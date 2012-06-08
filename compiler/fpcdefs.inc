@@ -129,6 +129,7 @@
   {$define cpurox}
   {$define cputargethasfixedstack}
   {$define cpurefshaveindexreg}
+  {$define FPC_HAS_SYSTEMS_INTERRUPT_TABLE}
   { default to armel }
   {$if not(defined(CPUARM)) and not(defined(CPUARMEB)) and not(defined(FPC_OARM)) and not(defined(FPC_ARMEB)) and not(defined(FPC_ARMHF))}
     {$define FPC_ARMEL}

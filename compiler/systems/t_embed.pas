@@ -727,6 +727,13 @@ begin
         ChangeFileExt(current_module.exefilename,'.hex'),true,false);
     end;
 
+  if success and (target_info.system in [system_arm_embedded,system_avr_embedded]) then
+    begin
+      success:=DoExec(FindUtil(utilsprefix+'objcopy'),'-O binary '+
+        ChangeFileExt(current_module.exefilename,'.elf')+' '+
+        ChangeFileExt(current_module.exefilename,'.bin'),true,false);
+    end;
+
   MakeExecutable:=success;   { otherwise a recursive call to link method }
 end;
 

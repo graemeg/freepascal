@@ -309,7 +309,7 @@ Const
         (
     	controllertypestr:'STM32F103RB';
         controllerunitstr:'STM32F103';
-        interruptvectors:12;
+        interruptvectors:72;
         flashbase:$08000000;
         flashsize:$00020000;
         srambase:$20000000;
@@ -319,7 +319,7 @@ Const
         (
     	controllertypestr:'STM32F103RE';
         controllerunitstr:'STM32F103';
-        interruptvectors:12;
+        interruptvectors:72;
         flashbase:$08000000;
         flashsize:$00080000;
         srambase:$20000000;
@@ -329,7 +329,7 @@ Const
         (
     	controllertypestr:'STM32F103C4T';
         controllerunitstr:'STM32F103';
-        interruptvectors:12;
+        interruptvectors:72;
         flashbase:$08000000;
         flashsize:$00004000;
         srambase:$20000000;
