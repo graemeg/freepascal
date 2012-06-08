@@ -3488,7 +3488,8 @@ unit cgcpu;
                   end
                 else
                   begin
-                    a_reg_dealloc(list,NR_R12);
+                    if current_procinfo.framepointer<>NR_STACK_POINTER_REG then
+                      a_reg_dealloc(list,NR_R12);
                     list.concat(taicpu.op_reg_reg_const(A_SUB,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,LocalSize));
                   end;
               end;
@@ -3574,7 +3575,7 @@ unit cgcpu;
                 inc(stackmisalignment,4);
 
             stackmisalignment:=stackmisalignment mod current_settings.alignment.localalignmax;
-            if (current_procinfo.framepointer=NR_STACK_POINTER_REG) then
+            //if (current_procinfo.framepointer<>NR_STACK_POINTER_REG) then
               begin
                 LocalSize:=current_procinfo.calc_stackframe_size;
                 if (LocalSize<>0) or
@@ -3592,34 +3593,25 @@ unit cgcpu;
                       end
                     else
                       begin
+                        if current_procinfo.framepointer<>NR_STACK_POINTER_REG then
+                          a_reg_dealloc(list,NR_R12);
                         list.concat(taicpu.op_reg_reg_const(A_ADD,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,LocalSize));
                       end;
                   end;
+              end;
 
-                if regs=[] then
-                  list.concat(taicpu.op_reg_reg(A_MOV,NR_R15,NR_R14))
-                else
-                  begin
-                    reference_reset(ref,4);
-                    ref.index:=NR_STACK_POINTER_REG;
-                    ref.addressmode:=AM_PREINDEXED;
-                    list.concat(setoppostfix(taicpu.op_ref_regset(A_LDM,ref,R_INTREGISTER,R_SUBWHOLE,regs),PF_FD));
-                  end;
-              end
+            if regs=[] then
+              list.concat(taicpu.op_reg(A_BX,NR_R14))
             else
               begin
-                { restore int registers and return }
-                list.concat(taicpu.op_reg_reg(A_MOV, NR_STACK_POINTER_REG, NR_FRAME_POINTER_REG));
-                { Add 4 to SP to make it point to an "imaginary PC" which the paramanager assumes is there(for normal ARM) }
-                list.concat(taicpu.op_reg_const(A_ADD, NR_STACK_POINTER_REG, 4));
-
                 reference_reset(ref,4);
                 ref.index:=NR_STACK_POINTER_REG;
-                list.concat(setoppostfix(taicpu.op_ref_regset(A_LDM,ref,R_INTREGISTER,R_SUBWHOLE,regs),PF_DB));
+                ref.addressmode:=AM_PREINDEXED;
+                list.concat(setoppostfix(taicpu.op_ref_regset(A_LDM,ref,R_INTREGISTER,R_SUBWHOLE,regs),PF_FD));
               end;
           end
         else
-          list.concat(taicpu.op_reg_reg(A_MOV,NR_PC,NR_R14));
+          list.concat(taicpu.op_reg(A_BX,NR_R14));
       end;
 
 
