@@ -451,7 +451,7 @@ type
   WRPR: DWord;
  end;
 
- TNVICRegisters = packed record
+ TNVICRegisters = record
   ISER: array[0..7] of longword;
    reserved0: array[0..23] of longword;
   ICER: array[0..7] of longword;
@@ -462,7 +462,7 @@ type
    reserved3: array[0..23] of longword;
   IABR: array[0..7] of longword;
    reserved4: array[0..55] of longword;
-  IP: array[0..239] of longword;
+  IP: array[0..239] of byte;
    reserved5: array[0..643] of longword;
   STIR: longword;
  end;
