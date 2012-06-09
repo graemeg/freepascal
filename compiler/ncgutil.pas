@@ -2014,6 +2014,7 @@ implementation
         hp:=tused_unit(usedunits.first);
         while assigned(hp) do
           begin
+            try
             for i := 0 to hp.u.symlist.Count-1 do
               begin
                 sym:=tsym(hp.u.symlist[i]);
@@ -2037,6 +2038,8 @@ implementation
                       end;
                   end;
               end;
+            except
+            end;  
             hp:=tused_unit(hp.next);
           end;
 

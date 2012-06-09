@@ -307,7 +307,7 @@ interface
          $define FPC_HAS_SYSTEMS_INTERRUPT_TABLE
          to fpcdefs.inc to reactivate
          the corresponding code }
-       systems_interrupt_table = [{system_arm_embedded}];
+       systems_interrupt_table = [system_arm_embedded];
        {$endif FPC_HAS_SYSTEMS_INTERRUPT_TABLE}
 
        { all systems for which istack must be at a 16 byte boundary

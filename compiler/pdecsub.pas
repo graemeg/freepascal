@@ -2115,7 +2115,11 @@ const
       idtok:_INTERRUPT;
       pd_flags : [pd_implemen,pd_body,pd_notobject,pd_notobjintf,pd_notrecord,pd_nothelper];
       handler  : @pd_interrupt;
+{$ifdef FPC_HAS_SYSTEMS_INTERRUPT_TABLE}
+      pocall   : pocall_interrupt;
+{$else FPC_HAS_SYSTEMS_INTERRUPT_TABLE}
       pocall   : pocall_oldfpccall;
+{$endif FPC_HAS_SYSTEMS_INTERRUPT_TABLE}      
       pooption : [po_interrupt];
       mutexclpocall : [pocall_internproc,pocall_cdecl,pocall_cppdecl,pocall_stdcall,
                        pocall_pascal,pocall_far16,pocall_oldfpccall];
