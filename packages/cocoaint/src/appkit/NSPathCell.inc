@@ -66,12 +66,38 @@ type
     _allowedTypes: NSArray;
     _doubleAction: SEL;
     _delegate: id;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __piFlags: record
       case byte of
        0: (_anonbitfield_NSPathCell0: cuint);
        1: (data: bitpacked record
         reserved: 0..((1 shl 32)-1);
        end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __piFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSPathCell0: cuint);
+       1: (
+        reserved: 0..((1 shl 32)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _pathStyle: NSPathStyle;

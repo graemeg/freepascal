@@ -34,7 +34,11 @@
 
     nils.sjoholm@mailbox.swipnet.se
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
 
 UNIT locale;
 
@@ -267,31 +271,30 @@ VAR LocaleBase : pLocaleBase;
 const
     LOCALENAME : PChar = 'locale.library';
 
-PROCEDURE CloseCatalog(catalog : pCatalog location 'a0'); syscall LocaleBase 036;
-PROCEDURE CloseLocale(locale : pLocale location 'a0'); syscall LocaleBase 042;
-FUNCTION ConvToLower(locale : pLocale location 'a0'; character : ULONG location 'd0') : ULONG; syscall LocaleBase 048;
-FUNCTION ConvToUpper(locale : pLocale location 'a0'; character : ULONG location 'd0') : ULONG; syscall LocaleBase 054;
-PROCEDURE FormatDate(locale : pLocale location 'a0'; fmtTemplate : pCHAR location 'a1'; date : pDateStamp location 'a2'; putCharFunc : pHook location 'a3'); syscall LocaleBase 060;
-FUNCTION FormatString(locale : pLocale location 'a0'; fmtTemplate : pCHAR location 'a1'; dataStream : POINTER location 'a2'; putCharFunc : pHook location 'a3') : POINTER; syscall LocaleBase 066;
-FUNCTION GetCatalogStr(catalog : pCatalog location 'a0'; stringNum : LONGINT location 'd0'; defaultString : pCHAR location 'a1') : pCHAR; syscall LocaleBase 072;
-FUNCTION GetLocaleStr(locale : pLocale location 'a0'; stringNum : ULONG location 'd0') : pCHAR; syscall LocaleBase 078;
-FUNCTION IsAlNum(locale : pLocale location 'a0'; character : ULONG location 'd0') : LongBool; syscall LocaleBase 084;
-FUNCTION IsAlpha(locale : pLocale location 'a0'; character : ULONG location 'd0') : LongBool; syscall LocaleBase 090;
-FUNCTION IsCntrl(locale : pLocale location 'a0'; character : ULONG location 'd0') : LongBool; syscall LocaleBase 096;
-FUNCTION IsDigit(locale : pLocale location 'a0'; character : ULONG location 'd0') : LongBool; syscall LocaleBase 102;
-FUNCTION IsGraph(locale : pLocale location 'a0'; character : ULONG location 'd0') : LongBool; syscall LocaleBase 108;
-FUNCTION IsLower(locale : pLocale location 'a0'; character : ULONG location 'd0') : LongBool; syscall LocaleBase 114;
-FUNCTION IsPrint(locale : pLocale location 'a0'; character : ULONG location 'd0') : LongBool; syscall LocaleBase 120;
-FUNCTION IsPunct(locale : pLocale location 'a0'; character : ULONG location 'd0') : LongBool; syscall LocaleBase 126;
-FUNCTION IsSpace(locale : pLocale location 'a0'; character : ULONG location 'd0') : LongBool; syscall LocaleBase 132;
-FUNCTION IsUpper(locale : pLocale location 'a0'; character : ULONG location 'd0') : LongBool; syscall LocaleBase 138;
-FUNCTION IsXDigit(locale : pLocale location 'a0'; character : ULONG location 'd0') : LongBool; syscall LocaleBase 144;
-FUNCTION OpenCatalogA(locale : pLocale location 'a0'; name : pCHAR location 'a1'; tags : pTagItem location 'a2') : pCatalog; syscall LocaleBase 150;
-FUNCTION OpenLocale(name : pCHAR location 'a0') : pLocale; syscall LocaleBase 156;
-FUNCTION ParseDate(locale : pLocale location 'a0'; date : pDateStamp location 'a1'; fmtTemplate : pCHAR location 'a2'; getCharFunc : pHook location 'a3') : LongBool; syscall LocaleBase 162;
-FUNCTION StrConvert(locale : pLocale location 'a0'; string1 : pCHAR location 'a1'; buffer : POINTER location 'a2'; bufferSize : ULONG location 'd0'; typ : ULONG location 'd1') : ULONG; syscall LocaleBase 174;
-FUNCTION StrnCmp(locale : pLocale location 'a0'; string1 : pCHAR location 'a1'; string2 : pCHAR location 'a2'; length : LONGINT location 'd0'; typ : ULONG location 'd1') : LONGINT; syscall LocaleBase 180;
-
+PROCEDURE CloseCatalog(catalog : pCatalog);
+PROCEDURE CloseLocale(locale : pLocale);
+FUNCTION ConvToLower(locale : pLocale; character : ULONG) : ULONG;
+FUNCTION ConvToUpper(locale : pLocale; character : ULONG) : ULONG;
+PROCEDURE FormatDate(locale : pLocale; fmtTemplate : pCHAR; date : pDateStamp; putCharFunc : pHook);
+FUNCTION FormatString(locale : pLocale; fmtTemplate : pCHAR; dataStream : POINTER; putCharFunc : pHook) : POINTER;
+FUNCTION GetCatalogStr(catalog : pCatalog; stringNum : LONGINT; defaultString : pCHAR) : pCHAR;
+FUNCTION GetLocaleStr(locale : pLocale; stringNum : ULONG) : pCHAR;
+FUNCTION IsAlNum(locale : pLocale; character : ULONG) : BOOLEAN;
+FUNCTION IsAlpha(locale : pLocale; character : ULONG) : BOOLEAN;
+FUNCTION IsCntrl(locale : pLocale; character : ULONG) : BOOLEAN;
+FUNCTION IsDigit(locale : pLocale; character : ULONG) : BOOLEAN;
+FUNCTION IsGraph(locale : pLocale; character : ULONG) : BOOLEAN;
+FUNCTION IsLower(locale : pLocale; character : ULONG) : BOOLEAN;
+FUNCTION IsPrint(locale : pLocale; character : ULONG) : BOOLEAN;
+FUNCTION IsPunct(locale : pLocale; character : ULONG) : BOOLEAN;
+FUNCTION IsSpace(locale : pLocale; character : ULONG) : BOOLEAN;
+FUNCTION IsUpper(locale : pLocale; character : ULONG) : BOOLEAN;
+FUNCTION IsXDigit(locale : pLocale; character : ULONG) : BOOLEAN;
+FUNCTION OpenCatalogA(locale : pLocale; name : pCHAR; tags : pTagItem) : pCatalog;
+FUNCTION OpenLocale(name : pCHAR) : pLocale;
+FUNCTION ParseDate(locale : pLocale; date : pDateStamp; fmtTemplate : pCHAR; getCharFunc : pHook) : BOOLEAN;
+FUNCTION StrConvert(locale : pLocale; string1 : pCHAR; buffer : POINTER; bufferSize : ULONG; typ : ULONG) : ULONG;
+FUNCTION StrnCmp(locale : pLocale; string1 : pCHAR; string2 : pCHAR; length : LONGINT; typ : ULONG) : LONGINT;
 
 {Here we read how to compile this unit}
 {You can remove this include and use a define instead}
@@ -308,9 +311,364 @@ IMPLEMENTATION
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox;
+msgbox;
 {$endif dont_use_openlib}
 
+PROCEDURE CloseCatalog(catalog : pCatalog);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L catalog,A0
+    MOVEA.L LocaleBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE CloseLocale(locale : pLocale);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVEA.L LocaleBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION ConvToLower(locale : pLocale; character : ULONG) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ConvToUpper(locale : pLocale; character : ULONG) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE FormatDate(locale : pLocale; fmtTemplate : pCHAR; date : pDateStamp; putCharFunc : pHook);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVEA.L fmtTemplate,A1
+    MOVEA.L date,A2
+    MOVEA.L putCharFunc,A3
+    MOVEA.L LocaleBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION FormatString(locale : pLocale; fmtTemplate : pCHAR; dataStream : POINTER; putCharFunc : pHook) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVEA.L fmtTemplate,A1
+    MOVEA.L dataStream,A2
+    MOVEA.L putCharFunc,A3
+    MOVEA.L LocaleBase,A6
+    JSR -066(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetCatalogStr(catalog : pCatalog; stringNum : LONGINT; defaultString : pCHAR) : pCHAR;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L catalog,A0
+    MOVE.L  stringNum,D0
+    MOVEA.L defaultString,A1
+    MOVEA.L LocaleBase,A6
+    JSR -072(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetLocaleStr(locale : pLocale; stringNum : ULONG) : pCHAR;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  stringNum,D0
+    MOVEA.L LocaleBase,A6
+    JSR -078(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION IsAlNum(locale : pLocale; character : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION IsAlpha(locale : pLocale; character : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -090(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION IsCntrl(locale : pLocale; character : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -096(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION IsDigit(locale : pLocale; character : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -102(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION IsGraph(locale : pLocale; character : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -108(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION IsLower(locale : pLocale; character : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -114(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION IsPrint(locale : pLocale; character : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -120(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION IsPunct(locale : pLocale; character : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -126(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION IsSpace(locale : pLocale; character : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -132(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION IsUpper(locale : pLocale; character : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -138(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION IsXDigit(locale : pLocale; character : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVE.L  character,D0
+    MOVEA.L LocaleBase,A6
+    JSR -144(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenCatalogA(locale : pLocale; name : pCHAR; tags : pTagItem) : pCatalog;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVEA.L name,A1
+    MOVEA.L tags,A2
+    MOVEA.L LocaleBase,A6
+    JSR -150(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenLocale(name : pCHAR) : pLocale;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L name,A0
+    MOVEA.L LocaleBase,A6
+    JSR -156(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ParseDate(locale : pLocale; date : pDateStamp; fmtTemplate : pCHAR; getCharFunc : pHook) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVEA.L date,A1
+    MOVEA.L fmtTemplate,A2
+    MOVEA.L getCharFunc,A3
+    MOVEA.L LocaleBase,A6
+    JSR -162(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION StrConvert(locale : pLocale; string1 : pCHAR; buffer : POINTER; bufferSize : ULONG; typ : ULONG) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVEA.L string1,A1
+    MOVEA.L buffer,A2
+    MOVE.L  bufferSize,D0
+    MOVE.L  typ,D1
+    MOVEA.L LocaleBase,A6
+    JSR -174(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION StrnCmp(locale : pLocale; string1 : pCHAR; string2 : pCHAR; length : LONGINT; typ : ULONG) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L locale,A0
+    MOVEA.L string1,A1
+    MOVEA.L string2,A2
+    MOVE.L  length,D0
+    MOVE.L  typ,D1
+    MOVEA.L LocaleBase,A6
+    JSR -180(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
 
 const
     { Change VERSION and LIBVERSION to proper values }

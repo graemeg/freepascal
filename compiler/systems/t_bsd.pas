@@ -36,7 +36,15 @@ implementation
     verbose,systems,globtype,globals,
     symconst,script,
     fmodule,aasmbase,aasmtai,aasmdata,aasmcpu,cpubase,symsym,symdef,
+<<<<<<< HEAD
+<<<<<<< HEAD
     import,export,link,comprsrc,rescmn,i_bsd,expunix,
+=======
+    import,export,link,i_bsd,expunix,
+>>>>>>> graemeg/fixes_2_2
+=======
+    import,export,link,i_bsd,expunix,
+>>>>>>> origin/fixes_2_2
     cgutils,cgbase,cgobj,cpuinfo,ogbase;
 
   type
@@ -61,7 +69,13 @@ implementation
       LdSupportsNoResponseFile : boolean;
       LibrarySuffix : Char;
       Function  WriteResponseFile(isdll:boolean) : Boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
       function GetDarwinCrt1ObjName(isdll: boolean): TCmdStr;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       Function GetDarwinPrtobjName(isdll: boolean): TCmdStr;
     public
       constructor Create;override;
@@ -88,14 +102,34 @@ implementation
 
     procedure texportlibdarwin.setinitname(list: TAsmList; const s: string);
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
         new_section(list,sec_init_func,'',sizeof(pint));
+=======
+        list.concat(tai_directive.create(asd_mod_init_func,''));
+        list.concat(tai_align.create(sizeof(aint)));
+>>>>>>> graemeg/fixes_2_2
+=======
+        list.concat(tai_directive.create(asd_mod_init_func,''));
+        list.concat(tai_align.create(sizeof(aint)));
+>>>>>>> origin/fixes_2_2
         list.concat(Tai_const.Createname(s,0));
       end;
 
 
     procedure texportlibdarwin.setfininame(list: TAsmList; const s: string);
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
         new_section(list,sec_term_func,'',sizeof(pint));
+=======
+        list.concat(tai_directive.create(asd_mod_term_func,''));
+        list.concat(tai_align.create(sizeof(aint)));
+>>>>>>> graemeg/fixes_2_2
+=======
+        list.concat(tai_directive.create(asd_mod_term_func,''));
+        list.concat(tai_align.create(sizeof(aint)));
+>>>>>>> origin/fixes_2_2
         list.concat(Tai_const.Createname(s,0));
       end;
 
@@ -151,12 +185,34 @@ begin
            end
          else
            begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifndef cpu64bitaddr}
              { Set the size of the page at address zero to 64kb, so nothing
                is loaded below that address. This avoids problems with the
                strange Windows-compatible resource handling that assumes
                that addresses below 64kb do not exist.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+               
+>>>>>>> graemeg/cpstrnew
+=======
+               
+>>>>>>> graemeg/cpstrnew
+=======
+               
+>>>>>>> graemeg/cpstrnew
+=======
+               
+>>>>>>> origin/cpstrnew
                On 64bit systems, page zero is 4GB by default, so no problems
                there.
              }
@@ -166,6 +222,10 @@ begin
                programs with problems that require Valgrind will have more
                than 60KB of data (first 4KB of address space is always invalid)
              }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                ExeCmd[1]:='ld $PRTOBJ $TARGET $EMUL $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -multiply_defined suppress -L. -o $EXE $CATRES';
              if not(cs_gdb_valgrind in current_settings.globalswitches) then
                ExeCmd[1]:=ExeCmd[1]+' -pagezero_size 0x10000';
@@ -176,6 +236,79 @@ begin
                DllCmd[1]:='ld $PRTOBJ $TARGET $EMUL $OPT $GCSECTIONS -dynamic -dylib -multiply_defined suppress -L. -o $EXE $CATRES'
              else
                DllCmd[1]:='ld $PRTOBJ $TARGET $EMUL $OPT $GCSECTIONS -dynamic -bundle -multiply_defined suppress -L. -o $EXE $CATRES'
+=======
+               ExeCmd[1]:='ld $PRTOBJ $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -multiply_defined suppress -L. -o $EXE `cat $RES`';
+             if not(cs_gdb_valgrind in current_settings.globalswitches) then
+               ExeCmd[1]:=ExeCmd[1]+' -pagezero_size 0x10000';
+{$else ndef cpu64bitaddr}
+             ExeCmd[1]:='ld $PRTOBJ $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -multiply_defined suppress -L. -o $EXE `cat $RES`';
+{$endif ndef cpu64bitaddr}
+             if (apptype<>app_bundle) then
+               DllCmd[1]:='ld $PRTOBJ $OPT $GCSECTIONS -dynamic -dylib -multiply_defined suppress -L. -o $EXE `cat $RES`'
+             else
+               DllCmd[1]:='ld $PRTOBJ $OPT $GCSECTIONS -dynamic -bundle -multiply_defined suppress -L. -o $EXE `cat $RES`'
+>>>>>>> graemeg/cpstrnew
+=======
+               ExeCmd[1]:='ld $PRTOBJ $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -multiply_defined suppress -L. -o $EXE `cat $RES`';
+             if not(cs_gdb_valgrind in current_settings.globalswitches) then
+               ExeCmd[1]:=ExeCmd[1]+' -pagezero_size 0x10000';
+{$else ndef cpu64bitaddr}
+             ExeCmd[1]:='ld $PRTOBJ $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -multiply_defined suppress -L. -o $EXE `cat $RES`';
+{$endif ndef cpu64bitaddr}
+             if (apptype<>app_bundle) then
+               DllCmd[1]:='ld $PRTOBJ $OPT $GCSECTIONS -dynamic -dylib -multiply_defined suppress -L. -o $EXE `cat $RES`'
+             else
+               DllCmd[1]:='ld $PRTOBJ $OPT $GCSECTIONS -dynamic -bundle -multiply_defined suppress -L. -o $EXE `cat $RES`'
+>>>>>>> graemeg/cpstrnew
+=======
+               ExeCmd[1]:='ld $PRTOBJ $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -multiply_defined suppress -L. -o $EXE `cat $RES`';
+             if not(cs_gdb_valgrind in current_settings.globalswitches) then
+               ExeCmd[1]:=ExeCmd[1]+' -pagezero_size 0x10000';
+{$else ndef cpu64bitaddr}
+             ExeCmd[1]:='ld $PRTOBJ $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -multiply_defined suppress -L. -o $EXE `cat $RES`';
+{$endif ndef cpu64bitaddr}
+             if (apptype<>app_bundle) then
+               DllCmd[1]:='ld $PRTOBJ $OPT $GCSECTIONS -dynamic -dylib -multiply_defined suppress -L. -o $EXE `cat $RES`'
+             else
+               DllCmd[1]:='ld $PRTOBJ $OPT $GCSECTIONS -dynamic -bundle -multiply_defined suppress -L. -o $EXE `cat $RES`'
+>>>>>>> graemeg/cpstrnew
+=======
+               ExeCmd[1]:='ld $PRTOBJ $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -multiply_defined suppress -L. -o $EXE `cat $RES`';
+             if not(cs_gdb_valgrind in current_settings.globalswitches) then
+               ExeCmd[1]:=ExeCmd[1]+' -pagezero_size 0x10000';
+=======
+               
+               On 64bit systems, page zero is 4GB by default, so no problems
+               there.
+             }
+             ExeCmd[1]:='ld $PRTOBJ $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -pagezero_size 0x10000 -multiply_defined suppress -L. -o $EXE `cat $RES`';
+>>>>>>> origin/fixes_2.4
+{$else ndef cpu64bitaddr}
+             ExeCmd[1]:='ld $PRTOBJ $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -multiply_defined suppress -L. -o $EXE `cat $RES`';
+{$endif ndef cpu64bitaddr}
+             if (apptype<>app_bundle) then
+<<<<<<< HEAD
+               DllCmd[1]:='ld $PRTOBJ $OPT $GCSECTIONS -dynamic -dylib -multiply_defined suppress -L. -o $EXE `cat $RES`'
+             else
+               DllCmd[1]:='ld $PRTOBJ $OPT $GCSECTIONS -dynamic -bundle -multiply_defined suppress -L. -o $EXE `cat $RES`'
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+             ExeCmd[1]:='ld $PRTOBJ $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -multiply_defined suppress -L. -o $EXE `cat $RES`';
+             if (apptype<>app_bundle) then
+               DllCmd[1]:='libtool $PRTOBJ $OPT -dynamic -multiply_defined suppress -L. -o $EXE `cat $RES`'
+             else
+               DllCmd[1]:='ld $PRTOBJ $OPT -dynamic -bundle -multiply_defined suppress -L. -o $EXE `cat $RES`'
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+               DllCmd[1]:='ld $PRTOBJ $OPT -dynamic -dylib -multiply_defined suppress -L. -o $EXE `cat $RES`'
+             else
+               DllCmd[1]:='ld $PRTOBJ $OPT -dynamic -bundle -multiply_defined suppress -L. -o $EXE `cat $RES`'
+>>>>>>> origin/fixes_2.4
            end
        end
      else
@@ -226,6 +359,8 @@ else
 End;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TLinkerBSD.GetDarwinCrt1ObjName(isdll: boolean): TCmdStr;
 begin
   if not isdll then
@@ -287,10 +422,32 @@ begin
             Info.ExeCmd[1]:=Info.ExeCmd[1]+' -no_new_main';
         end;
     end
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Function TLinkerBSD.GetDarwinPrtobjName(isdll: boolean): TCmdStr;
+begin
+  if not(isdll) then
+    if not(cs_profile in current_settings.moduleswitches) then
+      begin
+        if not librarysearchpath.FindFile('crt1.o',false,result) then
+          result:='/usr/lib/crt1.o';
+      end
+    else
+      begin
+        if not librarysearchpath.FindFile('gcrt1.o',false,result) then
+          result:='/usr/lib/gcrt1.o';
+      end
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   else
     begin
       if (apptype=app_bundle) then
         begin
+<<<<<<< HEAD
+<<<<<<< HEAD
           case target_info.system of
             system_powerpc_darwin,
             system_powerpc64_darwin,
@@ -322,6 +479,10 @@ begin
         end
       else
         begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           case target_info.system of
             system_powerpc_darwin,
             system_powerpc64_darwin,
@@ -354,6 +515,22 @@ begin
               end;
           end;
           result:='dylib1.o';
+=======
+          if not librarysearchpath.FindFile('dylib1.o',false,result) then
+            result:='/usr/lib/dylib1.o'
+>>>>>>> graemeg/cpstrnew
+=======
+          if not librarysearchpath.FindFile('dylib1.o',false,result) then
+            result:='/usr/lib/dylib1.o'
+>>>>>>> graemeg/cpstrnew
+=======
+          if not librarysearchpath.FindFile('dylib1.o',false,result) then
+            result:='/usr/lib/dylib1.o'
+>>>>>>> graemeg/cpstrnew
+=======
+          if not librarysearchpath.FindFile('dylib1.o',false,result) then
+            result:='/usr/lib/dylib1.o'
+>>>>>>> origin/cpstrnew
         end;
     end;
 end;
@@ -373,6 +550,23 @@ begin
     result:='';
   result:=maybequoted(result);
 end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          if not librarysearchpath.FindFile('bundle1.o',false,result) then
+            result:='/usr/lib/bundle1.o'
+        end
+      else
+        begin
+          if not librarysearchpath.FindFile('dylib1.o',false,result) then
+            result:='/usr/lib/dylib1.o'
+        end;
+    end;
+end;    
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
 Function TLinkerBSD.WriteResponseFile(isdll:boolean) : Boolean;
@@ -393,7 +587,13 @@ Var
 begin
   WriteResponseFile:=False;
   ReOrder:=False;
+<<<<<<< HEAD
+<<<<<<< HEAD
   linkdynamic:=False;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   IsDarwin:=target_info.system in systems_darwin;
 { set special options for some targets }
   if not IsDarwin Then
@@ -458,13 +658,16 @@ begin
 
   if (target_info.system in systems_darwin) and
      (sysrootpath<>'') then
+<<<<<<< HEAD
     begin
       LinkRes.Add('-syslibroot');
       LinkRes.Add(sysrootpath);
     end;
 
+<<<<<<< HEAD
   if (target_info.system in systems_darwin) then
     begin
+<<<<<<< HEAD
       LinkRes.Add('-arch');
       case target_info.system of
         system_powerpc_darwin:
@@ -485,6 +688,64 @@ begin
           LinkRes.Add('arm64');
         else
           internalerror(2014121801);
+=======
+=======
+    begin
+      LinkRes.Add('-syslibroot');
+      LinkRes.Add(sysrootpath);
+    end;
+
+  if (not isdll) or
+     (apptype=app_bundle) then
+    begin
+>>>>>>> graemeg/fixes_2_2
+=======
+  if (target_info.system in systems_darwin) and
+     (sysrootpath<>'') then
+    begin
+      LinkRes.Add('-syslibroot');
+      LinkRes.Add(sysrootpath);
+    end;
+
+  if (not isdll) or
+     (apptype=app_bundle) then
+    begin
+>>>>>>> origin/fixes_2_2
+      if (target_info.system in systems_darwin) then
+        begin
+          LinkRes.Add('-arch');
+          case target_info.system of
+            system_powerpc_darwin:
+              LinkRes.Add('ppc');
+<<<<<<< HEAD
+<<<<<<< HEAD
+            system_i386_darwin,
+            system_i386_iphonesim:
+=======
+            system_i386_darwin:
+>>>>>>> graemeg/fixes_2_2
+=======
+            system_i386_darwin:
+>>>>>>> origin/fixes_2_2
+              LinkRes.Add('i386');
+            system_powerpc64_darwin:
+              LinkRes.Add('ppc64');
+            system_x86_64_darwin:
+              LinkRes.Add('x86_64');
+<<<<<<< HEAD
+<<<<<<< HEAD
+            system_arm_darwin:
+              { don't specify architecture subtype, because then CPU_SUBTYPE_ALL
+                files, such as compiled resources, are rejected }
+              LinkRes.Add('arm');
+          end;
+>>>>>>> graemeg/cpstrnew
+=======
+          end;
+>>>>>>> graemeg/fixes_2_2
+=======
+          end;
+>>>>>>> origin/fixes_2_2
       end;
       if MacOSXVersionMin<>'' then
         begin
@@ -532,6 +793,8 @@ begin
          HPath:=TCmdStrListItem(HPath.Next);
        end;
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
       { force local symbol resolution (i.e., inside the shared }
       { library itself) for all non-exorted symbols, otherwise }
       { several RTL symbols of FPC-compiled shared libraries   }
@@ -554,6 +817,10 @@ begin
           LinkRes.add('  };');
           LinkRes.add('}');
         end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   if not LdSupportsNoResponseFile then
     LinkRes.Add('INPUT(');
@@ -648,7 +915,15 @@ begin
      if not LdSupportsNoResponseFile then
        LinkRes.Add(')');
    end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> graemeg/fixes_2_2
+=======
+   
+>>>>>>> origin/fixes_2_2
   { frameworks for Darwin }
   if IsDarwin then
     while not FrameworkFiles.empty do
@@ -656,7 +931,15 @@ begin
         LinkRes.Add('-framework');
         LinkRes.Add(FrameworkFiles.GetFirst);
       end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+     
+>>>>>>> graemeg/fixes_2_2
+=======
+     
+>>>>>>> origin/fixes_2_2
   { objects which must be at the end }
   if linklibc and
      not IsDarwin Then
@@ -688,17 +971,48 @@ function TLinkerBSD.MakeExecutable:boolean;
 var
   binstr,
   cmdstr,
+<<<<<<< HEAD
+<<<<<<< HEAD
   targetstr,
   emulstr,
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   extdbgbinstr,
   extdbgcmdstr: TCmdStr;
   linkscript: TAsmScript;
   DynLinkStr : string[60];
   GCSectionsStr,
   StaticStr,
+<<<<<<< HEAD
+<<<<<<< HEAD
   StripStr   : string[63];
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   success,
   useshell : boolean;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  success : boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+  StripStr   : string[40];
+=======
+  StripStr   : string[63];
+>>>>>>> origin/fixes_2.4
+  success : boolean;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   if not(cs_link_nolink in current_settings.globalswitches) then
    Message1(exec_i_linking,current_module.exefilename);
@@ -743,7 +1057,18 @@ begin
     if not(target_info.system in systems_darwin) then
       GCSectionsStr:='--gc-sections'
     else
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       GCSectionsStr:='-dead_strip -no_dead_strip_inits_and_terms';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      GCSectionsStr:='-dead_strip';
+>>>>>>> graemeg/fixes_2_2
+=======
+      GCSectionsStr:='-dead_strip -no_dead_strip_inits_and_terms';
+>>>>>>> origin/fixes_2.4
 
    if(not(target_info.system in systems_darwin) and
       (cs_profile in current_settings.moduleswitches)) or
@@ -790,7 +1115,15 @@ begin
      (cs_link_separate_dbg_file in current_settings.globalswitches) then
     begin
       extdbgbinstr:=FindUtil(utilsprefix+'dsymutil');
+<<<<<<< HEAD
+<<<<<<< HEAD
       extdbgcmdstr:=maybequoted(current_module.exefilename);
+=======
+      extdbgcmdstr:=maybequoted(current_module.exefilename^);
+>>>>>>> graemeg/fixes_2_2
+=======
+      extdbgcmdstr:=maybequoted(current_module.exefilename^);
+>>>>>>> origin/fixes_2_2
     end;
 
   if (LdSupportsNoResponseFile) and
@@ -808,8 +1141,16 @@ begin
       CmdStr:='';
     end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   useshell:=not (tf_no_backquote_support in source_info.flags);
   success:=DoExec(BinStr,CmdStr,true,LdSupportsNoResponseFile or useshell);
+=======
+  success:=DoExec(BinStr,CmdStr,true,LdSupportsNoResponseFile);
+>>>>>>> graemeg/fixes_2_2
+=======
+  success:=DoExec(BinStr,CmdStr,true,LdSupportsNoResponseFile);
+>>>>>>> origin/fixes_2_2
   if (success and
       (extdbgbinstr<>'') and
       (cs_link_nolink in current_settings.globalswitches)) then
@@ -823,7 +1164,15 @@ begin
        begin
          DeleteFile(linkscript.fn);
          linkscript.free
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+       end; 
+>>>>>>> graemeg/fixes_2_2
+=======
+       end; 
+>>>>>>> origin/fixes_2_2
    end;
 
   MakeExecutable:=success;   { otherwise a recursive call to link method }
@@ -838,17 +1187,39 @@ var
   linkscript: TAsmScript;
   binstr,
   cmdstr,
+<<<<<<< HEAD
+<<<<<<< HEAD
   targetstr,
   emulstr,
   extdbgbinstr,
   extdbgcmdstr  : TCmdStr;
   GCSectionsStr : string[63];
+=======
+  extdbgbinstr,
+  extdbgcmdstr  : TCmdStr;
+>>>>>>> graemeg/fixes_2_2
+=======
+  extdbgbinstr,
+  extdbgcmdstr  : TCmdStr;
+>>>>>>> origin/fixes_2_2
   exportedsyms: text;
   success : boolean;
 begin
   MakeSharedLibrary:=false;
   GCSectionsStr:='';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   linkscript:=nil;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   if not(cs_link_nolink in current_settings.globalswitches) then
    Message1(exec_i_linking,current_module.sharedlibfilename);
 
@@ -863,6 +1234,10 @@ begin
     else
       GCSectionsStr:='-dead_strip -no_dead_strip_inits_and_terms';
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   { i386_freebsd needs -b elf32-i386-freebsd and -m elf_i386_fbsd
     to avoid creation of a i386:x86_64 arch binary }
 
@@ -877,6 +1252,14 @@ begin
       emulstr:='';
     end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   InitStr:='-init FPC_LIB_START';
   FiniStr:='-fini FPC_LIB_EXIT';
   SoNameStr:='-soname '+ExtractFileName(current_module.sharedlibfilename);
@@ -909,7 +1292,12 @@ begin
      (cs_link_separate_dbg_file in current_settings.globalswitches) then
     begin
       extdbgbinstr:=FindUtil(utilsprefix+'dsymutil');
+<<<<<<< HEAD
+<<<<<<< HEAD
       extdbgcmdstr:=maybequoted(current_module.sharedlibfilename);
+=======
+      extdbgcmdstr:=maybequoted(current_module.sharedlibfilename^);
+>>>>>>> origin/fixes_2_2
     end;
 
   if (target_info.system in systems_darwin) then
@@ -942,6 +1330,44 @@ begin
       CmdStr:='';
     end;
 
+<<<<<<< HEAD
+=======
+      extdbgcmdstr:=maybequoted(current_module.sharedlibfilename^);
+    end;
+
+  if (target_info.system in systems_darwin) then
+    begin
+      { exported symbols for darwin }
+      if not texportlibunix(exportlib).exportedsymnames.empty then
+        begin
+          assign(exportedsyms,outputexedir+'linksyms.fpc');
+          rewrite(exportedsyms);
+          repeat
+            writeln(exportedsyms,texportlibunix(exportlib).exportedsymnames.getfirst);
+          until texportlibunix(exportlib).exportedsymnames.empty;
+          close(exportedsyms);
+          cmdstr:=cmdstr+' -exported_symbols_list '+maybequoted(outputexedir)+'linksyms.fpc';
+        end;
+    end;
+
+  if (LdSupportsNoResponseFile) and
+     not(cs_link_nolink in current_settings.globalswitches) then
+    begin
+      { we have to use a script to use the IFS hack }
+      linkscript:=TAsmScriptUnix.create(outputexedir+'ppaslink');
+      linkscript.AddLinkCommand(BinStr,CmdStr,'');
+      if (extdbgbinstr<>'') then
+        linkscript.AddLinkCommand(extdbgbinstr,extdbgcmdstr,'');
+      linkscript.WriteToDisk;
+      BinStr:=linkscript.fn;
+      if not path_absolute(BinStr) then
+        BinStr:='./'+BinStr;
+      CmdStr:='';
+    end;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   success:=DoExec(BinStr,cmdstr,true,LdSupportsNoResponseFile);
   if (success and
       (extdbgbinstr<>'') and
@@ -952,7 +1378,14 @@ begin
   if success and (cs_link_strip in current_settings.globalswitches) then
    begin
      SplitBinCmd(Info.DllCmd[2],binstr,cmdstr);
+<<<<<<< HEAD
      Replace(cmdstr,'$EXE',maybequoted(current_module.sharedlibfilename));
+=======
+     Replace(cmdstr,'$EXE',maybequoted(current_module.sharedlibfilename^));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
      success:=DoExec(FindUtil(utilsprefix+binstr),cmdstr,false,false);
    end;
 
@@ -967,7 +1400,15 @@ begin
         end;
       if (target_info.system in systems_darwin) then
         DeleteFile(outputexedir+'linksyms.fpc');
+<<<<<<< HEAD
+<<<<<<< HEAD
     end;
+=======
+    end;     
+>>>>>>> graemeg/fixes_2_2
+=======
+    end;     
+>>>>>>> origin/fixes_2_2
 
   MakeSharedLibrary:=success;   { otherwise a recursive call to link method }
 end;
@@ -1013,6 +1454,22 @@ initialization
   RegisterImport(system_i386_darwin,timportlibdarwin);
   RegisterExport(system_i386_darwin,texportlibdarwin);
   RegisterTarget(system_i386_darwin_info);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  RegisterExternalLinker(system_i386_iphonesim_info,TLinkerBSD);
+>>>>>>> graemeg/cpstrnew
+=======
+  RegisterExternalLinker(system_i386_iphonesim_info,TLinkerBSD);
+>>>>>>> graemeg/cpstrnew
+=======
+  RegisterExternalLinker(system_i386_iphonesim_info,TLinkerBSD);
+>>>>>>> graemeg/cpstrnew
+=======
+  RegisterExternalLinker(system_i386_iphonesim_info,TLinkerBSD);
+>>>>>>> origin/cpstrnew
   RegisterImport(system_i386_iphonesim,timportlibdarwin);
   RegisterExport(system_i386_iphonesim,texportlibdarwin);
   RegisterTarget(system_i386_iphonesim_info);
@@ -1027,15 +1484,32 @@ initialization
   RegisterExport(system_powerpc_darwin,texportlibdarwin);
   RegisterTarget(system_powerpc_darwin_info);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  RegisterExternalLinker(system_powerpc_netbsd_info,TLinkerBSD);
+>>>>>>> graemeg/fixes_2_2
   RegisterImport(system_powerpc_netbsd,timportlibbsd);
   RegisterExport(system_powerpc_netbsd,texportlibbsd);
   RegisterTarget(system_powerpc_netbsd_info);
 {$endif powerpc}
 {$ifdef powerpc64}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  RegisterExternalLinker(system_powerpc64_darwin_info,TLinkerBSD);
+>>>>>>> graemeg/fixes_2_2
+=======
+  RegisterExternalLinker(system_powerpc64_darwin_info,TLinkerBSD);
+>>>>>>> origin/fixes_2_2
   RegisterImport(system_powerpc64_darwin,timportlibdarwin);
   RegisterExport(system_powerpc64_darwin,texportlibdarwin);
   RegisterTarget(system_powerpc64_darwin_info);
 {$endif powerpc64}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef arm}
   RegisterImport(system_arm_darwin,timportlibdarwin);
   RegisterExport(system_arm_darwin,texportlibdarwin);
@@ -1049,4 +1523,8 @@ initialization
 
   RegisterRes(res_elf_info,TWinLikeResourceFile);
   RegisterRes(res_macho_info,TWinLikeResourceFile);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.

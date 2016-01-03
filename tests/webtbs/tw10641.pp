@@ -1,4 +1,6 @@
 { %cpu=x86_64 }
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %opt=-vw -Sew }
 
 {$ifdef windows}
@@ -25,6 +27,30 @@ begin
 .L3:
   END;
   if (test<>0) or (test2<>$deadbeef) then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+var
+  test : dword;
+
+begin
+  test:=$deadbeef;
+  ASM
+    MOVL $0,%EAX
+    JMP .LLT(%RAX)
+    .align 16
+.LLT:
+    .quad .L1,.L2
+.L2:
+    MOVL $12341234,test
+.L1:
+    MOVL $0,test
+  END;
+  if test<>0 then
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     halt(1);
   writeln('ok');
 end.

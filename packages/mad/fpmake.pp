@@ -14,10 +14,22 @@ begin
 
     P:=AddPackage('mad');
 {$ifdef ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
     P.OSes := [linux,win32,win64,wii];
+=======
+    P.Directory:='mad';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+>>>>>>> graemeg/fixes_2_2
+=======
+    P.Directory:='mad';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+>>>>>>> origin/fixes_2_2
     P.SourcePath.Add('src');
 
     T:=P.Targets.AddUnit('mad.pas');

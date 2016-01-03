@@ -1,6 +1,22 @@
 {
     Free Pascal port of the OpenPTC C++ library.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2001-2003, 2006, 2007, 2009-2012  Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -31,6 +47,10 @@
 }
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   IPTCSurface = interface
     function GetWidth: Integer;
     function GetHeight: Integer;
@@ -75,4 +95,66 @@ type
     property Pitch: Integer read GetPitch;
     property Area: IPTCArea read GetArea;
     property Format: IPTCFormat read GetFormat;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  TPTCBaseSurface = class
+  private
+    function GetWidth: Integer; virtual; abstract;
+    function GetHeight: Integer; virtual; abstract;
+    function GetPitch: Integer; virtual; abstract;
+    function GetArea: TPTCArea; virtual; abstract;
+    function GetFormat: TPTCFormat; virtual; abstract;
+  public
+    procedure Copy(ASurface: TPTCBaseSurface); virtual; abstract;
+    procedure Copy(ASurface: TPTCBaseSurface;
+                   const ASource, ADestination: TPTCArea); virtual; abstract;
+    function Lock: Pointer; virtual; abstract;
+    procedure Unlock; virtual; abstract;
+    procedure Load(const APixels: Pointer;
+                   AWidth, AHeight, APitch: Integer;
+                   const AFormat: TPTCFormat;
+                   const APalette: TPTCPalette); virtual; abstract;
+    procedure Load(const APixels: Pointer;
+                   AWidth, AHeight, APitch: Integer;
+                   const AFormat: TPTCFormat;
+                   const APalette: TPTCPalette;
+                   const ASource, ADestination: TPTCArea); virtual; abstract;
+    procedure Save(APixels: Pointer;
+                   AWidth, AHeight, APitch: Integer;
+                   const AFormat: TPTCFormat;
+                   const APalette: TPTCPalette); virtual; abstract;
+    procedure Save(APixels: Pointer;
+                   AWidth, AHeight, APitch: Integer;
+                   const AFormat: TPTCFormat;
+                   const APalette: TPTCPalette;
+                   const ASource, ADestination: TPTCArea); virtual; abstract;
+    procedure Clear; virtual; abstract;
+    procedure Clear(const AColor: TPTCColor); virtual; abstract;
+    procedure Clear(const AColor: TPTCColor;
+                    const AArea: TPTCArea); virtual; abstract;
+    procedure Palette(const APalette: TPTCPalette); virtual; abstract;
+    procedure Clip(const AArea: TPTCArea); virtual; abstract;
+    function Option(const AOption: String): Boolean; virtual; abstract;
+    function Clip: TPTCArea; virtual; abstract;
+    function Palette: TPTCPalette; virtual; abstract;
+    property Width: Integer read GetWidth;
+    property Height: Integer read GetHeight;
+    property Pitch: Integer read GetPitch;
+    property Area: TPTCArea read GetArea;
+    property Format: TPTCFormat read GetFormat;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;

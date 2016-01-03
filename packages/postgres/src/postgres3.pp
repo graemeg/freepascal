@@ -91,8 +91,6 @@ const
 
   function PQprotocolVersion(conn:PPGconn):longint;cdecl;external External_library name 'PQprotocolVersion';
 
-  function PQserverVersion(conn:PPGconn):longint;cdecl;external External_library name 'PQserverVersion';
-
   function PQerrorMessage(conn:PPGconn):Pchar;cdecl;external External_library name 'PQerrorMessage';
 
   function PQsocket(conn:PPGconn):longint;cdecl;external External_library name 'PQsocket';
@@ -125,7 +123,6 @@ const
 
   function PQexecPrepared(conn:PPGconn; stmtName:Pchar; nParams:longint; paramValues:PPchar; paramLengths:Plongint;
              paramFormats:Plongint; resultFormat:longint):PPGresult;cdecl;external External_library name 'PQexecPrepared';
-  function PQdescribePrepared(conn:PPGconn; stmtName:Pchar):PPGresult;cdecl;external External_library name 'PQdescribePrepared';
 
   { Interface for multiple-result or asynchronous queries  }
   function PQsendQuery(conn:PPGconn; query:Pchar):longint;cdecl;external External_library name 'PQsendQuery';

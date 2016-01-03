@@ -1,6 +1,34 @@
 {	CFURL.h
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	Copyright (c) 1998-2013, Apple Inc. All rights reserved.
 }
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+	Copyright (c) 1998-2009, Apple Inc. All rights reserved.
+}
+{	  Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, November 2005 }
+{	  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {
     Modified for use with Free Pascal
     Version 308
@@ -8,6 +36,30 @@
 }
 
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	Copyright (c) 1998-2005, Apple, Inc. All rights reserved.
+=======
+	Copyright (c) 1998-2009, Apple Inc. All rights reserved.
+>>>>>>> origin/fixes_2.4
+}
+{	  Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, November 2005 }
+{	  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+{
+    Modified for use with Free Pascal
+    Version 308
+    Please report any bugs to <gpc@microbizz.nl>
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4
 {$mode macpas}
 {$packenum 1}
 {$macro on}
@@ -16,8 +68,23 @@
 
 unit CFURL;
 interface
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$setc UNIVERSAL_INTERFACES_VERSION := $0400}
 {$setc GAP_INTERFACES_VERSION := $0308}
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> origin/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0400}
+{$setc GAP_INTERFACES_VERSION := $0308}
+>>>>>>> origin/fixes_2.4
 
 {$ifc not defined USE_CFSTR_CONSTANT_MACROS}
     {$setc USE_CFSTR_CONSTANT_MACROS := TRUE}
@@ -30,21 +97,50 @@ interface
 	{$error Conflicting initial definitions for FPC_BIG_ENDIAN and FPC_LITTLE_ENDIAN}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __ppc__ and defined CPUPOWERPC32}
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC32}
+>>>>>>> origin/fixes_2.4
 	{$setc __ppc__ := 1}
 {$elsec}
 	{$setc __ppc__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __ppc64__ and defined CPUPOWERPC64}
 	{$setc __ppc64__ := 1}
 {$elsec}
 	{$setc __ppc64__ := 0}
 {$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __i386__ and defined CPUI386}
 	{$setc __i386__ := 1}
 {$elsec}
 	{$setc __i386__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __x86_64__ and defined CPUX86_64}
 	{$setc __x86_64__ := 1}
 {$elsec}
@@ -55,11 +151,26 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -67,6 +178,13 @@ interface
   {$setc __LP64__ := 0}
 {$endc}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined __ppc__ and __ppc__ and defined __i386__ and __i386__}
 	{$error Conflicting definitions for __ppc__ and __i386__}
@@ -74,7 +192,14 @@ interface
 
 {$ifc defined __ppc__ and __ppc__}
 	{$setc TARGET_CPU_PPC := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_PPC64 := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
@@ -94,22 +219,106 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+>>>>>>> origin/cpstrnew
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/cpstrnew
 {$elsec}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
 {$elifc defined __x86_64__ and __x86_64__}
 	{$setc TARGET_CPU_PPC := FALSE}
@@ -154,6 +363,73 @@ interface
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elsec}
 	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ nor __arm64__ is defined.}
+=======
+{$elsec}
+=======
+{$elsec}
+>>>>>>> graemeg/cpstrnew
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+=======
+>>>>>>> origin/cpstrnew
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endc}
 
 {$ifc defined __LP64__ and __LP64__ }
@@ -161,6 +437,78 @@ interface
 {$elsec}
   {$setc TARGET_CPU_64 := FALSE}
 {$endc}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+>>>>>>> origin/fixes_2.4
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __i386__ and __i386__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := TRUE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+{$ifc defined(iphonesim)}
+ 	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+  {$setc TARGET_CPU_64 := FALSE}
+{$endc}
+<<<<<<< HEAD
+{$setc TARGET_CPU_PPC_64 := FALSE}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined FPC_BIG_ENDIAN}
 	{$setc TARGET_RT_BIG_ENDIAN := TRUE}
@@ -186,6 +534,17 @@ interface
 {$setc TARGET_CPU_68K := FALSE}
 {$setc TARGET_CPU_MIPS := FALSE}
 {$setc TARGET_CPU_SPARC := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$setc TARGET_OS_UNIX := FALSE}
 {$setc TARGET_OS_WIN32 := FALSE}
 {$setc TARGET_RT_MAC_68881 := FALSE}
@@ -195,20 +554,93 @@ interface
 {$setc TYPE_BOOL := FALSE}
 {$setc TYPE_EXTENDED := FALSE}
 {$setc TYPE_LONGLONG := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses MacTypes,CFBase,CFArray,CFData,CFDictionary,CFError,CFString,Files;
+=======
+uses MacTypes,CFBase,CFData,CFError,CFString,Files;
+>>>>>>> graemeg/cpstrnew
+=======
+uses MacTypes,CFBase,CFData,CFError,CFString,Files;
+>>>>>>> graemeg/cpstrnew
+=======
+uses MacTypes,CFBase,CFData,CFError,CFString,Files;
+>>>>>>> graemeg/cpstrnew
+=======
+uses MacTypes,CFBase,CFData,CFError,CFString,Files;
+>>>>>>> origin/cpstrnew
 {$endc} {not MACOSALLINCLUDE}
 
+=======
+uses MacTypes,CFBase,CFData,CFString,Files;
+>>>>>>> graemeg/fixes_2_2
+=======
+uses MacTypes,CFBase,CFData,CFString,Files;
+>>>>>>> origin/fixes_2_2
+=======
+uses MacTypes,CFBase,CFData,CFError,CFString,Files;
+{$endc} {not MACOSALLINCLUDE}
+
+>>>>>>> origin/fixes_2.4
 {$ALIGN POWER}
 
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	CFURLPathStyle = CFIndex;
+=======
+	CFURLPathStyle = SIGNEDLONG;
+>>>>>>> graemeg/cpstrnew
+=======
+	CFURLPathStyle = SIGNEDLONG;
+>>>>>>> graemeg/cpstrnew
+=======
+	CFURLPathStyle = SIGNEDLONG;
+>>>>>>> graemeg/cpstrnew
+=======
+	CFURLPathStyle = SIGNEDLONG;
+>>>>>>> origin/cpstrnew
 const
 	kCFURLPOSIXPathStyle = 0;
 	kCFURLHFSPathStyle = 1; { The use of kCFURLHFSPathStyle is deprecated. The Carbon File Manager, which uses HFS style paths, is deprecated. HFS style paths are unreliable because they can arbitrarily refer to multiple volumes if those volumes have identical volume names. You should instead use kCFURLPOSIXPathStyle wherever possible. }
 	kCFURLWindowsPathStyle = 2;
 
 { CFURLRef moved to CFBase to avoid circular dependency with Files unit }    
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	CFURLPathStyle = SInt32;
+=======
+	CFURLPathStyle = SIGNEDLONG;
+>>>>>>> origin/fixes_2.4
+const
+	kCFURLPOSIXPathStyle = 0;
+	kCFURLHFSPathStyle = 1;
+	kCFURLWindowsPathStyle = 2;
+<<<<<<< HEAD
+    
+type
+	CFURLRef = ^SInt32; { an opaque 32-bit type }
+	CFURLRefPtr = ^CFURLRef;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+
+{ CFURLRef moved to CFBase to avoid circular dependency with Files unit }    
+>>>>>>> origin/fixes_2.4
 
 { CFURLs are composed of two fundamental pieces - their string, and a }
 { (possibly NULL) base URL.  A relative URL is one in which the string }
@@ -228,11 +660,17 @@ function CFURLGetTypeID: CFTypeID; external name '_CFURLGetTypeID';
 
 { encoding will be used both to interpret the bytes of URLBytes, and to }
 { interpret any percent-escapes within the bytes. }
+<<<<<<< HEAD
+<<<<<<< HEAD
 { Using a string encoding which isn't a superset of ASCII encoding is not }
 { supported because CFURLGetBytes and CFURLGetByteRangeForComponent require }
 { 7-bit ASCII characters to be stored in a single 8-bit byte. }
 { CFStringEncodings which are a superset of ASCII encoding include MacRoman, }
 { WindowsLatin1, ISOLatin1, NextStepLatin, ASCII, and UTF8. }
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function CFURLCreateWithBytes( allocator: CFAllocatorRef; URLBytes: UInt8Ptr; length: CFIndex; encoding: CFStringEncoding; baseURL: CFURLRef ): CFURLRef; external name '_CFURLCreateWithBytes';
 
 { Escapes any character that is not 7-bit ASCII with the byte-code }
@@ -256,12 +694,20 @@ function CFURLCreateWithString( allocator: CFAllocatorRef; URLString: CFStringRe
 { in relative portion, leading "../" components are removed from the }
 { final URL's path, and if the relative portion contains only }
 { resource specifier pieces (query, parameters, and fragment), then }
+<<<<<<< HEAD
+<<<<<<< HEAD
 { the last path component of the base URL will not be deleted.  }
 { Using a string encoding which isn't a superset of ASCII encoding is not }
 { supported because CFURLGetBytes and CFURLGetByteRangeForComponent require }
 { 7-bit ASCII characters to be stored in a single 8-bit byte. }
 { CFStringEncodings which are a superset of ASCII encoding include MacRoman, }
 { WindowsLatin1, ISOLatin1, NextStepLatin, ASCII, and UTF8. }
+=======
+{ the last path component of the base URL will not be deleted  }
+>>>>>>> graemeg/fixes_2_2
+=======
+{ the last path component of the base URL will not be deleted  }
+>>>>>>> origin/fixes_2_2
 function CFURLCreateAbsoluteURLWithBytes( alloc: CFAllocatorRef; relativeURLBytes: UInt8Ptr; length: CFIndex; encoding: CFStringEncoding; baseURL: CFURLRef; useCompatibilityMode: Boolean ): CFURLRef; external name '_CFURLCreateAbsoluteURLWithBytes';
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
 {#endif}
@@ -276,12 +722,24 @@ function CFURLCreateWithFileSystemPath( allocator: CFAllocatorRef; filePath: CFS
 
 function CFURLCreateFromFileSystemRepresentation( allocator: CFAllocatorRef; buffer: CStringPtr; bufLen: CFIndex; isDirectory: Boolean ): CFURLRef; external name '_CFURLCreateFromFileSystemRepresentation';
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 { The path style of the baseURL must match the path style of the relative }
 { url or the results are undefined.  If the provided filePath looks like an }
 { absolute path ( starting with '/' if pathStyle is kCFURLPosixPathStyle, }
 { not starting with ':' for kCFURLHFSPathStyle, or starting with what looks }
 { like a drive letter and colon for kCFURLWindowsPathStyle ) then the baseURL }
 { is ignored. }
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 function CFURLCreateWithFileSystemPathRelativeToBase( allocator: CFAllocatorRef; filePath: CFStringRef; pathStyle: CFURLPathStyle; isDirectory: Boolean; baseURL: CFURLRef ): CFURLRef; external name '_CFURLCreateWithFileSystemPathRelativeToBase';
 
 function CFURLCreateFromFileSystemRepresentationRelativeToBase( allocator: CFAllocatorRef; buffer: CStringPtr; bufLen: CFIndex; isDirectory: Boolean; baseURL: CFURLRef ): CFURLRef; external name '_CFURLCreateFromFileSystemRepresentationRelativeToBase';
@@ -364,14 +822,30 @@ to request that none be.
 }
 
 { Returns true if anURL conforms to RFC 1808 }
+<<<<<<< HEAD
+<<<<<<< HEAD
 function CFURLCanBeDecomposed( anURL: CFURLRef ): Boolean; external name '_CFURLCanBeDecomposed'; 
+=======
+function CFURLCanBeDecomposed( anURL: CFURLRef ): Boolean; external name '_CFURLCanBeDecomposed';
+>>>>>>> graemeg/fixes_2_2
+=======
+function CFURLCanBeDecomposed( anURL: CFURLRef ): Boolean; external name '_CFURLCanBeDecomposed';
+>>>>>>> origin/fixes_2_2
 
 { The next several methods leave any percent escape sequences intact }
 
 function CFURLCopyScheme( anURL: CFURLRef ): CFStringRef; external name '_CFURLCopyScheme';
 
 { NULL if CFURLCanBeDecomposed(anURL) is false }
+<<<<<<< HEAD
+<<<<<<< HEAD
 function CFURLCopyNetLocation( anURL: CFURLRef ): CFStringRef; external name '_CFURLCopyNetLocation'; 
+=======
+function CFURLCopyNetLocation( anURL: CFURLRef ): CFStringRef; external name '_CFURLCopyNetLocation';
+>>>>>>> graemeg/fixes_2_2
+=======
+function CFURLCopyNetLocation( anURL: CFURLRef ): CFStringRef; external name '_CFURLCopyNetLocation';
+>>>>>>> origin/fixes_2_2
 
 { NULL if CFURLCanBeDecomposed(anURL) is false; also does not resolve the URL }
 { against its base.  See also CFURLCopyAbsoluteURL().  Note that, strictly }
@@ -396,7 +870,15 @@ function CFURLHasDirectoryPath( anURL: CFURLRef ): Boolean; external name '_CFUR
 
 { Any additional resource specifiers after the path.  For URLs }
 { that cannot be decomposed, this is everything except the scheme itself. }
+<<<<<<< HEAD
+<<<<<<< HEAD
 function CFURLCopyResourceSpecifier( anURL: CFURLRef ): CFStringRef; external name '_CFURLCopyResourceSpecifier'; 
+=======
+function CFURLCopyResourceSpecifier( anURL: CFURLRef ): CFStringRef; external name '_CFURLCopyResourceSpecifier';
+>>>>>>> graemeg/fixes_2_2
+=======
+function CFURLCopyResourceSpecifier( anURL: CFURLRef ): CFStringRef; external name '_CFURLCopyResourceSpecifier';
+>>>>>>> origin/fixes_2_2
 
 function CFURLCopyHostName( anURL: CFURLRef ): CFStringRef; external name '_CFURLCopyHostName';
 
@@ -444,12 +926,51 @@ function CFURLGetBytes( url: CFURLRef; buffer: CStringPtr; bufferLength: CFIndex
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	CFURLComponentType = CFIndex;
+=======
+	CFURLComponentType = SIGNEDLONG;
+>>>>>>> graemeg/cpstrnew
+=======
+	CFURLComponentType = SIGNEDLONG;
+>>>>>>> graemeg/cpstrnew
+=======
+	CFURLComponentType = SIGNEDLONG;
+>>>>>>> graemeg/cpstrnew
+=======
+	CFURLComponentType = SIGNEDLONG;
+>>>>>>> origin/cpstrnew
+=======
+	CFURLComponentType = SInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+	CFURLComponentType = SInt32;
+>>>>>>> origin/fixes_2_2
+=======
+	CFURLComponentType = SIGNEDLONG;
+>>>>>>> origin/fixes_2.4
 const
 	kCFURLComponentScheme = 1;
 	kCFURLComponentNetLocation = 2;
 	kCFURLComponentPath = 3;
 	kCFURLComponentResourceSpecifier = 4;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	
+>>>>>>> graemeg/fixes_2_2
+=======
+	
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	kCFURLComponentUser = 5;
 	kCFURLComponentPassword = 6;
 	kCFURLComponentUserInfo = 7;
@@ -553,9 +1074,16 @@ function CFURLCreateStringByReplacingPercentEscapesUsingEncoding( allocator: CFA
 { charactersToLeaveUnescaped.  To simply correct any non-URL characters }
 { in an otherwise correct URL string, do: }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 { newString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, origString, NULL, NULL, kCFStringEncodingUTF8); }
 function CFURLCreateStringByAddingPercentEscapes( allocator: CFAllocatorRef; originalString: CFStringRef; charactersToLeaveUnescaped: CFStringRef; legalURLCharactersToBeEscaped: CFStringRef; encoding: CFStringEncoding ): CFStringRef; external name '_CFURLCreateStringByAddingPercentEscapes';
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 { #if (TARGET_OS_MAC || TARGET_OS_EMBEDDED || TARGET_OS_IPHONE) || CF_BUILDING_CF || NSBUILDINGFOUNDATION }
 { CF_IMPLICIT_BRIDGING_DISABLED }
@@ -623,6 +1151,58 @@ function CFURLCreateFilePathURL( allocator: CFAllocatorRef; url: CFURLRef; var e
 {#ifndef CF_OPEN_SOURCE}
 
 // Note: CFURLCreateFromFSRef and CFURLGetFSRef have never been functional on iOS because the Carbon File Manager is not on iOS.
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{ Returns a file reference URL, a path-idependent form of file URL. }
+{ Converts a file path URL if necessary. For non-file URLs, returns NULL. }
+{ Also returns NULL when the conversion fails because the target resource doesn't exist. }
+{ Optional output error: The error is set to a valid CFErrorRef when the function }
+{ result is NULL. A valid output error must be released by the caller. }
+function CFURLCreateFileReferenceURL( allocator: CFAllocatorRef; url: CFURLRef; var error: CFErrorRef ): CFURLRef; external name '_CFURLCreateFileReferenceURL';
+(* AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER *)
+
+
+{ Returns a file path URL, converting a file reference URL if necessary. }
+{ For non-file URLs, returns NULL. Also returns NULL when the conversion fails }
+{ because the target resource doesn't exist. }
+{ Optional output error: The error is set to a valid CFErrorRef when the function }
+{ result is NULL. A valid output error must be released by the caller. }
+function CFURLCreateFilePathURL( allocator: CFAllocatorRef; url: CFURLRef; var error: CFErrorRef ): CFURLRef; external name '_CFURLCreateFilePathURL';
+(* AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER *)
+
+{#ifndef CF_OPEN_SOURCE}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+{ Returns a file reference URL, a path-idependent form of file URL. }
+{ Converts a file path URL if necessary. For non-file URLs, returns NULL. }
+{ Also returns NULL when the conversion fails because the target resource doesn't exist. }
+{ Optional output error: The error is set to a valid CFErrorRef when the function }
+{ result is NULL. A valid output error must be released by the caller. }
+function CFURLCreateFileReferenceURL( allocator: CFAllocatorRef; url: CFURLRef; var error: CFErrorRef ): CFURLRef; external name '_CFURLCreateFileReferenceURL';
+(* AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER *)
+
+
+{ Returns a file path URL, converting a file reference URL if necessary. }
+{ For non-file URLs, returns NULL. Also returns NULL when the conversion fails }
+{ because the target resource doesn't exist. }
+{ Optional output error: The error is set to a valid CFErrorRef when the function }
+{ result is NULL. A valid output error must be released by the caller. }
+function CFURLCreateFilePathURL( allocator: CFAllocatorRef; url: CFURLRef; var error: CFErrorRef ): CFURLRef; external name '_CFURLCreateFilePathURL';
+(* AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER *)
+
+{#ifndef CF_OPEN_SOURCE}
+
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc TARGET_OS_MAC}
 
 function CFURLCreateFromFSRef( allocator: CFAllocatorRef; const (*var*) fsRef_: FSRef ): CFURLRef; external name '_CFURLCreateFromFSRef';
@@ -633,8 +1213,20 @@ function CFURLGetFSRef( url: CFURLRef; var fsRef_: FSRef ): Boolean; external na
 
 {$endc} {TARGET_OS_MAC}
 
+{$endc} {TARGET_OS_MAC}
+
+{$endc} {TARGET_OS_MAC}
+
+{$endc} {TARGET_OS_MAC}
+
+{$endc} {TARGET_OS_MAC}
+
 {#endif} // !CF_OPEN_SOURCE
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 { Resource access
 
     The behavior of resource value caching is slightly different between the NSURL and CFURL API.
@@ -1360,7 +1952,64 @@ function CFURLStartAccessingSecurityScopedResource( url: CFURLRef ): Boolean; ex
 procedure CFURLStopAccessingSecurityScopedResource( url: CFURLRef ); external name '_CFURLStopAccessingSecurityScopedResource';
 (* CF_AVAILABLE_STARTING(10_7, NA) *)
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
 
 end.
 {$endc} {not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{ newString = CFURLCreateStringByAddingPercentEscapes(NULL, origString, NULL, NULL, kCFStringEncodingUTF8); }
+=======
+{ newString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, origString, NULL, NULL, kCFStringEncodingUTF8); }
+>>>>>>> origin/fixes_2.4
+function CFURLCreateStringByAddingPercentEscapes( allocator: CFAllocatorRef; originalString: CFStringRef; charactersToLeaveUnescaped: CFStringRef; legalURLCharactersToBeEscaped: CFStringRef; encoding: CFStringEncoding ): CFStringRef; external name '_CFURLCreateStringByAddingPercentEscapes';
+
+{ Returns a file reference URL, a path-idependent form of file URL. }
+{ Converts a file path URL if necessary. For non-file URLs, returns NULL. }
+{ Also returns NULL when the conversion fails because the target resource doesn't exist. }
+{ Optional output error: The error is set to a valid CFErrorRef when the function }
+{ result is NULL. A valid output error must be released by the caller. }
+function CFURLCreateFileReferenceURL( allocator: CFAllocatorRef; url: CFURLRef; var error: CFErrorRef ): CFURLRef; external name '_CFURLCreateFileReferenceURL';
+(* AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER *)
+
+
+{ Returns a file path URL, converting a file reference URL if necessary. }
+{ For non-file URLs, returns NULL. Also returns NULL when the conversion fails }
+{ because the target resource doesn't exist. }
+{ Optional output error: The error is set to a valid CFErrorRef when the function }
+{ result is NULL. A valid output error must be released by the caller. }
+function CFURLCreateFilePathURL( allocator: CFAllocatorRef; url: CFURLRef; var error: CFErrorRef ): CFURLRef; external name '_CFURLCreateFilePathURL';
+(* AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER *)
+
+{#ifndef CF_OPEN_SOURCE}
+
+{$ifc TARGET_OS_MAC}
+
+function CFURLCreateFromFSRef( allocator: CFAllocatorRef; const (*var*) fsRef_: FSRef ): CFURLRef; external name '_CFURLCreateFromFSRef';
+
+function CFURLGetFSRef( url: CFURLRef; var fsRef_: FSRef ): Boolean; external name '_CFURLGetFSRef';
+
+{$endc} {TARGET_OS_MAC}
+
+{#endif} // !CF_OPEN_SOURCE
+
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+
+end.
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4

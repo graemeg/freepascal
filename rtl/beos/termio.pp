@@ -30,6 +30,16 @@ Uses BaseUnix;          // load base unix typing
 
 implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$i textrec.inc}
+
+>>>>>>> graemeg/fixes_2_2
+=======
+{$i textrec.inc}
+
+>>>>>>> origin/fixes_2_2
 // load implementation for prototypes from current dir.
 {$i termiosproc.inc}
 

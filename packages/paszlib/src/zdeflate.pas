@@ -1260,9 +1260,21 @@ distances are limited to MAX_DIST instead of WSIZE. }
   scan_end   := Pwordarray(scan)^[best_len-1];   { fix }
 {$else}
   strend := Pbyte(@(s.window^[s.strstart + MAX_MATCH]));
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push} {$R-}
   scan_end1  := Pbytearray(scan)^[best_len-1];
   {$pop}
+=======
+  {$IFOPT R+} {$R-} {$DEFINE NoRangeCheck} {$ENDIF}
+  scan_end1  := Pbytearray(scan)^[best_len-1];
+  {$IFDEF NoRangeCheck} {$R+} {$UNDEF NoRangeCheck} {$ENDIF}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$IFOPT R+} {$R-} {$DEFINE NoRangeCheck} {$ENDIF}
+  scan_end1  := Pbytearray(scan)^[best_len-1];
+  {$IFDEF NoRangeCheck} {$R+} {$UNDEF NoRangeCheck} {$ENDIF}
+>>>>>>> origin/fixes_2_2
   scan_end   := Pbytearray(scan)^[best_len];
 {$endif}
 
@@ -1304,11 +1316,25 @@ distances are limited to MAX_DIST instead of WSIZE. }
 {$ifdef DO_UNALIGNED_OK}
         { This code assumes sizeof(cardinal short) = 2. Do not use
           UNALIGNED_OK if your compiler uses a different size. }
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$PUSH} {$R-}
         if (match[best_len-1]<>scan_end) or
            (match^ <> scan_start) then
           goto nextstep; {continue;}
   {$POP}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  {$IFOPT R+} {$R-} {$DEFINE NoRangeCheck} {$ENDIF}
+        if (match[best_len-1]<>scan_end) or
+           (match^ <> scan_start) then
+          goto nextstep; {continue;}
+  {$IFDEF NoRangeCheck} {$R+} {$UNDEF NoRangeCheck} {$ENDIF}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
         { It is not necessary to compare scan[2] and match[2] since they are
           always equal when the other bytes match, given that the hash keys
@@ -1334,11 +1360,25 @@ distances are limited to MAX_DIST instead of WSIZE. }
 
         { Here, scan <= window+strstart+257 }
         {$IFDEF ZLIB_DEBUG}
+<<<<<<< HEAD
+<<<<<<< HEAD
         {$PUSH} {$R-}
         Assert(ptruint(scan) <=
                ptruint(@(s.window^[cardinal(s.window_size-1)])),
                'wild scan');
         {$POP}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        {$ifopt R+} {$define RangeCheck} {$endif} {$R-}
+        Assert(ptruint(scan) <=
+               ptruint(@(s.window^[cardinal(s.window_size-1)])),
+               'wild scan');
+        {$ifdef RangeCheck} {$R+} {$undef RangeCheck} {$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         {$ENDIF}
         if scan^=match^ then
           inc(scan);
@@ -1349,12 +1389,28 @@ distances are limited to MAX_DIST instead of WSIZE. }
 
 {$else} { UNALIGNED_OK }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$PUSH} {$R-}
+=======
+  {$IFOPT R+} {$R-} {$DEFINE NoRangeCheck} {$ENDIF}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$IFOPT R+} {$R-} {$DEFINE NoRangeCheck} {$ENDIF}
+>>>>>>> origin/fixes_2_2
         if (Pbytearray(match)^[best_len]   <> scan_end) or
            (Pbytearray(match)^[best_len-1] <> scan_end1) or
            (match^ <> scan^) then
           goto nextstep; {continue;}
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$POP}
+=======
+  {$IFDEF NoRangeCheck} {$R+} {$UNDEF NoRangeCheck} {$ENDIF}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$IFDEF NoRangeCheck} {$R+} {$UNDEF NoRangeCheck} {$ENDIF}
+>>>>>>> origin/fixes_2_2
         inc(match);
         if (match^ <> Pbytearray(scan)^[1]) then
           goto nextstep; {continue;}
@@ -1402,14 +1458,30 @@ distances are limited to MAX_DIST instead of WSIZE. }
             best_len := len;
             if (len >= nice_match) then
               break;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push} {$R-}
+=======
+  {$IFOPT R+} {$R-} {$DEFINE NoRangeCheck} {$ENDIF}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$IFOPT R+} {$R-} {$DEFINE NoRangeCheck} {$ENDIF}
+>>>>>>> origin/fixes_2_2
 {$ifdef UNALIGNED_OK}
             scan_end   := Pbytearray(scan)^[best_len-1];
 {$else}
             scan_end1  := Pbytearray(scan)^[best_len-1];
             scan_end   := Pbytearray(scan)^[best_len];
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$pop}
+=======
+  {$IFDEF NoRangeCheck} {$R+} {$UNDEF NoRangeCheck} {$ENDIF}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$IFDEF NoRangeCheck} {$R+} {$UNDEF NoRangeCheck} {$ENDIF}
+>>>>>>> origin/fixes_2_2
         end;
     nextstep:
       cur_match := prev^[cur_match and wmask];

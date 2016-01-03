@@ -15,12 +15,26 @@ type
 procedure test149(a: ansistring); overload;
   begin
     writeln('ansistring called instead of widestring');
+<<<<<<< HEAD
+<<<<<<< HEAD
     halt(1)
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
 procedure test149(a: widestring); overload;
   begin
     writeln('widestring called instead of ansistring');
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    halt(1)
+>>>>>>> graemeg/fixes_2_2
+=======
+    halt(1)
+>>>>>>> origin/fixes_2_2
   end;
 
 var

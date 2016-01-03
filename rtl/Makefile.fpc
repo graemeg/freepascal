@@ -4,7 +4,31 @@
 
 [package]
 name=rtl
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> origin/cpstrnew
+=======
+version=2.2.5
+>>>>>>> graemeg/fixes_2_2
+=======
+version=2.2.5
+>>>>>>> origin/fixes_2_2
 
 [target]
 dirs_linux=linux
@@ -36,6 +60,10 @@ dirs_symbian=symbian
 dirs_embedded=embedded
 dirs_nativent=nativent
 dirs_wii=wii
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 dirs_aix=aix
 dirs_java=java
 dirs_i386_android=android
@@ -46,6 +74,14 @@ dirs_msdos=msdos
 dirs_aros=aros
 dirs_atari=atari
 dirs_win16=win16
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 [install]
 fpcpackage=y

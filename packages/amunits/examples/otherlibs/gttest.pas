@@ -18,7 +18,7 @@ program gttest;
 
 }
 
-uses intuition, exec, gadtools, utility, gtlayout, amsgbox;
+uses intuition, exec, gadtools, utility, gtlayout, msgbox;
 
 const
     ltrue : longint = 1;

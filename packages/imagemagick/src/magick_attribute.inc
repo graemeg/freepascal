@@ -23,7 +23,7 @@ function MagickGetFormat(wand: PMagickWand): PChar; cdecl; external WandExport;
 function MagickGetHomeURL: PChar; cdecl; external WandExport;
 function MagickGetOption(wand: PMagickWand;
  const key: PChar): PChar; cdecl; external WandExport;
-{sem documenta
+{sem documentação
 extern WandExport char
   *MagickQueryConfigureOption(const char *),
   **MagickQueryConfigureOptions(const char *,unsigned long *),
@@ -34,13 +34,13 @@ function MagickGetCompression(wand: PMagickWand): CompressionType; cdecl; extern
 
 function MagickGetCopyright: PChar; cdecl; external WandExport;
 function MagickGetPackageName: PChar; cdecl; external WandExport;
-function MagickGetQuantumDepth(depth: Pculong): PChar; cdecl; external WandExport;
-function MagickGetQuantumRange(range: Pculong): PChar; cdecl; external WandExport;
+function MagickGetQuantumDepth(depth: PCardinal): PChar; cdecl; external WandExport;
+function MagickGetQuantumRange(range: PCardinal): PChar; cdecl; external WandExport;
 function MagickGetReleaseDate: PChar; cdecl; external WandExport;
-function MagickGetVersion(version: Pculong): PChar; cdecl; external WandExport;
+function MagickGetVersion(version: PCardinal): PChar; cdecl; external WandExport;
 
 function MagickGetSamplingFactors(wand: PMagickWand;
- number_factors: Pculong): Pdouble; cdecl; external WandExport;
+ number_factors: PCardinal): Pdouble; cdecl; external WandExport;
 {function (wand: PMagickWand): Pdouble; cdecl; external WandExport;
   *MagickQueryFontMetrics(MagickWand *,const DrawingWand *,const char *),
   *MagickQueryMultilineFontMetrics(MagickWand *,const DrawingWand *,

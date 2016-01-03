@@ -73,6 +73,35 @@ unit agavrgas;
 {                  Helper routines for Instruction Writer                    }
 {****************************************************************************}
 
+<<<<<<< HEAD
+=======
+    function getreferencestring(var ref : treference) : string;
+      var
+        s : string;
+      begin
+         with ref do
+          begin
+{$ifdef extdebug}
+            // if base=NR_NO then
+            //   internalerror(200308292);
+
+            // if ((index<>NR_NO) or (shiftmode<>SM_None)) and ((offset<>0) or (symbol<>nil)) then
+            //   internalerror(200308293);
+{$endif extdebug}
+
+            if assigned(symbol) then
+              begin
+                s:=symbol.name;
+                if offset<0 then
+                  s:=s+tostr(offset)
+                else if offset>0 then
+                  s:=s+'+'+tostr(offset);
+              end
+            else
+              begin
+                s:=gas_regname(base);
+              end;
+>>>>>>> graemeg/cpstrnew
 
     Procedure TAVRInstrWriter.WriteInstruction(hp : tai);
 
@@ -141,6 +170,10 @@ unit agavrgas;
           getreferencestring:=s;
         end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
       function getopstr(const o:toper) : string;
         var
@@ -166,6 +199,36 @@ unit agavrgas;
                 end
               else
                 getopstr:=getreferencestring(o.ref^);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    function getopstr(const o:toper) : string;
+      var
+        hs : string;
+        first : boolean;
+        r : tsuperregister;
+      begin
+        case o.typ of
+          top_reg:
+            getopstr:=gas_regname(o.reg);
+          top_const:
+            getopstr:='#'+tostr(longint(o.val));
+          top_ref:
+            if o.ref^.refaddr=addr_full then
+              begin
+                hs:=o.ref^.symbol.name;
+                if o.ref^.offset>0 then
+                 hs:=hs+'+'+tostr(o.ref^.offset)
+                else
+                 if o.ref^.offset<0 then
+                  hs:=hs+tostr(o.ref^.offset);
+                getopstr:=hs;
+              end
+>>>>>>> graemeg/cpstrnew
             else
               internalerror(2002070604);
           end;

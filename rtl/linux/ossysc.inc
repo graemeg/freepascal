@@ -20,7 +20,20 @@
 *****************************************************************************}
 
 function Fptime(tloc:pTime_t): Time_t; [public, alias : 'FPC_SYSC_TIME'];
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if defined(generic_linux_syscalls) or defined(FPC_USEGETTIMEOFDAY)}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef FPC_USEGETTIMEOFDAY}
+>>>>>>> graemeg/cpstrnew
 VAR tv     : timeval;
     tz     : timezone;
     retval : longint;
@@ -68,7 +81,15 @@ begin
   result:=do_syscall(syscall_nr_lseek,tsysparam(fd),tsysparam(offset),tsysparam(whence));
 {$else}
   if do_syscall(syscall_nr__llseek,tsysparam(fd),
+<<<<<<< HEAD
+<<<<<<< HEAD
 //      {$ifdef FPC_ABI_EABI}      0,  { align parameters as required with dummy } {$endif FPC_ABI_EABI}
+=======
+      {$ifdef FPC_ABI_EABI}      0,  { align parameters as required with dummy } {$endif FPC_ABI_EABI}
+>>>>>>> graemeg/fixes_2_2
+=======
+      {$ifdef FPC_ABI_EABI}      0,  { align parameters as required with dummy } {$endif FPC_ABI_EABI}
+>>>>>>> origin/fixes_2_2
       tsysparam(hi(offset)),tsysparam(lo(offset)),
       tsysparam(@result), tsysparam(whence)) = -1 then
     result:=off_t(-1);
@@ -271,6 +292,10 @@ procedure linux_restore; cdecl; nostackframe; assembler;
 asm
 {$ifdef FPC_ABI_EABI}
   mov r7, syscall_nr_sigreturn
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUTHUMB}
   // svc   #0x0
   // GNU 2.22 does not like svc #0x0
@@ -278,6 +303,18 @@ asm
 {$else CPUTHUMB}
   swi #0x0
 {$endif CPUTHUMB}
+=======
+  swi #0x0
+>>>>>>> graemeg/cpstrnew
+=======
+  swi #0x0
+>>>>>>> graemeg/cpstrnew
+=======
+  swi #0x0
+>>>>>>> graemeg/cpstrnew
+=======
+  swi #0x0
+>>>>>>> origin/cpstrnew
 {$else}
   swi syscall_nr_sigreturn
 {$endif}
@@ -306,6 +343,10 @@ procedure linux_restore_rt; cdecl; nostackframe; assembler;
 asm
 {$ifdef FPC_ABI_EABI}
   mov r7, syscall_nr_rt_sigreturn
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUTHUMB}
   // svc   #0x0
   // GNU 2.22 does not like svc #0x0
@@ -313,6 +354,18 @@ asm
 {$else CPUTHUMB}
   swi #0x0
 {$endif CPUTHUMB}
+=======
+  swi #0x0
+>>>>>>> graemeg/cpstrnew
+=======
+  swi #0x0
+>>>>>>> graemeg/cpstrnew
+=======
+  swi #0x0
+>>>>>>> graemeg/cpstrnew
+=======
+  swi #0x0
+>>>>>>> origin/cpstrnew
 {$else}
   swi syscall_nr_rt_sigreturn
 {$endif}
@@ -667,8 +720,13 @@ begin
  fpgettimeofday:=do_syscall(syscall_nr_gettimeofday,TSysParam(tp),TSysParam(tzp));
 end;
 
+<<<<<<< HEAD
 
 function FpGetRLimit(resource : cInt; rlim : PRLimit) : cInt; [public, alias : 'FPC_SYSC_GETRLIMIT'];
+=======
+{$ifndef NO_SYSCALL_GETRLIMIT}
+function FpGetRLimit(resource : cInt; rlim : PRLimit) : cInt;
+>>>>>>> origin/fixes_2.4
 begin
 {$ifndef NO_SYSCALL_GETRLIMIT}
   FpGetRLimit := do_syscall(syscall_nr_getrlimit,
@@ -678,6 +736,7 @@ begin
     TSysParam(resource), TSysParam(rlim));
 {$endif}
 end;
+{$endif}
 
 
 {$ifdef HAS_UGETRLIMIT}

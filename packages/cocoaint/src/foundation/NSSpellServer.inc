@@ -54,15 +54,52 @@ var
     _spellServerConnection: id;
     _dictionaries: id;
     _learnedDictionaries: NSArray;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __ssFlags: record
       case byte of
        0: (_anonbitfield_NSSpellServer0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __ssFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSSpellServer0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         delegateLearnsWords: 0..1;
         delegateForgetsWords: 0..1;
         busy: 0..1;
         _reserved: 0..((1 shl 29)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _reservedSpellServer1: Pointer;

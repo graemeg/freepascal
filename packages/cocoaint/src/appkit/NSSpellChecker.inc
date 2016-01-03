@@ -67,10 +67,35 @@ var
     _quotesBrowser: id;
     _replacementsBrowser: id;
     _defineButton: id;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __scFlags: record
       case byte of
        0: (_anonbitfield_NSSpellChecker0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __scFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSSpellChecker0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         autoShowGuesses: 0..1;
         needDelayedGuess: 0..1;
         unignoreInProgress: 0..1;
@@ -83,7 +108,19 @@ var
         languagesHidden: 0..1;
         quotesByLanguage: 0..1;
         _reserved: 0..((1 shl 21)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _substitutionsPanel: id;

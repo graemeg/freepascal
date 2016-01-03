@@ -63,7 +63,23 @@ Unit Rax86int;
          function consume(t : tasmtoken):boolean;
          procedure RecoverConsume(allowcomma:boolean);
          procedure BuildRecordOffsetSize(const expr: string;var offset:aint;var size:aint; var mangledname: string; needvmtofs: boolean);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          procedure BuildConstSymbolExpression(needofs,isref,startingminus:boolean;var value:aint;var asmsym:string;var asmsymtyp:TAsmsymtype;out isseg,is_farproc_entry:boolean);
+=======
+         procedure BuildConstSymbolExpression(needofs,isref,startingminus:boolean;var value:aint;var asmsym:string;var asmsymtyp:TAsmsymtype);
+>>>>>>> graemeg/cpstrnew
+=======
+         procedure BuildConstSymbolExpression(needofs,isref,startingminus:boolean;var value:aint;var asmsym:string;var asmsymtyp:TAsmsymtype);
+>>>>>>> graemeg/cpstrnew
+=======
+         procedure BuildConstSymbolExpression(needofs,isref,startingminus:boolean;var value:aint;var asmsym:string;var asmsymtyp:TAsmsymtype);
+>>>>>>> graemeg/cpstrnew
+=======
+         procedure BuildConstSymbolExpression(needofs,isref,startingminus:boolean;var value:aint;var asmsym:string;var asmsymtyp:TAsmsymtype);
+>>>>>>> origin/cpstrnew
          function BuildConstExpression:aint;
          function BuildRefConstExpression(startingminus:boolean=false):aint;
          procedure BuildReference(oper : tx86operand);
@@ -228,9 +244,21 @@ Unit Rax86int;
       begin
         is_register:=false;
         actasmregister:=masm_regnum_search(lower(s));
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         { don't acceps "flags" as register name in an instruction }
         if actasmregister=NR_FLAGS then
           actasmregister:=NR_NO;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         if (actasmregister=NR_NO) and
            (current_procinfo.procdef.proccalloption=pocall_register) and
            (po_assembler in current_procinfo.procdef.procoptions) then
@@ -795,7 +823,23 @@ Unit Rax86int;
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Procedure tx86intreader.BuildConstSymbolExpression(needofs,isref,startingminus:boolean;var value:aint;var asmsym:string;var asmsymtyp:TAsmsymtype;out isseg,is_farproc_entry:boolean);
+=======
+    Procedure tx86intreader.BuildConstSymbolExpression(needofs,isref,startingminus:boolean;var value:aint;var asmsym:string;var asmsymtyp:TAsmsymtype);
+>>>>>>> graemeg/cpstrnew
+=======
+    Procedure tx86intreader.BuildConstSymbolExpression(needofs,isref,startingminus:boolean;var value:aint;var asmsym:string;var asmsymtyp:TAsmsymtype);
+>>>>>>> graemeg/cpstrnew
+=======
+    Procedure tx86intreader.BuildConstSymbolExpression(needofs,isref,startingminus:boolean;var value:aint;var asmsym:string;var asmsymtyp:TAsmsymtype);
+>>>>>>> graemeg/cpstrnew
+=======
+    Procedure tx86intreader.BuildConstSymbolExpression(needofs,isref,startingminus:boolean;var value:aint;var asmsym:string;var asmsymtyp:TAsmsymtype);
+>>>>>>> origin/cpstrnew
       var
         tempstr,expr,hs,mangledname : string;
         parenlevel : longint;
@@ -1195,7 +1239,23 @@ Unit Rax86int;
         isseg : boolean;
         is_farproc_entry : boolean;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         BuildConstSymbolExpression(false,false,false,l,hs,hssymtyp,isseg,is_farproc_entry);
+=======
+        BuildConstSymbolExpression(false,false,false,l,hs,hssymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+        BuildConstSymbolExpression(false,false,false,l,hs,hssymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+        BuildConstSymbolExpression(false,false,false,l,hs,hssymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+        BuildConstSymbolExpression(false,false,false,l,hs,hssymtyp);
+>>>>>>> origin/cpstrnew
         if hs<>'' then
          Message(asmr_e_relocatable_symbol_not_allowed);
         BuildConstExpression:=l;
@@ -1210,7 +1270,23 @@ Unit Rax86int;
         isseg : boolean;
         is_farproc_entry : boolean;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         BuildConstSymbolExpression(false,true,startingminus,l,hs,hssymtyp,isseg,is_farproc_entry);
+=======
+        BuildConstSymbolExpression(false,true,false,l,hs,hssymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+        BuildConstSymbolExpression(false,true,false,l,hs,hssymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+        BuildConstSymbolExpression(false,true,false,l,hs,hssymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+        BuildConstSymbolExpression(false,true,false,l,hs,hssymtyp);
+>>>>>>> origin/cpstrnew
         if hs<>'' then
          Message(asmr_e_relocatable_symbol_not_allowed);
         BuildRefConstExpression:=l;
@@ -1307,10 +1383,16 @@ Unit Rax86int;
                           end
                         else
                           oper.opr.ref.relsymbol:=hl;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef i8086}
                         if oper.opr.ref.segment=NR_NO then
                           oper.opr.ref.segment:=NR_CS;
 {$endif i8086}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                       end
                    else
                     if oper.SetupVar(tempstr,GotOffset) then
@@ -1546,7 +1628,23 @@ Unit Rax86int;
               begin
                 if not GotPlus and not GotStar then
                   Message(asmr_e_invalid_reference_syntax);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 BuildConstSymbolExpression(true,true,GotPlus and negative,l,tempstr,tempsymtyp,isseg,is_farproc_entry);
+=======
+                BuildConstSymbolExpression(true,true,GotPlus and negative,l,tempstr,tempsymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+                BuildConstSymbolExpression(true,true,GotPlus and negative,l,tempstr,tempsymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+                BuildConstSymbolExpression(true,true,GotPlus and negative,l,tempstr,tempsymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+                BuildConstSymbolExpression(true,true,GotPlus and negative,l,tempstr,tempsymtyp);
+>>>>>>> origin/cpstrnew
                 { already handled by BuildConstSymbolExpression(); must be
                   handled there to avoid [reg-1+1] being interpreted as
                   [reg-(1+1)] }
@@ -1585,10 +1683,26 @@ Unit Rax86int;
                            scale:=l;
                        end
                       else
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                       begin
                         Inc(oper.opr.ref.offset,l);
                         Inc(oper.opr.constoffset,l);
                       end;
+=======
+                       Inc(oper.opr.ref.offset,l);
+>>>>>>> graemeg/cpstrnew
+=======
+                       Inc(oper.opr.ref.offset,l);
+>>>>>>> graemeg/cpstrnew
+=======
+                       Inc(oper.opr.ref.offset,l);
+>>>>>>> graemeg/cpstrnew
+=======
+                       Inc(oper.opr.ref.offset,l);
+>>>>>>> origin/cpstrnew
                     end;
                   OPR_LOCAL :
                     begin
@@ -1641,6 +1755,10 @@ Unit Rax86int;
       begin
         if not (oper.opr.typ in [OPR_NONE,OPR_CONSTANT]) then
           Message(asmr_e_invalid_operand_type);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         BuildConstSymbolExpression(true,false,false,l,tempstr,tempsymtyp,isseg,is_farproc_entry);
 {$ifdef i8086}
         if tempstr='@DATA' then
@@ -1657,6 +1775,18 @@ Unit Rax86int;
           end
         else
 {$endif i8086}
+=======
+        BuildConstSymbolExpression(true,false,false,l,tempstr,tempsymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+        BuildConstSymbolExpression(true,false,false,l,tempstr,tempsymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+        BuildConstSymbolExpression(true,false,false,l,tempstr,tempsymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+        BuildConstSymbolExpression(true,false,false,l,tempstr,tempsymtyp);
+>>>>>>> origin/cpstrnew
         if tempstr<>'' then
           begin
             oper.opr.typ:=OPR_SYMBOL;
@@ -1793,6 +1923,10 @@ Unit Rax86int;
               begin
                 case oper.opr.typ of
                   OPR_REFERENCE :
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef x86_64}
                     { this is for the i386 scenario where you have
                         <load got into ebx>
@@ -1801,6 +1935,14 @@ Unit Rax86int;
                       x86-64 uses RIP-based addresses (both for GOT and non-GOT
                       relative accesses)
                     }
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                     if (actasmtoken=AS_OFFSET) and
                        (cs_create_pic in current_settings.moduleswitches) then
                       begin
@@ -1809,12 +1951,28 @@ Unit Rax86int;
                         BuildOperand(oper,false);
                       end
                     else
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif x86_64}
                     begin
                       l := BuildRefConstExpression;
                       inc(oper.opr.ref.offset,l);
                       inc(oper.opr.constoffset,l);
                     end;
+=======
+                      inc(oper.opr.ref.offset,BuildRefConstExpression);
+>>>>>>> graemeg/cpstrnew
+=======
+                      inc(oper.opr.ref.offset,BuildRefConstExpression);
+>>>>>>> graemeg/cpstrnew
+=======
+                      inc(oper.opr.ref.offset,BuildRefConstExpression);
+>>>>>>> graemeg/cpstrnew
+=======
+                      inc(oper.opr.ref.offset,BuildRefConstExpression);
+>>>>>>> origin/cpstrnew
                   OPR_LOCAL :
                     begin
                       l := BuildConstExpression;
@@ -2027,10 +2185,22 @@ Unit Rax86int;
                   AS_QWORD : oper.typesize:=8;
                   AS_DQWORD : oper.typesize:=16;
                   AS_TBYTE : oper.typesize:=10;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   AS_OWORD,                     
                   AS_XMMWORD: oper.typesize:=16; 
                   AS_YWORD,                     
                   AS_YMMWORD: oper.typesize:=32;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                   else
                     internalerror(2010061101);
                 end;
@@ -2164,6 +2334,10 @@ Unit Rax86int;
           instr.opcode:=A_POPFW
         else if (instr.opcode=A_PUSHF) then
           instr.opcode:=A_PUSHFW
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef x86_64}
         else if (instr.opcode=A_PUSHA) then
           instr.opcode:=A_PUSHAW
@@ -2183,6 +2357,27 @@ Unit Rax86int;
           end
 {$endif i8086}
         ;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        else if (instr.opcode=A_PUSHA) then
+          instr.opcode:=A_PUSHAW
+        else if (instr.opcode=A_POPA) then
+          instr.opcode:=A_POPAW;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         { We are reading operands, so opcode will be an AS_ID }
         { process operands backwards to get them in AT&T order }
         operandnum:=max_operands;
@@ -2381,7 +2576,23 @@ Unit Rax86int;
 {$endif i8086}
             AS_ID :
               Begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 BuildConstSymbolExpression(false,false,false,value,asmsym,asmsymtyp,isseg,is_farproc_entry);
+=======
+                BuildConstSymbolExpression(false,false,false,value,asmsym,asmsymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+                BuildConstSymbolExpression(false,false,false,value,asmsym,asmsymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+                BuildConstSymbolExpression(false,false,false,value,asmsym,asmsymtyp);
+>>>>>>> graemeg/cpstrnew
+=======
+                BuildConstSymbolExpression(false,false,false,value,asmsym,asmsymtyp);
+>>>>>>> origin/cpstrnew
                 if asmsym<>'' then
                  begin
                    if (not isseg) and (constsize<>sizeof(pint)) then
@@ -2465,9 +2676,25 @@ Unit Rax86int;
        end;
       }
       curlist:=TAsmList.Create;
+<<<<<<< HEAD
       { we might need to know which parameters are passed in registers }
       if not parse_generic then
         current_procinfo.generate_parameter_info;
+=======
+      { setup label linked list }
+      LocalLabelList:=TLocalLabelList.Create;
+      { we might need to know which parameters are passed in registers }
+      current_procinfo.generate_parameter_info;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       { start tokenizer }
       gettoken;
       { main loop }

@@ -46,7 +46,23 @@ implementation
        pexports,
        objcgutl,
        wpobase,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        scanner,pbase,pexpr,psystem,psub,pdecsub,ncgvmt,ncgrtti,
+=======
+       scanner,pbase,pexpr,psystem,psub,pdecsub,ptype,
+>>>>>>> graemeg/cpstrnew
+=======
+       scanner,pbase,pexpr,psystem,psub,pdecsub,ptype,
+>>>>>>> graemeg/cpstrnew
+=======
+       scanner,pbase,pexpr,psystem,psub,pdecsub,ptype,
+>>>>>>> graemeg/cpstrnew
+=======
+       scanner,pbase,pexpr,psystem,psub,pdecsub,ptype,
+>>>>>>> origin/cpstrnew
        cpuinfo;
 
 
@@ -148,17 +164,367 @@ implementation
             (target_dbg.id in [dbg_dwarf2, dbg_dwarf3])
            ) then
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
             current_asmdata.asmlists[al_dwarf_frame].Free;
             current_asmdata.asmlists[al_dwarf_frame] := TAsmList.create;
             current_asmdata.asmcfi.generate_code(current_asmdata.asmlists[al_dwarf_frame]);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+            current_asmdata.asmlists[al_dwarf].Free;
+            current_asmdata.asmlists[al_dwarf] := TAsmList.create;
+            current_asmdata.asmcfi.generate_code(current_asmdata.asmlists[al_dwarf]);
+>>>>>>> graemeg/fixes_2_2
           end;
       end;
 
+<<<<<<< HEAD
+=======
+
+    procedure InsertThreadvarTablesTable;
+      var
+        hp : tused_unit;
+        ltvTables : TAsmList;
+        count : longint;
+      begin
+        if (tf_section_threadvars in target_info.flags) then
+          exit;
+        ltvTables:=TAsmList.Create;
+        count:=0;
+        hp:=tused_unit(usedunits.first);
+        while assigned(hp) do
+         begin
+           If (hp.u.flags and uf_threadvars)=uf_threadvars then
+            begin
+              ltvTables.concat(Tai_const.Createname(make_mangledname('THREADVARLIST',hp.u.globalsymtable,''),0));
+              inc(count);
+            end;
+           hp:=tused_unit(hp.next);
+         end;
+        { Add program threadvars, if any }
+        If (current_module.flags and uf_threadvars)=uf_threadvars then
+         begin
+           ltvTables.concat(Tai_const.Createname(make_mangledname('THREADVARLIST',current_module.localsymtable,''),0));
+           inc(count);
+         end;
+        { Insert TableCount at start }
+        ltvTables.insert(Tai_const.Create_32bit(count));
+        { insert in data segment }
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,'FPC_THREADVARTABLES',sizeof(pint));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('FPC_THREADVARTABLES',AT_DATA,0));
+        current_asmdata.asmlists[al_globals].concatlist(ltvTables);
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol_end.Createname('FPC_THREADVARTABLES'));
+        ltvTables.free;
+      end;
+
+    procedure AddToThreadvarList(p:TObject;arg:pointer);
+      var
+        ltvTable : TAsmList;
+      begin
+        ltvTable:=TAsmList(arg);
+        if (tsym(p).typ=staticvarsym) and
+           (vo_is_thread_var in tstaticvarsym(p).varoptions) then
+         begin
+           { address of threadvar }
+           ltvTable.concat(tai_const.Createname(tstaticvarsym(p).mangledname,0));
+           { size of threadvar }
+           ltvTable.concat(tai_const.create_32bit(tstaticvarsym(p).getsize));
+         end;
+      end;
+
+
+    procedure InsertThreadvars;
+      var
+        s : string;
+        ltvTable : TAsmList;
+      begin
+         if (tf_section_threadvars in target_info.flags) then
+           exit;
+         ltvTable:=TAsmList.create;
+         if assigned(current_module.globalsymtable) then
+           current_module.globalsymtable.SymList.ForEachCall(@AddToThreadvarList,ltvTable);
+         current_module.localsymtable.SymList.ForEachCall(@AddToThreadvarList,ltvTable);
+         if ltvTable.first<>nil then
+          begin
+            s:=make_mangledname('THREADVARLIST',current_module.localsymtable,'');
+            { end of the list marker }
+            ltvTable.concat(tai_const.create_sym(nil));
+            { add to datasegment }
+            maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+            new_section(current_asmdata.asmlists[al_globals],sec_data,s,sizeof(pint));
+            current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global(s,AT_DATA,0));
+            current_asmdata.asmlists[al_globals].concatlist(ltvTable);
+            current_asmdata.asmlists[al_globals].concat(Tai_symbol_end.Createname(s));
+            current_module.flags:=current_module.flags or uf_threadvars;
+          end;
+         ltvTable.Free;
+      end;
+
+<<<<<<< HEAD
+    procedure InsertWideInits;
+      var
+        s: string;
+        item: TTCInitItem;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+      begin
+        item:=TTCInitItem(current_asmdata.WideInits.First);
+        if item=nil then
+          exit;
+        s:=make_mangledname('WIDEINITS',current_module.localsymtable,'');
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,s,sizeof(pint));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global(s,AT_DATA,0));
+        repeat
+          { address to initialize }
+          current_asmdata.asmlists[al_globals].concat(Tai_const.createname(item.sym.mangledname, item.offset));
+          { value with which to initialize }
+          current_asmdata.asmlists[al_globals].concat(Tai_const.Create_sym(item.datalabel));
+          item:=TTCInitItem(item.Next);
+        until item=nil;
+        { end-of-list marker }
+        current_asmdata.asmlists[al_globals].concat(Tai_const.Create_sym(nil));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol_end.Createname(s));
+        current_module.flags:=current_module.flags or uf_wideinits;
+=======
+      begin
+        item:=TTCInitItem(current_asmdata.WideInits.First);
+        if item=nil then
+          exit;
+        s:=make_mangledname('WIDEINITS',current_module.localsymtable,'');
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,s,sizeof(pint));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global(s,AT_DATA,0));
+        repeat
+          { address to initialize }
+          current_asmdata.asmlists[al_globals].concat(Tai_const.createname(item.sym.mangledname, item.offset));
+          { value with which to initialize }
+          current_asmdata.asmlists[al_globals].concat(Tai_const.Create_sym(item.datalabel));
+          item:=TTCInitItem(item.Next);
+        until item=nil;
+        { end-of-list marker }
+        current_asmdata.asmlists[al_globals].concat(Tai_const.Create_sym(nil));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol_end.Createname(s));
+        current_module.flags:=current_module.flags or uf_wideinits;
+=======
+      begin
+        item:=TTCInitItem(current_asmdata.WideInits.First);
+        if item=nil then
+          exit;
+        s:=make_mangledname('WIDEINITS',current_module.localsymtable,'');
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,s,sizeof(pint));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global(s,AT_DATA,0));
+        repeat
+          { address to initialize }
+          current_asmdata.asmlists[al_globals].concat(Tai_const.createname(item.sym.mangledname, item.offset));
+          { value with which to initialize }
+          current_asmdata.asmlists[al_globals].concat(Tai_const.Create_sym(item.datalabel));
+          item:=TTCInitItem(item.Next);
+        until item=nil;
+        { end-of-list marker }
+        current_asmdata.asmlists[al_globals].concat(Tai_const.Create_sym(nil));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol_end.Createname(s));
+        current_module.flags:=current_module.flags or uf_wideinits;
+=======
+      begin
+        item:=TTCInitItem(current_asmdata.WideInits.First);
+        if item=nil then
+          exit;
+        s:=make_mangledname('WIDEINITS',current_module.localsymtable,'');
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,s,sizeof(pint));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global(s,AT_DATA,0));
+        repeat
+          { address to initialize }
+          current_asmdata.asmlists[al_globals].concat(Tai_const.createname(item.sym.mangledname, item.offset));
+          { value with which to initialize }
+          current_asmdata.asmlists[al_globals].concat(Tai_const.Create_sym(item.datalabel));
+          item:=TTCInitItem(item.Next);
+        until item=nil;
+        { end-of-list marker }
+        current_asmdata.asmlists[al_globals].concat(Tai_const.Create_sym(nil));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol_end.Createname(s));
+        current_module.flags:=current_module.flags or uf_wideinits;
+      end;
+
+    procedure InsertWideInitsTablesTable;
+      var
+        hp: tused_unit;
+        lwiTables: TAsmList;
+        count: longint;
+      begin
+        lwiTables:=TAsmList.Create;
+        count:=0;
+        hp:=tused_unit(usedunits.first);
+        while assigned(hp) do
+         begin
+           if (hp.u.flags and uf_wideinits)=uf_wideinits then
+            begin
+              lwiTables.concat(Tai_const.Createname(make_mangledname('WIDEINITS',hp.u.globalsymtable,''),0));
+              inc(count);
+            end;
+           hp:=tused_unit(hp.next);
+         end;
+        { Add program widestring consts, if any }
+        if (current_module.flags and uf_wideinits)=uf_wideinits then
+         begin
+           lwiTables.concat(Tai_const.Createname(make_mangledname('WIDEINITS',current_module.localsymtable,''),0));
+           inc(count);
+         end;
+        { Insert TableCount at start }
+        lwiTables.insert(Tai_const.Create_32bit(count));
+        { insert in data segment }
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,'FPC_WIDEINITTABLES',sizeof(pint));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('FPC_WIDEINITTABLES',AT_DATA,0));
+        current_asmdata.asmlists[al_globals].concatlist(lwiTables);
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol_end.Createname('FPC_WIDEINITTABLES'));
+        lwiTables.free;
+>>>>>>> origin/cpstrnew
+      end;
+
+    procedure InsertWideInitsTablesTable;
+      var
+        hp: tused_unit;
+        lwiTables: TAsmList;
+        count: longint;
+      begin
+        lwiTables:=TAsmList.Create;
+        count:=0;
+        hp:=tused_unit(usedunits.first);
+        while assigned(hp) do
+         begin
+           if (hp.u.flags and uf_wideinits)=uf_wideinits then
+            begin
+              lwiTables.concat(Tai_const.Createname(make_mangledname('WIDEINITS',hp.u.globalsymtable,''),0));
+              inc(count);
+            end;
+           hp:=tused_unit(hp.next);
+         end;
+        { Add program widestring consts, if any }
+        if (current_module.flags and uf_wideinits)=uf_wideinits then
+         begin
+           lwiTables.concat(Tai_const.Createname(make_mangledname('WIDEINITS',current_module.localsymtable,''),0));
+           inc(count);
+         end;
+        { Insert TableCount at start }
+        lwiTables.insert(Tai_const.Create_32bit(count));
+        { insert in data segment }
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,'FPC_WIDEINITTABLES',sizeof(pint));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('FPC_WIDEINITTABLES',AT_DATA,0));
+        current_asmdata.asmlists[al_globals].concatlist(lwiTables);
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol_end.Createname('FPC_WIDEINITTABLES'));
+        lwiTables.free;
+>>>>>>> graemeg/cpstrnew
+      end;
+=======
+
+    Function CheckResourcesUsed : boolean;
+    var
+      hp           : tused_unit;
+      found        : Boolean;
+    begin
+      CheckResourcesUsed:=tf_has_winlike_resources in target_info.flags;
+      if not CheckResourcesUsed then exit;
+
+      hp:=tused_unit(usedunits.first);
+      found:=((current_module.flags and uf_has_resourcefiles)=uf_has_resourcefiles);
+      If not found then
+        While Assigned(hp) and not found do
+          begin
+          Found:=((hp.u.flags and uf_has_resourcefiles)=uf_has_resourcefiles);
+          hp:=tused_unit(hp.next);
+          end;
+      CheckResourcesUsed:=found;
+    end;
+
+    Procedure InsertResourceInfo(ResourcesUsed : boolean);
+>>>>>>> origin/fixes_2.4
+
+    procedure InsertWideInitsTablesTable;
+      var
+        hp: tused_unit;
+        lwiTables: TAsmList;
+        count: longint;
+      begin
+        lwiTables:=TAsmList.Create;
+        count:=0;
+        hp:=tused_unit(usedunits.first);
+        while assigned(hp) do
+         begin
+           if (hp.u.flags and uf_wideinits)=uf_wideinits then
+            begin
+              lwiTables.concat(Tai_const.Createname(make_mangledname('WIDEINITS',hp.u.globalsymtable,''),0));
+              inc(count);
+            end;
+           hp:=tused_unit(hp.next);
+         end;
+        { Add program widestring consts, if any }
+        if (current_module.flags and uf_wideinits)=uf_wideinits then
+         begin
+           lwiTables.concat(Tai_const.Createname(make_mangledname('WIDEINITS',current_module.localsymtable,''),0));
+           inc(count);
+         end;
+        { Insert TableCount at start }
+        lwiTables.insert(Tai_const.Create_32bit(count));
+        { insert in data segment }
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,'FPC_WIDEINITTABLES',sizeof(pint));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('FPC_WIDEINITTABLES',AT_DATA,0));
+        current_asmdata.asmlists[al_globals].concatlist(lwiTables);
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol_end.Createname('FPC_WIDEINITTABLES'));
+        lwiTables.free;
+>>>>>>> graemeg/cpstrnew
+      end;
+
+    procedure InsertWideInitsTablesTable;
+      var
+        hp: tused_unit;
+        lwiTables: TAsmList;
+        count: longint;
+      begin
+        lwiTables:=TAsmList.Create;
+        count:=0;
+        hp:=tused_unit(usedunits.first);
+        while assigned(hp) do
+         begin
+           if (hp.u.flags and uf_wideinits)=uf_wideinits then
+            begin
+              lwiTables.concat(Tai_const.Createname(make_mangledname('WIDEINITS',hp.u.globalsymtable,''),0));
+              inc(count);
+            end;
+           hp:=tused_unit(hp.next);
+         end;
+        { Add program widestring consts, if any }
+        if (current_module.flags and uf_wideinits)=uf_wideinits then
+         begin
+           lwiTables.concat(Tai_const.Createname(make_mangledname('WIDEINITS',current_module.localsymtable,''),0));
+           inc(count);
+         end;
+        { Insert TableCount at start }
+        lwiTables.insert(Tai_const.Create_32bit(count));
+        { insert in data segment }
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,'FPC_WIDEINITTABLES',sizeof(pint));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('FPC_WIDEINITTABLES',AT_DATA,0));
+        current_asmdata.asmlists[al_globals].concatlist(lwiTables);
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol_end.Createname('FPC_WIDEINITTABLES'));
+        lwiTables.free;
+      end;
+
+
+>>>>>>> graemeg/cpstrnew
     Function CheckResourcesUsed : boolean;
       var
         hp           : tused_unit;
         found        : Boolean;
       begin
+<<<<<<< HEAD
         CheckResourcesUsed:=tf_has_winlike_resources in target_info.flags;
         if not CheckResourcesUsed then exit;
 
@@ -171,6 +537,183 @@ implementation
             hp:=tused_unit(hp.next);
             end;
         CheckResourcesUsed:=found;
+=======
+        ResourceStringTables:=tasmlist.Create;
+        count:=0;
+        hp:=tmodule(loaded_units.first);
+        while assigned(hp) do
+          begin
+            If (hp.flags and uf_has_resourcestrings)=uf_has_resourcestrings then
+              begin
+                ResourceStringTables.concat(Tai_const.Createname(make_mangledname('RESSTR',hp.localsymtable,'START'),0));
+                ResourceStringTables.concat(Tai_const.Createname(make_mangledname('RESSTR',hp.localsymtable,'END'),0));
+                inc(count);
+              end;
+            hp:=tmodule(hp.next);
+          end;
+        { Insert TableCount at start }
+        ResourceStringTables.insert(Tai_const.Create_pint(count));
+        { Add to data segment }
+        maybe_new_object_file(current_asmdata.AsmLists[al_globals]);
+        new_section(current_asmdata.AsmLists[al_globals],sec_data,'FPC_RESOURCESTRINGTABLES',sizeof(pint));
+        current_asmdata.AsmLists[al_globals].concat(Tai_symbol.Createname_global('FPC_RESOURCESTRINGTABLES',AT_DATA,0));
+        current_asmdata.AsmLists[al_globals].concatlist(ResourceStringTables);
+        current_asmdata.AsmLists[al_globals].concat(Tai_symbol_end.Createname('FPC_RESOURCESTRINGTABLES'));
+        ResourceStringTables.free;
+      end;
+
+    procedure AddToStructInits(p:TObject;arg:pointer);
+      var
+        StructList: TFPList absolute arg;
+      begin
+        if (tdef(p).typ in [objectdef,recorddef]) and
+           ([oo_has_class_constructor,oo_has_class_destructor] * tabstractrecorddef(p).objectoptions <> []) then
+          StructList.Add(p);
+      end;
+
+    procedure InsertInitFinalTable;
+      var
+        hp : tused_unit;
+        unitinits : TAsmList;
+        count : longint;
+
+        procedure write_struct_inits(u: tmodule);
+          var
+            i: integer;
+            structlist: TFPList;
+            pd: tprocdef;
+          begin
+            structlist := TFPList.Create;
+            if assigned(u.globalsymtable) then
+              u.globalsymtable.DefList.ForEachCall(@AddToStructInits,structlist);
+            u.localsymtable.DefList.ForEachCall(@AddToStructInits,structlist);
+            { write structures }
+            for i := 0 to structlist.Count - 1 do
+            begin
+              pd := tabstractrecorddef(structlist[i]).find_procdef_bytype(potype_class_constructor);
+              if assigned(pd) then
+                unitinits.concat(Tai_const.Createname(pd.mangledname,0))
+              else
+                unitinits.concat(Tai_const.Create_pint(0));
+              pd := tabstractrecorddef(structlist[i]).find_procdef_bytype(potype_class_destructor);
+              if assigned(pd) then
+                unitinits.concat(Tai_const.Createname(pd.mangledname,0))
+              else
+                unitinits.concat(Tai_const.Create_pint(0));
+              inc(count);
+            end;
+            structlist.free;
+          end;
+
+      begin
+        unitinits:=TAsmList.Create;
+        count:=0;
+        hp:=tused_unit(usedunits.first);
+        while assigned(hp) do
+         begin
+           { insert class constructors/destructors of the unit }
+           if (hp.u.flags and uf_classinits) <> 0 then
+             write_struct_inits(hp.u);
+           { call the unit init code and make it external }
+           if (hp.u.flags and (uf_init or uf_finalize))<>0 then
+             begin
+               if (hp.u.flags and uf_init)<>0 then
+                 unitinits.concat(Tai_const.Createname(make_mangledname('INIT$',hp.u.globalsymtable,''),0))
+               else
+                 unitinits.concat(Tai_const.Create_sym(nil));
+               if (hp.u.flags and uf_finalize)<>0 then
+                 unitinits.concat(Tai_const.Createname(make_mangledname('FINALIZE$',hp.u.globalsymtable,''),0))
+               else
+                 unitinits.concat(Tai_const.Create_sym(nil));
+               inc(count);
+             end;
+           hp:=tused_unit(hp.next);
+         end;
+        { insert class constructors/destructor of the program }
+        if (current_module.flags and uf_classinits) <> 0 then
+          write_struct_inits(current_module);
+        { Insert initialization/finalization of the program }
+        if (current_module.flags and (uf_init or uf_finalize))<>0 then
+          begin
+            if (current_module.flags and uf_init)<>0 then
+              unitinits.concat(Tai_const.Createname(make_mangledname('INIT$',current_module.localsymtable,''),0))
+            else
+              unitinits.concat(Tai_const.Create_sym(nil));
+            if (current_module.flags and uf_finalize)<>0 then
+              unitinits.concat(Tai_const.Createname(make_mangledname('FINALIZE$',current_module.localsymtable,''),0))
+            else
+              unitinits.concat(Tai_const.Create_sym(nil));
+            inc(count);
+          end;
+        { Insert TableCount,InitCount at start }
+        unitinits.insert(Tai_const.Create_32bit(0));
+        unitinits.insert(Tai_const.Create_32bit(count));
+        { Add to data segment }
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,'INITFINAL',sizeof(pint));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('INITFINAL',AT_DATA,0));
+        current_asmdata.asmlists[al_globals].concatlist(unitinits);
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol_end.Createname('INITFINAL'));
+        unitinits.free;
+      end;
+
+
+    procedure InsertMemorySizes;
+{$IFDEF POWERPC}
+      var
+        stkcookie: string;
+{$ENDIF POWERPC}
+      begin
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        { Insert Ident of the compiler in the .fpc.version section }
+        new_section(current_asmdata.asmlists[al_globals],sec_fpc,'version',const_align(32));
+        current_asmdata.asmlists[al_globals].concat(Tai_string.Create('FPC '+full_version_string+
+          ' ['+date_string+'] for '+target_cpu_string+' - '+target_info.shortname));
+        if not(tf_no_generic_stackcheck in target_info.flags) then
+          begin
+            { stacksize can be specified and is now simulated }
+<<<<<<< HEAD
+<<<<<<< HEAD
+            new_section(current_asmdata.asmlists[al_globals],sec_data,'__stklen', sizeof(pint));
+            current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('__stklen',AT_DATA,sizeof(pint)));
+            current_asmdata.asmlists[al_globals].concat(Tai_const.Create_pint(stacksize));
+=======
+            new_section(current_asmdata.asmlists[al_globals],sec_data,'__stklen', sizeof(aint));
+            current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('__stklen',AT_DATA,sizeof(aint)));
+            current_asmdata.asmlists[al_globals].concat(Tai_const.Create_aint(stacksize));
+>>>>>>> graemeg/fixes_2_2
+=======
+            new_section(current_asmdata.asmlists[al_globals],sec_data,'__stklen', sizeof(aint));
+            current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('__stklen',AT_DATA,sizeof(aint)));
+            current_asmdata.asmlists[al_globals].concat(Tai_const.Create_aint(stacksize));
+>>>>>>> origin/fixes_2_2
+          end;
+{$IFDEF POWERPC}
+        { AmigaOS4 "stack cookie" support }
+        if ( target_info.system = system_powerpc_amiga ) then
+         begin
+           { this symbol is needed to ignite powerpc amigaos' }
+           { stack allocation magic for us with the given stack size. }
+           { note: won't work for m68k amigaos or morphos. (KB) }
+           str(stacksize,stkcookie);
+           stkcookie:='$STACK: '+stkcookie+#0;
+           maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+           new_section(current_asmdata.asmlists[al_globals],sec_data,'__stack_cookie',length(stkcookie));
+           current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('__stack_cookie',AT_DATA,length(stkcookie)));
+           current_asmdata.asmlists[al_globals].concat(Tai_string.Create(stkcookie));
+         end;
+{$ENDIF POWERPC}
+        { Initial heapsize }
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,'__heapsize',sizeof(pint));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('__heapsize',AT_DATA,sizeof(pint)));
+        current_asmdata.asmlists[al_globals].concat(Tai_const.Create_pint(heapsize));
+        { Initial heapsize }
+        maybe_new_object_file(current_asmdata.asmlists[al_globals]);
+        new_section(current_asmdata.asmlists[al_globals],sec_data,'__fpc_valgrind',sizeof(boolean));
+        current_asmdata.asmlists[al_globals].concat(Tai_symbol.Createname_global('__fpc_valgrind',AT_DATA,sizeof(boolean)));
+        current_asmdata.asmlists[al_globals].concat(Tai_const.create_8bit(byte(cs_gdb_valgrind in current_settings.globalswitches)));
+>>>>>>> graemeg/cpstrnew
       end;
 
     function AddUnit(const s:string): tppumodule;
@@ -217,6 +760,8 @@ implementation
         { Variants unit is not loaded yet, load it now }
         Message(parser_w_implicit_uses_of_variants_unit);
         AddUnit('variants');
+<<<<<<< HEAD
+<<<<<<< HEAD
       end;
 
 
@@ -269,6 +814,10 @@ implementation
             unloaded_units.Concat(hp);
           end;
         MaybeRemoveResUnit:=resources_used;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -345,14 +894,21 @@ implementation
         { Objpas unit? }
         if m_objpas in current_settings.modeswitches then
           AddUnit('objpas');
+<<<<<<< HEAD
+<<<<<<< HEAD
 
         { Macpas unit? }
         if m_mac in current_settings.modeswitches then
           AddUnit('macpas');
+<<<<<<< HEAD
 
         if m_iso in current_settings.modeswitches then
           AddUnit('iso7185');
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if m_extpas in current_settings.modeswitches then
           begin
             { basic procedures for Extended Pascal are for now provided by the iso unit }
@@ -368,6 +924,14 @@ implementation
         if m_default_unicodestring in current_settings.modeswitches then
           AddUnit('uuchar');
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         { Objective-C support unit? }
         if (m_objectivec1 in current_settings.modeswitches) then
           begin
@@ -379,6 +943,18 @@ implementation
                (current_module.modulename^<>'OBJCBASE') then
               AddUnit('objcbase');
           end;
+=======
+        { Macpas unit? }
+        if m_mac in current_settings.modeswitches then
+          AddUnit('macpas');
+>>>>>>> graemeg/fixes_2_2
+=======
+        { Macpas unit? }
+        if m_mac in current_settings.modeswitches then
+          AddUnit('macpas');
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
         { Profile unit? Needed for go32v2 only }
         if (cs_profile in current_settings.moduleswitches) and
            (target_info.system in [system_i386_go32v2,system_i386_watcom]) then
@@ -390,10 +966,26 @@ implementation
           end;
 
         { CPU targets with microcontroller support can add a controller specific unit }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if ControllerSupport and (target_info.system in systems_embedded) and
           (current_settings.controllertype<>ct_none) and
           (embedded_controllers[current_settings.controllertype].controllerunitstr<>'') then
           AddUnit(embedded_controllers[current_settings.controllertype].controllerunitstr);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$if defined(ARM) or defined(AVR)}
+        if (target_info.system in systems_embedded) and (current_settings.controllertype<>ct_none) then
+          AddUnit(controllerunitstr[current_settings.controllertype]);
+{$endif ARM}
+>>>>>>> graemeg/cpstrnew
       end;
 
 
@@ -518,7 +1110,23 @@ implementation
                   assigned(pu.u.globalmacrosymtable) then
                  macrosymtablestack.push(pu.u.globalmacrosymtable);
                { check hints }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                pu.check_hints;
+=======
+               pu.u.check_hints;
+>>>>>>> graemeg/cpstrnew
+=======
+               pu.u.check_hints;
+>>>>>>> graemeg/cpstrnew
+=======
+               pu.u.check_hints;
+>>>>>>> graemeg/cpstrnew
+=======
+               pu.u.check_hints;
+>>>>>>> origin/cpstrnew
              end;
             pu:=tused_unit(pu.next);
           end;
@@ -641,25 +1249,88 @@ implementation
     { Insert _GLOBAL_OFFSET_TABLE_ symbol if system uses it }
 
     procedure maybe_load_got;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if defined(i386) or defined (sparc)}
        var
          gotvarsym : tstaticvarsym;
 {$endif i386 or sparc}
       begin
 {$if defined(i386) or defined(sparc)}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef i386}
+       var
+         gotvarsym : tstaticvarsym;
+{$endif i386}
+      begin
+{$ifdef i386}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
          if (cs_create_pic in current_settings.moduleswitches) and
             (tf_pic_uses_got in target_info.flags) then
            begin
              { insert symbol for got access in assembler code}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
              gotvarsym:=cstaticvarsym.create('_GLOBAL_OFFSET_TABLE_',
                           vs_value,voidpointertype,[vo_is_external],true);
+=======
+             gotvarsym:=tstaticvarsym.create('_GLOBAL_OFFSET_TABLE_',
+                          vs_value,voidpointertype,[vo_is_external]);
+>>>>>>> graemeg/cpstrnew
+=======
+             gotvarsym:=tstaticvarsym.create('_GLOBAL_OFFSET_TABLE_',
+                          vs_value,voidpointertype,[vo_is_external]);
+>>>>>>> graemeg/cpstrnew
+=======
+             gotvarsym:=tstaticvarsym.create('_GLOBAL_OFFSET_TABLE_',
+                          vs_value,voidpointertype,[vo_is_external]);
+>>>>>>> graemeg/cpstrnew
+=======
+             gotvarsym:=tstaticvarsym.create('_GLOBAL_OFFSET_TABLE_',
+                          vs_value,voidpointertype,[vo_is_external]);
+>>>>>>> origin/cpstrnew
              gotvarsym.set_mangledname('_GLOBAL_OFFSET_TABLE_');
              current_module.localsymtable.insert(gotvarsym);
              { avoid unnecessary warnings }
              gotvarsym.varstate:=vs_read;
              gotvarsym.refs:=1;
            end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif i386 or sparc}
+=======
+{$endif i386}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif i386}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif i386}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif i386}
+>>>>>>> origin/cpstrnew
       end;
 
     function gen_implicit_initfinal(flag:word;st:TSymtable):tcgprocinfo;
@@ -691,6 +1362,73 @@ implementation
       end;
 
     function try_consume_hintdirective(var moduleopt:tmoduleoptions; var deprecatedmsg:pshortstring):boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      var
+        last_is_deprecated:boolean;
+      begin
+        try_consume_hintdirective:=false;
+        repeat
+          last_is_deprecated:=false;
+          case idtoken of
+            _LIBRARY :
+              begin
+                include(moduleopt,mo_hint_library);
+                try_consume_hintdirective:=true;
+              end;
+            _DEPRECATED :
+              begin
+                include(moduleopt,mo_hint_deprecated);
+                try_consume_hintdirective:=true;
+                last_is_deprecated:=true;
+              end;
+            _EXPERIMENTAL :
+              begin
+                include(moduleopt,mo_hint_experimental);
+                try_consume_hintdirective:=true;
+              end;
+            _PLATFORM :
+              begin
+                include(moduleopt,mo_hint_platform);
+                try_consume_hintdirective:=true;
+              end;
+            _UNIMPLEMENTED :
+              begin
+                include(moduleopt,mo_hint_unimplemented);
+                try_consume_hintdirective:=true;
+              end;
+            else
+              break;
+          end;
+          consume(Token);
+          { handle deprecated message }
+          if ((token=_CSTRING) or (token=_CCHAR)) and last_is_deprecated then
+            begin
+              if deprecatedmsg<>nil then
+                internalerror(201001221);
+              if token=_CSTRING then
+                deprecatedmsg:=stringdup(cstringpattern)
+              else
+                deprecatedmsg:=stringdup(pattern);
+              consume(token);
+              include(moduleopt,mo_has_deprecated_msg);
+            end;
+        until false;
+      end;
+
+    procedure proc_unit;
+
+      function is_assembler_generated:boolean;
+>>>>>>> graemeg/cpstrnew
       var
         deprecated_seen,
         last_is_deprecated:boolean;
@@ -779,14 +1517,41 @@ type
     function proc_unit:boolean;
       var
          main_file: tinputfile;
+<<<<<<< HEAD
+=======
+{$ifdef EXTDEBUG}
+         store_crc,
+{$endif EXTDEBUG}
+         store_interface_crc,
+         store_indirect_crc: cardinal;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
          s1,s2  : ^string; {Saves stack space}
          init_procinfo : tcgprocinfo;
          unitname : ansistring;
          unitname8 : string[8];
+<<<<<<< HEAD
          i,j : longint;
          finishstate:pfinishstate;
          globalstate:pglobalstate;
          consume_semicolon_after_uses:boolean;
+=======
+         ag: boolean;
+{$ifdef debug_devirt}
+         i: longint;
+{$endif debug_devirt}
+>>>>>>> graemeg/cpstrnew
       begin
          result:=true;
 
@@ -830,6 +1595,7 @@ type
                   (length(current_module.modulename^)>8) and
                   (unitname8=s2^)
                  )
+<<<<<<< HEAD
                 )
              or
              (
@@ -842,10 +1608,33 @@ type
           include(current_settings.moduleswitches,cs_compilesystem);
          dispose(s2);
          dispose(s1);
+=======
+                ) then
+              Message1(unit_e_illegal_unit_name,current_module.realmodulename^);
+             if (current_module.modulename^='SYSTEM') then
+              include(current_settings.moduleswitches,cs_compilesystem);
+             dispose(s2);
+             dispose(s1);
+          end;
+>>>>>>> graemeg/cpstrnew
 
          if (target_info.system in systems_unit_program_exports) then
            exportlib.preparelib(current_module.realmodulename^);
 
+<<<<<<< HEAD
+=======
+         consume(_ID);
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
          { parse hint directives }
          try_consume_hintdirective(current_module.moduleoptions, current_module.deprecatedmsg);
 
@@ -911,11 +1700,26 @@ type
            needs to be added implicitly }
          current_module.updatemaps;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          { consume the semicolon after maps have been updated else conditional compiling expressions
            might cause internal errors, see tw8611 }
          if consume_semicolon_after_uses then
            consume(_SEMICOLON);
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
          { create whole program optimisation information (may already be
            updated in the interface, e.g., in case of classrefdef typed
            constants }
@@ -987,10 +1791,23 @@ type
            end;
 
          if current_module.state=ms_compiled then
+<<<<<<< HEAD
            begin
              symtablestack.pop(current_module.globalsymtable);
              exit;
            end;
+=======
+           exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
          { All units are read, now give them a number }
          current_module.updatemaps;
@@ -1144,6 +1961,27 @@ type
          { finalize? }
          if not current_module.interface_only and (token=_FINALIZATION) then
            begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+              { the uf_finalize flag is only set after we checked that it
+                wasn't empty }
+
+>>>>>>> graemeg/cpstrnew
+=======
+              { the uf_finalize flag is only set after we checked that it
+                wasn't empty }
+
+>>>>>>> graemeg/cpstrnew
+=======
+              { the uf_finalize flag is only set after we checked that it
+                wasn't empty }
+
+>>>>>>> origin/cpstrnew
               { Compile the finalize }
               finalize_procinfo:=create_main_proc(make_mangledname('',current_module.localsymtable,'finalize'),potype_unitfinalize,current_module.localsymtable);
               finalize_procinfo.procdef.aliasnames.insert(make_mangledname('FINALIZE$',current_module.localsymtable,''));
@@ -1219,27 +2057,72 @@ type
             exit;
           end;
 
+<<<<<<< HEAD
          { if an Objective-C module, generate rtti and module info }
          MaybeGenerateObjectiveCImageInfo(current_module.globalsymtable,current_module.localsymtable);
 
+=======
+>>>>>>> origin/fixes_2.4
          { do we need to add the variants unit? }
          maybeloadvariantsunit;
 
+<<<<<<< HEAD
+=======
+         { generate wrappers for interfaces }
+         gen_intf_wrappers(current_asmdata.asmlists[al_procedures],current_module.globalsymtable,false);
+         gen_intf_wrappers(current_asmdata.asmlists[al_procedures],current_module.localsymtable,false);
+
+         { generate pic helpers to load eip if necessary }
+         gen_pic_helpers(current_asmdata.asmlists[al_procedures]);
+
+>>>>>>> graemeg/cpstrnew
          { generate rtti/init tables }
          write_persistent_type_info(current_module.globalsymtable,true);
          write_persistent_type_info(current_module.localsymtable,false);
 
          { Tables }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          cnodeutils.InsertThreadvars;
+=======
+         InsertThreadvars;
+>>>>>>> graemeg/cpstrnew
+=======
+         InsertThreadvars;
+>>>>>>> graemeg/cpstrnew
+=======
+         InsertThreadvars;
+>>>>>>> graemeg/cpstrnew
+=======
+         InsertThreadvars;
+>>>>>>> origin/cpstrnew
 
          { Resource strings }
          GenerateResourceStrings;
 
          { Widestring typed constants }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          cnodeutils.InsertWideInits;
 
          { Resourcestring references }
          cnodeutils.InsertResStrInits;
+=======
+         InsertWideInits;
+>>>>>>> graemeg/cpstrnew
+=======
+         InsertWideInits;
+>>>>>>> graemeg/cpstrnew
+=======
+         InsertWideInits;
+>>>>>>> graemeg/cpstrnew
+=======
+         InsertWideInits;
+>>>>>>> origin/cpstrnew
 
          { generate debuginfo }
          if (cs_debuginfo in current_settings.moduleswitches) then
@@ -1280,9 +2163,39 @@ type
          if not(cs_compilesystem in current_settings.moduleswitches) then
            begin
              if store_interface_crc<>current_module.interface_crc then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                Message1(unit_u_interface_crc_changed,current_module.ppufilename);
              if store_indirect_crc<>current_module.indirect_crc then
                Message1(unit_u_indirect_crc_changed,current_module.ppufilename);
+=======
+               Message1(unit_u_interface_crc_changed,current_module.ppufilename^);
+             if store_indirect_crc<>current_module.indirect_crc then
+               Message1(unit_u_indirect_crc_changed,current_module.ppufilename^);
+>>>>>>> graemeg/cpstrnew
+=======
+               Message1(unit_u_interface_crc_changed,current_module.ppufilename^);
+             if store_indirect_crc<>current_module.indirect_crc then
+               Message1(unit_u_indirect_crc_changed,current_module.ppufilename^);
+>>>>>>> graemeg/cpstrnew
+=======
+               Message1(unit_u_interface_crc_changed,current_module.ppufilename^);
+             if store_indirect_crc<>current_module.indirect_crc then
+               Message1(unit_u_indirect_crc_changed,current_module.ppufilename^);
+>>>>>>> graemeg/cpstrnew
+=======
+               Message1(unit_u_interface_crc_changed,current_module.ppufilename^);
+             if store_indirect_crc<>current_module.indirect_crc then
+               Message1(unit_u_indirect_crc_changed,current_module.ppufilename^);
+>>>>>>> origin/cpstrnew
+=======
+               Message1(unit_u_interface_crc_changed,current_module.ppufilename^);
+             if store_indirect_crc<>current_module.indirect_crc then
+               Message1(unit_u_indirect_crc_changed,current_module.ppufilename^);
+>>>>>>> origin/fixes_2.4
            end;
 {$ifdef EXTDEBUG}
          if not(cs_compilesystem in current_settings.moduleswitches) then
@@ -2001,7 +2914,15 @@ type
          { AV error when DLL is loaded and relocation is needed.  }
          { Internal linker does not have this problem.            }
          if RelocSection and
+<<<<<<< HEAD
+<<<<<<< HEAD
             (target_info.system in systems_all_windows+[system_i386_wdosx]) and
+=======
+            (target_info.system in system_all_windows+[system_i386_wdosx]) and
+>>>>>>> graemeg/fixes_2_2
+=======
+            (target_info.system in system_all_windows+[system_i386_wdosx]) and
+>>>>>>> origin/fixes_2_2
             (cs_link_extern in current_settings.globalswitches) then
            begin
               include(current_settings.globalswitches,cs_link_strip);
@@ -2054,7 +2975,13 @@ type
            if token=_PROGRAM then
             begin
               consume(_PROGRAM);
+<<<<<<< HEAD
               program_name:=orgpattern;
+=======
+              current_module.setmodulename(orgpattern);
+              if (target_info.system in systems_unit_program_exports) then
+                exportlib.preparelib(orgpattern);
+>>>>>>> graemeg/cpstrnew
               consume(_ID);
               while token=_POINT do
                 begin
@@ -2095,6 +3022,10 @@ type
 
               consume(_SEMICOLON);
             end
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          else
            begin
              if (target_info.system in systems_unit_program_exports) then
@@ -2103,6 +3034,16 @@ type
              { setup things using the switches }
              setupglobalswitches;
            end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+         else if (target_info.system in systems_unit_program_exports) then
+           exportlib.preparelib(current_module.realmodulename^);
+>>>>>>> graemeg/cpstrnew
 
          { global switches are read, so further changes aren't allowed }
          current_module.in_global:=false;
@@ -2121,6 +3062,7 @@ type
          { Load units provided on the command line }
          loadautounits;
 
+<<<<<<< HEAD
          { insert iso program parameters }
          if length(sc)>0 then
            begin
@@ -2134,6 +3076,9 @@ type
                end;
            end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          { Load the units used by the program we compile. }
          if token=_USES then
            begin
@@ -2143,6 +3088,18 @@ type
          else
            consume_semicolon_after_uses:=false;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+         {Load the units used by the program we compile.}
+         if token=_USES then
+           loadunits;
+
+>>>>>>> origin/cpstrnew
          { All units are read, now give them a number }
          current_module.updatemaps;
 
@@ -2159,11 +3116,23 @@ type
 
          symtablestack.push(current_module.localsymtable);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef jvm}
          { fake classdef to represent the class corresponding to the unit }
          addmoduleclass;
 {$endif}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
          { Insert _GLOBAL_OFFSET_TABLE_ symbol if system uses it }
          maybe_load_got;
 
@@ -2176,12 +3145,28 @@ type
           begin
             main_procinfo:=create_main_proc(make_mangledname('',current_module.localsymtable,mainaliasname),potype_proginit,current_module.localsymtable);
             { Win32 startup code needs a single name }
+<<<<<<< HEAD
+<<<<<<< HEAD
             if not(target_info.system in (systems_darwin+systems_aix)) then
+=======
+            if not(target_info.system in systems_darwin) then
+>>>>>>> graemeg/fixes_2_2
+=======
+            if not(target_info.system in systems_darwin) then
+>>>>>>> origin/fixes_2_2
               main_procinfo.procdef.aliasnames.insert('PASCALMAIN')
             else
               main_procinfo.procdef.aliasnames.insert(target_info.Cprefix+'PASCALMAIN')
           end
+<<<<<<< HEAD
+<<<<<<< HEAD
          else if (target_info.system in ([system_i386_netware,system_i386_netwlibc,system_powerpc_macos]+systems_darwin+systems_aix)) then
+=======
+         else if (target_info.system in ([system_i386_netware,system_i386_netwlibc,system_powerpc_macos]+systems_darwin)) then
+>>>>>>> graemeg/fixes_2_2
+=======
+         else if (target_info.system in ([system_i386_netware,system_i386_netwlibc,system_powerpc_macos]+systems_darwin)) then
+>>>>>>> origin/fixes_2_2
            begin
              { create a stub with the name of the desired main routine, with
                the same signature as the C "main" function, and call through to
@@ -2231,6 +3216,30 @@ type
          { finalize? }
          if token=_FINALIZATION then
            begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+              { the uf_finalize flag is only set after we checked that it
+                wasn't empty }
+
+>>>>>>> graemeg/cpstrnew
+=======
+              { the uf_finalize flag is only set after we checked that it
+                wasn't empty }
+
+>>>>>>> graemeg/cpstrnew
+=======
+              { the uf_finalize flag is only set after we checked that it
+                wasn't empty }
+
+>>>>>>> graemeg/cpstrnew
+=======
+              { the uf_finalize flag is only set after we checked that it
+                wasn't empty }
+
+>>>>>>> origin/cpstrnew
               { Parse the finalize }
               finalize_procinfo:=create_main_proc(make_mangledname('',current_module.localsymtable,'finalize'),potype_unitfinalize,current_module.localsymtable);
               finalize_procinfo.procdef.aliasnames.insert(make_mangledname('FINALIZE$',current_module.localsymtable,''));
@@ -2348,6 +3357,30 @@ type
 
          { if an Objective-C module, generate rtti and module info }
          MaybeGenerateObjectiveCImageInfo(nil,current_module.localsymtable);
+<<<<<<< HEAD
+=======
+
+         { if an Objective-C module, generate rtti and module info }
+         MaybeGenerateObjectiveCImageInfo(nil,current_module.localsymtable);
+
+         { if an Objective-C module, generate rtti and module info }
+         MaybeGenerateObjectiveCImageInfo(nil,current_module.localsymtable);
+
+         { if an Objective-C module, generate rtti and module info }
+         MaybeGenerateObjectiveCImageInfo(nil,current_module.localsymtable);
+
+         { generate wrappers for interfaces }
+         gen_intf_wrappers(current_asmdata.asmlists[al_procedures],current_module.localsymtable,false);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
          { generate imports }
          if current_module.ImportLibraryList.Count>0 then
@@ -2368,6 +3401,10 @@ type
          GenerateResourceStrings;
 
          { Windows widestring needing initialization }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          cnodeutils.InsertWideInits;
 
          { Resourcestring references (const foo:string=someresourcestring) }
@@ -2380,6 +3417,37 @@ type
          cnodeutils.InsertWideInitsTablesTable;
          cnodeutils.InsertResStrTablesTable;
          cnodeutils.InsertMemorySizes;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+         InsertWideInits;
+
+         { insert Tables and StackLength }
+=======
+         InsertWideInits;
+
+         { insert Tables and StackLength }
+>>>>>>> origin/cpstrnew
+         InsertInitFinalTable;
+         InsertThreadvarTablesTable;
+         InsertResourceTablesTable;
+         InsertWideInitsTablesTable;
+         InsertMemorySizes;
+
+         if target_info.system in systems_interrupt_table then
+           InsertInterruptTable;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
          { Insert symbol to resource info }
          cnodeutils.InsertResourceInfo(resources_used);
@@ -2396,10 +3464,18 @@ type
          { We might need the symbols info if not using
            the default do_extractsymbolinfo
            which is a dummy function PM }
+<<<<<<< HEAD
+<<<<<<< HEAD
          needsymbolinfo:=
            (do_extractsymbolinfo<>@def_extractsymbolinfo) or
            ((current_settings.genwpoptimizerswitches*WPOptimizationsNeedingAllUnitInfo)<>[]);
 
+=======
+         needsymbolinfo:=do_extractsymbolinfo<>@def_extractsymbolinfo;
+>>>>>>> graemeg/fixes_2_2
+=======
+         needsymbolinfo:=do_extractsymbolinfo<>@def_extractsymbolinfo;
+>>>>>>> origin/fixes_2_2
          { release all local symtables that are not needed anymore }
          if (not needsymbolinfo) then
            free_localsymtables(current_module.localsymtable);

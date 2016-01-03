@@ -163,9 +163,9 @@ var
   table : array[0..DCTSIZE2-1] of uInt;
 begin
   Assign(f, filename);
-  {$push}{$I-}
+  {$I-}
   Reset(f, 1);
-  {$pop}
+  {$IFDEF IoCheck} {$I+} {$ENDIF}
   if (IOresult <> 0) then
   begin
     WriteLn(output, 'Can''t open table file ', filename);
@@ -287,9 +287,9 @@ var
   scans : array[0..MAX_SCANS-1] of jpeg_scan_info;
 begin
   Assign(f,filename);
-  {$push}{$I-}
+  {$I-}
   Reset(f, 1);
-  {$pop}
+  {$IFDEF IoCheck} {$I+} {$ENDIF}
   if (IOresult <> 0) then
   begin
     WriteLn('Can''t open scan definition file ', filename);

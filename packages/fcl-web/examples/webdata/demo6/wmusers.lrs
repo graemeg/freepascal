@@ -1,0 +1,43 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TFPWebProviderDataModule1','FORMDATA',[
+  'TPF0'#25'TFPWebProviderDataModule1'#24'FPWebProviderDataModule1'#8'OnCreate'
+  +#7#16'DataModuleCreate'#14'OldCreateOrder'#8#12'InputAdaptor'#7#29'ExtJSJSon'
+  +'WebdataInputAdaptor1'#15'ContentProducer'#7#23'ExtJSJSONDataFormatter1'#20
+  +'OnGetContentProducer'#7#28'DataModuleGetContentProducer'#17'OnGetInputAdapt'
+  +'or'#7#25'DataModuleGetInputAdaptor'#6'Height'#3','#1#16'HorizontalOffset'#3
+  +'{'#2#14'VerticalOffset'#3#230#0#5'Width'#3#144#1#0#29'TExtJSJSonWebdataInpu'
+  +'tAdaptor'#29'ExtJSJSonWebdataInputAdaptor1'#4'left'#3#232#0#3'top'#3#152#0#0
+  +#0#28'TExtJSXMLWebdataInputAdaptor'#28'ExtJSXMLWebdataInputAdaptor1'#4'left'
+  +#3#16#1#3'top'#3#152#0#0#0#22'TExtJSXMLDataFormatter'#22'ExtJSXMLDataFormatt'
+  +'er1'#13'AllowPageSize'#8#4'left'#3#16#1#3'top'#3#192#0#0#0#23'TExtJSJSONDat'
+  +'aFormatter'#23'ExtJSJSONDataFormatter1'#13'AllowPageSize'#8#4'left'#3#232#0
+  +#3'top'#3#192#0#0#0#21'TSQLDBWebDataProvider'#5'ANAME'#17'SelectSQL.Strings'
+  +#1#6#22'SELECT * FROM FPCUSERS'#0#17'UpdateSQL.Strings'#1#6#19'UPDATE FPCUSE'
+  +'RS SET'#6#13'  NAME=:NAME,'#6#15'  LOGIN=:LOGIN,'#6#15'  EMAIL=:EMAIL,'#6#22
+  +'  LASTLOGIN=:LASTLOGIN'#6#5'WHERE'#6#10'  (ID=:ID)'#0#17'DeleteSQL.Strings'
+  +#1#6'#DELETE FROM FPCUSERS WHERE (ID=:ID)'#0#17'InsertSQL.Strings'#1#6#21'IN'
+  +'SERT INTO FPCUSERS '#6'#(ID, LOGIN, NAME, EMAIL, LASTLOGIN)'#6#6'VALUES'#6
+  +'((:ID, :LOGIN, :NAME, :EMAIL, :LASTLOGIN)'#0#10'Connection'#7#13'IBConnecti'
+  +'on1'#11'IDFieldName'#6#2'ID'#10'OnGetNewID'#7#13'ANAMEGetNewID'#4'left'#2'q'
+  +#3'top'#2'x'#0#0#13'TIBConnection'#13'IBConnection1'#9'Connected'#8#11'Login'
+  +'Prompt'#8#12'DatabaseName'#6#26'/wisa/firebird/fpcusers.fb'#14'KeepConnecti'
+  +'on'#8#8'Password'#6#8'SysteemD'#11'Transaction'#7#15'SQLTransaction1'#8'Use'
+  +'rName'#6#8'WISASOFT'#4'left'#2'H'#3'top'#2'x'#0#0#9'TSQLQuery'#6'QGetID'#9
+  +'IndexName'#6#13'DEFAULT_ORDER'#14'AutoCalcFields'#8#8'Database'#7#13'IBConn'
+  +'ection1'#11'Transaction'#7#15'SQLTransaction1'#8'ReadOnly'#8#11'SQL.Strings'
+  +#1#6'9SELECT GEN_ID(GEN_FPCUSERS,1) AS THEID  FROM RDB$DATABASE'#0#6'Params'
+  +#14#0#4'left'#3#155#0#3'top'#2'?'#0#0#15'TSQLTransaction'#15'SQLTransaction1'
+  +#6'Active'#8#6'Action'#7#6'caNone'#8'Database'#7#13'IBConnection1'#4'left'#2
+  +'J'#3'top'#2'@'#0#0#9'TSQLQuery'#9'SQLQuery1'#9'IndexName'#6#13'DEFAULT_ORDE'
+  +'R'#14'AutoCalcFields'#8#8'Database'#7#13'IBConnection1'#11'Transaction'#7#15
+  +'SQLTransaction1'#8'ReadOnly'#8#11'SQL.Strings'#1#6#20'INSERT INTO FPCUSERS'
+  +#6'#(ID, LOGIN, NAME, EMAIL, LASTLOGIN)'#6#6'VALUES'#6'((:ID, :LOGIN, :NAME,'
+  +' :EMAIL, :LASTLOGIN)'#6#0#0#6'Params'#14#1#8'DataType'#7#9'ftUnknown'#4'Nam'
+  +'e'#6#2'ID'#9'ParamType'#7#9'ptUnknown'#0#1#8'DataType'#7#9'ftUnknown'#4'Nam'
+  +'e'#6#5'LOGIN'#9'ParamType'#7#9'ptUnknown'#0#1#8'DataType'#7#9'ftUnknown'#4
+  +'Name'#6#4'NAME'#9'ParamType'#7#9'ptUnknown'#0#1#8'DataType'#7#9'ftUnknown'#4
+  +'Name'#6#5'EMAIL'#9'ParamType'#7#9'ptUnknown'#0#1#8'DataType'#7#9'ftUnknown'
+  +#4'Name'#6#9'LASTLOGIN'#9'ParamType'#7#9'ptUnknown'#0#0#4'left'#3#174#0#3'to'
+  +'p'#2'o'#0#0#0
+]);

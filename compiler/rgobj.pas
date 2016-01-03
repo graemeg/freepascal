@@ -179,11 +179,36 @@ unit rgobj;
         { default subregister used }
         defaultsub        : tsubregister;
         live_registers:Tsuperregisterworklist;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         spillednodes: tsuperregisterworklist;
 
         { can be overridden to add cpu specific interferences }
         procedure add_cpu_interferences(p : tai);virtual;
         procedure add_constraints(reg:Tregister);virtual;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        { can be overridden to add cpu specific interferences }
+        procedure add_cpu_interferences(p : tai);virtual;
+        procedure add_constraints(reg:Tregister);virtual;
+        function  get_alias(n:Tsuperregister):Tsuperregister;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         function  getregisterinline(list:TAsmList;const subregconstraints:Tsubregisterset):Tregister;
         procedure ungetregisterinline(list:TAsmList;r:Tregister);
         function  get_spill_subreg(r : tregister) : tsubregister;virtual;
@@ -209,7 +234,14 @@ unit rgobj;
         reginfo           : PReginfo;
       private
         int_live_range_direction: TRADirection;
+<<<<<<< HEAD
+<<<<<<< HEAD
         { First imaginary register.}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        {# First imaginary register.}
+>>>>>>> graemeg/fixes_2_2
         first_imaginary   : Tsuperregister;
         usable_registers_cnt : word;
         usable_registers  : array[0..maxcpuregister] of tsuperregister;
@@ -227,9 +259,26 @@ unit rgobj;
         constrained_moves : Tlinkedlist;
         extended_backwards,
         backwards_was_first : tbitset;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         has_usedmarks: boolean;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
 
         { Disposes of the reginfo array.}
+=======
+=======
+>>>>>>> origin/cpstrnew
+
+{$ifdef EXTDEBUG}
+        procedure writegraph(loopidx:longint);
+{$endif EXTDEBUG}
+        {# Disposes of the reginfo array.}
+>>>>>>> graemeg/cpstrnew
         procedure dispose_reginfo;
         { Prepare the register colouring.}
         procedure prepare_colouring;
@@ -261,6 +310,8 @@ unit rgobj;
         procedure assign_colours;
         procedure clear_interferences(u:Tsuperregister);
         procedure set_live_range_direction(dir: TRADirection);
+<<<<<<< HEAD
+<<<<<<< HEAD
         procedure set_live_start(reg : tsuperregister;t : tai);
         function get_live_start(reg : tsuperregister) : tai;
         procedure set_live_end(reg : tsuperregister;t : tai);
@@ -276,6 +327,14 @@ unit rgobj;
         property live_range_direction: TRADirection read int_live_range_direction write set_live_range_direction;
         property live_start[reg : tsuperregister]: tai read get_live_start write set_live_start;
         property live_end[reg : tsuperregister]: tai read get_live_end write set_live_end;
+=======
+       public
+        property live_range_direction: TRADirection read int_live_range_direction write set_live_range_direction;
+>>>>>>> graemeg/fixes_2_2
+=======
+       public
+        property live_range_direction: TRADirection read int_live_range_direction write set_live_range_direction;
+>>>>>>> origin/fixes_2_2
       end;
 
     const
@@ -407,14 +466,44 @@ unit rgobj;
          if high(Ausable)=-1 then
            internalerror(200210181);
          live_range_direction:=rad_forward;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+         supregset_reset(extended_backwards,false,high(tsuperregister));
+         supregset_reset(backwards_was_first,false,high(tsuperregister));
+>>>>>>> graemeg/fixes_2_2
+=======
+         supregset_reset(extended_backwards,false,high(tsuperregister));
+         supregset_reset(backwards_was_first,false,high(tsuperregister));
+>>>>>>> origin/fixes_2_2
          first_imaginary:=Afirst_imaginary;
          maxreg:=Afirst_imaginary;
          regtype:=Aregtype;
          defaultsub:=Adefaultsub;
          preserved_by_proc:=Apreserved_by_proc;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          // default values set by newinstance
          // used_in_proc:=[];
          // ssa_safe:=false;
+=======
+         // default value set by newinstance
+         // used_in_proc:=[];
+>>>>>>> graemeg/cpstrnew
+=======
+         // default value set by newinstance
+         // used_in_proc:=[];
+>>>>>>> graemeg/cpstrnew
+=======
+         // default value set by newinstance
+         // used_in_proc:=[];
+>>>>>>> graemeg/cpstrnew
+=======
+         // default value set by newinstance
+         // used_in_proc:=[];
+>>>>>>> origin/cpstrnew
          live_registers.init;
          { Get reginfo for CPU registers }
          maxreginfo:=first_imaginary;
@@ -714,7 +803,15 @@ unit rgobj;
           if movelist=nil then
             begin
               { don't use sizeof(tmovelistheader), because that ignores alignment }
+<<<<<<< HEAD
+<<<<<<< HEAD
               getmem(movelist,ptruint(@movelist^.data)-ptruint(movelist)+60*sizeof(pointer));
+=======
+              getmem(movelist,ptrint(@movelist^.data)-ptrint(movelist)+60*sizeof(pointer));
+>>>>>>> graemeg/fixes_2_2
+=======
+              getmem(movelist,ptrint(@movelist^.data)-ptrint(movelist)+60*sizeof(pointer));
+>>>>>>> origin/fixes_2_2
               movelist^.header.maxcount:=60;
               movelist^.header.count:=0;
               movelist^.header.sorted_until:=0;
@@ -725,7 +822,15 @@ unit rgobj;
                 begin
                   movelist^.header.maxcount:=movelist^.header.maxcount*2;
                   { don't use sizeof(tmovelistheader), because that ignores alignment }
+<<<<<<< HEAD
+<<<<<<< HEAD
                   reallocmem(movelist,ptruint(@movelist^.data)-ptruint(movelist)+movelist^.header.maxcount*sizeof(pointer));
+=======
+                  reallocmem(movelist,ptrint(@movelist^.data)-ptrint(movelist)+movelist^.header.maxcount*sizeof(pointer));
+>>>>>>> graemeg/fixes_2_2
+=======
+                  reallocmem(movelist,ptrint(@movelist^.data)-ptrint(movelist)+movelist^.header.maxcount*sizeof(pointer));
+>>>>>>> origin/fixes_2_2
                 end;
             end;
           movelist^.data[movelist^.header.count]:=data;
@@ -738,6 +843,8 @@ unit rgobj;
       begin
         if (dir in [rad_backwards,rad_backwards_reinit]) then
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
             if not assigned(extended_backwards) then
               begin
                 { create expects a "size", not a "max bit" parameter -> +1 }
@@ -778,6 +885,21 @@ unit rgobj;
     function trgobj.get_live_end(reg: tsuperregister): tai;
       begin
         result:=reginfo[reg].live_end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+            if (dir=rad_backwards_reinit) then
+              supregset_reset(extended_backwards,false,high(tsuperregister));
+            int_live_range_direction:=rad_backwards;
+            { new registers may be allocated }
+            supregset_reset(backwards_was_first,false,high(tsuperregister));
+          end
+        else
+          int_live_range_direction:=rad_forward;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -794,8 +916,14 @@ unit rgobj;
         if supreg>=first_imaginary then
           with reginfo[supreg] do
             begin
+<<<<<<< HEAD
+<<<<<<< HEAD
               // if aweight>weight then
               inc(weight,aweight);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               if (live_range_direction=rad_forward) then
                 begin
                   if not assigned(live_start) then
@@ -1892,6 +2020,8 @@ unit rgobj;
                                   begin
                                     if (base<>NR_NO) and
                                        (getregtype(base)=regtype) then
+<<<<<<< HEAD
+<<<<<<< HEAD
                                       begin
                                         u:=getsupreg(base);
 {$ifdef EXTDEBUG}
@@ -1922,6 +2052,14 @@ unit rgobj;
                                         setsupreg(segment,reginfo[u].colour);
                                       end;
 {$endif defined(x86)}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                                      setsupreg(base,reginfo[getsupreg(base)].colour);
+                                    if (index<>NR_NO) and
+                                       (getregtype(index)=regtype) then
+                                      setsupreg(index,reginfo[getsupreg(index)].colour);
+>>>>>>> graemeg/fixes_2_2
                                   end;
                             end;
 {$ifdef arm}
@@ -1984,7 +2122,23 @@ unit rgobj;
               supregset_include(regs_to_spill_set,t);
               {Clear all interferences of the spilled register.}
               clear_interferences(t);
+<<<<<<< HEAD
               get_spill_temp(templist,spill_temps,t);
+=======
+              {Get a temp for the spilled register, the size must at least equal a complete register,
+               take also care of the fact that subreg can be larger than a single register like doubles
+               that occupy 2 registers }
+              { only force the whole register in case of integers. Storing a register that contains
+                a single precision value as a double can cause conversion errors on e.g. ARM VFP }
+              if (regtype=R_INTREGISTER) then
+                size:=max(tcgsize2size[reg_cgsize(newreg(regtype,t,R_SUBWHOLE))],
+                               tcgsize2size[reg_cgsize(newreg(regtype,t,reginfo[t].subreg))])
+              else
+                size:=tcgsize2size[reg_cgsize(newreg(regtype,t,reginfo[t].subreg))];
+              tg.gettemp(templist,
+                         size,size,
+                         tt_noreuse,spill_temps^[t]);
+>>>>>>> graemeg/cpstrnew
             end;
         list.insertlistafter(headertai,templist);
         templist.free;
@@ -2049,29 +2203,102 @@ unit rgobj;
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure trgobj.do_spill_read(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister;orgsupreg:tsuperregister);
       var
         ins:tai_cpu_abstract_sym;
+=======
+    procedure trgobj.do_spill_read(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);
+      var
+        ins:Taicpu;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure trgobj.do_spill_read(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);
+      var
+        ins:Taicpu;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure trgobj.do_spill_read(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);
+      var
+        ins:Taicpu;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure trgobj.do_spill_read(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);
+      var
+        ins:Taicpu;
+>>>>>>> origin/cpstrnew
+=======
+    procedure Trgobj.do_spill_read(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);
+
+    var ins:Taicpu;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       begin
         ins:=spilling_create_load(spilltemp,tempreg);
         add_cpu_interferences(ins);
         list.insertafter(ins,pos);
+<<<<<<< HEAD
+<<<<<<< HEAD
         {$ifdef DEBUG_SPILLING}
         list.Insertbefore(tai_comment.Create(strpnew('Spilling: Spill Read')),ins);
         {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 
+<<<<<<< HEAD
     procedure Trgobj.do_spill_written(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister;orgsupreg:tsuperregister);
       var
         ins:tai_cpu_abstract_sym;
+=======
+    procedure Trgobj.do_spill_written(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);
+<<<<<<< HEAD
+<<<<<<< HEAD
+      var
+        ins:Taicpu;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+
+    var ins:Taicpu;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+    var ins:Taicpu;
+
+>>>>>>> origin/fixes_2_2
       begin
         ins:=spilling_create_store(tempreg,spilltemp);
         add_cpu_interferences(ins);
         list.insertafter(ins,pos);
+<<<<<<< HEAD
+<<<<<<< HEAD
         {$ifdef DEBUG_SPILLING}
         list.Insertbefore(tai_comment.Create(strpnew('Spilling: Spill Write')),ins);
         {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -2083,6 +2310,7 @@ unit rgobj;
 
     function trgobj.addreginfo(var regs: tspillregsinfo; const r: tsuperregisterset; reg: tregister; operation: topertype): boolean;
       var
+<<<<<<< HEAD
         i, tmpindex: longint;
         supreg: tsuperregister;
       begin
@@ -2092,6 +2320,31 @@ unit rgobj;
         { did we already encounter this register? }
         for i := 0 to pred(regs.reginfocount) do
           if (regs.reginfo[i].orgreg = supreg) then
+=======
+        counter, regindex: longint;
+        regs: tspillregsinfo;
+        spilled: boolean;
+
+      procedure addreginfo(reg: tregister; operation: topertype);
+        var
+          i, tmpindex: longint;
+          supreg : tsuperregister;
+        begin
+          tmpindex := regindex;
+          supreg:=get_alias(getsupreg(reg));
+          { did we already encounter this register? }
+          for i := 0 to pred(regindex) do
+            if (regs[i].orgreg = supreg) then
+              begin
+                tmpindex := i;
+                break;
+              end;
+          if tmpindex > high(regs) then
+            internalerror(2003120301);
+          regs[tmpindex].orgreg := supreg;
+          include(regs[tmpindex].spillregconstraints,get_spill_subreg(reg));
+          if supregset_in(r,supreg) then
+>>>>>>> graemeg/cpstrnew
             begin
               tmpindex := i;
               break;
@@ -2121,7 +2374,18 @@ unit rgobj;
       end;
 
 
+<<<<<<< HEAD
     function trgobj.instr_get_oper_spilling_info(var regs: tspillregsinfo; const r: tsuperregisterset; instr: tai_cpu_abstract_sym; opidx: longint): boolean;
+=======
+
+
+
+
+      var
+        loadpos,
+        storepos : tai;
+        oldlive_registers : tsuperregisterworklist;
+>>>>>>> graemeg/cpstrnew
       begin
         result:=false;
         with instr.oper[opidx]^ do
@@ -2255,6 +2519,7 @@ unit rgobj;
         if not spilled then
           exit;
 
+<<<<<<< HEAD
 {$if defined(x86) or defined(mips) or defined(sparc) or defined(arm) or defined(m68k)}
         { Try replacing the register with the spilltemp. This is useful only
           for the i386,x86_64 that support memory locations for several instructions
@@ -2263,6 +2528,13 @@ unit rgobj;
           with loads/stores to spilltemp (Sergei) }
         for counter := 0 to pred(regs.reginfocount) do
           with regs.reginfo[counter] do
+=======
+{$ifdef x86}
+        { Try replacing the register with the spilltemp. This is useful only
+          for the i386,x86_64 that support memory locations for several instructions }
+        for counter := 0 to pred(regindex) do
+          with regs[counter] do
+>>>>>>> graemeg/cpstrnew
             begin
               if mustbespilled then
                 begin
@@ -2335,8 +2607,22 @@ unit rgobj;
             begin
               if mustbespilled and regread then
                 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   loadreg:=getregisterinline(list,regs.reginfo[counter].spillregconstraints);
                   do_spill_read(list,tai(loadpos.previous),spilltemplist[orgreg],loadreg,orgreg);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                  tempreg:=getregisterinline(list,regs[counter].spillregconstraints);
+                  do_spill_read(list,tai(loadpos.previous),spilltemplist[orgreg],tempreg);
+>>>>>>> graemeg/cpstrnew
                 end;
             end;
 
@@ -2368,6 +2654,7 @@ unit rgobj;
               if mustbespilled and regwritten then
                 begin
                   { When the register is also loaded there is already a register assigned }
+<<<<<<< HEAD
                   if (not regread) or
                      ssa_safe then
                     begin
@@ -2380,6 +2667,19 @@ unit rgobj;
                     end
                   else
                     storereg:=loadreg;
+=======
+                  if (not regread) then
+                    tempreg:=getregisterinline(list,regs[counter].spillregconstraints);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                   { The original instruction will be the next that uses this register, this
                     also needs to be done for read-write registers,
 
@@ -2413,11 +2713,47 @@ unit rgobj;
 
         { substitute registers }
         for counter:=0 to instr.ops-1 do
+<<<<<<< HEAD
+<<<<<<< HEAD
           substitute_spilled_registers(regs,instr,counter);
         { We have modified the instruction; perhaps the new instruction has
           certain constraints regarding which imaginary registers interfere
           with certain physical registers. }
         add_cpu_interferences(instr);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          with instr.oper[counter]^ do
+            case typ of
+              top_reg:
+                begin
+                  if (getregtype(reg) = regtype) then
+                    tryreplacereg(reg);
+                end;
+              top_ref:
+                begin
+                  if regtype in [R_INTREGISTER,R_ADDRESSREGISTER] then
+                    begin
+                      tryreplacereg(ref^.base);
+                      tryreplacereg(ref^.index);
+                    end;
+                end;
+{$ifdef ARM}
+              top_shifterop:
+                begin
+                  if regtype in [R_INTREGISTER,R_ADDRESSREGISTER] then
+                    tryreplacereg(shifterop^.rs);
+                end;
+{$endif ARM}
+            end;
+         {We have modified the instruction; perhaps the new instruction has
+          certain constraints regarding which imaginary registers interfere
+          with certain physical registers.}
+         add_cpu_interferences(instr);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 end.

@@ -369,7 +369,21 @@ begin
 {$endif}
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if defined(generic_linux_syscalls)}
+=======
+{$ifndef NO_SYSCALL_UTIME}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifndef NO_SYSCALL_UTIME}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifndef NO_SYSCALL_UTIME}
+>>>>>>> graemeg/cpstrnew
 
 Function fpUtime(path:pchar;times:putimbuf):cint;
 var
@@ -384,11 +398,51 @@ begin
 end;
 
 {$elseif not defined(NO_SYSCALL_UTIME)}
+=======
+{$ifndef NO_SYSCALL_UTIME}
+>>>>>>> origin/cpstrnew
+=======
+{$ifndef NO_SYSCALL_UTIME}
+>>>>>>> origin/fixes_2.4
 
 Function fpUtime(path:pchar;times:putimbuf):cint;
 
 begin
   fputime:=do_syscall(syscall_nr_utime,TSysParam(path),TSysParam(times));
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
+end;
+
+{$else}
+
+Function fpUtime(path:pchar;times:putimbuf):cint;
+var
+  tva: Array[0..1] of timeval;
+begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
+  tva[0].tv_sec := times^.actime;
+  tva[0].tv_usec := 0;
+  tva[1].tv_sec := times^.modtime;
+  tva[1].tv_usec := 0;
+  fputime:=do_syscall(syscall_nr_utimes,TSysParam(path),TSysParam(@tva));
+<<<<<<< HEAD
+end;
+
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+  fputime:=do_syscall(syscall_nr_utime,TSysParam(path),TSysParam(times));
+=======
+>>>>>>> origin/cpstrnew
 end;
 
 {$else}
@@ -404,6 +458,20 @@ begin
   fputime:=do_syscall(syscall_nr_utimes,TSysParam(path),TSysParam(@tva));
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+end;
+
+>>>>>>> origin/fixes_2.4
 {$endif}
 
 
@@ -508,6 +576,8 @@ begin
 end;
 {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function fpLstat(path:pchar;Info:pstat):cint;
 {
   Get all information on a link (the link itself), and return it in info.
@@ -527,6 +597,10 @@ begin
 {$endif}
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 function fpNice(N:cint):cint;
 {

@@ -18,7 +18,7 @@ type
   private
     FServer : TOleServer;
   protected
-    function QueryInterface(constref IID: TGUID; out Obj): HResult; stdcall;
+    function QueryInterface(const IID: TGUID; out Obj): HResult; stdcall;
     function _AddRef: Integer; stdcall;
     function _Release: Integer; stdcall;
     function GetTypeInfoCount(out Count: Integer): HResult; stdcall;
@@ -46,11 +46,10 @@ type
   TOleServer = class(TComponent, IUnknown)
   private
     FRemoteMachineName: string;
+    FEventDispatch: TServerEventDispatch;
     FServerData: PServerData;
-    FEventDispatch:     TServerEventDispatch;
-    FEventsConnection:  DWord;
   protected
-    function QueryInterface(constref IID: TGUID; out Obj): HResult; stdcall; override;
+    function QueryInterface(const IID: TGUID; out Obj): HResult; stdcall; override;
     function _AddRef: Integer; stdcall;
     function _Release: Integer; stdcall;
 
@@ -86,7 +85,7 @@ type
 
 implementation
 
-    function TServerEventDispatch.QueryInterface(constref IID: TGUID; out Obj): HResult; stdcall;
+    function TServerEventDispatch.QueryInterface(const IID: TGUID; out Obj): HResult; stdcall;
       begin
       end;
 
@@ -133,7 +132,7 @@ implementation
       end;
 
 
-    function TOleServer.QueryInterface(constref IID: TGUID; out Obj): HResult; stdcall;
+    function TOleServer.QueryInterface(const IID: TGUID; out Obj): HResult; stdcall;
       begin
       end;
 
@@ -158,16 +157,14 @@ implementation
       end;
 
 
-procedure TOleServer.ConnectEvents(const Obj: IUnknown);
-begin
-  ComObj.InterfaceConnect(Obj, FServerData^.EventIID, FEventDispatch, FEventsConnection);
-end;
+    procedure TOleServer.ConnectEvents(const Obj: IUnknown);
+      begin
+      end;
 
 
-procedure TOleServer.DisconnectEvents(const Obj: Iunknown);
-begin
-  ComObj.InterfaceDisconnect(Obj, FServerData^.EventIID, FEventsConnection);
-end;
+    procedure TOleServer.DisconnectEvents(const Obj: Iunknown);
+      begin
+      end;
 
 
     procedure TOleServer.InvokeEvent(DispID: TDispID; var Params: TVariantArray);

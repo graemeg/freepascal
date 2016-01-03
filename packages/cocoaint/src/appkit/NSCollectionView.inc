@@ -58,15 +58,52 @@ const
   NSCollectionViewItem = objcclass external (NSViewController, NSCopyingProtocol)
   private
     _collectionView: NSCollectionView;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __cviFlags: record
       case byte of
        0: (_anonbitfield_NSCollectionView0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __cviFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSCollectionView0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _isSelected: 0..1;
         suppressSelectionChangedNotification: 0..1;
         connectionsCopied: 0..1;
         reserved: 0..((1 shl 29)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _cachedArchive: NSData;
@@ -94,10 +131,35 @@ const
     _backgroundColors: NSArray;
     _displayedItems: NSMutableArray;
     _animationDuration: NSTimeInterval;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __cvFlags: record
       case byte of
        0: (_anonbitfield_NSCollectionView1: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __cvFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSCollectionView1: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _isFirstResponder: 0..1;
         invalidateItemViews: 0..1;
         selectable: 0..1;
@@ -112,7 +174,19 @@ const
         animateForDrag: 0..1;
         unarchiving: 0..1;
         reserved: 0..((1 shl 19)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _delegate: id;
@@ -132,7 +206,23 @@ const
     _currentDropOperation: NSCollectionViewDropOperation;
     _dragTimer: NSTimer;
     _private: id;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _reserved: array[0..(16)-1] of Pointer;
+=======
+        _reserved: array[0..15] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..15] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..15] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..15] of Pointer;
+>>>>>>> origin/cpstrnew
     
   public
     procedure setDelegate(aDelegate: NSCollectionViewDelegateProtocol); message 'setDelegate:';

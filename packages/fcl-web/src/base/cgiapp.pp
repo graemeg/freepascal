@@ -21,7 +21,7 @@ unit cgiapp;
 Interface
 
 uses
-  CustApp,Classes, SysUtils, httpdefs;
+  CustApp,Classes,SysUtils;
 
 Const
   CGIVarCount = 23 deprecated;
@@ -127,8 +127,6 @@ Type
     Property RequestVariableCount : Integer Read GetRequestVariableCount; deprecated;
     Property Response : TStream Read FResponse; deprecated;
   end;
-
-  ECGI = Class(Exception);
 
 ResourceString
   SWebMaster = 'webmaster' deprecated;
@@ -430,13 +428,13 @@ var
 begin
   R:=RequestMethod;
   if (R='') then
-    Raise ECGI.Create(SErrNoRequestMethod);
+    Raise Exception.Create(SErrNoRequestMethod);
   if CompareText(R,'POST')=0 then
     InitPostVars
   else if CompareText(R,'GET')=0 then
     InitGetVars
   else
-    Raise ECGI.CreateFmt(SErrInvalidRequestMethod,[R]);
+    Raise Exception.CreateFmt(SErrInvalidRequestMethod,[R]);
 end;
 
 Procedure TCgiApplication.ProcessURLEncoded(M : TMemoryStream);
@@ -624,7 +622,7 @@ begin
       FI:=TFormItem(L[i]);
       FI.Process;
       If (FI.Name='') then
-        Raise ECGI.CreateFmt('Invalid multipart encoding: %s',[FI.Data]);
+        Raise Exception.CreateFmt('Invalid multipart encoding: %s',[FI.Data]);
       Key:=FI.Name;
       If Not FI.IsFile Then
         begin
@@ -681,19 +679,18 @@ begin
         end
       else
         begin
-        B:=0;
         While (I.Read(B,1)>0) do
           M.Write(B,1)
         end;
     Finally
       I.Free;
     end;
-    if CompareText(ContentType,'MULTIPART/FORM-DATA')=0 then
+    if Pos(ContentType,'MULTIPART/FORM-DATA')=0 then
       ProcessMultiPart(M,ContentType)
     else if CompareText(ContentType,'APPLICATION/X-WWW-FORM-URLENCODED')=0 then
       ProcessUrlEncoded(M)
     else
-      Raise ECGI.CreateFmt(SErrUnsupportedContentType,[ContentType]);
+      Raise Exception.CreateFmt(SErrUnsupportedContentType,[ContentType]);
   finally
     M.Free;
   end;
@@ -766,7 +763,7 @@ var
     aLenSep := Length(aSepStr);
   end;
 
-  function NextToken(var aToken : String; out aSepChar : Char) : Boolean;
+  function NextToken(var aToken : String; var aSepChar : Char) : Boolean;
 
   var
     i : Integer;

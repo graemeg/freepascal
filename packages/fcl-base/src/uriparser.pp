@@ -37,17 +37,41 @@ type
   end;
 
 function EncodeURI(const URI: TURI): String;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function ParseURI(const URI: String; Decode : Boolean = True):  TURI; overload;
 function ParseURI(const URI, DefaultProtocol: String; DefaultPort: Word; Decode : Boolean = True):  TURI; overload;
+=======
+function ParseURI(const URI: String):  TURI; overload;
+function ParseURI(const URI, DefaultProtocol: String; DefaultPort: Word):  TURI; overload;
+>>>>>>> graemeg/fixes_2_2
+=======
+function ParseURI(const URI: String):  TURI; overload;
+function ParseURI(const URI, DefaultProtocol: String; DefaultPort: Word):  TURI; overload;
+>>>>>>> origin/fixes_2_2
 
 function ResolveRelativeURI(const BaseUri, RelUri: WideString;
   out ResultUri: WideString): Boolean; overload;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function ResolveRelativeURI(const BaseUri, RelUri: AnsiString;
   out ResultUri: AnsiString): Boolean; overload;
 
 function URIToFilename(const URI: string; out Filename: string): Boolean;
 function FilenameToURI(const Filename: string; Encode : Boolean = True): string;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function ResolveRelativeURI(const BaseUri, RelUri: UTF8String;
+  out ResultUri: UTF8String): Boolean; overload;
+
+function URIToFilename(const URI: string; out Filename: string): Boolean;
+function FilenameToURI(const Filename: string): string;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 function IsAbsoluteURI(const UriReference: string): Boolean;
 
@@ -125,9 +149,21 @@ begin
     Result := Result + '#' + Escape(URI.Bookmark, ValidPathChars);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function ParseURI(const URI: String; Decode : Boolean = True):  TURI;
 begin
   Result := ParseURI(URI, '', 0, Decode);
+=======
+function ParseURI(const URI: String):  TURI;
+begin
+  Result := ParseURI(URI, '', 0);
+>>>>>>> graemeg/fixes_2_2
+=======
+function ParseURI(const URI: String):  TURI;
+begin
+  Result := ParseURI(URI, '', 0);
+>>>>>>> origin/fixes_2_2
 end;
 
 function HexValue(c: Char): Integer;
@@ -166,11 +202,24 @@ begin
   SetLength(Result, RealLength);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function ParseURI(const URI, DefaultProtocol: String; DefaultPort: Word;Decode : Boolean = True):  TURI;
 var
   s, Authority: String;
   i,j: Integer;
   PortValid: Boolean;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function ParseURI(const URI, DefaultProtocol: String; DefaultPort: Word):  TURI;
+var
+  s, Authority: String;
+  i: Integer;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   Result.Protocol := LowerCase(DefaultProtocol);
   Result.Port := DefaultPort;
@@ -195,9 +244,17 @@ begin
   i := LastDelimiter('#', s);
   if i > 0 then
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result.Bookmark := Copy(s, i + 1, MaxInt);
     if Decode then
       Result.Bookmark:=Unescape(Result.Bookmark);
+=======
+    Result.Bookmark := Unescape(Copy(s, i + 1, MaxInt));
+>>>>>>> graemeg/fixes_2_2
+=======
+    Result.Bookmark := Unescape(Copy(s, i + 1, MaxInt));
+>>>>>>> origin/fixes_2_2
     s := Copy(s, 1, i - 1);
   end;
 
@@ -206,9 +263,17 @@ begin
   i := LastDelimiter('?', s);
   if i > 0 then
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result.Params := Copy(s, i + 1, MaxInt);
     if Decode then
       Result.Params:=Unescape(Result.Params);
+=======
+    Result.Params := Unescape(Copy(s, i + 1, MaxInt));
+>>>>>>> graemeg/fixes_2_2
+=======
+    Result.Params := Unescape(Copy(s, i + 1, MaxInt));
+>>>>>>> origin/fixes_2_2
     s := Copy(s, 1, i - 1);
   end;
 
@@ -235,9 +300,17 @@ begin
   for i := Length(s) downto 1 do
     if s[i] = '/' then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       Result.Document :=Copy(s, i + 1, Length(s));
       if Decode then
         Result.Document:=Unescape(Result.Document);
+=======
+      Result.Document := Unescape(Copy(s, i + 1, Length(s)));
+>>>>>>> graemeg/fixes_2_2
+=======
+      Result.Document := Unescape(Copy(s, i + 1, Length(s)));
+>>>>>>> origin/fixes_2_2
       if (Result.Document <> '.') and (Result.Document <> '..') then
         s := Copy(s, 1, i)
       else
@@ -247,9 +320,17 @@ begin
       break
     else if i = 1 then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       Result.Document :=s;
       if Decode then
         Result.Document:=Unescape(Result.Document);
+=======
+      Result.Document := Unescape(s);
+>>>>>>> graemeg/fixes_2_2
+=======
+      Result.Document := Unescape(s);
+>>>>>>> origin/fixes_2_2
       if (Result.Document <> '.') and (Result.Document <> '..') then
         s := ''
       else
@@ -259,13 +340,23 @@ begin
 
   // Everything left is a path
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result.Path := s;
   if Decode then
     Result.Path:=Unescape(Result.Path);
+=======
+  Result.Path := Unescape(s);
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result.Path := Unescape(s);
+>>>>>>> origin/fixes_2_2
 
   // Extract the port number
 
   i := LastDelimiter(':@', Authority);
+<<<<<<< HEAD
+<<<<<<< HEAD
   if (i > 0) and (i < Length(Authority)) and (Authority[i] = ':') then
   begin
     PortValid := true;
@@ -280,6 +371,17 @@ begin
       Result.Port := StrToInt(Copy(Authority, i + 1, MaxInt));
       Authority := Copy(Authority, 1, i - 1);
     end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if (i > 0) and (Authority[i] = ':') then
+  begin
+    Result.Port := StrToInt(Copy(Authority, i + 1, MaxInt));
+    Authority := Copy(Authority, 1, i - 1);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
   // Extract the hostname
@@ -332,8 +434,20 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function ResolveRelativeURI(const BaseUri, RelUri: AnsiString;
   out ResultUri: AnsiString): Boolean;
+=======
+// TODO: this probably must NOT percent-encode the result...
+function ResolveRelativeURI(const BaseUri, RelUri: UTF8String;
+  out ResultUri: UTF8String): Boolean;
+>>>>>>> graemeg/fixes_2_2
+=======
+// TODO: this probably must NOT percent-encode the result...
+function ResolveRelativeURI(const BaseUri, RelUri: UTF8String;
+  out ResultUri: UTF8String): Boolean;
+>>>>>>> origin/fixes_2_2
 var
   Base, Rel: TUri;
 begin
@@ -376,15 +490,29 @@ begin
       RemoveDotSegments(Path);
     end;
   end; // with
+<<<<<<< HEAD
+<<<<<<< HEAD
   
   // EncodeUri percent-encodes the result, and that's good
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   ResultUri := EncodeUri(Rel);
 end;
 
 function ResolveRelativeURI(const BaseUri, RelUri: WideString;
   out ResultUri: WideString): Boolean;
 var
+<<<<<<< HEAD
+<<<<<<< HEAD
   rslt: AnsiString;
+=======
+  rslt: UTF8String;
+>>>>>>> graemeg/fixes_2_2
+=======
+  rslt: UTF8String;
+>>>>>>> origin/fixes_2_2
 begin
   Result := ResolveRelativeURI(UTF8Encode(BaseUri), UTF8Encode(RelUri), rslt);
   if Result then
@@ -424,11 +552,24 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function FilenameToURI(const Filename: string; Encode : Boolean = True): string;
 var
   I: Integer;
   IsAbsFilename: Boolean;
   FilenamePart: string;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function FilenameToURI(const Filename: string): string;
+var
+  I: Integer;
+  IsAbsFilename: Boolean;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   IsAbsFilename := ((Filename <> '') and (Filename[1] = PathDelim)) or
     ((Length(Filename) > 2) and (Filename[1] in ['A'..'Z', 'a'..'z']) and (Filename[2] = ':'));
@@ -442,6 +583,8 @@ begin
       Result := Result + '//';
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   FilenamePart := Filename;
   { unreachable code warning is ok here }
   if PathDelim <> '/' then
@@ -457,6 +600,24 @@ begin
     FilenamePart := Escape(FilenamePart, ValidPathChars);
 
   Result := Result + FilenamePart;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  Result := Result + Filename;
+  { unreachable code warning is ok here }
+  if PathDelim <> '/' then
+  begin
+    I := Pos(PathDelim, Result);
+    while I <> 0 do
+    begin
+      Result[I] := '/';
+      I := Pos(PathDelim, Result);
+    end;
+  end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 

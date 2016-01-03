@@ -34,10 +34,22 @@ implementation
 {$ifndef NOOPT}
       ,aoptcpu
 {$endif NOOPT}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef NOMIPSGAS}
       ,racpugas
 {$endif NOMIPSGAS}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 {**************************************
              Targets
@@ -46,6 +58,10 @@ implementation
     {$ifndef NOTARGETLINUX}
       ,t_linux
     {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$ifndef NOTARGETANDROID}
       {$ifdef MIPSEL}
         ,t_android
@@ -54,12 +70,24 @@ implementation
     {$ifndef NOTARGETEMBEDDED}
       ,t_embed
     {$endif}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 {**************************************
              Assemblers
 **************************************}
 
       ,CpuGas
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       ,ogelf
       ,cpuelf
 
@@ -80,6 +108,14 @@ implementation
       ,dbgdwarf
   {$endif NoDbgDwarf}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       ;
 
 end.

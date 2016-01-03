@@ -1,6 +1,22 @@
 {
     Free Pascal port of the OpenPTC C++ library.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2001-2007, 2009-2011  Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -31,6 +47,10 @@
 }
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   IPTCArea = interface
     function GetLeft: Integer;
     function GetTop: Integer;
@@ -55,3 +75,38 @@ type
     class function CreateNew(ALeft, ATop, ARight, ABottom: Integer): IPTCArea;
     class function CreateNew(AArea: IPTCArea): IPTCArea;
   end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  TPTCArea = class
+  private
+    FLeft, FTop, FRight, FBottom: Integer;
+    function GetWidth: Integer;
+    function GetHeight: Integer;
+  public
+    constructor Create;
+    constructor Create(ALeft, ATop, ARight, ABottom: Integer);
+    constructor Create(const AArea: TPTCArea);
+    procedure Assign(const AArea: TPTCArea);
+    function Equals(const AArea: TPTCArea): Boolean;
+    property Left: Integer read FLeft;
+    property Top: Integer read FTop;
+    property Right: Integer read FRight;
+    property Bottom: Integer read FBottom;
+    property Width: Integer read GetWidth;
+    property Height: Integer read GetHeight;
+  end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

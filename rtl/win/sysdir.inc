@@ -20,9 +20,40 @@
 type
  TDirFnType=function(name:pointer):longbool;stdcall;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function CreateDirectoryTrunc(name:pointer):longbool;stdcall;
 begin
   CreateDirectoryTrunc:=CreateDirectoryW(name,nil);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+procedure dirfn(afunc : TDirFnType;s:pchar;len:integer);
+begin
+<<<<<<< HEAD
+=======
+procedure dirfn(afunc : TDirFnType;s:pchar;len:integer);
+begin
+>>>>>>> graemeg/cpstrnew
+=======
+procedure dirfn(afunc : TDirFnType;s:pchar;len:integer);
+begin
+>>>>>>> origin/cpstrnew
+  DoDirSeparators(s);
+  if not aFunc(s) then
+=======
+  move(s[1],buffer,length(s));
+  buffer[length(s)]:=#0;
+  DoDirSeparators(pchar(@buffer));
+  if not aFunc(@buffer) then
+>>>>>>> graemeg/fixes_2_2
+    begin
+      errno:=GetLastError;
+      Errno2InoutRes;
+    end;
+>>>>>>> graemeg/cpstrnew
 end;
 
 procedure dirfn(afunc : TDirFnType;s:unicodestring);
@@ -34,6 +65,10 @@ begin
     end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure do_MkDir(const s: UnicodeString);
 begin
   dirfn(TDirFnType(@CreateDirectoryTrunc),s);
@@ -54,12 +89,82 @@ begin
     end;
   {$endif WINCE}
   dirfn(TDirFnType(@RemoveDirectoryW),s);
+=======
+Procedure MkDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+begin
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+   exit;
+  dirfn(TDirFnType(@CreateDirectoryTrunc),s,len);
+end;
+
+Procedure RmDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_RMDIR'];
+
+begin
+=======
+Procedure MkDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+begin
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+   exit;
+  dirfn(TDirFnType(@CreateDirectoryTrunc),s,len);
+end;
+
+Procedure RmDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_RMDIR'];
+
+begin
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure MkDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+begin
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+   exit;
+  dirfn(TDirFnType(@CreateDirectoryTrunc),s,len);
+end;
+
+Procedure RmDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_RMDIR'];
+
+begin
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure MkDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+begin
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+   exit;
+  dirfn(TDirFnType(@CreateDirectoryTrunc),s,len);
+end;
+
+Procedure RmDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_RMDIR'];
+
+begin
+>>>>>>> origin/cpstrnew
+  if (len=1) and (s^ ='.') then
+    InOutRes := 16;
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+   exit;
+{$ifdef WINCE}
+  if (len=2) and (s[0]='.') and (s[1]='.') then
+    InOutRes := 5;
+{$endif WINCE}
+  dirfn(TDirFnType(@RemoveDirectory),s,len);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifdef WINCE}
   if (Inoutres=3) and (Pos(DirectorySeparator, s)<2) then
     Inoutres:=2;
 {$endif WINCE}
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure do_ChDir(const s: UnicodeString);
 {$ifndef WINCE}
 var
@@ -95,6 +200,34 @@ begin
   else
 { Try SetCurrentDirectoryW with the original input if GetFullPathNameW errors out }
    dirfn(TDirFnType(@SetCurrentDirectoryW),s);
+=======
+Procedure ChDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_CHDIR'];
+
+begin
+{$ifndef WINCE}
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+   exit;
+  dirfn(TDirFnType(@SetCurrentDirectory),s,len);
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+Procedure ChDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_CHDIR'];
+
+begin
+{$ifndef WINCE}
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+   exit;
+  dirfn(TDirFnType(@SetCurrentDirectory),s,len);
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   if Inoutres=2 then
    Inoutres:=3;
 {$else WINCE}

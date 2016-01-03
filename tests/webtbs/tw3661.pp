@@ -15,6 +15,8 @@ var
   f: text;
 begin
  HaltOnNotReleased := true;
+<<<<<<< HEAD
+<<<<<<< HEAD
  { The subject matter of the test is heaptrc checking pointers belonging to .data
    or .bss sections. However, using a standard io file for this purpose is not a good
    idea, because it is a threadvar and resides in .bss only in certain circumstances
@@ -27,4 +29,9 @@ begin
  writeln(f,'abc');
  close(f);
  erase(f);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ writeln('abc');
+>>>>>>> graemeg/fixes_2_2
 end.

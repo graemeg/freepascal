@@ -90,7 +90,15 @@ type
 
   // procedural types used in parameters to pthread functions
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   TStartRoutine = function (_para1:pointer): Pointer; cdecl;
+=======
+  TStartRoutine = function (_para1:pointer): cint; cdecl;
+>>>>>>> graemeg/fixes_2_2
+=======
+  TStartRoutine = function (_para1:pointer): cint; cdecl;
+>>>>>>> origin/fixes_2_2
   TKeyValueDestructor = procedure(ValueInKey: Pointer); cdecl;
   TInitOnceProc = Procedure;cdecl;
   TForkHandler = procedure; cdecl;
@@ -309,3 +317,105 @@ type
   function sem_getvalue(__sem:Psem_t; __sval:pcint):cint;cdecl;external libthreads;
   function sem_timedwait(__sem: Psem_t; __abstime: Ptimespec):cint;cdecl; external libthreads;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{ ---------------------------------------------------------------------
+     Overloaded versions with var args instead of pointers
+  ---------------------------------------------------------------------}
+
+  function pthread_create(var __thread:pthread_t; var __attr: pthread_attr_t; __start_routine:TStartRoutine; __arg:pointer):cint;cdecl; external libthreads;
+  function pthread_join(__th:pthread_t; var __thread_return:pointer):cint;cdecl; external libthreads;
+  function pthread_attr_init(var __attr: pthread_attr_t):cint;cdecl; external libthreads;
+  function pthread_attr_destroy(var __attr: pthread_attr_t):cint;cdecl; external libthreads;
+  function pthread_attr_setdetachstate(var __attr: pthread_attr_t; __detachstate:cint):cint;cdecl; external libthreads;
+  function pthread_attr_getdetachstate(var __attr: pthread_attr_t; var __detachstate:cint):cint;cdecl; external libthreads;
+  function pthread_attr_setschedparam(var __attr: pthread_attr_t; const __param: sched_param):cint;cdecl; external libthreads;
+  function pthread_attr_getschedparam(var __attr: pthread_attr_t; var __param: sched_param):cint;cdecl; external libthreads;
+  function pthread_attr_setschedpolicy(var __attr: pthread_attr_t; __policy:cint):cint;cdecl; external libthreads;
+  function pthread_attr_getschedpolicy(var __attr: pthread_attr_t; var __policy:cint):cint;cdecl; external libthreads;
+  function pthread_attr_setinheritsched(var __attr: pthread_attr_t; __inherit:cint):cint;cdecl; external libthreads;
+  function pthread_attr_getinheritsched(var __attr: pthread_attr_t; var __inherit: cint):cint;cdecl; external libthreads;
+  function pthread_attr_setscope(var __attr: pthread_attr_t; __scope:cint):cint;cdecl; external libthreads;
+  function pthread_attr_getscope(var __attr: pthread_attr_t; var __scope: cint):cint;cdecl; external libthreads;
+  function pthread_attr_setstackaddr(var __attr: pthread_attr_t; __stackaddr:pointer):cint;cdecl; external libthreads;
+  function pthread_attr_getstackaddr(var __attr: pthread_attr_t; var __stackaddr:pointer):cint;cdecl; external libthreads;
+  function pthread_attr_setstacksize(var __attr: pthread_attr_t; __stacksize:size_t):cint;cdecl; external libthreads;
+  function pthread_attr_getstacksize(var __attr: pthread_attr_t; var __stacksize: size_t):cint;cdecl; external libthreads;
+  function pthread_attr_getguardsize(var __attr: pthread_attr_t; var Guardsize: Cardinal): cint; cdecl;external libthreads;
+  function pthread_attr_setguardsize(var __attr: pthread_attr_t; Guardsize: Cardinal): cint; cdecl;external libthreads;
+  function pthread_setschedparam(__target_thread:pthread_t; __policy:cint; const __param: sched_param):cint;cdecl; external libthreads;
+  function pthread_getschedparam(__target_thread:pthread_t; var __policy: cint; var __param: sched_param):cint;cdecl; external libthreads;
+  function pthread_mutex_init(var __mutex: pthread_mutex_t; var __mutex_attr: pthread_mutexattr_t):cint;cdecl; external libthreads;
+  function pthread_mutex_destroy(var __mutex: pthread_mutex_t):cint;cdecl; external libthreads;
+  function pthread_mutex_trylock(var __mutex: pthread_mutex_t):cint;cdecl; external libthreads;
+  function pthread_mutex_lock(var __mutex: pthread_mutex_t):cint;cdecl; external libthreads;
+  function pthread_mutex_unlock(var __mutex: pthread_mutex_t):cint;cdecl; external libthreads;
+  function pthread_mutexattr_init(var __attr: pthread_mutexattr_t):cint;cdecl; external libthreads;
+  function pthread_mutexattr_destroy(var __attr: pthread_mutexattr_t):cint;cdecl; external libthreads;
+  function pthread_mutexattr_getpshared(var __attr: pthread_mutexattr_t; var __pshared: cint):cint;cdecl; external libthreads;
+  function pthread_mutexattr_setpshared(var __attr: pthread_mutexattr_t; __pshared:cint):cint;cdecl; external libthreads;
+  function pthread_mutexattr_settype(var __attr: pthread_mutexattr_t; Kind: cint): cint; cdecl;external libthreads;
+  function pthread_mutexattr_gettype(var __attr: pthread_mutexattr_t; var Kind: cint): cint; cdecl;external libthreads;
+  function pthread_cond_init(var __cond: pthread_cond_t;var __cond_attr: pthread_condattr_t):cint;cdecl; external libthreads;
+  function pthread_cond_destroy(var __cond: pthread_cond_t):cint;cdecl; external libthreads;
+  function pthread_cond_signal(var __cond: pthread_cond_t):cint;cdecl; external libthreads;
+  function pthread_cond_broadcast(var __cond: pthread_cond_t):cint;cdecl; external libthreads;
+  function pthread_cond_wait(var __cond: pthread_cond_t; var __mutex: pthread_mutex_t):cint;cdecl; external libthreads;
+  function pthread_cond_timedwait(var __cond: pthread_cond_t; var __mutex: pthread_mutex_t; var __abstime: timespec):cint;cdecl; external libthreads;
+  function pthread_condattr_init(var __attr: pthread_condattr_t):cint;cdecl; external libthreads;
+  function pthread_condattr_destroy(var __attr: pthread_condattr_t):cint;cdecl; external libthreads;
+  function pthread_condattr_getpshared(var __attr: pthread_condattr_t; var __pshared:cint):cint;cdecl; external libthreads;
+  function pthread_condattr_setpshared(var __attr: pthread_condattr_t; __pshared:cint):cint;cdecl; external libthreads;
+  function pthread_rwlock_init(var __rwlock: pthread_rwlock_t; var __attr: pthread_rwlockattr_t):cint;cdecl; external libthreads;
+  function pthread_rwlock_destroy(var __rwlock: pthread_rwlock_t):cint;cdecl;external libthreads;
+  function pthread_rwlock_rdlock(var __rwlock: pthread_rwlock_t):cint;cdecl;external libthreads;
+  function pthread_rwlock_tryrdlock(var __rwlock: pthread_rwlock_t):cint;cdecl;external libthreads;
+  function pthread_rwlock_timedrdlock(var __rwlock: pthread_rwlock_t; __abstime:Ptimespec):cint;cdecl;external libthreads;
+  function pthread_rwlock_wrlock(var __rwlock: pthread_rwlock_t):cint;cdecl;external libthreads;
+  function pthread_rwlock_trywrlock(var __rwlock: pthread_rwlock_t):cint;cdecl; external libthreads;
+  function pthread_rwlock_timedwrlock(var __rwlock: pthread_rwlock_t; __abstime:Ptimespec):cint;cdecl;external libthreads;
+  function pthread_rwlock_unlock(var __rwlock: pthread_rwlock_t):cint;cdecl;external libthreads;
+  function pthread_rwlockattr_init(var __attr: pthread_rwlockattr_t):cint;cdecl;external libthreads;
+  function pthread_rwlockattr_destroy(var __attr: pthread_rwlockattr_t):cint;cdecl;external libthreads;
+  function pthread_rwlockattr_getpshared(var __attr: pthread_rwlockattr_t; var __pshared: cint):cint;cdecl;external libthreads;
+  function pthread_rwlockattr_setpshared(var __attr: pthread_rwlockattr_t; __pshared:cint):cint;cdecl;external libthreads;
+  function pthread_rwlockattr_getkind_np(var __attr: pthread_rwlockattr_t; var __pref: cint):cint;cdecl;external libthreads;
+  function pthread_rwlockattr_setkind_np(var __attr: pthread_rwlockattr_t; __pref:cint):cint;cdecl;external libthreads;
+  function pthread_spin_init(var __lock: pthread_spinlock_t; __pshared:cint):cint;cdecl;external libthreads;
+  function pthread_spin_destroy(var __lock: pthread_spinlock_t):cint;cdecl;external libthreads;
+  function pthread_spin_lock(var __lock: pthread_spinlock_t):cint;cdecl;external libthreads;
+  function pthread_spin_trylock(var __lock: pthread_spinlock_t):cint;cdecl;external libthreads;
+  function pthread_spin_unlock(var __lock: pthread_spinlock_t):cint;cdecl;external libthreads;
+  function pthread_barrier_init(var __barrier: pthread_barrier_t;var __attr: pthread_barrierattr_t; __count:dword):cint;cdecl;external libthreads;
+  function pthread_barrier_destroy(var __barrier: pthread_barrier_t):cint;cdecl;external libthreads;
+  function pthread_barrierattr_init(var __attr: pthread_barrierattr_t):cint;cdecl;external libthreads;
+  function pthread_barrierattr_destroy(var __attr: pthread_barrierattr_t):cint;cdecl;external libthreads;
+  function pthread_barrierattr_getpshared(var __attr: pthread_barrierattr_t; var __pshared:cint):cint;cdecl;external libthreads;
+  function pthread_barrierattr_setpshared(var __attr: pthread_barrierattr_t; __pshared:cint):cint;cdecl;external libthreads;
+  function pthread_barrier_wait(var __barrier: pthread_barrier_t):cint;cdecl;external libthreads;
+  function pthread_key_create(var __key: pthread_key_t; __destr_function :TKeyValueDestructor):cint;cdecl; external libthreads;
+  function pthread_once(var __once_control: pthread_once_t; __init_routine:Tprocedure ):cint;cdecl; external libthreads;
+  function pthread_setcancelstate(__state:cint; var __oldstate:cint):cint;cdecl; external libthreads;
+  function pthread_setcanceltype(__type:cint;var __oldtype:cint):cint;cdecl; external libthreads;
+
+  procedure _pthread_cleanup_push(var __buffer: _pthread_cleanup_buffer; __routine:TPthreadCleanupRoutine; __arg:pointer);cdecl; external libthreads;
+  procedure _pthread_cleanup_pop(var __buffer:_pthread_cleanup_buffer; __execute:cint);cdecl; external libthreads;
+  function pthread_sigmask(__how:cint; var __newmask:__sigset_t; var __oldmask:__sigset_t):cint;cdecl; external libthreads;
+
+  function sem_init(var __sem: sem_t; __pshared:cint; __value:dword):cint;cdecl;external libthreads;
+  function sem_destroy(var __sem: sem_t):cint;cdecl;external libthreads;
+  function sem_close(var __sem: sem_t):cint;cdecl;external libthreads;
+  function sem_wait(var __sem: sem_t):cint;cdecl;external libthreads;
+  function sem_timedwait(var __sem: sem_t; var __abstime: timespec):cint;cdecl; external libthreads;
+  function sem_trywait(var __sem: sem_t):cint;cdecl;external libthreads;
+  function sem_post(var __sem: sem_t):cint;cdecl;external libthreads;
+  function sem_getvalue(var __sem: sem_t; var __sval:cint):cint;cdecl;external libthreads;
+
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

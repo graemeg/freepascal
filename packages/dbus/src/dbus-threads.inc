@@ -17,8 +17,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  }
 
@@ -32,23 +31,18 @@ type
   DBusCondVar = record end;
   PDBusCondVar = ^DBusCondVar;
   
-  DBusMutexNewFunction = function (): DBusMutex; cdecl;
-  DBusMutexFreeFunction = procedure (mutex: PDBusMutex); cdecl;
-  DBusMutexLockFunction = function (mutex: PDBusMutex): dbus_bool_t; cdecl;
-  DBusMutexUnlockFunction = function (mutex: PDBusMutex): dbus_bool_t; cdecl;
+  DBusMutexNewFunction = function (): DBusMutex;
+  DBusMutexFreeFunction = procedure (mutex: PDBusMutex);
+  DBusMutexLockFunction = function (mutex: PDBusMutex): dbus_bool_t;
+  DBusMutexUnlockFunction = function (mutex: PDBusMutex): dbus_bool_t;
 
-  DBusRecursiveMutexNewFunction = function(): DBusMutex; cdecl;
-  DBusRecursiveMutexFreeFunction = procedure (mutex: PDBusMutex); cdecl;
-  DBusRecursiveMutexLockFunction = procedure (mutex: PDBusMutex); cdecl;
-  DBusRecursiveMutexUnlockFunction = procedure (mutex: PDBusMutex); cdecl;
-
-  DBusCondVarNewFunction = function (): PDBusCondVar; cdecl;
-  DBusCondVarFreeFunction = procedure (cond: PDBusCondVar); cdecl;
-  DBusCondVarWaitFunction = procedure (cond: PDBusCondVar; mutex: PDBusMutex); cdecl;
+  DBusCondVarNewFunction = function (): PDBusCondVar;
+  DBusCondVarFreeFunction = procedure (cond: PDBusCondVar);
+  DBusCondVarWaitFunction = procedure (cond: PDBusCondVar; mutex: PDBusMutex);
   DBusCondVarWaitTimeoutFunction = procedure (cond: PDBusCondVar; mutex: PDBusMutex;
-   timeout_milliseconds: cint); cdecl;
-  DBusCondVarWakeOneFunction = procedure (cond: PDBusCondVar); cdecl;
-  DBusCondVarWakeAllFunction = procedure (cond: PDBusCondVar); cdecl;
+   timeout_milliseconds: cint);
+  DBusCondVarWakeOneFunction = procedure (cond: PDBusCondVar);
+  DBusCondVarWakeAllFunction = procedure (cond: PDBusCondVar);
 
   DBusThreadFunctionsMask =
   (
@@ -62,12 +56,8 @@ type
    DBUS_THREAD_FUNCTIONS_CONDVAR_WAIT_TIMEOUT_MASK   = 1 shl 7,
    DBUS_THREAD_FUNCTIONS_CONDVAR_WAKE_ONE_MASK = 1 shl 8,
    DBUS_THREAD_FUNCTIONS_CONDVAR_WAKE_ALL_MASK = 1 shl 9,
-   DBUS_THREAD_FUNCTIONS_RECURSIVE_MUTEX_NEW_MASK    = 1 shl 10,
-   DBUS_THREAD_FUNCTIONS_RECURSIVE_MUTEX_FREE_MASK   = 1 shl 11,
-   DBUS_THREAD_FUNCTIONS_RECURSIVE_MUTEX_LOCK_MASK   = 1 shl 12,
-   DBUS_THREAD_FUNCTIONS_RECURSIVE_MUTEX_UNLOCK_MASK = 1 shl 13,
 
-   DBUS_THREAD_FUNCTIONS_ALL_MASK     = (1 shl 14) - 1
+   DBUS_THREAD_FUNCTIONS_ALL_MASK     = (1 shl 10) - 1
   );
 
 {
@@ -88,20 +78,18 @@ type
    condvar_wait_timeout: DBusCondVarWaitTimeoutFunction; {< Function to wait on a condition with a timeout }
    condvar_wake_one: DBusCondVarWakeOneFunction; {< Function to wake one thread waiting on the condition }
    condvar_wake_all: DBusCondVarWakeAllFunction; {< Function to wake all threads waiting on the condition }
-
-   recursive_mutex_new: DBusRecursiveMutexNewFunction; {< Function to create a recursive mutex }
-   recursive_mutex_free: DBusRecursiveMutexFreeFunction; {< Function to free a recursive mutex }
-   recursive_mutex_lock: DBusRecursiveMutexLockFunction; {< Function to lock a recursive mutex }
-   recursive_mutex_unlock: DBusRecursiveMutexUnlockFunction; {< Function to unlock a recursive mutex }
-
+  
    padding1: procedure; {< Reserved for future expansion }
    padding2: procedure; {< Reserved for future expansion }
    padding3: procedure; {< Reserved for future expansion }
    padding4: procedure; {< Reserved for future expansion }
+   padding5: procedure; {< Reserved for future expansion }
+   padding6: procedure; {< Reserved for future expansion }
+   padding7: procedure; {< Reserved for future expansion }
+   padding8: procedure; {< Reserved for future expansion }
   end;
   
   PDBusThreadFunctions = ^DBusThreadFunctions;
 
 function dbus_threads_init(const functions: PDBusThreadFunctions): dbus_bool_t; cdecl; external LibDBus;
-function dbus_threads_init_default: dbus_bool_t; cdecl; external LibDBus;
 

@@ -14,6 +14,8 @@ begin
 
     P:=AddPackage('dbus');
 {$ifdef ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
@@ -26,6 +28,16 @@ begin
     P.NeedLibC:= true;
     P.OSes := [linux];
 
+=======
+    P.Directory:='dbus';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+>>>>>>> graemeg/fixes_2_2
+=======
+    P.Directory:='dbus';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+>>>>>>> origin/fixes_2_2
     P.SourcePath.Add('src');
     P.IncludePath.Add('src');
 
@@ -47,11 +59,21 @@ begin
           AddInclude('dbus-server.inc');
           AddInclude('dbus-signature.inc');
           AddInclude('dbus-threads.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
           AddInclude('dbus-misc.inc');
         end;
 
     P.ExamplePath.Add('examples');
     T:=P.Targets.AddExampleProgram('busexample.pp');
+=======
+        end;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+        end;
+
+>>>>>>> origin/fixes_2_2
 
 {$ifndef ALLPACKAGES}
     Run;

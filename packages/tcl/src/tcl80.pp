@@ -560,6 +560,7 @@ const
 
 
 type
+    PPChar          = ^PChar;
     Tcl_Argv        = PPChar;
     Tcl_ClientData  = pointer;
     Tcl_FreeProc    = procedure(block : pointer); cdecl;

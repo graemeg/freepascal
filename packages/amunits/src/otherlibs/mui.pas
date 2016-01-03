@@ -147,7 +147,7 @@ interface
      Items marked with "Custom Class" are for use in custom classes only!
    }
 
-uses exec, intuition,utility,agraphics,iffparse;
+uses exec, intuition,utility,graphics,iffparse;
 
 
   const
@@ -466,20 +466,27 @@ uses exec, intuition,utility,agraphics,iffparse;
        MUIV_DragReport_Continue = 1;
        MUIV_DragReport_Lock = 2;
        MUIV_DragReport_Refresh = 3;
-
-//       Control codes for text strings
-  MUIX_R  = #27+'r';     // right justified
-  MUIX_C  = #27+'c';     // centered
-  MUIX_L  = #27+'l';     // left justified
-
-  MUIX_N  = #27+'n';     // normal
-  MUIX_B  = #27+'b';     // bold
-  MUIX_I  = #27+'i';     // italic
-  MUIX_U  = #27+'u';     // underlined
-
-  MUIX_PT = #27+'2';     // text pen
-  MUIX_PH = #27+'8';     // highlight text pen
-
+    {
+       Control codes for text strings
+                                                                               }
+    { right justified  }
+       MUIX_R : PChar = '\033r';
+    { centered         }
+       MUIX_C : PChar = '\033c';
+    { left justified   }
+       MUIX_L : PChar = '\033l';
+    { normal      }
+       MUIX_N : PChar = '\033n';
+    { bold        }
+       MUIX_B : PChar = '\033b';
+    { italic      }
+       MUIX_I : PChar = '\033i';
+    { underlined  }
+       MUIX_U : PChar = '\033u';
+    { text pen            }
+       MUIX_PT : PChar = '\0332';
+    { highlight text pen  }
+       MUIX_PH : PChar = '\0338';
     {
        Parameter structures for some classes
                                                                                }
@@ -1198,8 +1205,6 @@ uses exec, intuition,utility,agraphics,iffparse;
        MUIA_Application_Title = $804281b8;
     { V10 i.. BOOL               }
        MUIA_Application_UseCommodities = $80425ee5;
-    { V10 i.. STRPTR               }
-     MUIA_Application_UsedClasses = $8042e9a7;
     { V10 i.. BOOL               }
        MUIA_Application_UseRexx = $80422387;
     { V4  i.g STRPTR             }
@@ -1515,12 +1520,12 @@ uses exec, intuition,utility,agraphics,iffparse;
      { MUI_MinMax structure holds information about minimum, maximum
        and default dimensions of an object.  }
        tMUI_MinMax = record
-            MinWidth : SmallInt;
-            MinHeight : SmallInt;
-            MaxWidth : SmallInt;
-            MaxHeight : SmallInt;
-            DefWidth : SmallInt;
-            DefHeight : SmallInt;
+            MinWidth : WORD;
+            MinHeight : WORD;
+            MaxWidth : WORD;
+            MaxHeight : WORD;
+            DefWidth : WORD;
+            DefHeight : WORD;
          end;
        pMUI_MinMax = ^tMUI_MinMax;
 
@@ -3473,33 +3478,32 @@ uses exec, intuition,utility,agraphics,iffparse;
          end;
        pMUI_CustomClass = ^tMUI_CustomClass;
 
-VAR MUIMasterBase : pLibrary;
+FUNCTION MUI_NewObjectA(class_ : pChar; tags : pTagItem) : pObject_;
+PROCEDURE MUI_DisposeObject(obj : pObject_);
+FUNCTION MUI_RequestA(app : POINTER; win : POINTER; flags : LONGBITS; title : pChar; gadgets : pChar; format : pChar; params : POINTER) : LONGINT;
+FUNCTION MUI_AllocAslRequest(typ : ULONG; tags : pTagItem) : POINTER;
+FUNCTION MUI_AslRequest(req : POINTER; tags : pTagItem) : BOOLEAN;
+PROCEDURE MUI_FreeAslRequest(req : POINTER);
+FUNCTION MUI_Error : LONGINT;
+FUNCTION MUI_SetError(errnum : LONGINT) : LONGINT;
+FUNCTION MUI_GetClass(name : pCHar) : pIClass;
+PROCEDURE MUI_FreeClass(cl : pIClass);
+PROCEDURE MUI_RequestIDCMP(obj : pObject_; flags : ULONG);
+PROCEDURE MUI_RejectIDCMP(obj : pObject_; flags : ULONG);
+PROCEDURE MUI_Redraw(obj : pObject_; flags : ULONG);
+FUNCTION MUI_CreateCustomClass(base : pLibrary; supername : pChar; supermcc : pMUI_CustomClass; datasize : LONGINT; dispatcher : POINTER) : pMUI_CustomClass;
+FUNCTION MUI_DeleteCustomClass(mcc : pMUI_CustomClass) : BOOLEAN;
+FUNCTION MUI_MakeObjectA(typ: LONGINT; params : pULONG) : pULONG;
+FUNCTION MUI_Layout(obj : pObject_; l : LONGINT; t : LONGINT; w : LONGINT; h : LONGINT; flags : ULONG) : BOOLEAN;
+FUNCTION MUI_ObtainPen(mri : pMUI_RenderInfo; spec : pMUI_PenSpec; flags : ULONG) : LONGINT;
+PROCEDURE MUI_ReleasePen(mri : pMUI_RenderInfo; pen : LONGINT);
+FUNCTION MUI_AddClipping(mri : pMUI_RenderInfo; l : smallint; t : smallint; w : smallint; h : smallint) : POINTER;
+PROCEDURE MUI_RemoveClipping(mri : pMUI_RenderInfo; h : POINTER);
+FUNCTION MUI_AddClipRegion(mri : pMUI_RenderInfo; region : pRegion) : POINTER;
+PROCEDURE MUI_RemoveClipRegion(mri : pMUI_RenderInfo; region : POINTER);
+FUNCTION MUI_BeginRefresh(mri : pMUI_RenderInfo; flags : ULONG) : BOOLEAN;
+PROCEDURE MUI_EndRefresh(mri : pMUI_RenderInfo; flags : ULONG);
 
-FUNCTION MUI_NewObjectA(class_ : pCHar location 'a0'; tags : pTagItem location 'a1') : pObject_; syscall MUIMasterBase 030;
-PROCEDURE MUI_DisposeObject(obj : pObject_ location 'a0'); syscall MUIMasterBase 036;
-FUNCTION MUI_RequestA(app : POINTER location 'd0'; win : POINTER location 'd1'; flags : LONGBITS location 'd2'; title : pCHar location 'a0'; gadgets : pChar location 'a1'; format : pChar location 'a2'; params : POINTER location 'a3') : LONGINT; syscall MUIMasterBase 042;
-FUNCTION MUI_AllocAslRequest(typ : ULONG location 'd0'; tags : pTagItem location 'a0') : POINTER; syscall MUIMasterBase 048;
-FUNCTION MUI_AslRequest(req : POINTER location 'a0'; tags : pTagItem location 'a1') : WordBool; syscall MUIMasterBase 054;
-PROCEDURE MUI_FreeAslRequest(req : POINTER location 'a0'); syscall MUIMasterBase 060;
-FUNCTION MUI_Error : LONGINT; syscall MUIMasterBase 066;
-FUNCTION MUI_SetError(errnum : LONGINT location 'd0') : LONGINT; syscall MUIMasterBase 072;
-FUNCTION MUI_GetClass(name : pChar location 'a0') : pIClass; syscall MUIMasterBase 078;
-PROCEDURE MUI_FreeClass(cl : pIClass location 'a0'); syscall MUIMasterBase 084;
-PROCEDURE MUI_RequestIDCMP(obj : pObject_ location 'a0'; flags : ULONG location 'd0'); syscall MUIMasterBase 090;
-PROCEDURE MUI_RejectIDCMP(obj : pObject_ location 'a0'; flags : ULONG location 'd0'); syscall MUIMasterBase 096;
-PROCEDURE MUI_Redraw(obj : pObject_ location 'a0'; flags : ULONG location 'd0'); syscall MUIMasterBase 102;
-FUNCTION MUI_CreateCustomClass(base : pLibrary location 'a0'; supername : pChar location 'a1'; supermcc : pMUI_CustomClass location 'a2'; datasize : LONGINT location 'd0'; dispatcher : POINTER location 'a3') : pMUI_CustomClass; syscall MUIMasterBase 108;
-FUNCTION MUI_DeleteCustomClass(mcc : pMUI_CustomClass location 'a0') : WordBool; syscall MUIMasterBase 114;
-FUNCTION MUI_MakeObjectA(typ : LONGINT location 'd0'; params : pULONG location 'a0') : pObject_; syscall MUIMasterBase 120;
-FUNCTION MUI_Layout(obj : pObject_ location 'a0'; l : LONGINT location 'd0'; t : LONGINT location 'd1'; w : LONGINT location 'd2'; h : LONGINT location 'd3'; flags : ULONG location 'd4') : WordBool; syscall MUIMasterBase 126;
-FUNCTION MUI_ObtainPen(mri : pMUI_RenderInfo location 'a0'; spec : pMUI_PenSpec location 'a1'; flags : ULONG location 'd0') : LONGINT; syscall MUIMasterBase 156;
-PROCEDURE MUI_ReleasePen(mri : pMUI_RenderInfo location 'a0'; pen : LONGINT location 'd0'); syscall MUIMasterBase 162;
-FUNCTION MUI_AddClipping(mri : pMUI_RenderInfo location 'a0'; l : smallint location 'd0'; t : smallint location 'd1'; w : smallint location 'd2'; h : smallint location 'd3') : POINTER; syscall MUIMasterBase 168;
-PROCEDURE MUI_RemoveClipping(mri : pMUI_RenderInfo location 'a0'; h : POINTER location 'a1'); syscall MUIMasterBase 174;
-FUNCTION MUI_AddClipRegion(mri : pMUI_RenderInfo location 'a0'; region : pRegion location 'a1') : POINTER; syscall MUIMasterBase 180;
-PROCEDURE MUI_RemoveClipRegion(mri : pMUI_RenderInfo location 'a0'; region : POINTER location 'a1'); syscall MUIMAsterBase 186;
-FUNCTION MUI_BeginRefresh(mri : pMUI_RenderInfo location 'a0'; flags : ULONG location 'd0') : WordBool; syscall MUIMasterBase 192;
-PROCEDURE MUI_EndRefresh(mri : pMUI_RenderInfo location 'a0'; flags : ULONG location 'd0'); syscall MUIMasterBase 198;
 
 (*
 ** some procedures to get some information about our object
@@ -3578,6 +3582,8 @@ FUNCTION MUI_MakeObject(_type : LONGINT; const params : Array Of Const) : pULONG
 FUNCTION MUI_NewObject(a0arg : pCHAR; const tags : Array Of Const) : pULONG;
 FUNCTION MUI_Request(app : POINTER; win : POINTER; flags : longword; title : pCHAR; gadgets : pCHAR; format : pCHAR; const params : Array Of Const) : LONGINT;
 
+VAR MUIMasterBase : pLibrary;
+
 {You can remove this include and use a define instead}
 {$I useautoopenlib.inc}
 {$ifdef use_init_openlib}
@@ -3592,7 +3598,7 @@ implementation
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox,
+msgbox,
 {$endif dont_use_openlib}
 tagsarray,longarray;
 
@@ -3628,57 +3634,57 @@ end;
 
 function OBJ_App(obj : APTR) : pObject_;       (* valid between MUIM_Setup/Cleanup *)
 begin
-    OBJ_App := MUIGlobalInfo(obj)^.mgi_ApplicationObject;
+    OBJ_App := pMUI_GlobalInfo(obj)^.mgi_ApplicationObject;
 end;
 
 function OBJ_Win(obj : APTR) : pObject_;       (* valid between MUIM_Setup/Cleanup *)
 begin
-    OBJ_Win := MUIRenderInfo(obj)^.mri_WindowObject;
+    OBJ_Win := pMUI_RenderInfo(obj)^.mri_WindowObject;
 end;
 
 function OBJ_Dri(obj : APTR) : pDrawInfo;          (* valid between MUIM_Setup/Cleanup *)
 begin
-    OBJ_Dri := MUIRenderInfo(obj)^.mri_DrawInfo;
+    OBJ_Dri := pMUI_RenderInfo(obj)^.mri_DrawInfo;
 end;
 
 function OBJ_Screen(obj : APTR) : pScreen;         (* valid between MUIM_Setup/Cleanup *)
 begin
-    OBJ_Screen := MUIRenderInfo(obj)^.mri_Screen;
+    OBJ_Screen := pMUI_RenderInfo(obj)^.mri_Screen;
 end;
 
 function OBJ_Pens(obj : APTR) : pWord;      (* valid between MUIM_Setup/Cleanup *)
 begin
-    OBJ_Pens := MUIRenderInfo(obj)^.mri_Pens;
+    OBJ_Pens := pMUI_RenderInfo(obj)^.mri_Pens;
 end;
 
 function OBJ_Window(obj : APTR) : pWindow;         (* valid between MUIM_Show/Hide *)
 begin
-    OBJ_Window := MUIRenderInfo(obj)^.mri_Window;
+    OBJ_Window := PMUI_RenderInfo(obj)^.mri_Window;
 end;
 
 function OBJ_Rp(obj : APTR) : pRastPort;           (* valid between MUIM_Show/Hide *)
 begin
-    OBJ_Rp := MUIRenderInfo(obj)^.mri_RastPort;
+    OBJ_Rp := pMUI_RenderInfo(obj)^.mri_RastPort;
 end;
 
 function OBJ_Left(obj : APTR) : smallint;           (* valid during MUIM_Draw *)
 begin
-    OBJ_Left := MUIAreaData(obj)^.mad_Box.Left;
+    OBJ_Left := pMUI_AreaData(obj)^.mad_Box.Left;
 end;
 
 function OBJ_Top(obj : APTR) : smallint;            (* valid during MUIM_Draw *)
 begin
-    OBJ_Top := MUIAreaData(obj)^.mad_Box.Top;
+    OBJ_Top := pMUI_AreaData(obj)^.mad_Box.Top;
 end;
 
 function OBJ_Width(obj : APTR) : smallint;          (* valid during MUIM_Draw *)
 begin
-    OBJ_Width := MUIAreaData(obj)^.mad_Box.Width;
+    OBJ_Width := pMUI_AreaData(obj)^.mad_Box.Width;
 end;
 
 function OBJ_Height(obj : APTR) : smallint;         (* valid during MUIM_Draw *)
 begin
-    OBJ_Height := MUIAreaData(obj)^.mad_Box.Height;
+    OBJ_Height := pMUI_AreaData(obj)^.mad_Box.Height;
 end;
 
 function OBJ_Right(obj : APTR) : smallint;          (* valid during MUIM_Draw *)
@@ -3693,22 +3699,22 @@ end;
 
 function OBJ_AddLeft(obj : APTR) : smallint;        (* valid during MUIM_Draw *)
 begin
-    OBJ_AddLeft := MUIAreaData(obj)^.mad_AddLeft;
+    OBJ_AddLeft := pMUI_AreaData(obj)^.mad_AddLeft;
 end;
 
 function OBJ_AddTop(obj : APTR) : smallint;         (* valid during MUIM_Draw *)
 begin
-    OBJ_AddTop := MUIAreaData(obj)^.mad_AddTop;
+    OBJ_AddTop := pMUI_AreaData(obj)^.mad_AddTop;
 end;
 
 function OBJ_SubWidth(obj : APTR) : smallint;       (* valid during MUIM_Draw *)
 begin
-    OBJ_SubWidth := MUIAreaData(obj)^.mad_SubWidth;
+    OBJ_SubWidth := pMUI_AreaData(obj)^.mad_SubWidth;
 end;
 
 function OBJ_SubHeight(obj : APTR) : smallint;      (* valid during MUIM_Draw *)
 begin
-    OBJ_SubHeight := MUIAreaData(obj)^.mad_SubHeight;
+    OBJ_SubHeight := pMUI_AreaData(obj)^.mad_SubHeight;
 end;
 
 function OBJ_MLeft(obj : APTR) : smallint;          (* valid during MUIM_Draw *)
@@ -3743,42 +3749,42 @@ end;
 
 function OBJ_Font(obj : APTR) : pTextFont;         (* valid between MUIM_Setup/Cleanup *)
 begin
-    OBJ_Font := MUIAreaData(obj)^.mad_Font;
+    OBJ_Font := pMUI_AreaData(obj)^.mad_Font;
 end;
 
 function OBJ_MinWidth(obj : APTR) : ULONG;         (* valid between MUIM_Show/Hide *)
 begin
-    OBJ_MinWidth := MUIAreaData(obj)^.mad_MinMax.MinWidth;
+    OBJ_MinWidth := pMUI_AreaData(obj)^.mad_MinMax.MinWidth;
 end;
 
 function OBJ_MinHeight(obj : APTR) : ULONG;        (* valid between MUIM_Show/Hide *)
 begin
-    OBJ_MinHeight := MUIAreaData(obj)^.mad_MinMax.MinHeight;
+    OBJ_MinHeight := pMUI_AreaData(obj)^.mad_MinMax.MinHeight;
 end;
 
 function OBJ_MaxWidth(obj : APTR) : ULONG;         (* valid between MUIM_Show/Hide *)
 begin
-    OBJ_maxWidth := MUIAreaData(obj)^.mad_MinMax.MaxWidth;
+    OBJ_maxWidth := pMUI_AreaData(obj)^.mad_MinMax.MaxWidth;
 end;
 
 function OBJ_MaxHeight(obj : APTR) : ULONG;        (* valid between MUIM_Show/Hide *)
 begin
-    OBJ_maxHeight := MUIAreaData(obj)^.mad_MinMax.MaxHeight;
+    OBJ_maxHeight := pMUI_AreaData(obj)^.mad_MinMax.MaxHeight;
 end;
 
 function OBJ_DefWidth(obj : APTR) : ULONG;         (* valid between MUIM_Show/Hide *)
 begin
-    OBJ_DefWidth := MUIAreaData(obj)^.mad_MinMax.DefWidth;
+    OBJ_DefWidth := pMUI_AreaData(obj)^.mad_MinMax.DefWidth;
 end;
 
 function OBJ_DefHeight(obj : APTR) : ULONG;        (* valid between MUIM_Show/Hide *)
 begin
-    OBJ_DefHeight := MUIAreaData(obj)^.mad_MinMax.DefHeight;
+    OBJ_DefHeight := pMUI_AreaData(obj)^.mad_MinMax.DefHeight;
 end;
 
 function OBJ_Flags(obj : APTR) : ULONG;
 begin
-    OBJ_Flags := MUIAreaData(obj)^.mad_Flags;
+    OBJ_Flags := pMUI_AreaData(obj)^.mad_Flags;
 end;
 
 (*
@@ -3866,6 +3872,342 @@ function MUIV_Window_Width_Screen(p : longint) : longint;
 begin
     MUIV_Window_Width_Screen := (-200 - (p));
 end;
+
+FUNCTION MUI_NewObjectA(class_ : pCHar; tags : pTagItem) : pObject_;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L class_,A0
+        MOVEA.L tags,A1
+        MOVEA.L MUIMasterBase,A6
+        JSR     -030(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE MUI_DisposeObject(obj : pObject_);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L obj,A0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -036(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION MUI_RequestA(app : POINTER; win : POINTER; flags : LONGBITS; title : pCHar; gadgets : pChar; format : pChar; params : POINTER) : LONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  app,D0
+        MOVE.L  win,D1
+        MOVE.L  flags,D2
+        MOVEA.L title,A0
+        MOVEA.L gadgets,A1
+        MOVEA.L format,A2
+        MOVEA.L params,A3
+        MOVEA.L MUIMasterBase,A6
+        JSR     -042(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MUI_AllocAslRequest(typ : ULONG; tags : pTagItem) : POINTER;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  typ,D0
+        MOVEA.L tags,A0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -048(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MUI_AslRequest(req : POINTER; tags : pTagItem) : BOOLEAN;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L req,A0
+        MOVEA.L tags,A1
+        MOVEA.L MUIMasterBase,A6
+        JSR     -054(A6)
+        MOVEA.L (A7)+,A6
+        TST.W   D0
+        BEQ.B   @end
+        MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE MUI_FreeAslRequest(req : POINTER);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L req,A0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -060(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION MUI_Error : LONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L MUIMasterBase,A6
+        JSR     -066(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MUI_SetError(errnum : LONGINT) : LONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  errnum,D0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -072(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MUI_GetClass(name : pChar) : pIClass;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L name,A0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -078(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE MUI_FreeClass(cl : pIClass);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L cl,A0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -084(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE MUI_RequestIDCMP(obj : pObject_; flags : ULONG);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L obj,A0
+        MOVE.L  flags,D0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -090(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE MUI_RejectIDCMP(obj : pObject_; flags : ULONG);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L obj,A0
+        MOVE.L  flags,D0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -096(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE MUI_Redraw(obj : pObject_; flags : ULONG);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L obj,A0
+        MOVE.L  flags,D0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -102(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION MUI_CreateCustomClass(base : pLibrary; supername : pChar; supermcc : pMUI_CustomClass; datasize : LONGINT; dispatcher : POINTER) : pMUI_CustomClass;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L base,A0
+        MOVEA.L supername,A1
+        MOVEA.L supermcc,A2
+        MOVE.L  datasize,D0
+        MOVEA.L dispatcher,A3
+        MOVEA.L MUIMasterBase,A6
+        JSR     -108(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MUI_DeleteCustomClass(mcc : pMUI_CustomClass) : BOOLEAN;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L mcc,A0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -114(A6)
+        MOVEA.L (A7)+,A6
+        TST.W   D0
+        BEQ.B   @end
+        MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION MUI_MakeObjectA(typ : LONGINT; params : pULONG) : pObject_;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  typ,D0
+        MOVEA.L params,A0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -120(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MUI_Layout(obj : pObject_; l : LONGINT; t : LONGINT; w : LONGINT; h : LONGINT; flags : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L obj,A0
+        MOVE.L  l,D0
+        MOVE.L  t,D1
+        MOVE.L  w,D2
+        MOVE.L  h,D3
+        MOVE.L  flags,D4
+        MOVEA.L MUIMasterBase,A6
+        JSR     -126(A6)
+        MOVEA.L (A7)+,A6
+        TST.W   D0
+        BEQ.B   @end
+        MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION MUI_ObtainPen(mri : pMUI_RenderInfo; spec : pMUI_PenSpec; flags : ULONG) : LONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L mri,A0
+        MOVEA.L spec,A1
+        MOVE.L  flags,D0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -156(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE MUI_ReleasePen(mri : pMUI_RenderInfo; pen : LONGINT);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L mri,A0
+        MOVE.L  pen,D0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -162(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION MUI_AddClipping(mri : pMUI_RenderInfo; l : smallint; t : smallint; w : smallint; h : smallint) : POINTER;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L mri,A0
+        MOVE.L  l,D0
+        MOVE.L  t,D1
+        MOVE.L  w,D2
+        MOVE.L  h,D3
+        MOVEA.L MUIMasterBase,A6
+        JSR     -168(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE MUI_RemoveClipping(mri : pMUI_RenderInfo; h : POINTER);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L mri,A0
+        MOVEA.L h,A1
+        MOVEA.L MUIMasterBase,A6
+        JSR     -174(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION MUI_AddClipRegion(mri : pMUI_RenderInfo; region : pRegion) : POINTER;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L mri,A0
+        MOVEA.L region,A1
+        MOVEA.L MUIMasterBase,A6
+        JSR     -180(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE MUI_RemoveClipRegion(mri : pMUI_RenderInfo; region : POINTER);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L mri,A0
+        MOVEA.L region,A1
+        MOVEA.L MUIMasterBase,A6
+        JSR     -186(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION MUI_BeginRefresh(mri : pMUI_RenderInfo; flags : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L mri,A0
+        MOVE.L  flags,D0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -192(A6)
+        MOVEA.L (A7)+,A6
+        TST.W   D0
+        BEQ.B   @end
+        MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE MUI_EndRefresh(mri : pMUI_RenderInfo; flags : ULONG);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L mri,A0
+        MOVE.L  flags,D0
+        MOVEA.L MUIMasterBase,A6
+        JSR     -198(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
 
 {
  Functions and procedures with array of const go here

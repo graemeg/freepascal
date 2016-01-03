@@ -65,7 +65,23 @@ var
   private
     _flags: NSUInteger;
     _interval: NSTimeInterval;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _private: array[0..(11)-1] of id;
+=======
+        _private: array[0..10] of id;
+>>>>>>> graemeg/cpstrnew
+=======
+        _private: array[0..10] of id;
+>>>>>>> graemeg/cpstrnew
+=======
+        _private: array[0..10] of id;
+>>>>>>> graemeg/cpstrnew
+=======
+        _private: array[0..10] of id;
+>>>>>>> origin/cpstrnew
     _reserved: Pointer; {garbage collector: __strong }
     
   public
@@ -129,8 +145,28 @@ var
 { NSMetadataQueryResultGroup }
   NSMetadataQueryResultGroup = objcclass external (NSObject)
   private
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _private: array[0..(9)-1] of id;
     _private2: array[0..(1)-1] of NSUInteger;
+=======
+        _private: array[0..8] of id;
+    _private2: NSUInteger;
+>>>>>>> graemeg/cpstrnew
+=======
+        _private: array[0..8] of id;
+    _private2: NSUInteger;
+>>>>>>> graemeg/cpstrnew
+=======
+        _private: array[0..8] of id;
+    _private2: NSUInteger;
+>>>>>>> graemeg/cpstrnew
+=======
+        _private: array[0..8] of id;
+    _private2: NSUInteger;
+>>>>>>> origin/cpstrnew
     _reserved: Pointer;
     
   public

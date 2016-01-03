@@ -2,11 +2,37 @@
 #   This file is part of the Free Pascal Compiler
 #   Copyright (c) 1999-2009 by the Free Pascal Development team
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Portuguese (CP850) language file for Free Pascal Compiler
 #   Contributed by Marcelo B Paula, based on errore.msg SVN Rev.19883
 #   Former translator: Ari Ricardo Ody <ary.odi at japinfo.com.br>
 #
 #   See the file COPYING.v2, included in this distribution,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+#   Portuguese (DOS CP850) language file for Free Pascal Compiler
+#   Contributed by Marcelo B Paula, based on errore.msg SVN Rev.15527
+#   Former translator: Ari Ricardo Ody <ary.odi at japinfo.com.br>
+#
+#   See the file COPYING.FPC, included in this distribution,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 #   for details about the copyright.
 #
 #   This program is distributed in the hope that it will be useful,
@@ -43,9 +69,21 @@
 #   x_   executable informations
 #   o_   normal (e.g., "press enter to continue")
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 # <type> can contain a minus sign at the beginning to mark that
 # the message is off by default. Look at type_w_explicit_string_cast
 # for example.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 #
 # General
@@ -84,7 +122,23 @@ general_t_objectpath=01007_T_Usando caminho objeto: $1
 % When the \var{-vt} switch is used, this line tells you where the compiler
 % looks for object files you link in (files used in \var{\{\$L xxx\}} statements).
 % You can set this path with the \var{-Fo} option.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 general_i_abslines_compiled=01008_I_$1 linhas compiladas, $2 seg$3
+=======
+general_i_abslines_compiled=01008_I_$1 linhas compiladas, $2 seg $3
+>>>>>>> graemeg/cpstrnew
+=======
+general_i_abslines_compiled=01008_I_$1 linhas compiladas, $2 seg $3
+>>>>>>> graemeg/cpstrnew
+=======
+general_i_abslines_compiled=01008_I_$1 linhas compiladas, $2 seg $3
+>>>>>>> graemeg/cpstrnew
+=======
+general_i_abslines_compiled=01008_I_$1 linhas compiladas, $2 seg $3
+>>>>>>> origin/cpstrnew
 % When the \var{-vi} switch is used, the compiler reports the number
 % of lines compiled, and the time it took to compile them (real time,
 % not program time).
@@ -129,10 +183,22 @@ general_i_number_of_hints=01022_I_$1 dica(s) emitida(s)
 % Total number of hints issued during compilation.
 general_i_number_of_notes=01023_I_$1 nota(s) emitida(s)
 % Total number of notes issued during compilation.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 general_f_ioerror=01024_F_Erro E/S: $1
 % During compilation an I/O error happened which allows no further compilation.
 general_f_oserror=01025_F_Erro do sistema operacional: $1
 % During compilation an operanting system error happened which allows no further compilation.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 % \end{description}
 #
 # Scanner
@@ -373,14 +439,42 @@ scan_w_multiple_main_name_overrides=02086_W_Sobrescrevendo nome do procedimento 
 % name will be used.
 scanner_w_illegal_warn_identifier=02087_W_Identificador "$1" ilegal para a diretiva $WARN
 % Identifier is not known by a \var{\{\$WARN\}} compiler directive.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 scanner_e_illegal_alignment_directive=02088_E_Diretiva de alinhamento ilegal
 % The alignment directive is not valid. Either the alignment type is not known or the alignment
 % value is not a power of two.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 % \end{description}
 #
 # Parser
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 # 03314 is the last used one
+=======
+# 03295 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 03295 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 03295 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 03295 is the last used one
+>>>>>>> origin/cpstrnew
 #
 % \section{Parser messages}
 % This section lists all parser messages. The parser takes care of the
@@ -638,7 +732,23 @@ parser_e_void_function=03080_E_Procedimentos n∆o podem retornar um valor
 % In \fpc, you can specify a return value for a function when using
 % the \var{exit} statement. This error occurs when you try to do this with a
 % procedure. Procedures cannot return a value.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_constructors_always_objects=03081_E_Construtores, destruidores e operadores de classe devem ser mÇtodos
+=======
+parser_e_only_methods_allowed=03081_E_Construtores destruidores e class operators devem ser mÇtodos
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_only_methods_allowed=03081_E_Construtores destruidores e class operators devem ser mÇtodos
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_only_methods_allowed=03081_E_Construtores destruidores e class operators devem ser mÇtodos
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_only_methods_allowed=03081_E_Construtores destruidores e class operators devem ser mÇtodos
+>>>>>>> origin/cpstrnew
 % You're declaring a procedure as destructor, constructor or class operator, when the
 % procedure isn't a class method.
 parser_e_operator_not_overloaded=03082_E_Operador n∆o Ç sobrecarregado
@@ -772,9 +882,33 @@ parser_e_function_already_declared_public_forward=03120_E_Funá∆o j† declarada co
 % declaration in the \var{implementation} section.
 parser_e_not_external_and_export=03121_E_Imposs°vel usar ambos EXPORT e EXTERNAL
 % These two procedure directives are mutually exclusive.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_h_not_supported_for_inline=03123_H_"$1" n∆o suportado ainda dentro procedimento/funá∆o em linha
 % Inline procedures don't support this declaration.
 parser_h_inlining_disabled=03124_H_Procedimentos em linha desabilitados
+=======
+parser_w_not_supported_for_inline=03123_W_"$1" n∆o suportado ainda dentro procedimento/funá∆o em linha
+% Inline procedures don't support this declaration.
+parser_w_inlining_disabled=03124_W_Procedimentos em linha desabilitados
+>>>>>>> graemeg/cpstrnew
+=======
+parser_w_not_supported_for_inline=03123_W_"$1" n∆o suportado ainda dentro procedimento/funá∆o em linha
+% Inline procedures don't support this declaration.
+parser_w_inlining_disabled=03124_W_Procedimentos em linha desabilitados
+>>>>>>> graemeg/cpstrnew
+=======
+parser_w_not_supported_for_inline=03123_W_"$1" n∆o suportado ainda dentro procedimento/funá∆o em linha
+% Inline procedures don't support this declaration.
+parser_w_inlining_disabled=03124_W_Procedimentos em linha desabilitados
+>>>>>>> graemeg/cpstrnew
+=======
+parser_w_not_supported_for_inline=03123_W_"$1" n∆o suportado ainda dentro procedimento/funá∆o em linha
+% Inline procedures don't support this declaration.
+parser_w_inlining_disabled=03124_W_Procedimentos em linha desabilitados
+>>>>>>> origin/cpstrnew
 % Inlining of procedures is disabled.
 parser_i_writing_browser_log=03125_I_Gravando hist¢rio Navegador $1
 % When information messages are on, the compiler warns you when it
@@ -929,8 +1063,28 @@ parser_e_no_access_specifier_in_interfaces=03172_E_Especificadores de acesso n∆o
 % The access specifiers \var{public}, \var{private}, \var{protected} and
 % \var{published} can't be used in interfaces, Objective-C protocols and categories because all methods
 % of an interface/protocol/category must be public.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_no_vars_in_interfaces=03173_E_Uma interface, auxiliar ou protocolo Objective-C ou categoria n∆o pode conter campos
 % Declarations of fields are not allowed in interfaces, helpers and Objective-C protocols and categories.
+=======
+parser_e_no_vars_in_interfaces=03173_E_Uma interface ou protocolo Objective-C ou categoria n∆o pode conter campos
+% Declarations of fields are not allowed in interfaces and Objective-C protocols and categories.
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_no_vars_in_interfaces=03173_E_Uma interface ou protocolo Objective-C ou categoria n∆o pode conter campos
+% Declarations of fields are not allowed in interfaces and Objective-C protocols and categories.
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_no_vars_in_interfaces=03173_E_Uma interface ou protocolo Objective-C ou categoria n∆o pode conter campos
+% Declarations of fields are not allowed in interfaces and Objective-C protocols and categories.
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_no_vars_in_interfaces=03173_E_Uma interface ou protocolo Objective-C ou categoria n∆o pode conter campos
+% Declarations of fields are not allowed in interfaces and Objective-C protocols and categories.
+>>>>>>> origin/cpstrnew
 % An interface/protocol/category can contain only methods and properties with method read/write specifiers.
 parser_e_no_local_proc_external=03174_E_Imposs°ve declarar procedimento local como EXTERNAL
 % Declaring local procedures as external is not possible. Local procedures
@@ -962,7 +1116,23 @@ parser_w_proc_overriding_calling=03182_W_Convená∆o chamada sobreposiá∆o "$1" com
 % There are two directives in the procedure declaration that specify a calling
 % convention. Only the last directive will be used.
 parser_e_no_procvarobj_const=03183_E_Constantes tipadas do tipo "procedimento de objeto" podem ser apenas inicializadas com NIL
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 % You cannot assign the address of a method to a typed constant which has a
+=======
+% You can't assign the address of a method to a typed constant which has a
+>>>>>>> graemeg/cpstrnew
+=======
+% You can't assign the address of a method to a typed constant which has a
+>>>>>>> graemeg/cpstrnew
+=======
+% You can't assign the address of a method to a typed constant which has a
+>>>>>>> graemeg/cpstrnew
+=======
+% You can't assign the address of a method to a typed constant which has a
+>>>>>>> origin/cpstrnew
 % 'procedure of object' type, because such a constant requires two addresses:
 % that of the method (which is known at compile time) and that of the object or
 % class instance it operates on (which cannot be known at compile time).
@@ -1090,7 +1260,23 @@ parser_e_protected_or_private_expected=03214_E_Protected ou private esperados
 parser_e_illegal_slice=03215_E_SLICE n∆o pode ser usado fora da lista de parÉmetros
 % \var{slice} can be used only for arguments accepting an open array parameter.
 parser_e_dispinterface_cant_have_parent=03216_E_Uma DISPINTERFACE n∆o pode ter uma classe pai
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 % A DISPINTERFACE is a special type of interface which can't have a parent class. Dispinterface always derive from IDispatch type.
+=======
+% A DISPINTERFACE is a special type of interface which can't have a parent class.
+>>>>>>> graemeg/cpstrnew
+=======
+% A DISPINTERFACE is a special type of interface which can't have a parent class.
+>>>>>>> graemeg/cpstrnew
+=======
+% A DISPINTERFACE is a special type of interface which can't have a parent class.
+>>>>>>> graemeg/cpstrnew
+=======
+% A DISPINTERFACE is a special type of interface which can't have a parent class.
+>>>>>>> origin/cpstrnew
 parser_e_dispinterface_needs_a_guid=03217_E_Uma DISPINTERFACE necessita de um GUID
 % A DISPINTERFACE always needs an interface identification (a GUID).
 parser_w_overridden_methods_not_same_ret=03218_W_MÇtodos susbtitu°dos devem ter um tipo de retorno relacionados. Este c¢digo pode travar, ele depende de uma falha do analizador Delphi ("$2" Ç sobreposto por "$1" que possue outro tipo de retorno)
@@ -1118,9 +1304,33 @@ parser_e_packed_element_no_loop=03223_E_Elementos de matrizes de bits compactado
 % (or as \var{packed} in any mode with \var{\{\$bitpacking on\}}), it will
 % be packed at the bit level. For performance reasons, they cannot be
 % used as loop variables.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_type_var_const_only_in_records_and_classes=03224_E_VAR, TYPE e CONST s∆o permitidos apenas em registros, objetos e classes
 % The usage of VAR, TYPE and CONST to declare new types inside an object is allowed only inside
 % records, objects and classes.
+=======
+parser_e_type_and_var_only_in_generics=03224_E_VAR, TYPE e CONST s∆o permitidos apenas em genÇricos e classes
+% The usage of VAR, TYPE and CONST to declare new types inside an object is allowed only inside
+% generics and classes.
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_type_and_var_only_in_generics=03224_E_VAR, TYPE e CONST s∆o permitidos apenas em genÇricos e classes
+% The usage of VAR, TYPE and CONST to declare new types inside an object is allowed only inside
+% generics and classes.
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_type_and_var_only_in_generics=03224_E_VAR, TYPE e CONST s∆o permitidos apenas em genÇricos e classes
+% The usage of VAR, TYPE and CONST to declare new types inside an object is allowed only inside
+% generics and classes.
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_type_and_var_only_in_generics=03224_E_VAR, TYPE e CONST s∆o permitidos apenas em genÇricos e classes
+% The usage of VAR, TYPE and CONST to declare new types inside an object is allowed only inside
+% generics and classes.
+>>>>>>> origin/cpstrnew
 parser_e_cant_create_generics_of_this_type=03225_E_Este tipo n∆o pode ser um genÇrico
 % Only Classes, Objects, Interfaces and Records are allowed to be used as generic.
 parser_w_no_lineinfo_use_switch=03226_W_N∆o caregue a unidade LINEINFO manualmente, Em vez disso utilize a chave de compilador -gl
@@ -1195,7 +1405,23 @@ parser_e_field_not_allowed_here=03251_E_Campos n∆o podem aparecer depois dem um 
 % without starting a new visibility section (such as \var{public}, \var{private}, etc.). The reason is
 % that otherwise the source code can appear ambiguous to the compiler, since it is possible to use modifiers
 % such as \var{default} and \var{register} also as field names.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_no_local_para_def=03252_E_ParÉmetros ou tipos resultado n∆o podem conter definiá‰es locais de tipo. Use uma definiá∆o de tipo separada em um bloco de tipos
+=======
+parser_e_no_local_para_def=03252_E_ParÉmetros n∆o podem conter definiá‰es locais de tipo. Use uma definiá∆o de tipo separada em um bloco de tipos
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_no_local_para_def=03252_E_ParÉmetros n∆o podem conter definiá‰es locais de tipo. Use uma definiá∆o de tipo separada em um bloco de tipos
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_no_local_para_def=03252_E_ParÉmetros n∆o podem conter definiá‰es locais de tipo. Use uma definiá∆o de tipo separada em um bloco de tipos
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_no_local_para_def=03252_E_ParÉmetros n∆o podem conter definiá‰es locais de tipo. Use uma definiá∆o de tipo separada em um bloco de tipos
+>>>>>>> origin/cpstrnew
 % In Pascal, types are not considered to be identical simply because they are semantically equivalent.
 % Two variables or parameters are only considered to be of the same type if they refer to the
 % same type definition.
@@ -1259,16 +1485,48 @@ parser_e_no_objc_published=03271_E_Classes Objective-C n∆o podem ter seá‰es PUBL
 parser_f_need_objc=03272_F_Este m¢dulo requer que seja especificado uma chave de modo Objective-C para ser compilado
 % This error indicates the use of Objective-C language features without an Objective-C mode switch
 % active. Enable one via the -M command line switch, or the {\$modeswitch x} directive.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_must_use_override_objc=03273_E_MÇtodos herdados podem apenas ser sobrepostos em Objective-C, adicione "OVERRIDE" (mÇtodo herdado definido em $1)
 parser_h_should_use_override_objc=03274_H_MÇtodos herdados podem apenas ser sobrepostos em Objective-C, adicione "OVERRIDE" (mÇtodo herdado definido em $1).
+=======
+parser_e_must_use_override_objc=03273_E_MÇtodos herdados podem apenas ser sobrepostos em Objective-C, adicione "OVERRIDE".
+parser_h_should_use_override_objc=03274_H_MÇtodos herdados podem apenas ser sobrepostos em Objective-C, adicinone "OVERRIDE".
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_must_use_override_objc=03273_E_MÇtodos herdados podem apenas ser sobrepostos em Objective-C, adicione "OVERRIDE".
+parser_h_should_use_override_objc=03274_H_MÇtodos herdados podem apenas ser sobrepostos em Objective-C, adicinone "OVERRIDE".
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_must_use_override_objc=03273_E_MÇtodos herdados podem apenas ser sobrepostos em Objective-C, adicione "OVERRIDE".
+parser_h_should_use_override_objc=03274_H_MÇtodos herdados podem apenas ser sobrepostos em Objective-C, adicinone "OVERRIDE".
+>>>>>>> graemeg/cpstrnew
+=======
+parser_e_must_use_override_objc=03273_E_MÇtodos herdados podem apenas ser sobrepostos em Objective-C, adicione "OVERRIDE".
+parser_h_should_use_override_objc=03274_H_MÇtodos herdados podem apenas ser sobrepostos em Objective-C, adicinone "OVERRIDE".
+>>>>>>> origin/cpstrnew
 % It is not possible to \var{reintroduce} methods in Objective-C like in Object Pascal. Methods with the same
 % name always map to the same virtual method entry. In order to make this clear in the source code,
 % the compiler always requires the \var{override} directive to be specified when implementing overriding
 % Objective-C methods in Pascal. If the implementation is external, this rule is relaxed because Objective-C
 % does not have any \var{override}-style keyword (since it's the default and only behaviour in that language),
 % which makes it hard for automated header conversion tools to include it everywhere.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 % The type in which the inherited method is defined is explicitly mentioned, because this may either
 % be an objcclass or an objccategory.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 parser_e_objc_message_name_changed=03275_E_Nome mensagem "$1" na classe herdada Ç diferente do nome mensagem "$2" na classe atual.
 % An overriding Objective-C method cannot have a different message name than an inherited method. The reason
 % is that these message names uniquely define the message to the Objective-C runtime, which means that
@@ -1276,6 +1534,10 @@ parser_e_objc_message_name_changed=03275_E_Nome mensagem "$1" na classe herdada 
 parser_e_no_objc_unique=03276_E_Ainda n∆o Ç poss°vel fazer c¢pias £nicas de tipos Objective-C
 % Duplicating an Objective-C type using \var{type x = type y;} is not yet supported. You may be able to
 % obtain the desired effect using \var{type x = objcclass(y) end;} instead.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_no_category_as_types=03277_E_Categorias Objective-C e classes auxiliares Object Pascal n∆o podem ser usadas como tipos
 % It is not possible to declare a variable as an instance of an Objective-C
 % category or an Object Pascal class helper. A category/class helper adds
@@ -1285,6 +1547,29 @@ parser_e_no_category_as_types=03277_E_Categorias Objective-C e classes auxiliare
 parser_e_no_category_override=03278_E_Categorias n∆o sobrep‰em, mas substituem mÇtodos. Use "REINTRODUCE".
 parser_e_must_use_reintroduce_objc=03279_E_MÇtodos substitu°dos podem apenas ser reintroduzidos em Objective-C, adicione "REINTRODUCE" (mÇtodo substitu°do definido em $1).
 parser_h_should_use_reintroduce_objc=03280_H_MÇtodos substitu°dos podem apenas ser reintroduzidos em Objective-C, adicione "REINTRODUCE" (mÇtodo substitu°do definido em $1).
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+parser_e_no_category_as_types=03277_E_Categorias Objective-C n∆o podem ser usadas como tipos
+% It is not possible to declare a variable as an instance of an Objective-C category. A
+% category adds methods to the scope of an existing class, but does not define a type by itself.
+parser_e_no_category_override=03278_E_Categorias n∆o sobrep‰em, mas substituem mÇtodos. Use "REINTRODUCE".
+parser_e_must_use_reintroduce_objc=03279_E_MÇtodos substitu°dos podem apenas ser reintroduzidos em Objective-C, adicione "REINTRODUCE".
+parser_h_should_use_reintroduce_objc=03280_H_MÇtodos substitu°dos podem apenas ser reintroduzidos em Objective-C, adicione "REINTRODUCE".
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 % A category replaces an existing method in an Objective-C class, rather than that it overrides it.
 % Calling an inherited method from an category method will call that method in
 % the extended class' parent, not in the extended class itself. The
@@ -1292,8 +1577,20 @@ parser_h_should_use_reintroduce_objc=03280_H_MÇtodos substitu°dos podem apenas s
 % called or referred to. This behaviour corresponds somewhat more closely to
 % \var{reintroduce} than to \var{override} (although in case of \var{reintroduce}
 % in Object Pascal, hidden methods are still reachable via inherited).
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 % The type in which the inherited method is defined is explicitly mentioned, because this may either
 % be an objcclass or an objccategory.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 parser_e_implements_getter_not_default_cc=03281_E_'Getter' para implementaá∆o interface deve usar a convená∆o de chamada padr∆o do alvo.
 % Interface getters are called via a helper in the run time library, and hence
 % have to use the default calling convention for the target (\var{register} on
@@ -1325,6 +1622,22 @@ parser_e_no_paras_for_class_constructor=03290_E_Construtores de classe n∆o podem
 parser_e_no_paras_for_class_destructor=03291_E_Destruidores de classe n∆o podem ter parÉmetros
 % You are declaring a class destructor with a parameter list. Class destructor methods
 % cannot have parameters.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+% \end{description}
+>>>>>>> graemeg/cpstrnew
+=======
+% \end{description}
+>>>>>>> graemeg/cpstrnew
+=======
+% \end{description}
+>>>>>>> graemeg/cpstrnew
+=======
+% \end{description}
+>>>>>>> origin/cpstrnew
 parser_f_modeswitch_objc_required=03292_F_Esta construá∆o requer que chave de modo \{\$modeswitch objectivec1\} esteja ativa
 % Objective-Pascal constructs are not supported when \{\$modeswitch ObjectiveC1\}
 % is not active.
@@ -1343,6 +1656,10 @@ parser_e_objc_missing_enumeration_defs=03295_E_O compilador n∆o encontrou os tip
 % NSFastEnumerationProtocol and NSFastEnumerationState types. If you get this
 % error, most likely the compiler is finding and loading an alternate CocoaAll
 % unit.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_no_procvarnested_const=03296_E_Constantes tipadas do tipo 'procedimento Ç aninhado' s¢ podem ser inicializadas com NIL e procedimentos/funá‰es globais
 % A nested procedural variable consists of two components: the address of the
 % procedure/function to call (which is always known at compile time), and also
@@ -1412,6 +1729,27 @@ parser_e_invalid_codepage=03314_E_Codepage inv†lido
 # Type Checking
 #
 # 04108 is the last used one
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+#
+# Type Checking
+#
+# 04095 is the last used one
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 #
 % \section{Type checking errors}
 % This section lists all errors that can occur when type checking is
@@ -1598,6 +1936,10 @@ type_e_type_is_not_completly_defined=04042_E_Tipo "$1" n∆o est† completamente de
 type_w_string_too_long=04043_W_Literal 'String' tem mais caracteres que comprimento 'string' curta
 % The size of the constant string, which is assigned to a shortstring,
 % is longer than the maximum size of the shortstring (255 characters).
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 type_w_signed_unsigned_always_false=04044_W_Comparaá∆o pode ser sempre falsa devido a faixa da constante e express∆o
 % There is a comparison between a constant and an expression where the constant is out of the
 % valid range of values of the expression. Because of type promotion, the statement will always evaluate to
@@ -1608,6 +1950,31 @@ type_w_signed_unsigned_always_true=04045_W_Comparaá∆o pode ser sempre verdadeira
 % valid range of values of the expression. Because of type promotion, the statement will always evaluate to
 % true. Explicitly typecast the constant or the expression to the correct range to avoid this warning
 % if you think the code is correct.
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+type_w_signed_unsigned_always_false=04044_W_Comparaá∆o ser† sempre falsa devido a faixa de valores
+% There is a comparison between an unsigned value and a signed constant which is
+% less than zero. Because of type promotion, the statement will always evaluate to
+% false. Explicitly typecast the constant to the correct range to avoid this problem.
+type_w_signed_unsigned_always_true=04045_W_Comparaá∆o ser† sempre verdadeira devido a faixa de valores
+% There is a comparison between an unsigned value and a signed constant which is
+% less than zero. Because of type promotion, the statement will always evaluate to
+% true. Explicitly typecast the constant to the correct range to avoid this problem.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 type_w_instance_with_abstract=04046_W_Construindo uma classe "$1" com mÇtodo abstrato "$2"
 % An instance of a class is created which contains non-implemented abstract
 % methods. This will probably lead to a runtime error 211 in the code if that
@@ -1694,7 +2061,23 @@ type_w_pointer_to_signed=04082_W_Convertendo ponteiros para inteiros assinados p
 % For example both \windows and \linux allow pointers in the range \$0000000 to \$bfffffff.
 % If you convert pointers to signed types, this can cause overflow and range check errors,
 % but also \$80000000 < \$7fffffff. This can cause random errors in code like "if p>q".
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 type_e_interface_has_no_guid=04083_E_Tipo interface $1 n∆o tem um GUID v†lido
+=======
+type_interface_has_no_guid=04083_E_Tipo interface $1 n∆o tem um GUID v†lido
+>>>>>>> graemeg/cpstrnew
+=======
+type_interface_has_no_guid=04083_E_Tipo interface $1 n∆o tem um GUID v†lido
+>>>>>>> graemeg/cpstrnew
+=======
+type_interface_has_no_guid=04083_E_Tipo interface $1 n∆o tem um GUID v†lido
+>>>>>>> graemeg/cpstrnew
+=======
+type_interface_has_no_guid=04083_E_Tipo interface $1 n∆o tem um GUID v†lido
+>>>>>>> origin/cpstrnew
 % When applying the as-operator to an interface or class, the desired interface (i.e. the right operand of the
 % as-operator) must have a valid GUID.
 type_e_invalid_objc_selector_name=04084_E_Nome seletor inv†lido "$1"
@@ -1755,6 +2138,10 @@ type_w_procvar_univ_conflicting_para=04095_W_Tipo parÉmetro 'univ' foráado em va
 % floating point values on the stack, because then the stack will be unbalanced.
 % Note that this warning will not flagg all potentially dangerous situations.
 % when \var{test} returns.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 type_e_generics_cannot_reference_itself=04096_E_ParÉmetros de tipo de especializaá‰es de genÇricos n∆o podem referenciar o tipo especializado atual
 % Recursive specializations of generics like \var{Type MyType = specialize MyGeneric<MyType>;} are not possible.
 type_e_type_parameters_are_not_allowed_here=04097_E_ParÉmetros de tipo n∆o s∆o permitidos em procedimentos ou funá‰es de classe/registro/objeto n∆o-genÇrico
@@ -1793,11 +2180,39 @@ type_w_explicit_string_cast_loss=04107_-W_Convers∆o de tipo 'string' expl°cita c
 type_w_unicode_data_loss=04108_W_Convers∆o de constante Unicode com potencial de perda de dados
 % Conversion from a WideChar to AnsiChar can lose data since now all unicode characters may be represented in the current
 % system codepage
+=======
+%
+>>>>>>> graemeg/cpstrnew
+=======
+%
+>>>>>>> graemeg/cpstrnew
+=======
+%
+>>>>>>> graemeg/cpstrnew
+=======
+%
+>>>>>>> origin/cpstrnew
 % \end{description}
 #
 # Symtable
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 # 05084 is the last used one
+=======
+# 05080 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 05080 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 05080 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 05080 is the last used one
+>>>>>>> origin/cpstrnew
 #
 % \section{Symbol handling}
 % This section lists all the messages that concern the handling of symbols.
@@ -1834,8 +2249,28 @@ sym_e_forward_type_not_resolved=05009_E_Tipo posterior n∆o resolvido "$1"
 % A symbol was forward defined, but no declaration was encountered.
 sym_e_only_static_in_static=05010_E_Apenas vari†veis est†ticas podem ser usadas em mÇtodos est†ticos ou mÇtodos externos
 % A static method of an object can only access static variables.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 sym_e_type_must_be_rec_or_object_or_class=05012_E_Record or object or class type expected
 % The variable or expression isn't of the type \var{record} or \var{object} or \var{class}.
+=======
+sym_f_type_must_be_rec_or_class=05012_F_Tipo registro ou classe esperados
+% The variable or expression isn't of the type \var{record} or \var{class}.
+>>>>>>> graemeg/cpstrnew
+=======
+sym_f_type_must_be_rec_or_class=05012_F_Tipo registro ou classe esperados
+% The variable or expression isn't of the type \var{record} or \var{class}.
+>>>>>>> graemeg/cpstrnew
+=======
+sym_f_type_must_be_rec_or_class=05012_F_Tipo registro ou classe esperados
+% The variable or expression isn't of the type \var{record} or \var{class}.
+>>>>>>> graemeg/cpstrnew
+=======
+sym_f_type_must_be_rec_or_class=05012_F_Tipo registro ou classe esperados
+% The variable or expression isn't of the type \var{record} or \var{class}.
+>>>>>>> origin/cpstrnew
 sym_e_no_instance_of_abstract_object=05013_E_InstÉncias de classes ou objetos com mÇtodos abstratos n∆o s∆o permitidas
 % You are trying to generate an instance of a class which has an abstract
 % method that wasn't overridden.
@@ -2034,6 +2469,10 @@ sym_e_objc_formal_class_not_resolved=05080_E_Nenhuma definiá∆o completa da class
 % However, as soon as you wish to actually do something with an entity of this class type (such as
 % access one of its fields, send a message to it, or use it to inherit from), the compiler requires the full definition
 % of the class to be in scope.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 sym_e_interprocgoto_into_init_final_code_not_allowed=05081_E_Gotos dentro de blocos de inicializaá∆o ou finalizaá∆o de unidades n∆o s∆o permitidos
 % Gotos into initialization or finalization blockse of units are not allowed.
 sym_e_external_class_name_mismatch1=05082_E_Nome externo inv†lido "$1" para classe formal "$2"
@@ -2047,6 +2486,14 @@ sym_w_library_overload=05084_W_Poss°vel conflito em biblioteca: s°mbolo "$1" da 
 % the 'libname' part is only a hint, funcname might also be loaded
 % by another library. This warning appears if 'funcname' is used twice
 % with two different library names.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 %
 % \end{description}
 #
@@ -2184,6 +2631,10 @@ cg_f_unknown_type_in_unit=06050_F_Imposs°vel encontrar o tipo "$1" na unidade "$
 % and you didn't change the runtime library code, it's very likely that the runtime library
 % you're using doesn't match the compiler in use. If you changed the runtime library this error means
 % that you removed a type which the compiler needs for internal use.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 cg_e_interprocedural_goto_only_to_outer_scope_allowed=06051_E_Gotos interprocedimentos s∆o permitidos apenas para subrotinas externas
 % Gotos between subroutines are only allowed if the goto jumps from an inner to an outer subroutine or
 % from a subroutine to the main program
@@ -2194,13 +2645,37 @@ cg_e_goto_across_procedures_with_exceptions_not_allowed=06053_E_Deixar procedime
 % which use automated types like ansistrings or class constructurs are affected by this too.
 cg_e_mod_only_defined_for_pos_quotient=06054_E_No modo ISO, o operador 'mod' Ç definido apenas para quociente positivo
 % In ISO pascal, only positive values are allowed for the quotient: \var{n mod m} is only valid if \var{m>0}.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 % \end{description}
 # EndOfTeX
 
 #
 # Assembler reader
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 # 07110 is the last used one
+=======
+# 07109 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 07109 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 07109 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 07109 is the last used one
+>>>>>>> origin/cpstrnew
 #
 asmr_d_start_reading=07000_DL_Iniciando $1 an†lise estilo assembler
 % This informs you that an assembler block is being parsed
@@ -2350,7 +2825,23 @@ asmr_w_id_supposed_external=07072_W_Identificador $1 supostamente externo
 % problems at link time if the symbol is not defined anywhere.
 asmr_e_string_not_allowed_as_const=07073_E_'Strings' n∆o permitidas como constantes
 % Character strings are not allowed as constants.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 asmr_e_no_var_type_specified=07074_E_Nenhum tipo de vari†vel especificado
+=======
+asmr_e_no_var_type_specified=07074_Nenhum tipo de vari†vel especificado
+>>>>>>> graemeg/cpstrnew
+=======
+asmr_e_no_var_type_specified=07074_Nenhum tipo de vari†vel especificado
+>>>>>>> graemeg/cpstrnew
+=======
+asmr_e_no_var_type_specified=07074_Nenhum tipo de vari†vel especificado
+>>>>>>> graemeg/cpstrnew
+=======
+asmr_e_no_var_type_specified=07074_Nenhum tipo de vari†vel especificado
+>>>>>>> origin/cpstrnew
 % The syntax expects a type idenfitifer after the dot, but
 % none was found.
 asmr_w_assembler_code_not_returned_to_text=07075_E_C¢digo assembler n∆o retornou a seá∆o texto
@@ -2452,6 +2943,10 @@ asmr_e_mixing_regtypes=07108_E_Todos os registros em um conjunto de registros de
 asmr_e_empty_regset=07109_E_Um conjunto de registros n∆o pode estar vazio
 % Instructions on the ARM architecture that take a register set as argument require that such a set
 % contains at least one register.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 asmr_w_useless_got_for_local=07110_W_@GOTPCREL Ç in£til e potencialmente perigoso para s°mbolos locais
 % The use of @GOTPCREL supposes an extra indirection that is
@@ -2474,6 +2969,27 @@ asmr_e_unsupported_directive=07115_E_Diretiva "$1" n∆o Ç suportada pelo alvo atu
 # Assembler/binary writers
 #
 # 08022 is the last used one
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+#
+# Assembler/binary writers
+#
+# 08020 is the last used one
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 #
 asmw_f_too_many_asm_files=08000_F_Muitos arquivos assembler
 % With smartlinking enabled, there are too many assembler
@@ -2500,6 +3016,10 @@ asmw_e_first_defined_label=08018_E_Asm: Primeiramente definido aqui
 asmw_e_invalid_register=08019_E_Asm: Registro inv†lido $1
 asmw_e_16bit_32bit_not_supported=08020_E_Asm: Referàncias 16 ou 32 Bits n∆o suportadas
 asmw_e_64bit_not_supported=08021_E_Asm: Operandos 64 Bits n∆o suportados
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 asmw_e_bad_reg_with_rex=08022_E_Asm: AH,BH,CH ou DH n∆o podem ser usados em uma instruá∆o que requer o prefixo REX
 % x86_64 only: instruction encoding of this platform does not allow using
 % 8086 high byte registers (AH,BH,CH or DH) together with REX prefix in a single instruction.
@@ -2514,11 +3034,35 @@ asmw_e_prologue_too_large=08024_E_Pr¢logo da funá∆o excede 255 bytes
 asmw_e_handlerdata_no_handler=08025_E_Diretiva .seh_handlerdata sem .seh_handler precedente
 % x86_64-win64: If .seh_handlerdata directive is used, then a .seh_handler directive must be
 % present earlier in the same function.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 #
 # Executing linker/assembler
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 # 09033 is the last used one
+=======
+# 09032 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 09032 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 09032 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 09032 is the last used one
+>>>>>>> origin/cpstrnew
 #
 # BeginOfTeX
 %
@@ -2608,8 +3152,20 @@ exec_e_cant_open_resource_file=09031_E_Imposs°vel abrir arquivo recursos "$1"
 % An error occurred resource file cannot be opened.
 exec_e_cant_write_resource_file=09032_E_Imposs°vel gravar arquivo recursos "$1"
 % An error occurred resource file cannot be written.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 exec_n_backquote_cat_file_not_found=09033_N_Arquivo "$1" n∆o encontrado para comando 'cat' entre aspas
 % The compiler did not find the file that should be expanded into linker parameters
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 %\end{description}
 # EndOfTeX
 
@@ -2635,7 +3191,23 @@ execinfo_x_uninitdatasize=09132_X_Tamanho dos dados n∆o inicializados: $1 bytes
 % Informational message showing the size of the uninitialized data section.
 execinfo_x_stackreserve=09133_X_Espaáo da Pilha reservado: $1 bytes
 % Informational message showing the stack size that the compiler reserved for the executable.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 execinfo_x_stackcommit=09134_X_Espaáo da Pilha confirmado: $1 bytes
+=======
+execinfo_x_stackcommit=09134_X_Espaáo da Pilha comprometido: $1 bytes
+>>>>>>> graemeg/cpstrnew
+=======
+execinfo_x_stackcommit=09134_X_Espaáo da Pilha comprometido: $1 bytes
+>>>>>>> graemeg/cpstrnew
+=======
+execinfo_x_stackcommit=09134_X_Espaáo da Pilha comprometido: $1 bytes
+>>>>>>> graemeg/cpstrnew
+=======
+execinfo_x_stackcommit=09134_X_Espaáo da Pilha comprometido: $1 bytes
+>>>>>>> origin/cpstrnew
 % Informational message showing the stack size that the compiler committed for the executable.
 %\end{description}
 # EndOfTeX
@@ -2643,7 +3215,23 @@ execinfo_x_stackcommit=09134_X_Espaáo da Pilha confirmado: $1 bytes
 #
 # Internal linker messages
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 # 09200 is the last used one
+=======
+# 09201 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 09201 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 09201 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 09201 is the last used one
+>>>>>>> origin/cpstrnew
 #
 # BeginOfTeX
 % \section{Linker messages}
@@ -2789,7 +3377,23 @@ unit_u_check_time=10037_U_PPU Verifique arquivo $1 hora $2
 unit_w_cant_compile_unit_with_changed_incfile=10040_W_Imposs°vel recompilar unidade $1, mas encontrados arquivos de inclus∆o modificados
 % A unit was found to have modified include files, but
 % some source files were not found, so recompilation is impossible.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 unit_u_source_modified=10041_U_Arquivo $1 Ç mais novo que o usado para criar o arquivo PPU $2
+=======
+unit_u_source_modified=10041_U_Arquivo $1 Ç mais novo que o arquivo PPU $2
+>>>>>>> graemeg/cpstrnew
+=======
+unit_u_source_modified=10041_U_Arquivo $1 Ç mais novo que o arquivo PPU $2
+>>>>>>> graemeg/cpstrnew
+=======
+unit_u_source_modified=10041_U_Arquivo $1 Ç mais novo que o arquivo PPU $2
+>>>>>>> graemeg/cpstrnew
+=======
+unit_u_source_modified=10041_U_Arquivo $1 Ç mais novo que o arquivo PPU $2
+>>>>>>> origin/cpstrnew
 % A modified source file for a compiler unit was found.
 unit_u_ppu_invalid_fpumode=10042_U_Tentando usar uma unidade que foi compilada com um modo diferente de FPU
 % Trying to compile code while using units which were not compiled with
@@ -2858,6 +3462,22 @@ unit_e_different_wpo_file=10061_E_Unidade $1 foi compilada usando uma entrada de
 % When a unit has been compiled using a particular whole program optimization (wpo) feedback file (\var{-FW<x>} \var{-OW<x>}),
 % this compiled version of the unit is specialised for that particular compilation scenario and cannot be used in
 % any other context. It has to be recompiled before you can use it in another program or with another wpo feedback input file.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+% \end{description}
+>>>>>>> graemeg/cpstrnew
+=======
+% \end{description}
+>>>>>>> graemeg/cpstrnew
+=======
+% \end{description}
+>>>>>>> graemeg/cpstrnew
+=======
+% \end{description}
+>>>>>>> origin/cpstrnew
 unit_u_indirect_crc_changed=10062_U_CRC interface indireta (objetos/classes) alterado para a unidade $1
 % When you use the \var{-vu} flag, the compiler warns that the
 % indirect CRC calculated for the unit (this is the CRC of all classes/objects/interfaces/$\ldots$
@@ -2869,7 +3489,23 @@ unit_u_indirect_crc_changed=10062_U_CRC interface indireta (objetos/classes) alt
 #
 #  Options
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 # 11049 is the last used one
+=======
+# 11048 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 11048 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 11048 is the last used one
+>>>>>>> graemeg/cpstrnew
+=======
+# 11048 is the last used one
+>>>>>>> origin/cpstrnew
 #
 option_usage=11000_O_$1 [options] <inputfile> [options]
 # BeginOfTeX
@@ -2965,10 +3601,35 @@ option_read_config_file=11034_D_Lendo arquivo configuraá∆o "$1"
 option_found_file=11035_D_Nome arquivo fonte encontrado "$1"
 % Additional information about options.
 % Displayed when you have the debug option turned on.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 option_code_page_not_available=11039_E_Codepage desconhecido
 % An unknown codepage for the source files was requested.
 % The compiler is compiled with support for several codepages built-in.
 % The requested codepage is not in that list. You will need to recompile
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+option_code_page_not_available=11039_E_P†gina de c¢digo desconhecida
+% An unknown code page for the source files was requested.
+% The compiler is compiled with support for several code pages built-in.
+% The requested code page is not in that list. You will need to recompile
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 % the compiler with support for the codepage you need.
 option_config_is_dir=11040_F_Arquivo configuraá∆o $1 Ç um diret¢rio
 % Directories cannot be used as configuration files.
@@ -2992,12 +3653,37 @@ option_dwarf_smart_linking=11046_N_Informaá∆o de depuraá∆o DWARF n∆o pode ser us
 option_ignored_target=11047_W_Opá∆o "$1" ignorada pela plataforma alvo atual
 % Not all options are supported or implemented for all target platforms. This message informs you that a chosen
 % option is ignored for the currently selected target platform.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 option_debug_external_unsupported=11048_W_Desabilitando informaá∆o externa depuraá∆o porque n∆o Ç suportada pela combinaá∆o formato alvo/depuraá∆o selecionado.
 % Not all debug formats can be stored in an external file on all platforms. In particular, on
 % Mac OS X only DWARF debug information can be stored externally.
 option_dwarf_smartlink_creation=11049_N_Informaá∆o de depuraá∆o DWARF n∆o pode ser usada com vinculaá∆o inteligente com assembler externo, desabilitando criaá∆o de biblioteca est†tica.
 % Smart linking is currently incompatble with DWARF debug information on most
 % platforms, so smart linking is disabled in such cases.
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+%\end{description}
+option_debug_external_unsupported=11048_W_Desabilitando informaá∆o externa depuraá∆o porque n∆o Ç suportada pela combinaá∆o formato alvo/depuraá∆o selecionado.
+% Not all debug formats can be stored in an external file on all platforms. In particular, on
+% Mac OS X only DWARF debug information can be stored externally.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 %\end{description}
 # EndOfTeX
 
@@ -3083,7 +3769,23 @@ wpo_cant_create_feedback_file=12019_E_Imposs°vel criar arquivo retorno otimizaá‰
 #
 option_logo=11023_[
 Compilador Free Pascal vers∆o $FPCFULLVERSION [$FPCDATE] para $FPCCPU
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Copyright (c) 1993-2015 by Florian Klaempfl and others
+=======
+Copyright (c) 1993-2011 by Florian Klaempfl
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011 by Florian Klaempfl
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011 by Florian Klaempfl
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011 by Florian Klaempfl
+>>>>>>> origin/cpstrnew
 ]
 
 #
@@ -3118,10 +3820,37 @@ Tipos Microcontroladores suportados:
   $CONTROLLERTYPES
 
 Este programa Ç oferecido sob a Licenáa Geral P£blica GNU
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Para maiores informaá‰es leia COPYING.v2
 
 Reportar falhas, sugest‰es, etc. para:
                  http://bugs.freepascal.org
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+Para maiores informaá‰es leia COPYING.FPC
+
+Reportar falhas, sugest‰es, etc. para:
+                 http://bugs.freepascal.org
+ou
+                 bugs@freepascal.org
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 ]
 
 #
@@ -3170,11 +3899,23 @@ option_help_pages=11025_[
 3*2Acoff_COFF (Go32v2) usando gravador interno
 3*2Apecoff_PE-COFF (Win32) usando gravador interno
 4*2Aas_Monta usando o GNU AS
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 4*2Agas_Monta usando o GNU GAS
 4*2Agas-darwin_Monta darwin Mach-O64 usando GNU GAS
 4*2Amasm_Win64 arquivo objeto usando ml64 (Microsoft)
 4*2Apecoff_PE-COFF (Win64) usando escritor interno
 4*2Aelf_ELF (Linux-64bit) usando escritor interno
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 6*2Aas_Arquivo Unix .o usando o GNU AS
 6*2Agas_Montador assembler GNU Motorola
 6*2Amit_Sintaxe MIT (antigo GAS)
@@ -3186,7 +3927,19 @@ S*2Aas_Monta usando o GNU AS
 **2bl_Gera informaá‰es s°mbolos locais
 **1B_Constr¢i todos os m¢dulos
 **1C<x>_Opá‰es geraá∆o de c¢digo:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 **2C3<x>_Ligar verificaá∆o de erro ieee para constantes
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 **2Ca<x>_Seleciona ABI, veja fpc -i para poss°veis valores
 **2Cb_Gera c¢digo 'big-endian'
 **2Cc<x>_Ajusta convená∆o de chamada para <x>
@@ -3251,7 +4004,19 @@ S*2Aas_Monta usando o GNU AS
 *g2gw_Gera informaá‰es depuraá∆o DWARFv2 (mesmo que -gw2)
 *g2gw2_Gera informaá‰es depuraá∆o DWARFv2
 *g2gw3_Gera informaá‰es depuraá∆o DWARFv3
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 *g2gw4_Gera informaá‰es depuraá∆o DWARFv4 (experimental)
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 **1i_Informaá‰es
 **2iD_Retorna data compilador
 **2iV_Retorna vers∆o compilador curta
@@ -3270,6 +4035,26 @@ S*2Aas_Monta usando o GNU AS
 **2Mtp_Modo compatibilidade TP/BP 7.0
 **2Mmacpas_Modo compatibilidade dialetos Macintosh Pascal
 **1n_N∆o ler os arquivos de configuraá‰es padr∆o
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+**1N<x>_Otimizaá‰es n¢s †rvore
+**2Nu_Desdobra laáos
+>>>>>>> graemeg/cpstrnew
+=======
+**1N<x>_Otimizaá‰es n¢s †rvore
+**2Nu_Desdobra laáos
+>>>>>>> graemeg/cpstrnew
+=======
+**1N<x>_Otimizaá‰es n¢s †rvore
+**2Nu_Desdobra laáos
+>>>>>>> graemeg/cpstrnew
+=======
+**1N<x>_Otimizaá‰es n¢s †rvore
+**2Nu_Desdobra laáos
+>>>>>>> origin/cpstrnew
 **1o<x>_Altera o nome do execut†vel produzido para <x>
 **1O<x>_Otimizaá‰es:
 **2O-_Disabilita otimizaá‰es
@@ -3309,17 +4094,53 @@ S*2Aas_Monta usando o GNU AS
 **2So_Mesmo que -Mtp
 **2Ss_Nome construtor deve ser 'init' (destruidor deve ser 'done')
 **2Sx_Habilita palavras-chave exceá‰es (padr∆o nos modos Delphi/ObjFPC)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 **2Sy_@<ponteiro> retorna um ponteiro tipado, mesmo que $T+
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 **1s_N∆o chama o montador assembler e o vinculador
 **2sh_Gera roteiro para vincular no servidor
 **2st_Gera roteiro para vincular no alvo
 **2sr_Pula fase alocaá∆o registro (use com -alr)
 **1T<x>_Sistema operacional alvo:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 3*2Tdarwin_Darwin/Mac OS X
 3*2Temx_OS/2 via EMX (incluidos extensor EMX/RSX)
 3*2Tfreebsd_FreeBSD
 3*2Tgo32v2_Vers∆o 2 do extensor DOS DJ Delorie
 3*2Tiphonesim_ iPhoneSimulator do iOS SDK 3.2+ (vers‰es antigas: -Tdarwin)
+=======
+3*2Temx_OS/2 via EMX (incluidos extensor EMX/RSX)
+3*2Tfreebsd_FreeBSD
+3*2Tgo32v2_Vers∆o 2 do extensor DOS DJ Delorie
+>>>>>>> graemeg/cpstrnew
+=======
+3*2Temx_OS/2 via EMX (incluidos extensor EMX/RSX)
+3*2Tfreebsd_FreeBSD
+3*2Tgo32v2_Vers∆o 2 do extensor DOS DJ Delorie
+>>>>>>> graemeg/cpstrnew
+=======
+3*2Temx_OS/2 via EMX (incluidos extensor EMX/RSX)
+3*2Tfreebsd_FreeBSD
+3*2Tgo32v2_Vers∆o 2 do extensor DOS DJ Delorie
+>>>>>>> graemeg/cpstrnew
+=======
+3*2Temx_OS/2 via EMX (incluidos extensor EMX/RSX)
+3*2Tfreebsd_FreeBSD
+3*2Tgo32v2_Vers∆o 2 do extensor DOS DJ Delorie
+>>>>>>> origin/cpstrnew
 3*2Tlinux_Linux
 3*2Tnetbsd_NetBSD
 3*2Tnetware_M¢dulo Novell Netware (clib)
@@ -3328,6 +4149,10 @@ S*2Aas_Monta usando o GNU AS
 3*2Tos2_OS/2 / eComStation
 3*2Tsunos_SunOS/Solaris
 3*2Tsymbian_Symbian OS
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 3*2Tsolaris_Solaris
 3*2Twatcom_Watcom compatible DOS extender
 3*2Twdosx_WDOSX DOS extender
@@ -3349,6 +4174,40 @@ P*2Tlinux_Linux
 P*2Tmacos_Mac OS (cl†ssico)
 P*2Tmorphos_MorphOS
 S*2Tsolaris_Solaris
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+3*2Twatcom_Extensor DOS compat°vel Watcom
+3*2Twdosx_Extensor DOS WDOSX
+3*2Twin32_Windows 32 Bit
+3*2Twince_Windows CE
+4*2Tlinux_Linux
+6*2Tamiga_Commodore Amiga
+6*2Tatari_Atari ST/STe/TT
+6*2Tlinux_Linux/m68k
+6*2Tmacos_Macintosh m68k (n∆o suportado)
+6*2Tpalmos_PalmOS
+A*2Tlinux_Linux
+A*2Twince_Windows CE
+P*2Tamiga_AmigaOS no PowerPC
+P*2Tdarwin_Darwin e Mac OS X no PowerPC
+P*2Tlinux_Linux no PowerPC
+P*2Tmacos_Mac OS (cl†ssico) no PowerPC
+P*2Tmorphos_MorphOS
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 S*2Tlinux_Linux
 **1u<x>_Indefine o s°mbolo <x>
 **1U_Opá‰es unidades:
@@ -3368,6 +4227,10 @@ S*2Tlinux_Linux
 **2*_    com caminho completo        v : Grava fpcdebug.txt com muitas
 **2*_                                    informaá‰es de depuraá∆o
 **2*_m<x>,<y> : N∆o mostra mensagens numeradas <x> e <y>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 **1W<x>_Opá‰es espec°ficas do alvo (alvos)
 3*2WA_Especifica aplicaá∆o do tipo nativo (Windows)
 4*2WA_Especifica aplicaá∆o do tipo nativo (Windows)
@@ -3389,12 +4252,46 @@ A*2WC_Especifica aplicaá∆o do tipo console (Windows)
 P*2WC_Especifica aplicaá∆o do tipo console (Classic Mac OS)
 3*2WD_Usa DEFFILE para exportar funá‰es de DLL ou EXE (Windows)
 4*2WD_Usa DEFFILE para exportar funá‰es de DLL ou EXE (Windows)
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+3*1W<x>_Opá‰es espec°ficas alvo (alvos)
+A*1W<x>_Opá‰es espec°ficas alvo (alvos)
+P*1W<x>_Opá‰es espec°ficas alvo (alvos)
+p*1W<x>_Opá‰es espec°ficas alvo (alvos)
+3*2Wb_Cria um encarte ao invÇs de uma biblioteca (Darwin)
+P*2Wb_Cria um encarte ao invÇs de uma biblioteca (Darwin)
+p*2Wb_Cria um encarte ao invÇs de uma biblioteca (Darwin)
+3*2WB_Cria uma imagem reloc†vel (Windows)
+A*2WB_Cria uma imagem reloc†vel (Windows, Symbian)
+3*2WC_Especifica tipo aplicaá∆o console (EMX, OS/2, Windows)
+A*2WC_Especifica tipo aplicaá∆o console (Windows)
+P*2WC_Especifica tipo aplicaá∆o console (Classic Mac OS)
+3*2WD_Usa DEFFILE para exportar funá‰es de DLL ou EXE (Windows)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A*2WD_Usa DEFFILE para exportar funá‰es de DLL ou EXE (Windows)
 3*2We_Usa recursos externos (Darwin)
 4*2We_Usa recursos externos (Darwin)
 A*2We_Usa recursos externos (Darwin)
 P*2We_Usa recursos externos (Darwin)
 p*2We_Usa recursos externos (Darwin)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 3*2WF_Especifica aplicaá∆o do tipo tela-cheia (EMX, OS/2)
 3*2WG_Especifica aplicaá∆o do tipo gr†fica (EMX, OS/2, Windows)
 4*2WG_Especifica aplicaá∆o do tipo gr†fica (Windows)
@@ -3437,6 +4334,58 @@ P*2WT_Especifica aplicaá∆o do tipo ferramenta MPW (Classic Mac OS)
 **1*_
 **1?_Exibe esta ajuda
 **1h_Exibe esta ajuda sem espera
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+3*2WF_Especifica tipo aplicaá∆o tela-cheia (EMX, OS/2)
+3*2WG_Especifica tipo aplicaá∆o gr†fica (EMX, OS/2, Windows)
+A*2WG_Especifica tipo aplicaá∆o gr†fica (Windows)
+P*2WG_Especifica tipo aplicaá∆o gr†fica (Mac OS Cl†ssico)
+3*2Wi_Usa recursos internos (Darwin)
+P*2Wi_Usa recursos internos (Darwin)
+p*2Wi_Usa recursos internos (Darwin)
+3*2WN_N∆o gera c¢digo relocaá∆o, necess†rio para depuraá∆o (Windows)
+A*2WN_N∆o gera c¢digo relocaá∆o, necess†rio para depuraá∆o (Windows)
+3*2WR_Gera c¢digo relocaá∆o (Windows)
+A*2WR_Gera c¢digo relocaá∆o (Windows)
+P*2WT_Especifica tipo aplicaá∆o ferramenta MPW (Mac OS Cl†ssico)
+3*2WX_Habilita pilha execut†vel (Linux)
+A*2WX_Habilita pilha execut†vel (Linux)
+p*2WX_Habilita pilha execut†vel (Linux)
+P*2WX_Habilita pilha execut†vel (Linux)
+**1X_Opá‰es execut†vel:
+**2Xc_Passa '--shared/-dynamic' para o vinculador (BeOS, Darwin, FreeBSD, Linux)
+**2Xd_N∆o usa caminho busca biblioteca padr∆o (necess†rio para compilaá∆o 'cross')
+**2Xe_Use vinculador externo
+**2Xg_Cria info.depuraá∆o em um arquivo separado e adiciona uma seá∆o 'debuglink' no execut†vel
+**2XD_Tenta vincular unidades dinÉmicamente (define FPC_LINK_DYNAMIC)
+**2Xi_Use vinculador interno
+**2Xm_Gera mapa vinculaá∆o
+**2XM<x>_Ajusta o nome da rotina 'principal' programa (padr∆o Ç 'main')
+**2XP<x>_Prefixa os nomes dos utilit†rios bin†rios (binutils) com o prfixo <x>
+**2Xr<x>_Ajusta o caminho-rlink do vinculador para <x> (necess†rio para compilaá∆o 'cross', veja o manual do 'ld' para mais informaá‰es) (BeOS, Linux)
+**2XR<x>_Prefixa <x> para todos caminhos busca vinculador (BeOS, Darwin, FreeBSD, Linux, Mac OS, Solaris)
+**2Xs_Elimina todos os s°mbolos do execut†vel
+**2XS_Tenta vincular unidades estaticamente (padr∆o, define FPC_LINK_STATIC)
+**2Xt_Vincula com bibliotecas est†ticas (-static Ç passado ao vinculador)
+**2XX_Tenta vinculaá∆o inteligente unidades (define FPC_LINK_SMART)
+**1*_
+**1?_Mostra esta ajuda
+**1h_Mostra esta ajuda sem pausa
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 ]
 
 #

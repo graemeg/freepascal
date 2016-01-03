@@ -23,11 +23,17 @@ type
     procedure TestInitFielddefsFromFields;
     procedure TestDoubleFieldDef;
     procedure TestFieldDefWithoutDS;
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure TestGetParamList;
     procedure TestGetFieldList;
     procedure TestExtractFieldName; //move record then copy. Is copy identical? Has record position changed?
     procedure TestCheckFieldNames;
     procedure TestFindField;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
 implementation
@@ -440,6 +446,56 @@ begin
   finally
     ds.Destroy;
   end;
+end;
+
+procedure TTestBasics.TestDoubleFieldDef;
+var ds : TDataset;
+    PassException : boolean;
+begin
+  // If a second field with the same name is added to a TFieldDefs, an exception
+  // should occur
+  ds := TDataset.create(nil);
+  ds.FieldDefs.Add('Field1',ftInteger);
+  PassException:=False;
+  try
+    ds.FieldDefs.Add('Field1',ftString,10,false)
+  except
+    on E: EDatabaseError do PassException := True;
+  end;
+  AssertTrue(PassException);
+end;
+
+procedure TTestBasics.TestFieldDefWithoutDS;
+var FieldDefs : TFieldDefs;
+begin
+  FieldDefs := TFieldDefs.Create(nil);
+  FieldDefs.Add('test',ftString);
+  FieldDefs.Free;
+end;
+
+procedure TTestBasics.TestDoubleFieldDef;
+var ds : TDataset;
+    PassException : boolean;
+begin
+  // If a second field with the same name is added to a TFieldDefs, an exception
+  // should occur
+  ds := TDataset.create(nil);
+  ds.FieldDefs.Add('Field1',ftInteger);
+  PassException:=False;
+  try
+    ds.FieldDefs.Add('Field1',ftString,10,false)
+  except
+    on E: EDatabaseError do PassException := True;
+  end;
+  AssertTrue(PassException);
+end;
+
+procedure TTestBasics.TestFieldDefWithoutDS;
+var FieldDefs : TFieldDefs;
+begin
+  FieldDefs := TFieldDefs.Create(nil);
+  FieldDefs.Add('test',ftString);
+  FieldDefs.Free;
 end;
 
 initialization

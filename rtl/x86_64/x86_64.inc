@@ -21,6 +21,16 @@
                                Primitives
 ****************************************************************************}
 
+<<<<<<< HEAD
+=======
+procedure fpc_cpuinit;
+  begin
+    SysResetFPU;
+    if not(IsLibrary) then
+      SysInitFPU;
+  end;
+
+>>>>>>> graemeg/fixes_2_2
 {$define FPC_SYSTEM_HAS_SPTR}
 Function Sptr : Pointer;assembler;nostackframe;{$ifdef SYSTEMINLINE}inline;{$endif}
 asm
@@ -83,6 +93,298 @@ asm
     mov    %rsi, %rdx
     mov    %rdi, %rcx
 {$endif win64}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    mov    %r8, %rax
+    sub    %rdx, %rcx            { rcx = src - dest }
+    jz     .Lquit                { exit if src=dest }
+    jnb    .L1                   { src>dest => forward move }
+
+    add    %rcx, %rax            { rcx is negative => r8+rcx > 0 if regions overlap }
+    jb     .Lback                { if no overlap, still do forward move }
+
+.L1:
+    cmp    $8, %r8
+    jl     .Lless8f              { signed compare, negative count not allowed }
+    test   $7, %dl
+    je     .Ldestaligned
+
+    test   $1, %dl               { align dest by moving first 1+2+4 bytes }
+    je     .L2f
+    mov    (%rcx,%rdx,1),%al
+    dec    %r8
+    mov    %al, (%rdx)
+    add    $1, %rdx
+.L2f:
+    test   $2, %dl
+    je     .L4f
+    mov    (%rcx,%rdx,1),%ax
+    sub    $2, %r8
+    mov    %ax, (%rdx)
+    add    $2, %rdx
+.L4f:
+    test   $4, %dl
+    je     .Ldestaligned
+    mov    (%rcx,%rdx,1),%eax
+    sub    $4, %r8
+    mov    %eax, (%rdx)
+    add    $4, %rdx
+
+.Ldestaligned:
+    mov    %r8, %r9
+    shr    $5, %r9
+    jne    .Lmore32
+
+.Ltail:
+    mov    %r8, %r9
+    shr    $3, %r9
+    je     .Lless8f
+
+    .balign 16
+.Lloop8f:                             { max. 8 iterations }
+    mov    (%rcx,%rdx,1),%rax
+    mov    %rax, (%rdx)
+    add    $8, %rdx
+    dec    %r9
+    jne    .Lloop8f
+    and    $7, %r8
+
+.Lless8f:
+    test   %r8, %r8
+    jle    .Lquit
+
+    .balign 16
+.Lloop1f:
+    mov    (%rcx,%rdx,1),%al
+    mov    %al,(%rdx)
+    inc    %rdx
+    dec    %r8
+    jne    .Lloop1f
+.Lquit:
+    retq
+
+
+.Lmore32:
+    cmp    $0x2000, %r9          { this limit must be processor-specific (1/2 L2 cache size) }
+    jnae   .Lloop32
+    cmp    $0x1000, %rcx         { but don't bother bypassing cache if src and dest }
+    jnb    .Lntloopf             { are close to each other}
+
+    .balign 16
+.Lloop32:
+    add    $32,%rdx
+    mov    -32(%rcx,%rdx,1),%rax
+    mov    -24(%rcx,%rdx,1),%r10
+    mov    %rax,-32(%rdx)
+    mov    %r10,-24(%rdx)
+    dec    %r9
+    mov    -16(%rcx,%rdx,1),%rax
+    mov    -8(%rcx,%rdx,1),%r10
+    mov    %rax,-16(%rdx)
+    mov    %r10,-8(%rdx)
+    jne    .Lloop32
+
+    and    $0x1f, %r8
+    jmpq   .Ltail
+
+.Lntloopf:
+    mov    $32, %eax
+
+    .balign 16
+.Lpref:
+    prefetchnta (%rcx,%rdx,1)
+    prefetchnta 0x40(%rcx,%rdx,1)
+    add    $0x80, %rdx
+    dec    %eax
+    jne    .Lpref
+
+    sub    $0x1000, %rdx
+    mov    $64, %eax
+
+    .balign 16
+.Loop64:
+    add    $64, %rdx
+    mov    -64(%rcx,%rdx,1), %r9
+    mov    -56(%rcx,%rdx,1), %r10
+    movnti %r9, -64(%rdx)
+    movnti %r10, -56(%rdx)
+
+    mov    -48(%rcx,%rdx,1), %r9
+    mov    -40(%rcx,%rdx,1), %r10
+    movnti %r9, -48(%rdx)
+    movnti %r10, -40(%rdx)
+    dec    %eax
+    mov    -32(%rcx,%rdx,1), %r9
+    mov    -24(%rcx,%rdx,1), %r10
+    movnti %r9, -32(%rdx)
+    movnti %r10, -24(%rdx)
+
+    mov    -16(%rcx,%rdx,1), %r9
+    mov    -8(%rcx,%rdx,1), %r10
+    movnti %r9, -16(%rdx)
+    movnti %r10, -8(%rdx)
+    jne    .Loop64
+
+    sub    $0x1000, %r8
+    cmp    $0x1000, %r8
+    jae    .Lntloopf
+
+    mfence
+    jmpq    .Ldestaligned        { go handle remaining bytes }
+
+{ backwards move }
+.Lback:
+    add    %r8, %rdx             { points to the end of dest }
+    cmp    $8, %r8
+    jl     .Lless8b              { signed compare, negative count not allowed }
+    test   $7, %dl
+    je     .Ldestalignedb
+    test   $1, %dl
+    je     .L2b
+    dec    %rdx
+    mov    (%rcx,%rdx,1), %al
+    dec    %r8
+    mov    %al, (%rdx)
+.L2b:
+    test   $2, %dl
+    je     .L4b
+    sub    $2, %rdx
+    mov    (%rcx,%rdx,1), %ax
+    sub    $2, %r8
+    mov    %ax, (%rdx)
+.L4b:
+    test   $4, %dl
+    je     .Ldestalignedb
+    sub    $4, %rdx
+    mov    (%rcx,%rdx,1), %eax
+    sub    $4, %r8
+    mov    %eax, (%rdx)
+
+.Ldestalignedb:
+    mov    %r8, %r9
+    shr    $5, %r9
+    jne    .Lmore32b
+
+.Ltailb:
+    mov    %r8, %r9
+    shr    $3, %r9
+    je     .Lless8b
+
+.Lloop8b:
+    sub    $8, %rdx
+    mov    (%rcx,%rdx,1), %rax
+    dec    %r9
+    mov    %rax, (%rdx)
+    jne    .Lloop8b
+    and    $7, %r8
+
+.Lless8b:
+    test   %r8, %r8
+    jle    .Lquit2
+
+    .balign 16
+.Lsmallb:
+    dec   %rdx
+    mov   (%rcx,%rdx,1), %al
+    dec   %r8
+    mov   %al,(%rdx)
+    jnz   .Lsmallb
+.Lquit2:
+    retq
+
+.Lmore32b:
+    cmp   $0x2000, %r9
+    jnae  .Lloop32b
+    cmp    $0xfffffffffffff000,%rcx
+    jb     .Lntloopb
+
+    .balign 16
+.Lloop32b:
+    sub    $32, %rdx
+    mov    24(%rcx,%rdx,1), %rax
+    mov    16(%rcx,%rdx,1), %r10
+    mov    %rax, 24(%rdx)
+    mov    %r10, 16(%rdx)
+    dec    %r9
+    mov    8(%rcx,%rdx,1),%rax
+    mov    (%rcx,%rdx,1), %r10
+    mov    %rax, 8(%rdx)
+    mov    %r10, (%rdx)
+    jne    .Lloop32b
+    and    $0x1f, %r8
+    jmpq   .Ltailb
+
+
+.Lntloopb:
+    mov    $32, %eax
+
+    .balign 16
+.Lprefb:
+    sub    $0x80, %rdx
+    prefetchnta (%rcx,%rdx,1)
+    prefetchnta 0x40(%rcx,%rdx,1)
+    dec    %eax
+    jnz    .Lprefb
+
+    add    $0x1000, %rdx
+    mov    $0x40, %eax
+
+    .balign 16
+.Lloop64b:
+    sub    $64, %rdx
+    mov    56(%rcx,%rdx,1), %r9
+    mov    48(%rcx,%rdx,1), %r10
+    movnti %r9, 56(%rdx)
+    movnti %r10, 48(%rdx)
+
+    mov    40(%rcx,%rdx,1), %r9
+    mov    32(%rcx,%rdx,1), %r10
+    movnti %r9, 40(%rdx)
+    movnti %r10, 32(%rdx)
+    dec    %eax
+    mov    24(%rcx,%rdx,1), %r9
+    mov    16(%rcx,%rdx,1), %r10
+    movnti %r9, 24(%rdx)
+    movnti %r10, 16(%rdx)
+
+    mov    8(%rcx,%rdx,1), %r9
+    mov    (%rcx,%rdx,1), %r10
+    movnti %r9, 8(%rdx)
+    movnti %r10, (%rdx)
+    jne    .Lloop64b
+
+    sub    $0x1000, %r8
+    cmp    $0x1000, %r8
+    jae    .Lntloopb
+    mfence
+    jmpq   .Ldestalignedb
+end;
+{$endif FPC_SYSTEM_HAS_MOVE}
+
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifndef FPC_SYSTEM_HAS_MOVE}
+{$define FPC_SYSTEM_HAS_MOVE}
+procedure Move(const source;var dest;count:SizeInt);[public, alias: 'FPC_MOVE'];assembler;nostackframe;
+{ Linux: rdi source, rsi dest, rdx count
+  win64: rcx source, rdx dest, r8 count }
+asm
+{$ifndef win64}
+    mov    %rdx, %r8
+    mov    %rsi, %rdx
+    mov    %rdi, %rcx
+{$endif win64}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     mov    %r8, %rax
     sub    %rdx, %rcx            { rcx = src - dest }
@@ -350,6 +652,814 @@ asm
 end;
 {$endif FPC_SYSTEM_HAS_MOVE}
 
+>>>>>>> graemeg/cpstrnew
+=======
+
+    mov    %r8, %rax
+    sub    %rdx, %rcx            { rcx = src - dest }
+    jz     .Lquit                { exit if src=dest }
+    jnb    .L1                   { src>dest => forward move }
+
+    add    %rcx, %rax            { rcx is negative => r8+rcx > 0 if regions overlap }
+    jb     .Lback                { if no overlap, still do forward move }
+
+.L1:
+    cmp    $8, %r8
+    jl     .Lless8f              { signed compare, negative count not allowed }
+    test   $7, %dl
+    je     .Ldestaligned
+
+    test   $1, %dl               { align dest by moving first 1+2+4 bytes }
+    je     .L2f
+    mov    (%rcx,%rdx,1),%al
+    dec    %r8
+    mov    %al, (%rdx)
+    add    $1, %rdx
+.L2f:
+    test   $2, %dl
+    je     .L4f
+    mov    (%rcx,%rdx,1),%ax
+    sub    $2, %r8
+    mov    %ax, (%rdx)
+    add    $2, %rdx
+.L4f:
+    test   $4, %dl
+    je     .Ldestaligned
+    mov    (%rcx,%rdx,1),%eax
+    sub    $4, %r8
+    mov    %eax, (%rdx)
+    add    $4, %rdx
+
+.Ldestaligned:
+    mov    %r8, %r9
+    shr    $5, %r9
+    jne    .Lmore32
+
+.Ltail:
+    mov    %r8, %r9
+    shr    $3, %r9
+    je     .Lless8f
+
+    .balign 16
+.Lloop8f:                             { max. 8 iterations }
+    mov    (%rcx,%rdx,1),%rax
+    mov    %rax, (%rdx)
+    add    $8, %rdx
+    dec    %r9
+    jne    .Lloop8f
+    and    $7, %r8
+
+.Lless8f:
+    test   %r8, %r8
+    jle    .Lquit
+
+    .balign 16
+.Lloop1f:
+    mov    (%rcx,%rdx,1),%al
+    mov    %al,(%rdx)
+    inc    %rdx
+    dec    %r8
+    jne    .Lloop1f
+.Lquit:
+    retq
+
+
+.Lmore32:
+    cmp    $0x2000, %r9          { this limit must be processor-specific (1/2 L2 cache size) }
+    jnae   .Lloop32
+    cmp    $0x1000, %rcx         { but don't bother bypassing cache if src and dest }
+    jnb    .Lntloopf             { are close to each other}
+
+    .balign 16
+.Lloop32:
+    add    $32,%rdx
+    mov    -32(%rcx,%rdx,1),%rax
+    mov    -24(%rcx,%rdx,1),%r10
+    mov    %rax,-32(%rdx)
+    mov    %r10,-24(%rdx)
+    dec    %r9
+    mov    -16(%rcx,%rdx,1),%rax
+    mov    -8(%rcx,%rdx,1),%r10
+    mov    %rax,-16(%rdx)
+    mov    %r10,-8(%rdx)
+    jne    .Lloop32
+
+    and    $0x1f, %r8
+    jmpq   .Ltail
+
+.Lntloopf:
+    mov    $32, %eax
+
+    .balign 16
+.Lpref:
+    prefetchnta (%rcx,%rdx,1)
+    prefetchnta 0x40(%rcx,%rdx,1)
+    add    $0x80, %rdx
+    dec    %eax
+    jne    .Lpref
+
+    sub    $0x1000, %rdx
+    mov    $64, %eax
+
+    .balign 16
+.Loop64:
+    add    $64, %rdx
+    mov    -64(%rcx,%rdx,1), %r9
+    mov    -56(%rcx,%rdx,1), %r10
+    movnti %r9, -64(%rdx)
+    movnti %r10, -56(%rdx)
+
+    mov    -48(%rcx,%rdx,1), %r9
+    mov    -40(%rcx,%rdx,1), %r10
+    movnti %r9, -48(%rdx)
+    movnti %r10, -40(%rdx)
+    dec    %eax
+    mov    -32(%rcx,%rdx,1), %r9
+    mov    -24(%rcx,%rdx,1), %r10
+    movnti %r9, -32(%rdx)
+    movnti %r10, -24(%rdx)
+
+    mov    -16(%rcx,%rdx,1), %r9
+    mov    -8(%rcx,%rdx,1), %r10
+    movnti %r9, -16(%rdx)
+    movnti %r10, -8(%rdx)
+    jne    .Loop64
+
+    sub    $0x1000, %r8
+    cmp    $0x1000, %r8
+    jae    .Lntloopf
+
+    mfence
+    jmpq    .Ldestaligned        { go handle remaining bytes }
+
+{ backwards move }
+.Lback:
+    add    %r8, %rdx             { points to the end of dest }
+    cmp    $8, %r8
+    jl     .Lless8b              { signed compare, negative count not allowed }
+    test   $7, %dl
+    je     .Ldestalignedb
+    test   $1, %dl
+    je     .L2b
+    dec    %rdx
+    mov    (%rcx,%rdx,1), %al
+    dec    %r8
+    mov    %al, (%rdx)
+.L2b:
+    test   $2, %dl
+    je     .L4b
+    sub    $2, %rdx
+    mov    (%rcx,%rdx,1), %ax
+    sub    $2, %r8
+    mov    %ax, (%rdx)
+.L4b:
+    test   $4, %dl
+    je     .Ldestalignedb
+    sub    $4, %rdx
+    mov    (%rcx,%rdx,1), %eax
+    sub    $4, %r8
+    mov    %eax, (%rdx)
+
+.Ldestalignedb:
+    mov    %r8, %r9
+    shr    $5, %r9
+    jne    .Lmore32b
+
+.Ltailb:
+    mov    %r8, %r9
+    shr    $3, %r9
+    je     .Lless8b
+
+.Lloop8b:
+    sub    $8, %rdx
+    mov    (%rcx,%rdx,1), %rax
+    dec    %r9
+    mov    %rax, (%rdx)
+    jne    .Lloop8b
+    and    $7, %r8
+
+.Lless8b:
+    test   %r8, %r8
+    jle    .Lquit2
+
+    .balign 16
+.Lsmallb:
+    dec   %rdx
+    mov   (%rcx,%rdx,1), %al
+    dec   %r8
+    mov   %al,(%rdx)
+    jnz   .Lsmallb
+.Lquit2:
+    retq
+
+.Lmore32b:
+    cmp   $0x2000, %r9
+    jnae  .Lloop32b
+    cmp    $0xfffffffffffff000,%rcx
+    jb     .Lntloopb
+
+    .balign 16
+.Lloop32b:
+    sub    $32, %rdx
+    mov    24(%rcx,%rdx,1), %rax
+    mov    16(%rcx,%rdx,1), %r10
+    mov    %rax, 24(%rdx)
+    mov    %r10, 16(%rdx)
+    dec    %r9
+    mov    8(%rcx,%rdx,1),%rax
+    mov    (%rcx,%rdx,1), %r10
+    mov    %rax, 8(%rdx)
+    mov    %r10, (%rdx)
+    jne    .Lloop32b
+    and    $0x1f, %r8
+    jmpq   .Ltailb
+
+
+.Lntloopb:
+    mov    $32, %eax
+
+    .balign 16
+.Lprefb:
+    sub    $0x80, %rdx
+    prefetchnta (%rcx,%rdx,1)
+    prefetchnta 0x40(%rcx,%rdx,1)
+    dec    %eax
+    jnz    .Lprefb
+
+    add    $0x1000, %rdx
+    mov    $0x40, %eax
+
+    .balign 16
+.Lloop64b:
+    sub    $64, %rdx
+    mov    56(%rcx,%rdx,1), %r9
+    mov    48(%rcx,%rdx,1), %r10
+    movnti %r9, 56(%rdx)
+    movnti %r10, 48(%rdx)
+
+    mov    40(%rcx,%rdx,1), %r9
+    mov    32(%rcx,%rdx,1), %r10
+    movnti %r9, 40(%rdx)
+    movnti %r10, 32(%rdx)
+    dec    %eax
+    mov    24(%rcx,%rdx,1), %r9
+    mov    16(%rcx,%rdx,1), %r10
+    movnti %r9, 24(%rdx)
+    movnti %r10, 16(%rdx)
+
+    mov    8(%rcx,%rdx,1), %r9
+    mov    (%rcx,%rdx,1), %r10
+    movnti %r9, 8(%rdx)
+    movnti %r10, (%rdx)
+    jne    .Lloop64b
+
+    sub    $0x1000, %r8
+    cmp    $0x1000, %r8
+    jae    .Lntloopb
+    mfence
+    jmpq   .Ldestalignedb
+end;
+{$endif FPC_SYSTEM_HAS_MOVE}
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+    mov    %r8, %rax
+    sub    %rdx, %rcx            { rcx = src - dest }
+    jz     .Lquit                { exit if src=dest }
+    jnb    .L1                   { src>dest => forward move }
+
+    add    %rcx, %rax            { rcx is negative => r8+rcx > 0 if regions overlap }
+    jb     .Lback                { if no overlap, still do forward move }
+
+.L1:
+    cmp    $8, %r8
+    jl     .Lless8f              { signed compare, negative count not allowed }
+    test   $7, %dl
+    je     .Ldestaligned
+
+    test   $1, %dl               { align dest by moving first 1+2+4 bytes }
+    je     .L2f
+    mov    (%rcx,%rdx,1),%al
+    dec    %r8
+    mov    %al, (%rdx)
+    add    $1, %rdx
+.L2f:
+    test   $2, %dl
+    je     .L4f
+    mov    (%rcx,%rdx,1),%ax
+    sub    $2, %r8
+    mov    %ax, (%rdx)
+    add    $2, %rdx
+.L4f:
+    test   $4, %dl
+    je     .Ldestaligned
+    mov    (%rcx,%rdx,1),%eax
+    sub    $4, %r8
+    mov    %eax, (%rdx)
+    add    $4, %rdx
+
+.Ldestaligned:
+    mov    %r8, %r9
+    shr    $5, %r9
+    jne    .Lmore32
+
+.Ltail:
+    mov    %r8, %r9
+    shr    $3, %r9
+    je     .Lless8f
+
+    .balign 16
+.Lloop8f:                             { max. 8 iterations }
+    mov    (%rcx,%rdx,1),%rax
+    mov    %rax, (%rdx)
+    add    $8, %rdx
+    dec    %r9
+    jne    .Lloop8f
+    and    $7, %r8
+
+.Lless8f:
+    test   %r8, %r8
+    jle    .Lquit
+
+    .balign 16
+.Lloop1f:
+    mov    (%rcx,%rdx,1),%al
+    mov    %al,(%rdx)
+    inc    %rdx
+    dec    %r8
+    jne    .Lloop1f
+.Lquit:
+    retq
+
+
+.Lmore32:
+    cmp    $0x2000, %r9          { this limit must be processor-specific (1/2 L2 cache size) }
+    jnae   .Lloop32
+    cmp    $0x1000, %rcx         { but don't bother bypassing cache if src and dest }
+    jnb    .Lntloopf             { are close to each other}
+
+    .balign 16
+.Lloop32:
+    add    $32,%rdx
+    mov    -32(%rcx,%rdx,1),%rax
+    mov    -24(%rcx,%rdx,1),%r10
+    mov    %rax,-32(%rdx)
+    mov    %r10,-24(%rdx)
+    dec    %r9
+    mov    -16(%rcx,%rdx,1),%rax
+    mov    -8(%rcx,%rdx,1),%r10
+    mov    %rax,-16(%rdx)
+    mov    %r10,-8(%rdx)
+    jne    .Lloop32
+
+    and    $0x1f, %r8
+    jmpq   .Ltail
+
+.Lntloopf:
+    mov    $32, %eax
+
+    .balign 16
+.Lpref:
+    prefetchnta (%rcx,%rdx,1)
+    prefetchnta 0x40(%rcx,%rdx,1)
+    add    $0x80, %rdx
+    dec    %eax
+    jne    .Lpref
+
+    sub    $0x1000, %rdx
+    mov    $64, %eax
+
+    .balign 16
+.Loop64:
+    add    $64, %rdx
+    mov    -64(%rcx,%rdx,1), %r9
+    mov    -56(%rcx,%rdx,1), %r10
+    movnti %r9, -64(%rdx)
+    movnti %r10, -56(%rdx)
+
+    mov    -48(%rcx,%rdx,1), %r9
+    mov    -40(%rcx,%rdx,1), %r10
+    movnti %r9, -48(%rdx)
+    movnti %r10, -40(%rdx)
+    dec    %eax
+    mov    -32(%rcx,%rdx,1), %r9
+    mov    -24(%rcx,%rdx,1), %r10
+    movnti %r9, -32(%rdx)
+    movnti %r10, -24(%rdx)
+
+    mov    -16(%rcx,%rdx,1), %r9
+    mov    -8(%rcx,%rdx,1), %r10
+    movnti %r9, -16(%rdx)
+    movnti %r10, -8(%rdx)
+    jne    .Loop64
+
+    sub    $0x1000, %r8
+    cmp    $0x1000, %r8
+    jae    .Lntloopf
+
+    mfence
+    jmpq    .Ldestaligned        { go handle remaining bytes }
+
+{ backwards move }
+.Lback:
+    add    %r8, %rdx             { points to the end of dest }
+    cmp    $8, %r8
+    jl     .Lless8b              { signed compare, negative count not allowed }
+    test   $7, %dl
+    je     .Ldestalignedb
+    test   $1, %dl
+    je     .L2b
+    dec    %rdx
+    mov    (%rcx,%rdx,1), %al
+    dec    %r8
+    mov    %al, (%rdx)
+.L2b:
+    test   $2, %dl
+    je     .L4b
+    sub    $2, %rdx
+    mov    (%rcx,%rdx,1), %ax
+    sub    $2, %r8
+    mov    %ax, (%rdx)
+.L4b:
+    test   $4, %dl
+    je     .Ldestalignedb
+    sub    $4, %rdx
+    mov    (%rcx,%rdx,1), %eax
+    sub    $4, %r8
+    mov    %eax, (%rdx)
+
+.Ldestalignedb:
+    mov    %r8, %r9
+    shr    $5, %r9
+    jne    .Lmore32b
+
+.Ltailb:
+    mov    %r8, %r9
+    shr    $3, %r9
+    je     .Lless8b
+
+.Lloop8b:
+    sub    $8, %rdx
+    mov    (%rcx,%rdx,1), %rax
+    dec    %r9
+    mov    %rax, (%rdx)
+    jne    .Lloop8b
+    and    $7, %r8
+
+.Lless8b:
+    test   %r8, %r8
+    jle    .Lquit2
+
+    .balign 16
+.Lsmallb:
+    dec   %rdx
+    mov   (%rcx,%rdx,1), %al
+    dec   %r8
+    mov   %al,(%rdx)
+    jnz   .Lsmallb
+.Lquit2:
+    retq
+
+.Lmore32b:
+    cmp   $0x2000, %r9
+    jnae  .Lloop32b
+    cmp    $0xfffffffffffff000,%rcx
+    jb     .Lntloopb
+
+    .balign 16
+.Lloop32b:
+    sub    $32, %rdx
+    mov    24(%rcx,%rdx,1), %rax
+    mov    16(%rcx,%rdx,1), %r10
+    mov    %rax, 24(%rdx)
+    mov    %r10, 16(%rdx)
+    dec    %r9
+    mov    8(%rcx,%rdx,1),%rax
+    mov    (%rcx,%rdx,1), %r10
+    mov    %rax, 8(%rdx)
+    mov    %r10, (%rdx)
+    jne    .Lloop32b
+    and    $0x1f, %r8
+    jmpq   .Ltailb
+
+
+.Lntloopb:
+    mov    $32, %eax
+
+    .balign 16
+.Lprefb:
+    sub    $0x80, %rdx
+    prefetchnta (%rcx,%rdx,1)
+    prefetchnta 0x40(%rcx,%rdx,1)
+    dec    %eax
+    jnz    .Lprefb
+
+    add    $0x1000, %rdx
+    mov    $0x40, %eax
+
+    .balign 16
+.Lloop64b:
+    sub    $64, %rdx
+    mov    56(%rcx,%rdx,1), %r9
+    mov    48(%rcx,%rdx,1), %r10
+    movnti %r9, 56(%rdx)
+    movnti %r10, 48(%rdx)
+
+    mov    40(%rcx,%rdx,1), %r9
+    mov    32(%rcx,%rdx,1), %r10
+    movnti %r9, 40(%rdx)
+    movnti %r10, 32(%rdx)
+    dec    %eax
+    mov    24(%rcx,%rdx,1), %r9
+    mov    16(%rcx,%rdx,1), %r10
+    movnti %r9, 24(%rdx)
+    movnti %r10, 16(%rdx)
+
+    mov    8(%rcx,%rdx,1), %r9
+    mov    (%rcx,%rdx,1), %r10
+    movnti %r9, 8(%rdx)
+    movnti %r10, (%rdx)
+    jne    .Lloop64b
+
+    sub    $0x1000, %r8
+    cmp    $0x1000, %r8
+    jae    .Lntloopb
+    mfence
+    jmpq   .Ldestalignedb
+end;
+{$endif FPC_SYSTEM_HAS_MOVE}
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+    mov    %r8, %rax
+    sub    %rdx, %rcx            { rcx = src - dest }
+    jz     .Lquit                { exit if src=dest }
+    jnb    .L1                   { src>dest => forward move }
+
+    add    %rcx, %rax            { rcx is negative => r8+rcx > 0 if regions overlap }
+    jb     .Lback                { if no overlap, still do forward move }
+
+.L1:
+    cmp    $8, %r8
+    jl     .Lless8f              { signed compare, negative count not allowed }
+    test   $7, %dl
+    je     .Ldestaligned
+
+    test   $1, %dl               { align dest by moving first 1+2+4 bytes }
+    je     .L2f
+    mov    (%rcx,%rdx,1),%al
+    dec    %r8
+    mov    %al, (%rdx)
+    add    $1, %rdx
+.L2f:
+    test   $2, %dl
+    je     .L4f
+    mov    (%rcx,%rdx,1),%ax
+    sub    $2, %r8
+    mov    %ax, (%rdx)
+    add    $2, %rdx
+.L4f:
+    test   $4, %dl
+    je     .Ldestaligned
+    mov    (%rcx,%rdx,1),%eax
+    sub    $4, %r8
+    mov    %eax, (%rdx)
+    add    $4, %rdx
+
+.Ldestaligned:
+    mov    %r8, %r9
+    shr    $5, %r9
+    jne    .Lmore32
+
+.Ltail:
+    mov    %r8, %r9
+    shr    $3, %r9
+    je     .Lless8f
+
+    .balign 16
+.Lloop8f:                             { max. 8 iterations }
+    mov    (%rcx,%rdx,1),%rax
+    mov    %rax, (%rdx)
+    add    $8, %rdx
+    dec    %r9
+    jne    .Lloop8f
+    and    $7, %r8
+
+.Lless8f:
+    test   %r8, %r8
+    jle    .Lquit
+
+    .balign 16
+.Lloop1f:
+    mov    (%rcx,%rdx,1),%al
+    mov    %al,(%rdx)
+    inc    %rdx
+    dec    %r8
+    jne    .Lloop1f
+.Lquit:
+    retq
+
+
+.Lmore32:
+    cmp    $0x2000, %r9          { this limit must be processor-specific (1/2 L2 cache size) }
+    jnae   .Lloop32
+    cmp    $0x1000, %rcx         { but don't bother bypassing cache if src and dest }
+    jnb    .Lntloopf             { are close to each other}
+
+    .balign 16
+.Lloop32:
+    add    $32,%rdx
+    mov    -32(%rcx,%rdx,1),%rax
+    mov    -24(%rcx,%rdx,1),%r10
+    mov    %rax,-32(%rdx)
+    mov    %r10,-24(%rdx)
+    dec    %r9
+    mov    -16(%rcx,%rdx,1),%rax
+    mov    -8(%rcx,%rdx,1),%r10
+    mov    %rax,-16(%rdx)
+    mov    %r10,-8(%rdx)
+    jne    .Lloop32
+
+    and    $0x1f, %r8
+    jmpq   .Ltail
+
+.Lntloopf:
+    mov    $32, %eax
+
+    .balign 16
+.Lpref:
+    prefetchnta (%rcx,%rdx,1)
+    prefetchnta 0x40(%rcx,%rdx,1)
+    add    $0x80, %rdx
+    dec    %eax
+    jne    .Lpref
+
+    sub    $0x1000, %rdx
+    mov    $64, %eax
+
+    .balign 16
+.Loop64:
+    add    $64, %rdx
+    mov    -64(%rcx,%rdx,1), %r9
+    mov    -56(%rcx,%rdx,1), %r10
+    movnti %r9, -64(%rdx)
+    movnti %r10, -56(%rdx)
+
+    mov    -48(%rcx,%rdx,1), %r9
+    mov    -40(%rcx,%rdx,1), %r10
+    movnti %r9, -48(%rdx)
+    movnti %r10, -40(%rdx)
+    dec    %eax
+    mov    -32(%rcx,%rdx,1), %r9
+    mov    -24(%rcx,%rdx,1), %r10
+    movnti %r9, -32(%rdx)
+    movnti %r10, -24(%rdx)
+
+    mov    -16(%rcx,%rdx,1), %r9
+    mov    -8(%rcx,%rdx,1), %r10
+    movnti %r9, -16(%rdx)
+    movnti %r10, -8(%rdx)
+    jne    .Loop64
+
+    sub    $0x1000, %r8
+    cmp    $0x1000, %r8
+    jae    .Lntloopf
+
+    mfence
+    jmpq    .Ldestaligned        { go handle remaining bytes }
+
+{ backwards move }
+.Lback:
+    add    %r8, %rdx             { points to the end of dest }
+    cmp    $8, %r8
+    jl     .Lless8b              { signed compare, negative count not allowed }
+    test   $7, %dl
+    je     .Ldestalignedb
+    test   $1, %dl
+    je     .L2b
+    dec    %rdx
+    mov    (%rcx,%rdx,1), %al
+    dec    %r8
+    mov    %al, (%rdx)
+.L2b:
+    test   $2, %dl
+    je     .L4b
+    sub    $2, %rdx
+    mov    (%rcx,%rdx,1), %ax
+    sub    $2, %r8
+    mov    %ax, (%rdx)
+.L4b:
+    test   $4, %dl
+    je     .Ldestalignedb
+    sub    $4, %rdx
+    mov    (%rcx,%rdx,1), %eax
+    sub    $4, %r8
+    mov    %eax, (%rdx)
+
+.Ldestalignedb:
+    mov    %r8, %r9
+    shr    $5, %r9
+    jne    .Lmore32b
+
+.Ltailb:
+    mov    %r8, %r9
+    shr    $3, %r9
+    je     .Lless8b
+
+.Lloop8b:
+    sub    $8, %rdx
+    mov    (%rcx,%rdx,1), %rax
+    dec    %r9
+    mov    %rax, (%rdx)
+    jne    .Lloop8b
+    and    $7, %r8
+
+.Lless8b:
+    test   %r8, %r8
+    jle    .Lquit2
+
+    .balign 16
+.Lsmallb:
+    dec   %rdx
+    mov   (%rcx,%rdx,1), %al
+    dec   %r8
+    mov   %al,(%rdx)
+    jnz   .Lsmallb
+.Lquit2:
+    retq
+
+.Lmore32b:
+    cmp   $0x2000, %r9
+    jnae  .Lloop32b
+    cmp    $0xfffffffffffff000,%rcx
+    jb     .Lntloopb
+
+    .balign 16
+.Lloop32b:
+    sub    $32, %rdx
+    mov    24(%rcx,%rdx,1), %rax
+    mov    16(%rcx,%rdx,1), %r10
+    mov    %rax, 24(%rdx)
+    mov    %r10, 16(%rdx)
+    dec    %r9
+    mov    8(%rcx,%rdx,1),%rax
+    mov    (%rcx,%rdx,1), %r10
+    mov    %rax, 8(%rdx)
+    mov    %r10, (%rdx)
+    jne    .Lloop32b
+    and    $0x1f, %r8
+    jmpq   .Ltailb
+
+
+.Lntloopb:
+    mov    $32, %eax
+
+    .balign 16
+.Lprefb:
+    sub    $0x80, %rdx
+    prefetchnta (%rcx,%rdx,1)
+    prefetchnta 0x40(%rcx,%rdx,1)
+    dec    %eax
+    jnz    .Lprefb
+
+    add    $0x1000, %rdx
+    mov    $0x40, %eax
+
+    .balign 16
+.Lloop64b:
+    sub    $64, %rdx
+    mov    56(%rcx,%rdx,1), %r9
+    mov    48(%rcx,%rdx,1), %r10
+    movnti %r9, 56(%rdx)
+    movnti %r10, 48(%rdx)
+
+    mov    40(%rcx,%rdx,1), %r9
+    mov    32(%rcx,%rdx,1), %r10
+    movnti %r9, 40(%rdx)
+    movnti %r10, 32(%rdx)
+    dec    %eax
+    mov    24(%rcx,%rdx,1), %r9
+    mov    16(%rcx,%rdx,1), %r10
+    movnti %r9, 24(%rdx)
+    movnti %r10, 16(%rdx)
+
+    mov    8(%rcx,%rdx,1), %r9
+    mov    (%rcx,%rdx,1), %r10
+    movnti %r9, 8(%rdx)
+    movnti %r10, (%rdx)
+    jne    .Lloop64b
+
+    sub    $0x1000, %r8
+    cmp    $0x1000, %r8
+    jae    .Lntloopb
+    mfence
+    jmpq   .Ldestalignedb
+end;
+{$endif FPC_SYSTEM_HAS_MOVE}
+
+>>>>>>> origin/cpstrnew
 {$ifndef FPC_SYSTEM_HAS_FILLCHAR}
 {$define FPC_SYSTEM_HAS_FILLCHAR}
 Procedure FillChar(var x;count:SizeInt;value:byte);assembler;nostackframe;
@@ -364,6 +1474,10 @@ Procedure FillChar(var x;count:SizeInt;value:byte);assembler;nostackframe;
 
     cmp    $8, %rdx
     jl     .Ltiny
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 // TODO: movz?q and movs?q are not accepted by FPC asmreader, it needs fixing.
 // `movzbl' instead is accepted and generates correct code with internal assembler,
@@ -375,6 +1489,26 @@ Procedure FillChar(var x;count:SizeInt;value:byte);assembler;nostackframe;
 {
     movzbq %r8b, %r8
 }
+=======
+
+    { expand byte value  }
+    movzbl %r8b, %r8
+>>>>>>> graemeg/cpstrnew
+=======
+
+    { expand byte value  }
+    movzbl %r8b, %r8
+>>>>>>> graemeg/cpstrnew
+=======
+
+    { expand byte value  }
+    movzbl %r8b, %r8
+>>>>>>> graemeg/cpstrnew
+=======
+
+    { expand byte value  }
+    movzbl %r8b, %r8
+>>>>>>> origin/cpstrnew
     mov    $0x0101010101010101,%r9
     imul   %r9, %r8
 
@@ -467,6 +1601,22 @@ Procedure FillChar(var x;count:SizeInt;value:byte);assembler;nostackframe;
 {$endif FPC_SYSTEM_HAS_FILLCHAR}
 
 {$ifndef FPC_SYSTEM_HAS_INDEXBYTE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{ based on libc/sysdeps/x86_64/memchr.S }
+>>>>>>> graemeg/cpstrnew
+=======
+{ based on libc/sysdeps/x86_64/memchr.S }
+>>>>>>> graemeg/cpstrnew
+=======
+{ based on libc/sysdeps/x86_64/memchr.S }
+>>>>>>> graemeg/cpstrnew
+=======
+{ based on libc/sysdeps/x86_64/memchr.S }
+>>>>>>> origin/cpstrnew
 {$define FPC_SYSTEM_HAS_INDEXBYTE}
 function IndexByte(Const buf;len:SizeInt;b:byte):SizeInt; assembler; nostackframe;
 { win64: rcx buf, rdx len, r8b word
@@ -479,6 +1629,10 @@ asm
     movq   %rdi, %rcx
     movq   %rsi, %rdx
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     mov    %rcx, %r8
     punpcklbw  %xmm1, %xmm1
     and    $-0x10, %rcx                { highest aligned address before buf }
@@ -518,6 +1672,61 @@ asm
     lea    -16(%rcx,%rax), %rax
     cmp    %rax, %rdx                  { check against the buffer length }
     jbe    .Lnotfound
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    mov    %rcx, %rax                  { duplicate buf }
+    punpcklbw  %xmm1, %xmm1
+    and    $0xfffffffffffffff0, %rax
+    test   %rdx, %rdx
+    punpcklbw  %xmm1, %xmm1
+    jz     .L3                         { exit if len=0 }
+    orl    $0xffffffff, %r8d
+    movdqa (%rax), %xmm0               { Fetch first 16 bytes (up to 15 bytes before target) }
+    pshufd $0, %xmm1, %xmm1
+    sub    %rax, %rcx                  { rcx=misalignment }
+    pcmpeqb %xmm1, %xmm0
+    add    %rcx, %rdx                  { add misalignment to length }
+    cmovb  %r8, %rdx                   { if it overflows (happens when length=-1), set back to -1, }
+                                       {   otherwise loop will terminate too early }
+    mov    %rcx, %r9                   { and save it, will subtract back in the end }
+    shl    %cl, %r8d
+    pmovmskb %xmm0, %ecx
+    andl   %r8d, %ecx                  { mask away matches before buffer start }
+    movl   $16, %r8d
+    jnz    .L1                         { got a match within buffer -> we're done (almost) }
+    cmpq   %r8, %rdx
+    jbe    .L3
+
+    .balign 16
+.L2:
+    movdqa (%rax,%r8), %xmm0
+    lea    16(%r8), %r8
+    pcmpeqb %xmm1, %xmm0
+    pmovmskb %xmm0, %ecx
+    test   %ecx, %ecx
+    jnz    .L1
+    cmp    %r8, %rdx
+    ja     .L2
+
+.L3:
+    or    $-1, %rax
+    jmp   .Ldone
+
+.L1:
+    bsfl   %ecx, %ecx                  { compute position of the first match }
+    lea    -16(%rcx,%r8), %rax
+    cmp    %rax, %rdx
+    jbe    .L3                         { if it is after the specified length, ignore it }
+    sub    %r9, %rax
+.Ldone:
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
 end;
 {$endif FPC_SYSTEM_HAS_INDEXBYTE}
 
@@ -534,6 +1743,8 @@ asm
     movq   %rdi, %rcx
     movq   %rsi, %rdx
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
     mov    %rcx, %r8
     punpcklwd  %xmm1, %xmm1
     and    $-0x10, %rcx
@@ -663,8 +1874,234 @@ asm
      ret
 end;
 {$endif FPC_SYSTEM_HAS_COMPAREBYTE}
+=======
+    mov    %rcx, %rax                  { duplicate buf }
+    punpcklbw  %xmm1, %xmm1
+    and    $0xfffffffffffffff0, %rax
+    test   %rdx, %rdx
+    punpcklbw  %xmm1, %xmm1
+    jz     .L3                         { exit if len=0 }
+    orl    $0xffffffff, %r8d
+    movdqa (%rax), %xmm0               { Fetch first 16 bytes (up to 15 bytes before target) }
+    pshufd $0, %xmm1, %xmm1
+    sub    %rax, %rcx                  { rcx=misalignment }
+    pcmpeqb %xmm1, %xmm0
+    add    %rcx, %rdx                  { add misalignment to length }
+    cmovb  %r8, %rdx                   { if it overflows (happens when length=-1), set back to -1, }
+                                       {   otherwise loop will terminate too early }
+    mov    %rcx, %r9                   { and save it, will subtract back in the end }
+    shl    %cl, %r8d
+    pmovmskb %xmm0, %ecx
+    andl   %r8d, %ecx                  { mask away matches before buffer start }
+    movl   $16, %r8d
+    jnz    .L1                         { got a match within buffer -> we're done (almost) }
+    cmpq   %r8, %rdx
+    jbe    .L3
 
+    .balign 16
+.L2:
+    movdqa (%rax,%r8), %xmm0
+    lea    16(%r8), %r8
+    pcmpeqb %xmm1, %xmm0
+    pmovmskb %xmm0, %ecx
+    test   %ecx, %ecx
+    jnz    .L1
+    cmp    %r8, %rdx
+    ja     .L2
 
+.L3:
+    or    $-1, %rax
+    jmp   .Ldone
+
+.L1:
+    bsfl   %ecx, %ecx                  { compute position of the first match }
+    lea    -16(%rcx,%r8), %rax
+    cmp    %rax, %rdx
+    jbe    .L3                         { if it is after the specified length, ignore it }
+    sub    %r9, %rax
+.Ldone:
+end;
+{$endif FPC_SYSTEM_HAS_INDEXBYTE}
+>>>>>>> graemeg/cpstrnew
+
+=======
+end;
+{$endif FPC_SYSTEM_HAS_INDEXBYTE}
+
+>>>>>>> origin/cpstrnew
+{$ifndef FPC_SYSTEM_HAS_INDEXWORD}
+{$define FPC_SYSTEM_HAS_INDEXWORD}
+function IndexWord(Const buf;len:SizeInt;b:word):SizeInt; assembler; nostackframe;
+{ win64: rcx buf, rdx len, r8b word
+  linux: rdi buf, rsi len, rdx word }
+asm
+{$ifdef win64}
+    movd   %r8d, %xmm1
+{$else}
+    movd   %edx, %xmm1
+    movq   %rdi, %rcx
+    movq   %rsi, %rdx
+{$endif}
+    mov    %rcx, %rax                  { duplicate buf }
+    punpcklwd  %xmm1, %xmm1
+    and    $0xfffffffffffffff0, %rax
+    test   %rdx, %rdx
+    pshufd $0, %xmm1, %xmm1
+    jz     .L3                         { exit if len=0 }
+    orl    $0xffffffff, %r8d
+    test   $1, %cl                     { if buffer isn't aligned to word boundary, }
+    jnz    .Lunaligned                 { fallback to slower unaligned loop }
+
+    movdqa (%rax), %xmm0               { Fetch first 16 bytes (up to 14 bytes before target) }
+    sub    %rax, %rcx                  { rcx=misalignment }
+    pcmpeqw %xmm1, %xmm0
+
+    mov    %rcx, %r9
+    shr    $1, %r9                     { save misalignment in words }
+
+    add    %r9, %rdx                   { add misalignment to length }
+    cmovb  %r8, %rdx                   { if it overflows (happens when length=-1), set back to -1, }
+                                       {   otherwise loop will terminate too early }
+    shl    %cl, %r8d
+    pmovmskb %xmm0, %ecx
+    andl   %r8d, %ecx                  { mask away matches before buffer start }
+    movl   $8, %r8d
+    jnz    .L1                         { got a match within buffer -> we're done (almost) }
+    cmpq   %r8, %rdx
+    jbe    .L3
+
+    .balign 16
+.L2:
+    movdqa (%rax,%r8,2), %xmm0
+    lea    8(%r8), %r8
+    pcmpeqw %xmm1, %xmm0
+    pmovmskb %xmm0, %ecx
+    test   %ecx, %ecx
+    jnz    .L1
+    cmp    %r8, %rdx
+    ja     .L2
+
+.L3:
+    or    $-1, %rax
+    jmp   .Ldone
+
+.L1:
+    bsfl   %ecx, %ecx                  { compute position of the first match }
+    shr    $1, %ecx                    { in words }
+    lea    -8(%rcx,%r8), %rax
+    cmp    %rax, %rdx
+    jbe    .L3                         { if it is after the specified length, ignore it }
+    sub    %r9, %rax
+.Ldone:
+    retq
+
+{ TODO: aligned processing is still possible, but for now
+  use the simplest form }
+.Lunaligned:
+    xor    %r9, %r9
+    xor    %r8, %r8
+    mov    %rcx, %rax
+
+    .balign 16
+.L2u:
+    movdqu (%rax,%r8,2), %xmm0
+    lea    8(%r8), %r8
+    pcmpeqw %xmm1, %xmm0
+    pmovmskb %xmm0, %ecx
+    test   %ecx, %ecx
+    jnz    .L1
+    cmp    %r8, %rdx
+    ja     .L2u
+    or     $-1, %rax
+end;
+{$endif FPC_SYSTEM_HAS_INDEXWORD}
+<<<<<<< HEAD
+
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+    mov    %rcx, %rax                  { duplicate buf }
+    punpcklwd  %xmm1, %xmm1
+    and    $0xfffffffffffffff0, %rax
+    test   %rdx, %rdx
+    pshufd $0, %xmm1, %xmm1
+    jz     .L3                         { exit if len=0 }
+    orl    $0xffffffff, %r8d
+    test   $1, %cl                     { if buffer isn't aligned to word boundary, }
+    jnz    .Lunaligned                 { fallback to slower unaligned loop }
+
+    movdqa (%rax), %xmm0               { Fetch first 16 bytes (up to 14 bytes before target) }
+    sub    %rax, %rcx                  { rcx=misalignment }
+    pcmpeqw %xmm1, %xmm0
+
+    mov    %rcx, %r9
+    shr    $1, %r9                     { save misalignment in words }
+
+    add    %r9, %rdx                   { add misalignment to length }
+    cmovb  %r8, %rdx                   { if it overflows (happens when length=-1), set back to -1, }
+                                       {   otherwise loop will terminate too early }
+    shl    %cl, %r8d
+    pmovmskb %xmm0, %ecx
+    andl   %r8d, %ecx                  { mask away matches before buffer start }
+    movl   $8, %r8d
+    jnz    .L1                         { got a match within buffer -> we're done (almost) }
+    cmpq   %r8, %rdx
+    jbe    .L3
+
+    .balign 16
+.L2:
+    movdqa (%rax,%r8,2), %xmm0
+    lea    8(%r8), %r8
+    pcmpeqw %xmm1, %xmm0
+    pmovmskb %xmm0, %ecx
+    test   %ecx, %ecx
+    jnz    .L1
+    cmp    %r8, %rdx
+    ja     .L2
+
+.L3:
+    or    $-1, %rax
+    jmp   .Ldone
+
+.L1:
+    bsfl   %ecx, %ecx                  { compute position of the first match }
+    shr    $1, %ecx                    { in words }
+    lea    -8(%rcx,%r8), %rax
+    cmp    %rax, %rdx
+    jbe    .L3                         { if it is after the specified length, ignore it }
+    sub    %r9, %rax
+.Ldone:
+    retq
+
+{ TODO: aligned processing is still possible, but for now
+  use the simplest form }
+.Lunaligned:
+    xor    %r9, %r9
+    xor    %r8, %r8
+    mov    %rcx, %rax
+
+    .balign 16
+.L2u:
+    movdqu (%rax,%r8,2), %xmm0
+    lea    8(%r8), %r8
+    pcmpeqw %xmm1, %xmm0
+    pmovmskb %xmm0, %ecx
+    test   %ecx, %ecx
+    jnz    .L1
+    cmp    %r8, %rdx
+    ja     .L2u
+    or     $-1, %rax
+end;
+{$endif FPC_SYSTEM_HAS_INDEXWORD}
+
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
+{$asmmode att}
 {$define FPC_SYSTEM_HAS_DECLOCKED_LONGINT}
 { does a thread save inc/dec }
 function declocked(var l : longint) : boolean;assembler; nostackframe;
@@ -933,6 +2370,8 @@ const
   MM_MaskPrecision = %0001000000000000;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure fpc_cpuinit;
   begin
     { don't let libraries influence the FPU cw set by the host program }
@@ -944,9 +2383,109 @@ procedure fpc_cpuinit;
     SysResetFPU;
   end;
 
+procedure fpc_cpuinit;
+  begin
+    { don't let libraries influence the FPU cw set by the host program }
+    if IsLibrary then
+      begin
+        Default8087CW:=Get8087CW;
+        mxcsr:=GetSSECSR;
+      end;
+    SysResetFPU;
+    if not(IsLibrary) then
+      SysInitFPU;
+  end;
+
+procedure fpc_cpuinit;
+  begin
+    { don't let libraries influence the FPU cw set by the host program }
+    if IsLibrary then
+      begin
+        Default8087CW:=Get8087CW;
+        mxcsr:=GetSSECSR;
+      end;
+    SysResetFPU;
+    if not(IsLibrary) then
+      SysInitFPU;
+  end;
+
+procedure fpc_cpuinit;
+  begin
+    { don't let libraries influence the FPU cw set by the host program }
+    if IsLibrary then
+      begin
+        Default8087CW:=Get8087CW;
+        mxcsr:=GetSSECSR;
+      end;
+    SysResetFPU;
+    if not(IsLibrary) then
+      SysInitFPU;
+  end;
+
+procedure fpc_cpuinit;
+  begin
+    { don't let libraries influence the FPU cw set by the host program }
+    if IsLibrary then
+      begin
+        Default8087CW:=Get8087CW;
+        mxcsr:=GetSSECSR;
+      end;
+    SysResetFPU;
+    if not(IsLibrary) then
+      SysInitFPU;
+  end;
+
 {$define FPC_SYSTEM_HAS_SYSINITFPU}
 Procedure SysInitFPU;
+  var
+    { these locals are so we don't have to hack pic code in the assembler }
+    localmxcsr: dword;
+    localfpucw: word;
+ 
+=======
+{$define FPC_SYSTEM_HAS_SYSINITFPU}
+Procedure SysInitFPU;
+>>>>>>> graemeg/fixes_2_2
+=======
+{$define FPC_SYSTEM_HAS_SYSINITFPU}
+Procedure SysInitFPU;
+>>>>>>> origin/fixes_2_2
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  localmxcsr:=mxcsr;
+  localfpucw:=fpucw;
+  asm
+<<<<<<< HEAD
+<<<<<<< HEAD
+    fldcw localfpucw
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef FPC_PIC}
+    movq fpucw@GOTPCREL(%rip),%rax
+    fldcw (%rax)
+    { set sse exceptions }
+    movq mxcsr@GOTPCREL(%rip),%rax
+    ldmxcsr (%rax)
+{$else FPC_PIC}
+    fldcw fpucw
+>>>>>>> graemeg/fixes_2_2
+    { set sse exceptions }
+    ldmxcsr localmxcsr
+  end ['RAX'];
+  { x86-64 might use softfloat code }
+  softfloat_exception_mask:=float_flag_underflow or float_flag_inexact or float_flag_denormal;
+>>>>>>> graemeg/cpstrnew
 end;
 
 
@@ -1027,6 +2566,7 @@ asm
 end;
 
 
+<<<<<<< HEAD
 function SwapEndian(const AValue: DWord): DWord; assembler; nostackframe;
 asm
 {$ifdef win64}
@@ -1058,3 +2598,51 @@ asm
 {$endif win64}
   bswap %rax
 end;
+
+
+=======
+>>>>>>> origin/fixes_2_2
+{$define FPC_SYSTEM_HAS_SYSRESETFPU}
+Procedure SysResetFPU;
+  var
+    { these locals are so we don't have to hack pic code in the assembler }
+    localmxcsr: dword;
+    localfpucw: word;
+  begin
+    localfpucw:=Default8087CW;
+    localmxcsr:=mxcsr;
+    asm
+      fninit
+      fwait
+      fldcw   localfpucw
+      ldmxcsr localmxcsr
+    end;
+    { x86-64 might use softfloat code }
+    softfloat_exception_flags:=0;
+  end;
+
+
+{$ifndef FPC_SYSTEM_HAS_MEM_BARRIER}
+{$define FPC_SYSTEM_HAS_MEM_BARRIER}
+
+procedure ReadBarrier;assembler;nostackframe;{$ifdef SYSTEMINLINE}inline;{$endif}
+asm
+  lfence
+end;
+
+procedure ReadDependencyBarrier;assembler;nostackframe;{$ifdef SYSTEMINLINE}inline;{$endif}
+asm
+  { reads imply barrier on earlier reads depended on }
+end;
+
+procedure ReadWriteBarrier;assembler;nostackframe;{$ifdef SYSTEMINLINE}inline;{$endif}
+asm
+  mfence
+end;
+
+procedure WriteBarrier;assembler;nostackframe;{$ifdef SYSTEMINLINE}inline;{$endif}
+asm
+  { no write reordering on intel CPUs (yet) }
+end;
+
+{$endif}

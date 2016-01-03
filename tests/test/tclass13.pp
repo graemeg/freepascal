@@ -18,6 +18,10 @@ type
             FNode: TRootClass.TNode.TNode;
           end;
           en = (e1,e2);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           TOtherNode = class
           public
             type
@@ -28,6 +32,33 @@ type
           TFinalNode = class
             fx: TRootClass.TNode.TOtherNode.TNestedInOtherNode;
           end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      TOtherNode = class
+      public
+        type
+          TNestedInOtherNode = class
+            ffield: longint;
+          end;
+      end;
+      TFinalNode = class
+        fx: TRootClass.TOtherNode.TNestedInOtherNode;
+      end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       published
         property Test: Integer read FTest write FTest;
       end;

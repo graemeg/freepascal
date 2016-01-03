@@ -42,6 +42,7 @@ Unit System;
 {$I systemh.inc}
 
 const
+<<<<<<< HEAD
 {$ifdef FPC_HAS_FEATURE_TEXTIO}
   LineEnding = #10;
 {$endif FPC_HAS_FEATURE_TEXTIO}
@@ -64,6 +65,23 @@ const
 
   MaxPathLen = 1024; // BSDs since 1993, Solaris 10, Darwin
   AllFilesMask = '*';
+=======
+ LineEnding = #10;
+ LFNSupport = true;
+ DirectorySeparator = '/';
+ DriveSeparator = ':';
+ ExtensionSeparator = '.';
+ PathSeparator = ':';
+  AllowDirectorySeparators : set of char = ['\','/'];
+  AllowDriveSeparators : set of char = [':'];
+{ FileNameCaseSensitive is defined below! }
+ maxExitCode = 255;
+ MaxPathLen = 1024; // BSDs since 1993, Solaris 10, Darwin
+ AllFilesMask = '*';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   UnusedHandle    = -1;
   StdInputHandle  = 0;
@@ -245,7 +263,14 @@ begin
   SysResetFPU;
   if not(IsLibrary) then
     SysInitFPU;
+<<<<<<< HEAD
+<<<<<<< HEAD
   }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$endif FPC_HAS_FEATURE_FPU}
+>>>>>>> graemeg/fixes_2_2
 
 {$ifdef FPC_HAS_FEATURE_CONSOLEIO}
   IsConsole := TRUE;

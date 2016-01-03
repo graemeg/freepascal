@@ -512,9 +512,24 @@ var
   SockAddr: TInetSockAddr;
 begin
   inherited DoConnect;
+<<<<<<< HEAD
   SockAddr.sin_Family := AF_INET;
   SockAddr.sin_Port := ShortHostToNet(Port);
   SockAddr.sin_Addr.s_addr := Cardinal(HostAddr);
+=======
+  SockAddr.Family := AF_INET;
+  SockAddr.Port := ShortHostToNet(Port);
+  SockAddr.Addr := Cardinal(HostAddr);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   if Sockets.FpConnect(Stream.Handle, @SockAddr, SizeOf(SockAddr))<>0 Then
     if (SocketError <> sys_EINPROGRESS) and (SocketError <> 0) then
       raise ESocketError.CreateFmt(SSocketConnectFailed,
@@ -558,9 +573,24 @@ begin
       Sockets.fpSetSockOpt(Socket, SOL_SOCKET, SO_REUSEADDR,
         @TrueValue, SizeOf(TrueValue));
       FStream := TSocketStream.Create(Socket);
+<<<<<<< HEAD
       Addr.sin_Family := AF_INET;
       Addr.sin_Port := ShortHostToNet(Port);
       Addr.sin_Addr.s_addr := 0;
+=======
+      Addr.Family := AF_INET;
+      Addr.Port := ShortHostToNet(Port);
+      Addr.Addr := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       if  fpBind(Socket, @Addr, SizeOf(Addr))<>0 then
         raise ESocketError.CreateFmt(SSocketBindingError,
           [Port, StrError(SocketError)]);

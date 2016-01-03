@@ -40,9 +40,25 @@ interface
        TAsmsymbind=(
          AB_NONE,AB_EXTERNAL,AB_COMMON,AB_LOCAL,AB_GLOBAL,AB_WEAK_EXTERNAL,
          { global in the current program/library, but not visible outside it }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          AB_PRIVATE_EXTERN,AB_LAZY,AB_IMPORT,
          { a symbol that's internal to the compiler and used as a temp }
          AB_TEMP);
+=======
+         AB_PRIVATE_EXTERN,AB_LAZY,AB_IMPORT);
+>>>>>>> graemeg/cpstrnew
+=======
+         AB_PRIVATE_EXTERN,AB_LAZY,AB_IMPORT);
+>>>>>>> graemeg/cpstrnew
+=======
+         AB_PRIVATE_EXTERN,AB_LAZY,AB_IMPORT);
+>>>>>>> graemeg/cpstrnew
+=======
+         AB_PRIVATE_EXTERN,AB_LAZY,AB_IMPORT);
+>>>>>>> origin/cpstrnew
 
        TAsmsymtype=(
          AT_NONE,AT_FUNCTION,AT_DATA,AT_SECTION,AT_LABEL,
@@ -108,6 +124,9 @@ interface
          { Table of contents section }
          sec_toc,
          sec_init,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          sec_fini,
          {Objective-C common and fragile ABI }
          sec_objc_class,
@@ -144,11 +163,36 @@ interface
          sec_objc_nlclasslist,
          sec_objc_catlist,
          sec_objc_nlcatlist,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          sec_objc_protolist,
          { stack segment for 16-bit DOS }
          sec_stack,
          { initial heap segment for 16-bit DOS }
          sec_heap
+=======
+         sec_objc_protolist
+>>>>>>> graemeg/cpstrnew
+=======
+         sec_objc_protolist
+>>>>>>> graemeg/cpstrnew
+=======
+         sec_objc_protolist
+>>>>>>> graemeg/cpstrnew
+=======
+         sec_objc_protolist
+>>>>>>> origin/cpstrnew
+=======
+         sec_fini
+>>>>>>> graemeg/fixes_2_2
+=======
+         sec_fini
+>>>>>>> origin/fixes_2_2
+=======
+         sec_fini
+>>>>>>> origin/fixes_2.4
        );
 
        TAsmSectionOrder = (secorder_begin,secorder_default,secorder_end);
@@ -242,6 +286,10 @@ implementation
 
 
     function create_smartlink_library:boolean;inline;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2_2
       begin
         result:=(cs_Create_smart in current_settings.moduleswitches) and
                 (tf_smartlink_library in target_info.flags) and
@@ -251,6 +299,20 @@ implementation
 
     function create_smartlink:boolean;inline;
       begin
+<<<<<<< HEAD
+=======
+      begin
+        result:=(cs_Create_smart in current_settings.moduleswitches) and
+                (tf_smartlink_library in target_info.flags) and
+                not create_smartlink_sections;
+      end;
+
+
+    function create_smartlink:boolean;inline;
+      begin
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         result:=(
                  (af_smartlink_sections in target_asm.flags) and
                  (tf_smartlink_sections in target_info.flags)
@@ -428,9 +490,28 @@ implementation
                                  TAsmLabel
 *****************************************************************************}
 
+<<<<<<< HEAD
     constructor TAsmLabel.Createlocal(AList: TFPHashObjectList; nr: longint; ltyp: TAsmLabelType);
       begin
         create_non_global(AList,nr,ltyp,target_asm.labelprefix);
+=======
+    constructor TAsmLabel.Createlocal(AList:TFPHashObjectList;nr:longint;ltyp:TAsmLabelType);
+      var
+        asmtyp: TAsmsymtype;
+      begin
+        case ltyp of
+          alt_addr:
+            asmtyp:=AT_ADDR;
+          alt_data:
+            asmtyp:=AT_DATA;
+          else
+            asmtyp:=AT_LABEL;
+        end;
+        inherited Create(AList,target_asm.labelprefix+asmlabeltypeprefix[ltyp]+tostr(nr),AB_LOCAL,asmtyp);
+        labelnr:=nr;
+        labeltype:=ltyp;
+        is_set:=false;
+>>>>>>> graemeg/cpstrnew
       end;
 
 

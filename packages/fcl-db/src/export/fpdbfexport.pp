@@ -20,7 +20,15 @@ Type
 
   { TDBFExportFormatSettings }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   TTableFormat = (tfDBaseIII,tfDBaseIV,tfDBaseVII,tfFoxPro,tfVisualFoxPro);
+=======
+  TTableFormat = (tfDBaseIII,tfDBaseIV,tfDBaseVII,tfFoxPro);
+>>>>>>> graemeg/fixes_2_2
+=======
+  TTableFormat = (tfDBaseIII,tfDBaseIV,tfDBaseVII,tfFoxPro);
+>>>>>>> origin/fixes_2_2
   
   TDBFExportFormatSettings = class(TExportFormatSettings)
   private
@@ -28,7 +36,13 @@ Type
     FTableFormat: TTableFormat;
   public
     Procedure Assign(Source : TPersistent); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Procedure InitSettings; override;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Published
     Property TableFormat : TTableFormat Read FTableFormat Write FTableFormat;
     Property AutoRenameFields : Boolean Read FAutoRename Write FAutoRename;
@@ -43,7 +57,15 @@ Type
     function GetSettings: TDBFExportFormatSettings;
     procedure SetSettings(const AValue: TDBFExportFormatSettings);
   Protected
+<<<<<<< HEAD
+<<<<<<< HEAD
     Procedure CheckExportFieldName(ThisExportField: TExportFieldItem; const MaxFieldNameLength: integer);
+=======
+    Procedure CheckExportFieldNames; virtual;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Procedure CheckExportFieldNames; virtual;
+>>>>>>> origin/fixes_2_2
     Function BindFields : Boolean; override;
     Function CreateFormatSettings : TCustomExportFormatSettings; override;
 
@@ -98,6 +120,8 @@ begin
   Inherited FormatSettings.Assign(AValue);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TFPCustomDBFExport.CheckExportFieldName(ThisExportField: TExportFieldItem; const MaxFieldNameLength: integer);
 // Cut off field name at max length, and rename if it already exists
 Const
@@ -122,12 +146,44 @@ begin
         ExportError('Could not create a unique export field name for field %s',[ThisExportField.FieldName]);
       end;
     ThisExportField.ExportedName:=NewFieldName;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure TFPCustomDBFExport.CheckExportFieldNames;
+
+Var
+  I,J : Integer;
+  EF : TExportFieldItem;
+  FN : String;
+  
+begin
+  For I:=0 to ExportFields.Count-1 do
+    begin
+    EF:=ExportFields[i];
+    If (Length(EF.ExportedName)>10) then
+      begin
+      FN:=Copy(EF.ExportedName,1,10);
+      If ExportFIelds.IndexOfExportedName(FN)<>-1 then
+        begin
+        J:=1;
+        Repeat
+          FN:=Copy(EF.ExportedName,1,8)+Format('%.2d',[J]);
+        Until (ExportFIelds.IndexOfExportedName(FN)=-1);
+        end;
+      EF.ExportedName:=FN;
+      end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     end;
 end;
 
 function TFPCustomDBFExport.BindFields: Boolean;
 
 Const
+<<<<<<< HEAD
+<<<<<<< HEAD
   // Translate tableformat to tablelevel
   Levels : Array[TTableFormat] of integer = (3,4,7,25,30);
   
@@ -145,10 +201,29 @@ begin
     MaxFieldName:=32
   else
     MaxFieldName:=10;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  Levels : Array[TTableFormat] of integer = (3,4,7,25);
+  
+Var
+  EF : TDBFExportFieldItem;
+  I : Integer;
+  
+begin
+  If FormatSettings.AutoRenameFields and (FormatSettings.TableFormat=tfDbaseIII) then
+    CheckExportFieldNames;
+  Result:=Inherited;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   try
     with FDBF.FieldDefs do
       begin
       Clear;
+<<<<<<< HEAD
+<<<<<<< HEAD
       For i:=0 to ExportFields.Count-1 do
         begin
         EF:=ExportFields[i] as TDBFExportFieldItem;
@@ -156,13 +231,33 @@ begin
           CheckExportFieldName(EF,MaxFieldName);
         If EF.Enabled and Assigned(EF.Field) then
           Add(EF.ExportedName,EF.Field.DataType,EF.Field.Size);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      For I:=0 to ExportFields.Count-1 do
+        begin
+        EF:=ExportFIelds[i] as TDBFExportFieldItem;
+        If EF.ENabled and Assigned(EF.Field) then
+          Add(EF.ExportedName,EF.FIeld.DataType,EF.Field.Size);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         end;
       FDBF.TableLevel:=Levels[FormatSettings.TableFormat];
       FDBF.CreateTable;
       FDBF.Exclusive := true;
       FDBF.Open;
       end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     For i:=0 to ExportFields.Count-1 do
+=======
+    For I:=0 to ExportFields.Count-1 do
+>>>>>>> graemeg/fixes_2_2
+=======
+    For I:=0 to ExportFields.Count-1 do
+>>>>>>> origin/fixes_2_2
       begin
       EF:=ExportFIelds[i] as TDBFExportFieldItem;
       If EF.Enabled then
@@ -176,7 +271,15 @@ end;
 
 function TFPCustomDBFExport.CreateFormatSettings: TCustomExportFormatSettings;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result:=TDBFExportFormatSettings.Create(True);
+=======
+  Result:=TDBFExportFormatSettings.Create(False);
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result:=TDBFExportFormatSettings.Create(False);
+>>>>>>> origin/fixes_2_2
 end;
 
 function TFPCustomDBFExport.CreateExportFields: TExportFields;
@@ -233,6 +336,8 @@ Var
 begin
   F:=EF as TDBFExportFieldItem;
   With F do
+<<<<<<< HEAD
+<<<<<<< HEAD
     // Export depending on field datatype;
     // convert to dbf data types where necessary.
     // Fall back to string if unknown datatype
@@ -256,6 +361,27 @@ begin
       DestField.AsDatetime:=Field.AsDateTime
     else
       DestField.AsString:=Field.AsString
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    If FIeld.IsNull then
+      DestField.Clear
+    else If Field.Datatype in IntFieldTypes then
+      DestField.AsInteger:=Field.AsInteger
+    else if Field.dataType in [ftString,ftFixedChar] then
+      DestField.AsString:=Field.AsString
+    else if Field.DataType=ftBoolean then
+      DestField.AsBoolean:=Field.AsBoolean
+    else if (Field.DataType in ([ftWidestring,ftFixedWideChar]+BlobFieldTypes)) then
+      DestField.AsWideString:=Field.AsWideString
+    else if field.DataType in DateFieldTypes then
+      DestField.AsDatetime:=Field.AsDateTime
+    else
+      DestField.AsDatetime:=Field.AsDateTime
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure RegisterDBFExportFormat;
@@ -285,6 +411,8 @@ begin
   inherited Assign(Source);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TDBFExportFormatSettings.InitSettings;
 begin
   inherited InitSettings;
@@ -292,5 +420,9 @@ begin
   FTableFormat:=tfDBaseIV; //often used
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.
 

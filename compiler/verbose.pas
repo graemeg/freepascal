@@ -80,11 +80,17 @@ interface
     procedure PrepareReport;
 
     function  CheckVerbosity(v:longint):boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
     function  SetMessageVerbosity(v:longint;state:tmsgstate):boolean;
     procedure RestoreLocalVerbosity(pstate : pmessagestaterecord);
     procedure FreeLocalVerbosity(var fstate : pmessagestaterecord);
 
     function ChangeMessageVerbosity(s: string; var i: integer;state:tmsgstate): boolean;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     procedure ShowStatus;
     function  ErrorCount:longint;
     procedure SetErrorFlags(const s:string);
@@ -123,7 +129,31 @@ interface
 implementation
 
     uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       comphook,fmodule,constexp,globals,cfileutl,switches;
+=======
+      comphook,fmodule,constexp,globals,cfileutl;
+>>>>>>> graemeg/cpstrnew
+=======
+      comphook,fmodule,constexp,globals,cfileutl;
+>>>>>>> graemeg/cpstrnew
+=======
+      comphook,fmodule,constexp,globals,cfileutl;
+>>>>>>> graemeg/cpstrnew
+=======
+      comphook,fmodule,constexp,globals,cfileutl;
+>>>>>>> origin/cpstrnew
+=======
+      comphook,fmodule;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {****************************************************************************
                        Extra Handlers for default compiler
@@ -206,7 +236,21 @@ implementation
     function ChangeMessageVerbosity(s: string; var i : integer;state:tmsgstate): boolean;
       var
         tok  : string;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         msgnr, code : longint;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        code : longint;
+        msgnr: longint;
+>>>>>>> graemeg/cpstrnew
       begin
         { delete everything up to and including 'm' }
         delete(s,1,i);
@@ -279,7 +323,21 @@ implementation
                           else
                             status.print_source_path:=true;
                        end;
+<<<<<<< HEAD
                  'M' : if not ChangeMessageVerbosity(s,i,message_verbosity[inverse]) then
+=======
+                 'M' : if inverse or
+                         not ClearMessageVerbosity(s, i) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                          begin
                            result:=false;
                            exit
@@ -443,6 +501,7 @@ implementation
       { fix status }
         status.currentline:=current_filepos.line;
         status.currentcolumn:=current_filepos.column;
+<<<<<<< HEAD
         if (current_filepos.moduleindex <> lastmoduleidx) or
            (current_filepos.fileindex <> lastfileidx) then
         begin
@@ -455,7 +514,19 @@ implementation
               status.currentmodulestate:=ModuleStateStr[module.state];
               status.currentsource:=module.sourcefiles.get_file_name(current_filepos.fileindex);
               status.currentsourcepath:=module.sourcefiles.get_file_path(current_filepos.fileindex);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               status.sources_avail:=module.sources_avail;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
               { if currentsourcepath is relative, make it absolute }
               if not path_absolute(status.currentsourcepath) then
                 status.currentsourcepath:=GetCurrentDir+status.currentsourcepath;
@@ -469,6 +540,30 @@ implementation
               lastmoduleidx:=module.unit_index;
             end;
         end;
+=======
+        module:=get_module(current_filepos.moduleindex);
+        if assigned(module) and
+           assigned(module.sourcefiles) and
+           ((module.unit_index<>lastmoduleidx) or
+            (current_filepos.fileindex<>lastfileidx)) then
+         begin
+           { update status record }
+           status.currentmodule:=module.modulename^;
+					 status.currentmodulestate:=ModuleStateStr[module.state];
+           status.currentsource:=module.sourcefiles.get_file_name(current_filepos.fileindex);
+           status.currentsourcepath:=module.sourcefiles.get_file_path(current_filepos.fileindex);
+
+           { update lastfileidx only if name known PM }
+           if status.currentsource<>'' then
+             lastfileidx:=current_filepos.fileindex
+           else
+             lastfileidx:=0;
+           lastmoduleidx:=module.unit_index;
+         end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -586,7 +681,15 @@ implementation
            (status.errorwarning and ((l and V_Warning)<>0)) or
            (status.errornote and ((l and V_Note)<>0)) or
            (status.errorhint and ((l and V_Hint)<>0)) then
+<<<<<<< HEAD
+<<<<<<< HEAD
          GenerateError
+=======
+         inc(status.errorcount)
+>>>>>>> graemeg/fixes_2_2
+=======
+         inc(status.errorcount)
+>>>>>>> origin/fixes_2_2
         else
          if l and V_Warning <> 0 then
           inc(status.countWarnings)
@@ -663,12 +766,37 @@ implementation
                       st:=ms_error
                     else
                       st:=GetMessageState(w);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                     { We only want to know about local value }
                     st:= tmsgstate(ord(st) and ms_local_mask);
                     if st=ms_error then
                       begin
                         v:=v or V_Error;
                         GenerateError;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                    if st=ms_error then
+                      begin
+                        v:=v or V_Error;
+                        inc(status.errorcount);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                       end
                     else if st<>ms_off then
                       case ch of
@@ -677,7 +805,23 @@ implementation
                            v:=v or V_Warning;
                            if CheckVerbosity(V_Warning) then
                              if status.errorwarning then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                               GenerateError
+=======
+                              inc(status.errorcount)
+>>>>>>> graemeg/cpstrnew
+=======
+                              inc(status.errorcount)
+>>>>>>> graemeg/cpstrnew
+=======
+                              inc(status.errorcount)
+>>>>>>> graemeg/cpstrnew
+=======
+                              inc(status.errorcount)
+>>>>>>> origin/cpstrnew
                              else
                               inc(status.countWarnings);
                          end;
@@ -686,7 +830,23 @@ implementation
                            v:=v or V_Note;
                            if CheckVerbosity(V_Note) then
                              if status.errornote then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                               GenerateError
+=======
+                              inc(status.errorcount)
+>>>>>>> graemeg/cpstrnew
+=======
+                              inc(status.errorcount)
+>>>>>>> graemeg/cpstrnew
+=======
+                              inc(status.errorcount)
+>>>>>>> graemeg/cpstrnew
+=======
+                              inc(status.errorcount)
+>>>>>>> origin/cpstrnew
                              else
                               inc(status.countNotes);
                          end;
@@ -695,7 +855,23 @@ implementation
                            v:=v or V_Hint;
                            if CheckVerbosity(V_Hint) then
                              if status.errorhint then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                               GenerateError
+=======
+                              inc(status.errorcount)
+>>>>>>> graemeg/cpstrnew
+=======
+                              inc(status.errorcount)
+>>>>>>> graemeg/cpstrnew
+=======
+                              inc(status.errorcount)
+>>>>>>> graemeg/cpstrnew
+=======
+                              inc(status.errorcount)
+>>>>>>> origin/cpstrnew
                              else
                               inc(status.countHints);
                          end;

@@ -303,7 +303,19 @@ procedure TXMLConfig.Loaded;
 begin
   inherited Loaded;
   if Length(Filename) > 0 then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     SetFilenameForce(Filename, true);              // Load the XML config file
+=======
+    SetFilename(Filename, true);              // Load the XML config file
+>>>>>>> graemeg/fixes_2_2
+=======
+    SetFilename(Filename, true);              // Load the XML config file
+>>>>>>> origin/fixes_2_2
+=======
+    SetFilenameForce(Filename, true);              // Load the XML config file
+>>>>>>> origin/fixes_2.4
 end;
 
 function TXMLConfig.FindNode(const APath: String;

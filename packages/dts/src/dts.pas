@@ -22,8 +22,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02111-1301 USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *)
 
 {
@@ -428,7 +427,7 @@ begin
   begin
     if decoder^.samplecnt = 0 then
     begin
-      len := ptruint(decoder^.inbuf_ptr) - ptruint(@decoder^.inbuf);
+      len := ptrint(decoder^.inbuf_ptr) - ptrint(@decoder^.inbuf);
 
       if (len < HEADER_SIZE) or (len < decoder^.frame_size) then
       begin
@@ -449,7 +448,7 @@ begin
         if len = 0 then
         begin
           (* no sync found : move by one byte (inefficient, but simple!) *)
-          Move(decoder^.inbuf[1], decoder^.inbuf[0], ptruint(decoder^.inbuf_ptr) - ptruint(@decoder^.inbuf) - 1);
+          Move(decoder^.inbuf[1], decoder^.inbuf[0], ptrint(decoder^.inbuf_ptr) - ptrint(@decoder^.inbuf) - 1);
           Dec(decoder^.inbuf_ptr, 1);
         end else begin
           decoder^.frame_size := len;
@@ -500,7 +499,7 @@ begin
       end;
 
       (* skip decoded frame *)
-      Move(decoder^.inbuf[decoder^.frame_size], decoder^.inbuf[0], ptruint(decoder^.inbuf_ptr) - ptruint(@decoder^.inbuf) - decoder^.frame_size);
+      Move(decoder^.inbuf[decoder^.frame_size], decoder^.inbuf[0], ptrint(decoder^.inbuf_ptr) - ptrint(@decoder^.inbuf) - decoder^.frame_size);
       Dec(decoder^.inbuf_ptr, decoder^.frame_size);
       decoder^.frame_size := 0;
 
@@ -514,8 +513,8 @@ begin
 
     for i := 0 to len - 1 do
     begin
-      pcint16(ptruint(buffer) + ofs + 0)^ := decoder^.samples[0][decoder^.sampleofs];
-      pcint16(ptruint(buffer) + ofs + 2)^ := decoder^.samples[1][decoder^.sampleofs];
+      pcint16(ptrint(buffer) + ofs + 0)^ := decoder^.samples[0][decoder^.sampleofs];
+      pcint16(ptrint(buffer) + ofs + 2)^ := decoder^.samples[1][decoder^.sampleofs];
 
       Inc(decoder^.sampleofs);
       Dec(decoder^.samplecnt);

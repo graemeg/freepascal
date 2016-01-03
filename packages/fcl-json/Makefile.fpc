@@ -1,13 +1,68 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for XML for FCL
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for XML for FCL
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=fcl-json
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=fpjson jsonscanner jsonparser jsonconf fpjsonrtti
+rsts=fpjson jsonscanner jsonparser jsonconf fpjsonrtti
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=fpjson jsonscanner jsonparser jsonconf
+rsts=fpjson jsonscanner jsonparser jsonconf
+
+[require]
+packages=fcl-base
+
+[compiler]
+options=-S2h
+sourcedir=src
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -15,6 +70,8 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -43,6 +100,7 @@ FPMAKE_OPT+=--compiler=$(FPC)
 FPMAKE_OPT+=-bu
 .NOTPARALLEL:
 
+<<<<<<< HEAD
 fpmake$(SRCEXEEXT): fpmake.pp
 	$(FPCFPMAKE) fpmake.pp $(FPMAKE_SKIP_CONFIG) $(addprefix -Fu,$(COMPILER_FPMAKE_UNITDIR)) $(FPCMAKEOPT) $(OPT)
 all:	fpmake$(SRCEXEEXT)
@@ -100,3 +158,33 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+jsonparser$(PPUEXT): jsonparser.pp fpjson$(PPUEXT) jsonscanner$(PPUEXT)
+
+jsonconf$(PPUEXT): jsonparser$(PPUEXT) fpjson$(PPUEXT)
+
+fpjsonrtti$(PPUEXT): jsonparser$(PPUEXT) fpjson$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[rules]
+.NOTPARALLEL:
+
+jsonparser$(PPUEXT): jsonparser.pp fpjson$(PPUEXT) jsonscanner$(PPUEXT)
+
+<<<<<<< HEAD
+jsonconf$(PPUEXT): jsonparser$(PPUEXT) fpjson$(PPUEXT)
+>>>>>>> graemeg/fixes_2_2
+=======
+jsonconf$(PPUEXT): jsonparser$(PPUEXT) fpjson$(PPUEXT)
+>>>>>>> origin/fixes_2_2

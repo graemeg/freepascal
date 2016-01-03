@@ -111,7 +111,17 @@ type
       procedure DocTableItem(Entered: boolean); virtual;
       procedure DocHorizontalRuler; virtual;
       function CanonicalizeURL(const Base,Relative:String):string; virtual;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       procedure Resolve( href: ansistring; var AFileId,ALinkId : sw_integer); virtual;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+      procedure Resolve( href: ansistring; var AFileId,ALinkId : sw_integer); virtual;
+>>>>>>> origin/fixes_2.4
     public
       function  GetSectionColor(Section: THTMLSection; var Color: byte): boolean; virtual;
     private
@@ -150,9 +160,25 @@ type
     PCHMTopicRenderer = ^TCHMTopicRenderer;
     TCHMTopicRenderer = object(THTMLTopicRenderer)
       function CanonicalizeURL(const Base,Relative:String):string; virtual;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       procedure Resolve( href: ansistring; var AFileId,ALinkId : sw_integer); virtual;
       end;
 
+=======
+      end;
+      
+>>>>>>> graemeg/fixes_2_2
+=======
+      end;
+      
+>>>>>>> origin/fixes_2_2
+=======
+      procedure Resolve( href: ansistring; var AFileId,ALinkId : sw_integer); virtual;
+      end;
+
+>>>>>>> origin/fixes_2.4
     PCustomHTMLHelpFile = ^TCustomHTMLHelpFile;
     TCustomHTMLHelpFile = object(THelpFile)
       constructor Init(AID: word);
@@ -181,7 +207,19 @@ type
     PCHMHelpFile = ^TCHMHelpFile;
     TCHMHelpFile = object(TCustomHTMLHelpFile)
       constructor Init(AFileName: string; AID: word);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       destructor  Done; virtual;
+=======
+      destructor  Done; virtual; 
+>>>>>>> graemeg/fixes_2_2
+=======
+      destructor  Done; virtual; 
+>>>>>>> origin/fixes_2_2
+=======
+      destructor  Done; virtual;
+>>>>>>> origin/fixes_2.4
     public
       function    LoadIndex: boolean; virtual;
       function    ReadTopic(T: PTopic): boolean; virtual;
@@ -655,6 +693,9 @@ begin
 {$IFDEF WDEBUG}
               DebugMessageS({$i %file%},' Adding Link1 "'+HRef+'"'+' "'+url+'"',{$i %line%},'1',0,0);
 {$ENDIF WDEBUG}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
               if pos('#',HRef)=1 then
                 Href:=NameAndExtOf(GetFilename)+Href;
@@ -662,6 +703,27 @@ begin
               Resolve(Href,lfileid,llinkid);
               LinkIndexes[LinkPtr]:=llinkid;
               FileIDLinkIndexes[LinkPtr]:=lfileid;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+              
+              if pos('#',HRef)=1 then
+                Href:=NameAndExtOf(GetFilename)+Href;
+              HRef:=canonicalizeURL(URL,HRef);
+              LinkIndexes[LinkPtr]:=TopicLinks^.AddItem(HRef);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+
+              if pos('#',HRef)=1 then
+                Href:=NameAndExtOf(GetFilename)+Href;
+              HRef:=canonicalizeURL(URL,HRef);
+              Resolve(Href,lfileid,llinkid);
+              LinkIndexes[LinkPtr]:=llinkid;
+              FileIDLinkIndexes[LinkPtr]:=lfileid;
+>>>>>>> origin/fixes_2.4
 {$IFDEF WDEBUG}
               DebugMessageS({$i %file%},' Adding Link2 "'+HRef+'"',{$i %line%},'1',0,0);
 {$ENDIF WDEBUG}
@@ -723,12 +785,31 @@ begin
     end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function  THTMLTopicRenderer.CanonicalizeURL(const Base,Relative:String):string;
 // uses info from filesystem (curdir) -> overridden for CHM.
+=======
+Function  THTMLTopicRenderer.CanonicalizeURL(const Base,Relative:String):string; 
+=======
+Function  THTMLTopicRenderer.CanonicalizeURL(const Base,Relative:String):string;
+>>>>>>> origin/fixes_2.4
+// uses info from filesystem (curdir) -> overriden for CHM.
+>>>>>>> graemeg/fixes_2_2
+=======
+Function  THTMLTopicRenderer.CanonicalizeURL(const Base,Relative:String):string; 
+// uses info from filesystem (curdir) -> overriden for CHM.
+>>>>>>> origin/fixes_2_2
 begin
  CanonicalizeURL:=CompleteURL(Base,relative);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 procedure THTMLTopicRenderer.Resolve( href: ansistring; var AFileId,ALinkId : sw_integer); 
 begin
 {$IFDEF WDEBUG}
@@ -739,6 +820,13 @@ begin
   ALinkId:=TopicLinks^.AddItem(HRef);
 end;
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 procedure THTMLTopicRenderer.DocParagraph(Entered: boolean);
 var Align: string;
 begin
@@ -1318,10 +1406,27 @@ begin
           for I:=0 to Min(Topic^.LinkCount-1,High(LinkIndexes)-1) do
             begin
               {$IFDEF WDEBUG}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 DebugMessageS({$i %file%},' Indexing links ('+inttostr(i)+')'+topiclinks^.at(linkindexes[i])^+' '+inttostr(i)+' '+inttostr(linkindexes[i]),{$i %line%},'1',0,0);
               {$endif WDEBUG}
               Topic^.Links^[I].FileID:=FileIDLinkIndexes[i];
               Topic^.Links^[I].Context:=EncodeHTMLCtx(FileIDLinkIndexes[i],LinkIndexes[I]+1);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                DebugMessageS({$i %file%},' Indexing links ('+inttostr(i)+')'+topiclinks^.at(linkindexes[i])^,{$i %line%},'1',0,0);
+              {$endif WDEBUG}
+              Topic^.Links^[I].FileID:=Topic^.FileID;
+              Topic^.Links^[I].Context:=EncodeHTMLCtx(Topic^.FileID,LinkIndexes[I]+1);
+>>>>>>> graemeg/fixes_2_2
+=======
+                DebugMessageS({$i %file%},' Indexing links ('+inttostr(i)+')'+topiclinks^.at(linkindexes[i])^+' '+inttostr(i)+' '+inttostr(linkindexes[i]),{$i %line%},'1',0,0);
+              {$endif WDEBUG}
+              Topic^.Links^[I].FileID:=FileIDLinkIndexes[i];
+              Topic^.Links^[I].Context:=EncodeHTMLCtx(FileIDLinkIndexes[i],LinkIndexes[I]+1);
+>>>>>>> origin/fixes_2.4
             end;
          {$IFDEF WDEBUG}
           if Topic^.Linkcount>High(linkindexes) then
@@ -1344,6 +1449,9 @@ begin
   BuildTopic:=OK;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function  TCHMTopicRenderer.CanonicalizeURL(const Base,Relative:String):string;
 begin
  if copy(relative,1,6)='http:/' then // external links don't need to be fixed since we can't load them.
@@ -1379,6 +1487,54 @@ begin
 end;
 
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Function  TCHMTopicRenderer.CanonicalizeURL(const Base,Relative:String):string; 
+=======
+Function  TCHMTopicRenderer.CanonicalizeURL(const Base,Relative:String):string;
+>>>>>>> origin/fixes_2.4
+begin
+ if copy(relative,1,6)='http:/' then // external links don't need to be fixed since we can't load them.
+   begin
+     CanonicalizeUrl:=relative;
+     exit;
+   end;
+ if copy(relative,1,7)<>'ms-its:' then
+   CanonicalizeUrl:=combinepaths(relative,base)
+  else
+   CanonicalizeUrl:=relative;
+end;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+procedure TCHMTopicRenderer.Resolve( href: ansistring; var AFileId,ALinkId : sw_integer); 
+var resolved:boolean;
+begin
+{$IFDEF WDEBUG}
+  DebugMessageS({$i %file%},' chmresolve "'+HRef+'"',{$i %line%},'1',0,0);
+{$ENDIF WDEBUG}
+  resolved:=false; AFileID:=0; ALinkID:=0;	
+  href:=stringreplace(href,'%20',' '); 
+  if copy(href,1,7)='ms-its:' then
+    resolved:=CHMResolve(Href,AFileId,ALinkID);
+  if not resolved then
+    begin
+    {$IFDEF WDEBUG}
+       DebugMessageS({$i %file%},' chmresolve not resolved "'+HRef+'"',{$i %line%},'1',0,0);
+    {$ENDIF WDEBUG}
+
+      Afileid:=Topic^.FileId;
+      ALinkId:=TopicLinks^.AddItem(HRef);
+    end;
+end;
+
+
+>>>>>>> origin/fixes_2.4
 constructor TCustomHTMLHelpFile.Init(AID: word);
 begin
   inherited Init(AID);
@@ -1439,7 +1595,19 @@ begin
 {$IFDEF WDEBUG}
           DebugMessageS({$i %file%},'(Topicinfo) Link before formatpath "'+link+'"',{$i %line%},'1',0,0);
 {$ENDIF WDEBUG}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+          
+>>>>>>> graemeg/fixes_2_2
+=======
+          
+>>>>>>> origin/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2.4
           Link:=FormatLink(Link);
 {$IFDEF WDEBUG}
           DebugMessageS({$i %file%},'(Topicinfo) Link after formatpath "'+link+'"',{$i %line%},'1',0,0);
@@ -1633,21 +1801,63 @@ end;
 
 constructor TChmHelpFile.Init(AFileName: string; AID: word);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if inherited Init(AID)=false then
     Fail;
   Dispose(renderer,done);
   renderer:=New(PCHMTopicRenderer, Init);
   DefaultFileName:=AFileName;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if inherited Init(AID)=false then 
+    Fail;
+  Dispose(renderer,done);
+  renderer:=New(PCHMTopicRenderer, Init);
+  DefaultFileName:=AFileName; 
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+  if inherited Init(AID)=false then
+    Fail;
+  Dispose(renderer,done);
+  renderer:=New(PCHMTopicRenderer, Init);
+  DefaultFileName:=AFileName;
+>>>>>>> origin/fixes_2.4
   if (DefaultFileName='') or not ExistsFile(DefaultFilename) then
   begin
     Done;
     Fail;
   end
   else
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     chmw:=TCHMWrapper.Create(DefaultFileName,AID,TopicLinks);
 end;
 
 function    TChmHelpFile.LoadIndex: boolean;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    chmw:=TCHMWrapper.Create(DefaultFileName);
+end;
+
+function    TChmHelpFile.LoadIndex: boolean; 
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+    chmw:=TCHMWrapper.Create(DefaultFileName,AID,TopicLinks);
+end;
+
+function    TChmHelpFile.LoadIndex: boolean;
+>>>>>>> origin/fixes_2.4
 begin
   loadindex:=false;
   if assigned(chmw) then
@@ -1754,9 +1964,21 @@ begin
           begin
             Bookmark:=copy(Link,P+1,length(Link));
             Link:=copy(Link,1,P-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             {$IFDEF WDEBUG}
               debugMessageS({$i %file%},' Removed label: "'+Link+'"',{$i %line%},'1',0,0);
             {$endif WDEBUG}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+            {$IFDEF WDEBUG}
+              debugMessageS({$i %file%},' Removed label: "'+Link+'"',{$i %line%},'1',0,0);
+            {$endif WDEBUG}
+>>>>>>> origin/fixes_2.4
           end;
 {          if CurFileName='' then Name:=Link else
           Name:=CompletePath(CurFileName,Link);}

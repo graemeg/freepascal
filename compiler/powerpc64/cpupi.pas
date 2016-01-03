@@ -45,8 +45,17 @@ type
     function calc_stackframe_size: longint; override;
     function calc_stackframe_size(numgpr, numfpr : longint): longint;
 
+<<<<<<< HEAD
     procedure allocate_got_register(list: TAsmList); override;
     procedure postprocess_code;override;
+=======
+    needs_frame_pointer : boolean;
+
+    procedure allocate_got_register(list: TAsmList); override;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
 implementation
@@ -94,8 +103,18 @@ begin
     { the ABI specification says that it is required to always allocate space for 8 * 8 bytes
       for registers R3-R10 and stack header if there's a stack frame, but GCC doesn't do that,
       so we don't that too. Uncomment the next three lines if this is required }
+<<<<<<< HEAD
+<<<<<<< HEAD
     if (cs_profile in init_settings.moduleswitches) and (ofs < minstacksize) then begin
       ofs := minstacksize;
+=======
+    if (cs_profile in init_settings.moduleswitches) and (ofs < MINIMUM_STACKFRAME_SIZE) then begin
+      ofs := MINIMUM_STACKFRAME_SIZE;
+>>>>>>> graemeg/fixes_2_2
+=======
+    if (cs_profile in init_settings.moduleswitches) and (ofs < MINIMUM_STACKFRAME_SIZE) then begin
+      ofs := MINIMUM_STACKFRAME_SIZE;
+>>>>>>> origin/fixes_2_2
     end;
     tg.setfirsttemp(ofs);
   end else begin
@@ -142,6 +161,8 @@ procedure tppcprocinfo.allocate_got_register(list: TAsmList);
       end;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 procedure tppcprocinfo.postprocess_code;
   begin
@@ -149,6 +170,10 @@ procedure tppcprocinfo.postprocess_code;
   end;
 
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   cprocinfo := tppcprocinfo;
 end.

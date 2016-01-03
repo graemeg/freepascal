@@ -88,7 +88,7 @@ implementation
   {$DEFINE NO_FORMAT}
 {$ENDIF}
 {$IFDEF FPC}
-  {.$DEFINE NO_FORMAT}
+  {$DEFINE NO_FORMAT}
 {$ENDIF}
 
 uses

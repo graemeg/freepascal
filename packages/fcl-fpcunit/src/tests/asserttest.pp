@@ -329,6 +329,7 @@ procedure TMyTest.RaiseIgnoreTest;
 begin
   Ignore('This is an ignored test');
   AssertEquals('the compiler can count', 3, 2);
+<<<<<<< HEAD
 end;
 
 procedure TMyTest.TestExpectException;
@@ -358,6 +359,8 @@ procedure TMyTest.TestExpectExceptionWrongHelpContext;
 begin
   ExpectException('Error message',EMyException,'A message',123);
   Raise EMyException.CreateHelp('A message',124);
+=======
+>>>>>>> origin/fpcunit
 end;
 
 procedure TTestIgnore.TestIgnoreResult;

@@ -66,11 +66,22 @@ const
         movw   tmp,%ax
         andl   $0xffff,%eax  { clears bits 32-63 }
       end;
+<<<<<<< HEAD
 
 
     procedure SetMXCSR(w : dword);
       begin
         defaultmxcsr:=w;
+=======
+    
+    
+    procedure SetSSECSR(w : dword);
+      begin
+        mxcsr:=w;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         asm
           ldmxcsr w
         end;
@@ -205,6 +216,22 @@ const
     end;
     {$endif FPC_SYSTEM_HAS_COS}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$ifdef FPC_HAS_TYPE_EXTENDED}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef FPC_HAS_TYPE_EXTENDED}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef FPC_HAS_TYPE_EXTENDED}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef FPC_HAS_TYPE_EXTENDED}
+>>>>>>> origin/cpstrnew
     {$ifndef FPC_SYSTEM_HAS_EXP}
     {$define FPC_SYSTEM_HAS_EXP}
     { exp function adapted from AMath library (C) Copyright 2009-2013 Wolfgang Ehrhardt
@@ -369,5 +396,18 @@ const
       asm
         cvtsd2si   %xmm0,%rax;
       end;
+<<<<<<< HEAD
 
+=======
+    {$endif FPC_SYSTEM_HAS_POWER}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endif FPC_HAS_TYPE_EXTENDED}

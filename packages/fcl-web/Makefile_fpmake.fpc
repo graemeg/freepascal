@@ -1,0 +1,35 @@
+#
+#   Makefile.fpc for TDataSet for FCL
+#
+
+[package]
+name=fcl-web
+version=2.5.1
+
+[require]
+packages=rtl fcl-base fcl-xml fcl-db fcl-json fcl-net fcl-process fastcgi httpd22
+
+[default]
+fpcdir=../..
+
+[prerules]
+# If no fpmake exists and clean is called, do not try to build fpmake, it will
+# most often fail because the dependencies are cleared. So simply skip the
+# clean by replacing the command with 'echo'
+FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
+ifeq ($(FPMAKE_BIN_CLEAN),)
+FPMAKE_BIN_CLEAN=$(ECHO)
+endif
+
+
+[rules]
+fpmake: fpmake.pp
+	$(FPC) fpmake.pp -Fu../fpmkunit/src -dNO_UNIT_PROCESS -dNO_UNIT_ZIPPER $(FPCOPT)
+all:	fpmake
+	./fpmake build --localunitdir=../.. --globalunitdir=.. $(addprefix -o ,$(FPCOPT)) --compiler=$(FPC)
+clean:	
+	$(FPMAKE_BIN_CLEAN) clean --localunitdir=../.. --globalunitdir=.. $(addprefix -o ,$(FPCOPT)) --compiler=$(FPC)
+install:	fpmake
+	./fpmake install --localunitdir=../.. --globalunitdir=.. $(addprefix -o ,$(FPCOPT)) --compiler=$(FPC) --prefix=$(PREFIX)
+	
+

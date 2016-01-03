@@ -60,9 +60,15 @@ implementation
          current_module:=nil;
          current_asmdata:=nil;
          current_procinfo:=nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
          current_structdef:=nil;
          current_genericdef:=nil;
          current_specializedef:=nil;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
          loaded_units:=TLinkedList.Create;
 
@@ -122,6 +128,8 @@ implementation
            system_i386_aros,
            system_x86_64_aros:
              include(supported_calling_conventions,pocall_syscall);
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef i8086}
            system_i8086_msdos:
              begin
@@ -158,6 +166,12 @@ implementation
                  end;
              end;
 {$endif i8086}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+           system_m68k_amiga:
+             include(supported_calling_conventions,pocall_syscall);
+>>>>>>> origin/fixes_2_2
          end;
       end;
 
@@ -170,9 +184,15 @@ implementation
          current_module:=nil;
          current_procinfo:=nil;
          current_asmdata:=nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
          current_structdef:=nil;
          current_genericdef:=nil;
          current_specializedef:=nil;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
          { unload units }
          if assigned(loaded_units) then
@@ -295,6 +315,34 @@ implementation
 *****************************************************************************}
 
     procedure compile(const filename:string);
+<<<<<<< HEAD
+=======
+      type
+        polddata=^tolddata;
+        tolddata=record
+        { scanner }
+          oldidtoken,
+          oldtoken       : ttoken;
+          oldtokenpos    : tfileposinfo;
+          oldc           : char;
+          oldpattern,
+          oldorgpattern  : string;
+          old_block_type : tblock_type;
+        { symtable }
+          oldsymtablestack,
+          oldmacrosymtablestack : TSymtablestack;
+          oldaktprocsym    : tprocsym;
+        { cg }
+          oldparse_only  : boolean;
+        { akt.. things }
+          oldcurrent_filepos      : tfileposinfo;
+          old_current_module : tmodule;
+          oldcurrent_procinfo : tprocinfo;
+          old_settings : tsettings;
+          oldsourcecodepage : tcodepagestring;
+        end;
+
+>>>>>>> graemeg/fixes_2_2
       var
          olddata : pglobalstate;
          hp,hp2 : tmodule;
@@ -311,10 +359,40 @@ implementation
            stack. This is needed because compile() can be called
            recursively }
          new(olddata);
+<<<<<<< HEAD
          { handle the postponed case first }
          flushpendingswitchesstate;
          save_global_state(olddata^,false);
 
+=======
+         with olddata^ do
+          begin
+            old_current_module:=current_module;
+          { save symtable state }
+            oldsymtablestack:=symtablestack;
+            oldmacrosymtablestack:=macrosymtablestack;
+            oldcurrent_procinfo:=current_procinfo;
+          { save scanner state }
+            oldc:=c;
+            oldpattern:=pattern;
+            oldorgpattern:=orgpattern;
+            oldtoken:=token;
+            oldidtoken:=idtoken;
+            old_block_type:=block_type;
+            oldtokenpos:=current_tokenpos;
+          { save cg }
+            oldparse_only:=parse_only;
+          { save akt... state }
+          { handle the postponed case first }
+           if localswitcheschanged then
+             begin
+               current_settings.localswitches:=nextlocalswitches;
+               localswitcheschanged:=false;
+             end;
+            oldcurrent_filepos:=current_filepos;
+            old_settings:=current_settings;
+          end;
+>>>>>>> graemeg/fixes_2_2
        { reset parser, a previous fatal error could have left these variables in an unreliable state, this is
          important for the IDE }
          afterassignment:=false;
@@ -342,7 +420,15 @@ implementation
            begin
              if assigned(current_module) then
                internalerror(200501158);
+<<<<<<< HEAD
+<<<<<<< HEAD
              set_current_module(tppumodule.create(nil,'',filename,false));
+=======
+             set_current_module(tppumodule.create(nil,filename,'',false));
+>>>>>>> graemeg/fixes_2_2
+=======
+             set_current_module(tppumodule.create(nil,filename,'',false));
+>>>>>>> origin/fixes_2_2
              addloadedunit(current_module);
              main_module:=current_module;
              current_module.state:=ms_compile;
@@ -431,6 +517,7 @@ implementation
               { Write Browser Collections }
               do_extractsymbolinfo;
 
+<<<<<<< HEAD
             restore_global_state(olddata^,false);
 
             { Restore all locally modified warning messages }
@@ -438,6 +525,29 @@ implementation
             current_exceptblock:=0;
             exceptblockcounter:=0;
 
+=======
+            with olddata^ do
+              begin
+                { restore scanner }
+                c:=oldc;
+                pattern:=oldpattern;
+                orgpattern:=oldorgpattern;
+                token:=oldtoken;
+                idtoken:=oldidtoken;
+                current_tokenpos:=oldtokenpos;
+                block_type:=old_block_type;
+                { restore cg }
+                parse_only:=oldparse_only;
+                { restore symtable state }
+                symtablestack:=oldsymtablestack;
+                macrosymtablestack:=oldmacrosymtablestack;
+                current_procinfo:=oldcurrent_procinfo;
+                current_filepos:=oldcurrent_filepos;
+                current_settings:=old_settings;
+                aktexceptblock:=0;
+                exceptblockcounter:=0;
+              end;
+>>>>>>> graemeg/fixes_2_2
             { Shut down things when the last file is compiled succesfull }
             if (compile_level=1) and
                 (status.errorcount=0) then
@@ -470,6 +580,8 @@ implementation
               unloaded_units.Clear;
              end;
            dec(compile_level);
+<<<<<<< HEAD
+<<<<<<< HEAD
            { If used units are compiled current_module is already the same as
              the stored module. Now if the unit is not finished its scanner is
              not yet freed and thus set_current_module would reopen the scanned
@@ -480,6 +592,12 @@ implementation
              set_current_module(olddata^.old_current_module);
 
            FreeLocalVerbosity(current_settings.pmessage);
+=======
+           set_current_module(olddata^.old_current_module);
+>>>>>>> graemeg/fixes_2_2
+=======
+           set_current_module(olddata^.old_current_module);
+>>>>>>> origin/fixes_2_2
 
            dispose(olddata);
          end;

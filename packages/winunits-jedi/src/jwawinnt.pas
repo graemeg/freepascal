@@ -2935,11 +2935,19 @@ const
   PROCESS_ALL_ACCESS        = STANDARD_RIGHTS_REQUIRED or SYNCHRONIZE or $FFF;
   {$EXTERNALSYM PROCESS_ALL_ACCESS}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$ifdef win64}
   MAXIMUM_PROCESSORS = 64;
   {$else}
   MAXIMUM_PROCESSORS = 32;
   {$endif}
+=======
+  MAXIMUM_PROCESSORS = 32;
+>>>>>>> graemeg/fixes_2_2
+=======
+  MAXIMUM_PROCESSORS = 32;
+>>>>>>> origin/fixes_2_2
   {$EXTERNALSYM MAXIMUM_PROCESSORS}
 
   THREAD_TERMINATE            = $0001;
@@ -9020,7 +9028,15 @@ asm
         MOV     EAX, FS:[024]   // was zero        
 {$endif cpu386}
 {$ifdef cpux86_64}
+<<<<<<< HEAD
+<<<<<<< HEAD
         mov     RAX, GS:[48]
+=======
+        movq     RAX, GS:[48]
+>>>>>>> graemeg/fixes_2_2
+=======
+        movq     RAX, GS:[48]
+>>>>>>> origin/fixes_2_2
 {$endif cpux86_64}
 end;
 {$ENDIF JWA_INCLUDEMODE}
@@ -9155,7 +9171,15 @@ end;
 
 function IMAGE_FIRST_SECTION(NtHeader: PImageNtHeaders): PImageSectionHeader;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result := PImageSectionHeader(ptruint(NtHeader) +
+=======
+  Result := PImageSectionHeader(Cardinal(NtHeader) +
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result := PImageSectionHeader(Cardinal(NtHeader) +
+>>>>>>> origin/fixes_2_2
       FieldOffset(NtHeader^, NtHeader^.OptionalHeader) +
       NtHeader^.FileHeader.SizeOfOptionalHeader);
 end;

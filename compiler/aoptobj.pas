@@ -1316,8 +1316,22 @@ Unit AoptObj;
                         strpnew('next label reused'))));
       {$endif finaldestdebug}
                       l.increfs;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                       tasmlabel(JumpTargetOp(hp)^.ref^.symbol).decrefs;
                       JumpTargetOp(hp)^.ref^.symbol := l;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                      tasmlabel(hp.oper[0]^.ref^.symbol).decrefs;
+                      hp.oper[0]^.ref^.symbol := l;
+>>>>>>> graemeg/cpstrnew
                       if not GetFinalDestination(hp,succ(level)) then
                         exit;
                     end;
@@ -1353,6 +1367,7 @@ Unit AoptObj;
   {$endif DEBUG_OPTALLOC}
               if PeepHoleOptPass1Cpu(p) then
                 begin
+<<<<<<< HEAD
                   stoploop:=false;
                   UpdateUsedRegs(p);
                   continue;
@@ -1376,6 +1391,65 @@ Unit AoptObj;
 {$endif}
                                   do
                               if not(hp1.typ in ([ait_label,ait_align]+skipinstr)) then
+=======
+                  { Handle Jmp Optimizations }
+                  if taicpu(p).is_jmp then
+                    begin
+                      { the following if-block removes all code between a jmp and the next label,
+                        because it can never be executed
+                      }
+                      if (taicpu(p).opcode = aopt_uncondjmp) and
+{$ifdef arm}
+                         (taicpu(p).condition = C_None) and
+{$endif arm}
+                         (taicpu(p).oper[0]^.typ = top_ref) and
+                         (assigned(taicpu(p).oper[0]^.ref^.symbol)) and
+                         (taicpu(p).oper[0]^.ref^.symbol is TAsmLabel) then
+                        begin
+                          while GetNextInstruction(p, hp1) and
+                                (hp1.typ <> ait_label) do
+                            if not(hp1.typ in ([ait_label,ait_align]+skipinstr)) then
+                              begin
+                                if (hp1.typ = ait_instruction) and
+                                   taicpu(hp1).is_jmp and
+                                   (taicpu(hp1).oper[0]^.typ = top_ref) and
+                                   assigned(taicpu(hp1).oper[0]^.ref^.symbol) and
+                                   (taicpu(hp1).oper[0]^.ref^.symbol is TAsmLabel) then
+                                   TAsmLabel(taicpu(hp1).oper[0]^.ref^.symbol).decrefs;
+                                asml.remove(hp1);
+                                hp1.free;
+                              end
+                            else break;
+                          end;
+                      { remove jumps to a label coming right after them }
+                      if GetNextInstruction(p, hp1) then
+                        begin
+                          if FindLabel(tasmlabel(taicpu(p).oper[0]^.ref^.symbol), hp1) and
+        { TODO: FIXME removing the first instruction fails}
+                              (p<>blockstart) then
+                            begin
+                              hp2:=tai(hp1.next);
+                              asml.remove(p);
+                              tasmlabel(taicpu(p).oper[0]^.ref^.symbol).decrefs;
+                              p.free;
+                              p:=hp2;
+                              continue;
+                            end
+                          else
+                            begin
+                              if hp1.typ = ait_label then
+                                SkipLabels(hp1,hp1);
+                              if (tai(hp1).typ=ait_instruction) and
+                                  (taicpu(hp1).opcode=aopt_uncondjmp) and
+{$ifdef arm}
+                                  (taicpu(hp1).condition=C_None) and
+{$endif arm}
+                                  (taicpu(hp1).oper[0]^.typ = top_ref) and
+                                  (assigned(taicpu(hp1).oper[0]^.ref^.symbol)) and
+                                  (taicpu(hp1).oper[0]^.ref^.symbol is TAsmLabel) and
+                                  GetNextInstruction(hp1, hp2) and
+                                  FindLabel(tasmlabel(taicpu(p).oper[0]^.ref^.symbol), hp2) then
+>>>>>>> graemeg/cpstrnew
                                 begin
                                   if (hp1.typ = ait_instruction) and
                                      taicpu(hp1).is_jmp and

@@ -21,11 +21,6 @@ Var
 
 begin
   SendMethodEnter('Program');
-  If (SendError<>'') then
-    begin
-    Writeln('Error : ',SendError);
-    Exit;
-    end;
   Repeat
     Writeln('Enter message to send to debug server (STOP exits): ');
     Write('> ');

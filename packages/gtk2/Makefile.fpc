@@ -1,24 +1,127 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for Free Pascal GTK 2.x.y Bindings
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for Free Pascal GTK 2.x.y Bindings
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=gtk2
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[require]
+libc=y
+packages=cairo
+packages_beos=x11
+packages_haiku=x11
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[require]
+libc=y
+packages_beos=x11
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+packages_linux=x11
+packages_freebsd=x11
+packages_solaris=x11
+packages_openbsd=x11
+packages_netbsd=x11
+packages_darwin=x11
+<<<<<<< HEAD
+<<<<<<< HEAD
+packages_iphonesim=x11
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+
+[target]
+units=src/buildgtk2 
+exampledirs=examples
+<<<<<<< HEAD
+<<<<<<< HEAD
+implicitunits=glib2 atk pango pangocairo gdk2pixbuf gdk2 gtk2 libglade2 gtkglext gdkglext gtk2ext $(GDK2X)
+
+[compiler]
+unitdir=src src/glib src/atk src/pango src/pangocairo src/gtk+/gdk-pixbuf src/gtk+/gdk src/gtk+/gtk src/libglade src/gtkglext src/gtkext src/$(GTK2X11)
+includedir=$(GTK2X11INCLUDE)
+>>>>>>> graemeg/cpstrnew
 
 [install]
 fpcpackage=y
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+implicitunits=glib2 gtkhtml atk pango gdk2pixbuf gdk2 gtk2 libglade2 gtkglext gdkglext gtk2ext $(GDK2X)
+
+[compiler]
+unitdir=src src/glib src/atk src/pango src/gtk+/gdk-pixbuf src/gtk+/gdk src/gtk+/gtk src/libglade src/gtkglext src/gtkhtml src/gtkext src/$(GTK2X11)
+includedir=$(GTK2X11INCLUDE)
+
+[install]
+buildunit=buildgtk2
+fpcpackage=y
+
+[shared]
+build=n
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 [default]
 fpcdir=../..
 
 [prerules]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
 FPC_TARGETOPT+=--os=$(OS_TARGET)
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+ifneq ($(findstring $(OS_TARGET),linux freebsd netbsd openbsd solaris darwin iphonesim beos haiku ),)
+GDK2X=gdk2x
+GTK2X11=gtk2x11
+GTK2X11INCLUDE=src/gtk2x11/include
+>>>>>>> graemeg/cpstrnew
 endif
 ifdef CPU_TARGET
 FPC_TARGETOPT+=--cpu=$(CPU_TARGET)
@@ -100,3 +203,18 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ifneq ($(findstring $(OS_TARGET),linux freebsd netbsd openbsd solaris darwin beos ),)
+GDK2X=gdk2x
+GTK2X11=gtk2x11
+GTK2X11INCLUDE=src/gtk2x11/include
+endif
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

@@ -22,7 +22,23 @@ unit cpu;
 			           // Unless overridebinutils is defined (for ports usage), use db instead of the instruction
      {$ifndef overridebinutils}
        {$define oldbinutils}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      {$endif}
+=======
+     {$endif} 
+>>>>>>> graemeg/cpstrnew
+=======
+     {$endif} 
+>>>>>>> graemeg/cpstrnew
+=======
+     {$endif} 
+>>>>>>> graemeg/cpstrnew
+=======
+     {$endif} 
+>>>>>>> origin/cpstrnew
   {$endif}
 
     uses
@@ -30,17 +46,33 @@ unit cpu;
 
     function InterlockedCompareExchange128Support : boolean;inline;
     function AESSupport : boolean;inline;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function AVXSupport : boolean;inline;
     function AVX2Support: boolean;inline;
     function FMASupport: boolean;inline;
 
     var
       is_sse3_cpu : boolean = false;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     function InterlockedCompareExchange128(var Target: Int128Rec; NewValue: Int128Rec; Comperand: Int128Rec): Int128Rec;
 
   implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$asmmode att}
 
     var
@@ -49,6 +81,37 @@ unit cpu;
       _InterlockedCompareExchange128Support,
       _AVX2Support,
       _FMASupport : boolean;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    var
+      _AESSupport,
+      _InterlockedCompareExchange128Support : boolean;
+
+    function InterlockedCompareExchange128Support : boolean;inline;
+      begin
+        result:=_InterlockedCompareExchange128Support;
+      end;
+
+    function AESSupport : boolean;inline;
+      begin
+        result:=_AESSupport;
+      end;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     function InterlockedCompareExchange128(var Target: Int128Rec; NewValue: Int128Rec; Comperand: Int128Rec): Int128Rec; assembler;
      {
@@ -77,7 +140,23 @@ unit cpu;
         movq 8(%r9),%rdx
 
         {$ifdef oldbinutils}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
            .byte 0xF0,0x49,0x0F,0xC7,0x08
+=======
+           .byte 0xF0,0x49,0x0F,0xC7,0x08 
+>>>>>>> graemeg/cpstrnew
+=======
+           .byte 0xF0,0x49,0x0F,0xC7,0x08 
+>>>>>>> graemeg/cpstrnew
+=======
+           .byte 0xF0,0x49,0x0F,0xC7,0x08 
+>>>>>>> graemeg/cpstrnew
+=======
+           .byte 0xF0,0x49,0x0F,0xC7,0x08 
+>>>>>>> origin/cpstrnew
         {$else}
         lock cmpxchg16b (%r8)
         {$endif}
@@ -115,6 +194,10 @@ unit cpu;
       end;
     {$endif win64}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     function XGETBV(i : dword) : int64;assembler;
       asm
@@ -133,6 +216,26 @@ unit cpu;
       var
         _ecx,
         _ebx : longint;
+=======
+    procedure SetupSupport;
+      var
+        _ecx : longint;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure SetupSupport;
+      var
+        _ecx : longint;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure SetupSupport;
+      var
+        _ecx : longint;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure SetupSupport;
+      var
+        _ecx : longint;
+>>>>>>> origin/cpstrnew
       begin
         asm
            pushq %rbx
@@ -142,6 +245,10 @@ unit cpu;
            popq %rbx
         end;
         _InterlockedCompareExchange128Support:=(_ecx and $2000)<>0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         _AESSupport:=(_ecx and $2000000)<>0;
 
         _AVXSupport:=
@@ -195,6 +302,18 @@ unit cpu;
     function FMASupport: boolean;inline;
       begin
         result:=_FMASupport;
+=======
+        _AESSupport:=(_ecx and $2000000)<>0;        
+>>>>>>> graemeg/cpstrnew
+=======
+        _AESSupport:=(_ecx and $2000000)<>0;        
+>>>>>>> graemeg/cpstrnew
+=======
+        _AESSupport:=(_ecx and $2000000)<>0;        
+>>>>>>> graemeg/cpstrnew
+=======
+        _AESSupport:=(_ecx and $2000000)<>0;        
+>>>>>>> origin/cpstrnew
       end;
 
 

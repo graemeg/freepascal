@@ -13,12 +13,15 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('fcl-image');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ShortName:='fcli';
 {$ifdef ALLPACKAGES}
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
     P.Dependencies.Add('pasjpeg');
+    P.Dependencies.Add('hash');
     P.Dependencies.Add('paszlib');
     P.Dependencies.Add('fcl-base');
 
@@ -30,6 +33,22 @@ begin
     P.NeedLibC:= false;
     P.OSes := P.OSes - [embedded,nativent,msdos,win16];
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='fcl-image';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+
+    P.Dependencies.Add('pasjpeg');
+    P.Dependencies.Add('paszlib');
+    P.Dependencies.Add('fcl-base');
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     P.SourcePath.Add('src');
     P.IncludePath.Add('src');
 
@@ -88,7 +107,13 @@ begin
           AddInclude('fphandler.inc');
           AddInclude('fppalette.inc');
           AddInclude('fpcolcnv.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
           AddInclude('fpcompactimg.inc');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         end;
     T:=P.Targets.AddUnit('fpimgcanv.pp');
       with T.Dependencies do
@@ -159,6 +184,8 @@ begin
         begin
           AddUnit('fpimage');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T:=P.Targets.AddUnit('fpreadgif.pas');
       with T.Dependencies do
         begin
@@ -176,6 +203,10 @@ begin
           AddUnit('fpimage');
           AddUnit('xwdfile');
         end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     T:=P.Targets.AddUnit('fpwritebmp.pp');
       with T.Dependencies do
         begin
@@ -223,14 +254,32 @@ begin
         begin
           AddUnit('fpimage');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T:=P.Targets.AddUnit('freetypeh.pp',[solaris,iphonesim,darwin,freebsd,openbsd,netbsd,linux,haiku,beos,win32,win64,aix,dragonfly]);
     T:=P.Targets.AddUnit('freetype.pp',[solaris,iphonesim,darwin,freebsd,openbsd,netbsd,linux,haiku,beos,win32,win64,aix,dragonfly]);
+=======
+    T:=P.Targets.AddUnit('freetypeh.pp');
+    T:=P.Targets.AddUnit('freetype.pp');
+>>>>>>> graemeg/fixes_2_2
+=======
+    T:=P.Targets.AddUnit('freetypeh.pp');
+    T:=P.Targets.AddUnit('freetype.pp');
+>>>>>>> origin/fixes_2_2
       with T.Dependencies do
         begin
           AddUnit('freetypeh');
           AddUnit('fpimgcmn');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T:=P.Targets.AddUnit('ftfont.pp',[solaris,iphonesim,darwin,freebsd,openbsd,netbsd,linux,haiku,beos,win32,win64,aix,dragonfly]);
+=======
+    T:=P.Targets.AddUnit('ftfont.pp');
+>>>>>>> graemeg/fixes_2_2
+=======
+    T:=P.Targets.AddUnit('ftfont.pp');
+>>>>>>> origin/fixes_2_2
       with T.Dependencies do
         begin
           AddUnit('fpcanvas');
@@ -255,13 +304,21 @@ begin
           AddUnit('fpimgcmn');
         end;
     T:=P.Targets.AddUnit('pscanvas.pp');
+<<<<<<< HEAD
+<<<<<<< HEAD
       T.ResourceStrings:=true;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       with T.Dependencies do
         begin
           AddUnit('fpimage');
           AddUnit('fpcanvas');
         end;
     T:=P.Targets.AddUnit('targacmn.pp');
+<<<<<<< HEAD
+<<<<<<< HEAD
     T:=P.Targets.AddUnit('fpimggauss.pp');
     With T.Dependencies do
       AddUnit('fpimage');
@@ -269,10 +326,20 @@ begin
     P.ExamplePath.Add('examples');
     T:=P.Targets.AddExampleProgram('drawing.pp');
     T:=P.Targets.AddExampleProgram('imgconv.pp');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$ifndef ALLPACKAGES}
     Run;
     end;
 end.
 {$endif ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

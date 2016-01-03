@@ -37,7 +37,7 @@
 UNIT GUIGFX;
 
 INTERFACE
-USES Exec,utility,agraphics;
+USES Exec,utility,graphics;
 
 VAR GuiGFXBase : pLibrary;
 
@@ -220,7 +220,7 @@ IMPLEMENTATION
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox,
+msgbox,
 {$endif dont_use_openlib}
 tagsarray,longarray;
 

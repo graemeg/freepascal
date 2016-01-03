@@ -28,7 +28,7 @@ make them  }
 
 }
 
-uses Exec, Intuition, Utility,amsgbox, systemvartags;
+uses Exec, Intuition, Utility,msgbox, systemvartags;
 
 
 

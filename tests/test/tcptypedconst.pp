@@ -2,8 +2,28 @@
 program tcptypedconst;
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Str_cp = type AnsiString(1251);
   Str_cp850 = type AnsiString(850);
+=======
+  Str_cp = string<1251>;
+  Str_cp850 = string<850>;
+>>>>>>> graemeg/cpstrnew
+=======
+  Str_cp = string<1251>;
+  Str_cp850 = string<850>;
+>>>>>>> graemeg/cpstrnew
+=======
+  Str_cp = string<1251>;
+  Str_cp850 = string<850>;
+>>>>>>> graemeg/cpstrnew
+=======
+  Str_cp = string<1251>;
+  Str_cp850 = string<850>;
+>>>>>>> origin/cpstrnew
   
 procedure printcontent(p : Pointer; l: integer);
 var

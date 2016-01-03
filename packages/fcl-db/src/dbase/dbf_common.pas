@@ -16,9 +16,18 @@ uses
 
 
 const
+<<<<<<< HEAD
   TDBF_MAJOR_VERSION      = 7;
   TDBF_MINOR_VERSION      = 0;
   TDBF_SUB_MINOR_VERSION  = 0;
+=======
+  TDBF_MAJOR_VERSION      = 6;
+  TDBF_MINOR_VERSION      = 9;
+  TDBF_SUB_MINOR_VERSION  = 2;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   TDBF_TABLELEVEL_FOXPRO = 25;
   TDBF_TABLELEVEL_VISUALFOXPRO = 30; {Source: http://www.codebase.com/support/kb/?article=C01059}

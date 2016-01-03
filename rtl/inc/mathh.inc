@@ -45,12 +45,39 @@ const
 Software IEC/IEEE floating-point exception flags.
 -------------------------------------------------------------------------------
 *}
+<<<<<<< HEAD
     float_flag_invalid   =  exInvalidOp;
     float_flag_denormal  =  exDenormalized;
     float_flag_divbyzero =  exZeroDivide;
     float_flag_overflow  =  exOverflow;
     float_flag_underflow =  exUnderflow;
     float_flag_inexact   =  exPrecision;
+=======
+    float_flag_invalid   =  1;
+    float_flag_denormal  =  2;
+    float_flag_divbyzero =  4;
+    float_flag_overflow  =  8;
+    float_flag_underflow = 16;
+    float_flag_inexact   = 32;
+
+{*
+-------------------------------------------------------------------------------
+Software IEC/IEEE floating-point rounding mode.
+-------------------------------------------------------------------------------
+*}
+    float_round_nearest_even = 0;
+    float_round_down         = 1;
+    float_round_up           = 2;
+    float_round_to_zero      = 3;
+
+threadvar
+  softfloat_exception_mask : Byte;
+  softfloat_exception_flags : Byte;
+  softfloat_rounding_mode : Byte;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {*
 -------------------------------------------------------------------------------

@@ -18,7 +18,7 @@ unit amigaprinter;
 
 INTERFACE
 
-uses exec,agraphics,utility,intuition,prefs;
+uses exec, graphics,utility,intuition,prefs;
 
 
 Const

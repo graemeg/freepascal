@@ -37,7 +37,15 @@ const
 {$IFNDEF KYLIX}
 { Gtk version.  }
 var
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$IFDEF WINDOWS}
+=======
+  {$IFDEF WIN32}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$IFDEF WIN32}
+>>>>>>> origin/fixes_2_2
    gtk_major_version : guint;external gtklib name 'gtk_major_version';
    gtk_minor_version : guint;external gtklib name 'gtk_minor_version';
    gtk_micro_version : guint;external gtklib name 'gtk_micro_version';

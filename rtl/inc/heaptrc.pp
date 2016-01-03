@@ -23,6 +23,13 @@ interface
 {$endif FPC_HEAPTRC_EXTRA}
 
 {$checkpointer off}
+<<<<<<< HEAD
+=======
+{$goto on}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$TYPEDADDRESS on}
 
 {$if defined(win32) or defined(wince)}
@@ -465,7 +472,14 @@ begin
   allocsize:=size+sizeof(theap_mem_info)+extra_info_size;
 {$endif cpuarm}
   if add_tail then
+<<<<<<< HEAD
     inc(allocsize,sizeof(ptruint));
+=======
+    inc(allocsize,sizeof(ptrint));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   { if ReturnNilIfGrowHeapFails is true
     SysGetMem can return nil }
   p:=SysGetMem(allocsize);
@@ -506,13 +520,43 @@ begin
    pp^.extra_info:=nil;
   if add_tail then
     begin
+<<<<<<< HEAD
       pl:=pointer(pp)+allocsize-pp^.extra_info_size-sizeof(ptruint);
       unaligned(pl^):=$DEADBEEF;
+=======
+      pl:=pointer(pp)+allocsize-pp^.extra_info_size-sizeof(ptrint);
+{$ifdef FPC_SUPPORTS_UNALIGNED}
+      unaligned(pl^):=$DEADBEEF;
+{$else FPC_SUPPORTS_UNALIGNED}
+      pl^:=$DEADBEEF;
+{$endif FPC_SUPPORTS_UNALIGNED}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     end;
   { clear the memory }
   fillchar(p^,size,#255);
   { retrieve backtrace info }
+<<<<<<< HEAD
   CaptureBacktrace(1,tracesize-1,@pp^.calls[1]);
+=======
+  bp:=get_caller_frame(get_frame);
+
+  { valid bp? }
+  if (bp>=StackBottom) and (bp<(StackBottom + StackLength)) then
+    for i:=1 to tracesize do
+     begin
+       pp^.calls[i]:=get_caller_addr(bp);
+       oldbp:=bp;
+       bp:=get_caller_frame(bp);
+       if (bp<oldbp) or (bp>(StackBottom + StackLength)) then
+         break;
+     end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   { insert in the linked list }
   if loc_info^.heap_mem_root<>nil then
@@ -601,11 +645,28 @@ begin
          loc_info^.heap_mem_root:=loc_info^.heap_mem_root^.previous;
     end
   else
+<<<<<<< HEAD
     CaptureBacktrace(1,(tracesize div 2)-1,@pp^.calls[(tracesize div 2)+1]);
 
   inc(loc_info^.freemem_cnt);
   { clear the memory, $F0 will lead to GFP if used as pointer ! }
   fillchar((pointer(pp)+sizeof(theap_mem_info))^,size,#240);
+=======
+    begin
+       bp:=get_caller_frame(get_frame);
+       if (bp>=StackBottom) and (bp<(StackBottom + StackLength)) then
+         for i:=(tracesize div 2)+1 to tracesize do
+          begin
+            pp^.calls[i]:=get_caller_addr(bp);
+            bp:=get_caller_frame(bp);
+            if not((bp>=StackBottom) and (bp<(StackBottom + StackLength))) then
+              break;
+          end;
+    end;
+  inc(freemem_cnt);
+  { clear the memory }
+  fillchar(p^,size,#240); { $F0 will lead to GFP if used as pointer ! }
+>>>>>>> graemeg/fixes_2_2
   { this way we keep all info about all released memory !! }
   if keepreleased then
     begin
@@ -753,7 +814,14 @@ function TraceReAllocMem(var p:pointer;size:ptruint):Pointer;
 var
   newP: pointer;
   allocsize,
+<<<<<<< HEAD
   movesize  : ptruint;
+=======
+  movesize,
+  i  : ptrint;
+  oldbp,
+  bp : pointer;
+>>>>>>> graemeg/fixes_2_2
   pl : pdword;
   pp : pheap_mem_info;
   oldsize,
@@ -858,8 +926,20 @@ begin
    pp^.extra_info:=nil;
   if add_tail then
     begin
+<<<<<<< HEAD
       pl:=pointer(pp)+allocsize-pp^.extra_info_size-sizeof(ptruint);
       unaligned(pl^):=$DEADBEEF;
+=======
+      pl:=pointer(pp)+allocsize-pp^.extra_info_size-sizeof(ptrint);
+{$ifdef FPC_SUPPORTS_UNALIGNED}
+      unaligned(pl^):=$DEADBEEF;
+{$else FPC_SUPPORTS_UNALIGNED}
+      pl^:=$DEADBEEF;
+{$endif FPC_SUPPORTS_UNALIGNED}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     end;
   { adjust like a freemem and then a getmem, so you get correct
     results in the summary display }
@@ -868,7 +948,23 @@ begin
   inc(loc_info^.getmem_size,size);
   inc(loc_info^.getmem8_size,(size+7) and not 7);
   { generate new backtrace }
+<<<<<<< HEAD
   CaptureBacktrace(1,tracesize-1,@pp^.calls[1]);
+=======
+  bp:=get_caller_frame(get_frame);
+  if (bp>=StackBottom) and (bp<(StackBottom + StackLength)) then
+    for i:=1 to tracesize do
+     begin
+       pp^.calls[i]:=get_caller_addr(bp);
+       oldbp:=bp;
+       bp:=get_caller_frame(bp);
+       if (bp<oldbp) or (bp>(StackBottom + StackLength)) then
+         break;
+     end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   { regenerate signature }
   if usecrc then
     pp^.sig:=calculate_sig(pp);
@@ -968,7 +1064,14 @@ begin
   stack_top:=__stkbottom+__stklen;
   { allow all between start of code and end of bss }
   if ptruint(p)<=bss_end then
+<<<<<<< HEAD
+<<<<<<< HEAD
     exit;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    goto _exit;
+>>>>>>> graemeg/fixes_2_2
   { stack can be above heap !! }
 
   if (ptruint(p)>=get_ebp) and (ptruint(p)<=stack_top) then
@@ -1035,7 +1138,15 @@ begin
   // if we find the address in a known area in our current process,
   // then it is a valid one
   if area_for(p) <> B_ERROR then
+<<<<<<< HEAD
+<<<<<<< HEAD
     exit;
+=======
+    goto _exit;
+>>>>>>> graemeg/fixes_2_2
+=======
+    goto _exit;
+>>>>>>> origin/fixes_2_2
 {$endif BEOS}
 
   { first try valid list faster }
@@ -1388,7 +1499,23 @@ begin
     must be initialized already here
   }
   if IsMultithread then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     TraceRelocateHeap;
+=======
+    initcriticalsection(todo_lock);
+>>>>>>> graemeg/cpstrnew
+=======
+    initcriticalsection(todo_lock);
+>>>>>>> graemeg/cpstrnew
+=======
+    initcriticalsection(todo_lock);
+>>>>>>> graemeg/cpstrnew
+=======
+    initcriticalsection(todo_lock);
+>>>>>>> origin/cpstrnew
 end;
 
 procedure TraceExit;

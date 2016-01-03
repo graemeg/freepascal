@@ -89,8 +89,25 @@ interface
 {$if defined(x86) and not defined(llvm)}
       var
         tmpreg     : tregister;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         pushedfpu  : boolean;
 {$endif x86 and not llvm}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef x86}
+        pushedfpu,
+{$endif x86}
+        isjump     : boolean;
+        otl,ofl    : tasmlabel;
+>>>>>>> graemeg/cpstrnew
       begin
         { calculate the operator which is more difficult }
         firstcomplex(self);
@@ -101,8 +118,28 @@ interface
 
         secondpass(left);
         if left.location.loc in [LOC_FLAGS,LOC_JUMP] then
+<<<<<<< HEAD
           hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,resultdef,false);
 {$if defined(x86) and not defined(llvm)}
+=======
+          location_force_reg(current_asmdata.CurrAsmList,left.location,def_cgsize(resultdef),false);
+        if isjump then
+          begin
+            current_procinfo.CurrTrueLabel:=otl;
+            current_procinfo.CurrFalseLabel:=ofl;
+          end;
+
+{$ifdef x86}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         { are too few registers free? }
         pushedfpu:=false;
         if (left.location.loc=LOC_FPUREGISTER) and
@@ -111,14 +148,51 @@ interface
             hlcg.location_force_mem(current_asmdata.CurrAsmList,left.location,left.resultdef);
             pushedfpu:=true;
           end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif x86 and not llvm}
+=======
+{$endif x86}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif x86}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif x86}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif x86}
+>>>>>>> origin/cpstrnew
 
         secondpass(right);
         if right.location.loc in [LOC_FLAGS,LOC_JUMP] then
+<<<<<<< HEAD
           hlcg.location_force_reg(current_asmdata.CurrAsmList,right.location,right.resultdef,resultdef,false);
 {$if defined(x86) and not defined(llvm)}
+=======
+          location_force_reg(current_asmdata.CurrAsmList,right.location,def_cgsize(resultdef),false);
+        if isjump then
+          begin
+            current_procinfo.CurrTrueLabel:=otl;
+            current_procinfo.CurrFalseLabel:=ofl;
+          end;
+{$ifdef x86}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         if pushedfpu then
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
             if use_vectorfpu(left.resultdef) then
               begin
                 tmpreg := cg.getmmregister(current_asmdata.CurrAsmList,left.location.size);
@@ -137,9 +211,69 @@ interface
                 { left operand is now on top of the stack, instead of the right one! }
                 if (right.location.loc=LOC_FPUREGISTER) then
                   toggleflag(nf_swapped);
+=======
+{$ifdef x86}
+            if use_sse(left.resultdef) then
+              begin
+                tmpreg := cg.getmmregister(current_asmdata.CurrAsmList,left.location.size);
+                cg.a_loadmm_loc_reg(current_asmdata.CurrAsmList,left.location.size,left.location,tmpreg,mms_movescalar);
+                location_reset(left.location,LOC_MMREGISTER,left.location.size);
+                left.location.register := tmpreg;
+              end
+            else
+{$endif x86}
+              begin
+                tmpreg := cg.getfpuregister(current_asmdata.CurrAsmList,left.location.size);
+                cg.a_loadfpu_loc_reg(current_asmdata.CurrAsmList,left.location.size,left.location,tmpreg);
+                location_reset(left.location,LOC_FPUREGISTER,left.location.size);
+                left.location.register := tmpreg;
+{$ifdef x86}
+                { left operand is now on top of the stack, instead of the right one! }
+                if (right.location.loc=LOC_FPUREGISTER) then
+                  toggleflag(nf_swapped);
+{$endif x86}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef x86}
+            if use_sse(left.resultdef) then
+              begin
+                tmpreg := cg.getmmregister(current_asmdata.CurrAsmList,left.location.size);
+                cg.a_loadmm_loc_reg(current_asmdata.CurrAsmList,left.location.size,left.location,tmpreg,mms_movescalar);
+                location_reset(left.location,LOC_MMREGISTER,left.location.size);
+                left.location.register := tmpreg;
+              end
+            else
+{$endif x86}
+              begin
+                tmpreg := cg.getfpuregister(current_asmdata.CurrAsmList,left.location.size);
+                cg.a_loadfpu_loc_reg(current_asmdata.CurrAsmList,left.location.size,left.location,tmpreg);
+                location_reset(left.location,LOC_FPUREGISTER,left.location.size);
+                left.location.register := tmpreg;
+{$ifdef x86}
+                { left operand is now on top of the stack, instead of the right one! }
+                if (right.location.loc=LOC_FPUREGISTER) then
+                  toggleflag(nf_swapped);
+{$endif x86}
+>>>>>>> origin/fixes_2_2
               end;
           end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif x86 and not llvm}
+=======
+{$endif x86}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif x86}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif x86}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif x86}
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -219,6 +353,8 @@ interface
     procedure tcgaddnode.second_opsmallset;
       begin
         { when a setdef is passed, it has to be a smallset }
+<<<<<<< HEAD
+<<<<<<< HEAD
         if not(
                ((left.nodetype=setelementn) or is_smallset(left.resultdef)) and
                ((right.nodetype=setelementn) or is_smallset(right.resultdef))
@@ -227,6 +363,15 @@ interface
         if (left.nodetype=setelementn) or (right.nodetype=setelementn) then
           second_addsmallsetelement
         else if nodetype in [equaln,unequaln,gtn,gten,lten,ltn] then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        if is_varset(left.resultdef) or
+          is_varset(right.resultdef) then
+          internalerror(200203302);
+
+        if nodetype in [equaln,unequaln,gtn,gten,lten,ltn] then
+>>>>>>> graemeg/fixes_2_2
           second_cmpsmallset
         else
           second_addsmallset;
@@ -235,6 +380,19 @@ interface
 
     procedure tcgaddnode.second_addsmallset;
       var
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        tmpreg : tregister;
+        mask,
+        setbase : aint;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         cgop    : TOpCg;
         opdone  : boolean;
       begin
@@ -242,9 +400,68 @@ interface
         pass_left_right;
         force_reg_left_right(true,true);
         set_result_location_reg;
+<<<<<<< HEAD
+<<<<<<< HEAD
         case nodetype of
           addn :
             cgop:=OP_OR;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        if (left.resultdef.typ=setdef) then
+          setbase:=tsetdef(left.resultdef).setbase
+        else
+          setbase:=tsetdef(right.resultdef).setbase;
+
+        case nodetype of
+          addn :
+            begin
+              { are we adding set elements ? }
+              if right.nodetype=setelementn then
+                begin
+                  { no range support for smallsets! }
+                  if assigned(tsetelementnode(right).right) then
+                   internalerror(43244);
+                  if (right.location.loc = LOC_CONSTANT) then
+                    begin
+                      if (target_info.endian=endian_big) then
+                        mask:=aint((aword(1) shl (resultdef.size*8-1)) shr aword(right.location.value-setbase))
+                      else
+                        mask:=aint(1 shl (right.location.value-setbase));
+                      cg.a_op_const_reg_reg(current_asmdata.CurrAsmList,OP_OR,location.size,
+                        mask,left.location.register,location.register);
+                    end
+                  else
+                    begin
+                      if (target_info.endian=endian_big) then
+                        begin
+                          mask:=aint((aword(1) shl (resultdef.size*8-1)));
+                          cgop:=OP_SHR
+                        end
+                      else
+                        begin
+                          mask:=1;
+                          cgop:=OP_SHL
+                        end;
+                      tmpreg := cg.getintregister(current_asmdata.CurrAsmList,location.size);
+                      cg.a_load_const_reg(current_asmdata.CurrAsmList,location.size,mask,tmpreg);
+                      location_force_reg(current_asmdata.CurrAsmList,right.location,location.size,true);
+                      register_maybe_adjust_setbase(current_asmdata.CurrAsmList,right.location,setbase);
+                      cg.a_op_reg_reg(current_asmdata.CurrAsmList,cgop,location.size,
+                        right.location.register,tmpreg);
+                      if left.location.loc <> LOC_CONSTANT then
+                        cg.a_op_reg_reg_reg(current_asmdata.CurrAsmList,OP_OR,location.size,tmpreg,
+                            left.location.register,location.register)
+                      else
+                        cg.a_op_const_reg_reg(current_asmdata.CurrAsmList,OP_OR,location.size,
+                            left.location.value,tmpreg,location.register);
+                    end;
+                  opdone := true;
+                end
+              else
+                cgop := OP_OR;
+            end;
+>>>>>>> graemeg/fixes_2_2
           symdifn :
             cgop:=OP_XOR;
           muln :
@@ -269,6 +486,10 @@ interface
                   if (right.location.size<>left.location.size) or
                      (location.size<>left.location.size) then
                     internalerror(2010123001);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   { make sure that location.register is different from
                     left.location.register, since right will overwrite it
                     and we'll use left afterwards }
@@ -283,6 +504,30 @@ interface
                     hlcg.a_op_const_reg(current_asmdata.CurrAsmList,OP_AND,resultdef,left.location.value,location.register)
                   else
                     hlcg.a_op_reg_reg(current_asmdata.CurrAsmList,OP_AND,resultdef,left.location.register,location.register);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                  { make sure we don't modify left/right.location, because we told
+                    force_reg_left_right above that they can be constant }
+                  cg.a_op_reg_reg(current_asmdata.CurrAsmList,OP_NOT,location.size,right.location.register,location.register);
+                  if left.location.loc = LOC_CONSTANT then
+                    cg.a_op_const_reg(current_asmdata.CurrAsmList,OP_AND,location.size,left.location.value,location.register)
+                  else
+                    cg.a_op_reg_reg(current_asmdata.CurrAsmList,OP_AND,location.size,left.location.register,location.register);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                 end;
             end;
           else
@@ -789,8 +1034,24 @@ interface
             end;
           setdef :
             begin
+<<<<<<< HEAD
               if is_smallset(tsetdef(left.resultdef)) then
                 second_opsmallset
+=======
+              {Normalsets are already handled in pass1 if mmx
+               should not be used.}
+              if is_varset(tsetdef(left.resultdef)) then
+                begin
+{$ifdef SUPPORT_MMX}
+                {$ifdef i386}
+                  if cs_mmx in current_settings.localswitches then
+                    second_opmmxset
+                  else
+                {$endif}
+{$endif SUPPORT_MMX}
+                    internalerror(200109041);
+                end
+>>>>>>> graemeg/fixes_2_2
               else
                 internalerror(200109041);
             end;

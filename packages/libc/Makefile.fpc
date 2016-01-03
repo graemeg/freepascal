@@ -1,17 +1,59 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for libc binding
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for libc binding
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=libc
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=kerneldefs kernelioctl libc
+>>>>>>> graemeg/cpstrnew
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=kerneldefs kernelioctl libc
+
+[require]
+libc=y
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [default]
 fpcdir=../..
 
@@ -100,3 +142,22 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[compiler]
+includedir=src
+sourcedir=src tests
+
+[default]
+fpcdir=../..
+
+[shared]
+build=n
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

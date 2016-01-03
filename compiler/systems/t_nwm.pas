@@ -97,7 +97,23 @@ implementation
     verbose,systems,globtype,globals,
     symconst,script,
     fmodule,aasmbase,aasmtai,aasmdata,aasmcpu,cpubase,symsym,symdef,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     import,export,link,i_nwm,ogbase, ogcoff, ognlm, owar, cclasses
+=======
+    import,export,link,i_nwm,ogbase, ogcoff, ognlm, cclasses
+>>>>>>> graemeg/cpstrnew
+=======
+    import,export,link,i_nwm,ogbase, ogcoff, ognlm, cclasses
+>>>>>>> graemeg/cpstrnew
+=======
+    import,export,link,i_nwm,ogbase, ogcoff, ognlm, cclasses
+>>>>>>> graemeg/cpstrnew
+=======
+    import,export,link,i_nwm,ogbase, ogcoff, ognlm, cclasses
+>>>>>>> origin/cpstrnew
     {$ifdef netware} ,dos {$endif}
     ;
 
@@ -593,7 +609,19 @@ end;
     constructor TInternalLinkerNetware.Create;
       begin
         inherited Create;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         CArObjectReader:=TArObjectReader;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         CExeoutput:=TNLMexeoutput;
         CObjInput:=TNLMCoffObjInput;
         nlmSpecialSymbols_Segments := TFPHashList.create;
@@ -669,6 +697,22 @@ end;
         procedure addLinkerOptions;
         var
           s,option : string;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+          p : integer;
+>>>>>>> graemeg/cpstrnew
+=======
+          p : integer;
+>>>>>>> graemeg/cpstrnew
+=======
+          p : integer;
+>>>>>>> graemeg/cpstrnew
+=======
+          p : integer;
+>>>>>>> origin/cpstrnew
         begin
           s := ParaLinkOptions;
           option := GetToken(s,';');
@@ -720,6 +764,22 @@ end;
         function findPrelude : string;
         var
           s,option,keyword : string;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+          p : integer;
+>>>>>>> graemeg/cpstrnew
+=======
+          p : integer;
+>>>>>>> graemeg/cpstrnew
+=======
+          p : integer;
+>>>>>>> graemeg/cpstrnew
+=======
+          p : integer;
+>>>>>>> origin/cpstrnew
         begin
           s := ParaLinkOptions;
           option := GetToken(s,';');
@@ -940,7 +1000,23 @@ end;
             s := trimspace(s);
             if (length(s) > 0) then
               if copy(s,1,1) <> '#' then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 AddImportSymbol('!clib',s,s,0,false);
+=======
+                AddImportSymbol('!clib',s,0,false);
+>>>>>>> graemeg/cpstrnew
+=======
+                AddImportSymbol('!clib',s,0,false);
+>>>>>>> graemeg/cpstrnew
+=======
+                AddImportSymbol('!clib',s,0,false);
+>>>>>>> graemeg/cpstrnew
+=======
+                AddImportSymbol('!clib',s,0,false);
+>>>>>>> origin/cpstrnew
           end;
         close(t);
       end;
@@ -972,7 +1048,19 @@ end;
     Function  TInternalLinkerNetware.MakeSharedLibrary:boolean;
     begin
       Comment(V_Error,'Make shared library not supported for netware');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       MakeSharedLibrary := false;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     end;
 
 {*****************************************************************************
@@ -981,8 +1069,22 @@ end;
 
 
 initialization
+<<<<<<< HEAD
   RegisterLinker(ld_netware,TLinkerNetware);
   RegisterLinker(ld_int_netware,TInternalLinkerNetware);
+=======
+  RegisterExternalLinker(system_i386_netware_info,TLinkerNetware);
+  RegisterInternalLinker(system_i386_netware_info,TInternalLinkerNetware);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   RegisterImport(system_i386_netware,TImportLibNetware);
   RegisterExport(system_i386_netware,TExportLibNetware);
   RegisterTarget(system_i386_netware_info);

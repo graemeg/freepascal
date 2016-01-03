@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Version Value="9"/>
+=======
+    <Version Value="7"/>
+>>>>>>> graemeg/cpstrnew
+=======
+    <Version Value="7"/>
+>>>>>>> graemeg/cpstrnew
+=======
+    <Version Value="7"/>
+>>>>>>> graemeg/cpstrnew
+=======
+    <Version Value="7"/>
+>>>>>>> origin/cpstrnew
     <General>
       <Flags>
         <MainUnitHasUsesSectionForAllUnits Value="False"/>
@@ -12,6 +28,19 @@
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      <TargetFileExt Value=".exe"/>
+>>>>>>> graemeg/cpstrnew
       <Title Value="buildrtl"/>
     </General>
     <VersionInfo>
@@ -42,8 +71,22 @@
   <CompilerOptions>
     <Version Value="11"/>
     <SearchPaths>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       <IncludeFiles Value="../inc;../$(TargetCPU);../unix;../objpas/classes;../objpas/sysutils;../objpas;$(TargetCPU)"/>
       <OtherUnitFiles Value="../objpas;../objpas/classes;../objpas/sysutils;../inc;../unix;../$(TargetCPU)"/>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      <IncludeFiles Value="../inc/;../$(TargetCPU)/;../unix/;../objpas/classes/;../objpas/sysutils/;../objpas/;$(TargetCPU)/"/>
+      <OtherUnitFiles Value="../objpas/;../objpas/classes/;../objpas/sysutils/;../inc/;../unix/;../$(TargetCPU)/"/>
+>>>>>>> graemeg/cpstrnew
       <UnitOutputDirectory Value="../units/$(TargetCPU)-linux"/>
     </SearchPaths>
     <Parsing>

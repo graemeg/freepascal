@@ -26,7 +26,23 @@ unit parabase;
 
     uses
        cclasses,globtype,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        aasmbase,cpubase,cgbase,cgutils,
+=======
+       cpubase,cgbase,cgutils,
+>>>>>>> graemeg/cpstrnew
+=======
+       cpubase,cgbase,cgutils,
+>>>>>>> graemeg/cpstrnew
+=======
+       cpubase,cgbase,cgutils,
+>>>>>>> graemeg/cpstrnew
+=======
+       cpubase,cgbase,cgutils,
+>>>>>>> origin/cpstrnew
        symtype, ppu;
 
     type
@@ -101,10 +117,27 @@ unit parabase;
           Def       : tdef; { Type of the parameter }
           Location  : PCGParalocation;
           IntSize   : tcgint; { size of the total location in bytes }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           DefDeref  : tderef;
           Alignment : ShortInt;
           Size      : TCGSize;  { Size of the parameter included in all locations }
           Temporary : boolean;  { created on the fly, no permanent references exist to this somewhere that will cause it to be disposed }
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          Alignment : ShortInt;
+          Size      : TCGSize;  { Size of the parameter included in all locations }
+{$ifdef powerpc}
+          composite: boolean; { under the AIX abi, how certain parameters are passed depends on whether they are composite or not }
+{$endif powerpc}
+>>>>>>> graemeg/cpstrnew
           constructor init;
           destructor  done;
           procedure   reset;
@@ -113,10 +146,26 @@ unit parabase;
           procedure   check_simple_location;
           function    add_location:pcgparalocation;
           procedure   get_location(var newloc:tlocation);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           function    locations_count:integer;
 
           procedure   buildderef;
           procedure   deref;
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
           procedure   ppuwrite(ppufile:tcompilerppufile);
           procedure   ppuload(ppufile:tcompilerppufile);
        end;
@@ -286,6 +335,10 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function TCGPara.locations_count: integer;
       var
         hlocation: pcgparalocation;
@@ -312,6 +365,14 @@ implementation
       end;
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     procedure TCGPara.ppuwrite(ppufile: tcompilerppufile);
       var
         hparaloc: PCGParaLocation;
@@ -320,7 +381,31 @@ implementation
         ppufile.putbyte(byte(Alignment));
         ppufile.putbyte(ord(Size));
         ppufile.putaint(IntSize);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         ppufile.putderef(defderef);
+=======
+{$ifdef powerpc}
+        ppufile.putbyte(byte(composite));
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc}
+        ppufile.putbyte(byte(composite));
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc}
+        ppufile.putbyte(byte(composite));
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc}
+        ppufile.putbyte(byte(composite));
+{$endif}
+>>>>>>> origin/cpstrnew
         nparaloc:=0;
         hparaloc:=location;
         while assigned(hparaloc) do
@@ -347,7 +432,31 @@ implementation
               LOC_REGISTER,
               LOC_CREGISTER :
                 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   ppufile.putbyte(hparaloc^.shiftval);
+=======
+{$ifdef powerpc64}
+                  ppufile.putbyte(hparaloc^.shiftval);
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc64}
+                  ppufile.putbyte(hparaloc^.shiftval);
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc64}
+                  ppufile.putbyte(hparaloc^.shiftval);
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc64}
+                  ppufile.putbyte(hparaloc^.shiftval);
+{$endif}
+>>>>>>> origin/cpstrnew
                   ppufile.putlongint(longint(hparaloc^.register));
                 end;
               { This seems to be required for systems using explicitparaloc (eg. MorphOS)
@@ -373,7 +482,31 @@ implementation
         Alignment:=shortint(ppufile.getbyte);
         Size:=TCgSize(ppufile.getbyte);
         IntSize:=ppufile.getaint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         ppufile.getderef(defderef);
+=======
+{$ifdef powerpc}
+        composite:=boolean(ppufile.getbyte);
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc}
+        composite:=boolean(ppufile.getbyte);
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc}
+        composite:=boolean(ppufile.getbyte);
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc}
+        composite:=boolean(ppufile.getbyte);
+{$endif}
+>>>>>>> origin/cpstrnew
         nparaloc:=ppufile.getbyte;
         while nparaloc>0 do
           begin
@@ -393,7 +526,31 @@ implementation
               LOC_REGISTER,
               LOC_CREGISTER :
                 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   hparaloc^.shiftval:=ppufile.getbyte;
+=======
+{$ifdef powerpc64}
+                  hparaloc^.shiftval:=ppufile.getbyte;
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc64}
+                  hparaloc^.shiftval:=ppufile.getbyte;
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc64}
+                  hparaloc^.shiftval:=ppufile.getbyte;
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef powerpc64}
+                  hparaloc^.shiftval:=ppufile.getbyte;
+{$endif}
+>>>>>>> origin/cpstrnew
                   hparaloc^.register:=tregister(ppufile.getlongint);
                 end;
               { This seems to be required for systems using explicitparaloc (eg. MorphOS)

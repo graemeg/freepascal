@@ -1,4 +1,7 @@
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  * Copyright (c) 2000-2004,2007 Apple Inc. All Rights Reserved.
  * 
  * @APPLE_LICENSE_HEADER_START@
@@ -20,11 +23,35 @@
  * 
  * @APPLE_LICENSE_HEADER_END@
  }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {  Pascal Translation:  Peter N Lewis, <peter@stairways.com.au>, 2004 }
 {  Pascal Translation Update:  Gorazd Krosl <gorazd_1957@yahoo.ca>, October 2009 }
 {  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
 {  Pascal Translation Update: Jonas Maebe <jonas@freepascal.org>, October 2012 }
 {  Pascal Translation Update: Jonas Maebe <jonas@freepascal.org>, August 2015 }
+=======
+ {	  Pascal Translation:  Peter N Lewis, <peter@stairways.com.au>, 2004 }
+ {	  Pascal Translation Update:  Gorazd Krosl <gorazd_1957@yahoo.ca>, October 2009 }
+ {    Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+>>>>>>> graemeg/cpstrnew
+=======
+ {	  Pascal Translation:  Peter N Lewis, <peter@stairways.com.au>, 2004 }
+ {	  Pascal Translation Update:  Gorazd Krosl <gorazd_1957@yahoo.ca>, October 2009 }
+ {    Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+>>>>>>> graemeg/cpstrnew
+=======
+ {	  Pascal Translation:  Peter N Lewis, <peter@stairways.com.au>, 2004 }
+ {	  Pascal Translation Update:  Gorazd Krosl <gorazd_1957@yahoo.ca>, October 2009 }
+ {    Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+>>>>>>> graemeg/cpstrnew
+=======
+ {	  Pascal Translation:  Peter N Lewis, <peter@stairways.com.au>, 2004 }
+ {	  Pascal Translation Update:  Gorazd Krosl <gorazd_1957@yahoo.ca>, October 2009 }
+ {    Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+>>>>>>> origin/cpstrnew
 {
     Modified for use with Free Pascal
     Version 308
@@ -32,6 +59,50 @@
 }
 
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ * Copyright (c) 2000-2002 Apple Computer, Inc. All Rights Reserved.
+=======
+ * Copyright (c) 2000-2004,2007 Apple Inc. All Rights Reserved.
+>>>>>>> origin/fixes_2.4
+ * 
+ * @APPLE_LICENSE_HEADER_START@
+ * 
+ * This file contains Original Code and/or Modifications of Original Code
+ * as defined in and that are subject to the Apple Public Source License
+ * Version 2.0 (the 'License'). You may not use this file except in
+ * compliance with the License. Please obtain a copy of the License at
+ * http://www.opensource.apple.com/apsl/ and read it before using this
+ * file.
+ * 
+ * The Original Code and all software distributed under the License are
+ * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
+ * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
+ * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
+ * Please see the License for the specific language governing rights and
+ * limitations under the License.
+ * 
+ * @APPLE_LICENSE_HEADER_END@
+ }
+ {	  Pascal Translation:  Peter N Lewis, <peter@stairways.com.au>, 2004 }
+ {	  Pascal Translation Update:  Gorazd Krosl <gorazd_1957@yahoo.ca>, October 2009 }
+ {    Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+{
+    Modified for use with Free Pascal
+    Version 308
+    Please report any bugs to <gpc@microbizz.nl>
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4
 {$mode macpas}
 {$packenum 1}
 {$macro on}
@@ -40,8 +111,23 @@
 
 unit Authorization;
 interface
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$setc UNIVERSAL_INTERFACES_VERSION := $0400}
 {$setc GAP_INTERFACES_VERSION := $0308}
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> origin/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0400}
+{$setc GAP_INTERFACES_VERSION := $0308}
+>>>>>>> origin/fixes_2.4
 
 {$ifc not defined USE_CFSTR_CONSTANT_MACROS}
     {$setc USE_CFSTR_CONSTANT_MACROS := TRUE}
@@ -54,21 +140,50 @@ interface
 	{$error Conflicting initial definitions for FPC_BIG_ENDIAN and FPC_LITTLE_ENDIAN}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __ppc__ and defined CPUPOWERPC32}
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC32}
+>>>>>>> origin/fixes_2.4
 	{$setc __ppc__ := 1}
 {$elsec}
 	{$setc __ppc__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __ppc64__ and defined CPUPOWERPC64}
 	{$setc __ppc64__ := 1}
 {$elsec}
 	{$setc __ppc64__ := 0}
 {$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __i386__ and defined CPUI386}
 	{$setc __i386__ := 1}
 {$elsec}
 	{$setc __i386__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __x86_64__ and defined CPUX86_64}
 	{$setc __x86_64__ := 1}
 {$elsec}
@@ -79,11 +194,26 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -91,6 +221,13 @@ interface
   {$setc __LP64__ := 0}
 {$endc}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined __ppc__ and __ppc__ and defined __i386__ and __i386__}
 	{$error Conflicting definitions for __ppc__ and __i386__}
@@ -98,49 +235,134 @@ interface
 
 {$ifc defined __ppc__ and __ppc__}
 	{$setc TARGET_CPU_PPC := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_PPC64 := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __ppc64__ and __ppc64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := TRUE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elsec}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __x86_64__ and __x86_64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := TRUE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
@@ -152,12 +374,18 @@ interface
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __arm__ and __arm__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := TRUE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
@@ -171,13 +399,58 @@ interface
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
 	{$setc TARGET_CPU_ARM64 := TRUE}
+=======
+>>>>>>> graemeg/cpstrnew
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elsec}
 	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ nor __arm64__ is defined.}
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endc}
 
 {$ifc defined __LP64__ and __LP64__ }
@@ -185,6 +458,78 @@ interface
 {$elsec}
   {$setc TARGET_CPU_64 := FALSE}
 {$endc}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+>>>>>>> origin/fixes_2.4
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __i386__ and __i386__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := TRUE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+{$ifc defined(iphonesim)}
+ 	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+  {$setc TARGET_CPU_64 := FALSE}
+{$endc}
+<<<<<<< HEAD
+{$setc TARGET_CPU_PPC_64 := FALSE}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined FPC_BIG_ENDIAN}
 	{$setc TARGET_RT_BIG_ENDIAN := TRUE}
@@ -210,6 +555,17 @@ interface
 {$setc TARGET_CPU_68K := FALSE}
 {$setc TARGET_CPU_MIPS := FALSE}
 {$setc TARGET_CPU_SPARC := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$setc TARGET_OS_UNIX := FALSE}
 {$setc TARGET_OS_WIN32 := FALSE}
 {$setc TARGET_RT_MAC_68881 := FALSE}
@@ -220,6 +576,11 @@ interface
 {$setc TYPE_EXTENDED := FALSE}
 {$setc TYPE_LONGLONG := TRUE}
 uses MacTypes;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$endc} {not MACOSALLINCLUDE}
 
 
@@ -234,6 +595,15 @@ uses MacTypes;
  }
 
 
+<<<<<<< HEAD
+=======
+{$ALIGN MAC68K}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ALIGN MAC68K}
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {!
 	@header Authorization
 	Version 1.0 10/16/2000
@@ -268,6 +638,9 @@ const kAuthorizationEmptyEnvironment = nil;
     The comments must not be multi-line, and should be in a form meaningful to an end user. If
     a different or additional comment is needed, it can be put in the header doc format, or on a
     line that does not start with errZZZ.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     errAuthorizationSuccess can't include a string as it's also errSecSuccess in libsecurity_keychain/lib/SecBase.h
 }
@@ -288,6 +661,53 @@ const
 	errAuthorizationToolExecuteFailure = -60031; { The specified program could not be executed. }
 	errAuthorizationToolEnvironmentError = -60032; { An invalid status was returned during execution of a privileged tool. }
 	errAuthorizationBadAddress = -60033; { The requested socket address is invalid (must be 0-1023 inclusive). }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+}
+
+const
+	errAuthorizationSuccess					= 0;      { The operation completed successfully. }
+	errAuthorizationInvalidSet				= -60001; { The set parameter is invalid. }
+	errAuthorizationInvalidRef				= -60002; { The authorization parameter is invalid. }
+	errAuthorizationInvalidTag				= -60003; { The tag parameter is invalid. }
+	errAuthorizationInvalidPointer			= -60004; { The authorizedRights parameter is invalid. }
+	errAuthorizationDenied					= -60005; { The authorization was denied. }
+	errAuthorizationCanceled				= -60006; { The authorization was cancelled by the user. }
+	errAuthorizationInteractionNotAllowed	= -60007; { The authorization was denied since no user interaction was possible. }
+	errAuthorizationInternal                = -60008; { something else went wrong }
+	errAuthorizationExternalizeNotAllowed	= -60009; { authorization externalization denied }
+	errAuthorizationInternalizeNotAllowed	= -60010; { authorization internalization denied }
+	errAuthorizationInvalidFlags            = -60011; { invalid option flag(s) }
+	errAuthorizationToolExecuteFailure      = -60031; { cannot execute privileged tool }
+	errAuthorizationToolEnvironmentError    = -60032; { privileged tool environment error }
+	errAuthorizationBadAddress				= -60033; { invalid socket address requested }
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+
+    errAuthorizationSuccess can't include a string as it's also errSecSuccess in libsecurity_keychain/lib/SecBase.h
+}
+
+const
+	errAuthorizationSuccess = 0;
+	errAuthorizationInvalidSet = -60001; { The authorization rights are invalid. }
+	errAuthorizationInvalidRef = -60002; { The authorization reference is invalid. }
+	errAuthorizationInvalidTag = -60003; { The authorization tag is invalid. }
+	errAuthorizationInvalidPointer = -60004; { The returned authorization is invalid. }
+	errAuthorizationDenied = -60005; { The authorization was denied. }
+	errAuthorizationCanceled = -60006; { The authorization was cancelled by the user. }
+	errAuthorizationInteractionNotAllowed = -60007; { The authorization was denied since no user interaction was possible. }
+	errAuthorizationInternal = -60008; { Unable to obtain authorization for this operation. }
+	errAuthorizationExternalizeNotAllowed = -60009; { The authorization is not allowed to be converted to an external format. }
+	errAuthorizationInternalizeNotAllowed = -60010; { The authorization is not allowed to be created from an external format. }
+	errAuthorizationInvalidFlags = -60011; { The provided option flag(s) are invalid for this authorization operation. }
+	errAuthorizationToolExecuteFailure = -60031; { The specified program could not be executed. }
+	errAuthorizationToolEnvironmentError = -60032; { An invalid status was returned during execution of a privileged tool. }
+	errAuthorizationBadAddress = -60033; { The requested socket address is invalid (must be 0-1023 inclusive). }
+>>>>>>> origin/fixes_2.4
 
 
 {!
@@ -295,23 +715,63 @@ const
 	Optional flags passed in to serveral Authorization APIs. See the description of AuthorizationCreate, AuthorizationCopyRights and AuthorizationFree for a description of how they affect those calls.
 }
 const
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 	kAuthorizationFlagDefaults = 0;
 	kAuthorizationFlagInteractionAllowed = 1 shl 0;
 	kAuthorizationFlagExtendRights = 1 shl 1;
 	kAuthorizationFlagPartialRights = 1 shl 2;
 	kAuthorizationFlagDestroyRights = 1 shl 3;
 	kAuthorizationFlagPreAuthorize = 1 shl 4;
+<<<<<<< HEAD
 	
 	// private bits (do not use)
 	kAuthorizationFlagNoData = 1 shl 20;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	kAuthorizationFlagDefaults              = 0;
+	kAuthorizationFlagInteractionAllowed	= (1 shl 0);
+	kAuthorizationFlagExtendRights			= (1 shl 1);
+	kAuthorizationFlagPartialRights			= (1 shl 2);
+	kAuthorizationFlagDestroyRights			= (1 shl 3);
+	kAuthorizationFlagPreAuthorize			= (1 shl 4);
+	
+	// private bits (do not use)
+	kAuthorizationFlagNoData                = (1 shl 20);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	
+	// private bits (do not use)
+	kAuthorizationFlagNoData = 1 shl 20;
+>>>>>>> origin/fixes_2.4
 
 
 {!
 	@typedef AuthorizationFlags
 	Optional flags passed in to AuthorizationCreate.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 type
 	AuthorizationFlags = UInt32;
+=======
+type AuthorizationFlags = UInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+type AuthorizationFlags = UInt32;
+>>>>>>> origin/fixes_2_2
+=======
+type
+	AuthorizationFlags = UInt32;
+>>>>>>> origin/fixes_2.4
 
 
 {!
@@ -319,7 +779,19 @@ type
 	Flags returned in the flags field of ItemSet Items when calling AuthorizationCopyRights().
 }
 const
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kAuthorizationFlagCanNotPreAuthorize = 1 shl 0;
+=======
+	kAuthorizationFlagCanNotPreAuthorize = (1 shl 0);
+>>>>>>> graemeg/fixes_2_2
+=======
+	kAuthorizationFlagCanNotPreAuthorize = (1 shl 0);
+>>>>>>> origin/fixes_2_2
+=======
+	kAuthorizationFlagCanNotPreAuthorize = 1 shl 0;
+>>>>>>> origin/fixes_2.4
 
 
 {!
@@ -327,8 +799,36 @@ const
 	Opaque reference to an authorization object.
 }
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	AuthorizationRef = ^OpaqueAuthorization;
 	OpaqueAuthorization = record end;
+=======
+	AuthorizationRef = ^SInt32;
+>>>>>>> graemeg/cpstrnew
+=======
+	AuthorizationRef = ^SInt32;
+>>>>>>> graemeg/cpstrnew
+=======
+	AuthorizationRef = ^SInt32;
+>>>>>>> graemeg/cpstrnew
+=======
+	AuthorizationRef = ^SInt32;
+>>>>>>> origin/cpstrnew
+=======
+	AuthorizationRef							= ^SInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+	AuthorizationRef							= ^SInt32;
+>>>>>>> origin/fixes_2_2
+=======
+	AuthorizationRef = ^SInt32;
+>>>>>>> origin/fixes_2.4
 
 
 {!
@@ -336,7 +836,19 @@ type
 	A zero terminated string in UTF-8 encoding.
 }
 type AuthorizationString = CStringPtr;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	 ConstAuthorizationString = ConstCStringPtr;	{ will need later in AuthorizationPlugin }
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
+=======
+	 ConstAuthorizationString = ConstCStringPtr;	{ will need later in AuthorizationPlugin }
+>>>>>>> origin/fixes_2.4
 
 {!
 	@struct AuthorizationItem
@@ -353,8 +865,23 @@ type AuthorizationString = CStringPtr;
 type
 	AuthorizationItem = record
 		name: AuthorizationString;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		valueLength: size_t;
 		value: UnivPtr;
+=======
+		valueLength: UInt32;
+		value: Ptr;
+>>>>>>> graemeg/fixes_2_2
+=======
+		valueLength: UInt32;
+		value: Ptr;
+>>>>>>> origin/fixes_2_2
+=======
+		valueLength: size_t;
+		value: UnivPtr;
+>>>>>>> origin/fixes_2.4
 		flags: UInt32;
 	end;
 	AuthorizationItemPtr = ^AuthorizationItem;
@@ -385,8 +912,21 @@ type
 	SECURITY NOTE: Applications should take care to not disclose the AuthorizationExternalForm to
 	potential attackers since it would authorize rights to them.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 const
 	kAuthorizationExternalFormLength = 32;
+=======
+const kAuthorizationExternalFormLength = 32;
+>>>>>>> graemeg/fixes_2_2
+=======
+const kAuthorizationExternalFormLength = 32;
+>>>>>>> origin/fixes_2_2
+=======
+const
+	kAuthorizationExternalFormLength = 32;
+>>>>>>> origin/fixes_2.4
 
 type
 	AuthorizationExternalForm = record
@@ -443,7 +983,19 @@ type AuthorizationEnvironmentPtr = ^AuthorizationEnvironment;
 
 	errAuthorizationInteractionNotAllowed -60007 The authorization was denied since no interaction with the user was allowed.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function AuthorizationCreate( rights: AuthorizationRightsPtr; environment: AuthorizationEnvironmentPtr; flags: AuthorizationFlags; var authorization: AuthorizationRef ): OSStatus; external name '_AuthorizationCreate';
+=======
+function AuthorizationCreate(rights: AuthorizationRightsPtr; environment: AuthorizationEnvironmentPtr; flags: AuthorizationFlags; var authorization: AuthorizationRef): OSStatus; external name '_AuthorizationCreate';
+>>>>>>> graemeg/fixes_2_2
+=======
+function AuthorizationCreate(rights: AuthorizationRightsPtr; environment: AuthorizationEnvironmentPtr; flags: AuthorizationFlags; var authorization: AuthorizationRef): OSStatus; external name '_AuthorizationCreate';
+>>>>>>> origin/fixes_2_2
+=======
+function AuthorizationCreate( rights: AuthorizationRightsPtr; environment: AuthorizationEnvironmentPtr; flags: AuthorizationFlags; var authorization: AuthorizationRef ): OSStatus; external name '_AuthorizationCreate';
+>>>>>>> origin/fixes_2.4
 
 
 {!
@@ -462,8 +1014,21 @@ function AuthorizationCreate( rights: AuthorizationRightsPtr; environment: Autho
 
     errAuthorizationInvalidRef -60002 The authorization parameter is invalid.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function AuthorizationFree( authorization: AuthorizationRef; flags: AuthorizationFlags ): OSStatus; external name '_AuthorizationFree';
 
+=======
+function AuthorizationFree(authorization: AuthorizationRef;flags: AuthorizationFlags): OSStatus; external name '_AuthorizationFree';
+>>>>>>> graemeg/fixes_2_2
+=======
+function AuthorizationFree(authorization: AuthorizationRef;flags: AuthorizationFlags): OSStatus; external name '_AuthorizationFree';
+>>>>>>> origin/fixes_2_2
+=======
+function AuthorizationFree( authorization: AuthorizationRef; flags: AuthorizationFlags ): OSStatus; external name '_AuthorizationFree';
+
+>>>>>>> origin/fixes_2.4
 
 {!
 	@function AuthorizationCopyRights
@@ -498,7 +1063,19 @@ function AuthorizationFree( authorization: AuthorizationRef; flags: Authorizatio
 
     errAuthorizationInvalidPointer -60004 The authorizedRights parameter is invalid.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function AuthorizationCopyRights( authorization: AuthorizationRef; const (*var*) rights: AuthorizationRights; environment: AuthorizationEnvironmentPtr; flags: AuthorizationFlags; authorizedRights: AuthorizationRightsPtrPtr ): OSStatus; external name '_AuthorizationCopyRights';
+=======
+function AuthorizationCopyRights(authorization: AuthorizationRef; const (*var*) rights: AuthorizationRights; environment: AuthorizationEnvironmentPtr; flags: AuthorizationFlags; authorizedRights: AuthorizationRightsPtrPtr): OSStatus; external name '_AuthorizationCopyRights';
+>>>>>>> graemeg/fixes_2_2
+=======
+function AuthorizationCopyRights(authorization: AuthorizationRef; const (*var*) rights: AuthorizationRights; environment: AuthorizationEnvironmentPtr; flags: AuthorizationFlags; authorizedRights: AuthorizationRightsPtrPtr): OSStatus; external name '_AuthorizationCopyRights';
+>>>>>>> origin/fixes_2_2
+=======
+function AuthorizationCopyRights( authorization: AuthorizationRef; const (*var*) rights: AuthorizationRights; environment: AuthorizationEnvironmentPtr; flags: AuthorizationFlags; authorizedRights: AuthorizationRightsPtrPtr ): OSStatus; external name '_AuthorizationCopyRights';
+>>>>>>> origin/fixes_2.4
 
 {!
 	@function AuthorizationCopyInfo
@@ -517,7 +1094,19 @@ function AuthorizationCopyRights( authorization: AuthorizationRef; const (*var*)
 
     errAuthorizationInvalidPointer -60004 The info parameter is invalid.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function AuthorizationCopyInfo( authorization: AuthorizationRef; tag: AuthorizationString; var info: AuthorizationItemSetPtr ): OSStatus; external name '_AuthorizationCopyInfo';
+=======
+function AuthorizationCopyInfo(authorization: AuthorizationRef; tag: AuthorizationString; var info: AuthorizationItemSetPtr): OSStatus; external name '_AuthorizationCopyInfo';
+>>>>>>> graemeg/fixes_2_2
+=======
+function AuthorizationCopyInfo(authorization: AuthorizationRef; tag: AuthorizationString; var info: AuthorizationItemSetPtr): OSStatus; external name '_AuthorizationCopyInfo';
+>>>>>>> origin/fixes_2_2
+=======
+function AuthorizationCopyInfo( authorization: AuthorizationRef; tag: AuthorizationString; var info: AuthorizationItemSetPtr ): OSStatus; external name '_AuthorizationCopyInfo';
+>>>>>>> origin/fixes_2.4
 
 {!
 	@function AuthorizationMakeExternalForm
@@ -538,19 +1127,57 @@ function AuthorizationCopyInfo( authorization: AuthorizationRef; tag: Authorizat
 
 
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function AuthorizationMakeExternalForm( authorization: AuthorizationRef; var extForm: AuthorizationExternalForm ): OSStatus; external name '_AuthorizationMakeExternalForm';
+=======
+function AuthorizationMakeExternalForm(authorization: AuthorizationRef; var extForm: AuthorizationExternalForm): OSStatus; external name '_AuthorizationMakeExternalForm';
+>>>>>>> graemeg/fixes_2_2
+=======
+function AuthorizationMakeExternalForm(authorization: AuthorizationRef; var extForm: AuthorizationExternalForm): OSStatus; external name '_AuthorizationMakeExternalForm';
+>>>>>>> origin/fixes_2_2
+=======
+function AuthorizationMakeExternalForm( authorization: AuthorizationRef; var extForm: AuthorizationExternalForm ): OSStatus; external name '_AuthorizationMakeExternalForm';
+>>>>>>> origin/fixes_2.4
 
 
 {!
 	@function AuthorizationCreateFromExternalForm
+<<<<<<< HEAD
+<<<<<<< HEAD
 	Internalize the external "byte blob" form of an authorization reference.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	Turn an Authorization into an external "byte blob" form so it can be
+	transmitted to another process.
+	Note that *storing* the external form somewhere will probably not do what
+	you want, since authorizations are bounded by sessions, processes, and possibly
+	time limits. This is for online transmission of authorizations.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 	
 	@param extForm Pointer to an AuthorizationExternalForm value.
 	@param authorization Will be filled with a valid AuthorizationRef on success.
 	
 	@result errAuthorizationInternalizeNotAllowed -60010 Internalizing this authorization is not allowed.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function AuthorizationCreateFromExternalForm( const (*var*) extForm: AuthorizationExternalForm; var authorization: AuthorizationRef ): OSStatus; external name '_AuthorizationCreateFromExternalForm';
+=======
+function AuthorizationCreateFromExternalForm(const (*var*) extForm: AuthorizationExternalForm; var authorization: AuthorizationRef): OSStatus; external name '_AuthorizationCreateFromExternalForm';
+>>>>>>> graemeg/fixes_2_2
+=======
+function AuthorizationCreateFromExternalForm(const (*var*) extForm: AuthorizationExternalForm; var authorization: AuthorizationRef): OSStatus; external name '_AuthorizationCreateFromExternalForm';
+>>>>>>> origin/fixes_2_2
+=======
+function AuthorizationCreateFromExternalForm( const (*var*) extForm: AuthorizationExternalForm; var authorization: AuthorizationRef ): OSStatus; external name '_AuthorizationCreateFromExternalForm';
+>>>>>>> origin/fixes_2.4
 
 
 {!
@@ -564,7 +1191,19 @@ function AuthorizationCreateFromExternalForm( const (*var*) extForm: Authorizati
 
     errAuthorizationInvalidSet -60001 The set parameter is invalid.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function AuthorizationFreeItemSet( var setx: AuthorizationItemSet ): OSStatus; external name '_AuthorizationFreeItemSet';
+=======
+function AuthorizationFreeItemSet(var setx: AuthorizationItemSet): OSStatus; external name '_AuthorizationFreeItemSet';
+>>>>>>> graemeg/fixes_2_2
+=======
+function AuthorizationFreeItemSet(var setx: AuthorizationItemSet): OSStatus; external name '_AuthorizationFreeItemSet';
+>>>>>>> origin/fixes_2_2
+=======
+function AuthorizationFreeItemSet( var setx: AuthorizationItemSet ): OSStatus; external name '_AuthorizationFreeItemSet';
+>>>>>>> origin/fixes_2.4
 
 
 {!
@@ -583,16 +1222,46 @@ function AuthorizationFreeItemSet( var setx: AuthorizationItemSet ): OSStatus; e
 	a bidirectional pipe to communicate with the tool. The tool will have
 	this pipe as its standard I/O channels (stdin/stdout). If NULL, do not
 	establish a communications pipe.
+<<<<<<< HEAD
+<<<<<<< HEAD
 
  	@discussion This function has been deprecated and should no longer be used.
  	Use a launchd-launched helper tool and/or the Service Mangement framework
  	for this functionality.
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  }
 type
   Arg10000Type = array[0..10000] of CStringPtr;
   Arg10000TypePtr = ^Arg10000Type;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function AuthorizationExecuteWithPrivileges( authorization: AuthorizationRef; pathToTool: CStringPtr; options: AuthorizationFlags; arguments: Arg10000TypePtr; communicationsPipe: UnivPtr ): OSStatus; external name '_AuthorizationExecuteWithPrivileges';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_1,__MAC_10_7,__IPHONE_NA,__IPHONE_NA) *)
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+function AuthorizationExecuteWithPrivileges(authorization: AuthorizationRef; pathToTool: CStringPtr; options: AuthorizationFlags; arguments: Arg10000TypePtr; communicationsPipe: UnivPtr): OSStatus; external name '_AuthorizationExecuteWithPrivileges';
+>>>>>>> graemeg/fixes_2_2
+=======
+function AuthorizationExecuteWithPrivileges(authorization: AuthorizationRef; pathToTool: CStringPtr; options: AuthorizationFlags; arguments: Arg10000TypePtr; communicationsPipe: UnivPtr): OSStatus; external name '_AuthorizationExecuteWithPrivileges';
+>>>>>>> origin/fixes_2_2
+=======
+function AuthorizationExecuteWithPrivileges( authorization: AuthorizationRef; pathToTool: CStringPtr; options: AuthorizationFlags; arguments: Arg10000TypePtr; communicationsPipe: UnivPtr ): OSStatus; external name '_AuthorizationExecuteWithPrivileges';
+>>>>>>> origin/fixes_2.4
 // communicationsPipe not yet supported
 
 
@@ -603,13 +1272,27 @@ function AuthorizationExecuteWithPrivileges( authorization: AuthorizationRef; pa
 	While AuthorizationExecuteWithPrivileges already verified the authorization to
 	launch your tool, the tool may want to avail itself of any additional pre-authorizations
 	the caller may have obtained through that reference.
+<<<<<<< HEAD
+<<<<<<< HEAD
  
 	@discussion This function has been deprecated and should no longer be used.
 	Use a launchd-launched helper tool and/or the Service Mangement framework
 	for this functionality.
  }
 function AuthorizationCopyPrivilegedReference( var authorization: AuthorizationRef; flags: AuthorizationFlags ): OSStatus; external name '_AuthorizationCopyPrivilegedReference';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_1,__MAC_10_7,__IPHONE_NA,__IPHONE_NA) *)
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 
 {$endc} {TARGET_OS_MAC}
@@ -617,3 +1300,22 @@ function AuthorizationCopyPrivilegedReference( var authorization: AuthorizationR
 
 end.
 {$endc} {not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ }
+function AuthorizationCopyPrivilegedReference( var authorization: AuthorizationRef; flags: AuthorizationFlags ): OSStatus; external name '_AuthorizationCopyPrivilegedReference';
+
+
+{$endc} {TARGET_OS_MAC}
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+
+end.
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4

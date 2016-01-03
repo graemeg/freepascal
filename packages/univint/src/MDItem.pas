@@ -1,6 +1,38 @@
 {      MDItem.h
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         Copyright (c) 2003-2010, Apple Inc. All rights reserved.
 }
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
+        Copyright (c) 2003-2004, Apple Computer, Inc. All rights reserved.
+}
+
+ { Pascal Translation: Gorazd Krosl <gorazd_1957@yahoo.ca>, October 2009 }
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 {
     Modified for use with Free Pascal
     Version 308
@@ -55,11 +87,26 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -78,29 +125,104 @@ interface
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/fixes_2.4
 {$elifc defined __ppc64__ and __ppc64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := TRUE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/fixes_2.4
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
@@ -110,13 +232,33 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 {$elifc defined __x86_64__ and __x86_64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := TRUE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
@@ -128,17 +270,53 @@ interface
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/fixes_2.4
 {$elifc defined __arm__ and __arm__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elifc defined __arm64__ and __arm64__}
 	{$setc TARGET_CPU_PPC := FALSE}
@@ -147,13 +325,42 @@ interface
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
 	{$setc TARGET_CPU_ARM64 := TRUE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elsec}
 	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ nor __arm64__ is defined.}
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> origin/cpstrnew
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> origin/fixes_2.4
 {$endc}
 
 {$ifc defined __LP64__ and __LP64__ }
@@ -235,8 +442,28 @@ uses MacTypes,CFBase,CFString,CFDictionary,CFArray;
         This is the type of a reference to MDItems.
 }
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	MDItemRef = ^__MDItem; { an opaque type }
 	__MDItem = record end;
+=======
+	MDItemRef = ^SInt32; { an opaque type }
+>>>>>>> graemeg/cpstrnew
+=======
+	MDItemRef = ^SInt32; { an opaque type }
+>>>>>>> graemeg/cpstrnew
+=======
+	MDItemRef = ^SInt32; { an opaque type }
+>>>>>>> graemeg/cpstrnew
+=======
+	MDItemRef = ^SInt32; { an opaque type }
+>>>>>>> origin/cpstrnew
+=======
+	MDItemRef = ^SInt32; { an opaque type }
+>>>>>>> origin/fixes_2.4
 
 {!
         @function MDItemGetTypeID
@@ -261,6 +488,11 @@ function MDItemCreate( allocator: CFAllocatorRef; path: CFStringRef ): MDItemRef
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)
 
 {!
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  @function MDItemCreateWithURL
  Returns an metadata item for the given path.
  @param allocator The CFAllocator which should be used to allocate
@@ -288,6 +520,16 @@ function MDItemsCreateWithURLs( allocator: CFAllocatorRef; urls: CFArrayRef ): C
 (* AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER *)
 
 {!
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
         @function MDItemCopyAttribute
         Returns the value of the given attribute for the item.
         @param item The item to be interrogated.
@@ -338,6 +580,11 @@ function MDItemCopyAttributeList( item: MDItemRef; ... { CFStringRef names } ): 
 function MDItemCopyAttributeNames( item: MDItemRef ): CFArrayRef; external name '_MDItemCopyAttributeNames';
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {!
  @function MDItemsCopyAttributes
  Returns metadata for the given items.
@@ -350,6 +597,16 @@ function MDItemCopyAttributeNames( item: MDItemRef ): CFArrayRef; external name 
  }
 function MDItemsCopyAttributes( items: CFArrayRef; names: CFArrayRef ): CFArrayRef; external name '_MDItemsCopyAttributes';
 (* AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER *)
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 { List of well-known attributes }
 
@@ -388,10 +645,25 @@ function MDItemsCopyAttributes( items: CFArrayRef; names: CFArrayRef ): CFArrayR
    the main editor or relative importance of the editors. Type is a
    CFArray of CFStrings.
  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    @constant kMDItemParticipants
    The list of people who are visible in an image or movie or
    written about in a document. Type is CFArray of CFStrings.
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
    @constant kMDItemProjects
    The list of projects etc that this file is part of. For example if
    you were working on a movie, all of the movie files could be marked
@@ -405,9 +677,24 @@ function MDItemsCopyAttributes( items: CFArrayRef; names: CFArrayRef ): CFArrayR
 
    @constant kMDItemCopyright
    This is the copyright of the content. Type is a CFString
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    
    @constant kMDItemDownloadedDate
    This is the date that the file was last downloaded / received.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
    @constant kMDItemWhereFroms
    This attribute indicates where the item was obtained from.
@@ -436,11 +723,26 @@ function MDItemsCopyAttributes( items: CFArrayRef; names: CFArrayRef ): CFArrayR
    date, but can be independent of that. This allows tracking of the
    last time the content was modified irrespective of the last time the
    file was modified. Type is a CFDate.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    
    @constant kMDItemDateAdded
    This is the date that the file was moved into the current location.
    Not all files will have this attribute.  Not all file systems support
    this attribute.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
    @constant kMDItemDurationSeconds
    This is the duration, in seconds, of the content of the file (if
@@ -460,9 +762,24 @@ function MDItemsCopyAttributes( items: CFArrayRef; names: CFArrayRef ): CFArrayR
    @constant kMDItemPixelWidth
    The width of the document in pixels (ie Image width or Video frame width)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    @constant kMDItemPixelCount
    The total number of pixels in the document.  Type is a CFNumber.
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
    @constant kMDItemColorSpace
    What color space model is this document following
    (For example, are examples "RGB", "CMYK", "YUV", "YCbCr")
@@ -500,8 +817,33 @@ function MDItemsCopyAttributes( items: CFArrayRef; names: CFArrayRef ): CFArrayR
    acquired. 0 is auto white balance and 1 is manual
 
    @const kMDItemAperture
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    The size of the lens aperture as a log-scale APEX value
    when the image was acquired.
+=======
+   The aperture setting of the camera when the image was
+   acquired. This unit is the APEX value.
+>>>>>>> graemeg/cpstrnew
+=======
+   The aperture setting of the camera when the image was
+   acquired. This unit is the APEX value.
+>>>>>>> graemeg/cpstrnew
+=======
+   The aperture setting of the camera when the image was
+   acquired. This unit is the APEX value.
+>>>>>>> graemeg/cpstrnew
+=======
+   The aperture setting of the camera when the image was
+   acquired. This unit is the APEX value.
+>>>>>>> origin/cpstrnew
+=======
+   The aperture setting of the camera when the image was
+   acquired. This unit is the APEX value.
+>>>>>>> origin/fixes_2.4
 
    @const kMDItemProfileName
    Name of the color profile used for the image
@@ -568,14 +910,59 @@ function MDItemsCopyAttributes( items: CFArrayRef; names: CFArrayRef ): CFArrayR
    value. Ordinarily it is given in the range of 00.00 to 99.99.
 
    @const kMDItemFNumber
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    The focal length of the lens divided by the diameter of the aperture
    when the image was acquired.
+=======
+   FNumber expresses the diameter of the diaphragm aperture in terms
+   of the effective focal length of the lens.
+>>>>>>> graemeg/cpstrnew
+=======
+   FNumber expresses the diameter of the diaphragm aperture in terms
+   of the effective focal length of the lens.
+>>>>>>> graemeg/cpstrnew
+=======
+   FNumber expresses the diameter of the diaphragm aperture in terms
+   of the effective focal length of the lens.
+>>>>>>> graemeg/cpstrnew
+=======
+   FNumber expresses the diameter of the diaphragm aperture in terms
+   of the effective focal length of the lens.
+>>>>>>> origin/cpstrnew
+=======
+   FNumber expresses the diameter of the diaphragm aperture in terms
+   of the effective focal length of the lens.
+>>>>>>> origin/fixes_2.4
 
    @const kMDItemExposureProgram
    The class of the program used by the camera to set exposure when
    the picture is taken (Manual, Normal, Aperture priority, ...)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    @const kMDItemExposureTimeString
+=======
+   const kMDItemExposureTimeString
+>>>>>>> graemeg/cpstrnew
+=======
+   const kMDItemExposureTimeString
+>>>>>>> graemeg/cpstrnew
+=======
+   const kMDItemExposureTimeString
+>>>>>>> graemeg/cpstrnew
+=======
+   const kMDItemExposureTimeString
+>>>>>>> origin/cpstrnew
+=======
+   const kMDItemExposureTimeString
+>>>>>>> origin/fixes_2.4
    The time  of the exposure.
 
    @const kMDItemHeadline
@@ -627,9 +1014,24 @@ function MDItemsCopyAttributes( items: CFArrayRef; names: CFArrayRef ): CFArrayR
  @const kMDItemImageDirection
  The direction of the item's image, in degrees from true north.
  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  @const kMDItemNamedLocation
  The name of the location or point of interest associated with the item.
  The name may be user provided.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 }
 
 var kMDItemAttributeChangeDate: CFStringRef; external name '_kMDItemAttributeChangeDate'; (* attribute const *)
@@ -637,7 +1039,27 @@ var kMDItemAttributeChangeDate: CFStringRef; external name '_kMDItemAttributeCha
 var kMDItemContentType: CFStringRef; external name '_kMDItemContentType'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)               // CFString
 var kMDItemContentTypeTree: CFStringRef; external name '_kMDItemContentTypeTree'; (* attribute const *)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)   // CFArray of CFStringRef
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)   // Array of CFStringRef
+>>>>>>> graemeg/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)   // Array of CFStringRef
+>>>>>>> graemeg/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)   // Array of CFStringRef
+>>>>>>> graemeg/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)   // Array of CFStringRef
+>>>>>>> origin/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)   // Array of CFStringRef
+>>>>>>> origin/fixes_2.4
 var kMDItemKeywords: CFStringRef; external name '_kMDItemKeywords'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                  // CFArray of CFString
 var kMDItemTitle: CFStringRef; external name '_kMDItemTitle'; (* attribute const *)
@@ -646,12 +1068,37 @@ var kMDItemAuthors: CFStringRef; external name '_kMDItemAuthors'; (* attribute c
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                   // CFArray of CFString
 var kMDItemEditors: CFStringRef; external name '_kMDItemEditors'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)           // CFArray of CFString
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 var kMDItemParticipants: CFStringRef; external name '_kMDItemParticipants'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER *) // CFArray of CFString
 var kMDItemProjects: CFStringRef; external name '_kMDItemProjects'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                  // CFArray of CFString
 var kMDItemDownloadedDate: CFStringRef; external name '_kMDItemDownloadedDate'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER *) // CFDate
+=======
+var kMDItemProjects: CFStringRef; external name '_kMDItemProjects'; (* attribute const *)
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                  // CFArray of CFString
+>>>>>>> graemeg/cpstrnew
+=======
+var kMDItemProjects: CFStringRef; external name '_kMDItemProjects'; (* attribute const *)
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                  // CFArray of CFString
+>>>>>>> graemeg/cpstrnew
+=======
+var kMDItemProjects: CFStringRef; external name '_kMDItemProjects'; (* attribute const *)
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                  // CFArray of CFString
+>>>>>>> graemeg/cpstrnew
+=======
+var kMDItemProjects: CFStringRef; external name '_kMDItemProjects'; (* attribute const *)
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                  // CFArray of CFString
+>>>>>>> origin/cpstrnew
+=======
+var kMDItemProjects: CFStringRef; external name '_kMDItemProjects'; (* attribute const *)
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                  // CFArray of CFString
+>>>>>>> origin/fixes_2.4
 var kMDItemWhereFroms: CFStringRef; external name '_kMDItemWhereFroms'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                // CFArray of CFString
 var kMDItemComment: CFStringRef; external name '_kMDItemComment'; (* attribute const *)
@@ -664,8 +1111,23 @@ var kMDItemContentCreationDate: CFStringRef; external name '_kMDItemContentCreat
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)       // CFDate
 var kMDItemContentModificationDate: CFStringRef; external name '_kMDItemContentModificationDate'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)   // CFDate
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 var kMDItemDateAdded: CFStringRef; external name '_kMDItemDateAdded'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                 // CFDate
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 var kMDItemDurationSeconds: CFStringRef; external name '_kMDItemDurationSeconds'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)           // CFNumber
 var kMDItemContactKeywords: CFStringRef; external name '_kMDItemContactKeywords'; (* attribute const *)
@@ -677,8 +1139,23 @@ var kMDItemPixelHeight: CFStringRef; external name '_kMDItemPixelHeight'; (* att
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)               // CFNumber
 var kMDItemPixelWidth: CFStringRef; external name '_kMDItemPixelWidth'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                // CFNumber
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 var kMDItemPixelCount: CFStringRef; external name '_kMDItemPixelCount'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER *) // CFNumber
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 var kMDItemColorSpace: CFStringRef; external name '_kMDItemColorSpace'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                // CFString
 var kMDItemBitsPerSample: CFStringRef; external name '_kMDItemBitsPerSample'; (* attribute const *)
@@ -714,6 +1191,11 @@ var kMDItemExposureTimeSeconds: CFStringRef; external name '_kMDItemExposureTime
 var kMDItemEXIFVersion: CFStringRef; external name '_kMDItemEXIFVersion'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)               // CFString
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 var kMDItemCameraOwner: CFStringRef; external name '_kMDItemCameraOwner'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER *)       // CFString
 var kMDItemFocalLength35mm: CFStringRef; external name '_kMDItemFocalLength35mm'; (* attribute const *)
@@ -721,6 +1203,16 @@ var kMDItemFocalLength35mm: CFStringRef; external name '_kMDItemFocalLength35mm'
 var kMDItemLensModel: CFStringRef; external name '_kMDItemLensModel'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER *)         // CFString
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 var kMDItemEXIFGPSVersion: CFStringRef; external name '_kMDItemEXIFGPSVersion'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)    // CFString
 var kMDItemAltitude: CFStringRef; external name '_kMDItemAltitude'; (* attribute const *)
@@ -737,6 +1229,11 @@ var kMDItemGPSTrack: CFStringRef; external name '_kMDItemGPSTrack'; (* attribute
 (* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)          // CFNumber
 var kMDItemImageDirection: CFStringRef; external name '_kMDItemImageDirection'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)    // CFNumber
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 var kMDItemNamedLocation: CFStringRef; external name '_kMDItemNamedLocation'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER *) // CFString
 
@@ -764,6 +1261,16 @@ var kMDItemGPSDateStamp: CFStringRef; external name '_kMDItemGPSDateStamp'; (* a
 (* AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER *)          // CFDate
 var kMDItemGPSDifferental: CFStringRef; external name '_kMDItemGPSDifferental'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER *)        // CFNumber
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 var kMDItemCodecs: CFStringRef; external name '_kMDItemCodecs'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                    // CFArray of CFString
@@ -783,7 +1290,27 @@ var kMDItemDeliveryType: CFStringRef; external name '_kMDItemDeliveryType'; (* a
 var kMDItemAlbum: CFStringRef; external name '_kMDItemAlbum'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)                     // CFString
 var kMDItemHasAlphaChannel: CFStringRef; external name '_kMDItemHasAlphaChannel'; (* attribute const *)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)		   // CFBoolean
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)		  // CFBoolean
+>>>>>>> graemeg/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)		  // CFBoolean
+>>>>>>> graemeg/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)		  // CFBoolean
+>>>>>>> graemeg/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)		  // CFBoolean
+>>>>>>> origin/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)		  // CFBoolean
+>>>>>>> origin/fixes_2.4
 var kMDItemRedEyeOnOff: CFStringRef; external name '_kMDItemRedEyeOnOff'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)               // CFBoolean
 var kMDItemMeteringMode: CFStringRef; external name '_kMDItemMeteringMode'; (* attribute const *)
@@ -1247,7 +1774,27 @@ var kMDItemMusicalInstrumentName: CFStringRef; external name '_kMDItemMusicalIns
 var kMDItemCFBundleIdentifier: CFStringRef; external name '_kMDItemCFBundleIdentifier'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)       // CFString
 var kMDItemSupportFileType: CFStringRef; external name '_kMDItemSupportFileType'; (* attribute const *)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER_BUT_DEPRECATED *)          // CFArray of CFStrings
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)          // CFArray of CFStrings
+>>>>>>> graemeg/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)          // CFArray of CFStrings
+>>>>>>> graemeg/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)          // CFArray of CFStrings
+>>>>>>> graemeg/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)          // CFArray of CFStrings
+>>>>>>> origin/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)          // CFArray of CFStrings
+>>>>>>> origin/fixes_2.4
 
 {!
         @const kMDItemInformation
@@ -1279,6 +1826,11 @@ var kMDItemSupportFileType: CFStringRef; external name '_kMDItemSupportFileType'
         This attribute indicates the reciepients email addresses. (This is always the email
         address,  and not the human readable version).
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         @const kMDItemAuthorAddresses
         This attribute indicates the author addresses of the document.
  
@@ -1299,6 +1851,26 @@ var kMDItemSupportFileType: CFStringRef; external name '_kMDItemSupportFileType'
 
         @const kMDItemApplicationCategories
         Array of categories the item application is a member of.
+=======
+        @const kMDItemURL
+        Url of the item
+>>>>>>> graemeg/cpstrnew
+=======
+        @const kMDItemURL
+        Url of the item
+>>>>>>> graemeg/cpstrnew
+=======
+        @const kMDItemURL
+        Url of the item
+>>>>>>> graemeg/cpstrnew
+=======
+        @const kMDItemURL
+        Url of the item
+>>>>>>> origin/cpstrnew
+=======
+        @const kMDItemURL
+        Url of the item
+>>>>>>> origin/fixes_2.4
 
 }
 var kMDItemInformation: CFStringRef; external name '_kMDItemInformation'; (* attribute const *)
@@ -1319,6 +1891,11 @@ var kMDItemAuthorEmailAddresses: CFStringRef; external name '_kMDItemAuthorEmail
 (* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)     // CFArray of CFString
 var kMDItemRecipientEmailAddresses: CFStringRef; external name '_kMDItemRecipientEmailAddresses'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)  // CFArray of CFString
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 var kMDItemAuthorAddresses: CFStringRef; external name '_kMDItemAuthorAddresses'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER *)     // CFArray of CFString
 var kMDItemRecipientAddresses: CFStringRef; external name '_kMDItemRecipientAddresses'; (* attribute const *)
@@ -1347,6 +1924,31 @@ var kMDItemApplicationCategories: CFStringRef; external name '_kMDItemApplicatio
 var kMDItemIsApplicationManaged: CFStringRef; external name '_kMDItemIsApplicationManaged'; (* attribute const *)
 (* AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER *) // CFBoolean
 
+=======
+var kMDItemURL: CFStringRef; external name '_kMDItemURL'; (* attribute const *)
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)                      // CFString
+
+>>>>>>> graemeg/cpstrnew
+=======
+var kMDItemURL: CFStringRef; external name '_kMDItemURL'; (* attribute const *)
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)                      // CFString
+
+>>>>>>> graemeg/cpstrnew
+=======
+var kMDItemURL: CFStringRef; external name '_kMDItemURL'; (* attribute const *)
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)                      // CFString
+
+>>>>>>> graemeg/cpstrnew
+=======
+var kMDItemURL: CFStringRef; external name '_kMDItemURL'; (* attribute const *)
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)                      // CFString
+
+>>>>>>> origin/cpstrnew
+=======
+var kMDItemURL: CFStringRef; external name '_kMDItemURL'; (* attribute const *)
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)                      // CFString
+
+>>>>>>> origin/fixes_2.4
 { ================================================================ }
 
 {$endc} {TARGET_OS_MAC}

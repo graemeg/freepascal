@@ -139,7 +139,7 @@ unit wincrt;
        ctrlkey : boolean = false;
        shiftkey : boolean = false;
 
-    function msghandler(Window: HWnd; AMessage:UInt; WParam : WParam; LParam: LParam): LResult; stdcall;
+    function msghandler(Window: HWnd; AMessage:UInt; WParam : WParam; LParam: LParam): Longint; stdcall;
 
       begin
          case amessage of

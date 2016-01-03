@@ -27,10 +27,38 @@ interface
 
     const
        { version string }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        version_nr = '3';
        release_nr = '1';
+=======
+       version_nr = '2';
+<<<<<<< HEAD
+       release_nr = '5';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+       release_nr = '4';
+>>>>>>> origin/fixes_2.4
        patch_nr   = '1';
+       minorpatch = '-cps';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+       version_nr = '2';
+       release_nr = '2';
+       patch_nr   = '5';
        minorpatch = '';
+>>>>>>> graemeg/fixes_2_2
 
        { word version for ppu file }
        wordversion = ((ord(version_nr)-ord('0')) shl 14)+

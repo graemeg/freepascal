@@ -12,7 +12,20 @@
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       <Title Value="ppcavr"/>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      <Title Value="pp"/>
+>>>>>>> graemeg/cpstrnew
     </General>
     <BuildModes Count="1">
       <Item1 Name="default" Default="True"/>
@@ -42,7 +55,23 @@
     </Units>
   </ProjectOptions>
   <CompilerOptions>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Version Value="11"/>
+=======
+    <Version Value="9"/>
+>>>>>>> graemeg/cpstrnew
+=======
+    <Version Value="9"/>
+>>>>>>> graemeg/cpstrnew
+=======
+    <Version Value="9"/>
+>>>>>>> graemeg/cpstrnew
+=======
+    <Version Value="9"/>
+>>>>>>> origin/cpstrnew
     <PathDelim Value="\"/>
     <Target>
       <Filename Value="avr\pp"/>
@@ -69,9 +98,21 @@
       <ConfigFile>
         <StopAfterErrCount Value="50"/>
       </ConfigFile>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       <CompilerMessages>
         <UseMsgFile Value="True"/>
       </CompilerMessages>
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       <CustomOptions Value="-davr"/>
       <CompilerPath Value="$(CompPath)"/>
     </Other>

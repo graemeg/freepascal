@@ -246,15 +246,25 @@ Begin
  WriteLn(' Note: GetTime should return the same value as the previous test.     ');
  WriteLn('----------------------------------------------------------------------');
 {$ifndef beos}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef linux}
 {$ifndef android}
  {This should be disabled under BeOS : maybe this is a BeOS bug (or a feature ?)
+=======
+ {This should be disabled under BeOS : maybe this is a BeOS bug (or a feature ?) 
+>>>>>>> graemeg/fixes_2_2
+=======
+ {This should be disabled under BeOS : maybe this is a BeOS bug (or a feature ?) 
+>>>>>>> origin/fixes_2_2
   in stime function.
   When you set 36 hours, the time AND the date are changed
   It seems it is a valid value under BeOS, but you have jump in the future :
   36 hours in the future from the begining of the starting day, more or less
   depending on your timezone.
   For example in Paris, in summer (2 hours from GMT time zone),
+<<<<<<< HEAD
+<<<<<<< HEAD
   this call set the clock to 14:<Minute>:<Second>:<Sec100> the next day !
   Linux shows the same behaviour.
   }
@@ -263,6 +273,18 @@ Begin
 {$endif}
 {$endif}
 {$endif}
+=======
+  this call set the clock to 14:<Minute>:<Second>:<Sec100> the next day !}
+ SetTime(36,Minute,Second,Sec100);
+ CheckDosError(0);
+{$endif}
+>>>>>>> graemeg/fixes_2_2
+=======
+  this call set the clock to 14:<Minute>:<Second>:<Sec100> the next day !}
+ SetTime(36,Minute,Second,Sec100);
+ CheckDosError(0);
+{$endif}
+>>>>>>> origin/fixes_2_2
  GetTime(Hour1,Minute1,Second1,Sec1001);
  CheckDosError(0);
  WriteLn('HH:MIN:SEC ',Hour1,':',Minute1,':',Second1);
@@ -700,7 +722,13 @@ begin
  TestSplit;
  //Force RTL to use non-LFN calls
  FileNameCaseSensitive:=false;
+<<<<<<< HEAD
+<<<<<<< HEAD
  FileNameCasePreserving:=false;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  AllFilesMask := '*.*';
  LFNSupport:=false;
  WriteLn('----------------------------------------------------------------------');

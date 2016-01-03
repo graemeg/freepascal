@@ -358,7 +358,23 @@ begin
       write(stdfile,'''',stdnames[i],'''');
       write(attfile,'''',attnames[i],'''');
       write(intfile,'''',intnames[i],'''');
+<<<<<<< HEAD
       write(nasmfile,'''',nasmnames[i],'''');
+=======
+      if not(x86_64) then
+        begin
+          write(nasmfile,'''',nasmnames[i],'''');
+        end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       { stabs uses the same register numbering as dwarf
         for x86_64 CPU }
       if x86_64 then

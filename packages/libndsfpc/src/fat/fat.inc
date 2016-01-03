@@ -38,6 +38,8 @@
 
 *)
 {$ifdef NDS_INTERFACE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 function fatInit(cacheSize: cuint32; setAsDefaultDevice: cbool): cbool; cdecl; external;
 function fatInitDefault(): cbool; cdecl; external;
 function fatMountSimple (const name: pcchar; const ainterface: PDISC_INTERFACE): cbool; cdecl; external;
@@ -63,6 +65,58 @@ function FAT_getAttr(const _file: pcchar): cint; cdecl; external;
 function FAT_setAttr(const _file: pcchar; attr: cint): cint; cdecl; external;
 
 {$define LIBFAT_FEOS_MULTICWD}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+const
+  FEATURE_MEDIUM_CANREAD		= $00000001;
+  FEATURE_MEDIUM_CANWRITE		= $00000002;
+  FEATURE_SLOT_GBA			= $00000010;
+  FEATURE_SLOT_NDS			= $00000020;
+
+type
+  FN_MEDIUM_STARTUP = function: cbool;
+  FN_MEDIUM_ISINSERTED = function: cbool;
+  FN_MEDIUM_READSECTORS = function(sector, numSectors: cuint32; buffer: pointer): cbool;
+  FN_MEDIUM_WRITESECTORS = function(sector, numSectors: cuint32; const buffer: pointer): cbool;
+  FN_MEDIUM_CLEARSTATUS = function: cbool;
+  FN_MEDIUM_SHUTDOWN = function: cbool;
+
+  IO_INTERFACE_STRUCT = record
+    ioType: cuint32;
+    features: cuint32;
+    fn_startup: FN_MEDIUM_STARTUP;
+    fn_isInserted: FN_MEDIUM_ISINSERTED;
+    fn_readSectors: FN_MEDIUM_READSECTORS;
+    fn_writeSectors: FN_MEDIUM_WRITESECTORS;
+    fn_clearStatus: FN_MEDIUM_CLEARSTATUS;
+    fn_shutdown: FN_MEDIUM_SHUTDOWN;
+  end;
+
+  IO_INTERFACE = IO_INTERFACE_STRUCT;
+  TIO_INTERFACE_STRUCT = IO_INTERFACE_STRUCT;
+  PIO_INTERFACE_STRUCT = ^IO_INTERFACE_STRUCT;
+
+  PARTITION_INTERFACE = (
+    PI_DEFAULT = 0,
+    PI_SLOT_1, 
+    PI_SLOT_2, 
+    PI_CUSTOM
+  );
+
+
+function fatInit(cacheSize: cuint32; setAsDefaultDevice: cbool): cbool; cdecl; external;
+function fatInitDefault(): cbool; cdecl; external;
+function fatMountNormalInterface(partitionNumber: PARTITION_INTERFACE; cacheSize: cuint32): cbool; cdecl; external;
+function fatMountCustomInterface(const device: PIO_INTERFACE_STRUCT; cacheSize: cuint32): cbool; cdecl; external;
+function fatUnmount(partitionNumber: PARTITION_INTERFACE): cbool; cdecl; external;
+function fatUnsafeUnmount(partitionNumber: PARTITION_INTERFACE): cbool; cdecl; external;
+function fatSetDefaultInterface(partitionNumber: PARTITION_INTERFACE): cbool; cdecl; external;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$endif NDS_INTERFACE}
 

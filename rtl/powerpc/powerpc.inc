@@ -994,6 +994,8 @@ end;
 
 {$ifndef FPC_SYSTEM_HAS_FPC_PCHAR_TO_SHORTSTR}
 {$define FPC_SYSTEM_HAS_FPC_PCHAR_TO_SHORTSTR}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 procedure fpc_pchar_to_shortstr(out res : shortstring;p:pchar);assembler;[public,alias:'FPC_PCHAR_TO_SHORTSTR']; compilerproc; nostackframe;
 {
@@ -1037,6 +1039,21 @@ asm
       { store length }
       stb     r10,0(r3)
 end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifndef FPC_STRTOSHORTSTRINGPROC}
+function fpc_pchar_to_shortstr(p:pchar):shortstring;[public,alias:'FPC_PCHAR_TO_SHORTSTR']; compilerproc; assembler; nostackframe;
+{$else FPC_STRTOSHORTSTRINGPROC}
+procedure fpc_pchar_to_shortstr(out res : shortstring;p:pchar);assembler;[public,alias:'FPC_PCHAR_TO_SHORTSTR']; compilerproc; nostackframe;
+{$define FPC_STRPASPROC}
+{$endif FPC_STRTOSHORTSTRINGPROC}
+{$include strpas.inc}
+{$undef FPC_STRPASPROC}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif FPC_SYSTEM_HAS_FPC_PCHAR_TO_SHORTSTR}
 
 
@@ -1231,14 +1248,32 @@ begin
      mtfsf 7,f1
   end;
   { powerpc might use softfloat code }
+<<<<<<< HEAD
+<<<<<<< HEAD
   softfloat_exception_flags:=[];
   softfloat_exception_mask:=[float_flag_underflow, float_flag_inexact, float_flag_denormal];
+=======
+  softfloat_exception_flags:=0;
+  softfloat_exception_mask:=float_flag_underflow or float_flag_inexact or float_flag_denormal;
+>>>>>>> graemeg/fixes_2_2
+=======
+  softfloat_exception_flags:=0;
+  softfloat_exception_mask:=float_flag_underflow or float_flag_inexact or float_flag_denormal;
+>>>>>>> origin/fixes_2_2
 end;
 
 {$define FPC_SYSTEM_HAS_SYSRESETFPU}
 procedure SysResetFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   softfloat_exception_flags:=[];
+=======
+  softfloat_exception_flags:=0;
+>>>>>>> graemeg/fixes_2_2
+=======
+  softfloat_exception_flags:=0;
+>>>>>>> origin/fixes_2_2
 end;
 {$ENDIF}
 
@@ -1247,7 +1282,15 @@ end;
 
 procedure ReadBarrier;assembler;nostackframe;{$ifdef SYSTEMINLINE}inline;{$endif}
 asm
+<<<<<<< HEAD
+<<<<<<< HEAD
   isync
+=======
+  sync
+>>>>>>> graemeg/fixes_2_2
+=======
+  sync
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure ReadDependencyBarrier;{$ifdef SYSTEMINLINE}inline;{$endif}
@@ -1257,8 +1300,16 @@ end;
 
 procedure ReadWriteBarrier;assembler;nostackframe;{$ifdef SYSTEMINLINE}inline;{$endif}
 asm
+<<<<<<< HEAD
+<<<<<<< HEAD
   isync
   eieio
+=======
+  sync
+>>>>>>> graemeg/fixes_2_2
+=======
+  sync
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure WriteBarrier;assembler;nostackframe;{$ifdef SYSTEMINLINE}inline;{$endif}

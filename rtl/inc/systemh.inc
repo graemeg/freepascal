@@ -78,15 +78,36 @@
 {$define FPC_HAS_FEATURE_PROCESSES}
 {$define FPC_HAS_FEATURE_STACKCHECK}
 {$define FPC_HAS_FEATURE_DYNLIBS}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$define FPC_HAS_FEATURE_OBJECTIVEC1}
 {$define FPC_HAS_FEATURE_UNICODESTRINGS}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$endif FPC_HAS_FEATURE_SUPPORT}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 { bootstrapping, the starting compiler cannot be a downstripped compiler without unicodestring support }
 {$ifdef VER2_6}
 {$define FPC_HAS_FEATURE_UNICODESTRINGS}
 {$endif VER2_6}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {****************************************************************************
                          Global Types and Constants
 ****************************************************************************}
@@ -209,6 +230,8 @@ Type
 
 {$ifdef CPUM68K}
   {$define DEFAULT_DOUBLE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   {$ifdef FPUSOFT}
     {$define FPC_INCLUDE_SOFTWARE_MOD_DIV}
@@ -217,13 +240,25 @@ Type
 
   { m68k int64 shl/shr uses soft helper for non constaznt values }
   {$define FPC_INCLUDE_SOFTWARE_SHIFT_INT64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   {$define SUPPORT_SINGLE}
   {$define SUPPORT_DOUBLE}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$ifndef FPUNONE}
     ValReal = Real;
   {$endif}
+=======
+  ValReal = Real;
+>>>>>>> graemeg/fixes_2_2
+=======
+  ValReal = Real;
+>>>>>>> origin/fixes_2_2
 
   { Comp type does not exist on fpu }
   Comp    = int64;
@@ -469,14 +504,46 @@ Type
   UCS4String          = array of UCS4Char;
 
 {$ifdef FPC_HAS_CPSTRING}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   UTF8String          = type AnsiString(CP_UTF8);
+=======
+  UTF8String          = String<65001>;
+>>>>>>> graemeg/cpstrnew
+=======
+  UTF8String          = String<65001>;
+>>>>>>> graemeg/cpstrnew
+=======
+  UTF8String          = String<65001>;
+>>>>>>> graemeg/cpstrnew
+=======
+  UTF8String          = String<65001>;
+>>>>>>> origin/cpstrnew
 {$else FPC_HAS_CPSTRING}
   UTF8String          = type ansistring;
 {$endif FPC_HAS_CPSTRING}
   PUTF8String         = ^UTF8String;
 
 {$ifdef FPC_HAS_CPSTRING}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   RawByteString       = type AnsiString(CP_NONE);
+=======
+  RawByteString       = String<$ffff>;
+>>>>>>> graemeg/cpstrnew
+=======
+  RawByteString       = String<$ffff>;
+>>>>>>> graemeg/cpstrnew
+=======
+  RawByteString       = String<$ffff>;
+>>>>>>> graemeg/cpstrnew
+=======
+  RawByteString       = String<$ffff>;
+>>>>>>> origin/cpstrnew
 {$else FPC_HAS_CPSTRING}
   RawByteString       = ansistring;
 {$endif FPC_HAS_CPSTRING}
@@ -521,6 +588,18 @@ Type
   PPByte              = ^PByte;
   PPLongint           = ^PLongint;
 
+  PPByte              = ^PByte;
+  PPLongint           = ^PLongint;
+
+  PPByte              = ^PByte;
+  PPLongint           = ^PLongint;
+
+  PPByte              = ^PByte;
+  PPLongint           = ^PLongint;
+
+  PPByte              = ^PByte;
+  PPLongint           = ^PLongint;
+
   PPointer            = ^Pointer;
   PPPointer           = ^PPointer;
 
@@ -547,8 +626,16 @@ Type
 
 {$ifndef FPUNONE}
   PDate               = ^TDateTime;
+<<<<<<< HEAD
+<<<<<<< HEAD
   PDateTime           = ^TDateTime;
 {$endif}
+=======
+  PDateTime	      = ^TDateTime;
+>>>>>>> graemeg/fixes_2_2
+=======
+  PDateTime	      = ^TDateTime;
+>>>>>>> origin/fixes_2_2
   PError              = ^TError;
   PVariant            = ^Variant;
   POleVariant         = ^OleVariant;
@@ -567,6 +654,10 @@ Type
 
   TSystemCodePage     = Word;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef VER2_6}
   { the size of textrec/filerec is hardcoded in the 2.6 compiler binary }
   {$define FPC_ANSI_TEXTFILEREC}
@@ -574,6 +665,16 @@ Type
 
   TFileTextRecChar    = {$if defined(FPC_ANSI_TEXTFILEREC) or not(defined(FPC_HAS_FEATURE_WIDESTRINGS))}AnsiChar{$else}UnicodeChar{$endif};
   PFileTextRecChar    = ^TFileTextRecChar;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  { Needed for fpc_get_output }
+  PText               = ^Text;
+>>>>>>> graemeg/cpstrnew
 
   TTextLineBreakStyle = (tlbsLF,tlbsCRLF,tlbsCR);
 
@@ -583,6 +684,8 @@ Type
 { platform-dependent types }
 {$i sysosh.inc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 { platform-dependent defines }
 {$i rtldefs.inc}
 
@@ -601,6 +704,12 @@ type
   { Needed for fpc_get_output }
   PText               = ^Text;
 
+=======
+type
+>>>>>>> graemeg/fixes_2_2
+=======
+type
+>>>>>>> origin/fixes_2_2
   TEntryInformation = record
     InitFinalTable : Pointer;
     ThreadvarTablesTable : Pointer;
@@ -702,7 +811,14 @@ const
   ThreadingAlreadyUsed : boolean = FALSE;
   { Indicates if there was an error }
   StackError : boolean = FALSE;
+<<<<<<< HEAD
   InitProc : CodePointer = nil;
+=======
+  InitProc : Pointer = nil;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   { compatibility }
   ModuleIsLib : Boolean = FALSE;
   ModuleIsPackage : Boolean = FALSE;
@@ -733,6 +849,26 @@ var
   { the code page to use to return file names from single byte file system calls
     in the RTL that return ansistrings (by default, same as a above) }
   DefaultRTLFileSystemCodePage,
+  UTF8CompareLocale : TSystemCodePage;
+
+
+  DefaultSystemCodePage,
+  DefaultUnicodeCodePage,
+  UTF8CompareLocale : TSystemCodePage;
+
+
+  DefaultSystemCodePage,
+  DefaultUnicodeCodePage,
+  UTF8CompareLocale : TSystemCodePage;
+
+
+  DefaultSystemCodePage,
+  DefaultUnicodeCodePage,
+  UTF8CompareLocale : TSystemCodePage;
+
+
+  DefaultSystemCodePage,
+  DefaultUnicodeCodePage,
   UTF8CompareLocale : TSystemCodePage;
 
 
@@ -777,6 +913,8 @@ function StackTop: Pointer;
   {$endif}
 {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure Move(const source;var dest;count:{$ifdef MOVE_HAS_SIZEUINT_COUNT}SizeUInt{$else}SizeInt{$endif});
 Procedure FillChar(var x;count:{$ifdef FILLCHAR_HAS_SIZEUINT_COUNT}SizeUInt{$else}SizeInt{$endif};Value:Byte);
 Procedure FillChar(var x;count:{$ifdef FILLCHAR_HAS_SIZEUINT_COUNT}SizeUInt{$else}SizeInt{$endif};Value:Boolean);
@@ -792,16 +930,46 @@ function  IndexDWord(const buf;len:SizeInt;b:DWord):SizeInt;
 function  IndexQWord(const buf;len:SizeInt;b:QWord):SizeInt;
 function  CompareChar(const buf1,buf2;len:SizeInt):SizeInt;
 function  CompareByte(const buf1,buf2;len:SizeInt):SizeInt;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Procedure Move(const source;var dest;count:SizeInt);{$ifdef INLINEGENERICS}inline;{$endif}
+Procedure FillChar(var x;count:SizeInt;Value:Byte);{$ifdef INLINEGENERICS}inline;{$endif}
+Procedure FillChar(var x;count:SizeInt;Value:Boolean);{$ifdef SYSTEMINLINE}inline;{$endif}
+Procedure FillChar(var x;count:SizeInt;Value:Char);{$ifdef SYSTEMINLINE}inline;{$endif}
+procedure FillByte(var x;count:SizeInt;value:byte);{$ifdef SYSTEMINLINE}inline;{$endif}
+Procedure FillWord(var x;count:SizeInt;Value:Word);
+procedure FillDWord(var x;count:SizeInt;value:DWord);
+function  IndexChar(const buf;len:SizeInt;b:char):SizeInt;{$ifdef SYSTEMINLINE}inline;{$endif}
+function  IndexByte(const buf;len:SizeInt;b:byte):SizeInt;{$ifdef INLINEGENERICS}inline;{$endif}
+function  Indexword(const buf;len:SizeInt;b:word):SizeInt;
+function  IndexDWord(const buf;len:SizeInt;b:DWord):SizeInt;
+function  CompareChar(const buf1,buf2;len:SizeInt):SizeInt;{$ifdef SYSTEMINLINE}inline;{$endif}
+function  CompareByte(const buf1,buf2;len:SizeInt):SizeInt;{$ifdef INLINEGENERICS}inline;{$endif}
+>>>>>>> graemeg/fixes_2_2
 function  CompareWord(const buf1,buf2;len:SizeInt):SizeInt;
 function  CompareDWord(const buf1,buf2;len:SizeInt):SizeInt;
 procedure MoveChar0(const buf1;var buf2;len:SizeInt);
 function  IndexChar0(const buf;len:SizeInt;b:char):SizeInt;
 function  CompareChar0(const buf1,buf2;len:SizeInt):SizeInt;
 procedure prefetch(const mem);[internproc:fpc_in_prefetch_var];
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure ReadBarrier;
 procedure ReadDependencyBarrier;
 procedure ReadWriteBarrier;
 procedure WriteBarrier;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure ReadBarrier;{$ifdef INLINEGENERICS}inline;{$endif}
+procedure ReadDependencyBarrier;{$ifdef INLINEGENERICS}inline;{$endif}
+procedure ReadWriteBarrier;{$ifdef INLINEGENERICS}inline;{$endif}
+procedure WriteBarrier;{$ifdef INLINEGENERICS}inline;{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
 {****************************************************************************
@@ -975,6 +1143,10 @@ function RolQWord(Const AValue : QWord;const Dist : Byte): QWord;{$ifdef SYSTEMI
 
 {$ifdef FPC_HAS_INTERNAL_SAR}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if defined(cpux86_64) or defined(cpui386) or defined(mips) or defined(mipsel) or defined(sparc)}
 {$define FPC_HAS_INTERNAL_SAR_BYTE}
 {$define FPC_HAS_INTERNAL_SAR_WORD}
@@ -988,6 +1160,36 @@ function RolQWord(Const AValue : QWord;const Dist : Byte): QWord;{$ifdef SYSTEMI
 {$if defined(cpux86_64) or defined(powerpc64) or defined(cpuaarch64)}
 {$define FPC_HAS_INTERNAL_SAR_QWORD}
 {$endif defined(cpux86_64) or defined(powerpc64) or defined(cpuaarch64)}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$if defined(cpux86_64) or defined(cpui386)}
+{$define FPC_HAS_INTERNAL_SAR_BYTE}
+{$define FPC_HAS_INTERNAL_SAR_WORD}
+{$endif defined(cpux86_64) or defined(cpui386)}
+
+{ currently, all supported CPUs have an internal 32 bit sar implementation }
+{ $if defined(cpux86_64) or defined(cpui386) or defined(arm) or defined(powerpc) or defined(powerpc64)}
+{$define FPC_HAS_INTERNAL_SAR_DWORD}
+{ $endif defined(cpux86_64) or defined(cpui386) or defined(arm) or defined(powerpc) or defined(powerpc64)}
+
+{$if defined(cpux86_64) or defined(powerpc64)}
+{$define FPC_HAS_INTERNAL_SAR_QWORD}
+{$endif defined(cpux86_64) or defined(powerpc64)}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 {$endif FPC_HAS_INTERNAL_SAR}
 
@@ -995,20 +1197,56 @@ function RolQWord(Const AValue : QWord;const Dist : Byte): QWord;{$ifdef SYSTEMI
 function SarShortint(Const AValue : Shortint): Shortint;[internproc:fpc_in_sar_x];
 function SarShortint(Const AValue : Shortint;Shift : Byte): Shortint;[internproc:fpc_in_sar_x_y];
 {$else FPC_HAS_INTERNAL_ROX_BYTE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function SarShortint(Const AValue : Shortint;const Shift : Byte = 1): Shortint;
+=======
+function SarShortint(Const AValue : Shortint;Shift : Byte = 1): Shortint;
+>>>>>>> graemeg/cpstrnew
+=======
+function SarShortint(Const AValue : Shortint;Shift : Byte = 1): Shortint;
+>>>>>>> graemeg/cpstrnew
+=======
+function SarShortint(Const AValue : Shortint;Shift : Byte = 1): Shortint;
+>>>>>>> graemeg/cpstrnew
+=======
+function SarShortint(Const AValue : Shortint;Shift : Byte = 1): Shortint;
+>>>>>>> origin/cpstrnew
 {$endif FPC_HAS_INTERNAL_ROX_BYTE}
 
 {$ifdef FPC_HAS_INTERNAL_SAR_WORD}
 function SarSmallint(Const AValue : Smallint): Smallint;[internproc:fpc_in_sar_x];
 function SarSmallint(Const AValue : Smallint;Shift : Byte): Smallint;[internproc:fpc_in_sar_x_y];
 {$else FPC_HAS_INTERNAL_SAR_WORD}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function SarSmallint(Const AValue : Smallint;const Shift : Byte = 1): Smallint;
+=======
+function SarSmallint(Const AValue : Smallint;Shift : Byte = 1): Smallint;
+>>>>>>> graemeg/cpstrnew
+=======
+function SarSmallint(Const AValue : Smallint;Shift : Byte = 1): Smallint;
+>>>>>>> graemeg/cpstrnew
+=======
+function SarSmallint(Const AValue : Smallint;Shift : Byte = 1): Smallint;
+>>>>>>> graemeg/cpstrnew
+=======
+function SarSmallint(Const AValue : Smallint;Shift : Byte = 1): Smallint;
+>>>>>>> origin/cpstrnew
 {$endif FPC_HAS_INTERNAL_SAR_WORD}
 
 {$ifdef FPC_HAS_INTERNAL_SAR_DWORD}
 function SarLongint(Const AValue : Longint): Longint;[internproc:fpc_in_sar_x];
 function SarLongint(Const AValue : Longint;Shift : Byte): Longint;[internproc:fpc_in_sar_x_y];
 {$else FPC_HAS_INTERNAL_SAR_DWORD}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function SarLongint(Const AValue : Longint;const Shift : Byte = 1): Longint;
 {$endif FPC_HAS_INTERNAL_SAR_DWORD}
 
@@ -1089,6 +1327,75 @@ function PopCnt(Const AValue: Byte): Byte;[internproc:fpc_in_popcnt_x];
 function PopCnt(Const AValue: Word): Word;[internproc:fpc_in_popcnt_x];
 function PopCnt(Const AValue : DWord): DWord;[internproc:fpc_in_popcnt_x];
 function PopCnt(Const AValue : QWord): QWord;[internproc:fpc_in_popcnt_x];
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+function SarLongint(Const AValue : Longint;Shift : Byte = 1): Longint;
+{$endif FPC_HAS_INTERNAL_SAR_DWORD}
+
+{$ifdef FPC_HAS_INTERNAL_SAR_QWORD}
+function SarInt64(Const AValue : Int64): Int64;[internproc:fpc_in_sar_x];
+function SarInt64(Const AValue : Int64;Shift : Byte): Int64;[internproc:fpc_in_sar_x_y];
+{$else FPC_HAS_INTERNAL_SAR_QWORD}
+function SarInt64(Const AValue : Int64;Shift : Byte = 1): Int64;
+{$endif FPC_HAS_INTERNAL_SAR_QWORD}
+
+{$ifdef FPC_HAS_INTERNAL_BSX}
+{$if defined(cpui386) or defined(cpux86_64)}
+{$define FPC_HAS_INTERNAL_BSX_BYTE}
+{$define FPC_HAS_INTERNAL_BSX_WORD}
+{$define FPC_HAS_INTERNAL_BSX_DWORD}
+{$endif}
+{$if defined(cpux86_64)}
+{$define FPC_HAS_INTERNAL_BSX_QWORD}
+{$endif}
+{$endif}
+
+{$ifdef FPC_HAS_INTERNAL_BSX_BYTE}
+function BsfByte(Const AValue: Byte): Byte;[internproc:fpc_in_bsf_x];
+function BsrByte(Const AValue: Byte): Byte;[internproc:fpc_in_bsr_x];
+{$else}
+function BsfByte(Const AValue: Byte): Byte;{$ifdef SYSTEMINLINE}inline;{$endif}
+function BsrByte(Const AValue: Byte): Byte;{$ifdef SYSTEMINLINE}inline;{$endif}
+{$endif}
+
+{$ifdef FPC_HAS_INTERNAL_BSX_WORD}
+function BsfWord(Const AValue: Word): cardinal;[internproc:fpc_in_bsf_x];
+function BsrWord(Const AValue: Word): cardinal;[internproc:fpc_in_bsr_x];
+{$else}
+function BsfWord(Const AValue: Word): cardinal;{$ifdef SYSTEMINLINE}inline;{$endif}
+function BsrWord(Const AValue: Word): cardinal;{$ifdef SYSTEMINLINE}inline;{$endif}
+{$endif}
+
+{$ifdef FPC_HAS_INTERNAL_BSX_DWORD}
+function BsfDWord(Const AValue : DWord): cardinal;[internproc:fpc_in_bsf_x];
+function BsrDWord(Const AValue : DWord): cardinal;[internproc:fpc_in_bsr_x];
+{$else}
+function BsfDWord(Const AValue : DWord): cardinal;{$ifdef SYSTEMINLINE}inline;{$endif}
+function BsrDWord(Const AValue : DWord): cardinal;{$ifdef SYSTEMINLINE}inline;{$endif}
+{$endif FPC_HAS_INTERNAL_BSX_DWORD}
+
+{$ifdef FPC_HAS_INTERNAL_BSX_QWORD}
+function BsfQWord(Const AValue : QWord): cardinal;[internproc:fpc_in_bsf_x];
+function BsrQWord(Const AValue : QWord): cardinal;[internproc:fpc_in_bsr_x];
+{$else}
+function BsfQWord(Const AValue : QWord): cardinal;{$ifdef SYSTEMINLINE}inline;{$endif}
+function BsrQWord(Const AValue : QWord): cardinal;{$ifdef SYSTEMINLINE}inline;{$endif}
+{$endif FPC_HAS_INTERNAL_BSF_QWORD}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 {$ifndef FPUNONE}
 { float math routines }
@@ -1111,6 +1418,8 @@ Function  Sseg:Word;{$ifdef SYSTEMINLINE}inline;{$endif}
 ****************************************************************************}
 
 function strpas(p:pchar):shortstring;{$ifdef SYSTEMINLINE}inline;{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
 function strlen(p:pchar):sizeint;external name 'FPC_PCHAR_LENGTH';
 
 { result:
@@ -1120,6 +1429,11 @@ function strlen(p:pchar):sizeint;external name 'FPC_PCHAR_LENGTH';
       parameter was true)
 }
 function Utf8CodePointLen(P: PAnsiChar; MaxLookAhead: SizeInt; IncludeCombiningDiacriticalMarks: Boolean): SizeInt;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function strlen(p:pchar):longint;external name 'FPC_PCHAR_LENGTH';
+>>>>>>> graemeg/fixes_2_2
 
 { Shortstring functions }
 Procedure Delete(var s:shortstring;index:SizeInt;count:SizeInt);
@@ -1128,6 +1442,10 @@ Procedure Insert(source:Char;var s:shortstring;index:SizeInt);
 Function  Pos(const substr:shortstring;const s:shortstring; Offset: Sizeint = 1):SizeInt;
 Function  Pos(C:Char;const s:shortstring; Offset: Sizeint = 1):SizeInt;
 {$ifdef FPC_HAS_FEATURE_ANSISTRINGS}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function  Pos(const Substr : ShortString; const Source : RawByteString; Offset: Sizeint = 1) : SizeInt;
 
 {$ifdef FPC_HAS_CPSTRING}
@@ -1137,8 +1455,35 @@ Procedure fpc_setstring_ansistr_pwidechar(out S : RawByteString; Buf : PWideChar
 Procedure SetString(out S : AnsiString; Buf : PAnsiChar; Len : SizeInt);
 Procedure SetString(out S : AnsiString; Buf : PWideChar; Len : SizeInt);
 {$endif}
+=======
+Function  Pos (const Substr : ShortString; const Source : RawByteString) : SizeInt;
+Procedure SetString (out S : AnsiString; Buf : PChar; Len : SizeInt);
+Procedure SetString (out S : AnsiString; Buf : PWideChar; Len : SizeInt);
+>>>>>>> graemeg/cpstrnew
+=======
+Function  Pos (const Substr : ShortString; const Source : RawByteString) : SizeInt;
+Procedure SetString (out S : AnsiString; Buf : PChar; Len : SizeInt);
+Procedure SetString (out S : AnsiString; Buf : PWideChar; Len : SizeInt);
+>>>>>>> graemeg/cpstrnew
+=======
+Function  Pos (const Substr : ShortString; const Source : RawByteString) : SizeInt;
+Procedure SetString (out S : AnsiString; Buf : PChar; Len : SizeInt);
+Procedure SetString (out S : AnsiString; Buf : PWideChar; Len : SizeInt);
+>>>>>>> graemeg/cpstrnew
+=======
+Function  Pos (const Substr : ShortString; const Source : RawByteString) : SizeInt;
+Procedure SetString (out S : AnsiString; Buf : PChar; Len : SizeInt);
+Procedure SetString (out S : AnsiString; Buf : PWideChar; Len : SizeInt);
+>>>>>>> origin/cpstrnew
 {$endif FPC_HAS_FEATURE_ANSISTRINGS}
+<<<<<<< HEAD
 Procedure {$ifdef FPC_HAS_CPSTRING}fpc_setstring_shortstr{$else}SetString{$endif}(out S : Shortstring; Buf : PChar; Len : SizeInt); {$ifdef FPC_HAS_CPSTRING} compilerproc; {$endif FPC_HAS_CPSTRING}
+=======
+Procedure SetString (out S : Shortstring; Buf : PChar; Len : SizeInt);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function  ShortCompareText(const S1, S2: shortstring): SizeInt;
 Function  upCase(const s:shortstring):shortstring;
 Function  lowerCase(const s:shortstring):shortstring; overload;
@@ -1152,11 +1497,17 @@ Function  binStr(Val:int64;cnt:byte):shortstring;
 Function  hexStr(Val:qword;cnt:byte):shortstring;
 Function  OctStr(Val:qword;cnt:byte):shortstring;
 Function  binStr(Val:qword;cnt:byte):shortstring;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUI8086}
 Function  hexStr(Val:NearPointer):shortstring;
 Function  hexStr(Val:FarPointer):shortstring;
 Function  hexStr(Val:HugePointer):shortstring;{$ifdef SYSTEMINLINE}inline;{$endif}
 {$else CPUI8086}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Function  hexStr(Val:Pointer):shortstring;
 {$endif CPUI8086}
 
@@ -1172,12 +1523,21 @@ function  pos(const substr : shortstring;c:char; Offset: Sizeint = 1): SizeInt;
 ****************************************************************************}
 
 {$ifdef FPC_HAS_FEATURE_ANSISTRINGS}
+<<<<<<< HEAD
 Procedure UniqueString(var S : RawByteString);{$ifdef FPC_HAS_CPSTRING}rtlproc;{$endif FPC_HAS_CPSTRING}external name 'FPC_ANSISTR_UNIQUE';
 Function  Pos (const Substr : RawByteString; const Source : RawByteString; Offset: Sizeint = 1) : SizeInt;
 Function  Pos (c : AnsiChar; const s : RawByteString; Offset: Sizeint = 1) : SizeInt;
 Procedure Insert (const Source : RawByteString; var S : RawByteString; Index : SizeInt);{$ifdef FPC_HAS_CPSTRING}rtlproc;{$endif FPC_HAS_CPSTRING}
 Procedure Delete (var S : RawByteString; Index,Size: SizeInt);{$ifdef FPC_HAS_CPSTRING}rtlproc;{$endif FPC_HAS_CPSTRING}
 Function  StringOfChar(c : Ansichar;l : SizeInt) : AnsiString;
+=======
+Procedure UniqueString(var S : AnsiString);external name 'FPC_ANSISTR_UNIQUE';
+Function  Pos (const Substr : RawByteString; const Source : RawByteString) : SizeInt;
+Function  Pos (c : Char; const s : RawByteString) : SizeInt;
+Procedure Insert (const Source : AnsiString; var S : AnsiString; Index : SizeInt);
+Procedure Delete (var S : AnsiString; Index,Size: SizeInt);
+Function  StringOfChar(c : char;l : SizeInt) : AnsiString;
+>>>>>>> graemeg/cpstrnew
 function  upcase(const s : ansistring) : ansistring;
 function  lowercase(const s : ansistring) : ansistring;
 
@@ -1186,8 +1546,20 @@ function StringElementSize(const S : RawByteString): Word; overload;
 function StringRefCount(const S : RawByteString): SizeInt; overload;
 procedure SetCodePage(var s : RawByteString; CodePage : TSystemCodePage; Convert : Boolean = True);
 procedure SetMultiByteConversionCodePage(CodePage: TSystemCodePage);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure SetMultiByteFileSystemCodePage(CodePage: TSystemCodePage);
 procedure SetMultiByteRTLFileSystemCodePage(CodePage: TSystemCodePage);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endif FPC_HAS_FEATURE_ANSISTRINGS}
 
 
@@ -1311,10 +1683,28 @@ procedure SetTextCodePage(var T: Text; CodePage: TSystemCodePage);
 ****************************************************************************}
 
 {$ifdef FPC_HAS_FEATURE_FILEIO}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure chdir(const s:shortstring); overload;
 Procedure mkdir(const s:shortstring); overload;
 Procedure rmdir(const s:shortstring); overload;
 Procedure getdir(drivenr:byte;var dir:shortstring);overload;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+Procedure chdir(const s:string); overload;
+Procedure mkdir(const s:string); overload;
+Procedure rmdir(const s:string); overload;
+// the pchar versions are exported via alias for use in objpas
+
+Procedure getdir(drivenr:byte;var dir:shortstring);
+>>>>>>> graemeg/cpstrnew
 {$ifdef FPC_HAS_FEATURE_ANSISTRINGS}
 Procedure chdir(const s:rawbytestring); overload;
 Procedure mkdir(const s:rawbytestring); overload;
@@ -1331,8 +1721,20 @@ Procedure getdir(drivenr:byte;var dir: unicodestring);overload;
 
 {$endif FPC_HAS_FEATURE_FILEIO}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {*****************************************************************************
                              Miscellaneous
 *****************************************************************************}
@@ -1356,12 +1758,20 @@ Function Get_pc_addr : CodePointer;
   by 'frames', skipping 'skipframes' initial frames. Returns number of frames written. }
 function CaptureBacktrace(skipframes,count:sizeint;frames:PCodePointer):sizeint;
 
+<<<<<<< HEAD
 function get_caller_addr(framebp:pointer;addr:codepointer=nil):codepointer;
 function get_caller_frame(framebp:pointer;addr:codepointer=nil):pointer;
 procedure get_caller_stackinfo(var framebp : pointer; var addr : codepointer);
 
 Function IOResult:Word;
+<<<<<<< HEAD
 Function Sptr:Pointer;[internconst:fpc_in_const_ptr];
+=======
+=======
+Function IOResult:Word;
+>>>>>>> origin/fixes_2_2
+Function Sptr:Pointer;{$ifdef SYSTEMINLINE}inline;{$endif}[internconst:fpc_in_const_ptr];
+>>>>>>> graemeg/fixes_2_2
 
 {$ifdef FPC_HAS_FEATURE_PROCESSES}
 Function GetProcessID:SizeUInt;
@@ -1440,11 +1850,20 @@ Function  ParamCount:Longint;
 Function  ParamStr(l:Longint):string;
 {$endif FPC_HAS_FEATURE_COMMANDARGS}
 
+<<<<<<< HEAD
 Procedure Dump_Stack(var f : text;fp:pointer;addr : codepointer = nil);
 procedure Dump_Stack(var f : text;skipframes : longint);
 {$ifdef FPC_HAS_FEATURE_EXCEPTIONS}
 procedure DumpExceptionBackTrace(var f:text);
 {$endif FPC_HAS_FEATURE_EXCEPTIONS}
+=======
+{$ifdef FPC_HAS_FEATURE_CONSOLEIO}
+Procedure Dump_Stack(var f : text;bp:pointer);
+{$ifdef FPC_HAS_FEATURE_EXCEPTIONS}
+procedure DumpExceptionBackTrace(var f:text);
+{$endif FPC_HAS_FEATURE_EXCEPTIONS}
+{$endif FPC_HAS_FEATURE_CONSOLEIO}
+>>>>>>> graemeg/fixes_2_2
 
 Procedure RunError(w:Word);
 Procedure RunError;{$ifdef SYSTEMINLINE}inline;{$endif}
@@ -1464,10 +1883,18 @@ procedure SysInitStdIO;
 procedure SysFlushStdIO;
 {$endif EMBEDDED}
 {$endif FPC_HAS_FEATURE_CONSOLEIO}
+<<<<<<< HEAD
 {$ifndef FPUNONE}
 Procedure SysResetFPU;
 Procedure SysInitFPU;
 {$endif}
+=======
+Procedure SysResetFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
+Procedure SysInitFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {*****************************************************************************
                          Abstract/Assert/Error Handling

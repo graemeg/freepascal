@@ -1,17 +1,60 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for MD5 checksum.
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for MD5 checksum.
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=hash
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=md5 crc ntlm sha1 uuid
+units_linux=unixcrypt
+exampledirs=examples
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=md5 crc ntlm uuid sha1
+units_linux=unixcrypt
+exampledirs=examples
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [default]
 fpcdir=../..
 
@@ -126,3 +169,18 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[compiler]
+sourcedir=src
+
+[default]
+fpcdir=../..
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

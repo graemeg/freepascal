@@ -85,9 +85,21 @@ type
   cslong                 = longint;            pcslong                = ^cslong;
   culong                 = cardinal;           pculong                = ^culong;
 {$ifend}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   csigned                = cint;               pcsigned               = ^csigned;
   cunsigned              = cuint;              pcunsigned             = ^cunsigned;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
   csize_t                = ptruint;            pcsize_t               = pptruint;
 
@@ -109,16 +121,46 @@ type
 {$if defined(linux) and (defined(cpupowerpc) or defined(cpuarm))}
   {$define longdouble_is_double}
 {$ifend}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 {$if defined(darwin) and defined(cpuaarch64)}
   {$define longdouble_is_double}
 {$ifend}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPUNONE}
 {$if defined(longdouble_is_double) or not defined(FPC_HAS_CEXTENDED)}
   clongdouble=double;
 {$else}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$if defined(cpui8086) or defined(cpui386) or defined(cpux86_64) or defined(cpuavr)}
+=======
+  {$if defined(cpui386) or defined(cpux86_64) or defined(cpuavr)}
+>>>>>>> graemeg/cpstrnew
+=======
+  {$if defined(cpui386) or defined(cpux86_64) or defined(cpuavr)}
+>>>>>>> graemeg/cpstrnew
+=======
+  {$if defined(cpui386) or defined(cpux86_64) or defined(cpuavr)}
+>>>>>>> graemeg/cpstrnew
+=======
+  {$if defined(cpui386) or defined(cpux86_64) or defined(cpuavr)}
+>>>>>>> origin/cpstrnew
   clongdouble = cextended;
   {$else}
   {$define longdouble_assignment_overload_real128}
@@ -151,6 +193,12 @@ operator >=(const c:clongdouble;const e:Double) r:boolean;inline;
 operator <=(const e:Double;const c:clongdouble) r:boolean;inline;
 operator <=(const c:clongdouble;const e:Double) r:boolean;inline;
 {$endif dummy}
+=======
+  coff_t = clong;
+>>>>>>> graemeg/fixes_2_2
+=======
+  coff_t = clong;
+>>>>>>> origin/fixes_2_2
 {$endif}
 {$endif FPUNONE}
 

@@ -7,7 +7,13 @@ programs_beos=ppxview
 programs_linux=ppxview
 programs_win32=ppxview
 programs_darwin=ppxview
+<<<<<<< HEAD
+<<<<<<< HEAD
 programs_iphonesim=ppxview
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 programs_freebsd=ppxview
 programs_openbsd=ppxview
 programs_netbsd=ppxview

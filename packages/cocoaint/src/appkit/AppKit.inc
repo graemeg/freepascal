@@ -112,10 +112,30 @@
 {$include NSInterfaceStyle.inc} 
 {$include NSProgressIndicator.inc} 
 {$include NSTabView.inc} 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$include NSTabViewItem.inc}
 {$ifndef cpu64}
 {$include NSMenuView.inc}
 {$endif}
+=======
+{$include NSTabViewItem.inc} 
+{$include NSMenuView.inc} 
+>>>>>>> graemeg/cpstrnew
+=======
+{$include NSTabViewItem.inc} 
+{$include NSMenuView.inc} 
+>>>>>>> graemeg/cpstrnew
+=======
+{$include NSTabViewItem.inc} 
+{$include NSMenuView.inc} 
+>>>>>>> graemeg/cpstrnew
+=======
+{$include NSTabViewItem.inc} 
+{$include NSMenuView.inc} 
+>>>>>>> origin/cpstrnew
 {$include NSMenuItemCell.inc} 
 {$include NSPopUpButtonCell.inc} 
 {$include NSAffineTransform.inc} 
@@ -125,6 +145,10 @@
 {$include NSStatusItem.inc} 
 {$include NSSound.inc} 
 {$include NSMovie.inc} 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef cpu64}
 {$include NSMovieView.inc}
 {$endif}
@@ -132,6 +156,26 @@
 {$ifndef cpu64}
 {$include NSQuickDrawView.inc}
 {$endif}
+=======
+{$include NSMovieView.inc} 
+{$include NSPDFImageRep.inc} 
+{$include NSQuickDrawView.inc} 
+>>>>>>> graemeg/cpstrnew
+=======
+{$include NSMovieView.inc} 
+{$include NSPDFImageRep.inc} 
+{$include NSQuickDrawView.inc} 
+>>>>>>> graemeg/cpstrnew
+=======
+{$include NSMovieView.inc} 
+{$include NSPDFImageRep.inc} 
+{$include NSQuickDrawView.inc} 
+>>>>>>> graemeg/cpstrnew
+=======
+{$include NSMovieView.inc} 
+{$include NSPDFImageRep.inc} 
+{$include NSQuickDrawView.inc} 
+>>>>>>> origin/cpstrnew
 {$include NSDrawer.inc} 
 {$include NSOpenGL.inc} 
 {$include NSOpenGLView.inc} 

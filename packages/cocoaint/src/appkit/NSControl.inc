@@ -51,10 +51,35 @@ var
   private
     _tag: NSInteger;
     _cell: id;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __conFlags: record
       case byte of
        0: (_anonbitfield_NSControl0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __conFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSControl0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         enabled: 0..1;
         ignoreMultiClick: 0..1;
         _calcSize: 0..1;
@@ -62,7 +87,19 @@ var
         ibReserved: 0..1;
         updateCellFocus: 0..1;
         reserved: 0..((1 shl 26)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     

@@ -9,6 +9,7 @@ main=rtl
 fpcpackage=y
 
 [target]
+<<<<<<< HEAD
 loaders=prt0 cprt0 dllprt0
 units=$(SYSTEMUNIT) uuchar objpas macpas iso7185 extpas strings syscall baseunix \
       $(LINUXUNIT) unixtype unixutil unix ctypes bsd initc \
@@ -25,6 +26,26 @@ implicitunits=exeinfo \
       cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852 \
       unicodedata  unicodenumtable
+=======
+loaders=prt0 cprt0
+units=$(SYSTEMUNIT) objpas macpas iso7185 strings syscall baseunix \
+      $(LINUXUNIT) unix initc systhrds \
+      dos crt objects printer matrix \
+      sysutils fgl classes fmtbcd typinfo math varutils \
+       charset ucomplex getopts heaptrc lineinfo lnfodwrf \
+      errors sockets gpm ipc terminfo \
+      video mouse keyboard  serial variants types systhrds sysctl sysconst \
+      fpintres
+units_netbsd_i386=mmx cpu
+rsts=math varutils typinfo variants classes sysconst
+implicitunits=exeinfo
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [require]
 nortl=y
@@ -43,7 +64,7 @@ sourcedir=$(INC) $(PROCINC) $(UNIXINC) $(BSDINC)
 
 [lib]
 libname=libfprtl.so
-libversion=2.0.0
+libversion=2.2.1
 libunits=$(SYSTEMUNIT) objpas strings \
       unix  \
       dos  \
@@ -241,6 +262,8 @@ character$(PPUEXT): sysutils$(PPUEXT) $(OBJPASDIR)/character.pas objpas$(PPUEXT)
 #
 
 macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
         $(COMPILER) $(INC)/macpas.pp
 
 #
@@ -256,6 +279,11 @@ iso7185$(PPUEXT) : $(INC)/iso7185.pp $(SYSTEMUNIT)$(PPUEXT)
 
 extpas$(PPUEXT) : $(INC)/extpas.pp dos$(PPUEXT)
         $(COMPILER) $(INC)/extpas.pp
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        $(COMPILER) $(INC)/macpas.pp $(REDIR)
+>>>>>>> graemeg/fixes_2_2
 
 #
 # Other system-independent RTL Units

@@ -31,6 +31,11 @@
     nils.sjoholm@mailbox.swipnet.se Nils Sjoholm
 }
 
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
+
 UNIT expansion;
 
 INTERFACE
@@ -46,28 +51,27 @@ Const
 
 VAR ExpansionBase : pLibrary;
 
-
-FUNCTION AddBootNode(bootPri : LONGINT location 'd0'; flags : ULONG location 'd1'; deviceNode : pDeviceNode location 'a0'; configDev : pConfigDev location 'a1') : wordbool; syscall ExpansionBase 036;
-PROCEDURE AddConfigDev(configDev : pConfigDev location 'a0'); syscall ExpansionBase 030;
-FUNCTION AddDosNode(bootPri : LONGINT location 'd0'; flags : ULONG location 'd1'; deviceNode : pDeviceNode location 'a0') : wordbool; syscall ExpansionBase 150;
-PROCEDURE AllocBoardMem(slotSpec : ULONG location 'd0'); syscall ExpansionBase 042;
-FUNCTION AllocConfigDev : pConfigDev; syscall ExpansionBase 048;
-FUNCTION AllocExpansionMem(numSlots : ULONG location 'd0'; slotAlign : ULONG location 'd1') : POINTER; syscall ExpansionBase 054;
-PROCEDURE ConfigBoard(board : POINTER location 'a0'; configDev : pConfigDev location 'a1'); syscall ExpansionBase 060;
-PROCEDURE ConfigChain(baseAddr : POINTER location 'a0'); syscall ExpansionBase 066;
-FUNCTION FindConfigDev(const oldConfigDev : pConfigDev location 'a0'; manufacturer : LONGINT location 'd0'; product : LONGINT location 'd1') : pConfigDev; syscall ExpansionBase 072;
-PROCEDURE FreeBoardMem(startSlot : ULONG location 'd0'; slotSpec : ULONG location 'd1'); syscall ExpansionBase 078;
-PROCEDURE FreeConfigDev(configDev : pConfigDev location 'a0'); syscall ExpansionBase 084;
-PROCEDURE FreeExpansionMem(startSlot : ULONG location 'd0'; numSlots : ULONG location 'd1'); syscall ExpansionBase 090;
-FUNCTION GetCurrentBinding(const currentBinding : pCurrentBinding location 'a0'; bindingSize : ULONG location 'd0') : ULONG; syscall ExpansionBase 138;
-FUNCTION MakeDosNode(const parmPacket : POINTER location 'a0') : pDeviceNode; syscall ExpansionBase 144;
-PROCEDURE ObtainConfigBinding; syscall ExpansionBase 120;
-FUNCTION ReadExpansionByte(const board : POINTER location 'a0'; offset : ULONG location 'd0') : BYTE; syscall ExpansionBase 096;
-PROCEDURE ReadExpansionRom(const board : POINTER location 'a0'; configDev : pConfigDev location 'a1'); syscall ExpansionBase 102;
-PROCEDURE ReleaseConfigBinding; syscall ExpansionBase 126;
-PROCEDURE RemConfigDev(configDev : pConfigDev location 'a0'); syscall ExpansionBase 108;
-PROCEDURE SetCurrentBinding(currentBinding : pCurrentBinding location 'a0'; bindingSize : ULONG location 'd0'); syscall ExpansionBase 132;
-PROCEDURE WriteExpansionByte(board : POINTER location 'a0'; offset : ULONG location 'd0'; byte : ULONG location 'd1'); syscall ExpansionBase 114;
+FUNCTION AddBootNode(bootPri : LONGINT; flags : ULONG; deviceNode : pDeviceNode; configDev : pConfigDev) : BOOLEAN;
+PROCEDURE AddConfigDev(configDev : pConfigDev);
+FUNCTION AddDosNode(bootPri : LONGINT; flags : ULONG; deviceNode : pDeviceNode) : BOOLEAN;
+PROCEDURE AllocBoardMem(slotSpec : ULONG);
+FUNCTION AllocConfigDev : pConfigDev;
+FUNCTION AllocExpansionMem(numSlots : ULONG; slotAlign : ULONG) : POINTER;
+PROCEDURE ConfigBoard(board : POINTER; configDev : pConfigDev);
+PROCEDURE ConfigChain(baseAddr : POINTER);
+FUNCTION FindConfigDev(const oldConfigDev : pConfigDev; manufacturer : LONGINT; product : LONGINT) : pConfigDev;
+PROCEDURE FreeBoardMem(startSlot : ULONG; slotSpec : ULONG);
+PROCEDURE FreeConfigDev(configDev : pConfigDev);
+PROCEDURE FreeExpansionMem(startSlot : ULONG; numSlots : ULONG);
+FUNCTION GetCurrentBinding(const currentBinding : pCurrentBinding; bindingSize : ULONG) : ULONG;
+FUNCTION MakeDosNode(const parmPacket : POINTER) : pDeviceNode;
+PROCEDURE ObtainConfigBinding;
+FUNCTION ReadExpansionByte(const board : POINTER; offset : ULONG) : BYTE;
+PROCEDURE ReadExpansionRom(const board : POINTER; configDev : pConfigDev);
+PROCEDURE ReleaseConfigBinding;
+PROCEDURE RemConfigDev(configDev : pConfigDev);
+PROCEDURE SetCurrentBinding(currentBinding : pCurrentBinding; bindingSize : ULONG);
+PROCEDURE WriteExpansionByte(board : POINTER; offset : ULONG; byte : ULONG);
 
 {Here we read how to compile this unit}
 {You can remove this include and use a define instead}
@@ -84,8 +88,267 @@ IMPLEMENTATION
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox;
+msgbox;
 {$endif dont_use_openlib}
+
+FUNCTION AddBootNode(bootPri : LONGINT; flags : ULONG; deviceNode : pDeviceNode; configDev : pConfigDev) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  bootPri,D0
+    MOVE.L  flags,D1
+    MOVEA.L deviceNode,A0
+    MOVEA.L configDev,A1
+    MOVEA.L ExpansionBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE AddConfigDev(configDev : pConfigDev);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L configDev,A0
+    MOVEA.L ExpansionBase,A6
+    JSR -030(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION AddDosNode(bootPri : LONGINT; flags : ULONG; deviceNode : pDeviceNode) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  bootPri,D0
+    MOVE.L  flags,D1
+    MOVEA.L deviceNode,A0
+    MOVEA.L ExpansionBase,A6
+    JSR -150(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE AllocBoardMem(slotSpec : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  slotSpec,D0
+    MOVEA.L ExpansionBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION AllocConfigDev : pConfigDev;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L ExpansionBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AllocExpansionMem(numSlots : ULONG; slotAlign : ULONG) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  numSlots,D0
+    MOVE.L  slotAlign,D1
+    MOVEA.L ExpansionBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ConfigBoard(board : POINTER; configDev : pConfigDev);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L board,A0
+    MOVEA.L configDev,A1
+    MOVEA.L ExpansionBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ConfigChain(baseAddr : POINTER);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L baseAddr,A0
+    MOVEA.L ExpansionBase,A6
+    JSR -066(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION FindConfigDev(const oldConfigDev : pConfigDev; manufacturer : LONGINT; product : LONGINT) : pConfigDev;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L oldConfigDev,A0
+    MOVE.L  manufacturer,D0
+    MOVE.L  product,D1
+    MOVEA.L ExpansionBase,A6
+    JSR -072(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE FreeBoardMem(startSlot : ULONG; slotSpec : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  startSlot,D0
+    MOVE.L  slotSpec,D1
+    MOVEA.L ExpansionBase,A6
+    JSR -078(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE FreeConfigDev(configDev : pConfigDev);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L configDev,A0
+    MOVEA.L ExpansionBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE FreeExpansionMem(startSlot : ULONG; numSlots : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  startSlot,D0
+    MOVE.L  numSlots,D1
+    MOVEA.L ExpansionBase,A6
+    JSR -090(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION GetCurrentBinding(const currentBinding : pCurrentBinding; bindingSize : ULONG) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L currentBinding,A0
+    MOVE.L  bindingSize,D0
+    MOVEA.L ExpansionBase,A6
+    JSR -138(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MakeDosNode(const parmPacket : POINTER) : pDeviceNode;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L parmPacket,A0
+    MOVEA.L ExpansionBase,A6
+    JSR -144(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ObtainConfigBinding;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L ExpansionBase,A6
+    JSR -120(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION ReadExpansionByte(const board : POINTER; offset : ULONG) : BYTE;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L board,A0
+    MOVE.L  offset,D0
+    MOVEA.L ExpansionBase,A6
+    JSR -096(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ReadExpansionRom(const board : POINTER; configDev : pConfigDev);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L board,A0
+    MOVEA.L configDev,A1
+    MOVEA.L ExpansionBase,A6
+    JSR -102(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ReleaseConfigBinding;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L ExpansionBase,A6
+    JSR -126(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE RemConfigDev(configDev : pConfigDev);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L configDev,A0
+    MOVEA.L ExpansionBase,A6
+    JSR -108(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE SetCurrentBinding(currentBinding : pCurrentBinding; bindingSize : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L currentBinding,A0
+    MOVE.L  bindingSize,D0
+    MOVEA.L ExpansionBase,A6
+    JSR -132(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE WriteExpansionByte(board : POINTER; offset : ULONG; byte : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L board,A0
+    MOVE.L  offset,D0
+    MOVE.L  byte,D1
+    MOVEA.L ExpansionBase,A6
+    JSR -114(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
 
 const
     { Change VERSION and LIBVERSION to proper values }

@@ -47,8 +47,22 @@ type
   TGetCurrentThreadIdHandler = Function : TThreadID;
   TCriticalSectionHandler = Procedure (var cs);
   TCriticalSectionHandlerTryEnter = function (var cs):longint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   TInitThreadVarHandler = Procedure(var offset : {$ifdef cpu16}word{$else}dword{$endif};size : dword);
   TRelocateThreadVarHandler = Function(offset : {$ifdef cpu16}word{$else}dword{$endif}) : pointer;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  TInitThreadVarHandler = Procedure(var offset : dword;size : dword);
+  TRelocateThreadVarHandler = Function(offset : dword) : pointer;
+>>>>>>> graemeg/cpstrnew
   TAllocateThreadVarsHandler = Procedure;
   TReleaseThreadVarsHandler = Procedure;
   TBasicEventHandler        = procedure(state:peventstate);

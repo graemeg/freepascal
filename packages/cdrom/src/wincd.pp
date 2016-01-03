@@ -164,7 +164,7 @@ begin
   if (CDOSVer>4) then
     Flags:=Flags or Cardinal(GENERIC_WRITE);
   Device:=Upcase('\\.\'+Device);
-  DriveHandle:=CreateFileA(pchar(Device),Flags,FILE_SHARE_READ,
+  DriveHandle:=CreateFile(pchar(Device),Flags,FILE_SHARE_READ,
                           nil,OPEN_EXISTING, 0, 0 );
   if (DriveHandle=INVALID_HANDLE_VALUE) then
     begin
@@ -336,7 +336,7 @@ Var
 begin
   Flags:=Cardinal(GENERIC_READ);
   device:=Upcase('\\.\'+device);
-  DriveHandle:=CreateFileA(PChar(Device), Flags,
+  DriveHandle:=CreateFile(PChar(Device), Flags,
                           FILE_SHARE_READ, nil, OPEN_EXISTING, 0, 0 );
   if (DriveHandle = INVALID_HANDLE_VALUE) then
     begin
@@ -375,12 +375,12 @@ var
 
 begin
   FillChar(Drives,SizeOf(Drives),0);
-  GetLogicalDriveStringsA(105,Drives);
+  GetLogicalDriveStrings(105,Drives);
   P:=@Drives[0];
   Result:=0;
   While P[0]<>#0 do
     begin
-    If GetDriveTypeA(p)=DRIVE_CDROM then
+    If GetDriveType(p)=DRIVE_CDROM then
       begin
       If CopyDrives and (Result<High(CDDrives)) then
         CDDrives[Result]:=Upcase(P[0])+':';

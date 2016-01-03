@@ -56,21 +56,17 @@ procedure glFogfv(pname: GLenum; const params: PGLfloat); inline;
 procedure glFogi(pname: GLenum; param: GLint); inline;
 
 function  glGenLists(range: GLsizei): GLuint; inline;
-procedure glGetIntegerv(pname: GLenum; params: PGLint); inline;
 procedure glGetFloatv(pname: GLenum; params: PGLfloat); inline;
 function  glGetString(name: GLenum): PChar; inline;
 
 procedure glHint(target, mode: GLenum); inline;
 
 procedure glIndexi(c: GLint); inline;
-procedure glInitNames; inline;
 
 procedure glLightf(light, pname: GLenum; param: GLfloat); inline;
 procedure glLightfv(light, pname: GLenum; const params: PGLfloat); inline;
 procedure glLineWidth(width: GLfloat); inline;
 procedure glLoadIdentity; inline;
-procedure glLoadName(name: GLuint); inline;
-
 procedure glLightModelfv(pname: GLenum; const params: PGLfloat); inline;
 
 procedure glMaterialf(face, pname: GLenum; param: GLfloat); inline;
@@ -93,12 +89,9 @@ procedure glRasterPos3f(x, y, z: GLfloat); inline;
 procedure glReadPixels(x, y: GLint; width, height: GLsizei; format, atype: GLenum; pixels: Pointer); inline;
 
 procedure glShadeModel(mode: GLenum); inline;
-procedure glSelectBuffer(size: GLsizei; buffer: PGLuint); inline;
 
 procedure glStencilFunc(func: GLenum; ref: GLint; mask: GLuint); inline;
 procedure glStencilOp(fail, zfail, zpass: GLenum); inline;
-
-procedure glClipPlane(plane: GLenum; const equation: PGLdouble); inline;
 
 procedure glTexCoordPointer(size: GLint; atype: GLenum; stride: GLsizei; const pointer: Pointer); inline;
 procedure glTexParameterf(target: GLenum; pname: GLenum; param: GLfloat); inline;
@@ -106,13 +99,11 @@ procedure glTexParameterf(target: GLenum; pname: GLenum; param: GLfloat); inline
 procedure glFrustum(left, right, bottom, top, zNear, zFar: GLdouble); inline;
 procedure glTranslatef(x, y, z: GLfloat); inline;
 procedure glScalef(x, y, z: GLfloat); inline;
-function  glRenderMode(mode: GLint): GLint; inline;
 procedure glRotatef(angle, x, y, z: GLfloat); inline;
 
 procedure glOrtho(left, right, bottom, top, zNear, zFar: GLdouble); inline;
 procedure glPopMatrix; inline;
 procedure glPushMatrix; inline;
-procedure glPushName(name: GLuint); inline;
 
 procedure glTexImage2D(target: GLenum; level, internalformat: GLint; width, height: GLsizei; border: GLint; format, atype: GLenum; const pixels: Pointer); inline;
 procedure glTexParameteri(target: GLenum; pname: GLenum; param: GLint); inline;
@@ -136,7 +127,6 @@ procedure glViewport(x, y: GLint; width, height: GLsizei); inline;
 procedure gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz: GLdouble); inline;
 procedure gluOrtho2D(left,right, bottom, top: GLdouble); inline;
 procedure gluPerspective(fovy, aspect, zNear, zFar: GLdouble); inline;
-procedure gluPickMatrix(x:GLdouble; y:GLdouble; delX:GLdouble; delY:GLdouble; viewport:PGLint); inline;
 {$ENDIF GLU_UNIT}
 
 { ****************************************************************************************************** }

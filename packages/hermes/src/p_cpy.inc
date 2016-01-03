@@ -6,19 +6,7 @@
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version
-    with the following modification:
-
-    As a special exception, the copyright holders of this library give you
-    permission to link this library with independent modules to produce an
-    executable, regardless of the license terms of these independent modules,and
-    to copy and distribute the resulting executable under terms of your choice,
-    provided that you also meet, for each linked independent module, the terms
-    and conditions of the license of that module. An independent module is a
-    module which is not derived from or based on this library. If you modify
-    this library, you may extend this exception to your version of the library,
-    but you are not obligated to do so. If you do not wish to do so, delete this
-    exception statement from your version.
+    version 2.1 of the License, or (at your option) any later version.
 
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -39,129 +27,141 @@
    licensing conditions
 }
 
-procedure CopyP_4byte(source, dest: PUint8; count, inc_source: DWord); cdecl;
-begin
-  Move(source^, dest^, count shl 2);
-end;
+Procedure CopyP_4byte(source, dest : Pchar8; count, inc_source : DWord); CDecl;
 
-procedure CopyP_3byte(source, dest: PUint8; count, inc_source: DWord); cdecl;
-begin
+Begin
+  Move(source^, dest^, count Shl 2);
+End;
+
+Procedure CopyP_3byte(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Begin
   Move(source^, dest^, count * 3);
-end;
+End;
 
-procedure CopyP_2byte(source, dest: PUint8; count, inc_source: DWord); cdecl;
-begin
-  Move(source^, dest^, count shl 1);
-end;
+Procedure CopyP_2byte(source, dest : Pchar8; count, inc_source : DWord); CDecl;
 
-procedure CopyP_1byte(source, dest: PUint8; count, inc_source: DWord); cdecl;
-begin
+Begin
+  Move(source^, dest^, count Shl 1);
+End;
+
+Procedure CopyP_1byte(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Begin
   Move(source^, dest^, count);
-end;
+End;
 
-procedure CopyP_4byte_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x: DWord;
-begin
+Procedure CopyP_4byte_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x : DWord;
+
+Begin
   x := 0;
-  repeat
-    PUint32(dest)^ := (PUint32(source)+(x shr 16))^;
+  Repeat
+    Pint32(dest)^ := (Pint32(source)+(x Shr 16))^;
 
     Inc(x, inc_source);
     Inc(dest, 4);
     Dec(count);
-  until count = 0;
-end;
+  Until count = 0;
+End;
 
 { TODO: Optimise }
-procedure CopyP_3byte_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x: DWord;
-begin
+Procedure CopyP_3byte_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x : DWord;
+
+Begin
   x := 0;
-  repeat
-    dest[0] := source[0];
-    dest[1] := source[1];
-    dest[2] := source[2];
+  Repeat
+    dest[R_24] := source[R_24];
+    dest[G_24] := source[G_24];
+    dest[B_24] := source[B_24];
 
     Inc(x, inc_source);
-    Inc(source, 3*(x shr 16));
-    x := x and $FFFF;
+    Inc(source, 3*(x Shr 16));
+    x := x And $FFFF;
     Inc(dest, 3);
     Dec(count);
-  until count = 0;
-end;
+  Until count = 0;
+End;
 
-procedure CopyP_2byte_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x, c: DWord;
-  p: Uint32;
-begin
+Procedure CopyP_2byte_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x, c : DWord;
+  p : int32;
+
+Begin
   x := 0;
   { Alignment mod 4 }
-  if (PtrUInt(dest) and 3) <> 0 then
-  begin
-    PUint16(dest)^ := (PUint16(source) + (x shr 16))^;
+  If (PtrUInt(dest) And 3) <> 0 Then
+  Begin
+    Pshort16(dest)^ := (Pshort16(source) + (x Shr 16))^;
     Inc(x, inc_source);
     Inc(dest, 2);
     Dec(count);
-  end;
+  End;
 
-  c := count shr 1;
+  c := count Shr 1;
 
-  while c <> 0 do
-  begin
+  While c <> 0 Do
+  Begin
     Dec(c);
     { TODO: make fast :) }
-    p := (PUint16(source) + (x shr 16))^ shl DWORD_SMALLINT0_SHL; Inc(x, inc_source);
-    p := p or ((PUint16(source) + (x shr 16))^ shl DWORD_SMALLINT1_SHL);
+    p := (Pshort16(source) + (x Shr 16))^; Inc(x, inc_source);
+    p := p Or ((Pshort16(source) + (x Shr 16))^ Shl 16);
     Inc(x, inc_source);
 
-    PUint32(dest)^ := p;
+    Pint32(dest)^ := p;
     Inc(dest, 4);
-  end;
+  End;
 
-  if (count and 1) <> 0 then
-    PUint16(dest)^ := (PUint16(source) + (x shr 16))^;
-end;
+  If (count And 1) <> 0 Then
+    Pshort16(dest)^ := (Pshort16(source) + (x Shr 16))^;
+End;
 
-procedure CopyP_1byte_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x, c: DWord;
-  p: Uint32;
-begin
+Procedure CopyP_1byte_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x, c : DWord;
+  p : int32;
+
+Begin
   x := 0;
   { Alignment mod 4 }
-  while (PtrUInt(dest) and 3) <> 0 do
-  begin
-    dest^ := (source + (x shr 16))^;
+  While (PtrUInt(dest) And 3) <> 0 Do
+  Begin
+    dest^ := (source + (x Shr 16))^;
     Inc(x, inc_source);
     Inc(dest); Dec(count);
-    if count = 0 then
-      exit;
-  end;
+    If count = 0 Then
+      Exit;
+  End;
 
   { Write blocks of four pixels }
-  c := count shr 2;
-  while c <> 0 do
-  begin
+  c := count Shr 2;
+  While c <> 0 Do
+  Begin
     Dec(c);
-    p := (source + (x shr 16))^ shl DWORD_BYTE0_SHL; Inc(x, inc_source);
-    p := p or ((source + (x shr 16))^ shl DWORD_BYTE1_SHL); Inc(x, inc_source);
-    p := p or ((source + (x shr 16))^ shl DWORD_BYTE2_SHL); Inc(x, inc_source);
-    p := p or ((source + (x shr 16))^ shl DWORD_BYTE3_SHL); Inc(x, inc_source);
+    p := (source + (x Shr 16))^; Inc(x, inc_source);
+    p := p Or ((source + (x Shr 16))^ Shl 8); Inc(x, inc_source);
+    p := p Or ((source + (x Shr 16))^ Shl 16); Inc(x, inc_source);
+    p := p Or ((source + (x Shr 16))^ Shl 24); Inc(x, inc_source);
 
-    PUint32(dest)^ := p;
+    Pint32(dest)^ := p;
     Inc(dest, 4);
-  end;
+  End;
 
   { Write up to three trailing pixels }
-  c := count and $3;
-  while c <> 0 do
-  begin
+  c := count And $3;
+  While c <> 0 Do
+  Begin
     Dec(c);
-    dest^ := (source + (x shr 16))^;
+    dest^ := (source + (x Shr 16))^;
     Inc(x, inc_source);
     Inc(dest);
-  end;
-end;
+  End;
+End;

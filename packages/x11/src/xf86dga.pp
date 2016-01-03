@@ -157,13 +157,13 @@ Function XDGAQueryExtension(
     dpy : PDisplay;
     eventBase : Pcint;
     erroBase : Pcint
-  ) : TBoolResult; CDecl; External libXxf86dga;
+  ) : TBool; CDecl; External libXxf86dga;
 
 Function XDGAQueryVersion(
     dpy : PDisplay;
     majorVersion : Pcint;
     minorVersion : Pcint
-  ) : TBoolResult; CDecl; External libXxf86dga;
+  ) : TBool; CDecl; External libXxf86dga;
 
 Function XDGAQueryModes(
     dpy : PDisplay;
@@ -180,7 +180,7 @@ Function XDGASetMode(
 Function XDGAOpenFramebuffer(
     dpy : PDisplay;
     screen : cint
-  ) : TBoolResult; CDecl; External libXxf86dga;
+  ) : TBool; CDecl; External libXxf86dga;
 
 Procedure XDGACloseFramebuffer(
     dpy : PDisplay;
@@ -259,7 +259,7 @@ Procedure XDGASync(
 
 Function XDGASetClientVersion(
     dpy : PDisplay
-  ) : TBoolResult; CDecl; External libXxf86dga;
+  ) : TBool; CDecl; External libXxf86dga;
 
 Procedure XDGAChangePixmapMode(
     dpy : PDisplay;

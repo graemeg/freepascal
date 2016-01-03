@@ -28,7 +28,23 @@ type
   var
     FData:TContainer;
     
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure PushUp();
+=======
+    procedure PushUp(position:SizeUInt);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure PushUp(position:SizeUInt);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure PushUp(position:SizeUInt);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure PushUp(position:SizeUInt);
+>>>>>>> origin/cpstrnew
     function Left(a:SizeUInt):SizeUInt;inline;
     function Right(a:SizeUInt):SizeUInt;inline;
     procedure Heapify(position:SizeUInt);
@@ -79,10 +95,34 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TPriorityQueue.PushUp();
 var position,np:SizeUInt; temp:T;
 begin
   position:=FData.Size-1;
+=======
+procedure TPriorityQueue.PushUp(position:SizeUInt);
+var np:SizeUInt; temp:T;
+begin
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPriorityQueue.PushUp(position:SizeUInt);
+var np:SizeUInt; temp:T;
+begin
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPriorityQueue.PushUp(position:SizeUInt);
+var np:SizeUInt; temp:T;
+begin
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPriorityQueue.PushUp(position:SizeUInt);
+var np:SizeUInt; temp:T;
+begin
+>>>>>>> origin/cpstrnew
   while(position>0) do
   begin
     np := Parent(position);
@@ -100,7 +140,23 @@ end;
 procedure TPriorityQueue.Push(value:T);inline;
 begin
   FData.PushBack(value);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   PushUp();
+=======
+  PushUp(FData.Size-1);
+>>>>>>> graemeg/cpstrnew
+=======
+  PushUp(FData.Size-1);
+>>>>>>> graemeg/cpstrnew
+=======
+  PushUp(FData.Size-1);
+>>>>>>> graemeg/cpstrnew
+=======
+  PushUp(FData.Size-1);
+>>>>>>> origin/cpstrnew
 end;
 
 function TPriorityQueue.Left(a:SizeUInt):SizeUInt;inline;

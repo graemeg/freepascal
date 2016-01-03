@@ -57,7 +57,13 @@ Const
   KeyUserName     = 'User';
   KeyPassword     = 'Password';
   KeyEncode       = 'Trivial';
+<<<<<<< HEAD
+<<<<<<< HEAD
   KeyCharset      = 'Charset';
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 implementation
 
@@ -106,7 +112,13 @@ begin
     FConn.Password:=XorDecode(KeyEncode,L.Values[KeyPassword]);
     FConn.LoginPrompt:=False;
     FConn.Connected:=True;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FConn.CharSet:=L.Values[KeyCharset];
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     FConnected:=True;
     FConnectString:=AConnectString;
     Result:=True;

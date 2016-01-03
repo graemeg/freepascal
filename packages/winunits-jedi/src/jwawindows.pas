@@ -124,11 +124,17 @@ the one of the project.
   {$IFDEF FPC}
     {$UNDEF JWA_INCLUDE_JWAADSTLB}
     {$UNDEF JWA_INCLUDE_SETUP_API}
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$IFDEF CPU64}
        // Dynamic linking code contains assembler blocks, which are specific
        // to i386 and stdcall calling convention.
        {$UNDEF DYNAMIC_LINK}
     {$ENDIF}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   {$ENDIF FPC}
 {$ENDIF PACKAGE_CONDITIONS}
 
@@ -363,9 +369,21 @@ The list has no order!}
 {$I JwaAccCtrl.pas}
 {$I JwaAclApi.pas}
 {$I JwaSddl.pas}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$I JwaLmErr.pas}
 {$I JwaLmCons.pas}
 {$I JwaNtSecApi.pas}
+=======
+{$I JwaLmErr}
+{$I JwaLmCons}
+{$I JwaNtSecApi}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$I JwaLmErr}
+{$I JwaLmCons}
+{$I JwaNtSecApi}
+>>>>>>> origin/fixes_2_2
 {$I JwaWinCred.pas}
 {$I JwaWtsApi32.pas}
 {$I JwaWinIoctl.pas}
@@ -687,9 +705,21 @@ The list has no order!}
 {$I JwaAccCtrl.pas}
 {$I JwaAclApi.pas}
 {$I JwaSddl.pas}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$I JwaLmErr.pas}
 {$I JwaLmCons.pas}
 {$I JwaNtSecApi.pas}
+=======
+{$I JwaLmErr}
+{$I JwaLmCons}
+{$I JwaNtSecApi}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$I JwaLmErr}
+{$I JwaLmCons}
+{$I JwaNtSecApi}
+>>>>>>> origin/fixes_2_2
 {$I JwaWinCred.pas}
 {$I JwaWtsApi32.pas}
 {$I JwaWinIoctl.pas}

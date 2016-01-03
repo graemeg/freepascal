@@ -1,13 +1,59 @@
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
      File:       OSServices/OpenTransport.h
  
      Contains:   *** DEPRECATED *** Open Transport client interface file.
  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      Copyright:  (c) 1985-2011 Apple Inc. All rights reserved.
+=======
+     Version:    OpenTransport-110~114
+ 
+     Copyright:  © 1985-2008 by Apple Computer, Inc., all rights reserved
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    OpenTransport-110~114
+ 
+     Copyright:  © 1985-2008 by Apple Computer, Inc., all rights reserved
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    OpenTransport-110~114
+ 
+     Copyright:  © 1985-2008 by Apple Computer, Inc., all rights reserved
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    OpenTransport-110~114
+ 
+     Copyright:  © 1985-2008 by Apple Computer, Inc., all rights reserved
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+     File:       OT/OpenTransport.h
+ 
+     Contains:   Open Transport client interface file.
+ 
+     Version:    OpenTransport-110~114
+ 
+<<<<<<< HEAD
+     Copyright:  © 1985-2005 by Apple Computer, Inc., all rights reserved
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+     Copyright:  © 1985-2008 by Apple Computer, Inc., all rights reserved
+>>>>>>> origin/fixes_2.4
  
      Bugs?:      For bug reports, consult the following page on
                  the World Wide Web:
  
+<<<<<<< HEAD
+<<<<<<< HEAD
                      http://bugs.freepascal.org
  
 }
@@ -20,6 +66,27 @@
 }
 
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                     http://www.freepascal.org/bugs.html
+ 
+}
+{      Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, November 2005 }
+{
+    Modified for use with Free Pascal
+    Version 308
+    Please report any bugs to <gpc@microbizz.nl>
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4
 {$mode macpas}
 {$packenum 1}
 {$macro on}
@@ -28,8 +95,23 @@
 
 unit OpenTransport;
 interface
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$setc UNIVERSAL_INTERFACES_VERSION := $0400}
 {$setc GAP_INTERFACES_VERSION := $0308}
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> origin/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0400}
+{$setc GAP_INTERFACES_VERSION := $0308}
+>>>>>>> origin/fixes_2.4
 
 {$ifc not defined USE_CFSTR_CONSTANT_MACROS}
     {$setc USE_CFSTR_CONSTANT_MACROS := TRUE}
@@ -42,21 +124,50 @@ interface
 	{$error Conflicting initial definitions for FPC_BIG_ENDIAN and FPC_LITTLE_ENDIAN}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __ppc__ and defined CPUPOWERPC32}
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC32}
+>>>>>>> origin/fixes_2.4
 	{$setc __ppc__ := 1}
 {$elsec}
 	{$setc __ppc__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __ppc64__ and defined CPUPOWERPC64}
 	{$setc __ppc64__ := 1}
 {$elsec}
 	{$setc __ppc64__ := 0}
 {$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __i386__ and defined CPUI386}
 	{$setc __i386__ := 1}
 {$elsec}
 	{$setc __i386__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __x86_64__ and defined CPUX86_64}
 	{$setc __x86_64__ := 1}
 {$elsec}
@@ -67,11 +178,26 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -79,6 +205,13 @@ interface
   {$setc __LP64__ := 0}
 {$endc}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined __ppc__ and __ppc__ and defined __i386__ and __i386__}
 	{$error Conflicting definitions for __ppc__ and __i386__}
@@ -86,7 +219,14 @@ interface
 
 {$ifc defined __ppc__ and __ppc__}
 	{$setc TARGET_CPU_PPC := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_PPC64 := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
@@ -95,41 +235,112 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elifc defined __ppc64__ and __ppc64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := TRUE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$elsec}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __x86_64__ and __x86_64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := TRUE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
@@ -139,13 +350,20 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __arm__ and __arm__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := TRUE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
@@ -159,13 +377,62 @@ interface
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
 	{$setc TARGET_CPU_ARM64 := TRUE}
+=======
+>>>>>>> graemeg/cpstrnew
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elsec}
 	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ nor __arm64__ is defined.}
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+=======
+{$elsec}
+>>>>>>> origin/cpstrnew
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endc}
 
 {$ifc defined __LP64__ and __LP64__ }
@@ -173,6 +440,78 @@ interface
 {$elsec}
   {$setc TARGET_CPU_64 := FALSE}
 {$endc}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	{$setc TARGET_CPU_PPC64 := FALSE}
+>>>>>>> origin/fixes_2.4
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __i386__ and __i386__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := TRUE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+{$ifc defined(iphonesim)}
+ 	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+  {$setc TARGET_CPU_64 := FALSE}
+{$endc}
+<<<<<<< HEAD
+{$setc TARGET_CPU_PPC_64 := FALSE}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined FPC_BIG_ENDIAN}
 	{$setc TARGET_RT_BIG_ENDIAN := TRUE}
@@ -198,6 +537,17 @@ interface
 {$setc TARGET_CPU_68K := FALSE}
 {$setc TARGET_CPU_MIPS := FALSE}
 {$setc TARGET_CPU_SPARC := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$setc TARGET_OS_UNIX := FALSE}
 {$setc TARGET_OS_WIN32 := FALSE}
 {$setc TARGET_RT_MAC_68881 := FALSE}
@@ -208,11 +558,23 @@ interface
 {$setc TYPE_EXTENDED := FALSE}
 {$setc TYPE_LONGLONG := TRUE}
 uses MacTypes,MixedMode,MacErrors;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$endc} {not MACOSALLINCLUDE}
 
 
 {$ifc TARGET_OS_MAC}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ALIGN POWER}
 
 
@@ -421,7 +783,19 @@ type
 	OTCommand = SInt32;
 { value describing a client}
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	OTClient = UnivPtr;
+=======
+	OTClient = ^SInt32; { an opaque 32-bit type }
+>>>>>>> graemeg/fixes_2_2
+=======
+	OTClient = ^SInt32; { an opaque 32-bit type }
+>>>>>>> origin/fixes_2_2
+=======
+	OTClient = UnivPtr;
+>>>>>>> origin/fixes_2.4
 	OTClientPtr = ^OTClient;
 
 {
@@ -475,9 +849,27 @@ const
    Use kO_ASYNC, kO_NDELAY and kO_NONBLOCK in the unlikely event you need the OT value in Carbon
 }
 const
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	O_ASYNC = kO_ASYNC;
 	O_NDELAY = kO_NDELAY;
 	O_NONBLOCK = kO_NONBLOCK;
+=======
+	O_ASYNC = $01;
+	O_NDELAY = $04;
+	O_NONBLOCK = $04;
+>>>>>>> graemeg/fixes_2_2
+=======
+	O_ASYNC = $01;
+	O_NDELAY = $04;
+	O_NONBLOCK = $04;
+>>>>>>> origin/fixes_2_2
+=======
+	O_ASYNC = kO_ASYNC;
+	O_NDELAY = kO_NDELAY;
+	O_NONBLOCK = kO_NONBLOCK;
+>>>>>>> origin/fixes_2.4
 
 {$endc}  {CALL_NOT_IN_CARBON}
 
@@ -945,7 +1337,15 @@ type
  *    Non-Carbon CFM:   available as macro/inline
  }
 function NewOTNotifyUPP( userRoutine: OTNotifyProcPtr ): OTNotifyUPP; external name '_NewOTNotifyUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 {
  *  DisposeOTNotifyUPP()
@@ -956,7 +1356,15 @@ function NewOTNotifyUPP( userRoutine: OTNotifyProcPtr ): OTNotifyUPP; external n
  *    Non-Carbon CFM:   available as macro/inline
  }
 procedure DisposeOTNotifyUPP( userUPP: OTNotifyUPP ); external name '_DisposeOTNotifyUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 {
  *  InvokeOTNotifyUPP()
@@ -967,8 +1375,16 @@ procedure DisposeOTNotifyUPP( userUPP: OTNotifyUPP ); external name '_DisposeOTN
  *    Non-Carbon CFM:   available as macro/inline
  }
 procedure InvokeOTNotifyUPP( contextPtr: UnivPtr; code: OTEventCode; result: OTResult; cookie: UnivPtr; userUPP: OTNotifyUPP ); external name '_InvokeOTNotifyUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 { ***** Option Management Definitions *****}
 { The XTI Level number of a protocol.}
@@ -1106,7 +1522,19 @@ const
 
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	OTConfigurationRef = ^SInt32; { an opaque type }
+=======
+	OTConfigurationRef = ^SInt32; { an opaque 32-bit type }
+>>>>>>> graemeg/fixes_2_2
+=======
+	OTConfigurationRef = ^SInt32; { an opaque 32-bit type }
+>>>>>>> origin/fixes_2_2
+=======
+	OTConfigurationRef = ^SInt32; { an opaque type }
+>>>>>>> origin/fixes_2.4
 	OTConfigurationRefPtr = ^OTConfigurationRef;
 
 const
@@ -1140,7 +1568,19 @@ type
 		level: OTXTILevel;                  { protocol affected            }
 		name: OTXTIName;                   { option name                   }
 		status: UInt32;                 { status value                }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		value: array [0..0] of UInt32;					{ data goes here               }
+=======
+		value: array [0..0] of UInt32;					{  data goes here                }
+>>>>>>> graemeg/fixes_2_2
+=======
+		value: array [0..0] of UInt32;					{  data goes here                }
+>>>>>>> origin/fixes_2_2
+=======
+		value: array [0..0] of UInt32;					{ data goes here               }
+>>>>>>> origin/fixes_2.4
 	end;
 { Some useful constants when manipulating option buffers.}
 const
@@ -1309,77 +1749,207 @@ const
 type
 	OTSlotNumber = UInt16;
 { Accessor functions for the various elements of the OTPortRef.}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTCreatePortRef()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTCreatePortRef( busType: OTBusType; devType: OTDeviceType; slot: OTSlotNumber; other: UInt16 ): OTPortRef; external name '_OTCreatePortRef';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTGetDeviceTypeFromPortRef()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTGetDeviceTypeFromPortRef( ref: OTPortRef ): OTDeviceType; external name '_OTGetDeviceTypeFromPortRef';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTGetBusTypeFromPortRef()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTGetBusTypeFromPortRef( ref: OTPortRef ): UInt16; external name '_OTGetBusTypeFromPortRef';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTGetSlotFromPortRef()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTGetSlotFromPortRef( ref: OTPortRef; var other: UInt16 ): OTSlotNumber; external name '_OTGetSlotFromPortRef';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTSetDeviceTypeInPortRef()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTSetDeviceTypeInPortRef( ref: OTPortRef; devType: OTDeviceType ): OTPortRef; external name '_OTSetDeviceTypeInPortRef';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTSetBusTypeInPortRef()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTSetBusTypeInPortRef( ref: OTPortRef; busType: OTBusType ): OTPortRef; external name '_OTSetBusTypeInPortRef';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -1397,8 +1967,19 @@ function OTSetBusTypeInPortRef( ref: OTPortRef; busType: OTBusType ): OTPortRef;
 
 { Name length definitions for various fields in OTPortRecord.}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 const
 	kMaxModuleNameLength = 31;   { max length of a STREAMS module name}
 	kMaxModuleNameSize = kMaxModuleNameLength + 1;
@@ -1465,17 +2046,47 @@ type
    for the kernel.  Make sure you use and link with the right ones.
 }
 {$ifc NOT OTKERNEL}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTGetIndexedPort()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientUtilLib 1.0 and later
  }
 function OTGetIndexedPort( var portRecord: OTPortRecord; index: OTItemCount ): Boolean; external name '_OTGetIndexedPort';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Index through the ports in the system}
@@ -1483,12 +2094,32 @@ function OTGetIndexedPort( var portRecord: OTPortRecord; index: OTItemCount ): B
  *  OTFindPort()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientUtilLib 1.0 and later
  }
 function OTFindPort( var portRecord: OTPortRecord; portName: ConstCStringPtr ): Boolean; external name '_OTFindPort';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Find an OTPortRecord for a port using it's name}
@@ -1496,17 +2127,47 @@ function OTFindPort( var portRecord: OTPortRecord; portName: ConstCStringPtr ): 
  *  OTFindPortByRef()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientUtilLib 1.0 and later
  }
 function OTFindPortByRef( var portRecord: OTPortRecord; ref: OTPortRef ): Boolean; external name '_OTFindPortByRef';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
 
 { Find an OTPortRecord for a port using it's OTPortRef}
 {$endc} {not TARGET_CPU_64}
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+{ Find an OTPortRecord for a port using it's OTPortRef}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  OTRegisterPort()
  *  
@@ -1621,10 +2282,29 @@ type
 		fData: UInt8Ptr;                  { b_rptr}
 		fLen: ByteCount;                   { b_wptr}
 		fSave: UnivPtr;                  { b_datap}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 		fBand: UInt8;                  { b_band}
 		fType: UInt8;                  { b_pad1}
 		fPad1: UInt8;
 		fFlags: UInt8;                 { b_flag}
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+		fBand: SInt8;                  { b_band}
+		fType: SInt8;                  { b_pad1}
+		fPad1: SInt8;
+		fFlags: SInt8;                 { b_flag}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	end;
 const
 	kOTNetbufDataIsOTBufferStar = $FFFFFFFD;
@@ -1822,7 +2502,19 @@ type
 	TLookupBuffer = record
 		fAddressLength: UInt16;
 		fNameLength: UInt16;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		fAddressBuffer: packed array[0..0] of UInt8;
+=======
+		fAddressBuffer: packed array[0..0] of SInt8;
+>>>>>>> graemeg/fixes_2_2
+=======
+		fAddressBuffer: packed array[0..0] of SInt8;
+>>>>>>> origin/fixes_2_2
+=======
+		fAddressBuffer: packed array[0..0] of UInt8;
+>>>>>>> origin/fixes_2.4
 	end;
 
 {
@@ -1838,7 +2530,19 @@ type
 
 {$ifc NOT OTKERNEL}
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	OTClientContextPtr = ^SInt32; { an opaque type }
+=======
+	OTClientContextPtr = ^SInt32; { an opaque 32-bit type }
+>>>>>>> graemeg/fixes_2_2
+=======
+	OTClientContextPtr = ^SInt32; { an opaque 32-bit type }
+>>>>>>> origin/fixes_2_2
+=======
+	OTClientContextPtr = ^SInt32; { an opaque type }
+>>>>>>> origin/fixes_2.4
 	OTClientContextPtrPtr = ^OTClientContextPtr;
 {
    For Carbon the InitOpenTransport interface has changed so it takes a flags parameter 
@@ -1854,17 +2558,47 @@ const
 	kInitOTForApplicationMask = 1;
 	kInitOTForExtensionMask = 2;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  InitOpenTransportInContext()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function InitOpenTransportInContext( flags: OTInitializationFlags; outClientContext: OTClientContextPtrPtr { can be NULL } ): OSStatus; external name '_InitOpenTransportInContext';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -1876,13 +2610,43 @@ function InitOpenTransportInContext( flags: OTInitializationFlags; outClientCont
  *  CloseOpenTransportInContext()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 procedure CloseOpenTransportInContext( clientContext: OTClientContextPtr ); external name '_CloseOpenTransportInContext';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> origin/fixes_2_2
 
 {$endc} {not TARGET_CPU_64}
 
@@ -1941,33 +2705,107 @@ procedure CloseOpenTransportInContext( clientContext: OTClientContextPtr ); exte
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTRegisterAsClientInContext()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.3 and later
  *    Non-Carbon CFM:   not available
  }
 function OTRegisterAsClientInContext( name: OTClientName; proc: OTNotifyUPP; clientContext: OTClientContextPtr { can be NULL } ): OSStatus; external name '_OTRegisterAsClientInContext';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTUnregisterAsClientInContext()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.3 and later
  *    Non-Carbon CFM:   not available
  }
 function OTUnregisterAsClientInContext( clientContext: OTClientContextPtr ): OSStatus; external name '_OTUnregisterAsClientInContext';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
 
 {$endc} {not TARGET_CPU_64}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+{$endc} {not TARGET_CPU_64}
+
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> graemeg/cpstrnew
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+<<<<<<< HEAD
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {$endc}  { !OTKERNEL }
 
 { ***** Tasking Model *****}
@@ -2034,7 +2872,15 @@ type
  *    Non-Carbon CFM:   available as macro/inline
  }
 function NewOTProcessUPP( userRoutine: OTProcessProcPtr ): OTProcessUPP; external name '_NewOTProcessUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 {
  *  DisposeOTProcessUPP()
@@ -2045,7 +2891,15 @@ function NewOTProcessUPP( userRoutine: OTProcessProcPtr ): OTProcessUPP; externa
  *    Non-Carbon CFM:   available as macro/inline
  }
 procedure DisposeOTProcessUPP( userUPP: OTProcessUPP ); external name '_DisposeOTProcessUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 {
  *  InvokeOTProcessUPP()
@@ -2056,8 +2910,16 @@ procedure DisposeOTProcessUPP( userUPP: OTProcessUPP ); external name '_DisposeO
  *    Non-Carbon CFM:   available as macro/inline
  }
 procedure InvokeOTProcessUPP( arg: UnivPtr; userUPP: OTProcessUPP ); external name '_InvokeOTProcessUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 {$ifc NOT OTKERNEL}
 {
@@ -2065,18 +2927,71 @@ procedure InvokeOTProcessUPP( arg: UnivPtr; userUPP: OTProcessUPP ); external na
    after calling InitOpenTransport(kInitOTForApplicationMask, ...).  Non-applications must always pass a
    valid client context.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTCreateDeferredTaskInContext()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function OTCreateDeferredTaskInContext( upp: OTProcessUPP; arg: UnivPtr; clientContext: OTClientContextPtr { can be NULL } ): SIGNEDLONG; external name '_OTCreateDeferredTaskInContext';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/cpstrnew
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   not available
+ }
+function OTCreateDeferredTaskInContext( upp: OTProcessUPP; arg: UnivPtr; clientContext: OTClientContextPtr { can be NULL } ): SIGNEDLONG; external name '_OTCreateDeferredTaskInContext';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$endc} {not TARGET_CPU_64}
 
@@ -2089,7 +3004,19 @@ function OTCreateDeferredTaskInContext( upp: OTProcessUPP; arg: UnivPtr; clientC
 
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	OTDeferredTaskRef = SIGNEDLONG;
+=======
+	OTDeferredTaskRef = SInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+	OTDeferredTaskRef = SInt32;
+>>>>>>> origin/fixes_2_2
+=======
+	OTDeferredTaskRef = SIGNEDLONG;
+>>>>>>> origin/fixes_2.4
 {
  *  OTCreateDeferredTask()
  *  
@@ -2100,18 +3027,56 @@ type
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTScheduleDeferredTask()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTScheduleDeferredTask( dtCookie: OTDeferredTaskRef ): Boolean; external name '_OTScheduleDeferredTask';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> origin/fixes_2_2
 
 {$endc} {not TARGET_CPU_64}
 
@@ -2125,21 +3090,72 @@ function OTScheduleDeferredTask( dtCookie: OTDeferredTaskRef ): Boolean; externa
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTDestroyDeferredTask()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTDestroyDeferredTask( dtCookie: OTDeferredTaskRef ): OSStatus; external name '_OTDestroyDeferredTask';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
 
 {$endc} {not TARGET_CPU_64}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+<<<<<<< HEAD
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {$ifc NOT OTKERNEL}
 {
    OT system tasks allow you to schedule a procedure to be called
@@ -2149,7 +3165,19 @@ function OTDestroyDeferredTask( dtCookie: OTDeferredTaskRef ): OSStatus; externa
    to make progress is likely to result in deadlocks.
 }
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	OTSystemTaskRef = SIGNEDLONG;
+=======
+	OTSystemTaskRef = SInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+	OTSystemTaskRef = SInt32;
+>>>>>>> origin/fixes_2_2
+=======
+	OTSystemTaskRef = SIGNEDLONG;
+>>>>>>> origin/fixes_2.4
 {
  *  OTCreateSystemTask()
  *  
@@ -2190,21 +3218,70 @@ type
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTCanMakeSyncCall()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTCanMakeSyncCall: Boolean; external name '_OTCanMakeSyncCall';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
 
 {$endc} {not TARGET_CPU_64}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+{$endc} {not TARGET_CPU_64}
+
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {$endc}  { !OTKERNEL }
 
 { ***** Interface to Providers *****}
@@ -2229,21 +3306,72 @@ function OTCanMakeSyncCall: Boolean; external name '_OTCanMakeSyncCall';
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTCloseProvider()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function OTCloseProvider( ref: ProviderRef ): OSStatus; external name '_OTCloseProvider';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
 
 {$endc} {not TARGET_CPU_64}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  OTTransferProviderOwnership()
  *  
@@ -2274,21 +3402,70 @@ function OTCloseProvider( ref: ProviderRef ): OSStatus; external name '_OTCloseP
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTIoctl()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTIoctl( ref: ProviderRef; cmd: UInt32; data: UnivPtr ): SInt32; external name '_OTIoctl';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
 
 {$endc} {not TARGET_CPU_64}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+{$endc} {not TARGET_CPU_64}
+
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+<<<<<<< HEAD
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  OTGetMessage()
  *  
@@ -2329,191 +3506,532 @@ function OTIoctl( ref: ProviderRef; cmd: UInt32; data: UnivPtr ): SInt32; extern
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTSetAsynchronous()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTSetAsynchronous( ref: ProviderRef ): OSStatus; external name '_OTSetAsynchronous';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTSetSynchronous()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTSetSynchronous( ref: ProviderRef ): OSStatus; external name '_OTSetSynchronous';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTIsSynchronous()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTIsSynchronous( ref: ProviderRef ): Boolean; external name '_OTIsSynchronous';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTSetBlocking()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTSetBlocking( ref: ProviderRef ): OSStatus; external name '_OTSetBlocking';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTSetNonBlocking()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTSetNonBlocking( ref: ProviderRef ): OSStatus; external name '_OTSetNonBlocking';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTIsBlocking()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTIsBlocking( ref: ProviderRef ): Boolean; external name '_OTIsBlocking';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTInstallNotifier()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTInstallNotifier( ref: ProviderRef; proc: OTNotifyUPP; contextPtr: UnivPtr ): OSStatus; external name '_OTInstallNotifier';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTUseSyncIdleEvents()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTUseSyncIdleEvents( ref: ProviderRef; useEvents: Boolean ): OSStatus; external name '_OTUseSyncIdleEvents';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTRemoveNotifier()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 procedure OTRemoveNotifier( ref: ProviderRef ); external name '_OTRemoveNotifier';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTLeaveNotifier()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 procedure OTLeaveNotifier( ref: ProviderRef ); external name '_OTLeaveNotifier';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTEnterNotifier()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTEnterNotifier( ref: ProviderRef ): Boolean; external name '_OTEnterNotifier';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTAckSends()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTAckSends( ref: ProviderRef ): OSStatus; external name '_OTAckSends';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTDontAckSends()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTDontAckSends( ref: ProviderRef ): OSStatus; external name '_OTDontAckSends';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTIsAckingSends()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTIsAckingSends( ref: ProviderRef ): Boolean; external name '_OTIsAckingSends';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTCancelSynchronousCalls()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTCancelSynchronousCalls( ref: ProviderRef; err: OSStatus ): OSStatus; external name '_OTCancelSynchronousCalls';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+{$endc} {not TARGET_CPU_64}
+
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> graemeg/cpstrnew
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> graemeg/cpstrnew
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> graemeg/cpstrnew
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/cpstrnew
+{$endc} {not OTKERNEL}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
 
 
 {$endc} {not TARGET_CPU_64}
 
+<<<<<<< HEAD
+{$endc}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
 {$endc} {not OTKERNEL}
+>>>>>>> origin/fixes_2.4
 
 { ***** Interface to Endpoints *****}
 {$ifc NOT OTKERNEL}
@@ -2523,33 +4041,102 @@ function OTCancelSynchronousCalls( ref: ProviderRef; err: OSStatus ): OSStatus; 
    calling InitOpenTransport(kInitOTForApplicationMask, ...).  Non-applications must always pass a
    valid client context.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTOpenEndpointInContext()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function OTOpenEndpointInContext( config: OTConfigurationRef; oflag: OTOpenFlags; info: TEndpointInfoPtr { can be NULL }; var err: OSStatus; clientContext: OTClientContextPtr { can be NULL } ): EndpointRef; external name '_OTOpenEndpointInContext';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTAsyncOpenEndpointInContext()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function OTAsyncOpenEndpointInContext( config: OTConfigurationRef; oflag: OTOpenFlags; info: TEndpointInfoPtr { can be NULL }; upp: OTNotifyUPP; contextPtr: UnivPtr; clientContext: OTClientContextPtr { can be NULL } ): OSStatus; external name '_OTAsyncOpenEndpointInContext';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
 
 {$endc} {not TARGET_CPU_64}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+{$endc} {not TARGET_CPU_64}
+
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  OTOpenEndpoint()
  *  
@@ -2576,42 +4163,124 @@ function OTAsyncOpenEndpointInContext( config: OTConfigurationRef; oflag: OTOpen
 
 { Misc Information}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTGetEndpointInfo()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTGetEndpointInfo( ref: EndpointRef; var info: TEndpointInfo ): OSStatus; external name '_OTGetEndpointInfo';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTGetEndpointState()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTGetEndpointState( ref: EndpointRef ): OTResult; external name '_OTGetEndpointState';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTLook()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTLook( ref: EndpointRef ): OTResult; external name '_OTLook';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> origin/fixes_2_2
 
 {$endc} {not TARGET_CPU_64}
 
@@ -2625,41 +4294,111 @@ function OTLook( ref: EndpointRef ): OTResult; external name '_OTLook';
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTCountDataBytes()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTCountDataBytes( ref: EndpointRef; var countPtr: OTByteCount ): OTResult; external name '_OTCountDataBytes';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTGetProtAddress()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTGetProtAddress( ref: EndpointRef; boundAddr: TBindPtr { can be NULL }; peerAddr: TBindPtr { can be NULL } ): OSStatus; external name '_OTGetProtAddress';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTResolveAddress()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTResolveAddress( ref: EndpointRef; var reqAddr: TBind; var retAddr: TBind; timeOut: OTTimeout ): OSStatus; external name '_OTResolveAddress';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Allocating structures}
@@ -2680,13 +4419,43 @@ function OTResolveAddress( ref: EndpointRef; var reqAddr: TBind; var retAddr: TB
  *  OTAllocInContext()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function OTAllocInContext( ref: EndpointRef; structType: OTStructType; fields: UInt32; var err: OSStatus; clientContext: OTClientContextPtr { can be NULL } ): UnivPtr; external name '_OTAllocInContext';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> origin/fixes_2_2
 
 {$endc} {not TARGET_CPU_64}
 
@@ -2700,22 +4469,63 @@ function OTAllocInContext( ref: EndpointRef; structType: OTStructType; fields: U
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc OTCARBONAPPLICATION}
 { The following macro may be used by applications only.}
 // #define OTAlloc(ref, structType, fields, err) OTAllocInContext(ref, structType, fields, err, NULL)
 {$endc} {OTCARBONAPPLICATION}
 
 {$ifc not TARGET_CPU_64}
+=======
+{ The following macro may be used by applications only.}
+// #define OTAlloc(ref, structType, fields, err) OTAllocInContext(ref, structType, fields, err, NULL)
+
+>>>>>>> graemeg/fixes_2_2
+=======
+=======
+{$ifc OTCARBONAPPLICATION}
+>>>>>>> origin/fixes_2.4
+{ The following macro may be used by applications only.}
+// #define OTAlloc(ref, structType, fields, err) OTAllocInContext(ref, structType, fields, err, NULL)
+{$endc} {OTCARBONAPPLICATION}
+
+<<<<<<< HEAD
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTFree()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTFree( ptr: UnivPtr; structType: OTStructType ): OTResult; external name '_OTFree';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Option management}
@@ -2726,18 +4536,49 @@ function OTFree( ptr: UnivPtr; structType: OTStructType ): OTResult; external na
  *  OTOptionManagement()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTOptionManagement( ref: EndpointRef; var req: TOptMgmt; var ret: TOptMgmt ): OSStatus; external name '_OTOptionManagement';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { ... but then the hidden complexity emerges.}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  OTCreateOptions()
  *  
@@ -2758,29 +4599,79 @@ function OTOptionManagement( ref: EndpointRef; var req: TOptMgmt; var ret: TOptM
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTNextOption()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTNextOption( buffer: UInt8Ptr; buflen: UInt32; var prevOptPtr: TOptionPtr ): OSStatus; external name '_OTNextOption';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTFindOption()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTFindOption( buffer: UInt8Ptr; buflen: UInt32; level: OTXTILevel; name: OTXTIName ): TOptionPtr; external name '_OTFindOption';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Bind/Unbind}
@@ -2789,24 +4680,64 @@ function OTFindOption( buffer: UInt8Ptr; buflen: UInt32; level: OTXTILevel; name
  *  OTBind()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTBind( ref: EndpointRef; reqAddr: TBindPtr { can be NULL }; retAddr: TBindPtr { can be NULL } ): OSStatus; external name '_OTBind';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTUnbind()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTUnbind( ref: EndpointRef ): OSStatus; external name '_OTUnbind';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Connection creation/tear-down}
@@ -2815,96 +4746,256 @@ function OTUnbind( ref: EndpointRef ): OSStatus; external name '_OTUnbind';
  *  OTConnect()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTConnect( ref: EndpointRef; var sndCall: TCall; rcvCall: TCallPtr { can be NULL } ): OSStatus; external name '_OTConnect';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTRcvConnect()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTRcvConnect( ref: EndpointRef; call: TCallPtr { can be NULL } ): OSStatus; external name '_OTRcvConnect';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTListen()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTListen( ref: EndpointRef; var call: TCall ): OSStatus; external name '_OTListen';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTAccept()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTAccept( listener: EndpointRef; worker: EndpointRef; var call: TCall ): OSStatus; external name '_OTAccept';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTSndDisconnect()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTSndDisconnect( ref: EndpointRef; call: TCallPtr { can be NULL } ): OSStatus; external name '_OTSndDisconnect';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTSndOrderlyDisconnect()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTSndOrderlyDisconnect( ref: EndpointRef ): OSStatus; external name '_OTSndOrderlyDisconnect';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTRcvDisconnect()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTRcvDisconnect( ref: EndpointRef; discon: TDisconPtr { can be NULL } ): OSStatus; external name '_OTRcvDisconnect';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTRcvOrderlyDisconnect()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTRcvOrderlyDisconnect( ref: EndpointRef ): OSStatus; external name '_OTRcvOrderlyDisconnect';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Connection-oriented send/receive}
@@ -2913,24 +5004,64 @@ function OTRcvOrderlyDisconnect( ref: EndpointRef ): OSStatus; external name '_O
  *  OTRcv()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTRcv( ref: EndpointRef; buf: UnivPtr; nbytes: OTByteCount; var flags: OTFlags ): OTResult; external name '_OTRcv';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTSnd()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTSnd( ref: EndpointRef; buf: UnivPtr; nbytes: OTByteCount; flags: OTFlags ): OTResult; external name '_OTSnd';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Connectionless send/receive}
@@ -2939,42 +5070,113 @@ function OTSnd( ref: EndpointRef; buf: UnivPtr; nbytes: OTByteCount; flags: OTFl
  *  OTSndUData()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTSndUData( ref: EndpointRef; var udata: TUnitData ): OSStatus; external name '_OTSndUData';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTRcvUData()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTRcvUData( ref: EndpointRef; var udata: TUnitData; var flags: OTFlags ): OSStatus; external name '_OTRcvUData';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTRcvUDErr()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTRcvUDErr( ref: EndpointRef; uderr: TUDErrPtr { can be NULL } ): OSStatus; external name '_OTRcvUDErr';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Connection-oriented transactions}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  OTSndRequest()
  *  
@@ -3106,30 +5308,92 @@ function OTRcvUDErr( ref: EndpointRef; uderr: TUDErrPtr { can be NULL } ): OSSta
    valid client context.
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTAsyncOpenMapperInContext()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function OTAsyncOpenMapperInContext( config: OTConfigurationRef; oflag: OTOpenFlags; upp: OTNotifyUPP; contextPtr: UnivPtr; clientContext: OTClientContextPtr { can be NULL } ): OSStatus; external name '_OTAsyncOpenMapperInContext';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTOpenMapperInContext()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function OTOpenMapperInContext( config: OTConfigurationRef; oflag: OTOpenFlags; var err: OSStatus; clientContext: OTClientContextPtr { can be NULL } ): MapperRef; external name '_OTOpenMapperInContext';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> origin/fixes_2_2
 
 {$endc} {not TARGET_CPU_64}
 
@@ -3157,53 +5421,143 @@ function OTOpenMapperInContext( config: OTConfigurationRef; oflag: OTOpenFlags; 
 // #define OTAsyncOpenMapper(config, oflag, proc, contextPtr) OTAsyncOpenMapperInContext(config, oflag, proc, contextPtr, NULL)
 // #define OTOpenMapper(config, oflag, err) OTOpenMapperInContext(config, oflag, err, NULL)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTRegisterName()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTRegisterName( ref: MapperRef; var req: TRegisterRequest; var reply: TRegisterReply ): OSStatus; external name '_OTRegisterName';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTDeleteName()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTDeleteName( ref: MapperRef; var name: TNetbuf ): OSStatus; external name '_OTDeleteName';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTDeleteNameByID()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTDeleteNameByID( ref: MapperRef; nameID: OTNameID ): OSStatus; external name '_OTDeleteNameByID';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTLookupName()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 function OTLookupName( ref: MapperRef; var req: TLookupRequest; var reply: TLookupReply ): OSStatus; external name '_OTLookupName';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Basic configuration manipulation}
@@ -3212,36 +5566,96 @@ function OTLookupName( ref: MapperRef; var req: TLookupRequest; var reply: TLook
  *  OTCreateConfiguration()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientUtilLib 1.0 and later
  }
 function OTCreateConfiguration( path: ConstCStringPtr ): OTConfigurationRef; external name '_OTCreateConfiguration';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTCloneConfiguration()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientUtilLib 1.0 and later
  }
 function OTCloneConfiguration( cfig: OTConfigurationRef ): OTConfigurationRef; external name '_OTCloneConfiguration';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTDestroyConfiguration()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientUtilLib 1.0 and later
  }
 procedure OTDestroyConfiguration( cfig: OTConfigurationRef ); external name '_OTDestroyConfiguration';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -3262,16 +5676,54 @@ procedure OTDestroyConfiguration( cfig: OTConfigurationRef ); external name '_OT
  *  OTAllocMemInContext()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function OTAllocMemInContext( size: OTByteCount; clientContext: OTClientContextPtr { can be NULL } ): UnivPtr; external name '_OTAllocMemInContext';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
 
 {$endc} {not TARGET_CPU_64}
 
+<<<<<<< HEAD
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+=======
+>>>>>>> origin/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  OTAllocMem()
  *  
@@ -3282,21 +5734,70 @@ function OTAllocMemInContext( size: OTByteCount; clientContext: OTClientContextP
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTFreeMem()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientUtilLib 1.0 and later
  }
 procedure OTFreeMem( mem: UnivPtr ); external name '_OTFreeMem';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
 
 {$endc} {not TARGET_CPU_64}
 
+<<<<<<< HEAD
+{$endc} {not TARGET_CPU_64}
+
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/cpstrnew
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+
+<<<<<<< HEAD
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 { The following macros may be used by applications only.}
 // #define OTAllocMem(s) OTAllocMemInContext(s, NULL)
 
@@ -3307,30 +5808,92 @@ procedure OTFreeMem( mem: UnivPtr ); external name '_OTFreeMem';
    operation of an OT program.  If you're calling them, think again.
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTDelay()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 procedure OTDelay( seconds: UInt32 ); external name '_OTDelay';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTIdle()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTClientLib 1.0 and later
  }
 procedure OTIdle; external name '_OTIdle';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
 
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+
+{$endc} {not TARGET_CPU_64}
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+
+>>>>>>> origin/fixes_2_2
 
 {$endc} {not TARGET_CPU_64}
 
@@ -3347,113 +5910,303 @@ procedure OTIdle; external name '_OTIdle';
    C equivalents because they don't require you to link with StdCLib.
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTMemcpy()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 procedure OTMemcpy( dest: UnivPtr; src: {const} UnivPtr; nBytes: OTByteCount ); external name '_OTMemcpy';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTMemcmp()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTMemcmp( mem1: {const} UnivPtr; mem2: {const} UnivPtr; nBytes: OTByteCount ): Boolean; external name '_OTMemcmp';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTMemmove()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 procedure OTMemmove( dest: UnivPtr; src: {const} UnivPtr; nBytes: OTByteCount ); external name '_OTMemmove';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTMemzero()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 procedure OTMemzero( dest: UnivPtr; nBytes: OTByteCount ); external name '_OTMemzero';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTMemset()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 procedure OTMemset( dest: UnivPtr; toSet: OTUInt8Param; nBytes: OTByteCount ); external name '_OTMemset';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTStrLength()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTStrLength( str: ConstCStringPtr ): OTByteCount; external name '_OTStrLength';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTStrCopy()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 procedure OTStrCopy( var dest: char; src: ConstCStringPtr ); external name '_OTStrCopy';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTStrCat()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 procedure OTStrCat( var dest: char; src: ConstCStringPtr ); external name '_OTStrCat';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTStrEqual()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTStrEqual( src1: ConstCStringPtr; src2: ConstCStringPtr ): Boolean; external name '_OTStrEqual';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Timer Utilities}
@@ -3468,94 +6221,255 @@ function OTStrEqual( src1: ConstCStringPtr; src2: ConstCStringPtr ): Boolean; ex
    in seconds.
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
 type
 	OTTimeStamp = UnsignedWide;
 	OTTimeStampPtr = ^OTTimeStamp;
 {$ifc not TARGET_CPU_64}
+=======
+type
+	OTTimeStamp = UnsignedWide;
+	OTTimeStampPtr = ^OTTimeStamp;
+>>>>>>> graemeg/fixes_2_2
+=======
+type
+	OTTimeStamp = UnsignedWide;
+	OTTimeStampPtr = ^OTTimeStamp;
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+type
+	OTTimeStamp = UnsignedWide;
+	OTTimeStampPtr = ^OTTimeStamp;
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTGetTimeStamp()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 procedure OTGetTimeStamp( var currentTime: OTTimeStamp ); external name '_OTGetTimeStamp';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTSubtractTimeStamps()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTSubtractTimeStamps( var result: OTTimeStamp; var startTime: OTTimeStamp; var endEnd: OTTimeStamp ): OTTimeStampPtr; external name '_OTSubtractTimeStamps';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTTimeStampInMilliseconds()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTTimeStampInMilliseconds( var delta: OTTimeStamp ): UInt32; external name '_OTTimeStampInMilliseconds';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTTimeStampInMicroseconds()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTTimeStampInMicroseconds( var delta: OTTimeStamp ): UInt32; external name '_OTTimeStampInMicroseconds';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTElapsedMilliseconds()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTElapsedMilliseconds( var startTime: OTTimeStamp ): UInt32; external name '_OTElapsedMilliseconds';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTElapsedMicroseconds()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTElapsedMicroseconds( var startTime: OTTimeStamp ): UInt32; external name '_OTElapsedMicroseconds';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
  *  OTGetClockTimeInSecs()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTGetClockTimeInSecs: UInt32; external name '_OTGetClockTimeInSecs';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { ***** OT Link Element *****}
@@ -3567,8 +6481,19 @@ function OTGetClockTimeInSecs: UInt32; external name '_OTGetClockTimeInSecs';
    list elements are chained.
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 type
 	OTLinkPtr = ^OTLink;
 	OTLink = record
@@ -3601,17 +6526,47 @@ type
    This function atomically enqueues the link onto the
    front of the list.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTLIFOEnqueue()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 procedure OTLIFOEnqueue( var list: OTLIFO; var link: OTLink ); external name '_OTLIFOEnqueue';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -3622,12 +6577,32 @@ procedure OTLIFOEnqueue( var list: OTLIFO; var link: OTLink ); external name '_O
  *  OTLIFODequeue()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTLIFODequeue( var list: OTLIFO ): OTLinkPtr; external name '_OTLIFODequeue';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -3638,12 +6613,32 @@ function OTLIFODequeue( var list: OTLIFO ): OTLinkPtr; external name '_OTLIFODeq
  *  OTLIFOStealList()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTLIFOStealList( var list: OTLIFO ): OTLinkPtr; external name '_OTLIFOStealList';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -3655,12 +6650,32 @@ function OTLIFOStealList( var list: OTLIFO ): OTLinkPtr; external name '_OTLIFOS
  *  OTReverseList()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTReverseList( var list: OTLink ): OTLinkPtr; external name '_OTReverseList';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { OTList}
@@ -3677,8 +6692,19 @@ function OTReverseList( var list: OTLink ): OTLinkPtr; external name '_OTReverse
    This is only a UPP for CFM-68K clients.
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 type
 	OTListSearchProcPtr = function( ref: {const} UnivPtr; var linkToCheck: OTLink ): Boolean;
 	OTListSearchUPP = OTListSearchProcPtr;
@@ -3691,7 +6717,15 @@ type
  *    Non-Carbon CFM:   available as macro/inline
  }
 function NewOTListSearchUPP( userRoutine: OTListSearchProcPtr ): OTListSearchUPP; external name '_NewOTListSearchUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 {
  *  DisposeOTListSearchUPP()
@@ -3702,7 +6736,15 @@ function NewOTListSearchUPP( userRoutine: OTListSearchProcPtr ): OTListSearchUPP
  *    Non-Carbon CFM:   available as macro/inline
  }
 procedure DisposeOTListSearchUPP( userUPP: OTListSearchUPP ); external name '_DisposeOTListSearchUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 {
  *  InvokeOTListSearchUPP()
@@ -3713,7 +6755,15 @@ procedure DisposeOTListSearchUPP( userUPP: OTListSearchUPP ); external name '_Di
  *    Non-Carbon CFM:   available as macro/inline
  }
 function InvokeOTListSearchUPP( ref: {const} UnivPtr; var linkToCheck: OTLink; userUPP: OTListSearchUPP ): Boolean; external name '_InvokeOTListSearchUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 type
 	OTListPtr = ^OTList;
@@ -3721,17 +6771,47 @@ type
 		fHead: OTLinkPtr;
 	end;
 { Add the link to the list at the front}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  OTAddFirst()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 procedure OTAddFirst( var list: OTList; var link: OTLink ); external name '_OTAddFirst';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Add the link to the list at the end}
@@ -3739,12 +6819,32 @@ procedure OTAddFirst( var list: OTList; var link: OTLink ); external name '_OTAd
  *  OTAddLast()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 procedure OTAddLast( var list: OTList; var link: OTLink ); external name '_OTAddLast';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Remove the first link from the list}
@@ -3752,12 +6852,32 @@ procedure OTAddLast( var list: OTList; var link: OTLink ); external name '_OTAdd
  *  OTRemoveFirst()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTRemoveFirst( var list: OTList ): OTLinkPtr; external name '_OTRemoveFirst';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Remove the last link from the list}
@@ -3765,12 +6885,32 @@ function OTRemoveFirst( var list: OTList ): OTLinkPtr; external name '_OTRemoveF
  *  OTRemoveLast()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTRemoveLast( var list: OTList ): OTLinkPtr; external name '_OTRemoveLast';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Return the first link from the list}
@@ -3778,12 +6918,32 @@ function OTRemoveLast( var list: OTList ): OTLinkPtr; external name '_OTRemoveLa
  *  OTGetFirst()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTGetFirst( var list: OTList ): OTLinkPtr; external name '_OTGetFirst';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Return the last link from the list}
@@ -3791,12 +6951,32 @@ function OTGetFirst( var list: OTList ): OTLinkPtr; external name '_OTGetFirst';
  *  OTGetLast()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTGetLast( var list: OTList ): OTLinkPtr; external name '_OTGetLast';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Return true if the link is present in the list}
@@ -3804,12 +6984,32 @@ function OTGetLast( var list: OTList ): OTLinkPtr; external name '_OTGetLast';
  *  OTIsInList()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTIsInList( var list: OTList; var link: OTLink ): Boolean; external name '_OTIsInList';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -3823,12 +7023,32 @@ function OTIsInList( var list: OTList; var link: OTLink ): Boolean; external nam
  *  OTFindLink()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTFindLink( var list: OTList; proc: OTListSearchUPP; ref: {const} UnivPtr ): OTLinkPtr; external name '_OTFindLink';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Remove the specified link from the list, returning true if it was found}
@@ -3836,12 +7056,32 @@ function OTFindLink( var list: OTList; proc: OTListSearchUPP; ref: {const} UnivP
  *  OTRemoveLink()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTRemoveLink( var list: OTList; var link: OTLink ): Boolean; external name '_OTRemoveLink';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Similar to OTFindLink, but it also removes it from the list.}
@@ -3849,12 +7089,32 @@ function OTRemoveLink( var list: OTList; var link: OTLink ): Boolean; external n
  *  OTFindAndRemoveLink()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTFindAndRemoveLink( var list: OTList; proc: OTListSearchUPP; ref: {const} UnivPtr ): OTLinkPtr; external name '_OTFindAndRemoveLink';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Return the "index"th link in the list}
@@ -3862,12 +7122,32 @@ function OTFindAndRemoveLink( var list: OTList; proc: OTListSearchUPP; ref: {con
  *  OTGetIndexedLink()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTGetIndexedLink( var list: OTList; index: OTItemCount ): OTLinkPtr; external name '_OTGetIndexedLink';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { OTEnqueue/OTDequeue}
@@ -3887,12 +7167,32 @@ function OTGetIndexedLink( var list: OTList; index: OTItemCount ): OTLinkPtr; ex
  *  OTEnqueue()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 procedure OTEnqueue( var listHead: UnivPtr; objct: UnivPtr; linkOffset: OTByteCount ); external name '_OTEnqueue';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -3903,12 +7203,32 @@ procedure OTEnqueue( var listHead: UnivPtr; objct: UnivPtr; linkOffset: OTByteCo
  *  OTDequeue()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTDequeue( var listHead: UnivPtr; linkOffset: OTByteCount ): UnivPtr; external name '_OTDequeue';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Atomic Operations}
@@ -3930,12 +7250,32 @@ function OTDequeue( var listHead: UnivPtr; linkOffset: OTByteCount ): UnivPtr; e
  *  OTAtomicSetBit()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTAtomicSetBit( bytePtr: UInt8Ptr; bitNumber: OTByteCount ): Boolean; external name '_OTAtomicSetBit';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -3948,12 +7288,32 @@ function OTAtomicSetBit( bytePtr: UInt8Ptr; bitNumber: OTByteCount ): Boolean; e
  *  OTAtomicClearBit()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTAtomicClearBit( bytePtr: UInt8Ptr; bitNumber: OTByteCount ): Boolean; external name '_OTAtomicClearBit';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -3966,12 +7326,32 @@ function OTAtomicClearBit( bytePtr: UInt8Ptr; bitNumber: OTByteCount ): Boolean;
  *  OTAtomicTestBit()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTAtomicTestBit( bytePtr: UInt8Ptr; bitNumber: OTByteCount ): Boolean; external name '_OTAtomicTestBit';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -3984,12 +7364,32 @@ function OTAtomicTestBit( bytePtr: UInt8Ptr; bitNumber: OTByteCount ): Boolean; 
  *  OTCompareAndSwapPtr()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTCompareAndSwapPtr( oldValue: UnivPtr; newValue: UnivPtr; var dest: UnivPtr ): Boolean; external name '_OTCompareAndSwapPtr';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -4001,12 +7401,32 @@ function OTCompareAndSwapPtr( oldValue: UnivPtr; newValue: UnivPtr; var dest: Un
  *  OTCompareAndSwap32()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTCompareAndSwap32( oldValue: UInt32; newValue: UInt32; var dest: UInt32 ): Boolean; external name '_OTCompareAndSwap32';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -4018,12 +7438,32 @@ function OTCompareAndSwap32( oldValue: UInt32; newValue: UInt32; var dest: UInt3
  *  OTCompareAndSwap16()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTCompareAndSwap16( oldValue: UInt32; newValue: UInt32; var dest: UInt16 ): Boolean; external name '_OTCompareAndSwap16';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -4035,12 +7475,32 @@ function OTCompareAndSwap16( oldValue: UInt32; newValue: UInt32; var dest: UInt1
  *  OTCompareAndSwap8()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTCompareAndSwap8( oldValue: UInt32; newValue: UInt32; var dest: UInt8 ): Boolean; external name '_OTCompareAndSwap8';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -4052,12 +7512,32 @@ function OTCompareAndSwap8( oldValue: UInt32; newValue: UInt32; var dest: UInt8 
  *  OTAtomicAdd32()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTAtomicAdd32( toAdd: SInt32; var dest: SInt32 ): SInt32; external name '_OTAtomicAdd32';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -4072,12 +7552,32 @@ function OTAtomicAdd32( toAdd: SInt32; var dest: SInt32 ): SInt32; external name
  *  OTAtomicAdd16()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTAtomicAdd16( toAdd: SInt32; var dest: SInt16 ): SInt16; external name '_OTAtomicAdd16';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Not used frequently enough to justify inlining.}
@@ -4085,19 +7585,50 @@ function OTAtomicAdd16( toAdd: SInt32; var dest: SInt16 ): SInt16; external name
  *  OTAtomicAdd8()   *** DEPRECATED ***
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in CoreServices.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in OTUtilityLib 1.0 and later
  }
 function OTAtomicAdd8( toAdd: SInt32; var dest: SInt8 ): SInt8; external name '_OTAtomicAdd8';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_4,__IPHONE_NA,__IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
+>>>>>>> origin/fixes_2_2
 
 
 { Not used frequently enough to justify inlining.}
 { OTLock is just a convenience type with some convenient macros.}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 
 type
 	OTLock = UInt8;
@@ -4112,8 +7643,28 @@ type
 *******************************************************************************}
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {TARGET_OS_MAC}
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
 
 end.
 {$endc} {not MACOSALLINCLUDE}
+=======
+
+
+end.
+>>>>>>> graemeg/fixes_2_2
+=======
+
+
+end.
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {TARGET_OS_MAC}
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+
+end.
+{$endc} {not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4

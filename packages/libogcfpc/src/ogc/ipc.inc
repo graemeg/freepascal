@@ -30,6 +30,26 @@ type
 
 function iosCreateHeap(size: cint32): cint32; cdecl; external;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+function iosDestroyHeap(hid: cint32): cint32; cdecl; external;
+
+>>>>>>> graemeg/cpstrnew
+=======
+function iosDestroyHeap(hid: cint32): cint32; cdecl; external;
+
+>>>>>>> graemeg/cpstrnew
+=======
+function iosDestroyHeap(hid: cint32): cint32; cdecl; external;
+
+>>>>>>> graemeg/cpstrnew
+=======
+function iosDestroyHeap(hid: cint32): cint32; cdecl; external;
+
+>>>>>>> origin/cpstrnew
 function iosAlloc(hid, size: cint32): pointer; cdecl; external;
 
 procedure iosFree(hid: cint32; ptr: pointer); cdecl; external;

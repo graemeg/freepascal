@@ -1,4 +1,10 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 {%delfiles=texec1}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$mode objfpc}
 {$h+}
 

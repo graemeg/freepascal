@@ -143,7 +143,19 @@ interface
           function find_procdef_bytype(pt:Tproctypeoption):Tprocdef;
           function find_bytype_parameterless(pt:Tproctypeoption):Tprocdef;
           function find_procdef_bypara(para:TFPObjectList;retdef:tdef;cpoptions:tcompare_paras_options):Tprocdef;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           function find_procdef_bytype_and_para(pt:Tproctypeoption;para:TFPObjectList;retdef:tdef;cpoptions:tcompare_paras_options):Tprocdef;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           function find_procdef_byoptions(ops:tprocoptions): Tprocdef;
           function find_procdef_byprocvardef(d:Tprocvardef):Tprocdef;
           function find_procdef_assignment_operator(fromdef,todef:tdef;var besteq:tequaltype):Tprocdef;
@@ -171,6 +183,7 @@ interface
 
        tabstractvarsym = class(tstoredsym)
           varoptions    : tvaroptions;
+          notifications : Tlinkedlist;
           varspez       : tvarspez;  { sets the type of access }
           varregable    : tvarregable;
           varstate      : tvarstate;
@@ -179,7 +192,14 @@ interface
           { could also be part of tabstractnormalvarsym, but there's }
           { one byte left here till the next 4 byte alignment        }
           addr_taken     : boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
           constructor create(st:tsymtyp;const n : string;vsp:tvarspez;def:tdef;vopts:tvaroptions;doregister:boolean);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          constructor create(st:tsymtyp;const n : string;vsp:tvarspez;def:tdef;vopts:tvaroptions);
+>>>>>>> graemeg/fixes_2_2
           constructor ppuload(st:tsymtyp;ppufile:tcompilerppufile);
           procedure ppuwrite(ppufile:tcompilerppufile);override;
           procedure buildderef;override;
@@ -197,6 +217,10 @@ interface
       end;
 
       tfieldvarsym = class(tabstractvarsym)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           { offset in record/object, for bitpacked fields the offset is
             given in bit, else in bytes }
           fieldoffset   : asizeint;
@@ -222,6 +246,29 @@ interface
           procedure ppuwrite(ppufile:tcompilerppufile);override;final;
           procedure set_externalname(const s:string);virtual;
           function mangledname:TSymStr;override;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          fieldoffset   : asizeint;   { offset in record/object }
+          objcoffsetmangledname: pshortstring; { mangled name of offset, calculated as needed }
+          constructor create(const n : string;vsp:tvarspez;def:tdef;vopts:tvaroptions);
+          constructor ppuload(ppufile:tcompilerppufile);
+          procedure ppuwrite(ppufile:tcompilerppufile);override;
+          function mangledname:string;override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           destructor destroy;override;
       end;
       tfieldvarsymclass = class of tfieldvarsym;
@@ -288,6 +335,10 @@ interface
 {$endif symansistr}
       public
           section : ansistring;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           { if a text buffer has been defined as being initialized from command line
             parameters as it is done by iso pascal with the program symbols,
             isoindex contains the parameter number }
@@ -300,6 +351,17 @@ interface
           constructor create_dll(const n : string;vsp:tvarspez;def:tdef);virtual;
           constructor create_C(const n: string; const mangled : TSymStr;vsp:tvarspez;def:tdef);virtual;
           constructor create_from_fieldvar(const n:string;fieldvar:tfieldvarsym);virtual;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          constructor create(const n : string;vsp:tvarspez;def:tdef;vopts:tvaroptions);
+          constructor create_dll(const n : string;vsp:tvarspez;def:tdef);
+          constructor create_C(const n,mangled : string;vsp:tvarspez;def:tdef);
+>>>>>>> graemeg/cpstrnew
           constructor ppuload(ppufile:tcompilerppufile);
           destructor destroy;override;
           { do not override this routine in platform-specific subclasses,
@@ -351,6 +413,10 @@ interface
           default       : longint;
           dispid        : longint;
           propaccesslist: array[tpropaccesslisttypes] of tpropaccesslist;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           parast : tsymtable;
           constructor create(const n : string);virtual;
           destructor  destroy;override;
@@ -359,6 +425,19 @@ interface
           { do not override this routine in platform-specific subclasses,
             override ppuwrite_platform instead }
           procedure ppuwrite(ppufile:tcompilerppufile);override;final;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          constructor create(const n : string);
+          destructor  destroy;override;
+          constructor ppuload(ppufile:tcompilerppufile);
+          function  getsize : asizeint;
+          procedure ppuwrite(ppufile:tcompilerppufile);override;
+>>>>>>> graemeg/cpstrnew
           procedure buildderef;override;
           procedure deref;override;
           function getpropaccesslist(pap:tpropaccesslisttypes;out plist:tpropaccesslist):boolean;
@@ -387,11 +466,22 @@ interface
           constdefderef : tderef;
           consttyp    : tconsttyp;
           value       : tconstvalue;
+<<<<<<< HEAD
+<<<<<<< HEAD
           constructor create_ord(const n : string;t : tconsttyp;v : tconstexprint;def:tdef);virtual;
           constructor create_ordptr(const n : string;t : tconsttyp;v : tconstptruint;def:tdef);virtual;
           constructor create_ptr(const n : string;t : tconsttyp;v : pointer;def:tdef);virtual;
           constructor create_string(const n : string;t : tconsttyp;str:pchar;l:longint;def:tdef);virtual;
           constructor create_wstring(const n : string;t : tconsttyp;pw:pcompilerwidestring);virtual;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          constructor create_ord(const n : string;t : tconsttyp;v : tconstexprint;def:tdef);
+          constructor create_ordptr(const n : string;t : tconsttyp;v : tconstptruint;def:tdef);
+          constructor create_ptr(const n : string;t : tconsttyp;v : pointer;def:tdef);
+          constructor create_string(const n : string;t : tconsttyp;str:pchar;l:longint);
+          constructor create_wstring(const n : string;t : tconsttyp;pw:pcompilerwidestring);
+>>>>>>> graemeg/fixes_2_2
           constructor ppuload(ppufile:tcompilerppufile);
           destructor  destroy;override;
           procedure buildderef;override;
@@ -406,7 +496,20 @@ interface
           value      : longint;
           definition : tenumdef;
           definitionderef : tderef;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           constructor create(const n : string;def : tenumdef;v : longint);virtual;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          constructor create(const n : string;def : tenumdef;v : longint);
+>>>>>>> graemeg/cpstrnew
           constructor ppuload(ppufile:tcompilerppufile);
           { do not override this routine in platform-specific subclasses,
             override ppuwrite_platform instead }
@@ -586,6 +689,10 @@ implementation
          ppufile.putsmallset(symoptions);
          if sp_has_deprecated_msg in symoptions then
            ppufile.putstring(deprecatedmsg^);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          ppufile.do_interface_crc:=oldintfcrc;
       end;
 
@@ -613,6 +720,14 @@ implementation
     procedure tstoredsym.ppuload_platform(ppufile: tcompilerppufile);
       begin
         { by default: do nothing }
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -677,6 +792,13 @@ implementation
      begin
        if (asmblocklabel=nil) then
          begin
+<<<<<<< HEAD
+=======
+           defined:=true;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            if nonlocal then
              current_asmdata.getglobaljumplabel(asmblocklabel)
            else
@@ -1001,6 +1123,25 @@ implementation
           end;
       end;
 
+    function tprocsym.find_procdef_byoptions(ops: tprocoptions): Tprocdef;
+      var
+        i  : longint;
+        pd : tprocdef;
+      begin
+        result:=nil;
+        for i:=0 to ProcdefList.Count-1 do
+          begin
+            pd:=tprocdef(ProcdefList[i]);
+            if ops * pd.procoptions = ops then
+              begin
+                result:=pd;
+                exit;
+              end;
+          end;
+      end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     function check_procdef_paras(pd:tprocdef;para:TFPObjectList;retdef:tdef;
                                             cpoptions:tcompare_paras_options): tprocdef;
@@ -1079,6 +1220,12 @@ implementation
               end;
           end;
       end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     function Tprocsym.Find_procdef_byprocvardef(d:Tprocvardef):Tprocdef;
       var
@@ -1158,6 +1305,7 @@ implementation
         for i:=0 to ProcdefList.Count-1 do
           begin
             pd:=tprocdef(ProcdefList[i]);
+<<<<<<< HEAD
             if (pd.owner.symtabletype=staticsymtable) and not pd.owner.iscurrentunit then
               continue;
             if (equal_defs(todef,pd.returndef) or
@@ -1171,6 +1319,10 @@ implementation
                   not(df_unique in pd.returndef.defoptions)
                 )
                ) then
+=======
+            eq:=proc_to_procvar_equal(pd,d,false);
+            if eq>=te_convert_l1 then
+>>>>>>> graemeg/cpstrnew
               begin
                 paraidx:=0;
                 { ignore vs_hidden parameters }
@@ -1182,6 +1334,368 @@ implementation
                 for j := 0 to pd.paras.Count-1 do
                   if assigned(pd.paras[j]) and not (vo_is_hidden_para in tparavarsym(pd.paras[j]).varoptions) then
                     inc(realparamcount);
+                if (paraidx<pd.paras.count) and
+                   assigned(pd.paras[paraidx]) and
+                   (realparamcount = 1) then
+                  begin
+                    eq:=compare_defs_ext(fromdef,tparavarsym(pd.paras[paraidx]).vardef,nothingn,convtyp,hpd,[]);
+
+                    { alias? if yes, only l1 choice,
+                      if you mess with this code, check tw4093 }
+                    if (eq=te_exact) and
+                       (fromdef<>tparavarsym(pd.paras[paraidx]).vardef) and
+                       ((df_unique in fromdef.defoptions) or
+                       (df_unique in tparavarsym(pd.paras[paraidx]).vardef.defoptions)) then
+                      eq:=te_convert_l1;
+
+                    if eq=te_exact then
+                      begin
+                        besteq:=eq;
+                        result:=pd;
+                        exit;
+                      end;
+                    if eq>besteq then
+                      begin
+                        bestpd:=pd;
+                        besteq:=eq;
+                      end;
+                  end;
+              end;
+          end;
+        result:=bestpd;
+      end;
+
+      function Tprocsym.find_procdef_enumerator_operator(fromdef,todef:tdef;var besteq:tequaltype):Tprocdef;
+      var
+        paraidx, realparamcount,
+        i, j : longint;
+        bestpd,
+        hpd,
+        pd : tprocdef;
+        current : tpropertysym;
+        convtyp : tconverttype;
+        eq      : tequaltype;
+      begin
+        { This function will return the pprocdef of pprocsym that
+          is the best match for fromdef and todef. }
+        result:=nil;
+        bestpd:=nil;
+        besteq:=te_incompatible;
+        for i:=0 to ProcdefList.Count-1 do
+          begin
+            pd:=tprocdef(ProcdefList[i]);
+<<<<<<< HEAD
+            if (pd.owner.symtabletype=staticsymtable) and not pd.owner.iscurrentunit then
+              continue;
+<<<<<<< HEAD
+            if not (is_class_or_interface_or_object(pd.returndef) or is_record(pd.returndef)) then
+              continue;
+            current := tpropertysym(tabstractrecorddef(pd.returndef).search_enumerator_current);
+            if (current = nil) then
+              continue;
+            // compare current result def with the todef
+            if (equal_defs(todef, current.propdef) or
+=======
+            if (equal_defs(todef,pd.returndef) or
+>>>>>>> graemeg/cpstrnew
+                { shortstrings of different lengths are ok as result }
+                (is_shortstring(todef) and is_shortstring(current.propdef))) and
+               { the result type must be always really equal and not an alias,
+                 if you mess with this code, check tw4093 }
+               ((todef=current.propdef) or
+                (
+                  not(df_unique in todef.defoptions) and
+                  not(df_unique in current.propdef.defoptions)
+                )
+               ) then
+=======
+            eq:=proc_to_procvar_equal(pd,d,false);
+            if eq>=te_convert_l1 then
+>>>>>>> graemeg/cpstrnew
+              begin
+                paraidx:=0;
+                { ignore vs_hidden parameters }
+                while (paraidx<pd.paras.count) and
+                      assigned(pd.paras[paraidx]) and
+                      (vo_is_hidden_para in tparavarsym(pd.paras[paraidx]).varoptions) do
+                  inc(paraidx);
+                realparamcount:=0;
+                for j := 0 to pd.paras.Count-1 do
+                  if assigned(pd.paras[j]) and not (vo_is_hidden_para in tparavarsym(pd.paras[j]).varoptions) then
+                    inc(realparamcount);
+<<<<<<< HEAD
+=======
+                if (paraidx<pd.paras.count) and
+                   assigned(pd.paras[paraidx]) and
+                   (realparamcount = 1) then
+                  begin
+                    eq:=compare_defs_ext(fromdef,tparavarsym(pd.paras[paraidx]).vardef,nothingn,convtyp,hpd,[]);
+
+                    { alias? if yes, only l1 choice,
+                      if you mess with this code, check tw4093 }
+                    if (eq=te_exact) and
+                       (fromdef<>tparavarsym(pd.paras[paraidx]).vardef) and
+                       ((df_unique in fromdef.defoptions) or
+                       (df_unique in tparavarsym(pd.paras[paraidx]).vardef.defoptions)) then
+                      eq:=te_convert_l1;
+
+                    if eq=te_exact then
+                      begin
+                        besteq:=eq;
+                        result:=pd;
+                        exit;
+                      end;
+                    if eq>besteq then
+                      begin
+                        bestpd:=pd;
+                        besteq:=eq;
+                      end;
+                  end;
+              end;
+          end;
+        result:=bestpd;
+      end;
+
+      function Tprocsym.find_procdef_enumerator_operator(fromdef,todef:tdef;var besteq:tequaltype):Tprocdef;
+      var
+        paraidx, realparamcount,
+        i, j : longint;
+        bestpd,
+        hpd,
+        pd : tprocdef;
+        current : tpropertysym;
+        convtyp : tconverttype;
+        eq      : tequaltype;
+      begin
+        { This function will return the pprocdef of pprocsym that
+          is the best match for fromdef and todef. }
+        result:=nil;
+        bestpd:=nil;
+        besteq:=te_incompatible;
+        for i:=0 to ProcdefList.Count-1 do
+          begin
+            pd:=tprocdef(ProcdefList[i]);
+<<<<<<< HEAD
+            if (pd.owner.symtabletype=staticsymtable) and not pd.owner.iscurrentunit then
+              continue;
+<<<<<<< HEAD
+            if not (is_class_or_interface_or_object(pd.returndef) or is_record(pd.returndef)) then
+              continue;
+            current := tpropertysym(tabstractrecorddef(pd.returndef).search_enumerator_current);
+            if (current = nil) then
+              continue;
+            // compare current result def with the todef
+            if (equal_defs(todef, current.propdef) or
+=======
+            if (equal_defs(todef,pd.returndef) or
+>>>>>>> graemeg/cpstrnew
+                { shortstrings of different lengths are ok as result }
+                (is_shortstring(todef) and is_shortstring(current.propdef))) and
+               { the result type must be always really equal and not an alias,
+                 if you mess with this code, check tw4093 }
+               ((todef=current.propdef) or
+                (
+                  not(df_unique in todef.defoptions) and
+                  not(df_unique in current.propdef.defoptions)
+                )
+               ) then
+=======
+            eq:=proc_to_procvar_equal(pd,d,false);
+            if eq>=te_convert_l1 then
+>>>>>>> graemeg/cpstrnew
+              begin
+                paraidx:=0;
+                { ignore vs_hidden parameters }
+                while (paraidx<pd.paras.count) and
+                      assigned(pd.paras[paraidx]) and
+                      (vo_is_hidden_para in tparavarsym(pd.paras[paraidx]).varoptions) do
+                  inc(paraidx);
+                realparamcount:=0;
+                for j := 0 to pd.paras.Count-1 do
+                  if assigned(pd.paras[j]) and not (vo_is_hidden_para in tparavarsym(pd.paras[j]).varoptions) then
+                    inc(realparamcount);
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+                if (paraidx<pd.paras.count) and
+                   assigned(pd.paras[paraidx]) and
+                   (realparamcount = 1) then
+                  begin
+                    eq:=compare_defs_ext(fromdef,tparavarsym(pd.paras[paraidx]).vardef,nothingn,convtyp,hpd,[]);
+
+                    { alias? if yes, only l1 choice,
+                      if you mess with this code, check tw4093 }
+                    if (eq=te_exact) and
+                       (fromdef<>tparavarsym(pd.paras[paraidx]).vardef) and
+                       ((df_unique in fromdef.defoptions) or
+                       (df_unique in tparavarsym(pd.paras[paraidx]).vardef.defoptions)) then
+                      eq:=te_convert_l1;
+
+                    if eq=te_exact then
+                      begin
+                        besteq:=eq;
+                        result:=pd;
+                        exit;
+                      end;
+                    if eq>besteq then
+                      begin
+                        bestpd:=pd;
+                        besteq:=eq;
+                      end;
+                  end;
+              end;
+          end;
+        result:=bestpd;
+      end;
+
+      function Tprocsym.find_procdef_enumerator_operator(fromdef,todef:tdef;var besteq:tequaltype):Tprocdef;
+      var
+        paraidx, realparamcount,
+        i, j : longint;
+        bestpd,
+        hpd,
+        pd : tprocdef;
+        current : tpropertysym;
+        convtyp : tconverttype;
+        eq      : tequaltype;
+      begin
+        { This function will return the pprocdef of pprocsym that
+          is the best match for fromdef and todef. }
+        result:=nil;
+        bestpd:=nil;
+        besteq:=te_incompatible;
+        for i:=0 to ProcdefList.Count-1 do
+          begin
+            pd:=tprocdef(ProcdefList[i]);
+<<<<<<< HEAD
+            if (pd.owner.symtabletype=staticsymtable) and not pd.owner.iscurrentunit then
+              continue;
+<<<<<<< HEAD
+            if not (is_class_or_interface_or_object(pd.returndef) or is_record(pd.returndef)) then
+              continue;
+            current := tpropertysym(tabstractrecorddef(pd.returndef).search_enumerator_current);
+            if (current = nil) then
+              continue;
+            // compare current result def with the todef
+            if (equal_defs(todef, current.propdef) or
+=======
+            if (equal_defs(todef,pd.returndef) or
+>>>>>>> graemeg/cpstrnew
+                { shortstrings of different lengths are ok as result }
+                (is_shortstring(todef) and is_shortstring(current.propdef))) and
+               { the result type must be always really equal and not an alias,
+                 if you mess with this code, check tw4093 }
+               ((todef=current.propdef) or
+                (
+                  not(df_unique in todef.defoptions) and
+                  not(df_unique in current.propdef.defoptions)
+                )
+               ) then
+=======
+            eq:=proc_to_procvar_equal(pd,d,false);
+            if eq>=te_convert_l1 then
+>>>>>>> origin/cpstrnew
+              begin
+                paraidx:=0;
+                { ignore vs_hidden parameters }
+                while (paraidx<pd.paras.count) and
+                      assigned(pd.paras[paraidx]) and
+                      (vo_is_hidden_para in tparavarsym(pd.paras[paraidx]).varoptions) do
+                  inc(paraidx);
+                realparamcount:=0;
+                for j := 0 to pd.paras.Count-1 do
+                  if assigned(pd.paras[j]) and not (vo_is_hidden_para in tparavarsym(pd.paras[j]).varoptions) then
+                    inc(realparamcount);
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+                if (paraidx<pd.paras.count) and
+                   assigned(pd.paras[paraidx]) and
+                   (realparamcount = 1) then
+                  begin
+                    eq:=compare_defs_ext(fromdef,tparavarsym(pd.paras[paraidx]).vardef,nothingn,convtyp,hpd,[]);
+
+                    { alias? if yes, only l1 choice,
+                      if you mess with this code, check tw4093 }
+                    if (eq=te_exact) and
+                       (fromdef<>tparavarsym(pd.paras[paraidx]).vardef) and
+                       ((df_unique in fromdef.defoptions) or
+                       (df_unique in tparavarsym(pd.paras[paraidx]).vardef.defoptions)) then
+                      eq:=te_convert_l1;
+
+                    if eq=te_exact then
+                      begin
+                        besteq:=eq;
+                        result:=pd;
+                        exit;
+                      end;
+                    if eq>besteq then
+                      begin
+                        bestpd:=pd;
+                        besteq:=eq;
+                      end;
+                  end;
+              end;
+          end;
+        result:=bestpd;
+      end;
+
+      function Tprocsym.find_procdef_enumerator_operator(fromdef,todef:tdef;var besteq:tequaltype):Tprocdef;
+      var
+        paraidx, realparamcount,
+        i, j : longint;
+        bestpd,
+        hpd,
+        pd : tprocdef;
+        current : tpropertysym;
+        convtyp : tconverttype;
+        eq      : tequaltype;
+      begin
+        { This function will return the pprocdef of pprocsym that
+          is the best match for fromdef and todef. }
+        result:=nil;
+        bestpd:=nil;
+        besteq:=te_incompatible;
+        for i:=0 to ProcdefList.Count-1 do
+          begin
+            pd:=tprocdef(ProcdefList[i]);
+            if (pd.owner.symtabletype=staticsymtable) and not pd.owner.iscurrentunit then
+              continue;
+<<<<<<< HEAD
+            if not (is_class_or_interface_or_object(pd.returndef) or is_record(pd.returndef)) then
+              continue;
+            current := tpropertysym(tabstractrecorddef(pd.returndef).search_enumerator_current);
+            if (current = nil) then
+              continue;
+            // compare current result def with the todef
+            if (equal_defs(todef, current.propdef) or
+=======
+            if (equal_defs(todef,pd.returndef) or
+>>>>>>> origin/cpstrnew
+                { shortstrings of different lengths are ok as result }
+                (is_shortstring(todef) and is_shortstring(current.propdef))) and
+               { the result type must be always really equal and not an alias,
+                 if you mess with this code, check tw4093 }
+               ((todef=current.propdef) or
+                (
+                  not(df_unique in todef.defoptions) and
+                  not(df_unique in current.propdef.defoptions)
+                )
+               ) then
+              begin
+                paraidx:=0;
+                { ignore vs_hidden parameters }
+                while (paraidx<pd.paras.count) and
+                      assigned(pd.paras[paraidx]) and
+                      (vo_is_hidden_para in tparavarsym(pd.paras[paraidx]).varoptions) do
+                  inc(paraidx);
+                realparamcount:=0;
+                for j := 0 to pd.paras.Count-1 do
+                  if assigned(pd.paras[j]) and not (vo_is_hidden_para in tparavarsym(pd.paras[j]).varoptions) then
+                    inc(realparamcount);
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
                 if (paraidx<pd.paras.count) and
                    assigned(pd.paras[paraidx]) and
                    (realparamcount = 1) then
@@ -1262,6 +1776,7 @@ implementation
                 for j := 0 to pd.paras.Count-1 do
                   if assigned(pd.paras[j]) and not (vo_is_hidden_para in tparavarsym(pd.paras[j]).varoptions) then
                     inc(realparamcount);
+>>>>>>> origin/cpstrnew
                 if (paraidx<pd.paras.count) and
                    assigned(pd.paras[paraidx]) and
                    (realparamcount = 1) then
@@ -1343,8 +1858,24 @@ implementation
       begin
          inherited ppuload(propertysym,ppufile);
          ppufile.getsmallset(propoptions);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          if ppo_overrides in propoptions then
            ppufile.getderef(overriddenpropsymderef);
+=======
+         ppufile.getderef(overriddenpropsymderef);
+>>>>>>> graemeg/cpstrnew
+=======
+         ppufile.getderef(overriddenpropsymderef);
+>>>>>>> graemeg/cpstrnew
+=======
+         ppufile.getderef(overriddenpropsymderef);
+>>>>>>> graemeg/cpstrnew
+=======
+         ppufile.getderef(overriddenpropsymderef);
+>>>>>>> origin/cpstrnew
          ppufile.getderef(propdefderef);
          index:=ppufile.getlongint;
          default:=ppufile.getlongint;
@@ -1377,7 +1908,23 @@ implementation
       var
         pap : tpropaccesslisttypes;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         inherited;
+=======
+        overriddenpropsymderef.build(overriddenpropsym);
+>>>>>>> graemeg/cpstrnew
+=======
+        overriddenpropsymderef.build(overriddenpropsym);
+>>>>>>> graemeg/cpstrnew
+=======
+        overriddenpropsymderef.build(overriddenpropsym);
+>>>>>>> graemeg/cpstrnew
+=======
+        overriddenpropsymderef.build(overriddenpropsym);
+>>>>>>> origin/cpstrnew
         propdefderef.build(propdef);
         indexdefderef.build(indexdef);
         for pap:=low(tpropaccesslisttypes) to high(tpropaccesslisttypes) do
@@ -1394,6 +1941,22 @@ implementation
       var
         pap : tpropaccesslisttypes;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        overriddenpropsym:=tpropertysym(overriddenpropsymderef.resolve);
+>>>>>>> graemeg/cpstrnew
+=======
+        overriddenpropsym:=tpropertysym(overriddenpropsymderef.resolve);
+>>>>>>> graemeg/cpstrnew
+=======
+        overriddenpropsym:=tpropertysym(overriddenpropsymderef.resolve);
+>>>>>>> graemeg/cpstrnew
+=======
+        overriddenpropsym:=tpropertysym(overriddenpropsymderef.resolve);
+>>>>>>> origin/cpstrnew
         indexdef:=tdef(indexdefderef.resolve);
         propdef:=tdef(propdefderef.resolve);
         for pap:=low(tpropaccesslisttypes) to high(tpropaccesslisttypes) do
@@ -1565,8 +2128,24 @@ implementation
       begin
         inherited ppuwrite(ppufile);
         ppufile.putsmallset(propoptions);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if ppo_overrides in propoptions then
           ppufile.putderef(overriddenpropsymderef);
+=======
+        ppufile.putderef(overriddenpropsymderef);
+>>>>>>> graemeg/cpstrnew
+=======
+        ppufile.putderef(overriddenpropsymderef);
+>>>>>>> graemeg/cpstrnew
+=======
+        ppufile.putderef(overriddenpropsymderef);
+>>>>>>> graemeg/cpstrnew
+=======
+        ppufile.putderef(overriddenpropsymderef);
+>>>>>>> origin/cpstrnew
         ppufile.putderef(propdefderef);
         ppufile.putlongint(index);
         ppufile.putlongint(default);
@@ -1791,6 +2370,10 @@ implementation
           end
         else if is_objcclass(tdef(owner.defowner)) then
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef symansistr}
             if cachedmangledname<>'' then
               result:=cachedmangledname
@@ -1806,6 +2389,29 @@ implementation
 {$else symansistr}
                 cachedmangledname:=stringdup(result);
 {$endif symansistr}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+            if assigned(objcoffsetmangledname) then
+              result:=objcoffsetmangledname^
+            else
+              begin
+                result:=target_info.cprefix+'OBJC_IVAR_$_'+tobjectdef(owner.defowner).objextname^+'.'+RealName;
+                objcoffsetmangledname:=stringdup(result);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
               end;
           end
         else
@@ -1815,10 +2421,26 @@ implementation
 
     destructor tfieldvarsym.destroy;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef symansistr}
         stringdispose(cachedmangledname);
 {$endif symansistr}
         stringdispose(externalname);
+=======
+        stringdispose(objcoffsetmangledname);
+>>>>>>> graemeg/cpstrnew
+=======
+        stringdispose(objcoffsetmangledname);
+>>>>>>> graemeg/cpstrnew
+=======
+        stringdispose(objcoffsetmangledname);
+>>>>>>> graemeg/cpstrnew
+=======
+        stringdispose(objcoffsetmangledname);
+>>>>>>> origin/cpstrnew
         inherited destroy;
       end;
 
@@ -1933,11 +2555,31 @@ implementation
            _mangledname:=stringdup(ppufile.getstring)
          else
            _mangledname:=nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif symansistr}
          if vo_has_section in varoptions then
            section:=ppufile.getansistring;
          ppufile.getderef(fieldvarsymderef);
          ppuload_platform(ppufile);
+=======
+         if vo_has_section in varoptions then
+           section:=ppufile.getansistring;
+>>>>>>> graemeg/cpstrnew
+=======
+         if vo_has_section in varoptions then
+           section:=ppufile.getansistring;
+>>>>>>> graemeg/cpstrnew
+=======
+         if vo_has_section in varoptions then
+           section:=ppufile.getansistring;
+>>>>>>> graemeg/cpstrnew
+=======
+         if vo_has_section in varoptions then
+           section:=ppufile.getansistring;
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -1967,6 +2609,7 @@ implementation
            has not been calculated yet (can happen in case only the
            mangledbasename has been set) }
          if vo_has_mangledname in varoptions then
+<<<<<<< HEAD
 {$ifdef symansistr}
            ppufile.putansistring(mangledname);
 {$else symansistr}
@@ -1983,6 +2626,12 @@ implementation
       begin
         inherited buildderef;
         fieldvarsymderef.build(fieldvarsym);
+=======
+           ppufile.putstring(_mangledname^);
+         if vo_has_section in varoptions then
+           ppufile.putansistring(section);
+         ppufile.writeentry(ibstaticvarsym);
+>>>>>>> graemeg/cpstrnew
       end;
 
 
@@ -2110,9 +2759,23 @@ implementation
 
     constructor tparavarsym.create(const n : string;nr:word;vsp:tvarspez;def:tdef;vopts:tvaroptions);
       begin
+<<<<<<< HEAD
          inherited create(paravarsym,n,vsp,def,vopts,true);
          if (vsp in [vs_var,vs_value,vs_const,vs_constref]) and
             not(vo_is_funcret in vopts) then
+=======
+         inherited create(paravarsym,n,vsp,def,vopts);
+         if (vsp in [vs_var,vs_value,vs_const,vs_constref]) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
            varstate := vs_initialised;
          paranr:=nr;
          paraloc[calleeside].init;
@@ -2389,7 +3052,13 @@ implementation
                value.len:=ppufile.getlongint;
                getmem(pc,value.len+1);
                ppufile.getdata(pc^,value.len);
+<<<<<<< HEAD
+<<<<<<< HEAD
                pc[value.len]:=#0;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                value.valueptr:=pc;
              end;
            constreal :
@@ -2536,7 +3205,19 @@ implementation
          inherited ppuload(enumsym,ppufile);
          ppufile.getderef(definitionderef);
          value:=ppufile.getlongint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          ppuload_platform(ppufile);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -2566,10 +3247,31 @@ implementation
 ****************************************************************************}
 
 
+<<<<<<< HEAD
     constructor ttypesym.create(const n : string;def:tdef;doregister:boolean);
 
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         inherited create(typesym,n,doregister);
+=======
+        inherited create(typesym,n);
+>>>>>>> graemeg/cpstrnew
+=======
+        inherited create(typesym,n);
+>>>>>>> graemeg/cpstrnew
+=======
+        inherited create(typesym,n);
+>>>>>>> graemeg/cpstrnew
+=======
+        inherited create(typesym,n);
+>>>>>>> origin/cpstrnew
+=======
+      begin
+        inherited create(typesym,n);
+>>>>>>> origin/fixes_2.4
         typedef:=def;
         { register the typesym for the definition }
         if assigned(typedef) and

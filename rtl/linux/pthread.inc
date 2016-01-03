@@ -50,7 +50,15 @@ Type
        THREAD_PRIORITY_NORMAL, THREAD_PRIORITY_ABOVE_NORMAL,
        THREAD_PRIORITY_HIGHEST, THREAD_PRIORITY_TIME_CRITICAL
      );
+<<<<<<< HEAD
+<<<<<<< HEAD
 }
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
   const
      _POSIX_THREAD_THREADS_MAX = 64;
      PTHREAD_THREADS_MAX = 512;
@@ -129,7 +137,13 @@ Type
 {$ifndef ANDROID}
     function pthread_attr_setinheritsched(__attr:ppthread_attr_t; __inherit:longint):longint;cdecl;external;
     function pthread_attr_getinheritsched(__attr:ppthread_attr_t; __inherit:plongint):longint;cdecl;external;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     function pthread_attr_setstacksize(p: ppthread_attr_t;s:size_t):cint;cdecl;external;
     function pthread_attr_getstacksize(p: ppthread_attr_t;s:psize_t):cint;cdecl;external;
     function pthread_attr_setscope(__attr:ppthread_attr_t; __scope:longint):longint;cdecl;external;
@@ -245,10 +259,20 @@ Var
 {    pthread_sigmask : Function(__how:longint; __newmask:plibc_sigset; __oldmask:plibc_sigset):longint;cdecl;}
     pthread_kill : Function(__thread:pthread_t; __signo:longint):longint;cdecl;
 {    sigwait : Function(__set:plibc_sigset; __sig:plongint):longint;cdecl;}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef ANDROID}
     pthread_atfork : Function(__prepare:tprocedure ; __parent:tprocedure ; __child:tprocedure ):longint;cdecl;
     pthread_kill_other_threads_np : procedure;cdecl;
 {$endif}
+=======
+    pthread_atfork : Function(__prepare:tprocedure ; __parent:tprocedure ; __child:tprocedure ):longint;cdecl;
+    pthread_kill_other_threads_np : procedure;cdecl;
+>>>>>>> graemeg/fixes_2_2
+=======
+    pthread_atfork : Function(__prepare:tprocedure ; __parent:tprocedure ; __child:tprocedure ):longint;cdecl;
+    pthread_kill_other_threads_np : procedure;cdecl;
+>>>>>>> origin/fixes_2_2
     pthread_sigmask: Function(how: cint; nset: plibc_sigset; oset: plibc_sigset): cint;cdecl;
 
     sem_init     :   function (__sem:Psem_t; __pshared:longint; __value:dword):longint;cdecl;
@@ -340,7 +364,13 @@ begin
 {$ifndef ANDROID}
   Pointer(pthread_atfork):= dlsym(PthreadDLL,'pthread_atfork');
   Pointer(pthread_kill_other_threads_np) := dlsym(PthreadDLL,'pthread_kill_other_threads_np');
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Pointer(pthread_sigmask) := dlsym(PthreadDLL,'pthread_sigmask');
   Pointer(sem_init     ) := dlsym(PthreadDLL,'sem_init');
   Pointer(sem_destroy  ) := dlsym(PthreadDLL,'sem_destroy');

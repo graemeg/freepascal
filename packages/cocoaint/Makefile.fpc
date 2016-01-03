@@ -1,17 +1,66 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for Apple Universal Interfaces for Free Pascal
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for Apple Universal Interfaces for Free Pascal
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for Apple Universal Interfaces for Free Pascal
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for Apple Universal Interfaces for Free Pascal
+>>>>>>> origin/cpstrnew
 #
 
 [package]
 name=cocoaint
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=CocoaAll WebKit CoreData
+implicitunits=AnonClassDefinitionsQuartzcore AnonClassDefinitionsWebkit
+
+[libs]
+libversion=2.5.1
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 [install]
 fpcpackage=y
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 [default]
 fpcdir=../..
 
@@ -100,3 +149,33 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+[compiler]
+sourcedir=src
+
+[default]
+fpcdir=../..
+
+[require]
+packages=univint
+
+[rules]
+WebKit$(PPUEXT): CocoaAll$(PPUEXT)
+
+CoreData$(PPUEXT): CocoaAll$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

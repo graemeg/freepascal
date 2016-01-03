@@ -38,14 +38,28 @@ begin
 {$ifdef FPC_DOUBLE_HILO_SWAPPED}
   comp1:=swap(comp1);
 {$endif FPC_DOUBLE_HILO_SWAPPED}
+<<<<<<< HEAD
   str(comp1:23,s);
+=======
+  str(comp1,s);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifdef FPC_HAS_TYPE_EXTENDED}
   if s<>'-6.53142228756617E+0018' then
 {$else FPC_HAS_TYPE_EXTENDED}
   { this constant has been verified and is correct (FK) }
   { doubles have slightly different precision on processors <> x86, because }
   { intermediate calculations are not performed in 80 bit there (JM)        }
+<<<<<<< HEAD
   if trim(s)<>'-6531422287566170211' then
+=======
+  if Copy(s,1,Length(s)-1)<>'-653142228756617021' then
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif FPC_HAS_TYPE_EXTENDED}
     begin
       writeln(s);

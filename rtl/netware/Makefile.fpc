@@ -7,6 +7,10 @@ main=rtl
 
 [target]
 loaders=nwpre prelude
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=$(SYSTEMUNIT) uuchar objpas macpas iso7185 extpas strings \
       lineinfo lnfodwrf heaptrc \
       dos sysconst \
@@ -20,6 +24,32 @@ rsts=math typinfo classes sysconst rtlconsts
 implicitunits=exeinfo \
       cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+units=$(SYSTEMUNIT) objpas macpas iso7185 strings \
+      lineinfo lnfodwrf winsock heaptrc matrix \
+      dos crt objects sysconst \
+      initc sysutils types typinfo fgl classes fmtbcd \
+      cpu mmx getopts \
+      dateutils strutils convutils \
+      charset ucomplex variants \
+      rtlconsts math varutils freebidi utf8bidi \
+      mouse video keyboard cmem dynlibs sockets \
+      aio nwsnut nwserv nwnit nwprot netware nwcalls ctypes nwpre
+rsts=math varutils variants typinfo classes dateutils sysconst convutils rtlconsts
+implicitunits=exeinfo
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [require]
 nortl=y
@@ -136,6 +166,22 @@ strings$(PPUEXT) : $(INC)/strings.pp $(INC)/stringsi.inc\
 #
 
 nwpre$(PPUEXT) : nwpre.pp $(SYSTEMUNIT)$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+netware$(PPUEXT) : netware.pp $(SYSTEMUNIT)$(PPUEXT)
+
+winsock$(PPUEXT) : winsock.pp $(SYSTEMUNIT)$(PPUEXT)
+>>>>>>> graemeg/cpstrnew
 
 netware$(PPUEXT) : netware.pp $(SYSTEMUNIT)$(PPUEXT)
 

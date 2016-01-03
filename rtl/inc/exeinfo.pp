@@ -71,6 +71,8 @@ uses
 
   var
     Tmm: TMemoryBasicInformation;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_OS_UNICODE}
     TST: array[0..Max_Path] of WideChar;
 {$else}
@@ -79,10 +81,27 @@ uses
   procedure GetModuleByAddr(addr: pointer; var baseaddr: pointer; var filename: string);
     begin
       baseaddr:=nil;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef wince}
+    TST: array[0..Max_Path] of WideChar;
+{$else wince}
+    TST: array[0..Max_Path] of Char;
+{$endif wince}
+  procedure GetModuleByAddr(addr: pointer; var baseaddr: pointer; var filename: string);
+    begin
+      baseaddr:= nil;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       if VirtualQuery(addr, @Tmm, SizeOf(Tmm))<>sizeof(Tmm) then
         filename:=ParamStr(0)
       else
         begin
+<<<<<<< HEAD
+<<<<<<< HEAD
           baseaddr:=Tmm.AllocationBase;
           TST[0]:= #0;
           GetModuleFileName(THandle(Tmm.AllocationBase), TST, Length(TST));
@@ -91,6 +110,20 @@ uses
 {$else}
           filename:= String(PChar(@TST));
 {$endif FPC_OS_UNICODE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          TST[0]:= #0;
+          GetModuleFileName(THandle(Tmm.AllocationBase), TST, Length(TST));
+{$ifdef wince}
+          filename:= String(PWideChar(@TST));
+{$else wince}
+          filename:= String(PChar(@TST));
+{$endif wince}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         end;
     end;
 
@@ -99,11 +132,19 @@ uses
   procedure GetModuleByAddr(addr: pointer; var baseaddr: pointer; var filename: string);
     begin
       baseaddr:= nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_HAS_FEATURE_COMMANDARGS}
       filename:=ParamStr(0);
 {$else FPC_HAS_FEATURE_COMMANDARGS}
       filename:='';
 {$endif FPC_HAS_FEATURE_COMMANDARGS}
+=======
+      filename:=ParamStr(0);
+>>>>>>> graemeg/fixes_2_2
+=======
+      filename:=ParamStr(0);
+>>>>>>> origin/fixes_2_2
     end;
 
 {$endif windows}
@@ -113,7 +154,15 @@ uses
                              Executable Loaders
 ****************************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if defined(freebsd) or defined(netbsd) or defined (openbsd) or defined(linux) or defined(sunos) or defined(android) or defined(dragonfly)}
+=======
+{$if defined(netbsd) or defined(freebsd) or defined(linux) or defined(sunos)}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$if defined(netbsd) or defined(freebsd) or defined(linux) or defined(sunos)}
+>>>>>>> origin/fixes_2_2
   {$ifdef cpu64}
     {$define ELF64}
   {$else}
@@ -174,6 +223,8 @@ type
 
 {$ifdef netware}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function getByte(var f:file):byte;
   begin
     BlockRead (f,getByte,1);
@@ -184,7 +235,23 @@ function getByte(var f:file):byte;
   begin
     for i := 1 to bytes do getbyte(f);
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> origin/cpstrnew
   function get0String (var f:file) : string;
   var c : char;
   begin
@@ -196,32 +263,110 @@ function getByte(var f:file):byte;
       c := char (getbyte(f));
     end;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> origin/cpstrnew
   function getint32 (var f:file): longint;
   begin
     blockread (F, getint32, 4);
   end;
 
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 const SIZE_OF_NLM_INTERNAL_FIXED_HEADER = 130;
       SIZE_OF_NLM_INTERNAL_VERSION_HEADER = 32;
       SIZE_OF_NLM_INTERNAL_EXTENDED_HEADER = 124;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function openNetwareNLM(var e:TExeFile):boolean;
 var valid : boolean;
     name  : string;
     hdrLength,
     dataOffset,
     dataLength : longint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function loadNetwareNLM:boolean;
+var valid : boolean;
+    name  : string;
+    StabLength,
+    StabStrLength,
+    alignAmount,
+    hdrLength,
+    dataOffset,
+    dataLength : longint;
+
+  function getByte:byte;
+  begin
+    BlockRead (f,getByte,1);
+  end;
+
+  procedure Skip (bytes : longint);
+  var i : longint;
+  begin
+    for i := 1 to bytes do getbyte;
+  end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   function getLString : String;
   var Res:string;
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     blockread (e.F, res, 1);
     if length (res) > 0 THEN
       blockread (e.F, res[1], length (res));
     getbyte(e.f);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    blockread (F, res, 1);
+    if length (res) > 0 THEN
+      blockread (F, res[1], length (res));
+    getbyte;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     getLString := res;
   end;
 
@@ -230,6 +375,8 @@ var valid : boolean;
   begin
     getFixString := '';
     for I := 1 to Len do
+<<<<<<< HEAD
+<<<<<<< HEAD
       getFixString := getFixString + char (getbyte(e.f));
   end;
 
@@ -239,18 +386,93 @@ var valid : boolean;
     blockread (e.F, getword, 2);
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> origin/cpstrnew
 
 begin
   e.sechdrofs := 0;
   openNetwareNLM:=false;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> origin/cpstrnew
   // read and check header
   Skip (e.f,SIZE_OF_NLM_INTERNAL_FIXED_HEADER);
   getLString;  // NLM Description
   getInt32(e.f);    // Stacksize
   getInt32(e.f);    // Reserved
   skip(e.f,5);     // old Thread Name
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      getFixString := getFixString + char (getbyte);
+  end;
+
+  function get0String : string;
+  var c : char;
+  begin
+    get0String := '';
+    c := char (getbyte);
+    while (c <> #0) do
+    begin
+      get0String := get0String + c;
+      c := char (getbyte);
+    end;
+  end;
+
+  function getword : word;
+  begin
+    blockread (F, getword, 2);
+  end;
+
+  function getint32 : longint;
+  begin
+    blockread (F, getint32, 4);
+  end;
+
+begin
+  processaddress := 0;
+  LoadNetwareNLM:=false;
+  stabofs:=-1;
+  stabstrofs:=-1;
+  { read and check header }
+  Skip (SIZE_OF_NLM_INTERNAL_FIXED_HEADER);
+  getLString;  // NLM Description
+  getInt32;    // Stacksize
+  getInt32;    // Reserved
+  skip(5);     // old Thread Name
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   getLString;  // Screen Name
   getLString;  // Thread Name
   hdrLength := -1;
@@ -261,7 +483,15 @@ begin
     name := getFixString (8);
     if (name = 'VeRsIoN#') then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       Skip (e.f,SIZE_OF_NLM_INTERNAL_VERSION_HEADER-8);
+=======
+      Skip (SIZE_OF_NLM_INTERNAL_VERSION_HEADER-8);
+>>>>>>> graemeg/fixes_2_2
+=======
+      Skip (SIZE_OF_NLM_INTERNAL_VERSION_HEADER-8);
+>>>>>>> origin/fixes_2_2
     end else
     if (name = 'CoPyRiGh') then
     begin
@@ -270,6 +500,8 @@ begin
     end else
     if (name = 'MeSsAgEs') then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       skip (e.f,SIZE_OF_NLM_INTERNAL_EXTENDED_HEADER - 8);
     end else
     if (name = 'CuStHeAd') then
@@ -278,12 +510,29 @@ begin
       dataOffset := getInt32(e.f);
       dataLength := getInt32(e.f);
       Skip (e.f,8); // dateStamp
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      skip (SIZE_OF_NLM_INTERNAL_EXTENDED_HEADER - 8);
+    end else
+    if (name = 'CuStHeAd') then
+    begin
+      hdrLength := getInt32;
+      dataOffset := getInt32;
+      dataLength := getInt32;
+      Skip (8); // dataStamp
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       Valid := false;
     end else
       Valid := false;
   until not valid;
   if (hdrLength = -1) or (dataOffset = -1) or (dataLength = -1) then
     exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   Seek (e.F, dataOffset);
   e.sechdrofs := dataOffset;
@@ -296,10 +545,18 @@ var name : string;
 begin
   seek(e.f,e.sechdrofs);
     (* The format of the section information is:
+=======
+  (* The format of the section information is:
+>>>>>>> graemeg/fixes_2_2
+=======
+  (* The format of the section information is:
+>>>>>>> origin/fixes_2_2
        null terminated section name
        zeroes to adjust to 4 byte boundary
        4 byte section data file pointer
        4 byte section size *)
+<<<<<<< HEAD
+<<<<<<< HEAD
   Repeat
     Name := Get0String(e.f);
     alignAmount := 4 - ((length (Name) + 1) MOD 4);
@@ -314,6 +571,38 @@ begin
   FindSectionNetwareNLM := (Name=asecname);
 end;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  Seek (F, dataOffset);
+  stabOfs := 0;
+  stabStrOfs := 0;
+  Repeat
+    Name := Get0String;
+    alignAmount := 4 - ((length (Name) + 1) MOD 4);
+    Skip (alignAmount);
+    if (Name = '.stab') then
+    begin
+      stabOfs := getInt32;
+      stabLength := getInt32;
+      stabcnt:=stabLength div sizeof(tstab);
+    end else
+    if (Name = '.stabstr') then
+    begin
+      stabStrOfs := getInt32;
+      stabStrLength := getInt32;
+    end else
+      Skip (8);
+  until (Name = '') or ((StabOfs <> 0) and (stabStrOfs <> 0));
+  Seek (F,stabOfs);
+  //if (StabOfs = 0) then __ConsolePrintf ('StabOfs = 0');
+  //if (StabStrOfs = 0) then __ConsolePrintf ('StabStrOfs = 0');
+  LoadNetwareNLM := ((stabOfs > 0) and (stabStrOfs > 0));
+end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif}
 
 
@@ -383,6 +672,8 @@ begin
      if asecname=secname then
        begin
          secofs:=cardinal(sechdr.datapos) + E.ImgOffset;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef GO32V2}
          seclen:=sechdr.datalen;
 {$else GO32V2}
@@ -394,6 +685,12 @@ begin
          else
            exit;
 {$endif GO32V2}
+=======
+         seclen:=sechdr.datalen;
+>>>>>>> graemeg/fixes_2_2
+=======
+         seclen:=sechdr.datalen;
+>>>>>>> origin/fixes_2_2
          FindSectionCoff:=true;
          exit;
        end;
@@ -510,10 +807,22 @@ begin
     exit;
   e.sechdrofs:=filepos(e.f);
   e.nsects:=peheader.NumberOfSections;
+<<<<<<< HEAD
+<<<<<<< HEAD
   e.secstrofs:=peheader.PointerToSymbolTable+peheader.NumberOfSymbols*sizeof(coffsymbol);
   if e.secstrofs>e.size then
     exit;
   e.processaddress:=peheader.ImageBase;
+=======
+  e.secstrofs:=peheader.PointerToSymbolTable+peheader.NumberOfSymbols*sizeof(coffsymbol)+4;
+  if e.secstrofs>e.size then
+    exit;
+>>>>>>> graemeg/fixes_2_2
+=======
+  e.secstrofs:=peheader.PointerToSymbolTable+peheader.NumberOfSymbols*sizeof(coffsymbol)+4;
+  if e.secstrofs>e.size then
+    exit;
+>>>>>>> origin/fixes_2_2
   OpenPeCoff:=true;
 end;
 {$endif PE32}
@@ -539,7 +848,17 @@ type
      SizeOfUninitializedData : longint;
      AddressOfEntryPoint : longint;
      BaseOfCode : longint;
+<<<<<<< HEAD
+<<<<<<< HEAD
      ImageBase : qword;
+=======
+     BaseOfData : longint;
+     ImageBase : longint;
+>>>>>>> graemeg/fixes_2_2
+=======
+     BaseOfData : longint;
+     ImageBase : longint;
+>>>>>>> origin/fixes_2_2
      SectionAlignment : longint;
      FileAlignment : longint;
      MajorOperatingSystemVersion : word;
@@ -554,10 +873,23 @@ type
      CheckSum : longint;
      Subsystem : word;
      DllCharacteristics : word;
+<<<<<<< HEAD
+<<<<<<< HEAD
      SizeOfStackReserve : qword;
      SizeOfStackCommit : qword;
      SizeOfHeapReserve : qword;
      SizeOfHeapCommit : qword;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+     SizeOfStackReserve : int64;
+     SizeOfStackCommit : int64;
+     SizeOfHeapReserve : int64;
+     SizeOfHeapCommit : int64;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
      LoaderFlags : longint;
      NumberOfRvaAndSizes : longint;
      DataDirectory : array[1..$80] of byte;
@@ -577,10 +909,22 @@ begin
    exit;
   e.sechdrofs:=filepos(e.f);
   e.nsects:=peheader.NumberOfSections;
+<<<<<<< HEAD
+<<<<<<< HEAD
   e.secstrofs:=peheader.PointerToSymbolTable+peheader.NumberOfSymbols*sizeof(coffsymbol);
   if e.secstrofs>e.size then
     exit;
   e.processaddress:=peheader.ImageBase;
+=======
+  e.secstrofs:=peheader.PointerToSymbolTable+peheader.NumberOfSymbols*sizeof(coffsymbol)+4;
+  if e.secstrofs>e.size then
+    exit;
+>>>>>>> graemeg/fixes_2_2
+=======
+  e.secstrofs:=peheader.PointerToSymbolTable+peheader.NumberOfSymbols*sizeof(coffsymbol)+4;
+  if e.secstrofs>e.size then
+    exit;
+>>>>>>> origin/fixes_2_2
   OpenPePlusCoff:=true;
 end;
 {$endif PE32PLUS}
@@ -613,7 +957,15 @@ type
   end;
 
 const
+<<<<<<< HEAD
+<<<<<<< HEAD
  PageSizeFill = $FFF;
+=======
+ StartPageSize = $1000;
+>>>>>>> graemeg/fixes_2_2
+=======
+ StartPageSize = $1000;
+>>>>>>> origin/fixes_2_2
 
 var
  DosHeader: TDosHeader;
@@ -632,9 +984,15 @@ begin
  if E.Size > SizeOf (DosHeader) then
  begin
   BlockRead (E.F, DosHeader, SizeOf (TDosHeader));
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF DEBUG_LINEINFO}
   WriteLn (StdErr, 'DosHeader.E_CParHdr = ', DosHeader.E_cParHdr);
 {$ENDIF DEBUG_LINEINFO}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   if E.Size > DosHeader.e_cparhdr shl 4 + SizeOf (TEmxHeader) then
   begin
    Seek (E.F, DosHeader.e_cparhdr shl 4);
@@ -644,6 +1002,8 @@ begin
    if (S4 = 'emx ') and
                        (E.Size > EmxHeader.AoutOfs + SizeOf (TAoutHeader)) then
    begin
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF DEBUG_LINEINFO}
     WriteLn (StdErr, 'EmxHeader.AoutOfs = ', EmxHeader.AoutOfs, '/', HexStr (pointer (EmxHeader.AoutOfs)));
 {$ENDIF DEBUG_LINEINFO}
@@ -666,6 +1026,24 @@ begin
     WriteLn (StdErr, 'AoutHeader.SymbSize = ', AoutHeader.SymbSize, '/', HexStr (pointer (AoutHeader.SymbSize)));
     WriteLn (StdErr, 'StabOfs = ', StabOfs, '/', HexStr (pointer (StabOfs)));
 {$ENDIF DEBUG_LINEINFO}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    Seek (E.F, EmxHeader.AoutOfs);
+    BlockRead (E.F, AoutHeader, SizeOf (TAoutHeader));
+   if AOutHeader.Magic = $10B then
+     StabOfs := StartPageSize
+   else
+     StabOfs := EmxHeader.AoutOfs + SizeOf (TAoutHeader);
+   StabOfs := StabOfs
+                + AoutHeader.TextSize
+                + AoutHeader.DataSize
+                + AoutHeader.TextRelocSize
+                + AoutHeader.DataRelocSize;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     if E.Size > StabOfs + AoutHeader.SymbSize then
      OpenEMXaout := true;
    end;
@@ -732,6 +1110,8 @@ type
       sh_addralign      : longword;
       sh_entsize        : longword;
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   telfproghdr=packed record
     p_type            : longword;
     p_offset          : longword;
@@ -742,6 +1122,10 @@ type
     p_flags           : longword;
     p_align           : longword;
   end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif ELF32 or BEOS}
 {$ifdef ELF64}
 type
@@ -778,6 +1162,8 @@ type
       sh_addralign      : int64;
       sh_entsize        : int64;
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   telfproghdr=packed record
     p_type            : longword;
@@ -789,6 +1175,10 @@ type
     p_memsz           : qword;
     p_align           : qword;
   end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif ELF64}
 
 
@@ -797,8 +1187,14 @@ function OpenElf(var e:TExeFile):boolean;
 var
   elfheader : telfheader;
   elfsec    : telfsechdr;
+<<<<<<< HEAD
+<<<<<<< HEAD
   phdr      : telfproghdr;
   i         : longint;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   OpenElf:=false;
   { read and check header }
@@ -815,6 +1211,8 @@ begin
   e.secstrofs:=elfsec.sh_offset;
   e.sechdrofs:=elfheader.e_shoff;
   e.nsects:=elfheader.e_shnum;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   { scan program headers to find the image base address }
   e.processaddress:=High(e.processaddress);
@@ -829,6 +1227,10 @@ begin
   if e.processaddress = High(e.processaddress) then
     e.processaddress:=0;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   OpenElf:=true;
 end;
 
@@ -849,7 +1251,15 @@ begin
      fillchar(secnamebuf,sizeof(secnamebuf),0);
      oldofs:=filepos(e.f);
      seek(e.f,e.secstrofs+elfsec.sh_name);
+<<<<<<< HEAD
+<<<<<<< HEAD
      blockread(e.f,secnamebuf,sizeof(secnamebuf)-1,bufsize);
+=======
+     blockread(e.f,secnamebuf,sizeof(secnamebuf),bufsize);
+>>>>>>> graemeg/fixes_2_2
+=======
+     blockread(e.f,secnamebuf,sizeof(secnamebuf),bufsize);
+>>>>>>> origin/fixes_2_2
      seek(e.f,oldofs);
      secname:=strpas(secnamebuf);
      if asecname=secname then
@@ -880,7 +1290,13 @@ const
    B_LIBRARY_IMAGE = 2;
    B_ADD_ON_IMAGE  = 3;
    B_SYSTEM_IMAGE  = 4;
+<<<<<<< HEAD
+<<<<<<< HEAD
    B_OK = 0;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 type
     image_info = packed record
@@ -914,6 +1330,8 @@ var
 begin
   // The only BeOS specific part is setting the processaddress
   cookie := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
   OpenElf32Beos:=false;
   fillchar(info, sizeof(image_info), 0);
   while get_next_image_info(0,cookie,info,sizeof(info))=B_OK do
@@ -928,6 +1346,20 @@ begin
              exit;
          end;
     end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  fillchar(info, sizeof(image_info), 0);
+  get_next_image_info(0,cookie,info,sizeof(info));
+  if (info._type = B_APP_IMAGE) then
+     e.processaddress := cardinal(info.text)
+  else
+     e.processaddress := 0;
+  OpenElf32Beos := OpenElf(e);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 {$endif beos}
 
@@ -995,11 +1427,19 @@ begin
   seek(e.f,e.sechdrofs);
   for i:= 1 to e.nsects do
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       {$I-}
       blockread (e.f, block, sizeof(block));
       {$I+}
       if IOResult <> 0 then
         Exit;
+=======
+      blockread (e.f, block, sizeof(block));
+>>>>>>> graemeg/fixes_2_2
+=======
+      blockread (e.f, block, sizeof(block));
+>>>>>>> origin/fixes_2_2
       if block.cmd = $2   then
       begin
           blockread (e.f, symbolsSeg, sizeof(symbolsSeg));
@@ -1124,8 +1564,14 @@ begin
   fillchar(e,sizeof(e),0);
   e.bufsize:=sizeof(e.buf);
   e.filename:=fn;
+<<<<<<< HEAD
+<<<<<<< HEAD
   if fn='' then   // we don't want to read stdin
     exit;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   assign(e.f,fn);
   {$I-}
    ofm:=filemode;
@@ -1215,7 +1661,15 @@ begin
   if length(dbgfn)=0 then
     exit;
   i:=align(length(dbgfn)+1,4);
+<<<<<<< HEAD
+<<<<<<< HEAD
   if (i+4)>dbglinklen then
+=======
+  if i>dbglinklen then
+>>>>>>> graemeg/fixes_2_2
+=======
+  if i>dbglinklen then
+>>>>>>> origin/fixes_2_2
     exit;
   move(dbglink[i],dbgcrc,4);
   { current dir }

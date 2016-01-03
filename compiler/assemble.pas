@@ -33,7 +33,15 @@ interface
 
     uses
       SysUtils,
+<<<<<<< HEAD
+<<<<<<< HEAD
       systems,globtype,globals,aasmbase,aasmtai,aasmdata,ogbase,owbase,finput;
+=======
+      systems,globtype,globals,aasmbase,aasmtai,aasmdata,ogbase,finput;
+>>>>>>> graemeg/fixes_2_2
+=======
+      systems,globtype,globals,aasmbase,aasmtai,aasmdata,ogbase,finput;
+>>>>>>> origin/fixes_2_2
 
     const
        { maximum of aasmoutput lists there will be }
@@ -62,6 +70,10 @@ interface
         procedure MakeObject;virtual;abstract;
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       TExternalAssembler = class;
 
       IExternalAssemblerOutputFileDecorator=interface
@@ -71,6 +83,19 @@ interface
       end;
 
       TExternalAssemblerOutputFile=class
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      {# This is the base class which should be overridden for each each
+         assembler writer. It is used to actually assembler a file,
+         and write the output to the assembler file.
+      }
+      TExternalAssembler=class(TAssembler)
+>>>>>>> graemeg/cpstrnew
       private
         fdecorator: IExternalAssemblerOutputFileDecorator;
       protected
@@ -81,6 +106,7 @@ interface
         outcnt   : longint;
         outbuf   : array[0..AsmOutSize-1] of char;
         outfile  : file;
+<<<<<<< HEAD
         fioerror : boolean;
         linestart: boolean;
 
@@ -143,12 +169,20 @@ interface
 
         procedure CreateSmartLinkPath(const s:TPathStr);
       protected
+=======
+        ioerror : boolean;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       {input source info}
         lastfileinfo : tfileposinfo;
         infile,
         lastinfile   : tinputfile;
       {last section type written}
         lastsectype : TAsmSectionType;
+<<<<<<< HEAD
+<<<<<<< HEAD
         procedure WriteSourceLine(hp: tailineinfo);
         procedure WriteTempalloc(hp: tai_tempalloc);
         procedure WriteRealConstAsBytes(hp: tai_realconst; const dbdir: string; do_line: boolean);
@@ -156,6 +190,10 @@ interface
         function double2str(d : double) : string; virtual;
         function extended2str(e : extended) : string; virtual;
         Function DoPipe:boolean;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       public
 
         {# Returns the complete path and executable name of the assembler
@@ -173,6 +211,24 @@ interface
 
         Function  DoAssemble:boolean;virtual;
 
+<<<<<<< HEAD
+=======
+        {# Write a new line to the assembler file }
+        Procedure AsmLn;
+
+        procedure AsmCreate(Aplace:tcutplace);
+        procedure AsmClose;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         {# This routine should be overridden for each assembler, it is used
            to actually write the abstract assembler stream to file.}
         procedure WriteTree(p:TAsmList);virtual;
@@ -193,6 +249,14 @@ interface
         property writer: TExternalAssemblerOutputFile read fwriter;
       end;
       TExternalAssemblerClass = class of TExternalAssembler;
+
+      { TInternalAssembler }
+
+      { TInternalAssembler }
+
+      { TInternalAssembler }
+
+      { TInternalAssembler }
 
       { TInternalAssembler }
 
@@ -904,7 +968,21 @@ Implementation
         else if iPhoneOSVersionMin<>'' then
           Replace(result,'$DARWINVERSION','-miphoneos-version-min='+iPhoneOSVersionMin)
         else
+<<<<<<< HEAD
           Replace(result,'$DARWINVERSION','');
+=======
+          result:='-m68000 '+result;
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifdef arm}
         if (target_info.system=system_arm_darwin) then
           Replace(result,'$ARCH',lower(cputypestr[current_settings.cputype]));
@@ -1124,7 +1202,14 @@ Implementation
 
     procedure TExternalAssembler.MakeObject;
       begin
+<<<<<<< HEAD
         writer.AsmCreate(cut_normal);
+=======
+        AsmCreate(cut_normal);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         FillChar(lastfileinfo, sizeof(lastfileinfo), 0);
         lastfileinfo.line := -1;
         lastinfile := nil;
@@ -1263,6 +1348,7 @@ Implementation
                   move(pstart^,hs[1],len);
                   hs[0]:=chr(len);
                   sym:=objdata.symbolref(hs);
+                  have_first_symbol:=true;
                   { Second symbol? }
                   if assigned(relocsym) then
                     begin
@@ -1414,7 +1500,15 @@ Implementation
             oldsec:=ObjData.CurrObjSec;
             ObjData.SetSection(ObjData.StabsSec);
             ObjData.Writebytes(stab,sizeof(TObjStabEntry)-4);
+<<<<<<< HEAD
+<<<<<<< HEAD
             ObjData.Writereloc(stab.nvalue,4,relocsym,RELOC_ABSOLUTE32);
+=======
+            ObjData.Writereloc(stab.nvalue,4,relocsym,RELOC_ABSOLUTE);
+>>>>>>> graemeg/fixes_2_2
+=======
+            ObjData.Writereloc(stab.nvalue,4,relocsym,RELOC_ABSOLUTE);
+>>>>>>> origin/fixes_2_2
             ObjData.setsection(oldsec);
           end;
         if assigned(pendquote) then
@@ -1461,7 +1555,23 @@ Implementation
           begin
             { it's possible that indirect symbol is not present in the list,
               so we must create it as undefined }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             indsym:=ObjData.CObjSymbol.Create(ObjData.ObjSymbolList, indirectname);
+=======
+            indsym:=TObjSymbol.Create(ObjData.ObjSymbolList, indirectname);
+>>>>>>> graemeg/cpstrnew
+=======
+            indsym:=TObjSymbol.Create(ObjData.ObjSymbolList, indirectname);
+>>>>>>> graemeg/cpstrnew
+=======
+            indsym:=TObjSymbol.Create(ObjData.ObjSymbolList, indirectname);
+>>>>>>> graemeg/cpstrnew
+=======
+            indsym:=TObjSymbol.Create(ObjData.ObjSymbolList, indirectname);
+>>>>>>> origin/cpstrnew
             indsym.typ:=AT_NONE;
             indsym.bind:=AB_NONE;
           end;
@@ -1486,9 +1596,15 @@ Implementation
                        short jumps to become out of range }
                      Tai_align_abstract(hp).fillsize:=Tai_align_abstract(hp).aligntype;
                      ObjData.alloc(Tai_align_abstract(hp).fillsize);
+<<<<<<< HEAD
+<<<<<<< HEAD
                      { may need to increase alignment of section }
                      if tai_align_abstract(hp).aligntype>ObjData.CurrObjSec.secalign then
                        ObjData.CurrObjSec.secalign:=tai_align_abstract(hp).aligntype;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                    end
                  else
                    Tai_align_abstract(hp).fillsize:=0;
@@ -1507,8 +1623,19 @@ Implementation
                      ObjData.alloc(Tai_datablock(hp).size);
                    end;
                end;
+<<<<<<< HEAD
              ait_realconst:
                ObjData.alloc(tai_realconst(hp).savesize);
+=======
+             ait_real_80bit :
+               ObjData.alloc(tai_real_80bit(hp).savesize);
+             ait_real_64bit :
+               ObjData.alloc(8);
+             ait_real_32bit :
+               ObjData.alloc(4);
+             ait_comp_64bit :
+               ObjData.alloc(8);
+>>>>>>> graemeg/cpstrnew
              ait_const:
                begin
                  { if symbols are provided we can calculate the value for relative symbols.
@@ -1516,6 +1643,8 @@ Implementation
                  if assigned(tai_const(hp).sym) then
                    begin
                      objsym:=Objdata.SymbolRef(tai_const(hp).sym);
+<<<<<<< HEAD
+<<<<<<< HEAD
                      { objsym already defined and there is endsym? }
                      if assigned(objsym.objsection) and assigned(tai_const(hp).endsym) then
                        begin
@@ -1534,10 +1663,25 @@ Implementation
                              else
                                Tai_const(hp).value:=objsymend.address-objsym.address+Tai_const(hp).symofs;
                            end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                     if assigned(tai_const(hp).endsym) then
+                       begin
+                         objsymend:=Objdata.SymbolRef(tai_const(hp).endsym);
+                         if objsymend.objsection<>objsym.objsection then
+                           internalerror(200404124);
+                         Tai_const(hp).value:=objsymend.address-objsym.address+Tai_const(hp).symofs;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                        end;
                    end;
                  ObjData.alloc(tai_const(hp).size);
                end;
+<<<<<<< HEAD
+<<<<<<< HEAD
              ait_directive:
                begin
                  case tai_directive(hp).directive of
@@ -1546,22 +1690,62 @@ Implementation
                      ;
                    asd_lazy_reference:
                      begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                        if tai_directive(hp).name='' then
                          Internalerror(2009112101);
                        objsym:=ObjData.symbolref(tai_directive(hp).name);
+=======
+                       if tai_directive(hp).name = nil then
+                         Internalerror(2009112101);
+                       objsym:=ObjData.symbolref(tai_directive(hp).name^);
+>>>>>>> graemeg/cpstrnew
+=======
+                       if tai_directive(hp).name = nil then
+                         Internalerror(2009112101);
+                       objsym:=ObjData.symbolref(tai_directive(hp).name^);
+>>>>>>> graemeg/cpstrnew
+=======
+                       if tai_directive(hp).name = nil then
+                         Internalerror(2009112101);
+                       objsym:=ObjData.symbolref(tai_directive(hp).name^);
+>>>>>>> graemeg/cpstrnew
+=======
+                       if tai_directive(hp).name = nil then
+                         Internalerror(2009112101);
+                       objsym:=ObjData.symbolref(tai_directive(hp).name^);
+>>>>>>> origin/cpstrnew
                        objsym.bind:=AB_LAZY;
                      end;
                    asd_reference:
                      { ignore for now, but should be added}
                      ;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef ARM}
                    asd_thumb_func:
                      ObjData.ThumbFunc:=true;
 {$endif ARM}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                    else
                      internalerror(2010011101);
                  end;
                end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
              ait_section:
                begin
                  ObjData.CreateSection(Tai_section(hp).sectype,Tai_section(hp).name^,Tai_section(hp).secorder);
@@ -1636,16 +1820,37 @@ Implementation
                      ObjData.alloc(Tai_datablock(hp).size);
                    end;
                end;
+<<<<<<< HEAD
              ait_realconst:
                ObjData.alloc(tai_realconst(hp).savesize);
+=======
+             ait_real_80bit :
+               ObjData.alloc(tai_real_80bit(hp).savesize);
+             ait_real_64bit :
+               ObjData.alloc(8);
+             ait_real_32bit :
+               ObjData.alloc(4);
+             ait_comp_64bit :
+               ObjData.alloc(8);
+>>>>>>> graemeg/cpstrnew
              ait_const:
                begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                  { Recalculate relative symbols }
+=======
+                 { Recalculate relative symbols, all checks are done in treepass0 }
+>>>>>>> graemeg/fixes_2_2
+=======
+                 { Recalculate relative symbols, all checks are done in treepass0 }
+>>>>>>> origin/fixes_2_2
                  if assigned(tai_const(hp).sym) and
                     assigned(tai_const(hp).endsym) then
                    begin
                      objsym:=Objdata.SymbolRef(tai_const(hp).sym);
                      objsymend:=Objdata.SymbolRef(tai_const(hp).endsym);
+<<<<<<< HEAD
+<<<<<<< HEAD
                      if objsymend.objsection<>objsym.objsection then
                        begin
                          if (Tai_const(hp).consttype in [aitconst_uleb128bit,aitconst_sleb128bit]) or
@@ -1654,6 +1859,12 @@ Implementation
                        end
                      else
                        Tai_const(hp).value:=objsymend.address-objsym.address+Tai_const(hp).symofs;
+=======
+                     Tai_const(hp).value:=objsymend.address-objsym.address+Tai_const(hp).symofs;
+>>>>>>> graemeg/fixes_2_2
+=======
+                     Tai_const(hp).value:=objsymend.address-objsym.address+Tai_const(hp).symofs;
+>>>>>>> origin/fixes_2_2
                    end;
                  ObjData.alloc(tai_const(hp).size);
                end;
@@ -1683,13 +1894,39 @@ Implementation
              ait_cutobject :
                if SmartAsm then
                 break;
+<<<<<<< HEAD
+<<<<<<< HEAD
              ait_directive :
                begin
                  case tai_directive(hp).directive of
                    asd_indirect_symbol:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                      if tai_directive(hp).name='' then
                        Internalerror(2009101103)
                      else if not SetIndirectToSymbol(Tai(hp.Previous), tai_directive(hp).name) then
+=======
+                     if tai_directive(hp).name = nil then
+                       Internalerror(2009101103)
+                     else if not SetIndirectToSymbol(Tai(hp.Previous), tai_directive(hp).name^) then
+>>>>>>> graemeg/cpstrnew
+=======
+                     if tai_directive(hp).name = nil then
+                       Internalerror(2009101103)
+                     else if not SetIndirectToSymbol(Tai(hp.Previous), tai_directive(hp).name^) then
+>>>>>>> graemeg/cpstrnew
+=======
+                     if tai_directive(hp).name = nil then
+                       Internalerror(2009101103)
+                     else if not SetIndirectToSymbol(Tai(hp.Previous), tai_directive(hp).name^) then
+>>>>>>> graemeg/cpstrnew
+=======
+                     if tai_directive(hp).name = nil then
+                       Internalerror(2009101103)
+                     else if not SetIndirectToSymbol(Tai(hp.Previous), tai_directive(hp).name^) then
+>>>>>>> origin/cpstrnew
                        Internalerror(2009101102);
                    asd_lazy_reference:
                      { handled in TreePass0 }
@@ -1697,13 +1934,29 @@ Implementation
                    asd_reference:
                      { ignore for now, but should be added}
                      ;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                    asd_thumb_func:
                      { ignore for now, but should be added}
                      ;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                    else
                      internalerror(2010011102);
                  end;
                end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            end;
            hp:=Tai(hp.next);
          end;
@@ -1714,12 +1967,18 @@ Implementation
     function TInternalAssembler.TreePass2(hp:Tai):Tai;
       var
         fillbuffer : tfillbuffer;
+<<<<<<< HEAD
+<<<<<<< HEAD
         leblen : byte;
         lebbuf : array[0..63] of byte;
         objsym,
         ref,
         objsymend : TObjSymbol;
         zerobuf : array[0..63] of byte;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         relative_reloc: boolean;
         pdata : pointer;
         ssingle : single;
@@ -1733,14 +1992,57 @@ Implementation
         fillchar(zerobuf,sizeof(zerobuf),0);
         fillchar(objsym,sizeof(objsym),0);
         fillchar(objsymend,sizeof(objsymend),0);
+=======
+      begin
+        fillchar(zerobuf,sizeof(zerobuf),0);
+>>>>>>> graemeg/cpstrnew
+=======
+      begin
+        fillchar(zerobuf,sizeof(zerobuf),0);
+>>>>>>> graemeg/cpstrnew
+=======
+      begin
+        fillchar(zerobuf,sizeof(zerobuf),0);
+>>>>>>> graemeg/cpstrnew
+=======
+      begin
+        fillchar(zerobuf,sizeof(zerobuf),0);
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef x86}
+        co : comp;
+{$endif x86}
+        leblen : byte;
+        lebbuf : array[0..63] of byte;
+        objsym,
+        objsymend : TObjSymbol;
+      begin
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         { main loop }
         while assigned(hp) do
          begin
            case hp.typ of
              ait_align :
                begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                  if tai_align_abstract(hp).aligntype>ObjData.CurrObjSec.secalign then
                    InternalError(2012072301);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                  if oso_data in ObjData.CurrObjSec.secoptions then
                    ObjData.writebytes(Tai_align_abstract(hp).calculatefillbuf(fillbuffer,oso_executable in ObjData.CurrObjSec.secoptions)^,
                      Tai_align_abstract(hp).fillsize)
@@ -1775,7 +2077,20 @@ Implementation
                      ObjData.alloc(Tai_datablock(hp).size);
                    end;
                end;
+<<<<<<< HEAD
              ait_realconst:
+=======
+             ait_real_80bit :
+               begin
+                 ObjData.writebytes(Tai_real_80bit(hp).value,10);
+                 ObjData.writebytes(zerobuf,Tai_real_80bit(hp).savesize-10);
+               end;
+             ait_real_64bit :
+               ObjData.writebytes(Tai_real_64bit(hp).value,8);
+             ait_real_32bit :
+               ObjData.writebytes(Tai_real_32bit(hp).value,4);
+             ait_comp_64bit :
+>>>>>>> graemeg/cpstrnew
                begin
                  case tai_realconst(hp).realtyp of
                    aitrealconst_s32bit:
@@ -1813,13 +2128,25 @@ Implementation
                begin
                  { Recalculate relative symbols, addresses of forward references
                    can be changed in treepass1 }
+<<<<<<< HEAD
+<<<<<<< HEAD
                  relative_reloc:=false;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                  if assigned(tai_const(hp).sym) and
                     assigned(tai_const(hp).endsym) then
                    begin
                      objsym:=Objdata.SymbolRef(tai_const(hp).sym);
                      objsymend:=Objdata.SymbolRef(tai_const(hp).endsym);
+<<<<<<< HEAD
+<<<<<<< HEAD
                      relative_reloc:=(objsym.objsection<>objsymend.objsection);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                      Tai_const(hp).value:=objsymend.address-objsym.address+Tai_const(hp).symofs;
                    end;
                  case tai_const(hp).consttype of
@@ -1834,8 +2161,14 @@ Implementation
                        if assigned(tai_const(hp).sym) and
                           not assigned(tai_const(hp).endsym) then
                          ObjData.writereloc(Tai_const(hp).symofs,tai_const(hp).size,Objdata.SymbolRef(tai_const(hp).sym),RELOC_ABSOLUTE)
+<<<<<<< HEAD
+<<<<<<< HEAD
                        else if relative_reloc then
                          ObjData.writereloc(ObjData.CurrObjSec.size+tai_const(hp).size-objsym.address+tai_const(hp).symofs,tai_const(hp).size,objsymend,RELOC_RELATIVE)
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                        else
                          ObjData.writebytes(Tai_const(hp).value,tai_const(hp).size);
                      end;
@@ -1845,13 +2178,23 @@ Implementation
                        if target_info.system=system_x86_64_win64 then
                          ObjData.writereloc(Tai_const(hp).symofs,sizeof(longint),Objdata.SymbolRef(tai_const(hp).sym),RELOC_RVA)
                        else
+<<<<<<< HEAD
+<<<<<<< HEAD
                          ObjData.writereloc(Tai_const(hp).symofs,sizeof(pint),Objdata.SymbolRef(tai_const(hp).sym),RELOC_RVA);
+=======
+                         ObjData.writereloc(Tai_const(hp).symofs,sizeof(aint),Objdata.SymbolRef(tai_const(hp).sym),RELOC_RVA);
+>>>>>>> graemeg/fixes_2_2
+=======
+                         ObjData.writereloc(Tai_const(hp).symofs,sizeof(aint),Objdata.SymbolRef(tai_const(hp).sym),RELOC_RVA);
+>>>>>>> origin/fixes_2_2
                      end;
                    aitconst_secrel32_symbol :
                      begin
                        { Required for DWARF2 support under Windows }
                        ObjData.writereloc(Tai_const(hp).symofs,sizeof(longint),Objdata.SymbolRef(tai_const(hp).sym),RELOC_SECREL32);
                      end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef i8086}
                    aitconst_farptr :
                      if assigned(tai_const(hp).sym) and
@@ -1877,6 +2220,10 @@ Implementation
 {$endif arm}
                    aitconst_gotoff_symbol:
                      ObjData.writereloc(Tai_const(hp).symofs,sizeof(longint),Objdata.SymbolRef(tai_const(hp).sym),RELOC_GOTOFF);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                    aitconst_uleb128bit,
                    aitconst_sleb128bit :
                      begin
@@ -1891,12 +2238,24 @@ Implementation
                    aitconst_darwin_dwarf_delta32,
                    aitconst_darwin_dwarf_delta64:
                      ObjData.writebytes(Tai_const(hp).value,tai_const(hp).size);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                    aitconst_half16bit,
                    aitconst_gs:
                      begin
                        tmp:=Tai_const(hp).value div 2;
                        ObjData.writebytes(tmp,2);
                      end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                    else
                      internalerror(200603254);
                  end;
@@ -1916,6 +2275,8 @@ Implementation
              ait_cutobject :
                if SmartAsm then
                 break;
+<<<<<<< HEAD
+<<<<<<< HEAD
              ait_weak:
                begin
                  objsym:=ObjData.symbolref(tai_weak(hp).sym^);
@@ -1939,6 +2300,10 @@ Implementation
              ait_seh_directive :
                tai_seh_directive(hp).generate_code(objdata);
 {$endif DISABLE_WIN64_SEH}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            end;
            hp:=Tai(hp.next);
          end;

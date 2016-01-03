@@ -1,0 +1,10 @@
+3/usr/local/bin/makepp
+VERSION2.05.18.2darwin-thread-multi-2level
+LOAD140610947619488makefile140610946498216/users/stevenjames/build/freepascal140610946498216
+TRY140610947619488
+USEdefault rule
+DEPEND140610947619488
+UP_TO_DATE140610947619488
+LOAD_REC140610947619488
+*** /users/stevenjames/build/freepascal/makefile:2: syntax error in line '<<<<<<< HEAD'
+N_FILES000

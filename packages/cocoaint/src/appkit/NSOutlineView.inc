@@ -19,6 +19,10 @@ const
 { Records }
 type
   __OvFlags = record
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     case byte of
     0: (_anonbitfield_NSOutlineView0: cuint);
     1: (data: bitpacked record
@@ -87,6 +91,86 @@ type
 {$endif}
          end;
        );
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef fpc_big_endian}
+    delegateWillDisplayCell: 0..1;
+    delegateShouldEditTableColumn: 0..1;
+    delegateShouldSelectItem: 0..1;
+    delegateShouldSelectTableColumn: 0..1;
+    delegateSelectionShouldChangeInOutlineView: 0..1;
+    delegateShouldCollapseItem: 0..1;
+    delegateShouldExpandItem: 0..1;
+    autoresizesOutlineColumn: 0..1;
+    autoSaveExpandItems: 0..1;
+    enableExpandNotifications: 0..1;
+    delegateWillDisplayOutlineCell: 0..1;
+    removeChildInProgress: 0..1;
+    selectionAdjustmentDisabled: 0..1;
+    autoExpandFlashState: 0..1;
+    _unused: 0..1;
+    delegateHeightOfRowByItem: 0..1;
+    delayRowEntryFreeDisabled: 0..1;
+    numberOfRowsDataExpandEntered: 0..1;
+    validDataSourceMethods: 0..1;
+    reloadingData: 0..1;
+    dataSourceDraggingEndedAt: 0..1;
+    dataSourceDraggedImageMovedTo: 0..1;
+    delegateShouldShowOutlineCellForItem: 0..1;
+    delegateAutoExpandItem: 0..1;
+    delegateAutoCollapseItem: 0..1;
+    delegateShouldAutoExpandItem: 0..1;
+    flashingEntireRow: 0..1;
+    flashingOutlineCell: 0..1;
+    dontRedisplayOnFrameChange: 0..1;
+    __reserved: 0..((1 shl 3)-1);
+{$else}
+    __reserved: 0..((1 shl 3)-1);
+    dontRedisplayOnFrameChange: 0..1;
+    flashingOutlineCell: 0..1;
+    flashingEntireRow: 0..1;
+    delegateShouldAutoExpandItem: 0..1;
+    delegateAutoCollapseItem: 0..1;
+    delegateAutoExpandItem: 0..1;
+    delegateShouldShowOutlineCellForItem: 0..1;
+    dataSourceDraggedImageMovedTo: 0..1;
+    dataSourceDraggingEndedAt: 0..1;
+    reloadingData: 0..1;
+    validDataSourceMethods: 0..1;
+    numberOfRowsDataExpandEntered: 0..1;
+    delayRowEntryFreeDisabled: 0..1;
+    delegateHeightOfRowByItem: 0..1;
+    _unused: 0..1;
+    autoExpandFlashState: 0..1;
+    selectionAdjustmentDisabled: 0..1;
+    removeChildInProgress: 0..1;
+    delegateWillDisplayOutlineCell: 0..1;
+    enableExpandNotifications: 0..1;
+    autoSaveExpandItems: 0..1;
+    autoresizesOutlineColumn: 0..1;
+    delegateShouldExpandItem: 0..1;
+    delegateShouldCollapseItem: 0..1;
+    delegateSelectionShouldChangeInOutlineView: 0..1;
+    delegateShouldSelectTableColumn: 0..1;
+    delegateShouldSelectItem: 0..1;
+    delegateShouldEditTableColumn: 0..1;
+    delegateWillDisplayCell: 0..1;
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 _OVFlags = __OvFlags;
 __OvFlagsPtr = ^__OvFlags;

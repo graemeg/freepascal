@@ -251,11 +251,27 @@ end;
 
 
 function TCollection.GetNamePath: string;
+<<<<<<< HEAD
+<<<<<<< HEAD
 var o : TPersistent;
 begin
   o:=getowner;
   if assigned(o) and (propname<>'') then 
      result:=o.getnamepath+'.'+propname
+=======
+var o : TObject;
+begin
+  o:=getowner;
+  if assigned(o) and (propname<>'') and (o IS TPersistent) then 
+     result:=TPersistent(o).getnamepath+'.'+propname
+>>>>>>> graemeg/fixes_2_2
+=======
+var o : TObject;
+begin
+  o:=getowner;
+  if assigned(o) and (propname<>'') and (o IS TPersistent) then 
+     result:=TPersistent(o).getnamepath+'.'+propname
+>>>>>>> origin/fixes_2_2
    else
      result:=classname;
 end;
@@ -424,8 +440,20 @@ procedure TCollection.Exchange(Const Index1, index2: integer);
 
 begin
   FItems.Exchange(Index1,Index2);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if FUpdateCount = 0 then
     FPONotifyObservers(Self,ooChange,Nil);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;
 
 

@@ -42,9 +42,25 @@ interface
         'cp','cpc','cpi','sbic','sbis','br','mov','movw','ldi','lds','ld','ldd',
         'sts','st','std','lpm','elpm','spm','in','out','push','pop',
         'lsl','lsr','rol','ror','asr','swap','bset','bclr','sbi','cbi',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         'sec','seh','sei','sen','ser','ses','set','sev','sez',
         'clc','clh','cli','cln','clr','cls','clt','clv','clz',
         'bst','bld','break','nop','sleep','wdr');
+=======
+        'bst','bld','s','cli','brak','nop','sleep','wdr');
+>>>>>>> graemeg/cpstrnew
+=======
+        'bst','bld','s','cli','brak','nop','sleep','wdr');
+>>>>>>> graemeg/cpstrnew
+=======
+        'bst','bld','s','cli','brak','nop','sleep','wdr');
+>>>>>>> graemeg/cpstrnew
+=======
+        'bst','bld','s','cli','brak','nop','sleep','wdr');
+>>>>>>> origin/cpstrnew
 
     function gas_regnum_search(const s:string):Tregister;
     function gas_regname(r:Tregister):string;

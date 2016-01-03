@@ -66,10 +66,35 @@ var
     _objectStore: NSPersistentStoreCoordinator;
     _undoManager: NSUndoManager;
     _children: NSMutableArray;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __flags: record
       case byte of
        0: (_anonbitfield_NSManagedObjectContext0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __flags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSManagedObjectContext0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _registeredForCallback: 0..1;
         _propagatesDeletesAtEndOfEvent: 0..1;
         _exhaustiveValidation: 0..1;
@@ -86,7 +111,19 @@ var
         _isNSEditorEditing: 0..1;
         _isMainThreadBlessed: 0..1;
         _reservedFlags: 0..((1 shl 17)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _unprocessedChanges: NSMutableSet;

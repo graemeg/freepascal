@@ -45,10 +45,35 @@
     _reserved4: Pointer;
     _rearrangementExtensions: id;
     _temporaryWorkObjects: NSMutableArray;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __arrayControllerFlags: record
       case byte of
        0: (_anonbitfield_NSArrayController0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __arrayControllerFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSArrayController0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _avoidsEmptySelection: 0..1;
         _preservesSelection: 0..1;
         _selectsInsertedObjects: 0..1;
@@ -65,7 +90,19 @@
         _skipSortingAfterFetch: 0..1;
         _automaticallyRearrangesObjects: 0..1;
         _reservedArrayController: 0..((1 shl 17)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _observedIndexHint: NSUInteger;

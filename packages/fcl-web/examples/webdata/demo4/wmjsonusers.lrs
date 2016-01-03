@@ -1,0 +1,11 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TFPWebProviderDataModule1','FORMDATA',[
+  'TPF0'#25'TFPWebProviderDataModule1'#24'FPWebProviderDataModule1'#14'OldCreat'
+  +'eOrder'#8#12'InputAdaptor'#7#29'ExtJSJSonWebdataInputAdaptor1'#15'ContentPr'
+  +'oducer'#7#23'ExtJSJSONDataFormatter1'#6'Height'#3','#1#16'HorizontalOffset'
+  +#3'{'#2#14'VerticalOffset'#3#230#0#5'Width'#3#144#1#0#29'TExtJSJSonWebdataIn'
+  +'putAdaptor'#29'ExtJSJSonWebdataInputAdaptor1'#4'left'#3#204#0#3'top'#2'|'#0
+  +#0#23'TExtJSJSONDataFormatter'#23'ExtJSJSONDataFormatter1'#13'AllowPageSize'
+  +#8#4'left'#3#204#0#3'top'#3#164#0#0#0#0
+]);

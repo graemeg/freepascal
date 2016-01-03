@@ -94,8 +94,7 @@ end;
 
 procedure TCustomDaemonApplication.SysStartRunDaemons;
 begin
-  if Application.HasOption('b','background') then
-    DaemonizeProgram;
+
 end;
 
 procedure TCustomDaemonApplication.SysEndRunDaemons;
@@ -105,6 +104,8 @@ Var
   DC : TDaemonController;
   
 begin
+  if Application.HasOption('b','background') then
+    DaemonizeProgram;
   For I:=ComponentCount-1 downto 0 do
     If Components[i] is TDaemoncontroller then
       begin

@@ -53,6 +53,22 @@ V6.9.2
 - add german localization strings (thx heiko)
 
 ------------------------
+V6.9.2
+
+- compile fixes for delphi 4, 5 (pdouble)
+- fix indexes to work properly with ansi upper/lower casing
+- fix memory leak when inserting duplicate item in AVL tree 
+- add german localization strings (thx heiko)
+
+------------------------
+V6.9.2
+
+- compile fixes for delphi 4, 5 (pdouble)
+- fix indexes to work properly with ansi upper/lower casing
+- fix memory leak when inserting duplicate item in AVL tree 
+- add german localization strings (thx heiko)
+
+------------------------
 V6.9.1
 
 - fix last memo field getting truncated (patch by dhdorrough)

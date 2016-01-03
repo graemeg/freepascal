@@ -78,11 +78,47 @@ Type
         fib_Reserved     : Array [0..31] of Char;
     end;
 
-{$PACKRECORDS 2}
+{$PACKRECORDS NORMAL}
 
-FUNCTION Examine(lock : LONGINT location 'd1'; fileInfoBlock : pFileInfoBlock location 'd2') : LongBool; syscall _DOSBase 102;
-FUNCTION Lock(name : pCHAR location 'd1'; type_ : LONGINT location 'd2') : LONGINT; syscall _DOSBase 084;
-PROCEDURE UnLock(lock : LONGINT location 'd1'); syscall _DOSBase 090;
+FUNCTION Examine(lock : LONGINT; fileInfoBlock : pFileInfoBlock) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  lock,D1
+    MOVE.L  fileInfoBlock,D2
+    MOVEA.L _DOSBase,A6
+    JSR -102(A6)
+    MOVEA.L (A7)+,A6
+    TST.L   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+    @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION Lock(name : pCHAR; type_ : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  name,D1
+    MOVE.L  type_,D2
+    MOVEA.L _DOSBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE UnLock(lock : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  lock,D1
+    MOVEA.L _DOSBase,A6
+    JSR -090(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
 
 FUNCTION PCharCopy(s: PChar; thepos , len : Longint): PChar;
 VAR

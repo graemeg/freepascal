@@ -190,7 +190,15 @@ procedure TExternalLinkerGo32v2.SetDefaultInfo;
 begin
   with Info do
    begin
+<<<<<<< HEAD
+<<<<<<< HEAD
      ExeCmd[1]:='ld $OPT $RES';
+=======
+     ExeCmd[1]:='ld $RES';
+>>>>>>> graemeg/fixes_2_2
+=======
+     ExeCmd[1]:='ld $RES';
+>>>>>>> origin/fixes_2_2
    end;
 end;
 
@@ -205,7 +213,22 @@ begin
   WriteResponseFile:=False;
 
   { Open link.res file }
+<<<<<<< HEAD
   LinkRes:=TLinkRes.Create(outputexedir+Info.ResName,true);
+=======
+  LinkRes:=TLinkRes.Create(outputexedir+Info.ResName);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
   { Add all options to link.res instead of passing them via command line:
     DOS command line is limited to 126 characters! }
@@ -216,12 +239,31 @@ begin
     LinkRes.Add('-Map '+maybequoted(bstoslash(ChangeFileExt(current_module.exefilename,'.map'))));
   if create_smartlink_sections then
     LinkRes.Add('--gc-sections');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  
+  { Add all options to link.res instead of passing them via command line:
+    DOS command line is limited to 126 characters! }
+  LinkRes.Add('--script='+maybequoted(outputexedir+Info.ScriptName));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   if info.ExtraOptions<>'' then
     LinkRes.Add(Info.ExtraOptions);
 (* Potential issues with older ld version??? *)
   if (cs_link_strip in current_settings.globalswitches) then
     LinkRes.Add('-s');
+<<<<<<< HEAD
+<<<<<<< HEAD
   LinkRes.Add('-o '+maybequoted(bstoslash(current_module.exefilename)));
+=======
+  LinkRes.Add('-o '+maybequoted(current_module.exefilename^));
+>>>>>>> graemeg/fixes_2_2
+=======
+  LinkRes.Add('-o '+maybequoted(current_module.exefilename^));
+>>>>>>> origin/fixes_2_2
 
   { Write staticlibraries }
   if not StaticLibFiles.Empty then
@@ -295,7 +337,19 @@ begin
        end;
    end;
   ScriptRes.Add('    *(.text)');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   ScriptRes.Add('    *(.text.*)');
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   ScriptRes.Add('    etext  =  . ;');
   ScriptRes.Add('    PROVIDE(_etext  =  .);');
   ScriptRes.Add('    . = ALIGN(0x200);');
@@ -312,9 +366,29 @@ begin
   ScriptRes.Add('      *(.dtors)');
   ScriptRes.Add('      djgpp_last_dtor = . ;');
   ScriptRes.Add('      __environ = . ;');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   ScriptRes.Add('      _environ = .;');
   ScriptRes.Add('      LONG(0)');
   ScriptRes.Add('      . = ALIGN(0x20);');
+=======
+  ScriptRes.Add('      PROVIDE(_environ = .);');
+  ScriptRes.Add('      LONG(0)');
+>>>>>>> graemeg/cpstrnew
+=======
+  ScriptRes.Add('      PROVIDE(_environ = .);');
+  ScriptRes.Add('      LONG(0)');
+>>>>>>> graemeg/cpstrnew
+=======
+  ScriptRes.Add('      PROVIDE(_environ = .);');
+  ScriptRes.Add('      LONG(0)');
+>>>>>>> graemeg/cpstrnew
+=======
+  ScriptRes.Add('      PROVIDE(_environ = .);');
+  ScriptRes.Add('      LONG(0)');
+>>>>>>> origin/cpstrnew
   ScriptRes.Add('      *(.data)');
   ScriptRes.Add('      *(.data.*)');
   ScriptRes.Add('      . = ALIGN(0x20);');
@@ -383,7 +457,14 @@ var
   success : boolean;
 begin
   if not(cs_link_nolink in current_settings.globalswitches) then
+<<<<<<< HEAD
    Message1(exec_i_linking,current_module.exefilename);
+=======
+   Message1(exec_i_linking,current_module.exefilename^);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   { Write used files and libraries and our own ld script }
   WriteScript(false);
@@ -392,7 +473,13 @@ begin
 { Call linker }
   SplitBinCmd(Info.ExeCmd[1],binstr,cmdstr);
   Replace(cmdstr,'$RES','@'+maybequoted(outputexedir+Info.ResName));
+<<<<<<< HEAD
+<<<<<<< HEAD
   Replace(cmdstr,'$OPT',Info.ExtraOptions);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   success:=DoExec(FindUtil(utilsprefix+BinStr),cmdstr,true,false);
 
 { Remove ReponseFile }

@@ -5,6 +5,10 @@
 main=rtl
 [target]
 loaders=prt0 exceptn fpu
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=system uuchar objpas macpas iso7185 extpas strings \
       go32 dpmiexcp initc ports profile dxetype dxeload emu387 \
       dos cmem \
@@ -17,6 +21,36 @@ rsts=math typinfo classes sysconst
 implicitunits=exeinfo \
       cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852
+=======
+units=system objpas macpas iso7185 strings \
+      go32 dpmiexcp initc ports profile dxetype dxeload emu387 \
+=======
+units=system objpas macpas iso7185 strings \
+      go32 dpmiexcp initc ports profile dxetype dxeload emu387 \
+>>>>>>> graemeg/cpstrnew
+=======
+units=system objpas macpas iso7185 strings \
+      go32 dpmiexcp initc ports profile dxetype dxeload emu387 \
+>>>>>>> graemeg/cpstrnew
+=======
+units=system objpas macpas iso7185 strings \
+      go32 dpmiexcp initc ports profile dxetype dxeload emu387 \
+>>>>>>> origin/cpstrnew
+      dos crt objects printer cmem \
+      sysutils classes math typinfo matrix \
+      cpu mmx ucomplex getopts heaptrc lineinfo lnfodwrf ctypes fgl \
+      msmouse charset varutils \
+      video mouse keyboard variants vesamode types fmtbcd \
+      sysconst rtlconst dateutil convutil strutils
+rsts=math varutils typinfo classes variants dateutil sysconst
+implicitunits=exeinfo
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 [require]
 nortl=y
 [install]
@@ -152,6 +186,8 @@ sysutils$(PPUEXT) : sysutils.pp $(wildcard $(OBJPASDIR)/sysutils/*.inc) \
 	$(EXECPPAS)
 
 classes$(PPUEXT) : classes.pp $(wildcard $(OBJPASDIR)/classes/*.inc) \
+<<<<<<< HEAD
+<<<<<<< HEAD
 		   sysutils$(PPUEXT) typinfo$(PPUEXT) rtlconst$(PPUEXT) types$(PPUEXT) fgl$(PPUEXT)
 	$(COMPILER) -Fi$(OBJPASDIR)/classes classes.pp
 
@@ -159,6 +195,17 @@ fgl$(PPUEXT) : $(OBJPASDIR)/fgl.pp objpas$(PPUEXT) types$(PPUEXT) system$(PPUEXT
 	$(COMPILER) $(OBJPASDIR)/fgl.pp
 	$(EXECPPAS)
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                   sysutils$(PPUEXT) typinfo$(PPUEXT) rtlconst$(PPUEXT) types$(PPUEXT) fgl$(PPUEXT)
+        $(COMPILER) -Fi$(OBJPASDIR)/classes classes.pp
+fgl$(PPUEXT) : $(OBJPASDIR)/fgl.pp objpas$(PPUEXT) types$(PPUEXT) system$(PPUEXT) sysutils$(PPUEXT)
+        $(COMPILER) $(OBJPASDIR)/fgl.pp
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 math$(PPUEXT): $(OBJPASDIR)/math.pp objpas$(PPUEXT) sysutils$(PPUEXT)
 	$(COMPILER) $(OBJPASDIR)/math.pp
 	$(EXECPPAS)
@@ -183,8 +230,15 @@ sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT)
 # Mac Pascal Model
 #
 macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
 	$(COMPILER) $(INC)/macpas.pp $(REDIR)
 	$(EXECPPAS)
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        $(COMPILER) $(INC)/macpas.pp $(REDIR)
+>>>>>>> graemeg/fixes_2_2
 #
 # Other system-independent RTL Units
 #
@@ -236,6 +290,8 @@ msmouse$(PPUEXT) : msmouse.pp system$(PPUEXT)
 	$(EXECPPAS)
 
 callspec$(PPUEXT) : $(INC)/callspec.pp system$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
 	$(COMPILER) $(INC)/callspec.pp
 	$(EXECPPAS)
 
@@ -246,3 +302,9 @@ cmem$(PPUEXT) : $(INC)/cmem.pp $(SYSTEMUNIT)$(PPUEXT)
 ctypes$(PPUEXT) : $(INC)/ctypes.pp system$(PPUEXT)
 	$(COMPILER) $(INC)/ctypes.pp
 	$(EXECPPAS)
+=======
+ctypes$(PPUEXT) : $(INC)/ctypes.pp system$(PPUEXT)
+>>>>>>> graemeg/fixes_2_2
+=======
+ctypes$(PPUEXT) : $(INC)/ctypes.pp system$(PPUEXT)
+>>>>>>> origin/fixes_2_2

@@ -408,17 +408,81 @@
     TPARTITION_STYLE    = PARTITION_STYLE;
     PPARTITION_STYLE    = ^TPARTITION_STYLE;
 
+    _FINDEX_INFO_LEVELS = (FindExInfoStandard,FindExInfoBasic,FindExInfoMaxInfoLevel);
+    _FINDEX_SEARCH_OPS  = (FindExSearchNameMatch, FindExSearchLimitToDirectories,
+ 			   FindExSearchLimitToDevices, FindExSearchMaxSearchOp);
+    TFINDEX_INFO_LEVELS = _FINDEX_INFO_LEVELS;
+    FINDEX_INFO_LEVELS  = _FINDEX_INFO_LEVELS;
+    PFINDEX_INFO_LEVELS = ^TFINDEX_INFO_LEVELS;
+    TFINDEX_SEARCH_OPS  = _FINDEX_SEARCH_OPS;
+    FINDEX_SEARCH_OPS   = _FINDEX_SEARCH_OPS;
+    PFINDEX_SEARCH_OPS  = ^TFINDEX_SEARCH_OPS;
+
+    PARTITION_STYLE     = (PARTITION_STYLE_MBR:=0,PARTITION_STYLE_GPT,PARTITION_STYLE_RAW);
+    TPARTITION_STYLE    = PARTITION_STYLE;
+    PPARTITION_STYLE    = ^TPARTITION_STYLE;
+
+    _FINDEX_INFO_LEVELS = (FindExInfoStandard,FindExInfoBasic,FindExInfoMaxInfoLevel);
+    _FINDEX_SEARCH_OPS  = (FindExSearchNameMatch, FindExSearchLimitToDirectories,
+ 			   FindExSearchLimitToDevices, FindExSearchMaxSearchOp);
+    TFINDEX_INFO_LEVELS = _FINDEX_INFO_LEVELS;
+    FINDEX_INFO_LEVELS  = _FINDEX_INFO_LEVELS;
+    PFINDEX_INFO_LEVELS = ^TFINDEX_INFO_LEVELS;
+    TFINDEX_SEARCH_OPS  = _FINDEX_SEARCH_OPS;
+    FINDEX_SEARCH_OPS   = _FINDEX_SEARCH_OPS;
+    PFINDEX_SEARCH_OPS  = ^TFINDEX_SEARCH_OPS;
+
+    PARTITION_STYLE     = (PARTITION_STYLE_MBR:=0,PARTITION_STYLE_GPT,PARTITION_STYLE_RAW);
+    TPARTITION_STYLE    = PARTITION_STYLE;
+    PPARTITION_STYLE    = ^TPARTITION_STYLE;
+
+    _FINDEX_INFO_LEVELS = (FindExInfoStandard,FindExInfoBasic,FindExInfoMaxInfoLevel);
+    _FINDEX_SEARCH_OPS  = (FindExSearchNameMatch, FindExSearchLimitToDirectories,
+ 			   FindExSearchLimitToDevices, FindExSearchMaxSearchOp);
+    TFINDEX_INFO_LEVELS = _FINDEX_INFO_LEVELS;
+    FINDEX_INFO_LEVELS  = _FINDEX_INFO_LEVELS;
+    PFINDEX_INFO_LEVELS = ^TFINDEX_INFO_LEVELS;
+    TFINDEX_SEARCH_OPS  = _FINDEX_SEARCH_OPS;
+    FINDEX_SEARCH_OPS   = _FINDEX_SEARCH_OPS;
+    PFINDEX_SEARCH_OPS  = ^TFINDEX_SEARCH_OPS;
+
+    PARTITION_STYLE     = (PARTITION_STYLE_MBR:=0,PARTITION_STYLE_GPT,PARTITION_STYLE_RAW);
+    TPARTITION_STYLE    = PARTITION_STYLE;
+    PPARTITION_STYLE    = ^TPARTITION_STYLE;
+
+    _FINDEX_INFO_LEVELS = (FindExInfoStandard,FindExInfoBasic,FindExInfoMaxInfoLevel);
+    _FINDEX_SEARCH_OPS  = (FindExSearchNameMatch, FindExSearchLimitToDirectories,
+ 			   FindExSearchLimitToDevices, FindExSearchMaxSearchOp);
+    TFINDEX_INFO_LEVELS = _FINDEX_INFO_LEVELS;
+    FINDEX_INFO_LEVELS  = _FINDEX_INFO_LEVELS;
+    PFINDEX_INFO_LEVELS = ^TFINDEX_INFO_LEVELS;
+    TFINDEX_SEARCH_OPS  = _FINDEX_SEARCH_OPS;
+    FINDEX_SEARCH_OPS   = _FINDEX_SEARCH_OPS;
+    PFINDEX_SEARCH_OPS  = ^TFINDEX_SEARCH_OPS;
+
+    PARTITION_STYLE     = (PARTITION_STYLE_MBR:=0,PARTITION_STYLE_GPT,PARTITION_STYLE_RAW);
+    TPARTITION_STYLE    = PARTITION_STYLE;
+    PPARTITION_STYLE    = ^TPARTITION_STYLE;
+
  {
    Macros
  }
 
   MakeIntResourceA = PAnsiChar;
   MakeIntResourceW = PWideChar;
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$ifdef UNICODE}
     MakeIntResource = MakeIntResourceW;
   {$else}
     MakeIntResource = MakeIntResourceA;
   {$endif}
+=======
+  MakeIntResource = MakeIntResourceA;
+>>>>>>> graemeg/fixes_2_2
+=======
+  MakeIntResource = MakeIntResourceA;
+>>>>>>> origin/fixes_2_2
 
   { was #define dname(params) def_expr }
   { argument types are unknown }
@@ -496,7 +560,14 @@
 
   { was #define dname(params) def_expr }
   { argument types are unknown }
+<<<<<<< HEAD
   function MAKEINTATOM(i : longint) : LPTSTR; inline;
+=======
+  function MAKEINTATOM(i : longint) : LPTSTR;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   { was #define dname(params) def_expr }
   { argument types are unknown }
@@ -652,11 +723,39 @@
 
      PROC = FARPROC;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      ENUMRESTYPEPROC = function (hModule:HMODULE; lpszType:LPTSTR; lParam:LONG_PTR):WINBOOL;stdcall;
 
      ENUMRESNAMEPROC = function (hModule:HMODULE; lpszType:LPCTSTR; lpszName:LPTSTR; lParam:LONG_PTR):WINBOOL;stdcall;
 
      ENUMRESLANGPROC = function (hModule:HMODULE; lpszType:LPCTSTR; lpszName:LPCTSTR; wIDLanguage:WORD; lParam:LONG_PTR):WINBOOL;stdcall;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+     ENUMRESTYPEPROC = function (hModule:HANDLE; lpszType:LPTSTR; lParam:LONG_PTR):WINBOOL;stdcall;
+
+     ENUMRESNAMEPROC = function (hModule:HANDLE; lpszType:LPCTSTR; lpszName:LPTSTR; lParam:LONG_PTR):WINBOOL;stdcall;
+
+     ENUMRESLANGPROC = function (hModule:HANDLE; lpszType:LPCTSTR; lpszName:LPCTSTR; wIDLanguage:WORD; lParam:LONG_PTR):WINBOOL;stdcall;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+     ENUMRESTYPEPROC = function (hModule:HANDLE; lpszType:LPTSTR; lParam:LONG_PTR):WINBOOL;stdcall;
+
+     ENUMRESNAMEPROC = function (hModule:HANDLE; lpszType:LPCTSTR; lpszName:LPTSTR; lParam:LONG_PTR):WINBOOL;stdcall;
+
+     ENUMRESLANGPROC = function (hModule:HANDLE; lpszType:LPCTSTR; lpszName:LPCTSTR; wIDLanguage:WORD; lParam:LONG_PTR):WINBOOL;stdcall;
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
      DESKTOPENUMPROC = FARPROC;
 

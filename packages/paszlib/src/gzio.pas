@@ -133,10 +133,30 @@ var
 {$IFNDEF NO_DEFLATE}
   gzheader : array [0..9] of byte;
 {$ENDIF}
+<<<<<<< HEAD
+<<<<<<< HEAD
   doseek,
   exists,
   writing : boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   old_file_mode: byte;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 begin
 
   if (path='') or (mode='') then begin
@@ -172,7 +192,13 @@ begin
     case mode[i] of
       'r'      : s^.mode := 'r';
       'w'      : s^.mode := 'w';
+<<<<<<< HEAD
+<<<<<<< HEAD
       'a'      : s^.mode := 'a';
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       '0'..'9' : level := Ord(mode[i])-Ord('0');
       'f'      : strategy := Z_FILTERED;
       'h'      : strategy := Z_HUFFMAN_ONLY;
@@ -184,9 +210,17 @@ begin
     exit;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   writing:=( s^.mode='a') or (s^.mode='w');
 
   if writing then begin
+=======
+  if (s^.mode='w') then begin
+>>>>>>> graemeg/fixes_2_2
+=======
+  if (s^.mode='w') then begin
+>>>>>>> origin/fixes_2_2
 {$IFDEF NO_DEFLATE}
     err := Z_STREAM_ERROR;
 {$ELSE}
@@ -220,6 +254,8 @@ begin
 
   s^.stream.avail_out := Z_BUFSIZE;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$PUSH} {$I-}
   Assign (s^.gzfile, path);
   {$ifdef unix}
@@ -228,6 +264,10 @@ begin
     GetFAttr(s^.gzfile, Attr);
     exists:=(DosError= 0);
   {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   doseek:=false;
   if ((s^.mode='a') and not exists) or (s^.mode='w') then
@@ -245,11 +285,58 @@ begin
     end;
 
   {$POP}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  
+  doseek:=false;
+  if ((s^.mode='a') and not exists) or (s^.mode='w') then
+    begin
+   
+    ReWrite (s^.gzfile,1)  
+    end
+  else
+    begin
+      Reset (s^.gzfile,1);  
+      if s^.mode='a' then
+        doseek:=true;      // seek AFTER I/O check.
+    end;
+    
+  {$IFDEF IOCheck} {$I+} {$ENDIF}
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  {$IFOPT I+} {$I-} {$define IOcheck} {$ENDIF}
+  Assign (s^.gzfile, path);
+  {$ifdef unix}
+  if (fpstat(path,info)<0) and (s^.mode='w') then
+    ReWrite (s^.gzfile,1)  
+  else
+    Reset (s^.gzfile,1);
+  {$else}
+  GetFAttr(s^.gzfile, Attr);
+  if (DosError <> 0) and (s^.mode='w') then
+    ReWrite (s^.gzfile,1)
+  else
+    Reset (s^.gzfile,1);
+  {$endif}
+  {$IFDEF IOCheck} {$I+} {$ENDIF}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   if (IOResult <> 0) then begin
     destroy(s);
     gzopen := gzFile(nil);
     exit;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   // append binary file.
   if doseek then
      seek(s^.gzfile,filesize(s^.gzfile));
@@ -257,6 +344,14 @@ begin
   if s^.mode='a' then
     s^.mode:='w';   // difference append<->write doesn't matter anymore
   if writing then begin { Write a very simple .gz header }
+=======
+
+  if (s^.mode = 'w') then begin { Write a very simple .gz header }
+>>>>>>> graemeg/fixes_2_2
+=======
+
+  if (s^.mode = 'w') then begin { Write a very simple .gz header }
+>>>>>>> origin/fixes_2_2
 {$IFNDEF NO_DEFLATE}
     gzheader [0] := gz_magic [0];
     gzheader [1] := gz_magic [1];
@@ -332,9 +427,21 @@ begin
   end;
 
   if s^.stream.avail_in=0 then begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}{$I-}
     blockread (s^.gzfile, s^.inbuf^, Z_BUFSIZE, s^.stream.avail_in);
     {$pop}
+=======
+    {$I-}
+    blockread (s^.gzfile, s^.inbuf^, Z_BUFSIZE, s^.stream.avail_in);
+    {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$I-}
+    blockread (s^.gzfile, s^.inbuf^, Z_BUFSIZE, s^.stream.avail_in);
+    {$I+}
+>>>>>>> origin/fixes_2_2
     if s^.stream.avail_in=0 then begin
       s^.z_eof := true;
       if (IOResult <> 0) then s^.z_err := Z_ERRNO;
@@ -454,7 +561,15 @@ begin
 
   if ((flags and EXTRA_FIELD) <> 0) then begin { skip the extra field }
     len := cardinal(get_byte(s));
+<<<<<<< HEAD
+<<<<<<< HEAD
     len := len + (cardinal(get_byte(s)) shl 8);
+=======
+    len := len + (cardinal(get_byte(s)) shr 8);
+>>>>>>> graemeg/fixes_2_2
+=======
+    len := len + (cardinal(get_byte(s)) shr 8);
+>>>>>>> origin/fixes_2_2
     { len is garbage if EOF but the loop below will quit anyway }
     while (len <> 0) and (get_byte(s) <> Z_EOF) do Dec(len);
   end;
@@ -516,9 +631,21 @@ begin
   end;
 
   if s^.path <> '' then begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}{$I-}
     close(s^.gzfile);
     {$pop}
+=======
+    {$I-}
+    close(s^.gzfile);
+    {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$I-}
+    close(s^.gzfile);
+    {$I+}
+>>>>>>> origin/fixes_2_2
     if (IOResult <> 0) then destroy := Z_ERRNO;
   end;
 
@@ -609,9 +736,21 @@ begin
     end; { IF transparent }
 
     if (s^.stream.avail_in = 0) and (s^.z_eof = false) then begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       {$push}{$I-}
       blockread (s^.gzfile, s^.inbuf^, Z_BUFSIZE, s^.stream.avail_in);
       {$pop}
+=======
+      {$I-}
+      blockread (s^.gzfile, s^.inbuf^, Z_BUFSIZE, s^.stream.avail_in);
+      {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+      {$I-}
+      blockread (s^.gzfile, s^.inbuf^, Z_BUFSIZE, s^.stream.avail_in);
+      {$I+}
+>>>>>>> origin/fixes_2_2
       if (s^.stream.avail_in = 0) then begin
         s^.z_eof := true;
 	if (IOResult <> 0) then begin
@@ -881,9 +1020,21 @@ begin
     len := Z_BUFSIZE - s^.stream.avail_out;
 
     if (len <> 0) then begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       {$push}{$I-}
       blockwrite(s^.gzfile, s^.outbuf^, len, written);
       {$pop}
+=======
+      {$I-}
+      blockwrite(s^.gzfile, s^.outbuf^, len, written);
+      {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+      {$I-}
+      blockwrite(s^.gzfile, s^.outbuf^, len, written);
+      {$I+}
+>>>>>>> origin/fixes_2_2
       if (written <> len) then begin
         s^.z_err := Z_ERRNO;
         do_flush := Z_ERRNO;
@@ -966,17 +1117,41 @@ begin
   s^.stream.next_in := s^.inbuf;
 
   if (s^.startpos = 0) then begin { not a compressed file }
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}{$I-}
     seek (s^.gzfile, 0);
     {$pop}
+=======
+    {$I-}
+    seek (s^.gzfile, 0);
+    {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$I-}
+    seek (s^.gzfile, 0);
+    {$I+}
+>>>>>>> origin/fixes_2_2
     gzrewind := 0;
     exit;
   end;
 
   inflateReset(s^.stream);
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$I-}
   seek (s^.gzfile, s^.startpos);
   {$pop}
+=======
+  {$I-}
+  seek (s^.gzfile, s^.startpos);
+  {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$I-}
+  seek (s^.gzfile, s^.startpos);
+  {$I+}
+>>>>>>> origin/fixes_2_2
   gzrewind := integer(IOResult);
   exit;
 end;
@@ -1053,9 +1228,21 @@ begin
   if (s^.transparent = true) then begin
     s^.stream.avail_in := 0;
     s^.stream.next_in := s^.inbuf;
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}{$I-}
     seek (s^.gzfile, offset);
     {$pop}
+=======
+    {$I-}
+    seek (s^.gzfile, offset);
+    {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$I-}
+    seek (s^.gzfile, offset);
+    {$I+}
+>>>>>>> origin/fixes_2_2
     if (IOResult <> 0) then begin
       gzseek := z_off_t(-1);
       exit;
@@ -1223,4 +1410,12 @@ begin
   gzerror := s^.msg;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 end.
+=======
+end.
+>>>>>>> graemeg/fixes_2_2
+=======
+end.
+>>>>>>> origin/fixes_2_2

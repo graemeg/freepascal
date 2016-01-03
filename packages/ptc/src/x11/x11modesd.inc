@@ -1,6 +1,24 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 {
     This file is part of the PTCPas framebuffer library
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2001-2011 Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
     Original C++ version by Christian Nentwich (c.nentwich@cs.ucl.ac.uk)
 
     This library is free software; you can redistribute it and/or
@@ -31,7 +49,23 @@
 }
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   TX11Modes = class(TObject)
+=======
+  TX11Modes = Class(TObject)
+>>>>>>> graemeg/cpstrnew
+=======
+  TX11Modes = Class(TObject)
+>>>>>>> graemeg/cpstrnew
+=======
+  TX11Modes = Class(TObject)
+>>>>>>> graemeg/cpstrnew
+=======
+  TX11Modes = Class(TObject)
+>>>>>>> origin/cpstrnew
   private
     FDisplay: PDisplay;
     FScreen: cint;
@@ -40,7 +74,23 @@ type
     function GetHeight: Integer; virtual; abstract;
   public
     constructor Create(ADisplay: PDisplay; AScreen: cint); virtual;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure GetModes(var AModes: TPTCModeList; ACurrentDesktopFormat: IPTCFormat); virtual; abstract;
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); virtual; abstract;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); virtual; abstract;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); virtual; abstract;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); virtual; abstract;
+>>>>>>> origin/cpstrnew
     procedure SetBestMode(AWidth, AHeight: Integer); virtual; abstract;
     procedure RestorePreviousMode; virtual; abstract;
     property Width: Integer read GetWidth;
@@ -55,7 +105,23 @@ type
     function GetHeight: Integer; override;
   public
     constructor Create(ADisplay: PDisplay; AScreen: cint); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure GetModes(var AModes: TPTCModeList; ACurrentDesktopFormat: IPTCFormat); override;
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> origin/cpstrnew
     procedure SetBestMode(AWidth, AHeight: Integer); override;
     procedure RestorePreviousMode; override;
   end;
@@ -88,14 +154,84 @@ type
   public
     constructor Create(ADisplay: PDisplay; AScreen: cint); override;
     destructor Destroy; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure GetModes(var AModes: TPTCModeList; ACurrentDesktopFormat: IPTCFormat); override;
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> origin/cpstrnew
     procedure SetBestMode(AWidth, AHeight: Integer); override;
     procedure RestorePreviousMode; override;
   end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Type
+  TX11Modes = Class(TObject)
+  Private
+    FDisplay : PDisplay;
+    FScreen : cint;
+  Protected
+    Function GetWidth : Integer; Virtual; Abstract;
+    Function GetHeight : Integer; Virtual; Abstract;
+  Public
+    Constructor Create(ADisplay : PDisplay; AScreen : cint); Virtual;
+    Procedure GetModes(Var AModes : TPTCModeDynArray; ACurrentDesktopFormat : TPTCFormat); Virtual; Abstract;
+    Procedure SetBestMode(AWidth, AHeight : Integer); Virtual; Abstract;
+    Procedure RestorePreviousMode; Virtual; Abstract;
+    Property Width : Integer Read GetWidth;
+    Property Height : Integer Read GetHeight;
+  End;
+
+  TX11ModesNoModeSwitching = Class(TX11Modes)
+  Private
+    FWidth, FHeight : Integer;
+  Protected
+    Function GetWidth : Integer; Override;
+    Function GetHeight : Integer; Override;
+  Public
+    Constructor Create(ADisplay : PDisplay; AScreen : cint); Override;
+    Procedure GetModes(Var AModes : TPTCModeDynArray; ACurrentDesktopFormat : TPTCFormat); Override;
+    Procedure SetBestMode(AWidth, AHeight : Integer); Override;
+    Procedure RestorePreviousMode; Override;
+  End;
+
+{$IFDEF ENABLE_X11_EXTENSION_XRANDR}
+  TX11ModesXrandr = Class(TX11Modes)
+  Private
+    FRoot : TWindow;
+    FXRRConfig : PXRRScreenConfiguration;
+  Protected
+    Function GetWidth : Integer; Override;
+    Function GetHeight : Integer; Override;
+  Public
+    Constructor Create(ADisplay : PDisplay; AScreen : cint); Override;
+    Destructor Destroy; Override;
+    Procedure GetModes(Var AModes : TPTCModeDynArray; ACurrentDesktopFormat : TPTCFormat); Override;
+    Procedure SetBestMode(AWidth, AHeight : Integer); Override;
+    Procedure RestorePreviousMode; Override;
+  End;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ENDIF ENABLE_X11_EXTENSION_XRANDR}
 
 {$IFDEF ENABLE_X11_EXTENSION_XF86VIDMODE}
   TX11ModesXF86VidMode = Class(TX11Modes)
+<<<<<<< HEAD
+<<<<<<< HEAD
   private
     FModeList: PPXF86VidModeModeInfo;
     FModeListCount: cint;
@@ -111,8 +247,50 @@ type
   public
     constructor Create(ADisplay: PDisplay; AScreen: cint); override;
     destructor Destroy; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure GetModes(var AModes: TPTCModeList; ACurrentDesktopFormat: IPTCFormat); override;
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure GetModes(var AModes: TPTCModeDynArray; ACurrentDesktopFormat: TPTCFormat); override;
+>>>>>>> origin/cpstrnew
     procedure SetBestMode(AWidth, AHeight: Integer); override;
     procedure RestorePreviousMode; override;
   end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  Private
+    FModeList : PPXF86VidModeModeInfo;
+    FModeListCount : cint;
+    FSavedMode : PXF86VidModeModeLine;
+    FSavedDotClock : cint;
+    FWidth, FHeight : Integer;
+
+    Procedure RetrieveModeList;
+    Function FindNumberOfBestMode(AWidth, AHeight : Integer) : Integer;
+  Protected
+    Function GetWidth : Integer; Override;
+    Function GetHeight : Integer; Override;
+  Public
+    Constructor Create(ADisplay : PDisplay; AScreen : cint); Override;
+    Destructor Destroy; Override;
+    Procedure GetModes(Var AModes : TPTCModeDynArray; ACurrentDesktopFormat : TPTCFormat); Override;
+    Procedure SetBestMode(AWidth, AHeight : Integer); Override;
+    Procedure RestorePreviousMode; Override;
+  End;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ENDIF ENABLE_X11_EXTENSION_XF86VIDMODE}

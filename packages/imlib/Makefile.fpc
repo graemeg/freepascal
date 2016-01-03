@@ -1,20 +1,71 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for Free Pascal ImLib 1.x Packages
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for Free Pascal ImLib 1.x Packages
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=imlib
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=gdk_imlib imlib
+>>>>>>> graemeg/cpstrnew
 
 [require]
 packages=rtl fpmkunit
 
 [install]
 fpcpackage=y
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=gdk_imlib imlib
+
+[require]
+libc=y
+packages=gtk1 x11
+
+[compiler]
+includedir=src
+sourcedir=src tests
+
+[install]
+fpcpackage=y
+fpcsubdir=packages
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +151,15 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[shared]
+build=n
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

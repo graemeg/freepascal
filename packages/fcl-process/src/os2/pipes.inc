@@ -19,10 +19,10 @@ uses
 const
  PipeBufSize = 1024;
 
-Function CreatePipeHandles (Var Inhandle,OutHandle : Longint; APipeBufferSize : Cardinal = 1024) : Boolean;
+Function CreatePipeHandles (Var Inhandle,OutHandle : Longint) : Boolean;
 
 begin
-  CreatePipeHandles := DosCreatePipe (InHandle, OutHandle, APipeBufferSize) = 0;
+  CreatePipeHandles := DosCreatePipe (InHandle, OutHandle, PipeBufSize) = 0;
 end;
 
 Function TInputPipeStream.GetNumBytesAvailable: DWord;
@@ -32,17 +32,3 @@ begin
   Result := 0;
 end;
 
-function TInputPipeStream.GetPosition: Int64;
-begin
-  Result:=FPos;
-end;
-
-procedure TInputPipeStream.InvalidSeek;
-begin
-  Raise EPipeSeek.Create (ENoSeekMsg);
-end;
-
-procedure PipeClose (const FHandle: THandle); inline;
-begin
-  FileClose(FHandle);
-end;

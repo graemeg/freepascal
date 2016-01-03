@@ -1,14 +1,318 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for Apple Universal Interfaces for Free Pascal
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for Apple Universal Interfaces for Free Pascal
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=univint
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=MacOSAll MacOS
+implicitunits=ABActions ABAddressBook ABGlobals ABPeoplePicker ABTypedefs AEDataModel \
+  AEHelpers AEInteraction AEMach AEObjects AEPackObject AERegistry \
+  AEUserTermTypes AIFF ASDebugging ASRegistry ATSFont ATSLayoutTypes \
+  ATSTypes ATSUnicodeDirectAccess ATSUnicodeDrawing ATSUnicodeFlattening \
+  ATSUnicodeFonts ATSUnicodeGlyphs ATSUnicodeObjects ATSUnicodeTypes \
+  AUComponent AVLTree AXActionConstants AXAttributeConstants AXConstants \
+  AXErrors AXNotificationConstants AXRoleConstants AXTextAttributedString \
+  AXUIElement AXValue AXValueConstants Accessibility Aliases Appearance \
+  AppleDiskPartitions AppleEvents AppleHelp AppleScript AudioCodecs \
+  AudioComponents AudioHardware AudioOutputUnit AudioUnitCarbonViews \
+  AudioUnitParameters AudioUnitProperties AuthSession Authorization \
+  AuthorizationDB AuthorizationPlugin AuthorizationTags BackupCore CFArray \
+  CFAttributedString CFBag CFBase CFBinaryHeap CFBitVector CFBundle \
+  CFByteOrders CFCalendar CFCharacterSet CFData CFDate CFDateFormatter \
+  CFDictionary CFError CFFTPStream CFHTTPAuthentication CFHTTPMessage \
+  CFHTTPStream CFHost CFLocale CFMachPort CFMessagePort CFNetDiagnostics \
+  CFNetServices CFNetworkErrorss CFNotificationCenter CFNumber \
+  CFNumberFormatter CFPlugIn CFPlugInCOM CFPreferences CFPropertyList \
+  CFProxySupport CFRunLoop CFSet CFSocket CFSocketStream CFStream CFString \
+  CFStringEncodingExt CFStringTokenizer CFTimeZone CFTree CFURL CFURLAccess \
+  CFUUID \
+  CFUserNotification CFXMLNode CFXMLParser CGAffineTransforms CGBase \
+  CGBitmapContext CGColor CGColorSpace CGContext CGDataConsumer \
+  CGDataProvider CGDirectDisplay CGDirectPalette CGDisplayConfiguration \
+  CGDisplayFades CGErrors CGEvent CGEventSource CGEventTypes CGFont \
+  CGFunction CGGLContext CGGeometry CGGradient CGImage CGImageDestination \
+  CGImageProperties CGImageSource CGLCurrent CGLDevice CGLProfiler \
+  CGLProfilerFunctionEnums CGLRenderers CGLTypes CGLayer CGPDFArray \
+  CGPDFContentStream CGPDFContext CGPDFDictionary CGPDFDocument CGPDFObject \
+  CGPDFOperatorTable CGPDFPage CGPDFScanner CGPDFStream CGPDFString \
+  CGPSConverter CGPath CGPattern CGRemoteOperation CGSession CGShading \
+  CGWindow CGWindowLevels CMCalibrator CSIdentity CSIdentityAuthority \
+  CSIdentityQuery CTFont CTFontCollection CTFontDescriptor CTFontManager \
+  CTFontManagerErrors CTFontTraits CTFrame CTFramesetter CTGlyphInfo CTLine \
+  CTParagraphStyle CTRun CTStringAttributes CTTextTab CTTypesetter CVBase \
+  CVBuffer CVDisplayLink CVHostTime CVImageBuffer CVOpenGLBuffer \
+  CVOpenGLBufferPool CVOpenGLTexture CVOpenGLTextureCache CVPixelBuffer \
+  CVPixelBufferPool CVPixelFormatDescription CVReturns CarbonEvents \
+  CarbonEventsCore CodeFragments Collections ColorPicker ColorSyncCMM \
+  ColorSyncDeprecated ColorSyncDevice ColorSyncProfile ColorSyncTransform \
+  Components ConditionalMacros ControlDefinitions Controls CoreAudioTypes \
+  CoreFoundation CoreGraphics CoreText DADisk DASession \
+  DHCPClientPreferences DateTimeUtils Debugging Dialogs Dictionary \
+  DigitalHubRegistry Displays Drag DrawSprocket DriverServices \
+  DriverSynchronization Endian Events FSEvents FileTypesAndCreators Files \
+  Finder FinderRegistry FixMath Folders FontPanel FontSync Fonts GestaltEqu \
+  GPCStrings \
+  HFSVolumes HIAccessibility HIArchive HIButtonViews HIClockView HIComboBox \
+  HIContainerViews HIDataBrowser HIDisclosureViews HIGeometry HIImageViews \
+  HILittleArrows HIMenuView HIMovieView HIObject HIPopupButton \
+  HIProgressViews HIRelevanceBar HIScrollView HISearchField HISegmentedView \
+  HISeparator HIShape HISlider HITabbedView HITextLengthFilter HITextUtils \
+  HITextViews HITheme HIToolbar HIToolbox HIToolboxDebugging HIView \
+  HIWindowViews HTMLRendering HostTime IBCarbonRuntime ICAApplication \
+  ICACamera ICADevice IconStorage Icons IconsCore ImageCodec \
+  ImageCompression InternetConfig IntlResources \
+  IOKitReturn IOSurfaceAPI KeyEvents Keyboards \
+  KeychainCore KeychainHI LSInfo LSOpen LSQuarantine LSSharedFileList \
+  LanguageAnalysis Lists LowMem MDExternalDatastore MDImporter MDItem \
+  MDLineage MDQuery MDSchema MIDIDriver MIDIServices MIDISetup \
+  MIDIThruConnection MacApplication MacErrors MacHelp MacLocales MacMemory \
+  MacOSXPosix MacOpenGL MacTextEditor MacTypes MacWindows MachineExceptions \
+  Math64 MediaHandlers Menus MixedMode Movies MoviesFormat \
+  MultiProcessingInfo Multiprocessing MusicDevice NSL NSLCore Navigation \
+  Notification NumberFormatting OSA OSAComp OSAGeneric OSUtils ObjCRuntime \
+  OpenTransport OpenTransportProtocol OpenTransportProviders \
+  PEFBinaryFormat PLStringFuncs PMApplication PMApplicationDeprecated \
+  PMCore PMCoreDeprecated PMDefinitions PMDefinitionsDeprecated PMErrors \
+  PMPrintAETypes PMPrintSettingsKeys PMPrintingDialogExtensions Palettes \
+  Pasteboard PictUtils Power Processes QDCMCommon QDOffscreen \
+  QDPictToCGContext \
+  QLBase QLGenerator QLThumbnailImage \
+  QTML QTSMovie QTStreamingComponents QuickTimeComponents \
+  QuickTimeErrors QuickTimeMusic QuickTimeStreaming QuickTimeVR \
+  QuickTimeVRFormat Quickdraw QuickdrawText QuickdrawTypes Resources \
+  SCDynamicStore SCDynamicStoreCopyDHCPInfos SCDynamicStoreCopySpecific \
+  SCDynamicStoreKey SCNetwork SCNetworkConfiguration SCNetworkConnection \
+  SCNetworkReachability SCPreferences SCPreferencesPath \
+  SCPreferencesSetSpecific SCSI SCSchemaDefinitions SFNTLayoutTypes \
+  SFNTTypes ScalerStreamTypes Scrap Script SecBase SecTrust Sound \
+  SpeechRecognition \
+  SpeechSynthesis StringCompare SystemConfiguration SystemSound TSMTE \
+  TextCommon TextEdit TextEncodingConverter TextEncodingPlugin \
+  TextInputSources TextServices TextUtils Threads Timer ToolUtils \
+  Translation TranslationExtensions TranslationServices TypeSelect \
+  URLAccess UTCUtils UTCoreTypes UTType UnicodeConverter UnicodeUtilities \
+  UniversalAccess Video WSMethodInvocation WSProtocolHandler WSTypes cblas \
+  certextensions cssmapple cssmconfig cssmerr cssmkrapi cssmtype \
+  fenv fp gliContexts gliDispatch gluContext kern_return macgl macglext \
+  macglu mach_error vBLAS vDSP x509defs xattr 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=MacOSAll MacOS
+<<<<<<< HEAD
+implicitunits=ABActions ABAddressBook ABGlobals ABPeoplePicker ABTypedefs \
+  AEDataModel AEHelpers AEInteraction AEMach AEObjects \
+  AEPackObject AERegistry AEUserTermTypes AIFF ASDebugging \
+  ASRegistry ATSFont ATSLayoutTypes ATSTypes \
+  ATSUnicodeDirectAccess ATSUnicodeDrawing \
+  ATSUnicodeFlattening ATSUnicodeFonts ATSUnicodeGlyphs \
+  ATSUnicodeObjects ATSUnicodeTypes AVLTree \
+  AXErrors AXUIElement AXValue Aliases Appearance \
+  AppleDiskPartitions AppleEvents AppleHelp AppleScript \
+  AuthSession Authorization AuthorizationDB AuthorizationTags \
+  CFArray CFAttributedString CFBag CFBase CFBinaryHeap \
+  CFBitVector CFBundle CFByteOrders CFCalendar CFCharacterSet \
+  CFData CFDate CFDateFormatter CFDictionary CFFTPStream \
+  CFHTTPMessage CFHTTPStream CFHost CFLocale CFMachPort \
+  CFMessagePort CFNetServices CFNotificationCenter CFNumber \
+  CFNumberFormatter CFPlugIn CFPlugInCOM CFPreferences \
+  CFPropertyList CFRunLoop CFSet CFSocket CFSocketStream \
+  CFStream CFString CFStringEncodingExt CFTimeZone CFTree \
+  CFURL CFURLAccess CFUUID CFUserNotification CFXMLNode \
+  CFXMLParser CGAffineTransforms CGBase CGBitmapContext \
+  CGColor CGColorSpace CGContext CGDataConsumer CGDataProvider \
+  CGDirectDisplay CGDirectPalette CGDisplayConfiguration \
+  CGErrors CGEvent CGEventSource CGEventTypes \
+  CGFont CGFunction CGGLContext CGGeometry CGImage CGLayer \
+  CGPDFArray CGPDFContentStream CGPDFContext CGPDFDictionary \
+  CGPDFDocument CGPDFObject CGPDFOperatorTable CGPDFPage \
+  CGPDFScanner CGPDFStream CGPDFString CGPSConverter CGPath \
+  CGPattern CGRemoteOperation CGSession CGShading \
+  CGWindowLevels CMApplication CMCalibrator \
+  CMDeviceIntegration CMICCProfile CMMComponent CMPRComponent \
+  CMScriptingPlugin CMTypes CarbonEvents CarbonEventsCore \
+  CodeFragments Collections ColorPicker Components \
+  ConditionalMacros ControlDefinitions Controls CoreFoundation \
+  CoreGraphics DHCPClientPreferences DateTimeUtils Debugging \
+  Devices Dialogs Dictionary Displays Drag DrawSprocket \
+  DriverFamilyMatching DriverGestalt DriverSynchronization \
+  Endian Events FileTypesAndCreators Files FindByContent \
+  Finder FinderRegistry FixMath Folders FontSync Fonts GXTypes \
+  GestaltEqu HFSVolumes HIArchive HIGeometry HIObject \
+  HIObjectCore HIShape HITextUtils HITheme HIToolbar HIToolbox \
+  HIView HTMLRendering IBCarbonRuntime ICAApplication \
+  ICACamera ICADevice Icons ImageCodec ImageCompression \
+  InternetConfig IntlResources Keyboards KeychainCore \
+  KeychainHI LanguageAnalysis LaunchServices Lists LowMem \
+  MacApplication MacErrors MacHelp MacLocales MacMemory \
+  MacOSXPosix MacTextEditor MacTypes MacWindows \
+  MachineExceptions Math64 MediaHandlers Menus MixedMode \
+  Movies MoviesFormat Multiprocessing NSL NSLCore NameRegistry \
+  Navigation Notification NumberFormatting OSA OSAComp \
+  OSAGeneric OSUtils OpenTransport OpenTransportProtocol \
+  OpenTransportProviders PEFBinaryFormat PLStringFuncs \
+  PMApplication PMCore PMDefinitions Palettes Pasteboard \
+  PictUtils Power Printing Processes QDOffscreen \
+  QDPictToCGContext QTML QTSMovie QTStreamingComponents \
+  QuickTimeComponents QuickTimeMusic QuickTimeStreaming \
+  QuickTimeVR QuickTimeVRFormat Quickdraw QuickdrawText \
+  Resources SCDynamicStore SCDynamicStoreCopyDHCPInfos \
+  SCDynamicStoreCopySpecific SCDynamicStoreKey SCNetwork \
+  SCNetworkConnection SCNetworkReachability SCPreferences \
+  SCPreferencesPath SCPreferencesSetSpecific SCSI \
+  SCSchemaDefinitions SFNTLayoutTypes SFNTTypes Scrap Script \
+  Sound SpeechRecognition SpeechSynthesis StringCompare \
+  SystemConfiguration SystemSound TSMTE TextCommon TextEdit \
+  TextEncodingConverter TextEncodingPlugin TextServices \
+  TextUtils Threads Timer ToolUtils Translation \
+  TranslationExtensions TypeSelect URLAccess USB UTCUtils \
+  UTType UnicodeConverter UnicodeUtilities Video WorldScript \
+  fenv fp vBLAS vDSP \
+  UTCoreTypes xattr FontPanel CoreAudioTypes \
+  AXNotificationConstants AudioHardware AXRoleConstants \
+  TranslationServices AXActionConstants HIMovieView \
+  CGImageDestination AXValueConstants AXAttributeConstants \
+  AXTextAttributedString CGImageProperties CGImageSource \
+  UniversalAccess HostTime GPCStrings \
+  CGDisplayFades CGLTypes CVBase CVBuffer \
+  CVDisplayLink CVHostTime CVImageBuffer CVPixelBuffer \
+  CVPixelBufferPool CVPixelFormatDescription CVReturns \
+  ObjCRuntime
+
+  
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+implicitunits=  ABActions ABAddressBook ABGlobals ABPeoplePicker ABTypedefs AEDataModel \
+  AEHelpers AEInteraction AEMach AEObjects AEPackObject AERegistry \
+  AEUserTermTypes AIFF ASDebugging ASRegistry ATSFont ATSLayoutTypes \
+  ATSTypes ATSUnicodeDirectAccess ATSUnicodeDrawing ATSUnicodeFlattening \
+  ATSUnicodeFonts ATSUnicodeGlyphs ATSUnicodeObjects ATSUnicodeTypes \
+  AUComponent AVLTree AXActionConstants AXAttributeConstants AXConstants \
+  AXErrors AXNotificationConstants AXRoleConstants AXTextAttributedString \
+  AXUIElement AXValue AXValueConstants Accessibility Aliases Appearance \
+  AppleDiskPartitions AppleEvents AppleHelp AppleScript AudioCodecs \
+  AudioComponents AudioHardware AudioOutputUnit AudioUnitCarbonViews \
+  AudioUnitParameters AudioUnitProperties AuthSession Authorization \
+  AuthorizationDB AuthorizationPlugin AuthorizationTags BackupCore CFArray \
+  CFAttributedString CFBag CFBase CFBinaryHeap CFBitVector CFBundle \
+  CFByteOrders CFCalendar CFCharacterSet CFData CFDate CFDateFormatter \
+  CFDictionary CFError CFFTPStream CFHTTPAuthentication CFHTTPMessage \
+  CFHTTPStream CFHost CFLocale CFMachPort CFMessagePort CFNetDiagnostics \
+  CFNetServices CFNetworkErrorss CFNotificationCenter CFNumber \
+  CFNumberFormatter CFPlugIn CFPlugInCOM CFPreferences CFPropertyList \
+  CFProxySupport CFRunLoop CFSet CFSocket CFSocketStream CFStream CFString \
+  CFStringEncodingExt CFTimeZone CFTree CFURL CFURLAccess CFUUID \
+  CFUserNotification CFXMLNode CFXMLParser CGAffineTransforms CGBase \
+  CGBitmapContext CGColor CGColorSpace CGContext CGDataConsumer \
+  CGDataProvider CGDirectDisplay CGDirectPalette CGDisplayConfiguration \
+  CGDisplayFades CGErrors CGEvent CGEventSource CGEventTypes CGFont \
+  CGFunction CGGLContext CGGeometry CGGradient CGImage CGImageDestination \
+  CGImageProperties CGImageSource CGLCurrent CGLDevice CGLProfiler \
+  CGLProfilerFunctionEnums CGLRenderers CGLTypes CGLayer CGPDFArray \
+  CGPDFContentStream CGPDFContext CGPDFDictionary CGPDFDocument CGPDFObject \
+  CGPDFOperatorTable CGPDFPage CGPDFScanner CGPDFStream CGPDFString \
+  CGPSConverter CGPath CGPattern CGRemoteOperation CGSession CGShading \
+  CGWindow CGWindowLevels CMCalibrator CSIdentity CSIdentityAuthority \
+  CSIdentityQuery CTFont CTFontCollection CTFontDescriptor CTFontManager \
+  CTFontManagerErrors CTFontTraits CTFrame CTFramesetter CTGlyphInfo CTLine \
+  CTParagraphStyle CTRun CTStringAttributes CTTextTab CTTypesetter CVBase \
+  CVBuffer CVDisplayLink CVHostTime CVImageBuffer CVOpenGLBuffer \
+  CVOpenGLBufferPool CVOpenGLTexture CVOpenGLTextureCache CVPixelBuffer \
+  CVPixelBufferPool CVPixelFormatDescription CVReturns CarbonEvents \
+  CarbonEventsCore CodeFragments Collections ColorPicker ColorSyncCMM \
+  ColorSyncDeprecated ColorSyncDevice ColorSyncProfile ColorSyncTransform \
+  Components ConditionalMacros ControlDefinitions Controls CoreAudioTypes \
+  CoreFoundation CoreGraphics CoreText DADisk DASession \
+  DHCPClientPreferences DateTimeUtils Debugging Dialogs Dictionary \
+  DigitalHubRegistry Displays Drag DrawSprocket DriverServices \
+  DriverSynchronization Endian Events FSEvents FileTypesAndCreators Files \
+  Finder FinderRegistry FixMath Folders FontPanel FontSync Fonts GestaltEqu \
+  HFSVolumes HIAccessibility HIArchive HIButtonViews HIClockView HIComboBox \
+  HIContainerViews HIDataBrowser HIDisclosureViews HIGeometry HIImageViews \
+  HILittleArrows HIMenuView HIMovieView HIObject HIPopupButton \
+  HIProgressViews HIRelevanceBar HIScrollView HISearchField HISegmentedView \
+  HISeparator HIShape HISlider HITabbedView HITextLengthFilter HITextUtils \
+  HITextViews HITheme HIToolbar HIToolbox HIToolboxDebugging HIView \
+  HIWindowViews HTMLRendering HostTime IBCarbonRuntime ICAApplication \
+  ICACamera ICADevice IconStorage Icons IconsCore ImageCodec \
+  ImageCompression InternetConfig IntlResources KeyEvents Keyboards \
+  KeychainCore KeychainHI LSInfo LSOpen LSQuarantine LSSharedFileList \
+  LanguageAnalysis Lists LowMem MDExternalDatastore MDImporter MDItem \
+  MDLineage MDQuery MDSchema MIDIDriver MIDIServices MIDISetup \
+  MIDIThruConnection MacApplication MacErrors MacHelp MacLocales MacMemory \
+  MacOSXPosix MacOpenGL MacTextEditor MacTypes MacWindows MachineExceptions \
+  Math64 MediaHandlers Menus MixedMode Movies MoviesFormat \
+  MultiProcessingInfo Multiprocessing MusicDevice NSL NSLCore Navigation \
+  Notification NumberFormatting OSA OSAComp OSAGeneric OSUtils ObjCRuntime \
+  OpenTransport OpenTransportProtocol OpenTransportProviders \
+  PEFBinaryFormat PLStringFuncs PMApplication PMApplicationDeprecated \
+  PMCore PMCoreDeprecated PMDefinitions PMDefinitionsDeprecated PMErrors \
+  PMPrintAETypes PMPrintSettingsKeys PMPrintingDialogExtensions Palettes \
+  Pasteboard PictUtils Power Processes QDCMCommon QDOffscreen \
+  QDPictToCGContext \
+  QLBase QLGenerator QLThumbnailImage \
+  QTML QTSMovie QTStreamingComponents QuickTimeComponents \
+  QuickTimeErrors QuickTimeMusic QuickTimeStreaming QuickTimeVR \
+  QuickTimeVRFormat Quickdraw QuickdrawText QuickdrawTypes Resources \
+  SCDynamicStore SCDynamicStoreCopyDHCPInfos SCDynamicStoreCopySpecific \
+  SCDynamicStoreKey SCNetwork SCNetworkConfiguration SCNetworkConnection \
+  SCNetworkReachability SCPreferences SCPreferencesPath \
+  SCPreferencesSetSpecific SCSI SCSchemaDefinitions SFNTLayoutTypes \
+  SFNTTypes ScalerStreamTypes Scrap Script SecBase Sound SpeechRecognition \
+  SpeechSynthesis StringCompare SystemConfiguration SystemSound TSMTE \
+  TextCommon TextEdit TextEncodingConverter TextEncodingPlugin \
+  TextInputSources TextServices TextUtils Threads Timer ToolUtils \
+  Translation TranslationExtensions TranslationServices TypeSelect \
+  URLAccess UTCUtils UTCoreTypes UTType UnicodeConverter UnicodeUtilities \
+  UniversalAccess Video WSMethodInvocation WSProtocolHandler WSTypes cblas \
+  fenv fp gliContexts gliDispatch gluContext macgl macglext macglu vBLAS \
+  vDSP xattr   
+>>>>>>> origin/fixes_2.4
+exampledirs=examples
+
+[libs]
+libversion=2.0.0
+
+# FPCMacOSAll is not a build unit, but directly includes the code of
+# most other units
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
 [install]
 fpcpackage=y
 
@@ -16,6 +320,10 @@ fpcpackage=y
 fpcdir=../..
 
 [prerules]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
 FPC_TARGETOPT+=--os=$(OS_TARGET)
@@ -100,3 +408,40 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+override FPCOPT+=-Mmacpas
+
+[rules]
+MacOSAll$(PPUEXT): $(filter-out MacOS.pas GPCStrings.pas KeyEvents.pas,$(wildcard *.pas))
+MacOS$(PPUEXT): $(filter-out MacOSAll.pas,$(wildcard *.pas))
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[install]
+buildunit=MacOS
+fpcpackage=y
+
+[compiler]
+includedir=src
+sourcedir=src tests
+
+[default]
+fpcdir=../..
+
+[prerules]
+override FPCOPT+=-Mmacpas
+
+[rules]
+MacOSAll$(PPUEXT): $(filter-out MacOS.pas GPCStrings.pas KeyEvents.pas,$(wildcard *.pas))
+MacOS$(PPUEXT): $(filter-out MacOSAll.pas,$(wildcard *.pas))
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

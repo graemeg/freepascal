@@ -35,6 +35,10 @@ Type
    { possible supported processors for this target }
    tcputype =
       (cpu_none,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        cpu_mips1,
        cpu_mips2,
        cpu_mips3,
@@ -57,12 +61,54 @@ Type
      abi_n64,
      abi_eabi
      );
+=======
+       cpu_mips32
+      );
+
+   tfputype =(fpu_none,fpu_soft,fpu_mips2,fpu_mips3);
+>>>>>>> graemeg/cpstrnew
+=======
+       cpu_mips32
+      );
+
+   tfputype =(fpu_none,fpu_soft,fpu_mips2,fpu_mips3);
+>>>>>>> graemeg/cpstrnew
+=======
+       cpu_mips32
+      );
+
+   tfputype =(fpu_none,fpu_soft,fpu_mips2,fpu_mips3);
+>>>>>>> graemeg/cpstrnew
+=======
+       cpu_mips32
+      );
+
+   tfputype =(fpu_none,fpu_soft,fpu_mips2,fpu_mips3);
+>>>>>>> origin/cpstrnew
 
 Const
    {# Size of native extended floating point type }
    extended_size = 8;
    {# Size of a multimedia register               }
    mmreg_size = 0;
+<<<<<<< HEAD
+=======
+   { target cpu string (used by compiler options) }
+{$ifdef MIPSEL}
+   target_cpu_string = 'mipsel';
+{$else MIPSEL}
+   target_cpu_string = 'mips';
+{$endif MIPSEL}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
    { calling conventions supported by the code generator }
    supported_calling_conventions : tproccalloptions = [
      pocall_internproc,
@@ -93,6 +139,7 @@ Const
      'MIPS2','MIPS3'
    );
 
+<<<<<<< HEAD
    { abi strings as accepted by 
      GNU assembler in -abi=XXX option }
    abitypestr : array[tabitype] of string[4] =
@@ -111,6 +158,20 @@ type
    tcpuflags=(
      CPUMIPS_HAS_CMOV,             { conditional move instructions (mips4+) }
      CPUMIPS_HAS_ISA32R2           { mips32r2 instructions (also on PIC32)  }
+=======
+   fputypestr : array[tfputype] of string[6] = ('',
+     'SOFT',
+     'FPU_MIPS2','FPU_MIPS3'
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
    );
 
    tcontrollerdatatype = record
@@ -241,10 +302,34 @@ const
 {$endif MIPSEL}
 
    { Supported optimizations, only used for information }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    supported_optimizerswitches = [cs_opt_regvar,cs_opt_loopunroll,cs_opt_nodecse,
                                   cs_opt_reorder_fields,cs_opt_fastmath];
 
    level1optimizerswitches = genericlevel1optimizerswitches;
+=======
+   supported_optimizerswitches = [cs_opt_regvar,cs_opt_loopunroll,cs_opt_nodecse];
+
+   level1optimizerswitches = [];
+>>>>>>> graemeg/cpstrnew
+=======
+   supported_optimizerswitches = [cs_opt_regvar,cs_opt_loopunroll,cs_opt_nodecse];
+
+   level1optimizerswitches = [];
+>>>>>>> graemeg/cpstrnew
+=======
+   supported_optimizerswitches = [cs_opt_regvar,cs_opt_loopunroll,cs_opt_nodecse];
+
+   level1optimizerswitches = [];
+>>>>>>> graemeg/cpstrnew
+=======
+   supported_optimizerswitches = [cs_opt_regvar,cs_opt_loopunroll,cs_opt_nodecse];
+
+   level1optimizerswitches = [];
+>>>>>>> origin/cpstrnew
    level2optimizerswitches = level1optimizerswitches + [cs_opt_regvar,cs_opt_stackframe,cs_opt_nodecse];
    level3optimizerswitches = level2optimizerswitches + [cs_opt_loopunroll];
    level4optimizerswitches = genericlevel4optimizerswitches + level3optimizerswitches + [];

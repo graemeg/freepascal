@@ -15,17 +15,57 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure SignalToRunerror(sig : longint; SigInfo: PSigInfo; UContext: PUContext);cdecl;public name '_FPC_DEFAULTSIGHANDLER';
 var
   res : word;
   addr : pointer;
   frame : pointer;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+const
+  FPE_INTDIV = 1;
+  FPE_INTOVF = 2;
+  FPE_FLTDIV = 3;
+  FPE_FLTOVF = 4;
+  FPE_FLTUND = 5;
+  FPE_FLTRES = 6;
+  FPE_FLTINV = 7;
+  FPE_FLTSUB = 8;
+
+
+procedure SignalToRunerror(sig : longint; SigInfo: PSigInfo; SigContext: PSigContext);cdecl;
+var
+  res : word;
+  addr : pointer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 begin
   res:=0;
   addr:=nil;
   case sig of
     SIGFPE :
         begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           addr := siginfo^._sifields._sigfault._addr;
           res := 207;
           
@@ -36,10 +76,61 @@ begin
               res:=215;
             FPE_FLTDIV:
               res:=208;  // maps to EZeroDivide
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          addr := siginfo^._sifields._sigfault.si_addr;
+          res := 207;
+          case  siginfo^.si_code of
+            FPE_INTDIV:
+              res:=200;
+            FPE_INTOVF:
+              res:=205;
+            FPE_FLTDIV:
+              res:=200;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
             FPE_FLTOVF:
               res:=205;
             FPE_FLTUND:
               res:=206;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+            FPE_FLTRES,
+            FPE_FLTINV,
+            FPE_FLTSUB:
+              res:=216;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
             else
               res:=207;
           end;
@@ -48,13 +139,33 @@ begin
     SIGBUS,
     SIGSEGV :
         begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           addr := siginfo^._sifields._sigfault._addr;
+=======
+          addr := siginfo^._sifields._sigfault.si_addr;
+>>>>>>> graemeg/cpstrnew
+=======
+          addr := siginfo^._sifields._sigfault.si_addr;
+>>>>>>> graemeg/cpstrnew
+=======
+          addr := siginfo^._sifields._sigfault.si_addr;
+>>>>>>> graemeg/cpstrnew
+=======
+          addr := siginfo^._sifields._sigfault.si_addr;
+>>>>>>> origin/cpstrnew
           res:=216;
         end;
   end;
   reenable_signal(sig);
   { give runtime error at the position where the signal was raised }
   if res<>0 then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     begin
       if assigned(UContext) then
         begin
@@ -87,4 +198,16 @@ begin
         set_fsr(get_fsr and not (fpu_cause_mask or fpu_flags_mask));
       HandleErrorAddrFrame(res,addr,frame);
     end;
+=======
+    HandleErrorAddrFrame(res,addr,nil);
+>>>>>>> graemeg/cpstrnew
+=======
+    HandleErrorAddrFrame(res,addr,nil);
+>>>>>>> graemeg/cpstrnew
+=======
+    HandleErrorAddrFrame(res,addr,nil);
+>>>>>>> graemeg/cpstrnew
+=======
+    HandleErrorAddrFrame(res,addr,nil);
+>>>>>>> origin/cpstrnew
 end;

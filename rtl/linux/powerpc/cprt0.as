@@ -74,8 +74,18 @@ main_stub:
     lis     11, operatingsystem_parameter_envp@ha
     stw      5, operatingsystem_parameter_envp@l(11);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     lis     11,__stkptr@ha
     stw      1,__stkptr@l(11);
+=======
+    lis 	11,__stkptr@ha
+	stw 	1,__stkptr@l(11);
+>>>>>>> graemeg/fixes_2_2
+=======
+    lis 	11,__stkptr@ha
+	stw 	1,__stkptr@l(11);
+>>>>>>> origin/fixes_2_2
 
     lis     11, ___fpc_ret@ha
     stw     1, ___fpc_ret@l(11)
@@ -110,6 +120,8 @@ data_start:
 ___fpc_ret:                            /* return address to libc */
     .long   0
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     .section ".bss"
     .type __stkptr, @object
     .size __stkptr, 8
@@ -129,3 +141,17 @@ operatingsystem_parameters:
     .set operatingsystem_parameter_envp, operatingsystem_parameters+8
 
 .section .note.GNU-stack,"",%progbits
+=======
+=======
+>>>>>>> origin/fixes_2_2
+.text
+    .comm __stkptr, 4
+
+    .comm operatingsystem_parameter_envp, 4
+    .comm operatingsystem_parameter_argc, 4
+    .comm operatingsystem_parameter_argv, 4
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

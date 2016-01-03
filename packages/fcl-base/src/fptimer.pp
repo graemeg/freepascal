@@ -69,7 +69,13 @@ type
   end;  
 
   TFPTimerDriver = Class(TObject)
+<<<<<<< HEAD
+<<<<<<< HEAD
   Protected
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     FTimer : TFPCustomTimer;
   Public
     Constructor Create(ATimer : TFPCustomTimer); virtual;
@@ -182,7 +188,13 @@ Type
   TFPThreadedTimerDriver = Class(TFPTimerDriver)
   Private
     FThread : TFPTimerThread;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Procedure DoNilTimer(Sender : TObject);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Public
     Procedure StartTimer; override;
     Procedure StopTimer; override;
@@ -216,7 +228,15 @@ end;
 procedure TFPTimerThread.Execute;
 var
   SleepTime: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
   S,Last: Cardinal;
+=======
+  Last: Cardinal;
+>>>>>>> graemeg/fixes_2_2
+=======
+  Last: Cardinal;
+>>>>>>> origin/fixes_2_2
   T : TFPCustomTimer;
   
 begin
@@ -229,6 +249,8 @@ begin
       SleepTime := T.FInterval - (_GetTickCount - Last);
       if SleepTime < 10 then
         SleepTime := 10;
+<<<<<<< HEAD
+<<<<<<< HEAD
       Repeat  
         S:=5;
         If S>SleepTime then
@@ -238,6 +260,16 @@ begin
       until (SleepTime<=0) or Terminated;
       T:=Timer;
       If Assigned(T) and not terminated then
+=======
+      Sleep(SleepTime);
+      T:=Timer;
+      If Assigned(T) then
+>>>>>>> graemeg/fixes_2_2
+=======
+      Sleep(SleepTime);
+      T:=Timer;
+      If Assigned(T) then
+>>>>>>> origin/fixes_2_2
         Synchronize(@T.Timer);
       end
     else
@@ -249,27 +281,60 @@ end;
     TFPThreadedTimerDriver
   ---------------------------------------------------------------------}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure TFPThreadedTimerDriver.DoNilTimer(Sender : TObject);
 
 begin
   FThread:=Nil;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Procedure TFPThreadedTimerDriver.StartTimer; 
 
 begin
   FThread:=TFPTimerThread.CreateTimerThread(Self);
+<<<<<<< HEAD
+<<<<<<< HEAD
   FThread.OnTerminate:=@DoNilTimer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   FThread.Start;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  FThread.Resume;
+>>>>>>> graemeg/cpstrnew
+=======
+  FThread.Resume;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FThread.Resume;
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TFPThreadedTimerDriver.StopTimer;
 begin
   FThread.FTimerDriver:=Nil;
   FThread.Terminate; // Will free itself.
+<<<<<<< HEAD
+<<<<<<< HEAD
   CheckSynchronize; // make sure thread is not stuck at synchronize call.
   If Assigned(FThread) then
     Fthread.WaitFor;  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 

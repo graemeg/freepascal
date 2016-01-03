@@ -1,5 +1,11 @@
 { %result=1 }
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %NEEDEDAFTER }
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { this test fails when it isn't called by execansi }
   uses
     sysutils;

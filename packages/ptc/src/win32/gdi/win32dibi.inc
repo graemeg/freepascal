@@ -1,6 +1,24 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 {
     This file is part of the PTCPas framebuffer library
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2001-2011 Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -39,6 +57,24 @@ begin
   FillChar(FBitmapInfo^.bmiHeader, SizeOf(BITMAPINFOHEADER), 0);
   with FBitmapInfo^.bmiHeader do
   begin
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+{TODO: create DIBs with the same color depth as the desktop}
+
+Constructor TWin32DIB.Create(AWidth, AHeight : Integer);
+
+Begin
+  FBitmapInfo := GetMem(SizeOf(BITMAPINFOHEADER) + 12);
+
+  FillChar(FBitmapInfo^.bmiHeader, SizeOf(BITMAPINFOHEADER), 0);
+  With FBitmapInfo^.bmiHeader Do
+  Begin
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     biSize := SizeOf(BITMAPINFOHEADER);
     biWidth := AWidth;
     biHeight := -AHeight;
@@ -50,7 +86,15 @@ begin
     biYPelsPerMeter := 0;
     biClrUsed := 0;
     biClrImportant := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
   end;
+=======
+  End;
+>>>>>>> graemeg/fixes_2_2
+=======
+  End;
+>>>>>>> origin/fixes_2_2
 
   PDWord(@FBitmapInfo^.bmiColors)[0] := $FF0000;
   PDWord(@FBitmapInfo^.bmiColors)[1] := $00FF00;
@@ -63,11 +107,43 @@ begin
 
   FPixels := GetMem(AWidth * AHeight * 4);
   FillChar(FPixels^, AWidth * AHeight * 4, 0);
+<<<<<<< HEAD
+<<<<<<< HEAD
 end;
 
 destructor TWin32DIB.Destroy;
 begin
   FreeMem(FPixels);
   FreeMem(FBitmapInfo);
+<<<<<<< HEAD
+=======
+  FFormat.Free;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   inherited Destroy;
 end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+End;
+
+Destructor TWin32DIB.Destroy;
+
+Begin
+  FreeMem(FPixels);
+  FreeMem(FBitmapInfo);
+  FFormat.Free;
+  Inherited Destroy;
+End;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

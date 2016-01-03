@@ -52,6 +52,8 @@ type
   GLcharARB = Char;
   TGLcharARB = GLcharARB;
   PGLcharARB = ^GLcharARB;
+<<<<<<< HEAD
+<<<<<<< HEAD
   PPGLchar = ^PGLchar;
 
   {$ifdef DARWIN}
@@ -59,6 +61,14 @@ type
   {$else}
   GLhandleARB = Cardinal;
   {$endif}
+=======
+
+  GLhandleARB = Cardinal;
+>>>>>>> graemeg/fixes_2_2
+=======
+
+  GLhandleARB = Cardinal;
+>>>>>>> origin/fixes_2_2
   TGLhandleARB = GLhandleARB;
   PGLhandleARB = ^GLhandleARB;
 
@@ -74,6 +84,8 @@ type
   TGLchar = GLchar;
   PGLchar = Pchar;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   GLint64 = Int64;
   TGLint64 = GLint64;
   PGLint64 = ^GLint64;
@@ -83,6 +95,10 @@ type
   PGLuint64 = ^GLuint64;
 
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 //***** GL_version_1_2 *****//
 const
   GL_UNSIGNED_BYTE_3_3_2 = $8032;
@@ -1069,6 +1085,8 @@ var
 
 function Load_GL_EXT_multi_draw_arrays: Boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 //***** GL_EXT_packed_depth_stencil *****//
 const
   GL_DEPTH_STENCIL_EXT = $84F9;
@@ -1078,6 +1096,10 @@ const
 
 function Load_GL_EXT_packed_depth_stencil: Boolean;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 //***** GL_EXT_packed_pixels *****//
 const
   GL_UNSIGNED_BYTE_3_3_2_EXT = $8032;
@@ -2774,8 +2796,14 @@ function Load_GL_ARB_fragment_program: Boolean;
 const
      GL_TEXT_FRAGMENT_SHADER_ATI = $8200;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ATI_text_fragment_shader: Boolean;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {***** GL_ARB_vertex_buffer_object *****}
 const
      GL_BUFFER_SIZE_ARB = $8764;
@@ -2822,7 +2850,19 @@ var
      glUnmapBufferARB : function (target :GLenum) :GLboolean; extdecl;
      glGetBufferParameterivARB:procedure(target:GLenum; pname:GLenum; params:PGLint); extdecl;
      glGetBufferPointervARB : procedure(target: GLenum; pname:GLenum; params: PPGLvoid); extdecl;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_vertex_buffer_object : boolean;
+=======
+     function Load_GL_ARB_vertex_buffer_object : boolean;
+
+function Load_GL_ATI_text_fragment_shader: Boolean;
+>>>>>>> graemeg/fixes_2_2
+=======
+     function Load_GL_ARB_vertex_buffer_object : boolean;
+
+function Load_GL_ATI_text_fragment_shader: Boolean;
+>>>>>>> origin/fixes_2_2
 
 //***** GL_APPLE_client_storage *****//
 const
@@ -3914,6 +3954,8 @@ var
 
 function Load_GL_EXT_framebuffer_object: Boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 //**** GL_ARB_framebuffer_object *****//
 const
   GL_INVALID_FRAMEBUFFER_OPERATION = $0506;
@@ -4015,6 +4057,10 @@ var
   glRenderbufferStorageMultisample: procedure(target: GLenum; samples: GLsizei; internalformat: GLenum; width: GLsizei; height: GLsizei); extdecl;
   glFramebufferTextureLayer: procedure(target: GLenum; attachment: GLenum; texture: GLuint; level: GLint; layer: GLint); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 { Using LoadAsCore = true means that we will *not* check
   if the extension is advertised in glGetString(GL_EXTENSIONS) string.
   This allows to successfully Load_GL_version_3_0 in an OpenGL 3.0
@@ -4022,6 +4068,18 @@ var
   to be mentioned inside glGetString(GL_EXTENSIONS). }
 
 function Load_GL_ARB_framebuffer_object(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_framebuffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_framebuffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_framebuffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_framebuffer_object(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_framebuffer_object DEPRECATED *****//
 const
@@ -4042,7 +4100,23 @@ var
   glMapBufferRange: function(target: GLenum; offset: GLintptr; length: GLsizeiptr; access: GLbitfield): PGLvoid; extdecl;
   glFlushMappedBufferRange: procedure(target: GLenum; offset: GLintptr; length: GLsizeiptr); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_map_buffer_range(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_map_buffer_range(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_map_buffer_range(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_map_buffer_range(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_map_buffer_range(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_vertex_array_object *****//
 const
@@ -4053,7 +4127,23 @@ var
   glGenVertexArrays: procedure(n: GLsizei; arrays: PGLuint); extdecl;
   glIsVertexArray: function(_array: GLuint): GLboolean; extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_vertex_array_object(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_vertex_array_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_array_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_array_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_array_object(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_copy_buffer *****//
 const
@@ -4062,7 +4152,23 @@ const
 var
   glCopyBufferSubData: procedure(readTarget: GLenum; writeTarget: GLenum; readOffset: GLintptr; writeOffset: GLintptr; size: GLsizeiptr); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_copy_buffer(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_copy_buffer(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_copy_buffer(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_copy_buffer(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_copy_buffer(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_uniform_buffer_object *****//
 const
@@ -4108,7 +4214,23 @@ var
   glGetActiveUniformBlockName: procedure(_program: GLuint; uniformBlockIndex: GLuint; bufSize: GLsizei; length: PGLsizei; uniformBlockName: PGLchar); extdecl;
   glUniformBlockBinding: procedure(_program: GLuint; uniformBlockIndex: GLuint; uniformBlockBinding: GLuint); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_uniform_buffer_object(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_uniform_buffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_uniform_buffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_uniform_buffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_uniform_buffer_object(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_draw_elements_base_vertex *****//
 var
@@ -4117,7 +4239,23 @@ var
   glDrawElementsInstancedBaseVertex: procedure(mode: GLenum; count: GLsizei; _type: GLenum; const indices: PGLvoid; primcount: GLsizei; basevertex: GLint); extdecl;
   glMultiDrawElementsBaseVertex: procedure(mode: GLenum; const count: PGLsizei; _type: GLenum; const indices: PPGLvoid; primcount: GLsizei; const basevertex: PGLint); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_draw_elements_base_vertex(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_draw_elements_base_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_draw_elements_base_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_draw_elements_base_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_draw_elements_base_vertex(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_provoking_vertex *****//
 const
@@ -4128,7 +4266,23 @@ const
 var
   glProvokingVertex: procedure(mode: GLenum); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_provoking_vertex(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_provoking_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_provoking_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_provoking_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_provoking_vertex(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_sync *****//
 type
@@ -4161,7 +4315,23 @@ var
   glGetInteger64v: procedure(pname: GLenum; params: PGLint64); extdecl;
   glGetSynciv: procedure(sync: GLsync; pname: GLenum; bufSize: GLsizei; length: PGLsizei; values: PGLint); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_sync(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_sync(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_sync(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_sync(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_sync(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_texture_multisample *****//
 const
@@ -4192,7 +4362,23 @@ var
   glGetMultisamplefv: procedure(pname: GLenum; index: GLuint; val: PGLfloat); extdecl;
   glSampleMaski: procedure(index: GLuint; mask: GLbitfield); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_texture_multisample(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_texture_multisample(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_texture_multisample(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_texture_multisample(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_texture_multisample(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_blend_func_extended *****//
 const
@@ -4206,7 +4392,23 @@ var
   glBindFragDataLocationIndexed: procedure(_program: GLuint; colorNumber: GLuint; index: GLuint; const name: PGLchar); extdecl;
   glGetFragDataIndex: function(_program: GLuint; const name: PGLchar): GLint; extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_blend_func_extended(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_blend_func_extended(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_blend_func_extended(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_blend_func_extended(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_blend_func_extended(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_sampler_objects *****//
 const
@@ -4225,9 +4427,33 @@ var
   glGetSamplerParameteriv: procedure(sampler: GLuint; pname: GLenum; params: PGLint); extdecl;
   glGetSamplerParameterIiv: procedure(sampler: GLuint; pname: GLenum; params: PGLint); extdecl;
   glGetSamplerParameterfv: procedure(sampler: GLuint; pname: GLenum; params: PGLfloat); extdecl;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   glGetSamplerParameterIuiv: procedure(sampler: GLuint; pname: GLenum; params: PGLuint); extdecl;
 
 function Load_GL_ARB_sampler_objects(LoadAsCore: boolean = false): Boolean;
+=======
+  glGetSamplerParameterIfv: procedure(sampler: GLuint; pname: GLenum; params: PGLfloat); extdecl;
+
+function Load_GL_ARB_sampler_objects(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+  glGetSamplerParameterIfv: procedure(sampler: GLuint; pname: GLenum; params: PGLfloat); extdecl;
+
+function Load_GL_ARB_sampler_objects(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+  glGetSamplerParameterIfv: procedure(sampler: GLuint; pname: GLenum; params: PGLfloat); extdecl;
+
+function Load_GL_ARB_sampler_objects(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+  glGetSamplerParameterIfv: procedure(sampler: GLuint; pname: GLenum; params: PGLfloat); extdecl;
+
+function Load_GL_ARB_sampler_objects(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_timer_query *****//
 const
@@ -4238,7 +4464,23 @@ var
   glGetQueryObjecti64v: procedure(id: GLuint; pname: GLenum; params: PGLint64); extdecl;
   glGetQueryObjectui64v: procedure(id: GLuint; pname: GLenum; params: PGLuint64); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_timer_query(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_timer_query(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_timer_query(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_timer_query(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_timer_query(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_vertex_type_2_10_10_10_rev *****//
 
@@ -4284,7 +4526,23 @@ var
   glVertexAttribP4ui: procedure(index: GLuint; _type: GLenum; normalized: GLboolean; value: GLuint); extdecl;
   glVertexAttribP4uiv: procedure(index: GLuint; _type: GLenum; normalized: GLboolean; const value: PGLuint); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_vertex_type_2_10_10_10_rev(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_vertex_type_2_10_10_10_rev(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_type_2_10_10_10_rev(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_type_2_10_10_10_rev(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_type_2_10_10_10_rev(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_gpu_shader_fp64 *****//
 // reuse GL_DOUBLE
@@ -4320,6 +4578,10 @@ var
   glUniformMatrix4x2dv: procedure(location: GLint; count: GLsizei; transpose: GLboolean; const value: PGLdouble); extdecl;
   glUniformMatrix4x3dv: procedure(location: GLint; count: GLsizei; transpose: GLboolean; const value: PGLdouble); extdecl;
   glGetUniformdv: procedure(_program: GLuint; location: GLint; params: PGLdouble); extdecl;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   
   { All of the following ProgramUniform* functions are supported if and only
     if EXT_direct_state_access is supported.
@@ -4330,6 +4592,14 @@ var
     Load_GL_VERSION_4_0 functions. (Because they are not mandatory parts of
     the extension or OpenGL 4.0 core spec.) }   
   
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   glProgramUniform1dEXT: procedure(_program: GLuint; location: GLint; x: GLdouble); extdecl;
   glProgramUniform2dEXT: procedure(_program: GLuint; location: GLint; x: GLdouble; y: GLdouble); extdecl;
   glProgramUniform3dEXT: procedure(_program: GLuint; location: GLint; x: GLdouble; y: GLdouble; z: GLdouble); extdecl;
@@ -4348,7 +4618,23 @@ var
   glProgramUniformMatrix4x2dvEXT: procedure(_program: GLuint; location: GLint; count: GLsizei; transpose: GLboolean; const value: PGLdouble); extdecl;
   glProgramUniformMatrix4x3dvEXT: procedure(_program: GLuint; location: GLint; count: GLsizei; transpose: GLboolean; const value: PGLdouble); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_gpu_shader_fp64(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_gpu_shader_fp64(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_gpu_shader_fp64(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_gpu_shader_fp64(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_gpu_shader_fp64(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_shader_subroutine *****//
 const
@@ -4372,7 +4658,23 @@ var
   glGetUniformSubroutineuiv: procedure(shadertype: GLenum; location: GLint; params: PGLuint); extdecl;
   glGetProgramStageiv: procedure(_program: GLuint; shadertype: GLenum; pname: GLenum; values: PGLint); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_shader_subroutine(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_shader_subroutine(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_shader_subroutine(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_shader_subroutine(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_shader_subroutine(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_tessellation_shader *****//
 const
@@ -4420,7 +4722,23 @@ var
   glPatchParameteri: procedure(pname: GLenum; value: GLint); extdecl;
   glPatchParameterfv: procedure(pname: GLenum; const values: PGLfloat); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_tessellation_shader(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_tessellation_shader(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_tessellation_shader(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_tessellation_shader(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_tessellation_shader(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_transform_feedback2 *****//
 const
@@ -4437,7 +4755,23 @@ var
   glResumeTransformFeedback: procedure(); extdecl;
   glDrawTransformFeedback: procedure(mode: GLenum; id: GLuint); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_transform_feedback2(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_transform_feedback2(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback2(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback2(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback2(): Boolean;
+>>>>>>> origin/cpstrnew
 
 //**** GL_ARB_transform_feedback3 *****//
 const
@@ -4448,9 +4782,29 @@ var
   glEndQueryIndexed: procedure(target: GLenum; index: GLuint); extdecl;
   glGetQueryIndexediv: procedure(target: GLenum; index: GLuint; pname: GLenum; params: PGLint); extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_transform_feedback3(LoadAsCore: boolean = false): Boolean;
+=======
+function Load_GL_ARB_transform_feedback3(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback3(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback3(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback3(): Boolean;
+>>>>>>> origin/cpstrnew
 
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 //***** GL_version_1_4 *****//
 const
   GL_BLEND_DST_RGB = $80C8;
@@ -4799,6 +5153,8 @@ var
 
 function Load_GL_version_2_0: Boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 //**** GL_VERSION_2_1 *****//
 const
   GL_PIXEL_PACK_BUFFER = $88EB;
@@ -5093,6 +5449,10 @@ function Load_GL_VERSION_3_3(): Boolean;
 //**** GL_VERSION_4_0 *****//
 
 function Load_GL_VERSION_4_0(): Boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 //**** GL_VERSION_4_3 *****//
 
@@ -5148,6 +5508,18 @@ var
 
 function Load_GL_Debug_output(): Boolean;
 function Load_GL_VERSION_4_3(): Boolean;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 implementation
 
@@ -5393,7 +5765,15 @@ begin
     if not Assigned(glCompressedTexSubImage1D) then Exit;
     glGetCompressedTexImage := wglGetProcAddress('glGetCompressedTexImage');
     if not Assigned(glGetCompressedTexImage) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result := Load_GL_version_1_2;
+=======
+    Result := TRUE;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Result := TRUE;
+>>>>>>> origin/fixes_2_2
 
 end;
 
@@ -6286,6 +6666,8 @@ begin
 
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_EXT_packed_depth_stencil: Boolean;
 var
   extstring: String;
@@ -6301,6 +6683,10 @@ begin
 
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function Load_GL_EXT_packed_pixels: Boolean;
 var
   extstring: String;
@@ -8526,8 +8912,14 @@ begin
       if not Assigned(glIsBufferARB) then Exit;
       glBufferDataARB := wglGetProcAddress('glBufferDataARB');
       if not Assigned(glBufferDataARB) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
       glBufferSubDataARB := wglGetProcAddress('glBufferSubDataARB');
       if not Assigned(glBufferSubDataARB) then Exit;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       glGetBufferSubDataARB := wglGetProcAddress('glGetBufferSubDataARB');
       if not Assigned(glGetBufferSubDataARB) then Exit;
       glMapBufferARB := wglGetProcAddress('glMapBufferARB');
@@ -9909,14 +10301,48 @@ begin
 
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_framebuffer_object(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_framebuffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_framebuffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_framebuffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_framebuffer_object(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_framebuffer_object', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_framebuffer_object', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_framebuffer_object', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_framebuffer_object', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_framebuffer_object', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glIsRenderbuffer := wglGetProcAddress('glIsRenderbuffer');
     if not Assigned(glIsRenderbuffer) then Exit;
@@ -9962,14 +10388,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_map_buffer_range(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_map_buffer_range(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_map_buffer_range(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_map_buffer_range(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_map_buffer_range(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_map_buffer_range', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_map_buffer_range', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_map_buffer_range', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_map_buffer_range', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_map_buffer_range', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glMapBufferRange := wglGetProcAddress('glMapBufferRange');
     if not Assigned(glMapBufferRange) then Exit;
@@ -9979,14 +10437,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_vertex_array_object(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_vertex_array_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_array_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_array_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_array_object(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_vertex_array_object', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_vertex_array_object', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_vertex_array_object', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_vertex_array_object', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_vertex_array_object', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glBindVertexArray := wglGetProcAddress('glBindVertexArray');
     if not Assigned(glBindVertexArray) then Exit;
@@ -10000,14 +10490,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_copy_buffer(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_copy_buffer(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_copy_buffer(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_copy_buffer(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_copy_buffer(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_copy_buffer', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_copy_buffer', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_copy_buffer', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_copy_buffer', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_copy_buffer', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glCopyBufferSubData := wglGetProcAddress('glCopyBufferSubData');
     if not Assigned(glCopyBufferSubData) then Exit;
@@ -10015,14 +10537,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_uniform_buffer_object(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_uniform_buffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_uniform_buffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_uniform_buffer_object(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_uniform_buffer_object(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_uniform_buffer_object', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_uniform_buffer_object', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_uniform_buffer_object', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_uniform_buffer_object', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_uniform_buffer_object', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glGetUniformIndices := wglGetProcAddress('glGetUniformIndices');
     if not Assigned(glGetUniformIndices) then Exit;
@@ -10049,14 +10603,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_draw_elements_base_vertex(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_draw_elements_base_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_draw_elements_base_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_draw_elements_base_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_draw_elements_base_vertex(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_draw_elements_base_vertex', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_draw_elements_base_vertex', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_draw_elements_base_vertex', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_draw_elements_base_vertex', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_draw_elements_base_vertex', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glDrawElementsBaseVertex := wglGetProcAddress('glDrawElementsBaseVertex');
     if not Assigned(glDrawElementsBaseVertex) then Exit;
@@ -10070,14 +10656,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_provoking_vertex(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_provoking_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_provoking_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_provoking_vertex(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_provoking_vertex(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_provoking_vertex', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_provoking_vertex', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_provoking_vertex', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_provoking_vertex', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_provoking_vertex', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glProvokingVertex := wglGetProcAddress('glProvokingVertex');
     if not Assigned(glProvokingVertex) then Exit;
@@ -10085,14 +10703,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_sync(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_sync(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_sync(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_sync(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_sync(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_sync', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_sync', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_sync', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_sync', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_sync', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glFenceSync := wglGetProcAddress('glFenceSync');
     if not Assigned(glFenceSync) then Exit;
@@ -10112,14 +10762,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_texture_multisample(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_texture_multisample(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_texture_multisample(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_texture_multisample(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_texture_multisample(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_texture_multisample', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_texture_multisample', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_texture_multisample', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_texture_multisample', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_texture_multisample', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glTexImage2DMultisample := wglGetProcAddress('glTexImage2DMultisample');
     if not Assigned(glTexImage2DMultisample) then Exit;
@@ -10133,14 +10815,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_sampler_objects(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_sampler_objects(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_sampler_objects(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_sampler_objects(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_sampler_objects(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_sampler_objects', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_sampler_objects', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_sampler_objects', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_sampler_objects', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_sampler_objects', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glGenSamplers := wglGetProcAddress('glGenSamplers');
     if not Assigned(glGenSamplers) then Exit;
@@ -10168,20 +10882,72 @@ begin
     if not Assigned(glGetSamplerParameterIiv) then Exit;
     glGetSamplerParameterfv := wglGetProcAddress('glGetSamplerParameterfv');
     if not Assigned(glGetSamplerParameterfv) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     glGetSamplerParameterIuiv := wglGetProcAddress('glGetSamplerParameterIuiv');
     if not Assigned(glGetSamplerParameterIuiv) then Exit;
+=======
+    glGetSamplerParameterIfv := wglGetProcAddress('glGetSamplerParameterIfv');
+    if not Assigned(glGetSamplerParameterIfv) then Exit;
+>>>>>>> graemeg/cpstrnew
+=======
+    glGetSamplerParameterIfv := wglGetProcAddress('glGetSamplerParameterIfv');
+    if not Assigned(glGetSamplerParameterIfv) then Exit;
+>>>>>>> graemeg/cpstrnew
+=======
+    glGetSamplerParameterIfv := wglGetProcAddress('glGetSamplerParameterIfv');
+    if not Assigned(glGetSamplerParameterIfv) then Exit;
+>>>>>>> graemeg/cpstrnew
+=======
+    glGetSamplerParameterIfv := wglGetProcAddress('glGetSamplerParameterIfv');
+    if not Assigned(glGetSamplerParameterIfv) then Exit;
+>>>>>>> origin/cpstrnew
     Result := True;
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_blend_func_extended(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_blend_func_extended(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_blend_func_extended(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_blend_func_extended(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_blend_func_extended(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_blend_func_extended', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_blend_func_extended', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_blend_func_extended', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_blend_func_extended', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_blend_func_extended', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glBindFragDataLocationIndexed := wglGetProcAddress('glBindFragDataLocationIndexed');
     if not Assigned(glBindFragDataLocationIndexed) then Exit;
@@ -10191,14 +10957,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_timer_query(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_timer_query(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_timer_query(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_timer_query(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_timer_query(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_timer_query', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_timer_query', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_timer_query', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_timer_query', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_timer_query', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glQueryCounter := wglGetProcAddress('glQueryCounter');
     if not Assigned(glQueryCounter) then Exit;
@@ -10210,14 +11008,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_vertex_type_2_10_10_10_rev(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_vertex_type_2_10_10_10_rev(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_type_2_10_10_10_rev(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_type_2_10_10_10_rev(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_vertex_type_2_10_10_10_rev(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_vertex_type_2_10_10_10_rev', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_vertex_type_2_10_10_10_rev', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_vertex_type_2_10_10_10_rev', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_vertex_type_2_10_10_10_rev', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_vertex_type_2_10_10_10_rev', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glVertexP2ui := wglGetProcAddress('glVertexP2ui');
     if not Assigned(glVertexP2ui) then Exit;
@@ -10299,14 +11129,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_gpu_shader_fp64(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_gpu_shader_fp64(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_gpu_shader_fp64(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_gpu_shader_fp64(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_gpu_shader_fp64(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_gpu_shader_fp64', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_gpu_shader_fp64', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_gpu_shader_fp64', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_gpu_shader_fp64', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_gpu_shader_fp64', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glUniform1d := wglGetProcAddress('glUniform1d');
     if not Assigned(glUniform1d) then Exit;
@@ -10344,6 +11206,10 @@ begin
     if not Assigned(glUniformMatrix4x3dv) then Exit;
     glGetUniformdv := wglGetProcAddress('glGetUniformdv');
     if not Assigned(glGetUniformdv) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     
     { Ignore presence/absence of functions below.
       See their special definition in 
@@ -10385,18 +11251,101 @@ begin
 //    if not Assigned(glProgramUniformMatrix4x2dvEXT) then Exit;
     glProgramUniformMatrix4x3dvEXT := wglGetProcAddress('glProgramUniformMatrix4x3dvEXT');
 //    if not Assigned(glProgramUniformMatrix4x3dvEXT) then Exit;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    glProgramUniform1dEXT := wglGetProcAddress('glProgramUniform1dEXT');
+    if not Assigned(glProgramUniform1dEXT) then Exit;
+    glProgramUniform2dEXT := wglGetProcAddress('glProgramUniform2dEXT');
+    if not Assigned(glProgramUniform2dEXT) then Exit;
+    glProgramUniform3dEXT := wglGetProcAddress('glProgramUniform3dEXT');
+    if not Assigned(glProgramUniform3dEXT) then Exit;
+    glProgramUniform4dEXT := wglGetProcAddress('glProgramUniform4dEXT');
+    if not Assigned(glProgramUniform4dEXT) then Exit;
+    glProgramUniform1dvEXT := wglGetProcAddress('glProgramUniform1dvEXT');
+    if not Assigned(glProgramUniform1dvEXT) then Exit;
+    glProgramUniform2dvEXT := wglGetProcAddress('glProgramUniform2dvEXT');
+    if not Assigned(glProgramUniform2dvEXT) then Exit;
+    glProgramUniform3dvEXT := wglGetProcAddress('glProgramUniform3dvEXT');
+    if not Assigned(glProgramUniform3dvEXT) then Exit;
+    glProgramUniform4dvEXT := wglGetProcAddress('glProgramUniform4dvEXT');
+    if not Assigned(glProgramUniform4dvEXT) then Exit;
+    glProgramUniformMatrix2dvEXT := wglGetProcAddress('glProgramUniformMatrix2dvEXT');
+    if not Assigned(glProgramUniformMatrix2dvEXT) then Exit;
+    glProgramUniformMatrix3dvEXT := wglGetProcAddress('glProgramUniformMatrix3dvEXT');
+    if not Assigned(glProgramUniformMatrix3dvEXT) then Exit;
+    glProgramUniformMatrix4dvEXT := wglGetProcAddress('glProgramUniformMatrix4dvEXT');
+    if not Assigned(glProgramUniformMatrix4dvEXT) then Exit;
+    glProgramUniformMatrix2x3dvEXT := wglGetProcAddress('glProgramUniformMatrix2x3dvEXT');
+    if not Assigned(glProgramUniformMatrix2x3dvEXT) then Exit;
+    glProgramUniformMatrix2x4dvEXT := wglGetProcAddress('glProgramUniformMatrix2x4dvEXT');
+    if not Assigned(glProgramUniformMatrix2x4dvEXT) then Exit;
+    glProgramUniformMatrix3x2dvEXT := wglGetProcAddress('glProgramUniformMatrix3x2dvEXT');
+    if not Assigned(glProgramUniformMatrix3x2dvEXT) then Exit;
+    glProgramUniformMatrix3x4dvEXT := wglGetProcAddress('glProgramUniformMatrix3x4dvEXT');
+    if not Assigned(glProgramUniformMatrix3x4dvEXT) then Exit;
+    glProgramUniformMatrix4x2dvEXT := wglGetProcAddress('glProgramUniformMatrix4x2dvEXT');
+    if not Assigned(glProgramUniformMatrix4x2dvEXT) then Exit;
+    glProgramUniformMatrix4x3dvEXT := wglGetProcAddress('glProgramUniformMatrix4x3dvEXT');
+    if not Assigned(glProgramUniformMatrix4x3dvEXT) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     Result := True;
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_shader_subroutine(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_shader_subroutine(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_shader_subroutine(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_shader_subroutine(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_shader_subroutine(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_shader_subroutine', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_shader_subroutine', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_shader_subroutine', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_shader_subroutine', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_shader_subroutine', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glGetSubroutineUniformLocation := wglGetProcAddress('glGetSubroutineUniformLocation');
     if not Assigned(glGetSubroutineUniformLocation) then Exit;
@@ -10418,14 +11367,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_tessellation_shader(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_tessellation_shader(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_tessellation_shader(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_tessellation_shader(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_tessellation_shader(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_tessellation_shader', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_tessellation_shader', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_tessellation_shader', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_tessellation_shader', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_tessellation_shader', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glPatchParameteri := wglGetProcAddress('glPatchParameteri');
     if not Assigned(glPatchParameteri) then Exit;
@@ -10435,14 +11416,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_transform_feedback2(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_transform_feedback2(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback2(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback2(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback2(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_transform_feedback2', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_transform_feedback2', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_transform_feedback2', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_transform_feedback2', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_transform_feedback2', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glBindTransformFeedback := wglGetProcAddress('glBindTransformFeedback');
     if not Assigned(glBindTransformFeedback) then Exit;
@@ -10462,14 +11475,46 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_ARB_transform_feedback3(LoadAsCore: boolean): Boolean;
+=======
+function Load_GL_ARB_transform_feedback3(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback3(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback3(): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function Load_GL_ARB_transform_feedback3(): Boolean;
+>>>>>>> origin/cpstrnew
 var
   extstring: String;
 begin
   Result := False;
   extstring := String(PChar(glGetString(GL_EXTENSIONS)));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if LoadAsCore or glext_ExtensionSupported('GL_ARB_transform_feedback3', extstring) then
+=======
+  if glext_ExtensionSupported('GL_ARB_transform_feedback3', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_transform_feedback3', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_transform_feedback3', extstring) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if glext_ExtensionSupported('GL_ARB_transform_feedback3', extstring) then
+>>>>>>> origin/cpstrnew
   begin
     glDrawTransformFeedbackStream := wglGetProcAddress('glDrawTransformFeedbackStream');
     if not Assigned(glDrawTransformFeedbackStream) then Exit;
@@ -10483,6 +11528,10 @@ begin
   end;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function Load_GL_version_1_4: Boolean;
 var
   extstring: String;
@@ -10581,7 +11630,15 @@ begin
     if not Assigned(glWindowPos3s) then Exit;
     glWindowPos3sv := wglGetProcAddress('glWindowPos3sv');
     if not Assigned(glWindowPos3sv) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result := Load_GL_version_1_3;
+=======
+    Result := TRUE;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Result := TRUE;
+>>>>>>> origin/fixes_2_2
 
 end;
 
@@ -10631,7 +11688,15 @@ begin
     if not Assigned(glGetBufferParameteriv) then Exit;
     glGetBufferPointerv := wglGetProcAddress('glGetBufferPointerv');
     if not Assigned(glGetBufferPointerv) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result := Load_GL_version_1_4;
+=======
+    Result := TRUE;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Result := TRUE;
+>>>>>>> origin/fixes_2_2
 
 end;
 
@@ -10829,7 +11894,15 @@ begin
     if not Assigned(glVertexAttrib4usv) then Exit;
     glVertexAttribPointer := wglGetProcAddress('glVertexAttribPointer');
     if not Assigned(glVertexAttribPointer) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result := Load_GL_version_1_5;
+=======
+    Result := TRUE;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Result := TRUE;
+>>>>>>> origin/fixes_2_2
 
 end;
 
@@ -11041,6 +12114,8 @@ begin
 
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Load_GL_VERSION_2_1(): Boolean;
 begin
   Result := False;
@@ -11178,6 +12253,10 @@ begin
   if not Assigned(glClearBufferfi) then Exit;
   glGetStringi := wglGetProcAddress('glGetStringi');
   if not Assigned(glGetStringi) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not Load_GL_ARB_framebuffer_object(true) then Exit;
   if not Load_GL_ARB_map_buffer_range(true) then Exit;
   if not Load_GL_ARB_vertex_array_object(true) then Exit;
@@ -11212,6 +12291,29 @@ begin
   end;
 end;
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  if not Load_GL_ARB_framebuffer_object() then Exit;
+  if not Load_GL_ARB_map_buffer_range() then Exit;
+  if not Load_GL_ARB_vertex_array_object() then Exit;
+  Result := Load_GL_VERSION_2_1();
+end;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 function Load_GL_VERSION_3_1(): Boolean;
 begin
   Result := False;
@@ -11223,8 +12325,28 @@ begin
   if not Assigned(glTexBuffer) then Exit;
   glPrimitiveRestartIndex := wglGetProcAddress('glPrimitiveRestartIndex');
   if not Assigned(glPrimitiveRestartIndex) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not Load_GL_ARB_copy_buffer(true) then Exit;
   if not Load_GL_ARB_uniform_buffer_object(true) then Exit;
+=======
+  if not Load_GL_ARB_copy_buffer() then Exit;
+  if not Load_GL_ARB_uniform_buffer_object() then Exit;
+>>>>>>> graemeg/cpstrnew
+=======
+  if not Load_GL_ARB_copy_buffer() then Exit;
+  if not Load_GL_ARB_uniform_buffer_object() then Exit;
+>>>>>>> graemeg/cpstrnew
+=======
+  if not Load_GL_ARB_copy_buffer() then Exit;
+  if not Load_GL_ARB_uniform_buffer_object() then Exit;
+>>>>>>> graemeg/cpstrnew
+=======
+  if not Load_GL_ARB_copy_buffer() then Exit;
+  if not Load_GL_ARB_uniform_buffer_object() then Exit;
+>>>>>>> origin/cpstrnew
   Result := Load_GL_VERSION_3_0();
 end;
 
@@ -11239,26 +12361,80 @@ begin
   if not Assigned(glProgramParameteri) then Exit;
   glFramebufferTexture := wglGetProcAddress('glFramebufferTexture');
   if not Assigned(glFramebufferTexture) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not Load_GL_ARB_draw_elements_base_vertex(true) then Exit;
   if not Load_GL_ARB_provoking_vertex(true) then Exit;
   if not Load_GL_ARB_sync(true) then Exit;
   if not Load_GL_ARB_texture_multisample(true) then Exit;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  if not Load_GL_ARB_draw_elements_base_vertex() then Exit;
+  if not Load_GL_ARB_provoking_vertex() then Exit;
+  if not Load_GL_ARB_sync() then Exit;
+  if not Load_GL_ARB_texture_multisample() then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   Result := Load_GL_VERSION_3_1();
 end;
 
 function Load_GL_VERSION_3_3(): Boolean;
 begin
   Result := False;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not Load_GL_ARB_blend_func_extended(true) then Exit;
   if not Load_GL_ARB_sampler_objects(true) then Exit;
   if not Load_GL_ARB_timer_query(true) then Exit;
   if not Load_GL_ARB_vertex_type_2_10_10_10_rev(true) then Exit;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  if not Load_GL_ARB_blend_func_extended() then Exit;
+  if not Load_GL_ARB_sampler_objects() then Exit;
+  if not Load_GL_ARB_timer_query() then Exit;
+  if not Load_GL_ARB_vertex_type_2_10_10_10_rev() then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   Result := Load_GL_VERSION_3_2();
 end;
 
 function Load_GL_VERSION_4_0(): Boolean;
 begin
   Result := False;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not Load_GL_ARB_gpu_shader_fp64(true) then Exit;
   if not Load_GL_ARB_shader_subroutine(true) then Exit;
   if not Load_GL_ARB_tessellation_shader(true) then Exit;
@@ -11271,7 +12447,33 @@ function Load_GL_VERSION_4_3(): Boolean;
 begin
   Result := False;
   if not Load_GL_Debug_output() then Exit;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  if not Load_GL_ARB_gpu_shader_fp64() then Exit;
+  if not Load_GL_ARB_shader_subroutine() then Exit;
+  if not Load_GL_ARB_tessellation_shader() then Exit;
+  if not Load_GL_ARB_transform_feedback2() then Exit;
+  if not Load_GL_ARB_transform_feedback3() then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   Result := Load_GL_VERSION_3_3();
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.

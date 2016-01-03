@@ -1,7 +1,15 @@
 <?xml version="1.0"?>
 <CONFIG>
   <ProjectOptions>
+<<<<<<< HEAD
     <Version Value="9"/>
+=======
+    <PathDelim Value="/"/>
+    <Version Value="6"/>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     <General>
       <Flags>
         <MainUnitHasUsesSectionForAllUnits Value="False"/>
@@ -11,6 +19,15 @@
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
+<<<<<<< HEAD
+=======
+      <IconPath Value=".\"/>
+      <TargetFileExt Value=""/>
+      <ActiveEditorIndexAtStart Value="4"/>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     </General>
     <VersionInfo>
       <Language Value=""/>
@@ -26,20 +43,48 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
         <CommandLineParams Value="list"/>
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
     <Units Count="8">
+=======
+        <CommandLineParams Value="avail"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <Units Count="39">
+>>>>>>> graemeg/fixes_2_2
+=======
+        <CommandLineParams Value="avail"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <Units Count="39">
+>>>>>>> origin/fixes_2_2
       <Unit0>
         <Filename Value="fppkg.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="fppkg"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        <CursorPos X="1" Y="317"/>
+        <TopLine Value="293"/>
+        <EditorIndex Value="7"/>
+        <UsageCount Value="86"/>
+        <Loaded Value="True"/>
+>>>>>>> graemeg/fixes_2_2
       </Unit0>
       <Unit1>
         <Filename Value="pkgropts.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pkgoptions"/>
+<<<<<<< HEAD
       </Unit1>
       <Unit2>
         <Filename Value="fprepos.pp"/>
@@ -55,15 +100,53 @@
         <Filename Value="pkghandler.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="pkghandler"/>
+=======
+        <CursorPos X="41" Y="18"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="86"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="fpmkcnst.inc"/>
+        <CursorPos X="64" Y="8"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="72"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="fpmktype.pp"/>
+        <UnitName Value="fpmktype"/>
+        <CursorPos X="3" Y="41"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="72"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="fpmkunit.pp"/>
+        <UnitName Value="fpmkunit"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="72"/>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       </Unit4>
       <Unit5>
         <Filename Value="pkgmkconv.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
         <UnitName Value="pkgmkconv"/>
+=======
+        <UnitName Value="fprepos"/>
+        <CursorPos X="3" Y="167"/>
+        <TopLine Value="168"/>
+        <EditorIndex Value="8"/>
+        <UsageCount Value="86"/>
+        <Loaded Value="True"/>
+>>>>>>> graemeg/fixes_2_2
       </Unit5>
       <Unit6>
         <Filename Value="pkgdownload.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
         <UnitName Value="pkgDownload"/>
       </Unit6>
       <Unit7>
@@ -72,12 +155,303 @@
         <UnitName Value="pkgmessages"/>
       </Unit7>
     </Units>
+=======
+        <UnitName Value="fpxmlrep"/>
+        <CursorPos X="1" Y="43"/>
+        <TopLine Value="43"/>
+        <UsageCount Value="86"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="pkghandler.pp"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pkghandler"/>
+        <CursorPos X="46" Y="219"/>
+        <TopLine Value="200"/>
+        <EditorIndex Value="6"/>
+        <UsageCount Value="86"/>
+        <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="pkgmkconv.pp"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pkgmkconv"/>
+        <CursorPos X="14" Y="53"/>
+        <TopLine Value="29"/>
+        <UsageCount Value="86"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="pkgdownload.pp"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pkgDownload"/>
+        <CursorPos X="27" Y="144"/>
+        <TopLine Value="129"/>
+        <UsageCount Value="86"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="pkgmessages.pp"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="pkgmessages"/>
+        <CursorPos X="23" Y="36"/>
+        <TopLine Value="8"/>
+        <EditorIndex Value="2"/>
+        <UsageCount Value="86"/>
+        <Loaded Value="True"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="streamcoll.pp"/>
+        <UnitName Value="streamcoll"/>
+        <CursorPos X="66" Y="88"/>
+        <TopLine Value="65"/>
+        <UsageCount Value="4"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="streamcoll20.pp"/>
+        <UnitName Value="streamcoll"/>
+        <CursorPos X="3" Y="15"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="4"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="../../../fpc20/rtl/objpas/classes/classesh.inc"/>
+        <CursorPos X="14" Y="599"/>
+        <TopLine Value="580"/>
+        <UsageCount Value="32"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="../../../fpc20/rtl/inc/objpash.inc"/>
+        <CursorPos X="38" Y="277"/>
+        <TopLine Value="269"/>
+        <UsageCount Value="30"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="../../../fpc20/fcl/inc/contnrs.pp"/>
+        <UnitName Value="contnrs"/>
+        <CursorPos X="1" Y="19"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="4"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="contnrs20.pp"/>
+        <UnitName Value="contnrs20"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="24"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="pkgcommands.pp"/>
+        <UnitName Value="pkgcommands"/>
+        <CursorPos X="13" Y="110"/>
+        <TopLine Value="110"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="41"/>
+        <Loaded Value="True"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="pkgwget.pp"/>
+        <UnitName Value="pkgwget"/>
+        <CursorPos X="18" Y="25"/>
+        <TopLine Value="15"/>
+        <UsageCount Value="28"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="pkglnet.pas"/>
+        <UnitName Value="pkglnet"/>
+        <CursorPos X="36" Y="19"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="7"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="reptest.pp"/>
+        <UnitName Value="reptest"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="21"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="rep2xml.lpr"/>
+        <UnitName Value="rep2xml"/>
+        <CursorPos X="40" Y="228"/>
+        <TopLine Value="217"/>
+        <UsageCount Value="21"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="pkgrepos.pp"/>
+        <UnitName Value="pkgrepos"/>
+        <CursorPos X="57" Y="242"/>
+        <TopLine Value="210"/>
+        <EditorIndex Value="4"/>
+        <UsageCount Value="32"/>
+        <Loaded Value="True"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="pkgocurl.pp"/>
+        <UnitName Value="pkgoCurl"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="7"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="pkglibcurl.pp"/>
+        <UnitName Value="pkglibcurl"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="7"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="zipper.pp"/>
+        <UnitName Value="zipper"/>
+        <CursorPos X="21" Y="1324"/>
+        <TopLine Value="1303"/>
+        <UsageCount Value="14"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="../../../fpc20/rtl/objpas/sysutils/filutilh.inc"/>
+        <CursorPos X="12" Y="53"/>
+        <TopLine Value="40"/>
+        <UsageCount Value="12"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="../../../fpc20/rtl/inc/systemh.inc"/>
+        <CursorPos X="3" Y="214"/>
+        <TopLine Value="313"/>
+        <UsageCount Value="12"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="../../../fpc20/rtl/objpas/sysutils/datih.inc"/>
+        <CursorPos X="16" Y="93"/>
+        <TopLine Value="86"/>
+        <UsageCount Value="12"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="zstream.pp"/>
+        <UnitName Value="zstream"/>
+        <CursorPos X="38" Y="348"/>
+        <TopLine Value="330"/>
+        <UsageCount Value="10"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="../../../fpc20/packages/base/paszlib/paszlib.pas"/>
+        <UnitName Value="paszlib"/>
+        <CursorPos X="34" Y="139"/>
+        <TopLine Value="118"/>
+        <UsageCount Value="10"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="pkgfpmake.pp"/>
+        <UnitName Value="pkgfpmake"/>
+        <CursorPos X="25" Y="236"/>
+        <TopLine Value="217"/>
+        <EditorIndex Value="0"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="pkglnet.pp"/>
+        <UnitName Value="pkglnet"/>
+        <CursorPos X="71" Y="10"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="9"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="pkgoptions.pp"/>
+        <UnitName Value="pkgoptions"/>
+        <CursorPos X="24" Y="476"/>
+        <TopLine Value="439"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="pkgglobals.pp"/>
+        <UnitName Value="pkgglobals"/>
+        <CursorPos X="1" Y="20"/>
+        <TopLine Value="20"/>
+        <EditorIndex Value="5"/>
+        <UsageCount Value="17"/>
+        <Loaded Value="True"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="../../../fpc20/packages/base/netdb/uriparser.pp"/>
+        <UnitName Value="URIParser"/>
+        <CursorPos X="1" Y="193"/>
+        <TopLine Value="189"/>
+        <UsageCount Value="9"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="pkgarchive.pp"/>
+        <UnitName Value="pkgarchive"/>
+        <CursorPos X="1" Y="74"/>
+        <TopLine Value="69"/>
+        <UsageCount Value="12"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="/tmp/testcompileroptions.pas"/>
+        <UnitName Value="testcompileroptions"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="10"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="../../../proj/lazarus/lcl/interfaces/gtk/gtkproc.pp"/>
+        <UnitName Value="GTKProc"/>
+        <CursorPos X="11" Y="674"/>
+        <TopLine Value="655"/>
+        <UsageCount Value="10"/>
+      </Unit38>
+    </Units>
+    <JumpHistory Count="8" HistoryIndex="7">
+      <Position1>
+        <Filename Value="pkgrepos.pp"/>
+        <Caret Line="108" Column="17" TopLine="108"/>
+      </Position1>
+      <Position2>
+        <Filename Value="pkgrepos.pp"/>
+        <Caret Line="177" Column="16" TopLine="173"/>
+      </Position2>
+      <Position3>
+        <Filename Value="pkgrepos.pp"/>
+        <Caret Line="212" Column="77" TopLine="193"/>
+      </Position3>
+      <Position4>
+        <Filename Value="pkgrepos.pp"/>
+        <Caret Line="222" Column="33" TopLine="196"/>
+      </Position4>
+      <Position5>
+        <Filename Value="pkgrepos.pp"/>
+        <Caret Line="210" Column="1" TopLine="183"/>
+      </Position5>
+      <Position6>
+        <Filename Value="pkgrepos.pp"/>
+        <Caret Line="218" Column="29" TopLine="203"/>
+      </Position6>
+      <Position7>
+        <Filename Value="pkgrepos.pp"/>
+        <Caret Line="26" Column="28" TopLine="7"/>
+      </Position7>
+      <Position8>
+        <Filename Value="pkgrepos.pp"/>
+        <Caret Line="229" Column="1" TopLine="208"/>
+      </Position8>
+    </JumpHistory>
+>>>>>>> graemeg/fixes_2_2
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="9"/>
     <SearchPaths>
+<<<<<<< HEAD
+<<<<<<< HEAD
       <IncludeFiles Value="lnet/sys"/>
       <OtherUnitFiles Value="lnet"/>
+=======
+      <IncludeFiles Value="lnet/sys/"/>
+      <OtherUnitFiles Value="lnet/"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+      <IncludeFiles Value="lnet/sys/"/>
+      <OtherUnitFiles Value="lnet/"/>
+>>>>>>> origin/fixes_2_2
     </SearchPaths>
     <Parsing>
       <SyntaxOptions>
@@ -112,6 +486,17 @@
     </Other>
   </CompilerOptions>
   <Debugging>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    <Watches Count="1">
+      <Item1>
+        <Expression Value="builddir"/>
+      </Item1>
+    </Watches>
+>>>>>>> graemeg/fixes_2_2
     <Exceptions Count="2">
       <Item1>
         <Name Value="ECodetoolError"/>

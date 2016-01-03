@@ -1,4 +1,10 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 {%target=win32,win64,wince}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {%cpu=x86_64,i386,arm}
 {%result=229}
 

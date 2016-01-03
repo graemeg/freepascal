@@ -132,6 +132,8 @@ TYPE
       2: (dummy : double);
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   floatx80 = record
     case byte of
       1: (low : qword;high : word);
@@ -139,6 +141,18 @@ TYPE
       // else *_to_double will fail for cpus like sparc
       // and avoid expensive unpacking/packing operations
       2: (dummy : extended);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  int64rec = packed record
+    low: bits32;
+    high: bits32;
+  end;
+
+  floatx80 = packed record
+    low : qword;
+    high : word;
+>>>>>>> graemeg/fixes_2_2
   end;
 
   float128 = record
@@ -150,12 +164,27 @@ TYPE
       2: (dummy : qword);
   end;
 {$else}
+<<<<<<< HEAD
+<<<<<<< HEAD
   float64 = record
       case byte of
         1: (high,low : bits32);
         // force the record to be aligned like a double
         // else *_to_double will fail for cpus like sparc
         2: (dummy : double);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  float64 = packed record
+    high,low : bits32;
+  end;
+
+  int64rec = packed record
+    high,low : bits32;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
   floatx80 = record
@@ -591,7 +620,14 @@ var
     z: int32;
 begin
     roundingMode := softfloat_rounding_mode;
+<<<<<<< HEAD
+<<<<<<< HEAD
     roundNearestEven := (roundingMode = float_round_nearest_even);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    roundNearestEven := ord( roundingMode = float_round_nearest_even );
+>>>>>>> graemeg/fixes_2_2
     roundIncrement := $40;
     if not roundNearestEven then
     begin
@@ -2410,7 +2446,19 @@ Function roundAndPackFloat32( zSign : Flag; zExp : Int16; zSig : Bits32 ) : floa
    IsTiny : boolean;
  Begin
     roundingMode := softfloat_rounding_mode;
+<<<<<<< HEAD
+<<<<<<< HEAD
     roundNearestEven := (roundingMode = float_round_nearest_even);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    if (roundingMode = float_round_nearest_even) then
+      Begin
+        roundNearestEven := Flag(TRUE);
+      end
+    else
+       roundNearestEven := Flag(FALSE);
+>>>>>>> graemeg/fixes_2_2
     roundIncrement := $40;
     if not roundNearestEven then
       Begin
@@ -3071,7 +3119,15 @@ Function float32_to_int32( a : float32rec) : int32;compilerproc;
             z := aSig shr ( - shiftCount );
          End;
         if ( aSigExtra<>0 ) then
+<<<<<<< HEAD
           set_inexact_flag;
+=======
+          softfloat_exception_flags := softfloat_exception_flags
+             or float_flag_inexact;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         roundingMode := softfloat_rounding_mode;
         if ( roundingMode = float_round_nearest_even ) then
           Begin
@@ -5798,8 +5854,16 @@ var
     shiftCount: int8;
 Begin
     if ( a = 0 ) then
+<<<<<<< HEAD
       begin
        qword_to_float32.float32 := 0;
+=======
+      Begin
+       packFloat64( 0, 0, 0, 0, result );
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
        exit;
       end;
     absA := a;
@@ -6806,10 +6870,20 @@ begin
         end;
         set_inexact_flag;
         aSign := extractFloatx80Sign( a );
+<<<<<<< HEAD
+<<<<<<< HEAD
         case softfloat_rounding_mode of
          float_round_nearest_even:
             if ( ( aExp = $3FFE ) and ( bits64( extractFloatx80Frac( a ) shl 1 ) <> 0 )
                ) then begin
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        switch ( softfloat_rounding_mode ) begin
+         case float_round_nearest_even:
+            if ( ( aExp = $3FFE ) and (bits64) ( extractFloatx80Frac( a ) shl 1 )
+               ) begin
+>>>>>>> graemeg/fixes_2_2
                 result :=
                     packFloatx80( aSign, $3FFF, bits64( $8000000000000000 ) );
                 exit;
@@ -6837,6 +6911,8 @@ begin
     roundBitsMask := lastBitMask - 1;
     z := a;
     roundingMode := softfloat_rounding_mode;
+<<<<<<< HEAD
+<<<<<<< HEAD
     if ( roundingMode = float_round_nearest_even ) then begin
         inc( z.low, lastBitMask shr 1 );
         if ( ( z.low and roundBitsMask ) = 0 ) then z.low := z.low and not lastBitMask;
@@ -6844,6 +6920,17 @@ begin
     else if ( roundingMode <> float_round_to_zero ) then begin
         if ( extractFloatx80Sign( z ) <> 0 ) xor ( roundingMode = float_round_up ) then begin
             inc( z.low, roundBitsMask );
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    if ( roundingMode = float_round_nearest_even ) begin
+        z.low += lastBitMask>>1;
+        if ( ( z.low and roundBitsMask ) = 0 ) z.low &= ~ lastBitMask;
+    end;
+    else if ( roundingMode <> float_round_to_zero ) begin
+        if ( extractFloatx80Sign( z ) xor ( roundingMode = float_round_up ) ) begin
+            z.low += roundBitsMask;
+>>>>>>> graemeg/fixes_2_2
         end;
     end;
     z.low := z.low and not roundBitsMask;
@@ -6974,10 +7061,19 @@ begin
         bExp := 1;
     end;
     zSig1 := 0;
+<<<<<<< HEAD
     if ( bSig < aSig ) then goto aBigger;
     if ( aSig < bSig ) then goto bBigger;
     result := packFloatx80( ord( softfloat_rounding_mode = float_round_down ), 0, 0 );
     exit;
+=======
+    if ( bSig < aSig ) goto aBigger;
+    if ( aSig < bSig ) goto bBigger;
+    result := packFloatx80( softfloat_rounding_mode = float_round_down, 0, 0 );
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  bExpBigger:
     if ( bExp = $7FFF ) then begin
         if ( bits64( bSig shl 1 ) <> 0 ) then begin
@@ -8335,10 +8431,20 @@ begin
         z.low := 0;
         z.high := a.high;
         roundingMode := softfloat_rounding_mode;
+<<<<<<< HEAD
+<<<<<<< HEAD
         if ( roundingMode = float_round_nearest_even ) then begin
             inc(z.high,lastBitMask shr 1);
             if ( ( ( z.high and roundBitsMask ) or a.low ) = 0 ) then begin
                 z.high := z.high and not(lastBitMask);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        if ( roundingMode = float_round_nearest_even ) begin
+            z.high += lastBitMask>>1;
+            if ( ( ( z.high and roundBitsMask ) or a.low ) = 0 ) begin
+                z.high &= ~ lastBitMask;
+>>>>>>> graemeg/fixes_2_2
             end;
         end
         else if ( roundingMode <> float_round_to_zero ) then begin

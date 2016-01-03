@@ -3,6 +3,8 @@ program form_test_2;
 {$MODE OBJFPC}
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
   ncurses, form, initc;
 
 
@@ -22,6 +24,25 @@ begin
 
   try
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  ncurses, form, libc;
+
+
+var
+  my_bg: Smallint = COLOR_BLACK;
+
+  field: array[0..5] of PFIELD;
+  my_form: PFORM;
+  i, ch: Longint;
+begin
+
+try
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   setlocale(LC_ALL, ''); { Tested with Russian UTF-8 locale }
 
   (* Initialize curses *)

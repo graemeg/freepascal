@@ -1,20 +1,78 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for WinCE Units
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for WinCE Units
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=winceunits
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units_wince=comobj buildwinceunits
+implicitunits_wince=aygshell commctrl commdlg iphlpapi notify oleauto power shellapi simmgr tapi \
+                    gpsapi todaycmn windbase cesync gx winioctl msgqueue pm service htmlctrl \
+                    sipapi cpl bt_api bt_sdp bthapi bthutil pimstore ril sms ws2bth keybd nled \
+                    phone connmgr devload devmgmt mmreg mmsystem msacm wininet ras raserror \
+                    sip projects wap tsp extapi imm \
+                    activex ole2 comconst rapitypes tlhelp32
+
+units_win32=rapi cesync rapitypes
+
+rsts=comconst
+>>>>>>> graemeg/cpstrnew
 
 [install]
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units_wince=buildwinceunits
+implicitunits_wince=aygshell commctrl commdlg iphlpapi notify oleauto power shellapi simmgr tapi \
+                    gpsapi todaycmn windbase cesync gx winioctl msgqueue pm service htmlctrl \
+                    sipapi cpl bt_api bt_sdp bthapi bthutil ril sms ws2bth keybd nled \
+                    phone connmgr devload devmgmt mmreg mmsystem msacm wininet ras raserror \
+                    sip projects wap
+units_win32=rapi cesync
+
+[install]
+buildunit=buildwinceunits
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 fpcpackage=y
 
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +158,16 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[compiler]
+options=-Ur
+sourcedir=src
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

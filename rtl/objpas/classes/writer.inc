@@ -16,7 +16,13 @@
 {*                         TBinaryObjectWriter                              *}
 {****************************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPUNONE}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$IFNDEF FPC_HAS_TYPE_EXTENDED}
 procedure DoubleToExtended(d : double; e : pointer);
 var mant : qword;
@@ -53,7 +59,13 @@ begin
   move(exp,pbyte(e)[8],2);  //exponent and sign: bytes 8..9
 end;
 {$ENDIF}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 procedure TBinaryObjectWriter.WriteWord(w : word); {$ifdef CLASSESINLINE}inline;{$endif CLASSESINLINE}
 begin
@@ -73,7 +85,13 @@ begin
   Write(qw,8);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPUNONE}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 procedure TBinaryObjectWriter.WriteExtended(e : extended); {$ifdef CLASSESINLINE}inline;{$endif CLASSESINLINE}
 {$IFNDEF FPC_HAS_TYPE_EXTENDED}
 var ext : array[0..9] of byte;
@@ -90,7 +108,13 @@ begin
   Write(e,sizeof(e));
 {$ENDIF}
 end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 constructor TBinaryObjectWriter.Create(Stream: TStream; BufSize: Integer);
 begin
@@ -250,6 +274,10 @@ begin
   begin
     WriteValue(vaInt64);
     WriteQWord(qword(Value));
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2_2
   end;
 end;
 
@@ -279,6 +307,8 @@ begin
   begin
     WriteValue(vaQWord);
     WriteQWord(Value);
+=======
+>>>>>>> graemeg/fixes_2_2
   end;
 end;
 
@@ -349,6 +379,8 @@ begin
     Write(Value[1], len*sizeof(widechar));
     {$ENDIF}
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 end;
                       
 procedure TBinaryObjectWriter.WriteUnicodeString(const Value: UnicodeString);
@@ -372,6 +404,8 @@ begin
     Write(Value[1], len*sizeof(UnicodeChar));
     {$ENDIF}
   end;
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure TBinaryObjectWriter.WriteVariant(const VarValue: variant);
@@ -425,6 +459,8 @@ begin
     else
       raise EWriteError.CreateFmt(SUnsupportedPropertyVariantType, [Ord(tvardata(VarValue).vtype)]);
   end;
+=======
+>>>>>>> graemeg/fixes_2_2
 end;
 
 
@@ -654,6 +690,8 @@ procedure TWriter.DoFindAncestor(Component : TComponent);
 Var
   C : TComponent;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 begin
   if Assigned(FOnFindAncestor) then
     if (Ancestor=Nil) or (Ancestor is TComponent) then
@@ -673,6 +711,33 @@ begin
   SR:=FRoot;
   SA:=FAncestor;
   SRA:=FRootAncestor;
+=======
+begin
+=======
+begin
+>>>>>>> origin/fixes_2_2
+  if Assigned(FOnFindAncestor) then
+    if (Ancestor=Nil) or (Ancestor is TComponent) then
+      begin
+      C:=TComponent(Ancestor);
+      FOnFindAncestor(Self,Component,Component.Name,C,FRootAncestor);
+      Ancestor:=C;
+      end;
+end;
+
+procedure TWriter.WriteComponent(Component: TComponent);
+
+var
+  SA : TPersistent;
+  SR : TComponent;
+  
+begin
+  SR:=FRoot;
+  SA:=FAncestor;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Try
     Component.FComponentState:=Component.FComponentState+[csWriting];
     Try
@@ -688,7 +753,13 @@ begin
   Finally
     FAncestor:=SA;
     FRoot:=SR;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FRootAncestor:=SRA;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 end;
 
@@ -857,7 +928,15 @@ var
   Value, DefValue: LongInt;
   Ident: String;
   IntToIdentFn: TIntToIdent;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPUNONE}
+=======
+  SingleV : Single;
+>>>>>>> graemeg/fixes_2_2
+=======
+  SingleV : Single;
+>>>>>>> origin/fixes_2_2
   FloatValue, DefFloatValue: Extended;
 {$endif}
   MethodValue: TMethod;
@@ -1054,6 +1133,7 @@ begin
              (ObjValue is TComponent) then
           begin
             //writeln('TWriter.WriteProperty AncestorObj=',TComponent(AncestorObj).Name,' OwnerFit=',TComponent(AncestorObj).Owner = FRootAncestor,' ',TComponent(ObjValue).Name,' OwnerFit=',TComponent(ObjValue).Owner = Root);
+<<<<<<< HEAD
             if (AncestorObj<> ObjValue) and
              (TComponent(AncestorObj).Owner = FRootAncestor) and
              (TComponent(ObjValue).Owner = Root) and
@@ -1062,6 +1142,13 @@ begin
               // different components, but with the same name
               // treat it like an override
               AncestorObj := ObjValue;
+=======
+            if (TComponent(AncestorObj).Owner <> FRootAncestor) or
+             (TComponent(ObjValue).Owner <> Root) or
+             (UpperCase(TComponent(AncestorObj).Name) <> UpperCase(TComponent(ObjValue).Name)) then
+            begin
+              AncestorObj := nil;
+>>>>>>> origin/fixes_2.4
             end;
           end;
         end else
@@ -1087,6 +1174,8 @@ begin
             if (ObjValue <> AncestorObj)
                 and not (csTransient in Component.ComponentStyle) then
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
               Name:= '';
               C:= Component;
               While (C<>Nil) and (C.Name<>'') do
@@ -1109,6 +1198,23 @@ begin
               if (C=nil) and (Component.Owner=nil) then 
                 if (Name<>'') then              //foreign root
                   Name:=Name+'.Owner';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+              { Determine the correct name of the component this property contains }
+              if Component.Owner = LookupRoot then
+                Name := Component.Name
+              else if Component = LookupRoot then
+                Name := 'Owner'
+              else if Assigned(Component.Owner) and (Length(Component.Owner.Name) > 0)
+                and (Length(Component.Name) > 0) then
+                Name := Component.Owner.Name + '.' + Component.Name
+              else if Length(Component.Name) > 0 then
+                Name := Component.Name + '.Owner'
+              else
+                SetLength(Name, 0);
+
+>>>>>>> graemeg/fixes_2_2
               if Length(Name) > 0 then
                 begin
                 Driver.BeginProperty(FPropPath + PPropInfo(PropInfo)^.Name);
@@ -1117,8 +1223,35 @@ begin
                 end;  // length Name>0
               end; //(ObjValue <> AncestorObj)
             end // ObjValue.InheritsFrom(TComponent)
+<<<<<<< HEAD
+<<<<<<< HEAD
           else
             begin
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          else if ObjValue.InheritsFrom(TCollection) then
+            begin
+            if (not HasAncestor) or (not CollectionsEqual(TCollection(ObjValue),
+              TCollection(GetObjectProp(Ancestor, PropInfo)),root,rootancestor)) then
+              begin
+              Driver.BeginProperty(FPropPath + PPropInfo(PropInfo)^.Name);
+              SavedPropPath := FPropPath;
+              try
+                SetLength(FPropPath, 0);
+                WriteCollection(TCollection(ObjValue));
+              finally
+                FPropPath := SavedPropPath;
+                Driver.EndProperty;
+              end;
+              end;
+            end // Tcollection
+          else
+            begin
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             SavedAncestor := Ancestor;
             SavedPropPath := FPropPath;
             try
@@ -1130,6 +1263,8 @@ begin
               Ancestor := SavedAncestor;
               FPropPath := SavedPropPath;
             end;
+<<<<<<< HEAD
+<<<<<<< HEAD
             if ObjValue.InheritsFrom(TCollection) then
               begin
               if (not HasAncestor) or (not CollectionsEqual(TCollection(ObjValue),
@@ -1146,6 +1281,10 @@ begin
                 end;
                 end;
               end // Tcollection
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             end;
           end; // Inheritsfrom(TPersistent)
       end;

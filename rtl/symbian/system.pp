@@ -36,7 +36,14 @@ const
   PathSeparator = ';';
   AllowDirectorySeparators : set of char = ['\','/'];
   AllowDriveSeparators : set of char = [':'];
+<<<<<<< HEAD
+<<<<<<< HEAD
   { FileNameCaseSensitive and FileNameCasePreserving are defined separately below }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  { FileNameCaseSensitive is defined separately below }
+>>>>>>> graemeg/fixes_2_2
   maxExitCode = 65535;
   MaxPathLen = 260;
   AllFilesMask = '*';
@@ -181,6 +188,16 @@ function Pascal_E32Main: Integer; cdecl; [public, alias: '_Pascal_E32Main'];
 var
   ST : pointer;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  IsLibrary := false;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+  IsLibrary := false;
+
+>>>>>>> origin/fixes_2_2
   PascalMain;
 
   { if we pass here there was no error }

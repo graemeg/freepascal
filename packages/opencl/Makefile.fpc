@@ -1,9 +1,29 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for Free Pascal opencl Packages
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for Free Pascal opencl Packages
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for Free Pascal opencl Packages
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for Free Pascal opencl Packages
+>>>>>>> origin/cpstrnew
 #
 
 [package]
 name=opencl
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
@@ -11,10 +31,47 @@ packages=rtl fpmkunit
 
 [install]
 fpcpackage=y
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.2.2
+
+[target]
+units=cl cl_gl
+
+[require]
+libc=y
+packages=opengl
+
+[compiler]
+includedir=src
+sourcedir=src
+
+[install]
+fpcpackage=y
+fpcsubdir=packages
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +157,25 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+[shared]
+build=n
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

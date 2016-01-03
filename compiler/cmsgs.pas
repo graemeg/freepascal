@@ -53,8 +53,20 @@ type
     msgidx      : array[1..maxmsgidxparts] of PArrayOfPChar;
     msgidxmax   : array[1..maxmsgidxparts] of longint;
     msgstates   : array[1..maxmsgidxparts] of PArrayOfState;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     { set if changes with $WARN need to be cleared at next module change }
     has_local_changes : boolean;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     constructor Init(n:longint;const idxmax:array of longint);
     destructor  Done;
     function  LoadIntern(p:pointer;n:longint):boolean;
@@ -63,9 +75,17 @@ type
     procedure ResetStates;
     procedure CreateIdx;
     function  GetPChar(nr:longint):pchar;
+<<<<<<< HEAD
+<<<<<<< HEAD
     { function  ClearVerbosity(nr:longint):boolean; not used anymore }
     function  SetVerbosity(nr:longint;newstate:tmsgstate):boolean;
     function  Get(nr:longint;const args:array of TMsgStr):ansistring;
+=======
+    function  Get(nr:longint;const args:array of string):ansistring;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function  Get(nr:longint;const args:array of string):ansistring;
+>>>>>>> origin/fixes_2_2
   end;
 
 { this will read a line until #10 or #0 and also increase p }
@@ -79,11 +99,25 @@ uses
   cutils;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function MsgReplace(const s:TMsgStr;const args:array of TMsgStr):ansistring;
 var
   last,
   i  : longint;
   hs : TMsgStr;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function MsgReplace(const s:string;const args:array of string):ansistring;
+var
+  last,
+  i  : longint;
+  hs : ansistring;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 begin
   if s='' then
@@ -127,9 +161,25 @@ begin
      fillchar(msgidx[i]^,msgidxmax[i]*sizeof(pointer),0);
      { create array of states }
      getmem(msgstates[i],msgidxmax[i]*sizeof(tmsgstate));
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      { default value for msgstate is ms_on_global }
      for j:=0 to msgidxmax[i]-1 do
        msgstates[i]^[j]:=ms_on_global;
+=======
+     fillchar(msgstates[i]^,msgidxmax[i]*sizeof(tmsgstate),0);
+>>>>>>> graemeg/cpstrnew
+=======
+     fillchar(msgstates[i]^,msgidxmax[i]*sizeof(tmsgstate),0);
+>>>>>>> graemeg/cpstrnew
+=======
+     fillchar(msgstates[i]^,msgidxmax[i]*sizeof(tmsgstate),0);
+>>>>>>> graemeg/cpstrnew
+=======
+     fillchar(msgstates[i]^,msgidxmax[i]*sizeof(tmsgstate),0);
+>>>>>>> origin/cpstrnew
    end;
 end;
 
@@ -410,14 +460,30 @@ end;
 function TMessage.SetVerbosity(nr:longint;newstate:tmsgstate):boolean;
 var
   i: longint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   oldstate : tmsgstate;
   is_global : boolean;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 begin
   result:=false;
   i:=nr div 1000;
   if (i < low(msgstates)) or
      (i > msgparts) then
     exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if (nr mod 1000 < msgidxmax[i]) then
     begin
       is_global:=(ord(newstate) and ms_global_mask) <> 0;
@@ -429,6 +495,16 @@ begin
       msgstates[i]^[nr mod 1000]:=newstate;
       result:=true;
     end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  msgstates[i]^[nr mod 1000]:=ms_off;
+  result:=true;
+>>>>>>> graemeg/cpstrnew
 end;
 
 {
@@ -438,7 +514,15 @@ begin
 end;
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TMessage.Get(nr:longint;const args:array of TMsgStr):ansistring;
+=======
+function TMessage.Get(nr:longint;const args:array of string):ansistring;
+>>>>>>> graemeg/fixes_2_2
+=======
+function TMessage.Get(nr:longint;const args:array of string):ansistring;
+>>>>>>> origin/fixes_2_2
 var
   hp : pchar;
 begin
@@ -451,6 +535,10 @@ begin
     Get:='msg nr '+tostr(nr)
   else
     Get:=MsgReplace(system.strpas(hp),args);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure TMessage.ResetStates;
@@ -469,6 +557,8 @@ begin
         msgstates[i]^[j]:=state;
       end;
   has_local_changes:=false;
+=======
+>>>>>>> graemeg/fixes_2_2
 end;
 
 

@@ -43,7 +43,7 @@ UNIT TRITON;
 
 INTERFACE
 
-uses exec, intuition, agraphics, utility;
+uses exec, intuition, graphics, utility;
 
 
 {* ------------------------------------------------------------------------------ *}
@@ -792,7 +792,7 @@ IMPLEMENTATION
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox,
+msgbox,
 {$endif dont_use_openlib}
 tagsarray,pastoc;
 

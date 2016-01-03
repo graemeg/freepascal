@@ -55,6 +55,8 @@ begin
      try
        Inc(ThreadNumber);
        thr:=ThProva.Create(Threadnumber);
+<<<<<<< HEAD
+<<<<<<< HEAD
        thr.start;
      Except on e: Exception do
        begin
@@ -70,6 +72,24 @@ begin
          end;
        end;
      end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+       thr.resume;
+     Except on e: Exception do
+       begin
+         WriteLn(e.Message);
+         halt(1);
+       end;
+     end;
+     if (threadnumber mod 16) = 0 then
+       while (threadsfinished<>threadnumber) do
+         { let the started threads to finish }
+         sleep(70);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    end;
   while (threadsfinished<>threadnumber) do
     { give some time to the started threads to finish }

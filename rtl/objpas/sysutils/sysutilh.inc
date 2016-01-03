@@ -210,6 +210,12 @@ type
    ESafecallException = class(Exception);
    ENoThreadSupport = Class(Exception);
    ENoWideStringSupport = Class(Exception);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    ENoDynLibsSupport = class(Exception);
    ENotImplemented = class(Exception);
 
@@ -217,6 +223,24 @@ type
    EArgumentOutOfRangeException = class(EArgumentException);
 
    ENoConstructException = class(Exception);
+=======
+   ENotImplemented = class(Exception);
+>>>>>>> graemeg/cpstrnew
+=======
+   ENotImplemented = class(Exception);
+>>>>>>> graemeg/cpstrnew
+=======
+   ENotImplemented = class(Exception);
+>>>>>>> graemeg/cpstrnew
+=======
+   ENotImplemented = class(Exception);
+>>>>>>> origin/cpstrnew
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 
    { Exception handling routines }
    function ExceptObject: TObject;
@@ -287,9 +311,21 @@ Type
   {$i sysencodingh.inc}
 {$endif FPC_HAS_UNICODESTRING}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$macro on}
 {$define PathStr:=UnicodeString}
 {$define PathPChar:=PWideChar}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   { Read filename handling functions declaration }
   {$i finah.inc}
 {$define PathStr:=RawByteString}
@@ -320,9 +356,21 @@ Type
 
   function SafeLoadLibrary(const FileName: AnsiString;
     ErrorMode: DWord = {$ifdef windows}SEM_NOOPENFILEERRORBOX{$else windows}0{$endif windows}): HMODULE;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   function GetModuleName(Module: HMODULE): string;
 
+=======
+    
+  function GetModuleName(Module: HMODULE): string;
+  
+>>>>>>> graemeg/fixes_2_2
+=======
+    
+  function GetModuleName(Module: HMODULE): string;
+  
+>>>>>>> origin/fixes_2_2
 { some packages and unit related constants for compatibility }
 
 const

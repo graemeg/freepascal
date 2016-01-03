@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 (*---------------------------------------------------------------------------------
 
 	libnds Copyright (C) 2005
@@ -30,6 +32,10 @@
 ---------------------------------------------------------------------------------*)
 
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 unit nds7;
 {$mode objfpc} 
 {$apptype arm7}
@@ -49,7 +55,13 @@ uses
 
 {$linklib c}
 {$linklib gcc}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$linklib g}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$linklib sysbase}
 
 {$define NDS_INTERFACE}

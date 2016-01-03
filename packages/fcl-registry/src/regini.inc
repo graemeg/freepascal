@@ -21,6 +21,26 @@ begin
   fPreferStringValues:=True; // Delphi compatibility
 end;
 
+constructor TRegIniFile.Create(const FN: String;aaccess:longword);
+begin
+  inherited Create(aaccess);
+  fFileName := FN;
+  if fFileName<>'' then
+   fPath := fFileName + '\'
+  else
+   fPath := '';
+end;
+
+constructor TRegIniFile.Create(const FN: String;aaccess:longword);
+begin
+  inherited Create(aaccess);
+  fFileName := FN;
+  if fFileName<>'' then
+   fPath := fFileName + '\'
+  else
+   fPath := '';
+end;
+
 procedure TRegIniFile.DeleteKey(const Section, Ident: String);
 begin
   if OpenSection(Section) then
@@ -88,13 +108,42 @@ begin
         inherited WriteString(Ident,BoolToStr(Value));
     end;
   finally
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     CloseSection;
+=======
+	  CloseKey;
+>>>>>>> graemeg/cpstrnew
+=======
+	  CloseKey;
+>>>>>>> graemeg/cpstrnew
+=======
+	  CloseKey;
+>>>>>>> graemeg/cpstrnew
+=======
+	  CloseKey;
+>>>>>>> origin/cpstrnew
 	end;
 end;
 
 procedure TRegIniFile.WriteInteger(const Section, Ident: string; Value: LongInt);
 begin
+<<<<<<< HEAD
   if OpenSection(Section,True) then
+=======
+  if not OpenKey(fPath+Section,true) then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   try
     if not fPreferStringValues then
       inherited WriteInteger(Ident,Value)
@@ -105,12 +154,32 @@ begin
         inherited WriteString(Ident,IntToStr(Value));
     end;
   finally
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     CloseSection;
+=======
+    CloseKey;
+>>>>>>> graemeg/cpstrnew
+=======
+    CloseKey;
+>>>>>>> graemeg/cpstrnew
+=======
+    CloseKey;
+>>>>>>> graemeg/cpstrnew
+=======
+    CloseKey;
+>>>>>>> origin/cpstrnew
   end;
 end;
 
 procedure TRegIniFile.WriteString(const Section, Ident, Value: String);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if OpenSection(Section,True) then
   try
     inherited WriteString(Ident,Value);
@@ -148,6 +217,28 @@ begin
         inherited WriteString(Ident,DateTimeToStr(Value));
   finally
     CloseKey;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  if not OpenKey(fPath+Section,true) then Exit;
+  try
+   inherited WriteString(Ident,Value);
+  finally
+   CloseKey;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 end;
 
@@ -191,10 +282,18 @@ begin
   if OpenSection(Section) then
 	try
     if ValueExists(Ident) then
+<<<<<<< HEAD
+<<<<<<< HEAD
       if (not fPreferStringValues) or (GetDataType(Ident)=rdInteger) then
   	    Result := inherited ReadBool(Ident)
       else
         Result := StrToBool(inherited ReadString(Ident));
+=======
+	    Result := inherited ReadBool(Ident);
+>>>>>>> graemeg/fixes_2_2
+=======
+	    Result := inherited ReadBool(Ident);
+>>>>>>> origin/fixes_2_2
 	finally
     CloseSection;
 	end;
@@ -206,10 +305,18 @@ begin
   if OpenSection(Section) then
   try
     if ValueExists(Ident) then
+<<<<<<< HEAD
+<<<<<<< HEAD
       if (not fPreferStringValues) or (GetDataType(Ident)=rdInteger) then
         Result := inherited ReadInteger(Ident)
       else
         Result := StrToInt(inherited ReadString(Ident));
+=======
+      Result := inherited ReadInteger(Ident);
+>>>>>>> graemeg/fixes_2_2
+=======
+      Result := inherited ReadInteger(Ident);
+>>>>>>> origin/fixes_2_2
   finally
     CloseSection;
   end;

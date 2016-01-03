@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('ibase');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ShortName:='ibas';
 {$ifdef ALLPACKAGES}
     P.Directory:=ADirectory;
@@ -28,6 +30,18 @@ begin
 
     P.SourcePath.Add('src');
     P.IncludePath.Add('src');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='ibase';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     T:=P.Targets.AddUnit('ibase40.pp');
     T:=P.Targets.AddUnit('ibase60dyn.pp');
@@ -35,17 +49,29 @@ begin
         begin
           AddInclude('ibase60.inc');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T.ResourceStrings := True;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     T:=P.Targets.AddUnit('ibase60.pp');
       with T.Dependencies do
         begin
           AddInclude('ibase60.inc');
         end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ExamplePath.Add('examples');
     P.Targets.AddExampleProgram('testib40.pp');
     P.Targets.AddExampleProgram('testib60.pp');
     P.Sources.AddExampleFiles('examples/*',P.Directory,false,'.');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$ifndef ALLPACKAGES}
     Run;

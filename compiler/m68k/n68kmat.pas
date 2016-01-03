@@ -146,6 +146,18 @@ implementation
    begin
      if current_settings.cputype=cpu_MC68020 then
        begin
+<<<<<<< HEAD
+=======
+         { verify if denominator is zero }
+         current_asmdata.getjumplabel(continuelabel);
+         { compare against zero, if not zero continue }
+         cg.a_cmp_const_reg_label(current_asmdata.CurrAsmList,OS_S32,OC_NE,0,denum,continuelabel);
+//       paraloc1.init;
+//         cg.a_load_const_cgpara(current_asmdata.CurrAsmList,OS_S32,200,paramanager.getintparaloc(pocall_default,1,paraloc1));
+
+         cg.a_call_name(current_asmdata.CurrAsmList,'FPC_HANDLEERROR',false);
+         cg.a_label(current_asmdata.CurrAsmList, continuelabel);
+>>>>>>> graemeg/cpstrnew
          if signed then
            current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_DIVS,S_L,denum,num))
          else
@@ -162,6 +174,17 @@ implementation
     begin
      if current_settings.cputype=cpu_MC68020 then
        begin
+<<<<<<< HEAD
+=======
+         { verify if denominator is zero }
+         current_asmdata.getjumplabel(continuelabel);
+         { compare against zero, if not zero continue }
+         cg.a_cmp_const_reg_label(current_asmdata.CurrAsmList,OS_S32,OC_NE,0,denum,continuelabel);
+//         cg.a_load_const_cgpara(current_asmdata.CurrAsmList, OS_S32,200,paramanager.getintparaloc(pocall_default,1));
+         cg.a_call_name(current_asmdata.CurrAsmList,'FPC_HANDLEERROR',false);
+         cg.a_label(current_asmdata.CurrAsmList, continuelabel);
+
+>>>>>>> graemeg/cpstrnew
          tmpreg:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
          { copy the numerator to the tmpreg, so we can use it as quotient, which
            means we'll get the remainder immediately in the numerator }
@@ -248,7 +271,15 @@ implementation
             hreg64lo:=left.location.register64.reglo;
 
             shiftval := tordconstnode(right).value.svalue;
+<<<<<<< HEAD
+<<<<<<< HEAD
             shiftval := shiftval and 63;
+=======
+	    shiftval := shiftval and 63;
+>>>>>>> graemeg/fixes_2_2
+=======
+	    shiftval := shiftval and 63;
+>>>>>>> origin/fixes_2_2
             if shiftval > 31 then
               begin
                 if nodetype = shln then

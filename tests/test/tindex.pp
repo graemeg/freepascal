@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+const
+  err: boolean = false;
+>>>>>>> graemeg/fixes_2_2
+=======
+const
+  err: boolean = false;
+>>>>>>> origin/fixes_2_2
 
 var
   a, b: array[0..515] of byte;
@@ -44,6 +54,8 @@ begin
               writeln('indexbyte error 2 for (',i,',',j,',',k,')');
               halt(2);
             end;
+<<<<<<< HEAD
+<<<<<<< HEAD
           {same for length=-1}
           if indexbyte(b[k+4],-1,0)<>index then
             begin
@@ -52,12 +64,18 @@ begin
               halt(22);
             end;
   
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
           if indexbyte(b[k+4],i,b[k+4+i-1])<>i-1 then
             begin
               writeln('indexbyte error 3 for (',i,',',j,',',k,')');
               halt(3);
             end;
+<<<<<<< HEAD
+<<<<<<< HEAD
           {same for length=-1}  
           if i<>0 then   // previous test will be no-op when i=0
             if indexbyte(b[k+4],-1,b[k+4+i-1])<>i-1 then
@@ -67,6 +85,10 @@ begin
               end;
 
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           if (i<1) then
             index:=-1
           else
@@ -77,6 +99,8 @@ begin
               writeln('indexbyte error 4 for (',i,',',j,',',k,')');
               halt(4);
             end;
+<<<<<<< HEAD
+<<<<<<< HEAD
           {same for length=-1}
           if i<>0 then  // previous test will be no-op when i=0
             if indexbyte(b[k+4],-1,b[k+4+i shr 1])<>index then
@@ -87,6 +111,10 @@ begin
               end;
 
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           if (i=0) then
             index:=-1
           else
@@ -94,6 +122,8 @@ begin
           if indexbyte(b[k+4],i,b[k+4])<>index then
             begin
               writeln('indexbyte error 5 for (',i,',',j,',',k,')');
+<<<<<<< HEAD
+<<<<<<< HEAD
               halt(5);
             end;
           {same for length=-1}
@@ -103,6 +133,14 @@ begin
                 writeln('indexbyte error 5a for (',i,',',j,',',k,')');
                 halt(25);
               end;
+=======
+              halt(3);
+            end;
+>>>>>>> graemeg/fixes_2_2
+=======
+              halt(3);
+            end;
+>>>>>>> origin/fixes_2_2
 
 
           if indexword(b[k+4],i shr 1,0)<>-1 then
@@ -126,6 +164,8 @@ begin
               writeln('indexword error 7 for (',i,',',j,',',k,')');
               halt(7);
             end;
+<<<<<<< HEAD
+<<<<<<< HEAD
           {same for length=-1}
           if indexword(b[k+4],-1,0)<>index then
             begin
@@ -133,6 +173,10 @@ begin
               writeln('indexword error 7a for (',i,',',j,',',k,')');
               halt(27);
             end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
           if (i=0) then
             index:=0
@@ -145,6 +189,8 @@ begin
               writeln('indexword error 8 for (',i,',',j,',',k,')');
               halt(8);
             end;
+<<<<<<< HEAD
+<<<<<<< HEAD
           {same for length=-1}
           if indexword(b[k+4],-1,l)<>index then
             begin
@@ -152,6 +198,10 @@ begin
               writeln('indexword error 8a for (',i,',',j,',',k,')');
               halt(28);
             end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
            l:=unaligned(pword(@(b[k+4+((i shr 2) and not 1)-2]))^);
            if (i>=8) then
@@ -164,6 +214,8 @@ begin
                writeln('indexword error 9 for (',i,',',j,',',k,')');
                halt(9);
              end;
+<<<<<<< HEAD
+<<<<<<< HEAD
            if (i>1) and (index<>-1) then
              if indexword(b[k+4],-1,l)<>index then
                begin
@@ -172,6 +224,10 @@ begin
                  halt(29);
                end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            l:=unaligned(pword(@(b[k+4]))^);
            if (i<2) then
              index:=-1
@@ -182,12 +238,18 @@ begin
                writeln('indexword error 10 for (',i,',',j,',',k,')');
                halt(10);
              end;
+<<<<<<< HEAD
+<<<<<<< HEAD
            if i>1 then
              if indexword(b[k+4],-1,l)<>index then
                begin
                  writeln('indexword error 10a for (',i,',',j,',',k,')');
                  halt(30);
                end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
            if (unaligned(pdword(@b[k+4])^)=0) then

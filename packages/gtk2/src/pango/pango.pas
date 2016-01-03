@@ -16,8 +16,18 @@
 
    You should have received a copy of the GNU Library General Public
    License along with this library; if not, write to the
+<<<<<<< HEAD
+<<<<<<< HEAD
    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02111-1301, USA.
+=======
+   Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+   Boston, MA 02111-1307, USA.
+>>>>>>> graemeg/fixes_2_2
+=======
+   Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+   Boston, MA 02111-1307, USA.
+>>>>>>> origin/fixes_2_2
 }
 unit pango; // keep unit name lowercase for kylix
 
@@ -36,7 +46,15 @@ uses glib2;
 {$DEFINE PANGO_ENABLE_BACKEND}
 
 const
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef windows}
+=======
+{$ifdef win32}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef win32}
+>>>>>>> origin/fixes_2_2
   {$define pangowin}
   pangolib = 'libpango-1.0-0.dll';
   {$IFDEF FPC}
@@ -60,8 +78,14 @@ const
   {$WARNINGS OFF}
 {$ENDIF}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 { $define HasPango1_20}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$DEFINE read_forward_definitions}
 type

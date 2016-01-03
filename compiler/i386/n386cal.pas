@@ -91,7 +91,23 @@ implementation
 
     procedure ti386callnode.extra_interrupt_code;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if not(target_info.system in [system_i386_darwin,system_i386_iphonesim,system_i386_android]) then
+=======
+        if not(target_info.system in [system_i386_darwin,system_i386_iphonesim]) then
+>>>>>>> graemeg/cpstrnew
+=======
+        if not(target_info.system in [system_i386_darwin,system_i386_iphonesim]) then
+>>>>>>> graemeg/cpstrnew
+=======
+        if not(target_info.system in [system_i386_darwin,system_i386_iphonesim]) then
+>>>>>>> graemeg/cpstrnew
+=======
+        if not(target_info.system in [system_i386_darwin,system_i386_iphonesim]) then
+>>>>>>> origin/cpstrnew
           begin
             emit_none(A_PUSHF,S_L);
             emit_reg(A_PUSH,S_L,NR_CS);
@@ -121,6 +137,9 @@ implementation
         { was "callee removes funcret pointer from stack" until now, we'll }
         { keep that default for everyone else (ncgcal decreases popsize by }
         { sizeof(aint) in case of ret_in_param())                          }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         { This is only correct if the hidden funcret parameter
           is not passed as a register.
           As it is inserted in parast after all other hidden parameters,
@@ -133,7 +152,30 @@ implementation
             not ((procdefinition.proccalloption=pocall_register) or
                  ((procdefinition.proccalloption=pocall_internproc) and
                   (pocall_default=pocall_register))) then
+=======
+        if (target_info.system = system_i386_win32) and
+            paramanager.ret_in_param(procdefinition.returndef,procdefinition.proccalloption) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           inc(pop_size,sizeof(aint));
+=======
+        if (target_info.system = system_i386_win32) and
+            paramanager.ret_in_param(procdefinition.returndef,procdefinition.proccalloption) then
+           inc(pop_size,sizeof(aint));
+>>>>>>> graemeg/fixes_2_2
+=======
+        if (target_info.system = system_i386_win32) and
+            paramanager.ret_in_param(procdefinition.returndef,procdefinition.proccalloption) then
+           inc(pop_size,sizeof(aint));
+>>>>>>> origin/fixes_2_2
 
         { better than an add on all processors }
         if pop_size=4 then

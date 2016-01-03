@@ -196,17 +196,41 @@ interface
          win32     : boolean;
          nsects    : word;
          nsyms,
+<<<<<<< HEAD
          sympos    : aword;
          datapos_offset: longword;
          function  totalheadersize:longword;
+=======
+         sympos    : aint;
+         function  totalheadersize:longint;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
          procedure ExeSectionList_pass2_header(p:TObject;arg:pointer);
          procedure write_symbol(const name:string;value:aword;section:smallint;typ,aux:byte);
          procedure globalsyms_write_symbol(p:TObject;arg:pointer);
          procedure ExeSectionList_write_header(p:TObject;arg:pointer);
        protected
+<<<<<<< HEAD
+<<<<<<< HEAD
          function writedata:boolean;override;
          procedure Order_ObjSectionList(ObjSectionList : TFPObjectList;const aPattern:string);override;
          procedure DoRelocationFixup(objsec:TObjSection);override;
+=======
+         procedure MemPos_Header;override;
+         procedure DataPos_Header;override;
+         procedure DataPos_Symbols;override;
+         function writedata:boolean;override;
+         procedure Order_ObjSectionList(ObjSectionList : TFPObjectList);override;
+>>>>>>> graemeg/fixes_2_2
+=======
+         procedure MemPos_Header;override;
+         procedure DataPos_Header;override;
+         procedure DataPos_Symbols;override;
+         function writedata:boolean;override;
+         procedure Order_ObjSectionList(ObjSectionList : TFPObjectList);override;
+>>>>>>> origin/fixes_2_2
        public
          constructor createcoff(awin32:boolean);
          procedure MemPos_Header;override;
@@ -235,7 +259,14 @@ interface
          procedure MarkTargetSpecificSections(WorkList:TFPObjectList);override;
          procedure AfterUnusedSectionRemoval;override;
          procedure GenerateLibraryImports(ImportLibraryList:TFPHashObjectList);override;
+<<<<<<< HEAD
          procedure MemPos_Start;override;
+=======
+         procedure Order_End;override;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
          procedure MemPos_ExeSection(const aname:string);override;
        end;
 
@@ -496,14 +527,37 @@ implementation
        SymbolMaxGrow = 200*sizeof(coffsymbol);
        StrsMaxGrow   = 8192;
 
+<<<<<<< HEAD
        coffsecnames : array[TAsmSectiontype] of string[length('__DATA, __datacoal_nt,coalesced')] = ('','',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           '.text','.data','.rdata','.rdata','.bss','.tls',
+=======
+          '.text','.data','.data','.data','.bss','.tls',
+>>>>>>> graemeg/cpstrnew
+=======
+          '.text','.data','.data','.data','.bss','.tls',
+>>>>>>> graemeg/cpstrnew
+=======
+          '.text','.data','.data','.data','.bss','.tls',
+>>>>>>> graemeg/cpstrnew
+=======
+          '.text','.data','.data','.data','.bss','.tls',
+>>>>>>> origin/cpstrnew
           '.pdata',{pdata}
           '.text', {stub}
           '.data',
           '.data',
           '.data',
           '.data',
+=======
+       coffsecnames : array[TAsmSectiontype] of string[17] = ('',
+          '.text','.data','.data','.data','.bss','.tls',
+          '.text',
+          '.pdata',
+>>>>>>> graemeg/fixes_2_2
           '.stab','.stabstr',
           '.idata$2','.idata$4','.idata$5','.idata$6','.idata$7','.edata',
           '.eh_frame',
@@ -511,6 +565,9 @@ implementation
           '.fpc',
           '',
           '.init',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           '.fini',
           '.objc_class',
           '.objc_meta_class',
@@ -545,9 +602,34 @@ implementation
           '.objc_nlclasslist',
           '.objc_catlist',
           '.obcj_nlcatlist',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           '.objc_protolist',
           '.stack',
           '.heap'
+=======
+          '.objc_protolist'
+>>>>>>> graemeg/cpstrnew
+=======
+          '.objc_protolist'
+>>>>>>> graemeg/cpstrnew
+=======
+          '.objc_protolist'
+>>>>>>> graemeg/cpstrnew
+=======
+          '.objc_protolist'
+>>>>>>> origin/cpstrnew
+=======
+          '.fini'
+>>>>>>> graemeg/fixes_2_2
+=======
+          '.fini'
+>>>>>>> origin/fixes_2_2
+=======
+          '.fini'
+>>>>>>> origin/fixes_2.4
         );
 
 const go32v2stub : array[0..2047] of byte=(
@@ -832,7 +914,15 @@ const pemagic : array[0..3] of byte = (
 
     procedure TCoffExeOutput.DoRelocationFixup(objsec:TObjSection);
       var
+<<<<<<< HEAD
+<<<<<<< HEAD
         i,zero,address_size : longint;
+=======
+        i,zero   : longint;
+>>>>>>> graemeg/fixes_2_2
+=======
+        i,zero   : longint;
+>>>>>>> origin/fixes_2_2
         objreloc : TObjRelocation;
         address,
         relocval : aint;
@@ -848,10 +938,24 @@ const pemagic : array[0..3] of byte = (
         data:=objsec.data;
         for i:=0 to objsec.ObjRelocations.Count-1 do
           begin
+<<<<<<< HEAD
             objreloc:=TObjRelocation(objsec.ObjRelocations[i]);
             address_size:=4;
             case objreloc.typ of
               RELOC_NONE:
+=======
+            objreloc:=TObjRelocation(ObjRelocations[i]);
+            if objreloc.typ=RELOC_NONE then
+              continue;
+            if objreloc.typ=RELOC_ZERO then
+              begin
+                data.Seek(objreloc.dataoffset);
+                zero:=0;
+                data.Write(zero,4);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                 continue;
               RELOC_ZERO:
                 begin
@@ -900,9 +1004,18 @@ const pemagic : array[0..3] of byte = (
                     if (relocsec.objdata=objsec.objdata) then
                       dec(address,TCoffObjSection(relocsec).orgmempos);
 {$ifdef arm}
+<<<<<<< HEAD
+<<<<<<< HEAD
                     if (relocsec.objdata=objsec.objdata) and not TCoffObjData(objsec.objdata).eVCobj then
                       inc(address, relocsec.MemPos)
                     else
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                  if (relocsec.objdata=objdata) and not TCoffObjData(objdata).eVCobj then
+                    inc(address, relocsec.MemPos)
+                  else
+>>>>>>> graemeg/fixes_2_2
 {$endif arm}
                       inc(address,relocval);
                   end;
@@ -912,7 +1025,29 @@ const pemagic : array[0..3] of byte = (
                     if (relocsec.objdata=objsec.objdata) then
                       dec(address,relocsec.ExeSection.MemPos);
                     inc(address,relocval);
+<<<<<<< HEAD
                   end;
+=======
+                end;
+              RELOC_SECREL32 :
+<<<<<<< HEAD
+=======
+                begin
+                  { fixup address when the symbol was known in defined object }
+                  if (relocsec.objdata=objdata) then
+                    dec(address,TCoffObjSection(relocsec).mempos);
+                  inc(address,relocval);
+                end;
+{$ifdef arm}
+              RELOC_RELATIVE_24:
+>>>>>>> origin/fixes_2_2
+                begin
+                  { fixup address when the symbol was known in defined object }
+                  if (relocsec.objdata=objdata) then
+                    dec(address,TCoffObjSection(relocsec).mempos);
+                  inc(address,relocval);
+                end;
+>>>>>>> graemeg/fixes_2_2
 {$ifdef arm}
                 RELOC_RELATIVE_24:
                   begin
@@ -976,9 +1111,18 @@ const pemagic : array[0..3] of byte = (
                           dec(address,TCoffObjSection(relocsec).orgmempos);
                       end;
 {$ifdef arm}
+<<<<<<< HEAD
+<<<<<<< HEAD
                     if (relocsec.objdata=objsec.objdata) and not TCoffObjData(objsec.objdata).eVCobj then
                       inc(address, relocsec.MemPos)
                     else
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                  if (relocsec.objdata=objdata) and not TCoffObjData(objdata).eVCobj then
+                    inc(address, relocsec.MemPos)
+                  else
+>>>>>>> graemeg/fixes_2_2
 {$endif arm}
                       inc(address,relocval);
                     inc(address,imagebase);
@@ -992,16 +1136,51 @@ const pemagic : array[0..3] of byte = (
             data.Seek(objreloc.dataoffset);
             data.Write(address,address_size);
 {$ifdef cpu64bitaddr}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             if (objreloc.typ = RELOC_ABSOLUTE32) and (objsec.name <> '.stab') then
+=======
+            if (objreloc.typ = RELOC_ABSOLUTE32) and (name <> '.stab') then
+>>>>>>> graemeg/cpstrnew
+=======
+            if (objreloc.typ = RELOC_ABSOLUTE32) and (name <> '.stab') then
+>>>>>>> graemeg/cpstrnew
+=======
+            if (objreloc.typ = RELOC_ABSOLUTE32) and (name <> '.stab') then
+>>>>>>> graemeg/cpstrnew
+=======
+            if (objreloc.typ = RELOC_ABSOLUTE32) and (name <> '.stab') then
+>>>>>>> origin/cpstrnew
               begin
                 if assigned(objreloc.symbol) then
                   s:=objreloc.symbol.Name
                 else
                   s:=objreloc.objsection.Name;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 Message2(link_w_32bit_absolute_reloc, objsec.ObjData.Name, s);
+=======
+                Message2(link_w_32bit_absolute_reloc, ObjData.Name, s);
+>>>>>>> graemeg/cpstrnew
+=======
+                Message2(link_w_32bit_absolute_reloc, ObjData.Name, s);
+>>>>>>> graemeg/cpstrnew
+=======
+                Message2(link_w_32bit_absolute_reloc, ObjData.Name, s);
+>>>>>>> graemeg/cpstrnew
+=======
+                Message2(link_w_32bit_absolute_reloc, ObjData.Name, s);
+>>>>>>> origin/cpstrnew
               end;
 {$endif cpu64bitaddr}
           end;
+        {for size = 0 data is not valid PM }
+        if assigned(data) and (data.size <> size) then
+          internalerror(2010092801);
       end;
 
 
@@ -1023,15 +1202,44 @@ const pemagic : array[0..3] of byte = (
         sep     : string[3];
         secname : string;
       begin
+<<<<<<< HEAD
         { section type user gives the user full controll on the section name }
         if atype=sec_user then
           result:=aname
+=======
+        secname:=coffsecnames[atype];
+        if create_smartlink_sections and
+           (aname<>'') then
+          begin
+            case aorder of
+              secorder_begin :
+                sep:='.b_';
+              secorder_end :
+                sep:='.z_';
+              else
+                sep:='.n_';
+            end;
+            result:=secname+sep+aname
+          end
+>>>>>>> graemeg/fixes_2_2
         else
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             { non-PECOFF targets lack rodata support }
             if (atype in [sec_rodata,sec_rodata_norel]) and
                not (target_info.system in systems_all_windows) then
               atype:=sec_data;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
             secname:=coffsecnames[atype];
             if create_smartlink_sections and
                (aname<>'') then
@@ -1049,6 +1257,10 @@ const pemagic : array[0..3] of byte = (
             else
               result:=secname;
           end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       end;
 
 
@@ -1062,6 +1274,14 @@ const pemagic : array[0..3] of byte = (
               aType:=sec_data;
           end;
         result:=inherited sectiontype2options(aType);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -1107,13 +1327,29 @@ const pemagic : array[0..3] of byte = (
                       CurrObjSec.addsectionreloc(curraddr,CurrObjSec,RELOC_ABSOLUTE);
                       inc(data,symaddr);
                     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef cpu64bitaddr}
+=======
+{$ifdef x86_64}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef x86_64}
+>>>>>>> origin/fixes_2_2
                   RELOC_ABSOLUTE32 :
                     begin
                       CurrObjSec.addsectionreloc(curraddr,CurrObjSec,RELOC_ABSOLUTE32);
                       inc(data,symaddr);
                     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif cpu64bitaddr}
+=======
+{$endif x86_64}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$endif x86_64}
+>>>>>>> origin/fixes_2_2
                   RELOC_RELATIVE :
                     begin
                       //inc(data,symaddr-len-CurrObjSec.Size);
@@ -1296,10 +1532,16 @@ const pemagic : array[0..3] of byte = (
                 rel.reloctype:=IMAGE_REL_ARM_ADDR32NB;
               RELOC_SECREL32 :
                 rel.reloctype:=IMAGE_REL_ARM_SECREL;
+<<<<<<< HEAD
+<<<<<<< HEAD
               RELOC_RELATIVE_24 :
                 rel.reloctype:=IMAGE_REL_ARM_BRANCH24;
               RELOC_RELATIVE_24_THUMB:
                 rel.reloctype:=IMAGE_REL_ARM_BLX24;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif arm}
 {$ifdef i386}
               RELOC_RELATIVE :
@@ -1801,6 +2043,32 @@ const pemagic : array[0..3] of byte = (
       end;
 
 
+<<<<<<< HEAD
+=======
+    procedure TCoffObjInput.ObjSections_read_data(p:TObject;arg:pointer);
+      begin
+        with TCoffObjSection(p) do
+          begin
+            { Skip debug sections }
+            if (oso_debug in secoptions) and
+               (cs_link_strip in current_settings.globalswitches) and
+               not(cs_link_separate_dbg_file in current_settings.globalswitches) then
+              exit;
+
+            if assigned(data) then
+              begin
+                FReader.Seek(datapos);
+                if not FReader.ReadArray(data,Size) then
+                  begin
+                    Comment(V_Error,'Error reading coff file, can''t read object data');
+                    exit;
+                  end;
+              end;
+          end;
+      end;
+
+
+>>>>>>> graemeg/fixes_2_2
     procedure TCoffObjInput.ObjSections_read_relocs(p:TObject;arg:pointer);
       begin
         with TCoffObjSection(p) do
@@ -1854,12 +2122,23 @@ const pemagic : array[0..3] of byte = (
 {$ifdef arm}
            eVCobj:=header.flag=$100;
 {$endif arm}
+<<<<<<< HEAD
+<<<<<<< HEAD
            { ObjSymbols }
            AReader.Seek(header.sympos);
            if not AReader.ReadArray(FCoffSyms,header.syms*sizeof(CoffSymbol)) then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+           { Strings }
+           AReader.Seek(header.sympos+header.syms*sizeof(CoffSymbol));
+           if not AReader.Read(strsize,4) then
+>>>>>>> graemeg/fixes_2_2
              begin
                InputError('Error reading coff symbol table');
                exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
            end;
            { Strings }
            if not AReader.Read(FCoffStrSize,4) then
@@ -1868,6 +2147,14 @@ const pemagic : array[0..3] of byte = (
                exit;
              end;
            if (FCoffStrSize>4) then
+=======
+             end;
+           if (strsize>4) and not AReader.ReadArray(FCoffStrs,Strsize-4) then
+>>>>>>> graemeg/fixes_2_2
+=======
+             end;
+           if (strsize>4) and not AReader.ReadArray(FCoffStrs,Strsize-4) then
+>>>>>>> origin/fixes_2_2
              begin
                { allocate an extra byte and null-terminate }
                GetMem(FCoffStrs,FCoffStrSize+1);
@@ -1929,6 +2216,40 @@ const pemagic : array[0..3] of byte = (
                        secname:=secname + '.' + ExtractFileName(InputFileName);
                      end;
                  end;
+<<<<<<< HEAD
+=======
+               if (Length(secname)>3) and (secname[2] in ['e','f','i','p','r']) then
+                 begin
+                   if (Copy(secname,1,6)='.edata') or
+                      (Copy(secname,1,5)='.rsrc') or
+                      (Copy(secname,1,6)='.pdata') or
+                      (Copy(secname,1,4)='.fpc') then
+                     include(secoptions,oso_keep);
+                   if (Copy(secname,1,6)='.idata') then
+                     begin
+  {$warning TODO idata keep can maybe replaced with grouping of text and idata}
+                       include(secoptions,oso_keep);
+                       secname:=secname + '.' + ExtractFileName(InputFileName);
+                     end;
+                 end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+               if (Length(secname)>3) and (secname[2] in ['e','f','i','p','r']) then
+                 begin
+                   if (Copy(secname,1,6)='.edata') or
+                      (Copy(secname,1,5)='.rsrc') or
+                      (Copy(secname,1,6)='.pdata') or
+                      (Copy(secname,1,4)='.fpc') then
+                     include(secoptions,oso_keep);
+                   if (Copy(secname,1,6)='.idata') then
+                     begin
+  {$warning TODO idata keep can maybe replaced with grouping of text and idata}
+                       include(secoptions,oso_keep);
+                       secname:=secname + '.' + ExtractFileName(InputFileName);
+                     end;
+                 end;
+>>>>>>> origin/fixes_2_2
                objsec:=TCoffObjSection(createsection(secname,secalign,secoptions,false));
                FSecTbl^[i]:=objsec;
                if not win32 then
@@ -2057,7 +2378,15 @@ const pemagic : array[0..3] of byte = (
       var
         sechdr   : tcoffsechdr;
         s        : string;
+<<<<<<< HEAD
+<<<<<<< HEAD
         strpos   : aword;
+=======
+        strpos   : Aint;
+>>>>>>> graemeg/fixes_2_2
+=======
+        strpos   : Aint;
+>>>>>>> origin/fixes_2_2
       begin
         with tExeSection(p) do
           begin
@@ -2071,6 +2400,13 @@ const pemagic : array[0..3] of byte = (
                s:='/'+ToStr(strpos);
              end;
             move(s[1],sechdr.name,length(s));
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+            sechdr.rvaofs:=mempos;
+>>>>>>> graemeg/fixes_2_2
             if win32 then
               begin
                 sechdr.rvaofs:=mempos;
@@ -2082,6 +2418,8 @@ const pemagic : array[0..3] of byte = (
                   sechdr.datasize:=Align(Size,SectionDataAlign);
               end
             else
+<<<<<<< HEAD
+<<<<<<< HEAD
               begin
                 if not (oso_debug in SecOptions) then
                   begin
@@ -2092,6 +2430,21 @@ const pemagic : array[0..3] of byte = (
               end;
             if (Size>0) then
               sechdr.datapos:=datapos-datapos_offset;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+              sechdr.vsize:=mempos;
+
+            { sechdr.dataSize is size of initilized data. For .bss section it must be zero }
+            if (Name <> '.bss') then
+              sechdr.dataSize:=Size;
+            if (sechdr.dataSize>0) and
+               (oso_data in SecOptions) then
+              sechdr.datapos:=datapos;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             sechdr.nrelocs:=0;
             sechdr.relocpos:=0;
             if win32 then
@@ -2101,10 +2454,22 @@ const pemagic : array[0..3] of byte = (
                   sechdr.flags:=peencodesechdrflags(SecOptions,SecAlign) or PE_SCN_MEM_NOT_PAGED
                 else
                   sechdr.flags:=peencodesechdrflags(SecOptions,SecAlign);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 { some flags are invalid in executables, reset them }
                 sechdr.flags:=sechdr.flags and
                   not(PE_SCN_LNK_INFO or PE_SCN_LNK_REMOVE or
                       PE_SCN_LNK_COMDAT or PE_SCN_ALIGN_MASK);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
               end
             else
               sechdr.flags:=djencodesechdrflags(SecOptions);
@@ -2127,7 +2492,48 @@ const pemagic : array[0..3] of byte = (
       end;
 
 
+<<<<<<< HEAD
     function tcoffexeoutput.totalheadersize:longword;
+=======
+    procedure Tcoffexeoutput.ExeSectionList_write_Data(p:TObject;arg:pointer);
+      var
+        objsec : TObjSection;
+        i      : longint;
+        b      : boolean;
+      begin
+        with texesection(p) do
+          begin
+            { don't write normal section if writing only debug info }
+            if (ExeWriteMode=ewm_dbgonly) and
+               not(oso_debug in SecOptions) then
+              exit;
+
+            if oso_data in secoptions then
+              begin
+                FWriter.Writezeros(Align(FWriter.Size,SectionDataAlign)-FWriter.Size);
+                for i:=0 to ObjSectionList.Count-1 do
+                  begin
+                    objsec:=TObjSection(ObjSectionList[i]);
+                    if oso_data in objsec.secoptions then
+                      begin
+                        if not assigned(objsec.data) then
+                          internalerror(200603042);
+                        FWriter.writezeros(objsec.dataalignbytes);
+                        if objsec.DataPos<>FWriter.Size then
+                          internalerror(200602251);
+                        FWriter.writearray(objsec.data);
+                      end;
+                  end;
+              end;
+          end;
+      end;
+
+
+    function tcoffexeoutput.totalheadersize:longint;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       var
         stubsize,
         optheadersize : longword;
@@ -2149,7 +2555,15 @@ const pemagic : array[0..3] of byte = (
     procedure tcoffexeoutput.MemPos_Header;
       begin
         { calculate start positions after the headers }
+<<<<<<< HEAD
+<<<<<<< HEAD
         currmempos:=totalheadersize+sizeof(tcoffsechdr)*longword(ExeSectionList.Count-2);
+=======
+        currmempos:=totalheadersize+sizeof(tcoffsechdr)*(ExeSectionList.Count-2);
+>>>>>>> graemeg/fixes_2_2
+=======
+        currmempos:=totalheadersize+sizeof(tcoffsechdr)*(ExeSectionList.Count-2);
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -2159,7 +2573,15 @@ const pemagic : array[0..3] of byte = (
         nsects:=0;
         ExeSectionList.ForEachCall(@ExeSectionList_pass2_header,@nsects);
         { calculate start positions after the headers }
+<<<<<<< HEAD
+<<<<<<< HEAD
         currdatapos:=totalheadersize+longword(nsects)*sizeof(tcoffsechdr);
+=======
+        currdatapos:=totalheadersize+sizeof(tcoffsechdr)*nsects;
+>>>>>>> graemeg/fixes_2_2
+=======
+        currdatapos:=totalheadersize+sizeof(tcoffsechdr)*nsects;
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -2310,7 +2732,15 @@ const pemagic : array[0..3] of byte = (
         header.mach:=COFF_MAGIC;
         header.nsects:=nsects;
         if writeDbgStrings then
+<<<<<<< HEAD
+<<<<<<< HEAD
           header.sympos:=sympos-datapos_offset;
+=======
+          header.sympos:=sympos;
+>>>>>>> graemeg/fixes_2_2
+=======
+          header.sympos:=sympos;
+>>>>>>> origin/fixes_2_2
         if hassymbols then
           header.syms:=nsyms;
         if win32 then
@@ -2384,18 +2814,41 @@ const pemagic : array[0..3] of byte = (
                   peoptheader.Subsystem:=PE_SUBSYSTEM_WINDOWS_GUI
                 else
                   peoptheader.Subsystem:=PE_SUBSYSTEM_WINDOWS_CUI;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
             if SetPEOptFlagsSetExplicity then
               peoptheader.DllCharacteristics:=peoptflags
             else
               peoptheader.DllCharacteristics:=0;
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+            peoptheader.DllCharacteristics:=0;
+>>>>>>> graemeg/cpstrnew
             peoptheader.SizeOfStackReserve:=stacksize;
             peoptheader.SizeOfStackCommit:=$1000;
             if MinStackSizeSetExplicity then
               peoptheader.SizeOfStackCommit:=minstacksize;
             if MaxStackSizeSetExplicity then
               peoptheader.SizeOfStackReserve:=maxstacksize;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            if SetPEFlagsSetExplicity then
+              peoptheader.LoaderFlags:=peflags;
+>>>>>>> graemeg/fixes_2_2
+=======
+            if SetPEFlagsSetExplicity then
+              peoptheader.LoaderFlags:=peflags;
+>>>>>>> origin/fixes_2_2
             peoptheader.SizeOfHeapReserve:=$100000;
             peoptheader.SizeOfHeapCommit:=$1000;
             peoptheader.NumberOfRvaAndSizes:=PE_DATADIR_ENTRIES;
@@ -2424,11 +2877,25 @@ const pemagic : array[0..3] of byte = (
         { For some unknown reason WM 6.1 requires .idata section to be read only.
           Otherwise it refuses to load DLLs greater than 64KB.
           Earlier versions of WinCE load DLLs regardless of .idata flags. }
+<<<<<<< HEAD
+<<<<<<< HEAD
         if target_info.system in systems_wince then
           begin
             idataExeSec:=FindExeSection('.idata');
             if idataExeSec<>nil then
               idataExeSec.SecOptions:=idataExeSec.SecOptions - [oso_write];
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        if target_info.system in system_wince then
+          begin
+            idataExeSec:=FindExeSection('.idata');
+            if idataExeSec<>nil then
+              idataExeSec.SecOptions:=idataExeSec.SecOptions - [oso_write] + [oso_readonly];
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           end;
 
         { Section headers }
@@ -2464,12 +2931,24 @@ const pemagic : array[0..3] of byte = (
         Result:=CompareStr(I1.Name,I2.Name);
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure TCoffexeoutput.Order_ObjSectionList(ObjSectionList: TFPObjectList;const aPattern:string);
       begin
         { Sort sections having '$' in the name, that's how PECOFF documentation
           tells to handle them. However, look for '$' in the pattern, not in section
           names, because the latter often get superfluous '$' due to mangling. }
         if Pos('$',aPattern)>0 then
+=======
+    procedure TCoffexeoutput.Order_ObjSectionList(ObjSectionList: TFPObjectList);
+      begin
+        if CurrExeSec.Name = '.idata' then
+>>>>>>> graemeg/fixes_2_2
+=======
+    procedure TCoffexeoutput.Order_ObjSectionList(ObjSectionList: TFPObjectList);
+      begin
+        if CurrExeSec.Name = '.idata' then
+>>>>>>> origin/fixes_2_2
           ObjSectionList.Sort(@IdataObjSectionCompare);
       end;
 
@@ -2570,7 +3049,17 @@ const pemagic : array[0..3] of byte = (
           { idata5 }
           idata5objsection.writezeros(sizeof(longint));
           if target_info.system=system_x86_64_win64 then
+<<<<<<< HEAD
             idata5objsection.writezeros(sizeof(longint));
+=======
+            internalobjdata.writebytes(emptyint,sizeof(emptyint));
+          { be sure that this will not be removed }
+          idata4objsection.SecOptions:=idata4objsection.SecOptions + [oso_keep];
+          idata5objsection.SecOptions:=idata5objsection.SecOptions + [oso_keep];
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         end;
 
         function AddImport(const afuncname,amangledname:string; AOrdNr:longint;isvar:boolean):TObjSymbol;
@@ -2589,6 +3078,7 @@ const pemagic : array[0..3] of byte = (
             $90,$90
           );
         var
+<<<<<<< HEAD
           ordint: dword;
 
           procedure WriteTableEntry(objsec:TObjSection);
@@ -2598,6 +3088,29 @@ const pemagic : array[0..3] of byte = (
                 objsec.writereloc_internal(idata6objsection,idata6objsection.size,sizeof(longint),RELOC_RVA);
                 if target_info.system=system_x86_64_win64 then
                   objsec.writezeros(sizeof(longint));
+=======
+          idata4label,
+          idata5label,
+          idata6label : TObjSymbol;
+          emptyint : longint;
+          secname,
+          num : string;
+          absordnr: word;
+
+          procedure WriteTableEntry;
+          var
+            ordint: dword;
+          begin
+            if AOrdNr <= 0 then
+              begin
+                { import by name }
+                internalobjdata.writereloc(0,sizeof(longint),idata6label,RELOC_RVA);
+                if target_info.system=system_x86_64_win64 then
+                  internalobjdata.writebytes(emptyint,sizeof(emptyint));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               end
             else
               begin
@@ -2605,14 +3118,34 @@ const pemagic : array[0..3] of byte = (
                 ordint:=AOrdNr;
                 if target_info.system=system_x86_64_win64 then
                   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                     objsec.write(ordint,sizeof(ordint));
                     ordint:=$80000000;
                     objsec.write(ordint,sizeof(ordint));
+=======
+                    internalobjdata.writebytes(ordint,sizeof(ordint));
+                    ordint:=$80000000;
+                    internalobjdata.writebytes(ordint,sizeof(ordint));
+>>>>>>> graemeg/fixes_2_2
+=======
+                    internalobjdata.writebytes(ordint,sizeof(ordint));
+                    ordint:=$80000000;
+                    internalobjdata.writebytes(ordint,sizeof(ordint));
+>>>>>>> origin/fixes_2_2
                   end
                 else
                   begin
                     ordint:=ordint or $80000000;
+<<<<<<< HEAD
+<<<<<<< HEAD
                     objsec.write(ordint,sizeof(ordint));
+=======
+                    internalobjdata.writebytes(ordint,sizeof(ordint));
+>>>>>>> graemeg/fixes_2_2
+=======
+                    internalobjdata.writebytes(ordint,sizeof(ordint));
+>>>>>>> origin/fixes_2_2
                   end;
               end;
           end;
@@ -2620,6 +3153,11 @@ const pemagic : array[0..3] of byte = (
         begin
           result:=nil;
           if assigned(exemap) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
             begin
               if AOrdNr <= 0 then
                 exemap.Add(' Importing Function '+afuncname)
@@ -2627,13 +3165,51 @@ const pemagic : array[0..3] of byte = (
                 exemap.Add(' Importing Function '+afuncname+' (OrdNr='+tostr(AOrdNr)+')');
             end;
 
+          with internalobjdata do
+>>>>>>> graemeg/fixes_2_2
+            begin
+              if AOrdNr <= 0 then
+                exemap.Add(' Importing Function '+afuncname)
+              else
+                exemap.Add(' Importing Function '+afuncname+' (OrdNr='+tostr(AOrdNr)+')');
+            end;
+
+<<<<<<< HEAD
           { idata4, import lookup table }
           WriteTableEntry(idata4objsection);
+=======
+          { idata6, import data (ordnr+name) }
+          internalobjdata.SetSection(idata6objsection);
+          inc(idatalabnr);
+          num:=tostr(idatalabnr);
+          idata6label:=internalobjdata.SymbolDefine('__imp_'+num,AB_LOCAL,AT_DATA);
+          absordnr:=Abs(AOrdNr);
+          { write index hint }
+          internalobjdata.writebytes(absordnr,2);
+          if AOrdNr <= 0 then
+            internalobjdata.writebytes(afuncname[1],length(afuncname));
+          internalobjdata.writebytes(emptyint,1);
+          internalobjdata.writebytes(emptyint,align(internalobjdata.CurrObjSec.size,2)-internalobjdata.CurrObjSec.size);
+          { idata4, import lookup table }
+          internalobjdata.SetSection(idata4objsection);
+          idata4label:=internalobjdata.SymbolDefine('__imp_lookup_'+num,AB_LOCAL,AT_DATA);
+          WriteTableEntry;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           { idata5, import address table }
           internalobjdata.SetSection(idata5objsection);
           if isvar then
             result:=internalobjdata.SymbolDefine(amangledname,AB_GLOBAL,AT_DATA)
           else
+<<<<<<< HEAD
+=======
+            idata5label:=internalobjdata.SymbolDefine('__imp_'+amangledname,AB_LOCAL,AT_DATA);
+          WriteTableEntry;
+          { text, jmp }
+          if not isvar then
+>>>>>>> graemeg/fixes_2_2
             begin
               internalobjdata.SetSection(textobjsection);
               textobjsection.writezeros(align_aword(textobjsection.size,16)-textobjsection.size);
@@ -2760,12 +3336,28 @@ const pemagic : array[0..3] of byte = (
         offset : longword;
         w: word;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
         if not RelocSection or FRelocsGenerated then
+=======
+        if not RelocSection then
+>>>>>>> graemeg/fixes_2_2
+=======
+        if not RelocSection then
+>>>>>>> origin/fixes_2_2
           exit;
         exesec:=FindExeSection('.reloc');
         if exesec=nil then
           exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
         objsec:=internalObjData.createsection('.reloc',0,[oso_data,oso_keep]);
+=======
+        objsec:=internalObjData.createsection('.reloc',0,exesec.SecOptions+[oso_data]);
+>>>>>>> graemeg/fixes_2_2
+=======
+        objsec:=internalObjData.createsection('.reloc',0,exesec.SecOptions+[oso_data]);
+>>>>>>> origin/fixes_2_2
         exesec.AddObjSection(objsec);
         pgaddr:=longword(-1);
         hdrpos:=longword(-1);
@@ -2784,9 +3376,18 @@ const pemagic : array[0..3] of byte = (
                     if not (objreloc.typ in [{$ifdef cpu64bitaddr}RELOC_ABSOLUTE32,{$endif cpu64bitaddr}RELOC_ABSOLUTE]) then
                       continue;
                     offset:=objsec.MemPos+objreloc.dataoffset;
+<<<<<<< HEAD
+<<<<<<< HEAD
                     if (offset<pgaddr) and (pgaddr<>longword(-1)) then
                       Internalerror(2007062701);
                     if (offset-pgaddr>=4096) or (pgaddr=longword(-1)) then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                    if offset<pgaddr then
+                      Internalerror(2007062701);
+                    if (offset-pgaddr>=4096) or (pgaddr=-1) then
+>>>>>>> graemeg/fixes_2_2
                       begin
                         FinishBlock;
                         pgaddr:=(offset div 4096)*4096;
@@ -2823,6 +3424,18 @@ const pemagic : array[0..3] of byte = (
             exesec.Disabled:=false;
           end;
         inherited;
+<<<<<<< HEAD
+=======
+        if not IsSharedLibrary then
+          exit;
+        exesec:=FindExeSection('.reloc');
+        if exesec=nil then
+          exit;
+        exesec.SecOptions:=exesec.SecOptions + [oso_Data,oso_keep,oso_load];
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 

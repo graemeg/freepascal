@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('fcl-async');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ShortName:='fcla';
 {$ifdef ALLPACKAGES}
     P.Directory:=ADirectory;
@@ -27,6 +29,17 @@ begin
     P.NeedLibC:= false;
     P.OSes:=AllUnixOses;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='fcl-async';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     P.SourcePath.Add('src');
     P.SourcePath.Add('src/unix',AllUnixOSes);
     P.SourcePath.Add('src/win',AllWindowsOSes);

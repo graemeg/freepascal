@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
@@ -16,6 +20,39 @@
     <BuildModes Count="1">
       <Item1 Name="default" Default="True"/>
     </BuildModes>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="7"/>
+    <General>
+      <MainUnit Value="0"/>
+      <TargetFileExt Value=""/>
+      <Icon Value="0"/>
+      <UseXPManifest Value="True"/>
+      <ActiveEditorIndexAtStart Value="1"/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+      <Language Value=""/>
+      <CharSet Value=""/>
+    </VersionInfo>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -25,6 +62,10 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <CommandLineParams Value="--suite=TTestStatementWriter"/>
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
@@ -35,70 +76,254 @@
       </Item1>
     </RequiredPackages>
     <Units Count="16">
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <CommandLineParams Value="-a --format=plain"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="2">
+      <Item1>
+        <PackageName Value="FPCUnitConsoleRunner"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+      </Item2>
+    </RequiredPackages>
+    <Units Count="7">
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       <Unit0>
         <Filename Value="testjs.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="testjs"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <WindowIndex Value="1"/>
         <TopLine Value="1"/>
         <CursorPos X="48" Y="3"/>
         <UsageCount Value="201"/>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <CursorPos X="11" Y="7"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="0"/>
+        <UsageCount Value="201"/>
+        <Loaded Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       </Unit0>
       <Unit1>
         <Filename Value="tcscanner.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tcscanner"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <WindowIndex Value="1"/>
         <TopLine Value="1"/>
         <CursorPos X="17" Y="22"/>
         <UsageCount Value="201"/>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <CursorPos X="27" Y="427"/>
+        <TopLine Value="416"/>
+        <EditorIndex Value="2"/>
+        <UsageCount Value="201"/>
+        <Loaded Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       </Unit1>
       <Unit2>
         <Filename Value="../src/jsbase.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="jsbase"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <WindowIndex Value="1"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="12"/>
         <UsageCount Value="200"/>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <CursorPos X="1" Y="153"/>
+        <TopLine Value="132"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="196"/>
+        <Loaded Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       </Unit2>
       <Unit3>
         <Filename Value="../src/jsparser.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="jsparser"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <EditorIndex Value="3"/>
         <WindowIndex Value="1"/>
         <TopLine Value="67"/>
         <CursorPos X="14" Y="85"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="201"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="201"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="201"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="201"/>
+>>>>>>> origin/cpstrnew
       </Unit3>
       <Unit4>
         <Filename Value="../src/jsscanner.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="JSScanner"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <EditorIndex Value="6"/>
         <WindowIndex Value="1"/>
         <TopLine Value="342"/>
         <CursorPos X="76" Y="345"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="201"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="201"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="201"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="201"/>
+>>>>>>> origin/cpstrnew
       </Unit4>
       <Unit5>
         <Filename Value="../src/jstree.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="jstree"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <EditorIndex Value="5"/>
         <WindowIndex Value="1"/>
         <TopLine Value="739"/>
         <CursorPos X="3" Y="757"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="200"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="200"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="200"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="200"/>
+>>>>>>> origin/cpstrnew
       </Unit5>
       <Unit6>
         <Filename Value="tcparser.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tcparser"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <EditorIndex Value="4"/>
         <WindowIndex Value="1"/>
         <TopLine Value="1878"/>
@@ -221,22 +446,190 @@
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <OtherUnitFiles Value="/home/michael/source/fcl-js/;..;../src"/>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <CursorPos X="3" Y="2059"/>
+        <TopLine Value="2051"/>
+        <EditorIndex Value="4"/>
+        <UsageCount Value="97"/>
+        <Loaded Value="True"/>
+      </Unit6>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1752" Column="1" TopLine="1730"/>
+      </Position1>
+      <Position2>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1767" Column="32" TopLine="1733"/>
+      </Position2>
+      <Position3>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1790" Column="30" TopLine="1766"/>
+      </Position3>
+      <Position4>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1763" Column="26" TopLine="1736"/>
+      </Position4>
+      <Position5>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1791" Column="1" TopLine="1758"/>
+      </Position5>
+      <Position6>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="114" Column="30" TopLine="93"/>
+      </Position6>
+      <Position7>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1806" Column="23" TopLine="1798"/>
+      </Position7>
+      <Position8>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1828" Column="3" TopLine="1819"/>
+      </Position8>
+      <Position9>
+        <Filename Value="../../../../source/fcl-js/jsparser.pp"/>
+        <Caret Line="515" Column="28" TopLine="507"/>
+      </Position9>
+      <Position10>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1824" Column="24" TopLine="1803"/>
+      </Position10>
+      <Position11>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1828" Column="17" TopLine="1803"/>
+      </Position11>
+      <Position12>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1849" Column="34" TopLine="1820"/>
+      </Position12>
+      <Position13>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="118" Column="27" TopLine="96"/>
+      </Position13>
+      <Position14>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1900" Column="29" TopLine="1888"/>
+      </Position14>
+      <Position15>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1898" Column="12" TopLine="1877"/>
+      </Position15>
+      <Position16>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1904" Column="80" TopLine="1883"/>
+      </Position16>
+      <Position17>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1914" Column="29" TopLine="1883"/>
+      </Position17>
+      <Position18>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1948" Column="18" TopLine="1914"/>
+      </Position18>
+      <Position19>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="20" Column="1" TopLine="1"/>
+      </Position19>
+      <Position20>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="2165" Column="1" TopLine="2124"/>
+      </Position20>
+      <Position21>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="121" Column="27" TopLine="99"/>
+      </Position21>
+      <Position22>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1969" Column="3" TopLine="1960"/>
+      </Position22>
+      <Position23>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1971" Column="46" TopLine="1950"/>
+      </Position23>
+      <Position24>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1986" Column="14" TopLine="1961"/>
+      </Position24>
+      <Position25>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="1993" Column="33" TopLine="1960"/>
+      </Position25>
+      <Position26>
+        <Filename Value="../../../../source/fcl-js/jsparser.pp"/>
+        <Caret Line="1702" Column="24" TopLine="1685"/>
+      </Position26>
+      <Position27>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="124" Column="25" TopLine="100"/>
+      </Position27>
+      <Position28>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="2038" Column="10" TopLine="2035"/>
+      </Position28>
+      <Position29>
+        <Filename Value="tcparser.pp"/>
+        <Caret Line="2075" Column="56" TopLine="2051"/>
+      </Position29>
+      <Position30>
+        <Filename Value="../../../../source/fcl-js/jsparser.pp"/>
+        <Caret Line="1747" Column="29" TopLine="1740"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="8"/>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)/"/>
+      <OtherUnitFiles Value="/home/michael/source/fcl-js/;../"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     </SearchPaths>
     <CodeGeneration>
       <Optimizations>
         <OptimizationLevel Value="0"/>
       </Optimizations>
     </CodeGeneration>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Linking>
       <Debugging>
         <UseHeaptrc Value="True"/>
       </Debugging>
     </Linking>
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     <Other>
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>
   <Debugging>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     <BreakPoints Count="7">
       <Item1>
         <Kind Value="bpkSource"/>
@@ -287,6 +680,28 @@
         <Source Value="tcparser.pp"/>
         <Line Value="2253"/>
       </Item7>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    <BreakPoints Count="1">
+      <Item1>
+        <Source Value="../jsscanner.pp"/>
+        <Line Value="717"/>
+      </Item1>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     </BreakPoints>
     <Exceptions Count="3">
       <Item1>
@@ -300,5 +715,17 @@
       </Item3>
     </Exceptions>
   </Debugging>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   <EditorMacros Count="0"/>
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 </CONFIG>

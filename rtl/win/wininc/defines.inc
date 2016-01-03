@@ -1192,6 +1192,8 @@
   { EnumProtocols  }
   { EnumResLangProc  }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   // layout
    LAYOUT_RTL                         = 1; // Right to left
    LAYOUT_BTT                         = 2; // Bottom to top
@@ -1203,6 +1205,10 @@
      DMDFO_DEFAULT = 0;
      DMDFO_STRETCH = 1;
      DMDFO_CENTER  = 2;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   //
   // Predefined Resource Types
@@ -1716,6 +1722,8 @@
      SIF_RANGE = 1;
      SIF_DISABLENOSCROLL = 8;
   { GetStdHandle  }
+<<<<<<< HEAD
+<<<<<<< HEAD
   { !!! The 3 following constants are NOT handles. They remain 32-bit on Win64. }
      STD_INPUT_HANDLE = DWORD(-10);
      STD_OUTPUT_HANDLE = DWORD(-11);
@@ -1724,8 +1732,34 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
      INVALID_HANDLE_VALUE = HANDLE(-1);
      INVALID_FILE_SIZE    = DWORD(-1);
+=======
+     STD_INPUT_HANDLE = HANDLE(-10);
+     STD_OUTPUT_HANDLE = HANDLE(-11);
+     STD_ERROR_HANDLE = HANDLE(-12);
+
+     INVALID_HANDLE_VALUE = HANDLE(-1);
+>>>>>>> graemeg/fixes_2_2
+=======
+     STD_INPUT_HANDLE = HANDLE(-10);
+     STD_OUTPUT_HANDLE = HANDLE(-11);
+     STD_ERROR_HANDLE = HANDLE(-12);
+
+     INVALID_HANDLE_VALUE = HANDLE(-1);
+>>>>>>> origin/fixes_2_2
 
   { GetStockObject  }
 
@@ -2358,6 +2392,8 @@
      RDW_ALLCHILDREN = 128;
      RDW_NOCHILDREN = 64;
   { RegCreateKey  }
+<<<<<<< HEAD
+<<<<<<< HEAD
      HKEY_CLASSES_ROOT = HKEY(longint($80000000));
      HKEY_CURRENT_USER = HKEY(longint($80000001));
      HKEY_LOCAL_MACHINE = HKEY(longint($80000002));
@@ -2365,6 +2401,20 @@
      HKEY_PERFORMANCE_DATA = HKEY(longint($80000004));
      HKEY_CURRENT_CONFIG = HKEY(longint($80000005));
      HKEY_DYN_DATA = HKEY(longint($80000006));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+     HKEY_CLASSES_ROOT = HKEY($80000000);
+     HKEY_CURRENT_USER = HKEY($80000001);
+     HKEY_LOCAL_MACHINE = HKEY($80000002);
+     HKEY_USERS = HKEY($80000003);
+     HKEY_PERFORMANCE_DATA = HKEY($80000004);
+     HKEY_CURRENT_CONFIG = HKEY($80000005);	
+     HKEY_DYN_DATA = HKEY($80000006);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 Type
     SE_OBJECT_TYPE = (   // enum in Delphi apparantly.
@@ -2893,7 +2943,19 @@ Type
      TPM_VERTICAL    = $40;
      TPM_TOPALIGN    = 0;
      TPM_VCENTERALIGN= $10;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      TPM_BOTTOMALIGN = $20;
+=======
+     TPM_BOOTOMALIGN = $20;
+>>>>>>> graemeg/fixes_2_2
+=======
+     TPM_BOOTOMALIGN = $20;
+>>>>>>> origin/fixes_2_2
+=======
+     TPM_BOTTOMALIGN = $20;
+>>>>>>> origin/fixes_2.4
      TPM_NONOTIFY    = $80;
      TPM_RETURNCMD   = $100;
      TPM_RECURSE         = $0001;
@@ -5871,6 +5933,8 @@ const
   DMDO_180        = 2;
   DMDO_270        = 3;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   FIND_FIRST_EX_CASE_SENSITIVE   = $00000001;
   FIND_FIRST_EX_LARGE_FETCH      = $00000002;
 
@@ -5915,6 +5979,10 @@ const
     IMAGE_FILE_MACHINE_AMD64             = $8664;  // AMD64 (K8)
     IMAGE_FILE_MACHINE_M32R              = $9041;  // M32R little-endian
     IMAGE_FILE_MACHINE_CEE               = $C0EE;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     IMAGE_FILE_LARGE_ADDRESS_AWARE       = $20;    // for peflags.
 
   //
@@ -5977,6 +6045,14 @@ const
   // TLS Characteristic Flags
   //
      IMAGE_SCN_SCALE_INDEX                = $00000001;  // Tls index is scaled
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 
     GWLP_WNDPROC        		 = -4; 
@@ -5993,6 +6069,10 @@ const
     GCLP_WNDPROC                         = -24;
     GCLP_HICONSM                         = -34;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     IMAGE_ORDINAL_FLAG64 = uint64($8000000000000000);
     IMAGE_ORDINAL_FLAG32 = uint32($80000000);
     bm__IMAGE_TLS_DIRECTORY64_Reserved0 = $FFFFF;
@@ -6013,6 +6093,14 @@ const
 {$else}
     IMAGE_ORDINAL_FLAG = IMAGE_ORDINAL_FLAG32;
 {$endif}                                                          
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 // #if(WINVER >= 0x0500)
 {/*
@@ -6044,6 +6132,10 @@ const
       MBIFB_BAR_FOCUSED = $00000001;
       MBIFB_FOCUSED     = $00000002;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif read_interface}
 
 {$ifdef read_implementation}

@@ -69,6 +69,34 @@ type
   end;
   PMaxLogPalette = ^TMaxLogPalette;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+  TOwnerDrawState = set of (
+    odSelected,odGrayed,odDisabled,odChecked,
+    odFocused,odDefault,odHotLight,odInactive,odNoAccel,odNoFocusRect,
+    odReserved1,odReserved2,odComboBoxEdit);
+
+type
+  PKeyboardState = ^TKeyboardState;
+  TKeyboardState = array[0..255] of Byte;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  POSVersionInfoA = POSVERSIONINFO;
+
+  TBitmapFileHeader = BITMAPFILEHEADER;
+  PBitmapFileHeader = ^TBitmapFileHeader;
+>>>>>>> graemeg/fixes_2_2
+
+  TOwnerDrawState = set of (
+    odSelected,odGrayed,odDisabled,odChecked,
+    odFocused,odDefault,odHotLight,odInactive,odNoAccel,odNoFocusRect,
+    odReserved1,odReserved2,odComboBoxEdit);
+
+type
+  PKeyboardState = ^TKeyboardState;
+  TKeyboardState = array[0..255] of Byte;
+
   TOwnerDrawState = set of (
     odSelected,odGrayed,odDisabled,odChecked,
     odFocused,odDefault,odHotLight,odInactive,odNoAccel,odNoFocusRect,
@@ -105,6 +133,45 @@ const
   CP_UTF7 = 65000;
   CP_UTF8 = 65001;
   CREATE_NO_WINDOW = $08000000;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+  WHEEL_DELTA = 120;
+  WHEEL_PAGESCROLL = MAXDWORD;
+
+  MSH_MOUSEWHEEL   = 'MSWHEEL_ROLLMSG';
+  MOUSEZ_CLASSNAME = 'MouseZ';
+  MOUSEZ_TITLE     = 'Magellan MSWHEEL';
+  MSH_WHEELSUPPORT = 'MSH_WHEELSUPPORT_MSG';
+  MSH_SCROLL_LINES = 'MSH_SCROLL_LINES_MSG';
+
+  MSH_WHEELMODULE_CLASS = MOUSEZ_CLASSNAME;
+  MSH_WHEELMODULE_TITLE = MOUSEZ_TITLE;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  VK_ATTN = 246;
+  VK_CRSEL = 247;
+  VK_EXSEL = 248;
+  VK_EREOF = 249;
+  VK_PLAY = 250;
+  VK_ZOOM = 251;
+  VK_NONAME = 252;
+  VK_PA1 = 253;
+  VK_OEM_CLEAR = 254;
+>>>>>>> graemeg/fixes_2_2
+
+  WHEEL_DELTA = 120;
+  WHEEL_PAGESCROLL = MAXDWORD;
+
+  MSH_MOUSEWHEEL   = 'MSWHEEL_ROLLMSG';
+  MOUSEZ_CLASSNAME = 'MouseZ';
+  MOUSEZ_TITLE     = 'Magellan MSWHEEL';
+  MSH_WHEELSUPPORT = 'MSH_WHEELSUPPORT_MSG';
+  MSH_SCROLL_LINES = 'MSH_SCROLL_LINES_MSG';
+
+  MSH_WHEELMODULE_CLASS = MOUSEZ_CLASSNAME;
+  MSH_WHEELMODULE_TITLE = MOUSEZ_TITLE;
 
   WHEEL_DELTA = 120;
   WHEEL_PAGESCROLL = MAXDWORD;
@@ -208,7 +275,14 @@ function InitializeCriticalSectionAndSpinCount(var CriticalSection : TRTLCritica
 function SetCriticalSectionSpinCount(var CriticalSection : TRTLCriticalSection;dwSpinCount : DWORD ): DWORD; external 'kernel32' name 'SetCriticalSectionSpinCount';
 function TryEnterCriticalSection(var CriticalSection : TRTLCriticalSection) : BOOL; external 'kernel32' name 'TryEnterCriticalSection';
 
+<<<<<<< HEAD
 function GetWindowInfo(hWnd:HWND; var pwi:TWindowInfo):WINBOOL; external 'user32' name 'GetWindowInfo';
+=======
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function ControlService(hService:SC_HANDLE; dwControl:DWORD; var ServiceStatus:TSERVICESTATUS):WINBOOL; external 'advapi32' name 'ControlService';
 function QueryServiceStatus(hService:SC_HANDLE; var lpServiceStatus:TSERVICESTATUS):WINBOOL; external 'advapi32' name 'QueryServiceStatus';
 function SetServiceStatus(hServiceStatus:SERVICE_STATUS_HANDLE; const ServiceStatus:TSERVICESTATUS):WINBOOL; external 'advapi32' name 'SetServiceStatus';
@@ -482,7 +556,14 @@ function GetCPInfoEx(Codepage:UINT; dwFlags:DWORD; var CPinfoEx:TCPINFOEX):WINBO
 {$ifndef NO_SMART_LINK}
 function GetCursorInfo(var pci: TCursorInfo): BOOL;external 'user32' name 'GetCursorInfo';
 {$endif NO_SMART_LINK}
+<<<<<<< HEAD
+<<<<<<< HEAD
 function GetCursorPos(out lpPoint: TPoint): BOOL; external 'user32' name 'GetCursorPos';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function GetCursorPos(var lpPoint: TPoint): BOOL; external 'user32' name 'GetCursorPos';
+>>>>>>> graemeg/fixes_2_2
 function GetDCOrgEx(DC: HDC; var Origin: TPoint): BOOL; external 'gdi32' name 'GetDCOrgEx';
 function GetDefaultCommConfig(lpszName: PChar; var lpCC: TCommConfig; var lpdwSize: DWORD): BOOL;external 'kernel32' name 'GetDefaultCommConfigA';
 function GetDefaultCommConfigA(lpszName: LPCSTR; var lpCC: TCommConfig; var lpdwSize: DWORD): BOOL; external 'kernel32' name 'GetDefaultCommConfigA';
@@ -571,8 +652,28 @@ function GetProcessPriorityBoost(hThread: THandle; var DisablePriorityBoost: Boo
 {$endif NO_SMART_LINK}
 function GetProcessShutdownParameters(var lpdwLevel, lpdwFlags: DWORD): BOOL; external 'kernel32' name 'GetProcessShutdownParameters';
 function GetProcessTimes(hProcess: THandle; var lpCreationTime, lpExitTime, lpKernelTime, lpUserTime: TFileTime): BOOL; external 'kernel32' name 'GetProcessTimes';
+<<<<<<< HEAD
 function GetProcessWorkingSetSize(hProcess: THandle; var lpMinimumWorkingSetSize, lpMaximumWorkingSetSize: PTRUINT): BOOL; external 'kernel32' name 'GetProcessWorkingSetSize';
+=======
+function GetProcessWorkingSetSize(hProcess: THandle; var lpMinimumWorkingSetSize, lpMaximumWorkingSetSize: DWORD): BOOL; external 'kernel32' name 'GetProcessWorkingSetSize';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 function GetQueuedCompletionStatus(CompletionPort: THandle; var lpNumberOfBytesTransferred: DWORD; var lpCompletionKey: ULONG_PTR; var lpOverlapped: POverlapped; dwMilliseconds: DWORD): BOOL; external 'kernel32' name 'GetQueuedCompletionStatus';
+=======
+function GetQueuedCompletionStatus(CompletionPort: THandle; var lpNumberOfBytesTransferred, lpCompletionKey: DWORD; var lpOverlapped: POverlapped; dwMilliseconds: DWORD): BOOL; external 'kernel32' name 'GetQueuedCompletionStatus';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function PostQueuedCompletionStatus(CompletionPort: THandle; NumberOfBytesTransferred:dword; dwCompletionKey: ULONG_PTR; lpOverlapped: POverlapped): BOOL; external 'kernel32' name 'PostQueuedCompletionStatus';
 function GetRasterizerCaps(var p1: TRasterizerStatus; p2: UINT): BOOL; external 'gdi32' name 'GetRasterizerCaps';
 function GetRgnBox(RGN: HRGN; var p2: TRect): Integer; external 'gdi32' name 'GetRgnBox';
@@ -906,9 +1007,18 @@ function VerInstallFileW(uFlags: DWORD; szSrcFileName, szDestFileName, szSrcDir,
 function VerQueryValue(pBlock: Pointer; lpSubBlock: PChar; var lplpBuffer: Pointer; var puLen: UINT): BOOL;external 'version' name 'VerQueryValueA';
 function VerQueryValueA(pBlock: Pointer; lpSubBlock: LPCSTR; var lplpBuffer: Pointer; var puLen: UINT): BOOL; external 'version' name 'VerQueryValueA';
 function VerQueryValueW(pBlock: Pointer; lpSubBlock: LPWSTR; var lplpBuffer: Pointer; var puLen: UINT): BOOL; external 'version' name 'VerQueryValueW';
+<<<<<<< HEAD
+<<<<<<< HEAD
 function VirtualProtect(lpAddress:LPVOID; dwSize:PTRUINT; flNewProtect:DWORD; var lpflOldProtect:DWORD):WINBOOL; external 'kernel32' name 'VirtualProtect';
 function VirtualQuery(lpAddress: Pointer; var lpBuffer: TMemoryBasicInformation; dwLength: PTRUINT): PTRUINT; external 'kernel32' name 'VirtualQuery';
 function VirtualQueryEx(hProcess: THandle; lpAddress: Pointer; var lpBuffer: TMemoryBasicInformation; dwLength: PTRUINT): PTRUINT; external 'kernel32' name 'VirtualQueryEx';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function VirtualProtect(lpAddress:LPVOID; dwSize:DWORD; flNewProtect:DWORD; var lpflOldProtect:DWORD):WINBOOL; external 'kernel32' name 'VirtualProtect';
+function VirtualQuery(lpAddress: Pointer; var lpBuffer: TMemoryBasicInformation; dwLength: DWORD): DWORD; external 'kernel32' name 'VirtualQuery';
+function VirtualQueryEx(hProcess: THandle; lpAddress: Pointer; var lpBuffer: TMemoryBasicInformation; dwLength: DWORD): DWORD; external 'kernel32' name 'VirtualQueryEx';
+>>>>>>> graemeg/fixes_2_2
 function WaitCommEvent(hFile: THandle; var lpEvtMask: DWORD; lpOverlapped: POverlapped): BOOL; external 'kernel32' name 'WaitCommEvent';
 function WaitForDebugEvent(var lpDebugEvent: TDebugEvent; dwMilliseconds: DWORD): BOOL; external 'kernel32' name 'WaitForDebugEvent';
 function wglDescribeLayerPlane(DC: HDC; iPixelFormat, iLayerPlane: Integer; nBytes: Cardinal; var pfd: TLayerPlaneDescriptor): BOOL;external 'opengl32' name 'wglDescribeLayerPlane';
@@ -997,19 +1107,41 @@ function SetKeyboardState(var KeyState:TKeyboardState):WINBOOL; external 'user32
 function GetWindowThreadProcessId(hWnd:HWND;var lpdwProcessId:DWORD):DWORD; external 'user32' name 'GetWindowThreadProcessId';
 function HwndMSWheel(var puiMsh_MsgMouseWheel, puiMsh_Msg3DSupport,puiMsh_MsgScrollLines: UINT;
   var pf3DSupport: BOOL; var piScrollLines: Integer): HWND;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function CreateWaitableTimer(lpTimerAttributes :LPSECURITY_ATTRIBUTES; bManualReset:BOOl;lpTimerName:LPCTSTR):THandle;external 'kernel32' name 'CreateWaitableTimerA';
+=======
+function CreateWaitableTimer(lpTimerAttributes :LPSECURITY_ATTRIBUTES; bManualReset:BOOl;lpTimerName:LPCTSTR):THandle;external 'kernel32' name 'CreateWaitableTimerA'; 
+>>>>>>> graemeg/fixes_2_2
+=======
+function CreateWaitableTimer(lpTimerAttributes :LPSECURITY_ATTRIBUTES; bManualReset:BOOl;lpTimerName:LPCTSTR):THandle;external 'kernel32' name 'CreateWaitableTimerA'; 
+>>>>>>> origin/fixes_2_2
 function OpenWaitableTimer(dwDesiredAccess:DWORD;bInheritHandle:BOOL;lpTimerName:LPCTSTR):THandle;external 'kernel32' name 'OpenWaitableTimerA';
 //function PropertySheetA(p:TPROPSHEETHEADER):longint; external 'comctl32' name 'PropertySheetA';
 
 // windows because of Delphi compat.
 
 {$calling default}
+<<<<<<< HEAD
+<<<<<<< HEAD
 function InterLockedIncrement (var Target: longint) : longint; register; external name 'FPC_INTERLOCKEDINCREMENT';
 function InterLockedDecrement (var Target: longint) : longint; register; external name 'FPC_INTERLOCKEDDECREMENT';
 function InterLockedExchange (var Target: longint;Source : longint) : longint; register; external name 'FPC_INTERLOCKEDEXCHANGE';
 function InterLockedExchangeAdd (var Target: longint;Source : longint) : longint; register; external name 'FPC_INTERLOCKEDEXCHANGEADD';
 function InterLockedExchangeAdd (Target: plongint;Source : longint) : longint; register; external name 'FPC_INTERLOCKEDEXCHANGEADD';
 function InterlockedCompareExchange(var Target: longint; NewValue: longint; Comperand: longint): longint; register; external name 'FPC_INTERLOCKEDCOMPAREEXCHANGE';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function InterLockedIncrement (var Target: longint) : longint; external name 'FPC_INTERLOCKEDINCREMENT';
+function InterLockedDecrement (var Target: longint) : longint; external name 'FPC_INTERLOCKEDDECREMENT';
+function InterLockedExchange (var Target: longint;Source : longint) : longint; external name 'FPC_INTERLOCKEDEXCHANGE';
+function InterLockedExchangeAdd (var Target: longint;Source : longint) : longint; external name 'FPC_INTERLOCKEDEXCHANGEADD';
+function InterlockedCompareExchange(var Target: longint; NewValue: longint; Comperand: longint): longint; external name 'FPC_INTERLOCKEDCOMPAREEXCHANGE';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$calling stdcall}
 
 {$endif read_interface}

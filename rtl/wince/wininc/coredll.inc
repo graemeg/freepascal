@@ -205,6 +205,16 @@
       30C DumpKCallProfile
       3DB EnableCaretSystemWide
       553 EnableEUDC
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+      50E EnumDisplayDevices
+      666 EnumDisplayMonitors
+>>>>>>> graemeg/fixes_2_2
+=======
+      50E EnumDisplayDevices
+      666 EnumDisplayMonitors
+>>>>>>> origin/fixes_2_2
       14D EnumUILanguagesW
       374 ExtractResource
       17F FileSystemPowerFunction
@@ -235,6 +245,13 @@
       405 GetKeyboardTarget
       4B7 GetMessageWNoWait
       30B GetModuleInformation
+<<<<<<< HEAD
+=======
+      665 GetMonitorInfo
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       397 GetOwnerProcess
       110 GetPasswordStatus
       1B6 GetPrivateCallbacks
@@ -246,6 +263,14 @@
       371 GetRealTime
       377 GetRomFileBytes
       376 GetRomFileInfo
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+      102 GetStoreInformation
+>>>>>>> graemeg/fixes_2_2
+=======
+      102 GetStoreInformation
+>>>>>>> origin/fixes_2_2
       2D0 GetUserDirectory
       1B7 GetWindowTextWDirect
       37E GiveKPhys
@@ -333,6 +358,14 @@
       484 QASetWindowsJournalHook
       485 QAUnhookWindowsJournalHook
       2F2 QueryAPISetID
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+       91 Random
+>>>>>>> graemeg/fixes_2_2
+=======
+       91 Random
+>>>>>>> origin/fixes_2_2
       181 ReadFileWithSeek
       3C0 ReadRegistryFromOEM
       1BE RectangleAnimation
@@ -344,6 +377,13 @@
       17A RegisterAFSName
       3B8 RegisterAPISet
       33D RegisterDbgZones
+<<<<<<< HEAD
+=======
+      4DB RegisterDesktop
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       1BD RegisterSIPanel
       380 RegisterTrackedItem
         E ReinitLocale
@@ -355,6 +395,15 @@
        3D RemoteLocalFree
        3B RemoteLocalReAlloc
        3C RemoteLocalSize
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      15A ResourceCreateList
+      15C ResourceRelease
+      15B ResourceRequest
+>>>>>>> graemeg/fixes_2_2
       2E6 SHCreateExplorerInstance
       2E8 SHCreateShortcut
       2EA SHCreateShortcutEx
@@ -390,7 +439,16 @@
       3B5 SetWDevicePowerHandler
       406 ShellModalEnd
       1C4 ShowStartupWindow
+<<<<<<< HEAD
       361 SleepTillTick
+=======
+      176 SignalStarted
+      361 SleepTillTick
+      156 StopDeviceNotifications
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       648 StringCbCatA
       64A StringCbCatExA
        82 StringCbCatExW
@@ -2168,7 +2226,13 @@ function GetFileVersionInfoSizeW(lptstrFilename:LPWSTR; lpdwHandle:LPDWORD):DWOR
 function GetFileVersionInfoSizeW(lptstrFilename:LPWSTR; var dwHandle:DWORD):DWORD; external KernelDLL name 'GetFileVersionInfoSizeW';
 function GetFileVersionInfo(lptstrFilename:LPWSTR; dwHandle:DWORD; dwLen:DWORD; lpData:LPVOID):WINBOOL; external KernelDLL name 'GetFileVersionInfoW';
 function GetFileVersionInfoW(lptstrFilename:LPWSTR; dwHandle:DWORD; dwLen:DWORD; lpData:LPVOID):WINBOOL; external KernelDLL name 'GetFileVersionInfoW';
+<<<<<<< HEAD
+<<<<<<< HEAD
 function GetIconInfo(hIcon: HICON; piconinfo: pIconInfo): BOOL; external KernelDLL name 'GetIconInfo';
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function GetIdleTime:DWORD; external KernelDLL name 'GetIdleTime'; // index 399
 function GetKeyboardLayout(dwLayout:DWORD):HKL; external KernelDLL name 'GetKeyboardLayout';
 function GetKeyboardLayoutList(nBuff:longint; var lpList:HKL):UINT; external KernelDLL name 'GetKeyboardLayoutList';
@@ -2192,7 +2256,13 @@ function GetModuleFileName(hModule:HMODULE; lpFilename:LPWSTR; nSize:DWORD):DWOR
 function GetModuleFileNameW(hModule:HMODULE; lpFilename:LPWSTR; nSize:DWORD):DWORD; external KernelDLL name 'GetModuleFileNameW';
 function GetModuleHandle(lpModuleName:LPCWSTR):HMODULE; external KernelDLL name 'GetModuleHandleW';
 function GetModuleHandleW(lpModuleName:LPCWSTR):HMODULE; external KernelDLL name 'GetModuleHandleW';
+<<<<<<< HEAD
+<<<<<<< HEAD
 function GetMonitorInfo(_hMonitor:HMONITOR; lpmi:LPMONITORINFO):BOOL; external KernelDLL name 'GetMonitorInfo'; // index 665
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function GetMouseMovePoints(pptBuf:PPOINT; nBufPoints:UINT; pnPointsRetrieved:PUINT):BOOL; external KernelDLL name 'GetMouseMovePoints'; // index 481
 function GetNearestColor(_para1:HDC; _para2:COLORREF):COLORREF; external KernelDLL name 'GetNearestColor';
 function GetNearestPaletteIndex(_para1:HPALETTE; _para2:COLORREF):UINT; external KernelDLL name 'GetNearestPaletteIndex';
@@ -2590,8 +2660,14 @@ function QueryInstructionSet(dwInstructionSet:DWORD; lpdwCurrentInstructionSet:L
 function QueryPerformanceCounter(lpPerformanceCount:PLARGE_INTEGER):WINBOOL; external Kerneldll name 'QueryPerformanceCounter';
 function QueryPerformanceFrequency(lpFrequency:PLARGE_INTEGER):WINBOOL; external Kerneldll name 'QueryPerformanceFrequency';
 procedure RaiseException(dwExceptionCode:DWORD; dwExceptionFlags:DWORD; nNumberOfArguments:DWORD; lpArguments:LPDWORD); external KernelDLL name 'RaiseException';
+<<<<<<< HEAD
+<<<<<<< HEAD
 // This function generates a random number.
 function WINCE_Random:DWORD; external KernelDLL name 'Random'; // index 91
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function ReadFile(hFile:HANDLE; lpBuffer:LPVOID; nNumberOfBytesToRead:DWORD; lpNumberOfBytesRead:LPDWORD; lpOverlapped:LPOVERLAPPED):BOOL; external KernelDLL name 'ReadFile'; // index F4
 function ReadProcessMemory(hProcess:HANDLE; lpBaseAddress:LPCVOID; lpBuffer:LPVOID; nSize:DWORD; lpNumberOfBytesRead:LPDWORD):WINBOOL; external KernelDLL name 'ReadProcessMemory';
 function RealizePalette(_para1:HDC):UINT; external KernelDLL name 'RealizePalette'; // index 52F
@@ -2620,7 +2696,13 @@ function RegisterClass(lpWndClass:LPWNDCLASS):ATOM; external KernelDLL name 'Reg
 function RegisterClassW(lpWndClass:LPWNDCLASS):ATOM; external KernelDLL name 'RegisterClassW';
 function RegisterClipboardFormat(lpszFormat:LPCWSTR):UINT; external KernelDLL name 'RegisterClipboardFormatW';
 function RegisterClipboardFormatW(lpszFormat:LPCWSTR):UINT; external KernelDLL name 'RegisterClipboardFormatW';
+<<<<<<< HEAD
+<<<<<<< HEAD
 function RegisterDesktop(_hwndDesktop:HWND):BOOL; external KernelDLL name 'RegisterDesktop'; // index 4DB
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function RegisterDevice(lpszType:LPCWSTR; dwIndex:DWORD; lpszLib:LPCWSTR; dwInfo:DWORD):HANDLE; external KernelDLL name 'RegisterDevice'; // index 14F
 function RegisterTaskBar(hwndTaskbar:HWND):BOOL; external KernelDLL name 'RegisterTaskBar'; // index 4D9
 function RegisterTaskBarEx(hwndTaskbar:HWND; bTaskBarOnTop:BOOL):BOOL; external KernelDLL name 'RegisterTaskBarEx'; // index 4DA
@@ -2650,12 +2732,18 @@ function RemoveMenu(hMenu:HMENU; uPosition:UINT; uFlags:UINT):WINBOOL; external 
 function RemoveProp(hWnd:HWND; lpString:LPCWSTR):HANDLE; external KernelDLL name 'RemoveProp';
 function RequestDeviceNotifications(devclass:LPGUID; hMsgQ:HANDLE; fAll:BOOL):HANDLE; external KernelDLL name 'RequestDeviceNotifications'; // index 155
 function ResetEvent(hEvent:HANDLE):WINBOOL;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function ResourceCreateList(dwResId:DWORD; dwMinimum:DWORD; dwCount:DWORD):BOOL; external KernelDLL name 'ResourceCreateList'; // index 15A
 function ResourceRelease(dwResId:DWORD; dwId:DWORD; dwLen:DWORD):BOOL; external KernelDLL name 'ResourceRelease'; // index 15C
 function ResourceRequest(dwResId:DWORD; dwId:DWORD; dwLen:DWORD):BOOL; external KernelDLL name 'ResourceRequest'; // index 15B
 function ResourceDestroyList(dwResId:DWORD):BOOL; external KernelDLL name 'ResourceDestroyList';
 function ResourceRequestEx(dwResId:DWORD; dwId:DWORD; dwLen:DWORD; dwFlags:DWORD):BOOL; external KernelDLL name 'ResourceRequestEx';
 function ResourceMarkAsShareable(dwResId:DWORD; dwId:DWORD; dwLen:DWORD; fShareable:BOOL):BOOL; external KernelDLL name 'ResourceMarkAsShareable';
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function RestoreDC(_para1:HDC; _para2:longint):WINBOOL; external KernelDLL name 'RestoreDC';
 function ResumeThread(hThread:HANDLE):DWORD; external KernelDLL name 'ResumeThread';
 function RoundRect(_para1:HDC; _para2:longint; _para3:longint; _para4:longint; _para5:longint;_para6:longint; _para7:longint):WINBOOL; external KernelDLL name 'RoundRect';
@@ -2767,7 +2855,13 @@ function StretchDIBits(_para1:HDC; _para2:longint; _para3:longint; _para4:longin
   external KernelDLL name 'StretchDIBits';
 function SubtractRect(lprcDst:LPRECT; const lprcSrc1:RECT; const lprcSrc2:RECT):WINBOOL; external KernelDLL name 'SubtractRect';
 function SuspendThread(hThread:HANDLE):DWORD; external KernelDLL name 'SuspendThread';
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure SystemIdleTimerReset; external KernelDLL name 'SystemIdleTimerReset'; // 49D
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function SystemParametersInfo(uiAction:UINT; uiParam:UINT; pvParam:PVOID; fWinIni:UINT):WINBOOL; external KernelDLL name 'SystemParametersInfoW';
 function SystemParametersInfoW(uiAction:UINT; uiParam:UINT; pvParam:PVOID; fWinIni:UINT):WINBOOL; external KernelDLL name 'SystemParametersInfoW';
 function SystemTimeToFileTime(lpSystemTime:LPSYSTEMTIME; lpFileTime:LPFILETIME):WINBOOL; external KernelDLL name 'SystemTimeToFileTime';

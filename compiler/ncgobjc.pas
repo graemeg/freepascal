@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     Copyright (c) 2009 by Jonas Maebe
 
@@ -58,6 +59,26 @@ procedure tcgobjcselectornode.pass_generate_code;
     entry  : PHashSetItem;
     name   : pshortstring;
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    if current_asmdata.ConstPools[sp_varnamerefs]=nil then
+      current_asmdata.ConstPools[sp_varnamerefs]:=THashSet.Create(64, True, False);
+>>>>>>> graemeg/cpstrnew
+=======
+    if current_asmdata.ConstPools[sp_varnamerefs]=nil then
+      current_asmdata.ConstPools[sp_varnamerefs]:=THashSet.Create(64, True, False);
+>>>>>>> graemeg/cpstrnew
+=======
+    if current_asmdata.ConstPools[sp_varnamerefs]=nil then
+      current_asmdata.ConstPools[sp_varnamerefs]:=THashSet.Create(64, True, False);
+>>>>>>> graemeg/cpstrnew
+=======
+    if current_asmdata.ConstPools[sp_varnamerefs]=nil then
+      current_asmdata.ConstPools[sp_varnamerefs]:=THashSet.Create(64, True, False);
+>>>>>>> origin/cpstrnew
     pool:=current_asmdata.ConstPools[sp_varnamerefs];
 
     case left.nodetype of
@@ -100,3 +121,5 @@ begin
   cobjcselectornode:=tcgobjcselectornode;
   cobjcprotocolnode:=tcgobjcprotocolnode;
 end.
+=======
+>>>>>>> origin/fixes_2.4

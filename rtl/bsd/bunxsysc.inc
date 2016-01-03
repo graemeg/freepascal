@@ -47,15 +47,32 @@ function FPsigsuspend(const sigmask:sigset_t):cint;
 }
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef OPENBSD}
   { OpenBSD sigsuspend syscall wants a simple int as arg }
   FPsigsuspend:= do_syscall(syscall_nr_sigsuspend,TSysParam(sigmask[0]));
 {$else}
   FPsigsuspend:= do_syscall(syscall_nr_sigsuspend,TSysParam(@sigmask));
 {$endif}
+=======
+  FPsigsuspend:= do_syscall(syscall_nr_sigsuspend,TSysParam(@sigmask));
+>>>>>>> graemeg/fixes_2_2
+=======
+  FPsigsuspend:= do_syscall(syscall_nr_sigsuspend,TSysParam(@sigmask));
+>>>>>>> origin/fixes_2_2
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPC_SYS_SIGTIMEDWAIT_UNAVAILABLE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
 function fpsigtimedwait(const sigset:TSigSet;info:Psiginfo;timeout:Ptimespec):cint;
 
 begin
@@ -64,7 +81,26 @@ begin
                              Tsysparam(info),
                              Tsysparam(timeout));
 end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif ndef FPC_SYS_SIGTIMEDWAIT_UNAVAILABLE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+
+
+function fpsigtimedwait(const sigset:TSigSet;info:Psiginfo;timeout:Ptimespec):cint;
+
+begin
+  FpSigTimedWait:=do_syscall(syscall_nr_sigtimedwait,
+                             Tsysparam(@sigset),
+                             Tsysparam(info),
+                             Tsysparam(timeout));
+end;
 
 
 Type // implementation side for now. Should move to BSD unit.
@@ -376,6 +412,7 @@ end;
 
 function __pipe_call(sysnr:TSysParam):TSysResult; {$ifdef cpui386}oldfpccall{$endif} external name 'FPC_DOSYS0';
 
+<<<<<<< HEAD
 {$if defined(freebsd) or defined (dragonfly)}
   {$define PIPE_RESULT_IN_EAX_AND_EDX}
 {$endif}
@@ -407,6 +444,11 @@ begin
   fildes[1] := b;
 end;
 {$endif}
+=======
+begin
+ FPpipe:=do_syscall(syscall_nr_pipe,TSysParam(@fildes));
+end;
+>>>>>>> graemeg/fixes_2_2
 
 function FPfcntl(fildes:cint;Cmd:cint;Arg:cint):cint;
 
@@ -493,6 +535,8 @@ begin
   fpPoll:=do_syscall(syscall_nr_poll,tsysparam(fds),tsysparam(nfds),tsysparam(timeout));
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function fpLstat(path:pchar;Info:pstat):cint;
 {
   Get all information on a link (the link itself), and return it in info.
@@ -502,6 +546,10 @@ begin
  fpLStat:=do_syscall(syscall_nr_lstat,TSysParam(path),TSysParam(info));
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function fpNice(N:cint):cint;
 {
   Set process priority. A positive N means a lower priority.

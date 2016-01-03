@@ -34,10 +34,16 @@ unit wininet;
 
 {$CALLING cdecl}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_OS_UNICODE}
   {$define UNICODE}
 {$endif}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 interface
 
 uses Windows;
@@ -1026,7 +1032,15 @@ function InternetReadFile(_hFile:HINTERNET;
                                 lpBuffer:LPVOID;
                                 dwNumberOfBytesToRead:DWORD;
                                 lpdwNumberOfBytesRead:LPDWORD
+<<<<<<< HEAD
+<<<<<<< HEAD
                                ):BOOL; external WinInetDLL name 'InternetReadFile';
+=======
+                               ):BOOL; external WinInetDLL name 'InternetREadFile';
+>>>>>>> graemeg/fixes_2_2
+=======
+                               ):BOOL; external WinInetDLL name 'InternetREadFile';
+>>>>>>> origin/fixes_2_2
 
 function InternetReadFileExA(_hFile:HINTERNET;
                                       lpBuffersOut:LPINTERNET_BUFFERSA;
@@ -3217,7 +3231,15 @@ const
                                         COOKIE_CACHE_ENTRY or
                                         URLHISTORY_CACHE_ENTRY or
                                         TRACK_OFFLINE_CACHE_ENTRY or
+<<<<<<< HEAD
+<<<<<<< HEAD
                                         TRACK_ONLINE_CACHE_ENTRY or
+=======
+                                        TRACK_ONLINE_CACHE_ENTRY or       
+>>>>>>> graemeg/fixes_2_2
+=======
+                                        TRACK_ONLINE_CACHE_ENTRY or       
+>>>>>>> origin/fixes_2_2
                                         STICKY_CACHE_ENTRY;
 
 
@@ -4146,7 +4168,15 @@ const
       INTERNET_CONNECTION_MODEM           = $01;
       INTERNET_CONNECTION_LAN             = $02;
       INTERNET_CONNECTION_PROXY           = $04;
+<<<<<<< HEAD
+<<<<<<< HEAD
       INTERNET_CONNECTION_MODEM_BUSY      = $08;  // no longer used
+=======
+      INTERNET_CONNECTION_MODEM_BUSY      = $08;  // no longer used 
+>>>>>>> graemeg/fixes_2_2
+=======
+      INTERNET_CONNECTION_MODEM_BUSY      = $08;  // no longer used 
+>>>>>>> origin/fixes_2_2
       INTERNET_RAS_INSTALLED              = $10;
       INTERNET_CONNECTION_OFFLINE         = $20;
       INTERNET_CONNECTION_CONFIGURED      = $40;

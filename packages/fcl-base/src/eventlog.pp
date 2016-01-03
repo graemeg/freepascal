@@ -23,13 +23,27 @@ uses SysUtils,Classes;
 
 Type
   TEventLog = Class;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  TEventType = (etCustom,etInfo,etWarning,etError,etDebug);
+>>>>>>> graemeg/fixes_2_2
+=======
+  TEventType = (etCustom,etInfo,etWarning,etError,etDebug);
+>>>>>>> origin/fixes_2_2
   TLogType = (ltSystem,ltFile);
   TLogCodeEvent = Procedure (Sender : TObject; Var Code : DWord) of Object;
   TLogCategoryEvent = Procedure (Sender : TObject; Var Code : Word) of Object;
 
   TEventLog = Class(TComponent)
   Private
+<<<<<<< HEAD
+<<<<<<< HEAD
     fAppendContent : Boolean;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     FEventIDOffset : DWord;
     FLogHandle : Pointer;
     FStream : TFileStream;
@@ -44,7 +58,13 @@ Type
     FOnGetCustomCategory : TLogCategoryEvent;
     FOnGetCustomEventID : TLogCodeEvent;
     FOnGetCustomEvent : TLogCodeEvent;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FPaused : Boolean;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     procedure SetActive(const Value: Boolean);
     procedure SetIdentification(const Value: String);
     procedure SetlogType(const Value: TLogType);
@@ -54,8 +74,18 @@ Type
     procedure SetFileName(const Value: String);
     procedure ActivateSystemLog;
     function DefaultFileName: String;
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure WriteFileLog(EventType : TEventType; const Msg: String);
     procedure WriteSystemLog(EventType: TEventType; const Msg: String);
+=======
+    procedure WriteFileLog(EventType : TEventType; Msg: String);
+    procedure WriteSystemLog(EventType: TEventType; Msg: String);
+>>>>>>> graemeg/fixes_2_2
+=======
+    procedure WriteFileLog(EventType : TEventType; Msg: String);
+    procedure WriteSystemLog(EventType: TEventType; Msg: String);
+>>>>>>> origin/fixes_2_2
     procedure DeActivateFileLog;
     procedure DeActivateSystemLog;
     procedure CheckIdentification;
@@ -72,9 +102,23 @@ Type
     Destructor Destroy; override;
     Function EventTypeToString(E : TEventType) : String;
     Function RegisterMessageFile(AFileName : String) : Boolean; virtual;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Function UnRegisterMessageFile : Boolean; virtual;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Procedure Pause;
     Procedure Resume;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     Procedure Log (EventType : TEventType; const Msg : String); {$ifndef fpc }Overload;{$endif}
     Procedure Log (EventType : TEventType; const Fmt : String; Args : Array of const); {$ifndef fpc }Overload;{$endif}
     Procedure Log (const Msg : String); {$ifndef fpc }Overload;{$endif}
@@ -89,6 +133,26 @@ Type
     Procedure Info (const Fmt : String; Args : Array of const); {$ifndef fpc }Overload;{$endif}
   Published
     Property AppendContent : Boolean Read fAppendContent Write fAppendContent;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    Procedure Log (EventType : TEventType; Msg : String); {$ifndef fpc }Overload;{$endif}
+    Procedure Log (EventType : TEventType; Fmt : String; Args : Array of const); {$ifndef fpc }Overload;{$endif}
+    Procedure Log (Msg : String); {$ifndef fpc }Overload;{$endif}
+    Procedure Log (Fmt : String; Args : Array of const); {$ifndef fpc }Overload;{$endif}
+    Procedure Warning (Msg : String); {$ifndef fpc }Overload;{$endif}
+    Procedure Warning (Fmt : String; Args : Array of const); {$ifndef fpc }Overload;{$endif}
+    Procedure Error (Msg : String); {$ifndef fpc }Overload;{$endif}
+    Procedure Error (Fmt : String; Args : Array of const); {$ifndef fpc }Overload;{$endif}
+    Procedure Debug (Msg : String); {$ifndef fpc }Overload;{$endif}
+    Procedure Debug (Fmt : String; Args : Array of const); {$ifndef fpc }Overload;{$endif}
+    Procedure Info (Msg : String); {$ifndef fpc }Overload;{$endif}
+    Procedure Info (Fmt : String; Args : Array of const); {$ifndef fpc }Overload;{$endif}
+  Published
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Property Identification : String Read FIdentification Write SetIdentification;
     Property LogType : TLogType Read Flogtype Write SetlogType;
     Property Active : Boolean Read FActive write SetActive;
@@ -101,7 +165,13 @@ Type
     Property OnGetCustomCategory : TLogCategoryEvent Read FOnGetCustomCategory Write FOnGetCustomCategory;
     Property OnGetCustomEventID : TLogCodeEvent Read FOnGetCustomEventID Write FOnGetCustomEventID;
     Property OnGetCustomEvent : TLogCodeEvent Read FOnGetCustomEvent Write FOnGetCustomEvent;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Property Paused : Boolean Read FPaused Write FPaused;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   End;
 
   ELogError = Class(Exception);
@@ -114,12 +184,25 @@ Resourcestring
   SLogDebug     = 'Debug';
   SLogCustom    = 'Custom (%d)';
   SErrLogFailedMsg = 'Failed to log entry (Error: %s)';
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 implementation
 
 {$i eventlog.inc}
 (* File based dummy implementation is used for all platforms not providing
    specific implementation of eventlog.inc for the particular platform. *)
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  
+implementation
+
+{$i eventlog.inc}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 { TEventLog }
 
@@ -132,12 +215,28 @@ begin
     Raise ELogError.Create(SErrOperationNotAllowed);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.Debug(const Fmt: String; Args: array of const);
+=======
+procedure TEventLog.Debug(Fmt: String; Args: array of const);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Debug(Fmt: String; Args: array of const);
+>>>>>>> origin/fixes_2_2
 begin
    Debug(Format(Fmt,Args));
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.Debug(const Msg: String);
+=======
+procedure TEventLog.Debug(Msg: String);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Debug(Msg: String);
+>>>>>>> origin/fixes_2_2
 begin
   Log(etDebug,Msg);
 end;
@@ -148,6 +247,12 @@ begin
     Active:=True;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 Procedure TEventLog.Pause;
 
@@ -162,41 +267,105 @@ begin
 end;
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 procedure TEventLog.Error(const Fmt: String; Args: array of const);
+=======
+procedure TEventLog.Error(Fmt: String; Args: array of const);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Error(Fmt: String; Args: array of const);
+>>>>>>> origin/fixes_2_2
 begin
   Error(Format(Fmt,Args));
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.Error(const Msg: String);
+=======
+procedure TEventLog.Error(Msg: String);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Error(Msg: String);
+>>>>>>> origin/fixes_2_2
 begin
   Log(etError,Msg);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.Info(const Fmt: String; Args: array of const);
+=======
+procedure TEventLog.Info(Fmt: String; Args: array of const);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Info(Fmt: String; Args: array of const);
+>>>>>>> origin/fixes_2_2
 begin
   Info(Format(Fmt,Args));
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.Info(const Msg: String);
+=======
+procedure TEventLog.Info(Msg: String);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Info(Msg: String);
+>>>>>>> origin/fixes_2_2
 begin
   Log(etInfo,Msg);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.Log(const Msg: String);
+=======
+procedure TEventLog.Log(Msg: String);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Log(Msg: String);
+>>>>>>> origin/fixes_2_2
 begin
   Log(DefaultEventType,msg);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.Log(EventType: TEventType; const Fmt: String;
+=======
+procedure TEventLog.Log(EventType: TEventType; Fmt: String;
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Log(EventType: TEventType; Fmt: String;
+>>>>>>> origin/fixes_2_2
   Args: array of const);
 begin
   Log(EventType,Format(Fmt,Args));
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.Log(EventType: TEventType; const Msg: String);
 begin
   If Paused then 
     exit;
+=======
+procedure TEventLog.Log(EventType: TEventType; Msg: String);
+begin
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Log(EventType: TEventType; Msg: String);
+begin
+>>>>>>> origin/fixes_2_2
   EnsureActive;
   Case FlogType of
     ltFile   : WriteFileLog(EventType,Msg);
@@ -204,7 +373,15 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.WriteFileLog(EventType : TEventType; const Msg : String);
+=======
+procedure TEventLog.WriteFileLog(EventType : TEventType; Msg : String);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.WriteFileLog(EventType : TEventType; Msg : String);
+>>>>>>> origin/fixes_2_2
 
 Var
   S,TS,T : String;
@@ -221,12 +398,28 @@ begin
   except
     On E : Exception do
       S:=E.Message;
+<<<<<<< HEAD
+<<<<<<< HEAD
   end;
+=======
+  end;  
+>>>>>>> graemeg/fixes_2_2
+=======
+  end;  
+>>>>>>> origin/fixes_2_2
   If (S<>'') and RaiseExceptionOnError then
     Raise ELogError.CreateFmt(SErrLogFailedMsg,[S]);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.Log(const Fmt: String; Args: array of const);
+=======
+procedure TEventLog.Log(Fmt: String; Args: array of const);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Log(Fmt: String; Args: array of const);
+>>>>>>> origin/fixes_2_2
 begin
   Log(Format(Fmt,Args));
 end;
@@ -262,12 +455,22 @@ begin
 end;
 
 Procedure TEventLog.ActivateFileLog;
+<<<<<<< HEAD
+<<<<<<< HEAD
 var
   fFileFlags : Word;
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 begin
   If (FFileName='') then
     FFileName:=DefaultFileName;
   // This will raise an exception if the file cannot be opened for writing !
+<<<<<<< HEAD
+<<<<<<< HEAD
   if fAppendContent and FileExists(FFileName) then
     fFileFlags := fmOpenWrite
   else
@@ -275,8 +478,26 @@ begin
 
   fFileFlags := fFileFlags or fmShareDenyWrite;
   FStream:=TFileStream.Create(FFileName,fFileFlags);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if fAppendContent then
     FStream.Seek(0,soFromEnd);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+  FStream:=TFileStream.Create(FFileName,fmCreate or fmShareDenyWrite);
+>>>>>>> graemeg/fixes_2_2
+=======
+  FStream:=TFileStream.Create(FFileName,fmCreate or fmShareDenyWrite);
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TEventLog.DeActivateFileLog;
@@ -298,12 +519,28 @@ begin
   Flogtype := Value;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.Warning(const Fmt: String; Args: array of const);
+=======
+procedure TEventLog.Warning(Fmt: String; Args: array of const);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Warning(Fmt: String; Args: array of const);
+>>>>>>> origin/fixes_2_2
 begin
   Warning(Format(Fmt,Args));
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventLog.Warning(const Msg: String);
+=======
+procedure TEventLog.Warning(Msg: String);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TEventLog.Warning(Msg: String);
+>>>>>>> origin/fixes_2_2
 begin
   Log(etWarning,Msg);
 end;

@@ -114,7 +114,7 @@ char *ap_init_mutex_method(char *t);}
 
 {$ifndef NO_OTHER_CHILD}
 {
- * register another_child -- a child which the main loop keeps track of
+ * register an other_child -- a child which the main loop keeps track of
  * and knows it is different than the rest of the scoreboard.
  *
  * pid is the pid of the child.
@@ -149,7 +149,7 @@ const
 					 * us knowing ... buggy os? }
 
 {
- * unregister another_child.  Note that the data pointer is used here, and
+ * unregister an other_child.  Note that the data pointer is used here, and
  * is assumed to be unique' per other_child.  This is because the pid and
  * write_fd are possibly killed off separately.
  }

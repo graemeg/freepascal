@@ -173,10 +173,35 @@ var
     _sizeLimits: NSSizePtr;
     _frameSaveName: NSString;
     _regDragTypes: NSSet;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __wFlags: record
       case byte of
        0: (_anonbitfield_NSWindow0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __wFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSWindow0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         backing: 0..((1 shl 2)-1);
         visible: 0..1;
         _isMainWindow: 0..1;
@@ -234,7 +259,19 @@ var
         needsZoom: 0..1;
         sentWindowNeedsDisplayMsg: 0..1;
         liveResizeActive: 0..1;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _defaultButtonCell: id;

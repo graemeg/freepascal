@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('aspell');
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 {$ifdef ALLPACKAGES}
     P.Directory:=ADirectory;
@@ -33,6 +35,20 @@ begin
     T:=P.Targets.AddUnit('aspell.pp');
     T.Dependencies.AddInclude('src/aspelltypes.inc');
     T:=P.Targets.AddUnit('aspelldyn.pp');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='aspell';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+
+    T:=P.Targets.AddUnit('aspell.pp');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     T:=P.Targets.AddUnit('spellcheck.pp');
     with T.Dependencies do
       begin
@@ -41,9 +57,15 @@ begin
 
     P.Sources.AddSrc('LICENSE');
     P.Sources.AddSrc('LICENSE.ADDON');
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     P.ExamplePath.Add('examples');
     T:=P.Targets.AddExampleProgram('example.pas');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     
 {$ifndef ALLPACKAGES}
     Run;

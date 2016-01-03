@@ -59,11 +59,32 @@ begin
 {$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
   begin
 {$ifdef DEBUG_MT}
+<<<<<<< HEAD
+<<<<<<< HEAD
     WriteLn ('init_all_unit_threadvars (',count,') units');
 {$endif}
     for i := 1 to count do
       init_unit_threadvars (tables[i]);
   end;
+=======
+  WriteLn ('init_all_unit_threadvars (',
+    {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PltvInitTablesTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+      ThreadvarTablesTable{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}.count,') units');
+{$endif}
+=======
+  WriteLn ('init_all_unit_threadvars (',
+    {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PltvInitTablesTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+      ThreadvarTablesTable{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}.count,') units');
+{$endif}
+>>>>>>> origin/fixes_2_2
+  for i := 1 to {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PltvInitTablesTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+    ThreadvarTablesTable{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}.count do
+    init_unit_threadvars ({$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PltvInitTablesTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+      ThreadvarTablesTable{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}.tables[i]);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 
@@ -93,11 +114,30 @@ begin
 {$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
   begin
 {$ifdef DEBUG_MT}
+<<<<<<< HEAD
+<<<<<<< HEAD
     WriteLn ('copy_all_unit_threadvars (',count,') units');
 {$endif}
     for i := 1 to count do
       copy_unit_threadvars (tables[i]);
   end;
+=======
+  WriteLn ('copy_all_unit_threadvars (',{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PltvInitTablesTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+    ThreadvarTablesTable{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}.count,') units');
+{$endif}
+=======
+  WriteLn ('copy_all_unit_threadvars (',{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PltvInitTablesTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+    ThreadvarTablesTable{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}.count,') units');
+{$endif}
+>>>>>>> origin/fixes_2_2
+  for i := 1 to {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PltvInitTablesTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+    ThreadvarTablesTable{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}.count do
+    copy_unit_threadvars ({$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PltvInitTablesTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+      ThreadvarTablesTable{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}.tables[i]);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure InitThreadVars(RelocProc : TRelocateThreadVarHandler);

@@ -12,7 +12,15 @@ uses
 type
         vector4 = array[0..3] of single;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$codealign varmax=16}
+=======
+{$codealign varmax 16}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$codealign varmax 16}
+>>>>>>> origin/fixes_2_2
 var
         a,b,c :vector4;
 begin

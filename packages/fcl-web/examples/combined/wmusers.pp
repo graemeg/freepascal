@@ -5,7 +5,23 @@ unit wmusers;
 interface
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Classes, SysUtils, HTTPDefs, websession, fpHTTP, fpWeb,
+=======
+  Classes, SysUtils, FileUtil, LResources, HTTPDefs, websession, fpHTTP, fpWeb,
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, FileUtil, LResources, HTTPDefs, websession, fpHTTP, fpWeb,
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, FileUtil, LResources, HTTPDefs, websession, fpHTTP, fpWeb,
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, FileUtil, LResources, HTTPDefs, websession, fpHTTP, fpWeb,
+>>>>>>> origin/cpstrnew
   IBConnection, sqldb, fpwebdata, fpjson, extjsjson, extjsxml, sqldbwebdata;
 
 type
@@ -43,8 +59,20 @@ var
 
 implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$R *.lfm}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 uses inifiles;
 
 { TCombinedModule }
@@ -140,6 +168,26 @@ begin
 end;
 
 initialization
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  {$I wmusers.lrs}
+
+>>>>>>> graemeg/cpstrnew
+=======
+  {$I wmusers.lrs}
+
+>>>>>>> graemeg/cpstrnew
+=======
+  {$I wmusers.lrs}
+
+>>>>>>> graemeg/cpstrnew
+=======
+  {$I wmusers.lrs}
+
+>>>>>>> origin/cpstrnew
   RegisterHTTPModule('Provider', TCombinedModule);
 end.
 

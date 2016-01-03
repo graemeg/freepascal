@@ -29,9 +29,21 @@ const
   DefaultTimeOut = 60;
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
   EOraDatabaseError = class(ESQLDatabaseError)
     public
       property ORAErrorCode: integer read ErrorCode; deprecated 'Please use ErrorCode instead of ORAErrorCode'; // June 2014
+=======
+  EOraDatabaseError = class(EDatabaseError)
+    public
+      ORAErrorCode : Longint;
+>>>>>>> graemeg/fixes_2_2
+=======
+  EOraDatabaseError = class(EDatabaseError)
+    public
+      ORAErrorCode : Longint;
+>>>>>>> origin/fixes_2_2
   end;
 
   TOracleTrans = Class(TSQLHandle)
@@ -335,11 +347,28 @@ procedure TOracleConnection.HandleError;
 var
     errcode : sb4;
     buf     : array[0..1023] of char;
+    E       : EOraDatabaseError;
 
 begin
   OCIErrorGet(FOciError,1,nil,errcode,@buf[0],1024,OCI_HTYPE_ERROR);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   raise EOraDatabaseError.CreateFmt(pchar(buf), [], Self, errcode, '')
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if (Self.Name <> '') then
+    E := EOraDatabaseError.CreateFmt('%s : %s',[Self.Name,buf])
+  else
+    E := EOraDatabaseError.Create(buf);
+
+  E.ORAErrorCode := errcode;
+  Raise E;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure TOracleConnection.GetParameters(cursor: TSQLCursor; ATransaction : TSQLTransaction; AParams: TParams);
@@ -548,8 +577,17 @@ procedure TOracleConnection.DeAllocateCursorHandle(var cursor: TSQLCursor);
 begin
   with cursor as TOracleCursor do
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     FreeOraFieldBuffers(FieldBuffers);
     FreeOraFieldBuffers(ParamBuffers);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    OCIHandleFree(FOciStmt,OCI_HTYPE_STMT);
+    if Length(FieldBuffers) > 0 then
+      for tel := 0 to high(FieldBuffers) do freemem(FieldBuffers[tel].buffer);
+>>>>>>> graemeg/fixes_2_2
     end;
   FreeAndNil(cursor);
 end;
@@ -1067,6 +1105,7 @@ begin
     begin
     Result := True;
     case FieldDef.DataType of
+<<<<<<< HEAD
       ftString :
         move(fieldbuffers[FieldDef.FieldNo-1].buffer^,buffer^,FieldDef.Size);
       ftBCD :
@@ -1111,6 +1150,40 @@ begin
       ftBlob,
       ftMemo :
         CreateBlob := True;
+=======
+      ftString          : move(fieldbuffers[FieldDef.FieldNo-1].buffer^,buffer^,FieldDef.Size);
+      ftBCD             :  begin
+                           b := fieldbuffers[FieldDef.FieldNo-1].buffer;
+                           size := b[0];
+                           cur := 0;
+                           if (b[1] and $80)=$80 then // then the number is positive
+                             begin
+                             exp := (b[1] and $7f)-65;
+                             for i := 2 to size do
+                               cur := cur + (b[i]-1) * intpower(100,-(i-2)+exp);
+                             end
+                           else
+                             begin
+                             exp := (not(b[1]) and $7f)-65;
+                             for i := 2 to size-1 do
+                               cur := cur + (101-b[i]) * intpower(100,-(i-2)+exp);
+                             cur := -cur;
+                             end;
+                           move(cur,buffer^,SizeOf(Currency));
+                           end;
+      ftFloat           : move(fieldbuffers[FieldDef.FieldNo-1].buffer^,buffer^,sizeof(double));
+      ftInteger         : move(fieldbuffers[FieldDef.FieldNo-1].buffer^,buffer^,sizeof(integer));
+      ftDate  : begin
+                b := fieldbuffers[FieldDef.FieldNo-1].buffer;
+                dt := EncodeDate((b[0]-100)*100+(b[1]-100),b[2],b[3]);
+                move(dt,buffer^,sizeof(dt));
+                end;
+      ftDateTime : begin
+                   odt := fieldbuffers[FieldDef.FieldNo-1].buffer;
+                   dt := ComposeDateTime(EncodeDate(odt^.year,odt^.month,odt^.day), EncodeTime(odt^.hour,odt^.min,odt^.sec,0));
+                   move(dt,buffer^,sizeof(dt));
+                   end;
+>>>>>>> graemeg/fixes_2_2
     else
       Result := False;
     end;

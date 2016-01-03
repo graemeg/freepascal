@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('postgres');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ShortName:='pgr';
 {$ifdef ALLPACKAGES}
     P.Directory:=ADirectory;
@@ -22,6 +24,18 @@ begin
     P.OSes := AllUnixOSes-[qnx]+AllWindowsOSes;
 
     P.IncludePath.Add('src');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='postgres';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     T:=P.Targets.AddUnit('dllistdyn.pp');
       with T.Dependencies do
@@ -39,7 +53,13 @@ begin
           AddInclude('postgres3types.inc');
           AddUnit('dllistdyn');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T.ResourceStrings := True;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     T:=P.Targets.AddUnit('postgres3.pp');
       with T.Dependencies do
         begin
@@ -52,6 +72,8 @@ begin
           AddUnit('dllist');
         end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Sources.AddSrc('README.txt');
 
     P.ExamplePath.Add('examples');
@@ -59,6 +81,10 @@ begin
     P.Targets.AddExampleProgram('testpg1.pp');
     P.Sources.AddExampleFiles('examples/*',P.Directory,false,'.');
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifndef ALLPACKAGES}
     Run;
     end;

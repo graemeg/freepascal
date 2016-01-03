@@ -27,7 +27,23 @@
    function ExAllocatePoolWithTag(PoolType: LongInt; NumberOfBytes: PtrUInt; Tag: LongWord): Pointer; stdcall; external ntdll name 'ExAllocatePoolWithTag';
    procedure ExFreePoolWithTag(P: Pointer; Tag: LongWord); stdcall; external ntdll name 'ExFreePoolWithTag';
 {$else KMODE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    function RtlAllocateHeap(hHeap : THandle; dwFlags : LongWord; Size : PtrUInt): Pointer;
+=======
+   function RtlAllocateHeap(hHeap : THandle; dwFlags : LongWord; Size : Longword): Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+   function RtlAllocateHeap(hHeap : THandle; dwFlags : LongWord; Size : Longword): Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+   function RtlAllocateHeap(hHeap : THandle; dwFlags : LongWord; Size : Longword): Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+   function RtlAllocateHeap(hHeap : THandle; dwFlags : LongWord; Size : Longword): Pointer;
+>>>>>>> origin/cpstrnew
      stdcall; external ntdll name 'RtlAllocateHeap';
    function  RtlFreeHeap(hHeap : THandle; dwFlags : LongWord; MemoryPointer : Pointer): Boolean;
      stdcall; external ntdll name 'RtlFreeHeap';

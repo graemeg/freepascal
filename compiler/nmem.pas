@@ -184,6 +184,10 @@ implementation
         case left.resultdef.typ of
           classrefdef :
             resultdef:=left.resultdef;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           recorddef,
           objectdef:
             begin
@@ -217,6 +221,47 @@ implementation
               else
                 CGMessage(parser_e_pointer_to_class_expected);
             end
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          objectdef,
+          recorddef:
+            { access to the classtype while specializing? }
+            if (df_generic in left.resultdef.defoptions) then
+              begin
+                defaultresultdef:=true;
+                if assigned(current_structdef) then
+                  begin
+                    if assigned(current_structdef.genericdef) then
+                      if current_structdef.genericdef=left.resultdef then
+                        begin
+                          resultdef:=tclassrefdef.create(current_structdef);
+                          defaultresultdef:=false;
+                        end
+                      else
+                        message(parser_e_cant_create_generics_of_this_type);
+                  end
+                else
+                  message(parser_e_cant_create_generics_of_this_type);
+                if defaultresultdef then
+                  resultdef:=tclassrefdef.create(left.resultdef);
+              end
+            else
+              resultdef:=tclassrefdef.create(left.resultdef);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           else
             CGMessage(parser_e_pointer_to_class_expected);
         end;
@@ -249,6 +294,10 @@ implementation
            include(current_procinfo.flags,pi_needs_got);
          if left.nodetype<>typen then
            begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
              if (is_objc_class_or_protocol(left.resultdef) or
                  is_objcclassref(left.resultdef)) then
                begin
@@ -266,6 +315,35 @@ implementation
                result:=ctypeconvnode.create_internal(load_vmt_for_self_node(left),resultdef);
              { reused }
              left:=nil;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+             { make sure that the isa field is loaded correctly in case
+               of the non-fragile ABI }
+             if is_objcclass(left.resultdef) and
+                (left.nodetype<>typen) then
+               begin
+                 vs:=search_struct_member(tobjectdef(left.resultdef),'ISA');
+                 if not assigned(vs) or
+                    (tsym(vs).typ<>fieldvarsym) then
+                   internalerror(2009092502);
+                 result:=csubscriptnode.create(tfieldvarsym(vs),left);
+                 inserttypeconv_internal(result,resultdef);
+                 { reused }
+                 left:=nil;
+               end
+             else
+               firstpass(left)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
            end
          else if not is_objcclass(left.resultdef) and
                  not is_objcclassref(left.resultdef) then
@@ -281,6 +359,8 @@ implementation
                else if (left.resultdef.typ=objectdef) then
                  tobjectdef(left.resultdef).register_maybe_created_object_type
              end
+<<<<<<< HEAD
+<<<<<<< HEAD
            end
          else if is_objcclass(left.resultdef) and
               not(forcall) then
@@ -294,6 +374,32 @@ implementation
                internalerror(2011080601);
              { can't reuse "self", because it will be freed when we return }
              result:=ccallnode.create(nil,tprocsym(vs),vs.owner,self.getcopy,[],nil);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/cpstrnew
+           end
+         else if not is_objcclass(left.resultdef) and
+                 not is_objcclassref(left.resultdef) then
+           begin
+             if not(nf_ignore_for_wpo in flags) and
+                (not assigned(current_procinfo) or
+                 (po_inline in current_procinfo.procdef.procoptions) or
+                  wpoinfomanager.symbol_live(current_procinfo.procdef.mangledname)) then
+             begin
+               { keep track of which classes might be instantiated via a classrefdef }
+               if (left.resultdef.typ=classrefdef) then
+                 tobjectdef(tclassrefdef(left.resultdef).pointeddef).register_maybe_created_object_type
+               else if (left.resultdef.typ=objectdef) then
+                 tobjectdef(left.resultdef).register_maybe_created_object_type
+             end
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
            end;
       end;
 
@@ -584,6 +690,52 @@ implementation
                   exit;
               end
             else
+<<<<<<< HEAD
+=======
+{$endif i386}
+            if (hp.nodetype=loadn) and
+               (tloadnode(hp).symtableentry.typ=absolutevarsym) and
+{$ifdef i386}
+               not(tabsolutevarsym(tloadnode(hp).symtableentry).absseg) and
+{$endif i386}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+            if (hp.nodetype=loadn) and
+               (tloadnode(hp).symtableentry.typ=absolutevarsym) and
+{$ifdef i386}
+               not(tabsolutevarsym(tloadnode(hp).symtableentry).absseg) and
+{$endif i386}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+               (tabsolutevarsym(tloadnode(hp).symtableentry).abstyp=toaddr) then
+               begin
+                 if nf_typedaddr in flags then
+                   result:=cpointerconstnode.create(tabsolutevarsym(tloadnode(hp).symtableentry).addroffset,tpointerdef.create(left.resultdef))
+                 else
+                   result:=cpointerconstnode.create(tabsolutevarsym(tloadnode(hp).symtableentry).addroffset,voidpointertype);
+                 exit;
+               end
+              else if (nf_internal in flags) or
+                 valid_for_addr(left,true) then
+                begin
+                  if not(nf_typedaddr in flags) then
+                    resultdef:=voidpointertype
+                  else
+                    resultdef:=tpointerdef.create(left.resultdef);
+                end
+            else
+>>>>>>> graemeg/cpstrnew
               CGMessage(type_e_variable_id_expected);
           end;
 
@@ -790,10 +942,19 @@ implementation
         maybe_call_procvar(left,true);
         resultdef:=vs.vardef;
 
+<<<<<<< HEAD
         // don't put records from which we load float fields
         // in integer registers
         if (left.resultdef.typ=recorddef) and
            (resultdef.typ=floatdef) then
+=======
+        // don't put records from which we load fields which aren't regable in integer registers
+        if (left.resultdef.typ = recorddef) and
+           not(tstoreddef(resultdef).is_intregable) then
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           make_not_regable(left,[ra_addr_regable]);
       end;
 
@@ -867,8 +1028,15 @@ implementation
     function tvecnode.pass_typecheck:tnode;
       var
          hightree: tnode;
+<<<<<<< HEAD
+<<<<<<< HEAD
          htype,elementdef,elementptrdef : tdef;
          newordtyp: tordtype;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+         htype,elementdef : tdef;
+>>>>>>> graemeg/fixes_2_2
          valid : boolean;
       begin
          result:=nil;
@@ -907,6 +1075,10 @@ implementation
           exit;
 
          { maybe type conversion for the index value, but
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
            do not convert range nodes }
          if (right.nodetype<>rangen) then
            case left.resultdef.typ of
@@ -972,11 +1144,65 @@ implementation
                  else
                    inserttypeconv(right,htype)
                end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+           do not convert enums, char (why not? (JM))
+           and do not convert range nodes }
+<<<<<<< HEAD
+<<<<<<< HEAD
+         if (right.nodetype<>rangen) and (is_integer(right.resultdef) or is_boolean(right.resultdef) or (left.resultdef.typ<>arraydef)) then
+=======
+         if (right.nodetype<>rangen) and (is_integer(right.resultdef) or (left.resultdef.typ<>arraydef)) then
+>>>>>>> graemeg/fixes_2_2
+=======
+         if (right.nodetype<>rangen) and (is_integer(right.resultdef) or (left.resultdef.typ<>arraydef)) then
+>>>>>>> origin/fixes_2_2
+           case left.resultdef.typ of
+             arraydef:
+               if ado_isvariant in Tarraydef(left.resultdef).arrayoptions then
+                 {Variant arrays are a special array, can have negative indexes and would therefore
+                  need s32bit. However, they should not appear in a vecn, as they are handled in
+                  handle_variantarray in pexpr.pas. Therefore, encountering a variant array is an
+                  internal error... }
+                 internalerror(200707031)
+               else if is_special_array(left.resultdef) then
+                 {Arrays without a high bound (dynamic arrays, open arrays) are zero based,
+                  convert indexes into these arrays to aword.}
+                 inserttypeconv(right,uinttype)
+<<<<<<< HEAD
+<<<<<<< HEAD
+               { convert between pasbool and cbool if necessary }
+               else if is_boolean(right.resultdef) then
+                 inserttypeconv(right,tarraydef(left.resultdef).rangedef)
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+               else
+                 {Convert array indexes to low_bound..high_bound.}
+                 inserttypeconv(right,Torddef.create(Torddef(sinttype).ordtype,
+                                                     int64(Tarraydef(left.resultdef).lowrange),
+                                                     int64(Tarraydef(left.resultdef).highrange)
+                                                    ));
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
              stringdef:
                if is_open_string(left.resultdef) then
                  inserttypeconv(right,u8inttype)
                else if is_shortstring(left.resultdef) then
                  {Convert shortstring indexes to 0..length.}
+<<<<<<< HEAD
+<<<<<<< HEAD
                  inserttypeconv(right,corddef.create(u8bit,0,int64(Tstringdef(left.resultdef).len),true))
                else
                  {Convert indexes into dynamically allocated strings to aword.}
@@ -985,6 +1211,19 @@ implementation
                inserttypeconv(right,tpointerdef(left.resultdef).pointer_arithmetic_int_type);
              else
                {Others, (are there any?) indexes to aint.}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                 inserttypeconv(right,Torddef.create(u8bit,0,int64(Tstringdef(left.resultdef).len)))
+               else
+                 {Convert indexes into dynamically allocated strings to aword.}
+                 inserttypeconv(right,uinttype);
+             else
+               {Others, i.e. pointer indexes to aint.}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                inserttypeconv(right,sinttype);
            end;
 
@@ -1022,7 +1261,25 @@ implementation
                { webtbs/tw8975                                                }
                if (cs_check_range in current_settings.localswitches) and
                   (is_open_array(left.resultdef) or
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                    is_array_of_const(left.resultdef)) then
+=======
+                   is_array_of_const(left.resultdef)) and
+                  { cdecl functions don't have high() so we can not check the range }
+                  { (can't use current_procdef, since it may be a nested procedure) }
+                  not(tprocdef(tparasymtable(tparavarsym(tloadnode(left).symtableentry).owner).defowner).proccalloption in cdecl_pocalls) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                    begin
                      { expect to find the load node }
                      if get_open_const_array(left).nodetype<>loadn then
@@ -1036,6 +1293,24 @@ implementation
                          hightree.free;
                        end;
                    end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                   is_array_of_const(left.resultdef)) and
+                  { cdecl functions don't have high() so we can not check the range }
+                  { (can't use current_procdef, since it may be a nested procedure) }
+                  not(tprocdef(tparasymtable(tparavarsym(tloadnode(left).symtableentry).owner).defowner).proccalloption in [pocall_cdecl,pocall_cppdecl]) then
+                   begin
+                     { load_high_value_node already typechecks }
+                     hightree:=load_high_value_node(tparavarsym(tloadnode(left).symtableentry));
+                     hightree.free;
+                   end;
+      
+      
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
              end;
            pointerdef :
              begin
@@ -1136,13 +1411,87 @@ implementation
          else if is_widestring(left.resultdef) and (tf_winlikewidestring in target_info.flags) then
            exclude(flags,nf_callunique);
 
+<<<<<<< HEAD
          { a range node as array index can only appear in function calls, and
            those convert the range node into something else in
            tcallnode.gen_high_tree }
          if (right.nodetype=rangen) then
            CGMessagePos(right.fileinfo,parser_e_illegal_expression)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          else if left.resultdef.typ=arraydef then
            result:=first_arraydef
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+         else if (not is_packed_array(left.resultdef)) or
+=======
+         { the register calculation is easy if a const index is used }
+         if right.nodetype=ordconstn then
+           begin
+              registersint:=left.registersint;
+
+              { for ansi/wide strings, we need at least one register }
+              if is_ansistring(left.resultdef) or
+                is_widestring(left.resultdef) or
+              { ... as well as for dynamic arrays }
+                is_dynamic_array(left.resultdef) then
+                registersint:=max(registersint,1);
+           end
+         else
+           begin
+              { this rules are suboptimal, but they should give }
+              { good results                                }
+              registersint:=max(left.registersint,right.registersint);
+
+              { for ansi/wide strings, we need at least one register }
+              if is_ansistring(left.resultdef) or
+                is_widestring(left.resultdef) or
+              { ... as well as for dynamic arrays }
+                is_dynamic_array(left.resultdef) then
+                registersint:=max(registersint,1);
+
+              { need we an extra register when doing the restore ? }
+              if (left.registersint<=right.registersint) and
+              { only if the node needs less than 3 registers }
+              { two for the right node and one for the       }
+              { left address                             }
+                (registersint<3) then
+                inc(registersint);
+
+              { need we an extra register for the index ? }
+              if (right.expectloc<>LOC_REGISTER)
+              { only if the right node doesn't need a register }
+                and (right.registersint<1) then
+                inc(registersint);
+
+              { not correct, but what works better ?
+              if left.registersint>0 then
+                registersint:=max(registersint,2)
+              else
+                 min. one register
+                registersint:=max(registersint,1);
+              }
+           end;
+
+         registersfpu:=max(left.registersfpu,right.registersfpu);
+{$ifdef SUPPORT_MMX}
+         registersmmx:=max(left.registersmmx,right.registersmmx);
+{$endif SUPPORT_MMX}
+         if (not is_packed_array(left.resultdef)) or
+>>>>>>> graemeg/fixes_2_2
+            ((tarraydef(left.resultdef).elepackedbitsize mod 8) = 0) then
+           if left.expectloc=LOC_CREFERENCE then
+             expectloc:=LOC_CREFERENCE
+           else
+             expectloc:=LOC_REFERENCE
+>>>>>>> graemeg/cpstrnew
          else
            begin
              if left.expectloc=LOC_CREFERENCE then

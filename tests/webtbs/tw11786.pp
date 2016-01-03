@@ -1,6 +1,14 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %skiptarget=darwin}
 { %cpu=i386 }
 { %OPT=-Cg- }
+=======
+{ %cpu=i386 }
+>>>>>>> graemeg/fixes_2_2
+=======
+{ %cpu=i386 }
+>>>>>>> origin/fixes_2_2
 var
   w : word;
   b1,b2,b3 : byte;

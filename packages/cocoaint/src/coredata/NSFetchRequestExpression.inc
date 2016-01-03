@@ -53,6 +53,10 @@ const
     _reserved4: Pointer;
     _fetchRequest: NSExpression;
     _managedObjectContext: NSExpression;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __flags: record
       case byte of
        0: (_anonbitfield_NSFetchRequestExpression0: cuint);
@@ -60,6 +64,29 @@ const
         isCountOnly: 0..1;
         _RESERVED: 0..((1 shl 31)-1);
        end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __flags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSFetchRequestExpression0: cuint);
+       1: (
+        isCountOnly: 0..1;
+        _RESERVED: 0..((1 shl 31)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     

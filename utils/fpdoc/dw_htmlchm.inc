@@ -10,6 +10,8 @@ type
     FChm: TChmWriter;
     FTempUncompressed: TStream;
     FTempUncompressedName: String;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FChmTitle: String;
     FTOCName,
     FIndexName,
@@ -17,6 +19,23 @@ type
     FMakeSearchable,
     FNoBinToc,
     FNoBinIndex,
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    FTOCName,
+    FIndexName,
+    FDefaultPage: String;
+    FCSSFile: String;
+    FMakeSearchable,
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+    FNoBinToc,
+    FNoBinIndex,
+>>>>>>> origin/fixes_2.4
     FAutoTOC,
     FAutoIndex: Boolean;
     FOtherFiles: String;
@@ -31,8 +50,14 @@ type
     function  InterPretOption(const Cmd,Arg : String): boolean; override;
 
     class procedure Usage(List: TStrings); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Class Function FileNameExtension : String; override;
     Class procedure SplitImport(var AFilename, ALinkPrefix: String); override;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 {$ELSE} // implementation
 
@@ -46,13 +71,59 @@ begin
     FDefaultPage := 'index.html'
   else
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     DoLog('Note: --index-page not assigned. Using default "index.html"');
+=======
+    WriteLn('Note: --index-page not assigned. Using default "index.html"');
+>>>>>>> graemeg/fixes_2_2
+=======
+    WriteLn('Note: --index-page not assigned. Using default "index.html"');
+>>>>>>> origin/fixes_2_2
   end;
   
   if FCSSFile <> '' then
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     if not FileExists(FCSSFile) Then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       Raise Exception.CreateFmt('Can''t find CSS file "%S"',[FCSSFILE]);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+    if not FileExists(FCSSFile) Then
+>>>>>>> origin/fixes_2.4
+      begin
+        Writeln(stderr,'Can''t find CSS file "',FCSSFILE,'"');
+        halt(1);
+      end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
     TempStream := TMemoryStream.Create;
     TempStream.LoadFromFile(FCSSFile);
     TempStream.Position := 0;
@@ -116,7 +187,15 @@ begin
       FChm.AppendIndex(TmpStream);
     end;
   TmpStream.Free;
+<<<<<<< HEAD
+<<<<<<< HEAD
   DoLog('Finishing compressing...');
+=======
+  WriteLn('Finishing compressing...');
+>>>>>>> graemeg/fixes_2_2
+=======
+  WriteLn('Finishing compressing...');
+>>>>>>> origin/fixes_2_2
 end;
 
 function TOCSort(Item1, Item2: TChmSiteMapItem): Integer;
@@ -157,7 +236,15 @@ var
   AlphaRoutinesItem: TChmSiteMapItem;
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   DoLog('Generating Table of contents...');
+=======
+  WriteLn('Generating Table of contents...');
+>>>>>>> graemeg/fixes_2_2
+=======
+  WriteLn('Generating Table of contents...');
+>>>>>>> origin/fixes_2_2
   if Assigned(Package) then
   begin
     Toc := TChmSiteMap.Create(stTOC);
@@ -175,8 +262,14 @@ begin
     for i := 0 to Package.Modules.Count - 1 do
     begin
       AModule := TPasModule(Package.Modules[i]);
+<<<<<<< HEAD
+<<<<<<< HEAD
       If not assigned(AModule.InterfaceSection) Then
          Continue;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       ObjUnitItem := ObjByUnitItem.Children.NewItem;
       ObjUnitItem.Text := AModule.Name;
       RoutinesUnitItem := RoutinesByUnitItem.Children.NewItem;
@@ -240,9 +333,23 @@ begin
       TOC.Items.Item[i].Children.Item[j].Children.Sort(TListSortCompare(@TOCSort));
     end;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   if not fnobintoc then
     fchm.AppendBinaryTOCFromSiteMap(Toc);  
+=======
+  
+>>>>>>> graemeg/fixes_2_2
+=======
+  
+>>>>>>> origin/fixes_2_2
+=======
+
+  if not fnobintoc then
+    fchm.AppendBinaryTOCFromSiteMap(Toc);  
+>>>>>>> origin/fixes_2.4
   TOC.SaveToStream(Stream);
   TOC.Free;
 
@@ -285,17 +392,37 @@ var
   MemberItem: TChmSiteMapItem;
   Stream: TMemoryStream;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   DoLog('Generating Index...');
 
   if Assigned(Package) then
   begin
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  WriteLn('Generating Index...');
+
+  if Assigned(Package) then
+  begin
+  try
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Index := TChmSiteMap.Create(stIndex);
     Stream := TMemoryStream.Create;
     for i := 0 to Package.Modules.Count - 1 do
     begin
       AModule := TPasModule(Package.Modules[i]);
+<<<<<<< HEAD
+<<<<<<< HEAD
       if not assigned(AModule.InterfaceSection) then
         continue;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       ParentItem := Index.Items.NewItem;
       ParentItem.Text := AModule.Name;
       ParentItem.Local := FixHTMLpath(Allocator.GetFilename(AModule, 0));
@@ -345,7 +472,15 @@ begin
       begin
         ParentElement := TPasProcedureType(AModule.InterfaceSection.Functions[j]);
         TmpItem := Index.Items.NewItem;
+<<<<<<< HEAD
+<<<<<<< HEAD
         TmpItem.Text := ParentElement.Name + ' ' + ParentElement.ElementTypeName;
+=======
+        TmpItem.Text := ParentElement.Name + ' ' + TPasFunction(ParentElement).ElementTypeName;
+>>>>>>> graemeg/fixes_2_2
+=======
+        TmpItem.Text := ParentElement.Name + ' ' + TPasFunction(ParentElement).ElementTypeName;
+>>>>>>> origin/fixes_2_2
         TmpItem.Local := FixHTMLpath(Allocator.GetFilename(ParentElement, 0));
       end;
       // consts
@@ -418,12 +553,36 @@ begin
 
     // save
     Index.SaveToStream(Stream);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     if not fnobinindex then
       fchm.AppendBinaryindexFromSitemap(index,false);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+    if not fnobinindex then
+      fchm.AppendBinaryindexFromSitemap(index,false);
+>>>>>>> origin/fixes_2.4
     Index.Free;
     Stream.Position :=0 ;
     FChm.AppendIndex(Stream);
     Stream.Free;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  except
+    Dump_Stack(StdOut, get_frame);
+    Halt(1);
+  end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 end;
 
@@ -435,6 +594,8 @@ var
   FileName: String;
   FilePath: String;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FileName := Engine.Output;
   if FileName = '' then
     Raise Exception.Create('Error: no --output option used.'); 
@@ -443,16 +604,52 @@ begin
     FileName := ChangeFileExt(FileName, FileNameExtension);
 
   FOutChm := TFileStream.Create(FileName, fmOpenReadWrite or fmCreate);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if Engine.Output = '' then
+  begin
+    WriteLn('Error: no --output option used.');
+    Exit;
+  end;
+  
+  if ExtractFileExt(Engine.Output) <> '.chm' then
+    ChangeFileExt(Engine.OutPut, '.chm');
+
+  FOutChm := TFileStream.Create(Engine.Output, fmOpenReadWrite or fmCreate);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   FTempUncompressedName := GetTempFileName+IntToStr(GetProcessID) +'.raw';
   FTempUncompressed := TFileStream.Create(FTempUncompressedName, fmOpenReadWrite  or fmCreate);
   FChm := TChmWriter.Create(FOutChm, False);
+<<<<<<< HEAD
+<<<<<<< HEAD
   FChm.Title := FChmTitle;
   FChm.TempRawStream := FTempUncompressed;
   FChm.OnGetFileData := @RetrieveOtherFiles;
   FChm.OnLastFile := @LastFileAdded;
   fchm.hasbinarytoc:=not fnobintoc;;
   fchm.hasbinaryindex:=not fnobinindex;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  FChm.Title := Copy(Package.Name, 2, Length(Package.Name));
+  FChm.TempRawStream := FTempUncompressed;
+  FChm.OnGetFileData := @RetrieveOtherFiles;
+  FChm.OnLastFile := @LastFileAdded;
+<<<<<<< HEAD
+  
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+  fchm.hasbinarytoc:=not fnobintoc;;
+  fchm.hasbinaryindex:=not fnobinindex;
+>>>>>>> origin/fixes_2.4
   ProcessOptions;
 
   FileStream := TMemoryStream.Create;
@@ -469,7 +666,15 @@ begin
           FChm.AddStreamToArchive(FileName, FilePath, FileStream, True);
         except
 	  on E: Exception do
+<<<<<<< HEAD
+<<<<<<< HEAD
             DoLog(Format(SErrCouldNotCreateFile, [FileName, e.Message]));
+=======
+            WriteLn(Format(SErrCouldNotCreateFile, [FileName, e.Message]));
+>>>>>>> graemeg/fixes_2_2
+=======
+            WriteLn(Format(SErrCouldNotCreateFile, [FileName, e.Message]));
+>>>>>>> origin/fixes_2_2
         end;
       finally
         PageDoc.Free;
@@ -477,6 +682,8 @@ begin
       end;
     end;
   FileStream.Free;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   DoLog('HTML Files written. Collecting other files and compressing...this could take some time');
 
@@ -500,6 +707,12 @@ begin
   end;
   FileStream.Free;
 
+=======
+  WriteLn('HTML Files written. Collecting other files and compressing...this could take some time');
+>>>>>>> graemeg/fixes_2_2
+=======
+  WriteLn('HTML Files written. Collecting other files and compressing...this could take some time');
+>>>>>>> origin/fixes_2_2
   FChm.Execute;
   FChm.Free;
   // we don't need to free FTempUncompressed
@@ -511,8 +724,19 @@ end;
 function TCHMHTMLWriter.InterPretOption(const Cmd, Arg: String): boolean;
 begin
   Result:=True;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   FNoBinToc:=False;
   FnoBinIndex:=False;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+  FNoBinToc:=False;
+  FnoBinIndex:=False;
+>>>>>>> origin/fixes_2.4
   if Cmd = '--toc-file' then
     FTOCName := arg
   else if Cmd = '--index-file' then
@@ -521,10 +745,25 @@ begin
     FDefaultPage := arg
   else if Cmd = '--other-files' then
     FOtherFiles := arg
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  else if Cmd = '--css-file' then
+    FCSSFile := arg
+>>>>>>> graemeg/fixes_2_2
+=======
+  else if Cmd = '--css-file' then
+    FCSSFile := arg
+>>>>>>> origin/fixes_2_2
   else if Cmd = '--auto-index' then
     FAutoIndex := True
   else if Cmd = '--auto-toc' then
     FAutoTOC := True
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
   else if Cmd = '--no-bintoc' then
     FNoBinToc := True
   else if Cmd = '--no-binindex' then
@@ -538,6 +777,17 @@ begin
 
   if Length(FChmTitle) = 0 then
     FChmTitle := Copy(Package.Name, 2, Length(Package.Name));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  else if Cmd = '--make-searchable' then
+    FMakeSearchable := True
+  else
+    Result:=inherited InterPretOption(Cmd, Arg);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 class procedure TCHMHTMLWriter.Usage(List: TStrings);
@@ -559,6 +809,8 @@ begin
   List.Add(SCHMUsageAutoTOC);
   List.add('--make-searchable');
   List.Add(SCHMUsageMakeSearch);
+<<<<<<< HEAD
+<<<<<<< HEAD
   List.Add('--chm-title');
   List.Add(SCHMUsageChmTitle);
 end;
@@ -585,5 +837,15 @@ begin
     AFilename := ChangeFileExt(AFilename, '.xct');
     end;
 end;
+=======
+end;
+
+
+>>>>>>> graemeg/fixes_2_2
+=======
+end;
+
+
+>>>>>>> origin/fixes_2_2
 
 {$ENDIF}

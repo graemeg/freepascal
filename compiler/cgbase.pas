@@ -68,9 +68,19 @@ interface
        trefaddr = (
          addr_no,
          addr_full,
+<<<<<<< HEAD
+<<<<<<< HEAD
          addr_pic,
          addr_pic_no_got
          {$IF defined(POWERPC) or defined(POWERPC64) or defined(SPARC) or defined(MIPS)}
+=======
+         addr_pic
+         {$IF defined(POWERPC) or defined(POWERPC64) or defined(SPARC)}
+>>>>>>> graemeg/fixes_2_2
+=======
+         addr_pic
+         {$IF defined(POWERPC) or defined(POWERPC64) or defined(SPARC)}
+>>>>>>> origin/fixes_2_2
          ,
          addr_low,         // bits 48-63
          addr_high,        // bits 32-47
@@ -84,6 +94,8 @@ interface
          addr_highera,     // bits 32-47, adjusted
          addr_highesta     // bits 48-63, adjusted
          {$ENDIF}
+<<<<<<< HEAD
+<<<<<<< HEAD
          {$ENDIF POWERPC or POWERPC64 or SPARC or MIPS}
          {$IFDEF MIPS}
          ,
@@ -104,12 +116,43 @@ interface
          ,addr_fardataseg  // the far data segment of the current pascal module (unit or program)
          ,addr_seg         // used for getting the segment of an object, e.g. 'mov ax, SEG symbol'
          {$ENDIF}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          {$IFDEF AARCH64}
          ,addr_page
          ,addr_pageoffset
          ,addr_gotpage
          ,addr_gotpageoffset
          {$ENDIF AARCH64}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+         {$IFDEF AVR}
+         ,addr_lo8
+         ,addr_hi8
+         {$ENDIF}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+         {$ENDIF}
+>>>>>>> graemeg/fixes_2_2
+=======
+         {$ENDIF}
+>>>>>>> origin/fixes_2_2
          );
 
 
@@ -391,8 +434,20 @@ interface
     }
     function int_cgsize(const a: tcgint): tcgsize;{$ifdef USEINLINE}inline;{$endif}
     function int_float_cgsize(const a: tcgint): tcgsize;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     function tcgsize2str(cgsize: tcgsize):string;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     { return the inverse condition of opcmp }
     function inverse_opcmp(opcmp: topcmp): topcmp;{$ifdef USEINLINE}inline;{$endif}

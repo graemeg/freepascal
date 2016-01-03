@@ -1,6 +1,22 @@
 {
     Free Pascal port of the OpenPTC C++ library.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2001-2007, 2009-2011  Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -31,6 +47,10 @@
 }
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   IPTCFormat = interface
     function GetHermesFormat: PHermesFormat;
 
@@ -64,3 +84,44 @@ type
                              AAlphaMask: Uint32 = 0): IPTCFormat;
     class function CreateNew(AFormat: IPTCFormat): IPTCFormat;
   end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  TPTCFormat = class
+  private
+    FFormat: THermesFormat;
+    function GetDirect: Boolean;
+    function GetBytes: Integer;
+  public
+    constructor Create;
+    constructor Create(ABits: Integer);
+    constructor Create(ABits: Integer;
+                       ARedMask, AGreenMask, ABlueMask: Uint32;
+                       AAlphaMask: Uint32 = 0);
+    constructor Create(const format: TPTCFormat);
+    destructor Destroy; override;
+    procedure Assign(const format: TPTCFormat);
+    function Equals(const format: TPTCFormat): Boolean;
+    property R: Uint32 read FFormat.r;
+    property G: Uint32 read FFormat.g;
+    property B: Uint32 read FFormat.b;
+    property A: Uint32 read FFormat.a;
+    property Bits: Integer read FFormat.bits;
+    property Indexed: Boolean read FFormat.indexed;
+    property Direct: Boolean read GetDirect;
+    property Bytes: Integer read GetBytes;
+  end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

@@ -606,9 +606,9 @@ TYPE
   Protected
     procedure CreateGtkObject; override;
   Public
+    function TheGtkObject : PGtkImage;
     FMask:PGdkBitMap;
     FImage:PGdkImage;
-    function TheGtkObject : PGtkImage;
     property Image : PGdkImage read GetImageProp write SetImageProp;
     property Mask : PGdkBitMap read GetMask write SetMask;
     procedure SetImage (anImage:PGdkImage; aMask:PGdkBitmap);
@@ -629,9 +629,9 @@ TYPE
   Protected
     procedure CreateGtkObject; override;
   Public
+    function TheGtkObject : PGtkPixmap;
     FMask:PGdkBitMap;
     FPixMap:PGdkPixmap;
-    function TheGtkObject : PGtkPixmap;
     property BuildInsensitive : longbool read GetBuildInsensitive write SetBuildInsensitive;
     constructor Create;
     constructor CreateFromFile (Filename:string; Window:TFPgtkWidget);
@@ -655,8 +655,8 @@ TYPE
     procedure SetBorder (TheValue : integer);
     function GetChildren : TFPgtkWidgetGroup;
   Public
-    FChildren:TFPgtkWidgetGroup;
     function TheGtkObject : PGtkContainer;
+    FChildren:TFPgtkWidgetGroup;
     property Border : integer read GetBorder write SetBorder;
     procedure Add (AWidget:TFPgtkWidget; IsVisible:boolean); Overload;
     procedure Add (AWidget:TFPgtkWidget); Overload;
@@ -802,8 +802,8 @@ TYPE
   Protected
     procedure CreateGtkObject; Override;
   Public
-    FGroup:TFPgtkRadioButtonGroup;
     function TheGtkObject : PGtkRadioButton;
+    FGroup:TFPgtkRadioButtonGroup;
     constructor Create (AGroup:TFPgtkRadioButtonGroup);
     constructor CreateWithLabel (AGroup:TFPgtkRadioButtonGroup; aText:string);
   end;
@@ -1957,8 +1957,8 @@ TYPE
     procedure GtkInsert (MenuItem:TFPgtkWidget; position:integer); Override;
     procedure GtkAppend (MenuItem:TFPgtkWidget); Override;
   Public
-    FDetacher:TFPgtkMenuDetachFunction;
     function TheGtkObject : PGtkMenu;
+    FDetacher:TFPgtkMenuDetachFunction;
     procedure ReorderChild (MenuItem:TFPgtkWidget; position:integer);
     procedure Popup (button:guint); Overload;
     procedure Popup (ParentShell:TFPgtkWidget; ParentItem:TFPgtkWidget; func:TFPgtkMenuPosFunction; data:pointer; button:guint; ActivateTime:guint32); Overload;

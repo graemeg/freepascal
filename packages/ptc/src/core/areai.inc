@@ -1,6 +1,6 @@
 {
     Free Pascal port of the OpenPTC C++ library.
-    Copyright (C) 2001-2007, 2009-2012  Nikolay Nikolov (nickysn@users.sourceforge.net)
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -29,38 +29,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }
-
-type
-  TPTCArea = class(TInterfacedObject, IPTCArea)
-  private
-    FLeft, FTop, FRight, FBottom: Integer;
-    function GetLeft: Integer;
-    function GetTop: Integer;
-    function GetRight: Integer;
-    function GetBottom: Integer;
-    function GetWidth: Integer;
-    function GetHeight: Integer;
-    function Equals(AArea: IPTCArea): Boolean; reintroduce;
-  public
-    constructor Create;
-    constructor Create(ALeft, ATop, ARight, ABottom: Integer);
-    constructor Create(AArea: IPTCArea);
-  end;
-
-class function TPTCAreaFactory.CreateNew: IPTCArea;
-begin
-  Result := TPTCArea.Create;
-end;
-
-class function TPTCAreaFactory.CreateNew(ALeft, ATop, ARight, ABottom: Integer): IPTCArea;
-begin
-  Result := TPTCArea.Create(ALeft, ATop, ARight, ABottom);
-end;
-
-class function TPTCAreaFactory.CreateNew(AArea: IPTCArea): IPTCArea;
-begin
-  Result := TPTCArea.Create(AArea);
-end;
 
 constructor TPTCArea.Create(ALeft, ATop, ARight, ABottom: Integer);
 begin
@@ -94,40 +62,28 @@ begin
   FBottom := 0;
 end;
 
-constructor TPTCArea.Create(AArea: IPTCArea);
+constructor TPTCArea.Create(const AArea: TPTCArea);
 begin
-  FLeft   := AArea.Left;
-  FTop    := AArea.Top;
-  FRight  := AArea.Right;
-  FBottom := AArea.Bottom;
+  FLeft   := AArea.FLeft;
+  FTop    := AArea.FTop;
+  FRight  := AArea.FRight;
+  FBottom := AArea.FBottom;
 end;
 
-function TPTCArea.Equals(AArea: IPTCArea): Boolean;
+procedure TPTCArea.Assign(const AArea: TPTCArea);
 begin
-  Result := (FLeft   = AArea.Left) and
-            (FTop    = AArea.Top) and
-            (FRight  = AArea.Right) and
-            (FBottom = AArea.Bottom);
+  FLeft   := AArea.FLeft;
+  FTop    := AArea.FTop;
+  FRight  := AArea.FRight;
+  FBottom := AArea.FBottom;
 end;
 
-function TPTCArea.GetLeft: Integer;
+function TPTCArea.Equals(const AArea: TPTCArea): Boolean;
 begin
-  Result := FLeft;
-end;
-
-function TPTCArea.GetTop: Integer;
-begin
-  Result := FTop;
-end;
-
-function TPTCArea.GetRight: Integer;
-begin
-  Result := FRight;
-end;
-
-function TPTCArea.GetBottom: Integer;
-begin
-  Result := FBottom;
+  Result := (FLeft   = AArea.FLeft) and
+            (FTop    = AArea.FTop) and
+            (FRight  = AArea.FRight) and
+            (FBottom = AArea.FBottom);
 end;
 
 function TPTCArea.GetWidth: Integer;

@@ -103,8 +103,24 @@ Const
                                  { no need to write info about those }
                                  [cs_opt_level1,cs_opt_level2,cs_opt_level3]+
                                  [cs_opt_regvar,cs_opt_loopunroll,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                                   cs_opt_tailrecursion,cs_opt_nodecse,
                                   cs_opt_reorder_fields,cs_opt_fastmath];
+=======
+								  cs_opt_tailrecursion,cs_opt_nodecse];
+>>>>>>> graemeg/cpstrnew
+=======
+								  cs_opt_tailrecursion,cs_opt_nodecse];
+>>>>>>> graemeg/cpstrnew
+=======
+								  cs_opt_tailrecursion,cs_opt_nodecse];
+>>>>>>> graemeg/cpstrnew
+=======
+								  cs_opt_tailrecursion,cs_opt_nodecse];
+>>>>>>> origin/cpstrnew
 
    level1optimizerswitches = genericlevel1optimizerswitches;
    level2optimizerswitches = genericlevel2optimizerswitches + level1optimizerswitches + 

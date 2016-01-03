@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('libndsfpc');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.OSes:=[nds];
     P.CPUs:=[arm];
 {$ifdef ALLPACKAGES}
@@ -145,6 +147,22 @@ begin
      end;
 
     P.Sources.AddExampleFiles('examples/*',P.Directory,true,'.');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='libndsfpc';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+//    P.Dependencies.Add('x11');
+
+    // not linux compilable, skip
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifndef ALLPACKAGES}
     Run;
     end;

@@ -88,7 +88,14 @@ var
   nodeValue: DOMString;
   length: Integer;
 begin
+<<<<<<< HEAD
   FParser.Options.CanonicalForm := True;
+=======
+// canonical form: PreserveWhitespace, Namespaces, NamespaceDeclarations = True;
+//                 Entities, CDSections = False;
+  FParser.Options.PreserveWhitespace := True;
+  FParser.Options.Namespaces := True;
+>>>>>>> origin/fixes_2.4
   LoadStringData(doc, canonicform01);
   begin
     node := TDOMNode(doc).firstChild;
@@ -116,7 +123,27 @@ begin
     nodeType := node.nodeType;
     assertEquals('PIisFifthChild', 7, nodeType);
     nodeValue := TDOMProcessingInstruction(node).data;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     assertEqualsW('trailingPIData', '', nodeValue);
+=======
+    assertEquals('trailingPIData', '', nodeValue);
+>>>>>>> graemeg/cpstrnew
+=======
+    assertEquals('trailingPIData', '', nodeValue);
+>>>>>>> graemeg/cpstrnew
+=======
+    assertEquals('trailingPIData', '', nodeValue);
+>>>>>>> graemeg/cpstrnew
+=======
+    assertEquals('trailingPIData', '', nodeValue);
+>>>>>>> origin/cpstrnew
+=======
+    assertEquals('trailingPIData', '', nodeValue);
+>>>>>>> origin/fixes_2.4
     node := node.nextSibling;
     nodeType := node.nodeType;
     assertEquals('TextisSixthChild', 3, nodeType);
@@ -149,7 +176,14 @@ var
   nodeValue: DOMString;
   length: Integer;
 begin
+<<<<<<< HEAD
   FParser.Options.CanonicalForm := True;
+=======
+// canonical form: PreserveWhitespace, Namespaces, NamespaceDeclarations = True;
+//                 Entities, CDSections = False;
+  FParser.Options.PreserveWhitespace := True;
+  FParser.Options.Namespaces := True;
+>>>>>>> origin/fixes_2.4
   FParser.Options.IgnoreComments := True;
   LoadStringData(doc, canonicform01);
   begin
@@ -178,7 +212,27 @@ begin
     nodeType := node.nodeType;
     assertEquals('PIisFifthChild', 7, nodeType);
     nodeValue := TDOMProcessingInstruction(node).data;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     assertEqualsW('trailingPIData', '', nodeValue);
+=======
+    assertEquals('trailingPIData', '', nodeValue);
+>>>>>>> graemeg/cpstrnew
+=======
+    assertEquals('trailingPIData', '', nodeValue);
+>>>>>>> graemeg/cpstrnew
+=======
+    assertEquals('trailingPIData', '', nodeValue);
+>>>>>>> graemeg/cpstrnew
+=======
+    assertEquals('trailingPIData', '', nodeValue);
+>>>>>>> origin/cpstrnew
+=======
+    assertEquals('trailingPIData', '', nodeValue);
+>>>>>>> origin/fixes_2.4
     node := node.nextSibling;
     assertNull('SixthIsNull', node);
   end;
@@ -192,7 +246,12 @@ var
   divEl: TDOMElement;
   node: TDOMNode;
 begin
+<<<<<<< HEAD
   FParser.Options.CanonicalForm := True;
+=======
+  FParser.Options.PreserveWhitespace := True;
+  FParser.Options.Namespaces := True;
+>>>>>>> origin/fixes_2.4
   LoadStringData(doc, canonicform03);
 
   divList := doc.getElementsByTagName('div');
@@ -213,7 +272,12 @@ var
   attrSpecified: Boolean;
   attrValue: DOMString;
 begin
+<<<<<<< HEAD
   FParser.Options.CanonicalForm := True;
+=======
+  FParser.Options.PreserveWhitespace := True;
+  FParser.Options.Namespaces := True;
+>>>>>>> origin/fixes_2.4
   LoadStringData(doc, canonicform03);
 
   elemList := doc.getElementsByTagName('acronym');
@@ -223,7 +287,27 @@ begin
   attrSpecified := attr.specified;
   assertTrue('titleSpecified', attrSpecified);
   attrValue := attr.nodeValue;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   assertEqualsW('titleValue', 'default', attrValue);
+=======
+  assertEquals('titleValue', 'default', attrValue);
+>>>>>>> graemeg/cpstrnew
+=======
+  assertEquals('titleValue', 'default', attrValue);
+>>>>>>> graemeg/cpstrnew
+=======
+  assertEquals('titleValue', 'default', attrValue);
+>>>>>>> graemeg/cpstrnew
+=======
+  assertEquals('titleValue', 'default', attrValue);
+>>>>>>> origin/cpstrnew
+=======
+  assertEquals('titleValue', 'default', attrValue);
+>>>>>>> origin/fixes_2.4
 end;
 
 { tests that namespace fixup is done while serializing }
@@ -244,7 +328,10 @@ begin
   FParser.Options.Namespaces := True;
   domImpl := GetImplementation;
   origDoc := domImpl.createDocument(namespaceURI, 'test', nil);
+<<<<<<< HEAD
   GC(origDoc);
+=======
+>>>>>>> origin/fixes_2.4
   docElem := origDoc.documentElement;
   docElem.setAttributeNS(namespaceURI, 'attr', 'test value');
 
@@ -256,11 +343,43 @@ begin
 
   docElem := parsedDoc.documentElement;
   docElemLocalName := docElem.localName;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   assertEqualsW('docElemLocalName', 'test', docElemLocalName);
   docElemNS := TDOMNode(docElem).namespaceURI;
   assertEqualsW('docElemNS', namespaceURI, docElemNS);
   attrValue := docElem.getAttributeNS(namespaceURI, 'attr');
   assertEqualsW('properNSAttrValue', 'test value', attrValue);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
+  assertEquals('docElemLocalName', 'test', docElemLocalName);
+  docElemNS := TDOMNode(docElem).namespaceURI;
+  assertEquals('docElemNS', namespaceURI, docElemNS);
+  attrValue := docElem.getAttributeNS(namespaceURI, 'attr');
+  assertEquals('properNSAttrValue', 'test value', attrValue);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 end;
 
 { tests that namespace fixup is done while serializing }
@@ -281,7 +400,10 @@ begin
   FParser.Options.Namespaces := True;
   domImpl := GetImplementation;
   origDoc := domImpl.createDocument(namespaceURI, 'test', nil);
+<<<<<<< HEAD
   GC(origDoc);
+=======
+>>>>>>> origin/fixes_2.4
   docElem := origDoc.documentElement;
   docElem.setAttributeNS(namespaceURI, 'test:attr', 'test value');
 
@@ -293,11 +415,43 @@ begin
 
   docElem := parsedDoc.documentElement;
   docElemLocalName := docElem.localName;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   assertEqualsW('docElemLocalName', 'test', docElemLocalName);
   docElemNS := TDOMNode(docElem).namespaceURI;
   assertEqualsW('docElemNS', namespaceURI, docElemNS);
   attrValue := docElem.getAttributeNS(namespaceURI, 'attr');
   assertEqualsW('properNSAttrValue', 'test value', attrValue);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
+  assertEquals('docElemLocalName', 'test', docElemLocalName);
+  docElemNS := TDOMNode(docElem).namespaceURI;
+  assertEquals('docElemNS', namespaceURI, docElemNS);
+  attrValue := docElem.getAttributeNS(namespaceURI, 'attr');
+  assertEquals('properNSAttrValue', 'test value', attrValue);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 end;
 
 initialization

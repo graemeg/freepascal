@@ -1,13 +1,70 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
 #
 
 [package]
 name=gdbint
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=gdbint gdbcon
+examples=examples/testgdb examples/symify
+=======
+=======
+>>>>>>> origin/fixes_2_2
+#   Makefile.fpc for Free Pascal GDB Interface
+#
+
+
+[package]
+name=gdbint
+version=2.2.5
+
+[target]
+units=gdbint gdbcon
+examples=testgdb symify
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+
+[compiler]
+objectdir=$(GDBLIBDIR)
+librarydir=$(GDBLIBDIR)
+<<<<<<< HEAD
+<<<<<<< HEAD
+includedir=$(GDBLIBDIR) src
+sourcedir=src tests
+>>>>>>> graemeg/cpstrnew
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> origin/fixes_2_2
+includedir=src
+sourcedir=src tests
+
+[require]
+libc=y
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -15,6 +72,8 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -23,7 +82,88 @@ endif
 ifdef CPU_TARGET
 FPC_TARGETOPT+=--cpu=$(CPU_TARGET)
 endif
+<<<<<<< HEAD
 LOCALFPMAKE=./fpmake$(SRCEXEEXT)
+=======
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+[prerules]
+# For unix be sure to use the locally created gdbver
+ifdef inUnix
+CURRDIR=./
+else
+CURRDIR=
+endif
+
+# Look for a valid GDBLIBDIR environment variable
+ifdef GDBLIBDIR
+override LIBGDBFILE:=$(firstword $(wildcard $(addsuffix /libgdb.a,$(GDBLIBDIR))))
+endif
+
+# Use default dirs if not available
+ifeq ($(LIBGDBFILE),)
+# Default locations <target>/<cpu> (linux) or <target> (win32,go32v2) only
+override GDBLIBDIR=$(wildcard $(FPCDIR)/libgdb/$(OS_TARGET)/$(CPU_TARGET))
+ifeq ($(GDBLIBDIR),)
+override GDBLIBDIR=$(FPCDIR)/libgdb/$(OS_TARGET)
+endif
+# Detect if libgdb.a is available
+override LIBGDBFILE:=$(firstword $(wildcard $(addsuffix /libgdb.a,$(GDBLIBDIR))))
+endif
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+
+# Set GDBFOUND variable
+ifeq ($(LIBGDBFILE),)
+GDBFOUND=0
+else
+GDBFOUND=1
+<<<<<<< HEAD
+<<<<<<< HEAD
+# Detect if gdblib.inc is available
+override LIBGDBINC:=$(firstword $(wildcard $(addsuffix /gdblib.inc,$(GDBLIBDIR))))
+ifeq ($(LIBGDBINC),)
+GDBLIBINCFOUND=0
+GDBLIBINCCOND=
+else
+GDBLIBINCFOUND=1
+GDBLIBINCCOND=-dUSE_GDBLIBINC
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+=======
+endif
+ifdef NO_GDBLIBINC
+GDBLIBINCFOUND=0
+GDBLIBINCCOND=
+endif
+>>>>>>> origin/cpstrnew
+endif
+ifdef NO_GDBLIBINC
+GDBLIBINCFOUND=0
+GDBLIBINCCOND=
+endif
+>>>>>>> graemeg/cpstrnew
+endif
+ifdef NO_GDBLIBINC
+GDBLIBINCFOUND=0
+GDBLIBINCCOND=
+endif
+>>>>>>> graemeg/cpstrnew
+endif
+ifdef NO_GDBLIBINC
+GDBLIBINCFOUND=0
+GDBLIBINCCOND=
+endif
+endif
+
+>>>>>>> graemeg/cpstrnew
 
 [rules]
 # Do not pass the Makefile's unit and binary target locations. Fpmake uses it's own.
@@ -59,8 +199,61 @@ debug:	fpmake$(SRCEXEEXT)
 ifeq ($(FPMAKE_BIN_CLEAN),)
 clean:
 else
+<<<<<<< HEAD
 clean:
 	$(FPMAKE_BIN_CLEAN) clean $(FPMAKE_OPT)
+=======
+=======
+=======
+>>>>>>> origin/fixes_2_2
+endif
+
+
+[rules]
+ifeq ($(FULL_SOURCE),$(FULL_TARGET))
+CAN_RUN_GDBVER=1
+endif
+
+ifeq ($(FULL_SOURCE),i386-win32)
+ifeq ($(FULL_TARGET),i386-go32v2)
+CAN_RUN_GDBVER=1
+endif
+endif
+
+
+ifdef CAN_RUN_GDBVER
+ifeq ($(GDBFOUND),1)
+# libgdb.a found
+
+$(CURRDIR)getver$(EXEEXT) : gdbver.pp
+	$(COMPILER) -o$(CURRDIR)getver$(EXEEXT) gdbver.pp
+
+ifndef GOTGDBVER
+# gdbver doesn't exists, build it first
+gdbint$(PPUEXT): $(CURRDIR)gdbver$(EXEEXT) gdbint.pp
+	$(MAKE) gdbint$(PPUEXT) GOTGDBVER=1
+else
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+# gdbver exists
+GDBVER:=GDB_V$(strip $(shell $(CURRDIR)gdbver$(EXEEXT) -n))
+gdbver.inc: gdbver$(EXEEXT)
+        ./gdbver$(EXEEXT) -o gdbver.inc
+gdbint$(PPUEXT): gdbint.pp gdbver.inc
+<<<<<<< HEAD
+<<<<<<< HEAD
+# MingW?
+ifeq ($(wildcard $(GDBLIBDIR)/libmingw32.a),)
+	@$(ECHO) Using GDB $(GDBVER)
+        $(COMPILER) -d$(GDBVER) $(GDBLIBINCCOND) -Fisrc -Fusrc src/gdbint.pp
+else
+	@$(ECHO) Using GDB $(GDBVER) \(MingW\)
+	$(COMPILER) -d$(GDBVER) $(GDBLIBINCCOND) -dUSE_MINGW_GDB -Fisrc -Fusrc src/gdbint.pp
+endif
+	$(DEL) gdbver$(EXEEXT) gdbver$(OEXT)
+>>>>>>> graemeg/cpstrnew
 endif
 # In case of a distclean, perform an 'old'-style distclean. This to avoid problems
 # when the package is compiled using fpcmake prior to running this clean using fpmake
@@ -71,7 +264,42 @@ distclean:
 ifdef inUnix
         { $(FPMAKE_BIN_CLEAN) distclean $(FPMAKE_OPT); if [ $$? != "0" ]; then { echo Something wrong with fpmake exectable. Remove the executable and call make recursively to recover.; $(DEL) $(FPMAKE_BIN_CLEAN); $(MAKE) fpc_cleanall; }; fi;  }
 else
+<<<<<<< HEAD
         $(FPMAKE_BIN_CLEAN) distclean $(FPMAKE_OPT)
+=======
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	@$(ECHO) Using GDB $(GDBVER)
+	$(COMPILER) -d$(GDBVER) -Fisrc -Fusrc src/gdbint.pp
+	$(DEL) gdbver$(EXEEXT) gdbver$(OEXT)
+endif
+
+else
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+# libgdb.a not found, default to libgdb v6
+GDBVER=GDB_V606
+gdbver.inc:
+        $(CPPROG) src/gdbver_nogdb.inc src/gdbver.inc
+gdbint$(PPUEXT): gdbint.pp gdbver.inc
+	@$(ECHO) libgdb.a not found, using default GDB $(GDBVER)
+<<<<<<< HEAD
+<<<<<<< HEAD
+	$(COMPILER) -d$(GDBVER) $(GDBLIBINCCOND)  -Fisrc -Fusrc src/gdbint.pp
+        $(DEL) src/gdbver.inc
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 endif
 	-$(DEL) $(LOCALFPMAKE)
 endif
@@ -80,6 +308,7 @@ install:	fpmake$(SRCEXEEXT)
 ifdef UNIXHier
 	$(LOCALFPMAKE) install $(FPMAKE_OPT) --prefix=$(INSTALL_PREFIX) --baseinstalldir=$(INSTALL_LIBDIR)/fpc/$(FPC_VERSION) --unitinstalldir=$(INSTALL_UNITDIR)
 else
+<<<<<<< HEAD
 	$(LOCALFPMAKE) install $(FPMAKE_OPT) --prefix=$(INSTALL_BASEDIR) --baseinstalldir=$(INSTALL_BASEDIR) --unitinstalldir=$(INSTALL_UNITDIR)
 endif
 # distinstall also installs the example-sources and omits the location of the source-
@@ -87,6 +316,40 @@ endif
 distinstall:	fpmake$(SRCEXEEXT)
 ifdef UNIXHier
 	$(LOCALFPMAKE) install $(FPMAKE_OPT) --prefix=$(INSTALL_PREFIX) --baseinstalldir=$(INSTALL_LIBDIR)/fpc/$(FPC_VERSION) --unitinstalldir=$(INSTALL_UNITDIR) -ie -fsp 0
+=======
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	$(COMPILER) -d$(GDBVER) -Fisrc -Fusrc src/gdbint.pp
+endif
+
+else
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+# Different OS_TARGET, default to libgdb v6
+GDBVER=GDB_V606
+gdbver.inc:
+        $(CPPROG) src/gdbver_nogdb.inc src/gdbver.inc
+gdbint$(PPUEXT): gdbint.pp gdbver.inc
+	@$(ECHO) Different target os or cpu, using default GDB $(GDBVER)
+<<<<<<< HEAD
+<<<<<<< HEAD
+	$(COMPILER) -d$(GDBVER) $(GDBLIBINCCOND)  -Fisrc -Fusrc src/gdbint.pp
+endif
+
+gdbcon$(PPUEXT): gdbcon.pp gdbint$(PPUEXT)
+ifeq ($(wildcard $(GDBLIBDIR)/libmingw32.a),)
+        $(COMPILER) src/gdbcon.pp
+else
+        $(COMPILER) -dUSE_MINGW_GDB src/gdbcon.pp
+endif
+	$(EXECPPAS)
+
+ifeq ($(OS_TARGET),go32v2)
+DBGCOM=dbgcom$(OEXT)
+>>>>>>> graemeg/cpstrnew
 else
 	$(LOCALFPMAKE) install $(FPMAKE_OPT) --prefix=$(INSTALL_BASEDIR) --baseinstalldir=$(INSTALL_BASEDIR) --unitinstalldir=$(INSTALL_UNITDIR) -ie -fsp 0
 endif
@@ -100,3 +363,82 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+<<<<<<< HEAD
+=======
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	$(COMPILER) -d$(GDBVER) -Fisrc -Fusrc src/gdbint.pp
+endif
+
+gdbcon$(PPUEXT): gdbcon.pp gdbint$(PPUEXT)
+
+ifeq ($(OS_TARGET),go32v2)
+DBGCOM=dbgcom$(OEXT)
+else
+DBGCOM=
+endif
+
+ifdef $(COMPILEDBGCOM)
+# FPC conditionnal remove the file watching mecanism introduced
+# in v2.02 of dbgcom.c because it relies
+# on the fact that all files are opened via C lib calls
+# which is wrong for FPC !!
+$(DBGCOM): ../v4.16/dbgcom.c
+	gcc -c -DFPC -Dother_sel -gstabs -o dbgcom.o -I../v4.16 ../v4.16/dbgcom.c
+else
+$(DBGCOM):
+endif
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+
+simple: $(DBGCOM)
+	-rm gdbint.ppu
+	ppc386 -dUSE_LIBGDB -fisrc -fusrc gdbint
+	ppc386 testgdb
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+examples/testgdb$(EXEEXT): examples/testgdb.pp gdbint$(PPUEXT) gdbcon$(PPUEXT) $(DBGCOM)
+ifeq ($(wildcard $(GDBLIBDIR)/libmingw32.a),)
+	$(COMPILER) -FEexamples  examples/testgdb.pp
+else
+	$(COMPILER) -FEexamples -dUSE_MINGW_GDB examples/testgdb.pp
+endif
+	$(EXECPPAS)
+
+examples/symify$(EXEEXT): examples/symify.pp gdbint$(PPUEXT) gdbcon$(PPUEXT) $(DBGCOM)
+ifeq ($(wildcard $(GDBLIBDIR)/libmingw32.a),)
+        $(COMPILER) -FEexamples  examples/symify.pp
+else
+        $(COMPILER) -FEexamples -dUSE_MINGW_GDB examples/symify.pp
+endif
+	$(EXECPPAS)
+=======
+testgdb$(EXEEXT): testgdb.pp gdbint$(PPUEXT) gdbcon$(PPUEXT) $(DBGCOM)
+>>>>>>> graemeg/fixes_2_2
+=======
+testgdb$(EXEEXT): testgdb.pp gdbint$(PPUEXT) gdbcon$(PPUEXT) $(DBGCOM)
+>>>>>>> origin/fixes_2_2
+
+# Allow test for example
+.PHONY: test
+
+test: examples
+
+clean: fpc_clean
+	$(DEL) src/gdbver$(EXEEXT) src/gdbver$(OEXT)
+
+distclean: fpc_distclean
+	$(DEL) src/gdbver.inc
+
+.NOTPARALLEL:
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

@@ -1,6 +1,6 @@
 {
     Free Pascal port of the OpenPTC C++ library.
-    Copyright (C) 2001-2003, 2006, 2007, 2009-2011  Nikolay Nikolov (nickysn@users.sourceforge.net)
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -29,96 +29,8 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }
-type
-  TPTCKeyEvent = class(TPTCEvent, IPTCKeyEvent)
-  private
-    FCode: Integer;
-    FUnicode: Integer;
-    FAlt: Boolean;
-    FShift: Boolean;
-    FControl: Boolean;
-    FPress: Boolean;
 
-    function GetCode: Integer;
-    function GetUnicode: Integer;
-    function GetAlt: Boolean;
-    function GetShift: Boolean;
-    function GetControl: Boolean;
-    function GetPress: Boolean;
-    function GetRelease: Boolean;
-  protected
-    function GetEventType: TPTCEventType; override;
-  public
-    constructor Create;
-    constructor Create(ACode: Integer);
-    constructor Create(ACode, AUnicode: Integer);
-    constructor Create(ACode, AUnicode: Integer; APress: Boolean);
-    constructor Create(ACode: Integer; AAlt, AShift, AControl: Boolean);
-    constructor Create(ACode: Integer; AAlt, AShift, AControl, APress: Boolean);
-    constructor Create(ACode, AUnicode: Integer;
-                       AAlt, AShift, AControl: Boolean);
-    constructor Create(ACode, AUnicode: Integer;
-                       AAlt, AShift, AControl, APress: Boolean);
-    constructor Create(AKey: IPTCKeyEvent);
-{    procedure Assign(const AKey: TPTCKeyEvent);
-    function Equals(const AKey: TPTCKeyEvent): Boolean;
-    property Code: Integer read GetCode;
-    property Unicode: Integer read GetUnicode;
-    property Alt: Boolean read GetAlt;
-    property Shift: Boolean read GetShift;
-    property Control: Boolean read GetControl;
-    property Press: Boolean read GetPress;
-    property Release: Boolean read GetRelease;}
-  end;
-
-class function TPTCKeyEventFactory.CreateNew: IPTCKeyEvent;
-begin
-  Result := TPTCKeyEvent.Create;
-end;
-
-class function TPTCKeyEventFactory.CreateNew(ACode: Integer): IPTCKeyEvent;
-begin
-  Result := TPTCKeyEvent.Create(ACode);
-end;
-
-class function TPTCKeyEventFactory.CreateNew(ACode, AUnicode: Integer): IPTCKeyEvent;
-begin
-  Result := TPTCKeyEvent.Create(ACode, AUnicode);
-end;
-
-class function TPTCKeyEventFactory.CreateNew(ACode, AUnicode: Integer; APress: Boolean): IPTCKeyEvent;
-begin
-  Result := TPTCKeyEvent.Create(ACode, AUnicode, APress);
-end;
-
-class function TPTCKeyEventFactory.CreateNew(ACode: Integer; AAlt, AShift, AControl: Boolean): IPTCKeyEvent;
-begin
-  Result := TPTCKeyEvent.Create(ACode, AAlt, AShift, AControl);
-end;
-
-class function TPTCKeyEventFactory.CreateNew(ACode: Integer; AAlt, AShift, AControl, APress: Boolean): IPTCKeyEvent;
-begin
-  Result := TPTCKeyEvent.Create(ACode, AAlt, AShift, AControl, APress);
-end;
-
-class function TPTCKeyEventFactory.CreateNew(ACode, AUnicode: Integer;
-                                             AAlt, AShift, AControl: Boolean): IPTCKeyEvent;
-begin
-  Result := TPTCKeyEvent.Create(ACode, AUnicode, AAlt, AShift, AControl);
-end;
-
-class function TPTCKeyEventFactory.CreateNew(ACode, AUnicode: Integer;
-                                             AAlt, AShift, AControl, APress: Boolean): IPTCKeyEvent;
-begin
-  Result := TPTCKeyEvent.Create(ACode, AUnicode, AAlt, AShift, AControl, APress);
-end;
-
-class function TPTCKeyEventFactory.CreateNew(AKey: IPTCKeyEvent): IPTCKeyEvent;
-begin
-  Result := TPTCKeyEvent.Create(AKey);
-end;
-
-function TPTCKeyEvent.GetEventType: TPTCEventType;
+function TPTCKeyEvent.GetType: TPTCEventType;
 begin
   Result := PTCKeyEvent;
 end;
@@ -204,7 +116,7 @@ begin
   FPress   := APress;
 end;
 
-constructor TPTCKeyEvent.Create(AKey: IPTCKeyEvent);
+constructor TPTCKeyEvent.Create(const AKey: TPTCKeyEvent);
 begin
   FCode    := AKey.Code;
   FUnicode := AKey.Unicode;
@@ -214,7 +126,7 @@ begin
   FPress   := AKey.Press;
 end;
 
-{procedure TPTCKeyEvent.Assign(const AKey: TPTCKeyEvent);
+procedure TPTCKeyEvent.Assign(const AKey: TPTCKeyEvent);
 begin
   FCode    := AKey.Code;
   FUnicode := AKey.Unicode;
@@ -232,36 +144,6 @@ begin
             (FShift   = AKey.FShift) and
             (FControl = AKey.FControl) and
             (FPress   = AKey.FPress);
-end;}
-
-function TPTCKeyEvent.GetCode: Integer;
-begin
-  Result := FCode;
-end;
-
-function TPTCKeyEvent.GetUnicode: Integer;
-begin
-  Result := FUnicode;
-end;
-
-function TPTCKeyEvent.GetAlt: Boolean;
-begin
-  Result := FAlt;
-end;
-
-function TPTCKeyEvent.GetShift: Boolean;
-begin
-  Result := FShift;
-end;
-
-function TPTCKeyEvent.GetControl: Boolean;
-begin
-  Result := FControl;
-end;
-
-function TPTCKeyEvent.GetPress: Boolean;
-begin
-  Result := FPress;
 end;
 
 function TPTCKeyEvent.GetRelease: Boolean;

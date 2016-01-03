@@ -3,7 +3,19 @@ unit WebKit;
 {$mode delphi}
 {$modeswitch cvar}
 {$modeswitch objectivec1}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$packrecords c}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 interface
 
@@ -67,4 +79,20 @@ implementation
 {$undef USER_PATCHES}
 
 {$undef IMPLEMENTATION}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 end.
+=======
+end.
+>>>>>>> graemeg/cpstrnew
+=======
+end.
+>>>>>>> graemeg/cpstrnew
+=======
+end.
+>>>>>>> graemeg/cpstrnew
+=======
+end.
+>>>>>>> origin/cpstrnew

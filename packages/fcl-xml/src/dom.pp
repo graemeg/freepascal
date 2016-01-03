@@ -38,7 +38,15 @@ unit DOM;
 interface
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
   SysUtils, Classes, xmlutils, dtdmodel;
+=======
+  SysUtils, Classes, AVL_Tree, xmlutils;
+>>>>>>> graemeg/fixes_2_2
+=======
+  SysUtils, Classes, AVL_Tree, xmlutils;
+>>>>>>> origin/fixes_2_2
 
 // -------------------------------------------------------
 //   DOMException
@@ -98,6 +106,7 @@ type
   TDOMEntityReference = class;
   TDOMProcessingInstruction = class;
 
+<<<<<<< HEAD
   TNodePool = class;
   PNodePoolArray = ^TNodePoolArray;
 {$ifdef CPU16}
@@ -105,6 +114,25 @@ type
 {$else CPU16}
   TNodePoolArray = array[0..MaxInt div sizeof(Pointer)-1] of TNodePool;
 {$endif CPU16}
+=======
+  TDOMAttrDef = class;
+  TNodePool = class;
+  PNodePoolArray = ^TNodePoolArray;
+<<<<<<< HEAD
+  TNodePoolArray = array[0..MaxInt div sizeof(Pointer)-1] of TNodePool;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+  TNodePoolArray = array[0..0] of TNodePool;
+>>>>>>> origin/fixes_2.4
 
 {$ifndef fpc}
   TFPList = TList;
@@ -114,9 +142,21 @@ type
 //   DOMString
 // -------------------------------------------------------
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   TSetOfChar = xmlutils.TSetOfChar;  { to be removed: not used in DOM unit }
   DOMString = XMLString;
   DOMPChar = PXMLChar;
+=======
+  TSetOfChar = set of Char;
+  DOMString = WideString;
+  DOMPChar = PWideChar;
+>>>>>>> graemeg/fixes_2_2
+=======
+  TSetOfChar = set of Char;
+  DOMString = WideString;
+  DOMPChar = PWideChar;
+>>>>>>> origin/fixes_2_2
   PDOMString = ^DOMString;
 
   EDOMError = class(Exception)
@@ -189,17 +229,33 @@ type
   TNodeFlagEnum = (
     nfReadonly,
     nfRecycled,
+<<<<<<< HEAD
+<<<<<<< HEAD
     nfLevel2,
     nfIgnorableWS,
     nfSpecified,
     nfDestroying,
     nfFirstChild
+=======
+    nfIgnorableWS,
+    nfSpecified
+>>>>>>> graemeg/fixes_2_2
+=======
+    nfIgnorableWS,
+    nfSpecified
+>>>>>>> origin/fixes_2_2
   );
   TNodeFlags = set of TNodeFlagEnum;
 
   TDOMNode = class
   protected
+<<<<<<< HEAD
+<<<<<<< HEAD
     FPool: TObject;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     FFlags: TNodeFlags;
     FParentNode: TDOMNode;
     FPreviousSibling, FNextSibling: TDOMNode;
@@ -222,7 +278,28 @@ type
     function GetPrefix: DOMString; virtual;
     procedure SetPrefix(const Value: DOMString); virtual;
     function GetOwnerDocument: TDOMDocument; virtual;
+<<<<<<< HEAD
+<<<<<<< HEAD
     function GetBaseURI: DOMString;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    procedure SetReadOnly(Value: Boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure SetReadOnly(Value: Boolean);
+>>>>>>> graemeg/fixes_2_2
+=======
+    procedure SetReadOnly(Value: Boolean);
+>>>>>>> origin/fixes_2_2
     procedure Changing;
   public
     constructor Create(AOwner: TDOMDocument);
@@ -269,7 +346,19 @@ type
     function CloneNode(deep: Boolean; ACloneOwner: TDOMDocument): TDOMNode; overload; virtual;
     function FindNode(const ANodeName: DOMString): TDOMNode; virtual;
     function CompareName(const name: DOMString): Integer; virtual;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure SetReadOnly(Value: Boolean);    
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     property Flags: TNodeFlags read FFlags;
   end;
 
@@ -282,7 +371,20 @@ type
 
   TDOMNode_WithChildren = class(TDOMNode)
   protected
+<<<<<<< HEAD
     FFirstChild: TDOMNode;
+=======
+    FFirstChild, FLastChild: TDOMNode;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     FChildNodes: TDOMNodeList;
     function GetFirstChild: TDOMNode; override;
     function GetLastChild: TDOMNode; override;
@@ -312,8 +414,20 @@ type
   public
     property InputEncoding: DOMString read FInputEncoding;
     property XMLEncoding: DOMString read FXMLEncoding;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     // extension
     procedure SetHeaderData(aXmlVersion: TXMLVersion; const aXmlEncoding: DOMString);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 
 // -------------------------------------------------------
@@ -364,13 +478,29 @@ type
   TDOMNamedNodeMap = class(TObject)
   protected
     FOwner: TDOMNode;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    FNodeType: Integer;
+>>>>>>> graemeg/fixes_2_2
+=======
+    FNodeType: Integer;
+>>>>>>> origin/fixes_2_2
     FList: TFPList;
     function GetItem(index: LongWord): TDOMNode;
     function GetLength: LongWord;
     function Find(const name: DOMString; out Index: LongWord): Boolean;
     function Delete(index: LongWord): TDOMNode; virtual;
     function InternalRemove(const name: DOMString): TDOMNode;
+<<<<<<< HEAD
+<<<<<<< HEAD
     function ValidateInsert(arg: TDOMNode): Integer; virtual;
+=======
+    function ValidateInsert(arg: TDOMNode): Integer;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function ValidateInsert(arg: TDOMNode): Integer;
+>>>>>>> origin/fixes_2_2
   public
     constructor Create(AOwner: TDOMNode);
     destructor Destroy; override;
@@ -450,6 +580,7 @@ type
   protected
     FIDList: THashTable;
     FRevision: Integer;
+    FXML11: Boolean;
     FImplementation: TDOMImplementation;
     FNamespaces: TNamespaces;
     FNames: THashTable;
@@ -457,9 +588,25 @@ type
     FNodeLists: THashTable;
     FMaxPoolSize: Integer;
     FPools: PNodePoolArray;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FXmlStandalone: Boolean;
     FStdUri_xml: PHashItem;
     FStdUri_xmlns: PHashItem;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+    FDocumentURI: DOMString;
+>>>>>>> origin/fixes_2.4
     function GetDocumentElement: TDOMElement;
     function GetDocType: TDOMDocumentType;
     function GetNodeType: Integer; override;
@@ -467,14 +614,36 @@ type
     function GetTextContent: DOMString; override;
     function GetOwnerDocument: TDOMDocument; override;
     procedure SetTextContent(const value: DOMString); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure RemoveID(Elem: TDOMElement);
     function GetChildNodeList(aNode: TDOMNode): TDOMNodeList;
     function GetElementList(aNode: TDOMNode; const nsURI, aLocalName: DOMString; UseNS: Boolean): TDOMNodeList;
     procedure NodeListDestroyed(aList: TDOMNodeList);
     function Alloc(AClass: TDOMNodeClass): TDOMNode;
     procedure SetXMLVersion(const aValue: DOMString); virtual;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure SetXMLStandalone(aValue: Boolean); virtual;
     function ValidateQName(const nsUri, qName: DOMString; out nsidx: PHashItem): Integer;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+    function IndexOfNS(const nsURI: DOMString): Integer;
+    procedure RemoveID(Elem: TDOMElement);
+>>>>>>> graemeg/fixes_2_2
+=======
+    function IndexOfNS(const nsURI: DOMString): Integer;
+    procedure RemoveID(Elem: TDOMElement);
+>>>>>>> origin/fixes_2_2
   public
     function IndexOfNS(const nsURI: DOMString; AddIfAbsent: Boolean = False): Integer;
     function InsertBefore(NewChild, RefChild: TDOMNode): TDOMNode; override;
@@ -496,25 +665,77 @@ type
       TDOMProcessingInstruction; virtual;
     function CreateAttribute(const name: DOMString): TDOMAttr;
     function CreateAttributeBuf(Buf: DOMPChar; Length: Integer): TDOMAttr;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    function CreateAttributeDef(Buf: DOMPChar; Length: Integer): TDOMAttrDef; deprecated;
+>>>>>>> graemeg/cpstrnew
+=======
+    function CreateAttributeDef(Buf: DOMPChar; Length: Integer): TDOMAttrDef; deprecated;
+>>>>>>> graemeg/cpstrnew
+=======
+    function CreateAttributeDef(Buf: DOMPChar; Length: Integer): TDOMAttrDef; deprecated;
+>>>>>>> graemeg/cpstrnew
+=======
+    function CreateAttributeDef(Buf: DOMPChar; Length: Integer): TDOMAttrDef; deprecated;
+>>>>>>> origin/cpstrnew
     function CreateEntityReference(const name: DOMString): TDOMEntityReference;
       virtual;
     function GetElementsByTagName(const tagname: DOMString): TDOMNodeList;
 
     // DOM level 2 methods
     function ImportNode(ImportedNode: TDOMNode; Deep: Boolean): TDOMNode;
+<<<<<<< HEAD
+<<<<<<< HEAD
     function CreateElementNS(const nsURI, QualifiedName: DOMString): TDOMElement; overload;
     function CreateElementNS(const nsURI, QualifiedName: DOMString;
       AClass: TDOMElementClass): TDOMElement; overload;
+=======
+    function CreateElementNS(const nsURI, QualifiedName: DOMString): TDOMElement;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function CreateElementNS(const nsURI, QualifiedName: DOMString): TDOMElement;
+>>>>>>> origin/fixes_2_2
     function CreateAttributeNS(const nsURI, QualifiedName: DOMString): TDOMAttr;
     function GetElementsByTagNameNS(const nsURI, alocalName: DOMString): TDOMNodeList;
     function GetElementById(const ElementID: DOMString): TDOMElement;
     // DOM level 3:
     property documentURI: DOMString read FURI write FURI;
     property XMLVersion: DOMString read GetXMLVersion write SetXMLVersion;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     property XMLStandalone: Boolean read FXmlStandalone write SetXmlStandalone;
     // Extensions to DOM interface:
     constructor Create; virtual;
     destructor Destroy; override;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+    // Extensions to DOM interface:
+    constructor Create; virtual;
+    destructor Destroy; override;
+    function AddID(Attr: TDOMAttr): Boolean; deprecated;
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/cpstrnew
+    // Extensions to DOM interface:
+<<<<<<< HEAD
+<<<<<<< HEAD
+    constructor Create; virtual;
+    destructor Destroy; override;
+    function AddID(Attr: TDOMAttr): Boolean; deprecated;
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     function CloneNode(deep: Boolean): TDOMNode; overload; override;
     property Names: THashTable read FNames;
     property IDs: THashTable read FIDList write FIDList;
@@ -523,16 +744,75 @@ type
   TXMLDocument = class(TDOMDocument)
   protected
     procedure SetXMLVersion(const aValue: DOMString); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure SetXMLStandalone(aValue: Boolean); override;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   public
     // These fields are extensions to the DOM interface:
     StylesheetType, StylesheetHRef: DOMString;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    constructor Create;
+    destructor Destroy; override;
+    function AddID(Attr: TDOMAttr): Boolean;
+  end;
+
+  TXMLDocument = class(TDOMDocument)
+  private
+    FXMLVersion: DOMString;
+    procedure SetXMLVersion(const aValue: DOMString);
+  public
+    // These fields are extensions to the DOM interface:
+    Encoding, StylesheetType, StylesheetHRef: DOMString;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     constructor Create; override;
     function CreateCDATASection(const data: DOMString): TDOMCDATASection; override;
     function CreateProcessingInstruction(const target, data: DOMString):
       TDOMProcessingInstruction; override;
     function CreateEntityReference(const name: DOMString): TDOMEntityReference; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    // non-compliant symbol, superseded by XMLEncoding, to be phased out
+    property Encoding: DOMString read FXMLEncoding write FXMLEncoding; deprecated;
+>>>>>>> graemeg/cpstrnew
+=======
+    // non-compliant symbol, superseded by XMLEncoding, to be phased out
+    property Encoding: DOMString read FXMLEncoding write FXMLEncoding; deprecated;
+>>>>>>> graemeg/cpstrnew
+=======
+    // non-compliant symbol, superseded by XMLEncoding, to be phased out
+    property Encoding: DOMString read FXMLEncoding write FXMLEncoding; deprecated;
+>>>>>>> graemeg/cpstrnew
+=======
+    // non-compliant symbol, superseded by XMLEncoding, to be phased out
+    property Encoding: DOMString read FXMLEncoding write FXMLEncoding; deprecated;
+>>>>>>> origin/cpstrnew
+=======
+    property XMLVersion: DOMString read FXMLVersion write SetXMLVersion;
+>>>>>>> graemeg/fixes_2_2
+=======
+    property XMLVersion: DOMString read FXMLVersion write SetXMLVersion;
+>>>>>>> origin/fixes_2_2
   end;
 
   // This limits number of namespaces per document to 65535,
@@ -548,6 +828,8 @@ type
 //   Attr
 // -------------------------------------------------------
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   TAttrDataType = xmlutils.TAttrDataType;
 
   TDOMNode_NS = class(TDOMNode_WithChildren)
@@ -574,10 +856,40 @@ type
     function GetSpecified: Boolean;
     function GetIsID: Boolean;
     function GetOwnerElement: TDOMElement;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  TAttrDataType = (
+    dtCdata,
+    dtId,
+    dtIdRef,
+    dtIdRefs,
+    dtEntity,
+    dtEntities,
+    dtNmToken,
+    dtNmTokens,
+    dtNotation
+  );
+
+  TDOMAttr = class(TDOMNode_WithChildren)
+  protected
+    FName: DOMString;
+    FOwnerElement: TDOMElement;
+    // TODO: replace with a link to AttDecl ??    
+    FDataType: TAttrDataType;
+    function  GetNodeValue: DOMString; override;
+    function GetNodeType: Integer; override;
+    function GetNodeName: DOMString; override;
+    function GetSpecified: Boolean;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     procedure SetNodeValue(const AValue: DOMString); override;
   public
     destructor Destroy; override;
     function CloneNode(deep: Boolean; ACloneOwner: TDOMDocument): TDOMNode; overload; override;
+<<<<<<< HEAD
     property Name: DOMString read GetNodeName;
     property Specified: Boolean read GetSpecified;
     property Value: DOMString read GetNodeValue write SetNodeValue;
@@ -586,6 +898,18 @@ type
     // extensions
     // TODO: this is to be replaced with DOM 3 TypeInfo
     property DataType: TAttrDataType read FDataType write FDataType;
+=======
+    property Name: DOMString read FName;
+    property Specified: Boolean read GetSpecified;
+    property Value: DOMString read GetNodeValue write SetNodeValue;
+    property OwnerElement: TDOMElement read FOwnerElement;
+    // extensions
+    function CompareName(const AName: DOMString): Integer; override;
+    property DataType: TAttrDataType read FDataType;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
 
@@ -604,8 +928,16 @@ type
   public
     destructor Destroy; override;
     function  CloneNode(deep: Boolean; ACloneOwner: TDOMDocument): TDOMNode; overload; override;
+<<<<<<< HEAD
     procedure Normalize; override;
     property  TagName: DOMString read GetNodeName;
+=======
+    property  TagName: DOMString read FNodeName;
+    procedure Normalize; override;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     function  GetAttribute(const name: DOMString): DOMString;
     procedure SetAttribute(const name, value: DOMString);
     procedure RemoveAttribute(const name: DOMString);
@@ -680,16 +1012,27 @@ type
   protected
     FModel: TDTDModel;
     FEntities, FNotations: TDOMNamedNodeMap;
+    FElementDefs: TDOMNamedNodeMap;
     function GetEntities: TDOMNamedNodeMap;
     function GetNotations: TDOMNamedNodeMap;
     function GetNodeType: Integer; override;
     function GetNodeName: DOMString; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
     function GetPublicID: DOMString;
     function GetSystemID: DOMString;
     function GetInternalSubset: DOMString;
+=======
+    function GetElementDefs: TDOMNamedNodeMap;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function GetElementDefs: TDOMNamedNodeMap;
+>>>>>>> origin/fixes_2_2
   public
     constructor Create(aOwner: TDOMDocument; aModel: TDTDModel);
     destructor Destroy; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
     property Name: DOMString read GetNodeName;
     property Entities: TDOMNamedNodeMap read GetEntities;
     property Notations: TDOMNamedNodeMap read GetNotations;
@@ -697,8 +1040,36 @@ type
     property PublicID: DOMString read GetPublicID;
     property SystemID: DOMString read GetSystemID;
     property InternalSubset: DOMString read GetInternalSubset;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   // extension
     property Model: TDTDModel read FModel;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    property Name: DOMString read FName;
+    property Entities: TDOMNamedNodeMap read GetEntities;
+    property Notations: TDOMNamedNodeMap read GetNotations;
+  // Introduced in DOM Level 2:
+    property PublicID: DOMString read FPublicID;
+    property SystemID: DOMString read FSystemID;
+    property InternalSubset: DOMString read FInternalSubset;
+    // extensions
+    property ElementDefs: TDOMNamedNodeMap read GetElementDefs;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
 
@@ -709,7 +1080,19 @@ type
   TDOMNotation = class(TDOMNode)
   protected
     FDecl: TNotationDecl;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FBaseURI: DOMString;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     function GetNodeType: Integer; override;
     function GetNodeName: DOMString; override;
     function GetPublicID: DOMString;
@@ -728,7 +1111,19 @@ type
   TDOMEntity = class(TDOMNode_TopLevel)
   protected
     FDecl: TEntityDecl;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FBaseURI: DOMString;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     function GetNodeType: Integer; override;
     function GetNodeName: DOMString; override;
     function GetPublicID: DOMString;
@@ -736,10 +1131,19 @@ type
     function GetNotationName: DOMString;
   public
     function CloneNode(deep: Boolean; aCloneOwner: TDOMDocument): TDOMNode; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
     property PublicID: DOMString read GetPublicID;
     property SystemID: DOMString read GetSystemID;
     property NotationName: DOMString read GetNotationName;
     property XMLVersion: DOMString read GetXMLVersion;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    property PublicID: DOMString read FPublicID;
+    property SystemID: DOMString read FSystemID;
+    property NotationName: DOMString read FNotationName;
+>>>>>>> graemeg/fixes_2_2
   end;
 
 
@@ -774,8 +1178,33 @@ type
     function CloneNode(deep: Boolean; ACloneOwner: TDOMDocument): TDOMNode; overload; override;
     property Target: DOMString read FTarget;
     property Data: DOMString read FNodeValue write SetNodeValue;
+<<<<<<< HEAD
+<<<<<<< HEAD
   end;
 
+<<<<<<< HEAD
+=======
+// Attribute declaration - Attr descendant which carries rudimentary type info
+// must be severely improved while developing Level 3
+// NOT USED ANYMORE -- replaced by dtdmodel.TAttributeDef
+
+  TAttrDefault = dtdmodel.TAttrDefault;
+  TDOMAttrDef = class(TDOMAttr)
+  protected
+    FExternallyDeclared: Boolean;
+    FDefault: TAttrDefault;
+    FTag: Cardinal;
+    FEnumeration: array of DOMString;
+  public
+    function AddEnumToken(Buf: DOMPChar; Len: Integer): Boolean;
+    function HasEnumToken(const aValue: DOMString): Boolean;
+    function CloneNode(deep: Boolean; ACloneOwner: TDOMDocument): TDOMNode; overload; override;
+    property Default: TAttrDefault read FDefault write FDefault;
+    property ExternallyDeclared: Boolean read FExternallyDeclared write FExternallyDeclared;
+    property Tag: Cardinal read FTag write FTag;
+  end deprecated;
+
+>>>>>>> graemeg/cpstrnew
 // TNodePool - custom memory management for TDOMNode's
 // One pool manages objects of the same InstanceSize (may be of various classes)
 
@@ -783,6 +1212,10 @@ type
   TExtent = record
     Next: PExtent;
     // following: array of TDOMNode instances
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
   TNodePool = class(TObject)
@@ -800,14 +1233,36 @@ type
     procedure FreeNode(ANode: TDOMNode);
   end;
 
+<<<<<<< HEAD
 // temporary until things are settled
 function LoadElement(doc: TDOMDocument; src: PNodeData; attrCount: Integer): TDOMElement;
+=======
+
+// URIs of predefined namespaces
+const
+  stduri_xml: DOMString = 'http://www.w3.org/XML/1998/namespace';
+  stduri_xmlns: DOMString = 'http://www.w3.org/2000/xmlns/';
+
+// temporary until things are settled
+function LoadAttribute(doc: TDOMDocument; src: PNodeData): TDOMAttr;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 // =======================================================
 // =======================================================
 
 implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses
   UriParser;
 
@@ -828,6 +1283,29 @@ type
     function setNamedItemNS(arg: TDOMNode): TDOMNode; override;
     function removeNamedItemNS(const namespaceURI,localName: DOMString): TDOMNode; override;
   end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+constructor TRefClass.Create;
+begin
+  inherited Create;
+  RefCounter := 1;
+end;
+
+function TRefClass.AddRef: LongInt;
+begin
+  Inc(RefCounter);
+  Result := RefCounter;
+end;
+
+function TRefClass.Release: LongInt;
+begin
+  Dec(RefCounter);
+  Result := RefCounter;
+  if RefCounter <= 0 then Free;
+end;
+
+>>>>>>> graemeg/fixes_2_2
 
 // -------------------------------------------------------
 //   DOM Exception
@@ -912,6 +1390,8 @@ begin
   inherited Destroy;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TDOMNode.FreeInstance;
 begin
   if Assigned(FPool) then
@@ -923,6 +1403,10 @@ begin
     inherited FreeInstance;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function TDOMNode.GetNodeValue: DOMString;
 begin
   Result := '';
@@ -988,8 +1472,29 @@ begin
 end;
 
 function TDOMNode.RemoveChild(OldChild: TDOMNode): TDOMNode;
+<<<<<<< HEAD
+<<<<<<< HEAD
 begin
   Result := DetachChild(OldChild);
+end;
+
+function TDOMNode.AppendChild(NewChild: TDOMNode): TDOMNode;
+begin
+  Result := InsertBefore(NewChild, nil);
+=======
+begin
+=======
+begin
+>>>>>>> origin/fixes_2_2
+  DetachChild(OldChild);
+  OldChild.Free;
+  Result:=nil;
+>>>>>>> graemeg/fixes_2_2
+end;
+
+function TDOMNode.AppendChild(NewChild: TDOMNode): TDOMNode;
+begin
+  Result := InsertBefore(NewChild, nil);
 end;
 
 function TDOMNode.AppendChild(NewChild: TDOMNode): TDOMNode;
@@ -1126,9 +1631,21 @@ begin
     child.SetReadOnly(Value);
     child := child.NextSibling;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   if HasAttributes then
   begin
     attrs := Attributes;
+=======
+  attrs := Attributes;
+  if Assigned(attrs) then
+  begin
+>>>>>>> graemeg/fixes_2_2
+=======
+  attrs := Attributes;
+  if Assigned(attrs) then
+  begin
+>>>>>>> origin/fixes_2_2
     for I := 0 to attrs.Length-1 do
       attrs[I].SetReadOnly(Value);
   end;
@@ -1136,7 +1653,15 @@ end;
 
 procedure TDOMNode.Changing;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if (nfReadOnly in FFlags) and not (nfDestroying in FOwnerDocument.FFlags) then
+=======
+  if nfReadOnly in FFlags then
+>>>>>>> graemeg/fixes_2_2
+=======
+  if nfReadOnly in FFlags then
+>>>>>>> origin/fixes_2_2
     raise EDOMError.Create(NO_MODIFICATION_ALLOWED_ERR, 'Node.CheckReadOnly');
 end;
 
@@ -1175,7 +1700,23 @@ begin
     while Assigned(parent) and (parent.NodeType <> ELEMENT_NODE) do
       parent := parent.ParentNode;
     Result := TDOMElement(parent);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   end;
+=======
+  end;  
+>>>>>>> graemeg/cpstrnew
+=======
+  end;  
+>>>>>>> graemeg/cpstrnew
+=======
+  end;  
+>>>>>>> graemeg/cpstrnew
+=======
+  end;  
+>>>>>>> origin/cpstrnew
 end;
 
 // TODO: specs prescribe to return default namespace if APrefix=null,
@@ -1193,6 +1734,8 @@ begin
   if nodeType = ELEMENT_NODE then
   begin
     if (nfLevel2 in FFlags) and (TDOMElement(Self).Prefix = APrefix) then
+<<<<<<< HEAD
+<<<<<<< HEAD
     begin
       result := Self.NamespaceURI;
       Exit;
@@ -1212,7 +1755,15 @@ begin
         end;
       end
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   end;
+=======
+  end;  
+>>>>>>> graemeg/cpstrnew
+=======
+  end;  
+>>>>>>> graemeg/cpstrnew
   result := GetAncestorElement(Self).LookupNamespaceURI(APrefix);
 end;
 
@@ -1225,6 +1776,7 @@ begin
     result := TDOMElement(Self).InternalLookupPrefix(nsURI, TDOMElement(Self))
   else
     result := GetAncestorElement(Self).LookupPrefix(nsURI);
+<<<<<<< HEAD
 end;
 
 function TDOMNode.IsDefaultNamespace(const nsURI: DOMString): Boolean;
@@ -1232,6 +1784,7 @@ var
   Attr: TDOMAttr;
   Map: TDOMNamedNodeMap;
   I: Integer;
+<<<<<<< HEAD
 begin
   Result := False;
   if Self = nil then
@@ -1244,11 +1797,26 @@ begin
       Exit;
     end
     else if HasAttributes then
+=======
+    begin
+=======
+    begin
+>>>>>>> origin/cpstrnew
+      result := Self.NamespaceURI;
+      Exit;
+    end;
+    if HasAttributes then
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     begin
       Map := Attributes;
       for I := 0 to Map.Length-1 do
       begin
         Attr := TDOMAttr(Map[I]);
+<<<<<<< HEAD
+<<<<<<< HEAD
         if Attr.LocalName = 'xmlns' then
         begin
           result := (Attr.Value = nsURI);
@@ -1292,6 +1860,7 @@ var
   dtype: TDOMDocumentType;
   ent: TDOMEntity;
 begin
+<<<<<<< HEAD
   case NodeType of
     ELEMENT_NODE:
       begin
@@ -1325,6 +1894,120 @@ begin
             result := ent.FDecl.FURI;
         end;
       end
+=======
+=======
+end;
+
+=======
+        // should ignore level 1 atts here
+        if ((Attr.Prefix = 'xmlns') and (Attr.localName = APrefix)) or
+           ((Attr.localName = 'xmlns') and (APrefix = '')) then
+        begin
+          result := Attr.NodeValue;
+          Exit;
+        end;
+      end
+    end;
+=======
+        // should ignore level 1 atts here
+        if ((Attr.Prefix = 'xmlns') and (Attr.localName = APrefix)) or
+           ((Attr.localName = 'xmlns') and (APrefix = '')) then
+        begin
+          result := Attr.NodeValue;
+          Exit;
+        end;
+      end
+    end;
+>>>>>>> origin/cpstrnew
+  end;  
+  result := GetAncestorElement(Self).LookupNamespaceURI(APrefix);
+=======
+  Result := TDOMNode(Node2).CompareName(TDOMNode(Node1).NodeName);
+>>>>>>> origin/fixes_2_2
+end;
+
+function TDOMNode.LookupPrefix(const nsURI: DOMString): DOMString;
+begin
+<<<<<<< HEAD
+  Result := '';
+  if (nsURI = '') or (Self = nil) then
+    Exit;
+  if nodeType = ELEMENT_NODE then
+    result := TDOMElement(Self).InternalLookupPrefix(nsURI, TDOMElement(Self))
+  else
+    result := GetAncestorElement(Self).LookupPrefix(nsURI);
+end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+function TDOMNode.IsDefaultNamespace(const nsURI: DOMString): Boolean;
+var
+  Attr: TDOMAttr;
+  Map: TDOMNamedNodeMap;
+  I: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+begin
+<<<<<<< HEAD
+  Result := False;
+  if Self = nil then
+    Exit;
+  if nodeType = ELEMENT_NODE then
+  begin
+    if TDOMElement(Self).FNSI.PrefixLen = 0 then
+    begin
+      result := (nsURI = namespaceURI);
+      Exit;
+    end  
+    else if HasAttributes then
+    begin
+      Map := Attributes;
+      for I := 0 to Map.Length-1 do
+      begin
+        Attr := TDOMAttr(Map[I]);
+        if Attr.LocalName = 'xmlns' then
+        begin
+          result := (Attr.Value = nsURI);
+          Exit;
+        end;
+      end;
+    end;
+  end;
+  result := GetAncestorElement(Self).IsDefaultNamespace(nsURI);
+=======
+  Result := TDOMNode(Node2).CompareName(TDOMNode(Node1).NodeName);
+>>>>>>> graemeg/fixes_2_2
+end;
+
+function TDOMNode.GetBaseURI: DOMString;
+begin
+<<<<<<< HEAD
+  case NodeType of
+  // !! Incomplete !!
+    DOCUMENT_NODE:
+      result := TDOMDocument(Self).FURI;
+    PROCESSING_INSTRUCTION_NODE:
+      if Assigned(ParentNode) then
+        result := ParentNode.GetBaseURI
+      else
+        result := OwnerDocument.DocumentURI;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   else
     result := '';
   end;
@@ -1332,6 +2015,16 @@ end;
 
 //------------------------------------------------------------------------------
 
+=======
+  Result := TDOMNode(ANode).CompareName(PDOMString(AKey)^);
+end;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result := TDOMNode(ANode).CompareName(PDOMString(AKey)^);
+end;
+
+>>>>>>> origin/fixes_2_2
 type
   TNodeTypeEnum = ELEMENT_NODE..NOTATION_NODE;
   TNodeTypeSet = set of TNodeTypeEnum;
@@ -1371,7 +2064,15 @@ end;
 destructor TDOMNode_WithChildren.Destroy;
 begin
   FreeChildren;
+<<<<<<< HEAD
+<<<<<<< HEAD
   FChildNodes.Free; // its destructor will zero the field
+=======
+  FreeAndNil(FChildNodeTree);  
+>>>>>>> graemeg/fixes_2_2
+=======
+  FreeAndNil(FChildNodeTree);  
+>>>>>>> origin/fixes_2_2
   inherited Destroy;
 end;
 
@@ -1395,7 +2096,42 @@ begin
   if Assigned(RefChild) and (RefChild.ParentNode <> Self) then
     raise EDOMNotFound.Create('NodeWC.InsertBefore');
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   // TODO: skip checking Fragments as well? (Fragment itself cannot be in the tree)
+=======
+  // TODO: skip checking Fragments as well? (Fragment itself cannot be in the tree)  
+>>>>>>> origin/fixes_2_2
+  if not (NewChildType in [TEXT_NODE, CDATA_SECTION_NODE, COMMENT_NODE, PROCESSING_INSTRUCTION_NODE]) and (NewChild.FirstChild <> nil) then
+  begin
+    Tmp := Self;
+    while Assigned(Tmp) do
+    begin
+      if Tmp = NewChild then
+        raise EDOMHierarchyRequest.Create('NodeWC.InsertBefore (cycle in tree)');
+      Tmp := Tmp.ParentNode;
+    end;
+  end;
+  if NewChild = RefChild then    // inserting node before itself is a no-op
+    Exit;
+
+  Inc(FOwnerDocument.FRevision); // invalidate nodelists
+
+  if NewChildType = DOCUMENT_FRAGMENT_NODE then
+  begin
+    Tmp := NewChild.FirstChild;
+    if Assigned(Tmp) then
+<<<<<<< HEAD
+    begin
+      while Assigned(Tmp) do
+      begin
+        if not (Tmp.NodeType in ValidChildren[NodeType]) then
+          raise EDOMHierarchyRequest.Create('NodeWC.InsertBefore');
+        Tmp := Tmp.NextSibling;
+      end;
+
+=======
+  // TODO: skip checking Fragments as well? (Fragment itself cannot be in the tree)  
   if not (NewChildType in [TEXT_NODE, CDATA_SECTION_NODE, COMMENT_NODE, PROCESSING_INSTRUCTION_NODE]) and (NewChild.FirstChild <> nil) then
   begin
     Tmp := Self;
@@ -1416,13 +2152,20 @@ begin
     Tmp := NewChild.FirstChild;
     if Assigned(Tmp) then
     begin
+=======
+    begin
+>>>>>>> origin/fixes_2_2
       while Assigned(Tmp) do
       begin
         if not (Tmp.NodeType in ValidChildren[NodeType]) then
           raise EDOMHierarchyRequest.Create('NodeWC.InsertBefore');
         Tmp := Tmp.NextSibling;
       end;
-
+    
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       while Assigned(TDOMDocumentFragment(NewChild).FFirstChild) do
         InsertBefore(TDOMDocumentFragment(NewChild).FFirstChild, RefChild);
     end;
@@ -1437,6 +2180,8 @@ begin
 
   NewChild.FNextSibling := RefChild;
   if RefChild = nil then  // append to the end
+<<<<<<< HEAD
+<<<<<<< HEAD
   begin
     if Assigned(FFirstChild) then
     begin
@@ -1462,6 +2207,32 @@ begin
     end
     else
       RefChild.FPreviousSibling.FNextSibling := NewChild;
+=======
+  begin
+=======
+  begin
+>>>>>>> origin/fixes_2_2
+    if Assigned(FFirstChild) then
+    begin
+      FLastChild.FNextSibling := NewChild;
+      NewChild.FPreviousSibling := FLastChild;
+    end else
+      FFirstChild := NewChild;
+    FLastChild := NewChild;
+  end
+  else   // insert before RefChild
+  begin
+    if RefChild = FFirstChild then
+      FFirstChild := NewChild
+    else
+    begin
+      RefChild.FPreviousSibling.FNextSibling := NewChild;
+      NewChild.FPreviousSibling := RefChild.FPreviousSibling;
+    end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     RefChild.FPreviousSibling := NewChild;
   end;
   NewChild.FParentNode := Self;
@@ -1470,15 +2241,36 @@ end;
 function TDOMNode_WithChildren.ReplaceChild(NewChild, OldChild: TDOMNode):
   TDOMNode;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  RemoveFromChildNodeTree(OldChild);
+>>>>>>> graemeg/fixes_2_2
   InsertBefore(NewChild, OldChild);
   if Assigned(OldChild) and (OldChild <> NewChild) then
     RemoveChild(OldChild);
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result := OldChild;
 end;
 
 function TDOMNode_WithChildren.DetachChild(OldChild: TDOMNode): TDOMNode;
 var
   prev, next: TDOMNode;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  // TODO: per DOM spec, must return OldChild, but OldChild is destroyed
+  Result := NewChild;
+end;
+
+function TDOMNode_WithChildren.DetachChild(OldChild: TDOMNode): TDOMNode;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   Changing;
 
@@ -1499,6 +2291,7 @@ begin
     end;
   end
   else
+<<<<<<< HEAD
   begin
     prev := OldChild.FPreviousSibling;
     next := OldChild.FNextSibling;
@@ -1508,6 +2301,19 @@ begin
     else                       { removing the last child }
       FFirstChild.FPreviousSibling := prev;
   end;
+=======
+    OldChild.FNextSibling.FPreviousSibling := OldChild.FPreviousSibling;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   // Make sure removed child does not contain references to nowhere
   OldChild.FPreviousSibling := nil;
   OldChild.FNextSibling := nil;
@@ -1515,7 +2321,13 @@ begin
   Result := OldChild;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TDOMNode_WithChildren.InternalAppend(NewChild: TDOMNode);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 var
   Tmp: TDOMNode;
 begin
@@ -1531,9 +2343,38 @@ begin
     Include(NewChild.FFlags, nfFirstChild);
   end;
   FFirstChild.FPreviousSibling := NewChild;   { becomes our last child }
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+begin
+  if Assigned(FFirstChild) then
+  begin
+    FLastChild.FNextSibling := NewChild;
+    NewChild.FPreviousSibling := FLastChild;
+  end else
+    FFirstChild := NewChild;
+  FLastChild := NewChild;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   NewChild.FParentNode := Self;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function TDOMNode_WithChildren.HasChildNodes: Boolean;
 begin
   Result := Assigned(FFirstChild);
@@ -1542,12 +2383,21 @@ end;
 
 function TDOMNode_WithChildren.FindNode(const ANodeName: DOMString): TDOMNode;
 begin
+<<<<<<< HEAD
   Result := FFirstChild;
   while Assigned(Result) do
   begin
     if Result.CompareName(ANodeName)=0 then
       Exit;
     Result := Result.NextSibling;
+=======
+  Result:=nil;
+  if FChildNodeTree<>nil then begin
+    AVLNode:=FChildNodeTree.FindKey(Pointer(@ANodeName),
+                                    @CompareDOMStringWithDOMNode);
+    if AVLNode<>nil then
+      Result:=TDOMNode(AVLNode.Data);
+>>>>>>> graemeg/fixes_2_2
   end;
 end;
 
@@ -1569,6 +2419,8 @@ procedure TDOMNode_WithChildren.FreeChildren;
 var
   child, next: TDOMNode;
 begin
+  if Assigned(FChildNodeTree) then
+    FChildNodeTree.Clear;
   child := FFirstChild;
   while Assigned(child) do
   begin
@@ -1603,8 +2455,15 @@ end;
 procedure TDOMNode_WithChildren.SetTextContent(const AValue: DOMString);
 begin
   Changing;
+<<<<<<< HEAD
+<<<<<<< HEAD
   while Assigned(FFirstChild) do
     DetachChild(FFirstChild);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  FreeChildren;
+>>>>>>> graemeg/fixes_2_2
   if AValue <> '' then
     AppendChild(FOwnerDocument.CreateTextNode(AValue));
 end;
@@ -1718,9 +2577,21 @@ begin
   Result := frFalse;
   if aNode.NodeType = ELEMENT_NODE then with TDOMElement(aNode) do
   begin
+<<<<<<< HEAD
     if FMatchNS then
     begin
       if (FMatchAnyNS or (FNSI.NSIndex = Word(FNSIndexFilter))) then
+=======
+    if (Child.NodeType = ELEMENT_NODE) and (not UseFilter or (TDOMElement(Child).TagName = filter)) then
+          FList.Add(Child);
+    // recursive track node hierarchy  
+    if Assigned(Child.FirstChild) then
+      Child := Child.FirstChild
+    else
+      if Assigned(Child.NextSibling) then
+        Child := Child.NextSibling
+      else
+>>>>>>> graemeg/fixes_2_2
       begin
         I := FNSI.PrefixLen;
         L := system.Length(FNSI.QName^.Key);
@@ -1743,6 +2614,14 @@ constructor TDOMNamedNodeMap.Create(AOwner: TDOMNode);
 begin
   inherited Create;
   FOwner := AOwner;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  FNodeType := ANodeType;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FNodeType := ANodeType;
+>>>>>>> origin/fixes_2_2
   FList := TFPList.Create;
 end;
 
@@ -1807,7 +2686,33 @@ end;
 // This isn't checked now.
 function TDOMNamedNodeMap.GetNamedItemNS(const namespaceURI, localName: DOMString): TDOMNode;
 begin
+<<<<<<< HEAD
   Result := nil;
+=======
+  // TODO: implement TDOMNamedNodeMap.GetNamedItemNS
+  raise EDOMNotSupported.Create('TDOMNamedNodeMap.GetNamedItemNS');
+    Result := nil;
+end;
+
+function TDOMNamedNodeMap.ValidateInsert(arg: TDOMNode): Integer;
+var
+  AttrOwner: TDOMNode;
+begin
+  Result := 0;
+  if nfReadOnly in FOwner.FFlags then
+    Result := NO_MODIFICATION_ALLOWED_ERR
+  else if arg.FOwnerDocument <> FOwner.FOwnerDocument then
+    Result := WRONG_DOCUMENT_ERR
+  else if arg.NodeType <> FNodeType then
+    Result := HIERARCHY_REQUEST_ERR
+  else if (FNodeType = ATTRIBUTE_NODE) then
+  begin
+    AttrOwner := TDOMAttr(arg).ownerElement;
+    if Assigned(AttrOwner) and (AttrOwner <> FOwner) then
+      Result := INUSE_ATTRIBUTE_ERR;
+  end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
 end;
 
 function TDOMNamedNodeMap.ValidateInsert(arg: TDOMNode): Integer;
@@ -1820,6 +2725,8 @@ begin
 { Note: Since Entity and Notation maps are always read-only, and the AttributeMap
   overrides this method and does its own check for correct arg.NodeType, there's
   no point in checking NodeType here. }
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 function TDOMNamedNodeMap.SetNamedItem(arg: TDOMNode): TDOMNode;
@@ -1831,11 +2738,27 @@ begin
   res := ValidateInsert(arg);
   if res <> 0 then
     raise EDOMError.Create(res, 'NamedNodeMap.SetNamedItem');
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  if FNodeType = ATTRIBUTE_NODE then
+  begin
+    TDOMAttr(arg).FOwnerElement := TDOMElement(FOwner);
+    Exists := Find(TDOMAttr(arg).Name, i); // optimization
+  end
+  else
+    Exists := Find(arg.NodeName, i);
+>>>>>>> graemeg/fixes_2_2
 
   Exists := Find(arg.NodeName, i);
   if Exists then
   begin
     Result := TDOMNode(FList.List^[i]);
+    if FNodeType = ATTRIBUTE_NODE then
+      TDOMAttr(Result).FOwnerElement := nil;
     FList.List^[i] := arg;
     exit;
   end;
@@ -1844,7 +2767,11 @@ begin
 end;
 
 function TDOMNamedNodeMap.SetNamedItemNS(arg: TDOMNode): TDOMNode;
+var
+  res: Integer;
+<<<<<<< HEAD
 begin
+<<<<<<< HEAD
 { Since the map contains only namespaceless nodes (all having empty
   localName and namespaceURI properties), a namespaced arg won't match
   any of them. Therefore, add it using nodeName as key.
@@ -1854,9 +2781,22 @@ begin
 end;
 
 function TDOMNamedNodeMap.Delete(index: LongWord): TDOMNode;
+=======
+>>>>>>> origin/fixes_2_2
 begin
   Result := TDOMNode(FList.List^[index]);
   FList.Delete(index);
+=======
+  // TODO: implement TDOMNamedNodeMap.SetNamedItemNS
+  res := ValidateInsert(arg);
+  if res <> 0 then
+    raise EDOMError.Create(res, 'NamedNodeMap.SetNamedItemNS');
+
+    Result := nil;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 function TDOMNamedNodeMap.InternalRemove(const name: DOMString): TDOMNode;
@@ -1880,6 +2820,8 @@ end;
 
 function TDOMNamedNodeMap.RemoveNamedItemNS(const namespaceURI, localName: DOMString): TDOMNode;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
 // see comments to SetNamedItemNS. Related tests are written clever enough
 // in the sense they don't expect NO_MODIFICATION_ERR in first place.
   raise EDOMNotFound.Create('NamedNodeMap.RemoveNamedItemNS');
@@ -1998,6 +2940,13 @@ begin
   if res <> 0 then
     raise EDOMError.Create(res, 'NamedNodeMap.SetNamedItemNS');
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if nfReadOnly in FOwner.FFlags then
+    raise EDOMError.Create(NO_MODIFICATION_ALLOWED_ERR, 'NamedNodeMap.RemoveNamedItemNS');
+  // TODO: Implement TDOMNamedNodeMap.RemoveNamedItemNS
+>>>>>>> graemeg/fixes_2_2
   Result := nil;
   with TDOMAttr(arg) do
   begin
@@ -2109,15 +3058,33 @@ begin
     CloneChildren(Result, aCloneOwner);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2_2
 // -------------------------------------------------------
 //   Top-level node
 // -------------------------------------------------------
 
+<<<<<<< HEAD
 function TDOMNode_TopLevel.GetXMLVersion: DOMString;
 begin
   Result := xmlVersionStr[FXMLVersion];
+=======
+function TDOMImplementation.HasFeature(const feature, version: DOMString):
+  Boolean;
+var
+  s: string;
+begin
+  s := feature;   // force Ansi, features do not contain non-ASCII chars
+  Result := SameText(s, 'XML') and ((version = '') or (version = '1.0'));
+>>>>>>> origin/fixes_2_2
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TDOMNode_TopLevel.SetHeaderData(aXmlVersion: TXMLVersion; const aXmlEncoding: DOMString);
 begin
   if aXmlVersion <> xmlVersionUnknown then
@@ -2125,6 +3092,17 @@ begin
   FXMLEncoding := aXmlEncoding;
 end;
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
 // -------------------------------------------------------
 //   DOMImplementation
 // -------------------------------------------------------
@@ -2158,6 +3136,11 @@ begin
       Exit;
     end;
   end;
+=======
+  // DOM does not restrict PublicID without SystemID (unlike XML spec)
+  Result.FPublicID := PublicID;
+  Result.FSystemID := SystemID;
+>>>>>>> origin/fixes_2_2
 end;
 
 function TDOMImplementation.HasFeature(const feature, version: DOMString):
@@ -2166,9 +3149,13 @@ var
   s: string;
 begin
   s := feature;   // force Ansi, features do not contain non-ASCII chars
+<<<<<<< HEAD
   Result := (SameText(s, 'XML') and ((version = '') or (version = '1.0') or (version = '2.0'))) or
             (SameText(s, 'Core') and ((version = '') or (version = '2.0')));
 
+=======
+  Result := SameText(s, 'XML') and ((version = '') or (version = '1.0'));
+>>>>>>> graemeg/fixes_2_2
 end;
 
 function TDOMImplementation.CreateDocumentType(const QualifiedName, PublicID,
@@ -2177,6 +3164,7 @@ var
   res: Integer;
   model: TDTDModel;
 begin
+<<<<<<< HEAD
   res := CheckQName(QualifiedName);
   if res < 0 then
     raise EDOMError.Create(-res, 'Implementation.CreateDocumentType');
@@ -2187,6 +3175,15 @@ begin
   model.FSystemID := SystemID;
   Result := TDOMDocumentType.Create(nil, model);
   model.Release;                  // now Result remains a sole owner of model
+=======
+  // DONE: Implemented
+  Result := TDOMDocumentType.Create(nil);
+  Result.FName := QualifiedName;
+
+  // DOM does not restrict PublicID without SystemID (unlike XML spec)
+  Result.FPublicID := PublicID;
+  Result.FSystemID := SystemID;
+>>>>>>> graemeg/fixes_2_2
 end;
 
 function TDOMImplementation.CreateDocument(const NamespaceURI,
@@ -2194,13 +3191,30 @@ function TDOMImplementation.CreateDocument(const NamespaceURI,
 var
   Root: TDOMNode;
 begin
+<<<<<<< HEAD
   if Assigned(doctype) and Assigned(doctype.OwnerDocument) then
     raise EDOMWrongDocument.Create('Implementation.CreateDocument');
+=======
+  // TODO: This method is not usable yet due to CreateElementNS...
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Result := TXMLDocument.Create;
   Result.FImplementation := Self;
   try
     if Assigned(doctype) then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+      if Assigned(doctype.OwnerDocument) then
+        raise EDOMWrongDocument.Create('Implementation.CreateDocument');
+>>>>>>> graemeg/fixes_2_2
+=======
+      if Assigned(doctype.OwnerDocument) then
+        raise EDOMWrongDocument.Create('Implementation.CreateDocument');
+>>>>>>> origin/fixes_2_2
       Doctype.FOwnerDocument := Result;
       Result.AppendChild(doctype);
     end;
@@ -2221,7 +3235,11 @@ constructor TDOMDocument.Create;
 begin
   inherited Create(nil);
   FOwnerDocument := Self;
+<<<<<<< HEAD
   FMaxPoolSize := (TDOMEntity.InstanceSize + sizeof(Pointer)-1) and not (sizeof(Pointer)-1) + sizeof(Pointer);
+=======
+  FMaxPoolSize := (TDOMAttr.InstanceSize + sizeof(Pointer)-1) and not (sizeof(Pointer)-1) + sizeof(Pointer);
+>>>>>>> origin/fixes_2.4
   FPools := AllocMem(FMaxPoolSize);
   FNames := THashTable.Create(256, True);
   SetLength(FNamespaces, 3);
@@ -2229,8 +3247,20 @@ begin
   FNamespaces[1] := stduri_xml;
   FNamespaces[2] := stduri_xmlns;
   FEmptyNode := TDOMElement.Create(Self);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   FStdUri_xml := FNames.FindOrAdd(stduri_xml);
   FStdUri_xmlns := FNames.FindOrAdd(stduri_xmlns);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;
 
 destructor TDOMDocument.Destroy;
@@ -2260,7 +3290,19 @@ begin
   Clone.FInputEncoding := FInputEncoding;
   Clone.FXMLEncoding := FXMLEncoding;
   Clone.FXMLVersion := FXMLVersion;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Clone.FXMLStandalone := FXMLStandalone;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   Clone.FURI := FURI;
   if deep then
   begin
@@ -2300,6 +3342,25 @@ begin
   Result := pp.AllocNode(AClass);
 end;
 
+<<<<<<< HEAD
+=======
+function TDOMDocument.AddID(Attr: TDOMAttr): Boolean;
+var
+  ID: DOMString;
+  Exists: Boolean;
+  p: PHashItem;
+begin
+  if FIDList = nil then
+    FIDList := THashTable.Create(256, False);
+
+  ID := Attr.Value;
+  p := FIDList.FindOrAdd(DOMPChar(ID), Length(ID), Exists);
+  if not Exists then
+    p^.Data := Attr.FParentNode;
+  Result := not Exists;
+end;
+
+>>>>>>> graemeg/cpstrnew
 // This shouldn't be called if document has no IDs,
 // or when it is being destroyed
 // TODO: This could be much faster if removing ID happens
@@ -2308,6 +3369,124 @@ end;
 procedure TDOMDocument.RemoveID(Elem: TDOMElement);
 begin
   FIDList.RemoveData(Elem);
+end;
+
+destructor TDOMDocument.Destroy;
+begin
+  FreeAndNil(FIDList);   // set to nil before starting destroying chidlren
+  inherited Destroy;
+end;
+
+function TDOMDocument.AddID(Attr: TDOMAttr): Boolean;
+var
+  ID: DOMString;
+  Exists: Boolean;
+  p: PHashItem;
+begin
+  if FIDList = nil then
+    FIDList := THashTable.Create(256, False);
+
+  ID := Attr.Value;
+  p := FIDList.FindOrAdd(DOMPChar(ID), Length(ID), Exists);
+  if not Exists then
+  begin
+    p^.Data := Attr.OwnerElement;
+    Result := True;
+  end
+  else
+    Result := False;
+end;
+
+// This shouldn't be called if document has no IDs,
+// or when it is being destroyed
+// TODO: This could be much faster if removing ID happens
+// upon modification of corresponding attribute value.
+
+type
+  TempRec = record
+    Element: TDOMElement;
+    Entry: PHashItem;
+  end;
+
+function CheckID(Entry: PHashItem; arg: Pointer): Boolean;
+begin
+  if Entry^.Data = TempRec(arg^).Element then
+  begin
+    TempRec(arg^).Entry := Entry;
+    Result := False;
+  end
+  else
+    Result := True;
+end;
+
+procedure TDOMDocument.RemoveID(Elem: TDOMElement);
+var
+  hr: TempRec;
+begin
+  hr.Element := Elem;
+  hr.Entry := nil;
+  FIDList.ForEach(@CheckID, @hr);
+  if Assigned(hr.Entry) then
+    FIDList.Remove(hr.Entry);
+end;
+
+destructor TDOMDocument.Destroy;
+begin
+  FreeAndNil(FIDList);   // set to nil before starting destroying chidlren
+  inherited Destroy;
+end;
+
+function TDOMDocument.AddID(Attr: TDOMAttr): Boolean;
+var
+  ID: DOMString;
+  Exists: Boolean;
+  p: PHashItem;
+begin
+  if FIDList = nil then
+    FIDList := THashTable.Create(256, False);
+
+  ID := Attr.Value;
+  p := FIDList.FindOrAdd(DOMPChar(ID), Length(ID), Exists);
+  if not Exists then
+  begin
+    p^.Data := Attr.OwnerElement;
+    Result := True;
+  end
+  else
+    Result := False;
+end;
+
+// This shouldn't be called if document has no IDs,
+// or when it is being destroyed
+// TODO: This could be much faster if removing ID happens
+// upon modification of corresponding attribute value.
+
+type
+  TempRec = record
+    Element: TDOMElement;
+    Entry: PHashItem;
+  end;
+
+function CheckID(Entry: PHashItem; arg: Pointer): Boolean;
+begin
+  if Entry^.Data = TempRec(arg^).Element then
+  begin
+    TempRec(arg^).Entry := Entry;
+    Result := False;
+  end
+  else
+    Result := True;
+end;
+
+procedure TDOMDocument.RemoveID(Elem: TDOMElement);
+var
+  hr: TempRec;
+begin
+  hr.Element := Elem;
+  hr.Entry := nil;
+  FIDList.ForEach(@CheckID, @hr);
+  if Assigned(hr.Entry) then
+    FIDList.Remove(hr.Entry);
 end;
 
 function TDOMDocument.GetNodeType: Integer;
@@ -2335,6 +3514,8 @@ begin
   Result := nil;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TDOMDocument.InsertBefore(NewChild, RefChild: TDOMNode): TDOMNode;
 var
   nType: Integer;
@@ -2363,6 +3544,10 @@ begin
     Result := inherited ReplaceChild(NewChild, OldChild);
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function TDOMDocument.GetDocumentElement: TDOMElement;
 var
   node: TDOMNode;
@@ -2385,12 +3570,39 @@ end;
 
 function TDOMDocument.CreateElement(const tagName: DOMString): TDOMElement;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not IsXmlName(tagName) then
+=======
+  if not IsXmlName(tagName, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(tagName, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(tagName, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(tagName, FXMLVersion = xmlVersion11) then
+>>>>>>> origin/cpstrnew
     raise EDOMError.Create(INVALID_CHARACTER_ERR, 'DOMDocument.CreateElement');
   TDOMNode(Result) := Alloc(TDOMElement);
   Result.Create(Self);
   Result.FNSI.QName := FNames.FindOrAdd(DOMPChar(tagName), Length(tagName));
   Result.AttachDefaultAttrs;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if not IsXmlName(tagName, FXML11) then
+    raise EDOMError.Create(INVALID_CHARACTER_ERR, 'DOMDocument.CreateElement');
+  Result := TDOMElement.Create(Self);
+  Result.FNodeName := tagName;
+  // TODO: attach default attributes
+>>>>>>> graemeg/fixes_2_2
 end;
 
 function TDOMDocument.CreateElementBuf(Buf: DOMPChar; Length: Integer): TDOMElement;
@@ -2453,22 +3665,80 @@ end;
 
 function TDOMDocument.CreateAttribute(const name: DOMString): TDOMAttr;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not IsXmlName(name) then
+=======
+  if not IsXmlName(name, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(name, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(name, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(name, FXMLVersion = xmlVersion11) then
+>>>>>>> origin/cpstrnew
     raise EDOMError.Create(INVALID_CHARACTER_ERR, 'DOMDocument.CreateAttribute');
   TDOMNode(Result) := Alloc(TDOMAttr);
   Result.Create(Self);
   Result.FNSI.QName := FNames.FindOrAdd(DOMPChar(name), Length(name));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if not IsXmlName(name, FXML11) then
+    raise EDOMError.Create(INVALID_CHARACTER_ERR, 'DOMDocument.CreateAttribute');
+  Result := TDOMAttr.Create(Self);
+  Result.FName := name;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Include(Result.FFlags, nfSpecified);
 end;
 
 function TDOMDocument.CreateAttributeBuf(Buf: DOMPChar; Length: Integer): TDOMAttr;
 begin
+<<<<<<< HEAD
   TDOMNode(Result) := Alloc(TDOMAttr);
   Result.Create(Self);
   Result.FNSI.QName := FNames.FindOrAdd(buf, Length);
   Include(Result.FFlags, nfSpecified);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{deprecated}
+function TDOMDocument.CreateAttributeDef(Buf: DOMPChar; Length: Integer): TDOMAttrDef;
+begin
+// not using custom allocation here
+  Result := TDOMAttrDef.Create(Self);
+  Result.FNSI.QName := FNames.FindOrAdd(Buf, Length);
+=======
+  Result := TDOMAttr.Create(Self);
+  SetString(Result.FName, Buf, Length);
+  Include(Result.FFlags, nfSpecified);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+end;
+
+>>>>>>> graemeg/cpstrnew
 function TDOMDocument.CreateEntityReference(const name: DOMString):
   TDOMEntityReference;
 begin
@@ -2536,6 +3806,8 @@ end;
 
 function TDOMDocument.GetElementsByTagNameNS(const nsURI, aLocalName: DOMString): TDOMNodeList;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result := GetElementList(Self, nsURI, aLocalName, True);
 end;
 
@@ -2544,11 +3816,24 @@ end;
   - if user code does not free nodelists, this is not called at all.
 }
 procedure TDOMDocument.NodeListDestroyed(aList: TDOMNodeList);
+=======
+  Result := TDOMElementList.Create(Self, nsURI, aLocalName);
+end;
+
+=======
+  Result := TDOMElementList.Create(Self, nsURI, aLocalName);
+end;
+
+>>>>>>> origin/fixes_2_2
+function TDOMDocument.CreateAttributeNS(const nsURI,
+  QualifiedName: DOMString): TDOMAttr;
+>>>>>>> graemeg/fixes_2_2
 begin
   if (not (nfDestroying in FFlags)) and (FNodeLists <> nil) then
     FNodeLists.RemoveData(aList);
 end;
 
+<<<<<<< HEAD
 function TDOMDocument.ValidateQName(const nsUri, qName: DOMString;
   out nsidx: PHashItem): Integer;
 begin
@@ -2566,13 +3851,28 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
 function TDOMDocument.CreateAttributeNS(const nsURI,
   QualifiedName: DOMString): TDOMAttr;
 var
   PrefIdx: Integer;
   nsidx: PHashItem;
 begin
+<<<<<<< HEAD
   PrefIdx := ValidateQName(nsURI, QualifiedName, nsidx);
+=======
+  idx := IndexOfNS(nsURI, True);
+  PrefIdx := CheckQName(QualifiedName, idx, FXMLVersion = xmlVersion11);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   if PrefIdx < 0 then
     raise EDOMError.Create(-PrefIdx, 'Document.CreateAttributeNS');
   TDOMNode(Result) := Alloc(TDOMAttr);
@@ -2584,19 +3884,39 @@ begin
   Include(Result.FFlags, nfSpecified);
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function TDOMDocument.CreateElementNS(const nsURI,
   QualifiedName: DOMString): TDOMElement;
 begin
      result:=CreateElementNS(nsURI, QualifiedName, TDOMElement);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TDOMDocument.CreateElementNS(const nsURI, QualifiedName: DOMString;
   AClass: TDOMElementClass): TDOMElement; overload;
 var
   PrefIdx: Integer;
   nsidx: PHashItem;
 begin
+<<<<<<< HEAD
   PrefIdx := ValidateQName(nsURI, QualifiedName, nsidx);
+=======
+  idx := IndexOfNS(nsURI, True);
+  PrefIdx := CheckQName(QualifiedName, idx, FXMLVersion = xmlVersion11);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   if PrefIdx < 0 then
     raise EDOMError.Create(-PrefIdx, 'Document.CreateElementNS');
   TDOMNode(Result) := Alloc(AClass);
@@ -2608,6 +3928,10 @@ begin
   Result.AttachDefaultAttrs;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function TDOMDocument.GetElementById(const ElementID: DOMString): TDOMElement;
 begin
   Result := nil;
@@ -2619,8 +3943,18 @@ function TDOMDocument.ImportNode(ImportedNode: TDOMNode;
   Deep: Boolean): TDOMNode;
 begin
   Result := ImportedNode.CloneNode(Deep, Self);
+<<<<<<< HEAD
+=======
 end;
 
+function TDOMDocument.IndexOfNS(const nsURI: DOMString): Integer;
+begin
+  // TODO: implement
+    Result := -1;
+>>>>>>> origin/fixes_2_2
+end;
+
+<<<<<<< HEAD
 function TDOMDocument.IndexOfNS(const nsURI: DOMString; AddIfAbsent: Boolean): Integer;
 var
   I: Integer;
@@ -2647,11 +3981,29 @@ begin
   raise EDOMNotSupported.Create('DOMDocument.SetXMLVersion');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TDOMDocument.SetXMLStandalone(aValue: Boolean);
 begin
   raise EDOMNotSupported.Create('DOMDocument.SetXMLStandalone');
+=======
+function TDOMDocument.IndexOfNS(const nsURI: DOMString): Integer;
+begin
+  // TODO: implement
+    Result := -1;
+>>>>>>> graemeg/fixes_2_2
 end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 constructor TXMLDocument.Create;
 begin
   inherited Create;
@@ -2669,10 +4021,35 @@ end;
 function TXMLDocument.CreateProcessingInstruction(const target,
   data: DOMString): TDOMProcessingInstruction;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not IsXmlName(target) then
+=======
+  if not IsXmlName(target, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(target, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(target, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(target, FXMLVersion = xmlVersion11) then
+>>>>>>> origin/cpstrnew
     raise EDOMError.Create(INVALID_CHARACTER_ERR, 'XMLDocument.CreateProcessingInstruction');
   TDOMNode(Result) := Alloc(TDOMProcessingInstruction);
   Result.Create(Self);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if not IsXmlName(target, FXML11) then
+    raise EDOMError.Create(INVALID_CHARACTER_ERR, 'XMLDocument.CreateProcessingInstruction');
+  Result := TDOMProcessingInstruction.Create(Self);
+>>>>>>> graemeg/fixes_2_2
   Result.FTarget := target;
   Result.FNodeValue := data;
 end;
@@ -2683,10 +4060,35 @@ var
   dType: TDOMDocumentType;
   ent: TDOMEntity;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not IsXmlName(name) then
+=======
+  if not IsXmlName(name, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(name, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(name, FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(name, FXMLVersion = xmlVersion11) then
+>>>>>>> origin/cpstrnew
     raise EDOMError.Create(INVALID_CHARACTER_ERR, 'XMLDocument.CreateEntityReference');
   TDOMNode(Result) := Alloc(TDOMEntityReference);
   Result.Create(Self);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if not IsXmlName(name, FXML11) then
+    raise EDOMError.Create(INVALID_CHARACTER_ERR, 'XMLDocument.CreateEntityReference');
+  Result := TDOMEntityReference.Create(Self);
+>>>>>>> graemeg/fixes_2_2
   Result.FName := name;
   dType := DocType;
   if Assigned(dType) then
@@ -2696,6 +4098,8 @@ begin
       ent.CloneChildren(Result, Self);
   end;
   Result.SetReadOnly(True);
+<<<<<<< HEAD
+<<<<<<< HEAD
 end;
 
 procedure TXMLDocument.SetXMLVersion(const aValue: DOMString);
@@ -2706,11 +4110,23 @@ begin
     FXMLVersion := xmlVersion11
   else
     raise EDOMNotSupported.Create('XMLDocument.SetXMLVersion');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 end;
 
 procedure TXMLDocument.SetXMLStandalone(aValue: Boolean);
 begin
   FXmlStandalone := aValue;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;
 
 { TDOMNode_NS }
@@ -2752,7 +4168,23 @@ var
   NewName: DOMString;
 begin
   Changing;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not IsXmlName(Value) then
+=======
+  if not IsXmlName(Value, FOwnerDocument.FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(Value, FOwnerDocument.FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(Value, FOwnerDocument.FXMLVersion = xmlVersion11) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if not IsXmlName(Value, FOwnerDocument.FXMLVersion = xmlVersion11) then
+>>>>>>> origin/cpstrnew
     raise EDOMError.Create(INVALID_CHARACTER_ERR, 'Node.SetPrefix');
 
   if (Pos(WideChar(':'), Value) > 0) or ((FNSI.NSIndex = 0) and (Value <> '')) or
@@ -2777,6 +4209,21 @@ begin
   FNSI.NSIndex := FOwnerDocument.IndexOfNS(nsURI, True);
   FNSI.PrefixLen := ColonPos;
   Include(FFlags, nfLevel2);
+=======
+end;
+
+=======
+end;
+
+>>>>>>> origin/fixes_2_2
+procedure TXMLDocument.SetXMLVersion(const aValue: DOMString);
+begin
+  FXMLVersion := aValue;
+  FXML11 := (aValue = '1.1');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 // -------------------------------------------------------
@@ -2805,10 +4252,17 @@ end;
 function TDOMAttr.CloneNode(deep: Boolean; ACloneOwner: TDOMDocument): TDOMNode;
 begin
   // Cloned attribute is always specified and carries its children
+<<<<<<< HEAD
   if nfLevel2 in FFlags then
     Result := ACloneOwner.CreateAttributeNS(namespaceURI, NodeName)
   else
     Result := ACloneOwner.CreateAttribute(NodeName);
+=======
+  Result := ACloneOwner.CreateAttribute(FName);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   TDOMAttr(Result).FDataType := FDataType;
   CloneChildren(Result, ACloneOwner);
 end;
@@ -2824,6 +4278,8 @@ procedure TDOMAttr.SetNodeValue(const AValue: DOMString);
 begin
   SetTextContent(AValue);
   Include(FFlags, nfSpecified);
+<<<<<<< HEAD
+<<<<<<< HEAD
 end;
 
 function TDOMAttr.GetSpecified: Boolean;
@@ -2834,11 +4290,25 @@ end;
 function TDOMAttr.GetIsID: Boolean;
 begin
   Result := FDataType = dtID;
+=======
+>>>>>>> graemeg/fixes_2_2
 end;
 
 function TDOMAttr.GetOwnerElement: TDOMElement;
 begin
   Result := TDOMElement(FParentNode);
+=======
+>>>>>>> origin/fixes_2_2
+end;
+
+function TDOMAttr.GetSpecified: Boolean;
+begin
+  Result := nfSpecified in FFlags;
+end;
+
+function TDOMAttr.GetSpecified: Boolean;
+begin
+  Result := nfSpecified in FFlags;
 end;
 
 // -------------------------------------------------------
@@ -2852,11 +4322,21 @@ end;
 
 destructor TDOMElement.Destroy;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   Include(FFlags, nfDestroying);
   if Assigned(FOwnerDocument.FIDList) then
     FOwnerDocument.RemoveID(Self);
   FAttributes.Free;
   FAttributes := nil;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if Assigned(FOwnerDocument.FIDList) then
+    FOwnerDocument.RemoveID(Self);
+  // FIX: Attribute nodes are now freed by TDOMNamedNodeMap.Destroy
+  FreeAndNil(FAttributes);
+>>>>>>> graemeg/fixes_2_2
   inherited Destroy;
 end;
 
@@ -2907,6 +4387,8 @@ begin
     CloneChildren(Result, ACloneOwner);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TDOMElement.AttachDefaultAttrs;
 var
   eldef: TElementDecl;
@@ -2928,6 +4410,16 @@ begin
 end;
 
 function TDOMElement.InternalLookupPrefix(const nsURI: DOMString; Original: TDOMElement): DOMString;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/cpstrnew
 var
   I: Integer;
   Attr: TDOMAttr;
@@ -2971,6 +4463,180 @@ begin
   if Assigned(src^.FNsUri) then
     result.SetNSI(src^.FNsUri^.Key, src^.FColonPos+1);
   if Assigned(src^.FNext) then
+  begin
+    curr := src^.FNext;
+    while Assigned(curr) do
+    begin
+      case curr^.FNodeType of
+        ntText: result.InternalAppend(doc.CreateTextNode(curr^.FValueStr));
+        ntEntityReference: result.InternalAppend(doc.CreateEntityReference(curr^.FValueStr));
+      end;
+      curr := curr^.FNext;
+    end;
+  end
+  else if src^.FValueStr <> '' then
+    result.InternalAppend(doc.CreateTextNode(src^.FValueStr));
+end;
+
+procedure TDOMElement.RestoreDefaultAttr(AttrDef: TAttributeDef);
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+var
+  I: Integer;
+  Attr: TDOMAttr;
+begin
+<<<<<<< HEAD
+  result := '';
+  if Self = nil then
+    Exit;
+  if (nfLevel2 in FFlags) and (namespaceURI = nsURI) and (FNSI.PrefixLen > 0) then
+  begin
+    Result := Prefix;
+    if Original.LookupNamespaceURI(result) = nsURI then
+      Exit;
+  end;
+  if Assigned(FAttributes) then
+  begin
+    for I := 0 to FAttributes.Length-1 do
+    begin
+      Attr := TDOMAttr(FAttributes[I]);
+      if (Attr.Prefix = 'xmlns') and (Attr.Value = nsURI) then
+      begin
+        result := Attr.LocalName;
+        if Original.LookupNamespaceURI(result) = nsURI then
+          Exit;
+      end;
+    end;
+  end;
+  result := GetAncestorElement(Self).InternalLookupPrefix(nsURI, Original);
+end;
+
+function LoadAttribute(doc: TDOMDocument; src: PNodeData): TDOMAttr;
+<<<<<<< HEAD
+=======
+var
+  curr: PNodeData;
+begin
+  TDOMNode(result) := doc.Alloc(TDOMAttr);
+  result.Create(doc);
+  result.FNSI.QName := src^.FQName;
+  if not src^.FIsDefault then
+    Include(result.FFlags, nfSpecified);
+  if Assigned(src^.FTypeInfo) then
+    result.FDataType := TAttributeDef(src^.FTypeInfo).DataType;
+  if Assigned(src^.FNsUri) then
+    result.SetNSI(src^.FNsUri^.Key, src^.FColonPos+1);
+  if Assigned(src^.FNext) then
+  begin
+    curr := src^.FNext;
+    while Assigned(curr) do
+    begin
+      case curr^.FNodeType of
+        ntText: result.InternalAppend(doc.CreateTextNode(curr^.FValueStr));
+        ntEntityReference: result.InternalAppend(doc.CreateEntityReference(curr^.FValueStr));
+      end;
+      curr := curr^.FNext;
+    end;
+  end
+  else if src^.FValueStr <> '' then
+    result.InternalAppend(doc.CreateTextNode(src^.FValueStr));
+end;
+
+procedure TDOMElement.RestoreDefaultAttr(AttrDef: TAttributeDef);
+>>>>>>> graemeg/cpstrnew
+var
+  curr: PNodeData;
+begin
+  TDOMNode(result) := doc.Alloc(TDOMAttr);
+  result.Create(doc);
+  result.FNSI.QName := src^.FQName;
+  if not src^.FIsDefault then
+    Include(result.FFlags, nfSpecified);
+  if Assigned(src^.FTypeInfo) then
+    result.FDataType := TAttributeDef(src^.FTypeInfo).DataType;
+  if Assigned(src^.FNsUri) then
+    result.SetNSI(src^.FNsUri^.Key, src^.FColonPos+1);
+  if Assigned(src^.FNext) then
+  begin
+    curr := src^.FNext;
+    while Assigned(curr) do
+    begin
+      case curr^.FNodeType of
+        ntText: result.InternalAppend(doc.CreateTextNode(curr^.FValueStr));
+        ntEntityReference: result.InternalAppend(doc.CreateEntityReference(curr^.FValueStr));
+      end;
+      curr := curr^.FNext;
+    end;
+  end
+  else if src^.FValueStr <> '' then
+    result.InternalAppend(doc.CreateTextNode(src^.FValueStr));
+end;
+
+procedure TDOMElement.RestoreDefaultAttr(AttrDef: TAttributeDef);
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+var
+  I: Integer;
+  Attr: TDOMAttr;
+begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+  result := '';
+  if Self = nil then
+    Exit;
+  if (nfLevel2 in FFlags) and (namespaceURI = nsURI) and (FNSI.PrefixLen > 0) then
+  begin
+    Result := Prefix;
+    if Original.LookupNamespaceURI(result) = nsURI then
+      Exit;
+  end;
+  if Assigned(FAttributes) then
+  begin
+    for I := 0 to FAttributes.Length-1 do
+    begin
+      Attr := TDOMAttr(FAttributes[I]);
+      if (Attr.Prefix = 'xmlns') and (Attr.Value = nsURI) then
+      begin
+        result := Attr.LocalName;
+        if Original.LookupNamespaceURI(result) = nsURI then
+          Exit;
+      end;
+    end;
+  end;
+  result := GetAncestorElement(Self).InternalLookupPrefix(nsURI, Original);
+end;
+
+function LoadAttribute(doc: TDOMDocument; src: PNodeData): TDOMAttr;
+var
+  curr: PNodeData;
+begin
+  TDOMNode(result) := doc.Alloc(TDOMAttr);
+  result.Create(doc);
+  result.FNSI.QName := src^.FQName;
+  if not src^.FIsDefault then
+    Include(result.FFlags, nfSpecified);
+  if Assigned(src^.FTypeInfo) then
+    result.FDataType := TAttributeDef(src^.FTypeInfo).DataType;
+  if Assigned(src^.FNsUri) then
+    result.SetNSI(src^.FNsUri^.Key, src^.FColonPos+1);
+  if Assigned(src^.FNext) then
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  if nfDestroying in FOwnerDocument.FFlags then
+    Exit;
+  Attr := LoadAttribute(FOwnerDocument, AttrDef.Data);
+
+  AttrName := Attr.Name;
+  ColonPos := Pos(WideChar(':'), AttrName);
+  if Pos(DOMString('xmlns'), AttrName) = 1 then
+>>>>>>> graemeg/cpstrnew
   begin
     curr := src^.FNext;
     while Assigned(curr) do
@@ -3038,6 +4704,10 @@ begin
   SetAttributeNode(Attr);
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 procedure TDOMElement.Normalize;
 var
   I: Integer;
@@ -3045,7 +4715,15 @@ begin
   if Assigned(FAttributes) then
     for I := 0 to FAttributes.Length - 1 do
       FAttributes[I].Normalize;
+<<<<<<< HEAD
+<<<<<<< HEAD
   inherited Normalize;
+=======
+  inherited Normalize;    
+>>>>>>> graemeg/fixes_2_2
+=======
+  inherited Normalize;    
+>>>>>>> origin/fixes_2_2
 end;
 
 function TDOMElement.GetAttributes: TDOMNamedNodeMap;
@@ -3092,7 +4770,15 @@ begin
   else
   begin
     Attr := FOwnerDocument.CreateAttribute(name);
+<<<<<<< HEAD
+<<<<<<< HEAD
     Attr.FParentNode := Self;
+=======
+    Attr.FOwnerElement := Self;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Attr.FOwnerElement := Self;
+>>>>>>> origin/fixes_2_2
     FAttributes.FList.Insert(I, Attr);
   end;
   attr.NodeValue := value;
@@ -3110,8 +4796,18 @@ procedure TDOMElement.RemoveAttributeNS(const nsURI,
   aLocalName: DOMString);
 begin
   Changing;
+<<<<<<< HEAD
+<<<<<<< HEAD
   if Assigned(FAttributes) then
     TAttributeMap(FAttributes).InternalRemoveNS(nsURI, aLocalName).Free;
+=======
+  // TODO: Implement TDOMElement.RemoveAttributeNS
+  raise EDOMNotSupported.Create('TDOMElement.RemoveAttributeNS');
+>>>>>>> graemeg/fixes_2_2
+=======
+  // TODO: Implement TDOMElement.RemoveAttributeNS
+  raise EDOMNotSupported.Create('TDOMElement.RemoveAttributeNS');
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure TDOMElement.SetAttributeNS(const nsURI, qualifiedName,
@@ -3119,12 +4815,30 @@ procedure TDOMElement.SetAttributeNS(const nsURI, qualifiedName,
 var
   I: Cardinal;
   Attr: TDOMAttr;
+<<<<<<< HEAD
+<<<<<<< HEAD
   idx, prefIdx: Integer;
   nsidx: PHashItem;
 begin
   Changing;
   idx := FOwnerDocument.IndexOfNS(nsURI, True);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   prefIdx := FOwnerDocument.ValidateQName(nsURI, qualifiedName, nsidx);
+=======
+  prefIdx := CheckQName(qualifiedName, idx, FOwnerDocument.FXMLVersion = xmlVersion11);
+>>>>>>> graemeg/cpstrnew
+=======
+  prefIdx := CheckQName(qualifiedName, idx, FOwnerDocument.FXMLVersion = xmlVersion11);
+>>>>>>> graemeg/cpstrnew
+=======
+  prefIdx := CheckQName(qualifiedName, idx, FOwnerDocument.FXMLVersion = xmlVersion11);
+>>>>>>> graemeg/cpstrnew
+=======
+  prefIdx := CheckQName(qualifiedName, idx, FOwnerDocument.FXMLVersion = xmlVersion11);
+>>>>>>> origin/cpstrnew
   if prefIdx < 0 then
     raise EDOMError.Create(-prefIdx, 'Element.SetAttributeNS');
 
@@ -3141,6 +4855,17 @@ begin
     Attr.FParentNode := Self;
     Attr.FNSI.NSIndex := Word(idx);
     Include(Attr.FFlags, nfLevel2);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+begin
+  Attr := Attributes.GetNamedItemNS(nsURI, qualifiedName) as TDOMAttr;
+  if attr = nil then
+  begin
+    attr := FOwnerDocument.CreateAttributeNS(nsURI, qualifiedName);
+    // TODO 5: keep sorted!
+    FAttributes.FList.Add(attr);
+>>>>>>> graemeg/fixes_2_2
   end;
   // keep list sorted by DOM Level 1 name
   FAttributes.Find(qualifiedName, I);
@@ -3170,11 +4895,37 @@ end;
 function TDOMElement.SetAttributeNode(NewAttr: TDOMAttr): TDOMAttr;
 begin
   Result := Attributes.SetNamedItem(NewAttr) as TDOMAttr;
+<<<<<<< HEAD
+=======
+
+  // TODO -cConformance: here goes inconsistency with DOM 2 - same as in TDOMNode.RemoveChild
+  if Assigned(Result) and (Result <> NewAttr) then
+  begin
+    Result.Free;
+    Result := nil;
+  end;  
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 function TDOMElement.SetAttributeNodeNS(NewAttr: TDOMAttr): TDOMAttr;
 begin
   Result := Attributes.SetNamedItemNS(NewAttr) as TDOMAttr;
+<<<<<<< HEAD
+=======
+
+  // TODO -cConformance: here goes inconsistency with DOM 2 - same as in TDOMNode.RemoveChild
+  if Assigned(Result) and (Result <> NewAttr) then
+  begin
+    Result.Free;
+    Result := nil;
+  end;  
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 
@@ -3183,6 +4934,8 @@ var
   Index: Integer;
 begin
   Changing;
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result := OldAttr;
   if Assigned(FAttributes) then
   begin
@@ -3194,6 +4947,24 @@ begin
     end;
   end;
   raise EDOMNotFound.Create('Element.RemoveAttributeNode');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  Result:=nil;
+  // TODO: DOM 2: must raise NOT_FOUND_ERR if OldAttr is not ours.
+  //       -- but what is the purpose of return value then?
+  // TODO: delegate to TNamedNodeMap?  Nope, it does not have such method
+  // (note) one way around is to remove by name
+  if Assigned(FAttributes) and (FAttributes.FList.Remove(OldAttr) > -1) then
+  begin
+    Result := OldAttr;
+  end
+  else
+    raise EDOMNotFound.Create('Element.RemoveAttributeNode');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 function TDOMElement.GetElementsByTagName(const name: DOMString): TDOMNodeList;
@@ -3203,7 +4974,15 @@ end;
 
 function TDOMElement.GetElementsByTagNameNS(const nsURI, aLocalName: DOMString): TDOMNodeList;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result := FOwnerDocument.GetElementList(Self, nsURI, aLocalName, True);
+=======
+  Result := TDOMElementList.Create(Self, nsURI, aLocalName);
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result := TDOMElementList.Create(Self, nsURI, aLocalName);
+>>>>>>> origin/fixes_2_2
 end;
 
 function TDOMElement.hasAttribute(const name: DOMString): Boolean;
@@ -3258,7 +5037,15 @@ begin
   if offset > L then
     raise EDOMIndexSize.Create('Text.SplitText');
 
+<<<<<<< HEAD
   Result := FOwnerDocument.CreateTextNodeBuf(@FNodeValue[offset+1], L-offset, False);
+=======
+  Result := TDOMText.Create(FOwnerDocument);
+  Result.FNodeValue := Copy(FNodeValue, offset + 1, Length);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Result.FFlags := FFlags * [nfIgnorableWS];
   FNodeValue := Copy(FNodeValue, 1, offset);
   if Assigned(FParentNode) then
@@ -3346,7 +5133,19 @@ var
 begin
   node := TDOMEntity.Create(this.ownerDocument);
   node.FDecl := TEntityDecl(Entry^.Data);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   node.FBaseURI := node.FDecl.FURI;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   node.SetReadOnly(True);
   this.Entities.SetNamedItem(node);
   Result := True;
@@ -3359,7 +5158,19 @@ var
 begin
   node := TDOMNotation.Create(this.ownerDocument);
   node.FDecl := TNotationDecl(Entry^.Data);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   node.FBaseURI := node.FDecl.FURI;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   node.SetReadOnly(True);
   this.Notations.SetNamedItem(node);
   Result := True;
@@ -3379,6 +5190,7 @@ begin
   FModel.Release;
   FEntities.Free;
   FNotations.Free;
+  FElementDefs.Free;
   inherited Destroy;
 end;
 
@@ -3394,6 +5206,13 @@ begin
   if FNotations = nil then
     FNotations := TDOMNamedNodeMap.Create(Self);
   Result := FNotations;
+end;
+
+function TDOMDocumentType.GetElementDefs: TDOMNamedNodeMap;
+begin
+  if FElementDefs = nil then
+    FElementDefs := TDOMNamedNodeMap.Create(Self, ELEMENT_NODE);
+  Result := FElementDefs;
 end;
 
 // -------------------------------------------------------
@@ -3468,6 +5287,30 @@ begin
   Result.SetReadOnly(True);
 end;
 
+function TDOMEntity.CloneNode(deep: Boolean; aCloneOwner: TDOMDocument): TDOMNode;
+begin
+  Result := TDOMEntity.Create(aCloneOwner);
+  TDOMEntity(Result).FName := FName;
+  TDOMEntity(Result).FSystemID := FSystemID;
+  TDOMEntity(Result).FPublicID := FPublicID;
+  TDOMEntity(Result).FNotationName := FNotationName;
+  if deep then
+    CloneChildren(Result, aCloneOwner);
+  Result.SetReadOnly(True);
+end;
+
+function TDOMEntity.CloneNode(deep: Boolean; aCloneOwner: TDOMDocument): TDOMNode;
+begin
+  Result := TDOMEntity.Create(aCloneOwner);
+  TDOMEntity(Result).FName := FName;
+  TDOMEntity(Result).FSystemID := FSystemID;
+  TDOMEntity(Result).FPublicID := FPublicID;
+  TDOMEntity(Result).FNotationName := FNotationName;
+  if deep then
+    CloneChildren(Result, aCloneOwner);
+  Result.SetReadOnly(True);
+end;
+
 // -------------------------------------------------------
 //   EntityReference
 // -------------------------------------------------------
@@ -3518,6 +5361,58 @@ begin
   FNodeValue := AValue;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{ TDOMAttrDef (DEPRECATED) }
+
+function TDOMAttrDef.CloneNode(deep: Boolean; ACloneOwner: TDOMDocument): TDOMNode;
+begin
+  Result := inherited CloneNode(deep, ACloneOwner);
+  Exclude(Result.FFlags, nfSpecified);
+end;
+
+function TDOMAttrDef.AddEnumToken(Buf: DOMPChar; Len: Integer): Boolean;
+var
+  I, L: Integer;
+begin
+  // TODO: this implementaion is the slowest possible...
+  Result := False;
+  L := Length(FEnumeration);
+  for I := 0 to L-1 do
+  begin
+    if CompareDomStrings(Buf, DOMPChar(FEnumeration[I]), Len, Length(FEnumeration[I])) = 0 then
+      Exit;
+  end;
+  SetLength(FEnumeration, L+1);
+  SetString(FEnumeration[L], Buf, Len);
+  Result := True;
+end;
+
+function TDOMAttrDef.HasEnumToken(const aValue: DOMString): Boolean;
+var
+  I: Integer;
+begin
+  Result := True;
+  if Length(FEnumeration) = 0 then
+    Exit;
+  for I := 0 to Length(FEnumeration)-1 do
+  begin
+    if FEnumeration[I] = aValue then
+      Exit;
+  end;
+  Result := False;
+end;
+
+>>>>>>> graemeg/cpstrnew
 { TNodePool }
 
 constructor TNodePool.Create(AElementSize: Integer; AElementCount: Integer);
@@ -3560,7 +5455,11 @@ var
   ext: PExtent;
 begin
   Assert((FCurrExtent = nil) or
+<<<<<<< HEAD
     (PAnsiChar(FCurrBlock) < PAnsiChar(FCurrExtent) + sizeof(TExtent)));
+=======
+    (PAnsiChar(FCurrBlock) = PAnsiChar(FCurrExtent) + sizeof(TExtent)));
+>>>>>>> origin/fixes_2.4
   Assert(AElemCount > 0);
 
   GetMem(ext, sizeof(TExtent) + AElemCount * FElementSize);
@@ -3580,7 +5479,11 @@ begin
   end
   else
   begin
+<<<<<<< HEAD
     if PAnsiChar(FCurrBlock) < PAnsiChar(FCurrExtent) + sizeof(TExtent) then
+=======
+    if PAnsiChar(FCurrBlock) = PAnsiChar(FCurrExtent) + sizeof(TExtent) then
+>>>>>>> origin/fixes_2.4
       AddExtent(FCurrExtentSize * 2);
     Result := FCurrBlock;
     Dec(PAnsiChar(FCurrBlock), FElementSize);

@@ -19,9 +19,24 @@ Procedure UniqueString (Var S : UnicodeString);external name 'FPC_UNICODESTR_UNI
 Function Pos (Const Substr : UnicodeString; Const Source : UnicodeString) : SizeInt;
 Function Pos (c : Char; Const s : UnicodeString) : SizeInt;
 Function Pos (c : UnicodeChar; Const s : UnicodeString) : SizeInt;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function Pos (const c : RawByteString; Const s : UnicodeString) : SizeInt;
 Function Pos (const c : UnicodeString; Const s : RawByteString) : SizeInt;
 Function Pos (const c : ShortString; Const s : UnicodeString) : SizeInt;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+Function Pos (c : RawByteString; Const s : UnicodeString) : SizeInt;{$ifdef SYSTEMINLINE}inline;{$endif}
+Function Pos (c : UnicodeString; Const s : RawByteString) : SizeInt;{$ifdef SYSTEMINLINE}inline;{$endif}
+Function Pos (c : ShortString; Const s : UnicodeString) : SizeInt;{$ifdef SYSTEMINLINE}inline;{$endif}
+>>>>>>> graemeg/cpstrnew
 
 Function UpCase(const s : UnicodeString) : UnicodeString;
 Function  UpCase(c:UnicodeChar):UnicodeChar;
@@ -85,9 +100,23 @@ Type
     CompUCS2 : function(p1,p2:PUCS2Char) : shortint;
     CompUCS4 : function(p1,p2:PUC42Char) : shortint;
 }
+<<<<<<< HEAD
     CompareWideStringProc : function(const s1, s2 : WideString; Options : TCompareOptions) : PtrInt;
     // CompareTextWideStringProc is CompareWideStringProc with coIgnoreCase in options.
 //    CompareTextWideStringProc : function(const s1, s2 : WideString): PtrInt;
+=======
+    CompareWideStringProc : function(const s1, s2 : WideString) : PtrInt;
+    CompareTextWideStringProc : function(const s1, s2 : WideString): PtrInt;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     { return value: number of code points in the string. Whenever an invalid
       code point is encountered, all characters part of this invalid code point
       are considered to form one "character" and the next character is
@@ -133,6 +162,10 @@ function UnicodeToUtf8(Dest: PChar; Source: PUnicodeChar; MaxBytes: SizeInt): Si
 function UnicodeToUtf8(Dest: PChar; MaxDestBytes: SizeUInt; Source: PUnicodeChar; SourceChars: SizeUInt): SizeUInt;
 function Utf8ToUnicode(Dest: PUnicodeChar; Source: PChar; MaxChars: SizeInt): SizeInt;{$ifdef SYSTEMINLINE}inline;{$endif}
 function Utf8ToUnicode(Dest: PUnicodeChar; MaxDestChars: SizeUInt; Source: PChar; SourceBytes: SizeUInt): SizeUInt;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function UTF8Encode(const s : RawByteString) : RawByteString; inline;
 function UTF8Encode(const s : UnicodeString) : RawByteString;
 function UTF8Decode(const s : RawByteString): UnicodeString;
@@ -144,6 +177,28 @@ function UTF8ToString(const S: array of AnsiChar): unicodestring;
 function UTF8ToString(const S: array of Byte): unicodestring; 
 function AnsiToUtf8(const s : RawByteString): RawByteString;{$ifdef SYSTEMINLINE}inline;{$endif}
 function Utf8ToAnsi(const s : RawByteString) : RawByteString;{$ifdef SYSTEMINLINE}inline;{$endif}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+function UTF8Encode(const s : RawByteString) : UTF8String; inline;
+function UTF8Encode(const s : UnicodeString) : UTF8String;
+function UTF8Decode(const s : UTF8String): UnicodeString;
+function AnsiToUtf8(const s : RawByteString): UTF8String;{$ifdef SYSTEMINLINE}inline;{$endif}
+function Utf8ToAnsi(const s : UTF8String) : RawByteString;{$ifdef SYSTEMINLINE}inline;{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 function UnicodeStringToUCS4String(const s : UnicodeString) : UCS4String;
 function UCS4StringToUnicodeString(const s : UCS4String) : UnicodeString;
 function WideStringToUCS4String(const s : WideString) : UCS4String;
@@ -160,7 +215,19 @@ Procedure SetUnicodeStringManager (Const New : TUnicodeStringManager; Var Old: T
 function StringElementSize(const S : UnicodeString): Word; overload;
 function StringRefCount(const S : UnicodeString): SizeInt; overload;
 function StringCodePage(const S : UnicodeString): TSystemCodePage; overload;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 Function ToSingleByteFileSystemEncodedFileName(const Str: UnicodeString): RawByteString;
 Function ToSingleByteFileSystemEncodedFileName(const arr: array of widechar): RawByteString;
 Function ToSingleByteFileSystemEncodedFileName(const Str: RawByteString): RawByteString;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

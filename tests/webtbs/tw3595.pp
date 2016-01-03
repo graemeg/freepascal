@@ -54,10 +54,10 @@ begin
  filestream.free;
 
 
- try
+// try
   filestream:= tfilestream.create(textfilename,fmopenread);
   memstream:= tmemorystream.create;
-  try
+//  try
    objecttexttobinary(filestream,memstream);
    writeln('objecttexttobinary OK');
    try
@@ -80,19 +80,21 @@ begin
      halt(1);
     end;
    end;
-  except
+{  except
    on e: exception do begin
     writeln('objecttexttobinary fails: '+e.message);
+    
     halt(1);
    end;
   end;
-  filestream.free;
+}  filestream.free;
   memstream.free;
- except
+{
+except
   writeln('file '+textfilename+' not found.');
   halt(1);
  end;
- test1.free;
+} test1.free;
  test2.free;
  deletefile(textfilename);
 end.

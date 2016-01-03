@@ -42,7 +42,7 @@ type
  );
 
   DrawingWand = record
-    id: culong;
+    id: Cardinal;
 
     name: array[0..MaxTextExtent] of Char;
 
@@ -59,7 +59,7 @@ type
     mvg_alloc,                // total allocated memory
 //    mvg_length: size_t;       // total MVG length
 
-    mvg_width: culong;      // current line width 
+    mvg_width: Cardinal;      // current line width 
 
     { Pattern support }
     
@@ -71,7 +71,7 @@ type
 
     { Graphic wand }
     
-    index: culong;          // array index
+    index: Cardinal;          // array index
 
     graphic_context: PPDrawInfo;
 
@@ -79,7 +79,7 @@ type
 
     { Pretty-printing depth }
   
-    indent_depth: culong;       // number of left-hand pad characters 
+    indent_depth: Cardinal;       // number of left-hand pad characters 
 
     { Path operation support }
   
@@ -90,7 +90,7 @@ type
     destroy,
     debug: MagickBooleanType;
 
-    signature: culong;
+    signature: Cardinal;
   end;
  
   PDrawingWand = ^DrawingWand;
@@ -112,7 +112,7 @@ function DrawGetTextDecoration(const wand: PDrawingWand): DecorationType; cdecl;
 
 function DrawGetFillAlpha(const wand: PDrawingWand): double; cdecl; external WandExport;
 function DrawGetFontSize(const wand: PDrawingWand): double; cdecl; external WandExport;
-function DrawGetStrokeDashArray(const wand: PDrawingWand; number_elements: culong): PDouble; cdecl; external WandExport;
+function DrawGetStrokeDashArray(const wand: PDrawingWand; number_elements: Cardinal): PDouble; cdecl; external WandExport;
 function DrawGetStrokeDashOffset(const wand: PDrawingWand): double; cdecl; external WandExport;
 function DrawGetStrokeAlpha(const wand: PDrawingWand): double; cdecl; external WandExport;
 function DrawGetStrokeWidth(const wand: PDrawingWand): double; cdecl; external WandExport;
@@ -121,7 +121,7 @@ function PeekDrawingWand(const wand: PDrawingWand): PDrawInfo; cdecl; external W
 
 function CloneDrawingWand(const wand: PDrawingWand): PDrawingWand; cdecl; external WandExport;
 function DestroyDrawingWand(wand: PDrawingWand): PDrawingWand; cdecl; external WandExport;
-{ Sem documenta
+{ Sem documentação
 function DrawAllocateWand(const DrawInfo *,Image *): PDrawingWand; cdecl; external WandExport;
 }
 function NewDrawingWand: PDrawingWand; cdecl; external WandExport;
@@ -148,7 +148,7 @@ function DrawSetClipPath(wand: PDrawingWand; const clip_path: PChar): MagickBool
 function DrawSetFillPatternURL(wand: PDrawingWand; const fill_url: PChar): MagickBooleanType; cdecl; external WandExport;
 function DrawSetFont(wand: PDrawingWand; const font_name: PChar): MagickBooleanType; cdecl; external WandExport;
 function DrawSetFontFamily(wand: PDrawingWand; const font_family: PChar): MagickBooleanType; cdecl; external WandExport;
-function DrawSetStrokeDashArray(wand: PDrawingWand; const number_elements: culong;
+function DrawSetStrokeDashArray(wand: PDrawingWand; const number_elements: Cardinal;
  const dash_array: Pdouble): MagickBooleanType; cdecl; external WandExport;
 function DrawSetStrokePatternURL(wand: PDrawingWand; const stroke_url: PChar): MagickBooleanType; cdecl; external WandExport;
 function DrawSetVectorGraphics(wand: PDrawingWand; const xml: PChar): MagickBooleanType; cdecl; external WandExport;
@@ -160,15 +160,15 @@ function DrawGetFontStretch(const wand: PDrawingWand): StretchType; cdecl; exter
 
 function DrawGetFontStyle(const wand: PDrawingWand): StyleType; cdecl; external WandExport;
 
-function DrawGetFontWeight(const wand: PDrawingWand): culong; cdecl; external WandExport;
-function DrawGetStrokeMiterLimit(const wand: PDrawingWand): culong; cdecl; external WandExport;
+function DrawGetFontWeight(const wand: PDrawingWand): Cardinal; cdecl; external WandExport;
+function DrawGetStrokeMiterLimit(const wand: PDrawingWand): Cardinal; cdecl; external WandExport;
 
 procedure ClearDrawingWand(wand: PDrawingWand); cdecl; external WandExport;
 procedure DrawAffine(wand: PDrawingWand; const affine: PAffineMatrix); cdecl; external WandExport;
 procedure DrawAnnotation(wand: PDrawingWand; const  x, y: double;
  const text: PChar); cdecl; external WandExport;
 procedure DrawArc(wand: PDrawingWand; const sx, sy, ex, ey, sd, ed: double); cdecl; external WandExport;
-procedure DrawBezier(wand: PDrawingWand; const number_coordinates: culong;
+procedure DrawBezier(wand: PDrawingWand; const number_coordinates: Cardinal;
  const coordinates: PPointInfo); cdecl; external WandExport;
 procedure DrawCircle(wand: PDrawingWand; const ox, oy, px, py: double); cdecl; external WandExport;
 procedure DrawColor(wand: PDrawingWand; const x, y: double;
@@ -213,7 +213,7 @@ procedure DrawPathLineToRelative(wand: PDrawingWand; const x, y: double); cdecl;
  const mode: PathMode; const x: double); cdecl; external WandExport;
 procedure DrawPathLineToHorizontalRelative(wand: PDrawingWand); cdecl; external WandExport;
 
-Contradio na declarao
+Contradição na declaração
 }
 procedure DrawPathLineToVerticalAbsolute(wand: PDrawingWand; const y: double); cdecl; external WandExport;
 procedure DrawPathLineToVerticalRelative(wand: PDrawingWand; const y: double); cdecl; external WandExport;
@@ -221,9 +221,9 @@ procedure DrawPathMoveToAbsolute(wand: PDrawingWand; const x, y: double); cdecl;
 procedure DrawPathMoveToRelative(wand: PDrawingWand; const x, y: double); cdecl; external WandExport;
 procedure DrawPathStart(wand: PDrawingWand); cdecl; external WandExport;
 procedure DrawPoint(wand: PDrawingWand; const x, y: double); cdecl; external WandExport;
-procedure DrawPolygon(wand: PDrawingWand; const number_coordinates: culong; const coordinates: PPointInfo
+procedure DrawPolygon(wand: PDrawingWand; const number_coordinates: Cardinal; const coordinates: PPointInfo
  ); cdecl; external WandExport;
-procedure DrawPolyline(wand: PDrawingWand; const number_coordinates: culong; const coordinates: PPointInfo
+procedure DrawPolyline(wand: PDrawingWand; const number_coordinates: Cardinal; const coordinates: PPointInfo
  ); cdecl; external WandExport;
 procedure DrawPopClipPath(wand: PDrawingWand); cdecl; external WandExport;
 procedure DrawPopDefs(wand: PDrawingWand); cdecl; external WandExport;
@@ -241,7 +241,7 @@ procedure DrawSetFillRule(wand: PDrawingWand; const fill_rule: FillRule); cdecl;
 procedure DrawSetFontSize(wand: PDrawingWand; const pointsize: double); cdecl; external WandExport;
 procedure DrawSetFontStretch(wand: PDrawingWand; const font_stretch: StretchType); cdecl; external WandExport;
 procedure DrawSetFontStyle(wand: PDrawingWand; const style: StyleType); cdecl; external WandExport;
-procedure DrawSetFontWeight(wand: PDrawingWand; const font_weight: culong); cdecl; external WandExport;
+procedure DrawSetFontWeight(wand: PDrawingWand; const font_weight: Cardinal); cdecl; external WandExport;
 procedure DrawSetGravity(wand: PDrawingWand; const gravity: GravityType); cdecl; external WandExport;
 procedure DrawSkewX(wand: PDrawingWand; const degrees: double); cdecl; external WandExport;
 procedure DrawSkewY(wand: PDrawingWand; const degrees: double); cdecl; external WandExport;
@@ -251,7 +251,7 @@ procedure DrawSetStrokeColor(wand: PDrawingWand; const stroke_wand: PPixelWand);
 procedure DrawSetStrokeDashOffset(wand: PDrawingWand; const dash_offset: double); cdecl; external WandExport;
 procedure DrawSetStrokeLineCap(wand: PDrawingWand; const linecap_: LineCap); cdecl; external WandExport;
 procedure DrawSetStrokeLineJoin(wand: PDrawingWand; const linejoin_: LineJoin); cdecl; external WandExport;
-procedure DrawSetStrokeMiterLimit(wand: PDrawingWand; const miterlimit: culong); cdecl; external WandExport;
+procedure DrawSetStrokeMiterLimit(wand: PDrawingWand; const miterlimit: Cardinal); cdecl; external WandExport;
 procedure DrawSetStrokeAlpha(wand: PDrawingWand; const stroke_opacity: double); cdecl; external WandExport;
 procedure DrawSetStrokeWidth(wand: PDrawingWand; const troke_width: double); cdecl; external WandExport;
 procedure DrawSetTextAlignment(wand: PDrawingWand; const alignment: AlignType); cdecl; external WandExport;
@@ -260,7 +260,7 @@ procedure DrawSetTextAntialias(wand: PDrawingWand; const text_antialias: MagickB
 procedure DrawSetTextDecoration(wand: PDrawingWand; const decoration: DecorationType); cdecl; external WandExport;
 procedure DrawSetTextEncoding(wand: PDrawingWand; const encoding: PChar); cdecl; external WandExport;
 procedure DrawSetTextUnderColor(wand: PDrawingWand; const under_wand: PPixelWand); cdecl; external WandExport;
-procedure DrawSetViewbox(wand: PDrawingWand; x1, y1, x2, y2: culong); cdecl; external WandExport;
+procedure DrawSetViewbox(wand: PDrawingWand; x1, y1, x2, y2: Cardinal); cdecl; external WandExport;
 procedure DrawTranslate(wand: PDrawingWand; const x, y: double); cdecl; external WandExport;
 
 {

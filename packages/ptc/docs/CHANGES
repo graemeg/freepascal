@@ -1,0 +1,22 @@
+0.99.5
+ - support for fpc 2.0.0. fpc 1.0.10 support dropped, except for DOS.
+ - support for amd64 (the code is now 64-bit safe, but still little endian-only)
+ - fix the (sometimes) missing titlebar when using the metacity window manager
+
+0.99.4
+ - some X11 fixes (missing cdecl's, wrong alignments, etc.)
+ - FreeBSD and NetBSD now compile and work (dga and XShm still not tested...)
+ - improved exception handling in demos and examples
+
+0.99.3
+ - support for fpc 1.9.2+ (adapted to use the new unix rtl)
+ - the dos console uses rdtsc if available for more accurate timing
+ - some vesa fixes
+
+0.99.2
+ - alt, shift, ctrl modifier keys support for X11
+ - key release support for win32 and X11
+ - new example (keybrd2) demonstrating the use of key release events
+
+0.99.1
+ - first release to sourceforge

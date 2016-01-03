@@ -8,9 +8,15 @@ main=fcl-db
 [target]
 units=dbf
 examples=testdbf
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 [require]
 packages=fcl-base
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [compiler]
 options=-S2 -Sh

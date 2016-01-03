@@ -25,6 +25,10 @@ NR_F5 = tregister($02000005);
 NR_F6 = tregister($02000006);
 NR_F7 = tregister($02000007);
 NR_S0 = tregister($04060000);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 NR_S1 = tregister($04060020);
 NR_D0 = tregister($04070000);
 NR_S2 = tregister($04060001);
@@ -71,6 +75,69 @@ NR_S29 = tregister($0406002E);
 NR_D14 = tregister($0407000E);
 NR_S30 = tregister($0406000F);
 NR_S31 = tregister($0406002F);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+NR_S1 = tregister($04060000);
+NR_D0 = tregister($04070000);
+NR_S2 = tregister($04060001);
+NR_S3 = tregister($04060001);
+NR_D1 = tregister($04070001);
+NR_S4 = tregister($04060002);
+NR_S5 = tregister($04060002);
+NR_D2 = tregister($04070002);
+NR_S6 = tregister($04060003);
+NR_S7 = tregister($04060003);
+NR_D3 = tregister($04070003);
+NR_S8 = tregister($04060004);
+NR_S9 = tregister($04060004);
+NR_D4 = tregister($04070004);
+NR_S10 = tregister($04060005);
+NR_S11 = tregister($04060005);
+NR_D5 = tregister($04070005);
+NR_S12 = tregister($04060006);
+NR_S13 = tregister($04060006);
+NR_D6 = tregister($04070006);
+NR_S14 = tregister($04060007);
+NR_S15 = tregister($04060007);
+NR_D7 = tregister($04070007);
+NR_S16 = tregister($04060008);
+NR_S17 = tregister($04060008);
+NR_D8 = tregister($04070008);
+NR_S18 = tregister($04060009);
+NR_S19 = tregister($04060009);
+NR_D9 = tregister($04070009);
+NR_S20 = tregister($0406000A);
+NR_S21 = tregister($0406000A);
+NR_D10 = tregister($0407000A);
+NR_S22 = tregister($0406000B);
+NR_S23 = tregister($0406000B);
+NR_D11 = tregister($0407000B);
+NR_S24 = tregister($0406000C);
+NR_S25 = tregister($0406000C);
+NR_D12 = tregister($0407000C);
+NR_S26 = tregister($0406000D);
+NR_S27 = tregister($0406000D);
+NR_D13 = tregister($0407000D);
+NR_S28 = tregister($0406000E);
+NR_S29 = tregister($0406000E);
+NR_D14 = tregister($0407000E);
+NR_S30 = tregister($0406000F);
+NR_S31 = tregister($0406000F);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 NR_D15 = tregister($0407000F);
 NR_D16 = tregister($04070010);
 NR_D17 = tregister($04070011);
@@ -88,6 +155,10 @@ NR_D28 = tregister($0407001C);
 NR_D29 = tregister($0407001D);
 NR_D30 = tregister($0407001E);
 NR_D31 = tregister($0407001F);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 NR_CPSR = tregister($05000000);
 NR_FPSCR = tregister($05000001);
 NR_SPSR = tregister($05000002);
@@ -130,3 +201,19 @@ NR_FPEXC = tregister($05000026);
 NR_APSR_nzcvq = tregister($05000027);
 NR_APSR_g = tregister($05000028);
 NR_APSR_nzcvqg = tregister($05000029);
+=======
+NR_CPSR_C = tregister($05000000);
+NR_FPSCR = tregister($05000001);
+>>>>>>> graemeg/cpstrnew
+=======
+NR_CPSR_C = tregister($05000000);
+NR_FPSCR = tregister($05000001);
+>>>>>>> graemeg/cpstrnew
+=======
+NR_CPSR_C = tregister($05000000);
+NR_FPSCR = tregister($05000001);
+>>>>>>> graemeg/cpstrnew
+=======
+NR_CPSR_C = tregister($05000000);
+NR_FPSCR = tregister($05000001);
+>>>>>>> origin/cpstrnew

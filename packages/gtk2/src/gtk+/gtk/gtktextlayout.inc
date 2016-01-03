@@ -132,7 +132,7 @@
 {$IFDEF read_interface_rest}
 {$IFNDEF KYLIX}
 var
-  {$IFDEF WINDOWS}
+  {$IFDEF WIN32}
    gtk_text_attr_appearance_type : TPangoAttrType; external gtklib name 'gtk_text_attr_appearance_type';
   {$ELSE}
    gtk_text_attr_appearance_type : TPangoAttrType;cvar; external;

@@ -1,6 +1,26 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 %%% Reordering of errorheu.msg respective to errore.msg
 %%% Contains all comments from errorheu.msg
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 #
+=======
+﻿#
+>>>>>>> graemeg/fixes_2_2
+=======
+﻿#
+>>>>>>> origin/fixes_2_2
 #   This file is part of the Free Pascal Compiler
 #   Copyright (c) 1999-2008 by the Free Pascal Development team
 #
@@ -3360,6 +3380,8 @@ option_config_is_dir=11040_F_נמצאה ספרייה במקום קובץ ההג�
 option_confict_asm_debug=11041_W_סוג הפלט של המאסף שנבחר "$1" אינו יכול ליצור מידע עבור ניפוי שגיאות. מבטל ניפוי שגיאות
 % The assembler output selected can not generate
 % debugging information, debugging option is therefore disabled.
+<<<<<<< HEAD
+<<<<<<< HEAD
 %\end{description}
 # EndOfTeX
 
@@ -3484,6 +3506,10 @@ wpo_symbol_live_info_needs_smart_linking=12018_E_Collection of symbol liveness i
 % actually used or not. So in that case all symbols will be seen as live, which makes this optimization ineffective.
 wpo_cant_create_feedback_file=12019_E_Cannot create specified whole program optimisation feedback file "$1"
 % The compiler is unable to create the file specified using the -FW parameter to store the whole program optimisation information.
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 %\end{description}
 # EndOfTeX
 
@@ -3493,7 +3519,31 @@ wpo_cant_create_feedback_file=12019_E_Cannot create specified whole program opti
 #
 option_logo=11023_[
 Free Pascal Compiler version $FPCFULLVERSION [$FPCDATE] for $FPCCPU
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Copyright (c) 1993-2015 by Florian Klaempfl and others
+=======
+Copyright (c) 1993-2011 by Florian Klaempfl
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011 by Florian Klaempfl
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011 by Florian Klaempfl
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011 by Florian Klaempfl
+>>>>>>> origin/cpstrnew
+=======
+Copyright (c) 1993-2008 by Florian Klaempfl
+>>>>>>> graemeg/fixes_2_2
+=======
+Copyright (c) 1993-2008 by Florian Klaempfl
+>>>>>>> origin/fixes_2_2
 ]
 
 #

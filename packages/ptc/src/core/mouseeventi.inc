@@ -1,6 +1,22 @@
 {
     Free Pascal port of the OpenPTC C++ library.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2001-2007, 2009-2011  Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -30,6 +46,10 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 type
   TPTCMouseEvent = class(TPTCEvent, IPTCMouseEvent)
   private
@@ -76,6 +96,18 @@ begin
 end;
 
 function TPTCMouseEvent.GetEventType: TPTCEventType;
+=======
+function TPTCMouseEvent.GetType: TPTCEventType;
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCMouseEvent.GetType: TPTCEventType;
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCMouseEvent.GetType: TPTCEventType;
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCMouseEvent.GetType: TPTCEventType;
+>>>>>>> origin/cpstrnew
 begin
   Result := PTCMouseEvent;
 end;
@@ -89,6 +121,10 @@ begin
   FButtonState := AButtonState;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TPTCMouseEvent.GetX: Integer;
 begin
   Result := FX;
@@ -114,6 +150,14 @@ begin
   Result := FButtonState;
 end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 constructor TPTCMouseButtonEvent.Create(AX, AY, ADeltaX, ADeltaY: Integer; AButtonState: TPTCMouseButtonState; APress: Boolean; AButton: TPTCMouseButton);
 begin
   if APress xor (AButton In AButtonState) then
@@ -125,17 +169,41 @@ begin
   FButton := AButton;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TPTCMouseButtonEvent.GetPress: Boolean;
 begin
   Result := FPress;
 end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 function TPTCMouseButtonEvent.GetRelease: Boolean;
 begin
   Result := not FPress;
 end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 function TPTCMouseButtonEvent.GetButton: TPTCMouseButton;
 begin
   Result := FButton;
 end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

@@ -78,11 +78,19 @@ const
 {$ifdef Unix}
   AllFiles = '*';
 {$else}
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$ifdef OS_AMIGA}
     AllFiles = '*';
   {$else}
     AllFiles = '*.*';
   {$endif}
+=======
+  AllFiles = '*.*';
+>>>>>>> graemeg/fixes_2_2
+=======
+  AllFiles = '*.*';
+>>>>>>> origin/fixes_2_2
 {$endif}
 
 type
@@ -619,9 +627,21 @@ resourcestring  sChangeDirectory='Change Directory';
 {$ifdef go32v2}
 {$define NetDrive}
 {$endif go32v2}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef OS_WINDOWS}
 {$define NetDrive}
 {$endif OS_WINDOWS}
+=======
+{$ifdef win32}
+{$define NetDrive}
+{$endif win32}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef win32}
+{$define NetDrive}
+{$endif win32}
+>>>>>>> origin/fixes_2_2
 
 procedure RemoveDoubleDirSep(var ExpPath : PathStr);
 var
@@ -671,7 +691,15 @@ begin
     // This function is called on current directories.
     // If the current dir starts with a . on Linux it is is hidden.
     // That's why we allow hidden dirs below (bug 6173)
+<<<<<<< HEAD
+<<<<<<< HEAD
     FindFirst(ExpPath, Directory+hidden, SR);
+=======
+    FindFirst(ExpPath, Directory+hidden, SR); 
+>>>>>>> graemeg/fixes_2_2
+=======
+    FindFirst(ExpPath, Directory+hidden, SR); 
+>>>>>>> origin/fixes_2_2
     PathValid := (DosError = 0) and (SR.Attr and Directory <> 0);
 {$ifdef NetDrive}
     if (DosError<>0) and (length(ExpPath)>2) and
@@ -1292,11 +1320,19 @@ end;
   function RelativePath(var S: PathStr): Boolean;
   begin
     S := LTrim(RTrim(S));
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$ifdef HASAMIGA}
     RelativePath := Pos(DriveSeparator, S) = 0;
     {$ELSE}
     RelativePath := not ((S <> '') and ((S[1] = DirSeparator) or (S[2] = ':')));
     {$ENDIF}
+=======
+    RelativePath := not ((S <> '') and ((S[1] = DirSeparator) or (S[2] = ':')));
+>>>>>>> graemeg/fixes_2_2
+=======
+    RelativePath := not ((S <> '') and ((S[1] = DirSeparator) or (S[2] = ':')));
+>>>>>>> origin/fixes_2_2
   end;
 
 { try to reduce the length of S+dir as a file path+pattern }
@@ -1495,8 +1531,18 @@ begin
   Inc(R.A.Y,3); Inc(R.B.Y,3);
   if AOptions and fdHelpButton <> 0 then
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     //Insert(New(PButton, Init(R,slHelp,cmHelp, bfNormal)));
     //Inc(R.A.Y,3); Inc(R.B.Y,3);
+=======
+    Insert(New(PButton, Init(R,slHelp,cmHelp, bfNormal)));
+    Inc(R.A.Y,3); Inc(R.B.Y,3);
+>>>>>>> graemeg/fixes_2_2
+=======
+    Insert(New(PButton, Init(R,slHelp,cmHelp, bfNormal)));
+    Inc(R.A.Y,3); Inc(R.B.Y,3);
+>>>>>>> origin/fixes_2_2
   end;
 
   R.Assign(1,16,48,18);
@@ -1675,14 +1721,26 @@ var
     {$ifdef Unix}
     if Path=DirSeparator then Root:=true;
     {$else}
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$ifdef HASAMIGA}
     if Length(Path) > 0 then Root := Path[Length(Path)] = DriveSeparator;
     {$else}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     if (length(Path)=3) and (Upcase(Path[1]) in['A'..'Z']) and
        (Path[2]=':') and (Path[3]=DirSeparator) then
          Root:=true;
     {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     if (Root=false) and (copy(Path,length(Path),1)=DirSeparator) then
       NormalizeDir:=copy(Path,1,length(Path)-1)
     else
@@ -2013,8 +2071,18 @@ begin
   Insert(New(PButton, Init(R,slRevert, cmRevert, bfNormal)));
   if AOptions and cdHelpButton <> 0 then
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     //Inc(R.A.Y,3); Inc(R.B.Y,3);
     //Insert(New(PButton, Init(R,slHelp, cmHelp, bfNormal)));
+=======
+    Inc(R.A.Y,3); Inc(R.B.Y,3);
+    Insert(New(PButton, Init(R,slHelp, cmHelp, bfNormal)));
+>>>>>>> graemeg/fixes_2_2
+=======
+    Inc(R.A.Y,3); Inc(R.B.Y,3);
+    Insert(New(PButton, Init(R,slHelp, cmHelp, bfNormal)));
+>>>>>>> origin/fixes_2_2
   end;
 
   if AOptions and cdNoLoadDir = 0 then SetUpDialog;
@@ -2140,14 +2208,30 @@ begin
     P := FExpand(DirInput^.Data^);
     if (Length(P) > 3) and (P[Length(P)] = DirSeparator) then
       Dec(P[0]);
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}{$I-}
+=======
+    {$I-}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$I-}
+>>>>>>> origin/fixes_2_2
     ChDir(P);
     if (IOResult <> 0) then
     begin
       MessageBox(sInvalidDirectory, nil, mfError + mfOkButton);
       Valid := False;
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$pop}
+=======
+    {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$I+}
+>>>>>>> origin/fixes_2_2
   end;
 end;
 
@@ -2173,12 +2257,20 @@ begin
     CurDir := ''
   else begin
     CurDir := DirInput^.Data^;
+<<<<<<< HEAD
+<<<<<<< HEAD
     
     if (CurDir[Length(CurDir)] <> DirSeparator) 
     {$IFDEF HASAMIGA}
       and (CurDir[Length(CurDir)] <> DriveSeparator) 
     {$endif}
     then
+=======
+    if (CurDir[Length(CurDir)] <> DirSeparator) then
+>>>>>>> graemeg/fixes_2_2
+=======
+    if (CurDir[Length(CurDir)] <> DirSeparator) then
+>>>>>>> origin/fixes_2_2
       CurDir := CurDir + DirSeparator;
   end;
 end;
@@ -2355,7 +2447,15 @@ var
   D: Char;
 begin
   D := GetCurDrive;
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$I-}
+=======
+  {$I-}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$I-}
+>>>>>>> origin/fixes_2_2
   ChDir(Drive+':');
   if (IOResult = 0) then
   begin
@@ -2363,7 +2463,15 @@ begin
     ChDir(D+':')
   end
   else DriveValid := False;
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$pop}
+=======
+  {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$I+}
+>>>>>>> origin/fixes_2_2
 end;
 {$else HAS_DOS_DRIVES}
 begin
@@ -2404,11 +2512,19 @@ begin
     ExtractDir := '';
     Exit;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   if (D[Byte(D[0])] <> DirSeparator)
   {$ifdef HASAMIGA}
     and (D[Byte(D[0])] <> DriveSeparator)
   {$endif}
   then
+=======
+  if D[Byte(D[0])] <> DirSeparator then
+>>>>>>> graemeg/fixes_2_2
+=======
+  if D[Byte(D[0])] <> DirSeparator then
+>>>>>>> origin/fixes_2_2
     D := D + DirSeparator;
   ExtractDir := D;
 end;
@@ -2491,11 +2607,19 @@ begin
 {$ifdef Unix}
   Is:=(S=DirSeparator); { handle root }
 {$else}
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$ifdef HASAMIGA}
   Is := (Length(S) > 0) and (S[Length(S)] = DriveSeparator);
   {$else}
   Is:=(length(S)=3) and (Upcase(S[1]) in['A'..'Z']) and (S[2]=':') and (S[3]=DirSeparator);
   {$endif}
+=======
+  Is:=(length(S)=3) and (Upcase(S[1]) in['A'..'Z']) and (S[2]=':') and (S[3]=DirSeparator);
+>>>>>>> graemeg/fixes_2_2
+=======
+  Is:=(length(S)=3) and (Upcase(S[1]) in['A'..'Z']) and (S[2]=':') and (S[3]=DirSeparator);
+>>>>>>> origin/fixes_2_2
   { handle root dirs }
 {$endif}
   if Is=false then
@@ -2697,9 +2821,21 @@ var
   Dlg : PEditChDirDialog;
   Rec : DirStr;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$I-}
   GetDir(0,Dir);
   {$pop}
+=======
+  {$I-}
+  GetDir(0,Dir);
+  {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$I-}
+  GetDir(0,Dir);
+  {$I+}
+>>>>>>> origin/fixes_2_2
   Rec := FExpand(ADir);
   Dlg := New(PEditChDirDialog,Init(cdHelpButton,HistoryID));
   if (Application^.ExecuteDialog(Dlg,@Rec) = cmOk) then
@@ -2708,9 +2844,21 @@ begin
     ADir := Rec;
   end
   else SelectDir := False;
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$I-}
   ChDir(Dir);
   {$pop}
+=======
+  {$I-}
+  ChDir(Dir);
+  {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$I-}
+  ChDir(Dir);
+  {$I+}
+>>>>>>> origin/fixes_2_2
 end;
 
 {****************************************************************************}
@@ -2735,11 +2883,19 @@ begin
     if (i = 0) then
       AFile := AFile + D1
     else AFile := AFile + Copy(D1,Succ(i),Length(D1)-i);
+<<<<<<< HEAD
+<<<<<<< HEAD
     if (AFile[Length(AFile)] <> DirSeparator)
     {$ifdef HASAMIGA}
       and (AFile[Length(AFile)] <> DriveSeparator)
     {$endif}
     then
+=======
+    if AFile[Length(AFile)] <> DirSeparator then
+>>>>>>> graemeg/fixes_2_2
+=======
+    if AFile[Length(AFile)] <> DirSeparator then
+>>>>>>> origin/fixes_2_2
       AFile := AFile + DirSeparator;
     if Length(AFile)+Length(N1)+Length(E1) <= MaxLen then
       AFile := AFile + N1 + E1
@@ -2771,11 +2927,25 @@ begin
   else
     IllegalChars := ';,=+<>|"[] '+DirSeparator;
 {$else not go32v2}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef OS_WINDOWS}
     IllegalChars := ';,=+<>|"[]'+DirSeparator;
 {$else not go32v2 and not OS_WINDOWS }
     IllegalChars := ';,=+<>|"[] '+DirSeparator;
 {$endif not OS_WINDOWS}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef win32}
+    IllegalChars := ';,=+<>|"[]'+DirSeparator;
+{$else not go32v2 and not win32 }
+    IllegalChars := ';,=+<>|"[] '+DirSeparator;
+{$endif not win32}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif not go32v2}
 {$else not PPC_FPC}
   IllegalChars := ';,=+<>|"[] '+DirSeparator;

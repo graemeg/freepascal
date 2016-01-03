@@ -48,6 +48,10 @@
     _reserved2: id;
     _childNodes: NSMutableArray;
     _parentNode: NSTreeNode;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __NSTreeNodeFlags: record
       case byte of
        0: (_anonbitfield_NSTreeNode0: cuint);
@@ -55,6 +59,29 @@
         ignoreObserving: 0..1;
         reserved: 0..((1 shl 31)-1);
        end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __NSTreeNodeFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSTreeNode0: cuint);
+       1: (
+        ignoreObserving: 0..1;
+        reserved: 0..((1 shl 31)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     

@@ -127,8 +127,20 @@ var
 
 {$IFDEF WINDOWS}{$R createusers.rc}{$ENDIF}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$R *.res}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 begin
   Application:=TMyApplication.Create(nil);
   Application.Title:='My Application';

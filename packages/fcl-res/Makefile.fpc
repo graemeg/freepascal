@@ -4,10 +4,38 @@
 
 [package]
 name=fcl-res
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=acceleratorsresource bitmapresource coffconsts coffreader cofftypes \
+      coffwriter dfmreader elfconsts elfreader elftypes elfwriter externalreader \
+      externaltypes externalwriter fpcrestypes groupcursorresource groupiconresource \
+      groupresource icocurtypes machoconsts machoreader machotypes machowriter \
+      resdatastream resfactory resmerger resource resourcetree resreader reswriter \
+      stringtableresource strtable tlbreader versionconsts versionresource versiontypes \
+      winpeimagereader
+rsts=versiontypes stringtableresource resource resfactory
+
+
+[compiler]
+options=-S2h
+sourcedir=src
+>>>>>>> graemeg/cpstrnew
 
 [install]
 fpcpackage=y

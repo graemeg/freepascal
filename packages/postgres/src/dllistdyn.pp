@@ -14,6 +14,15 @@ uses
 
 {$PACKRECORDS C}
 
+{$IFDEF Unix}
+  const
+    pqlib = 'libpq.so';
+{$ENDIF}
+{$IFDEF Windows}
+  const
+    pqlib = 'libpq.dll';
+{$ENDIF}
+
 {$i dllisttypes.inc}
 
 var
@@ -34,63 +43,52 @@ var
 { Macro translated }
 Function  DLE_VAL(elem : PDlelem) : pointer;
 
-Procedure InitialiseDllist(libpath:string);
+Procedure InitialiseDllist;
 Procedure ReleaseDllist;
 
 var DllistLibraryHandle : TLibHandle;
-var libpgCriticalSection: TRTLCriticalSection;
 
 implementation
 
 var RefCount : integer;
 
-Procedure InitialiseDllist(libpath:string);
+Procedure InitialiseDllist;
 
 begin
-  EnterCriticalsection(libpgCriticalSection);
-  try
-    inc(RefCount);
-    if RefCount = 1 then
+  inc(RefCount);
+  if RefCount = 1 then
+    begin
+    DllistLibraryHandle := loadlibrary(pqlib);
+    if DllistLibraryHandle = nilhandle then
       begin
-      DllistLibraryHandle := loadlibrary(libpath);
-      if DllistLibraryHandle = nilhandle then
-        begin
-        RefCount := 0;
-        Raise EInOutError.Create('Can not load PosgreSQL client. Is it installed? ('+libpath+')');
-        end;
-
-      pointer(DLNewList) := GetProcedureAddress(DllistLibraryHandle,'DLNewList');
-      pointer(DLFreeList) := GetProcedureAddress(DllistLibraryHandle,'DLFreeList');
-      pointer( DLNewElem) := GetProcedureAddress(DllistLibraryHandle,' DLNewElem');
-      pointer(DLFreeElem) := GetProcedureAddress(DllistLibraryHandle,'DLFreeElem');
-      pointer( DLGetHead) := GetProcedureAddress(DllistLibraryHandle,' DLGetHead');
-      pointer( DLGetTail) := GetProcedureAddress(DllistLibraryHandle,' DLGetTail');
-      pointer( DLRemTail) := GetProcedureAddress(DllistLibraryHandle,' DLRemTail');
-      pointer( DLGetPred) := GetProcedureAddress(DllistLibraryHandle,' DLGetPred');
-      pointer( DLGetSucc) := GetProcedureAddress(DllistLibraryHandle,' DLGetSucc');
-      pointer(DLRemove) := GetProcedureAddress(DllistLibraryHandle,'DLRemove');
-      pointer(DLAddHead) := GetProcedureAddress(DllistLibraryHandle,'DLAddHead');
-      pointer(DLAddTail) := GetProcedureAddress(DllistLibraryHandle,'DLAddTail');
-      pointer( DLRemHead) := GetProcedureAddress(DllistLibraryHandle,' DLRemHead');
+      RefCount := 0;
+      Raise EInOutError.Create('Can not load PosgreSQL client. Is it installed? ('+pqlib+')');
       end;
-  finally
-    LeaveCriticalsection(libpgCriticalSection);
-  end;
+
+    pointer(DLNewList) := GetProcedureAddress(DllistLibraryHandle,'DLNewList');
+    pointer(DLFreeList) := GetProcedureAddress(DllistLibraryHandle,'DLFreeList');
+    pointer( DLNewElem) := GetProcedureAddress(DllistLibraryHandle,' DLNewElem');
+    pointer(DLFreeElem) := GetProcedureAddress(DllistLibraryHandle,'DLFreeElem');
+    pointer( DLGetHead) := GetProcedureAddress(DllistLibraryHandle,' DLGetHead');
+    pointer( DLGetTail) := GetProcedureAddress(DllistLibraryHandle,' DLGetTail');
+    pointer( DLRemTail) := GetProcedureAddress(DllistLibraryHandle,' DLRemTail');
+    pointer( DLGetPred) := GetProcedureAddress(DllistLibraryHandle,' DLGetPred');
+    pointer( DLGetSucc) := GetProcedureAddress(DllistLibraryHandle,' DLGetSucc');
+    pointer(DLRemove) := GetProcedureAddress(DllistLibraryHandle,'DLRemove');
+    pointer(DLAddHead) := GetProcedureAddress(DllistLibraryHandle,'DLAddHead');
+    pointer(DLAddTail) := GetProcedureAddress(DllistLibraryHandle,'DLAddTail');
+    pointer( DLRemHead) := GetProcedureAddress(DllistLibraryHandle,' DLRemHead');
+    end;
 end;
 
 Procedure ReleaseDllist;
 
 begin
-  EnterCriticalsection(libpgCriticalSection);
-  try
-    if RefCount > 0 then dec(RefCount);
-    if RefCount = 0 then
-      begin
-      if not UnloadLibrary(DllistLibraryHandle) then inc(RefCount);
-      end;
-  finally
-    LeaveCriticalsection(libpgCriticalSection);
-  end;
+  if RefCount > 0 then dec(RefCount);
+  if RefCount = 0 then
+    begin
+    if not UnloadLibrary(DllistLibraryHandle) then inc(RefCount);
+    end;
 end;
 
 // This function is also defined in Dllist!
@@ -100,8 +98,4 @@ begin
 end;
 
 
-initialization
-  InitCriticalSection(libpgCriticalSection);
-finalization
-  DoneCriticalsection(libpgCriticalSection);
 end.

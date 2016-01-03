@@ -54,10 +54,35 @@ const
     _tableView: NSTableView;
     _headerCell: NSCell;
     _dataCell: NSCell;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __cFlags: record
       case byte of
        0: (_anonbitfield_NSTableColumn0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __cFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSTableColumn0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         oldIsResizable: 0..1;
         _isEditable: 0..1;
         resizedPostingDisableCount: 0..((1 shl 8)-1);
@@ -66,7 +91,19 @@ const
         autoResizingAllowed: 0..1;
         hidden: 0..1;
         RESERVED: 0..((1 shl 18)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _tcAuxiliaryStorage: id;

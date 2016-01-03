@@ -8,8 +8,20 @@ uses
 
 {$IFDEF WINDOWS}{$R extgrid.rc}{$ENDIF}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$R *.res}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 begin
   Application.Title:='SQLDBWebDataProvider demo using ExtJS';
   Application.Initialize;

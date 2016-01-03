@@ -114,8 +114,18 @@ begin
   res:=FileTimeToLocalFileTime(@WTime, @lft) and FileTimeToSystemTime(@lft, @st);
   if res then
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     FatDate:=st.wDay or (st.wMonth shl 5) or (word(st.wYear - 1980) shl 9);
     FatTime:=word(st.wSecond div 2) or (st.wMinute shl 5) or (st.wHour shl 11);
+=======
+    FatDate:=st.wDay or (st.wMonth shl 5) or ((st.wYear - 1980) shl 9);
+    FatTime:=(st.wSecond div 2) or (st.wMinute shl 5) or (st.wHour shl 11);
+>>>>>>> graemeg/fixes_2_2
+=======
+    FatDate:=st.wDay or (st.wMonth shl 5) or ((st.wYear - 1980) shl 9);
+    FatTime:=(st.wSecond div 2) or (st.wMinute shl 5) or (st.wHour shl 11);
+>>>>>>> origin/fixes_2_2
     Longrec(Dtime).Hi:=FatDate;
     Longrec(Dtime).Lo:=FatTime;
   end;
@@ -484,11 +494,23 @@ end;
 procedure getfattr(var f;var attr : word);
 var
   l : cardinal;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_ANSI_TEXTFILEREC}
   u: unicodestring;
 {$endif FPC_ANSI_TEXTFILEREC}
 begin
   if filerec(f).name[0] = #0 then
+=======
+  buf: array[0..MaxPathLen] of WideChar;
+begin
+  if filerec(f).name[1] = #0 then
+>>>>>>> graemeg/fixes_2_2
+=======
+  buf: array[0..MaxPathLen] of WideChar;
+begin
+  if filerec(f).name[1] = #0 then
+>>>>>>> origin/fixes_2_2
     begin
       doserror:=3;
       attr:=0;
@@ -496,12 +518,22 @@ begin
   else
     begin
       doserror:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_ANSI_TEXTFILEREC}
       widestringmanager.Ansi2UnicodeMoveProc(filerec(f).name,DefaultFileSystemCodePage,u,length(filerec(f).name));
       l:=GetFileAttributes(pwidechar(u));
 {$else}
       l:=GetFileAttributes(filerec(f).name);
 {$endif}
+=======
+      AnsiToWideBuf(@filerec(f).name, -1, buf, SizeOf(buf));
+      l:=GetFileAttributes(buf);
+>>>>>>> graemeg/fixes_2_2
+=======
+      AnsiToWideBuf(@filerec(f).name, -1, buf, SizeOf(buf));
+      l:=GetFileAttributes(buf);
+>>>>>>> origin/fixes_2_2
       if l = $ffffffff then
        begin
          doserror:=Last2DosError(GetLastError);

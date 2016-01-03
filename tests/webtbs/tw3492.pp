@@ -1,4 +1,9 @@
 {$mode fpc}
+uses
+{$ifdef unix}
+  cwstring,
+{$endif unix}
+  SysUtils;
 
 resourcestring
   s = 'OK';

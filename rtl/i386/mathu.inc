@@ -70,20 +70,38 @@ function cotan(x : float) : float;assembler;
     fldt X
     fptan
     fdivp %st,%st(1)
+<<<<<<< HEAD
+<<<<<<< HEAD
     fwait
   end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$define FPC_MATH_HAS_LOG2}
 function log2(x : float) : float;assembler;
   asm
     fld1
     fldt x
     fyl2x
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     fwait
   end;
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$define FPC_MATH_HAS_DIVMOD}
 procedure DivMod(Dividend: Integer; Divisor: Word; var Result, Remainder: Word);assembler;
 asm

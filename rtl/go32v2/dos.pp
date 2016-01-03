@@ -197,7 +197,14 @@ end;
 const
   DOS_MAX_COMMAND_LINE_LENGTH = 126;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure exec_ansistring(path : string;comline : ansistring);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure exec(const path : pathstr;const comline : comstr);
+>>>>>>> graemeg/fixes_2_2
 type
   realptr = packed record
     ofs,seg : word;
@@ -234,6 +241,8 @@ var
     start_pos,ls : longint;
   begin
      paste_to_dos:=false;
+<<<<<<< HEAD
+<<<<<<< HEAD
      if include_string_length then
        start_pos:=0
      else
@@ -248,6 +257,16 @@ var
       RunError(217);
      end;
 {
+=======
+     ls:=Length(src)-n;
+     if current_dos_buffer_pos+ls+3>transfer_buffer+tb_size then
+      RunError(217);
+>>>>>>> graemeg/fixes_2_2
+=======
+     ls:=Length(src)-n;
+     if current_dos_buffer_pos+ls+3>transfer_buffer+tb_size then
+      RunError(217);
+>>>>>>> origin/fixes_2_2
      getmem(c,ls+3);
 }
      Move (Src [Start_Pos], ExecBufPtr [Current_Dos_Buffer_Pos], LS + 1);
@@ -368,6 +387,7 @@ var
 
 begin
 { create command line }
+<<<<<<< HEAD
   c:=comline; 
   use_proxy:=false;
   if force_go32v2_proxy then
@@ -387,11 +407,27 @@ begin
            writeln(stderr,'After: "',c,'"');
          end;
     end;
+=======
+  c:=comline;
+  if length(c)>DOS_MAX_COMMAND_LINE_LENGTH then
+    c[0]:=chr(DOS_MAX_COMMAND_LINE_LENGTH);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { create path }
 {$ifdef DEBUG_PROXY}
   writeln(stderr,'Dos.exec path="',path,'"');
 {$endif DEBUG_PROXY}
   p:=path;
+<<<<<<< HEAD
+=======
+{ allow slash as backslash }
+  DoDirSeparators(p);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   if LFNSupport then
     GetShortName(p);
 { create buffer }
@@ -411,6 +447,8 @@ begin
   for i:=1 to envcount do
    paste_to_dos(envstr(i),false,false);
   {the behaviour is still suboptimal because variable COMMAND is stripped out}
+<<<<<<< HEAD
+<<<<<<< HEAD
   paste_to_dos(chr(0),false,false); { adds a double zero at the end }
   if use_proxy then
     setup_proxy_cmdline;
@@ -426,6 +464,16 @@ begin
   paste_to_dos(c,true,true);
 
   la_e:=TB + current_dos_buffer_pos;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  paste_to_dos(chr(0),false,1); { adds a double zero at the end }
+  la_p:=current_dos_buffer_pos;
+  paste_to_dos(p,false,0);
+  la_c:=current_dos_buffer_pos;
+  paste_to_dos(c,true,0);
+  la_e:=current_dos_buffer_pos;
+>>>>>>> graemeg/fixes_2_2
   fcb1_la:=la_e;
   la_e:=la_e+16;
   fcb2_la:=la_e;
@@ -541,6 +589,8 @@ const
   IOCTL_INPUT = 3;       //For request header command field
   CDFUNC_SECTSIZE = 7;   //For cdrom control block func field
   CDFUNC_VOLSIZE  = 8;   //For cdrom control block func field
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 type
   TRequestHeader = packed record
@@ -572,6 +622,44 @@ function do_diskdata(drive : byte; Free : boolean) : Int64;
 var
   blocksize, freeblocks, totblocks : longword;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+type
+  TRequestHeader = packed record
+    length     : byte;         { $00 }
+    subunit    : byte;         { $01 }
+    command    : byte;         { $02 }
+    status     : word;         { $03 }
+    reserved1  : longword;     { $05 }
+    reserved2  : longword;     { $09 }
+    media_desc : byte;         { $0D }
+    transf_ofs : word;         { $0E }
+    transf_seg : word;         { $10 }
+    numbytes   : word;         { $12 }
+  end;                         { $14 }
+
+  TCDSectSizeReq = packed record
+    func    : byte;            { $00 }
+    mode    : byte;            { $01 }
+    secsize : word;            { $02 }
+  end;                         { $04 }
+
+  TCDVolSizeReq = packed record
+    func    : byte;            { $00 }
+    size    : longword;        { $01 }
+  end;                         { $05 }
+
+
+function do_diskdata(drive : byte; Free : boolean) : Int64;
+var
+  blocksize, freeblocks, totblocks : longword;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   { Get disk data via old int21/36 (GET FREE DISK SPACE). It's always supported
     even if it returns wrong values for volumes > 2GB and for cdrom drives when
     in pure DOS. Note that it's also the only way to get some data on WinNTs. }
@@ -1148,7 +1236,13 @@ begin
     doserror:=5;
     exit;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_ANSI_TEXTFILEREC}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   copytodos(filerec(f).name,strlen(filerec(f).name)+1);
 {$else}
   r:=ToSingleByteFileSystemEncodedFileName(filerec(f).name);

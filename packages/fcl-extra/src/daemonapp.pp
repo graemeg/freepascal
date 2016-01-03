@@ -19,14 +19,14 @@ interface
 
 uses
   Custapp, Classes, SysUtils, eventlog, rtlconsts;
-
+  
 Type
   TCustomDaemon = Class;
   TDaemonController = Class;
 
   TDaemonEvent = procedure(Sender: TCustomDaemon) of object;
   TDaemonOKEvent = procedure(Sender: TCustomDaemon; var OK: Boolean) of object;
-
+  
   TDaemonOption = (doAllowStop,doAllowPause,doInteractive);
   TDaemonOptions = Set of TDaemonOption;
 
@@ -57,7 +57,6 @@ Type
     Function UnInstall: boolean; virtual;
     Function HandleCustomCode(ACode : DWord) : Boolean; Virtual;
   Public
-    Procedure CheckControlMessages(Wait : Boolean);
     Procedure LogMessage(const Msg : String);
     Procedure ReportStatus;
     
@@ -133,7 +132,7 @@ Type
     Property Daemon : TCustomDaemon Read FDaemon;
     Property Params : TStrings Read FParams;
     Property LastStatus : TCurrentStatus Read FLastStatus;
-    Property CheckPoint : DWord read FCheckPoint;
+    Property CheckPoint : DWord;
   end;
   
   TDaemonClass = Class of TDaemon;
@@ -336,7 +335,6 @@ Type
     FRunMode: TDaemonRunMode;
     FSysData: TObject;
     FControllerCount : Integer;
-    FAutoRegisterMessageFile : Boolean;
     procedure BindDaemonDefs(AMapper: TCustomDaemonMapper);
     function  InstallRun: Boolean;
     procedure SysInstallDaemon(Daemon: TCustomDaemon);
@@ -361,10 +359,8 @@ Type
     Procedure RemoveController(AController : TDaemonController); virtual;
     Function GetEventLog: TEventLog; virtual;
     Procedure DoRun; override;
-    procedure DoLog(EventType: TEventType; const Msg: String); override;
     Property SysData : TObject Read FSysData Write FSysData;
   Public
-    Constructor Create(AOwner : TComponent); override;
     destructor Destroy; override;
     Procedure ShowException(E : Exception); override;
     Function CreateDaemon(DaemonDef : TDaemonDef) : TCustomDaemon;
@@ -374,12 +370,12 @@ Type
     procedure UnInstallDaemons;
     procedure ShowHelp;
     procedure CreateForm(InstanceClass: TComponentClass; var Reference); virtual;
+    procedure Log(EventType: TEventType; const Msg: String); override;
     Property  OnRun : TNotifyEvent Read FOnRun Write FOnRun;
     Property EventLog : TEventLog Read GetEventLog;
     Property GUIMainLoop : TGuiLoopEvent Read FGUIMainLoop Write FGuiMainLoop;
     Property GuiHandle : THandle Read FGUIHandle Write FGUIHandle;
     Property RunMode : TDaemonRunMode Read FRunMode;
-    Property AutoRegisterMessageFile : Boolean Read FAutoRegisterMessageFile Write FAutoRegisterMessageFile default true;
   end;
   TCustomDaemonApplicationClass = Class of TCustomDaemonApplication;
   
@@ -524,12 +520,8 @@ end;
 
 function Application: TCustomDaemonApplication;
 begin
- {$ifdef svcdebug}Debuglog('Application');{$endif}
   If (AppInstance=Nil) then
-    begin
-    {$ifdef svcdebug}Debuglog('Application creating instance');{$endif}
     CreateDaemonApplication;
-    end;
   Result:=AppInstance;
 end;
 
@@ -694,14 +686,8 @@ begin
   Result:=False
 end;
 
-Procedure TCustomDaemon.CheckControlMessages(Wait : Boolean);
-
-begin
-  If Assigned(FThread) then
-    TDaemonThread(FThread).CheckControlMessage(Wait);
-end;
-    
 { TCustomServiceApplication }
+
 
 procedure TCustomDaemonApplication.CreateServiceMapper(Var AMapper : TCustomDaemonMapper);
 
@@ -736,39 +722,12 @@ Var
   DD : TDaemonDef;
   
 begin
- {$ifdef svcdebug}DebugLog('Application.Main');{$endif svcdebug}
-  If (Argc=0) then
-    begin
-    {$ifdef svcdebug}DebugLog('Using Default daemon');{$endif svcdebug}
-    if FMapper.DaemonDefs.Count=1 then
-      DD:=FMapper.DaemonDefs[0]
-    else
-      DD:=Nil
-    end
-  else
-    begin
-    {$ifdef svcdebug}DebugLog('Application.Main 2 : '+IntToStr(Argc));{$endif svcdebug}
-    DD:=Nil;
-    SN:='';
-    If (Args<>Nil) then
-      begin
-      If (Args^<>Nil) then
-        SN:=StrPas(Args^)
-      else
-        SN:='';
-      end;
-    {$ifdef svcdebug}DebugLog('Looking for daemon '+SN);{$endif svcdebug}
-    DD:=FMapper.DaemonDefs.FindDaemonDef(SN);
-    end;
+  If (Args=Nil) then
+    Exit;
+  SN:=StrPas(Args^);
+  DD:=FMapper.DaemonDefs.FindDaemonDef(SN);
   If (DD<>Nil) then
-    begin
-    {$ifdef svcdebug}DebugLog('Found daemon '+SN);{$endif svcdebug}
     DD.Instance.Controller.Main(Argc,Args);
-    end
-  else
-    begin
-  {$ifdef svcdebug}DebugLog('Did not fin daemon '+SN);{$endif svcdebug}
-    end;
 end;
 
 
@@ -804,6 +763,7 @@ Var
 
 begin
   FrunMode:=drmInstall;
+  EventLog.RegisterMessageFile('');
   SysStartInstallDaemons;
   try
     FMapper.DoOnInstall;
@@ -835,8 +795,7 @@ Var
 
 begin
   FrunMode:=drmUnInstall;
-  if FAutoRegisterMessageFile then
-    EventLog.UnRegisterMessageFile;
+  EventLog.UnRegisterMessageFile;
   SysStartUnInstallDaemons;
   Try
     FMapper.DoOnUnInstall;
@@ -862,14 +821,11 @@ end;
 
 procedure TCustomDaemonApplication.ShowHelp;
 begin
-  if IsConsole then
-    begin
-    writeln(Format(SHelpUsage,[ParamStr(0)]));
-    writeln(SHelpCommand);
-    writeln('  -i --install   '+SHelpInstall);
-    writeln('  -u --uninstall '+SHelpUnInstall);
-    writeln('  -r --run       '+SHelpRun);
-	end
+  writeln(Format(SHelpUsage,[ParamStr(0)]));
+  writeln(SHelpCommand);
+  writeln('  -i --install   '+SHelpInstall);
+  writeln('  -u --uninstall '+SHelpUnInstall);
+  writeln('  -r --run       '+SHelpRun);
 end;
 
 procedure TCustomDaemonApplication.CreateForm(InstanceClass: TComponentClass;
@@ -892,7 +848,7 @@ begin
   end;
 end;
 
-procedure TCustomDaemonApplication.DoLog(EventType: TEventType; const Msg: String);
+procedure TCustomDaemonApplication.Log(EventType: TEventType; const Msg: String);
 begin
   EventLog.Log(EventType,Msg);
 end;
@@ -928,9 +884,8 @@ begin
   if not assigned(FEventLog) then
     begin
     FEventLog:=TEventlog.Create(Self);
-    FEventLog.RaiseExceptionOnError:=False;
-    if FAutoRegisterMessageFile then
-      FEventLog.RegisterMessageFile('');
+    FEventLog.RaiseExceptionOnError:=true;
+    FEventLog.RegisterMessageFile('');
     end;
   result := FEventLog;
 end;
@@ -940,14 +895,6 @@ destructor TCustomDaemonApplication.Destroy;
 begin
   if assigned(FEventLog) then
     FEventLog.Free;
-  inherited Destroy;
-end;
-
-constructor TCustomDaemonApplication.Create(AOwner : TComponent);
-
-begin
-  inherited;
-  FAutoRegisterMessageFile:=True;
 end;
 
 procedure TCustomDaemonApplication.DoRun;
@@ -1243,7 +1190,6 @@ Var
   S : String;
 
 begin
- {$ifdef svcdebug}DebugLog('Handling control code '+IntToStr(ACode));{$endif svcdebug}
   CS:=FDaemon.Status;
   Try
     OK:=True;

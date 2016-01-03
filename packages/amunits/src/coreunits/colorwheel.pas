@@ -26,7 +26,11 @@
 
     nils.sjoholm@mailbox.swipnet.se Nils Sjoholm
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
 
 UNIT colorwheel;
 
@@ -63,7 +67,7 @@ const
     WHEEL_Green          = (WHEEL_Dummy+6) ;  { set/get Green     }
     WHEEL_Blue           = (WHEEL_Dummy+7) ;  { set/get Blue              }
     WHEEL_RGB            = (WHEEL_Dummy+8) ;  { set/get ColorWheelRGB     }
-    WHEEL_Screen         = (WHEEL_Dummy+9) ;  { init screen/environment    }
+    WHEEL_Screen         = (WHEEL_Dummy+9) ;  { init screen/enviroment    }
     WHEEL_Abbrv          = (WHEEL_Dummy+10);  { "GCBMRY" if English       }
     WHEEL_Donation       = (WHEEL_Dummy+11);  { colors donated by app     }
     WHEEL_BevelBox       = (WHEEL_Dummy+12);  { inside a bevel box        }
@@ -80,13 +84,36 @@ VAR ColorWheelBase : pLibrary;
 const
     COLORWHEELNAME : Pchar = 'colorwheel.library';
 
-PROCEDURE ConvertHSBToRGB(hsb : pColorWheelHSB location 'a0'; rgb : pColorWheelRGB location 'a1'); syscall ColorWheelBase 030;
-PROCEDURE ConvertRGBToHSB(rgb : pColorWheelRGB location 'a0'; hsb : pColorWheelHSB location 'a1'); syscall ColorWheelBase 036;
+PROCEDURE ConvertHSBToRGB(hsb : pColorWheelHSB; rgb : pColorWheelRGB);
+PROCEDURE ConvertRGBToHSB(rgb : pColorWheelRGB; hsb : pColorWheelHSB);
 
 IMPLEMENTATION
 
-uses amsgbox;
+uses msgbox;
 
+PROCEDURE ConvertHSBToRGB(hsb : pColorWheelHSB; rgb : pColorWheelRGB);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L hsb,A0
+    MOVEA.L rgb,A1
+    MOVEA.L ColorWheelBase,A6
+    JSR -030(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ConvertRGBToHSB(rgb : pColorWheelRGB; hsb : pColorWheelHSB);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L rgb,A0
+    MOVEA.L hsb,A1
+    MOVEA.L ColorWheelBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
 
 {$I useautoopenlib.inc}
 {$ifdef use_auto_openlib}

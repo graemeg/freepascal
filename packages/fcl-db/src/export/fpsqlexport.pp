@@ -191,7 +191,15 @@ Function TCustomSQLExporter.SQLValue(F : TField) : String;
 
 begin
   Result:=FormatField(F);
+<<<<<<< HEAD
+<<<<<<< HEAD
   If (F.DataType in BlobFieldTypes+StringFieldTypes+MemoFieldTypes+DateFieldTypes) then
+=======
+  If (F.DataType in StringFieldTypes+DateFieldTypes) then
+>>>>>>> graemeg/fixes_2_2
+=======
+  If (F.DataType in StringFieldTypes+DateFieldTypes) then
+>>>>>>> origin/fixes_2_2
     Result:=''''+QuoteFIeld(Result)+'''';
 end;
 

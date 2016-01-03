@@ -459,11 +459,17 @@ begin
   {$pop}
   CStreamError:=IOResult;
   Result:=l;
+<<<<<<< HEAD
+<<<<<<< HEAD
 end;
 
 function TCFileStream.EOF: boolean;
 begin
   EOF:=system.eof(FHandle);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 

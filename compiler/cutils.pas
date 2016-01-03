@@ -45,6 +45,8 @@ interface
     {# Returns the maximum value between @var(a) and @var(b) }
     function max(a,b : longint) : longint;{$ifdef USEINLINE}inline;{$endif}
     function max(a,b : int64) : int64;{$ifdef USEINLINE}inline;{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     { These functions are intenionally put here and not in the constexp unit.
       Since Tconstexprint may be automatically converted to int, which causes
@@ -67,6 +69,17 @@ interface
     function reverse_byte(b: byte): byte;
 
     function next_prime(l: longint): longint;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    {# Return value @var(i) aligned on @var(a) boundary }
+    function align(i,a:longint):longint;{$ifdef USEINLINE}inline;{$endif}
+    {# Return @var(b) with the bit order reversed }
+    function reverse_byte(b: byte): byte;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     function used_align(varalign,minalign,maxalign:shortint):shortint;
     function isbetteralignedthan(new, org, limit: cardinal): boolean;
@@ -166,9 +179,28 @@ interface
 
     Function nextafter(x,y:double):double;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   { hide Sysutils.ExecuteProcess in units using this one after SysUtils}
   const
     ExecuteProcess = 'Do not use' deprecated 'Use cfileutil.RequotedExecuteProcess instead, ExecuteProcess cannot deal with single quotes as used by Unix command lines';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ver2_0}
+{ RTL routines not available yet in 2.0.x }
+function SwapEndian(const AValue: SmallInt): SmallInt;
+function SwapEndian(const AValue: Word): Word;
+function SwapEndian(const AValue: LongInt): LongInt;
+function SwapEndian(const AValue: DWord): DWord;
+function SwapEndian(const AValue: Int64): Int64;
+function SwapEndian(const AValue: QWord): QWord;
+{$endif ver2_0}
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 implementation
 
@@ -239,6 +271,8 @@ implementation
            max:=b;
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     function max(const a,b : Tconstexprint) : Tconstexprint;{$ifdef USEINLINE}inline;{$endif}
     {
@@ -262,7 +296,19 @@ implementation
         newalignment:=oldalignment;
       end;
 
+=======
+    function reverse_byte(b: byte): byte;
+      const
+        reverse_nible:array[0..15] of 0..15 =
+          (%0000,%1000,%0100,%1100,%0010,%1010,%0110,%1110,
+           %0001,%1001,%0101,%1101,%0011,%1011,%0111,%1111);
+      begin
+        reverse_byte:=(reverse_nible[b and $f] shl 4) or reverse_nible[b shr 4];
+      end;
+>>>>>>> graemeg/fixes_2_2
 
+=======
+>>>>>>> origin/fixes_2_2
     function reverse_byte(b: byte): byte;
       const
         reverse_nible:array[0..15] of 0..15 =
@@ -316,7 +362,14 @@ implementation
            { always starts at a multiple of 10 bits. Same for the others.  }
            3,5,6,7,9,10,12,16:
              result := 2;
+<<<<<<< HEAD
   {$ifdef cpu64bitalu}
+=======
+  {$ifdef cpu64bit}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            { performance penalty for unaligned 8 byte access is much   }
            { higher than for unaligned 4 byte access, at least on ppc, }
            { so use 4 bytes even in some cases where a value could     }
@@ -1432,8 +1485,18 @@ implementation
 
     // Case x=NAN or y=NAN
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     if ( (ix>=$7ff00000) and ((longword(ix-$7ff00000) or lx) <> 0) )
         or ( (iy>=$7ff00000) and ((longword(iy-$7ff00000) OR ly) <> 0) )
+=======
+    if ( (ix>=$7ff00000) and (((ix-$7ff00000) or lx) <> 0) )
+        or ( (iy>=$7ff00000) and (((iy-$7ff00000) OR ly) <> 0) )
+>>>>>>> graemeg/fixes_2_2
+=======
+    if ( (ix>=$7ff00000) and (((ix-$7ff00000) or lx) <> 0) )
+        or ( (iy>=$7ff00000) and (((iy-$7ff00000) OR ly) <> 0) )
+>>>>>>> origin/fixes_2_2
     then exit(x+y);
 
     // Case x=y
@@ -1442,7 +1505,15 @@ implementation
 
     // Case x=0
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     if (longword(ix) or lx)=0
+=======
+    if (ix or lx)=0
+>>>>>>> graemeg/fixes_2_2
+=======
+    if (ix or lx)=0
+>>>>>>> origin/fixes_2_2
     then begin
           twoword(x).hi:=hy and $80000000;  // return +-minimalSubnormal
           twoword(x).lo:=1;
@@ -1499,6 +1570,76 @@ implementation
 
     end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+{$ifdef ver2_0}
+function SwapEndian(const AValue: SmallInt): SmallInt;
+  begin
+    { the extra Word type cast is necessary because the "AValue shr 8" }
+    { is turned into "longint(AValue) shr 8", so if AValue < 0 then    }
+    { the sign bits from the upper 16 bits are shifted in rather than  }
+    { zeroes.                                                          }
+    Result := SmallInt((Word(AValue) shr 8) or (Word(AValue) shl 8));
+  end;
+
+
+function SwapEndian(const AValue: Word): Word;
+  begin
+    Result := (AValue shr 8) or (AValue shl 8);
+  end;
+
+
+function SwapEndian(const AValue: LongInt): LongInt;
+  begin
+    Result := (AValue shl 24)
+           or ((AValue and $0000FF00) shl 8)
+           or ((AValue and $00FF0000) shr 8)
+           or (AValue shr 24);
+  end;
+
+
+function SwapEndian(const AValue: DWord): DWord;
+  begin
+    Result := (AValue shl 24)
+           or ((AValue and $0000FF00) shl 8)
+           or ((AValue and $00FF0000) shr 8)
+           or (AValue shr 24);
+  end;
+
+
+function SwapEndian(const AValue: Int64): Int64;
+  begin
+    Result := (AValue shl 56)
+           or ((AValue and $000000000000FF00) shl 40)
+           or ((AValue and $0000000000FF0000) shl 24)
+           or ((AValue and $00000000FF000000) shl 8)
+           or ((AValue and $000000FF00000000) shr 8)
+           or ((AValue and $0000FF0000000000) shr 24)
+           or ((AValue and $00FF000000000000) shr 40)
+           or (AValue shr 56);
+  end;
+
+
+function SwapEndian(const AValue: QWord): QWord;
+  begin
+    Result := (AValue shl 56)
+           or ((AValue and $000000000000FF00) shl 40)
+           or ((AValue and $0000000000FF0000) shl 24)
+           or ((AValue and $00000000FF000000) shl 8)
+           or ((AValue and $000000FF00000000) shr 8)
+           or ((AValue and $0000FF0000000000) shr 24)
+           or ((AValue and $00FF000000000000) shr 40)
+           or (AValue shr 56);
+  end;
+{$endif ver2_0}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 initialization
   internalerrorproc:=@defaulterror;

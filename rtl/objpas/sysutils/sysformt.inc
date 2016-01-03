@@ -44,12 +44,38 @@ Var ChPos,OldPos,ArgPos,DoArg,Len : SizeInt;
       While (ChPos<=Len) and
             (Fmt[ChPos]<='9') and (Fmt[ChPos]>='0') do inc(ChPos);
       If ChPos>len then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         DoFormatError(feInvalidFormat,ansistring(Fmt));
+=======
+        DoFormatError(feInvalidFormat,Fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+        DoFormatError(feInvalidFormat,Fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+        DoFormatError(feInvalidFormat,Fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+        DoFormatError(feInvalidFormat,Fmt);
+>>>>>>> origin/cpstrnew
       If Fmt[ChPos]='*' then
         begin
 
         if Index=-1 then
           ArgN:=Argpos
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         else
         begin
           ArgN:=Index;
@@ -57,6 +83,9 @@ Var ChPos,OldPos,ArgPos,DoArg,Len : SizeInt;
         end;
 
         If (ChPos>OldPos) or (ArgN>High(Args)) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           DoFormatError(feInvalidFormat,ansistring(Fmt));
 
         ArgPos:=ArgN+1;
@@ -67,6 +96,40 @@ Var ChPos,OldPos,ArgPos,DoArg,Len : SizeInt;
           vtQWord: Value := Args[ArgN].VQWord^;
         else
           DoFormatError(feInvalidFormat,ansistring(Fmt));
+=======
+        else
+        begin
+          ArgN:=Index;
+          Inc(Index);
+        end;
+
+        If (ChPos>OldPos) or (ArgN>High(Args)) then
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          DoFormatError(feInvalidFormat,Fmt);
+
+        ArgPos:=ArgN+1;
+
+        case Args[ArgN].Vtype of
+          vtInteger: Value := Args[ArgN].VInteger;
+          vtInt64: Value := Args[ArgN].VInt64^;
+          vtQWord: Value := Args[ArgN].VQWord^;
+        else
+          DoFormatError(feInvalidFormat,Fmt);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         end;
         Inc(ChPos);
         end
@@ -76,7 +139,23 @@ Var ChPos,OldPos,ArgPos,DoArg,Len : SizeInt;
           begin
           Val (Copy(Fmt,OldPos,ChPos-OldPos),value,code);
           // This should never happen !!
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           If Code>0 then DoFormatError (feInvalidFormat,ansistring(Fmt));
+=======
+          If Code>0 then DoFormatError (feInvalidFormat,Fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+          If Code>0 then DoFormatError (feInvalidFormat,Fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+          If Code>0 then DoFormatError (feInvalidFormat,Fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+          If Code>0 then DoFormatError (feInvalidFormat,Fmt);
+>>>>>>> origin/cpstrnew
           end
         else
           Value:=-1;
@@ -92,7 +171,23 @@ Var ChPos,OldPos,ArgPos,DoArg,Len : SizeInt;
         value:=0; // Delphi undocumented behaviour, assume 0, #11099
       If Fmt[ChPos]=':' then
         begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         If Value=-1 then DoFormatError(feMissingArgument,ansistring(Fmt));
+=======
+        If Value=-1 then DoFormatError(feMissingArgument,fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+        If Value=-1 then DoFormatError(feMissingArgument,fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+        If Value=-1 then DoFormatError(feMissingArgument,fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+        If Value=-1 then DoFormatError(feMissingArgument,fmt);
+>>>>>>> origin/cpstrnew
         Index:=Value;
         Value:=-1;
         Inc(ChPos);
@@ -214,7 +309,23 @@ begin
   If (Doarg>High(Args)) or (Args[Doarg].Vtype<>AT) then
    begin
      if err then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       DoFormatError(feInvalidArgindex,ansistring(Fmt));
+=======
+      DoFormatError(feInvalidArgindex,Fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+      DoFormatError(feInvalidArgindex,Fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+      DoFormatError(feInvalidArgindex,Fmt);
+>>>>>>> graemeg/cpstrnew
+=======
+      DoFormatError(feInvalidArgindex,Fmt);
+>>>>>>> origin/cpstrnew
      dec(ArgPos);
      exit;
    end;
@@ -326,6 +437,42 @@ begin
                   if CheckArg(vtUnicodeString,false) then
                     hs:=TFormatString(UnicodeString(Args[doarg].VUnicodeString))
                 else
+<<<<<<< HEAD
+=======
+                  if CheckArg(vtAnsiString,false) then
+                    hs:=ansistring(Args[doarg].VAnsiString)
+                else
+                  if CheckArg(vtUnicodeString,false) then
+                    hs:=UnicodeString(Args[doarg].VUnicodeString)
+                else
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+                  if CheckArg(vtAnsiString,false) then
+                    hs:=ansistring(Args[doarg].VAnsiString)
+                else
+                  if CheckArg(vtUnicodeString,false) then
+                    hs:=UnicodeString(Args[doarg].VUnicodeString)
+                else
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+                  if CheckArg(vtAnsiString,false) then
+                    hs:=ansistring(Args[doarg].VAnsiString)
+                else
+                  if CheckArg(vtUnicodeString,false) then
+                    hs:=UnicodeString(Args[doarg].VUnicodeString)
+                else
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+                  if CheckArg(vtAnsiString,false) then
+                    hs:=ansistring(Args[doarg].VAnsiString)
+                else
+                  if CheckArg(vtUnicodeString,false) then
+                    hs:=UnicodeString(Args[doarg].VUnicodeString)
+                else
+>>>>>>> origin/cpstrnew
                   if CheckArg(vtVariant,true) then
                     hs:=Args[doarg].VVariant^;
                 Index:=Length(hs);
@@ -335,7 +482,15 @@ begin
               end;
         'P' : Begin
               CheckArg(vtpointer,true);
+<<<<<<< HEAD
+<<<<<<< HEAD
               ToAdd:=TFormatString(HexStr(ptruint(Args[DoArg].VPointer),sizeof(Ptruint)*2));
+=======
+              ToAdd:=HexStr(ptruint(Args[DoArg].VPointer),sizeof(Ptruint)*2);
+>>>>>>> graemeg/fixes_2_2
+=======
+              ToAdd:=HexStr(ptruint(Args[DoArg].VPointer),sizeof(Ptruint)*2);
+>>>>>>> origin/fixes_2_2
               // Insert ':'. Is this needed in 32 bit ? No it isn't.
               // Insert(':',ToAdd,5);
               end;
@@ -358,7 +513,15 @@ begin
                    index:=31;
                  end;
               If Prec>index then
+<<<<<<< HEAD
+<<<<<<< HEAD
                 ToAdd:=TFormatString(HexStr(int64(vq),index))
+=======
+                ToAdd:=HexStr(int64(vq),index)
+>>>>>>> graemeg/fixes_2_2
+=======
+                ToAdd:=HexStr(int64(vq),index)
+>>>>>>> origin/fixes_2_2
               else
                 begin
                 // determine minimum needed number of hex digits.
@@ -367,7 +530,15 @@ begin
                   inc(Index);
                 If Index>Prec then
                   Prec:=Index;
+<<<<<<< HEAD
+<<<<<<< HEAD
                 ToAdd:=TFormatString(HexStr(int64(vq),Prec));
+=======
+                ToAdd:=HexStr(int64(vq),Prec);
+>>>>>>> graemeg/fixes_2_2
+=======
+                ToAdd:=HexStr(int64(vq),Prec);
+>>>>>>> origin/fixes_2_2
                 end;
               end;
         '%': ToAdd:='%';

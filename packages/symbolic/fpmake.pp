@@ -11,6 +11,8 @@ begin
   With Installer do
     begin
 {$endif ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
     P:=AddPackage('symbolic');
     P.ShortName:='symb';
 {$ifdef ALLPACKAGES}
@@ -28,6 +30,24 @@ begin
     P.SourcePath.Add('src');
     P.IncludePath.Add('src');
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+    P:=AddPackage('symbolic');
+{$ifdef ALLPACKAGES}
+    P.Directory:='symbolic';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+    P.IncludePath.Add('src');
+
+//    P.Dependencies.Add('x11');
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     T:=P.Targets.AddUnit('symbolic.pas');
       with T.Dependencies do
         begin
@@ -37,6 +57,8 @@ begin
           AddInclude('teval.inc');
           AddInclude('rearrang.inc');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T.ResourceStrings := True;
 
     P.ExamplePath.Add('examples');
@@ -45,6 +67,12 @@ begin
     P.Targets.AddExampleProgram('easyevalexample.pp');
     P.Sources.AddDoc('doc/optimization.txt');
     P.Sources.AddDoc('doc/symbolic.txt');
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 
 {$ifndef ALLPACKAGES}
     Run;

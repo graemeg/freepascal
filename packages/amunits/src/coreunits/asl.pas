@@ -48,12 +48,16 @@
 
     nils.sjoholm@mailbox.swipnet.se
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+    {$smartlink on}
+{$endif use_amiga_smartlink}
 
 UNIT asl;
 
 INTERFACE
-uses exec, utility, workbench, agraphics;
+uses exec, utility, workbench, graphics;
 
 {************************************************************************}
 
@@ -549,15 +553,15 @@ Const
 VAR AslBase : pLibrary;
 
 
-FUNCTION AllocAslRequest(reqType : ULONG location 'd0'; tagList : pTagItem location 'a0') : POINTER; syscall AslBase 048;
-FUNCTION AllocFileRequest : pFileRequester; syscall AslBase 030;
-FUNCTION AslRequest(requester : POINTER location 'a0'; tagList : pTagItem location 'a1') : LongInt; syscall AslBase 060;
-PROCEDURE FreeAslRequest(requester : POINTER location 'a0'); syscall AslBase 054;
-PROCEDURE FreeFileRequest(fileReq : pFileRequester location 'a0'); syscall AslBase 036;
-FUNCTION RequestFile(fileReq : pFileRequester location 'a0') : LongInt; syscall AslBase 042;
+FUNCTION AllocAslRequest(reqType : ULONG; tagList : pTagItem) : POINTER;
+FUNCTION AllocFileRequest : pFileRequester;
+FUNCTION AslRequest(requester : POINTER; tagList : pTagItem) : BOOLEAN;
+PROCEDURE FreeAslRequest(requester : POINTER);
+PROCEDURE FreeFileRequest(fileReq : pFileRequester);
+FUNCTION RequestFile(fileReq : pFileRequester) : BOOLEAN;
 
-PROCEDURE AbortAslRequest(requester : POINTER location 'a0'); syscall AslBase 078;
-PROCEDURE ActivateAslRequest(requester : POINTER location 'a0'); syscall AslBase 084;
+PROCEDURE AbortAslRequest(requester : POINTER);
+PROCEDURE ActivateAslRequest(requester : POINTER);
 
 {Here we read how to compile this unit}
 {You can remove this include and use a define instead}
@@ -573,9 +577,107 @@ var
 IMPLEMENTATION
 
 {$ifndef dont_use_openlib}
-uses amsgbox;
+uses  msgbox;
 {$endif dont_use_openlib}
 
+FUNCTION AllocAslRequest(reqType : ULONG; tagList : pTagItem) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  reqType,D0
+    MOVEA.L tagList,A0
+    MOVEA.L AslBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AllocFileRequest : pFileRequester;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L AslBase,A6
+    JSR -030(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AslRequest(requester : POINTER; tagList : pTagItem) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L requester,A0
+    MOVEA.L tagList,A1
+    MOVEA.L AslBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE FreeAslRequest(requester : POINTER);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L requester,A0
+    MOVEA.L AslBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE FreeFileRequest(fileReq : pFileRequester);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L fileReq,A0
+    MOVEA.L AslBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION RequestFile(fileReq : pFileRequester) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L fileReq,A0
+    MOVEA.L AslBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE AbortAslRequest(requester : POINTER);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L requester,A0
+        MOVEA.L AslBase,A6
+        JSR     -078(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ActivateAslRequest(requester : POINTER);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L requester,A0
+        MOVEA.L AslBase,A6
+        JSR     -084(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
 
 const
     { Change VERSION and LIBVERSION to proper values }

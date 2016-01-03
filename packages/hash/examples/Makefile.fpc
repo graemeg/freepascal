@@ -3,10 +3,43 @@
 #
 
 [target]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 programs=mdtest crctest sha1test md5performancetest  sha1performancetest
+=======
+programs=mdtest crctest sha1test
+>>>>>>> graemeg/cpstrnew
+=======
+programs=mdtest crctest sha1test
+>>>>>>> graemeg/cpstrnew
+=======
+programs=mdtest crctest sha1test
+>>>>>>> graemeg/cpstrnew
+=======
+programs=mdtest crctest sha1test
+>>>>>>> origin/cpstrnew
 
 [require]
 packages=hash rtl-extra rtl-objpas
+=======
+=======
+>>>>>>> origin/fixes_2_2
+programs=mdtest
+=======
+programs=mdtest crctest sha1test
+>>>>>>> origin/fixes_2.4
+
+[require]
+packages=hash
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y

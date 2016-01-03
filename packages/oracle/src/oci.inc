@@ -3378,12 +3378,25 @@ uses ctypes,
 {$include ociap.inc}
 
 {$IFDEF LinkDynamically}
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function InitialiseOCI(const LibraryName: AnsiString): integer;
 Function InitialiseOCI(): integer;
 Procedure ReleaseOCI;
 
 var OCILibraryHandle : TLibHandle;
     OCILoadedLibrary : AnsiString;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Procedure InitialiseOCI;
+Procedure ReleaseOCI;
+
+var OCILibraryHandle : TLibHandle;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ENDIF}
 
 implementation
@@ -3392,6 +3405,8 @@ implementation
 
 {$IFDEF LinkDynamically}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 var 
   RefCount : integer;
 
@@ -3912,11 +3927,522 @@ begin
   pointer(OCIDBShutdown) := GetProcedureAddress(OCILibraryHandle,'OCIDBShutdown');
   pointer(OCIClientVersion) := GetProcedureAddress(OCILibraryHandle,'OCIClientVersion');
   pointer(OCIInitEventHandle) := GetProcedureAddress(OCILibraryHandle,'OCIInitEventHandle');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+var RefCount : integer;
+
+Procedure InitialiseOCI;
+
+begin
+  inc(RefCount);
+  if RefCount = 1 then
+    begin
+    OCILibraryHandle:=loadlibrary(ocilib);
+    if (OCILibraryHandle=nilhandle) then
+      begin
+      RefCount := 0;
+      Raise EInOutError.Create('Can not load Oracle client. Is it installed? ('+ocilib+')');
+      end;
+{ ORL.inc}
+    pointer(OCINumberInc) := GetProcedureAddress(OCILibraryHandle,'OCINumberInc');
+    pointer(OCINumberDec) := GetProcedureAddress(OCILibraryHandle,'OCINumberDec');
+    pointer(OCINumberSetZero) := GetProcedureAddress(OCILibraryHandle,'OCINumberSetZero');
+    pointer(OCINumberSetPi) := GetProcedureAddress(OCILibraryHandle,'OCINumberSetPi');
+    pointer(OCINumberAdd) := GetProcedureAddress(OCILibraryHandle,'OCINumberAdd');
+    pointer(OCINumberSub) := GetProcedureAddress(OCILibraryHandle,'OCINumberSub');
+    pointer(OCINumberMul) := GetProcedureAddress(OCILibraryHandle,'OCINumberMul');
+    pointer(OCINumberDiv) := GetProcedureAddress(OCILibraryHandle,'OCINumberDiv');
+    pointer(OCINumberMod) := GetProcedureAddress(OCILibraryHandle,'OCINumberMod');
+    pointer(OCINumberIntPower) := GetProcedureAddress(OCILibraryHandle,'OCINumberIntPower');
+    pointer(OCINumberShift) := GetProcedureAddress(OCILibraryHandle,'OCINumberShift');
+    pointer(OCINumberNeg) := GetProcedureAddress(OCILibraryHandle,'OCINumberNeg');
+    pointer(OCINumberToText) := GetProcedureAddress(OCILibraryHandle,'OCINumberToText');
+    pointer(OCINumberFromText) := GetProcedureAddress(OCILibraryHandle,'OCINumberFromText');
+    pointer(OCINumberToInt) := GetProcedureAddress(OCILibraryHandle,'OCINumberToInt');
+    pointer(OCINumberFromInt) := GetProcedureAddress(OCILibraryHandle,'OCINumberFromInt');
+    pointer(OCINumberToReal) := GetProcedureAddress(OCILibraryHandle,'OCINumberToReal');
+    pointer(OCINumberToRealArray) := GetProcedureAddress(OCILibraryHandle,'OCINumberToRealArray');
+    pointer(OCINumberFromReal) := GetProcedureAddress(OCILibraryHandle,'OCINumberFromReal');
+    pointer(OCINumberCmp) := GetProcedureAddress(OCILibraryHandle,'OCINumberCmp');
+    pointer(OCINumberSign) := GetProcedureAddress(OCILibraryHandle,'OCINumberSign');
+    pointer(OCINumberIsZero) := GetProcedureAddress(OCILibraryHandle,'OCINumberIsZero');
+    pointer(OCINumberIsInt) := GetProcedureAddress(OCILibraryHandle,'OCINumberIsInt');
+    pointer(OCINumberAssign) := GetProcedureAddress(OCILibraryHandle,'OCINumberAssign');
+    pointer(OCINumberAbs) := GetProcedureAddress(OCILibraryHandle,'OCINumberAbs');
+    pointer(OCINumberCeil) := GetProcedureAddress(OCILibraryHandle,'OCINumberCeil');
+    pointer(OCINumberFloor) := GetProcedureAddress(OCILibraryHandle,'OCINumberFloor');
+    pointer(OCINumberSqrt) := GetProcedureAddress(OCILibraryHandle,'OCINumberSqrt');
+    pointer(OCINumberTrunc) := GetProcedureAddress(OCILibraryHandle,'OCINumberTrunc');
+    pointer(OCINumberPower) := GetProcedureAddress(OCILibraryHandle,'OCINumberPower');
+    pointer(OCINumberRound) := GetProcedureAddress(OCILibraryHandle,'OCINumberRound');
+    pointer(OCINumberPrec) := GetProcedureAddress(OCILibraryHandle,'OCINumberPrec');
+    pointer(OCINumberSin) := GetProcedureAddress(OCILibraryHandle,'OCINumberSin');
+    pointer(OCINumberArcSin) := GetProcedureAddress(OCILibraryHandle,'OCINumberArcSin');
+    pointer(OCINumberHypSin) := GetProcedureAddress(OCILibraryHandle,'OCINumberHypSin');
+    pointer(OCINumberCos) := GetProcedureAddress(OCILibraryHandle,'OCINumberCos');
+    pointer(OCINumberArcCos) := GetProcedureAddress(OCILibraryHandle,'OCINumberArcCos');
+    pointer(OCINumberHypCos) := GetProcedureAddress(OCILibraryHandle,'OCINumberHypCos');
+    pointer(OCINumberTan) := GetProcedureAddress(OCILibraryHandle,'OCINumberTan');
+    pointer(OCINumberArcTan) := GetProcedureAddress(OCILibraryHandle,'OCINumberArcTan');
+    pointer(OCINumberArcTan2) := GetProcedureAddress(OCILibraryHandle,'OCINumberArcTan2');
+    pointer(OCINumberHypTan) := GetProcedureAddress(OCILibraryHandle,'OCINumberHypTan');
+    pointer(OCINumberExp) := GetProcedureAddress(OCILibraryHandle,'OCINumberExp');
+    pointer(OCINumberLn) := GetProcedureAddress(OCILibraryHandle,'OCINumberLn');
+    pointer(OCINumberLog) := GetProcedureAddress(OCILibraryHandle,'OCINumberLog');
+    pointer(OCIDateToText) := GetProcedureAddress(OCILibraryHandle,'var OCIDateToText');
+    pointer(OCIDateFromText) := GetProcedureAddress(OCILibraryHandle,'OCIDateFromText');
+    pointer(OCIDateCompare) := GetProcedureAddress(OCILibraryHandle,'OCIDateCompare');
+    pointer(OCIDateAddMonths) := GetProcedureAddress(OCILibraryHandle,'OCIDateAddMonths');
+    pointer(OCIDateAddDays) := GetProcedureAddress(OCILibraryHandle,'OCIDateAddDays');
+    pointer(OCIDateLastDay) := GetProcedureAddress(OCILibraryHandle,'OCIDateLastDay');
+    pointer(OCIDateDaysBetween) := GetProcedureAddress(OCILibraryHandle,'OCIDateDaysBetween');
+    pointer(OCIDateZoneToZone) := GetProcedureAddress(OCILibraryHandle,'OCIDateZoneToZone');
+    pointer(OCIDateNextDay) := GetProcedureAddress(OCILibraryHandle,'OCIDateNextDay');
+    pointer(OCIDateCheck) := GetProcedureAddress(OCILibraryHandle,'OCIDateCheck');
+    pointer(OCIDateSysDate) := GetProcedureAddress(OCILibraryHandle,'OCIDateSysDate');
+    pointer(OCIStringAssign) := GetProcedureAddress(OCILibraryHandle,'OCIStringAssign');
+    pointer(OCIStringAssignText) := GetProcedureAddress(OCILibraryHandle,'OCIStringAssignText');
+    pointer(OCIStringResize) := GetProcedureAddress(OCILibraryHandle,'OCIStringResize');
+    pointer(OCIStringSize) := GetProcedureAddress(OCILibraryHandle,'OCIStringSize');
+    pointer(OCIStringPtr) := GetProcedureAddress(OCILibraryHandle,'OCIStringPtr');
+    pointer(OCIStringAllocSize) := GetProcedureAddress(OCILibraryHandle,'OCIStringAllocSize');
+    pointer(OCIRawAssignRaw) := GetProcedureAddress(OCILibraryHandle,'OCIRawAssignRaw');
+    pointer(OCIRawAssignBytes) := GetProcedureAddress(OCILibraryHandle,'OCIRawAssignBytes');
+    pointer(OCIRawResize) := GetProcedureAddress(OCILibraryHandle,'OCIRawResize');
+    pointer(OCIRawSize) := GetProcedureAddress(OCILibraryHandle,'OCIRawSize');
+    pointer(OCIRawPtr) := GetProcedureAddress(OCILibraryHandle,'OCIRawPtr');
+    pointer(OCIRawAllocSize) := GetProcedureAddress(OCILibraryHandle,'OCIRawAllocSize');
+    pointer(OCIRefClear) := GetProcedureAddress(OCILibraryHandle,'OCIRefClear');
+    pointer(OCIRefToHex) := GetProcedureAddress(OCILibraryHandle,'OCIRefToHex');
+    pointer(OCICollSize) := GetProcedureAddress(OCILibraryHandle,'OCICollSize');
+    pointer(OCICollMax) := GetProcedureAddress(OCILibraryHandle,'OCICollMax');
+    pointer(OCICollGetElem) := GetProcedureAddress(OCILibraryHandle,'OCICollGetElem');
+    pointer(OCICollAssignElem) := GetProcedureAddress(OCILibraryHandle,'OCICollAssignElem');
+    pointer(OCICollTrim) := GetProcedureAddress(OCILibraryHandle,'OCICollTrim');
+    pointer(OCICollIsLocator) := GetProcedureAddress(OCILibraryHandle,'OCICollIsLocator');
+    pointer(OCIIterCreate) := GetProcedureAddress(OCILibraryHandle,'OCIIterCreate');
+    pointer(OCIIterDelete) := GetProcedureAddress(OCILibraryHandle,'OCIIterDelete');
+    pointer(OCIIterInit) := GetProcedureAddress(OCILibraryHandle,'OCIIterInit');
+    pointer(OCIIterGetCurrent) := GetProcedureAddress(OCILibraryHandle,'OCIIterGetCurrent');
+    pointer(OCIIterPrev) := GetProcedureAddress(OCILibraryHandle,'OCIIterPrev');
+
+{ ORT.inc}
+
+    pointer(OCITypeIterNew) := GetProcedureAddress(OCILibraryHandle,'OCITypeIterNew');
+    pointer(OCITypeArrayByName) := GetProcedureAddress(OCILibraryHandle,'OCITypeArrayByName');
+    pointer(OCITypeArrayByRef) := GetProcedureAddress(OCILibraryHandle,'OCITypeArrayByRef');
+    pointer(OCITypeSchema) := GetProcedureAddress(OCILibraryHandle,'OCITypeSchema');
+    pointer(OCITypeCollTypeCode) := GetProcedureAddress(OCILibraryHandle,'OCITypeCollTypeCode');
+    pointer(OCITypeAttrs) := GetProcedureAddress(OCILibraryHandle,'OCITypeAttrs');
+    pointer(OCITypeElemName) := GetProcedureAddress(OCILibraryHandle,'OCITypeElemName');
+    pointer(OCITypeElemType) := GetProcedureAddress(OCILibraryHandle,'OCITypeElemType');
+    pointer(OCITypeElemFlags) := GetProcedureAddress(OCILibraryHandle,'OCITypeElemFlags');
+    pointer(OCITypeElemNumScale) := GetProcedureAddress(OCILibraryHandle,'OCITypeElemNumScale');
+    pointer(OCITypeElemCharSetID) := GetProcedureAddress(OCILibraryHandle,'OCITypeElemCharSetID');
+    pointer(OCITypeElemParameterizedType) := GetProcedureAddress(OCILibraryHandle,'OCITypeElemParameterizedType');
+    pointer(OCITypeAttrByName) := GetProcedureAddress(OCILibraryHandle,'OCITypeAttrByName');
+    pointer(OCITypeMethodNext) := GetProcedureAddress(OCILibraryHandle,'OCITypeMethodNext');
+    pointer(OCITypeMethodName) := GetProcedureAddress(OCILibraryHandle,'OCITypeMethodName');
+    pointer(OCITypeMethodFlags) := GetProcedureAddress(OCILibraryHandle,'OCITypeMethodFlags');
+    pointer(OCITypeMethodOrder) := GetProcedureAddress(OCILibraryHandle,'OCITypeMethodOrder');
+    pointer(OCITypeResult) := GetProcedureAddress(OCILibraryHandle,'OCITypeResult');
+    pointer(OCITypeParamByName) := GetProcedureAddress(OCILibraryHandle,'OCITypeParamByName');
+    pointer(OCITypeElemDefaultValue) := GetProcedureAddress(OCILibraryHandle,'OCITypeElemDefaultValue');
+    pointer(OCITypeVTInsert) := GetProcedureAddress(OCILibraryHandle,'OCITypeVTInsert');
+    pointer(ortgcty) := GetProcedureAddress(OCILibraryHandle,'ortgcty');
+    pointer(OCITypeBeginCreate) := GetProcedureAddress(OCILibraryHandle,'OCITypeBeginCreate');
+    pointer(OCITypeSetCollection) := GetProcedureAddress(OCILibraryHandle,'OCITypeSetCollection');
+    pointer(OCITypeSetBuiltin) := GetProcedureAddress(OCILibraryHandle,'OCITypeSetBuiltin');
+    pointer(OCITypeAddAttr) := GetProcedureAddress(OCILibraryHandle,'OCITypeAddAttr');
+    pointer(OCITypeEndCreate) := GetProcedureAddress(OCILibraryHandle,'OCITypeEndCreate');
+
+{ nzt.inc}
+
+    pointer(nzteStorePersona) := GetProcedureAddress(OCILibraryHandle,'nzteStorePersona');
+    pointer(nzteRemovePersona) := GetProcedureAddress(OCILibraryHandle,'nzteRemovePersona');
+    pointer(nzteCreatePersona) := GetProcedureAddress(OCILibraryHandle,'nzteCreatePersona');
+    pointer(nztiStoreTrustedIdentity) := GetProcedureAddress(OCILibraryHandle,'nztiStoreTrustedIdentity');
+    pointer(nzteSetProtection) := GetProcedureAddress(OCILibraryHandle,'nzteSetProtection');
+    pointer(nzteGetProtection) := GetProcedureAddress(OCILibraryHandle,'nzteGetProtection');
+    pointer(nztiRemoveIdentity) := GetProcedureAddress(OCILibraryHandle,'nztiRemoveIdentity');
+    pointer(nztifdn) := GetProcedureAddress(OCILibraryHandle,'nztifdn');
+    pointer(nztxSignExpansion) := GetProcedureAddress(OCILibraryHandle,'nztxSignExpansion');
+    pointer(nztxsd_SignDetachedExpansion) := GetProcedureAddress(OCILibraryHandle,'nztxsd_SignDetachedExpansion');
+    pointer(nztEncrypt) := GetProcedureAddress(OCILibraryHandle,'nztEncrypt');
+    pointer(nztxEncryptExpansion) := GetProcedureAddress(OCILibraryHandle,'nztxEncryptExpansion');
+    pointer(nztDecrypt) := GetProcedureAddress(OCILibraryHandle,'nztDecrypt');
+    pointer(nztEnvelope) := GetProcedureAddress(OCILibraryHandle,'nztEnvelope');
+    pointer(nztDeEnvelope) := GetProcedureAddress(OCILibraryHandle,'nztDeEnvelope');
+    pointer(nztKeyedHash) := GetProcedureAddress(OCILibraryHandle,'nztKeyedHash');
+    pointer(nztxKeyedHashExpansion) := GetProcedureAddress(OCILibraryHandle,'nztxKeyedHashExpansion');
+    pointer(nztxHashExpansion) := GetProcedureAddress(OCILibraryHandle,'nztxHashExpansion');
+    pointer(nztiae_IsAuthEnabled) := GetProcedureAddress(OCILibraryHandle,'nztiae_IsAuthEnabled');
+    pointer(nztiee_IsEncrEnabled) := GetProcedureAddress(OCILibraryHandle,'nztiee_IsEncrEnabled');
+    pointer(nztihe_IsHashEnabled) := GetProcedureAddress(OCILibraryHandle,'nztihe_IsHashEnabled');
+    pointer(nztGetIssuerName) := GetProcedureAddress(OCILibraryHandle,'nztGetIssuerName');
+    pointer(nztGetSubjectName) := GetProcedureAddress(OCILibraryHandle,'nztGetSubjectName');
+    pointer(nztGetBase64Cert) := GetProcedureAddress(OCILibraryHandle,'nztGetBase64Cert');
+    pointer(nztGetSerialNumber) := GetProcedureAddress(OCILibraryHandle,'nztGetSerialNumber');
+    pointer(nztGetValidDate) := GetProcedureAddress(OCILibraryHandle,'nztGetValidDate');
+    pointer(nztGetVersion) := GetProcedureAddress(OCILibraryHandle,'nztGetVersion');
+    pointer(nztGetPublicKey) := GetProcedureAddress(OCILibraryHandle,'nztGetPublicKey');
+    pointer(nztGenericDestroy) := GetProcedureAddress(OCILibraryHandle,'nztGenericDestroy');
+    pointer(nztSetAppDefaultLocation) := GetProcedureAddress(OCILibraryHandle,'nztSetAppDefaultLocation');
+    pointer(nztSearchNZDefault) := GetProcedureAddress(OCILibraryHandle,'nztSearchNZDefault');
+
+{ ociap.inc}
+
+    pointer(OCIInitialize) := GetProcedureAddress(OCILibraryHandle,'OCIInitialize');
+    pointer(OCITerminate) := GetProcedureAddress(OCILibraryHandle,'OCITerminate');
+    pointer(OCIEnvCreate) := GetProcedureAddress(OCILibraryHandle,'OCIEnvCreate');
+    pointer(OCIEnvNlsCreate) := GetProcedureAddress(OCILibraryHandle,'OCIEnvNlsCreate');
+    pointer(OCIFEnvCreate) := GetProcedureAddress(OCILibraryHandle,'OCIFEnvCreate');
+    pointer(OCIHandleAlloc) := GetProcedureAddress(OCILibraryHandle,'OCIHandleAlloc');
+    pointer(OCIHandleFree) := GetProcedureAddress(OCILibraryHandle,'OCIHandleFree');
+    pointer(OCIDescriptorAlloc) := GetProcedureAddress(OCILibraryHandle,'OCIDescriptorAlloc');
+    pointer(OCIDescriptorFree) := GetProcedureAddress(OCILibraryHandle,'OCIDescriptorFree');
+    pointer(OCIEnvInit) := GetProcedureAddress(OCILibraryHandle,'OCIEnvInit');
+    pointer(OCIServerAttach) := GetProcedureAddress(OCILibraryHandle,'OCIServerAttach');
+    pointer(OCIServerDetach) := GetProcedureAddress(OCILibraryHandle,'OCIServerDetach');
+    pointer(OCISessionBegin) := GetProcedureAddress(OCILibraryHandle,'OCISessionBegin');
+    pointer(OCISessionEnd) := GetProcedureAddress(OCILibraryHandle,'OCISessionEnd');
+    pointer(OCILogon) := GetProcedureAddress(OCILibraryHandle,'OCILogon');
+    pointer(OCILogon2) := GetProcedureAddress(OCILibraryHandle,'OCILogon2');
+    pointer(OCILogoff) := GetProcedureAddress(OCILibraryHandle,'OCILogoff');
+    pointer(OCIPasswordChange) := GetProcedureAddress(OCILibraryHandle,'OCIPasswordChange');
+    pointer(OCIStmtPrepare) := GetProcedureAddress(OCILibraryHandle,'OCIStmtPrepare');
+    pointer(OCIStmtPrepare2) := GetProcedureAddress(OCILibraryHandle,'OCIStmtPrepare2');
+    pointer(OCIStmtRelease) := GetProcedureAddress(OCILibraryHandle,'OCIStmtRelease');
+    pointer(OCIBindByPos) := GetProcedureAddress(OCILibraryHandle,'OCIBindByPos');
+    pointer(OCIBindByName) := GetProcedureAddress(OCILibraryHandle,'OCIBindByName');
+    pointer(OCIBindObject) := GetProcedureAddress(OCILibraryHandle,'OCIBindObject');
+    pointer(OCIBindDynamic) := GetProcedureAddress(OCILibraryHandle,'OCIBindDynamic');
+    pointer(OCIBindArrayOfStruct) := GetProcedureAddress(OCILibraryHandle,'OCIBindArrayOfStruct');
+    pointer(OCIStmtGetPieceInfo) := GetProcedureAddress(OCILibraryHandle,'OCIStmtGetPieceInfo');
+    pointer(OCIStmtSetPieceInfo) := GetProcedureAddress(OCILibraryHandle,'OCIStmtSetPieceInfo');
+    pointer(OCIStmtExecute) := GetProcedureAddress(OCILibraryHandle,'OCIStmtExecute');
+    pointer(OCIDefineByPos) := GetProcedureAddress(OCILibraryHandle,'OCIDefineByPos');
+    pointer(OCIDefineObject) := GetProcedureAddress(OCILibraryHandle,'OCIDefineObject');
+    pointer(OCIDefineDynamic) := GetProcedureAddress(OCILibraryHandle,'OCIDefineDynamic');
+    pointer(OCIRowidToChar) := GetProcedureAddress(OCILibraryHandle,'OCIRowidToChar');
+    pointer(OCIDefineArrayOfStruct) := GetProcedureAddress(OCILibraryHandle,'OCIDefineArrayOfStruct');
+    pointer(OCIStmtFetch) := GetProcedureAddress(OCILibraryHandle,'OCIStmtFetch');
+    pointer(OCIStmtFetch2) := GetProcedureAddress(OCILibraryHandle,'OCIStmtFetch2');
+    pointer(OCIStmtGetBindInfo) := GetProcedureAddress(OCILibraryHandle,'OCIStmtGetBindInfo');
+    pointer(OCIDescribeAny) := GetProcedureAddress(OCILibraryHandle,'OCIDescribeAny');
+    pointer(OCIParamGet) := GetProcedureAddress(OCILibraryHandle,'OCIParamGet');
+    pointer(OCIParamSet) := GetProcedureAddress(OCILibraryHandle,'OCIParamSet');
+    pointer(OCITransStart) := GetProcedureAddress(OCILibraryHandle,'OCITransStart');
+    pointer(OCITransDetach) := GetProcedureAddress(OCILibraryHandle,'OCITransDetach');
+    pointer(OCITransCommit) := GetProcedureAddress(OCILibraryHandle,'OCITransCommit');
+    pointer(OCITransRollback) := GetProcedureAddress(OCILibraryHandle,'OCITransRollback');
+    pointer(OCITransPrepare) := GetProcedureAddress(OCILibraryHandle,'OCITransPrepare');
+    pointer(OCITransMultiPrepare) := GetProcedureAddress(OCILibraryHandle,'OCITransMultiPrepare');
+    pointer(OCITransForget) := GetProcedureAddress(OCILibraryHandle,'OCITransForget');
+    pointer(OCIErrorGet) := GetProcedureAddress(OCILibraryHandle,'OCIErrorGet');
+    pointer(OCILobAppend) := GetProcedureAddress(OCILibraryHandle,'OCILobAppend');
+    pointer(OCILobAssign) := GetProcedureAddress(OCILibraryHandle,'OCILobAssign');
+    pointer(OCILobCharSetForm) := GetProcedureAddress(OCILibraryHandle,'OCILobCharSetForm');
+    pointer(OCILobCharSetId) := GetProcedureAddress(OCILibraryHandle,'OCILobCharSetId');
+    pointer(OCILobCopy) := GetProcedureAddress(OCILibraryHandle,'OCILobCopy');
+    pointer(OCILobCreateTemporary) := GetProcedureAddress(OCILibraryHandle,'OCILobCreateTemporary');
+    pointer(OCILobClose) := GetProcedureAddress(OCILibraryHandle,'OCILobClose');
+    pointer(OCILobDisableBuffering) := GetProcedureAddress(OCILibraryHandle,'OCILobDisableBuffering');
+    pointer(OCILobEnableBuffering) := GetProcedureAddress(OCILibraryHandle,'OCILobEnableBuffering');
+    pointer(OCILobErase) := GetProcedureAddress(OCILibraryHandle,'OCILobErase');
+    pointer(OCILobFileClose) := GetProcedureAddress(OCILibraryHandle,'OCILobFileClose');
+    pointer(OCILobFileCloseAll) := GetProcedureAddress(OCILibraryHandle,'OCILobFileCloseAll');
+    pointer(OCILobFileExists) := GetProcedureAddress(OCILibraryHandle,'OCILobFileExists');
+    pointer(OCILobFileGetName) := GetProcedureAddress(OCILibraryHandle,'OCILobFileGetName');
+    pointer(OCILobFileIsOpen) := GetProcedureAddress(OCILibraryHandle,'OCILobFileIsOpen');
+    pointer(OCILobFileOpen) := GetProcedureAddress(OCILibraryHandle,'OCILobFileOpen');
+    pointer(OCILobFileSetName) := GetProcedureAddress(OCILibraryHandle,'OCILobFileSetName');
+    pointer(OCILobFlushBuffer) := GetProcedureAddress(OCILibraryHandle,'OCILobFlushBuffer');
+    pointer(OCILobFreeTemporary) := GetProcedureAddress(OCILibraryHandle,'OCILobFreeTemporary');
+    pointer(OCILobGetChunkSize) := GetProcedureAddress(OCILibraryHandle,'OCILobGetChunkSize');
+    pointer(OCILobGetLength) := GetProcedureAddress(OCILibraryHandle,'OCILobGetLength');
+    pointer(OCILobIsEqual) := GetProcedureAddress(OCILibraryHandle,'OCILobIsEqual');
+    pointer(OCILobIsOpen) := GetProcedureAddress(OCILibraryHandle,'OCILobIsOpen');
+    pointer(OCILobIsTemporary) := GetProcedureAddress(OCILibraryHandle,'OCILobIsTemporary');
+    pointer(OCILobLoadFromFile) := GetProcedureAddress(OCILibraryHandle,'OCILobLoadFromFile');
+    pointer(OCILobLocatorAssign) := GetProcedureAddress(OCILibraryHandle,'OCILobLocatorAssign');
+    pointer(OCILobLocatorIsInit) := GetProcedureAddress(OCILibraryHandle,'OCILobLocatorIsInit');
+    pointer(OCILobOpen) := GetProcedureAddress(OCILibraryHandle,'OCILobOpen');
+    pointer(OCILobRead) := GetProcedureAddress(OCILibraryHandle,'OCILobRead');
+    pointer(OCILobTrim) := GetProcedureAddress(OCILibraryHandle,'OCILobTrim');
+    pointer(OCILobWrite) := GetProcedureAddress(OCILibraryHandle,'OCILobWrite');
+    pointer(OCILobWriteAppend) := GetProcedureAddress(OCILibraryHandle,'OCILobWriteAppend');
+    pointer(OCIBreak) := GetProcedureAddress(OCILibraryHandle,'OCIBreak');
+    pointer(OCIReset) := GetProcedureAddress(OCILibraryHandle,'OCIReset');
+    pointer(OCIServerVersion) := GetProcedureAddress(OCILibraryHandle,'OCIServerVersion');
+    pointer(OCIServerRelease) := GetProcedureAddress(OCILibraryHandle,'OCIServerRelease');
+    pointer(OCIAttrGet) := GetProcedureAddress(OCILibraryHandle,'OCIAttrGet');
+    pointer(OCIAttrSet) := GetProcedureAddress(OCILibraryHandle,'OCIAttrSet');
+    pointer(OCISvcCtxToLda) := GetProcedureAddress(OCILibraryHandle,'OCISvcCtxToLda');
+    pointer(OCILdaToSvcCtx) := GetProcedureAddress(OCILibraryHandle,'OCILdaToSvcCtx');
+    pointer(OCIResultSetToStmt) := GetProcedureAddress(OCILibraryHandle,'OCIResultSetToStmt');
+    pointer(OCIFileClose) := GetProcedureAddress(OCILibraryHandle,'OCIFileClose');
+    pointer(OCISharedLibInit) := GetProcedureAddress(OCILibraryHandle,'OCISharedLibInit');
+    pointer(OCIFileExists) := GetProcedureAddress(OCILibraryHandle,'OCIFileExists');
+    pointer(OCIFileFlush) := GetProcedureAddress(OCILibraryHandle,'OCIFileFlush');
+    pointer(OCIFileGetLength) := GetProcedureAddress(OCILibraryHandle,'OCIFileGetLength');
+    pointer(OCIFileInit) := GetProcedureAddress(OCILibraryHandle,'OCIFileInit');
+    pointer(OCIFileOpen) := GetProcedureAddress(OCILibraryHandle,'OCIFileOpen');
+    pointer(OCIFileRead) := GetProcedureAddress(OCILibraryHandle,'OCIFileRead');
+    pointer(OCIFileSeek) := GetProcedureAddress(OCILibraryHandle,'OCIFileSeek');
+    pointer(OCIFileTerm) := GetProcedureAddress(OCILibraryHandle,'OCIFileTerm');
+    pointer(OCIFileWrite) := GetProcedureAddress(OCILibraryHandle,'OCIFileWrite');
+{$ifdef ORAXB8_DEFINED}
+    pointer(OCILobCopy2) := GetProcedureAddress(OCILibraryHandle,'OCILobCopy2');
+    pointer(OCILobErase2) := GetProcedureAddress(OCILibraryHandle,'OCILobErase2');
+    pointer(OCILobGetLength2) := GetProcedureAddress(OCILibraryHandle,'OCILobGetLength2');
+    pointer(OCILobLoadFromFile2) := GetProcedureAddress(OCILibraryHandle,'OCILobLoadFromFile2');
+    pointer(OCILobRead2) := GetProcedureAddress(OCILibraryHandle,'OCILobRead2');
+    pointer(OCILobArrayRead) := GetProcedureAddress(OCILibraryHandle,'OCILobArrayRead');
+    pointer(OCILobTrim2) := GetProcedureAddress(OCILibraryHandle,'OCILobTrim2');
+    pointer(OCILobWrite2) := GetProcedureAddress(OCILibraryHandle,'OCILobWrite2');
+    pointer(OCILobArrayWrite) := GetProcedureAddress(OCILibraryHandle,'OCILobArrayWrite');
+    pointer(OCILobWriteAppend2) := GetProcedureAddress(OCILibraryHandle,'OCILobWriteAppend2');
+    pointer(OCILobGetStorageLimit) := GetProcedureAddress(OCILibraryHandle,'OCILobGetStorageLimit');
+{$endif}
+    pointer(OCISecurityInitialize) := GetProcedureAddress(OCILibraryHandle,'OCISecurityInitialize');
+    pointer(OCISecurityTerminate) := GetProcedureAddress(OCILibraryHandle,'OCISecurityTerminate');
+    pointer(OCISecurityOpenWallet) := GetProcedureAddress(OCILibraryHandle,'OCISecurityOpenWallet');
+    pointer(OCISecurityCloseWallet) := GetProcedureAddress(OCILibraryHandle,'OCISecurityCloseWallet');
+    pointer(OCISecurityCreateWallet) := GetProcedureAddress(OCILibraryHandle,'OCISecurityCreateWallet');
+    pointer(OCISecurityDestroyWallet) := GetProcedureAddress(OCILibraryHandle,'OCISecurityDestroyWallet');
+    pointer(OCISecurityStorePersona) := GetProcedureAddress(OCILibraryHandle,'OCISecurityStorePersona');
+    pointer(OCISecurityOpenPersona) := GetProcedureAddress(OCILibraryHandle,'OCISecurityOpenPersona');
+    pointer(OCISecurityClosePersona) := GetProcedureAddress(OCILibraryHandle,'OCISecurityClosePersona');
+    pointer(OCISecurityRemovePersona) := GetProcedureAddress(OCILibraryHandle,'OCISecurityRemovePersona');
+    pointer(OCISecurityCreatePersona) := GetProcedureAddress(OCILibraryHandle,'OCISecurityCreatePersona');
+    pointer(OCISecuritySetProtection) := GetProcedureAddress(OCILibraryHandle,'OCISecuritySetProtection');
+    pointer(OCISecurityGetProtection) := GetProcedureAddress(OCILibraryHandle,'OCISecurityGetProtection');
+    pointer(OCISecurityRemoveIdentity) := GetProcedureAddress(OCILibraryHandle,'OCISecurityRemoveIdentity');
+    pointer(OCISecurityCreateIdentity) := GetProcedureAddress(OCILibraryHandle,'OCISecurityCreateIdentity');
+    pointer(OCISecurityAbortIdentity) := GetProcedureAddress(OCILibraryHandle,'OCISecurityAbortIdentity');
+    pointer(OCISecurityFreeIdentity) := GetProcedureAddress(OCILibraryHandle,'OCISecurityFreeIdentity');
+    pointer(OCISecurityStoreTrustedIdentity) := GetProcedureAddress(OCILibraryHandle,'OCISecurityStoreTrustedIdentity');
+    pointer(OCISecuritySign) := GetProcedureAddress(OCILibraryHandle,'OCISecuritySign');
+    pointer(OCISecuritySignExpansion) := GetProcedureAddress(OCILibraryHandle,'OCISecuritySignExpansion');
+    pointer(OCISecurityVerify) := GetProcedureAddress(OCILibraryHandle,'OCISecurityVerify');
+    pointer(OCISecurityValidate) := GetProcedureAddress(OCILibraryHandle,'OCISecurityValidate');
+    pointer(OCISecuritySignDetached) := GetProcedureAddress(OCILibraryHandle,'OCISecuritySignDetached');
+    pointer(OCISecuritySignDetExpansion) := GetProcedureAddress(OCILibraryHandle,'OCISecuritySignDetExpansion');
+    pointer(OCISecurityVerifyDetached) := GetProcedureAddress(OCILibraryHandle,'OCISecurityVerifyDetached');
+    pointer(OCISecurity_PKEncrypt) := GetProcedureAddress(OCILibraryHandle,'OCISecurity_PKEncrypt');
+    pointer(OCISecurityPKEncryptExpansion) := GetProcedureAddress(OCILibraryHandle,'OCISecurityPKEncryptExpansion');
+    pointer(OCISecurityPKDecrypt) := GetProcedureAddress(OCILibraryHandle,'OCISecurityPKDecrypt');
+    pointer(OCISecurityEncrypt) := GetProcedureAddress(OCILibraryHandle,'OCISecurityEncrypt');
+    pointer(OCISecurityEncryptExpansion) := GetProcedureAddress(OCILibraryHandle,'OCISecurityEncryptExpansion');
+    pointer(OCISecurityDecrypt) := GetProcedureAddress(OCILibraryHandle,'OCISecurityDecrypt');
+    pointer(OCISecurityEnvelope) := GetProcedureAddress(OCILibraryHandle,'OCISecurityEnvelope');
+    pointer(OCISecurityDeEnvelope) := GetProcedureAddress(OCILibraryHandle,'OCISecurityDeEnvelope');
+    pointer(OCISecurityKeyedHash) := GetProcedureAddress(OCILibraryHandle,'OCISecurityKeyedHash');
+    pointer(OCISecurityKeyedHashExpansion) := GetProcedureAddress(OCILibraryHandle,'OCISecurityKeyedHashExpansion');
+    pointer(OCISecurityHash) := GetProcedureAddress(OCILibraryHandle,'OCISecurityHash');
+    pointer(OCISecurityHashExpansion) := GetProcedureAddress(OCILibraryHandle,'OCISecurityHashExpansion');
+    pointer(OCISecuritySeedRandom) := GetProcedureAddress(OCILibraryHandle,'OCISecuritySeedRandom');
+    pointer(OCISecurityRandomBytes) := GetProcedureAddress(OCILibraryHandle,'OCISecurityRandomBytes');
+    pointer(OCISecurityRandomNumber) := GetProcedureAddress(OCILibraryHandle,'OCISecurityRandomNumber');
+    pointer(OCISecurityInitBlock) := GetProcedureAddress(OCILibraryHandle,'OCISecurityInitBlock');
+    pointer(OCISecurityReuseBlock) := GetProcedureAddress(OCILibraryHandle,'OCISecurityReuseBlock');
+    pointer(OCISecurityPurgeBlock) := GetProcedureAddress(OCILibraryHandle,'OCISecurityPurgeBlock');
+    pointer(OCISecuritySetBlock) := GetProcedureAddress(OCILibraryHandle,'OCISecuritySetBlock');
+    pointer(OCISecurityGetIdentity) := GetProcedureAddress(OCILibraryHandle,'OCISecurityGetIdentity');
+    pointer(OCIAQEnq) := GetProcedureAddress(OCILibraryHandle,'OCIAQEnq');
+    pointer(OCIAQDeq) := GetProcedureAddress(OCILibraryHandle,'OCIAQDeq');
+    pointer(OCIAQEnqArray) := GetProcedureAddress(OCILibraryHandle,'OCIAQEnqArray');
+    pointer(OCIAQDeqArray) := GetProcedureAddress(OCILibraryHandle,'OCIAQDeqArray');
+    pointer(OCIAQListen) := GetProcedureAddress(OCILibraryHandle,'OCIAQListen');
+    pointer(OCIAQListen2) := GetProcedureAddress(OCILibraryHandle,'OCIAQListen2');
+    pointer(OCIExtractInit) := GetProcedureAddress(OCILibraryHandle,'OCIExtractInit');
+    pointer(OCIExtractTerm) := GetProcedureAddress(OCILibraryHandle,'OCIExtractTerm');
+    pointer(OCIExtractReset) := GetProcedureAddress(OCILibraryHandle,'OCIExtractReset');
+    pointer(OCIExtractSetNumKeys) := GetProcedureAddress(OCILibraryHandle,'OCIExtractSetNumKeys');
+    pointer(OCIExtractSetKey) := GetProcedureAddress(OCILibraryHandle,'OCIExtractSetKey');
+    pointer(OCIExtractFromFile) := GetProcedureAddress(OCILibraryHandle,'OCIExtractFromFile');
+    pointer(OCIExtractFromStr) := GetProcedureAddress(OCILibraryHandle,'OCIExtractFromStr');
+    pointer(OCIExtractToInt) := GetProcedureAddress(OCILibraryHandle,'OCIExtractToInt');
+    pointer(OCIExtractToBool) := GetProcedureAddress(OCILibraryHandle,'OCIExtractToBool');
+    pointer(OCIExtractToStr) := GetProcedureAddress(OCILibraryHandle,'OCIExtractToStr');
+    pointer(OCIExtractToOCINum) := GetProcedureAddress(OCILibraryHandle,'OCIExtractToOCINum');
+    pointer(OCIExtractToList) := GetProcedureAddress(OCILibraryHandle,'OCIExtractToList');
+    pointer(OCIExtractFromList) := GetProcedureAddress(OCILibraryHandle,'OCIExtractFromList');
+    pointer(OCIMemoryAlloc) := GetProcedureAddress(OCILibraryHandle,'OCIMemoryAlloc');
+    pointer(OCIMemoryResize) := GetProcedureAddress(OCILibraryHandle,'OCIMemoryResize');
+    pointer(OCIMemoryFree) := GetProcedureAddress(OCILibraryHandle,'OCIMemoryFree');
+    pointer(OCIContextSetValue) := GetProcedureAddress(OCILibraryHandle,'OCIContextSetValue');
+    pointer(OCIContextGetValue) := GetProcedureAddress(OCILibraryHandle,'OCIContextGetValue');
+    pointer(OCIContextClearValue) := GetProcedureAddress(OCILibraryHandle,'OCIContextClearValue');
+    pointer(OCIContextGenerateKey) := GetProcedureAddress(OCILibraryHandle,'OCIContextGenerateKey');
+    pointer(OCIMemorySetCurrentIDs) := GetProcedureAddress(OCILibraryHandle,'OCIMemorySetCurrentIDs');
+    pointer(OCIPicklerTdsCtxInit) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsCtxInit');
+    pointer(OCIPicklerTdsCtxFree) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsCtxFree');
+    pointer(OCIPicklerTdsInit) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsInit');
+    pointer(OCIPicklerTdsFree) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsFree');
+    pointer(OCIPicklerTdsCreateElementNumber) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsCreateElementNumber');
+    pointer(OCIPicklerTdsCreateElementChar) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsCreateElementChar');
+    pointer(OCIPicklerTdsCreateElementVarchar) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsCreateElementVarchar');
+    pointer(OCIPicklerTdsCreateElementRaw) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsCreateElementRaw');
+    pointer(OCIPicklerTdsCreateElement) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsCreateElement');
+    pointer(OCIPicklerTdsAddAttr) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsAddAttr');
+    pointer(OCIPicklerTdsGenerate) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsGenerate');
+    pointer(OCIPicklerTdsGetAttr) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerTdsGetAttr');
+    pointer(OCIPicklerFdoInit) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerFdoInit');
+    pointer(OCIPicklerFdoFree) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerFdoFree');
+    pointer(OCIPicklerImageInit) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageInit');
+    pointer(OCIPicklerImageFree) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageFree');
+    pointer(OCIPicklerImageAddScalar) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageAddScalar');
+    pointer(OCIPicklerImageAddNullScalar) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageAddNullScalar');
+    pointer(OCIPicklerImageGenerate) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageGenerate');
+    pointer(OCIPicklerImageGetScalarSize) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageGetScalarSize');
+    pointer(OCIPicklerImageGetScalar) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageGetScalar');
+    pointer(OCIPicklerImageCollBegin) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageCollBegin');
+    pointer(OCIPicklerImageCollAddScalar) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageCollAddScalar');
+    pointer(OCIPicklerImageCollEnd) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageCollEnd');
+    pointer(OCIPicklerImageCollBeginScan) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageCollBeginScan');
+    pointer(OCIPicklerImageCollGetScalarSize) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageCollGetScalarSize');
+    pointer(OCIPicklerImageCollGetScalar) := GetProcedureAddress(OCILibraryHandle,'OCIPicklerImageCollGetScalar');
+    pointer(OCIAnyDataGetType) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataGetType');
+    pointer(OCIAnyDataIsNull) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataIsNull');
+    pointer(OCIAnyDataConvert) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataConvert');
+    pointer(OCIAnyDataBeginCreate) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataBeginCreate');
+    pointer(OCIAnyDataDestroy) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataDestroy');
+    pointer(OCIAnyDataAttrSet) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataAttrSet');
+    pointer(OCIAnyDataCollAddElem) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataCollAddElem');
+    pointer(OCIAnyDataEndCreate) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataEndCreate');
+    pointer(OCIAnyDataAccess) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataAccess');
+    pointer(OCIAnyDataGetCurrAttrNum) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataGetCurrAttrNum');
+    pointer(OCIAnyDataAttrGet) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataAttrGet');
+    pointer(OCIAnyDataCollGetElem) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataCollGetElem');
+    pointer(OCIAnyDataSetBeginCreate) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataSetBeginCreate');
+    pointer(OCIAnyDataSetDestroy) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataSetDestroy');
+    pointer(OCIAnyDataSetAddInstance) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataSetAddInstance');
+    pointer(OCIAnyDataSetEndCreate) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataSetEndCreate');
+    pointer(OCIAnyDataSetGetType) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataSetGetType');
+    pointer(OCIAnyDataSetGetCount) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataSetGetCount');
+    pointer(OCIAnyDataSetGetInstance) := GetProcedureAddress(OCILibraryHandle,'OCIAnyDataSetGetInstance');
+    pointer(OCIFormatInit) := GetProcedureAddress(OCILibraryHandle,'OCIFormatInit');
+    pointer(OCIFormatString) := GetProcedureAddress(OCILibraryHandle,'OCIFormatString');
+    pointer(OCIFormatTerm) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTerm');
+    pointer(OCIFormatTUb1) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTUb1');
+    pointer(OCIFormatTUb2) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTUb2');
+    pointer(OCIFormatTUb4) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTUb4');
+    pointer(OCIFormatTUword) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTUword');
+    pointer(OCIFormatTUbig_ora) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTUbig_ora');
+    pointer(OCIFormatTSb1) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTSb1');
+    pointer(OCIFormatTSb2) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTSb2');
+    pointer(OCIFormatTSb4) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTSb4');
+    pointer(OCIFormatTSword) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTSword');
+    pointer(OCIFormatTSbig_ora) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTSbig_ora');
+    pointer(OCIFormatTEb1) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTEb1');
+    pointer(OCIFormatTEb2) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTEb2');
+    pointer(OCIFormatTEb4) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTEb4');
+    pointer(OCIFormatTEword) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTEword');
+    pointer(OCIFormatTChar) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTChar');
+    pointer(OCIFormatTText) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTText');
+    pointer(OCIFormatTDouble) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTDouble');
+    pointer(OCIFormatTDvoid) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTDvoid');
+    pointer(OCIFormatTEnd) := GetProcedureAddress(OCILibraryHandle,'OCIFormatTEnd');
+    pointer(xaosvch) := GetProcedureAddress(OCILibraryHandle,'xaosvch');
+    pointer(xaoSvcCtx) := GetProcedureAddress(OCILibraryHandle,'xaoSvcCtx');
+    pointer(xaoEnv) := GetProcedureAddress(OCILibraryHandle,'xaoEnv');
+    pointer(xaosterr) := GetProcedureAddress(OCILibraryHandle,'xaosterr');
+    pointer(OCINlsGetInfo) := GetProcedureAddress(OCILibraryHandle,'OCINlsGetInfo');
+    pointer(OCINlsNumericInfoGet) := GetProcedureAddress(OCILibraryHandle,'OCINlsNumericInfoGet');
+    pointer(OCINlsCharSetNameToId) := GetProcedureAddress(OCILibraryHandle,'OCINlsCharSetNameToId');
+    pointer(OCIThreadProcessInit) := GetProcedureAddress(OCILibraryHandle,'OCIThreadProcessInit');
+    pointer(OCIThreadInit) := GetProcedureAddress(OCILibraryHandle,'OCIThreadInit');
+    pointer(OCIThreadTerm) := GetProcedureAddress(OCILibraryHandle,'OCIThreadTerm');
+    pointer(OCIThreadIsMulti) := GetProcedureAddress(OCILibraryHandle,'OCIThreadIsMulti');
+    pointer(OCIThreadMutexInit) := GetProcedureAddress(OCILibraryHandle,'OCIThreadMutexInit');
+    pointer(OCIThreadMutexDestroy) := GetProcedureAddress(OCILibraryHandle,'OCIThreadMutexDestroy');
+    pointer(OCIThreadMutexAcquire) := GetProcedureAddress(OCILibraryHandle,'OCIThreadMutexAcquire');
+    pointer(OCIThreadMutexRelease) := GetProcedureAddress(OCILibraryHandle,'OCIThreadMutexRelease');
+    pointer(OCIThreadKeyInit) := GetProcedureAddress(OCILibraryHandle,'OCIThreadKeyInit');
+    pointer(OCIThreadKeyDestroy) := GetProcedureAddress(OCILibraryHandle,'OCIThreadKeyDestroy');
+    pointer(OCIThreadKeyGet) := GetProcedureAddress(OCILibraryHandle,'OCIThreadKeyGet');
+    pointer(OCIThreadKeySet) := GetProcedureAddress(OCILibraryHandle,'OCIThreadKeySet');
+    pointer(OCIThreadIdInit) := GetProcedureAddress(OCILibraryHandle,'OCIThreadIdInit');
+    pointer(OCIThreadIdDestroy) := GetProcedureAddress(OCILibraryHandle,'OCIThreadIdDestroy');
+    pointer(OCIThreadIdSet) := GetProcedureAddress(OCILibraryHandle,'OCIThreadIdSet');
+    pointer(OCIThreadIdSetNull) := GetProcedureAddress(OCILibraryHandle,'OCIThreadIdSetNull');
+    pointer(OCIThreadIdGet) := GetProcedureAddress(OCILibraryHandle,'OCIThreadIdGet');
+    pointer(OCIThreadIdSame) := GetProcedureAddress(OCILibraryHandle,'OCIThreadIdSame');
+    pointer(OCIThreadIdNull) := GetProcedureAddress(OCILibraryHandle,'OCIThreadIdNull');
+    pointer(OCIThreadHndInit) := GetProcedureAddress(OCILibraryHandle,'OCIThreadHndInit');
+    pointer(OCIThreadHndDestroy) := GetProcedureAddress(OCILibraryHandle,'OCIThreadHndDestroy');
+    pointer(OCIThreadCreate) := GetProcedureAddress(OCILibraryHandle,'OCIThreadCreate');
+    pointer(OCIThreadJoin) := GetProcedureAddress(OCILibraryHandle,'OCIThreadJoin');
+    pointer(OCIThreadClose) := GetProcedureAddress(OCILibraryHandle,'OCIThreadClose');
+    pointer(OCIThreadHandleGet) := GetProcedureAddress(OCILibraryHandle,'OCIThreadHandleGet');
+    pointer(OCISubscriptionRegister) := GetProcedureAddress(OCILibraryHandle,'OCISubscriptionRegister');
+    pointer(OCISubscriptionPost) := GetProcedureAddress(OCILibraryHandle,'OCISubscriptionPost');
+    pointer(OCISubscriptionUnRegister) := GetProcedureAddress(OCILibraryHandle,'OCISubscriptionUnRegister');
+    pointer(OCISubscriptionDisable) := GetProcedureAddress(OCILibraryHandle,'OCISubscriptionDisable');
+    pointer(OCISubscriptionEnable) := GetProcedureAddress(OCILibraryHandle,'OCISubscriptionEnable');
+    pointer(OCIDateTimeGetTime) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeGetTime');
+    pointer(OCIDateTimeGetDate) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeGetDate');
+    pointer(OCIDateTimeGetTimeZoneOffset) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeGetTimeZoneOffset');
+    pointer(OCIDateTimeConstruct) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeConstruct');
+    pointer(OCIDateTimeSysTimeStamp) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeSysTimeStamp');
+    pointer(OCIDateTimeAssign) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeAssign');
+    pointer(OCIDateTimeToText) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeToText');
+    pointer(OCIDateTimeFromText) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeFromText');
+    pointer(OCIDateTimeCompare) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeCompare');
+    pointer(OCIDateTimeCheck) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeCheck');
+    pointer(OCIDateTimeConvert) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeConvert');
+    pointer(OCIDateTimeSubtract) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeSubtract');
+    pointer(OCIDateTimeIntervalAdd) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeIntervalAdd');
+    pointer(OCIDateTimeIntervalSub) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeIntervalSub');
+    pointer(OCIIntervalSubtract) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalSubtract');
+    pointer(OCIIntervalAdd) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalAdd');
+    pointer(OCIIntervalMultiply) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalMultiply');
+    pointer(OCIIntervalDivide) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalDivide');
+    pointer(OCIIntervalCompare) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalCompare');
+    pointer(OCIIntervalFromNumber) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalFromNumber');
+    pointer(OCIIntervalFromText) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalFromText');
+    pointer(OCIIntervalToText) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalToText');
+    pointer(OCIIntervalToNumber) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalToNumber');
+    pointer(OCIIntervalCheck) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalCheck');
+    pointer(OCIIntervalAssign) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalAssign');
+    pointer(OCIIntervalSetYearMonth) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalSetYearMonth');
+    pointer(OCIIntervalGetYearMonth) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalGetYearMonth');
+    pointer(OCIIntervalSetDaySecond) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalSetDaySecond');
+    pointer(OCIIntervalGetDaySecond) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalGetDaySecond');
+    pointer(OCIDateTimeToArray) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeToArray');
+    pointer(OCIDateTimeFromArray) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeFromArray');
+    pointer(OCIDateTimeGetTimeZoneName) := GetProcedureAddress(OCILibraryHandle,'OCIDateTimeGetTimeZoneName');
+    pointer(OCIIntervalFromTZ) := GetProcedureAddress(OCILibraryHandle,'OCIIntervalFromTZ');
+    pointer(OCIConnectionPoolCreate) := GetProcedureAddress(OCILibraryHandle,'OCIConnectionPoolCreate');
+    pointer(OCIConnectionPoolDestroy) := GetProcedureAddress(OCILibraryHandle,'OCIConnectionPoolDestroy');
+    pointer(OCISessionPoolCreate) := GetProcedureAddress(OCILibraryHandle,'OCISessionPoolCreate');
+    pointer(OCISessionPoolDestroy) := GetProcedureAddress(OCILibraryHandle,'OCISessionPoolDestroy');
+    pointer(OCISessionGet) := GetProcedureAddress(OCILibraryHandle,'OCISessionGet');
+    pointer(OCISessionRelease) := GetProcedureAddress(OCILibraryHandle,'OCISessionRelease');
+    pointer(OCIAppCtxSet) := GetProcedureAddress(OCILibraryHandle,'OCIAppCtxSet');
+    pointer(OCIAppCtxClearAll) := GetProcedureAddress(OCILibraryHandle,'OCIAppCtxClearAll');
+    pointer(OCIPing) := GetProcedureAddress(OCILibraryHandle,'OCIPing');
+    pointer(OCIKerbAttrSet) := GetProcedureAddress(OCILibraryHandle,'OCIKerbAttrSet');
+    pointer(OCIDBStartup) := GetProcedureAddress(OCILibraryHandle,'OCIDBStartup');
+    pointer(OCIDBShutdown) := GetProcedureAddress(OCILibraryHandle,'OCIDBShutdown');
+    pointer(OCIClientVersion) := GetProcedureAddress(OCILibraryHandle,'OCIClientVersion');
+    pointer(OCIInitEventHandle) := GetProcedureAddress(OCILibraryHandle,'OCIInitEventHandle');
+
+    end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure ReleaseOCI;
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if RefCount > 0 then 
     dec(RefCount);
   if RefCount = 0 then
@@ -3924,6 +4450,17 @@ begin
     if not UnloadLibrary(OCILibraryHandle) then 
       inc(RefCount);
     OCILoadedLibrary:='';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if RefCount > 0 then dec(RefCount);
+  if RefCount = 0 then
+    begin
+    if not UnloadLibrary(OCILibraryHandle) then inc(RefCount);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     end;
 end;
 

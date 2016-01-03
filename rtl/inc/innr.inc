@@ -77,6 +77,7 @@ const
    fpc_in_ror_x_x           = 66;
    fpc_in_rol_x             = 67;
    fpc_in_rol_x_x           = 68;
+<<<<<<< HEAD
    fpc_objc_selector_x      = 69;
    fpc_objc_protocol_x      = 70;
    fpc_objc_encode_x        = 71;
@@ -84,12 +85,26 @@ const
    fpc_in_sar_x             = 73;
    fpc_in_bsf_x             = 74;
    fpc_in_bsr_x             = 75;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    fpc_in_default_x         = 76;
    fpc_in_box_x             = 77; { managed platforms: wrap in class instance }
    fpc_in_unbox_x_y         = 78; { manage platforms: extract from class instance }
    fpc_in_popcnt_x          = 79;
    fpc_in_aligned_x         = 80;
    fpc_in_setstring_x_y_z   = 81;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 { Internal constant functions }
    fpc_in_const_sqr        = 100;

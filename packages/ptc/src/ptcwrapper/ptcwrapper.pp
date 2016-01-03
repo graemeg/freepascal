@@ -1,6 +1,22 @@
 {
     Free Pascal PTCPas framebuffer library threaded wrapper
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2010, 2011, 2012, 2013 Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -60,8 +76,28 @@ type
     Title: string;
     SurfaceWidth, SurfaceHeight: Integer;
     Width, Height: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Format: IPTCFormat;
     Mode: IPTCMode;
+=======
+    Format: TPTCFormat;
+    Mode: TPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+    Format: TPTCFormat;
+    Mode: TPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+    Format: TPTCFormat;
+    Mode: TPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+    Format: TPTCFormat;
+    Mode: TPTCMode;
+>>>>>>> origin/cpstrnew
     VirtualPages: Integer;
     Pages: Integer;
 
@@ -84,14 +120,54 @@ type
   TPTCWrapperGetModesRequest = record
     Processed: Boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result: TPTCModeList;
+=======
+    Result: PPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+    Result: PPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+    Result: PPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+    Result: PPTCMode;
+>>>>>>> origin/cpstrnew
   end;
 
   TPTCWrapperThread = class(TThread)
   private
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FConsole: IPTCConsole;
     FSurface: array of IPTCSurface;
     FPalette: IPTCPalette;
+=======
+    FConsole: TPTCConsole;
+    FSurface: array of TPTCSurface;
+    FPalette: TPTCPalette;
+>>>>>>> graemeg/cpstrnew
+=======
+    FConsole: TPTCConsole;
+    FSurface: array of TPTCSurface;
+    FPalette: TPTCPalette;
+>>>>>>> graemeg/cpstrnew
+=======
+    FConsole: TPTCConsole;
+    FSurface: array of TPTCSurface;
+    FPalette: TPTCPalette;
+>>>>>>> graemeg/cpstrnew
+=======
+    FConsole: TPTCConsole;
+    FSurface: array of TPTCSurface;
+    FPalette: TPTCPalette;
+>>>>>>> origin/cpstrnew
     FSurfaceCriticalSection: TCriticalSection;
     FNeedsUpdate: Boolean;
     FPaletteNeedsUpdate: Boolean;
@@ -116,14 +192,54 @@ type
     destructor Destroy; override;
 
     procedure Open(const ATitle: string; AVirtualPages: Integer; APages: Integer = 0);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure Open(const ATitle: string; AFormat: IPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
     procedure Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight, AWidth, AHeight: Integer; AFormat: IPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
     procedure Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight: Integer; AMode: IPTCMode; AVirtualPages: Integer; APages: Integer = 0);
+=======
+    procedure Open(const ATitle: string; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+    procedure Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight, AWidth, AHeight: Integer; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+    procedure Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight: Integer; AMode: TPTCMode; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure Open(const ATitle: string; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+    procedure Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight, AWidth, AHeight: Integer; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+    procedure Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight: Integer; AMode: TPTCMode; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure Open(const ATitle: string; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+    procedure Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight, AWidth, AHeight: Integer; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+    procedure Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight: Integer; AMode: TPTCMode; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure Open(const ATitle: string; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+    procedure Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight, AWidth, AHeight: Integer; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+    procedure Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight: Integer; AMode: TPTCMode; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> origin/cpstrnew
     procedure Close;
 
     function Option(const AOption: string): Boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function Modes: TPTCModeList;
+=======
+    function Modes: PPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+    function Modes: PPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+    function Modes: PPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+    function Modes: PPTCMode;
+>>>>>>> origin/cpstrnew
 
     procedure SetVisualPage(AVisualPage: Integer);
 
@@ -133,8 +249,28 @@ type
     function PaletteLock: Pointer;
     procedure PaletteUnlock;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function NextEvent(out AEvent: IPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean;
     function PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): IPTCEvent;
+=======
+    function NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean;
+    function PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+    function NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean;
+    function PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+    function NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean;
+    function PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+    function NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean;
+    function PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> origin/cpstrnew
 
     property IsOpen: Boolean read FOpen;
   end;
@@ -174,13 +310,54 @@ end;
 procedure TPTCWrapperThread.Execute;
   procedure GetEvents;
   var
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Event: IPTCEvent;
+=======
+    Event: TPTCEvent = nil;
+>>>>>>> graemeg/cpstrnew
+=======
+    Event: TPTCEvent = nil;
+>>>>>>> graemeg/cpstrnew
+=======
+    Event: TPTCEvent = nil;
+>>>>>>> graemeg/cpstrnew
+=======
+    Event: TPTCEvent = nil;
+>>>>>>> origin/cpstrnew
     NextEventAvailable: Boolean;
   begin
     repeat
       NextEventAvailable := FConsole.NextEvent(Event, False, PTCAnyEvent);
       if NextEventAvailable then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         FEventQueue.AddEvent(Event);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      begin
+        FEventQueue.AddEvent(Event);
+        Event := nil;
+      end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     until not NextEventAvailable;
   end;
 
@@ -191,7 +368,23 @@ procedure TPTCWrapperThread.Execute;
     if not FOpenRequest.Processed then
     begin
       for I := Low(FSurface) to High(FSurface) do
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         FSurface[I] := nil;
+=======
+        FreeAndNil(FSurface[I]);
+>>>>>>> graemeg/cpstrnew
+=======
+        FreeAndNil(FSurface[I]);
+>>>>>>> graemeg/cpstrnew
+=======
+        FreeAndNil(FSurface[I]);
+>>>>>>> graemeg/cpstrnew
+=======
+        FreeAndNil(FSurface[I]);
+>>>>>>> origin/cpstrnew
       with FOpenRequest do
       begin
         SetLength(FSurface, VirtualPages);
@@ -200,25 +393,89 @@ procedure TPTCWrapperThread.Execute;
             begin
               FConsole.Open(Title, Pages);
               for I := Low(FSurface) to High(FSurface) do
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 FSurface[I] := TPTCSurfaceFactory.CreateNew(FConsole.Width, FConsole.Height, FConsole.Format);
+=======
+                FSurface[I] := TPTCSurface.Create(FConsole.Width, FConsole.Height, FConsole.Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(FConsole.Width, FConsole.Height, FConsole.Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(FConsole.Width, FConsole.Height, FConsole.Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(FConsole.Width, FConsole.Height, FConsole.Format);
+>>>>>>> origin/cpstrnew
             end;
           pwotFormat:
             begin
               FConsole.Open(Title, Format, Pages);
               for I := Low(FSurface) to High(FSurface) do
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 FSurface[I] := TPTCSurfaceFactory.CreateNew(FConsole.Width, FConsole.Height, Format);
+=======
+                FSurface[I] := TPTCSurface.Create(FConsole.Width, FConsole.Height, Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(FConsole.Width, FConsole.Height, Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(FConsole.Width, FConsole.Height, Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(FConsole.Width, FConsole.Height, Format);
+>>>>>>> origin/cpstrnew
             end;
           pwotWidthHeightFormat:
             begin
               FConsole.Open(Title, Width, Height, Format, Pages);
               for I := Low(FSurface) to High(FSurface) do
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 FSurface[I] := TPTCSurfaceFactory.CreateNew(SurfaceWidth, SurfaceHeight, Format);
+=======
+                FSurface[I] := TPTCSurface.Create(SurfaceWidth, SurfaceHeight, Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(SurfaceWidth, SurfaceHeight, Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(SurfaceWidth, SurfaceHeight, Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(SurfaceWidth, SurfaceHeight, Format);
+>>>>>>> origin/cpstrnew
             end;
           pwotMode:
             begin
               FConsole.Open(Title, Mode, Pages);
               for I := Low(FSurface) to High(FSurface) do
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 FSurface[I] := TPTCSurfaceFactory.CreateNew(SurfaceWidth, SurfaceHeight, Mode.Format);
+=======
+                FSurface[I] := TPTCSurface.Create(SurfaceWidth, SurfaceHeight, Mode.Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(SurfaceWidth, SurfaceHeight, Mode.Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(SurfaceWidth, SurfaceHeight, Mode.Format);
+>>>>>>> graemeg/cpstrnew
+=======
+                FSurface[I] := TPTCSurface.Create(SurfaceWidth, SurfaceHeight, Mode.Format);
+>>>>>>> origin/cpstrnew
             end;
         end;
       end;
@@ -238,7 +495,23 @@ procedure TPTCWrapperThread.Execute;
     begin
       FConsole.Close;
       for I := Low(FSurface) to High(FSurface) do
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         FSurface[I] := nil;
+=======
+        FreeAndNil(FSurface[I]);
+>>>>>>> graemeg/cpstrnew
+=======
+        FreeAndNil(FSurface[I]);
+>>>>>>> graemeg/cpstrnew
+=======
+        FreeAndNil(FSurface[I]);
+>>>>>>> graemeg/cpstrnew
+=======
+        FreeAndNil(FSurface[I]);
+>>>>>>> origin/cpstrnew
       SetLength(FSurface, 0);
       SetLength(FPixels, 0);
       FOpen := False;
@@ -259,6 +532,10 @@ procedure TPTCWrapperThread.Execute;
     end;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 begin
   try
     FConsole := TPTCConsoleFactory.CreateNew;
@@ -266,6 +543,31 @@ begin
 
     FEventQueue := TEventQueue.Create;
     FPalette := TPTCPaletteFactory.CreateNew;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+var
+  I: Integer;
+begin
+  try
+    FConsole := TPTCConsole.Create;
+
+    FEventQueue := TEventQueue.Create;
+    FPalette := TPTCPalette.Create;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     FPaletteData := FPalette.Data;
 
     FOpen := False;
@@ -308,8 +610,34 @@ begin
     if Assigned(FConsole) then
       FConsole.Close;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     SetLength(FSurface, 0);
     FConsole := nil;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    for I := Low(FSurface) to High(FSurface) do
+      FreeAndNil(FSurface[I]);
+    SetLength(FSurface, 0);
+    FreeAndNil(FPalette);
+    FreeAndNil(FConsole);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 end;
 
@@ -334,7 +662,23 @@ begin
   until FOpenRequest.Processed;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TPTCWrapperThread.Open(const ATitle: string; AFormat: IPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> origin/cpstrnew
 begin
   FSurfaceCriticalSection.Acquire;
   try
@@ -356,7 +700,23 @@ begin
   until FOpenRequest.Processed;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TPTCWrapperThread.Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight, AWidth, AHeight: Integer; AFormat: IPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight, AWidth, AHeight: Integer; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight, AWidth, AHeight: Integer; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight, AWidth, AHeight: Integer; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight, AWidth, AHeight: Integer; AFormat: TPTCFormat; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> origin/cpstrnew
 begin
   FSurfaceCriticalSection.Acquire;
   try
@@ -382,7 +742,23 @@ begin
   until FOpenRequest.Processed;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TPTCWrapperThread.Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight: Integer; AMode: IPTCMode; AVirtualPages: Integer; APages: Integer = 0);
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight: Integer; AMode: TPTCMode; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight: Integer; AMode: TPTCMode; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight: Integer; AMode: TPTCMode; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TPTCWrapperThread.Open(const ATitle: string; ASurfaceWidth, ASurfaceHeight: Integer; AMode: TPTCMode; AVirtualPages: Integer; APages: Integer = 0);
+>>>>>>> origin/cpstrnew
 begin
   FSurfaceCriticalSection.Acquire;
   try
@@ -442,7 +818,23 @@ begin
   Result := FOptionRequest.Result;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TPTCWrapperThread.Modes: TPTCModeList;
+=======
+function TPTCWrapperThread.Modes: PPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCWrapperThread.Modes: PPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCWrapperThread.Modes: PPTCMode;
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCWrapperThread.Modes: PPTCMode;
+>>>>>>> origin/cpstrnew
 begin
   FSurfaceCriticalSection.Acquire;
   try
@@ -500,8 +892,32 @@ begin
   FSurfaceCriticalSection.Release;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TPTCWrapperThread.NextEvent(out AEvent: IPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean;
 begin
+=======
+function TPTCWrapperThread.NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean;
+begin
+  FreeAndNil(AEvent);
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCWrapperThread.NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean;
+begin
+  FreeAndNil(AEvent);
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCWrapperThread.NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean;
+begin
+  FreeAndNil(AEvent);
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCWrapperThread.NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean;
+begin
+  FreeAndNil(AEvent);
+>>>>>>> origin/cpstrnew
   repeat
     ThreadSwitch;
 
@@ -512,7 +928,23 @@ begin
   Result := AEvent <> nil;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TPTCWrapperThread.PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): IPTCEvent;
+=======
+function TPTCWrapperThread.PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCWrapperThread.PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCWrapperThread.PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+function TPTCWrapperThread.PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> origin/cpstrnew
 begin
   repeat
     ThreadSwitch;

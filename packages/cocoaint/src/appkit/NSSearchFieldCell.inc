@@ -49,10 +49,35 @@ const
 { NSSearchFieldCell }
   NSSearchFieldCell = objcclass external (NSTextFieldCell)
   private
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __sfFlags: record
       case byte of
        0: (_anonbitfield_NSSearchFieldCell0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __sfFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSSearchFieldCell0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _sendsWholeSearchString: 0..1;
         _maximumRecents: 0..((1 shl 8)-1);
         cancelVisible: 0..1;
@@ -63,7 +88,19 @@ const
         sendsImmediately: 0..1;
         
         reserved: 0..((1 shl 16)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _searchButtonCell: NSButtonCell;

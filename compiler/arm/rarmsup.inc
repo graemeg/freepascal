@@ -28,6 +28,10 @@ RS_S0 = $00;
 RS_S1 = $20;
 RS_D0 = $00;
 RS_S2 = $01;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 RS_S3 = $21;
 RS_D1 = $01;
 RS_S4 = $02;
@@ -71,6 +75,66 @@ RS_S29 = $2E;
 RS_D14 = $0E;
 RS_S30 = $0F;
 RS_S31 = $2F;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+RS_S3 = $01;
+RS_D1 = $01;
+RS_S4 = $02;
+RS_S5 = $02;
+RS_D2 = $02;
+RS_S6 = $03;
+RS_S7 = $03;
+RS_D3 = $03;
+RS_S8 = $04;
+RS_S9 = $04;
+RS_D4 = $04;
+RS_S10 = $05;
+RS_S11 = $05;
+RS_D5 = $05;
+RS_S12 = $06;
+RS_S13 = $06;
+RS_D6 = $06;
+RS_S14 = $07;
+RS_S15 = $07;
+RS_D7 = $07;
+RS_S16 = $08;
+RS_S17 = $08;
+RS_D8 = $08;
+RS_S18 = $09;
+RS_S19 = $09;
+RS_D9 = $09;
+RS_S20 = $0A;
+RS_S21 = $0A;
+RS_D10 = $0A;
+RS_S22 = $0B;
+RS_S23 = $0B;
+RS_D11 = $0B;
+RS_S24 = $0C;
+RS_S25 = $0C;
+RS_D12 = $0C;
+RS_S26 = $0D;
+RS_S27 = $0D;
+RS_D13 = $0D;
+RS_S28 = $0E;
+RS_S29 = $0E;
+RS_D14 = $0E;
+RS_S30 = $0F;
+RS_S31 = $0F;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 RS_D15 = $0F;
 RS_D16 = $10;
 RS_D17 = $11;
@@ -88,6 +152,10 @@ RS_D28 = $1C;
 RS_D29 = $1D;
 RS_D30 = $1E;
 RS_D31 = $1F;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 RS_CPSR = $00;
 RS_FPSCR = $01;
 RS_SPSR = $02;
@@ -130,3 +198,19 @@ RS_FPEXC = $26;
 RS_APSR_nzcvq = $27;
 RS_APSR_g = $28;
 RS_APSR_nzcvqg = $29;
+=======
+RS_CPSR_C = $00;
+RS_FPSCR = $01;
+>>>>>>> graemeg/cpstrnew
+=======
+RS_CPSR_C = $00;
+RS_FPSCR = $01;
+>>>>>>> graemeg/cpstrnew
+=======
+RS_CPSR_C = $00;
+RS_FPSCR = $01;
+>>>>>>> graemeg/cpstrnew
+=======
+RS_CPSR_C = $00;
+RS_FPSCR = $01;
+>>>>>>> origin/cpstrnew

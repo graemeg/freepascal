@@ -150,15 +150,6 @@ begin
           z.next_in := p;
           s.write := q;
           inflate_codes := inflate_flush(s,z,r);
-
-          //if this is the last block, there are no bytes left in stream and the block end code follows, finish processing this block
-          if s.last then
-          begin
-            t := c^.sub.code.tree;
-            if t^.exop and 32 <> 0 then
-              break;
-          end;
-
           exit;
         end;
         dec(n);

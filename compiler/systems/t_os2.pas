@@ -285,19 +285,43 @@ procedure AddImport(const module:string;index:longint;const name,mangledname:str
  index      = Index of function in DLL. Use 0 to import by name.
  name       = Name of function in DLL. Ignored when index=0;}
 (*
+<<<<<<< HEAD
+<<<<<<< HEAD
 var tmp1,tmp2,tmp3:string;
 *)
+=======
+>>>>>>> graemeg/fixes_2_2
 var tmp1,tmp2,tmp3:string;
+*)
+=======
+var tmp1,tmp2,tmp3:string;
+*)
+>>>>>>> origin/fixes_2_2
+var tmp1,tmp3:string;
     sym_mcount,sym_import:longint;
     fixup_mcount,fixup_import:longint;
 begin
     aout_init;
+<<<<<<< HEAD
+<<<<<<< HEAD
     tmp2:=mangledname;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 (*
     tmp2:=func;
     if profile_flag and not (copy(func,1,4)='_16_') then
 *)
+<<<<<<< HEAD
+<<<<<<< HEAD
     if profile_flag and not (copy(tmp2,1,4)='_16_') then
+=======
+    if profile_flag and not (copy(Name,1,4)='_16_') then
+>>>>>>> graemeg/fixes_2_2
+=======
+    if profile_flag and not (copy(Name,1,4)='_16_') then
+>>>>>>> origin/fixes_2_2
         begin
             {sym_entry:=aout_sym(func,n_text+n_ext,0,0,aout_text_size);}
             sym_mcount:=aout_sym('__mcount',n_ext,0,0,0);
@@ -307,7 +331,15 @@ begin
             tmp2:='__$U_'+func;
             sym_import:=aout_sym(tmp2,n_ext,0,0,0);
 *)
+<<<<<<< HEAD
+<<<<<<< HEAD
             sym_import:=aout_sym(tmp2,n_ext,0,0,0);
+=======
+            sym_import:=aout_sym(name,n_ext,0,0,0);
+>>>>>>> graemeg/fixes_2_2
+=======
+            sym_import:=aout_sym(name,n_ext,0,0,0);
+>>>>>>> origin/fixes_2_2
             aout_text_byte($55);    {push ebp}
             aout_text_byte($89);    {mov ebp, esp}
             aout_text_byte($e5);
@@ -330,6 +362,8 @@ begin
     if index<>0 then
         begin
             str(index,tmp3);
+<<<<<<< HEAD
+<<<<<<< HEAD
             tmp3:=Name+'='+module+'.'+tmp3;
         end
     else
@@ -337,7 +371,22 @@ begin
 *)
         tmp3 := MangledName + '=' + module + '.' + target_info.Cprefix + name;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(*
+            tmp3:=func+'='+module+'.'+tmp3;
+*)
+            tmp3:=Name+'='+module+'.'+tmp3;
+        end
+    else
+        tmp3:=Name+'='+module+'.'+name;
+(*
+        tmp3:=func+'='+module+'.'+name;
+>>>>>>> graemeg/fixes_2_2
     aout_sym(tmp2,n_imp1+n_ext,0,0,0);
+*)
+    aout_sym(Name,n_imp1+n_ext,0,0,0);
     aout_sym(tmp3,n_imp2+n_ext,0,0,0);
     aout_finish;
     write_ar(tmp1,aout_size);
@@ -354,20 +403,52 @@ end;
           ImportLibrary : TImportLibrary;
           ImportSymbol  : TImportSymbol;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
         seq_no:=1;
         current_module.linkotherstaticlibs.add(Current_Module.ImportLibFilename,link_always);
         assign(out_file,Current_Module.ImportLibFilename);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{        LibName:=FixFileName(Current_Module.ModuleName^ + Target_Info.StaticCLibExt);}
+(* Hack to fix the problem without merging larger changes from trunk. *)
+        LibName := FixFileName(Current_Module.ObjFileName^);
+        LibName := Copy (LibName, 1, Length (LibName) - Length (Target_Info.ObjExt)) + Target_Info.StaticLibExt;
+        seq_no:=1;
+        current_module.linkotherstaticlibs.add(libname,link_always);
+        assign(out_file,libname);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         rewrite(out_file,1);
         blockwrite(out_file,ar_magic,sizeof(ar_magic));
 
         for i:=0 to current_module.ImportLibraryList.Count-1 do
           begin
             ImportLibrary:=TImportLibrary(current_module.ImportLibraryList[i]);
+<<<<<<< HEAD
+<<<<<<< HEAD
             for j:=0 to ImportLibrary.ImportSymbolList.Count-1 do
               begin
                 ImportSymbol:=TImportSymbol(ImportLibrary.ImportSymbolList[j]);
                 AddImport(ChangeFileExt(ExtractFileName(ImportLibrary.Name),''),
                   ImportSymbol.OrdNr,ImportSymbol.Name,ImportSymbol.MangledName);
+=======
+{            LibName:=FixFileName(ImportLibrary.Name + Target_Info.StaticCLibExt);}
+            for j:=0 to ImportLibrary.ImportSymbolList.Count-1 do
+              begin
+                ImportSymbol:=TImportSymbol(ImportLibrary.ImportSymbolList[j]);
+                AddImport(ChangeFileExt(ExtractFileName(ImportLibrary.Name),''),ImportSymbol.OrdNr,ImportSymbol.Name);
+>>>>>>> graemeg/fixes_2_2
+=======
+{            LibName:=FixFileName(ImportLibrary.Name + Target_Info.StaticCLibExt);}
+            for j:=0 to ImportLibrary.ImportSymbolList.Count-1 do
+              begin
+                ImportSymbol:=TImportSymbol(ImportLibrary.ImportSymbolList[j]);
+                AddImport(ChangeFileExt(ExtractFileName(ImportLibrary.Name),''),ImportSymbol.OrdNr,ImportSymbol.Name);
+>>>>>>> origin/fixes_2_2
               end;
          end;
          close(out_file);
@@ -536,12 +617,20 @@ begin
         Replace(cmdstr,'$RES',maybequoted(outputexedir+Info.ResName));
 *)
         Replace(cmdstr,'$RES',outputexedir+Info.ResName);
+<<<<<<< HEAD
+<<<<<<< HEAD
         if (Info.ExtraOptions <> '') and
                    (Info.ExtraOptions [Length (Info.ExtraOptions)] <> ' ') then
          Replace(cmdstr,'$OPT',Info.ExtraOptions)
         else
          Replace(cmdstr,'$OPT ',Info.ExtraOptions);
         Replace(cmdstr,'$RSRC ',RsrcStr);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        Replace(cmdstr,'$OPT',Info.ExtraOptions);
+        Replace(cmdstr,'$RSRC',RsrcStr);
+>>>>>>> graemeg/fixes_2_2
         Replace(cmdstr,'$OUT',maybequoted(OutName));
         Replace(cmdstr,'$EXE',maybequoted(current_module.exefilename));
         if i<>3 then

@@ -31,7 +31,15 @@ unit SAX_HTML;
 
 interface
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses SysUtils, Classes, SAX, DOM, DOM_HTML,htmldefs,xmlutils;
+=======
+uses SysUtils, Classes, SAX, DOM, DOM_HTML,htmldefs;
+>>>>>>> graemeg/fixes_2_2
+=======
+uses SysUtils, Classes, SAX, DOM, DOM_HTML,htmldefs;
+>>>>>>> origin/fixes_2_2
 
 type
 
@@ -283,22 +291,80 @@ begin
               begin
                 // TODO: this check is hardly complete, probably must also check if
                 // tag name is followed by legal attributes.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 if CheckForName(FRawTokenText) then   { <-- ansi to wide conversion here }
                   EnterNewScannerContext(scUnknown)   // assume unclosed tag
                 else if (FRawTokenText <> '') and (FRawTokenText[1] <> '!') then
                 begin
                   Insert('<', FRawTokenText, 1);         // assume plaintext
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                if CheckForName(FTokenText) then
+                  EnterNewScannerContext(scUnknown)   // assume unclosed tag
+                else if (FTokenText <> '') and (FTokenText[1] <> '!') then
+                begin
+                  Insert('<', FTokenText, 1);         // assume plaintext
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                   FScannerContext := scText;
                   EnterNewScannerContext(scUnknown);
                 end
                 else
                 begin  // in comment, ignore
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   FRawTokenText := FRawTokenText + Buffer[BufferPos];
+=======
+                  FTokenText := FTokenText + Buffer[BufferPos];
+>>>>>>> graemeg/cpstrnew
+=======
+                  FTokenText := FTokenText + Buffer[BufferPos];
+>>>>>>> graemeg/cpstrnew
+=======
+                  FTokenText := FTokenText + Buffer[BufferPos];
+>>>>>>> graemeg/cpstrnew
+=======
+                  FTokenText := FTokenText + Buffer[BufferPos];
+>>>>>>> origin/cpstrnew
                   Inc(BufferPos);
                 end;
               end;
           else
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             FRawTokenText := FRawTokenText + Buffer[BufferPos];
+=======
+            FTokenText := FTokenText + Buffer[BufferPos];
+>>>>>>> graemeg/cpstrnew
+=======
+            FTokenText := FTokenText + Buffer[BufferPos];
+>>>>>>> graemeg/cpstrnew
+=======
+            FTokenText := FTokenText + Buffer[BufferPos];
+>>>>>>> graemeg/cpstrnew
+=======
+            FTokenText := FTokenText + Buffer[BufferPos];
+>>>>>>> origin/cpstrnew
             Inc(BufferPos);
           end;
         end;    // case ScannerContext of

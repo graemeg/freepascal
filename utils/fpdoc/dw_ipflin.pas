@@ -29,9 +29,21 @@ const
   TIPFExtension = '.ipf';
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   { TIPFNewWriter }
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   TIPFNewWriter = class(TLinearWriter)
   private
     InPackageOverview: Boolean;
@@ -88,10 +100,36 @@ type
     procedure StartSubSection(SubSectionName : String);override;
     procedure StartSubSubSection(SubSubSectionName : String);override;
     procedure StartChapter(ChapterName : String); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure StartOverview(Const What : String;WithAccess : Boolean); override;
     procedure EndOverview; override;
     procedure WriteOverviewMember(const ALabel,AName,Access,ADescr : String); override;
     procedure WriteOverviewMember(const ALabel,AName,ADescr : String); override;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    procedure StartOverview(WithAccess : Boolean); override;
+    procedure EndOverview; override;
+    procedure WriteOverviewMember(const ALabel,AName,Access,ADescr : String); override;
+    procedure WriteOverviewMember(const ALabel,AName,ADescr : String); override;
+    class function FileNameExtension: string; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     procedure DescrBeginURL(const AURL: DOMString); override;
     procedure DescrEndURL; override;
     // Description node conversion. Overrides for TFPDocWriter.
@@ -143,8 +181,20 @@ type
     // TFPDocWriter class methods
   public
     constructor Create(APackage: TPasPackage; AEngine: TFPDocEngine); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     class function FileNameExtension: string; override;
     procedure WriteClassInheritanceOverview(ClassDecl: TPasClassType); override;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 
 
@@ -199,6 +249,22 @@ const
   cMax = 100;
 var
   sl: TStringlist;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  ns: string;
+>>>>>>> graemeg/cpstrnew
+=======
+  ns: string;
+>>>>>>> graemeg/cpstrnew
+=======
+  ns: string;
+>>>>>>> graemeg/cpstrnew
+=======
+  ns: string;
+>>>>>>> origin/cpstrnew
   i: integer;
   lText: string;
 begin
@@ -503,6 +569,10 @@ begin
   InTypesDeclaration := False;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.WriteClassInheritanceOverview(ClassDecl: TPasClassType);
 var
   DocNode: TDocNode;
@@ -617,21 +687,84 @@ end;
 { TLinearWriter overrides}
 
 class function TIPFNewWriter.FileNameExtension: string;
+=======
+{ TLinearWriter overrides}
+
+class function TIPFNewWriter.FileNameExtension: String;
+>>>>>>> graemeg/cpstrnew
+=======
+{ TLinearWriter overrides}
+
+class function TIPFNewWriter.FileNameExtension: String;
+>>>>>>> graemeg/cpstrnew
+=======
+{ TLinearWriter overrides}
+
+class function TIPFNewWriter.FileNameExtension: String;
+>>>>>>> graemeg/cpstrnew
+=======
+{ TLinearWriter overrides}
+
+class function TIPFNewWriter.FileNameExtension: String;
+>>>>>>> origin/cpstrnew
 begin
   Result := TIPFExtension;
 end;
 
 procedure TIPFNewWriter.DescrBeginURL(const AURL: DOMString);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Write(':link reftype=launch object=''netscape'' data=''' + AURL + '''.');
+=======
+  //Write(EscapeText(AURL));
+>>>>>>> graemeg/cpstrnew
+=======
+  //Write(EscapeText(AURL));
+>>>>>>> graemeg/cpstrnew
+=======
+  //Write(EscapeText(AURL));
+>>>>>>> graemeg/cpstrnew
+=======
+  //Write(EscapeText(AURL));
+>>>>>>> origin/cpstrnew
 end;
 
 procedure TIPFNewWriter.DescrEndURL;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Write(':elink.');
 end;
 
 function TIPFNewWriter.GetLabel(AElement: TPasElement): String;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  // do nothing
+end;
+
+function TIPFNewWriter.GetLabel(AElement: TPasElement): String;
+var
+  i: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 begin
   if AElement.ClassType = TPasUnresolvedTypeRef then
     Result := Engine.ResolveLink(Module, AElement.Name)
@@ -644,7 +777,23 @@ begin
   Result := StringReplace(Result, ' ', '_', [rfReplaceAll]);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TIPFNewWriter.EscapeText(S: String): String;
+=======
+Function TIPFNewWriter.EscapeText(S : String) : String;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TIPFNewWriter.EscapeText(S : String) : String;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TIPFNewWriter.EscapeText(S : String) : String;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TIPFNewWriter.EscapeText(S : String) : String;
+>>>>>>> origin/cpstrnew
 var
   i: Integer;
 begin
@@ -700,9 +849,33 @@ begin
     end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TIPFNewWriter.StripText(S: String): String;
 var
   I: Integer;
+=======
+Function TIPFNewWriter.StripText(S : String) : String;
+var
+  I,L: Integer;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TIPFNewWriter.StripText(S : String) : String;
+var
+  I,L: Integer;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TIPFNewWriter.StripText(S : String) : String;
+var
+  I,L: Integer;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TIPFNewWriter.StripText(S : String) : String;
+var
+  I,L: Integer;
+>>>>>>> origin/cpstrnew
 begin
   //Result := S;
   SetLength(Result, 0);
@@ -723,7 +896,23 @@ begin
   fColCount := 0;
   Writeln(':userdoc.');
   WriteComment('This file has been created automatically by FPDoc');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   WriteComment('IPF output (c) 2010-2012 by Graeme Geldenhuys (graemeg@gmail.com)');
+=======
+  WriteComment('IPF output (c) 2010 by Graeme Geldenhuys (graemeg@gmail.com)');
+>>>>>>> graemeg/cpstrnew
+=======
+  WriteComment('IPF output (c) 2010 by Graeme Geldenhuys (graemeg@gmail.com)');
+>>>>>>> graemeg/cpstrnew
+=======
+  WriteComment('IPF output (c) 2010 by Graeme Geldenhuys (graemeg@gmail.com)');
+>>>>>>> graemeg/cpstrnew
+=======
+  WriteComment('IPF output (c) 2010 by Graeme Geldenhuys (graemeg@gmail.com)');
+>>>>>>> origin/cpstrnew
   writeln('');
   Writeln(':docprof toc=12345.');
   WriteLn(':title.' + PackageName);
@@ -743,7 +932,23 @@ begin
   writeln('');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.WriteLabel(const S: String);
+=======
+procedure TIPFNewWriter.WriteLabel(const s: String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TIPFNewWriter.WriteLabel(const s: String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TIPFNewWriter.WriteLabel(const s: String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TIPFNewWriter.WriteLabel(const s: String);
+>>>>>>> origin/cpstrnew
 var
   x: String;
 begin
@@ -765,7 +970,23 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.WriteIndex(const S: String);
+=======
+procedure TIPFNewWriter.WriteIndex(const s : String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TIPFNewWriter.WriteIndex(const s : String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TIPFNewWriter.WriteIndex(const s : String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TIPFNewWriter.WriteIndex(const s : String);
+>>>>>>> origin/cpstrnew
 begin
 //  writeln(':i1 id=' + s + '.');
 end;
@@ -847,9 +1068,33 @@ begin
     DescrEndBold;
 //    writeln(':lm margin=3.');
     writeln('.br');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   end
 
   else if InPackageOverview then
+=======
+  end;
+
+  if InPackageOverview then
+>>>>>>> graemeg/cpstrnew
+=======
+  end;
+
+  if InPackageOverview then
+>>>>>>> graemeg/cpstrnew
+=======
+  end;
+
+  if InPackageOverview then
+>>>>>>> graemeg/cpstrnew
+=======
+  end;
+
+  if InPackageOverview then
+>>>>>>> origin/cpstrnew
   begin
     FInHeadingText := ':h2%s. ' + SectionName;
 //    Writeln(':h2.' + SectionName);
@@ -859,7 +1104,19 @@ begin
   begin
     FInHeadingText := ':h3%s. ' + SectionName;
 //    Writeln(':h3.' + SectionName);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     InPackageOverview := False;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 //  Writeln('');
 end;
@@ -881,19 +1138,67 @@ begin
   //Writeln(':h5.' + SubSubSectionName);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.StartProcedure;
+=======
+Procedure TIPFNewWriter.StartProcedure;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartProcedure;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartProcedure;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartProcedure;
+>>>>>>> origin/cpstrnew
 begin
   //writeln('');
   //writeln(':ul.');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.EndProcedure;
+=======
+Procedure TIPFNewWriter.EndProcedure;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.EndProcedure;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.EndProcedure;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.EndProcedure;
+>>>>>>> origin/cpstrnew
 begin
   //writeln('');
   //writeln(':eul.');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.StartSynopsis;
+=======
+Procedure TIPFNewWriter.StartSynopsis;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartSynopsis;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartSynopsis;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartSynopsis;
+>>>>>>> origin/cpstrnew
 begin
   writeln('');
   writeln(':p.');
@@ -903,7 +1208,23 @@ begin
   writeln(':lm margin=3.');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.StartDeclaration;
+=======
+Procedure TIPFNewWriter.StartDeclaration;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartDeclaration;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartDeclaration;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartDeclaration;
+>>>>>>> origin/cpstrnew
 begin
   writeln('');
   writeln(':p.');
@@ -912,7 +1233,23 @@ begin
   writeln(':lm margin=3.');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.StartVisibility;
+=======
+Procedure TIPFNewWriter.StartVisibility;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartVisibility;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartVisibility;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartVisibility;
+>>>>>>> origin/cpstrnew
 begin
   writeln('');
   writeln(':p.');
@@ -922,7 +1259,23 @@ begin
   writeln('.br');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.StartDescription;
+=======
+Procedure TIPFNewWriter.StartDescription;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartDescription;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartDescription;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartDescription;
+>>>>>>> origin/cpstrnew
 begin
   writeln('');
   writeln(':p.');
@@ -932,7 +1285,23 @@ begin
   writeln('.br');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.StartErrors;
+=======
+Procedure TIPFNewWriter.StartErrors;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartErrors;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartErrors;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartErrors;
+>>>>>>> origin/cpstrnew
 begin
   writeln('');
   writeln(':p.');
@@ -952,7 +1321,23 @@ begin
   writeln('.br');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.StartAccess;
+=======
+Procedure TIPFNewWriter.StartAccess;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartAccess;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartAccess;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartAccess;
+>>>>>>> origin/cpstrnew
 begin
   writeln('');
   writeln(':p.');
@@ -962,14 +1347,46 @@ begin
   writeln('.br');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.StartProperty;
+=======
+Procedure TIPFNewWriter.StartProperty;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartProperty;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartProperty;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartProperty;
+>>>>>>> origin/cpstrnew
 begin
   //writeln('');
   //Writeln('.* here I am');
   //writeln(':ul.');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.EndProperty;
+=======
+Procedure TIPFNewWriter.EndProperty;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.EndProperty;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.EndProperty;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.EndProperty;
+>>>>>>> origin/cpstrnew
 begin
   //writeln('');
   //writeln(':eul.');
@@ -1006,7 +1423,23 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.StartOverview(const What: String; WithAccess: Boolean);
+=======
+procedure TIPFNewWriter.StartOverview(WithAccess : Boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TIPFNewWriter.StartOverview(WithAccess : Boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TIPFNewWriter.StartOverview(WithAccess : Boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TIPFNewWriter.StartOverview(WithAccess : Boolean);
+>>>>>>> origin/cpstrnew
 begin
 {
   If With access then it is a property overview.
@@ -1068,7 +1501,23 @@ begin
   WriteLn(Format(':pd. %s', [ADescr]));
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIPFNewWriter.StartSeealso;
+=======
+Procedure TIPFNewWriter.StartSeeAlso;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartSeeAlso;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartSeeAlso;
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TIPFNewWriter.StartSeeAlso;
+>>>>>>> origin/cpstrnew
 begin
   writeln('');
   writeln(':p.');

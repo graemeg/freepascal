@@ -42,6 +42,10 @@ FPMAKE_OPT+=$(addprefix -o ,$(FPCOPT))
 FPMAKE_OPT+=--compiler=$(FPC)
 FPMAKE_OPT+=-bu
 .NOTPARALLEL:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 fpmake$(SRCEXEEXT): fpmake.pp
 	$(FPCFPMAKE) fpmake.pp $(FPMAKE_SKIP_CONFIG) $(addprefix -Fu,$(COMPILER_FPMAKE_UNITDIR)) $(FPCMAKEOPT) $(OPT)
@@ -100,3 +104,15 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+fpcreslipo$(EXEEXT): msghandler.pp paramparser.pp sourcehandler.pp fpcreslipo.pp
+>>>>>>> graemeg/cpstrnew
+=======
+fpcreslipo$(EXEEXT): msghandler.pp paramparser.pp sourcehandler.pp fpcreslipo.pp
+>>>>>>> graemeg/cpstrnew
+=======
+fpcreslipo$(EXEEXT): msghandler.pp paramparser.pp sourcehandler.pp fpcreslipo.pp
+>>>>>>> graemeg/cpstrnew
+=======
+fpcreslipo$(EXEEXT): msghandler.pp paramparser.pp sourcehandler.pp fpcreslipo.pp
+>>>>>>> origin/cpstrnew

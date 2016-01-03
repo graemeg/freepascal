@@ -211,7 +211,7 @@ var
    if_local1 : TGC;
 begin
    if_local1:=(PGdkGCX11(gc))^.xgc;
-   if (GDK_GC_X11(gc))^.dirty_mask=longint(gTRUE) then begin
+   if (GDK_GC_X11(gc))^.dirty_mask=gTRUE then begin
      //if_local1:=_gdk_x11_gc_flush(gc)
    end;
    GDK_GC_GET_XGC:=if_local1;

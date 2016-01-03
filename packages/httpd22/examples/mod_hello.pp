@@ -26,8 +26,24 @@ var
 const
   MODULE_NAME = 'mod_hello.so';
   
+<<<<<<< HEAD
+<<<<<<< HEAD
 exports
  test_module name 'hello_module';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{*******************************************************************
+*  Free Pascal only supports exporting variables on Windows
+*******************************************************************}
+{$ifdef WINDOWS}
+exports
+ test_module name 'test_module';
+{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {*******************************************************************
 *  Handles apache requests

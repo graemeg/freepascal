@@ -20,7 +20,15 @@ var
 begin
   FmtStr(tstr, fmt, args);
   getmaxyx(win, my, mx);
+<<<<<<< HEAD
+<<<<<<< HEAD
   dec(mx,startx);
+=======
+  mx -= startx;
+>>>>>>> graemeg/fixes_2_2
+=======
+  mx -= startx;
+>>>>>>> origin/fixes_2_2
 
   if (width > length(tstr)) OR  (width < 2) then
     width := length(tstr);

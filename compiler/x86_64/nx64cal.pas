@@ -27,6 +27,10 @@ interface
 
     uses
       symdef,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       ncal,nx86cal;
 
     type
@@ -37,6 +41,30 @@ interface
          procedure set_result_location(realresdef: tstoreddef);override;
        public
          procedure do_syscall;override;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      ncal,ncgcal;
+
+    type
+       tx8664callnode = class(tcgcallnode)
+        protected
+         procedure extra_call_code;override;
+         procedure set_result_location(realresdef: tstoreddef);override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
        end;
 
 
@@ -44,9 +72,23 @@ implementation
 
     uses
       globtype,
+<<<<<<< HEAD
       systems,verbose,cutils,
       cpubase,cgbase,cgutils,cgobj,
       symsym,symcpu,nld,
+=======
+      systems,
+      cpubase,cgbase,cgutils,cgobj,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       aasmtai,aasmdata,aasmcpu;
 
 {    uses

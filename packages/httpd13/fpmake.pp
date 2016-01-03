@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('httpd13');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ShortName:='hd13';
 {$ifdef ALLPACKAGES}
     P.Directory:=ADirectory;
@@ -32,6 +34,18 @@ begin
     P.SourcePath.Add('src');
     P.IncludePath.Add('src');
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='httpd13';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 //    P.Dependencies.Add('x11');
 
     T:=P.Targets.AddUnit('httpd.pas');

@@ -7,9 +7,24 @@ main=rtl
 
 [target]
 loaders=prt0 prt1
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=$(SYSTEMUNIT) uuchar objpas macpas iso7185 extpas strings \
       ports os2def doscalls doscall2 moncalls kbdcalls moucalls viocalls \
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+units=$(SYSTEMUNIT) objpas macpas iso7185 strings \
+      ports os2def doscalls moncalls kbdcalls moucalls viocalls \
+>>>>>>> graemeg/cpstrnew
       pmbitmap pmwin pmgpi pmstddlg pmhelp pmdev pmspl pmshl pmwp pmwsock pmbidi \
+<<<<<<< HEAD
       dos \
       sysutils classes fgl math typinfo \
       charset cpall cpu mmx getopts heaptrc lnfodwrf lineinfo dynlibs \
@@ -19,6 +34,18 @@ rsts=math typinfo pmhelp classes sysconst
 implicitunits=exeinfo \
       cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852
+=======
+      dos crt objects printer matrix \
+      sysutils classes fgl math typinfo varutils winsock fmtbcd \
+      charset ucomplex cpu mmx getopts heaptrc lnfodwrf lineinfo dynlibs \
+      video mouse keyboard variants types rtlconst sysconst dateutil \
+      strutils convutil ctypes 
+rsts=math varutils typinfo variants pmhelp classes sysconst dateutil
+implicitunits=exeinfo
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [require]
 nortl=y

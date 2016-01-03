@@ -37,7 +37,7 @@
 UNIT TTENGINE;
 
 INTERFACE
-USES Exec,utility,agraphics;
+USES Exec,utility,graphics;
 
 VAR TTEngineBase : pLibrary;
 
@@ -235,7 +235,7 @@ IMPLEMENTATION
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox,
+msgbox,
 {$endif dont_use_openlib}
 tagsarray;
 

@@ -107,17 +107,54 @@ var
     _name: NSString;
     _size: CGFloat;
     _retainCount: NSInteger;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __fFlags: record
       case byte of
        0: (_anonbitfield_NSFont0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __fFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSFont0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _isScreenFont: 0..1;
         _systemFontType: 0..((1 shl 8)-1);
         _reserved1: 0..((1 shl 4)-1);
         _matrixIsIdentity: 0..1;
         _renderingMode: 0..((1 shl 3)-1);
         _reserved2: 0..((1 shl 15)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _private: id;

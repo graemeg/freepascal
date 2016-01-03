@@ -39,8 +39,28 @@ uses
    cutils,globtype,globals,systems,
    symbase,symconst,symtype,symdef,symsym,symtable,
    verbose,fmodule,ppu,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    aasmbase,aasmtai,aasmdata,aasmcnst,
    aasmcpu;
+=======
+   aasmbase,aasmtai,aasmdata,
+   aasmcpu,asmutils;
+>>>>>>> graemeg/cpstrnew
+=======
+   aasmbase,aasmtai,aasmdata,
+   aasmcpu,asmutils;
+>>>>>>> graemeg/cpstrnew
+=======
+   aasmbase,aasmtai,aasmdata,
+   aasmcpu,asmutils;
+>>>>>>> graemeg/cpstrnew
+=======
+   aasmbase,aasmtai,aasmdata,
+   aasmcpu,asmutils;
+>>>>>>> origin/cpstrnew
 
     Type
       { These are used to form a singly-linked list, ordered by hash value }
@@ -130,20 +150,83 @@ uses
 
 
     procedure Tresourcestrings.CreateResourceStringData;
+<<<<<<< HEAD
+=======
+
+        function WriteValueString(p:pchar;len:longint):TasmLabel;
+        var
+          s : pchar;
+          referencelab: TAsmLabel;
+        begin
+          if (target_info.system in systems_darwin) then
+            begin
+              current_asmdata.getdatalabel(referencelab);
+              current_asmdata.asmlists[al_const].concat(tai_label.create(referencelab));
+            end;
+          current_asmdata.getdatalabel(result);
+          current_asmdata.asmlists[al_const].concat(tai_align.create(const_align(sizeof(aint))));
+          current_asmdata.asmlists[al_const].concat(tai_const.create_aint(-1));
+          current_asmdata.asmlists[al_const].concat(tai_const.create_aint(len));
+          current_asmdata.asmlists[al_const].concat(tai_label.create(result));
+          if (target_info.system in systems_darwin) then
+             current_asmdata.asmlists[al_const].concat(tai_directive.create(asd_reference,referencelab.name));
+          getmem(s,len+1);
+          move(p^,s^,len);
+          s[len]:=#0;
+          current_asmdata.asmlists[al_const].concat(tai_string.create_pchar(s,len));
+          current_asmdata.asmlists[al_const].concat(tai_const.create_8bit(0));
+        end;
+
+>>>>>>> graemeg/fixes_2_2
       Var
         namelab,
+<<<<<<< HEAD
         valuelab : tasmlabofs;
+=======
+        valuelab : tasmlabel;
+        resstrlab : tasmsymbol;
+        endsymlab : tasmsymbol;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
         R : TResourceStringItem;
         resstrdef: tdef;
         tcb : ttai_typedconstbuilder;
       begin
+<<<<<<< HEAD
         resstrdef:=search_system_type('TRESOURCESTRINGRECORD').typedef;
+=======
+        { Put resourcestrings in a new objectfile. Putting it in multiple files
+	  makes the linking too dependent on the linker script requiring a SORT(*) for
+	  the data sections }
+        maybe_new_object_file(current_asmdata.asmlists[al_const]);
+        new_section(current_asmdata.asmlists[al_const],sec_data,make_mangledname('RESSTRTABLE',current_module.localsymtable,''),sizeof(pint));
+
+        maybe_new_object_file(current_asmdata.asmlists[al_resourcestrings]);
+        new_section(current_asmdata.asmlists[al_resourcestrings],sec_data,make_mangledname('RESSTR',current_module.localsymtable,'1_START'),sizeof(pint));
+        current_asmdata.AsmLists[al_resourcestrings].concat(tai_symbol.createname_global(
+          make_mangledname('RESSTR',current_module.localsymtable,'START'),AT_DATA,0));
+>>>>>>> graemeg/cpstrnew
 
         { Put resourcestrings in a new objectfile. Putting it in multiple files
           makes the linking too dependent on the linker script requiring a SORT(*) for
           the data sections }
         tcb:=ctai_typedconstbuilder.create([tcalo_make_dead_strippable,tcalo_new_section,tcalo_vectorized_dead_strip_start]);
         { Write unitname entry }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         tcb.maybe_begin_aggregate(resstrdef);
         namelab:=tcb.emit_ansistring_const(current_asmdata.asmlists[al_const],@current_module.localsymtable.name^[1],length(current_module.localsymtable.name^),getansistringcodepage);
         tcb.emit_string_offset(namelab,length(current_module.localsymtable.name^),st_ansistring,false,charpointertype);
@@ -157,6 +240,22 @@ uses
           )
         );
         tcb.free;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        namelab:=emit_ansistring_const(current_asmdata.asmlists[al_const],@current_module.localsymtable.name^[1],length(current_module.localsymtable.name^),DefaultSystemCodePage,False);
+        current_asmdata.asmlists[al_resourcestrings].concat(tai_const.create_sym(namelab));
+        current_asmdata.asmlists[al_resourcestrings].concat(tai_const.create_sym(nil));
+        current_asmdata.asmlists[al_resourcestrings].concat(tai_const.create_sym(nil));
+        current_asmdata.asmlists[al_resourcestrings].concat(tai_const.create_32bit(0));
+{$ifdef cpu64bitaddr}
+        current_asmdata.asmlists[al_resourcestrings].concat(tai_const.create_32bit(0));
+{$endif cpu64bitaddr}
+>>>>>>> graemeg/cpstrnew
 
         { Add entries }
         R:=TResourceStringItem(List.First);
@@ -164,6 +263,10 @@ uses
           begin
             tcb:=ctai_typedconstbuilder.create([tcalo_new_section,tcalo_vectorized_dead_strip_item]);
             if assigned(R.value) and (R.len<>0) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               valuelab:=tcb.emit_ansistring_const(current_asmdata.asmlists[al_const],R.Value,R.Len,getansistringcodepage)
             else
               begin
@@ -172,6 +275,21 @@ uses
               end;
             current_asmdata.asmlists[al_const].concat(cai_align.Create(const_align(sizeof(pint))));
             namelab:=tcb.emit_ansistring_const(current_asmdata.asmlists[al_const],@R.Name[1],length(R.name),getansistringcodepage);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+              valuelab:=emit_ansistring_const(current_asmdata.asmlists[al_const],R.Value,R.Len,DefaultSystemCodePage,False)
+            else
+              valuelab:=nil;
+            { Append the name as a ansistring. }
+            current_asmdata.asmlists[al_const].concat(cai_align.Create(const_align(sizeof(pint))));
+            namelab:=emit_ansistring_const(current_asmdata.asmlists[al_const],@R.Name[1],length(R.name),DefaultSystemCodePage,False);
+
+>>>>>>> graemeg/cpstrnew
             {
               Resourcestring index:
                   TResourceStringRecord = Packed Record
@@ -194,6 +312,8 @@ uses
             R:=TResourceStringItem(R.Next);
             tcb.free;
           end;
+<<<<<<< HEAD
+<<<<<<< HEAD
         tcb:=ctai_typedconstbuilder.create([tcalo_new_section,tcalo_vectorized_dead_strip_end]);
         tcb.begin_anonymous_record(internaltypeprefixName[itp_emptyrec],
           default_settings.packrecords,sizeof(pint),
@@ -205,6 +325,60 @@ uses
           )
         );
         tcb.free;
+=======
+        new_section(current_asmdata.asmlists[al_resourcestrings],sec_data,make_mangledname('RESSTR',current_module.localsymtable,'3_END'),sizeof(pint));
+        endsymlab:=current_asmdata.DefineAsmSymbol(make_mangledname('RESSTR',current_module.localsymtable,'END'),AB_GLOBAL,AT_DATA);
+        current_asmdata.AsmLists[al_resourcestrings].concat(tai_symbol.create_global(endsymlab,0));
+<<<<<<< HEAD
+=======
+        new_section(current_asmdata.asmlists[al_resourcestrings],sec_data,make_mangledname('RESSTR',current_module.localsymtable,'3_END'),sizeof(aint));
+        current_asmdata.AsmLists[al_resourcestrings].concat(tai_symbol.createname_global(
+          make_mangledname('RESSTR',current_module.localsymtable,'END'),AT_DATA,0));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
+        { The darwin/ppc64 assembler or linker seems to have trouble       }
+        { if a section ends with a global label without any data after it. }
+        { So for safety, just put a dummy value here.                      }
+        { Further, the regular linker also kills this symbol when turning  }
+        { on smart linking in case no value appears after it, so put the   }
+        { dummy byte there always                                          }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+        { Update: the Mac OS X 10.6 linker orders data that needs to be    }
+        { relocated before all other data, so make this data relocatable,  }
+        { otherwise the end label won't be moved with the rest             }
+        if (target_info.system in systems_darwin) then   
+          current_asmdata.asmlists[al_resourcestrings].concat(Tai_const.create_sym(endsymlab));
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+        if (target_info.system in systems_darwin) then   
+          current_asmdata.asmlists[al_resourcestrings].concat(Tai_const.create_8bit(0));
+>>>>>>> graemeg/fixes_2_2
+=======
+        if (target_info.system in systems_darwin) then   
+          current_asmdata.asmlists[al_resourcestrings].concat(Tai_const.create_8bit(0));
+>>>>>>> origin/fixes_2_2
+=======
+        { Update: the Mac OS X 10.6 linker orders data that needs to be    }
+        { relocated before all other data, so make this data relocatable,  }
+        { otherwise the end label won't be moved with the rest             }
+        if (target_info.system in systems_darwin) then   
+          current_asmdata.asmlists[al_resourcestrings].concat(Tai_const.create_sym(endsymlab));
+>>>>>>> origin/fixes_2.4
       end;
 
     procedure Tresourcestrings.WriteRSJFile;

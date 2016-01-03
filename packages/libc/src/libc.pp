@@ -1,12 +1,7 @@
 {$mode objfpc}
 {$inline on}
 {$h+}
-
-{$if not defined(linux) or not defined(cpui386)}
-  {$error The KernelDefs unit is a legacy Kylix-compatibility unit that is only supported on Linux/i386. It is known not to work in various ways on other OSes and architectures (including Linux/x86_64). }
-{$endif}
-
-unit libc deprecated 'Unportable Kylix legacy unit that only exists on Linux/x86. see http://wiki.freepascal.org/libc_unit ';
+unit libc;
 
 Interface
 

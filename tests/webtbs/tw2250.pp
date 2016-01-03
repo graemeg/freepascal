@@ -1,6 +1,11 @@
 { Source provided for Free Pascal Bug Report 2250 }
 { Submitted by "Konstantin Seiler" on  2002-12-04 }
 { e-mail: list@kseiler.de }
+uses
+{$ifdef unix}
+  cwstring,
+{$endif unix}
+  SysUtils;
 procedure stringbug;
 var env:ansistring;
   procedure addenv(s:ansistring);

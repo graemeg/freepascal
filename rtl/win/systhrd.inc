@@ -96,8 +96,13 @@ var
       threadvarblocksize : dword; public name '_FPC_TlsSize';
       TLSKey : DWord = $ffffffff; public name '_FPC_TlsKey';
 
+    const
+      TLSKey : DWord = $ffffffff;
+<<<<<<< HEAD
     var
       MainThreadIdWin32 : DWORD;
+=======
+>>>>>>> origin/fixes_2.4
 
     procedure SysInitThreadvar(var offset : dword;size : dword);
       begin
@@ -110,7 +115,14 @@ var
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure SysAllocateThreadVars; public name '_FPC_SysAllocateThreadVars';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    procedure SysAllocateThreadVars;
+>>>>>>> graemeg/fixes_2_2
       var
         dataindex : pointer;
         errorsave : dword;
@@ -154,25 +166,144 @@ var
 
     procedure SysFiniMultithreading;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if TLSKey<>$ffffffff then
           TlsFree(TLSKey);
         TLSKey:=$ffffffff;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        if IsMultiThread then
+          begin
+            TlsFree(TLSKey);
+            TLSKey:=$ffffffff;
+          end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
+
 
     function SysRelocateThreadvar(offset : dword) : pointer;
       var
         dataindex : pointer;
         errorsave : dword;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       begin
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      begin	
+{$ifdef dummy}
+        { it least in the on windows 7 x64, this still doesn't not work, fs:(0x2c) is
+          self referencing on this system (FK)
+          MVC: It also does not work on Windows Vista 32-bit, Home Premium, SP 1. Results in a crash}
+        asm
+          movl TLSKey,%edx
+          movl %fs:(0x2c),%eax
+          orl  %eax,%eax
+          jnz  .LAddressInEAX
+          { this works on Windows 7, but I don't know if it works on other OSes (FK) }
+          movl %fs:(0x18),%eax
+          movl 0xe10(%eax,%edx,4),%eax
+          jmp  .LToDataIndex
+          .LAddressInEAX:
+           movl (%eax,%edx,4),%eax
+          .LToDataIndex:
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      begin
+=======
+      begin	    
+>>>>>>> origin/fixes_2.4
+{$ifdef dummy}
+        { it least in the on windows 7 x64, this still doesn't not work, fs:(0x2c) is
+          self referencing on this system (FK) }
+        asm
+          movl TLSKey,%edx
+<<<<<<< HEAD
+          movl $0x2c,%eax
+          movl %fs:(%eax),%eax
+          movl (%eax,%edx,4),%eax
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+          movl %fs:(0x2c),%eax
+          orl  %eax,%eax
+          jnz  .LAddressInEAX
+		  { this works on Windows 7, but I don't know if it works on other OSes (FK) }
+          movl %fs:(0x18),%eax
+          movl 0xe10(%eax,%edx,4),%eax
+          jmp  .LToDataIndex
+          .LAddressInEAX:
+           movl (%eax,%edx,4),%eax
+          .LToDataIndex:
+>>>>>>> origin/fixes_2.4
+          movl %eax,dataindex
+        end;
+        if DataIndex=nil then
+          begin
+            errorsave:=GetLastError;
+            SysAllocateThreadVars;
+            DataIndex:=TlsGetValue(tlskey);
+            SetLastError(errorsave);
+          end;
+{$else win32}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         errorsave:=GetLastError;
         dataindex:=TlsGetValue(tlskey);
         if dataindex=nil then
           begin
             SysAllocateThreadVars;
             dataindex:=TlsGetValue(tlskey);
+<<<<<<< HEAD
+<<<<<<< HEAD
             InitThread($1000000);
           end;
         SetLastError(errorsave);
+=======
+          end;
+        SetLastError(errorsave);
+{$endif win32}
+>>>>>>> graemeg/fixes_2_2
+=======
+          end;
+        SetLastError(errorsave);
+{$endif win32}
+>>>>>>> origin/fixes_2_2
         SysRelocateThreadvar:=DataIndex+Offset;
       end;
 
@@ -200,7 +331,11 @@ var
       tthreadinfo = record
         f : tthreadfunc;
         p : pointer;
+<<<<<<< HEAD
         stklen : ptruint;
+=======
+        stklen : cardinal;
+>>>>>>> graemeg/fixes_2_2
       end;
 
     function ThreadMain(param : pointer) : Longint; {$ifdef wince}cdecl{$else}stdcall{$endif};
@@ -233,6 +368,32 @@ var
 {$endif FPC_USE_WIN64_SEH or FPC_USE_WIN32_SEH}
       end;
 
+<<<<<<< HEAD
+=======
+    procedure SysInitMultithreading;
+      begin
+        { do not check IsMultiThread, as program could have altered it, out of Delphi habit }
+        
+        { the thread attach/detach code uses locks to avoid multiple calls of this }
+        if TLSKey=$ffffffff then
+         begin
+           { We're still running in single thread mode, setup the TLS }
+           TLSKey:=TlsAlloc;
+           InitThreadVars(@SysRelocateThreadvar);
+		   { allocate the thread vars for the main thread }
+           IsMultiThread:=true;
+         end;
+      end;
+
+    procedure SysFiniMultithreading;
+      begin
+        if IsMultiThread then
+          begin
+            TlsFree(TLSKey);
+            TLSKey:=$ffffffff;
+          end;
+      end;
+>>>>>>> origin/fixes_2.4
 
     function SysBeginThread(sa : Pointer;stacksize : ptruint;
                          ThreadFunction : tthreadfunc;p : pointer;
@@ -395,6 +556,52 @@ begin
 end;
 
 
+<<<<<<< HEAD
+=======
+{*****************************************************************************
+                           Heap Mutex Protection
+*****************************************************************************}
+
+{$ifndef HAS_MT_MEMORYMANAGER}
+    var
+      HeapMutex : TRTLCriticalSection;
+
+    procedure Win32HeapMutexInit;
+      begin
+         InitCriticalSection(heapmutex);
+      end;
+
+    procedure Win32HeapMutexDone;
+      begin
+         DoneCriticalSection(heapmutex);
+      end;
+
+    procedure Win32HeapMutexLock;
+      begin
+         EnterCriticalSection(heapmutex);
+      end;
+
+    procedure Win32HeapMutexUnlock;
+      begin
+         LeaveCriticalSection(heapmutex);
+      end;
+
+    const
+      Win32MemoryMutexManager : TMemoryMutexManager = (
+        MutexInit : @Win32HeapMutexInit;
+        MutexDone : @Win32HeapMutexDone;
+        MutexLock : @Win32HeapMutexLock;
+        MutexUnlock : @Win32HeapMutexUnlock;
+      );
+
+    procedure InitHeapMutexes;
+      begin
+        SetMemoryMutexManager(Win32MemoryMutexManager);
+      end;
+
+{$endif HAS_MT_MEMORYMANAGER}
+
+>>>>>>> graemeg/fixes_2_2
 Const
   wrSignaled = 0;
   wrTimeout  = 1;
@@ -487,7 +694,20 @@ end;
 Var
   WinThreadManager : TThreadManager;
 
+<<<<<<< HEAD
 Procedure InitSystemThreads;public name '_FPC_InitSystemThreads';
+=======
+Procedure InitSystemThreads;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$IFDEF SUPPORT_WIN95}
 var
   KernelHandle : THandle;
@@ -531,6 +751,10 @@ begin
     end;
   SetThreadManager(WinThreadManager);
   ThreadID := GetCurrentThreadID;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPC_USE_TLS_DIRECTORY}
   if IsLibrary then
 {$endif}
@@ -540,6 +764,33 @@ begin
   KernelHandle:=GetModuleHandle(KernelDLL);
   if KernelHandle<>0 then
     WinTryEnterCriticalSection:=TTryEnterCriticalSection(GetProcAddress(KernelHandle,'TryEnterCriticalSection'));
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  if IsLibrary then
+    SysInitMultithreading;
+{$IFDEF SUPPORT_WIN95}
+  { Try to find TryEnterCriticalSection function }
+  KernelHandle:=LoadLibrary(KernelDLL);
+  if KernelHandle<>0 then
+    begin
+      WinTryEnterCriticalSection:=TTryEnterCriticalSection(GetProcAddress(KernelHandle,'TryEnterCriticalSection'));
+      FreeLibrary(KernelHandle);
+    end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   if not assigned(WinTryEnterCriticalSection) then
     WinTryEnterCriticalSection:=@Win95TryEnterCriticalSection;
 {$ENDIF SUPPORT_WIN95}

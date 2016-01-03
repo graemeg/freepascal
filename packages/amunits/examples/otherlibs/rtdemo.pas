@@ -41,7 +41,7 @@ VAR
     filename        : PChar;
     dummy           : PChar;
     dummy2          : PChar;
-    longnum         : Longword;
+    longnum         : Longint;
     ret             : Longint;
     color           : Longint;
     undertag        : Array [0..1] of tTagItem;
@@ -204,9 +204,9 @@ BEGIN
     rtEZRequestA(dummy,'_Great|_Fantastic|_Swell|Oh _Boy',NIL,NIL,@undertag);
 
     rtEZRequestA('You may also use C-style formatting codes in the body text.' + #10 +
-                        'Like this:' + #10 +  #10 +
-                        'The number %%ld is written %%s. will give:' + #10 +  #10 +
-                        'The number %ld is written %s.' + #10 +  #10 +
+                        'Like this:' + #10 +  + #10 +
+                        'The number %%ld is written %%s. will give:' + #10 +  + #10 +
+                        'The number %ld is written %s.' + #10 +  + #10 +
                         'if you also pass ''5'' and ''five'' to rtEZRequestA().',
                         '_Proceed',NIL,readinlongs([5,'five']),@undertag);
 

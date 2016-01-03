@@ -47,8 +47,6 @@ function pango_context_get_base_dir(context:PPangoContext):TPangoDirection; cdec
   }
 function pango_itemize(context:PPangoContext; text:Pchar; start_index:longint; length:longint; attrs:PPangoAttrList;
            cached_iter:PPangoAttrIterator):PGList; cdecl; external pangolib;
-
-
 {$endif read_interface_functions}
 
 //------------------------------------------------------------------------------

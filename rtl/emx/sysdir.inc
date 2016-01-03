@@ -22,6 +22,7 @@
 procedure DosDir (Func: byte; S: rawbytestring);
 
 begin
+<<<<<<< HEAD
   DoDirSeparators (S);
   asm
     movl S, %edx
@@ -29,6 +30,17 @@ begin
     call SysCall
     jnc .LDOS_DIRS1
     movw %ax, InOutRes
+=======
+    move(s[1],buffer,length(s));
+    buffer[length(s)]:=#0;
+    DoDirSeparators(Pchar(@buffer));
+    asm
+        leal buffer,%edx
+        movb func,%ah
+        call syscall
+        jnc  .LDOS_DIRS1
+        movw %ax,inoutres
+>>>>>>> graemeg/fixes_2_2
     .LDOS_DIRS1:
   end ['eax', 'edx'];
 end;
@@ -37,6 +49,7 @@ procedure do_MkDir (S: rawbytestring);
 var 
   RC: cardinal;
 begin
+<<<<<<< HEAD
   if os_mode = osOs2 then
    begin
     DoDirSeparators (S);
@@ -47,6 +60,22 @@ begin
       Errno2InOutRes;
      end;
    end
+=======
+  If (s='') or (InOutRes <> 0) then
+   exit;
+ if os_mode = osOs2 then
+    begin
+      move(s[1],buffer,length(s));
+      buffer[length(s)]:=#0;
+      DoDirSeparators(Pchar(@buffer));
+      Rc := DosCreateDir(buffer,nil);
+      if Rc <> 0 then
+       begin
+         InOutRes := Rc;
+         Errno2Inoutres;
+       end;
+    end
+>>>>>>> graemeg/fixes_2_2
   else
    begin
      { Under EMX 0.9d DOS this routine call may sometimes fail   }
@@ -66,6 +95,7 @@ begin
   else
    if os_mode = osOs2 then
     begin
+<<<<<<< HEAD
      DoDirSeparators (S);
      RC := DosDeleteDir (pchar(S));
      if RC <> 0 then
@@ -73,6 +103,17 @@ begin
        InOutRes := RC;
        Errno2InOutRes;
       end;
+=======
+      move(s[1],buffer,length(s));
+      buffer[length(s)]:=#0;
+      DoDirSeparators(Pchar(@buffer));
+      Rc := DosDeleteDir(buffer);
+      if Rc <> 0 then
+       begin
+         InOutRes := Rc;
+         Errno2Inoutres;
+       end;
+>>>>>>> graemeg/fixes_2_2
     end
    else
    { Under EMX 0.9d DOS this routine call may sometimes fail   }
@@ -91,6 +132,7 @@ var
 begin
 (* According to EMX documentation, EMX has only one current directory
    for all processes, so we'll use native calls under OS/2. *)
+<<<<<<< HEAD
   Len := Length (S);
   if os_Mode = osOS2 then
    begin
@@ -145,6 +187,59 @@ begin
       cmp al, dl
       jz @LCHDIR
       mov InOutRes, 15
+=======
+            if os_Mode = osOS2 then
+                begin
+                    if (Length (S) >= 2) and (S [2] = ':') then
+                        begin
+                            RC := DosSetDefaultDisk ((Ord (S [1]) and
+                                                             not ($20)) - $40);
+                            if RC <> 0 then
+                                InOutRes := RC
+                            else
+                                if Length (S) > 2 then
+                                    begin
+                                        Move (S [1], Buffer, Length (S));
+                                        Buffer [Length (S)] := #0;
+                                        DoDirSeparators (PChar (@Buffer));
+                                        RC := DosSetCurrentDir (@Buffer);
+                                        if RC <> 0 then
+                                         begin
+                                            InOutRes := RC;
+                                            Errno2InOutRes;
+                                         end;
+                                    end;
+                        end
+                    else
+                        begin
+                            Move (S [1], Buffer, Length (S));
+                            Buffer [Length (S)] := #0;
+                            DoDirSeparators (PChar (@Buffer));
+                            RC := DosSetCurrentDir (@Buffer);
+                            if RC <> 0 then
+                             begin
+                                  InOutRes:= RC;
+                                  Errno2InOutRes;
+                             end;
+                        end;
+                end
+            else
+                if (Length (S) >= 2) and (S [2] = ':') then
+                    begin
+                        asm
+                            mov esi, S
+                            mov al, [esi + 1]
+                            and al, not (20h)
+                            sub al, 41h
+                            mov edx, eax
+                            mov ah, 0Eh
+                            call syscall
+                            mov ah, 19h
+                            call syscall
+                            cmp al, dl
+                            jz @LCHDIR
+                            mov InOutRes, 15
+>>>>>>> graemeg/fixes_2_2
 @LCHDIR:
      end ['eax','edx','esi'];
      if (Len > 2) and (InOutRes <> 0) then
@@ -205,6 +300,13 @@ begin
             { convert path name to DOS }
 			     if dir[i] in AllowDirectorySeparators then
 			       dir[i]:=DirectorySeparator;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+            dir[0]:=char(i);
+>>>>>>> graemeg/fixes_2_2
             inc(i);
         end;
     SetLength(dir,i-1);

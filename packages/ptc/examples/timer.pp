@@ -3,52 +3,57 @@ Ported to FPC by Nikolay Nikolov (nickysn@users.sourceforge.net)
 }
 
 {
- Timer example for OpenPTC 1.0 C++ implementation
+ Timer example for OpenPTC 1.0 C++ Implementation
  Copyright (c) Glenn Fiedler (ptc@gaffer.org)
  This source code is in the public domain
 }
 
-program TimerExample;
+Program TimerExample;
 
 {$MODE objfpc}
 
-uses
+Uses
   ptc;
 
-var
-  console: IPTCConsole;
-  format: IPTCFormat;
-  surface: IPTCSurface;
-  timer: IPTCTimer;
-  time, t: Double;
-  pixels: PDWord;
-  width, height: Integer;
-  repeats, center, magnitude, intensity, sx: Single;
-  x, y: Integer;
-begin
-  try
-    try
+Var
+  console : TPTCConsole;
+  format : TPTCFormat;
+  surface : TPTCSurface;
+  timer : TPTCTimer;
+  time, t : Double;
+  pixels : PDWord;
+  width, height : Integer;
+  repeats, center, magnitude, intensity, sx : Single;
+  x, y : Integer;
+
+Begin
+  timer := Nil;
+  format := Nil;
+  surface := Nil;
+  console := Nil;
+  Try
+    Try
       { create console }
-      console := TPTCConsoleFactory.CreateNew;
+      console := TPTCConsole.Create;
 
       { create format }
-      format := TPTCFormatFactory.CreateNew(32, $00FF0000, $0000FF00, $000000FF);
+      format := TPTCFormat.Create(32, $00FF0000, $0000FF00, $000000FF);
 
       { open the console }
       console.open('Timer example', format);
 
       { create surface matching console dimensions }
-      surface := TPTCSurfaceFactory.CreateNew(console.width, console.height, format);
+      surface := TPTCSurface.Create(console.width, console.height, format);
 
       { create timer }
-      timer := TPTCTimerFactory.CreateNew;
+      timer := TPTCTimer.Create;
 
       { start timer }
       timer.start;
 
       { loop until a key is pressed }
-      while not console.KeyPressed do
-      begin
+      While Not console.KeyPressed Do
+      Begin
         { get current time from timer }
         time := timer.time;
 
@@ -57,7 +62,7 @@ begin
 
         { lock surface }
         pixels := surface.lock;
-        try
+        Try
           { get surface dimensions }
           width := surface.width;
           height := surface.height;
@@ -68,41 +73,44 @@ begin
           magnitude := height / 3;
 
           { render a sine curve }
-          for x := 0 to width - 1 do
-          begin
+          For x := 0 To width - 1 Do
+          Begin
             { rescale 'x' in the range [0,2*pi] }
-            sx := x / width * 2 * pi;
+	    sx := x / width * 2 * pi;
 
             { calculate time at current position }
-            t := time + sx * repeats;
+	    t := time + sx * repeats;
 
             { lookup sine intensity at time 't' }
-            intensity := sin(t);
+	    intensity := sin(t);
 
             { convert intensity to a y position on the surface }
-            y := Trunc(center + intensity * magnitude);
+	    y := Trunc(center + intensity * magnitude);
 
             { plot pixel on sine curve }
-            pixels[x + y * width] := $000000FF;
-          end;
-        finally
+	    pixels[x + y * width] := $000000FF;
+          End;
+        Finally
           { unlock surface }
           surface.unlock;
-        end;
+	End;
 
         { copy to console }
         surface.copy(console);
 
         { update console }
         console.update;
-      end;
-    finally
-      if Assigned(console) then
-        console.close;
-    end;
-  except
-    on error: TPTCError do
+      End;
+    Finally
+      timer.Free;
+      surface.Free;
+      console.close;
+      console.Free;
+      format.Free;
+    End;
+  Except
+    On error : TPTCError Do
       { report error }
       error.report;
-  end;
-end.
+  End;
+End.

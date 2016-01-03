@@ -48,7 +48,31 @@ FPC_SHARED_LIB_START:
         .type   _haltproc,@function
 _haltproc:
 _haltproc2:             # GAS <= 2.15 bug: generates larger jump if a label is exported
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         subl    $12, %esp               /* align back to 16 bytes if it was before the call */
+=======
+        .globl  FPC_SHARED_LIB_EXIT
+        .type   FPC_SHARED_LIB_EXIT,@function
+FPC_SHARED_LIB_EXIT:
+>>>>>>> graemeg/cpstrnew
+=======
+        .globl  FPC_SHARED_LIB_EXIT
+        .type   FPC_SHARED_LIB_EXIT,@function
+FPC_SHARED_LIB_EXIT:
+>>>>>>> graemeg/cpstrnew
+=======
+        .globl  FPC_SHARED_LIB_EXIT
+        .type   FPC_SHARED_LIB_EXIT,@function
+FPC_SHARED_LIB_EXIT:
+>>>>>>> graemeg/cpstrnew
+=======
+        .globl  FPC_SHARED_LIB_EXIT
+        .type   FPC_SHARED_LIB_EXIT,@function
+FPC_SHARED_LIB_EXIT:
+>>>>>>> origin/cpstrnew
 	call	lib_exit
         xorl    %eax,%eax
         incl    %eax                    /* eax=1, exit call */

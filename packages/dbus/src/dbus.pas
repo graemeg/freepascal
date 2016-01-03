@@ -1,7 +1,7 @@
 {
   Pascal translation of the dbus headers
   
-  Based on dbus version 1.2.16
+  Based on dbus version 0.92
 }
 { -*- mode: C; c-file-style: "gnu" -*- }
 { dbus.h  Convenience header including all other headers
@@ -22,8 +22,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  }
 unit dbus;
@@ -50,6 +49,9 @@ interface
 
 uses ctypes;
 
+{ D-Bus hasn't reached 1.0 and is subject to protocol and API churn.
+  See the README for a full explanation. }
+
 const
 {$ifdef unix}
   LibDBus = 'libdbus-1';
@@ -74,7 +76,6 @@ const
 
 {$include dbus-signature.inc}
 {$include dbus-threads.inc}
-{$include dbus-misc.inc}
 
 {
  * @defgroup DBus D-Bus low-level public API

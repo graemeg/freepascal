@@ -7,6 +7,32 @@ Usage example:
 
 \lstinputlisting[language=Pascal]{mapexample.pp}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+Some methods return type TMSet.PNode. Usefull fields are Data.Key, Data.Value, for retrieving
+actual Key and Value from node. This node can be also used for navigation between elements by methods of set class.
+You can also change value in node (but not key).
+(But don't do anything else with it, you can lose data integrity.)
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 Memory complexity:
 Size of stored base + constant overhead for each stored element (3 pointers + one boolean).
 
@@ -28,14 +54,30 @@ O(lg N), N is number of elements in map \\ \hline
 \multicolumn{2}{|m{15cm}|}{Inserts key value pair into map. If key was already there, it will have
 new value assigned.} \\\hline\hline
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 \verb!function InsertAndGetIterator! & $O(\lg N)$\\
 \verb!(key:TKey; value: TValue):TIterator! & \\ \hline
 \multicolumn{2}{|m{15cm}|}{Same as Insert but also returns iterator poiting to inserted element.} \\\hline\hline
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 \verb!procedure Delete(key: TKey)! &
 O(lg N) \\ \hline
 \multicolumn{2}{|m{15cm}|}{Deletes key (and associated value) from map. If element is not in map, nothing happens.} \\\hline\hline
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 \verb!function Find(key: T):TIterator! & O(lg N) \\\hline
 \multicolumn{2}{|m{15cm}|}{Searches for key in map. If value is not there returns nil. Otherwise
 returns iterator, which can be used for retrieving data from map.} \\\hline\hline
@@ -67,12 +109,75 @@ nil.} \\\hline\hline
 \verb!function IsEmpty(): boolean! & O(1) \\ \hline
 \multicolumn{2}{|m{15cm}|}{Returns true when map is empty.} \\\hline
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+\verb!function Find(key: T):TMSet.PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Searches for key in map. If value is not there returns nil. Otherwise
+returns pointer to tree node (type TMSet.PNode), which can be used for retrieving data from map.} \\\hline\hline
+
+\verb!function FindLess(key: T):TMSet.PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Searches for greatest element less than key in map. If such element is not there returns nil. Otherwise
+returns pointer to tree node (type TMSet.PNode), which can be used for retrieving data from map.} \\\hline\hline
+
+\verb!function FindLessEqual(key: T):TMSet.PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Searches for greatest element less or equal than key in map. If such element is not there returns nil. Otherwise
+returns pointer to tree node (type TMSet.PNode), which can be used for retrieving data from map.} \\\hline\hline
+
+\verb!function FindGreater(key: T):TMSet.PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Searches for smallest element greater than key in map. If such element is not there returns nil. Otherwise
+returns pointer to tree node (type TMSet.PNode), which can be used for retrieving data from map.} \\\hline\hline
+
+\verb!function FindGreaterEqual(key: T):TMSet.PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Searches for smallest element greater or equal than key in map. If such element is not there returns nil. Otherwise
+returns pointer to tree node (type TMSet.PNode), which can be used for retrieving data from map.} \\\hline\hline
+
+\verb!function Min:TMSet.PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Returns node containing smallest key of map. If map is empty returns
+nil.} \\\hline\hline
+
+\verb!function Max:TMSet.PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Returns node containing largest key of map. If map is empty returns
+nil.} \\\hline\hline
+
+\verb!function Next(x:TMSet.PNode):TMSet.PNode! & O(lg N) worst case, but traversal from smallest element to
+largest takes O(N) time \\\hline
+\multicolumn{2}{|m{15cm}|}{Returns successor of x. If x is largest key of map, returns nil.} \\\hline\hline
+
+\verb!function Prev(x:TMSet.PNode):TMSet.PNode! & O(lg N) worst case, but traversal from largest element to
+smallest takes O(N) time \\\hline
+\multicolumn{2}{|m{15cm}|}{Returns predecessor of x. If x is smallest key of map, returns nil.} \\\hline\hline
+
+\verb!function IsEmpty(): boolean! & O(1) \\ \hline
+\multicolumn{2}{|m{15cm}|}{Returns true when map is empty.} \\\hline
+
+\verb!function GetValue(key:TKey):TValue! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Returns value associated with key. Is key isn't in map crashes.} \\\hline
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 \verb!property item[i: Key]: TValue; default;! & O(ln N) \\\hline
 \multicolumn{2}{|m{15cm}|}{Property for accessing key i in map. Can be used just by square
 brackets (its default property).} \\\hline\hline
 
 
 \end{longtable}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 Some methods return type TIterator, which has following methods:
 \begin{longtable}{|m{10cm}|m{5cm}|}                                                             
@@ -100,3 +205,11 @@ objects.} \\\hline
 
 
 \end{longtable}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

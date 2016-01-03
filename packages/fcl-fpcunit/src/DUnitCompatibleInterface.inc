@@ -30,6 +30,10 @@
     class function Suite: TTest;
 
 
+    class function Suite: TTest;
+
+    class function Suite: TTest;
+
     {
     *** TODO  ***
     procedure CheckEqualsBin(expected, actual: longword; msg: string = ''; digits: integer=32); virtual;
@@ -186,6 +190,16 @@ begin
     Result := Format(sExpectedButWasAndMessageFmt, [ErrorMsg, expected, actual])
   else
     Result := Format(sExpectedButWasFmt, [expected, actual]);
+end;
+
+class function TAssert.Suite: TTest;
+begin
+  result := TTestSuite.Create(self);
+end;
+
+class function TAssert.Suite: TTest;
+begin
+  result := TTestSuite.Create(self);
 end;
 
 class function TAssert.Suite: TTest;

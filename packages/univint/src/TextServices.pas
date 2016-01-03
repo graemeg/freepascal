@@ -3,19 +3,67 @@
  
      Contains:   Text Services Manager Interfaces.
  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      Version:    HIToolbox-624~3
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> origin/cpstrnew
  
      Copyright:  © 1991-2008 by Apple Computer, Inc., all rights reserved.
+=======
+     Version:    HIToolbox-219.4.81~2
+ 
+     Copyright:  © 1991-2005 by Apple Computer, Inc., all rights reserved.
+>>>>>>> graemeg/fixes_2_2
+=======
+     Version:    HIToolbox-219.4.81~2
+ 
+     Copyright:  © 1991-2005 by Apple Computer, Inc., all rights reserved.
+>>>>>>> origin/fixes_2_2
+=======
+     Version:    HIToolbox-437~1
+ 
+     Copyright:  © 1991-2008 by Apple Computer, Inc., all rights reserved.
+>>>>>>> origin/fixes_2.4
  
      Bugs?:      For bug reports, consult the following page on
                  the World Wide Web:
  
+<<<<<<< HEAD
+<<<<<<< HEAD
                      http://bugs.freepascal.org
  
 }
 {       Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
 {       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2012 }
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {
     Modified for use with Free Pascal
     Version 308
@@ -23,6 +71,28 @@
 }
 
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                     http://www.freepascal.org/bugs.html
+ 
+}
+{       Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
+{       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+{
+    Modified for use with Free Pascal
+    Version 308
+    Please report any bugs to <gpc@microbizz.nl>
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4
 {$mode macpas}
 {$packenum 1}
 {$macro on}
@@ -31,8 +101,23 @@
 
 unit TextServices;
 interface
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$setc UNIVERSAL_INTERFACES_VERSION := $0400}
 {$setc GAP_INTERFACES_VERSION := $0308}
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> origin/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0400}
+{$setc GAP_INTERFACES_VERSION := $0308}
+>>>>>>> origin/fixes_2.4
 
 {$ifc not defined USE_CFSTR_CONSTANT_MACROS}
     {$setc USE_CFSTR_CONSTANT_MACROS := TRUE}
@@ -45,21 +130,50 @@ interface
 	{$error Conflicting initial definitions for FPC_BIG_ENDIAN and FPC_LITTLE_ENDIAN}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __ppc__ and defined CPUPOWERPC32}
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC32}
+>>>>>>> origin/fixes_2.4
 	{$setc __ppc__ := 1}
 {$elsec}
 	{$setc __ppc__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __ppc64__ and defined CPUPOWERPC64}
 	{$setc __ppc64__ := 1}
 {$elsec}
 	{$setc __ppc64__ := 0}
 {$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __i386__ and defined CPUI386}
 	{$setc __i386__ := 1}
 {$elsec}
 	{$setc __i386__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __x86_64__ and defined CPUX86_64}
 	{$setc __x86_64__ := 1}
 {$elsec}
@@ -70,11 +184,26 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -82,6 +211,13 @@ interface
   {$setc __LP64__ := 0}
 {$endc}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined __ppc__ and __ppc__ and defined __i386__ and __i386__}
 	{$error Conflicting definitions for __ppc__ and __i386__}
@@ -89,7 +225,14 @@ interface
 
 {$ifc defined __ppc__ and __ppc__}
 	{$setc TARGET_CPU_PPC := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_PPC64 := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
@@ -98,28 +241,89 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __ppc64__ and __ppc64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := TRUE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_CPU_PPC64 := FALSE}
+>>>>>>> origin/fixes_2.4
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+<<<<<<< HEAD
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$elsec}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
@@ -169,6 +373,74 @@ interface
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elsec}
 	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ nor __arm64__ is defined.}
+=======
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+=======
+{$elsec}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+>>>>>>> origin/cpstrnew
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endc}
 
 {$ifc defined __LP64__ and __LP64__ }
@@ -176,6 +448,68 @@ interface
 {$elsec}
   {$setc TARGET_CPU_64 := FALSE}
 {$endc}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __i386__ and __i386__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := TRUE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+{$ifc defined(iphonesim)}
+ 	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+  {$setc TARGET_CPU_64 := FALSE}
+{$endc}
+<<<<<<< HEAD
+{$setc TARGET_CPU_PPC_64 := FALSE}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined FPC_BIG_ENDIAN}
 	{$setc TARGET_RT_BIG_ENDIAN := TRUE}
@@ -201,6 +535,17 @@ interface
 {$setc TARGET_CPU_68K := FALSE}
 {$setc TARGET_CPU_MIPS := FALSE}
 {$setc TARGET_CPU_SPARC := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$setc TARGET_OS_UNIX := FALSE}
 {$setc TARGET_OS_WIN32 := FALSE}
 {$setc TARGET_RT_MAC_68881 := FALSE}
@@ -210,17 +555,41 @@ interface
 {$setc TYPE_BOOL := FALSE}
 {$setc TYPE_EXTENDED := FALSE}
 {$setc TYPE_LONGLONG := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses MacTypes,QuickdrawTypes,ConditionalMacros,CFBase,CarbonEventsCore,ATSTypes,CFArray,CFDictionary,Events,Menus,AEDataModel,AERegistry,AEInteraction,Components,CarbonEvents;
 {$endc} {not MACOSALLINCLUDE}
 
 
 {$ifc TARGET_OS_MAC}
 
+=======
+uses MacTypes,Quickdraw,ConditionalMacros,CFBase,CarbonEventsCore,ATSTypes,CFArray,CFDictionary,Events,Menus,AEDataModel,AERegistry,AEInteraction,Components,CarbonEvents;
+=======
+uses MacTypes,QuickdrawTypes,ConditionalMacros,CFBase,CarbonEventsCore,ATSTypes,CFArray,CFDictionary,Events,Menus,AEDataModel,AERegistry,AEInteraction,Components,CarbonEvents;
+{$endc} {not MACOSALLINCLUDE}
+
+>>>>>>> origin/fixes_2.4
+
+{$ifc TARGET_OS_MAC}
+
+>>>>>>> graemeg/fixes_2_2
+=======
+uses MacTypes,Quickdraw,ConditionalMacros,CFBase,CarbonEventsCore,ATSTypes,CFArray,CFDictionary,Events,Menus,AEDataModel,AERegistry,AEInteraction,Components,CarbonEvents;
+
+
+>>>>>>> origin/fixes_2_2
 {$ALIGN MAC68K}
 
 const
 	kTextService = FourCharCode('tsvc'); { component type for the component description }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 
 {
  *  Summary:
@@ -229,6 +598,7 @@ const
  *  Discussion:
  *    Gestalt values for gestaltTSMgrVersion selector (Gestalt.h)
  }
+<<<<<<< HEAD
 const
 	kTSMVersion = $0150; { Version 1.5 of the Text Services Manager }
 	kTSM15Version = kTSMVersion;
@@ -236,6 +606,28 @@ const
 	kTSM22Version = $0220; { Version 2.2 as of Mac OS X 10.3 }
 	kTSM23Version = $0230; { Version 2.3 as of Mac OS X 10.4 }
 	kTSM24Version = $0240; { Version 2.4 as of Mac OS X 10.5 }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+const
+	kTSMVersion = $0150; { Version 1.5 of the Text Services Manager }
+	kTSM15Version = kTSMVersion;
+	kTSM20Version = $0200; { Version 2.0 as of MacOSX 10.0 }
+	kTSM22Version = $0220; { Version 2.2 as of MacOSX 10.3 }
+	kTSM23Version = $0230; { Version 2.3 as of MacOSX 10.4 }
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+const
+	kTSMVersion = $0150; { Version 1.5 of the Text Services Manager }
+	kTSM15Version = kTSMVersion;
+	kTSM20Version = $0200; { Version 2.0 as of Mac OS X 10.0 }
+	kTSM22Version = $0220; { Version 2.2 as of Mac OS X 10.3 }
+	kTSM23Version = $0230; { Version 2.3 as of Mac OS X 10.4 }
+	kTSM24Version = $0240; { Version 2.4 as of Mac OS X 10.5 }
+>>>>>>> origin/fixes_2.4
 
 
 {  Interface types for NewTSMDocument}
@@ -269,8 +661,21 @@ const
   {
    * TSMTE document type.  This requests automatic management of inline
    * input sessions by TextEdit (the text engine.)  See Technote TE27 -
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * Inline Input for TextEdit with TSMTE.  This property (like
    * TextEdit) is not supported on 64-bit.
+=======
+   * Inline Input for TextEdit with TSMTE.
+>>>>>>> graemeg/fixes_2_2
+=======
+   * Inline Input for TextEdit with TSMTE.
+>>>>>>> origin/fixes_2_2
+=======
+   * Inline Input for TextEdit with TSMTE.  This property (like
+   * TextEdit) is not supported on 64-bit.
+>>>>>>> origin/fixes_2.4
    }
 	kTSMTEDocumentInterfaceType = FourCharCode('tmTE'); { TSM Document type for TSMTE document (see kTSMTEInterfaceType - TSMTE.h) }
 
@@ -296,6 +701,9 @@ type
  *    TextService classes
  *  
  *  Discussion:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Text Service classes fall into three categories or behaviors.
  *    
  *    (1) KeyboardInputMethodClass text services are exclusive of one
@@ -316,10 +724,53 @@ const
    * with a Mac ScriptCode or Unicode, although they can be associated
    * with several scripts by adopting the Input Mode protocol. Keyboard
    * input methods are always visible in the System UI.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Text Service classes fall in two categories or behaviors.  Text
+ *    services that belong to some classes are exclusive of oneanother
+ *    within a given Mac script code, such input methods of the
+ *    keyboard class.
+=======
+ *    Text Service classes fall into three categories or behaviors.
+>>>>>>> origin/fixes_2.4
+ *    
+ *    (1) KeyboardInputMethodClass text services are exclusive of one
+ *    another in terms of being the default for a given Mac script
+ *    code, and at most one of these - regardless of script - can be
+ *    currently selected. 
+ *    (2) Only zero or one InkInputMethodClass text services can be
+ *    selected; this is independent of what other input sources are
+ *    selected. 
+ *    (3) Zero or more input methods of other classes can be selected,
+ *    regardless of what other input sources are selected (they are
+ *    additive in nature, regardless of the current keyboard script).
+ }
+const
+{
+   * Text service class for keyboard input methods. Behavior is
+   * exclusive. Input Methods in this class are normally associated
+   * with a Mac ScriptCode or Unicode, although they can be associated
+<<<<<<< HEAD
+   * with several scripts by adopting the Input Mode protocol. 
+   * Keyboard input methods are always visible in the System UI.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+   * with several scripts by adopting the Input Mode protocol. Keyboard
+   * input methods are always visible in the System UI.
+>>>>>>> origin/fixes_2.4
    }
 	kKeyboardInputMethodClass = FourCharCode('inpm');
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
    * Text service class for Ink (Handwriting) input methods. At most
    * one of these can be enabled and active regardless of script. Text
    * Services in the Ink class do not belong to any given script in the
@@ -331,9 +782,41 @@ const
    * the mac encoding specified in their component description record
    * or their implementation of the GetScriptLanguageSupport component
    * call. 
+<<<<<<< HEAD
    * 
    * Mac OS X only provides System UI for enabling Apple's Ink input
    * method, not for other Ink input methods.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   * Text service class for Ink (Handwriting) input methods.  Behavior
+   * is Additive. Text Services in the Ink class do not belong to any
+   * given script in the sense that those of the Keyboard class do. 
+   * Once selected, this kind of text service will remain active
+   * regardless of the current keyboard script. Although text services
+   * in this class are keyboard script agnostic, like input methods of
+   * the keyboard class they can still profess to produce only those
+   * Unicodes that are encoded in the mac encoding specified in their
+   * component description record or their implementation of the
+   * GetScriptLanguageSupport component call.
+   * 
+   * Unlike input methods in the keyboard class, multiple such text
+   * services can be activate in parallel.
+   * 
+   * Dictionary Service input methods are visible in the system UI by
+   * default.  Use the kComponentBundleInvisibleInSystemUIKey plist key
+   * to make them invisible if a developer-provided UI is to be used
+   * instead.  Mac OS X only provides System UI for Apple's Ink input
+   * method.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+   * 
+   * Mac OS X only provides System UI for enabling Apple's Ink input
+   * method, not for other Ink input methods.
+>>>>>>> origin/fixes_2.4
    }
 	kInkInputMethodClass = FourCharCode('ink ');
 
@@ -347,6 +830,9 @@ const
    * input methods of the keyboard class they can still profess to
    * produce only those Unicodes that are encoded in the mac encoding
    * specified in their component description record or their
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * implementation of the GetScriptLanguageSupport component call.
    * 
    * 
@@ -361,12 +847,54 @@ const
    * default.  Use the kComponentBundleInvisibleInSystemUIKey plist key
    * to make them invisible if a developer-provided UI is to be used
    * instead.)
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   * implementation of the GetScriptLanguageSupport component
+   * call.
+=======
+   * implementation of the GetScriptLanguageSupport component call.
+   * 
+>>>>>>> origin/fixes_2.4
+   * 
+   * Unlike input methods in the keyboard class, multiple such text
+   * services can be activated in parallel, and unlike input methods in
+   * the Ink class, Mac OS X provides System UI to allow the user to
+   * both enable and select multiple such input methods. Use the
+   * kComponentBundleInvisibleInSystemUIKey plist key to make Character
+   * Palette input methods invisible to the System UI. 
+   * 
+<<<<<<< HEAD
+   * Use the kComponentBundleInvisibleInSystemUIKey plist key to make
+   * Character Palette input methods invisible to the System UI.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+   * (Dictionary Service input methods are visible in the system UI by
+   * default.  Use the kComponentBundleInvisibleInSystemUIKey plist key
+   * to make them invisible if a developer-provided UI is to be used
+   * instead.)
+>>>>>>> origin/fixes_2.4
    }
 	kCharacterPaletteInputMethodClass = FourCharCode('cplt');
 
   {
    * Text Service class for Speech input methods.  Behavior is
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * Additive. 
+=======
+   * Additive.
+>>>>>>> graemeg/fixes_2_2
+=======
+   * Additive.
+>>>>>>> origin/fixes_2_2
+=======
+   * Additive. 
+>>>>>>> origin/fixes_2.4
    * 
    * Similar to Character palette class.  System UI for these has not
    * yet been determined.
@@ -375,7 +903,19 @@ const
 
   {
    * Text Service class for Optical Character Recognition input
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * methods.  Behavior is Additive. 
+=======
+   * methods.  Behavior is Additive.
+>>>>>>> graemeg/fixes_2_2
+=======
+   * methods.  Behavior is Additive.
+>>>>>>> origin/fixes_2_2
+=======
+   * methods.  Behavior is Additive. 
+>>>>>>> origin/fixes_2.4
    * 
    * Similar to Character palette class.  System UI for these has not
    * yet been determined.
@@ -384,8 +924,36 @@ const
 
 { New opaque definitions for types }
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	TSMDocumentID = ^OpaqueTSMDocumentID; { an opaque type }
 	OpaqueTSMDocumentID = record end;
+=======
+	TSMDocumentID = ^SInt32; { an opaque type }
+>>>>>>> graemeg/cpstrnew
+=======
+	TSMDocumentID = ^SInt32; { an opaque type }
+>>>>>>> graemeg/cpstrnew
+=======
+	TSMDocumentID = ^SInt32; { an opaque type }
+>>>>>>> graemeg/cpstrnew
+=======
+	TSMDocumentID = ^SInt32; { an opaque type }
+>>>>>>> origin/cpstrnew
+=======
+	TSMDocumentID = ^SInt32; { an opaque 32-bit type }
+>>>>>>> graemeg/fixes_2_2
+=======
+	TSMDocumentID = ^SInt32; { an opaque 32-bit type }
+>>>>>>> origin/fixes_2_2
+=======
+	TSMDocumentID = ^SInt32; { an opaque type }
+>>>>>>> origin/fixes_2.4
 { TSMDocumentID Properties}
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 { TSMDocumentID Properties                                                             }
@@ -517,9 +1085,28 @@ const
    * Property is value-dependent.  The property value initially
    * contains the Refcon value passed to NewTSMDocument. This property
    * is useful for changing the refcon on-the-fly after the TSMDocument
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * has been created. Property available in TSM 2.2 and later
    }
 	kTSMDocumentRefconPropertyTag = FourCharCode('refc'); {    refcon passed to NewTSMDocument (SRefCon)}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   * has been created. The refcon value is a long, the same as that
+   * passed to NewTSMDocument. Property available in TSM 2.2 and later
+   }
+	kTSMDocumentRefconPropertyTag = FourCharCode('refc'); {    refcon passed to TSMDocument (UInt32)}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+   * has been created. Property available in TSM 2.2 and later
+   }
+	kTSMDocumentRefconPropertyTag = FourCharCode('refc'); {    refcon passed to NewTSMDocument (SRefCon)}
+>>>>>>> origin/fixes_2.4
 
   {
    * Property is value-dependent.  The property value indicates which
@@ -532,10 +1119,30 @@ const
    * it also serves as a TextServicePropertyTag. See
    * kTextServiceInputModePropertyTag for discussion on the values
    * associated with this property. Usage Note:  Property value is a
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
    * CFStringRef. With TSMGetDocumentProperty, the behavior is that of
    * a Copy function, and TSMSetDocumentProperty retain the CFString...
    * in either case the caller is responsible for releasing its
    * reference. Property available in TSM 2.2 and later
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   * CFStringRef. With TSMGetTextServiceProperty, the behavior is that
+   * of a Copy function. The implementation of
+   * TSMSetTextServiceProperty (in the component) retains or copies the
+   * CFString... in either case the caller is responsible for releasing
+   * its reference. Property available in TSM 2.2 and later
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
    }
 	kTSMDocumentInputModePropertyTag = FourCharCode('imim'); {    Input mode property for input methods (CFStringRef - see Input Modes below)}
 
@@ -555,6 +1162,11 @@ const
    }
 	kTSMDocumentWindowLevelPropertyTag = FourCharCode('twlp'); {    document window level (CGWindowLevel)}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
   {
    * Property is value-dependent.  The property value is a
    * TISInputSourceRef specifying a keyboard input source that should
@@ -592,6 +1204,13 @@ const
    }
 	kTSMDocumentEnabledInputSourcesPropertyTag = FourCharCode('enis'); {  Restrict input to this set of enabled Input sources}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {
  *  TSMSetDocumentProperty()
@@ -754,7 +1373,17 @@ type
 	end;
 
 { High level TSM Doucment routines }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  NewTSMDocument()
  *  
@@ -762,6 +1391,9 @@ type
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
@@ -773,6 +1405,30 @@ function NewTSMDocument( numOfInterface: SInt16; supportedInterfaceTypes: {varia
 {$endc} {not TARGET_CPU_64}
 
 {$ifc not TARGET_CPU_64}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+function NewTSMDocument( numOfInterface: SInt16; supportedInterfaceTypes: {variable-size-array} InterfaceTypeListPtr; var idocID: TSMDocumentID; refcon: SRefCon ): OSErr; external name '_NewTSMDocument';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  DeleteTSMDocument()
  *  
@@ -780,7 +1436,19 @@ function NewTSMDocument( numOfInterface: SInt16; supportedInterfaceTypes: {varia
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -795,7 +1463,19 @@ function DeleteTSMDocument( idocID: TSMDocumentID ): OSErr; external name '_Dele
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -810,7 +1490,19 @@ function ActivateTSMDocument( idocID: TSMDocumentID ): OSErr; external name '_Ac
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -825,7 +1517,19 @@ function DeactivateTSMDocument( idocID: TSMDocumentID ): OSErr; external name '_
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -834,6 +1538,11 @@ function FixTSMDocument( idocID: TSMDocumentID ): OSErr; external name '_FixTSMD
 
 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  GetServiceList()   *** DEPRECATED ***
  *  
  *  Deprecated:
@@ -852,62 +1561,197 @@ function FixTSMDocument( idocID: TSMDocumentID ): OSErr; external name '_FixTSMD
  *    specific input method from the Component Manager's list of
  *    installed Components, usually by componentType, componentSubType,
  *    and/or componentManufacturer.
+<<<<<<< HEAD
+=======
+ *  GetServiceList()
+>>>>>>> graemeg/fixes_2_2
+=======
+ *  GetServiceList()
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 function GetServiceList( numOfInterface: SInt16; {const} supportedInterfaceTypes: {variable-size-array} InterfaceTypeListPtr; var serviceInfo: TextServiceListHandle; var seedValue: SInt32 ): OSErr; external name '_GetServiceList';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
 {
  *  OpenTextService()   *** DEPRECATED ***
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+{
+ *  OpenTextService()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  OpenTextService()   *** DEPRECATED ***
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 function OpenTextService( idocID: TSMDocumentID; aComponent: Component; var aComponentInstance: ComponentInstance ): OSErr; external name '_OpenTextService';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
 {
  *  CloseTextService()   *** DEPRECATED ***
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+{
+ *  CloseTextService()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  CloseTextService()   *** DEPRECATED ***
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 function CloseTextService( idocID: TSMDocumentID; aComponentInstance: ComponentInstance ): OSErr; external name '_CloseTextService';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
 {
  *  SendAEFromTSMComponent()   *** DEPRECATED ***
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+{
+ *  SendAEFromTSMComponent()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  SendAEFromTSMComponent()   *** DEPRECATED ***
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 function SendAEFromTSMComponent( const (*var*) theAppleEvent: AppleEvent; var reply: AppleEvent; sendMode: AESendMode; sendPriority: AESendPriority; timeOutInTicks: SInt32; idleProc: AEIdleUPP; filterProc: AEFilterUPP ): OSErr; external name '_SendAEFromTSMComponent';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 
 {
@@ -923,7 +1767,19 @@ function SendAEFromTSMComponent( const (*var*) theAppleEvent: AppleEvent; var re
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib N.e.v.e.r and later
  *    Non-Carbon CFM:   not available
  }
@@ -932,6 +1788,11 @@ function SendTextInputEvent( inEvent: EventRef ): OSStatus; external name '_Send
 
 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  SetDefaultInputMethod()   *** DEPRECATED ***
  *  
  *  Deprecated:
@@ -943,16 +1804,40 @@ function SendTextInputEvent( inEvent: EventRef ): OSStatus; external name '_Send
  *  
  *  Discussion:
  *    This API also switches to the specified script/language.
+<<<<<<< HEAD
+=======
+ *  SetDefaultInputMethod()
+>>>>>>> graemeg/fixes_2_2
+=======
+ *  SetDefaultInputMethod()
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 function SetDefaultInputMethod( ts: Component; var slRecordPtr: ScriptLanguageRecord ): OSErr; external name '_SetDefaultInputMethod';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -968,16 +1853,60 @@ function SetDefaultInputMethod( ts: Component; var slRecordPtr: ScriptLanguageRe
  *  Summary:
  *    Get the default (last used) input method Component ID for the
  *    specified script/language.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+{
+ *  GetDefaultInputMethod()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  GetDefaultInputMethod()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Use TISCopyCurrentKeyboardInputSource API and query its
+ *    properties.  If the current input source does not support the
+ *    specified script/language, use TISCopyInputSourceForLanguage to
+ *    find one that does.
+ *  
+ *  Summary:
+ *    Get the default (last used) input method Component ID for the
+ *    specified script/language.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 function GetDefaultInputMethod( var ts: Component; var slRecordPtr: ScriptLanguageRecord ): OSErr; external name '_GetDefaultInputMethod';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -990,16 +1919,57 @@ function GetDefaultInputMethod( var ts: Component; var slRecordPtr: ScriptLangua
  *  Summary:
  *    Switch to the last used input method (if any) for the specified
  *    script/language.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+{
+ *  SetTextServiceLanguage()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  SetTextServiceLanguage()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Use TISSelectInputSource API
+ *  
+ *  Summary:
+ *    Switch to the last used input method (if any) for the specified
+ *    script/language.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 function SetTextServiceLanguage( var slRecordPtr: ScriptLanguageRecord ): OSErr; external name '_SetTextServiceLanguage';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -1012,17 +1982,67 @@ function SetTextServiceLanguage( var slRecordPtr: ScriptLanguageRecord ): OSErr;
  *  
  *  Summary:
  *    Get the current script/language.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+{
+ *  GetTextServiceLanguage()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  GetTextServiceLanguage()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Use TISCopyCurrentKeyboardInputSource API and query its
+ *    properties, such as kTISPropertyInputSourceLanguages.
+ *  
+ *  Summary:
+ *    Get the current script/language.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 function GetTextServiceLanguage( var slRecordPtr: ScriptLanguageRecord ): OSErr; external name '_GetTextServiceLanguage';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 
 {
@@ -1032,7 +2052,19 @@ function GetTextServiceLanguage( var slRecordPtr: ScriptLanguageRecord ): OSErr;
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1041,11 +2073,25 @@ function UseInputWindow( idocID: TSMDocumentID; useWindow: Boolean ): OSErr; ext
 
 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  TSMSetInlineInputRegion()   *** DEPRECATED ***
  *  
  *  Deprecated:
  *    Implement kEventTextInputIsMouseEventInInlineInputArea TSM Carbon
  *    event.
+<<<<<<< HEAD
+=======
+ *  TSMSetInlineInputRegion()
+>>>>>>> graemeg/fixes_2_2
+=======
+ *  TSMSetInlineInputRegion()
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Summary:
  *    Tell TSM what region and which window make up the inline input
@@ -1085,28 +2131,194 @@ function UseInputWindow( idocID: TSMDocumentID; useWindow: Boolean ): OSErr; ext
  *      window's content region.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.1 and later
  *    Non-Carbon CFM:   not available
  }
 function TSMSetInlineInputRegion( inTSMDocument: TSMDocumentID; inWindow: WindowRef; inRegion: RgnHandle ): OSStatus; external name '_TSMSetInlineInputRegion';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+{ Following calls from Classic event loops not needed for Carbon clients. }
+{
+ *  TSMEvent()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  TSMMenuSelect()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  SetTSMCursor()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{ Following ServiceWindow API replaced by Window Manager API in Carbon. }
+{
+ *  NewServiceWindow()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  CloseServiceWindow()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  GetFrontServiceWindow()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  FindServiceWindow()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  NewCServiceWindow()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 8.5 and later
+ }
+
+
+{ Explicit initialization not needed for Carbon clients, since TSM is }
+{ instanciated per-context. }
+{
+ *  InitTSMAwareApplication()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  CloseTSMAwareApplication()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 
 { Component Manager Interfaces to Input Methods }
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  GetScriptLanguageSupport()   *** DEPRECATED ***
+=======
+ *  GetScriptLanguageSupport()
+>>>>>>> graemeg/fixes_2_2
+=======
+ *  GetScriptLanguageSupport()
+>>>>>>> origin/fixes_2_2
+=======
+ *  GetScriptLanguageSupport()   *** DEPRECATED ***
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 function GetScriptLanguageSupport( ts: ComponentInstance; var scriptHdl: ScriptLanguageSupportHandle ): ComponentResult; external name '_GetScriptLanguageSupport';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 
 {
@@ -1116,7 +2328,19 @@ function GetScriptLanguageSupport( ts: ComponentInstance; var scriptHdl: ScriptL
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1131,7 +2355,19 @@ function InitiateTextService( ts: ComponentInstance ): ComponentResult; external
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1146,7 +2382,19 @@ function TerminateTextService( ts: ComponentInstance ): ComponentResult; externa
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1161,7 +2409,19 @@ function ActivateTextService( ts: ComponentInstance ): ComponentResult; external
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1176,7 +2436,19 @@ function DeactivateTextService( ts: ComponentInstance ): ComponentResult; extern
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1193,7 +2465,19 @@ function GetTextServiceMenu( ts: ComponentInstance; var serviceMenu: MenuRef ): 
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.1 and later
  *    Non-Carbon CFM:   not available
  }
@@ -1202,13 +2486,77 @@ function TextServiceEventRef( ts: ComponentInstance; event: EventRef ): Componen
 
 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *  TextServiceEvent()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  UCTextServiceEvent()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 8.5 and later
+ }
+
+
+{
+ *  TextServiceMenuSelect()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  SetTextServiceCursor()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  FixTextService()
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1223,7 +2571,19 @@ function FixTextService( ts: ComponentInstance ): ComponentResult; external name
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1235,8 +2595,19 @@ function HidePaletteWindows( ts: ComponentInstance ): ComponentResult; external 
     Text Service Properties and standard values
     (used with GetTextServiceProperty/SetTextServiceProperty)
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 
 type
 	TextServicePropertyTag = OSType;
@@ -1310,6 +2681,11 @@ const
 	kIMJaTypingMethodRoman = FourCharCode('roma'); { Roman typing}
 	kIMJaTypingMethodKana = FourCharCode('kana'); { Kana typing}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc TARGET_CPU_64}
 type
@@ -1319,6 +2695,17 @@ type
 	TextServicePropertyValue = SInt32;
 {$endc} {TARGET_CPU_64}
 
+<<<<<<< HEAD
+=======
+type
+	TextServicePropertyValue = SInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+type
+	TextServicePropertyValue = SInt32;
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {
     Generic, restricted, input modes
@@ -1389,7 +2776,17 @@ type
 {$endc}
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  GetTextServiceProperty()
  *  
@@ -1397,7 +2794,19 @@ type
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -1412,7 +2821,19 @@ function GetTextServiceProperty( ts: ComponentInstance; inPropertyTag: TextServi
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -1433,6 +2854,11 @@ function SetTextServiceProperty( ts: ComponentInstance; inPropertyTag: TextServi
  *    call is not supported by an input method, calls to the
  *    TextServiceProperty API with the kTextServiceInputModePropertyTag
  *    property will fail with tsmComponentPropertyUnsupportedErr. Below
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    is the layout of the CFDictionary returned, using the constants
  *    defined for the keys (i.e. not using the actual strings for the
  *    keys). <dict> <key>kTSInputModeListKey</key> <dict> <key>
@@ -1440,6 +2866,7 @@ function SetTextServiceProperty( ts: ComponentInstance; inPropertyTag: TextServi
  *    of the generic input modes defined in this file, --> <!--    such
  *    as kTextServiceInputModeRoman, or can be a private input --> <!--
  *       mode such as CFSTR(
+<<<<<<< HEAD
  *    "com.apple.MyInputmethod.Japanese.CoolInputMode" ) --> <dict>
  *    <key>kTSInputModeMenuIconFileKey</key> <string> (path for menu
  *    icon image file) </string>
@@ -1460,6 +2887,45 @@ function SetTextServiceProperty( ts: ComponentInstance; inPropertyTag: TextServi
  *    <key>kTSInputModeJISKeyboardShortcutKey</key> <integer>
  *    (optional: 0=none,1=hiragana,2=katakana,3=eisu) </integer>
  *    </dict> </dict> <key>kTSVisibleInputModeOrderedArrayKey</key>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    is the layout of the CFDictionary returned. <dict> <key>
+ *    kTSInputModeListKey </key> <dict> <key> modeSignature : (internal
+ *    ascii name) </key> <!-- This can be any of the generic input
+ *    modes defined in this file, --> <!--    such as
+ *    kTextServiceInputModeRoman, or can be a private input --> <!--   
+ *    mode such as CFSTR(
+=======
+>>>>>>> origin/fixes_2.4
+ *    "com.apple.MyInputmethod.Japanese.CoolInputMode" ) --> <dict>
+ *    <key>kTSInputModeMenuIconFileKey</key> <string> (path for menu
+ *    icon image file) </string>
+ *    <key>kTSInputModeAlternateMenuIconFileKey</key> <string> (path
+ *    for alternate menu icon image file -- when item is hilited)
+ *    </string> <key>kTSInputModePaletteIconFileKey</key> <string>
+ *    (path for palette icon image file) </string>
+ *    <key>kTSInputModeDefaultStateKey</key> <boolean> (default on/off
+ *    state) </boolean> <key>kTSInputModeScriptKey</key> <string>
+ *    (scriptCode string for this mode, i.e. "smRoman", "smJapanese",
+ *    ...) </string> <key>kTSInputModePrimaryInScriptKey</key>
+ *    <boolean> (true if this is primary mode in this script)
+ *    </boolean> <key>kTSInputModeIsVisibleKey</key> <boolean> (true if
+ *    this input mode should appear in System UI) </boolean>
+ *    <key>kTSInputModeKeyEquivalentModifiersKey</key> <integer>
+ *    (modifiers) </integer> <key>kTSInputModeKeyEquivalentKey</key>
+ *    <string> (key equivalent character) </string>
+ *    <key>kTSInputModeJISKeyboardShortcutKey</key> <integer>
+ *    (optional: 0=none,1=hiragana,2=katakana,3=eisu) </integer>
+<<<<<<< HEAD
+ *    </dict> </dict> <key> kTSVisibleInputModeOrderedArrayKey </key>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    </dict> </dict> <key>kTSVisibleInputModeOrderedArrayKey</key>
+>>>>>>> origin/fixes_2.4
  *    <!-- This array defines the ordering (for UI purposes) of input
  *    modes that are --> <!--    both visible and enabled (either by
  *    default, i.e. by the System, or by --> <!--    the user, i.e. via
@@ -1484,7 +2950,19 @@ function SetTextServiceProperty( ts: ComponentInstance; inPropertyTag: TextServi
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.3 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.3 and later
  *    Non-Carbon CFM:   not available
  }
@@ -1500,13 +2978,29 @@ function CopyTextServiceInputModeList( ts: ComponentInstance; var outInputModes:
             kTSVisibleInputModeOrderedArrayKey
     See CopyTextServiceInputModeList() for more details.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {$ifc USE_CFSTR_CONSTANT_MACROS}
 {$definec kComponentBundleInputModeDictKey CFSTRP('ComponentInputModeDict')}
 {$endc}
 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
     Info.plist keys for an Input Method icon TIFF file.
     The filepath (.tif or .icns file) specified for an icon is relative to the input method bundle's Resources directory.
     NOTE:  This key is required if the input method (Component) does not contain a resource fork icon.  This icon will
@@ -1521,6 +3015,13 @@ function CopyTextServiceInputModeList( ts: ComponentInstance; var outInputModes:
 {$endc}
 
 {
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
     Key for dictionary of individual input modes
     NOTE:  This key is used both in the Component bundle's Info.plist dictionary and the dictionary
             returned by the CopyTextServiceInputModeList() component call.
@@ -1577,6 +3078,9 @@ function CopyTextServiceInputModeList( ts: ComponentInstance; var outInputModes:
 {$definec kComponentBundleInvisibleInSystemUIKey CFSTRP('ComponentInvisibleInSystemUI')}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
 {
  *  TSMCopyInputMethodEnabledInputModes()   *** DEPRECATED ***
@@ -1586,6 +3090,25 @@ function CopyTextServiceInputModeList( ts: ComponentInstance; var outInputModes:
  *     kTISPropertyInputSourceType = kTISTypeKeyboardInputMode
  *     kTISPropertyBundleID = <your input method bundle identifier>
  *    <BR> kTISPropertyInputSourceIsEnabled = true
+=======
+{
+ *  TSMCopyInputMethodEnabledInputModes()
+>>>>>>> graemeg/fixes_2_2
+=======
+{
+ *  TSMCopyInputMethodEnabledInputModes()
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+{
+ *  TSMCopyInputMethodEnabledInputModes()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Use TISCreateInputSourceList API with:
+ *     kTISPropertyInputSourceType = kTISTypeKeyboardInputMode
+ *     kTISPropertyBundleID = <your input method bundle identifier>
+ *    <BR> kTISPropertyInputSourceIsEnabled = true
+>>>>>>> origin/fixes_2.4
  *  
  *  Summary:
  *    Obtain the array of a component's enabled (and visible) input
@@ -1610,11 +3133,26 @@ function CopyTextServiceInputModeList( ts: ComponentInstance; var outInputModes:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.3 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.3 and later
  *    Non-Carbon CFM:   not available
  }
 function TSMCopyInputMethodEnabledInputModes( inComponent: Component; var outInputModeArray: CFArrayRef ): Boolean; external name '_TSMCopyInputMethodEnabledInputModes';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -1624,6 +3162,29 @@ function TSMCopyInputMethodEnabledInputModes( inComponent: Component; var outInp
  *  Deprecated:
  *    Use TISSelectInputSource API passing your input mode's
  *    TISInputSourceRef
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
+
+
+{
+ *  TSMSelectInputMode()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  TSMSelectInputMode()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Use TISSelectInputSource API passing your input mode's
+ *    TISInputSourceRef
+>>>>>>> origin/fixes_2.4
  *  
  *  Summary:
  *    Make the specified input method input mode the current input
@@ -1640,19 +3201,54 @@ function TSMCopyInputMethodEnabledInputModes( inComponent: Component; var outInp
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.3 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.3 and later
  *    Non-Carbon CFM:   not available
  }
 function TSMSelectInputMode( inComponent: Component; inInputMode: CFStringRef ): OSStatus; external name '_TSMSelectInputMode';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 
 { Get the active TSMDocument in the current application context.       }
 { If TSM has enabled bottom line input mode because no TSMDocument     }
 { is active, NULL will be returned.                                    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  TSMGetActiveDocument()
  *  
@@ -1668,6 +3264,9 @@ function TSMGetActiveDocument: TSMDocumentID; external name '_TSMGetActiveDocume
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
 {
  *  GetDefaultInputMethodOfClass()   *** DEPRECATED ***
@@ -1681,16 +3280,54 @@ function TSMGetActiveDocument: TSMDocumentID; external name '_TSMGetActiveDocume
  *  
  *  Discussion:
  *    Only kKeyboardInputMethodClass is supported.
+=======
+{
+ *  GetDefaultInputMethodOfClass()
+>>>>>>> graemeg/fixes_2_2
+=======
+{
+ *  GetDefaultInputMethodOfClass()
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+{
+ *  GetDefaultInputMethodOfClass()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    See GetDefaultInputMethod.
+ *  
+ *  Summary:
+ *    Get the default (last used) input method Component ID for the
+ *    specified script/language.
+ *  
+ *  Discussion:
+ *    Only kKeyboardInputMethodClass is supported.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.2 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.2 and later
  *    Non-Carbon CFM:   not available
  }
 function GetDefaultInputMethodOfClass( var aComp: Component; var slRecPtr: ScriptLanguageRecord; tsClass: TextServiceClass ): OSStatus; external name '_GetDefaultInputMethodOfClass';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -1707,16 +3344,61 @@ function GetDefaultInputMethodOfClass( var aComp: Component; var slRecPtr: Scrip
  *  Discussion:
  *    Only kKeyboardInputMethodClass is supported.
  *    This API also switches to the specified script/language.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER *)
+
+
+{
+ *  SetDefaultInputMethodOfClass()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  SetDefaultInputMethodOfClass()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    See SetDefaultInputMethod.
+ *  
+ *  Summary:
+ *    Set the input method Component ID to be used for the specified
+ *    script/language.
+ *  
+ *  Discussion:
+ *    Only kKeyboardInputMethodClass is supported.
+ *    This API also switches to the specified script/language.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.2 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.2 and later
  *    Non-Carbon CFM:   not available
  }
 function SetDefaultInputMethodOfClass( aComp: Component; var slRecPtr: ScriptLanguageRecord; tsClass: TextServiceClass ): OSStatus; external name '_SetDefaultInputMethodOfClass';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -1725,6 +3407,28 @@ function SetDefaultInputMethodOfClass( aComp: Component; var slRecPtr: ScriptLan
  *  
  *  Deprecated:
  *    Use TISSelectInputSource API.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER *)
+
+
+{
+ *  SelectTextService()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  SelectTextService()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Use TISSelectInputSource API.
+>>>>>>> origin/fixes_2.4
  *  
  *  Summary:
  *    Select a text service component
@@ -1742,11 +3446,26 @@ function SetDefaultInputMethodOfClass( aComp: Component; var slRecPtr: ScriptLan
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.2 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.2 and later
  *    Non-Carbon CFM:   not available
  }
 function SelectTextService( aComp: Component ): OSStatus; external name '_SelectTextService';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -1755,6 +3474,28 @@ function SelectTextService( aComp: Component ): OSStatus; external name '_Select
  *  
  *  Deprecated:
  *    Use TISDeselectInputSource API.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER *)
+
+
+{
+ *  DeselectTextService()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  DeselectTextService()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Use TISDeselectInputSource API.
+>>>>>>> origin/fixes_2.4
  *  
  *  Summary:
  *    Deselect a text service component
@@ -1766,11 +3507,26 @@ function SelectTextService( aComp: Component ): OSStatus; external name '_Select
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.2 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.2 and later
  *    Non-Carbon CFM:   not available
  }
 function DeselectTextService( aComp: Component ): OSStatus; external name '_DeselectTextService';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -1780,6 +3536,29 @@ function DeselectTextService( aComp: Component ): OSStatus; external name '_Dese
  *  Deprecated:
  *    Use TISGetInputSourceProperty API with
  *    kTISPropertyInputSourceIsSelected property.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER *)
+
+
+{
+ *  IsTextServiceSelected()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  IsTextServiceSelected()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Use TISGetInputSourceProperty API with
+ *    kTISPropertyInputSourceIsSelected property.
+>>>>>>> origin/fixes_2.4
  *  
  *  Summary:
  *    Checks if a text service component is selected
@@ -1791,26 +3570,85 @@ function DeselectTextService( aComp: Component ): OSStatus; external name '_Dese
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.3 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.3 and later
  *    Non-Carbon CFM:   not available
  }
 function IsTextServiceSelected( aComp: Component ): Boolean; external name '_IsTextServiceSelected';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
 {$endc} {not TARGET_CPU_64}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
+
+
+{$ifc OLDROUTINENAMES}
+const
+	kInputMethodService = kKeyboardInputMethodClass;
+
+const
+	kUnicodeTextService = FourCharCode('utsv'); { Component type for Unicode Text Service }
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
+
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 
 {-------------------------------------------}
 { Input Mode Palette configuration routines }
 {-------------------------------------------}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
 {
  *  TSMInputModePaletteLoadButtons()   *** DEPRECATED ***
  *  
  *  Deprecated:
  *    Not used anymore.
+=======
+{
+ *  TSMInputModePaletteLoadButtons()
+>>>>>>> graemeg/fixes_2_2
+=======
+{
+ *  TSMInputModePaletteLoadButtons()
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+{
+ *  TSMInputModePaletteLoadButtons()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Not used anymore.
+>>>>>>> origin/fixes_2.4
  *  
  *  Discussion:
  *    Notifies the Input Mode Palette of changes in an input method's
@@ -1828,11 +3666,26 @@ function IsTextServiceSelected( aComp: Component ): Boolean; external name '_IsT
  *      below.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.4 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.4 and later
  *    Non-Carbon CFM:   not available
  }
 procedure TSMInputModePaletteLoadButtons( paletteButtonsArray: CFArrayRef ); external name '_TSMInputModePaletteLoadButtons';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -1841,6 +3694,28 @@ procedure TSMInputModePaletteLoadButtons( paletteButtonsArray: CFArrayRef ); ext
  *  
  *  Deprecated:
  *    Not used anymore.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)
+
+
+{
+ *  TSMInputModePaletteUpdateButtons()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  TSMInputModePaletteUpdateButtons()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Not used anymore.
+>>>>>>> origin/fixes_2.4
  *  
  *  Discussion:
  *    Notifies the Input Mode Palette of updates in an input method's
@@ -1858,12 +3733,36 @@ procedure TSMInputModePaletteLoadButtons( paletteButtonsArray: CFArrayRef ); ext
  *      below.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.4 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.4 and later
  *    Non-Carbon CFM:   not available
  }
 procedure TSMInputModePaletteUpdateButtons( paletteButtonsArray: CFArrayRef ); external name '_TSMInputModePaletteUpdateButtons';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 
 {----------------------------------------------------------------------------}
@@ -1922,8 +3821,19 @@ Example of palette controls CFArray passed to TSMInputModePaletteLoadButtons():
 ******************************************************}
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {$ifc USE_CFSTR_CONSTANT_MACROS}
 {$definec kTSInputModePaletteItemTypeKey CFSTRP('tsInputModePaletteItemTypeKey')}
 {$endc}
@@ -1955,12 +3865,31 @@ Example of palette controls CFArray passed to TSMInputModePaletteLoadButtons():
 { CFNumber - UInt32 tag ID for control }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
 {
  *  InputModePaletteItemHit()   *** DEPRECATED ***
  *  
  *  Deprecated:
  *    No longer called.
+=======
+{
+ *  InputModePaletteItemHit()
+>>>>>>> graemeg/fixes_2_2
+=======
+{
+ *  InputModePaletteItemHit()
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+{
+ *  InputModePaletteItemHit()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    No longer called.
+>>>>>>> origin/fixes_2.4
  *  
  *  Discussion:
  *    Component Manager call to tell an Input Method that a function
@@ -1984,11 +3913,26 @@ Example of palette controls CFArray passed to TSMInputModePaletteLoadButtons():
  *    Return non-null on successful handling of call.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.4 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.4 and later
  *    Non-Carbon CFM:   not available
  }
 function InputModePaletteItemHit( inInstance: ComponentInstance; inItemID: UInt32; inItemState: UInt32 ): ComponentResult; external name '_InputModePaletteItemHit';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -1997,6 +3941,28 @@ function InputModePaletteItemHit( inInstance: ComponentInstance; inItemID: UInt3
  *  
  *  Deprecated:
  *    No longer called.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)
+
+
+{
+ *  GetInputModePaletteMenu()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  GetInputModePaletteMenu()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    No longer called.
+>>>>>>> origin/fixes_2.4
  *  
  *  Discussion:
  *    Component Manager call to ask an Input Method for the menu to
@@ -2020,12 +3986,36 @@ function InputModePaletteItemHit( inInstance: ComponentInstance; inItemID: UInt3
  *    Return non-null on successful handling of call.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.4 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.4 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.4 and later
  *    Non-Carbon CFM:   not available
  }
 function GetInputModePaletteMenu( inInstance: ComponentInstance; inItemID: UInt32; var outMenuItemsArray: CFArrayRef ): ComponentResult; external name '_GetInputModePaletteMenu';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 
 {----------------------------------------------------------}
@@ -2078,8 +4068,19 @@ Example of menu CFArray returned to GetInputModePaletteMenu():
     </array>         
 
 ******************************************************}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {$ifc USE_CFSTR_CONSTANT_MACROS}
 {$definec kTSInputModePaletteItemTitleKey CFSTRP('tsInputModePaletteItemTitleKey')}
 {$endc}
@@ -2096,8 +4097,28 @@ Example of menu CFArray returned to GetInputModePaletteMenu():
 { CFNumber - menu item keyboard shortcut modifiers (from Events.h) }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {TARGET_OS_MAC}
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
 
 end.
 {$endc} {not MACOSALLINCLUDE}
+=======
+
+
+end.
+>>>>>>> graemeg/fixes_2_2
+=======
+
+
+end.
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {TARGET_OS_MAC}
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+
+end.
+{$endc} {not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4

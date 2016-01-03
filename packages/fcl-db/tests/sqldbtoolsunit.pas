@@ -5,6 +5,7 @@ unit SQLDBToolsUnit;
 interface
 
 uses
+<<<<<<< HEAD
   Classes, SysUtils, toolsunit
   ,db, sqldb
   ,mysql40conn, mysql41conn, mysql50conn, mysql51conn, mysql55conn, mysql56conn, mysql57conn
@@ -27,9 +28,110 @@ const
   MySQLConnTypes = [mysql40,mysql41,mysql50,mysql51,mysql55,mysql56,mysql57];
   SQLConnTypesNames : Array [TSQLConnType] of String[19] =
         ('MYSQL40','MYSQL41','MYSQL50','MYSQL51','MYSQL55','MYSQL56','MYSQL57','POSTGRESQL','INTERBASE','ODBC','ORACLE','SQLITE3','MSSQL','SYBASE');
+=======
+  Classes, SysUtils, toolsunit,
+  db,
+<<<<<<< HEAD
+<<<<<<< HEAD
+  sqldb, ibconnection, mysql40conn, mysql41conn, mysql50conn, mysql51conn, pqconnection,odbcconn,oracleconnection,sqlite3conn;
+
+type TSQLDBTypes = (mysql40,mysql41,mysql50,mysql51,postgresql,interbase,odbc,oracle,sqlite3);
+
+const MySQLdbTypes = [mysql40,mysql41,mysql50];
+      DBTypesNames : Array [TSQLDBTypes] of String[19] =
+             ('MYSQL40','MYSQL41','MYSQL50','MYSQL51','POSTGRESQL','INTERBASE','ODBC','ORACLE','SQLITE3');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  sqldb, ibconnection, mysql40conn, mysql41conn, mysql50conn, pqconnection,odbcconn,oracleconnection,sqlite3conn;
+
+type TSQLDBTypes = (mysql40,mysql41,mysql50,postgresql,interbase,odbc,oracle,sqlite3);
+
+const MySQLdbTypes = [mysql40,mysql41,mysql50];
+      DBTypesNames : Array [TSQLDBTypes] of String[19] =
+             ('MYSQL40','MYSQL41','MYSQL50','POSTGRESQL','INTERBASE','ODBC','ORACLE','SQLITE3');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+             
+      FieldtypeDefinitionsConst : Array [TFieldType] of String[15] =
+        (
+          '',
+          'VARCHAR(10)',
+          'SMALLINT',
+          'INTEGER',
+          '',
+          '',
+          'FLOAT',
+          '',
+          'DECIMAL(18,4)',
+          'DATE',
+<<<<<<< HEAD
+<<<<<<< HEAD
+          'TIME',
+=======
+          'TIMESTAMP',
+>>>>>>> graemeg/fixes_2_2
+=======
+          'TIMESTAMP',
+>>>>>>> origin/fixes_2_2
+          'TIMESTAMP',
+          '',
+          '',
+          '',
+          'BLOB',
+          'BLOB',
+          'BLOB',
+          '',
+          '',
+          '',
+          '',
+          '',
+          'CHAR(10)',
+          '',
+<<<<<<< HEAD
+<<<<<<< HEAD
+          'BIGINT',
+=======
+          '',
+>>>>>>> graemeg/fixes_2_2
+=======
+          '',
+>>>>>>> origin/fixes_2_2
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          'TIMESTAMP',
+<<<<<<< HEAD
+<<<<<<< HEAD
+          'NUMERIC(18,6)',
+          '',
+          ''
+        );
+>>>>>>> graemeg/cpstrnew
              
   STestNotApplicable = 'This test does not apply to this sqldb connection type';
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          '',
+          '',
+          ''
+        );
+             
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 type
 { TSQLDBConnector }
@@ -67,12 +169,24 @@ type
     property Query : TSQLQuery read FQuery;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 var SQLConnType : TSQLConnType;
     SQLServerType : TSQLServerType;
     FieldtypeDefinitions : Array [TFieldType] of String[20];
 
 function IdentifierCase(const s: string): string;
 
+=======
+var SQLDbType : TSQLDBTypes;
+    FieldtypeDefinitions : Array [TFieldType] of String[15];
+    
+>>>>>>> graemeg/fixes_2_2
+=======
+var SQLDbType : TSQLDBTypes;
+    FieldtypeDefinitions : Array [TFieldType] of String[15];
+    
+>>>>>>> origin/fixes_2_2
 implementation
 
 uses StrUtils;
@@ -160,6 +274,7 @@ end;
 { TSQLDBConnector }
 
 procedure TSQLDBConnector.CreateFConnection;
+<<<<<<< HEAD
 var t : TSQLConnType;
     i : integer;
     s : string;
@@ -187,6 +302,49 @@ begin
   end;
 
   if not assigned(Fconnection) then writeln('Invalid database type, check if a valid database type for your achitecture was provided in the file ''database.ini''');
+=======
+var i : TSQLDBTypes;
+    t : integer;
+begin
+  for i := low(DBTypesNames) to high(DBTypesNames) do
+    if UpperCase(dbconnectorparams) = DBTypesNames[i] then sqldbtype := i;
+
+  FieldtypeDefinitions := FieldtypeDefinitionsConst;
+    
+  if SQLDbType = MYSQL40 then Fconnection := tMySQL40Connection.Create(nil);
+  if SQLDbType = MYSQL41 then Fconnection := tMySQL41Connection.Create(nil);
+  if SQLDbType in [mysql40,mysql41] then
+    begin
+    // Mysql versions prior to 5.0.3 removes the trailing spaces on varchar
+    // fields on insertion. So to test properly, we have to do the same
+    for t := 0 to testValuesCount-1 do
+      testStringValues[t] := TrimRight(testStringValues[t]);
+    end;
+  if SQLDbType = MYSQL50 then Fconnection := tMySQL50Connection.Create(nil);
+  if SQLDbType in MySQLdbTypes then
+    FieldtypeDefinitions[ftLargeint] := 'BIGINT';
+  if SQLDbType = sqlite3 then
+    begin
+    Fconnection := TSQLite3Connection.Create(nil);
+    FieldtypeDefinitions[ftCurrency] := 'CURRENCY';
+    FieldtypeDefinitions[ftFixedChar] := '';
+    end;
+  if SQLDbType = POSTGRESQL then
+    begin
+    Fconnection := tpqConnection.Create(nil);
+    FieldtypeDefinitions[ftBlob] := 'TEXT';
+    FieldtypeDefinitions[ftMemo] := 'TEXT';
+    FieldtypeDefinitions[ftGraphic] := '';
+    FieldtypeDefinitions[ftCurrency] := 'MONEY';
+    end;
+  if SQLDbType = INTERBASE then
+    begin
+    Fconnection := tIBConnection.Create(nil);
+    FieldtypeDefinitions[ftLargeint] := 'BIGINT';
+    end;
+  if SQLDbType = ODBC then Fconnection := tODBCConnection.Create(nil);
+  if SQLDbType = ORACLE then Fconnection := TOracleConnection.Create(nil);
+>>>>>>> graemeg/fixes_2_2
 
   FTransaction := TSQLTransaction.Create(nil);
 
@@ -202,8 +360,14 @@ begin
       LogEvents:=[detCustom,detCommit,detExecute,detRollBack];
       OnLog:=@DoLogEvent;
     end;
+<<<<<<< HEAD
 
     if (dbhostname='') and (SQLConnType=interbase) then
+=======
+  if SQLDbType = MYSQL50 then Fconnection := tMySQL50Connection.Create(nil);
+  if SQLDbType = MYSQL51 then Fconnection := tMySQL51Connection.Create(nil);
+  if SQLDbType = sqlite3 then
+>>>>>>> graemeg/cpstrnew
     begin
       // Firebird embedded: create database file if it doesn't yet exist
       // Note: pagesize parameter has influence on behavior. We're using
@@ -360,6 +524,7 @@ begin
 
   if SQLServerType in [ssMySQL] then
     begin
+<<<<<<< HEAD
     // Some DB's do not support milliseconds in datetime and time fields.
     for i := 0 to testValuesCount-1 do
       begin
@@ -368,10 +533,23 @@ begin
       if length(testValues[ftDateTime,i]) > 19 then
         testValues[ftDateTime,i] := copy(testValues[ftDateTime,i],1,19)+'.000';
       end;
+=======
+    Fconnection := tIBConnection.Create(nil);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     end;
 
   if SQLServerType in [ssFirebird, ssInterbase, ssMSSQL, ssOracle, ssPostgreSQL, ssSybase] then
     begin
+<<<<<<< HEAD
     // Some db's do not support times > 24:00:00
     testTimeValues[3]:='13:25:15.000';
     testValues[ftTime,3]:='13:25:15.000';
@@ -382,6 +560,18 @@ begin
       testTimeValues[2]:='23:59:59.997';
       testValues[ftTime,2]:='23:59:59.997';
       end;
+=======
+    DatabaseName := dbname;
+    UserName := dbuser;
+    Password := dbpassword;
+    HostName := dbhostname;
+    if length(dbQuoteChars)>1 then
+      begin
+      FieldNameQuoteChars[0] := dbQuoteChars[1];
+      FieldNameQuoteChars[1] := dbQuoteChars[2];
+      end;
+    open;
+>>>>>>> graemeg/cpstrnew
     end;
 
   if SQLServerType in [ssMSSQL, ssSybase] then
@@ -416,8 +606,20 @@ begin
     end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 procedure TSQLDBConnector.SetTestUniDirectional(const AValue: boolean);
 begin
   FUniDirectional:=avalue;
@@ -459,6 +661,7 @@ begin
 end;
 
 procedure TSQLDBConnector.CreateFieldDataset;
+<<<<<<< HEAD
 var
   CountID : Integer;
   FType   : TFieldType;
@@ -478,12 +681,31 @@ begin
   try
     Ftransaction.StartTransaction;
     TryDropIfExist('FPDEV_FIELD');
+=======
+var CountID : Integer;
+    FType   : TFieldType;
+    Sql,sql1: String;
+begin
+  try
+    Ftransaction.StartTransaction;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     Sql := 'create table FPDEV_FIELD (ID INT NOT NULL,';
     for FType := low(TFieldType)to high(TFieldType) do
       if FieldtypeDefinitions[FType]<>'' then
+<<<<<<< HEAD
+<<<<<<< HEAD
         sql := sql + 'F' + Fieldtypenames[FType] + ' ' +
           FieldtypeDefinitions[FType] + ',';
+=======
+        sql := sql + 'F' + Fieldtypenames[FType] + ' ' +FieldtypeDefinitions[FType]+ ',';
+>>>>>>> graemeg/fixes_2_2
+=======
+        sql := sql + 'F' + Fieldtypenames[FType] + ' ' +FieldtypeDefinitions[FType]+ ',';
+>>>>>>> origin/fixes_2_2
     Sql := Sql + 'PRIMARY KEY (ID))';
 
     FConnection.ExecuteDirect(Sql);
@@ -492,6 +714,14 @@ begin
 
     for countID := 0 to testValuesCount-1 do
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+      
+>>>>>>> graemeg/fixes_2_2
+=======
+      
+>>>>>>> origin/fixes_2_2
       Sql :=  'insert into FPDEV_FIELD (ID';
       Sql1 := 'values ('+IntToStr(countID);
       for FType := low(TFieldType)to high(TFieldType) do
@@ -499,6 +729,8 @@ begin
           begin
           sql := sql + ',F' + Fieldtypenames[FType];
           if testValues[FType,CountID] <> '' then
+<<<<<<< HEAD
+<<<<<<< HEAD
             case FType of
               ftBlob, ftBytes, ftGraphic, ftVarBytes:
                 if SQLServerType in [ssOracle] then
@@ -539,6 +771,12 @@ begin
               else
                 sql1 := sql1 + ',' + QuotedStr(testValues[FType,CountID])
             end
+=======
+            sql1 := sql1 + ',''' + StringReplace(testValues[FType,CountID],'''','''''',[rfReplaceAll]) + ''''
+>>>>>>> graemeg/fixes_2_2
+=======
+            sql1 := sql1 + ',''' + StringReplace(testValues[FType,CountID],'''','''''',[rfReplaceAll]) + ''''
+>>>>>>> origin/fixes_2_2
           else
             sql1 := sql1 + ',NULL';
           end;
@@ -563,6 +801,8 @@ procedure TSQLDBConnector.DoLogEvent(Sender: TSQLConnection;
 var
   Category: string;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   case EventType of
     detCustom:   Category:='Custom';
     detPrepare:  Category:='Prepare';
@@ -577,6 +817,10 @@ end;
 
 procedure TSQLDBConnector.DropNDatasets;
 begin
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   if assigned(FTransaction) then
     begin
     try
@@ -585,11 +829,19 @@ begin
       Fconnection.ExecuteDirect('DROP TABLE FPDEV');
       Ftransaction.Commit;
     Except
+<<<<<<< HEAD
+<<<<<<< HEAD
       on E: Exception do begin
         if dblogfilename<>'' then
           DoLogEvent(nil,detCustom,'Exception running DropNDatasets: '+E.Message);
         if Ftransaction.Active then Ftransaction.Rollback
       end;
+=======
+      if Ftransaction.Active then Ftransaction.Rollback
+>>>>>>> graemeg/fixes_2_2
+=======
+      if Ftransaction.Active then Ftransaction.Rollback
+>>>>>>> origin/fixes_2_2
     end;
     end;
 end;
@@ -604,11 +856,19 @@ begin
       Fconnection.ExecuteDirect('DROP TABLE FPDEV_FIELD');
       Ftransaction.Commit;
     Except
+<<<<<<< HEAD
+<<<<<<< HEAD
       on E: Exception do begin
         if dblogfilename<>'' then
           DoLogEvent(nil,detCustom,'Exception running DropFieldDataset: '+E.Message);
         if Ftransaction.Active then Ftransaction.Rollback
       end;
+=======
+      if Ftransaction.Active then Ftransaction.Rollback
+>>>>>>> graemeg/fixes_2_2
+=======
+      if Ftransaction.Active then Ftransaction.Rollback
+>>>>>>> origin/fixes_2_2
     end;
     end;
 end;
@@ -619,7 +879,20 @@ begin
   with (Result as TSQLQuery) do
     begin
     sql.clear;
+<<<<<<< HEAD
     sql.add('SELECT * FROM FPDEV WHERE ID < '+inttostr(n+1)+' ORDER BY ID');
+=======
+    sql.add('SELECT * FROM FPDEV WHERE ID < '+inttostr(n+1));
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     UniDirectional:=TestUniDirectional;
     end;
 end;
@@ -631,12 +904,30 @@ begin
     begin
     sql.clear;
     sql.add('SELECT * FROM FPDEV_FIELD');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     UniDirectional:=TestUniDirectional;
+=======
+    tsqlquery(Result).UniDirectional:=TestUniDirectional;
+>>>>>>> graemeg/cpstrnew
+=======
+    tsqlquery(Result).UniDirectional:=TestUniDirectional;
+>>>>>>> graemeg/cpstrnew
+=======
+    tsqlquery(Result).UniDirectional:=TestUniDirectional;
+>>>>>>> graemeg/cpstrnew
+=======
+    tsqlquery(Result).UniDirectional:=TestUniDirectional;
+>>>>>>> origin/cpstrnew
     end;
 end;
 
 procedure TSQLDBConnector.TryDropIfExist(ATableName: String);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   // This makes life so much easier, since it avoids the exception if the table already
   // exists. And while this exception is in a try..except statement, the debugger
   // always shows the exception, which is pretty annoying.
@@ -696,6 +987,22 @@ begin
     FTransaction.RollbackRetaining;
   end;
 end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if assigned(FTransaction) then
+    begin
+    try
+      if Ftransaction.Active then Ftransaction.Rollback;
+      Ftransaction.StartTransaction;
+      Fconnection.ExecuteDirect('DROP TABLE FPDEV2');
+      Ftransaction.Commit;
+    Except
+      if Ftransaction.Active then Ftransaction.Rollback
+    end; // try
+    end;
+  inherited Destroy;
+>>>>>>> graemeg/fixes_2_2
 
 procedure TSQLDBConnector.ExecuteDirect(const SQL: string);
 begin

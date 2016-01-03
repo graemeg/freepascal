@@ -126,13 +126,13 @@ type
 
     stop: SegmentInfo;
 
-    length: culong;
+    length: Cardinal;
 
     spread: SpreadMethod;
 
     debug: MagickBooleanType;
 
-    signature: culong;
+    signature: Cardinal;
 
     previous, next: Pointer;
 {  struct _GradientInfo
@@ -148,7 +148,7 @@ type
 
     gradient: GradientInfo;
 
-    signature: culong;
+    signature: Cardinal;
 
     previous, next: Pointer;
 {  struct _ElementReference
@@ -187,7 +187,7 @@ type
 
     linejoin_: LineJoin;
 
-    miterlimit: culong;
+    miterlimit: Cardinal;
 
     dash_offset: double;
 
@@ -197,7 +197,7 @@ type
 
     text: PChar;
 
-    face: culong;
+    face: Cardinal;
 
     font,
     metrics,
@@ -207,7 +207,7 @@ type
 
     stretch: StretchType;
 
-    weight: culong;
+    weight: Cardinal;
     
     encoding: PChar;
 
@@ -238,7 +238,7 @@ type
 
     debug: MagickBooleanType;
 
-    signature: culong;
+    signature: Cardinal;
   end;
   
   PDrawInfo = ^DrawInfo;
@@ -256,7 +256,7 @@ type
   PrimitiveInfo = record
     point: PointInfo;
 
-    coordinates: culong;
+    coordinates: Cardinal;
 
     primitive: PrimitiveType;
 

@@ -190,6 +190,7 @@ const
 type
    _Voidfp = procedure (_para1:pointer);cdecl;
   _fp = procedure;cdecl;
+  P_Voidfp = ^_Voidfp;
 
 
 procedure __pthread_cleanup_push(_para1:_Voidfp; _para2:pointer; _para3:caddr_t; _para4:P_cleanup_t);cdecl;external External_library name '__pthread_cleanup_push';
@@ -225,7 +226,7 @@ function pthread_attr_setschedparam(_RESTRICT_KYWD1:Ppthread_attr_t; _RESTRICT_K
 (* Const before type ignored *)
 function pthread_attr_getschedparam(_RESTRICT_KYWD1:Ppthread_attr_t; _RESTRICT_KYWD2:Psched_param):longint;cdecl;external External_library name 'pthread_attr_getschedparam';
 (* Const before type ignored *)
-function pthread_create(_RESTRICT_KYWD1:Ppthread_t; _RESTRICT_KYWD2:Ppthread_attr_t; _para3:_Voidfp ; _RESTRICT_KYWD3:pointer):longint;cdecl;external External_library name 'pthread_create';
+function pthread_create(_RESTRICT_KYWD1:Ppthread_t; _RESTRICT_KYWD2:Ppthread_attr_t; _para3:P_Voidfp ; _RESTRICT_KYWD3:pointer):longint;cdecl;external External_library name 'pthread_create';
 function pthread_once(_para1:Ppthread_once_t; _para2:_fp ):longint;cdecl;external External_library name 'pthread_once';
 function pthread_join(_para1:pthread_t; _para2:Ppointer):longint;cdecl;external External_library name 'pthread_join';
 function pthread_detach(_para1:pthread_t):longint;cdecl;external External_library name 'pthread_detach';

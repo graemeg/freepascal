@@ -89,7 +89,15 @@ begin
   EndTest('Array value from array of const',TJSONArray.Create([1,'a',2,'b']));
   EndTest('Empty Object value',TJSONObject.Create);
   // Name, Value, name, value
+<<<<<<< HEAD
+<<<<<<< HEAD
   EndTest('Object from array of const',TJSONObject.Create(['a',1,'b',True,'C',Nil]));
+=======
+  EndTest('Object from array of const',TJSONArray.Create(['a',1,'b',True,'C',Nil]));
+>>>>>>> graemeg/fixes_2_2
+=======
+  EndTest('Object from array of const',TJSONArray.Create(['a',1,'b',True,'C',Nil]));
+>>>>>>> origin/fixes_2_2
 
 end;
 

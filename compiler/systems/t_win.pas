@@ -91,6 +91,15 @@ interface
         function Scan(const binname:string):boolean;override;
       end;
 
+<<<<<<< HEAD
+=======
+
+      TWinResourceFile = class(TWinLikeResourceFile)
+        procedure PostProcessResourcefile(const s : ansistring);override;
+      end;
+
+
+>>>>>>> graemeg/fixes_2_2
 implementation
 
   uses
@@ -104,16 +113,28 @@ implementation
     res_gnu_windres_info : tresinfo =
         (
           id     : res_gnu_windres;
+<<<<<<< HEAD
           resbin : 'fpcres';
           rescmd : '-o $OBJ -a $ARCH -of coff $DBG';
           rcbin  : 'windres';
           rccmd  : '--include $INC -O res -D FPC -o $RES $RC';
           resourcefileclass : nil;
           resflags : [];
+=======
+          resbin : 'windres';
+          rescmd : '--include $INC -O coff -o $OBJ $RES';
+          rcbin  : 'windres';
+          rccmd  : '--include $INC -O res -o $RES $RC';
+          resourcefileclass : nil;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         );
 {$ifdef x86_64}
     res_win64_gorc_info : tresinfo =
         (
+<<<<<<< HEAD
           id     : res_win64_gorc;
           resbin : 'fpcres';
           rescmd : '-o $OBJ -a $ARCH -of coff $DBG';
@@ -121,6 +142,41 @@ implementation
           rccmd  : '/machine x64 /nw /ni /r /d FPC /fo $RES $RC';
           resourcefileclass : nil;
           resflags : [];
+=======
+          id     : res_gnu_wince_windres;
+          resbin : 'windres';
+          rescmd : '--include $INC -O coff -o $OBJ $RES';
+          rcbin  : 'windres';
+          rccmd  : '--include $INC -O res -o $RES $RC';
+          resourcefileclass : nil;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+        );
+{$endif x86_64}
+
+{$ifdef x86_64}
+    res_win64_gorc_info : tresinfo =
+        (
+          id     : res_win64_gorc;
+          resbin : 'gorc';
+          rescmd : '/machine x64 /nw /ni /o /fo $OBJ $RES';
+          rcbin  : 'gorc';
+          rccmd  : '/machine x64 /nw /ni /r /fo $RES $RC';
+          resourcefileclass : nil;
+        );
+{$endif x86_64}
+
+{$ifdef x86_64}
+    res_win64_gorc_info : tresinfo =
+        (
+          id     : res_win64_gorc;
+          resbin : 'gorc';
+          rescmd : '/machine x64 /nw /ni /o /fo $OBJ $RES';
+          rcbin  : 'gorc';
+          rccmd  : '/machine x64 /nw /ni /r /fo $RES $RC';
+          resourcefileclass : nil;
         );
 {$endif x86_64}
 
@@ -869,6 +925,7 @@ implementation
                    address_table.concat(Tai_const.Create_32bit(0));
                    inc(current_index);
                 end;
+<<<<<<< HEAD
 
               { symbol known? then get a new name }
               if assigned(hp.sym) then
@@ -882,6 +939,19 @@ implementation
                 end
               else
                 asmsym:=current_asmdata.RefAsmSymbol(hp.name^);
+=======
+              case hp.sym.typ of
+                staticvarsym :
+                  asmsym:=current_asmdata.RefAsmSymbol(tstaticvarsym(hp.sym).mangledname);
+                procsym :
+                  asmsym:=current_asmdata.RefAsmSymbol(tprocdef(tprocsym(hp.sym).ProcdefList[0]).mangledname);
+                else
+                  internalerror(200709272);
+              end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               address_table.concat(Tai_const.Create_rva_sym(asmsym));
               inc(current_index);
               hp:=texported_item(hp.next);
@@ -942,6 +1012,17 @@ implementation
 
 
     procedure TInternalLinkerWin.DefaultLinkScript;
+<<<<<<< HEAD
+=======
+      var
+        s,s2,
+        ibase : TCmdStr;
+        secname,
+        secnames : string;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       begin
         ScriptAddSourceStatements(true);
         with LinkScript do
@@ -958,7 +1039,23 @@ implementation
                     imagebase:=$10000
                   else
 {$ifdef cpu64bitaddr}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                     if (target_dbg.id = dbg_stabs) then
+=======
+                    if (paratargetdbg = dbg_stabs) then
+>>>>>>> graemeg/cpstrnew
+=======
+                    if (paratargetdbg = dbg_stabs) then
+>>>>>>> graemeg/cpstrnew
+=======
+                    if (paratargetdbg = dbg_stabs) then
+>>>>>>> graemeg/cpstrnew
+=======
+                    if (paratargetdbg = dbg_stabs) then
+>>>>>>> origin/cpstrnew
                       imagebase:=$400000
                     else
                       imagebase:= $100000000;
@@ -1061,9 +1158,29 @@ implementation
             Concat('  OBJSECTION .idata$6*');
             Concat('  OBJSECTION .idata$7*');
             Concat('ENDEXESECTION');
+<<<<<<< HEAD
+<<<<<<< HEAD
             ScriptAddGenericSections('.edata,.rsrc,.reloc,.gnu_debuglink,'+
                       '.debug_aranges,.debug_pubnames,.debug_info,.debug_abbrev,.debug_line,.debug_frame,.debug_str,.debug_loc,'+
                       '.debug_macinfo,.debug_weaknames,.debug_funcnames,.debug_typenames,.debug_varnames,.debug_ranges');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+            secnames:='.edata,.rsrc,.reloc,.gnu_debuglink,'+
+                      '.debug_aranges,.debug_pubnames,.debug_info,.debug_abbrev,.debug_line,.debug_frame,.debug_str,.debug_loc,'+
+                      '.debug_macinfo,.debug_weaknames,.debug_funcnames,.debug_typenames,.debug_varnames,.debug_ranges';
+            repeat
+              secname:=gettoken(secnames,',');
+              if secname='' then
+                break;
+              Concat('EXESECTION '+secname);
+              Concat('  OBJSECTION '+secname+'*');
+              Concat('ENDEXESECTION');
+            until false;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             { Can't use the generic rules, because that will add also .stabstr to .stab }
             Concat('EXESECTION .stab');
             Concat('  OBJSECTION .stab');
@@ -1278,8 +1395,20 @@ implementation
             Add('    *(.data2)');
             Add('    *(SORT(.data$*))');
             Add('    *(.jcr)');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             Add('    PROVIDE ('+target_info.Cprefix+'_tls_index = .);');
             Add('    LONG (0);');
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
             Add('    __data_end__ = . ;');
             Add('    *(.data_cygwin_nocopy)');
             Add('  }');
@@ -1782,7 +1911,15 @@ implementation
             ExtName:=current_module.dllscannerinputlist.NameOfIndex(i);
             if (ExtName=funcname) then
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 current_module.AddExternalImport(dllname,funcname,funcname,0,false,false);
+=======
+                current_module.AddExternalImport(dllname,funcname,0,false,false);
+>>>>>>> graemeg/fixes_2_2
+=======
+                current_module.AddExternalImport(dllname,funcname,0,false,false);
+>>>>>>> origin/fixes_2_2
                 importfound:=true;
                 current_module.dllscannerinputlist.Delete(i);
                 exit;
@@ -1813,6 +1950,31 @@ implementation
         result:=importfound;
       end;
 
+<<<<<<< HEAD
+=======
+
+{****************************************************************************
+                            TWinResourceFile
+****************************************************************************}
+
+procedure TWinResourceFile.PostProcessResourcefile(const s : ansistring);
+{$ifdef arm}
+var
+  f : file;
+  w : word;
+{$endif arm}
+begin
+{$ifdef arm}
+  assign(f,s);
+  reset(f,1);
+  w:=COFF_MAGIC;
+  blockwrite(f,w,2);
+  close(f);
+{$endif arm}
+end;
+
+
+>>>>>>> graemeg/fixes_2_2
 {*****************************************************************************
                                      Initialize
 *****************************************************************************}
@@ -1834,11 +1996,33 @@ initialization
   RegisterTarget(system_i386_wince_info);
 {$endif i386}
 {$ifdef x86_64}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  RegisterExternalLinker(system_x64_win64_info,TExternalLinkerWin);
+  RegisterInternalLinker(system_x64_win64_info,TInternalLinkerWin);
+>>>>>>> graemeg/cpstrnew
   RegisterImport(system_x86_64_win64,TImportLibWin);
   RegisterExport(system_x86_64_win64,TExportLibWin);
   RegisterDLLScanner(system_x86_64_win64,TDLLScannerWin);
+<<<<<<< HEAD
+<<<<<<< HEAD
   RegisterRes(res_gnu_windres_info,TWinLikeResourceFile);
   RegisterRes(res_win64_gorc_info,TWinLikeResourceFile);
+=======
+  RegisterRes(res_win64_gorc_info,TWinResourceFile);
+>>>>>>> graemeg/fixes_2_2
+=======
+  RegisterRes(res_win64_gorc_info,TWinResourceFile);
+>>>>>>> origin/fixes_2_2
   RegisterTarget(system_x64_win64_info);
 {$endif x86_64}
 {$ifdef arm}

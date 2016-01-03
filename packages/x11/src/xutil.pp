@@ -243,7 +243,15 @@ procedure XConvertCase(para1:TKeySym; para2:PKeySym; para3:PKeySym);cdecl;extern
 function XLookupString(para1:PXKeyEvent; para2:Pchar; para3:cint; para4:PKeySym; para5:PXComposeStatus):cint;cdecl;external libX11;
 function XMatchVisualInfo(para1:PDisplay; para2:cint; para3:cint; para4:cint; para5:PXVisualInfo):TStatus;cdecl;external libX11;
 function XOffsetRegion(para1:TRegion; para2:cint; para3:cint):cint;cdecl;external libX11;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function XPointInRegion(para1:TRegion; para2:cint; para3:cint):TBoolResult;cdecl;external libX11;
+=======
+function XPointInRegion(para1:TRegion; para2:cint; para3:cint):TBool;cdecl;external libX11;
+>>>>>>> graemeg/fixes_2_2
+=======
+function XPointInRegion(para1:TRegion; para2:cint; para3:cint):TBool;cdecl;external libX11;
+>>>>>>> origin/fixes_2_2
 function XPolygonRegion(para1:PXPoint; para2:cint; para3:cint):TRegion;cdecl;external libX11;
 function XRectInRegion(para1:TRegion; para2:cint; para3:cint; para4:cuint; para5:cuint):cint;cdecl;external libX11;
 function XSaveContext(para1:PDisplay; para2:TXID; para3:TXContext; para4:Pchar):cint;cdecl;external libX11;

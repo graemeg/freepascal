@@ -1,6 +1,22 @@
 {
     Free Pascal port of the OpenPTC C++ library.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2001-2003, 2006, 2007, 2009-2011  Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -36,6 +52,10 @@ begin
 end;}
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   TPTCEvent = class(TInterfacedObject, IPTCEvent)
   protected
     function GetEventType: TPTCEventType; virtual; abstract;
@@ -50,6 +70,26 @@ type
   PEventLinkedList = ^TEventLinkedList;
   TEventLinkedList = record
     Event: IPTCEvent;
+=======
+  PEventLinkedList = ^TEventLinkedList;
+  TEventLinkedList = record
+    Event: TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+  PEventLinkedList = ^TEventLinkedList;
+  TEventLinkedList = record
+    Event: TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+  PEventLinkedList = ^TEventLinkedList;
+  TEventLinkedList = record
+    Event: TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+  PEventLinkedList = ^TEventLinkedList;
+  TEventLinkedList = record
+    Event: TPTCEvent;
+>>>>>>> origin/cpstrnew
     Next: PEventLinkedList;
   end;
   TEventQueue = class
@@ -58,9 +98,33 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure AddEvent(const event: IPTCEvent);
     function PeekEvent(const EventMask: TPTCEventMask): IPTCEvent;
     function NextEvent(const EventMask: TPTCEventMask): IPTCEvent;
+=======
+    procedure AddEvent(event: TPTCEvent);
+    function PeekEvent(const EventMask: TPTCEventMask): TPTCEvent;
+    function NextEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure AddEvent(event: TPTCEvent);
+    function PeekEvent(const EventMask: TPTCEventMask): TPTCEvent;
+    function NextEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure AddEvent(event: TPTCEvent);
+    function PeekEvent(const EventMask: TPTCEventMask): TPTCEvent;
+    function NextEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure AddEvent(event: TPTCEvent);
+    function PeekEvent(const EventMask: TPTCEventMask): TPTCEvent;
+    function NextEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> origin/cpstrnew
   end;
 
 constructor TEventQueue.Create;
@@ -76,7 +140,23 @@ begin
   p := FHead;
   while p <> nil do
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     p^.Event := nil;
+=======
+    FreeAndNil(p^.Event);
+>>>>>>> graemeg/cpstrnew
+=======
+    FreeAndNil(p^.Event);
+>>>>>>> graemeg/cpstrnew
+=======
+    FreeAndNil(p^.Event);
+>>>>>>> graemeg/cpstrnew
+=======
+    FreeAndNil(p^.Event);
+>>>>>>> origin/cpstrnew
     pnext := p^.Next;
     Dispose(p);
     p := pnext;
@@ -84,7 +164,23 @@ begin
   inherited Destroy;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TEventQueue.AddEvent(const event: IPTCEvent);
+=======
+procedure TEventQueue.AddEvent(event: TPTCEvent);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TEventQueue.AddEvent(event: TPTCEvent);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TEventQueue.AddEvent(event: TPTCEvent);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TEventQueue.AddEvent(event: TPTCEvent);
+>>>>>>> origin/cpstrnew
 var
   tmp: PEventLinkedList;
 begin
@@ -105,7 +201,23 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TEventQueue.PeekEvent(const EventMask: TPTCEventMask): IPTCEvent;
+=======
+function TEventQueue.PeekEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+function TEventQueue.PeekEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+function TEventQueue.PeekEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+function TEventQueue.PeekEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> origin/cpstrnew
 var
   p: PEventLinkedList;
 begin
@@ -123,7 +235,23 @@ begin
   Result := nil;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TEventQueue.NextEvent(const EventMask: TPTCEventMask): IPTCEvent;
+=======
+function TEventQueue.NextEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+function TEventQueue.NextEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+function TEventQueue.NextEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> graemeg/cpstrnew
+=======
+function TEventQueue.NextEvent(const EventMask: TPTCEventMask): TPTCEvent;
+>>>>>>> origin/cpstrnew
 var
   prev, p: PEventLinkedList;
 begin
@@ -134,7 +262,19 @@ begin
     if p^.Event.EventType In EventMask then
     begin
       Result := p^.Event;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       p^.Event := nil;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
       { delete the element from the linked list }
       if prev <> nil then

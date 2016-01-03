@@ -8,7 +8,15 @@ programs=stringl dparser fstream mstream list threads testrtf \
          b64test b64test2 b64enc b64dec restest testz testz2 \
          istream doecho testol testcont txmlreg testreg tstelcmd \
          testapp testcgi testbs testbf cachetest poolmm1 poolmm2 tarmakercons \
+<<<<<<< HEAD
+<<<<<<< HEAD
          tarmakerconsgzip avltreetest testmime decodeascii85 encodeascii85
+=======
+         tarmakerconsgzip 
+>>>>>>> graemeg/fixes_2_2
+=======
+         tarmakerconsgzip 
+>>>>>>> origin/fixes_2_2
 programs_win32=showver testproc testhres testnres testsres testrhre \
                testrnre testrsre testur ipcserver ipcclient debugtest \
                dbugsrv testtimer
@@ -18,9 +26,15 @@ programs_linux=sockcli isockcli dsockcli socksvr isocksvr dsocksvr \
 programs_darwin=sockcli isockcli dsockcli socksvr isocksvr dsocksvr \
                testhres testnres testsres testrhre testrnre testrsre testur \
                ipcserver ipcclient debugtest dbugsrv asiotest testtimer
+<<<<<<< HEAD
+<<<<<<< HEAD
 programs_iphonesim=sockcli isockcli dsockcli socksvr isocksvr dsocksvr \
                testhres testnres testsres testrhre testrnre testrsre testur \
                ipcserver ipcclient debugtest dbugsrv asiotest testtimer
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 programs_freebsd=sockcli isockcli dsockcli socksvr isocksvr dsocksvr \
                testhres testnres testsres testrhre testrnre testrsre testur \
                ipcserver ipcclient debugtest dbugsrv asiotest testtimer

@@ -18,9 +18,9 @@
 
 type
   QuantizeInfo = record
-    number_colors: culong;
+    number_colors: Cardinal;
 
-    tree_depth: culong; 
+    tree_depth: Cardinal;
 
     dither: MagickBooleanType;
 
@@ -28,7 +28,7 @@ type
 
     measure_error: MagickBooleanType;
 
-    signature: culong; 
+    signature: Cardinal;
   end;
 	PQuantizeInfo = ^QuantizeInfo;
 

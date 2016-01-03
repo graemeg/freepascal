@@ -100,9 +100,9 @@ var buf : string;
 
 begin
    assign (infile,fname);
-{$push}{$i-}
+{$i-}
   reset(infile);
-{$pop}
+{$i+}
   if ioresult<>0 then
     begin
       fname:=fname+#0;

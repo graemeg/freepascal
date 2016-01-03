@@ -3,7 +3,23 @@
 #
 
 [target]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 programs=fpc ppufiles ppudump ppumove mka64ins mkarmins mkx86ins
+=======
+programs=fpc ppufiles ppudump ppumove fpcsubst mkarmins mkx86ins
+>>>>>>> graemeg/cpstrnew
+=======
+programs=fpc ppufiles ppudump ppumove fpcsubst mkarmins mkx86ins
+>>>>>>> graemeg/cpstrnew
+=======
+programs=fpc ppufiles ppudump ppumove fpcsubst mkarmins mkx86ins
+>>>>>>> graemeg/cpstrnew
+=======
+programs=fpc ppufiles ppudump ppumove fpcsubst mkarmins mkx86ins
+>>>>>>> origin/cpstrnew
 rst=fpcsubst
 
 [clean]
@@ -57,8 +73,18 @@ ppu$(PPUEXT): ../ppu.pas
 ppudump$(EXEEXT): ppuutils/ppudump.pp ppu$(PPUEXT)
         $(COMPILER) ppuutils/ppudump.pp -Fu../generic -dGENERIC_CPU -Fi..
 
+<<<<<<< HEAD
 ppufiles$(EXEEXT): ppufiles.pp ppu$(PPUEXT)
         $(COMPILER) ppufiles.pp -Fu../generic -dGENERIC_CPU -Fi..
+=======
+
+
+
+
+
+ppudump$(EXEEXT): ppudump.pp ppu$(PPUEXT)
+        $(COMPILER) ppudump.pp -Fu../$(CPU_TARGET) -Fi..
+>>>>>>> graemeg/cpstrnew
 
 ppumove$(EXEEXT): ppumove.pp ppu$(PPUEXT)
         $(COMPILER) ppumove.pp -Fu../generic -dGENERIC_CPU -Fi..
@@ -68,6 +94,16 @@ endif
 msg2inc$(EXEEXT): $(COMPILER_UNITTARGETDIR) msg2inc.pp
 
 gppc386$(EXEEXT): $(COMPILER_UNITTARGETDIR) gppc386.pp
+
+msg2inc$(EXEEXT): $(COMPILER_UNITTARGETDIR) msg2inc.pp
+
+msg2inc$(EXEEXT): $(COMPILER_UNITTARGETDIR) msg2inc.pp
+
+msg2inc$(EXEEXT): $(COMPILER_UNITTARGETDIR) msg2inc.pp
+
+msg2inc$(EXEEXT): $(COMPILER_UNITTARGETDIR) msg2inc.pp
+
+msg2inc$(EXEEXT): $(COMPILER_UNITTARGETDIR) msg2inc.pp
 
 fpcsubst$(EXEEXT): fpcsubst.pp usubst.pp
 

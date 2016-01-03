@@ -3,20 +3,77 @@
  
      Contains:   HIToolbox HITheme interfaces.
  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      Version:    HIToolbox-624~3
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> origin/cpstrnew
  
      Copyright:  © 1994-2008 by Apple Computer, Inc., all rights reserved.
+=======
+     Version:    HIToolbox-219.4.81~2
+ 
+     Copyright:  © 1994-2005 by Apple Computer, Inc., all rights reserved.
+>>>>>>> graemeg/fixes_2_2
+=======
+     Version:    HIToolbox-219.4.81~2
+ 
+     Copyright:  © 1994-2005 by Apple Computer, Inc., all rights reserved.
+>>>>>>> origin/fixes_2_2
+=======
+     Version:    HIToolbox-437~1
+ 
+     Copyright:  © 1994-2008 by Apple Computer, Inc., all rights reserved.
+>>>>>>> origin/fixes_2.4
  
      Bugs?:      For bug reports, consult the following page on
                  the World Wide Web:
  
+<<<<<<< HEAD
+<<<<<<< HEAD
                      http://bugs.freepascal.org
+=======
+                     http://www.freepascal.org/bugs.html
+>>>>>>> graemeg/fixes_2_2
+=======
+                     http://www.freepascal.org/bugs.html
+>>>>>>> origin/fixes_2_2
  
 }
 {       Pascal Translation:  Peter N Lewis, <peter@stairways.com.au>, 2004 }
 {       Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2012 }
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {
     Modified for use with Free Pascal
     Version 308
@@ -24,6 +81,26 @@
 }
 
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+>>>>>>> origin/fixes_2.4
+{
+    Modified for use with Free Pascal
+    Version 308
+    Please report any bugs to <gpc@microbizz.nl>
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4
 {$mode macpas}
 {$packenum 1}
 {$macro on}
@@ -32,8 +109,23 @@
 
 unit HITheme;
 interface
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$setc UNIVERSAL_INTERFACES_VERSION := $0400}
 {$setc GAP_INTERFACES_VERSION := $0308}
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> origin/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0400}
+{$setc GAP_INTERFACES_VERSION := $0308}
+>>>>>>> origin/fixes_2.4
 
 {$ifc not defined USE_CFSTR_CONSTANT_MACROS}
     {$setc USE_CFSTR_CONSTANT_MACROS := TRUE}
@@ -46,21 +138,50 @@ interface
 	{$error Conflicting initial definitions for FPC_BIG_ENDIAN and FPC_LITTLE_ENDIAN}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __ppc__ and defined CPUPOWERPC32}
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC32}
+>>>>>>> origin/fixes_2.4
 	{$setc __ppc__ := 1}
 {$elsec}
 	{$setc __ppc__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __ppc64__ and defined CPUPOWERPC64}
 	{$setc __ppc64__ := 1}
 {$elsec}
 	{$setc __ppc64__ := 0}
 {$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __i386__ and defined CPUI386}
 	{$setc __i386__ := 1}
 {$elsec}
 	{$setc __i386__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __x86_64__ and defined CPUX86_64}
 	{$setc __x86_64__ := 1}
 {$elsec}
@@ -71,11 +192,26 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -83,6 +219,13 @@ interface
   {$setc __LP64__ := 0}
 {$endc}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined __ppc__ and __ppc__ and defined __i386__ and __i386__}
 	{$error Conflicting definitions for __ppc__ and __i386__}
@@ -90,7 +233,14 @@ interface
 
 {$ifc defined __ppc__ and __ppc__}
 	{$setc TARGET_CPU_PPC := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_PPC64 := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
@@ -110,13 +260,57 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
@@ -126,13 +320,29 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elifc defined __x86_64__ and __x86_64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := TRUE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
@@ -144,17 +354,50 @@ interface
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __arm__ and __arm__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elifc defined __arm64__ and __arm64__}
 	{$setc TARGET_CPU_PPC := FALSE}
@@ -163,10 +406,13 @@ interface
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
 	{$setc TARGET_CPU_ARM64 := TRUE}
+=======
+>>>>>>> graemeg/cpstrnew
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elsec}
 	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ nor __arm64__ is defined.}
@@ -175,8 +421,104 @@ interface
 {$ifc defined __LP64__ and __LP64__ }
   {$setc TARGET_CPU_64 := TRUE}
 {$elsec}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   {$setc TARGET_CPU_64 := FALSE}
 {$endc}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+>>>>>>> origin/fixes_2.4
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __i386__ and __i386__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := TRUE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+{$ifc defined(iphonesim)}
+ 	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+  {$setc TARGET_CPU_64 := FALSE}
+{$endc}
+<<<<<<< HEAD
+{$setc TARGET_CPU_PPC_64 := FALSE}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined FPC_BIG_ENDIAN}
 	{$setc TARGET_RT_BIG_ENDIAN := TRUE}
@@ -202,6 +544,17 @@ interface
 {$setc TARGET_CPU_68K := FALSE}
 {$setc TARGET_CPU_MIPS := FALSE}
 {$setc TARGET_CPU_SPARC := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$setc TARGET_OS_UNIX := FALSE}
 {$setc TARGET_OS_WIN32 := FALSE}
 {$setc TARGET_RT_MAC_68881 := FALSE}
@@ -211,10 +564,43 @@ interface
 {$setc TYPE_BOOL := FALSE}
 {$setc TYPE_EXTENDED := FALSE}
 {$setc TYPE_LONGLONG := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses MacTypes,CFBase,CGBase,Appearance,HIShape,HIGeometry,Drag,CFDate,CGContext,MacWindows,Controls,CTFont;
 {$endc} {not MACOSALLINCLUDE}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+
+{$ifc TARGET_OS_MAC}
+=======
+>>>>>>> origin/cpstrnew
+
+{$ifc TARGET_OS_MAC}
+
+{$ifc TARGET_OS_MAC}
+
+{$ifc TARGET_OS_MAC}
+=======
+uses MacTypes,CFBase,CGBase,Appearance,HIShape,HIGeometry,Drag,CFDate,CGContext,MacWindows,Controls;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+uses MacTypes,CFBase,CGBase,Appearance,HIShape,HIGeometry,Drag,CFDate,CGContext,MacWindows,Controls;
+=======
+uses MacTypes,CFBase,CGBase,Appearance,HIShape,HIGeometry,Drag,CFDate,CGContext,MacWindows,Controls,CTFont;
+{$endc} {not MACOSALLINCLUDE}
+
+>>>>>>> origin/fixes_2.4
+
+>>>>>>> origin/fixes_2_2
 
 {$ifc TARGET_OS_MAC}
 
@@ -348,6 +734,11 @@ const
 	kHIThemeFrameTextFieldSquare = 0;
 	kHIThemeFrameListBox = 1;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
   {
    * The standard sized round text field, as typically used for search
    * fields. Available on Mac OS X 10.3 and later.
@@ -366,6 +757,13 @@ const
    }
 	kHIThemeFrameTextFieldRoundMini = 1002;
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 type
 	HIThemeFrameKind = UInt32;
 
@@ -411,7 +809,19 @@ type
   {
    * The view range size.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		viewsize: CGFloat;
+=======
+		viewsize: Float32;
+>>>>>>> graemeg/fixes_2_2
+=======
+		viewsize: Float32;
+>>>>>>> origin/fixes_2_2
+=======
+		viewsize: CGFloat;
+>>>>>>> origin/fixes_2.4
 	end;
 	HIScrollBarTrackInfoPtr = ^HIScrollBarTrackInfo;
 
@@ -479,6 +889,11 @@ type
   {
    * Leave this reserved field set to 0.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 		filler1: UInt8;
 
 		case SInt16 of
@@ -491,6 +906,28 @@ type
 			2: (
 				progress: ProgressTrackInfo;
 				);
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+		filler1: SInt8;
+
+	case SInt16 of
+		0: (
+			scrollbar: ScrollBarTrackInfo;
+		   );
+		1: (
+			slider: SliderTrackInfo;
+			);
+		2: (
+			progress: ProgressTrackInfo;
+			);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	end;
 	HIThemeTrackDrawInfoPtr = ^HIThemeTrackDrawInfo;
 
@@ -581,6 +1018,11 @@ type
    * or measured.
    }
 		adornment: ThemeButtonAdornment;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 		case SInt16 of
 			0: (
 					time: HIThemeAnimationTimeInfo;
@@ -588,6 +1030,23 @@ type
 			1: (
 					frame: HIThemeAnimationFrameInfo;
 				);
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	case SInt16 of
+		0: (
+				time: HIThemeAnimationTimeInfo;
+		   );
+		1: (
+				frame: HIThemeAnimationFrameInfo;
+			);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	end;
 	HIThemeButtonDrawInfoPtr = ^HIThemeButtonDrawInfo;
 
@@ -811,7 +1270,19 @@ type
 type
 	HIThemeTabPaneDrawInfo = record
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * The version of this data structure.  Currently, it is always 1.
+=======
+   * The version of this data structure.  Currently, it is always 0.
+>>>>>>> graemeg/fixes_2_2
+=======
+   * The version of this data structure.  Currently, it is always 0.
+>>>>>>> origin/fixes_2_2
+=======
+   * The version of this data structure.  Currently, it is always 1.
+>>>>>>> origin/fixes_2.4
    }
 		version: UInt32;
 
@@ -863,6 +1334,11 @@ type
 		size: HIThemeTabSize;
 	end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 const
 {
    * Available in Mac OS X 10.3 and later. Valid fields for this
@@ -878,6 +1354,13 @@ const
 	kHIThemeMenuDrawInfoVersionOne = 1001;
 
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {
  *  HIThemeMenuDrawInfo
  *  
@@ -886,13 +1369,38 @@ const
  *    APIs.
  *  
  *  Discussion:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    New in Mac OS X 10.3; revised in Mac OS X 10.5.
+=======
+ *    New in Mac OS X 10.3.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    New in Mac OS X 10.3.
+>>>>>>> origin/fixes_2_2
+=======
+ *    New in Mac OS X 10.3; revised in Mac OS X 10.5.
+>>>>>>> origin/fixes_2.4
  }
 type
 	HIThemeMenuDrawInfo = record
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * The version of this data structure. Use
    * kHIThemeMenuDrawInfoVersionZero or kHIThemeMenuDrawInfoVersionOne.
+=======
+   * The version of this data structure.  Currently, it is always 0.
+>>>>>>> graemeg/fixes_2_2
+=======
+   * The version of this data structure.  Currently, it is always 0.
+>>>>>>> origin/fixes_2_2
+=======
+   * The version of this data structure. Use
+   * kHIThemeMenuDrawInfoVersionZero or kHIThemeMenuDrawInfoVersionOne.
+>>>>>>> origin/fixes_2.4
    }
 		version: UInt32;
 
@@ -900,6 +1408,11 @@ type
    * A ThemeMenuType indicating which type of menu is to be drawn.
    }
 		menuType: ThemeMenuType;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 
   {
    * Must be zero.
@@ -927,10 +1440,22 @@ type
    * Must be zero.
    }
 		reserved4: CGFloat;
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	end;
 	HIThemeMenuDrawInfoPtr = ^HIThemeMenuDrawInfo;
 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  HIThemeMenuDrawInfoVersionZero
  *  
  *  Summary:
@@ -955,6 +1480,13 @@ type
 	HIThemeMenuDrawInfoVersionZeroPtr = ^HIThemeMenuDrawInfoVersionZero;
 
 {
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  HIThemeMenuItemDrawInfo
  *  
  *  Summary:
@@ -1150,7 +1682,19 @@ type
   {
    * The attributes of the menu bar to be drawn.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		attributes: OptionBits;
+=======
+		attributes: UInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+		attributes: UInt32;
+>>>>>>> origin/fixes_2_2
+=======
+		attributes: OptionBits;
+>>>>>>> origin/fixes_2.4
 	end;
 	HIThemeMenuBarDrawInfoPtr = ^HIThemeMenuBarDrawInfo;
 
@@ -1179,7 +1723,19 @@ type
    * The attributes of the menu title to be drawn. Must be either 0 or
    * kHIThemeMenuTitleDrawCondensed.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		attributes: OptionBits;
+=======
+		attributes: UInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+		attributes: UInt32;
+>>>>>>> origin/fixes_2_2
+=======
+		attributes: OptionBits;
+>>>>>>> origin/fixes_2.4
 
   {
    * The border space between the menu title rect and the menu title
@@ -1191,7 +1747,19 @@ type
    * &extra, true ). You may pass 0 in this field to use the minimum
    * condensed title extra.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		condensedTitleExtra: CGFloat;
+=======
+		condensedTitleExtra: Float32;
+>>>>>>> graemeg/fixes_2_2
+=======
+		condensedTitleExtra: Float32;
+>>>>>>> origin/fixes_2_2
+=======
+		condensedTitleExtra: CGFloat;
+>>>>>>> origin/fixes_2.4
 	end;
 	HIThemeMenuTitleDrawInfoPtr = ^HIThemeMenuTitleDrawInfo;
 
@@ -1255,12 +1823,36 @@ type
   {
    * The height of the title of the window.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		titleHeight: CGFloat;
+=======
+		titleHeight: Float32;
+>>>>>>> graemeg/fixes_2_2
+=======
+		titleHeight: Float32;
+>>>>>>> origin/fixes_2_2
+=======
+		titleHeight: CGFloat;
+>>>>>>> origin/fixes_2.4
 
   {
    * The width of the title of the window.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		titleWidth: CGFloat;
+=======
+		titleWidth: Float32;
+>>>>>>> graemeg/fixes_2_2
+=======
+		titleWidth: Float32;
+>>>>>>> origin/fixes_2_2
+=======
+		titleWidth: CGFloat;
+>>>>>>> origin/fixes_2.4
 	end;
 	HIThemeWindowDrawInfoPtr = ^HIThemeWindowDrawInfo;
 
@@ -1312,12 +1904,36 @@ type
   {
    * The height of the title of the window.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		titleHeight: CGFloat;
+=======
+		titleHeight: Float32;
+>>>>>>> graemeg/fixes_2_2
+=======
+		titleHeight: Float32;
+>>>>>>> origin/fixes_2_2
+=======
+		titleHeight: CGFloat;
+>>>>>>> origin/fixes_2.4
 
   {
    * The width of the title of the window.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		titleWidth: CGFloat;
+=======
+		titleWidth: Float32;
+>>>>>>> graemeg/fixes_2_2
+=======
+		titleWidth: Float32;
+>>>>>>> origin/fixes_2_2
+=======
+		titleWidth: CGFloat;
+>>>>>>> origin/fixes_2.4
 	end;
 	HIThemeWindowWidgetDrawInfoPtr = ^HIThemeWindowWidgetDrawInfo;
 
@@ -1500,7 +2116,23 @@ type
 		version: UInt32;
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * The ThemeDrawState of the background to be drawn.
+=======
+   * The ThemeDrawState of the background to be drawn. Currently,
+   * HIThemeDrawBackground backgrounds do not have state, so this field
+   * has no meaning. Set it to kThemeStateActive.
+>>>>>>> graemeg/fixes_2_2
+=======
+   * The ThemeDrawState of the background to be drawn. Currently,
+   * HIThemeDrawBackground backgrounds do not have state, so this field
+   * has no meaning. Set it to kThemeStateActive.
+>>>>>>> origin/fixes_2_2
+=======
+   * The ThemeDrawState of the background to be drawn.
+>>>>>>> origin/fixes_2.4
    }
 		state: ThemeDrawState;
 
@@ -1574,16 +2206,37 @@ function HIThemeDrawButton( const (*var*) inBounds: HIRect; const (*var*) inDraw
  *  Parameters:
  *    
  *    inBounds:
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      An HIRect indicating where the button would be drawn.
  *    
  *    inDrawInfo:
  *      An HIThemeButtonDrawInfo describing the button that would be
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *      The HIRect in which to draw.
+ *    
+ *    inDrawInfo:
+ *      An HIThemeButtonDrawInfo describing the button that will be
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  *      drawn.
  *    
  *    outShape:
  *      A pointer to an HIShapeRef which will be set to the shape of
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      the button that would be drawn. It needs to be released by the
  *      caller.
+=======
+ *      the button. Needs to be released by caller.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      the button. Needs to be released by caller.
+>>>>>>> origin/fixes_2_2
  *  
  *  Availability:
  *    Mac OS X:         in version 10.3 and later in Carbon.framework
@@ -1606,10 +2259,23 @@ function HIThemeGetButtonShape( const (*var*) inBounds: HIRect; const (*var*) in
  *  Parameters:
  *    
  *    inBounds:
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      An HIRect indicating where the button would be drawn.
  *    
  *    inDrawInfo:
  *      An HIThemeButtonDrawInfo describing the button that would be
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *      An HIRect indicating where the button is to be drawn.
+ *    
+ *    inDrawInfo:
+ *      An HIThemeButtonDrawInfo describing the button that will be
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  *      drawn.
  *    
  *    outBounds:
@@ -1637,10 +2303,23 @@ function HIThemeGetButtonContentBounds( const (*var*) inBounds: HIRect; const (*
  *  Parameters:
  *    
  *    inBounds:
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      An HIRect indicating where the button would be drawn.
  *    
  *    inDrawInfo:
  *      An HIThemeButtonDrawInfo describing the button that would be
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *      An HIRect indicating where the button is to be drawn.
+ *    
+ *    inDrawInfo:
+ *      An HIThemeButtonDrawInfo describing the button that will be
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  *      drawn.
  *    
  *    outBounds:
@@ -1945,14 +2624,30 @@ function HIThemeDrawMenuSeparator( const (*var*) inMenuRect: HIRect; const (*var
  *    
  *    inMenuRect:
  *      An HIRect indicating the bounds of the menu for which the menu
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      background is to be retrieved.
+=======
+ *      background is to be drawn.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      background is to be drawn.
+>>>>>>> origin/fixes_2_2
  *    
  *    inMenuDrawInfo:
  *      An HIThemeMenuDrawInfo describing the menu to be measured.
  *    
  *    outShape:
  *      A valid HIShape that will be cleared and filled with the shape
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      of the menu background. It needs to be released by the caller.
+=======
+ *      of the menu background.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      of the menu background.
+>>>>>>> origin/fixes_2_2
  *  
  *  Availability:
  *    Mac OS X:         in version 10.3 and later in Carbon.framework
@@ -2001,17 +2696,45 @@ type
 
 {
  *  Summary:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Available values for HIThemeSegmentKind available on Mac OS X
  *    10.4 a later.
  }
 const
 {
    * The segment to use on non-textured windows. Do not use on textured
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Available values for HIThemeSegmentKind.
+ }
+const
+{
+   * The outset looking segment. Do not use on metal or metal-like
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Available values for HIThemeSegmentKind available on Mac OS X
+ *    10.4 a later.
+ }
+const
+{
+   * The segment to use on non-textured windows. Do not use on textured
+>>>>>>> origin/fixes_2.4
    * windows.
    }
 	kHIThemeSegmentKindNormal = 0;
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
    * The textured segment. Use on textured windows.
    }
 	kHIThemeSegmentKindTextured = 1;
@@ -2019,8 +2742,23 @@ const
   {
    * This is a synonym for kHIThemeSegmentKindTextured for code
    * compatibility. Please use kHIThemeSegmentKindTextured instead.
+<<<<<<< HEAD
    }
 	kHIThemeSegmentKindInset = kHIThemeSegmentKindTextured;
+=======
+   * The inset segment. Use on metal or metal-like windows.
+   }
+	kHIThemeSegmentKindInset = 1;
+>>>>>>> graemeg/fixes_2_2
+=======
+   * The inset segment. Use on metal or metal-like windows.
+   }
+	kHIThemeSegmentKindInset = 1;
+>>>>>>> origin/fixes_2_2
+=======
+   }
+	kHIThemeSegmentKindInset = kHIThemeSegmentKindTextured;
+>>>>>>> origin/fixes_2.4
 
 type
 	HIThemeSegmentKind = UInt32;
@@ -2036,12 +2774,36 @@ const
 	kHIThemeSegmentSizeNormal = 0;
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * The small segment. Not available as textured.
+=======
+   * The small segment. Not available with as inset.
+>>>>>>> graemeg/fixes_2_2
+=======
+   * The small segment. Not available with as inset.
+>>>>>>> origin/fixes_2_2
+=======
+   * The small segment. Not available as textured.
+>>>>>>> origin/fixes_2.4
    }
 	kHIThemeSegmentSizeSmall = 1;
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * The mini segment. Not available as textured.
+=======
+   * The mini segment. Not available with as inset.
+>>>>>>> graemeg/fixes_2_2
+=======
+   * The mini segment. Not available with as inset.
+>>>>>>> origin/fixes_2_2
+=======
+   * The mini segment. Not available as textured.
+>>>>>>> origin/fixes_2.4
    }
 	kHIThemeSegmentSizeMini = 3;
 
@@ -2250,6 +3012,8 @@ function HIThemeDrawTab( const (*var*) inRect: HIRect; const (*var*) inDrawInfo:
  *  Parameters:
  *    
  *    inRect:
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      An HIRect indicating the entire tabs area for which the tab
  *      pane shape is to be retrieved.
  *    
@@ -2264,6 +3028,25 @@ function HIThemeDrawTab( const (*var*) inRect: HIRect; const (*var*) inDrawInfo:
  *    outShape:
  *      A pointer to an HIShapeRef which will be set to the shape of
  *      the draw area. It needs to be released by the caller.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *      The HIRect for which to get the shape.
+ *    
+ *    inDirection:
+ *      A ThemeTabDirection describing on which side of the pane the
+ *      tabs will be drawn.
+ *    
+ *    inTabSize:
+ *      An HIThemeTabSize indicating what size of tab pane to draw.
+ *    
+ *    outShape:
+ *      A pointer to an HIShapeRef which will be set to the shape of
+ *      the draw area. Needs to be released by caller.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  *  
  *  Availability:
  *    Mac OS X:         in version 10.3 and later in Carbon.framework
@@ -2292,6 +3075,8 @@ function HIThemeGetTabPaneDrawShape( const (*var*) inRect: HIRect; inDirection: 
  *  Parameters:
  *    
  *    inRect:
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      An HIRect indicating the entire tabs area for which the tab
  *      content shape is to be retrieved.
  *    
@@ -2306,6 +3091,25 @@ function HIThemeGetTabPaneDrawShape( const (*var*) inRect: HIRect; inDirection: 
  *    outShape:
  *      A pointer to an HIShapeRef which will be set to the shape of
  *      the draw content. It needs to be released by the caller.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *      The HIRect for which to get the shape.
+ *    
+ *    inDirection:
+ *      A ThemeTabDirection describing on which side of the pane the
+ *      tabs will be drawn.
+ *    
+ *    inTabSize:
+ *      An HIThemeTabSize indicating what size of tab pane to draw.
+ *    
+ *    outShape:
+ *      A pointer to an HIShapeRef which will be set to the shape of
+ *      the draw content. Needs to be released by caller.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  *  
  *  Availability:
  *    Mac OS X:         in version 10.3 and later in Carbon.framework
@@ -2334,6 +3138,8 @@ function HIThemeGetTabPaneContentShape( const (*var*) inRect: HIRect; inDirectio
  *  Parameters:
  *    
  *    inRect:
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      An HIRect indicating the entire tab+pane area for which the tab
  *      shape is to be retrieved.
  *    
@@ -2343,6 +3149,21 @@ function HIThemeGetTabPaneContentShape( const (*var*) inRect: HIRect; inDirectio
  *    outShape:
  *      A pointer to an HIShapeRef which will be set to the shape of
  *      the tab drawing area. It needs to be released by the caller.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *      The HIRect for which to get the shape.
+ *    
+ *    inDrawInfo:
+ *      An HIThemeTabDrawInfo describing the tab that will be drawn.
+ *    
+ *    outShape:
+ *      A pointer to an HIShapeRef which will be set to the shape of
+ *      the tab drawing area. Needs to be released by caller.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  *  
  *  Availability:
  *    Mac OS X:         in version 10.3 and later in Carbon.framework
@@ -2374,11 +3195,25 @@ function HIThemeGetTabDrawShape( const (*var*) inRect: HIRect; const (*var*) inD
  *      shape is to be retrieved.
  *    
  *    inDrawInfo:
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      An HIThemeTabDrawInfo describing the tab that would be drawn.
  *    
  *    outShape:
  *      A pointer to an HIShapeRef which will be set to the shape of
  *      the tab. It needs to be released by the caller.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *      An HIThemeTabDrawInfo describing the tab that will be drawn.
+ *    
+ *    outShape:
+ *      A pointer to an HIShapeRef which will be set to the shape of
+ *      the tab. Needs to be released by caller.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  *  
  *  Availability:
  *    Mac OS X:         in version 10.3 and later in Carbon.framework
@@ -2412,7 +3247,17 @@ const
    * line.
    }
 	kHIThemeTextTruncationEnd = 2;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kHIThemeTextTruncationDefault = 3;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	kHIThemeTextTruncationDefault = 3;
+>>>>>>> origin/fixes_2.4
 
 type
 	HIThemeTextTruncation = UInt32;
@@ -2434,7 +3279,17 @@ const
    * box.
    }
 	kHIThemeTextHorizontalFlushRight = 2;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kHIThemeTextHorizontalFlushDefault = 3;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	kHIThemeTextHorizontalFlushDefault = 3;
+>>>>>>> origin/fixes_2.4
 
 type
 	HIThemeTextHorizontalFlush = UInt32;
@@ -2454,18 +3309,34 @@ const
    * Draw the text vertically flush with the bottom of the box
    }
 	kHIThemeTextVerticalFlushBottom = 2;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kHIThemeTextVerticalFlushDefault = 3;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	kHIThemeTextVerticalFlushDefault = 3;
+>>>>>>> origin/fixes_2.4
 
 type
 	HIThemeTextVerticalFlush = UInt32;
 
 const
 	kHIThemeTextBoxOptionNone = 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 
   {
    * Is the text strongly vertical? This option bit is not correctly
    * respected and will have no effect if used.
    }
+<<<<<<< HEAD
 	kHIThemeTextBoxOptionStronglyVertical = 1 shl 1;
 
   {
@@ -2504,6 +3375,56 @@ const
    }
 	kHIThemeTextInfoVersionOne = 1;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
+	kHIThemeTextBoxOptionStronglyVertical = 1 shl 1;
+
+  {
+   * Draw the text with an engraved look, suitable for use on the Mac
+   * OS X 10.5 dark window backgrounds or on the bodies of some
+   * controls.
+   }
+	kHIThemeTextBoxOptionEngraved = 1 shl 2;
+
+  {
+   * By default, HIThemeDrawTextBox will clip the text to the rectangle
+   * specified by the inBounds parameter. With some fonts or styles,
+   * text may draw outside of the drawing rectangle and will be
+   * clipped. If this bit is set, HIThemeDrawTextBox will not clip
+   * drawing to its inBounds parameter. Available in Mac OS X 10.4 and
+   * later.
+   }
+	kHIThemeTextBoxOptionDontClip = 1 shl 18;
+
+type
+	HIThemeTextBoxOptions = OptionBits;
+
+const
+{
+   * Available in Mac OS X 10.3 and later. Valid fields for this
+   * version are version, state, fontID, horizontalFlushness,
+   * verticalFlushness, options, truncationPosition, truncationMaxLines
+   * and truncationHappened.
+   }
+	kHIThemeTextInfoVersionZero = 0;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+  {
+   * Available in Mac OS X 10.5 and later. Valid fields for this
+   * version are all those in the zero version as well as the font
+   * field.
+   }
+	kHIThemeTextInfoVersionOne = 1;
+
+>>>>>>> origin/fixes_2.4
 
 {
  *  HIThemeTextInfo
@@ -2522,9 +3443,27 @@ const
 type
 	HIThemeTextInfo = record
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * The version of this data structure. Currently, it is always 1.
    }
 		version: UInt32;
+=======
+   * The version of this data structure. Currently, it is always 0.
+   }
+		version: UInt32;                { current version is 0 }
+>>>>>>> graemeg/fixes_2_2
+=======
+   * The version of this data structure. Currently, it is always 0.
+   }
+		version: UInt32;                { current version is 0 }
+>>>>>>> origin/fixes_2_2
+=======
+   * The version of this data structure. Currently, it is always 1.
+   }
+		version: UInt32;
+>>>>>>> origin/fixes_2.4
 
   {
    * The theme draw state in which to draw the string.
@@ -2544,7 +3483,19 @@ type
    * same flushness that will be used with a subsequent draw will
    * trigger a performance optimization.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		horizontalFlushness: HIThemeTextHorizontalFlush;
+=======
+		horizontalFlushness: HIThemeTextHorizontalFlush; { kHIThemeTextHorizontalFlush[Left/Center/Right] }
+>>>>>>> graemeg/fixes_2_2
+=======
+		horizontalFlushness: HIThemeTextHorizontalFlush; { kHIThemeTextHorizontalFlush[Left/Center/Right] }
+>>>>>>> origin/fixes_2_2
+=======
+		horizontalFlushness: HIThemeTextHorizontalFlush;
+>>>>>>> origin/fixes_2.4
 
   {
    * The vertical flushness of the text. One of the
@@ -2554,12 +3505,27 @@ type
    * flushness that will be used with a subsequent draw will trigger a
    * performance optimization.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		verticalFlushness: HIThemeTextVerticalFlush;
+=======
+		verticalFlushness: HIThemeTextVerticalFlush; { kHIThemeTextVerticalFlush[Top/Center/Bottom] }
+>>>>>>> graemeg/fixes_2_2
+=======
+		verticalFlushness: HIThemeTextVerticalFlush; { kHIThemeTextVerticalFlush[Top/Center/Bottom] }
+>>>>>>> origin/fixes_2_2
+=======
+		verticalFlushness: HIThemeTextVerticalFlush;
+>>>>>>> origin/fixes_2.4
 
   {
    * Currently, the only option available is for strongly vertical text
    * with the kThemeTextBoxOptionStronglyVertical option bit.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		options: HIThemeTextBoxOptions;
 
   {
@@ -2575,12 +3541,46 @@ type
    * kHIThemeTextTruncationNone.
    }
 		truncationMaxLines: UInt32;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+		options: HIThemeTextBoxOptions;             { includes kHIThemeTextBoxOptionStronglyVertical }
+=======
+		options: HIThemeTextBoxOptions;
+>>>>>>> origin/fixes_2.4
+
+  {
+   * Specifies where truncation should occur. If this field is
+   * kHIThemeTextTruncationNone, no truncation will occur, and all
+   * fields with the truncation prefix will be ignored.
+   }
+		truncationPosition: HIThemeTextTruncation;
+
+  {
+   * The maximum number of lines to measure or draw before truncation
+   * occurs. Ignored if truncationPosition is
+   * kHIThemeTextTruncationNone.
+   }
+<<<<<<< HEAD
+		truncationMaxLines: UInt32;     { the maximum number of lines before truncation occurs }
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+		truncationMaxLines: UInt32;
+>>>>>>> origin/fixes_2.4
 
   {
    * On output, if the text has been truncated, this is set to true. If
    * the text fit completely within the parameters specified and the
    * text was not truncated, this is set to false.
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 		truncationHappened: Boolean;
 		filler1: UInt8;
 
@@ -2591,6 +3591,15 @@ type
    * version is not 1, this field is ignored.
    }
 		font: CTFontRef;
+<<<<<<< HEAD
+=======
+		truncationHappened: Boolean;     { on output, whether truncation needed to happen }
+>>>>>>> graemeg/fixes_2_2
+=======
+		truncationHappened: Boolean;     { on output, whether truncation needed to happen }
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	end;
 	HIThemeTextInfoPtr = ^HIThemeTextInfo;
 {
@@ -2615,10 +3624,24 @@ type
  *      measure. You MUST NOT pass in a CFStringRef that was allocated
  *      with any of the "NoCopy" CFString creation APIs; a string
  *      created with a "NoCopy" API has transient storage which is
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *      incompatible with HIThemeGetTextDimensions's caches. 
  *      
  *      In Mac OS X 10.5 and later, this API may also be passed a
  *      CFAttributedStringRef.
+<<<<<<< HEAD
+=======
+ *      incompatible with HIThemeGetTextDimensions's caches.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      incompatible with HIThemeGetTextDimensions's caches.
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *    
  *    inWidth:
  *      The width to constrain the text before wrapping. If inWidth is
@@ -2660,7 +3683,19 @@ type
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.3 and later
  *    Non-Carbon CFM:   not available
  }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function HIThemeGetTextDimensions( inString: CFStringRef; inWidth: CGFloat; var inTextInfo: HIThemeTextInfo; outWidth: CGFloatPtr { can be NULL }; outHeight: CGFloatPtr { can be NULL }; outBaseline: CGFloatPtr { can be NULL } ): OSStatus; external name '_HIThemeGetTextDimensions';
+=======
+function HIThemeGetTextDimensions( inString: CFStringRef; inWidth: Float32; var inTextInfo: HIThemeTextInfo; outWidth: Float32Ptr { can be NULL }; outHeight: Float32Ptr { can be NULL }; outBaseline: Float32Ptr { can be NULL } ): OSStatus; external name '_HIThemeGetTextDimensions';
+>>>>>>> graemeg/fixes_2_2
+=======
+function HIThemeGetTextDimensions( inString: CFStringRef; inWidth: Float32; var inTextInfo: HIThemeTextInfo; outWidth: Float32Ptr { can be NULL }; outHeight: Float32Ptr { can be NULL }; outBaseline: Float32Ptr { can be NULL } ): OSStatus; external name '_HIThemeGetTextDimensions';
+>>>>>>> origin/fixes_2_2
+=======
+function HIThemeGetTextDimensions( inString: CFStringRef; inWidth: CGFloat; var inTextInfo: HIThemeTextInfo; outWidth: CGFloatPtr { can be NULL }; outHeight: CGFloatPtr { can be NULL }; outBaseline: CGFloatPtr { can be NULL } ): OSStatus; external name '_HIThemeGetTextDimensions';
+>>>>>>> origin/fixes_2.4
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
 
 
@@ -2685,10 +3720,24 @@ function HIThemeGetTextDimensions( inString: CFStringRef; inWidth: CGFloat; var 
  *      render. You MUST NOT pass in a CFStringRef that was allocated
  *      with any of the "NoCopy" CFString creation APIs; a string
  *      created with a "NoCopy" API has transient storage which is
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *      incompatible with HIThemeDrawTextBox's caches. 
  *      
  *      In Mac OS X 10.5 and later, this API may also be passed a
  *      CFAttributedStringRef.
+<<<<<<< HEAD
+=======
+ *      incompatible with HIThemeDrawTextBox's caches.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      incompatible with HIThemeDrawTextBox's caches.
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *    
  *    inBounds:
  *      The HIRect that bounds where the text is to be drawn
@@ -2720,6 +3769,11 @@ function HIThemeDrawTextBox( inString: CFStringRef; const (*var*) inBounds: HIRe
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {
  *  HIThemeGetUIFontType()
  *  
@@ -2756,6 +3810,13 @@ function HIThemeGetUIFontType( inFontID: ThemeFontID ): CTFontUIFontType; extern
 (* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)
 
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 { -------------------------------------------------------------------------- }
 {  Tracks                                                                    }
 { -------------------------------------------------------------------------- }
@@ -2898,7 +3959,15 @@ function HIThemeDrawTickMark( const (*var*) inBounds: HIRect; const (*var*) inDr
  *    
  *    outThumbShape:
  *      A pointer to an HIShapeRef which will be set to the shape of
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      the themed track's thumb. It needs to be released by the caller.
+=======
+ *      the themed track's thumb. Needs to be released by caller.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      the themed track's thumb. Needs to be released by caller.
+>>>>>>> origin/fixes_2_2
  *  
  *  Availability:
  *    Mac OS X:         in version 10.3 and later in Carbon.framework
@@ -3107,7 +4176,19 @@ function HIThemeGetTrackDragRect( const (*var*) inDrawInfo: HIThemeTrackDrawInfo
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.3 and later
  *    Non-Carbon CFM:   not available
  }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function HIThemeGetTrackThumbPositionFromOffset( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; const (*var*) inThumbOffset: HIPoint; var outRelativePosition: CGFloat ): OSStatus; external name '_HIThemeGetTrackThumbPositionFromOffset';
+=======
+function HIThemeGetTrackThumbPositionFromOffset( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; const (*var*) inThumbOffset: HIPoint; var outRelativePosition: Float32 ): OSStatus; external name '_HIThemeGetTrackThumbPositionFromOffset';
+>>>>>>> graemeg/fixes_2_2
+=======
+function HIThemeGetTrackThumbPositionFromOffset( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; const (*var*) inThumbOffset: HIPoint; var outRelativePosition: Float32 ): OSStatus; external name '_HIThemeGetTrackThumbPositionFromOffset';
+>>>>>>> origin/fixes_2_2
+=======
+function HIThemeGetTrackThumbPositionFromOffset( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; const (*var*) inThumbOffset: HIPoint; var outRelativePosition: CGFloat ): OSStatus; external name '_HIThemeGetTrackThumbPositionFromOffset';
+>>>>>>> origin/fixes_2.4
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
 
 
@@ -3139,7 +4220,19 @@ function HIThemeGetTrackThumbPositionFromOffset( const (*var*) inDrawInfo: HIThe
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.3 and later
  *    Non-Carbon CFM:   not available
  }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function HIThemeGetTrackThumbPositionFromBounds( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; const (*var*) inThumbBounds: HIRect; var outRelativePosition: CGFloat ): OSStatus; external name '_HIThemeGetTrackThumbPositionFromBounds';
+=======
+function HIThemeGetTrackThumbPositionFromBounds( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; const (*var*) inThumbBounds: HIRect; var outRelativePosition: Float32 ): OSStatus; external name '_HIThemeGetTrackThumbPositionFromBounds';
+>>>>>>> graemeg/fixes_2_2
+=======
+function HIThemeGetTrackThumbPositionFromBounds( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; const (*var*) inThumbBounds: HIRect; var outRelativePosition: Float32 ): OSStatus; external name '_HIThemeGetTrackThumbPositionFromBounds';
+>>>>>>> origin/fixes_2_2
+=======
+function HIThemeGetTrackThumbPositionFromBounds( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; const (*var*) inThumbBounds: HIRect; var outRelativePosition: CGFloat ): OSStatus; external name '_HIThemeGetTrackThumbPositionFromBounds';
+>>>>>>> origin/fixes_2.4
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
 
 
@@ -3170,7 +4263,19 @@ function HIThemeGetTrackThumbPositionFromBounds( const (*var*) inDrawInfo: HIThe
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.3 and later
  *    Non-Carbon CFM:   not available
  }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function HIThemeGetTrackLiveValue( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; inRelativePosition: CGFloat; var outValue: SInt32 ): OSStatus; external name '_HIThemeGetTrackLiveValue';
+=======
+function HIThemeGetTrackLiveValue( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; inRelativePosition: Float32; var outValue: SInt32 ): OSStatus; external name '_HIThemeGetTrackLiveValue';
+>>>>>>> graemeg/fixes_2_2
+=======
+function HIThemeGetTrackLiveValue( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; inRelativePosition: Float32; var outValue: SInt32 ): OSStatus; external name '_HIThemeGetTrackLiveValue';
+>>>>>>> origin/fixes_2_2
+=======
+function HIThemeGetTrackLiveValue( const (*var*) inDrawInfo: HIThemeTrackDrawInfo; inRelativePosition: CGFloat; var outValue: SInt32 ): OSStatus; external name '_HIThemeGetTrackLiveValue';
+>>>>>>> origin/fixes_2.4
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
 
 
@@ -3186,6 +4291,8 @@ function HIThemeGetTrackLiveValue( const (*var*) inDrawInfo: HIThemeTrackDrawInf
  *  Parameters:
  *    
  *    inBounds:
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      An HIRect indicating the area in which the scroll bar would be
  *      drawn.
  *    
@@ -3196,6 +4303,23 @@ function HIThemeGetTrackLiveValue( const (*var*) inDrawInfo: HIThemeTrackDrawInf
  *    inIsHoriz:
  *      A Boolean where true means that the scroll bar would be
  *      horizontal and false means that the scroll bar would be
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *      An HIRect indicating the area in which the scroll bar will be
+ *      drawn.
+ *    
+ *    inTrackInfo:
+ *      An HIScrollBarTrackInfo for the scroll bar to be drawn.
+ *      Currently, only the pressState and enableState fields are used.
+ *    
+ *    inIsHoriz:
+ *      A Boolean where true means that the scroll bar is to be
+ *      horizontal and false means that the scroll bar is to be
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  *      vertical.
  *    
  *    outTrackBounds:
@@ -3435,8 +4559,18 @@ function HIThemeDrawGrowBox( const (*var*) inOrigin: HIPoint; const (*var*) inDr
  *      The origin from which to draw the grow box.
  *    
  *    inDrawInfo:
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      An HIThemeGrowBoxDrawInfo describing the grow box to be
  *      measured. The state field is ignored.
+=======
+ *      An HIThemeGrowBoxDrawInfo describing the grow box to be drawn
+ *      or measured. The state field is ignored.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      An HIThemeGrowBoxDrawInfo describing the grow box to be drawn
+ *      or measured. The state field is ignored.
+>>>>>>> origin/fixes_2_2
  *    
  *    outBounds:
  *      A pointer to an HIRect in which will be returned the rectangle
@@ -3469,7 +4603,15 @@ function HIThemeGetGrowBoxBounds( const (*var*) inOrigin: HIPoint; const (*var*)
  *    
  *    inContRect:
  *      An HIRect indicating the rectangle of the content area of the
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      window that would be drawn.
+=======
+ *      window to be drawn.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      window to be drawn.
+>>>>>>> origin/fixes_2_2
  *    
  *    inDrawInfo:
  *      The HIThemeWindowDrawInfo of the window frame to be measured.
@@ -3480,8 +4622,16 @@ function HIThemeGetGrowBoxBounds( const (*var*) inOrigin: HIPoint; const (*var*)
  *    
  *    outShape:
  *      A pointer to an HIShapeRef which will be set to the shape of
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      the requested window region. It needs to be released by the
  *      caller.
+=======
+ *      the requested window region. Needs to be released by caller.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      the requested window region. Needs to be released by caller.
+>>>>>>> origin/fixes_2_2
  *  
  *  Availability:
  *    Mac OS X:         in version 10.3 and later in Carbon.framework
@@ -3508,7 +4658,15 @@ function HIThemeGetWindowShape( const (*var*) inContRect: HIRect; const (*var*) 
  *    
  *    inContRect:
  *      An HIRect indicating the rectangle of the content area of the
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      window that would be drawn.
+=======
+ *      window to be drawn.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      window to be drawn.
+>>>>>>> origin/fixes_2_2
  *    
  *    inDrawInfo:
  *      The HIThemeWindowDrawInfo of the window frame to be measured.
@@ -3535,7 +4693,19 @@ function HIThemeGetWindowRegionHit( const (*var*) inContRect: HIRect; const (*va
  *  HIThemeDrawFrame()
  *  
  *  Summary:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Draws a variety of frames.
+=======
+ *    Draws a variety of frames frame.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Draws a variety of frames frame.
+>>>>>>> origin/fixes_2_2
+=======
+ *    Draws a variety of frames.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -3615,9 +4785,23 @@ function HIThemeDrawGroupBox( const (*var*) inRect: HIRect; const (*var*) inDraw
  *    
  *    inDrawInfo:
  *      An HIThemeButtonDrawInfo that describes attributes of the well
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      to be drawn. Set the kThemeAdornmentDefault bit of the
  *      adornment field of this structure to also draw the center of
  *      the well.
+=======
+ *      to be drawn.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      to be drawn.
+>>>>>>> origin/fixes_2_2
+=======
+ *      to be drawn. Set the kThemeAdornmentDefault bit of the
+ *      adornment field of this structure to also draw the center of
+ *      the well.
+>>>>>>> origin/fixes_2.4
  *    
  *    inContext:
  *      The CG context in which the drawing is to be done.
@@ -3801,6 +4985,11 @@ function HIThemeDrawFocusRect( const (*var*) inRect: HIRect; inHasFocus: Boolean
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 const
 {
    * Draw the visual focus only, and not any of the draw operations
@@ -3845,6 +5034,9 @@ type
  *    the size of the context's clip at the time it is called -- so an
  *    extremely large clip or an unset clip may cause a large,
  *    inefficient allocation.
+<<<<<<< HEAD
+=======
+=======
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -3907,6 +5099,115 @@ function HIThemeEndFocus( inContext: CGContextRef ): OSStatus; external name '_H
 (* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)
 
 
+>>>>>>> origin/fixes_2.4
+{
+ *  HIThemeDrawSeparator()
+ *  
+ *  Summary:
+ *    Draw a themed separator element.
+>>>>>>> origin/fixes_2_2
+ *  
+ *  Mac OS X threading:
+ *    Not thread safe
+ *  
+ *  Parameters:
+ *    
+<<<<<<< HEAD
+ *    inContext:
+ *      The CG context in which the focus is to be drawn.
+ *    
+ *    inRing:
+ *      An HIThemeFocusRing indicating which type of focus is to be
+ *      drawn.
+ *    
+ *    inReserved:
+ *      Always pass NULL for this parameter.
+ *  
+ *  Result:
+ *    A result code indicating success or failure. Don't call
+ *    HIThemeEndFocus on the context if HIThemeBeginFocus fails.
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.5 and later in Carbon.framework
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   not available
+ }
+function HIThemeBeginFocus( inContext: CGContextRef; inRing: HIThemeFocusRing; inReserved: UnivPtr ): OSStatus; external name '_HIThemeBeginFocus';
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)
+
+
+{
+ *  HIThemeEndFocus()
+ *  
+ *  Summary:
+ *    End focus drawing.
+ *  
+ *  Discussion:
+ *    See HIThemeBeginFocus for focus drawing details. Calling
+ *    HIThemeEndFocus indicates that the drawing operations to be
+ *    focused are complete.
+=======
+ *    inRect:
+ *      The HIRect in which to draw.
+ *    
+ *    inDrawInfo:
+ *      The HIThemeSeparatorDrawInfo of the window frame to be drawn.
+ *    
+ *    inContext:
+ *      The CG context in which the drawing is to be done.
+ *    
+ *    inOrientation:
+ *      An HIThemeOrientation that describes the orientation of the
+ *      passed in context.
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework
+ *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.3 and later
+ *    Non-Carbon CFM:   not available
+ }
+function HIThemeDrawSeparator( const (*var*) inRect: HIRect; const (*var*) inDrawInfo: HIThemeSeparatorDrawInfo; inContext: CGContextRef; inOrientation: HIThemeOrientation ): OSStatus; external name '_HIThemeDrawSeparator';
+(* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
+
+
+{
+ *  HIThemeSetFill()
+ *  
+ *  Summary:
+ *    Set the context fill color to that specified by the requested
+ *    brush.
+ *  
+ *  Discussion:
+ *    Note that this call does not actually draw anything. It sets the
+ *    passed context's fill color to that of the specified theme brush.
+ *    Subsequent fills in the context will be with the color specified
+ *    by the theme brush.
+>>>>>>> origin/fixes_2_2
+ *  
+ *  Mac OS X threading:
+ *    Not thread safe
+ *  
+ *  Parameters:
+ *    
+<<<<<<< HEAD
+ *    inContext:
+ *      The CG context in which the focus is to be drawn. This needs to
+ *      be the same context passed to the HIThemeBeginFocus call with
+ *      which this call to HIThemeEndFocus is paired.
+ *  
+ *  Result:
+ *    A result code indicating success or failure.
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.5 and later in Carbon.framework
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   not available
+ }
+function HIThemeEndFocus( inContext: CGContextRef ): OSStatus; external name '_HIThemeEndFocus';
+(* AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER *)
+
+
+=======
+>>>>>>> graemeg/fixes_2_2
 {
  *  HIThemeDrawSeparator()
  *  
@@ -3964,6 +5265,14 @@ function HIThemeDrawSeparator( const (*var*) inRect: HIRect; const (*var*) inDra
  *    inInfo:
  *      Not used. Should always be NULL.
  *    
+=======
+ *    inBrush:
+ *      The ThemeBrush describing the requested fill color.
+ *    
+ *    inInfo:
+ *      Not used. Should always be NULL.
+ *    
+>>>>>>> origin/fixes_2_2
  *    inContext:
  *      The CG context for which the fill color is to be set.
  *    
@@ -4177,6 +5486,11 @@ function HIThemeBrushCreateCGColor( inBrush: ThemeBrush; var outColor: CGColorRe
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {
  *  HIThemeGetTextColorForThemeBrush()
  *  
@@ -4928,9 +6242,28 @@ const
 	kThemeMetricBestListHeaderHeight = kThemeMetricListHeaderHeight;
 	kThemeMetricSmallProgressBarThickness = kThemeMetricNormalProgressBarThickness; { obsolete }
 	kThemeMetricProgressBarThickness = kThemeMetricLargeProgressBarThickness; { obsolete }
+<<<<<<< HEAD
 
 {$endc} {TARGET_OS_MAC}
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
 
 end.
 {$endc} {not MACOSALLINCLUDE}
+=======
+
+
+end.
+>>>>>>> graemeg/fixes_2_2
+=======
+=======
+>>>>>>> origin/fixes_2.4
+
+{$endc} {TARGET_OS_MAC}
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+
+end.
+<<<<<<< HEAD
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4

@@ -58,11 +58,35 @@ const
       cmCollapseFold         = 51266;
       cmExpandFold           = 51267;
       cmDelToEndOfWord       = 51268;
+<<<<<<< HEAD
       cmInputLineLen         = 51269;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+      
+>>>>>>> graemeg/cpstrnew
+=======
+      
+>>>>>>> graemeg/cpstrnew
+=======
+      
+>>>>>>> graemeg/cpstrnew
+=======
+      
+>>>>>>> origin/cpstrnew
+      EditorTextBufSize = 32768;
+      MaxLineLength     = 255;
+      MaxLineCount      = 2000000;
+=======
 
       EditorTextBufSize = 32768;
       MaxLineLength     = 255;
       MaxLineCount      = 2000000;
+
+>>>>>>> graemeg/fixes_2_2
 
       CodeTemplateCursorChar = '|'; { char to signal cursor pos in templates }
 
@@ -711,12 +735,32 @@ type
          Procedure   HandleEvent(var Event : TEvent);virtual;
     end;
     PEditorInputLine = ^TEditorInputLine;
+ 
+    TSearchHelperDialog = object(TDialog)
+             OkButton: PButton;
+             Procedure   HandleEvent(var Event : TEvent);virtual;
+    end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+<<<<<<< HEAD
     TSearchHelperDialog = object(TDialog)
              OkButton: PButton;
              Procedure   HandleEvent(var Event : TEvent);virtual;
     end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
     PSearchHelperDialog = ^TSearchHelperDialog;
 
 const
@@ -6950,13 +6994,49 @@ begin
      evBroadcast :
            case Event.Command of
                    cminputlinelen : begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                                       if PtrInt(Event.InfoPtr)=0 then
                                         okbutton^.DisableCommands([cmok])
+=======
+                                      if Event.InfoLong=0 then
+                                        okbutton^.DisableCommands([cmok]) 
+>>>>>>> graemeg/cpstrnew
+=======
+                                      if Event.InfoLong=0 then
+                                        okbutton^.DisableCommands([cmok]) 
+>>>>>>> graemeg/cpstrnew
+=======
+                                      if Event.InfoLong=0 then
+                                        okbutton^.DisableCommands([cmok]) 
+>>>>>>> graemeg/cpstrnew
+=======
+                                      if Event.InfoLong=0 then
+                                        okbutton^.DisableCommands([cmok]) 
+>>>>>>> origin/cpstrnew
                                       else
                                         okbutton^.EnableCommands([cmok]);
                                       clearevent(event);
                                     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
              end;
+=======
+             end;      
+>>>>>>> graemeg/cpstrnew
+=======
+             end;      
+>>>>>>> graemeg/cpstrnew
+=======
+             end;      
+>>>>>>> graemeg/cpstrnew
+=======
+             end;      
+>>>>>>> origin/cpstrnew
        end;
   inherited HandleEvent(Event);
 end;

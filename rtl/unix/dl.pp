@@ -20,6 +20,8 @@ const
 {$ifdef BSD}   // dlopen is in libc on FreeBSD.
   LibDL = 'c';
 {$else}
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$ifdef HAIKU}
     LibDL = 'root';
   {$else}
@@ -29,6 +31,11 @@ const
 
 {$if defined(linux) or defined(freebsd) or defined(openbsd) or defined(dragonfly)}
   {$define ELF} // ELF symbol versioning.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  LibDL = 'dl';
+>>>>>>> graemeg/fixes_2_2
 {$endif}
 
 {$if defined(linux) and defined(cpuarm)}
@@ -63,14 +70,20 @@ const
   RTLD_LOCAL        = 0;
   RTLD_GLOBAL       = $100;
   RTLD_NEXT         = pointer(-1);
-  {$ifdef LINUX}
+{$ifdef LINUX}
   RTLD_DEFAULT      = nil;
-  {$endif}
-  {$ifdef BSD}
+{$endif}
+{$ifdef BSD}
   RTLD_DEFAULT      = pointer(-2);
   RTLD_MODEMASK     = RTLD_BINDING_MASK;
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$endif}
   {$endif}          // DARWIN
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif}
 
 type
@@ -96,9 +109,15 @@ function dladdr(Lib: pointer; info: Pdl_info): Longint; cdecl; {$if not defined(
 
 implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses
   ctypes;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   function PosLastSlash(const s : string) : longint;
     var
       i : longint;
@@ -125,6 +144,8 @@ uses
       dladdr(addr, @dlinfo);
       baseaddr:=dlinfo.dli_fbase;
       filename:=String(dlinfo.dli_fname);
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$ifdef darwin}
       if SimpleExtractFilename(filename)=SimpleExtractFilename(ParamStr(0)) then
         baseaddr:=nil;
@@ -139,6 +160,17 @@ uses
 {$i dlandroid.inc}
 {$endif}
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      if SimpleExtractFilename(filename)=SimpleExtractFilename(ParamStr(0)) then
+        baseaddr:=nil;
+    end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   UnixGetModuleByAddrHook:=@UnixGetModuleByAddr;
 end.

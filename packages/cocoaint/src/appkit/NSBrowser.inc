@@ -37,6 +37,10 @@ type
 { Records }
 type
   __Brflags = record
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     case byte of
     0: (_anonbitfield_NSBrowser0: cuint);
     1: (data: bitpacked record
@@ -99,6 +103,80 @@ type
 {$endif}
          end;
        );
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef fpc_big_endian}
+    allowsMultipleSelection: 0..1;
+    allowsBranchSelection: 0..1;
+    reuseColumns: 0..1;
+    isTitled: 0..1;
+    titleFromPrevious: 0..1;
+    separateColumns: 0..1;
+    delegateImplementsWillDisplayCell: 0..1;
+    delegateSetsTitles: 0..1;
+    delegateSelectsCellsByString: 0..1;
+    delegateDoesNotCreateRowsInMatrix: 0..1;
+    delegateValidatesColumns: 0..1;
+    acceptArrowKeys: 0..1;
+    dontDrawTitles: 0..1;
+    sendActionOnArrowKeys: 0..1;
+    prohibitEmptySel: 0..1;
+    hasHorizontalScroller: 0..1;
+    time: 0..1;
+    allowsIncrementalSearching: 0..1;
+    delegateSelectsCellsByRow: 0..1;
+    disableCompositing: 0..((1 shl 6)-1);
+    refusesFirstResponder: 0..1;
+    acceptsFirstMouse: 0..1;
+    actionNeedsToBeSent: 0..1;
+    usesSmallSizeTitleFont: 0..1;
+    usesSmallScrollers: 0..1;
+    prefersAllColumnUserResizing: 0..1;
+    firstVisibleCalculationDisabled: 0..1;
+{$else}
+    firstVisibleCalculationDisabled: 0..1;
+    prefersAllColumnUserResizing: 0..1;
+    usesSmallScrollers: 0..1;
+    usesSmallSizeTitleFont: 0..1;
+    actionNeedsToBeSent: 0..1;
+    acceptsFirstMouse: 0..1;
+    refusesFirstResponder: 0..1;
+    disableCompositing: 0..((1 shl 6)-1);
+    delegateSelectsCellsByRow: 0..1;
+    allowsIncrementalSearching: 0..1;
+    time: 0..1;
+    hasHorizontalScroller: 0..1;
+    prohibitEmptySel: 0..1;
+    sendActionOnArrowKeys: 0..1;
+    dontDrawTitles: 0..1;
+    acceptArrowKeys: 0..1;
+    delegateValidatesColumns: 0..1;
+    delegateDoesNotCreateRowsInMatrix: 0..1;
+    delegateSelectsCellsByString: 0..1;
+    delegateSetsTitles: 0..1;
+    delegateImplementsWillDisplayCell: 0..1;
+    separateColumns: 0..1;
+    titleFromPrevious: 0..1;
+    isTitled: 0..1;
+    reuseColumns: 0..1;
+    allowsBranchSelection: 0..1;
+    allowsMultipleSelection: 0..1;
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 _Brflags = __Brflags;
 __BrflagsPtr = ^__Brflags;

@@ -35,7 +35,7 @@ Program Bezier;
    nils.sjoholm@mailbox.swipnet.se
 }
 
-uses exec, intuition, agraphics, utility, systemvartags;
+uses exec, intuition, graphics, utility,pastoc, systemvartags;
 
 type
     PointRec = packed Record
@@ -69,7 +69,7 @@ end;
 
 Procedure DrawLine;
 begin
-    GFXMove(rp, Trunc(Points[PointCount].X), Trunc(Points[PointCount].Y));
+    Move(rp, Trunc(Points[PointCount].X), Trunc(Points[PointCount].Y));
     Draw(rp, LastX, LastY);
 end;
 
@@ -201,7 +201,7 @@ Procedure DrawCurve;
 var
     i : Integer;
 begin
-    GfxMove(rp, Trunc(Points[1].X), Trunc(Points[1].Y));
+    Move(rp, Trunc(Points[1].X), Trunc(Points[1].Y));
     for i := 2 to PointCount do
     Draw(rp, Round(Points[i].X), Round(Points[i].Y));
 end;
@@ -248,10 +248,10 @@ begin
     IF w=NIL THEN CleanUpAndDie;
 
     rp := w^.RPort;
-    GfxMove(rp, 252, 30);
-    GfxText(rp, 'Enter points by pressing the left mouse button', 46);
-    GfxMove(rp, 252, 40);
-    GfxText(rp, 'Double click on the last point to begin drawing', 47);
+    Move(rp, 252, 30);
+    GText(rp, pas2c('Enter points by pressing the left mouse button'), 46);
+    Move(rp, 252, 40);
+    GText(rp, pas2c('Double click on the last point to begin drawing'), 47);
     repeat
         GetPoints;  { Both these routines will quit if }
         DrawBezier; { the window is closed. }

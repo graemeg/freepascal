@@ -32,7 +32,13 @@ const
   // Maybe needed later for topic overview ??
   TopicsSubIndex = 7;
   IndexSubIndex = 8;
+<<<<<<< HEAD
+<<<<<<< HEAD
   ClassHierarchySubIndex = 9;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   // Subpage indices for classes
   PropertiesByInheritanceSubindex = 1;
@@ -89,8 +95,14 @@ type
     FOnTest: TNotifyEvent;
     FPackage: TPasPackage;
     FCharSet : String;
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure CreateMinusImage;
     procedure CreatePlusImage;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     function GetPageCount: Integer;
     procedure SetOnTest(const AValue: TNotifyEvent);
   protected
@@ -117,12 +129,35 @@ type
     FIndexColCount : Integer;
     FSearchPage : String;
     FBaseImageURL : String;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FUseMenuBrackets: Boolean;
 
     Procedure CreateAllocator; virtual;
+<<<<<<< HEAD
     procedure CreateCSSFile; virtual;
     function ResolveLinkID(const Name: String; Level : Integer = 0): DOMString;
+=======
+    function ResolveLinkID(const Name: String): DOMString;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     function ResolveLinkIDInUnit(const Name,AUnitName: String): DOMString;
+=======
+    function ResolveLinkID(const Name: String): DOMString;
+    function ResolveLinkIDInUnit(const Name,UnitName: String): DOMString;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function ResolveLinkID(const Name: String): DOMString;
+    function ResolveLinkIDInUnit(const Name,UnitName: String): DOMString;
+>>>>>>> origin/fixes_2_2
     function ResolveLinkWithinPackage(AElement: TPasElement;
       ASubpageIndex: Integer): String;
 
@@ -234,8 +269,14 @@ type
     procedure CreatePageBody(AElement: TPasElement; ASubpageIndex: Integer); virtual;
     procedure CreatePackagePageBody;
     procedure CreatePackageIndex;
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure CreatePackageClassHierarchy;
     procedure CreateClassHierarchyPage(AList: TStringList; AddUnit : Boolean);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     procedure AddModuleIdentifiers(AModule : TPasModule; L : TStrings);
     Procedure CreateTopicPageBody(AElement : TTopicElement);
     procedure CreateModulePageBody(AModule: TPasModule; ASubpageIndex: Integer);
@@ -263,9 +304,17 @@ type
 
     Function InterPretOption(Const Cmd,Arg : String) : boolean; override;
     Procedure WriteDoc; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Class Function FileNameExtension : String; override;
     class procedure Usage(List: TStrings); override;
     Class procedure SplitImport(var AFilename, ALinkPrefix: String); override;
+=======
+    class procedure Usage(List: TStrings); override;
+>>>>>>> graemeg/fixes_2_2
+=======
+    class procedure Usage(List: TStrings); override;
+>>>>>>> origin/fixes_2_2
     Property SearchPage: String Read FSearchPage Write FSearchPage;
     property Allocator: TFileAllocator read FAllocator;
     property Package: TPasPackage read FPackage;
@@ -276,7 +325,13 @@ type
     Property CharSet : String Read FCharSet Write FCharSet;
     Property IndexColCount : Integer Read FIndexColCount write FIndexColCount;
     Property BaseImageURL : String Read FBaseImageURL Write FBaseImageURL;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Property UseMenuBrackets : Boolean Read FUseMenuBrackets write FUseMenuBrackets;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
   THTMWriter = class(THTMLWriter)
@@ -290,8 +345,16 @@ type
 
 implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses SysUtils, XHTML, XMLRead, XMLWrite, HTMWrite, sh_pas, fpdocclasstree,
   chmsitemap;
+=======
+uses SysUtils, XHTML, XMLRead, XMLWrite, HTMWrite, sh_pas,chmsitemap;
+>>>>>>> graemeg/fixes_2_2
+=======
+uses SysUtils, XHTML, XMLRead, XMLWrite, HTMWrite, sh_pas,chmsitemap;
+>>>>>>> origin/fixes_2_2
 
 {$i css.inc}
 {$i plusimage.inc}
@@ -442,17 +505,37 @@ end;
 Type
 
   { TLinkData }
+<<<<<<< HEAD
 
   TLinkData = Class(TObject)
+<<<<<<< HEAD
     FPathName,
     FLink,
     FModuleName : String;
 
     Constructor Create(Const APathName,ALink,AModuleName : string);
+=======
+    Constructor Create(Const APathName,ALink,AModuleName : string);
+    FPathName,
+    FLink,
+    FModuleName : String;
+>>>>>>> graemeg/fixes_2_2
   end;
 
 { TLinkData }
 
+=======
+
+  TLinkData = Class(TObject)
+    Constructor Create(Const APathName,ALink,AModuleName : string);
+    FPathName,
+    FLink,
+    FModuleName : String;
+  end;
+
+{ TLinkData }
+
+>>>>>>> origin/fixes_2_2
 constructor TLinkData.Create(Const APathName, ALink, AModuleName: string);
 begin
   FPathName:=APathName;
@@ -562,7 +645,15 @@ constructor THTMLWriter.Create(APackage: TPasPackage; AEngine: TFPDocEngine);
       end;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   Procedure AddClassMemberPages(AModule: TPasModule; LinkList : TObjectList);
+=======
+  procedure ScanModule(AModule: TPasModule; LinkList : TObjectList);
+>>>>>>> graemeg/fixes_2_2
+=======
+  procedure ScanModule(AModule: TPasModule; LinkList : TObjectList);
+>>>>>>> origin/fixes_2_2
   var
     i, j, k: Integer;
     s: String;
@@ -657,9 +748,75 @@ constructor THTMLWriter.Create(APackage: TPasPackage; AEngine: TFPDocEngine);
       if InterfaceSection.Classes.Count > 0 then
         begin
         AddPage(AModule, ClassesSubindex);
+<<<<<<< HEAD
         AddClassMemberPages(AModule,LinkList);
         end;
 
+=======
+        for i := 0 to InterfaceSection.Classes.Count - 1 do
+          begin
+          ClassEl := TPasClassType(InterfaceSection.Classes[i]);
+          AddPage(ClassEl, 0);
+          // !!!: Only add when there are items
+          AddPage(ClassEl, PropertiesByInheritanceSubindex);
+          AddPage(ClassEl, PropertiesByNameSubindex);
+          AddPage(ClassEl, MethodsByInheritanceSubindex);
+          AddPage(ClassEl, MethodsByNameSubindex);
+          AddPage(ClassEl, EventsByInheritanceSubindex);
+          AddPage(ClassEl, EventsByNameSubindex);
+
+          for j := 0 to ClassEl.Members.Count - 1 do
+            begin
+            FPEl := TPasElement(ClassEl.Members[j]);
+            if ((FPEl.Visibility = visPrivate) and Engine.HidePrivate) or
+              ((FPEl.Visibility = visProtected) and Engine.HideProtected) then
+              continue;
+
+            DocNode := Engine.FindDocNode(FPEl);
+            if Assigned(DocNode) then
+              begin
+              if Assigned(DocNode.Node) then
+                ALink:=DocNode.Node['link']
+              else
+                ALink:='';
+              If (ALink<>'') then
+                LinkList.Add(TLinkData.Create(FPEl.PathName,ALink,AModule.name))
+              else
+                AddPage(FPEl, 0);
+              end
+            else
+              begin
+              DidAutolink := False;
+              if Assigned(ClassEl.AncestorType) and
+                (ClassEl.AncestorType.ClassType = TPasClassType) then
+                begin
+                for k := 0 to TPasClassType(ClassEl.AncestorType).Members.Count - 1 do
+                  begin
+                  AncestorMemberEl :=
+                    TPasElement(TPasClassType(ClassEl.AncestorType).Members[k]);
+                  if AncestorMemberEl.Name = FPEl.Name then
+                    begin
+                    DocNode := Engine.FindDocNode(AncestorMemberEl);
+                    if Assigned(DocNode) then
+                      begin
+                      DidAutolink := True;
+                      Engine.AddLink(FPEl.PathName,
+                        Engine.FindAbsoluteLink(AncestorMemberEl.PathName));
+                      break;
+                      end;
+                    end;
+                  end;
+                end;
+              if not DidAutolink then
+                AddPage(FPEl, 0);
+              end;
+            end;
+          end;
+        end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       AddPages(AModule, ProcsSubindex, InterfaceSection.Functions);
       AddPages(AModule, VarsSubindex, InterfaceSection.Variables);
       end;
@@ -668,6 +825,8 @@ constructor THTMLWriter.Create(APackage: TPasPackage; AEngine: TFPDocEngine);
 var
   i: Integer;
   L : TObjectList;
+<<<<<<< HEAD
+<<<<<<< HEAD
   H : Boolean;
 
 begin
@@ -676,6 +835,16 @@ begin
   // should default to true since this is the old behavior
   UseMenuBrackets:=True;
 
+=======
+
+begin
+  inherited ;
+>>>>>>> graemeg/fixes_2_2
+=======
+
+begin
+  inherited ;
+>>>>>>> origin/fixes_2_2
   IndexColCount:=3;
   Charset:='iso-8859-1';
   CreateAllocator;
@@ -690,6 +859,8 @@ begin
     begin
     AddPage(Package, 0);
     AddPage(Package,IndexSubIndex);
+<<<<<<< HEAD
+<<<<<<< HEAD
     I:=0;
     H:=False;
     While (I<Package.Modules.Count) and Not H do
@@ -699,6 +870,10 @@ begin
       end;
     if H then
       AddPage(Package,ClassHierarchySubIndex);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     AddTopicPages(Package);
     end;
   L:=TObjectList.Create;
@@ -719,7 +894,13 @@ begin
   PageInfos.Free;
   OutputNodeStack.Free;
   FAllocator.Free;
+<<<<<<< HEAD
+<<<<<<< HEAD
   FImageFileList.Free;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   inherited Destroy;
 end;
 
@@ -733,8 +914,16 @@ begin
   Doc := THTMLDocument.Create;
   Result := Doc;
   Doc.AppendChild(Doc.Impl.CreateDocumentType(
+<<<<<<< HEAD
+<<<<<<< HEAD
     'HTML', '-//W3C//DTD HTML 4.01 Transitional//EN',
     'http://www.w3.org/TR/html4/loose.dtd'));
+=======
+    'HTML', '-//W3C//DTD HTML 4.0 Transitional//EN', ''));
+>>>>>>> graemeg/fixes_2_2
+=======
+    'HTML', '-//W3C//DTD HTML 4.0 Transitional//EN', ''));
+>>>>>>> origin/fixes_2_2
 
   HTMLEl := Doc.CreateHtmlElement;
   Doc.AppendChild(HTMLEl);
@@ -798,6 +987,22 @@ var
   i: Integer;
   PageDoc: TXMLDocument;
   Filename: String;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  TempStream: TMemoryStream;
+>>>>>>> graemeg/cpstrnew
+=======
+  TempStream: TMemoryStream;
+>>>>>>> graemeg/cpstrnew
+=======
+  TempStream: TMemoryStream;
+>>>>>>> graemeg/cpstrnew
+=======
+  TempStream: TMemoryStream;
+>>>>>>> origin/cpstrnew
 
 begin
   if Engine.Output <> '' then
@@ -819,6 +1024,10 @@ begin
         PageDoc.Free;
       end;
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   CreateCSSFile;
   CreatePlusImage;
   CreateMinusImage;
@@ -892,6 +1101,35 @@ begin
    TempStream.Position := 0;
    TempStream.SaveToFile(Engine.output+'fpdoc.css');
   finally
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  
+  if FCSSFile <> '' then
+  begin
+    if not FileExists(FCSSFile) Then
+      begin
+        Writeln(stderr,'Can''t find CSS file "',FCSSFILE,'"');
+        halt(1);
+      end;
+    TempStream := TMemoryStream.Create;
+    TempStream.LoadFromFile(FCSSFile);
+    TempStream.Position := 0;
+    TempStream.SaveToFile(Engine.output+ExtractFileName(FCSSFile));
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     TempStream.Free;
   end;
 end;
@@ -949,21 +1187,96 @@ end;
   - AppendHyperlink (for unresolved parse tree element links)
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function THTMLWriter.ResolveLinkIDInUnit(const Name,AUnitName: String): DOMString;
 
 begin
   Result:=ResolveLinkID(Name);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   If (Result='') and (AUnitName<>'') and (length(Name)>0) and (Name[1]<>'#') then
      Result:=ResolveLinkID(AUnitName+'.'+Name);
+=======
+  If (Result='') and (AUnitName<>'')  then
+    Result:=ResolveLinkID(AUnitName+'.'+Name);
+>>>>>>> graemeg/cpstrnew
+=======
+  If (Result='') and (AUnitName<>'')  then
+    Result:=ResolveLinkID(AUnitName+'.'+Name);
+>>>>>>> graemeg/cpstrnew
 end;
 
 function THTMLWriter.ResolveLinkID(const Name: String; Level : Integer = 0): DOMString;
+=======
+  If (Result='') and (AUnitName<>'')  then
+    Result:=ResolveLinkID(AUnitName+'.'+Name);
+end;
+>>>>>>> graemeg/cpstrnew
+=======
+  If (Result='') and (AUnitName<>'')  then
+    Result:=ResolveLinkID(AUnitName+'.'+Name);
+end;
+>>>>>>> origin/cpstrnew
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function THTMLWriter.ResolveLinkIDInUnit(const Name,UnitName: String): DOMString;
+
+begin
+  Result:=ResolveLinkID(Name);
+  If (Result='') and (UnitName<>'')  then
+    Result:=ResolveLinkID(UnitName+'.'+Name);
+end;
+
+function THTMLWriter.ResolveLinkID(const Name: String): DOMString;
+>>>>>>> graemeg/fixes_2_2
 var
   i: Integer;
   ThisPackage: TLinkNode;
 begin
+<<<<<<< HEAD
   Result:=Engine.ResolveLink(Module,Name, True);
+=======
+  if Length(Name) = 0 then
+  begin
+    SetLength(Result, 0);
+    exit;
+  end;
+
+  if Name[1] = '#' then
+    Result := Engine.FindAbsoluteLink(Name)
+  else
+  begin
+    SetLength(Result, 0);
+    { Try all packages }
+    ThisPackage := Engine.RootLinkNode.FirstChild;
+    while Assigned(ThisPackage) do
+    begin
+      Result := Engine.FindAbsoluteLink(ThisPackage.Name + '.' + Name);
+      if Length(Result) = 0 then
+      begin
+        if Assigned(Module) then
+          begin
+          Result := Engine.FindAbsoluteLink(Module.PathName + '.' + Name);
+//          WriteLn('Searching for ', Module.PathName + '.' + Name, ' => ', Result);
+          end;
+        if Length(Result) = 0 then
+          for i := Length(Name) downto 1 do
+            if Name[i] = '.' then
+            begin
+              Result := ResolveLinkID(Copy(Name, 1, i - 1));
+              exit;
+            end;
+      end;
+      ThisPackage := ThisPackage.NextSibling;
+    end;
+  end;
+
+>>>>>>> graemeg/fixes_2_2
   if Length(Result) > 0 then
     if Copy(Result, 1, Length(CurDirectory) + 1) = CurDirectory + '/' then
       Result := Copy(Result, Length(CurDirectory) + 2, Length(Result))
@@ -1073,6 +1386,8 @@ begin
   Result['class'] := 'warning';
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure THTMLWriter.DescrEmitNotesHeader(AContext: TPasElement);
 begin
   AppendText(CreateH2(BodyElement), SDocNotes);
@@ -1084,6 +1399,10 @@ begin
   PopOutPutNode;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 procedure THTMLWriter.PushOutputNode(ANode: TDOMNode);
 begin
   OutputNodeStack.Add(CurOutputNode);
@@ -1155,6 +1474,8 @@ begin
       Cel:=CreateAnchor(Cel,ALinkName);
     AppendText(Cel,ACaption);
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   // Determine URL for image.  
   If (Module=Nil) then
@@ -1172,6 +1493,34 @@ begin
 
   //cache image filename, so it can be used later (CHM)
   FImageFileList.Add(BaseImageURL + AFileName);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  // Determine URL for image.  
+  D:=BaseImageURL;
+  If (D='') then
+    begin
+    If (Module=Nil) then
+      D:=Allocator.GetRelativePathToTop(Package)
+    else 
+      D:=Allocator.GetRelativePathToTop(Module);
+    L:=Length(D);  
+    If (L>0) and (D[L]<>'/') then
+      D:=D+'/';
+    D:=D+'images/';
+    end
+  else  
+    L:=Length(D);  
+    If (L>0) and (D[L]<>'/') then
+      D:=D+'/';
+  // Create image node.  
+  El:=CreateEl(Pel,'img');
+  EL['src']:=D+AFileName;
+  El['alt']:=ACaption;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure THTMLWriter.DescrWriteFileEl(const AText: DOMString);
@@ -2140,8 +2489,26 @@ begin
     end
   else
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     AddPackageLink(IndexSubIndex, SDocIdentifierIndex);
     AddPackageLink(ClassHierarchySubIndex, SDocPackageClassHierarchy);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    // Manually add link for package page
+    AppendText(ParaEl, '[');
+    if (IndexSubIndex = ASubpageIndex) then
+      AppendText(ParaEl, SDocIdentifierIndex)
+    else
+      AppendText(
+        CreateLink(ParaEl, ResolveLinkWithinPackage(Package, IndexSubIndex)),
+        SDocIdentifierIndex);
+    AppendText(ParaEl, ']');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     end;
 
   if Length(SearchPage) > 0 then
@@ -2399,7 +2766,23 @@ procedure THTMLWriter.CreateClassHierarchyPage(AList : TStringList; AddUnit : Bo
     PushOutputNode(h);
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Procedure AppendClass(E : TDomElement);
+=======
+	procedure THTMLWriter.CreateIndexPage(L : TStringList);
+>>>>>>> graemeg/cpstrnew
+=======
+	procedure THTMLWriter.CreateIndexPage(L : TStringList);
+>>>>>>> graemeg/cpstrnew
+=======
+	procedure THTMLWriter.CreateIndexPage(L : TStringList);
+>>>>>>> graemeg/cpstrnew
+=======
+	procedure THTMLWriter.CreateIndexPage(L : TStringList);
+>>>>>>> origin/cpstrnew
 
   Var
     N : TDomNode;
@@ -2548,8 +2931,14 @@ begin
       CreatePackagePageBody
     else if ASubPageIndex=IndexSubIndex then
       CreatePackageIndex  
+<<<<<<< HEAD
+<<<<<<< HEAD
     else if ASubPageIndex=ClassHierarchySubIndex then
       CreatePackageClassHierarchy
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     end
   else
     begin
@@ -2705,6 +3094,310 @@ begin
       AddElementsFromList(L,AModule.InterfaceSection.Variables);
       AddElementsFromList(L,AModule.InterfaceSection.ResStrings);
    end;
+end;
+
+
+procedure THTMLWriter.CreatePackageIndex;
+
+Var
+  L : TStringList;
+  I : Integer;
+  M : TPasModule;
+  E : TPasElement;
+  S : String;    
+  
+begin
+  L:=TStringList.Create;
+  try
+    L.Capacity:=PageInfos.Count; // Too much, but that doesn't hurt.
+    For I:=0 to Package.Modules.Count-1 do
+      begin
+      M:=TPasModule(Package.Modules[i]);
+      L.AddObject(M.Name,M);
+      AddModuleIdentifiers(M,L);
+      end;
+    AppendMenuBar(IndexSubIndex);
+    S:=Package.Name;
+    If Length(S)>0 then
+      Delete(S,1,1);
+    AppendTitle(Format(SDocPackageIndex, [S]));
+    CreateIndexPage(L);
+  Finally
+    L.Free;
+  end;
+end;
+
+procedure THTMLWriter.CreateIndexPage(L : TStringList);
+
+Var
+  Lists  : Array['A'..'Z'] of TStringList;
+  LOther : TStringList;
+  
+  CL : TStringList;
+  TableEl, TREl, EL: TDOMElement;
+  E : TPasElement;
+  I,Rows,J,Index : Integer;
+  S : String;
+  C : Char;
+
+begin
+  For C:='A' to 'Z' do
+    Lists[C]:=Nil;
+  L.Sort;
+  Cl:=Nil;
+  // Divide over alphabet
+  For I:=0 to L.Count-1 do
+    begin
+    S:=L[i];
+    E:=TPasElement(L.Objects[i]);
+    If not (E is TPasUnresolvedTypeRef) then
+      begin
+      If (S<>'') then 
+        begin
+        C:=Upcase(S[1]);
+        If C='_' then
+          C:='A';
+        If (C in ['A'..'Z']) and (Lists[C]=Nil) then
+          begin
+          CL:=TStringList.Create;
+          Lists[C]:=CL;
+          end;
+        end;
+      if assigned(cl) then  
+        CL.AddObject(S,E);
+      end;  
+    end;  
+  Try  
+  // Create a quick jump table to all available letters.    
+  TableEl := CreateTable(BodyElement);
+  TableEl['border']:='1';
+  TableEl['width']:='50%';
+  TREl := CreateTR(TableEl);
+  for C:='A' to 'Z' do
+    If (Lists[C]<>Nil) then
+      begin
+      El:=CreateTD_vtop(TREl);
+      AppendText(CreateLink(El,'#SECTION'+C),C);
+      If C<>'Z' then
+       AppendNBsp(El,1);
+      end;
+  // Now emit all identifiers.    
+  TableEl:=Nil;
+  For C:='A' to 'Z' do
+    begin
+    CL:=Lists[C];
+    If CL<>Nil then
+      begin
+      El:=CreateH2(BodyElement);
+      AppendText(El,C);
+      CreateAnchor(El,'SECTION'+C);
+      TableEl := CreateTable(BodyElement);
+      TableEl['Width']:='80%';
+      // Determine number of rows needed
+      Rows:=(CL.Count div IndexColCount);
+      If ((CL.Count Mod IndexColCount)<>0) then
+        Inc(Rows);
+      // Fill rows  
+      For I:=0 to Rows-1 do
+        begin
+        TREl := CreateTR(TableEl);
+        For J:=0 to IndexColCount-1 do 
+          begin
+          El:=CreateTD_vtop(TREl);
+          Index:=(J*Rows)+I;
+          If (Index<CL.Count) then
+            begin
+            S:=CL[Index];
+            E:=TPasElement(CL.Objects[Index]);
+            AppendHyperlink(El,E);
+            end;
+          end;  
+        end;  
+      end; // have List
+    end;  // For C:=
+  Finally
+    for C:='A' to 'Z' do
+      FreeAndNil(Lists[C]);
+  end;  
+end;
+
+procedure THTMLWriter.AddModuleIdentifiers(AModule : TPasModule; L : TStrings);
+
+  Procedure AddElementsFromList(L : TStrings; List : TList);
+  
+  Var
+    I : Integer;
+    El : TPasElement;
+    
+  begin
+    For I:=0 to List.Count-1 do
+      begin
+      El:=TPasElement(List[I]);
+      L.AddObject(El.Name,El);
+      If el is TPasEnumType then
+        AddElementsFromList(L,TPasEnumType(el).Values);
+      end;
+  end;
+  
+begin
+  AddElementsFromList(L,AModule.InterfaceSection.Consts);
+  AddElementsFromList(L,AModule.InterfaceSection.Types);
+  AddElementsFromList(L,AModule.InterfaceSection.Functions);
+  AddElementsFromList(L,AModule.InterfaceSection.Classes);
+  AddElementsFromList(L,AModule.InterfaceSection.Variables);
+  AddElementsFromList(L,AModule.InterfaceSection.ResStrings);
+end;
+
+
+procedure THTMLWriter.CreatePackageIndex;
+
+Var
+  L : TStringList;
+  I : Integer;
+  M : TPasModule;
+  E : TPasElement;
+  S : String;    
+  
+begin
+  L:=TStringList.Create;
+  try
+    L.Capacity:=PageInfos.Count; // Too much, but that doesn't hurt.
+    For I:=0 to Package.Modules.Count-1 do
+      begin
+      M:=TPasModule(Package.Modules[i]);
+      L.AddObject(M.Name,M);
+      AddModuleIdentifiers(M,L);
+      end;
+    AppendMenuBar(IndexSubIndex);
+    S:=Package.Name;
+    If Length(S)>0 then
+      Delete(S,1,1);
+    AppendTitle(Format(SDocPackageIndex, [S]));
+    CreateIndexPage(L);
+  Finally
+    L.Free;
+  end;
+end;
+
+procedure THTMLWriter.CreateIndexPage(L : TStringList);
+
+Var
+  Lists  : Array['A'..'Z'] of TStringList;
+  LOther : TStringList;
+  
+  CL : TStringList;
+  TableEl, TREl, EL: TDOMElement;
+  E : TPasElement;
+  I,Rows,J,Index : Integer;
+  S : String;
+  C : Char;
+
+begin
+  For C:='A' to 'Z' do
+    Lists[C]:=Nil;
+  L.Sort;
+  Cl:=Nil;
+  // Divide over alphabet
+  For I:=0 to L.Count-1 do
+    begin
+    S:=L[i];
+    E:=TPasElement(L.Objects[i]);
+    If not (E is TPasUnresolvedTypeRef) then
+      begin
+      If (S<>'') then 
+        begin
+        C:=Upcase(S[1]);
+        If C='_' then
+          C:='A';
+        If (C in ['A'..'Z']) and (Lists[C]=Nil) then
+          begin
+          CL:=TStringList.Create;
+          Lists[C]:=CL;
+          end;
+        end;
+      if assigned(cl) then  
+        CL.AddObject(S,E);
+      end;  
+    end;  
+  Try  
+  // Create a quick jump table to all available letters.    
+  TableEl := CreateTable(BodyElement);
+  TableEl['border']:='1';
+  TableEl['width']:='50%';
+  TREl := CreateTR(TableEl);
+  for C:='A' to 'Z' do
+    If (Lists[C]<>Nil) then
+      begin
+      El:=CreateTD_vtop(TREl);
+      AppendText(CreateLink(El,'#SECTION'+C),C);
+      If C<>'Z' then
+       AppendNBsp(El,1);
+      end;
+  // Now emit all identifiers.    
+  TableEl:=Nil;
+  For C:='A' to 'Z' do
+    begin
+    CL:=Lists[C];
+    If CL<>Nil then
+      begin
+      El:=CreateH2(BodyElement);
+      AppendText(El,C);
+      CreateAnchor(El,'SECTION'+C);
+      TableEl := CreateTable(BodyElement);
+      TableEl['Width']:='80%';
+      // Determine number of rows needed
+      Rows:=(CL.Count div IndexColCount);
+      If ((CL.Count Mod IndexColCount)<>0) then
+        Inc(Rows);
+      // Fill rows  
+      For I:=0 to Rows-1 do
+        begin
+        TREl := CreateTR(TableEl);
+        For J:=0 to IndexColCount-1 do 
+          begin
+          El:=CreateTD_vtop(TREl);
+          Index:=(J*Rows)+I;
+          If (Index<CL.Count) then
+            begin
+            S:=CL[Index];
+            E:=TPasElement(CL.Objects[Index]);
+            AppendHyperlink(El,E);
+            end;
+          end;  
+        end;  
+      end; // have List
+    end;  // For C:=
+  Finally
+    for C:='A' to 'Z' do
+      FreeAndNil(Lists[C]);
+  end;  
+end;
+
+procedure THTMLWriter.AddModuleIdentifiers(AModule : TPasModule; L : TStrings);
+
+  Procedure AddElementsFromList(L : TStrings; List : TList);
+  
+  Var
+    I : Integer;
+    El : TPasElement;
+    
+  begin
+    For I:=0 to List.Count-1 do
+      begin
+      El:=TPasElement(List[I]);
+      L.AddObject(El.Name,El);
+      If el is TPasEnumType then
+        AddElementsFromList(L,TPasEnumType(el).Values);
+      end;
+  end;
+  
+begin
+  AddElementsFromList(L,AModule.InterfaceSection.Consts);
+  AddElementsFromList(L,AModule.InterfaceSection.Types);
+  AddElementsFromList(L,AModule.InterfaceSection.Functions);
+  AddElementsFromList(L,AModule.InterfaceSection.Classes);
+  AddElementsFromList(L,AModule.InterfaceSection.Variables);
+  AddElementsFromList(L,AModule.InterfaceSection.ResStrings);
 end;
 
 
@@ -3340,6 +4033,19 @@ var
   var
     TableEl, TREl, TDEl, CodeEl: TDOMElement;
     i: Integer;
+<<<<<<< HEAD
+=======
+    s: String;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     ThisInterface,
     ThisClass: TPasClassType;
     HaveSeenTObject: Boolean;
@@ -3378,7 +4084,66 @@ var
 
     if Assigned(AClass.AncestorType) then
     begin
+<<<<<<< HEAD
       if AClass.ObjKind=okSpecialize then
+=======
+      AppendSym(CodeEl, '(');
+      AppendHyperlink(CodeEl, AClass.AncestorType);
+      if AClass.Interfaces.count>0 Then
+        begin
+          for i:=0 to AClass.interfaces.count-1 do
+           begin
+             AppendSym(CodeEl, ', ');
+             AppendHyperlink(CodeEl,TPasClassType(AClass.Interfaces[i]));
+           end; 
+        end;
+      AppendSym(CodeEl, ')');
+    end;
+
+    if AClass.Members.Count > 0 then
+    begin
+      CurVisibility := visDefault;
+      for i := 0 to AClass.Members.Count - 1 do
+      begin
+        Member := TPasElement(AClass.Members[i]);
+        if CurVisibility <> Member.Visibility then
+        begin
+          CurVisibility := Member.Visibility;
+          if ((CurVisibility = visPrivate) and Engine.HidePrivate) or
+            ((CurVisibility = visProtected) and Engine.HideProtected) then
+            continue;
+          case CurVisibility of
+            visPrivate: s := 'private';
+            visProtected: s := 'protected';
+            visPublic: s := 'public';
+            visPublished: s := 'published';
+            visAutomated: s := 'automated';
+          end;
+          AppendKw(CreateCode(CreatePara(CreateTD(CreateTR(TableEl)))), s);
+        end else
+          if ((CurVisibility = visPrivate) and Engine.HidePrivate) or
+            ((CurVisibility = visProtected) and Engine.HideProtected) then
+            continue;
+
+        TREl := CreateTR(TableEl);
+        CodeEl := CreateCode(CreatePara(CreateTD_vtop(TREl)));
+        AppendNbSp(CodeEl, 2);
+        AppendShortDescrCell(TREl, Member);
+
+        if Member.InheritsFrom(TPasProcedureBase) then
+        begin
+          AppendKw(CodeEl, TPasProcedureBase(Member).TypeName + ' ');
+          AppendHyperlink(CodeEl, Member);
+          if (Member.ClassType = TPasOverloadedProc) or
+            (TPasProcedure(Member).ProcType.Args.Count > 0) then
+            AppendSym(CodeEl, '();')
+          else
+            AppendSym(CodeEl, ';');
+          if Member.ClassType <> TPasOverloadedProc then
+            AppendProcExt(CodeEl, TPasProcedure(Member));
+        end else
+        if Member.ClassType = TPasVariable then
+>>>>>>> graemeg/cpstrnew
         begin
         AppendHyperlink(CodeEl, AClass.AncestorType);
         AppendGenericTypes(CodeEl,AClass.GenericTemplateTypes,true)
@@ -3395,8 +4160,37 @@ var
                AppendHyperlink(CodeEl,TPasClassType(AClass.Interfaces[i]));
              end;
           end;
+<<<<<<< HEAD
         AppendSym(CodeEl, ')');
         end;
+=======
+          if (TPasProperty(Member).ImplementsName<>'') then
+          begin
+            AppendKw(CodeEl, ' implements');
+            AppendText(CodeEl, ' '+TPasProperty(Member).ImplementsName);
+            AppendSym(CodeEl, ';');
+          end;
+          if (TPasProperty(Member).ImplementsName<>'') then
+          begin
+            AppendKw(CodeEl, ' implements');
+            AppendText(CodeEl, ' '+TPasProperty(Member).ImplementsName);
+            AppendSym(CodeEl, ';');
+          end;
+          SetLength(s, 0);
+          if Length(TPasProperty(Member).ReadAccessorName) > 0 then
+            s := s + 'r';
+          if Length(TPasProperty(Member).WriteAccessorName) > 0 then
+            s := s + 'w';
+          if Length(TPasProperty(Member).StoredAccessorName) > 0 then
+            s := s + 's';
+          if Length(s) > 0 then
+            AppendText(CodeEl, '  [' + s + ']');
+        end else
+          AppendText(CreateWarning(CodeEl), '<' + Member.ClassName + '>');
+      end;
+
+      CodeEl := CreateCode(CreatePara(CreateTD(CreateTR(TableEl))));
+>>>>>>> graemeg/fixes_2_2
     end;
     CreateMemberDeclarations(AClass, AClass.Members,TableEl);
 
@@ -3418,6 +4212,7 @@ var
       TDEl := CreateTD_vtop(TREl);
       TDEl['align'] := 'center';
       CodeEl := CreateCode(CreatePara(TDEl));
+<<<<<<< HEAD
       if Assigned(ThisClass) then
         LName:=ThisClass.Name
       Else
@@ -3427,6 +4222,19 @@ var
       else
         AppendHyperlink(CodeEl, ThisNode);
       if Assigned(ThisClass) and (ThisClass.Interfaces.count>0) then
+=======
+      AppendHyperlink(CodeEl, ThisClass);
+      if ThisClass.Interfaces.count>0 then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         begin
           for i:=0 to ThisClass.interfaces.count-1 do
             begin
@@ -3851,15 +4659,27 @@ begin
     IndexColCount := StrToIntDef(Arg,IndexColCount)
   else if Cmd = '--image-url' then
     FBaseImageURL  := Arg
+<<<<<<< HEAD
+<<<<<<< HEAD
   else if Cmd = '--css-file' then
     FCSSFile := arg
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   else if Cmd = '--footer-date' then
     begin
     FIDF:=True;
     FDateFormat:=Arg;
     end
+<<<<<<< HEAD
+<<<<<<< HEAD
   else if Cmd = '--disable-menu-brackets' then
     FUseMenuBrackets:=False
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   else
     Result:=False;
 end;
@@ -3884,6 +4704,8 @@ begin
   List.Add(SHTMLIndexColcount);
   List.Add('--image-url=url');
   List.Add(SHTMLImageUrl);
+<<<<<<< HEAD
+<<<<<<< HEAD
   List.Add('--disable-menu-brackets');
   List.Add(SHTMLDisableMenuBrackets);
 end;
@@ -3908,6 +4730,10 @@ end;
 Class Function THTMLWriter.FileNameExtension : String; 
 begin
   result:='';
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 // private methods

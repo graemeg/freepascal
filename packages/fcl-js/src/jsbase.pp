@@ -42,11 +42,23 @@ Type
     procedure SetIsNull(const AValue: Boolean);
     procedure SetIsUndefined(const AValue: Boolean);
   Public
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Constructor Create;
     Constructor CreateNull;
     Constructor Create(ANumber : TJSNumber);
     Constructor Create(ABoolean : Boolean);
     Constructor Create(AString: TJSString);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     Destructor Destroy; override;
     Property ValueType : TJSType Read FValueType;
     Property IsUndefined : Boolean Read GetIsUndefined Write SetIsUndefined;
@@ -169,6 +181,10 @@ begin
   ClearValue(jstUndefined);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Constructor TJSValue.CreateNull;
 begin
   IsNull:=True;
@@ -195,6 +211,18 @@ begin
 end;
 
 Destructor TJSValue.Destroy;
+=======
+destructor TJSValue.Destroy;
+>>>>>>> graemeg/cpstrnew
+=======
+destructor TJSValue.Destroy;
+>>>>>>> graemeg/cpstrnew
+=======
+destructor TJSValue.Destroy;
+>>>>>>> graemeg/cpstrnew
+=======
+destructor TJSValue.Destroy;
+>>>>>>> origin/cpstrnew
 begin
   ClearValue(jstUndefined);
   inherited Destroy;

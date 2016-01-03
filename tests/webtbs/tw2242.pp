@@ -7256,6 +7256,7 @@ s += chr(84);
 s += chr(85);
 s += chr(86);
 s += chr(87);
+{$ifndef fpc_pic}
 s += chr(88);
 s += chr(89);
 s += chr(90);
@@ -10924,6 +10925,14 @@ s += chr(85);
 s += chr(86);
 s += chr(87);
 s += chr(88);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$if not defined(cpuarm) and not defined(cpusparc)}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$if not defined(cpuarm) and not defined(cpusparc)}
+>>>>>>> origin/fixes_2_2
 s += chr(89);
 s += chr(90);
 s += chr(65);

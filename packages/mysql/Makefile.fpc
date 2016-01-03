@@ -1,13 +1,55 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for MySql bindings
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for MySql bindings
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=mysql
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=my4_sys mysql4_com mysql4_version mysql4 mysql4dyn mysql4_comdyn mysql3_com mysql3_version mysql3 mysql3_comdyn mysql3dyn mysql40 mysql40dyn mysql41 mysql41dyn mysql50 mysql50dyn mysql51 mysql51dyn
+exampledirs=examples
+>>>>>>> graemeg/cpstrnew
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=my4_sys mysql4_com mysql4_version mysql4 mysql4dyn mysql4_comdyn mysql3_com mysql3_version mysql3 mysql3_comdyn mysql3dyn mysql40 mysql40dyn mysql41 mysql41dyn mysql50 mysql50dyn
+exampledirs=examples
+
+[require]
+libc=y
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -15,6 +57,8 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +144,20 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[shared]
+build=n
+
+[compiler]
+includedir=src 
+sourcedir=src
+
+[rules]
+.NOTPARALLEL:
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 <?xml version="1.0"?>
 <CONFIG>
   <ProjectOptions>
@@ -77,3 +79,89 @@
     </Other>
   </CompilerOptions>
 </CONFIG>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <PathDelim Value="\"/>
+    <Version Value="6"/>
+    <General>
+      <Flags>
+        <MainUnitHasUsesSectionForAllUnits Value="False"/>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <MainUnitHasTitleStatement Value="False"/>
+      </Flags>
+      <SessionStorage Value="InProjectDir"/>
+      <MainUnit Value="0"/>
+      <IconPath Value="./"/>
+      <TargetFileExt Value=".exe"/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+    </VersionInfo>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
+      <ExcludeFileFilter Value="*.(bak|ppu|ppw|o|so);*~;backup"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <Units Count="7">
+      <Unit0>
+        <Filename Value="mksymbian.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="mksymbian"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="cmdline.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="cmdline"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="constants.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="constants"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="cfgfile.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="cfgfile"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="sdkutil.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="sdkutil"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="compiler.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="compiler"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="projectparser.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="projectparser"/>
+      </Unit6>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="5"/>
+    <PathDelim Value="\"/>
+    <CodeGeneration>
+      <Generate Value="Faster"/>
+    </CodeGeneration>
+    <Other>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+  </CompilerOptions>
+</CONFIG>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

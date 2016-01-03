@@ -12,16 +12,13 @@
 
  **********************************************************************}
 {
-    This example shows how to use curl and write the result to a TStream.
-    It requires the libcurl library. Should work on Unix/Linux.
-    It would need modifications to run on Windows.
+   This example shows how to use curl and write the result to a TStream.
 }
-
 {$mode objfpc}
 {$H+}
 program teststream;
 
-uses classes,libcurl,{$ifdef windows}ctypes{$else}unixtype{$endif};
+uses classes,libcurl,unixtype;
 
 Function DoWrite(Ptr : Pointer; Size : size_t; nmemb: size_t; Data : Pointer) : size_t;cdecl;
 

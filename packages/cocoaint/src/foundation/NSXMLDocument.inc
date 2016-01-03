@@ -61,7 +61,23 @@ type
     _children: NSArray;
     _childrenHaveMutated: Boolean;
     _standalone: Boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _padding3: array[0..(2)-1] of cuint8;
+=======
+        _padding3: array[0..1] of cuint8;
+>>>>>>> graemeg/cpstrnew
+=======
+        _padding3: array[0..1] of cuint8;
+>>>>>>> graemeg/cpstrnew
+=======
+        _padding3: array[0..1] of cuint8;
+>>>>>>> graemeg/cpstrnew
+=======
+        _padding3: array[0..1] of cuint8;
+>>>>>>> origin/cpstrnew
     _rootElement: NSXMLElement;
     _URI: NSString;
     _MIMEType: NSString;

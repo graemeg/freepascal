@@ -94,6 +94,8 @@ begin
   case (RoundMode) of
     rmNearest :
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
         mode := FP_RND_RN;
       end;
     rmTruncate :
@@ -107,6 +109,40 @@ begin
     rmDown :
       begin
         mode := FP_RND_RM;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        mode := 0;
+{ 2.3.x has internal rounding support, which does the right thing }
+{ automatically                                                   }
+{$ifdef VER2_2}
+        softfloat_rounding_mode := float_round_nearest_even;
+{$endif}
+      end;
+    rmTruncate :
+      begin
+        mode := 1;
+{$ifdef VER2_2}
+        softfloat_rounding_mode := float_round_to_zero;
+{$endif}
+      end;
+    rmUp :
+      begin
+        mode := 2;
+{$ifdef VER2_2}
+        softfloat_rounding_mode := float_round_up;
+{$endif}
+      end;
+    rmDown :
+      begin
+        mode := 3;
+{$ifdef VER2_2}
+        softfloat_rounding_mode := float_round_down;
+{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
   end;
 {$ifndef aix}

@@ -30,7 +30,12 @@
 
     nils.sjoholm@mailbox.swipnet.se
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
+
 unit commodities;
 
 INTERFACE
@@ -229,52 +234,375 @@ VAR CxBase : pLibrary;
 const
     COMMODITIESNAME : PChar = 'commodities.library';
 
-
-FUNCTION ActivateCxObj(co : pCxObj location 'a0'; tru : LONGINT location 'd0') : LONGINT; syscall CxBase 042;
-PROCEDURE AddIEvents(events : pInputEvent location 'a0'); syscall CxBase 180;
-PROCEDURE AttachCxObj(headObj : pCxObj location 'a0'; co : pCxObj location 'a1'); syscall CxBase 084;
-PROCEDURE ClearCxObjError(co : pCxObj location 'a0'); syscall CxBase 072;
-FUNCTION CreateCxObj(typ : ULONG location 'd0'; arg1 : LONGINT location 'a0'; arg2 : LONGINT location 'a1') : pCxObj; syscall CxBase 030;
-FUNCTION CxBroker(nb : pNewBroker location 'a0'; error : PLongInt location 'd0') : pCxObj; syscall CxBase 036;
-FUNCTION CxMsgData(cxm : pCxMsg location 'a0') : POINTER; syscall CxBase 144;
-FUNCTION CxMsgID(cxm : pCxMsg location 'a0') : LONGINT; syscall CxBase 150;
-FUNCTION CxMsgType(cxm : pCxMsg location 'a0') : ULONG; syscall CxBase 138;
-FUNCTION CxObjError(co : pCxObj location 'a0') : LONGINT; syscall CxBase 066;
-FUNCTION CxObjType(co : pCxObj location 'a0') : ULONG; syscall CxBase 060;
-PROCEDURE DeleteCxObj(co : pCxObj location 'a0'); syscall CxBase 048;
-PROCEDURE DeleteCxObjAll(co : pCxObj location 'a0'); syscall CxBase 054;
-PROCEDURE DisposeCxMsg(cxm : pCxMsg location 'a0'); syscall CxBase 168;
-PROCEDURE DivertCxMsg(cxm : pCxMsg location 'a0'; headObj : pCxObj location 'a1'; returnObj : pCxObj location 'a2'); syscall CxBase 156;
-PROCEDURE EnqueueCxObj(headObj : pCxObj location 'a0'; co : pCxObj location 'a1'); syscall CxBase 090;
-PROCEDURE InsertCxObj(headObj : pCxObj location 'a0'; co : pCxObj location 'a1'; pred : pCxObj location 'a2'); syscall CxBase 096;
-FUNCTION InvertKeyMap(ansiCode : ULONG location 'd0'; event : pInputEvent location 'a0'; km : pKeyMap location 'a1') : LongBool; syscall CxBase 174;
-FUNCTION MatchIX(event : pInputEvent location 'a0'; ix : pInputXpression location 'a1') : LongBool; syscall CxBase 204;
-FUNCTION ParseIX(description : pCHAR location 'a0'; ix : pInputXpression location 'a1') : LONGINT; syscall CxBase 132;
-PROCEDURE RemoveCxObj(co : pCxObj location 'a0'); syscall CxBase 102;
-PROCEDURE RouteCxMsg(cxm : pCxMsg location 'a0'; co : pCxObj location 'a1'); syscall CxBase 162;
-FUNCTION SetCxObjPri(co : pCxObj location 'a0'; pri : LONGINT location 'd0') : LONGINT; syscall CxBase 078;
-PROCEDURE SetFilter(filter : pCxObj location 'a0'; text : pCHAR location 'a1'); syscall CxBase 120;
-PROCEDURE SetFilterIX(filter : pCxObj location 'a0'; ix : pInputXpression location 'a1'); syscall CxBase 126;
-PROCEDURE SetTranslate(translator : pCxObj location 'a0'; events : pInputEvent location 'a1'); syscall CxBase 114;
+FUNCTION ActivateCxObj(co : pCxObj; tru : LONGINT) : LONGINT;
+PROCEDURE AddIEvents(events : pInputEvent);
+PROCEDURE AttachCxObj(headObj : pCxObj; co : pCxObj);
+PROCEDURE ClearCxObjError(co : pCxObj);
+FUNCTION CreateCxObj(typ : ULONG; arg1 : LONGINT; arg2 : LONGINT): pCxObj;
+FUNCTION CxBroker(nb : pNewBroker; error : pCxObj) : pCxObj;
+FUNCTION CxMsgData(cxm : pCxMsg) : POINTER;
+FUNCTION CxMsgID(cxm : pCxMsg) : LONGINT;
+FUNCTION CxMsgType(cxm : pCxMsg) : ULONG;
+FUNCTION CxObjError(co : pCxObj) : LONGINT;
+FUNCTION CxObjType(co : pCxObj) : ULONG;
+PROCEDURE DeleteCxObj(co : pCxObj);
+PROCEDURE DeleteCxObjAll(co : pCxObj);
+PROCEDURE DisposeCxMsg(cxm : pCxMsg);
+PROCEDURE DivertCxMsg(cxm : pCxMsg; headObj : pCxObj; returnObj : pCxObj);
+PROCEDURE EnqueueCxObj(headObj : pCxObj; co : pCxObj);
+PROCEDURE InsertCxObj(headObj : pCxObj; co : pCxObj; pred : pCxObj);
+FUNCTION InvertKeyMap(ansiCode : ULONG; event : pInputEvent; km : pKeyMap) : BOOLEAN;
+FUNCTION MatchIX(event : pInputEvent; ix : pInputXpression) : BOOLEAN;
+FUNCTION ParseIX(description : pCHAR; ix : pInputXpression) : LONGINT;
+PROCEDURE RemoveCxObj(co : pCxObj);
+PROCEDURE RouteCxMsg(cxm : pCxMsg; co : pCxObj);
+FUNCTION SetCxObjPri(co : pCxObj; pri : LONGINT) : LONGINT;
+PROCEDURE SetFilter(filter : pCxObj; text : pCHAR);
+PROCEDURE SetFilterIX(filter : pCxObj; ix : pInputXpression);
+PROCEDURE SetTranslate(translator : pCxObj; events : pInputEvent);
 
 { overlay functions}
 
-FUNCTION ParseIX(description : rawbytestring; ix : pInputXpression) : LONGINT;
-PROCEDURE SetFilter(filter : pCxObj; text : rawbytestring);
+FUNCTION ParseIX(description : string; ix : pInputXpression) : LONGINT;
+PROCEDURE SetFilter(filter : pCxObj; text : string);
 
 
 IMPLEMENTATION
 
-uses amsgbox;
+uses pastoc,msgbox;
 
-FUNCTION ParseIX(description : rawbytestring; ix : pInputXpression) : LONGINT;
+FUNCTION ActivateCxObj(co : pCxObj; tru : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L co,A0
+    MOVE.L  tru,D0
+    MOVEA.L CxBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE AddIEvents(events : pInputEvent);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L events,A0
+    MOVEA.L CxBase,A6
+    JSR -180(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE AttachCxObj(headObj : pCxObj; co : pCxObj);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L headObj,A0
+    MOVEA.L co,A1
+    MOVEA.L CxBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ClearCxObjError(co : pCxObj);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L co,A0
+    MOVEA.L CxBase,A6
+    JSR -072(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION CreateCxObj(typ : ULONG; arg1 : LONGINT; arg2 : LONGINT) : pCxObj;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  typ,D0
+    MOVEA.L arg1,A0
+    MOVEA.L arg2,A1
+    MOVEA.L CxBase,A6
+    JSR -030(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CxBroker(nb : pNewBroker; error : pCxObj) : pCxObj;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L nb,A0
+    MOVE.L  error,D0
+    MOVEA.L CxBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CxMsgData(cxm : pCxMsg) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cxm,A0
+    MOVEA.L CxBase,A6
+    JSR -144(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CxMsgID(cxm : pCxMsg) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cxm,A0
+    MOVEA.L CxBase,A6
+    JSR -150(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CxMsgType(cxm : pCxMsg) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cxm,A0
+    MOVEA.L CxBase,A6
+    JSR -138(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CxObjError(co : pCxObj) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L co,A0
+    MOVEA.L CxBase,A6
+    JSR -066(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CxObjType(co : pCxObj) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L co,A0
+    MOVEA.L CxBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE DeleteCxObj(co : pCxObj);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L co,A0
+    MOVEA.L CxBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE DeleteCxObjAll(co : pCxObj);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L co,A0
+    MOVEA.L CxBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE DisposeCxMsg(cxm : pCxMsg);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cxm,A0
+    MOVEA.L CxBase,A6
+    JSR -168(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE DivertCxMsg(cxm : pCxMsg; headObj : pCxObj; returnObj : pCxObj);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cxm,A0
+    MOVEA.L headObj,A1
+    MOVEA.L returnObj,A2
+    MOVEA.L CxBase,A6
+    JSR -156(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE EnqueueCxObj(headObj : pCxObj; co : pCxObj);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L headObj,A0
+    MOVEA.L co,A1
+    MOVEA.L CxBase,A6
+    JSR -090(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE InsertCxObj(headObj : pCxObj; co : pCxObj; pred : pCxObj);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L headObj,A0
+    MOVEA.L co,A1
+    MOVEA.L pred,A2
+    MOVEA.L CxBase,A6
+    JSR -096(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION InvertKeyMap(ansiCode : ULONG; event : pInputEvent; km : pKeyMap) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  ansiCode,D0
+    MOVEA.L event,A0
+    MOVEA.L km,A1
+    MOVEA.L CxBase,A6
+    JSR -174(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION MatchIX(event : pInputEvent; ix : pInputXpression) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L event,A0
+    MOVEA.L ix,A1
+    MOVEA.L CxBase,A6
+    JSR -204(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION ParseIX(description : pCHAR; ix : pInputXpression) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L description,A0
+    MOVEA.L ix,A1
+    MOVEA.L CxBase,A6
+    JSR -132(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE RemoveCxObj(co : pCxObj);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L co,A0
+    MOVEA.L CxBase,A6
+    JSR -102(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE RouteCxMsg(cxm : pCxMsg; co : pCxObj);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cxm,A0
+    MOVEA.L co,A1
+    MOVEA.L CxBase,A6
+    JSR -162(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION SetCxObjPri(co : pCxObj; pri : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L co,A0
+    MOVE.L  pri,D0
+    MOVEA.L CxBase,A6
+    JSR -078(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE SetFilter(filter : pCxObj; text : pCHAR);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L filter,A0
+    MOVEA.L text,A1
+    MOVEA.L CxBase,A6
+    JSR -120(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE SetFilterIX(filter : pCxObj; ix : pInputXpression);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L filter,A0
+    MOVEA.L ix,A1
+    MOVEA.L CxBase,A6
+    JSR -126(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE SetTranslate(translator : pCxObj; events : pInputEvent);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L translator,A0
+    MOVEA.L events,A1
+    MOVEA.L CxBase,A6
+    JSR -114(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+
+FUNCTION ParseIX(description : string; ix : pInputXpression) : LONGINT;
 begin
-  ParseIX := ParseIX(pchar(description),ix);
+      ParseIX := ParseIX(pas2c(description),ix);
 end;
 
-PROCEDURE SetFilter(filter : pCxObj; text : rawbytestring);
+PROCEDURE SetFilter(filter : pCxObj; text : string);
 begin
-  SetFilter(filter,pchar(text));
+      SetFilter(filter,pas2c(text));
 end;
 
 {$I useautoopenlib.inc}

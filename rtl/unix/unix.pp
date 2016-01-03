@@ -42,6 +42,8 @@ Const
   PROT_WRITE = baseunix.PROT_WRITE;             { page can be written }
   PROT_EXEC  = baseunix.PROT_EXEC;             { page can be executed }
   PROT_NONE  = baseunix.PROT_NONE;             { page can not be accessed }
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   MAP_FAILED    = baseunix.MAP_FAILED;	      { mmap() failed }
   MAP_SHARED    = baseunix.MAP_SHARED;        { Share changes }
@@ -49,6 +51,28 @@ Const
   MAP_TYPE      = baseunix.MAP_TYPE;          { Mask for type of mapping }
   MAP_FIXED     = baseunix.MAP_FIXED;         { Interpret addr exactly }
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  MAP_FAILED    = baseunix.MAP_FAILED;	      { mmap() failed }
+  MAP_SHARED    = baseunix.MAP_SHARED;        { Share changes }
+  MAP_PRIVATE   = baseunix.MAP_PRIVATE;       { Changes are private }
+  MAP_TYPE      = baseunix.MAP_TYPE;          { Mask for type of mapping }
+  MAP_FIXED     = baseunix.MAP_FIXED;         { Interpret addr exactly }
+
+{ Flags to `msync'.  There is non msync() call in this unit? }
+  MS_ASYNC        = 1;               { Sync memory asynchronously.  }
+  MS_SYNC         = 4;               { Synchronous memory sync.  }
+  MS_INVALIDATE   = 2;               { Invalidate the caches.  }
+
+Type
+  Tpipe = baseunix.tfildes;     // compability.
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {** Time/Date Handling **}
 
 var
@@ -78,6 +102,15 @@ function FpExecV  (Const PathName:AnsiString;args:ppchar):cint;
 function FpExecVP (Const PathName:AnsiString;args:ppchar):cint;
 function FpExecVPE(Const PathName:AnsiString;args,env:ppchar):cint;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Function Shell   (const Command:String):cint;     deprecated;
+Function Shell   (const Command:AnsiString):cint; deprecated;
+Function fpSystem(const Command:string):cint;
+>>>>>>> graemeg/fixes_2_2
 Function fpSystem(const Command:AnsiString):cint;
 
 Function WaitProcess (Pid:cint):cint; 
@@ -87,9 +120,31 @@ Function W_EXITCODE (ReturnCode, Signal: Integer): Integer;
 Function W_STOPCODE (Signal: Integer): Integer;
 
 {**      File Handling     **}
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function  fpFlock   (var T : text;mode : cint) : cint;
 Function  fpFlock   (var F : File;mode : cint) : cint;
 
+=======
+
+=======
+
+>>>>>>> origin/fixes_2_2
+// some of these are formally listed as deprecated, but specially statfs will remain for a while, no rush.
+Function  fsync (fd : cint) : cint; deprecated;	
+Function  fStatFS (Fd: cint;Var Info:tstatfs):cint; deprecated;
+Function  StatFS  (Path:pchar;Var Info:tstatfs):cint; deprecated;
+
+Function  fpFlock   (var T : text;mode : cint) : cint;
+Function  fpFlock   (var F : File;mode : cint) : cint;
+
+Function  SelectText (var T:Text;TimeOut :PTimeVal):cint; deprecated;
+Function  SelectText (var T:Text;TimeOut :cint):cint; deprecated;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {**  Directory Handling  **}
 
 procedure SeekDir(p:pdir;loc:clong);
@@ -100,6 +155,8 @@ function  TellDir(p:pdir):TOff;
 Function AssignPipe  (var pipe_in,pipe_out:cint):cint;
 Function AssignPipe  (var pipe_in,pipe_out:text):cint;
 Function AssignPipe  (var pipe_in,pipe_out:file):cint;
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function POpen       (var F:text;const Prog:RawByteString;rw:char):cint;
 Function POpen       (var F:file;const Prog:RawByteString;rw:char):cint;
 Function POpen       (var F:text;const Prog:UnicodeString;rw:char):cint;
@@ -108,6 +165,16 @@ Function AssignStream(Var StreamIn,Streamout:text;Const Prog:ansiString;const ar
 Function AssignStream(Var StreamIn,Streamout,streamerr:text;Const Prog:ansiString;const args : array of ansistring) : cint;
 Function GetDomainName:String; deprecated; // because linux only.
 Function GetHostName:String;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Function POpen       (var F:text;const Prog:Ansistring;rw:char):cint;
+Function POpen       (var F:file;const Prog:Ansistring;rw:char):cint;
+Function AssignStream(Var StreamIn,Streamout:text;Const Prog:ansiString;const args : array of ansistring) : cint;
+Function AssignStream(Var StreamIn,Streamout,streamerr:text;Const Prog:ansiString;const args : array of ansistring) : cint;
+Function  GetDomainName:String; deprecated; // because linux only.
+Function  GetHostName:String;
+>>>>>>> graemeg/fixes_2_2
 
 {** Utility functions  **}
 
@@ -119,6 +186,14 @@ Type
 Function  FSearch  (const path:AnsiString;dirlist:Ansistring;CurrentDirStrategy:TFSearchOption):AnsiString;
 Function  FSearch  (const path:AnsiString;dirlist:AnsiString):AnsiString;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure SigRaise (sig:integer); deprecated;
+
+>>>>>>> graemeg/fixes_2_2
 {$ifdef FPC_USE_LIBC}
   const clib = 'c';
   {$i unxdeclh.inc}
@@ -318,10 +393,112 @@ End;
 {$if defined(FPC_USE_FPEXEC) and not defined(USE_VFORK)}
 {$define SHELL_USE_FPEXEC}
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Function Shell(const Command:String):cint; deprecated;
+{
+  Executes the shell, and passes it the string Command. (Through /bin/sh -c)
+  The current environment is passed to the shell.
+  It waits for the shell to exit, and returns its exit status.
+  If the Exec call failed exit status 127 is reported.
+}
+{ Changed the structure:
+- the previous version returns an undefinied value if fork fails
+- it returns the status of Waitpid instead of the Process returnvalue (see the doc to Shell)
+- it uses exit(127) not ExitProc (The Result in pp386: going on Compiling in 2 processes!)
+- ShellArgs are now released
+- The Old CreateShellArg gives back pointers to a local var
+}
+var
+{$ifndef SHELL_USE_FPEXEC}
+  p      : ppchar;
+{$endif}
+  pid    : cint;
+begin
+ {$ifndef SHELL_USE_FPEXEC}
+  p:=CreateShellArgv(command);
+{$endif}
+{$ifdef USE_VFORK}
+  pid:=fpvfork;
+{$else USE_VFORK}
+  pid:=fpfork;
+{$endif USE_VFORK}
+  if pid=0 then // We are in the Child
+   begin
+     {This is the child.}
+     {$ifndef SHELL_USE_FPEXEC}
+       fpExecve(p^,p,envp);
+     {$else}
+      fpexecl('/bin/sh',['-c',Command]);
+     {$endif}
+     fpExit(127);  // was Exit(127)
+   end
+  else if (pid<>-1) then // Successfull started
+   Shell:=WaitProcess(pid)
+  else // no success
+   Shell:=-1; // indicate an error
+  {$ifndef SHELL_USE_FPEXEC}
+  FreeShellArgV(p);
+  {$endif}
+end;
+
+Function Shell(const Command:AnsiString):cint;
+{
+  AnsiString version of Shell
+}
+var
+{$ifndef SHELL_USE_FPEXEC}
+  p     : ppchar;
+{$endif}
+  pid   : cint;
+begin { Changes as above }
+{$ifndef SHELL_USE_FPEXEC}
+  p:=CreateShellArgv(command);
+{$endif}
+{$ifdef USE_VFORK}
+  pid:=fpvfork;
+{$else USE_VFORK}
+  pid:=fpfork;
+{$endif USE_VFORK}
+  if pid=0 then // We are in the Child
+   begin
+    {$ifdef SHELL_USE_FPEXEC}
+      fpexecl('/bin/sh',['-c',Command]);
+    {$else}
+     fpExecve(p^,p,envp);
+    {$endif}
+     fpExit(127); // was exit(127)!! We must exit the Process, not the function
+   end
+  else if (pid<>-1) then // Successfull started
+   Shell:=WaitProcess(pid)
+  else // no success
+   Shell:=-1;
+ {$ifndef SHELL_USE_FPEXEC}
+  FreeShellArgV(p);
+ {$ENDIF}
+end;
+
+>>>>>>> graemeg/fixes_2_2
 
 {$ifdef FPC_USE_LIBC}
 function xfpsystem(p:pchar):cint; cdecl; external clib name 'system';
 
+<<<<<<< HEAD
+=======
+function fpsystem(const Command:string):cint;
+
+var c:array[0..255] of char;
+
+begin
+  move(command[1],c[0],length(command));
+  c[length(command)]:=#0;
+  fpsystem:=xfpsystem(@c);
+end;
+
+>>>>>>> graemeg/fixes_2_2
 Function fpSystem(const Command:AnsiString):cint;
 begin
   fpsystem:=xfpsystem(pchar(command));
@@ -476,7 +653,15 @@ begin
      fpseterrno(ESysEBADF);
      exit;
    end;
+<<<<<<< HEAD
+<<<<<<< HEAD
  {$if not(defined(bsd)) and not(defined(solaris)) and not(defined(beos)) and not(defined(aix)) }
+=======
+ {$if not(defined(bsd)) and not(defined(solaris)) and not(defined(beos)) }
+>>>>>>> graemeg/fixes_2_2
+=======
+ {$if not(defined(bsd)) and not(defined(solaris)) and not(defined(beos)) }
+>>>>>>> origin/fixes_2_2
   p^.dd_nextoff:=fplseek(p^.dd_fd,loc,seek_set);
  {$endif}
  {$if not(defined(beos))}
@@ -1123,6 +1308,18 @@ begin
 end;
 
 {******************************************************************************
+<<<<<<< HEAD
+=======
+                          Signal handling calls
+******************************************************************************}
+
+procedure SigRaise(sig:integer);
+begin
+  fpKill(fpGetPid,Sig);
+end;
+
+{******************************************************************************
+>>>>>>> graemeg/fixes_2_2
                              Utility calls
 ******************************************************************************}
 
@@ -1190,6 +1387,37 @@ Begin
  FSearch:=FSearch(path,dirlist,CurrentDirectoryFirst);
 End;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Function  fsync (fd : cint) : cint;
+begin
+  fsync := fpFSync(fd);
+end;
+
+Function StatFS(Path:Pchar;Var Info:tstatfs):cint;
+{
+  Get all information on a fileSystem, and return it in Info.
+  Path is the name of a file/directory on the fileSystem you wish to
+  investigate.
+}
+begin
+  StatFS:=fpStatFS(Path, @Info);;
+end;
+
+Function fStatFS(Fd:cint;Var Info:tstatfs):cint;
+{
+  Get all information on a fileSystem, and return it in Info.
+  Fd is the file descriptor of a file/directory on the fileSystem
+  you wish to investigate.
+}
+begin
+  fStatFS:=fpfStatFS(fd, @Info);
+end;
+
+>>>>>>> graemeg/fixes_2_2
 Initialization
 {$IFNDEF DONT_READ_TIMEZONE}
   InitLocalTime;

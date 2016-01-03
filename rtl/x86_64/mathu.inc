@@ -23,6 +23,10 @@ function arctan2(y,x : float) : float;assembler;
      fpatan
      fwait
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 {$define FPC_MATH_HAS_TAN}
 function tan(x : float) : float;assembler;
@@ -99,12 +103,37 @@ procedure sincos(theta : single;out sinus,cosinus : single);assembler;
     fwait
   end;
 
+=======
+{$endif FPC_HAS_TYPE_EXTENDED}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif FPC_HAS_TYPE_EXTENDED}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif FPC_HAS_TYPE_EXTENDED}
+>>>>>>> graemeg/cpstrnew
+=======
+{$endif FPC_HAS_TYPE_EXTENDED}
+>>>>>>> origin/cpstrnew
 
 {$asmmode gas}
 function GetRoundMode: TFPURoundingMode;
 begin
 {$ifndef FPC_HAS_TYPE_EXTENDED}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result:=TFPURoundingMode((GetMXCSR shr 13) and $3);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  Result:=TFPURoundingMode((GetSSECSR shr 13) and $3);
+>>>>>>> graemeg/cpstrnew
 {$else win64}
   Result:=TFPURoundingMode((Get8087CW shr 10) and $3);
 {$endif win64}
@@ -143,7 +172,20 @@ end;
 function GetExceptionMask: TFPUExceptionMask;
 begin
 {$ifndef FPC_HAS_TYPE_EXTENDED}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result:=TFPUExceptionMask(dword((GetMXCSR shr 7) and $3f));
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  Result:=TFPUExceptionMask((GetSSECSR shr 7) and $3f);
+>>>>>>> graemeg/cpstrnew
 {$else win64}
   Result:=TFPUExceptionMask(dword(Get8087CW and $3F));
 {$endif win64}

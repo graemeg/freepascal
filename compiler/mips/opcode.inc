@@ -1,9 +1,33 @@
 A_NONE,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_P_SET_NOMIPS16,
+=======
+A_P_STK2,
+A_P_LW,
+>>>>>>> graemeg/cpstrnew
+=======
+A_P_STK2,
+A_P_LW,
+>>>>>>> graemeg/cpstrnew
+=======
+A_P_STK2,
+A_P_LW,
+>>>>>>> graemeg/cpstrnew
+=======
+A_P_STK2,
+A_P_LW,
+>>>>>>> origin/cpstrnew
 A_P_SET_NOREORDER,
 A_P_SET_NOMACRO,
 A_P_SET_MACRO,
 A_P_SET_REORDER,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_P_SET_NOAT,
 A_P_SET_AT,
 A_P_FRAME,
@@ -12,12 +36,50 @@ A_P_FMASK,
 A_P_CPLOAD,
 A_P_CPRESTORE,
 A_P_CPADD,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+A_P_FRAME,
+A_P_MASK,
+A_P_FMASK,
+A_P_SW,
+A_SPARC8UNIMP,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A_NOP,
 A_NOT,
 A_NEG,
 A_NEGU,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_BA,
 A_BC,
+=======
+A_B,
+>>>>>>> graemeg/cpstrnew
+=======
+A_B,
+>>>>>>> graemeg/cpstrnew
+=======
+A_B,
+>>>>>>> graemeg/cpstrnew
+=======
+A_B,
+>>>>>>> origin/cpstrnew
 A_LI,
 A_DLI,
 A_LA,
@@ -94,10 +156,80 @@ A_MFHI,
 A_MTHI,
 A_MFLO,
 A_MTLO,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+A_MULTG,
+A_DMULTG,
+A_MULTUG,
+A_DMULTUG,
+A_DIVG,
+A_DDIVG,
+A_DIVUG,
+A_DDIVUG,
+A_MODG,
+A_DMODG,
+A_MODUG,
+A_DMODUG,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A_J,
 A_JAL,
 A_JR,
 A_JALR,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+A_BEQ,
+A_BNE,
+A_BLEZ,
+A_BGTZ,
+A_BLTZ,
+A_BGEZ,
+A_BLTZAL,
+A_BGEZAL,
+A_BEQL,
+A_BNEL,
+A_BLEZL,
+A_BGTZL,
+A_BLTZL,
+A_BGEZL,
+A_BLTZALL,
+A_BGEZALL,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A_SLL,
 A_SRL,
 A_SRA,
@@ -165,12 +297,76 @@ A_FLOOR_W_S,
 A_FLOOR_W_D,
 A_FLOOR_L_S,
 A_FLOOR_L_D,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+A_BC1T,
+A_BC1F,
+A_BC1TL,
+A_BC1FL,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A_C_EQ_D,
 A_C_EQ_S,
 A_C_LE_D,
 A_C_LE_S,
 A_C_LT_D,
 A_C_LT_S,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+A_BEQI,
+A_BNEI,
+A_BLTI,
+A_BLEI,
+A_BGTI,
+A_BGEI,
+A_BLTUI,
+A_BLEUI,
+A_BGTUI,
+A_BGEUI,
+A_BLT,
+A_BLE,
+A_BGT,
+A_BGE,
+A_BLTU,
+A_BLEU,
+A_BGTU,
+A_BGEU,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A_SEQ,
 A_SGE,
 A_SGEU,
@@ -180,6 +376,10 @@ A_SLE,
 A_SLEU,
 A_SNE,
 A_SYSCALL,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_BREAK,
 A_EHB,
 A_EXT,
@@ -205,4 +405,32 @@ A_MOVN_S,
 A_MOVZ_S,
 A_MOVN_D,
 A_MOVZ_D,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+A_ADD64SUB,
+A_SUB64SUB,
+A_MUL64SUB,
+A_DIV64SUB,
+A_NEG64SUB,
+A_NOT64SUB,
+A_OR64SUB,
+A_SAR64SUB,
+A_SHL64SUB,
+A_SHR64SUB,
+A_XOR64SUB,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A_END_DEF

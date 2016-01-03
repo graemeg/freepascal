@@ -15,6 +15,7 @@ const
  libgnomedll='gnome';
 
 Type
+  PPPChar = ^PPChar;
   PPPgChar = ^PPgChar;
   PPPgfloat = ^PPgfloat;
   PPgfloat = ^Pgfloat;

@@ -1,10 +1,24 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
     <Version Value="9"/>
     <General>
       <Flags>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <SaveOnlyProjectUnits Value="True"/>
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         <LRSInOutputDirectory Value="False"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
@@ -16,6 +30,27 @@
     <BuildModes Count="1">
       <Item1 Name="default" Default="True"/>
     </BuildModes>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <PathDelim Value="/"/>
+    <Version Value="5"/>
+    <General>
+      <SessionStorage Value="InProjectDir"/>
+      <MainUnit Value="0"/>
+      <IconPath Value="./"/>
+      <TargetFileExt Value=""/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+    </VersionInfo>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -25,7 +60,25 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <CommandLineParams Value="--suite=TTestParser.TestComment"/>
+=======
+        <CommandLineParams Value="--format=plain --suite=TCJSONStreamer"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CommandLineParams Value="--format=plain --suite=TCJSONStreamer"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CommandLineParams Value="--format=plain --suite=TCJSONStreamer"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <CommandLineParams Value="--format=plain --suite=TCJSONStreamer"/>
+>>>>>>> origin/cpstrnew
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
@@ -38,27 +91,114 @@
       <Unit0>
         <Filename Value="testjson.pp"/>
         <IsPartOfProject Value="True"/>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="4">
+      <Item1>
+        <PackageName Value="fpcunitconsolerunner"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="LCL"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="FPCUnitTestRunner"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="FCL"/>
+      </Item4>
+    </RequiredPackages>
+    <Units Count="3">
+      <Unit0>
+        <Filename Value="testjson.pp"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="testjson"/>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       </Unit0>
       <Unit1>
         <Filename Value="testjsonparser.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="testjsonparser"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="testjsonparser"/>
+>>>>>>> origin/fixes_2_2
       </Unit1>
       <Unit2>
         <Filename Value="testjsondata.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
       </Unit2>
       <Unit3>
         <Filename Value="testjsonrtti.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="testjsonrtti"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <UnitName Value="testjsonrtti"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <UnitName Value="testjsonrtti"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <UnitName Value="testjsonrtti"/>
+>>>>>>> origin/cpstrnew
       </Unit3>
       <Unit4>
         <Filename Value="../src/fpjsonrtti.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpjsonrtti"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <UnitName Value="fpjsonrtti"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <UnitName Value="fpjsonrtti"/>
+>>>>>>> graemeg/cpstrnew
+=======
+        <UnitName Value="fpjsonrtti"/>
+>>>>>>> origin/cpstrnew
       </Unit4>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Version Value="11"/>
+=======
+    <Version Value="9"/>
+>>>>>>> graemeg/cpstrnew
+=======
+    <Version Value="9"/>
+>>>>>>> graemeg/cpstrnew
+=======
+    <Version Value="9"/>
+>>>>>>> graemeg/cpstrnew
+=======
+    <Version Value="9"/>
+>>>>>>> origin/cpstrnew
     <SearchPaths>
       <OtherUnitFiles Value="../src"/>
     </SearchPaths>
@@ -67,6 +207,30 @@
         <UseAnsiStrings Value="False"/>
       </SyntaxOptions>
     </Parsing>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    <Linking>
+      <Debugging>
+        <GenerateDebugInfo Value="True"/>
+        <UseHeaptrc Value="True"/>
+      </Debugging>
+    </Linking>
+    <Other>
+      <CompilerMessages>
+        <UseMsgFile Value="True"/>
+      </CompilerMessages>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+>>>>>>> graemeg/cpstrnew
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="2">
@@ -78,4 +242,27 @@
       </Item2>
     </Exceptions>
   </Debugging>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        <UnitName Value="testjsondata"/>
+      </Unit2>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="5"/>
+    <SearchPaths>
+      <OtherUnitFiles Value="../src/"/>
+    </SearchPaths>
+    <CodeGeneration>
+      <Generate Value="Faster"/>
+    </CodeGeneration>
+    <Other>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+  </CompilerOptions>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 </CONFIG>

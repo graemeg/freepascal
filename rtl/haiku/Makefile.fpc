@@ -6,11 +6,26 @@
 main=rtl
 
 [target]
+<<<<<<< HEAD
 loaders=prt0 cprt0 dllcprt0 func dllprt
 units=system uuchar baseunix unixtype ctypes objpas macpas iso7185 extpas strings \
+=======
+loaders=prt0 cprt0 func dllprt
+units=system baseunix unixtype ctypes objpas macpas iso7185 strings \
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 #      beos \
       errors dos dl \
       sysconst sysutils \
+<<<<<<< HEAD
       types charset cpall character typinfo classes fgl math \
       cpu mmx getopts heaptrc lineinfo lnfodwrf \
       rtlconsts syscall unix unixutil termio initc \
@@ -22,6 +37,16 @@ implicitunits=exeinfo \
       cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852 \
       unicodedata unicodenumtable
+=======
+      types charset ucomplex typinfo classes fgl math varutils \
+      cpu mmx getopts heaptrc lineinfo lnfodwrf variants \
+      rtlconsts syscall unix unixutil strutils termio initc \
+      cmem crt video mouse keyboard \
+      dateutils fmtbcd sockets dynlibs cwstring cthreads convutils stdconvs \
+      fpintres clocale
+rsts=math varutils typinfo variants sysconst rtlconsts dateutils stdconvs
+implicitunits=exeinfo
+>>>>>>> graemeg/cpstrnew
 
 [require]
 nortl=y
@@ -188,6 +213,30 @@ sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUE
 rtlconsts$(PPUEXT) : $(OBJPASDIR)/rtlconsts.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
          $(COMPILER) $(OBJPASDIR)/rtlconsts.pp
 
+<<<<<<< HEAD
+=======
+strutils$(PPUEXT) : $(OBJPASDIR)/strutils.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT) \
+                    sysutils$(PPUEXT)
+        $(COMPILER) $(OBJPASDIR)/strutils.pp
+
+convutils$(PPUEXT) : $(OBJPASDIR)/convutils.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT) \
+                    sysutils$(PPUEXT)
+        $(COMPILER) $(OBJPASDIR)/convutils.pp
+
+stdconvs$(PPUEXT) : $(OBJPASDIR)/stdconvs.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT) \
+                    sysutils$(PPUEXT)
+        $(COMPILER) $(OBJPASDIR)/stdconvs.pp
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 #
 # Mac Pascal Model
 #

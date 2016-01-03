@@ -107,7 +107,14 @@ implementation
         // allocate base and index registers register
         indexreg:= cg.makeregsize(current_asmdata.CurrAsmList, hregister, OS_INT);
         { indexreg := hregister; }
+<<<<<<< HEAD
         cg.a_load_reg_reg(current_asmdata.CurrAsmList, def_cgsize(opsize), OS_INT, hregister, indexreg);
+=======
+        cg.a_load_reg_reg(current_asmdata.CurrAsmList, opsize, OS_INT, hregister, indexreg);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         if not(jumptable_no_range) then
           begin
              { use aword(value-min)<aword(max-min) instead of two comparisons }
@@ -122,11 +129,25 @@ implementation
         { create reference, indexreg := indexreg * sizeof(jtentry) (= 4) }
         mulfactor:=4;
         cg.a_op_const_reg(current_asmdata.CurrAsmList, OP_MUL, OS_INT, mulfactor, indexreg);
+<<<<<<< HEAD
+<<<<<<< HEAD
         reference_reset_symbol(href, table, (-aint(min_)) * mulfactor, 4);
 
         hregister:=cg.getaddressregister(current_asmdata.CurrAsmList);
         cg.a_loadaddr_ref_reg(current_asmdata.CurrAsmList,href,hregister);
         reference_reset_base(href,hregister,0,4);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        reference_reset_symbol(href, table, (-aint(min_)) * mulfactor);
+
+        hregister:=cg.getaddressregister(current_asmdata.CurrAsmList);
+        cg.a_loadaddr_ref_reg(current_asmdata.CurrAsmList,href,hregister);
+        reference_reset_base(href,hregister,0);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         href.index:=indexreg;
         indexreg:=cg.getaddressregister(current_asmdata.CurrAsmList);
         cg.a_load_ref_reg(current_asmdata.CurrAsmList,OS_S32,OS_ADDR,href,indexreg);
@@ -200,7 +221,14 @@ implementation
                   begin
                      { have we to ajust the first value ? }
                      if (t^._low>get_min_value(left.resultdef)) or (get_min_value(left.resultdef)<>0) then
+<<<<<<< HEAD
+<<<<<<< HEAD
                        gensub(longint(int64(t^._low)));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                       gensub(longint(t^._low));
+>>>>>>> graemeg/fixes_2_2
                   end
                 else
                   begin

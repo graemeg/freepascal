@@ -81,6 +81,8 @@ TConfigOpt = (
   coComment,
   coTestSrcDir,
   coRelSrcDir,
+<<<<<<< HEAD
+<<<<<<< HEAD
   coVerbose,
   coSQL
  );
@@ -94,6 +96,55 @@ TConfigAddOpt = (
   coSvnTestsRevision,
   coSvnRTLRevision,
   coSvnPackagesRevision
+ );
+
+{ Additional options only for dbdigest.cfg file }
+
+TConfigAddOpt = (
+  coCompilerDate,
+  coCompilerFullVersion,
+  coSvnCompilerRevision,
+  coSvnTestsRevision,
+  coSvnRTLRevision,
+  coSvnPackagesRevision
+ );
+
+{ Additional options only for dbdigest.cfg file }
+
+TConfigAddOpt = (
+  coCompilerDate,
+  coCompilerFullVersion,
+  coSvnCompilerRevision,
+  coSvnTestsRevision,
+  coSvnRTLRevision,
+  coSvnPackagesRevision
+ );
+
+{ Additional options only for dbdigest.cfg file }
+
+TConfigAddOpt = (
+  coCompilerDate,
+  coCompilerFullVersion,
+  coSvnCompilerRevision,
+  coSvnTestsRevision,
+  coSvnRTLRevision,
+  coSvnPackagesRevision
+ );
+
+{ Additional options only for dbdigest.cfg file }
+
+TConfigAddOpt = (
+  coCompilerDate,
+  coCompilerFullVersion,
+  coSvnCompilerRevision,
+  coSvnTestsRevision,
+  coSvnRTLRevision,
+  coSvnPackagesRevision
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  coVerbose
+>>>>>>> graemeg/fixes_2_2
  );
 
 Const
@@ -116,10 +167,14 @@ ConfigStrings : Array [TConfigOpt] of string = (
   'comment',
   'testsrcdir',
   'relsrcdir',
+<<<<<<< HEAD
+<<<<<<< HEAD
   'verbose',
   'sql'
 );
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 ConfigOpts : Array[TConfigOpt] of char =(
  'd', {  coDatabaseName }
  'h', {  coHost }
@@ -140,8 +195,23 @@ ConfigOpts : Array[TConfigOpt] of char =(
  'r', {  coRelSrcDir }
  'V', {  coVerbose }
  'Q'  {  coSQL }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  'verbose'
+>>>>>>> graemeg/fixes_2_2
 );
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 ConfigAddStrings : Array [TConfigAddOpt] of string = (
   'compilerdate',
   'compilerfullversion',
@@ -160,6 +230,34 @@ ConfigAddCols : Array [TConfigAddOpt] of string = (
   'TU_SVNPACKAGESREVISION'
  );
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+ConfigOpts : Array[TConfigOpt] of char
+<<<<<<< HEAD
+<<<<<<< HEAD
+           = ('d','h','u','p','P','l','o','c','a','v','t','s','m','C','S','r','V');
+>>>>>>> graemeg/cpstrnew
+=======
+ConfigOpts : Array[TConfigOpt] of char
+           = ('d','h','u','p','P','l','o','c','a','v','t','s','m','C','S','r','V');
+>>>>>>> graemeg/cpstrnew
+=======
+ConfigOpts : Array[TConfigOpt] of char
+           = ('d','h','u','p','P','l','o','c','a','v','t','s','m','C','S','r','V');
+>>>>>>> graemeg/cpstrnew
+=======
+ConfigOpts : Array[TConfigOpt] of char
+           = ('d','h','u','p','P','l','o','c','a','v','t','s','m','C','S','r','V');
+>>>>>>> origin/cpstrnew
+=======
+           = ('d','h','u','p','l','o','c','a','v','t','s','m','C','S','r','V');
+>>>>>>> graemeg/fixes_2_2
+=======
+           = ('d','h','u','p','l','o','c','a','v','t','s','m','C','S','r','V');
+>>>>>>> origin/fixes_2_2
 
 Var
   TestOS,
@@ -171,7 +269,19 @@ Var
   UserName,
   Password,
   Port,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   LongLogFileName,
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   LogFileName,
   Submitter,
   Machine,
@@ -218,7 +328,19 @@ begin
     coCPU          : TestCPU:=Value;
     coCategory     : TestCategory:=Value;
     coVersion      : TestVersion:=Value;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     coSQL          : DoSQL:=True;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     coDate         :
       begin
         { Formated like YYYYMMDDhhmm }
@@ -523,7 +645,23 @@ Procedure Processfile (FN: String);
 
 var
   logfile : text;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   fullline,line,prevLine : string;
+=======
+  line,prevLine : string;
+>>>>>>> graemeg/cpstrnew
+=======
+  line,prevLine : string;
+>>>>>>> graemeg/cpstrnew
+=======
+  line,prevLine : string;
+>>>>>>> graemeg/cpstrnew
+=======
+  line,prevLine : string;
+>>>>>>> origin/cpstrnew
   TS,PrevTS : TTestStatus;
   ID,PrevID : integer;
   Testlog : string;
@@ -566,11 +704,28 @@ begin
             begin
               TestLog:=GetExecuteLog(Fullline,Line);
               if pos(failed_to_compile,TestLog)=1 then
+<<<<<<< HEAD
                 TestLog:=GetLog(Fullline,Line);
             end
           else
             TestLog:='';
           { AddTestResult can fail for test that contain %recompile
+=======
+                TestLog:=GetLog(Line);
+            end
+          else
+            TestLog:='';
+          { AddTestResult can fail for test that contain %recompile 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
             as the same }
           if AddTestResult(ID,TestRunID,Ord(TS),TestOK[TS],
                TestSkipped[TS],TestLog,is_new) <> -1 then
@@ -584,17 +739,59 @@ begin
             begin
               Verbose(V_Warning,'Test: "'+line+'" already registered');
             end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
           end;
         end
       else
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+              
+          end;
+        end
+      else  
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/cpstrnew
+              
+          end;
+        end
+      else  
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         begin
           Inc(StatusCount[TS]);
           PrevTS:=TS;
           PrevID:=RequireTestID(line);
           PrevLine:=line;
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> graemeg/cpstrnew
+=======
+ 
+>>>>>>> graemeg/cpstrnew
+=======
+ 
+>>>>>>> graemeg/cpstrnew
+=======
+ 
+>>>>>>> origin/cpstrnew
       end
     else
       begin
@@ -616,6 +813,10 @@ procedure UpdateTestRun;
     for i:=low(TTestStatus) to high(TTestStatus) do
       qry:=qry+format('%s=%d, ',[SQLField[i],StatusCount[i]]);
     if TestCompilerDate<>'' then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       qry:=qry+format('%s=''%s'', ',[ConfigAddCols[coCompilerDate],EscapeSQL(TestCompilerDate)]);
     if TestCompilerFullVersion<>'' then
       qry:=qry+format('%s=''%s'', ',[ConfigAddCols[coCompilerFullVersion],EscapeSQL(TestCompilerFullVersion)]);
@@ -629,6 +830,27 @@ procedure UpdateTestRun;
       qry:=qry+format('%s=''%s'', ',[ConfigAddCols[coSvnPackagesRevision],EscapeSQL(TestSvnPackagesRevision)]);
 
     qry:=qry+format('TU_SUBMITTER=''%s'', TU_MACHINE=''%s'', TU_COMMENT=''%s'', TU_DATE=''%s''',[Submitter,Machine,Comment,SqlDate(TestDate)]);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      qry:=qry+format('%s="%s", ',[ConfigAddCols[coCompilerDate],EscapeSQL(TestCompilerDate)]);
+    if TestCompilerFullVersion<>'' then
+      qry:=qry+format('%s="%s", ',[ConfigAddCols[coCompilerFullVersion],EscapeSQL(TestCompilerFullVersion)]);
+    if TestSvnCompilerRevision<>'' then
+      qry:=qry+format('%s="%s", ',[ConfigAddCols[coSvnCompilerRevision],EscapeSQL(TestSvnCompilerRevision)]);
+    if TestSvnTestsRevision<>'' then
+      qry:=qry+format('%s="%s", ',[ConfigAddCols[coSvnTestsRevision],EscapeSQL(TestSvnTestsRevision)]);
+    if TestSvnRTLRevision<>'' then
+      qry:=qry+format('%s="%s", ',[ConfigAddCols[coSvnRTLRevision],EscapeSQL(TestSvnRTLRevision)]);
+    if TestSvnPackagesRevision<>'' then
+      qry:=qry+format('%s="%s", ',[ConfigAddCols[coSvnPackagesRevision],EscapeSQL(TestSvnPackagesRevision)]);
+
+    qry:=qry+format('TU_SUBMITTER="%s", TU_MACHINE="%s", TU_COMMENT="%s", TU_DATE="%s"',[Submitter,Machine,Comment,SqlDate(TestDate)]);
+>>>>>>> graemeg/cpstrnew
     qry:=qry+' WHERE TU_ID='+format('%d',[TestRunID]);
     ExecuteQuery(Qry,False);
   end;
@@ -755,6 +977,10 @@ begin
   If LogFileName<>'' then
     begin
     ConnectToDatabase(DatabaseName,HostName,UserName,Password,Port);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     if LongLogFileName<>'' then
       begin
 {$I-}
@@ -767,6 +993,14 @@ begin
           end;
 {$I+}
       end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     GetIDs;
     ProcessFile(LogFileName);
     UpdateTestRun;

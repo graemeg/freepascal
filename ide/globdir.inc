@@ -10,10 +10,16 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef USE_GDBLIBINC}
   {$include gdblib.inc}
 {$endif USE_GDBLIBINC}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { --- Special OS settings --- }
 {$ifdef Go32V2}
   { NOVESA conditional avoids use of
@@ -81,11 +87,17 @@
     {$define HasSignal}
     {$define SignalIsFunction}
     {$define SignalIsCdecl}
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$endif}
   {$ifdef win64}
     {$define HasSignal}
     {$define SignalIsFunction}
     {$define SignalIsCdecl}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   {$endif}
   {$define FSCaseInsensitive}
   {$define HasSysMsgUnit}

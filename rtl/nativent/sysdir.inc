@@ -17,7 +17,23 @@
                            Directory Handling
 *****************************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure do_MkDir(const s: UnicodeString);
+=======
+procedure MkDir(s: pchar; len: sizeuint); [IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+>>>>>>> graemeg/cpstrnew
+=======
+procedure MkDir(s: pchar; len: sizeuint); [IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+>>>>>>> graemeg/cpstrnew
+=======
+procedure MkDir(s: pchar; len: sizeuint); [IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+>>>>>>> graemeg/cpstrnew
+=======
+procedure MkDir(s: pchar; len: sizeuint); [IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+>>>>>>> origin/cpstrnew
 var
   objattr: TObjectAttributes;
   name: TNtUnicodeString;
@@ -25,7 +41,32 @@ var
   iostatus: TIOStatusBlock;
   h: THandle;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   SysUnicodeStringToNtStr(name, s);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  if not Assigned(s) or (len <= 1) or (InOutRes <> 0) then
+    Exit;
+
+  SysPCharToNtStr(name, s, len);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
   { first we try to create a directory object }
   SysInitializeObjectAttributes(objattr, @name, OBJ_PERMANENT, 0, Nil);
@@ -58,7 +99,23 @@ begin
   SysFreeNtStr(name);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure do_RmDir(const s: UnicodeString);
+=======
+procedure RmDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_RMDIR'];
+>>>>>>> graemeg/cpstrnew
+=======
+procedure RmDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_RMDIR'];
+>>>>>>> graemeg/cpstrnew
+=======
+procedure RmDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_RMDIR'];
+>>>>>>> graemeg/cpstrnew
+=======
+procedure RmDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_RMDIR'];
+>>>>>>> origin/cpstrnew
 var
   ntstr: TNtUnicodeString;
   objattr: TObjectAttributes;
@@ -67,6 +124,10 @@ var
   disp: TFileDispositionInformation;
   res: LongInt;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if s = '.' then
     begin
       InOutRes := 16;
@@ -79,6 +140,31 @@ begin
     end;
 
   SysUnicodeStringToNtStr(ntstr, s);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  if (len = 1) and (s^ = '.') then
+    InOutRes := 16;
+  if not assigned(s) or (len = 0) or (InOutRes <> 0) then
+    Exit;
+  if (len = 2) and (s[0] = '.') and (s[1] = '.') then
+    InOutRes := 5;
+
+  SysPCharToNtStr(ntstr, s, len);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   SysInitializeObjectAttributes(objattr, @ntstr, 0, 0, Nil);
 
   res := NtOpenDirectoryObject(@h, STANDARD_RIGHTS_REQUIRED, @objattr);
@@ -116,13 +202,45 @@ begin
   Errno2InoutRes;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure do_ChDir(const s: UnicodeString);
+=======
+procedure ChDir(s: pchar; len: sizeuint);[IOCheck, public, alias : 'FPC_SYS_CHDIR'];
+>>>>>>> graemeg/cpstrnew
+=======
+procedure ChDir(s: pchar; len: sizeuint);[IOCheck, public, alias : 'FPC_SYS_CHDIR'];
+>>>>>>> graemeg/cpstrnew
+=======
+procedure ChDir(s: pchar; len: sizeuint);[IOCheck, public, alias : 'FPC_SYS_CHDIR'];
+>>>>>>> graemeg/cpstrnew
+=======
+procedure ChDir(s: pchar; len: sizeuint);[IOCheck, public, alias : 'FPC_SYS_CHDIR'];
+>>>>>>> origin/cpstrnew
 begin
   { for now this is not supported }
   InOutRes := 3;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure do_GetDir(DriveNr: byte; var Dir: UnicodeString);
+=======
+procedure GetDir(DriveNr: byte; var Dir: ShortString);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure GetDir(DriveNr: byte; var Dir: ShortString);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure GetDir(DriveNr: byte; var Dir: ShortString);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure GetDir(DriveNr: byte; var Dir: ShortString);
+>>>>>>> origin/cpstrnew
 begin
   { for now we return simply the root directory }
   Dir := DirectorySeparator;

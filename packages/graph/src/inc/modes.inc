@@ -76,6 +76,8 @@ end;
   {********************************************************}
   var
     i,driverNr, modeNr: smallint;
+<<<<<<< HEAD
+<<<<<<< HEAD
     prev: PNewModeList;
     list: PModeInfo;
     newMode: PModeInfo;
@@ -100,6 +102,17 @@ end;
         System.move(mode, newMode^, sizeof(Mode));
       end;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    prev: PModeInfo;
+    list: PModeInfo;
+    newlst : PModeInfo;
+  begin
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     res2Mode(mode.maxx+1,mode.maxy+1,mode.maxColor,driverNr,ModeNr);
     { bitdepth supported? }
     if (driverNr <> maxsmallint) then
@@ -112,12 +125,22 @@ end;
                 ' ('+strf(mode.maxx)+'x'+strf(mode.maxy)+')');
 {$endif logging}
           new(newModeList.modeinfo[driverNr]);
+<<<<<<< HEAD
+<<<<<<< HEAD
           newModeList.modeinfo[driverNr]^.Mode := newMode;
+=======
+          newModeList.modeinfo[driverNr]^ := mode;
+>>>>>>> graemeg/fixes_2_2
+=======
+          newModeList.modeinfo[driverNr]^ := mode;
+>>>>>>> origin/fixes_2_2
           newModeList.modeinfo[driverNr]^.next:=nil;
         end
       else
         begin
           prev := nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
           newList := newModeList.modeinfo[driverNr];
           { sort first by x resolution, then by yresolution }
           while assigned(newList) and
@@ -133,26 +156,76 @@ end;
           if assigned(newList) and
              (newList^.Mode^.maxx = mode.maxx) and
              (newList^.Mode^.maxy = mode.maxy) then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          list := newModeList.modeinfo[driverNr];
+          { sort first by x resolution, then by yresolution }
+          while assigned(list) and
+                ((list^.maxx < mode.maxx) or
+                 ((list^.maxx = mode.maxx) and
+                  (list^.maxy < mode.maxy))) do
+            begin
+              prev := list;
+              list := list^.next;
+            end;
+          { mode already exists? -> replace (assume later added modes are }
+          { better)                                                       }
+          if assigned(list) and
+             (list^.maxx = mode.maxx) and
+             (list^.maxy = mode.maxy) then
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             begin
 {$ifdef logging}
               logln('replacing resolution '+strf(modenr)+' for drivernr '+strf(drivernr)+
                 ' ('+strf(mode.maxx)+'x'+strf(mode.maxy)+')');
 {$endif logging}
               { save/restore next, drivernr and drivermode in list }
+<<<<<<< HEAD
+<<<<<<< HEAD
               prev := newList^.next;
               newList^.Mode := newMode;
               newList^.next := prev;
+=======
+              prev := list^.next;
+              list^ := mode;
+              list^.next := prev;
+>>>>>>> graemeg/fixes_2_2
+=======
+              prev := list^.next;
+              list^ := mode;
+              list^.next := prev;
+>>>>>>> origin/fixes_2_2
             end
           else
             begin
               new(newLst);
               { Increase the number of modes for this driver }
+<<<<<<< HEAD
+<<<<<<< HEAD
               newLst^.Mode := newMode;
+=======
+              newLst^ := mode;
+>>>>>>> graemeg/fixes_2_2
+=======
+              newLst^ := mode;
+>>>>>>> origin/fixes_2_2
 {$ifdef logging}
               logln('Adding resolution '+strf(modenr)+' for drivernr '+strf(drivernr)+
                 ' ('+strf(mode.maxx)+'x'+strf(mode.maxy)+')');
 {$endif logging}
+<<<<<<< HEAD
+<<<<<<< HEAD
               newLst^.next := newList;
+=======
+              newLst^.next := list;
+>>>>>>> graemeg/fixes_2_2
+=======
+              newLst^.next := list;
+>>>>>>> origin/fixes_2_2
               if assigned(prev) then
                 prev^.next := newLst
               else
@@ -160,6 +233,8 @@ end;
             end;
         end;
        { renumber internmodenumber }
+<<<<<<< HEAD
+<<<<<<< HEAD
        newList := newModeList.modeinfo[driverNr];
        i:=0;
        while assigned(newList) do
@@ -167,10 +242,49 @@ end;
           inc(i);
           newList^.internmodenumber:=i;
           newList:=newList^.next;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+       list := newModeList.modeinfo[driverNr];
+       i:=0;
+       while assigned(list) do
+        begin
+          inc(i);
+          list^.internmodenumber:=i;
+          list:=list^.next;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         end;
        newModeList.loHiModeNr[driverNr].lo:=1;
        newModeList.loHiModeNr[driverNr].hi:=i;
      end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    { TP-like mode stuff }
+    if not assigned(ModeList) then
+      begin
+        new(ModeList);
+        System.move(mode, ModeList^, sizeof(Mode));
+      end
+    else
+      begin
+        list := ModeList;
+        { go to the end of the list }
+        while assigned(list^.next) do
+          list:=list^.next;
+        new(NewLst);
+        list^.next := NewLst;
+        System.move(mode, NewLst^, sizeof(Mode));
+      end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
 
@@ -200,7 +314,13 @@ end;
   {********************************************************}
     var
      list, lastModeInfo: PModeInfo;
+<<<<<<< HEAD
+<<<<<<< HEAD
      newList: PNewModeList;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
      x,y: longint;
     begin
 {$ifdef logging}
@@ -213,10 +333,18 @@ end;
             -32768:
               begin
                 reqMode := newModeList.loHiModeNr[reqDriver].lo;
+<<<<<<< HEAD
+<<<<<<< HEAD
                 if newModeList.modeinfo[reqDriver] <> nil then
                   searchMode := newModeList.modeinfo[reqDriver]^.Mode
                 else
                   searchMode := nil;
+=======
+                searchMode := newModeList.modeinfo[reqDriver];
+>>>>>>> graemeg/fixes_2_2
+=======
+                searchMode := newModeList.modeinfo[reqDriver];
+>>>>>>> origin/fixes_2_2
               end;
             -32767:
               begin
@@ -225,22 +353,49 @@ end;
                 { Are there any modes available for this driver? }
                 if reqMode <> -1 then
                   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                     newList := newModeList.modeinfo[reqDriver];
                     while assigned(newList^.next) do
                       newList := newList^.next;
                     searchMode := newList^.Mode;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                    list := newModeList.modeinfo[reqDriver];
+                    while assigned(list^.next) do
+                      list := list^.next;
+                    searchMode := list;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                   end;
               end;
             else
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 newList := newModeList.modeinfo[reqDriver];
                 searchMode := nil;
                 if not assigned(newList) then
+=======
+                list := newModeList.modeinfo[reqDriver];
+                searchMode := nil;
+                if not assigned(list) then
+>>>>>>> graemeg/fixes_2_2
+=======
+                list := newModeList.modeinfo[reqDriver];
+                searchMode := nil;
+                if not assigned(list) then
+>>>>>>> origin/fixes_2_2
                   exit;
                 if mode2res(reqMode,x,y) then
                   begin
                     x := pred(x);
                     y := pred(y);
+<<<<<<< HEAD
+<<<<<<< HEAD
                     while assigned(newList) and
                           ((newList^.Mode^.maxx < x) or
                            ((newList^.Mode^.maxx = x) and
@@ -264,6 +419,30 @@ end;
                       searchMode := newList^.Mode
                     else
                       searchMode := nil;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                    while assigned(list) and
+                          ((list^.maxx < x) or
+                           ((list^.maxx = x) and
+                            (list^.maxy < y))) do
+                      list := list^.next;
+                    if not assigned(list) or
+                       (list^.maxx <> x) or
+                       (list^.maxy <> y) then
+                      list := nil;
+                    searchmode := list;
+                  end
+                else
+                  begin
+                    while assigned(list) and
+                          (list^.internModeNumber <> reqMode) do
+                      list := list^.next;
+                    searchMode := list;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                   end;
 
               end;
@@ -330,10 +509,18 @@ end;
       mode:=nil;
       GetModeName:='';
       { only search in the current driver modes ... }
+<<<<<<< HEAD
+<<<<<<< HEAD
       if (ModeNumber >= lowNewMode) and (ModeNumber <= highNewMode) then
           mode:=SearchMode(IntCurrentNewDriver,ModeNumber)
       else
           mode:=SearchMode(IntCurrentDriver,ModeNumber);
+=======
+      mode:=SearchMode(IntCurrentNewDriver,ModeNumber);
+>>>>>>> graemeg/fixes_2_2
+=======
+      mode:=SearchMode(IntCurrentNewDriver,ModeNumber);
+>>>>>>> origin/fixes_2_2
       if assigned(mode) then
           GetModeName:=Mode^.ModeName
       else
@@ -409,7 +596,13 @@ end;
     var
      modeinfo: PModeInfo;
      usedDriver: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
      dummyNewModeNr: smallint;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     begin
       { check if the mode exists... }
       { Depending on the modenumber, we search using the old or new }
@@ -538,6 +731,8 @@ end;
          SetActivePage := modeInfo^.SetActivePage;
       if assigned(modeInfo^.OutTextXY) then
          OutTextXY:=modeInfo^.OutTextXY;
+<<<<<<< HEAD
+<<<<<<< HEAD
       if assigned(modeInfo^.SetBkColor) then
          SetBkColor:=modeInfo^.SetBkColor;
       if assigned(modeInfo^.GetBkColor) then
@@ -549,6 +744,16 @@ end;
 	with a new style driver/mode and then later using SetGraphMode(GetGraphMode) }
       IntCurrentDriver := modeinfo^.DriverNumber;
       res2Mode(modeinfo^.maxx+1, modeinfo^.maxy+1, modeinfo^.maxColor, IntCurrentNewDriver, dummyNewModeNr);
+=======
+
+      IntCurrentMode := modeinfo^.ModeNumber;
+      IntCurrentDriver := usedDriver;
+>>>>>>> graemeg/fixes_2_2
+=======
+
+      IntCurrentMode := modeinfo^.ModeNumber;
+      IntCurrentDriver := usedDriver;
+>>>>>>> origin/fixes_2_2
 {$ifdef logging}
        logln('Entering mode '+strf(intCurrentMode)+' of driver '+strf(intCurrentDriver));
 {$endif logging}
@@ -575,7 +780,13 @@ end;
           _GraphResult := grInvalidMode;
           exit;
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
       _GraphResult := grOk;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       modeinfo^.InitMode;
       if _GraphResult <> grOk then
         begin

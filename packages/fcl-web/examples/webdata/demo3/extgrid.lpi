@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <CONFIG>
   <ProjectOptions>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Version Value="9"/>
     <General>
       <Flags>
@@ -18,6 +22,38 @@
     <BuildModes Count="1">
       <Item1 Name="default" Default="True"/>
     </BuildModes>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    <Version Value="7"/>
+    <General>
+      <Flags>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <Runnable Value="False"/>
+      </Flags>
+      <MainUnit Value="0"/>
+      <TargetFileExt Value=""/>
+      <Icon Value="0"/>
+      <UseXPManifest Value="True"/>
+      <ActiveEditorIndexAtStart Value="3"/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+    </VersionInfo>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -49,11 +85,53 @@
         <PackageName Value="FCL"/>
       </Item5>
     </RequiredPackages>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Units Count="2">
+=======
+    <Units Count="16">
+>>>>>>> graemeg/cpstrnew
+=======
+    <Units Count="16">
+>>>>>>> graemeg/cpstrnew
+=======
+    <Units Count="16">
+>>>>>>> graemeg/cpstrnew
+=======
+    <Units Count="16">
+>>>>>>> origin/cpstrnew
       <Unit0>
         <Filename Value="extgrid.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="extgrid"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <CursorPos X="24" Y="6"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       </Unit0>
       <Unit1>
         <Filename Value="wmusers.pp"/>
@@ -61,15 +139,284 @@
         <ComponentName Value="FPWebProviderDataModule1"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="wmusers"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       </Unit1>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="10"/>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <CursorPos X="33" Y="60"/>
+        <TopLine Value="27"/>
+        <EditorIndex Value="2"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="../demo2/wmusers.pp"/>
+        <ComponentName Value="FPWebModule1"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="wmusers"/>
+        <CursorPos X="1" Y="80"/>
+        <TopLine Value="45"/>
+        <UsageCount Value="10"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="../fpwebdata.pp"/>
+        <ComponentName Value="FPWebProviderDataModule"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="fpwebdata"/>
+        <CursorPos X="26" Y="1530"/>
+        <TopLine Value="1526"/>
+        <EditorIndex Value="4"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="wmusers.lfm"/>
+        <UsageCount Value="10"/>
+        <SyntaxHighlighter Value="LFM"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="../demo/reglazwebextra.pp"/>
+        <UnitName Value="reglazwebextra"/>
+        <CursorPos X="53" Y="50"/>
+        <TopLine Value="34"/>
+        <EditorIndex Value="0"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="../../../fpc/rtl/objpas/classes/classesh.inc"/>
+        <CursorPos X="17" Y="1833"/>
+        <TopLine Value="1812"/>
+        <UsageCount Value="10"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../../../fpc/rtl/objpas/classes/dm.inc"/>
+        <CursorPos X="3" Y="18"/>
+        <TopLine Value="16"/>
+        <UsageCount Value="10"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../../../fpc/packages/fcl-web/src/fphttp.pp"/>
+        <UnitName Value="fphttp"/>
+        <CursorPos X="3" Y="105"/>
+        <TopLine Value="108"/>
+        <EditorIndex Value="5"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="../../../fpc/packages/fcl-web/src/fpweb.pp"/>
+        <UnitName Value="fpWeb"/>
+        <CursorPos X="3" Y="421"/>
+        <TopLine Value="419"/>
+        <EditorIndex Value="6"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="../../../fpc/lazarus/components/fpweb/weblazideintf.pp"/>
+        <UnitName Value="WebLazIDEIntf"/>
+        <CursorPos X="52" Y="173"/>
+        <TopLine Value="145"/>
+        <UsageCount Value="10"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="../../../fpc/lazarus/components/fpweb/lazweb.pp"/>
+        <UnitName Value="lazweb"/>
+        <CursorPos X="12" Y="7"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="10"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="tralala.pp"/>
+        <ComponentName Value="FPWebModule1"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="tralala"/>
+        <CursorPos X="7" Y="11"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="20"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="../fpwebdata.lfm"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="10"/>
+        <SyntaxHighlighter Value="LFM"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="../../../fpc/packages/fcl-web/src/websession.pp"/>
+        <UnitName Value="websession"/>
+        <CursorPos X="20" Y="40"/>
+        <TopLine Value="20"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="../../../fpc/packages/fcl-xml/src/xmliconv.pas"/>
+        <UnitName Value="xmliconv"/>
+        <CursorPos X="1" Y="64"/>
+        <TopLine Value="37"/>
+        <UsageCount Value="10"/>
+      </Unit15>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="385" Column="53" TopLine="364"/>
+      </Position1>
+      <Position2>
+        <Filename Value="../../../fpc/packages/fcl-web/src/websession.pp"/>
+        <Caret Line="381" Column="25" TopLine="345"/>
+      </Position2>
+      <Position3>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="385" Column="51" TopLine="364"/>
+      </Position3>
+      <Position4>
+        <Filename Value="../../../fpc/packages/fcl-web/src/websession.pp"/>
+        <Caret Line="27" Column="39" TopLine="20"/>
+      </Position4>
+      <Position5>
+        <Filename Value="wmusers.pp"/>
+        <Caret Line="34" Column="29" TopLine="3"/>
+      </Position5>
+      <Position6>
+        <Filename Value="wmusers.pp"/>
+        <Caret Line="48" Column="45" TopLine="15"/>
+      </Position6>
+      <Position7>
+        <Filename Value="wmusers.pp"/>
+        <Caret Line="49" Column="45" TopLine="14"/>
+      </Position7>
+      <Position8>
+        <Filename Value="wmusers.pp"/>
+        <Caret Line="50" Column="45" TopLine="14"/>
+      </Position8>
+      <Position9>
+        <Filename Value="wmusers.pp"/>
+        <Caret Line="17" Column="18" TopLine="14"/>
+      </Position9>
+      <Position10>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="395" Column="32" TopLine="387"/>
+      </Position10>
+      <Position11>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="1066" Column="1" TopLine="1039"/>
+      </Position11>
+      <Position12>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="1624" Column="20" TopLine="1606"/>
+      </Position12>
+      <Position13>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="955" Column="46" TopLine="933"/>
+      </Position13>
+      <Position14>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="956" Column="19" TopLine="933"/>
+      </Position14>
+      <Position15>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="957" Column="16" TopLine="933"/>
+      </Position15>
+      <Position16>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="971" Column="38" TopLine="933"/>
+      </Position16>
+      <Position17>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="975" Column="77" TopLine="954"/>
+      </Position17>
+      <Position18>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="985" Column="43" TopLine="954"/>
+      </Position18>
+      <Position19>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="1013" Column="66" TopLine="992"/>
+      </Position19>
+      <Position20>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="1017" Column="77" TopLine="992"/>
+      </Position20>
+      <Position21>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="1042" Column="62" TopLine="1013"/>
+      </Position21>
+      <Position22>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="1066" Column="35" TopLine="1055"/>
+      </Position22>
+      <Position23>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="1646" Column="22" TopLine="1630"/>
+      </Position23>
+      <Position24>
+        <Filename Value="wmusers.pp"/>
+        <Caret Line="15" Column="41" TopLine="1"/>
+      </Position24>
+      <Position25>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="1655" Column="28" TopLine="1632"/>
+      </Position25>
+      <Position26>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="1587" Column="17" TopLine="1565"/>
+      </Position26>
+      <Position27>
+        <Filename Value="../fpwebdata.pp"/>
+        <Caret Line="414" Column="15" TopLine="393"/>
+      </Position27>
+      <Position28>
+        <Filename Value="extgrid.lpr"/>
+        <Caret Line="6" Column="36" TopLine="1"/>
+      </Position28>
+      <Position29>
+        <Filename Value="extgrid.lpr"/>
+        <Caret Line="11" Column="17" TopLine="1"/>
+      </Position29>
+      <Position30>
+        <Filename Value="extgrid.lpr"/>
+        <Caret Line="6" Column="33" TopLine="1"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="8"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     <Target>
       <Filename Value="extgrid.cgi"/>
     </Target>
     <SearchPaths>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       <IncludeFiles Value="$(ProjOutDir)"/>
     </SearchPaths>
     <Parsing>
@@ -81,6 +428,26 @@
       <CompilerMessages>
         <UseMsgFile Value="True"/>
       </CompilerMessages>
+=======
+      <IncludeFiles Value="$(ProjOutDir)/"/>
+    </SearchPaths>
+    <Other>
+>>>>>>> graemeg/cpstrnew
+=======
+      <IncludeFiles Value="$(ProjOutDir)/"/>
+    </SearchPaths>
+    <Other>
+>>>>>>> graemeg/cpstrnew
+=======
+      <IncludeFiles Value="$(ProjOutDir)/"/>
+    </SearchPaths>
+    <Other>
+>>>>>>> graemeg/cpstrnew
+=======
+      <IncludeFiles Value="$(ProjOutDir)/"/>
+    </SearchPaths>
+    <Other>
+>>>>>>> origin/cpstrnew
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>

@@ -3,8 +3,17 @@
 #
 
 [package]
+<<<<<<< HEAD
 name=libxml
 version=3.1.1
+=======
+name=libxml2
+version=2.5.1
+
+[target]
+units=xml2 xmlxsdparser xmlxsd
+exampledirs=examples
+>>>>>>> graemeg/cpstrnew
 
 [require]
 packages=rtl fpmkunit
@@ -12,6 +21,12 @@ packages=rtl fpmkunit
 [install]
 fpcpackage=y
 
+<<<<<<< HEAD
+=======
+[compiler]
+sourcedir=src tests examples
+
+>>>>>>> graemeg/cpstrnew
 [default]
 fpcdir=../..
 

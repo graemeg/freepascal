@@ -91,6 +91,8 @@ type
 
 implementation
 
+{$IFOpt R+}{$Define RangeChecksOn}{$Endif}
+
 { TPooledMemManager }
 
 procedure TPooledMemManager.Clear;
@@ -131,9 +133,9 @@ begin
     end else begin
       // free list full -> free the ANode
       //FreeItem(AnItem);
-      {$push}{$R-}
+      {$R-}
       inc(FFreedCount);
-      {$pop}
+      {$IfDef RangeChecksOn}{$R+}{$Endif}
     end;
     dec(FCount);
   end;
@@ -150,9 +152,9 @@ begin
   end else begin
     // free list empty -> create new node
     New(Result);
-    {$push}{$R-}
+    {$R-}
     inc(FAllocatedCount);
-    {$pop}
+    {$IfDef RangeChecksOn}{$R+}{$Endif}
   end;
   inc(FCount);
 end;

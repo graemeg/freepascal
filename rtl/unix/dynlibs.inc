@@ -13,6 +13,7 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
 uses dl;
 
 Function SysLoadLibraryA(const Name : RawByteString) : TLibHandle;
@@ -37,13 +38,68 @@ begin
   Result:=TLibHandle(dlopen(PAnsiChar(MemberName),RTLD_LAZY or RTLD_MEMBER));
 {$endif aix}
 end;
+=======
+{$ifdef readinterface}
+
+{ ---------------------------------------------------------------------
+    Interface declarations
+  ---------------------------------------------------------------------}
+
+Type
+  { using PtrInt here is compliant with the other platforms }
+  TLibHandle = PtrInt;
+
+Const
+  NilHandle = TLibHandle(0);
+// these are for easier crossplatform construction of dll names in dynloading libs.
+{$ifdef Darwin}
+  SharedSuffix = 'dylib';
+{$else Darwin}
+  SharedSuffix = 'so';
+{$endif Darwin}
+
+{$else}
+
+{ ---------------------------------------------------------------------
+    Implementation section
+  ---------------------------------------------------------------------}
+
+uses dl;
+
+Function LoadLibrary(const Name : AnsiString) : TLibHandle;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 Function SysLoadLibraryU(const Name: UnicodeString) : TLibHandle;
 begin
   Result := SysLoadLibraryA(ToSingleByteFileSystemEncodedFileName(Name));
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function SysGetProcedureAddress(Lib : TLibHandle; const ProcName : AnsiString) : Pointer;
+=======
+Function GetProcedureAddress(Lib : TLibHandle; const ProcName : AnsiString) : Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+Function GetProcedureAddress(Lib : TLibHandle; const ProcName : AnsiString) : Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+Function GetProcedureAddress(Lib : TLibHandle; const ProcName : AnsiString) : Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+Function GetProcedureAddress(Lib : TLibHandle; const ProcName : AnsiString) : Pointer;
+>>>>>>> origin/cpstrnew
 
 begin
   Result:=dlsym(lib,pchar(ProcName));

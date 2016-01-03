@@ -14,6 +14,8 @@ begin
 
     P:=AddPackage('newt');
 {$ifdef ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
@@ -27,6 +29,20 @@ begin
     P.Targets.AddExampleProgram('newt2.pas');
     P.Targets.AddExampleProgram('newt1.pas');
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    P.Directory:='newt';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+
+    T:=P.Targets.AddUnit('newt.pp');
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifndef ALLPACKAGES}
     Run;
     end;

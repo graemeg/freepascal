@@ -1,13 +1,68 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for chm library
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for chm library
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=chm
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+=======
+version=2.2.5
+>>>>>>> graemeg/fixes_2_2
+=======
+version=2.2.5
+>>>>>>> origin/fixes_2_2
+
+[target]
+units=fasthtmlparser htmlutil paslzx paslzxcomp paslznonslide chmbase chmtypes \
+      chmspecialfiles chmsitemap chmwriter chmfilewriter chmreader htmlindexer \
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+      chmfiftimain lzxcompressthread itolitlstypes itsftransform itolitlsreader
+programs=chmcmd chmls
+examples=
+>>>>>>> graemeg/cpstrnew
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      chmfiftimain
+=======
+      chmfiftimain lzxcompressthread
+>>>>>>> origin/fixes_2.4
+programs=chmcmd chmls
+examples=
+
+[require]
+packages=rtl fcl-xml
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -15,6 +70,8 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -43,6 +100,7 @@ FPMAKE_OPT+=--compiler=$(FPC)
 FPMAKE_OPT+=-bu
 .NOTPARALLEL:
 
+<<<<<<< HEAD
 fpmake$(SRCEXEEXT): fpmake.pp
 	$(FPCFPMAKE) fpmake.pp $(FPMAKE_SKIP_CONFIG) $(addprefix -Fu,$(COMPILER_FPMAKE_UNITDIR)) $(FPCMAKEOPT) $(OPT)
 all:	fpmake$(SRCEXEEXT)
@@ -100,3 +158,36 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+cdmcmd$(EXEEXT): chmcmd.lpr
+
+chmls$(EXEEXT): chmls.lpr
+
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[compiler]
+includedir=src
+sourcedir=src tests
+
+[rules]
+.NOTPARALLEL:
+
+cdmcmd$(EXEEXT): chmcmd.lpr
+
+chmls$(EXEEXT): chmls.lpr
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

@@ -44,13 +44,18 @@
     nils.sjoholm@mailbox.swipnet.se
 
 }
-{$PACKRECORDS 2}
+
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+    {$smartlink on}
+{$endif use_amiga_smartlink}
 
 unit gadtools;
 
 INTERFACE
 
-uses exec, intuition, agraphics, utility;
+uses exec, intuition, graphics, utility;
 
 
 {------------------------------------------------------------------------}
@@ -467,25 +472,25 @@ Type
 VAR
     GadToolsBase : pLibrary;
 
-FUNCTION CreateContext(glistptr : pGadget location 'a0'): pGadget; syscall GadToolsBase 114;
-FUNCTION CreateGadgetA(kind : ULONG location 'd0'; gad : pGadget location 'a0'; const ng : pNewGadget location 'a1'; const taglist : pTagItem location 'a2') : pGadget; syscall GadToolsBase 030;
-FUNCTION CreateMenusA(const newmenu : pNewMenu location 'a0'; const taglist : pTagItem location 'a1') : pMenu; syscall GadToolsBase 048;
-PROCEDURE DrawBevelBoxA(rport : pRastPort location 'a0'; left : LONGINT location 'd0'; top : LONGINT location 'd1'; width : LONGINT location 'd2'; height : LONGINT location 'd3'; const taglist : pTagItem location 'a1'); syscall GadToolsBase 120;
-PROCEDURE FreeGadgets(gad : pGadget location 'a0'); syscall GadToolsBase 036;
-PROCEDURE FreeMenus(menu : pMenu location 'a0'); syscall GadToolsBase 054;
-PROCEDURE FreeVisualInfo(vi : POINTER location 'a0'); syscall GadToolsBase 132;
-FUNCTION GetVisualInfoA(screen : pScreen location 'a0'; const taglist : pTagItem location 'a1') : POINTER; syscall GadToolsBase 126;
-PROCEDURE GT_BeginRefresh(win : pWindow location 'a0'); syscall GadToolsBase 090;
-PROCEDURE GT_EndRefresh(win : pWindow location 'a0'; complete : LONGINT location 'd0'); syscall GadToolsBase 096;
-FUNCTION GT_FilterIMsg(const imsg : pIntuiMessage location 'a1') : pIntuiMessage; syscall GadToolsBase 102;
-FUNCTION GT_GetGadgetAttrsA(gad : pGadget location 'a0'; win : pWindow location 'a1'; req : pRequester location 'a2'; const taglist : pTagItem location 'a3') : LONGINT; syscall GadToolsBase 174;
-FUNCTION GT_GetIMsg(iport : pMsgPort location 'a0') : pIntuiMessage; syscall GadToolsBase 072;
-FUNCTION GT_PostFilterIMsg(imsg : pIntuiMessage location 'a1') : pIntuiMessage; syscall GadToolsBase 108;
-PROCEDURE GT_RefreshWindow(win : pWindow location 'a0'; req : pRequester location 'a1'); syscall GadToolsBase 084;
-PROCEDURE GT_ReplyIMsg(imsg : pIntuiMessage location 'a1'); syscall GadToolsBase 078;
-PROCEDURE GT_SetGadgetAttrsA(gad : pGadget location 'a0'; win : pWindow location 'a1'; req : pRequester location 'a2'; const taglist : pTagItem location 'a3'); syscall GadToolsBase 042;
-FUNCTION LayoutMenuItemsA(firstitem : pMenuItem location 'a0'; vi : POINTER location 'a1'; const taglist : pTagItem location 'a2') : LongBool; syscall GadToolsBase 060;
-FUNCTION LayoutMenusA(firstmenu : pMenu location 'a0'; vi : POINTER location 'a1'; const taglist : pTagItem location 'a2') : LongBool; syscall GadToolsBase 066;
+FUNCTION CreateContext(glistptr : pGadget): pGadget;
+FUNCTION CreateGadgetA(kind : ULONG; gad : pGadget;const ng : pNewGadget;const taglist : pTagItem) : pGadget;
+FUNCTION CreateMenusA(const newmenu : pNewMenu;const taglist : pTagItem) : pMenu;
+PROCEDURE DrawBevelBoxA(rport : pRastPort; left : LONGINT; top : LONGINT; width : LONGINT; height : LONGINT;const taglist : pTagItem);
+PROCEDURE FreeGadgets(gad : pGadget);
+PROCEDURE FreeMenus(menu : pMenu);
+PROCEDURE FreeVisualInfo(vi : POINTER);
+FUNCTION GetVisualInfoA(screen : pScreen;const taglist : pTagItem) : POINTER;
+PROCEDURE GT_BeginRefresh(win : pWindow);
+PROCEDURE GT_EndRefresh(win : pWindow; complete : LONGINT);
+FUNCTION GT_FilterIMsg(const imsg : pIntuiMessage) : pIntuiMessage;
+FUNCTION GT_GetGadgetAttrsA(gad : pGadget; win : pWindow; req : pRequester;const taglist : pTagItem) : LONGINT;
+FUNCTION GT_GetIMsg(iport : pMsgPort) : pIntuiMessage;
+FUNCTION GT_PostFilterIMsg(imsg : pIntuiMessage) : pIntuiMessage;
+PROCEDURE GT_RefreshWindow(win : pWindow; req : pRequester);
+PROCEDURE GT_ReplyIMsg(imsg : pIntuiMessage);
+PROCEDURE GT_SetGadgetAttrsA(gad : pGadget; win : pWindow; req : pRequester;const taglist : pTagItem);
+FUNCTION LayoutMenuItemsA(firstitem : pMenuItem; vi : POINTER;const taglist : pTagItem) : BOOLEAN;
+FUNCTION LayoutMenusA(firstmenu : pMenu; vi : POINTER;const taglist : pTagItem) : BOOLEAN;
 
 function GTMENUITEM_USERDATA(menuitem : pMenuItem): pointer;
 function GTMENU_USERDATA(menu : pMenu): pointer;
@@ -505,7 +510,7 @@ IMPLEMENTATION
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox;
+msgbox;
 {$endif dont_use_openlib}
 
 function GTMENUITEM_USERDATA(menuitem : pMenuItem): pointer;
@@ -517,6 +522,253 @@ function GTMENU_USERDATA(menu : pMenu): pointer;
 begin
     GTMENU_USERDATA := pointer((pMenu(menu)+1));
 end;
+
+FUNCTION CreateContext(glistptr : pGadget): pGadget;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L glistptr,A0
+    MOVEA.L GadToolsBase,A6
+    JSR -114(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CreateGadgetA(kind : ULONG; gad : pGadget;const ng : pNewGadget;const taglist : pTagItem) : pGadget;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  kind,D0
+    MOVEA.L gad,A0
+    MOVEA.L ng,A1
+    MOVEA.L taglist,A2
+    MOVEA.L GadToolsBase,A6
+    JSR -030(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CreateMenusA(const newmenu : pNewMenu;const taglist : pTagItem) : pMenu;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L newmenu,A0
+    MOVEA.L taglist,A1
+    MOVEA.L GadToolsBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE DrawBevelBoxA(rport : pRastPort; left : LONGINT; top : LONGINT; width : LONGINT; height : LONGINT;const taglist : pTagItem);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L rport,A0
+    MOVE.L  left,D0
+    MOVE.L  top,D1
+    MOVE.L  width,D2
+    MOVE.L  height,D3
+    MOVEA.L taglist,A1
+    MOVEA.L GadToolsBase,A6
+    JSR -120(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE FreeGadgets(gad : pGadget);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gad,A0
+    MOVEA.L GadToolsBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE FreeMenus(menu : pMenu);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L menu,A0
+    MOVEA.L GadToolsBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE FreeVisualInfo(vi : POINTER);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L vi,A0
+    MOVEA.L GadToolsBase,A6
+    JSR -132(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION GetVisualInfoA(screen : pScreen;const taglist : pTagItem) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVEA.L taglist,A1
+    MOVEA.L GadToolsBase,A6
+    JSR -126(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE GT_BeginRefresh(win : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L win,A0
+    MOVEA.L GadToolsBase,A6
+    JSR -090(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE GT_EndRefresh(win : pWindow; complete : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L win,A0
+    MOVE.L  complete,D0
+    MOVEA.L GadToolsBase,A6
+    JSR -096(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION GT_FilterIMsg(const imsg : pIntuiMessage) : pIntuiMessage;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L imsg,A1
+    MOVEA.L GadToolsBase,A6
+    JSR -102(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GT_GetGadgetAttrsA(gad : pGadget; win : pWindow; req : pRequester;const taglist : pTagItem) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gad,A0
+    MOVEA.L win,A1
+    MOVEA.L req,A2
+    MOVEA.L taglist,A3
+    MOVEA.L GadToolsBase,A6
+    JSR -174(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GT_GetIMsg(iport : pMsgPort) : pIntuiMessage;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iport,A0
+    MOVEA.L GadToolsBase,A6
+    JSR -072(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GT_PostFilterIMsg(imsg : pIntuiMessage) : pIntuiMessage;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L imsg,A1
+    MOVEA.L GadToolsBase,A6
+    JSR -108(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE GT_RefreshWindow(win : pWindow; req : pRequester);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L win,A0
+    MOVEA.L req,A1
+    MOVEA.L GadToolsBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE GT_ReplyIMsg(imsg : pIntuiMessage);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L imsg,A1
+    MOVEA.L GadToolsBase,A6
+    JSR -078(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE GT_SetGadgetAttrsA(gad : pGadget; win : pWindow; req : pRequester;const taglist : pTagItem);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gad,A0
+    MOVEA.L win,A1
+    MOVEA.L req,A2
+    MOVEA.L taglist,A3
+    MOVEA.L GadToolsBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION LayoutMenuItemsA(firstitem : pMenuItem; vi : POINTER;const taglist : pTagItem) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L firstitem,A0
+    MOVEA.L vi,A1
+    MOVEA.L taglist,A2
+    MOVEA.L GadToolsBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION LayoutMenusA(firstmenu : pMenu; vi : POINTER;const taglist : pTagItem) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L firstmenu,A0
+    MOVEA.L vi,A1
+    MOVEA.L taglist,A2
+    MOVEA.L GadToolsBase,A6
+    JSR -066(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
 
 const
     { Change VERSION and LIBVERSION to proper values }

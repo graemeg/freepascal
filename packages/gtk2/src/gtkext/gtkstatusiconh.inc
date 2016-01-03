@@ -30,6 +30,8 @@ type
 
 
 var
+<<<<<<< HEAD
+<<<<<<< HEAD
   gtk_status_icon_get_type : function:GType; cdecl;
   gtk_status_icon_new : function:PGtkStatusIcon; cdecl;
   gtk_status_icon_new_from_pixbuf : function(pixbuf:PGdkPixbuf):PGtkStatusIcon; cdecl;
@@ -55,6 +57,38 @@ var
   gtk_status_icon_is_embedded : function(status_icon:PGtkStatusIcon):gboolean; cdecl;
   gtk_status_icon_position_menu : procedure(menu:PGtkMenu; x:Pgint; y:Pgint; push_in:Pgboolean; user_data:gpointer); cdecl;
   gtk_status_icon_get_geometry : function(status_icon:PGtkStatusIcon; screen:PPGdkScreen; area:PGdkRectangle; orientation:PGtkOrientation):gboolean; cdecl;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  gtk_status_icon_get_type : function:GType;
+  gtk_status_icon_new : function:PGtkStatusIcon;
+  gtk_status_icon_new_from_pixbuf : function(pixbuf:PGdkPixbuf):PGtkStatusIcon;
+  gtk_status_icon_new_from_file : function(filename:Pgchar):PGtkStatusIcon;
+  gtk_status_icon_new_from_stock : function(stock_id:Pgchar):PGtkStatusIcon;
+  gtk_status_icon_new_from_icon_name : function(icon_name:Pgchar):PGtkStatusIcon;
+  gtk_status_icon_set_from_pixbuf : procedure(status_icon:PGtkStatusIcon; pixbuf:PGdkPixbuf);
+  gtk_status_icon_set_from_file : procedure(status_icon:PGtkStatusIcon; filename:Pgchar);
+  gtk_status_icon_set_from_stock : procedure(status_icon:PGtkStatusIcon; stock_id:Pgchar);
+  gtk_status_icon_set_from_icon_name : procedure(status_icon:PGtkStatusIcon; icon_name:Pgchar);
+  gtk_status_icon_get_storage_type : function(status_icon:PGtkStatusIcon):TGtkImageType;
+  gtk_status_icon_get_pixbuf : function(status_icon:PGtkStatusIcon):PGdkPixbuf;
+  gtk_status_icon_get_stock : function(status_icon: PGtkStatusIcon):Pgchar;
+  gtk_status_icon_get_icon_name : function(status_icon: PGtkStatusIcon):Pgchar;
+  gtk_status_icon_get_size : function(status_icon:PGtkStatusIcon):gint;
+  gtk_status_icon_set_screen : procedure(status_icon:PGtkStatusIcon; screen:PGdkScreen);
+  gtk_status_icon_get_screen : function(status_icon:PGtkStatusIcon):PGdkScreen;
+  gtk_status_icon_set_tooltip : procedure(status_icon:PGtkStatusIcon; tooltip_text:Pgchar);
+  gtk_status_icon_set_visible : procedure(status_icon:PGtkStatusIcon; visible:gboolean);
+  gtk_status_icon_get_visible : function(status_icon:PGtkStatusIcon):gboolean;
+  gtk_status_icon_set_blinking : procedure(status_icon:PGtkStatusIcon; blinking:gboolean);
+  gtk_status_icon_get_blinking : function(status_icon:PGtkStatusIcon):gboolean;
+  gtk_status_icon_is_embedded : function(status_icon:PGtkStatusIcon):gboolean;
+  gtk_status_icon_position_menu : procedure(menu:PGtkMenu; x:Pgint; y:Pgint; push_in:Pgboolean; user_data:gpointer);
+  gtk_status_icon_get_geometry : function(status_icon:PGtkStatusIcon; screen:PPGdkScreen; area:PGdkRectangle; orientation:PGtkOrientation):gboolean;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   function GTK_TYPE_STATUS_ICON: GType; inline;
   function GTK_STATUS_ICON(obj: Pointer): PGTypeInstance; inline;

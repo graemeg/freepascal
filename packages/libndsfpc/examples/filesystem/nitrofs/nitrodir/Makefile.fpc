@@ -4,11 +4,11 @@
 
 [target]
 loaders= 
-programs=nitrodir
+programs=*
 
 [require]
 packages=libndsfpc
-tools=bin2s mmutil grit_fpc rmdir mv ndstool
+tools=bin2s mmutil grit rmdir ndstool
 nortl=y
 
 [install]
@@ -20,37 +20,27 @@ target=nds
 fpcdir=../../../../../..
 
 [compiler]
-options=-Xm
-targetdir=$(BIN)  
-unittargetdir=$(BUILD)
+options=-gl -Xm -O2 
+#-d__THUMB__
 
 [clean]
 files=*.elf *.o *.s *.nds *.nef *.h *.bin *.map \
        $(BUILD)/* \
-       $(INC)/* \
-       $(BIN)/*
+       $(INC)/*
 units=*
 
-
 [prerules]
-BIN = bin
 BUILD = build
-DATA = data
-FILESYSTEM = filesystem
-GFX = gfx
 INC = inc
 AUDIO_FILES = $(foreach dir, $(notdir $(wildcard audio/*.*)), $(CURDIR)/audio/$(dir))
-GFX_FILES   = $(foreach dir, $(GFX), $(notdir $(wildcard $(dir)/*.bmp $(dir)/*.png)))
-BIN_FILES   = $(foreach dir, $(DATA), $(notdir $(wildcard $(dir)/*)))
-GBFS_FILES  = $(foreach dir, GBFS, $(notdir $(wildcard $(dir)/*)))
+GFX_FILES = $(foreach dir,gfx,$(notdir $(wildcard $(dir)/*.png)))
+BIN_FILES = $(foreach dir,data,$(notdir $(wildcard $(dir)/*)))
+NITRO_FILES = $(foreach dir,nitrofiles,$(notdir $(wildcard $(dir)/*)))
 
 [rules]
 .NOTPARALLEL:
 clean: dir_delete fpc_clean fpc_cleanall
-all: dir_make $(BIN_FILES) $(GFX_FILES) fpc_all 
-filesystem: all make_filesystem
-
-
+all: dir_make $(BIN_FILES) $(GFX_FILES) fpc_all nitro
 
 #
 # Delete temp directories
@@ -58,8 +48,7 @@ filesystem: all make_filesystem
 dir_delete:
         @$(DELTREE) $(CURDIR)/$(BUILD) 
         @$(DELTREE) $(CURDIR)/$(INC) 
-        @$(DELTREE) $(CURDIR)/$(BIN) 
-                
+        
 #
 # Create temp directories
 #
@@ -69,9 +58,6 @@ ifneq ($(BUILD), $(CURDIR))
 endif
 ifneq ($(INC), $(CURDIR))
         @$(MKDIR) $(INC)
-endif
-ifneq ($(BIN), $(CURDIR))
-        @$(MKDIR) $(BIN)
 endif
 
 #
@@ -85,12 +71,11 @@ soundbank.bin.o : $(AUDIO_FILES)
 #
 # Png files processing rule
 #
-$(GFX_FILES): $(wildcard %.bmp %.png)
+$(GFX_FILES): $(wildcard %.png) 
         @echo 'Converting $(@) file to asm...'
-        $(GRIT_FPC) $(GFX)/$(@) -fp -fts -ff $(GFX)/$(basename $(@)).grit -o$(BUILD)/$(@)
+        $(GRIT) gfx/$(@) -fts -ff gfx/$(basename $(@)).grit -o$(BUILD)/$(@)
         @echo 'Assembling $(@).s file...'
         $(AS) -o $(BUILD)/$(basename $(@)).o $(BUILD)/$(basename $(@)).s
-        $(MOVE) /Y $(BUILD)/$(basename $(@)).inc $(INC)/$(basename $(@)).inc           
         @echo 'Done!'
 
 #
@@ -98,16 +83,15 @@ $(GFX_FILES): $(wildcard %.bmp %.png)
 # 
 $(BIN_FILES): $(wildcard %.*)
         @echo 'Converting $(@) file to asm...'
-        @$(BIN2S) $(DATA)/$(@) > $(BUILD)/$(@).s
+        @$(BIN2S) data/$(@) > $(BUILD)/$(@).s
         @echo 'Creating $(@).inc include file...'
-        @echo "var" > `(echo "$(INC)/"$(@F) | tr . .)`.inc
-        @echo " " `(echo $(@F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"_end: array [0..0] of cuint8; cvar; external;" >> `(echo "$(INC)/"$(@F) | tr . .)`.inc
-        @echo " " `(echo $(@F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`": array [0..0] of cuint8; cvar; external;" >> `(echo "$(INC)/"$(@F) | tr . .)`.inc
-        @echo " " `(echo $(@F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`_size": cuint32; cvar; external;" >> `(echo "$(INC)/"$(@F) | tr . .)`.inc
+        @echo "var" > `(echo "inc/"$(@F) | tr . .)`.inc
+        @echo " " `(echo $(@F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"_end: array [0..0] of cuint8; cvar; external;" >> `(echo "inc/"$(@F) | tr . .)`.inc
+        @echo " " `(echo $(@F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`": array [0..0] of cuint8; cvar; external;" >> `(echo "inc/"$(@F) | tr . .)`.inc
+        @echo " " `(echo $(@F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`_size": cuint32; cvar; external;" >> `(echo "inc/"$(@F) | tr . .)`.inc
         @echo 'Assembling $(@).s file...'
         @$(AS) -o $(BUILD)/$(@).o $(BUILD)/$(@).s
         @echo 'Done!'
-
 
 #
 # GBFS files processing rule
@@ -118,8 +102,8 @@ data.gbfs.o:
         $(AS) -o $(BUILD)/data.gbfs.o $(BUILD)/data.gbfs.s
 
 #
-# Nitro Filesystem processing rule
+# Binary files processing rule
 # 
-make_filesystem:
-	@$(NDSTOOL) -c $(BIN)/$(TARGET_PROGRAMS).fs.nds -9 $(BIN)/$(TARGET_PROGRAMS).nef.bin -d $(CURDIR)/$(FILESYSTEM)
+nitro: 
+	@ndstool -c nitrodir.nds -9 nitrodir.nef.bin -d $(CURDIR)/nitrofiles
 

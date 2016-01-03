@@ -77,12 +77,22 @@ TEST_FULL_TARGET=$(TEST_CPU_TARGET)-$(TEST_OS_TARGET)
 ifneq ($(findstring $(OS_SOURCE),$(LIMIT83fs)),)
 TEST_TARGETSUFFIX=$(TEST_OS_TARGET)
 else
+<<<<<<< HEAD
+<<<<<<< HEAD
 ifneq ($(findstring $(TEST_OS_TARGET),$(LIMIT83fs)),)
 TEST_TARGETSUFFIX=$(TEST_OS_TARGET)
 else
 TEST_TARGETSUFFIX=$(TEST_FULL_TARGET)
 endif
 endif
+=======
+TEST_TARGETSUFFIX=$(TEST_FULL_TARGET)
+endif
+>>>>>>> graemeg/fixes_2_2
+=======
+TEST_TARGETSUFFIX=$(TEST_FULL_TARGET)
+endif
+>>>>>>> origin/fixes_2_2
 
 ifndef TEST_CCOMPILER
 ifeq ($(CPU_TARGET),$(TEST_CPU_TARGET))
@@ -102,14 +112,32 @@ endif
 
 # Target dir where the ppu and binaries are created
 TEST_OUTPUTDIR=output/$(TEST_TARGETSUFFIX)
+<<<<<<< HEAD
+<<<<<<< HEAD
 C_SUBDIR=$(TEST_OS_TARGET)/$(TEST_CPU_TARGET)
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 # Date and time the testsuite was run
 ifneq ($(DATE),__missing_command_DATE)
 TEST_DATETIME:=$(shell $(DATE) +%Y%m%d%H%M)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 else
 # Use a spaceless string, as it will be used for file names
 TEST_DATETIME="No-date"
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 endif
 
 ifndef TEST_USER
@@ -130,7 +158,13 @@ endif
 ifeq ($(OS_SOURCE),go32v2)
 inWinDOS=1
 inDOS=1
+<<<<<<< HEAD
+<<<<<<< HEAD
 SINGLEDOTESTRUNS=1
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 endif
 
 ################################
@@ -154,18 +188,68 @@ LOGFILES=$(TEST_OUTPUTDIR)/log $(TEST_OUTPUTDIR)/longlog $(TEST_OUTPUTDIR)/faill
 LOGEXT=.testlog .tbslog .tbflog .webtbslog .webtbflog
 
 # Subdirs available in the test subdir
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 TESTSUBDIRS=cg cg/variants cg/cdecl cpu16 cpu16/i8086 library opt units/system units/dos units/crt units/objects units/strings units/sysutils units/math units/sharemem units/strutils units/matrix units/lineinfo units/ucomplex units/fpwidestring units/cpu units/fmtbcd
 TESTPACKAGESUBDIRS=packages/win-base packages/webtbs packages/hash packages/fcl-registry packages/fcl-process packages/zlib packages/fcl-db packages/fcl-base packages/fcl-xml packages/cocoaint packages/bzip2
+=======
+TESTSUBDIRS=cg cg/variants cg/cdecl opt units/system units/dos units/crt units/objects units/strings units/sysutils units/math units/sharemem units/strutils
+TESTPACKAGESUBDIRS=packages/win-base packages/webtbs packages/hash packages/fcl-registry packages/fcl-process packages/zlib packages/fcl-db packages/fcl-base packages/fcl-xml packages/cocoaint
+>>>>>>> graemeg/cpstrnew
+=======
+TESTSUBDIRS=cg cg/variants cg/cdecl opt units/system units/dos units/crt units/objects units/strings units/sysutils units/math units/sharemem units/strutils
+TESTPACKAGESUBDIRS=packages/win-base packages/webtbs packages/hash packages/fcl-registry packages/fcl-process packages/zlib packages/fcl-db packages/fcl-base packages/fcl-xml packages/cocoaint
+>>>>>>> graemeg/cpstrnew
+=======
+TESTSUBDIRS=cg cg/variants cg/cdecl opt units/system units/dos units/crt units/objects units/strings units/sysutils units/math units/sharemem units/strutils
+TESTPACKAGESUBDIRS=packages/win-base packages/webtbs packages/hash packages/fcl-registry packages/fcl-process packages/zlib packages/fcl-db packages/fcl-base packages/fcl-xml packages/cocoaint
+>>>>>>> graemeg/cpstrnew
+=======
+TESTSUBDIRS=cg cg/variants cg/cdecl opt units/system units/dos units/crt units/objects units/strings units/sysutils units/math units/sharemem units/strutils
+TESTPACKAGESUBDIRS=packages/win-base packages/webtbs packages/hash packages/fcl-registry packages/fcl-process packages/zlib packages/fcl-db packages/fcl-base packages/fcl-xml packages/cocoaint
+>>>>>>> origin/cpstrnew
+=======
+TESTSUBDIRS=cg cg/variants cg/cdecl opt units/system units/dos units/crt units/objects units/strings units/sysutils units/math units/sharemem
+TESTPACKAGESUBDIRS=cg packages/win-base packages/webtbs packages/hash packages/fcl-registry packages/fcl-process packages/zlib packages/fcl-base
+>>>>>>> graemeg/fixes_2_2
+=======
+TESTSUBDIRS=cg cg/variants cg/cdecl opt units/system units/dos units/crt units/objects units/strings units/sysutils units/math units/sharemem
+TESTPACKAGESUBDIRS=cg packages/win-base packages/webtbs packages/hash packages/fcl-registry packages/fcl-process packages/zlib packages/fcl-base
+>>>>>>> origin/fixes_2_2
 
 ifdef QUICKTEST
 export QUICKTEST
 else
+<<<<<<< HEAD
+<<<<<<< HEAD
 override TESTSUBDIRS+=$(TESTPACKAGESUBDIRS) alglib
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 endif
 
 # number of tests to run per (potentially parallel) chunk/dotest invocation
 ifndef CHUNKSIZE
 export CHUNKSIZE:=100
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+override TESTSUBDIRS+=TESTSUBDIRS $(TESTPACKAGESUBDIRS)
+>>>>>>> graemeg/fixes_2_2
+=======
+override TESTSUBDIRS+=TESTSUBDIRS $(TESTPACKAGESUBDIRS)
+>>>>>>> origin/fixes_2_2
 endif
 
 # All full dirnames in the test/ dir including the subdir self
@@ -219,12 +303,36 @@ endif
 # Copy test environment dependent files ctest.o, cext3.o, cext4.o to test/cg etc
 #
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 .PHONY: create_c_objects delete_c_objects copyfiles test_c_objects
+=======
+.PHONY: create_c_objects delete_c_objects copyfiles
+>>>>>>> graemeg/cpstrnew
+=======
+.PHONY: create_c_objects delete_c_objects copyfiles
+>>>>>>> graemeg/cpstrnew
+=======
+.PHONY: create_c_objects delete_c_objects copyfiles
+>>>>>>> graemeg/cpstrnew
+=======
+.PHONY: create_c_objects delete_c_objects copyfiles
+>>>>>>> origin/cpstrnew
 
 C_SOURCE_DIR=test/cg/obj
 C_SOURCES=ctest.c tcext3.c tcext4.c tcext5.c tcext6.c
 CPP_SOURCES=cpptcl1.cpp cpptcl2.cpp
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 TASM_SOURCES=ttasm1.asm
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 ifneq ($(TEST_ABI),)
 C_OBJECTS_DIR=$(C_SOURCE_DIR)/$(TEST_OS_TARGET)/$(TEST_CPU_TARGET)-$(TEST_ABI)
 else
@@ -232,7 +340,13 @@ C_OBJECTS_DIR=$(C_SOURCE_DIR)/$(TEST_OS_TARGET)/$(TEST_CPU_TARGET)
 endif
 C_OBJECTS=$(addprefix $(C_OBJECTS_DIR)/, $(subst .c,.o, $(C_SOURCES)))
 CPP_OBJECTS=$(addprefix $(C_OBJECTS_DIR)/, $(subst .cpp,.o, $(CPP_SOURCES)))
+<<<<<<< HEAD
+<<<<<<< HEAD
 TASM_OBJECTS=$(addprefix $(C_OBJECTS_DIR)/, $(subst .asm,.obj, $(TASM_SOURCES)))
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 
 create_c_objects:
@@ -241,11 +355,66 @@ ifneq ($(TEST_CCOMPILER),)
 		$(MAKE) $(C_OBJECTS)
 		-$(COPY) $(addprefix $(C_SOURCE_DIR)/, $(CPP_SOURCES)) $(C_OBJECTS_DIR)
 		$(MAKE) $(CPP_OBJECTS)
+<<<<<<< HEAD
+<<<<<<< HEAD
 		-$(DEL) $(addprefix $(C_OBJECTS_DIR)/, $(C_SOURCES) $(CPP_SOURCES))
+=======
+		-$(DEL) $(addprefix $(C_OBJECTS_DIR)/, $(C_SOURCES) $(CPP_SOURCES)) 
+>>>>>>> graemeg/cpstrnew
+=======
+		-$(DEL) $(addprefix $(C_OBJECTS_DIR)/, $(C_SOURCES) $(CPP_SOURCES)) 
+>>>>>>> origin/cpstrnew
 else
 		$(ECHO) create_c_objects rule needs a valid C compiler in TEST_CCOMPILER variable
 		$(ECHO) TEST_CFLAGS variable is passed as options is used to compile the objects
 endif
+<<<<<<< HEAD
+=======
+ifneq ($(TEST_ABI),)
+C_OBJECTS_DIR=$(C_SOURCE_DIR)/$(TEST_OS_TARGET)/$(TEST_CPU_TARGET)-$(TEST_ABI)
+else
+C_OBJECTS_DIR=$(C_SOURCE_DIR)/$(TEST_OS_TARGET)/$(TEST_CPU_TARGET)
+endif
+C_OBJECTS=$(addprefix $(C_OBJECTS_DIR)/, $(subst .c,.o, $(C_SOURCES)))
+CPP_OBJECTS=$(addprefix $(C_OBJECTS_DIR)/, $(subst .cpp,.o, $(CPP_SOURCES)))
+
+
+create_c_objects:
+ifneq ($(TEST_CCOMPILER),)
+		-$(COPY) $(addprefix $(C_SOURCE_DIR)/, $(C_SOURCES)) $(C_OBJECTS_DIR)
+		$(MAKE) $(C_OBJECTS)
+		-$(COPY) $(addprefix $(C_SOURCE_DIR)/, $(CPP_SOURCES)) $(C_OBJECTS_DIR)
+		$(MAKE) $(CPP_OBJECTS)
+		-$(DEL) $(addprefix $(C_OBJECTS_DIR)/, $(C_SOURCES) $(CPP_SOURCES)) 
+else
+		$(ECHO) create_c_objects rule needs a valid C compiler in TEST_CCOMPILER variable
+		$(ECHO) TEST_CFLAGS variable is passed as options is used to compile the objects
+endif
+>>>>>>> graemeg/cpstrnew
+=======
+ifneq ($(TEST_ABI),)
+C_OBJECTS_DIR=$(C_SOURCE_DIR)/$(TEST_OS_TARGET)/$(TEST_CPU_TARGET)-$(TEST_ABI)
+else
+C_OBJECTS_DIR=$(C_SOURCE_DIR)/$(TEST_OS_TARGET)/$(TEST_CPU_TARGET)
+endif
+C_OBJECTS=$(addprefix $(C_OBJECTS_DIR)/, $(subst .c,.o, $(C_SOURCES)))
+CPP_OBJECTS=$(addprefix $(C_OBJECTS_DIR)/, $(subst .cpp,.o, $(CPP_SOURCES)))
+
+
+create_c_objects:
+ifneq ($(TEST_CCOMPILER),)
+		-$(COPY) $(addprefix $(C_SOURCE_DIR)/, $(C_SOURCES)) $(C_OBJECTS_DIR)
+		$(MAKE) $(C_OBJECTS)
+		-$(COPY) $(addprefix $(C_SOURCE_DIR)/, $(CPP_SOURCES)) $(C_OBJECTS_DIR)
+		$(MAKE) $(CPP_OBJECTS)
+		-$(DEL) $(addprefix $(C_OBJECTS_DIR)/, $(C_SOURCES) $(CPP_SOURCES)) 
+else
+		$(ECHO) create_c_objects rule needs a valid C compiler in TEST_CCOMPILER variable
+		$(ECHO) TEST_CFLAGS variable is passed as options is used to compile the objects
+endif
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 delete_c_objects:
 ifneq ($(TEST_CCOMPILER),)
@@ -265,7 +434,19 @@ copyfiles: $(TEST_OUTPUTDIR)
         -$(MKDIRTREE) $(TEST_OUTPUTDIR)/test/cg
         -$(COPY) $(C_OBJECTS) $(TEST_OUTPUTDIR)/test/cg
         -$(COPY) $(CPP_OBJECTS) $(TEST_OUTPUTDIR)/test/cg
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         -$(COPY) $(TASM_OBJECTS) $(TEST_OUTPUTDIR)/test/cg
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         -$(MKDIRTREE) $(TEST_OUTPUTDIR)/test/units/system
 
 
@@ -323,10 +504,16 @@ endif
 ifdef TEST_VERBOSE
 override DOTESTOPT+=-V
 endif
+<<<<<<< HEAD
+<<<<<<< HEAD
 # Also display benchmarks
 ifdef TEST_BENCH
 override DOTESTOPT+=-D
 endif
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 ifdef V
 Q=
 QECHO=
@@ -386,6 +573,7 @@ DIRS=webtbs webtbf tbs tbf $(TESTDIRS)
 
 vpath %.log $(TEST_OUTPUTDIR)
 vpath %.elg $(TEST_OUTPUTDIR)
+<<<<<<< HEAD
 vpath %.o $(C_SUBDIR)
 
 ifdef SINGLEDOTESTRUNS
@@ -408,7 +596,12 @@ endif
 
 %.elg : %.pp testprep-stamp.$(TEST_FULL_TARGET)
 	$(call QECHO,"  EXECUTE $<")
+ifdef SINGLEDOTESTRUNS
 	$(Q)$(DOTEST) $(DOTESTOPT) -e $<
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 ifdef TEST_CCOMPILER
 %.o : %.c
@@ -416,7 +609,30 @@ ifdef TEST_CCOMPILER
 
 %.o : %.cc
 	$(TEST_CCOMPILER) -c $< -o $(@D)/$(C_SUBDIR)/$(@F)
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 endif
+=======
+
+%.log : %.pp
+	$(call QECHO,"  COMPILE $<")
+	$(Q)$(DOTEST) $(DOTESTOPT) $<
+
+%.elg : %.pp
+	$(call QECHO,"  EXECUTE $<")
+	$(Q)$(DOTEST) $(DOTESTOPT) -e $<
+<<<<<<< HEAD
+
+>>>>>>> graemeg/fixes_2_2
+=======
+endif
+>>>>>>> origin/fixes_2.4
 
 ################################
 # Compile tests
@@ -430,7 +646,20 @@ alltbf : testprep $(patsubst %.pp,%.log,$(sort $(wildcard tbf/t*.pp)))
 allwebtbs : testprep $(patsubst %.pp,%.log,$(sort $(wildcard webtbs/t*.pp)))
 allwebtbf : testprep $(patsubst %.pp,%.log,$(sort $(wildcard webtbf/t*.pp)))
 
+<<<<<<< HEAD
 alltest : testprep $(patsubst %.pp,%.log,$(sort $(wildcard $(addsuffix /t*.pp,$(TESTDIRS)))))
+=======
+alltest : testprep $(patsubst %.pp,%.log,$(wildcard $(addsuffix /t*.pp,$(TESTDIRS))))
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 ifndef SINGLEDOTESTRUNS
 	$(Q)$(DOTEST) $(DOTESTOPT) -e $(wildcard $(addsuffix /t*.pp,$(TESTDIRS)))
 endif
@@ -450,6 +679,7 @@ test_c_objects: testprep
 ifdef SINGLEDOTESTRUNS
 .PHONY: allexectbs allexectbf allexecwebtbs allexecwebtbf allexectest allexectests
 
+<<<<<<< HEAD
 allexectbs: $(addsuffix .tbslog, $(LOGFILES))
 allexectbf: $(addsuffix .tbflog, $(LOGFILES))
 allexecwebtbs: $(addsuffix .webtbslog, $(LOGFILES))
@@ -545,6 +775,40 @@ allexectests: $(MAKEINC)
 	$(MAKE) gparmake_allexectests
 
 # SINGLEDOTESTRUNS
+=======
+allexectbs : testprep $(patsubst %.pp,%.elg,$(wildcard tbs/t*.pp))
+ifndef SINGLEDOTESTRUNS
+	$(Q)$(DOTEST) $(DOTESTOPT) -e $(wildcard tbs/t*.pp)
+endif
+
+allexectbf : testprep $(patsubst %.pp,%.elg,$(wildcard tbf/t*.pp))
+ifndef SINGLEDOTESTRUNS
+	$(Q)$(DOTEST) $(DOTESTOPT) -e $(wildcard tbf/t*.pp)
+endif
+
+allexecwebtbs : testprep $(patsubst %.pp,%.elg,$(wildcard webtbs/t*.pp))
+ifndef SINGLEDOTESTRUNS
+	$(Q)$(DOTEST) $(DOTESTOPT) -e $(wildcard webtbs/t*.pp)
+endif
+
+allexecwebtbf : testprep $(patsubst %.pp,%.elg,$(wildcard webtbf/t*.pp))
+ifndef SINGLEDOTESTRUNS
+	$(Q)$(DOTEST) $(DOTESTOPT) -e $(wildcard webtbf/t*.pp)
+endif
+
+allexectest : testprep $(patsubst %.pp,%.elg,$(wildcard $(addsuffix /t*.pp,$(TESTDIRS))))
+ifndef SINGLEDOTESTRUNS
+	$(Q)$(DOTEST) $(DOTESTOPT) -e $(wildcard $(addsuffix /t*.pp,$(TESTDIRS)))
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 endif
 
 
@@ -560,7 +824,17 @@ clean_sources:
 
 clean_test:
         -$(DELTREE) $(TEST_OUTPUTDIR)
+<<<<<<< HEAD
+<<<<<<< HEAD
         -$(DEL) core gmon.out testprep-stamp.$(TEST_FULL_TARGET) dotgz$(SRCBATCHEXT)
+=======
+        -$(DEL) $(LOG) $(LONGLOG) $(FAILLIST)
+        -$(DEL) core gmon.out testprep-stamp.$(TEST_FULL_TARGET) dotgz.bat
+>>>>>>> graemeg/fixes_2_2
+=======
+        -$(DEL) $(LOG) $(LONGLOG) $(FAILLIST)
+        -$(DEL) core gmon.out testprep-stamp.$(TEST_FULL_TARGET) dotgz.bat
+>>>>>>> origin/fixes_2_2
 
 clean: clean_sources fpc_clean
         $(MAKE) clean_test CPU_TARGET=$(TEST_CPU_TARGET) OS_TARGET=$(TEST_OS_TARGET) SUBARCH=$(TEST_SUBARCH)
@@ -620,6 +894,10 @@ ifneq ($(SVNVERSION),)
         $(ECHOREDIR) svnpackagesrevision=$(SVN_PACKAGES_REV_STR) >> $(TEST_OUTPUTDIR)/dbdigest.cfg
 endif
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 # OpenBSD system tar executable doesn't know
 # about --files-from option, but supports -I
 ifeq ($(OS_SOURCE),openbsd)
@@ -628,6 +906,8 @@ else
 TARFROM=--files-from=tar.lst
 endif
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 # Pass option -ll to perpup if we use longlog file
 # instead of add all *.log and *.elg files to DB_TARGZ
 ifneq ($(TEST_USE_LONGLOG),)
@@ -635,7 +915,19 @@ PREPUP_OPT=-ll
 else
 PREPUP_OPT=
 endif
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 ifndef inWinDOS
 $(TEST_OUTPUTDIR)/tar.lst:
 ifdef inOS2
@@ -656,16 +948,34 @@ $(TEST_OUTPUTDIR)/$(DB_TARGZ): $(TEST_OUTPUTDIR)/tar.lst $(TEST_OUTPUTDIR)/dbdig
 ifdef inCygWin
         dos2unix $(TEST_OUTPUTDIR)/tar.lst
 endif
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 ifdef inOS2
         dos2unix $(TEST_OUTPUTDIR)/tar.lst
         cd $(subst /,\,$(TEST_OUTPUTDIR)) && $(TARPROG) czf $(DB_TARGZ) $(TARFROM)
 else
         cd $(TEST_OUTPUTDIR) && $(TARPROG) czf $(DB_TARGZ) $(TARFROM)
 endif
+=======
+        cd $(TEST_OUTPUTDIR) && $(TARPROG) czf $(DB_TARGZ) --files-from=tar.lst
+>>>>>>> graemeg/cpstrnew
+=======
+        cd $(TEST_OUTPUTDIR) && $(TARPROG) czf $(DB_TARGZ) --files-from=tar.lst
+>>>>>>> graemeg/cpstrnew
+=======
+        cd $(TEST_OUTPUTDIR) && $(TARPROG) czf $(DB_TARGZ) --files-from=tar.lst
+>>>>>>> graemeg/cpstrnew
+=======
+        cd $(TEST_OUTPUTDIR) && $(TARPROG) czf $(DB_TARGZ) --files-from=tar.lst
+>>>>>>> origin/cpstrnew
 
 else
 $(TEST_OUTPUTDIR)/$(DB_TARGZ): $(TEST_OUTPUTDIR)/dbdigest.cfg
 ifdef inDOS
+<<<<<<< HEAD
+<<<<<<< HEAD
         $(ECHOREDIR) @echo off > dotgz$(SRCBATCHEXT)
         $(ECHOREDIR) cd $(subst /,\,$(TEST_OUTPUTDIR)) >> dotgz$(SRCBATCHEXT)
         $(ECHOREDIR) $(subst /,\,../../$(PREPUP)) $(DB_TARGZ) >> dotgz$(SRCBATCHEXT)
@@ -692,15 +1002,61 @@ endif
 
 uploadrun: $(TEST_OUTPUTDIR)/$(DB_TARGZ)
 ifdef UsePutty
+=======
+        $(ECHOREDIR) @echo off > dotgz.bat
+        $(ECHOREDIR) cd $(subst /,\,$(TEST_OUTPUTDIR)) >> dotgz.bat
+        $(ECHOREDIR) $(subst /,\,../../$(PREPUP)) $(DB_TARGZ) >> dotgz.bat
+        $(ECHOREDIR) if errorlevel 1 $(DEL) $(DB_TARGZ) >> dotgz.bat
+        $(ECHOREDIR) cd $(subst /,\,../../) >> dotgz.bat
+        $(RUNBATCH) dotgz.bat
+else
+        cd "$(TEST_OUTPUTDIR)" && "../../$(PREPUP)" $(DB_TARGZ)
+endif
+endif
+
+uploadrun: $(TEST_OUTPUTDIR)/$(DB_TARGZ)
+ifdef inWinDOS
+>>>>>>> graemeg/fixes_2_2
+=======
+        $(ECHOREDIR) @echo off > dotgz.bat
+        $(ECHOREDIR) cd $(subst /,\,$(TEST_OUTPUTDIR)) >> dotgz.bat
+        $(ECHOREDIR) $(subst /,\,../../$(PREPUP)) $(DB_TARGZ) >> dotgz.bat
+        $(ECHOREDIR) if errorlevel 1 $(DEL) $(DB_TARGZ) >> dotgz.bat
+        $(ECHOREDIR) cd $(subst /,\,../../) >> dotgz.bat
+        $(RUNBATCH) dotgz.bat
+else
+        cd "$(TEST_OUTPUTDIR)" && "../../$(PREPUP)" $(DB_TARGZ)
+endif
+endif
+
+uploadrun: $(TEST_OUTPUTDIR)/$(DB_TARGZ)
+ifdef inWinDOS
+>>>>>>> origin/fixes_2_2
         pscp -load "fpc@www.freepascal.org" $(TEST_OUTPUTDIR)/$(DB_TARGZ) $(DB_HOST):$(DB_UPLOADDIR)/$(DB_TARGZ).part $(SSH_EXTRA)
         plink -load "fpc@www.freepascal.org" "mv $(DB_UPLOADDIR)/$(DB_TARGZ).part $(DB_UPLOADDIR)/$(DB_TARGZ)"
 else
         scp $(DB_SSH_EXTRA) $(TEST_OUTPUTDIR)/$(DB_TARGZ) $(DB_HOST):$(DB_UPLOADDIR)/$(DB_TARGZ).part
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 ifdef inOS2
         $(ECHOREDIR) . | ssh $(DB_SSH_EXTRA) $(DB_HOST) "mv $(DB_UPLOADDIR)/$(DB_TARGZ).part $(DB_UPLOADDIR)/$(DB_TARGZ)"
 else
         ssh $(DB_SSH_EXTRA) $(DB_HOST) "mv $(DB_UPLOADDIR)/$(DB_TARGZ).part $(DB_UPLOADDIR)/$(DB_TARGZ)"
 endif
+=======
+        ssh $(DB_SSH_EXTRA) $(DB_HOST) "mv $(DB_UPLOADDIR)/$(DB_TARGZ).part $(DB_UPLOADDIR)/$(DB_TARGZ)"
+>>>>>>> graemeg/cpstrnew
+=======
+        ssh $(DB_SSH_EXTRA) $(DB_HOST) "mv $(DB_UPLOADDIR)/$(DB_TARGZ).part $(DB_UPLOADDIR)/$(DB_TARGZ)"
+>>>>>>> graemeg/cpstrnew
+=======
+        ssh $(DB_SSH_EXTRA) $(DB_HOST) "mv $(DB_UPLOADDIR)/$(DB_TARGZ).part $(DB_UPLOADDIR)/$(DB_TARGZ)"
+>>>>>>> graemeg/cpstrnew
+=======
+        ssh $(DB_SSH_EXTRA) $(DB_HOST) "mv $(DB_UPLOADDIR)/$(DB_TARGZ).part $(DB_UPLOADDIR)/$(DB_TARGZ)"
+>>>>>>> origin/cpstrnew
 endif
 
 all : allexectests

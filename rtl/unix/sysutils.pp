@@ -35,6 +35,8 @@ interface
 {$DEFINE HASUNIX}
 {$DEFINE HASCREATEGUID}
 {$DEFINE HAS_OSUSERDIR}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$DEFINE HAS_LOCALTIMEZONEOFFSET}
 {$DEFINE HAS_GETTICKCOUNT64}
 
@@ -42,6 +44,10 @@ interface
 {$define SYSUTILS_HAS_ANSISTR_FILEUTIL_IMPL}
 { OS has an ansistring/single byte environment variable API }
 {$define SYSUTILS_HAS_ANSISTR_ENVVAR_IMPL}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 uses
 {$IFDEF LINUX}linux,{$ENDIF}
@@ -448,24 +454,41 @@ begin
     fmOpenWrite : LinuxFlags:=LinuxFlags or O_WrOnly;
     fmOpenReadWrite : LinuxFlags:=LinuxFlags or O_RdWr;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
   repeat
     FileOpenNoLocking:=fpOpen (pointer(SystemFileName),LinuxFlags);
   until (FileOpenNoLocking<>-1) or (fpgeterrno<>ESysEINTR);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  FileOpen:=fpOpen (pointer(FileName),LinuxFlags);
+  //!! We need to set locking based on Mode !!
+>>>>>>> graemeg/fixes_2_2
 end;
 
 
 Function FileOpen (Const FileName : RawbyteString; Mode : Integer) : Longint;
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FileOpen:=FileOpenNoLocking(FileName, Mode);
   FileOpen:=DoFileLocking(FileOpen, Mode);
+=======
+  FileCreate:=fpOpen(pointer(FileName),O_RdWr or O_Creat or O_Trunc);
+>>>>>>> graemeg/fixes_2_2
+=======
+  FileCreate:=fpOpen(pointer(FileName),O_RdWr or O_Creat or O_Trunc);
+>>>>>>> origin/fixes_2_2
 end;
 
 
 Function FileCreate (Const FileName : RawByteString) : Longint;
 
+<<<<<<< HEAD
 Var
   SystemFileName: RawByteString;
 begin
@@ -473,6 +496,13 @@ begin
   repeat
     FileCreate:=fpOpen(pointer(SystemFileName),O_RdWr or O_Creat or O_Trunc);
   until (FileCreate<>-1) or (fpgeterrno<>ESysEINTR);
+=======
+BEGIN
+  FileCreate:=fpOpen(pointer(FileName),O_RdWr or O_Creat or O_Trunc,Mode);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 
@@ -489,6 +519,7 @@ end;
 
 Function FileCreate (Const FileName : RawByteString; ShareMode : Longint; Rights:LongInt ) : Longint;
 
+<<<<<<< HEAD
 Var
   fd: Longint;
 begin
@@ -512,6 +543,14 @@ begin
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 Function FileRead (Handle : Longint; out Buffer; Count : longint) : Longint;
 
 begin
@@ -553,6 +592,8 @@ begin
 end;
 
 Function FileTruncate (Handle: THandle; Size: Int64) : boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
 var
   res: cint;
 begin
@@ -566,6 +607,20 @@ begin
       until (res<>-1) or (fpgeterrno<>ESysEINTR);
       FileTruncate:=res>=0;
     end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+begin
+  if (SizeOf (TOff) < 8)   (* fpFTruncate only supporting signed 32-bit size *)
+                         and (Size > high (longint)) then
+    FileTruncate := false
+  else
+    FileTruncate:=fpftruncate(Handle,Size)>=0;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 Function FileAge (Const FileName : RawByteString): Longint;
@@ -573,11 +628,48 @@ Var
   Info : Stat;
   SystemFileName: RawByteString;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
   If  (fpstat(pchar(SystemFileName),Info)<0) or fpS_ISDIR(info.st_mode) then
     exit(-1)
   else 
     Result:=info.st_mtime;
+=======
+  If  (fpstat (pointer(FileName),Info)<0) or fpS_ISDIR(info.st_mode) then
+    exit(-1)
+  else 
+=======
+  EpochToLocal(UnixAge,y,m,d,hh,mm,ss);
+  Result:=DateTimeToFileDate(EncodeDate(y,m,d)+EncodeTime(hh,mm,ss,0));
+end;
+
+
+Function FileAge (Const FileName : String): Longint;
+
+Var Info : Stat;
+
+begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+  If  (fpstat (pointer(FileName),Info)<0) or fpS_ISDIR(info.st_mode) then
+=======
+  If  fpstat (pointer(FileName),Info)<0 then
+>>>>>>> graemeg/fixes_2_2
+=======
+  If  fpstat (pointer(FileName),Info)<0 then
+>>>>>>> origin/fixes_2_2
+    exit(-1)
+  else 
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    Result:=UnixToWinAge(info.st_mtime);
+>>>>>>> graemeg/cpstrnew
 end;
 
 
@@ -588,7 +680,15 @@ begin
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
   // Don't use stat. It fails on files >2 GB.
   // Access obeys the same access rules, so the result should be the same.
+<<<<<<< HEAD
+<<<<<<< HEAD
   FileExists:=fpAccess(pointer(SystemFileName),F_OK)=0;
+=======
+  FileExists:=fpAccess(pointer(filename),F_OK)=0;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FileExists:=fpAccess(pointer(filename),F_OK)=0;
+>>>>>>> origin/fixes_2_2
 end;
 
 Function DirectoryExists (Const Directory : RawByteString) : Boolean;
@@ -596,6 +696,8 @@ Var
   Info : Stat;
   SystemFileName: RawByteString;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(Directory);
   DirectoryExists:=(fpstat(pointer(SystemFileName),Info)>=0) and fpS_ISDIR(Info.st_mode);
 end;
@@ -604,6 +706,23 @@ Function LinuxToWinAttr (const FN : RawByteString; Const Info : Stat) : Longint;
 Var
   LinkInfo : Stat;
   nm : RawByteString;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  DirectoryExists:=(fpstat(pointer(Directory),Info)>=0) and fpS_ISDIR(Info.st_mode);
+end;
+
+
+Function LinuxToWinAttr (FN : Pchar; Const Info : Stat) : Longint;
+
+Var
+  FNL : String;
+  LinkInfo : Stat;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   Result:=faArchive;
   If fpS_ISDIR(Info.st_mode) then
@@ -619,10 +738,24 @@ begin
      Result:=Result or faSysFile;
   If fpS_ISLNK(Info.st_mode) Then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       Result:=Result or faSymLink;
       // Windows reports if the link points to a directory.
       if (fpstat(pchar(FN),LinkInfo)>=0) and fpS_ISDIR(LinkInfo.st_mode) then
         Result := Result or faDirectory;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    Result:=Result or faSymLink;
+    // Windows reports if the link points to a directory.
+    FNL:=StrPas(FN);
+    if (fpstat(FNL,LinkInfo)>=0) and fpS_ISDIR(LinkInfo.st_mode) then
+      Result := Result or faDirectory;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     end;
 end;
 
@@ -853,7 +986,9 @@ Function FindGetFileInfo(const s: RawByteString; var f: TAbstractSearchRec; var 
 Var
   st : baseunix.stat;
   WinAttr : longint;
+  
 begin
+<<<<<<< HEAD
   if Assigned(f.FindHandle) and ( (PUnixFindData(F.FindHandle)^.searchattr and faSymlink) > 0) then
     FindGetFileInfo:=(fplstat(pointer(s),st)=0)
   else
@@ -880,6 +1015,37 @@ Function InternalFindNext (var Rslt : TAbstractSearchRec; var Name : RawByteStri
 
 Var
   DirName  : RawByteString;
+=======
+  FindGetFileInfo:=false;
+  If Assigned(F.FindHandle) and ((((PUnixFindData(f.FindHandle)^.searchattr)) and faSymlink) > 0) then
+    FindGetFileInfo:=(fplstat(pointer(s),st)=0)    
+  else
+    FindGetFileInfo:=(fpstat(pointer(s),st)=0);
+  If not FindGetFileInfo then 
+    exit;  
+  WinAttr:=LinuxToWinAttr(PChar(pointer(s)),st);
+  If (f.FindHandle = nil) or ((WinAttr and Not(PUnixFindData(f.FindHandle)^.searchattr))=0) Then
+   Begin
+     f.Name:=ExtractFileName(s);
+     f.Attr:=WinAttr;
+     f.Size:=st.st_Size;
+     f.Mode:=st.st_mode;
+     f.Time:=UnixToWinAge(st.st_mtime);
+     result:=true;
+   End;
+end;
+
+
+Function FindNext (Var Rslt : TSearchRec) : Longint;
+{
+  re-opens dir if not already in array and calls FindGetFileInfo
+}
+Var
+  DirName  : String;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   FName,
   SName    : RawBytestring;
   Found,
@@ -902,7 +1068,7 @@ Begin
         DirName:='./'
       Else
         DirName:=Copy(UnixFindData^.SearchSpec,1,UnixFindData^.NamePos);
-      UnixFindData^.DirPtr := fpopendir(Pchar(DirName));
+      UnixFindData^.DirPtr := fpopendir(Pchar(pointer(DirName)));
     end;
   SName:=Copy(UnixFindData^.SearchSpec,UnixFindData^.NamePos+1,Length(UnixFindData^.SearchSpec));
   Found:=False;
@@ -998,11 +1164,19 @@ Var
   Info : Stat;
   res : Integer;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
   res:=FpLStat(pointer(SystemFileName),Info);
   if res<0 then
     res:=FpStat(pointer(SystemFileName),Info);
   if res<0 then
+=======
+  If  FpStat (pointer(FileName),Info)<0 then
+>>>>>>> graemeg/fixes_2_2
+=======
+  If  FpStat (pointer(FileName),Info)<0 then
+>>>>>>> origin/fixes_2_2
     Result:=-1
   Else
     Result:=LinuxToWinAttr(SystemFileName,Info);
@@ -1019,8 +1193,16 @@ Function DeleteFile (Const FileName : RawByteString) : Boolean;
 var
   SystemFileName: RawByteString;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
   Result:=fpUnLink (pchar(SystemFileName))>=0;
+=======
+  Result:=fpUnLink (pointer(FileName))>=0;
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result:=fpUnLink (pointer(FileName))>=0;
+>>>>>>> origin/fixes_2_2
 end;
 
 
@@ -1028,9 +1210,17 @@ Function RenameFile (Const OldName, NewName : RawByteString) : Boolean;
 var
   SystemOldName, SystemNewName: RawByteString;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   SystemOldName:=ToSingleByteFileSystemEncodedFileName(OldName);
   SystemNewName:=ToSingleByteFileSystemEncodedFileName(NewName);
   RenameFile:=BaseUnix.FpRename(pointer(SystemOldName),pointer(SystemNewName))>=0;
+=======
+  RenameFile:=BaseUnix.FpRename(pointer(OldNAme),pointer(NewName))>=0;
+>>>>>>> graemeg/fixes_2_2
+=======
+  RenameFile:=BaseUnix.FpRename(pointer(OldNAme),pointer(NewName))>=0;
+>>>>>>> origin/fixes_2_2
 end;
 
 
@@ -1038,8 +1228,16 @@ Function FileIsReadOnly(const FileName: RawByteString): Boolean;
 var
   SystemFileName: RawByteString;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
   Result:=fpAccess(PChar(SystemFileName),W_OK)<>0;
+=======
+  Result := fpAccess(PChar(pointer(FileName)),W_OK)<>0;
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result := fpAccess(PChar(pointer(FileName)),W_OK)<>0;
+>>>>>>> origin/fixes_2_2
 end;
 
 Function FileSetDate (Const FileName : RawByteString; Age : Longint) : Longint;
@@ -1047,12 +1245,20 @@ var
   SystemFileName: RawByteString;
   t: TUTimBuf;
 begin
+<<<<<<< HEAD
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
   Result:=0;
   t.actime:= Age;
   t.modtime:=Age;
   if fputime(PChar(SystemFileName), @t) = -1 then
     Result:=fpgeterrno;
+=======
+  Result := 0;
+  t.actime := Age;
+  t.modtime := Age;
+  if fputime(PChar(pointer(FileName)), @t) = -1 then
+    Result := fpgeterrno;
+>>>>>>> graemeg/fixes_2_2
 end;
 
 {****************************************************************************
@@ -1099,8 +1305,18 @@ Function DiskFree(Drive: Byte): int64;
 var
   fs : tstatfs;
 Begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if ((Drive in [Low(FixDriveStr)..High(FixDriveStr)]) and (not (fixdrivestr[Drive]=nil)) and (fpstatfs(StrPas(fixdrivestr[drive]),@fs)<>-1)) or
      ((Drive <= High(drivestr)) and (not (drivestr[Drive]=nil)) and (fpstatfs(StrPas(drivestr[drive]),@fs)<>-1)) then
+=======
+  if ((Drive in [Low(FixDriveStr)..High(FixDriveStr)]) and (not (fixdrivestr[Drive]=nil)) and (statfs(StrPas(fixdrivestr[drive]),fs)<>-1)) or
+     ((Drive <= High(drivestr)) and (not (drivestr[Drive]=nil)) and (statfs(StrPas(drivestr[drive]),fs)<>-1)) then
+>>>>>>> graemeg/fixes_2_2
+=======
+  if ((Drive in [Low(FixDriveStr)..High(FixDriveStr)]) and (not (fixdrivestr[Drive]=nil)) and (statfs(StrPas(fixdrivestr[drive]),fs)<>-1)) or
+     ((Drive <= High(drivestr)) and (not (drivestr[Drive]=nil)) and (statfs(StrPas(drivestr[drive]),fs)<>-1)) then
+>>>>>>> origin/fixes_2_2
    Diskfree:=int64(fs.bavail)*int64(fs.bsize)
   else
    Diskfree:=-1;
@@ -1112,8 +1328,18 @@ Function DiskSize(Drive: Byte): int64;
 var
   fs : tstatfs;
 Begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if ((Drive in [Low(FixDriveStr)..High(FixDriveStr)]) and (not (fixdrivestr[Drive]=nil)) and (fpstatfs(StrPas(fixdrivestr[drive]),@fs)<>-1)) or
      ((drive <= High(drivestr)) and (not (drivestr[Drive]=nil)) and (fpstatfs(StrPas(drivestr[drive]),@fs)<>-1)) then
+=======
+  if ((Drive in [Low(FixDriveStr)..High(FixDriveStr)]) and (not (fixdrivestr[Drive]=nil)) and (statfs(StrPas(fixdrivestr[drive]),fs)<>-1)) or
+     ((drive <= High(drivestr)) and (not (drivestr[Drive]=nil)) and (statfs(StrPas(drivestr[drive]),fs)<>-1)) then
+>>>>>>> graemeg/fixes_2_2
+=======
+  if ((Drive in [Low(FixDriveStr)..High(FixDriveStr)]) and (not (fixdrivestr[Drive]=nil)) and (statfs(StrPas(fixdrivestr[drive]),fs)<>-1)) or
+     ((drive <= High(drivestr)) and (not (drivestr[Drive]=nil)) and (statfs(StrPas(drivestr[drive]),fs)<>-1)) then
+>>>>>>> origin/fixes_2_2
    DiskSize:=int64(fs.blocks)*int64(fs.bsize)
   else
    DiskSize:=-1;
@@ -1273,9 +1499,17 @@ end;
 Function GetEnvironmentVariable(Const EnvVar : String) : String;
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   { no need to adjust the code page of EnvVar to DefaultSystemCodePage, as only
     ASCII identifiers are supported }
   Result:=BaseUnix.FPGetenv(PChar(pointer(EnvVar)));
+=======
+  Result:=StrPas(BaseUnix.FPGetenv(PChar(pointer(EnvVar))));
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result:=StrPas(BaseUnix.FPGetenv(PChar(pointer(EnvVar))));
+>>>>>>> origin/fixes_2_2
 end;
 
 Function GetEnvironmentVariableCount : Integer;
@@ -1291,7 +1525,14 @@ begin
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function ExecuteProcess(Const Path: AnsiString; Const ComLine: AnsiString;Flags:TExecuteFlags=[]):integer;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function ExecuteProcess(Const Path: AnsiString; Const ComLine: AnsiString):integer;
+>>>>>>> graemeg/fixes_2_2
 var
   pid    : longint;
   e      : EOSError;
@@ -1519,18 +1760,36 @@ begin
   Result:=TheUserDir;    
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure SysBeep;
 
 begin
   Write(#7);
   Flush(Output);
 end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 function GetLocalTimeOffset: Integer;
 
 begin
  Result := -Tzseconds div 60; 
 end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {****************************************************************************
                               Initialization code

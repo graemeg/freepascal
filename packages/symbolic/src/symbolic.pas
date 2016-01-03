@@ -244,8 +244,14 @@ const InfixOperatorName   : array[addo..powo] of char= ('+','-','*','/','^');
 
 {$I exprstrs.inc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function QuickEvaluate(formula:ansistring;variablenames : array of ansistring;variablevalues:array of const):Double;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 implementation
 
 
@@ -486,6 +492,8 @@ end;
 {$I teval.inc}
 {$I rearrang.inc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 function QuickEvaluate(formula:ansistring;variablenames : array of ansistring;variablevalues:array of const):Double;
 
@@ -546,6 +554,10 @@ begin
    end;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.
 {
   $Log$

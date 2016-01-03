@@ -1,6 +1,14 @@
 {
     This file is part of the Free Pascal packages.
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (c) 1999-2014 by the Free Pascal development team
+=======
+    Copyright (c) 1999-2006 by the Free Pascal development team
+>>>>>>> graemeg/fixes_2_2
+=======
+    Copyright (c) 1999-2006 by the Free Pascal development team
+>>>>>>> origin/fixes_2_2
 
     Implements a MD2 digest algorithm (RFC 1319)
     Implements a MD4 digest algorithm (RFC 1320)
@@ -15,6 +23,8 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 // Define to use original MD5 code on i386 processors.
 // Undefine to use original implementation.
 { the assembler implementation does not work on Darwin }
@@ -22,6 +32,10 @@
 {$DEFINE MD5PASCAL}
 {$endif darwin}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 unit md5;
 
 {$mode objfpc}
@@ -58,16 +72,34 @@ type
   TMD5Digest = TMDDigest;
 
   PMDContext = ^TMDContext;
+<<<<<<< HEAD
+<<<<<<< HEAD
   TMDHashFunc = procedure(Context: PMDContext; Buffer: Pointer);
   TMDContext = record
     Version : TMDVersion;
     Hash    : TMDHashFunc;
+=======
+  TMDContext = record
+    Version : TMDVersion;
+>>>>>>> graemeg/fixes_2_2
+=======
+  TMDContext = record
+    Version : TMDVersion;
+>>>>>>> origin/fixes_2_2
     Align   : PtrUInt;
     State   : array[0..3] of Cardinal;
     BufCnt  : QWord;
     Buffer  : array[0..63] of Byte;
     case Integer of
+<<<<<<< HEAD
+<<<<<<< HEAD
       0: (Length   : QWord);
+=======
+      0: (Length   : PtrUInt);
+>>>>>>> graemeg/fixes_2_2
+=======
+      0: (Length   : PtrUInt);
+>>>>>>> origin/fixes_2_2
       1: (Checksum : array[0..15] of Byte);
   end;
 
@@ -86,9 +118,21 @@ type
  * Core raw functions
  ******************************************************************************)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure MDInit(out Context: TMDContext; const Version: TMDVersion);
 procedure MDUpdate(var Context: TMDContext; var Buf; const BufLen: PtrUInt);
 procedure MDFinal(var Context: TMDContext; out Digest: TMDDigest);
+=======
+procedure MDInit(var Context: TMDContext; const Version: TMDVersion);
+procedure MDUpdate(var Context: TMDContext; var Buf; const BufLen: PtrUInt);
+procedure MDFinal(var Context: TMDContext; var Digest: TMDDigest);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure MDInit(var Context: TMDContext; const Version: TMDVersion);
+procedure MDUpdate(var Context: TMDContext; var Buf; const BufLen: PtrUInt);
+procedure MDFinal(var Context: TMDContext; var Digest: TMDDigest);
+>>>>>>> origin/fixes_2_2
 
 
 (******************************************************************************
@@ -97,8 +141,18 @@ procedure MDFinal(var Context: TMDContext; out Digest: TMDDigest);
 
 function MDString(const S: String; const Version: TMDVersion): TMDDigest;
 function MDBuffer(var Buf; const BufLen: PtrUInt; const Version: TMDVersion): TMDDigest;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function MDFile(const Filename: RawByteString; const Version: TMDVersion; const Bufsize: PtrUInt = MDDefBufSize): TMDDigest;
 function MDFile(const Filename: UnicodeString; const Version: TMDVersion; const Bufsize: PtrUInt = MDDefBufSize): TMDDigest;
+=======
+function MDFile(const Filename: String; const Version: TMDVersion; const Bufsize: PtrUInt = MDDefBufSize): TMDDigest;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+function MDFile(const Filename: String; const Version: TMDVersion; const Bufsize: PtrUInt = MDDefBufSize): TMDDigest;
+
+>>>>>>> origin/fixes_2_2
 
 (******************************************************************************
  * Helper functions
@@ -112,6 +166,8 @@ function MDMatch(const Digest1, Digest2: TMDDigest): Boolean;
  * Dedicated raw functions
  ******************************************************************************)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure MD2Init(out Context: TMD2Context); inline;
 procedure MD2Update(var Context: TMD2Context; var Buf; const BufLen: PtrUInt); external name 'MD_UPDATE';
 procedure MD2Final(var Context: TMD2Context; out Digest: TMD2Digest); external name 'MD_FINAL';
@@ -123,6 +179,24 @@ procedure MD4Final(var Context: TMD4Context; out Digest: TMD4Digest); external n
 procedure MD5Init(out Context: TMD5Context); inline;
 procedure MD5Update(var Context: TMD5Context; var Buf; const BufLen: PtrUInt); external name 'MD_UPDATE';
 procedure MD5Final(var Context: TMD5Context; out Digest: TMD5Digest); external name 'MD_FINAL';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure MD2Init(var Context: TMD2Context); inline;
+procedure MD2Update(var Context: TMD2Context; var Buf; const BufLen: PtrUInt); inline;
+procedure MD2Final(var Context: TMD2Context; var Digest: TMD2Digest); inline;
+
+procedure MD4Init(var Context: TMD4Context); inline;
+procedure MD4Update(var Context: TMD4Context; var Buf; const BufLen: PtrUInt); inline;
+procedure MD4Final(var Context: TMD4Context; var Digest: TMD4Digest); inline;
+
+procedure MD5Init(var Context: TMD5Context); inline;
+procedure MD5Update(var Context: TMD5Context; var Buf; const BufLen: PtrUInt); inline;
+procedure MD5Final(var Context: TMD5Context; var Digest: TMD5Digest); inline;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
 (******************************************************************************
@@ -130,6 +204,8 @@ procedure MD5Final(var Context: TMD5Context; out Digest: TMD5Digest); external n
  ******************************************************************************)
 
 function MD2String(const S: String): TMD2Digest; inline;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function MD2Buffer(var Buf; const BufLen: PtrUInt): TMD2Digest;
 function MD2File(const Filename: RawByteString; const Bufsize: PtrUInt = MDDefBufSize): TMD2Digest; overload; inline;
 function MD2File(const Filename: UnicodeString; const Bufsize: PtrUInt = MDDefBufSize): TMD2Digest; overload; inline;
@@ -143,6 +219,23 @@ function MD5String(const S: String): TMD5Digest; inline;
 function MD5Buffer(var Buf; const BufLen: PtrUInt): TMD5Digest;
 function MD5File(const Filename: RawByteString; const Bufsize: PtrUInt = MDDefBufSize): TMD5Digest; inline;
 function MD5File(const Filename: UnicodeString; const Bufsize: PtrUInt = MDDefBufSize): TMD5Digest; inline;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function MD2Buffer(var Buf; const BufLen: PtrUInt): TMD2Digest; inline;
+function MD2File(const Filename: String; const Bufsize: PtrUInt = MDDefBufSize): TMD2Digest; inline;
+
+function MD4String(const S: String): TMD4Digest; inline;
+function MD4Buffer(var Buf; const BufLen: PtrUInt): TMD4Digest; inline;
+function MD4File(const Filename: String; const Bufsize: PtrUInt = MDDefBufSize): TMD4Digest; inline;
+
+function MD5String(const S: String): TMD5Digest; inline;
+function MD5Buffer(var Buf; const BufLen: PtrUInt): TMD5Digest; inline;
+function MD5File(const Filename: String; const Bufsize: PtrUInt = MDDefBufSize): TMD5Digest; inline;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
 
@@ -157,12 +250,33 @@ function MD4Print(const Digest: TMD4Digest): String; inline;
 function MD4Match(const Digest1, Digest2: TMD4Digest): Boolean; inline;
 
 function MD5Print(const Digest: TMD5Digest): String; inline;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function StrtoMD5(const MD5String:String):TMDDigest;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function MD5Match(const Digest1, Digest2: TMD5Digest): Boolean; inline;
 
 implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses sysutils;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+function rol(x: Cardinal; n: Byte): Cardinal;
+begin
+  Result := (x shl n) or (x shr (32 - n));
+end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 // inverts the bytes of (Count div 4) cardinals from source to target.
 procedure Invert(Source, Dest: Pointer; Count: PtrUInt);
@@ -246,6 +360,8 @@ end;
 
 procedure MD4Transform(var Context: TMDContext; Buffer: Pointer);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}
 {$r-,q-}
 
@@ -253,22 +369,53 @@ procedure MD4Transform(var Context: TMDContext; Buffer: Pointer);
   // F(x,y,z) = (x and y) or ((not x) and z)
   begin
     a := roldword(dword(a + {F(b,c,d)}((b and c) or ((not b) and d)) + x), s);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  procedure R1(var a: Cardinal; b,c,d,x: Cardinal; s: Byte);
+  // F(x,y,z) = (x and y) or ((not x) and z)
+  begin
+    a := rol(a + {F(b,c,d)}((b and c) or ((not b) and d)) + x, s);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
   procedure R2(var a: Cardinal; b,c,d,x: Cardinal; s: Byte);
   // G(x,y,z) = (x and y) or (x and z) or (y and z);
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     a := roldword(dword(a + {G(b,c,d)}((b and c) or (b and d) or (c and d)) + x + $5A827999), s);
+=======
+    a := rol(a + {G(b,c,d)}((b and c) or (b and d) or (c and d)) + x + $5A827999, s);
+>>>>>>> graemeg/fixes_2_2
+=======
+    a := rol(a + {G(b,c,d)}((b and c) or (b and d) or (c and d)) + x + $5A827999, s);
+>>>>>>> origin/fixes_2_2
   end;
 
   procedure R3(var a: Cardinal; b,c,d,x: Cardinal; s: Byte);
   // H(x,y,z) = x xor y xor z
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     a := roldword(dword(a + {H(b,c,d)}(b xor c xor d) + x + $6ED9EBA1), s);
   end;
 
 {$pop}
 
+=======
+    a := rol(a + {H(b,c,d)}(b xor c xor d) + x + $6ED9EBA1, s);
+  end;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+    a := rol(a + {H(b,c,d)}(b xor c xor d) + x + $6ED9EBA1, s);
+  end;
+
+>>>>>>> origin/fixes_2_2
 var
   a, b, c, d: Cardinal;
   Block: array[0..15] of Cardinal;
@@ -297,17 +444,31 @@ begin
   R3(a,b,c,d,Block[1],  3); R3(d,a,b,c,Block[9],  9); R3(c,d,a,b,Block[5], 11); R3(b,c,d,a,Block[13],15);
   R3(a,b,c,d,Block[3],  3); R3(d,a,b,c,Block[11], 9); R3(c,d,a,b,Block[7], 11); R3(b,c,d,a,Block[15],15);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}
 {$r-,q-}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   inc(Context.State[0], a);
   inc(Context.State[1], b);
   inc(Context.State[2], c);
   inc(Context.State[3], d);
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$pop}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   inc(Context.Length,64);
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IF (NOT(DEFINED(MD5PASCAL))) and (DEFINED(CPUI386)) }
 {$i md5i386.inc}
 {$ENDIF}
@@ -421,28 +582,69 @@ procedure MD5Transform(var Context: TMDContext; Buffer: Pointer);
   // F(x,y,z) = (x and y) or ((not x) and z)
   begin
     a := b + roldword(dword(a + {F(b,c,d)}((b and c) or ((not b) and d)) + x + ac), s);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure MD5Transform(var Context: TMDContext; Buffer: Pointer);
+
+  procedure R1(var a: Cardinal; b,c,d,x: Cardinal; s: Byte; ac: Cardinal);
+  // F(x,y,z) = (x and y) or ((not x) and z)
+  begin
+    a := b + rol(a + {F(b,c,d)}((b and c) or ((not b) and d)) + x + ac, s);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
   procedure R2(var a: Cardinal; b,c,d,x: Cardinal; s: Byte; ac: Cardinal);
   // G(x,y,z) = (x and z) or (y and (not z))
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     a := b + roldword(dword(a + {G(b,c,d)}((b and d) or (c and (not d))) + x + ac), s);
+=======
+    a := b + rol(a + {G(b,c,d)}((b and d) or (c and (not d))) + x + ac, s);
+>>>>>>> graemeg/fixes_2_2
+=======
+    a := b + rol(a + {G(b,c,d)}((b and d) or (c and (not d))) + x + ac, s);
+>>>>>>> origin/fixes_2_2
   end;
 
   procedure R3(var a: Cardinal; b,c,d,x: Cardinal; s: Byte; ac: Cardinal);
   // H(x,y,z) = x xor y xor z;
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     a := b + roldword(dword(a + {H(b,c,d)}(b xor c xor d) + x + ac), s);
+=======
+    a := b + rol(a + {H(b,c,d)}(b xor c xor d) + x + ac, s);
+>>>>>>> graemeg/fixes_2_2
+=======
+    a := b + rol(a + {H(b,c,d)}(b xor c xor d) + x + ac, s);
+>>>>>>> origin/fixes_2_2
   end;
 
   procedure R4(var a: Cardinal; b,c,d,x: Cardinal; s: Byte; ac: Cardinal);
   // I(x,y,z) = y xor (x or (not z));
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     a := b + roldword(dword(a + {I(b,c,d)}(c xor (b or (not d))) + x + ac), s);
   end;
 
 {$pop}
 
+=======
+    a := b + rol(a + {I(b,c,d)}(c xor (b or (not d))) + x + ac, s);
+  end;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+    a := b + rol(a + {I(b,c,d)}(c xor (b or (not d))) + x + ac, s);
+  end;
+
+>>>>>>> origin/fixes_2_2
 var
   a, b, c, d: Cardinal;
   Block: array[0..15] of Cardinal;
@@ -477,12 +679,20 @@ begin
   R4(a,b,c,d,Block[8] , 6,$6fa87e4f); R4(d,a,b,c,Block[15],10,$fe2ce6e0); R4(c,d,a,b,Block[6] ,15,$a3014314); R4(b,c,d,a,Block[13],21,$4e0811a1);
   R4(a,b,c,d,Block[4] , 6,$f7537e82); R4(d,a,b,c,Block[11],10,$bd3af235); R4(c,d,a,b,Block[2] ,15,$2ad7d2bb); R4(b,c,d,a,Block[9] ,21,$eb86d391);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}
 {$r-,q-}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   inc(Context.State[0],a);
   inc(Context.State[1],b);
   inc(Context.State[2],c);
   inc(Context.State[3],d);
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$pop}
   inc(Context.Length,64);
 end;
@@ -490,6 +700,18 @@ end;
 
 
 procedure MDInit(out Context: TMDContext; const Version: TMDVersion);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  inc(Context.Length,64);
+end;
+
+
+procedure MDInit(var Context: TMDContext; const Version: TMDVersion);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   FillChar(Context, Sizeof(TMDContext), 0);
   Context.Version := Version;
@@ -498,10 +720,16 @@ begin
 
     MD_VERSION_4, MD_VERSION_5:
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
         if Version = MD_VERSION_4 then
           Context.Hash := TMDHashFunc(@MD4Transform)
         else
           Context.Hash := TMDHashFunc(@MD5Transform);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         Context.Align := 64;
         Context.State[0] := $67452301;
         Context.State[1] := $efcdab89;
@@ -514,14 +742,28 @@ begin
     MD_VERSION_2:
       begin
         Context.Align := 16;
+<<<<<<< HEAD
+<<<<<<< HEAD
         Context.Hash := TMDHashFunc(@MD2Transform)
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
   end;
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure MDUpdate(var Context: TMDContext; var Buf; const BufLen: PtrUInt); [public,alias:'MD_UPDATE'];
+=======
+procedure MDUpdate(var Context: TMDContext; var Buf; const BufLen: PtrUInt);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure MDUpdate(var Context: TMDContext; var Buf; const BufLen: PtrUInt);
+>>>>>>> origin/fixes_2_2
 var
   Align: PtrUInt;
   Src: Pointer;
@@ -549,7 +791,21 @@ begin
     // 1.2 If buffer contains "Align" bytes, transform it
     if Context.BufCnt = Align then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       Context.Hash(@Context, @Context.Buffer);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      case Context.Version of
+        MD_VERSION_2: MD2Transform(Context, @Context.Buffer);
+        MD_VERSION_4: MD4Transform(Context, @Context.Buffer);
+        MD_VERSION_5: MD5Transform(Context, @Context.Buffer);
+      end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       Context.BufCnt := 0;
     end;
   end;
@@ -558,7 +814,21 @@ begin
   Num := BufLen - Num;
   while Num >= Align do
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     Context.Hash(@Context, Src);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    case Context.Version of
+      MD_VERSION_2: MD2Transform(Context, Src);
+      MD_VERSION_4: MD4Transform(Context, Src);
+      MD_VERSION_5: MD5Transform(Context, Src);
+    end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Src := Pointer(PtrUInt(Src) + Align);
     Num := Num - Align;
   end;
@@ -572,7 +842,15 @@ begin
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure MDFinal(var Context: TMDContext; out Digest: TMDDigest); [public,alias:'MD_FINAL'];
+=======
+procedure MDFinal(var Context: TMDContext; var Digest: TMDDigest);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure MDFinal(var Context: TMDContext; var Digest: TMDDigest);
+>>>>>>> origin/fixes_2_2
 const
 {$ifdef FPC_BIG_ENDIAN}
   PADDING_MD45: array[0..15] of Cardinal = ($80000000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
@@ -641,6 +919,8 @@ begin
   MDFinal(Context, Result);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function MDFile(const Filename: RawByteString; const Version: TMDVersion; const BufSize: PtrUInt): TMDDigest;
 var
   F: File;
@@ -675,6 +955,12 @@ begin
 end;
 
 function MDFile(const Filename: UnicodeString; const Version: TMDVersion; const BufSize: PtrUInt): TMDDigest;
+=======
+function MDFile(const Filename: String; const Version: TMDVersion; const BufSize: PtrUInt): TMDDigest;
+>>>>>>> graemeg/fixes_2_2
+=======
+function MDFile(const Filename: String; const Version: TMDVersion; const BufSize: PtrUInt): TMDDigest;
+>>>>>>> origin/fixes_2_2
 var
   F: File;
   Buf: Pchar;
@@ -685,11 +971,25 @@ begin
   MDInit(Context, Version);
 
   Assign(F, Filename);
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$i-}
   ofm := FileMode;
   FileMode := 0;
   Reset(F, 1);
   {$pop}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  {$i-}
+  ofm := FileMode;
+  FileMode := 0;
+  Reset(F, 1);
+  {$i+}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   if IOResult = 0 then
   begin
@@ -722,6 +1022,8 @@ var
   A: array[0..3] of Cardinal absolute Digest1;
   B: array[0..3] of Cardinal absolute Digest2;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}
 {$B+}
   Result := (A[0] = B[0]) and (A[1] = B[1]) and (A[2] = B[2]) and (A[3] = B[3]);
@@ -729,20 +1031,90 @@ begin
 end;
 
 procedure MD2Init(out Context: TMD2Context);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  Result := (A[0] = B[0]) and (A[1] = B[1]) and (A[2] = B[2]) and (A[3] = B[3]);
+end;
+
+procedure MD2Init(var Context: TMD2Context);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   MDInit(Context, MD_VERSION_2);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure MD4Init(out Context: TMD4Context);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure MD2Update(var Context: TMD2Context; var Buf; const BufLen: PtrUInt);
+begin
+  MDUpdate(Context, Buf, BufLen);
+end;
+
+procedure MD2Final(var Context: TMD2Context; var Digest: TMD2Digest);
+begin
+  MDFinal(Context, Digest);
+end;
+
+procedure MD4Init(var Context: TMD4Context);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   MDInit(Context, MD_VERSION_4);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure MD5Init(out Context: TMD5Context);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure MD4Update(var Context: TMD4Context; var Buf; const BufLen: PtrUInt);
+begin
+  MDUpdate(Context, Buf, BufLen);
+end;
+
+procedure MD4Final(var Context: TMD4Context; var Digest: TMD4Digest);
+begin
+  MDFinal(Context, Digest);
+end;
+
+procedure MD5Init(var Context: TMD5Context);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   MDInit(Context, MD_VERSION_5);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure MD5Update(var Context: TMD5Context; var Buf; const BufLen: PtrUInt);
+begin
+  MDUpdate(Context, Buf, BufLen);
+end;
+
+procedure MD5Final(var Context: TMD5Context; var Digest: TMD5Digest);
+begin
+  MDFinal(Context, Digest);
+end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function MD2String(const S: String): TMD2Digest;
 begin
   Result := MDString(S, MD_VERSION_2);
@@ -753,12 +1125,20 @@ begin
   Result := MDBuffer(Buf, BufLen, MD_VERSION_2);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function MD2File(const Filename: RawByteString; const Bufsize: PtrUInt): TMD2Digest;
 begin
   Result := MDFile(Filename, MD_VERSION_2, Bufsize);
 end;
 
 function MD2File(const Filename: UnicodeString; const Bufsize: PtrUInt): TMD2Digest;
+=======
+function MD2File(const Filename: String; const Bufsize: PtrUInt): TMD2Digest;
+>>>>>>> graemeg/fixes_2_2
+=======
+function MD2File(const Filename: String; const Bufsize: PtrUInt): TMD2Digest;
+>>>>>>> origin/fixes_2_2
 begin
   Result := MDFile(Filename, MD_VERSION_2, Bufsize);
 end;
@@ -773,12 +1153,20 @@ begin
   Result := MDBuffer(Buf, BufLen, MD_VERSION_4);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function MD4File(const Filename: RawByteString; const Bufsize: PtrUInt): TMD4Digest;
 begin
   Result := MDFile(Filename, MD_VERSION_4, Bufsize);
 end;
 
 function MD4File(const Filename: UnicodeString; const Bufsize: PtrUInt): TMD4Digest;
+=======
+function MD4File(const Filename: String; const Bufsize: PtrUInt): TMD4Digest;
+>>>>>>> graemeg/fixes_2_2
+=======
+function MD4File(const Filename: String; const Bufsize: PtrUInt): TMD4Digest;
+>>>>>>> origin/fixes_2_2
 begin
   Result := MDFile(Filename, MD_VERSION_4, Bufsize);
 end;
@@ -793,12 +1181,20 @@ begin
   Result := MDBuffer(Buf, BufLen, MD_VERSION_5);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function MD5File(const Filename: RawByteString; const Bufsize: PtrUInt): TMD5Digest;
 begin
   Result := MDFile(Filename, MD_VERSION_5, Bufsize);
 end;
 
 function MD5File(const Filename: UnicodeString; const Bufsize: PtrUInt): TMD5Digest;
+=======
+function MD5File(const Filename: String; const Bufsize: PtrUInt): TMD5Digest;
+>>>>>>> graemeg/fixes_2_2
+=======
+function MD5File(const Filename: String; const Bufsize: PtrUInt): TMD5Digest;
+>>>>>>> origin/fixes_2_2
 begin
   Result := MDFile(Filename, MD_VERSION_5, Bufsize);
 end;
@@ -833,6 +1229,8 @@ begin
   Result := MDMatch(Digest1, Digest2);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 //convert the String representation of a digest to a TMDDigest
 //on error all fields are set to $00
 function StrtoMD5(const MD5String:String):TMDDigest;
@@ -850,4 +1248,8 @@ function StrtoMD5(const MD5String:String):TMDDigest;
      if not f then
        FillChar(Result, Sizeof(Result), 0);
    end; 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.

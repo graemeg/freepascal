@@ -35,6 +35,8 @@ type  Tconstexprint=record
             (svalue:int64);
       end;
 
+      Tconststring = type pchar;
+
       errorproc=procedure (i:longint);
 
 {"Uses verbose" gives a dependency on cpuinfo through globals. This leads
@@ -399,16 +401,64 @@ begin
   result.overflow:=false;
   sa:=a.signed and (a.svalue<0);
   if sa then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push} {$Q-}
     aa:=qword(-a.svalue)
     {$pop}
+=======
+    {$Q-}
+    aa:=qword(-a.svalue)
+    {$ifdef ena_q}{$Q+}{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+    {$Q-}
+    aa:=qword(-a.svalue)
+    {$ifdef ena_q}{$Q+}{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+    {$Q-}
+    aa:=qword(-a.svalue)
+    {$ifdef ena_q}{$Q+}{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+    {$Q-}
+    aa:=qword(-a.svalue)
+    {$ifdef ena_q}{$Q+}{$endif}
+>>>>>>> origin/cpstrnew
   else
     aa:=a.uvalue;
   sb:=b.signed and (b.svalue<0);
   if sb then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push} {$Q-}
     bb:=qword(-b.svalue)
     {$pop}
+=======
+    {$Q-}
+    bb:=qword(-b.svalue)
+    {$ifdef ena_q}{$Q+}{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+    {$Q-}
+    bb:=qword(-b.svalue)
+    {$ifdef ena_q}{$Q+}{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+    {$Q-}
+    bb:=qword(-b.svalue)
+    {$ifdef ena_q}{$Q+}{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+    {$Q-}
+    bb:=qword(-b.svalue)
+    {$ifdef ena_q}{$Q+}{$endif}
+>>>>>>> origin/cpstrnew
   else
     bb:=b.uvalue;
   if bb=0 then

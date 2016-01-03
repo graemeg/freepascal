@@ -1,13 +1,90 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for Free Component Library
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for Free Component Library
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for Free Component Library
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for Free Component Library
+>>>>>>> origin/cpstrnew
 #
 
 [package]
 name=fcl-extra
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[require]
+packages=fcl-base
+packages_win32=winunits-base winunits-jedi  
+packages_win64=winunits-base winunits-jedi   
+packages_darwin=univint  
+packages_iphonesim=univint  
+
+[target]
+ 
+units_freebsd=daemonapp
+units_darwin=daemonapp 
+units_iphonesim=daemonapp 
+units_solaris= daemonapp 
+units_netbsd=daemonapp 
+units_openbsd=daemonapp
+units_linux=daemonapp  
+units_win32= daemonapp ServiceManager 
+units_win64=daemonapp ServiceManager 
+rsts=daemonapp servicemanager
+ 
+[compiler]
+options=-S2h
+includedir=src/$(OS_TARGET) src src/dummy
+includedir_linux=src/unix
+includedir_freebsd=src/unix
+includedir_darwin=src/unix
+includedir_iphonesim=src/unix
+includedir_netbsd=src/unix
+includedir_openbsd=src/unix
+includedir_solaris=src/unix
+includedir_qnx=src/unix
+includedir_beos=src/unix
+includedir_haiku=src/unix
+includedir_emx=src/os2
+includedir_win32=src/win
+includedir_win64=src/win
+includedir_wince=src/win
+sourcedir=src/$(OS_TARGET) src
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 [install]
 fpcpackage=y
@@ -15,6 +92,10 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +181,19 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+[rules]
+.NOTPARALLEL:
+>>>>>>> graemeg/cpstrnew
+=======
+[rules]
+.NOTPARALLEL:
+>>>>>>> graemeg/cpstrnew
+=======
+[rules]
+.NOTPARALLEL:
+>>>>>>> graemeg/cpstrnew
+=======
+[rules]
+.NOTPARALLEL:
+>>>>>>> origin/cpstrnew

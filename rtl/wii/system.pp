@@ -51,7 +51,19 @@ const
   StdErrorHandle  = 2;
 
   FileNameCaseSensitive : boolean = true;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   FileNameCasePreserving: boolean = true;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   CtrlZMarksEOF: boolean = true; (* #26 not considered as end of file *)
 
   sLineBreak = LineEnding;
@@ -209,7 +221,23 @@ begin
         buf[bufsize]:='"';
         inc(bufsize);
       end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      if i<argc-1 then
+=======
+     if i<argc then
+>>>>>>> graemeg/cpstrnew
+=======
+     if i<argc then
+>>>>>>> graemeg/cpstrnew
+=======
+     if i<argc then
+>>>>>>> graemeg/cpstrnew
+=======
+     if i<argc then
+>>>>>>> origin/cpstrnew
       buf[bufsize]:=' '
      else
       buf[bufsize]:=#0;
@@ -231,11 +259,37 @@ end;
 
 procedure SysInitStdIO;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   OpenStdIO(Input,fmInput,StdInputHandle);
   OpenStdIO(Output,fmOutput,StdOutputHandle);
   OpenStdIO(ErrOutput,fmOutput,StdErrorHandle);
   OpenStdIO(StdOut,fmOutput,StdOutputHandle);
   OpenStdIO(StdErr,fmOutput,StdErrorHandle);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  OpenStdIO(Input,fmInput,0);
+  OpenStdIO(Output,fmOutput,0);
+  OpenStdIO(ErrOutput,fmOutput,0);
+  OpenStdIO(StdOut,fmOutput,0);
+  OpenStdIO(StdErr,fmOutput,0);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;
 
 
@@ -247,18 +301,69 @@ end;
 
 begin
   StackLength := CheckInitialStkLen(InitialStkLen);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   StackBottom := Sptr - StackLength;
 { OS specific startup }
 
 { Set up signals handlers }
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  StackBottom := StackTop - StackLength;
+{ OS specific startup }
+
+{ Set up signals handlers }
+//  fpc_cpucodeinit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 { Setup heap }
   InitHeap;
   SysInitExceptions;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   initunicodestringmanager;
   SetupCmdLine;
   
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+  SetupCmdLine;
+  
+  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifdef FPC_HAS_FEATURE_CONSOLEIO}
   { Setup stdin, stdout and stderr }
   SysInitStdIO;
@@ -270,4 +375,20 @@ begin
   { threading }
   InitSystemThreads;
 {$endif FPC_HAS_FEATURE_THREADING}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  initvariantmanager;
+>>>>>>> graemeg/cpstrnew
+=======
+  initvariantmanager;
+>>>>>>> graemeg/cpstrnew
+=======
+  initvariantmanager;
+>>>>>>> graemeg/cpstrnew
+=======
+  initvariantmanager;
+>>>>>>> origin/cpstrnew
 end.

@@ -2100,7 +2100,31 @@ option_code_page_not_available=11039_E_La pàgina del codi no està disponible
 #
 option_logo=11023_[
 Free Pascal Compiler versió $FPCFULLVERSION [$FPCDATE] per $FPCCPU
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Copyright (c) 1993-2015 per Florian Klaempfl and others
+=======
+Copyright (c) 1993-2011 per Florian Klaempfl
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011 per Florian Klaempfl
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011 per Florian Klaempfl
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011 per Florian Klaempfl
+>>>>>>> origin/cpstrnew
+=======
+Copyright (c) 1993-2008 per Florian Klaempfl
+>>>>>>> graemeg/fixes_2_2
+=======
+Copyright (c) 1993-2008 per Florian Klaempfl
+>>>>>>> origin/fixes_2_2
 ]
 
 #

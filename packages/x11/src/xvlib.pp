@@ -403,32 +403,6 @@ function XvShmCreateImage(
   shminfo : PXShmSegmentInfo
 ) : PXvImage; cdecl; external libXv;
 
-{ overloaded functions to handle TBool parameters as actual booleans }
-function XvSelectVideoNotify(display : PDisplay; drawable : TDrawable; onoff : Boolean): cint;
-function XvSelectPortNotify(display : PDisplay; port : TXvPortID; onoff : Boolean): cint;
-function XvQueryBestSize(display : PDisplay; port : TXvPortID; motion : Boolean; vid_w, vid_h, drw_w, drw_h : cuint; p_actual_width, p_actual_height : pcuint): cint;
-function XvShmPutImage(display : PDisplay; id : TXvPortID; d : TDrawable; gc : TGC; image : PXvImage; src_x, src_y : cint; src_w, src_h : cuint; dest_x, dest_y : cint; dest_w, dest_h : cuint; send_event : Boolean): cint;
-
 implementation
-
-function XvSelectVideoNotify(display : PDisplay; drawable : TDrawable; onoff : Boolean): cint;
-begin
-  XvSelectVideoNotify := XvSelectVideoNotify(display, drawable, Ord(onoff));
-end;
-
-function XvSelectPortNotify(display : PDisplay; port : TXvPortID; onoff : Boolean): cint;
-begin
-  XvSelectPortNotify := XvSelectPortNotify(display, port, Ord(onoff));
-end;
-
-function XvQueryBestSize(display : PDisplay; port : TXvPortID; motion : Boolean; vid_w, vid_h, drw_w, drw_h : cuint; p_actual_width, p_actual_height : pcuint): cint;
-begin
-  XvQueryBestSize := XvQueryBestSize(display, port, Ord(motion), vid_w, vid_h, drw_w, drw_h, p_actual_width, p_actual_height);
-end;
-
-function XvShmPutImage(display : PDisplay; id : TXvPortID; d : TDrawable; gc : TGC; image : PXvImage; src_x, src_y : cint; src_w, src_h : cuint; dest_x, dest_y : cint; dest_w, dest_h : cuint; send_event : Boolean): cint;
-begin
-  XvShmPutImage := XvShmPutImage(display, id, d, gc, image, src_x, src_y, src_w, src_h, dest_x, dest_y, dest_w, dest_h, Ord(send_event));
-end;
 
 end.

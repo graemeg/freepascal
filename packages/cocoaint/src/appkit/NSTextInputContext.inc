@@ -52,12 +52,39 @@ var
     _keyBindings: id;
     _keyBindingManager: id;
     _commandCharacters: NSString;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _reserved: array[0..(3)-1] of id;
     _auxiliary: id;
     __ticFlags: record
       case byte of
        0: (_anonbitfield_NSTextInputContext0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        _reserved: array[0..2] of id;
+    _auxiliary: id;
+    __ticFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSTextInputContext0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _acceptsGlyphInfo: 0..1;
         
         _attributedString: 0..1;
@@ -77,7 +104,19 @@ var
         _bindingFound: 0..1;
         
         __reserved: 0..((1 shl 3)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     

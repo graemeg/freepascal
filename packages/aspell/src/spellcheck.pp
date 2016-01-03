@@ -23,7 +23,17 @@ type
   TLineErrors = array of TWordError;
   TLineErrorsArray = array of TLineErrors;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   { TSpellCheck }
+=======
+  { TSpeller }
+  { Abstract ancestor, don't use directly }
+>>>>>>> graemeg/fixes_2_2
+=======
+  { TSpeller }
+  { Abstract ancestor, don't use directly }
+>>>>>>> origin/fixes_2_2
 
   TSpeller = class // abstract class, basis for all checkers
    protected
@@ -43,6 +53,8 @@ type
     property Encoding: string read FEncoding write SetEncoding;
     property Language: string read FLanguage write SetLanguage;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   
   { TWordSpeller }
 
@@ -51,6 +63,20 @@ type
     FSpeller: PAspellSpeller;
     FLastError: string;
     function DoCreateSpeller(Lang, Enc, aMode: pChar): PAspellSpeller;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  { TWordSpeller }
+  { Basic spelling class for spelling single words without context }
+  
+  TWordSpeller = class(TSpeller) // class for simple per-word checking
+   private
+    FSpeller: PAspellSpeller;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    protected
     procedure CreateSpeller; override;
     procedure FreeSpeller; override;
@@ -59,6 +85,18 @@ type
   end;
   
   { TDocumentSpeller }
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  { This speller is used to spellcheck lines or even whole documents.
+    It is usefull when different mode (like "tex") is used so you can pass
+    everything to aspell and let it take care of the context }
+>>>>>>> graemeg/fixes_2_2
+=======
+  { This speller is used to spellcheck lines or even whole documents.
+    It is usefull when different mode (like "tex") is used so you can pass
+    everything to aspell and let it take care of the context }
+>>>>>>> origin/fixes_2_2
 
   TDocumentSpeller = class(TWordSpeller)
    private
@@ -133,6 +171,8 @@ end;
 
 { TWordSpeller }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TWordSpeller.DoCreateSpeller(Lang, Enc, aMode: pChar): PAspellSpeller;
 var
   Error: Paspellcanhaveerror;
@@ -175,6 +215,36 @@ begin
 
   if not Assigned(FSpeller) then
     raise Exception.Create('Error on speller creation: ' + FLastError);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure TWordSpeller.CreateSpeller;
+var
+  Config: Paspellconfig;
+  Error: Paspellcanhaveerror;
+begin
+  Config := new_aspell_config();
+
+  if Length(FLanguage) > 0 then
+    aspell_config_replace(Config, 'lang', pChar(FLanguage));
+  if Length(FEncoding) > 0 then
+    aspell_config_replace(Config, 'encoding', pChar(FEncoding));
+  if Length(FMode) > 0 then
+    aspell_config_replace(Config, 'mode', pChar(FMode));
+
+  Error := new_aspell_speller(Config);
+
+  delete_aspell_config(Config);
+  FreeSpeller;
+
+  if aspell_error_number(Error) <> 0 then
+    raise Exception.Create('Error on speller creation: ' + aspell_error_message(Error))
+  else
+    FSpeller := to_aspell_speller(Error);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure TWordSpeller.FreeSpeller;

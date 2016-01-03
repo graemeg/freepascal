@@ -94,9 +94,9 @@ Var
 begin
   Result:=0;
   Assign(FSTab,'/etc/fstab');
-  {$push}{$i-}
+  {$i-}
   Reset(fstab);
-  {$pop}
+  {$i+}
   If IOResult=0 then
     begin
     While Not EOF(fstab) do
@@ -117,55 +117,20 @@ end;
 
 Function GetCDRomDevices(Var Devices : Array of string) : Integer;
 
-
-  Function AlreadyAdded(AName: String; AMax: Integer): Boolean;
-  var
-    I: Integer;
-  begin
-    Result := False;
-    for I := 0 to AMax do
-      if Devices[I] = AName then
-        Exit(True);
-  end;
-
-  // Resolves name if it's a symlink and adds it ensuring no dups
-  Function AddCdrom(ACDRom: String; I: Integer): Integer;
-  var
-    SInfo : stat;
-    RealName: String;
-  begin
-    Result := I;
-    if fpStat(PChar(ACDRom), SInfo) <> -1 then
-    begin
-      RealName := ACDRom;
-      if SInfo.st_mode and S_IFMT = S_IFLNK then
-        RealName := fpReadLink(ACDRom);
-
-      if not AlreadyAdded(RealName, I-1) then
-      begin
-        Devices[I] := RealName;
-        Result := I+1;
-      end;
-    end;
-  end;
-
-var
-  I,J: Integer;
-  CDRec: TCDSearchRec;
-  FSTab: array[0..10] of String;
+Var
+  S : String;
 
 begin
-  I := 0;
-  // First Add Entries From FSTab
-  for J := 0 to TestFSTab(FSTab)-1 do
-    I := AddCdrom(FSTab[J], I);
-
-  //Now Do A Search
-  if FindFirstCD(CDRec) then
-  repeat
-    I := AddCdrom(CDRec.Name, I);
-  until FindNextCD(CDRec) = False;
-  Result := I;
+  Result:=TestFSTab(Devices);
+  If (Result<1) then
+    begin
+    S:=DetectCD;
+    If (S<>'') then
+      begin
+      Devices[0]:=S;
+      Result:=1;
+      end;
+    end
 end;
 
 

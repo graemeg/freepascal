@@ -14,6 +14,8 @@ begin
 
     P:=AddPackage('imagemagick');
 {$ifdef ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
@@ -28,6 +30,17 @@ begin
 
     P.SourcePath.Add('src');
     P.IncludePath.Add('src');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    P.Directory:='imagemagick';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     T:=P.Targets.AddUnit('buildim.pp');
       with T.Dependencies do
@@ -35,14 +48,26 @@ begin
           AddUnit('imagemagick');
           AddUnit('magick_wand');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T.Install := False;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     T:=P.Targets.AddUnit('imagemagick.pas');
       with T.Dependencies do
         begin
           AddInclude('magick_type.inc');
           AddInclude('type.inc');
           AddInclude('cache_view.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
           AddInclude('cache.inc');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           AddInclude('compare.inc');
           AddInclude('constitute.inc');
           AddInclude('draw.inc');
@@ -63,11 +88,17 @@ begin
           AddUnit('imagemagick');
         end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ExamplePath.Add('examples');
     P.Targets.AddExampleProgram('screenshot.lpr');
     P.Targets.AddExampleProgram('wanddemo.lpr');
     P.Targets.AddExampleProgram('wanddemo.dpr');
     // 'image.png
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     {$ifndef ALLPACKAGES}
         Run;

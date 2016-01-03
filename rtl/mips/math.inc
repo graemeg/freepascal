@@ -14,6 +14,26 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$ifdef INTERNCONSTINTF}
+
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef INTERNCONSTINTF}
+
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef INTERNCONSTINTF}
+
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef INTERNCONSTINTF}
+
+>>>>>>> origin/cpstrnew
 {$ifndef FPC_SYSTEM_HAS_ABS}
     {$define FPC_SYSTEM_HAS_ABS}
     function fpc_abs_real(d : valreal) : valreal;compilerproc;
@@ -44,3 +64,36 @@
     end;
 {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$else}
+
+    {$define FPC_SYSTEM_HAS_ABS}
+    function abs(d : extended) : extended;[internproc:fpc_in_abs_real];
+
+    {$define FPC_SYSTEM_HAS_SQR}
+    function sqr(d : extended) : extended;[internproc:fpc_in_sqr_real];
+
+    {$define FPC_SYSTEM_HAS_SQRT}
+    function sqrt(d : extended) : extended;[internproc:fpc_in_sqrt_real];
+
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

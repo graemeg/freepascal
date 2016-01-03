@@ -14,8 +14,16 @@
 
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
+<<<<<<< HEAD
+<<<<<<< HEAD
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
   MA 02110-1301, USA.
+=======
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA.
+>>>>>>> graemeg/fixes_2_2
+=======
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA.
+>>>>>>> origin/fixes_2_2
 }
 
 { Translated from C header /usr/include/gtkglext-1.0/gdk/gdkgl.h
@@ -32,7 +40,15 @@ uses Glib2, Gdk2;
 
 const
   GdkGLExtLib = 
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$ifdef WINDOWS} 'libgdkglext-win32-1.0-0.dll'
+=======
+    {$ifdef WIN32} 'libgdkglext-win32-1.0-0.dll'
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$ifdef WIN32} 'libgdkglext-win32-1.0-0.dll'
+>>>>>>> origin/fixes_2_2
     {$else}        
       {$ifdef DARWIN}
         'gdkglext-x11-1.0'

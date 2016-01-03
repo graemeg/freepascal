@@ -132,9 +132,7 @@ procedure jpeg_save_markers (cinfo : j_decompress_ptr;
 procedure jpeg_set_marker_processor (cinfo : j_decompress_ptr;
                                      marker_code : int;
                                      routine : jpeg_marker_parser_method);
-Var
-  on_unknown_marker : function (cinfo : j_decompress_ptr) : int; far;
-  
+
 implementation
 
 uses
@@ -1694,31 +1692,27 @@ begin
       numtoread := uint(length)
     else
       numtoread := 0;
-      
-  if numtoread > 0 then
+  for i := 0 to numtoread-1 do
   begin
-    for i := 0 to numtoread-1 do
+  { Read a byte into b[i]. If must suspend, return FALSE. }
+    { make a byte available.
+      Note we do *not* do INPUT_SYNC before calling fill_input_buffer,
+      but we must reload the local copies after a successful fill. }
+    if (bytes_in_buffer = 0) then
     begin
-      { Read a byte into b[i]. If must suspend, return FALSE. }
-      { make a byte available.
-        Note we do *not* do INPUT_SYNC before calling fill_input_buffer,
-        but we must reload the local copies after a successful fill. }
-      if (bytes_in_buffer = 0) then
+      if (not datasrc^.fill_input_buffer(cinfo)) then
       begin
-        if (not datasrc^.fill_input_buffer(cinfo)) then
-        begin
-          get_interesting_appn := FALSE;
-          exit;
-        end;
-        { Reload the local copies }
-        next_input_byte := datasrc^.next_input_byte;
-        bytes_in_buffer := datasrc^.bytes_in_buffer;
+        get_interesting_appn := FALSE;
+        exit;
       end;
-      Dec( bytes_in_buffer );
-
-      b[i] := GETJOCTET(next_input_byte^);
-      Inc(next_input_byte);
+      { Reload the local copies }
+      next_input_byte := datasrc^.next_input_byte;
+      bytes_in_buffer := datasrc^.bytes_in_buffer;
     end;
+    Dec( bytes_in_buffer );
+
+    b[i] := GETJOCTET(next_input_byte^);
+    Inc(next_input_byte);
   end;
 
   Dec(length, numtoread);
@@ -2323,25 +2317,18 @@ begin
 
       M_DNL:            { Ignore DNL ... perhaps the wrong thing }
         if not skip_variable(cinfo) then
-          begin
-            read_markers := JPEG_SUSPENDED;
-            exit;
-          end;
-
-      else                      { must be DHP, EXP, JPGn, or RESn }
-        if (@on_unknown_marker<>nil) then
-          begin
-          read_markers:=on_unknown_marker(cinfo);
-          exit;
-          end
-        else if not skip_variable(cinfo) then
-          begin
+        begin
           read_markers := JPEG_SUSPENDED;
           exit;
-          end;
-        { // This is the previous code.
-          ERREXIT1(j_common_ptr(cinfo) , JERR_UNKNOWN_MARKER,cinfo^.unread_marker);
-        }  
+        end;
+
+      else                      { must be DHP, EXP, JPGn, or RESn }
+        { For now, we treat the reserved markers as fatal errors since they are
+          likely to be used to signal incompatible JPEG Part 3 extensions.
+          Once the JPEG 3 version-number marker is well defined, this code
+          ought to change! }
+        ERREXIT1(j_common_ptr(cinfo) , JERR_UNKNOWN_MARKER,
+          cinfo^.unread_marker);
     end; { end of case }
     { Successfully processed marker, so reset state variable }
     cinfo^.unread_marker := 0;

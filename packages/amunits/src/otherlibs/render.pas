@@ -37,12 +37,12 @@
 UNIT RENDER;
 
 INTERFACE
-USES Exec,utility,agraphics;
+USES Exec,utility,graphics;
 
 VAR RenderBase : pLibrary;
 
 type
-    pPLANEPTR = ^TPLANEPTR;
+    pPLANEPTR = ^PLANEPTR;
 
 const
     RENDERNAME : PChar = 'render.library';
@@ -448,7 +448,7 @@ IMPLEMENTATION
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox,
+msgbox,
 {$endif dont_use_openlib}
 tagsarray;
 

@@ -38,7 +38,23 @@ Procedure OpenKey_AES(Key: PAESKey256; OpenedKey: PAESOpenedKey); Assembler; NoS
    PSHUFD XMM1, XMM1, 011100101b; MOVD EBX, XMM1; XOR EAX, EBX; MOV [RCX], EAX; ADD RCX, 4
    PSHUFD XMM1, XMM1, 011100110b; MOVD EBX, XMM1; XOR EAX, EBX; MOV [RCX], EAX; ADD RCX, 4
    PSHUFD XMM1, XMM1, 011100111b; MOVD EBX, XMM1; XOR EAX, EBX; MOV [RCX], EAX; ADD RCX, 4
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    MOVDQU XMM4, [RDX]; AESKEYGENASSIST XMM4, XMM4, 0
+=======
+   MOVDQU XMM4, [RDX]; AESKEYGEN XMM4, XMM4, 0
+>>>>>>> graemeg/cpstrnew
+=======
+   MOVDQU XMM4, [RDX]; AESKEYGEN XMM4, XMM4, 0
+>>>>>>> graemeg/cpstrnew
+=======
+   MOVDQU XMM4, [RDX]; AESKEYGEN XMM4, XMM4, 0
+>>>>>>> graemeg/cpstrnew
+=======
+   MOVDQU XMM4, [RDX]; AESKEYGEN XMM4, XMM4, 0
+>>>>>>> origin/cpstrnew
    PSHUFD XMM4, XMM4, 011100110b; MOVD EAX, XMM4; MOVD EBX, XMM3; XOR EAX, EBX; MOV [RCX], EAX; ADD RCX, 4
    PSHUFD XMM3, XMM3, 011100101b; MOVD EBX, XMM3; XOR EAX, EBX; MOV [RCX], EAX; ADD RCX, 4
    PSHUFD XMM3, XMM3, 011100110b; MOVD EBX, XMM3; XOR EAX, EBX; MOV [RCX], EAX; ADD RCX, 4
@@ -56,6 +72,10 @@ Asm
  MOVDQU XMM1, [RCX]; MOVDQU XMM3, [RCX+16]
  MOVDQU [RDX], XMM1; MOVDQU [RDX + $10], XMM3
  LEA RCX, [RDX+$20]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  AESKEYGENASSIST XMM2, XMM3, $1;  CALL key_expansion
  AESKEYGENASSIST XMM2, XMM3, $2;  CALL key_expansion
  AESKEYGENASSIST XMM2, XMM3, $4;  CALL key_expansion
@@ -63,6 +83,30 @@ Asm
  AESKEYGENASSIST XMM2, XMM3, $10; CALL key_expansion
  AESKEYGENASSIST XMM2, XMM3, $20; CALL key_expansion
  AESKEYGENASSIST XMM2, XMM3, $40; CALL key_expansion
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+ AESKEYGEN XMM2, XMM3, $1;  CALL key_expansion
+ AESKEYGEN XMM2, XMM3, $2;  CALL key_expansion
+ AESKEYGEN XMM2, XMM3, $4;  CALL key_expansion
+ AESKEYGEN XMM2, XMM3, $8;  CALL key_expansion
+ AESKEYGEN XMM2, XMM3, $10; CALL key_expansion
+ AESKEYGEN XMM2, XMM3, $20; CALL key_expansion
+ AESKEYGEN XMM2, XMM3, $40; CALL key_expansion
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
  MOVDQU XMM0,  [R8+$00]; MOVDQU XMM1,  [R8+$10]; MOVDQU XMM2,  [R8+$20]; MOVDQU XMM3,  [R8+$30]
  MOVDQU XMM4,  [R8+$40]; MOVDQU XMM5,  [R8+$50]; MOVDQU XMM6,  [R8+$60]; MOVDQU XMM7,  [R8+$70]
  MOVDQU XMM8,  [R8+$80]; MOVDQU XMM9,  [R8+$90]; MOVDQU XMM10, [R8+$A0]; MOVDQU XMM11, [R8+$B0]

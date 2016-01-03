@@ -653,9 +653,9 @@ begin
   if (file_index < argc) then
   begin
     Assign(input_file, ParamStr(file_index));
-    {$push}{$I-}
+    {$I-}
     Reset(input_file, 1);
-    {$pop}
+    {$ifdef IOcheck} {$I+} {$endif}
     if (IOresult <> 0) then
     begin
       WriteLn(output, progname, ': can''t open ', ParamStr(file_index));
@@ -672,9 +672,9 @@ begin
   if (outfilename <> '') then
   begin
     Assign(output_file, outfilename);
-{$push}{$I-}
+    {$I-}
     Reset(output_file, 1);
-{$pop}
+    {$ifdef IOcheck} {$I+} {$endif}
     if (IOresult = 0) then
     begin
       WriteLn(output, outfilename, ':  already exists.');
@@ -682,9 +682,9 @@ begin
       Halt(EXIT_FAILURE);
     end;
 
-{$push}{$I-}
+    {$I-}
     ReWrite(output_file, 1);
-{$pop}
+    {$ifdef IOcheck} {$I+} {$endif}
     if (IOresult <> 0) then
     begin
       WriteLn(output, progname, ': can''t create ', outfilename);

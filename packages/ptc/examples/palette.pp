@@ -3,101 +3,100 @@ Ported to FPC by Nikolay Nikolov (nickysn@users.sourceforge.net)
 }
 
 {
- Palette example for OpenPTC 1.0 C++ implementation
+ Palette example for OpenPTC 1.0 C++ Implementation
  Copyright (c) Glenn Fiedler (ptc@gaffer.org)
  This source code is in the public domain
 }
 
-program PaletteExample;
+Program PaletteExample;
 
 {$MODE objfpc}
 
-uses
+Uses
   ptc;
 
-var
-  console: IPTCConsole;
-  surface: IPTCSurface;
-  format: IPTCFormat;
-  palette: IPTCPalette;
-  data: array [0..255] of Uint32;
-  pixels: PUint8;
-  width, height: Integer;
-  i: Integer;
-  x, y, index: Integer;
-begin
-  try
-    try
-      { create console }
-      console := TPTCConsoleFactory.CreateNew;
+Var
+  console : TPTCConsole;
+  surface : TPTCSurface;
+  format : TPTCFormat;
+  palette : TPTCPalette;
+  data : Array[0..255] Of int32;
+  pixels : Pchar8;
+  width, height : Integer;
+  i : Integer;
+  x, y, index : Integer;
 
-      { create format }
-      format := TPTCFormatFactory.CreateNew(8);
+Begin
+  Try
+    { create console }
+    console := TPTCConsole.Create;
 
-      { open console }
-      console.open('Palette example', format);
+    { create format }
+    format := TPTCFormat.Create(8);
 
-      { create surface }
-      surface := TPTCSurfaceFactory.CreateNew(console.width, console.height, format);
+    { open console }
+    console.open('Palette example', format);
 
-      { create palette }
-      palette := TPTCPaletteFactory.CreateNew;
+    { create surface }
+    surface := TPTCSurface.Create(console.width, console.height, format);
+    format.Free;
 
-      { generate palette }
-      for i := 0 to 255 do
-        data[i] := i;
+    { create palette }
+    palette := TPTCPalette.Create;
 
-      { load palette data }
-      palette.Load(data);
+    { generate palette }
+    For i := 0 To 255 Do
+      data[i] := i;
 
-      { set console palette }
-      console.Palette(palette);
+    { load palette data }
+    palette.load(data);
 
-      { set surface palette }
-      surface.Palette(palette);
+    { set console palette }
+    console.palette(palette);
 
-      { loop until a key is pressed }
-      while not console.KeyPressed do
-      begin
-        { lock surface }
-        pixels := surface.lock;
+    { set surface palette }
+    surface.palette(palette);
+    palette.Free;
 
-        try
-          { get surface dimensions }
-          width := surface.width;
-          height := surface.height;
+    { loop until a key is pressed }
+    While Not console.KeyPressed Do
+    Begin
+      { lock surface }
+      pixels := surface.lock;
 
-          { draw random pixels }
-          for i := 1 to 100 do
-          begin
-            { get random position }
-            x := Random(width);
-            y := Random(height);
+      { get surface dimensions }
+      width := surface.width;
+      height := surface.height;
 
-            { get random color index }
-            index := Random(256);
+      { draw random pixels }
+      For i := 1 To 100 Do
+      Begin
+        { get random position }
+	x := Random(width);
+	y := Random(height);
 
-            { draw color [index] at position [x,y] }
-            pixels[x + y * width] := index;
-          end;
-        finally
-          { unlock surface }
-          surface.unlock;
-        end;
+        { get random color index }
+	index := Random(256);
 
-        { copy to console }
-        surface.copy(console);
+        { draw color [index] at position [x,y] }
+	pixels[x + y * width] := index;
+      End;
 
-        { update console }
-        console.update;
-      end;
-    finally
-      if Assigned(console) then
-        console.close;
-    end;
-  except
-    on error: TPTCError do
+      { unlock surface }
+      surface.unlock;
+
+      { copy to console }
+      surface.copy(console);
+
+      { update console }
+      console.update;
+    End;
+    console.close;
+    console.Free;
+    surface.Free;
+  Except
+    On error : TPTCError Do
       { report error }
       error.report;
-  end;
-end.
+  End;
+End.

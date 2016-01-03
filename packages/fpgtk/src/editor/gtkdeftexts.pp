@@ -9,7 +9,7 @@ resourcestring
   sOptions = 'Options';
   sOk = '  Ok  ';
   sCancel = 'Cancel';
-  sExtension = 'Extension';
+  sExtention = 'Extention';
   sSaveonclose = '_Save on close';
   sFileFormat = 'File format';
   sMRUcount = 'MRU count';

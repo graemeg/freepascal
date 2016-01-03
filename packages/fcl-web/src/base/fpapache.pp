@@ -18,7 +18,7 @@ unit fpapache;
 interface
 
 uses
-  SysUtils,Classes,CustWeb,httpDefs,fpHTTP,httpd,httpprotocol, apr, SyncObjs;
+  SysUtils,Classes,CustWeb,httpDefs,fpHTTP,httpd, apr, SyncObjs;
 
 Type
 
@@ -31,11 +31,11 @@ Type
     FApache : TApacheHandler;
     FRequest : PRequest_rec;
   Protected
+    Function GetFieldValue(Index : Integer) : String; override;
     Procedure InitFromRequest;
     procedure ReadContent; override;
   Public
     Constructor CreateReq(App : TApacheHandler; ARequest : PRequest_rec);
-    Function GetCustomHeader(const Name: String) : String; override;
     Property ApacheRequest : Prequest_rec Read FRequest;
     Property ApacheApp : TApacheHandler Read FApache;
   end;
@@ -125,11 +125,9 @@ Type
     procedure SetPriority(const AValue: THandlerPriority);
   public
     function InitializeWebHandler: TWebHandler; override;
-    Procedure Initialize;override;
     procedure ShowException(E: Exception); override;
     Function ProcessRequest(P : PRequest_Rec) : Integer; virtual;
     Function AllowRequest(P : PRequest_Rec) : Boolean; virtual;
-    Procedure SetModuleRecord(Var ModuleRecord : Module);
     Property HandlerPriority : THandlerPriority Read GetPriority Write SetPriority default hpMiddle;
     Property BeforeModules : TStrings Read GetBeforeModules Write SetBeforeModules;
     Property AfterModules : TStrings Read GetAfterModules Write SetAfterModules;
@@ -157,7 +155,7 @@ Type
   end;
   
 
-  EFPApacheError = Class(EHTTP);
+  EFPApacheError = Class(Exception);
   
 Var
   Application : TCustomApacheApplication = Nil;
@@ -179,12 +177,6 @@ const
   HPRIO : Array[THandlerPriority] of Integer
         = (APR_HOOK_FIRST,APR_HOOK_MIDDLE,APR_HOOK_LAST);
 
-Function MaybeP(P : Pchar) : String;
-
-begin
-  If (P<>Nil) then
-    Result:=StrPas(P);
-end;
 
 Procedure InitApache;
 
@@ -260,11 +252,9 @@ Var
 begin
   Req:=TApacheRequest.CreateReq(Self,P);
   Try
-    InitRequest(Req);
     Req.InitRequestVars;
     Resp:=TApacheResponse.CreateApache(Req);
     Try
-      InitResponse(Resp);
       HandleRequest(Req,Resp);
       If Not Resp.ContentSent then
         Resp.SendContent;
@@ -285,9 +275,7 @@ end;
 
 function TApacheHandler.WaitForRequest(out ARequest: TRequest; out AResponse: TResponse): boolean;
 begin
-  Result:=False;
-  ARequest:=Nil;
-  AResponse:=Nil;
+  // Do nothing. Requests are triggered by Apache
 end;
 
 function TApacheHandler.AllowRequest(P: PRequest_Rec): Boolean;
@@ -454,6 +442,53 @@ end;
 
 { TApacheRequest }
 
+function TApacheRequest.GetFieldValue(Index: Integer): String;
+
+var
+  P : Pchar;
+  FN : String;
+  I : Integer;
+  
+begin
+  Result:='';
+  If (Index in [1..NoHTTPFields]) then
+    begin
+    FN:=HTTPFieldNames[Index];
+    P:=apr_table_get(FRequest^.headers_in,pchar(FN));
+    If (P<>Nil) then
+      Result:=StrPas(P);
+    end;
+  if (Result='') then
+    case Index of
+      0  : Result:=strpas(FRequest^.protocol); // ProtocolVersion
+      7  : Result:=Strpas(FRequest^.content_encoding); //ContentEncoding
+      25 : Result:=StrPas(FRequest^.path_info); // PathInfo
+      26 : Result:=StrPas(FRequest^.filename); // PathTranslated
+      27 : // RemoteAddr
+           If (FRequest^.Connection<>Nil) then
+             Result:=StrPas(FRequest^.Connection^.remote_ip);
+      28 : // RemoteHost
+           If (FRequest^.Connection<>Nil) then
+             Result:=StrPas(ap_get_remote_host(FRequest^.Connection,
+                                FRequest^.Per_Dir_Config,
+                                REMOTE_HOST,Nil));
+      29 : begin // ScriptName
+           Result:=StrPas(FRequest^.unparsed_uri);
+           I:=Pos('?',Result)-1;
+           If (I=-1) then
+             I:=Length(Result);
+           Result:=Copy(Result,1,I-Length(PathInfo));
+           end;
+      30 : Result:=IntToStr(ap_get_server_port(FRequest)); // ServerPort
+      31 : Result:=StrPas(FRequest^.method); // Method
+      32 : Result:=StrPas(FRequest^.unparsed_uri); // URL
+      33 : Result:=StrPas(FRequest^.args); // Query
+      34 : Result:=StrPas(FRequest^.HostName); // Host
+    else
+      Result:=inherited GetFieldValue(Index);
+    end;
+end;
+
 procedure TApacheRequest.ReadContent;
 
   Function MinS(A,B : Integer) : Integer;
@@ -468,7 +503,6 @@ procedure TApacheRequest.ReadContent;
 Var
   Left,Len,Count,Bytes : Integer;
   P : Pchar;
-  S : String;
   
 begin
   ap_setup_client_block(FRequest,REQUEST_CHUNKED_DECHUNK);
@@ -477,8 +511,8 @@ begin
     Len:=ContentLength;
     If (Len>0) then
       begin
-      SetLength(S,Len);
-      P:=PChar(S);
+      SetLength(FContent,Len);
+      P:=PChar(FContent);
       Left:=Len;
       Count:=0;
       Repeat
@@ -487,53 +521,18 @@ begin
         Inc(P,Bytes);
         Inc(Count,Bytes);
       Until (Count>=Len) or (Bytes=0);
-      SetLength(S,Count);
+      SetLength(FContent,Count);
       end;
     end;
-  InitContent(S);
+  FContentRead:=True;
 end;
 
 procedure TApacheRequest.InitFromRequest;
-
-
-Var
-  H : THeader;
-  V : String;
-  I : Integer;
-
 begin
   ParseCookies;
-  For H in THeader do
-    begin
-    V:=MaybeP(apr_table_get(FRequest^.headers_in,PAnsiChar(HTTPHeaderNames[h])));
-    If (V<>'') then
-      SetHeader(H,V);
-    end;
-  // Some Specials;
-  SetHeader(hhContentEncoding,MaybeP(FRequest^.content_encoding));
-  SetHTTPVariable(hvHTTPVersion,MaybeP(FRequest^.protocol));
-  SetHTTPVariable(hvPathInfo,MaybeP(FRequest^.path_info));
-  SetHTTPVariable(hvPathTranslated,MaybeP(FRequest^.filename));
-  If (FRequest^.Connection<>Nil) then
-    begin
-    SetHTTPVariable(hvRemoteAddress,MaybeP(FRequest^.Connection^.remote_ip));
-    SetHTTPVariable(hvRemoteHost,MaybeP(ap_get_remote_host(FRequest^.Connection,
-                   FRequest^.per_dir_config, REMOTE_NAME,@i)));
-    end;
-  V:=MaybeP(FRequest^.unparsed_uri);
-  I:=Pos('?',V)-1;
-  If (I=-1) then
-    I:=Length(V);
-  SetHTTPVariable(hvScriptName,Copy(V,1,I-Length(PathInfo)));
-  SetHTTPVariable(hvServerPort,IntToStr(ap_get_server_port(FRequest)));
-  SetHTTPVariable(hvMethod,MaybeP(FRequest^.method));
-  SetHTTPVariable(hvURL,FRequest^.unparsed_uri);
-  SetHTTPVariable(hvQuery,MaybeP(FRequest^.args));
-  SetHeader(hhHost,MaybeP(FRequest^.HostName));
 end;
 
-constructor TApacheRequest.CreateReq(App: TApacheHandler; ARequest: PRequest_rec
-  );
+Constructor TApacheRequest.CreateReq(App : TApacheHandler; ARequest : PRequest_rec);
 
 begin
   FApache:=App;
@@ -541,13 +540,6 @@ begin
   ReturnedPathInfo:=App.BaseLocation;
   Inherited Create;
   InitFromRequest;
-end;
-
-function TApacheRequest.GetCustomHeader(const Name: String): String;
-begin
-  Result:=inherited GetCustomHeader(Name);
-  if Result='' then
-    Result:=MaybeP(apr_table_get(FRequest^.headers_in,pchar(Name)));
 end;
 
 { TApacheResponse }
@@ -624,8 +616,7 @@ end;
 
 function __dummythread(p: pointer): ptrint;
 begin
-  sleep(1000);
-  Result:=0;
+//empty
 end;
 
 { TCustomApacheApplication }
@@ -725,12 +716,6 @@ begin
   Result:=TApacheHandler.Create(self);
 end;
 
-procedure TCustomApacheApplication.Initialize;
-begin
-  Inherited;
-  TApacheHandler(WebHandler).Initialize;
-end;
-
 procedure TCustomApacheApplication.ShowException(E: Exception);
 begin
   ap_log_error(pchar(TApacheHandler(WebHandler).ModuleName),0,APLOG_ERR,0,Nil,'module: %s',[Pchar(E.Message)]);
@@ -746,13 +731,10 @@ begin
   result := TApacheHandler(WebHandler).AllowRequest(p);
 end;
 
-procedure TCustomApacheApplication.SetModuleRecord(var ModuleRecord: Module);
-begin
-  TApacheHandler(WebHandler).SetModuleRecord(ModuleRecord);
-end;
-
 Initialization
   BeginThread(@__dummythread);//crash prevention for simultaneous requests
+  sleep(300);
+
   InitApache;
   
 Finalization

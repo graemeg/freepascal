@@ -31,8 +31,16 @@ procedure SetPrinterDevice(const Device: string);
 
 implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses
   sysutils, { used for SameFileName function }
+=======
+uses 
+>>>>>>> graemeg/fixes_2_2
+=======
+uses 
+>>>>>>> origin/fixes_2_2
   Dos,Objects,Drivers,
   FVConsts,
   Version,

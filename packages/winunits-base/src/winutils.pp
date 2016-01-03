@@ -13,17 +13,62 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$mode objfpc}{$H+}
+=======
+{$mode objfpc}
+>>>>>>> graemeg/cpstrnew
+=======
+{$mode objfpc}
+>>>>>>> graemeg/cpstrnew
+=======
+{$mode objfpc}
+>>>>>>> graemeg/cpstrnew
+=======
+{$mode objfpc}
+>>>>>>> origin/cpstrnew
+=======
+{$mode objfpc}
+>>>>>>> origin/fixes_2.4
 unit winutils;
 
 Interface
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Uses Windows, ComObj, ActiveX;
+=======
+Uses Windows;
+>>>>>>> graemeg/cpstrnew
+=======
+Uses Windows;
+>>>>>>> graemeg/cpstrnew
+=======
+Uses Windows;
+>>>>>>> graemeg/cpstrnew
+=======
+Uses Windows;
+>>>>>>> origin/cpstrnew
+=======
+Uses Windows;
+>>>>>>> origin/fixes_2.4
 
 // returns True if the currently logged Windows user has Administrator rights. Delphi.about.com
 // From Delphi.about.com with permission, http://delphi.about.com/od/delphitips2007/qt/is_win_admin.htm
 function IsWindowsAdmin: Boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 // Removes Browsers "downloaded" attribute from a file.
 procedure UnBlockFile(const name:String);
 
@@ -42,6 +87,16 @@ procedure AddProgramExceptionToFireWall(Const wsCaption, wsDescription, wsExecut
 // remove firewall rule, e.g.  RemoveExceptionFromFW(Application.Title);
 procedure RemoveExceptionFromFW(Const exCaption: WideString);
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 implementation
 
 const
@@ -97,6 +152,11 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure UnBlockFile(const name:String);
 var f : file;
 begin
@@ -133,4 +193,14 @@ begin
   fwPolicy2.Rules.Remove(exCaption);
 end;   
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 end.

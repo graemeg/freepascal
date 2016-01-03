@@ -3,7 +3,13 @@
 {$H-}
 {$goto on}
 {$inline on}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$interfaces corba}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 { This reduces the memory requirements a lot }
 {$PACKENUM 1}
@@ -97,8 +103,14 @@
   {$define cpu32bitalu}
   {$define cpuflags}
   {$define cputargethasfixedstack}
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$define cpurefshaveindexreg}
   {$define SUPPORT_SAFECALL}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif sparc}
 
 {$ifdef powerpc}
@@ -118,9 +130,15 @@
   {$define cpuflags}
   {$define cputargethasfixedstack}
   {$define cpumm}
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$define cpurox}
   {$define cpurefshaveindexreg}
   {$define cpuno32bitops}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif powerpc64}
 
 {$ifdef arm}
@@ -132,6 +150,8 @@
   {$define cpuneedsdivhelper}
   {$define cpurox}
   {$define cputargethasfixedstack}
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$define cpurefshaveindexreg}
   {$define cpucapabilities}
   {$define SUPPORT_SAFECALL}
@@ -152,6 +172,10 @@
   {$if defined(CPUARMHF) and not(defined(FPC_OARM)) and not(defined(FPC_ARMEL)) and not(defined(FPC_ARMEB))}
     {$define FPC_ARMHF}
   {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif arm}
 
 {$ifdef m68k}
@@ -172,14 +196,34 @@
   {$define cpuflags}
   {$define cpunofpu}
   {$define cpunodefaultint}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$define cpuneedsdivhelper}
   {$define cpuneedsmulhelper}
   {$define cpurefshaveindexreg}
   {$define cpucapabilities}
+=======
+  {$define cpuneedsdiv32helper}
+>>>>>>> graemeg/cpstrnew
+=======
+  {$define cpuneedsdiv32helper}
+>>>>>>> graemeg/cpstrnew
+=======
+  {$define cpuneedsdiv32helper}
+>>>>>>> graemeg/cpstrnew
+=======
+  {$define cpuneedsdiv32helper}
+>>>>>>> origin/cpstrnew
 {$endif avr}
 
 {$ifdef mipsel}
   {$define mips}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$else not mipsel}
   { Define both mips and mipseb if mipsel is not defined
     but mips cpu is wanted. }
@@ -229,10 +273,43 @@
   {$define SUPPORT_GET_FRAME}
 {$endif aarch64}
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$endif mipsel}
+
+{$ifdef mips}
+  {$define cpu32bitalu}
+  {$define cpu32bitaddr}
+  { $define cpuflags}
+  {$define cputargethasfixedstack}
+  {$define cpurequiresproperalignment}
+  {$define cpumm}
+{$endif mips}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$IFDEF MACOS}
 {$DEFINE USE_FAKE_SYSUTILS}
 {$ENDIF MACOS}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 { Stabs is not officially supported on 64 bit targets by gdb, except on Mac OS X
   (but there we don't support it)
 }
@@ -242,6 +319,14 @@
 {$endif}
 {$endif}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$if not defined(FPC_HAS_TYPE_EXTENDED) and defined(i386)}
 {$error Cross-compiling from systems without support for an 80 bit extended floating point type to i386 is not yet supported at this time }
 {$endif}
@@ -256,4 +341,13 @@
   {$define cpu64bitalu}
   {$define cpuhighleveltarget}
   {$define symansistr}
+=======
+{$define SUPPORT_UNALIGNED}
+
+{$if not defined(cpui386) and defined(i386)}
+{$error Cross-compiling from non-i386 to i386 is not yet supported at this time }
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif}

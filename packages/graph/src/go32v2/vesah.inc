@@ -31,7 +31,6 @@ TYPE
   end;                             { VESA standard because of bugs on }
                                    { some video cards.                }
   *)
-  { VESA 1.1 }
     TotalMem     : word;
   { VESA 2.0 }
     OEMversion   : word;
@@ -83,21 +82,7 @@ TYPE
     PhysAddress    : longint; { pos $28 }
     OffscreenPtr   : longint; { pos $2C }
     OffscreenMem   : word; { pos $30 }
-  { VESA 3.0 }
-    LinBytesPerScanLine: Word;   {bytes per scan line for linear modes}
-    BnkNumberOfImagePages: Byte; {number of images for banked modes}
-    LinNumberOfImagePages: Byte; {number of images for linear modes}
-    LinRedMaskSize: Byte;        {size of direct color red mask (linear modes)}
-    LinRedFieldPosition: Byte;   {bit position of lsb of red mask (linear modes)}
-    LinGreenMaskSize: Byte;      {size of direct color green mask (linear modes)}
-    LinGreenFieldPosition: Byte; {bit position of lsb of green mask (linear modes)}
-    LinBlueMaskSize: Byte;       {size of direct color blue mask (linear modes)}
-    LinBlueFieldPosition: Byte;  {bit position of lsb of blue mask (linear modes)}
-    LinRsvdMaskSize: Byte;       {size of direct color reserved mask (linear modes)}
-    LinRsvdFieldPosition: Byte;  {bit position of lsb of reserved mask (linear modes)}
-    MaxPixelClock: longint;      {maximum pixel clock (in Hz) for graphics mode}
-
-    reserved2: array [1..189] of Byte; {remainder of ModeInfoBlock}
+    reserved2      : Array[1..458]of Byte; { pos $32 }
    end;
 
 

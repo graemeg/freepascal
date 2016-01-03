@@ -1,20 +1,75 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for Free Vision for Free Pascal
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for Free Vision for Free Pascal
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=fv
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> origin/cpstrnew
 
 [require]
 packages=rtl fpmkunit
 
 [install]
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=buildfv
+implicitunits=app colortxt dialogs drivers editors \
+              fvcommon fvconsts gadgets histlist inplong memory \
+              menus msgbox statuses stddlg tabs time validate \
+              views sysmsg asciitab timeddlg outline
+exampledirs=examples
+rsts=app dialogs editors msgbox stddlg
+
+[libs]
+libname=libfpfv.so
+libversion=2.0.0
+
+[compiler]
+sourcedir=src
+
+[install]
+buildunit=buildfv
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 fpcpackage=y
 
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +155,11 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+[rules]
+.NOTPARALLEL:
+>>>>>>> graemeg/fixes_2_2
+=======
+[rules]
+.NOTPARALLEL:
+>>>>>>> origin/fixes_2_2

@@ -1,5 +1,17 @@
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     This unit implements support information structures for Nintendo DS
+=======
+    This unit implements support information structures for GameBoy Advance
+>>>>>>> graemeg/fixes_2_2
+=======
+    This unit implements support information structures for GameBoy Advance
+>>>>>>> origin/fixes_2_2
+=======
+    This unit implements support information structures for Nintendo DS
+>>>>>>> origin/fixes_2.4
 
     Copyright (c) 1998-2002 by Peter Vreman
 
@@ -34,8 +46,23 @@ unit i_nds;
             system       : system_arm_nds;
             name         : 'Nintendo DS';
             shortname    : 'nds';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             flags        : [tf_needs_symbol_size,tf_files_case_sensitive,
                             tf_requires_proper_alignment,tf_smartlink_sections];
+=======
+            flags        : [tf_needs_symbol_size,tf_files_case_sensitive,tf_use_function_relative_addresses
+	                          ,tf_smartlink_sections,tf_requires_proper_alignment];
+>>>>>>> graemeg/fixes_2_2
+=======
+            flags        : [tf_needs_symbol_size,tf_files_case_sensitive,tf_use_function_relative_addresses
+	                          ,tf_smartlink_sections,tf_requires_proper_alignment];
+>>>>>>> origin/fixes_2_2
+=======
+            flags        : [tf_needs_symbol_size,tf_files_case_sensitive,
+                            tf_use_function_relative_addresses,tf_requires_proper_alignment,tf_smartlink_sections];
+>>>>>>> origin/fixes_2.4
             cpu          : cpu_arm;
             unit_env     : '';
             extradefines : '';
@@ -57,15 +84,31 @@ unit i_nds;
             staticClibext : '.a';
             staticClibprefix : 'lib';
             sharedClibprefix : 'lib';
+<<<<<<< HEAD
+<<<<<<< HEAD
             importlibprefix : 'libimp';
             importlibext : '.a';
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             Cprefix      : '';
             newline      : #10;
             dirsep       : '/';
             assem        : as_gas;
             assemextern  : as_gas;
+<<<<<<< HEAD
+<<<<<<< HEAD
             link         : ld_none;
             linkextern   : ld_nds;
+=======
+            link         : nil;
+            linkextern   : nil;
+>>>>>>> graemeg/fixes_2_2
+=======
+            link         : nil;
+            linkextern   : nil;
+>>>>>>> origin/fixes_2_2
             ar           : ar_gnu_ar;
             res          : res_none;
             dbg          : dbg_stabs;
@@ -77,6 +120,8 @@ unit i_nds;
                 loopalign       : 4;
                 jumpalign       : 0;
                 constalignmin   : 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
                 constalignmax   : 8;//4;
                 varalignmin     : 0;
                 varalignmax     : 8;//4;
@@ -88,9 +133,48 @@ unit i_nds;
               );
             first_parm_offset : 8;
             stacksize    : $3CFF; //15615? or 16384?;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             stackalign   : 8;
             abi : abi_eabi;
             llvmdatalayout : 'e-p:32:32:32-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v64:64:64-v128:64:128-a0:0:64-n32-S64';
+=======
+            abi : abi_eabi
+>>>>>>> graemeg/cpstrnew
+=======
+            abi : abi_eabi
+>>>>>>> graemeg/cpstrnew
+=======
+            abi : abi_eabi
+>>>>>>> graemeg/cpstrnew
+=======
+            abi : abi_eabi
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                constalignmax   : 4;
+                varalignmin     : 0;
+                varalignmax     : 4;
+                localalignmin   : 4;
+                localalignmax   : 8;
+                recordalignmin  : 0;
+                recordalignmax  : 4;
+                maxCrecordalign : 4
+              );
+            first_parm_offset : 8;
+            stacksize    : 16384;
+            abi : abi_default
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+            abi : abi_eabi
+>>>>>>> origin/fixes_2.4
           );
 
   implementation

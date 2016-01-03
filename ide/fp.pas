@@ -53,9 +53,15 @@ uses
 {$ifdef go32v2}
   dpmiexcp,
 {$endif go32v2}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef VESA}
   vesa,
 {$endif VESA}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   keyboard,video,mouse,
 {$ifdef HasSignal}
   fpcatch,
@@ -267,6 +273,25 @@ begin
   end;
 end;
 
+{$ifdef linux}
+procedure detect_debian;
+
+var attr:word;
+    f:text;
+
+begin
+  assign(f,'/etc/debian_version');
+  getfattr(f,attr);
+  if doserror=0 then
+    errorbox('Debian system detected!'#13#13+
+             'Debian systems use an incompatible gpm'#13+
+             'daemon, therefore your system might'#13+
+             'suffer from Debian bug 412927. Please'#13+
+             'see http://bugs.debian.org/cgi-bin/'#13+
+             'bugreport.cgi?bug=412927 for details.',nil);
+end;
+{$endif}
+
 procedure DelTempFiles;
 begin
   DeleteFile(FPOutFileName);
@@ -345,6 +370,8 @@ procedure InitCompilerSwitches;
     default_settings.localswitches:=[cs_typed_const_writable];
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF HASAMIGA}
 procedure SetAmigaWindowTitle;
 begin
@@ -354,6 +381,12 @@ begin
      'Free Pascal IDE '+VersionStr+' ['+{$i %date%}+'] - Compiler '+Full_Version_String);
 end;
 {$ENDIF}
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 {The square bullet needs an MS-DOS code page. On Unix it is for sure the code
  page is not available before video is initialized. (And only in certain
  circumstances after that, so, use a plain ascii character as bullet on Unix.)}
@@ -470,6 +503,10 @@ BEGIN
 
   if ShowReadme then
   begin
+  {$ifdef linux}
+    {Regrettably we do not have a proper solution.}
+    detect_debian;
+  {$endif}
     PutCommand(Application,evCommand,cmShowReadme,nil);
     ShowReadme:=false; { do not show next time }
   end;

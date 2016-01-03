@@ -120,7 +120,19 @@ Type
     TTopicLinkCollection = object(TStringCollection)
       procedure   Insert(Item: Pointer); virtual;
       function    At(Index: sw_Integer): PString;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       function    AddItem(Item: string): sw_integer;
+=======
+      function    AddItem(Item: string): integer;
+>>>>>>> graemeg/fixes_2_2
+=======
+      function    AddItem(Item: string): integer;
+>>>>>>> origin/fixes_2_2
+=======
+      function    AddItem(Item: string): sw_integer;
+>>>>>>> origin/fixes_2.4
     end;
 
 function EncodeHTMLCtx(FileID: integer; LinkNo: word): longint;
@@ -901,7 +913,19 @@ begin
   At:=inherited At(Index);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TTopicLinkCollection.AddItem(Item: string): sw_integer;
+=======
+function TTopicLinkCollection.AddItem(Item: string): integer;
+>>>>>>> graemeg/fixes_2_2
+=======
+function TTopicLinkCollection.AddItem(Item: string): integer;
+>>>>>>> origin/fixes_2_2
+=======
+function TTopicLinkCollection.AddItem(Item: string): sw_integer;
+>>>>>>> origin/fixes_2.4
 var Idx: sw_integer;
 begin
   if Item='' then Idx:=-1 else

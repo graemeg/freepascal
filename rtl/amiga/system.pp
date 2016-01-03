@@ -42,7 +42,15 @@ const
   AllowDriveSeparators : set of char = [':'];
   maxExitCode = 255;
   MaxPathLen = 256;
+<<<<<<< HEAD
+<<<<<<< HEAD
   AllFilesMask = '#?';
+=======
+  AllFilesMask = '*';
+>>>>>>> graemeg/fixes_2_2
+=======
+  AllFilesMask = '*';
+>>>>>>> origin/fixes_2_2
 
 const
   UnusedHandle    : LongInt = -1;
@@ -408,6 +416,13 @@ end;
 
 begin
   IsConsole := TRUE;
+<<<<<<< HEAD
+=======
+  IsLibrary := FALSE;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   SysResetFPU;
   if not(IsLibrary) then
     SysInitFPU;

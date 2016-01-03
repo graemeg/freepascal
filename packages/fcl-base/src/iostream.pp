@@ -22,22 +22,17 @@ type
   TIOSType = (iosInput,iosOutPut,iosError);
   EIOStreamError = class(EStreamError);
 
-  { TIOStream }
-
   TIOStream = class(THandleStream)
   private
     FType : longint;
     FPos : Int64;
     zIOSType : TIOSType;
-  protected
-    procedure SetSize(const NewSize: Int64); override;
-    function  GetPosition: Int64; override;
-    procedure InvalidSeek; override;
   public
     constructor Create(aIOSType : TiosType);
     function Read(var Buffer; Count : LongInt) : Longint; override;
     function Write(const Buffer; Count : LongInt) : LongInt; override;
-    function Seek(const Offset: int64; Origin: TSeekOrigin): int64; override;
+    procedure SetSize(NewSize: Longint); override;
+    function Seek(Offset: Longint; Origin: Word): Longint; override;
     end;
 
 implementation
@@ -47,24 +42,9 @@ const
   SWriteOnlyStream = 'Cannot read from an output stream.';
   SInvalidOperation = 'Cannot perform this operation on a IOStream.';
 
-procedure TIOStream.SetSize(const NewSize: Int64);
-begin
-  raise EIOStreamError.Create(SInvalidOperation);
-end;
-
-function TIOStream.GetPosition: Int64;
-begin
-  Result:=FPos;
-end;
-
-procedure TIOStream.InvalidSeek;
-begin
-  raise EIOStreamError.Create(SInvalidOperation);
-end;
-
 constructor TIOStream.Create(aIOSType : TIOSType);
 begin
-{$ifdef windows}
+{$ifdef win32}
   case aIOSType of
     iosInput : FType := StdInputHandle;
     iosOutput : FType := StdOutputHandle;
@@ -97,18 +77,32 @@ begin
   end;
 end;
 
-
-function TIOStream.Seek(const Offset: int64; Origin: TSeekOrigin): int64;
+procedure TIOStream.SetSize(NewSize: Longint);
 begin
-  if (Origin=soCurrent) and (Offset=0) then
-    Result:=FPos
-  else
-    begin
-    if zIOSType in [iosOutput,iosError] then
-      InvalidSeek;
-    FakeSeekForward(Offset,Origin,FPos);
-    Result:=FPos;
-    end;
+  raise EIOStreamError.Create(SInvalidOperation);
+end;
+
+function TIOStream.Seek(Offset: Longint; Origin: Word): Longint;
+const
+  BufSize = 1024;
+var
+  Buf : array[1..BufSize] of Byte;
+begin
+  If (Origin=soFromCurrent) and (Offset=0) then
+     result:=FPos;
+  { Try to fake seek by reading and discarding }
+  if (zIOSType = iosOutput) or
+     Not((Origin=soFromCurrent) and (Offset>=0) or
+         ((Origin=soFrombeginning) and (OffSet>=FPos))) then
+     Raise EIOStreamError.Create(SInvalidOperation);
+  if Origin=soFromBeginning then
+    Dec(Offset,FPos);
+  While ((Offset Div BufSize)>0)
+        and (Read(Buf,SizeOf(Buf))=BufSize) do
+     Dec(Offset,BufSize);
+  If (Offset>0) then
+    Read(Buf,BufSize);
+  Result:=FPos;
 end;
 
 end.

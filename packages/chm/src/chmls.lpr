@@ -1,8 +1,14 @@
 { Copyright (C) <2005> <Andrew Haines> chmls.lpr
+<<<<<<< HEAD
+<<<<<<< HEAD
   Mostly rewritten by Marco van de Voort 2009-2012
 
   An util that concentrates on listing and decompiling various sections
    of a CHM.
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   This library is free software; you can redistribute it and/or modify it
   under the terms of the GNU Library General Public License as published by
@@ -16,8 +22,20 @@
 
   You should have received a copy of the GNU Library General Public License
   along with this library; if not, write to the Free Software Foundation,
+<<<<<<< HEAD
+<<<<<<< HEAD
   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+}
+{
+>>>>>>> graemeg/fixes_2_2
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+}
+{
+>>>>>>> origin/fixes_2_2
   See the file COPYING, included in this distribution,
   for details about the copyright.
 }
@@ -30,11 +48,21 @@ program chmls;
 {$mode objfpc}{$H+}
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
   Classes, GetOpts, SysUtils, Types,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   StreamEx,
   chmreader, chmbase, chmsitemap;
 
 {$R-} // CHM spec puts "-1" in dwords etc.
+=======
+  chmreader, chmbase, chmsitemap;
+
+>>>>>>> graemeg/cpstrnew
 type
 
   { TListObject }
@@ -54,17 +82,68 @@ type
     procedure OnFileEntry(Name: String; Offset, UncompressedSize, ASection: Integer);
   end;
 
+<<<<<<< HEAD
 Type
   TCmdEnum = (cmdList,cmdExtract,cmdExtractall,cmdUnblock,cmdextractalias,cmdextracttoc,cmdextractindex,cmdprintidxhdr,cmdprintsystem,cmdprintwindows,cmdprinttopics,cmdNone);        // One dummy element at the end avoids rangecheck errors.
 
 Const
   CmdNames : array [TCmdEnum] of String = ('LIST','EXTRACT','EXTRACTALL','UNBLOCK','EXTRACTALIAS','EXTRACTTOC','EXTRACTINDEX','PRINTIDXHDR','PRINTSYSTEM','PRINTWINDOWS','PRINTTOPICS','');
+=======
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  chmreader, chmbase, chmsitemap;
+
+type
+
+  { TListObject }
+
+  TListObject = class
+    Section  : Integer;
+    count    : integer;
+    donotpage: boolean;
+    nameonly : boolean;
+    procedure OnFileEntry(Name: String; Offset, UncompressedSize, ASection: Integer);
+  end;
+
+   TExtractAllObject = class
+    basedir : string;
+    r       : TChmReader;
+    lastone_was_point : boolean;
+    procedure OnFileEntry(Name: String; Offset, UncompressedSize, ASection: Integer);
+  end;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+  TCmdEnum = (cmdList,cmdExtract,cmdExtractall,cmdUnblock,cmdextractalias,cmdextracttoc,cmdextractindex,cmdNone);        // One dummy element at the end avoids rangecheck errors.
+
+Const
+  CmdNames : array [TCmdEnum] of String = ('LIST','EXTRACT','EXTRACTALL','UNBLOCK','EXTRACTALIAS','EXTRACTTOC','EXTRACTINDEX','');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 var
   theopts : array[1..4] of TOption;
 
 
 Procedure Usage;
+<<<<<<< HEAD
 
 begin
   Writeln(StdErr,'Usage: chmls [switches] [command] [command specific parameters]');
@@ -94,6 +173,9 @@ begin
   writeln(stderr,'            Extracts the toc (mainly to check binary TOC)');
   writeln(stderr,' extractindex <chmfilename> [filename]');
   writeln(stderr,'            Extracts the index (mainly to check binary index)');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   writeln(stderr,' printidxhdr <chmfilename>');
   writeln(stderr,'            prints #IDXHDR in readable format ');
   writeln(stderr,' printsystem <chmfilename>');
@@ -103,6 +185,10 @@ begin
   writeln(stderr,' printtopics <chmfilename>');
   writeln(stderr,'            prints #TOPICS in readable format ');
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
   Halt(1);
 end;
 
@@ -143,9 +229,148 @@ begin
   end;
 end;
 
+=======
+  Halt(1);
+end;
+
+procedure WrongNrParam(cmd:string;number:integer);
+
+begin
+  writeln(stderr,' Wrong number of parameters for ',cmd,' ',number);
+  usage;
+  halt(1);
+end;
+
+procedure InitOptions;
+begin
+  with theopts[1] do
+   begin
+    name:='help';
+    has_arg:=0;
+    flag:=nil;
+    value:=#0;
+  end;
+  with theopts[2] do
+   begin
+    name:='name-only';
+    has_arg:=0;
+    flag:=nil;
+  end;
+  with theopts[3] do
+   begin
+    name:='no-page';
+    has_arg:=0;
+    flag:=nil;
+  end;
+  with theopts[4] do
+   begin
+    name:='';
+    has_arg:=0;
+    flag:=nil;
+  end;
+end;
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+begin
+  Writeln(StdErr,'Usage: chmls [switches] [command] [command specific parameters]');
+  writeln(stderr);
+  writeln(stderr,'Switches : ');
+  writeln(stderr,' -h, --help     : this screen');
+  writeln(stderr,' -p, --no-page  : do not page list output');
+  writeln(stderr,' -n,--name-only : only show "name" column in list output');
+  writeln(stderr);
+  writeln(stderr,'Where command is one of the following or if omitted, equal to LIST.');
+  writeln(stderr,' list       <filename> [section number] ');
+  writeln(stderr,'            Shows contents of the archive''s directory');
+  writeln(stderr,' extract    <chm filename> <filename to extract> [saveasname]');
+  writeln(stderr,'            Extracts file "filename to get" from archive "filename",');
+  writeln(stderr,'            and, if specified, saves it to [saveasname]');
+  writeln(stderr,' extractall <chm filename> [directory]');
+  writeln(stderr,'            Extracts all files from archive "filename" to directory ');
+  writeln(stderr,'            "directory"');
+  writeln(stderr,' unblockchm <filespec1> [filespec2] ..' );
+  writeln(stderr,'            Mass unblocks (XPsp2+) the relevant CHMs. Multiple files');
+  writeln(stderr,'            and wildcards allowed');
+  writeln(stderr,' extractalias <chmfilename> [basefilename] [symbolprefix]' );
+  writeln(stderr,'            Extracts context info from file "chmfilename" ');
+  writeln(stderr,'            to a "basefilename".h and "basefilename".ali,');
+  writeln(stderr,'            using symbols "symbolprefix"contextnr');
+  writeln(stderr,' extracttoc <chmfilename> [filename]');
+  writeln(stderr,'            Extracts the toc (mainly to check binary TOC)');
+  writeln(stderr,' extractindex <chmfilename> [filename]');
+  writeln(stderr,'            Extracts the index (mainly to check binary index)');
+  Halt(1);
+end;
+
+procedure WrongNrParam(cmd:string;number:integer);
+
+begin
+  writeln(stderr,' Wrong number of parameters for ',cmd,' ',number);
+  usage;
+  halt(1);
+end;
+
+procedure InitOptions;
+begin
+  with theopts[1] do
+   begin
+    name:='help';
+    has_arg:=0;
+    flag:=nil;
+    value:=#0;
+  end;
+  with theopts[2] do
+   begin
+    name:='name-only';
+    has_arg:=0;
+    flag:=nil;
+  end;
+  with theopts[3] do
+   begin
+    name:='no-page';
+    has_arg:=0;
+    flag:=nil;
+  end;
+  with theopts[4] do
+   begin
+    name:='';
+    has_arg:=0;
+    flag:=nil;
+  end;
+end;
+
+>>>>>>> origin/cpstrnew
 procedure WriteStrAdj(Str: String; CharWidth: Integer);
 // Changed to WriteStrADJ (for adjust), since 2.4.0 writestr is a builtin
 // Why doesn't Write() allow left aligned columns?, sigh.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  Classes, chmreader, chmbase, Sysutils
+  { add your units here };
+type
+
+  { TJunkObject }
+
+  TJunkObject = class
+    procedure OnFileEntry(Name: String; Offset, UncompressedSize, ASection: Integer);
+  end;
+  
+
+var
+  ITS: TITSFReader;
+  Stream: TFileStream;
+  I : Integer;
+  Section: Integer = -1;
+  JunkObject: TJunkObject;
+
+procedure WriteStr(Str: String; CharWidth: Integer);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   var
     OutString: String;
     Len: Integer;
@@ -153,6 +378,8 @@ procedure WriteStrAdj(Str: String; CharWidth: Integer);
     Len := Length(Str);
     SetLength(OutString, CharWidth-Len);
     FillChar(OutString[1], CharWidth-Len, ' ');
+<<<<<<< HEAD
+<<<<<<< HEAD
     Write(OutString + Str); // to stdout
   end;
 
@@ -169,6 +396,32 @@ begin
   pthends:=false;  filenameends:=false;
   if (lenpth>0) and (pth[lenpth] in ['/','\']) then
     pthends:=true;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/cpstrnew
+
+  if (lenfn>0) and (filename[1] in ['/','\']) then
+    filenameends:=true;
+
+  if pthends and filenameends then
+      result:=copy(pth,1,lenpth-1)+filename
+  else
+    if pthends or filenameends then
+        result:=pth+filename
+    else
+       result:=pth+pathsep+filename;
+end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+
+=======
+
+
+>>>>>>> graemeg/cpstrnew
+=======
 
   if (lenfn>0) and (filename[1] in ['/','\']) then
     filenameends:=true;
@@ -183,6 +436,27 @@ begin
 end;
 
 
+>>>>>>> graemeg/cpstrnew
+=======
+
+  if (lenfn>0) and (filename[1] in ['/','\']) then
+    filenameends:=true;
+
+  if pthends and filenameends then
+      result:=copy(pth,1,lenpth-1)+filename
+  else
+    if pthends or filenameends then
+        result:=pth+filename
+    else
+       result:=pth+pathsep+filename;
+end;
+
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+
+>>>>>>> origin/cpstrnew
 procedure TListObject.OnFileEntry(Name: String; Offset, UncompressedSize,
   ASection: Integer);
 begin
@@ -300,7 +574,23 @@ begin
   if (length(readfrom)>1) and (readfrom[1]<>'/') then
     readfrom:='/'+readfrom;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   fs:=TFileStream.create(chm,fmOpenRead or fmShareDenyNone);
+=======
+  fs:=TFileStream.create(chm,fmOpenRead);
+>>>>>>> graemeg/cpstrnew
+=======
+  fs:=TFileStream.create(chm,fmOpenRead);
+>>>>>>> graemeg/cpstrnew
+=======
+  fs:=TFileStream.create(chm,fmOpenRead);
+>>>>>>> graemeg/cpstrnew
+=======
+  fs:=TFileStream.create(chm,fmOpenRead);
+>>>>>>> origin/cpstrnew
   r:=TChmReader.Create(fs,True);
   m:=r.getobject(readfrom);
   if assigned(m) then
@@ -467,6 +757,10 @@ begin
  Files.Free;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 procedure readchunk13(m:TMemoryStream;r:TChmReader);
 
@@ -913,6 +1207,18 @@ begin
 end;
 
 const
+=======
+const 
+>>>>>>> graemeg/cpstrnew
+=======
+const 
+>>>>>>> graemeg/cpstrnew
+=======
+const 
+>>>>>>> graemeg/cpstrnew
+=======
+const 
+>>>>>>> origin/cpstrnew
    siteext : array[TSiteMapType] of string = ('.hhc','.hhk');
 
 procedure extracttocindex(filespec:TStringDynArray;sttype:TSiteMapType);
@@ -1045,9 +1351,25 @@ begin
                      end;
                    end;
       cmdextractall: begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                       if length(localparams)=1 then //extract into current directory
                         ExtractFileAll(localparams[0],GetCurrentDir)
                       else if length(localparams)=2 then //extract into specified dir
+=======
+                      if length(localparams)=2 then
+>>>>>>> graemeg/cpstrnew
+=======
+                      if length(localparams)=2 then
+>>>>>>> graemeg/cpstrnew
+=======
+                      if length(localparams)=2 then
+>>>>>>> graemeg/cpstrnew
+=======
+                      if length(localparams)=2 then
+>>>>>>> origin/cpstrnew
                         ExtractFileall(localparams[0],localparams[1])
                       else
                         WrongNrParam(cmdnames[cmd],length(localparams));
@@ -1065,18 +1387,54 @@ begin
                         else
                           WrongNrParam(cmdnames[cmd],length(localparams));
                        end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       cmdextracttoc : begin
+=======
+       cmdextracttoc : begin
+>>>>>>> graemeg/cpstrnew
+=======
+       cmdextracttoc : begin
+>>>>>>> graemeg/cpstrnew
+=======
+       cmdextracttoc : begin
+>>>>>>> graemeg/cpstrnew
+=======
+       cmdextracttoc : begin
+>>>>>>> origin/cpstrnew
                         if length(localparams)>0 then
                           extracttocindex(localparams,sttoc)
                         else
                           WrongNrParam(cmdnames[cmd],length(localparams));
                        end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       cmdextractindex: begin
+=======
+       cmdextractindex: begin
+>>>>>>> graemeg/cpstrnew
+=======
+       cmdextractindex: begin
+>>>>>>> graemeg/cpstrnew
+=======
+       cmdextractindex: begin
+>>>>>>> graemeg/cpstrnew
+=======
+       cmdextractindex: begin
+>>>>>>> origin/cpstrnew
                         if length(localparams)>0 then
                           extracttocindex(localparams,stindex)
 	                        else
                           WrongNrParam(cmdnames[cmd],length(localparams));
                        end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
       cmdprintidxhdr: begin
                         if length(localparams)=1 then
@@ -1102,6 +1460,14 @@ begin
                           else
                             WrongNrParam(cmdnames[cmd],length(localparams));
                          end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end; {case cmd of}
   end
  else
@@ -1110,5 +1476,66 @@ begin
      halt;
    end;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+    Write(OutString + Str); // to sdtout
+  end;
+
+{ TJunkObject }
+
+procedure TJunkObject.OnFileEntry(Name: String; Offset, UncompressedSize,
+  ASection: Integer);
+begin
+  Inc(I);
+  if (Section > -1) and (ASection <> Section) then Exit;
+  if (I = 1) or (I mod 40 = 0) then
+    WriteLn(StdErr, '<Section> <Offset> <UnCompSize>  <Name>');
+  Write(' ');
+  Write(ASection);
+  Write('      ');
+  WriteStr(IntToStr(Offset), 10);
+  Write('  ');
+  WriteStr(IntToStr(UncompressedSize), 11);
+  Write('  ');
+  WriteLn(Name);
+end;
+
+Procedure Usage;
+
+begin
+  WriteLn('   Usage:  chmls filename.chm [section number]');
+  Halt(1);
+end;
+
+// Start of program
+begin
+  if (Paramcount < 1) or (Paramstr(1)='-h') or (Paramstr(1)='-?') then 
+    begin
+    usage;
+    end;
+  if ParamCount > 1 then 
+    begin
+    Section := StrToIntDef(ParamStr(2),-1);
+    If (Section=-1) then
+      begin
+      Usage;
+      Halt(1);
+      end;
+    end; 
+  Stream := TFileStream.Create(ParamStr(1), fmOpenRead);
+  JunkObject := TJunkObject.Create;
+  ITS:= TITSFReader.Create(Stream, True);
+  I := 0;
+  ITS.GetCompleteFileList(@JunkObject.OnFileEntry);
+  
+  WriteLn('Total Files in chm: ', I);
+  ITS.Free;
+  JunkObject.Free;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.
 

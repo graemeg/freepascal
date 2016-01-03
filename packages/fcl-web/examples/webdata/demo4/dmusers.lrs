@@ -1,0 +1,12 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TDataModule1','FORMDATA',[
+  'TPF0'#12'TDataModule1'#11'DataModule1'#8'OnCreate'#7#16'DataModuleCreate'#14
+  +'OldCreateOrder'#8#6'Height'#3','#1#16'HorizontalOffset'#3'd'#1#14'VerticalO'
+  +'ffset'#3'h'#1#5'Width'#3#144#1#0#18'TFPWebDataProvider'#5'AName'#10'DataSou'
+  +'rce'#7#11'Datasource1'#4'left'#3#161#0#3'top'#3#145#0#0#0#11'TDatasource'#11
+  +'Datasource1'#7'DataSet'#7#4'Dbf1'#4'left'#2'h'#3'top'#3#160#0#0#0#4'TDbf'#4
+  +'Dbf1'#8'FilePath'#6'&/home/michael/public_html/extjs/demo2/'#9'IndexDefs'#14
+  +#0#9'TableName'#6#9'users.dbf'#10'TableLevel'#2#7#13'FilterOptions'#11#0#4'l'
+  +'eft'#2'k'#3'top'#2'x'#0#0#0
+]);

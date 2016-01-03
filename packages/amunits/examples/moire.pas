@@ -21,7 +21,7 @@ Program Moire;
       nils.sjoholm@mailbox.swipnet.se
 }
 
-uses Exec, Intuition, AGraphics, Utility, systemvartags;
+uses Exec, Intuition, Graphics, Utility, systemvartags;
 
 
 const
@@ -47,7 +47,7 @@ begin
         while x < Pred(Width - BorderRight - BorderLeft) do begin
         Stop := Pred(Width - BorderRight);
         SetAPen(RP, Pen);
-        GfxMove(RP, Succ(x + BorderLeft), BorderTop);
+        Move(RP, Succ(x + BorderLeft), BorderTop);
         Draw(RP, Stop - x, Pred(Height - BorderBottom));
         Pen := (Pen + 1) mod 4;
         Inc(x);
@@ -59,7 +59,7 @@ begin
         while x < Pred(Height - BorderBottom - BorderTop) do begin
         Stop := Pred(Height - BorderBottom);
         SetAPen(RP, Pen);
-        GfxMove(RP, Pred(Width - BorderRight), Succ(x + BorderTop));
+        Move(RP, Pred(Width - BorderRight), Succ(x + BorderTop));
         Draw(RP, Succ(BorderLeft), Stop - x);
         Pen := (Pen + 1) mod 4;
         Inc(x);

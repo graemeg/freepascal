@@ -18,7 +18,19 @@ unit objcbase;
 {$ifdef FPC_HAS_FEATURE_OBJECTIVEC1}
 
 {$modeswitch objectivec1}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$packrecords c}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 interface
 

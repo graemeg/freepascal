@@ -17,6 +17,10 @@ Function fppipe(var fildes : tfildes):cint;assembler;
 {
   This function puts the registers in place, does the call, and then
   copies back the registers as they are after the SysCall.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Extracted from linux/source/arch/mips/kernel/syscall.c:
   * For historic reasons the pipe(2) syscall on MIPS has an unusual calling
   * convention.  It returns results in registers $v0 / $v1 which means there
@@ -45,4 +49,26 @@ asm
   sw   $v0,($t1)
   sw   $v1,4($t1)
 .L2:
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+}
+asm
+// At present it is NOT IMPLEMENTED for MIPS
+// simplified-work
+// DavidZhang
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;

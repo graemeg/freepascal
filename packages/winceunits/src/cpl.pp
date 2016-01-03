@@ -52,10 +52,16 @@
 
 unit cpl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_OS_UNICODE}
   {$define UNICODE}
 {$endif}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 interface
 
 uses Windows;
@@ -248,4 +254,12 @@ const
 
 implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 end.
+=======
+end.
+>>>>>>> graemeg/fixes_2_2
+=======
+end.
+>>>>>>> origin/fixes_2_2

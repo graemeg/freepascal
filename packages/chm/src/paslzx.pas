@@ -12,7 +12,15 @@
 
   You should have received a copy of the GNU Library General Public License
   along with this library; if not, write to the Free Software Foundation,
+<<<<<<< HEAD
+<<<<<<< HEAD
   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+>>>>>>> graemeg/fixes_2_2
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+>>>>>>> origin/fixes_2_2
 }
 {
   See the file COPYING.LCL, included in this distribution,
@@ -593,7 +601,19 @@ begin
             i := bits.read(16, inpos);
             j := bits.read(16, inpos);
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         pState^.intel_filesize := LongInt((i shl 16) or j); ///* or 0 if not encoded */
+=======
+        pState^.intel_filesize := (i shl 16) or j; ///* or 0 if not encoded */
+>>>>>>> graemeg/fixes_2_2
+=======
+        pState^.intel_filesize := (i shl 16) or j; ///* or 0 if not encoded */
+>>>>>>> origin/fixes_2_2
+=======
+        pState^.intel_filesize := LongInt((i shl 16) or j); ///* or 0 if not encoded */
+>>>>>>> origin/fixes_2.4
         pState^.header_read := 1;
     end;
 

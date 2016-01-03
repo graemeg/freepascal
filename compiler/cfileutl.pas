@@ -1078,7 +1078,20 @@ end;
             currPath:=FixPath(ExpandFileName(currpath),false);
             if (CurrentDir<>'') and (Copy(currPath,1,length(CurrentDir))=CurrentDir) then
              begin
+<<<<<<< HEAD
 {$ifdef hasamiga}
+=======
+{$if defined(amiga) and defined(morphos)}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                currPath:= CurrentDir+Copy(currPath,length(CurrentDir)+1,length(currPath));
 {$else}
                currPath:= CurDirRelPath(source_info)+Copy(currPath,length(CurrentDir)+1,length(currPath));
@@ -1260,6 +1273,7 @@ end;
      end;
 }
 
+<<<<<<< HEAD
   function  FindFileInExeLocations(const bin:TCmdStr;allowcache:boolean;var foundfile:TCmdStr):boolean;
     var
       Path : TCmdStr;
@@ -1268,6 +1282,16 @@ end;
        found:=FindFile(FixFileName(bin),exepath,allowcache,foundfile);
       if not found then
        begin
+=======
+   function  FindExe(const bin:TCmdStr;allowcache:boolean;var foundfile:TCmdStr):boolean;
+     var
+       Path : TCmdStr;
+       found : boolean;
+     begin
+       found:=FindFile(FixFileName(ChangeFileExt(bin,source_info.exeext)),exepath,allowcache,foundfile);
+       if not found then
+        begin
+>>>>>>> graemeg/cpstrnew
 {$ifdef macos}
          Path:=GetEnvironmentVariable('Commands');
 {$else}

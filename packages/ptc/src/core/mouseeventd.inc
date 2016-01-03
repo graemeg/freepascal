@@ -1,6 +1,22 @@
 {
     Free Pascal port of the OpenPTC C++ library.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2001-2007, 2009-2011  Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -39,6 +55,10 @@ type
                      PTCMouseButton3, { middle mouse button }
                      PTCMouseButton4,
                      PTCMouseButton5);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   TPTCMouseButtonState = set of TPTCMouseButton;
   IPTCMouseEvent = interface(IPTCEvent)
     ['{4D093608-6F27-4578-B41E-3492A4C7FEED}']
@@ -72,4 +92,47 @@ type
   TPTCMouseButtonEventFactory = class
   public
     class function CreateNew(AX, AY, ADeltaX, ADeltaY: Integer; AButtonState: TPTCMouseButtonState; APress: Boolean; AButton: TPTCMouseButton): IPTCMouseButtonEvent;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  TPTCMouseButtonState = Set of TPTCMouseButton;
+  TPTCMouseEvent = Class(TPTCEvent)
+  private
+    FX, FY: Integer;
+    FDeltaX, FDeltaY: Integer;
+    FButtonState: TPTCMouseButtonState;
+  protected
+    function GetType: TPTCEventType; override;
+  public
+    constructor Create(AX, AY, ADeltaX, ADeltaY: Integer; AButtonState: TPTCMouseButtonState);
+    property X: Integer read FX;
+    property Y: Integer read FY;
+    property DeltaX: Integer read FDeltaX;
+    property DeltaY: Integer read FDeltaY;
+    property ButtonState: TPTCMouseButtonState read FButtonState;
+  end;
+  TPTCMouseButtonEvent = Class(TPTCMouseEvent)
+  private
+    FPress: Boolean;
+    FButton: TPTCMouseButton;
+    function GetRelease: Boolean;
+  public
+    constructor Create(AX, AY, ADeltaX, ADeltaY: Integer; AButtonState: TPTCMouseButtonState; APress: Boolean; AButton: TPTCMouseButton);
+    property Press: Boolean read FPress;
+    property Release: Boolean read GetRelease;
+    property Button: TPTCMouseButton read FButton;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;

@@ -209,7 +209,20 @@ implementation
     uses
       cutils,
       verbose,systems,sysutils,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       defcmp,defutil,procinfo,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      defutil,
+>>>>>>> graemeg/cpstrnew
       cpubase,cgbase,
       nld;
 
@@ -260,7 +273,23 @@ implementation
           begin
             initwidestring(pWideStringVal);
             concatwidestringchar(pWideStringVal, tcompilerwidechar(tordconstnode(p).value.uvalue));
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             result:=cstringconstnode.createunistr(pWideStringVal);
+=======
+            result:=cstringconstnode.createwstr(pWideStringVal);
+>>>>>>> graemeg/cpstrnew
+=======
+            result:=cstringconstnode.createwstr(pWideStringVal);
+>>>>>>> graemeg/cpstrnew
+=======
+            result:=cstringconstnode.createwstr(pWideStringVal);
+>>>>>>> graemeg/cpstrnew
+=======
+            result:=cstringconstnode.createwstr(pWideStringVal);
+>>>>>>> origin/cpstrnew
           end
         else if is_conststringnode(p) then
           result:=tstringconstnode(p.getcopy)
@@ -306,7 +335,23 @@ implementation
           conststring :
             begin
               len:=p.value.len;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               if not(cs_refcountedstrings in current_settings.localswitches) and (len>255) then
+=======
+              if not(cs_ansistrings in current_settings.localswitches) and (len>255) then
+>>>>>>> graemeg/cpstrnew
+=======
+              if not(cs_ansistrings in current_settings.localswitches) and (len>255) then
+>>>>>>> graemeg/cpstrnew
+=======
+              if not(cs_ansistrings in current_settings.localswitches) and (len>255) then
+>>>>>>> graemeg/cpstrnew
+=======
+              if not(cs_ansistrings in current_settings.localswitches) and (len>255) then
+>>>>>>> origin/cpstrnew
                 begin
                   message(parser_e_string_const_too_long);
                   len:=255;
@@ -317,7 +362,23 @@ implementation
               p1:=cstringconstnode.createpchar(pc,len,p.constdef);
             end;
           constwstring :
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             p1:=cstringconstnode.createunistr(pcompilerwidestring(p.value.valueptr));
+=======
+            p1:=cstringconstnode.createwstr(pcompilerwidestring(p.value.valueptr));
+>>>>>>> graemeg/cpstrnew
+=======
+            p1:=cstringconstnode.createwstr(pcompilerwidestring(p.value.valueptr));
+>>>>>>> graemeg/cpstrnew
+=======
+            p1:=cstringconstnode.createwstr(pcompilerwidestring(p.value.valueptr));
+>>>>>>> graemeg/cpstrnew
+=======
+            p1:=cstringconstnode.createwstr(pcompilerwidestring(p.value.valueptr));
+>>>>>>> origin/cpstrnew
           constreal :
             p1:=crealconstnode.create(pbestreal(p.value.valueptr)^,p.constdef);
           constset :
@@ -705,8 +766,18 @@ implementation
         resultdef:=typedef;
         { only do range checking when explicitly asked for it
           and if the type can be range checked, see tests/tbs/tb0539.pp }
+<<<<<<< HEAD
+<<<<<<< HEAD
         if (resultdef.typ in [orddef,enumdef]) then
            testrange(resultdef,value,not rangecheck,false)
+=======
+        if rangecheck and (resultdef.typ in [orddef,enumdef]) then
+           testrange(resultdef,resultdef,value,false);
+>>>>>>> graemeg/fixes_2_2
+=======
+        if rangecheck and (resultdef.typ in [orddef,enumdef]) then
+           testrange(resultdef,resultdef,value,false);
+>>>>>>> origin/fixes_2_2
       end;
 
     function tordconstnode.pass_1 : tnode;
@@ -1066,6 +1137,10 @@ implementation
           if (cst_type in [cst_widestring,cst_unicodestring]) and
             not(tstringdef(def).stringtype in [st_widestring,st_unicodestring]) then
             begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               cp1:=tstringdef(def).encoding;
               if (cp1=globals.CP_NONE) or (cp1=0) then
                 cp1:=current_settings.sourcecodepage;
@@ -1079,21 +1154,88 @@ implementation
                   len:=l-1;
                   donewidestring(pw);
                   value_str:=pc;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+              if (tstringdef(def).encoding=CP_UTF8) or
+                 (current_settings.sourcecodepage='utf8') then
+                begin
+                  pw:=pcompilerwidestring(value_str);
+                  l:=(getlengthwidestring(pw)*4)+1;
+                  getmem(pc,l);   
+                  l2:=UnicodeToUtf8(pc,l,PUnicodeChar(pw^.data),getlengthwidestring(pw));
+                  if (l<>l2) then
+                    ReAllocMem(pc,l2);
+                  len:=l2-1;
+                  donewidestring(pw);
+                  value_str:=pc;
+                  if (tstringdef(def).encoding<>CP_UTF8) then
+                    tstringdef(def).encoding:=CP_UTF8;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                 end
               else
                 begin
                   pw:=pcompilerwidestring(value_str);
                   getmem(pc,getlengthwidestring(pw)+1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   unicode2ascii(pw,pc,cp1);
+=======
+                  unicode2ascii(pw,pc,tstringdef(def).encoding);
+>>>>>>> graemeg/cpstrnew
+=======
+                  unicode2ascii(pw,pc,tstringdef(def).encoding);
+>>>>>>> graemeg/cpstrnew
+=======
+                  unicode2ascii(pw,pc,tstringdef(def).encoding);
+>>>>>>> graemeg/cpstrnew
+=======
+                  unicode2ascii(pw,pc,tstringdef(def).encoding);
+>>>>>>> origin/cpstrnew
                   donewidestring(pw);
                   value_str:=pc;
                 end;
             end
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         else
+=======
+        else 
+>>>>>>> graemeg/cpstrnew
+=======
+        else 
+>>>>>>> graemeg/cpstrnew
+=======
+        else 
+>>>>>>> graemeg/cpstrnew
+=======
+        else 
+>>>>>>> origin/cpstrnew
           if (tstringdef(def).stringtype = st_ansistring) and
              not(cst_type in [cst_widestring,cst_unicodestring]) then
             begin
               cp1:=tstringdef(def).encoding;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               if cp1=0 then
                 cp1:=current_settings.sourcecodepage;
               if (cst_type = cst_ansistring) then
@@ -1155,6 +1297,29 @@ implementation
                         end;
                     end;
                 end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+              if (cst_type = cst_ansistring) then
+                cp2:=tstringdef(resultdef).encoding
+              else if (cst_type in [cst_shortstring,cst_conststring,cst_longstring]) then
+                cp2:=codepagebyname(current_settings.sourcecodepage);
+              if cpavailable(cp1) and cpavailable(cp2) then
+                changecodepage(value_str,len,cp1,value_str,cp2);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
             end;
         cst_type:=st2cst[tstringdef(def).stringtype];
         resultdef:=def;
@@ -1256,6 +1421,16 @@ implementation
               end;
           end;
       end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+    
+
+    function tsetconstnode.dogetcopy : tnode;
+>>>>>>> graemeg/fixes_2_2
 
 
     function tsetconstnode.dogetcopy : tnode;

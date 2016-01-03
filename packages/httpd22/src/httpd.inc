@@ -325,35 +325,13 @@ procedure ap_get_server_revision(version: Pap_version_t);
  {$IFDEF WINDOWS} stdcall; {$ELSE} cdecl; {$ENDIF}
  external LibHTTPD name LibNamePrefix + 'ap_get_server_revision' + LibSuff4;
 
-{**
- * Get the server version string, as controlled by the ServerTokens directive
+{
+ * Get the server version string
  * @return The server version string
- * @deprecated @see ap_get_server_banner() and ap_get_server_description()
- *}
+ }
 function ap_get_server_version: PChar;
  {$IFDEF WINDOWS} stdcall; {$ELSE} cdecl; {$ENDIF}
  external LibHTTPD name LibNamePrefix + 'ap_get_server_version' + LibSuff0;
-
-{**
- * Get the server banner in a form suitable for sending over the
- * network, with the level of information controlled by the
- * ServerTokens directive.
- * @return The server banner
- *}//added in Apache 2.2.4
-function ap_get_server_banner: PChar;
- {$IFDEF WINDOWS} stdcall; {$ELSE} cdecl; {$ENDIF}
- external LibHTTPD name LibNamePrefix + 'ap_get_server_banner' + LibSuff0;
-
-{**
- * Get the server description in a form suitable for local displays,
- * status reports, or logging.  This includes the detailed server
- * version and information about some modules.  It is not affected
- * by the ServerTokens directive.
- * @return The server description
- *}//added in Apache 2.2.4
-function ap_get_server_description: PChar;
- {$IFDEF WINDOWS} stdcall; {$ELSE} cdecl; {$ENDIF}
- external LibHTTPD name LibNamePrefix + 'ap_get_server_description' + LibSuff0;
 
 {
  * Add a component to the version string
@@ -916,19 +894,22 @@ type
      *  get_remote_logname() }
     remote_logname: PChar;
 
-    {** Are we still talking? *}
-    //unsigned aborted:1;
-    flags1: Cardinal;
+    { Are we still talking? }
+    flags: Cardinal;
 
-    {** Are we going to keep the connection alive for another request?
-     * @see ap_conn_keepalive_e *}
-    //ap_conn_keepalive_e keepalive;
-    keepalive: ap_conn_keepalive_e;
+    (* Useless bitset variables to make the code obscure
 
-    {** have we done double-reverse DNS? -1 yes/failure, 0 not yet, 
-     *  1 yes/success *}
-    //signed int double_reverse:2;
-    flags2: Cardinal;
+     Are we still talking?
+    unsigned aborted:1;
+
+     Are we going to keep the connection alive for another request?
+     * @see ap_conn_keepalive_e
+    signed int keepalive:2;
+
+     have we done double-reverse DNS? -1 yes/failure, 0 not yet,
+     *  1 yes/success
+    signed int double_reverse:2;
+    *)
 
     { How many times have we used it? }
     keepalives: Integer;
@@ -958,10 +939,6 @@ type
     cs: Pconn_state_t;
     { Is there data pending in the input filters? }
     data_in_input_filters: cint;
-    {** Are there any filters that clogg/buffer the input stream, breaking
-     *  the event mpm.
-     *}//added in Apache 2.2.7
-    clogging_input_filters: cint;
   end;
 
 {
@@ -1023,7 +1000,7 @@ type
     { The name of the server }
     defn_name: PChar;
     { The line of the config file that the server was defined on }
-    defn_line_number: Cardinal;
+    defn_line_number: Integer;
 
     { Contact information }
 

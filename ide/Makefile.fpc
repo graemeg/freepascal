@@ -1,12 +1,45 @@
 #
 #   Makefile.fpc for running fpmake
 #
+<<<<<<< HEAD
 [require]
 packages=rtl fpmkunit
+=======
+#   Makefile.fpc for FP IDE
+#
+
+[package]
+name=ide
+<<<<<<< HEAD
+<<<<<<< HEAD
+version=2.5.1
+=======
+version=2.2.5
+>>>>>>> graemeg/fixes_2_2
+=======
+version=2.2.5
+>>>>>>> origin/fixes_2_2
+
+[target]
+dirs=compiler
+programs=fp
+rst=fpstrings
+>>>>>>> graemeg/cpstrnew
 
 [install]
 fpcpackage=y
+<<<<<<< HEAD
 fpcsubdir=ide
+=======
+
+[compiler]
+options=-Sg
+
+[require]
+packages=fv gdbint regexpr chm
+packages_go32v2=graph
+libc=y
+>>>>>>> graemeg/fixes_2_2
 
 [default]
 fpcdir=..
@@ -20,6 +53,8 @@ ifdef INSTALL_BINDIR
 FPMAKE_INSTALL_OPT+=--bininstalldir=$(INSTALL_BINDIR)
 endif
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 # Translate OS_TARGET and CPU_TARGET to fpmake's --os and --cpu parameters
 ifdef OS_TARGET
 FPC_TARGETOPT+=--os=$(OS_TARGET)
@@ -32,6 +67,7 @@ LOCALFPMAKE=./fpmake$(SRCEXEEXT)
 # do not add -d$(CPU_TARGET)
 override NOCPUDEF=1
 
+<<<<<<< HEAD
 [rules]
 # Do not pass the Makefile's unit and binary target locations. Fpmake uses it's own.
 override FPCOPT:=$(filter-out -FU%,$(FPCOPT))
@@ -41,6 +77,43 @@ override FPCOPT:=$(filter-out $(addprefix -Fu,$(COMPILER_UNITDIR)),$(FPCOPT))# C
 # Compose general fpmake-parameters
 ifdef FPMAKEOPT
 FPMAKE_OPT+=$(FPMAKEOPT)
+=======
+=======
+=======
+>>>>>>> origin/fixes_2_2
+# set default value for PPC_TARGET
+ifndef PPC_TARGET
+PPC_TARGET=$(CPU_TARGET)
+endif
+
+# do not add -d$(CPU_TARGET)
+override NOCPUDEF=1
+# Use PPC_TARGET instead
+override FPCOPT+= -d$(PPC_TARGET)
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+ifndef NOGDB
+
+ifeq ($(FULL_TARGET),i386-win32)
+needlinkparam=1
+endif
+
+
+ifeq ($(FULL_TARGET),x86_64-win64)
+needlinkparam=1
+endif
+
+ifdef needlinkparam
+override SPECIALLINK=-Xe -k--allow-multiple-definition
+endif
+# Try to find GDB library
+# Look for a valid GDBLIBDIR environment variable
+ifdef GDBLIBDIR
+override LIBGDBFILE:=$(firstword $(wildcard $(addsuffix /libgdb.a,$(GDBLIBDIR))))
+>>>>>>> graemeg/cpstrnew
 endif
 FPMAKE_OPT+=--localunitdir=..
 FPMAKE_OPT+=--globalunitdir=../packages
@@ -54,14 +127,27 @@ endif
 ifdef NOGDB
 FPMAKE_OPT+=--NoGDB=1
 endif
+<<<<<<< HEAD
 ifdef GDBMI
 FPMAKE_OPT+=--GDBMI=1
+=======
+
+# No custom libgdb.a found, try using system default library if available
+ifeq ($(LIBGDBFILE),)
+SYSLIBDIR=/lib /usr/lib /usr/local/lib
+# Detect if libgdb.a is available
+override LIBGDBFILE=$(firstword $(wildcard $(addsuffix /libgdb.a,$(SYSLIBDIR))))
+ifneq (${LIBGDBFILE},)
+$(warning Using system default libgdb file located in ${LIBGDBFILE})
+GDBLIBDIR=$(dir ${LIBGDBFILE})
+>>>>>>> graemeg/cpstrnew
 endif
 ifdef PPC_TARGET
 FPMAKE_OPT+=--CompilerTarget=$(PPC_TARGET)
 endif
 .NOTPARALLEL:
 
+<<<<<<< HEAD
 fpmake$(SRCEXEEXT): fpmake.pp
 	$(FPCFPMAKE) fpmake.pp $(FPMAKE_SKIP_CONFIG) $(addprefix -Fu,$(COMPILER_FPMAKE_UNITDIR)) $(FPCMAKEOPT) $(OPT)
 all:	fpmake$(SRCEXEEXT)
@@ -77,9 +163,61 @@ debug:	fpmake$(SRCEXEEXT)
 # In case of a clean, simply do nothing
 ifeq ($(FPMAKE_BIN_CLEAN),)
 clean:
+=======
+# No custom libgdb.a found, try using system default library if available
+ifeq ($(LIBGDBFILE),)
+SYSLIBDIR=/lib /usr/lib /usr/local/lib
+# Detect if libgdb.a is available
+override LIBGDBFILE=$(firstword $(wildcard $(addsuffix /libgdb.a,$(SYSLIBDIR))))
+ifneq (${LIBGDBFILE},)
+$(warning Using system sefault libgdb file located in ${LIBGDBFILE})
+GDBLIBDIR=$(dir ${LIBGDBFILE})
+endif
+endif
+
+# No custom libgdb.a found, try using system default library if available
+ifeq ($(LIBGDBFILE),)
+SYSLIBDIR=/lib /usr/lib /usr/local/lib
+# Detect if libgdb.a is available
+override LIBGDBFILE=$(firstword $(wildcard $(addsuffix /libgdb.a,$(SYSLIBDIR))))
+ifneq (${LIBGDBFILE},)
+$(warning Using system sefault libgdb file located in ${LIBGDBFILE})
+GDBLIBDIR=$(dir ${LIBGDBFILE})
+endif
+endif
+
+# Disable GDB when no libgdb.a found
+ifeq ($(LIBGDBFILE),)
+GDB=
+>>>>>>> graemeg/fixes_2_2
 else
+<<<<<<< HEAD
 clean:
 	$(FPMAKE_BIN_CLEAN) clean $(FPMAKE_OPT)
+=======
+GDB=1
+# Detect if gdblib.inc is available
+override LIBGDBINC:=$(firstword $(wildcard $(addsuffix /gdblib.inc,$(GDBLIBDIR))))
+ifeq ($(LIBGDBINC),)
+GDBLIBINCFOUND=0
+GDBLIBINCCOND=
+else
+GDBLIBINCFOUND=1
+GDBLIBINCCOND=-dUSE_GDBLIBINC -I$(GDBLIBDIR)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+=======
+endif
+>>>>>>> origin/cpstrnew
+endif
+>>>>>>> graemeg/cpstrnew
+endif
+>>>>>>> graemeg/cpstrnew
+endif
+>>>>>>> graemeg/cpstrnew
 endif
 
 CLEAN_TARGET_DIRS=$(subst /Makefile.fpc, ,$(wildcard */Makefile.fpc))
@@ -106,7 +244,70 @@ install:	fpmake$(SRCEXEEXT)
 ifdef UNIXHier
 	$(LOCALFPMAKE) install $(FPMAKE_OPT) --prefix=$(INSTALL_PREFIX) --baseinstalldir=$(INSTALL_LIBDIR)/fpc/$(FPC_VERSION) $(FPMAKE_INSTALL_OPT)
 else
+<<<<<<< HEAD
 	$(LOCALFPMAKE) install $(FPMAKE_OPT) --prefix=$(INSTALL_BASEDIR) --baseinstalldir=$(INSTALL_BASEDIR) $(FPMAKE_INSTALL_OPT)
+=======
+testgdb:
+        @$(ECHO) Building without Debugger
+postgdbinfo:
+        @$(ECHO) Debugger disabled, IDE has no Debugger support
+override COMPILER+=-dNODEBUG
+endif  # NOGDB
+
+
+#
+# Compiler
+#
+
+compilerunits : compiler/$(FPCMADE)
+compiler/$(FPCMADE):
+        $(MAKE) -C compiler all
+
+compilerclean :
+        $(MAKE) -C compiler clean
+
+#
+# Build targets
+#
+# building happends in 2 steps, first the packages, compiler
+# dirs are build. In the second step the IDE is build. This is
+# required because it needs to detect which compiler version
+# to use.
+#
+fp$(EXEEXT): $(wildcard *.pas) $(wildcard *.inc)
+        $(COMPILER) $(GDBLIBINCCOND) $(SPECIALLINK) fp.pas
+
+buildfp:
+        $(MAKE) compilerunits
+        $(MAKE) testgdb
+        $(MAKE) fpc_all
+        $(MAKE) postgdbinfo
+
+gdb:
+#        $(MAKE) -C ../packages/base/gdbint
+        $(MAKE) buildfp
+
+nogdb:
+        $(MAKE) buildfp NOGDB=1
+
+#
+# Default targets
+#
+
+# By default we try to create the ide with full debugging support,
+all: gdb
+
+# This is necessary because we don't have all units separate in the
+# units targets
+clean: cleanall
+
+#
+# Installation
+#
+
+ifndef UNIXHier
+override INSTALL_DATADIR=$(INSTALL_BINDIR)
+>>>>>>> graemeg/cpstrnew
 endif
 # distinstall also installs the example-sources and omits the location of the source-
 # files from the fpunits.cfg files.

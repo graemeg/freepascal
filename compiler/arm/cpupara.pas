@@ -28,9 +28,15 @@ unit cpupara;
 
     uses
        globtype,globals,
+<<<<<<< HEAD
        aasmdata,
        cpuinfo,cpubase,cgbase,cgutils,
        symconst,symtype,symdef,parabase,paramgr;
+=======
+       aasmtai,aasmdata,
+       cpuinfo,cpubase,cgbase,cgutils,
+       symconst,symbase,symtype,symdef,parabase,paramgr;
+>>>>>>> graemeg/cpstrnew
 
     type
        tcpuparamanager = class(tparamanager)
@@ -42,22 +48,72 @@ unit cpupara;
           procedure getintparaloc(list: TAsmList; pd : tabstractprocdef; nr : longint; var cgpara : tcgpara);override;
           function create_paraloc_info(p : tabstractprocdef; side: tcallercallee):longint;override;
           function create_varargs_paraloc_info(p : tabstractprocdef; varargspara:tvarargsparalist):longint;override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           function get_funcretloc(p : tabstractprocdef; side: tcallercallee; forcetempdef: tdef): tcgpara;override;
+=======
+          function get_funcretloc(p : tabstractprocdef; side: tcallercallee; def: tdef): tcgpara;override;
+>>>>>>> graemeg/cpstrnew
+=======
+          function get_funcretloc(p : tabstractprocdef; side: tcallercallee; def: tdef): tcgpara;override;
+>>>>>>> graemeg/cpstrnew
+=======
+          function get_funcretloc(p : tabstractprocdef; side: tcallercallee; def: tdef): tcgpara;override;
+>>>>>>> graemeg/cpstrnew
+=======
+          function get_funcretloc(p : tabstractprocdef; side: tcallercallee; def: tdef): tcgpara;override;
+>>>>>>> origin/cpstrnew
          private
           procedure init_values(p: tabstractprocdef; side: tcallercallee; var curintreg,
             curfloatreg, curmmreg: tsuperregister; var cur_stack_offset: aword;
             var sparesinglereg: tregister);
           function create_paraloc_info_intern(p : tabstractprocdef; side: tcallercallee; paras: tparalist;
+<<<<<<< HEAD
             var curintreg, curfloatreg, curmmreg: tsuperregister; var cur_stack_offset: aword; var sparesinglereg: tregister; isvariadic: boolean):longint;
+=======
+            var curintreg, curfloatreg, curmmreg: tsuperregister; var cur_stack_offset: aword):longint;
+          procedure create_funcretloc_info(p : tabstractprocdef; side: tcallercallee);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
        end;
 
   implementation
 
     uses
        verbose,systems,cutils,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        defutil,symsym,symcpu,symtable,
        { PowerPC uses procinfo as well in cpupara, so this should not hurt }
        procinfo;
+=======
+       rgobj,
+       defutil,symsym;
+>>>>>>> graemeg/cpstrnew
+=======
+       rgobj,
+       defutil,symsym;
+>>>>>>> graemeg/cpstrnew
+=======
+       rgobj,
+       defutil,symsym;
+>>>>>>> graemeg/cpstrnew
+=======
+       rgobj,
+       defutil,symsym;
+>>>>>>> origin/cpstrnew
 
 
     function tcpuparamanager.get_volatile_registers_int(calloption : tproccalloption):tcpuregisterset;
@@ -75,13 +131,42 @@ unit cpupara;
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function tcpuparamanager.get_volatile_registers_mm(calloption: tproccalloption): tcpuregisterset;
+=======
+    function tarmparamanager.get_volatile_registers_mm(calloption: tproccalloption): tcpuregisterset;
+>>>>>>> graemeg/cpstrnew
+=======
+    function tarmparamanager.get_volatile_registers_mm(calloption: tproccalloption): tcpuregisterset;
+>>>>>>> graemeg/cpstrnew
+=======
+    function tarmparamanager.get_volatile_registers_mm(calloption: tproccalloption): tcpuregisterset;
+>>>>>>> graemeg/cpstrnew
+=======
+    function tarmparamanager.get_volatile_registers_mm(calloption: tproccalloption): tcpuregisterset;
+>>>>>>> origin/cpstrnew
       begin
         result:=VOLATILE_MMREGISTERS;
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure tcpuparamanager.getintparaloc(list: TAsmList; pd : tabstractprocdef; nr : longint; var cgpara : tcgpara);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    procedure tarmparamanager.getintparaloc(calloption : tproccalloption; nr : longint;var cgpara:TCGPara);
+>>>>>>> graemeg/cpstrnew
       var
         paraloc : pcgparalocation;
         psym : tparavarsym;
@@ -129,6 +214,10 @@ unit cpupara;
             orddef:
               getparaloc:=LOC_REGISTER;
             floatdef:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               if (target_info.abi = abi_eabihf) and
                  (not isvariadic) then
                 getparaloc:=LOC_MMREGISTER
@@ -138,6 +227,28 @@ unit cpupara;
                 { the ARM eabi also allows passing VFP values via VFP registers,
                   but Mac OS X doesn't seem to do that and linux only does it if
                   built with the "-mfloat-abi=hard" option }
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+              if (calloption in [pocall_cdecl,pocall_cppdecl,pocall_softfloat]) or
+                 (cs_fp_emulation in current_settings.moduleswitches) or
+                 (current_settings.fputype in [fpu_vfpv2,fpu_vfpv3]) then
+                { the ARM eabi also allows passing VFP values via VFP registers,
+                  but at least neither Mac OS X nor Linux seems to do that }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                 getparaloc:=LOC_REGISTER
               else
                 getparaloc:=LOC_FPUREGISTER;
@@ -223,6 +334,10 @@ unit cpupara;
           exit;
         case def.typ of
           recorddef:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             begin
               result:=def.size>4;
               if not result and
@@ -285,6 +400,18 @@ unit cpupara;
                     end;
                 end;
             end;
+=======
+            result:=def.size>4;
+>>>>>>> graemeg/cpstrnew
+=======
+            result:=def.size>4;
+>>>>>>> graemeg/cpstrnew
+=======
+            result:=def.size>4;
+>>>>>>> graemeg/cpstrnew
+=======
+            result:=def.size>4;
+>>>>>>> origin/cpstrnew
           procvardef:
             if not tprocvardef(def).is_addressonly then
               result:=true
@@ -410,7 +537,19 @@ unit cpupara;
              hp.paraloc[side].size:=paracgsize;
              hp.paraloc[side].Alignment:=std_param_align;
              hp.paraloc[side].intsize:=paralen;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
              hp.paraloc[side].def:=paradef;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
              firstparaloc:=true;
 
 {$ifdef EXTDEBUG}
@@ -450,7 +589,20 @@ unit cpupara;
                     LOC_REGISTER:
                       begin
                         { align registers for eabi }
+<<<<<<< HEAD
                         if (target_info.abi in [abi_eabi,abi_eabihf]) and
+=======
+                        if (target_info.abi=abi_eabi) and
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                            firstparaloc and
                            (paradef.alignment=8) then
                           begin
@@ -559,19 +711,59 @@ unit cpupara;
                         if push_addr_param(hp.varspez,paradef,p.proccalloption) then
                           begin
                             paraloc^.size:=OS_ADDR;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                             paraloc^.def:=cpointerdef.getreusable_no_free(paradef);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                             assignintreg
                           end
                         else
                           begin
                             { align stack for eabi }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                             if (target_info.abi in [abi_eabi,abi_eabihf]) and
+=======
+                            if (target_info.abi=abi_eabi) and
+>>>>>>> graemeg/cpstrnew
+=======
+                            if (target_info.abi=abi_eabi) and
+>>>>>>> graemeg/cpstrnew
+=======
+                            if (target_info.abi=abi_eabi) and
+>>>>>>> graemeg/cpstrnew
+=======
+                            if (target_info.abi=abi_eabi) and
+>>>>>>> origin/cpstrnew
                                firstparaloc and
                                (paradef.alignment=8) then
                               stack_offset:=align(stack_offset,8);
 
                              paraloc^.size:=paracgsize;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                              paraloc^.def:=paradef;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                              paraloc^.loc:=LOC_REFERENCE;
                              paraloc^.reference.index:=NR_STACK_POINTER_REG;
                              paraloc^.reference.offset:=stack_offset;
@@ -614,6 +806,10 @@ unit cpupara;
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function  tcpuparamanager.get_funcretloc(p : tabstractprocdef; side: tcallercallee; forcetempdef: tdef): tcgpara;
       var
         paraloc : pcgparalocation;
@@ -627,17 +823,207 @@ unit cpupara;
         if result.def.typ=floatdef then
           begin
             if target_info.abi = abi_eabihf then 
+=======
+    procedure tarmparamanager.create_funcretloc_info(p : tabstractprocdef; side: tcallercallee);
+      begin
+        p.funcretloc[side]:=get_funcretloc(p,side,p.returndef);
+      end;
+
+=======
+    procedure tarmparamanager.create_funcretloc_info(p : tabstractprocdef; side: tcallercallee);
+      begin
+        p.funcretloc[side]:=get_funcretloc(p,side,p.returndef);
+      end;
+
+>>>>>>> graemeg/cpstrnew
+
+=======
+    procedure tarmparamanager.create_funcretloc_info(p : tabstractprocdef; side: tcallercallee);
+      begin
+        p.funcretloc[side]:=get_funcretloc(p,side,p.returndef);
+      end;
+
+
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure tarmparamanager.create_funcretloc_info(p : tabstractprocdef; side: tcallercallee);
+      begin
+        p.funcretloc[side]:=get_funcretloc(p,side,p.returndef);
+      end;
+
+
+>>>>>>> origin/cpstrnew
+    function  tarmparamanager.get_funcretloc(p : tabstractprocdef; side: tcallercallee; def: tdef): tcgpara;
+      var
+        paraloc : pcgparalocation;
+        retcgsize  : tcgsize;
+      begin
+        result.init;
+        result.alignment:=get_para_align(p.proccalloption);
+        { void has no location }
+        if is_void(def) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+          begin
+            paraloc:=result.add_location;
+            result.size:=OS_NO;
+            result.intsize:=0;
+            paraloc^.size:=OS_NO;
+            paraloc^.loc:=LOC_VOID;
+            exit;
+          end;
+        { Constructors return self instead of a boolean }
+        if (p.proctypeoption=potype_constructor) then
+          begin
+            retcgsize:=OS_ADDR;
+            result.intsize:=sizeof(pint);
+          end
+        else
+          begin
+            retcgsize:=def_cgsize(def);
+            result.intsize:=def.size;
+          end;
+=======
+          begin
+            paraloc:=result.add_location;
+            result.size:=OS_NO;
+            result.intsize:=0;
+            paraloc^.size:=OS_NO;
+            paraloc^.loc:=LOC_VOID;
+            exit;
+          end;
+<<<<<<< HEAD
+        { Constructors return self instead of a boolean }
+        if (p.proctypeoption=potype_constructor) then
+          begin
+            retcgsize:=OS_ADDR;
+            result.intsize:=sizeof(pint);
+          end
+        else
+          begin
+            retcgsize:=def_cgsize(def);
+            result.intsize:=def.size;
+          end;
+>>>>>>> graemeg/cpstrnew
+=======
+          begin
+            paraloc:=result.add_location;
+            result.size:=OS_NO;
+            result.intsize:=0;
+            paraloc^.size:=OS_NO;
+            paraloc^.loc:=LOC_VOID;
+            exit;
+          end;
+        { Constructors return self instead of a boolean }
+        if (p.proctypeoption=potype_constructor) then
+          begin
+            retcgsize:=OS_ADDR;
+            result.intsize:=sizeof(pint);
+          end
+        else
+          begin
+            retcgsize:=def_cgsize(def);
+            result.intsize:=def.size;
+          end;
+>>>>>>> graemeg/cpstrnew
+=======
+          begin
+            paraloc:=result.add_location;
+            result.size:=OS_NO;
+            result.intsize:=0;
+            paraloc^.size:=OS_NO;
+            paraloc^.loc:=LOC_VOID;
+            exit;
+          end;
+        { Constructors return self instead of a boolean }
+        if (p.proctypeoption=potype_constructor) then
+          begin
+            retcgsize:=OS_ADDR;
+            result.intsize:=sizeof(pint);
+          end
+        else
+          begin
+            retcgsize:=def_cgsize(def);
+            result.intsize:=def.size;
+          end;
+>>>>>>> origin/cpstrnew
+        result.size:=retcgsize;
+        { Return is passed as var parameter }
+        if ret_in_param(def,p.proccalloption) then
+          begin
+            paraloc:=result.add_location;
+            paraloc^.loc:=LOC_REFERENCE;
+            paraloc^.size:=retcgsize;
+            exit;
+          end;
+<<<<<<< HEAD
+
+        paraloc:=result.add_location;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        { Return is passed as var parameter }
+        if ret_in_param(p.returndef,p.proccalloption) then
+          begin
+            p.funcretloc[side].loc:=LOC_REFERENCE;
+            p.funcretloc[side].size:=retcgsize;
+            exit;
+          end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+        { Return in FPU register? }
+        if def.typ=floatdef then
+          begin
+            if (p.proccalloption in [pocall_softfloat]) or
+               (cs_fp_emulation in current_settings.moduleswitches) or
+               (current_settings.fputype in [fpu_vfpv2,fpu_vfpv3]) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
               begin
                 paraloc^.loc:=LOC_MMREGISTER;
                 case retcgsize of
                   OS_64,
                   OS_F64:
                     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                       paraloc^.register:=NR_MM_RESULT_REG;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+                      paraloc^.loc:=LOC_REGISTER;
+                      paraloc^.register:=NR_FUNCTION_RESULT64_LOW_REG;
+                      paraloc^.size:=OS_32;
+                      paraloc:=result.add_location;
+                      paraloc^.loc:=LOC_REGISTER;
+                      paraloc^.register:=NR_FUNCTION_RESULT64_HIGH_REG;
+                      paraloc^.size:=OS_32;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
                     end;
                   OS_32,
                   OS_F32:
                     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                       paraloc^.register:=NR_S0;
                     end;
                   else
@@ -649,12 +1035,15 @@ unit cpupara;
             else if (p.proccalloption in [pocall_softfloat]) or
                (cs_fp_emulation in current_settings.moduleswitches) or
                (current_settings.fputype in [fpu_vfpv2,fpu_vfpv3,fpu_vfpv3_d16,fpu_fpv4_s16]) then
+=======
+>>>>>>> origin/cpstrnew
               begin
                 case retcgsize of
                   OS_64,
                   OS_F64:
                     begin
                       paraloc^.loc:=LOC_REGISTER;
+<<<<<<< HEAD
                       if target_info.endian = endian_big then
                         paraloc^.register:=NR_FUNCTION_RESULT64_HIGH_REG
                       else
@@ -669,6 +1058,14 @@ unit cpupara;
                         paraloc^.register:=NR_FUNCTION_RESULT64_HIGH_REG;
                       paraloc^.size:=OS_32;
                       paraloc^.def:=u32inttype;
+=======
+                      paraloc^.register:=NR_FUNCTION_RESULT64_LOW_REG;
+                      paraloc^.size:=OS_32;
+                      paraloc:=result.add_location;
+                      paraloc^.loc:=LOC_REGISTER;
+                      paraloc^.register:=NR_FUNCTION_RESULT64_HIGH_REG;
+                      paraloc^.size:=OS_32;
+>>>>>>> origin/cpstrnew
                     end;
                   OS_32,
                   OS_F32:
@@ -676,7 +1073,25 @@ unit cpupara;
                       paraloc^.loc:=LOC_REGISTER;
                       paraloc^.register:=NR_FUNCTION_RETURN_REG;
                       paraloc^.size:=OS_32;
+<<<<<<< HEAD
                       paraloc^.def:=u32inttype;
+=======
+                      paraloc^.loc:=LOC_REGISTER;
+                      paraloc^.register:=NR_FUNCTION_RETURN_REG;
+                      paraloc^.size:=OS_32;
+>>>>>>> graemeg/cpstrnew
+=======
+                      paraloc^.loc:=LOC_REGISTER;
+                      paraloc^.register:=NR_FUNCTION_RETURN_REG;
+                      paraloc^.size:=OS_32;
+>>>>>>> graemeg/cpstrnew
+=======
+                      paraloc^.loc:=LOC_REGISTER;
+                      paraloc^.register:=NR_FUNCTION_RETURN_REG;
+                      paraloc^.size:=OS_32;
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                     end;
                   else
                     internalerror(2005082603);
@@ -687,7 +1102,19 @@ unit cpupara;
                 paraloc^.loc:=LOC_FPUREGISTER;
                 paraloc^.register:=NR_FPU_RESULT_REG;
                 paraloc^.size:=retcgsize;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 paraloc^.def:=result.def;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
               end;
           end
           { Return in register }
@@ -696,6 +1123,10 @@ unit cpupara;
             if retcgsize in [OS_64,OS_S64] then
               begin
                 paraloc^.loc:=LOC_REGISTER;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 if target_info.endian = endian_big then
                   paraloc^.register:=NR_FUNCTION_RESULT64_HIGH_REG
                 else
@@ -710,11 +1141,38 @@ unit cpupara;
                   paraloc^.register:=NR_FUNCTION_RESULT64_HIGH_REG;
                 paraloc^.size:=OS_32;
                 paraloc^.def:=u32inttype;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                paraloc^.register:=NR_FUNCTION_RESULT64_LOW_REG;
+                paraloc^.size:=OS_32;
+                paraloc:=result.add_location;
+                paraloc^.loc:=LOC_REGISTER;
+                paraloc^.register:=NR_FUNCTION_RESULT64_HIGH_REG;
+                paraloc^.size:=OS_32;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
               end
             else
               begin
                 paraloc^.loc:=LOC_REGISTER;
                 paraloc^.register:=NR_FUNCTION_RETURN_REG;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 case result.IntSize of
                   0:
                     begin
@@ -734,11 +1192,62 @@ unit cpupara;
                       paraloc^.def:=result.def;
                     end;
                 end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                if (result.intsize<>3) then
+                  paraloc^.size:=retcgsize
+                else
+                  paraloc^.size:=OS_32;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
               end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
           end;
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
+    function tarmparamanager.create_paraloc_info(p : tabstractprocdef; side: tcallercallee):longint;
+      var
+        cur_stack_offset: aword;
+        curintreg, curfloatreg, curmmreg: tsuperregister;
+      begin
+        init_values(curintreg,curfloatreg,curmmreg,cur_stack_offset);
+
+        result:=create_paraloc_info_intern(p,side,p.paras,curintreg,curfloatreg,curmmreg,cur_stack_offset);
+
+        create_funcretloc_info(p,side);
+     end;
+>>>>>>> graemeg/cpstrnew
+
+<<<<<<< HEAD
     function tcpuparamanager.create_paraloc_info(p : tabstractprocdef; side: tcallercallee):longint;
       var
         cur_stack_offset: aword;
@@ -748,6 +1257,16 @@ unit cpupara;
         init_values(p,side,curintreg,curfloatreg,curmmreg,cur_stack_offset,sparesinglereg);
 
         result:=create_paraloc_info_intern(p,side,p.paras,curintreg,curfloatreg,curmmreg,cur_stack_offset,sparesinglereg,false);
+=======
+    function tarmparamanager.create_paraloc_info(p : tabstractprocdef; side: tcallercallee):longint;
+      var
+        cur_stack_offset: aword;
+        curintreg, curfloatreg, curmmreg: tsuperregister;
+      begin
+        init_values(curintreg,curfloatreg,curmmreg,cur_stack_offset);
+
+        result:=create_paraloc_info_intern(p,side,p.paras,curintreg,curfloatreg,curmmreg,cur_stack_offset);
+>>>>>>> graemeg/cpstrnew
 
         create_funcretloc_info(p,side);
      end;

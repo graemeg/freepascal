@@ -183,7 +183,19 @@ const
         { the fractional part is not used for rounding later                }
         currprec := -1;
         { instead, round based on the next whole digit }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if (int(intPartStack[stackPtr]-corrVal) >= 5.0) then
+=======
+        if (int(intPartStack[stackPtr]-corrVal+roundcorr) >= 5.0) then
+>>>>>>> graemeg/fixes_2_2
+=======
+        if (int(intPartStack[stackPtr]-corrVal+roundcorr) >= 5.0) then
+>>>>>>> origin/fixes_2_2
+=======
+        if (int(intPartStack[stackPtr]-corrVal) >= 5.0) then
+>>>>>>> origin/fixes_2.4
            roundStr(temp,spos);
         end;
 {$ifdef DEBUG_NASM}
@@ -272,6 +284,8 @@ begin
          explen:=6;
          { correction used with comparing to avoid rounding/precision errors }
          roundCorr := 1.0842021725e-19;
+<<<<<<< HEAD
+<<<<<<< HEAD
       end;
     else
       begin
@@ -280,6 +294,10 @@ begin
         minlen:=0;
         explen:=0;
         roundCorr:=0;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
     end;
   { check parameters }
@@ -443,18 +461,46 @@ begin
           for fracCount := 1 to currPrec do
             factor := factor * 10.0;
           corrval := corrval / factor;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
           { for single, we may write more significant digits than are available,
             so the rounding correction itself can show up -> don't round in that
             case
           }
           if real_type<>rt_s32real then
             d:=d+d*roundCorr;
+=======
+          if (d<>0.0) then
+            d:=d+roundCorr;
+>>>>>>> graemeg/fixes_2_2
+=======
+          if (d<>0.0) then
+            d:=d+roundCorr;
+>>>>>>> origin/fixes_2_2
           if d >= corrVal then
             d := d + corrVal;
           if int(d) = 1 then
             begin
               roundStr(temp,spos);
               d := frac(d);
+<<<<<<< HEAD
+=======
+              if (f < 0) then
+                begin
+                  dec(currprec);
+                  if (currprec=0) then
+                    begin
+                      inc(spos);
+                      temp[spos]:='0';
+                    end;
+                end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             end;
           { calculate the necessary fractional digits }
           for fracCount := 1 to currPrec do

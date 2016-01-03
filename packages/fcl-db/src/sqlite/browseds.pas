@@ -4,6 +4,18 @@ program browseds;
 {$H+}
 {$define DEBUGHEAP}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+//To test the sqlite3 version replace sqliteds by sqlite3ds
+//  and TSqliteDataset by TSqlite3Dataset
+
+>>>>>>> graemeg/fixes_2_2
+=======
+//To test the sqlite3 version replace sqliteds by sqlite3ds
+//  and TSqliteDataset by TSqlite3Dataset
+
+>>>>>>> origin/fixes_2_2
 uses 
 {$ifdef DEBUGHEAP}
   Heaptrc,
@@ -12,6 +24,8 @@ uses
   cmem,
 {$endif}
   crt,
+<<<<<<< HEAD
+<<<<<<< HEAD
   sqlite3ds,
   sysutils, db, inifiles;
 
@@ -22,6 +36,28 @@ const
 
 var 
   dsTest: TSqlite3Dataset;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  sqliteds,
+  sysutils,db,inifiles;
+
+const
+  SQLITEDS_TESTS_INI_FILE = 'sqlitedstests.ini';
+  DEFAULT_TABLENAME = 'tabletest';
+  DEFAULT_FILENAME = 'test.db';
+<<<<<<< HEAD
+
+
+var 
+  dsTest:TSqliteDataset;
+>>>>>>> graemeg/fixes_2_2
+=======
+
+
+var 
+  dsTest:TSqliteDataset;
+>>>>>>> origin/fixes_2_2
   ini: TIniFile;
   i:Integer;
 
@@ -53,7 +89,15 @@ begin
   {$ifdef DEBUGHEAP}
   SetHeapTraceOutput(ExtractFileName(ParamStr(0))+'.heap.log');
   {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
   dsTest:=TSqlite3Dataset.Create(nil);
+=======
+  dsTest:=TSqliteDataset.Create(nil);
+>>>>>>> graemeg/fixes_2_2
+=======
+  dsTest:=TSqliteDataset.Create(nil);
+>>>>>>> origin/fixes_2_2
   with dsTest do
   begin
     //Load Database properties from a inifile

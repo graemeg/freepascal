@@ -1,5 +1,56 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef ARM7}
   {$error The clock is only available on the ARM7}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(*
+  $Id: clock.inc 25 2007-12-10 21:06:46Z p4p3r0 $
+  ------------------------------------------------------------------------------
+  	Copyright (C) 2005
+  		Jason Rogers (dovoto)
+  		Dave Murphy (WinterMute)
+  	
+  	This software is provided 'as-is', without any express or implied
+  	warranty.  In no event will the authors be held liable for any
+  	damages arising from the use of this software.
+  	
+  	Permission is granted to anyone to use this software for any
+  	purpose, including commercial applications, and to alter it and
+  	redistribute it freely, subject to the following restrictions:
+  	
+  	1.	The origin of this software must not be misrepresented; you
+  		must not claim that you wrote the original software. If you use
+  		this software in a product, an acknowledgment in the product
+  		documentation would be appreciated but is not required.
+  	
+  	2.	Altered source versions must be plainly marked as such, and
+  		must not be misrepresented as being the original software.
+  	
+  	3.	This notice may not be removed or altered from any source
+  		distribution.
+  ------------------------------------------------------------------------------
+    
+    
+  Conversion by Legolas (http://itaprogaming.free.fr) for freepascal compiler
+  (http://www.freepascal.org)
+   
+  Copyright (C) 2006  Francesco Lombardi
+  Check http://sourceforge.net/projects/libndsfpc for updates
+   
+  ------------------------------------------------------------------------------
+
+  $Log$
+
+*)
+
+{$ifndef ARM7}
+{$error The clock is only available on the ARM7}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif ARM7}
 
 {$ifdef NDS_INTERFACE}
@@ -55,14 +106,38 @@ procedure rtcReset(); cdecl; external;
 procedure rtcTransaction(command: pcuint8; commandLength: cuint32; result: pcuint8; resultLength: cuint32); cdecl; external;
 procedure rtcGetTime(time: pcuint8); cdecl; external;
 procedure rtcSetTime(time: pcuint8); cdecl; external;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+procedure rtcGetData(data: pcuint8; size: cuint32); cdecl; external;
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure rtcGetData(data: pcuint8; size: cuint32); cdecl; external;
+>>>>>>> origin/fixes_2_2
 
 procedure rtcGetTimeAndDate(time: pcuint8); cdecl; external;
 procedure rtcSetTimeAndDate(time: pcuint8); cdecl; external;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure rtcGetData(var data: cuint8; size: cuint32); cdecl; external;
 procedure BCDToInteger(var data: cuint8; length: cuint32); cdecl; external;
 procedure integerToBCD(var data: cuint8; length: cuint32); cdecl; external;
 
 procedure initClockIRQ(); cdecl; external;
 procedure resyncClock(); cdecl; external;
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure BCDToInteger(data: pcuint8; length: cuint32); cdecl; external;
+procedure integerToBCD(data: pcuint8; length: uint32); cdecl; external;
+
+procedure initClockIRQ(); cdecl; external;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$endif NDS_INTERFACE}

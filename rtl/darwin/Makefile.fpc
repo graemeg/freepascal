@@ -8,6 +8,10 @@ main=rtl
 # disabled units: serial
 [target]
 loaders=
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=$(SYSTEMUNIT) uuchar unixtype ctypes objpas macpas iso7185 extpas \
       strings sysctl baseunix unixutil \
       unix initc cmem dynlibs $(CPU_UNITS) \
@@ -23,6 +27,41 @@ implicitunits=exeinfo \
       unicodedata unicodenumtable 
 
 rsts=math typinfo classes sysconst rtlconsts
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+units=$(SYSTEMUNIT) unixtype ctypes objpas macpas iso7185 \
+      strings sysctl baseunix unixutil \
+      unix initc cmem matrix dynlibs $(CPU_UNITS) \
+      dos dl objects printer sockets \
+      sysutils typinfo fgl classes math varutils types \
+      charset ucomplex getopts heaptrc lineinfo lnfodwrf \
+<<<<<<< HEAD
+      errors ipc terminfo termio video crt mouse keyboard  \
+      variants dateutils convutils stdconvs \
+      sysconst cthreads strutils rtlconsts cwstring bsd fmtbcd \
+<<<<<<< HEAD
+      fpintres fpextres clocale objc objcbase
+=======
+      errors terminfo termio video crt mouse keyboard console \
+      variants dateutils convutils stdconvs \
+      sysconst cthreads strutils rtlconsts cwstring bsd fmtbcd \
+      clocale
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+      fpintres fpextres clocale
+>>>>>>> origin/fixes_2.4
+implicitunits=exeinfo
+
+rsts=math varutils typinfo classes variants dateutils sysconst rtlconsts
+>>>>>>> graemeg/cpstrnew
 
 [require]
 nortl=y
@@ -41,7 +80,7 @@ sourcedir=$(INC) $(PROCINC) $(UNIXINC) $(BSDINC) $(COMMON)
 
 [lib]
 libname=libfprtl.so
-libversion=2.0.0
+libversion=2.2.1
 libunits=$(SYSTEMUNIT) objpas strings \
       unix  \
       dos crt objects  \
@@ -123,6 +162,8 @@ SYSDEPS=$(SYSINCDEPS) $(SYSCPUDEPS)
 $(SYSTEMUNIT)$(PPUEXT) : $(BSDINC)/$(SYSTEMUNIT).pp $(SYSDEPS)
         $(COMPILER) -Us -Sg $(BSDINC)/$(SYSTEMUNIT).pp
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uuchar$(PPUEXT): $(SYSTEMUNIT)$(PPUEXT) $(INC)/uuchar.pp
 
 fpintres$(PPUEXT): $(SYSTEMUNIT)$(PPUEXT)
@@ -130,7 +171,29 @@ fpintres$(PPUEXT): $(SYSTEMUNIT)$(PPUEXT)
 fpextres$(PPUEXT): $(SYSTEMUNIT)$(PPUEXT) baseunix$(PPUEXT)
 
 iso7185$(PPUEXT): $(SYSTEMUNIT)$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         $(COMPILER) $(INC)/iso7185.pp
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+clocale$(PPUEXT): initc$(PPUEXT) sysutils$(PPUEXT) unixtype$(PPUEXT)
+>>>>>>> graemeg/fixes_2_2
+=======
+clocale$(PPUEXT): initc$(PPUEXT) sysutils$(PPUEXT) unixtype$(PPUEXT)
+>>>>>>> origin/fixes_2_2
+
+objpas$(PPUEXT): $(SYSTEMUNIT)$(PPUEXT) $(OBJPASDIR)/objpas.pp $(INC)/except.inc $(SYSTEMUNIT)$(PPUEXT)
+        $(COMPILER) -I$(OBJPASDIR) $(OBJPASDIR)/objpas.pp
+
+>>>>>>> graemeg/cpstrnew
 
 extpas$(PPUEXT) : $(INC)/extpas.pp dos$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) $(INC)/extpas.pp
@@ -142,12 +205,27 @@ strings$(PPUEXT) : $(SYSTEMUNIT)$(PPUEXT) $(INC)/strings.pp $(INC)/stringsi.inc\
                    $(PROCINC)/strings.inc $(PROCINC)/stringss.inc\
                    $(SYSTEMUNIT)$(PPUEXT)
 
+<<<<<<< HEAD
 objc$(PPUEXT) : $(SYSTEMUNIT)$(PPUEXT) ctypes$(PPUEXT) unixtype$(PPUEXT) $(INC)/objc.pp $(INC)/objc1.inc $(INC)/objcnf.inc
 
 objcbase$(PPUEXT) : $(SYSTEMUNIT)$(PPUEXT) $(INC)/objcbase.pp objc$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 blockrtl$(PPUEXT) : $(SYSTEMUNIT)$(PPUEXT) objpas$(PPUEXT) initc$(PPUEXT) ctypes$(PPUEXT) $(INC)/blockrtl.pp
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
+=======
+>>>>>>> origin/fixes_2.4
 #
 # System Dependent Units
 #
@@ -222,6 +300,24 @@ sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUE
 rtlconsts$(PPUEXT) : $(OBJPASDIR)/rtlconsts.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) $(OBJPASDIR)/rtlconsts.pp
 
+<<<<<<< HEAD
+=======
+strutils$(PPUEXT) : $(OBJPASDIR)/strutils.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT) \
+                    sysutils$(PPUEXT)
+        $(COMPILER) $(OBJPASDIR)/strutils.pp
+
+variants$(PPUEXT) : $(INC)/variants.pp sysutils$(PPUEXT) sysconst$(PPUEXT) varutils$(PPUEXT) typinfo$(PPUEXT) rtlconsts$(PPUEXT) math$(PPUEXT)
+        $(COMPILER) -Fi$(INC) $(INC)/variants.pp
+
+convutils$(PPUEXT) : $(OBJPASDIR)/convutils.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT) \
+                    sysutils$(PPUEXT)
+        $(COMPILER) $(OBJPASDIR)/convutils.pp
+
+stdconvs$(PPUEXT) : $(OBJPASDIR)/stdconvs.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT) \
+                    sysutils$(PPUEXT) convutils$(PPUEXT)
+        $(COMPILER) $(OBJPASDIR)/stdconvs.pp
+
+>>>>>>> graemeg/fixes_2_2
 #
 # Mac Pascal Model
 #
@@ -233,10 +329,32 @@ macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT)
 # Other system-independent RTL Units
 #
 
+<<<<<<< HEAD
 ifeq ($(ARCH),x86_64)
 cpu$(PPUEXT) : $(PROCINC)/cpu.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT) sysutils$(PPUEXT)
 else
 cpu$(PPUEXT) : $(PROCINC)/cpu.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
+=======
+video$(PPUEXT) : $(SYSTEMUNIT)$(PPUEXT) $(INC)/video.inc $(INC)/videoh.inc $(UNIXINC)/video.pp baseunix$(PPUEXT) strings$(PPUEXT) terminfo$(PPUEXT) termio$(PPUEXT)
+
+keyboard$(PPUEXT) : $(SYSTEMUNIT)$(PPUEXT) $(INC)/keyboard.inc $(INC)/keybrdh.inc $(UNIXINC)/keyboard.pp mouse$(PPUEXT) strings$(PPUEXT) terminfo$(PPUEXT) termio$(PPUEXT) baseunix$(PPUEXT)
+
+matrix$(PPUEXT) : $(INC)/matrix.pp $(SYSTEMUNIT)$(PPUEXT)
+
+ifeq ($(ARCH),x86_64)
+cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT) sysutils$(PPUEXT)
+else
+cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 endif
 
 mmx$(PPUEXT) : $(PROCINC)/mmx.pp cpu$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
@@ -249,8 +367,14 @@ heaptrc$(PPUEXT) : $(INC)/heaptrc.pp $(SYSTEMUNIT)$(PPUEXT)
 lineinfo$(PPUEXT) : $(INC)/lineinfo.pp $(SYSTEMUNIT)$(PPUEXT) strings$(PPUEXT) $(INC)/exeinfo.pp
 
 lnfodwrf$(PPUEXT) : $(INC)/lnfodwrf.pp $(SYSTEMUNIT)$(PPUEXT) strings$(PPUEXT) $(INC)/exeinfo.pp lineinfo$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 lnfogdb$(PPUEXT) : $(UNIXINC)/lnfogdb.pp $(SYSTEMUNIT)$(PPUEXT) ctypes$(PPUEXT) baseunix$(PPUEXT) unix$(PPUEXT)
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 charset$(PPUEXT) : $(INC)/charset.pp objpas$(PPUEXT)
 

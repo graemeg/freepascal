@@ -8,6 +8,8 @@ Var
   P : TPackage;
   T : TTarget;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 
   With Installer do
@@ -26,6 +28,22 @@ begin
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  With Installer do
+    begin
+{$endif ALLPACKAGES}
+
+    P:=AddPackage('a52');
+{$ifdef ALLPACKAGES}
+    P.Directory:='a52';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     P.SourcePath.Add('src');
 
     T:=P.Targets.AddUnit('a52.pas');

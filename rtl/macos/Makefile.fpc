@@ -7,16 +7,38 @@ main=rtl
 
 [target]
 loaders=
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=system uuchar strings objpas macpas iso7185 extpas heaptrc getopts macostp macutils \
       unixutil dos cmem charset cpall ctypes
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+units=system strings objpas macpas iso7185 heaptrc getopts macostp macutils \
+      unixutil dos objects matrix cmem charset ctypes
+>>>>>>> graemeg/cpstrnew
 #      exec  \
 #      printer \
 #      lineinfo lnfodwrf  graph \
 #      sysutils math typinfo
 # rsts=math
+<<<<<<< HEAD
+<<<<<<< HEAD
 # implicitunits=exeinfo \
 implicitunits=cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp932 cp936 cp949 cp950 cp8859_1 cp8859_5 cp8859_2 cp852
+=======
+# implicitunits=exeinfo
+>>>>>>> graemeg/fixes_2_2
+=======
+# implicitunits=exeinfo
+>>>>>>> origin/fixes_2_2
 
 [require]
 nortl=y

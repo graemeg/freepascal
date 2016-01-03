@@ -4,17 +4,137 @@
 
 [package]
 name=fcl-base
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[require]
+packages_darwin=univint
+packages_iphonesim=univint
+=======
+version=2.2.5
+
+[require]
+packages_win32=winunits-base winunits-jedi
+packages_win64=winunits-base winunits-jedi
+>>>>>>> graemeg/fixes_2_2
+=======
+version=2.2.5
+
+[require]
+packages_win32=winunits-base winunits-jedi
+packages_win64=winunits-base winunits-jedi
+>>>>>>> origin/fixes_2_2
+
+[target]
+units=contnrs inifiles rtfpars idea base64 gettext \
+      iostream cachecls avl_tree uriparser \
+      eventlog custapp wformat whtml wtex rttiutils bufstream \
+      streamex blowfish streamio inicol pooledmm libtar streamcoll \
+<<<<<<< HEAD
+<<<<<<< HEAD
+      maskutils fpexprpars ascii85 fptemplate
+units_beos=syncobjs
+units_haiku=syncobjs
+units_freebsd=syncobjs fptimer
+units_darwin=syncobjs fptimer
+units_iphonesim=syncobjs fptimer
+units_solaris=syncobjs fptimer
+units_netbsd=  fptimer
+units_openbsd= fptimer
+units_linux=syncobjs   fptimer
+units_win32=fileinfo syncobjs  fptimer
+units_win64=fileinfo syncobjs  fptimer
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      maskutils fpexprpars
+units_beos=syncobjs 
+units_freebsd=syncobjs daemonapp fptimer
+units_darwin=syncobjs daemonapp fptimer 
+units_solaris=syncobjs daemonapp fptimer
+units_netbsd=daemonapp fptimer
+units_openbsd=daemonapp fptimer
+units_linux=syncobjs daemonapp fptimer
+units_win32=fileinfo syncobjs daemonapp ServiceManager fptimer
+units_win64=fileinfo syncobjs daemonapp ServiceManager fptimer
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+units_wince=fileinfo syncobjs fptimer
+# syncobjs requires GetLastOSError function
+units_netware=syncobjs
+units_netwlibc=syncobjs
+rsts=cachecls custapp cgiapp eventlog registry streamcoll inicol
+
+[compiler]
+options=-S2h
+<<<<<<< HEAD
+<<<<<<< HEAD
+includedir=src/$(OS_TARGET) src src/dummy
+=======
+includedir=src/$(OS_TARGET) src
+>>>>>>> graemeg/fixes_2_2
+=======
+includedir=src/$(OS_TARGET) src
+>>>>>>> origin/fixes_2_2
+includedir_linux=src/unix
+includedir_freebsd=src/unix
+includedir_darwin=src/unix
+includedir_iphonesim=src/unix
+includedir_netbsd=src/unix
+includedir_openbsd=src/unix
+includedir_solaris=src/unix
+includedir_qnx=src/unix
+includedir_beos=src/unix
+includedir_haiku=src/unix
+includedir_emx=src/os2
+includedir_win32=src/win
+includedir_win64=src/win
+includedir_wince=src/win
+sourcedir=src/$(OS_TARGET) src
+
+[prerules]
+ifeq ($(OS_TARGET),win32)
+INSTALL_DATADIR=${INSTALL_UNITDIR}
+endif
+ifeq ($(OS_TARGET),win64)
+INSTALL_DATADIR=${INSTALL_UNITDIR}
+endif
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
+files_win32=src/win/fclel.res
+files_win64=src/win/fclel.res
 
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +220,11 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+[rules]
+.NOTPARALLEL:
+>>>>>>> graemeg/fixes_2_2
+=======
+[rules]
+.NOTPARALLEL:
+>>>>>>> origin/fixes_2_2

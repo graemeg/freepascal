@@ -38,6 +38,10 @@ implementation
   uses
     verbose,globtype,globals,aasmdata,
     symconst,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     cgbase,cgutils,cpuinfo,
     ncgutil,tgobj,
     systems;
@@ -48,6 +52,33 @@ implementation
          (target_info.abi <> abi_eabihf) and
          ((cs_fp_emulation in current_settings.moduleswitches) or
           (current_settings.fputype in [fpu_vfpv2,fpu_vfpv3,fpu_vfpv3_d16,fpu_fpv4_s16])) then
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    cgbase,
+    cpubase,cpuinfo,
+    ncgutil,
+    paramgr;
+
+  procedure tarmcallnode.set_result_location(realresdef: tstoreddef);
+    begin
+      if (realresdef.typ=floatdef) and
+         ((cs_fp_emulation in current_settings.moduleswitches) or
+          (current_settings.fputype in [fpu_vfpv2,fpu_vfpv3])) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         begin
           { keep the fpu values in integer registers for now, the code
             generator will move them to memory or an mmregister when necessary
@@ -64,6 +95,10 @@ implementation
               internalerror(2010053008);
           end
         end
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       else if (resultdef.typ=floatdef) and
          (location.loc=LOC_REGISTER) and
          (current_settings.fputype in [fpu_fpa,fpu_fpa10,fpu_fpa11]) then
@@ -71,6 +106,14 @@ implementation
           location_reset_ref(location,LOC_REFERENCE,location.size,resultdef.alignment);
           tg.gethltemp(current_asmdata.CurrAsmList,resultdef,resultdef.size,tt_normal,location.reference);
         end
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       else
         inherited;
     end;

@@ -11,6 +11,8 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Uses
   Windows;
 
@@ -22,6 +24,10 @@ Resourcestring
   SErrNoTerminalProgram = 'Could not detect X-Terminal program';
 }
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Const
   PriorityConstants : Array [TProcessPriority] of Cardinal =
                       (HIGH_PRIORITY_CLASS,IDLE_PRIORITY_CLASS,
@@ -116,7 +122,15 @@ begin
   TA.nLength := SizeOf(TA);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure InitStartupInfo(P : TProcess; Var SI : STARTUPINFOA);
+=======
+Procedure InitStartupInfo(P : TProcess; Var SI : STARTUPINFO);
+>>>>>>> graemeg/fixes_2_2
+=======
+Procedure InitStartupInfo(P : TProcess; Var SI : STARTUPINFO);
+>>>>>>> origin/fixes_2_2
 
 Const
   SWC : Array [TShowWindowOptions] of Cardinal =
@@ -152,6 +166,8 @@ begin
      end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 { The handles that are to be passed to the child process must be
   inheritable. On the other hand, only non-inheritable handles
   allow the sending of EOF when the write-end is closed. This
@@ -190,6 +206,20 @@ begin
     CreatePipeHandles(HE,SI.hStdError, APipeBufferSize);
     DuplicateHandleFP(   SI.hStdError);
     end
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Procedure CreatePipes(Var HI,HO,HE : Thandle; Var SI : TStartupInfo; CE : Boolean);
+
+begin
+  CreatePipeHandles(SI.hStdInput,HI);
+  CreatePipeHandles(HO,Si.hStdOutput);
+  if CE then
+    CreatePipeHandles(HE,SI.hStdError)
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   else
     begin
     SI.hStdError:=SI.hStdOutput;
@@ -197,6 +227,8 @@ begin
     end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function MaybeQuote(Const S : String) : String;
 
 begin
@@ -218,21 +250,46 @@ end;
 Procedure TProcess.Execute;
 Var
   i : Integer;
+=======
+
+Procedure TProcess.Execute;
+Var
+>>>>>>> graemeg/fixes_2_2
+=======
+
+Procedure TProcess.Execute;
+Var
+>>>>>>> origin/fixes_2_2
   PName,PDir,PCommandLine : PChar;
   FEnv: pointer;
   FCreationFlags : Cardinal;
   FProcessAttributes : TSecurityAttributes;
   FThreadAttributes : TSecurityAttributes;
   FProcessInformation : TProcessInformation;
+<<<<<<< HEAD
+<<<<<<< HEAD
   FStartupInfo : STARTUPINFOA;
   HI,HO,HE : THandle;
   Cmd : String;
   
 begin
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  FStartupInfo : STARTUPINFO;
+  HI,HO,HE : THandle;
+begin
+  FInheritHandles:=True;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   PName:=Nil;
   PCommandLine:=Nil;
   PDir:=Nil;
     
+<<<<<<< HEAD
+<<<<<<< HEAD
   if (FApplicationName='') and (FCommandLine='') and (FExecutable='') then
     Raise EProcess.Create(SNoCommandline);
   if (FApplicationName<>'') then
@@ -249,6 +306,28 @@ begin
       Cmd:=Cmd+' '+MaybeQuoteIfNotQuoted(Parameters[i]);
     PCommandLine:=PChar(Cmd);
     end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if (FApplicationName='') then
+    begin
+      If (FCommandLine='') then
+        Raise EProcess.Create(SNoCommandline);
+      PCommandLine:=Pchar(FCommandLine)
+    end
+  else
+    begin
+      PName:=Pchar(FApplicationName);
+      If (FCommandLine='') then
+        PCommandLine:=Pchar(FApplicationName)
+      else
+        PCommandLine:=Pchar(FCommandLine)
+    end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   If FCurrentDirectory<>'' then
     PDir:=Pchar(FCurrentDirectory);
   if FEnvironment.Count<>0 then
@@ -261,12 +340,28 @@ begin
     InitThreadAttributes(Self,FThreadAttributes);
     InitStartupInfo(Self,FStartUpInfo);
     If poUsePipes in FProcessOptions then
+<<<<<<< HEAD
+<<<<<<< HEAD
       CreatePipes(HI,HO,HE,FStartupInfo,Not(poStdErrToOutPut in FProcessOptions), FPipeBufferSize);
+=======
+      CreatePipes(HI,HO,HE,FStartupInfo,Not(poStdErrToOutPut in FProcessOptions));
+>>>>>>> graemeg/fixes_2_2
+=======
+      CreatePipes(HI,HO,HE,FStartupInfo,Not(poStdErrToOutPut in FProcessOptions));
+>>>>>>> origin/fixes_2_2
     Try
       If Not CreateProcess (PName,PCommandLine,@FProcessAttributes,@FThreadAttributes,
                    FInheritHandles,FCreationFlags,FEnv,PDir,FStartupInfo,
                    fProcessInformation) then
+<<<<<<< HEAD
+<<<<<<< HEAD
         Raise EProcess.CreateFmt(SErrCannotExecute,[FCommandLine,GetLastError]);
+=======
+        Raise EProcess.CreateFmt('Failed to execute %s : %d',[FCommandLine,GetLastError]);
+>>>>>>> graemeg/fixes_2_2
+=======
+        Raise EProcess.CreateFmt('Failed to execute %s : %d',[FCommandLine,GetLastError]);
+>>>>>>> origin/fixes_2_2
       FProcessHandle:=FProcessInformation.hProcess;
       FThreadHandle:=FProcessInformation.hThread;
       FProcessID:=FProcessINformation.dwProcessID;
@@ -330,3 +425,15 @@ Procedure TProcess.SetShowWindow (Value : TShowWindowOptions);
 begin
   FShowWindow:=Value;
 end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+
+
+>>>>>>> origin/fixes_2_2

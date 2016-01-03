@@ -1,5 +1,56 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef NDS_INTERFACE}
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(*
+  $Id: memory.inc 25 2007-12-10 21:06:46Z p4p3r0 $
+  ------------------------------------------------------------------------------
+  	Copyright (C) 2005
+  		Jason Rogers (dovoto)
+  		Dave Murphy (WinterMute)
+  	
+  	This software is provided 'as-is', without any express or implied
+  	warranty.  In no event will the authors be held liable for any
+  	damages arising from the use of this software.
+  	
+  	Permission is granted to anyone to use this software for any
+  	purpose, including commercial applications, and to alter it and
+  	redistribute it freely, subject to the following restrictions:
+  	
+  	1.	The origin of this software must not be misrepresented; you
+  		must not claim that you wrote the original software. If you use
+  		this software in a product, an acknowledgment in the product
+  		documentation would be appreciated but is not required.
+  	
+  	2.	Altered source versions must be plainly marked as such, and
+  		must not be misrepresented as being the original software.
+  	
+  	3.	This notice may not be removed or altered from any source
+  		distribution.
+  ------------------------------------------------------------------------------
+    
+    
+  Conversion by Legolas (http://itaprogaming.free.fr) for freepascal compiler
+  (http://www.freepascal.org)
+   
+  Copyright (C) 2006  Francesco Lombardi
+  Check http://sourceforge.net/projects/libndsfpc for updates
+   
+  ------------------------------------------------------------------------------
+
+  $Log$
+
+*)
+
+{$ifdef NDS_INTERFACE}
+// WAIT_CR: Wait State Control Register
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 const
 {$ifdef ARM9}
   REG_EXMEMCNT : pcuint16 = pointer($04000204);
@@ -31,6 +82,47 @@ const
 
   SRAM          : pcuint8  = pointer($0A000000);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+{$ifdef ARM9}
+  PALETTE             : pcuint16 = pointer($05000000);
+  PALETTE_SUB         : pcuint16 = pointer($05000400);
+
+  BG_PALETTE          : pcuint16 = pointer($05000000);
+  BG_PALETTE_SUB      : pcuint16 = pointer($05000400);
+
+  SPRITE_PALETTE      : pcuint16 = pointer($05000200);
+  SPRITE_PALETTE_SUB  : pcuint16 = pointer($05000600);
+
+  BG_GFX			         : pcuint16 = pointer($06000000);
+  BG_GFX_SUB		       : pcuint16 = pointer($06200000);
+  SPRITE_GFX			     : pcuint16 = pointer($06400000);
+  SPRITE_GFX_SUB		   : pcuint16 = pointer($06600000);
+
+  VRAM_0        : pcuint16 = pointer($06000000);
+  VRAM          : pcuint16 = pointer($06800000);
+  VRAM_A        : pcuint16 = pointer($06800000);
+  VRAM_B        : pcuint16 = pointer($06820000);
+  VRAM_C        : pcuint16 = pointer($06840000);
+  VRAM_D        : pcuint16 = pointer($06860000);
+  VRAM_E        : pcuint16 = pointer($06880000);
+  VRAM_F        : pcuint16 = pointer($06890000);
+  VRAM_G        : pcuint16 = pointer($06894000);
+  VRAM_H        : pcuint16 = pointer($06898000);
+  VRAM_I        : pcuint16 = pointer($068A0000);
+
+  OAM           : pcuint16 = pointer($07000000);
+  OAM_SUB       : pcuint16 = pointer($07000400);
+{$endif ARM9}
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifdef ARM7}
   VRAM          : pcuint16 = pointer($06000000);
 {$endif ARM7}
@@ -68,19 +160,47 @@ type
     romversion: cuint8;
     flags: cuint8;                // auto-boot flag
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     arm9romOffset: cuint32;
+=======
+    arm9romSource: cuint32;
+>>>>>>> graemeg/fixes_2_2
+=======
+    arm9romSource: cuint32;
+>>>>>>> origin/fixes_2_2
     arm9executeAddress: cuint32;
     arm9destination: cuint32;
     arm9binarySize: cuint32;
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     arm7romOffset: cuint32;
+=======
+    arm7romSource: cuint32;
+>>>>>>> graemeg/fixes_2_2
+=======
+    arm7romSource: cuint32;
+>>>>>>> origin/fixes_2_2
     arm7executeAddress: cuint32;
     arm7destination: cuint32;
     arm7binarySize: cuint32;
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     filenameOffset: cuint32;
     filenameSize: cuint32;
     fatOffset: cuint32;
+=======
+    filenameSource: cuint32;
+    filenameSize: cuint32;
+    fatSource: cuint32;
+>>>>>>> graemeg/fixes_2_2
+=======
+    filenameSource: cuint32;
+    filenameSize: cuint32;
+    fatSource: cuint32;
+>>>>>>> origin/fixes_2_2
     fatSize: cuint32;
     
     arm9overlaySource: cuint32;
@@ -120,7 +240,19 @@ type
   pNDSHeader = ^tNDSHeader;
   
 const
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   __NDSHeader : pNDSHeader = pointer($02FFFE00);
+=======
+  NDSHeader : pNDSHeader = pointer($027FFE00);
+>>>>>>> graemeg/fixes_2_2
+=======
+  NDSHeader : pNDSHeader = pointer($027FFE00);
+>>>>>>> origin/fixes_2_2
+=======
+  __NDSHeader : pNDSHeader = pointer($02FFFE00);
+>>>>>>> origin/fixes_2.4
 
 
 type
@@ -142,10 +274,16 @@ type
 const
   BUS_OWNER_ARM9 = true;
   BUS_OWNER_ARM7 = false;
+<<<<<<< HEAD
+<<<<<<< HEAD
   
 procedure sysSetCartOwner(arm9: cbool); inline; 
 procedure sysSetCardOwner(arm9: cbool); inline;
 procedure sysSetBusOwners(arm9rom, arm9card: cbool); inline;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif NDS_INTERFACE}
 
 {$ifdef NDS_IMPLEMENTATION}
@@ -176,6 +314,9 @@ end;
 // Changes all bus ownerships
 procedure sysSetBusOwners(arm9rom, arm9card: cbool); inline;
 var
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   val1, val2: cuint;
 begin
   val1 := 0;
@@ -192,3 +333,38 @@ end;
 
 {$endif NDS_IMPLEMENTATION}
 {$endif ARM9}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  pattern: cuint16;
+  a9r, a9c: cint;
+=======
+  val1, val2: cuint;
+>>>>>>> origin/fixes_2.4
+begin
+  val1 := 0;
+  val2 := 0;
+  if not arm9card then
+    val1 := ARM7_OWNS_CARD; 
+  
+  if not arm9rom then
+    val2 := ARM7_OWNS_ROM ;
+    
+  REG_EXMEMCNT^ := (REG_EXMEMCNT^ and not(ARM7_OWNS_CARD or ARM7_OWNS_ROM)) or val1 or val2;
+end;
+
+
+{$endif NDS_IMPLEMENTATION}
+{$endif ARM9}
+
+{$ifdef NDS_INTERFACE}
+{$ifdef ARM9}
+procedure sysSetCartOwner(arm9: cbool); inline; 
+procedure sysSetCardOwner(arm9: cbool); inline;
+procedure sysSetBusOwners(arm9rom, arm9card: cbool); inline;
+{$endif ARM9}
+{$endif NDS_INTERFACE}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

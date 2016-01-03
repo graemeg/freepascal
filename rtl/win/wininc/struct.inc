@@ -46,7 +46,15 @@
 
 {$ifdef read_interface}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Const
+=======
+Const 
+>>>>>>> graemeg/fixes_2_2
+=======
+Const 
+>>>>>>> origin/fixes_2_2
   IMAGE_SIZEOF_SHORT_NAME = 8;
 
   type
@@ -1560,6 +1568,10 @@ Const
 
 {$ifndef UNICODE}
      CPINFOEX   = CPINFOEXA;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      LPCPINFOEX = PCPINFOEXA;
      _cpinfoex  = CPINFOEXA;
      Tcpinfoex  = CPINFOEXA;
@@ -1570,6 +1582,33 @@ Const
      _cpinfoex  = CPINFOEXW;
      Tcpinfoex  = CPINFOEXW;
      Pcpinfoex  = PCPINFOEXW;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+     LPCPINFOEX = ^CPINFOEXA;
+     _cpinfoex  = CPINFOEXA;
+     Tcpinfoex  = CPINFOEXA;
+     Pcpinfoex  = ^CPINFOEXA;
+{$ELSE}
+     CPINFOEX   = CPINFOEXW;
+     LPCPINFOEX = ^CPINFOEXW;
+     _cpinfoex  = CPINFOEXW;
+     Tcpinfoex  = CPINFOEXW;
+     Pcpinfoex  = ^CPINFOEXW;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ENDIF}
 
      CPLINFO = record
@@ -2829,7 +2868,15 @@ Const
           elpWidth : DWORD;
           elpBrushStyle : UINT;
           elpColor : COLORREF;
+<<<<<<< HEAD
+<<<<<<< HEAD
           elpHatch : ULONG_PTR;
+=======
+          elpHatch : ULONG_ptr;
+>>>>>>> graemeg/fixes_2_2
+=======
+          elpHatch : ULONG_ptr;
+>>>>>>> origin/fixes_2_2
           elpNumEntries : DWORD;
           elpStyleEntry : array[0..0] of DWORD;
        end;
@@ -4042,8 +4089,20 @@ Const
           iCtrlId : longint;
           hItemHandle : HANDLE;
           dwContextId : DWORD_PTR;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  // NOTE:  this is defined as DWORD in http://msdn.microsoft.com/en-us/library/windows/desktop/bb773313%28v=vs.85%29.asp
 // but mingw has it as DWORD_PTR, so we will use that
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           MousePos : POINT;
        end;
      LPHELPINFO = ^HELPINFO;
@@ -4892,7 +4951,20 @@ Const
           lpszText : LPCTSTR;
           lpszCaption : LPCTSTR;
           dwStyle : DWORD;
+<<<<<<< HEAD
           lpszIcon : LPCTSTR;
+=======
+          lpszIcon : LPCSTR;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           dwContextHelpId : DWORD_PTR;
           lpfnMsgBoxCallback : MSGBOXCALLBACK;
           dwLanguageId : DWORD;
@@ -5416,6 +5488,7 @@ Const
      LPOSVERSIONINFOW = ^OSVERSIONINFOW;
      _OSVERSIONINFOW = OSVERSIONINFOW;
      TOSVERSIONINFOW = OSVERSIONINFOW;
+<<<<<<< HEAD
      POSVERSIONINFOW = LPOSVERSIONINFOW;
 
      {$IFNDEF UNICODE}
@@ -5431,11 +5504,28 @@ Const
        POSVERSIONINFO   = ^OSVERSIONINFOW;
        OSVERSIONINFO    = OSVERSIONINFOW;
      {$ENDIF}
+=======
+     POSVERSIONINFOW = ^OSVERSIONINFOW;
+
+>>>>>>> graemeg/cpstrnew
 
      {$push}
      {$packrecords 4}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      TEXTMETRICA = record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+     TEXTMETRIC = record
+>>>>>>> graemeg/cpstrnew
           tmHeight : LONG;
           tmAscent : LONG;
           tmDescent : LONG;
@@ -5457,11 +5547,32 @@ Const
           tmPitchAndFamily : BYTE;
           tmCharSet : BYTE;
        end;
+<<<<<<< HEAD
      LPTEXTMETRICA  = ^TEXTMETRICA;
      tagTEXTMETRICA = TEXTMETRICA;
      _TEXTMETRICA   = TEXTMETRICA;
      TTEXTMETRICA   = TEXTMETRICA;
      PTEXTMETRICA   = LPTEXTMETRICA;
+=======
+     LPTEXTMETRIC = ^TEXTMETRIC;
+     tagTEXTMETRIC = TEXTMETRIC;
+     TTEXTMETRIC = TEXTMETRIC;
+     PTEXTMETRIC = ^TEXTMETRIC;
+     TEXTMETRICA   = TEXTMETRIC;
+     LPTEXTMETRICA = ^TEXTMETRICA;
+     tagTEXTMETRICA = TEXTMETRICA;
+     TTEXTMETRICA = TEXTMETRICA;
+     PTEXTMETRICA = ^TEXTMETRICA;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
      TEXTMETRICW = record
           tmHeight : LONG;
@@ -5490,7 +5601,12 @@ Const
      _TEXTMETRICW   = TEXTMETRICW;
      TTEXTMETRICW = TEXTMETRICW;
      PTEXTMETRICW = ^TEXTMETRICW;
+     {$PACKRECORDS C}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
      {$IFNDEF UNICODE}
        LPTEXTMETRIC       = ^TEXTMETRICA;
@@ -5509,6 +5625,14 @@ Const
      {$ENDIF}
      {$PACKRECORDS C}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
      OUTLINETEXTMETRICA = record
           otmSize : UINT;
           otmTextMetrics : TEXTMETRICA;
@@ -5585,6 +5709,10 @@ Const
      LPOUTLINETEXTMETRICW = ^OUTLINETEXTMETRICW;
      _OUTLINETEXTMETRICW = OUTLINETEXTMETRICW;
      TOUTLINETEXTMETRICW = OUTLINETEXTMETRICW;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      POUTLINETEXTMETRICW = LPOUTLINETEXTMETRICW;
 
      {$ifdef Unicode}
@@ -5601,6 +5729,38 @@ Const
      OUTLINETEXTMETRIC   = OUTLINETEXTMETRICA;
      {$endif}
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+     POUTLINETEXTMETRICW = ^OUTLINETEXTMETRICW;
+
+     {$ifdef Unicode}
+     LPOUTLINETEXTMETRIC = ^OUTLINETEXTMETRICW;
+     _OUTLINETEXTMETRIC  = OUTLINETEXTMETRICW;
+     TOUTLINETEXTMETRIC  = OUTLINETEXTMETRICW;
+     POUTLINETEXTMETRIC  = ^OUTLINETEXTMETRICW;
+     OUTLINETEXTMETRIC   = OUTLINETEXTMETRICW;
+     {$else}
+     LPOUTLINETEXTMETRIC = ^OUTLINETEXTMETRICA;
+     _OUTLINETEXTMETRIC  = OUTLINETEXTMETRICA;
+     TOUTLINETEXTMETRIC  = OUTLINETEXTMETRICA;
+     POUTLINETEXTMETRIC  = ^OUTLINETEXTMETRICA;
+     OUTLINETEXTMETRIC   = OUTLINETEXTMETRICA;
+     {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
      {$POP}
      OVERLAPPED = record
           Internal : ULONG_PTR;
@@ -6822,9 +6982,21 @@ Const
      TSTICKYKEYS = STICKYKEYS;
      PSTICKYKEYS = ^STICKYKEYS;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
      STRRET = record
           utype : UINT;
           case longint of
+=======
+     STRRET = record 
+          utype : UINT;
+          case longint of 
+>>>>>>> graemeg/fixes_2_2
+=======
+     STRRET = record 
+          utype : UINT;
+          case longint of 
+>>>>>>> origin/fixes_2_2
            0: ( polestr:LPWSTR);
            1: ( uOffset : UINT);
            2: ( cStr : array[0..(MAX_PATH)-1] of char );
@@ -6867,16 +7039,34 @@ Const
 		       dwPageSize : DWORD;
           	       lpMinimumApplicationAddress : LPVOID;
           	       lpMaximumApplicationAddress : LPVOID;
+<<<<<<< HEAD
+<<<<<<< HEAD
           	       dwActiveProcessorMask : DWORD_PTR;
+=======
+          	       dwActiveProcessorMask : DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+          	       dwActiveProcessorMask : DWORD;
+>>>>>>> origin/fixes_2_2
           	       dwNumberOfProcessors : DWORD;
                        dwProcessorType : DWORD;
                        dwAllocationGranularity : DWORD;
                        wProcessorLevel : WORD;
                        wProcessorRevision : WORD;	
 			 );
+<<<<<<< HEAD
+<<<<<<< HEAD
                  1 : (
                       wProcessorArchitecture : WORD;
                       wReserved : WORD;
+=======
+                 1 : ( 
+                      wProcessorArchitecture : WORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                 1 : ( 
+                      wProcessorArchitecture : WORD;
+>>>>>>> origin/fixes_2_2
                     );
        end;
      LPSYSTEM_INFO = ^SYSTEM_INFO;
@@ -7406,12 +7596,22 @@ Const
           cFileName : array[0..(MAX_PATH)-1] of AnsiCHAR;
           cAlternateFileName : array[0..13] of AnsiCHAR;
        end;
+<<<<<<< HEAD
      LPWIN32_FIND_DATAA = ^WIN32_FIND_DATAA;
      PWIN32_FIND_DATAA = ^WIN32_FIND_DATAA;
      _WIN32_FIND_DATAA = WIN32_FIND_DATAA;
      TWIN32FINDDATAA = WIN32_FIND_DATAA;
      WIN32FINDDATAA = WIN32_FIND_DATAA;
      PWIN32FINDDATAA = ^WIN32_FIND_DATAA;
+=======
+     LPWIN32_FIND_DATA = ^WIN32_FIND_DATA;
+     PWIN32_FIND_DATA = ^WIN32_FIND_DATA;
+     _WIN32_FIND_DATA = WIN32_FIND_DATA;
+     TWIN32FINDDATA = WIN32_FIND_DATA;
+     TWIN32FINDDATAA = WIN32_FIND_DATA;
+     WIN32FINDDATAA = WIN32_FIND_DATA;
+     PWIN32FINDDATA = ^WIN32_FIND_DATA;
+>>>>>>> graemeg/fixes_2_2
 
      WIN32_FIND_DATAW = record
           dwFileAttributes : DWORD;
@@ -7856,7 +8056,15 @@ Const
           e_oemid : WORD;
           e_oeminfo : WORD;
           e_res2 : array[0..9] of WORD;
+<<<<<<< HEAD
+<<<<<<< HEAD
           case boolean of
+=======
+          case boolean of 
+>>>>>>> graemeg/fixes_2_2
+=======
+          case boolean of 
+>>>>>>> origin/fixes_2_2
              true : (e_lfanew : LONG);
              false: (_lfanew : LONG); // delphi naming
        end;
@@ -8123,6 +8331,8 @@ const
   IMAGE_ROM_OPTIONAL_HDR_MAGIC  = $107;
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef _WIN64}
   IMAGE_OPTIONAL_HEADER = IMAGE_OPTIONAL_HEADER64;
   PIMAGE_OPTIONAL_HEADER = PIMAGE_OPTIONAL_HEADER64;
@@ -8130,6 +8340,14 @@ type
   IMAGE_OPTIONAL_HEADER = IMAGE_OPTIONAL_HEADER32;
   PIMAGE_OPTIONAL_HEADER = PIMAGE_OPTIONAL_HEADER32;
 {$endif}
+=======
+  IMAGE_OPTIONAL_HEADER = IMAGE_OPTIONAL_HEADER32;
+  PIMAGE_OPTIONAL_HEADER = PIMAGE_OPTIONAL_HEADER32;
+>>>>>>> graemeg/fixes_2_2
+=======
+  IMAGE_OPTIONAL_HEADER = IMAGE_OPTIONAL_HEADER32;
+  PIMAGE_OPTIONAL_HEADER = PIMAGE_OPTIONAL_HEADER32;
+>>>>>>> origin/fixes_2_2
   TImageOptionalHeader = IMAGE_OPTIONAL_HEADER;
   PImageOptionalHeader = PIMAGE_OPTIONAL_HEADER;
 
@@ -8167,6 +8385,8 @@ type
   TImageRomHeaders = IMAGE_ROM_HEADERS;
   PImageRomHeaders = PIMAGE_ROM_HEADERS;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef _WIN64}
   IMAGE_NT_HEADERS = IMAGE_NT_HEADERS64;
   PIMAGE_NT_HEADERS = PIMAGE_NT_HEADERS64;
@@ -8176,6 +8396,17 @@ type
 {$endif}
 
   TImageNtHeaders = IMAGE_NT_HEADERS;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  IMAGE_NT_HEADERS = IMAGE_NT_HEADERS32;
+  PIMAGE_NT_HEADERS = PIMAGE_NT_HEADERS32;
+
+  TImageNtHeaders = IMAGE_NT_HEADERS32;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   PImageNtHeaders = PIMAGE_NT_HEADERS;
 
   _GET_FILEEX_INFO_LEVELS = (GetFileExInfoStandard, GetFileExMaxInfoLevel);
@@ -8241,7 +8472,15 @@ type
    _IMAGE_FUNCTION_ENTRY64 = record
        StartingAddress,
        EndingAddress :   ULONGLONG   ;
+<<<<<<< HEAD
+<<<<<<< HEAD
        case boolean of
+=======
+       case boolean of 
+>>>>>>> graemeg/fixes_2_2
+=======
+       case boolean of 
+>>>>>>> origin/fixes_2_2
          false : (EndOfPrologue : ULONGLONG);
          true  : (UnwindInfoAddress : ULONGLONG);
        end;
@@ -8270,7 +8509,15 @@ type
     ulOffStart: DWORD;             // offset 1st byte of function code
     cbProcSize: DWORD;             // # bytes in function
     cdwLocals : DWORD;             // # bytes in locals/4
+<<<<<<< HEAD
+<<<<<<< HEAD
     bitvalues : word;              //
+=======
+    bitvalues : word;              // 
+>>>>>>> graemeg/fixes_2_2
+=======
+    bitvalues : word;              // 
+>>>>>>> origin/fixes_2_2
 {
     WORD        cdwParams;              // # bytes in params/4
     WORD        cbProlog : 8;           // # bytes in prolog
@@ -8345,6 +8592,8 @@ type
      PIMAGE_LOAD_CONFIG_DIRECTORY = PIMAGE_LOAD_CONFIG_DIRECTORY32;
 {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}
 {$packrecords 4}
 
@@ -8560,6 +8809,10 @@ type
   PCIMAGE_DELAYLOAD_DESCRIPTOR= PIMAGE_DELAYLOAD_DESCRIPTOR;
 {$pop}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  tagCOMBOBOXINFO = record
     cbSize: DWORD;
     rcItem: TRect;
@@ -8604,6 +8857,8 @@ type
   PGRADIENT_RECT = ^_GRADIENT_RECT;
   LPGRADIENT_RECT = PGRADIENT_RECT;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   CURSORINFO = record
     		 cbSize  : DWORD;
      		 flags   : DWORD;
@@ -8647,6 +8902,16 @@ type
     PMENUBARINFO = ^tagMENUBARINFO;
     LPMENUBARINFO = ^tagMENUBARINFO;
 
+=======
+const 
+  SECURITY_DESCRIPTOR_MIN_LENGTH = SIZEOF(SECURITY_DESCRIPTOR);
+
+>>>>>>> graemeg/fixes_2_2
+=======
+const 
+  SECURITY_DESCRIPTOR_MIN_LENGTH = SIZEOF(SECURITY_DESCRIPTOR);
+
+>>>>>>> origin/fixes_2_2
 {$endif read_interface}
 
 

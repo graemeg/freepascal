@@ -35,7 +35,19 @@ const
 {$include iotypes.inc}
 {$include rtltypes.inc}
 {$include ketypes.inc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$include obtypes.inc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$include pstypes.inc}
 {$include peb_teb.inc}
 

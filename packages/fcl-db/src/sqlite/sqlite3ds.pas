@@ -51,7 +51,23 @@ type
     procedure InternalCloseHandle; override;
     function InternalGetHandle: Pointer; override;
     procedure RetrieveFieldDefs; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function SqliteExec(ASQL: PAnsiChar; ACallback: TSqliteCdeclCallback; Data: Pointer): Integer; override;
+=======
+    function SqliteExec(ASQL: PChar; ACallback: TSqliteCdeclCallback; Data: Pointer): Integer; override;
+>>>>>>> graemeg/cpstrnew
+=======
+    function SqliteExec(ASQL: PChar; ACallback: TSqliteCdeclCallback; Data: Pointer): Integer; override;
+>>>>>>> graemeg/cpstrnew
+=======
+    function SqliteExec(ASQL: PChar; ACallback: TSqliteCdeclCallback; Data: Pointer): Integer; override;
+>>>>>>> graemeg/cpstrnew
+=======
+    function SqliteExec(ASQL: PChar; ACallback: TSqliteCdeclCallback; Data: Pointer): Integer; override;
+>>>>>>> origin/cpstrnew
   public
     procedure ExecuteDirect(const ASQL: String); override;
     function QuickQuery(const ASQL: String; const AStrList: TStrings; FillObjects: Boolean): String; override;
@@ -62,7 +78,14 @@ type
 implementation
 
 uses
+<<<<<<< HEAD
   sqlite3, db, strutils;
+=======
+  sqlite3,db;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   
 function SqliteCode2Str(Code: Integer): String;
 begin
@@ -97,7 +120,15 @@ begin
     SQLITE_NOTADB       : Result := 'SQLITE_NOTADB';
     SQLITE_DONE         : Result := 'SQLITE_DONE';
   else
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result := 'Unknown Return Value';
+=======
+    Result:='Unknown Return Value';
+>>>>>>> graemeg/fixes_2_2
+=======
+    Result:='Unknown Return Value';
+>>>>>>> origin/fixes_2_2
   end;
 end;
 
@@ -105,7 +136,15 @@ function GetAutoIncValue(NextValue: Pointer; Columns: Integer; ColumnValues: PPA
 var
   CodeError, TempInt: Integer;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   TempInt := 0;
+=======
+  TempInt := -1;
+>>>>>>> graemeg/fixes_2_2
+=======
+  TempInt := -1;
+>>>>>>> origin/fixes_2_2
   if ColumnValues[0] <> nil then
   begin
     Val(String(ColumnValues[0]), TempInt, CodeError);
@@ -138,6 +177,8 @@ var
   vm: Pointer;
   ErrorStr: String;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   sqlite3_open(PAnsiChar(FFileName), @Result);
   //sqlite3_open returns SQLITE_OK even for invalid files
   //do additional check here
@@ -145,17 +186,44 @@ begin
   if FReturnCode <> SQLITE_OK then
   begin
     ErrorStr := SqliteCode2Str(FReturnCode) + ' - ' + sqlite3_errmsg(Result);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  sqlite3_open(PChar(FFileName), @Result);
+  //sqlite3_open returns SQLITE_OK even for invalid files
+  //do additional check here
+  FReturnCode := sqlite3_prepare(Result, CheckFileSql, -1, @vm, nil);
+  if FReturnCode <> SQLITE_OK then
+  begin
+    ErrorStr := SqliteCode2Str(FReturnCode) + ' - ' + sqlite3_errmsg(Result);;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     sqlite3_close(Result);
     DatabaseError(ErrorStr, Self);
   end;
   sqlite3_finalize(vm);
 end;
 
+<<<<<<< HEAD
 procedure TSqlite3Dataset.RetrieveFieldDefs;
 var
   vm: Pointer;
   ColumnStr: String;
   i, ColumnCount, DataSize: Integer;
+=======
+procedure TSqlite3Dataset.InternalInitFieldDefs;
+const
+  FieldSizeMap: array[Boolean] of Integer = (0, dsMaxStringSize);
+var
+  vm: Pointer;
+  ColumnStr: String;
+  i, ColumnCount: Integer;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   AType: TFieldType;
 begin
   {$ifdef DEBUG_SQLITEDS}
@@ -163,15 +231,51 @@ begin
   {$endif}
   FAutoIncFieldNo := -1;
   FieldDefs.Clear;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   FReturnCode := sqlite3_prepare_v2(FSqliteHandle, PAnsiChar(FEffectiveSQL), -1, @vm, nil);
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle, PChar(FEffectiveSQL), -1, @vm, nil);
+>>>>>>> graemeg/cpstrnew
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle, PChar(FEffectiveSQL), -1, @vm, nil);
+>>>>>>> graemeg/cpstrnew
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle, PChar(FEffectiveSQL), -1, @vm, nil);
+>>>>>>> graemeg/cpstrnew
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle, PChar(FEffectiveSQL), -1, @vm, nil);
+>>>>>>> origin/cpstrnew
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle, PChar(FSql), -1, @vm, nil);
+>>>>>>> graemeg/fixes_2_2
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle, PChar(FSql), -1, @vm, nil);
+>>>>>>> origin/fixes_2_2
   if FReturnCode <> SQLITE_OK then
     DatabaseError(ReturnString, Self);
   sqlite3_step(vm);
   ColumnCount := sqlite3_column_count(vm);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  //Set BufferSize
+  FRowBufferSize := (SizeOf(PPChar) * ColumnCount);
+>>>>>>> graemeg/fixes_2_2
+=======
+  //Set BufferSize
+  FRowBufferSize := (SizeOf(PPChar) * ColumnCount);
+>>>>>>> origin/fixes_2_2
   //Prepare the array of pchar2sql functions
   SetLength(FGetSqlStr, ColumnCount);
   for i := 0 to ColumnCount - 1 do
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     DataSize := 0;
     ColumnStr := UpperCase(String(sqlite3_column_decltype(vm, i)));
     if (ColumnStr = 'INTEGER') or (ColumnStr = 'INT') then
@@ -227,15 +331,56 @@ begin
         SQLITE_FLOAT:
           AType := ftFloat;
       else
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         begin
           AType := ftString;
           DataSize := DefaultStringSize;
         end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+	    begin
+          AType := ftString;
+		  DataSize := DefaultStringSize;
+		end;  		
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
     end else
     begin
       AType := ftString;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       DataSize := DefaultStringSize;
+=======
+	  DataSize := DefaultStringSize;
+>>>>>>> graemeg/cpstrnew
+=======
+	  DataSize := DefaultStringSize;
+>>>>>>> graemeg/cpstrnew
+=======
+	  DataSize := DefaultStringSize;
+>>>>>>> graemeg/cpstrnew
+=======
+	  DataSize := DefaultStringSize;
+>>>>>>> origin/cpstrnew
     end;
     FieldDefs.Add(FieldDefs.MakeNameUnique(String(sqlite3_column_name(vm, i))), AType, DataSize);
     //Set the pchar2sql function
@@ -255,6 +400,86 @@ begin
   sqlite3_finalize(vm);
   {$ifdef DEBUG_SQLITEDS}
   WriteLn('  FieldDefs.Count: ', FieldDefs.Count);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   ColumnStr := UpperCase(String(sqlite3_column_decltype(vm, i)));
+   if (ColumnStr = 'INTEGER') or (ColumnStr = 'INT') then
+   begin
+     if AutoIncrementKey and (UpperCase(String(sqlite3_column_name(vm, i))) = UpperCase(PrimaryKey)) then
+     begin
+       AType := ftAutoInc;
+       FAutoIncFieldNo := i;
+     end
+     else
+       AType := ftInteger;     
+   end else if Pos('VARCHAR', ColumnStr) = 1 then
+   begin
+     AType := ftString;
+   end else if Pos('BOOL', ColumnStr) = 1 then
+   begin
+     AType := ftBoolean;
+   end else if Pos('AUTOINC', ColumnStr) = 1 then
+   begin
+     AType := ftAutoInc;
+     if FAutoIncFieldNo = -1 then
+       FAutoIncFieldNo := i;
+   end else if (Pos('FLOAT', ColumnStr) = 1) or (Pos('NUMERIC', ColumnStr) = 1) then
+   begin
+     AType := ftFloat;
+   end else if (ColumnStr = 'DATETIME') then
+   begin
+     AType := ftDateTime;
+   end else if (ColumnStr = 'DATE') then
+   begin
+     AType := ftDate;
+   end else if (ColumnStr = 'LARGEINT') then
+   begin
+     AType := ftLargeInt;
+   end else if (ColumnStr = 'TIME') then
+   begin
+     AType := ftTime;
+   end else if (ColumnStr = 'TEXT') then
+   begin
+     AType := ftMemo;
+   end else if (ColumnStr = 'CURRENCY') then
+   begin
+     AType := ftCurrency;
+   end else if (ColumnStr = 'WORD') then
+   begin
+     AType := ftWord;
+   end else if (ColumnStr = '') then
+   begin
+     case sqlite3_column_type(vm, i) of
+       SQLITE_INTEGER:
+         AType := ftInteger;
+       SQLITE_FLOAT:
+         AType := ftFloat;
+     else
+       AType := ftString;
+     end;
+   end else
+   begin
+     AType := ftString;
+   end;
+   FieldDefs.Add(String(sqlite3_column_name(vm, i)), AType, FieldSizeMap[AType = ftString]);
+   //Set the pchar2sql function
+   if AType in [ftString, ftMemo] then
+     FGetSqlStr[i] := @Char2SqlStr
+   else
+     FGetSqlStr[i] := @Num2SqlStr;
+   {$ifdef DEBUG}
+   writeln('  Field[',i,'] Name: ', sqlite3_column_name(vm,i));
+   writeln('  Field[',i,'] Type: ', sqlite3_column_decltype(vm,i));
+   {$endif}
+  end;
+  sqlite3_finalize(vm);
+  {$ifdef DEBUG}
+  writeln('  FieldDefs.Count: ', FieldDefs.Count);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   {$endif}
 end;
 
@@ -285,7 +510,23 @@ begin
     sqlite3_exec(FSqliteHandle, PAnsiChar('Select Max(' + FieldDefs[FAutoIncFieldNo].Name +
       ') from ' + FTableName), @GetAutoIncValue, @FNextAutoInc, nil);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   FReturnCode := sqlite3_prepare_v2(FSqliteHandle, PAnsiChar(FEffectiveSQL), -1, @vm, nil);
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle, PChar(FEffectiveSQL), -1, @vm, nil);
+>>>>>>> graemeg/cpstrnew
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle, PChar(FEffectiveSQL), -1, @vm, nil);
+>>>>>>> graemeg/cpstrnew
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle, PChar(FEffectiveSQL), -1, @vm, nil);
+>>>>>>> graemeg/cpstrnew
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle, PChar(FEffectiveSQL), -1, @vm, nil);
+>>>>>>> origin/cpstrnew
   if FReturnCode <> SQLITE_OK then
     DatabaseError(ReturnString, Self);
 
@@ -362,8 +603,16 @@ var
   begin
     while FReturnCode = SQLITE_ROW do
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       AStrList.AddObject(String(sqlite3_column_text(vm, 0)),
         TObject(PtrInt(sqlite3_column_int(vm, 1))));
+=======
+      AStrList.AddObject(String(sqlite3_column_text(vm,0)), TObject(PtrInt(sqlite3_column_int(vm,1))));
+>>>>>>> graemeg/fixes_2_2
+=======
+      AStrList.AddObject(String(sqlite3_column_text(vm,0)), TObject(PtrInt(sqlite3_column_int(vm,1))));
+>>>>>>> origin/fixes_2_2
       FReturnCode := sqlite3_step(vm);
     end;
   end;    
@@ -371,14 +620,30 @@ begin
   if FSqliteHandle = nil then
     GetSqliteHandle;
   Result := '';
+<<<<<<< HEAD
+<<<<<<< HEAD
   FReturnCode := sqlite3_prepare_v2(FSqliteHandle,PAnsiChar(ASQL), -1, @vm, nil);
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle,Pchar(ASql), -1, @vm, nil);
+>>>>>>> graemeg/fixes_2_2
+=======
+  FReturnCode := sqlite3_prepare(FSqliteHandle,Pchar(ASql), -1, @vm, nil);
+>>>>>>> origin/fixes_2_2
   if FReturnCode <> SQLITE_OK then
     DatabaseError(ReturnString, Self);
     
   FReturnCode := sqlite3_step(vm);
   if (FReturnCode = SQLITE_ROW) and (sqlite3_column_count(vm) > 0) then
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result := String(sqlite3_column_text(vm, 0));
+=======
+    Result := String(sqlite3_column_text(vm,0));
+>>>>>>> graemeg/fixes_2_2
+=======
+    Result := String(sqlite3_column_text(vm,0));
+>>>>>>> origin/fixes_2_2
     if AStrList <> nil then
     begin   
       if FillObjects and (sqlite3_column_count(vm) > 1) then

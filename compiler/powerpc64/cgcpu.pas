@@ -37,6 +37,17 @@ type
     procedure init_register_allocators; override;
     procedure done_register_allocators; override;
 
+<<<<<<< HEAD
+=======
+    { passing parameters, per default the parameter is pushed }
+    { nr gives the number of the parameter (enumerated from   }
+    { left to right), this allows to move the parameter to    }
+    { register, if the cpu supports register calling          }
+    { conventions                                             }
+    procedure a_load_ref_cgpara(list: TAsmList; size: tcgsize; const r: treference;
+      const paraloc: tcgpara); override;
+
+>>>>>>> graemeg/cpstrnew
     procedure a_call_name(list: TAsmList; const s: string; weak: boolean); override;
     procedure a_call_reg(list: TAsmList; reg: tregister); override;
 
@@ -78,6 +89,42 @@ type
     }
     procedure g_adjust_self_value(list:TAsmList;procdef: tprocdef;ioffset: aint);override;
 
+    { need to override this for ppc64 to avoid calling CG methods which allocate 
+      registers during creation of the interface wrappers to subtract ioffset from 
+      the self pointer. But register allocation does not take place for them (which
+      would probably be the generic fix) so we need to have a specialized method
+      that uses the R11 scratch register in these cases.
+      At the same time this allows > 32 bit offsets as well.
+    }
+    procedure g_adjust_self_value(list:TAsmList;procdef: tprocdef;ioffset: aint);override;
+
+    { need to override this for ppc64 to avoid calling CG methods which allocate 
+      registers during creation of the interface wrappers to subtract ioffset from 
+      the self pointer. But register allocation does not take place for them (which
+      would probably be the generic fix) so we need to have a specialized method
+      that uses the R11 scratch register in these cases.
+      At the same time this allows > 32 bit offsets as well.
+    }
+    procedure g_adjust_self_value(list:TAsmList;procdef: tprocdef;ioffset: aint);override;
+
+    { need to override this for ppc64 to avoid calling CG methods which allocate 
+      registers during creation of the interface wrappers to subtract ioffset from 
+      the self pointer. But register allocation does not take place for them (which
+      would probably be the generic fix) so we need to have a specialized method
+      that uses the R11 scratch register in these cases.
+      At the same time this allows > 32 bit offsets as well.
+    }
+    procedure g_adjust_self_value(list:TAsmList;procdef: tprocdef;ioffset: aint);override;
+
+    { need to override this for ppc64 to avoid calling CG methods which allocate 
+      registers during creation of the interface wrappers to subtract ioffset from 
+      the self pointer. But register allocation does not take place for them (which
+      would probably be the generic fix) so we need to have a specialized method
+      that uses the R11 scratch register in these cases.
+      At the same time this allows > 32 bit offsets as well.
+    }
+    procedure g_adjust_self_value(list:TAsmList;procdef: tprocdef;ioffset: aint);override;
+
     procedure g_profilecode(list: TAsmList); override;
     procedure g_proc_entry(list: TAsmList; localsize: longint; nostackframe:
       boolean); override;
@@ -92,6 +139,17 @@ type
     procedure g_concatcopy(list: TAsmList; const source, dest: treference;
       len: aint); override;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    procedure g_external_wrapper(list: TAsmList; pd: TProcDef; const externalname: string); override;
+=======
+    procedure g_external_wrapper(list: TAsmList; pd: TProcDef; const externalname: string); override;
+
+  private
+>>>>>>> origin/fixes_2_2
+
+>>>>>>> graemeg/fixes_2_2
   private
 
     procedure maybeadjustresult(list: TAsmList; op: TOpCg; size: tcgsize; dst: tregister);
@@ -129,8 +187,19 @@ type
     procedure profilecode_savepara(para : tparavarsym; list : TAsmList);
     procedure profilecode_restorepara(para : tparavarsym; list : TAsmList);
   end;
+  
+  procedure create_codegen;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   procedure create_codegen;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 const
   TShiftOpCG2AsmOpConst : array[boolean, OP_SAR..OP_SHR] of TAsmOp = (
@@ -242,7 +311,15 @@ begin
   inherited init_register_allocators;
   if (target_info.system <> system_powerpc64_darwin) then
     // r13 is tls, do not use, r2 is not available
+<<<<<<< HEAD
+<<<<<<< HEAD
     rg[R_INTREGISTER] := trgintcpu.create(R_INTREGISTER, R_SUBWHOLE,
+=======
+    rg[R_INTREGISTER] := trgcpu.create(R_INTREGISTER, R_SUBWHOLE,
+>>>>>>> graemeg/fixes_2_2
+=======
+    rg[R_INTREGISTER] := trgcpu.create(R_INTREGISTER, R_SUBWHOLE,
+>>>>>>> origin/fixes_2_2
       [{$ifdef user0} RS_R0, {$endif} RS_R3, RS_R4, RS_R5, RS_R6, RS_R7, RS_R8,
        RS_R9, RS_R10, RS_R11, RS_R12, RS_R31, RS_R30, RS_R29,
        RS_R28, RS_R27, RS_R26, RS_R25, RS_R24, RS_R23, RS_R22,
@@ -252,10 +329,23 @@ begin
     { special for darwin/ppc64: r2 available volatile, r13 = tls }
     rg[R_INTREGISTER] := trgintcpu.create(R_INTREGISTER, R_SUBWHOLE,
       [{$ifdef user0} RS_R0, {$endif} RS_R2, RS_R3, RS_R4, RS_R5, RS_R6, RS_R7, RS_R8,
+<<<<<<< HEAD
+<<<<<<< HEAD
        RS_R9, RS_R10, RS_R11, RS_R12, RS_R31, RS_R30, RS_R29,
        RS_R28, RS_R27, RS_R26, RS_R25, RS_R24, RS_R23, RS_R22,
        RS_R21, RS_R20, RS_R19, RS_R18, RS_R17, RS_R16, RS_R15,
        RS_R14], first_int_imreg, []);	
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        RS_R9, RS_R10, RS_R11, RS_R12, RS_R31, RS_R30, RS_R29,
+        RS_R28, RS_R27, RS_R26, RS_R25, RS_R24, RS_R23, RS_R22,
+       RS_R21, RS_R20, RS_R19, RS_R18, RS_R17, RS_R16, RS_R15,
+       RS_R14], first_int_imreg, []);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   rg[R_FPUREGISTER] := trgcpu.create(R_FPUREGISTER, R_SUBNONE,
     [RS_F0, RS_F1, RS_F2, RS_F3, RS_F4, RS_F5, RS_F6, RS_F7, RS_F8, RS_F9,
      RS_F10, RS_F11, RS_F12, RS_F13, RS_F31, RS_F30, RS_F29, RS_F28, RS_F27,
@@ -274,12 +364,144 @@ begin
   inherited done_register_allocators;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+procedure tcgppc.a_load_ref_cgpara(list: TAsmList; size: tcgsize; const r:
+  treference; const paraloc: tcgpara);
+
+var
+  tmpref, ref: treference;
+  location: pcgparalocation;
+  sizeleft: aint;
+  adjusttail : boolean;
+
+begin
+  location := paraloc.location;
+  tmpref := r;
+  sizeleft := paraloc.intsize;
+  adjusttail := false;
+  while assigned(location) do begin
+    paramanager.allocparaloc(list,location);
+    case location^.loc of
+      LOC_REGISTER, LOC_CREGISTER:
+        begin
+          if not(size in [OS_NO,OS_128,OS_S128]) then
+            a_load_ref_reg(list, size, location^.size, tmpref,
+              location^.register)
+          else begin
+            { load non-integral sized memory location into register. This
+             memory location be 1-sizeleft byte sized.
+             Always assume that this memory area is properly aligned, eg. start
+             loading the larger quantities for "odd" quantities first }
+            case sizeleft of
+              1,2,4,8 :
+                a_load_ref_reg(list, int_cgsize(sizeleft), location^.size, tmpref,
+                  location^.register);
+              3 : begin
+                a_reg_alloc(list, NR_R12);
+                a_load_ref_reg(list, OS_16, location^.size, tmpref,
+                  NR_R12);
+                inc(tmpref.offset, tcgsize2size[OS_16]);
+                a_load_ref_reg(list, OS_8, location^.size, tmpref,
+                  location^.register);
+                list.concat(taicpu.op_reg_reg_const_const(A_RLDIMI, location^.register, NR_R12, 8, 40));
+                a_reg_dealloc(list, NR_R12);
+              end;
+              5 : begin
+                a_reg_alloc(list, NR_R12);
+                a_load_ref_reg(list, OS_32, location^.size, tmpref, NR_R12);
+                inc(tmpref.offset, tcgsize2size[OS_32]);
+                a_load_ref_reg(list, OS_8, location^.size, tmpref, location^.register);
+                list.concat(taicpu.op_reg_reg_const_const(A_RLDIMI, location^.register, NR_R12, 8, 24));
+                a_reg_dealloc(list, NR_R12);
+              end;
+              6 : begin
+                a_reg_alloc(list, NR_R12);
+                a_load_ref_reg(list, OS_32, location^.size, tmpref, NR_R12);
+                inc(tmpref.offset, tcgsize2size[OS_32]);
+                a_load_ref_reg(list, OS_16, location^.size, tmpref, location^.register);
+                list.concat(taicpu.op_reg_reg_const_const(A_RLDIMI, location^.register, NR_R12, 16, 16));
+                a_reg_dealloc(list, NR_R12);
+              end;
+              7 : begin
+                a_reg_alloc(list, NR_R12);
+                a_reg_alloc(list, NR_R0);
+                a_load_ref_reg(list, OS_32, location^.size, tmpref, NR_R12);
+                inc(tmpref.offset, tcgsize2size[OS_32]);
+                a_load_ref_reg(list, OS_16, location^.size, tmpref, NR_R0);
+                inc(tmpref.offset, tcgsize2size[OS_16]);
+                a_load_ref_reg(list, OS_8, location^.size, tmpref, location^.register);
+                list.concat(taicpu.op_reg_reg_const_const(A_RLDIMI, NR_R0, NR_R12, 16, 16));
+                list.concat(taicpu.op_reg_reg_const_const(A_RLDIMI, location^.register, NR_R0, 8, 8));
+                a_reg_dealloc(list, NR_R0);
+                a_reg_dealloc(list, NR_R12);
+              end;
+              else begin
+                { still > 8 bytes to load, so load data single register now }
+                a_load_ref_reg(list, location^.size, location^.size, tmpref,
+                  location^.register);
+                { the block is > 8 bytes, so we have to store any bytes not
+                 a multiple of the register size beginning with the MSB }
+                adjusttail := true;
+              end;
+            end;
+            if (adjusttail) and (sizeleft < sizeof(pint)) then
+              a_op_const_reg(list, OP_SHL, OS_INT,
+                (sizeof(pint) - sizeleft) * sizeof(pint),
+                location^.register);
+          end;
+        end;
+      LOC_REFERENCE:
+        begin
+          reference_reset_base(ref, location^.reference.index,
+            location^.reference.offset,paraloc.alignment);
+          g_concatcopy(list, tmpref, ref, sizeleft);
+          if assigned(location^.next) then
+            internalerror(2005010710);
+        end;
+      LOC_FPUREGISTER, LOC_CFPUREGISTER:
+        case location^.size of
+          OS_F32, OS_F64:
+            a_loadfpu_ref_reg(list, location^.size, location^.size, tmpref, location^.register);
+        else
+          internalerror(2002072801);
+        end;
+      LOC_VOID:
+        { nothing to do }
+        ;
+    else
+      internalerror(2002081103);
+    end;
+    inc(tmpref.offset, tcgsize2size[location^.size]);
+    dec(sizeleft, tcgsize2size[location^.size]);
+    location := location^.next;
+  end;
+end;
+
+>>>>>>> graemeg/cpstrnew
 { calling a procedure by name }
 
 procedure tcgppc.a_call_name(list: TAsmList; const s: string; weak: boolean);
 begin
     if (target_info.system <> system_powerpc64_darwin) then
+<<<<<<< HEAD
+<<<<<<< HEAD
       a_call_name_direct(list, A_BL, s, weak, target_info.system=system_powerpc64_aix, true)
+=======
+      a_call_name_direct(list, s, false, true)
+>>>>>>> graemeg/fixes_2_2
+=======
+      a_call_name_direct(list, s, false, true)
+>>>>>>> origin/fixes_2_2
     else
       begin
         list.concat(taicpu.op_sym(A_BL,get_darwin_call_stub(s,weak)));
@@ -519,6 +741,39 @@ begin
   ref2 := ref;
   fixref(list, ref2);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  { unaligned 64 bit accesses are much slower than unaligned }
+  { 32 bit accesses because they cause a hardware exception  }
+  { (which isn't handled by linux, so there you even get a   }
+  {  crash)                                                  }
+  if (ref.alignment<>0) and
+     (fromsize in [OS_64,OS_S64]) and
+     (ref.alignment<4) then
+    begin
+      if (ref2.base<>NR_NO) and
+         (ref2.index<>NR_NO) then
+        begin
+          tmpreg:=getintregister(list,OS_64);
+          a_op_reg_reg_reg(list,OP_SHR,OS_64,ref2.base,ref2.index,tmpreg);
+          ref2.base:=tmpreg;
+          ref2.index:=NR_NO;
+        end;
+      tmpreg:=getintregister(list,OS_32);
+      a_load_ref_reg(list,OS_32,OS_32,ref2,tmpreg);
+      inc(ref2.offset,4);
+      a_load_ref_reg(list,OS_32,OS_32,ref2,reg);
+      list.concat(taicpu.op_reg_reg_const_const(A_RLDIMI, reg, tmpreg, 32, 0));
+      exit;
+    end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   op := loadinstr[fromsize, ref2.index <> NR_NO, false];
   { there is no LWAU instruction, simulate using ADDI and LWA }
   if (op = A_NOP) then begin
@@ -527,6 +782,7 @@ begin
     op := A_LWA;
   end;
   a_load_store(list, op, reg, ref2);
+<<<<<<< HEAD
   { sign extend shortint if necessary (because there is
    no load instruction to sign extend an 8 bit value automatically)
    and mask out extra sign bits when loading from a smaller
@@ -536,6 +792,22 @@ begin
     a_load_reg_reg(list, OS_S8, tosize, reg, reg);
   end else if (fromsize = OS_S16) and (tosize = OS_32) then
     a_load_reg_reg(list, fromsize, tosize, reg, reg);
+=======
+  { sign extend shortint if necessary, since there is no
+   load instruction that does that automatically (JM) }
+  if (fromsize = OS_S8) then
+    begin
+      list.concat(taicpu.op_reg_reg(A_EXTSB, reg, reg));
+      if (tosize in [OS_16,OS_32]) then
+        a_load_reg_reg(list,fromsize,tosize,reg,reg);
+    end
+  else if (fromsize = OS_S16) and
+          (tosize = OS_32) then
+    a_load_reg_reg(list,fromsize,tosize,reg,reg);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure tcgppc.a_load_reg_reg(list: TAsmList; fromsize, tosize: tcgsize;
@@ -574,6 +846,62 @@ begin
   rg[R_INTREGISTER].add_move_instruction(instr);
 end;
 
+<<<<<<< HEAD
+=======
+procedure tcgppc.a_load_subsetreg_reg(list : TAsmList; subsetsize, tosize: tcgsize; const sreg: tsubsetregister; destreg: tregister);
+begin
+  {$ifdef extdebug}
+  list.concat(tai_comment.create(strpnew('a_load_subsetreg_reg subsetregsize = ' + cgsize2string(sreg.subsetregsize) + ' subsetsize = ' + cgsize2string(subsetsize) + ' startbit = ' + intToStr(sreg.startbit) + ' tosize = ' + cgsize2string(tosize))));
+  {$endif}
+  { do the extraction if required and then extend the sign correctly. (The latter is actually required only for signed subsets
+  and if that subset is not >= the tosize). }
+  if (sreg.startbit <> 0) or
+     (sreg.bitlen <> tcgsize2size[subsetsize]*8) then begin
+    list.concat(taicpu.op_reg_reg_const_const(A_RLDICL, destreg, sreg.subsetreg, (64 - sreg.startbit) and 63, 64 - sreg.bitlen));
+    if (subsetsize in [OS_S8..OS_S128]) then
+      if ((sreg.bitlen mod 8) = 0) then begin
+        a_load_reg_reg(list, tcgsize2unsigned[subsetsize], subsetsize, destreg, destreg);
+        a_load_reg_reg(list, subsetsize, tosize, destreg, destreg);
+      end else begin
+        a_op_const_reg(list,OP_SHL,OS_INT,64-sreg.bitlen,destreg);
+        a_op_const_reg(list,OP_SAR,OS_INT,64-sreg.bitlen,destreg);
+     end;
+  end else begin
+    a_load_reg_reg(list, tcgsize2unsigned[sreg.subsetregsize], subsetsize, sreg.subsetreg, destreg);
+    a_load_reg_reg(list, subsetsize, tosize, destreg, destreg);
+  end;
+end;
+
+procedure tcgppc.a_load_regconst_subsetreg_intern(list : TAsmList; fromsize, subsetsize: tcgsize; fromreg: tregister; const sreg: tsubsetregister; slopt: tsubsetloadopt);
+begin
+  {$ifdef extdebug}
+  list.concat(tai_comment.create(strpnew('a_load_reg_subsetreg fromsize = ' + cgsize2string(fromsize) + ' subsetregsize = ' + cgsize2string(sreg.subsetregsize) + ' subsetsize = ' + cgsize2string(subsetsize) + ' startbit = ' + IntToStr(sreg.startbit))));
+  {$endif}
+  if (slopt in [SL_SETZERO,SL_SETMAX]) then
+    inherited a_load_regconst_subsetreg_intern(list,fromsize,subsetsize,fromreg,sreg,slopt)
+  else if (sreg.bitlen <> sizeof(aint)*8) then
+    { simply use the INSRDI instruction }
+    list.concat(taicpu.op_reg_reg_const_const(A_INSRDI, sreg.subsetreg, fromreg, sreg.bitlen, (64 - (sreg.startbit + sreg.bitlen)) and 63))
+  else
+    a_load_reg_reg(list, fromsize, subsetsize, fromreg, sreg.subsetreg);
+end;
+
+procedure tcgppc.a_load_const_subsetreg(list: TAsmlist; subsetsize: tcgsize;
+  a: aint; const sreg: tsubsetregister);
+var
+  tmpreg : TRegister;
+begin
+  {$ifdef extdebug}
+  list.concat(tai_comment.create(strpnew('a_load_const_subsetreg subsetregsize = ' + cgsize2string(sreg.subsetregsize) + ' subsetsize = ' + cgsize2string(subsetsize) + ' startbit = ' + intToStr(sreg.startbit) + ' a = ' + intToStr(a))));
+  {$endif}
+  { loading the constant into the lowest bits of a temp register and then inserting is
+    better than loading some usually large constants and do some masking and shifting on ppc64 }
+  tmpreg := getintregister(list,subsetsize);
+  a_load_const_reg(list,subsetsize,a,tmpreg);
+  a_load_reg_subsetreg(list, subsetsize, subsetsize, tmpreg, sreg);
+end;
+
+>>>>>>> graemeg/fixes_2_2
 procedure tcgppc.a_op_const_reg(list: TAsmList; Op: TOpCG; size: TCGSize; a:
   aint; reg: TRegister);
 begin
@@ -682,8 +1010,16 @@ var
       end else begin
         calc_divconst_magic_unsigned(sizeof(aWord)*8, a, u_magic, u_add, u_shift);
         { load magic in divreg }
+<<<<<<< HEAD
+<<<<<<< HEAD
         a_load_const_reg(list, OS_INT, aint(u_magic), divreg);
         list.concat(taicpu.op_reg_reg_reg(A_MULHDU, dst, src, divreg));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        cg.a_load_const_reg(current_asmdata.CurrAsmList, OS_INT, aint(u_magic), divreg);
+        current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg_reg(A_MULHDU, dst, src, divreg));
+>>>>>>> graemeg/fixes_2_2
         if (u_add) then begin
           a_op_reg_reg_reg(list, OP_SUB, OS_INT, dst, src, divreg);
           a_op_const_reg_reg(list, OP_SHR, OS_INT,  1, divreg, divreg);
@@ -976,12 +1312,28 @@ var
 begin
   if (target_info.system = system_powerpc64_darwin) then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       p := taicpu.op_sym(A_B,get_darwin_call_stub(s,false));
+=======
+      p := taicpu.op_sym(A_B,get_darwin_call_stub(s));
+>>>>>>> graemeg/fixes_2_2
+=======
+      p := taicpu.op_sym(A_B,get_darwin_call_stub(s));
+>>>>>>> origin/fixes_2_2
       p.is_jmp := true;
       list.concat(p)
     end
   else
+<<<<<<< HEAD
+<<<<<<< HEAD
     a_jmp_name_direct(list, A_B, s, true);
+=======
+    a_jmp_name_direct(list, s, true);
+>>>>>>> graemeg/fixes_2_2
+=======
+    a_jmp_name_direct(list, s, true);
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure tcgppc.a_jmp_always(list: TAsmList; l: tasmlabel);
@@ -1422,7 +1774,15 @@ var
   tempreg : TRegister;
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if (target_info.system in [system_powerpc64_darwin,system_powerpc64_aix]) then
+=======
+  if (target_info.system = system_powerpc64_darwin) then
+>>>>>>> graemeg/fixes_2_2
+=======
+  if (target_info.system = system_powerpc64_darwin) then
+>>>>>>> origin/fixes_2_2
     begin
       inherited a_loadaddr_ref_reg(list,ref,r);
       exit;
@@ -1570,8 +1930,16 @@ begin
     end;
 
   tempreg:=getintregister(list,size);
+<<<<<<< HEAD
+<<<<<<< HEAD
   reference_reset(src,source.alignment);
   reference_reset(dst,dest.alignment);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  reference_reset(src);
+  reference_reset(dst);
+>>>>>>> graemeg/fixes_2_2
   { load the address of source into src.base }
   if (count > 4) or
     not issimpleref(source) or
@@ -1654,7 +2022,76 @@ begin
     a_load_ref_reg(list, OS_8, OS_8, src, tempreg);
     a_load_reg_ref(list, OS_8, OS_8, tempreg, dst);
   end;
+<<<<<<< HEAD
 
+=======
+
+<<<<<<< HEAD
+end;
+
+=======
+>>>>>>> origin/fixes_2_2
+procedure tcgppc.g_external_wrapper(list: TAsmList; pd: TProcDef; const externalname: string);
+var
+  href : treference;
+begin
+  if (target_info.system <> system_powerpc64_linux) then begin
+    inherited;
+    exit;
+  end;
+
+  { for ppc64/linux emit correct code which sets up a stack frame and then calls the
+  external method normally to ensure that the GOT/TOC will be loaded correctly if
+  required.
+
+  It's not really advantageous to use cg methods here because they are too specialized.
+
+  I.e. the resulting code sequence looks as follows:
+
+  mflr r0
+  std r0, 16(r1)
+  stdu r1, -112(r1)
+  bl <external_method>
+  nop
+  addi r1, r1, 112
+  ld r0, 16(r1)
+  mtlr r0
+  blr
+<<<<<<< HEAD
+
+  }
+  list.concat(taicpu.op_reg(A_MFLR, NR_R0));
+  reference_reset_base(href, NR_STACK_POINTER_REG, 16);
+  list.concat(taicpu.op_reg_ref(A_STD, NR_R0, href));
+  reference_reset_base(href, NR_STACK_POINTER_REG, -MINIMUM_STACKFRAME_SIZE);
+  list.concat(taicpu.op_reg_ref(A_STDU, NR_STACK_POINTER_REG, href));
+
+  list.concat(taicpu.op_sym(A_BL, current_asmdata.RefAsmSymbol(externalname)));
+  list.concat(taicpu.op_none(A_NOP));
+
+=======
+
+  }
+  list.concat(taicpu.op_reg(A_MFLR, NR_R0));
+  reference_reset_base(href, NR_STACK_POINTER_REG, 16);
+  list.concat(taicpu.op_reg_ref(A_STD, NR_R0, href));
+  reference_reset_base(href, NR_STACK_POINTER_REG, -MINIMUM_STACKFRAME_SIZE);
+  list.concat(taicpu.op_reg_ref(A_STDU, NR_STACK_POINTER_REG, href));
+
+  list.concat(taicpu.op_sym(A_BL, current_asmdata.RefAsmSymbol(externalname)));
+  list.concat(taicpu.op_none(A_NOP));
+
+>>>>>>> origin/fixes_2_2
+  list.concat(taicpu.op_reg_reg_const(A_ADDI, NR_STACK_POINTER_REG, NR_STACK_POINTER_REG, MINIMUM_STACKFRAME_SIZE));
+
+  reference_reset_base(href, NR_STACK_POINTER_REG, LA_LR_ELF);
+  list.concat(taicpu.op_reg_ref(A_LD, NR_R0, href));
+  list.concat(taicpu.op_reg(A_MTLR, NR_R0));
+  list.concat(taicpu.op_none(A_BLR));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 {***************** This is private property, keep out! :) *****************}
@@ -1877,7 +2314,19 @@ end;
 procedure create_codegen;
 begin
   cg := tcgppc.create;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   cg128:=tcg128.create;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;
 
 end.

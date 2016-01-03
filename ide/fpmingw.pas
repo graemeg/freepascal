@@ -47,11 +47,27 @@ var _imp__atexit : TAtExitFunction; Cvar; external;  // "true" atexit in mingw l
 var
  hMsvcrt : HModule = 0;
  free_Msvcrt : boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef win32}
  fctMsvcrtLongJmp : pointer;cvar;external;
 {$else not win32}
  fctMsvcrtLongJmp : pointer;cvar;
 {$endif not win32}
+=======
+ fctMsvcrtLongJmp : pointer;cvar;external;
+>>>>>>> graemeg/cpstrnew
+=======
+ fctMsvcrtLongJmp : pointer;cvar;external;
+>>>>>>> graemeg/cpstrnew
+=======
+ fctMsvcrtLongJmp : pointer;cvar;external;
+>>>>>>> graemeg/cpstrnew
+=======
+ fctMsvcrtLongJmp : pointer;cvar;external;
+>>>>>>> origin/cpstrnew
 
 function atexit(p:TCFunction):longint;cdecl; [public, alias : '_atexit'];
 
@@ -74,11 +90,35 @@ procedure doinit;
 begin
  // not (yet) done: set mingw exception handlers:
  // SetUnhandledExceptionFilter (_gnu_exception_handler);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef DISABLE_CPU_FEATURES_INIT}
 {$ifdef win32}
   __cpu_features_init;        // load CPU features. Might be useful for debugger :-)
 {$endif win32}
 {$endif ndef DISABLE_CPU_FEATURES_INIT}
+=======
+{$ifdef win32}
+  __cpu_features_init;        // load CPU features. Might be useful for debugger :-)
+{$endif win32}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef win32}
+  __cpu_features_init;        // load CPU features. Might be useful for debugger :-)
+{$endif win32}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef win32}
+  __cpu_features_init;        // load CPU features. Might be useful for debugger :-)
+{$endif win32}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef win32}
+  __cpu_features_init;        // load CPU features. Might be useful for debugger :-)
+{$endif win32}
+>>>>>>> origin/cpstrnew
 
  // fpreset; 		      // don't do this, we init our own fp mask
 

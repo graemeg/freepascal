@@ -43,7 +43,14 @@ const
  PathSeparator = ';';
  AllowDirectorySeparators : set of char = ['\','/'];
  AllowDriveSeparators : set of char = [':'];
+<<<<<<< HEAD
+<<<<<<< HEAD
 { FileNameCaseSensitive and FileNameCasePreserving are defined separately below!!! }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{ FileNameCaseSensitive is defined separately below!!! }
+>>>>>>> graemeg/fixes_2_2
  maxExitCode = 65535;
  MaxPathLen = 260;
  AllFilesMask = '*';
@@ -55,8 +62,15 @@ const
   StdOutputHandle : THandle = 0;
   StdErrorHandle  : THandle = 0;
 
+<<<<<<< HEAD
   FileNameCaseSensitive : boolean = false;
   FileNameCasePreserving: boolean = true;
+=======
+  FileNameCaseSensitive : boolean = true;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   CtrlZMarksEOF: boolean = true; (* #26 is considered as end of file *)
 
   sLineBreak = LineEnding;
@@ -105,6 +119,24 @@ function CreateFileW(lpFileName:pwidechar; dwDesiredAccess:DWORD; dwShareMode:DW
 
 
 {$ifdef CPUARM}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+{ the external directive isn't really necessary here because it is overridden by external (FK) }
+
+>>>>>>> graemeg/cpstrnew
+=======
+{ the external directive isn't really necessary here because it is overridden by external (FK) }
+
+>>>>>>> graemeg/cpstrnew
+=======
+{ the external directive isn't really necessary here because it is overridden by external (FK) }
+
+>>>>>>> origin/cpstrnew
 function addd(d1,d2 : double) : double; compilerproc;
    cdecl;external 'coredll' name '__addd';
 
@@ -801,6 +833,13 @@ begin
        end;
      DLL_THREAD_ATTACH :
        begin
+<<<<<<< HEAD
+=======
+         inclocked(Thread_count);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { Allocate Threadvars ?!}
          if assigned(Dll_Thread_Attach_Hook) then
            Dll_Thread_Attach_Hook(DllParam);
@@ -1771,7 +1810,17 @@ initialization
   ProcessID := GetCurrentProcessID;
   { threading }
   InitSystemThreads;
+<<<<<<< HEAD
   InitSystemDynLibs;
+=======
+  { Reset internal error variable }
+  errno:=0;
+  initvariantmanager;
+{$ifndef VER2_2}
+  initunicodestringmanager;
+{$endif VER2_2}
+  InitWinCEWidestrings;
+>>>>>>> graemeg/cpstrnew
   DispCallByIDProc:=@DoDispCallByIDError;
 
 finalization

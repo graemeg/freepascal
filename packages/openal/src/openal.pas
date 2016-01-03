@@ -16,7 +16,7 @@ uses
   {$DEFINE DYNLINK}
 {$ENDIF}
 
-{$IF Defined(DYNLINK)}
+{$IFDEF DYNLINK}
 const
 {$IF Defined(WINDOWS)}
   openallib = 'openal32.dll';
@@ -25,8 +25,6 @@ const
 {$ELSE}
   {$MESSAGE ERROR 'DYNLINK not supported'}
 {$IFEND}
-{$ELSEIF Defined(Darwin)}
-{$linkframework OpenAL}
 {$ELSE}
   {$LINKLIB openal}
 {$ENDIF}

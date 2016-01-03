@@ -78,7 +78,6 @@ Type
     Function ParseString(Src : String) : String;
     Function ParseStream(Src : TStream; Dest : TStream) : Integer; // Wrapper, Returns number of bytes written.
     Procedure ParseStrings(Src : TStrings; Dest : TStrings) ;      // Wrapper
-    Procedure ParseFiles(Const Src,Dest : String);
     Property OnGetParam : TGetParamEvent Read FOnGetParam Write FOnGetParam;               // Called if not found in values  //used only when AllowTagParams = false
     Property OnReplaceTag : TReplaceTagEvent Read FOnReplaceTag Write FOnReplaceTag;       // Called if a tag found          //used only when AllowTagParams = true
     Property StartDelimiter : TParseDelimiter Index 1 Read GetDelimiter Write SetDelimiter;// Start char/string, default '}'
@@ -411,8 +410,6 @@ begin
         IsFirst := false;
         I := 1;
         while not (P[I] in [#0..' ']) do Inc(I);
-        if i>(TS-SP) then
-          i := TS-SP;
         SetLength(TP, I);
         Move(P^, TP[1], I);
       end;
@@ -426,20 +423,16 @@ begin
         Move(TS^, PName[1], I);//param name
         inc(TS, Length(FParamValueSeparator) + I);
         I := TS - P;//index of param value
-      end;
-
-      TE:=FindDelimiter(TS,FParamEndDelimiter, SLen-I+1);
-      if (TE<>Nil) then
-      begin//Found param end
-        I:=TE-TS;//Param length
-        Setlength(PValue,I);
-        Move(TS^,PValue[1],I);//Param value
-        if TM=nil then
-          TagParams.Add(Trim(PValue))
-        else
+        TE:=FindDelimiter(TS,FParamEndDelimiter, SLen-I+1);
+        if (TE<>Nil) then
+        begin//Found param end
+          I:=TE-TS;//Param length
+          Setlength(PValue,I);
+          Move(TS^,PValue[1],I);//Param value
           TagParams.Add(Trim(PName) + '=' + PValue);//Param names cannot contain '='
-        P:=TE+Length(FParamEndDelimiter);
-        TS:=P;
+          P:=TE+Length(FParamEndDelimiter);
+          TS:=P;
+        end else break;
       end else break;
     end else break;
   end;
@@ -463,9 +456,9 @@ begin
   if FAllowTagParams then
   begin//template tags with parameters are allowed
     SLen:=Length(Src);
-    Result:='';
     If SLen=0 then
       exit;
+    Result:='';
     SP:=PChar(Src);
     P:=SP;
     While (P-SP<SLen) do
@@ -479,7 +472,6 @@ begin
       else
         begin
         I:=TS-P;
-        inc(TS,Length(FStartDelimiter));//points to first char of Tag name now
         TE:=FindDelimiter(TS,FEndDelimiter,SLen-I+1);
         If (TE=Nil) then
           begin//Tag End Delimiter not found
@@ -491,6 +483,7 @@ begin
           // Add text prior to template tag to result
           AddToString(Result,P,I);
           // Retrieve the full template tag (only tag name if no params specified)
+          inc(TS,Length(FStartDelimiter));//points to first char of Tag name now
           I:=TE-TS;//full Tag length
           Setlength(PN,I);
           Move(TS^,PN[1],I);//full Tag string (only tag name if no params specified)
@@ -516,10 +509,10 @@ begin
     If FParseLevel>FMaxParseDepth then
       Raise ETemplateParser.CreateFmt(SErrParseDepthExceeded,[FMaxParseDepth]);
     SLen:=Length(Src); // Minimum
-    Result:='';
     If SLen=0 then
       exit;
 //    STLen:=Length(FStartDelimiter);
+    Result:='';
     SP:=PChar(Src);
     P:=SP;
     While (P-SP<SLen) do
@@ -591,25 +584,6 @@ Var
 begin
   For I:=0 to Src.Count-1 do
     Dest.Add(ParseString(Src[i]));
-end;
-
-procedure TTemplateParser.ParseFiles(const Src, Dest: String);
-
-Var
-  Fin,Fout : TFileStream;
-
-begin
-  Fin:=TFileStream.Create(Src,fmOpenRead or fmShareDenyWrite);
-  try
-    Fout:=TFileStream.Create(Dest,fmCreate);
-    try
-      ParseStream(Fin,Fout);
-    finally
-      Fout.Free;
-    end;
-  finally
-    Fin.Free;
-  end;
 end;
 
 { TFPCustomTemplate }

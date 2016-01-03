@@ -65,9 +65,9 @@ type
         readOnly : TBool;
      end;
 
-function XShmQueryExtension(para1:PDisplay):TBoolResult;cdecl;external libX11;
+function XShmQueryExtension(para1:PDisplay):TBool;cdecl;external libX11;
 function XShmGetEventBase(para1:PDisplay):cint;cdecl;external libX11;
-function XShmQueryVersion(para1:PDisplay; para2:Pcint; para3:Pcint; para4:PBool):TBoolResult;cdecl;external libX11;
+function XShmQueryVersion(para1:PDisplay; para2:Pcint; para3:Pcint; para4:PBool):TBool;cdecl;external libX11;
 function XShmPixmapFormat(para1:PDisplay):cint;cdecl;external libX11;
 function XShmAttach(para1:PDisplay; para2:PXShmSegmentInfo):TStatus;cdecl;external libX11;
 function XShmDetach(para1:PDisplay; para2:PXShmSegmentInfo):TStatus;cdecl;external libX11;
@@ -81,18 +81,7 @@ function XShmCreateImage(para1:PDisplay; para2:PVisual; para3:cuint; para4:cint;
 function XShmCreatePixmap(para1:PDisplay; para2:TDrawable; para3:Pchar; para4:PXShmSegmentInfo; para5:cuint;
            para6:cuint; para7:cuint):TPixmap;cdecl;external libX11;
 
-{ overloaded functions to handle TBool parameters as actual booleans }
-function XShmPutImage(para1:PDisplay; para2:TDrawable; para3:TGC; para4:PXImage; para5:cint;
-           para6:cint; para7:cint; para8:cint; para9:cuint; para10:cuint;
-           para11:Boolean):TStatus;
-
 implementation
 
-function XShmPutImage(para1:PDisplay; para2:TDrawable; para3:TGC; para4:PXImage; para5:cint;
-           para6:cint; para7:cint; para8:cint; para9:cuint; para10:cuint;
-           para11:Boolean):TStatus;
-begin
-  XShmPutImage := XShmPutImage(para1,para2,para3,para4,para5,para6,para7,para8,para9,para10,Ord(para11));
-end;
 
 end.

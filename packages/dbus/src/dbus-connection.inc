@@ -17,8 +17,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02111-1301, USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  }
 
@@ -61,26 +60,23 @@ type
     DBUS_DISPATCH_NEED_MEMORY    {< More memory is needed to continue. }
   );
 
-  DBusAddWatchFunction = function (watch: PDBusWatch; data: Pointer): dbus_bool_t; cdecl;
-  DBusWatchToggledFunction = procedure(watch: PDBusWatch; data: Pointer); cdecl;
-  DBusRemoveWatchFunction = procedure(watch: PDBusWatch; data: Pointer); cdecl;
-  DBusAddTimeoutFunction = function(timeout: PDBusTimeout; data: Pointer): dbus_bool_t; cdecl;
-  DBusTimeoutToggledFunction = procedure(timeout: PDBusTimeout; data: Pointer); cdecl;
-  DBusRemoveTimeoutFunction = procedure(timeout: PDBusTimeout; data: Pointer); cdecl;
+  DBusAddWatchFunction = function (watch: PDBusWatch; data: Pointer): dbus_bool_t;
+  DBusWatchToggledFunction = procedure(watch: PDBusWatch; data: Pointer);
+  DBusRemoveWatchFunction = procedure(watch: PDBusWatch; data: Pointer);
+  DBusAddTimeoutFunction = function(timeout: PDBusTimeout; data: Pointer): dbus_bool_t;
+  DBusTimeoutToggledFunction = procedure(timeout: PDBusTimeout; data: Pointer);
+  DBusRemoveTimeoutFunction = procedure(timeout: PDBusTimeout; data: Pointer);
   DBusDispatchStatusFunction = procedure(connection: PDBusConnection;
-   new_status: DBusDispatchStatus; data: Pointer); cdecl;
-  DBusWakeupMainFunction = procedure(data: Pointer); cdecl;
+   new_status: DBusDispatchStatus; data: Pointer);
+  DBusWakeupMainFunction = procedure(data: Pointer);
   DBusAllowUnixUserFunction = function(connection: PDBusConnection;
-   uid: cuint; data: Pointer): dbus_bool_t; cdecl;
-
-  DBusAllowWindowsUserFunction = function(connection: PDBusConnection;
-   user_sid: PChar; data: Pointer): dbus_bool_t; cdecl;
+   uid: cuint; data: Pointer): dbus_bool_t;
 
   DBusPendingCallNotifyFunction = procedure(pending: PDBusPendingCall;
-   user_data: Pointer); cdecl;
+   user_data: Pointer);
 
   DBusHandleMessageFunction = function(connection: PDBusConnection;
-   message_: PDBusMessage; user_data: Pointer): DBusHandlerResult; cdecl;
+   message_: PDBusMessage; user_data: Pointer): DBusHandlerResult;
 
 function dbus_connection_open(const address: PChar; error: PDBusError): PDBusConnection; cdecl; external LibDBus;
 function dbus_connection_open_private(const address: PChar; error: PDBusError): PDBusConnection; cdecl; external LibDBus;
@@ -137,30 +133,13 @@ function dbus_connection_get_unix_user(connection: PDBusConnection;
  uid: Pculong): dbus_bool_t; cdecl; external LibDBus;
 function dbus_connection_get_unix_process_id(connection: PDBusConnection;
  pid: Pculong): dbus_bool_t; cdecl; external LibDBus;
-function dbus_connection_get_adt_audit_session_data(connection: PDBusConnection;
-  data: PPointer; data_size: Pdbus_int32_t): dbus_bool_t; cdecl; external LibDBus;
 procedure dbus_connection_set_unix_user_function(connection: PDBusConnection;
  function_: DBusAllowUnixUserFunction;
  data: Pointer;
  free_data_function: DBusFreeFunction); cdecl; external LibDBus;
 
-function dbus_connection_get_windows_user(connection: PDBusConnection;
- windows_sid_p: PPChar): dbus_bool_t; cdecl; external LibDBus;
-procedure dbus_connection_set_windows_user_function(connection: PDBusConnection;
- function_: DBusAllowWindowsUserFunction;
- data: Pointer;
- free_data_function: DBusFreeFunction); cdecl; external LibDBus;
 
-procedure dbus_connection_set_allow_anonymous(connection: PDBusConnection;
- value: dbus_bool_t); cdecl; external LibDBus;
-procedure dbus_connection_set_route_peer_messages(connection: PDBusConnection;
- value: dbus_bool_t); cdecl; external LibDBus;
-
-//deprecated:
 function dbus_watch_get_fd(watch: PDBusWatch): cint; cdecl; external LibDBus;
-
-function dbus_watch_get_unix_fd(watch: PDBusWatch): cint; cdecl; external LibDBus;
-function dbus_watch_get_socket(watch: PDBusWatch): cint; cdecl; external LibDBus;
 function dbus_watch_get_flags(watch: PDBusWatch): cuint; cdecl; external LibDBus;
 function dbus_watch_get_data(watch: PDBusWatch): Pointer; cdecl; external LibDBus;
 procedure dbus_watch_set_data(watch: PDBusWatch;
@@ -210,15 +189,15 @@ procedure dbus_connection_send_preallocated      (connection: PDBusConnection;
 
 type
   DBusObjectPathUnregisterFunction = procedure(connection: PDBusConnection;
-   user_data: Pointer); cdecl;
+   user_data: Pointer);
   DBusObjectPathMessageFunction = function(connection: PDBusConnection;
-   message_: PDBusMessage; user_data: Pointer): DBusHandlerResult; cdecl;
+   message_: PDBusMessage; user_data: Pointer): DBusHandlerResult;
 
 {
  * Virtual table that must be implemented to handle a portion of the
  * object path hierarchy.
  }
-  dbus_internal_func = procedure(param1: Pointer); cdecl;
+  dbus_internal_func = procedure(param1: Pointer);
 
   PDBusObjectPathVTable = ^DBusObjectPathVTable;
 
@@ -233,18 +212,10 @@ type
     dbus_internal_pad4: dbus_internal_func; {< Reserved for future expansion }
   end;
 
-function dbus_connection_try_register_object_path(connection: PDBusConnection;
-  path: PChar; vtable: PDBusObjectPathVTable; user_data: Pointer;
-  error: PDBusError): dbus_bool_t; cdecl; external LibDBus;
-
 function dbus_connection_register_object_path(connection: PDBusConnection;
- path: PChar; vtable: PDBusObjectPathVTable;
+ const path: PChar;
+ const vtable: PDBusObjectPathVTable;
  user_data: Pointer): dbus_bool_t; cdecl; external LibDBus;
-
-function dbus_connection_try_register_fallback(connection: PDBusConnection;
- path: PChar; vtable: PDBusObjectPathVTable; user_data: Pointer;
- error: PDBusError): dbus_bool_t; cdecl; external LibDBus;
-
 function dbus_connection_register_fallback(connection: PDBusConnection;
  const path: PChar;
  const vtable: PDBusObjectPathVTable;
@@ -261,8 +232,5 @@ function dbus_connection_list_registered(connection: PDBusConnection;
  child_entries: PPPChar): dbus_bool_t; cdecl; external LibDBus;
 
 function dbus_connection_get_unix_fd(connection: PDBusConnection;
- fd: Pcint): dbus_bool_t; cdecl; external LibDBus;
-
-function dbus_connection_get_socket(connection: PDBusConnection;
  fd: Pcint): dbus_bool_t; cdecl; external LibDBus;
 

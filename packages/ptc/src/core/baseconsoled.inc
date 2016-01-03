@@ -1,6 +1,22 @@
 {
     Free Pascal port of the OpenPTC C++ library.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2001-2003, 2006, 2007, 2009-2013  Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -31,6 +47,10 @@
 }
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   IPTCConsole = interface(IPTCSurface)
     function GetPages: Integer;
     function GetName: string;
@@ -69,11 +89,66 @@ type
     procedure SetKeyReleaseEnabled(AValue: Boolean);
     function GetKeyReleaseEnabled: Boolean;
     property KeyReleaseEnabled: Boolean read GetKeyReleaseEnabled write SetKeyReleaseEnabled;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  TPTCBaseConsole = class(TPTCBaseSurface)
+  private
+    FReleaseEnabled: Boolean;
+    function GetPages: Integer; virtual; abstract;
+    function GetName: string; virtual; abstract;
+    function GetTitle: string; virtual; abstract;
+    function GetInformation: string; virtual; abstract;
+  public
+    constructor Create; virtual;
+    procedure Configure(const AFileName: String); virtual; abstract;
+    function Modes: PPTCMode; virtual; abstract;
+    procedure Open(const ATitle: string; APages: Integer = 0); overload; virtual; abstract;
+    procedure Open(const ATitle: string; const AFormat: TPTCFormat;
+                   APages: Integer = 0); overload; virtual; abstract;
+    procedure Open(const ATitle: string; AWidth, AHeight: Integer;
+                   const AFormat: TPTCFormat; APages: Integer = 0); overload; virtual; abstract;
+    procedure Open(const ATitle: string; const AMode: TPTCMode;
+                   APages: Integer = 0); overload; virtual; abstract;
+    procedure Close; virtual; abstract;
+    procedure Flush; virtual; abstract;
+    procedure Finish; virtual; abstract;
+    procedure Update; virtual; abstract;
+    procedure Update(const AArea: TPTCArea); virtual; abstract;
+
+    { event handling }
+    function NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean; virtual; abstract;
+    function PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent; virtual; abstract;
+
+    { key handling }
+    function KeyPressed: Boolean;
+    function PeekKey(var AKey: TPTCKeyEvent): Boolean;
+    procedure ReadKey(var AKey: TPTCKeyEvent);
+    procedure ReadKey;
+    property KeyReleaseEnabled: Boolean read FReleaseEnabled write FReleaseEnabled;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     property Pages: Integer read GetPages;
     property Name: string read GetName;
     property Title: string read GetTitle;
     property Information: string read GetInformation;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     { OpenGL support }
     property OpenGL_Enabled: Boolean read GetOpenGL_Enabled write SetOpenGL_Enabled;
@@ -83,3 +158,15 @@ type
     function OpenGL_GetSwapInterval: Integer;
   end;
 
+=======
+  end;
+>>>>>>> graemeg/cpstrnew
+=======
+  end;
+>>>>>>> graemeg/cpstrnew
+=======
+  end;
+>>>>>>> graemeg/cpstrnew
+=======
+  end;
+>>>>>>> origin/cpstrnew

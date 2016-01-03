@@ -12,6 +12,8 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  **********************************************************************}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 {
   Some notes:
@@ -24,6 +26,10 @@
 
 
 }
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 unit fpcddb;
 
 {$mode objfpc}{$H+}
@@ -76,7 +82,13 @@ Type
   private
     FDiskID: Integer;
     FExtra: String;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FGenre: String;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     FPerformer: String;
     FPlayOrder: String;
     FTitle: String;
@@ -94,10 +106,22 @@ Type
     Property IntDiscID : Integer Read FDiskID Write FDiskID;
   Published
     Property PlayOrder : String Read FPlayOrder Write FPlayOrder;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Property Year : Word Read FYear Write FYear; // proto=5
     Property Title : String Read FTitle Write FTitle;
     Property Performer : String Read FPerformer Write FPerformer;
     Property Genre : String Read FGenre write FGenre; //proto=5
+=======
+    Property Year : Word Read FYear Write FYear;
+    Property Title : String Read FTitle Write FTitle;
+    Property Performer : String Read FPerformer Write FPerformer;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Property Year : Word Read FYear Write FYear;
+    Property Title : String Read FTitle Write FTitle;
+    Property Performer : String Read FPerformer Write FPerformer;
+>>>>>>> origin/fixes_2_2
     Property Extra : String Read FExtra Write FExtra;
     Property DiscID : String Read GetDiskID Write SetDiskID;
     property Tracks : TCDTracks Read FTracks Write SetTracks;
@@ -458,6 +482,8 @@ begin
               FDisk.Title:=T;
               FDisk.Performer:=A;
               end
+<<<<<<< HEAD
+<<<<<<< HEAD
             else if (L='DYEAR') then
               begin
               FDisk.Year:=StrToIntDef(Trim(Args),0);
@@ -466,6 +492,10 @@ begin
               begin
               FDisk.Genre:=Trim(Args);
               end
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             else if (L='EXTD') then
               ParseExtraDiskData(Args)
             else if (Copy(L,1,6)='TTITLE') then
@@ -542,6 +572,8 @@ begin
       Result:=1;
       Exit;
       end
+<<<<<<< HEAD
+<<<<<<< HEAD
     else if not (CmdRes in [210,211]) then
       Raise ECDDBParser.CreateFmt(SerrCDDBResponse,[L]);
     end;
@@ -551,6 +583,21 @@ begin
       SplitQueryResponse(Response[i],C,D,T,P);
       Matches.AddMatch(D,C,T,P);
       end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    else if (CmdRes<>210) then
+      Raise ECDDBParser.CreateFmt(SerrCDDBResponse,[L]);
+    end;
+  For I:=Ord(WithHeader) to Response.Count-1 do
+    begin
+    SplitQueryResponse(Response[i],C,D,T,P);
+    Matches.AddMatch(D,C,T,P);
+    end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Result:=Matches.Count;
 end;
 

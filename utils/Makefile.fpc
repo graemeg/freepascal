@@ -1,8 +1,56 @@
 #
 #   Makefile.fpc for running fpmake
 #
+<<<<<<< HEAD
 [require]
 packages=rtl fpmkunit fcl-json
+=======
+
+[package]
+name=utils
+<<<<<<< HEAD
+<<<<<<< HEAD
+version=2.5.1
+
+[target]
+dirs=fppkg fpcm tply h2pas fprcp dxegen fpdoc fpcmkcfg
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+dirs=fppkg fpcm tply h2pas fprcp dxegen fpdoc
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+programs=ppdep ptop rstconv data2inc delp bin2obj postw32 rmcvsdir
+programs_linux=grab_vcsa
+dirs_win32=fpmc fpcres rmwait
+dirs_win64=fpmc fpcres rmwait
+dirs_wince=fpcres rmwait
+dirs_haiku=fpcres
+dirs_linux=fpcres
+dirs_freebsd=fpcres
+dirs_openbsd=fpcres
+dirs_netbsd=fpcres
+dirs_darwin=fpcres fpcreslipo
+dirs_iphonesim=fpcres fpcreslipo
+dirs_solaris=fpcres
+dirs_os2=fpmc fpcres rmwait
+dirs_emx=fpmc fpcres rmwait
+dirs_go32v2=rmwait
+rsts=rstconv
+
+[require]
+packages=fcl-base paszlib hash
+packages_darwin=univint
+packages_iphonesim=univint
+
+[clean]
+units=ptopu
+>>>>>>> graemeg/cpstrnew
 
 [install]
 fpcpackage=y

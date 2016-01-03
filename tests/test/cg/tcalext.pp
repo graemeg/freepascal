@@ -406,7 +406,20 @@ begin
 {$ifdef test_longdouble}
   array_long_double[1] := RESULT_LONGDOUBLE;
   test_array_param_longdouble(array_long_double);
+<<<<<<< HEAD
   if Abs(RESULT_LONGDOUBLE - global_long_double) > 1E-15 then
+=======
+  if trunc(global_long_double) <> trunc(RESULT_LONGDOUBLE) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     failed := true;
 {$endif test_longdouble}
 
@@ -500,7 +513,15 @@ begin
     failed := true;
   if global_u8bit <> RESULT_U8BIT then
     failed := true;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif}
+=======
+{$endif FPC_HAS_TYPE_EXTENDED}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$endif FPC_HAS_TYPE_EXTENDED}
+>>>>>>> origin/fixes_2_2
 
   If failed then
    fail

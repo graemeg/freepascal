@@ -92,7 +92,15 @@ function G_THREAD_ERROR: TGQuark;
 
 {$IFNDEF KYLIX}
   var
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$IFDEF WINDOWS}
+=======
+    {$IFDEF WIN32}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$IFDEF WIN32}
+>>>>>>> origin/fixes_2_2
     g_thread_functions_for_glib_use : TGThreadFunctions; external gliblib name 'g_thread_functions_for_glib_use';
     g_thread_use_default_impl       : gboolean; external gliblib name 'g_thread_use_default_impl';
     g_threads_got_initialized       : gboolean; external gliblib name 'g_threads_got_initialized';

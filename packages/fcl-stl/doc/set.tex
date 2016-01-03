@@ -6,6 +6,31 @@ Usage example:
 
 \lstinputlisting[language=Pascal]{setexample.pp}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+Some methods return type of PNode. It has field Data, which can be used for retrieving data from
+that node. This node can be also used for navigation between elements by methods of set class.
+(But don't do anything else with it, you can lose data integrity.)
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 Memory complexity:
 Size of stored elements + constant overhead for each stored element (3 pointers + one boolean).
 
@@ -24,6 +49,10 @@ Method & Complexity guarantees \\ \hline
 
 \verb!procedure Insert(value: T)! &
 O(lg N), N is number of elements in set \\ \hline
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 \multicolumn{2}{|m{15cm}|}{Inserts element into set, if given element is already there nothing
 happens.} \\\hline\hline
 
@@ -31,11 +60,27 @@ happens.} \\\hline\hline
 \verb!(value: T):TIterator! & \\ \hline
 \multicolumn{2}{|m{15cm}|}{Inserts element into set, if given element is already there nothing
 happens. Also returns iterator pointing on given element.} \\\hline\hline
+=======
+\multicolumn{2}{|m{15cm}|}{Inserts element into set.} \\\hline\hline
+>>>>>>> graemeg/cpstrnew
+=======
+\multicolumn{2}{|m{15cm}|}{Inserts element into set.} \\\hline\hline
+>>>>>>> graemeg/cpstrnew
+=======
+\multicolumn{2}{|m{15cm}|}{Inserts element into set.} \\\hline\hline
+>>>>>>> graemeg/cpstrnew
+=======
+\multicolumn{2}{|m{15cm}|}{Inserts element into set.} \\\hline\hline
+>>>>>>> origin/cpstrnew
 
 \verb!procedure Delete(value: T)! &
 O(lg N), N is number of elements in set \\ \hline
 \multicolumn{2}{|m{15cm}|}{Deletes value from set. If element is not in set, nothing happens.} \\\hline\hline
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 \verb!function Find(value: T):TIterator! & O(lg N) \\\hline
 \multicolumn{2}{|m{15cm}|}{Searches for value in set. If value is not there returns nil. Otherwise
 returns iterator, which can be used for retrieving data from set.} \\\hline\hline
@@ -86,5 +131,60 @@ success. If the iterator is already pointing on smallest element returns false.}
 
 \verb!property Data:T! & $O(1)$ \\\hline
 \multicolumn{2}{|m{15cm}|}{Property, which allows reading of the element.} \\\hline
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+\verb!function Find(value: T):PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Searches for value in set. If value is not there returns nil. Otherwise
+returns pointer to tree node (type PNode), which can be used for retrieving data from set.} \\\hline\hline
+
+\verb!function FindLess(value: T):PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Searches for greatest element less than value in set. If such element is not there returns nil. Otherwise
+returns pointer to tree node (type PNode), which can be used for retrieving data from set.} \\\hline\hline
+
+\verb!function FindLessEqual(value: T):PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Searches for greatest element less or equal than value in set. If such element is not there returns nil. Otherwise
+returns pointer to tree node (type PNode), which can be used for retrieving data from set.} \\\hline\hline
+
+\verb!function FindGreater(value: T):PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Searches for smallest element greater than value in set. If such element is not there returns nil. Otherwise
+returns pointer to tree node (type PNode), which can be used for retrieving data from set.} \\\hline\hline
+
+\verb!function FindGreaterEqual(value: T):PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Searches for smallest element greater or equal than value in set. If such element is not there returns nil. Otherwise
+returns pointer to tree node (type PNode), which can be used for retrieving data from set.} \\\hline\hline
+
+\verb!function Min:PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Returns node containing smallest element of set. If set is empty returns
+nil.} \\\hline\hline
+
+\verb!function Max:PNode! & O(lg N) \\\hline
+\multicolumn{2}{|m{15cm}|}{Returns node containing largest element of set. If set is empty returns
+nil.} \\\hline\hline
+
+\verb!function Next(x:PNode):PNode! & O(lg N) worst case, but traversal from smallest element to
+largest takes O(N) time \\\hline
+\multicolumn{2}{|m{15cm}|}{Returns successor of x. If x is largest element of set, returns nil.} \\\hline\hline
+
+\verb!function Prev(x:PNode):PNode! & O(lg N) worst case, but traversal from largest element to
+smallest takes O(N) time \\\hline
+\multicolumn{2}{|m{15cm}|}{Returns predecessor of x. If x is smallest element of set, returns nil.} \\\hline\hline
+
+\verb!function IsEmpty(): boolean! & O(1) \\ \hline
+\multicolumn{2}{|m{15cm}|}{Returns true when set is empty.} \\\hline
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 \end{longtable}

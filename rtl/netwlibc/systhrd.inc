@@ -95,6 +95,13 @@
         stklen : cardinal;
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+>>>>>>> graemeg/fixes_2_2
     function ThreadMain(param : pointer) : pointer;cdecl;
       var
         ti : tthreadinfo;
@@ -162,6 +169,7 @@
 
     procedure SysEndThread(ExitCode : DWord);
       begin
+        WRITE_DEBUG('DoneThread, releasing threadvars'#13#10);
         DoneThread;
         pthread_detach(pointer(pthread_self));
         pthread_exit(pointer(ExitCode));

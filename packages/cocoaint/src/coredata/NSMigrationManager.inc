@@ -51,6 +51,10 @@
     _destinationManagedObjectContext: NSManagedObjectContext;
     _migrationContext: NSMigrationContext;
     _userInfo: NSDictionary;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __migrationManagerFlags: record
       case byte of
        0: (_anonbitfield_NSMigrationManager0: cuint);
@@ -58,6 +62,29 @@
         _migrationWasCancelled: 0..1;
         _reservedMigrationManager: 0..((1 shl 31)-1);
        end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __migrationManagerFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSMigrationManager0: cuint);
+       1: (
+        _migrationWasCancelled: 0..1;
+        _reservedMigrationManager: 0..((1 shl 31)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _migrationCancellationError: NSError;

@@ -1,0 +1,8 @@
+ - key release events support in dos
+ - mouse support
+ - multiple video pages and lfb for the vesa console
+ - test the x11 console (in XShm and dga mode) under *BSD
+ - big endian support in hermes
+ - make hermes thread safe (in FPC 1.9.x+)
+ - delphi (kylix? c++?) bindings
+ - better timing under dos

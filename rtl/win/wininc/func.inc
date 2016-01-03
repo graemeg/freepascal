@@ -374,8 +374,22 @@ function MakeAbsoluteSD(pSelfRelativeSecurityDescriptor:PSECURITY_DESCRIPTOR; pA
 function SetKernelObjectSecurity(Handle:HANDLE; SecurityInformation:SECURITY_INFORMATION; SecurityDescriptor:PSECURITY_DESCRIPTOR):WINBOOL; external 'advapi32' name 'SetKernelObjectSecurity';
 function FindNextChangeNotification(hChangeHandle:HANDLE):WINBOOL; external 'kernel32' name 'FindNextChangeNotification';
 function FindCloseChangeNotification(hChangeHandle:HANDLE):WINBOOL; external 'kernel32' name 'FindCloseChangeNotification';
+<<<<<<< HEAD
 function VirtualLock(lpAddress:LPVOID; dwSize:PTRUINT):WINBOOL; external 'kernel32' name 'VirtualLock';
 function VirtualUnlock(lpAddress:LPVOID; dwSize:PTRUINT):WINBOOL; external 'kernel32' name 'VirtualUnlock';
+=======
+function VirtualLock(lpAddress:LPVOID; dwSize:DWORD):WINBOOL; external 'kernel32' name 'VirtualLock';
+function VirtualUnlock(lpAddress:LPVOID; dwSize:DWORD):WINBOOL; external 'kernel32' name 'VirtualUnlock';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 function MapViewOfFileEx(hFileMappingObject:HANDLE; dwDesiredAccess:DWORD; dwFileOffsetHigh:DWORD; dwFileOffsetLow:DWORD; dwNumberOfBytesToMap:SIZE_T;lpBaseAddress:LPVOID):LPVOID; external 'kernel32' name 'MapViewOfFileEx';
 function SetPriorityClass(hProcess:HANDLE; dwPriorityClass:DWORD):WINBOOL; external 'kernel32' name 'SetPriorityClass';
 function GetPriorityClass(hProcess:HANDLE):DWORD; external 'kernel32' name 'GetPriorityClass';
@@ -1265,6 +1279,8 @@ function SignalObjectAndWait( hObjectToSignal:THANDLE;  hObjectToWaitOn:THANDLE 
 function CancelWaitableTimer(hTimer:THandle):BOOL; external 'kernel32' name 'CancelWaitableTimer';
 function GetComboBoxInfo(hwndCombo:HWND;pcbi:PCOMBOBOXINFO):BOOL; external 'user32' name 'GetComboBoxInfo';
 function GetAncestor(HWnd: HWND; Flag: UINT): HWND; StdCall; External 'user32';
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 // #if(WINVER >= 0x0500)
 function GetMenuInfo(_hmenu:HMENU; lpcmi:LPMENUINFO):BOOL; external 'user32' name 'GetMenuInfo';
@@ -1274,8 +1290,24 @@ function EndMenu:BOOL; external 'user32' name 'EndMenu';
 
 
 function GetMenuBarInfo(_hwnd:HWND; idObject:longint; idItem:longint; pmbi:LPMENUBARINFO):BOOL; external 'user32' name 'GetMenuBarInfo';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function IMAGE_FIRST_SECTION(ntheader : PIMAGE_NT_HEADERS):PIMAGE_SECTION_HEADER;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif read_interface}
 
 

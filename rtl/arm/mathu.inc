@@ -12,7 +12,66 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+function FPUExceptionMaskToSoftFloatMask(const Mask: TFPUExceptionMask): byte;
+begin
+    result:=0;
+    if exInvalidOp in Mask then
+      result:=result or (1 shl ord(exInvalidOp));
+    if exDenormalized in Mask then
+      result:=result or (1 shl ord(exDenormalized));
+    if exZeroDivide in Mask then
+      result:=result or (1 shl ord(exZeroDivide));
+    if exOverflow in Mask then
+      result:=result or (1 shl ord(exOverflow));
+    if exUnderflow in Mask then
+      result:=result or (1 shl ord(exUnderflow));
+    if exPrecision in Mask then
+      result:=result or (1 shl ord(exPrecision));
+end;
+
+function SoftFloatMaskToFPUExceptionMask(const Mask: byte): TFPUExceptionMask;
+begin
+    result:=[];
+    if (mask and (1 shl ord(exInvalidOp)) <> 0) then
+      include(result,exInvalidOp);
+    if (mask and (1 shl ord(exDenormalized)) <> 0) then
+      include(result,exDenormalized);
+    if (mask and (1 shl ord(exZeroDivide)) <> 0) then
+      include(result,exZeroDivide);
+    if (mask and (1 shl ord(exOverflow)) <> 0) then
+      include(result,exOverflow);
+    if (mask and (1 shl ord(exUnderflow)) <> 0) then
+      include(result,exUnderflow);
+    if (mask and (1 shl ord(exPrecision)) <> 0) then
+      include(result,exPrecision);
+end;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$if defined(wince)}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef wince}
+>>>>>>> graemeg/fixes_2_2
 
 const
   _DN_SAVE  = $00000000;
@@ -57,6 +116,16 @@ function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
 var
   c: dword;
 begin
+  case (RoundMode) of
+    rmNearest :
+      softfloat_rounding_mode := float_round_nearest_even;
+    rmTruncate :
+      softfloat_rounding_mode := float_round_to_zero;
+    rmUp :
+      softfloat_rounding_mode := float_round_up;
+    rmDown :
+      softfloat_rounding_mode := float_round_down;
+  end;
   c:=Ord(RoundMode) shl 16;
   c:=_controlfp(c, _MCW_RC);
   Result:=TFPURoundingMode((c shr 16) and 3);
@@ -126,13 +195,37 @@ begin
     c:=c or _EM_INEXACT;
   c:=_controlfp(c, _MCW_EM);
   Result:=ConvertExceptionMask(c);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  softfloat_exception_mask:=FPUExceptionMaskToSoftFloatMask(mask);
+>>>>>>> graemeg/fixes_2_2
+=======
+  softfloat_exception_mask:=FPUExceptionMaskToSoftFloatMask(mask);
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure ClearExceptions(RaisePending: Boolean =true);
 begin
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$elseif defined(darwin) or defined(FPUVFPV2) or defined(FPUVFPV3) or defined(FPUVFPV3_d16) or defined(FPUFPV4_s16)}
+=======
+{$elseif defined(darwin) or defined(FPUVFPV2) or defined(FPUVFPV3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elseif defined(darwin) or defined(FPUVFPV2) or defined(FPUVFPV3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elseif defined(darwin) or defined(FPUVFPV2) or defined(FPUVFPV3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elseif defined(darwin) or defined(FPUVFPV2) or defined(FPUVFPV3)}
+>>>>>>> origin/cpstrnew
 
 const
   _VFP_ENABLE_IM  =  1 shl 8;         { invalid operation      }
@@ -171,9 +264,35 @@ procedure VFP_SetCW(cw : dword); nostackframe; assembler;
   end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function VFPCw2RoundingMode(cw: dword): TFPURoundingMode;
   begin
     case (cw and _VFP_ROUNDINGMODE_MASK) shr _VFP_ROUNDINGMODE_MASK_SHIFT of
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+function GetRoundMode: TFPURoundingMode; 
+  var
+    rm: byte;
+  begin
+    case (VFP_GetCW and _VFP_ROUNDINGMODE_MASK) shr _VFP_ROUNDINGMODE_MASK_SHIFT of
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       0 : result := rmNearest;
       1 : result := rmUp;
       2 : result := rmDown;
@@ -182,6 +301,10 @@ function VFPCw2RoundingMode(cw: dword): TFPURoundingMode;
   end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function GetRoundMode: TFPURoundingMode; 
   begin
     result:=VFPCw2RoundingMode(VFP_GetCW);
@@ -204,6 +327,52 @@ function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
     mode:=mode shl _VFP_ROUNDINGMODE_MASK_SHIFT;
     VFP_SetCW((oldcw and (not _VFP_ROUNDINGMODE_MASK)) or mode);
     result := VFPCw2RoundingMode(oldcw);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
+  var
+    mode: dword;
+  begin
+    case (RoundMode) of
+      rmNearest :
+        begin
+          mode := 0;
+          softfloat_rounding_mode := float_round_nearest_even;
+        end;
+      rmUp :
+        begin
+          mode := 1;
+          softfloat_rounding_mode := float_round_up;
+        end;
+      rmDown :
+        begin
+          mode := 2;
+          softfloat_rounding_mode := float_round_down;
+        end;
+      rmTruncate :
+        begin
+          mode := 3;
+          softfloat_rounding_mode := float_round_to_zero;
+        end;
+    end;
+    mode:=mode shl _VFP_ROUNDINGMODE_MASK_SHIFT;
+    VFP_SetCW((VFP_GetCW and (not _VFP_ROUNDINGMODE_MASK)) or mode);
+    result := RoundMode;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 
 
@@ -220,6 +389,10 @@ function SetPrecisionMode(const Precision: TFPUPrecisionMode): TFPUPrecisionMode
   end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function VFPCw2ExceptionMask(cw: dword): TFPUExceptionMask;
   begin
     Result:=[];
@@ -239,20 +412,76 @@ function VFPCw2ExceptionMask(cw: dword): TFPUExceptionMask;
       include(Result,exUnderflow);
 
     if (cw and _VFP_ENABLE_PM)=0 then
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+function GetExceptionMask: TFPUExceptionMask;
+  var
+    cw : dword;
+  begin
+    Result:=[];
+    cw:=VFP_GetCW;
+
+    if (cw and _VFP_ENABLE_IM)<>0 then
+      include(Result,exInvalidOp);
+
+    if (cw and _VFP_ENABLE_DM)<>0 then
+      include(Result,exDenormalized);
+
+    if (cw and _VFP_ENABLE_ZM)<>0 then
+      include(Result,exZeroDivide);
+
+    if (cw and _VFP_ENABLE_OM)<>0 then
+      include(Result,exOverflow);
+
+    if (cw and _VFP_ENABLE_UM)<>0 then
+      include(Result,exUnderflow);
+
+    if (cw and _VFP_ENABLE_PM)<>0 then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       include(Result,exPrecision);
   end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function GetExceptionMask: TFPUExceptionMask;
   begin
     Result:=VFPCw2ExceptionMask(VFP_GetCW);
   end;
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 function SetExceptionMask(const Mask: TFPUExceptionMask): TFPUExceptionMask;
   var
     cw : dword;
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     cw:=VFP_GetCW;
     Result:=VFPCw2ExceptionMask(cw);
     cw:=cw and not(_VFP_ENABLE_ALL);
@@ -278,6 +507,48 @@ function SetExceptionMask(const Mask: TFPUExceptionMask): TFPUExceptionMask;
 {$endif}
     VFP_SetCW(cw);
     softfloat_exception_mask:=Mask;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    cw:=VFP_GetCW and not(_VFP_ENABLE_ALL);
+
+{$ifndef darwin}
+    if exInvalidOp in Mask then
+      cw:=cw or _VFP_ENABLE_IM;
+
+    if exDenormalized in Mask then
+      cw:=cw or _VFP_ENABLE_DM;
+
+    if exZeroDivide in Mask then
+      cw:=cw or _VFP_ENABLE_ZM;
+
+    if exOverflow in Mask then
+      cw:=cw or _VFP_ENABLE_OM;
+
+    if exUnderflow in Mask then
+      cw:=cw or _VFP_ENABLE_UM;
+
+    if exPrecision in Mask then
+      cw:=cw or _VFP_ENABLE_PM;
+{$endif}
+    VFP_SetCW(cw);
+    result:=Mask;
+
+    softfloat_exception_mask:=FPUExceptionMaskToSoftFloatMask(Mask);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 
 
@@ -415,14 +686,85 @@ function FPUCw2ExceptionMask(cw: dword): TFPUExceptionMask;
 
 function GetRoundMode: TFPURoundingMode;
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     GetRoundMode:=softfloat_rounding_mode;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    case softfloat_rounding_mode of
+      float_round_nearest_even:
+        GetRoundMode:=rmNearest;
+      float_round_up:
+        GetRoundMode:=rmUp;
+      float_round_down:
+        GetRoundMode:=rmDown;
+      float_round_to_zero:
+        GetRoundMode:=rmTruncate;
+    end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 
 
 function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     result:=softfloat_rounding_mode;
     softfloat_rounding_mode:=RoundMode;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    case (RoundMode) of
+      rmNearest :
+        begin
+          softfloat_rounding_mode := float_round_nearest_even;
+        end;
+      rmUp :
+        begin
+          softfloat_rounding_mode := float_round_up;
+        end;
+      rmDown :
+        begin
+          softfloat_rounding_mode := float_round_down;
+        end;
+      rmTruncate :
+        begin
+          softfloat_rounding_mode := float_round_to_zero;
+        end;
+    end;
+    SetRoundMode:=RoundMode;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 
 
@@ -442,9 +784,40 @@ function SetPrecisionMode(const Precision: TFPUPrecisionMode): TFPUPrecisionMode
 function GetExceptionMask: TFPUExceptionMask;
   begin
 {$if not(defined(gba)) and not(defined(nds)) and not(defined(FPUSOFT)) and not(defined(FPULIBGCC))}
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result:=FPUCw2ExceptionMask(FPU_GetCW);
 {$else}
     Result:=softfloat_exception_mask;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    Result:=[];
+    cw:=FPU_GetCW;
+
+    if (cw and _FPU_MASK_IM)=0 then
+      include(Result,exInvalidOp);
+
+    if (cw and _FPU_MASK_DM)=0 then
+      include(Result,exDenormalized);
+
+    if (cw and _FPU_MASK_ZM)=0 then
+      include(Result,exZeroDivide);
+
+    if (cw and _FPU_MASK_OM)=0 then
+      include(Result,exOverflow);
+
+    if (cw and _FPU_MASK_UM)=0 then
+      include(Result,exUnderflow);
+
+    if (cw and _FPU_MASK_PM)=0 then
+      include(Result,exPrecision);
+{$else}
+    Result:=SoftFloatMaskToFPUExceptionMask(softfloat_exception_mask);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif}
   end;
 
@@ -456,9 +829,16 @@ function SetExceptionMask(const Mask: TFPUExceptionMask): TFPUExceptionMask;
 {$endif}
   begin
 {$if not(defined(gba)) and not(defined(nds)) and not(defined(FPUSOFT)) and not(defined(FPULIBGCC))}
+<<<<<<< HEAD
+<<<<<<< HEAD
     cw:=FPU_GetCW;
     Result:=FPUCw2ExceptionMask(cw);
     cw:=cw or _FPU_MASK_ALL;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    cw:=FPU_GetCW or _FPU_MASK_ALL;
+>>>>>>> graemeg/fixes_2_2
 
     if exInvalidOp in Mask then
       cw:=cw and not(_FPU_MASK_IM);
@@ -482,7 +862,29 @@ function SetExceptionMask(const Mask: TFPUExceptionMask): TFPUExceptionMask;
 {$else}
     Result:=softfloat_exception_mask;
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     softfloat_exception_mask:=Mask;
+=======
+    softfloat_exception_mask:=FPUExceptionMaskToSoftFloatMask(Mask);
+    Result:=Mask;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+    softfloat_exception_mask:=FPUExceptionMaskToSoftFloatMask(Mask);
+>>>>>>> graemeg/fixes_2_2
+=======
+    softfloat_exception_mask:=FPUExceptionMaskToSoftFloatMask(Mask);
+>>>>>>> origin/fixes_2_2
   end;
 
 

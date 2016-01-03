@@ -4,7 +4,31 @@
 
 [package]
 name=fcl-passrc
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> origin/cpstrnew
+=======
+version=2.2.5
+>>>>>>> graemeg/fixes_2_2
+=======
+version=2.2.5
+>>>>>>> origin/fixes_2_2
 
 [require]
 packages=rtl fpmkunit

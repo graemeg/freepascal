@@ -2,12 +2,22 @@
 { %needlibrary }
 { %cpu=x86_64,i386,powerpc,sparc}
 { %skiptarget = go32v2,macos }
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %delfiles=tw3082 }
 { execute this test only on reasonable fast cpus }
 
 { we do not cut off too long strings silently anymore }
 {$H+}
 
+=======
+{ execute this test only on reasonable fast cpus }
+
+>>>>>>> graemeg/fixes_2_2
+=======
+{ execute this test only on reasonable fast cpus }
+
+>>>>>>> origin/fixes_2_2
 {$ifdef darwin}
 {$PIC+}
 {$endif darwin}

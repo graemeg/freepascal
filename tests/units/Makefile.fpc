@@ -1,0 +1,131 @@
+#
+#  Makefile.fpc for Free Pascal units, which participates in the tests
+#
+
+[target]
+
+[install]
+fpcpackage=y
+
+[clean]
+units = erroru popuperr ptest
+
+[compiler]
+targetdir=$(TARGETSUFFIX)
+
+[default]
+fpcdir=../..
+
+[rules]
+.PHONY: rtl extra fpcunit packages all clean cleanrtl clean_ctest
+
+#############################
+# RTL
+#
+
+DUMMYINSTALLDIR=$(BASEDIR)/tmp
+INSTALLOPT=INSTALL_PREFIX=$(DUMMYINSTALLDIR) INSTALL_UNITDIR=$(BASEDIR)/$(COMPILER_TARGETDIR)
+
+rtl-stamp.$(FULL_TARGET):
+        $(MAKE) -C ../../rtl all 'OPT=$(OPT) -n'
+        $(MAKE) -C ../../rtl install $(INSTALLOPT)
+        $(ECHO) Compiled > rtl-stamp.$(FULL_TARGET)
+
+cleanrtl:
+        $(DELTREE) $(COMPILER_TARGETDIR)
+        $(DELTREE) $(DUMMYINSTALLDIR)
+        -$(DEL) rtl-stamp.$(FULL_TARGET)
+
+rtl : rtl-stamp.$(FULL_TARGET)
+
+
+#############################
+# FPCUnit
+#
+
+DUMMYINSTALLDIR=$(BASEDIR)/tmp
+INSTALLOPT=INSTALL_PREFIX=$(DUMMYINSTALLDIR) INSTALL_UNITDIR=$(BASEDIR)/$(COMPILER_TARGETDIR)
+FPCUNITDIR=../../packages/fcl-fpcunit/src
+
+fpcunit-stamp.$(FULL_TARGET):
+ 	$(TESTCOMPILER) -Fu$(BASEDIR)/$(COMPILER_TARGETDIR) $(FPCUNITDIR)/testutils
+        $(TESTCOMPILER) -Fu$(BASEDIR)/$(COMPILER_TARGETDIR) $(FPCUNITDIR)/fpcunit
+        $(ECHO) Compiled > fpcunit-stamp.$(FULL_TARGET)
+
+cleanfpcunit:
+        $(DELTREE) $(COMPILER_TARGETDIR)
+        $(DELTREE) $(DUMMYINSTALLDIR)
+        -$(DEL) fpcunit-stamp.$(FULL_TARGET)
+
+fpcunit : fpcunit-stamp.$(FULL_TARGET)
+
+
+#############################
+# Packages
+#
+
+DUMMYINSTALLDIR=$(BASEDIR)/tmp
+INSTALLOPT=INSTALL_PREFIX=$(DUMMYINSTALLDIR) INSTALL_UNITDIR=$(BASEDIR)/$(COMPILER_TARGETDIR)
+PACKAGESDIR=../../packages
+
+packages-stamp.$(FULL_TARGET):
+        $(MAKE) -C ../../packages all 'OPT=$(OPT) -n'
+        $(MAKE) -C ../../packages install $(INSTALLOPT)
+        $(ECHO) Compiled > packages-stamp.$(FULL_TARGET)
+
+cleanpackages:
+        $(DELTREE) $(COMPILER_TARGETDIR)
+        $(DELTREE) $(DUMMYINSTALLDIR)
+        -$(DEL) packages-stamp.$(FULL_TARGET)
+
+packages : packages-stamp.$(FULL_TARGET)
+
+
+#############################
+# Extra units
+#
+
+
+TESTOPT=-n -FE$(COMPILER_TARGETDIR) -T$(OS_TARGET) $(OPT)
+ifneq ($(BINUTILSPREFIX),)
+override TESTOPT+=-XP$(BINUTILSPREFIX) -Xc
+endif
+TESTCOMPILER=$(FPC) $(TESTOPT)
+
+erroru$(PPUEXT) : erroru.pp
+        $(TESTCOMPILER) erroru.pp
+
+ptest$(PPUEXT) : ../test/cg/ptest.pp
+        $(TESTCOMPILER) ../test/cg/ptest.pp
+
+popuperr$(PPUEXT) : popuperr.pp
+        $(TESTCOMPILER) popuperr.pp
+
+ifdef CCOMPILER
+ctest: ../test/cg/obj/ctest.c
+        $(CCOMPILER) -c -o ../test/cg/obj/$(OS_TARGET)/$(CPU_TARGET)/ctest.o ../test/cg/obj/ctest.c
+else
+ctest:
+        @$(ECHO) "No C compiler found"
+        @exit 1
+endif
+
+
+extra : erroru$(PPUEXT) ptest$(PPUEXT) popuperr$(PPUEXT)
+
+
+
+#############################
+# Main rules
+#
+
+ifdef QUICKTEST
+all : rtl fpcunit extra
+else
+all : rtl fpcunit packages extra
+endif
+
+clean : cleanrtl cleanall cleanfpcunit cleanpackages
+
+clean_ctest :
+        -$(DEL) ../test/cg/obj/$(OS_TARGET)/$(CPU_TARGET)/ctest.o

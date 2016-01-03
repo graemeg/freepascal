@@ -23,10 +23,7 @@ unit comconst;
       SOleError = 'OLE error %.8x';
       SVarNotObject = 'Variant does not reference an automation object';
       SDCOMNotInstalled = 'DCOM not installed';
-      SNoCloseActiveServer1 = 'NoCloseActiveServer1';
-      SNoCloseActiveServer2 = 'NoCloseActiveServer2';
-      SAutomationWarning = 'COM Automation Warning';
-      
+
   implementation
 
 end.

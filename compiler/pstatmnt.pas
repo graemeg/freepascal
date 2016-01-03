@@ -71,7 +71,23 @@ implementation
          ex,if_a,else_a : tnode;
       begin
          consume(_IF);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          ex:=comp_expr([ef_accept_equal]);
+=======
+         ex:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         ex:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         ex:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         ex:=comp_expr(true,false);
+>>>>>>> origin/cpstrnew
          consume(_THEN);
          if not(token in endtokens) then
            if_a:=statement
@@ -126,7 +142,23 @@ implementation
          casenode : tcasenode;
       begin
          consume(_CASE);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          caseexpr:=comp_expr([ef_accept_equal]);
+=======
+         caseexpr:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         caseexpr:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         caseexpr:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         caseexpr:=comp_expr(true,false);
+>>>>>>> origin/cpstrnew
          { determines result type }
          do_typecheckpass(caseexpr);
          { variants must be accepted, but first they must be converted to integer }
@@ -184,13 +216,49 @@ implementation
                    begin
                       if (p.nodetype=ordconstn) then
                         begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                            p:=ctypeconvnode.create(p,cansichartype);
+=======
+                           p:=ctypeconvnode.create(p,cchartype);
+>>>>>>> graemeg/cpstrnew
+=======
+                           p:=ctypeconvnode.create(p,cchartype);
+>>>>>>> graemeg/cpstrnew
+=======
+                           p:=ctypeconvnode.create(p,cchartype);
+>>>>>>> graemeg/cpstrnew
+=======
+                           p:=ctypeconvnode.create(p,cchartype);
+>>>>>>> origin/cpstrnew
                            do_typecheckpass(p);
                         end
                       else if (p.nodetype=rangen) then
                         begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                            trangenode(p).left:=ctypeconvnode.create(trangenode(p).left,cansichartype);
                            trangenode(p).right:=ctypeconvnode.create(trangenode(p).right,cansichartype);
+=======
+                           trangenode(p).left:=ctypeconvnode.create(trangenode(p).left,cchartype);
+                           trangenode(p).right:=ctypeconvnode.create(trangenode(p).right,cchartype);
+>>>>>>> graemeg/cpstrnew
+=======
+                           trangenode(p).left:=ctypeconvnode.create(trangenode(p).left,cchartype);
+                           trangenode(p).right:=ctypeconvnode.create(trangenode(p).right,cchartype);
+>>>>>>> graemeg/cpstrnew
+=======
+                           trangenode(p).left:=ctypeconvnode.create(trangenode(p).left,cchartype);
+                           trangenode(p).right:=ctypeconvnode.create(trangenode(p).right,cchartype);
+>>>>>>> graemeg/cpstrnew
+=======
+                           trangenode(p).left:=ctypeconvnode.create(trangenode(p).left,cchartype);
+                           trangenode(p).right:=ctypeconvnode.create(trangenode(p).right,cchartype);
+>>>>>>> origin/cpstrnew
                            do_typecheckpass(trangenode(p).left);
                            do_typecheckpass(trangenode(p).right);
                         end;
@@ -224,8 +292,18 @@ implementation
                        CGMessage(parser_e_case_lower_less_than_upper_bound);
                      if not casedeferror then
                        begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                          testrange(casedef,hl1,false,false);
                          testrange(casedef,hl2,false,false);
+=======
+                         testrange(casedef,casedef,hl1,false);
+                         testrange(casedef,casedef,hl2,false);
+>>>>>>> graemeg/fixes_2_2
+=======
+                         testrange(casedef,casedef,hl1,false);
+                         testrange(casedef,casedef,hl2,false);
+>>>>>>> origin/fixes_2_2
                        end;
                    end
                  else
@@ -238,6 +316,7 @@ implementation
                end
              else
                begin
+<<<<<<< HEAD
                  { type check for string case statements }
                  if (caseofstring and (not is_conststring_or_constcharnode(p))) or
                  { type checking for ordinal case statements }
@@ -256,6 +335,15 @@ implementation
                        testrange(casedef,hl1,false,false);
                      casenode.addlabel(blockid,hl1,hl1);
                    end;
+=======
+                  { type checking for case statements }
+                  if not is_subequal(casedef, p.resultdef) then
+                    CGMessage(parser_e_case_mismatch);
+                  hl1:=get_ordinal_value(p);
+                  if not casedeferror then
+                    testrange(casedef,casedef,hl1,false);
+                  casenode.addlabel(blockid,hl1,hl1);
+>>>>>>> graemeg/fixes_2_2
                end;
              p.free;
              sl1.free;
@@ -320,7 +408,23 @@ implementation
          consume(_UNTIL);
 
          first:=cblocknode.create(first);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          p_e:=comp_expr([ef_accept_equal]);
+=======
+         p_e:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         p_e:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         p_e:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         p_e:=comp_expr(true,false);
+>>>>>>> origin/cpstrnew
          result:=cwhilerepeatnode.create(p_e,first,false,true);
       end;
 
@@ -332,7 +436,23 @@ implementation
 
       begin
          consume(_WHILE);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          p_e:=comp_expr([ef_accept_equal]);
+=======
+         p_e:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         p_e:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         p_e:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         p_e:=comp_expr(true,false);
+>>>>>>> origin/cpstrnew
          consume(_DO);
          p_a:=statement;
          result:=cwhilerepeatnode.create(p_e,p_a,true,false);
@@ -365,6 +485,10 @@ implementation
                (fordef.typ<>errordef) then
               testrange(fordef,tordconstnode(hp).value,false,true);
           end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
         function for_loop_create(hloopvar: tnode): tnode;
           var
@@ -544,15 +668,406 @@ implementation
          hloopvar:=factor(false,[]);
          valid_for_loopvar(hloopvar,true);
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+        function for_loop_create(hloopvar: tnode): tnode;
+          var
+             hp,
+             hblock,
+             hto,hfrom : tnode;
+             backward : boolean;
+             loopvarsym : tabstractvarsym;
+          begin
+             { Check loop variable }
+             loopvarsym:=nil;
+
+             { variable must be an ordinal, int64 is not allowed for 32bit targets }
+             if not(is_ordinal(hloopvar.resultdef))
+    {$ifndef cpu64bitaddr}
+                or is_64bitint(hloopvar.resultdef)
+    {$endif not cpu64bitaddr}
+                then
+               MessagePos(hloopvar.fileinfo,type_e_ordinal_expr_expected);
+
+             hp:=hloopvar;
+             while assigned(hp) and
+                   (
+                    { record/object fields and array elements are allowed }
+                    { in tp7 mode only                                    }
+                    (
+                     (m_tp7 in current_settings.modeswitches) and
+                     (
+                      ((hp.nodetype=subscriptn) and
+                       ((tsubscriptnode(hp).left.resultdef.typ=recorddef) or
+                        is_object(tsubscriptnode(hp).left.resultdef))
+                      ) or
+                      { constant array index }
+                      (
+                       (hp.nodetype=vecn) and
+                       is_constintnode(tvecnode(hp).right)
+                      )
+                     )
+                    ) or
+                    { equal typeconversions }
+                    (
+                     (hp.nodetype=typeconvn) and
+                     (ttypeconvnode(hp).convtype=tc_equal)
+                    )
+                   ) do
+               begin
+                 { Use the recordfield for loopvarsym }
+                 if not assigned(loopvarsym) and
+                    (hp.nodetype=subscriptn) then
+                   loopvarsym:=tsubscriptnode(hp).vs;
+                 hp:=tunarynode(hp).left;
+               end;
+=======
+         { Check loop variable }
+         loopvarsym:=nil;
+
+         { variable must be an ordinal, int64 is not allowed for 32bit targets }
+         if not(is_ordinal(hloopvar.resultdef))
+{$ifndef cpu64bit}
+            or is_64bitint(hloopvar.resultdef)
+{$endif cpu64bit}
+            then
+           MessagePos(hloopvar.fileinfo,type_e_ordinal_expr_expected);
+
+         hp:=hloopvar;
+         while assigned(hp) and
+               (
+                { record/object fields and array elements are allowed }
+                { in tp7 mode only                                    }
+                (
+                 (m_tp7 in current_settings.modeswitches) and
+                 (
+                  ((hp.nodetype=subscriptn) and
+                   ((tsubscriptnode(hp).left.resultdef.typ=recorddef) or
+                    is_object(tsubscriptnode(hp).left.resultdef))
+                  ) or
+                  { constant array index }
+                  (
+                   (hp.nodetype=vecn) and
+                   is_constintnode(tvecnode(hp).right)
+                  )
+                 )
+                ) or
+                { equal typeconversions }
+                (
+                 (hp.nodetype=typeconvn) and
+                 (ttypeconvnode(hp).convtype=tc_equal)
+                )
+               ) do
+           begin
+             { Use the recordfield for loopvarsym }
+             if not assigned(loopvarsym) and
+                (hp.nodetype=subscriptn) then
+               loopvarsym:=tsubscriptnode(hp).vs;
+             hp:=tunarynode(hp).left;
+           end;
+>>>>>>> graemeg/fixes_2_2
+
+             if assigned(hp) and
+                (hp.nodetype=loadn) then
+               begin
+                 case tloadnode(hp).symtableentry.typ of
+                   staticvarsym,
+                   localvarsym,
+                   paravarsym :
+                     begin
+                       { we need a simple loadn:
+                           1. The load must be in a global symtable or
+                               in the same level as the para of the current proc.
+                           2. value variables (no const,out or var)
+                           3. No threadvar, readonly or typedconst
+                       }
+                       if (
+                           (tloadnode(hp).symtable.symtablelevel=main_program_level) or
+                           (tloadnode(hp).symtable.symtablelevel=current_procinfo.procdef.parast.symtablelevel)
+                          ) and
+                          (tabstractvarsym(tloadnode(hp).symtableentry).varspez=vs_value) and
+                          ([vo_is_thread_var,vo_is_typed_const] * tabstractvarsym(tloadnode(hp).symtableentry).varoptions=[]) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                         begin
+                           { Assigning for-loop variable is only allowed in tp7 and macpas }
+                           if ([m_tp7,m_mac] * current_settings.modeswitches = []) then
+                             begin
+                               if not assigned(loopvarsym) then
+                                 loopvarsym:=tabstractvarsym(tloadnode(hp).symtableentry);
+                               include(loopvarsym.varoptions,vo_is_loop_counter);
+                             end;
+                         end
+                       else
+<<<<<<< HEAD
+<<<<<<< HEAD
+                         begin
+=======
+                         begin
+                           { Assigning for-loop variable is only allowed in tp7 and macpas }
+                           if ([m_tp7,m_mac] * current_settings.modeswitches = []) then
+                             begin
+                               if not assigned(loopvarsym) then
+                                 loopvarsym:=tabstractvarsym(tloadnode(hp).symtableentry);
+                               include(loopvarsym.varoptions,vo_is_loop_counter);
+                             end;
+                         end
+                       else
+                         begin
+>>>>>>> graemeg/cpstrnew
+=======
+                         begin
+>>>>>>> graemeg/cpstrnew
+=======
+                         begin
+>>>>>>> origin/cpstrnew
+                           { Typed const is allowed in tp7 }
+                           if not(m_tp7 in current_settings.modeswitches) or
+                              not(vo_is_typed_const in tabstractvarsym(tloadnode(hp).symtableentry).varoptions) then
+                             MessagePos(hp.fileinfo,type_e_illegal_count_var);
+                         end;
+                     end;
+                   else
+                     MessagePos(hp.fileinfo,type_e_illegal_count_var);
+                 end;
+               end
+             else
+               MessagePos(hloopvar.fileinfo,type_e_illegal_count_var);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+             hfrom:=comp_expr(true,false);
+
+             if try_to_consume(_DOWNTO) then
+               backward:=true
+             else
+               begin
+                 consume(_TO);
+                 backward:=false;
+               end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+             hto:=comp_expr(true,false);
+             consume(_DO);
+
+             { Check if the constants fit in the range }
+             check_range(hfrom,hloopvar.resultdef);
+             check_range(hto,hloopvar.resultdef);
+
+             { first set the varstate for from and to, so
+               uses of loopvar in those expressions will also
+               trigger a warning when it is not used yet. This
+               needs to be done before the instruction block is
+               parsed to have a valid hloopvar }
+             typecheckpass(hfrom);
+             set_varstate(hfrom,vs_read,[vsf_must_be_valid]);
+             typecheckpass(hto);
+             set_varstate(hto,vs_read,[vsf_must_be_valid]);
+             typecheckpass(hloopvar);
+             { in two steps, because vs_readwritten may turn on vsf_must_be_valid }
+             { for some subnodes                                                  }
+             set_varstate(hloopvar,vs_written,[]);
+             set_varstate(hloopvar,vs_read,[vsf_must_be_valid]);
+
+             { ... now the instruction block }
+             hblock:=statement;
+
+             { variable is not used for loop counter anymore }
+             if assigned(loopvarsym) then
+               exclude(loopvarsym.varoptions,vo_is_loop_counter);
+
+             result:=cfornode.create(hloopvar,hfrom,hto,hblock,backward);
+          end;
+
+
+          function for_in_loop_create(hloopvar: tnode): tnode;
+            var
+              expr: tnode;
+            begin
+              expr:=comp_expr(true,false);
+
+              consume(_DO);
+
+              set_varstate(hloopvar,vs_written,[]);
+              set_varstate(hloopvar,vs_read,[vsf_must_be_valid]);
+
+              result:=create_for_in_loop(hloopvar,statement,expr);
+
+              expr.free;
+            end;
+
+
+      var
+         hloopvar: tnode;
+      begin
+         { parse loop header }
+         consume(_FOR);
+
+         hloopvar:=factor(false,false);
+         valid_for_loopvar(hloopvar,true);
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+             hfrom:=comp_expr(true,false);
+
+             if try_to_consume(_DOWNTO) then
+               backward:=true
+             else
+               begin
+                 consume(_TO);
+                 backward:=false;
+               end;
+
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
+             hto:=comp_expr(true,false);
+             consume(_DO);
+
+             { Check if the constants fit in the range }
+             check_range(hfrom,hloopvar.resultdef);
+             check_range(hto,hloopvar.resultdef);
+
+             { first set the varstate for from and to, so
+               uses of loopvar in those expressions will also
+               trigger a warning when it is not used yet. This
+               needs to be done before the instruction block is
+               parsed to have a valid hloopvar }
+             typecheckpass(hfrom);
+             set_varstate(hfrom,vs_read,[vsf_must_be_valid]);
+             typecheckpass(hto);
+             set_varstate(hto,vs_read,[vsf_must_be_valid]);
+             typecheckpass(hloopvar);
+             { in two steps, because vs_readwritten may turn on vsf_must_be_valid }
+             { for some subnodes                                                  }
+             set_varstate(hloopvar,vs_written,[]);
+             set_varstate(hloopvar,vs_read,[vsf_must_be_valid]);
+
+             { ... now the instruction block }
+             hblock:=statement;
+
+             { variable is not used for loop counter anymore }
+             if assigned(loopvarsym) then
+               exclude(loopvarsym.varoptions,vo_is_loop_counter);
+
+             result:=cfornode.create(hloopvar,hfrom,hto,hblock,backward);
+          end;
+
+
+          function for_in_loop_create(hloopvar: tnode): tnode;
+            var
+              expr: tnode;
+            begin
+              expr:=comp_expr(true,false);
+
+              consume(_DO);
+
+              set_varstate(hloopvar,vs_written,[]);
+              set_varstate(hloopvar,vs_read,[vsf_must_be_valid]);
+
+              result:=create_for_in_loop(hloopvar,statement,expr);
+
+              expr.free;
+            end;
+
+
+      var
+         hloopvar: tnode;
+      begin
+         { parse loop header }
+         consume(_FOR);
+
+         hloopvar:=factor(false,false);
+         valid_for_loopvar(hloopvar,true);
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
          if try_to_consume(_ASSIGNMENT) then
            result:=for_loop_create(hloopvar)
          else if try_to_consume(_IN) then
            result:=for_in_loop_create(hloopvar)
          else
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
            begin
              consume(_ASSIGNMENT); // fail
              result:=cerrornode.create;
            end;
+<<<<<<< HEAD
+=======
+           consume(_ASSIGNMENT); // fail
+>>>>>>> graemeg/cpstrnew
+=======
+           consume(_ASSIGNMENT); // fail
+>>>>>>> graemeg/cpstrnew
+=======
+           consume(_ASSIGNMENT); // fail
+>>>>>>> graemeg/cpstrnew
+=======
+           consume(_ASSIGNMENT); // fail
+>>>>>>> origin/cpstrnew
+=======
+
+         hto:=comp_expr(true);
+         consume(_DO);
+
+         { Check if the constants fit in the range }
+         check_range(hfrom);
+         check_range(hto);
+
+         { first set the varstate for from and to, so
+           uses of loopvar in those expressions will also
+           trigger a warning when it is not used yet. This
+           needs to be done before the instruction block is
+           parsed to have a valid hloopvar }
+         typecheckpass(hfrom);
+         set_varstate(hfrom,vs_read,[vsf_must_be_valid]);
+         typecheckpass(hto);
+         set_varstate(hto,vs_read,[vsf_must_be_valid]);
+         typecheckpass(hloopvar);
+         { in two steps, because vs_readwritten may turn on vsf_must_be_valid }
+         { for some subnodes                                                  }
+         set_varstate(hloopvar,vs_written,[]);
+         set_varstate(hloopvar,vs_read,[vsf_must_be_valid]);
+
+         { ... now the instruction block }
+         hblock:=statement;
+
+         { variable is not used for loop counter anymore }
+         if assigned(loopvarsym) then
+           exclude(loopvarsym.varoptions,vo_is_loop_counter);
+
+         result:=cfornode.create(hloopvar,hfrom,hto,hblock,backward);
+>>>>>>> graemeg/fixes_2_2
       end;
 
 
@@ -603,8 +1118,24 @@ implementation
 
 
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          calltempnode:=nil;
          p:=comp_expr([ef_accept_equal]);
+=======
+         p:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         p:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         p:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+         p:=comp_expr(true,false);
+>>>>>>> origin/cpstrnew
          do_typecheckpass(p);
 
          if (p.nodetype=vecn) and
@@ -615,8 +1146,21 @@ implementation
            to call it in case it returns a record/object/... }
          maybe_call_procvar(p,false);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          if (p.resultdef.typ in [objectdef,recorddef,classrefdef]) or
            ((p.resultdef.typ=undefineddef) and (df_generic in current_procinfo.procdef.defoptions)) then
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+         if (p.resultdef.typ in [objectdef,recorddef,classrefdef]) then
+>>>>>>> graemeg/cpstrnew
           begin
             newblock:=nil;
             valuenode:=nil;
@@ -657,6 +1201,10 @@ implementation
                     typecheckpass(p);
                   end;
                 { several object types have implicit dereferencing }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 { is_implicit_pointer_object_type() returns true for records
                   on the JVM target because they are implemented as classes
                   there, but we definitely have to take their address here
@@ -668,6 +1216,16 @@ implementation
                   not((target_info.system in systems_jvm) and
                       ((p.resultdef.typ=recorddef) or
                        is_object(p.resultdef)));
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                hasimplicitderef:=is_implicit_pointer_object_type(p.resultdef) or
+                                  (p.resultdef.typ = classrefdef);
+>>>>>>> graemeg/cpstrnew
                 if hasimplicitderef then
                   hdef:=p.resultdef
                 else
@@ -830,12 +1388,42 @@ implementation
          if not(token in endtokens) then
            begin
               { object }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               pobj:=comp_expr([ef_accept_equal]);
               if try_to_consume(_AT) then
                 begin
                    paddr:=comp_expr([ef_accept_equal]);
                    if try_to_consume(_COMMA) then
                      pframe:=comp_expr([ef_accept_equal]);
+=======
+              pobj:=comp_expr(true,false);
+              if try_to_consume(_AT) then
+                begin
+                   paddr:=comp_expr(true,false);
+                   if try_to_consume(_COMMA) then
+                     pframe:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+              pobj:=comp_expr(true,false);
+              if try_to_consume(_AT) then
+                begin
+                   paddr:=comp_expr(true,false);
+                   if try_to_consume(_COMMA) then
+                     pframe:=comp_expr(true,false);
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                 end;
            end
          else
@@ -1089,12 +1677,20 @@ implementation
                   reg:=std_regnum_search(lower(cstringpattern));
                   if reg<>NR_NO then
                     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                       if not(po_assembler in current_procinfo.procdef.procoptions) and assigned(hl) then
                         begin
                           hl.Insert(tai_regalloc.alloc(reg,nil));
                           hl.Insert(tai_regalloc.markused(reg));
                           hl.Concat(tai_regalloc.dealloc(reg,nil));
                         end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                      if (getregtype(reg)=R_INTREGISTER) and not(po_assembler in current_procinfo.procdef.procoptions) then
+                        include(asmstat.used_regs_int,getsupreg(reg));
+>>>>>>> graemeg/fixes_2_2
                     end
                   else
                     Message(asmr_e_invalid_register);
@@ -1127,7 +1723,20 @@ implementation
            _GOTO :
              begin
                 if not(cs_support_goto in current_settings.moduleswitches) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   Message(sym_e_goto_and_label_not_supported);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                 Message(sym_e_goto_and_label_not_supported);
+>>>>>>> graemeg/cpstrnew
                 consume(_GOTO);
                 if (token<>_INTCONST) and (token<>_ID) then
                   begin
@@ -1144,7 +1753,23 @@ implementation
                           internalerror(201008021);
 
                         { strip leading 0's in iso mode }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                         if (([m_iso,m_extpas]*current_settings.modeswitches)<>[]) then
+=======
+                        if m_iso in current_settings.modeswitches then
+>>>>>>> graemeg/cpstrnew
+=======
+                        if m_iso in current_settings.modeswitches then
+>>>>>>> graemeg/cpstrnew
+=======
+                        if m_iso in current_settings.modeswitches then
+>>>>>>> graemeg/cpstrnew
+=======
+                        if m_iso in current_settings.modeswitches then
+>>>>>>> origin/cpstrnew
                           while pattern[1]='0' do
                             delete(pattern,1,1);
 
@@ -1167,12 +1792,31 @@ implementation
                        begin
                          { goto outside the current scope? }
                          if srsym.owner<>current_procinfo.procdef.localst then
+<<<<<<< HEAD
                            begin
                              { allowed? }
                              if not(m_non_local_goto in current_settings.modeswitches) then
                                Message(parser_e_goto_outside_proc);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                              include(current_procinfo.flags,pi_has_global_goto);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                            end;
+=======
+                           CGMessage(parser_e_goto_outside_proc);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                          code:=cgotonode.create(tlabelsym(srsym));
                          tgotonode(code).labelsym:=tlabelsym(srsym);
                          { set flag that this label is used }
@@ -1238,7 +1882,23 @@ implementation
                 try_to_consume(_COLON) then
               begin
                 { in iso mode, 0003: is equal to 3: }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 if (([m_iso,m_extpas]*current_settings.modeswitches)<>[]) then
+=======
+                if m_iso in current_settings.modeswitches then
+>>>>>>> graemeg/cpstrnew
+=======
+                if m_iso in current_settings.modeswitches then
+>>>>>>> graemeg/cpstrnew
+=======
+                if m_iso in current_settings.modeswitches then
+>>>>>>> graemeg/cpstrnew
+=======
+                if m_iso in current_settings.modeswitches then
+>>>>>>> origin/cpstrnew
                   searchsym(tostr(tordconstnode(p).value),srsym,srsymtable)
                 else
                   searchsym(s,srsym,srsymtable);
@@ -1287,6 +1947,7 @@ implementation
              if p.nodetype in [vecn,derefn,typeconvn,subscriptn,loadn] then
                maybe_call_procvar(p,false);
 
+<<<<<<< HEAD
              { additional checks make no sense in a generic definition }
              if not(df_generic in current_procinfo.procdef.defoptions) then
                begin
@@ -1333,6 +1994,57 @@ implementation
                         ) then
                        Message(parser_e_illegal_expression);
                    end;
+=======
+             { blockn support because a read/write is changed into a blocknode }
+             { with a separate statement for each read/write operation (JM)    }
+             { the same is true for val() if the third parameter is not 32 bit }
+             if not(p.nodetype in [nothingn,errorn,calln,ifn,assignn,breakn,inlinen,
+                                   continuen,labeln,blockn,exitn]) or
+                ((p.nodetype=inlinen) and
+<<<<<<< HEAD
+<<<<<<< HEAD
+                 not is_void(p.resultdef)) or
+                ((p.nodetype=calln) and
+                 (assigned(tcallnode(p).procdefinition)) and
+                 (tcallnode(p).procdefinition.proctypeoption=potype_operator)) then
+=======
+                 not is_void(p.resultdef)) then
+>>>>>>> graemeg/fixes_2_2
+=======
+                 not is_void(p.resultdef)) then
+>>>>>>> origin/fixes_2_2
+               Message(parser_e_illegal_expression);
+
+             if not assigned(p.resultdef) then
+               do_typecheckpass(p);
+
+             { Specify that we don't use the value returned by the call.
+               This is used for :
+                - dispose of temp stack space
+                - dispose on FPU stack
+                - extended syntax checking }
+             if (p.nodetype=calln) then
+               begin
+                 exclude(tcallnode(p).callnodeflags,cnf_return_value_used);
+
+                 { in $x- state, the function result must not be ignored }
+                 if not(cs_extsyntax in current_settings.moduleswitches) and
+                    not(is_void(p.resultdef)) and
+                    { can be nil in case there was an error in the expression }
+                    assigned(tcallnode(p).procdefinition) and
+                    not((tcallnode(p).procdefinition.proctypeoption=potype_constructor) and
+                        is_object(tprocdef(tcallnode(p).procdefinition).struct)) then
+                   Message(parser_e_illegal_expression);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                end;
              code:=p;
            end;

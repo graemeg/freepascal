@@ -1,11 +1,23 @@
 {$ifdef fpc}
+<<<<<<< HEAD
+<<<<<<< HEAD
  {$mode objfpc}
  {$macro on}
+=======
+{$mode objfpc}
+{$macro on}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$mode objfpc}
+{$macro on}
+>>>>>>> origin/fixes_2_2
 {$endif}
 
 {$h+}
 
 {$ifdef fpc}
+<<<<<<< HEAD
+<<<<<<< HEAD
  // define ODBC version 3.52 by default for Windows and MAC and 3.51 for Linux/Unix
  {$if defined(WINDOWS) or defined(DARWIN)}
   {$define ODBCVER:=$0352}
@@ -15,12 +27,22 @@
 {$else fpc}
  {$define ODBCVER:=$0352}
 {$endif fpc}
+=======
+ // define ODBC version 3.51 by default
+{$define ODBCVER:=$0351}
+>>>>>>> graemeg/fixes_2_2
+=======
+ // define ODBC version 3.51 by default
+{$define ODBCVER:=$0351}
+>>>>>>> origin/fixes_2_2
 {$if ODBCVER >= $0300}
   {$define ODBCVER3}
 {$endif}
 {$if ODBCVER >= $0350}
   {$define ODBCVER35}
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if ODBCVER >= $0352}
   {$define ODBCVER352}
 {$endif}
@@ -32,6 +54,49 @@
   {$linklib odbc}
  {$ENDIF}
 {$endif}
+
+{$ifndef DYNLOADINGODBC}
+{$IFDEF WINDOWS}
+  {$linklib odbc32}
+{$ELSE}
+  {$linklib odbc}
+{$endif} 
+{$endif}
+
+{$ifndef DYNLOADINGODBC}
+{$IFDEF WINDOWS}
+  {$linklib odbc32}
+{$ELSE}
+  {$linklib odbc}
+{$endif} 
+{$endif}
+
+{$ifndef DYNLOADINGODBC}
+{$IFDEF WINDOWS}
+  {$linklib odbc32}
+{$ELSE}
+  {$linklib odbc}
+{$endif} 
+{$endif}
+
+{$ifndef DYNLOADINGODBC}
+{$IFDEF WINDOWS}
+  {$linklib odbc32}
+{$ELSE}
+  {$linklib odbc}
+{$endif} 
+{$endif}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$else fpc}
+  {$define ODBCVER3}
+  {$define ODBCVER35}
+{$endif fpc}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 interface
 
@@ -67,6 +132,8 @@ uses
 *)
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
   SQLCHAR      = cuchar;
   SQLSCHAR     = cschar;
   SQLSMALLINT  = csshort;
@@ -80,11 +147,24 @@ type
   SQLFLOAT     = cdouble;
   SQLRETURN    = SQLSMALLINT;
   SQLPOINTER   = pointer;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  SQLCHAR      = char;
+  SQLSMALLINT  = csshort;
+  SQLUSMALLINT = cushort;
+  SQLRETURN    = SQLSMALLINT;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   SQLHANDLE    = pointer;
   SQLHENV      = SQLHANDLE;
   SQLHDBC      = SQLHANDLE;
   SQLHSTMT     = SQLHANDLE;
   SQLHDESC     = SQLHANDLE;
+<<<<<<< HEAD
+<<<<<<< HEAD
   SQLHWND      = pointer;
   SQLSETPOSIROW= {$IF DEFINED(CPU64) AND DEFINED(ODBCVER352)}cuint64{$ELSE}SQLUSMALLINT{$ENDIF};
   PSQLCHAR      = PChar;
@@ -94,6 +174,25 @@ type
   PSQLUINTEGER  = ^SQLUINTEGER;
   PSQLLEN       = ^SQLLEN;
   PSQLULEN      = ^SQLULEN;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  SQLINTEGER   = clong;
+  SQLUINTEGER  = culong;
+  SQLPOINTER   = pointer;
+  SQLREAL      = cfloat;
+  SQLDOUBLE    = cdouble;
+  SQLFLOAT     = cdouble;
+  SQLHWND      = pointer;
+  PSQLCHAR      = PChar;
+  PSQLINTEGER   = ^SQLINTEGER;
+  PSQLUINTEGER  = ^SQLUINTEGER;
+  PSQLSMALLINT  = ^SQLSMALLINT;
+  PSQLUSMALLINT = ^SQLUSMALLINT;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   PSQLREAL      = ^SQLREAL;
   PSQLDOUBLE    = ^SQLDOUBLE;
   PSQLFLOAT     = ^SQLFLOAT;
@@ -113,6 +212,14 @@ const
   SQL_WVARCHAR      =(-9);
   SQL_WLONGVARCHAR  =(-10);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
   SQL_CHAR          = 1;
   SQL_NUMERIC       = 2;
   SQL_DECIMAL       = 3;
@@ -130,6 +237,8 @@ const
   SQL_TYPE_DATE     = 91;
   SQL_TYPE_TIME     = 92;
   SQL_TYPE_TIMESTAMP= 93;
+<<<<<<< HEAD
+<<<<<<< HEAD
   // Microsoft has -150 thru -199 reserved for Microsoft SQL Server Native Client driver usage.
   SQL_SS_VARIANT          = -150;
   SQL_SS_UDT              = -151;
@@ -137,6 +246,10 @@ const
   SQL_SS_TABLE            = -153;
   SQL_SS_TIME2            = -154;
   SQL_SS_TIMESTAMPOFFSET  = -155;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  {$endif}
 
   SQL_DATE       = 9;
@@ -148,7 +261,15 @@ const
   {$if ODBCVER >= $0350}
   SQL_GUID       = -11;
   {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> graemeg/fixes_2_2
+=======
+  
+>>>>>>> origin/fixes_2_2
   { interval codes}
   {$ifdef ODBCVER3}
   SQL_CODE_YEAR             = 1;
@@ -193,7 +314,15 @@ const
   SQL_INTERVAL_HOUR_TO_SECOND   = -91;
   SQL_INTERVAL_MINUTE_TO_SECOND = -92;
   {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> graemeg/fixes_2_2
+=======
+  
+>>>>>>> origin/fixes_2_2
   { Unicode data type codes }
   {$ifndef ODBCVER3}
   SQL_UNICODE             = -95;
@@ -210,7 +339,13 @@ const
 
   { C datatype to SQL datatype mapping }
   SQL_C_CHAR   = SQL_CHAR;
+<<<<<<< HEAD
+<<<<<<< HEAD
   SQL_C_WCHAR  = SQL_WCHAR;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   SQL_C_LONG   = SQL_INTEGER;
   SQL_C_SHORT  = SQL_SMALLINT;
   SQL_C_FLOAT  = SQL_REAL;
@@ -257,8 +392,18 @@ const
   SQL_C_ULONG    =  SQL_C_LONG +SQL_UNSIGNED_OFFSET; // UNSIGNED INTEGER
   SQL_C_USHORT   =  SQL_C_SHORT+SQL_UNSIGNED_OFFSET; // UNSIGNED SMALLINT
   SQL_C_UTINYINT =  SQL_TINYINT+SQL_UNSIGNED_OFFSET; // UNSIGNED TINYINT
+<<<<<<< HEAD
+<<<<<<< HEAD
   SQL_C_BOOKMARK = {$if defined(CPU64) and defined(ODBCVER352)}SQL_C_UBIGINT{$else}SQL_C_ULONG{$endif}; // BOOKMARK
 
+=======
+  SQL_C_BOOKMARK = SQL_C_ULONG; // BOOKMARK
+  
+>>>>>>> graemeg/fixes_2_2
+=======
+  SQL_C_BOOKMARK = SQL_C_ULONG; // BOOKMARK
+  
+>>>>>>> origin/fixes_2_2
 {$ifdef ODBCVER35}
   SQL_C_GUID    = SQL_GUID;
 {$endif}
@@ -302,6 +447,8 @@ type
   end;
   PSQL_TIMESTAMP_STRUCT = ^SQL_TIMESTAMP_STRUCT;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   SQL_NUMERIC_STRUCT = packed record
     precision: SQLCHAR;
     scale    : SQLSCHAR;
@@ -309,6 +456,10 @@ type
     val      : array[0..15] of SQLCHAR;
   end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 const
   SQL_NAME_LEN = 128;
 
@@ -462,6 +613,16 @@ const
 
   SQL_MAX_OPTION_STRING_LENGTH = 256;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  SQL_ODBC_CURSORS      = 110;
+  SQL_ATTR_ODBC_CURSORS = SQL_ODBC_CURSORS;
+>>>>>>> graemeg/fixes_2_2
+=======
+  SQL_ODBC_CURSORS      = 110;
+  SQL_ATTR_ODBC_CURSORS = SQL_ODBC_CURSORS;
+>>>>>>> origin/fixes_2_2
   { SQL_ODBC_CURSORS options }
   SQL_CUR_USE_IF_NEEDED = 0;
   SQL_CUR_USE_ODBC      = 1;
@@ -536,34 +697,81 @@ const
   SQL_RETRIEVE_DATA           =11;
   SQL_USE_BOOKMARKS           =12;
   SQL_GET_BOOKMARK            =13;      //      GetStmtOption Only */
+<<<<<<< HEAD
+<<<<<<< HEAD
   SQL_ROW_NUMBER              =14 ;     //      GetStmtOption Only */
 
+=======
+  SQL_ROW_NUMBER              = 14;     //      GetStmtOption Only */
+  
+>>>>>>> graemeg/fixes_2_2
+=======
+  SQL_ROW_NUMBER              = 14;     //      GetStmtOption Only */
+  
+>>>>>>> origin/fixes_2_2
   SQL_ATTR_CURSOR_TYPE        = SQL_CURSOR_TYPE;
   SQL_ATTR_CONCURRENCY        = SQL_CONCURRENCY;
   SQL_ATTR_FETCH_BOOKMARK_PTR = 16;
   SQL_ATTR_ROW_STATUS_PTR     = 25;
   SQL_ATTR_ROWS_FETCHED_PTR   = 26;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   SQL_ATTR_ROW_NUMBER         = SQL_ROW_NUMBER;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  SQL_AUTOCOMMIT              = 102;
+  SQL_ATTR_AUTOCOMMIT         = SQL_AUTOCOMMIT;
+
+  SQL_ATTR_ROW_NUMBER         = SQL_ROW_NUMBER;
+  SQL_TXN_ISOLATION           = 108;
+  SQL_ATTR_TXN_ISOLATION      = SQL_TXN_ISOLATION;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   SQL_ATTR_MAX_ROWS           = SQL_MAX_ROWS;
   SQL_ATTR_USE_BOOKMARKS      = SQL_USE_BOOKMARKS;
 
 //* connection attributes */
   SQL_ACCESS_MODE             =101;
+<<<<<<< HEAD
+<<<<<<< HEAD
   SQL_AUTOCOMMIT              =102;
+=======
+//  SQL_AUTOCOMMIT              =102;
+>>>>>>> graemeg/fixes_2_2
+=======
+//  SQL_AUTOCOMMIT              =102;
+>>>>>>> origin/fixes_2_2
   SQL_LOGIN_TIMEOUT           =103;
   SQL_OPT_TRACE               =104;
   SQL_OPT_TRACEFILE           =105;
   SQL_TRANSLATE_DLL           =106;
   SQL_TRANSLATE_OPTION        =107;
+<<<<<<< HEAD
+<<<<<<< HEAD
   SQL_TXN_ISOLATION           =108;
   SQL_CURRENT_QUALIFIER       =109;
   SQL_ODBC_CURSORS            =110;
+=======
+//  SQL_TXN_ISOLATION           =108;
+  SQL_CURRENT_QUALIFIER       =109;
+//  SQL_ODBC_CURSORS            =110;
+>>>>>>> graemeg/fixes_2_2
+=======
+//  SQL_TXN_ISOLATION           =108;
+  SQL_CURRENT_QUALIFIER       =109;
+//  SQL_ODBC_CURSORS            =110;
+>>>>>>> origin/fixes_2_2
   SQL_QUIET_MODE              =111;
   SQL_PACKET_SIZE             =112;
 
 
 //* connection attributes with new names */
+<<<<<<< HEAD
+<<<<<<< HEAD
   SQL_ATTR_ACCESS_MODE        =SQL_ACCESS_MODE;
   SQL_ATTR_AUTOCOMMIT         =SQL_AUTOCOMMIT;
   SQL_ATTR_CONNECTION_DEAD    =1209;        //* GetConnectAttr only */
@@ -581,6 +789,30 @@ const
   SQL_ATTR_TRANSLATE_LIB      =SQL_TRANSLATE_DLL;
   SQL_ATTR_TRANSLATE_OPTION   =SQL_TRANSLATE_OPTION;
   SQL_ATTR_TXN_ISOLATION      =SQL_TXN_ISOLATION;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  SQL_ATTR_ACCESS_MODE              =SQL_ACCESS_MODE;
+//  SQL_ATTR_AUTOCOMMIT                       =SQL_AUTOCOMMIT;
+  SQL_ATTR_CONNECTION_DEAD        =1209;        //* GetConnectAttr only */
+  SQL_ATTR_CONNECTION_TIMEOUT   =113;
+  SQL_ATTR_CURRENT_CATALOG        =SQL_CURRENT_QUALIFIER;
+  SQL_ATTR_DISCONNECT_BEHAVIOR=114;
+  SQL_ATTR_ENLIST_IN_DTC                  =1207;
+  SQL_ATTR_ENLIST_IN_XA             =1208;
+  SQL_ATTR_LOGIN_TIMEOUT                  =SQL_LOGIN_TIMEOUT;
+//  SQL_ATTR_ODBC_CURSORS             =SQL_ODBC_CURSORS;
+  SQL_ATTR_PACKET_SIZE              =SQL_PACKET_SIZE;
+  SQL_ATTR_QUIET_MODE                       =SQL_QUIET_MODE;
+  SQL_ATTR_TRACE                                      =SQL_OPT_TRACE;
+  SQL_ATTR_TRACEFILE                        =SQL_OPT_TRACEFILE;
+  SQL_ATTR_TRANSLATE_LIB                  =SQL_TRANSLATE_DLL;
+  SQL_ATTR_TRANSLATE_OPTION       =SQL_TRANSLATE_OPTION;
+//  SQL_ATTR_TXN_ISOLATION                  =SQL_TXN_ISOLATION;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 //* SQL_ACCESS_MODE options */
   SQL_MODE_READ_WRITE         =0;
@@ -808,6 +1040,8 @@ const
 #define SQL_MAX_CONCURRENT_ACTIVITIES        1
 #define SQL_MAXIMUM_CONCURRENT_ACTIVITIES       SQL_MAX_CONCURRENT_ACTIVITIES
 #endif
+<<<<<<< HEAD
+<<<<<<< HEAD
 #define SQL_FETCH_DIRECTION                  8
 #define SQL_SEARCH_PATTERN_ESCAPE           14
 #define SQL_ACCESSIBLE_TABLES               19
@@ -815,6 +1049,26 @@ const
 #define SQL_CURSOR_COMMIT_BEHAVIOR          23
 #define SQL_DATA_SOURCE_READ_ONLY           25
 #define SQL_DEFAULT_TXN_ISOLATION           26
+=======
+=======
+>>>>>>> origin/fixes_2_2
+#define SQL_DATA_SOURCE_NAME                 2
+#define SQL_FETCH_DIRECTION                  8
+#define SQL_SERVER_NAME                     13
+#define SQL_SEARCH_PATTERN_ESCAPE           14
+#define SQL_DBMS_NAME                       17
+#define SQL_DBMS_VER                        18
+#define SQL_ACCESSIBLE_TABLES               19
+#define SQL_ACCESSIBLE_PROCEDURES               20
+#define SQL_CURSOR_COMMIT_BEHAVIOR          23
+#define SQL_DATA_SOURCE_READ_ONLY           25
+#define SQL_DEFAULT_TXN_ISOLATION           26
+#define SQL_IDENTIFIER_CASE                 28
+#define SQL_IDENTIFIER_QUOTE_CHAR           29
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 #define SQL_MAX_COLUMN_NAME_LEN             30
 #define SQL_MAXIMUM_COLUMN_NAME_LENGTH          SQL_MAX_COLUMN_NAME_LEN
 #define SQL_MAX_CURSOR_NAME_LEN             31
@@ -825,6 +1079,8 @@ const
 #define SQL_MAXIMUM_CATALOG_NAME_LENGTH         SQL_MAX_CATALOG_NAME_LEN
 #define SQL_MAX_TABLE_NAME_LEN              35
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
   SQL_DATA_SOURCE_NAME                = 2;
   SQL_DRIVER_NAME                     = 6;
   SQL_DRIVER_VER                      = 7;
@@ -836,6 +1092,16 @@ const
   SQL_SCROLL_CONCURRENCY              = 43;
   SQL_TXN_CAPABLE                     = 46;
   SQL_TRANSACTION_CAPABLE             = SQL_TXN_CAPABLE;
+=======
+  SQL_SCROLL_CONCURRENCY              = 43;
+  SQL_TXN_CAPABLE                     = 46;
+  SQL_TRANSACTION_CAPABLE              = SQL_TXN_CAPABLE;
+>>>>>>> graemeg/fixes_2_2
+=======
+  SQL_SCROLL_CONCURRENCY              = 43;
+  SQL_TXN_CAPABLE                     = 46;
+  SQL_TRANSACTION_CAPABLE              = SQL_TXN_CAPABLE;
+>>>>>>> origin/fixes_2_2
   SQL_USER_NAME                       = 47;
   SQL_TXN_ISOLATION_OPTION            = 72;
   SQL_TRANSACTION_ISOLATION_OPTION    = SQL_TXN_ISOLATION_OPTION;
@@ -932,6 +1198,8 @@ const
 /* SQL_GETDATA_EXTENSIONS bitmasks */
 #define SQL_GD_ANY_COLUMN                   0x00000001L
 #define SQL_GD_ANY_ORDER                    0x00000002L
+<<<<<<< HEAD
+<<<<<<< HEAD
 }
 { SQL_IDENTIFIER_CASE values }
   SQL_IC_UPPER                       = 1;
@@ -939,6 +1207,20 @@ const
   SQL_IC_SENSITIVE                   = 3;
   SQL_IC_MIXED                       = 4;
 {
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+/* SQL_IDENTIFIER_CASE values */
+#define SQL_IC_UPPER                        1
+#define SQL_IC_LOWER                        2
+#define SQL_IC_SENSITIVE                    3
+#define SQL_IC_MIXED                        4
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 /* SQL_OJ_CAPABILITIES bitmasks */
 /* NB: this means 'outer join', not what  you may be thinking */
 
@@ -1013,7 +1295,15 @@ const
   SQL_COLUMN_DRIVER_START        = 1000;
 {$endif} { ODBCVER >= 0x0300 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 { SQLColAttribute defines }
+=======
+ { SQLColAttribute defines }
+>>>>>>> graemeg/fixes_2_2
+=======
+ { SQLColAttribute defines }
+>>>>>>> origin/fixes_2_2
 {$ifdef ODBCVER3}
   SQL_DESC_ARRAY_SIZE	     = 20;
   SQL_DESC_ARRAY_STATUS_PTR  = 21;
@@ -1045,11 +1335,17 @@ const
   SQL_DESC_UPDATABLE         = SQL_COLUMN_UPDATABLE;
 {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 { SQLColAttributes subdefines for SQL_COLUMN_UPDATABLE }
   SQL_ATTR_READONLY          = 0;
   SQL_ATTR_WRITE             = 1;
   SQL_ATTR_READWRITE_UNKNOWN = 2;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 //* SQLEndTran() options */
   SQL_COMMIT    = 0;
   SQL_ROLLBACK  = 1;
@@ -1081,7 +1377,15 @@ type   TSQLGetDiagRec=function (HandleType:SQLSMALLINT;
            Sqlstate:PSQLCHAR;var NativeError:SQLINTEGER;
            MessageText:PSQLCHAR;BufferLength:SQLSMALLINT;
            var TextLength:SQLSMALLINT ):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+           
+>>>>>>> graemeg/fixes_2_2
+=======
+           
+>>>>>>> origin/fixes_2_2
 type   TSQLGetDiagField=function (HandleType:SQLSMALLINT;
            Handle:SQLHANDLE;RecNumber:SQLSMALLINT;
            DiagIdentifier:SQLSMALLINT;DiagInfoPtr:SQLPOINTER;
@@ -1118,6 +1422,8 @@ type   TSQLNumResultCols=function (StatementHandle:SQLHSTMT;
 type   TSQLDescribeCol=function (StatementHandle:SQLHSTMT;
            ColumnNumber:SQLUSMALLINT;ColumnName:PSQLCHAR;
            BufferLength:SQLSMALLINT;var NameLength:SQLSMALLINT;
+<<<<<<< HEAD
+<<<<<<< HEAD
            var DataType:SQLSMALLINT;var ColumnSize:SQLULEN;
            var DecimalDigits:SQLSMALLINT;var Nullable:SQLSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
 
@@ -1132,6 +1438,27 @@ type   TSQLGetData=function (StatementHandle:SQLHSTMT;
            ColumnNumber:SQLUSMALLINT;TargetType:SQLSMALLINT;
            TargetValue:SQLPOINTER;BufferLength:SQLLEN;
            StrLen_or_Ind:PSQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+=======
+=======
+>>>>>>> origin/fixes_2_2
+           var DataType:SQLSMALLINT;var ColumnSize:SQLUINTEGER;
+           var DecimalDigits:SQLSMALLINT;var Nullable:SQLSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+
+type   TSQLFetchScroll=function (StatementHandle:SQLHSTMT;
+           FetchOrientation:SQLSMALLINT;FetchOffset:SQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+
+type   TSQLExtendedFetch=function (hstmt:SQLHSTMT;
+           fFetchType:SQLUSMALLINT;irow:SQLINTEGER;
+           pcrow:PSQLUINTEGER;rgfRowStatus:PSQLUSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+
+type   TSQLGetData=function (StatementHandle:SQLHSTMT;
+           ColumnNumber:SQLUSMALLINT;TargetType:SQLSMALLINT;
+           TargetValue:SQLPOINTER;BufferLength:SQLINTEGER;
+           StrLen_or_Ind:PSQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 type   TSQLSetStmtAttr=function (StatementHandle:SQLHSTMT;
            Attribute:SQLINTEGER;Value:SQLPOINTER;
@@ -1141,6 +1468,8 @@ type   TSQLGetStmtAttr=function (StatementHandle:SQLHSTMT;
            Attribute:SQLINTEGER;Value:SQLPOINTER;
            BufferLength:SQLINTEGER;StringLength:PSQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 type   TSQLSetDescField=function (DescriptorHandle:SQLHDESC;
            RecNumber:SQLSMALLINT; FieldIdentifier:SQLSMALLINT;
            ValuePtr:SQLPOINTER; BufferLength:SQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
@@ -1150,6 +1479,10 @@ type   TSQLSetDescRec=function (DescriptorHandle:SQLHDESC;
            Length:SQLLEN; Precision, Scale: SQLSMALLINT;
            DataPtr:SQLPOINTER; StringLengthPtr,IndicatorPtr:PSQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 type   tSQLGetInfo=function (ConnectionHandle:SQLHDBC;
            InfoType:SQLUSMALLINT;InfoValue:SQLPOINTER;
            BufferLength:SQLSMALLINT;StringLength:PSQLSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
@@ -1158,6 +1491,8 @@ type   TSQLBulkOperations=function (StatementHandle: SQLHSTMT;
            Operation:SQLSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
 
 type   TSQLPutData=function (StatementHandle:SQLHSTMT;
+<<<<<<< HEAD
+<<<<<<< HEAD
            Data:SQLPOINTER;StrLen_or_Ind:SQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
 
 type   TSQLBindCol=function (StatementHandle:SQLHSTMT;
@@ -1168,6 +1503,23 @@ type   TSQLBindCol=function (StatementHandle:SQLHSTMT;
 type   TSQLSetPos=function (StatementHandle:SQLHSTMT;
            RowNumber:SQLSETPOSIROW; Operation:SQLUSMALLINT;
            LockType:SQLUSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+=======
+=======
+>>>>>>> origin/fixes_2_2
+           Data:SQLPOINTER;StrLen_or_Ind:SQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+
+type   TSQLBindCol=function (StatementHandle:SQLHSTMT;
+           ColumnNumber:SQLUSMALLINT;TargetType:SQLSMALLINT;
+           TargetValue:SQLPOINTER;BufferLength:SQLINTEGER;
+           StrLen_or_Ind:PSQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+
+type   TSQLSetPos=function (hstmt:SQLHSTMT;
+           irow:SQLUSMALLINT;fOption:SQLUSMALLINT;
+           fLock:SQLUSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 type   TSQLDataSources=function (EnvironmentHandle:SQLHENV;
            Direction:SQLUSMALLINT;ServerName:PSQLCHAR;
@@ -1193,14 +1545,34 @@ type   TSQLSetCursorName=function (StatementHandle:SQLHSTMT;
            CursorName:PSQLCHAR; NameLength:SQLSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
 
 type   TSQLRowCount=function (StatementHandle:SQLHSTMT;
+<<<<<<< HEAD
+<<<<<<< HEAD
            var RowCount:SQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+=======
+           Var RowCount:SQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+>>>>>>> graemeg/fixes_2_2
+=======
+           Var RowCount:SQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+>>>>>>> origin/fixes_2_2
 
 type   TSQLBindParameter=function (hstmt:SQLHSTMT;
            ipar:SQLUSMALLINT;fParamType:SQLSMALLINT;
            fCType:SQLSMALLINT;fSqlType:SQLSMALLINT;
+<<<<<<< HEAD
+<<<<<<< HEAD
            cbColDef:SQLULEN;ibScale:SQLSMALLINT;
            rgbValue:SQLPOINTER;cbValueMax:SQLLEN;
            pcbValue:PSQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+=======
+           cbColDef:SQLUINTEGER;ibScale:SQLSMALLINT;
+           rgbValue:SQLPOINTER;cbValueMax:SQLINTEGER;
+           pcbValue:PSQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+>>>>>>> graemeg/fixes_2_2
+=======
+           cbColDef:SQLUINTEGER;ibScale:SQLSMALLINT;
+           rgbValue:SQLPOINTER;cbValueMax:SQLINTEGER;
+           pcbValue:PSQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+>>>>>>> origin/fixes_2_2
 
 type   TSQLFreeStmt=function (StatementHandle:SQLHSTMT;
            Option:SQLUSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
@@ -1208,7 +1580,15 @@ type   TSQLFreeStmt=function (StatementHandle:SQLHSTMT;
 type   TSQLColAttribute=function (StatementHandle:SQLHSTMT;
            ColumnNumber:SQLUSMALLINT;FieldIdentifier:SQLUSMALLINT;
            CharacterAttribute:PSQLCHAR;BufferLength:SQLSMALLINT;
+<<<<<<< HEAD
+<<<<<<< HEAD
            StringLength:PSQLSMALLINT;NumericAttribute:PSQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+=======
+           StringLength:PSQLSMALLINT;NumericAttribute:SQLPOINTER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+>>>>>>> graemeg/fixes_2_2
+=======
+           StringLength:PSQLSMALLINT;NumericAttribute:SQLPOINTER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+>>>>>>> origin/fixes_2_2
 
 type   TSQLEndTran=function (HandleType:SQLSMALLINT;
            Handle:SQLHANDLE;CompletionType:SQLSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
@@ -1277,8 +1657,14 @@ var    SQLExtendedFetch:TSQLExtendedFetch;
 var    SQLGetData:TSQLGetData;
 var    SQLSetStmtAttr:TSQLSetStmtAttr;
 var    SQLGetStmtAttr:TSQLGetStmtAttr;
+<<<<<<< HEAD
+<<<<<<< HEAD
 //var    SQLSetDescField:TSQLSetDescField;
 var    SQLSetDescRec:TSQLSetDescRec;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 var    SQLBulkOperations:TSQLBulkOperations;
 var    SQLPutData:TSQLPutData;
 var    SQLBindCol:TSQLBindCol;
@@ -1384,26 +1770,59 @@ var    odbcversion:word;
                BufferLength:SQLSMALLINT;
                var NameLength:SQLSMALLINT;
                var DataType:SQLSMALLINT;
+<<<<<<< HEAD
+<<<<<<< HEAD
                var ColumnSize:SQLULEN;
+=======
+               var ColumnSize:SQLUINTEGER;
+>>>>>>> graemeg/fixes_2_2
+=======
+               var ColumnSize:SQLUINTEGER;
+>>>>>>> origin/fixes_2_2
                var DecimalDigits:SQLSMALLINT;
                var Nullable:SQLSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
    function SQLFetchScroll(
                StatementHandle:SQLHSTMT;
                FetchOrientation:SQLSMALLINT;
+<<<<<<< HEAD
+<<<<<<< HEAD
                FetchOffset:SQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
    function SQLExtendedFetch(
                hstmt:SQLHSTMT;
                fFetchType:SQLUSMALLINT;
                irow:SQLLEN;
                pcrow:PSQLULEN;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+               FetchOffset:SQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+   function SQLExtendedFetch(
+               hstmt:SQLHSTMT;
+               fFetchType:SQLUSMALLINT;
+               irow:SQLINTEGER;
+               pcrow:PSQLUINTEGER;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                rgfRowStatus:PSQLUSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
    function SQLGetData(
                StatementHandle:SQLHSTMT;
                ColumnNumber:SQLUSMALLINT;
                TargetType:SQLSMALLINT;
                TargetValue:SQLPOINTER;
+<<<<<<< HEAD
+<<<<<<< HEAD
                BufferLength:SQLLEN;
                StrLen_or_Ind:PSQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+=======
+               BufferLength:SQLINTEGER;
+               StrLen_or_Ind:PSQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+>>>>>>> graemeg/fixes_2_2
+=======
+               BufferLength:SQLINTEGER;
+               StrLen_or_Ind:PSQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+>>>>>>> origin/fixes_2_2
    function SQLSetStmtAttr(
                StatementHandle:SQLHSTMT;
                Attribute:SQLINTEGER;
@@ -1427,12 +1846,22 @@ var    odbcversion:word;
    function SQLPutData(
                StatementHandle:SQLHSTMT;
                Data:SQLPOINTER;
+<<<<<<< HEAD
+<<<<<<< HEAD
                StrLen_or_Ind:SQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+=======
+               StrLen_or_Ind:SQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+>>>>>>> graemeg/fixes_2_2
+=======
+               StrLen_or_Ind:SQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+>>>>>>> origin/fixes_2_2
    function SQLBindCol(
                StatementHandle:SQLHSTMT;
                ColumnNumber:SQLUSMALLINT;
                TargetType:SQLSMALLINT;
                TargetValue:SQLPOINTER;
+<<<<<<< HEAD
+<<<<<<< HEAD
                BufferLength:SQLLEN;
                StrLen_or_Ind:PSQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
    function SQLSetPos(
@@ -1440,6 +1869,20 @@ var    odbcversion:word;
                RowNumber:SQLSETPOSIROW;
                Operation:SQLUSMALLINT;
                LockType:SQLUSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+               BufferLength:SQLINTEGER;
+               StrLen_or_Ind:PSQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+   function SQLSetPos(
+               hstmt:SQLHSTMT;
+               irow:SQLUSMALLINT;
+               fOption:SQLUSMALLINT;
+               fLock:SQLUSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    function SQLDataSources(
                EnvironmentHandle:SQLHENV;
                Direction:SQLUSMALLINT;
@@ -1472,18 +1915,40 @@ var    odbcversion:word;
                ):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
    function SQLRowCount(
                StatementHandle:SQLHSTMT;
+<<<<<<< HEAD
+<<<<<<< HEAD
                var RowCount:SQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+=======
+               Var RowCount:SQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+>>>>>>> graemeg/fixes_2_2
+=======
+               Var RowCount:SQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+>>>>>>> origin/fixes_2_2
    function SQLBindParameter(
                hstmt:SQLHSTMT;
                ipar:SQLUSMALLINT;
                fParamType:SQLSMALLINT;
                fCType:SQLSMALLINT;
                fSqlType:SQLSMALLINT;
+<<<<<<< HEAD
+<<<<<<< HEAD
                cbColDef:SQLULEN;
                ibScale:SQLSMALLINT;
                rgbValue:SQLPOINTER;
                cbValueMax:SQLLEN;
                pcbValue:PSQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+               cbColDef:SQLUINTEGER;
+               ibScale:SQLSMALLINT;
+               rgbValue:SQLPOINTER;
+               cbValueMax:SQLINTEGER;
+               pcbValue:PSQLINTEGER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    function SQLFreeStmt(
                StatementHandle:SQLHSTMT;
                Option:SQLUSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
@@ -1494,7 +1959,15 @@ var    odbcversion:word;
                CharacterAttribute:PSQLCHAR;
                BufferLength:SQLSMALLINT;
                StringLength:PSQLSMALLINT;
+<<<<<<< HEAD
+<<<<<<< HEAD
                NumericAttribute:PSQLLEN):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+=======
+               NumericAttribute:SQLPOINTER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+>>>>>>> graemeg/fixes_2_2
+=======
+               NumericAttribute:SQLPOINTER):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+>>>>>>> origin/fixes_2_2
 {$ifdef ODBCVER3}
    function SQLEndTran(
                HandleType:SQLSMALLINT;
@@ -1561,12 +2034,25 @@ function DateTimeToDateStruct( b:TDateTime):SQL_DATE_STRUCT;
 procedure DateTime2TimeStampStruct( var Value:SQL_TIMESTAMP_STRUCT; b:TDateTime);
 Function TimeStampStructToDateTime( B :  PSQL_TIMESTAMP_STRUCT) : TDateTime;
 Function TimeStructToDateTime (B : PSQL_TIME_STRUCT) : TDateTime;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function DateTimeToTimeStruct(b: TDateTime) : SQL_TIME_STRUCT;
 function CurrToNumericStruct(c: currency): SQL_NUMERIC_STRUCT;
 
 
 {$IFDEF DYNLOADINGODBC}
 Procedure InitialiseODBC(OverrideName : string ='');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+
+{$IFDEF DYNLOADINGODBC}
+Procedure InitialiseODBC;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Procedure ReleaseODBC;
 
 var ODBCLibraryHandle : TLibHandle;
@@ -1578,19 +2064,51 @@ implementation
 
 var RefCount : integer;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure InitialiseODBC(OverrideName : string ='');
 
 var libname : string;
+=======
+Procedure InitialiseODBC;
+>>>>>>> graemeg/fixes_2_2
+=======
+Procedure InitialiseODBC;
+>>>>>>> origin/fixes_2_2
 
 begin
   inc(RefCount);
   if RefCount = 1 then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     if OverrideName='' then
+=======
+    if OverrideName='' then 
+>>>>>>> graemeg/cpstrnew
+=======
+    if OverrideName='' then 
+>>>>>>> graemeg/cpstrnew
+=======
+    if OverrideName='' then 
+>>>>>>> graemeg/cpstrnew
+=======
+    if OverrideName='' then 
+>>>>>>> origin/cpstrnew
        libname:=odbclib
      else
        libname:=OverrideName;
     ODBCLibraryHandle := loadlibrary(libname);
+=======
+    ODBCLibraryHandle := loadlibrary(odbclib);
+>>>>>>> graemeg/fixes_2_2
+=======
+    ODBCLibraryHandle := loadlibrary(odbclib);
+>>>>>>> origin/fixes_2_2
     if ODBCLibraryHandle = nilhandle then
       begin
       RefCount := 0;
@@ -1622,8 +2140,14 @@ begin
     pointer(SQLGetData) := GetProcedureAddress(ODBCLibraryHandle,'SQLGetData');
     pointer(SQLSetStmtAttr) := GetProcedureAddress(ODBCLibraryHandle,'SQLSetStmtAttr');
     pointer(SQLGetStmtAttr) := GetProcedureAddress(ODBCLibraryHandle,'SQLGetStmtAttr');
+<<<<<<< HEAD
+<<<<<<< HEAD
     //pointer(SQLSetDescField) := GetProcedureAddress(ODBCLibraryHandle,'SQLSetDescField');
     pointer(SQLSetDescRec) := GetProcedureAddress(ODBCLibraryHandle,'SQLSetDescRec');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     pointer(SQLBulkOperations) := GetProcedureAddress(ODBCLibraryHandle,'SQLBulkOperations');
     pointer(SQLPutData) := GetProcedureAddress(ODBCLibraryHandle,'SQLPutData');
     pointer(SQLBindCol) := GetProcedureAddress(ODBCLibraryHandle,'SQLBindCol');
@@ -1667,8 +2191,14 @@ begin
     SQLGetData := GetProcedureAddress(ODBCLibraryHandle,'SQLGetData');
     SQLSetStmtAttr := GetProcedureAddress(ODBCLibraryHandle,'SQLSetStmtAttr');
     SQLGetStmtAttr := GetProcedureAddress(ODBCLibraryHandle,'SQLGetStmtAttr');
+<<<<<<< HEAD
+<<<<<<< HEAD
     //SQLSetDescField := GetProcedureAddress(ODBCLibraryHandle,'SQLSetDescField');
     SQLSetDescRec := GetProcedureAddress(ODBCLibraryHandle,'SQLSetDescRec');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     SQLBulkOperations := GetProcedureAddress(ODBCLibraryHandle,'SQLBulkOperations');
     SQLPutData := GetProcedureAddress(ODBCLibraryHandle,'SQLPutData');
     SQLBindCol := GetProcedureAddress(ODBCLibraryHandle,'SQLBindCol');
@@ -1751,12 +2281,24 @@ Function TimeStampStructToDateTime( B :  PSQL_TIMESTAMP_STRUCT) : TDateTime;
 
 begin
  With B^ do
+<<<<<<< HEAD
+<<<<<<< HEAD
    Result:=ComposeDateTime(EncodeDate(Year,Month,Day), EncodeTime(Hour,Minute,Second,Fraction div 1000000));
+=======
+   Result:=EncodeDate(Year,Month,Day)+
+           EncodeTime(Hour,Minute,Second,0);
+>>>>>>> graemeg/fixes_2_2
+=======
+   Result:=EncodeDate(Year,Month,Day)+
+           EncodeTime(Hour,Minute,Second,0);
+>>>>>>> origin/fixes_2_2
 end;
 
 Function TimeStructToDateTime (B : PSQL_TIME_STRUCT) : TDateTime;
 begin
   With B^ do
+<<<<<<< HEAD
+<<<<<<< HEAD
     begin
       // TryEncodeTime can not be used, because it doesn't supports times with more then 24 hours.
       Result:=TDateTime(cardinal(Hour)*3600000+cardinal(Minute)*60000+cardinal(Second)*1000)/MSecsPerDay;
@@ -1790,3 +2332,15 @@ begin
     n := n shr 8;
   end;
 end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    Result:=EncodeTime(Hour,Minute,Second,0);
+end;
+
+
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

@@ -31,8 +31,21 @@ end;
 procedure fillpoly(numpoints : Word; var polypoints);
 
 { disable range check mode }
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}
 {$R-}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifopt R+}
+{$define OPT_R_WAS_ON}
+{$R-}
+{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 type
   pedge = ^tedge;
   tedge = packed record
@@ -55,8 +68,14 @@ var
 
   ptable : ^pointtype;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   LastPolygonStart : Longint;
   Closing, PrevClosing : Boolean;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 begin
 { /********************************************************************
@@ -74,12 +93,20 @@ begin
  { check for getmem success }
 
   nEdges := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
   LastPolygonStart := 0;
   Closing := false;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   for i := 0 to (numpoints-1) do begin
     p0 := ptable[i];
     if (i+1) >= numpoints then p1 := ptable[0]
     else p1 := ptable[i+1];
+<<<<<<< HEAD
+<<<<<<< HEAD
     { save the 'closing' flag for the previous edge }
     PrevClosing := Closing;
     { check if the current edge is 'closing'. This means that it 'closes'
@@ -105,6 +132,16 @@ begin
    { ignore if this is a horizontal edge}
     if (p0.y = p1.y) then continue;
    { swap ptable if necessary to ensure p0 contains yMin}
+=======
+   { ignore if this is a horizontal edge}
+    if (p0.y = p1.y) then continue;
+    {swap ptable if necessary to ensure p0 contains yMin}
+>>>>>>> graemeg/fixes_2_2
+=======
+   { ignore if this is a horizontal edge}
+    if (p0.y = p1.y) then continue;
+    {swap ptable if necessary to ensure p0 contains yMin}
+>>>>>>> origin/fixes_2_2
     if (p0.y > p1.y) then begin
       p0 := p1;
       p1 := ptable[i];
@@ -189,11 +226,25 @@ begin
     { Fill in desired pixels values on scan line y by using pairs of x
     coordinates from the AET }
     i := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
     while (i < (nActive - 1)) do begin
       x0 := AET^[i]^.x;
       x1 := AET^[i+1]^.x;
       {Left edge adjustment for positive fraction.  0 is interior. }
       if (AET^[i]^.frac >= 0) then inc(x0);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    while (i < nActive) do begin
+      x0 := AET^[i]^.x;
+      x1 := AET^[i+1]^.x;
+      {Left edge adjustment for positive fraction.  0 is interior. }
+      if (AET^[i]^.frac > 0) then inc(x0);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       {Right edge adjustment for negative fraction.  0 is exterior. }
       if (AET^[i+1]^.frac <= 0) then dec(x1);
 
@@ -231,6 +282,8 @@ begin
     inc(y);
     if (y >= ViewHeight) then break;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   { finally, draw the edges }
   LastPolygonStart := 0;
@@ -262,6 +315,10 @@ begin
     Line(p0.x,p0.y,p1.x,p1.y);
   end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   System.freemem(et, sizeof(tedge) * numpoints);
   System.freemem(get, sizeof(pedge) * numpoints);
   System.freemem(aet, sizeof(pedge) * numpoints);
@@ -283,11 +340,24 @@ type
     y  : smallint;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   PDrawnList  = ^TDrawnList;
   TDrawnList  = Array[0..(MaxYRes - 1) div YResDiv] of PFloodLine;
 
 var
    DrawnList : PDrawnList;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  TDrawnList  = Array[0..(MaxYRes - 1) div YResDiv] of PFloodLine;
+
+var
+   DrawnList : TDrawnList;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    Buffer : Record                         { Union for byte and word addressing of buffer }
      ByteIndex : Word;
      WordIndex : Word;
@@ -353,8 +423,18 @@ var
      temp^.x1 := x1;
      temp^.x2 := x2;
      temp^.y := y;
+<<<<<<< HEAD
+<<<<<<< HEAD
      temp^.next := DrawnList^[y div YResDiv];
      DrawnList^[y div YResDiv] := temp;
+=======
+     temp^.next := DrawnList[y div YResDiv];
+     DrawnList[y div YResDiv] := temp;
+>>>>>>> graemeg/fixes_2_2
+=======
+     temp^.next := DrawnList[y div YResDiv];
+     DrawnList[y div YResDiv] := temp;
+>>>>>>> origin/fixes_2_2
    end;
 
   {********************************************************}
@@ -374,7 +454,15 @@ var
     temp : PFloodLine;
    begin
     AlreadyDrawn := false;
+<<<<<<< HEAD
+<<<<<<< HEAD
     temp := DrawnList^[y div YResDiv];
+=======
+    temp := DrawnList[y div YResDiv];
+>>>>>>> graemeg/fixes_2_2
+=======
+    temp := DrawnList[y div YResDiv];
+>>>>>>> origin/fixes_2_2
     while assigned(temp) do
       begin
         if (temp^.y = y) and
@@ -396,12 +484,27 @@ var
   {********************************************************}
   Procedure CleanUpDrawnList;
   var
+<<<<<<< HEAD
+<<<<<<< HEAD
     l: smallint;
     temp1, temp2: PFloodLine;
   begin
     for l := 0 to ViewHeight div YResDiv do
       begin
         temp1 := DrawnList^[l];
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    l: longint;
+    temp1, temp2: PFloodLine;
+  begin
+    for l := 0 to high(DrawnList) do
+      begin
+        temp1 := DrawnList[l];
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         while assigned(temp1) do
           begin
             temp2 := temp1;
@@ -429,8 +532,16 @@ var
    BackupColor : Word;
    x1, x2, prevy: smallint;
   Begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     GetMem(DrawnList,sizeof(PFloodLine)*((ViewHeight div YResDiv) + 1));
     FillChar(DrawnList^,sizeof(PFloodLine)*((ViewHeight div YResDiv) + 1),0);
+=======
+    FillChar(DrawnList,sizeof(DrawnList),0);
+>>>>>>> graemeg/fixes_2_2
+=======
+    FillChar(DrawnList,sizeof(DrawnList),0);
+>>>>>>> origin/fixes_2_2
     { init prevy }
     prevy := 32767;
     { Save current drawing color }
@@ -535,9 +646,27 @@ var
     System.FreeMem (s2,(ViewWidth+1)*2);
     System.FreeMem (s3,(ViewWidth+1)*2);
     CleanUpDrawnList;
+<<<<<<< HEAD
+<<<<<<< HEAD
     System.FreeMem(DrawnList,sizeof(PFloodLine)*((ViewHeight div YResDiv) + 1));
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     CurrentColor := BackUpColor;
   End;
 
 { restore previous range check mode }
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$pop}
+=======
+{$ifdef OPT_R_WAS_ON}
+{$R+}
+{$endif}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef OPT_R_WAS_ON}
+{$R+}
+{$endif}
+>>>>>>> origin/fixes_2_2

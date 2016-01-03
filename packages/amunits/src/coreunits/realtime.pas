@@ -34,7 +34,11 @@
     nils.sjoholm@mailbox.swipnet.se
 }
 
-{$PACKRECORDS 2}
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
+
 UNIT realtime;
 
 INTERFACE
@@ -237,17 +241,16 @@ VAR RealTimeBase : pRealTimeBase;
 const
     REALTIMENAME : PChar = 'realtime.library';
 
-FUNCTION CreatePlayerA(const tagList : pTagItem location 'a0') : pPlayer; syscall RealTimeBase 042;
-PROCEDURE DeletePlayer(player : pPlayer location 'a0'); syscall RealTimeBase 048;
-FUNCTION ExternalSync(player : pPlayer location 'a0'; minTime : LONGINT location 'd0'; maxTime : LONGINT location 'd1') : WordBool; syscall RealTimeBase 066;
-FUNCTION FindConductor(const name : pCHAR location 'a0') : pConductor; syscall RealTimeBase 078;
-FUNCTION GetPlayerAttrsA(const player : pPlayer location 'a0'; const tagList : pTagItem location 'a1') : ULONG; syscall RealTimeBase 084;
-FUNCTION LockRealTime(lockType : ULONG location 'd0') : POINTER; syscall RealTimeBase 030;
-FUNCTION NextConductor(const previousConductor : pConductor location 'a0') : pConductor; syscall RealTimeBase 072;
-FUNCTION SetConductorState(player : pPlayer location 'a0'; state : ULONG location 'd0'; time : LONGINT location 'd1') : LONGINT; syscall RealTimeBase 060;
-FUNCTION SetPlayerAttrsA(player : pPlayer location 'a0'; const tagList : pTagItem location 'a1') : WordBool; syscall RealTimeBase 054;
-PROCEDURE UnlockRealTime(lock : POINTER location 'a0'); syscall RealTimeBase 036;
-
+FUNCTION CreatePlayerA(const tagList : pTagItem) : pPlayer;
+PROCEDURE DeletePlayer(player : pPlayer);
+FUNCTION ExternalSync(player : pPlayer; minTime : LONGINT; maxTime : LONGINT) : BOOLEAN;
+FUNCTION FindConductor(const name : pCHAR) : pConductor;
+FUNCTION GetPlayerAttrsA(const player : pPlayer;const tagList : pTagItem) : ULONG;
+FUNCTION LockRealTime(lockType : ULONG) : POINTER;
+FUNCTION NextConductor(const previousConductor : pConductor) : pConductor;
+FUNCTION SetConductorState(player : pPlayer; state : ULONG; time : LONGINT) : LONGINT;
+FUNCTION SetPlayerAttrsA(player : pPlayer;const tagList : pTagItem) : BOOLEAN;
+PROCEDURE UnlockRealTime(lock : POINTER);
 
 {You can remove this include and use a define instead}
 {$I useautoopenlib.inc}
@@ -262,8 +265,138 @@ var
 IMPLEMENTATION
 
 {$ifndef dont_use_openlib}
-uses amsgbox;
+uses msgbox;
 {$endif dont_use_openlib}
+
+FUNCTION CreatePlayerA(const tagList : pTagItem) : pPlayer;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L tagList,A0
+    MOVEA.L RealTimeBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE DeletePlayer(player : pPlayer);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L player,A0
+    MOVEA.L RealTimeBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION ExternalSync(player : pPlayer; minTime : LONGINT; maxTime : LONGINT) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L player,A0
+    MOVE.L  minTime,D0
+    MOVE.L  maxTime,D1
+    MOVEA.L RealTimeBase,A6
+    JSR -066(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION FindConductor(const name : pCHAR) : pConductor;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L name,A0
+    MOVEA.L RealTimeBase,A6
+    JSR -078(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetPlayerAttrsA(const player : pPlayer;const tagList : pTagItem) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L player,A0
+    MOVEA.L tagList,A1
+    MOVEA.L RealTimeBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION LockRealTime(lockType : ULONG) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  lockType,D0
+    MOVEA.L RealTimeBase,A6
+    JSR -030(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION NextConductor(const previousConductor : pConductor) : pConductor;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L previousConductor,A0
+    MOVEA.L RealTimeBase,A6
+    JSR -072(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetConductorState(player : pPlayer; state : ULONG; time : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L player,A0
+    MOVE.L  state,D0
+    MOVE.L  time,D1
+    MOVEA.L RealTimeBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetPlayerAttrsA(player : pPlayer;const tagList : pTagItem) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L player,A0
+    MOVEA.L tagList,A1
+    MOVEA.L RealTimeBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE UnlockRealTime(lock : POINTER);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L lock,A0
+    MOVEA.L RealTimeBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
 
 const
     { Change VERSION and LIBVERSION to proper values }
@@ -348,3 +481,6 @@ begin
 
 
 END. (* UNIT REALTIME *)
+
+
+

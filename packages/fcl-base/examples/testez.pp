@@ -73,7 +73,7 @@ end;
 // To determine how many environment variables have been stored you can
 // use the VariableCount property.
 //
-// The following procedure loops through all of the environment variables
+// The following procedure loops through all of the enviroment variables
 // and prints them back to the client. This is a good CGI example to
 // show you exactly what information you have to work with.
 

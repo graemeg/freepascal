@@ -51,12 +51,17 @@
     nils.sjoholm@mailbox.swipnet.se
 }
 
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
+
 unit icon;
 
 INTERFACE
 
 
-uses exec, workbench,utility,amigados,agraphics,intuition,datatypes;
+uses exec, workbench,utility,amigados,graphics,intuition,datatypes;
 
     const
     ICONA_Dummy = TAG_USER + $9000;
@@ -348,44 +353,46 @@ Const
 
 VAR IconBase : pLibrary;
 
-FUNCTION AddFreeList(freelist : pFreeList location 'a0'; const mem : POINTER location 'a1'; size : ULONG location 'a2') : LongBool; syscall IconBase 072;
-FUNCTION BumpRevision(newname : pCHAR location 'a0'; const oldname : pCHAR location 'a1') : pCHAR; syscall IconBase 108;
-FUNCTION DeleteDiskObject(const name : pCHAR location 'a0') : LongBool; syscall IconBase 138;
-FUNCTION FindToolType(const toolTypeArray : POINTER location 'a0'; const typeName : pCHAR location 'a1') : pCHAR; syscall IconBase 096;
-PROCEDURE FreeDiskObject(diskobj : pDiskObject location 'a0'); syscall IconBase 090;
-PROCEDURE FreeFreeList(freelist : pFreeList location 'a0'); syscall IconBase 054;
-FUNCTION GetDefDiskObject(typ : LONGINT location 'd0') : pDiskObject; syscall IconBase 120;
-FUNCTION GetDiskObject(const name : pCHAR location 'a0') : pDiskObject; syscall IconBase 078;
-FUNCTION GetDiskObjectNew(const name : pCHAR location 'a0') : pDiskObject; syscall IconBase 132;
-FUNCTION MatchToolValue(const typeString : pCHAR location 'a0'; const value : pCHAR location 'a1') : LongBool; syscall IconBase 102;
-FUNCTION PutDefDiskObject(const diskObject : pDiskObject location 'a0') : LongBool; syscall IconBase 126;
-FUNCTION PutDiskObject(const name : pCHAR location 'a0'; const diskobj : pDiskObject location 'a1') : LongBool; syscall IconBase 084;
+FUNCTION AddFreeList(freelist : pFreeList;const mem : POINTER; size : ULONG) : BOOLEAN;
+FUNCTION BumpRevision(newname : pCHAR;const oldname : pCHAR) : pCHAR;
+FUNCTION DeleteDiskObject(const name : pCHAR) : BOOLEAN;
+FUNCTION FindToolType(const toolTypeArray : POINTER;const typeName : pCHAR) : pCHAR;
+PROCEDURE FreeDiskObject(diskobj : pDiskObject);
+PROCEDURE FreeFreeList(freelist : pFreeList);
+FUNCTION GetDefDiskObject(typ : LONGINT) : pDiskObject;
+FUNCTION GetDiskObject(const name : pCHAR) : pDiskObject;
+FUNCTION GetDiskObjectNew(const name : pCHAR) : pDiskObject;
+FUNCTION MatchToolValue(const typeString : pCHAR;const value : pCHAR) : BOOLEAN;
+FUNCTION PutDefDiskObject(const diskObject : pDiskObject) : BOOLEAN;
+FUNCTION PutDiskObject(const name : pCHAR;const diskobj : pDiskObject) : BOOLEAN;
 
 { version 44 }
-FUNCTION DupDiskObjectA(CONST diskObject : pDiskObject location 'a0'; CONST tags : pTagItem location 'a1') : pDiskObject; syscall IconBase 150;
-FUNCTION IconControlA(icon : pDiskObject location 'a0'; CONST tags : pTagItem location 'a1') : longword; syscall IconBase 156;
-PROCEDURE DrawIconStateA(rp : pRastPort location 'a0'; CONST icon : pDiskObject location 'a1'; CONST label_ : pCHAR location 'a2'; leftOffset : LONGINT location 'd0'; topOffset : LONGINT location 'd1'; state : longword location 'd2'; CONST tags : pTagItem location 'a3'); syscall IconBase 162;
-FUNCTION GetIconRectangleA(rp : pRastPort location 'a0'; CONST icon : pDiskObject location 'a1'; CONST label_ : pCHAR location 'a2'; rect : pRectangle location 'a3'; CONST tags : pTagItem location 'a4') : LongBool; syscall IconBase 168;
-FUNCTION NewDiskObject(type_ : LONGINT location 'd0') : pDiskObject; syscall IconBase 174;
-FUNCTION GetIconTagList(CONST name : pCHAR location 'a0'; CONST tags : pTagItem location 'a1') : pDiskObject; syscall IconBase 180;
-FUNCTION PutIconTagList(CONST name : pCHAR location 'a0'; CONST icon : pDiskObject location 'a1'; CONST tags : pTagItem location 'a2') : LongBool; syscall IconBase 186;
-FUNCTION LayoutIconA(icon : pDiskObject location 'a0'; screen : pScreen location 'a1'; tags : pTagItem location 'a2') : LongBool; syscall IconBase 192;
-PROCEDURE ChangeToSelectedIconColor(cr : pColorRegister location 'a0'); syscall IconBase 198;
+FUNCTION DupDiskObjectA(CONST diskObject : pDiskObject; CONST tags : pTagItem) : pDiskObject;
+FUNCTION IconControlA(icon : pDiskObject; CONST tags : pTagItem) : longword;
+PROCEDURE DrawIconStateA(rp : pRastPort; CONST icon : pDiskObject; CONST label_ : pCHAR; leftOffset : LONGINT; topOffset : LONGINT; state : longword; CONST tags : pTagItem);
+FUNCTION GetIconRectangleA(rp : pRastPort; CONST icon : pDiskObject; CONST label_ : pCHAR; rect : pRectangle; CONST tags : pTagItem) : BOOLEAN;
+FUNCTION NewDiskObject(type_ : LONGINT) : pDiskObject;
+FUNCTION GetIconTagList(CONST name : pCHAR; CONST tags : pTagItem) : pDiskObject;
+FUNCTION PutIconTagList(CONST name : pCHAR; CONST icon : pDiskObject; CONST tags : pTagItem) : BOOLEAN;
+FUNCTION LayoutIconA(icon : pDiskObject; screen : pScreen; tags : pTagItem) : BOOLEAN;
+PROCEDURE ChangeToSelectedIconColor(cr : pColorRegister);
 
 { overlay }
-FUNCTION BumpRevision(newname : pCHar; const oldname : RawByteString) : pCHAR;
-FUNCTION DeleteDiskObject(const name : RawByteString) : BOOLEAN;
-FUNCTION FindToolType(const toolTypeArray : POINTER;const typeName : RawByteString) : pCHAR;
-FUNCTION GetDiskObject(const name : RawByteString) : pDiskObject;
-FUNCTION GetDiskObjectNew(const name : RawByteString) : pDiskObject;
-FUNCTION MatchToolValue(const typeString : RawByteString;const value : pCHAR) : BOOLEAN;
-FUNCTION MatchToolValue(const typeString : pCHAR;const value : RawByteString) : BOOLEAN;
-FUNCTION MatchToolValue(const typeString : RawByteString;const value : RawByteString) : BOOLEAN;
-FUNCTION PutDiskObject(const name : RawByteString;const diskobj : pDiskObject) : BOOLEAN;
+FUNCTION BumpRevision(newname : string;const oldname : pCHAR) : pCHAR;
+FUNCTION BumpRevision(newname : pCHar;const oldname : string) : pCHAR;
+FUNCTION BumpRevision(newname : string;const oldname : string) : pCHAR;
+FUNCTION DeleteDiskObject(const name : string) : BOOLEAN;
+FUNCTION FindToolType(const toolTypeArray : POINTER;const typeName : string) : pCHAR;
+FUNCTION GetDiskObject(const name : string) : pDiskObject;
+FUNCTION GetDiskObjectNew(const name : string) : pDiskObject;
+FUNCTION MatchToolValue(const typeString :string;const value : pCHAR) : BOOLEAN;
+FUNCTION MatchToolValue(const typeString : pCHAR;const value : string) : BOOLEAN;
+FUNCTION MatchToolValue(const typeString : string;const value : string) : BOOLEAN;
+FUNCTION PutDiskObject(const name : string;const diskobj : pDiskObject) : BOOLEAN;
 
 { version 44 overlay}
-FUNCTION GetIconTagList(CONST name : RawByteString; CONST tags : pTagItem) : pDiskObject;
-FUNCTION PutIconTagList(CONST name : RawByteString; CONST icon : pDiskObject; CONST tags : pTagItem) : BOOLEAN;
+FUNCTION GetIconTagList(CONST name : string; CONST tags : pTagItem) : pDiskObject;
+FUNCTION PutIconTagList(CONST name : string; CONST icon : pDiskObject; CONST tags : pTagItem) : BOOLEAN;
 
 {macros}
 function PACK_ICON_ASPECT_RATIO(num,den : longint) : longint;
@@ -404,71 +411,375 @@ var
 
 IMPLEMENTATION
 
-{$ifndef dont_use_openlib}
 uses
-  amsgbox;
+{$ifndef dont_use_openlib}
+msgbox,
 {$endif dont_use_openlib}
-
+pastoc;
 
 function PACK_ICON_ASPECT_RATIO(num,den : longint) : longint;
 begin
     PACK_ICON_ASPECT_RATIO:=(num shl 4) or den;
 end;
 
+FUNCTION AddFreeList(freelist : pFreeList;const mem : POINTER; size : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L freelist,A0
+    MOVEA.L mem,A1
+    MOVEA.L size,A2
+    MOVEA.L IconBase,A6
+    JSR -072(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
 
-FUNCTION BumpRevision(newname : pCHar;const oldname : RawByteString) : pCHAR;
+FUNCTION BumpRevision(newname : pCHAR;const oldname : pCHAR) : pCHAR;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L newname,A0
+    MOVEA.L oldname,A1
+    MOVEA.L IconBase,A6
+    JSR -108(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION DeleteDiskObject(const name : pCHAR) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L name,A0
+    MOVEA.L IconBase,A6
+    JSR -138(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION FindToolType(const toolTypeArray : POINTER;const typeName : pCHAR) : pCHAR;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L toolTypeArray,A0
+    MOVEA.L typeName,A1
+    MOVEA.L IconBase,A6
+    JSR -096(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE FreeDiskObject(diskobj : pDiskObject);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L diskobj,A0
+    MOVEA.L IconBase,A6
+    JSR -090(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE FreeFreeList(freelist : pFreeList);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L freelist,A0
+    MOVEA.L IconBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION GetDefDiskObject(typ : LONGINT) : pDiskObject;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  typ,D0
+    MOVEA.L IconBase,A6
+    JSR -120(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetDiskObject(const name : pCHAR) : pDiskObject;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L name,A0
+    MOVEA.L IconBase,A6
+    JSR -078(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetDiskObjectNew(const name : pCHAR) : pDiskObject;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L name,A0
+    MOVEA.L IconBase,A6
+    JSR -132(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MatchToolValue(const typeString : pCHAR;const value : pCHAR) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L typeString,A0
+    MOVEA.L value,A1
+    MOVEA.L IconBase,A6
+    JSR -102(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION PutDefDiskObject(const diskObject : pDiskObject) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L diskObject,A0
+    MOVEA.L IconBase,A6
+    JSR -126(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION PutDiskObject(const name : pCHAR;const diskobj : pDiskObject) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L name,A0
+    MOVEA.L diskobj,A1
+    MOVEA.L IconBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION DupDiskObjectA(CONST diskObject : pDiskObject; CONST tags : pTagItem) : pDiskObject;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L diskObject,A0
+        MOVEA.L tags,A1
+        MOVEA.L IconBase,A6
+        JSR     -150(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION IconControlA(icon : pDiskObject; CONST tags : pTagItem) : longword;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L icon,A0
+        MOVEA.L tags,A1
+        MOVEA.L IconBase,A6
+        JSR     -156(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE DrawIconStateA(rp : pRastPort; CONST icon : pDiskObject; CONST label_ : pCHAR; leftOffset : LONGINT; topOffset : LONGINT; state : longword; CONST tags : pTagItem);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L rp,A0
+        MOVEA.L icon,A1
+        MOVEA.L label_,A2
+        MOVE.L  leftOffset,D0
+        MOVE.L  topOffset,D1
+        MOVE.L  state,D2
+        MOVEA.L tags,A3
+        MOVEA.L IconBase,A6
+        JSR     -162(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION GetIconRectangleA(rp : pRastPort; CONST icon : pDiskObject; CONST label_ : pCHAR; rect : pRectangle; CONST tags : pTagItem) : BOOLEAN;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L rp,A0
+        MOVEA.L icon,A1
+        MOVEA.L label_,A2
+        MOVEA.L rect,A3
+        MOVEA.L tags,A4
+        MOVEA.L IconBase,A6
+        JSR     -168(A6)
+        MOVEA.L (A7)+,A6
+        TST.W   D0
+        BEQ.B   @end
+        MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION NewDiskObject(type_ : LONGINT) : pDiskObject;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  type_,D0
+        MOVEA.L IconBase,A6
+        JSR     -174(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetIconTagList(CONST name : pCHAR; CONST tags : pTagItem) : pDiskObject;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L name,A0
+        MOVEA.L tags,A1
+        MOVEA.L IconBase,A6
+        JSR     -180(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION PutIconTagList(CONST name : pCHAR; CONST icon : pDiskObject; CONST tags : pTagItem) : BOOLEAN;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L name,A0
+        MOVEA.L icon,A1
+        MOVEA.L tags,A2
+        MOVEA.L IconBase,A6
+        JSR     -186(A6)
+        MOVEA.L (A7)+,A6
+        TST.W   D0
+        BEQ.B   @end
+        MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION LayoutIconA(icon : pDiskObject; screen : pScreen; tags : pTagItem) : BOOLEAN;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L icon,A0
+        MOVEA.L screen,A1
+        MOVEA.L tags,A2
+        MOVEA.L IconBase,A6
+        JSR     -192(A6)
+        MOVEA.L (A7)+,A6
+        TST.W   D0
+        BEQ.B   @end
+        MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ChangeToSelectedIconColor(cr : pColorRegister);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L cr,A0
+        MOVEA.L IconBase,A6
+        JSR     -198(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION BumpRevision(newname : string;const oldname : pCHAR) : pCHAR;
 begin
-      BumpRevision := BumpRevision(newname,PChar(oldname));
+      BumpRevision := BumpRevision(pas2c(newname),oldname);
 end;
 
-FUNCTION DeleteDiskObject(const name : RawByteString) : BOOLEAN;
+FUNCTION BumpRevision(newname : pCHar;const oldname : string) : pCHAR;
 begin
-      DeleteDiskObject := DeleteDiskObject(PChar(name));
+      BumpRevision := BumpRevision(newname,pas2c(oldname));
 end;
 
-FUNCTION FindToolType(const toolTypeArray : POINTER;const typeName : RawByteString) : pCHAR;
+FUNCTION BumpRevision(newname : string;const oldname : string) : pCHAR;
 begin
-      FindToolType := FindToolType(toolTypeArray,PChar(typeName));
+      BumpRevision := BumpRevision(pas2c(newname),pas2c(oldname));
 end;
 
-FUNCTION GetDiskObject(const name : RawByteString) : pDiskObject;
+FUNCTION DeleteDiskObject(const name : string) : BOOLEAN;
 begin
-      GetDiskObject := GetDiskObject(PChar(name));
+      DeleteDiskObject := DeleteDiskObject(pas2c(name));
 end;
 
-FUNCTION GetDiskObjectNew(const name : RawByteString) : pDiskObject;
+FUNCTION FindToolType(const toolTypeArray : POINTER;const typeName : string) : pCHAR;
 begin
-      GetDiskObjectNew := GetDiskObjectNew(PChar(name));
+      FindToolType := FindToolType(toolTypeArray,pas2c(typeName));
 end;
 
-FUNCTION MatchToolValue(const typeString : RawByteString;const value : pCHAR) : BOOLEAN;
+FUNCTION GetDiskObject(const name : string) : pDiskObject;
 begin
-       MatchToolValue := MatchToolValue(PChar(typeString),value);
+      GetDiskObject := GetDiskObject(pas2c(name));
 end;
 
-FUNCTION MatchToolValue(const typeString : pCHAR;const value : RawByteString) : BOOLEAN;
+FUNCTION GetDiskObjectNew(const name : string) : pDiskObject;
 begin
-       MatchToolValue := MatchToolValue(typeString,PChar(value));
+      GetDiskObjectNew := GetDiskObjectNew(pas2c(name));
 end;
 
-FUNCTION MatchToolValue(const typeString : RawByteString;const value : RawByteString) : BOOLEAN;
+FUNCTION MatchToolValue(const typeString : string;const value : pCHAR) : BOOLEAN;
 begin
-       MatchToolValue := MatchToolValue(PChar(typeString),PChar(value));
+       MatchToolValue := MatchToolValue(pas2c(typeString),value);
 end;
 
-FUNCTION PutDiskObject(const name : RawByteString;const diskobj : pDiskObject) : BOOLEAN;
+FUNCTION MatchToolValue(const typeString : pCHAR;const value : string) : BOOLEAN;
 begin
-       PutDiskObject := PutDiskObject(PChar(name),diskobj);
+       MatchToolValue := MatchToolValue(typeString,pas2c(value));
 end;
 
-FUNCTION GetIconTagList(CONST name : RawByteString; CONST tags : pTagItem) : pDiskObject;
+FUNCTION MatchToolValue(const typeString : string;const value : string) : BOOLEAN;
 begin
-       GetIconTagList := GetIconTagList(PChar(name),tags);
+       MatchToolValue := MatchToolValue(pas2c(typeString),pas2c(value));
 end;
 
-FUNCTION PutIconTagList(CONST name : RawByteString; CONST icon : pDiskObject; CONST tags : pTagItem) : BOOLEAN;
+FUNCTION PutDiskObject(const name : string;const diskobj : pDiskObject) : BOOLEAN;
 begin
-       PutIconTagList := PutIconTagList(PChar(name),icon,tags);
+       PutDiskObject := PutDiskObject(pas2c(name),diskobj);
+end;
+
+FUNCTION GetIconTagList(CONST name : string; CONST tags : pTagItem) : pDiskObject;
+begin
+       GetIconTagList := GetIconTagList(pas2c(name),tags);
+end;
+
+FUNCTION PutIconTagList(CONST name : string; CONST icon : pDiskObject; CONST tags : pTagItem) : BOOLEAN;
+begin
+       PutIconTagList := PutIconTagList(pas2c(name),icon,tags);
 end;
 
 const

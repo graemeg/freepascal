@@ -528,9 +528,9 @@ begin
   if (file_index < ParamCount) then
   begin
     assign(input_file, ParamStr(file_index));
-{$push}{$I-}
+    {$I-}
     reset(input_file, 1);
-{$pop}
+    {$IFDEF IoCheck} {$I+} {$ENDIF}
     if (IOresult <> 0) then
     begin
       WriteLn(output, progname, ': can''t open ', ParamStr(file_index));
@@ -548,9 +548,9 @@ begin
   if (outfilename <> '') then
   begin
     assign(output_file, outfilename);
-{$push}{$I-}
+    {$I-}
     rewrite(output_file, 1);
-{$pop}
+    {$IFDEF IoCheck} {$I+} {$ENDIF}
     if (IOresult <> 0) then
     begin
       WriteLn(output, progname, ': can''t open ', outfilename);

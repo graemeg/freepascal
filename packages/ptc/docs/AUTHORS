@@ -1,0 +1,6 @@
+The Free Pascal port was done by:
+  Nikolay Nikolov (nickysn@users.sourceforge.net)
+
+It was based on the OpenPTC C++ library by Glenn Fiedler
+(http://www.gaffer.org/ptc) and the Hermes C library by Christian Nentwich
+(http://hermes.terminal.at)

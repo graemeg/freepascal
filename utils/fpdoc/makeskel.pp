@@ -115,6 +115,7 @@ begin
       end;
     I:=FModules.IndexOf(AName);
     IF (I=-1) then
+<<<<<<< HEAD
       begin
       Result:=TPasModule.Create(AName,Nil);
       FModules.AddObject(AName,Result);
@@ -151,6 +152,44 @@ begin
     // Skip ProcedureType or PasFunctionType
     If (PT<>Nil) then
       begin
+=======
+      begin
+      Result:=TPasModule.Create(AName,Nil);
+      FModules.AddObject(AName,Result);
+      end
+    else
+      Result:=FModules.Objects[i] as TPasModule;  
+    end;  
+end;
+
+Destructor TSkelEngine.Destroy; 
+
+Var
+  I : Integer;
+
+begin
+  If Assigned(FModules) then 
+    begin
+    For I:=0 to FModules.Count-1 do
+      FModules.Objects[i].Free;
+    FreeAndNil(FModules);    
+    end;
+end;
+
+Function TSkelEngine.MustWriteElement(El : TPasElement; Full : Boolean) : Boolean;
+
+Var
+  ParentVisible:Boolean;
+  PT,PP : TPasElement;
+begin
+  ParentVisible:=True;
+  If (El is TPasArgument) or (El is TPasResultElement) then
+    begin
+    PT:=El.Parent;
+    // Skip ProcedureType or PasFunctionType
+    If (PT<>Nil) then
+      begin
+>>>>>>> origin/fixes_2_2
       if (PT is TPasProcedureType) or (PT is TPasFunctionType) then
         PT:=PT.Parent;
       If (PT<>Nil) and ((PT is TPasProcedure) or (PT is TPasProcedure))   then
@@ -188,6 +227,8 @@ Var
 begin
   Result := AClass.Create(AName, AParent);
   Result.Visibility:=AVisibility;
+<<<<<<< HEAD
+<<<<<<< HEAD
   // Let function/procedure arguments and function results
   // inherit visibility from their parents if visDefault visibility is
   // specified.
@@ -196,6 +237,10 @@ begin
     ((Result is TPasArgument) or (Result is TPasResultElement)) then
     Result.Visibility:=AParent.Visibility;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   if AClass.InheritsFrom(TPasModule) then
     CurModule := TPasModule(Result);
   // Track this element
@@ -332,6 +377,7 @@ begin
     end;
   Try 
     For I:=0 to List.Count-1 do
+<<<<<<< HEAD
       begin
       P:=List.Objects[i] as TNodePair;
       If (P.Element<>AModule) then
@@ -346,6 +392,7 @@ end;
 
 Procedure TSkelEngine.DocumentFile(Var F : Text; Const AFileName,ATarget,ACPU : String);
 
+<<<<<<< HEAD
   Procedure ResolveOperators;
 
   Var
@@ -446,6 +493,164 @@ begin
         Finally
           Engine.Free;
         end;
+=======
+Var
+  Module : TPasModule;
+  I : Integer;
+  N : TDocNode;
+     
+begin
+  FNodeList:=TStringList.Create;
+  Try
+    FEmittedList:=TStringList.Create;
+    FEmittedList.Sorted:=True;
+    try
+      Module:=ParseSource(Self,AFileName,ATarget,ACPU);
+      If UpdateMode then
+        begin
+        N:=FindDocNode(Module);
+        If Assigned(N) then
+           N.IncRefCount;
+         end;
+      If SortNodes then  
+        FNodelist.Sorted:=True;   
+      WriteNodes(F,Module,FNodeList);  
+      If UpdateMode then
+        WriteUnReferencedNodes;
+    Finally
+      FEmittedList.Free;
+    end;  
+  Finally  
+    For I:=0 to FNodeList.Count-1 do
+      FNodeList.Objects[i].Free;
+    FNodeList.Free;  
+  end;  
+end;
+
+{ ---------------------------------------------------------------------
+  Main program. Document all units.    
+  ---------------------------------------------------------------------}
+  
+Function DocumentPackage(Const APackageName,AOutputName : String; InputFiles,DescrFiles : TStrings) : String;
+
+Var
+  F : Text;
+  I,J : Integer;
+  Engine: TSkelEngine;
+
+begin
+  Assign(f, AOutputName);
+  Rewrite(f);
+  Try
+    WriteLn(f, '<?xml version="1.0" encoding="ISO-8859-1"?>');
+    WriteLn(f, '<fpdoc-descriptions>');
+    WriteLn(f, '<package name="', APackageName, '">');
+    Try
+      I:=0;
+      While (Result='') And (I<InputFiles.Count) do
+        begin
+        Engine := TSkelEngine.Create;
+        Try
+          Engine.SetPackageName(APackageName);
+          if UpdateMode then
+            For J:=0 to DescrFiles.Count-1 do
+              Engine.AddDocFile(DescrFiles[J]);
+          Try    
+            Engine.DocumentFile(F,InputFiles[I],OSTarget,CPUTarget);
+          except
+            on E:Exception do
+              Result:='Error while documenting: '+E.message;
+          end;
+        Finally
+          Engine.Free;
+        end;
+>>>>>>> graemeg/fixes_2_2
+=======
+      begin
+      P:=List.Objects[i] as TNodePair;
+      If (P.Element<>AModule) then
+        WriteElement(F,P.Element,P.DocNode);
+      end;  
+  Finally
+    WriteLn(f, '');
+    WriteLn(f, '</module> <!-- ', AModule.Name, ' -->');
+    WriteLn(f, '');
+  end;   
+end;
+
+Procedure TSkelEngine.DocumentFile(Var F : Text; Const AFileName,ATarget,ACPU : String);
+
+Var
+  Module : TPasModule;
+  I : Integer;
+  N : TDocNode;
+     
+begin
+  FNodeList:=TStringList.Create;
+  Try
+    FEmittedList:=TStringList.Create;
+    FEmittedList.Sorted:=True;
+    try
+      Module:=ParseSource(Self,AFileName,ATarget,ACPU);
+      If UpdateMode then
+        begin
+        N:=FindDocNode(Module);
+        If Assigned(N) then
+           N.IncRefCount;
+         end;
+      If SortNodes then  
+        FNodelist.Sorted:=True;   
+      WriteNodes(F,Module,FNodeList);  
+      If UpdateMode then
+        WriteUnReferencedNodes;
+    Finally
+      FEmittedList.Free;
+    end;  
+  Finally  
+    For I:=0 to FNodeList.Count-1 do
+      FNodeList.Objects[i].Free;
+    FNodeList.Free;  
+  end;  
+end;
+
+{ ---------------------------------------------------------------------
+  Main program. Document all units.    
+  ---------------------------------------------------------------------}
+  
+Function DocumentPackage(Const APackageName,AOutputName : String; InputFiles,DescrFiles : TStrings) : String;
+
+Var
+  F : Text;
+  I,J : Integer;
+  Engine: TSkelEngine;
+
+begin
+  Assign(f, AOutputName);
+  Rewrite(f);
+  Try
+    WriteLn(f, '<?xml version="1.0" encoding="ISO-8859-1"?>');
+    WriteLn(f, '<fpdoc-descriptions>');
+    WriteLn(f, '<package name="', APackageName, '">');
+    Try
+      I:=0;
+      While (Result='') And (I<InputFiles.Count) do
+        begin
+        Engine := TSkelEngine.Create;
+        Try
+          Engine.SetPackageName(APackageName);
+          if UpdateMode then
+            For J:=0 to DescrFiles.Count-1 do
+              Engine.AddDocFile(DescrFiles[J]);
+          Try    
+            Engine.DocumentFile(F,InputFiles[I],OSTarget,CPUTarget);
+          except
+            on E:Exception do
+              Result:='Error while documenting: '+E.message;
+          end;
+        Finally
+          Engine.Free;
+        end;
+>>>>>>> origin/fixes_2_2
         Inc(I);
         end;
     Finally
@@ -593,7 +798,15 @@ begin
     TranslateDocStrings(DocLang);
     end;
   // Action is to create the XML skeleton
+<<<<<<< HEAD
+<<<<<<< HEAD
   if (Length(PackageName) = 0) and (CmdLineAction<>ActionHelp) then
+=======
+  if Length(PackageName) = 0 then
+>>>>>>> graemeg/fixes_2_2
+=======
+  if Length(PackageName) = 0 then
+>>>>>>> origin/fixes_2_2
     begin
     WriteLn(SNoPackageNameProvided);
     Result:=2;
@@ -648,8 +861,15 @@ var
 begin
   WriteLn(STitle);
   WriteLn(Format(SVersion, [FPCVersion, FPCDate]));
+<<<<<<< HEAD
   WriteLn(SCopyright1);
   WriteLn(SCopyright2);
+=======
+  WriteLn(SCopyright);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   InitOptions;
   Try
     E:=ParseCommandLine;

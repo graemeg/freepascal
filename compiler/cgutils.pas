@@ -77,6 +77,10 @@ unit cgutils;
          { (An)+ and -(An)                      }
          direction : tdirection;
 {$endif m68k}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef jvm}
          arrayreftype: tarrayreftype;
          indexbase: tregister;
@@ -84,6 +88,14 @@ unit cgutils;
          indexoffset: aint;
          checkcast: boolean;
 {$endif jvm}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
          alignment : byte;
       end;
 
@@ -182,7 +194,19 @@ unit cgutils;
     procedure location_reset_jump(out l: tlocation; truelab, falselab: tasmlabel);
     procedure location_copy(var destloc:tlocation; const sourceloc : tlocation);
     procedure location_swap(var destloc,sourceloc : tlocation);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function location_reg2string(const locreg: tlocation): string;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     { returns r with the given alignment }
     function setalignment(const r : treference;b : byte) : treference;
@@ -193,6 +217,12 @@ unit cgutils;
       N is number of bits to handle, functionality tested for values 32 and 64. }
     procedure calc_divconst_magic_signed(N: byte; d: aInt; out magic_m: aInt; out magic_s: byte);
     procedure calc_divconst_magic_unsigned(N: byte; d: aWord; out magic_m: aWord; out magic_add: boolean; out magic_shift: byte);
+
+    { returns r with the given alignment }
+    function setalignment(const r : treference;b : byte) : treference;
+
+    { returns r with the given alignment }
+    function setalignment(const r : treference;b : byte) : treference;
 
 implementation
 
@@ -296,6 +326,10 @@ uses
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function location_reg2string(const locreg: tlocation): string;
       begin
         if not (locreg.loc in [LOC_REGISTER,LOC_CREGISTER,
@@ -376,6 +410,7 @@ uses
         ad,anc,delta,q1,r1,q2,r2,t: aWord;
         two_N_minus_1: aWord;
       begin
+<<<<<<< HEAD
         assert((d<-1) or (d>1));
         two_N_minus_1:=aWord(1) shl (N-1);
 
@@ -409,6 +444,17 @@ uses
         if (d<0) then
           magic_m:=-magic_m;  { resulting magic number }
         magic_s:=p-N;         { resulting shift }
+=======
+{$ifdef i386}
+        result := (target_info.system in [system_i386_darwin,system_x86_64_darwin]);
+{$else i386}
+{$ifdef cputargethasfixedstack}
+        result := true;
+{$else cputargethasfixedstack}
+        result := false;
+{$endif cputargethasfixedstack}
+{$endif i386}
+>>>>>>> graemeg/fixes_2_2
       end;
 
 
@@ -463,5 +509,13 @@ uses
       end;
 {$pop}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end.
 

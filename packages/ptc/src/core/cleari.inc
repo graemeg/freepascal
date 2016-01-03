@@ -1,6 +1,6 @@
 {
     Free Pascal port of the OpenPTC C++ library.
-    Copyright (C) 2001-2003, 2006, 2007, 2009-2011  Nikolay Nikolov (nickysn@users.sourceforge.net)
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@
 
 constructor TPTCClear.Create;
 begin
+  FFormat := nil;
   { initialize hermes }
   if not Hermes_Init then
     raise TPTCError.Create('could not initialize hermes');
@@ -49,6 +50,7 @@ destructor TPTCClear.Destroy;
 begin
   { return the clearer instance }
   Hermes_ClearerReturn(FHandle);
+  FFormat.Free;
 
   { free hermes }
   Hermes_Done;
@@ -56,20 +58,20 @@ begin
   inherited Destroy;
 end;
 
-procedure TPTCClear.Request(AFormat: IPTCFormat);
+procedure TPTCClear.Request(const AFormat: TPTCFormat);
 var
   hermes_format: PHermesFormat;
 begin
-  hermes_format := AFormat.GetHermesFormat;
+  hermes_format := @AFormat.FFormat;
   { request surface clear for this format }
   if not Hermes_ClearerRequest(FHandle, hermes_format) then
     raise TPTCError.Create('unsupported clear format');
 
   { update current format }
-  FFormat := AFormat;
+  FFormat.Assign(AFormat);
 end;
 
-procedure TPTCClear.Clear(APixels: Pointer; AX, AY, AWidth, AHeight, APitch: Integer; AColor: IPTCColor);
+procedure TPTCClear.Clear(APixels: Pointer; AX, AY, AWidth, AHeight, APitch: Integer; const AColor: TPTCColor);
 var
   r, g, b, a: LongInt;
   index: LongInt;

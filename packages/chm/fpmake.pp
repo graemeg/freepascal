@@ -15,6 +15,8 @@ begin
 
     P:=AddPackage('chm');
 {$ifdef ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
@@ -33,6 +35,21 @@ begin
 
     P.SourcePath.Add('src');
     P.IncludePath.Add('src');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    P.Directory:='chm';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+
+    D:=P.Dependencies.Add('fcl-xml');
+      D.Version:='2.2.4';
+    
+    P.SourcePath.Add('src');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     T:=P.Targets.AddUnit('chmbase.pas');
     T:=P.Targets.AddUnit('chmfilewriter.pas');
@@ -59,7 +76,19 @@ begin
         end;
     T:=P.Targets.AddUnit('chmtypes.pas');
       with T.Dependencies do
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        begin
+=======
+        begin
+>>>>>>> graemeg/fixes_2_2
+=======
+        begin
+>>>>>>> origin/fixes_2_2
+=======
+       begin
+>>>>>>> origin/fixes_2.4
           AddUnit('chmbase');
         end;
     T:=P.Targets.AddUnit('htmlindexer.pas');
@@ -76,9 +105,40 @@ begin
           AddUnit('chmspecialfiles');
           AddUnit('paslzxcomp');
           AddUnit('chmfiftimain');
+<<<<<<< HEAD
+<<<<<<< HEAD
           AddInclude('chmobjinstconst.inc');
         end;
     T:=P.Targets.AddUnit('lzxcompressthread.pas');
+      with T.Dependencies do
+        begin
+          AddUnit('paslzxcomp');
+        end;
+    T:=P.Targets.AddUnit('lzxcompressthread.pas');
+      with T.Dependencies do
+        begin
+          AddUnit('paslzxcomp');
+        end;
+    T:=P.Targets.AddUnit('lzxcompressthread.pas');
+      with T.Dependencies do
+        begin
+          AddUnit('paslzxcomp');
+        end;
+    T:=P.Targets.AddUnit('lzxcompressthread.pas');
+      with T.Dependencies do
+        begin
+          AddUnit('paslzxcomp');
+        end;
+    T:=P.Targets.AddUnit('lzxcompressthread.pas');
+      with T.Dependencies do
+        begin
+          AddUnit('paslzxcomp');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+        end;
+    T:=P.Targets.AddUnit('lzxcompressthread');
       with T.Dependencies do
         begin
           AddUnit('paslzxcomp');
@@ -97,6 +157,8 @@ begin
         begin
           AddUnit('htmlindexer');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
    T:=P.Targets.AddUnit('itolitlstypes.pas');
    T:=P.Targets.AddUnit('itsftransform.pas');
       with T.Dependencies do
@@ -106,7 +168,23 @@ begin
         end;
    T:=P.Targets.AddUnit('itolitlsreader.pas');
       with T.Dependencies do
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         begin  //chmreader, itolitlstypes, Sysutils, chmbase, itsftransform;
+=======
+        begin  //chmreader, itolitlstypes, Sysutils, chmbase, itsftransform; 
+>>>>>>> graemeg/cpstrnew
+=======
+        begin  //chmreader, itolitlstypes, Sysutils, chmbase, itsftransform; 
+>>>>>>> graemeg/cpstrnew
+=======
+        begin  //chmreader, itolitlstypes, Sysutils, chmbase, itsftransform; 
+>>>>>>> graemeg/cpstrnew
+=======
+        begin  //chmreader, itolitlstypes, Sysutils, chmbase, itsftransform; 
+>>>>>>> origin/cpstrnew
           AddUnit('chmbase');
           AddUnit('chmreader');
           AddUnit('itolitlstypes');
@@ -117,6 +195,10 @@ begin
 //    P.ProgramPath.Add('src');
     T:=P.Targets.AddProgram('chmls.lpr');
     T:=P.Targets.AddProgram('chmcmd.lpr');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
 {$ifndef ALLPACKAGES}

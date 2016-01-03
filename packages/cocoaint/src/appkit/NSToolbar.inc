@@ -80,10 +80,35 @@ var
     _configPalette: id;
     _toolbarView: id;
     _syncPostEnabledCount: NSInteger;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __tbFlags: record
       case byte of
        0: (_anonbitfield_NSToolbar0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __tbFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSToolbar0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _allowsUserCustomization: 0..1;
         autosavesUsingIdentifier: 0..1;
         initialConfigurationDone: 0..1;
@@ -111,7 +136,19 @@ var
         autovalidatesItemsDisabled: 0..1;
         inAutovalidation: 0..1;
         loadedMetrics: 0..1;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _customizationSheetWidth: NSInteger;

@@ -5,25 +5,102 @@ unit utests;
 
 interface
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses
      cgiapp,
      sysutils,
      pqconnection,
      sqldb,whtml,dbwhtml,db,
      tresults,webutil,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef FPC}
+  {$ifdef VER2_4}
+    {$define USE_FPCGI}
+  {$endif VER2_4}
+  {$ifdef VER2_5}
+    {$define USE_FPCGI}
+  {$endif VER2_5}
+{$endif FPC}
+
+{$undef USE_FPCGI}
+
+uses 
+{$ifdef USE_FPCGI}
+     fpcgi,
+{$else not USE_FPCGI}
+     cgiapp,
+{$endif not USE_FPCGI}     
+     sysutils,mysql50conn,sqldb,whtml,dbwhtml,db,
+=======
+uses cgiapp,sysutils,mysql50conn,sqldb,whtml,dbwhtml,db,
+>>>>>>> graemeg/fixes_2_2
+=======
+uses cgiapp,sysutils,mysql50conn,sqldb,whtml,dbwhtml,db,
+>>>>>>> origin/fixes_2_2
+     tresults,
+>>>>>>> graemeg/cpstrnew
      Classes,ftFont,fpimage,fpimgcanv,fpWritePng,fpcanvas;
 
 const
   TestsuiteURLPrefix='http://www.freepascal.org/testsuite/';
+<<<<<<< HEAD
+<<<<<<< HEAD
   TestsuiteBin='testsuite.cgi';
   ViewURL='http://svn.freepascal.org/cgi-bin/viewvc.cgi/';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   ViewRevURL='http://svn.freepascal.org/cgi-bin/viewvc.cgi?view=revision&amp;revision=';
   TestsSubDir='/tests/';
   DataBaseSubDir='/packages/fcl-db/tests/';
 
 var
   TestsuiteCGIURL : string;
+=======
+  TestsuiteCGIURL = TestsuiteURLPrefix+'cgi-bin/testsuite.cgi';
+  ViewVCURL='http://svn.freepascal.org/cgi-bin/viewvc.cgi/trunk/tests/';
+>>>>>>> graemeg/fixes_2_2
+=======
+  TestsuiteCGIURL = TestsuiteURLPrefix+'cgi-bin/testsuite.cgi';
+  ViewVCURL='http://svn.freepascal.org/cgi-bin/viewvc.cgi/trunk/tests/';
+>>>>>>> origin/fixes_2_2
 
+=======
+  TestsSubDir='/tests/';
+  DataBaseSubDir='/packages/fcl-db/tests/';
+var
+  TestsuiteCGIURL : string;
+>>>>>>> graemeg/cpstrnew
+=======
+  TestsSubDir='/tests/';
+  DataBaseSubDir='/packages/fcl-db/tests/';
+var
+  TestsuiteCGIURL : string;
+>>>>>>> graemeg/cpstrnew
+=======
+  TestsSubDir='/tests/';
+  DataBaseSubDir='/packages/fcl-db/tests/';
+var
+  TestsuiteCGIURL : string;
+>>>>>>> graemeg/cpstrnew
+=======
+  TestsSubDir='/tests/';
+  DataBaseSubDir='/packages/fcl-db/tests/';
+var
+  TestsuiteCGIURL : string;
+>>>>>>> origin/cpstrnew
 Type
 
   { TTestSuite }
@@ -64,7 +141,13 @@ Type
     FLimit : Integer;
     FTestLastDays : Integer;
     FNeedEnd : boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure DumpTestInfo(Q: TSQLQuery);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Procedure GetOverviewRowAttr(Sender : TObject; Var BGColor : String;
                                    Var Align : THTMLAlign; Var VAlign : THTMLValign;
                                    Var CustomAttr : String) ;
@@ -76,8 +159,20 @@ Type
     Procedure FormatFileDetails(Sender: TObject; var CellData: String);
     Procedure FormatFileIDDetails(Sender: TObject; var CellData: String);
     Procedure FormatTestResult(Sender: TObject; var CellData: String);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Procedure FormatSVN(Sender: TObject; var CellData: String);
     Procedure FormatSVNData(var CellData: String);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     Function  FormatDetailURL(const RunIdStr, CellData : String) : string;
 
     Procedure DoDrawPie(Img : TFPCustomImage; Skipped,Failed,Total : Integer);
@@ -95,8 +190,20 @@ Type
     Function GetVersionName(ID : String) : String;
     Function GetCategoryName(ID : String) : String;
     Function GetTestFileName(ID : String) : String;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Function GetPreviousRunID(RunID : String) : String;
     Function GetNextRunID(RunID : String) : String;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     Function GetFailCount(RunID : longint) : string;
     Function InitCGIVars : Integer;
     Procedure DoRun; override;
@@ -137,7 +244,13 @@ Const
   DefPassword = ''; // fill this in, too.
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Const
+<<<<<<< HEAD
+<<<<<<< HEAD
   OldTestResultsTableName = 'OLDTESTRESULTS';
   NewTestResultsTableName = 'TESTRESULTS';
   LastOldTestRun = 91178;
@@ -173,6 +286,27 @@ Var
   SDetailsURL : string;
 
 type
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+Var
+  SDetailsURL : string;
+
+type 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   known_versions = (
     ver_unknown,
     ver_1_0_10,
@@ -193,6 +327,10 @@ type
     ver_2_3_1,
     ver_2_4_0,
     ver_2_4_1,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     ver_2_4_2,
     ver_2_4_3,
     ver_2_4_4,
@@ -208,6 +346,18 @@ type
     ver_3_0_0,
     ver_3_0_1,
     ver_3_1_1);
+=======
+    ver_2_5_1);
+>>>>>>> graemeg/cpstrnew
+=======
+    ver_2_5_1);
+>>>>>>> graemeg/cpstrnew
+=======
+    ver_2_5_1);
+>>>>>>> graemeg/cpstrnew
+=======
+    ver_2_5_1);
+>>>>>>> origin/cpstrnew
 
 const
   ver_trunk = high (known_versions);
@@ -234,6 +384,10 @@ const
    '2.3.1',
    '2.4.0',
    '2.4.1',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    '2.4.2',
    '2.4.3',
    '2.4.4',
@@ -252,6 +406,27 @@ const
   );
 
   ver_branch : array [known_versions] of string =
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+   '2.5.1'
+  );
+
+  ver_branch : array [known_versions] of string = 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   (
    '',
    '',
@@ -271,6 +446,10 @@ const
    'branches/fixes_2_2',
    'tags/release_2_4_0',
    'tags/release_2_4_0',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    'tags/release_2_4_2',
    'tags/release_2_4_2',
    'tags/release_2_4_4',
@@ -286,8 +465,26 @@ const
    'trunk',
    'branches/release_3_0_0',
    'branches/fixes_3_0',
+=======
+   'branches/fixes_2_4',
+>>>>>>> graemeg/cpstrnew
+=======
+   'branches/fixes_2_4',
+>>>>>>> graemeg/cpstrnew
+=======
+   'branches/fixes_2_4',
+>>>>>>> graemeg/cpstrnew
+=======
+   'branches/fixes_2_4',
+>>>>>>> origin/cpstrnew
    'trunk'
   );
+=======
+  SDetailsURL = TestsuiteCGIURL + '?action=1&run1id=%s';
+>>>>>>> graemeg/fixes_2_2
+=======
+  SDetailsURL = TestsuiteCGIURL + '?action=1&run1id=%s';
+>>>>>>> origin/fixes_2_2
 
 Procedure TTestSuite.DoRun;
 
@@ -301,6 +498,7 @@ begin
             ShowRunResults
           else
             ShowRunComparison;
+<<<<<<< HEAD
         faction_show_run_pie : CreateRunPie;
         faction_show_one_test : ShowOneTest;
         faction_show_history : ShowHistory;
@@ -327,6 +525,14 @@ begin
             ShowRunComparison;
           end;
 {$ifdef TEST}
+=======
+        2 : CreateRunPie;
+        3 : ShowOneTest;
+<<<<<<< HEAD
+<<<<<<< HEAD
+        4 : ShowHistory;
+{$ifdef TEST}        
+>>>>>>> graemeg/cpstrnew
         98 :
           begin
             ///EmitOverviewForm;
@@ -343,6 +549,27 @@ begin
             system.Dump_stack(stdout,get_frame);
             system.Writeln(stdout,'</PRE>');
             system.Flush(stdout);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef TEST}        
+        98 :
+          begin
+            EmitOverviewForm;
+            Writeln(stdout,'<PRE>');
+            FreeMem(pointer($ffffffff));
+            Writeln(stdout,'</PRE>');
+          end;
+        99 : 
+          begin
+            EmitOverviewForm;
+            Writeln(stdout,'<PRE>');
+            Dump_stack(stdout,get_frame);
+            Writeln(stdout,'</PRE>');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           end;
 {$endif TEST}
         end;
@@ -369,6 +596,10 @@ begin
   S:=RequestVariables['action'];
   if Length(S) = 0 then
     S:=RequestVariables['TESTACTION'];
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if S='View_history' then
     FAction:=faction_show_history
   else if S='Show/Compare' then
@@ -381,6 +612,22 @@ begin
     FAction:=faction_compare2_with_previous
   else if S='Compare_right_to_next' then
     FAction:=faction_compare2_with_next
+=======
+  if S='View history' then
+    FAction:=4
+>>>>>>> graemeg/cpstrnew
+=======
+  if S='View history' then
+    FAction:=4
+>>>>>>> graemeg/cpstrnew
+=======
+  if S='View history' then
+    FAction:=4
+>>>>>>> graemeg/cpstrnew
+=======
+  if S='View history' then
+    FAction:=4
+>>>>>>> origin/cpstrnew
   else
     FAction:=StrToIntDef(S,0);
   S:=RequestVariables['limit'];
@@ -392,17 +639,45 @@ begin
   FVersion:=RequestVariables['version'];
   if Length(FVersion) = 0 then
     FVersion:=RequestVariables['TESTVERSION'];
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   TestsuiteCGIURL:=Self.ScriptName;
   SDetailsURL := TestsuiteCGIURL + '?action=1&amp;run1id=%s';
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> origin/cpstrnew
   FOS:=RequestVariables['os'];
   if Length(FOS) = 0 then
     FOS:=RequestVariables['TESTOS'];
   FCPU:=RequestVariables['cpu'];
   if Length(FCPU) = 0 then
     FCPU:=RequestVariables['TESTCPU'];
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   FCategory:=RequestVariables['category'];
   if Length(FCategory) = 0 then
     FCategory:=RequestVariables['TESTCATEGORY'];
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   FCond:=RequestVariables['cond'];
   if Length(FCond) = 0 then
     FCond:=RequestVariables['TESTCOND'];
@@ -461,7 +736,15 @@ Function TTestSuite.ConnectToDB : Boolean;
 
 begin
   Result:=False;
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDB:=TPQConnection.Create(Self);
+=======
+  FDB:=TMySQl50Connection.Create(Self);
+>>>>>>> graemeg/fixes_2_2
+=======
+  FDB:=TMySQl50Connection.Create(Self);
+>>>>>>> origin/fixes_2_2
   FDB.HostName:=DefHost;
   FDB.DatabaseName:=DefDatabase;
   FDB.UserName:=DefDBUser;
@@ -589,12 +872,18 @@ begin
   AddResponseLn('<TITLE>'+ATitle+'</TITLE>');
   AddResponseLn('<BODY>');
   FNeedEnd:=true;
+<<<<<<< HEAD
+<<<<<<< HEAD
 end;
 
 Procedure TTestSuite.EmitDocType;
 begin
   AddResponseLn('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" '+
      '"http://www.w3.org/TR/html4/loose.dtd">');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TTestSuite.EmitOverviewForm;
@@ -647,7 +936,11 @@ begin
       begin
         RowNext;
         CellStart;
+<<<<<<< HEAD
         DumpLn('Submitter');
+=======
+        Write('Submitter');
+>>>>>>> graemeg/cpstrnew
         CellNext;
         If (FSubmitter='') then
           EmitInput('submitter','')
@@ -656,7 +949,11 @@ begin
         CellEnd;
        RowNext;
         CellStart;
+<<<<<<< HEAD
         DumpLn('Machine');
+=======
+        Write('Machine');
+>>>>>>> graemeg/cpstrnew
         CellNext;
         If (FMachine='') then
           EmitInput('machine','')
@@ -665,7 +962,11 @@ begin
         CellEnd;
         RowNext;
         CellStart;
+<<<<<<< HEAD
         DumpLn('Comment');
+=======
+        Write('Comment');
+>>>>>>> graemeg/cpstrnew
         CellNext;
         If (FComment='') then
           EmitInput('comment','')
@@ -675,7 +976,11 @@ begin
 
         RowNext;
         CellStart;
+<<<<<<< HEAD
         DumpLn('Cond');
+=======
+        Write('Cond');
+>>>>>>> graemeg/cpstrnew
         CellNext;
         If (FCond='') then
           EmitInput('cond','')
@@ -683,12 +988,15 @@ begin
           EmitInput('cond',FCond);
         CellEnd;
       end;
+<<<<<<< HEAD
     RowNext;
       CellStart;
         DumpLn('Category');
       CellNext;
         ComboBoxFromQuery('Category','SELECT TCAT_ID,TCAT_NAME FROM TESTCATEGORY ORDER BY TCAT_NAME',FCategory);
       CellEnd;
+=======
+>>>>>>> graemeg/cpstrnew
     RowNext;
       CellStart;
         DumpLn('Only failed tests');
@@ -719,11 +1027,15 @@ begin
   ConnectToDB;
   ContentType:='text/html';
   EmitContentType;
+<<<<<<< HEAD
   EmitDocType;
+=======
+>>>>>>> graemeg/cpstrnew
   EmitTitle(Title);
   With FHTMLWriter do
     begin
     HeaderStart(1);
+<<<<<<< HEAD
     DumpLn('View Test suite results');
     HeaderEnd(1);
     DumpLn('Please specify search criteria:');
@@ -735,46 +1047,114 @@ begin
     RowStart;
       CellStart;
         DumpLn('File:');
+=======
+    Write('View Test suite results');
+    HeaderEnd(1);
+    Write('Please specify search criteria:');
+    ParagraphStart;
+    FormStart(TestsuiteCGIURL,'');
+<<<<<<< HEAD
+<<<<<<< HEAD
+    if FDebug then
+      EmitHiddenVar('DEBUGCGI', '1');
+<<<<<<< HEAD
+<<<<<<< HEAD
+    EmitHiddenVar('action','4');
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+    TableStart(2,true);
+    RowStart;
+      CellStart;
+        Write('File:');
+>>>>>>> graemeg/cpstrnew
       CellNext;
         EmitInput('testfilename',FTestfilename);
       CellEnd;
     RowNext;
     (*   CellStart;
+<<<<<<< HEAD
         DumpLn('FileID:');
+=======
+        Write('FileID:');
+>>>>>>> graemeg/cpstrnew
       CellNext;
         EmitInput('testfileid',FTestfileid);
       CellEnd;
     RowNext; *)
+<<<<<<< HEAD
 
       CellStart;
         DumpLn('Operating system:');
+=======
+ 
+      CellStart;
+        Write('Operating system:');
+>>>>>>> graemeg/cpstrnew
       CellNext;
         ComboBoxFromQuery('os','SELECT TO_ID,TO_NAME FROM TESTOS ORDER BY TO_NAME',FOS);
       CellEnd;
     RowNext;
       CellStart;
+<<<<<<< HEAD
         DumpLn('Processor:');
+=======
+        Write('Processor:');
+>>>>>>> graemeg/cpstrnew
       CellNext;
         ComboBoxFromQuery('cpu','SELECT TC_ID,TC_NAME FROM TESTCPU ORDER BY TC_NAME',FCPU);
       CellEnd;
     RowNext;
       CellStart;
+<<<<<<< HEAD
         DumpLn('Version');
+=======
+        Write('Version');
+>>>>>>> graemeg/cpstrnew
       CellNext;
         ComboBoxFromQuery('version','SELECT TV_ID,TV_VERSION FROM TESTVERSION ORDER BY TV_VERSION DESC',FVERSION);
       CellEnd;
     RowNext;
       CellStart;
+<<<<<<< HEAD
         DumpLn('Date');
+=======
+        Write('Date');
+>>>>>>> graemeg/cpstrnew
       CellNext;
         If (FDate=0) then
           EmitInput('date','')
         else
           EmitInput('date',DateToStr(FDate));
       CellEnd;
+<<<<<<< HEAD
+<<<<<<< HEAD
         RowNext;
         CellStart;
+<<<<<<< HEAD
         DumpLn('Submitter');
+=======
+        Write('Submitter');
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/cpstrnew
+    //if FDebug then
+      begin
+        RowNext;
+        CellStart;
+        Write('Submitter');
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         CellNext;
         If (FSubmitter='') then
           EmitInput('submitter','')
@@ -783,7 +1163,19 @@ begin
         CellEnd;
        RowNext;
         CellStart;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         DumpLn('Machine');
+=======
+        Write('Machine');
+>>>>>>> graemeg/cpstrnew
+=======
+        Write('Machine');
+>>>>>>> graemeg/cpstrnew
+=======
+        Write('Machine');
+>>>>>>> origin/cpstrnew
         CellNext;
         If (FMachine='') then
           EmitInput('machine','')
@@ -792,7 +1184,218 @@ begin
         CellEnd;
         RowNext;
         CellStart;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         DumpLn('Comment');
+=======
+        Write('Comment');
+>>>>>>> graemeg/cpstrnew
+=======
+        Write('Comment');
+>>>>>>> graemeg/cpstrnew
+=======
+        Write('Comment');
+>>>>>>> origin/cpstrnew
+        CellNext;
+        If (FComment='') then
+          EmitInput('comment','')
+        else
+          EmitInput('comment',FComment);
+        CellEnd;
+<<<<<<< HEAD
+<<<<<<< HEAD
+        RowNext;
+        CellStart;
+<<<<<<< HEAD
+        DumpLn('Limit');
+=======
+        Write('Limit');
+>>>>>>> graemeg/cpstrnew
+        CellNext;
+        EmitInput('limit',IntToStr(FLimit));
+        CellEnd;
+
+        RowNext;
+        CellStart;
+<<<<<<< HEAD
+        DumpLn('Cond');
+=======
+        Write('Cond');
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/cpstrnew
+
+        RowNext;
+        CellStart;
+        Write('Cond');
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        CellNext;
+        If (FCond='') then
+          EmitInput('cond','')
+        else
+          EmitInput('cond',FCond);
+        CellEnd;
+<<<<<<< HEAD
+<<<<<<< HEAD
+    RowNext;
+      CellStart;
+<<<<<<< HEAD
+        DumpLn('Category');
+      CellNext;
+        ComboBoxFromQuery('Category','SELECT TCAT_ID,TCAT_NAME FROM TESTCATEGORY ORDER BY TCAT_NAME',FCategory);
+      CellEnd;
+=======
+      end;
+>>>>>>> graemeg/cpstrnew
+=======
+      end;
+>>>>>>> origin/cpstrnew
+    RowNext;
+      CellStart;
+        DumpLn('Only failed tests');
+=======
+        Write('Only failed tests');
+>>>>>>> graemeg/cpstrnew
+      CellNext;
+        EmitCheckBox('failedonly','1',FonlyFailed);
+      CellEnd;
+    RowNext;
+      CellStart;
+<<<<<<< HEAD
+        DumpLn('Hide skipped tests');
+=======
+        Write('Hide skipped tests');
+>>>>>>> graemeg/cpstrnew
+      CellNext;
+        EmitCheckBox('noskipped','1',FNoSkipped);
+      CellEnd;
+    RowNext;
+      CellStart;
+<<<<<<< HEAD
+        DumpLn('List all tests');
+=======
+        Write('List all tests');
+>>>>>>> graemeg/cpstrnew
+      CellNext;
+        EmitCheckBox('listall','1',FListAll);
+      CellEnd;
+
+    RowEnd;
+    TableEnd;
+    ParaGraphStart;
+<<<<<<< HEAD
+    if FDebug then
+      EmitHiddenVar('DEBUGCGI', '1');
+=======
+>>>>>>> graemeg/cpstrnew
+    EmitSubmitButton('','Search');
+    EmitSubmitButton('action','View history');
+
+    EmitResetButton('','Reset form');
+    FormEnd;
+    end;
+end;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+Procedure TTestSuite.EmitHistoryForm;
+=======
+Procedure TTestSuite.EmitHistoryForm;
+=======
+procedure TTestSuite.EmitEnd;
+begin  
+  if not FNeedEnd then
+    exit;
+  AddResponseLn('</BODY>');
+  AddResponseLn('</HTML>');
+end;
+>>>>>>> graemeg/fixes_2_2
+
+begin
+  ConnectToDB;
+  ContentType:='text/html';
+  EmitContentType;
+  EmitTitle(Title);
+  With FHTMLWriter do
+    begin
+    HeaderStart(1);
+    Write('View Test suite results');
+    HeaderEnd(1);
+    Write('Please specify search criteria:');
+    ParagraphStart;
+    FormStart(TestsuiteCGIURL,'');
+    if FDebug then
+      EmitHiddenVar('DEBUGCGI', '1');
+    EmitHiddenVar('action','4');
+    TableStart(2,true);
+    RowStart;
+      CellStart;
+        Write('File:');
+      CellNext;
+        EmitInput('testfilename',FTestfilename);
+      CellEnd;
+    RowNext;
+    (*   CellStart;
+        Write('FileID:');
+      CellNext;
+        EmitInput('testfileid',FTestfileid);
+      CellEnd;
+    RowNext; *)
+ 
+      CellStart;
+        Write('Operating system:');
+      CellNext;
+        ComboBoxFromQuery('os','SELECT TO_ID,TO_NAME FROM TESTOS ORDER BY TO_NAME',FOS);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('Processor:');
+      CellNext;
+        ComboBoxFromQuery('cpu','SELECT TC_ID,TC_NAME FROM TESTCPU ORDER BY TC_NAME',FCPU);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('Version');
+      CellNext;
+        ComboBoxFromQuery('version','SELECT TV_ID,TV_VERSION FROM TESTVERSION ORDER BY TV_VERSION DESC',FVERSION);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('Date');
+      CellNext;
+        If (FDate=0) then
+          EmitInput('date','')
+        else
+          EmitInput('date',DateToStr(FDate));
+      CellEnd;
+        RowNext;
+        CellStart;
+        Write('Submitter');
+        CellNext;
+        If (FSubmitter='') then
+          EmitInput('submitter','')
+        else
+          EmitInput('submitter',FSubmitter);
+        CellEnd;
+       RowNext;
+        CellStart;
+        Write('Machine');
+        CellNext;
+        If (FMachine='') then
+          EmitInput('machine','')
+        else
+          EmitInput('machine',FMachine);
+        CellEnd;
+        RowNext;
+        CellStart;
+        Write('Comment');
         CellNext;
         If (FComment='') then
           EmitInput('comment','')
@@ -801,14 +1404,14 @@ begin
         CellEnd;
         RowNext;
         CellStart;
-        DumpLn('Limit');
+        Write('Limit');
         CellNext;
         EmitInput('limit',IntToStr(FLimit));
         CellEnd;
 
         RowNext;
         CellStart;
-        DumpLn('Cond');
+        Write('Cond');
         CellNext;
         If (FCond='') then
           EmitInput('cond','')
@@ -817,25 +1420,19 @@ begin
         CellEnd;
     RowNext;
       CellStart;
-        DumpLn('Category');
-      CellNext;
-        ComboBoxFromQuery('Category','SELECT TCAT_ID,TCAT_NAME FROM TESTCATEGORY ORDER BY TCAT_NAME',FCategory);
-      CellEnd;
-    RowNext;
-      CellStart;
-        DumpLn('Only failed tests');
+        Write('Only failed tests');
       CellNext;
         EmitCheckBox('failedonly','1',FonlyFailed);
       CellEnd;
     RowNext;
       CellStart;
-        DumpLn('Hide skipped tests');
+        Write('Hide skipped tests');
       CellNext;
         EmitCheckBox('noskipped','1',FNoSkipped);
       CellEnd;
     RowNext;
       CellStart;
-        DumpLn('List all tests');
+        Write('List all tests');
       CellNext;
         EmitCheckBox('listall','1',FListAll);
       CellEnd;
@@ -843,14 +1440,302 @@ begin
     RowEnd;
     TableEnd;
     ParaGraphStart;
-    if FDebug then
-      EmitHiddenVar('DEBUGCGI', '1');
     EmitSubmitButton('','Search');
     EmitResetButton('','Reset form');
     FormEnd;
     end;
 end;
 
+
+procedure TTestSuite.EmitEnd;
+begin  
+  if not FNeedEnd then
+    exit;
+  AddResponseLn('</BODY>');
+  AddResponseLn('</HTML>');
+end;
+>>>>>>> origin/cpstrnew
+
+begin
+  ConnectToDB;
+  ContentType:='text/html';
+  EmitContentType;
+  EmitTitle(Title);
+  With FHTMLWriter do
+    begin
+    HeaderStart(1);
+    Write('View Test suite results');
+    HeaderEnd(1);
+    Write('Please specify search criteria:');
+    ParagraphStart;
+    FormStart(TestsuiteCGIURL,'');
+    if FDebug then
+      EmitHiddenVar('DEBUGCGI', '1');
+<<<<<<< HEAD
+    EmitHiddenVar('action','4');
+=======
+
+>>>>>>> graemeg/cpstrnew
+    TableStart(2,true);
+    RowStart;
+      CellStart;
+        Write('File:');
+      CellNext;
+        EmitInput('testfilename',FTestfilename);
+      CellEnd;
+    RowNext;
+    (*   CellStart;
+        Write('FileID:');
+      CellNext;
+        EmitInput('testfileid',FTestfileid);
+      CellEnd;
+    RowNext; *)
+ 
+      CellStart;
+        Write('Operating system:');
+      CellNext;
+        ComboBoxFromQuery('os','SELECT TO_ID,TO_NAME FROM TESTOS ORDER BY TO_NAME',FOS);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('Processor:');
+      CellNext;
+        ComboBoxFromQuery('cpu','SELECT TC_ID,TC_NAME FROM TESTCPU ORDER BY TC_NAME',FCPU);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('Version');
+      CellNext;
+        ComboBoxFromQuery('version','SELECT TV_ID,TV_VERSION FROM TESTVERSION ORDER BY TV_VERSION DESC',FVERSION);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('Date');
+      CellNext;
+        If (FDate=0) then
+          EmitInput('date','')
+        else
+          EmitInput('date',DateToStr(FDate));
+      CellEnd;
+<<<<<<< HEAD
+=======
+    //if FDebug then
+      begin
+>>>>>>> graemeg/cpstrnew
+        RowNext;
+        CellStart;
+        Write('Submitter');
+        CellNext;
+        If (FSubmitter='') then
+          EmitInput('submitter','')
+        else
+          EmitInput('submitter',FSubmitter);
+        CellEnd;
+       RowNext;
+        CellStart;
+        Write('Machine');
+        CellNext;
+        If (FMachine='') then
+          EmitInput('machine','')
+        else
+          EmitInput('machine',FMachine);
+        CellEnd;
+        RowNext;
+        CellStart;
+        Write('Comment');
+        CellNext;
+        If (FComment='') then
+          EmitInput('comment','')
+        else
+          EmitInput('comment',FComment);
+        CellEnd;
+<<<<<<< HEAD
+        RowNext;
+        CellStart;
+        Write('Limit');
+        CellNext;
+        EmitInput('limit',IntToStr(FLimit));
+        CellEnd;
+=======
+>>>>>>> graemeg/cpstrnew
+
+        RowNext;
+        CellStart;
+        Write('Cond');
+        CellNext;
+        If (FCond='') then
+          EmitInput('cond','')
+        else
+          EmitInput('cond',FCond);
+        CellEnd;
+<<<<<<< HEAD
+=======
+      end;
+>>>>>>> graemeg/cpstrnew
+    RowNext;
+      CellStart;
+        Write('Only failed tests');
+      CellNext;
+        EmitCheckBox('failedonly','1',FonlyFailed);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('Hide skipped tests');
+      CellNext;
+        EmitCheckBox('noskipped','1',FNoSkipped);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('List all tests');
+      CellNext;
+        EmitCheckBox('listall','1',FListAll);
+      CellEnd;
+
+    RowEnd;
+    TableEnd;
+    ParaGraphStart;
+    EmitSubmitButton('','Search');
+    EmitSubmitButton('action','View history');
+
+    EmitResetButton('','Reset form');
+    FormEnd;
+    end;
+end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure TTestSuite.EmitHistoryForm;
+
+begin
+  ConnectToDB;
+  ContentType:='text/html';
+  EmitContentType;
+  EmitTitle(Title);
+  With FHTMLWriter do
+    begin
+    HeaderStart(1);
+    Write('View Test suite results');
+    HeaderEnd(1);
+    Write('Please specify search criteria:');
+    ParagraphStart;
+    FormStart(TestsuiteCGIURL,'');
+    if FDebug then
+      EmitHiddenVar('DEBUGCGI', '1');
+    EmitHiddenVar('action','4');
+    TableStart(2,true);
+    RowStart;
+      CellStart;
+        Write('File:');
+      CellNext;
+        EmitInput('testfilename',FTestfilename);
+      CellEnd;
+    RowNext;
+    (*   CellStart;
+        Write('FileID:');
+      CellNext;
+        EmitInput('testfileid',FTestfileid);
+      CellEnd;
+    RowNext; *)
+ 
+      CellStart;
+        Write('Operating system:');
+      CellNext;
+        ComboBoxFromQuery('os','SELECT TO_ID,TO_NAME FROM TESTOS ORDER BY TO_NAME',FOS);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('Processor:');
+      CellNext;
+        ComboBoxFromQuery('cpu','SELECT TC_ID,TC_NAME FROM TESTCPU ORDER BY TC_NAME',FCPU);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('Version');
+      CellNext;
+        ComboBoxFromQuery('version','SELECT TV_ID,TV_VERSION FROM TESTVERSION ORDER BY TV_VERSION DESC',FVERSION);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('Date');
+      CellNext;
+        If (FDate=0) then
+          EmitInput('date','')
+        else
+          EmitInput('date',DateToStr(FDate));
+      CellEnd;
+        RowNext;
+        CellStart;
+        Write('Submitter');
+        CellNext;
+        If (FSubmitter='') then
+          EmitInput('submitter','')
+        else
+          EmitInput('submitter',FSubmitter);
+        CellEnd;
+       RowNext;
+        CellStart;
+        Write('Machine');
+        CellNext;
+        If (FMachine='') then
+          EmitInput('machine','')
+        else
+          EmitInput('machine',FMachine);
+        CellEnd;
+        RowNext;
+        CellStart;
+        Write('Comment');
+        CellNext;
+        If (FComment='') then
+          EmitInput('comment','')
+        else
+          EmitInput('comment',FComment);
+        CellEnd;
+        RowNext;
+        CellStart;
+        Write('Limit');
+        CellNext;
+        EmitInput('limit',IntToStr(FLimit));
+        CellEnd;
+
+        RowNext;
+        CellStart;
+        Write('Cond');
+        CellNext;
+        If (FCond='') then
+          EmitInput('cond','')
+        else
+          EmitInput('cond',FCond);
+        CellEnd;
+    RowNext;
+      CellStart;
+        Write('Only failed tests');
+      CellNext;
+        EmitCheckBox('failedonly','1',FonlyFailed);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('Hide skipped tests');
+      CellNext;
+        EmitCheckBox('noskipped','1',FNoSkipped);
+      CellEnd;
+    RowNext;
+      CellStart;
+        Write('List all tests');
+      CellNext;
+        EmitCheckBox('listall','1',FListAll);
+      CellEnd;
+
+    RowEnd;
+    TableEnd;
+    ParaGraphStart;
+    EmitSubmitButton('','Search');
+    EmitResetButton('','Reset form');
+    FormEnd;
+    end;
+end;
+
+>>>>>>> graemeg/cpstrnew
 
 procedure TTestSuite.EmitEnd;
 begin
@@ -960,7 +1845,23 @@ begin
    if (FOS<>'') and (GetOSName(FOS)<>'All') then
      S:=S+' AND (TU_OS_FK='+FOS+')';
    If (Round(FDate)<>0) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      S:=S+' AND (to_char(TU_DATE, ''YYYY-MM-DD'') LIKE '''+FormatDateTime('YYYY-MM-DD',FDate)+'%'')';
+=======
+     S:=S+' AND (TU_DATE LIKE '''+FormatDateTime('YYYY-MM-DD',FDate)+'%'')';
+>>>>>>> graemeg/cpstrnew
+=======
+     S:=S+' AND (TU_DATE LIKE '''+FormatDateTime('YYYY-MM-DD',FDate)+'%'')';
+>>>>>>> graemeg/cpstrnew
+=======
+     S:=S+' AND (TU_DATE LIKE '''+FormatDateTime('YYYY-MM-DD',FDate)+'%'')';
+>>>>>>> graemeg/cpstrnew
+=======
+     S:=S+' AND (TU_DATE LIKE '''+FormatDateTime('YYYY-MM-DD',FDate)+'%'')';
+>>>>>>> origin/cpstrnew
    If FSubmitter<>'' then
      S:=S+' AND (TU_SUBMITTER='''+FSubmitter+''')';
    If FMachine<>'' then
@@ -969,6 +1870,10 @@ begin
      S:=S+' AND (TU_COMMENT LIKE '''+Fcomment+''')';
    If FCond<>'' then
      S:=S+' AND ('+FCond+')';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    If GetCategoryName(FCategory)<>'DB' then
      SC:=', CONCAT(TU_SVNCOMPILERREVISION,''/'',TU_SVNRTLREVISION,''/'', '+
           'TU_SVNPACKAGESREVISION,''/'',TU_SVNTESTSREVISION) as svnrev'
@@ -977,6 +1882,16 @@ begin
    If (FCategory='') or (GetCategoryName(FCategory)='All') then
      SC:=SC+', TCAT_NAME as Cat';
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+   If FOnlyFailed then
+     S:=S+' AND (TR_OK="-")';
+>>>>>>> graemeg/cpstrnew
    A:=SDetailsURL;
    If FOnlyFailed then
      A:=A+'&amp;failedonly=1';
@@ -1036,7 +1951,17 @@ begin
     Result:='';
 end;
 
+<<<<<<< HEAD
 Function TTestSuite.GetTestFileName(ID : String) : String;
+=======
+Function TTestsuite.GetFailCount(RunID : longint) : string;
+begin
+  if RunID<>0 then
+    Result:=GetSingleTon('SELECT (TU_FAILEDTOCOMPILE + TU_FAILEDTOFAIL + TU_FAILEDTORUN) FROM TESTRUN WHERE TU_ID='+IntToStr(RunID));
+end;
+
+Function TTestSuite.GetCPUName(ID : String) : String;
+>>>>>>> graemeg/cpstrnew
 
 begin
   if (ID<>'') then
@@ -1051,6 +1976,24 @@ begin
     Result:=GetSingleTon('SELECT (TU_FAILEDTOCOMPILE + TU_FAILEDTOFAIL + TU_FAILEDTORUN) FROM TESTRUN WHERE TU_ID='+IntToStr(RunID))
   else
     Result:='';
+end;
+
+Function TTestsuite.GetFailCount(RunID : longint) : string;
+begin
+  if RunID<>0 then
+    Result:=GetSingleTon('SELECT (TU_FAILEDTOCOMPILE + TU_FAILEDTOFAIL + TU_FAILEDTORUN) FROM TESTRUN WHERE TU_ID='+IntToStr(RunID));
+end;
+
+Function TTestsuite.GetFailCount(RunID : longint) : string;
+begin
+  if RunID<>0 then
+    Result:=GetSingleTon('SELECT (TU_FAILEDTOCOMPILE + TU_FAILEDTOFAIL + TU_FAILEDTORUN) FROM TESTRUN WHERE TU_ID='+IntToStr(RunID));
+end;
+
+Function TTestsuite.GetFailCount(RunID : longint) : string;
+begin
+  if RunID<>0 then
+    Result:=GetSingleTon('SELECT (TU_FAILEDTOCOMPILE + TU_FAILEDTOFAIL + TU_FAILEDTORUN) FROM TESTRUN WHERE TU_ID='+IntToStr(RunID));
 end;
 
 Function TTestSuite.GetCPUName(ID : String) : String;
@@ -1111,16 +2054,49 @@ Function TTestSuite.ShowRunData : Boolean;
 
 Const
   SGetRunData = 'SELECT TU_ID,TU_DATE,TC_NAME,TO_NAME,' +
+<<<<<<< HEAD
+<<<<<<< HEAD
                 'TU_SUBMITTER,TU_MACHINE,TU_COMMENT,TV_VERSION,'+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 'TU_CATEGORY_FK,TU_SVNCOMPILERREVISION,TU_SVNRTLREVISION,'+
                 'TU_COMPILERDATE,'+
                 'TU_SVNPACKAGESREVISION,TU_SVNTESTSREVISION,'+
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                '(TU_SUCCESSFULLYFAILED+TU_SUCCESFULLYCOMPILED+TU_SUCCESSFULLYRUN) AS OK,'+
                '(TU_FAILEDTOCOMPILE+TU_FAILEDTORUN+TU_FAILEDTOFAIL) as Failed,'+
                '(TU_SUCCESSFULLYFAILED+TU_SUCCESFULLYCOMPILED+TU_SUCCESSFULLYRUN+'+
                 'TU_FAILEDTOCOMPILE+TU_FAILEDTORUN+TU_FAILEDTOFAIL) as Total'+
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 ' %s FROM TESTRUN,TESTCPU,TESTOS,TESTVERSION '+
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+                'TU_SUBMITTER,TU_MACHINE,TU_COMMENT,TV_VERSION '+
+>>>>>>> graemeg/fixes_2_2
+=======
+                'TU_SUBMITTER,TU_MACHINE,TU_COMMENT,TV_VERSION '+
+>>>>>>> origin/fixes_2_2
+                ' FROM TESTRUN,TESTCPU,TESTOS,TESTVERSION '+
+>>>>>>> graemeg/cpstrnew
                 'WHERE '+
                 ' (TC_ID=TU_CPU_FK) AND '+
                 ' (TO_ID=TU_OS_FK) AND '+
@@ -1158,9 +2134,16 @@ begin
         Q2.Open;
       Result:=Not (Q1.EOF and Q1.BOF);
       If Result then
+<<<<<<< HEAD
        With FHTMLWriter do
         begin
           FormStart(TestsuiteCGIURL,'get');
+=======
+        With FHTMLWriter do
+          begin
+          FormStart(TestsuiteCGIURL,'get');
+          EmitHiddenVar('action', '1');
+>>>>>>> graemeg/fixes_2_2
           TableStart(3,true);
           RowStart;
             CellStart;
@@ -1199,7 +2182,119 @@ begin
             CellEnd;
           RowNext;
             CellStart;
+<<<<<<< HEAD
               DumpLn('Fails/OK/Total:');
+=======
+              Write('Fails/OK/Total:');
+            CellNext;
+              Write(Q1.FieldByName('Failed').AsString);
+              Write('/'+Q1.FieldByName('OK').AsString);
+              Write('/'+Q1.FieldByName('Total').AsString);
+            CellNext;
+              if Q2 <> nil then
+                begin
+                  Write(Q2.FieldByName('Failed').AsString);
+                  Write('/'+Q2.FieldByName('Ok').AsString);
+                  Write('/'+Q2.FieldByName('Total').AsString);
+               end;
+            CellEnd;
+ 
+          RowNext;
+            CellStart;
+<<<<<<< HEAD
+<<<<<<< HEAD
+              Write('Fails/OK/Total:');
+=======
+              Write('Machine:');
+=======
+              Write('Machine:');
+            CellNext;
+              Write(Q1.FieldByName('TU_MACHINE').AsString);
+            CellNext;
+              if Q2 <> nil then
+                Write(Q2.FieldByName('TU_MACHINE').AsString);
+            CellEnd;
+          RowNext;
+            CellStart;
+              Write('Submitter:');
+            CellNext;
+              Write(Q1.FieldByName('TU_SUBMITTER').AsString);
+            CellNext;
+              if Q2 <> nil then
+                Write(Q2.FieldByName('TU_SUBMITTER').AsString);
+            CellEnd;
+          RowNext;
+            CellStart;
+              Write('Date:');
+>>>>>>> origin/fixes_2_2
+            CellNext;
+              Write(Q1.FieldByName('TU_MACHINE').AsString);
+            CellNext;
+              if Q2 <> nil then
+                Write(Q2.FieldByName('TU_MACHINE').AsString);
+            CellEnd;
+          RowNext;
+            CellStart;
+              Write('Submitter:');
+            CellNext;
+              Write(Q1.FieldByName('TU_SUBMITTER').AsString);
+            CellNext;
+              if Q2 <> nil then
+                Write(Q2.FieldByName('TU_SUBMITTER').AsString);
+            CellEnd;
+          RowNext;
+            CellStart;
+              Write('Date:');
+>>>>>>> graemeg/fixes_2_2
+            CellNext;
+              Write(Q1.FieldByName('Failed').AsString);
+              Write('/'+Q1.FieldByName('OK').AsString);
+              Write('/'+Q1.FieldByName('Total').AsString);
+            CellNext;
+              if Q2 <> nil then
+                begin
+                  Write(Q2.FieldByName('Failed').AsString);
+                  Write('/'+Q2.FieldByName('Ok').AsString);
+                  Write('/'+Q2.FieldByName('Total').AsString);
+               end;
+            CellEnd;
+ 
+          RowNext;
+            CellStart;
+              Write('Fails/OK/Total:');
+            CellNext;
+              Write(Q1.FieldByName('Failed').AsString);
+              Write('/'+Q1.FieldByName('OK').AsString);
+              Write('/'+Q1.FieldByName('Total').AsString);
+            CellNext;
+              if Q2 <> nil then
+                begin
+                  Write(Q2.FieldByName('Failed').AsString);
+                  Write('/'+Q2.FieldByName('Ok').AsString);
+                  Write('/'+Q2.FieldByName('Total').AsString);
+               end;
+            CellEnd;
+ 
+          RowNext;
+            CellStart;
+              Write('Fails/OK/Total:');
+            CellNext;
+              Write(Q1.FieldByName('Failed').AsString);
+              Write('/'+Q1.FieldByName('OK').AsString);
+              Write('/'+Q1.FieldByName('Total').AsString);
+            CellNext;
+              if Q2 <> nil then
+                begin
+                  Write(Q2.FieldByName('Failed').AsString);
+                  Write('/'+Q2.FieldByName('Ok').AsString);
+                  Write('/'+Q2.FieldByName('Total').AsString);
+               end;
+            CellEnd;
+ 
+          RowNext;
+            CellStart;
+              Write('Comment:');
+>>>>>>> graemeg/cpstrnew
             CellNext;
               Dump(Q1.FieldByName('Failed').AsString);
               Dump('/'+Q1.FieldByName('OK').AsString);
@@ -1497,6 +2592,14 @@ begin
               Finally
                 Free;
               end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            DumpLn(Format('<p>Record count: %d </p>',[Q.RecordCount]));
+>>>>>>> graemeg/fixes_2_2
+=======
+            DumpLn(Format('<p>Record count: %d </p>',[Q.RecordCount]));
+>>>>>>> origin/fixes_2_2
           Finally
             Close;
           end;
@@ -1506,6 +2609,10 @@ begin
       If Not (FRunCount=0) and not (FNoSkipped or FOnlyFailed) then
         begin
         ParaGraphStart;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         TagStart('IMG',Format('Src="'+TestsuiteCGIURL+
         '?action=2&amp;pietotal=%d&amp;piefailed=%d&amp;pieskipped=%d"'+
         ' ALT="total=%d, failed=%d, skipped=%d"',
@@ -1522,6 +2629,7 @@ end;
 Procedure TTestSuite.DumpTestInfo(Q : TSQLQuery);
 
 Var
+<<<<<<< HEAD
   I : Integer;
   field_displayed : boolean;
   FieldValue,FieldName : String;
@@ -1562,6 +2670,9 @@ Procedure TTestSuite.ShowOneTest;
 
 Var
   S,S2 : String;
+=======
+  S : String;
+>>>>>>> graemeg/cpstrnew
   Qry : String;
   Base, Category : string;
   Q : TSQLQuery;
@@ -1678,7 +2789,11 @@ begin
                 //FL:='TR_ID,TR_TESTRUN_FK,T_NAME,T_CPU,T_VERSION';
                 CreateColumns(Nil);
                 TableColumns.Delete(TableColumns.ColumnByName('TR_TEST_FK').Index);
+<<<<<<< HEAD
                 TableColumns.ColumnByNAme('RUN').OnGetCellContents:=
+=======
+                TableColumns.ColumnByNAme('TR_TESTRUN_FK').OnGetCellContents:=
+>>>>>>> graemeg/cpstrnew
                   @FormatTestRunOverview;
                 //OnGetRowAttributes:=@GetRunRowAttr;
                 TableColumns.ColumnByNAme('TR_RESULT').OnGetCellContents:=
@@ -1703,7 +2818,11 @@ begin
               begin
                 Category:=getsingleton('select TU_CATEGORY_FK from TESTRUN where TU_ID='+FRunId);
                 FVersionBranch:=GetVersionName(getsingleton('select TU_VERSION_FK from TESTRUN where TU_ID='+fRunId));
+<<<<<<< HEAD
                 LLog:='';
+=======
+                log:=''; 
+>>>>>>> graemeg/cpstrnew
                 Try
                 LLog:=getsingleton('select TR_LOG from TESTRESULTS where (TR_TEST_FK='+ftestfileid
                      +') and (TR_TESTRUN_FK='+frunid+')');
@@ -1766,13 +2885,21 @@ begin
                 system.flush(output);
                 PreformatEnd;
               end;
+<<<<<<< HEAD
             Finally
+=======
+            Finally 
+>>>>>>> graemeg/cpstrnew
             Base:='trunk';
             if  FVersionBranch<>'' then
               begin
                 // Test all but last version, which is assumed to be trunk
                 for ver:=low(known_versions) to pred(high(known_versions)) do
+<<<<<<< HEAD
                   if VER_String[ver]=FVersionBranch then
+=======
+                  if ver_string[ver]=FVersionBranch then
+>>>>>>> graemeg/cpstrnew
                     begin
                       base:=ver_branch[ver];
                       break;
@@ -2541,6 +3668,2827 @@ begin
     end;
 end;
 
+
+Procedure TTestSuite.ShowHistory;
+Const
+  MaxCombo = 50;
+Type 
+  StatusLongintArray = Array [TTestStatus] of longint;
+  StatusDateTimeArray = Array [TTestStatus] of TDateTime;
+  AStatusLA = Array[1..MaxCombo] of StatusLongintArray;
+  AStatusDTA = Array[1..MaxCombo] of StatusDateTimeArray;
+  PStatusLA = ^AStatusLA;
+  PStatusDTA = ^AStatusDTA;
+Var
+  S,FL,cpu,version,os : String;
+  date : TDateTime;
+  Qry : String;
+  Base, Category : string;
+  Q : TSQLQuery;
+  i,run_id,os_id,version_id,cpu_id : longint;
+  run_ind,os_ind,version_ind,cpu_ind,
+  ok_ind,skip_ind,result_ind,date_ind : longint;
+  os_size, cpu_size, version_size : longint;
+  os_last, cpu_last, version_last : longint;
+  error : word;
+  OK_count, not_OK_count,resi,
+  total_count, skip_count, not_skip_count : longint;
+  TS : TTestStatus;
+  result_count : StatusLongintArray;
+  os_count,cpu_count,version_count: PStatusLA;
+  first_date, last_date : array[TTestStatus] of TDateTime;
+  first_date_id, last_date_id : array[TTestStatus] of longint;
+  os_first_date, os_last_date,
+  cpu_first_date, cpu_last_date,
+  version_first_date, version_last_date : PStatusDTA;
+  os_first_date_id, os_last_date_id,
+  cpu_first_date_id, cpu_last_date_id,
+  version_first_date_id, version_last_date_id : PStatusLA;
+  FieldName,FieldValue,
+  Log,Source : String;
+  Res : Boolean;
+  ver : known_versions;
+begin
+  os_count:=nil;
+  cpu_count:=nil;
+  version_count:=nil;
+  ConnectToDB;
+  ContentType:='text/html';
+  EmitContentType;
+  if FTestFileID='' then
+    FTestFileID:=GetSingleton('SELECT T_ID FROM TESTS WHERE T_NAME LIKE ''%'+
+     FTestFileName+'%''');
+  if FTestFileID<>'' then
+    FTestFileName:=GetTestFileName(FTestFileID);
+  EmitTitle(Title+' : File '+FTestFileName+' Results');
+  With FHTMLWriter do
+    begin
+    HeaderStart(1);
+    Write('Test suite results for test file '+FTestFileName);
+    HeaderEnd(1);
+    HeaderStart(2);
+    Write('Test run data : ');
+    HeaderEnd(2);
+    if FRunID<>'' then
+      begin
+        Res:=ShowRunData;
+        Res:=true;
+      end
+    else 
+      begin
+        // This is useless as it is now
+        // It should be integrated into a form probably PM 
+        //Write('Only failed tests');
+        //EmitCheckBox('failedonly','1',FonlyFailed);
+        //Write('Hide skipped tests');
+        //EmitCheckBox('noskipped','1',FNoSkipped);
+        Res:=true;
+        EmitHistoryForm;
+      end;
+    If Res then
+      begin
+      HeaderStart(2);
+      Write('Test file "'+FTestFileName+'" information:');
+      HeaderEnd(2);
+      ParaGraphStart;
+      S:='SELECT * FROM TESTS WHERE T_ID='+FTestFileID;
+      Q:=CreateDataSet(S);
+      With Q do
+        Try
+          Open;
+          Try
+            For i:=0 to FieldCount-1 do
+              begin
+                FieldValue:=Fields[i].AsString;
+                FieldName:=Fields[i].DisplayName;
+                if (FieldValue<>'') and (FieldValue<>'-') and 
+                   (FieldName<>'T_NAME') and (FieldName<>'T_SOURCE') then
+                  begin
+                    if (FieldValue='+') then
+                      Write('Flag ');
+                    Write(FieldName);
+                    Write(' ');
+                    if FieldValue='+' then
+                      Write(' set')
+                    else
+                      Write(FieldValue);
+                    DumpLn('<BR>');
+                  end;
+              end;
+           
+          Finally
+            Close;
+          end;
+        Finally
+          Free;
+        end;
+      ParaGraphEnd;  
+      HeaderStart(2);
+      Write('Detailed test run results:');
+
+      HeaderEnd(2);
+      ParaGraphStart;
+      S:='SELECT TR_ID,TR_TESTRUN_FK,TR_TEST_FK,TR_OK, TR_SKIP,TR_RESULT '
+      //S:='SELECT * '
+        +',TC_NAME AS CPU, TV_VERSION AS VERSION, TO_NAME AS OS'
+        +',TU_ID,TU_DATE,TU_SUBMITTER,TU_MACHINE,TU_COMMENT '
+        +',TO_ID,TC_ID,TV_ID'
+        +' FROM TESTRUN '
+        +' LEFT JOIN TESTRESULTS ON  (TR_TESTRUN_FK=TU_ID)'
+        +' LEFT JOIN TESTOS ON  (TU_OS_FK=TO_ID)'
+        +' LEFT JOIN TESTCPU ON  (TU_CPU_FK=TC_ID)'
+        +' LEFT JOIN TESTVERSION ON  (TU_VERSION_FK=TV_ID)'
+        +' WHERE  (TR_TEST_FK='+FTestFileID+')';
+      If FOnlyFailed then
+        S:=S+' AND (TR_OK="-")';
+      If FNoSkipped then
+        S:=S+' AND (TR_SKIP="-")';
+      If (FCPU<>'') and (GetCPUName(FCPU)<>'All') then
+        begin
+          S:=S+' AND (TU_CPU_FK='+FCPU+')';
+          cpu_size:=0;
+        end
+      else
+        begin
+          cpu_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTCPU'));
+          cpu_size:=Sizeof(StatusLongintArray)*(1+cpu_last);
+          cpu_count:=GetMem(cpu_size);
+          FillChar(cpu_count^,cpu_size,#0);
+          cpu_first_date_id:=GetMem(cpu_size);
+          FillChar(cpu_first_date_id^,cpu_size,#0);
+          cpu_last_date_id:=GetMem(cpu_size);
+          FillChar(cpu_last_date_id^,cpu_size,#0);
+          cpu_first_date:=GetMem(cpu_last*SizeOf(StatusDateTimeArray));
+          FillChar(cpu_first_date^,cpu_last*Sizeof(StatusDateTimeArray),#0);
+          cpu_last_date:=GetMem(cpu_last*SizeOf(StatusDateTimeArray));
+          FillChar(cpu_last_date^,cpu_last*Sizeof(StatusDateTimeArray),#0);
+        end;
+      If (FVersion<>'') and (GetVersionName(FVersion)<>'All')  then
+        begin
+          S:=S+' AND (TU_VERSION_FK='+FVERSION+')';
+          version_size:=0;
+        end
+      else
+        begin
+          version_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTVERSION'));
+          version_size:=Sizeof(StatusLongintArray)*(1+version_last);
+          version_count:=GetMem(version_size);
+          FillChar(version_count^,version_size,#0);
+          version_first_date_id:=GetMem(version_size);
+          FillChar(version_first_date_id^,version_size,#0);
+          version_last_date_id:=GetMem(version_size);
+          FillChar(version_last_date_id^,version_size,#0);
+          version_first_date:=GetMem(version_last*SizeOf(StatusDateTimeArray));
+          FillChar(version_first_date^,version_last*Sizeof(StatusDateTimeArray),#0);
+          version_last_date:=GetMem(version_last*SizeOf(StatusDateTimeArray));
+          FillChar(version_last_date^,version_last*Sizeof(StatusDateTimeArray),#0);
+
+        end;
+
+      if (FOS<>'') and (GetOSName(FOS)<>'All') then
+        begin
+          S:=S+' AND (TU_OS_FK='+FOS+')';
+          os_size:=0;
+        end
+      else
+        begin
+          os_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTOS'));
+          os_size:=Sizeof(StatusLongintArray)*(1+os_last);
+          os_count:=GetMem(os_size);
+          FillChar(os_count^,os_size,#0);
+          os_first_date_id:=GetMem(os_size);
+          FillChar(os_first_date_id^,os_size,#0);
+          os_last_date_id:=GetMem(os_size);
+          FillChar(os_last_date_id^,os_size,#0);
+          os_first_date:=GetMem(os_last*SizeOf(StatusDateTimeArray));
+          FillChar(os_first_date^,os_last*Sizeof(StatusDateTimeArray),#0);
+          os_last_date:=GetMem(os_last*SizeOf(StatusDateTimeArray));
+          FillChar(os_last_date^,os_last*Sizeof(StatusDateTimeArray),#0);
+        end;
+
+      If FSubmitter<>'' then
+        S:=S+' AND (TU_SUBMITTER='''+FSubmitter+''')';
+      If FMachine<>'' then
+        S:=S+' AND (TU_MACHINE='''+FMachine+''')';
+      If FComment<>'' then
+        S:=S+' AND (TU_COMMENT LIKE '''+FComment+''')';
+      if FDATE<>0 then
+        S:=S+' AND (TU_DATE >= '''+FormatDateTime('YYYY-MM-DD',FDate)+''')';
+
+      S:=S+' ORDER BY TU_ID DESC';
+      if FDATE=0 then
+        S:=S+' LIMIT '+IntToStr(FLimit);
+      Qry:=S;
+      If FDebug then
+      begin
+        Writeln(system.stdout,'Query : '+Qry);
+        system.Flush(system.stdout);
+      end;
+      FRunCount:=0;
+      FRunSkipCount:=0;
+      FRunFailedCount:=0;
+      Q:=CreateDataset(Qry);
+      With Q do
+        try
+          Open;
+          
+          while not EOF do
+            Next;
+
+          DumpLn(Format('<p>Record count: %d </p>',[Q.RecordCount]));
+          if RecordCount>0 then
+            RecNo:=0;
+
+          Try
+           if FDebug then
+             begin
+               Writeln(stdout,'FieldKind=',Fields[0].FieldKind);
+               Writeln(stdout,'DataType=',Fields[0].DataType);
+               system.flush(stdout);
+             end;
+
+          total_count:=0;
+          OK_count:=0;
+          not_OK_count:=0;
+          skip_count:=0;
+          not_skip_count:=0;
+          fillchar(Result_Count,Sizeof(Result_count),#0);
+          ok_ind:=FieldByName('TR_OK').Index;
+          skip_ind:=FieldBYName('TR_SKIP').Index;
+          result_ind:=FieldByName('TR_RESULT').Index;
+          cpu_ind:=FieldByName('TC_ID').Index;
+          os_ind:=FieldByName('TO_ID').Index;
+          version_ind:=FieldByName('TV_ID').Index;
+          date_ind:=FieldByName('TU_DATE').Index;
+          run_ind:=FieldByName('TU_ID').Index;
+          For i:=0 to Q.RecordCount-1 do
+            begin
+              Q.RecNo:=i;
+              inc(total_count);
+              S:=Fields[ok_ind].AsString;
+
+              if S='+' then
+                inc(OK_count)
+              else
+                inc(not_OK_count);
+              S:=Fields[skip_ind].AsString;
+              if S='+' then
+                inc(skip_count)
+              else
+                inc(not_skip_count);
+              S:=Fields[result_ind].AsString;
+              cpu:=Fields[cpu_ind].ASString;
+              version:=Fields[version_ind].AsString;
+              os:=Fields[os_ind].AsString;
+              date:=Fields[date_ind].ASDateTime;
+              os_id:=Fields[os_ind].AsLongint;
+              cpu_id:=Fields[cpu_ind].AsLongint;
+              version_id:=Fields[version_ind].AsLongint;
+              system.val(S,resi,error);
+              run_id:=Fields[run_ind].ASLongint;
+              if (error=0) and (Resi>=longint(FirstStatus)) and
+                 (Resi<=longint(LastStatus)) then
+                begin   
+                  TS:=TTestStatus(Resi);
+                  if Result_count[TS]=0 then
+                    begin
+                      first_date[TS]:=date;
+                      last_date[TS]:=date;
+                      first_date_id[TS]:=run_id;
+                      last_date_id[TS]:=run_id;
+                    end
+                  else 
+                    begin
+                      if (date>last_date[TS]) then
+                        begin
+                          last_date[TS]:=date;
+                          last_date_id[TS]:=run_id;
+                        end;
+                      if date<first_date[TS] then
+                        begin
+                          first_date[TS]:=date;
+                          first_date_id[TS]:=run_id;
+                        end;
+                    end;
+                    
+                  inc(Result_count[TS]);
+                  if assigned(cpu_count) and (cpu_id<=cpu_last) then
+                    begin
+                      if cpu_count^[cpu_id,TS]=0 then
+                        begin
+                          cpu_first_date^[cpu_id,TS]:=date;
+                          cpu_last_date^[cpu_id,TS]:=date;
+                          cpu_first_date_id^[cpu_id,TS]:=run_id;
+                          cpu_last_date_id^[cpu_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>cpu_last_date^[cpu_id,TS]) then
+                            begin
+                              cpu_last_date^[cpu_id,TS]:=date;
+                              cpu_last_date_id^[cpu_id,TS]:=run_id;
+                            end;
+                          if date<cpu_first_date^[cpu_id,TS] then
+                            begin
+                              cpu_first_date^[cpu_id,TS]:=date;
+                              cpu_first_date_id^[cpu_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(cpu_count^[cpu_id,TS]);
+                    end;
+                  if assigned(os_count) and (os_id<=os_last) then
+                    begin
+                      if os_count^[os_id,TS]=0 then
+                        begin
+                          os_first_date^[os_id,TS]:=date;
+                          os_last_date^[os_id,TS]:=date;
+                          os_first_date_id^[os_id,TS]:=run_id;
+                          os_last_date_id^[os_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>os_last_date^[os_id,TS]) then
+                            begin
+                              os_last_date^[os_id,TS]:=date;
+                              os_last_date_id^[os_id,TS]:=run_id;
+                            end;
+                          if date<os_first_date^[os_id,TS] then
+                            begin
+                              os_first_date^[os_id,TS]:=date;
+                              os_first_date_id^[os_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(os_count^[os_id,TS]);
+                    end;
+                  if assigned(version_count) and (version_id<=version_last) then
+                    begin
+                      if version_count^[version_id,TS]=0 then
+                        begin
+                          version_first_date^[version_id,TS]:=date;
+                          version_last_date^[version_id,TS]:=date;
+                          version_first_date_id^[version_id,TS]:=run_id;
+                          version_last_date_id^[version_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>version_last_date^[version_id,TS]) then
+                            begin
+                              version_last_date^[version_id,TS]:=date;
+                              version_last_date_id^[version_id,TS]:=run_id;
+                            end;
+                          if date<version_first_date^[version_id,TS] then
+                            begin
+                              version_first_date^[version_id,TS]:=date;
+                              version_first_date_id^[version_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(version_count^[version_id,TS]);
+                    end;
+                end
+              else if Fdebug then
+                writeln(stdout,'Error for Result, S=',S);
+            end;
+          DumpLn(Format('<p>Total = %d </p>',[total_count]));
+          if Total_count > 0 then
+            DumpLn(Format('<p>OK=%d Percentage= %3.2f </p>',[OK_count,OK_count*100/total_count]));
+          if Skip_count > 0 then
+            DumpLn(Format('<p>Skipped=%d Percentage= %3.2f </p>',[Skip_count,Skip_count*100/total_count]));
+          if total_count>0 then
+            begin
+              TableStart(5,True);
+              RowStart;
+              CellStart;
+              Write('Result type');
+              CellNext;
+              Write('Cat.');
+              CellNext;
+              Write('Count');
+              CellNext;
+              Write('Percentage');
+              CellNext;
+              Write('First date');
+              CellNext;
+              Write('Last Date');
+              CellEnd;
+            end;
+          For TS:=FirstStatus to LastStatus do
+            if Result_count[TS]>0 then
+              begin
+                RowNext;
+                CellStart;
+                Write(StatusText[TS]);
+                CellNext;
+                CellNext;
+                Write(Format('%d',[Result_count[TS]]));
+                CellNext;
+                Write(Format('%3.1f',[Result_count[TS]*100/total_count]));
+                CellNext;
+
+                DumpLn(FormatDetailURL(IntToStr(first_date_id[TS]),
+                  DateTimeToStr(first_date[TS])));
+                Write(' '+GetFailCount(first_date_id[TS]));
+                CellNext;
+                DumpLn(FormatDetailURL(IntToStr(last_date_id[TS]),
+                  DateTimeToStr(last_date[TS])));
+                Write(' '+GetFailCount(last_date_id[TS]));
+                CellEnd;
+                if assigned(cpu_count) then
+                  begin
+                    for i:=1 to cpu_last do
+                      if cpu_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TC_NAME FROM TESTCPU WHERE TC_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[cpu_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[cpu_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(cpu_first_date_id^[i,TS]),
+                            DateTimeToStr(cpu_first_date^[i,TS])));
+                          Write(' '+GetFailCount(cpu_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(cpu_last_date_id^[i,TS]),
+                            DateTimeToStr(cpu_last_date^[i,TS])));
+                          Write(' '+GetFailCount(cpu_last_date_id^[i,TS]));
+                          CellEnd;
+                        end;
+                  end;
+                if assigned(os_count) then
+                  begin
+                    for i:=1 to os_last do
+                      if os_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TO_NAME FROM TESTOS WHERE TO_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[os_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[os_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(os_first_date_id^[i,TS]),
+                            DateTimeToStr(os_first_date^[i,TS])));
+                          Write(' '+GetFailCount(os_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(os_last_date_id^[i,TS]),
+                            DateTimeToStr(os_last_date^[i,TS])));
+                          Write(' '+GetFailCount(os_last_date_id^[i,TS]));
+                          CellEnd;
+
+                        end;
+
+                  end;
+
+                if assigned(version_count) then
+                  begin
+                    for i:=1 to version_last do
+                      if version_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TV_VERSION FROM TESTVERSION WHERE TV_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[version_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[version_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(version_first_date_id^[i,TS]),
+                            DateTimeToStr(version_first_date^[i,TS])));
+                          Write(' '+GetFailCount(version_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(version_last_date_id^[i,TS]),
+                            DateTimeToStr(version_last_date^[i,TS])));
+                          Write(' '+GetFailCount(version_last_date_id^[i,TS]));
+                          CellEnd;
+
+                        end;
+
+                  end;
+
+              end;
+          if total_count>0 then
+            begin
+              TableEnd;
+              RecNo:=0;
+            end;
+          If FDebug or FListAll then
+           begin
+
+            With CreateTableProducer(Q) do
+              Try
+                Border:=True;
+<<<<<<< HEAD
+                FL:='TR_TESTRUN_FK,TU_DATE,TR_OK,TR_SKIP,TR_RESULT';
+                if FSubmitter='' then
+                  FL:=FL+',TU_SUBMITTER';
+                if FMachine='' then
+                  FL:=FL+',TU_MACHINE';
+                if Fcomment='' then
+                  FL:=FL+',TU_COMMENT';
+                if (FOS='') or (GetOSName(FOS)='All') then
+                  FL:=FL+',OS';
+                if (FCPU='') or (GetCPUName(FCPU)='All') then
+                  FL:=FL+',CPU';
+                if (FVersion='') or (GetVersionName(FVersion)='All') then
+                  FL:=FL+',VERSION';
+                
+                CreateColumns(FL);
+                //TableColumns.Delete(TableColumns.ColumnByName('TR_TEST_FK').Index);
+=======
+                //FL:='TR_ID,TR_TESTRUN_FK,T_NAME,T_CPU,T_VERSION';
+                CreateColumns(Nil);
+                TableColumns.Delete(TableColumns.ColumnByName('TR_TEST_FK').Index);
+>>>>>>> graemeg/cpstrnew
+                TableColumns.ColumnByNAme('TR_TESTRUN_FK').OnGetCellContents:=
+                  @FormatTestRunOverview;
+                //OnGetRowAttributes:=@GetRunRowAttr;
+                TableColumns.ColumnByNAme('TR_RESULT').OnGetCellContents:=
+                  @FormatTestResult;
+                //(TableColumns.Items[0] as TTableColumn).ActionURL:=ALink;
+                CreateTable(Response);
+              Finally
+                Free;
+              end;
+           end;
+
+          Finally
+            Close;
+          end;
+        finally
+          Free;
+        end;
+             //If FDebug then
+            Category:='1';
+            if FRunId<>'' then
+              begin
+                Category:=getsingleton('select TU_CATEGORY_FK from TESTRUN where TU_ID='+FRunId);
+                FVersionBranch:=GetVersionName(getsingleton('select TU_VERSION_FK from TESTRUN where TU_ID='+fRunId));
+                log:=''; 
+                Try
+                log:=getsingleton('select TR_LOG from TESTRESULTS where (TR_TEST_FK='+ftestfileid
+                     +') and (TR_TESTRUN_FK='+frunid+')');
+                if Log<>'' then
+                  begin
+                    HeaderStart(2);
+                    Write('Log of '+FRunId+':');
+                    HeaderEnd(2);
+                    PreformatStart;
+                    system.Write(Log);
+                    system.flush(output);
+                    PreformatEnd;
+                  end;
+                Finally
+                  if Log='' then
+                    begin
+                      HeaderStart(2);
+                      Write('No log of '+FRunId+'.');
+                      HeaderEnd(2);
+                    end;  
+                end;  
+              end;  
+            if FCompareRunId<>'' then
+              begin
+                log:=''; 
+                Try
+                log:=getsingleton('select TR_LOG from TESTRESULTS where (TR_TEST_FK='+ftestfileid
+                     +') and (TR_TESTRUN_FK='+fcomparerunid+')');
+                if Log<>'' then
+                  begin
+                    HeaderStart(2);
+                    Write('Log of '+FCompareRunId+':');
+                    HeaderEnd(2);
+                    PreformatStart;
+                    system.Write(Log);
+                    system.flush(output);
+                    PreformatEnd;
+                  end;
+                Finally
+                  if Log='' then
+                    begin
+                      HeaderStart(2);
+                      Write('No log of '+FCompareRunId+'.');
+                      HeaderEnd(2);
+                    end;  
+                end;  
+              end;  
+            if FDebug then
+              Write('After Log.');
+            Source:='';
+            Try  
+            Source:=getsingleton('select T_SOURCE from TESTS where T_ID='+ftestfileid);
+            if Source<>'' then
+              begin
+                HeaderStart(2);
+                Write('Source:');
+                HeaderEnd(2);
+                PreformatStart;
+                system.Write(Source);
+                system.flush(output);
+                PreformatEnd;
+              end;
+            Finally 
+            Base:='trunk';
+            if  FVersionBranch<>'' then
+              begin
+                // Test all but last version, which is assumed to be trunk
+                for ver:=low(known_versions) to pred(high(known_versions)) do
+                  if ver_string[ver]=FVersionBranch then
+                    begin
+                      base:=ver_branch[ver];
+                      break;
+                    end;
+              end;
+            FViewVCURL:=ViewURL+Base;
+            if Category='1' then
+              FViewVCUrl:=FViewVCURL+TestsSubDir
+            else
+              begin
+                FViewVCUrl:=FViewVCURL+DataBaseSubDir;
+                // This assumes that type TAnyType is
+                // defined in anytype.pas source PM
+                if pos('/',FTestFileName)>0 then
+                  FTestfilename:=lowercase(copy(FTestFilename,2,pos('/',FTestFilename)-2)+'.pas');
+              end;
+            if Source='' then
+              begin
+                HeaderStart(3);
+                DumpLn('<P>No Source in TestSuite DataBase.</P>');
+                DumpLn('Link to SVN view of '+
+                  '<A HREF="'+FViewVCURL+FTestFileName+'?view=markup'+
+                  '" TARGET="fpc_source"> '+FTestFileName+'</A> source. ');
+                HeaderEnd(3);
+              end
+            else
+              begin
+                HeaderStart(3);
+                DumpLn('Link to SVN view of '+
+                  '<A HREF="'+FViewVCURL+FTestFileName+'?view=markup'+
+                  '" TARGET="fpc_source"> '+FTestFileName+'</A> source. ');
+                HeaderEnd(3);
+              end;  
+            end;  
+             if FDebug then
+              Write('After Source.');
+    end
+=======
+        TagStart('IMG',Format('Src="'+TestsuiteCGIURL+'?action=2&pietotal=%d&piefailed=%d&pieskipped=%d"',[FRunCount,FRunFailedCount,FRunSkipCount]));
+        end;
+      end
+>>>>>>> graemeg/cpstrnew
+    else
+      Write(Format('No data for test file with ID: %s',[FTestFileID]));
+      
+    end;
+  if assigned(os_count) then
+    begin
+      FreeMem(os_count);
+      FreeMem(os_first_date);
+      FreeMem(os_first_date_id);
+      FreeMem(os_last_date);
+      FreeMem(os_last_date_id);
+    end;
+
+  if assigned(cpu_count) then
+    begin
+      FreeMem(cpu_count);
+      FreeMem(cpu_first_date);
+      FreeMem(cpu_first_date_id);
+      FreeMem(cpu_last_date);
+      FreeMem(cpu_last_date_id);
+    end;
+  if assigned(version_count) then
+    begin
+      FreeMem(version_count);
+      FreeMem(version_first_date);
+      FreeMem(version_first_date_id);
+      FreeMem(version_last_date);
+      FreeMem(version_last_date_id);
+    end;
+end;
+
+
+Procedure TTestSuite.ShowHistory;
+Const
+  MaxCombo = 50;
+Type 
+  StatusLongintArray = Array [TTestStatus] of longint;
+  StatusDateTimeArray = Array [TTestStatus] of TDateTime;
+  AStatusLA = Array[1..MaxCombo] of StatusLongintArray;
+  AStatusDTA = Array[1..MaxCombo] of StatusDateTimeArray;
+  PStatusLA = ^AStatusLA;
+  PStatusDTA = ^AStatusDTA;
+Var
+  S,FL,cpu,version,os : String;
+  date : TDateTime;
+  Qry : String;
+  Base, Category : string;
+  Q : TSQLQuery;
+  i,run_id,os_id,version_id,cpu_id : longint;
+  run_ind,os_ind,version_ind,cpu_ind,
+  ok_ind,skip_ind,result_ind,date_ind : longint;
+  os_size, cpu_size, version_size : longint;
+  os_last, cpu_last, version_last : longint;
+  error : word;
+  OK_count, not_OK_count,resi,
+  total_count, skip_count, not_skip_count : longint;
+  TS : TTestStatus;
+  result_count : StatusLongintArray;
+  os_count,cpu_count,version_count: PStatusLA;
+  first_date, last_date : array[TTestStatus] of TDateTime;
+  first_date_id, last_date_id : array[TTestStatus] of longint;
+  os_first_date, os_last_date,
+  cpu_first_date, cpu_last_date,
+  version_first_date, version_last_date : PStatusDTA;
+  os_first_date_id, os_last_date_id,
+  cpu_first_date_id, cpu_last_date_id,
+  version_first_date_id, version_last_date_id : PStatusLA;
+  FieldName,FieldValue,
+  Log,Source : String;
+  Res : Boolean;
+  ver : known_versions;
+begin
+  os_count:=nil;
+  cpu_count:=nil;
+  version_count:=nil;
+  ConnectToDB;
+  ContentType:='text/html';
+  EmitContentType;
+  if FTestFileID='' then
+    FTestFileID:=GetSingleton('SELECT T_ID FROM TESTS WHERE T_NAME LIKE ''%'+
+     FTestFileName+'%''');
+  if FTestFileID<>'' then
+    FTestFileName:=GetTestFileName(FTestFileID);
+  EmitTitle(Title+' : File '+FTestFileName+' Results');
+  With FHTMLWriter do
+    begin
+    HeaderStart(1);
+    Write('Test suite results for test file '+FTestFileName);
+    HeaderEnd(1);
+    HeaderStart(2);
+    Write('Test run data : ');
+    HeaderEnd(2);
+    if FRunID<>'' then
+      begin
+        Res:=ShowRunData;
+        Res:=true;
+      end
+    else 
+      begin
+        // This is useless as it is now
+        // It should be integrated into a form probably PM 
+        //Write('Only failed tests');
+        //EmitCheckBox('failedonly','1',FonlyFailed);
+        //Write('Hide skipped tests');
+        //EmitCheckBox('noskipped','1',FNoSkipped);
+        Res:=true;
+        EmitHistoryForm;
+      end;
+    If Res then
+      begin
+      HeaderStart(2);
+      Write('Test file "'+FTestFileName+'" information:');
+      HeaderEnd(2);
+      ParaGraphStart;
+      S:='SELECT * FROM TESTS WHERE T_ID='+FTestFileID;
+      Q:=CreateDataSet(S);
+      With Q do
+        Try
+          Open;
+          Try
+            For i:=0 to FieldCount-1 do
+              begin
+                FieldValue:=Fields[i].AsString;
+                FieldName:=Fields[i].DisplayName;
+                if (FieldValue<>'') and (FieldValue<>'-') and 
+                   (FieldName<>'T_NAME') and (FieldName<>'T_SOURCE') then
+                  begin
+                    if (FieldValue='+') then
+                      Write('Flag ');
+                    Write(FieldName);
+                    Write(' ');
+                    if FieldValue='+' then
+                      Write(' set')
+                    else
+                      Write(FieldValue);
+                    DumpLn('<BR>');
+                  end;
+              end;
+           
+          Finally
+            Close;
+          end;
+        Finally
+          Free;
+        end;
+      ParaGraphEnd;  
+      HeaderStart(2);
+      Write('Detailed test run results:');
+
+      HeaderEnd(2);
+      ParaGraphStart;
+      S:='SELECT TR_ID,TR_TESTRUN_FK,TR_TEST_FK,TR_OK, TR_SKIP,TR_RESULT '
+      //S:='SELECT * '
+        +',TC_NAME AS CPU, TV_VERSION AS VERSION, TO_NAME AS OS'
+        +',TU_ID,TU_DATE,TU_SUBMITTER,TU_MACHINE,TU_COMMENT '
+        +',TO_ID,TC_ID,TV_ID'
+        +' FROM TESTRUN '
+        +' LEFT JOIN TESTRESULTS ON  (TR_TESTRUN_FK=TU_ID)'
+        +' LEFT JOIN TESTOS ON  (TU_OS_FK=TO_ID)'
+        +' LEFT JOIN TESTCPU ON  (TU_CPU_FK=TC_ID)'
+        +' LEFT JOIN TESTVERSION ON  (TU_VERSION_FK=TV_ID)'
+        +' WHERE  (TR_TEST_FK='+FTestFileID+')';
+      If FOnlyFailed then
+        S:=S+' AND (TR_OK="-")';
+      If FNoSkipped then
+        S:=S+' AND (TR_SKIP="-")';
+      If (FCPU<>'') and (GetCPUName(FCPU)<>'All') then
+        begin
+          S:=S+' AND (TU_CPU_FK='+FCPU+')';
+          cpu_size:=0;
+        end
+      else
+        begin
+          cpu_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTCPU'));
+          cpu_size:=Sizeof(StatusLongintArray)*(1+cpu_last);
+          cpu_count:=GetMem(cpu_size);
+          FillChar(cpu_count^,cpu_size,#0);
+          cpu_first_date_id:=GetMem(cpu_size);
+          FillChar(cpu_first_date_id^,cpu_size,#0);
+          cpu_last_date_id:=GetMem(cpu_size);
+          FillChar(cpu_last_date_id^,cpu_size,#0);
+          cpu_first_date:=GetMem(cpu_last*SizeOf(StatusDateTimeArray));
+          FillChar(cpu_first_date^,cpu_last*Sizeof(StatusDateTimeArray),#0);
+          cpu_last_date:=GetMem(cpu_last*SizeOf(StatusDateTimeArray));
+          FillChar(cpu_last_date^,cpu_last*Sizeof(StatusDateTimeArray),#0);
+        end;
+      If (FVersion<>'') and (GetVersionName(FVersion)<>'All')  then
+        begin
+          S:=S+' AND (TU_VERSION_FK='+FVERSION+')';
+          version_size:=0;
+        end
+      else
+        begin
+          version_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTVERSION'));
+          version_size:=Sizeof(StatusLongintArray)*(1+version_last);
+          version_count:=GetMem(version_size);
+          FillChar(version_count^,version_size,#0);
+          version_first_date_id:=GetMem(version_size);
+          FillChar(version_first_date_id^,version_size,#0);
+          version_last_date_id:=GetMem(version_size);
+          FillChar(version_last_date_id^,version_size,#0);
+          version_first_date:=GetMem(version_last*SizeOf(StatusDateTimeArray));
+          FillChar(version_first_date^,version_last*Sizeof(StatusDateTimeArray),#0);
+          version_last_date:=GetMem(version_last*SizeOf(StatusDateTimeArray));
+          FillChar(version_last_date^,version_last*Sizeof(StatusDateTimeArray),#0);
+
+        end;
+
+      if (FOS<>'') and (GetOSName(FOS)<>'All') then
+        begin
+          S:=S+' AND (TU_OS_FK='+FOS+')';
+          os_size:=0;
+        end
+      else
+        begin
+          os_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTOS'));
+          os_size:=Sizeof(StatusLongintArray)*(1+os_last);
+          os_count:=GetMem(os_size);
+          FillChar(os_count^,os_size,#0);
+          os_first_date_id:=GetMem(os_size);
+          FillChar(os_first_date_id^,os_size,#0);
+          os_last_date_id:=GetMem(os_size);
+          FillChar(os_last_date_id^,os_size,#0);
+          os_first_date:=GetMem(os_last*SizeOf(StatusDateTimeArray));
+          FillChar(os_first_date^,os_last*Sizeof(StatusDateTimeArray),#0);
+          os_last_date:=GetMem(os_last*SizeOf(StatusDateTimeArray));
+          FillChar(os_last_date^,os_last*Sizeof(StatusDateTimeArray),#0);
+        end;
+
+      If FSubmitter<>'' then
+        S:=S+' AND (TU_SUBMITTER='''+FSubmitter+''')';
+      If FMachine<>'' then
+        S:=S+' AND (TU_MACHINE='''+FMachine+''')';
+      If FComment<>'' then
+        S:=S+' AND (TU_COMMENT LIKE '''+FComment+''')';
+      if FDATE<>0 then
+        S:=S+' AND (TU_DATE >= '''+FormatDateTime('YYYY-MM-DD',FDate)+''')';
+
+      S:=S+' ORDER BY TU_ID DESC';
+      if FDATE=0 then
+        S:=S+' LIMIT '+IntToStr(FLimit);
+      Qry:=S;
+      If FDebug then
+      begin
+        Writeln(system.stdout,'Query : '+Qry);
+        system.Flush(system.stdout);
+      end;
+      FRunCount:=0;
+      FRunSkipCount:=0;
+      FRunFailedCount:=0;
+      Q:=CreateDataset(Qry);
+      With Q do
+        try
+          Open;
+          
+          while not EOF do
+            Next;
+
+          DumpLn(Format('<p>Record count: %d </p>',[Q.RecordCount]));
+          if RecordCount>0 then
+            RecNo:=0;
+
+          Try
+           if FDebug then
+             begin
+               Writeln(stdout,'FieldKind=',Fields[0].FieldKind);
+               Writeln(stdout,'DataType=',Fields[0].DataType);
+               system.flush(stdout);
+             end;
+
+          total_count:=0;
+          OK_count:=0;
+          not_OK_count:=0;
+          skip_count:=0;
+          not_skip_count:=0;
+          fillchar(Result_Count,Sizeof(Result_count),#0);
+          ok_ind:=FieldByName('TR_OK').Index;
+          skip_ind:=FieldBYName('TR_SKIP').Index;
+          result_ind:=FieldByName('TR_RESULT').Index;
+          cpu_ind:=FieldByName('TC_ID').Index;
+          os_ind:=FieldByName('TO_ID').Index;
+          version_ind:=FieldByName('TV_ID').Index;
+          date_ind:=FieldByName('TU_DATE').Index;
+          run_ind:=FieldByName('TU_ID').Index;
+          For i:=0 to Q.RecordCount-1 do
+            begin
+              Q.RecNo:=i;
+              inc(total_count);
+              S:=Fields[ok_ind].AsString;
+
+              if S='+' then
+                inc(OK_count)
+              else
+                inc(not_OK_count);
+              S:=Fields[skip_ind].AsString;
+              if S='+' then
+                inc(skip_count)
+              else
+                inc(not_skip_count);
+              S:=Fields[result_ind].AsString;
+              cpu:=Fields[cpu_ind].ASString;
+              version:=Fields[version_ind].AsString;
+              os:=Fields[os_ind].AsString;
+              date:=Fields[date_ind].ASDateTime;
+              os_id:=Fields[os_ind].AsLongint;
+              cpu_id:=Fields[cpu_ind].AsLongint;
+              version_id:=Fields[version_ind].AsLongint;
+              system.val(S,resi,error);
+              run_id:=Fields[run_ind].ASLongint;
+              if (error=0) and (Resi>=longint(FirstStatus)) and
+                 (Resi<=longint(LastStatus)) then
+                begin   
+                  TS:=TTestStatus(Resi);
+                  if Result_count[TS]=0 then
+                    begin
+                      first_date[TS]:=date;
+                      last_date[TS]:=date;
+                      first_date_id[TS]:=run_id;
+                      last_date_id[TS]:=run_id;
+                    end
+                  else 
+                    begin
+                      if (date>last_date[TS]) then
+                        begin
+                          last_date[TS]:=date;
+                          last_date_id[TS]:=run_id;
+                        end;
+                      if date<first_date[TS] then
+                        begin
+                          first_date[TS]:=date;
+                          first_date_id[TS]:=run_id;
+                        end;
+                    end;
+                    
+                  inc(Result_count[TS]);
+                  if assigned(cpu_count) and (cpu_id<=cpu_last) then
+                    begin
+                      if cpu_count^[cpu_id,TS]=0 then
+                        begin
+                          cpu_first_date^[cpu_id,TS]:=date;
+                          cpu_last_date^[cpu_id,TS]:=date;
+                          cpu_first_date_id^[cpu_id,TS]:=run_id;
+                          cpu_last_date_id^[cpu_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>cpu_last_date^[cpu_id,TS]) then
+                            begin
+                              cpu_last_date^[cpu_id,TS]:=date;
+                              cpu_last_date_id^[cpu_id,TS]:=run_id;
+                            end;
+                          if date<cpu_first_date^[cpu_id,TS] then
+                            begin
+                              cpu_first_date^[cpu_id,TS]:=date;
+                              cpu_first_date_id^[cpu_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(cpu_count^[cpu_id,TS]);
+                    end;
+                  if assigned(os_count) and (os_id<=os_last) then
+                    begin
+                      if os_count^[os_id,TS]=0 then
+                        begin
+                          os_first_date^[os_id,TS]:=date;
+                          os_last_date^[os_id,TS]:=date;
+                          os_first_date_id^[os_id,TS]:=run_id;
+                          os_last_date_id^[os_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>os_last_date^[os_id,TS]) then
+                            begin
+                              os_last_date^[os_id,TS]:=date;
+                              os_last_date_id^[os_id,TS]:=run_id;
+                            end;
+                          if date<os_first_date^[os_id,TS] then
+                            begin
+                              os_first_date^[os_id,TS]:=date;
+                              os_first_date_id^[os_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(os_count^[os_id,TS]);
+                    end;
+                  if assigned(version_count) and (version_id<=version_last) then
+                    begin
+                      if version_count^[version_id,TS]=0 then
+                        begin
+                          version_first_date^[version_id,TS]:=date;
+                          version_last_date^[version_id,TS]:=date;
+                          version_first_date_id^[version_id,TS]:=run_id;
+                          version_last_date_id^[version_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>version_last_date^[version_id,TS]) then
+                            begin
+                              version_last_date^[version_id,TS]:=date;
+                              version_last_date_id^[version_id,TS]:=run_id;
+                            end;
+                          if date<version_first_date^[version_id,TS] then
+                            begin
+                              version_first_date^[version_id,TS]:=date;
+                              version_first_date_id^[version_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(version_count^[version_id,TS]);
+                    end;
+                end
+              else if Fdebug then
+                writeln(stdout,'Error for Result, S=',S);
+            end;
+          DumpLn(Format('<p>Total = %d </p>',[total_count]));
+          if Total_count > 0 then
+            DumpLn(Format('<p>OK=%d Percentage= %3.2f </p>',[OK_count,OK_count*100/total_count]));
+          if Skip_count > 0 then
+            DumpLn(Format('<p>Skipped=%d Percentage= %3.2f </p>',[Skip_count,Skip_count*100/total_count]));
+          if total_count>0 then
+            begin
+              TableStart(5,True);
+              RowStart;
+              CellStart;
+              Write('Result type');
+              CellNext;
+              Write('Cat.');
+              CellNext;
+              Write('Count');
+              CellNext;
+              Write('Percentage');
+              CellNext;
+              Write('First date');
+              CellNext;
+              Write('Last Date');
+              CellEnd;
+            end;
+          For TS:=FirstStatus to LastStatus do
+            if Result_count[TS]>0 then
+              begin
+                RowNext;
+                CellStart;
+                Write(StatusText[TS]);
+                CellNext;
+                CellNext;
+                Write(Format('%d',[Result_count[TS]]));
+                CellNext;
+                Write(Format('%3.1f',[Result_count[TS]*100/total_count]));
+                CellNext;
+
+                DumpLn(FormatDetailURL(IntToStr(first_date_id[TS]),
+                  DateTimeToStr(first_date[TS])));
+                Write(' '+GetFailCount(first_date_id[TS]));
+                CellNext;
+                DumpLn(FormatDetailURL(IntToStr(last_date_id[TS]),
+                  DateTimeToStr(last_date[TS])));
+                Write(' '+GetFailCount(last_date_id[TS]));
+                CellEnd;
+                if assigned(cpu_count) then
+                  begin
+                    for i:=1 to cpu_last do
+                      if cpu_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TC_NAME FROM TESTCPU WHERE TC_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[cpu_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[cpu_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(cpu_first_date_id^[i,TS]),
+                            DateTimeToStr(cpu_first_date^[i,TS])));
+                          Write(' '+GetFailCount(cpu_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(cpu_last_date_id^[i,TS]),
+                            DateTimeToStr(cpu_last_date^[i,TS])));
+                          Write(' '+GetFailCount(cpu_last_date_id^[i,TS]));
+                          CellEnd;
+                        end;
+                  end;
+                if assigned(os_count) then
+                  begin
+                    for i:=1 to os_last do
+                      if os_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TO_NAME FROM TESTOS WHERE TO_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[os_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[os_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(os_first_date_id^[i,TS]),
+                            DateTimeToStr(os_first_date^[i,TS])));
+                          Write(' '+GetFailCount(os_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(os_last_date_id^[i,TS]),
+                            DateTimeToStr(os_last_date^[i,TS])));
+                          Write(' '+GetFailCount(os_last_date_id^[i,TS]));
+                          CellEnd;
+
+                        end;
+
+                  end;
+
+                if assigned(version_count) then
+                  begin
+                    for i:=1 to version_last do
+                      if version_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TV_VERSION FROM TESTVERSION WHERE TV_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[version_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[version_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(version_first_date_id^[i,TS]),
+                            DateTimeToStr(version_first_date^[i,TS])));
+                          Write(' '+GetFailCount(version_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(version_last_date_id^[i,TS]),
+                            DateTimeToStr(version_last_date^[i,TS])));
+                          Write(' '+GetFailCount(version_last_date_id^[i,TS]));
+                          CellEnd;
+
+                        end;
+
+                  end;
+
+              end;
+          if total_count>0 then
+            begin
+              TableEnd;
+              RecNo:=0;
+            end;
+          If FDebug or FListAll then
+           begin
+
+            With CreateTableProducer(Q) do
+              Try
+                Border:=True;
+<<<<<<< HEAD
+                FL:='TR_TESTRUN_FK,TU_DATE,TR_OK,TR_SKIP,TR_RESULT';
+                if FSubmitter='' then
+                  FL:=FL+',TU_SUBMITTER';
+                if FMachine='' then
+                  FL:=FL+',TU_MACHINE';
+                if Fcomment='' then
+                  FL:=FL+',TU_COMMENT';
+                if (FOS='') or (GetOSName(FOS)='All') then
+                  FL:=FL+',OS';
+                if (FCPU='') or (GetCPUName(FCPU)='All') then
+                  FL:=FL+',CPU';
+                if (FVersion='') or (GetVersionName(FVersion)='All') then
+                  FL:=FL+',VERSION';
+                
+                CreateColumns(FL);
+                //TableColumns.Delete(TableColumns.ColumnByName('TR_TEST_FK').Index);
+=======
+                //FL:='TR_ID,TR_TESTRUN_FK,T_NAME,T_CPU,T_VERSION';
+                CreateColumns(Nil);
+                TableColumns.Delete(TableColumns.ColumnByName('TR_TEST_FK').Index);
+>>>>>>> graemeg/cpstrnew
+                TableColumns.ColumnByNAme('TR_TESTRUN_FK').OnGetCellContents:=
+                  @FormatTestRunOverview;
+                //OnGetRowAttributes:=@GetRunRowAttr;
+                TableColumns.ColumnByNAme('TR_RESULT').OnGetCellContents:=
+                  @FormatTestResult;
+                //(TableColumns.Items[0] as TTableColumn).ActionURL:=ALink;
+                CreateTable(Response);
+              Finally
+                Free;
+              end;
+           end;
+
+          Finally
+            Close;
+          end;
+        finally
+          Free;
+        end;
+             //If FDebug then
+            Category:='1';
+            if FRunId<>'' then
+              begin
+                Category:=getsingleton('select TU_CATEGORY_FK from TESTRUN where TU_ID='+FRunId);
+                FVersionBranch:=GetVersionName(getsingleton('select TU_VERSION_FK from TESTRUN where TU_ID='+fRunId));
+                log:=''; 
+                Try
+                log:=getsingleton('select TR_LOG from TESTRESULTS where (TR_TEST_FK='+ftestfileid
+                     +') and (TR_TESTRUN_FK='+frunid+')');
+                if Log<>'' then
+                  begin
+                    HeaderStart(2);
+                    Write('Log of '+FRunId+':');
+                    HeaderEnd(2);
+                    PreformatStart;
+                    system.Write(Log);
+                    system.flush(output);
+                    PreformatEnd;
+                  end;
+                Finally
+                  if Log='' then
+                    begin
+                      HeaderStart(2);
+                      Write('No log of '+FRunId+'.');
+                      HeaderEnd(2);
+                    end;  
+                end;  
+              end;  
+            if FCompareRunId<>'' then
+              begin
+                log:=''; 
+                Try
+                log:=getsingleton('select TR_LOG from TESTRESULTS where (TR_TEST_FK='+ftestfileid
+                     +') and (TR_TESTRUN_FK='+fcomparerunid+')');
+                if Log<>'' then
+                  begin
+                    HeaderStart(2);
+                    Write('Log of '+FCompareRunId+':');
+                    HeaderEnd(2);
+                    PreformatStart;
+                    system.Write(Log);
+                    system.flush(output);
+                    PreformatEnd;
+                  end;
+                Finally
+                  if Log='' then
+                    begin
+                      HeaderStart(2);
+                      Write('No log of '+FCompareRunId+'.');
+                      HeaderEnd(2);
+                    end;  
+                end;  
+              end;  
+            if FDebug then
+              Write('After Log.');
+            Source:='';
+            Try  
+            Source:=getsingleton('select T_SOURCE from TESTS where T_ID='+ftestfileid);
+            if Source<>'' then
+              begin
+                HeaderStart(2);
+                Write('Source:');
+                HeaderEnd(2);
+                PreformatStart;
+                system.Write(Source);
+                system.flush(output);
+                PreformatEnd;
+              end;
+            Finally 
+            Base:='trunk';
+            if  FVersionBranch<>'' then
+              begin
+                // Test all but last version, which is assumed to be trunk
+                for ver:=low(known_versions) to pred(high(known_versions)) do
+                  if ver_string[ver]=FVersionBranch then
+                    begin
+                      base:=ver_branch[ver];
+                      break;
+                    end;
+              end;
+            FViewVCURL:=ViewURL+Base;
+            if Category='1' then
+              FViewVCUrl:=FViewVCURL+TestsSubDir
+            else
+              begin
+                FViewVCUrl:=FViewVCURL+DataBaseSubDir;
+                // This assumes that type TAnyType is
+                // defined in anytype.pas source PM
+                if pos('/',FTestFileName)>0 then
+                  FTestfilename:=lowercase(copy(FTestFilename,2,pos('/',FTestFilename)-2)+'.pas');
+              end;
+            if Source='' then
+              begin
+                HeaderStart(3);
+                DumpLn('<P>No Source in TestSuite DataBase.</P>');
+                DumpLn('Link to SVN view of '+
+                  '<A HREF="'+FViewVCURL+FTestFileName+'?view=markup'+
+                  '" TARGET="fpc_source"> '+FTestFileName+'</A> source. ');
+                HeaderEnd(3);
+              end
+            else
+              begin
+                HeaderStart(3);
+                DumpLn('Link to SVN view of '+
+                  '<A HREF="'+FViewVCURL+FTestFileName+'?view=markup'+
+                  '" TARGET="fpc_source"> '+FTestFileName+'</A> source. ');
+                HeaderEnd(3);
+              end;  
+            end;  
+             if FDebug then
+              Write('After Source.');
+    end
+=======
+        TagStart('IMG',Format('Src="'+TestsuiteCGIURL+'?action=2&pietotal=%d&piefailed=%d&pieskipped=%d"',[FRunCount,FRunFailedCount,FRunSkipCount]));
+        end;
+      end
+>>>>>>> origin/cpstrnew
+    else
+      Write(Format('No data for test file with ID: %s',[FTestFileID]));
+      
+    end;
+  if assigned(os_count) then
+    begin
+      FreeMem(os_count);
+      FreeMem(os_first_date);
+      FreeMem(os_first_date_id);
+      FreeMem(os_last_date);
+      FreeMem(os_last_date_id);
+    end;
+
+  if assigned(cpu_count) then
+    begin
+      FreeMem(cpu_count);
+      FreeMem(cpu_first_date);
+      FreeMem(cpu_first_date_id);
+      FreeMem(cpu_last_date);
+      FreeMem(cpu_last_date_id);
+    end;
+  if assigned(version_count) then
+    begin
+      FreeMem(version_count);
+      FreeMem(version_first_date);
+      FreeMem(version_first_date_id);
+      FreeMem(version_last_date);
+      FreeMem(version_last_date_id);
+    end;
+end;
+
+
+Procedure TTestSuite.ShowHistory;
+Const
+  MaxCombo = 50;
+Type 
+  StatusLongintArray = Array [TTestStatus] of longint;
+  StatusDateTimeArray = Array [TTestStatus] of TDateTime;
+  AStatusLA = Array[1..MaxCombo] of StatusLongintArray;
+  AStatusDTA = Array[1..MaxCombo] of StatusDateTimeArray;
+  PStatusLA = ^AStatusLA;
+  PStatusDTA = ^AStatusDTA;
+Var
+  S,FL,cpu,version,os : String;
+  date : TDateTime;
+  Qry : String;
+  Base, Category : string;
+  Q : TSQLQuery;
+  i,run_id,os_id,version_id,cpu_id : longint;
+  run_ind,os_ind,version_ind,cpu_ind,
+  ok_ind,skip_ind,result_ind,date_ind : longint;
+  os_size, cpu_size, version_size : longint;
+  os_last, cpu_last, version_last : longint;
+  error : word;
+  OK_count, not_OK_count,resi,
+  total_count, skip_count, not_skip_count : longint;
+  TS : TTestStatus;
+  result_count : StatusLongintArray;
+  os_count,cpu_count,version_count: PStatusLA;
+  first_date, last_date : array[TTestStatus] of TDateTime;
+  first_date_id, last_date_id : array[TTestStatus] of longint;
+  os_first_date, os_last_date,
+  cpu_first_date, cpu_last_date,
+  version_first_date, version_last_date : PStatusDTA;
+  os_first_date_id, os_last_date_id,
+  cpu_first_date_id, cpu_last_date_id,
+  version_first_date_id, version_last_date_id : PStatusLA;
+  FieldName,FieldValue,
+  Log,Source : String;
+  Res : Boolean;
+  ver : known_versions;
+begin
+  os_count:=nil;
+  cpu_count:=nil;
+  version_count:=nil;
+  ConnectToDB;
+  ContentType:='text/html';
+  EmitContentType;
+  if FTestFileID='' then
+    FTestFileID:=GetSingleton('SELECT T_ID FROM TESTS WHERE T_NAME LIKE ''%'+
+     FTestFileName+'%''');
+  if FTestFileID<>'' then
+    FTestFileName:=GetTestFileName(FTestFileID);
+  EmitTitle(Title+' : File '+FTestFileName+' Results');
+  With FHTMLWriter do
+    begin
+    HeaderStart(1);
+    Write('Test suite results for test file '+FTestFileName);
+    HeaderEnd(1);
+    HeaderStart(2);
+    Write('Test run data : ');
+    HeaderEnd(2);
+    if FRunID<>'' then
+      begin
+        Res:=ShowRunData;
+        Res:=true;
+      end
+    else 
+      begin
+        // This is useless as it is now
+        // It should be integrated into a form probably PM 
+        //Write('Only failed tests');
+        //EmitCheckBox('failedonly','1',FonlyFailed);
+        //Write('Hide skipped tests');
+        //EmitCheckBox('noskipped','1',FNoSkipped);
+        Res:=true;
+        EmitHistoryForm;
+      end;
+    If Res then
+      begin
+      HeaderStart(2);
+      Write('Test file "'+FTestFileName+'" information:');
+      HeaderEnd(2);
+      ParaGraphStart;
+      S:='SELECT * FROM TESTS WHERE T_ID='+FTestFileID;
+      Q:=CreateDataSet(S);
+      With Q do
+        Try
+          Open;
+          Try
+            For i:=0 to FieldCount-1 do
+              begin
+                FieldValue:=Fields[i].AsString;
+                FieldName:=Fields[i].DisplayName;
+                if (FieldValue<>'') and (FieldValue<>'-') and 
+                   (FieldName<>'T_NAME') and (FieldName<>'T_SOURCE') then
+                  begin
+                    if (FieldValue='+') then
+                      Write('Flag ');
+                    Write(FieldName);
+                    Write(' ');
+                    if FieldValue='+' then
+                      Write(' set')
+                    else
+                      Write(FieldValue);
+                    DumpLn('<BR>');
+                  end;
+              end;
+           
+          Finally
+            Close;
+          end;
+        Finally
+          Free;
+        end;
+      ParaGraphEnd;  
+      HeaderStart(2);
+      Write('Detailed test run results:');
+
+      HeaderEnd(2);
+      ParaGraphStart;
+      S:='SELECT TR_ID,TR_TESTRUN_FK,TR_TEST_FK,TR_OK, TR_SKIP,TR_RESULT '
+      //S:='SELECT * '
+        +',TC_NAME AS CPU, TV_VERSION AS VERSION, TO_NAME AS OS'
+        +',TU_ID,TU_DATE,TU_SUBMITTER,TU_MACHINE,TU_COMMENT '
+        +',TO_ID,TC_ID,TV_ID'
+        +' FROM TESTRUN '
+        +' LEFT JOIN TESTRESULTS ON  (TR_TESTRUN_FK=TU_ID)'
+        +' LEFT JOIN TESTOS ON  (TU_OS_FK=TO_ID)'
+        +' LEFT JOIN TESTCPU ON  (TU_CPU_FK=TC_ID)'
+        +' LEFT JOIN TESTVERSION ON  (TU_VERSION_FK=TV_ID)'
+        +' WHERE  (TR_TEST_FK='+FTestFileID+')';
+      If FOnlyFailed then
+        S:=S+' AND (TR_OK="-")';
+      If FNoSkipped then
+        S:=S+' AND (TR_SKIP="-")';
+      If (FCPU<>'') and (GetCPUName(FCPU)<>'All') then
+        begin
+          S:=S+' AND (TU_CPU_FK='+FCPU+')';
+          cpu_size:=0;
+        end
+      else
+        begin
+          cpu_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTCPU'));
+          cpu_size:=Sizeof(StatusLongintArray)*(1+cpu_last);
+          cpu_count:=GetMem(cpu_size);
+          FillChar(cpu_count^,cpu_size,#0);
+          cpu_first_date_id:=GetMem(cpu_size);
+          FillChar(cpu_first_date_id^,cpu_size,#0);
+          cpu_last_date_id:=GetMem(cpu_size);
+          FillChar(cpu_last_date_id^,cpu_size,#0);
+          cpu_first_date:=GetMem(cpu_last*SizeOf(StatusDateTimeArray));
+          FillChar(cpu_first_date^,cpu_last*Sizeof(StatusDateTimeArray),#0);
+          cpu_last_date:=GetMem(cpu_last*SizeOf(StatusDateTimeArray));
+          FillChar(cpu_last_date^,cpu_last*Sizeof(StatusDateTimeArray),#0);
+        end;
+      If (FVersion<>'') and (GetVersionName(FVersion)<>'All')  then
+        begin
+          S:=S+' AND (TU_VERSION_FK='+FVERSION+')';
+          version_size:=0;
+        end
+      else
+        begin
+          version_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTVERSION'));
+          version_size:=Sizeof(StatusLongintArray)*(1+version_last);
+          version_count:=GetMem(version_size);
+          FillChar(version_count^,version_size,#0);
+          version_first_date_id:=GetMem(version_size);
+          FillChar(version_first_date_id^,version_size,#0);
+          version_last_date_id:=GetMem(version_size);
+          FillChar(version_last_date_id^,version_size,#0);
+          version_first_date:=GetMem(version_last*SizeOf(StatusDateTimeArray));
+          FillChar(version_first_date^,version_last*Sizeof(StatusDateTimeArray),#0);
+          version_last_date:=GetMem(version_last*SizeOf(StatusDateTimeArray));
+          FillChar(version_last_date^,version_last*Sizeof(StatusDateTimeArray),#0);
+
+        end;
+
+      if (FOS<>'') and (GetOSName(FOS)<>'All') then
+        begin
+          S:=S+' AND (TU_OS_FK='+FOS+')';
+          os_size:=0;
+        end
+      else
+        begin
+          os_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTOS'));
+          os_size:=Sizeof(StatusLongintArray)*(1+os_last);
+          os_count:=GetMem(os_size);
+          FillChar(os_count^,os_size,#0);
+          os_first_date_id:=GetMem(os_size);
+          FillChar(os_first_date_id^,os_size,#0);
+          os_last_date_id:=GetMem(os_size);
+          FillChar(os_last_date_id^,os_size,#0);
+          os_first_date:=GetMem(os_last*SizeOf(StatusDateTimeArray));
+          FillChar(os_first_date^,os_last*Sizeof(StatusDateTimeArray),#0);
+          os_last_date:=GetMem(os_last*SizeOf(StatusDateTimeArray));
+          FillChar(os_last_date^,os_last*Sizeof(StatusDateTimeArray),#0);
+        end;
+
+      If FSubmitter<>'' then
+        S:=S+' AND (TU_SUBMITTER='''+FSubmitter+''')';
+      If FMachine<>'' then
+        S:=S+' AND (TU_MACHINE='''+FMachine+''')';
+      If FComment<>'' then
+        S:=S+' AND (TU_COMMENT LIKE '''+FComment+''')';
+      if FDATE<>0 then
+        S:=S+' AND (TU_DATE >= '''+FormatDateTime('YYYY-MM-DD',FDate)+''')';
+
+      S:=S+' ORDER BY TU_ID DESC';
+      if FDATE=0 then
+        S:=S+' LIMIT '+IntToStr(FLimit);
+      Qry:=S;
+      If FDebug then
+      begin
+        Writeln(system.stdout,'Query : '+Qry);
+        system.Flush(system.stdout);
+      end;
+      FRunCount:=0;
+      FRunSkipCount:=0;
+      FRunFailedCount:=0;
+      Q:=CreateDataset(Qry);
+      With Q do
+        try
+          Open;
+          
+          while not EOF do
+            Next;
+
+          DumpLn(Format('<p>Record count: %d </p>',[Q.RecordCount]));
+          if RecordCount>0 then
+            RecNo:=0;
+
+          Try
+           if FDebug then
+             begin
+               Writeln(stdout,'FieldKind=',Fields[0].FieldKind);
+               Writeln(stdout,'DataType=',Fields[0].DataType);
+               system.flush(stdout);
+             end;
+
+          total_count:=0;
+          OK_count:=0;
+          not_OK_count:=0;
+          skip_count:=0;
+          not_skip_count:=0;
+          fillchar(Result_Count,Sizeof(Result_count),#0);
+          ok_ind:=FieldByName('TR_OK').Index;
+          skip_ind:=FieldBYName('TR_SKIP').Index;
+          result_ind:=FieldByName('TR_RESULT').Index;
+          cpu_ind:=FieldByName('TC_ID').Index;
+          os_ind:=FieldByName('TO_ID').Index;
+          version_ind:=FieldByName('TV_ID').Index;
+          date_ind:=FieldByName('TU_DATE').Index;
+          run_ind:=FieldByName('TU_ID').Index;
+          For i:=0 to Q.RecordCount-1 do
+            begin
+              Q.RecNo:=i;
+              inc(total_count);
+              S:=Fields[ok_ind].AsString;
+
+              if S='+' then
+                inc(OK_count)
+              else
+                inc(not_OK_count);
+              S:=Fields[skip_ind].AsString;
+              if S='+' then
+                inc(skip_count)
+              else
+                inc(not_skip_count);
+              S:=Fields[result_ind].AsString;
+              cpu:=Fields[cpu_ind].ASString;
+              version:=Fields[version_ind].AsString;
+              os:=Fields[os_ind].AsString;
+              date:=Fields[date_ind].ASDateTime;
+              os_id:=Fields[os_ind].AsLongint;
+              cpu_id:=Fields[cpu_ind].AsLongint;
+              version_id:=Fields[version_ind].AsLongint;
+              system.val(S,resi,error);
+              run_id:=Fields[run_ind].ASLongint;
+              if (error=0) and (Resi>=longint(FirstStatus)) and
+                 (Resi<=longint(LastStatus)) then
+                begin   
+                  TS:=TTestStatus(Resi);
+                  if Result_count[TS]=0 then
+                    begin
+                      first_date[TS]:=date;
+                      last_date[TS]:=date;
+                      first_date_id[TS]:=run_id;
+                      last_date_id[TS]:=run_id;
+                    end
+                  else 
+                    begin
+                      if (date>last_date[TS]) then
+                        begin
+                          last_date[TS]:=date;
+                          last_date_id[TS]:=run_id;
+                        end;
+                      if date<first_date[TS] then
+                        begin
+                          first_date[TS]:=date;
+                          first_date_id[TS]:=run_id;
+                        end;
+                    end;
+                    
+                  inc(Result_count[TS]);
+                  if assigned(cpu_count) and (cpu_id<=cpu_last) then
+                    begin
+                      if cpu_count^[cpu_id,TS]=0 then
+                        begin
+                          cpu_first_date^[cpu_id,TS]:=date;
+                          cpu_last_date^[cpu_id,TS]:=date;
+                          cpu_first_date_id^[cpu_id,TS]:=run_id;
+                          cpu_last_date_id^[cpu_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>cpu_last_date^[cpu_id,TS]) then
+                            begin
+                              cpu_last_date^[cpu_id,TS]:=date;
+                              cpu_last_date_id^[cpu_id,TS]:=run_id;
+                            end;
+                          if date<cpu_first_date^[cpu_id,TS] then
+                            begin
+                              cpu_first_date^[cpu_id,TS]:=date;
+                              cpu_first_date_id^[cpu_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(cpu_count^[cpu_id,TS]);
+                    end;
+                  if assigned(os_count) and (os_id<=os_last) then
+                    begin
+                      if os_count^[os_id,TS]=0 then
+                        begin
+                          os_first_date^[os_id,TS]:=date;
+                          os_last_date^[os_id,TS]:=date;
+                          os_first_date_id^[os_id,TS]:=run_id;
+                          os_last_date_id^[os_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>os_last_date^[os_id,TS]) then
+                            begin
+                              os_last_date^[os_id,TS]:=date;
+                              os_last_date_id^[os_id,TS]:=run_id;
+                            end;
+                          if date<os_first_date^[os_id,TS] then
+                            begin
+                              os_first_date^[os_id,TS]:=date;
+                              os_first_date_id^[os_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(os_count^[os_id,TS]);
+                    end;
+                  if assigned(version_count) and (version_id<=version_last) then
+                    begin
+                      if version_count^[version_id,TS]=0 then
+                        begin
+                          version_first_date^[version_id,TS]:=date;
+                          version_last_date^[version_id,TS]:=date;
+                          version_first_date_id^[version_id,TS]:=run_id;
+                          version_last_date_id^[version_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>version_last_date^[version_id,TS]) then
+                            begin
+                              version_last_date^[version_id,TS]:=date;
+                              version_last_date_id^[version_id,TS]:=run_id;
+                            end;
+                          if date<version_first_date^[version_id,TS] then
+                            begin
+                              version_first_date^[version_id,TS]:=date;
+                              version_first_date_id^[version_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(version_count^[version_id,TS]);
+                    end;
+                end
+              else if Fdebug then
+                writeln(stdout,'Error for Result, S=',S);
+            end;
+          DumpLn(Format('<p>Total = %d </p>',[total_count]));
+          if Total_count > 0 then
+            DumpLn(Format('<p>OK=%d Percentage= %3.2f </p>',[OK_count,OK_count*100/total_count]));
+          if Skip_count > 0 then
+            DumpLn(Format('<p>Skipped=%d Percentage= %3.2f </p>',[Skip_count,Skip_count*100/total_count]));
+          if total_count>0 then
+            begin
+              TableStart(5,True);
+              RowStart;
+              CellStart;
+              Write('Result type');
+              CellNext;
+              Write('Cat.');
+              CellNext;
+              Write('Count');
+              CellNext;
+              Write('Percentage');
+              CellNext;
+              Write('First date');
+              CellNext;
+              Write('Last Date');
+              CellEnd;
+            end;
+          For TS:=FirstStatus to LastStatus do
+            if Result_count[TS]>0 then
+              begin
+                RowNext;
+                CellStart;
+                Write(StatusText[TS]);
+                CellNext;
+                CellNext;
+                Write(Format('%d',[Result_count[TS]]));
+                CellNext;
+                Write(Format('%3.1f',[Result_count[TS]*100/total_count]));
+                CellNext;
+
+                DumpLn(FormatDetailURL(IntToStr(first_date_id[TS]),
+                  DateTimeToStr(first_date[TS])));
+                Write(' '+GetFailCount(first_date_id[TS]));
+                CellNext;
+                DumpLn(FormatDetailURL(IntToStr(last_date_id[TS]),
+                  DateTimeToStr(last_date[TS])));
+                Write(' '+GetFailCount(last_date_id[TS]));
+                CellEnd;
+                if assigned(cpu_count) then
+                  begin
+                    for i:=1 to cpu_last do
+                      if cpu_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TC_NAME FROM TESTCPU WHERE TC_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[cpu_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[cpu_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(cpu_first_date_id^[i,TS]),
+                            DateTimeToStr(cpu_first_date^[i,TS])));
+                          Write(' '+GetFailCount(cpu_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(cpu_last_date_id^[i,TS]),
+                            DateTimeToStr(cpu_last_date^[i,TS])));
+                          Write(' '+GetFailCount(cpu_last_date_id^[i,TS]));
+                          CellEnd;
+                        end;
+                  end;
+                if assigned(os_count) then
+                  begin
+                    for i:=1 to os_last do
+                      if os_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TO_NAME FROM TESTOS WHERE TO_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[os_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[os_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(os_first_date_id^[i,TS]),
+                            DateTimeToStr(os_first_date^[i,TS])));
+                          Write(' '+GetFailCount(os_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(os_last_date_id^[i,TS]),
+                            DateTimeToStr(os_last_date^[i,TS])));
+                          Write(' '+GetFailCount(os_last_date_id^[i,TS]));
+                          CellEnd;
+
+                        end;
+
+                  end;
+
+                if assigned(version_count) then
+                  begin
+                    for i:=1 to version_last do
+                      if version_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TV_VERSION FROM TESTVERSION WHERE TV_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[version_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[version_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(version_first_date_id^[i,TS]),
+                            DateTimeToStr(version_first_date^[i,TS])));
+                          Write(' '+GetFailCount(version_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(version_last_date_id^[i,TS]),
+                            DateTimeToStr(version_last_date^[i,TS])));
+                          Write(' '+GetFailCount(version_last_date_id^[i,TS]));
+                          CellEnd;
+
+                        end;
+
+                  end;
+
+              end;
+          if total_count>0 then
+            begin
+              TableEnd;
+              RecNo:=0;
+            end;
+          If FDebug or FListAll then
+           begin
+
+            With CreateTableProducer(Q) do
+              Try
+                Border:=True;
+<<<<<<< HEAD
+                FL:='TR_TESTRUN_FK,TU_DATE,TR_OK,TR_SKIP,TR_RESULT';
+                if FSubmitter='' then
+                  FL:=FL+',TU_SUBMITTER';
+                if FMachine='' then
+                  FL:=FL+',TU_MACHINE';
+                if Fcomment='' then
+                  FL:=FL+',TU_COMMENT';
+                if (FOS='') or (GetOSName(FOS)='All') then
+                  FL:=FL+',OS';
+                if (FCPU='') or (GetCPUName(FCPU)='All') then
+                  FL:=FL+',CPU';
+                if (FVersion='') or (GetVersionName(FVersion)='All') then
+                  FL:=FL+',VERSION';
+                
+                CreateColumns(FL);
+                //TableColumns.Delete(TableColumns.ColumnByName('TR_TEST_FK').Index);
+=======
+                //FL:='TR_ID,TR_TESTRUN_FK,T_NAME,T_CPU,T_VERSION';
+                CreateColumns(Nil);
+                TableColumns.Delete(TableColumns.ColumnByName('TR_TEST_FK').Index);
+>>>>>>> origin/cpstrnew
+                TableColumns.ColumnByNAme('TR_TESTRUN_FK').OnGetCellContents:=
+                  @FormatTestRunOverview;
+                //OnGetRowAttributes:=@GetRunRowAttr;
+                TableColumns.ColumnByNAme('TR_RESULT').OnGetCellContents:=
+                  @FormatTestResult;
+                //(TableColumns.Items[0] as TTableColumn).ActionURL:=ALink;
+                CreateTable(Response);
+              Finally
+                Free;
+              end;
+           end;
+
+          Finally
+            Close;
+          end;
+        finally
+          Free;
+        end;
+             //If FDebug then
+            Category:='1';
+            if FRunId<>'' then
+              begin
+                Category:=getsingleton('select TU_CATEGORY_FK from TESTRUN where TU_ID='+FRunId);
+                FVersionBranch:=GetVersionName(getsingleton('select TU_VERSION_FK from TESTRUN where TU_ID='+fRunId));
+                log:=''; 
+                Try
+                log:=getsingleton('select TR_LOG from TESTRESULTS where (TR_TEST_FK='+ftestfileid
+                     +') and (TR_TESTRUN_FK='+frunid+')');
+                if Log<>'' then
+                  begin
+                    HeaderStart(2);
+                    Write('Log of '+FRunId+':');
+                    HeaderEnd(2);
+                    PreformatStart;
+                    system.Write(Log);
+                    system.flush(output);
+                    PreformatEnd;
+                  end;
+                Finally
+                  if Log='' then
+                    begin
+                      HeaderStart(2);
+                      Write('No log of '+FRunId+'.');
+                      HeaderEnd(2);
+                    end;  
+                end;  
+              end;  
+            if FCompareRunId<>'' then
+              begin
+                log:=''; 
+                Try
+                log:=getsingleton('select TR_LOG from TESTRESULTS where (TR_TEST_FK='+ftestfileid
+                     +') and (TR_TESTRUN_FK='+fcomparerunid+')');
+                if Log<>'' then
+                  begin
+                    HeaderStart(2);
+                    Write('Log of '+FCompareRunId+':');
+                    HeaderEnd(2);
+                    PreformatStart;
+                    system.Write(Log);
+                    system.flush(output);
+                    PreformatEnd;
+                  end;
+                Finally
+                  if Log='' then
+                    begin
+                      HeaderStart(2);
+                      Write('No log of '+FCompareRunId+'.');
+                      HeaderEnd(2);
+                    end;  
+                end;  
+              end;  
+            if FDebug then
+              Write('After Log.');
+            Source:='';
+            Try  
+            Source:=getsingleton('select T_SOURCE from TESTS where T_ID='+ftestfileid);
+            if Source<>'' then
+              begin
+                HeaderStart(2);
+                Write('Source:');
+                HeaderEnd(2);
+                PreformatStart;
+                system.Write(Source);
+                system.flush(output);
+                PreformatEnd;
+              end;
+            Finally 
+            Base:='trunk';
+            if  FVersionBranch<>'' then
+              begin
+                // Test all but last version, which is assumed to be trunk
+                for ver:=low(known_versions) to pred(high(known_versions)) do
+                  if ver_string[ver]=FVersionBranch then
+                    begin
+                      base:=ver_branch[ver];
+                      break;
+                    end;
+              end;
+            FViewVCURL:=ViewURL+Base;
+            if Category='1' then
+              FViewVCUrl:=FViewVCURL+TestsSubDir
+            else
+              begin
+                FViewVCUrl:=FViewVCURL+DataBaseSubDir;
+                // This assumes that type TAnyType is
+                // defined in anytype.pas source PM
+                if pos('/',FTestFileName)>0 then
+                  FTestfilename:=lowercase(copy(FTestFilename,2,pos('/',FTestFilename)-2)+'.pas');
+              end;
+            if Source='' then
+              begin
+                HeaderStart(3);
+                DumpLn('<P>No Source in TestSuite DataBase.</P>');
+                DumpLn('Link to SVN view of '+
+                  '<A HREF="'+FViewVCURL+FTestFileName+'?view=markup'+
+                  '" TARGET="fpc_source"> '+FTestFileName+'</A> source. ');
+                HeaderEnd(3);
+              end
+            else
+              begin
+                HeaderStart(3);
+                DumpLn('Link to SVN view of '+
+                  '<A HREF="'+FViewVCURL+FTestFileName+'?view=markup'+
+                  '" TARGET="fpc_source"> '+FTestFileName+'</A> source. ');
+                HeaderEnd(3);
+              end;  
+            end;  
+             if FDebug then
+              Write('After Source.');
+    end
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        TagStart('IMG',Format('Src="'+TestsuiteCGIURL+'?action=2&pietotal=%d&piefailed=%d&pieskipped=%d"',[FRunCount,FRunFailedCount,FRunSkipCount]));
+        end;
+      end
+>>>>>>> graemeg/fixes_2_2
+    else
+      Write(Format('No data for test file with ID: %s',[FTestFileID]));
+      
+    end;
+  if assigned(os_count) then
+    begin
+      FreeMem(os_count);
+      FreeMem(os_first_date);
+      FreeMem(os_first_date_id);
+      FreeMem(os_last_date);
+      FreeMem(os_last_date_id);
+    end;
+
+  if assigned(cpu_count) then
+    begin
+      FreeMem(cpu_count);
+      FreeMem(cpu_first_date);
+      FreeMem(cpu_first_date_id);
+      FreeMem(cpu_last_date);
+      FreeMem(cpu_last_date_id);
+    end;
+  if assigned(version_count) then
+    begin
+      FreeMem(version_count);
+      FreeMem(version_first_date);
+      FreeMem(version_first_date_id);
+      FreeMem(version_last_date);
+      FreeMem(version_last_date_id);
+    end;
+end;
+
+
+Procedure TTestSuite.ShowHistory;
+Const
+  MaxCombo = 50;
+Type 
+  StatusLongintArray = Array [TTestStatus] of longint;
+  StatusDateTimeArray = Array [TTestStatus] of TDateTime;
+  AStatusLA = Array[1..MaxCombo] of StatusLongintArray;
+  AStatusDTA = Array[1..MaxCombo] of StatusDateTimeArray;
+  PStatusLA = ^AStatusLA;
+  PStatusDTA = ^AStatusDTA;
+Var
+  S,FL,cpu,version,os : String;
+  date : TDateTime;
+  Qry : String;
+  Base, Category : string;
+  Q : TSQLQuery;
+  i,run_id,os_id,version_id,cpu_id : longint;
+  run_ind,os_ind,version_ind,cpu_ind,
+  ok_ind,skip_ind,result_ind,date_ind : longint;
+  os_size, cpu_size, version_size : longint;
+  os_last, cpu_last, version_last : longint;
+  error : word;
+  OK_count, not_OK_count,resi,
+  total_count, skip_count, not_skip_count : longint;
+  TS : TTestStatus;
+  result_count : StatusLongintArray;
+  os_count,cpu_count,version_count: PStatusLA;
+  first_date, last_date : array[TTestStatus] of TDateTime;
+  first_date_id, last_date_id : array[TTestStatus] of longint;
+  os_first_date, os_last_date,
+  cpu_first_date, cpu_last_date,
+  version_first_date, version_last_date : PStatusDTA;
+  os_first_date_id, os_last_date_id,
+  cpu_first_date_id, cpu_last_date_id,
+  version_first_date_id, version_last_date_id : PStatusLA;
+  FieldName,FieldValue,
+  Log,Source : String;
+  Res : Boolean;
+  ver : known_versions;
+begin
+  os_count:=nil;
+  cpu_count:=nil;
+  version_count:=nil;
+  ConnectToDB;
+  ContentType:='text/html';
+  EmitContentType;
+  if FTestFileID='' then
+    FTestFileID:=GetSingleton('SELECT T_ID FROM TESTS WHERE T_NAME LIKE ''%'+
+     FTestFileName+'%''');
+  if FTestFileID<>'' then
+    FTestFileName:=GetTestFileName(FTestFileID);
+  EmitTitle(Title+' : File '+FTestFileName+' Results');
+  With FHTMLWriter do
+    begin
+    HeaderStart(1);
+    Write('Test suite results for test file '+FTestFileName);
+    HeaderEnd(1);
+    HeaderStart(2);
+    Write('Test run data : ');
+    HeaderEnd(2);
+    if FRunID<>'' then
+      begin
+        Res:=ShowRunData;
+        Res:=true;
+      end
+    else 
+      begin
+        // This is useless as it is now
+        // It should be integrated into a form probably PM 
+        //Write('Only failed tests');
+        //EmitCheckBox('failedonly','1',FonlyFailed);
+        //Write('Hide skipped tests');
+        //EmitCheckBox('noskipped','1',FNoSkipped);
+        Res:=true;
+        EmitHistoryForm;
+      end;
+    If Res then
+      begin
+      HeaderStart(2);
+      Write('Test file "'+FTestFileName+'" information:');
+      HeaderEnd(2);
+      ParaGraphStart;
+      S:='SELECT * FROM TESTS WHERE T_ID='+FTestFileID;
+      Q:=CreateDataSet(S);
+      With Q do
+        Try
+          Open;
+          Try
+            For i:=0 to FieldCount-1 do
+              begin
+                FieldValue:=Fields[i].AsString;
+                FieldName:=Fields[i].DisplayName;
+                if (FieldValue<>'') and (FieldValue<>'-') and 
+                   (FieldName<>'T_NAME') and (FieldName<>'T_SOURCE') then
+                  begin
+                    if (FieldValue='+') then
+                      Write('Flag ');
+                    Write(FieldName);
+                    Write(' ');
+                    if FieldValue='+' then
+                      Write(' set')
+                    else
+                      Write(FieldValue);
+                    DumpLn('<BR>');
+                  end;
+              end;
+           
+          Finally
+            Close;
+          end;
+        Finally
+          Free;
+        end;
+      ParaGraphEnd;  
+      HeaderStart(2);
+      Write('Detailed test run results:');
+
+      HeaderEnd(2);
+      ParaGraphStart;
+      S:='SELECT TR_ID,TR_TESTRUN_FK,TR_TEST_FK,TR_OK, TR_SKIP,TR_RESULT '
+      //S:='SELECT * '
+        +',TC_NAME AS CPU, TV_VERSION AS VERSION, TO_NAME AS OS'
+        +',TU_ID,TU_DATE,TU_SUBMITTER,TU_MACHINE,TU_COMMENT '
+        +',TO_ID,TC_ID,TV_ID'
+        +' FROM TESTRUN '
+        +' LEFT JOIN TESTRESULTS ON  (TR_TESTRUN_FK=TU_ID)'
+        +' LEFT JOIN TESTOS ON  (TU_OS_FK=TO_ID)'
+        +' LEFT JOIN TESTCPU ON  (TU_CPU_FK=TC_ID)'
+        +' LEFT JOIN TESTVERSION ON  (TU_VERSION_FK=TV_ID)'
+        +' WHERE  (TR_TEST_FK='+FTestFileID+')';
+      If FOnlyFailed then
+        S:=S+' AND (TR_OK="-")';
+      If FNoSkipped then
+        S:=S+' AND (TR_SKIP="-")';
+      If (FCPU<>'') and (GetCPUName(FCPU)<>'All') then
+        begin
+          S:=S+' AND (TU_CPU_FK='+FCPU+')';
+          cpu_size:=0;
+        end
+      else
+        begin
+          cpu_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTCPU'));
+          cpu_size:=Sizeof(StatusLongintArray)*(1+cpu_last);
+          cpu_count:=GetMem(cpu_size);
+          FillChar(cpu_count^,cpu_size,#0);
+          cpu_first_date_id:=GetMem(cpu_size);
+          FillChar(cpu_first_date_id^,cpu_size,#0);
+          cpu_last_date_id:=GetMem(cpu_size);
+          FillChar(cpu_last_date_id^,cpu_size,#0);
+          cpu_first_date:=GetMem(cpu_last*SizeOf(StatusDateTimeArray));
+          FillChar(cpu_first_date^,cpu_last*Sizeof(StatusDateTimeArray),#0);
+          cpu_last_date:=GetMem(cpu_last*SizeOf(StatusDateTimeArray));
+          FillChar(cpu_last_date^,cpu_last*Sizeof(StatusDateTimeArray),#0);
+        end;
+      If (FVersion<>'') and (GetVersionName(FVersion)<>'All')  then
+        begin
+          S:=S+' AND (TU_VERSION_FK='+FVERSION+')';
+          version_size:=0;
+        end
+      else
+        begin
+          version_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTVERSION'));
+          version_size:=Sizeof(StatusLongintArray)*(1+version_last);
+          version_count:=GetMem(version_size);
+          FillChar(version_count^,version_size,#0);
+          version_first_date_id:=GetMem(version_size);
+          FillChar(version_first_date_id^,version_size,#0);
+          version_last_date_id:=GetMem(version_size);
+          FillChar(version_last_date_id^,version_size,#0);
+          version_first_date:=GetMem(version_last*SizeOf(StatusDateTimeArray));
+          FillChar(version_first_date^,version_last*Sizeof(StatusDateTimeArray),#0);
+          version_last_date:=GetMem(version_last*SizeOf(StatusDateTimeArray));
+          FillChar(version_last_date^,version_last*Sizeof(StatusDateTimeArray),#0);
+
+        end;
+
+      if (FOS<>'') and (GetOSName(FOS)<>'All') then
+        begin
+          S:=S+' AND (TU_OS_FK='+FOS+')';
+          os_size:=0;
+        end
+      else
+        begin
+          os_last:=StrToInt(GetSingleton('SELECT COUNT(*) FROM TESTOS'));
+          os_size:=Sizeof(StatusLongintArray)*(1+os_last);
+          os_count:=GetMem(os_size);
+          FillChar(os_count^,os_size,#0);
+          os_first_date_id:=GetMem(os_size);
+          FillChar(os_first_date_id^,os_size,#0);
+          os_last_date_id:=GetMem(os_size);
+          FillChar(os_last_date_id^,os_size,#0);
+          os_first_date:=GetMem(os_last*SizeOf(StatusDateTimeArray));
+          FillChar(os_first_date^,os_last*Sizeof(StatusDateTimeArray),#0);
+          os_last_date:=GetMem(os_last*SizeOf(StatusDateTimeArray));
+          FillChar(os_last_date^,os_last*Sizeof(StatusDateTimeArray),#0);
+        end;
+
+      If FSubmitter<>'' then
+        S:=S+' AND (TU_SUBMITTER='''+FSubmitter+''')';
+      If FMachine<>'' then
+        S:=S+' AND (TU_MACHINE='''+FMachine+''')';
+      If FComment<>'' then
+        S:=S+' AND (TU_COMMENT LIKE '''+FComment+''')';
+      if FDATE<>0 then
+        S:=S+' AND (TU_DATE >= '''+FormatDateTime('YYYY-MM-DD',FDate)+''')';
+
+      S:=S+' ORDER BY TU_ID DESC';
+      if FDATE=0 then
+        S:=S+' LIMIT '+IntToStr(FLimit);
+      Qry:=S;
+      If FDebug then
+      begin
+        Writeln(system.stdout,'Query : '+Qry);
+        system.Flush(system.stdout);
+      end;
+      FRunCount:=0;
+      FRunSkipCount:=0;
+      FRunFailedCount:=0;
+      Q:=CreateDataset(Qry);
+      With Q do
+        try
+          Open;
+          
+          while not EOF do
+            Next;
+
+          DumpLn(Format('<p>Record count: %d </p>',[Q.RecordCount]));
+          if RecordCount>0 then
+            RecNo:=0;
+
+          Try
+           if FDebug then
+             begin
+               Writeln(stdout,'FieldKind=',Fields[0].FieldKind);
+               Writeln(stdout,'DataType=',Fields[0].DataType);
+               system.flush(stdout);
+             end;
+
+          total_count:=0;
+          OK_count:=0;
+          not_OK_count:=0;
+          skip_count:=0;
+          not_skip_count:=0;
+          fillchar(Result_Count,Sizeof(Result_count),#0);
+          ok_ind:=FieldByName('TR_OK').Index;
+          skip_ind:=FieldBYName('TR_SKIP').Index;
+          result_ind:=FieldByName('TR_RESULT').Index;
+          cpu_ind:=FieldByName('TC_ID').Index;
+          os_ind:=FieldByName('TO_ID').Index;
+          version_ind:=FieldByName('TV_ID').Index;
+          date_ind:=FieldByName('TU_DATE').Index;
+          run_ind:=FieldByName('TU_ID').Index;
+          For i:=0 to Q.RecordCount-1 do
+            begin
+              Q.RecNo:=i;
+              inc(total_count);
+              S:=Fields[ok_ind].AsString;
+
+              if S='+' then
+                inc(OK_count)
+              else
+                inc(not_OK_count);
+              S:=Fields[skip_ind].AsString;
+              if S='+' then
+                inc(skip_count)
+              else
+                inc(not_skip_count);
+              S:=Fields[result_ind].AsString;
+              cpu:=Fields[cpu_ind].ASString;
+              version:=Fields[version_ind].AsString;
+              os:=Fields[os_ind].AsString;
+              date:=Fields[date_ind].ASDateTime;
+              os_id:=Fields[os_ind].AsLongint;
+              cpu_id:=Fields[cpu_ind].AsLongint;
+              version_id:=Fields[version_ind].AsLongint;
+              system.val(S,resi,error);
+              run_id:=Fields[run_ind].ASLongint;
+              if (error=0) and (Resi>=longint(FirstStatus)) and
+                 (Resi<=longint(LastStatus)) then
+                begin   
+                  TS:=TTestStatus(Resi);
+                  if Result_count[TS]=0 then
+                    begin
+                      first_date[TS]:=date;
+                      last_date[TS]:=date;
+                      first_date_id[TS]:=run_id;
+                      last_date_id[TS]:=run_id;
+                    end
+                  else 
+                    begin
+                      if (date>last_date[TS]) then
+                        begin
+                          last_date[TS]:=date;
+                          last_date_id[TS]:=run_id;
+                        end;
+                      if date<first_date[TS] then
+                        begin
+                          first_date[TS]:=date;
+                          first_date_id[TS]:=run_id;
+                        end;
+                    end;
+                    
+                  inc(Result_count[TS]);
+                  if assigned(cpu_count) and (cpu_id<=cpu_last) then
+                    begin
+                      if cpu_count^[cpu_id,TS]=0 then
+                        begin
+                          cpu_first_date^[cpu_id,TS]:=date;
+                          cpu_last_date^[cpu_id,TS]:=date;
+                          cpu_first_date_id^[cpu_id,TS]:=run_id;
+                          cpu_last_date_id^[cpu_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>cpu_last_date^[cpu_id,TS]) then
+                            begin
+                              cpu_last_date^[cpu_id,TS]:=date;
+                              cpu_last_date_id^[cpu_id,TS]:=run_id;
+                            end;
+                          if date<cpu_first_date^[cpu_id,TS] then
+                            begin
+                              cpu_first_date^[cpu_id,TS]:=date;
+                              cpu_first_date_id^[cpu_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(cpu_count^[cpu_id,TS]);
+                    end;
+                  if assigned(os_count) and (os_id<=os_last) then
+                    begin
+                      if os_count^[os_id,TS]=0 then
+                        begin
+                          os_first_date^[os_id,TS]:=date;
+                          os_last_date^[os_id,TS]:=date;
+                          os_first_date_id^[os_id,TS]:=run_id;
+                          os_last_date_id^[os_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>os_last_date^[os_id,TS]) then
+                            begin
+                              os_last_date^[os_id,TS]:=date;
+                              os_last_date_id^[os_id,TS]:=run_id;
+                            end;
+                          if date<os_first_date^[os_id,TS] then
+                            begin
+                              os_first_date^[os_id,TS]:=date;
+                              os_first_date_id^[os_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(os_count^[os_id,TS]);
+                    end;
+                  if assigned(version_count) and (version_id<=version_last) then
+                    begin
+                      if version_count^[version_id,TS]=0 then
+                        begin
+                          version_first_date^[version_id,TS]:=date;
+                          version_last_date^[version_id,TS]:=date;
+                          version_first_date_id^[version_id,TS]:=run_id;
+                          version_last_date_id^[version_id,TS]:=run_id;
+                        end
+                      else 
+                        begin
+                          if (date>version_last_date^[version_id,TS]) then
+                            begin
+                              version_last_date^[version_id,TS]:=date;
+                              version_last_date_id^[version_id,TS]:=run_id;
+                            end;
+                          if date<version_first_date^[version_id,TS] then
+                            begin
+                              version_first_date^[version_id,TS]:=date;
+                              version_first_date_id^[version_id,TS]:=run_id;
+                            end;
+                        end;
+                      inc(version_count^[version_id,TS]);
+                    end;
+                end
+              else if Fdebug then
+                writeln(stdout,'Error for Result, S=',S);
+            end;
+          DumpLn(Format('<p>Total = %d </p>',[total_count]));
+          if Total_count > 0 then
+            DumpLn(Format('<p>OK=%d Percentage= %3.2f </p>',[OK_count,OK_count*100/total_count]));
+          if Skip_count > 0 then
+            DumpLn(Format('<p>Skipped=%d Percentage= %3.2f </p>',[Skip_count,Skip_count*100/total_count]));
+          if total_count>0 then
+            begin
+              TableStart(5,True);
+              RowStart;
+              CellStart;
+              Write('Result type');
+              CellNext;
+              Write('Cat.');
+              CellNext;
+              Write('Count');
+              CellNext;
+              Write('Percentage');
+              CellNext;
+              Write('First date');
+              CellNext;
+              Write('Last Date');
+              CellEnd;
+            end;
+          For TS:=FirstStatus to LastStatus do
+            if Result_count[TS]>0 then
+              begin
+                RowNext;
+                CellStart;
+                Write(StatusText[TS]);
+                CellNext;
+                CellNext;
+                Write(Format('%d',[Result_count[TS]]));
+                CellNext;
+                Write(Format('%3.1f',[Result_count[TS]*100/total_count]));
+                CellNext;
+
+                DumpLn(FormatDetailURL(IntToStr(first_date_id[TS]),
+                  DateTimeToStr(first_date[TS])));
+                Write(' '+GetFailCount(first_date_id[TS]));
+                CellNext;
+                DumpLn(FormatDetailURL(IntToStr(last_date_id[TS]),
+                  DateTimeToStr(last_date[TS])));
+                Write(' '+GetFailCount(last_date_id[TS]));
+                CellEnd;
+                if assigned(cpu_count) then
+                  begin
+                    for i:=1 to cpu_last do
+                      if cpu_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TC_NAME FROM TESTCPU WHERE TC_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[cpu_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[cpu_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(cpu_first_date_id^[i,TS]),
+                            DateTimeToStr(cpu_first_date^[i,TS])));
+                          Write(' '+GetFailCount(cpu_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(cpu_last_date_id^[i,TS]),
+                            DateTimeToStr(cpu_last_date^[i,TS])));
+                          Write(' '+GetFailCount(cpu_last_date_id^[i,TS]));
+                          CellEnd;
+                        end;
+                  end;
+                if assigned(os_count) then
+                  begin
+                    for i:=1 to os_last do
+                      if os_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TO_NAME FROM TESTOS WHERE TO_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[os_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[os_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(os_first_date_id^[i,TS]),
+                            DateTimeToStr(os_first_date^[i,TS])));
+                          Write(' '+GetFailCount(os_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(os_last_date_id^[i,TS]),
+                            DateTimeToStr(os_last_date^[i,TS])));
+                          Write(' '+GetFailCount(os_last_date_id^[i,TS]));
+                          CellEnd;
+
+                        end;
+
+                  end;
+
+                if assigned(version_count) then
+                  begin
+                    for i:=1 to version_last do
+                      if version_count^[i,TS]>0 then
+                        begin
+                          RowNext;
+                          CellStart;
+                          CellNext;
+                          Write(GetSingleton('SELECT TV_VERSION FROM TESTVERSION WHERE TV_ID='+IntToStr(i)));
+                          CellNext;
+                          Write(Format('%d',[version_count^[i,TS]]));
+                          CellNext;
+                          Write(Format('%3.1f',[version_count^[i,TS]*100/result_count[TS]]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(version_first_date_id^[i,TS]),
+                            DateTimeToStr(version_first_date^[i,TS])));
+                          Write(' '+GetFailCount(version_first_date_id^[i,TS]));
+                          CellNext;
+                          DumpLn(FormatDetailURL(IntToStr(version_last_date_id^[i,TS]),
+                            DateTimeToStr(version_last_date^[i,TS])));
+                          Write(' '+GetFailCount(version_last_date_id^[i,TS]));
+                          CellEnd;
+
+                        end;
+
+                  end;
+
+              end;
+          if total_count>0 then
+            begin
+              TableEnd;
+              RecNo:=0;
+            end;
+          If FDebug or FListAll then
+           begin
+
+            With CreateTableProducer(Q) do
+              Try
+                Border:=True;
+                FL:='TR_TESTRUN_FK,TU_DATE,TR_OK,TR_SKIP,TR_RESULT';
+                if FSubmitter='' then
+                  FL:=FL+',TU_SUBMITTER';
+                if FMachine='' then
+                  FL:=FL+',TU_MACHINE';
+                if Fcomment='' then
+                  FL:=FL+',TU_COMMENT';
+                if (FOS='') or (GetOSName(FOS)='All') then
+                  FL:=FL+',OS';
+                if (FCPU='') or (GetCPUName(FCPU)='All') then
+                  FL:=FL+',CPU';
+                if (FVersion='') or (GetVersionName(FVersion)='All') then
+                  FL:=FL+',VERSION';
+                
+                CreateColumns(FL);
+                //TableColumns.Delete(TableColumns.ColumnByName('TR_TEST_FK').Index);
+                TableColumns.ColumnByNAme('TR_TESTRUN_FK').OnGetCellContents:=
+                  @FormatTestRunOverview;
+                //OnGetRowAttributes:=@GetRunRowAttr;
+                TableColumns.ColumnByNAme('TR_RESULT').OnGetCellContents:=
+                  @FormatTestResult;
+                //(TableColumns.Items[0] as TTableColumn).ActionURL:=ALink;
+                CreateTable(Response);
+              Finally
+                Free;
+              end;
+           end;
+
+          Finally
+            Close;
+          end;
+        finally
+          Free;
+        end;
+             //If FDebug then
+            Category:='1';
+            if FRunId<>'' then
+              begin
+                Category:=getsingleton('select TU_CATEGORY_FK from TESTRUN where TU_ID='+FRunId);
+                FVersionBranch:=GetVersionName(getsingleton('select TU_VERSION_FK from TESTRUN where TU_ID='+fRunId));
+                log:=''; 
+                Try
+                log:=getsingleton('select TR_LOG from TESTRESULTS where (TR_TEST_FK='+ftestfileid
+                     +') and (TR_TESTRUN_FK='+frunid+')');
+                if Log<>'' then
+                  begin
+                    HeaderStart(2);
+                    Write('Log of '+FRunId+':');
+                    HeaderEnd(2);
+                    PreformatStart;
+                    system.Write(Log);
+                    system.flush(output);
+                    PreformatEnd;
+                  end;
+                Finally
+                  if Log='' then
+                    begin
+                      HeaderStart(2);
+                      Write('No log of '+FRunId+'.');
+                      HeaderEnd(2);
+                    end;  
+                end;  
+              end;  
+            if FCompareRunId<>'' then
+              begin
+                log:=''; 
+                Try
+                log:=getsingleton('select TR_LOG from TESTRESULTS where (TR_TEST_FK='+ftestfileid
+                     +') and (TR_TESTRUN_FK='+fcomparerunid+')');
+                if Log<>'' then
+                  begin
+                    HeaderStart(2);
+                    Write('Log of '+FCompareRunId+':');
+                    HeaderEnd(2);
+                    PreformatStart;
+                    system.Write(Log);
+                    system.flush(output);
+                    PreformatEnd;
+                  end;
+                Finally
+                  if Log='' then
+                    begin
+                      HeaderStart(2);
+                      Write('No log of '+FCompareRunId+'.');
+                      HeaderEnd(2);
+                    end;  
+                end;  
+              end;  
+            if FDebug then
+              Write('After Log.');
+            Source:='';
+            Try  
+            Source:=getsingleton('select T_SOURCE from TESTS where T_ID='+ftestfileid);
+            if Source<>'' then
+              begin
+                HeaderStart(2);
+                Write('Source:');
+                HeaderEnd(2);
+                PreformatStart;
+                system.Write(Source);
+                system.flush(output);
+                PreformatEnd;
+              end;
+            Finally 
+            Base:='trunk';
+            if  FVersionBranch<>'' then
+              begin
+                // Test all but last version, which is assumed to be trunk
+                for ver:=low(known_versions) to pred(high(known_versions)) do
+                  if ver_string[ver]=FVersionBranch then
+                    begin
+                      base:=ver_branch[ver];
+                      break;
+                    end;
+              end;
+            FViewVCURL:=ViewURL+Base;
+            if Category='1' then
+              FViewVCUrl:=FViewVCURL+TestsSubDir
+            else
+              begin
+                FViewVCUrl:=FViewVCURL+DataBaseSubDir;
+                // This assumes that type TAnyType is
+                // defined in anytype.pas source PM
+                if pos('/',FTestFileName)>0 then
+                  FTestfilename:=lowercase(copy(FTestFilename,2,pos('/',FTestFilename)-2)+'.pas');
+              end;
+            if Source='' then
+              begin
+                HeaderStart(3);
+                DumpLn('<P>No Source in TestSuite DataBase.</P>');
+                DumpLn('Link to SVN view of '+
+<<<<<<< HEAD
+<<<<<<< HEAD
+                  '<A HREF="'+FViewVCURL+FTestFileName+'?view=markup'+
+                  '" TARGET="fpc_source"> '+FTestFileName+'</A> source. ');
+=======
+                  '<A HREF="'+ViewVCURL+FTestFileName+'?view=markup'+
+                  '" TARGET="_blank"> '+FTestFileName+'</A> source. ');
+>>>>>>> graemeg/fixes_2_2
+=======
+                  '<A HREF="'+ViewVCURL+FTestFileName+'?view=markup'+
+                  '" TARGET="_blank"> '+FTestFileName+'</A> source. ');
+>>>>>>> origin/fixes_2_2
+                HeaderEnd(3);
+              end
+            else
+              begin
+                HeaderStart(3);
+                DumpLn('Link to SVN view of '+
+<<<<<<< HEAD
+<<<<<<< HEAD
+                  '<A HREF="'+FViewVCURL+FTestFileName+'?view=markup'+
+                  '" TARGET="fpc_source"> '+FTestFileName+'</A> source. ');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                  '<A HREF="'+ViewVCURL+FTestFileName+'?view=markup'+
+                  '" TARGET="_blank"> '+FTestFileName+'</A> source. ');
+>>>>>>> graemeg/fixes_2_2
+                HeaderEnd(3);
+              end;  
+            end;  
+             if FDebug then
+              Write('After Source.');
+    end
+    else
+      Write(Format('No data for test file with ID: %s',[FTestFileID]));
+      
+    end;
+  if assigned(os_count) then
+    begin
+      FreeMem(os_count);
+      FreeMem(os_first_date);
+      FreeMem(os_first_date_id);
+      FreeMem(os_last_date);
+      FreeMem(os_last_date_id);
+    end;
+
+  if assigned(cpu_count) then
+    begin
+      FreeMem(cpu_count);
+      FreeMem(cpu_first_date);
+      FreeMem(cpu_first_date_id);
+      FreeMem(cpu_last_date);
+      FreeMem(cpu_last_date_id);
+    end;
+  if assigned(version_count) then
+    begin
+      FreeMem(version_count);
+      FreeMem(version_first_date);
+      FreeMem(version_first_date_id);
+      FreeMem(version_last_date);
+      FreeMem(version_last_date_id);
+    end;
+end;
+
 Procedure TTestSuite.ShowRunComparison;
 
 Var
@@ -2592,14 +6540,36 @@ begin
          +'tr2.TR_OK as Run2_OK, tr1.TR_Result as Run1_Result,'
          +'tr2.TR_RESULT as Run2_Result '
          +'FROM TESTS, tr2 LEFT JOIN tr1 USING (TR_TEST_FK) '
+<<<<<<< HEAD
+<<<<<<< HEAD
          +'WHERE ((tr1.TR_SKIP IS NULL) or (tr2.TR_SKIP IS NULL) or '
+=======
+         +'WHERE ((tr1.TR_SKIP IS NULL) or'
+         +' (tr2.TR_SKIP IS NULL) or '
+>>>>>>> graemeg/fixes_2_2
+=======
+         +'WHERE ((tr1.TR_SKIP IS NULL) or'
+         +' (tr2.TR_SKIP IS NULL) or '
+>>>>>>> origin/fixes_2_2
          +' (%s (tr1.TR_Result<>tr2.TR_Result)))'
          +'and (T_ID=tr2.TR_TEST_FK)';
       If FNoSkipped then
         begin
+<<<<<<< HEAD
+<<<<<<< HEAD
         Qry:='(((tr1.TR_SKIP) and (not tr2.TR_OK) and (not tr2.TR_SKIP)) or '
            +'((not tr1.TR_OK) and (not tr1.TR_SKIP) and (tr2.TR_SKIP)) or '
            +'((not tr1.TR_SKIP) and (not tr2.TR_SKIP))) and ';
+=======
+        Qry:='(((tr1.TR_SKIP="+") and (tr2.TR_OK="-") and (tr2.TR_SKIP="-")) or '
+           +'((tr1.TR_OK="-") and (tr1.TR_SKIP="-") and (tr2.TR_SKIP="+")) or '
+           +'((tr1.TR_SKIP="-") and (tr2.TR_SKIP="-"))) and ';
+>>>>>>> graemeg/fixes_2_2
+=======
+        Qry:='(((tr1.TR_SKIP="+") and (tr2.TR_OK="-") and (tr2.TR_SKIP="-")) or '
+           +'((tr1.TR_OK="-") and (tr1.TR_SKIP="-") and (tr2.TR_SKIP="+")) or '
+           +'((tr1.TR_SKIP="-") and (tr2.TR_SKIP="-"))) and ';
+>>>>>>> origin/fixes_2_2
         end
       else
         Qry:='';
@@ -2650,12 +6620,20 @@ begin
       If Not (FRunCount=0) and not (FNoSkipped or FOnlyFailed) then
         begin
         ParaGraphStart;
+<<<<<<< HEAD
+<<<<<<< HEAD
         TagStart('IMG',Format('Src="'+TestsuiteCGIURL+
         '?action=2&amp;pietotal=%d&amp;piefailed=%d&amp;pieskipped=%d"'+
         ' ALT="total=%d, failed=%d, skipped=%d"',
         [FRunCount,FRunFailedCount,FRunSkipCount,
           FRunCount,FRunFailedCount,FRunSkipCount
           ]));
+=======
+        TagStart('IMG',Format('Src="'+TestsuiteCGIURL+'?action=2&pietotal=%d&piefailed=%d&pieskipped=%d"',[FRunCount,FRunFailedCount,FRunSkipCount]));
+>>>>>>> graemeg/fixes_2_2
+=======
+        TagStart('IMG',Format('Src="'+TestsuiteCGIURL+'?action=2&pietotal=%d&piefailed=%d&pieskipped=%d"',[FRunCount,FRunFailedCount,FRunSkipCount]));
+>>>>>>> origin/fixes_2_2
         end;
       end
     else
@@ -2699,6 +6677,7 @@ begin
       Inc(FRunSkipCount);
       BGColor:='yellow';    // Yellow
       end
+<<<<<<< HEAD
     else If Run2Field.AsBoolean then
       begin
       if Run1Field.AsString='' then
@@ -2707,11 +6686,32 @@ begin
         BGColor:='#98FB98';    // pale Green
       end
     else if Not Run2Field.AsBoolean then
+=======
+    else If Run2Field.AsString='+' then
+      begin
+      if Run1Field.AsString='' then
+        BGColor:='#68DFB8'
+      else if Run1Field.ASString<>'+' then
+        BGColor:='#98FB98';    // pale Green
+      end  
+    else if Run2Field.AsString='-' then
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       begin
       Inc(FRunFailedCount);
       if Run1Field.AsString='' then
         BGColor:='#FF82AB'    // Light red
+<<<<<<< HEAD
+<<<<<<< HEAD
       else if Not Run1Field.AsBoolean then
+=======
+      else if Run1Field.AsString<>'-' then
+>>>>>>> graemeg/fixes_2_2
+=======
+      else if Run1Field.AsString<>'-' then
+>>>>>>> origin/fixes_2_2
         BGColor:='#FF225B';
       end;
     end;
@@ -2730,6 +6730,32 @@ begin
   CellData:=Format('<A HREF="%s">%s</A>',[S,CellData]);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+function TTestSuite.FormatDetailURL(const RunIdStr, CellData : String) : string;
+Var
+  S : String;
+begin
+  S:=Format(SDetailsURL,[RunIdStr]);
+  if FOnlyFailed then
+    S:=S+'&failedonly=1';
+  if FNoSkipped then
+    S:=S+'&noskipped=1';
+  FormatDetailURL:=Format('<A HREF="%s">%s</A>',[S,CellData]);
+end;
+
+procedure TTestSuite.FormatTestRunOverview(Sender: TObject; var CellData: String);
+>>>>>>> graemeg/cpstrnew
 
 function TTestSuite.FormatDetailURL(const RunIdStr, CellData : String) : string;
 Var
@@ -2757,6 +6783,7 @@ begin
   CellData:=Format('<A HREF="%s">%s</A>',[S,CellData]);
 end;
 
+<<<<<<< HEAD
 procedure TTestSuite.FormatSVN(Sender: TObject; var CellData: String);
 begin
   FormatSVNData(CellData);
@@ -2804,6 +6831,8 @@ begin
     end;
 end;
 
+=======
+>>>>>>> graemeg/cpstrnew
 procedure TTestSuite.FormatFileIDDetails(Sender: TObject; var CellData: String);
 
 Var
@@ -2813,14 +6842,82 @@ Var
 begin
   P:=(Sender as TTableProducer);
   if FVersion<>'' then
+<<<<<<< HEAD
     S:=Format(TestSuiteCGIURL + '?action=%d&amp;version=%s&amp;testfileid=%s',
        [faction_show_history,FVersion,P.DataSet.FieldByName('Id').AsString])
   else
     S:=Format(TestSuiteCGIURL + '?action=%d&amp;testfileid=%s',
        [faction_show_history,P.DataSet.FieldByName('Id').AsString]);
+=======
+    S:=Format(TestSuiteCGIURL + '?action=4&version=%s&testfileid=%s',
+       [FVersion,P.DataSet.FieldByName('Id').AsString])
+  else 
+    S:=Format(TestSuiteCGIURL + '?action=4&testfileid=%s',
+       [P.DataSet.FieldByName('Id').AsString]);
+>>>>>>> graemeg/cpstrnew
   CellData:=Format('<A HREF="%s">%s</A>',[S,CellData]);
 end;
 
+<<<<<<< HEAD
+=======
+procedure TTestSuite.FormatFileIDDetails(Sender: TObject; var CellData: String);
+
+Var
+  S: String;
+  P : TTableProducer;
+
+begin
+  P:=(Sender as TTableProducer);
+  if FVersion<>'' then
+    S:=Format(TestSuiteCGIURL + '?action=4&version=%s&testfileid=%s',
+       [FVersion,P.DataSet.FieldByName('Id').AsString])
+  else 
+    S:=Format(TestSuiteCGIURL + '?action=4&testfileid=%s',
+       [P.DataSet.FieldByName('Id').AsString]);
+  CellData:=Format('<A HREF="%s">%s</A>',[S,CellData]);
+end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TTestSuite.FormatFileIDDetails(Sender: TObject; var CellData: String);
+
+Var
+  S: String;
+  P : TTableProducer;
+
+begin
+  P:=(Sender as TTableProducer);
+  if FVersion<>'' then
+    S:=Format(TestSuiteCGIURL + '?action=4&version=%s&testfileid=%s',
+       [FVersion,P.DataSet.FieldByName('Id').AsString])
+  else 
+    S:=Format(TestSuiteCGIURL + '?action=4&testfileid=%s',
+       [P.DataSet.FieldByName('Id').AsString]);
+  CellData:=Format('<A HREF="%s">%s</A>',[S,CellData]);
+end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TTestSuite.FormatFileIDDetails(Sender: TObject; var CellData: String);
+
+Var
+  S: String;
+  P : TTableProducer;
+
+begin
+  P:=(Sender as TTableProducer);
+  if FVersion<>'' then
+    S:=Format(TestSuiteCGIURL + '?action=4&version=%s&testfileid=%s',
+       [FVersion,P.DataSet.FieldByName('Id').AsString])
+  else 
+    S:=Format(TestSuiteCGIURL + '?action=4&testfileid=%s',
+       [P.DataSet.FieldByName('Id').AsString]);
+  CellData:=Format('<A HREF="%s">%s</A>',[S,CellData]);
+end;
+
+>>>>>>> origin/cpstrnew
 
 procedure TTestSuite.FormatFileDetails(Sender: TObject; var CellData: String);
 
@@ -2831,11 +6928,22 @@ Var
 begin
   P:=(Sender as TTableProducer);
   if FCompareRunID<>'' then
+<<<<<<< HEAD
+<<<<<<< HEAD
     S:=Format(TestSuiteCGIURL + '?action=%d&amp;run1id=%s&amp;run2id=%s&amp;testfileid=%s',
        [faction_show_one_test,FRunID,FCompareRunID,P.DataSet.FieldByName('Id').AsString])
   else
     S:=Format(TestSuiteCGIURL + '?action=%d&amp;run1id=%s&amp;testfileid=%s',
        [faction_show_one_test,FRunID,P.DataSet.FieldByName('Id').AsString]);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    S:=Format(TestSuiteCGIURL + '?action=3&run1id=%s&run2id=%s&testfileid=%s',
+       [FRunID,FCompareRunID,P.DataSet.FieldByName('Id').AsString])
+  else 
+    S:=Format(TestSuiteCGIURL + '?action=3&run1id=%s&testfileid=%s',
+       [FRunID,P.DataSet.FieldByName('Id').AsString]);
+>>>>>>> graemeg/fixes_2_2
   CellData:=Format('<A HREF="%s">%s</A>',[S,CellData]);
 end;
 
@@ -2996,8 +7104,31 @@ begin
   if FDebug then
     begin
       Writeln(stdout,'Setting text');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       system.flush(stdout);
     end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      Writeln(stdout,'Palette size : ',Img.Palette.Count);
+    end;
+
+  cnv.font.FPColor:=colred;
+  Inc(FH,4);
+  FR:=Failed/Total;
+  SR:=Skipped/Total;
+  PR:=1-(FR+SR);
+  Cnv.Textout(1,FH,Format('%d Failed (%3.1f%%)',[Failed,Fr*100]));
+  // Writeln('Palette size : ',Img.Palette.Count);
+  cnv.font.FPColor:=colYellow;
+>>>>>>> graemeg/cpstrnew
   Cnv.Textout(1,FH*2,Format('%d Skipped (%3.1f%%)',[Skipped,SR*100]));
   A1:=(Pi*2*(failed/total));
   A2:=A1+(Pi*2*(Skipped/Total));
@@ -3018,5 +7149,21 @@ begin
   else
     TestsuiteCGIURL:=TestsuiteURLPrefix+'cgi-bin/'+TestsuiteBin;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   ShortDateFormat:='yyyy/mm/dd';
+=======
+  SDetailsURL := TestsuiteCGIURL + '?action=1&run1id=%s';
+>>>>>>> graemeg/cpstrnew
+=======
+  SDetailsURL := TestsuiteCGIURL + '?action=1&run1id=%s';
+>>>>>>> graemeg/cpstrnew
+=======
+  SDetailsURL := TestsuiteCGIURL + '?action=1&run1id=%s';
+>>>>>>> graemeg/cpstrnew
+=======
+  SDetailsURL := TestsuiteCGIURL + '?action=1&run1id=%s';
+>>>>>>> origin/cpstrnew
 end.

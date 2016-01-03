@@ -2,6 +2,8 @@
 {$mode objfpc}{$H+}
 program fpmake;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses fpmkunit, classes, sysutils;
 
 {$endif ALLPACKAGES}
@@ -146,6 +148,12 @@ begin
 end;
 
 procedure add_gdbint(const ADirectory: string);
+=======
+uses fpmkunit;
+>>>>>>> graemeg/fixes_2_2
+=======
+uses fpmkunit;
+>>>>>>> origin/fixes_2_2
 
 Var
   P : TPackage;
@@ -153,6 +161,8 @@ Var
 begin
   With Installer do
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     P:=AddPackage('gdbint');
     P.ShortName:='gdb';
     P.Directory:=ADirectory;
@@ -180,6 +190,21 @@ begin
     //
     // NOTE: the gdbver.inc dependencies gives warnings because the makefile.fpc
     // does a "cp src/gdbver_nogdb.inc src/gdbver.inc" to create it
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$endif ALLPACKAGES}
+
+    P:=AddPackage('gdbint');
+{$ifdef ALLPACKAGES}
+    P.Directory:='gdbint';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     T:=P.Targets.AddUnit('gdbcon.pp');
       with T.Dependencies do
@@ -187,6 +212,8 @@ begin
           AddUnit('gdbint');
         end;
     T:=P.Targets.AddUnit('gdbint.pp');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ExamplePath.add('examples');
     P.Targets.AddExampleProgram('testgdb.pp');
     P.Targets.AddExampleProgram('symify.pp');
@@ -203,3 +230,20 @@ begin
 end.
 {$endif ALLPACKAGES}
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      with T.Dependencies do
+        begin
+          AddInclude('gdbver.inc');
+        end;
+
+{$ifndef ALLPACKAGES}
+    Run;
+    end;
+end.
+{$endif ALLPACKAGES}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

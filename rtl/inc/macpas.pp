@@ -391,8 +391,18 @@ begin
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPUNONE}
 begin
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision])
 {$endif}
+=======
+begin
+  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision])
+>>>>>>> graemeg/fixes_2_2
+=======
+begin
+  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision])
+>>>>>>> origin/fixes_2_2
 end.

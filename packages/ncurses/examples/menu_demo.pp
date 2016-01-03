@@ -29,7 +29,7 @@ procedure print_in_middle(win : PWINDOW;starty,startx,width : longint;_string : 
         temp := (width - length)/ 2;
         x := startx + round(temp);
         wattron(win, color);
-        mvwprintw(win, y, x, '%s', _string);
+        mvwprintw(win, y, x, '%s', [_string]);
         wattroff(win, color);
         refresh;
   end;
@@ -47,7 +47,7 @@ begin
         start_color;
         cbreak;
         noecho;
-        keypad(stdscr, true);
+        keypad(stdscr, 1);
         init_pair(1, COLOR_RED, COLOR_BLACK);
 
         { Create items }
@@ -61,7 +61,7 @@ begin
 
         { Create the window to be associated with the menu }
         my_menu_win := newwin(10, 40, 4, 4);
-        keypad(my_menu_win, true);
+        keypad(my_menu_win, 1);
 
         { Set main window and sub window }
         set_menu_win(my_menu, my_menu_win);
@@ -76,7 +76,7 @@ begin
         mvwaddch(my_menu_win, 2, 0, ACS_LTEE);
         mvwhline(my_menu_win, 2, 1, ACS_HLINE, 38);
         mvwaddch(my_menu_win, 2, 39, ACS_RTEE);
-        mvprintw(LINES - 2, 0, 'F1 to exit');
+        mvprintw(LINES - 2, 0, 'F1 to exit',[]);
         refresh();
 
         { Post the menu }

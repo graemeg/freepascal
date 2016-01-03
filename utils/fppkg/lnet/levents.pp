@@ -1,6 +1,14 @@
 { lNet Events abstration
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   CopyRight (C) 2006-2008 Ales Katona
+=======
+  CopyRight (C) 2006-2007 Ales Katona
+>>>>>>> graemeg/fixes_2_2
+=======
+  CopyRight (C) 2006-2007 Ales Katona
+>>>>>>> origin/fixes_2_2
 
   This library is Free software; you can rediStribute it and/or modify it
   under the terms of the GNU Library General Public License as published by
@@ -141,7 +149,13 @@ type
     FFreeRoot: TLHandle; // the root of "free" list if any
     FFreeIter: TLHandle; // the last of "free" list if any
     FInLoop: Boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
     function GetCount: Integer; virtual;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     function GetTimeout: Integer; virtual;
     procedure SetTimeout(const Value: Integer); virtual;
     function Bail(const msg: string; const Ernum: Integer): Boolean;
@@ -160,7 +174,14 @@ type
     function AddHandle(aHandle: TLHandle): Boolean; virtual;
     function CallAction: Boolean; virtual;
     procedure RemoveHandle(aHandle: TLHandle); virtual;
+<<<<<<< HEAD
     procedure UnplugHandle(aHandle: TLHandle);
+=======
+    procedure UnplugHandle(aHandle: TLHandle); virtual;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     procedure UnregisterHandle(aHandle: TLHandle); virtual;
     procedure LoadFromEventer(aEventer: TLEventer); virtual;
     procedure Clear;
@@ -168,7 +189,14 @@ type
     procedure DeleteRef;
     property Timeout: Integer read GetTimeout write SetTimeout;
     property OnError: TLEventerErrorEvent read FOnError write FOnError;
+<<<<<<< HEAD
+<<<<<<< HEAD
     property Count: Integer read GetCount;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    property Count: Integer read FCount;
+>>>>>>> graemeg/fixes_2_2
   end;
   TLEventerClass = class of TLEventer;
   
@@ -313,6 +341,8 @@ begin
   Clear;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TLEventer.GetCount: Integer;
 begin
   Result := FCount;
@@ -323,6 +353,18 @@ begin
   Result := 0;
 end;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function TLEventer.GetTimeout: Integer;
+begin
+  Result := 0;
+end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 procedure TLEventer.SetTimeout(const Value: Integer);
 begin
 end;
@@ -390,6 +432,8 @@ end;
 procedure TLEventer.SetHandleEventer(aHandle: TLHandle);
 begin
   aHandle.FEventer := Self;
+<<<<<<< HEAD
+<<<<<<< HEAD
 end;
 
 procedure TLEventer.InternalUnplugHandle(aHandle: TLHandle);
@@ -413,6 +457,10 @@ begin
     if FCount > 0 then
       Dec(FCount);
   end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 function TLEventer.AddHandle(aHandle: TLHandle): Boolean;
@@ -448,11 +496,38 @@ end;
 
 procedure TLEventer.UnplugHandle(aHandle: TLHandle);
 begin
+<<<<<<< HEAD
   CS.Enter;
 
   InternalUnplugHandle(aHandle);
 
   CS.Leave;
+end;
+
+procedure TLEventer.UnregisterHandle(aHandle: TLHandle);
+begin
+  // do nothing, specific to win32 LCLEventer crap (windows is shit)
+=======
+  if aHandle.FEventer = Self then begin
+    aHandle.FEventer := nil; // avoid recursive AV
+    if Assigned(aHandle.FPrev) then begin
+      aHandle.FPrev.FNext := aHandle.FNext;
+      if Assigned(aHandle.FNext) then
+        aHandle.FNext.FPrev := aHandle.FPrev;
+    end else if Assigned(aHandle.FNext) then begin
+      aHandle.FNext.FPrev := aHandle.FPrev;
+      if aHandle = FRoot then
+        FRoot := aHandle.FNext;
+    end else FRoot := nil;
+    if FCount > 0 then
+      Dec(FCount);
+  end;
+>>>>>>> graemeg/fixes_2_2
+end;
+
+procedure TLEventer.UnregisterHandle(aHandle: TLHandle);
+begin
+  // do nothing, specific to win32 LCLEventer crap (windows is shit)
 end;
 
 procedure TLEventer.UnregisterHandle(aHandle: TLHandle);

@@ -3,7 +3,7 @@
 
 program testelcmd;
 
-uses eventlog,sysutils;
+uses eventlog;
 
 Var
   E : TEventType;

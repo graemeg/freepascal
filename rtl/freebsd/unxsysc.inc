@@ -79,6 +79,24 @@ begin
 end;
 
 Function  fpFlock (fd,mode : longint) : cint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+begin
+ fpFlock:=do_syscall(syscall_nr_flock,fd,mode);
+end;
+
+// needs oldfpccall;
+Function intAssignPipe(var pipe_in,pipe_out:longint;var errn:cint):cint;  oldfpccall;
+{
+  Sets up a pair of file variables, which act as a pipe. The first one can
+  be read from, the second one can be written to.
+  If the operation was unsuccesful, linuxerror is set.
+}
+>>>>>>> graemeg/fixes_2_2
 
 begin
  fpFlock:=do_syscall(syscall_nr_flock,fd,mode);

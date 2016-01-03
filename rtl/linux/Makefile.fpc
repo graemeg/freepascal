@@ -7,10 +7,17 @@ main=rtl
 
 [target]
 loaders=$(LOADERS)
+<<<<<<< HEAD
 units=$(SYSTEMUNIT) fpintres $(SYSINIT_UNITS) \
       uuchar unixtype ctypes baseunix strings objpas macpas iso7185 extpas syscall unixutil \
       heaptrc lineinfo lnfodwrf \
+=======
+units=$(SYSTEMUNIT) $(SYSINIT_UNITS) \
+      unixtype ctypes baseunix strings objpas macpas iso7185 syscall unixutil \
+      fpintres heaptrc lineinfo lnfodwrf \
+>>>>>>> graemeg/cpstrnew
       termio unix linux initc cmem $(CPU_UNITS) \
+<<<<<<< HEAD
       linuxvcs \
       sysutils typinfo math   \
       charset cpall character unixcp getopts \
@@ -23,6 +30,18 @@ implicitunits=exeinfo \
       unicodedata unicodenumtable 
 
 rsts=math typinfo sysconst rtlconsts
+=======
+      crt printer linuxvcs \
+      sysutils typinfo math matrix varutils \
+      charset ucomplex getopts \
+      errors sockets gpm ipc serial terminfo dl dynlibs \
+      video mouse keyboard variants types dateutils sysconst fmtbcd \
+      cthreads classes fgl convutils stdconvs strutils rtlconsts dos objects cwstring fpcylix \
+      clocale
+implicitunits=exeinfo
+
+rsts=math varutils typinfo variants sysconst rtlconsts stdconvs
+>>>>>>> graemeg/fixes_2_2
 
 [require]
 nortl=y
@@ -72,18 +91,37 @@ override LOADERS+=cprt21 gprt21
 endif
 CPU_UNITS=x86 ports cpu mmx
 SYSINIT_UNITS=si_prc si_c21g si_c21 si_c si_dll si_uc
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2_2
 endif
 
 ifeq ($(ARCH),x86_64)
 CPU_UNITS=x86 ports cpu
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 SYSINIT_UNITS=si_prc si_c si_g si_dll
 override LOADERS+=abitag
+=======
+>>>>>>> graemeg/fixes_2_2
 endif
 
 ifeq ($(ARCH),powerpc64)
 ifeq ($(findstring 2.6.,$(FPC_VERSION)),)
 SYSINIT_UNITS=si_prc si_c si_g si_dll
 endif
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+SYSINIT_UNITS=   # si_prc si_c si_dll
+>>>>>>> graemeg/cpstrnew
 endif
 
 # mipsel reuses mips files by including so some file names exist
@@ -96,6 +134,14 @@ endif
 
 
 ifeq ($(ARCH),arm)
+override LOADERS+=ucprt0
+endif
+
+ifeq ($(CPU_TARGET),arm)
+override LOADERS+=ucprt0
+endif
+
+ifeq ($(CPU_TARGET),arm)
 override LOADERS+=ucprt0
 endif
 
@@ -242,6 +288,12 @@ si_uc$(PPUEXT) : si_uc.pp si_intf.inc $(ARCH)/sysnr.inc $(ARCH)/si_uc.inc $(SYST
 si_g$(PPUEXT) : si_g.pp si_intf.inc $(ARCH)/sysnr.inc $(ARCH)/si_g.inc $(SYSTEMUNIT)$(PPUEXT)
 	$(COMPILER) si_g.pp
 
+ucprt0$(OEXT) : $(CPU_TARGET)/ucprt0.as
+        $(AS) $(ASTARGET) -o $(UNITTARGETDIRPREFIX)$@ $<
+
+ucprt0$(OEXT) : $(CPU_TARGET)/ucprt0.as
+        $(AS) $(ASTARGET) -o $(UNITTARGETDIRPREFIX)$@ $<
+
 
 #
 # $(SYSTEMUNIT) Units ($(SYSTEMUNIT), Objpas, Strings)
@@ -357,7 +409,15 @@ rtlconsts$(PPUEXT) : $(OBJPASDIR)/rtlconsts.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PP
 # Mac Pascal Model
 #
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
+=======
+macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT)
+>>>>>>> graemeg/fixes_2_2
+=======
+macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT)
+>>>>>>> origin/fixes_2_2
         $(COMPILER) $(INC)/macpas.pp $(REDIR)
 
 #
@@ -365,11 +425,35 @@ macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT) $(SYSTEMUNIT)$(
 #
 
 ifeq ($(ARCH),x86_64)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT) sysutils$(PPUEXT) objpas$(PPUEXT)
 	$(COMPILER) $(PROCINC)/cpu.pp
 else
 cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT) objpas$(PPUEXT)
 	$(COMPILER) $(PROCINC)/cpu.pp
+=======
+cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT) sysutils$(PPUEXT)
+else
+cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT)
+>>>>>>> graemeg/cpstrnew
+=======
+cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT) sysutils$(PPUEXT)
+else
+cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT)
+>>>>>>> graemeg/cpstrnew
+=======
+cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT) sysutils$(PPUEXT)
+else
+cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT)
+>>>>>>> graemeg/cpstrnew
+=======
+cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT) sysutils$(PPUEXT)
+else
+cpu$(PPUEXT) : $(PROCINC)/cpu.pp $(SYSTEMUNIT)$(PPUEXT)
+>>>>>>> origin/cpstrnew
 endif
 
 mmx$(PPUEXT) : $(PROCINC)/mmx.pp cpu$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)

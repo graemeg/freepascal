@@ -3,8 +3,16 @@
 #
 
 [package]
+<<<<<<< HEAD
 name=librsvg
 version=3.1.1
+=======
+name=rsvg
+version=2.5.1
+
+[target]
+units=rsvg
+>>>>>>> graemeg/cpstrnew
 
 [require]
 packages=rtl fpmkunit

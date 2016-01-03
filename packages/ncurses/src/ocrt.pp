@@ -144,10 +144,16 @@ Unit oCrt;
           | 1) Added nReadScr, nReadScrStr, nReadScrColor, nWriteScrStr,
           | nGrabScreen, nPopScreen, nReleaseScreen.
           | 2) Fixed some trouble with PrevWn accuracy.
+<<<<<<< HEAD
+<<<<<<< HEAD
   2.16.01 | 05/26/2009 | kjw |
           | 1) Corrected error with tnWindow.PutFrame and wattr_get. Recent
           | updates to ncurses and ocrt by the FreePascal team introduced an
           | error with tnWindow.PutFrame's use of wattr_get.
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 ------------------------------------------------------------------------------
 }
 Interface
@@ -862,11 +868,24 @@ Var
    x,y,
    mx,my,
    atts : longint;
+<<<<<<< HEAD
+<<<<<<< HEAD
    junk : smallint;
    
 Begin
    wbkgd(win,COLOR_PAIR(nSetColorPair(att)));
    wattr_get(win,@atts,@junk,nil);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   
+Begin
+   wbkgd(win,COLOR_PAIR(nSetColorPair(att)));
+   atts := wattr_get(win,nil,Nil,nil);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    If nisbold(att) then wattr_on(win,atts or A_BOLD,Nil);
    box(win,ACS_VLINE,ACS_HLINE);
    framecolor := att;

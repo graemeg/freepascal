@@ -1,6 +1,22 @@
 {
     Free Pascal port of the OpenPTC C++ library.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2001-2007, 2009-2011  Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -31,6 +47,10 @@
 }
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   IPTCColor = interface
     function GetIndex: Integer;
     function GetR: Single;
@@ -57,4 +77,41 @@ type
     class function CreateNew(AIndex: Integer): IPTCColor;
     class function CreateNew(ARed, AGreen, ABlue: Single; AAlpha: Single = 1): IPTCColor;
     class function CreateNew(AColor: IPTCColor): IPTCColor;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  TPTCColor = class
+  private
+    FIndex: Integer;
+    FRed, FGreen, FBlue, FAlpha: Single;
+    FDirect: Boolean;
+    FIndexed: Boolean;
+  public
+    constructor Create;
+    constructor Create(AIndex: Integer);
+    constructor Create(ARed, AGreen, ABlue: Single; AAlpha: Single = 1);
+    constructor Create(const AColor: TPTCColor);
+    procedure Assign(const AColor: TPTCColor);
+    function Equals(const AColor: TPTCColor): Boolean;
+    property Index: Integer read FIndex;
+    property R: Single read FRed;
+    property G: Single read FGreen;
+    property B: Single read FBlue;
+    property A: Single read FAlpha;
+    property Direct: Boolean read FDirect;
+    property Indexed: Boolean read FIndexed;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;

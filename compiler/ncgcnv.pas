@@ -430,16 +430,45 @@ interface
              if (left.location.loc in [LOC_CREFERENCE,LOC_REFERENCE]) then
                hlcg.location_force_fpureg(current_asmdata.CurrAsmList,left.location,left.resultdef,false);
              { round them down to the proper precision }
+<<<<<<< HEAD
+<<<<<<< HEAD
              tg.gethltemp(current_asmdata.currasmlist,resultdef,resultdef.size,tt_normal,tr);
              hlcg.a_loadfpu_reg_ref(current_asmdata.CurrAsmList,left.resultdef,resultdef,left.location.register,tr);
              location_reset_ref(left.location,LOC_REFERENCE,location.size,tr.alignment);
              left.location.reference:=tr;
              left.resultdef:=resultdef;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+             tg.gettemp(current_asmdata.currasmlist,resultdef.size,tt_normal,tr);
+             cg.a_loadfpu_reg_ref(current_asmdata.CurrAsmList,left.location.size,location.size,left.location.register,tr);
+             location_reset(left.location,LOC_REFERENCE,location.size);
+             left.location.reference:=tr;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            end;
 {$endif x86}
          { ARM VFP values are in integer registers when they are function results }
          if (left.location.loc in [LOC_REGISTER,LOC_CREGISTER]) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
            hlcg.location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,left.resultdef,false);
+=======
+           location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,false);
+>>>>>>> graemeg/cpstrnew
+=======
+           location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,false);
+>>>>>>> graemeg/cpstrnew
+=======
+           location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,false);
+>>>>>>> graemeg/cpstrnew
+=======
+           location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,false);
+>>>>>>> origin/cpstrnew
          case left.location.loc of
             LOC_FPUREGISTER,
             LOC_CFPUREGISTER:
@@ -515,10 +544,26 @@ interface
 
     procedure tcgtypeconvnode.second_proc_to_procvar;
       var
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         href: treference;
         tmpreg: tregister;
         procvarrectype: trecorddef;
         procvarselfname: TIDString;
+=======
+        tmpreg: tregister;
+>>>>>>> graemeg/cpstrnew
+=======
+        tmpreg: tregister;
+>>>>>>> graemeg/cpstrnew
+=======
+        tmpreg: tregister;
+>>>>>>> graemeg/cpstrnew
+=======
+        tmpreg: tregister;
+>>>>>>> origin/cpstrnew
       begin
         if tabstractprocdef(resultdef).is_addressonly then
           begin
@@ -571,6 +616,10 @@ interface
               begin
                 { assigning a global function to a nested procvar -> create
                   tmethodpointer record and set the "frame pointer" to nil }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 if not(left.location.loc in [LOC_REFERENCE,LOC_CREFERENCE]) then
                   internalerror(2013031503);
                 location_reset_ref(location,LOC_REFERENCE,int_cgsize(resultdef.size),sizeof(pint));
@@ -594,17 +643,64 @@ interface
                   since the global procedure won't use it, but it can help with
                   debugging }
                 hlcg.g_load_const_field_by_name(current_asmdata.CurrAsmList,trecorddef(procvarrectype),0,procvarselfname,href);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                location_reset_ref(location,LOC_REFERENCE,int_cgsize(sizeof(pint)*2),sizeof(pint));
+                tg.gettemp(current_asmdata.CurrAsmList,resultdef.size,sizeof(pint),tt_normal,location.reference);
+                tmpreg:=cg.getaddressregister(current_asmdata.CurrAsmList);
+                cg.a_loadaddr_ref_reg(current_asmdata.CurrAsmList,left.location.reference,tmpreg);
+                cg.a_load_reg_ref(current_asmdata.CurrAsmList,OS_ADDR,OS_ADDR,tmpreg,location.reference);
+                { setting the frame pointer to nil is not strictly necessary
+                  since the global procedure won't use it, but it can help with
+                  debugging }
+                inc(location.reference.offset,sizeof(pint));
+                cg.a_load_const_ref(current_asmdata.CurrAsmList,OS_ADDR,0,location.reference);
+                dec(location.reference.offset,sizeof(pint));
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
               end;
           end;
       end;
 
     procedure Tcgtypeconvnode.second_nil_to_methodprocvar;
+<<<<<<< HEAD
+<<<<<<< HEAD
     begin
       location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
       location.registerhi:=hlcg.getaddressregister(current_asmdata.currasmlist,voidpointertype);
       hlcg.a_load_const_reg(current_asmdata.currasmlist,voidpointertype,0,location.registerhi);
       location.register:=hlcg.getaddressregister(current_asmdata.currasmlist,voidcodepointertype);
       hlcg.a_load_const_reg(current_asmdata.currasmlist,voidcodepointertype,0,location.register);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    
+    var r:Treference;
+
+    begin
+      tg.gettemp(current_asmdata.currasmlist,2*sizeof(aword),tt_normal,r);
+      location_reset(location,LOC_REFERENCE,OS_NO);
+      location.reference:=r;
+      cg.a_load_const_ref(current_asmdata.currasmlist,OS_ADDR,0,r);
+      inc(r.offset,sizeof(aword));
+      cg.a_load_const_ref(current_asmdata.currasmlist,OS_ADDR,0,r);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     end;
 
     procedure tcgtypeconvnode.second_bool_to_int;
@@ -746,12 +842,18 @@ interface
     procedure tcgtypeconvnode.second_char_to_char;
       begin
         internalerror(2007081202);
+<<<<<<< HEAD
+<<<<<<< HEAD
       end;
 
     procedure tcgtypeconvnode.second_elem_to_openarray;
       begin
         { nothing special to do by default }
         second_nothing;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 

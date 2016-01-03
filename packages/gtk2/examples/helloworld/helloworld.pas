@@ -12,7 +12,7 @@ begin
    g_print ('Hello World'#13#10);
 end;
 
-function delete_event( Widget: PGtkWidget; Event: PGdkEvent; Data: gpointer):gboolean; cdecl;
+function delete_event( Widget: PGtkWidget; Event: PGdkEvent; Data: gpointer):gint; cdecl;
 begin
   (* If you return FALSE in the "delete_event" signal handler,
    * GTK will emit the "destroy" signal. Returning TRUE means

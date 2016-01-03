@@ -44,22 +44,50 @@ type
 
   THTMLWriter = class(TObject)
   private
+<<<<<<< HEAD
+<<<<<<< HEAD
     FStream: TStream;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     FInsideTextNode: Boolean;
     FBuffer: PChar;
     FBufPos: PChar;
     FCapacity: Integer;
     FLineBreak: string;
     procedure wrtChars(Src: PWideChar; Length: Integer);
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure wrtStr(const ws: XMLString); {$IFDEF HAS_INLINE} inline; {$ENDIF}
     procedure wrtChr(c: WideChar); {$IFDEF HAS_INLINE} inline; {$ENDIF}
     procedure wrtIndent; {$IFDEF HAS_INLINE} inline; {$ENDIF}
     procedure wrtQuotedLiteral(const ws: XMLString);
     procedure ConvWrite(const s: XMLString; const SpecialChars: TSetOfChar;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    procedure wrtStr(const ws: WideString); {$IFDEF HAS_INLINE} inline; {$ENDIF}
+    procedure wrtChr(c: WideChar); {$IFDEF HAS_INLINE} inline; {$ENDIF}
+    procedure wrtIndent; {$IFDEF HAS_INLINE} inline; {$ENDIF}
+    procedure wrtQuotedLiteral(const ws: WideString);
+    procedure ConvWrite(const s: WideString; const SpecialChars: TSetOfChar;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       const SpecialCharCallback: TSpecialCharCallback);
     procedure AttrSpecialCharCallback(c: WideChar);
     procedure TextNodeSpecialCharCallback(c: WideChar);
   protected
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    procedure Write(const Buffer; Count: Longint); virtual; abstract;
+>>>>>>> graemeg/fixes_2_2
+=======
+    procedure Write(const Buffer; Count: Longint); virtual; abstract;
+>>>>>>> origin/fixes_2_2
     procedure WriteNode(Node: TDOMNode);
     procedure VisitDocument(Node: TDOMNode);
     procedure VisitElement(Node: TDOMNode);
@@ -72,7 +100,25 @@ type
     procedure VisitDocumentType(Node: TDOMNode);
     procedure VisitPI(Node: TDOMNode);
   public
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     constructor Create(AStream: TStream; ACapacity : Cardinal = 4096);
+=======
+    constructor Create(AStream: TStream);
+>>>>>>> graemeg/cpstrnew
+=======
+    constructor Create(AStream: TStream);
+>>>>>>> graemeg/cpstrnew
+=======
+    constructor Create(AStream: TStream);
+>>>>>>> graemeg/cpstrnew
+=======
+    constructor Create(AStream: TStream);
+>>>>>>> origin/cpstrnew
     destructor Destroy; override;
   end;
 
@@ -111,7 +157,23 @@ end;
     THTMLWriter
   ---------------------------------------------------------------------}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 constructor THTMLWriter.Create(AStream: TStream; ACapacity : Cardinal = 4096);
+=======
+constructor THTMLWriter.Create(AStream: TStream);
+>>>>>>> graemeg/cpstrnew
+=======
+constructor THTMLWriter.Create(AStream: TStream);
+>>>>>>> graemeg/cpstrnew
+=======
+constructor THTMLWriter.Create(AStream: TStream);
+>>>>>>> graemeg/cpstrnew
+=======
+constructor THTMLWriter.Create(AStream: TStream);
+>>>>>>> origin/cpstrnew
 begin
   inherited Create;
   FStream := AStream;
@@ -231,11 +293,385 @@ begin
   wrtChr(Quote);
 end;
 
+=======
+    constructor Create;
+    destructor Destroy; override;
+  end;
+
+  TTextHTMLWriter = Class(THTMLWriter)
+  Private
+    F : ^Text;
+  Protected
+    Procedure Write(Const Buffer; Count : Longint);override;
+  Public
+    constructor Create(var AFile: Text);
+  end;
+
+  TStreamHTMLWriter = Class(THTMLWriter)
+  Private
+    F : TStream;
+  Protected
+    Procedure Write(Const Buffer; Count : Longint);override;
+  Public
+    constructor Create(AStream: TStream);
+  end;
+
+{ ---------------------------------------------------------------------
+    TTextHTMLWriter
+  ---------------------------------------------------------------------}
+
+
+constructor TTextHTMLWriter.Create(var AFile: Text);
+begin
+  inherited Create;
+  f := @AFile;
+end;
+
+procedure TTextHTMLWriter.Write(const Buffer; Count: Longint);
+var
+  s: string;
+begin
+  if Count>0 then
+  begin
+    SetString(s, PChar(@Buffer), Count);
+    system.Write(f^, s);
+  end;
+end;
+
+{ ---------------------------------------------------------------------
+    TStreamHTMLWriter
+  ---------------------------------------------------------------------}
+
+constructor TStreamHTMLWriter.Create(AStream: TStream);
+begin
+  inherited Create;
+  F := AStream;
+end;
+
+
+procedure TStreamHTMLWriter.Write(const Buffer; Count: Longint);
+begin
+  if Count > 0 then
+    F.Write(Buffer, Count);
+end;
+
+
+{ ---------------------------------------------------------------------
+    THTMLWriter
+  ---------------------------------------------------------------------}
+
+constructor THTMLWriter.Create;
+var
+  I: Integer;
+begin
+  inherited Create;
+  // some overhead - always be able to write at least one extra UCS4
+  FBuffer := AllocMem(512+32);
+  FBufPos := FBuffer;
+  FCapacity := 512;
+  // Later on, this may be put under user control
+  // for now, take OS setting
+  FLineBreak := sLineBreak;
+end;
+
+destructor THTMLWriter.Destroy;
+begin
+  if FBufPos > FBuffer then
+    write(FBuffer^, FBufPos-FBuffer);
+
+  FreeMem(FBuffer);
+  inherited Destroy;
+end;
+
+procedure THTMLWriter.wrtChars(Src: PWideChar; Length: Integer);
+var
+  pb: PChar;
+  wc: Cardinal;
+  SrcEnd: PWideChar;
+begin
+  pb := FBufPos;
+  SrcEnd := Src + Length;
+  while Src < SrcEnd do
+  begin
+    if pb >= @FBuffer[FCapacity] then
+    begin
+      write(FBuffer^, FCapacity);
+      Dec(pb, FCapacity);
+      if pb > FBuffer then
+        Move(FBuffer[FCapacity], FBuffer^, pb - FBuffer);
+    end;
+
+    wc := Cardinal(Src^);  Inc(Src);
+    case wc of
+      $0A: pb := StrECopy(pb, PChar(FLineBreak));
+
+      0..$09, $0B..$7F:  begin
+        pb^ := char(wc); Inc(pb);
+      end;
+
+      $80..$7FF: begin
+        pb^ := Char($C0 or (wc shr 6));
+        pb[1] := Char($80 or (wc and $3F));
+        Inc(pb,2);
+      end;
+
+      $D800..$DBFF: begin
+        if (Src < SrcEnd) and (Src^ >= #$DC00) and (Src^ <= #$DFFF) then
+        begin
+          wc := ((LongInt(wc) - $D7C0) shl 10) + LongInt(word(Src^) xor $DC00);
+          Inc(Src);
+
+          pb^ := Char($F0 or (wc shr 18));
+          pb[1] := Char($80 or ((wc shr 12) and $3F));
+          pb[2] := Char($80 or ((wc shr 6) and $3F));
+          pb[3] := Char($80 or (wc and $3F));
+          Inc(pb,4);
+        end
+        else
+          raise EConvertError.Create('High surrogate without low one');
+      end;
+      $DC00..$DFFF:
+        raise EConvertError.Create('Low surrogate without high one');
+      else   // $800 >= wc > $FFFF, excluding surrogates
+      begin
+        pb^ := Char($E0 or (wc shr 12));
+        pb[1] := Char($80 or ((wc shr 6) and $3F));
+        pb[2] := Char($80 or (wc and $3F));
+        Inc(pb,3);
+      end;
+    end;
+  end;
+  FBufPos := pb;
+end;
+
+procedure THTMLWriter.wrtStr(const ws: WideString); { inline }
+begin
+  wrtChars(PWideChar(ws), Length(ws));
+end;
+
+{ No checks here - buffer always has 32 extra bytes }
+procedure THTMLWriter.wrtChr(c: WideChar); { inline }
+begin
+  FBufPos^ := char(ord(c));
+  Inc(FBufPos);
+end;
+
+procedure THTMLWriter.wrtIndent; { inline }
+begin
+  wrtChars(#10, 1);
+=======
+    constructor Create;
+    destructor Destroy; override;
+  end;
+
+  TTextHTMLWriter = Class(THTMLWriter)
+  Private
+    F : ^Text;
+  Protected
+    Procedure Write(Const Buffer; Count : Longint);override;
+  Public
+    constructor Create(var AFile: Text);
+  end;
+
+  TStreamHTMLWriter = Class(THTMLWriter)
+  Private
+    F : TStream;
+  Protected
+    Procedure Write(Const Buffer; Count : Longint);override;
+  Public
+    constructor Create(AStream: TStream);
+  end;
+
+{ ---------------------------------------------------------------------
+    TTextHTMLWriter
+  ---------------------------------------------------------------------}
+
+
+constructor TTextHTMLWriter.Create(var AFile: Text);
+begin
+  inherited Create;
+  f := @AFile;
+end;
+
+procedure TTextHTMLWriter.Write(const Buffer; Count: Longint);
+var
+  s: string;
+begin
+  if Count>0 then
+  begin
+    SetString(s, PChar(@Buffer), Count);
+    system.Write(f^, s);
+  end;
+end;
+
+{ ---------------------------------------------------------------------
+    TStreamHTMLWriter
+  ---------------------------------------------------------------------}
+
+constructor TStreamHTMLWriter.Create(AStream: TStream);
+begin
+  inherited Create;
+  F := AStream;
+end;
+
+
+procedure TStreamHTMLWriter.Write(const Buffer; Count: Longint);
+begin
+  if Count > 0 then
+    F.Write(Buffer, Count);
+end;
+
+
+{ ---------------------------------------------------------------------
+    THTMLWriter
+  ---------------------------------------------------------------------}
+
+constructor THTMLWriter.Create;
+var
+  I: Integer;
+begin
+  inherited Create;
+  // some overhead - always be able to write at least one extra UCS4
+  FBuffer := AllocMem(512+32);
+  FBufPos := FBuffer;
+  FCapacity := 512;
+  // Later on, this may be put under user control
+  // for now, take OS setting
+  FLineBreak := sLineBreak;
+end;
+
+destructor THTMLWriter.Destroy;
+begin
+  if FBufPos > FBuffer then
+    write(FBuffer^, FBufPos-FBuffer);
+
+  FreeMem(FBuffer);
+  inherited Destroy;
+end;
+
+procedure THTMLWriter.wrtChars(Src: PWideChar; Length: Integer);
+var
+  pb: PChar;
+  wc: Cardinal;
+  SrcEnd: PWideChar;
+begin
+  pb := FBufPos;
+  SrcEnd := Src + Length;
+  while Src < SrcEnd do
+  begin
+    if pb >= @FBuffer[FCapacity] then
+    begin
+      write(FBuffer^, FCapacity);
+      Dec(pb, FCapacity);
+      if pb > FBuffer then
+        Move(FBuffer[FCapacity], FBuffer^, pb - FBuffer);
+    end;
+
+    wc := Cardinal(Src^);  Inc(Src);
+    case wc of
+      $0A: pb := StrECopy(pb, PChar(FLineBreak));
+
+      0..$09, $0B..$7F:  begin
+        pb^ := char(wc); Inc(pb);
+      end;
+
+      $80..$7FF: begin
+        pb^ := Char($C0 or (wc shr 6));
+        pb[1] := Char($80 or (wc and $3F));
+        Inc(pb,2);
+      end;
+
+      $D800..$DBFF: begin
+        if (Src < SrcEnd) and (Src^ >= #$DC00) and (Src^ <= #$DFFF) then
+        begin
+          wc := ((LongInt(wc) - $D7C0) shl 10) + LongInt(word(Src^) xor $DC00);
+          Inc(Src);
+
+          pb^ := Char($F0 or (wc shr 18));
+          pb[1] := Char($80 or ((wc shr 12) and $3F));
+          pb[2] := Char($80 or ((wc shr 6) and $3F));
+          pb[3] := Char($80 or (wc and $3F));
+          Inc(pb,4);
+        end
+        else
+          raise EConvertError.Create('High surrogate without low one');
+      end;
+      $DC00..$DFFF:
+        raise EConvertError.Create('Low surrogate without high one');
+      else   // $800 >= wc > $FFFF, excluding surrogates
+      begin
+        pb^ := Char($E0 or (wc shr 12));
+        pb[1] := Char($80 or ((wc shr 6) and $3F));
+        pb[2] := Char($80 or (wc and $3F));
+        Inc(pb,3);
+      end;
+    end;
+  end;
+  FBufPos := pb;
+end;
+
+procedure THTMLWriter.wrtStr(const ws: WideString); { inline }
+begin
+  wrtChars(PWideChar(ws), Length(ws));
+end;
+
+{ No checks here - buffer always has 32 extra bytes }
+procedure THTMLWriter.wrtChr(c: WideChar); { inline }
+begin
+  FBufPos^ := char(ord(c));
+  Inc(FBufPos);
+end;
+
+procedure THTMLWriter.wrtIndent; { inline }
+begin
+  wrtChars(#10, 1);
+end;
+
+procedure THTMLWriter.wrtQuotedLiteral(const ws: WideString);
+var
+  Quote: WideChar;
+begin
+  // TODO: need to check if the string also contains single quote
+  // both quotes present is a error
+  if Pos('"', ws) > 0 then
+    Quote := ''''
+  else
+    Quote := '"';
+  wrtChr(Quote);
+  wrtStr(ws);
+  wrtChr(Quote);
+>>>>>>> origin/fixes_2_2
+end;
+
+procedure THTMLWriter.wrtQuotedLiteral(const ws: WideString);
+var
+  Quote: WideChar;
+begin
+  // TODO: need to check if the string also contains single quote
+  // both quotes present is a error
+  if Pos('"', ws) > 0 then
+    Quote := ''''
+  else
+    Quote := '"';
+  wrtChr(Quote);
+  wrtStr(ws);
+  wrtChr(Quote);
+end;
+
+>>>>>>> graemeg/fixes_2_2
 const
   AttrSpecialChars = ['<', '"', '&'];
   TextSpecialChars = ['<', '>', '&'];
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure THTMLWriter.ConvWrite(const s: XMLString; const SpecialChars: TSetOfChar;
+=======
+procedure THTMLWriter.ConvWrite(const s: WideString; const SpecialChars: TSetOfChar;
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure THTMLWriter.ConvWrite(const s: WideString; const SpecialChars: TSetOfChar;
+>>>>>>> origin/fixes_2_2
   const SpecialCharCallback: TSpecialCharCallback);
 var
   StartPos, EndPos: Integer;
@@ -310,12 +746,26 @@ var
   s: string;
   ElFlags: THTMLElementFlags;
   j: THTMLElementTag;
+<<<<<<< HEAD
+<<<<<<< HEAD
   meta: Boolean;
 begin
   if not FInsideTextNode then
     wrtIndent;
 
   meta := False;
+=======
+begin
+  if not FInsideTextNode then
+    wrtIndent;
+    
+>>>>>>> graemeg/fixes_2_2
+=======
+begin
+  if not FInsideTextNode then
+    wrtIndent;
+    
+>>>>>>> origin/fixes_2_2
   s := LowerCase(node.NodeName);
   ElFlags := [efSubelementContent, efPCDATAContent];    // default flags
   for j := Low(THTMLElementTag) to High(THTMLElementTag) do
@@ -329,6 +779,8 @@ begin
 
   wrtChr('<');
   wrtStr(TDOMElement(node).TagName);
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   { Force charset label to utf-8, because it is the encoding we actually write }
   if meta then
@@ -341,6 +793,10 @@ begin
     end;
   end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   if node.HasAttributes then
     for i := 0 to node.Attributes.Length - 1 do
     begin
@@ -502,6 +958,8 @@ procedure WriteHTMLFile(doc: TXMLDocument; var AFile: Text);
 var
   s: TStream;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   s := TTextStream.Create(AFile);
   try
     with THTMLWriter.Create(s) do
@@ -512,12 +970,32 @@ begin
     end;
   finally
     s.Free;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  with TTextHTMLWriter.Create(AFile) do
+  try
+    WriteNode(doc);
+  finally
+    Free;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 end;
 
 procedure WriteHTMLFile(doc: TXMLDocument; AStream: TStream);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   with THTMLWriter.Create(AStream) do
+=======
+  with TStreamHTMLWriter.Create(AStream) do
+>>>>>>> graemeg/fixes_2_2
+=======
+  with TStreamHTMLWriter.Create(AStream) do
+>>>>>>> origin/fixes_2_2
   try
     WriteNode(doc);
   finally

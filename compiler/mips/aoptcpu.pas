@@ -28,6 +28,10 @@ unit aoptcpu;
   Interface
 
     uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       cgbase, cpubase, aoptobj, aoptcpub, aopt, aasmtai, aasmcpu;
 
     Type
@@ -42,10 +46,35 @@ unit aoptcpu;
         function TryRemoveMovBeforeStore(var p: tai; next: taicpu; const storeops: TAsmOpSet): boolean;
         function PeepHoleOptPass1Cpu(var p: tai): boolean; override;
         procedure PeepHoleOptPass2; override;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      cpubase, aoptobj, aoptcpub, aopt;
+
+    Type
+      TCpuAsmOptimizer = class(TAsmOptimizer)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       End;
 
   Implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      uses
        cutils,globtype,globals,aasmbase,cpuinfo,verbose;
 
@@ -790,6 +819,14 @@ unit aoptcpu;
         end;
     end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 begin
   casmoptimizer:=TCpuAsmOptimizer;
 end.

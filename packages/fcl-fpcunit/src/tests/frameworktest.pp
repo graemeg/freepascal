@@ -22,14 +22,28 @@ uses
 
 
 Type
+<<<<<<< HEAD
   TFPCUnitRunner = Class(TTestRunner);
+=======
+  TFPCUnitRunner = Class(TTestRunner)
+
+  end;
+
+
+
+
+
+>>>>>>> origin/fpcunit
 
 Var
   App : TFPCUnitRunner;
 
 begin
+<<<<<<< HEAD
   DefaultFormat:=fPlain;
   DefaultRunAllTests:=True;
+=======
+>>>>>>> origin/fpcunit
   App:=TFPCUnitRunner.Create(Nil);
   App.Initialize;
   App.Title := 'FPCUnit Test Suite';

@@ -65,14 +65,30 @@ implementation
       cgbase,cga,procinfo,pass_2,
       ncon,ncal,ncnv,
       cpubase,
+<<<<<<< HEAD
+<<<<<<< HEAD
       cgutils,cgobj,hlcgobj,cgx86,ncgutil,
+=======
+      cgutils,cgobj,cgx86,ncgutil,
+>>>>>>> graemeg/fixes_2_2
+=======
+      cgutils,cgobj,cgx86,ncgutil,
+>>>>>>> origin/fixes_2_2
       tgobj;
 
 
     function tx8664typeconvnode.first_int_to_real : tnode;
       begin
         result:=nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
         if use_vectorfpu(resultdef) and
+=======
+        if use_sse(resultdef) and
+>>>>>>> graemeg/fixes_2_2
+=======
+        if use_sse(resultdef) and
+>>>>>>> origin/fixes_2_2
            (torddef(left.resultdef).ordtype=u32bit) then
           begin
             inserttypeconv(left,s64inttype);
@@ -80,7 +96,15 @@ implementation
           end
         else
           result:=inherited first_int_to_real;
+<<<<<<< HEAD
+<<<<<<< HEAD
        if use_vectorfpu(resultdef) then
+=======
+       if use_sse(resultdef) then
+>>>>>>> graemeg/fixes_2_2
+=======
+       if use_sse(resultdef) then
+>>>>>>> origin/fixes_2_2
          expectloc:=LOC_MMREGISTER;
       end;
 
@@ -91,7 +115,15 @@ implementation
          l1,l2 : tasmlabel;
          op : tasmop;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
         if use_vectorfpu(resultdef) then
+=======
+        if use_sse(resultdef) then
+>>>>>>> graemeg/fixes_2_2
+=======
+        if use_sse(resultdef) then
+>>>>>>> origin/fixes_2_2
           begin
             if is_double(resultdef) then
               op:=A_CVTSI2SD
@@ -110,12 +142,28 @@ implementation
                      we load bits 0..62 and then check bit 63:
                      if it is 1 then we add $80000000 000000000
                      as double                                  }
+<<<<<<< HEAD
+<<<<<<< HEAD
                    current_asmdata.getglobaldatalabel(l1);
+=======
+                   current_asmdata.getdatalabel(l1);
+>>>>>>> graemeg/fixes_2_2
+=======
+                   current_asmdata.getdatalabel(l1);
+>>>>>>> origin/fixes_2_2
                    current_asmdata.getjumplabel(l2);
 
                    { Get sign bit }
                    if not(left.location.loc in [LOC_REGISTER,LOC_REFERENCE]) then
+<<<<<<< HEAD
+<<<<<<< HEAD
                      hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,left.resultdef,false);
+=======
+                     location_force_reg(current_asmdata.CurrAsmList,left.location,left.location.size,false);
+>>>>>>> graemeg/fixes_2_2
+=======
+                     location_force_reg(current_asmdata.CurrAsmList,left.location,left.location.size,false);
+>>>>>>> origin/fixes_2_2
                    case left.location.loc of
                      LOC_REGISTER :
                        begin
@@ -124,23 +172,46 @@ implementation
                        end;
                      LOC_REFERENCE :
                        begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                          href:=left.location.reference;
                          tcgx86(cg).make_simple_ref(current_asmdata.CurrAsmList,href);
                          inc(href.offset,4);
                          emit_const_ref(A_BT,S_L,31,href);
                          dec(href.offset,4);
                          current_asmdata.CurrAsmList.concat(taicpu.op_ref_reg(op,S_Q,href,location.register));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                         inc(left.location.reference.offset,4);
+                         emit_const_ref(A_BT,S_L,31,left.location.reference);
+                         dec(left.location.reference.offset,4);
+                         current_asmdata.CurrAsmList.concat(taicpu.op_ref_reg(op,S_Q,left.location.reference,location.register));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                        end;
                      else
                        internalerror(200710181);
                    end;
 
                    cg.a_jmp_flags(current_asmdata.CurrAsmList,F_NC,l2);
+<<<<<<< HEAD
+<<<<<<< HEAD
                    new_section(current_asmdata.asmlists[al_typedconsts],sec_rodata_norel,l1.name,const_align(sizeof(pint)));
                    current_asmdata.asmlists[al_typedconsts].concat(Tai_label.Create(l1));
                    reference_reset_symbol(href,l1,0,4);
                    { simplify for PIC }
                    tcgx86(cg).make_simple_ref(current_asmdata.CurrAsmList,href);
+=======
+                   current_asmdata.asmlists[al_typedconsts].concat(Tai_label.Create(l1));
+                   reference_reset_symbol(href,l1,0);
+>>>>>>> graemeg/fixes_2_2
+=======
+                   current_asmdata.asmlists[al_typedconsts].concat(Tai_label.Create(l1));
+                   reference_reset_symbol(href,l1,0);
+>>>>>>> origin/fixes_2_2
 
                    { I got these constant from a test program (FK) }
                    if is_double(resultdef) then
@@ -148,6 +219,14 @@ implementation
                        { double (2^64) }
                        current_asmdata.asmlists[al_typedconsts].concat(Tai_const.Create_32bit(0));
                        current_asmdata.asmlists[al_typedconsts].concat(Tai_const.Create_32bit($43f00000));
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                       { simplify for PIC }
+>>>>>>> graemeg/fixes_2_2
+=======
+                       { simplify for PIC }
+>>>>>>> origin/fixes_2_2
                        tcgx86(cg).make_simple_ref(current_asmdata.CurrAsmList,href);
                        current_asmdata.CurrAsmList.concat(taicpu.op_ref_reg(A_ADDSD,S_NO,href,location.register));
                      end
@@ -155,6 +234,16 @@ implementation
                      begin
                        { single(2^64) }
                        current_asmdata.asmlists[al_typedconsts].concat(Tai_const.Create_32bit($5f800000));
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                       { simplify for PIC }
+                       tcgx86(cg).make_simple_ref(current_asmdata.CurrAsmList,href);
+>>>>>>> graemeg/fixes_2_2
+=======
+                       { simplify for PIC }
+                       tcgx86(cg).make_simple_ref(current_asmdata.CurrAsmList,href);
+>>>>>>> origin/fixes_2_2
                        current_asmdata.CurrAsmList.concat(taicpu.op_ref_reg(A_ADDSS,S_NO,href,location.register));
                      end
                    else

@@ -10,7 +10,15 @@ units=paradox
 rsts=paradox
 
 [require]
+<<<<<<< HEAD
+<<<<<<< HEAD
 packages=pxlib fcl-base
+=======
+packages=pxlib
+>>>>>>> graemeg/fixes_2_2
+=======
+packages=pxlib
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y

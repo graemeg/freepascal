@@ -42,5 +42,15 @@ function do_sysCall(sysnr,param1,param2,param3,param4,param5:TSysParam):TSysResu
 function do_sysCall(sysnr,param1,param2,param3,param4,param5,param6:TSysParam):int64; external name 'FPC_DOSYS6';
 function do_sysCall(sysnr,param1,param2,param3,param4,param5,param6,param7:TSysParam):int64; external name 'FPC_DOSYS7';
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+// special
+function do__sysCall(sysnr,param1,param2,param3,param4,param5,param6,param7,Param8:TSysParam):TSysResult; external name 'FPC__DOSYS';
+>>>>>>> graemeg/fixes_2_2
+=======
+// special
+function do__sysCall(sysnr,param1,param2,param3,param4,param5,param6,param7,Param8:TSysParam):TSysResult; external name 'FPC__DOSYS';
+>>>>>>> origin/fixes_2_2
 {$endif}
 

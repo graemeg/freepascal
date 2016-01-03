@@ -25,6 +25,8 @@ program PalettedCube;
 
 {$mode objfpc}
 
+{$mode objfpc}
+
 uses
   ctypes, nds9;
 

@@ -14,10 +14,34 @@ begin
 
     P:=AddPackage('zorba');
 {$ifdef ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
     P.OSes := [linux,win32];
+=======
+    P.Directory:='zorba';
+{$endif ALLPACKAGES}
+    P.Version:='0.9.9';
+>>>>>>> graemeg/cpstrnew
+=======
+    P.Directory:='zorba';
+{$endif ALLPACKAGES}
+    P.Version:='0.9.9';
+>>>>>>> graemeg/cpstrnew
+=======
+    P.Directory:='zorba';
+{$endif ALLPACKAGES}
+    P.Version:='0.9.9';
+>>>>>>> graemeg/cpstrnew
+=======
+    P.Directory:='zorba';
+{$endif ALLPACKAGES}
+    P.Version:='0.9.9';
+>>>>>>> origin/cpstrnew
     P.SourcePath.Add('src');
     P.IncludePath.Add('src');
 
@@ -34,7 +58,19 @@ begin
           AddInclude('zorba.inc');
           AddInclude('zorba_options.inc');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     T.ResourceStrings := True;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     T:=P.Targets.AddUnit('zorba.pas');
       with T.Dependencies do
         begin

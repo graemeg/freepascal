@@ -75,7 +75,23 @@ implementation
           fpu_fpa10,
           fpu_fpa11:
             begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               hlcg.location_force_fpureg(current_asmdata.CurrAsmList,left.location,left.resultdef,true);
+=======
+              location_force_fpureg(current_asmdata.CurrAsmList,left.location,true);
+>>>>>>> graemeg/cpstrnew
+=======
+              location_force_fpureg(current_asmdata.CurrAsmList,left.location,true);
+>>>>>>> graemeg/cpstrnew
+=======
+              location_force_fpureg(current_asmdata.CurrAsmList,left.location,true);
+>>>>>>> graemeg/cpstrnew
+=======
+              location_force_fpureg(current_asmdata.CurrAsmList,left.location,true);
+>>>>>>> origin/cpstrnew
               location_copy(location,left.location);
               if left.location.loc=LOC_CFPUREGISTER then
                 begin
@@ -84,11 +100,35 @@ implementation
                end;
             end;
           fpu_vfpv2,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           fpu_vfpv3,
           fpu_vfpv3_d16,
           fpu_fpv4_s16:
             begin
               hlcg.location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,left.resultdef,true);
+=======
+          fpu_vfpv3:
+            begin
+              location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,true);
+>>>>>>> graemeg/cpstrnew
+=======
+          fpu_vfpv3:
+            begin
+              location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,true);
+>>>>>>> graemeg/cpstrnew
+=======
+          fpu_vfpv3:
+            begin
+              location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,true);
+>>>>>>> graemeg/cpstrnew
+=======
+          fpu_vfpv3:
+            begin
+              location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,true);
+>>>>>>> origin/cpstrnew
               location_copy(location,left.location);
               if left.location.loc=LOC_CMMREGISTER then
                 begin
@@ -96,11 +136,23 @@ implementation
                  location.loc := LOC_MMREGISTER;
                end;
             end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           fpu_soft:
             begin
               hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,left.resultdef,false);
               location_copy(location,left.location);
             end
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           else
             internalerror(2009111801);
         end;
@@ -111,11 +163,24 @@ implementation
     function tarminlinenode.first_abs_real : tnode;
       begin
         if (cs_fp_emulation in current_settings.moduleswitches) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           begin
             firstpass(left);
             expectloc:=LOC_REGISTER;
             first_abs_real:=nil;
           end
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          result:=inherited first_abs_real
+>>>>>>> graemeg/cpstrnew
         else
           begin
             case current_settings.fputype of
@@ -124,6 +189,10 @@ implementation
               fpu_fpa11:
                 expectloc:=LOC_FPUREGISTER;
               fpu_vfpv2,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               fpu_vfpv3,
               fpu_vfpv3_d16:
                 expectloc:=LOC_MMREGISTER;
@@ -134,6 +203,22 @@ implementation
                   else
                     exit(inherited first_abs_real);
                 end;
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> origin/cpstrnew
               else
                 internalerror(2009112401);
             end;
@@ -154,6 +239,10 @@ implementation
               fpu_fpa11:
                 expectloc:=LOC_FPUREGISTER;
               fpu_vfpv2,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               fpu_vfpv3,
               fpu_vfpv3_d16:
                 expectloc:=LOC_MMREGISTER;
@@ -164,6 +253,22 @@ implementation
                   else
                     exit(inherited first_sqr_real);
                 end;
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> origin/cpstrnew
               else
                 internalerror(2009112402);
             end;
@@ -184,6 +289,10 @@ implementation
               fpu_fpa11:
                 expectloc:=LOC_FPUREGISTER;
               fpu_vfpv2,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               fpu_vfpv3,
               fpu_vfpv3_d16:
                 expectloc:=LOC_MMREGISTER;
@@ -194,6 +303,22 @@ implementation
                   else
                     exit(inherited first_sqrt_real);
                 end;
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+                expectloc:=LOC_MMREGISTER;
+>>>>>>> origin/cpstrnew
               else
                 internalerror(2009112403);
             end;
@@ -234,8 +359,25 @@ implementation
     procedure tarminlinenode.second_abs_real;
       var
         singleprec: boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         pf: TOpPostfix;
+=======
+        op: TAsmOp;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: TAsmOp;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: TAsmOp;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: TAsmOp;
+>>>>>>> origin/cpstrnew
       begin
+<<<<<<< HEAD
         load_fpu_location(singleprec);
         case current_settings.fputype of
           fpu_fpa,
@@ -243,6 +385,10 @@ implementation
           fpu_fpa11:
             current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_ABS,location.register,left.location.register),get_fpu_postfix(resultdef)));
           fpu_vfpv2,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           fpu_vfpv3,
           fpu_vfpv3_d16:
             begin
@@ -261,16 +407,64 @@ implementation
               else
                 cg.a_op_const_reg(current_asmdata.CurrAsmList,OP_AND,OS_32,tcgint($7fffffff),location.registerhi);
             end
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          fpu_vfpv3:
+            begin
+              if singleprec then
+                op:=A_FABSS
+              else
+                op:=A_FABSD;
+              current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(op,location.register,left.location.register));
+            end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         else
           internalerror(2009111402);
         end;
+=======
+        load_fpu_location;
+        current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_ABS,location.register,left.location.register),get_fpu_postfix(resultdef)));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 
     procedure tarminlinenode.second_sqr_real;
       var
         singleprec: boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         pf: TOpPostfix;
+=======
+        op: TAsmOp;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: TAsmOp;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: TAsmOp;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: TAsmOp;
+>>>>>>> origin/cpstrnew
       begin
         load_fpu_location(singleprec);
         case current_settings.fputype of
@@ -279,6 +473,10 @@ implementation
           fpu_fpa11:
             current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg_reg(A_MUF,location.register,left.location.register,left.location.register),get_fpu_postfix(resultdef)));
           fpu_vfpv2,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           fpu_vfpv3,
           fpu_vfpv3_d16:
             begin
@@ -290,6 +488,31 @@ implementation
             end;
           fpu_fpv4_s16:
             current_asmdata.CurrAsmList.Concat(setoppostfix(taicpu.op_reg_reg_reg(A_VMUL,location.register,left.location.register,left.location.register), PF_F32));
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          fpu_vfpv3:
+            begin
+              if singleprec then
+                op:=A_FMULS
+              else
+                op:=A_FMULD;
+              current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg_reg(op,location.register,left.location.register,left.location.register));
+            end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         else
           internalerror(2009111403);
         end;
@@ -299,8 +522,25 @@ implementation
     procedure tarminlinenode.second_sqrt_real;
       var
         singleprec: boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         pf: TOpPostfix;
+=======
+        op: TAsmOp;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: TAsmOp;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: TAsmOp;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: TAsmOp;
+>>>>>>> origin/cpstrnew
       begin
+<<<<<<< HEAD
         load_fpu_location(singleprec);
         case current_settings.fputype of
           fpu_fpa,
@@ -308,6 +548,10 @@ implementation
           fpu_fpa11:
             current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_SQT,location.register,left.location.register),get_fpu_postfix(resultdef)));
           fpu_vfpv2,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           fpu_vfpv3,
           fpu_vfpv3_d16:
             begin
@@ -319,9 +563,41 @@ implementation
             end;
           fpu_fpv4_s16:
             current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_VSQRT,location.register,left.location.register), PF_F32));
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          fpu_vfpv3:
+            begin
+              if singleprec then
+                op:=A_FSQRTS
+              else
+                op:=A_FSQRTD;
+              current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(op,location.register,left.location.register));
+            end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         else
           internalerror(2009111402);
         end;
+=======
+        load_fpu_location;
+        current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_SQT,location.register,left.location.register),get_fpu_postfix(resultdef)));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -377,6 +653,8 @@ implementation
           end;
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure tarminlinenode.second_abs_long;
       var
         opsize : tcgsize;
@@ -403,6 +681,10 @@ implementation
 
         cg.a_reg_dealloc(current_asmdata.CurrAsmList,NR_DEFAULTFLAGS);
       end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 begin
   cinlinenode:=tarminlinenode;

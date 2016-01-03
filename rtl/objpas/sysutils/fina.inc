@@ -14,18 +14,30 @@
     System Utilities For Free Pascal
 }
 
+<<<<<<< HEAD
 function ChangeFileExt(const FileName, Extension: PathStr): PathStr;
 var
   i : longint;
   EndSep : Set of Char;
   SOF : Boolean;
   
+=======
+function ChangeFileExt(const FileName, Extension: string): string;
+var
+  i : longint;
+  EndSep : Set of Char;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   i := Length(FileName);
   EndSep:=AllowDirectorySeparators+AllowDriveSeparators+[ExtensionSeparator];
   while (I > 0) and not(FileName[I] in EndSep) do
     Dec(I);
   if (I = 0) or (FileName[I] <> ExtensionSeparator) then
+<<<<<<< HEAD
+<<<<<<< HEAD
     I := Length(FileName)+1
   else
     begin
@@ -37,13 +49,33 @@ begin
 end;
 
 function ExtractFilePath(const FileName: PathStr): PathStr;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    I := Length(FileName)+1;
+  Result := Copy(FileName, 1, I - 1) + Extension;
+end;
+
+function ExtractFilePath(const FileName: string): string;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 var
   i : longint;
   EndSep : Set of Char;
 begin
   i := Length(FileName);
   EndSep:=AllowDirectorySeparators+AllowDriveSeparators;
+<<<<<<< HEAD
+<<<<<<< HEAD
   while (i > 0) and not CharInSet(FileName[i],EndSep) do
+=======
+  while (i > 0) and not (FileName[i] in EndSep) do
+>>>>>>> graemeg/fixes_2_2
+=======
+  while (i > 0) and not (FileName[i] in EndSep) do
+>>>>>>> origin/fixes_2_2
     Dec(i);
   If I>0 then
     Result := Copy(FileName, 1, i)
@@ -51,17 +83,37 @@ begin
     Result:='';
 end;
 
+<<<<<<< HEAD
 function ExtractFileDir(const FileName: PathStr): PathStr;
+=======
+function ExtractFileDir(const FileName: string): string;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 var
   i : longint;
   EndSep : Set of Char;
 begin
   I := Length(FileName);
   EndSep:=AllowDirectorySeparators+AllowDriveSeparators;
+<<<<<<< HEAD
+<<<<<<< HEAD
   while (I > 0) and not CharInSet(FileName[I],EndSep) do
     Dec(I);
   if (I > 1) and CharInSet(FileName[I],AllowDirectorySeparators) and
      not CharInSet(FileName[I - 1],EndSep) then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  while (I > 0) and not (FileName[I] in EndSep) do
+    Dec(I);
+  if (I > 1) and (FileName[I] in AllowDirectorySeparators) and
+     not (FileName[I - 1] in EndSep) then
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Dec(I);
   Result := Copy(FileName, 1, I);
 end;
@@ -72,6 +124,8 @@ var
 begin
   Result := '';
   l:=Length(FileName);
+<<<<<<< HEAD
+<<<<<<< HEAD
   if (l<2) then
     exit;
 {$IFDEF HASAMIGA}
@@ -91,24 +145,62 @@ begin
       inc(i);
 
       While (i<l) and Not CharInSet(Filename[i+1],AllowDirectorySeparators) do
+=======
+  if (L<2) then
+    exit;
+  If (FileName[2] in AllowDriveSeparators) then
+    result:=Copy(FileName,1,2)
+  else if (FileName[1] in AllowDirectorySeparators) and
+          (FileName[2] in AllowDirectorySeparators) then
+    begin
+      i := 2;
+      While (i<L) and Not (Filename[i+1] in AllowDirectorySeparators) do
+>>>>>>> graemeg/fixes_2_2
+=======
+  if (L<2) then
+    exit;
+  If (FileName[2] in AllowDriveSeparators) then
+    result:=Copy(FileName,1,2)
+  else if (FileName[1] in AllowDirectorySeparators) and
+          (FileName[2] in AllowDirectorySeparators) then
+    begin
+      i := 2;
+      While (i<L) and Not (Filename[i+1] in AllowDirectorySeparators) do
+>>>>>>> origin/fixes_2_2
         inc(i);
       Result:=Copy(FileName,1,i);
     end;
 {$ENDIF}
 end;
 
+<<<<<<< HEAD
 function ExtractFileName(const FileName: PathStr): PathStr;
+=======
+function ExtractFileName(const FileName: string): string;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 var
   i : longint;
   EndSep : Set of Char;
 begin
   I := Length(FileName);
   EndSep:=AllowDirectorySeparators+AllowDriveSeparators;
+<<<<<<< HEAD
+<<<<<<< HEAD
   while (I > 0) and not CharInSet(FileName[I],EndSep) do
+=======
+  while (I > 0) and not (FileName[I] in EndSep) do
+>>>>>>> graemeg/fixes_2_2
+=======
+  while (I > 0) and not (FileName[I] in EndSep) do
+>>>>>>> origin/fixes_2_2
     Dec(I);
   Result := Copy(FileName, I + 1, MaxInt);
 end;
 
+<<<<<<< HEAD
 function ExtractFileExt(const FileName: PathStr): PathStr;
 var
   i : longint;
@@ -127,10 +219,28 @@ begin
 	if (Not SOF) or FirstDotAtFileNameStartIsExtension then
 	  Result := Copy(FileName, I, MaxInt);
 	end  
+=======
+function ExtractFileExt(const FileName: string): string;
+var
+  i : longint;
+  EndSep : Set of Char;
+begin
+  I := Length(FileName);
+  EndSep:=AllowDirectorySeparators+AllowDriveSeparators+[ExtensionSeparator];
+  while (I > 0) and not (FileName[I] in EndSep) do
+    Dec(I);
+  if (I > 0) and (FileName[I] = ExtensionSeparator) then
+    Result := Copy(FileName, I, MaxInt)
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   else
     Result := '';
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function ExtractShortPathName(Const FileName : PathStr) : PathStr;
 {$if defined(MSWINDOWS) and not defined(SYSUTILSUNICODE)}
 var
@@ -151,6 +261,36 @@ begin
   Result:=FileName;
 {$endif MSWindows}
 end;
+=======
+function ExtractShortPathName(Const FileName : String) : String;
+
+begin
+{$ifdef MSWINDOWS}
+  SetLength(Result,Max_Path);
+  SetLength(Result,GetShortPathName(PChar(FileName), Pchar(Result),Length(Result)));
+{$else}
+  Result:=FileName;
+{$endif}
+end;
+=======
+function ExtractShortPathName(Const FileName : String) : String;
+
+begin
+{$ifdef MSWINDOWS}
+  SetLength(Result,Max_Path);
+  SetLength(Result,GetShortPathName(PChar(FileName), Pchar(Result),Length(Result)));
+{$else}
+  Result:=FileName;
+{$endif}
+end;
+
+type
+  PathStr=string;
+>>>>>>> origin/fixes_2_2
+
+type
+  PathStr=string;
+>>>>>>> graemeg/fixes_2_2
 
 {$DEFINE FPC_FEXPAND_SYSUTILS}
 {$I fexpand.inc}
@@ -333,6 +473,8 @@ begin
       Break;
     end;
   Result:='';
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef SYSUTILSUNICODE}
   For J:=I to SC do Result:=Result+OneLevelBack;
   For J:=I to DC do Result:=Result+DD[J]+DirectorySeparator;
@@ -366,6 +508,13 @@ begin
     end;
 {$endif SYSUTILSUNICODE}
   Result:=Result+ExtractFileName(DestName);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  For J:=I to SC do Result:=Result+OneLevelBack;
+  For J:=I to DC do Result:=Result+DD[J]+DirectorySeparator;
+  Result:=Result+ExtractFileName(DestNAme);
+>>>>>>> graemeg/fixes_2_2
 end;
 
 Procedure DoDirSeparators (Var FileName : PathStr); {$ifdef FPC_HAS_CPSTRING}rtlproc;{$endif}
@@ -374,7 +523,15 @@ VAr I : longint;
 
 begin
   For I:=1 to Length(FileName) do
+<<<<<<< HEAD
+<<<<<<< HEAD
     If CharInSet(FileName[I],AllowDirectorySeparators) then
+=======
+    If FileName[I] in AllowDirectorySeparators then
+>>>>>>> graemeg/fixes_2_2
+=======
+    If FileName[I] in AllowDirectorySeparators then
+>>>>>>> origin/fixes_2_2
       FileName[i]:=DirectorySeparator;
 end;
 
@@ -402,11 +559,19 @@ begin
   Result:=-1;
   While I<=Length(DirName) do
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     If (CharInSet(DirName[i],AllowDirectorySeparators)
     {$ifdef HASAMIGA}
       or (DirName[i] = DriveSeparator)
     {$endif}
       ) and
+=======
+    If (DirName[i] in AllowDirectorySeparators) and
+>>>>>>> graemeg/fixes_2_2
+=======
+    If (DirName[i] in AllowDirectorySeparators) and
+>>>>>>> origin/fixes_2_2
        { avoid error in case last char=pathdelim }
        (length(dirname)>i) then
       begin
@@ -427,6 +592,8 @@ Var
 begin
   Result:=Path;
   l:=Length(Result);
+<<<<<<< HEAD
+<<<<<<< HEAD
   If (L=0) or not CharInSet(Result[l],AllowDirectorySeparators) then
 {$ifdef HASAMIGA}
     If (L>0) and (Result[l] <> DriveSeparator) then
@@ -439,6 +606,14 @@ begin
       Result[l+1]:=DirectorySeparator;
     end;
 {$endif SYSUTILSUNICODE}
+=======
+  If (L=0) or not(Result[l] in AllowDirectorySeparators) then
+    Result:=Result+DirectorySeparator;
+>>>>>>> graemeg/fixes_2_2
+=======
+  If (L=0) or not(Result[l] in AllowDirectorySeparators) then
+    Result:=Result+DirectorySeparator;
+>>>>>>> origin/fixes_2_2
 end;
 
 function IncludeTrailingBackslash(Const Path : PathStr) : PathStr;
@@ -460,12 +635,36 @@ Var
 
 begin
   L:=Length(Path);
+<<<<<<< HEAD
+<<<<<<< HEAD
   If (L>0) and CharInSet(Path[L],AllowDirectorySeparators) then
+=======
+  If (L>0) and (Path[L] in AllowDirectorySeparators) then
+>>>>>>> graemeg/fixes_2_2
+=======
+  If (L>0) and (Path[L] in AllowDirectorySeparators) then
+>>>>>>> origin/fixes_2_2
     Dec(L);
   Result:=Copy(Path,1,L);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function IncludeLeadingPathDelimiter(Const Path : PathStr) : PathStr;
+=======
+function IncludeLeadingPathDelimiter(Const Path : String) : String;
+>>>>>>> graemeg/cpstrnew
+=======
+function IncludeLeadingPathDelimiter(Const Path : String) : String;
+>>>>>>> graemeg/cpstrnew
+=======
+function IncludeLeadingPathDelimiter(Const Path : String) : String;
+>>>>>>> graemeg/cpstrnew
+=======
+function IncludeLeadingPathDelimiter(Const Path : String) : String;
+>>>>>>> origin/cpstrnew
 
 Var
   l : Integer;
@@ -473,6 +672,10 @@ Var
 begin
   Result:=Path;
   l:=Length(Result);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   If (L=0) or not CharInSet(Result[1],AllowDirectorySeparators) then
 {$ifdef SYSUTILSUNICODE}
     Result:=DirectorySeparator+Result;
@@ -489,23 +692,118 @@ function ExcludeLeadingPathDelimiter(Const Path: PathStr): PathStr;
 
 Var
   L : Integer;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  If (L=0) or not(Result[1] in AllowDirectorySeparators) then
+    Result:=DirectorySeparator+Result;
+end;
+
+function ExcludeLeadingPathDelimiter(Const Path: string): string;
+
+Var
+  L : Integer;
 
 begin
+  L:=Length(Path);
+  If (L>0) and (Path[1] in AllowDirectorySeparators) then
+    Dec(L);
+  Result:=Copy(Path,2,L);
+end;
+
+function IsPathDelimiter(Const Path: string; Index: Integer): Boolean;
+>>>>>>> graemeg/cpstrnew
+
+begin
+<<<<<<< HEAD
   Result:=Path;
   L:=Length(Result);
   If (L>0) and CharInSet(Result[1],AllowDirectorySeparators) then
     Delete(Result,1,1);
 end;
 
+<<<<<<< HEAD
 function IsPathDelimiter(Const Path: PathStr; Index: Integer): Boolean;
+=======
+function ConcatPaths(const Paths: array of String): String;
+var
+  I: Integer;
+begin
+  if Length(Paths) > 0 then
+  begin
+    Result := Paths[0];
+    for I := 1 to Length(Paths) - 1 do
+      Result := IncludeTrailingPathDelimiter(Result) + ExcludeLeadingPathDelimiter(Paths[I]);
+  end else
+    Result := '';
+=======
+  Result:=(Index>0) and (Index<=Length(Path)) and (Path[Index] in AllowDirectorySeparators);
+>>>>>>> graemeg/fixes_2_2
+end;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+Function GetFileHandle(var f : File):THandle;
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+function ConcatPaths(const Paths: array of String): String;
+var
+  I: Integer;
+begin
+<<<<<<< HEAD
+  if Length(Paths) > 0 then
+  begin
+    Result := Paths[0];
+    for I := 1 to Length(Paths) - 1 do
+      Result := IncludeTrailingPathDelimiter(Result) + ExcludeLeadingPathDelimiter(Paths[I]);
+  end else
+    Result := '';
+=======
+  Result:=(Index>0) and (Index<=Length(Path)) and (Path[Index] in AllowDirectorySeparators);
+>>>>>>> origin/fixes_2_2
+end;
+
+Function GetFileHandle(var f : File):THandle;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 begin
   Result:=(Index>0) and (Index<=Length(Path)) and CharInSet(Path[Index],AllowDirectorySeparators);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function ConcatPaths(const Paths: array of PathStr): PathStr;
 var
   I: Integer;
+=======
+Function GetFileHandle(var f : Text):THandle;
+>>>>>>> graemeg/cpstrnew
+=======
+Function GetFileHandle(var f : Text):THandle;
+>>>>>>> graemeg/cpstrnew
+=======
+Function GetFileHandle(var f : Text):THandle;
+>>>>>>> graemeg/cpstrnew
+=======
+Function GetFileHandle(var f : Text):THandle;
+>>>>>>> origin/cpstrnew
 begin
   if Length(Paths) > 0 then
   begin

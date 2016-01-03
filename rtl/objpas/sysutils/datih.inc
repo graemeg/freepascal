@@ -133,17 +133,53 @@ function DateToStr(Date: TDateTime): string;
 function DateToStr(Date: TDateTime; const FormatSettings: TFormatSettings): string;
 function TimeToStr(Time: TDateTime): string;
 function TimeToStr(Time: TDateTime; const FormatSettings: TFormatSettings): string;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function DateTimeToStr(DateTime: TDateTime; ForceTimeIfZero : Boolean = False): string;
 function DateTimeToStr(DateTime: TDateTime; const FormatSettings: TFormatSettings; ForceTimeIfZero : Boolean = False): string;
+=======
+function DateTimeToStr(DateTime: TDateTime): string;
+function DateTimeToStr(DateTime: TDateTime; const FormatSettings: TFormatSettings): string;
+>>>>>>> graemeg/cpstrnew
+=======
+function DateTimeToStr(DateTime: TDateTime): string;
+function DateTimeToStr(DateTime: TDateTime; const FormatSettings: TFormatSettings): string;
+>>>>>>> graemeg/cpstrnew
+=======
+function DateTimeToStr(DateTime: TDateTime): string;
+function DateTimeToStr(DateTime: TDateTime; const FormatSettings: TFormatSettings): string;
+>>>>>>> graemeg/cpstrnew
+=======
+function DateTimeToStr(DateTime: TDateTime): string;
+function DateTimeToStr(DateTime: TDateTime; const FormatSettings: TFormatSettings): string;
+>>>>>>> origin/cpstrnew
 function StrToDate(const S: ShortString): TDateTime;                  {$ifdef SYSUTILSINLINE}inline;{$endif}
 function StrToDate(const S: Ansistring): TDateTime;                   {$ifdef SYSUTILSINLINE}inline;{$endif}
 function StrToDate(const S: ShortString; separator : char): TDateTime;{$ifdef SYSUTILSINLINE}inline;{$endif}
 function StrToDate(const S: AnsiString; separator : char): TDateTime; {$ifdef SYSUTILSINLINE}inline;{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function StrToDate(const S: string; FormatSettings : TFormatSettings): TDateTime;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 function StrToTime(const S: Shortstring): TDateTime;                  {$ifdef SYSUTILSINLINE}inline;{$endif}
 function StrToTime(const S: Ansistring): TDateTime;                   {$ifdef SYSUTILSINLINE}inline;{$endif}
 function StrToTime(const S: ShortString; separator : char): TDateTime;{$ifdef SYSUTILSINLINE}inline;{$endif}
 function StrToTime(const S: AnsiString; separator : char): TDateTime; {$ifdef SYSUTILSINLINE}inline;{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function StrToTime(const S: string; FormatSettings : TFormatSettings): TDateTime;
 function StrToDate(const S: ShortString; const useformat : string; separator : char = #0): TDateTime;{$ifdef SYSUTILSINLINE}inline;{$endif}
 function StrToDate(const S: AnsiString; const useformat : string; separator : char = #0): TDateTime;{$ifdef SYSUTILSINLINE}inline;{$endif}
@@ -156,6 +192,34 @@ function FormatDateTime(const FormatStr: string; DateTime: TDateTime; Options : 
 function FormatDateTime(const FormatStr: string; DateTime: TDateTime; const FormatSettings: TFormatSettings; Options : TFormatDateTimeOptions = []): string;
 procedure DateTimeToString(out Result: string; const FormatStr: string; const DateTime: TDateTime; Options : TFormatDateTimeOptions = []);
 procedure DateTimeToString(out Result: string; const FormatStr: string; const DateTime: TDateTime; const FormatSettings: TFormatSettings; Options : TFormatDateTimeOptions = []);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+function StrToDate(const S: ShortString; const useformat : string; separator : char): TDateTime;{$ifdef SYSUTILSINLINE}inline;{$endif}
+function StrToDate(const S: AnsiString; const useformat : string; separator : char): TDateTime;{$ifdef SYSUTILSINLINE}inline;{$endif}
+function StrToTime(const S: PChar; Len : integer; separator : char = #0): TDateTime;
+function StrToDate(const S: PChar; Len : integer; const useformat : string; separator : char = #0): TDateTime;
+function StrToDateTime(const S: string): TDateTime;
+function StrToDateTime(const s: ShortString; const UseFormat : TFormatSettings): TDateTime;
+function StrToDateTime(const s: AnsiString; const UseFormat : TFormatSettings): TDateTime;
+function FormatDateTime(const FormatStr: string; DateTime: TDateTime):string;
+function FormatDateTime(const FormatStr: string; DateTime: TDateTime; const FormatSettings: TFormatSettings): string;
+procedure DateTimeToString(out Result: string; const FormatStr: string; const DateTime: TDateTime);
+procedure DateTimeToString(out Result: string; const FormatStr: string; const DateTime: TDateTime; const FormatSettings: TFormatSettings);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 Function DateTimeToFileDate(DateTime : TDateTime) : Longint;
 Function FileDateToDateTime (Filedate : Longint) :TDateTime;
 function TryStrToDate(const S: ShortString; out Value: TDateTime): Boolean;                         {$ifdef SYSUTILSINLINE}inline;{$endif}
@@ -195,4 +259,10 @@ Procedure GetLocalTime(var SystemTime: TSystemTime);
 
 procedure ReplaceTime(var dati:TDateTime; NewTime : TDateTime); inline;
 procedure ReplaceDate(var DateTime: TDateTime; const NewDate: TDateTime); inline;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function GetLocalTimeOffset: Integer;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

@@ -16,18 +16,44 @@ type
 
   TTestBasics = class(TTestCase)
   private
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure DeleteUserXmlFile;
   protected
   published
     procedure TestSimpleWinRegistry;
     procedure TestDoubleWrite;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure bug16395;
     procedure TestAdv;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+  protected
+  published
+    procedure TestSimpleWinRegistry;
+>>>>>>> graemeg/fixes_2_2
+=======
+  protected
+  published
+    procedure TestSimpleWinRegistry;
+>>>>>>> origin/fixes_2_2
   end;
 
 implementation
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
   registry
 {$ifdef windows}
   , tregistry2
@@ -56,6 +82,17 @@ begin
 {$endif}
 end;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  registry;
+
+{ TTestBasics }
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 procedure TTestBasics.TestSimpleWinRegistry;
 var
   Registry : TRegistry;
@@ -65,6 +102,8 @@ begin
 
   // use a hopefully non existing key
   AssertFalse(Registry.KeyExists('FPC1234'));
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef windows}
   AssertTrue(Registry.KeyExists('SOFTWARE'));
 {$endif}  
@@ -73,11 +112,47 @@ begin
 end;
 
 procedure TTestBasics.TestDoubleWrite;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 begin
   DeleteUserXmlFile;
   with TRegistry.Create do
     try
       OpenKey('FirstNode', true);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+{$ifndef windows}
+Var
+  FN : String;
+{$endif}
+
+begin
+{$ifndef windows}
+  FN:=includetrailingpathdelimiter(GetAppConfigDir(False))+'reg.xml';
+  if FileExists(FN) then
+    AssertTrue(DeleteFile(FN));
+{$endif}
+  with TRegistry.Create do
+    try
+      OpenKey('test', true);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       WriteString('LAYOUT', '');
       CloseKey;
     finally
@@ -85,12 +160,32 @@ begin
     end;
   with TRegistry.Create do
     try
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       OpenKey('FirstNode', true);
+=======
+      OpenKey('test', true);
+>>>>>>> graemeg/cpstrnew
+=======
+      OpenKey('test', true);
+>>>>>>> graemeg/cpstrnew
+=======
+      OpenKey('test', true);
+>>>>>>> graemeg/cpstrnew
+=======
+      OpenKey('test', true);
+>>>>>>> origin/cpstrnew
       WriteString('LAYOUT', '');
       CloseKey;
     finally
       Free;
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   DeleteUserXmlFile;
 end;
 
@@ -157,9 +252,51 @@ begin
 {$ifdef windows}
   DoRegTest2;
 {$endif windows}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifndef windows}
+  FN:=includetrailingpathdelimiter(GetAppConfigDir(False))+'reg.xml';
+  if FileExists(FN) then
+    AssertTrue(DeleteFile(FN));
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  AssertTrue(Registry.KeyExists('SOFTWARE'));
+
+  // Registry.OpenKey('FPC', False);
+  // Result:=Registry.ReadString('VALUE1');
+
+  Registry.Free;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 initialization
   RegisterTest(TTestBasics);
 end.
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

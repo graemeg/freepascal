@@ -14,12 +14,25 @@ begin
 
     P:=AddPackage('ncurses');
 {$ifdef ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
     P.OSes := [beos,haiku,freebsd,darwin,iphonesim,solaris,netbsd,openbsd,linux,aix,dragonfly];
     P.SourcePath.Add('src');
     P.IncludePath.Add('src');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    P.Directory:='ncurses';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     T:=P.Targets.AddUnit('menu.pp');
       with T.Dependencies do
@@ -48,6 +61,8 @@ begin
         begin
           AddUnit('ncurses');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T:=P.Targets.AddUnit('form.pp');
       with T.Dependencies do
         begin
@@ -77,6 +92,10 @@ begin
     P.Targets.AddExampleProgram('tmouse.pp');
     // 'tnlshello_ru_UTF8.pot
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$ifndef ALLPACKAGES}
     Run;

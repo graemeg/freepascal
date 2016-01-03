@@ -48,10 +48,35 @@ Procedure free (P : pointer); cdecl; external;
 function realloc (P : Pointer; Size : ptruint) : pointer;cdecl; external;
 Function calloc (unitSize,UnitCount : ptruint) : pointer;cdecl; external;
 {$else not USE_STATIC_LIBC}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function Malloc (Size : ptruint) : Pointer; cdecl; external LibName name 'malloc';
 Procedure Free (P : pointer); cdecl; external LibName name 'free';
 function ReAlloc (P : Pointer; Size : ptruint) : pointer; cdecl; external LibName name 'realloc';
 Function CAlloc (unitSize,UnitCount : ptruint) : pointer; cdecl; external LibName name 'calloc';
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+Function Malloc (Size : ptruint) : Pointer; {$ifdef win32}stdcall{$else}cdecl{$endif}; external LibName name 'malloc';
+Procedure Free (P : pointer); {$ifdef win32}stdcall{$else}cdecl{$endif}; external LibName name 'free';
+function ReAlloc (P : Pointer; Size : ptruint) : pointer; {$ifdef win32}stdcall{$else}cdecl{$endif}; external LibName name 'realloc';
+Function CAlloc (unitSize,UnitCount : ptruint) : pointer; {$ifdef win32}stdcall{$else}cdecl{$endif}; external LibName name 'calloc';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endif not USE_STATIC_LIBC}
 
 implementation

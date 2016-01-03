@@ -1,0 +1,71 @@
+For more complete documentation please refer to the C++ documentation of
+OpenPTC.
+
+This will explain the basics of creating a simple graphics application using
+PTC for FPC. :)
+
+(If you aren't familiar with Delphi classes, please refer to the Free Pascal
+Reference guide, Chapter 5 - Classes.)
+
+There are 3 classes you should get familiar with: TPTCFormat, TPTCSurface and
+TPTCConsole.
+
+Ok, what is TPTCFormat? It basically describes a pixel format. To create a
+pixel format for 32 bpp use:
+  Format := TPTCFormat.Create(32, $FF0000, $FF00, $FF);
+
+32 is the number of bits per pixel. (Only formats with 8, 16, 24 and 32 bits
+per pixel are supported). $FF0000, $FF00 and $FF are the red, green and blue
+masks.
+
+
+Now, when you have created your favourite pixel format, you should create a
+surface:
+  Surface := TPTCSurface.Create(320, 200, Format);
+
+This will create a buffer in RAM to hold a single 320x200 frame in the given
+format. Note that TPTCSurface is always created in normal RAM, not video RAM,
+so it's not a problem if your video card doesn't have enough memory for it,
+or doesn't support e.g. 320x200x32bpp. You just create a TPTCConsole and open
+it in whatever mode is supported by the hardware and then PTC will blit the
+image stored in TPTCSurface to the console, doing any conversions that are
+necessary (i.e. converting to another pixel format, stretching the image to
+another resolution, etc...).
+
+
+How to use this TPTCConsole? Easy! First create it:
+  Console := TPTCConsole.Create;
+
+This still doesn't do anything, just allocates memory and initializes stuff.
+Then you switch to the desired mode:
+  Console.open('Hello, world!', 320, 200, Format);
+
+Note that if your hardware doesn't support the requested mode, PTC will try
+to switch to the best mode. If (for example) your card doesn't support
+320x200 in 32bpp, only in 16bpp, PTC will (probably) switch to that mode.
+To see the actual mode that PTC has set use these properties:
+  Console.width Console.height and Console.format
+
+Ok, now that you have created a TPTCSurface and opened a TPTCConsole, what to
+do next? Draw stuff... The lock function of TPTCSurface will give you a pointer
+to the internal buffer.
+  ptr := Surface.lock;
+
+Now you can draw your frame in the buffer, pointed by ptr. Note that this buffer
+is guaranteed to be in the format and resolution you requested.
+
+When you're done you have to unlock the surface and copy it to the console:
+  Surface.unlock;
+  Surface.copy(Console);
+  Console.update;
+
+The Surface.copy(Console) will do the conversion (if necessary) to the actual
+mode. Console.update will actually show the new frame (if the console driver
+supports multiple pages and you have enough video RAM for that, etc... :) ).
+
+See the example programs for additional details. (keyboard input, high
+resolution timers - they're pretty much straightforward)
+
+Enjoy!
+
+Nikolay Nikolov

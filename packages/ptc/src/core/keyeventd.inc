@@ -1,6 +1,6 @@
 {
     Free Pascal port of the OpenPTC C++ library.
-    Copyright (C) 2001-2003, 2006, 2007, 2009-2011  Nikolay Nikolov (nickysn@users.sourceforge.net)
+    Copyright (C) 2001-2003  Nikolay Nikolov (nickysn@users.sourceforge.net)
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -31,40 +31,39 @@
 }
 
 type
-  IPTCKeyEvent = interface(IPTCEvent)
-    ['{9BD1CD41-1DF6-4392-99DC-885EADB6D85A}']
-    function GetCode: Integer;
-    function GetUnicode: Integer;
-    function GetAlt: Boolean;
-    function GetShift: Boolean;
-    function GetControl: Boolean;
-    function GetPress: Boolean;
+  TPTCKeyEvent = class(TPTCEvent)
+  private
+    FCode: Integer;
+    FUnicode: Integer;
+    FAlt: Boolean;
+    FShift: Boolean;
+    FControl: Boolean;
+    FPress: Boolean;
+
     function GetRelease: Boolean;
-
-//    function Equals(AKey: IPTCKeyEvent): Boolean;
-
-    property Code: Integer read GetCode;
-    property Unicode: Integer read GetUnicode;
-    property Alt: Boolean read GetAlt;
-    property Shift: Boolean read GetShift;
-    property Control: Boolean read GetControl;
-    property Press: Boolean read GetPress;
-    property Release: Boolean read GetRelease;
-  end;
-
-  TPTCKeyEventFactory = class
+  protected
+    function GetType: TPTCEventType; override;
   public
-    class function CreateNew: IPTCKeyEvent;
-    class function CreateNew(ACode: Integer): IPTCKeyEvent;
-    class function CreateNew(ACode, AUnicode: Integer): IPTCKeyEvent;
-    class function CreateNew(ACode, AUnicode: Integer; APress: Boolean): IPTCKeyEvent;
-    class function CreateNew(ACode: Integer; AAlt, AShift, AControl: Boolean): IPTCKeyEvent;
-    class function CreateNew(ACode: Integer; AAlt, AShift, AControl, APress: Boolean): IPTCKeyEvent;
-    class function CreateNew(ACode, AUnicode: Integer;
-                             AAlt, AShift, AControl: Boolean): IPTCKeyEvent;
-    class function CreateNew(ACode, AUnicode: Integer;
-                             AAlt, AShift, AControl, APress: Boolean): IPTCKeyEvent;
-    class function CreateNew(AKey: IPTCKeyEvent): IPTCKeyEvent;
+    constructor Create;
+    constructor Create(ACode: Integer);
+    constructor Create(ACode, AUnicode: Integer);
+    constructor Create(ACode, AUnicode: Integer; APress: Boolean);
+    constructor Create(ACode: Integer; AAlt, AShift, AControl: Boolean);
+    constructor Create(ACode: Integer; AAlt, AShift, AControl, APress: Boolean);
+    constructor Create(ACode, AUnicode: Integer;
+                       AAlt, AShift, AControl: Boolean);
+    constructor Create(ACode, AUnicode: Integer;
+                       AAlt, AShift, AControl, APress: Boolean);
+    constructor Create(const AKey: TPTCKeyEvent);
+    procedure Assign(const AKey: TPTCKeyEvent);
+    function Equals(const AKey: TPTCKeyEvent): Boolean;
+    property Code: Integer read FCode;
+    property Unicode: Integer read FUnicode;
+    property Alt: Boolean read FAlt;
+    property Shift: Boolean read FShift;
+    property Control: Boolean read FControl;
+    property Press: Boolean read FPress;
+    property Release: Boolean read GetRelease;
   end;
 
 const
@@ -175,6 +174,5 @@ const
   PTCKEY_INSERT       = $9B;
   PTCKEY_HELP         = $9C;
   PTCKEY_META         = $9D;
-  PTCKEY_MINUS        = $BD;
   PTCKEY_BACKQUOTE    = $C0;
   PTCKEY_QUOTE        = $DE;

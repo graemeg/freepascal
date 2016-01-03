@@ -44,8 +44,18 @@ interface
 
 const
 {$IFDEF UNIX}
+<<<<<<< HEAD
+<<<<<<< HEAD
   LUA_NAME = 'liblua.so.5.1';
   LUA_LIB_NAME = 'liblua.so.5.1';
+=======
+  LUA_NAME = 'liblua5.1.so';
+  LUA_LIB_NAME = 'liblua5.1.so';
+>>>>>>> graemeg/fixes_2_2
+=======
+  LUA_NAME = 'liblua5.1.so';
+  LUA_LIB_NAME = 'liblua5.1.so';
+>>>>>>> origin/fixes_2_2
 {$ELSE}
   LUA_NAME = 'lua5.1.dll';
   LUA_LIB_NAME = 'lua5.1.dll';

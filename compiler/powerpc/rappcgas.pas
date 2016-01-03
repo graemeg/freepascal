@@ -142,7 +142,13 @@ Unit rappcgas;
         l : aint;
         relsym: string;
         asmsymtyp: tasmsymtype;
+<<<<<<< HEAD
+<<<<<<< HEAD
         isflags: tindsymflags;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
       begin
         Consume(AS_LPAREN);

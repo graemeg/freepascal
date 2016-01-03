@@ -1,5 +1,11 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %skiptarget=android }
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { This test checks whether the 'extradefines' from compiler/system/i_*.pas   }
 { are defined before the configuration file is parsed, together with tw9450a }
 

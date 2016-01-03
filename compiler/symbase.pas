@@ -97,7 +97,19 @@ interface
           refcount  : smallint;
           currentvisibility : tvisibility;
           currentlyoptional : boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           tableoptions : tsymtableoptions;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           { level of symtable, used for nested procedures }
           symtablelevel : byte;
           { do not allow to add new definitions, can be extended to symbols probably }

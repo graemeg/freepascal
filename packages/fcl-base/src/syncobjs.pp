@@ -42,7 +42,6 @@ type
       procedure Acquire;override;
       procedure Release;override;
       procedure Enter;
-      function  TryEnter:boolean;
       procedure Leave;
       constructor Create;
       destructor Destroy;override;
@@ -83,15 +82,6 @@ implementation
     Real syncobjs implementation
   ---------------------------------------------------------------------}
 
-{$IFDEF OS2}
-type
-  TBasicEventState = record
-                      FHandle: THandle;
-                      FLastError: longint;
-                     end;
-  PLocalEventRec = ^TBasicEventState;
-{$ENDIF OS2}
-
 procedure TSynchroObject.Acquire;
 begin
 end;
@@ -110,10 +100,6 @@ begin
   Release;
 end;
 
-function  TCriticalSection.TryEnter:boolean;
-begin
-  result:=TryEnterCriticalSection(CriticalSection)<>0;
-end;
 
 procedure TCriticalSection.Acquire;
 
@@ -177,11 +163,7 @@ function TEventObject.WaitFor(Timeout : Cardinal) : TWaitResult;
 begin
   Result := TWaitResult(basiceventWaitFor(Timeout, Handle));
   if Result = wrError then
-{$IFDEF OS2}
-    FLastError := PLocalEventRec (Handle)^.FLastError;
-{$ELSE OS2}
     FLastError := GetLastOSError;
-{$ENDIF OS2}
 end;
 
 constructor TSimpleEvent.Create;

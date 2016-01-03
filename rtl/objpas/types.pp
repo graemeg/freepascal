@@ -175,7 +175,23 @@ const
 
   STATFLAG_DEFAULT   	      = 0;
   STATFLAG_NONAME    	      = 1;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   STATFLAG_NOOPEN    	      = 2;
+=======
+  STATFLAG_NOOPEN    	      = 2; 
+>>>>>>> graemeg/cpstrnew
+=======
+  STATFLAG_NOOPEN    	      = 2; 
+>>>>>>> graemeg/cpstrnew
+=======
+  STATFLAG_NOOPEN    	      = 2; 
+>>>>>>> graemeg/cpstrnew
+=======
+  STATFLAG_NOOPEN    	      = 2; 
+>>>>>>> origin/cpstrnew
 
 {$ifndef Wince}
   // in Wince these are in unit windows. Under 32/64 in ActiveX.
@@ -268,8 +284,27 @@ type
   PFiletime = Windows.PFileTime;
 {$endif Windows}
 
+<<<<<<< HEAD
 type
   tagSTATSTG = record
+=======
+{$endif Windows}
+
+<<<<<<< HEAD
+=======
+{$endif Windows}
+
+>>>>>>> origin/fixes_2_2
+type
+  tagSTATSTG =
+{$ifndef FPC_REQUIRES_PROPER_ALIGNMENT}
+  packed
+{$endif FPC_REQUIRES_PROPER_ALIGNMENT}
+  record
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
      pwcsName      : POleStr;
      dwType        : DWord;
      cbSize        : Large_uint;
@@ -285,8 +320,18 @@ type
   TStatStg = tagSTATSTG;
   STATSTG = TStatStg;
   PStatStg = ^TStatStg;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   { classes depends on these interfaces, we can't use the activex unit in classes though }
+=======
+  
+  { classes depends on these interfaces, we can't use the activex unit in classes though }  
+>>>>>>> graemeg/fixes_2_2
+=======
+  
+  { classes depends on these interfaces, we can't use the activex unit in classes though }  
+>>>>>>> origin/fixes_2_2
   IClassFactory = Interface(IUnknown) ['{00000001-0000-0000-C000-000000000046}']
      Function CreateInstance(Const unkOuter : IUnknown;Const riid : TGUID;Out vObject) : HResult;StdCall;
      Function LockServer(fLock : LongBool) : HResult;StdCall;
@@ -297,7 +342,7 @@ type
      function Read(pv : Pointer;cb : DWORD;pcbRead : PDWORD) : HRESULT;stdcall;
      function Write(pv : Pointer;cb : DWORD;pcbWritten : PDWORD): HRESULT;stdcall;
   end;
-
+  
   IStream = interface(ISequentialStream) ['{0000000C-0000-0000-C000-000000000046}']
      function Seek(dlibMove : LargeUInt; dwOrigin : Longint; out libNewPosition : LargeUInt) : HResult;stdcall;
      function SetSize(libNewSize : LargeUInt) : HRESULT;stdcall;
@@ -415,7 +460,23 @@ begin
   if R2.Bottom>R1.Bottom then
     lRect.Bottom:=R2.Bottom;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if IsRectEmpty(lRect) then
+=======
+  if IsRectEmpty(Rect) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if IsRectEmpty(Rect) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if IsRectEmpty(Rect) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if IsRectEmpty(Rect) then
+>>>>>>> origin/cpstrnew
   begin
     FillChar(Rect,SizeOf(Rect),0);
     UnionRect:=false;
@@ -424,7 +485,23 @@ begin
   begin
     Rect:=lRect;
     UnionRect:=true;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   end;
+=======
+  end;  
+>>>>>>> graemeg/cpstrnew
+=======
+  end;  
+>>>>>>> graemeg/cpstrnew
+=======
+  end;  
+>>>>>>> graemeg/cpstrnew
+=======
+  end;  
+>>>>>>> origin/cpstrnew
 end;
 
 function IsRectEmpty(const Rect : TRect) : Boolean;

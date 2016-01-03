@@ -257,8 +257,16 @@ unit optdfa;
                     dfainfo.map:=map;
                     foreachnodestatic(pm_postprocess,twhilerepeatnode(node).left,@AddDefUse,@dfainfo);
                   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
                 { NB: this node should typically have empty def set }
+=======
+
+                { NB: this node should typically have empty def set }                  
+>>>>>>> graemeg/cpstrnew
                 if assigned(node.successor) then
                   DFASetDiff(l,node.successor.optinfo^.life,node.optinfo^.def)
                 else if assigned(resultnode) then
@@ -272,6 +280,60 @@ unit optdfa;
 
                 DFASetIncludeSet(l,node.optinfo^.life);
 
+<<<<<<< HEAD
+=======
+
+                { NB: this node should typically have empty def set }                  
+                if assigned(node.successor) then
+                  DFASetDiff(l,node.successor.optinfo^.life,node.optinfo^.def)
+                else if assigned(resultnode) then
+                  DFASetDiff(l,resultnode.optinfo^.life,node.optinfo^.def)
+                else
+                  l:=nil;
+
+                { for repeat..until, node use set in included at the end of loop }
+                if not (lnf_testatbegin in twhilerepeatnode(node).loopflags) then
+                  DFASetIncludeSet(l,node.optinfo^.use);
+
+                DFASetIncludeSet(l,node.optinfo^.life);
+
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+
+                { NB: this node should typically have empty def set }                  
+                if assigned(node.successor) then
+                  DFASetDiff(l,node.successor.optinfo^.life,node.optinfo^.def)
+                else if assigned(resultnode) then
+                  DFASetDiff(l,resultnode.optinfo^.life,node.optinfo^.def)
+                else
+                  l:=nil;
+
+                { for repeat..until, node use set in included at the end of loop }
+                if not (lnf_testatbegin in twhilerepeatnode(node).loopflags) then
+                  DFASetIncludeSet(l,node.optinfo^.use);
+
+                DFASetIncludeSet(l,node.optinfo^.life);
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+                { NB: this node should typically have empty def set }                  
+                if assigned(node.successor) then
+                  DFASetDiff(l,node.successor.optinfo^.life,node.optinfo^.def)
+                else if assigned(resultnode) then
+                  DFASetDiff(l,resultnode.optinfo^.life,node.optinfo^.def)
+                else
+                  l:=nil;
+
+                { for repeat..until, node use set in included at the end of loop }
+                if not (lnf_testatbegin in twhilerepeatnode(node).loopflags) then
+                  DFASetIncludeSet(l,node.optinfo^.use);
+
+                DFASetIncludeSet(l,node.optinfo^.life);
+
+>>>>>>> origin/cpstrnew
                 save:=node.optinfo^.life;
                 { to process body correctly, we need life info in place (because
                   whilerepeatnode is successor of its body). }
@@ -318,6 +380,7 @@ unit optdfa;
                 { create life for the body }
                 CreateInfo(tfornode(node).t2);
 
+<<<<<<< HEAD
                 { is the counter living after the loop?
 
                   if left is a record element, it might not be tracked by dfa, so
@@ -375,6 +438,24 @@ unit optdfa;
                   removing the def of the counter variable }
                 DFASetIncludeSet(l,node.optinfo^.use);
 
+=======
+                { update for node }
+                { life:=life+use+body }
+                l:=copy(node.optinfo^.life);
+                DFASetIncludeSet(l,node.optinfo^.use);
+                DFASetIncludeSet(l,tfornode(node).t2.optinfo^.life);
+                { the for loop always updates its control variable }
+                DFASetDiff(l,l,node.optinfo^.def);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                 UpdateLifeInfo(node,l);
 
                 { ... and a second iteration for fast convergence }

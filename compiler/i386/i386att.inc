@@ -269,6 +269,7 @@
 'popf',
 'popfl',
 'popfw',
+'popfq',
 'por',
 'prefetch',
 'prefetchw',
@@ -302,6 +303,7 @@
 'pushf',
 'pushfl',
 'pushfw',
+'pushfq',
 'pxor',
 'rcl',
 'rcr',
@@ -590,11 +592,23 @@
 'xsha256',
 'dmint',
 'rdm',
+<<<<<<< HEAD
+=======
+'movabs',
+'movslq',
+'cqto',
+'cmpxchg16b',
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 'movntss',
 'movntsd',
 'insertq',
 'extrq',
 'lzcnt',
+<<<<<<< HEAD
+<<<<<<< HEAD
 'pabsb',
 'pabsw',
 'pabsd',
@@ -627,9 +641,35 @@
 'pcmpeqq',
 'pextrb',
 'pextrd',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 'phminposuw',
 'pinsrb',
 'pinsrd',
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+'pextrq',
+'phminposuw',
+'pinsrb',
+'pinsrd',
+'pinsrq',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 'pmaxsb',
 'pmaxsd',
 'pmaxud',
@@ -651,13 +691,37 @@
 'pmovzxwq',
 'pmovzxdq',
 'pmuldq',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 'pmulld',
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 'ptest',
 'roundps',
 'roundpd',
 'roundss',
 'roundsd',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 'crc32',
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 'pcmpestri',
 'pcmpestrm',
 'pcmpistri',
@@ -669,6 +733,10 @@
 'aesdec',
 'aesdeclast',
 'aesimc',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 'aeskeygenassist',
 'rdtscp',
 'vaddpd',
@@ -1026,4 +1094,31 @@
 'vfnmsub132ss',
 'vfnmsub213ss',
 'vfnmsub231ss'
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+'aeskeygen',
+'stosq',
+'lodsq',
+'cmpsq'
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+'popcnt'
+>>>>>>> graemeg/fixes_2_2
+=======
+'popcnt'
+>>>>>>> origin/fixes_2_2
 );

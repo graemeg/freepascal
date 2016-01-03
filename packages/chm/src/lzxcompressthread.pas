@@ -12,7 +12,27 @@
 
   You should have received a copy of the GNU Library General Public License
   along with this library; if not, write to the Free Software Foundation,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+>>>>>>> graemeg/cpstrnew
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+>>>>>>> graemeg/cpstrnew
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+>>>>>>> graemeg/cpstrnew
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+>>>>>>> origin/cpstrnew
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+>>>>>>> origin/fixes_2.4
 }
 {
   See the file COPYING.FPC, included in this distribution,
@@ -249,7 +269,11 @@ begin
     FMasterThread.Resume;
     if WaitForFinish then
       While Running do
+<<<<<<< HEAD
         CheckSynchronize(10);
+=======
+        CheckSynchronize(50);
+>>>>>>> origin/fixes_2.4
 end;
 
 { TLZXMasterThread }
@@ -263,7 +287,10 @@ function TLZXMasterThread.BlockDone(Worker: TLZXWorkerThread; ABlock: PLZXFinish
 begin
   Lock;
   REsult := True;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/fixes_2.4
   FCompressor.BlockIsFinished(ABlock);
   if DataRemains then
     QueueThread(Worker)
@@ -294,7 +321,27 @@ begin
     FMemList.Delete(0);
   end
   else
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result := Getmem(FCompressor.BlockSize*2); // it's unlikely but possible for the block to be bigger than the orig size
+=======
+    Result := Getmem(FCompressor.BlockSize);
+>>>>>>> graemeg/cpstrnew
+=======
+    Result := Getmem(FCompressor.BlockSize);
+>>>>>>> graemeg/cpstrnew
+=======
+    Result := Getmem(FCompressor.BlockSize);
+>>>>>>> graemeg/cpstrnew
+=======
+    Result := Getmem(FCompressor.BlockSize);
+>>>>>>> origin/cpstrnew
+=======
+    Result := Getmem(FCompressor.BlockSize);
+>>>>>>> origin/fixes_2.4
 end;
 
 procedure TLZXMasterThread.Lock;
@@ -350,8 +397,12 @@ begin
 
   Thread.CompressData(FBlockNumber);
   Inc(FBlockNumber);
+<<<<<<< HEAD
   if Thread.Suspended then
     Thread.Resume;
+=======
+  Thread.Resume;
+>>>>>>> origin/fixes_2.4
   UnLockTmpData;
 end;
 
@@ -372,7 +423,11 @@ begin
   //Suspend;
   while Working do
   begin
+<<<<<<< HEAD
       Sleep(0);
+=======
+      Sleep(50);
+>>>>>>> origin/fixes_2.4
   end;
   FRunning:= False;
 end;
@@ -491,16 +546,23 @@ begin
   while not Terminated do
   begin
     lzx_reset(LZXdata);
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/fixes_2.4
     lzx_compress_block(LZXdata, WSize, True);
 
     MasterThread.Synchronize(@NotifyMasterDone);
 
     if ShouldSuspend then
+<<<<<<< HEAD
     begin
       Suspend;
     end;
 
+=======
+      Suspend;
+>>>>>>> origin/fixes_2.4
   end;
 end;
 
@@ -514,9 +576,29 @@ begin
   FreeOnTerminate := True;
 
   Data  := GetMem(ABlockSize);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   //it's possible to have a chunk be slightly bigger than the data it's compressing
   CompressedData:=GetMem(ABlockSize*2);
+=======
+  CompressedData:=GetMem(ABlockSize);
+>>>>>>> graemeg/cpstrnew
+=======
+  CompressedData:=GetMem(ABlockSize);
+>>>>>>> graemeg/cpstrnew
+=======
+  CompressedData:=GetMem(ABlockSize);
+>>>>>>> graemeg/cpstrnew
+=======
+  CompressedData:=GetMem(ABlockSize);
+>>>>>>> origin/cpstrnew
+=======
+  CompressedData:=GetMem(ABlockSize);
+>>>>>>> origin/fixes_2.4
 
   lzx_init(@LZXdata, longint(WindowSizeCode),
            TGetBytesFunc(@TLZXWorkerThread.GetBytes), Self,

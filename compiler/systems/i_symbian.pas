@@ -36,7 +36,15 @@ unit i_symbian;
             name         : 'Symbian OS for i386';
             shortname    : 'Symbian';
             flags        : [tf_files_case_aware, tf_has_dllscanner,
+<<<<<<< HEAD
+<<<<<<< HEAD
                             tf_smartlink_library];
+=======
+                            tf_smartlink_library,tf_use_function_relative_addresses];
+>>>>>>> graemeg/fixes_2_2
+=======
+                            tf_smartlink_library,tf_use_function_relative_addresses];
+>>>>>>> origin/fixes_2_2
             cpu          : cpu_i386;
             unit_env     : 'SYMBIANUNITS';
             extradefines : 'SYMBIAN';

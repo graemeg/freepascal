@@ -146,15 +146,43 @@ type
 
     TMachoAssembler=class(TInternalAssembler)
       public
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         constructor create(info: pasminfo; smart:boolean);override;
+=======
+        constructor create(smart:boolean);override;
+>>>>>>> graemeg/cpstrnew
+=======
+        constructor create(smart:boolean);override;
+>>>>>>> graemeg/cpstrnew
+=======
+        constructor create(smart:boolean);override;
+>>>>>>> graemeg/cpstrnew
+=======
+        constructor create(smart:boolean);override;
+>>>>>>> origin/cpstrnew
       end;
 
 
 implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses
   owar;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   { TmachoObjData }
 
   constructor TmachoObjData.create(const n: string);
@@ -354,11 +382,36 @@ uses
 
   { TMachoAssembler }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   constructor TMachoAssembler.create(info: pasminfo; smart: boolean);
     begin
       inherited;
       CObjOutput:=TMachoObjectOutput;
       CInternalAr:=tarobjectwriter;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  constructor TMachoAssembler.create(smart: boolean);
+    begin
+      inherited create(smart);
+      CObjOutput:=TMachoObjectOutput;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     end;
 
 
@@ -1218,7 +1271,19 @@ uses
         flags : [af_outputbinary,af_smartlink_sections,af_supports_dwarf{, af_stabs_use_function_absolute_addresses}];
         labelprefix : '.L';
         comment : '#';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         dollarsign: '$';
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
 
 initialization

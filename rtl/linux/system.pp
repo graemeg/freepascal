@@ -19,6 +19,16 @@
 { If you use an aout system, set the conditional AOUT}
 { $Define AOUT}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef CPUI386}
+{$DEFINE ELFRES32}
+{$endif}
+
+>>>>>>> graemeg/fixes_2_2
 Unit System;
 
 {*****************************************************************************}
@@ -51,6 +61,19 @@ property cmdline:Pchar read get_cmdline;
 {$if defined(CPUI386) and not defined(FPC_USE_LIBC)}
 var
   sysenter_supported: LongInt = 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$endif}
+
+{ Include ELF resources }
+
+{$ifdef ELFRES32}
+{$define HAS_RESOURCES}
+{$i elfres32.inc}
+>>>>>>> graemeg/fixes_2_2
 {$endif}
 
 const calculated_cmdline:Pchar=nil;
@@ -344,7 +367,19 @@ begin
   InitSyscallIntf;
 {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPUNONE}
+=======
+  SysResetFPU;
+  if not(IsLibrary) then
+    SysInitFPU;
+>>>>>>> graemeg/fixes_2_2
+=======
+  SysResetFPU;
+  if not(IsLibrary) then
+    SysInitFPU;
+>>>>>>> origin/fixes_2_2
 {$if defined(cpupowerpc)}
   // some PPC kernels set the exception bits FE0/FE1 in the MSR to zero,
   // disabling all FPU exceptions. Enable them again.

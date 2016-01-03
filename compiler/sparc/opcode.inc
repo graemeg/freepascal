@@ -70,8 +70,14 @@ A_tst,
 A_FMOVd,
 A_FABSd,
 A_FABSq,
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_FNEGd,
 A_FNEGq,
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { Memory barrier instructions }
 A_STBAR,
 A_MEMBAR

@@ -12,6 +12,10 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 { ObjpasInt is the integer type, equivalent to Objpas.Integer (the Integer
   type in ObjFpc and Delphi modes). It is defined here for use in the
   implementation part of the System unit. }
@@ -22,12 +26,24 @@ type
 type
   ObjpasInt = LongInt;
 {$endif CPU16}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 { The RTTI is implemented through a series of constants : }
 
 Const
    // please update tkManagedTypes below if you add new
    // values
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    tkUnknown        = 0;
    tkInteger        = 1;
    tkChar           = 2;
@@ -58,6 +74,49 @@ Const
    tkFile           = 27;
    tkClassRef       = 28;
    tkPointer        = 29;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+   tkUnknown       = 0;
+   tkInteger       = 1;
+   tkChar          = 2;
+   tkEnumeration   = 3;
+   tkFloat         = 4;
+   tkSet           = 5;
+   tkMethod        = 6;
+   tkSString       = 7;
+   tkString        = tkSString;
+   tkLString       = 8;
+   tkAString       = 9;
+   tkWString       = 10;
+   tkVariant       = 11;
+   tkArray         = 12;
+   tkRecord        = 13;
+   tkInterface     = 14;
+   tkClass         = 15;
+   tkObject        = 16;
+   tkWChar         = 17;
+   tkBool          = 18;
+   tkInt64         = 19;
+   tkQWord         = 20;
+   tkDynArray      = 21;
+   tkInterfaceCorba = 22;
+   tkProcVar       = 23;
+   tkUString       = 24;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
   // all potentially managed types
   tkManagedTypes   = [tkAstring,tkWstring,tkUstring,tkArray,
@@ -222,6 +281,10 @@ function do_isdevice(handle:thandle):boolean;forward;
   {$ifdef SYSPROCDEFINED}
     {$Error Can't determine processor type !}
   {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$i armdefines.inc}
   {$if defined(CPUTHUMB2)}
     {$i thumb2.inc}  { Case dependent, don't change }
@@ -231,10 +294,33 @@ function do_isdevice(handle:thandle):boolean;forward;
     {$else}
       {$i arm.inc}  { Case dependent, don't change }
     {$endif}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  {$if defined(CPUCORTEXM3) or defined(CPUARMV7M)}
+    {$i thumb2.inc}  { Case dependent, don't change }
+  {$else}
+    {$i arm.inc}  { Case dependent, don't change }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   {$endif}
   {$define SYSPROCDEFINED}
 {$endif cpuarm}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef cpuavr}
   {$ifdef SYSPROCDEFINED}
     {$Error Can't determine processor type !}
@@ -273,34 +359,73 @@ function do_isdevice(handle:thandle):boolean;forward;
 {$endif}
 
 procedure fillchar(var x;count : {$ifdef FILLCHAR_HAS_SIZEUINT_COUNT}SizeUInt{$else}SizeInt{$endif};value : boolean);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+procedure fillchar(var x;count : SizeInt;value : boolean);{$ifdef SYSTEMINLINE}inline;{$endif}
+>>>>>>> graemeg/fixes_2_2
 begin
   fillchar(x,count,byte(value));
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure fillchar(var x;count : {$ifdef FILLCHAR_HAS_SIZEUINT_COUNT}SizeUInt{$else}SizeInt{$endif};value : char);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure fillchar(var x;count : SizeInt;value : char);{$ifdef SYSTEMINLINE}inline;{$endif}
+>>>>>>> graemeg/fixes_2_2
 begin
   fillchar(x,count,byte(value));
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure FillByte (var x;count : {$ifdef FILLCHAR_HAS_SIZEUINT_COUNT}SizeUInt{$else}SizeInt{$endif};value : byte );
+=======
+procedure FillByte (var x;count : SizeInt;value : byte ); {$ifdef SYSTEMINLINE}inline;{$endif}
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure FillByte (var x;count : SizeInt;value : byte ); {$ifdef SYSTEMINLINE}inline;{$endif}
+>>>>>>> origin/fixes_2_2
 begin
   FillChar (X,Count,VALUE);
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function IndexChar(Const buf;len:SizeInt;b:char):SizeInt;
+=======
+function IndexChar(Const buf;len:SizeInt;b:char):SizeInt;{$ifdef SYSTEMINLINE}inline;{$endif}
+>>>>>>> graemeg/fixes_2_2
+=======
+function IndexChar(Const buf;len:SizeInt;b:char):SizeInt;{$ifdef SYSTEMINLINE}inline;{$endif}
+>>>>>>> origin/fixes_2_2
 begin
   IndexChar:=IndexByte(Buf,Len,byte(B));
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function CompareChar(Const buf1,buf2;len:SizeInt):SizeInt;
+=======
+function CompareChar(Const buf1,buf2;len:SizeInt):SizeInt;{$ifdef SYSTEMINLINE}inline;{$endif}
+>>>>>>> graemeg/fixes_2_2
+=======
+function CompareChar(Const buf1,buf2;len:SizeInt):SizeInt;{$ifdef SYSTEMINLINE}inline;{$endif}
+>>>>>>> origin/fixes_2_2
 begin
   CompareChar:=CompareByte(buf1,buf2,len);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 procedure fpc_zeromem(p:pointer;len:ptruint);
 begin
@@ -312,6 +437,10 @@ procedure fpc_fillmem(out data;len:ptruint;b : byte);
 begin
   FillByte(data,len,b);
 end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 { Include generic pascal only routines which are not defined in the processor
   specific include file }
@@ -762,6 +891,18 @@ begin
 end;
 
 
+procedure fpc_threaderror; [public,alias:'FPC_THREADERROR'];
+begin
+  HandleErrorFrame(6,get_frame);
+end;
+
+
+procedure fpc_threaderror; [public,alias:'FPC_THREADERROR'];
+begin
+  HandleErrorFrame(6,get_frame);
+end;
+
+
 procedure fpc_iocheck;[public,alias:'FPC_IOCHECK']; compilerproc;
 var
   l : longint;
@@ -772,7 +913,14 @@ begin
    begin
      l:=HInOutRes^;
      HInOutRes^:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
      HandleErrorAddrFrameInd(l,get_pc_addr,get_frame);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+     HandleErrorFrame(l,get_frame);
+>>>>>>> graemeg/fixes_2_2
    end;
 end;
 
@@ -861,8 +1009,18 @@ type
     Procs      : array[1..maxunits] of TInitFinalRec;
   end;
   PInitFinalTable = ^TInitFinalTable;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+
+>>>>>>> origin/fixes_2_2
 {$ifndef FPC_HAS_INDIRECT_MAIN_INFORMATION}
 var
   InitFinalTable : TInitFinalTable;external name 'INITFINAL';
@@ -878,7 +1036,13 @@ var
 begin
   { call cpu/fpu initialisation routine }
   fpc_cpuinit;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef DEBUG}
   pt := PInitFinalTable(EntryInformation.InitFinalTable);
 {$endif}
@@ -887,8 +1051,34 @@ begin
 {$ifdef DEBUG}
   pt := @InitFinalTable;
 {$endif}
+=======
+  with PInitFinalTable(EntryInformation.InitFinalTable)^ do
+{$else FPC_HAS_INDIRECT_MAIN_INFORMATION}
+>>>>>>> graemeg/cpstrnew
+=======
+  with PInitFinalTable(EntryInformation.InitFinalTable)^ do
+{$else FPC_HAS_INDIRECT_MAIN_INFORMATION}
+>>>>>>> graemeg/cpstrnew
+=======
+  with PInitFinalTable(EntryInformation.InitFinalTable)^ do
+{$else FPC_HAS_INDIRECT_MAIN_INFORMATION}
+>>>>>>> graemeg/cpstrnew
+=======
+  with PInitFinalTable(EntryInformation.InitFinalTable)^ do
+{$else FPC_HAS_INDIRECT_MAIN_INFORMATION}
+>>>>>>> origin/cpstrnew
   with InitFinalTable do
 {$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+=======
+  with {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PInitFinalTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+    InitFinalTable
+    {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION} do
+>>>>>>> graemeg/fixes_2_2
+=======
+  with {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PInitFinalTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+    InitFinalTable
+    {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION} do
+>>>>>>> origin/fixes_2_2
    begin
      for i:=1 to ALUUInt(TableCount) do
       begin
@@ -921,11 +1111,23 @@ procedure FinalizeUnits; external name 'FPC_FINALIZE_FUNC_TABLE';
 {$else CPUAVR}
 procedure FinalizeUnits;[public,alias:'FPC_FINALIZEUNITS'];
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}
   with PInitFinalTable(EntryInformation.InitFinalTable)^ do
 {$else FPC_HAS_INDIRECT_MAIN_INFORMATION}
   with InitFinalTable do
 {$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+=======
+  with {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PInitFinalTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+    InitFinalTable
+    {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION} do
+>>>>>>> graemeg/fixes_2_2
+=======
+  with {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}PInitFinalTable(EntryInformation.{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+    InitFinalTable
+    {$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION})^{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION} do
+>>>>>>> origin/fixes_2_2
    begin
      while (InitCount>0) do
       begin
@@ -1007,8 +1209,24 @@ Begin
      dump_stack(pstdout^,ErrorBase,ErrorAddr);
      Writeln(pstdout^,'');
    End;
+<<<<<<< HEAD
   SysFlushStdIO;
 {$endif EMBEDDED}
+=======
+
+  { Make sure that all output is written to the redirected file }
+  if Textrec(Output).Mode=fmOutput then
+    Flush(Output);
+  if Textrec(ErrOutput).Mode=fmOutput then
+    Flush(ErrOutput);
+  if Textrec(pstdout^).Mode=fmOutput then
+    Flush(pstdout^);
+  if Textrec(StdErr).Mode=fmOutput then
+    Flush(StdErr);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif FPC_HAS_FEATURE_CONSOLEIO}
 
   { Finalize units }
@@ -1197,7 +1415,15 @@ begin
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure dump_stack(var f : text;fp : Pointer; addr : CodePointer);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef FPC_HAS_FEATURE_CONSOLEIO}
+Procedure dump_stack(var f : text;bp : Pointer);
+>>>>>>> graemeg/fixes_2_2
 var
   i : Longint;
   prevfp : Pointer;
@@ -1233,6 +1459,8 @@ Begin
 End;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure dump_stack(var f: text; skipframes: longint);
 var
   i,count: longint;
@@ -1255,12 +1483,24 @@ begin
 end;
 
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifdef FPC_HAS_FEATURE_EXCEPTIONS}
 procedure DumpExceptionBackTrace(var f:text);
 var
   FrameNumber,
   FrameCount   : longint;
+<<<<<<< HEAD
+<<<<<<< HEAD
   Frames       : PCodePointer;
+=======
+  Frames       : PPointer;
+>>>>>>> graemeg/fixes_2_2
+=======
+  Frames       : PPointer;
+>>>>>>> origin/fixes_2_2
 begin
   if RaiseList=nil then
     exit;
@@ -1271,6 +1511,14 @@ begin
     WriteLn(f,BackTraceStrFunc(Frames[FrameNumber]));
 end;
 {$endif FPC_HAS_FEATURE_EXCEPTIONS}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+{$endif FPC_HAS_FEATURE_CONSOLEIO}
+>>>>>>> graemeg/fixes_2_2
 
 
 {$ifdef FPC_HAS_FEATURE_HEAP}
@@ -1473,7 +1721,24 @@ end;
 {$i setjump.inc}
 
 
+<<<<<<< HEAD
 {$pop} //{$I-,R-,Q-} before 'procedure fpc_rangeerror'
+=======
+{$ifdef IOCheckWasOn}
+{$I+}
+{$endif}
+
+{$ifdef RangeCheckWasOn}
+{$R+}
+{$endif}
+
+{$ifdef OverflowCheckWasOn}
+{$Q+}
+{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
 {*****************************************************************************
@@ -1523,6 +1788,8 @@ end;
                             File Handling
 *****************************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_HAS_FEATURE_FILEIO}
 { Allow slash and backslash as separators }
 procedure DoDirSeparators(var p: pchar; inplace: boolean = true);
@@ -1568,6 +1835,21 @@ begin
           end;
         p[i]:=DirectorySeparator;
       end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{ Allow slash and backslash as separators }
+procedure DoDirSeparators(p:Pchar);
+var
+  i : longint;
+begin
+  for i:=0 to strlen(p) do
+    if p[i] in AllowDirectorySeparators then
+      p[i]:=DirectorySeparator;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure DoDirSeparators(var p:shortstring);
@@ -1579,6 +1861,8 @@ begin
       p[i]:=DirectorySeparator;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 {$ifdef FPC_HAS_FEATURE_ANSISTRINGS}
 procedure DoDirSeparators(var ps:RawByteString);
@@ -1627,6 +1911,10 @@ end;
 
 {$endif FPC_HAS_FEATURE_FILEIO}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { OS dependent low level file functions }
 {$ifdef FPC_HAS_FEATURE_FILEIO}
 {$i sysfile.inc}
@@ -1739,6 +2027,58 @@ function min(v1,v2 : SizeInt) : SizeInt;
 {$ifdef FPC_HAS_FEATURE_FILEIO}
 { OS dependent dir functions }
 {$i sysdir.inc}
+{$endif FPC_HAS_FEATURE_FILEIO}
+
+{$if defined(FPC_HAS_FEATURE_FILEIO) and defined(FPC_HAS_FEATURE_ANSISTRINGS)}
+Procedure getdir(drivenr:byte;Var dir:ansistring);
+{ this is needed to also allow ansistrings, the shortstring version is
+  OS dependent }
+var
+  s : shortstring;
+begin
+  getdir(drivenr,s);
+  dir:=s;
+end;
+{$endif}
+
+{$if defined(FPC_HAS_FEATURE_FILEIO)}
+
+Procedure MkDir(Const s: String);
+Var
+  Buffer: Array[0..255] of Char;
+Begin
+  If (s='') or (InOutRes <> 0) then
+   exit;
+  Move(s[1], Buffer, Length(s));
+  Buffer[Length(s)] := #0;
+  MkDir(@buffer[0],length(s));
+End;
+
+Procedure RmDir(Const s: String);
+Var
+  Buffer: Array[0..255] of Char;
+Begin
+  If (s='') or (InOutRes <> 0) then
+   exit;
+  Move(s[1], Buffer, Length(s));
+  Buffer[Length(s)] := #0;
+  RmDir(@buffer[0],length(s));
+End;
+
+Procedure ChDir(Const s: String);
+Var
+  Buffer: Array[0..255] of Char;
+Begin
+  If (s='') or (InOutRes <> 0) then
+   exit;
+  Move(s[1], Buffer, Length(s));
+  Buffer[Length(s)] := #0;
+  ChDir(@buffer[0],length(s));
+End;
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 
 {$ifdef FPC_HAS_FEATURE_ANSISTRINGS}
@@ -1915,6 +2255,12 @@ end;
 
 {$endif FPC_HAS_FEATURE_FILEIO}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 {*****************************************************************************
                             Resources support
@@ -1935,4 +2281,38 @@ begin
   SysSetCtrlBreakHandler := CtrlBreakHandler;
   CtrlBreakHandler := Handler;
 end;
+<<<<<<< HEAD
+=======
+
+const
+  CtrlBreakHandler: TCtrlBreakHandler = nil;
+
+{$IFNDEF FPC_HAS_SETCTRLBREAKHANDLER}
+(* It is possible to provide platform specific implementation performing   *)
+(* special initialization; default implementation just sets the procedural *)
+(* variable to make it available for use from the exception handler.       *)
+function SysSetCtrlBreakHandler (Handler: TCtrlBreakHandler): TCtrlBreakHandler;
+begin
+  (* Return either nil or previous handler *)
+  SysSetCtrlBreakHandler := CtrlBreakHandler;
+  CtrlBreakHandler := Handler;
+end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+
+const
+  CtrlBreakHandler: TCtrlBreakHandler = nil;
+
+{$IFNDEF FPC_HAS_SETCTRLBREAKHANDLER}
+(* It is possible to provide platform specific implementation performing   *)
+(* special initialization; default implementation just sets the procedural *)
+(* variable to make it available for use from the exception handler.       *)
+function SysSetCtrlBreakHandler (Handler: TCtrlBreakHandler): TCtrlBreakHandler;
+begin
+  (* Return either nil or previous handler *)
+  SysSetCtrlBreakHandler := CtrlBreakHandler;
+  CtrlBreakHandler := Handler;
+end;
+>>>>>>> origin/fixes_2_2
 {$ENDIF FPC_HAS_SETCTRLBREAKHANDLER}

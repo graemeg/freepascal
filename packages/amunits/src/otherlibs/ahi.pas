@@ -27,9 +27,12 @@
 
   nils.sjoholm@mailbox.swipnet.se Nils Sjoholm
 }
-{$PACKRECORDS 2}
 
 {$mode objfpc}
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
 
 UNIT AHI;
 
@@ -499,28 +502,28 @@ VAR AHIBase : pLibrary;
      AHIDB_NOMODESCAN = 0;
 
 
-FUNCTION AHI_AddAudioMode(a0arg : pTagItem location 'a0') : longword; syscall AHIBase 150;
-FUNCTION AHI_AllocAudioA(tagList : pTagItem location 'a1') : pAHIAudioCtrl; syscall AHIBase 42;
-FUNCTION AHI_AllocAudioRequestA(tagList : pTagItem location 'a0') : pAHIAudioModeRequester; syscall AHIBase 120;
-FUNCTION AHI_AudioRequestA(Requester : pAHIAudioModeRequester location 'a0'; tagList : pTagItem location 'a1') : wordbool; syscall AHIBase 126;
-FUNCTION AHI_BestAudioIDA(tagList : pTagItem location 'a1') : longword; syscall AHIBase 114;
-FUNCTION AHI_ControlAudioA(AudioCtrl : pAHIAudioCtrl location 'a2'; tagList : pTagItem location 'a1') : longword; syscall AHIBase 60;
-PROCEDURE AHI_FreeAudio(AudioCtrl : pAHIAudioCtrl location 'a2'); syscall AHIBase 48;
-PROCEDURE AHI_FreeAudioRequest(Requester : pAHIAudioModeRequester location 'a0'); syscall AHIBase 132;
-FUNCTION AHI_GetAudioAttrsA(ID : longword location 'd0'; Audioctrl : pAHIAudioCtrl location 'a2'; tagList : pTagItem location 'a1') : wordbool; syscall AHIBase 108;
-PROCEDURE AHI_KillAudio; syscall AHIBase 54;
-FUNCTION AHI_LoadModeFile(a0arg : pCHAR location 'a0') : longword; syscall AHIBase 162;
-FUNCTION AHI_LoadSound(Sound : WORD location 'd0'; _Type : longword location 'd1'; Info : POINTER location 'a0'; AudioCtrl : pAHIAudioCtrl location 'a2') : longword; syscall AHIBase 90;
-FUNCTION AHI_NextAudioID(Last_ID : longword location 'd0') : longword; syscall AHIBase 102;
-PROCEDURE AHI_PlayA(Audioctrl : pAHIAudioCtrl location 'a2'; tagList : pTagItem location 'a1'); syscall AHIBase 138;
-FUNCTION AHI_RemoveAudioMode(d0arg : longword location 'd0') : longword; syscall AHIBase 156;
-FUNCTION AHI_SampleFrameSize(SampleType : longword location 'd0') : longword; syscall AHIBase 144;
-FUNCTION AHI_SetEffect(Effect : POINTER location 'a0'; AudioCtrl : pAHIAudioCtrl location 'a2') : longword; syscall AHIBase 084;
-PROCEDURE AHI_SetFreq(Channel : WORD location 'd0'; Freq : longword location 'd1'; AudioCtrl : pAHIAudioCtrl location 'a2'; Flags : longword location 'd2'); syscall AHIBase 72;
-PROCEDURE AHI_SetSound(Channel : WORD location 'd0'; Sound : WORD location 'd1'; Offset : longword location 'd2'; len : LONGINT location 'd3'; AudioCtrl : pAHIAudioCtrl location 'a2'; Flags : longword location 'd4'); syscall AHIBase 78;
-PROCEDURE AHI_SetVol(Channel : WORD location 'd0'; Volume : LONGINT location 'd1'; Pan : LONGINT location 'd2'; AudioCtrl : pAHIAudioCtrl location 'a2'; Flags : longword location 'd3'); syscall AHIBase 66;
-PROCEDURE AHI_UnloadSound(Sound : WORD location 'd0'; Audioctrl : pAHIAudioCtrl location 'a2'); syscall AHIBase 96;
 
+FUNCTION AHI_AddAudioMode(a0arg : pTagItem) : longword;
+FUNCTION AHI_AllocAudioA(tagList : pTagItem) : pAHIAudioCtrl;
+FUNCTION AHI_AllocAudioRequestA(tagList : pTagItem) : pAHIAudioModeRequester;
+FUNCTION AHI_AudioRequestA(Requester : pAHIAudioModeRequester; tagList : pTagItem) : BOOLEAN;
+FUNCTION AHI_BestAudioIDA(tagList : pTagItem) : longword;
+FUNCTION AHI_ControlAudioA(AudioCtrl : pAHIAudioCtrl; tagList : pTagItem) : longword;
+PROCEDURE AHI_FreeAudio(AudioCtrl : pAHIAudioCtrl);
+PROCEDURE AHI_FreeAudioRequest(Requester : pAHIAudioModeRequester);
+FUNCTION AHI_GetAudioAttrsA(ID : longword; Audioctrl : pAHIAudioCtrl; tagList : pTagItem) : BOOLEAN;
+PROCEDURE AHI_KillAudio;
+FUNCTION AHI_LoadModeFile(a0arg : pCHAR) : longword;
+FUNCTION AHI_LoadSound(Sound : WORD; _Type : longword; Info : POINTER; AudioCtrl : pAHIAudioCtrl) : longword;
+FUNCTION AHI_NextAudioID(Last_ID : longword) : longword;
+PROCEDURE AHI_PlayA(Audioctrl : pAHIAudioCtrl; tagList : pTagItem);
+FUNCTION AHI_RemoveAudioMode(d0arg : longword) : longword;
+FUNCTION AHI_SampleFrameSize(SampleType : longword) : longword;
+FUNCTION AHI_SetEffect(Effect : POINTER; AudioCtrl : pAHIAudioCtrl) : longword;
+PROCEDURE AHI_SetFreq(Channel : WORD; Freq : longword; AudioCtrl : pAHIAudioCtrl; Flags : longword);
+PROCEDURE AHI_SetSound(Channel : WORD; Sound : WORD; Offset : longword; len : LONGINT; AudioCtrl : pAHIAudioCtrl; Flags : longword);
+PROCEDURE AHI_SetVol(Channel : WORD; Volume : LONGINT; Pan : LONGINT; AudioCtrl : pAHIAudioCtrl; Flags : longword);
+PROCEDURE AHI_UnloadSound(Sound : WORD; Audioctrl : pAHIAudioCtrl);
 {
  Functions and procedures with array of const go here
 }
@@ -545,9 +548,280 @@ IMPLEMENTATION
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox,
+msgbox,
 {$endif dont_use_openlib}
 tagsarray;
+
+FUNCTION AHI_AddAudioMode(a0arg : pTagItem) : longword;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L a0arg,A0
+        MOVEA.L AHIBase,A6
+        JSR     -150(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AHI_AllocAudioA(tagList : pTagItem) : pAHIAudioCtrl;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L tagList,A1
+        MOVEA.L AHIBase,A6
+        JSR     -042(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AHI_AllocAudioRequestA(tagList : pTagItem) : pAHIAudioModeRequester;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L tagList,A0
+        MOVEA.L AHIBase,A6
+        JSR     -120(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AHI_AudioRequestA(Requester : pAHIAudioModeRequester; tagList : pTagItem) : BOOLEAN;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Requester,A0
+        MOVEA.L tagList,A1
+        MOVEA.L AHIBase,A6
+        JSR     -126(A6)
+        MOVEA.L (A7)+,A6
+        TST.W   D0
+        BEQ.B   @end
+        MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION AHI_BestAudioIDA(tagList : pTagItem) : longword;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L tagList,A1
+        MOVEA.L AHIBase,A6
+        JSR     -114(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AHI_ControlAudioA(AudioCtrl : pAHIAudioCtrl; tagList : pTagItem) : longword;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L AudioCtrl,A2
+        MOVEA.L tagList,A1
+        MOVEA.L AHIBase,A6
+        JSR     -060(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE AHI_FreeAudio(AudioCtrl : pAHIAudioCtrl);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L AudioCtrl,A2
+        MOVEA.L AHIBase,A6
+        JSR     -048(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE AHI_FreeAudioRequest(Requester : pAHIAudioModeRequester);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Requester,A0
+        MOVEA.L AHIBase,A6
+        JSR     -132(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION AHI_GetAudioAttrsA(ID : longword; Audioctrl : pAHIAudioCtrl; tagList : pTagItem) : BOOLEAN;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  ID,D0
+        MOVEA.L Audioctrl,A2
+        MOVEA.L tagList,A1
+        MOVEA.L AHIBase,A6
+        JSR     -108(A6)
+        MOVEA.L (A7)+,A6
+        TST.W   D0
+        BEQ.B   @end
+        MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE AHI_KillAudio;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L AHIBase,A6
+        JSR     -054(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION AHI_LoadModeFile(a0arg : pCHAR) : longword;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L a0arg,A0
+        MOVEA.L AHIBase,A6
+        JSR     -162(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AHI_LoadSound(Sound : WORD; _Type : longword; Info : POINTER; AudioCtrl : pAHIAudioCtrl) : longword;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  Sound,D0
+        MOVE.L  _Type,D1
+        MOVEA.L Info,A0
+        MOVEA.L AudioCtrl,A2
+        MOVEA.L AHIBase,A6
+        JSR     -090(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AHI_NextAudioID(Last_ID : longword) : longword;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  Last_ID,D0
+        MOVEA.L AHIBase,A6
+        JSR     -102(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE AHI_PlayA(Audioctrl : pAHIAudioCtrl; tagList : pTagItem);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Audioctrl,A2
+        MOVEA.L tagList,A1
+        MOVEA.L AHIBase,A6
+        JSR     -138(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION AHI_RemoveAudioMode(d0arg : longword) : longword;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  d0arg,D0
+        MOVEA.L AHIBase,A6
+        JSR     -156(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AHI_SampleFrameSize(SampleType : longword) : longword;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  SampleType,D0
+        MOVEA.L AHIBase,A6
+        JSR     -144(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AHI_SetEffect(Effect : POINTER; AudioCtrl : pAHIAudioCtrl) : longword;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Effect,A0
+        MOVEA.L AudioCtrl,A2
+        MOVEA.L AHIBase,A6
+        JSR     -084(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE AHI_SetFreq(Channel : WORD; Freq : longword; AudioCtrl : pAHIAudioCtrl; Flags : longword);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  Channel,D0
+        MOVE.L  Freq,D1
+        MOVEA.L AudioCtrl,A2
+        MOVE.L  Flags,D2
+        MOVEA.L AHIBase,A6
+        JSR     -072(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE AHI_SetSound(Channel : WORD; Sound : WORD; Offset : longword; len : LONGINT; AudioCtrl : pAHIAudioCtrl; Flags : longword);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  Channel,D0
+        MOVE.L  Sound,D1
+        MOVE.L  Offset,D2
+        MOVE.L  len,D3
+        MOVEA.L AudioCtrl,A2
+        MOVE.L  Flags,D4
+        MOVEA.L AHIBase,A6
+        JSR     -078(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE AHI_SetVol(Channel : WORD; Volume : LONGINT; Pan : LONGINT; AudioCtrl : pAHIAudioCtrl; Flags : longword);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  Channel,D0
+        MOVE.L  Volume,D1
+        MOVE.L  Pan,D2
+        MOVEA.L AudioCtrl,A2
+        MOVE.L  Flags,D3
+        MOVEA.L AHIBase,A6
+        JSR     -066(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE AHI_UnloadSound(Sound : WORD; Audioctrl : pAHIAudioCtrl);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  Sound,D0
+        MOVEA.L Audioctrl,A2
+        MOVEA.L AHIBase,A6
+        JSR     -096(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
 
 {
  Functions and procedures with array of const go here

@@ -48,10 +48,35 @@
     _arrangedObjects: id;
     _rootNode: id;
     _selectionIndexPaths: id;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __treeControllerFlags: record
       case byte of
        0: (_anonbitfield_NSTreeController0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __treeControllerFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSTreeController0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _avoidsEmptySelection: 0..1;
         _preservesSelection: 0..1;
         _selectsInsertedObjects: 0..1;
@@ -65,7 +90,19 @@
         _skipSortingAfterFetch: 0..1;
         _usesIdenticalComparisonOfModelObjects: 0..1;
         _reservedTreeController: 0..((1 shl 20)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _selectedObjects: NSArray;

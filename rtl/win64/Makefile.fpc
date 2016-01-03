@@ -7,13 +7,38 @@ main=rtl
 
 [target]
 loaders=$(LOADERS)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=system uuchar objpas macpas iso7185 buildrtl cpall lineinfo lnfodwrf
+=======
+units=system objpas macpas iso7185 buildrtl lineinfo lnfodwrf
+>>>>>>> graemeg/cpstrnew
+=======
+units=system objpas macpas iso7185 buildrtl lineinfo lnfodwrf
+>>>>>>> graemeg/cpstrnew
+=======
+units=system objpas macpas iso7185 buildrtl lineinfo lnfodwrf
+>>>>>>> graemeg/cpstrnew
+=======
+units=system objpas macpas iso7185 buildrtl lineinfo lnfodwrf
+>>>>>>> origin/cpstrnew
+=======
+units=system objpas macpas buildrtl lineinfo lnfodwrf
+>>>>>>> graemeg/fixes_2_2
+=======
+units=system objpas macpas buildrtl lineinfo lnfodwrf
+>>>>>>> origin/fixes_2_2
 implicitunits=ctypes strings \
       extpas \
       heaptrc \
       dos messages \
       windows cmem dynlibs \
       rtlconsts sysconst sysutils math types \
+<<<<<<< HEAD
       typinfo fgl classes getopts \
       charset character fpwidestring \
       sharemem exeinfo fpintres windirs \
@@ -22,7 +47,32 @@ implicitunits=ctypes strings \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852 \
       unicodedata unicodenumtable 
 
+=======
+      strutils convutils dateutils \
+      varutils variants typinfo fgl classes getopts \
+      stdconvs sockets printer charset ucomplex fmtbcd \
+      winevent video mouse keyboard \
+<<<<<<< HEAD
+<<<<<<< HEAD
+      sharemem exeinfo fpintres windirs \
+      cpu signals
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 # mmx
+=======
+      sharemem exeinfo
+>>>>>>> graemeg/fixes_2_2
+=======
+      sharemem exeinfo
+>>>>>>> origin/fixes_2_2
 #      fpcmemdll
 #     winsysut signals
 #     no cygwin so far

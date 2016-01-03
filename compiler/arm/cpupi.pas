@@ -85,17 +85,44 @@ unit cpupi;
              exit;
           end;
         if tg.direction = -1 then
+<<<<<<< HEAD
+<<<<<<< HEAD
           begin
             if (target_info.system<>system_arm_darwin) then
               { Non-Darwin, worst case: r4-r10,r11,r13,r14,r15 is saved -> -28-16, but we
                 always adjust the frame pointer to point to the first stored
                 register (= last register in list above) -> + 4 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               tg.setfirsttemp(-28-16)
             else
               { on Darwin first r4-r7,r14 are saved, then r7 is adjusted to
                 point to the saved r7, and next r8,r10,r11 gets saved -> -24
                 (r4-r6 and r8,r10,r11) }
               tg.setfirsttemp(-24)
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+              tg.setfirsttemp(-28-16+4)
+            else
+              { on Darwin r9 is not usable -> one less register to save }
+              tg.setfirsttemp(-24-16+4)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           end
         else
           tg.setfirsttemp(maxpushedparasize);
@@ -137,6 +164,16 @@ unit cpupi;
 
             stackframesize:=Align(stackframesize,8);
           end;
+=======
+          tg.setfirsttemp(-12-28)
+        else
+          tg.setfirsttemp(maxpushedparasize);
+>>>>>>> graemeg/fixes_2_2
+=======
+          tg.setfirsttemp(-12-28)
+        else
+          tg.setfirsttemp(maxpushedparasize);
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -146,7 +183,11 @@ unit cpupi;
          r : byte;
          floatsavesize : aword;
          regs: tcpuregisterset;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       begin
+<<<<<<< HEAD
         if GenerateThumbCode or (pi_estimatestacksize in flags) then
           result:=stackframesize
         else
@@ -240,6 +281,12 @@ unit cpupi;
 
 
     procedure tarmprocinfo.init_framepointer;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       begin
         if (target_info.system in systems_darwin) or GenerateThumbCode then
           begin
@@ -251,6 +298,44 @@ unit cpupi;
             RS_FRAME_POINTER_REG:=RS_R11;
             NR_FRAME_POINTER_REG:=NR_R11;
           end;
+=======
+        maxpushedparasize:=align(maxpushedparasize,max(current_settings.alignment.localalignmin,4));
+        floatsavesize:=0;
+        case current_settings.fputype of
+          fpu_fpa,
+          fpu_fpa10,
+          fpu_fpa11:
+            begin
+              { save floating point registers? }
+              firstfloatreg:=RS_NO;
+              regs:=cg.rg[R_FPUREGISTER].used_in_proc-paramanager.get_volatile_registers_fpu(pocall_stdcall);
+              for r:=RS_F0 to RS_F7 do
+                if r in regs then
+                  begin
+                    if firstfloatreg=RS_NO then
+                      firstfloatreg:=r;
+                    lastfloatreg:=r;
+                  end;
+              if firstfloatreg<>RS_NO then
+                floatsavesize:=(lastfloatreg-firstfloatreg+1)*12;
+            end;
+          fpu_vfpv2,
+          fpu_vfpv3:
+            begin
+              floatsavesize:=0;
+              regs:=cg.rg[R_MMREGISTER].used_in_proc-paramanager.get_volatile_registers_mm(pocall_stdcall);
+              for r:=RS_D0 to RS_D31 do
+                if r in regs then
+                  inc(floatsavesize,8);
+            end;
+        end;
+        floatsavesize:=align(floatsavesize,max(current_settings.alignment.localalignmin,4));
+<<<<<<< HEAD
+        result:=Align(tg.direction*tg.lasttemp,max(current_settings.alignment.localalignmin,4))+maxpushedparasize+aint(floatsavesize);
+        floatregstart:=tg.direction*result+maxpushedparasize;
+        if tg.direction=1 then
+          dec(floatregstart,floatsavesize);
+>>>>>>> graemeg/cpstrnew
       end;
 
 
@@ -266,6 +351,15 @@ unit cpupi;
         { darwin doesn't use a got }
         if tf_pic_uses_got in target_info.flags then
           got := cg.getaddressregister(list);
+=======
+        result:=Align(tg.direction*tg.lasttemp,max(current_settings.alignment.localalignmin,4))+maxpushedparasize+floatsavesize;
+        floatregstart:=tg.direction*result+maxpushedparasize;
+        if tg.direction=1 then
+          dec(floatregstart,floatsavesize);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 

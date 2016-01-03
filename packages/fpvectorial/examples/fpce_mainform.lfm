@@ -1,0 +1,62 @@
+object formCorelExplorer: TformCorelExplorer
+  Left = 216
+  Height = 345
+  Top = 192
+  Width = 466
+  Caption = 'FP Corel Explorer'
+  ClientHeight = 345
+  ClientWidth = 466
+  LCLVersion = '0.9.29'
+  object Label1: TLabel
+    Left = 8
+    Height = 14
+    Top = 40
+    Width = 123
+    Caption = 'Location of the Input file:'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 8
+    Height = 32
+    Top = 8
+    Width = 224
+    AutoSize = False
+    Caption = 'This application helps us explore the internal structure of Corel Draw files (*.cdr).'
+    ParentColor = False
+    WordWrap = True
+  end
+  object shellInput: TShellTreeView
+    Left = 8
+    Height = 272
+    Top = 64
+    Width = 224
+    FileSortType = fstFoldersFirst
+    TabOrder = 0
+    OnSelectionChanged = shellInputSelectionChanged
+    ObjectTypes = [otFolders, otNonFolders]
+  end
+  object labelFilename: TLabel
+    Left = 256
+    Height = 14
+    Top = 65
+    Width = 47
+    Caption = 'Filename:'
+    ParentColor = False
+  end
+  object labelVersion: TLabel
+    Left = 256
+    Height = 14
+    Top = 88
+    Width = 40
+    Caption = 'Version:'
+    ParentColor = False
+  end
+  object labelSize: TLabel
+    Left = 256
+    Height = 14
+    Top = 112
+    Width = 24
+    Caption = 'Size:'
+    ParentColor = False
+  end
+end

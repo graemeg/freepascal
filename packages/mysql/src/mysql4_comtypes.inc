@@ -7,6 +7,7 @@ type
     PVIO = Pointer;
     My_socket = longint;
     my_bool = byte;
+    pppchar = ^PPChar;
     gptr = Pointer;
 
   {

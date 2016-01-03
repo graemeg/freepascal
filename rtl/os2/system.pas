@@ -28,11 +28,17 @@ interface
 {$endif SYSTEMDEBUG}
 
 {$DEFINE OS2EXCEPTIONS}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$DEFINE OS2UNICODE}
 {$define DISABLE_NO_THREAD_MANAGER}
 {$define DISABLE_NO_DYNLIBS_MANAGER}
 {$DEFINE HAS_GETCPUCOUNT}
 {$define FPC_SYSTEM_HAS_SYSDLH}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$I systemh.inc}
 
@@ -46,6 +52,8 @@ const
   PathSeparator = ';';
   AllowDirectorySeparators : set of char = ['\','/'];
   AllowDriveSeparators : set of char = [':'];
+<<<<<<< HEAD
+<<<<<<< HEAD
 { FileNameCaseSensitive and FileNameCasePreserving are defined separately below!!! }
   MaxExitCode = 65535;
   MaxPathLen = 260;
@@ -63,6 +71,28 @@ type
 const
   OS_Mode: TOS = osOS2; (* For compatibility with target EMX *)
   First_Meg: pointer = nil; (* For compatibility with target EMX *)
+=======
+{ FileNameCaseSensitive is defined separately below!!! }
+  MaxExitCode = 65535;
+  MaxPathLen = 256;
+  AllFilesMask = '*';
+
+type    Tos=(osDOS,osOS2,osDPMI);
+
+const   OS_Mode: Tos = osOS2;
+        First_Meg: pointer = nil;
+>>>>>>> graemeg/fixes_2_2
+=======
+{ FileNameCaseSensitive is defined separately below!!! }
+  MaxExitCode = 65535;
+  MaxPathLen = 256;
+  AllFilesMask = '*';
+
+type    Tos=(osDOS,osOS2,osDPMI);
+
+const   OS_Mode: Tos = osOS2;
+        First_Meg: pointer = nil;
+>>>>>>> origin/fixes_2_2
 
   UnusedHandle=-1;
   StdInputHandle=0;
@@ -101,13 +131,25 @@ var
   ApplicationType: cardinal;
 
 const
+<<<<<<< HEAD
+<<<<<<< HEAD
   HeapAllocFlags: cardinal = $53; (* Compatible to VP/2 *)
   (* mfPag_Commit or mfObj_Tile or mfPag_Write or mfPag_Read *)
+=======
+ HeapAllocFlags: cardinal = $53; (* Compatible to VP/2 *)
+ (* mfPag_Commit or mfObj_Tile or mfPag_Write or mfPag_Read *)
+>>>>>>> graemeg/fixes_2_2
+=======
+ HeapAllocFlags: cardinal = $53; (* Compatible to VP/2 *)
+ (* mfPag_Commit or mfObj_Tile or mfPag_Write or mfPag_Read *)
+>>>>>>> origin/fixes_2_2
 
 function ReadUseHighMem: boolean;
 
 procedure WriteUseHighMem (B: boolean);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* Is allocation of memory above 512 MB address limit allowed? Even if use   *)
 (* of high memory is supported by the underlying OS/2 version, just a subset *)
 (* of OS/2 API functions can work with memory buffers located in high        *)
@@ -136,6 +178,21 @@ function RtlCPtoOS2CP (RtlCP: TSystemCodepage; ReqFlags: byte): cardinal;
 (* function RtlChangeCP (CP: TSystemCodePage; const stdcp: TStandardCodePageEnum): longint; *)
 {$ENDIF OS2UNICODE}
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* Is allocation of memory above 512 MB address limit allowed? Initialized *)
+(* during initialization of system unit according to capabilities of the   *)
+(* underlying OS/2 version, can be overridden by user - heap is allocated  *)
+(* for all threads, so the setting isn't declared as a threadvar and       *)
+(* should be only changed at the beginning of the main thread if needed.   *)
+property
+  UseHighMem: boolean read ReadUseHighMem write WriteUseHighMem;
+(* UseHighMem is provided for compatibility with 2.0.x. *)
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 const
 (* Are file sizes > 2 GB (64-bit) supported on the current system? *)
@@ -175,6 +232,8 @@ type
   TDosSetFileSizeL = function (Handle: THandle; Size: int64): cardinal; cdecl;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   TUniCreateUConvObject = function (const CpName: PWideChar;
                                var UConv_Object: TUConvObject): longint; cdecl;
 
@@ -241,12 +300,57 @@ var
   SysLastOSError: cardinal;
 {$ENDIF SYSTEMDEBUG}
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function DummyDosOpenL (FileName: PChar; var Handle: THandle;
+                        var Action: cardinal; InitSize: int64;
+                        Attrib, OpenFlags, FileMode: cardinal;
+                                                 EA: pointer): cardinal; cdecl;
+
+function DummyDosSetFilePtrL (Handle: THandle; Pos: int64; Method: cardinal;
+                                        var PosActual: int64): cardinal; cdecl;
+
+function DummyDosSetFileSizeL (Handle: THandle; Size: int64): cardinal; cdecl;
+
+
+const
+  Sys_DosOpenL: TDosOpenL = @DummyDosOpenL;
+  Sys_DosSetFilePtrL: TDosSetFilePtrL = @DummyDosSetFilePtrL;
+  Sys_DosSetFileSizeL: TDosSetFileSizeL = @DummyDosSetFileSizeL;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
 implementation
 
 
 {*****************************************************************************
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+                        System unit initialization.
+
+****************************************************************************}
+
+=======
+
+                        System unit initialization.
+
+****************************************************************************}
+
+>>>>>>> graemeg/fixes_2_2
+{$I system.inc}
+
+{*****************************************************************************
+
+                           Exception handling.
+
+****************************************************************************}
+
+=======
 
                         System unit initialization.
 
@@ -260,6 +364,7 @@ implementation
 
 ****************************************************************************}
 
+>>>>>>> origin/fixes_2_2
 {$IFDEF OS2EXCEPTIONS}
 var
   { value of the stack segment
@@ -273,15 +378,51 @@ function Is_Prefetch (P: pointer): boolean;
     InstrLo, InstrHi, OpCode: byte;
     I: longint;
     MemSize, MemAttrs: cardinal;
+<<<<<<< HEAD
+<<<<<<< HEAD
     RC: cardinal;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   begin
     Is_Prefetch := false;
 
     MemSize := SizeOf (A);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     RC := DosQueryMem (P, MemSize, MemAttrs);
     if RC <> 0 then
      OSErrorWatch (RC)
     else if (MemAttrs and (mfPag_Free or mfPag_Commit) <> 0)
+=======
+    if (DosQueryMem (P, MemSize, MemAttrs) = 0) and
+            (MemAttrs and (mfPag_Free or mfPag_Commit) <> 0)
+>>>>>>> graemeg/cpstrnew
+=======
+    if (DosQueryMem (P, MemSize, MemAttrs) = 0) and
+            (MemAttrs and (mfPag_Free or mfPag_Commit) <> 0)
+>>>>>>> graemeg/cpstrnew
+=======
+    if (DosQueryMem (P, MemSize, MemAttrs) = 0) and
+            (MemAttrs and (mfPag_Free or mfPag_Commit) <> 0)
+>>>>>>> graemeg/cpstrnew
+=======
+    if (DosQueryMem (P, MemSize, MemAttrs) = 0) and
+            (MemAttrs and (mfPag_Free or mfPag_Commit) <> 0)
+>>>>>>> origin/cpstrnew
+=======
+    DosQueryMem (P, MemSize, MemAttrs);
+    if (MemAttrs and (mfPag_Free or mfPag_Commit) <> 0)
+>>>>>>> graemeg/fixes_2_2
+=======
+    DosQueryMem (P, MemSize, MemAttrs);
+    if (MemAttrs and (mfPag_Free or mfPag_Commit) <> 0)
+>>>>>>> origin/fixes_2_2
                                                and (MemSize >= SizeOf (A)) then
      Move (P^, A [0], SizeOf (A))
     else
@@ -338,14 +479,22 @@ end;
 procedure JumpToHandleErrorFrame;
 var
  EIP, EBP, Error: longint;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF SYSTEMEXCEPTIONDEBUG}
  ESP, EBP1: longint;
 {$ENDIF SYSTEMEXCEPTIONDEBUG}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
  (* save ebp *)
  asm
   movl (%ebp),%eax
   movl %eax,ebp
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF SYSTEMEXCEPTIONDEBUG}
   movl %ebp,%eax
   movl %eax,EBP1
@@ -357,18 +506,32 @@ begin
  if IsConsole then
   WriteLn (StdErr, 'Exception level at start of JumpToHandleErrorFrame = ', ExceptLevel);
 {$endif SYSTEMEXCEPTIONDEBUG}
+=======
+ end;
+>>>>>>> graemeg/fixes_2_2
+=======
+ end;
+>>>>>>> origin/fixes_2_2
  if (ExceptLevel > 0) then
   Dec (ExceptLevel);
  EIP := ExceptEIP [ExceptLevel];
  Error := ExceptError [ExceptLevel];
 {$ifdef SYSTEMEXCEPTIONDEBUG}
  if IsConsole then
+<<<<<<< HEAD
+<<<<<<< HEAD
   begin
    WriteLn (StdErr, 'In JumpToHandleErrorFrame error = ', Error);
    WriteLn (StdErr, 'EBP on entry: ', HexStr (EBP1, 8));
    WriteLn (StdErr, 'Previous EBP: ', HexStr (EBP, 8));
    WriteLn (StdErr, 'ESP on entry: ', HexStr (ESP, 8));
   end;
+=======
+  WriteLn (StdErr, 'In JumpToHandleErrorFrame error = ', Error);
+>>>>>>> graemeg/fixes_2_2
+=======
+  WriteLn (StdErr, 'In JumpToHandleErrorFrame error = ', Error);
+>>>>>>> origin/fixes_2_2
 {$endif SYSTEMEXCEPTIONDEBUG}
  if ResetFPU [ExceptLevel] then
   SysResetFPU;
@@ -409,9 +572,19 @@ var
  Res: cardinal;
  Err: byte;
  Must_Reset_FPU: boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
  RC: cardinal;
 {$IFDEF SYSTEMEXCEPTIONDEBUG}
  CurSS, CurESP, CurEBP: cardinal;
+=======
+{$IFDEF SYSTEMEXCEPTIONDEBUG}
+ CurSS: cardinal;
+>>>>>>> graemeg/fixes_2_2
+=======
+{$IFDEF SYSTEMEXCEPTIONDEBUG}
+ CurSS: cardinal;
+>>>>>>> origin/fixes_2_2
  B: byte;
 {$ENDIF SYSTEMEXCEPTIONDEBUG}
 begin
@@ -419,6 +592,8 @@ begin
  if IsConsole then
   begin
     asm
+<<<<<<< HEAD
+<<<<<<< HEAD
       pushl %eax
       xorl %eax,%eax
       movw %ss,%ax
@@ -474,6 +649,21 @@ begin
                      ', ECX = ', HexStr (Context^.Reg_ECX, 8),
                      ', EDX = ', HexStr (Context^.Reg_EDX, 8));
      end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      xorl %eax,%eax
+      movw %ss,%ax
+      movl %eax,CurSS
+    end;
+    WriteLn (StdErr, 'In System_Exception_Handler, error = ',
+                                            HexStr (Report^.Exception_Num, 8));
+    WriteLn (StdErr, 'Context SS = ', HexStr (Context^.Reg_SS, 8),
+                                         ', current SS = ', HexStr (CurSS, 8));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 {$endif SYSTEMEXCEPTIONDEBUG}
  Res := Xcpt_Continue_Search;
@@ -535,6 +725,8 @@ begin
        Res := Xcpt_Continue_Execution;
       end
      else
+<<<<<<< HEAD
+<<<<<<< HEAD
       begin
        Err := 216;
 {$ifdef SYSTEMEXCEPTIONDEBUG}
@@ -545,6 +737,12 @@ begin
         end;
 {$endif SYSTEMEXCEPTIONDEBUG}
       end;
+=======
+      Err := 216;
+>>>>>>> graemeg/fixes_2_2
+=======
+      Err := 216;
+>>>>>>> origin/fixes_2_2
     Xcpt_Signal:
      case Report^.Parameters [0] of
       Xcpt_Signal_KillProc:
@@ -559,9 +757,17 @@ begin
 {$ENDIF SYSTEMEXCEPTIONDEBUG}
           Report^.Exception_Num := 0;
           Res := Xcpt_Continue_Execution;
+<<<<<<< HEAD
+<<<<<<< HEAD
           RC := DosAcknowledgeSignalException (Report^.Parameters [0]);
           if RC <> 0 then
            OSErrorWatch (RC);
+=======
+          DosAcknowledgeSignalException (Report^.Parameters [0]);
+>>>>>>> graemeg/fixes_2_2
+=======
+          DosAcknowledgeSignalException (Report^.Parameters [0]);
+>>>>>>> origin/fixes_2_2
          end
         else
          Err := 217;
@@ -581,10 +787,18 @@ begin
      end;
    end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
    if (Err <> 0) and (ExceptLevel < MaxExceptionLevel) 
 (* TH: The following line is necessary to avoid an endless loop *)
                  and (Report^.Exception_Num < Xcpt_Process_Terminate)
                                                                     then
+=======
+   if (Err <> 0) and (ExceptLevel < MaxExceptionLevel) then
+>>>>>>> graemeg/fixes_2_2
+=======
+   if (Err <> 0) and (ExceptLevel < MaxExceptionLevel) then
+>>>>>>> origin/fixes_2_2
     begin
      ExceptEIP [ExceptLevel] := Context^.Reg_EIP;
      ExceptError [ExceptLevel] := Err;
@@ -594,6 +808,8 @@ begin
      Context^.Reg_EIP := cardinal (@JumpToHandleErrorFrame);
      Report^.Exception_Num := 0;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
      if Must_Reset_FPU and
                    (Context^.ContextFlags and Context_Floating_Point <> 0) then
       begin
@@ -611,16 +827,32 @@ begin
        WriteLn (StdErr, 'Ctx Env [3] = ', HexStr (Context^.Env [3], 8));
 {$endif SYSTEMEXCEPTIONDEBUG}
       end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
      Res := Xcpt_Continue_Execution;
 {$ifdef SYSTEMEXCEPTIONDEBUG}
      if IsConsole then
       begin
        WriteLn (StdErr, 'Exception Continue Exception set at ',
+<<<<<<< HEAD
+<<<<<<< HEAD
                                    HexStr (ExceptEIP [Pred (ExceptLevel)], 8));
        WriteLn (StdErr, 'EIP changed to ',
                               HexStr (Context^.Reg_EIP, 8), ', error = ', Err);
        WriteLn (StdErr, 'Exception level = ', ExceptLevel);
        WriteLn (StdErr, 'ResetFPU = ', ResetFPU [Pred (ExceptLevel)]);
+=======
+                                          HexStr (ExceptEIP [ExceptLevel], 8));
+       WriteLn (StdErr, 'EIP changed to ',
+             HexStr (longint (@JumpToHandleErrorFrame), 8), ', error = ', Err);
+>>>>>>> graemeg/fixes_2_2
+=======
+                                          HexStr (ExceptEIP [ExceptLevel], 8));
+       WriteLn (StdErr, 'EIP changed to ',
+             HexStr (longint (@JumpToHandleErrorFrame), 8), ', error = ', Err);
+>>>>>>> origin/fixes_2_2
       end;
 {$endif SYSTEMEXCEPTIONDEBUG}
     end;
@@ -641,9 +873,17 @@ begin
 {$ENDIF SYSTEMEXCEPTIONDEBUG}
      Report^.Exception_Num := 0;
      Res := Xcpt_Continue_Execution;
+<<<<<<< HEAD
+<<<<<<< HEAD
      RC := DosAcknowledgeSignalException (Report^.Parameters [0]);
      if RC <> 0 then
       OSErrorWatch (RC);
+=======
+     DosAcknowledgeSignalException (Report^.Parameters [0]);
+>>>>>>> graemeg/fixes_2_2
+=======
+     DosAcknowledgeSignalException (Report^.Parameters [0]);
+>>>>>>> origin/fixes_2_2
     end
    else
     Err := 217;
@@ -704,7 +944,13 @@ var
 procedure Install_Exception_Handler;
 var
  T: cardinal;
+<<<<<<< HEAD
+<<<<<<< HEAD
  RC: cardinal;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
 {$ifdef SYSTEMEXCEPTIONDEBUG}
 (* ThreadInfoBlock is located at FS:[0], the first      *)
@@ -725,6 +971,8 @@ begin
  DosSetExceptionHandler (ExcptReg^);
  if IsConsole then
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
    RC := DosSetSignalExceptionFocus (1, T);
    if RC <> 0 then
     OSErrorWatch (RC);
@@ -734,6 +982,16 @@ begin
    RC := DosAcknowledgeSignalException (Xcpt_Signal_Break);
    if RC <> 0 then
     OSErrorWatch (RC);
+=======
+   DosSetSignalExceptionFocus (1, T);
+   DosAcknowledgeSignalException (Xcpt_Signal_Intr);
+   DosAcknowledgeSignalException (Xcpt_Signal_Break);
+>>>>>>> graemeg/fixes_2_2
+=======
+   DosSetSignalExceptionFocus (1, T);
+   DosAcknowledgeSignalException (Xcpt_Signal_Intr);
+   DosAcknowledgeSignalException (Xcpt_Signal_Break);
+>>>>>>> origin/fixes_2_2
   end;
 {$ifdef SYSTEMEXCEPTIONDEBUG}
  asm
@@ -744,6 +1002,8 @@ begin
 {$endif SYSTEMEXCEPTIONDEBUG}
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF SYSTEMDEBUG}
 const
   OrigOSErrorWatch: TOSErrorWatch = nil;
@@ -766,6 +1026,16 @@ begin
   RC := DosUnsetExceptionHandler (ExcptReg^);
   if RC <> 0 then
    OSErrorWatch (RC);
+=======
+procedure Remove_Exception_Handlers;
+begin
+  DosUnsetExceptionHandler (ExcptReg^);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure Remove_Exception_Handlers;
+begin
+  DosUnsetExceptionHandler (ExcptReg^);
+>>>>>>> origin/fixes_2_2
 end;
 {$ENDIF OS2EXCEPTIONS}
 
@@ -828,8 +1098,18 @@ begin
   randseed:=dt.hour+(dt.minute shl 8)+(dt.second shl 16)+(dt.sec100 shl 32);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+
+>>>>>>> origin/fixes_2_2
 {****************************************************************************
                     Error Message writing using messageboxes
 ****************************************************************************}
@@ -1364,7 +1644,16 @@ const
   {$I sysucode.inc}
 {$ENDIF OS2UNICODE}
 
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/fixes_2_2
+{*var}
+{* ST: pointer;}
+{*}
 begin
+<<<<<<< HEAD
 {$IFDEF OS2EXCEPTIONS}
   asm
    xorl %eax,%eax
@@ -1474,6 +1763,102 @@ begin
   fpc_cpucodeinit;
 
   InitUnicodeStringManager;
+=======
+    IsLibrary := FALSE;
+
+{$IFDEF OS2EXCEPTIONS}
+(*    asm
+      { allocate space for exception registration record }
+     pushl $0
+     pushl $0}
+{*     pushl %fs:(0)}
+        { movl  %esp,%fs:(0)
+          but don't insert it as it doesn't
+          point to anything yet
+          this will be used in signals unit }
+     movl %esp,%eax
+     movl %eax,ExcptReg
+     pushl %ebp
+     movl %esp,%eax
+{*     movl %eax,st*}
+     movl %eax,StackTop
+    end;
+{*    StackTop:=st;}
+*)    asm
+     xorl %eax,%eax
+     movw %ss,%ax
+     movl %eax,_SS
+     call SysResetFPU
+    end;
+{$ENDIF OS2EXCEPTIONS}
+    DosGetInfoBlocks (@TIB, @PIB);
+    StackBottom := TIB^.Stack;
+{ $IFNDEF OS2EXCEPTIONS}
+    StackTop := TIB^.StackLimit;
+{ $ENDIF OS2EXCEPTIONS}
+    StackLength := CheckInitialStkLen (InitialStkLen);
+
+    {Set type of application}
+    ApplicationType := PIB^.ProcType;
+    ProcessID := PIB^.PID;
+    ThreadID := TIB^.TIB2^.TID;
+    IsConsole := ApplicationType <> 3;
+
+    ExitProc := nil;
+
+{$IFDEF OS2EXCEPTIONS}
+    Install_Exception_Handler;
+{$ENDIF OS2EXCEPTIONS}
+
+    (* Initialize the amount of file handles *)
+    FileHandleCount := GetFileHandleCount;
+
+    {Initialize the heap.}
+    (* Logic is following:
+       The heap is initially restricted to low address space (< 512 MB).
+       If underlying OS/2 version allows using more than 512 MB per process
+       (OS/2 WarpServer for e-Business, eComStation, possibly OS/2 Warp 4.0
+       with FP13 and above as well), use of this high memory is allowed for
+       future memory allocations at the end of System unit initialization.
+       The consequences are that the compiled application can allocate more
+       memory, but it must make sure to use direct DosAllocMem calls if it
+       needs a memory block for some system API not supporting high memory.
+       This is probably no problem for direct calls to these APIs, but
+       there might be situations when a memory block needs to be passed
+       to a 3rd party DLL which in turn calls such an API call. In case
+       of problems usage of high memory can be turned off by setting
+       UseHighMem to false - the program should change the setting at its
+       very beginning (e.g. in initialization section of the first unit
+       listed in the "uses" section) to avoid having preallocated memory
+       from the high memory region before changing value of this variable. *)
+    InitHeap;
+
+    if DosQueryModuleHandle (@DosCallsName [0], DosCallsHandle) = 0 then
+      begin
+        if DosQueryProcAddr (DosCallsHandle, OrdDosOpenL, nil, P) = 0 then
+          begin
+            Sys_DosOpenL := TDosOpenL (P);
+            if DosQueryProcAddr (DosCallsHandle, OrdDosSetFilePtrL, nil, P) = 0
+                                                                           then
+              begin
+                Sys_DosSetFilePtrL := TDosSetFilePtrL (P);
+                if DosQueryProcAddr (DosCallsHandle, OrdDosSetFileSizeL, nil,
+                                                                    P) = 0 then
+                  begin
+                    Sys_DosSetFileSizeL := TDosSetFileSizeL (P);
+                    FSApi64 := true;
+                  end;
+              end;
+          end;
+      end;
+
+    { ... and exceptions }
+    SysInitExceptions;
+    fpc_cpucodeinit;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$IFDEF OS2UNICODE}
   InitOS2WideStringManager;
@@ -1517,8 +1902,18 @@ begin
 {    Int_HeapSize := high (cardinal);}
 {$ENDIF EXTDUMPGROW}
 {$ifdef SYSTEMEXCEPTIONDEBUG}
+<<<<<<< HEAD
+<<<<<<< HEAD
   if IsConsole then
    WriteLn (StdErr, 'Old exception ', HexStr (OldExceptAddr, 8),
+=======
+ if IsConsole then
+  WriteLn (StdErr, 'Old exception ', HexStr (OldExceptAddr, 8),
+>>>>>>> graemeg/fixes_2_2
+=======
+ if IsConsole then
+  WriteLn (StdErr, 'Old exception ', HexStr (OldExceptAddr, 8),
+>>>>>>> origin/fixes_2_2
    ', new exception ', HexStr (NewExceptAddr, 8), ', _SS = ', HexStr (_SS, 8));
 {$endif SYSTEMEXCEPTIONDEBUG}
 end.

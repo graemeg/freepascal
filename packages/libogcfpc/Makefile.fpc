@@ -1,18 +1,73 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for wii units
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for wii units
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for wii units
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for wii units
+>>>>>>> origin/cpstrnew
 #
 
 [package]
 name=libogcfpc
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=gctypes gccore debug mp3player fat asndlib aesndlib gcmodplay iso9660 network
+exampledirs=examples
+
+[compiler]
+options=
+includedir=src 
+#src/bte src/di src/ogc src/sdcard src/wiikeyboard src/wiiuse 
+sourcedir=src tests
+
+[prerules]
+BINUTILSPREFIX=powerpc-eabi-
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 [install]
 fpcpackage=y
 
 [default]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 fpcdir=../..
 
 [prerules]
@@ -100,3 +155,33 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+cpu=powerpc
+target=wii
+fpcdir=../..
+
+[require] 
+nortl=y
+
+[shared]
+build=n
+
+[rules]
+.NOTPARALLEL:
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

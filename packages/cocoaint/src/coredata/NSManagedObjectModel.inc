@@ -49,6 +49,10 @@
     _configurations: NSMutableDictionary;
     _fetchRequestTemplates: NSMutableDictionary;
     _versionIdentifiers: NSSet;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __managedObjectModelFlags: record
       case byte of
        0: (_anonbitfield_NSManagedObjectModel0: cuint);
@@ -57,6 +61,30 @@
         _isImmutable: 0..1;
         _reservedEntityDescription: 0..((1 shl 30)-1);
        end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __managedObjectModelFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSManagedObjectModel0: cuint);
+       1: (
+        _isInUse: 0..1;
+        _isImmutable: 0..1;
+        _reservedEntityDescription: 0..((1 shl 30)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     

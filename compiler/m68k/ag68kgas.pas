@@ -246,7 +246,21 @@ interface
         if op in [a_bxx,a_fbxx] then
           result:=gas_op2str[op]+cond2str[taicpu(hp).condition]+gas_opsize2str[taicpu(hp).opsize]
         else
+<<<<<<< HEAD
           result:=gas_op2str[op]+gas_opsize2str[taicpu(hp).opsize];
+=======
+        if op in [a_dbxx,a_bxx,a_fbxx] then
+         s:=gas_op2str[op]+cond2str[taicpu(hp).condition]+gas_opsize2str[taicpu(hp).opsize]
+        else
+         s:=gas_op2str[op]+gas_opsize2str[taicpu(hp).opsize];
+        if op = A_FMOVE then
+          begin
+{$ifdef DEBUG_CHARLIE}
+            writeln('fmove! opsize:',dword(taicpu(hp).opsize));
+{$endif DEBUG_CHARLIE}
+          end;
+        getopcodestring:=s;
+>>>>>>> graemeg/fixes_2_2
       end;
 
 

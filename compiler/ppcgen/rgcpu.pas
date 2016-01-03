@@ -35,8 +35,18 @@ unit rgcpu;
 
      type
        trgcpu = class(trgobj)
+<<<<<<< HEAD
+<<<<<<< HEAD
          procedure do_spill_read(list: TAsmList; pos: tai; const spilltemp: treference; tempreg: tregister; orgsupreg: tsuperregister); override;
          procedure do_spill_written(list: TAsmList; pos: tai; const spilltemp: treference; tempreg: tregister; orgsupreg: tsuperregister); override;
+=======
+         procedure do_spill_read(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);override;
+         procedure do_spill_written(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);override;
+>>>>>>> graemeg/fixes_2_2
+=======
+         procedure do_spill_read(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);override;
+         procedure do_spill_written(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);override;
+>>>>>>> origin/fixes_2_2
        end;
 
        trgintcpu = class(trgcpu)
@@ -48,12 +58,28 @@ unit rgcpu;
   implementation
 
     uses
+<<<<<<< HEAD
+<<<<<<< HEAD
       verbose, cutils,globtype,
+=======
+      verbose, cutils,
+>>>>>>> graemeg/fixes_2_2
+=======
+      verbose, cutils,
+>>>>>>> origin/fixes_2_2
       cgobj,
       procinfo;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure trgcpu.do_spill_read(list: TAsmList; pos: tai; const spilltemp: treference; tempreg: tregister; orgsupreg: tsuperregister);
+=======
+    procedure trgcpu.do_spill_read(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);
+>>>>>>> graemeg/fixes_2_2
+=======
+    procedure trgcpu.do_spill_read(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);
+>>>>>>> origin/fixes_2_2
       var
         tmpref : treference;
         helplist : TAsmList;
@@ -70,14 +96,30 @@ unit rgcpu;
 
             if getregtype(tempreg)=R_INTREGISTER then
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 hreg:=getregisterinline(helplist,[R_SUBWHOLE]);
+=======
+                hreg:=getregisterinline(helplist,R_SUBWHOLE);
+>>>>>>> graemeg/fixes_2_2
+=======
+                hreg:=getregisterinline(helplist,R_SUBWHOLE);
+>>>>>>> origin/fixes_2_2
                 {Done by add_cpu_interferences now.
                 add_edge(getsupreg(hreg),RS_R0);}
               end
             else
               hreg:=cg.getintregister(helplist,OS_ADDR);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
             reference_reset(tmpref,sizeof(aint));
+=======
+            reference_reset(tmpref);
+>>>>>>> graemeg/fixes_2_2
+=======
+            reference_reset(tmpref);
+>>>>>>> origin/fixes_2_2
             tmpref.offset:=spilltemp.offset;
             tmpref.refaddr := addr_higha;
             ins:=taicpu.op_reg_reg_ref(A_ADDIS,hreg,spilltemp.base,tmpref);
@@ -100,11 +142,25 @@ unit rgcpu;
             helplist.free;
           end
         else
+<<<<<<< HEAD
+<<<<<<< HEAD
           inherited;
       end;
 
 
     procedure trgcpu.do_spill_written(list: TAsmList; pos: tai; const spilltemp: treference; tempreg: tregister; orgsupreg: tsuperregister);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          inherited do_spill_read(list,pos,spilltemp,tempreg);
+      end;
+
+
+    procedure trgcpu.do_spill_written(list:TAsmList;pos:tai;const spilltemp:treference;tempreg:tregister);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       var
         tmpref : treference;
         helplist : TAsmList;
@@ -121,13 +177,29 @@ unit rgcpu;
 
             if getregtype(tempreg)=R_INTREGISTER then
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 hreg:=getregisterinline(helplist,[R_SUBWHOLE]);
+=======
+                hreg:=getregisterinline(helplist,R_SUBWHOLE);
+>>>>>>> graemeg/fixes_2_2
+=======
+                hreg:=getregisterinline(helplist,R_SUBWHOLE);
+>>>>>>> origin/fixes_2_2
                 {Done by add_cpu_interferences now.
                 add_edge(getsupreg(hreg),RS_R0);}
               end
             else
               hreg:=cg.getintregister(helplist,OS_ADDR);
+<<<<<<< HEAD
+<<<<<<< HEAD
             reference_reset(tmpref,sizeof(aint));
+=======
+            reference_reset(tmpref);
+>>>>>>> graemeg/fixes_2_2
+=======
+            reference_reset(tmpref);
+>>>>>>> origin/fixes_2_2
             tmpref.offset:=spilltemp.offset;
             tmpref.refaddr := addr_higha;
             ins:=taicpu.op_reg_reg_ref(A_ADDIS,hreg,spilltemp.base,tmpref);
@@ -147,7 +219,15 @@ unit rgcpu;
             helplist.free;
           end
         else
+<<<<<<< HEAD
+<<<<<<< HEAD
           inherited;
+=======
+          inherited do_spill_written(list,pos,spilltemp,tempreg);
+>>>>>>> graemeg/fixes_2_2
+=======
+          inherited do_spill_written(list,pos,spilltemp,tempreg);
+>>>>>>> origin/fixes_2_2
       end;
 
 {$ifdef user0}
@@ -165,12 +245,28 @@ unit rgcpu;
               A_STHBRX, A_LHBRX, A_STWBRX, A_LWBRX, A_STWCX_, A_LWARX,
               A_ECIWX, A_ECOWX,
               A_LMW, A_STMW,A_LSWI,A_LSWX,A_STSWI,A_STSWX
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef cpu64bitalu}
+=======
+{$ifdef cpu64bit}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef cpu64bit}
+>>>>>>> origin/fixes_2_2
               , A_STD, A_STDX,
               A_LD, A_LDX,
               A_LWA, A_LWAX,
               A_STDCX_,A_LDARX
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif cpu64bitalu}
+=======
+{$endif cpu64bit}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$endif cpu64bit}
+>>>>>>> origin/fixes_2_2
                 :
                 begin
                   case taicpu(p).oper[1]^.typ of

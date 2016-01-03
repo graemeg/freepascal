@@ -29,6 +29,8 @@ Interface
 
 Uses Sockets;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF OS2}
 (* ETC directory location determined by environment variable ETC *)
  {$DEFINE ETC_BY_ENV}
@@ -49,6 +51,10 @@ Uses Sockets;
  {$DEFINE UNIX_ETC}
 {$ENDIF UNIX}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Type
   THostAddr = in_addr;		// historical aliases for these.
   THostAddr6= Tin6_addr;
@@ -57,6 +63,8 @@ Type
 Const
   DNSPort        = 53;
   MaxResolveAddr = 10;
+<<<<<<< HEAD
+<<<<<<< HEAD
   SServicesFile  = 'services'; 
   SHostsFile     = 'hosts';
   SNetworksFile  = 'networks';
@@ -79,6 +87,22 @@ Const
 var
   EtcPath: string;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  SResolveFile   = '/etc/resolv.conf';
+  SServicesFile  = '/etc/services'; 
+  SHostsFile     = '/etc/hosts';
+  SNetworksFile  = '/etc/networks';
+  SProtocolFile  = '/etc/protocols';
+
+  MaxRecursion = 10;
+  MaxIP4Mapped = 10;
+  
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Type
   TDNSServerArray = Array of THostAddr;
   TServiceEntry = record
@@ -333,9 +357,21 @@ Var
 begin
   Result:=Nil;
   Assign(F,FileName);
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$I-}
   Reset(F);
   {$pop};
+=======
+  {$I-}
+  Reset(F);
+  {$I+};
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$I-}
+  Reset(F);
+  {$I+};
+>>>>>>> origin/fixes_2_2
   If (IOResult<>0) then
     Exit;
   Try  
@@ -420,12 +456,28 @@ Var
 begin
   If CheckHostsFileAge then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     F:=FileAge (EtcPath + SHostsFile);
+=======
+    F:=FileAge(SHostsFile);
+>>>>>>> graemeg/fixes_2_2
+=======
+    F:=FileAge(SHostsFile);
+>>>>>>> origin/fixes_2_2
     If HostsFileAge<F then
       begin
       // Rescan.
       FreeHostsList(HostsList);
+<<<<<<< HEAD
+<<<<<<< HEAD
       HostsList:=ProcessHosts (EtcPath + SHostsFile);
+=======
+      HostsList:=ProcessHosts(SHostsFile);
+>>>>>>> graemeg/fixes_2_2
+=======
+      HostsList:=ProcessHosts(SHostsFile);
+>>>>>>> origin/fixes_2_2
       HostsFileAge:=F;
       end;
     end;  
@@ -495,10 +547,23 @@ begin
   Result:=0;
   ResolveFileName:=Fn;
   ResolveFileAge:=FileAge(FN);
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$i-}
   Assign(R,FN);
   Reset(R);
   {$pop}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  {$i-}
+  Assign(R,FN);
+  Reset(R);
+  {$i+}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   If (IOResult<>0) then 
     exit;
   Try  
@@ -536,17 +601,35 @@ Procedure CheckResolveFile;
 
 Var
   F : Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
   N : String;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 begin
   If CheckResolveFileAge then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     N:=ResolveFileName;
     if (N='') then
       N:=EtcPath + SResolveFile;
     F:=FileAge(N);
     If ResolveFileAge<F then
       GetDnsServers(N);
+=======
+    F:=FileAge(ResolveFileName);
+    If ResolveFileAge<F then
+      GetDnsServers(ResolveFileName);
+>>>>>>> graemeg/fixes_2_2
+=======
+    F:=FileAge(ResolveFileName);
+    If ResolveFileAge<F then
+      GetDnsServers(ResolveFileName);
+>>>>>>> origin/fixes_2_2
     end;  
 end;
 
@@ -758,16 +841,38 @@ begin
     nscount:=0;
     arcount:=0;
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   Sock:=FpSocket(PF_INET,SOCK_DGRAM,0);
+=======
+  Sock:=Socket(PF_INET,SOCK_DGRAM,0);
+>>>>>>> graemeg/fixes_2_2
+=======
+  Sock:=Socket(PF_INET,SOCK_DGRAM,0);
+>>>>>>> origin/fixes_2_2
   If Sock=-1 then 
     exit;
   With SA do
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     sin_family:=AF_INET;
     sin_port:=htons(DNSport);
     sin_addr.s_addr:=cardinal(DNSServers[Resolver]); // dnsservers already in net order
     end;
   fpsendto(sock,@qry,qrylen+12,0,@SA,SizeOf(SA));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    family:=AF_INET;
+    port:=htons(DNSport);
+    addr:=cardinal(DNSServers[Resolver]); // dnsservers already in net order
+    end;
+  sendto(sock,qry,qrylen+12,0,SA,SizeOf(SA));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   // Wait for answer.
   RTO:=TimeOutS*1000+TimeOutMS;
   fpFD_ZERO(ReadFDS);
@@ -778,7 +883,15 @@ begin
     exit;
     end;
   AL:=SizeOf(SA);
+<<<<<<< HEAD
+<<<<<<< HEAD
   L:=fprecvfrom(Sock,@ans,SizeOf(Ans),0,@SA,@AL);
+=======
+  L:=recvfrom(Sock,ans,SizeOf(Ans),0,SA,AL);
+>>>>>>> graemeg/fixes_2_2
+=======
+  L:=recvfrom(Sock,ans,SizeOf(Ans),0,SA,AL);
+>>>>>>> origin/fixes_2_2
   fpclose(Sock);
   // Check lenght answer and fields in header data.
   If (L<12) or not CheckAnswer(Qry,Ans) Then
@@ -1201,12 +1314,27 @@ Var
   
 begin
   Result:=False;
+<<<<<<< HEAD
+<<<<<<< HEAD
   If FileExists (EtcPath + SProtocolFile) then
     begin
     Assign (F, EtcPath + SProtocolFile);
     {$push}{$i-}
     Reset(F);
     {$pop}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  If FileExists(SProtocolFile) then
+    begin
+    Assign(F,SProtocolFile);
+    {$i-}
+    Reset(F);
+    {$i+}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     If (IOResult=0) then
       begin
       While Not Result and GetNextProtoEntry(F,HE) do
@@ -1303,12 +1431,27 @@ Var
   
 begin
   Result:=False;
+<<<<<<< HEAD
+<<<<<<< HEAD
   If FileExists (EtcPath + SNetworksFile) then
     begin
     Assign (F, EtcPath + SNetworksFile);
     {$push}{$i-}
     Reset(F);
     {$pop}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  If FileExists(SNetworksFile) then
+    begin
+    Assign(F,SNetworksFile);
+    {$i-}
+    Reset(F);
+    {$i+}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     If (IOResult=0) then
       begin
       While Not Result and GetNextNetworkEntry(F,NE) do
@@ -1396,12 +1539,27 @@ Var
   
 begin
   Result:=False;
+<<<<<<< HEAD
+<<<<<<< HEAD
   If FileExists (EtcPath + SServicesFile) then
     begin
     Assign (F, EtcPath + SServicesFile);
     {$push}{$i-}
     Reset(F);
     {$pop}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  If FileExists(SServicesFile) then
+    begin
+    Assign(F,SServicesFile);
+    {$i-}
+    Reset(F);
+    {$i+}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     If (IOResult=0) then
       begin
       While Not Result and GetNextServiceEntry(F,TE) do
@@ -1450,6 +1608,8 @@ begin
   TimeOutS :=5;
   TimeOutMS:=0;
   CheckHostsFileAge:=False;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF UNIX_ETC}
   EtcPath := '/etc/';
 {$ELSE UNIX_ETC}
@@ -1472,6 +1632,18 @@ begin
     GetDNsservers(EtcPath + SResolveFile2)
 {$ENDIF OS2}
                                          ;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  If FileExists(SHostsFile) then
+    HostsList:=ProcessHosts(SHostsFile);
+  CheckResolveFileAge:=False;
+  If FileExists(SResolveFile) then
+    GetDNsservers(SResolveFile);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure DoneResolver;

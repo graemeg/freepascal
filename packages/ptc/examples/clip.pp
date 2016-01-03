@@ -3,94 +3,107 @@ Ported to FPC by Nikolay Nikolov (nickysn@users.sourceforge.net)
 }
 
 {
- Clip example for OpenPTC 1.0 C++ implementation
+ Clip example for OpenPTC 1.0 C++ Implementation
  Copyright (c) Glenn Fiedler (ptc@gaffer.org)
  This source code is in the public domain
 }
 
-program ClipExample;
+Program ClipExample;
 
 {$MODE objfpc}
 
-uses
+Uses
   ptc;
 
-var
-  console: IPTCConsole;
-  surface: IPTCSurface;
-  format: IPTCFormat;
-  x1, y1, x2, y2: Integer;
-  pixels: PUint32;
-  width, height: Integer;
-  i: Integer;
-  x, y, r, g, b: Integer;
-begin
-  try
-    try
+Var
+  console : TPTCConsole;
+  surface : TPTCSurface;
+  format : TPTCFormat;
+  area : TPTCArea;
+  x1, y1, x2, y2 : Integer;
+  pixels : Pint32;
+  width, height : Integer;
+  i : Integer;
+  x, y, r, g, b : Integer;
+
+Begin
+  format := Nil;
+  surface := Nil;
+  console := Nil;
+  Try
+    Try
       { create console }
-      console := TPTCConsoleFactory.CreateNew;
+      console := TPTCConsole.Create;
 
       { create format }
-      format := TPTCFormatFactory.CreateNew(32, $00FF0000, $0000FF00, $000000FF);
+      format := TPTCFormat.Create(32, $00FF0000, $0000FF00, $000000FF);
 
       { open the console }
       console.open('Clip example', format);
 
       { create surface matching console dimensions }
-      surface := TPTCSurfaceFactory.CreateNew(console.width, console.height, format);
+      surface := TPTCSurface.Create(console.width, console.height, format);
 
       { calculate clip coordinates }
-      x1 := console.width div 4;
-      y1 := console.height div 4;
+      x1 := console.width Div 4;
+      y1 := console.height Div 4;
       x2 := console.width - x1;
       y2 := console.height - y1;
 
-      { set clip area }
-      console.clip(TPTCAreaFactory.CreateNew(x1, y1, x2, y2));
+      { setup clip area }
+      area := TPTCArea.Create(x1, y1, x2, y2);
+      Try
+        { set clip area }
+        console.clip(area);
+      Finally
+        area.Free;
+      End;
 
       { loop until a key is pressed }
-      while not console.KeyPressed do
-      begin
+      While Not console.KeyPressed Do
+      Begin
         { lock surface }
         pixels := surface.lock;
-        try
+        Try
           { get surface dimensions }
           width := surface.width;
           height := surface.height;
 
           { draw random pixels }
-          for i := 1 to 100 do
-          begin
+          For i := 1 To 100 Do
+          Begin
             { get random position }
-            x := Random(width);
-            y := Random(height);
+	    x := Random(width);
+	    y := Random(height);
 
             { get random color }
-            r := Random(256);
-            g := Random(256);
-            b := Random(256);
+	    r := Random(256);
+	    g := Random(256);
+	    b := Random(256);
 
             { draw color [r,g,b] at position [x,y] }
-            pixels[x + y * width] := (r shl 16) + (g shl 8) + b;
-          end;
-        finally
+	    pixels[x + y * width] := (r Shl 16) + (g Shl 8) + b;
+          End;
+	Finally
           { unlock surface }
           surface.unlock;
-        end;
+	End;
 
         { copy to console }
         surface.copy(console);
 
         { update console }
         console.update;
-      end;
-    finally
-      if Assigned(console) then
-        console.close;
-    end;
-  except
-    on error: TPTCError do
+      End;
+    Finally
+      console.close;
+      console.Free;
+      surface.Free;
+      format.Free;
+    End;
+  Except
+    On error : TPTCError Do
       { report error }
       error.report;
-  end;
-end.
+  End;
+End.

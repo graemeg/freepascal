@@ -1,0 +1,37 @@
+#
+#   Makefile.fpc for FPVectorial Library
+#
+
+[package]
+name=fpvectorial
+version=2.5.1
+
+[require]
+libc=n
+packages=fcl-image
+
+[target]
+units=fpvectbuildunit
+exampledirs=
+implicitunits= avisocncgcodereader avisocncgcodewriter avisozlib fpvectorial \
+	       fpvtocanvas  pdfvectorialreader pdfvrlexico pdfvrsemantico \
+	       pdfvrsintatico cdrvectorialreader svgvectorialwriter
+
+[compiler]
+includedir=src
+sourcedir=src
+
+[install]
+buildunit=fpvectbuildunit
+fpcpackage=y
+
+[shared]
+build=n
+
+[default]
+fpcdir=../..
+
+[rules]
+.NOTPARALLEL:
+
+

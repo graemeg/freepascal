@@ -1,6 +1,22 @@
 {
     This file is part of the Free Component Library
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (c) 2010-2014 by the Free Pascal development team
+=======
+    Copyright (c) 2010 by the Free Pascal development team
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (c) 2010 by the Free Pascal development team
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (c) 2010 by the Free Pascal development team
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (c) 2010 by the Free Pascal development team
+>>>>>>> origin/cpstrnew
 
     SQL source lexical scanner test suite
 
@@ -197,8 +213,28 @@ type
     Procedure TestStarting;
     procedure TestString;
     procedure TestSubtype;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure TestSum;
     procedure TestSuspend;
+=======
+    Procedure TestSum;
+    Procedure TestSuspend;
+>>>>>>> graemeg/cpstrnew
+=======
+    Procedure TestSum;
+    Procedure TestSuspend;
+>>>>>>> graemeg/cpstrnew
+=======
+    Procedure TestSum;
+    Procedure TestSuspend;
+>>>>>>> graemeg/cpstrnew
+=======
+    Procedure TestSum;
+    Procedure TestSuspend;
+>>>>>>> origin/cpstrnew
     Procedure TestTable;
     Procedure TestThen;
     Procedure TestTime;
@@ -244,8 +280,20 @@ type
     procedure TestFloatLiteral;
     procedure TestStringLiteral1;
     procedure TestStringLiteral2;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure TestSymbolLiteral1;
     procedure TestSymbolLiteral2;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     procedure TestStringError;
     procedure TestFloatError;
     Procedure TestOptionsoDoubleQuoteStringLiteral;
@@ -293,7 +341,23 @@ Var
 begin
   CreateScanner(ASource);
   J:=Scanner.FetchToken;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   EN2:=GetEnumName(TypeInfo(TSQLToken),Ord(AToken));
+=======
+  EN2:=GetEnumName(TypeINfo(TSQLToken),Ord(AToken));
+>>>>>>> graemeg/cpstrnew
+=======
+  EN2:=GetEnumName(TypeINfo(TSQLToken),Ord(AToken));
+>>>>>>> graemeg/cpstrnew
+=======
+  EN2:=GetEnumName(TypeINfo(TSQLToken),Ord(AToken));
+>>>>>>> graemeg/cpstrnew
+=======
+  EN2:=GetEnumName(TypeINfo(TSQLToken),Ord(AToken));
+>>>>>>> origin/cpstrnew
   AssertEquals(Format('Source %s should result in %s.',[ASource,EN2]),AToken,J);
 end;
 
@@ -364,7 +428,23 @@ begin
   FLineReader:=TStreamLineReader.Create(Fstream);
   FScanner:=TSQLScanner.Create(FLineReader);
   FScanner.Options:=AOptions;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result:=FScanner;
+=======
+  Result:=FSCanner;
+>>>>>>> graemeg/cpstrnew
+=======
+  Result:=FSCanner;
+>>>>>>> graemeg/cpstrnew
+=======
+  Result:=FSCanner;
+>>>>>>> graemeg/cpstrnew
+=======
+  Result:=FSCanner;
+>>>>>>> origin/cpstrnew
 end;
 
 procedure TTestSQLScanner.FreeScanner;
@@ -646,6 +726,10 @@ begin
   CheckToken(tsqlSuspend,'Suspend');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TTestSQLScanner.TestSymbolLiteral1;
 begin
   CheckToken(tsqlSymbolString,'%');
@@ -656,6 +740,14 @@ begin
   CheckToken(tsqlSymbolString,'%^');
 end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 procedure TTestSQLScanner.TestStarting;
 begin
   CheckToken(tsqlStarting,'starting');
@@ -1404,8 +1496,28 @@ end;
 
 procedure TTestSQLScanner.TestIdentifier5;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   // $0 should not be parsed as an identifier but as a symbol literal
   CheckToken(tsqlSymbolString,'$0');
+=======
+  FErrorSource:='$0';
+  AssertException('Identifier cannot start with _',ESQLScannerError,@TestErrorSource);
+>>>>>>> graemeg/cpstrnew
+=======
+  FErrorSource:='$0';
+  AssertException('Identifier cannot start with _',ESQLScannerError,@TestErrorSource);
+>>>>>>> graemeg/cpstrnew
+=======
+  FErrorSource:='$0';
+  AssertException('Identifier cannot start with _',ESQLScannerError,@TestErrorSource);
+>>>>>>> graemeg/cpstrnew
+=======
+  FErrorSource:='$0';
+  AssertException('Identifier cannot start with _',ESQLScannerError,@TestErrorSource);
+>>>>>>> origin/cpstrnew
 end;
 
 procedure TTestSQLScanner.TestIdentifierDotIdentifier;

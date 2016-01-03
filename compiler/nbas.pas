@@ -78,7 +78,15 @@ interface
 
        tstatementnode = class(tbinarynode)
           constructor create(l,r : tnode);virtual;
+<<<<<<< HEAD
+<<<<<<< HEAD
           function simplify(forinline : boolean) : tnode; override;
+=======
+          function simplify : tnode; override;
+>>>>>>> graemeg/fixes_2_2
+=======
+          function simplify : tnode; override;
+>>>>>>> origin/fixes_2_2
           function pass_1 : tnode;override;
           function pass_typecheck:tnode;override;
           procedure printnodetree(var t:text);override;
@@ -90,7 +98,15 @@ interface
        tblocknode = class(tunarynode)
           constructor create(l : tnode);virtual;
           destructor destroy; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
           function simplify(forinline : boolean) : tnode; override;
+=======
+          function simplify : tnode; override;
+>>>>>>> graemeg/fixes_2_2
+=======
+          function simplify : tnode; override;
+>>>>>>> origin/fixes_2_2
           function pass_1 : tnode;override;
           function pass_typecheck:tnode;override;
 {$ifdef state_tracking}
@@ -102,6 +118,12 @@ interface
 
        ttempcreatenode = class;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        ttempinfoflag = (
          { temp can be kept in a register as far as the original creator is
           concerned }
@@ -156,12 +178,43 @@ interface
            managed types like ansistrings where temp. refs are pointers to the actual value }
          ti_const
          );
+=======
+       ttempinfoflag = (ti_may_be_in_reg,ti_valid,ti_nextref_set_hookoncopy_nil,
+                        ti_addr_taken,ti_executeinitialisation);
+>>>>>>> graemeg/cpstrnew
+=======
+       ttempinfoflag = (ti_may_be_in_reg,ti_valid,ti_nextref_set_hookoncopy_nil,
+                        ti_addr_taken,ti_executeinitialisation);
+>>>>>>> graemeg/cpstrnew
+=======
+       ttempinfoflag = (ti_may_be_in_reg,ti_valid,ti_nextref_set_hookoncopy_nil,
+                        ti_addr_taken,ti_executeinitialisation);
+>>>>>>> graemeg/cpstrnew
+=======
+       ttempinfoflag = (ti_may_be_in_reg,ti_valid,ti_nextref_set_hookoncopy_nil,
+                        ti_addr_taken,ti_executeinitialisation);
+>>>>>>> origin/cpstrnew
        ttempinfoflags = set of ttempinfoflag;
 
      const
        tempinfostoreflags = [ti_may_be_in_reg,ti_addr_taken,ti_reference,ti_readonly];
 
      type
+=======
+=======
+>>>>>>> origin/fixes_2_2
+       ttempinfoflag = (ti_may_be_in_reg,ti_valid,ti_nextref_set_hookoncopy_nil,ti_is_inlined_result,
+        ti_addr_taken);
+       ttempinfoflags = set of ttempinfoflag;
+
+const
+       tempinfostoreflags = [ti_may_be_in_reg,ti_is_inlined_result,ti_addr_taken];
+
+type
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
        { to allow access to the location by temp references even after the temp has }
        { already been disposed and to make sure the coherency between temps and     }
        { temp references is kept after a getcopy                                    }
@@ -177,7 +230,13 @@ interface
          withnode                   : tnode;
          location                   : tlocation;
          flags                      : ttempinfoflags;
+<<<<<<< HEAD
+<<<<<<< HEAD
          tempinitcode               : tnode;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
        end;
 
        { a node which will create a (non)persistent temp of a given type with a given  }
@@ -193,10 +252,33 @@ interface
           { where the node that receives the temp becomes responsible for       }
           { freeing it. In this last case, you must use only one reference      }
           { to it and *not* generate a ttempdeletenode                          }
+<<<<<<< HEAD
           constructor create(_typedef: tdef; _size: tcgint; _temptype: ttemptype;allowreg:boolean); virtual;
           constructor create_withnode(_typedef: tdef; _size: tcgint; _temptype: ttemptype; allowreg:boolean; withnode: tnode); virtual;
           constructor create_value(_typedef:tdef; _size: tcgint; _temptype: ttemptype;allowreg:boolean; templvalue: tnode);
           constructor create_reference(_typedef:tdef; _size: tcgint; _temptype: ttemptype;allowreg:boolean; templvalue: tnode; readonly: boolean);
+=======
+          constructor create(_typedef: tdef; _size: aint; _temptype: ttemptype;allowreg:boolean); virtual;
+          constructor create_withnode(_typedef: tdef; _size: aint; _temptype: ttemptype; allowreg:boolean; withnode: tnode); virtual;
+<<<<<<< HEAD
+<<<<<<< HEAD
+          constructor create_value(_typedef:tdef; _size: aint; _temptype: ttemptype;allowreg:boolean; templvalue: tnode);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+          constructor create_inlined_result(_typedef: tdef; _size: aint; _temptype: ttemptype; allowreg:boolean); virtual;
+>>>>>>> graemeg/fixes_2_2
+=======
+          constructor create_inlined_result(_typedef: tdef; _size: aint; _temptype: ttemptype; allowreg:boolean); virtual;
+>>>>>>> origin/fixes_2_2
           constructor ppuload(t:tnodetype;ppufile:tcompilerppufile);override;
           procedure ppuwrite(ppufile:tcompilerppufile);override;
           procedure buildderefimpl;override;
@@ -257,7 +339,19 @@ interface
     var
        cnothingnode : tnothingnodeclass = tnothingnode;
        cerrornode : terrornodeclass = terrornode;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        cspecializenode : tspecializenodeclass = tspecializenode;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
        casmnode : tasmnodeclass = tasmnode;
        cstatementnode : tstatementnodeclass = tstatementnode;
        cblocknode : tblocknodeclass = tblocknode;
@@ -445,7 +539,15 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     function tstatementnode.simplify(forinline: boolean) : tnode;
+=======
+    function tstatementnode.simplify : tnode;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function tstatementnode.simplify : tnode;
+>>>>>>> origin/fixes_2_2
       begin
         result:=nil;
         { these "optimizations" are only to make it more easy to recognise    }
@@ -481,6 +583,8 @@ implementation
             exit;
           end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
         { if the current statement contains a block with one statement,
           replace the current statement with that block's statement
           (but only if the block does not have nf_block_with_exit set
@@ -492,6 +596,21 @@ implementation
         if (left.nodetype = blockn) and
            ((left.flags*[nf_block_with_exit,nf_usercode_entry]=[]) or
             ((left.flags*[nf_block_with_exit,nf_usercode_entry]=[nf_block_with_exit]) and no_exit_statement_in_block(left))) and
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        { if the current statement contains a block with one statement, }
+        { replace the current statement with that block's statement     }
+        { (but only if the block does not have nf_block_with_exit set   }
+        {  or has no exit statement, because otherwise it needs an own  }
+        {  exit label, see tests/test/tinline10)                        }
+        if (left.nodetype = blockn) and
+           (not(nf_block_with_exit in left.flags) or
+            no_exit_statement_in_block(left)) and
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            assigned(tblocknode(left).left) and
            not assigned(tstatementnode(tblocknode(left).left).right) then
           begin
@@ -511,6 +630,17 @@ implementation
 
          { left is the statement itself calln assignn or a complex one }
          typecheckpass(left);
+<<<<<<< HEAD
+=======
+         if (not (cs_extsyntax in current_settings.moduleswitches)) and
+            assigned(left.resultdef) and
+            not((left.nodetype=calln) and
+                { don't complain when the value is used. And also not for constructors }
+                ((cnf_return_value_used in tcallnode(left).callnodeflags) or
+                 (tcallnode(left).procdefinition.proctypeoption=potype_constructor))) and
+            not(is_void(left.resultdef)) then
+           CGMessage(parser_e_illegal_expression);
+>>>>>>> graemeg/fixes_2_2
          if codegenerror then
            exit;
 
@@ -571,7 +701,15 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     function tblocknode.simplify(forinline : boolean): tnode;
+=======
+    function tblocknode.simplify: tnode;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function tblocknode.simplify: tnode;
+>>>>>>> origin/fixes_2_2
       begin
         result := nil;
         { Warning: never replace a blocknode with another node type,      }
@@ -579,6 +717,8 @@ implementation
         {  main program body, and those nodes should always be blocknodes }
         {  since that's what the compiler expects elsewhere.              }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
         if assigned(left) and
            not assigned(tstatementnode(left).right) then
           begin
@@ -603,6 +743,25 @@ implementation
                   exit;
                 end;
             end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        { if the current block contains only one statement, and   }
+        { this one statement only contains another block, replace }
+        { this block with that other block.                       }
+        if assigned(left) and
+           not assigned(tstatementnode(left).right) and
+           (tstatementnode(left).left.nodetype = blockn) then
+          begin
+            result:=tstatementnode(left).left;
+            tstatementnode(left).left:=nil;
+            { make sure the nf_block_with_exit flag is safeguarded }
+            result.flags:=result.flags+(flags * [nf_block_with_exit]);
+            exit;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           end;
       end;
 
@@ -838,19 +997,63 @@ implementation
            { size of register operations must be known }
            (def_cgsize(_typedef)<>OS_NO) and
            { no init/final needed }
+<<<<<<< HEAD
+<<<<<<< HEAD
            not is_managed_type(_typedef) then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+           not (_typedef.needs_inittable) and
+           ((_typedef.typ <> pointerdef) or
+            (is_object(tpointerdef(_typedef).pointeddef) or
+             not tpointerdef(_typedef).pointeddef.needs_inittable)) then
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           include(tempinfo^.flags,ti_may_be_in_reg);
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     constructor ttempcreatenode.create_withnode(_typedef: tdef; _size: tcgint; _temptype: ttemptype; allowreg:boolean; withnode: tnode);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    constructor ttempcreatenode.create_withnode(_typedef: tdef; _size: aint; _temptype: ttemptype; allowreg:boolean; withnode: tnode);
+>>>>>>> graemeg/cpstrnew
       begin
         self.create(_typedef,_size,_temptype,allowreg);
         tempinfo^.withnode:=withnode.getcopy;
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     constructor ttempcreatenode.create_value(_typedef:tdef; _size: tcgint; _temptype: ttemptype;allowreg:boolean; templvalue: tnode);
+=======
+    constructor ttempcreatenode.create_value(_typedef:tdef; _size: aint; _temptype: ttemptype;allowreg:boolean; templvalue: tnode);
+>>>>>>> graemeg/cpstrnew
+=======
+    constructor ttempcreatenode.create_value(_typedef:tdef; _size: aint; _temptype: ttemptype;allowreg:boolean; templvalue: tnode);
+>>>>>>> graemeg/cpstrnew
+=======
+    constructor ttempcreatenode.create_value(_typedef:tdef; _size: aint; _temptype: ttemptype;allowreg:boolean; templvalue: tnode);
+>>>>>>> graemeg/cpstrnew
+=======
+    constructor ttempcreatenode.create_value(_typedef:tdef; _size: aint; _temptype: ttemptype;allowreg:boolean; templvalue: tnode);
+>>>>>>> origin/cpstrnew
       begin
         self.create(_typedef,_size,_temptype,allowreg);
         // store in ppuwrite
@@ -860,6 +1063,10 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      constructor ttempcreatenode.create_reference(_typedef: tdef; _size: tcgint; _temptype: ttemptype; allowreg: boolean; templvalue: tnode; readonly: boolean);
       begin
         // store in ppuwrite
@@ -873,6 +1080,28 @@ implementation
       end;
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    constructor ttempcreatenode.create_inlined_result(_typedef: tdef; _size: aint; _temptype: ttemptype; allowreg:boolean);
+      begin
+        self.create(_typedef,_size,_temptype,allowreg);
+        include(tempinfo^.flags,ti_is_inlined_result);
+      end;
+
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     function ttempcreatenode.dogetcopy: tnode;
       var
         n: ttempcreatenode;
@@ -886,6 +1115,34 @@ implementation
         n.tempinfo^.typedef := tempinfo^.typedef;
         n.tempinfo^.temptype := tempinfo^.temptype;
         n.tempinfo^.flags := tempinfo^.flags * tempinfostoreflags;
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+        if assigned(tempinfo^.tempinitcode) then
+          n.tempinfo^.tempinitcode := tempinfo^.tempinitcode.getcopy
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        if assigned(tempinfo^.withnode) then
+          n.tempinfo^.withnode := tempinfo^.withnode.getcopy
+>>>>>>> graemeg/fixes_2_2
+        else
+          n.tempinfo^.tempinitcode := nil;
+
+        if assigned(tempinfo^.tempinitcode) then
+          n.tempinfo^.tempinitcode := tempinfo^.tempinitcode.getcopy
+        else
+          n.tempinfo^.tempinitcode := nil;
+
+        if assigned(tempinfo^.tempinitcode) then
+          n.tempinfo^.tempinitcode := tempinfo^.tempinitcode.getcopy
+        else
+          n.tempinfo^.tempinitcode := nil;
+
+        if assigned(tempinfo^.tempinitcode) then
+          n.tempinfo^.tempinitcode := tempinfo^.tempinitcode.getcopy
+        else
+          n.tempinfo^.tempinitcode := nil;
 
         { when the tempinfo has already a hookoncopy then it is not
           reset by a tempdeletenode }
@@ -896,6 +1153,8 @@ implementation
         { to the copy of the temp                                          }
         tempinfo^.hookoncopy := n.tempinfo;
         exclude(tempinfo^.flags,ti_nextref_set_hookoncopy_nil);
+<<<<<<< HEAD
+<<<<<<< HEAD
 
         if assigned(tempinfo^.withnode) then
           n.tempinfo^.withnode := tempinfo^.withnode.getcopy
@@ -906,6 +1165,10 @@ implementation
           n.tempinfo^.tempinitcode := tempinfo^.tempinitcode.getcopy
         else
           n.tempinfo^.tempinitcode := nil;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
         result := n;
       end;
@@ -979,7 +1242,19 @@ implementation
           firstpass(tempinfo^.withnode);
         if assigned(tempinfo^.tempinitcode) then
           firstpass(tempinfo^.tempinitcode);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         inc(current_procinfo.estimatedtempsize,size);;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -1001,7 +1276,13 @@ implementation
           inherited docompare(p) and
           (ttempcreatenode(p).size = size) and
           (ttempcreatenode(p).tempinfo^.flags*tempinfostoreflags=tempinfo^.flags*tempinfostoreflags) and
+<<<<<<< HEAD
+<<<<<<< HEAD
           equal_defs(ttempcreatenode(p).tempinfo^.typedef,tempinfo^.typedef) and
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           (ttempcreatenode(p).tempinfo^.withnode.isequal(tempinfo^.withnode)) and
           (ttempcreatenode(p).tempinfo^.tempinitcode.isequal(tempinfo^.tempinitcode));
       end;
@@ -1010,10 +1291,30 @@ implementation
     procedure ttempcreatenode.printnodedata(var t:text);
       begin
         inherited printnodedata(t);
+<<<<<<< HEAD
+<<<<<<< HEAD
         writeln(t,printnodeindention,'size = ',size,', temptypedef = ',tempinfo^.typedef.typesymbolprettyname,' = "',
           tempinfo^.typedef.GetTypeName,'", tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         writeln(t,printnodeindention,'tempinit =');
         printnode(t,tempinfo^.tempinitcode);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+        writeln(t,printnodeindention,'size = ',size,', temptypedef = "',tempinfo^.typedef.GetTypeName,'", tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+>>>>>>> graemeg/fixes_2_2
+=======
+        writeln(t,printnodeindention,'size = ',size,', temptypedef = "',tempinfo^.typedef.GetTypeName,'", tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+>>>>>>> origin/fixes_2_2
       end;
 
 {*****************************************************************************
@@ -1155,8 +1456,16 @@ implementation
     procedure ttemprefnode.printnodedata(var t:text);
       begin
         inherited printnodedata(t);
+<<<<<<< HEAD
+<<<<<<< HEAD
         writeln(t,printnodeindention,'temptypedef = ',tempinfo^.typedef.typesymbolprettyname,' = "',
           tempinfo^.typedef.GetTypeName,'", tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+=======
+        writeln(t,printnodeindention,'temptypedef = "',tempinfo^.typedef.GetTypeName,'", tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+>>>>>>> graemeg/fixes_2_2
+=======
+        writeln(t,printnodeindention,'temptypedef = "',tempinfo^.typedef.GetTypeName,'", tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -1268,8 +1577,42 @@ implementation
     procedure ttempdeletenode.printnodedata(var t:text);
       begin
         inherited printnodedata(t);
+<<<<<<< HEAD
+<<<<<<< HEAD
         writeln(t,printnodeindention,'release_to_normal: ',release_to_normal,', temptypedef = ',tempinfo^.typedef.typesymbolprettyname,' = "',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           tempinfo^.typedef.GetTypeName,'", temptype = ',tempinfo^.temptype,', tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+=======
+          tempinfo^.typedef.GetTypeName,'", tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+>>>>>>> graemeg/cpstrnew
+=======
+          tempinfo^.typedef.GetTypeName,'", tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+>>>>>>> graemeg/cpstrnew
+=======
+          tempinfo^.typedef.GetTypeName,'", tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+>>>>>>> graemeg/cpstrnew
+=======
+          tempinfo^.typedef.GetTypeName,'", tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+>>>>>>> origin/cpstrnew
       end;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        writeln(t,printnodeindention,'release_to_normal: ',release_to_normal,', temptypedef = "',tempinfo^.typedef.GetTypeName,'", tempinfo = $',hexstr(ptrint(tempinfo),sizeof(ptrint)*2));
+      end;
+
+begin
+   cnothingnode:=tnothingnode;
+   cerrornode:=terrornode;
+   casmnode:=tasmnode;
+   cstatementnode:=tstatementnode;
+   cblocknode:=tblocknode;
+   ctempcreatenode:=ttempcreatenode;
+   ctemprefnode:=ttemprefnode;
+   ctempdeletenode:=ttempdeletenode;
+>>>>>>> graemeg/fixes_2_2
 end.

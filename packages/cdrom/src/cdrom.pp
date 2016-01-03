@@ -20,23 +20,12 @@ unit cdrom;
 interface
 
 Type
-  // Frames are 1/75th of a second.
-  // To get the seconds of a track divide the frames by 75.
-  // TrackLen: Double; ...
-  // TrackLen := Frames / 75.
   TTocEntry = Record
     min, sec, frame : Integer;
   end;
   PTocEntry = ^TTocEntry;
 
-// Returns the High value to use in a loop. Each entry is the position of the end
-// of a track. For audio cd's the zero'th entry is not audio data. If an audio cd
-// has 10 songs then ReadCDToc will return 10 but there are 11 entries: 0..10.
-// You still need to use the zero'th entry to get the first track length:
-// Track1Length := TOC[1].frames = TOC[0].frames.
 Function ReadCDTOC(Device : String; Var CDTOC : Array of TTocEntry) : Integer;
-
-// Returns the number of devices placed in 'Devices'
 Function GetCDRomDevices(Var Devices : Array of string) : Integer;
 
 Implementation

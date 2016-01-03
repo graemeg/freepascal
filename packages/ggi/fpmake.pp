@@ -14,6 +14,8 @@ begin
 
     P:=AddPackage('ggi');
 {$ifdef ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
@@ -30,6 +32,18 @@ begin
     // have happened since?
 
     P.SourcePath.Add('src');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    P.Directory:='ggi';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+//    P.Dependencies.Add('x11');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     T:=P.Targets.AddUnit('ggi2d.pp');
       with T.Dependencies do
@@ -43,9 +57,15 @@ begin
         end;
     T:=P.Targets.AddUnit('gii.pp');
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ExamplePath.Add('examples');
     P.Targets.AddExampleProgram('ggi1.pp');
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifndef ALLPACKAGES}
     Run;
     end;

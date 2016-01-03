@@ -17,13 +17,45 @@
 program fpcmkcfg;
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   fpmkunit,
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   SysUtils,
   Classes,
 {$ifdef unix}
   baseunix,
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   fpTemplate;
+=======
+  fpTemplate,
+  process;
+>>>>>>> graemeg/cpstrnew
+=======
+  fpTemplate,
+  process;
+>>>>>>> graemeg/cpstrnew
+=======
+  fpTemplate,
+  process;
+>>>>>>> graemeg/cpstrnew
+=======
+  fpTemplate,
+  process;
+>>>>>>> origin/cpstrnew
 
 {
   The inc files must be built from a template with the data2inc
@@ -79,12 +111,36 @@ Resourcestring
   SErrBackupFailed    = 'Error: Backup of file "%s" to "%s" failed.';
   SErrDelBackupFailed = 'Error: Delete of old backup file "%s" failed.';
   SErrCreateDirFailed = 'Error: Could not create the directory for file "%s".';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   SErrDestDirectory   = 'Error: The output file "%s" is a directory.';
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
   SWarnIgnoringFile   = 'Warning: Ignoring non-existent file: ';
   SWarnIgnoringPair   = 'Warning: Ignoring wrong name/value pair: ';
   SWarngccNotFound    = 'Warning: Could not find gcc. Unable to determine the gcclib path.';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   SWarnCouldNotExecute= 'Warning: Could not execute command ''%s''';
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
   SBackupCreated      = 'Saved old "%s" to "%s"';
 
@@ -168,6 +224,10 @@ end;
 
 function GetDefaultGCCDir: string;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   var
     OS: TOS;
     CPU: TCPU;
@@ -217,6 +277,134 @@ begin
        AddConditionalLinkerPath('cpupowerpc64', powerpc64, result);
        end
   end; {case}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+var GccExecutable: string;
+
+  function GetGccExecutable: string;
+  begin
+    if GccExecutable='' then
+      begin
+      GccExecutable := ExeSearch('gcc'+ExeExt,GetEnvironmentVariable('PATH'));
+      if GccExecutable='' then
+        begin
+        Writeln(StdErr,SWarngccNotFound);
+        GccExecutable:='-';
+        end;
+      end;
+    if GccExecutable = '-' then
+      result := ''
+    else
+      result := GccExecutable;
+  end;
+
+  function ExecuteProc(const CommandLine: string; ReadStdErr: boolean) : string;
+
+  const BufSize=2048;
+
+  var S: TProcess;
+      buf: array[0..BufSize-1] of byte;
+      count: integer;
+
+  begin
+    S:=TProcess.Create(Nil);
+    try
+      S.Commandline:=CommandLine;
+      S.Options:=[poUsePipes,poWaitOnExit];
+      S.execute;
+      Count:=s.output.read(buf,BufSize);
+      if (count=0) and ReadStdErr then
+        Count:=s.Stderr.read(buf,BufSize);
+      setlength(result,count);
+      move(buf[0],result[1],count);
+    finally
+      S.Free;
+    end;
+  end;
+
+  function Get4thWord(const AString: string): string;
+  var p: pchar;
+      spacecount: integer;
+      StartWord: pchar;
+  begin
+    if length(AString)>6 then
+      begin
+      p := @AString[1];
+      spacecount:=0;
+      StartWord:=nil;
+      while (not (p^ in [#0,#10,#13])) and ((p^<>' ') or (StartWord=nil)) do
+        begin
+        if p^=' ' then
+          begin
+          inc(spacecount);
+          if spacecount=3 then StartWord:=p+1;
+          end;
+        inc(p);
+        end;
+      if StartWord<>nil then
+        begin
+        SetLength(result,p-StartWord);
+        move(StartWord^,result[1],p-StartWord);
+        end
+      else
+        result := '';
+      end;
+  end;
+
+  function GetGccDirArch(const ACpuType, GCCParams: string) : string;
+  var ExecResult: string;
+      libgccFilename: string;
+      gccDir: string;
+  begin
+    ExecResult:=ExecuteProc(GetGccExecutable+' -v '+GCCParams, True);
+    libgccFilename:=Get4thWord(ExecResult);
+    if libgccFilename='' then
+      libgccFilename:=ExecuteProc(GetGccExecutable+' --print-libgcc-file-name '+GCCParams, False);
+    gccDir := ExtractFileDir(libgccFilename);
+    if gccDir='' then
+      result := ''
+    else if ACpuType = '' then
+      result := '-Fl'+gccDir
+    else
+      result := '#ifdef ' + ACpuType + LineEnding + '-Fl' + gccDir + LineEnding + '#endif';
+  end;
+
+begin
+  result := '';
+  GccExecutable:='';
+  if sametext(BuildOSTarget,'Freebsd') or sametext(BuildOSTarget,'Openbsd') then
+    result := '-Fl/usr/local/lib'
+  else if sametext(BuildOSTarget,'Netbsd') then
+    result := '-Fl/usr/pkg/lib'
+  else if sametext(BuildOSTarget,'Linux') then
+    begin
+    if (BuildTarget = 'i386') or (BuildTarget = 'x86_64') then
+      result := GetGccDirArch('cpui386','-m32') + LineEnding +
+                GetGccDirArch('cpux86_64','-m64')
+    else if (BuildTarget = 'powerpc') or (BuildTarget = 'powerpc64') then
+      result := GetGccDirArch('cpupowerpc','-m32') + LineEnding +
+                GetGccDirArch('cpupowerpc64','-m64')
+    end
+  else if sametext(BuildOSTarget,'Darwin') then
+    result := GetGccDirArch('cpupowerpc','-arch ppc') + LineEnding +
+              GetGccDirArch('cpupowerpc64','-arch ppc64') + LineEnding +
+              GetGccDirArch('cpui386','-arch i386') + LineEnding +
+              GetGccDirArch('cpux86_64','-arch x86_64');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;
 
 
@@ -418,12 +606,24 @@ Var
   I : Integer;
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if (OutputFileName<>'') and
      DirectoryExists(OutputFileName) then
     begin
       Writeln(StdErr,Format(SErrDestDirectory,[OutputFileName]));
       Halt(1);
     end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   If (OutputFileName<>'')
      and FileExists(OutputFileName)
      and not SkipBackup then

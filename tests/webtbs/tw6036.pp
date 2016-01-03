@@ -62,6 +62,8 @@ begin
   writeln('getinterface icorbainterface1 not found');
  end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
  if testclass1.getinterface(icorbainterface2,po1) then begin
   writeln('getinterface icorbainterface2 found');
  end
@@ -69,6 +71,10 @@ begin
   writeln('getinterface icorbainterface2 not found');
  end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  if testclass2.getinterface(icominterface,po1) then begin
   writeln('getinterface icominterface found');
  end

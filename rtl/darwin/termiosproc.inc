@@ -89,7 +89,15 @@ function real_tcsetpgrp(fd: cint; pgrp: pid_t): cint; cdecl; external name 'tcse
 
 Function TCSetPGrp(fd,id:cint):cint;{$ifdef VER2_0}inline;{$endif}
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   TCSetPGrp:=real_tcsetpgrp(fd,id);;
+=======
+  TCSetPGrp:=fpIOCtl(fd,TIOCSPGRP,pointer(ptrint(id)));
+>>>>>>> graemeg/fixes_2_2
+=======
+  TCSetPGrp:=fpIOCtl(fd,TIOCSPGRP,pointer(ptrint(id)));
+>>>>>>> origin/fixes_2_2
 end;
 
 
@@ -123,7 +131,15 @@ function real_tcflush(fd,qsel: cint): cint; cdecl; external name 'tcflush';
 
 Function TCFlush(fd,qsel:cint):cint;  {$ifdef VER2_0}inline;{$endif}
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   TCFlush:=real_tcflush(fd,qsel);
+=======
+  TCFlush:=fpIOCtl(fd,TIOCFLUSH,pointer(ptrint(qsel)));
+>>>>>>> graemeg/fixes_2_2
+=======
+  TCFlush:=fpIOCtl(fd,TIOCFLUSH,pointer(ptrint(qsel)));
+>>>>>>> origin/fixes_2_2
 end;
 
 Function IsATTY (Handle:cint):cint;

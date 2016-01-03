@@ -393,6 +393,7 @@ var Psql : pchar;
 begin
   Psql:=StrAlloc (length(Sql)+1);
   strpcopy(Psql,Sql);
+  Writeln('Testing: ',psql);
   Result := SQLite_Complete(Psql)<>0;
   strdispose(Psql);
 end;

@@ -19,8 +19,14 @@
         .globl  _startlib
         .type   _startlib,@function
 _startlib:
+<<<<<<< HEAD
+<<<<<<< HEAD
         .globl  FPC_SHARED_LIB_START
         .type   FPC_SHARED_LIB_START,@function
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 # This is a normal C function with args (argc,argv,envp)
 FPC_SHARED_LIB_START:
         link.w   %a6,#0
@@ -30,6 +36,35 @@ FPC_SHARED_LIB_START:
         move.l   %d0,operatingsystem_parameter_argv
         move.l   16(%fp),%d0
         move.l   %d0,operatingsystem_parameter_envp
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+FPC_SHARED_LIB_START:
+=======
+        .globl  FPC_LIB_START
+        .type   FPC_LIB_START,@function
+FPC_LIB_START:
+>>>>>>> graemeg/fixes_2_2
+=======
+        .globl  FPC_LIB_START
+        .type   FPC_LIB_START,@function
+FPC_LIB_START:
+>>>>>>> origin/fixes_2_2
+|
+|       The args and envs are not tested yet
+|
+        move.l   (%sp)+, %d0
+        lea      4(%sp,%d0*4),%a0
+        move.l   %a0, U_SYSLINUX_ENVP
+        move.l   %sp,U_SYSLINUX_ARGV
+        move.l   %d0,U_SYSLINUX_ARGC
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
         jsr      PASCALMAIN
         unlk     %a6
         rts
@@ -37,12 +72,46 @@ FPC_SHARED_LIB_START:
 
         .globl  _haltproc
         .type   _haltproc,@function
+<<<<<<< HEAD
 _haltproc:
+=======
+haltproc:
+        .globl  FPC_SHARED_LIB_EXIT
+        .type   FPC_SHARED_LIB_EXIT,@function
+FPC_SHARED_LIB_EXIT:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         moveq.l   #1,%d0
         move.w    operatingsystem_result,%d1
         trap      #0
         bra       _haltproc
 .size _haltproc,.-_haltproc
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        jsr      PASCALMAIN
+        rts
+
+        .globl  _haltproc
+        .type   _haltproc,@function
+haltproc:
+        moveq.l   #1,%d0
+        move.w    U_SYSLINUX_EXITCODE,%d1
+        trap      #0
+        bra       _haltproc
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
         .data
 	.align  4
@@ -50,6 +119,8 @@ _haltproc:
 ___fpc_brk_addr:
         .long   0
 
+<<<<<<< HEAD
+<<<<<<< HEAD
         .bss
         .type   __stkptr,@object
         .size   __stkptr,4
@@ -68,4 +139,26 @@ operatingsystem_parameters:
         .set operatingsystem_parameter_envp,operatingsystem_parameters+0
         .set operatingsystem_parameter_argc,operatingsystem_parameters+4
         .set operatingsystem_parameter_argv,operatingsystem_parameters+8
+=======
+=======
+>>>>>>> origin/fixes_2_2
+|
+| $Log: dllprt0.as,v $
+| Revision 1.1.2.4  2001/08/01 13:26:17  pierre
+|  * syntax adapted to GNU as
+|
+| Revision 1.1.2.3  2001/07/13 15:13:47  pierre
+|  + add and fix some comments
+|
+| Revision 1.1.2.2  2001/07/13 15:04:35  pierre
+|  * correct assembler error
+|
+| Revision 1.1.2.1  2001/07/13 15:03:02  pierre
+|  + New file converted from i386 version
+|
+|
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 

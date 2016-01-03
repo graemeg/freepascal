@@ -1,6 +1,24 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 {
     This file is part of the PTCPas framebuffer library
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2001-2013 Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
     Original C++ version by Christian Nentwich (c.nentwich@cs.ucl.ac.uk)
 
     This library is free software; you can redistribute it and/or
@@ -34,9 +52,25 @@ type
   TX11WindowDisplay = class(TX11Display)
   private
     {eventHandler}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FOpen: Boolean;
     FWindow: TWindow;
     FVisual: PVisual;
+=======
+    FWindow: TWindow;
+>>>>>>> graemeg/cpstrnew
+=======
+    FWindow: TWindow;
+>>>>>>> graemeg/cpstrnew
+=======
+    FWindow: TWindow;
+>>>>>>> graemeg/cpstrnew
+=======
+    FWindow: TWindow;
+>>>>>>> origin/cpstrnew
     FPrimary: TX11Image;
     FDestX, FDestY: Integer;
     FGC: TGC;
@@ -47,7 +81,19 @@ type
     FX11InvisibleCursor: TCursor; { Blank cursor }
     FFullScreen: Boolean; { Keeps a snapshot of the PTC_X11_FULLSCREEN option
                              taken at the time 'open' was called }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FResizable: Boolean;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     FFocus: Boolean;
     FModeSwitcher: TX11Modes;
 
@@ -56,11 +102,31 @@ type
     FPreviousMousePositionSaved: Boolean; { true, if FPreviousMouseX,
            FPreviousMouseY and FPreviousMouseButtonState contain valid values }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FPreviousWidth, FPreviousHeight: Integer;
 
 {$IFDEF ENABLE_X11_EXTENSION_GLX}
     FGLXFBConfig: TX11GLXFBConfig;
 {$ENDIF ENABLE_X11_EXTENSION_GLX}
+=======
+    function NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean; override;
+    function PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent; override;
+>>>>>>> graemeg/cpstrnew
+=======
+    function NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean; override;
+    function PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent; override;
+>>>>>>> graemeg/cpstrnew
+=======
+    function NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean; override;
+    function PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent; override;
+>>>>>>> graemeg/cpstrnew
+=======
+    function NextEvent(var AEvent: TPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean; override;
+    function PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): TPTCEvent; override;
+>>>>>>> origin/cpstrnew
 
     procedure EnterFullScreen;
     procedure LeaveFullScreen;
@@ -70,6 +136,10 @@ type
     procedure HandleEvents;
     procedure Draw;
     function CreateImage(ADisplay: PDisplay; AScreen, AWidth, AHeight: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                          AFormat: IPTCFormat): TX11Image; { Factory method }
     function CreateModeSwitcher: TX11Modes; { Factory method }
     procedure CreateColormap; { Register colour maps }
@@ -77,10 +147,34 @@ type
   protected
     function NextEvent(out AEvent: IPTCEvent; AWait: Boolean; const AEventMask: TPTCEventMask): Boolean; override;
     function PeekEvent(AWait: Boolean; const AEventMask: TPTCEventMask): IPTCEvent; override;
+=======
+                         AFormat: TPTCFormat): TX11Image; { Factory method }
+    function CreateModeSwitcher: TX11Modes; { Factory method }
+    procedure CreateColormap; { Register colour maps }
+>>>>>>> graemeg/cpstrnew
+=======
+                         AFormat: TPTCFormat): TX11Image; { Factory method }
+    function CreateModeSwitcher: TX11Modes; { Factory method }
+    procedure CreateColormap; { Register colour maps }
+>>>>>>> graemeg/cpstrnew
+=======
+                         AFormat: TPTCFormat): TX11Image; { Factory method }
+    function CreateModeSwitcher: TX11Modes; { Factory method }
+    procedure CreateColormap; { Register colour maps }
+>>>>>>> graemeg/cpstrnew
+=======
+                         AFormat: TPTCFormat): TX11Image; { Factory method }
+    function CreateModeSwitcher: TX11Modes; { Factory method }
+    procedure CreateColormap; { Register colour maps }
+>>>>>>> origin/cpstrnew
   public
     constructor Create(ADisplay: PDisplay; AScreen: Integer; const AFlags: TX11Flags); override;
     destructor Destroy; override;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure Open(ATitle: string; AWidth, AHeight: Integer; AFormat: IPTCFormat; const AOpenGLAttributes: IPTCOpenGLAttributes); override;
     procedure Open(AWindow: TWindow; AFormat: IPTCFormat); override;
     procedure Open(AWindow: TWindow; AFormat: IPTCFormat; AX, AY, AWidth, AHeight: Integer); override;
@@ -92,10 +186,41 @@ type
     procedure Unlock; override;
     procedure GetModes(var AModes: TPTCModeList); override;
     procedure Palette(APalette: IPTCPalette); override;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    procedure Open(ATitle: string; AWidth, AHeight: Integer; const AFormat: TPTCFormat); override;
+    procedure Open(AWindow: TWindow; const AFormat: TPTCFormat); override;
+    procedure Open(AWindow: TWindow; const AFormat: TPTCFormat; AX, AY, AWidth, AHeight: Integer); override;
+    procedure Close; override;
+    procedure Update; override;
+    procedure Update(const AArea: TPTCArea); override;
+    function Lock: Pointer; override;
+    procedure Unlock; override;
+    procedure GetModes(var AModes: TPTCModeDynArray); override;
+    procedure Palette(const APalette: TPTCPalette); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     function GetPitch: Integer; override;
     function GetX11Window: TWindow; override;
     function GetX11GC: TGC; virtual;
     function IsFullScreen: Boolean; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function IsOpen: Boolean; override;
     procedure SetCursor(AVisible: Boolean); override;
     procedure SetMouseGrab(AGrabMouse: Boolean); override;
@@ -104,4 +229,79 @@ type
     procedure OpenGL_SetSwapInterval(AInterval: Integer); override;
     function OpenGL_GetSwapInterval: Integer; override;
 {$ENDIF ENABLE_X11_EXTENSION_GLX}
+=======
+    procedure SetCursor(AVisible: Boolean); override;
+    procedure SetMouseGrab(AGrabMouse: Boolean); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure SetCursor(AVisible: Boolean); override;
+    procedure SetMouseGrab(AGrabMouse: Boolean); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure SetCursor(AVisible: Boolean); override;
+    procedure SetMouseGrab(AGrabMouse: Boolean); override;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure SetCursor(AVisible: Boolean); override;
+    procedure SetMouseGrab(AGrabMouse: Boolean); override;
+>>>>>>> origin/cpstrnew
   end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Type
+  TX11WindowDisplay = Class(TX11Display)
+  Private
+    Function NextEvent(Var AEvent : TPTCEvent; AWait : Boolean; Const AEventMask : TPTCEventMask) : Boolean; Override;
+    Function PeekEvent(AWait : Boolean; Const AEventMask : TPTCEventMask) : TPTCEvent; Override;
+
+    Procedure EnterFullScreen;
+    Procedure LeaveFullScreen;
+    Procedure internal_ShowCursor(AVisible : Boolean);
+    Procedure HandleChangeFocus(ANewFocus : Boolean);
+    Procedure HandleEvents;
+    Function CreateImage(ADisplay : PDisplay; AScreen, AWidth, AHeight : Integer;
+                         AFormat : TPTCFormat) : TX11Image; { Factory method }
+    Function CreateModeSwitcher : TX11Modes; { Factory method }
+    Procedure CreateColormap; { Register colour maps }
+    {eventHandler}
+    FWindow : TWindow;
+    FPrimary : TX11Image;
+    FDestX, FDestY : Integer;
+    FGC : TGC;
+    FAtomClose : TAtom; { X Atom for close window button }
+    FCursorVisible : Boolean;
+    FX11InvisibleCursor : TCursor; { Blank cursor }
+    FFullScreen : Boolean; { Keeps a snapshot of the PTC_X11_FULLSCREEN option
+                             taken at the time 'open' was called }
+    FFocus : Boolean;
+    FModeSwitcher : TX11Modes;
+
+    FPreviousMouseButtonState : TPTCMouseButtonState;
+    FPreviousMouseX, FPreviousMouseY : Integer; { for calculating the deltas }
+    FPreviousMousePositionSaved : Boolean; { true, if FPreviousMouseX,
+           FPreviousMouseY and FPreviousMouseButtonState contain valid values }
+  Public
+    Constructor Create(ADisplay : PDisplay; AScreen : Integer; Const AFlags : TX11Flags); Override;
+    Destructor Destroy; Override;
+
+    Procedure Open(ATitle : String; AWidth, AHeight : Integer; Const AFormat : TPTCFormat); Override;
+    Procedure Open(AWindow : TWindow; Const AFormat : TPTCFormat); Override;
+    Procedure Open(AWindow : TWindow; Const AFormat : TPTCFormat; AX, AY, AWidth, AHeight : Integer); Override;
+    Procedure Close; Override;
+    Procedure Update; Override;
+    Procedure Update(Const AArea : TPTCArea); Override;
+    Function Lock : Pointer; Override;
+    Procedure Unlock; Override;
+    Procedure GetModes(Var AModes : TPTCModeDynArray); Override;
+    Procedure Palette(Const APalette : TPTCPalette); Override;
+    Function GetPitch : Integer; Override;
+    Function GetX11Window : TWindow; Override;
+    Function GetX11GC : TGC; Virtual;
+    Function IsFullScreen : Boolean; Override;
+    Procedure SetCursor(AVisible : Boolean); Override;
+  End;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

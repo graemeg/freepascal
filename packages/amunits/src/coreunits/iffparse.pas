@@ -33,7 +33,11 @@
 
     nils.sjoholm@mailbox.swipnet.se Nils Sjoholm
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
 
 unit iffparse;
 
@@ -235,46 +239,46 @@ CONST
 
 VAR IFFParseBase : pLibrary;
 
-FUNCTION AllocIFF : pIFFHandle; syscall IFFParseBase 030;
-FUNCTION AllocLocalItem(typ : LONGINT location 'd0'; id : LONGINT location 'd1'; ident : LONGINT location 'd2'; dataSize : LONGINT location 'd3') : pLocalContextItem; syscall IFFParseBase 186;
-PROCEDURE CloseClipboard(clipHandle : pClipboardHandle location 'a0'); syscall IFFParseBase 252;
-PROCEDURE CloseIFF(iff : pIFFHandle location 'a0'); syscall IFFParseBase 048;
-FUNCTION CollectionChunk(iff : pIFFHandle location 'a0'; typ : LONGINT location 'd0'; id : LONGINT location 'd1') : LONGINT; syscall IFFParseBase 138;
-FUNCTION CollectionChunks(iff : pIFFHandle location 'a0'; const propArray : pLONGINT location 'a1'; numPairs : LONGINT location 'd0') : LONGINT; syscall IFFParseBase 144;
-FUNCTION CurrentChunk(const iff : pIFFHandle location 'a0') : pContextNode; syscall IFFParseBase 174;
-FUNCTION EntryHandler(iff : pIFFHandle location 'a0'; typ : LONGINT location 'd0'; id : LONGINT location 'd1'; position : LONGINT location 'd2'; handler : pHook location 'a1'; obj : POINTER location 'a2') : LONGINT; syscall IFFParseBase 102;
-FUNCTION ExitHandler(iff : pIFFHandle location 'a0'; typ : LONGINT location 'd0'; id : LONGINT location 'd1'; position : LONGINT location 'd2'; handler : pHook location 'a1'; obj : POINTER location 'a2') : LONGINT; syscall IFFParseBase 108;
-FUNCTION FindCollection(const iff : pIFFHandle location 'a0'; typ : LONGINT location 'd0'; id : LONGINT location 'd1') : pCollectionItem; syscall IFFParseBase 162;
-FUNCTION FindLocalItem(const iff : pIFFHandle location 'a0'; typ : LONGINT location 'd0'; id : LONGINT location 'd1'; ident : LONGINT location 'd2') : pLocalContextItem; syscall IFFParseBase 210;
-FUNCTION FindProp(const iff : pIFFHandle location 'a0'; typ : LONGINT location 'd0'; id : LONGINT location 'd1') : pStoredProperty; syscall IFFParseBase 156;
-FUNCTION FindPropContext(const iff : pIFFHandle location 'a0') : pContextNode; syscall IFFParseBase 168;
-PROCEDURE FreeIFF(iff : pIFFHandle location 'a0'); syscall IFFParseBase 054;
-PROCEDURE FreeLocalItem(localItem : pLocalContextItem location 'a0'); syscall IFFParseBase 204;
-FUNCTION GoodID(id : LONGINT location 'd0') : LONGINT; syscall IFFParseBase 258;
-FUNCTION GoodType(typ : LONGINT location 'd0') : LONGINT; syscall IFFParseBase 264;
-FUNCTION IDtoStr(id : LONGINT location 'd0'; buf : pCHAR location 'a0') : pCHAR; syscall IFFParseBase 270;
-PROCEDURE InitIFF(iff : pIFFHandle location 'a0'; flags : LONGINT location 'd0'; const streamHook : pHook location 'a1'); syscall IFFParseBase 228;
-PROCEDURE InitIFFasClip(iff : pIFFHandle location 'a0'); syscall IFFParseBase 240;
-PROCEDURE InitIFFasDOS(iff : pIFFHandle location 'a0'); syscall IFFParseBase 234;
-FUNCTION LocalItemData(const localItem : pLocalContextItem location 'a0') : POINTER; syscall IFFParseBase 192;
-FUNCTION OpenClipboard(unitNumber : LONGINT location 'd0') : pClipboardHandle; syscall IFFParseBase 246;
-FUNCTION OpenIFF(iff : pIFFHandle location 'a0'; rwMode : LONGINT location 'd0') : LONGINT; syscall IFFParseBase 036;
-FUNCTION ParentChunk(const contextNode : pContextNode location 'a0') : pContextNode; syscall IFFParseBase 180;
-FUNCTION ParseIFF(iff : pIFFHandle location 'a0'; control : LONGINT location 'd0') : LONGINT; syscall IFFParseBase 042;
-FUNCTION PopChunk(iff : pIFFHandle location 'a0') : LONGINT; syscall IFFParseBase 090;
-FUNCTION PropChunk(iff : pIFFHandle location 'a0'; typ : LONGINT location 'd0'; id : LONGINT location 'd1') : LONGINT; syscall IFFParseBase 114;
-FUNCTION PropChunks(iff : pIFFHandle location 'a0'; const propArray : pLONGINT location 'a1'; numPairs : LONGINT location 'd0') : LONGINT; syscall IFFParseBase 120;
-FUNCTION PushChunk(iff : pIFFHandle location 'a0'; typ : LONGINT location 'd0'; id : LONGINT location 'd1'; size : LONGINT location 'd2') : LONGINT; syscall IFFParseBase 084;
-FUNCTION ReadChunkBytes(iff : pIFFHandle location 'a0'; buf : POINTER location 'a1'; numBytes : LONGINT location 'd0') : LONGINT; syscall IFFParseBase 060;
-FUNCTION ReadChunkRecords(iff : pIFFHandle location 'a0'; buf : POINTER location 'a1'; bytesPerRecord : LONGINT location 'd0'; numRecords : LONGINT location 'd1') : LONGINT; syscall IFFParseBase 072;
-PROCEDURE SetLocalItemPurge(localItem : pLocalContextItem location 'a0'; const purgeHook : pHook location 'a1'); syscall IFFParseBase 198;
-FUNCTION StopChunk(iff : pIFFHandle location 'a0'; typ : LONGINT location 'd0'; id : LONGINT location 'd1') : LONGINT; syscall IFFParseBase 126;
-FUNCTION StopChunks(iff : pIFFHandle location 'a0'; const propArray : pLONGINT location 'a1'; numPairs : LONGINT location 'd0') : LONGINT; syscall IFFParseBase 132;
-FUNCTION StopOnExit(iff : pIFFHandle location 'a0'; typ : LONGINT location 'd0'; id : LONGINT location 'd1') : LONGINT; syscall IFFParseBase 150;
-PROCEDURE StoreItemInContext(iff : pIFFHandle location 'a0'; localItem : pLocalContextItem location 'a1'; contextNode : pContextNode location 'a2'); syscall IFFParseBase 222;
-FUNCTION StoreLocalItem(iff : pIFFHandle location 'a0'; localItem : pLocalContextItem location 'a1'; position : LONGINT location 'd0') : LONGINT; syscall IFFParseBase 216;
-FUNCTION WriteChunkBytes(iff : pIFFHandle location 'a0'; const buf : POINTER location 'a1'; numBytes : LONGINT location 'd0') : LONGINT; syscall IFFParseBase 066;
-FUNCTION WriteChunkRecords(iff : pIFFHandle location 'a0'; const buf : POINTER location 'a1'; bytesPerRecord : LONGINT location 'd0'; numRecords : LONGINT location 'd1') : LONGINT; syscall IFFParseBase 078;
+FUNCTION AllocIFF : pIFFHandle;
+FUNCTION AllocLocalItem(typ : LONGINT; id : LONGINT; ident : LONGINT; dataSize : LONGINT) : pLocalContextItem;
+PROCEDURE CloseClipboard(clipHandle : pClipboardHandle);
+PROCEDURE CloseIFF(iff : pIFFHandle);
+FUNCTION CollectionChunk(iff : pIFFHandle; typ : LONGINT; id : LONGINT) : LONGINT;
+FUNCTION CollectionChunks(iff : pIFFHandle;const propArray : pLONGINT; numPairs : LONGINT) : LONGINT;
+FUNCTION CurrentChunk(const iff : pIFFHandle) : pContextNode;
+FUNCTION EntryHandler(iff : pIFFHandle; typ : LONGINT; id : LONGINT; position : LONGINT; handler : pHook; obj : POINTER) : LONGINT;
+FUNCTION ExitHandler(iff : pIFFHandle; typ : LONGINT; id : LONGINT; position : LONGINT; handler : pHook; obj : POINTER) : LONGINT;
+FUNCTION FindCollection(const iff : pIFFHandle; typ : LONGINT; id : LONGINT) : pCollectionItem;
+FUNCTION FindLocalItem(const iff : pIFFHandle; typ : LONGINT; id : LONGINT; ident : LONGINT) : pLocalContextItem;
+FUNCTION FindProp(const iff : pIFFHandle; typ : LONGINT; id : LONGINT) : pStoredProperty;
+FUNCTION FindPropContext(const iff : pIFFHandle) : pContextNode;
+PROCEDURE FreeIFF(iff : pIFFHandle);
+PROCEDURE FreeLocalItem(localItem : pLocalContextItem);
+FUNCTION GoodID(id : LONGINT) : LONGINT;
+FUNCTION GoodType(typ : LONGINT) : LONGINT;
+FUNCTION IDtoStr(id : LONGINT; buf : pCHAR) : pCHAR;
+PROCEDURE InitIFF(iff : pIFFHandle; flags : LONGINT;const streamHook : pHook);
+PROCEDURE InitIFFasClip(iff : pIFFHandle);
+PROCEDURE InitIFFasDOS(iff : pIFFHandle);
+FUNCTION LocalItemData(const localItem : pLocalContextItem) : POINTER;
+FUNCTION OpenClipboard(unitNumber : LONGINT) : pClipboardHandle;
+FUNCTION OpenIFF(iff : pIFFHandle; rwMode : LONGINT) : LONGINT;
+FUNCTION ParentChunk(const contextNode : pContextNode) : pContextNode;
+FUNCTION ParseIFF(iff : pIFFHandle; control : LONGINT) : LONGINT;
+FUNCTION PopChunk(iff : pIFFHandle) : LONGINT;
+FUNCTION PropChunk(iff : pIFFHandle; typ : LONGINT; id : LONGINT) : LONGINT;
+FUNCTION PropChunks(iff : pIFFHandle;const propArray : pLONGINT; numPairs : LONGINT) : LONGINT;
+FUNCTION PushChunk(iff : pIFFHandle; typ : LONGINT; id : LONGINT; size : LONGINT) : LONGINT;
+FUNCTION ReadChunkBytes(iff : pIFFHandle; buf : POINTER; numBytes : LONGINT) : LONGINT;
+FUNCTION ReadChunkRecords(iff : pIFFHandle; buf : POINTER; bytesPerRecord : LONGINT; numRecords : LONGINT) : LONGINT;
+PROCEDURE SetLocalItemPurge(localItem : pLocalContextItem;const purgeHook : pHook);
+FUNCTION StopChunk(iff : pIFFHandle; typ : LONGINT; id : LONGINT) : LONGINT;
+FUNCTION StopChunks(iff : pIFFHandle;const propArray : pLONGINT; numPairs : LONGINT) : LONGINT;
+FUNCTION StopOnExit(iff : pIFFHandle; typ : LONGINT; id : LONGINT) : LONGINT;
+PROCEDURE StoreItemInContext(iff : pIFFHandle; localItem : pLocalContextItem; contextNode : pContextNode);
+FUNCTION StoreLocalItem(iff : pIFFHandle; localItem : pLocalContextItem; position : LONGINT) : LONGINT;
+FUNCTION WriteChunkBytes(iff : pIFFHandle;const buf : POINTER; numBytes : LONGINT) : LONGINT;
+FUNCTION WriteChunkRecords(iff : pIFFHandle;const buf : POINTER; bytesPerRecord : LONGINT; numRecords : LONGINT) : LONGINT;
 
 Function Make_ID(str : String) : LONGINT;
 
@@ -293,9 +297,535 @@ IMPLEMENTATION
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox;
+msgbox;
 {$endif dont_use_openlib}
 
+FUNCTION AllocIFF : pIFFHandle;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L IFFParseBase,A6
+    JSR -030(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AllocLocalItem(typ : LONGINT; id : LONGINT; ident : LONGINT; dataSize : LONGINT) : pLocalContextItem;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  typ,D0
+    MOVE.L  id,D1
+    MOVE.L  ident,D2
+    MOVE.L  dataSize,D3
+    MOVEA.L IFFParseBase,A6
+    JSR -186(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE CloseClipboard(clipHandle : pClipboardHandle);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L clipHandle,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -252(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE CloseIFF(iff : pIFFHandle);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION CollectionChunk(iff : pIFFHandle; typ : LONGINT; id : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  typ,D0
+    MOVE.L  id,D1
+    MOVEA.L IFFParseBase,A6
+    JSR -138(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CollectionChunks(iff : pIFFHandle;const propArray : pLONGINT; numPairs : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L propArray,A1
+    MOVE.L  numPairs,D0
+    MOVEA.L IFFParseBase,A6
+    JSR -144(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CurrentChunk(const iff : pIFFHandle) : pContextNode;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -174(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION EntryHandler(iff : pIFFHandle; typ : LONGINT; id : LONGINT; position : LONGINT; handler : pHook; obj : POINTER) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  typ,D0
+    MOVE.L  id,D1
+    MOVE.L  position,D2
+    MOVEA.L handler,A1
+    MOVEA.L obj,A2
+    MOVEA.L IFFParseBase,A6
+    JSR -102(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ExitHandler(iff : pIFFHandle; typ : LONGINT; id : LONGINT; position : LONGINT; handler : pHook; obj : POINTER) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  typ,D0
+    MOVE.L  id,D1
+    MOVE.L  position,D2
+    MOVEA.L handler,A1
+    MOVEA.L obj,A2
+    MOVEA.L IFFParseBase,A6
+    JSR -108(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION FindCollection(const iff : pIFFHandle; typ : LONGINT; id : LONGINT) : pCollectionItem;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  typ,D0
+    MOVE.L  id,D1
+    MOVEA.L IFFParseBase,A6
+    JSR -162(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION FindLocalItem(const iff : pIFFHandle; typ : LONGINT; id : LONGINT; ident : LONGINT) : pLocalContextItem;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  typ,D0
+    MOVE.L  id,D1
+    MOVE.L  ident,D2
+    MOVEA.L IFFParseBase,A6
+    JSR -210(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION FindProp(const iff : pIFFHandle; typ : LONGINT; id : LONGINT) : pStoredProperty;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  typ,D0
+    MOVE.L  id,D1
+    MOVEA.L IFFParseBase,A6
+    JSR -156(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION FindPropContext(const iff : pIFFHandle) : pContextNode;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -168(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE FreeIFF(iff : pIFFHandle);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE FreeLocalItem(localItem : pLocalContextItem);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L localItem,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -204(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION GoodID(id : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  id,D0
+    MOVEA.L IFFParseBase,A6
+    JSR -258(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GoodType(typ : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  typ,D0
+    MOVEA.L IFFParseBase,A6
+    JSR -264(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION IDtoStr(id : LONGINT; buf : pCHAR) : pCHAR;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  id,D0
+    MOVEA.L buf,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -270(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE InitIFF(iff : pIFFHandle; flags : LONGINT;const streamHook : pHook);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  flags,D0
+    MOVEA.L streamHook,A1
+    MOVEA.L IFFParseBase,A6
+    JSR -228(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE InitIFFasClip(iff : pIFFHandle);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -240(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE InitIFFasDOS(iff : pIFFHandle);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -234(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION LocalItemData(const localItem : pLocalContextItem) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L localItem,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -192(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenClipboard(unitNumber : LONGINT) : pClipboardHandle;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  unitNumber,D0
+    MOVEA.L IFFParseBase,A6
+    JSR -246(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenIFF(iff : pIFFHandle; rwMode : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  rwMode,D0
+    MOVEA.L IFFParseBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ParentChunk(const contextNode : pContextNode) : pContextNode;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L contextNode,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -180(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ParseIFF(iff : pIFFHandle; control : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  control,D0
+    MOVEA.L IFFParseBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION PopChunk(iff : pIFFHandle) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L IFFParseBase,A6
+    JSR -090(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION PropChunk(iff : pIFFHandle; typ : LONGINT; id : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  typ,D0
+    MOVE.L  id,D1
+    MOVEA.L IFFParseBase,A6
+    JSR -114(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION PropChunks(iff : pIFFHandle;const  propArray : pLONGINT; numPairs : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L propArray,A1
+    MOVE.L  numPairs,D0
+    MOVEA.L IFFParseBase,A6
+    JSR -120(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION PushChunk(iff : pIFFHandle; typ : LONGINT; id : LONGINT; size : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  typ,D0
+    MOVE.L  id,D1
+    MOVE.L  size,D2
+    MOVEA.L IFFParseBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ReadChunkBytes(iff : pIFFHandle; buf : POINTER; numBytes : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L buf,A1
+    MOVE.L  numBytes,D0
+    MOVEA.L IFFParseBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ReadChunkRecords(iff : pIFFHandle; buf : POINTER; bytesPerRecord : LONGINT; numRecords : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L buf,A1
+    MOVE.L  bytesPerRecord,D0
+    MOVE.L  numRecords,D1
+    MOVEA.L IFFParseBase,A6
+    JSR -072(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE SetLocalItemPurge(localItem : pLocalContextItem;const purgeHook : pHook);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L localItem,A0
+    MOVEA.L purgeHook,A1
+    MOVEA.L IFFParseBase,A6
+    JSR -198(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION StopChunk(iff : pIFFHandle; typ : LONGINT; id : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  typ,D0
+    MOVE.L  id,D1
+    MOVEA.L IFFParseBase,A6
+    JSR -126(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION StopChunks(iff : pIFFHandle; const propArray : pLONGINT; numPairs : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L propArray,A1
+    MOVE.L  numPairs,D0
+    MOVEA.L IFFParseBase,A6
+    JSR -132(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION StopOnExit(iff : pIFFHandle; typ : LONGINT; id : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVE.L  typ,D0
+    MOVE.L  id,D1
+    MOVEA.L IFFParseBase,A6
+    JSR -150(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE StoreItemInContext(iff : pIFFHandle; localItem : pLocalContextItem; contextNode : pContextNode);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L localItem,A1
+    MOVEA.L contextNode,A2
+    MOVEA.L IFFParseBase,A6
+    JSR -222(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION StoreLocalItem(iff : pIFFHandle; localItem : pLocalContextItem; position : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L localItem,A1
+    MOVE.L  position,D0
+    MOVEA.L IFFParseBase,A6
+    JSR -216(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION WriteChunkBytes(iff : pIFFHandle;const buf : POINTER; numBytes : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L buf,A1
+    MOVE.L  numBytes,D0
+    MOVEA.L IFFParseBase,A6
+    JSR -066(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION WriteChunkRecords(iff : pIFFHandle;const buf : POINTER; bytesPerRecord : LONGINT; numRecords : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iff,A0
+    MOVEA.L buf,A1
+    MOVE.L  bytesPerRecord,D0
+    MOVE.L  numRecords,D1
+    MOVEA.L IFFParseBase,A6
+    JSR -078(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
 
 Function Make_ID(str : String) : LONGINT;
 begin

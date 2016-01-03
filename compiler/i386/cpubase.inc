@@ -137,9 +137,17 @@
          This value can be deduced from the CALLED_USED_REGISTERS array in the
          GCC source.
       }
+<<<<<<< HEAD
       saved_standard_registers : array[0..3] of tsuperregister = (RS_EBX,RS_ESI,RS_EDI,RS_EBP);
 
       saved_address_registers : array[0..0] of tsuperregister = (RS_INVALID);
+=======
+      saved_standard_registers : array[0..2] of tsuperregister = (RS_EBX,RS_ESI,RS_EDI);
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       saved_mm_registers : array[0..0] of tsuperregister = (RS_INVALID);
       {# Required parameter alignment when calling a routine declared as
          stdcall and cdecl. The alignment value should be the one defined

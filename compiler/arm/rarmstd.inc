@@ -88,6 +88,10 @@
 'd29',
 'd30',
 'd31',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 'cpsr',
 'fpscr',
 'spsr',
@@ -130,3 +134,19 @@
 'apsr_nzcvq',
 'apsr_g',
 'apsr_nzcvqg'
+=======
+'cpsr_c',
+'fpscr'
+>>>>>>> graemeg/cpstrnew
+=======
+'cpsr_c',
+'fpscr'
+>>>>>>> graemeg/cpstrnew
+=======
+'cpsr_c',
+'fpscr'
+>>>>>>> graemeg/cpstrnew
+=======
+'cpsr_c',
+'fpscr'
+>>>>>>> origin/cpstrnew

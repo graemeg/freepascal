@@ -1,20 +1,128 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for WinUnits
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for WinUnits
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=winunits-jedi
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+version=2.5.1
+
+[require]
+=======
+version=2.5.1
+
+[require]
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+
+[require]
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+
+[require]
+>>>>>>> origin/cpstrnew
+packages_win32=winunits-base fcl-registry fcl-base
+packages_win64=winunits-base fcl-registry fcl-base
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[require]
+packages_win32=winunits-base
+packages_win64=winunits-base
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+
+[target]
+units=buildjwa
+implicitunits= jwawintype jwawinbase jwawinnt \
+ jwalmerr jwalmmsg jwaaclui jwaadsdb jwalmerrlog jwalmjoin jwaauthz  \
+ jwabits jwalmremutl jwalmrepl jwalmserver jwalmshare jwalmsname \
+ jwalmstats jwaaccctrl jwaaclapi jwacderr jwacpl jwaactiveds jwadbt jwadde \
+ jwaadserr jwaadshlp jwaadsnms jwaadsprop jwaadssts jwaadtgen \
+ jwaaf_irda jwaatalkwsh jwaauthif jwadlgs jwadssec jwabatclass \
+ jwaexcpt jwaime jwabits1_5 jwabitscfg jwabitsmsg jwablberr \
+ jwabluetoothapis jwabthdef jwabthsdpdef jwabugcodes jwalmat jwalmsvc \
+ jwacmnquery jwacolordlg jwalmuse jwamsi jwacplext jwacryptuiapi \
+ jwanb30 jwanetsh jwapbt jwapdh jwadhcpcsdk jwadhcpsapi jwadhcpssdk \
+ jwaprsht jwapsapi jwadsadmin jwadsclient jwadsgetdc jwadskquota \
+ jwadsquery jwadsrole jwaqos jwaqossp jwaerrorrep jwarpc jwasddl \
+ jwafaxdev jwafaxext jwafaxmmc jwafaxroute jwagpedit jwahherror \
+ jwahtmlguid jwahtmlhelp jwaiaccess jwaiadmext jwaicmpapi jwaiiscnfg \
+ jwaimagehlp jwalmdfs jwaimapierror jwasens jwasfc jwaioevent \
+ jwaipexport jwaiphlpapi jwaipifcons jwaipinfoid jwaiprtrmib \
+ jwaiptypes jwaisguids jwaissper16 jwalmaccess jwalmalert jwalmapibuf \
+ jwasnmp jwasspi jwalmaudit jwalmconfig jwalmcons jwawpapi \
+ jwawsipx jwawsrm jwalmuseflg jwalmwksta jwaloadperf jwalpmapi \
+ jwamciavi jwamprerror jwawsvns jwaimapi jwamsidefs jwamsiquery \
+ jwamstask jwamstcpip jwamswsock jwanspapi jwantddpar jwantdsapi \
+ jwantdsbcli jwantdsbmsg jwantldap jwantquery jwantsecapi jwantstatus \
+ jwaobjsel jwapatchapi jwapatchwiz jwapdhmsg jwapowrprof jwaprofinfo \
+ jwaprotocol jwaqosname jwaqospol jwareason jwaregstr jwarpcasync \
+ jwarpcdce jwarpcnsi jwarpcnterr jwarpcssl jwascesvc jwaschedule \
+ jwaschemadef jwasecext jwasecurity jwasensapi jwashlguid jwasisbkup \
+ jwasporder jwasrrestoreptapi jwasubauth jwasvcguid jwatlhelp32 \
+ jwatmschema jwatraffic jwauserenv jwauxtheme jwawbemcli jwawinable \
+ jwawinber jwawincon jwawincpl jwawincred jwawincrypt \
+ jwawindns jwawinefs jwawinerror jwawinfax jwawingdi jwawinioctl \
+ jwawinldap jwawinnetwk jwawinnls jwawinperf jwawinreg jwawinresrc \
+ jwawinsafer jwawinsock jwawinsock2 jwawinsvc jwawinuser \
+ jwawinver jwawinwlx jwawmistr jwawownt16 jwawownt32 jwawpapimsg \
+ jwawpcrsmsg jwawpftpmsg jwawppstmsg jwawpspihlp jwawptypes \
+ jwawpwizmsg jwaws2atm jwaws2bth jwaws2dnet jwaws2spi jwaws2tcpip \
+ jwawshisotp jwawsnetbs jwawsnwlink jwawtsapi32 jwazmouse jwasensevts \
+ jwaadstlb jwanative jwawindows jwacarderr jwaactivex \
+ jwawindllnames jwawinternl jwawinsta jwavista
+
+
+examples=examples
+
+rsts = jwawintype 
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
 
 [install]
+=======
+
+[install]
+buildunit=buildjwa
+>>>>>>> graemeg/fixes_2_2
+=======
+
+[install]
+buildunit=buildjwa
+>>>>>>> origin/fixes_2_2
 fpcpackage=y
 
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +208,18 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[compiler]
+options=-Ur
+sourcedir=src
+includedir=src
+unitdir=units
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

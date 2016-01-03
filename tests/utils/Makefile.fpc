@@ -13,7 +13,15 @@ fpcdir=../..
 nortl=y
 
 [target]
+<<<<<<< HEAD
+<<<<<<< HEAD
 programs=dotest fptime fail testfail digest concat $(DBDIGEST) $(MSDOSPROG)
+=======
+programs=dotest fptime fail testfail digest $(DBDIGEST)
+>>>>>>> graemeg/fixes_2_2
+=======
+programs=dotest fptime fail testfail digest $(DBDIGEST)
+>>>>>>> origin/fixes_2_2
 programs_win32=prepup
 programs_win64=prepup
 programs_go32v2=prepup

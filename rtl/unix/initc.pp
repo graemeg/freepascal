@@ -84,10 +84,16 @@ function geterrnolocation: pcint; cdecl;external clib name '___errno';
 function geterrnolocation: pcint; cdecl;external 'root' name '_errnop';
 {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef aix}
 function geterrnolocation: pcint; cdecl;external clib name '_Errno';
 {$endif}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function fpgetCerrno:cint;
 
 begin

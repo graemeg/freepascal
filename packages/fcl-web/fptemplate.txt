@@ -1,0 +1,164 @@
+fptemplate.pp
+
+implements template support
+
+Default behaviour:
+In the basic default version the TFPTemplate object can handle simple template 
+tags ex. {templatetagname} and requires the replacement strings in a Values 
+array before the parsing starts. An OnGetParam:TGetParamEvent event can be 
+triggered if it is set, when a value is not found in the Values list.
+
+The template tag start and end delimiters can be set with the StartDelimiter 
+and EndDelimiter properties (defaults are '{' and '}' for now).
+
+The parsing happens recursively so a replace text string can contain further 
+tags in it.
+
+
+Recent improvements:
+With the recent improvements the template tag handling got more close to the 
+traditional Delphi way of handling templates.
+By setting the AllowTagParams property to True this new parsing method will be 
+activated and it is possible to pass parameters to the processing program from 
+the template tags.
+
+Other than the two original StartDelimiter and EndDelimiter properties to 
+specify the boundaries of a template tag, there are 3 more delimiters to 
+define these parameters. 
+    ParamStartDelimiter (default is '[-')
+    ParamEndDelimiter   (default is '-]')
+    ParamValueSeparator (default is '=')
+
+Some examples for tags with these above, StartDelimiter:='{+' and 
+EndDelimiter:='+}' 
+(the default '{' and '}' is not good when processing HTML templates with 
+JavaSript in them):
+
+{+ATagHere+}
+
+{+AnotherTagHere  [-paramname1=paramvalue1-]+}
+
+{+HereIsATagToo //with param 
+ [-param1=param1value-]    //some text here to ignore
+//this text is ignored too
+ [-param2=param2value which
+                      is multi line something
+text ending here
+-] 
+ [-param3=param3value-] 
++}
+
+If we want something close to the Delphi tag delimiters, we can set the 
+  StartDelimiter := '<#';
+  EndDelimiter := '>';
+  ParamStartDelimiter := ' ';
+  ParamEndDelimiter := '"';
+  ParamValueSeparator := '="';
+
+This allows the use of Dephi-like tags like these:
+
+<#input type="text" name="foo1"        value="" caption="bar" checked="false">
+<#input type="RadioButton" name="foo2" 
+			     value="" 
+			     caption="bar" checked="false" >
+<#fieldvalue fieldname="FIRSTNAME">
+
+Of course, the above setting requires at least one space before the parameter 
+names. Cannot just use tabs for example to separate them. Also, Delphi (and its
+emulation here) cannot handle any HTML code within the tag parameters because
+some might contain characters indicating tag-param-end or tag-end.
+
+When the tags are processed, for each tag a 
+
+TReplaceTagEvent = Procedure(Sender : TObject; Const TagString : String;
+ TagParams:TStringList; Out ReplaceText : String) Of Object;
+
+will be called with the parameters passed in TagParams:TStringList so it has 
+to be assigned to such a procedure.
+
+Example:
+
+procedure TFPWebModule1.func1callRequest(Sender: TObject; ARequest: TRequest;
+  AResponse: TResponse; var Handled: Boolean);
+var s:String;
+begin     //Template:TFPTemplate is a property of the web Action
+  Template.FileName := 'pathtotemplate\mytemplate.html';
+  Template.AllowTagParams := true;
+  Template.StartDelimiter := '{+';
+  Template.EndDelimiter := '+}';
+  Template.OnReplaceTag := @func1callReplaceTag;
+  s := Template.GetContent;
+
+  //lets use some Delphi style tags too and re-run the parser
+  Template.StartDelimiter := '<#';
+  Template.EndDelimiter := '>';
+  Template.ParamStartDelimiter := ' ';
+  Template.ParamEndDelimiter := '"';
+  Template.ParamValueSeparator := '="';
+  Template.FileName := '';
+  Template.Template := s;
+
+  AResponse.Content := Template.GetContent;
+
+  Handled := true;
+end;
+
+procedure TFPWebModule1.func1callReplaceTag(Sender: TObject; const TagString: 
+  String; TagParams: TStringList; Out ReplaceText: String);
+begin
+  if AnsiCompareText(TagString, 'TagName1') = 0 then
+  begin
+    ReplaceText := 'text to replace this tag, using the TagParams if needed';
+  end else begin
+.
+.snip
+.
+//Not found value for tag -> TagString
+  end;
+end;
+
+
+With these improvements it is easily possible to separate the web page design 
+and the web server side programming. For example to generate a table record 
+list the web designer can use the following Tag in a template:
+
+.
+.snip
+.
+<table class="beautify1"><tr class="beautify2"><td class="beautify3">
+  {+REPORTRESULT 
+   [-HEADER=
+    <table bordercolorlight="#6699CC" bordercolordark="#E1E1E1" class="Label">
+     <tr class="Label" align=center bgcolor="#6699CC">
+      <th><font color="white">~Column1</font></th>
+      <th><font color="white">~Column2</font></th>
+     </tr>
+   -]
+   [- ONEROW =
+     <tr bgcolor="#F2F2F2" class="Label3" align="center">
+      <td>~Column1Value</td><td>~Column2value</td>
+     </tr>
+   -]
+.
+.snip, and so on more parameters
+.
+   [- NOTFOUND=
+    <tr class="Error"><td>There are no entries found.</td></tr> 
+   -]
+   [-FOOTER=</table>-]
+  +}
+</table>
+.
+.snip
+.
+
+
+I know, I know its ugly html progamming and who uses tables and font html tags 
+nowadays, etc. ... but you get the idea.
+The OnReplaceTag event handler just need to replace the whole REPORTRESULT 
+template tag with the ~Column1, ~Column2 for the HEADER parameter, and the 
+~Column1Value, ~Column2Value in the ONEROW parameter while looping through a 
+sql query result set.
+Or if there is nothing to list, just use the NOTFOUND parameter as a replace 
+text for the whole REPORTRESULT template tag.
+

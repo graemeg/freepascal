@@ -51,7 +51,7 @@ UNIT GTLAYOUT;
 
 INTERFACE
 
-USES Exec,intuition,utility, gadtools,agraphics;
+USES Exec,intuition,utility, gadtools,graphics;
 
 
 
@@ -635,7 +635,7 @@ IMPLEMENTATION
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox,
+msgbox,
 {$endif dont_use_openlib}
 tagsarray;
 

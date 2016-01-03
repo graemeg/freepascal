@@ -206,13 +206,25 @@ implementation
       begin
         secondpass(left);
         location_reset(location,LOC_REGISTER,left.location.size);
+<<<<<<< HEAD
+<<<<<<< HEAD
         location.register64.reglo:=cg.getintregister(current_asmdata.CurrAsmList,OS_32);
         location.register64.reghi:=cg.getintregister(current_asmdata.CurrAsmList,OS_32);
+=======
+        location.register64.reglo:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
+        location.register64.reghi:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
+>>>>>>> graemeg/fixes_2_2
+=======
+        location.register64.reglo:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
+        location.register64.reghi:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
+>>>>>>> origin/fixes_2_2
         cg64.a_op64_loc_reg(current_asmdata.CurrAsmList,OP_NEG,OS_S64,
           left.location,joinreg64(location.register64.reglo,location.register64.reghi));
         { there's only overflow in case left was low(int64) -> -left = left }
         if (cs_check_overflow in current_settings.localswitches) then
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
             tr:=cg.getintregister(current_asmdata.CurrAsmList,OS_32);
             cg.a_op_const_reg_reg(current_asmdata.CurrAsmList,OP_XOR,OS_32,
               longint($80000000),location.register64.reghi,tr);
@@ -221,6 +233,21 @@ implementation
             current_asmdata.getjumplabel(hl);
             cg.a_cmp_const_reg_label(current_asmdata.CurrAsmList,OS_32,OC_NE,0,tr,hl);
             cg.a_call_name(current_asmdata.CurrAsmList,'FPC_OVERFLOW',false);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+            tr:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
+            cg.a_op_const_reg_reg(current_asmdata.CurrAsmList,OP_XOR,OS_INT,
+              aint($80000000),location.register64.reghi,tr);
+            cg.a_op_reg_reg(current_asmdata.CurrAsmList,OP_OR,OS_INT,
+              location.register64.reglo,tr);
+            current_asmdata.getjumplabel(hl);
+            cg.a_cmp_const_reg_label(current_asmdata.CurrAsmList,OS_INT,OC_NE,0,tr,hl);
+            cg.a_call_name(current_asmdata.CurrAsmList,'FPC_OVERFLOW');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             cg.a_label(current_asmdata.CurrAsmList,hl);
           end;
       end;
@@ -289,9 +316,16 @@ implementation
     procedure tcgunaryminusnode.second_integer;
       var
         hl: tasmlabel;
+<<<<<<< HEAD
+<<<<<<< HEAD
         opsize: tdef;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       begin
         secondpass(left);
+<<<<<<< HEAD
 
 {$ifdef cpunodefaultint}
         opsize:=left.resultdef;
@@ -307,6 +341,23 @@ implementation
         location_reset(location,LOC_REGISTER,def_cgsize(opsize));
         location.register:=cg.getintregister(current_asmdata.CurrAsmList,location.size);
         hlcg.a_op_reg_reg(current_asmdata.CurrAsmList,OP_NEG,opsize,left.location.register,location.register);
+=======
+        { load left operator in a register }
+        location_copy(location,left.location);
+        location_force_reg(current_asmdata.CurrAsmList,location,OS_SINT,false);
+        cg.a_op_reg_reg(current_asmdata.CurrAsmList,OP_NEG,OS_SINT,location.register,location.register);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
         if (cs_check_overflow in current_settings.localswitches) then
           begin
@@ -314,6 +365,20 @@ implementation
             hlcg.a_cmp_const_reg_label(current_asmdata.CurrAsmList,opsize,OC_NE,torddef(opsize).low.svalue,location.register,hl);
             hlcg.g_call_system_proc(current_asmdata.CurrAsmList,'fpc_overflow',[],nil);
             hlcg.a_label(current_asmdata.CurrAsmList,hl);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        
+        if (cs_check_overflow in current_settings.localswitches) then
+          begin
+            current_asmdata.getjumplabel(hl);
+            cg.a_cmp_const_reg_label(current_asmdata.CurrAsmList,OS_SINT,OC_NE,low(aint),location.register,hl);
+            cg.a_call_name(current_asmdata.CurrAsmList,'FPC_OVERFLOW');
+            cg.a_label(current_asmdata.CurrAsmList,hl);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           end;
       end;
 
@@ -446,6 +511,7 @@ implementation
                     except if we have a const node, where we don't need this, because
                     then zero check was done earlier.
                   }
+<<<<<<< HEAD
                   if (right.nodetype <> ordconstn) then
                     begin
                       current_asmdata.getjumplabel(hl);
@@ -459,6 +525,17 @@ implementation
                       paraloc1.done;
                       cg.a_label(current_asmdata.CurrAsmList,hl);
                     end;
+=======
+                  current_asmdata.getjumplabel(hl);
+                  cg.a_cmp_const_reg_label(current_asmdata.CurrAsmList,OS_INT,OC_NE,0,hdenom,hl);
+                  paraloc1.init;
+                  paramanager.getintparaloc(pocall_default,1,paraloc1);
+                  cg.a_load_const_cgpara(current_asmdata.CurrAsmList,OS_S32,aint(200),paraloc1);
+                  paramanager.freecgpara(current_asmdata.CurrAsmList,paraloc1);
+                  cg.a_call_name(current_asmdata.CurrAsmList,'FPC_HANDLEERROR',false);
+                  paraloc1.done;
+                  cg.a_label(current_asmdata.CurrAsmList,hl);
+>>>>>>> graemeg/cpstrnew
                   if nodetype = modn then
                     emit_mod_reg_reg(is_signed(left.resultdef),hdenom,hreg1)
                   else
@@ -500,6 +577,7 @@ implementation
            else
              internalerror(2013120102);
          end;
+<<<<<<< HEAD
 {$ifdef cpunodefaultint}
         opsize:=left.location.size;
         opdef:=left.resultdef;
@@ -556,15 +634,43 @@ implementation
            hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,opdef,true);
          location_reset(location,LOC_REGISTER,opsize);
          location.register:=hlcg.getintregister(current_asmdata.CurrAsmList,resultdef);
+=======
+         { load left operators in a register }
+         if is_signed(left.resultdef) then
+           opsize:=OS_SINT
+         else
+           opsize:=OS_INT;
+         location_force_reg(current_asmdata.CurrAsmList,left.location,opsize,true);
+         location_reset(location,LOC_REGISTER,opsize);
+         location.register:=cg.getintregister(current_asmdata.CurrAsmList,opsize);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
          { shifting by a constant directly coded: }
          if (right.nodetype=ordconstn) then
            begin
+<<<<<<< HEAD
               { shl/shr must "wrap around", so use ... and 31 }
               { In TP, "byte/word shl 16 = 0", so no "and 15" in case of
                 a 16 bit ALU }
               if tcgsize2size[opsize]<=4 then
                 shiftval:=tordconstnode(right).value.uvalue and 31
+=======
+              { l shl 32 should 0 imho, but neither TP nor Delphi do it in this way (FK)
+              if right.value<=31 then
+              }
+              cg.a_op_const_reg_reg(current_asmdata.CurrAsmList,op,location.size,
+                tordconstnode(right).value.uvalue and 31,left.location.register,location.register);
+              {
+>>>>>>> graemeg/cpstrnew
               else
                 shiftval:=tordconstnode(right).value.uvalue and 63;
               hlcg.a_op_const_reg_reg(current_asmdata.CurrAsmList,op,opdef,
@@ -576,6 +682,7 @@ implementation
                 is done since most target cpu which will use this
                 node do not support a shift count in a mem. location (cec)
               }
+<<<<<<< HEAD
               hlcg.location_force_reg(current_asmdata.CurrAsmList,right.location,right.resultdef,opdef,true);
               hlcg.a_op_reg_reg_reg(current_asmdata.CurrAsmList,op,opdef,right.location.register,left.location.register,location.register);
            end;
@@ -586,6 +693,25 @@ implementation
              hcountreg:=hlcg.getintregister(current_asmdata.CurrAsmList,resultdef);
              hlcg.a_load_reg_reg(current_asmdata.CurrAsmList,opdef,resultdef,location.register,hcountreg);
              location.register:=hcountreg;
+=======
+              if right.location.loc<>LOC_REGISTER then
+                begin
+                  hcountreg:=cg.getintregister(current_asmdata.CurrAsmList,opsize);
+                  cg.a_load_loc_reg(current_asmdata.CurrAsmList,right.location.size,right.location,hcountreg);
+                end
+              else
+                hcountreg:=right.location.register;
+              cg.a_op_reg_reg_reg(current_asmdata.CurrAsmList,op,opsize,hcountreg,left.location.register,location.register);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
            end;
       end;
 

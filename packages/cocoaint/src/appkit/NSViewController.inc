@@ -51,7 +51,23 @@
     _editors: NSPointerArray;
     _autounbinder: id;
     _designNibBundleIdentifier: NSString;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _reserved: array[0..(2)-1] of id;
+=======
+        _reserved: array[0..1] of id;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..1] of id;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..1] of id;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..1] of id;
+>>>>>>> origin/cpstrnew
     
   public
     function initWithNibName_bundle(nibNameOrNil: NSString; nibBundleOrNil: NSBundle): id; message 'initWithNibName:bundle:';

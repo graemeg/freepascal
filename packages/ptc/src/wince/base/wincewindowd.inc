@@ -1,6 +1,24 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 {
     This file is part of the PTCPas framebuffer library
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (C) 2007, 2009, 2010  Nikolay Nikolov (nickysn@users.sourceforge.net)
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> graemeg/cpstrnew
+=======
+    Copyright (C) 2001-2010 Nikolay Nikolov (nickysn@users.sourceforge.net)
+>>>>>>> origin/cpstrnew
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -50,3 +68,31 @@ type
 
     property WindowHandle: HWND read FWindow;
   end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Type
+  TWinCEWndProc = Function(Ahwnd : HWND; AuMsg : UINT; AwParam : WPARAM; AlParam : LPARAM) : LRESULT Of Object;
+
+  TWinCEWindow = Class(TObject)
+  Private
+    FWindow : HWND;
+    FClassName : WideString;
+    FClassHInstance : HINST;
+  Public
+    Constructor Create(Const AClassName, ATitle : WideString;
+                       AExStyle, AStyle : DWord;
+                       AShow, AX, AY, AWidth, AHeight : Integer;
+                       AWndProc : TWinCEWndProc;
+                       AData : Pointer = Nil);
+    Destructor Destroy; Override;
+
+    Procedure Close;
+    Procedure Update;
+
+    Property WindowHandle : HWND Read FWindow;
+  End;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

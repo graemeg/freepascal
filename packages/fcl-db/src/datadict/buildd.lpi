@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
@@ -15,6 +17,27 @@
     <BuildModes Count="1">
       <Item1 Name="default" Default="True"/>
     </BuildModes>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <PathDelim Value="/"/>
+    <Version Value="6"/>
+    <General>
+      <SessionStorage Value="InProjectDir"/>
+      <MainUnit Value="0"/>
+      <IconPath Value="./"/>
+      <TargetFileExt Value=""/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+    </VersionInfo>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -31,14 +54,38 @@
       <Unit0>
         <Filename Value="buildd.lpr"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="buildd"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="buildd"/>
+>>>>>>> origin/fixes_2_2
       </Unit0>
       <Unit1>
         <Filename Value="fpddsqldb.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpddsqldb"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpddsqldb"/>
+>>>>>>> origin/fixes_2_2
       </Unit1>
       <Unit2>
         <Filename Value="fpdatadict.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpdatadict"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpdatadict"/>
+>>>>>>> origin/fixes_2_2
       </Unit2>
       <Unit3>
         <Filename Value="fpdddbf.pp"/>
@@ -48,46 +95,128 @@
       <Unit4>
         <Filename Value="fpddfb.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpddfb"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpddfb"/>
+>>>>>>> origin/fixes_2_2
       </Unit4>
       <Unit5>
         <Filename Value="fpddmysql40.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpddmysql40"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpddmysql40"/>
+>>>>>>> origin/fixes_2_2
       </Unit5>
       <Unit6>
         <Filename Value="fpddmysql41.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpddmysql41"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpddmysql41"/>
+>>>>>>> origin/fixes_2_2
       </Unit6>
       <Unit7>
         <Filename Value="fpddmysql50.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpddmysql50"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpddmysql50"/>
+>>>>>>> origin/fixes_2_2
       </Unit7>
       <Unit8>
         <Filename Value="fpddpq.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpddpq"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpddpq"/>
+>>>>>>> origin/fixes_2_2
       </Unit8>
       <Unit9>
         <Filename Value="fpddodbc.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpddodbc"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpddodbc"/>
+>>>>>>> origin/fixes_2_2
       </Unit9>
       <Unit10>
         <Filename Value="fpddoracle.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpddoracle"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpddoracle"/>
+>>>>>>> origin/fixes_2_2
       </Unit10>
       <Unit11>
         <Filename Value="fpddsqlite3.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpddsqlite3"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpddsqlite3"/>
+>>>>>>> origin/fixes_2_2
       </Unit11>
       <Unit12>
         <Filename Value="fpddregstd.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpddregstd"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpddregstd"/>
+>>>>>>> origin/fixes_2_2
       </Unit12>
       <Unit13>
         <Filename Value="fpdddiff.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="fpdddiff"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="fpdddiff"/>
+>>>>>>> origin/fixes_2_2
       </Unit13>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Version Value="11"/>
     <SearchPaths>
       <UnitOutputDirectory Value="../../units/$(TARGETCPU)-$(TARGETOS)"/>
@@ -97,5 +226,22 @@
         <UseAnsiStrings Value="False"/>
       </SyntaxOptions>
     </Parsing>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    <Version Value="5"/>
+    <SearchPaths>
+      <UnitOutputDirectory Value="../../units/$(TARGETCPU)-$(TARGETOS)"/>
+    </SearchPaths>
+    <CodeGeneration>
+      <Generate Value="Faster"/>
+    </CodeGeneration>
+    <Other>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   </CompilerOptions>
 </CONFIG>

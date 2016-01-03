@@ -246,8 +246,23 @@ type
    function GetStdHandle(nStdHandle:DWORD):THANDLE;
      stdcall;external KernelDLL name 'GetStdHandle';
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    {$ifdef FPC_UNICODE_RTLx}
    { command line/environment functions }
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+   { command line/environment functions }
+   function GetCommandLine : pchar;
+     stdcall;external KernelDLL name 'GetCommandLineA';
+>>>>>>> graemeg/cpstrnew
 
    function GetCommandLine : pwidechar;
      stdcall;external KernelDLL name 'GetCommandLineW';
@@ -255,6 +270,12 @@ type
    function GetCommandLine : pchar;
      stdcall;external KernelDLL name 'GetCommandLineA';
    {$endif}
+
+   function GetCommandLineW : pwidechar;
+     stdcall;external KernelDLL name 'GetCommandLineW';
+
+   function GetCommandLineW : pwidechar;
+     stdcall;external KernelDLL name 'GetCommandLineW';
 
   function GetCurrentProcessId:DWORD;
     stdcall; external KernelDLL name 'GetCurrentProcessId';
@@ -331,6 +352,7 @@ type
      stdcall;external KernelDLL name 'GetFileAttributesW';
 
    { Directory }
+<<<<<<< HEAD
    function CreateDirectoryW(name : pointer;sec : pointer) : longbool;
      stdcall;external KernelDLL name 'CreateDirectoryW';
    function RemoveDirectoryW(name:pointer):longbool;
@@ -345,11 +367,34 @@ type
    function SetEnvironmentVariableW (lpName: PUnicodeChar; lpValue: PUnicodeChar): BOOL;
      stdcall; external KernelDLL name 'SetEnvironmentVariableW';
 
+=======
+   function CreateDirectory(name : pointer;sec : pointer) : longbool;
+     stdcall;external KernelDLL name 'CreateDirectoryA';
+   function RemoveDirectory(name:pointer):longbool;
+     stdcall;external KernelDLL name 'RemoveDirectoryA';
+   function SetCurrentDirectory(name : pointer) : longbool;
+     stdcall;external KernelDLL name 'SetCurrentDirectoryA';
+   function GetCurrentDirectory(bufsize : longint;name : pchar) : longbool;
+     stdcall;external KernelDLL name 'GetCurrentDirectoryA';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
    { Console functions needed for WriteFile fix for bug 17550 }
    function GetConsoleMode(hConsoleHandle:thandle; lpMode:LPDWORD):BOOL;
      stdcall;external KernelDLL name 'GetConsoleMode';
    function GetConsoleOutputCP : UINT;
      stdcall; external KernelDLL name 'GetConsoleOutputCP';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    function GetOEMCP: UINT;
      stdcall; external KernelDLL name 'GetOEMCP';
 
@@ -359,6 +404,18 @@ type
      stdcall; external 'oleaut32.dll' name 'SysFreeString';
    function SysReAllocStringLen(var bstr:pointer;psz: pointer;
      len:dword): Integer; stdcall;external 'oleaut32.dll' name 'SysReAllocStringLen';
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
 {$endif WINCE}
 
    Procedure Errno2InOutRes(oserror: longword);
@@ -414,6 +471,50 @@ type
     begin
       result:=nil;
       widestringmanager.Ansi2WideMoveProc(pchar(pointer(source)),StringCodePage(source),widestring(pointer(result)),length(source));
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    end;
+
+
+  Function NewWideString(Len : SizeInt) : Pointer;forward;
+
+
+  function StringToOleStr(const source : UnicodeString) : PWideChar;inline;
+    begin
+      if source<>'' then
+        begin
+          result:=NewWideString(Length(source));
+          move(source[1],result^,Length(source));
+        end
+      else
+        result:=nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+    end;
+
+
+  Function NewWideString(Len : SizeInt) : Pointer;forward;
+
+
+  function StringToOleStr(const source : UnicodeString) : PWideChar;inline;
+    begin
+      if source<>'' then
+        begin
+          result:=NewWideString(Length(source));
+          move(source[1],result^,Length(source));
+        end
+      else
+        result:=nil;
+>>>>>>> graemeg/cpstrnew
     end;
 
 
@@ -422,6 +523,10 @@ type
       result:=nil;
       { will call UnicodeString overload if FPC_WIDESTRING_EQUAL_UNICODESTRING is set }
       SetString(widestring(pointer(result)),PWideChar(source),length(source));
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     end;
 
 

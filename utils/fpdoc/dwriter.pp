@@ -75,15 +75,41 @@ type
     FEmitNotes: Boolean;
     FEngine  : TFPDocEngine;
     FPackage : TPasPackage;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FContext : TPasElement;
     FTopics  : TList;
     FImgExt : String;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FBeforeEmitNote : TWriterNoteEvent;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     procedure ConvertURL(AContext: TPasElement; El: TDOMElement);
     
   protected
     Procedure DoLog(Const Msg : String);
     Procedure DoLog(Const Fmt : String; Args : Array of const);
+=======
+    FTopics  : TList;
+    FImgExt : String;
+    
+  protected
+>>>>>>> graemeg/fixes_2_2
+=======
+    FTopics  : TList;
+    FImgExt : String;
+    
+  protected
+>>>>>>> origin/fixes_2_2
     procedure Warning(AContext: TPasElement; const AMsg: String);
     procedure Warning(AContext: TPasElement; const AMsg: String;
       const Args: array of const);
@@ -109,9 +135,17 @@ type
     function ConvertSimpleBlock(AContext: TPasElement; Node: TDOMNode): Boolean;
     Function FindTopicElement(Node : TDocNode): TTopicElement;
     Procedure ConvertImage(El : TDomElement);
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     Procedure DescrEmitNotesHeader(AContext : TPasElement); virtual;
     Procedure DescrEmitNotesFooter(AContext : TPasElement); virtual;
+=======
+    
+>>>>>>> graemeg/fixes_2_2
+=======
+    
+>>>>>>> origin/fixes_2_2
     procedure DescrWriteText(const AText: DOMString); virtual; abstract;
     procedure DescrBeginBold; virtual; abstract;
     procedure DescrEndBold; virtual; abstract;
@@ -404,11 +438,24 @@ begin
     end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TFPDocWriter.DescrWriteImageEl(const AFileName, ACaption,
   ALinkName: DOMString);
 
 begin
   DoLog('%s : No support for images yet: %s (caption: "%s")',[ClassName,AFileName,ACaption]);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Procedure TFPDocWriter.DescrWriteImageEl(const AFileName, ACaption,ALinkName : DOMString); 
+
+begin
+  system.writeln(ClassName,': No support for images yet: ',AFileName,' (caption: "',ACaption,'")');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 { ---------------------------------------------------------------------
@@ -513,6 +560,7 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
 function TFPDocWriter.ConvertNotes(AContext: TPasElement; El: TDOMElement
   ): Boolean;
 
@@ -556,6 +604,19 @@ begin
     DescrEmitNotesFooter(AContext);
   finally
     L.Free;
+=======
+  Node := El.FirstChild;
+  while Assigned(Node) do
+  begin
+    if (Node.NodeType = ELEMENT_NODE) and (Node.NodeName = 'link') then
+      ConvertLink(AContext, TDOMElement(Node))
+    else if (Node.NodeType = ELEMENT_NODE) and (Node.NodeName = 'url') then
+      ConvertURL(AContext, TDOMElement(Node))
+    else
+      if not ConvertBaseShort(AContext, Node) then
+        exit;
+    Node := Node.NextSibling;
+>>>>>>> graemeg/cpstrnew
   end;
 end;
 
@@ -706,6 +767,10 @@ begin
   DescrEndURL;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TFPDocWriter.DoLog(const Msg: String);
 begin
   If Assigned(FEngine.OnLog) then
@@ -717,6 +782,14 @@ begin
   DoLog(Format(Fmt,Args));
 end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 function TFPDocWriter.ConvertExtShort(AContext: TPasElement;
   Node: TDOMNode): Boolean;
 begin
@@ -1132,6 +1205,8 @@ begin
   DescrWriteImageEl(FN,Cap,LinkName);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TFPDocWriter.DescrEmitNotesHeader(AContext: TPasElement);
 begin
   DescrWriteLinebreak;
@@ -1146,6 +1221,10 @@ begin
   DescrWriteLinebreak;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 Constructor TTopicElement.Create(const AName: String; AParent: TPasElement);
 

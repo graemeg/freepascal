@@ -26,7 +26,14 @@ unit ncgset;
 interface
 
     uses
+<<<<<<< HEAD
        globtype,globals,constexp,symtype,
+=======
+       globtype,globals,
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
        node,nset,cpubase,cgbase,cgutils,cgobj,aasmbase,aasmtai,aasmdata;
 
     type
@@ -41,6 +48,7 @@ interface
        end;
        Tsetparts=array[1..8] of Tsetpart;
 
+<<<<<<< HEAD
        { tcginnode }
 
        tcginnode = class(tinnode)
@@ -51,6 +59,14 @@ interface
        protected
          function checkgenjumps(out setparts: Tsetparts; out numparts: byte; out use_small: boolean): boolean; virtual;
          function analizeset(const Aset:Tconstset;out setparts: Tsetparts; out numparts: byte;is_small:boolean):boolean;virtual;
+=======
+       tcginnode = class(tinnode)
+          function pass_1: tnode;override;
+          procedure pass_generate_code;override;
+       protected
+          function checkgenjumps(out setparts: Tsetparts; out numparts: byte; out use_small: boolean): boolean; virtual;
+          function analizeset(const Aset:Tconstset;out setparts: Tsetparts; out numparts: byte;is_small:boolean):boolean;virtual;
+>>>>>>> graemeg/fixes_2_2
        end;
 
        tcgcasenode = class(tcasenode)
@@ -92,7 +108,15 @@ implementation
       paramgr,
       procinfo,pass_2,tgobj,
       nbas,ncon,nflw,
+<<<<<<< HEAD
+<<<<<<< HEAD
       ncgutil,hlcgobj;
+=======
+      ncgutil;
+>>>>>>> graemeg/fixes_2_2
+=======
+      ncgutil;
+>>>>>>> origin/fixes_2_2
 
 
 {*****************************************************************************
@@ -207,8 +231,15 @@ implementation
       begin
          { check if we can use smallset operation using btl which is limited
            to 32 bits, the left side may also not contain higher values !! }
+<<<<<<< HEAD
          use_small:=is_smallset(right.resultdef) and
                     not is_signed(left.resultdef) and
+=======
+         use_small:=(tsetdef(right.resultdef).settype=smallset) and not is_signed(left.resultdef) and
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                     ((left.resultdef.typ=orddef) and (torddef(left.resultdef).high<32) or
                      (left.resultdef.typ=enumdef) and (tenumdef(left.resultdef).max<32));
 
@@ -234,9 +265,19 @@ implementation
        var
          adjustment,
          setbase    : aint;
+<<<<<<< HEAD
+<<<<<<< HEAD
          l, l2      : tasmlabel;
          hr,
+=======
+=======
+>>>>>>> origin/fixes_2_2
+				 l,l2,
+         otl, ofl   : tasmlabel;
+         hr,hr2,
+>>>>>>> graemeg/fixes_2_2
          pleftreg   : tregister;
+         href       : treference;
          setparts   : Tsetparts;
          opsize     : tcgsize;
          opdef      : tdef;
@@ -244,7 +285,8 @@ implementation
          uopdef     : tdef;
          orgopsize  : tcgsize;
          genjumps,
-         use_small  : boolean;
+         use_small,
+         isjump     : boolean;
          i,numparts : byte;
          needslabel : Boolean;
        begin
@@ -270,17 +312,58 @@ implementation
            end;
          needslabel := false;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
          if not genjumps then
            { calculate both operators }
            { the complex one first }
            { not in case of genjumps, because then we don't secondpass      }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+         isjump:=false;
+         if (left.expectloc=LOC_JUMP) then
+           begin
+             otl:=current_procinfo.CurrTrueLabel;
+             current_asmdata.getjumplabel(current_procinfo.CurrTrueLabel);
+             ofl:=current_procinfo.CurrFalseLabel;
+             current_asmdata.getjumplabel(current_procinfo.CurrFalseLabel);
+             isjump:=true;
+           end
+         else if not genjumps then
+           { calculate both operators }
+           { the complex one first }
+           { only if left will not be a LOC_JUMP, to keep complexity in the }
+           { code generator down. This almost never happens anyway, only in }
+           { case like "if ((a in someset) in someboolset) then" etc        }
+           { also not in case of genjumps, because then we don't secondpass }
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            { right at all (so we have to make sure that "right" really is   }
            { "right" and not "swapped left" in that case)                   }
            firstcomplex(self);
 
          secondpass(left);
+<<<<<<< HEAD
+<<<<<<< HEAD
          if (left.expectloc=LOC_JUMP)<>
             (left.location.loc=LOC_JUMP) then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+         if isjump then
+           begin
+             location_force_reg(current_asmdata.CurrAsmList,left.location,opsize,true);
+             current_procinfo.CurrTrueLabel:=otl;
+             current_procinfo.CurrFalseLabel:=ofl;
+           end
+         else if (left.location.loc=LOC_JUMP) then
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            internalerror(2007070101);
 
          { Only process the right if we are not generating jumps }
@@ -370,6 +453,7 @@ implementation
          {*****************************************************************}
          {                     NO JUMP TABLE GENERATION                    }
          {*****************************************************************}
+<<<<<<< HEAD
            begin
              { We will now generated code to check the set itself, no jmps,
                handle smallsets separate, because it allows faster checks }
@@ -448,11 +532,137 @@ implementation
                          current_asmdata.getjumplabel(l);
                          current_asmdata.getjumplabel(l2);
                          needslabel := True;
+=======
+          begin
+            { location is always LOC_REGISTER }
+            location_reset(location, LOC_REGISTER, uopsize{def_cgsize(resultdef)});
+            { allocate a register for the result }
+            location.register := cg.getintregister(current_asmdata.CurrAsmList, uopsize);
 
+            { We will now generated code to check the set itself, no jmps,
+              handle smallsets separate, because it allows faster checks }
+            if use_small then
+             begin
+               {****************************  SMALL SET **********************}
+               if left.location.loc=LOC_CONSTANT then
+                begin
+                  cg.a_bit_test_const_loc_reg(current_asmdata.CurrAsmList,location.size,
+                    left.location.value-setbase,right.location,
+                    location.register);
+                end
+               else
+                begin
+                  location_force_reg(current_asmdata.CurrAsmList,left.location,opsize,true);
+                  register_maybe_adjust_setbase(current_asmdata.CurrAsmList,left.location,setbase);
+                  cg.a_bit_test_reg_loc_reg(current_asmdata.CurrAsmList,left.location.size,
+                    location.size,left.location.register,right.location,location.register);
+                end;
+             end
+            else
+             {************************** NOT SMALL SET ********************}
+             begin
+               if right.location.loc=LOC_CONSTANT then
+                begin
+                  { can it actually occur currently? CEC }
+                  { yes: "if bytevar in [1,3,5,7,9,11,13,15]" (JM) }
+
+                  { note: this code assumes that left in [0..255], which is a valid }
+                  { assumption (other cases will be caught by range checking) (JM)  }
+
+                  { load left in register }
+                  location_force_reg(current_asmdata.CurrAsmList,left.location,location.size,true);
+                  register_maybe_adjust_setbase(current_asmdata.CurrAsmList,left.location,setbase);
+<<<<<<< HEAD
+<<<<<<< HEAD
+                  { emit bit test operation -- warning: do not use
+                    location_force_reg() to force a set into a register, except
+                    to a register of the same size as the set. The reason is
+                    that on big endian systems, this would require moving the
+                    set to the most significant part of the new register,
+                    and location_force_register can't do that (it does not
+                    know the type).
+
+                   a_bit_test_reg_loc_reg() properly takes into account the
+                   size of the set to adjust the register index to test }
+                  cg.a_bit_test_reg_loc_reg(current_asmdata.CurrAsmList,
+                    left.location.size,location.size,
+                    left.location.register,right.location,location.register);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                  location_force_reg(current_asmdata.CurrAsmList,right.location,opsize,true);
+                  { emit bit test operation }
+                  cg.a_bit_test_reg_reg_reg(current_asmdata.CurrAsmList,
+                    left.location.size,right.location.size,location.size,
+                    left.location.register,right.location.register,location.register);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+
+                  { now zero the result if left > nr_of_bits_in_right_register }
+                  hr := cg.getintregister(current_asmdata.CurrAsmList,location.size);
+                  { if left > tcgsize2size[opsize]*8 then hr := 0 else hr := $ffffffff }
+                  { (left.location.size = location.size at this point) }
+                  cg.a_op_const_reg_reg(current_asmdata.CurrAsmList, OP_SUB, location.size, tcgsize2size[opsize]*8, left.location.register, hr);
+                  cg.a_op_const_reg(current_asmdata.CurrAsmList, OP_SAR, location.size, (tcgsize2size[opsize]*8)-1, hr);
+
+                  { if left > tcgsize2size[opsize]*8-1, then result := 0 else result := result of bit test }
+                  cg.a_op_reg_reg(current_asmdata.CurrAsmList, OP_AND, location.size, hr, location.register);
+                end { of right.location.loc=LOC_CONSTANT }
+               { do search in a normal set which could have >32 elements
+                 but also used if the left side contains higher values > 32 }
+               else if (left.location.loc=LOC_CONSTANT) then
+                begin
+                  if (left.location.value < setbase) or (((left.location.value-setbase) shr 3) >= right.resultdef.size) then
+                    {should be caught earlier }
+                    internalerror(2007020402);
+>>>>>>> graemeg/cpstrnew
+
+<<<<<<< HEAD
+<<<<<<< HEAD
                          hlcg.a_cmp_const_reg_label(current_asmdata.CurrAsmList, opdef, OC_BE, tsetdef(right.resultdef).setmax-tsetdef(right.resultdef).setbase, pleftreg, l);
 
                          hlcg.a_load_const_reg(current_asmdata.CurrAsmList, uopdef, 0, location.register);
                          hlcg.a_jmp_always(current_asmdata.CurrAsmList, l2);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                  cg.a_bit_test_const_loc_reg(current_asmdata.CurrAsmList,location.size,left.location.value-setbase,
+                    right.location,location.register);
+                end
+               else
+                begin
+                  location_force_reg(current_asmdata.CurrAsmList, left.location, opsize, true);
+                  register_maybe_adjust_setbase(current_asmdata.CurrAsmList,left.location,setbase);
+                  pleftreg := left.location.register;
+
+                  if (opsize >= OS_S8) or { = if signed }
+                     ((left.resultdef.typ=orddef) and 
+                      ((torddef(left.resultdef).low < int64(tsetdef(right.resultdef).setbase)) or
+                       (torddef(left.resultdef).high > int64(tsetdef(right.resultdef).setmax)))) or
+                     ((left.resultdef.typ=enumdef) and
+                      ((tenumdef(left.resultdef).min < tsetdef(right.resultdef).setbase) or
+                       (tenumdef(left.resultdef).max > tsetdef(right.resultdef).setmax))) then
+                    begin
+                      current_asmdata.getjumplabel(l);
+                      current_asmdata.getjumplabel(l2);
+                      needslabel := True;
+
+                      cg.a_cmp_const_reg_label(current_asmdata.CurrAsmList, left.location.size, OC_BE, tsetdef(right.resultdef).setmax-tsetdef(right.resultdef).setbase, pleftreg, l);
+
+                      cg.a_load_const_reg(current_asmdata.CurrAsmList, location.size, 0, location.register);
+                      cg.a_jmp_always(current_asmdata.CurrAsmList, l2);
+
+                      cg.a_label(current_asmdata.CurrAsmList, l);
+                    end;
+
+                  cg.a_bit_test_reg_loc_reg(current_asmdata.CurrAsmList,left.location.size,location.size,
+                    pleftreg,right.location,location.register);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
                          hlcg.a_label(current_asmdata.CurrAsmList, l);
                        end;
@@ -556,7 +766,14 @@ implementation
                   begin
                      { have we to ajust the first value ? }
                      if (t^._low>get_min_value(left.resultdef)) or (get_min_value(left.resultdef)<>0) then
+<<<<<<< HEAD
+<<<<<<< HEAD
                        gensub(tcgint(t^._low.svalue));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                       gensub(aint(t^._low));
+>>>>>>> graemeg/fixes_2_2
                   end
                 else
                   begin
@@ -1071,11 +1288,19 @@ implementation
               load_all_regvars(current_asmdata.CurrAsmList);
 {$endif OLDREGVARS}
            end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
          cg.executionweight:=oldexecutionweight;
 
          current_asmdata.CurrAsmList.concat(cai_align.create(current_settings.alignment.jumpalign));
          hlcg.a_label(current_asmdata.CurrAsmList,endlabel);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+         current_asmdata.CurrAsmList.concat(cai_align.create(current_settings.alignment.jumpalign));
+         cg.a_label(current_asmdata.CurrAsmList,endlabel);
+>>>>>>> graemeg/fixes_2_2
 
          { Reset labels }
          for i:=0 to blocks.count-1 do

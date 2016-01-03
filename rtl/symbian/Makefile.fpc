@@ -6,7 +6,31 @@
 main=rtl
 
 [target]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=system uuchar objpas macpas iso7185 extpas buildrtl
+=======
+units=system objpas macpas iso7185 buildrtl
+>>>>>>> graemeg/cpstrnew
+=======
+units=system objpas macpas iso7185 buildrtl
+>>>>>>> graemeg/cpstrnew
+=======
+units=system objpas macpas iso7185 buildrtl
+>>>>>>> graemeg/cpstrnew
+=======
+units=system objpas macpas iso7185 buildrtl
+>>>>>>> origin/cpstrnew
+=======
+units=system objpas macpas buildrtl
+>>>>>>> graemeg/fixes_2_2
+=======
+units=system objpas macpas buildrtl
+>>>>>>> origin/fixes_2_2
 implicitunits=ctypes strings \
       symbian
 
@@ -35,6 +59,10 @@ UIQINC=./uiqinc
 
 UNITPREFIX=rtl
 SYSTEMUNIT=system
+
+OBJPASDIR=$(RTL)/objpas
+
+OBJPASDIR=$(RTL)/objpas
 
 OBJPASDIR=$(RTL)/objpas
 
@@ -71,8 +99,14 @@ system$(PPUEXT) : system.pp $(SYSDEPS)
 system$(PPUEXT) : system.pp $(SYSDEPS)
         $(COMPILER) -Us -Sg system.pp -Fi../win
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uuchar$(PPUEXT): $(SYSTEMUNIT)$(PPUEXT) $(INC)/uuchar.pp
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 objpas$(PPUEXT): $(OBJPASDIR)/objpas.pp $(INC)/except.inc system$(PPUEXT)
         $(COMPILER) -I$(OBJPASDIR) $(OBJPASDIR)/objpas.pp
 

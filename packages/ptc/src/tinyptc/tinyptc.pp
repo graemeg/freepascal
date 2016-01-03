@@ -1,63 +1,60 @@
-unit TinyPTC;
+{todo: handle exceptions}
+
+Unit TinyPTC;
 
 {$MODE objfpc}
 
-interface
+Interface
 
-function ptc_open(const ATitle: string; AWidth, AHeight: Integer): Boolean;
-function ptc_update(ABuffer: Pointer): Boolean;
-procedure ptc_close;
+Function ptc_open(title : String; width, height : Integer) : Boolean;
+Function ptc_update(buffer : Pointer) : Boolean;
+Procedure ptc_close;
 
-implementation
+Implementation
 
-uses
-  SysUtils, ptc;
+Uses
+  ptc;
 
-var
-  Console: TPTCConsole = nil;
-  Format: TPTCFormat = nil;
-  Palette: TPTCPalette = nil;
-  Width, Height: Integer;
+Var
+  console : TPTCConsole;
+  format : TPTCFormat;
+  palette : TPTCPalette;
+  w, h : Integer;
 
-function ptc_open(const ATitle: string; AWidth, AHeight: Integer): Boolean;
-begin
-  try
-    if Console = nil then
-      Console := TPTCConsole.Create;
-    if Format = nil then
-      Format := TPTCFormat.Create(32, $FF0000, $FF00, $FF);
-    if Palette = nil then
-      Palette := TPTCPalette.Create;
-    Console.Open(ATitle, AWidth, AHeight, Format);
-    Width := AWidth;
-    Height := AHeight;
-    Result := true;
-  except
-    on error: TPTCError do
-      Result := false;
-  end;
-end;
+Function ptc_open(title : String; width, height : Integer) : Boolean;
 
-function ptc_update(ABuffer: Pointer): Boolean;
-begin
-  try
-    Console.Load(ABuffer, Width, Height, Width*4, Format, Palette);
-    Result := true;
-  except
-    on error: TPTCError do
-      Result := false;
-  end;
-end;
+Begin
+  If console = Nil Then
+    console := TPTCConsole.Create;
+  If format = Nil Then
+    format := TPTCFormat.Create(32, $FF0000, $FF00, $FF);
+  If palette = Nil Then
+    palette := TPTCPalette.Create;
+  console.open(title, width, height, format);
+  w := width;
+  h := height;
+  ptc_open := True;
+End;
 
-procedure ptc_close;
-begin
-  if Assigned(Console) then
-    Console.Close;
-  FreeAndNil(Console);
-  FreeAndNil(Format);
-  FreeAndNil(Palette);
-end;
+Function ptc_update(buffer : Pointer) : Boolean;
 
-finalization
+Begin
+  console.load(buffer, w, h, w*4, format, palette);
+  ptc_update := True;
+End;
+
+Procedure ptc_close;
+
+Begin
+  If console <> Nil Then
+    console.close;
+  FreeAndNil(console);
+  FreeAndNil(format);
+  FreeAndNil(palette);
+End;
+
+Initialization
+  console := Nil;
+Finalization
   ptc_close;
-end.
+End.

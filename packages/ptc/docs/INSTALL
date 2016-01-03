@@ -1,0 +1,36 @@
+The supported platforms are Linux (on IA-32 and AMD64), Windows and DOS.
+FreeBSD and NetBSD compiles and runs fine on the SourceForge compilefarm, but
+I haven't tested it on a local machine, so any feedback (+patches) is welcome.
+(At least the basic XImage mode works, XShm and dga are not tested since they
+need to run on the same machine as the X server, so I can't test them on the
+SourceForge compilefarm.)
+
+You need Free Pascal Compiler version 2.0.0. Since there's no DOS version of
+2.0.0, you need 1.0.10 if you are going to use the DOS version of the library.
+Please note that DOS is the only platform where the 1.0.10 compiler is
+supported.
+
+ - Compiling the library:
+Before starting make sure the FPCDIR environment variable is set correctly.
+For example: (windows, fpc version 2.0.0, default install dir)
+
+  set FPCDIR=c:\fpc\2.0.0
+
+To compile the library type:
+
+  fpcmake -r
+  make
+
+Then you can do:
+
+  make examples
+
+And then try to run the programs in the demos/ and examples/ dirs.
+
+If compiling the library fails, make sure you're using the GNU make and not
+some other make! (e.g. GNU make is called 'gmake' on FreeBSD and NetBSD)
+
+'make -v' should report:
+  GNU Make version x.xx.x, ... etc. :)
+
+On Windows and DOS this is the 'make' that comes with Free Pascal.

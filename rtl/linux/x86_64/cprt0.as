@@ -50,8 +50,28 @@ _start:
         movq    %rsp,(%rax)   /* argv starts just at the current stack top.  */
         leaq    8(,%rsi,8),%rax
         addq    %rsp,%rax
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         movq    operatingsystem_parameter_envp@GOTPCREL(%rip),%rcx
         movq    %rax,(%rcx)
+=======
+        movq    operatingsystem_parameter_envp@GOTPCREL(%rip),%rsi
+        movq    %rax,(%rsi)
+>>>>>>> graemeg/cpstrnew
+=======
+        movq    operatingsystem_parameter_envp@GOTPCREL(%rip),%rsi
+        movq    %rax,(%rsi)
+>>>>>>> graemeg/cpstrnew
+=======
+        movq    operatingsystem_parameter_envp@GOTPCREL(%rip),%rsi
+        movq    %rax,(%rsi)
+>>>>>>> graemeg/cpstrnew
+=======
+        movq    operatingsystem_parameter_envp@GOTPCREL(%rip),%rsi
+        movq    %rax,(%rsi)
+>>>>>>> origin/cpstrnew
 
 	/* Align the stack to a 16 byte boundary to follow the ABI.  */
 	andq  $~15, %rsp
@@ -63,8 +83,28 @@ _start:
 	pushq %rsp
 
 	/* Pass address of our own entry points to .fini and .init.  */
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	movq __libc_csu_init@GOTPCREL(%rip), %rcx
 	movq __libc_csu_fini@GOTPCREL(%rip), %r8
+=======
+	movq _init_dummy@GOTPCREL(%rip), %rcx
+	movq _fini_dummy@GOTPCREL(%rip), %r8
+>>>>>>> graemeg/cpstrnew
+=======
+	movq _init_dummy@GOTPCREL(%rip), %rcx
+	movq _fini_dummy@GOTPCREL(%rip), %r8
+>>>>>>> graemeg/cpstrnew
+=======
+	movq _init_dummy@GOTPCREL(%rip), %rcx
+	movq _fini_dummy@GOTPCREL(%rip), %r8
+>>>>>>> graemeg/cpstrnew
+=======
+	movq _init_dummy@GOTPCREL(%rip), %rcx
+	movq _fini_dummy@GOTPCREL(%rip), %r8
+>>>>>>> origin/cpstrnew
 
 	movq main_stub@GOTPCREL(%rip), %rdi
 
@@ -104,7 +144,27 @@ main_stub:
         .globl _haltproc
         .type _haltproc,@function
 _haltproc:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         movl    %edi,%eax
+=======
+        movq    operatingsystem_result@GOTPCREL(%rip),%rax
+        movzwl  (%rax),%eax
+>>>>>>> graemeg/cpstrnew
+=======
+        movq    operatingsystem_result@GOTPCREL(%rip),%rax
+        movzwl  (%rax),%eax
+>>>>>>> graemeg/cpstrnew
+=======
+        movq    operatingsystem_result@GOTPCREL(%rip),%rax
+        movzwl  (%rax),%eax
+>>>>>>> graemeg/cpstrnew
+=======
+        movq    operatingsystem_result@GOTPCREL(%rip),%rax
+        movzwl  (%rax),%eax
+>>>>>>> origin/cpstrnew
 
         /* return to libc */
 	movq    ___fpc_ret_rbp@GOTPCREL(%rip),%rcx
@@ -114,6 +174,39 @@ _haltproc:
         pushq    %rdx
 	ret
 	.size   _haltproc,.-_haltproc
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+	.globl _init_dummy
+        .type   _init_dummy, @function
+_init_dummy:
+        ret
+	.size   _init_dummy,.-_init_dummy
+
+	.globl  _fini_dummy
+        .type   _fini_dummy, @function
+_fini_dummy:
+        ret
+	.size   _fini_dummy,.-_fini_dummy
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 /* Define a symbol for the first piece of initialized data.  */
 	.data

@@ -52,7 +52,13 @@ interface
          cl3_count,
          cl4_count,
          cl5_count,
+<<<<<<< HEAD
+<<<<<<< HEAD
          cl6_count,
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
          coper_count : integer; { should be signed }
          ordinal_distance : double;
          invalid     : boolean;
@@ -70,13 +76,57 @@ interface
         FParaNode   : tnode;
         FParaLength : smallint;
         FAllowVariant : boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         procedure collect_overloads_in_struct(structdef:tabstractrecorddef;ProcdefOverloadList:TFPObjectList;searchhelpers,anoninherited:boolean;spezcontext:tspecializationcontext);
         procedure collect_overloads_in_units(ProcdefOverloadList:TFPObjectList; objcidcall,explicitunit: boolean;spezcontext:tspecializationcontext);
         procedure create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit,searchhelpers,anoninherited:boolean;spezcontext:tspecializationcontext);
         function  proc_add(st:tsymtable;pd:tprocdef;objcidcall: boolean):pcandidate;
         function  maybe_specialize(var pd:tprocdef;spezcontext:tspecializationcontext):boolean;
+=======
+        function proc_add(ps:tprocsym;pd:tprocdef):pcandidate;
+>>>>>>> graemeg/fixes_2_2
+=======
+        function proc_add(ps:tprocsym;pd:tprocdef):pcandidate;
+>>>>>>> origin/fixes_2_2
       public
         constructor create(sym:tprocsym;st:TSymtable;ppn:tnode;ignorevisibility,allowdefaultparas,objcidcall,explicitunit,searchhelpers,anoninherited:boolean;spezcontext:tspecializationcontext);
+=======
+        procedure collect_overloads_in_struct(structdef:tabstractrecorddef;ProcdefOverloadList:TFPObjectList);
+        procedure collect_overloads_in_units(ProcdefOverloadList:TFPObjectList; objcidcall,explicitunit: boolean);
+        procedure create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+        function  proc_add(st:tsymtable;pd:tprocdef;objcidcall: boolean):pcandidate;
+      public
+        constructor create(sym:tprocsym;st:TSymtable;ppn:tnode;ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+        procedure collect_overloads_in_struct(structdef:tabstractrecorddef;ProcdefOverloadList:TFPObjectList);
+        procedure collect_overloads_in_units(ProcdefOverloadList:TFPObjectList; objcidcall,explicitunit: boolean);
+        procedure create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+        function  proc_add(st:tsymtable;pd:tprocdef;objcidcall: boolean):pcandidate;
+      public
+        constructor create(sym:tprocsym;st:TSymtable;ppn:tnode;ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+        procedure collect_overloads_in_struct(structdef:tabstractrecorddef;ProcdefOverloadList:TFPObjectList);
+        procedure collect_overloads_in_units(ProcdefOverloadList:TFPObjectList; objcidcall,explicitunit: boolean);
+        procedure create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+        function  proc_add(st:tsymtable;pd:tprocdef;objcidcall: boolean):pcandidate;
+      public
+        constructor create(sym:tprocsym;st:TSymtable;ppn:tnode;ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+        procedure collect_overloads_in_struct(structdef:tabstractrecorddef;ProcdefOverloadList:TFPObjectList);
+        procedure collect_overloads_in_units(ProcdefOverloadList:TFPObjectList; objcidcall,explicitunit: boolean);
+        procedure create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+        function  proc_add(st:tsymtable;pd:tprocdef;objcidcall: boolean):pcandidate;
+      public
+        constructor create(sym:tprocsym;st:TSymtable;ppn:tnode;ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> origin/cpstrnew
         constructor create_operator(op:ttoken;ppn:tnode);
         destructor destroy;override;
         procedure list(all:boolean);
@@ -99,6 +149,8 @@ interface
          ra_addr_taken);
       tregableinfoflags = set of tregableinfoflag;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$i compinnr.inc}
     const
       tok2nodes=27;
@@ -130,6 +182,37 @@ interface
         (tok:_NE         ;nod:unequaln;inr:-1;op_overloading_supported:true),  { binary overloading supported }
         (tok:_OP_INC     ;nod:inlinen;inr:in_inc_x;op_overloading_supported:true),{ unary overloading supported }
         (tok:_OP_DEC     ;nod:inlinen;inr:in_dec_x;op_overloading_supported:true) { unary overloading supported }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    const
+      tok2nodes=24;
+      tok2node:array[1..tok2nodes] of ttok2noderec=(
+        (tok:_PLUS    ;nod:addn;op_overloading_supported:true),      { binary overloading supported }
+        (tok:_MINUS   ;nod:subn;op_overloading_supported:true),      { binary and unary overloading supported }
+        (tok:_STAR    ;nod:muln;op_overloading_supported:true),      { binary overloading supported }
+        (tok:_SLASH   ;nod:slashn;op_overloading_supported:true),    { binary overloading supported }
+        (tok:_EQUAL   ;nod:equaln;op_overloading_supported:true),    { binary overloading supported }
+        (tok:_GT      ;nod:gtn;op_overloading_supported:true),       { binary overloading supported }
+        (tok:_LT      ;nod:ltn;op_overloading_supported:true),       { binary overloading supported }
+        (tok:_GTE     ;nod:gten;op_overloading_supported:true),      { binary overloading supported }
+        (tok:_LTE     ;nod:lten;op_overloading_supported:true),      { binary overloading supported }
+        (tok:_SYMDIF  ;nod:symdifn;op_overloading_supported:true),   { binary overloading supported }
+        (tok:_STARSTAR;nod:starstarn;op_overloading_supported:true), { binary overloading supported }
+        (tok:_OP_AS     ;nod:asn;op_overloading_supported:false),     { binary overloading NOT supported }
+        (tok:_OP_IN     ;nod:inn;op_overloading_supported:false),     { binary overloading NOT supported }
+        (tok:_OP_IS     ;nod:isn;op_overloading_supported:false),     { binary overloading NOT supported }
+        (tok:_OP_OR     ;nod:orn;op_overloading_supported:true),     { binary overloading supported }
+        (tok:_OP_AND    ;nod:andn;op_overloading_supported:true),    { binary overloading supported }
+        (tok:_OP_DIV    ;nod:divn;op_overloading_supported:true),    { binary overloading supported }
+        (tok:_OP_NOT    ;nod:notn;op_overloading_supported:true),    { unary overloading supported }
+        (tok:_OP_MOD    ;nod:modn;op_overloading_supported:true),    { binary overloading supported }
+        (tok:_OP_SHL    ;nod:shln;op_overloading_supported:true),    { binary overloading supported }
+        (tok:_OP_SHR    ;nod:shrn;op_overloading_supported:true),    { binary overloading supported }
+        (tok:_OP_XOR    ;nod:xorn;op_overloading_supported:true),    { binary overloading supported }
+        (tok:_ASSIGNMENT;nod:assignn;op_overloading_supported:true), { unary overloading supported }
+        (tok:_UNEQUAL ;nod:unequaln;op_overloading_supported:false)   { binary overloading NOT supported  overload = instead }
+>>>>>>> graemeg/fixes_2_2
       );
 
       { true, if we are parsing stuff which allows array constructors }
@@ -145,6 +228,13 @@ interface
 
     { Register Allocation }
     procedure make_not_regable(p : tnode; how: tregableinfoflags);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    procedure calcregisters(p : tbinarynode;r32,fpu,mmx : word);
+>>>>>>> graemeg/fixes_2_2
 
     { procvar handling }
     function  is_proc2procvar_load(p:tnode;out realprocdef:tprocdef):boolean;
@@ -174,6 +264,22 @@ interface
 
     function allowenumop(nt:tnodetype):boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+    procedure check_hints(const srsym: tsym; const symoptions: tsymoptions; const deprecatedmsg : pshortstring);
+
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure check_hints(const srsym: tsym; const symoptions: tsymoptions; const deprecatedmsg : pshortstring);
+
+>>>>>>> origin/cpstrnew
     procedure check_ranges(const location: tfileposinfo; source: tnode; destdef: tdef);
 
     { returns whether the def may be used in the Default() intrinsic; static
@@ -375,6 +481,7 @@ implementation
               end;
             pointerdef :
               begin
+<<<<<<< HEAD
                 { DI permits pointer arithmetic for pointer + pointer, pointer -
                   integer, pointer - pointer, but not for pointer + pointer.
                   The last case is only valid in DI when both sides are
@@ -424,6 +531,27 @@ implementation
                                (treetyp in identity_operators)
                              )
                            );
+=======
+                if ((rd.typ in [orddef,enumdef,pointerdef,classrefdef,procvardef]) or
+                    is_implicit_pointer_object_type(rd)) then
+                 begin
+                   allowed:=false;
+                   exit;
+                 end;
+
+                { don't allow pchar+string }
+                if (is_pchar(ld) or is_pwidechar(ld)) and
+                   ((rd.typ=stringdef) or
+                    is_pchar(rd) or
+                    is_pwidechar(rd) or
+                    is_chararray(rd) or
+                    is_widechararray(rd)) then
+                 begin
+                   allowed:=false;
+                   exit;
+                 end;
+                allowed:=true;
+>>>>>>> graemeg/cpstrnew
               end;
             arraydef :
               begin
@@ -479,6 +607,10 @@ implementation
             objectdef :
               begin
                 { <> and = are defined for implicit pointer object types }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 allowed:=not (
                            is_implicit_pointer_object_type(ld) and
                            (
@@ -492,6 +624,21 @@ implementation
                            ) and
                            (treetyp in identity_operators)
                          );
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                if (treetyp in [equaln,unequaln]) and
+                   is_implicit_pointer_object_type(ld) then
+                 begin
+                   allowed:=false;
+                   exit;
+                 end;
+                allowed:=true;
+>>>>>>> graemeg/cpstrnew
               end;
             stringdef :
               begin
@@ -807,7 +954,23 @@ implementation
 
             { for commutative operators we can swap arguments and try again }
             if (candidates.count=0) and
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                not(optoken in non_commutative_op_tokens) then
+=======
+               not(optoken in [_OP_SHL,_OP_SHR,_OP_DIV,_OP_MOD,_STARSTAR,_SLASH,_MINUS]) then
+>>>>>>> graemeg/cpstrnew
+=======
+               not(optoken in [_OP_SHL,_OP_SHR,_OP_DIV,_OP_MOD,_STARSTAR,_SLASH,_MINUS]) then
+>>>>>>> graemeg/cpstrnew
+=======
+               not(optoken in [_OP_SHL,_OP_SHR,_OP_DIV,_OP_MOD,_STARSTAR,_SLASH,_MINUS]) then
+>>>>>>> graemeg/cpstrnew
+=======
+               not(optoken in [_OP_SHL,_OP_SHR,_OP_DIV,_OP_MOD,_STARSTAR,_SLASH,_MINUS]) then
+>>>>>>> origin/cpstrnew
               begin
                 candidates.free;
                 reverseparameters(ppn);
@@ -831,8 +994,20 @@ implementation
               begin
                 CGMessage(parser_e_operator_not_overloaded);
                 candidates.free;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 ppn.free;
                 ppn:=nil;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                 exit;
               end;
 
@@ -852,8 +1027,20 @@ implementation
               begin
                 CGMessage3(parser_e_operator_not_overloaded_3,ld.typename,arraytokeninfo[optoken].str,rd.typename);
                 candidates.free;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 ppn.free;
                 ppn:=nil;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                 exit;
               end;
 
@@ -941,7 +1128,19 @@ implementation
         if (cand_cnt=0) and (optoken=_NE) then
           begin
             ppn.free;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             ppn:=nil;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
             operpd:=nil;
             optoken:=_EQ;
             cand_cnt:=search_operator(optoken,true);
@@ -978,9 +1177,34 @@ implementation
 
     { marks an lvalue as "unregable" }
     procedure make_not_regable_intern(p : tnode; how: tregableinfoflags; records_only: boolean);
+<<<<<<< HEAD
+<<<<<<< HEAD
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if ra_addr_taken in how then
           include(p.flags,nf_address_taken);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      var
+        update_regable: boolean;
+      begin
+        update_regable:=true;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         repeat
           case p.nodetype of
             subscriptn:
@@ -990,6 +1214,8 @@ implementation
               end;
             vecn:
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 { if there's an implicit dereference, we can stop (just like
                   when there is an actual derefn) }
                 if ((tvecnode(p).left.resultdef.typ=arraydef) and
@@ -1006,6 +1232,28 @@ implementation
                  if (ttypeconvnode(p).convtype=tc_pointer_2_array) then
                    break;
                  if (ttypeconvnode(p).resultdef.typ=recorddef) then
+=======
+                { arrays are currently never regable and pointers indexed like }
+                { arrays do not have be made unregable, but we do need to      }
+                { propagate the ra_addr_taken info                             }                                          
+                update_regable:=false;
+                p:=tvecnode(p).left;
+              end;
+            typeconvn :
+               begin
+                 if (ttypeconvnode(p).resultdef.typ = recorddef) then
+>>>>>>> graemeg/fixes_2_2
+=======
+                { arrays are currently never regable and pointers indexed like }
+                { arrays do not have be made unregable, but we do need to      }
+                { propagate the ra_addr_taken info                             }                                          
+                update_regable:=false;
+                p:=tvecnode(p).left;
+              end;
+            typeconvn :
+               begin
+                 if (ttypeconvnode(p).resultdef.typ = recorddef) then
+>>>>>>> origin/fixes_2_2
                    records_only:=false;
                  p:=ttypeconvnode(p).left;
                end;
@@ -1015,7 +1263,17 @@ implementation
                   begin
                     if (ra_addr_taken in how) then
                       tabstractvarsym(tloadnode(p).symtableentry).addr_taken:=true;
+<<<<<<< HEAD
+<<<<<<< HEAD
                     if (tabstractvarsym(tloadnode(p).symtableentry).varregable <> vr_none) and
+=======
+                    if update_regable and
+                       (tabstractvarsym(tloadnode(p).symtableentry).varregable <> vr_none) and
+>>>>>>> graemeg/fixes_2_2
+=======
+                    if update_regable and
+                       (tabstractvarsym(tloadnode(p).symtableentry).varregable <> vr_none) and
+>>>>>>> origin/fixes_2_2
                        ((not records_only) or
                         (tabstractvarsym(tloadnode(p).symtableentry).vardef.typ = recorddef)) then
                       if (tloadnode(p).symtableentry.typ = paravarsym) and
@@ -1030,7 +1288,17 @@ implementation
               begin
                 if (ra_addr_taken in how) then
                   include(ttemprefnode(p).tempinfo^.flags,ti_addr_taken);
+<<<<<<< HEAD
+<<<<<<< HEAD
                 if (ti_may_be_in_reg in ttemprefnode(p).tempinfo^.flags) and
+=======
+                if update_regable and
+                   (ti_may_be_in_reg in ttemprefnode(p).tempinfo^.flags) and
+>>>>>>> graemeg/fixes_2_2
+=======
+                if update_regable and
+                   (ti_may_be_in_reg in ttemprefnode(p).tempinfo^.flags) and
+>>>>>>> origin/fixes_2_2
                    ((not records_only) or
                     (ttemprefnode(p).tempinfo^.typedef.typ = recorddef)) then
                   exclude(ttemprefnode(p).tempinfo^.flags,ti_may_be_in_reg);
@@ -1195,6 +1463,7 @@ implementation
              loadn :
                begin
                  if (tloadnode(p).symtableentry.typ in [localvarsym,paravarsym,staticvarsym]) then
+<<<<<<< HEAD
                    begin
                      hsym:=tabstractvarsym(tloadnode(p).symtableentry);
                      { this check requires proper data flow analysis... }
@@ -1257,6 +1526,50 @@ implementation
                      if not(nf_write in tloadnode(p).flags) then
                        include(tloadnode(p).flags,nf_modify);
                  end;
+=======
+                  begin
+                    hsym:=tabstractvarsym(tloadnode(p).symtableentry);
+                    if (vsf_must_be_valid in varstateflags) and
+                       (hsym.varstate in [vs_declared,vs_read_not_warned,vs_referred_not_inited]) then
+                      begin
+                        { Give warning/note for uninitialized locals }
+                        if assigned(hsym.owner) and
+                           not(vo_is_external in hsym.varoptions) and
+                           (hsym.owner.symtabletype in [parasymtable,localsymtable,staticsymtable]) and
+                           ((hsym.owner=current_procinfo.procdef.localst) or
+                            (hsym.owner=current_procinfo.procdef.parast)) then
+                          begin
+                            if (vo_is_funcret in hsym.varoptions) then
+                              begin
+                                if (vsf_use_hints in varstateflags) then
+                                  CGMessagePos(p.fileinfo,sym_h_function_result_uninitialized)
+                                else
+                                  CGMessagePos(p.fileinfo,sym_w_function_result_uninitialized)
+                              end
+                            else
+                              begin
+                                if tloadnode(p).symtable.symtabletype=localsymtable then
+                                  begin
+                                    if (vsf_use_hints in varstateflags) then
+                                      CGMessagePos1(p.fileinfo,sym_h_uninitialized_local_variable,hsym.realname)
+                                    else
+                                      CGMessagePos1(p.fileinfo,sym_w_uninitialized_local_variable,hsym.realname);
+                                  end
+                                else
+                                  begin
+                                    if (vsf_use_hints in varstateflags) then
+                                      CGMessagePos1(p.fileinfo,sym_h_uninitialized_variable,hsym.realname)
+                                    else
+                                      CGMessagePos1(p.fileinfo,sym_w_uninitialized_variable,hsym.realname);
+                                  end;
+                              end;
+                          end
+                        else if (newstate = vs_read) then
+                          newstate := vs_read_not_warned;
+                      end;
+                    hsym.varstate := vstrans[hsym.varstate,newstate];
+                  end;
+>>>>>>> graemeg/fixes_2_2
                  break;
                end;
              callparan :
@@ -1307,6 +1620,8 @@ implementation
         todef    : tdef;
         errmsg,
         temp     : longint;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
         function constaccessok(vs: tabstractvarsym): boolean;
           begin
@@ -1350,6 +1665,10 @@ implementation
           end;
 
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       begin
         if valid_const in opts then
           errmsg:=type_e_variable_id_expected
@@ -1505,6 +1824,7 @@ implementation
                         ((fromdef.typ=pointerdef) and (todef.typ=arraydef)) or
                         (def_is_related(fromdef,todef))) then
                   begin
+<<<<<<< HEAD
                     if (fromdef.size<>todef.size) then
                       begin
                         { in TP it is allowed to typecast to smaller types. But the variable can't
@@ -1519,10 +1839,39 @@ implementation
 {$ifdef llvm}
                     { we can never typecast a non-memory value on the assignment
                       side in llvm }
+=======
+                    { in TP it is allowed to typecast to smaller types. But the variable can't
+                      be in a register }
+                    if (m_tp7 in current_settings.modeswitches) or
+                       (todef.size<fromdef.size) then
+                      make_not_regable(hp,[ra_addr_regable])
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                     else
                       make_not_regable(hp,[ra_addr_regable])
 {$endif llvm}
                   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                  
+                 { when typecasting to the same size but changing the signdness of
+                   an ordinal, the value cannot be in a register if it's < sizeof(aint).
+                   The reason is that a tc_int_2_int type conversion changing the sign
+                   of a such value in a register also has to modify this register (JM)   }
+                 if is_ordinal(fromdef) and is_ordinal(todef) and
+                    (fromdef.size=todef.size) and
+                    (fromdef.size<sizeof(aint)) and
+                    (is_signed(fromdef) xor is_signed(todef)) then
+                   make_not_regable(hp,[ra_addr_regable]);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
                  { don't allow assignments to typeconvs that need special code }
                  if not(gotsubscript or gotvec or gotderef) and
@@ -1753,6 +2102,7 @@ implementation
                        stringdef :
                          gotstring:=true;
                      end;
+<<<<<<< HEAD
                      { 1. if it returns a pointer and we've found a deref,
                        2. if it returns a class or record and a subscription or with is found
                        3. string is returned }
@@ -1776,6 +2126,35 @@ implementation
                      mayberesettypeconvs;
                      exit;
                    end
+=======
+                   pointerdef :
+                     gotpointer:=true;
+                   objectdef :
+                     gotclass:=is_implicit_pointer_object_type(hp.resultdef);
+                   recorddef, { handle record like class it needs a subscription }
+                   classrefdef :
+                     gotclass:=true;
+                   stringdef :
+                     gotstring:=true;
+                 end;
+                 { 1. if it returns a pointer and we've found a deref,
+                   2. if it returns a class or record and a subscription or with is found
+                   3. string is returned }
+                 if (gotstring and gotvec) or
+                    (gotpointer and gotderef) or
+                    (gotclass and gotsubscript) then
+                  result:=true
+                 else
+                 { Temp strings are stored in memory, for compatibility with
+                   delphi only }
+                   if (m_delphi in current_settings.modeswitches) and
+                      (valid_addr in opts) and
+                      (hp.resultdef.typ=stringdef) then
+                     result:=true
+                 else
+                   if ([valid_const,valid_addr] * opts = [valid_const]) then
+                     result:=true
+>>>>>>> graemeg/cpstrnew
                  else
                    begin
                      hp2:=tblocknode(hp).statements;
@@ -1800,7 +2179,23 @@ implementation
                begin
                  if ((valid_const in opts) and
                      (tinlinenode(hp).inlinenumber in [in_typeof_x])) or
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                     (tinlinenode(hp).inlinenumber in [in_unaligned_x,in_aligned_x]) then
+=======
+                    (tinlinenode(hp).inlinenumber in [in_unaligned_x]) then
+>>>>>>> graemeg/cpstrnew
+=======
+                    (tinlinenode(hp).inlinenumber in [in_unaligned_x]) then
+>>>>>>> graemeg/cpstrnew
+=======
+                    (tinlinenode(hp).inlinenumber in [in_unaligned_x]) then
+>>>>>>> graemeg/cpstrnew
+=======
+                    (tinlinenode(hp).inlinenumber in [in_unaligned_x]) then
+>>>>>>> origin/cpstrnew
                    result:=true
                  else
                    if report_errors then
@@ -1845,7 +2240,23 @@ implementation
                            exit;
                          end;
                        { read-only variable? }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                        if (tabstractvarsym(tloadnode(hp).symtableentry).varspez in [vs_const,vs_constref,vs_final]) then
+=======
+                       if (tabstractvarsym(tloadnode(hp).symtableentry).varspez in [vs_const,vs_constref]) then
+>>>>>>> graemeg/cpstrnew
+=======
+                       if (tabstractvarsym(tloadnode(hp).symtableentry).varspez in [vs_const,vs_constref]) then
+>>>>>>> graemeg/cpstrnew
+=======
+                       if (tabstractvarsym(tloadnode(hp).symtableentry).varspez in [vs_const,vs_constref]) then
+>>>>>>> graemeg/cpstrnew
+=======
+                       if (tabstractvarsym(tloadnode(hp).symtableentry).varspez in [vs_const,vs_constref]) then
+>>>>>>> origin/cpstrnew
                         begin
                           result:=constaccessok(tabstractvarsym(tloadnode(hp).symtableentry));
                           mayberesettypeconvs;
@@ -2113,7 +2524,23 @@ implementation
                            TCallCandidates
 ****************************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     constructor tcallcandidates.create(sym:tprocsym;st:TSymtable;ppn:tnode;ignorevisibility,allowdefaultparas,objcidcall,explicitunit,searchhelpers,anoninherited:boolean;spezcontext:tspecializationcontext);
+=======
+    constructor tcallcandidates.create(sym:tprocsym;st:TSymtable;ppn:tnode;ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+    constructor tcallcandidates.create(sym:tprocsym;st:TSymtable;ppn:tnode;ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+    constructor tcallcandidates.create(sym:tprocsym;st:TSymtable;ppn:tnode;ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+    constructor tcallcandidates.create(sym:tprocsym;st:TSymtable;ppn:tnode;ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> origin/cpstrnew
       begin
         if not assigned(sym) then
           internalerror(200411015);
@@ -2121,8 +2548,24 @@ implementation
         FProcsym:=sym;
         FProcsymtable:=st;
         FParanode:=ppn;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         FIgnoredCandidateProcs:=tfpobjectlist.create(false);
         create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit,searchhelpers,anoninherited,spezcontext);
+=======
+        create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit);
+>>>>>>> graemeg/cpstrnew
+=======
+        create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit);
+>>>>>>> graemeg/cpstrnew
+=======
+        create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit);
+>>>>>>> graemeg/cpstrnew
+=======
+        create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit);
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -2132,8 +2575,24 @@ implementation
         FProcsym:=nil;
         FProcsymtable:=nil;
         FParanode:=ppn;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         FIgnoredCandidateProcs:=tfpobjectlist.create(false);
         create_candidate_list(false,false,false,false,false,false,nil);
+=======
+        create_candidate_list(false,false,false,false);
+>>>>>>> graemeg/cpstrnew
+=======
+        create_candidate_list(false,false,false,false);
+>>>>>>> graemeg/cpstrnew
+=======
+        create_candidate_list(false,false,false,false);
+>>>>>>> graemeg/cpstrnew
+=======
+        create_candidate_list(false,false,false,false);
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -2156,6 +2615,10 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure tcallcandidates.collect_overloads_in_struct(structdef:tabstractrecorddef;ProcdefOverloadList:TFPObjectList;searchhelpers,anoninherited:boolean;spezcontext:tspecializationcontext);
 
       function processprocsym(srsym:tprocsym; out foundanything: boolean):boolean;
@@ -2206,6 +2669,18 @@ implementation
             end;
         end;
 
+=======
+    procedure tcallcandidates.collect_overloads_in_struct(structdef:tabstractrecorddef;ProcdefOverloadList:TFPObjectList);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure tcallcandidates.collect_overloads_in_struct(structdef:tabstractrecorddef;ProcdefOverloadList:TFPObjectList);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure tcallcandidates.collect_overloads_in_struct(structdef:tabstractrecorddef;ProcdefOverloadList:TFPObjectList);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure tcallcandidates.collect_overloads_in_struct(structdef:tabstractrecorddef;ProcdefOverloadList:TFPObjectList);
+>>>>>>> origin/cpstrnew
       var
         srsym      : tsym;
         hashedid   : THashedIDString;
@@ -2220,11 +2695,43 @@ implementation
         hasoverload:=false;
         while assigned(structdef) do
          begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
            { first search in helpers for this type }
            if (is_class(structdef) or is_record(structdef))
                and searchhelpers then
              begin
+<<<<<<< HEAD
                if search_last_objectpascal_helper(structdef,nil,helperdef) then
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+           srsym:=tprocsym(structdef.symtable.FindWithHash(hashedid));
+           if assigned(srsym) and
+              { Delphi allows hiding a property by a procedure with the same name }
+              (srsym.typ=procsym) then
+             begin
+<<<<<<< HEAD
+=======
+           srsym:=tprocsym(structdef.symtable.FindWithHash(hashedid));
+           if assigned(srsym) and
+              { Delphi allows hiding a property by a procedure with the same name }
+              (srsym.typ=procsym) then
+             begin
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+               { Store first procsym found }
+               if not assigned(FProcsym) then
+                 FProcsym:=tprocsym(srsym);
+               { add all definitions }
+               hasoverload:=false;
+               for j:=0 to tprocsym(srsym).ProcdefList.Count-1 do
+>>>>>>> graemeg/cpstrnew
                  begin
                    srsym:=nil;
                    while assigned(helperdef) do
@@ -2239,6 +2746,82 @@ implementation
                            if foundanything and
                               not hasoverload then
                              break;
+=======
+               { we have at least one procedure that is visible }
+               inc(FProcvisiblecnt);
+               { only when the # of parameter are supported by the
+                 procedure }
+               if (FParalength>=pd.minparacount) and
+                  ((po_varargs in pd.procoptions) or { varargs }
+                   (FParalength<=pd.maxparacount)) then
+                 proc_add(sym,pd);
+             end;
+          end;
+
+        { remember if the procedure is declared with the overload directive,
+          it's information is still needed also after all procs are removed }
+        has_overload_directive:=(po_overload in tprocdef(sym.ProcdefList[0]).procoptions);
+
+        { when the definition has overload directive set, we search for
+          overloaded definitions in the symtablestack. The found
+          entries are only added to the procs list and not the procsym, because
+          the list can change in every situation }
+        if has_overload_directive and
+           (sym.owner.symtabletype<>ObjectSymtable) then
+          begin
+            srsymtable:=sym.owner;
+            checkstack:=symtablestack.stack;
+            while assigned(checkstack) and
+                  (checkstack^.symtable<>srsymtable) do
+              checkstack:=checkstack^.next;
+            { we've already processed the current symtable, start with
+              the next symtable in the stack }
+            if assigned(checkstack) then
+              checkstack:=checkstack^.next;
+            hashedid.id:=sym.name;
+            while assigned(checkstack) do
+             begin
+               srsymtable:=checkstack^.symtable;
+               if srsymtable.symtabletype in [localsymtable,staticsymtable,globalsymtable] then
+                begin
+                  srprocsym:=tprocsym(srsymtable.FindWithHash(hashedid));
+                  if assigned(srprocsym) and
+                     (srprocsym.typ=procsym) then
+                   begin
+                     { if this visible procedure doesn't have overload we can stop
+                       searching }
+                     if not(po_overload in tprocdef(srprocsym.ProcdefList[0]).procoptions) and
+                        tprocdef(srprocsym.ProcdefList[0]).is_visible_for_object(topclassh,nil) then
+                      break;
+                     { process all overloaded definitions }
+                     for j:=0 to srprocsym.ProcdefList.Count-1 do
+                      begin
+                        pd:=tprocdef(srprocsym.ProcdefList[j]);
+                        { only visible procedures need to be added }
+                        if pd.is_visible_for_object(topclassh,nil) then
+                          begin
+                            { only when the # of parameter are supported by the
+                              procedure }
+                            if (FParalength>=pd.minparacount) and
+                               ((po_varargs in pd.procoptions) or { varargs }
+                               (FParalength<=pd.maxparacount)) then
+                             begin
+                               found:=false;
+                               hp:=FProcs;
+                               while assigned(hp) do
+                                begin
+                                  { Only compare visible parameters for the user }
+                                  if compare_paras(hp^.data.paras,pd.paras,cp_value_equal_const,[cpo_ignorehidden])>=te_equal then
+                                   begin
+                                     found:=true;
+                                     break;
+                                   end;
+                                  hp:=hp^.next;
+                                end;
+                               if not found then
+                                 proc_add(srprocsym,pd);
+                             end;
+>>>>>>> graemeg/fixes_2_2
                          end;
                        helperdef:=helperdef.childof;
                      end;
@@ -2283,7 +2866,23 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure tcallcandidates.collect_overloads_in_units(ProcdefOverloadList:TFPObjectList; objcidcall,explicitunit: boolean;spezcontext:tspecializationcontext);
+=======
+    procedure tcallcandidates.collect_overloads_in_units(ProcdefOverloadList:TFPObjectList; objcidcall,explicitunit: boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure tcallcandidates.collect_overloads_in_units(ProcdefOverloadList:TFPObjectList; objcidcall,explicitunit: boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure tcallcandidates.collect_overloads_in_units(ProcdefOverloadList:TFPObjectList; objcidcall,explicitunit: boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure tcallcandidates.collect_overloads_in_units(ProcdefOverloadList:TFPObjectList; objcidcall,explicitunit: boolean);
+>>>>>>> origin/cpstrnew
       var
         j          : integer;
         pd         : tprocdef;
@@ -2324,12 +2923,25 @@ implementation
                (FProcsymtable.symtabletype in [globalsymtable,staticsymtable]) and
                (srsymtable.moduleid<>FProcsymtable.moduleid) then
               break;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             if (srsymtable.symtabletype in [localsymtable,staticsymtable,globalsymtable]) and
                 (
                   (FOperator=NOTOKEN) or
                   (sto_has_operator in srsymtable.tableoptions)
                 )
                then
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+            if srsymtable.symtabletype in [localsymtable,staticsymtable,globalsymtable] then
+>>>>>>> graemeg/cpstrnew
               begin
                 srsym:=tsym(srsymtable.FindWithHash(hashedid));
                 if assigned(srsym) and
@@ -2344,8 +2956,28 @@ implementation
                           continue;
                         if (po_ignore_for_overload_resolution in pd.procoptions) then
                           begin
+<<<<<<< HEAD
                             FIgnoredCandidateProcs.add(pd);
                             continue;
+=======
+                            found:=false;
+                            hp:=FProcs;
+                            while assigned(hp) do
+                              begin
+                                { Only compare visible parameters for the user }
+                                if compare_paras(hp^.data.paras,pd.paras,cp_value_equal_const,[cpo_ignorehidden])>=te_equal then
+                                  begin
+                                    found:=true;
+                                    break;
+                                  end;
+                                hp:=hp^.next;
+                              end;
+                            if not found then
+                              proc_add(srprocsym,pd);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                           end;
                         { Store first procsym found }
                         if not assigned(FProcsym) then
@@ -2366,14 +2998,43 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure tcallcandidates.create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit,searchhelpers,anoninherited:boolean;spezcontext:tspecializationcontext);
+=======
+    procedure tcallcandidates.create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure tcallcandidates.create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure tcallcandidates.create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure tcallcandidates.create_candidate_list(ignorevisibility,allowdefaultparas,objcidcall,explicitunit:boolean);
+>>>>>>> origin/cpstrnew
       var
         j     : integer;
         pd    : tprocdef;
         hp    : pcandidate;
         pt    : tcallparanode;
+<<<<<<< HEAD
         found,
         added : boolean;
+=======
+        found : boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         st    : TSymtable;
         contextstructdef : tabstractrecorddef;
         ProcdefOverloadList : TFPObjectList;
@@ -2386,7 +3047,23 @@ implementation
         if not objcidcall and
            (FOperator=NOTOKEN) and
            (FProcsym.owner.symtabletype in [objectsymtable,recordsymtable]) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           collect_overloads_in_struct(tabstractrecorddef(FProcsym.owner.defowner),ProcdefOverloadList,searchhelpers,anoninherited,spezcontext)
+=======
+          collect_overloads_in_struct(tabstractrecorddef(FProcsym.owner.defowner),ProcdefOverloadList)
+>>>>>>> graemeg/cpstrnew
+=======
+          collect_overloads_in_struct(tabstractrecorddef(FProcsym.owner.defowner),ProcdefOverloadList)
+>>>>>>> graemeg/cpstrnew
+=======
+          collect_overloads_in_struct(tabstractrecorddef(FProcsym.owner.defowner),ProcdefOverloadList)
+>>>>>>> graemeg/cpstrnew
+=======
+          collect_overloads_in_struct(tabstractrecorddef(FProcsym.owner.defowner),ProcdefOverloadList)
+>>>>>>> origin/cpstrnew
         else
         if (FOperator<>NOTOKEN) then
           begin
@@ -2395,6 +3072,10 @@ implementation
             pt:=tcallparanode(FParaNode);
             while assigned(pt) do
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 if (pt.resultdef.typ=recorddef) and
                     (sto_has_operator in tabstractrecorddef(pt.resultdef).owner.tableoptions) then
                   collect_overloads_in_struct(tabstractrecorddef(pt.resultdef),ProcdefOverloadList,searchhelpers,anoninherited,spezcontext);
@@ -2404,6 +3085,31 @@ implementation
           end
         else
           collect_overloads_in_units(ProcdefOverloadList,objcidcall,explicitunit,spezcontext);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                if (pt.resultdef.typ=recorddef) then
+                  collect_overloads_in_struct(tabstractrecorddef(pt.resultdef),ProcdefOverloadList);
+                pt:=tcallparanode(pt.right);
+              end;
+            collect_overloads_in_units(ProcdefOverloadList,objcidcall,explicitunit);
+          end
+        else
+          collect_overloads_in_units(ProcdefOverloadList,objcidcall,explicitunit);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
         { determine length of parameter list.
           for operators also enable the variant-operators if
@@ -2464,6 +3170,10 @@ implementation
                ) and
                (
                 ignorevisibility or
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 (
                   pd.is_specialization and not assigned(pd.owner) and
                   (
@@ -2481,6 +3191,22 @@ implementation
                     is_visible_for_object(pd,contextstructdef)
                   )
                 )
+=======
+                not (pd.owner.symtabletype in [objectsymtable,recordsymtable]) or
+                is_visible_for_object(pd,contextstructdef)
+>>>>>>> graemeg/cpstrnew
+=======
+                not (pd.owner.symtabletype in [objectsymtable,recordsymtable]) or
+                is_visible_for_object(pd,contextstructdef)
+>>>>>>> graemeg/cpstrnew
+=======
+                not (pd.owner.symtabletype in [objectsymtable,recordsymtable]) or
+                is_visible_for_object(pd,contextstructdef)
+>>>>>>> graemeg/cpstrnew
+=======
+                not (pd.owner.symtabletype in [objectsymtable,recordsymtable]) or
+                is_visible_for_object(pd,contextstructdef)
+>>>>>>> origin/cpstrnew
                ) then
               begin
                 { don't add duplicates, only compare visible parameters for the user }
@@ -2493,7 +3219,23 @@ implementation
                 hp:=FCandidateProcs;
                 while assigned(hp) do
                   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                     if (compare_paras(hp^.data.paras,pd.paras,cp_value_equal_const,cpoptions)>=te_equal) and
+=======
+                    if (compare_paras(hp^.data.paras,pd.paras,cp_value_equal_const,[cpo_ignorehidden])>=te_equal) and
+>>>>>>> graemeg/cpstrnew
+=======
+                    if (compare_paras(hp^.data.paras,pd.paras,cp_value_equal_const,[cpo_ignorehidden])>=te_equal) and
+>>>>>>> graemeg/cpstrnew
+=======
+                    if (compare_paras(hp^.data.paras,pd.paras,cp_value_equal_const,[cpo_ignorehidden])>=te_equal) and
+>>>>>>> graemeg/cpstrnew
+=======
+                    if (compare_paras(hp^.data.paras,pd.paras,cp_value_equal_const,[cpo_ignorehidden])>=te_equal) and
+>>>>>>> origin/cpstrnew
                        (not(po_objc in pd.procoptions) or
                         (pd.messageinf.str^=hp^.data.messageinf.str^)) then
                       begin
@@ -2503,6 +3245,10 @@ implementation
                     hp:=hp^.next;
                   end;
                 if not found then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   begin
                     proc_add(st,pd,objcidcall);
                     added:=true;
@@ -2517,6 +3263,18 @@ implementation
                 if tprocsym(pd.procsym).procdeflist.extract(pd)<>pd then
                   internalerror(20150828);
                 pd.free;
+=======
+                  proc_add(st,pd,objcidcall);
+>>>>>>> graemeg/cpstrnew
+=======
+                  proc_add(st,pd,objcidcall);
+>>>>>>> graemeg/cpstrnew
+=======
+                  proc_add(st,pd,objcidcall);
+>>>>>>> graemeg/cpstrnew
+=======
+                  proc_add(st,pd,objcidcall);
+>>>>>>> origin/cpstrnew
               end;
           end;
 
@@ -2524,7 +3282,15 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     function tcallcandidates.proc_add(st:tsymtable;pd:tprocdef;objcidcall: boolean):pcandidate;
+=======
+    function tcallcandidates.proc_add(ps:tprocsym;pd:tprocdef):pcandidate;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function tcallcandidates.proc_add(ps:tprocsym;pd:tprocdef):pcandidate;
+>>>>>>> origin/fixes_2_2
       var
         defaultparacnt : integer;
       begin
@@ -2553,6 +3319,8 @@ implementation
          end;
         { Give a small penalty for overloaded methods not in
           defined the current class/unit }
+<<<<<<< HEAD
+<<<<<<< HEAD
         {  when calling Objective-C methods via id.method, then the found
            procsym will be inside an arbitrary ObjectSymtable, and we don't
            want togive the methods of that particular objcclass precedence over
@@ -2561,6 +3329,12 @@ implementation
         if objcidcall then
           st:=st.defowner.owner;
         if (st<>pd.owner) then
+=======
+        if ps.owner<>pd.owner then
+>>>>>>> graemeg/fixes_2_2
+=======
+        if ps.owner<>pd.owner then
+>>>>>>> origin/fixes_2_2
           result^.ordinal_distance:=result^.ordinal_distance+1.0;
       end;
 
@@ -2645,7 +3419,13 @@ implementation
                           ' l3: '+tostr(hp^.cl3_count)+
                           ' l4: '+tostr(hp^.cl4_count)+
                           ' l5: '+tostr(hp^.cl5_count)+
+<<<<<<< HEAD
+<<<<<<< HEAD
                           ' l6: '+tostr(hp^.cl6_count)+
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                           ' oper: '+tostr(hp^.coper_count)+
                           ' ord: '+realtostr(hp^.ordinal_distance));
               { Print parameters in left-right order }
@@ -2669,8 +3449,15 @@ implementation
         paraidx  : integer;
         currparanr : byte;
         rfh,rth  : double;
+<<<<<<< HEAD
+<<<<<<< HEAD
         obj_from,
         obj_to   : tobjectdef;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        objdef   : tobjectdef;
+>>>>>>> graemeg/fixes_2_2
         def_from,
         def_to   : tdef;
         currpt,
@@ -2684,12 +3471,26 @@ implementation
         cdoptions : tcompare_defs_options;
         n : tnode;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}
     {$r-}
     {$q-}
       const
         inf=1.0/0.0;
     {$pop}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    {$ifopt r+}{$define ena_rq}{$q-}{$r-}{$endif}
+      const
+        inf=1.0/0.0;
+    {$ifdef ena_rq}{$q+}{$r+}{$endif}
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       begin
         cdoptions:=[cdo_check_operator];
         if FAllowVariant then
@@ -2734,9 +3535,17 @@ implementation
                  (
                   (count=1) or
                   equal_defs(tprocvardef(currpt.left.resultdef).returndef,def_to)
+<<<<<<< HEAD
+<<<<<<< HEAD
                  ) and
                  { and if it doesn't require any parameters }
                  (tprocvardef(currpt.left.resultdef).minparacount=0)  then
+=======
+                 ) then
+>>>>>>> graemeg/fixes_2_2
+=======
+                 ) then
+>>>>>>> origin/fixes_2_2
                 begin
                   releasecurrpt:=true;
                   currpt:=tcallparanode(pt.getcopy);
@@ -2791,11 +3600,23 @@ implementation
                    { Give wrong sign a small penalty, this is need to get a diffrence
                      from word->[longword,longint] }
                    if is_signed(def_from)<>is_signed(def_to) then
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}
 {$r-}
 {$q-}
                      hp^.ordinal_distance:=nextafter(hp^.ordinal_distance,inf);
 {$pop}
+=======
+                   {$ifopt r+}{$define ena_rq}{$q-}{$r-}{$endif}
+                     hp^.ordinal_distance:=nextafter(hp^.ordinal_distance,inf);
+                   {$ifdef ena_rq}{$r+}{$q+}{$endif}
+>>>>>>> graemeg/fixes_2_2
+=======
+                   {$ifopt r+}{$define ena_rq}{$q-}{$r-}{$endif}
+                     hp^.ordinal_distance:=nextafter(hp^.ordinal_distance,inf);
+                   {$ifdef ena_rq}{$r+}{$q+}{$endif}
+>>>>>>> origin/fixes_2_2
                  end
               else
               { for value and const parameters check precision of real, give
@@ -2858,6 +3679,8 @@ implementation
                    eq:=compare_defs_ext(n.resultdef,def_to,n.nodetype,convtype,pdoper,cdoptions);
                    n.free;
                  end
+<<<<<<< HEAD
+<<<<<<< HEAD
               else if is_open_array(def_to) and
                       is_class_or_interface_or_dispinterface_or_objc_or_java(tarraydef(def_to).elementdef) and
                       is_array_constructor(currpt.left.resultdef) and
@@ -2882,6 +3705,10 @@ implementation
                   until not assigned(n);
                   eq:=mineq;
                 end
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               else
               { generic type comparision }
                begin
@@ -2943,8 +3770,14 @@ implementation
                   inc(hp^.cl4_count);
                 te_convert_l5 :
                   inc(hp^.cl5_count);
+<<<<<<< HEAD
+<<<<<<< HEAD
                 te_convert_l6 :
                   inc(hp^.cl6_count);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                 te_convert_operator :
                   inc(hp^.coper_count);
                 te_incompatible :
@@ -3072,6 +3905,8 @@ implementation
            res:=(bestpd^.coper_count-currpd^.coper_count);
            if (res=0) then
             begin
+<<<<<<< HEAD
+<<<<<<< HEAD
              { less cl6 parameters? }
              res:=(bestpd^.cl6_count-currpd^.cl6_count);
              if (res=0) then
@@ -3113,12 +3948,63 @@ implementation
                                    else
                                     res:=0;
                                  end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+             { less cl5 parameters? }
+             res:=(bestpd^.cl5_count-currpd^.cl5_count);
+             if (res=0) then
+              begin
+               { less cl4 parameters? }
+               res:=(bestpd^.cl4_count-currpd^.cl4_count);
+               if (res=0) then
+                begin
+                 { less cl3 parameters? }
+                 res:=(bestpd^.cl3_count-currpd^.cl3_count);
+                 if (res=0) then
+                  begin
+                    { less cl2 parameters? }
+                    res:=(bestpd^.cl2_count-currpd^.cl2_count);
+                    if (res=0) then
+                     begin
+                       { less cl1 parameters? }
+                       res:=(bestpd^.cl1_count-currpd^.cl1_count);
+                       if (res=0) then
+                        begin
+                          { more exact parameters? }
+                          res:=(currpd^.exact_count-bestpd^.exact_count);
+                          if (res=0) then
+                           begin
+                             { less equal parameters? }
+                             res:=(bestpd^.equal_count-currpd^.equal_count);
+                             if (res=0) then
+                              begin
+                                { smaller ordinal distance? }
+                                if (currpd^.ordinal_distance<bestpd^.ordinal_distance) then
+                                 res:=1
+                                else
+                                 if (currpd^.ordinal_distance>bestpd^.ordinal_distance) then
+                                  res:=-1
+                                else
+                                 res:=0;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                               end;
                            end;
                         end;
                      end;
+<<<<<<< HEAD
                    end;
                  end;
+=======
+                  end;
+                end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               end;
             end;
          end;
@@ -3415,6 +4301,38 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    procedure check_hints(const srsym: tsym; const symoptions: tsymoptions; const deprecatedmsg : pshortstring);
+      begin
+        if not assigned(srsym) then
+          internalerror(200602051);
+        if sp_hint_deprecated in symoptions then
+          if (sp_has_deprecated_msg in symoptions) and (deprecatedmsg <> nil) then
+            Message2(sym_w_deprecated_symbol_with_msg,srsym.realname,deprecatedmsg^)
+          else
+            Message1(sym_w_deprecated_symbol,srsym.realname);
+        if sp_hint_experimental in symoptions then
+          Message1(sym_w_experimental_symbol,srsym.realname);
+        if sp_hint_platform in symoptions then
+          Message1(sym_w_non_portable_symbol,srsym.realname);
+        if sp_hint_library in symoptions then
+          Message1(sym_w_library_symbol,srsym.realname);
+        if sp_hint_unimplemented in symoptions then
+          Message1(sym_w_non_implemented_symbol,srsym.realname);
+      end;
+
+
+>>>>>>> graemeg/cpstrnew
     procedure check_ranges(const location: tfileposinfo; source: tnode; destdef: tdef);
       begin
         if not(cs_check_ordinal_size in current_settings.localswitches) then

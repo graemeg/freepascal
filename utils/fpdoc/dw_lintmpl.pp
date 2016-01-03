@@ -91,6 +91,19 @@ Type
     procedure EndOverview; override;
     procedure WriteOverviewMember(const ALabel,AName,Access,ADescr : String); override;
     procedure WriteOverviewMember(const ALabel,AName,ADescr : String); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    Class Function FileNameExtension : String; override;
+>>>>>>> graemeg/cpstrnew
     // Description node conversion. Overrides for TFPDocWriter.
     procedure DescrBeginBold; override;
     procedure DescrEndBold; override;

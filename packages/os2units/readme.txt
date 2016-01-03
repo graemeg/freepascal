@@ -81,7 +81,7 @@ b) Add support for IBM Multimedia Classes and CWMM Classes for WPS (as fast as
    SOM and WPS toolkits will be presented)
 c) SEAL library interface (seal.pas) www.netlabs.org/hobbes.nmsu.edu
    SEAL is module player library. At the present time SEAL not developing
-   anymore (for all platforms), but still very useful for mudule music fans.
+   anymore (for all platforms), but still very usefull for mudule music fans.
 d) DualMode Library (dual.pas) www.netlabs.org
    DualMode library allows to use common access method as for fullscreen (MGL)
    as for windowed (DIVE) video modes.

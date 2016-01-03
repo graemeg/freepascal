@@ -1,4 +1,10 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
 #
 
@@ -8,6 +14,36 @@ version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+#   Makefile.fpc for Free Pascal Symbian Build Tool
+#
+
+[target]
+programs=mksymbian
+
+[clean]
+units=cfgfile cmdline compiler constants projectparser sdkutil
+
+[require]
+packages=
+
+[compiler]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 [install]
 fpcpackage=y
@@ -15,6 +51,10 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +140,54 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+[rules]
+.NOTPARALLEL:
+mksymbian$(EXEEXT): mksymbian.pas
+>>>>>>> graemeg/cpstrnew
+=======
+[rules]
+.NOTPARALLEL:
+mksymbian$(EXEEXT): mksymbian.pas
+>>>>>>> graemeg/cpstrnew
+=======
+[rules]
+.NOTPARALLEL:
+mksymbian$(EXEEXT): mksymbian.pas
+>>>>>>> graemeg/cpstrnew
+=======
+[rules]
+.NOTPARALLEL:
+mksymbian$(EXEEXT): mksymbian.pas
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+#
+#   Makefile.fpc for Free Pascal Symbian Build Tool
+#
+
+[target]
+programs=mksymbian
+
+[clean]
+units=cfgfile cmdline compiler constants projectparser sdkutil
+
+[require]
+packages=
+
+[compiler]
+
+[install]
+fpcpackage=y
+
+[default]
+fpcdir=../..
+
+[rules]
+.NOTPARALLEL:
+mksymbian$(EXEEXT): mksymbian.pas
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

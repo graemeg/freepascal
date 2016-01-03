@@ -186,11 +186,19 @@ PROCEDURE SecondsToTime (Sd: LongInt; Var Hour24, Minute, Second: Word);
 
 {$ifdef OS_NETWARE}
   USES Dos;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif OS_NETWARE}
 
 {$ifdef OS_AMIGA}
   USES Dos;
 {$endif OS_AMIGA}
+=======
+{$endif OS_GO32}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$endif OS_GO32}
+>>>>>>> origin/fixes_2_2
 
 {***************************************************************************}
 {                            INTERFACE ROUTINES                             }
@@ -292,6 +300,8 @@ PROCEDURE SetTime (Hour, Minute, Second, Sec100: Word);
      POP BP;                                          { Restore register }
    END;
    {$ENDIF}
+<<<<<<< HEAD
+<<<<<<< HEAD
    {$IFDEF BIT_32_OR_MORE}                            { 32 BIT WINDOWS CODE }
    VAR DT: TSystemTime;
    BEGIN
@@ -299,6 +309,20 @@ PROCEDURE SetTime (Hour, Minute, Second, Sec100: Word);
      GetLocalTime(@DT);                               { Get the date/time }
      {$ELSE}                                          { OTHER COMPILERS }
      GetLocalTime(DT);                                { Get the date/time }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   {$IFDEF BIT_32}                                    { 32 BIT WINDOWS CODE }
+   VAR DT: TSystemTime;
+   BEGIN
+     {$IFDEF PPC_FPC}                                 { FPC WINDOWS COMPILER }
+     GetLocalTime(@DT);                              { Get the date/time }
+     {$ELSE}                                          { OTHER COMPILERS }
+     GetLocalTime(DT);                               { Get the date/time }
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
      {$ENDIF}
      DT.wHour := Hour;                                { Transfer hour }
      DT.wMinute := Minute;                            { Transfer minute }
@@ -329,12 +353,18 @@ BEGIN
  {settime is dummy in Netware (Libc and Clib) }
 END;
 {$ENDIF OS_NETWARE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF OS_AMIGA}
 BEGIN
  { settime is dummy on Amiga }
  { probably could be implemented, but it's low pri... (KB) }
 END;
 {$ENDIF OS_AMIGA}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {---------------------------------------------------------------------------}
 {  GetTime -> Platforms DOS/DPMI/WIN/NT/OS2 - Updated 06Nov97 LdB           }
@@ -417,7 +447,15 @@ PROCEDURE GetTime (Var Hour, Minute, Second, Sec100: Word);
      STOSW;                                           { Return hours }
    END;
    {$ENDIF}
+<<<<<<< HEAD
+<<<<<<< HEAD
    {$IFDEF BIT_32_OR_MORE}                            { 32 BIT WINDOWS CODE }
+=======
+   {$IFDEF BIT_32}                                    { 32 BIT WINDOWS CODE }
+>>>>>>> graemeg/fixes_2_2
+=======
+   {$IFDEF BIT_32}                                    { 32 BIT WINDOWS CODE }
+>>>>>>> origin/fixes_2_2
    VAR DT: TSystemTime;
    BEGIN
      {$IFDEF PPC_FPC}                                 { FPC WINDOWS COMPILER }
@@ -452,11 +490,17 @@ BEGIN
   Dos.GetTime(Hour,Minute,Second,Sec100);
 END;
 {$ENDIF OS_NETWARE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF OS_AMIGA}
 BEGIN
   Dos.GetTime(Hour,Minute,Second,Sec100);
 END;
 {$ENDIF OS_AMIGA}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {---------------------------------------------------------------------------}
 {  MinutesToTime -> Platforms DOS/DPMI/WIN/NT/OS2 - Updated 19Jun97 LdB     }

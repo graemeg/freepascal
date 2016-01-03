@@ -31,7 +31,15 @@ type
     procedure SetPhysicalRecNo(RecNo: Integer); override;
     procedure SetSequentialRecNo(RecNo: Integer); override;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure VariantStrToBuffer(Key: Variant; ABuffer: TRecordBuffer);
+=======
+    procedure VariantStrToBuffer(Key: Variant; ABuffer: PChar);
+>>>>>>> graemeg/fixes_2_2
+=======
+    procedure VariantStrToBuffer(Key: Variant; ABuffer: PChar);
+>>>>>>> origin/fixes_2_2
   public
     constructor Create(DbfIndexFile: TIndexFile);
     destructor Destroy; override;
@@ -138,18 +146,42 @@ end;
 
 {$ifdef SUPPORT_VARIANTS}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIndexCursor.VariantStrToBuffer(Key: Variant; ABuffer: TRecordBuffer);
+=======
+procedure TIndexCursor.VariantStrToBuffer(Key: Variant; ABuffer: PChar);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TIndexCursor.VariantStrToBuffer(Key: Variant; ABuffer: PChar);
+>>>>>>> origin/fixes_2_2
 var
   currLen: Integer;
   StrKey: string;
 begin
   StrKey := Key;
+<<<<<<< HEAD
+<<<<<<< HEAD
   currLen := TranslateString(GetACP, FIndexFile.CodePage, PAnsiChar(StrKey), PAnsiChar(ABuffer), -1);
+=======
+  currLen := TranslateString(GetACP, FIndexFile.CodePage, PChar(StrKey), ABuffer, -1);
+>>>>>>> graemeg/fixes_2_2
+=======
+  currLen := TranslateString(GetACP, FIndexFile.CodePage, PChar(StrKey), ABuffer, -1);
+>>>>>>> origin/fixes_2_2
   // we have null-terminated string, pad with spaces if string too short
   FillChar(ABuffer[currLen], TIndexFile(PagedFile).KeyLen-currLen, ' ');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TIndexCursor.VariantToBuffer(Key: Variant; ABuffer: TRecordBuffer): TExpressionType;
+=======
+function TIndexCursor.VariantToBuffer(Key: Variant; ABuffer: PChar): TExpressionType;
+>>>>>>> graemeg/fixes_2_2
+=======
+function TIndexCursor.VariantToBuffer(Key: Variant; ABuffer: PChar): TExpressionType;
+>>>>>>> origin/fixes_2_2
 // assumes ABuffer is large enough ie. at least max key size
 begin
   if (TIndexFile(PagedFile).KeyType='N') then

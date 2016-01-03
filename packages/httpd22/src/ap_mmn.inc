@@ -103,32 +103,14 @@
  *                         proxy_server (minor)
  * 20051115.2 (2.2.2)  added inreslist member to proxy_conn_rec (minor)
  * 20051115.3 (2.2.3)  Added server_scheme member to server_rec (minor)
- * 20051115.4 (2.2.4)  Added ap_get_server_banner() and
- *                         ap_get_server_description() (minor)
- * 20051115.5 (2.2.5)  Added ap_mpm_safe_kill() (minor)
- * 20051115.6 (2.2.7)  Added retry_set to proxy_worker (minor)
- * 20051115.7 (2.2.7)  Added conn_rec::clogging_input_filters (minor)
- * 20051115.8 (2.2.7)  Added flags to proxy_alias (minor)
- * 20051115.9 (2.2.7)  Add ap_send_interim_response API
- * 20051115.10(2.2.7)  Added ap_mod_status_reqtail (minor)
- * 20051115.11(2.2.7)  Add *ftp_directory_charset to proxy_dir_conf
- * 20051115.12(2.2.8)  Add optional function ap_logio_add_bytes_in() to mog_logio
- * 20051115.13(2.2.9)  Add disablereuse and disablereuse_set
- *                     to proxy_worker struct (minor)
- * 20051115.14(2.2.9)  Add ap_proxy_ssl_connection_cleanup and
- *                     add *scpool, *r and need_flush to proxy_conn_rec
- *                     structure
- * 20051115.15(2.2.9)  Add interpolate_env to proxy_dir_conf and
- *                     introduce proxy_req_conf.
- *
  }
 const
 
   MODULE_MAGIC_COOKIE = $41503232; { "AP22" }
 
-  MODULE_MAGIC_NUMBER_MAJOR = 20051115; { For 2.2.x }
+  MODULE_MAGIC_NUMBER_MAJOR = 20051115; { For 2.2.3 }
 
-  MODULE_MAGIC_NUMBER_MINOR = 15;{2.2.9}               // 0...n
+  MODULE_MAGIC_NUMBER_MINOR = 3;                    // 0...n
 
 {
  * Determine if the server's current MODULE_MAGIC_NUMBER is at least a

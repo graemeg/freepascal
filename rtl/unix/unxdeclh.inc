@@ -17,6 +17,7 @@ type filedesarray=array[0..1] of cint;
 
 {$if defined(solaris) or defined(aix)}
 Function fpFlock (fd,mode : longint) : cint;{$ifdef IN_SYSTEM}forward;{$endif IN_SYSTEM}
+<<<<<<< HEAD
 {$else solaris or aix}
 {$ifndef beos}
 Function fpFlock (fd,mode : longint) : cint; cdecl; external clib name 'flock';
@@ -37,5 +38,30 @@ Function fpStatFS  (Path:pchar; Info:pstatfs):cint; cdecl; external clib name 's
 Function fpStatFS  (Path:pchar; Info:pstatfs):cint; cdecl; external clib name 'statfs';
 {$endif beos or solaris }
 
+=======
+{$else solaris}
+{$ifndef beos}
+Function fpFlock (fd,mode : longint) : cint; cdecl; external clib name 'flock';
+{$endif beos}
+{$endif solaris}
+
+{$ifdef beos}
+Function fpfStatFS(Fd:Longint; Info:pstatfs):cint; cdecl; external clib name 'fstatvfs';
+{$else beos}
+Function fpfStatFS(Fd:Longint; Info:pstatfs):cint; cdecl; external clib name 'fstatfs';
+{$endif beos}
+
+Function fpfsync (fd : cint) : cint; cdecl; external clib name 'fsync';
+
+{$ifdef beos}
+Function fpStatFS  (Path:pchar; Info:pstatfs):cint; cdecl; external clib name 'statvfs';
+{$else beos}
+Function fpStatFS  (Path:pchar; Info:pstatfs):cint; cdecl; external clib name 'statfs';
+{$endif beos}
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function pipe (var fildes: filedesarray):cint;  cdecl; external clib name 'pipe';
 function fpgettimeofday(tp: ptimeval;tzp:ptimezone):cint;   cdecl; external clib name 'gettimeofday';

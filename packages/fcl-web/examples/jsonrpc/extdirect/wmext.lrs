@@ -1,0 +1,10 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TDemoClass','FORMDATA',[
+  'TPF0'#10'TDemoClass'#9'DemoClass'#14'OldCreateOrder'#8#7'APIPath'#6#3'API'#10
+  +'RouterPath'#6#6'Router'#6'Height'#3'9'#1#16'HorizontalOffset'#3'$'#2#14'Ver'
+  +'ticalOffset'#3#230#0#5'Width'#3'g'#1#0#15'TJSONRPCHandler'#3'Add'#9'OnExecu'
+  +'te'#7#10'AddExecute'#7'Options'#11#0#9'ParamDefs'#14#1#4'Name'#6#1'A'#8'Dat'
+  +'aType'#7#8'jtNumber'#0#1#4'Name'#6#1'B'#8'DataType'#7#8'jtNumber'#0#0#4'lef'
+  +'t'#2'8'#3'top'#2' '#0#0#0
+]);

@@ -2,8 +2,165 @@
 #
 #   Makefile.fpc for Free Pascal Packages
 #
+<<<<<<< HEAD
 [require]
 packages=rtl
+=======
+
+[target]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+dirs=hash pasjpeg paszlib fpmkunit fcl-xml fcl-base fcl-db fcl-image fcl-net fcl-passrc fcl-registry fcl-fpcunit fcl-json fcl-js fcl-process unzip regexpr chm fcl-res libgd symbolic bzip2 hermes
+dirs_linux_i386=libc unixutil graph pxlib bzip2
+=======
+dirs=hash pasjpeg paszlib fpmkunit fcl-xml fcl-base fcl-db fcl-image fcl-net fcl-passrc fcl-registry fcl-fpcunit fcl-json fcl-process unzip regexpr chm libgd symbolic
+=======
+dirs=hash pasjpeg paszlib fpmkunit fcl-xml fcl-base fcl-db fcl-image fcl-net fcl-passrc fcl-registry fcl-fpcunit fcl-json  fcl-process unzip regexpr chm fcl-res libgd symbolic 
+>>>>>>> origin/fixes_2.4
+dirs_linux_i386=libc unixutil graph pxlib
+>>>>>>> graemeg/fixes_2_2
+=======
+dirs=hash pasjpeg paszlib fpmkunit fcl-xml fcl-base fcl-db fcl-image fcl-net fcl-passrc fcl-registry fcl-fpcunit fcl-json fcl-process unzip regexpr chm libgd symbolic
+dirs_linux_i386=libc unixutil graph pxlib
+>>>>>>> origin/fixes_2_2
+dirs_i386_linux=graph
+dirs_x86_64_linux=graph
+dirs_powerpc_linux=graph
+dirs_powerpc64_linux=graph
+dirs_sparc_linux=graph
+dirs_arm_linux=graph
+dirs_m68k_linux=graph
+<<<<<<< HEAD
+<<<<<<< HEAD
+dirs_beos=fv fcl-web fastcgi fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               gdbint libpng x11 gdbm tcl syslog libcurl opengl cairo bfd aspell svgalib \
+               imlib utmp  fpgtk xforms fftw pcap ggi sdl openssl graph gnome1 gtk1 gtk2 librsvg httpd13 httpd20 httpd22 pxlib numlib \
+               iconvenc
+dirs_haiku=fv fcl-web fastcgi fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               gdbint libpng x11 gdbm tcl syslog libcurl opengl cairo bfd aspell svgalib \
+               imlib utmp  fpgtk xforms fftw pcap ggi sdl openssl graph gnome1 gtk1 gtk2 librsvg httpd13 httpd20 httpd22 pxlib numlib \
+               iconvenc
+dirs_freebsd=fv fcl-web fastcgi fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               gdbint libpng x11 gdbm tcl syslog libcurl opengl cairo  bfd aspell svgalib \
+               imlib utmp  fpgtk xforms fftw pcap ggi sdl openssl graph gnome1 gtk1 gtk2 librsvg httpd13 httpd20 httpd22 pxlib numlib \
+<<<<<<< HEAD
+               users iconvenc gmp fcl-extra libxml
+dirs_darwin=fv fcl-web fastcgi fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               libpng gdbm tcl syslog libcurl bfd aspell utmp fftw pcap openssl numlib iconvenc gmp fcl-extra univint
+dirs_iphonesim=fv fcl-web fastcgi fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               libpng gdbm tcl syslog libcurl bfd aspell utmp fftw pcap openssl numlib iconvenc gmp fcl-extra univint
+dirs_i386_darwin=graph sdl opengl x11 cairo gtk1 gtk2 librsvg fpgtk xforms gnome1 httpd13 httpd20 httpd22 imlib objcrtl cocoaint opencl openal
+dirs_powerpc_darwin=graph sdl opengl x11 cairo gtk1 gtk2 librsvg fpgtk xforms gnome1 httpd13 httpd20 httpd22 imlib objcrtl cocoaint
+dirs_x86_64_darwin=opengl x11 cairo gtk1 gtk2 librsvg fpgtk xforms gnome1 httpd13 httpd20 httpd22 imlib cocoaint
+dirs_powerpc64_darwin=opengl x11 cairo gtk1 gtk2 librsvg fpgtk xforms gnome1 httpd13 httpd20 httpd22 imlib cocoaint
+dirs_arm_darwin=httpd13 httpd20 httpd22 opengles objcrtl
+dirs_i386_iphonesim=httpd13 httpd20 httpd22 opengles objcrtl
+=======
+               users iconvenc gmp
+dirs_darwin=fv fcl-web fastcgi fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               libpng gdbm tcl syslog libcurl bfd aspell utmp fftw pcap openssl numlib iconvenc gmp univint
+dirs_i386_darwin=graph sdl opengl x11 cairo gtk1 gtk2 librsvg fpgtk xforms  gnome1 httpd13 httpd20 httpd22 imlib opengles objcrtl
+dirs_powerpc_darwin=graph sdl opengl x11 cairo gtk1 gtk2 librsvg fpgtk xforms gnome1 httpd13 httpd20 httpd22 imlib objcrtl
+dirs_x86_64_darwin=opengl x11 cairo gtk1 gtk2 librsvg fpgtk xforms gnome1 httpd13 httpd20 httpd22 imlib
+dirs_powerpc64_darwin=opengl x11 cairo gtk1 gtk2 librsvg fpgtk xforms gnome1 httpd13 httpd20 httpd22 imlib
+dirs_arm_darwin= httpd13 httpd20 httpd22 opengles objcrtl
+>>>>>>> origin/fixes_2.4
+dirs_solaris=fv fcl-web fastcgi fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               libpng x11 gdbm tcl syslog libcurl opengl cairo gtk1 bfd svgalib fcl-extra \
+               imlib utmp  fpgtk xforms fftw pcap ggi  openssl gnome1 httpd13 httpd20 httpd22 numlib iconvenc gtk2 cairo
+dirs_netbsd=fv fcl-web fastcgi fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               gdbint libpng x11 gdbm tcl syslog libcurl opengl cairo gtk1 gtk2 librsvg bfd aspell svgalib \
+               imlib utmp  fpgtk xforms fftw pcap ggi sdl openssl gnome1 httpd13 httpd20 httpd22 pxlib numlib
+dirs_openbsd=fv fcl-web fastcgi fcl-async ibase mysql ncurses zlib oracle odbc  postgres sqlite pthreads imagemagick \
+               gdbint libpng x11 gdbm tcl syslog libcurl opengl cairo gtk1 gtk2 librsvg bfd aspell svgalib \
+               imlib utmp  fpgtk xforms fftw pcap ggi sdl openssl gnome1 httpd13 httpd20 httpd22 pxlib numlib
+dirs_linux=fv fcl-web fastcgi fcl-async ibase mysql ncurses unzip zlib oracle dbus odbc postgres sqlite pthreads imagemagick \
+<<<<<<< HEAD
+               gdbint libpng x11 uuid ldap modplug dts mad  gdbm tcl syslog libcurl opengl opencl cairo gtk1 gtk2 librsvg \
+               a52 bfd aspell svgalib newt cdrom users  iconvenc libxml proj4 fcl-extra zorba \
+               imlib utmp  fpgtk openal lua oggvorbis xforms fftw pcap ggi sdl openssl gnome1 httpd13 httpd20 httpd22 \
+               pxlib numlib gmp libsee ptc
+dirs_win32=fv winunits-base winunits-jedi fcl-web fastcgi ibase mysql zlib oracle odbc postgres sqlite imagemagick \
+               gdbint libpng mad tcl opengl gtk1 gtk2 librsvg a52 cdrom fpgtk openal fftw lua fcl-extra zorba \
+               oggvorbis sdl openssl graph pcap httpd13 httpd20 httpd22 pxlib numlib winceunits cairo libxml \
+               gmp opencl libsee nvapi ptc
+dirs_win64=fv winunits-base winunits-jedi fcl-web fastcgi ibase mysql zlib oracle odbc postgres sqlite imagemagick gdbint \
+                tcl opengl gtk1 fpgtk fftw sdl openssl cdrom httpd13 httpd20 httpd22 numlib fcl-extra opencl nvapi ptc graph
+=======
+               gdbint libpng x11 uuid ldap modplug dts mad  gdbm tcl syslog libcurl opengl cairo gtk1 gtk2 librsvg \
+               a52 bfd aspell svgalib newt cdrom users  iconvenc libxml proj4 \
+               imlib utmp  fpgtk openal lua oggvorbis xforms fftw pcap ggi sdl openssl gnome1 httpd13 httpd20 httpd22 pxlib numlib gmp
+dirs_win32=fv winunits-base winunits-jedi fcl-web fastcgi ibase mysql zlib oracle odbc postgres sqlite imagemagick \
+               gdbint libpng mad tcl opengl gtk1 gtk2 librsvg a52 cdrom fpgtk openal fftw lua \
+               oggvorbis sdl openssl graph pcap httpd13 httpd20 httpd22 pxlib numlib winceunits cairo libxml gmp
+dirs_win64=fv winunits-base winunits-jedi fcl-web fastcgi ibase mysql zlib oracle odbc postgres sqlite imagemagick \
+                tcl opengl gtk1 fpgtk fftw sdl openssl cdrom httpd13 httpd20 httpd22 numlib
+>>>>>>> origin/fixes_2.4
+dirs_wince=winceunits httpd22 fcl-web fastcgi tcl fftw unzip zlib sqlite mysql ibase postgres oracle odbc sdl openssl oggvorbis numlib
+=======
+=======
+>>>>>>> origin/fixes_2_2
+dirs_beos=fv fcl-web fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               gdbint libpng x11 gdbm tcl syslog libcurl opengl bfd aspell svgalib \
+               imlib utmp  fpgtk xforms fftw pcap ggi sdl openssl graph gnome1 gtk1 gtk2 httpd13 httpd20 httpd22 pxlib numlib
+dirs_freebsd=fv fcl-web fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               gdbint libpng x11 gdbm tcl syslog libcurl opengl cairo  bfd aspell svgalib \
+               imlib utmp  fpgtk xforms fftw pcap ggi sdl openssl graph gnome1 gtk1 gtk2 httpd13 httpd20 httpd22 pxlib numlib \
+               users iconvenc
+dirs_darwin=fv fcl-web fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+                libpng x11 gdbm tcl syslog libcurl opengl cairo gtk1 gtk2  bfd aspell svgalib \
+               imlib utmp  fpgtk xforms fftw pcap ggi openssl gnome1 httpd13 httpd20 httpd22 numlib iconvenc
+dirs_i386_darwin=graph univint sdl
+dirs_powerpc_darwin=graph univint sdl
+dirs_solaris=fv fcl-web fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               libpng x11 gdbm tcl syslog libcurl opengl cairo gtk1 bfd svgalib \
+               imlib utmp  fpgtk xforms fftw pcap ggi  openssl gnome1 httpd13 httpd20 httpd22 numlib
+dirs_netbsd=fv fcl-web fcl-async ibase mysql ncurses zlib oracle odbc postgres sqlite pthreads imagemagick \
+               gdbint libpng x11 gdbm tcl syslog libcurl opengl cairo gtk1 gtk2  bfd aspell svgalib \
+               imlib utmp  fpgtk xforms fftw pcap ggi sdl openssl gnome1 httpd13 httpd20 httpd22 pxlib numlib
+dirs_openbsd=fv fcl-web fcl-async ibase mysql ncurses zlib oracle odbc  postgres sqlite pthreads imagemagick \
+               gdbint libpng x11 gdbm tcl syslog libcurl opengl cairo gtk1 gtk2  bfd aspell svgalib \
+               imlib utmp  fpgtk xforms fftw pcap ggi sdl openssl gnome1 httpd13 httpd20 httpd22 pxlib numlib
+dirs_linux=fv fcl-web fcl-async ibase mysql ncurses unzip zlib oracle dbus odbc postgres sqlite pthreads imagemagick \
+               gdbint libpng x11 uuid ldap modplug dts mad  gdbm tcl syslog libcurl opengl cairo gtk1 gtk2  \
+               a52 bfd aspell svgalib newt cdrom users  iconvenc \
+               imlib utmp  fpgtk openal lua oggvorbis xforms fftw pcap ggi sdl openssl gnome1 httpd13 httpd20 httpd22 pxlib numlib
+dirs_win32=fv winunits-base winunits-jedi fcl-web ibase mysql zlib oracle odbc postgres sqlite imagemagick \
+               gdbint libpng mad tcl opengl gtk1 gtk2 a52 cdrom fpgtk openal fftw lua \
+               oggvorbis sdl openssl graph pcap httpd13 httpd20 httpd22 pxlib numlib winceunits cairo
+dirs_win64=fv winunits-base winunits-jedi fcl-web ibase mysql zlib oracle odbc postgres sqlite imagemagick \
+                tcl opengl gtk1 gtk2 fpgtk fftw sdl openssl cdrom httpd13 httpd20 httpd22 numlib
+dirs_wince=winceunits httpd22 fcl-web tcl fftw unzip zlib sqlite mysql ibase postgres oracle odbc sdl openssl oggvorbis numlib
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+dirs_os2=fv zlib libpng x11 tcl fpgtk rexx os2units gtk1 imlib
+dirs_emx=fv zlib libpng x11 tcl fpgtk rexx os2units gtk1 imlib
+dirs_netware=fv zlib unzip
+dirs_netwlibc=fv zlib unzip
+dirs_palmos=palmunits
+dirs_go32v2=fv graph unzip gdbint
+dirs_amiga=amunits
+<<<<<<< HEAD
+<<<<<<< HEAD
+dirs_morphos=fv opengl sdl
+dirs_wii=libogcfpc
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -12,6 +169,7 @@ fpcsubdir=packages
 [default]
 fpcdir=..
 
+<<<<<<< HEAD
 [prerules]
 # Translate INSTALL_UNITDIR to fpmake's --unitinstalldir parameter
 ifdef INSTALL_UNITDIR
@@ -38,6 +196,209 @@ PACKAGEDIR_FPMKUNIT=
 UNITDIR_FPMKUNIT:=$(subst /Package.fpc,,$(strip $(wildcard $(addsuffix /fpmkunit/Package.fpc,$(UNITSDIR)))))
 ifneq ($(UNITDIR_FPMKUNIT),)
 UNITDIR_FPMKUNIT:=$(firstword $(UNITDIR_FPMKUNIT))
+=======
+[rules]
+fpmkunit_all: fcl-base_all fcl-process_all paszlib_all
+fpmkunit_debug: fcl-base_debug fcl-process_debug paszlib_debug
+fpmkunit_smart: fcl-base_smart fcl-process_smart paszlib_smart
+fpmkunit_release: fcl-base_release fcl-process_release paszlib_release
+fpmkunit_shared: fcl-base_shared fcl-process_shared paszlib_shared
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+ifneq ($(findstring $(OS_TARGET),darwin iphonesim),)
+fcl-base_all: univint_all paszlib_all
+fcl-base_debug: univint_debug paszlib_debug
+fcl-base_smart: univint_smart paszlib_smart
+fcl-base_release: univint_release paszlib_release
+fcl-base_shared: univint_shared paszlib_shared
+else
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+ifneq ($(findstring $(OS_TARGET),win32 win64),)
+fcl-base_all: paszlib_all winunits-base_all winunits-jedi_all
+fcl-base_debug: paszlib_debug winunits-base_debug winunits-jedi_debug
+fcl-base_smart: paszlib_smart winunits-base_smart winunits-jedi_smart
+fcl-base_release: paszlib_release winunits-base_release winunits-jedi_release
+fcl-base_shared: paszlib_shared winunits-base_shared winunits-jedi_shared
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+fcl-base_all: paszlib_all
+fcl-base_debug: paszlib_debug
+fcl-base_smart: paszlib_smart
+fcl-base_release: paszlib_release
+fcl-base_shared: paszlib_shared
+endif
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+ifneq ($(findstring $(OS_TARGET),win32 win64),)
+fcl-extra_all: fcl-base winunits-base_all winunits-jedi_all
+fcl-extra_debug: fcl-base_debug winunits-base_debug winunits-jedi_debug
+fcl-extra_smart: fcl-base_smart winunits-base_smart winunits-jedi_smart
+fcl-extra_release: fcl-base_release winunits-base_release winunits-jedi_release
+fcl-extra_shared: fcl-base_shared winunits-base_shared winunits-jedi_shared
+else
+ifneq ($(findstring $(OS_TARGET),darwin iphonesim),)
+fcl-extra_all: univint_all fcl-base_all
+fcl-extra_debug: univint_debug fcl-base_debug
+fcl-extra_smart: univint_smart fcl-base_smart
+fcl-extra_release: univint_release fcl-base_release
+fcl-extra_shared: univint_shared fcl-base_shared
+else
+fcl-extra_all: fcl-base_all
+fcl-extra_debug: fcl-base_debug
+fcl-extra_smart: fcl-base_smart
+fcl-extra_release: fcl-base_release
+fcl-extra_shared: fcl-base_shared
+endif
+endif
+
+ifneq ($(findstring $(FULL_TARGET),i386-darwin powerpc-darwin x86_64-darwin powerpc64-darwin),)
+cocoaint_all: univint_all
+cocoaint_debug: univint_debug
+cocoaint_smart: univint_smart
+cocoaint_release: univint_release
+cocoaint_shared: univint_shared
+endif
+
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+endif
+
+ifneq ($(findstring $(OS_TARGET),darwin),)
+fcl-base_all: univint_all
+fcl-base_debug: univint_debug
+fcl-base_smart: univint_smart
+fcl-base_release: univint_release
+fcl-base_shared: univint_shared
+endif
+
+ifneq ($(findstring $(FULL_TARGET),i386-darwin powerpc-darwin x86_64-darwin powerpc64-darwin),)
+cocoaint_all: univint_all
+cocoaint_debug: univint_debug
+cocoaint_smart: univint_smart
+cocoaint_release: univint_release
+cocoaint_shared: univint_shared
+endif
+
+>>>>>>> origin/fixes_2.4
+fcl-xml_all: fcl-base_all
+fcl-xml_debug: fcl-base_debug
+fcl-xml_smart: fcl-base_smart
+fcl-xml_release: fcl-base_release
+fcl-xml_shared: fcl-base_shared
+
+fcl-json_all: fcl-base_all
+fcl-json_debug: fcl-base_debug
+fcl-json_smart: fcl-base_smart
+fcl-json_release: fcl-base_release
+fcl-json_shared: fcl-base_shared
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+fcl-js_all: fcl-base_all
+fcl-js_debug: fcl-base_debug
+fcl-js_smart: fcl-base_smart
+fcl-js_release: fcl-base_release
+fcl-js_shared: fcl-base_shared
+
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+fcl-image_all: fcl-base_all paszlib_all pasjpeg_all
+fcl-image_debug: fcl-base_debug paszlib_debug pasjpeg_debug
+fcl-image_smart: fcl-base_smart paszlib_smart pasjpeg_smart
+fcl-image_release: fcl-base_release paszlib_release pasjpeg_release
+fcl-image_shared: fcl-base_shared paszlib_shared pasjpeg_shared
+<<<<<<< HEAD
+
+fcl-fpcunit_all: fcl-xml_all paszlib_all
+fcl-fpcunit_debug: fcl-xml_debug paszlib_debug
+fcl-fpcunit_smart: fcl-xml_smart paszlib_smart
+fcl-fpcunit_release: fcl-xml_release paszlib_release
+fcl-fpcunit_shared: fcl-xml_shared paszlib_shared
+
+fcl-registry_all: fcl-xml_all
+fcl-registry_debug: fcl-xml_debug
+fcl-registry_smart: fcl-xml_smart
+fcl-registry_release: fcl-xml_release
+fcl-registry_shared: fcl-xml_shared
+
+<<<<<<< HEAD
+ifeq ($(findstring $(OS_TARGET),linux darwin iphonesim freebsd openbsd netbsd solaris),)
+=======
+ifeq ($(findstring $(OS_TARGET),linux darwin freebsd openbsd netbsd solaris),)
+>>>>>>> graemeg/fixes_2_2
+=======
+
+fcl-fpcunit_all: fcl-xml_all paszlib_all
+fcl-fpcunit_debug: fcl-xml_debug paszlib_debug
+fcl-fpcunit_smart: fcl-xml_smart paszlib_smart
+fcl-fpcunit_release: fcl-xml_release paszlib_release
+fcl-fpcunit_shared: fcl-xml_shared paszlib_shared
+
+fcl-registry_all: fcl-xml_all
+fcl-registry_debug: fcl-xml_debug
+fcl-registry_smart: fcl-xml_smart
+fcl-registry_release: fcl-xml_release
+fcl-registry_shared: fcl-xml_shared
+
+ifeq ($(findstring $(OS_TARGET),linux darwin freebsd openbsd netbsd solaris),)
+>>>>>>> origin/fixes_2_2
+fcl-net_all: fcl-passrc_all fcl-xml_all
+fcl-net_debug: fcl-passrc_debug fcl-xml_debug
+fcl-net_smart: fcl-passrc_smart fcl-xml_smart
+fcl-net_release: fcl-passrc_release fcl-xml_release
+fcl-net_shared: fcl-passrc_shared fcl-xml_shared
+else
+fcl-net_all: fcl-passrc_all fcl-xml_all fcl-async_all
+fcl-net_debug: fcl-passrc_debug fcl-xml_debug fcl-async_debug
+fcl-net_smart: fcl-passrc_smart fcl-xml_smart fcl-async_smart
+fcl-net_release: fcl-passrc_release fcl-xml_release fcl-async_release
+fcl-net_shared: fcl-passrc_shared fcl-xml_shared fcl-async_shared
+endif
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+fcl-web_all: fcl-db_all fcl-xml_all fcl-process_all httpd22_all fastcgi_all fcl-net_all fcl-json_all
+fcl-web_debug: fcl-db_debug fcl-xml_debug fcl-process_debug httpd22_debug fastcgi_debug fcl-net_debug fcl-json_debug
+fcl-web_smart: fcl-db_smart fcl-xml_smart fcl-process_smart httpd22_smart fastcgi_smart fcl-net_smart fcl-json_smart
+fcl-web_release: fcl-db_release fcl-xml_release fcl-process_release httpd22_release fastcgi_release fcl-net_release fcl-json_release
+fcl-web_shared: fcl-db_shared fcl-xml_shared fcl-process_shared httpd22_shared fastcgi_shared fcl-net_shared fcl-json_shared
+
+ifneq ($(findstring $(OS_TARGET),linux freebsd openbsd netbsd win32 beos haiku),)
+fcl-db_all: fcl-xml_all mysql_all ibase_all oracle_all odbc_all postgres_all sqlite_all pxlib_all
+fcl-db_debug: fcl-xml_debug mysql_debug ibase_debug oracle_debug odbc_debug postgres_debug sqlite_debug pxlib_debug
+fcl-db_smart: fcl-xml_smart mysql_smart ibase_smart oracle_smart odbc_smart postgres_smart sqlite_smart pxlib_smart
+fcl-db_release: fcl-xml_release mysql_release ibase_release oracle_release odbc_release postgres_release sqlite_release pxlib_release
+fcl-db_shared: fcl-xml_shared mysql_shared ibase_shared oracle_shared odbc_shared postgres_shared sqlite_shared pxlib_shared
+else
+ifneq ($(findstring $(OS_TARGET),win64 wince solaris darwin iphonesim),)
+fcl-db_all: fcl-xml_all mysql_all ibase_all oracle_all odbc_all postgres_all sqlite_all
+fcl-db_debug: fcl-xml_debug mysql_debug ibase_debug oracle_debug odbc_debug postgres_debug sqlite_debug
+fcl-db_smart: fcl-xml_smart mysql_smart ibase_smart oracle_smart odbc_smart postgres_smart sqlite_smart
+fcl-db_release: fcl-xml_release mysql_release ibase_release oracle_release odbc_release postgres_release sqlite_release
+fcl-db_shared: fcl-xml_shared mysql_shared ibase_shared oracle_shared odbc_shared postgres_shared sqlite_shared
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 else
 UNITDIR_FPMKUNIT=
 endif
@@ -46,6 +407,7 @@ ifdef UNITDIR_FPMAKE_FPMKUNIT
 override COMPILER_FPMAKE_UNITDIR=$(UNITDIR_FPMAKE_FPMKUNIT)
 endif
 
+<<<<<<< HEAD
 SUB_FPMAKE_SRCS=$(wildcard */fpmake.pp)
 
 [rules]
@@ -86,6 +448,26 @@ debug:	fpmake$(SRCEXEEXT)
 # In case of a clean, simply do nothing
 ifeq ($(FPMAKE_BIN_CLEAN),)
 clean:	fpmkunit_clean_bootstrap
+=======
+fcl_all: fcl-base_all fcl-xml_all fcl-fpcunit_all fcl-db_all fcl-web_all fcl-registry_all fcl-passrc_all fcl-image_all fcl-net_all fcl-json_all fcl-res_all
+fcl_debug: fcl-base_debug fcl-xml_debug fcl-fpcunit_debug fcl-db_debug fcl-web_debug fcl-registry_debug fcl-passrc_debug fcl-image_debug fcl-net_debug fcl-json_debug fcl-res_debug
+fcl_smart: fcl-base_smart fcl-xml_smart fcl-fpcunit_smart fcl-db_smart fcl-web_smart fcl-registry_smart fcl-passrc_smart fcl-image_smart fcl-net_smart fcl-json_smart fcl-res_smart
+fcl_release: fcl-base_release fcl-xml_release fcl-fpcunit_release fcl-db_release fcl-web_release fcl-registry_release fcl-passrc_release fcl-image_release fcl-net_release fcl-json_release fcl-res_release
+fcl_shared: fcl-base_shared fcl-xml_shared fcl-fpcunit_shared fcl-db_shared fcl-web_shared fcl-registry_shared fcl-passrc_shared fcl-image_shared fcl-net_shared fcl-json_shared fcl-res_shared
+
+libpng_all: zlib_all
+libpng_debug: zlib_debug
+libpng_smart: zlib_smart
+libpng_release: zlib_release
+libpng_shared: zlib_shared
+
+ifneq ($(findstring $(OS_TARGET),linux darwin iphonesim freebsd openbsd netbsd solaris),)
+cairo_all: x11_all fcl-image_all
+cairo_debug: x11_debug fcl-image_debug
+cairo_smart: x11_smart fcl-image_smart
+cairo_release: x11_release fcl-image_release
+cairo_shared: x11_shared fcl-image_shared
+>>>>>>> graemeg/cpstrnew
 else
 clean:	fpmkunit_clean_bootstrap
 	$(FPMAKE_BIN_CLEAN) clean $(FPMAKE_OPT)
@@ -106,6 +488,7 @@ ifdef inUnix
 else
         $(FPMAKE_BIN_CLEAN) distclean $(FPMAKE_OPT)
 endif
+<<<<<<< HEAD
 	-$(DEL) $(LOCALFPMAKE)
 	-$(DEL) fpmake.o
 	-$(DEL) fpmake.dbg
@@ -113,6 +496,57 @@ endif
 install:	fpmake$(SRCEXEEXT)
 ifdef UNIXHier
 	$(LOCALFPMAKE) install $(FPMAKE_OPT) --prefix=$(INSTALL_PREFIX) --baseinstalldir=$(INSTALL_LIBDIR)/fpc/$(FPC_VERSION) $(FPMAKE_INSTALL_OPT)
+=======
+
+ifneq ($(findstring $(OS_TARGET),linux win32 win64),)
+graph_all: ptc_all
+graph_shared: ptc_shared
+graph_smart: ptc_smart
+graph_debug: ptc_debug
+graph_release: ptc_release
+endif
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+ifneq ($(findstring $(OS_TARGET),linux win32 win64),)
+graph_all: ptc_all
+graph_shared: ptc_shared
+graph_smart: ptc_smart
+graph_debug: ptc_debug
+graph_release: ptc_release
+endif
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+ifneq ($(findstring $(OS_TARGET),linux win32 win64),)
+graph_all: ptc_all
+graph_shared: ptc_shared
+graph_smart: ptc_smart
+graph_debug: ptc_debug
+graph_release: ptc_release
+endif
+
+>>>>>>> origin/cpstrnew
+ifneq ($(findstring $(OS_TARGET),linux darwin iphonesim freebsd openbsd netbsd solaris),)
+gtk1_all: x11_all opengl_all
+gtk1_debug: x11_debug opengl_debug
+gtk1_smart: x11_smart opengl_smart
+gtk1_release: x11_release opengl_release
+gtk1_shared: x11_shared opengl_shared
+
+gtk2_all: x11_all cairo_all
+gtk2_shared: x11_shared cairo_shared
+gtk2_smart: x11_smart cairo_smart
+gtk2_debug: x11_debug cairo_debug
+gtk2_release: x11_release cairo_release
+>>>>>>> graemeg/cpstrnew
 else
 	$(LOCALFPMAKE) install $(FPMAKE_OPT) --prefix=$(INSTALL_BASEDIR) --baseinstalldir=$(INSTALL_BASEDIR) $(FPMAKE_INSTALL_OPT)
 endif
@@ -135,6 +569,7 @@ else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
 
+<<<<<<< HEAD
 #####################################################################
 # PPU testing targets
 #####################################################################
@@ -145,11 +580,68 @@ RMPPULOGLIST:=$(subst .ppu,.rm-log-ppu,$(PPULIST))
 
 .PHONY : ppulogs cleanppulogs testppudump $(RMPPULOGLIST)
 
+<<<<<<< HEAD
 ppulogs : $(PPULOGLIST)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 vpath %.ppu $(ALLPPUDIRS)
 vpath %.log-ppu $(ALLPPUDIRS)
 vpath %.rm-log-ppu $(ALLPPUDIRS)
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+imlib_all: gtk1_all x11_all
+imlib_shared: gtk1_shared x11_shared
+imlib_smart: gtk1_smart x11_smart
+imlib_debug: gtk1_debug x11_debug
+imlib_release: gtk1_release x11_release
+
+ldap_all: hash_all
+ldap_shared: hash_shared
+ldap_smart: hash_smart
+ldap_debug: hash_debug
+ldap_release: hash_release
+
+libpng_all: zlib_all
+libpng_shared: zlib_shared
+libpng_smart: zlib_smart
+libpng_debug: zlib_debug
+libpng_release: zlib_release
+
+paszlib_all: hash_all
+paszlib_shared: hash_shared
+paszlib_smart: hash_smart
+paszlib_debug: hash_debug
+paszlib_release: hash_release
+
+>>>>>>> origin/cpstrnew
+ifneq ($(findstring $(OS_TARGET),linux darwin iphonesim freebsd openbsd netbsd solaris),)
+sdl_all: pthreads_all x11_all
+sdl_shared: pthreads_shared x11_shared
+sdl_smart: pthreads_smart x11_smart
+sdl_debug: pthreads_debug x11_debug
+sdl_release: pthreads_release x11_release
+
+opengl_all: x11_all
+opengl_shared: x11_shared
+opengl_smart: x11_smart
+opengl_debug: x11_debug
+opengl_release: x11_release
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+ptc_all: x11_all
+ptc_shared: x11_shared
+ptc_smart: x11_smart
+ptc_debug: x11_debug
+ptc_release: x11_release
+endif
+>>>>>>> graemeg/cpstrnew
 
 %.log-ppu : %.ppu ../compiler/utils/ppudump$(EXEEXT)
 	..$(PATHSEP)compiler$(PATHSEP)utils$(PATHSEP)ppudump -VA -M $< > $@
@@ -157,6 +649,56 @@ vpath %.rm-log-ppu $(ALLPPUDIRS)
 %.rm-log-ppu : %.ppu ../compiler/utils/ppudump$(EXEEXT)
 	-$(RMPROG) $<
 
+<<<<<<< HEAD
+=======
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+ptc_all: x11_all
+ptc_shared: x11_shared
+ptc_smart: x11_smart
+ptc_debug: x11_debug
+ptc_release: x11_release
+endif
+
+tcl_all: fcl-base_all
+tcl_shared: fcl-base_shared
+tcl_smart: fcl-base_smart
+tcl_debug: fcl-base_debug
+tcl_release: fcl-base_release
+
+unixutil_all: libc_all fcl-base_all
+unixutil_shared: libc_shared fcl-base_shared
+unixutil_smart: libc_smart fcl-base_smart
+unixutil_debug: libc_debug fcl-base_debug
+unixutil_release: libc_release fcl-base_release
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+winunits-base_all: fcl-registry_all fcl-base_all
+winunits-base_shared: fcl-registry_shared fcl-base_shared
+winunits-base_smart: fcl-registry_smart fcl-base_smart
+winunits-base_debug: fcl-registry_debug fcl-base_debug
+winunits-base_release: fcl-registry_release fcl-base_release
+
+winunits-jedi_all: winunits-base_all fcl-registry_all fcl-base_all
+winunits-jedi_shared: winunits-base_shared fcl-registry_shared fcl-base_shared
+winunits-jedi_smart: winunits-base_smart fcl-registry_smart fcl-base_smart
+winunits-jedi_debug: winunits-base_debug fcl-registry_debug fcl-base_debug
+winunits-jedi_release: winunits-base_release fcl-registry_release fcl-base_release
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
 
 ../compiler/utils/ppudump$(EXEEXT):
 	$(MAKE) -C $(COMPILERDIR)/utils ppudump$(EXEEXT)
@@ -165,8 +707,279 @@ ppuinfo :
 	echo PPU list is "$(PPULIST)"
 	echo PPULOG list is "$(PPULOGLIST)"
 
+<<<<<<< HEAD
 cleanppulogs : $(RMPPULOGLIST)
+=======
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+xforms_all: x11_all
+xforms_shared: x11_shared
+xforms_smart: x11_smart
+xforms_debug: x11_debug
+xforms_release: x11_release
+
+gnome1_all: gtk1_all imlib_all
+gnome1_shared: gtk1_shared imlib_shared
+gnome1_smart: gtk1_smart imlib_smart
+gnome1_debug: gtk1_debug imlib_debug
+gnome1_release: gtk1_release imlib_release
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+ptc_all: hermes_all fcl-base_all
+ptc_shared: hermes_shared fcl-base_shared
+ptc_smart: hermes_smart fcl-base_smart
+ptc_debug: hermes_debug fcl-base_debug
+ptc_release: hermes_release fcl-base_release
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
 
 testppudump :
         $(MAKE) cleanppulogs ppulogs
 
+<<<<<<< HEAD
+=======
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+librsvg_all: gtk2_all
+librsvg_shared: gtk2_shared
+librsvg_smart: gtk2_smart
+librsvg_debug: gtk2_debug
+librsvg_release: gtk2_release
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+ifneq ($(findstring $(OS_TARGET),linux freebsd darwin iphonesim beos haiku),)
+fcl-xml_all: iconvenc_all
+fcl-xml_shared: iconvenc_shared
+fcl-xml_smart: iconvenc_smart
+fcl-xml_debug: iconvenc_debug
+fcl-xml_release: iconvenc_release
+endif
+
+opencl_all:  opengl_all
+opencl_debug:  opengl_debug
+opencl_smart:  opengl_smart
+opencl_release:  opengl_release
+opencl_shared:  opengl_shared
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+
+fcl-web_all: fcl-db_all fcl-xml_all fcl-process_all httpd22_all
+fcl-web_debug: fcl-db_debug fcl-xml_debug fcl-process_debug httpd22_debug
+fcl-web_smart: fcl-db_smart fcl-xml_smart fcl-process_smart httpd22_smart
+fcl-web_release: fcl-db_release fcl-xml_release fcl-process_release httpd22_release
+fcl-web_shared: fcl-db_shared fcl-xml_shared fcl-process_shared httpd22_shared
+
+=======
+
+fcl-web_all: fcl-db_all fcl-xml_all fcl-process_all httpd22_all
+fcl-web_debug: fcl-db_debug fcl-xml_debug fcl-process_debug httpd22_debug
+fcl-web_smart: fcl-db_smart fcl-xml_smart fcl-process_smart httpd22_smart
+fcl-web_release: fcl-db_release fcl-xml_release fcl-process_release httpd22_release
+fcl-web_shared: fcl-db_shared fcl-xml_shared fcl-process_shared httpd22_shared
+
+>>>>>>> origin/fixes_2_2
+ifneq ($(findstring $(OS_TARGET),linux freebsd openbsd netbsd win32 beos),)
+fcl-db_all: fcl-base_all mysql_all ibase_all oracle_all odbc_all postgres_all sqlite_all pxlib_all
+fcl-db_debug: fcl-base_debug mysql_debug ibase_debug oracle_debug odbc_debug postgres_debug sqlite_debug pxlib_debug
+fcl-db_smart: fcl-base_smart mysql_smart ibase_smart oracle_smart odbc_smart postgres_smart sqlite_smart pxlib_smart
+fcl-db_release: fcl-base_release mysql_release ibase_release oracle_release odbc_release postgres_release sqlite_release pxlib_release
+fcl-db_shared: fcl-base_shared mysql_shared ibase_shared oracle_shared odbc_shared postgres_shared postgres_release pxlib_shared
+else
+ifneq ($(findstring $(OS_TARGET),win64 wince solaris darwin),)
+fcl-db_all: fcl-base_all mysql_all ibase_all oracle_all odbc_all postgres_all sqlite_all
+fcl-db_debug: fcl-base_debug mysql_debug ibase_debug oracle_debug odbc_debug postgres_debug sqlite_debug
+fcl-db_smart: fcl-base_smart mysql_smart ibase_smart oracle_smart odbc_smart postgres_smart sqlite_smart
+fcl-db_release: fcl-base_release mysql_release ibase_release oracle_release odbc_release postgres_release sqlite_release
+fcl-db_shared: fcl-base_shared mysql_shared ibase_shared oracle_shared odbc_shared postgres_shared postgres_release
+else
+fcl-db_all: fcl-base_all
+fcl-db_debug: fcl-base_debug
+fcl-db_smart: fcl-base_smart
+fcl-db_release: fcl-base_release
+fcl-db_shared: fcl-base_shared
+endif
+endif
+
+fcl_all: fcl-base_all fcl-xml_all fcl-fpcunit_all fcl-db_all fcl-web_all fcl-registry_all fcl-passrc_all fcl-image_all fcl-net_all fcl-json_all
+fcl_debug: fcl-base_debug fcl-xml_debug fcl-fpcunit_debug fcl-db_debug fcl-web_debug fcl-registry_debug fcl-passrc_debug fcl-image_debug fcl-net_debug fcl-json_debug
+fcl_smart: fcl-base_smart fcl-xml_smart fcl-fpcunit_smart fcl-db_smart fcl-web_smart fcl-registry_smart fcl-passrc_smart fcl-image_smart fcl-net_smart fcl-json_smart
+fcl_release: fcl-base_release fcl-xml_release fcl-fpcunit_release fcl-db_release fcl-web_release fcl-registry_release fcl-passrc_release fcl-image_release fcl-net_release fcl-json_release
+fcl_shared: fcl-base_shared fcl-xml_shared fcl-fpcunit_shared fcl-db_shared fcl-web_shared fcl-registry_shared fcl-passrc_shared fcl-image_shared fcl-net_shared fcl-json_shared
+
+paszlib_all: hash_all
+paszlib_debug: hash_debug
+paszlib_smart: hash_smart
+paszlib_release: hash_release
+paszlib_shared: hash_shared
+
+libpng_all: zlib_all
+libpng_debug: zlib_debug
+libpng_smart: zlib_smart
+libpng_release: zlib_release
+libpng_shared: zlib_shared
+
+ifneq ($(findstring $(OS_TARGET),linux darwin freebsd openbsd netbsd solaris),)
+cairo_all: x11_all fcl-image_all
+cairo_debug: x11_debug fcl-image_debug
+cairo_smart: x11_smart fcl-image_smart
+cairo_release: x11_release fcl-image_release
+cairo_shared: x11_shared fcl-image_shared
+else
+cairo_all:  fcl-image_all
+cairo_debug:  fcl-image_debug
+cairo_smart:  fcl-image_smart
+cairo_release:  fcl-image_release
+cairo_shared:  fcl-image_shared
+endif
+
+chm_all:  fcl-xml_all
+chm_shared:  fcl-xml_shared
+chm_smart:  fcl-xml_smart
+chm_debug:  fcl-xml_debug
+chm_release:  fcl-xml_release
+
+fpgtk_all: fcl-base_all gtk1_all
+fpgtk_shared: fcl-base_shared gtk1_shared
+fpgtk_smart: fcl-base_smart gtk1_smart
+fpgtk_debug: fcl-base_debug gtk1_debug
+fpgtk_release: fcl-base_release gtk1_release
+
+ifeq ($(findstring $(OS_TARGET),go32v2),)
+graph_all: sdl_all
+graph_shared: sdl_shared
+graph_smart: sdl_smart
+graph_debug: sdl_debug
+graph_release: sdl_release
+endif
+
+ifneq ($(findstring $(OS_TARGET),linux darwin freebsd openbsd netbsd solaris),)
+gtk1_all: x11_all opengl_all
+gtk1_debug: x11_debug opengl_debug
+gtk1_smart: x11_smart opengl_smart
+gtk1_release: x11_release opengl_release
+gtk1_shared: x11_shared opengl_shared
+
+gtk2_all: x11_all
+gtk2_shared: x11_shared
+gtk2_smart: x11_smart
+gtk2_debug: x11_debug
+gtk2_release: x11_release
+else
+ifeq ($(findstring $(OS_TARGET),os2 emx),)
+gtk1_all:  opengl_all
+gtk1_debug:  opengl_debug
+gtk1_smart:  opengl_smart
+gtk1_release:  opengl_release
+gtk1_shared:  opengl_shared
+endif
+endif
+
+imlib_all: gtk1_all x11_all
+imlib_shared: gtk1_shared x11_shared
+imlib_smart: gtk1_smart x11_smart
+imlib_debug: gtk1_debug x11_debug
+imlib_release: gtk1_release x11_release
+
+ldap_all: hash_all
+ldap_shared: hash_shared
+ldap_smart: hash_smart
+ldap_debug: hash_debug
+ldap_release: hash_release
+
+libpng_all: zlib_all
+libpng_shared: zlib_shared
+libpng_smart: zlib_smart
+libpng_debug: zlib_debug
+libpng_release: zlib_release
+
+paszlib_all: hash_all
+paszlib_shared: hash_shared
+paszlib_smart: hash_smart
+paszlib_debug: hash_debug
+paszlib_release: hash_release
+
+ifneq ($(findstring $(OS_TARGET),linux darwin freebsd openbsd netbsd solaris),)
+sdl_all: pthreads_all x11_all
+sdl_shared: pthreads_shared x11_shared
+sdl_smart: pthreads_smart x11_smart
+sdl_debug: pthreads_debug x11_debug
+sdl_release: pthreads_release x11_release
+
+opengl_all: x11_all
+opengl_shared: x11_shared
+opengl_smart: x11_smart
+opengl_debug: x11_debug
+opengl_release: x11_release
+endif
+
+tcl_all: fcl-base_all
+tcl_shared: fcl-base_shared
+tcl_smart: fcl-base_smart
+tcl_debug: fcl-base_debug
+tcl_release: fcl-base_release
+
+unixutil_all: libc_all fcl-base_all
+unixutil_shared: libc_shared fcl-base_shared
+unixutil_smart: libc_smart fcl-base_smart
+unixutil_debug: libc_debug fcl-base_debug
+unixutil_release: libc_release fcl-base_release
+
+winunits-jedi_all: winunits-base_all
+winunits-jedi_shared: winunits-base_shared
+winunits-jedi_smart: winunits-base_smart
+winunits-jedi_debug: winunits-base_debug
+winunits-jedi_release: winunits-base_release
+
+xforms_all: x11_all
+xforms_shared: x11_shared
+xforms_smart: x11_smart
+xforms_debug: x11_debug
+xforms_release: x11_release
+
+gnome1_all: gtk1_all imlib_all
+gnome1_shared: gtk1_shared imlib_shared
+gnome1_smart: gtk1_smart imlib_smart
+gnome1_debug: gtk1_debug imlib_debug
+gnome1_release: gtk1_release imlib_release
+
+ptc_all: hermes_all x11_all
+ptc_shared: hermes_shared x11_shared
+ptc_smart: hermes_smart x11_smart
+ptc_debug: hermes_debug x11_debug
+ptc_release: hermes_release x11_release
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

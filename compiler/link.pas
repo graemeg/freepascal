@@ -65,7 +65,14 @@ interface
          Procedure AddStaticCLibrary(const S : TCmdStr);
          Procedure AddSharedCLibrary(S : TCmdStr);
          Procedure AddFramework(S : TCmdStr);
+<<<<<<< HEAD
+<<<<<<< HEAD
          procedure AddImportSymbol(const libname,symname,symmangledname:TCmdStr;OrdNr: longint;isvar:boolean);virtual;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+         procedure AddImportSymbol(const libname,symname:TCmdStr;OrdNr: longint;isvar:boolean);virtual;
+>>>>>>> graemeg/fixes_2_2
          Procedure InitSysInitUnitName;virtual;
          Function  MakeExecutable:boolean;virtual;
          Function  MakeSharedLibrary:boolean;virtual;
@@ -156,10 +163,18 @@ interface
 Implementation
 
     uses
+<<<<<<< HEAD
+<<<<<<< HEAD
       cutils,cfileutl,cstreams,
 {$ifdef hasUnix}
       baseunix,
 {$endif hasUnix}
+=======
+      cutils,cfileutils,cstreams,
+>>>>>>> graemeg/fixes_2_2
+=======
+      cutils,cfileutils,cstreams,
+>>>>>>> origin/fixes_2_2
       script,globals,verbose,comphook,ppu,fpccrc,
       aasmbase,aasmtai,aasmdata,aasmcpu,
       ogmap;
@@ -171,7 +186,15 @@ Implementation
                                    Helpers
 *****************************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     function GetFileCRC(const fn:TPathStr):cardinal;
+=======
+    function GetFileCRC(const fn:string):cardinal;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function GetFileCRC(const fn:string):cardinal;
+>>>>>>> origin/fixes_2_2
       var
         fs : TCStream;
         bufcount,
@@ -180,7 +203,15 @@ Implementation
       begin
         result:=0;
         bufsize:=64*1024;
+<<<<<<< HEAD
+<<<<<<< HEAD
 	      fs:=CFileStreamClass.Create(fn,fmOpenRead or fmShareDenyNone);
+=======
+	      fs:=TCFileStream.Create(fn,fmOpenRead or fmShareDenyNone);
+>>>>>>> graemeg/fixes_2_2
+=======
+	      fs:=TCFileStream.Create(fn,fmOpenRead or fmShareDenyNone);
+>>>>>>> origin/fixes_2_2
 	      if CStreamError<>0 then
 	        begin
 	          fs.Free;
@@ -767,7 +798,23 @@ Implementation
 
     Function TExternalLinker.MakeStaticLibrary:boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         function GetNextFiles(const maxCmdLength : Longint; var item : TCmdStrListItem; const addfilecmd : string) : TCmdStr;
+=======
+        function GetNextFiles(const maxCmdLength : Longint; var item : TCmdStrListItem) : TCmdStr;
+>>>>>>> graemeg/cpstrnew
+=======
+        function GetNextFiles(const maxCmdLength : Longint; var item : TCmdStrListItem) : TCmdStr;
+>>>>>>> graemeg/cpstrnew
+=======
+        function GetNextFiles(const maxCmdLength : Longint; var item : TCmdStrListItem) : TCmdStr;
+>>>>>>> graemeg/cpstrnew
+=======
+        function GetNextFiles(const maxCmdLength : Longint; var item : TCmdStrListItem) : TCmdStr;
+>>>>>>> origin/cpstrnew
           begin
             result := '';
             while (assigned(item) and ((length(result) + length(item.str) + 1) < maxCmdLength)) do begin
@@ -1349,11 +1396,42 @@ Implementation
 
 
     procedure TInternalLinker.ParseScript_MemPos;
+<<<<<<< HEAD
+=======
       var
         s,
         para,
         keyword : String;
         hp : TCmdStrListItem;
+      begin
+        exeoutput.MemPos_Start;
+        hp:=TCmdStrListItem(linkscript.first);
+        while assigned(hp) do
+          begin
+            s:=hp.str;
+            if (s='') or (s[1]='#') then
+              continue;
+            keyword:=Upper(GetToken(s,' '));
+            para:=GetToken(s,' ');
+            if keyword='EXESECTION' then
+              ExeOutput.MemPos_ExeSection(para)
+            else if keyword='ENDEXESECTION' then
+              ExeOutput.MemPos_EndExeSection
+            else if keyword='HEADER' then
+              ExeOutput.MemPos_Header;
+            hp:=TCmdStrListItem(hp.next);
+          end;
+      end;
+
+
+    procedure TInternalLinker.ParseScript_DataPos;
+>>>>>>> origin/fixes_2_2
+      var
+        s,
+        para,
+        keyword : String;
+        hp : TCmdStrListItem;
+<<<<<<< HEAD
         i : longint;
         handled : boolean;
       begin
@@ -1372,16 +1450,37 @@ Implementation
             handled:=true;
             keyword:=Upper(GetToken(s,' '));
             para:=ParsePara(GetToken(s,' '));
+=======
+      begin
+<<<<<<< HEAD
+        exeoutput.MemPos_Start;
+=======
+        exeoutput.DataPos_Start;
+>>>>>>> origin/fixes_2_2
+        hp:=TCmdStrListItem(linkscript.first);
+        while assigned(hp) do
+          begin
+            s:=hp.str;
+            if (s='') or (s[1]='#') then
+              continue;
+            keyword:=Upper(GetToken(s,' '));
+            para:=GetToken(s,' ');
+>>>>>>> graemeg/fixes_2_2
             if keyword='EXESECTION' then
+<<<<<<< HEAD
               ExeOutput.MemPos_ExeSection(para)
             else if keyword='ENDEXESECTION' then
               ExeOutput.MemPos_EndExeSection
             else if keyword='HEADER' then
+<<<<<<< HEAD
               ExeOutput.MemPos_Header
             else
               handled:=false;
             if handled then
               IsHandled^[i]:=true;
+=======
+              ExeOutput.MemPos_Header;
+>>>>>>> graemeg/fixes_2_2
             hp:=TCmdStrListItem(hp.next);
           end;
       end;
@@ -1418,11 +1517,24 @@ Implementation
             else if keyword='HEADER' then
               ExeOutput.DataPos_Header
             else if keyword='SYMBOLS' then
+<<<<<<< HEAD
               ExeOutput.DataPos_Symbols
             else
               handled:=false;
             if handled then
               IsHandled^[i]:=true;
+=======
+              ExeOutput.DataPos_Symbols;
+>>>>>>> graemeg/fixes_2_2
+=======
+              ExeOutput.DataPos_ExeSection(para)
+            else if keyword='ENDEXESECTION' then
+              ExeOutput.DataPos_EndExeSection
+            else if keyword='HEADER' then
+              ExeOutput.DataPos_Header
+            else if keyword='SYMBOLS' then
+              ExeOutput.DataPos_Symbols;
+>>>>>>> origin/fixes_2_2
             hp:=TCmdStrListItem(hp.next);
           end;
       end;
@@ -1449,13 +1561,30 @@ Implementation
       label
         myexit;
       var
+<<<<<<< HEAD
         bsssize : aword;
+=======
+        bsssize : aint;
+        bsssec  : TExeSection;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         dbgname : TCmdStr;
       begin
         result:=false;
 
         Message1(exec_i_linking,outputname);
         FlushOutput;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+{$warning TODO Load custom linker script}
+        DefaultLinkScript;
+>>>>>>> graemeg/fixes_2_2
 
         exeoutput:=CExeOutput.Create;
 
@@ -1514,7 +1643,15 @@ Implementation
             { create executable with link to just created debuginfo file }
             exeoutput.ExeWriteMode:=ewm_exeonly;
             exeoutput.RemoveDebugInfo;
+<<<<<<< HEAD
+<<<<<<< HEAD
             exeoutput.GenerateDebugLink(ExtractFileName(dbgname),GetFileCRC(dbgname));
+=======
+            exeoutput.GenerateDebugLink(dbgname,GetFileCRC(dbgname));
+>>>>>>> graemeg/fixes_2_2
+=======
+            exeoutput.GenerateDebugLink(dbgname,GetFileCRC(dbgname));
+>>>>>>> origin/fixes_2_2
             ParseScript_MemPos;
             ParseScript_DataPos;
             exeoutput.WriteExeFile(outputname);
@@ -1526,12 +1663,26 @@ Implementation
             exeoutput.WriteExeFile(outputname);
           end;
 
+<<<<<<< HEAD
         { Post check that everything was handled }
         ParseScript_PostCheck;
 
         status.codesize:=GetCodeSize(exeoutput);
         status.datasize:=GetDataSize(exeoutput);
         bsssize:=GetBssSize(exeoutput);
+=======
+{$warning TODO fixed section names}
+        status.codesize:=exeoutput.findexesection('.text').size;
+        status.datasize:=exeoutput.findexesection('.data').size;
+        bsssec:=exeoutput.findexesection('.bss');
+        if assigned(bsssec) then
+          bsssize:=bsssec.size
+        else
+          bsssize:=0;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
         { Executable info }
         Message1(execinfo_x_codesize,tostr(status.codesize));

@@ -1,0 +1,12 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TFPWebModule1','FORMDATA',[
+  'TPF0'#13'TFPWebModule1'#12'FPWebModule1'#14'OldCreateOrder'#8#7'Actions'#14#1
+  +#4'Name'#6#4'Read'#7'Default'#8#9'OnRequest'#7#21'TFPWebActions0Request'#0#1
+  +#4'Name'#6#6'Insert'#7'Default'#8#9'OnRequest'#7#21'TFPWebActions1Request'#0
+  +#1#4'Name'#6#6'Update'#7'Default'#8#9'OnRequest'#7#21'TFPWebActions2Request'
+  +#0#1#4'Name'#6#6'Delete'#7'Default'#8#9'OnRequest'#7#21'TFPWebActions3Reques'
+  +'t'#0#0#13'CreateSession'#8#6'Height'#3','#1#16'HorizontalOffset'#3#184#2#14
+  +'VerticalOffset'#3'n'#1#5'Width'#3#144#1#0#4'TDbf'#4'Dbf1'#9'IndexDefs'#14#0
+  +#10'TableLevel'#2#4#13'FilterOptions'#11#0#4'left'#2#23#3'top'#2'5'#0#0#0
+]);

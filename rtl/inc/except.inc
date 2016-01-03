@@ -150,8 +150,24 @@ begin
     Halt(errorcode);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPC_SYSTEM_HAS_RAISEEXCEPTION}
 procedure fpc_RaiseException (Obj : TObject; AnAddr : CodePointer; AFrame : Pointer);[Public, Alias : 'FPC_RAISEEXCEPTION']; compilerproc;
+=======
+
+Function fpc_RaiseException (Obj : TObject; AnAddr,AFrame : Pointer) : TObject;[Public, Alias : 'FPC_RAISEEXCEPTION']; compilerproc;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+
+Function fpc_RaiseException (Obj : TObject; AnAddr,AFrame : Pointer) : TObject;[Public, Alias : 'FPC_RAISEEXCEPTION']; compilerproc;
+>>>>>>> origin/cpstrnew
 var
   _ExceptObjectStack : PExceptObject;
   _ExceptAddrstack : PExceptAddr;
@@ -319,8 +335,24 @@ begin
   o.Free;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 { TODO: no longer used, clean up }
 function fpc_GetExceptionAddr : CodePointer;[Public, Alias : 'FPC_GETEXCEPTIONADDR']; compilerproc;
+=======
+function fpc_GetExceptionAddr : Pointer;[Public, Alias : 'FPC_GETEXCEPTIONADDR']; compilerproc;
+>>>>>>> graemeg/cpstrnew
+=======
+function fpc_GetExceptionAddr : Pointer;[Public, Alias : 'FPC_GETEXCEPTIONADDR']; compilerproc;
+>>>>>>> graemeg/cpstrnew
+=======
+function fpc_GetExceptionAddr : Pointer;[Public, Alias : 'FPC_GETEXCEPTIONADDR']; compilerproc;
+>>>>>>> graemeg/cpstrnew
+=======
+function fpc_GetExceptionAddr : Pointer;[Public, Alias : 'FPC_GETEXCEPTIONADDR']; compilerproc;
+>>>>>>> origin/cpstrnew
 var
   _ExceptObjectStack : PExceptObject;
 begin
@@ -330,7 +362,19 @@ begin
   else
     fpc_GetExceptionAddr:=_ExceptObjectStack^.Addr;
 end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif VER2_6}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 Procedure SysInitExceptions;
 {

@@ -13,6 +13,8 @@
 {$IFDEF read_interface_rest}
 const
   NULL = nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef noboolean32}
   gTRUE = 1;
   gFALSE = 0;
@@ -20,6 +22,16 @@ const
   gTRUE = boolean32(true);
   gFALSE = boolean32(false);
 {$endif}
+=======
+  gTRUE = 1;
+  gFALSE = 0;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+  gTRUE = 1;
+  gFALSE = 0;
+
+>>>>>>> origin/fixes_2_2
 function CLAMP(x, MinX, MaxX: integer): integer;
 // Macros by analogy to GINT_TO_POINTER, GPOINTER_TO_INT
 function GPOINTER_TO_SIZE(p: GPointer): GSize;

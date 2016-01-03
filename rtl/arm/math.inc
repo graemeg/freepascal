@@ -14,8 +14,32 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if defined(FPUFPA) or defined(FPUFPA10) or defined(FPUFPA11) or defined(FPUVFPV2) or defined(FPUVFPV3) or defined(FPUVFPV3_D16)}
     {$ifndef FPC_SYSTEM_HAS_ABS}
+=======
+{$if defined(FPUFPA) or defined(FPUFPA10) or defined(FPUFPA11) or defined(FPUVFPV2) or defined(FPUVFPV3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(FPUFPA) or defined(FPUFPA10) or defined(FPUFPA11) or defined(FPUVFPV2) or defined(FPUVFPV3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(FPUFPA) or defined(FPUFPA10) or defined(FPUFPA11) or defined(FPUVFPV2) or defined(FPUVFPV3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(FPUFPA) or defined(FPUFPA10) or defined(FPUFPA11) or defined(FPUVFPV2) or defined(FPUVFPV3)}
+>>>>>>> origin/cpstrnew
+=======
+{$if defined(FPUFPA) or defined(FPUFPA10) or defined(FPUFPA11)}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$if defined(FPUFPA) or defined(FPUFPA10) or defined(FPUFPA11)}
+>>>>>>> origin/fixes_2_2
     {$define FPC_SYSTEM_HAS_ABS}
     function fpc_abs_real(d : ValReal) : ValReal;compilerproc;
     begin
@@ -32,7 +56,13 @@
       runerror(207);
       result:=0;
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$endif FPC_SYSTEM_HAS_SQR}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     {$ifndef FPC_SYSTEM_HAS_SQRT}
     {$define FPC_SYSTEM_HAS_SQRT}
     function fpc_sqrt_real(d : ValReal) : ValReal;compilerproc;

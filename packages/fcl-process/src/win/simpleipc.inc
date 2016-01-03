@@ -24,7 +24,7 @@ Resourcestring
   SErrFailedToCreateWindow = 'Failed to create message window %s';
 
 var
-  MsgWindowClass: TWndClassA = (
+  MsgWindowClass: TWndClass = (
     style: 0;
     lpfnWndProc: Nil;
     cbClsExtra: 0;
@@ -90,18 +90,18 @@ end;
 function TWinMsgServerComm.AllocateHWnd(const aWindowName: String): HWND;
 
 var
-  cls: TWndClassA;
+  cls: TWndClass;
   isreg : Boolean;
 
 begin
   Pointer(MsgWindowClass.lpfnWndProc):=@MsgWndProc;
   MsgWindowClass.hInstance := HInstance;
   MsgWindowClass.lpszClassName:=MsgWndClassName;
-  isreg:=GetClassInfoA(HInstance,MsgWndClassName,cls);
+  isreg:=GetClassInfo(HInstance,MsgWndClassName,cls);
   if not isreg then
-    if (Windows.RegisterClassA(MsgWindowClass)=0) then
+    if (Windows.RegisterClass(MsgWindowClass)=0) then
       Owner.DoError(SErrFailedToRegisterWindowClass,[]);
-  Result:=CreateWindowExA(WS_EX_TOOLWINDOW, MsgWndClassName,
+  Result:=CreateWindowEx(WS_EX_TOOLWINDOW, MsgWndClassName,
     PChar(aWindowName), WS_POPUP {!0}, 0, 0, 0, 0, 0, 0, HInstance, nil);
   if (Result=0) then
     Owner.DoError(SErrFailedToCreateWindow,[aWindowName]);
@@ -169,7 +169,6 @@ Var
 begin
   CDS:=PCopyDataStruct(Msg.Lparam);
   Owner.FMsgType:=CDS^.dwData;
-  Owner.FMsgData.Size:=0;
   Owner.FMsgData.Seek(0,soFrombeginning);
   Owner.FMsgData.WriteBuffer(CDS^.lpData^,CDS^.cbData);
 end;
@@ -222,7 +221,7 @@ end;
 
 procedure TWinMsgClientComm.Connect;
 begin
-  FHWND:=FindWindowA(MsgWndClassName,PChar(FWindowName));
+  FHWND:=FindWindow(MsgWndClassName,PChar(FWindowName));
   If (FHWND=0) then
     Owner.DoError(SErrServerNotActive,[Owner.ServerID]);
 end;
@@ -258,7 +257,7 @@ begin
     CDS.dwData:=MsgType;
     CDS.lpData:=Data.Memory;
     CDS.cbData:=Data.Size;
-    Windows.SendMessage(FHWnd,WM_COPYDATA,0,PtrInt(@CDS));
+    Windows.SendMessage(FHWnd,WM_COPYDATA,0,Integer(@CDS));
   Finally
     FreeAndNil(FMemStr);
   end;
@@ -266,7 +265,7 @@ end;
 
 function TWinMsgClientComm.ServerRunning: Boolean;
 begin
-  Result:=FindWindowA(MsgWndClassName,PChar(FWindowName))<>0;
+  Result:=FindWindow(MsgWndClassName,PChar(FWindowName))<>0;
 end;
 
 { ---------------------------------------------------------------------

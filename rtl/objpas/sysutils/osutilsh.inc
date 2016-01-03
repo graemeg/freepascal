@@ -57,7 +57,19 @@ Type
 
 Type
   TEventType = (etCustom,etInfo,etWarning,etError,etDebug);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   TEventTypes = Set of TEventType;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 Var
   OnGetVendorName      : TGetVendorNameEvent;

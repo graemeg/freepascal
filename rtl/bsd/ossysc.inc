@@ -94,12 +94,27 @@ Function Fpmmap(start:pointer;len:size_t;prot:cint;flags:cint;fd:cint;offst:off_
 
 begin
  {$ifdef CPU64}
+<<<<<<< HEAD
+<<<<<<< HEAD
   Fpmmap:=pointer(ptruint(do_syscall(TSysParam(syscall_nr_mmap),TSysParam(Start),TSysParam(Len),TSysParam(Prot),TSysParam(Flags),TSysParam(fd),0,TSysParam(offst))));
 {$else}
  Fpmmap:=pointer(ptruint(do_syscall(syscall_nr_mmap,TSysParam(Start),Len,Prot,Flags,fd,0,
          {$ifdef FPC_BIG_ENDIAN}    hi(offst),lo(offst){$endif}
          {$ifdef FPC_LITTLE_ENDIAN} lo(offst),hi(offst){$endif}
          )));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  Fpmmap:=pointer(ptruint(do__syscall(TSysParam(syscall_nr_mmap),TSysParam(Start),TSysParam(Len),TSysParam(Prot),TSysParam(Flags),TSysParam(fd),TSysParam(offst),0,0)));
+{$else}
+  Fpmmap:=pointer(ptruint(do_syscall(syscall_nr_mmap,TSysParam(Start),Len,Prot,Flags,fd,
+        {$ifdef FPC_BIG_ENDIAN}    hi(offst),lo(offst){$endif}
+        {$ifdef FPC_LITTLE_ENDIAN} lo(offst),hi(offst){$endif},0
+        )));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif}
 end;
 
@@ -526,6 +541,8 @@ function FPSigProcMask(how:cint;nset : psigset;oset : psigset):cint; [public, al
     res : cint;
 {$endif OS_SIGPROCMASK_RETURNS_OVAL}
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef OS_SIGPROCMASK_RETURNS_OVAL}
   res:=do_syscall(syscall_nr_sigprocmask,tsysparam(how),TSysParam(nset^[0]));
   if assigned(oset) then
@@ -535,8 +552,16 @@ begin
 {$else OS_SIGPROCMASK_RETURNS_OVAL}
   FPsigprocmask:=do_syscall(syscall_nr_sigprocmask,tsysparam(how),TSysParam(nset),TSysParam(oset));
 {$endif OS_SIGPROCMASK_RETURNS_OVAL}
+=======
+  FPsigprocmask:=do_syscall(syscall_nr_sigprocmask,tsysparam(how),TSysParam(nset),TSysParam(oset));
+>>>>>>> graemeg/fixes_2_2
 end;
 {$warning user BLA!}
+=======
+  FPsigprocmask:=do_syscall(syscall_nr_sigprocmask,tsysparam(how),TSysParam(nset),TSysParam(oset));
+end;
+{$user BLA!}
+>>>>>>> origin/fixes_2_2
 Function FpNanoSleep(req : ptimespec;rem : ptimespec) : cint; [public, alias : 'FPC_SYSC_NANOSLEEP'];
 begin
   FpNanoSleep:=Do_SysCall(syscall_nr_nanosleep,TSysParam(req),TSysParam(rem));

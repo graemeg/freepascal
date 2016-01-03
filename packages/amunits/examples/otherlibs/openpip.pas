@@ -17,7 +17,7 @@ Program OpenPIP;
     nils.sjoholm@mailbox.swipnet.se
 }
 
-uses exec, amigados, agraphics, intuition, picasso96api, utility,strings;
+uses exec, amigados, graphics, intuition, picasso96api, utility,strings;
 
 
 Const

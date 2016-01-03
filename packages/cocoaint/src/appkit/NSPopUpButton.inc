@@ -46,6 +46,10 @@ var
 { NSPopUpButton }
   NSPopUpButton = objcclass external (NSButton)
   private
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __pbFlags: record
       case byte of
        0: (_anonbitfield_NSPopUpButton0: cuint);
@@ -53,6 +57,29 @@ var
         needsPullsDownFromTemplate: 0..1;
         RESERVED: 0..((1 shl 31)-1);
        end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __pbFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSPopUpButton0: cuint);
+       1: (
+        needsPullsDownFromTemplate: 0..1;
+        RESERVED: 0..((1 shl 31)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     {$ifdef cpu64}

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {
     This file is part of the Free Component Library
 
@@ -12,6 +16,14 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  **********************************************************************}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 unit webjsonrpc;
 
 {$mode objfpc}{$H+}
@@ -20,7 +32,23 @@ unit webjsonrpc;
 interface
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Classes, SysUtils, fpjson, fpjsonrpc, httpdefs, fphttp, jsonparser;
+=======
+  Classes, SysUtils, fpjson, fpjsonrpc, httpdefs, fphttp, jsonparser, websession;
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, fpjson, fpjsonrpc, httpdefs, fphttp, jsonparser, websession;
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, fpjson, fpjsonrpc, httpdefs, fphttp, jsonparser, websession;
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, fpjson, fpjsonrpc, httpdefs, fphttp, jsonparser, websession;
+>>>>>>> origin/cpstrnew
 
 Type
 { ---------------------------------------------------------------------

@@ -30,14 +30,38 @@ uses classes, sysutils;
 
 type
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   TBase64EncodingStream = class(TOwnerStream)
   protected
+=======
+  TBase64EncodingStream = class(TStream)
+  protected
+    OutputStream: TStream;
+>>>>>>> graemeg/fixes_2_2
+=======
+  TBase64EncodingStream = class(TStream)
+  protected
+    OutputStream: TStream;
+>>>>>>> origin/fixes_2_2
     TotalBytesProcessed, BytesWritten: LongWord;
     Buf: array[0..2] of Byte;
     BufSize: Integer;    // # of bytes used in Buf
   public
+<<<<<<< HEAD
+<<<<<<< HEAD
     destructor Destroy; override;
     Function Flush : Boolean;
+=======
+    constructor Create(AOutputStream: TStream);
+    destructor Destroy; override;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+    constructor Create(AOutputStream: TStream);
+    destructor Destroy; override;
+
+>>>>>>> origin/fixes_2_2
     function Write(const Buffer; Count: Longint): Longint; override;
     function Seek(Offset: Longint; Origin: Word): Longint; override;
   end;
@@ -47,7 +71,15 @@ type
    *    - follows RFC3548
    *    - rejects any characters outside of base64 alphabet,
    *    - only accepts up to two '=' characters at the end and
+<<<<<<< HEAD
+<<<<<<< HEAD
    *    - requires the input to have a Size being a multiple of 4; otherwise raises an EBase64DecodingException
+=======
+   *    - requires the input to have a Size being a multiple of 4; otherwise raises an EBase64DecodeException
+>>>>>>> graemeg/fixes_2_2
+=======
+   *    - requires the input to have a Size being a multiple of 4; otherwise raises an EBase64DecodeException
+>>>>>>> origin/fixes_2_2
    * - 'MIME mode':
    *    - follows RFC2045
    *    - ignores any characters outside of base64 alphabet
@@ -58,22 +90,52 @@ type
 
   { TBase64DecodingStream }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   TBase64DecodingStream = class(TOwnerStream)
+=======
+  TBase64DecodingStream = class(TStream)
+>>>>>>> graemeg/fixes_2_2
+=======
+  TBase64DecodingStream = class(TStream)
+>>>>>>> origin/fixes_2_2
   private
     FMode: TBase64DecodingMode;
     procedure SetMode(const AValue: TBase64DecodingMode);
     function  GetSize: Int64; override;
     function  GetPosition: Int64; override;
   protected
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    InputStream: TStream;
+>>>>>>> graemeg/fixes_2_2
+=======
+    InputStream: TStream;
+>>>>>>> origin/fixes_2_2
     CurPos,             // 0-based (decoded) position of this stream (nr. of decoded & Read bytes since last reset)
     DecodedSize: Int64; // length of decoded stream ((expected) decoded bytes since last Reset until Mode-dependent end of stream)
     ReadBase64ByteCount: Int64; // number of valid base64 bytes read from input stream since last Reset
     Buf: array[0..2] of Byte; // last 3 decoded bytes
+<<<<<<< HEAD
+<<<<<<< HEAD
     BufPos: Integer;          // offset in Buf of byte which is to be read next; if >2, next block must be read from Source & decoded
     FEOF: Boolean;            // if true, all decoded bytes have been read
   public
     constructor Create(ASource: TStream);
     constructor Create(ASource: TStream; AMode: TBase64DecodingMode);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    BufPos: Integer;          // offset in Buf of byte which is to be read next; if >2, next block must be read from InputStream & decoded
+    FEOF: Boolean;            // if true, all decoded bytes have been read
+  public
+    constructor Create(AInputStream: TStream);
+    constructor Create(AInputStream: TStream; AMode: TBase64DecodingMode);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     procedure Reset;
 
     function Read(var Buffer; Count: Longint): Longint; override;
@@ -86,9 +148,31 @@ type
   EBase64DecodingException = class(Exception)
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function EncodeStringBase64(const s:string):String;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function DecodeStringBase64(const s:string;strict:boolean=false):String;
+=======
+function DecodeStringBase64(const s:string):String;
+>>>>>>> graemeg/cpstrnew
+=======
+function DecodeStringBase64(const s:string):String;
+>>>>>>> graemeg/cpstrnew
+=======
+function DecodeStringBase64(const s:string):String;
+>>>>>>> graemeg/cpstrnew
+=======
+function DecodeStringBase64(const s:string):String;
+>>>>>>> origin/cpstrnew
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 implementation
 
 uses
@@ -126,8 +210,44 @@ const
 
   Alphabet = ['a'..'z','A'..'Z','0'..'9','+','/','=']; // all 65 chars that are in the base64 encoding alphabet
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TBase64EncodingStream.Flush : Boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+function TBase64EncodingStream.Flush : Boolean;
+
+>>>>>>> graemeg/cpstrnew
+=======
+function TBase64EncodingStream.Flush : Boolean;
+
+>>>>>>> graemeg/cpstrnew
+=======
+function TBase64EncodingStream.Flush : Boolean;
+
+>>>>>>> graemeg/cpstrnew
+=======
+function TBase64EncodingStream.Flush : Boolean;
+
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+constructor TBase64EncodingStream.Create(AOutputStream: TStream);
+begin
+  inherited Create;
+  OutputStream := AOutputStream;
+end;
+
+destructor TBase64EncodingStream.Destroy;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 var
   WriteBuf: array[0..3] of Char;
 begin
@@ -138,15 +258,25 @@ begin
         WriteBuf[1] := EncodingTable[(Buf[0] and 3) shl 4];
         WriteBuf[2] := '=';
         WriteBuf[3] := '=';
+<<<<<<< HEAD
+<<<<<<< HEAD
         Source.Write(WriteBuf, 4);
         Result:=True;
         Inc(TotalBytesProcessed,2);
+=======
+        OutputStream.Write(WriteBuf, 4);
+>>>>>>> graemeg/fixes_2_2
+=======
+        OutputStream.Write(WriteBuf, 4);
+>>>>>>> origin/fixes_2_2
       end;
     2: begin
         WriteBuf[0] := EncodingTable[Buf[0] shr 2];
         WriteBuf[1] := EncodingTable[(Buf[0] and 3) shl 4 or (Buf[1] shr 4)];
         WriteBuf[2] := EncodingTable[(Buf[1] and 15) shl 2];
         WriteBuf[3] := '=';
+<<<<<<< HEAD
+<<<<<<< HEAD
         Source.Write(WriteBuf, 4);
         Result:=True;
         Inc(TotalBytesProcessed,1);
@@ -159,6 +289,16 @@ end;
 destructor TBase64EncodingStream.Destroy;
 begin
   Flush;
+=======
+        OutputStream.Write(WriteBuf, 4);
+      end;
+  end;
+>>>>>>> graemeg/fixes_2_2
+=======
+        OutputStream.Write(WriteBuf, 4);
+      end;
+  end;
+>>>>>>> origin/fixes_2_2
   inherited Destroy;
 end;
 
@@ -185,7 +325,15 @@ begin
     WriteBuf[1] := EncodingTable[(Buf[0] and 3) shl 4 or (Buf[1] shr 4)];
     WriteBuf[2] := EncodingTable[(Buf[1] and 15) shl 2 or (Buf[2] shr 6)];
     WriteBuf[3] := EncodingTable[Buf[2] and 63];
+<<<<<<< HEAD
+<<<<<<< HEAD
     Source.Write(WriteBuf, 4);
+=======
+    OutputStream.Write(WriteBuf, 4);
+>>>>>>> graemeg/fixes_2_2
+=======
+    OutputStream.Write(WriteBuf, 4);
+>>>>>>> origin/fixes_2_2
     Inc(BytesWritten, 4);
     BufSize := 0;
   end;
@@ -221,15 +369,35 @@ var
   i: Integer;
   c: Char;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   // Note: this method only works on Seekable Sources (for bdmStrict we also get the Size property)
   if DecodedSize<>-1 then Exit(DecodedSize);
   ipos := Source.Position; // save position in input stream
+=======
+  // Note: this method only works on Seekable InputStreams (for bdmStrict we also get the Size property)
+  if DecodedSize<>-1 then Exit(DecodedSize);
+  ipos := InputStream.Position; // save position in input stream
+>>>>>>> graemeg/fixes_2_2
+=======
+  // Note: this method only works on Seekable InputStreams (for bdmStrict we also get the Size property)
+  if DecodedSize<>-1 then Exit(DecodedSize);
+  ipos := InputStream.Position; // save position in input stream
+>>>>>>> origin/fixes_2_2
   case Mode of
     bdmMIME:  begin
       // read until end of input stream or first occurence of a '='
       Result := ReadBase64ByteCount; // keep number of valid base64 bytes since last Reset in Result
       repeat
+<<<<<<< HEAD
+<<<<<<< HEAD
         count := Source.Read(scanBuf, SizeOf(scanBuf));
+=======
+        count := InputStream.Read(scanBuf, SizeOf(scanBuf));
+>>>>>>> graemeg/fixes_2_2
+=======
+        count := InputStream.Read(scanBuf, SizeOf(scanBuf));
+>>>>>>> origin/fixes_2_2
         for i := 0 to count-1 do begin
           c := scanBuf[i];
           if c in Alphabet-['='] then // base64 encoding characters except '='
@@ -250,6 +418,8 @@ begin
     end;
     bdmStrict:begin
       // seek to end of input stream, read last two bytes and determine size
+<<<<<<< HEAD
+<<<<<<< HEAD
       //   from Source size and the number of leading '=' bytes
       // NB we don't raise an exception here if the input does not contains an integer multiple of 4 bytes
       ipos  := Source.Position;
@@ -257,6 +427,20 @@ begin
       Result := ((ReadBase64ByteCount + (isize - ipos) + 3) div 4) * 3;
       Source.Seek(-2, soFromEnd);
       Source.Read(endBytes, 2);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      //   from InputStream size and the number of leading '=' bytes
+      // NB we don't raise an exception here if the input does not contains an integer multiple of 4 bytes
+      ipos  := InputStream.Position;
+      isize := InputStream.Size;
+      Result := ((ReadBase64ByteCount + (isize - ipos) + 3) div 4) * 3;
+      InputStream.Seek(-2, soFromEnd);
+      InputStream.Read(endBytes, 2);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       if endBytes[1] = '=' then begin // last byte
         Dec(Result);
       if endBytes[0] = '=' then       // second to last byte
@@ -264,7 +448,15 @@ begin
       end;
     end;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   Source.Position := ipos; // restore position in input stream
+=======
+  InputStream.Position := ipos; // restore position in input stream
+>>>>>>> graemeg/fixes_2_2
+=======
+  InputStream.Position := ipos; // restore position in input stream
+>>>>>>> origin/fixes_2_2
   // store calculated DecodedSize
   DecodedSize := Result;
 end;
@@ -274,6 +466,8 @@ begin
   Result := CurPos;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 constructor TBase64DecodingStream.Create(ASource: TStream);
 begin
   Create(ASource, bdmMIME); // MIME mode is default
@@ -282,13 +476,37 @@ end;
 constructor TBase64DecodingStream.Create(ASource: TStream; AMode: TBase64DecodingMode);
 begin
   inherited Create(ASource);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+constructor TBase64DecodingStream.Create(AInputStream: TStream);
+begin
+  Create(AInputStream, bdmMIME); // MIME mode is default
+end;
+
+constructor TBase64DecodingStream.Create(AInputStream: TStream; AMode: TBase64DecodingMode);
+begin
+  inherited Create;
+  InputStream := AInputStream;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Mode := AMode;
   Reset;
 end;
 
 procedure TBase64DecodingStream.Reset;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   ReadBase64ByteCount := 0; // number of bytes Read form Source since last call to Reset
+=======
+  ReadBase64ByteCount := 0; // number of bytes Read form InputStream since last call to Reset
+>>>>>>> graemeg/fixes_2_2
+=======
+  ReadBase64ByteCount := 0; // number of bytes Read form InputStream since last call to Reset
+>>>>>>> origin/fixes_2_2
   CurPos := 0; // position in decoded byte sequence since last Reset
   DecodedSize := -1; // indicates unknown; will be set after first call to GetSize or when reaching end of stream
   BufPos := 3; // signals we need to read & decode a new block of 4 bytes
@@ -329,7 +547,15 @@ begin
       ReadOK := 0; // number of base64 bytes already read into ReadBuf
       while ToRead > 0 do begin
         OrgToRead := ToRead;
+<<<<<<< HEAD
+<<<<<<< HEAD
         HaveRead := Source.Read(ReadBuf[ReadOK], ToRead);
+=======
+        HaveRead := InputStream.Read(ReadBuf[ReadOK], ToRead);
+>>>>>>> graemeg/fixes_2_2
+=======
+        HaveRead := InputStream.Read(ReadBuf[ReadOK], ToRead);
+>>>>>>> origin/fixes_2_2
         //WriteLn('ToRead = ', ToRead, ', HaveRead = ', HaveRead, ', ReadOK=', ReadOk);
         if HaveRead > 0 then begin // if any new bytes; in ReadBuf[ReadOK .. ReadOK + HaveRead-1]
           for i := ReadOK to ReadOK + HaveRead - 1 do begin
@@ -364,11 +590,25 @@ begin
           else if (ReadBuf[0] = PC) or (ReadBuf[1] = PC) then
             raise EBase64DecodingException.CreateFmt(SStrictMisplacedPadChar,[])   // =BBB or B=BB
           else if (ReadBuf[2] = PC) then begin
+<<<<<<< HEAD
+<<<<<<< HEAD
             if (ReadBuf[3] <> PC) or (Source.Position < Source.Size) then
               raise EBase64DecodingException.CreateFmt(SStrictMisplacedPadChar,[]); // BB=B or BB==, but not at end of input stream
             DetectedEnd(CurPos + 1)  // only one byte left to read;  BB==, at end of input stream
           end else if (ReadBuf[3] = PC) then begin
             if (Source.Position < Source.Size) then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+            if (ReadBuf[3] <> PC) or (InputStream.Position < InputStream.Size) then
+              raise EBase64DecodingException.CreateFmt(SStrictMisplacedPadChar,[]); // BB=B or BB==, but not at end of input stream
+            DetectedEnd(CurPos + 1)  // only one byte left to read;  BB==, at end of input stream
+          end else if (ReadBuf[3] = PC) then begin
+            if (InputStream.Position < InputStream.Size) then
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               raise EBase64DecodingException.CreateFmt(SStrictMisplacedPadChar,[]); // BBB=, but not at end of input stream
             DetectedEnd(CurPos + 2); // only two bytes left to read; BBB=, at end of input stream
           end;
@@ -417,7 +657,25 @@ begin
   raise EStreamError.Create('Invalid stream operation');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function DecodeStringBase64(const s:string;strict:boolean=false):String;
+=======
+function DecodeStringBase64(const s:string):String;
+>>>>>>> graemeg/cpstrnew
+=======
+function DecodeStringBase64(const s:string):String;
+>>>>>>> graemeg/cpstrnew
+=======
+function DecodeStringBase64(const s:string):String;
+>>>>>>> graemeg/cpstrnew
+=======
+function DecodeStringBase64(const s:string):String;
+>>>>>>> origin/cpstrnew
 
 var 
   Instream, 
@@ -428,6 +686,10 @@ begin
   try
     Outstream:=TStringStream.Create('');
     try 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       if strict then
         Decoder:=TBase64DecodingStream.Create(Instream,bdmStrict)
       else
@@ -435,6 +697,28 @@ begin
       try
          Outstream.CopyFrom(Decoder,Decoder.Size);
          Result:=Outstream.DataString;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      Decoder:=TBase64DecodingStream.Create(Instream,bdmMIME);
+      try
+         Outstream.CopyFrom(Decoder,Decoder.Size);
+         Outstream.Position:=0;
+         Result:=Outstream.ReadString(Outstream.Size);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       finally
         Decoder.Free;
         end;
@@ -460,10 +744,34 @@ begin
     finally 
       Encoder.Free;
       end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Result:=Outstream.DataString;
+=======
+    Outstream.Position:=0;
+    Result:=Outstream.ReadString(Outstream.Size);
+>>>>>>> graemeg/cpstrnew
+=======
+    Outstream.Position:=0;
+    Result:=Outstream.ReadString(Outstream.Size);
+>>>>>>> graemeg/cpstrnew
+=======
+    Outstream.Position:=0;
+    Result:=Outstream.ReadString(Outstream.Size);
+>>>>>>> graemeg/cpstrnew
+=======
+    Outstream.Position:=0;
+    Result:=Outstream.ReadString(Outstream.Size);
+>>>>>>> origin/cpstrnew
   finally
     Outstream.free;
     end;
 end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 end.

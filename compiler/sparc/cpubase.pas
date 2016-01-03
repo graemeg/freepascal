@@ -253,9 +253,15 @@ uses
       saved_standard_registers : array[0..0] of tsuperregister = (RS_INVALID);
 
       { this is only for the generic code which is not used for this architecture }
+<<<<<<< HEAD
       saved_address_registers : array[0..0] of tsuperregister = (RS_INVALID);
       saved_mm_registers : array[0..0] of tsuperregister = (RS_INVALID);
 
+      { this is only for the generic code which is not used for this architecture }
+=======
+>>>>>>> origin/fixes_2_2
+      saved_mm_registers : array[0..0] of tsuperregister = (RS_NO);
+      
       {# Required parameter alignment when calling a routine declared as
          stdcall and cdecl. The alignment value should be the one defined
          by GCC or the target ABI.

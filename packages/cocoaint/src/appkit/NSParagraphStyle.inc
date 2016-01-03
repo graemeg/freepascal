@@ -75,17 +75,54 @@ var
 { NSTextTab }
   NSTextTab = objcclass external (NSObject, NSCopyingProtocol, NSCodingProtocol)
   private
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __flags: record
       case byte of
        0: (_anonbitfield_NSParagraphStyle1: NSTextAlignment);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __flags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSParagraphStyle1: NSTextAlignment);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _alignment: 0..((1 shl 4)-1);
         refCount: 0..((1 shl 24)-1);
         unused: 0..((1 shl 4)-1);
         {$ifdef cpu64}
         _anonbitfield_NSParagraphStyle0: 0..((1 shl 32)-1);
         {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _location: CGFloat;
@@ -116,10 +153,35 @@ var
     _minimumLineHeight: CGFloat;
     _maximumLineHeight: CGFloat;
     _tabStops: NSArray;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __flags: record
       case byte of
        0: (_anonbitfield_NSParagraphStyle3: NSTextAlignment);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __flags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSParagraphStyle3: NSTextAlignment);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _alignment: 0..((1 shl 4)-1);
         _lineBreakMode: 0..((1 shl 4)-1);
         tabStopsIsMutable: 0..1;
@@ -130,7 +192,19 @@ var
         {$ifdef cpu64}
         _anonbitfield_NSParagraphStyle2: 0..((1 shl 32)-1);
         {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _defaultTabInterval: CGFloat;

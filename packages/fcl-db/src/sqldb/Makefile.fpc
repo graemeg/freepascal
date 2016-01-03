@@ -6,6 +6,9 @@
 main=fcl-db
 
 [target]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 dirs_beos=interbase postgres mysql odbc oracle sqlite mssql
 dirs_linux=interbase postgres mysql odbc oracle sqlite mssql 
 dirs_freebsd=interbase postgres mysql odbc oracle sqlite mssql
@@ -15,8 +18,37 @@ dirs_netbsd=interbase postgres mysql odbc oracle sqlite mssql
 dirs_openbsd=interbase postgres mysql odbc oracle sqlite mssql
 dirs_win32=interbase postgres mysql odbc oracle sqlite mssql
 dirs_win64=interbase odbc mysql sqlite mssql
+=======
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+dirs_beos=interbase postgres mysql odbc oracle sqlite
+dirs_linux=interbase postgres mysql odbc oracle sqlite
+dirs_freebsd=interbase postgres mysql odbc oracle sqlite
+dirs_darwin=interbase postgres mysql odbc oracle sqlite
+<<<<<<< HEAD
+<<<<<<< HEAD
+dirs_iphonesim=interbase postgres mysql odbc oracle sqlite
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+dirs_netbsd=interbase postgres mysql odbc oracle sqlite
+dirs_openbsd=interbase postgres mysql odbc oracle sqlite
+dirs_win32=interbase postgres mysql odbc oracle sqlite
+dirs_win64=interbase odbc mysql sqlite
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
 dirs_wince=interbase postgres mysql odbc oracle sqlite
 dirs_aix=interbase postgres mysql odbc oracle sqlite
+=======
+dirs_wince=interbase postgres mysql odbc oracle sqlite
+>>>>>>> graemeg/fixes_2_2
+=======
+dirs_wince=interbase postgres mysql odbc oracle sqlite
+>>>>>>> origin/fixes_2_2
 units=sqldb
 rsts=sqldb
 

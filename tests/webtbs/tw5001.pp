@@ -4,6 +4,11 @@
 program Project1;
 
 {$mode objfpc}{$H+}
+uses
+{$ifdef unix}
+  cwstring,
+{$endif unix}
+  SysUtils;
 
 resourcestring
   s = 'test';

@@ -227,7 +227,15 @@ type
     function  ParseIndexName(const AIndexName: string): string;
     procedure ParseFilter(const AFilter: string);
     function  GetDbfFieldDefs: TDbfFieldDefs;
+<<<<<<< HEAD
+<<<<<<< HEAD
     function  ReadCurrentRecord(Buffer: TRecordBuffer; var Acceptable: Boolean): TGetResult;
+=======
+    function  ReadCurrentRecord(Buffer: PChar; var Acceptable: Boolean): TGetResult;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function  ReadCurrentRecord(Buffer: PChar; var Acceptable: Boolean): TGetResult;
+>>>>>>> origin/fixes_2_2
     function  SearchKeyBuffer(Buffer: PChar; SearchType: TSearchKeyType): Boolean;
     procedure SetRangeBuffer(LowRange: PChar; HighRange: PChar);
 
@@ -261,8 +269,16 @@ type
     procedure InternalSetToRecord(Buffer: TRecordBuffer); override; {virtual abstract}
     procedure InitFieldDefs; override;
     function  IsCursorOpen: Boolean; override; {virtual abstract}
+<<<<<<< HEAD
     procedure SetBookmarkFlag(Buffer: TRecordBuffer; Value: TBookmarkFlag); override; {virtual abstract}
     procedure SetBookmarkData(Buffer: TRecordBuffer; Data: Pointer); override; {virtual abstract}
+=======
+    procedure SetBookmarkFlag(Buffer: PChar; Value: TBookmarkFlag); override; {virtual abstract}
+    procedure SetBookmarkData(Buffer: PChar; Data: Pointer); override; {virtual abstract}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     procedure SetFieldData(Field: TField; Buffer: Pointer);
       {$ifdef SUPPORT_OVERLOAD} overload; {$endif} override; {virtual abstract}
 
@@ -846,7 +862,15 @@ begin
     OnFilterRecord(Self, Acceptable);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TDbf.ReadCurrentRecord(Buffer: TRecordBuffer; var Acceptable: Boolean): TGetResult;
+=======
+function TDbf.ReadCurrentRecord(Buffer: PChar; var Acceptable: Boolean): TGetResult;
+>>>>>>> graemeg/fixes_2_2
+=======
+function TDbf.ReadCurrentRecord(Buffer: PChar; var Acceptable: Boolean): TGetResult;
+>>>>>>> origin/fixes_2_2
 var
   lPhysicalRecNo: Integer;
   pRecord: pDbfRecord;
@@ -864,7 +888,14 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TDbf.GetRecord(Buffer: TRecordBuffer; GetMode: TGetMode; DoCheck: Boolean): TGetResult; {override virtual abstract from TDataset}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function TDbf.GetRecord(Buffer: PChar; GetMode: TGetMode; DoCheck: Boolean): TGetResult; {override virtual abstract from TDataset}
+>>>>>>> graemeg/fixes_2_2
 var
   pRecord: pDbfRecord;
   acceptable: Boolean;

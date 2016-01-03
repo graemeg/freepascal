@@ -412,10 +412,22 @@ begin
   { Set up signals handlers }
   InstallSignals;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef cpui386}
   fpc_cpucodeinit;
 {$endif}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   { Setup heap }
   myheapsize:=4096*100;// $ 20000;
   myheaprealsize:=4096*100;// $ 20000;

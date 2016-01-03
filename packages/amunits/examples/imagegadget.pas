@@ -21,7 +21,7 @@ PROGRAM ImageGadget;
    nils.sjoholm@mailbox.swipnet.se
 }
 
-USES Intuition, Exec, AGraphics, GadTools, Utility, systemvartags,pastoc;
+USES Intuition, Exec, Graphics, GadTools, Utility, systemvartags,pastoc;
 
 
 CONST
@@ -289,7 +289,6 @@ end;
 FUNCTION EasyReq(wp : pWindow; title,body,gad : PChar) : Longint;
 VAR
   es : tEasyStruct;
-  Res: LongWord;
 BEGIN
   es.es_StructSize:=SizeOf(tEasyStruct);
   es.es_Flags:=0;
@@ -297,7 +296,7 @@ BEGIN
   es.es_TextFormat:=body;
   es.es_GadgetFormat:=gad;
 
-  EasyReq := EasyRequestArgs(wp,@es,@Res,NIL);
+  EasyReq := EasyRequestArgs(wp,@es,0,NIL);
 END;
 
 PROCEDURE CleanUp(why : PChar; rc : BYTE);

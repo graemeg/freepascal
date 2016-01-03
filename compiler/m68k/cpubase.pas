@@ -136,8 +136,16 @@ unit cpubase;
 
       maxfpuregs = 8;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
       { include regnumber_count_bsstart }
       {$i r68kbss.inc}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$WARNING TODO FIX BSSTART}
+      regnumber_count_bsstart = 16;
+>>>>>>> graemeg/fixes_2_2
 
       regnumber_table : array[tregisterindex] of tregister = (
         {$i r68knum.inc}
@@ -261,9 +269,18 @@ unit cpubase;
       NR_STACK_POINTER_REG = NR_SP;
       RS_STACK_POINTER_REG = RS_SP;
       {# Frame pointer register }
+<<<<<<< HEAD
 { Frame pointer register (initialized in tm68kprocinfo.init_framepointer) }
       RS_FRAME_POINTER_REG: tsuperregister = RS_NO;
       NR_FRAME_POINTER_REG: tregister = NR_NO;
+=======
+{$warning FIX ME!!! frame pointer is A5 on Amiga, but A6 on unixes?}
+      NR_FRAME_POINTER_REG = NR_A5;
+      RS_FRAME_POINTER_REG = RS_A5;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
       {# Register for addressing absolute data in a position independant way,
          such as in PIC code. The exact meaning is ABI specific. For
@@ -311,11 +328,21 @@ unit cpubase;
          GCC source.
       }
       saved_standard_registers : array[0..5] of tsuperregister = (RS_D2,RS_D3,RS_D4,RS_D5,RS_D6,RS_D7);
+<<<<<<< HEAD
       saved_address_registers : array[0..4] of tsuperregister = (RS_A2,RS_A3,RS_A4,RS_A5,RS_A6);
       saved_fpu_registers : array[0..5] of tsuperregister = (RS_FP2,RS_FP3,RS_FP4,RS_FP5,RS_FP6,RS_FP7);
 
       { this is only for the generic code which is not used for this architecture }
       saved_mm_registers : array[0..0] of tsuperregister = (RS_INVALID);
+=======
+      saved_standard_address_registers : array[0..3] of tsuperregister = (RS_A2,RS_A3,RS_A4,RS_A5);
+      
+      { this is only for the generic code which is not used for this architecture }
+      saved_mm_registers : array[0..0] of tsuperregister = (RS_NO);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
       {# Required parameter alignment when calling a routine declared as
          stdcall and cdecl. The alignment value should be the one defined

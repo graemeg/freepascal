@@ -38,6 +38,10 @@ function NtOpenFile(
   OpenOptions: ULONG
 ): NTSTATUS; external ntdll;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function NtQueryDirectoryFile(
   FileHandle: HANDLE;
   Event: HANDLE; {OPTIONAL}
@@ -52,6 +56,14 @@ function NtQueryDirectoryFile(
   RestartScan: NT_BOOLEAN
 ): NTSTATUS; external ntdll;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 function NtQueryFullAttributesFile(
   ObjectAttributes: POBJECT_ATTRIBUTES;
   FileInformation: PFILE_NETWORK_OPEN_INFORMATION

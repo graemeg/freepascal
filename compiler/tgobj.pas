@@ -697,8 +697,29 @@ implementation
 
     procedure ttgobj.getlocal(list: TAsmList; size: asizeint; alignment: shortint; def: tdef; var ref : treference);
       begin
+{$ifdef arm}
+        { for ARM CPU records must be aligned in stack depending of record size           }
+        { to prevent misaligned error when the record is passed as parameter in registers }
+        if def.typ=recorddef then
+          if size>2 then
+            alignment:=current_settings.alignment.localalignmax
+          else
+            alignment:=size;
+{$else}
         alignment:=used_align(alignment,current_settings.alignment.localalignmin,current_settings.alignment.localalignmax);
+<<<<<<< HEAD
+<<<<<<< HEAD
         alloctemp(list,size,alignment,tt_persistent,def,false,ref);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$endif arm}
+        { can't use reference_reset_base, because that will let tgobj depend
+          on cgobj (PFV) }
+        fillchar(ref,sizeof(ref),0);
+        ref.base:=current_procinfo.framepointer;
+        ref.offset:=alloctemp(list,size,alignment,tt_persistent,nil);
+>>>>>>> graemeg/fixes_2_2
       end;
 
 

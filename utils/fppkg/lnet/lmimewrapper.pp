@@ -1,6 +1,14 @@
 { lNet MIME Wrapper
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   CopyRight (C) 2007-2008 by Ales Katona
+=======
+  CopyRight (C) 2007 Ales Katona
+>>>>>>> graemeg/fixes_2_2
+=======
+  CopyRight (C) 2007 Ales Katona
+>>>>>>> origin/fixes_2_2
 
   This library is Free software; you can rediStribute it and/or modify it
   under the terms of the GNU Library General Public License as published by
@@ -612,6 +620,16 @@ begin
 end;
 
 procedure TMimeStream.DoRead(const aSize: Integer);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+var
+  n: Integer;
+>>>>>>> graemeg/fixes_2_2
+=======
+var
+  n: Integer;
+>>>>>>> origin/fixes_2_2
 begin
   ActivateFirstSection;
   

@@ -17,7 +17,23 @@ type
     state: culong;
     itemsPtr: idPtr;
     mutationsPtr: pculong;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     extra: array[0..(5)-1] of culong;
+=======
+        extra: array[0..4] of culong;
+>>>>>>> graemeg/cpstrnew
+=======
+        extra: array[0..4] of culong;
+>>>>>>> graemeg/cpstrnew
+=======
+        extra: array[0..4] of culong;
+>>>>>>> graemeg/cpstrnew
+=======
+        extra: array[0..4] of culong;
+>>>>>>> origin/cpstrnew
   end;
 NSFastEnumerationStatePtr = ^NSFastEnumerationState;
 

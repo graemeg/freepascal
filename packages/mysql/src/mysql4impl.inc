@@ -28,7 +28,7 @@ end;}
 
 function MYSQL_COUNT_ERROR : longint;
 begin
-  MYSQL_COUNT_ERROR:= not ({my_ulonglong}(0));
+  MYSQL_COUNT_ERROR:= not (my_ulonglong(0));
 end;
 
 

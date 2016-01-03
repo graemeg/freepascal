@@ -13,7 +13,57 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
 procedure InitDynLibs;
+=======
+
+{$ifdef readinterface}
+
+{ ---------------------------------------------------------------------
+    Interface declarations
+  ---------------------------------------------------------------------}
+
+type
+ TLibHandle = longint;
+
+const
+ NilHandle = 0;
+// these are for easier crossplatform construction of dll names in dynloading libs.
+ SharedSuffix  = 'dll';
+
+{$else}
+
+{ ---------------------------------------------------------------------
+    Implementation section
+  ---------------------------------------------------------------------}
+
+uses
+ DosCalls;
+
+function LoadLibrary (const Name: AnsiString): TLibHandle;
+var
+ ErrPath: array [0..259] of char;
+ Handle: longint;
+>>>>>>> graemeg/cpstrnew
 begin
   { nothing to do here since OS/2 DynLibs is done in System }
 end;
+<<<<<<< HEAD
+=======
+
+function GetProcedureAddress (Lib: TLibHandle; const ProcName: AnsiString): pointer;
+var
+ P: pointer;
+begin
+ if DosQueryProcAddr (Lib, 0, PChar (ProcName), P) = 0 then Result := P
+                                                            else Result := nil;
+end;
+
+function UnloadLibrary (Lib: TLibHandle): boolean;
+begin
+ Result := DosFreeModule (Lib) = 0;
+end;
+
+{$endif}
+
+>>>>>>> graemeg/cpstrnew

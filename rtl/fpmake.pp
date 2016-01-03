@@ -16,7 +16,15 @@ begin
 {$ifdef ALLPACKAGES}
     P.Directory:='rtl';
 {$endif ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Version:='3.1.1';
+=======
+    P.Version:='2.2.0';
+>>>>>>> graemeg/fixes_2_2
+=======
+    P.Version:='2.2.0';
+>>>>>>> origin/fixes_2_2
 
     // Where to find the sources using firstmatch
     P.SourcePath.Add('$(OS)');
@@ -77,6 +85,14 @@ begin
           AddInclude('int64.inc');
           AddInclude('astrings.inc');
           AddInclude('wstrings.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+          AddInclude('wustrings.inc');
+>>>>>>> graemeg/fixes_2_2
+=======
+          AddInclude('wustrings.inc');
+>>>>>>> origin/fixes_2_2
           AddInclude('aliases.inc');
           AddInclude('dynarr.inc');
           AddInclude('objpas.inc');
@@ -90,12 +106,28 @@ begin
           AddInclude('innr.inc');
           AddInclude('$(CPU).inc');
           AddInclude('fastmove.inc',[i386],AllOSes);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+          AddInclude('strpas.inc',[i386,powerpc,powerpc64],AllOSes);
+>>>>>>> graemeg/fixes_2_2
+=======
+          AddInclude('strpas.inc',[i386,powerpc,powerpc64],AllOSes);
+>>>>>>> origin/fixes_2_2
           AddInclude('math.inc');
           AddInclude('real2str.inc');
           AddInclude('systhrd.inc',AllWindowsOSes+[Netware,Netwlibc,EMX,OS2]);
           // Unix implementations
           AddInclude('osdefs.inc',AllUnixOSes);
           AddInclude('sysunixh.inc',AllUnixOSes);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+          AddInclude('elfres32.inc',AllUnixOSes);
+>>>>>>> graemeg/fixes_2_2
+=======
+          AddInclude('elfres32.inc',AllUnixOSes);
+>>>>>>> origin/fixes_2_2
           AddInclude('system.inc',AllUnixOSes);
           AddInclude('errno.inc',AllUnixOSes);
           AddInclude('ostypes.inc',AllUnixOSes);
@@ -204,7 +236,15 @@ begin
       T.Dependencies.AddUnit('baseunix',AllUnixOSes);
     T:=P.Targets.AddUnit('unix/dl.pp',AllUnixOSes);
       T.Dependencies.AddUnit('system');
+<<<<<<< HEAD
+<<<<<<< HEAD
     T:=P.Targets.AddUnit('unix/ipc.pp',AllUnixOSes - [Android]);
+=======
+    T:=P.Targets.AddUnit('unix/ipc.pp',AllUnixOSes);
+>>>>>>> graemeg/fixes_2_2
+=======
+    T:=P.Targets.AddUnit('unix/ipc.pp',AllUnixOSes);
+>>>>>>> origin/fixes_2_2
       With T.Dependencies do
         begin
           AddUnit('baseunix');
@@ -437,7 +477,13 @@ begin
           AddInclude('syspchh.inc');
           AddInclude('sysansih.inc');
           AddInclude('syswideh.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
           AddInclude('sysunih.inc');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           AddInclude('finah.inc');
           AddInclude('filutilh.inc');
           AddInclude('diskh.inc');
@@ -457,7 +503,13 @@ begin
           AddInclude('sysint.inc');
           AddInclude('sysansi.inc');
           AddInclude('syswide.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
           AddInclude('sysuni.inc');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           AddInclude('sysformt.inc');
           AddInclude('sysuthrd.inc');
           AddInclude('osutil.inc');
@@ -546,6 +598,14 @@ begin
       With T.Dependencies do
         begin
           AddUnit('sysutils');
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+          AddInclude('mathuh.inc');
+>>>>>>> graemeg/fixes_2_2
+=======
+          AddInclude('mathuh.inc');
+>>>>>>> origin/fixes_2_2
           AddInclude('mathu.inc');
         end;
 
@@ -586,6 +646,8 @@ begin
         end;
 
     // Misc units
+<<<<<<< HEAD
+<<<<<<< HEAD
     T:=P.Targets.AddUnit('fpextres.pp',[Darwin]);
       with T.Dependencies do
         begin
@@ -599,6 +661,10 @@ begin
           AddInclude('intres.inc',AllOSes-AllWindowsOSes);
           AddInclude('winres.inc',AllWindowsOSes);
         end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     T:=P.Targets.AddUnit('charset.pp');
       with T.Dependencies do
         begin

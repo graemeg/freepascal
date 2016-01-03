@@ -27,6 +27,10 @@ interface
 
   uses
     cutils,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     globtype,symdef,
     procinfo,cpuinfo,cpupara,
     psub,aasmdata,cgutils;
@@ -130,11 +134,52 @@ implementation
                not (po_nostackframe in procdef.procoptions) then
               tg.gettemp(list,sizeof(aint),sizeof(aint),tt_noreuse,save_gp_ref);
           end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    procinfo,cpuinfo,
+    psub;
+
+  type
+    TMIPSProcInfo=class(tcgprocinfo)
+    public
+      constructor create(aparent:tprocinfo);override;
+      function calc_stackframe_size:longint;override;
+    end;
+
+implementation
+
+    uses
+      systems,globals,
+      tgobj,paramgr,symconst;
+
+    constructor tmipsprocinfo.create(aparent:tprocinfo);
+      begin
+        inherited create(aparent);
+        maxpushedparasize:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
     function TMIPSProcInfo.calc_stackframe_size:longint;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         result:=maxpushedparasize;
         floatregstart:=result;
         inc(result,floatregssave*4);
@@ -165,6 +210,42 @@ implementation
           mips_extra_offset:=tcpuprocdef(procdef).total_local_size;
       end;
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        {
+          Stackframe layout:
+          %fp
+            <locals>
+            <temp>
+            <arguments 6-n for calling>
+          %sp+92
+            <space for arguments 0-5>                \
+            <return pointer for calling>              | included in first_parm_offset
+            <register window save area for calling>  /
+          %sp
+
+          Alignment must be the max available, as doubles require
+          8 byte alignment
+        }
+        result:=Align(tg.direction*tg.lasttemp+maxpushedparasize+target_info.first_parm_offset,current_settings.alignment.localalignmax);
+      end;
+
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 begin
   cprocinfo:=TMIPSProcInfo;
 end.

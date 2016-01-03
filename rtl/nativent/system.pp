@@ -49,7 +49,23 @@ const
  AllowDirectorySeparators : set of char = ['\'];
  AllowDriveSeparators : set of char = [];
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 { FileNameCaseSensitive and FileNameCasePreserving are defined separately below!!! }
+=======
+{ FileNameCaseSensitive is defined separately below!!! }
+>>>>>>> graemeg/cpstrnew
+=======
+{ FileNameCaseSensitive is defined separately below!!! }
+>>>>>>> graemeg/cpstrnew
+=======
+{ FileNameCaseSensitive is defined separately below!!! }
+>>>>>>> graemeg/cpstrnew
+=======
+{ FileNameCaseSensitive is defined separately below!!! }
+>>>>>>> origin/cpstrnew
  maxExitCode = High(ErrorCode);
  MaxPathLen = High(Word);
  AllFilesMask = '*';
@@ -87,7 +103,19 @@ const
 const
   // NT is case sensitive
   FileNameCaseSensitive : boolean = true;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   FileNameCasePreserving: boolean = true;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   // todo: check whether this is really the case on NT
   CtrlZMarksEOF: boolean = true; (* #26 is considered as end of file *)
 
@@ -101,7 +129,23 @@ implementation
 { include system independent routines }
 {$I system.inc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function fpc_pwidechar_length(p: PWideChar): SizeInt; external name 'FPC_PWIDECHAR_LENGTH';
+=======
+function fpc_pwidechar_length(p: PWideChar): LongInt; external name 'FPC_PWIDECHAR_LENGTH';
+>>>>>>> graemeg/cpstrnew
+=======
+function fpc_pwidechar_length(p: PWideChar): LongInt; external name 'FPC_PWIDECHAR_LENGTH';
+>>>>>>> graemeg/cpstrnew
+=======
+function fpc_pwidechar_length(p: PWideChar): LongInt; external name 'FPC_PWIDECHAR_LENGTH';
+>>>>>>> graemeg/cpstrnew
+=======
+function fpc_pwidechar_length(p: PWideChar): LongInt; external name 'FPC_PWIDECHAR_LENGTH';
+>>>>>>> origin/cpstrnew
 
 { based on setup_arguments from Win32 RTL }
 procedure setup_arguments;
@@ -337,7 +381,23 @@ begin
       if Dll_Process_Detach_Hook <> Nil then
         Dll_Process_Detach_Hook(aDllParam);
       // finalize units
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       internal_do_exit;
+=======
+      do_exit;
+>>>>>>> graemeg/cpstrnew
+=======
+      do_exit;
+>>>>>>> graemeg/cpstrnew
+=======
+      do_exit;
+>>>>>>> graemeg/cpstrnew
+=======
+      do_exit;
+>>>>>>> origin/cpstrnew
     end;
   end;
 end;
@@ -377,11 +437,38 @@ begin
 end;
 {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure SysInitStdIO;
 begin
   { This function is currently only called if the RTL is compiled for Usermode;
     one could think about adding a text driver that outputs using DbgPrint }
 {$ifndef KMODE}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifndef kmode}
+
+// other user mode only stuff
+
+procedure SysInitStdIO;
+begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   with PSimplePEB(CurrentPEB)^.ProcessParameters^ do begin
     StdInputHandle := StandardInput;
     StdOutputHandle := StandardOutput;
@@ -405,9 +492,38 @@ begin
     Assign(ErrOutput, '');
     Assign(StdErr, '');
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif}
 end;
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+end;
+
+{$else}
+
+// other kernel mode only stuff
+
+{$endif}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 function GetProcessID: SizeUInt;
 begin
 {$ifdef kmode}
@@ -425,9 +541,25 @@ begin
   InitHeap;
 {$endif ndef KMODE and ndef HAS_MEMORYMANAGER}
   SysInitExceptions;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   { we do not use winlike widestrings and also the RTL can't be compiled with
     2.2, so we can savely use the UnicodeString manager only. }
   initunicodestringmanager;
+=======
+  initvariantmanager;
+>>>>>>> graemeg/cpstrnew
+=======
+  initvariantmanager;
+>>>>>>> graemeg/cpstrnew
+=======
+  initvariantmanager;
+>>>>>>> graemeg/cpstrnew
+=======
+  initvariantmanager;
+>>>>>>> origin/cpstrnew
 {$ifndef KMODE}
   SysInitStdIO;
   { Arguments }
@@ -436,5 +568,29 @@ begin
   InOutRes := 0;
   InitSystemThreads;
   errno := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  { we do not use winlike widestrings and also the RTL can't be compiled with
+    2.2, so we can savely use the UnicodeString manager only. }
+  initunicodestringmanager;
+>>>>>>> graemeg/cpstrnew
+=======
+  { we do not use winlike widestrings and also the RTL can't be compiled with
+    2.2, so we can savely use the UnicodeString manager only. }
+  initunicodestringmanager;
+>>>>>>> graemeg/cpstrnew
+=======
+  { we do not use winlike widestrings and also the RTL can't be compiled with
+    2.2, so we can savely use the UnicodeString manager only. }
+  initunicodestringmanager;
+>>>>>>> graemeg/cpstrnew
+=======
+  { we do not use winlike widestrings and also the RTL can't be compiled with
+    2.2, so we can savely use the UnicodeString manager only. }
+  initunicodestringmanager;
+>>>>>>> origin/cpstrnew
 end.
 

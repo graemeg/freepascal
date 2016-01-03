@@ -740,6 +740,8 @@ BEGIN
 {$endif TESTGRAPHIC}
 
   SetVideoDriver (Driver);
+<<<<<<< HEAD
+<<<<<<< HEAD
   SetVESAVideoDriver:=true;
 END;
 
@@ -762,4 +764,8 @@ begin
 (* Let's disable VESA functions by default if running under MS Windows NT+ *)
   if ChkWinNT then
    DisableVESA := true;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 END.

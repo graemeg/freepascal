@@ -37,7 +37,11 @@
     nils.sjoholm@mailbox.swipnet.se
 }
 
-{$PACKRECORDS 2}
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
+
 unit amigaguide;
 
 INTERFACE
@@ -244,24 +248,25 @@ VAR AmigaGuideBase : pLibrary;
 const
     AMIGAGUIDENAME : Pchar = 'amigaguide.library';
 
-FUNCTION AddAmigaGuideHostA(h : pHook location 'a0'; name : pCHAR location 'd0'; attrs : pTagItem location 'a1') : POINTER; syscall AmigaGuideBase 138;
-FUNCTION AmigaGuideSignal(cl : POINTER location 'a0') : ULONG; syscall AmigaGuideBase 072;
-PROCEDURE CloseAmigaGuide(cl : POINTER location 'a0'); syscall AmigaGuideBase 066;
-PROCEDURE ExpungeXRef; syscall AmigaGuideBase 132;
-FUNCTION GetAmigaGuideAttr(tag : ULONG location 'd0'; cl : POINTER location 'a0'; storage : POINTER location 'a1') : LONGINT; syscall AmigaGuideBase 114;
-FUNCTION GetAmigaGuideMsg(cl : POINTER location 'a0') : pAmigaGuideMsg; syscall AmigaGuideBase 078;
-FUNCTION GetAmigaGuideString(id : LONGINT location 'd0') : pCHAR; syscall AmigaGuideBase 210;
-FUNCTION LoadXRef(lock : LONGINT location 'a0'; name : pCHAR location 'a1') : LONGINT; syscall AmigaGuideBase 126;
-FUNCTION LockAmigaGuideBase(handle : POINTER location 'a0') : LONGINT; syscall AmigaGuideBase 036;
-FUNCTION OpenAmigaGuideA(nag : pNewAmigaGuide location 'a0'; taglist : pTagItem location 'a1') : POINTER; syscall AmigaGuideBase 054;
-FUNCTION OpenAmigaGuideAsyncA(nag : pNewAmigaGuide location 'a0'; attrs : pTagItem location 'd0') : POINTER; syscall AmigaGuideBase 060;
-FUNCTION RemoveAmigaGuideHostA(hh : POINTER location 'a0'; attrs : pTagItem location 'a1') : LONGINT; syscall AmigaGuideBase 144;
-PROCEDURE ReplyAmigaGuideMsg(amsg : pAmigaGuideMsg location 'a0'); syscall AmigaGuideBase 084;
-FUNCTION SendAmigaGuideCmdA(cl : POINTER location 'a0'; cmd : pCHAR location 'd0'; attrs : pTagItem location 'd1') : LONGINT; syscall AmigaGuideBase 102;
-FUNCTION SendAmigaGuideContextA(cl : POINTER location 'a0'; attrs : pTagItem location 'd0') : LONGINT; syscall AmigaGuideBase 096;
-FUNCTION SetAmigaGuideAttrsA(cl : POINTER location 'a0'; attrs : pTagItem location 'a1') : LONGINT; syscall AmigaGuideBase 108;
-FUNCTION SetAmigaGuideContextA(cl : POINTER location 'a0'; id : ULONG location 'd0'; attrs : pTagItem location 'd1') : LONGINT; syscall AmigaGuideBase 090;
-PROCEDURE UnlockAmigaGuideBase(key : LONGINT location 'd0'); syscall AmigaGuideBase 042;
+FUNCTION AddAmigaGuideHostA(h : pHook; name : pCHAR; attrs : pTagItem) : POINTER;
+FUNCTION AmigaGuideSignal(cl : POINTER) : ULONG;
+PROCEDURE CloseAmigaGuide(cl : POINTER);
+PROCEDURE ExpungeXRef;
+FUNCTION GetAmigaGuideAttr(tag : ULONG; cl : POINTER; storage : POINTER) : LONGINT;
+FUNCTION GetAmigaGuideMsg(cl : POINTER) : pAmigaGuideMsg;
+FUNCTION GetAmigaGuideString(id : LONGINT) : pCHAR;
+FUNCTION LoadXRef(lock : LONGINT; name : pCHAR) : LONGINT;
+FUNCTION LockAmigaGuideBase(handle : POINTER) : LONGINT;
+FUNCTION OpenAmigaGuideA(nag : pNewAmigaGuide; taglist : pTagItem) : POINTER;
+FUNCTION OpenAmigaGuideAsyncA(nag : pNewAmigaGuide; attrs : pTagItem) : POINTER;
+FUNCTION RemoveAmigaGuideHostA(hh : POINTER; attrs : pTagItem) : LONGINT;
+PROCEDURE ReplyAmigaGuideMsg(amsg : pAmigaGuideMsg);
+FUNCTION SendAmigaGuideCmdA(cl : POINTER; cmd : pCHAR; attrs : pTagItem) : LONGINT;
+FUNCTION SendAmigaGuideContextA(cl : POINTER; attrs : pTagItem) : LONGINT;
+FUNCTION SetAmigaGuideAttrsA(cl : POINTER; attrs : pTagItem) : LONGINT;
+FUNCTION SetAmigaGuideContextA(cl : POINTER; id : ULONG; attrs : pTagItem) : LONGINT;
+PROCEDURE UnlockAmigaGuideBase(key : LONGINT);
+
 
 {Here we read how to compile this unit}
 {You can remove this include and use a define instead}
@@ -277,9 +282,234 @@ var
 IMPLEMENTATION
 
 {$ifndef dont_use_openlib}
-uses amsgbox;
+uses msgbox;
 {$endif dont_use_openlib}
 
+
+FUNCTION AddAmigaGuideHostA(h : pHook; name : pCHAR; attrs : pTagItem) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L h,A0
+    MOVE.L  name,D0
+    MOVEA.L attrs,A1
+    MOVEA.L AmigaGuideBase,A6
+    JSR -138(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AmigaGuideSignal(cl : POINTER) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cl,A0
+    MOVEA.L AmigaGuideBase,A6
+    JSR -072(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE CloseAmigaGuide(cl : POINTER);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cl,A0
+    MOVEA.L AmigaGuideBase,A6
+    JSR -066(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ExpungeXRef;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L AmigaGuideBase,A6
+    JSR -132(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION GetAmigaGuideAttr(tag : ULONG; cl : POINTER; storage : POINTER) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  tag,D0
+    MOVEA.L cl,A0
+    MOVEA.L storage,A1
+    MOVEA.L AmigaGuideBase,A6
+    JSR -114(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetAmigaGuideMsg(cl : POINTER) : pAmigaGuideMsg;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cl,A0
+    MOVEA.L AmigaGuideBase,A6
+    JSR -078(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetAmigaGuideString(id : LONGINT) : pCHAR;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  id,D0
+    MOVEA.L AmigaGuideBase,A6
+    JSR -210(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION LoadXRef(lock : LONGINT; name : pCHAR) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L lock,A0
+    MOVEA.L name,A1
+    MOVEA.L AmigaGuideBase,A6
+    JSR -126(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION LockAmigaGuideBase(handle : POINTER) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L handle,A0
+    MOVEA.L AmigaGuideBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenAmigaGuideA(nag : pNewAmigaGuide; taglist : pTagItem) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L nag,A0
+    MOVEA.L taglist,A1
+    MOVEA.L AmigaGuideBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenAmigaGuideAsyncA(nag : pNewAmigaGuide; attrs : pTagItem) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L nag,A0
+    MOVE.L  attrs,D0
+    MOVEA.L AmigaGuideBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION RemoveAmigaGuideHostA(hh : POINTER; attrs : pTagItem) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L hh,A0
+    MOVEA.L attrs,A1
+    MOVEA.L AmigaGuideBase,A6
+    JSR -144(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ReplyAmigaGuideMsg(amsg : pAmigaGuideMsg);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L amsg,A0
+    MOVEA.L AmigaGuideBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION SendAmigaGuideCmdA(cl : POINTER; cmd : pCHAR; attrs : pTagItem) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cl,A0
+    MOVE.L  cmd,D0
+    MOVE.L  attrs,D1
+    MOVEA.L AmigaGuideBase,A6
+    JSR -102(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION SendAmigaGuideContextA(cl : POINTER; attrs : pTagItem) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cl,A0
+    MOVE.L  attrs,D0
+    MOVEA.L AmigaGuideBase,A6
+    JSR -096(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetAmigaGuideAttrsA(cl : POINTER; attrs : pTagItem) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cl,A0
+    MOVEA.L attrs,A1
+    MOVEA.L AmigaGuideBase,A6
+    JSR -108(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetAmigaGuideContextA(cl : POINTER; id : ULONG; attrs : pTagItem) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L cl,A0
+    MOVE.L  id,D0
+    MOVE.L  attrs,D1
+    MOVEA.L AmigaGuideBase,A6
+    JSR -090(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE UnlockAmigaGuideBase(key : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  key,D0
+    MOVEA.L AmigaGuideBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
 
 const
     { Change VERSION and LIBVERSION to proper values }

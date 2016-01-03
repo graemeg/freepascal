@@ -3,46 +3,49 @@ Ported to FPC by Nikolay Nikolov (nickysn@users.sourceforge.net)
 }
 
 {
- Info example for OpenPTC 1.0 C++ implementation
+ Info example for OpenPTC 1.0 C++ Implementation
  Copyright (c) Glenn Fiedler (ptc@gaffer.org)
  This source code is in the public domain
 }
 
-program InfoExample;
+Program InfoExample;
 
 {$MODE objfpc}
 
-uses
+Uses
   ptc;
 
-procedure print(format: IPTCFormat);
-begin
+Procedure print(Const format : TPTCFormat);
+
+Begin
   { check format type }
-  if format.direct then
+  If format.direct Then
     { check alpha }
-    if format.a = 0 then
+    If format.a = 0 Then
       { direct color format without alpha }
       Write('Format(', format.bits:2, ',$', HexStr(format.r, 8), ',$', HexStr(format.g, 8), ',$', HexStr(format.b, 8), ')')
-    else
+    Else
       { direct color format with alpha }
       Write('Format(', format.bits:2, ',$', HexStr(format.r, 8), ',$', HexStr(format.g, 8), ',$', HexStr(format.b, 8), ',$', HexStr(format.a, 8), ')')
-  else
+  Else
     { indexed color format }
     Write('Format(', format.bits:2, ')');
-end;
+End;
 
-var
-  console: IPTCConsole;
-begin
-  try
-    try
-      Writeln('[ptcpas version]');
-      { print ptcpas version string define }
-      Writeln(PTCPAS_VERSION);
+Var
+  console : TPTCConsole;
+
+Begin
+  console := Nil;
+  Try
+    Try
+      Writeln('[ptc version]');
+      { print ptc version string define }
+      Writeln(PTC_VERSION);
       Writeln;
 
       { create console }
-      console := TPTCConsoleFactory.CreateNew;
+      console := TPTCConsole.Create;
 
       { open the console }
       console.open('Info example');
@@ -63,13 +66,13 @@ begin
       { print console information }
       Writeln('[console information]');
       Writeln(console.information);
-    finally
-      if Assigned(console) then
-        console.close;
-    end;
-  except
-    on error: TPTCError do
+    Finally
+      console.close;
+      console.Free;
+    End;
+  Except
+    On error : TPTCError Do
       { report error }
       error.report;
-  end;
-end.
+  End;
+End.

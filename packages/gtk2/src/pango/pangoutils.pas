@@ -15,8 +15,8 @@
 
    You should have received a copy of the GNU Library General Public
    License along with this library; if not, write to the
-   Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.
+   Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+   Boston, MA 02111-1307, USA.
   }
 unit pangoutils;
 
@@ -100,8 +100,6 @@ function pango_get_lib_subdirectory:Pchar; cdecl; external pangolib;
   }
 
 function pango_log2vis_get_embedding_levels(str:Pgunichar; len:longint; pbase_dir:PPangoDirection; embedding_level_list:Pguint8):gboolean; cdecl; external pangolib;
-function pango_unichar_direction(ch : gunichar) : TPangoDirection; cdecl; external pangolib;
-function pango_find_base_dir(text : Pgchar; aLength : gint) : TPangoDirection; cdecl; external pangolib;
 function pango_get_mirror_char(ch:gunichar; mirrored_ch:Pgunichar):gboolean; cdecl; external pangolib;
 function pango_language_get_sample_string(language:PPangoLanguage):Pchar; cdecl; external pangolib;
 

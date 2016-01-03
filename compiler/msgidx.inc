@@ -109,7 +109,13 @@ const
   scan_w_frameworks_darwin_only=02084;
   scan_e_illegal_minfpconstprec=02085;
   scan_w_multiple_main_name_overrides=02086;
+<<<<<<< HEAD
+<<<<<<< HEAD
   scanner_w_illegal_warn_identifier=02087;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   scanner_e_illegal_alignment_directive=02088;
   scanner_f_illegal_utf8_bom=02089;
   scanner_w_directive_ignored_on_target=02090;
@@ -121,6 +127,18 @@ const
   scan_w_invalid_stacksize=02096;
   scan_w_heapmax_lessthan_heapmin=02097;
   scan_e_illegal_hugepointernormalization=02098;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   parser_e_syntax_error=03000;
   parser_e_dont_nest_interrupt=03004;
   parser_w_proc_directive_ignored=03005;
@@ -340,6 +358,8 @@ const
   parser_e_no_common_type=03235;
   parser_e_no_generics_as_types=03236;
   parser_w_register_list_ignored=03237;
+<<<<<<< HEAD
+<<<<<<< HEAD
   parser_e_implements_must_be_class_or_interface=03238;
   parser_e_implements_must_have_correct_type=03239;
   parser_e_implements_must_read_specifier=03240;
@@ -375,10 +395,35 @@ const
   parser_h_no_objc_parent=03270;
   parser_e_no_objc_published=03271;
   parser_f_need_objc=03272;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   parser_e_must_use_override=03273;
   parser_h_should_use_override=03274;
   parser_e_objc_message_name_changed=03275;
   parser_e_unique_unsupported=03276;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  parser_e_must_use_override_objc=03273;
+  parser_h_should_use_override_objc=03274;
+  parser_e_objc_message_name_changed=03275;
+  parser_e_no_objc_unique=03276;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   parser_e_no_category_as_types=03277;
   parser_e_no_category_override=03278;
   parser_e_must_use_reintroduce_objc=03279;
@@ -394,21 +439,67 @@ const
   parser_e_only_one_class_destructor_allowed=03289;
   parser_e_no_paras_for_class_constructor=03290;
   parser_e_no_paras_for_class_destructor=03291;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   parser_f_modeswitch_objc_required=03292;
   parser_e_widestring_to_ansi_compile_time=03293;
+=======
+  parser_f_modeswitch_objc_required=03293;
+>>>>>>> graemeg/cpstrnew
+=======
+  parser_f_modeswitch_objc_required=03293;
+>>>>>>> graemeg/cpstrnew
+=======
+  parser_f_modeswitch_objc_required=03293;
+>>>>>>> graemeg/cpstrnew
+=======
+  parser_f_modeswitch_objc_required=03293;
+>>>>>>> origin/cpstrnew
   parser_e_objc_enumerator_2_0=03294;
   parser_e_objc_missing_enumeration_defs=03295;
   parser_e_no_procvarnested_const=03296;
   parser_f_no_generic_inside_generic=03297;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   parser_e_forward_intf_declaration_must_be_resolved=03298;
   parser_e_no_record_published=03299;
   parser_e_no_destructor_in_records=03300;
   parser_e_class_methods_only_static_in_records=03301;
   parser_e_no_parameterless_constructor_in_records=03302;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  parser_e_forward_protocol_declaration_must_be_resolved=03298;
+  parser_e_no_record_published=03299;
+  parser_e_no_destructor_in_records=03300;
+  parser_e_class_methods_only_static_in_records=03301;
+  parser_e_no_constructor_in_records=03302;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   parser_e_at_least_one_argument_must_be_of_type=03303;
   parser_e_cant_use_type_parameters_here=03304;
   parser_e_externals_no_section=03305;
   parser_e_section_no_locals=03306;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   parser_e_not_allowed_in_helper=03307;
   parser_e_no_class_constructor_in_helpers=03308;
   parser_e_inherited_not_in_record=03309;
@@ -446,6 +537,30 @@ const
   parser_e_explicit_method_implementation_for_specializations_not_allowed=03341;
   parser_e_no_genfuncs_in_interfaces=03342;
   parser_e_genfuncs_cannot_be_virtual=03343;
+=======
+  parser_e_invalid_codepage=03307;
+  parser_e_widestring_to_ansi_compile_time=03308;
+>>>>>>> graemeg/cpstrnew
+=======
+  parser_e_invalid_codepage=03307;
+  parser_e_widestring_to_ansi_compile_time=03308;
+>>>>>>> graemeg/cpstrnew
+=======
+  parser_e_invalid_codepage=03307;
+  parser_e_widestring_to_ansi_compile_time=03308;
+>>>>>>> graemeg/cpstrnew
+=======
+  parser_e_invalid_codepage=03307;
+  parser_e_widestring_to_ansi_compile_time=03308;
+>>>>>>> origin/cpstrnew
+=======
+  parser_e_cant_export_var_different_name=03247;
+  parser_e_forward_mismatch=03249;
+>>>>>>> graemeg/fixes_2_2
+=======
+  parser_e_cant_export_var_different_name=03247;
+  parser_e_forward_mismatch=03249;
+>>>>>>> origin/fixes_2_2
   type_e_mismatch=04000;
   type_e_incompatible_types=04001;
   type_e_not_equal_types=04002;
@@ -519,6 +634,8 @@ const
   type_h_convert_sub_operands_to_prevent_overflow=04080;
   type_h_convert_mul_operands_to_prevent_overflow=04081;
   type_w_pointer_to_signed=04082;
+<<<<<<< HEAD
+<<<<<<< HEAD
   type_e_interface_has_no_guid=04083;
   type_e_invalid_objc_selector_name=04084;
   type_e_expected_objc_method_but_got=04085;
@@ -535,6 +652,10 @@ const
   type_e_generics_cannot_reference_itself=04096;
   type_e_type_parameters_are_not_allowed_here=04097;
   type_e_generic_declaration_does_not_match=04098;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   type_e_helper_type_expected=04099;
   type_e_record_type_expected=04100;
   type_e_class_helper_must_extend_subclass=04101;
@@ -560,6 +681,20 @@ const
   type_e_procedure_must_be_far=04121;
   type_w_instance_abstract_class=04122;
   type_e_function_reference_kind=04123;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+  type_interface_has_no_guid=04083;
+>>>>>>> graemeg/fixes_2_2
+=======
+  type_interface_has_no_guid=04083;
+>>>>>>> origin/fixes_2_2
   sym_e_id_not_found=05000;
   sym_f_internal_error_in_symtablestack=05001;
   sym_e_duplicate_id=05002;
@@ -626,6 +761,10 @@ const
   sym_w_library_unit=05077;
   sym_w_non_implemented_unit=05078;
   sym_w_experimental_unit=05079;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   sym_e_formal_class_not_resolved=05080;
   sym_e_interprocgoto_into_init_final_code_not_allowed=05081;
   sym_e_external_class_name_mismatch1=05082;
@@ -642,6 +781,27 @@ const
   sym_w_managed_function_result_uninitialized=05093;
   sym_h_managed_function_result_uninitialized=05094;
   sym_w_duplicate_id=05095;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  sym_e_objc_formal_class_not_resolved=05080;
+  sym_e_interprocgoto_into_init_final_code_not_allowed=05081;
+  sym_e_external_class_name_mismatch1=05082;
+  sym_e_external_class_name_mismatch2=05083;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   cg_e_parasize_too_big=06009;
   cg_e_file_must_call_by_reference=06012;
   cg_e_cant_use_far_pointer_there=06013;
@@ -669,14 +829,32 @@ const
   cg_f_unknown_system_type=06047;
   cg_h_inherited_ignored=06048;
   cg_e_goto_label_not_found=06049;
+<<<<<<< HEAD
+<<<<<<< HEAD
   cg_f_unknown_type_in_unit=06050;
   cg_e_interprocedural_goto_only_to_outer_scope_allowed=06051;
   cg_e_labels_cannot_defined_outside_declaration_scope=06052;
   cg_e_goto_across_procedures_with_exceptions_not_allowed=06053;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   cg_e_mod_only_defined_for_pos_quotient=06054;
   cg_d_autoinlining=06055;
   cg_e_function_not_support_by_selected_instruction_set=06056;
   cg_f_max_units_reached=06057;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   asmr_d_start_reading=07000;
   asmr_d_finish_reading=07001;
   asmr_e_none_label_contain_at=07002;
@@ -780,9 +958,15 @@ const
   asmr_w_direct_esp_neg_offset=07105;
   asmr_e_no_vmtoffset_possible=07106;
   asmr_e_need_pic_ref=07107;
+<<<<<<< HEAD
+<<<<<<< HEAD
   asmr_e_mixing_regtypes=07108;
   asmr_e_empty_regset=07109;
   asmr_w_useless_got_for_local=07110;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   asmr_w_general_segment_with_constant=07111;
   asmr_e_bad_seh_directive_offset=07112;
   asmr_e_bad_seh_directive_register=07113;
@@ -801,6 +985,18 @@ const
   asmr_e_seg_without_identifier=07126;
   asmr_e_CODE_or_DATA_without_SEG=07127;
   asmr_e_const16bit_for_segment=07128;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   asmw_f_too_many_asm_files=08000;
   asmw_f_assembler_output_not_supported=08001;
   asmw_f_comp_not_supported=08002;
@@ -943,9 +1139,30 @@ const
   unit_u_reresolving_unit=10058;
   unit_u_skipping_reresolving_unit=10059;
   unit_u_unload_resunit=10060;
+<<<<<<< HEAD
+<<<<<<< HEAD
   unit_e_different_wpo_file=10061;
   unit_u_indirect_crc_changed=10062;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   unit_u_ppu_invalid_memory_model=10063;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
   option_usage=11000;
   option_only_one_source_support=11001;
   option_def_only_for_os2=11002;
@@ -985,11 +1202,18 @@ const
   option_confict_asm_debug=11041;
   option_ppc386_deprecated=11042;
   option_else_without_if=11043;
+<<<<<<< HEAD
+<<<<<<< HEAD
   option_unsupported_target=11044;
   option_unsupported_target_for_feature=11045;
   option_dwarf_smart_linking=11046;
   option_ignored_target=11047;
+<<<<<<< HEAD
   option_debug_external_unsupported=11048;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   option_dwarf_smartlink_creation=11049;
   option_invalid_macosx_deployment_target=11050;
   option_invalid_iphoneos_deployment_target=11051;
@@ -999,6 +1223,16 @@ const
   option_malformed_para=11055;
   option_smart_link_requires_external_linker=11056;
   option_com_files_require_tiny_model=11057;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
   wpo_cant_find_file=12000;
   wpo_begin_processing=12001;
   wpo_end_processing=12002;
@@ -1019,13 +1253,71 @@ const
   wpo_error_executing_symbol_prog=12017;
   wpo_symbol_live_info_needs_smart_linking=12018;
   wpo_cant_create_feedback_file=12019;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   option_logo=11023;
   option_info=11024;
   option_help_pages=11025;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   MsgTxtSize = 76521;
 
   MsgIdxMax : array[1..20] of longint=(
     27,99,344,124,96,58,129,32,208,64,
     58,20,1,1,1,1,1,1,1,1
+=======
+  MsgTxtSize = 58873;
+
+  MsgIdxMax : array[1..20] of longint=(
+    24,88,309,99,84,54,111,22,202,63,
+    49,20,1,1,1,1,1,1,1,1
+>>>>>>> graemeg/cpstrnew
+=======
+  MsgTxtSize = 58873;
+
+  MsgIdxMax : array[1..20] of longint=(
+    24,88,309,99,84,54,111,22,202,63,
+    49,20,1,1,1,1,1,1,1,1
+>>>>>>> graemeg/cpstrnew
+=======
+  MsgTxtSize = 58873;
+
+  MsgIdxMax : array[1..20] of longint=(
+    24,88,309,99,84,54,111,22,202,63,
+    49,20,1,1,1,1,1,1,1,1
+>>>>>>> graemeg/cpstrnew
+=======
+  MsgTxtSize = 58873;
+
+  MsgIdxMax : array[1..20] of longint=(
+    24,88,309,99,84,54,111,22,202,63,
+    49,20,1,1,1,1,1,1,1,1
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  MsgTxtSize = 46171;
+
+  MsgIdxMax : array[1..20] of longint=(
+    24,87,250,84,63,50,108,22,135,61,
+    44,1,1,1,1,1,1,1,1,1
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+  MsgTxtSize = 51811;
+
+  MsgIdxMax : array[1..20] of longint=(
+    24,87,253,88,65,50,108,22,202,63,
+    48,20,1,1,1,1,1,1,1,1
+>>>>>>> origin/fixes_2.4
   );

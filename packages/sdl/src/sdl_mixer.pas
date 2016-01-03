@@ -162,9 +162,15 @@ uses
   smpeg,
 {$ENDIF}
 {$ENDIF}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF MORPHOS}
   exec,
 {$ENDIF}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   sdl;
 
 const
@@ -188,10 +194,16 @@ const
   SDL_MixerLibName = 'SDL_mixer';
 {$ENDIF}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF MACOS}
   SDL_MixerLibName = 'powersdl_mixer.library';
 {$ENDIF}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   {* Printable format: "%d.%d.%d", MAJOR, MINOR, PATCHLEVEL *}
   SDL_MIXER_MAJOR_VERSION = 1;
 {$EXTERNALSYM MIX_MAJOR_VERSION}
@@ -252,8 +264,16 @@ type
   //wavestream.h types
   PWAVStream = ^TWAVStream;
   TWAVStream = record
+<<<<<<< HEAD
+<<<<<<< HEAD
     rw : PSDL_RWops;
     freerw : TSDL_Bool;
+=======
+    wavefp : Pointer;
+>>>>>>> graemeg/fixes_2_2
+=======
+    wavefp : Pointer;
+>>>>>>> origin/fixes_2_2
     start : longint;
     stop : longint;
     cvt : TSDL_AudioCVT;
@@ -486,10 +506,16 @@ type
 procedure SDL_MIXER_VERSION(var X: TSDL_Version);
 {$EXTERNALSYM SDL_MIXER_VERSION}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFDEF MORPHOS}
 {$INCLUDE powersdl_mixer.inc}
 {$ELSE MORPHOS}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { This function gets the version of the dynamically linked SDL_mixer library.
      It should NOT be used to fill a version structure, instead you should use the
      SDL_MIXER_VERSION() macro. }
@@ -582,8 +608,14 @@ function Mix_GetMusicHookData : Pointer;
 cdecl; external {$IFDEF __GPC__}name 'Mix_GetMusicHookData'{$ELSE} SDL_MixerLibName{$ENDIF __GPC__};
 {$EXTERNALSYM Mix_GetMusicHookData}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ENDIF MORPHOS}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {* Add your own callback when a channel has finished playing. NULL
  * to disable callback.*}
 type
@@ -593,14 +625,26 @@ type
   TChannel_finished = procedure( channel: Integer );
   {$ENDIF}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFNDEF MORPHOS}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 procedure Mix_ChannelFinished( channel_finished : TChannel_finished );
 cdecl; external {$IFDEF __GPC__}name 'Mix_ChannelFinished'{$ELSE} SDL_MixerLibName{$ENDIF __GPC__};
 {$EXTERNALSYM Mix_ChannelFinished}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ENDIF MORPHOS}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 const
   MIX_CHANNEL_POST = -2;
 
@@ -681,9 +725,15 @@ type
   * returns zero if error (no such channel), nonzero if added.
   *  Error messages can be retrieved from Mix_GetError().
   *}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 {$IFNDEF MORPHOS}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function Mix_RegisterEffect( chan : integer; f : TMix_EffectFunc; d : TMix_EffectDone; arg : Pointer ) : integer;
 cdecl; external {$IFDEF __GPC__}name 'Mix_RegisterEffect'{$ELSE} SDL_MixerLibName{$ENDIF __GPC__};
 {$EXTERNALSYM Mix_RegisterEffect}
@@ -715,12 +765,24 @@ function Mix_UnregisterAllEffects( channel : integer ) : integer;
 cdecl; external {$IFDEF __GPC__}name 'Mix_UnregisterAllEffects'{$ELSE} SDL_MixerLibName{$ENDIF __GPC__};
 {$EXTERNALSYM Mix_UnregisterAllEffects}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ENDIF MORPHOS}
 
 const
   MIX_EFFECTSMAXSPEED = 'MIX_EFFECTSMAXSPEED';
 
 {$IFNDEF MORPHOS}
+=======
+const
+  MIX_EFFECTSMAXSPEED = 'MIX_EFFECTSMAXSPEED';
+
+>>>>>>> graemeg/fixes_2_2
+=======
+const
+  MIX_EFFECTSMAXSPEED = 'MIX_EFFECTSMAXSPEED';
+
+>>>>>>> origin/fixes_2_2
   {*
   * These are the internally - defined mixing effects.They use the same API that
   * effects defined in the application use, but are provided here as a
@@ -1093,8 +1155,14 @@ procedure Mix_CloseAudio;
 cdecl; external {$IFDEF __GPC__}name 'Mix_CloseAudio'{$ELSE} SDL_MixerLibName{$ENDIF __GPC__};
 {$EXTERNALSYM Mix_CloseAudio}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ENDIF MORPHOS}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { We'll use SDL for reporting errors }
 procedure Mix_SetError( fmt : PChar );
 

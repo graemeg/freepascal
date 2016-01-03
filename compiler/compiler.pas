@@ -126,15 +126,36 @@ uses
 {$ifdef symbian}
   ,i_symbian
 {$endif symbian}
+<<<<<<< HEAD
 {$ifdef nativent}
   ,i_nativent
 {$endif nativent}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef aix}
   ,i_aix
 {$endif aix}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   ,globtype;
 
 function Compile(const cmd:TCmdStr):longint;
+=======
+  ;
+
+function Compile(const cmd:string):longint;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 implementation
 

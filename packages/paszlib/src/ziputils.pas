@@ -98,11 +98,25 @@ begin
   fp := nil;
   try
     case mode of
+<<<<<<< HEAD
+<<<<<<< HEAD
       fopenread: fp  := TFileStream.Create(strpas(filename), fmOpenRead);
       fopenwrite: fp := TFileStream.Create(strpas(filename), fmCreate);
       fappendwrite:
       begin
         fp := TFileStream.Create(strpas(filename), fmOpenReadWrite);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      fopenread: fp  := TFileStream.Create(filename, fmOpenRead);
+      fopenwrite: fp := TFileStream.Create(filename, fmCreate);
+      fappendwrite:
+      begin
+        fp := TFileStream.Create(filename, fmOpenReadWrite);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         fp.Seek(soFromEnd, 0);
       end;
     end;
@@ -187,8 +201,18 @@ begin
   OldFileMode := FileMode;
 
   GetMem(fp, SizeOf(file));
+<<<<<<< HEAD
+<<<<<<< HEAD
   Assign(fp^, strpas(filename));
   {$push}{$i-}
+=======
+  Assign(fp^, filename);
+  {$i-}
+>>>>>>> graemeg/fixes_2_2
+=======
+  Assign(fp^, filename);
+  {$i-}
+>>>>>>> origin/fixes_2_2
   Case mode of
   fopenread:
     begin
@@ -208,7 +232,13 @@ begin
     end;
   end;
   FileMode := OldFileMode;
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$pop}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   if IOresult<>0 then
   begin
     FreeMem(fp, SizeOf(file));
@@ -222,9 +252,19 @@ procedure fclose(fp : FILEptr);
 begin
   if Assigned(fp) then
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}{$i-}
     system.close(fp^);
     {$pop}
+=======
+    {$i-}
+    system.close(fp^);
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$i-}
+    system.close(fp^);
+>>>>>>> origin/fixes_2_2
     if IOresult=0 then;
     FreeMem(fp, SizeOf(file));
   end;
@@ -240,13 +280,27 @@ begin
   if Assigned(buf) then
   begin
     totalSize := recCount * LongInt(recSize);
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}{$i-}
+=======
+    {$i-}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$i-}
+>>>>>>> origin/fixes_2_2
     system.BlockRead(fp^, buf^, totalSize, readcount);
     if (readcount <> totalSize) then
       fread := readcount div recSize
     else
       fread := recCount;
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$pop}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end
   else
     fread := 0;
@@ -262,13 +316,27 @@ begin
   if Assigned(buf) then
   begin
     totalSize := recCount * LongInt(recSize);
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}{$i-}
+=======
+    {$i-}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$i-}
+>>>>>>> origin/fixes_2_2
     system.BlockWrite(fp^, buf^, totalSize, written);
     if (written <> totalSize) then
       fwrite := written div recSize
     else
       fwrite := recCount;
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$pop}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end
   else
     fwrite := 0;
@@ -278,13 +346,27 @@ function fseek(fp : FILEptr;
                recPos : LongInt;
                mode : seek_mode) : longint;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$i-}
+=======
+  {$i-}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$i-}
+>>>>>>> origin/fixes_2_2
   case mode of
     SEEK_SET : system.Seek(fp^, recPos);
     SEEK_CUR : system.Seek(fp^, FilePos(fp^)+recPos);
     SEEK_END : system.Seek(fp^, FileSize(fp^)-1-recPos); { ?? check }
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$pop}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   fseek := IOresult; { = 0 for success }
 end;
 

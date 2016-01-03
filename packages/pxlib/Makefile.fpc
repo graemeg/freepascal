@@ -1,17 +1,91 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for MD5 checksum.
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for MD5 checksum.
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=pxlib
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units_beos=pxlib
+units_haiku=pxlib
+units_linux=pxlib
+units_win32=pxlib
+units_darwin=pxlib
+units_iphonesim=pxlib
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units_beos=pxlib
+units_linux=pxlib
+units_win32=pxlib
+units_darwin=pxlib
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+units_freebsd=pxlib
+units_openbsd=pxlib
+units_netbsd=pxlib
+exampledirs_beos=examples
+<<<<<<< HEAD
+<<<<<<< HEAD
+exampledirs_haiku=examples
+exampledirs_linux=examples
+exampledirs_win32=examples
+exampledirs_darwin=examples
+exampledirs_iphonesim=examples
+exampledirs_freebsd=examples
+exampledirs_openbsd=examples
+exampledirs_netbsd=examples
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+exampledirs_linux=examples
+exampledirs_win32=examples
+exampledirs_darwin=examples
+exampledirs_freebsd=examples
+exampledirs_openbsd=examples
+exampledirs_netbsd=examples
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [default]
 fpcdir=../..
 
@@ -100,3 +174,18 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[compiler]
+sourcedir=src
+
+[default]
+fpcdir=../..
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

@@ -128,8 +128,14 @@ const
       { these arrays differ between unix and win64 }
       saved_standard_registers : array of tsuperregister = nil;
       saved_mm_registers : array of tsuperregister = nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
       saved_address_registers : array[0..0] of tsuperregister = (RS_INVALID);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       { Required parameter alignment when calling a routine declared as
         stdcall and cdecl. The alignment value should be the one defined
         by GCC or the target ABI.

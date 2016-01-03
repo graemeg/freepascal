@@ -2,7 +2,13 @@
 program tb0524;
 
 uses sockets,baseunix,sysutils;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 const port=6667;
    textfile = 'tb0524.txt';
@@ -52,12 +58,32 @@ var s,t:string;
     i:byte;
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    reset_textfile;
    lsock:=fpsocket(af_inet,sock_stream,0);
    if lsock=-1 then
      begin
        writeln('socket call error:',socketerror);
        stop(1);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
+   lsock:=fpsocket(af_inet,sock_stream,0);
+   if lsock=-1 then
+     begin
+       writeln('socket:',socketerror);
+       halt(1);
+>>>>>>> graemeg/cpstrnew
      end;
 
   with saddr do
@@ -69,22 +95,73 @@ begin
 
   if  fpbind(lsock,@saddr,sizeof(saddr))<>0 then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       writeln('bind call error:',socketerror);
       stop(1);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
+      writeln('bind:',socketerror);
+      halt(1);
+>>>>>>> graemeg/cpstrnew
     end;
 
   if  fplisten(lsock,1)<>0 then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       writeln('listen call error:',socketerror);
       stop(1);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
+      writeln('listen:',socketerror);
+      halt(1);
+>>>>>>> graemeg/cpstrnew
     end;
 
   len:=sizeof(saddr);
   usock:=fpaccept(lsock,@saddr,@len);
   if usock=-1 then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       writeln('accept call error:',SocketError);
       stop(1);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
+      writeln('accept:',SocketError);
+      halt(1);
+>>>>>>> graemeg/cpstrnew
     end;
   sock2text(usock,sin,sout);
 
@@ -139,6 +216,8 @@ begin
     begin
       {Give server some time to start.}
       sleep(2000);
+<<<<<<< HEAD
+<<<<<<< HEAD
       if server_failed then
         begin
           writeln('Server startup failed, test can not be completed');
@@ -146,5 +225,10 @@ begin
         end
       else
         do_client;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      do_client;
+>>>>>>> graemeg/fixes_2_2
     end;
 end.

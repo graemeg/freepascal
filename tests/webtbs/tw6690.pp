@@ -53,9 +53,21 @@ begin
   tkinterface: if (po^.name<>'iinterface2') and
                   (po^.name<>'iinterface4') and
                   (po^.name<>'iinterface6') then
+<<<<<<< HEAD
+<<<<<<< HEAD
                   halt(2);
   else
     halt(3);
+=======
+                  halt(1);
+  else
+    halt(1);
+>>>>>>> graemeg/fixes_2_2
+=======
+                  halt(1);
+  else
+    halt(1);
+>>>>>>> origin/fixes_2_2
  end;
 end;
 

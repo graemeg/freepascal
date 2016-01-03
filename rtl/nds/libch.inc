@@ -2,7 +2,27 @@
     This file is part of the Free Component Library (FCL)
     Copyright (c) 1999-2002 by the Free Pascal development team
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     libc unit for Nintendo DS
+=======
+    BIOS functions unit for Nintendo DS
+>>>>>>> graemeg/cpstrnew
+=======
+    BIOS functions unit for Nintendo DS
+>>>>>>> graemeg/cpstrnew
+=======
+    BIOS functions unit for Nintendo DS
+>>>>>>> graemeg/cpstrnew
+=======
+    BIOS functions unit for Nintendo DS
+>>>>>>> origin/cpstrnew
+=======
+    BIOS functions unit for Nintendo DS
+>>>>>>> origin/fixes_2.4
     Copyright (c) 2006 by Francesco Lombardi
 
     See the file COPYING.FPC, included in this distribution,
@@ -57,11 +77,41 @@ type
   TSort = function (const a, b: pointer): integer;
 procedure qsort(__base: pointer; __nmemb: integer; __size: integer; __compar: TSort); cdecl; external;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 var
   errno: plongint; external name '__errno'; 
 
 type
 {
+=======
+function __errno: plongint; cdecl; export;
+
+type
+>>>>>>> graemeg/cpstrnew
+=======
+function __errno: plongint; cdecl; export;
+
+type
+>>>>>>> graemeg/cpstrnew
+=======
+function __errno: plongint; cdecl; export;
+
+type
+>>>>>>> graemeg/cpstrnew
+=======
+function __errno: plongint; cdecl; export;
+
+type
+>>>>>>> origin/cpstrnew
+=======
+function __errno: plongint; cdecl; export;
+
+type
+>>>>>>> origin/fixes_2.4
   _FILE = record
     firstCluster: longword;
     length: longword;
@@ -81,6 +131,11 @@ type
     dirEntOffset: integer;                // The offset within the directory sector
   end;
   P_FILE = ^_FILE;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  }
  
    P_iobuf = ^_iobuf;
@@ -91,10 +146,30 @@ type
    P_FILE = ^_FILE;
    PP_FILE = ^P_FILE;
  
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
+=======
+
+>>>>>>> origin/fixes_2.4
 const
   SEEK_SET = 0;
   SEEK_CUR = 1;
   SEEK_END = 2;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    R_OK = 1;
    W_OK = 2;
    X_OK = 4;
@@ -106,6 +181,16 @@ const
    STDIN_FILENO = 0;
    STDOUT_FILENO = 1;
    STDERR_FILENO = 2;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 (*
   ------------------------------------------------------------------------------
@@ -119,7 +204,27 @@ type
   end;
   PDIR_ITER = ^DIR_ITER;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   stat = record
+=======
+  stat = packed record
+>>>>>>> graemeg/cpstrnew
+=======
+  stat = packed record
+>>>>>>> graemeg/cpstrnew
+=======
+  stat = packed record
+>>>>>>> graemeg/cpstrnew
+=======
+  stat = packed record
+>>>>>>> origin/cpstrnew
+=======
+  stat = packed record
+>>>>>>> origin/fixes_2.4
     st_dev: longint;
     st_ino: longword;
     st_mode : longword;
@@ -192,6 +297,26 @@ procedure rewinddir(dirp: PDIR); cdecl; external;
 procedure seekdir(dirp: PDIR; loc: longint); cdecl; external;
 function telldir(dirp: PDIR): longint; cdecl; external;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
+=======
+
+>>>>>>> origin/fixes_2.4
 function diropen(const path: pchar): PDIR_ITER; cdecl; external;
 function dirreset(dirState: PDIR_ITER): longint; cdecl; external;
 function dirnext(dirState: PDIR_ITER; filename: pchar; filestat: Pstat): longint; cdecl; external;
@@ -214,6 +339,11 @@ function fileno(para1: P_FILE): longint; cdecl; external;
 function fileno(var para1: _FILE): longint; cdecl; external;
 function fstat(fildes: longint; buf: PStat): longint; cdecl; external;
 function fstat(fildes: longint; var buf: TStat): longint; cdecl; external;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function _stat(__file: Pchar; var __buf: Tstat): longint; cdecl; external name 'stat';
 function _stat(path: Pchar; buf: Pstat): longint; cdecl; external name 'stat';
 function ftruncate(fildes: longint; len: longint): longint; cdecl; external;
@@ -425,3 +555,29 @@ Sys_EDQUOT      = 122;  { Quota exceeded }
 
 Sys_ERROR_MAX = $fff;
  
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
+function _stat(__file:Pchar; var __buf:Tstat):longint; cdecl; external name 'stat';
+function ftruncate(fildes: longint; len: longint): longint; cdecl; external;
+function unlink(path: Pchar): longint; cdecl; external;
+function rename(para1: Pchar; para2: Pchar): longint; cdecl; external;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4

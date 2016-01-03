@@ -14,7 +14,7 @@ program wbtest;
      nils.sjoholm@mailbox.swipnet.se
 }
 
-uses wbargs, amsgbox;
+uses wbargs, msgbox;
 
 var
    i : integer;

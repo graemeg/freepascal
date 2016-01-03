@@ -27,7 +27,15 @@ unit Linux;
 interface
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
   BaseUnix, unixtype;
+=======
+  BaseUnix;//, ctypes;
+>>>>>>> graemeg/fixes_2_2
+=======
+  BaseUnix;//, ctypes;
+>>>>>>> origin/fixes_2_2
 
 type
   TSysInfo = record
@@ -107,9 +115,15 @@ const
      wake UADDR2; }
 
 {$ifndef FPC_USE_LIBC}
+<<<<<<< HEAD
+<<<<<<< HEAD
 function futex(uaddr:Pcint;op,val:cint;timeout:Ptimespec;addr2:Pcint;val3:cint):cint;{$ifdef SYSTEMINLINE}inline;{$endif}
 function futex(var uaddr;op,val:cint;timeout:Ptimespec;var addr2;val3:cint):cint;{$ifdef SYSTEMINLINE}inline;{$endif}
 function futex(var uaddr;op,val:cint;var timeout:Ttimespec;var addr2;val3:cint):cint;{$ifdef SYSTEMINLINE}inline;{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 // general aliases:
 function futex(uaddr:Pcint;op,val:cint;timeout:Ptimespec):cint;{$ifdef SYSTEMINLINE}inline;{$endif}
 function futex(var uaddr;op,val:cint;timeout:Ptimespec):cint;{$ifdef SYSTEMINLINE}inline;{$endif}
@@ -120,8 +134,37 @@ function futex(var uaddr;op,val:cint;var timeout:Ttimespec):cint;{$ifdef SYSTEMI
 //function futex(var uaddr;op,val:cint;timeout:Ptimespec;var addr2;val3:cint):cint; cdecl; external name 'futex';
 //function futex(var uaddr;op,val:cint;var timeout:Ttimespec;var addr2;val3:cint):cint; cdecl; external name 'futex';
 {$endif}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$else}
+function futex(uaddr:Pcint;op,val:cint;timeout:Ptimespec;addr2:Pcint;val3:cint):cint; cdecl; external name 'futex';
+function futex(var uaddr;op,val:cint;timeout:Ptimespec;var addr2;val3:cint):cint; cdecl; external name 'futex';
+function futex(var uaddr;op,val:cint;var timeout:Ttimespec;var addr2;val3:cint):cint; cdecl; external name 'futex';
+{$endif}
+function futex(uaddr:Pcint;op,val:cint;timeout:Ptimespec):cint;{$ifdef SYSTEMINLINE}inline;{$endif}
+function futex(var uaddr;op,val:cint;timeout:Ptimespec):cint;{$ifdef SYSTEMINLINE}inline;{$endif}
+function futex(var uaddr;op,val:cint;var timeout:Ttimespec):cint;{$ifdef SYSTEMINLINE}inline;{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 {$ifndef FPC_USE_LIBC}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function futex_op(op, oparg, cmp, cmparg: cint): cint; {$ifdef SYSTEMINLINE}inline;{$endif}
 {$endif}
 
@@ -187,13 +230,15 @@ const
   LED_SCR         = 1;    {scroll lock led}
   LED_NUM         = 2;    {num lock led}
   LED_CAP         = 4;    {caps lock led}
-
+    
   {Tty modes. (for KDSETMODE)}
   KD_TEXT         = 0;
   KD_GRAPHICS     = 1;
   KD_TEXT0        = 2;    {obsolete}
   KD_TEXT1        = 3;    {obsolete}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if defined(cpumips) or defined(cpumipsel)}
   MAP_GROWSDOWN  = $1000;       { stack-like segment }
   MAP_DENYWRITE  = $2000;       { ETXTBSY }
@@ -201,12 +246,20 @@ const
   MAP_LOCKED     = $8000;      { pages are locked }
   MAP_NORESERVE  = $4000;      { don't check for reservations; not defined for linux/mips? }
 {$else cpumips}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   MAP_GROWSDOWN  = $100;       { stack-like segment }
   MAP_DENYWRITE  = $800;       { ETXTBSY }
   MAP_EXECUTABLE = $1000;      { mark it as an executable }
   MAP_LOCKED     = $2000;      { pages are locked }
   MAP_NORESERVE  = $4000;      { don't check for reservations }
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif cpumips}
+=======
+>>>>>>> graemeg/fixes_2_2
 
 type
   TCloneFunc = function(args:pointer):longint;cdecl;
@@ -214,13 +267,50 @@ type
 {$ifdef cpui386}
   {$define clone_implemented}
 {$endif}
+<<<<<<< HEAD
+=======
+{$ifdef cpum68k}
+  {$define clone_implemented}
+{$endif}
+>>>>>>> graemeg/fixes_2_2
 
+=======
+
+type
+  TCloneFunc = function(args:pointer):longint;cdecl;
+
+{$ifdef cpui386}
+  {$define clone_implemented}
+{$endif}
+{$ifdef cpum68k}
+  {$define clone_implemented}
+{$endif}
+
+>>>>>>> origin/fixes_2_2
 {$ifdef clone_implemented}
 function clone(func:TCloneFunc;sp:pointer;flags:longint;args:pointer):longint; {$ifdef FPC_USE_LIBC} cdecl; external name 'clone'; {$endif}
 {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPC_USE_LIBC}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$if defined(cpui386) or defined(cpux86_64)}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 const
   MODIFY_LDT_CONTENTS_DATA       = 0;
   MODIFY_LDT_CONTENTS_STACK      = 1;
@@ -238,8 +328,18 @@ const
   UD_LM                   = $80;
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
   user_desc = record
     entry_number  : cuint;
+=======
+  user_desc = packed record
+    entry_number  : cint;
+>>>>>>> graemeg/fixes_2_2
+=======
+  user_desc = packed record
+    entry_number  : cint;
+>>>>>>> origin/fixes_2_2
     base_addr     : cuint;
     limit         : cuint;
     flags         : cuint;
@@ -248,12 +348,32 @@ type
   TUser_Desc = user_desc;
   PUser_Desc = ^user_desc;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function modify_ldt(func:cint;p:pointer;bytecount:culong):cint;
 {$endif cpui386 or cpux86_64}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 procedure sched_yield; {$ifdef FPC_USE_LIBC} cdecl; external name 'sched_yield'; {$endif}
 
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 type
   EPoll_Data = record
     case integer of
@@ -282,6 +402,8 @@ function epoll_ctl(epfd, op, fd: cint; event: pepoll_event): cint; {$ifdef FPC_U
 function epoll_wait(epfd: cint; events: pepoll_event; maxevents, timeout: cint): cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'epoll_wait'; {$endif}
 
 type Puser_cap_header=^user_cap_header;
+<<<<<<< HEAD
+<<<<<<< HEAD
      user_cap_header=record
        version: cuint32;
        pid:cint;
@@ -290,6 +412,20 @@ type Puser_cap_header=^user_cap_header;
      Puser_cap_data=^user_cap_data;
      user_cap_data=record
         effective,permitted,inheritable:cuint32;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+     user_cap_header=packed record
+       version,pid:cardinal;
+     end;
+     
+     Puser_cap_data=^user_cap_data;
+     user_cap_data=packed record
+        effective,permitted,inheritable:cardinal;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
      end;
 
 {Get a capability.}
@@ -297,7 +433,15 @@ function capget(header:Puser_cap_header;data:Puser_cap_data):cint;{$ifdef FPC_US
 {Set a capability.}
 function capset(header:Puser_cap_header;data:Puser_cap_data):cint;{$ifdef FPC_USE_LIBC} cdecl; external name 'capset'; {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+     
+>>>>>>> graemeg/fixes_2_2
+=======
+     
+>>>>>>> origin/fixes_2_2
 const CAP_CHOWN            = 0;
       CAP_DAC_OVERRIDE     = 1;
       CAP_DAC_READ_SEARCH  = 2;
@@ -350,13 +494,28 @@ const
 function vmsplice (fdout: cInt; iov: PIOVec; count: size_t; flags: cuInt): cInt; {$ifdef FPC_USE_LIBC} cdecl; external name 'vmsplice'; {$ENDIF}
 
 {* Splice two files together.  *}
+<<<<<<< HEAD
+<<<<<<< HEAD
 function splice (fdin: cInt; offin: off64_t; fdout: cInt;
                              offout: off64_t; len: size_t; flags: cuInt): cInt; {$ifdef FPC_USE_LIBC} cdecl; external name 'splice'; {$ENDIF}
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+// NOTE: offin and offout should be "off64_t" but we don't have that type. It's an "always 64 bit offset" so I use cint64
+function splice (fdin: cInt; offin: cInt64; fdout: cInt;
+                             offout: cInt64; len: size_t; flags: cuInt): cInt; {$ifdef FPC_USE_LIBC} cdecl; external name 'splice'; {$ENDIF}
+                             
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function tee(fd_in: cInt; fd_out: cInt; len: size_t; flags: cuInt): cInt; {$ifdef FPC_USE_LIBC} cdecl; external name 'tee'; {$ENDIF}
 
 {$endif} // x86
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 const
   { flags for sync_file_range }
   SYNC_FILE_RANGE_WAIT_BEFORE = 1;
@@ -468,10 +627,24 @@ implementation
 
 {$if not defined(FPC_USE_LIBC) or defined(cpui386) or defined(cpux86_64)}
 { needed for modify_ldt on x86 }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+implementation
+
+
+{$ifndef FPC_USE_LIBC}
+>>>>>>> graemeg/fixes_2_2
 Uses Syscall;
 {$endif not defined(FPC_USE_LIBC) or defined(cpui386) or defined(cpux86_64)}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPC_USE_LIBC}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function Sysinfo(Info: PSysinfo): cInt;
 begin
   Sysinfo := do_SysCall(SysCall_nr_Sysinfo, TSysParam(info));
@@ -520,12 +693,18 @@ begin
 {$endif cpui386}
 end;
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 procedure sched_yield;
 
 begin
   do_syscall(syscall_nr_sched_yield);
 end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 function epoll_create(size: cint): cint;
 begin
@@ -559,6 +738,44 @@ begin
   capget:=do_syscall(syscall_nr_capget,Tsysparam(header),Tsysparam(data));
 end;
 
+<<<<<<< HEAD
+=======
+function capget(header:Puser_cap_header;data:Puser_cap_data):cint;
+
+begin
+  capget:=do_syscall(syscall_nr_capget,Tsysparam(header),Tsysparam(data));
+end;
+
+>>>>>>> graemeg/fixes_2_2
+function capset(header:Puser_cap_header;data:Puser_cap_data):cint;
+
+begin
+  capset:=do_syscall(syscall_nr_capset,Tsysparam(header),Tsysparam(data));
+end;
+
+<<<<<<< HEAD
+// TODO: update also on non x86!
+{$ifdef cpu86} // didn't update syscall_nr on others yet
+
+function vmsplice (fdout: cInt; iov: PIOVec; count: size_t; flags: cuInt): cInt;
+begin
+<<<<<<< HEAD
+  vmsplice := do_syscall(syscall_nr_vmsplice, TSysParam(fdout), TSysParam(iov),
+    TSysParam(count), TSysParam(flags));
+end;
+
+function splice (fdin: cInt; offin: off64_t; fdout: cInt; offout: off64_t; len: size_t; flags: cuInt): cInt;
+begin
+  splice := do_syscall(syscall_nr_splice, TSysParam(fdin), TSysParam(@offin),
+    TSysParam(fdout), TSysParam(@offout), TSysParam(len), TSysParam(flags));
+=======
+=======
+function capget(header:Puser_cap_header;data:Puser_cap_data):cint;
+
+begin
+  capget:=do_syscall(syscall_nr_capget,Tsysparam(header),Tsysparam(data));
+end;
+
 function capset(header:Puser_cap_header;data:Puser_cap_data):cint;
 
 begin
@@ -570,14 +787,18 @@ end;
 
 function vmsplice (fdout: cInt; iov: PIOVec; count: size_t; flags: cuInt): cInt;
 begin
-  vmsplice := do_syscall(syscall_nr_vmsplice, TSysParam(fdout), TSysParam(iov),
-    TSysParam(count), TSysParam(flags));
+>>>>>>> origin/fixes_2_2
+  vmsplice := do_syscall(syscall_nr_vmsplice, TSysParam(fdout), TSysParam(iov), TSysParam(count), TSysParam(flags));
 end;
 
-function splice (fdin: cInt; offin: off64_t; fdout: cInt; offout: off64_t; len: size_t; flags: cuInt): cInt;
+function splice (fdin: cInt; offin: cint64; fdout: cInt; offout: cint64; len: size_t; flags: cuInt): cInt; 
 begin
-  splice := do_syscall(syscall_nr_splice, TSysParam(fdin), TSysParam(@offin),
-    TSysParam(fdout), TSysParam(@offout), TSysParam(len), TSysParam(flags));
+  splice := do_syscall(syscall_nr_splice, TSysParam(fdin), TSysParam(offin), TSysParam(fdout), TSysParam(offout), 
+                       TSysParam(len), TSysParam(flags));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 function tee(fd_in: cInt; fd_out: cInt; len: size_t; flags: cuInt): cInt;
@@ -588,6 +809,8 @@ end;
 
 {$endif} // x86
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function sync_file_range(fd: cInt; offset: off64_t; nbytes: off64_t; flags: cuInt): cInt;
 begin
 {$if defined(cpupowerpc) or defined(cpuarm)}
@@ -656,7 +879,23 @@ end;
 {$else}
 
 {Libc case.}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (*
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
 function futex(uaddr:Pcint;op,val:cint;timeout:Ptimespec):cint;{$ifdef SYSTEMINLINE}inline;{$endif}
 
 begin
@@ -667,6 +906,14 @@ function futex(var uaddr;op,val:cint;timeout:Ptimespec):cint;{$ifdef SYSTEMINLIN
 
 begin
   futex:=futex(@uaddr,op,val,nil,nil,0);
+=======
+{$endif} // non-libc
+
+{ FUTEX_OP is a macro, doesn't exist in libC as function}
+function FUTEX_OP(op, oparg, cmp, cmparg: cint): cint; {$ifdef SYSTEMINLINE}inline;{$endif}
+begin
+  FUTEX_OP := ((op and $F) shl 28) or ((cmp and $F) shl 24) or ((oparg and $FFF) shl 12) or (cmparg and $FFF);
+>>>>>>> origin/fixes_2_2
 end;
 
 function futex(var uaddr;op,val:cint;var timeout:Ttimespec):cint;{$ifdef SYSTEMINLINE}inline;{$endif}
@@ -674,10 +921,34 @@ function futex(var uaddr;op,val:cint;var timeout:Ttimespec):cint;{$ifdef SYSTEMI
 begin
   futex:=futex(@uaddr,op,val,@timeout,nil,0);
 end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 *)
 {$endif} // non-libc
 
 {$ifndef FPC_USE_LIBC}
+=======
+
+{$endif} // non-libc
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+{$endif} // non-libc
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+{$endif} // non-libc
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+{$endif} // non-libc
+
+>>>>>>> origin/cpstrnew
 {$if defined(cpui386) or defined(cpux86_64)}
 { does not exist as a wrapper in glibc, and exists only for x86 }
 function modify_ldt(func:cint;p:pointer;bytecount:culong):cint;
@@ -688,16 +959,35 @@ begin
                                                Tsysparam(bytecount));
 end;
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
+=======
+{$endif} // non-libc
+
+>>>>>>> graemeg/fixes_2_2
 { FUTEX_OP is a macro, doesn't exist in libC as function}
 function FUTEX_OP(op, oparg, cmp, cmparg: cint): cint; {$ifdef SYSTEMINLINE}inline;{$endif}
 begin
   FUTEX_OP := ((op and $F) shl 28) or ((cmp and $F) shl 24) or ((oparg and $FFF) shl 12) or (cmparg and $FFF);
 end;
+<<<<<<< HEAD
 
 {$ifndef FPC_USE_LIBC}
 function inotify_init:cint;
+=======
+>>>>>>> graemeg/fixes_2_2
 
 begin
   inotify_init:=inotify_init1(0);

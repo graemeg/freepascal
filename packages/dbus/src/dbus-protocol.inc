@@ -18,8 +18,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  }
 
@@ -232,7 +231,6 @@ const
   DBUS_ERROR_DISCONNECTED              = 'org.freedesktop.DBus.Error.Disconnected';
   DBUS_ERROR_INVALID_ARGS              = 'org.freedesktop.DBus.Error.InvalidArgs';
   DBUS_ERROR_FILE_NOT_FOUND            = 'org.freedesktop.DBus.Error.FileNotFound';
-  DBUS_ERROR_FILE_EXISTS               = 'org.freedesktop.DBus.Error.FileExists';
   DBUS_ERROR_UNKNOWN_METHOD            = 'org.freedesktop.DBus.Error.UnknownMethod';
   DBUS_ERROR_TIMED_OUT                 = 'org.freedesktop.DBus.Error.TimedOut';
   DBUS_ERROR_MATCH_RULE_NOT_FOUND      = 'org.freedesktop.DBus.Error.MatchRuleNotFound';
@@ -242,23 +240,12 @@ const
   DBUS_ERROR_SPAWN_CHILD_EXITED        = 'org.freedesktop.DBus.Error.Spawn.ChildExited';
   DBUS_ERROR_SPAWN_CHILD_SIGNALED      = 'org.freedesktop.DBus.Error.Spawn.ChildSignaled';
   DBUS_ERROR_SPAWN_FAILED              = 'org.freedesktop.DBus.Error.Spawn.Failed';
-  DBUS_ERROR_SPAWN_SETUP_FAILED        = 'org.freedesktop.DBus.Error.Spawn.FailedToSetup';
-  DBUS_ERROR_SPAWN_CONFIG_INVALID      = 'org.freedesktop.DBus.Error.Spawn.ConfigInvalid';
-  DBUS_ERROR_SPAWN_SERVICE_INVALID     = 'org.freedesktop.DBus.Error.Spawn.ServiceNotValid';
-  DBUS_ERROR_SPAWN_SERVICE_NOT_FOUND   = 'org.freedesktop.DBus.Error.Spawn.ServiceNotFound';
-  DBUS_ERROR_SPAWN_PERMISSIONS_INVALID = 'org.freedesktop.DBus.Error.Spawn.PermissionsInvalid';
-  DBUS_ERROR_SPAWN_FILE_INVALID        = 'org.freedesktop.DBus.Error.Spawn.FileInvalid';
-  DBUS_ERROR_SPAWN_NO_MEMORY           = 'org.freedesktop.DBus.Error.Spawn.NoMemory';
-
   DBUS_ERROR_UNIX_PROCESS_ID_UNKNOWN   = 'org.freedesktop.DBus.Error.UnixProcessIdUnknown';
   DBUS_ERROR_INVALID_SIGNATURE         = 'org.freedesktop.DBus.Error.InvalidSignature';
   DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN   = 'org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown';
 
-  DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN    = 'org.freedesktop.DBus.Error.AdtAuditDataUnknown';
-  DBUS_ERROR_OBJECT_PATH_IN_USE        = 'org.freedesktop.DBus.Error.ObjectPathInUse';
-
   DBUS_INTROSPECT_1_0_XML_NAMESPACE         = 'http://www.freedesktop.org/standards/dbus';
   DBUS_INTROSPECT_1_0_XML_PUBLIC_IDENTIFIER = '-//freedesktop//DTD D-BUS Object Introspection 1.0//EN';
   DBUS_INTROSPECT_1_0_XML_SYSTEM_IDENTIFIER = 'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd';
-  DBUS_INTROSPECT_1_0_XML_DOCTYPE_DECL_NODE = '<!DOCTYPE node PUBLIC "'+DBUS_INTROSPECT_1_0_XML_PUBLIC_IDENTIFIER+'"'#10'"'+DBUS_INTROSPECT_1_0_XML_SYSTEM_IDENTIFIER+'">'#10;
+  DBUS_INTROSPECT_1_0_XML_DOCTYPE_DECL_NODE = '<!DOCTYPE node PUBLIC \""DBUS_INTROSPECT_1_0_XML_PUBLIC_IDENTIFIER"\"\n\""DBUS_INTROSPECT_1_0_XML_SYSTEM_IDENTIFIER"\">\n';
 

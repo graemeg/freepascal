@@ -1,0 +1,98 @@
+object formVectorialConverter: TformVectorialConverter
+  Left = 216
+  Height = 439
+  Top = 192
+  Width = 240
+  BorderStyle = bsSingle
+  Caption = 'FP Vectorial Converter'
+  ClientHeight = 439
+  ClientWidth = 240
+  LCLVersion = '0.9.31'
+  object Label1: TLabel
+    Left = 8
+    Height = 18
+    Top = 112
+    Width = 172
+    Caption = 'Location of the Input file:'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 11
+    Height = 104
+    Top = 8
+    Width = 229
+    AutoSize = False
+    Caption = 'This converter application use the fpvectorial library to convert between various different vectorial graphics formats. The type is detected from the extension and the supported types are: PDF (*.pdf), SVG (*.svg) and Corel Draw file (*.cdr).'
+    Font.Height = -12
+    ParentColor = False
+    ParentFont = False
+    WordWrap = True
+  end
+  object editInput: TFileNameEdit
+    Left = 8
+    Height = 25
+    Top = 128
+    Width = 192
+    DialogOptions = []
+    FilterIndex = 0
+    HideDirectories = False
+    ButtonWidth = 23
+    NumGlyphs = 0
+    MaxLength = 0
+    TabOrder = 0
+  end
+  object Label3: TLabel
+    Left = 8
+    Height = 18
+    Top = 152
+    Width = 184
+    Caption = 'Full path of the Output file:'
+    ParentColor = False
+  end
+  object editOutput: TFileNameEdit
+    Left = 8
+    Height = 25
+    Top = 168
+    Width = 192
+    DialogOptions = []
+    FilterIndex = 0
+    HideDirectories = False
+    ButtonWidth = 23
+    NumGlyphs = 0
+    MaxLength = 0
+    TabOrder = 1
+  end
+  object buttonConvert: TButton
+    Left = 87
+    Height = 25
+    Top = 192
+    Width = 67
+    Caption = 'Convert'
+    OnClick = buttonConvertClick
+    TabOrder = 2
+  end
+  object buttonQuit: TButton
+    Left = 176
+    Height = 25
+    Top = 192
+    Width = 59
+    Caption = 'Quit'
+    OnClick = buttonQuitClick
+    TabOrder = 3
+  end
+  object imagePreview: TImage
+    Left = 8
+    Height = 210
+    Top = 224
+    Width = 224
+  end
+  object buttonVisualize: TButton
+    Left = 8
+    Height = 25
+    Top = 192
+    Width = 59
+    Caption = 'Visualize'
+    OnClick = buttonVisualizeClick
+    TabOrder = 4
+  end
+end

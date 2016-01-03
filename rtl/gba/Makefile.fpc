@@ -6,6 +6,7 @@
 main=rtl
 
 [target]
+<<<<<<< HEAD
 loaders=$(LOADERS)
 units=$(SYSTEMUNIT) uuchar objpas macpas iso7185 extpas strings \
 #      dos \
@@ -13,13 +14,40 @@ units=$(SYSTEMUNIT) uuchar objpas macpas iso7185 extpas strings \
       classes math typinfo ctypes \
       charset cpall getopts \
       types rtlconsts sysconst lineinfo fgl
+=======
+loaders=prt0 cprt0
+units=$(SYSTEMUNIT) objpas macpas iso7185 strings \
+#      dos \
+      sysutils \
+      classes math typinfo varutils fmtbcd ctypes \
+      charset ucomplex getopts matrix \
+      variants types rtlconsts sysconst dateutil lineinfo fgl \
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 #      exec timer doslib utility hardware inputevent graphics layers \
 # these can be moved to packages later
 #      clipboard datatypes asl ahi tinygl get9 muihelper  \
 #rsts=math rtlconsts varutils typinfo variants classes sysconst dateutil
 # implicitunits=exeinfo
+<<<<<<< HEAD
+<<<<<<< HEAD
 implicitunits=cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [require]
 nortl=y
@@ -44,8 +72,23 @@ COMMON=$(RTL)/common
 PROCINC=$(RTL)/$(CPU_TARGET)
 UNITPREFIX=rtl
 SYSTEMUNIT=system
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 LOADERS=prt0 cprt0
 override FPCOPT+=@rtl.cfg
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 # Use new feature from 1.0.5 version
 # that generates release PPU files
@@ -180,8 +223,23 @@ heaptrc$(PPUEXT) : $(INC)/heaptrc.pp $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) -Sg $(INC)/heaptrc.pp $(REDIR)
 
 lineinfo$(PPUEXT) : $(INC)/lineinfo.pp $(SYSTEMUNIT)$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         $(COMPILER) $(INC)/lineinfo.pp
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 #lnfodwrf$(PPUEXT) : $(INC)/lnfodwrf.pp $(SYSTEMUNIT)$(PPUEXT)
 
 charset$(PPUEXT) : $(INC)/charset.pp $(SYSTEMUNIT)$(PPUEXT)

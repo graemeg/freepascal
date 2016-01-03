@@ -16,15 +16,14 @@ Program fd2pascal;
 
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-    MA 02110-1301, USA.
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
   --------------------------------------------------------------------------- }
 
 
 uses
   baseunix,
   Unix,
-  sysutils;
+  unixutil;
 
 Const RevString = '$Revision: 1.5 $';
   NrOptions = 4;
@@ -156,12 +155,16 @@ Var
   Utilities Code
   ------------------------------------------------------------------------ }
 
-Function BaseName(const s:ansistring;suf:ansistring):ansistring;
+
+Function IntTostr (s : Longint) : String;
+
+var temp : String;
+
 begin
-  BaseName:=extractfilename(s);
-  if '.'+suf=extractfileext(s) then
-    BaseName:=changefileext(s,'');  
+  str(s,temp);
+  IntToStr:=Temp;
 end;
+
 
 Procedure EmitError (Const s : String);
 
@@ -248,9 +251,9 @@ begin
   if pos('.fd',FileName)=0 then
     FileName:=FileName+'.fd';
   assign(infile,Filename);
-{$push}{$i-}
+{$i-}
   reset (infile);
-{$pop}
+{$i+}
   if ioresult<>0 then
     begin
     EmitError('Can''t open : '+filename);
@@ -506,9 +509,9 @@ begin
     end;
 
   assign(outfile,filename);
-{$push}{$i-}
+{$i-}
   rewrite(outfile);
-{$pop}
+{$i+}
   if ioresult<>0 then
     begin
     EmitError('Couldn''t open output file : '+filename);

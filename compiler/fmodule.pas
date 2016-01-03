@@ -181,9 +181,15 @@ interface
         locallibrarysearchpath,
         localframeworksearchpath : TSearchPathList;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
         moduleoptions: tmoduleoptions;
         deprecatedmsg: pshortstring;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         { contains a list of types that are extended by helper types; the key is
           the full name of the type and the data is a TFPObjectList of
           tobjectdef instances (the helper defs) }
@@ -214,6 +220,18 @@ interface
            -- actual type: tnode (but fmodule should not depend on node) }
          tcinitcode     : tobject;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         {create creates a new module which name is stored in 's'. LoadedFrom
         points to the module calling it. It is nil for the first compiled
         module. This allow inheritence of all path lists. MUST pay attention
@@ -225,12 +243,21 @@ interface
         procedure flagdependent(callermodule:tmodule);
         function  addusedunit(hp:tmodule;inuses:boolean;usym:tunitsym):tused_unit;
         procedure updatemaps;
+        procedure check_hints;
         function  derefidx_unit(id:longint):longint;
         function  resolve_unit(id:longint):tmodule;
         procedure allunitsused;
         procedure end_of_parsing;virtual;
         procedure setmodulename(const s:string);
+<<<<<<< HEAD
+<<<<<<< HEAD
         procedure AddExternalImport(const libname,symname,symmangledname:string;OrdNr: longint;isvar:boolean;ImportByOrdinalOnly:boolean);
+=======
+        procedure AddExternalImport(const libname,symname:string;OrdNr: longint;isvar:boolean;ImportByOrdinalOnly:boolean);
+>>>>>>> graemeg/fixes_2_2
+=======
+        procedure AddExternalImport(const libname,symname:string;OrdNr: longint;isvar:boolean;ImportByOrdinalOnly:boolean);
+>>>>>>> origin/fixes_2_2
         property ImportLibraryList : TFPHashObjectList read FImportLibraryList;
       end;
 
@@ -261,7 +288,13 @@ interface
        SmartLinkOFiles   : TCmdStrList; { List of .o files which are generated,
                                           used to delete them after linking }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     procedure set_current_module(p:tmodule);
     function get_module(moduleindex : longint) : tmodule;
     function get_source_file(moduleindex,fileindex : longint) : tinputfile;
@@ -275,7 +308,14 @@ implementation
       SysUtils,globals,
       verbose,systems,
       scanner,ppu,dbgbase,
+<<<<<<< HEAD
+<<<<<<< HEAD
       procinfo,symdef;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      procinfo;
+>>>>>>> graemeg/fixes_2_2
 
 {$ifdef MEMDEBUG}
     var
@@ -294,7 +334,17 @@ implementation
         hp:=tmodule(loaded_units.first);
         while assigned(hp) do
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
             if (hp.moduleid=st.moduleid) then
+=======
+            if (hp.globalsymtable=st) or
+               (hp.localsymtable=st) then
+>>>>>>> graemeg/fixes_2_2
+=======
+            if (hp.globalsymtable=st) or
+               (hp.localsymtable=st) then
+>>>>>>> origin/fixes_2_2
               begin
                 result:=hp;
                 exit;
@@ -322,7 +372,15 @@ implementation
               begin
                 current_scanner.tempopeninputfile;
                 current_scanner.gettokenpos;
+<<<<<<< HEAD
+<<<<<<< HEAD
                 parser_current_file:=current_scanner.inputfile.name;
+=======
+                parser_current_file:=current_scanner.inputfile.name^;
+>>>>>>> graemeg/fixes_2_2
+=======
+                parser_current_file:=current_scanner.inputfile.name^;
+>>>>>>> origin/fixes_2_2
               end
             else
               begin
@@ -516,6 +574,8 @@ implementation
 
     constructor tmodule.create(LoadedFrom:TModule;const amodulename: string; const afilename:TPathStr;_is_unit:boolean);
       var
+<<<<<<< HEAD
+<<<<<<< HEAD
         n:string;
         fn:TPathStr;
       begin
@@ -527,6 +587,13 @@ implementation
           fn:=amodulename
         else
           fn:=afilename;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        n : string;
+      begin
+        n:=ChangeFileExt(ExtractFileName(s),'');
+>>>>>>> graemeg/fixes_2_2
         { Programs have the name 'Program' to don't conflict with dup id's }
         if _is_unit then
          inherited create(amodulename)
@@ -605,19 +672,51 @@ implementation
         mode_switch_allowed:= true;
         moduleoptions:=[];
         deprecatedmsg:=nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         namespace:=nil;
         tcinitcode:=nil;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _exports:=TLinkedList.Create;
         dllscannerinputlist:=TFPHashList.Create;
+<<<<<<< HEAD
         asmdata:=casmdata.create(modulename);
         InitDebugInfo(self,false);
+=======
+        asmdata:=TAsmData.create(realmodulename^);
+        InitDebugInfo(self);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 
     destructor tmodule.Destroy;
       var
         i : longint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         current_debuginfo_reset : boolean;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       begin
         if assigned(unitmap) then
           freemem(unitmap);
@@ -676,8 +775,20 @@ implementation
         waitingunits.free;
         stringdispose(asmprefix);
         stringdispose(deprecatedmsg);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         stringdispose(namespace);
         tcinitcode.free;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         localunitsearchpath.Free;
         localobjectsearchpath.free;
         localincludesearchpath.free;
@@ -742,6 +853,8 @@ implementation
             asmdata.free;
             asmdata:=nil;
           end;
+<<<<<<< HEAD
+<<<<<<< HEAD
         DoneDebugInfo(self,current_debuginfo_reset);
         globalsymtable.free;
         globalsymtable:=nil;
@@ -751,6 +864,31 @@ implementation
         globalmacrosymtable:=nil;
         localmacrosymtable.free;
         localmacrosymtable:=nil;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        DoneDebugInfo(self);
+        if assigned(globalsymtable) then
+          begin
+            globalsymtable.free;
+            globalsymtable:=nil;
+          end;
+        if assigned(localsymtable) then
+          begin
+            localsymtable.free;
+            localsymtable:=nil;
+          end;
+        if assigned(globalmacrosymtable) then
+          begin
+            globalmacrosymtable.free;
+            globalmacrosymtable:=nil;
+          end;
+        if assigned(localmacrosymtable) then
+          begin
+            localmacrosymtable.free;
+            localmacrosymtable:=nil;
+          end;
+>>>>>>> graemeg/fixes_2_2
         deflist.free;
         deflist:=TFPObjectList.Create(false);
         symlist.free;
@@ -789,8 +927,17 @@ implementation
         derefdataintflen:=0;
         sourcefiles.free;
         sourcefiles:=tinputfilemanager.create;
+<<<<<<< HEAD
         asmdata:=casmdata.create(modulename);
         InitDebugInfo(self,current_debuginfo_reset);
+=======
+        asmdata:=TAsmData.create(realmodulename^);
+        DoneDebugInfo(self);
+        InitDebugInfo(self);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         _exports.free;
         _exports:=tlinkedlist.create;
         dllscannerinputlist.free;
@@ -825,9 +972,21 @@ implementation
         in_global:=true;
         mode_switch_allowed:=true;
         stringdispose(deprecatedmsg);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         stringdispose(namespace);
         tcinitcode.free;
         tcinitcode:=nil;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         moduleoptions:=[];
         is_dbginfo_written:=false;
         crc:=0;
@@ -938,7 +1097,33 @@ implementation
           end;
       end;
 
+    procedure tmodule.check_hints;
+      begin
+        if mo_hint_deprecated in moduleoptions then
+          if (mo_has_deprecated_msg in moduleoptions) and (deprecatedmsg <> nil) then
+            Message2(sym_w_deprecated_unit_with_msg,realmodulename^,deprecatedmsg^)
+          else
+            Message1(sym_w_deprecated_unit,realmodulename^);
+        if mo_hint_experimental in moduleoptions then
+          Message1(sym_w_experimental_unit,realmodulename^);
+        if mo_hint_platform in moduleoptions then
+          Message1(sym_w_non_portable_unit,realmodulename^);
+        if mo_hint_library in moduleoptions then
+          Message1(sym_w_library_unit,realmodulename^);
+        if mo_hint_unimplemented in moduleoptions then
+          Message1(sym_w_non_implemented_unit,realmodulename^);
+      end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     function tmodule.derefidx_unit(id:longint):longint;
       begin
@@ -1084,8 +1269,16 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure TModule.AddExternalImport(const libname,symname,symmangledname:string;
               OrdNr: longint;isvar:boolean;ImportByOrdinalOnly:boolean);
+=======
+    procedure TModule.AddExternalImport(const libname,symname:string;OrdNr: longint;isvar:boolean;ImportByOrdinalOnly:boolean);
+>>>>>>> graemeg/fixes_2_2
+=======
+    procedure TModule.AddExternalImport(const libname,symname:string;OrdNr: longint;isvar:boolean;ImportByOrdinalOnly:boolean);
+>>>>>>> origin/fixes_2_2
       var
         ImportLibrary,OtherIL : TImportLibrary;
         ImportSymbol  : TImportSymbol;
@@ -1097,6 +1290,8 @@ implementation
         ImportSymbol:=TImportSymbol(ImportLibrary.ImportSymbolList.Find(symname));
         if not assigned(ImportSymbol) then
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
             { Check that the same name does not exist in another library }
             { If it does and the same mangled name is used, issue a warning }
             if ImportLibraryList.Count>1 then
@@ -1118,6 +1313,17 @@ implementation
               OrdNr:=-OrdNr;
             ImportSymbol:=TImportSymbol.Create(ImportLibrary.ImportSymbolList,
               symname,symmangledname,OrdNr,isvar);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+            if not ImportByOrdinalOnly then
+              { negative ordinal number indicates import by name with ordinal number as hint }
+              OrdNr:=-OrdNr;
+            ImportSymbol:=TImportSymbol.Create(ImportLibrary.ImportSymbolList,symname,OrdNr,isvar);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           end;
       end;
 

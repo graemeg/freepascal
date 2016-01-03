@@ -14,6 +14,8 @@ begin
 
     P:=AddPackage('gtk2');
 {$ifdef ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
@@ -63,9 +65,36 @@ begin
           Add('src/gtkext');
           Add('src/gtk2x11');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     T.Install:=False;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     T:=P.Targets.AddImplicitUnit('src/atk/atk.pas');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    P.Directory:='gtk2';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.OSes:=AllUnixOSes+[Win32,Win64];
+
+    P.Dependencies.Add('x11',AllUnixOSes);
+
+    T:=P.Targets.AddUnit('src/atk/atk.pas');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
      T.IncludePath.Add('src/atk');
      with T.Dependencies do
        begin
@@ -157,22 +186,61 @@ begin
          AddInclude('atktext.inc');
          AddInclude('atkutil.inc');
          AddInclude('atkvalue.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
     T:=P.Targets.AddImplicitUnit('src/gtk+/gdk-pixbuf/gdk2pixbuf.pas');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+         AddUnit('glib2');
+       end;
+    T:=P.Targets.AddUnit('src/buildgtk2.pp');
+      with T.Dependencies do
+        begin
+          AddUnit('gtk2');
+          AddUnit('libglade2');
+          AddUnit('gdkglext');
+          AddUnit('gtkglext');
+          AddUnit('gdk2x',AllUnixOSes);
+        end;
+    T:=P.Targets.AddUnit('src/gtk+/gdk-pixbuf/gdk2pixbuf.pas');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       T.IncludePath.Add('src/gtk+/gdk-pixbuf');
       with T.Dependencies do
         begin
           AddInclude('gdk-pixbuf-loader.inc');
           AddInclude('gdk-pixbuf-loader.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
         end;
     T:=P.Targets.AddImplicitUnit('src/gtk+/gdk/gdk2.pas');
+=======
+          AddUnit('glib2');
+        end;
+    T:=P.Targets.AddUnit('src/gtk+/gdk/gdk2.pas');
+>>>>>>> graemeg/fixes_2_2
+=======
+          AddUnit('glib2');
+        end;
+    T:=P.Targets.AddUnit('src/gtk+/gdk/gdk2.pas');
+>>>>>>> origin/fixes_2_2
       T.IncludePath.Add('src/gtk+/gdk');
       with T.Dependencies do
         begin
           AddInclude('gdkincludes.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
           AddInclude('gdkdisplaymanager.inc');
           AddInclude('gdkspawn.inc');
           AddInclude('gdkcairo.inc');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           AddInclude('gdkcolor.inc');
           AddInclude('gdkcursor.inc');
           AddInclude('gdkdnd.inc');
@@ -197,6 +265,14 @@ begin
           AddInclude('gdktypes.inc');
           AddInclude('gdkvisual.inc');
           AddInclude('gdkwindow.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+          AddInclude('gdkincludes.inc');
+>>>>>>> graemeg/fixes_2_2
+=======
+          AddInclude('gdkincludes.inc');
+>>>>>>> origin/fixes_2_2
           AddInclude('gdkcolor.inc');
           AddInclude('gdkcursor.inc');
           AddInclude('gdkdnd.inc');
@@ -221,6 +297,14 @@ begin
           AddInclude('gdktypes.inc');
           AddInclude('gdkvisual.inc');
           AddInclude('gdkwindow.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+          AddInclude('gdkincludes.inc');
+>>>>>>> graemeg/fixes_2_2
+=======
+          AddInclude('gdkincludes.inc');
+>>>>>>> origin/fixes_2_2
           AddInclude('gdkcolor.inc');
           AddInclude('gdkcursor.inc');
           AddInclude('gdkdnd.inc');
@@ -245,6 +329,14 @@ begin
           AddInclude('gdktypes.inc');
           AddInclude('gdkvisual.inc');
           AddInclude('gdkwindow.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+          AddInclude('gdkincludes.inc');
+>>>>>>> graemeg/fixes_2_2
+=======
+          AddInclude('gdkincludes.inc');
+>>>>>>> origin/fixes_2_2
           AddInclude('gdkcolor.inc');
           AddInclude('gdkcursor.inc');
           AddInclude('gdkdnd.inc');
@@ -269,8 +361,22 @@ begin
           AddInclude('gdktypes.inc');
           AddInclude('gdkvisual.inc');
           AddInclude('gdkwindow.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
         end;
     T:=P.Targets.AddImplicitUnit('src/gtk2x11/gdk2x.pas',AllUnixOSes);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          AddUnit('glib2');
+          AddUnit('gdk2pixbuf');
+          AddUnit('pango');
+        end;
+    T:=P.Targets.AddUnit('src/gtk2x11/gdk2x.pas',AllUnixOSes);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       T.IncludePath.Add('src/gtk2x11');
       T.IncludePath.Add('src/gtk2x11/include');
       with T.Dependencies do
@@ -314,8 +420,21 @@ begin
           AddInclude('gdkx.inc');
           AddInclude('gxid_proto.inc');
           AddInclude('mwmutil.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
         end;
     T:=P.Targets.AddImplicitUnit('src/gtkglext/gdkglext.pas');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          AddUnit('glib2');
+          AddUnit('gdk2');
+        end;
+    T:=P.Targets.AddUnit('src/gtkglext/gdkglext.pas');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       T.IncludePath.Add('src/gtkglext');
       with T.Dependencies do
         begin
@@ -364,8 +483,21 @@ begin
           AddInclude('gdkglwindow.inc');
           AddInclude('gdkglfont.inc');
           AddInclude('gdkglshapes.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
         end;
     T:=P.Targets.AddImplicitUnit('src/glib/glib2.pas');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          AddUnit('glib2');
+          AddUnit('gdk2');
+        end;
+    T:=P.Targets.AddUnit('src/glib/glib2.pas');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       T.IncludePath.Add('src/glib');
       with T.Dependencies do
         begin
@@ -439,11 +571,21 @@ begin
           AddInclude('gboxed.inc');
           AddInclude('gmodule.inc');
           AddInclude('gmarshal.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
           AddInclude('gincludes.inc');
           AddInclude('goption.inc');
           AddInclude('gwin32.inc',AllWindowsOSes);
         end;
     T:=P.Targets.AddImplicitUnit('src/gtk+/gtk/gtk2.pas');
+=======
+        end;
+    T:=P.Targets.AddUnit('src/gtk+/gtk/gtk2.pas');
+>>>>>>> graemeg/fixes_2_2
+=======
+        end;
+    T:=P.Targets.AddUnit('src/gtk+/gtk/gtk2.pas');
+>>>>>>> origin/fixes_2_2
       T.IncludePath.Add('src/gtk+/gtk');
       with T.Dependencies do
         begin
@@ -1135,6 +1277,12 @@ begin
           AddInclude('gtkentrycompletion.inc');
           AddInclude('gtkuimanager.inc');
           AddInclude('gtktreemodelfilter.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
           AddInclude('gtkseparatortoolitem.inc');
           AddInclude('gtkaboutdialog.inc');
@@ -1143,8 +1291,30 @@ begin
           AddInclude('gtkcellview.inc');
           AddInclude('gtkiconview.inc');
           AddInclude('gtkmenutoolbutton.inc');
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         end;
     T:=P.Targets.AddImplicitUnit('src/gtkglext/gtkglext.pas');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          AddUnit('glib2');
+          AddUnit('atk');
+          AddUnit('pango');
+          AddUnit('gdk2pixbuf');
+          AddUnit('gdk2');
+        end;
+    T:=P.Targets.AddUnit('src/gtkglext/gtkglext.pas');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       T.IncludePath.Add('src/gtkglext');
       with T.Dependencies do
         begin
@@ -1163,15 +1333,43 @@ begin
           AddInclude('gtkglversion.inc');
           AddInclude('gtkglinit.inc');
           AddInclude('gtkglwidget.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
         end;
     T:=P.Targets.AddImplicitUnit('src/libglade/libglade2.pas');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          AddUnit('glib2');
+          AddUnit('gdk2');
+          AddUnit('gtk2');
+          AddUnit('gdkglext');
+        end;
+    T:=P.Targets.AddUnit('src/libglade/libglade2.pas');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       T.IncludePath.Add('src/libglade');
       with T.Dependencies do
         begin
           AddInclude('glade-init.inc');
           AddInclude('glade-xml.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
         end;
     T:=P.Targets.AddImplicitUnit('src/pango/pango.pas');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          AddUnit('glib2');
+          AddUnit('gtk2');
+        end;
+    T:=P.Targets.AddUnit('src/pango/pango.pas');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       T.IncludePath.Add('src/pango');
       with T.Dependencies do
         begin
@@ -1231,14 +1429,39 @@ begin
           AddInclude('pango-item.inc');
           AddInclude('pango-layout.inc');
           AddInclude('pango-tabs.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           AddInclude('pango-matrix.inc');
           AddInclude('pango-renderer.inc');
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         end;
     
     T:=P.Targets.AddImplicitUnit('src/pangocairo/pangocairo.pas');
       T.IncludePath.Add('src/pangocairo');
 
     T:=P.Targets.AddImplicitUnit('src/gtkext/gtk2ext.pp');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          AddUnit('glib2');
+        end;
+
+    T:=P.Targets.AddUnit('src/gtkext/gtk2ext.pp');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       T.IncludePath.Add('src/gtkext');
       with T.Dependencies do
         begin
@@ -1253,8 +1476,18 @@ begin
 	  AddInclude('gtktextiterh.inc');
 	  AddInclude('gtktextiter.inc');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 // For some reson this isn't build in the buildunit nor the Makefile.fpc
 {     T:=P.Targets.AddUnit('src/gtkhtml/gtkhtml.pas');
+=======
+
+     T:=P.Targets.AddUnit('src/gtkhtml/gtkhtml.pas');
+>>>>>>> graemeg/fixes_2_2
+=======
+
+     T:=P.Targets.AddUnit('src/gtkhtml/gtkhtml.pas');
+>>>>>>> origin/fixes_2_2
        T.IncludePath.Add('src/gtkhtml');
        with T.Dependencies do
          begin
@@ -1278,7 +1511,13 @@ begin
            AddInclude('htmlstreambuffer.inc');
            AddInclude('htmldocument.inc');
            AddInclude('htmlview.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
          end;}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Sources.AddExampleFiles('examples/*',P.Directory,false,'.');
     P.Sources.AddExampleFiles('examples/filechooser/*',P.Directory,false,'filechooser');
     P.Sources.AddExampleFiles('examples/gettingstarted/*',P.Directory,false,'gettingstarted');
@@ -1290,6 +1529,28 @@ begin
     P.Sources.AddExampleFiles('examples/scribble_simple/*',P.Directory,false,'scribble_simple');
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+           AddUnit('gtk2');
+           AddUnit('glib2');
+           AddUnit('atk');
+           AddUnit('pango');
+           AddUnit('gdk2pixbuf');
+           AddUnit('gdk2');
+         end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifndef ALLPACKAGES}
     Run;
     end;

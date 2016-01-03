@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('httpd22');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ShortName:='hd22';
 {$ifdef ALLPACKAGES}
     P.Directory:=ADirectory;
@@ -36,6 +38,18 @@ begin
     P.IncludePath.Add('src/apriconv');
     P.IncludePath.Add('src/aprutil');
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='httpd22';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 //    P.Dependencies.Add('x11');
 
     T:=P.Targets.AddUnit('apriconv.pas');
@@ -103,6 +117,8 @@ begin
           AddUnit('apr');
           AddUnit('aprutil');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ExamplePath.Add('examples');
     T:=P.Targets.AddExampleProgram('minimain.pas');
     T:=P.Targets.AddExampleProgram('mod_hello.pp');
@@ -112,10 +128,22 @@ begin
     T.Dependencies.AddInclude('define.inc');	
     T:=P.Targets.AddExampleProgram('testmodule.pp');
     T.Dependencies.AddInclude('define.inc');	
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 
 {$ifndef ALLPACKAGES}
     Run;
     end;
 end.
 {$endif ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

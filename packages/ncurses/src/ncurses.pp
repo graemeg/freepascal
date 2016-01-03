@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 {
   Interface to the ncurses library. Original ncurses library copyright:
 
@@ -29,15 +31,25 @@
  * authorization.                                                           *
  ****************************************************************************}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$MODE OBJFPC}
 
 
 unit ncurses;
 interface
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses
   unixtype;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$PACKRECORDS C}
 {$LINKLIB ncursesw}
 {$LINKLIB c} // should be uses initc ?
@@ -55,6 +67,19 @@ type
    Bool = Byte;
 {$ENDIF USE_FPC_BYTEBOOL}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+type
+   wchar_t = Widechar;
+   pwchar_t = ^wchar_t;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 const
 {$IFDEF USE_FPC_BYTEBOOL}
    NC_FPC_TRUE  = true;
@@ -73,18 +98,44 @@ const
 
 type
    pchtype = ^chtype;
+<<<<<<< HEAD
+<<<<<<< HEAD
    chtype  = culong;
    pmmask_t = ^mmask_t;
    mmask_t  = culong;
+=======
+   chtype  = Longint; {longword}
+   pmmask_t = ^mmask_t;
+   mmask_t  = Longint; {longword}
+>>>>>>> graemeg/fixes_2_2
+=======
+   chtype  = Longint; {longword}
+   pmmask_t = ^mmask_t;
+   mmask_t  = Longint; {longword}
+>>>>>>> origin/fixes_2_2
 
 { colors  }
 var
 {$IFNDEF darwin}
+<<<<<<< HEAD
+<<<<<<< HEAD
    COLORS : cint cvar; external;
    COLOR_PAIRS : cint cvar; external;
 {$ELSE darwin}
    COLORS : cint external libncurses name 'COLORS';
    COLOR_PAIRS : cint external libncurses name 'COLOR_PAIRS';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   COLORS : Longint cvar; external;
+   COLOR_PAIRS : Longint cvar; external;
+{$ELSE darwin}
+   COLORS : Longint external libncurses name 'COLORS';
+   COLOR_PAIRS : Longint external libncurses name 'COLOR_PAIRS';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ENDIF darwin}
 
 const
@@ -204,7 +255,15 @@ type
      attr : attr_t;
      chars : array[0..CCHARW_MAX - 1] of wchar_t;
 {$IFDEF NCURSES_EXT_COLORS}
+<<<<<<< HEAD
+<<<<<<< HEAD
      ext_color : cint;  { color pair, must be more than 16-bits }
+=======
+     ext_color : Longint;  { color pair, must be more than 16-bits }
+>>>>>>> graemeg/fixes_2_2
+=======
+     ext_color : Longint;  { color pair, must be more than 16-bits }
+>>>>>>> origin/fixes_2_2
 {$ENDIF NCURSES_EXT_COLORS}
    end;
 
@@ -236,14 +295,32 @@ type
      _immed : Bool;               { window in immed mode? (not yet used)  }
      _sync : Bool;                { window in sync mode?  }
      _use_keypad : Bool;          { process function keys into KEY_ symbols?  }
+<<<<<<< HEAD
+<<<<<<< HEAD
      _delay : cint;               { 0 = nodelay, <0 = blocking, >0 = delay  }
+=======
+     _delay : Longint;            { 0 = nodelay, <0 = blocking, >0 = delay  }
+>>>>>>> graemeg/fixes_2_2
+=======
+     _delay : Longint;            { 0 = nodelay, <0 = blocking, >0 = delay  }
+>>>>>>> origin/fixes_2_2
      _line : ^ldat;               { the actual line data  }
 { global screen state  }
      _regtop : Smallint;          { top line of scrolling region  }
      _regbottom : Smallint;       { bottom line of scrolling region  }
 { these are used only if this is a sub-window  }
+<<<<<<< HEAD
+<<<<<<< HEAD
      _parx : cint;                { x coordinate of this window in parent  }
      _pary : cint;                { y coordinate of this window in parent  }
+=======
+     _parx : Longint;             { x coordinate of this window in parent  }
+     _pary : Longint;             { y coordinate of this window in parent  }
+>>>>>>> graemeg/fixes_2_2
+=======
+     _parx : Longint;             { x coordinate of this window in parent  }
+     _pary : Longint;             { y coordinate of this window in parent  }
+>>>>>>> origin/fixes_2_2
      _parent : PWINDOW;           { pointer to parent if a sub-window  }
 { these are used only if this is a pad  }
      _pad : record
@@ -257,7 +334,15 @@ type
         _yoffset : Smallint;     { real begy is _begy + _yoffset  }
         _bkgrnd : cchar_t;       { current background char/attribute pair  }
 {$IFDEF NCURSES_EXT_COLORS}
+<<<<<<< HEAD
+<<<<<<< HEAD
      _color : cint;              { current color-pair for non-space character }
+=======
+     _color : Longint;           { current color-pair for non-space character }
+>>>>>>> graemeg/fixes_2_2
+=======
+     _color : Longint;           { current color-pair for non-space character }
+>>>>>>> origin/fixes_2_2
 {$ENDIF NCURSES_EXT_COLORS}
      end;
 
@@ -428,7 +513,15 @@ function wattr_on(_para1:PWINDOW; _para2:attr_t; _para3:Pointer):Longint; cdecl;
 function wattr_off(_para1:PWINDOW; _para2:attr_t; _para3:Pointer):Longint; cdecl;external libncurses;
 function wbkgd(_para1:PWINDOW; _para2:chtype):Longint; cdecl;external libncurses;
 procedure wbkgdset(_para1:PWINDOW; _para2:chtype);cdecl;external libncurses;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function wborder(_para1:PWINDOW; _para2:chtype; _para3:chtype; _para4:chtype; _para5:chtype;
+=======
+function wborder(_para1:PWINDOW; _para2:chtype; _para3:chtype; _para4:chtype; _para5:chtype; 
+>>>>>>> graemeg/fixes_2_2
+=======
+function wborder(_para1:PWINDOW; _para2:chtype; _para3:chtype; _para4:chtype; _para5:chtype; 
+>>>>>>> origin/fixes_2_2
            _para6:chtype; _para7:chtype; _para8:chtype; _para9:chtype):Longint; cdecl;external libncurses;
 function wchgat(_para1:PWINDOW; _para2:Longint; _para3:attr_t; _para4:Smallint; _para5:Pointer):Longint; cdecl;external libncurses;
 function wclear(_para1:PWINDOW):Longint; cdecl;external libncurses;
@@ -501,7 +594,15 @@ function wadd_wchnstr(_para1:PWINDOW; _para2:Pcchar_t; _para3:Longint):longint; 
 function waddnwstr(_para1:PWINDOW; _para2:Pwchar_t; _para3:Longint):longint; cdecl;external libncurses;
 function wbkgrnd(_para1:PWINDOW; _para2:Pcchar_t):longint; cdecl;external libncurses;
 procedure wbkgrndset(_para1:PWINDOW; _para2:Pcchar_t);cdecl;external  libncurses;
+<<<<<<< HEAD
+<<<<<<< HEAD
 function wborder_set(_para1:PWINDOW; _para2:Pcchar_t; _para3:Pcchar_t; _para4:Pcchar_t; _para5:Pcchar_t;
+=======
+function wborder_set(_para1:PWINDOW; _para2:Pcchar_t; _para3:Pcchar_t; _para4:Pcchar_t; _para5:Pcchar_t; 
+>>>>>>> graemeg/fixes_2_2
+=======
+function wborder_set(_para1:PWINDOW; _para2:Pcchar_t; _para3:Pcchar_t; _para4:Pcchar_t; _para5:Pcchar_t; 
+>>>>>>> origin/fixes_2_2
            _para6:Pcchar_t; _para7:Pcchar_t; _para8:Pcchar_t; _para9:Pcchar_t):longint; cdecl;external libncurses;
 function wecho_wchar(_para1:PWINDOW; _para2:Pcchar_t):longint; cdecl;external libncurses;
 function wget_wch(_para1:PWINDOW; _para2:PLongint):longint; cdecl;external libncurses;
@@ -557,7 +658,15 @@ const
    WA_TOP = A_TOP;
    WA_VERTICAL = A_VERTICAL;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function COLOR_PAIR(n: cint): cint; inline;
+=======
+function COLOR_PAIR(n: longint): longint; inline;
+>>>>>>> graemeg/fixes_2_2
+=======
+function COLOR_PAIR(n: longint): longint; inline;
+>>>>>>> origin/fixes_2_2
 function PAIR_NUMBER(attr: attr_t): longint; inline;
 function color_set(color_pair_number: Smallint; opts: Pointer): longint; inline;
 

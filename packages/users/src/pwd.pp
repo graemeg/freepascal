@@ -3,7 +3,15 @@ unit pwd;
 interface
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
   initc,unixtype,baseunix,ctypes;
+=======
+  initc,baseunix,ctypes;
+>>>>>>> graemeg/fixes_2_2
+=======
+  initc,baseunix,ctypes;
+>>>>>>> origin/fixes_2_2
 
 {$IFDEF FPC}
 {$PACKRECORDS C}

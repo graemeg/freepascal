@@ -12,7 +12,15 @@
 
   You should have received a copy of the GNU Library General Public License
   along with this library; if not, write to the Free Software Foundation,
+<<<<<<< HEAD
+<<<<<<< HEAD
   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+>>>>>>> graemeg/fixes_2_2
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+>>>>>>> origin/fixes_2_2
 }
 {
   See the file COPYING.FPC, included in this distribution,
@@ -26,9 +34,15 @@ interface
 
 uses
   Classes, SysUtils;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 const 
   CHMPackageVersion = '3.1.1'; // to be put in readme
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   
 type
   {$PACKRECORDS C}
@@ -39,6 +53,16 @@ type
     Unknown_1: LongWord;
     TimeStamp: LongWord; //bigendian
     LanguageID: LongWord;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    Guid1: TGuid;
+    Guid2: TGuid;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Guid1: TGuid;
+    Guid2: TGuid;
+>>>>>>> origin/fixes_2_2
   end;
   TITSFHeaderEntry = record
     PosFromZero: QWord;
@@ -79,7 +103,15 @@ type
     Unknown5: LongInt; // = -1
   end;
   
+<<<<<<< HEAD
+<<<<<<< HEAD
   TDirChunkType = (ctPMGL, ctPMGI, ctAOLL, ctAOLI, ctUnknown);
+=======
+  TPMGchunktype = (ctPMGL, ctPMGI, ctUnknown);
+>>>>>>> graemeg/fixes_2_2
+=======
+  TPMGchunktype = (ctPMGL, ctPMGI, ctUnknown);
+>>>>>>> origin/fixes_2_2
   
   TPMGListChunk = record
     PMGLsig: array [0..3] of char;
@@ -174,13 +206,52 @@ var
 begin
   bit := 28; //((sizeof(dWord)*8)div 7)*7; // = 28
   buf := @Value;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  {$undef rangeon}
+  {$ifopt R+}
+     {$define rangeon}
+  {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   {$R-}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   while True do begin
     mask := $7f shl bit;
     if (bit = 0) or ((ANumber and mask)<>0) then break;
     Dec(bit, 7);
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
   while True do begin
     buf^ := Byte(((ANumber shr bit)and $7f));
     if(bit = 0) then break;
@@ -189,15 +260,53 @@ begin
     Dec(bit, 7);
     Inc(TheEnd);
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$pop}
+=======
+  {$ifdef rangeon}
+    {$R+}
+  {$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+  {$ifdef rangeon}
+    {$R+}
+  {$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+  {$ifdef rangeon}
+    {$R+}
+  {$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+  {$ifdef rangeon}
+    {$R+}
+  {$endif}
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   
   buf := @Value;
   Result := TheEnd+1;
   Move(Value, Buffer^, Result);
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$ifdef chm_debug}
   if Result > 8 then WriteLn(' ', ANumber,' WRITE_COMPRESSED_INTEGER too big!: ', Result, ' ');
   {$endif}
+=======
+  if Result > 8 then WriteLn(' ', ANumber,' WRITE_COMPRESSED_INTEGER too big!: ', Result, ' ');
+>>>>>>> graemeg/fixes_2_2
+=======
+  if Result > 8 then WriteLn(' ', ANumber,' WRITE_COMPRESSED_INTEGER too big!: ', Result, ' ');
+>>>>>>> origin/fixes_2_2
 end;
 
 function ChmCompareText(S1, S2: String): Integer; inline;

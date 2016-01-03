@@ -163,10 +163,10 @@ begin
           g_error_free (error);
     end else
     begin
-      {$push}{$I-}
+      {$I-}
       assign (image_stream, filename);
       reset (image_stream, 1);
-      {$pop}
+      {$I+}
 
           if IOResult <> 0 then
             error_msg := g_strdup_printf ('Error while opening file "%s"',

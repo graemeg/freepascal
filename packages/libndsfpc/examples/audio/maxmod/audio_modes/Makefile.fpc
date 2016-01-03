@@ -46,6 +46,7 @@ GBFS_FILES  = $(foreach dir, GBFS, $(notdir $(wildcard $(dir)/*)))
 
 [rules]
 .NOTPARALLEL:
+<<<<<<< HEAD
 clean: dir_delete fpc_clean fpc_cleanall
 all: dir_make $(BIN_FILES) $(GFX_FILES) fpc_all 
 filesystem: all make_filesystem
@@ -63,6 +64,11 @@ dir_delete:
 # Create temp directories
 #
 dir_make:
+=======
+all: direc fpc_all 
+<<<<<<< .mine=======
+>>>>>>> .theirsdirec:
+>>>>>>> origin/fixes_2.4
 ifneq ($(BUILD), $(CURDIR))
         @$(MKDIR) $(BUILD)
 endif

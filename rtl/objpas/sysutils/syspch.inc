@@ -16,6 +16,12 @@
 
 {  PChar functions  }
 
+<<<<<<< HEAD
+=======
+type
+   CharArray = array[0..0] of char;
+
+>>>>>>> graemeg/fixes_2_2
 { Processor dependent part, shared withs strings unit }
 {$ifdef FPC_USE_LIBC}
 {$i cgenstr.inc}

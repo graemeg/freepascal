@@ -1,20 +1,62 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
 #
 
 [package]
+<<<<<<< HEAD
 name=iconvenc
 version=3.1.1
+=======
+name=iconvenc 
+version=2.5.1
+
+[target]
+units=iconvenc iconvenc_dyn
+exampledirs=examples
+>>>>>>> graemeg/cpstrnew
 
 [require]
 packages=rtl fpmkunit
 
 [install]
 fpcpackage=y
+=======
+=======
+>>>>>>> origin/fixes_2_2
+#   Makefile.fpc for Free Pascal ImLib 1.x Packages
+#
+
+[package]
+name=iconvenc
+version=2.2.5
+
+[target]
+units=iconvenc
+exampledirs=examples
+
+[require]
+libc=y
+
+[compiler]
+includedir=src
+sourcedir=src 
+
+
+[install]
+fpcpackage=y
+fpcsubdir=packages
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +142,15 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[shared]
+build=n
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

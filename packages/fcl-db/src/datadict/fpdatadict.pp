@@ -24,6 +24,8 @@ uses
 
 Type
   // Supported objects in this data dictionary
+<<<<<<< HEAD
+<<<<<<< HEAD
   TObjectType = (otUnknown,otDictionary,
                  otTables,otTable,
                  otFields,otField,
@@ -33,6 +35,14 @@ Type
                  otForeignKeyDefs,otForeignKeyDef,
                  otDomainDefs,otDomainDef);
 
+=======
+  TObjectType = (otUnknown,otDictionary,otTables,otTable,otFields,otField,
+                 otConnection,otTableData,otIndexDefs,otIndexDef);
+>>>>>>> graemeg/fixes_2_2
+=======
+  TObjectType = (otUnknown,otDictionary,otTables,otTable,otFields,otField,
+                 otConnection,otTableData,otIndexDefs,otIndexDef);
+>>>>>>> origin/fixes_2_2
   TDDProgressEvent = Procedure(Sender : TObject; Const Msg : String) of Object;
 
   TFPDDFieldList = Class;
@@ -74,7 +84,13 @@ Type
   protected
     function GetSectionName: String; override;
     procedure SetSectionName(const Value: String); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
     function GetDisplayName: string; override;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Public
     Constructor Create(ACollection : TCollection); override;
     Function FieldDefs : TDDFieldDefs;
@@ -108,7 +124,13 @@ Type
     Property Hint : String Read FHint Write FHint;
     Property ProviderFlags : TProviderFlags Read FProviderFlags Write FProviderFlags;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   TDDFieldDefClass = Class of TDDFieldDef;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   { TDDTableCollection }
   TDDTableCollection = Class(TIniCollection)
@@ -136,7 +158,13 @@ Type
   Public
     Constructor Create(ATableDef : TDDTableDef);
     Constructor Create(ATableName : string);
+<<<<<<< HEAD
+<<<<<<< HEAD
     Class Function FieldDefClass : TDDFieldDefClass; virtual;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Property TableDef : TDDTableDef Read FTableDef;
     Property TableName : String Read GetTableName Write SetTableName;
     Function AddField(AFieldName: String = '') : TDDFieldDef;
@@ -460,9 +488,17 @@ Type
   end;
 
   { TFPDDSQLEngine }
+<<<<<<< HEAD
+<<<<<<< HEAD
   TSQLEngineOption = (eoLineFeedAfterField,eoUseOldInWhereParams,eoAndTermsInBrackets,
                       eoQuoteFieldNames,eoLineFeedAfterAndTerm,eoAddTerminator,
                       eoSkipForeignkeys);
+=======
+  TSQLEngineOption = (eoLineFeedAfterField,eoUseOldInWhereParams,eoAndTermsInBrackets,eoQuoteFieldNames,eoLineFeedAfterAndTerm,eoAddTerminator);
+>>>>>>> graemeg/fixes_2_2
+=======
+  TSQLEngineOption = (eoLineFeedAfterField,eoUseOldInWhereParams,eoAndTermsInBrackets,eoQuoteFieldNames,eoLineFeedAfterAndTerm,eoAddTerminator);
+>>>>>>> origin/fixes_2_2
   TSQLEngineOptions = Set of TSQLEngineOption;
   
 
@@ -482,8 +518,16 @@ Type
     Procedure ResetLine;
     Procedure AddToStringLN(Var Res : String; S : String);
     Procedure AddToString(Var Res : String; S : String);
+<<<<<<< HEAD
+<<<<<<< HEAD
     Procedure FixUpStatement(var Res : String; ForceTerminator : Boolean = False);
     Procedure FixUpStatement(SQL : TStrings; ForceTerminator : Boolean = False);
+=======
+    Procedure FixUpStatement(var Res : String);
+>>>>>>> graemeg/fixes_2_2
+=======
+    Procedure FixUpStatement(var Res : String);
+>>>>>>> origin/fixes_2_2
     Procedure AddWhereClause(Var Res : String; FieldList: TFPDDFieldList; UseOldParam:Boolean);
     Function CreateAndTerm(FD : TDDFieldDef; UseOldParam : Boolean): string;
     // Primitives. Override for engine-specifics
@@ -501,7 +545,13 @@ Type
   Public
     Constructor Create; virtual;
     function  CreateWhereSQL(Var Res : String; FieldList: TFPDDFieldList; UseOldParam:Boolean): String;
+<<<<<<< HEAD
+<<<<<<< HEAD
     // Methods that fill a stringlist
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Procedure CreateSelectSQLStrings(FieldList,KeyFields : TFPDDFieldList; SQL : TStrings);
     Procedure CreateInsertSQLStrings(FieldList : TFPDDFieldList; SQL : TStrings);
     Procedure CreateUpdateSQLStrings(FieldList,KeyFields : TFPDDFieldList; SQL : TStrings);
@@ -509,14 +559,26 @@ Type
     Procedure CreateCreateSQLStrings(Fields,KeyFields : TFPDDFieldList; SQL : TStrings);
     Procedure CreateCreateSQLStrings(KeyFields : TFPDDFieldList; SQL : TStrings);
     Procedure CreateIndexesSQLStrings(Indexes : TFPDDIndexList; SQL : TStrings);
+<<<<<<< HEAD
+<<<<<<< HEAD
     Procedure CreateForeignKeysSQLStrings(ForeignKeys: TDDForeignKeyDefs; SQL : TStrings);
     Procedure CreateSequencesSQLStrings(Sequences : TFPDDSequenceList; SQL : TStrings);
     Procedure CreateDomainsSQLStrings(Domains : TFPDDDomainList; SQL : TStrings);
     // Insert/Update/Delete statements.
+=======
+    Procedure CreateSequencesSQLStrings(Sequences : TFPDDSequenceList; SQL : TStrings);
+    Procedure CreateDomainsSQLStrings(Domains : TFPDDDomainList; SQL : TStrings);
+>>>>>>> graemeg/fixes_2_2
+=======
+    Procedure CreateSequencesSQLStrings(Sequences : TFPDDSequenceList; SQL : TStrings);
+    Procedure CreateDomainsSQLStrings(Domains : TFPDDDomainList; SQL : TStrings);
+>>>>>>> origin/fixes_2_2
     Function  CreateSelectSQL(FieldList,KeyFields : TFPDDFieldList) : String; virtual;
     Function  CreateInsertSQL(FieldList : TFPDDFieldList) : String; virtual;
     Function  CreateUpdateSQL(FieldList,KeyFields : TFPDDFieldList) : String; virtual;
     Function  CreateDeleteSQL(KeyFields : TFPDDFieldList) : String; virtual;
+<<<<<<< HEAD
+<<<<<<< HEAD
     // CREATE TABLE statement
     Function  CreateCreateSQL(Fields,KeyFields : TFPDDFieldList) : String; virtual;
     Function  CreateCreateSQL(KeyFields : TFPDDFieldList) : String; virtual;
@@ -532,6 +594,24 @@ Type
     Function  CreateSequencesSQL(Sequences : TFPDDSequenceList) : String;
     Function  CreateSequencesSQL(Sequences : TDDSequenceDefs) : String;
     // CREATE DOMAIN
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    Function  CreateCreateSQL(Fields,KeyFields : TFPDDFieldList) : String; virtual;
+    Function  CreateCreateSQL(KeyFields : TFPDDFieldList) : String; virtual;
+    // Indexes
+    Function  CreateIndexSQL(Index : TDDIndexDef) : String; virtual;
+    Function  CreateIndexesSQL(Indexes : TFPDDIndexList) : String;
+    Function  CreateIndexesSQL(Indexes : TDDIndexDefs) : String;
+    // Sequences
+    Function  CreateSequenceSQL(Sequence : TDDSequenceDef) : String; virtual;
+    Function  CreateSequencesSQL(Sequences : TFPDDSequenceList) : String;
+    Function  CreateSequencesSQL(Sequences : TDDSequenceDefs) : String;
+    // Domains
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Function  CreateDomainSQL(Domain : TDDDomainDef) : String; virtual;
     Function  CreateDomainsSQL(Domains : TFPDDDomainList) : String;
     Function  CreateDomainsSQL(Domains : TDDDomainDefs) : String;
@@ -1016,6 +1096,8 @@ begin
   FFieldName:=Value;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TDDFieldDef.GetDisplayName: string;
 begin
   If (FieldName<>'') then
@@ -1024,6 +1106,10 @@ begin
     Result:=inherited GetDisplayName;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 constructor TDDFieldDef.Create(ACollection: TCollection);
 begin
   Inherited;
@@ -1244,30 +1330,58 @@ end;
 
 constructor TDDFieldDefs.Create(ATableDef: TDDTableDef);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   Inherited Create(FieldDefClass);
+=======
+  Inherited Create(TDDFieldDef);
+>>>>>>> graemeg/fixes_2_2
+=======
+  Inherited Create(TDDFieldDef);
+>>>>>>> origin/fixes_2_2
   FPrefix:='Field';
   SetTableDef(ATableDef);
 end;
 
 constructor TDDFieldDefs.Create(ATableName: String);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   Inherited Create(FieldDefClass);
+=======
+  Inherited Create(TDDFieldDef);
+>>>>>>> graemeg/fixes_2_2
+=======
+  Inherited Create(TDDFieldDef);
+>>>>>>> origin/fixes_2_2
   FPrefix:='Field';
   TableName:=ATableName;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 class function TDDFieldDefs.FieldDefClass: TDDFieldDefClass;
 begin
   Result:=TDDFieldDef
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function TDDFieldDefs.GetField(Index : Integer): TDDFieldDef;
 begin
   Result:=TDDFieldDef(Items[Index]);
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 procedure TDDFieldDefs.SetField(Index : Integer; const AValue: TDDFieldDef);
 begin
   Items[Index]:=AValue;
@@ -1351,7 +1465,13 @@ begin
   FTableName:=AValue;
   FFieldDefs.TableName:=AValue;
   FIndexDefs.TableName:=AValue;
+<<<<<<< HEAD
+<<<<<<< HEAD
   FKeyDefs.TableName:=AValue;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 function TDDTableDef.GetPrimaryKeyName: String;
@@ -1496,7 +1616,13 @@ begin
     OnProgress(Self,Format(SSavingFieldsFrom,[TableName]));
   FFieldDefs.SaveToIni(Ini,ASection+SFieldSuffix);
   FIndexDefs.SaveToIni(Ini,ASection+SIndexSuffix);
+<<<<<<< HEAD
+<<<<<<< HEAD
   FKeyDefs.SaveToIni(Ini,ASection+SKeySuffix);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure TDDTableDef.LoadFromIni(Ini: TCustomInifile; ASection: String);
@@ -1510,7 +1636,13 @@ begin
     OnProgress(Self,Format(SLoadingFieldsFrom,[TableName]));
   FFieldDefs.LoadFromIni(Ini,ASection+SFieldSuffix);
   FIndexDefs.LoadFromIni(Ini,ASection+SIndexSuffix);
+<<<<<<< HEAD
+<<<<<<< HEAD
   FKeyDefs.LoadFromIni(Ini,ASection+SKeySuffix);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure TDDTableDef.PrimaryIndexToFields;
@@ -1647,7 +1779,13 @@ end;
 
 destructor TFPDataDictionary.Destroy;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FreeAndNil(FDomains);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   FreeAndNil(FSequences);
   FreeAndNil(FTables);
   inherited Destroy;
@@ -1973,6 +2111,14 @@ end;
 function TFPDDEngine.ImportDomains(Domains: TDDDomainDefs; List : TStrings; UpdateExisting : boolean) : Integer;
 begin
   result := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  writeln ('importing no domains');
+>>>>>>> graemeg/fixes_2_2
+=======
+  writeln ('importing no domains');
+>>>>>>> origin/fixes_2_2
 end;
 
 function TFPDDEngine.GetSequenceList(List: TStrings): integer;
@@ -1984,6 +2130,14 @@ end;
 function TFPDDEngine.ImportSequences(Sequences: TDDSequenceDefs; List : TStrings; UpdateExisting : boolean) : Integer;
 begin
   result := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  writeln ('importing no sequences');
+>>>>>>> graemeg/fixes_2_2
+=======
+  writeln ('importing no sequences');
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure TFPDDEngine.CreateTable(Table: TDDTableDef);
@@ -2051,6 +2205,8 @@ begin
   NoIndent;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TFPDDSQLEngine.FixUpStatement(var Res: String; ForceTerminator : Boolean = False);
 
 Var
@@ -2078,6 +2234,18 @@ begin
     FixupStatement(S,ForceTerminator);
     SQL[SQL.Count-1]:=S;
     end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure TFPDDSQLEngine.FixUpStatement(var Res: String);
+begin
+  Res:=Trim(Res);
+  if (eoAddTerminator in Options) then
+    Res:=Res+FTerminatorChar;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TFPDDSQLEngine.AddToStringLN(Var Res : String;S : String);
@@ -2486,6 +2654,8 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TFPDDSQLEngine.CreateForeignKeySQL(ForeignKey: TDDForeignKeyDef
   ): String;
 
@@ -2511,6 +2681,10 @@ begin
   end;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function TFPDDSQLEngine.CreateSequenceSQL(Sequence: TDDSequenceDef): String;
 begin
   Result:='CREATE SEQUENCE '+Sequence.SequenceName;
@@ -2612,8 +2786,16 @@ Var
   KF : TFPDDFieldlist;
   ID : TDDIndexDef;
   FD : TDDFieldDef;
+<<<<<<< HEAD
+<<<<<<< HEAD
   S : String;
 
+=======
+  
+>>>>>>> graemeg/fixes_2_2
+=======
+  
+>>>>>>> origin/fixes_2_2
 begin
   CheckTableDef;
   L:=TStringList.Create;
@@ -2631,6 +2813,8 @@ begin
             KF.Add(FD);
           end;
       CreateCreateSQLStrings(KF,SQL);
+<<<<<<< HEAD
+<<<<<<< HEAD
       FixupStatement(SQL,True);
       L.Text:=CreateIndexesSQL(TableDef.Indexes);
       If (L.Count>0) then
@@ -2641,6 +2825,12 @@ begin
       L.Clear;
       If Not (eoSkipForeignKeys in Options) then
         L.Text:=CreateForeignKeysSQL(TableDef.ForeignKeys);
+=======
+      L.Text:=CreateIndexesSQL(TableDef.Indexes);
+>>>>>>> graemeg/fixes_2_2
+=======
+      L.Text:=CreateIndexesSQL(TableDef.Indexes);
+>>>>>>> origin/fixes_2_2
       SQL.AddStrings(L);
     finally
       KF.Free;
@@ -2698,6 +2888,8 @@ begin
       SQL.Add(CreateIndexSQL(Indexes[i])+TerminatorChar);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TFPDDSQLEngine.CreateForeignKeysSQLStrings(
   ForeignKeys: TDDForeignKeyDefs; SQL: TStrings);
 
@@ -2709,6 +2901,10 @@ begin
     SQL.Add(CreateForeignKeySQL(ForeignKeys[i])+TerminatorChar);
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 procedure TFPDDSQLEngine.CreateSequencesSQLStrings(Sequences: TFPDDSequenceList;
   SQL: TStrings);
 

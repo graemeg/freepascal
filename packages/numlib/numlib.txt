@@ -31,9 +31,7 @@ throughout the entire library. If the floating point type is changed,
 define or undefine ArbExtended and add the machineconstants change to
 the type selected.
 
-This allows to switch between IEEE Double (64bit) and Extended(80bit),
-though big endian state is unknown (and probably needs refactoring the
-examples to an automated testsuite first)
+This allows IEEE Double (64bit) and Extended(80bit).
 
 ARBINT, basic INTEGER type.
 -----------------------------------
@@ -68,14 +66,6 @@ The calling side looks like this:
 VAR L : ARRAY[0..1999] OF ArbFloat;
 
 DoSomething(L[0]);
-
-Documentation
--------------
-
-Needs fpc.sty and fakehtml.sty from FPC documentation source to build.
-
-For now in latex (due to math formulas etc), and file per unit, later then
-can be combined in one hyperrefed pkg
 
 -----------
 Questions that remain open/incompleteneses in the package we got:

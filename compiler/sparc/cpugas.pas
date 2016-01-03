@@ -114,12 +114,27 @@ implementation
           begin
             if (ref.base<>NR_NO) then
               begin
+<<<<<<< HEAD
                 if (ref.index<>NR_NO) then
                   InternalError(2013013001);
                 if (result[1]='-') then
                   result:=gas_regname(ref.base)+result
                 else
                   result:=gas_regname(ref.base)+'+'+result;
+=======
+                 if assigned(symbol) then
+                   GetReferenceString:=symbol.name;
+                 if offset>0 then
+                   GetReferenceString:=GetReferenceString+'+'+ToStr(offset)
+                 else if offset<0 then
+                   GetReferenceString:=GetReferenceString+ToStr(offset);
+                 case refaddr of
+                   addr_high:
+                     GetReferenceString:='%hi('+GetReferenceString+')';
+                   addr_low:
+                     GetReferenceString:='%lo('+GetReferenceString+')';
+                 end;
+>>>>>>> graemeg/fixes_2_2
               end
             else if (ref.index<>NR_NO) then
               InternalError(2013122501);
@@ -128,12 +143,51 @@ implementation
           begin
             if (ref.base<>NR_NO) then
               begin
+<<<<<<< HEAD
                 result:=gas_regname(ref.base);
                 if (ref.index<>NR_NO) then
                   result:=result+'+'+gas_regname(ref.index);
               end
             else if (ref.index<>NR_NO) then
               result:=gas_regname(ref.index);
+=======
+{$ifdef extdebug}
+                if assigned(symbol) and
+                  not(refaddr in [addr_pic,addr_low]) then
+                  internalerror(2003052601);
+{$endif extdebug}
+                if base<>NR_NO then
+                  GetReferenceString:=GetReferenceString+gas_regname(base);
+                if index=NR_NO then
+                  begin
+                    { if (Offset<simm13lo) or (Offset>simm13hi) then
+                      internalerror(2003053008); }
+                    if offset>0 then
+                      GetReferenceString:=GetReferenceString+'+'+ToStr(offset)
+                    else if offset<0 then
+                      GetReferenceString:=GetReferenceString+ToStr(offset);
+                    {
+                    else if (offset=0) and not(assigned(symbol)) then
+                      GetReferenceString:=GetReferenceString+ToStr(offset);
+                    }
+                    if assigned(symbol) then
+                      begin
+                        if refaddr=addr_low then
+                          GetReferenceString:='%lo('+symbol.name+')+'+GetReferenceString
+                        else
+                          GetReferenceString:=symbol.name+'+'+GetReferenceString;
+                      end;
+                  end
+                else
+                  begin
+{$ifdef extdebug}
+                    if (Offset<>0) or assigned(symbol) then
+                      internalerror(2003052603);
+{$endif extdebug}
+                    GetReferenceString:=GetReferenceString+'+'+gas_regname(index);
+                  end;
+              end;
+>>>>>>> graemeg/fixes_2_2
           end;
       end;
 
@@ -147,9 +201,17 @@ implementation
             top_const:
               getopstr:=tostr(longint(val));
             top_ref:
+<<<<<<< HEAD
+<<<<<<< HEAD
               if (oper.ref^.refaddr in [addr_no,addr_pic]) or
                  ((oper.ref^.refaddr=addr_low) and ((oper.ref^.base<>NR_NO) or
                   (oper.ref^.index<>NR_NO))) then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+              if (oper.ref^.refaddr in [addr_no,addr_pic]) or ((oper.ref^.refaddr=addr_low) and ((oper.ref^.base<>NR_NO) or
+                (oper.ref^.index<>NR_NO))) then
+>>>>>>> graemeg/fixes_2_2
                 getopstr:='['+getreferencestring(ref^)+']'
               else
                 getopstr:=getreferencestring(ref^);
@@ -224,12 +286,24 @@ implementation
            idtxt  : 'AS';
            asmbin : 'as';
 {$ifdef FPC_SPARC_V8_ONLY}
+<<<<<<< HEAD
+<<<<<<< HEAD
            asmcmd : '$PIC -o $OBJ $EXTRAOPT $ASM';
 {$else}
            asmcmd : '$ARCH $PIC -o $OBJ $EXTRAOPT $ASM';
 {$endif}
            supported_targets : [system_sparc_solaris,system_sparc_linux,system_sparc_embedded];
            flags : [af_needar,af_smartlink_sections];
+=======
+=======
+>>>>>>> origin/fixes_2_2
+           asmcmd : '-o $OBJ $ASM';
+{$else}
+           asmcmd : '-Av9 -o $OBJ $ASM';
+{$endif}
+           supported_target : system_any;
+           flags : [af_allowdirect,af_needar,af_smartlink_sections];
+>>>>>>> graemeg/fixes_2_2
            labelprefix : '.L';
            comment : '# ';
            dollarsign: '$';
@@ -240,9 +314,18 @@ implementation
            id     : as_ggas;
            idtxt  : 'GAS';
            asmbin : 'gas';
+<<<<<<< HEAD
+<<<<<<< HEAD
            asmcmd : '$ARCH $PIC -o $OBJ $EXTRAOPT $ASM';
            supported_targets : [system_sparc_solaris,system_sparc_linux,system_sparc_embedded];
            flags : [af_needar,af_smartlink_sections];
+=======
+=======
+>>>>>>> origin/fixes_2_2
+           asmcmd : '-Av9 -o $OBJ $ASM';
+           supported_target : system_any;
+           flags : [af_allowdirect,af_needar,af_smartlink_sections];
+>>>>>>> graemeg/fixes_2_2
            labelprefix : '.L';
            comment : '# ';
            dollarsign: '$';

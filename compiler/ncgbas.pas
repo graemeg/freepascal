@@ -71,7 +71,20 @@ interface
       aasmbase,aasmtai,aasmdata,aasmcpu,
       symsym,symconst,symdef,defutil,
       nflw,pass_2,ncgutil,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       cgbase,cgobj,hlcgobj,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      cgbase,cgobj,
+>>>>>>> graemeg/cpstrnew
       procinfo,
       tgobj
       ;
@@ -206,6 +219,10 @@ interface
                         op.reg:=sym.localloc.register;
                       end;
                   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 LOC_FPUREGISTER,
                 LOC_MMXREGISTER,
                 LOC_MMREGISTER :
@@ -233,6 +250,35 @@ interface
                     { recover }
                     op.typ:=top_reg;
                     op.reg:=NR_FUNCTION_RETURN_REG;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                LOC_MMREGISTER :
+                  begin
+                    if getoffset then
+                      Message(asmr_e_invalid_reference_syntax);
+                    { Subscribed access }
+                    if forceref or (sofs<>0) then
+                      internalerror(201001032)
+                    else
+                      begin
+                        op.typ:=top_reg;
+                        op.reg:=sym.localloc.register;
+                      end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                   end;
                 else
                   internalerror(201001031);
@@ -331,7 +377,14 @@ interface
 {$endif}
                        { fixup the references }
                        for i:=1 to taicpu(hp).ops do
+<<<<<<< HEAD
                          ResolveRef(taicpu(hp).fileinfo,taicpu(hp).oper[i-1]^);
+=======
+                         ResolveRef(taicpu(hp).oper[i-1]^);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifdef x86}
                       { can only be checked now that all local operands }
                       { have been resolved                              }
@@ -415,6 +468,7 @@ interface
         if (ti_valid in tempinfo^.flags) then
           internalerror(200108222);
 
+<<<<<<< HEAD
         { in case of ti_reference, the location will be initialised using the
           location of the tempinitnode once the first temprefnode is processed }
         if not(ti_reference in tempinfo^.flags) then
@@ -437,10 +491,35 @@ interface
                 location_reset_ref(tempinfo^.location,LOC_REFERENCE,def_cgsize(tempinfo^.typedef),0);
                 tg.gethltemp(current_asmdata.CurrAsmList,tempinfo^.typedef,size,tempinfo^.temptype,tempinfo^.location.reference);
               end;
+=======
+        { get a (persistent) temp }
+        if is_managed_type(tempinfo^.typedef) then
+          begin
+            location_reset_ref(tempinfo^.location,LOC_REFERENCE,def_cgsize(tempinfo^.typedef),0);
+            tg.GetTempTyped(current_asmdata.CurrAsmList,tempinfo^.typedef,tempinfo^.temptype,tempinfo^.location.reference);
+            { the temp could have been used previously either because the memory location was reused or
+              because we're in a loop }
+            cg.g_finalize(current_asmdata.CurrAsmList,tempinfo^.typedef,tempinfo^.location.reference);
+          end
+        else if (ti_may_be_in_reg in tempinfo^.flags) then
+          begin
+            location_allocate_register(current_asmdata.CurrAsmList,tempinfo^.location,tempinfo^.typedef,tempinfo^.temptype = tt_persistent);
+          end
+        else
+          begin
+            location_reset_ref(tempinfo^.location,LOC_REFERENCE,def_cgsize(tempinfo^.typedef),0);
+            tg.GetTemp(current_asmdata.CurrAsmList,size,tempinfo^.typedef.alignment,tempinfo^.temptype,tempinfo^.location.reference);
+>>>>>>> graemeg/cpstrnew
           end;
         include(tempinfo^.flags,ti_valid);
+<<<<<<< HEAD
+<<<<<<< HEAD
         if assigned(tempinfo^.tempinitcode) then
           include(tempinfo^.flags,ti_executeinitialisation);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -455,6 +534,10 @@ interface
             { avoid recursion }
             exclude(tempinfo^.flags, ti_executeinitialisation);
             secondpass(tempinfo^.tempinitcode);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             if (ti_reference in tempinfo^.flags) then
               begin
                 case tempinfo^.tempinitcode.location.loc of
@@ -476,6 +559,14 @@ interface
                 end;
                 hlcg.g_reference_loc(current_asmdata.CurrAsmList,tempinfo^.typedef,tempinfo^.tempinitcode.location,tempinfo^.location);
               end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           end;
         { check if the temp is valid }
         if not(ti_valid in tempinfo^.flags) then
@@ -485,7 +576,13 @@ interface
           LOC_REFERENCE:
             begin
               inc(location.reference.offset,offset);
+<<<<<<< HEAD
+<<<<<<< HEAD
               location.reference.alignment:=newalignment(location.reference.alignment,offset);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               { ti_valid should be excluded if it's a normal temp }
             end;
           LOC_REGISTER,

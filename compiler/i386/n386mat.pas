@@ -72,6 +72,13 @@ implementation
         if is_64bitint(resultdef) then
           { should be handled in pass_1 (JM) }
           internalerror(200109052);
+<<<<<<< HEAD
+=======
+        { put numerator in register }
+        location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
+        location_force_reg(current_asmdata.CurrAsmList,left.location,location.size,false);
+        hreg1:=left.location.register;
+>>>>>>> graemeg/fixes_2_2
 
         if (nodetype=divn) and (right.nodetype=ordconstn) and
           is_signed(left.resultdef) and
@@ -124,7 +131,15 @@ implementation
         location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
 
         { load left operator in a register }
+<<<<<<< HEAD
+<<<<<<< HEAD
         hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,resultdef,false);
+=======
+        location_force_reg(current_asmdata.CurrAsmList,left.location,location.size,false);
+>>>>>>> graemeg/fixes_2_2
+=======
+        location_force_reg(current_asmdata.CurrAsmList,left.location,location.size,false);
+>>>>>>> origin/fixes_2_2
         hreg64hi:=left.location.register64.reghi;
         hreg64lo:=left.location.register64.reglo;
 

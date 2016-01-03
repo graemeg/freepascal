@@ -929,7 +929,19 @@ var
   doc: TXMLDocument;
   rslt: TXPathVariable;
   nsdoc: TXMLDocument;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   resolver: TXPathNSResolver;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 begin
   for i := 0 to High(tests) do
   begin
@@ -938,6 +950,10 @@ begin
       nsdoc := ParseString(tests[i].re);
       try
         try
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           resolver := TXPathNSResolver.Create(nsdoc.DocumentElement);
           try
             rslt := EvaluateXPathExpression(tests[i].expr, doc.DocumentElement, resolver);
@@ -948,6 +964,28 @@ begin
             end;
           finally
             resolver.Free;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          rslt := EvaluateXPathExpression(tests[i].expr, doc.DocumentElement, nsdoc.DocumentElement);
+          try
+            CheckResult(tests[i], rslt);
+          finally
+            rslt.Free;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           end;
         except
           writeln;

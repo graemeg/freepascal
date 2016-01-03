@@ -130,6 +130,18 @@ const
  syscall_nr_kse_switchin                = 440;
  syscall_nr_getrlimit                   = 194;
  syscall_nr_setrlimit                   = 195;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  syscall_nr_getsid			= 310;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 

@@ -32,6 +32,10 @@ type
 { Records }
 type
   __MFlags = record
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     case byte of
     0: (_anonbitfield_NSMatrix0: cuint);
     1: (data: bitpacked record
@@ -98,6 +102,84 @@ type
 {$endif}
          end;
        );
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef fpc_big_endian}
+    highlightMode: 0..1;
+    radioMode: 0..1;
+    listMode: 0..1;
+    allowEmptySel: 0..1;
+    autoscroll: 0..1;
+    selectionByRect: 0..1;
+    drawsCellBackground: 0..1;
+    drawsBackground: 0..1;
+    autosizeCells: 0..1;
+    drawingAncestor: 0..1;
+    tabKeyTraversesCells: 0..1;
+    tabKeyTraversesCellsExplicitlySet: 0..1;
+    allowsIncrementalSearching: 0..1;
+    currentlySelectingCell: 0..1;
+    onlySetKeyCell: 0..1;
+    changingSelectionWithKeyboard: 0..1;
+    dontScroll: 0..1;
+    refusesFirstResponder: 0..1;
+    useSimpleTrackingMode: 0..1;
+    checkForSimpleTrackingMode: 0..1;
+    liveResizeImageCacheingEnabled: 0..1;
+    hasCachedSubclassIsSafeForLiveResize: 0..1;
+    subclassIsSafeForLiveResize: 0..1;
+    tmpAllowNonVisibleCellsToBecomeFirstResponder: 0..1;
+    needsRedrawBeforeFirstLiveResizeCache: 0..1;
+    browserOptimizationsEnabled: 0..1;
+    drawingContextMenuHighlight: 0..1;
+    drawingContextMenuHighlightOnAllSelectedRows: 0..1;
+    reservedMatrix: 0..((1 shl 4)-1);
+{$else}
+    reservedMatrix: 0..((1 shl 4)-1);
+    drawingContextMenuHighlightOnAllSelectedRows: 0..1;
+    drawingContextMenuHighlight: 0..1;
+    browserOptimizationsEnabled: 0..1;
+    needsRedrawBeforeFirstLiveResizeCache: 0..1;
+    tmpAllowNonVisibleCellsToBecomeFirstResponder: 0..1;
+    subclassIsSafeForLiveResize: 0..1;
+    hasCachedSubclassIsSafeForLiveResize: 0..1;
+    liveResizeImageCacheingEnabled: 0..1;
+    checkForSimpleTrackingMode: 0..1;
+    useSimpleTrackingMode: 0..1;
+    refusesFirstResponder: 0..1;
+    dontScroll: 0..1;
+    changingSelectionWithKeyboard: 0..1;
+    onlySetKeyCell: 0..1;
+    currentlySelectingCell: 0..1;
+    allowsIncrementalSearching: 0..1;
+    tabKeyTraversesCellsExplicitlySet: 0..1;
+    tabKeyTraversesCells: 0..1;
+    drawingAncestor: 0..1;
+    autosizeCells: 0..1;
+    drawsBackground: 0..1;
+    drawsCellBackground: 0..1;
+    selectionByRect: 0..1;
+    autoscroll: 0..1;
+    allowEmptySel: 0..1;
+    listMode: 0..1;
+    radioMode: 0..1;
+    highlightMode: 0..1;
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 _MFlags = __MFlags;
 __MFlagsPtr = ^__MFlags;

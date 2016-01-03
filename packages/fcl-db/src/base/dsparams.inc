@@ -1,4 +1,6 @@
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure SkipQuotesString(var p : pchar; QuoteChar : char; EscapeSlash, EscapeRepeat : Boolean);
 var notRepeatEscaped : boolean;
 begin
@@ -42,6 +44,10 @@ begin
   Result := FPosition < FParams.Count;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { TParams }
 
 Function TParams.GetItem(Index: Integer): TParam;
@@ -85,6 +91,8 @@ begin
   Result:=FOwner;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Class Function TParams.ParamClass: TParamClass;
 begin
   Result:=TParam;
@@ -104,6 +112,21 @@ begin
 end;
 
 Constructor TParams.Create;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+constructor TParams.Create(AOwner: TPersistent);
+begin
+  Inherited Create(TParam);
+  Fowner:=AOwner;
+end;
+
+constructor TParams.Create;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   Create(TPersistent(Nil));
 end;
@@ -134,9 +157,24 @@ Function TParams.CreateParam(FldType: TFieldType; const ParamName: string;
 
 begin
   Result:=Add as TParam;
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result.Name:=ParamName;
   Result.DataType:=FldType;
   Result.ParamType:=ParamType;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  With Result do
+    begin
+    Name:=ParamName;
+    DataType:=FldType;
+    ParamType:=ParamType;
+    end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 Function TParams.FindParam(const Value: string): TParam;
@@ -156,6 +194,8 @@ end;
 
 Procedure TParams.GetParamList(List: TList; const ParamNames: string);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Var
   P: TParam;
   N: String;
@@ -170,6 +210,34 @@ begin
     P := ParamByName(N);
     List.Add(P);
   until StrPos > Length(ParamNames);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  Function NextName(Var S : String) : String;
+  Var
+    P : Integer;
+  begin
+    P:=Pos(';',S);
+    If (P=0) then
+      P:=Length(S)+1;
+    Result:=Copy(S,1,P-1);
+    system.Delete(S,1,P);
+  end;
+
+Var
+  L,N : String;
+
+begin
+  L:=ParamNames;
+  While (Length(L)>0) do
+    begin
+    N:=NextName(L);
+    List.Add(ParamByName(N));
+    end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 Function TParams.IsEqual(Value: TParams): Boolean;
@@ -187,11 +255,17 @@ begin
     end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function TParams.GetEnumerator: TParamsEnumerator;
 begin
   Result:=TParamsEnumerator.Create(Self);
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Function TParams.ParamByName(const Value: string): TParam;
 begin
   Result:=FindParam(Value);
@@ -208,8 +282,16 @@ begin
   Result := ParseSQL(SQL,DoCreate,True,True,psInterbase, pb, rs);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function TParams.ParseSQL(SQL: String; DoCreate, EscapeSlash,
   EscapeRepeat: Boolean; ParameterStyle: TParamStyle): String;
+=======
+Function TParams.ParseSQL(SQL: String; DoCreate, EscapeSlash, EscapeRepeat : Boolean; ParameterStyle : TParamStyle): String;
+>>>>>>> graemeg/fixes_2_2
+=======
+Function TParams.ParseSQL(SQL: String; DoCreate, EscapeSlash, EscapeRepeat : Boolean; ParameterStyle : TParamStyle): String;
+>>>>>>> origin/fixes_2_2
 
 var pb : TParamBinding;
     rs : string;
@@ -218,9 +300,17 @@ begin
   Result := ParseSQL(SQL,DoCreate,EscapeSlash,EscapeRepeat,ParameterStyle,pb, rs);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function TParams.ParseSQL(SQL: String; DoCreate, EscapeSlash,
   EscapeRepeat: Boolean; ParameterStyle: TParamStyle; out
   ParamBinding: TParambinding): String;
+=======
+Function TParams.ParseSQL(SQL: String; DoCreate, EscapeSlash, EscapeRepeat : Boolean; ParameterStyle : TParamStyle; var ParamBinding: TParambinding): String;
+>>>>>>> graemeg/fixes_2_2
+=======
+Function TParams.ParseSQL(SQL: String; DoCreate, EscapeSlash, EscapeRepeat : Boolean; ParameterStyle : TParamStyle; var ParamBinding: TParambinding): String;
+>>>>>>> origin/fixes_2_2
 
 var rs : string;
 
@@ -229,6 +319,8 @@ begin
 end;
 
 function SkipComments(var p: PChar; EscapeSlash, EscapeRepeat : Boolean) : Boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 begin
   Result := False;
@@ -239,6 +331,43 @@ begin
         // single quote, double quote or backtick delimited string
         SkipQuotesString(p, p^, EscapeSlash, EscapeRepeat);
       end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+var notRepeatEscaped : boolean;
+
+  procedure SkipQuotesString(QuoteChar : char);
+  begin
+    Inc(p);
+    Result := True;
+    repeat
+      notRepeatEscaped := True;
+      while not (p^ in [#0, QuoteChar]) do
+      begin
+        if EscapeSlash and (p^='\') and (p[1] <> #0) then Inc(p,2) // make sure we handle \' and \\ correct
+        else Inc(p);
+      end;
+      if p^=QuoteChar then
+      begin
+        Inc(p); // skip final '
+        if (p^=QuoteChar) and EscapeRepeat then // Handle escaping by ''
+        begin
+        notRepeatEscaped := False;
+        inc(p);
+        end
+      end;
+    until notRepeatEscaped;
+  end;
+
+begin
+  result := false;
+  case p^ of
+    '''': SkipQuotesString('''');       // single quote delimited string
+    '"':  SkipQuotesString('"');        // double quote delimited string
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     '-': // possible start of -- comment
       begin
         Inc(p);
@@ -247,9 +376,19 @@ begin
           Result := True;
           repeat // skip until at end of line
             Inc(p);
+<<<<<<< HEAD
+<<<<<<< HEAD
           until p^ in [#10, #13, #0];
           while p^ in [#10, #13] do Inc(p); // newline is part of comment
         end;
+=======
+          until p^ in [#10, #0];
+        end
+>>>>>>> graemeg/fixes_2_2
+=======
+          until p^ in [#10, #0];
+        end
+>>>>>>> origin/fixes_2_2
       end;
     '/': // possible start of /* */ comment
       begin
@@ -271,9 +410,17 @@ begin
   end; {case}
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function TParams.ParseSQL(SQL: String; DoCreate, EscapeSlash,
   EscapeRepeat: Boolean; ParameterStyle: TParamStyle; out
   ParamBinding: TParambinding; out ReplaceString: string): String;
+=======
+Function TParams.ParseSQL(SQL: String; DoCreate, EscapeSlash, EscapeRepeat: Boolean; ParameterStyle : TParamStyle; var ParamBinding: TParambinding; var ReplaceString : string): String;
+>>>>>>> graemeg/fixes_2_2
+=======
+Function TParams.ParseSQL(SQL: String; DoCreate, EscapeSlash, EscapeRepeat: Boolean; ParameterStyle : TParamStyle; var ParamBinding: TParambinding; var ReplaceString : string): String;
+>>>>>>> origin/fixes_2_2
 
 type
   // used for ParamPart
@@ -305,7 +452,15 @@ begin
   ParamCount:=0;
   NewQueryLength:=Length(SQL);
   SetLength(ParamPart,ParamAllocStepSize);
+<<<<<<< HEAD
+<<<<<<< HEAD
   SetLength(ParamBinding,ParamAllocStepSize);
+=======
+  SetLength(Parambinding,ParamAllocStepSize);
+>>>>>>> graemeg/fixes_2_2
+=======
+  SetLength(Parambinding,ParamAllocStepSize);
+>>>>>>> origin/fixes_2_2
   QuestionMarkParamCount:=0; // number of ? params found in query so far
 
   ReplaceString := '$';
@@ -315,7 +470,15 @@ begin
   p:=PChar(SQL);
   BufStart:=p; // used to calculate ParamPart.Start values
   repeat
+<<<<<<< HEAD
+<<<<<<< HEAD
     while SkipComments(p,EscapeSlash,EscapeRepeat) do ;
+=======
+    SkipComments(p,EscapeSlash,EscapeRepeat);
+>>>>>>> graemeg/fixes_2_2
+=======
+    SkipComments(p,EscapeSlash,EscapeRepeat);
+>>>>>>> origin/fixes_2_2
     case p^ of
       ':','?': // parameter
         begin
@@ -323,13 +486,23 @@ begin
           if p^=':' then
           begin // find parameter name
             Inc(p);
+<<<<<<< HEAD
+<<<<<<< HEAD
             if p^ in [':','=',' '] then  // ignore ::, since some databases uses this as a cast (wb 4813)
+=======
+            if p^ in [':','='] then  // ignore ::, since some databases uses this as a cast (wb 4813)
+>>>>>>> graemeg/fixes_2_2
+=======
+            if p^ in [':','='] then  // ignore ::, since some databases uses this as a cast (wb 4813)
+>>>>>>> origin/fixes_2_2
             begin
               IgnorePart := True;
               Inc(p);
             end
             else
             begin
+<<<<<<< HEAD
+<<<<<<< HEAD
               if p^='"' then // Check if the parameter-name is between quotes
                 begin
                 ParamNameStart:=p;
@@ -345,6 +518,17 @@ begin
                   Inc(p);
                 ParamName:=Copy(ParamNameStart,1,p-ParamNameStart);
                 end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+              ParamNameStart:=p;
+              while not (p^ in (SQLDelimiterCharacters+[#0,'=','+','-','*','\','/','[',']','|'])) do
+                Inc(p);
+              ParamName:=Copy(ParamNameStart,1,p-ParamNameStart);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             end;
           end
           else
@@ -387,11 +571,24 @@ begin
               end;
             if ParameterStyle in [psPostgreSQL,psSimulated] then
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
               i:=ParameterIndex+1;
               repeat
                 inc(NewQueryLength);
                 i:=i div 10;
               until i=0;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+              if ParameterIndex > 8 then
+                inc(NewQueryLength,2)
+              else
+                inc(NewQueryLength,1)
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               end;
 
             // store ParameterIndex in FParamIndex, ParamPart data
@@ -403,7 +600,15 @@ begin
             Dec(NewQueryLength,p-ParamNameStart);
           end;
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
       #0:Break; // end of SQL
+=======
+      #0:Break;
+>>>>>>> graemeg/fixes_2_2
+=======
+      #0:Break;
+>>>>>>> origin/fixes_2_2
     else
       Inc(p);
     end;
@@ -428,10 +633,18 @@ begin
       Move(SQL[BufIndex],NewQuery[NewQueryIndex],CopyLen);
       Inc(NewQueryIndex,CopyLen);
       case ParameterStyle of
+<<<<<<< HEAD
+<<<<<<< HEAD
         psInterbase : begin
                         NewQuery[NewQueryIndex]:='?';
                         Inc(NewQueryIndex);
                       end;
+=======
+        psInterbase : NewQuery[NewQueryIndex]:='?';
+>>>>>>> graemeg/fixes_2_2
+=======
+        psInterbase : NewQuery[NewQueryIndex]:='?';
+>>>>>>> origin/fixes_2_2
         psPostgreSQL,
         psSimulated : begin
                         ParamName := IntToStr(ParamBinding[i]+1);
@@ -440,6 +653,8 @@ begin
                           NewQuery[NewQueryIndex]:='$';
                           Inc(NewQueryIndex);
                           end;
+<<<<<<< HEAD
+<<<<<<< HEAD
                         for b := 1 to length(ParamName) do
                           begin
                           NewQuery[NewQueryIndex]:=ParamName[b];
@@ -447,6 +662,22 @@ begin
                           end;
                       end;
       end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                        NewQuery[NewQueryIndex]:= paramname[1];
+                        if length(paramname)>1 then
+                          begin
+                          Inc(NewQueryIndex);
+                          NewQuery[NewQueryIndex]:= paramname[2]
+                          end;
+                      end;
+      end;
+      Inc(NewQueryIndex);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       BufIndex:=ParamPart[i].Stop;
     end;
     CopyLen:=Length(SQL)+1-BufIndex;
@@ -455,7 +686,15 @@ begin
   end
   else
     NewQuery:=SQL;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> graemeg/fixes_2_2
+=======
+    
+>>>>>>> origin/fixes_2_2
   Result := NewQuery;
 end;
 
@@ -525,6 +764,8 @@ begin
     Result:=FValue;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TParam.GetAsBytes: TBytes;
 begin
   if IsNull then
@@ -536,6 +777,10 @@ begin
     Result:=FValue;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Function TParam.GetAsCurrency: Currency;
 begin
   If IsNull then
@@ -586,6 +831,8 @@ begin
 end;
 
 Function TParam.GetAsString: string;
+<<<<<<< HEAD
+<<<<<<< HEAD
 var P: Pointer;
 begin
   If IsNull then
@@ -600,6 +847,16 @@ begin
       VarArrayUnlock(FValue);
     end;
   end
+=======
+begin
+  If IsNull then
+    Result:=''
+>>>>>>> graemeg/fixes_2_2
+=======
+begin
+  If IsNull then
+    Result:=''
+>>>>>>> origin/fixes_2_2
   else
     Result:=FValue;
 end;
@@ -612,6 +869,14 @@ begin
     Result := FValue;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 Function TParam.GetAsVariant: Variant;
 begin
   if IsNull then
@@ -620,6 +885,8 @@ begin
     Result:=FValue;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TParam.GetAsFMTBCD: TBCD;
 begin
   If IsNull then
@@ -628,6 +895,10 @@ begin
     Result:=VarToBCD(FValue);
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Function TParam.GetDisplayName: string;
 begin
   if (FName<>'') then
@@ -652,6 +923,8 @@ begin
           and (FValue=AValue.FValue);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TParam.SetAsBCD(const AValue: Currency);
 begin
   FDataType:=ftBCD;
@@ -662,10 +935,23 @@ Procedure TParam.SetAsBlob(const AValue: TBlobData);
 begin
   FDataType:=ftBlob;
   Value:=AValue;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+Procedure TParam.SetAsBlob(const AValue: TBlobData);
+begin
+  FValue:=AValue;
+  FDataType:=ftBlob;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TParam.SetAsBoolean(AValue: Boolean);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDataType:=ftBoolean;
   Value:=AValue;
 end;
@@ -674,82 +960,212 @@ procedure TParam.SetAsBytes(const AValue: TBytes);
 begin
   FDataType:=ftVarBytes;
   Value:=AValue;
+=======
+  FValue:=AValue;
+  FDataType:=ftBoolean;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue:=AValue;
+  FDataType:=ftBoolean;
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TParam.SetAsCurrency(const AValue: Currency);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDataType:=ftCurrency;
   Value:=AValue;
+=======
+  FValue:=Avalue;
+  FDataType:=ftCurrency;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue:=Avalue;
+  FDataType:=ftCurrency;
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TParam.SetAsDate(const AValue: TDateTime);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDataType:=ftDate;
   Value:=AValue;
+=======
+  FValue:=Avalue;
+  FDataType:=ftDate;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue:=Avalue;
+  FDataType:=ftDate;
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TParam.SetAsDateTime(const AValue: TDateTime);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDataType:=ftDateTime;
   Value:=AValue;
+=======
+  FValue:=AValue;
+  FDataType:=ftDateTime;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue:=AValue;
+  FDataType:=ftDateTime;
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TParam.SetAsFloat(const AValue: Double);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDataType:=ftFloat;
   Value:=AValue;
+=======
+  FValue:=AValue;
+  FDataType:=ftFloat;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue:=AValue;
+  FDataType:=ftFloat;
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TParam.SetAsInteger(AValue: Longint);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDataType:=ftInteger;
   Value:=AValue;
+=======
+  FValue:=AValue;
+  FDataType:=ftInteger;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue:=AValue;
+  FDataType:=ftInteger;
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TParam.SetAsLargeInt(AValue: LargeInt);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDataType:=ftLargeint;
   Value:=AValue;
+=======
+  FValue:=AValue;
+  FDataType:=ftLargeint;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue:=AValue;
+  FDataType:=ftLargeint;
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TParam.SetAsMemo(const AValue: string);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDataType:=ftMemo;
   Value:=AValue;
+=======
+  FValue:=AValue;
+  FDataType:=ftMemo;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue:=AValue;
+  FDataType:=ftMemo;
+>>>>>>> origin/fixes_2_2
 end;
 
 
 Procedure TParam.SetAsSmallInt(AValue: LongInt);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDataType:=ftSmallInt;
   Value:=AValue;
+=======
+  FValue:=AValue;
+  FDataType:=ftSmallInt;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue:=AValue;
+  FDataType:=ftSmallInt;
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TParam.SetAsString(const AValue: string);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if FDataType <> ftFixedChar then
     FDataType := ftString;
   Value:=AValue;
+=======
+  FValue:=AValue;
+  if FDataType <> ftFixedChar then
+    FDataType := ftString;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue:=AValue;
+  if FDataType <> ftFixedChar then
+    FDataType := ftString;
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure TParam.SetAsWideString(const aValue: WideString);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if FDataType <> ftFixedWideChar then
     FDataType := ftWideString;
   Value := aValue;
+=======
+  FValue := aValue;
+  if FDataType <> ftFixedWideChar then
+    FDataType := ftWideString;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue := aValue;
+  if FDataType <> ftFixedWideChar then
+    FDataType := ftWideString;
+>>>>>>> origin/fixes_2_2
 end;
 
 
 Procedure TParam.SetAsTime(const AValue: TDateTime);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDataType:=ftTime;
   Value:=AValue;
+=======
+  FValue:=AValue;
+  FDataType:=ftTime;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FValue:=AValue;
+  FDataType:=ftTime;
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TParam.SetAsVariant(const AValue: Variant);
 begin
   FValue:=AValue;
+<<<<<<< HEAD
+<<<<<<< HEAD
   FBound:=not VarIsClear(AValue);
+=======
+  FBound:=not VarIsClear(Value);
+>>>>>>> graemeg/fixes_2_2
+=======
+  FBound:=not VarIsClear(Value);
+>>>>>>> origin/fixes_2_2
   if FDataType = ftUnknown then
     case VarType(Value) of
       varBoolean  : FDataType:=ftBoolean;
@@ -768,17 +1184,27 @@ begin
                       FDataType:=ftString;
       varInt64    : FDataType:=ftLargeInt;
     else
+<<<<<<< HEAD
+<<<<<<< HEAD
       if VarIsFmtBCD(Value) then
         FDataType:=ftFmtBCD
       else if VarIsArray(AValue) and (VarType(AValue) and varTypeMask = varByte) then
         FDataType:=ftVarBytes
       else
         FDataType:=ftUnknown;
+=======
+      FDataType:=ftUnknown;
+>>>>>>> graemeg/fixes_2_2
+=======
+      FDataType:=ftUnknown;
+>>>>>>> origin/fixes_2_2
     end;
 end;
 
 Procedure TParam.SetAsWord(AValue: LongInt);
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   FDataType:=ftWord;
   Value:=AValue;
 end;
@@ -788,6 +1214,17 @@ begin
   FDataType:=ftFMTBcd;
   FValue:=VarFmtBCDCreate(AValue);
 end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  FValue:=AValue;
+  FDataType:=ftWord;
+end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 Procedure TParam.SetDataType(AValue: TFieldType);
 
@@ -868,8 +1305,20 @@ begin
       ftWord     : Field.AsInteger:=AsWord;
       ftInteger,
       ftAutoInc  : Field.AsInteger:=AsInteger;
+<<<<<<< HEAD
+<<<<<<< HEAD
       ftCurrency : Field.AsCurrency:=AsCurrency;
       ftFloat    : Field.AsFloat:=AsFloat;
+=======
+      // Need TField.AsCurrency
+      ftCurrency : Field.asFloat:=AsCurrency;
+      ftFloat    : Field.asFloat:=AsFloat;
+>>>>>>> graemeg/fixes_2_2
+=======
+      // Need TField.AsCurrency
+      ftCurrency : Field.asFloat:=AsCurrency;
+      ftFloat    : Field.asFloat:=AsFloat;
+>>>>>>> origin/fixes_2_2
       ftBoolean  : Field.AsBoolean:=AsBoolean;
       ftBlob,
       ftGraphic..ftTypedBinary,
@@ -883,8 +1332,16 @@ begin
       ftDate,
       ftDateTime : Field.AsDateTime:=AsDateTime;
       ftBytes,
+<<<<<<< HEAD
+<<<<<<< HEAD
       ftVarBytes : Field.AsVariant:=Value;
       ftFmtBCD   : Field.AsBCD:=AsFMTBCD;
+=======
+      ftVarBytes : ; // Todo.
+>>>>>>> graemeg/fixes_2_2
+=======
+      ftVarBytes : ; // Todo.
+>>>>>>> origin/fixes_2_2
     else
       If not (DataType in [ftCursor, ftArray, ftDataset,ftReference]) then
         DatabaseErrorFmt(SBadParamFieldType, [Name], DataSet);
@@ -905,9 +1362,21 @@ begin
       ftWord     : AsWord:=Field.AsInteger;
       ftInteger,
       ftAutoInc  : AsInteger:=Field.AsInteger;
+<<<<<<< HEAD
+<<<<<<< HEAD
       ftBCD,
       ftCurrency : AsCurrency:=Field.AsCurrency;
       ftFloat    : AsFloat:=Field.AsFloat;
+=======
+      // Need TField.AsCurrency
+      ftCurrency : AsCurrency:=Field.asCurrency;
+      ftFloat    : AsFloat:=Field.asFloat;
+>>>>>>> graemeg/fixes_2_2
+=======
+      // Need TField.AsCurrency
+      ftCurrency : AsCurrency:=Field.asCurrency;
+      ftFloat    : AsFloat:=Field.asFloat;
+>>>>>>> origin/fixes_2_2
       ftBoolean  : AsBoolean:=Field.AsBoolean;
       ftBlob,
       ftGraphic..ftTypedBinary,
@@ -921,8 +1390,16 @@ begin
       ftDate,
       ftDateTime : AsDateTime:=Field.AsDateTime;
       ftBytes,
+<<<<<<< HEAD
+<<<<<<< HEAD
       ftVarBytes : Value:=Field.AsVariant;
       ftFmtBCD   : AsFMTBCD:=Field.AsBCD;
+=======
+      ftVarBytes : ; // Todo.
+>>>>>>> graemeg/fixes_2_2
+=======
+      ftVarBytes : ; // Todo.
+>>>>>>> origin/fixes_2_2
     else
       If not (DataType in [ftCursor, ftArray, ftDataset,ftReference]) then
         DatabaseErrorFmt(SBadParamFieldType, [Name], DataSet);
@@ -937,6 +1414,8 @@ begin
     begin
 
     if (Field.DataType = ftString) and TStringField(Field).FixedChar then
+<<<<<<< HEAD
+<<<<<<< HEAD
       FDataType := ftFixedChar
     else if (Field.DataType = ftMemo) and (Field.Size > 255) then
       FDataType := ftString
@@ -946,6 +1425,22 @@ begin
       FDataType := ftWideString
     else
       FDataType := Field.DataType;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      DataType := ftFixedChar
+    else if (Field.DataType = ftMemo) and (Field.Size > 255) then
+      DataType := ftString
+    else if (Field.DataType = ftWideString) and TWideStringField(Field).FixedChar then
+      DataType := ftFixedWideChar
+    else if (Field.DataType = ftWideMemo) and (Field.Size > 255) then
+      DataType := ftWideString
+    else
+      DataType := Field.DataType;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     if VarIsNull(AValue) then
       Clear
@@ -1020,7 +1515,13 @@ begin
         end;
         end;
       end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     ftFmtBCD   : PBCD(Buffer)^:=AsFMTBCD;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   else
     If not (DataType in [ftCursor, ftArray, ftDataset,ftReference]) then
       DatabaseErrorFmt(SBadParamFieldType, [Name], DataSet);
@@ -1059,7 +1560,13 @@ begin
     ftDataSet,
     ftReference,
     ftCursor   : Result:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
     ftFmtBCD   : Result:=SizeOf(TBCD);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   else
     DatabaseErrorFmt(SBadParamFieldType,[Name],DataSet);
   end;
@@ -1141,31 +1648,65 @@ begin
     ftGraphic..ftTypedBinary,
     ftOraBlob,
     ftOraClob  : SetBlobData(Buffer, StrLen(PChar(Buffer)));
+<<<<<<< HEAD
+<<<<<<< HEAD
     ftFmtBCD   : AsFMTBCD:=PBCD(Buffer)^;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   else
     DatabaseErrorFmt(SBadParamFieldType,[Name],DataSet);
   end;
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure TParams.CopyParamValuesFromDataset(ADataSet: TDataSet;
   CopyBound: Boolean);
+=======
+Procedure TParams.CopyParamValuesFromDataset(ADataset : TDataset; CopyBound : Boolean);
+>>>>>>> graemeg/fixes_2_2
+=======
+Procedure TParams.CopyParamValuesFromDataset(ADataset : TDataset; CopyBound : Boolean);
+>>>>>>> origin/fixes_2_2
 
 Var
   I : Integer;
   P : TParam;
   F : TField;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 begin
   If assigned(ADataSet) then
+=======
+  
+begin
+  If (ADataSet<>Nil) then
+>>>>>>> graemeg/fixes_2_2
+=======
+  
+begin
+  If (ADataSet<>Nil) then
+>>>>>>> origin/fixes_2_2
     For I:=0 to Count-1 do
      begin
      P:=Items[i];
      if CopyBound or (not P.Bound) then
        begin
+<<<<<<< HEAD
+<<<<<<< HEAD
        // Master dataset must be active and unbound parameters must have fields
        // with same names in master dataset (Delphi compatible behavior)
        F:=ADataSet.FieldByName(P.Name);
+=======
+       F:=ADataset.FieldByName(P.Name);
+>>>>>>> graemeg/fixes_2_2
+=======
+       F:=ADataset.FieldByName(P.Name);
+>>>>>>> origin/fixes_2_2
        P.AssignField(F);
        If Not CopyBound then
          P.Bound:=False;

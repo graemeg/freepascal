@@ -14,6 +14,8 @@ begin
 
     P:=AddPackage('ldap');
 {$ifdef ALLPACKAGES}
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.Directory:=ADirectory;
 {$endif ALLPACKAGES}
     P.Version:='3.1.1';
@@ -28,6 +30,17 @@ begin
 
     P.SourcePath.Add('src');
     P.IncludePath.Add('src');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    P.Directory:='ldap';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     T:=P.Targets.AddUnit('lber.pas');
       with T.Dependencies do

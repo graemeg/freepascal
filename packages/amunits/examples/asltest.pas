@@ -1,6 +1,6 @@
 PROGRAM AslTest;
 
-uses Exec, Utility, Asl, amsgbox, systemvartags;
+uses Exec, Utility, Asl, msgbox, systemvartags;
 
 
 {
@@ -32,7 +32,7 @@ BEGIN
                           TAG_DONE]);
 
     IF fr <> nil THEN BEGIN
-        dummy := AslRequest(fr,NIL) <> LFALSE;
+        dummy := AslRequest(fr,NIL);
         if dummy then begin
            MessageBox('Test of Asl',
                       ' The path is :' +

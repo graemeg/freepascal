@@ -14,11 +14,27 @@ uses
 const
   MAX_VOICES = 32;
   SND_BUFFERSIZE = 384;  // output 2ms sound data at 48KHz
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef HW_DOL}
   DSP_DEFAULT_FREQ = 48044;
 {$else}
 	DSP_DEFAULT_FREQ = 48000;
 {$endif}
+=======
+  DSP_DEFAULT_FREQ = 48000;
+>>>>>>> graemeg/cpstrnew
+=======
+  DSP_DEFAULT_FREQ = 48000;
+>>>>>>> graemeg/cpstrnew
+=======
+  DSP_DEFAULT_FREQ = 48000;
+>>>>>>> graemeg/cpstrnew
+=======
+  DSP_DEFAULT_FREQ = 48000;
+>>>>>>> origin/cpstrnew
   VOICE_STATE_STOPPED = 0;
   VOICE_STATE_RUNNING = 1;
   VOICE_STATE_STREAM = 2;

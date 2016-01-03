@@ -65,10 +65,35 @@ type
     _fetchLimit: culong;
     _affectedStores: NSArray;
     _relationshipKeyPathsForPrefetching: NSArray;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __flags: record
       case byte of
        0: (_anonbitfield_NSFetchRequest0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __flags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSFetchRequest0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         distinctValuesOnly: 0..1;
         _includesSubentities: 0..1;
         _includesPropertyValues: 0..1;
@@ -77,7 +102,19 @@ type
         excludePendingChanges: 0..1;
         isInUse: 0..1;
         __RESERVED: 0..((1 shl 23)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     

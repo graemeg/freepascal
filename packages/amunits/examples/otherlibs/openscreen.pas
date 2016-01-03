@@ -20,7 +20,7 @@ PROGRAM OpenScreen;
 }
 
 
-uses exec, amigados, agraphics, intuition, picasso96api, utility,systemvartags;
+uses exec, amigados, graphics, intuition, picasso96api, utility,systemvartags;
 
 Const
 

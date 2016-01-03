@@ -12,6 +12,7 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
   Stat = record  // No unix typing because of differences
     case byte of
     0:
@@ -34,6 +35,33 @@
       ctime  : culong deprecated;
       ctime_nsec : culong deprecated;
       ino    : culonglong deprecated;);
+=======
+  Stat = packed record  // No unix typing because of differences
+    case byte of
+    0:
+      (dev    : culonglong;
+      __pad0    : array[0..3] of cuchar;
+      __st_ino  : culong;
+      mode   : cuint;
+      nlink  : cuint;
+      uid    : culong;
+      gid    : culong;
+      rdev   : culonglong;
+      __pad3 : array[0..3] of cuchar;
+      size   : culonglong;
+      blksize: culong;
+      blocks : culonglong;
+      atime  : culong;
+      atime_nsec : culong;
+      mtime  : culong;
+      mtime_nsec : culong;
+      ctime  : culong;
+      ctime_nsec : culong;
+      ino    : culonglong;);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     1:
       (st_dev    : culonglong;
       __pad0_    : array[0..3] of cuchar;
@@ -55,4 +83,3 @@
       st_ctime_nsec : culong;
       st_ino    : culonglong);
   end;
-

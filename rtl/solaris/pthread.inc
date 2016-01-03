@@ -91,10 +91,17 @@ function  pthread_create ( p: ppthread_t;attr : ppthread_attr_t;f:__startroutine
 procedure pthread_exit  ( p: pointer); cdecl;external 'c';
 function  pthread_self:pthread_t; cdecl;external 'c';
 function  pthread_mutex_init (p:ppthread_mutex_t;o:ppthread_mutexattr_t):cint; cdecl;external 'c';
+<<<<<<< HEAD
 function  pthread_mutex_destroy (p:ppthread_mutex_t):cint; cdecl;external 'c';
 function  pthread_mutex_lock    (p:ppthread_mutex_t):cint; cdecl;external 'c';
 function  pthread_mutex_trylock (p:ppthread_mutex_t):cint; cdecl;external 'c';
 function  pthread_mutex_unlock  (p:ppthread_mutex_t):cint; cdecl;external 'c';
+=======
+function  pthread_mutex_destroy (p:ppthread_mutexattr_t):cint; cdecl;external 'c';
+function  pthread_mutex_lock    (p:ppthread_mutexattr_t):cint; cdecl;external 'c';
+function  pthread_mutex_trylock (p:ppthread_mutex_t):cint; cdecl;external 'c';
+function  pthread_mutex_unlock  (p:ppthread_mutexattr_t):cint; cdecl;external 'c';
+>>>>>>> graemeg/cpstrnew
 function  pthread_cancel(_para1:pthread_t):cint;cdecl;external 'c';
 function  pthread_detach(_para1:pthread_t):cint;cdecl;external 'c';
 function  pthread_join(_para1:pthread_t; _para2:Ppointer):cint;cdecl;external 'c';

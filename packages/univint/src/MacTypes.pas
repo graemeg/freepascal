@@ -3,8 +3,26 @@
  
      Contains:   Basic Macintosh data types.
  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      Version:    CarbonCore-769~1
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+ 
+     Copyright:  © 1985-2008 by Apple Computer, Inc., all rights reserved.
+ 
+>>>>>>> graemeg/cpstrnew
      Bugs?:      For bug reports, consult the following page on
                  the World Wide Web:
  
@@ -14,7 +32,19 @@
 {       Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
 {       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
 {	    Pascal Translation Updated:  Gorazd Krosl <gorazd_1957@yahoo.ca>, October 2009 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, September 2012 }
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {
     Modified for use with Free Pascal
     Version 308
@@ -22,6 +52,39 @@
 }
 
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+     Version:    CarbonCore-654.0.85~1
+=======
+     Version:    CarbonCore-769~1
+>>>>>>> origin/fixes_2.4
+ 
+     Copyright:  © 1985-2008 by Apple Computer, Inc., all rights reserved.
+ 
+     Bugs?:      For bug reports, consult the following page on
+                 the World Wide Web:
+ 
+                     http://www.freepascal.org/bugs.html
+ 
+}
+{       Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
+{       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+{	    Pascal Translation Updated:  Gorazd Krosl <gorazd_1957@yahoo.ca>, October 2009 }
+{
+    Modified for use with Free Pascal
+    Version 308
+    Please report any bugs to <gpc@microbizz.nl>
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4
 {$mode macpas}
 {$packenum 1}
 {$macro on}
@@ -30,8 +93,23 @@
 
 unit MacTypes;
 interface
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$setc UNIVERSAL_INTERFACES_VERSION := $0400}
 {$setc GAP_INTERFACES_VERSION := $0308}
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> origin/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0400}
+{$setc GAP_INTERFACES_VERSION := $0308}
+>>>>>>> origin/fixes_2.4
 
 {$ifc not defined USE_CFSTR_CONSTANT_MACROS}
     {$setc USE_CFSTR_CONSTANT_MACROS := TRUE}
@@ -44,21 +122,50 @@ interface
 	{$error Conflicting initial definitions for FPC_BIG_ENDIAN and FPC_LITTLE_ENDIAN}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __ppc__ and defined CPUPOWERPC32}
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC32}
+>>>>>>> origin/fixes_2.4
 	{$setc __ppc__ := 1}
 {$elsec}
 	{$setc __ppc__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __ppc64__ and defined CPUPOWERPC64}
 	{$setc __ppc64__ := 1}
 {$elsec}
 	{$setc __ppc64__ := 0}
 {$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __i386__ and defined CPUI386}
 	{$setc __i386__ := 1}
 {$elsec}
 	{$setc __i386__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __x86_64__ and defined CPUX86_64}
 	{$setc __x86_64__ := 1}
 {$elsec}
@@ -69,11 +176,26 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -81,6 +203,13 @@ interface
   {$setc __LP64__ := 0}
 {$endc}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined __ppc__ and __ppc__ and defined __i386__ and __i386__}
 	{$error Conflicting definitions for __ppc__ and __i386__}
@@ -88,50 +217,134 @@ interface
 
 {$ifc defined __ppc__ and __ppc__}
 	{$setc TARGET_CPU_PPC := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_PPC64 := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __ppc64__ and __ppc64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := TRUE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+>>>>>>> graemeg/cpstrnew
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$elsec}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __x86_64__ and __x86_64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := TRUE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> origin/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
@@ -141,13 +354,20 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __arm__ and __arm__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := TRUE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
@@ -161,13 +381,150 @@ interface
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
 	{$setc TARGET_CPU_ARM64 := TRUE}
+=======
+>>>>>>> graemeg/cpstrnew
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elsec}
 	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ nor __arm64__ is defined.}
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+=======
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+=======
+>>>>>>> origin/cpstrnew
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  {$setc TARGET_CPU_64 := FALSE}
+{$endc}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	{$setc TARGET_CPU_PPC64 := FALSE}
+>>>>>>> origin/fixes_2.4
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __i386__ and __i386__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := TRUE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+{$ifc defined(iphonesim)}
+ 	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
 {$endc}
 
 {$ifc defined __LP64__ and __LP64__ }
@@ -175,6 +532,14 @@ interface
 {$elsec}
   {$setc TARGET_CPU_64 := FALSE}
 {$endc}
+<<<<<<< HEAD
+{$setc TARGET_CPU_PPC_64 := FALSE}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined FPC_BIG_ENDIAN}
 	{$setc TARGET_RT_BIG_ENDIAN := TRUE}
@@ -200,6 +565,17 @@ interface
 {$setc TARGET_CPU_68K := FALSE}
 {$setc TARGET_CPU_MIPS := FALSE}
 {$setc TARGET_CPU_SPARC := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$setc TARGET_OS_UNIX := FALSE}
 {$setc TARGET_OS_WIN32 := FALSE}
 {$setc TARGET_RT_MAC_68881 := FALSE}
@@ -210,8 +586,19 @@ interface
 {$setc TYPE_EXTENDED := FALSE}
 {$setc TYPE_LONGLONG := TRUE}
 uses ConditionalMacros;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not MACOSALLINCLUDE}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not MACOSALLINCLUDE}
+
+>>>>>>> origin/fixes_2.4
 
 
 {$ALIGN MAC68K}
@@ -241,12 +628,20 @@ type
     SInt64 = Int64;
     UInt64 = QWord;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 type
     UNSIGNEDBYTE = UInt8;
     SIGNEDBYTE = SInt8;
     UNSIGNEDWORD = UInt16;
     SIGNEDWORD = SInt16;
+<<<<<<< HEAD
     UInt32_fix = UInt32;
+=======
+>>>>>>> origin/fixes_2.4
 
 type
 {$ifc TARGET_CPU_64}
@@ -256,8 +651,16 @@ type
     UNSIGNEDLONG = UInt32;
     SIGNEDLONG = SInt32;
 {$endc}
+<<<<<<< HEAD
     MacPtrUInt = UNSIGNEDLONG;
     MacPtrSInt = SIGNEDLONG;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2.4
 
 
 {$ifc TARGET_RT_BIG_ENDIAN}
@@ -317,8 +720,19 @@ type
     UInt64Ptr = ^UInt64;
     widePtr = ^wide;
     UnsignedWidePtr = ^UnsignedWide;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     SIGNEDLONGPtr = ^SIGNEDLONG;
     UNSIGNEDLONGPtr = ^UNSIGNEDLONG;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+    SIGNEDLONGPtr = ^SIGNEDLONG;
+    UNSIGNEDLONGPtr = ^UNSIGNEDLONG;
+>>>>>>> origin/fixes_2.4
 
 	{	*******************************************************************************
 	
@@ -335,12 +749,22 @@ type
 	********************************************************************************	}
 	ByteParameter = SInt8;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 // For interfaces that use Cs "bool" type
 {$ifc TARGET_CPU_PPC}
 	CBool = SInt32;
 {$elsec}
 	CBool = SInt8;
 {$endc}
+=======
+// For interfaces that use Cs "bool" type, which is a 32 bit number
+	CBool = SInt32; 
+>>>>>>> graemeg/fixes_2_2
+=======
+// For interfaces that use Cs "bool" type, which is a 32 bit number
+	CBool = SInt32; 
+>>>>>>> origin/fixes_2_2
 
 {*******************************************************************************
 
@@ -391,12 +815,24 @@ type
 		man: array [0..3] of UInt16;
 	end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 const
   Float32_Min = 1.5e-45;
   Float32_Max = 3.4e+38;
   Float64_Min = 5.0e-324;
   Float64_Max = 1.7e+308;
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 type
 	Float96 = record
 		exp: SInt16;
@@ -408,16 +844,48 @@ type
 		x: Float32;
 		y: Float32;
 	end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {GK: Need in AudioUnitCarbonViews.pas }
 	Float32PointPtr = ^Float32Point;
 	
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
+=======
+{GK: Need in AudioUnitCarbonViews.pas }
+	Float32PointPtr = ^Float32Point;
+	
+>>>>>>> origin/fixes_2.4
 {*******************************************************************************
 	Unix compatibility types        
 ********************************************************************************}
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	size_t = UNSIGNEDLONG;
 	size_t_ptr = ^size_t;
 	ssize_t = SIGNEDLONG;
+=======
+	size_t = UInt32;
+	size_t_ptr = ^size_t;
+	ssize_t = SInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+	size_t = UInt32;
+	size_t_ptr = ^size_t;
+	ssize_t = SInt32;
+>>>>>>> origin/fixes_2_2
+=======
+	size_t = UNSIGNEDLONG;
+	size_t_ptr = ^size_t;
+	ssize_t = SIGNEDLONG;
+>>>>>>> origin/fixes_2.4
 	ssize_t_ptr = ^ssize_t;
 
 {*******************************************************************************
@@ -434,7 +902,15 @@ type
 	PtrPtr = ^Ptr;       
 	Handle = ^Ptr;
 	Handle_fix = Handle; { used as field type when a record declaration contains a Handle field identifier }
+<<<<<<< HEAD
+<<<<<<< HEAD
 	Size = SIGNEDLONG;
+=======
+	Size = SInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+	Size = SInt32;
+>>>>>>> origin/fixes_2_2
 	Size_fix = Size; { used as field type when a record declaration contains a Size field identifier }
 	SizePtr = ^Size;
 	UnivPtr = Pointer;
@@ -473,16 +949,36 @@ type
 	ConstLogicalAddress = UnivPtr;
 	PhysicalAddress = UnivPtr;
 	BytePtr = UInt8Ptr;
+<<<<<<< HEAD
+<<<<<<< HEAD
 	ByteCount = UNSIGNEDLONG;
  	ByteCountPtr = ^ByteCount;
 	ByteOffset = UNSIGNEDLONG;
+=======
+	ByteCount = UInt32;
+ 	ByteCountPtr = ^ByteCount;
+	ByteOffset = UInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+	ByteCount = UInt32;
+ 	ByteCountPtr = ^ByteCount;
+	ByteOffset = UInt32;
+>>>>>>> origin/fixes_2_2
  	ByteOffsetPtr = ^ByteOffset;
 	Duration = SInt32;
 	AbsoluteTime = UnsignedWide;
 	AbsoluteTimePtr = ^AbsoluteTime;
 	OptionBits = UInt32;
 	OptionBitsPtr = ^OptionBits;
+<<<<<<< HEAD
+<<<<<<< HEAD
 	ItemCount = UNSIGNEDLONG;
+=======
+	ItemCount = UInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+	ItemCount = UInt32;
+>>>>>>> origin/fixes_2_2
  	ItemCountPtr = ^ItemCount;
 	PBVersion = UInt32;
 	ScriptCode = SInt16;
@@ -496,7 +992,17 @@ type
 	OSType_fix = OSType; { used as field type when a record declaration contains a OSType field identifier }
 	ResType = FourCharCode;
 	OSTypePtr = ^OSType;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	OSTypeHandle = ^OSTypePtr;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	OSTypeHandle = ^OSTypePtr;
+>>>>>>> origin/fixes_2.4
 	ResTypePtr = ^ResType;
 {*******************************************************************************
 
@@ -536,6 +1042,11 @@ type
 
 {*******************************************************************************
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
     RefCon Types
     
         For access to private data in callbacks, etc.; refcons are generally
@@ -567,6 +1078,13 @@ type
 
 {*******************************************************************************
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
     Common Constants
     
         noErr                   OSErr: function performed properly - no error
@@ -574,6 +1092,8 @@ type
         kInvalidID              KernelID: NULL is for pointers as kInvalidID is for ID's
         kVariableLengthArray    array bounds: variable length array
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     Note: kVariableLengthArray was used in array bounds to specify a variable length array,
           usually the last field in a struct.  Now that the C language supports 
 		  the concept of flexible array members, you can instead use: 
@@ -589,6 +1109,23 @@ type
 		the count elements
 
 		struct BarList* l = (struct BarList*) malloc( sizeof(BarList) + count * sizeof(Bar) );
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    Note: kVariableLengthArray is used in array bounds to specify a variable length array.
+          It is ususally used in variable length structs when the last field is an array
+          of any size.  Before ANSI C, we used zero as the bounds of variable length 
+          array, but zero length array are illegal in ANSI C.  Example usage:
+    
+        struct FooList 
+        (
+            short   listLength;
+            Foo     elements[kVariableLengthArray];
+        );
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         
 ********************************************************************************}
 const
@@ -659,13 +1196,27 @@ const
 type
 	UnicodeScalarValue = UInt32;
 	UTF32Char = UInt32;
+<<<<<<< HEAD
+<<<<<<< HEAD
 	UTF32CharPtr = ^UTF32Char;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 	UniChar = UInt16;
 	UTF16Char = UInt16;
 	UTF8Char = UInt8;
 	UniCharPtr = ^UniChar;
 	ConstUniCharPtr = UniCharPtr;
+<<<<<<< HEAD
+<<<<<<< HEAD
 	UniCharCount = UNSIGNEDLONG;
+=======
+	UniCharCount = UInt32;
+>>>>>>> graemeg/fixes_2_2
+=======
+	UniCharCount = UInt32;
+>>>>>>> origin/fixes_2_2
 	UniCharCountPtr = ^UniCharCount;
 	Str15 = STRING[15];
 	Str27 = STRING[27];
@@ -814,7 +1365,17 @@ type
 type
 	TimeValue = SInt32;
 	TimeScale = SInt32;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	TimeScalePtr = ^TimeScale;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	TimeScalePtr = ^TimeScale;
+>>>>>>> origin/fixes_2.4
 	TimeScale_fix = TimeScale; { used as field type when a record declaration contains a TimeScale field identifier }
 	CompTimeValue = wide;
 	CompTimeValuePtr = ^CompTimeValue;
@@ -901,6 +1462,19 @@ type
         
 ********************************************************************************}
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	Byte = UInt8;
+	SignedByte = SInt8;
+>>>>>>> graemeg/fixes_2_2
+=======
+	Byte = UInt8;
+	SignedByte = SInt8;
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	extended80 = Float80;
 	extended80Ptr = ^extended80;
 	extended96 = Float96;
@@ -911,8 +1485,14 @@ type
     Debugger functions
     
 ********************************************************************************}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 {$ifc TARGET_OS_MAC}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {
  *  Debugger()
  *  
@@ -922,7 +1502,15 @@ type
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 procedure Debugger; external name '_Debugger';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_8, __IPHONE_NA, __IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -934,8 +1522,18 @@ procedure Debugger; external name '_Debugger';
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 procedure DebugStr( const (*var*) debuggerMsg: Str255 ); external name '_DebugStr';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_8, __IPHONE_NA, __IPHONE_NA) *)
 {$endc}
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+>>>>>>> origin/fixes_2_2
 
 {
  *  debugstr()
@@ -947,7 +1545,13 @@ procedure DebugStr( const (*var*) debuggerMsg: Str255 ); external name '_DebugSt
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc TARGET_CPU_PPC}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { Only for Mac OS native drivers }
 {
  *  SysDebug()
@@ -969,9 +1573,17 @@ procedure DebugStr( const (*var*) debuggerMsg: Str255 ); external name '_DebugSt
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc}
 
 {$ifc TARGET_OS_MAC}
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 { SADE break points }
 {
  *  SysBreak()
@@ -982,7 +1594,15 @@ procedure DebugStr( const (*var*) debuggerMsg: Str255 ); external name '_DebugSt
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 procedure SysBreak; external name '_SysBreak';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_8, __IPHONE_NA, __IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -994,7 +1614,15 @@ procedure SysBreak; external name '_SysBreak';
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 procedure SysBreakStr( const (*var*) debuggerMsg: Str255 ); external name '_SysBreakStr';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_8, __IPHONE_NA, __IPHONE_NA) *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
 
 
 {
@@ -1006,8 +1634,30 @@ procedure SysBreakStr( const (*var*) debuggerMsg: Str255 ); external name '_SysB
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 procedure SysBreakFunc( const (*var*) debuggerMsg: Str255 ); external name '_SysBreakFunc';
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0, __MAC_10_8, __IPHONE_NA, __IPHONE_NA) *)
 {$endc}
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+>>>>>>> graemeg/fixes_2_2
+
+
+
+
+<<<<<<< HEAD
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+
+end.
+{$endc} {not MACOSALLINCLUDE}
+=======
+
+end.
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
 
 
 
@@ -1015,4 +1665,8 @@ procedure SysBreakFunc( const (*var*) debuggerMsg: Str255 ); external name '_Sys
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
 
 end.
+<<<<<<< HEAD
+>>>>>>> origin/fixes_2_2
+=======
 {$endc} {not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4

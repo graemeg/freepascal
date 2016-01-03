@@ -26,7 +26,23 @@ unit ppu;
 interface
 
   uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     systems,globtype,constexp,cstreams;
+=======
+    globtype,constexp,cstreams;
+>>>>>>> graemeg/cpstrnew
+=======
+    globtype,constexp,cstreams;
+>>>>>>> graemeg/cpstrnew
+=======
+    globtype,constexp,cstreams;
+>>>>>>> graemeg/cpstrnew
+=======
+    globtype,constexp,cstreams;
+>>>>>>> origin/cpstrnew
 
 { Also write the ppu if only crc if done, this can be used with ppudump to
   see the differences between the intf and implementation }
@@ -43,7 +59,31 @@ type
 {$endif Test_Double_checksum}
 
 const
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   CurrentPPUVersion = 181;
+=======
+  CurrentPPUVersion = 127;
+>>>>>>> graemeg/cpstrnew
+=======
+  CurrentPPUVersion = 127;
+>>>>>>> graemeg/cpstrnew
+=======
+  CurrentPPUVersion = 127;
+>>>>>>> graemeg/cpstrnew
+=======
+  CurrentPPUVersion = 127;
+>>>>>>> origin/cpstrnew
+=======
+  CurrentPPUVersion = 91;
+>>>>>>> graemeg/fixes_2_2
+=======
+  CurrentPPUVersion = 91;
+>>>>>>> origin/fixes_2_2
 
 { buffer sizes }
   maxentrysize = 1024;
@@ -126,6 +166,8 @@ const
   ibnodetree       = 80;
   ibasmsymbols     = 81;
   ibresources      = 82;
+<<<<<<< HEAD
+<<<<<<< HEAD
   ibcreatedobjtypes = 83;
   ibwpofile         = 84;
   ibmoduleoptions   = 85;
@@ -136,6 +178,18 @@ const
   { target-specific things }
   iblinkotherframeworks = 100;
   ibjvmnamespace = 101;
+=======
+
+  ibmainname       = 90;
+  { target-specific things }
+  iblinkotherframeworks = 100;
+>>>>>>> graemeg/fixes_2_2
+=======
+
+  ibmainname       = 90;
+  { target-specific things }
+  iblinkotherframeworks = 100;
+>>>>>>> origin/fixes_2_2
 
 { unit flags }
   uf_init                = $000001; { unit has initialization section }
@@ -161,6 +215,10 @@ const
   uf_has_dwarf_debuginfo = $200000; { this unit has dwarf debuginfo generated }
   uf_wideinits           = $400000; { this unit has winlike widestring typed constants }
   uf_classinits          = $800000; { this unit has class constructors/destructors }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   uf_resstrinits        = $1000000; { this unit has string consts referencing resourcestrings }
   uf_i8086_far_code     = $2000000; { this unit uses an i8086 memory model with far code (i.e. medium, large or huge) }
   uf_i8086_far_data     = $4000000; { this unit uses an i8086 memory model with far data (i.e. compact or large) }
@@ -212,6 +270,14 @@ const
     { 16 } 64 {'aarch64'}
     );
 {$endif generic_cpu}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 type
   { bestreal is defined based on the target architecture }
@@ -273,7 +339,22 @@ type
     entrytyp : byte;
     header           : tppuheader;
     size             : integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     change_endian    : boolean; { Used in ppudump util }
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
     { crc for the entire unit }
     crc,
     { crc for the interface definitions in this unit }
@@ -315,15 +396,35 @@ type
     function  getlongint:longint;
     function getint64:int64;
     function  getqword:qword;
+<<<<<<< HEAD
     function getaint:{$ifdef generic_cpu}int64{$else}aint{$endif};
     function getasizeint:{$ifdef generic_cpu}int64{$else}asizeint{$endif};
     function getaword:{$ifdef generic_cpu}qword{$else}aword{$endif};
+=======
+    function getaint:aint;
+    function getasizeint:asizeint;
+    function getaword:aword;
+>>>>>>> graemeg/cpstrnew
     function  getreal:ppureal;
     function  getrealsize(sizeofreal : longint):ppureal;
     function  getstring:string;
     function  getansistring:ansistring;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure getnormalset(out b);
     procedure getsmallset(out b);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    procedure getnormalset(var b);
+    procedure getsmallset(var b);
+>>>>>>> graemeg/cpstrnew
     function  skipuntilentry(untilb:byte):boolean;
   {write}
     function  createfile:boolean;
@@ -359,8 +460,20 @@ implementation
     fpccrc,
     cutils;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function swapendian_ppureal(d:ppureal):ppureal;
 
+=======
+
+function swapendian_ppureal(d:ppureal):ppureal;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+function swapendian_ppureal(d:ppureal):ppureal;
+
+>>>>>>> origin/fixes_2_2
 type ppureal_bytes=array[0..sizeof(d)-1] of byte;
 
 var i:0..sizeof(d)-1;
@@ -494,7 +607,17 @@ begin
   header.size := swapendian(header.size);
   header.checksum := swapendian(header.checksum);
   header.interface_checksum := swapendian(header.interface_checksum);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   header.indirect_checksum := swapendian(header.indirect_checksum);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+  header.indirect_checksum := swapendian(header.indirect_checksum);
+>>>>>>> origin/fixes_2.4
   header.deflistsize:=swapendian(header.deflistsize);
   header.symlistsize:=swapendian(header.symlistsize);
 {$ENDIF}
@@ -682,12 +805,28 @@ begin
      result:=0;
      exit;
    end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$ifdef FPC_UNALIGNED_FIXED}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef FPC_UNALIGNED_FIXED}
+>>>>>>> origin/fixes_2_2
   if bufsize-bufidx>=sizeof(word) then
     begin
       result:=Unaligned(pword(@buf[bufidx])^);
       inc(bufidx,sizeof(word));
     end
   else
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$endif FPC_UNALIGNED_FIXED}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$endif FPC_UNALIGNED_FIXED}
+>>>>>>> origin/fixes_2_2
     readdata(result,sizeof(word));
   if change_endian then
    result:=swapendian(result);
@@ -703,11 +842,21 @@ begin
      result:=0;
      exit;
    end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$ifdef FPC_UNALIGNED_FIXED}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef FPC_UNALIGNED_FIXED}
+>>>>>>> origin/fixes_2_2
   if bufsize-bufidx>=sizeof(longint) then
     begin
       result:=Unaligned(plongint(@buf[bufidx])^);
       inc(bufidx,sizeof(longint));
     end
+<<<<<<< HEAD
+<<<<<<< HEAD
   else
     readdata(result,sizeof(longint));
   if change_endian then
@@ -731,6 +880,16 @@ begin
     end
   else
     readdata(result,sizeof(dword));
+=======
+  else
+{$endif FPC_UNALIGNED_FIXED}
+    readdata(result,sizeof(longint));
+>>>>>>> graemeg/fixes_2_2
+=======
+  else
+{$endif FPC_UNALIGNED_FIXED}
+    readdata(result,sizeof(longint));
+>>>>>>> origin/fixes_2_2
   if change_endian then
    result:=swapendian(result);
   inc(entryidx,4);
@@ -745,11 +904,21 @@ begin
      result:=0;
      exit;
    end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$ifdef FPC_UNALIGNED_FIXED}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef FPC_UNALIGNED_FIXED}
+>>>>>>> origin/fixes_2_2
   if bufsize-bufidx>=sizeof(int64) then
     begin
       result:=Unaligned(pint64(@buf[bufidx])^);
       inc(bufidx,sizeof(int64));
     end
+<<<<<<< HEAD
+<<<<<<< HEAD
   else
     readdata(result,sizeof(int64));
   if change_endian then
@@ -773,6 +942,16 @@ begin
     end
   else
     readdata(result,sizeof(qword));
+=======
+  else
+{$endif FPC_UNALIGNED_FIXED}
+    readdata(result,sizeof(int64));
+>>>>>>> graemeg/fixes_2_2
+=======
+  else
+{$endif FPC_UNALIGNED_FIXED}
+    readdata(result,sizeof(int64));
+>>>>>>> origin/fixes_2_2
   if change_endian then
    result:=swapendian(result);
   inc(entryidx,8);
@@ -807,7 +986,51 @@ begin
 end;
 
 
+<<<<<<< HEAD
 function tppufile.getasizeint:{$ifdef generic_cpu}int64{$else}asizeint{$endif};
+=======
+function tppufile.getasizeint:asizeint;
+begin
+{$ifdef cpu64bitaddr}
+  result:=getint64;
+{$else cpu64bitaddr}
+  result:=getlongint;
+{$endif cpu32bitaddr}
+end;
+
+
+function tppufile.getasizeint:asizeint;
+begin
+{$ifdef cpu64bitaddr}
+  result:=getint64;
+{$else cpu64bitaddr}
+  result:=getlongint;
+{$endif cpu32bitaddr}
+end;
+
+
+function tppufile.getasizeint:asizeint;
+begin
+{$ifdef cpu64bitaddr}
+  result:=getint64;
+{$else cpu64bitaddr}
+  result:=getlongint;
+{$endif cpu32bitaddr}
+end;
+
+
+function tppufile.getasizeint:asizeint;
+begin
+{$ifdef cpu64bitaddr}
+  result:=getint64;
+{$else cpu64bitaddr}
+  result:=getlongint;
+{$endif cpu32bitaddr}
+end;
+
+
+function tppufile.getaword:aword;
+>>>>>>> graemeg/cpstrnew
 begin
 {$ifdef generic_cpu}
   if CpuAddrBitSize[tsystemcpu(header.cpu)]=64 then
@@ -875,6 +1098,7 @@ begin
          result:=0;
          exit;
        end;
+<<<<<<< HEAD
       readdata(e,sizeof(e));
       if change_endian then
         result:=swapendian_ppureal(e)
@@ -884,6 +1108,16 @@ begin
       exit;
     end;
   if sizeofreal=sizeof(d) then
+=======
+      readdata(hd,sizeof(hd));
+      if change_endian then
+        getreal:=swapendian(qword(hd))
+      else
+        getreal:=hd;
+      inc(entryidx,sizeof(hd));
+    end
+  else
+>>>>>>> graemeg/fixes_2_2
     begin
       if entryidx+sizeof(d)>entry.size then
        begin
@@ -891,6 +1125,8 @@ begin
          result:=0;
          exit;
        end;
+<<<<<<< HEAD
+<<<<<<< HEAD
       readdata(d,sizeof(d));
       if change_endian then
         result:=swapendian(pqword(@d)^)
@@ -935,6 +1171,16 @@ begin
     begin
       d:=getrealsize(sizeof(d));
       getreal:=d;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      readdata(d,sizeof(ppureal));
+      if change_endian then
+        getreal:=swapendian_ppureal(d)
+      else
+        getreal:=d;
+      inc(entryidx,sizeof(ppureal));
+>>>>>>> graemeg/fixes_2_2
     end;
 end;
 
@@ -952,20 +1198,80 @@ begin
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function tppufile.getansistring:ansistring;
 var
   len: longint;
 begin
   len:=getlongint;
   if entryidx+len>entry.size then
+=======
+function tppufile.getansistring: ansistring;
+var
+<<<<<<< HEAD
+=======
+function tppufile.getansistring: ansistring;
+var
+>>>>>>> graemeg/cpstrnew
+=======
+function tppufile.getansistring: ansistring;
+var
+>>>>>>> graemeg/cpstrnew
+  l : longint;
+begin
+  l:=getlongint;
+  if entryidx+l>entry.size then
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+function tppufile.getansistring: ansistring;
+var
+  i : longint;
+begin
+<<<<<<< HEAD
+  l:=getlongint;
+  if entryidx+l>entry.size then
+>>>>>>> origin/cpstrnew
    begin
      error:=true;
      result:='';
      exit;
    end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   setlength(result,len);
   if len>0 then
     getdata(result[1],len);
+=======
+  SetLength(Result,l);
+  ReadData(result[1],l);
+  inc(entryidx,l);
+>>>>>>> graemeg/cpstrnew
+=======
+  SetLength(Result,l);
+  ReadData(result[1],l);
+  inc(entryidx,l);
+>>>>>>> graemeg/cpstrnew
+=======
+  SetLength(Result,l);
+  ReadData(result[1],l);
+  inc(entryidx,l);
+>>>>>>> graemeg/cpstrnew
+=======
+  SetLength(Result,l);
+  ReadData(result[1],l);
+  inc(entryidx,l);
+>>>>>>> origin/cpstrnew
 end;
 
 
@@ -986,6 +1292,28 @@ var
 begin
   getdata(b,32);
   if change_endian then
+=======
+=======
+  i : longint;
+begin
+>>>>>>> origin/fixes_2_2
+  getdata(b,4);
+  if change_endian then
+    for i:=0 to 3 do
+      Pbyte(@b)[i]:=reverse_byte(Pbyte(@b)[i]);
+end;
+
+
+procedure tppufile.getnormalset(var b);
+var
+  i : longint;
+begin
+  getdata(b,32);
+  if change_endian then
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     for i:=0 to 31 do
       Pbyte(@b)[i]:=reverse_byte(Pbyte(@b)[i]);
 end;
@@ -1047,7 +1375,17 @@ begin
 {reset}
   crc:=0;
   interface_crc:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   indirect_crc:=0;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+  indirect_crc:=0;
+>>>>>>> origin/fixes_2.4
   do_interface_crc:=true;
   do_indirect_crc:=false;
   Error:=false;
@@ -1083,7 +1421,17 @@ begin
     header.size := swapendian(header.size);
     header.checksum := swapendian(header.checksum);
     header.interface_checksum := swapendian(header.interface_checksum);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     header.indirect_checksum := swapendian(header.indirect_checksum);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+    header.indirect_checksum := swapendian(header.indirect_checksum);
+>>>>>>> origin/fixes_2.4
     header.deflistsize:=swapendian(header.deflistsize);
     header.symlistsize:=swapendian(header.symlistsize);
 {$endif not FPC_BIG_ENDIAN}
@@ -1315,12 +1663,26 @@ begin
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure tppufile.putstring(const s:string);
+=======
+procedure tppufile.putstring(s:string);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure tppufile.putstring(s:string);
+>>>>>>> origin/fixes_2_2
   begin
     putdata(s,length(s)+1);
   end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure tppufile.putansistring(const s:ansistring);
   var
     len: longint;
@@ -1329,6 +1691,30 @@ procedure tppufile.putansistring(const s:ansistring);
     putlongint(len);
     if len>0 then
       putdata(s[1],len);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+procedure tppufile.putansistring(const s: ansistring);
+  var
+    l : longint;
+  begin
+    l:=length(s);
+    putdata(l,4);
+    putdata(s[1],l);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 
 
@@ -1353,7 +1739,19 @@ procedure tppufile.tempclose;
      begin
        closepos:=f.Position;
        f.Free;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        f:=nil;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
        closed:=true;
        tempclosed:=true;
      end;
@@ -1365,6 +1763,10 @@ function tppufile.tempopen:boolean;
     tempopen:=false;
     if not closed or not tempclosed then
      exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    { MG: not sure, if this is correct
      f.position:=0;
        No, f was freed in tempclose above, we need to
@@ -1374,11 +1776,149 @@ function tppufile.tempopen:boolean;
     except
       exit;
     end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    // MG: not sure, if this is correct
+
+    f.Position:=0;
+    (*
+    ofm:=filemode;
+    filemode:=0;
+    {$I-}
+     reset(f,1);
+    {$I+}
+    filemode:=ofm;
+    if ioresult<>0 then
+     exit;
+    *)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     closed:=false;
     tempclosed:=false;
 
   { restore state }
     f.Position:=closepos;
+=======
+procedure tppufile.putsmallset(const b);
+  var
+    l : longint;
+  begin
+    l:=longint(b);
+    putlongint(l);
+  end;
+
+
+procedure tppufile.putnormalset(const b);
+  type
+    SetLongintArray = Array [0..7] of longint;
+  begin
+    putdata(b,32);
+  end;
+
+
+procedure tppufile.tempclose;
+  begin
+    if not closed then
+     begin
+       closepos:=filepos(f);
+       {$I-}
+        system.close(f);
+       {$I+}
+       if ioresult<>0 then;
+       closed:=true;
+       tempclosed:=true;
+     end;
+  end;
+
+
+function tppufile.tempopen:boolean;
+  var
+    ofm : byte;
+  begin
+    tempopen:=false;
+    if not closed or not tempclosed then
+     exit;
+    ofm:=filemode;
+    filemode:=0;
+    {$I-}
+     reset(f,1);
+    {$I+}
+    filemode:=ofm;
+    if ioresult<>0 then
+     exit;
+    closed:=false;
+    tempclosed:=false;
+
+  { restore state }
+    seek(f,closepos);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure tppufile.putsmallset(const b);
+  var
+    l : longint;
+  begin
+    l:=longint(b);
+    putlongint(l);
+  end;
+
+
+procedure tppufile.putnormalset(const b);
+  type
+    SetLongintArray = Array [0..7] of longint;
+  begin
+    putdata(b,32);
+  end;
+
+
+procedure tppufile.tempclose;
+  begin
+    if not closed then
+     begin
+       closepos:=filepos(f);
+       {$I-}
+        system.close(f);
+       {$I+}
+       if ioresult<>0 then;
+       closed:=true;
+       tempclosed:=true;
+     end;
+  end;
+
+
+function tppufile.tempopen:boolean;
+  var
+    ofm : byte;
+  begin
+    tempopen:=false;
+    if not closed or not tempclosed then
+     exit;
+    ofm:=filemode;
+    filemode:=0;
+    {$I-}
+     reset(f,1);
+    {$I+}
+    filemode:=ofm;
+    if ioresult<>0 then
+     exit;
+    closed:=false;
+    tempclosed:=false;
+
+  { restore state }
+    seek(f,closepos);
+>>>>>>> origin/fixes_2_2
     tempopen:=true;
   end;
 

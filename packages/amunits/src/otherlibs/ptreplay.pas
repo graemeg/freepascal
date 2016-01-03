@@ -31,6 +31,11 @@
 
 }
 
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
+
 UNIT ptreplay;
 
 INTERFACE
@@ -61,32 +66,32 @@ USES Exec;
 
 VAR PTReplayBase : pLibrary;
 
-FUNCTION PTLoadModule(name : pCHAR location 'a0') : pModule; syscall PTReplayBase 030;
-PROCEDURE PTUnloadModule(module : pModule location 'a0'); syscall PTReplayBase 036;
-FUNCTION PTPlay(module : pModule location 'a0') : ULONG; syscall PTReplayBase 042;
-FUNCTION PTStop(module : pModule location 'a0') : ULONG; syscall PTReplayBase 048;
-FUNCTION PTPause(module : pModule location 'a0') : ULONG; syscall PTReplayBase 054;
-FUNCTION PTResume(module : pModule location 'a0') : ULONG; syscall PTReplayBase 060;
-PROCEDURE PTFade(module : pModule location 'a0'; speed : BYTE location 'd0'); syscall PTReplayBase 066;
-PROCEDURE PTSetVolume(module : pModule location 'a0'; vol : BYTE location 'd0'); syscall PTReplayBase 072;
-FUNCTION PTSongPos(module : pModule location 'a0') : BYTE; syscall PTReplayBase 078;
-FUNCTION PTSongLen(module : pModule location 'a0') : BYTE; syscall PTReplayBase 084;
-FUNCTION PTSongPattern(module : pModule location 'a0'; Pos : WORD location 'd0') : BYTE; syscall PTReplayBase 090;
-FUNCTION PTPatternPos(Module : pModule location 'a0') : BYTE; syscall PTReplayBase 096;
-FUNCTION PTPatternData(Module : pModule location 'a0'; Pattern : BYTE location 'd0'; Row : BYTE location 'd1') : POINTER; syscall PTReplayBase 102;
-PROCEDURE PTInstallBits(Module : pModule location 'a0'; Restart : SHORTINT location 'd0'; NextPattern : SHORTINT location 'd1'; NextRow : SHORTINT location 'd2'; Fade : SHORTINT location 'd3'); syscall PTReplayBase 108;
-FUNCTION PTSetupMod(ModuleFile : POINTER location 'a0') : pModule; syscall PTReplayBase 114;
-PROCEDURE PTFreeMod(Module : pModule location 'a0'); syscall PTReplayBase 120;
-PROCEDURE PTStartFade(Module : pModule location 'a0'; speed : BYTE location 'd0'); syscall PTReplayBase 126;
-PROCEDURE PTOnChannel(Module : pModule location 'a0'; Channels : SHORTINT location 'd0'); syscall PTReplayBase 132;
-PROCEDURE PTOffChannel(Module : pModule location 'a0'; Channels : SHORTINT location 'd0'); syscall PTReplayBase 138;
-PROCEDURE PTSetPos(Module : pModule location 'a0'; Pos : BYTE location 'd0'); syscall PTReplayBase 144;
-PROCEDURE PTSetPri(Pri : SHORTINT location 'd0'); syscall PTReplayBase 150;
-FUNCTION PTGetPri : SHORTINT; syscall PTReplayBase 156;
-FUNCTION PTGetChan : SHORTINT; syscall PTReplayBase 162;
-FUNCTION PTGetSample(Module : pModule location 'a0'; Nr : smallint location 'd0') : pPTSample; syscall PTReplayBase 168;
+FUNCTION PTLoadModule(name : pCHAR) : pModule;
+PROCEDURE PTUnloadModule(module : pModule);
+FUNCTION PTPlay(module : pModule) : ULONG;
+FUNCTION PTStop(module : pModule) : ULONG;
+FUNCTION PTPause(module : pModule) : ULONG;
+FUNCTION PTResume(module : pModule) : ULONG;
+PROCEDURE PTFade(module : pModule; speed : BYTE);
+PROCEDURE PTSetVolume(module : pModule; vol : BYTE);
+FUNCTION PTSongPos(module : pModule) : BYTE;
+FUNCTION PTSongLen(module : pModule) : BYTE;
+FUNCTION PTSongPattern(module : pModule; Pos : WORD) : BYTE;
+FUNCTION PTPatternPos(Module : pModule) : BYTE;
+FUNCTION PTPatternData(Module : pModule; Pattern : BYTE; Row : BYTE) : POINTER;
+PROCEDURE PTInstallBits(Module : pModule; Restart : SHORTINT; NextPattern : SHORTINT; NextRow : SHORTINT; Fade : SHORTINT);
+FUNCTION PTSetupMod(ModuleFile : POINTER) : pModule;
+PROCEDURE PTFreeMod(Module : pModule);
+PROCEDURE PTStartFade(Module : pModule; speed : BYTE);
+PROCEDURE PTOnChannel(Module : pModule; Channels : SHORTINT);
+PROCEDURE PTOffChannel(Module : pModule; Channels : SHORTINT);
+PROCEDURE PTSetPos(Module : pModule; Pos : BYTE);
+PROCEDURE PTSetPri(Pri : SHORTINT);
+FUNCTION PTGetPri : SHORTINT;
+FUNCTION PTGetChan : SHORTINT;
+FUNCTION PTGetSample(Module : pModule; Nr : smallint) : pPTSample;
 
-FUNCTION PTLoadModule(const name : String) : pModule;
+FUNCTION PTLoadModule(name : string) : pModule;
 
 {You can remove this include and use a define instead}
 {$I useautoopenlib.inc}
@@ -100,18 +105,305 @@ var
 
 IMPLEMENTATION
 
-{$ifndef dont_use_openlib}
 uses
-  amsgbox;
+{$ifndef dont_use_openlib}
+msgbox,
 {$endif dont_use_openlib}
+pastoc;
 
+FUNCTION PTLoadModule(name : pCHAR) : pModule;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L name,A0
+        MOVEA.L PTReplayBase,A6
+        JSR     -030(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
 
-FUNCTION PTLoadModule(const name : string) : pModule;
-var
-  s: RawByteString;
+PROCEDURE PTUnloadModule(module : pModule);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L module,A0
+        MOVEA.L PTReplayBase,A6
+        JSR     -036(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION PTPlay(module : pModule) : ULONG;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L module,A0
+        MOVEA.L PTReplayBase,A6
+        JSR     -042(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION PTStop(module : pModule) : ULONG;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L module,A0
+        MOVEA.L PTReplayBase,A6
+        JSR     -048(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION PTPause(module : pModule) : ULONG;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L module,A0
+        MOVEA.L PTReplayBase,A6
+        JSR     -054(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION PTResume(module : pModule) : ULONG;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L module,A0
+        MOVEA.L PTReplayBase,A6
+        JSR     -060(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE PTFade(module : pModule; speed : BYTE);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L module,A0
+        MOVE.L  speed,D0
+        MOVEA.L PTReplayBase,A6
+        JSR     -066(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE PTSetVolume(module : pModule; vol : BYTE);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L module,A0
+        MOVE.L  vol,D0
+        MOVEA.L PTReplayBase,A6
+        JSR     -072(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION PTSongPos(module : pModule) : BYTE;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L module,A0
+        MOVEA.L PTReplayBase,A6
+        JSR     -078(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION PTSongLen(module : pModule) : BYTE;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L module,A0
+        MOVEA.L PTReplayBase,A6
+        JSR     -084(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION PTSongPattern(module : pModule; Pos : WORD) : BYTE;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L module,A0
+        MOVE.L  Pos,D0
+        MOVEA.L PTReplayBase,A6
+        JSR     -090(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION PTPatternPos(Module : pModule) : BYTE;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Module,A0
+        MOVEA.L PTReplayBase,A6
+        JSR     -096(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION PTPatternData(Module : pModule; Pattern : BYTE; Row : BYTE) : POINTER;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Module,A0
+        MOVE.L  Pattern,D0
+        MOVE.L  Row,D1
+        MOVEA.L PTReplayBase,A6
+        JSR     -102(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE PTInstallBits(Module : pModule; Restart : SHORTINT; NextPattern : SHORTINT; NextRow : SHORTINT; Fade : SHORTINT);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Module,A0
+        MOVE.L  Restart,D0
+        MOVE.L  NextPattern,D1
+        MOVE.L  NextRow,D2
+        MOVE.L  Fade,D3
+        MOVEA.L PTReplayBase,A6
+        JSR     -108(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION PTSetupMod(ModuleFile : POINTER) : pModule;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L ModuleFile,A0
+        MOVEA.L PTReplayBase,A6
+        JSR     -114(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE PTFreeMod(Module : pModule);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Module,A0
+        MOVEA.L PTReplayBase,A6
+        JSR     -120(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE PTStartFade(Module : pModule; speed : BYTE);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Module,A0
+        MOVE.L  speed,D0
+        MOVEA.L PTReplayBase,A6
+        JSR     -126(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE PTOnChannel(Module : pModule; Channels : SHORTINT);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Module,A0
+        MOVE.L  Channels,D0
+        MOVEA.L PTReplayBase,A6
+        JSR     -132(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE PTOffChannel(Module : pModule; Channels : SHORTINT);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Module,A0
+        MOVE.L  Channels,D0
+        MOVEA.L PTReplayBase,A6
+        JSR     -138(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE PTSetPos(Module : pModule; Pos : BYTE);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Module,A0
+        MOVE.L  Pos,D0
+        MOVEA.L PTReplayBase,A6
+        JSR     -144(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE PTSetPri(Pri : SHORTINT);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  Pri,D0
+        MOVEA.L PTReplayBase,A6
+        JSR     -150(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION PTGetPri : SHORTINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L PTReplayBase,A6
+        JSR     -156(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION PTGetChan : SHORTINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L PTReplayBase,A6
+        JSR     -162(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION PTGetSample(Module : pModule; Nr : smallint) : pPTSample;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L Module,A0
+        MOVE.W  Nr,D0
+        MOVEA.L PTReplayBase,A6
+        JSR     -168(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION PTLoadModule(name : string) : pModule;
 begin
-  s:=name;
-  PTLoadModule := PTLoadModule(PChar(s));
+    PTLoadModule := PTLoadModule(pas2c(name));
 end;
 
 const
@@ -197,3 +489,9 @@ begin
 
 
 END. (* UNIT PTREPLAY *)
+
+
+
+
+
+

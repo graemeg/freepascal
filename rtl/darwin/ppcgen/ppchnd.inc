@@ -13,7 +13,15 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure SignalToRunerror(Sig: cint; info : PSigInfo; SigContext:PSigContext); public name '_FPC_DEFAULTSIGHANDLER'; cdecl;
+=======
+procedure SignalToRunerror(Sig: cint; info : PSigInfo; SigContext:PSigContext); cdecl;
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure SignalToRunerror(Sig: cint; info : PSigInfo; SigContext:PSigContext); cdecl;
+>>>>>>> origin/fixes_2_2
 
 var
   res : word;
@@ -44,10 +52,16 @@ begin
     SIGBUS,
     SIGSEGV :
         res:=216;
+<<<<<<< HEAD
+<<<<<<< HEAD
     SIGINT:
         res:=217;
     SIGQUIT:
         res:=233;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
   {$ifdef FPC_USE_SIGPROCMASK}
    reenable_signal(sig);

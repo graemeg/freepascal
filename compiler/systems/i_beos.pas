@@ -34,8 +34,31 @@ unit i_beos;
             system       : system_i386_BeOS;
             name         : 'Beos for i386';
             shortname    : 'Beos';
+<<<<<<< HEAD
+<<<<<<< HEAD
             flags        : [tf_under_development,tf_needs_symbol_size,tf_files_case_sensitive,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                             tf_smartlink_sections];
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                            tf_smartlink_sections, tf_smartlink_library];
+>>>>>>> graemeg/cpstrnew
+=======
+            flags        : [tf_under_development,tf_needs_symbol_size,tf_files_case_sensitive,tf_use_function_relative_addresses,
+                            tf_smartlink_library];
+>>>>>>> graemeg/fixes_2_2
+=======
+            flags        : [tf_under_development,tf_needs_symbol_size,tf_files_case_sensitive,tf_use_function_relative_addresses,
+                            tf_smartlink_library];
+>>>>>>> origin/fixes_2_2
             cpu          : cpu_i386;
             unit_env     : 'BEOSUNITS';
             extradefines : 'UNIX;HASUNIX';
@@ -98,9 +121,17 @@ unit i_beos;
               so i use this new value.  
             }
             stacksize    : 16 * 1024 * 1024;
+<<<<<<< HEAD
+<<<<<<< HEAD
             stackalign   : 4;
             abi : abi_default;
             llvmdatalayout : 'e-p:32:32:32-i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:32:64-f32:32:32-f64:32:64-v64:64:64-v128:128:128-a0:0:64-f80:32:32-n8:16:32-S32';
+=======
+            abi : abi_default
+>>>>>>> graemeg/fixes_2_2
+=======
+            abi : abi_default
+>>>>>>> origin/fixes_2_2
           );
 
   implementation

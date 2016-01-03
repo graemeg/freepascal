@@ -371,6 +371,10 @@ implementation
                 end;
             end;
           procvardef :
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             if not(po_is_block in tprocvardef(def).procoptions) then
               encodedstr:=encodedstr+'^?'
             else
@@ -378,13 +382,49 @@ implementation
           objectdef :
             case tobjectdef(def).objecttype of
               odt_helper,
+=======
+            encodedstr:=encodedstr+'^?';
+          objectdef :
+            case tobjectdef(def).objecttype of
+>>>>>>> graemeg/cpstrnew
+=======
+            encodedstr:=encodedstr+'^?';
+          objectdef :
+            case tobjectdef(def).objecttype of
+>>>>>>> graemeg/cpstrnew
+=======
+            encodedstr:=encodedstr+'^?';
+          objectdef :
+            case tobjectdef(def).objecttype of
+>>>>>>> graemeg/cpstrnew
+=======
+            encodedstr:=encodedstr+'^?';
+          objectdef :
+            case tobjectdef(def).objecttype of
+>>>>>>> origin/cpstrnew
               odt_class,
               odt_object,
               odt_cppclass:
                 begin
                   newstate:=recordinfostate;
                   { implicit pointer for classes }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   if (tobjectdef(def).objecttype in [odt_class,odt_helper]) then
+=======
+                  if (tobjectdef(def).objecttype=odt_class) then
+>>>>>>> graemeg/cpstrnew
+=======
+                  if (tobjectdef(def).objecttype=odt_class) then
+>>>>>>> graemeg/cpstrnew
+=======
+                  if (tobjectdef(def).objecttype=odt_class) then
+>>>>>>> graemeg/cpstrnew
+=======
+                  if (tobjectdef(def).objecttype=odt_class) then
+>>>>>>> origin/cpstrnew
                     begin
                       encodedstr:=encodedstr+'^';
                       { make all classes opaque, so even if they contain a
@@ -597,14 +637,42 @@ implementation
             ;
           objectdef :
             case tobjectdef(def).objecttype of
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               odt_helper,
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
               odt_class,
               odt_object,
               odt_cppclass:
                 begin
                   newstate:=recordinfostate;
                   { implicit pointer for classes }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   if (tobjectdef(def).objecttype in [odt_class,odt_helper]) then
+=======
+                  if (tobjectdef(def).objecttype=odt_class) then
+>>>>>>> graemeg/cpstrnew
+=======
+                  if (tobjectdef(def).objecttype=odt_class) then
+>>>>>>> graemeg/cpstrnew
+=======
+                  if (tobjectdef(def).objecttype=odt_class) then
+>>>>>>> graemeg/cpstrnew
+=======
+                  if (tobjectdef(def).objecttype=odt_class) then
+>>>>>>> origin/cpstrnew
                     begin
                       { make all classes opaque, so even if they contain a
                         reference-counted field there is no problem. Since a

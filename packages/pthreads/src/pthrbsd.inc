@@ -124,7 +124,15 @@ const
 
      psem_t = ^sem_t;
      TSemaphore         = sem_t;
+<<<<<<< HEAD
+<<<<<<< HEAD
      PSemaphore   = psem_t;
+=======
+     PSemaphore   = ^TSemaphore;
+>>>>>>> graemeg/fixes_2_2
+=======
+     PSemaphore   = ^TSemaphore;
+>>>>>>> origin/fixes_2_2
 
     {
      Primitive system data type definitions required by P1003.1c.
@@ -134,6 +142,16 @@ const
      pthread_condattr_t, pthread_mutex_t, pthread_mutexattr_t.
     }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+     TThreadID = pthread_t;
+     PThreadID = ^TThreadID;
+>>>>>>> graemeg/fixes_2_2
+=======
+     TThreadID = pthread_t;
+     PThreadID = ^TThreadID;
+>>>>>>> origin/fixes_2_2
      TThreadAttr = pthread_attr_t;
      PThreadAttr = ^TThreadAttr;
      TPthreadMutex = pthread_mutex_t;

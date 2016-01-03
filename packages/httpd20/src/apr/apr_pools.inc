@@ -88,7 +88,7 @@ type
  * <pre>
  * | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
  * ---------------------------------
- * |   |   |   |   |   |   |   | x |  General debug code enabled (useful in
+ * |   |   |   |   |   |   |   | x |  General debug code enabled (usefull in
  *                                    combination with --with-efence).
  *
  * |   |   |   |   |   |   | x |   |  Verbose output on stderr (report

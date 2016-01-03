@@ -59,6 +59,19 @@ Type
     function LookForPreindexedPattern(p: taicpu): boolean;
     function LookForPostindexedPattern(p: taicpu): boolean;
   End;
+  
+  
+  TCpuThumb2AsmOptimizer = class(TCpuAsmOptimizer)
+    { uses the same constructor as TAopObj }
+    procedure PeepHoleOptPass2;override;
+  End;
+  
+  
+  TCpuThumb2AsmOptimizer = class(TCpuAsmOptimizer)
+    { uses the same constructor as TAopObj }
+    procedure PeepHoleOptPass2;override;
+  End;
+<<<<<<< HEAD
 
   TCpuPreRegallocScheduler = class(TAsmScheduler)
     function SchedulerPass1Cpu(var p: tai): boolean;override;
@@ -71,17 +84,33 @@ Type
     procedure PeepHoleOptPass2;override;
     function PostPeepHoleOptsCpu(var p: tai): boolean; override;
   End;
+  
+  
+  TCpuThumb2AsmOptimizer = class(TCpuAsmOptimizer)
+    { uses the same constructor as TAopObj }
+    procedure PeepHoleOptPass2;override;
+  End;
 
   function MustBeLast(p : tai) : boolean;
+=======
+>>>>>>> origin/cpstrnew
 
 Implementation
 
   uses
+<<<<<<< HEAD
+<<<<<<< HEAD
     cutils,verbose,globtype,globals,
     systems,
     cpuinfo,
     cgobj,procinfo,
     aasmbase,aasmdata;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    verbose,
+    aasmbase,aasmcpu;
+>>>>>>> graemeg/fixes_2_2
 
   function CanBeCond(p : tai) : boolean;
     begin
@@ -566,6 +595,8 @@ Implementation
 
   function TCpuAsmOptimizer.PeepHoleOptPass1Cpu(var p: tai): boolean;
     var
+<<<<<<< HEAD
+<<<<<<< HEAD
       hp1,hp2,hp3,hp4: tai;
       i, i2: longint;
       TmpUsedRegs: TAllUsedRegs;
@@ -578,11 +609,20 @@ Implementation
         Result:=(value and (value - 1)) = 0;
       end;
 
+=======
+      next1: tai;
+      hp1: tai;
+>>>>>>> graemeg/fixes_2_2
+=======
+      next1: tai;
+      hp1: tai;
+>>>>>>> origin/fixes_2_2
     begin
       result := false;
       case p.typ of
         ait_instruction:
           begin
+<<<<<<< HEAD
             {
               change
               <op> reg,x,y
@@ -2156,6 +2196,58 @@ Implementation
                   end;
 
               end;
+=======
+            case taicpu(p).opcode of
+              A_MOV:
+                begin
+                  { fold
+                    mov reg1,reg0, shift imm1
+                    mov reg1,reg1, shift imm2
+                    to
+                    mov reg1,reg0, shift imm1+imm2
+                  }
+                  if (taicpu(p).ops=3) and
+                     (taicpu(p).oper[0]^.typ = top_reg) and
+                     (taicpu(p).oper[2]^.typ = top_shifterop) and
+                     (taicpu(p).oper[2]^.shifterop^.rs = NR_NO) and
+                     getnextinstruction(p,next1) and
+                     (next1.typ = ait_instruction) and
+                     (taicpu(next1).opcode = A_MOV) and
+                     (taicpu(next1).ops=3) and
+                     (taicpu(next1).oper[0]^.typ = top_reg) and
+                     (taicpu(p).oper[0]^.reg=taicpu(next1).oper[0]^.reg) and
+                     (taicpu(next1).oper[1]^.typ = top_reg) and
+                     (taicpu(p).oper[0]^.reg=taicpu(next1).oper[1]^.reg) and
+                     (taicpu(next1).oper[2]^.typ = top_shifterop) and
+                     (taicpu(next1).oper[2]^.shifterop^.rs = NR_NO) and
+                     (taicpu(p).oper[2]^.shifterop^.shiftmode=taicpu(next1).oper[2]^.shifterop^.shiftmode) then
+                    begin
+                      inc(taicpu(p).oper[2]^.shifterop^.shiftimm,taicpu(next1).oper[2]^.shifterop^.shiftimm);
+                      { avoid overflows }
+                      if taicpu(p).oper[2]^.shifterop^.shiftimm>31 then
+                        case taicpu(p).oper[2]^.shifterop^.shiftmode of
+                          SM_ROR:
+                            taicpu(p).oper[2]^.shifterop^.shiftimm:=taicpu(p).oper[2]^.shifterop^.shiftimm and 31;
+                          SM_ASR:
+                            taicpu(p).oper[2]^.shifterop^.shiftimm:=31;
+                          SM_LSR,
+                          SM_LSL:
+                            begin
+                              hp1:=taicpu.op_reg_const(A_MOV,taicpu(p).oper[0]^.reg,0);
+                              InsertLLItem(p.previous, p.next, hp1);
+                              p.free;
+                              p:=hp1;
+                            end;
+                          else
+                            internalerror(2008072803);
+                        end;
+                      asml.remove(next1);
+                      next1.free;
+                      result := true;
+                    end;
+                end;
+            end;
+>>>>>>> graemeg/fixes_2_2
           end;
       end;
     end;
@@ -2341,6 +2433,10 @@ Implementation
         end;
     end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   function TCpuAsmOptimizer.RegInInstruction(Reg: TRegister; p1: tai): Boolean;
     begin
       If (p1.typ = ait_instruction) and (taicpu(p1).opcode=A_BL) then
@@ -3012,6 +3108,29 @@ Implementation
     end;
 
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+  procedure TCpuThumb2AsmOptimizer.PeepHoleOptPass2;
+    begin
+      { TODO: Add optimizer code }
+    end;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 begin
   casmoptimizer:=TCpuAsmOptimizer;
   cpreregallocscheduler:=TCpuPreRegallocScheduler;

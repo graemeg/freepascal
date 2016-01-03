@@ -51,7 +51,14 @@ const
  AllowDirectorySeparators : set of char = ['\','/'];
  AllowDriveSeparators : set of char = [':'];
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 { FileNameCaseSensitive and FileNameCasePreserving are defined separately below!!! }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{ FileNameCaseSensitive is defined separately below!!! }
+>>>>>>> graemeg/fixes_2_2
  maxExitCode = 65535;
  MaxPathLen = 260;
  AllFilesMask = '*';
@@ -70,8 +77,15 @@ const
   StdOutputHandle : THandle = 0;
   StdErrorHandle  : THandle = 0;
 
+<<<<<<< HEAD
   FileNameCaseSensitive : boolean = false;
   FileNameCasePreserving: boolean = true;
+=======
+  FileNameCaseSensitive : boolean = true;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   CtrlZMarksEOF: boolean = true; (* #26 is considered as end of file *)
 
   sLineBreak = LineEnding;
@@ -87,14 +101,35 @@ var
   startupinfo : tstartupinfo deprecated;  // Delphi does not have one in interface
   MainInstance,
   cmdshow     : longint;
+<<<<<<< HEAD
   DLLreason : dword; public name 'operatingsystem_dllreason';
   DLLparam : PtrInt; public name 'operatingsystem_dllparam';
   StartupConsoleMode : DWORD;
 const
   hprevinst: longint=0;
+=======
+  DLLreason,DLLparam:longint;
+  StartupConsoleMode : DWORD;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   TDLL_Entry_Hook = procedure (dllparam : PtrInt);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  TDLL_Entry_Hook = procedure (dllparam : longint);
+>>>>>>> graemeg/cpstrnew
 
 const
   Dll_Process_Detach_Hook : TDLL_Entry_Hook = nil;
@@ -102,15 +137,24 @@ const
   Dll_Thread_Detach_Hook : TDLL_Entry_Hook = nil;
 
 Const
+<<<<<<< HEAD
   { it can be discussed whether fmShareDenyNone means read and write or read, write and delete, see
+=======
+  { it can be discussed whether fmShareDenyNone means read and write or read, write and delete, see 
+>>>>>>> origin/fixes_2.4
     also http://bugs.freepascal.org/view.php?id=8898, this allows users to configure the used
 	value
   }
   fmShareDenyNoneFlags : DWord = 3;
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> origin/fixes_2.4
 implementation
 
 var
+  EntryInformation : TEntryInformation;
   SysInstance : Longint;public name '_FPC_SysInstance';
   InitFinalTable : record end; external name 'INITFINAL';
   ThreadvarTablesTable : record end; external name 'FPC_THREADVARTABLES';
@@ -139,8 +183,157 @@ end;
 { include system independent routines }
 {$I system.inc}
 
+<<<<<<< HEAD
 { include code common with win64 }
 {$I syswin.inc}
+=======
+{*****************************************************************************
+                              Parameter Handling
+*****************************************************************************}
+
+procedure setup_arguments;
+var
+  arglen,
+  count   : longint;
+  argstart,
+  pc,arg  : pchar;
+  quote   : Boolean;
+  argvlen : longint;
+  buf: array[0..259] of char;  // need MAX_PATH bytes, not 256!
+
+  procedure allocarg(idx,len:longint);
+    var
+      oldargvlen : longint;
+    begin
+      if idx>=argvlen then
+       begin
+         oldargvlen:=argvlen;
+         argvlen:=(idx+8) and (not 7);
+         sysreallocmem(argv,argvlen*sizeof(pointer));
+         fillchar(argv[oldargvlen],(argvlen-oldargvlen)*sizeof(pointer),0);
+       end;
+      { use realloc to reuse already existing memory }
+      { always allocate, even if length is zero, since }
+      { the arg. is still present!                     }
+      sysreallocmem(argv[idx],len+1);
+    end;
+
+begin
+  { create commandline, it starts with the executed filename which is argv[0] }
+  { Win32 passes the command NOT via the args, but via getmodulefilename}
+  count:=0;
+  argv:=nil;
+  argvlen:=0;
+  ArgLen := GetModuleFileName(0, @buf[0], sizeof(buf));
+  buf[ArgLen] := #0; // be safe
+  allocarg(0,arglen);
+  move(buf,argv[0]^,arglen+1);
+  { Setup cmdline variable }
+  cmdline:=GetCommandLine;
+  { process arguments }
+  pc:=cmdline;
+{$IfDef SYSTEM_DEBUG_STARTUP}
+  Writeln(stderr,'Win32 GetCommandLine is #',pc,'#');
+{$EndIf }
+  while pc^<>#0 do
+   begin
+     { skip leading spaces }
+     while pc^ in [#1..#32] do
+      inc(pc);
+     if pc^=#0 then
+      break;
+     { calc argument length }
+     quote:=False;
+     argstart:=pc;
+     arglen:=0;
+     while (pc^<>#0) do
+      begin
+        case pc^ of
+          #1..#32 :
+            begin
+              if quote then
+               inc(arglen)
+              else
+               break;
+            end;
+          '"' :
+            if pc[1]<>'"' then
+              quote := not quote
+              else
+              inc(pc);
+          else
+            inc(arglen);
+        end;
+        inc(pc);
+      end;
+     { copy argument }
+     { Don't copy the first one, it is already there.}
+     If Count<>0 then
+      begin
+        allocarg(count,arglen);
+        quote:=False;
+        pc:=argstart;
+        arg:=argv[count];
+        while (pc^<>#0) do
+         begin
+           case pc^ of
+             #1..#32 :
+               begin
+                 if quote then
+                  begin
+                    arg^:=pc^;
+                    inc(arg);
+                  end
+                 else
+                  break;
+               end;
+             '"' :
+               if pc[1]<>'"' then
+                 quote := not quote
+                  else
+                inc(pc);
+             else
+               begin
+                 arg^:=pc^;
+                 inc(arg);
+               end;
+           end;
+           inc(pc);
+         end;
+        arg^:=#0;
+      end;
+ {$IfDef SYSTEM_DEBUG_STARTUP}
+     Writeln(stderr,'dos arg ',count,' #',arglen,'#',argv[count],'#');
+ {$EndIf SYSTEM_DEBUG_STARTUP}
+     inc(count);
+   end;
+  { get argc }
+  argc:=count;
+  { free unused memory, leaving a nil entry at the end }
+  sysreallocmem(argv,(count+1)*sizeof(pointer));
+  argv[count] := nil;
+end;
+
+
+function paramcount : longint;
+begin
+  paramcount := argc - 1;
+end;
+
+function paramstr(l : longint) : string;
+begin
+  if (l>=0) and (l<argc) then
+    paramstr:=strpas(argv[l])
+  else
+    paramstr:='';
+end;
+
+
+procedure randomize;
+begin
+  randseed:=GetTickCount;
+end;
+>>>>>>> graemeg/cpstrnew
 
 
 {*****************************************************************************
@@ -150,7 +343,22 @@ end;
 {$ifndef FPC_USE_WIN32_SEH}
 procedure install_exception_handlers;forward;
 procedure remove_exception_handlers;forward;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif FPC_USE_WIN32_SEH}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifndef FPC_HAS_INDIRECT_MAIN_INFORMATION}
+procedure PascalMain;stdcall;external name 'PASCALMAIN';
+{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+procedure fpc_do_exit;stdcall;external name 'FPC_DO_EXIT';
+Procedure ExitDLL(Exitcode : longint); forward;
+procedure asm_exit;stdcall;external name 'asm_exit';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 Procedure system_exit;
 begin
@@ -184,6 +392,26 @@ begin
 
   { do cleanup required by the startup code }
   EntryInformation.asm_exit();
+
+  { in 2.0 asm_exit does an exitprocess }
+{$ifndef ver2_0}
+  { do cleanup required by the startup code }
+{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}
+  EntryInformation.asm_exit();
+{$else FPC_HAS_INDIRECT_MAIN_INFORMATION}
+  asm_exit;
+{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+{$endif ver2_0}
+
+  { in 2.0 asm_exit does an exitprocess }
+{$ifndef ver2_0}
+  { do cleanup required by the startup code }
+{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}
+  EntryInformation.asm_exit();
+{$else FPC_HAS_INDIRECT_MAIN_INFORMATION}
+  asm_exit;
+{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+{$endif ver2_0}
 
   { call exitprocess, with cleanup as required }
   ExitProcess(exitcode);
@@ -228,7 +456,21 @@ procedure Exe_entry(const info : TEntryInformation);[public,alias:'_FPC_EXE_Entr
         movl %eax,_SS
         xorl %ebp,%ebp
      end;
+<<<<<<< HEAD
+<<<<<<< HEAD
      EntryInformation.PascalMain();
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}
+     EntryInformation.PascalMain();
+{$else FPC_HAS_INDIRECT_MAIN_INFORMATION}
+     PascalMain;
+{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
      asm
         popl %ebp
      end;
@@ -236,6 +478,89 @@ procedure Exe_entry(const info : TEntryInformation);[public,alias:'_FPC_EXE_Entr
      system_exit;
   end;
 
+<<<<<<< HEAD
+=======
+
+Const
+  { DllEntryPoint  }
+     DLL_PROCESS_ATTACH = 1;
+     DLL_THREAD_ATTACH = 2;
+     DLL_PROCESS_DETACH = 0;
+     DLL_THREAD_DETACH = 3;
+Var
+     DLLBuf : Jmp_buf;
+Const
+     DLLExitOK : boolean = true;
+
+function Dll_entry(const info : TEntryInformation) : longbool; [public,alias:'_FPC_DLL_Entry'];
+  var
+    res : longbool;
+  begin
+     EntryInformation:=info;
+     IsLibrary:=true;
+     Dll_entry:=false;
+     case DLLreason of
+       DLL_PROCESS_ATTACH :
+         begin
+           If SetJmp(DLLBuf) = 0 then
+             begin
+               if assigned(Dll_Process_Attach_Hook) then
+                 begin
+                   res:=Dll_Process_Attach_Hook(DllParam);
+                   if not res then
+                     exit(false);
+                 end;
+{$ifdef FPC_HAS_INDIRECT_MAIN_INFORMATION}
+               EntryInformation.PascalMain();
+{$else FPC_HAS_INDIRECT_MAIN_INFORMATION}
+               PascalMain;
+{$endif FPC_HAS_INDIRECT_MAIN_INFORMATION}
+               Dll_entry:=true;
+             end
+           else
+             Dll_entry:=DLLExitOK;
+         end;
+       DLL_THREAD_ATTACH :
+         begin
+           inclocked(Thread_count);
+{ Allocate Threadvars ?!}
+           if assigned(Dll_Thread_Attach_Hook) then
+             Dll_Thread_Attach_Hook(DllParam);
+           Dll_entry:=true; { return value is ignored }
+         end;
+       DLL_THREAD_DETACH :
+         begin
+           declocked(Thread_count);
+           if assigned(Dll_Thread_Detach_Hook) then
+             Dll_Thread_Detach_Hook(DllParam);
+{ Release Threadvars ?!}
+           Dll_entry:=true; { return value is ignored }
+         end;
+       DLL_PROCESS_DETACH :
+         begin
+           Dll_entry:=true; { return value is ignored }
+           If SetJmp(DLLBuf) = 0 then
+             FPC_Do_Exit;
+           if assigned(Dll_Process_Detach_Hook) then
+             Dll_Process_Detach_Hook(DllParam);
+         end;
+     end;
+  end;
+
+Procedure ExitDLL(Exitcode : longint);
+begin
+    DLLExitOK:=ExitCode=0;
+    LongJmp(DLLBuf,1);
+end;
+
+
+function GetCurrentProcess : dword;
+ stdcall;external 'kernel32' name 'GetCurrentProcess';
+
+function ReadProcessMemory(process : dword;address : pointer;dest : pointer;size : dword;bytesread : pdword) :  longbool;
+ stdcall;external 'kernel32' name 'ReadProcessMemory';
+
+>>>>>>> graemeg/fixes_2_2
 function is_prefetch(p : pointer) : boolean;
   var
     a : array[0..15] of byte;
@@ -547,6 +872,11 @@ begin
 end;
 {$endif Set_i386_Exception_handler}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_SECTION_THREADVARS}
 function fpc_tls_add(addr: pointer): pointer; assembler; nostackframe;
   [public,alias: 'FPC_TLS_ADD']; compilerproc;
@@ -579,6 +909,62 @@ function fpc_tls_add(addr: pointer): pointer; assembler; nostackframe;
       call  SetLastError              { restore (value is on stack) }
       mov   %ebx,%eax
       pop   %ebx
+=======
+{****************************************************************************
+                      OS dependend widestrings
+****************************************************************************}
+
+const
+  { MultiByteToWideChar  }
+     MB_PRECOMPOSED = 1;
+     CP_ACP = 0;
+     WC_NO_BEST_FIT_CHARS = $400;
+
+function MultiByteToWideChar(CodePage:UINT; dwFlags:DWORD; lpMultiByteStr:PChar; cchMultiByte:longint; lpWideCharStr:PWideChar;cchWideChar:longint):longint;
+    stdcall; external 'kernel32' name 'MultiByteToWideChar';
+function WideCharToMultiByte(CodePage:UINT; dwFlags:DWORD; lpWideCharStr:PWideChar; cchWideChar:longint; lpMultiByteStr:PChar;cchMultiByte:longint; lpDefaultChar:PChar; lpUsedDefaultChar:pointer):longint;
+    stdcall; external 'kernel32' name 'WideCharToMultiByte';
+function CharUpperBuff(lpsz:LPWSTR; cchLength:DWORD):DWORD;
+    stdcall; external 'user32' name 'CharUpperBuffW';
+function CharLowerBuff(lpsz:LPWSTR; cchLength:DWORD):DWORD;
+    stdcall; external 'user32' name 'CharLowerBuffW';
+
+
+procedure Win32Wide2AnsiMove(source:pwidechar;var dest:ansistring;len:SizeInt);
+  var
+    destlen: SizeInt;
+  begin
+    // retrieve length including trailing #0
+    // not anymore, because this must also be usable for single characters
+    destlen:=WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, source, len, nil, 0, nil, nil);
+    // this will null-terminate
+    setlength(dest, destlen);
+    WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, source, len, @dest[1], destlen, nil, nil);
+  end;
+
+procedure Win32Ansi2WideMove(source:pchar;var dest:widestring;len:SizeInt);
+  var
+    destlen: SizeInt;
+  begin
+    // retrieve length including trailing #0
+    // not anymore, because this must also be usable for single characters
+    destlen:=MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, source, len, nil, 0);
+    // this will null-terminate
+    setlength(dest, destlen);
+    MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, source, len, @dest[1], destlen);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+  end;
+
+
+function Win32WideUpper(const s : WideString) : WideString;
+  begin
+    result:=s;
+    UniqueString(result);
+    if length(result)>0 then
+      CharUpperBuff(LPWSTR(result),length(result));
+>>>>>>> origin/fixes_2_2
   end;
 {$endif FPC_SECTION_THREADVARS}
 
@@ -649,15 +1035,304 @@ function CheckInitialStkLen(stklen : SizeUInt) : SizeUInt;
   begin
     result:=tpeheader((pointer(getmodulehandle(nil))+(tdosheader(pointer(getmodulehandle(nil))^).e_lfanew))^).SizeOfStackReserve;
   end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{******************************************************************************}
+{ include code common with win64 }
+
+{$I syswin.inc}
+{******************************************************************************}
+
+
+<<<<<<< HEAD
+function CheckInitialStkLen(stklen : SizeUInt) : SizeUInt;
+	type
+	  tdosheader = packed record
+	     e_magic : word;
+	     e_cblp : word;
+	     e_cp : word;
+	     e_crlc : word;
+	     e_cparhdr : word;
+	     e_minalloc : word;
+	     e_maxalloc : word;
+	     e_ss : word;
+	     e_sp : word;
+	     e_csum : word;
+	     e_ip : word;
+	     e_cs : word;
+	     e_lfarlc : word;
+	     e_ovno : word;
+	     e_res : array[0..3] of word;
+	     e_oemid : word;
+	     e_oeminfo : word;
+	     e_res2 : array[0..9] of word;
+	     e_lfanew : longint;
+	  end;
+	  tpeheader = packed record
+	     PEMagic : longint;
+	     Machine : word;
+	     NumberOfSections : word;
+	     TimeDateStamp : longint;
+	     PointerToSymbolTable : longint;
+	     NumberOfSymbols : longint;
+	     SizeOfOptionalHeader : word;
+	     Characteristics : word;
+	     Magic : word;
+	     MajorLinkerVersion : byte;
+	     MinorLinkerVersion : byte;
+	     SizeOfCode : longint;
+	     SizeOfInitializedData : longint;
+	     SizeOfUninitializedData : longint;
+	     AddressOfEntryPoint : longint;
+	     BaseOfCode : longint;
+	     BaseOfData : longint;
+	     ImageBase : longint;
+	     SectionAlignment : longint;
+	     FileAlignment : longint;
+	     MajorOperatingSystemVersion : word;
+	     MinorOperatingSystemVersion : word;
+	     MajorImageVersion : word;
+	     MinorImageVersion : word;
+	     MajorSubsystemVersion : word;
+	     MinorSubsystemVersion : word;
+	     Reserved1 : longint;
+	     SizeOfImage : longint;
+	     SizeOfHeaders : longint;
+	     CheckSum : longint;
+	     Subsystem : word;
+	     DllCharacteristics : word;
+	     SizeOfStackReserve : longint;
+	     SizeOfStackCommit : longint;
+	     SizeOfHeapReserve : longint;
+	     SizeOfHeapCommit : longint;
+	     LoaderFlags : longint;
+	     NumberOfRvaAndSizes : longint;
+	     DataDirectory : array[1..$80] of byte;
+	  end;
+	begin
+	  result:=tpeheader((pointer(SysInstance)+(tdosheader(pointer(SysInstance)^).e_lfanew))^).SizeOfStackReserve;
+	end;
+
+>>>>>>> graemeg/cpstrnew
+=======
+{****************************************************************************
+                    Error Message writing using messageboxes
+****************************************************************************}
+
+function MessageBox(w1:longint;l1,l2:pointer;w2:longint):longint;
+   stdcall;external 'user32' name 'MessageBoxA';
+
+const
+  ErrorBufferLength = 1024;
+var
+  ErrorBuf : array[0..ErrorBufferLength] of char;
+  ErrorLen : longint;
+
+Function ErrorWrite(Var F: TextRec): Integer;
+{
+  An error message should always end with #13#10#13#10
+}
+var
+  p : pchar;
+  i : longint;
+Begin
+  if F.BufPos>0 then
+   begin
+     if F.BufPos+ErrorLen>ErrorBufferLength then
+       i:=ErrorBufferLength-ErrorLen
+     else
+       i:=F.BufPos;
+     Move(F.BufPtr^,ErrorBuf[ErrorLen],i);
+     inc(ErrorLen,i);
+     ErrorBuf[ErrorLen]:=#0;
+   end;
+  if ErrorLen>3 then
+   begin
+     p:=@ErrorBuf[ErrorLen];
+     for i:=1 to 4 do
+      begin
+        dec(p);
+        if not(p^ in [#10,#13]) then
+         break;
+      end;
+   end;
+   if ErrorLen=ErrorBufferLength then
+     i:=4;
+   if (i=4) then
+    begin
+      MessageBox(0,@ErrorBuf,pchar('Error'),0);
+      ErrorLen:=0;
+    end;
+  F.BufPos:=0;
+  ErrorWrite:=0;
+End;
+
+
+Function ErrorClose(Var F: TextRec): Integer;
+begin
+  if ErrorLen>0 then
+   begin
+     MessageBox(0,@ErrorBuf,pchar('Error'),0);
+     ErrorLen:=0;
+   end;
+  ErrorLen:=0;
+  ErrorClose:=0;
+end;
+
+
+Function ErrorOpen(Var F: TextRec): Integer;
+Begin
+  TextRec(F).InOutFunc:=@ErrorWrite;
+  TextRec(F).FlushFunc:=@ErrorWrite;
+  TextRec(F).CloseFunc:=@ErrorClose;
+  ErrorOpen:=0;
+End;
+
+
+procedure AssignError(Var T: Text);
+begin
+  Assign(T,'');
+  TextRec(T).OpenFunc:=@ErrorOpen;
+  Rewrite(T);
+end;
+
+
+procedure SysInitStdIO;
+begin
+  { Setup stdin, stdout and stderr, for GUI apps redirect stderr,stdout to be
+    displayed in a messagebox }
+  StdInputHandle:=longint(GetStdHandle(cardinal(STD_INPUT_HANDLE)));
+  StdOutputHandle:=longint(GetStdHandle(cardinal(STD_OUTPUT_HANDLE)));
+  StdErrorHandle:=longint(GetStdHandle(cardinal(STD_ERROR_HANDLE)));
+  if not IsConsole then
+   begin
+     AssignError(stderr);
+     AssignError(stdout);
+     Assign(Output,'');
+     Assign(Input,'');
+     Assign(ErrOutput,'');
+   end
+  else
+   begin
+     OpenStdIO(Input,fmInput,StdInputHandle);
+     OpenStdIO(Output,fmOutput,StdOutputHandle);
+     OpenStdIO(ErrOutput,fmOutput,StdErrorHandle);
+     OpenStdIO(StdOut,fmOutput,StdOutputHandle);
+     OpenStdIO(StdErr,fmOutput,StdErrorHandle);
+   end;
+end;
+
+{ ProcessID cached to avoid repeated calls to GetCurrentProcess. }
+
+var
+  ProcessID: SizeUInt;
+
+function GetProcessID: SizeUInt;
+begin
+ GetProcessID := ProcessID;
+end;
+
+function CheckInitialStkLen(stklen : SizeUInt) : SizeUInt;
+type
+  tdosheader = packed record
+     e_magic : word;
+     e_cblp : word;
+     e_cp : word;
+     e_crlc : word;
+     e_cparhdr : word;
+     e_minalloc : word;
+     e_maxalloc : word;
+     e_ss : word;
+     e_sp : word;
+     e_csum : word;
+     e_ip : word;
+     e_cs : word;
+     e_lfarlc : word;
+     e_ovno : word;
+     e_res : array[0..3] of word;
+     e_oemid : word;
+     e_oeminfo : word;
+     e_res2 : array[0..9] of word;
+     e_lfanew : longint;
+  end;
+  tpeheader = packed record
+     PEMagic : longint;
+     Machine : word;
+     NumberOfSections : word;
+     TimeDateStamp : longint;
+     PointerToSymbolTable : longint;
+     NumberOfSymbols : longint;
+     SizeOfOptionalHeader : word;
+     Characteristics : word;
+     Magic : word;
+     MajorLinkerVersion : byte;
+     MinorLinkerVersion : byte;
+     SizeOfCode : longint;
+     SizeOfInitializedData : longint;
+     SizeOfUninitializedData : longint;
+     AddressOfEntryPoint : longint;
+     BaseOfCode : longint;
+     BaseOfData : longint;
+     ImageBase : longint;
+     SectionAlignment : longint;
+     FileAlignment : longint;
+     MajorOperatingSystemVersion : word;
+     MinorOperatingSystemVersion : word;
+     MajorImageVersion : word;
+     MinorImageVersion : word;
+     MajorSubsystemVersion : word;
+     MinorSubsystemVersion : word;
+     Reserved1 : longint;
+     SizeOfImage : longint;
+     SizeOfHeaders : longint;
+     CheckSum : longint;
+     Subsystem : word;
+     DllCharacteristics : word;
+     SizeOfStackReserve : longint;
+     SizeOfStackCommit : longint;
+     SizeOfHeapReserve : longint;
+     SizeOfHeapCommit : longint;
+     LoaderFlags : longint;
+     NumberOfRvaAndSizes : longint;
+     DataDirectory : array[1..$80] of byte;
+  end;
+begin
+  result:=tpeheader((pointer(HInstance)+(tdosheader(pointer(HInstance)^).e_lfanew))^).SizeOfStackReserve;
+end;
+
+{
+const
+   Exe_entry_code : pointer = @Exe_entry;
+   Dll_entry_code : pointer = @Dll_entry;
+}
+>>>>>>> graemeg/fixes_2_2
 
 begin
   { get some helpful informations }
   GetStartupInfo(@startupinfo);
+
+  SysResetFPU;
+  if not(IsLibrary) then
+    SysInitFPU;
+
   { some misc Win32 stuff }
   if not IsLibrary then
     SysInstance:=getmodulehandle(nil);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   MainInstance:=SysInstance;
+=======
+  MainInstance:=HInstance;
+>>>>>>> graemeg/fixes_2_2
+=======
+  MainInstance:=HInstance;
+>>>>>>> origin/fixes_2_2
 
   { pass dummy value }
   StackLength := CheckInitialStkLen($1000000);

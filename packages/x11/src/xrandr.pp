@@ -75,7 +75,7 @@ type
 function XRRQueryExtension(
   dpy : PDisplay;
   event_basep,
-  error_basep : Pcint) : TBoolResult; cdecl; external libXrandr;
+  error_basep : Pcint) : TBool; cdecl; external libXrandr;
 
 function XRRQueryVersion(
   dpy : PDisplay;

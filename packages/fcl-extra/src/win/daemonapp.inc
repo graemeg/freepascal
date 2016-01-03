@@ -237,6 +237,7 @@ begin
     PDeps:=GetDependencies(Dependencies);
     end;
   Try
+    flush(output);
     SV:=CreateService(SM, PChar(N), PChar(DN), SERVICE_ALL_ACCESS, ST, STT, ES,
                       PChar(E), PChar(LG), PIDTag, PDeps, PN, PP);
     If (SV=0) then
@@ -324,10 +325,10 @@ Const
 Var
   T : TDaemonStartThread;
   Msg : TMsg;
-  TClass: TWndClassA;
-  AWClass: TWndClassA = (
+  TClass: TWndClass;
+  AWClass: TWndClass = (
     style: 0;
-    lpfnWndProc: @DefWindowProcA;
+    lpfnWndProc: @DefWindowProc;
     cbClsExtra: 0;
     cbWndExtra: 0;
     hInstance: 0;
@@ -340,13 +341,13 @@ Var
 begin
   If (GUIHandle=0) then
     begin
-    if not GetClassInfoA(HInstance,AWClass.lpszClassName,TClass) then
+    if not GetClassInfo(HInstance,AWClass.lpszClassName,TClass) then
       begin
       AWClass.hInstance := HInstance;
-      if Windows.RegisterClassA(AWClass) = 0 then
+      if Windows.RegisterClass(AWClass) = 0 then
         DaemonError(SErrWindowClass);
       end;
-    GUIHandle := CreateWindowA(AWClass.lpszClassName, Pchar(Title),
+    GUIHandle := CreateWindow(AWClass.lpszClassName, Pchar(Title),
       HandleOpts, 1,1, 0, 0, 0, 0, HInstance, nil);
     end;
   T:=TDaemonStartThread.Create(P,GUIHandle);
@@ -368,8 +369,6 @@ begin
           else
             Terminate;
           end;
-        if not Terminated then
-          WaitMessage;  
       Until Terminated;
       end;
   finally

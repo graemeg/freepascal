@@ -1,4 +1,16 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$include ogc/libversion.inc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$include ogc/disc_io.inc}
 
 {$include debug.inc}
@@ -87,7 +99,23 @@
   {$include wiiuse/wiiuse.inc}
   {$include wiiuse/wpad.inc}
   
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$include wiikeyboard/wsksymdef.inc}
+=======
+  { $include wiikeyboard/wsksymdef.inc}
+>>>>>>> graemeg/cpstrnew
+=======
+  { $include wiikeyboard/wsksymdef.inc}
+>>>>>>> graemeg/cpstrnew
+=======
+  { $include wiikeyboard/wsksymdef.inc}
+>>>>>>> graemeg/cpstrnew
+=======
+  { $include wiikeyboard/wsksymdef.inc}
+>>>>>>> origin/cpstrnew
   {$include wiikeyboard/keyboard.inc}
   {$include wiikeyboard/usbkeyboard.inc}
 

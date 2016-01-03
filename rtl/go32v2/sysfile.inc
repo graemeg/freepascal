@@ -59,8 +59,16 @@ var
   regs : trealregs;
   oldp : pchar;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   oldp:=p;
   DoDirSeparators(p,pchangeable);
+=======
+  DoDirSeparators(p);
+>>>>>>> graemeg/fixes_2_2
+=======
+  DoDirSeparators(p);
+>>>>>>> origin/fixes_2_2
   syscopytodos(longint(p),strlen(p)+1);
   regs.realedx:=tb_offset;
   regs.realds:=tb_segment;
@@ -83,10 +91,20 @@ var
   regs : trealregs;
   oldp1, oldp2 : pchar;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   oldp1:=p1;
   oldp2:=p2;
   DoDirSeparators(p1,p1changeable);
   DoDirSeparators(p2,p2changeable);
+=======
+  DoDirSeparators(p1);
+  DoDirSeparators(p2);
+>>>>>>> graemeg/fixes_2_2
+=======
+  DoDirSeparators(p1);
+  DoDirSeparators(p2);
+>>>>>>> origin/fixes_2_2
   if strlen(p1)+strlen(p2)+3>tb_size then
    HandleError(217);
   sysseg_move(get_ds,longint(p2),dos_selector,tb,strlen(p2)+1);
@@ -304,6 +322,14 @@ var
   action : longint;
   oldp : pchar;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  DoDirSeparators(p);
+>>>>>>> graemeg/fixes_2_2
+=======
+  DoDirSeparators(p);
+>>>>>>> origin/fixes_2_2
 { close first if opened }
   if ((flags and $10000)=0) then
    begin

@@ -3,44 +3,45 @@ Ported to FPC by Nikolay Nikolov (nickysn@users.sourceforge.net)
 }
 
 {
- Clear example for OpenPTC 1.0 C++ implementation
+ Clear example for OpenPTC 1.0 C++ Implementation
  Copyright (c) Glenn Fiedler (ptc@gaffer.org)
  This source code is in the public domain
 }
 
-program ClearExample;
+Program ClearExample;
 
 {$MODE objfpc}
 
-uses
-  SysUtils, ptc;
+Uses
+  ptc;
 
-var
-  console: IPTCConsole;
-  format: IPTCFormat;
-  surface: IPTCSurface;
-  width, height: Integer;
-  x, y: Integer;
-  size: Integer;
-  area: IPTCArea;
-  color: IPTCColor;
-begin
-  try
+Var
+  console : TPTCConsole;
+  format : TPTCFormat;
+  surface : TPTCSurface;
+  width, height : Integer;
+  x, y : Integer;
+  size : Integer;
+  area : TPTCArea;
+  color : TPTCColor;
+
+Begin
+  Try
     { create console }
-    console := TPTCConsoleFactory.CreateNew;
+    console := TPTCConsole.Create;
 
     { create format }
-    format := TPTCFormatFactory.CreateNew(32, $00FF0000, $0000FF00, $000000FF);
+    format := TPTCFormat.Create(32, $00FF0000, $0000FF00, $000000FF);
 
     { open the console }
     console.open('Clear example', format);
 
     { create surface matching console dimensions }
-    surface := TPTCSurfaceFactory.CreateNew(console.width, console.height, format);
+    surface := TPTCSurface.Create(console.width, console.height, format);
 
     { loop until a key is pressed }
-    while not console.KeyPressed do
-    begin
+    While Not console.KeyPressed Do
+    Begin
       { get surface dimensions }
       width := surface.width;
       height := surface.height;
@@ -50,13 +51,13 @@ begin
       y := Random(height);
 
       { get random area size }
-      size := Random(width div 8);
+      size := Random(width Div 8);
 
       { setup clear area }
-      area := TPTCAreaFactory.CreateNew(x-size, y-size, x+size, y+size);
+      area := TPTCArea.Create(x-size, y-size, x+size, y+size);
 
       { create random color }
-      color := TPTCColorFactory.CreateNew(Random, Random, Random);
+      color := TPTCColor.Create(Random, Random, Random);
 
       { clear surface area with color }
       surface.clear(color, area);
@@ -66,12 +67,15 @@ begin
 
       { update console }
       console.update;
-    end;
-    if Assigned(console) then
-      console.close;
-  except
-    on error: TPTCError do
+      area.Free;
+      color.Free;
+    End;
+    console.close;
+    console.Free;
+    surface.Free;
+  Except
+    On error : TPTCError Do
       { report error }
       error.report;
-  end;
-end.
+  End;
+End.

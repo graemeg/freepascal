@@ -92,6 +92,10 @@ interface
        PAInt = ^AInt;
 
        { target cpu specific type used to store data sizes }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef cpu16bitaddr}
        { on small CPUs such as i8086, we use LongInt to support data structures
          larger than 32767 bytes and up to 65535 bytes in size. Since asizeint
@@ -102,6 +106,22 @@ interface
        ASizeInt = PInt;
        ASizeUInt = PUInt;
 {$endif cpu16bitaddr}
+=======
+       ASizeInt = PInt;
+       ASizeUInt = PUInt;
+>>>>>>> graemeg/cpstrnew
+=======
+       ASizeInt = PInt;
+       ASizeUInt = PUInt;
+>>>>>>> graemeg/cpstrnew
+=======
+       ASizeInt = PInt;
+       ASizeUInt = PUInt;
+>>>>>>> graemeg/cpstrnew
+=======
+       ASizeInt = PInt;
+       ASizeUInt = PUInt;
+>>>>>>> origin/cpstrnew
 
        { type used for handling constants etc. in the code generator }
        TCGInt = Int64;
@@ -141,12 +161,38 @@ interface
          cs_generate_stackframes,cs_do_assertion,cs_generate_rtti,
          cs_full_boolean_eval,cs_typed_const_writable,cs_allow_enum_calc,
          cs_do_inline,cs_fpu_fwait,cs_ieee_errors,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          cs_check_low_addr_load,
          { mmx }
          cs_mmx,cs_mmx_saturation,
          { parser }
          cs_typed_addresses,cs_strict_var_strings,cs_refcountedstrings,
          cs_bitpacking,cs_varpropsetter,cs_scopedenums,cs_pointermath,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+         { mmx }
+         cs_mmx,cs_mmx_saturation,
+         { parser }
+         cs_typed_addresses,cs_strict_var_strings,cs_ansistrings,cs_bitpacking,
+         cs_varpropsetter,cs_scopedenums,cs_pointermath,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
          { macpas specific}
          cs_external_var, cs_externally_visible,
          { jvm specific }
@@ -187,7 +233,6 @@ interface
        tglobalswitch = (cs_globalnone,
          { parameter switches }
          cs_check_unit_name,cs_constructor_name,cs_support_exceptions,
-         cs_support_c_objectivepas,
          { units }
          cs_load_objpas_unit,
          cs_load_gpc_unit,
@@ -204,9 +249,25 @@ interface
          cs_link_strip,cs_link_staticflag,cs_link_on_target,cs_link_extern,cs_link_opt_vtable,
          cs_link_opt_used_sections,cs_link_separate_dbg_file,
          cs_link_map,cs_link_pthread,cs_link_no_default_lib_order,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          cs_link_native,
          cs_link_pre_binutils_2_19,
          cs_link_vlink
+=======
+	 cs_link_native
+>>>>>>> graemeg/cpstrnew
+=======
+	 cs_link_native
+>>>>>>> graemeg/cpstrnew
+=======
+	 cs_link_native
+>>>>>>> graemeg/cpstrnew
+=======
+	 cs_link_native
+>>>>>>> origin/cpstrnew
        );
        tglobalswitches = set of tglobalswitch;
 
@@ -215,6 +276,8 @@ interface
           { enable set support in dwarf debug info, breaks gdb versions }
           { without support for that tag (they refuse to parse the rest }
           { of the debug information)                                   }
+<<<<<<< HEAD
+<<<<<<< HEAD
           ds_dwarf_sets,
           { use absolute paths for include files in stabs. Pro: gdb     }
           { always knows full path to file. Con: doesn't work anymore   }
@@ -274,6 +337,17 @@ interface
        );
        ttargetswitches = set of ttargetswitch;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          ds_dwarf_sets
+       );
+       tdebugswitches = set of tdebugswitch;
+       
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
        { adding a new entry here requires also adding the appropriate define in
          systemh.inc (FK)
@@ -282,8 +356,36 @@ interface
          f_heap,f_init_final,f_rtti,f_classes,f_exceptions,f_exitcode,
          f_ansistrings,f_widestrings,f_textio,f_consoleio,f_fileio,
          f_random,f_variants,f_objects,f_dynarrays,f_threading,f_commandargs,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          f_processes,f_stackcheck,f_dynlibs,f_softfpu,f_objectivec1,f_resources,
          f_unicodestring
+=======
+         f_processes,f_stackcheck,f_dynlibs,f_softfpu,f_objectivec1,f_resources
+>>>>>>> graemeg/cpstrnew
+=======
+         f_processes,f_stackcheck,f_dynlibs,f_softfpu,f_objectivec1,f_resources
+>>>>>>> graemeg/cpstrnew
+=======
+         f_processes,f_stackcheck,f_dynlibs,f_softfpu,f_objectivec1,f_resources
+>>>>>>> graemeg/cpstrnew
+=======
+         f_processes,f_stackcheck,f_dynlibs,f_softfpu,f_objectivec1,f_resources
+>>>>>>> origin/cpstrnew
+=======
+         f_processes,f_stackcheck,f_dynlibs
+>>>>>>> graemeg/fixes_2_2
+=======
+         f_processes,f_stackcheck,f_dynlibs
+>>>>>>> origin/fixes_2_2
+=======
+         f_processes,f_stackcheck,f_dynlibs,f_softfpu
+>>>>>>> origin/fixes_2.4
        );
        tfeatures = set of tfeature;
 
@@ -344,6 +446,11 @@ interface
 
        DebugSwitchStr : array[tdebugswitch] of string[22] = ('',
          'DWARFSETS','STABSABSINCLUDES','DWARFMETHODCLASSPREFIX');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
        TargetSwitchStr : array[ttargetswitch] of ttargetswitchinfo = (
          (name: '';                    hasvalue: false; isglobal: true ; define: ''),
@@ -358,6 +465,22 @@ interface
          (name: 'CLD';                 hasvalue: false; isglobal: true ; define: 'FPC_ENABLED_CLD'),
          (name: 'FARPROCSPUSHODDBP';   hasvalue: false; isglobal: false; define: 'FPC_FAR_PROCS_PUSH_ODD_BP')
        );
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+       DebugSwitchStr : array[tdebugswitch] of string[9] = ('',
+         'DWARFSETS');
+
+       DebugSwitchStr : array[tdebugswitch] of string[9] = ('',
+         'DWARFSETS');
+=======
+>>>>>>> origin/fixes_2.4
 
        { switches being applied to all CPUs at the given level }
        genericlevel1optimizerswitches = [cs_opt_level1,cs_opt_peephole];
@@ -374,15 +497,59 @@ interface
          'HEAP','INITFINAL','RTTI','CLASSES','EXCEPTIONS','EXITCODE',
          'ANSISTRINGS','WIDESTRINGS','TEXTIO','CONSOLEIO','FILEIO',
          'RANDOM','VARIANTS','OBJECTS','DYNARRAYS','THREADING','COMMANDARGS',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          'PROCESSES','STACKCHECK','DYNLIBS','SOFTFPU','OBJECTIVEC1','RESOURCES',
          'UNICODESTRINGS'
+=======
+         'PROCESSES','STACKCHECK','DYNLIBS','SOFTFPU','OBJECTIVEC1','RESOURCES'
+>>>>>>> graemeg/cpstrnew
+=======
+         'PROCESSES','STACKCHECK','DYNLIBS','SOFTFPU','OBJECTIVEC1','RESOURCES'
+>>>>>>> graemeg/cpstrnew
+=======
+         'PROCESSES','STACKCHECK','DYNLIBS','SOFTFPU','OBJECTIVEC1','RESOURCES'
+>>>>>>> graemeg/cpstrnew
+=======
+         'PROCESSES','STACKCHECK','DYNLIBS','SOFTFPU','OBJECTIVEC1','RESOURCES'
+>>>>>>> origin/cpstrnew
+=======
+         'PROCESSES','STACKCHECK','DYNLIBS'
+>>>>>>> graemeg/fixes_2_2
+=======
+         'PROCESSES','STACKCHECK','DYNLIBS'
+>>>>>>> origin/fixes_2_2
+=======
+         'PROCESSES','STACKCHECK','DYNLIBS','SOFTFPU'
+>>>>>>> origin/fixes_2.4
        );
 
     type
        { Switches which can be changed by a mode (fpc,tp7,delphi) }
        tmodeswitch = (m_none,
          { generic }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          m_fpc,m_objfpc,m_delphi,m_tp7,m_mac,m_iso,m_extpas,
+=======
+         m_fpc,m_objfpc,m_delphi,m_tp7,m_mac,m_iso,
+>>>>>>> graemeg/cpstrnew
+=======
+         m_fpc,m_objfpc,m_delphi,m_tp7,m_mac,m_iso,
+>>>>>>> graemeg/cpstrnew
+=======
+         m_fpc,m_objfpc,m_delphi,m_tp7,m_mac,m_iso,
+>>>>>>> graemeg/cpstrnew
+=======
+         m_fpc,m_objfpc,m_delphi,m_tp7,m_mac,m_iso,
+>>>>>>> origin/cpstrnew
          {$ifdef fpc_mode}m_gpc,{$endif}
          { more specific }
          m_class,               { delphi class model }
@@ -405,11 +572,16 @@ interface
          m_duplicate_names,     { allow locals/paras to have duplicate names of globals }
          m_property,            { allow properties }
          m_default_inline,      { allow inline proc directive }
+<<<<<<< HEAD
          m_except,              { allow exception-related keywords }
          m_objectivec1,         { support interfacing with Objective-C (1.0) }
          m_objectivec2,         { support interfacing with Objective-C (2.0) }
          m_nested_procvars,     { support nested procedural variables }
          m_non_local_goto,      { support non local gotos (like iso pascal) }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          m_advanced_records,    { advanced record syntax with visibility sections, methods and properties }
          m_isolike_unary_minus, { unary minus like in iso pascal: same precedence level as binary minus/plus }
          m_systemcodepage,      { use system codepage as compiler codepage by default, emit ansistrings with system codepage }
@@ -424,6 +596,21 @@ interface
          m_isolike_io,          { I/O as it required by an ISO compatible compiler }
          m_isolike_program_para, { program parameters as it required by an ISO compatible compiler }
          m_isolike_mod          { mod operation as it is required by an iso compatible compiler }
+=======
+         m_advanced_records     { advanced record syntax with visibility sections, methods and properties }
+>>>>>>> graemeg/cpstrnew
+=======
+         m_advanced_records     { advanced record syntax with visibility sections, methods and properties }
+>>>>>>> graemeg/cpstrnew
+=======
+         m_advanced_records     { advanced record syntax with visibility sections, methods and properties }
+>>>>>>> graemeg/cpstrnew
+=======
+         m_advanced_records     { advanced record syntax with visibility sections, methods and properties }
+>>>>>>> origin/cpstrnew
+=======
+         m_except               { allow exception-related keywords }
+>>>>>>> origin/fixes_2.4
        );
        tmodeswitches = set of tmodeswitch;
 
@@ -438,11 +625,21 @@ interface
          app_gui,       { graphic user-interface application }
          app_cui,       { console application }
          app_fs,        { full-screen type application (OS/2 and EMX only) }
+<<<<<<< HEAD
          app_tool,      { tool application, (MPW tool for MacOS, MacOS only) }
          app_arm7,      { for Nintendo DS target }
          app_arm9,      { for Nintendo DS target }
          app_bundle,    { dynamically loadable bundle, Darwin only }
          app_com        { DOS .COM file }
+=======
+         app_tool,      { tool application, (MPW tool for MacOS, MacOS only)}
+         app_arm7,
+         app_arm9,
+         app_bundle     { dynamically loadable bundle, Darwin only }
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
        );
 
        { interface types }
@@ -553,10 +750,24 @@ interface
        pocall_default = pocall_stdcall;
 {$endif}
 
+<<<<<<< HEAD
        cstylearrayofconst = [pocall_cdecl,pocall_cppdecl,pocall_mwpascal];
 
        modeswitchstr : array[tmodeswitch] of string[18] = ('',
          '','','','','','','',
+=======
+       modeswitchstr : array[tmodeswitch] of string[18] = ('','',
+         '','','','','','',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
          {$ifdef fpc_mode}'',{$endif}
          { more specific }
          'CLASS',
@@ -578,11 +789,16 @@ interface
          'DUPLICATELOCALS',
          'PROPERTIES',
          'ALLOWINLINE',
+<<<<<<< HEAD
          'EXCEPTIONS',
          'OBJECTIVEC1',
          'OBJECTIVEC2',
          'NESTEDPROCVARS',
          'NONLOCALGOTO',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          'ADVANCEDRECORDS',
          'ISOUNARYMINUS',
          'SYSTEMCODEPAGE',
@@ -594,6 +810,21 @@ interface
          'ISOPROGRAMPARAS',
          'ISOMOD'
          );
+=======
+         'ADVANCEDRECORDS');
+>>>>>>> graemeg/cpstrnew
+=======
+         'ADVANCEDRECORDS');
+>>>>>>> graemeg/cpstrnew
+=======
+         'ADVANCEDRECORDS');
+>>>>>>> graemeg/cpstrnew
+=======
+         'ADVANCEDRECORDS');
+>>>>>>> origin/cpstrnew
+=======
+         'EXCEPTIONS');
+>>>>>>> origin/fixes_2.4
 
 
      type
@@ -626,10 +857,16 @@ interface
          { stack frame optimization not possible (only on x86 probably) }
          pi_needs_stackframe,
          { set if the procedure has at least one register saved on the stack }
+<<<<<<< HEAD
+<<<<<<< HEAD
          pi_has_saved_regs,
          { dfa was generated for this proc }
          pi_dfaavailable,
          { subroutine contains interprocedural used labels }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          pi_has_interproclabel,
          { subroutine has unwind info (win64) }
          pi_has_unwind_info,
@@ -645,14 +882,44 @@ interface
          pi_estimatestacksize,
          { the routine calls a C-style varargs function }
          pi_calls_c_varargs
+=======
+         pi_has_interproclabel
+>>>>>>> graemeg/cpstrnew
+=======
+         pi_has_interproclabel
+>>>>>>> graemeg/cpstrnew
+=======
+         pi_has_interproclabel
+>>>>>>> graemeg/cpstrnew
+=======
+         pi_has_interproclabel
+>>>>>>> origin/cpstrnew
+=======
+         pi_has_saved_regs
+>>>>>>> graemeg/fixes_2_2
+=======
+         pi_has_saved_regs
+>>>>>>> origin/fixes_2_2
        );
        tprocinfoflags=set of tprocinfoflag;
 
     type
+<<<<<<< HEAD
+<<<<<<< HEAD
       { float types -- warning, this enum/order is used internally by the RTL
         as well in rtl/inc/real2str.inc }
       tfloattype = (
         s32real,s64real,s80real,sc80real { the C "long double" type on x86 },
+=======
+      { float types }
+      tfloattype = (
+        s32real,s64real,s80real,
+>>>>>>> graemeg/fixes_2_2
+=======
+      { float types }
+      tfloattype = (
+        s32real,s64real,s80real,
+>>>>>>> origin/fixes_2_2
         s64comp,s64currency,s128real
       );
 
@@ -661,6 +928,8 @@ interface
       TRADirection = (rad_forward, rad_backwards, rad_backwards_reinit);
 
     type
+<<<<<<< HEAD
+<<<<<<< HEAD
       TIDString = string[maxidlen];
 
       tnormalset = set of byte; { 256 elements set }
@@ -681,6 +950,29 @@ interface
         fileindex : word;
         moduleindex : word;
       end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+       TIDString = string[maxidlen];
+
+       tnormalset = set of byte; { 256 elements set }
+       pnormalset = ^tnormalset;
+
+       pboolean   = ^boolean;
+       pdouble    = ^double;
+       pbyte      = ^byte;
+       pword      = ^word;
+       plongint   = ^longint;
+       plongintarray = plongint;
+
+       Tconstant=record
+            case signed:boolean of
+                false:
+                    (valueu:cardinal);
+                true:
+                    (values:longint);
+       end;
+>>>>>>> graemeg/fixes_2_2
 
   {$ifndef xFPC}
     type
@@ -693,8 +985,24 @@ interface
       end;
   {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        tstringencoding = Word;
        tcodepagestring = string[20];
+=======
+      tstringencoding = word;
+>>>>>>> graemeg/cpstrnew
+=======
+      tstringencoding = word;
+>>>>>>> graemeg/cpstrnew
+=======
+      tstringencoding = word;
+>>>>>>> graemeg/cpstrnew
+=======
+      tstringencoding = word;
+>>>>>>> origin/cpstrnew
 
     const
        { link options }
@@ -707,6 +1015,10 @@ interface
     type
       { a message state }
       tmsgstate = (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         ms_on := 1,
         ms_off := 2,
         ms_error := 3,
@@ -746,6 +1058,27 @@ interface
   { hide Sysutils.ExecuteProcess in units using this one after SysUtils}
   const
     ExecuteProcess = 'Do not use' deprecated 'Use cfileutil.RequotedExecuteProcess instead, ExecuteProcess cannot deal with single quotes as used by Unix command lines';
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        ms_on,    // turn on output
+        ms_off,   // turn off output
+        ms_error  // cast to error
+      );
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 implementation
 

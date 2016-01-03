@@ -263,7 +263,13 @@ ResourceString
   SSocketRead                   = 'Read';
   SSocketWrite                  = 'Write';
   SSortedListError              = 'Operation not allowed on sorted list';
+<<<<<<< HEAD
+<<<<<<< HEAD
   SStreamInvalidSeek            = 'Invalid stream operation %s.Seek';   
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   SStreamNoReading              = 'Reading from %s is not supported';
   SStreamNoWriting              = 'Writing to %s is not supported';
   SStreamSetSize                = 'Error setting stream size';

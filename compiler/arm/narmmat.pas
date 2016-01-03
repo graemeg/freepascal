@@ -58,10 +58,16 @@ implementation
       symtype,symconst,symtable,
       cgbase,cgobj,hlcgobj,cgutils,
       pass_2,procinfo,
+<<<<<<< HEAD
       ncon,ncnv,ncal,ninl,
       cpubase,cpuinfo,
       ncgutil,
       nadd,pass_1,symdef;
+=======
+      ncon,
+      cpubase,cpuinfo,
+      ncgutil,cgcpu;
+>>>>>>> graemeg/cpstrnew
 
 {*****************************************************************************
                              TARMMODDIVNODE
@@ -393,7 +399,23 @@ implementation
 
     procedure tarmunaryminusnode.second_float;
       var
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         pf: TOpPostfix;
+=======
+        op: tasmop;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: tasmop;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: tasmop;
+>>>>>>> graemeg/cpstrnew
+=======
+        op: tasmop;
+>>>>>>> origin/cpstrnew
       begin
         secondpass(left);
         case current_settings.fputype of
@@ -401,13 +423,33 @@ implementation
           fpu_fpa10,
           fpu_fpa11:
             begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               hlcg.location_force_fpureg(current_asmdata.CurrAsmList,left.location,left.resultdef,false);
+=======
+              location_force_fpureg(current_asmdata.CurrAsmList,left.location,false);
+>>>>>>> graemeg/cpstrnew
+=======
+              location_force_fpureg(current_asmdata.CurrAsmList,left.location,false);
+>>>>>>> graemeg/cpstrnew
+=======
+              location_force_fpureg(current_asmdata.CurrAsmList,left.location,false);
+>>>>>>> graemeg/cpstrnew
+=======
+              location_force_fpureg(current_asmdata.CurrAsmList,left.location,false);
+>>>>>>> origin/cpstrnew
               location:=left.location;
               current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg_const(A_RSF,
                 location.register,left.location.register,0),
                 cgsize2fpuoppostfix[def_cgsize(resultdef)]));
             end;
           fpu_vfpv2,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           fpu_vfpv3,
           fpu_vfpv3_d16:
             begin
@@ -612,6 +654,39 @@ implementation
             else
               shift_by_variable(lreg.reghi, lreg.reglo, resreg.reghi, resreg.reglo, right.location.register, SM_LSR);
           end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          fpu_vfpv3:
+            begin
+              location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,true);
+              location:=left.location;
+              if (left.location.loc=LOC_CMMREGISTER) then
+                location.register:=cg.getmmregister(current_asmdata.CurrAsmList,location.size);
+              if (location.size=OS_F32) then
+                op:=A_FNEGS
+              else
+                op:=A_FNEGD;
+              current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(op,
+                location.register,left.location.register));
+            end;
+          else
+            internalerror(2009112602);
+        end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 

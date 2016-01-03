@@ -1242,7 +1242,7 @@ begin
     else
       FDefs.Write (TheFile, nil, nil);
     TheFile.EndUpdate;
-    Thefile.SaveToFile (FDefs.UnitName+'.'+FSettings.Extension);
+    Thefile.SaveToFile (FDefs.UnitName+'.'+FSettings.Extention);
   finally
     TheFile.Free;
   end;
@@ -1381,7 +1381,7 @@ const
   keySaveOnExit = 'SaveOnExit';
   keyFileFormat = 'TextFormat';
   keyMRUCount = 'MRUCount';
-  keyExtension = 'Extention'; //keep wrong spelling so cmpatibility kept with existing settings
+  keyExtention = 'Extention';
   keyProgressWindow = 'ShowProgress';
   secMRU = 'Last open files';
   keyFile = 'File';
@@ -1396,7 +1396,7 @@ begin
     try
       saveonclose := readbool (SecSettings, keySaveOnExit, true);
       Fileformat := TFileFormat(readinteger (secSettings, keyFileFormat, 2));
-      Extension := readstring (secSettings, keyExtension, '.pp');
+      Extention := readstring (secSettings, keyExtention, '.pp');
       MRUCount := readinteger (secSettings, keyMRUCount, 5);
       ShowProgress := readbool (SecSettings, keyProgressWindow, true);
       FReopenList.capacity := MRUCount;
@@ -1420,7 +1420,7 @@ begin
     try
       writebool (SecSettings, keySaveOnExit, saveonclose);
       writeinteger (secSettings, keyFileFormat, Ord(FileFormat));
-      writestring (secSettings, keyExtension, Extension);
+      writestring (secSettings, keyExtention, Extention);
       writeinteger (secSettings, keyMRUCount, MRUCount);
       writebool (SecSettings, keyProgressWindow, ShowProgress);
       writeinteger (secMRU, keyCount, FReopenlist.count);

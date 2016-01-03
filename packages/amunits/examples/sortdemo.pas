@@ -38,7 +38,7 @@ PROGRAM SortDemo;
     so you have to wait until it's finished.
 }
 
-uses Exec, Intuition, AGraphics, Utility, GadTools, amsgbox,systemvartags;
+uses Exec, Intuition, Graphics, Utility, GadTools, msgbox,systemvartags;
 
 
 CONST
@@ -550,7 +550,7 @@ VAR
     MenuNumber  : Integer;
     ItemNumber  : Integer;
     SubItemNumber   : Integer;
-    t0,t1,l         : Longword;
+    t0,t1,l         : Longint;
 
     begin
     if IMessage.Code = MENUNULL then

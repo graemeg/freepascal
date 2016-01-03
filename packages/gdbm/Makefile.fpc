@@ -1,20 +1,70 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for gdbm bindings
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for gdbm bindings
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=gdbm
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+=======
+version=2.2.5
+>>>>>>> graemeg/fixes_2_2
+=======
+version=2.2.5
+>>>>>>> origin/fixes_2_2
+
+[target]
+units=gdbm
+exampledirs=examples
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
 
 [require]
 packages=rtl fpmkunit
 
 [install]
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+[require]
+package=rtl
+
+[install]
+examplesubdir=gdbm
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 fpcpackage=y
 
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +150,21 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[compiler]
+includedir=src
+sourcedir=src tests
+
+
+[shared]
+build=n
+
+[rules]
+.NOTPARALLEL:
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

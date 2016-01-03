@@ -1,0 +1,21 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TFPWebProviderDataModule1','FORMDATA',[
+  'TPF0'#25'TFPWebProviderDataModule1'#24'FPWebProviderDataModule1'#8'OnCreate'
+  +#7#16'DataModuleCreate'#14'OldCreateOrder'#8#12'InputAdaptor'#7#29'ExtJSJSon'
+  +'WebdataInputAdaptor1'#15'ContentProducer'#7#23'ExtJSJSONDataFormatter1'#20
+  +'OnGetContentProducer'#7#28'DataModuleGetContentProducer'#17'OnGetInputAdapt'
+  +'or'#7#25'DataModuleGetInputAdaptor'#6'Height'#3','#1#16'HorizontalOffset'#3
+  +#27#2#14'VerticalOffset'#3#191#1#5'Width'#3#144#1#0#29'TExtJSJSonWebdataInpu'
+  +'tAdaptor'#29'ExtJSJSonWebdataInputAdaptor1'#4'left'#3#176#0#3'top'#2'`'#0#0
+  +#23'TExtJSJSONDataFormatter'#23'ExtJSJSONDataFormatter1'#13'AllowPageSize'#8
+  +#4'left'#3#176#0#3'top'#3#136#0#0#0#28'TExtJSXMLWebdataInputAdaptor'#28'ExtJ'
+  +'SXMLWebdataInputAdaptor1'#4'left'#3#216#0#3'top'#2'`'#0#0#22'TExtJSXMLDataF'
+  +'ormatter'#22'ExtJSXMLDataFormatter1'#13'AllowPageSize'#8#4'left'#3#216#0#3
+  +'top'#3#136#0#0#0#4'TDbf'#4'Dbf1'#8'FilePath'#6'&/home/michael/public_html/e'
+  +'xtjs/demo2/'#9'IndexDefs'#14#0#9'TableName'#6#9'users.dbf'#10'TableLevel'#2
+  +#7#13'FilterOptions'#11#0#4'left'#2'O'#3'top'#2'\'#0#0#11'TDatasource'#11'Da'
+  +'tasource1'#7'DataSet'#7#4'Dbf1'#4'left'#2'L'#3'top'#3#132#0#0#0#18'TFPWebDa'
+  +'taProvider'#5'AName'#10'DataSource'#7#11'Datasource1'#4'left'#3#133#0#3'top'
+  +#2'u'#0#0#0
+]);

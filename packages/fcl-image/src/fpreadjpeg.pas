@@ -232,6 +232,8 @@ var
   var
     MinColor: word;
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     // accuracy not 100%
     if C.red<C.green then MinColor:=C.red
     else MinColor:= C.green;
@@ -246,6 +248,10 @@ var
   var
     MinColor: word;
   begin
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     if C.red<C.green then MinColor:=C.red
     else MinColor:= C.green;
     if C.blue<MinColor then MinColor:= C.blue;
@@ -265,6 +271,8 @@ var
     x: Integer;
     y: Integer;
     c: word;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Status,Scan: integer;
     ReturnValue,RestartLoop: Boolean;
     procedure OutputScanLines();
@@ -318,6 +326,10 @@ var
         inc(y);
       end;
     end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   begin
     InitReadingPixels;
 
@@ -333,6 +345,7 @@ var
     GetMem(SampRow,FInfo.output_width*FInfo.output_components);
     SampArray^[0]:=SampRow;
     try
+<<<<<<< HEAD
       case FProgressiveEncoding of
         false:
           begin
@@ -405,6 +418,40 @@ var
               end;
             end;
           end;
+=======
+      Color.Alpha:=alphaOpaque;
+      y:=0;
+      while (FInfo.output_scanline < FInfo.output_height) do begin
+        LinesRead := jpeg_read_scanlines(@FInfo, SampArray, 1);
+        if LinesRead<1 then break;
+        if (FInfo.jpeg_color_space = JCS_CMYK) then
+        for x:=0 to FInfo.output_width-1 do begin
+          Color.Red:=SampRow^[x*4+0];
+          Color.Green:=SampRow^[x*4+1];
+          Color.Blue:=SampRow^[x*4+2];
+          Color.alpha:=SampRow^[x*4+3];
+          Img.Colors[x,y]:=CorrectCMYK(Color);
+        end
+        else
+        if fgrayscale then begin
+         for x:=0 to FInfo.output_width-1 do begin
+           c:= SampRow^[x] shl 8;
+           Color.Red:=c;
+           Color.Green:=c;
+           Color.Blue:=c;
+           Img.Colors[x,y]:=Color;
+         end;
+        end
+        else begin
+         for x:=0 to FInfo.output_width-1 do begin
+           Color.Red:=SampRow^[x*3+0] shl 8;
+           Color.Green:=SampRow^[x*3+1] shl 8;
+           Color.Blue:=SampRow^[x*3+2] shl 8;
+           Img.Colors[x,y]:=Color;
+         end;
+        end;
+        inc(y);
+>>>>>>> graemeg/fixes_2_2
       end;
     finally
       FreeMem(SampRow);

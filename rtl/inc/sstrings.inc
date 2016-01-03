@@ -134,8 +134,16 @@ begin
   if (Length(SubStr)>0) and (Offset>0) and (Offset<=Length(S)) then
    begin
      MaxLen:=sizeint(Length(s))-Length(SubStr);
+<<<<<<< HEAD
+<<<<<<< HEAD
      i:=Offset-1;
      pc:=@s[Offset];
+=======
+=======
+>>>>>>> origin/fixes_2_2
+     i:=0;
+     pc:=@s[1];
+>>>>>>> graemeg/fixes_2_2
      while (i<=MaxLen) do
       begin
         inc(i);
@@ -386,11 +394,56 @@ end;
 {$endif FPC_HAS_QWORD_BIN_SHORTSTR}
 
 
+<<<<<<< HEAD
 {$ifndef FPC_HAS_HEXSTR_POINTER_SHORTSTR}
 {$define FPC_HAS_HEXSTR_POINTER_SHORTSTR}
 function hexstr(val : pointer) : shortstring;
 var
   i : ObjpasInt;
+=======
+Function  hexStr(Val:qword;cnt:byte):shortstring;
+begin
+  hexStr:=hexStr(int64(Val),cnt);
+end;
+
+
+Function  OctStr(Val:qword;cnt:byte):shortstring;
+begin
+  OctStr:=OctStr(int64(Val),cnt);
+end;
+
+
+Function  binStr(Val:qword;cnt:byte):shortstring;
+begin
+  binStr:=binStr(int64(Val),cnt);
+end;
+
+
+Function  hexStr(Val:qword;cnt:byte):shortstring;
+begin
+  hexStr:=hexStr(int64(Val),cnt);
+end;
+
+
+Function  OctStr(Val:qword;cnt:byte):shortstring;
+begin
+  OctStr:=OctStr(int64(Val),cnt);
+end;
+
+
+Function  binStr(Val:qword;cnt:byte):shortstring;
+begin
+  binStr:=binStr(int64(Val),cnt);
+end;
+
+
+function hexstr(val : pointer) : shortstring;
+var
+  i : longint;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   v : ptruint;
 begin
   v:=ptruint(val);
@@ -434,15 +487,35 @@ end;
 
 {$ifndef CPU64}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure fpc_shortstr_qword(v : qword;len : SizeInt;out s : shortstring);[public,alias:'FPC_SHORTSTR_QWORD']; compilerproc;
 begin
   int_str_unsigned(v,s);
+=======
+procedure fpc_shortstr_qword(v : qword;len : longint;out s : shortstring);[public,alias:'FPC_SHORTSTR_QWORD']; compilerproc;
+begin
+  int_str(v,s);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure fpc_shortstr_qword(v : qword;len : longint;out s : shortstring);[public,alias:'FPC_SHORTSTR_QWORD']; compilerproc;
+begin
+  int_str(v,s);
+>>>>>>> origin/fixes_2_2
   if length(s)<len then
     s:=space(len-length(s))+s;
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure fpc_shortstr_int64(v : int64;len : SizeInt;out s : shortstring);[public,alias:'FPC_SHORTSTR_INT64'];  compilerproc;
+=======
+procedure fpc_shortstr_int64(v : int64;len : longint;out s : shortstring);[public,alias:'FPC_SHORTSTR_INT64'];  compilerproc;
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure fpc_shortstr_int64(v : int64;len : longint;out s : shortstring);[public,alias:'FPC_SHORTSTR_INT64'];  compilerproc;
+>>>>>>> origin/fixes_2_2
 begin
   int_str(v,s);
   if length(s)<len then
@@ -497,7 +570,13 @@ end;
 {$endif FLOAT_ASCII_FALLBACK}
 {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPUNONE}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 procedure fpc_shortstr_float(d : ValReal;len,fr,rt : SizeInt;out s : shortstring);[public,alias:'FPC_SHORTSTR_FLOAT']; compilerproc;
 begin
   str_real(len,fr,d,treal_type(rt),s);
@@ -530,6 +609,26 @@ type
       basetype:pointer; { required for alignment }
     end;
     { more data here, but not needed }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+  end;
+
+  { Pascal data types for the ordinal enum value to string table. It consists of a header
+    that indicates what type of data the table stores, either a direct lookup table (when
+    o = lookup) or a set of ordered (ordinal value, string) tuples (when o = search). }
+
+  { A single entry in the set of ordered tuples }
+  Psearch_data=^Tsearch_data;
+  Tsearch_data={$ifndef FPC_REQUIRES_PROPER_ALIGNMENT}packed{$endif}record
+    value:longint;
+    name:Pstring;
+<<<<<<< HEAD
+  end;
+
+=======
   end;
 
   { Pascal data types for the ordinal enum value to string table. It consists of a header
@@ -543,6 +642,26 @@ type
     name:Pstring;
   end;
 
+>>>>>>> graemeg/cpstrnew
+=======
+  end;
+
+>>>>>>> graemeg/cpstrnew
+=======
+  end;
+
+  { Pascal data types for the ordinal enum value to string table. It consists of a header
+    that indicates what type of data the table stores, either a direct lookup table (when
+    o = lookup) or a set of ordered (ordinal value, string) tuples (when o = search). }
+
+  { A single entry in the set of ordered tuples }
+  Psearch_data=^Tsearch_data;
+  Tsearch_data={$ifndef FPC_REQUIRES_PROPER_ALIGNMENT}packed{$endif}record
+    value:longint;
+    name:Pstring;
+  end;
+
+>>>>>>> origin/cpstrnew
   Penum_ord_to_string=^Tenum_ord_to_string;
   Tenum_ord_to_string={$ifndef FPC_REQUIRES_PROPER_ALIGNMENT}packed{$endif}record
     o:(lookup,search);
@@ -587,9 +706,33 @@ begin
         end;
       { temporarily disable range checking because of the access to the array[0..0]
         member of Tenum_ord_to_string_lookup }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}{$R-}
         res:=enum_o2s^.lookup_data[ordinal];
 {$pop}
+=======
+{$PUSH}{$R-}
+        res:=enum_o2s^.lookup_data[ordinal];
+{$POP}
+>>>>>>> graemeg/cpstrnew
+=======
+{$PUSH}{$R-}
+        res:=enum_o2s^.lookup_data[ordinal];
+{$POP}
+>>>>>>> graemeg/cpstrnew
+=======
+{$PUSH}{$R-}
+        res:=enum_o2s^.lookup_data[ordinal];
+{$POP}
+>>>>>>> graemeg/cpstrnew
+=======
+{$PUSH}{$R-}
+        res:=enum_o2s^.lookup_data[ordinal];
+{$POP}
+>>>>>>> origin/cpstrnew
         if (not assigned(res)) then
           exit;
         s:=res^;
@@ -602,7 +745,23 @@ begin
       l:=0;
       { temporarily disable range checking because of the access to the array[0..0]
         member of Tenum_ord_to_string_search }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}{$R-}
+=======
+{$PUSH}{$R-}
+>>>>>>> graemeg/cpstrnew
+=======
+{$PUSH}{$R-}
+>>>>>>> graemeg/cpstrnew
+=======
+{$PUSH}{$R-}
+>>>>>>> graemeg/cpstrnew
+=======
+{$PUSH}{$R-}
+>>>>>>> origin/cpstrnew
       h:=enum_o2s^.num_entries-1;
       repeat
         m:=(l+h) div 2;
@@ -615,7 +774,23 @@ begin
         if l>h then
           exit; { Ordinal value not found? Exit }
       until false;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$pop}
+=======
+{$POP}
+>>>>>>> graemeg/cpstrnew
+=======
+{$POP}
+>>>>>>> graemeg/cpstrnew
+=======
+{$POP}
+>>>>>>> graemeg/cpstrnew
+=======
+{$POP}
+>>>>>>> origin/cpstrnew
       s:=sorted_data[m].name^;
     end;
 
@@ -656,9 +831,64 @@ begin
 end;
 
 { also define alias for internal use in the system unit }
+<<<<<<< HEAD
 procedure fpc_shortstr_bool(b : boolean;len:sizeint;out s:shortstring);external {$ifndef cpujvm}name 'FPC_SHORTSTR_BOOL'{$endif};
 
 procedure fpc_shortstr_currency({$ifdef cpujvm}constref{$endif} c : currency; len,f : SizeInt; out s : shortstring);[public,alias:'FPC_SHORTSTR_CURRENCY']; compilerproc;
+=======
+procedure fpc_shortstr_bool(b : boolean;len:sizeint;out s:shortstring);external name 'FPC_SHORTSTR_BOOL';
+
+
+procedure fpc_shortstr_bool(b : boolean;len:sizeint;out s:shortstring);[public,alias:'FPC_SHORTSTR_BOOL'];compilerproc;
+begin
+  if b then
+    s:='TRUE'
+  else
+    s:='FALSE';
+  if length(s)<len then
+    s:=space(len-length(s))+s;
+end;
+
+{ also define alias for internal use in the system unit }
+procedure fpc_shortstr_bool(b : boolean;len:sizeint;out s:shortstring);external name 'FPC_SHORTSTR_BOOL';
+
+
+procedure fpc_shortstr_bool(b : boolean;len:sizeint;out s:shortstring);[public,alias:'FPC_SHORTSTR_BOOL'];compilerproc;
+begin
+  if b then
+    s:='TRUE'
+  else
+    s:='FALSE';
+  if length(s)<len then
+    s:=space(len-length(s))+s;
+end;
+
+{ also define alias for internal use in the system unit }
+procedure fpc_shortstr_bool(b : boolean;len:sizeint;out s:shortstring);external name 'FPC_SHORTSTR_BOOL';
+
+
+procedure fpc_shortstr_bool(b : boolean;len:sizeint;out s:shortstring);[public,alias:'FPC_SHORTSTR_BOOL'];compilerproc;
+begin
+  if b then
+    s:='TRUE'
+  else
+    s:='FALSE';
+  if length(s)<len then
+    s:=space(len-length(s))+s;
+end;
+
+{ also define alias for internal use in the system unit }
+procedure fpc_shortstr_bool(b : boolean;len:sizeint;out s:shortstring);external name 'FPC_SHORTSTR_BOOL';
+
+
+procedure fpc_shortstr_currency(c : currency; len,f : SizeInt; out s : shortstring);[public,alias:'FPC_SHORTSTR_CURRENCY']; compilerproc;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 const
   MinLen = 8; { Minimal string length in scientific format }
 var
@@ -736,6 +966,7 @@ begin
   { rounding string if r > 0 }
   if r > 0 then
     begin
+<<<<<<< HEAD
       k := 0;
       i := r+2;
       if i > tlen then
@@ -750,6 +981,36 @@ begin
                k := 1;
              end;
          end;
+=======
+      i:=1;
+      k:=0;
+      for j:=0 to r do
+        begin
+          if (k=1) and (buf[i]='9') then
+            buf[i]:='0'
+          else
+            begin
+            buf[i]:=chr(ord(buf[i]) + k);
+            if buf[i] >= '5' then
+              k:=1
+            else
+              k:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+            end;
+=======
+            end; 
+>>>>>>> graemeg/fixes_2_2
+=======
+            end; 
+>>>>>>> origin/fixes_2_2
+          Inc(i);
+          if i>tlen  then
+            break;
+        end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
       If (k=1) and (buf[i-1]='0') then
 	    begin
 		  { 1.9996 rounded to two decimal digits after the decimal separator must result in
@@ -765,12 +1026,36 @@ begin
 		    e.g. 99.9996 to two decimal digits after the decimal separator which should result in
 			100.00
 		  }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		  if i>tlen then
+=======
+		  if i>reslen then
+>>>>>>> graemeg/cpstrnew
+=======
+		  if i>reslen then
+>>>>>>> graemeg/cpstrnew
+=======
+		  if i>reslen then
+>>>>>>> graemeg/cpstrnew
+=======
+		  if i>reslen then
+>>>>>>> origin/cpstrnew
 		    begin
 			  inc(reslen);
 			  inc(tlen);
 			end;
 		end;		
+=======
+      If (k=1) and (buf[i-1]='0') then
+        buf[i]:=chr(Ord(buf[i])+1);
+>>>>>>> graemeg/fixes_2_2
+=======
+      If (k=1) and (buf[i-1]='0') then
+        buf[i]:=chr(Ord(buf[i])+1);
+>>>>>>> origin/fixes_2_2
     end;
   { preparing result string }
   if reslen<len then
@@ -960,6 +1245,8 @@ var
   ss : shortstring;
   maxlen : SizeInt;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   int_str_unsigned(v,ss);
   if length(ss)<len then
     ss:=space(len-length(ss))+ss;
@@ -968,11 +1255,68 @@ begin
   else
     maxlen:=high(a)+1;
   fpc_shortstr_chararray_intern_charmove(ss,a,maxlen);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  code:=1;
+  negativ:=false;
+  base:=10;
+  if length(s)=0 then 
+    begin
+      InitVal:=code;
+      Exit;
+    end;
+{Skip Spaces and Tab}
+  while (code<=length(s)) and (s[code] in [' ',#9]) do
+   inc(code);
+{Sign}
+  case s[code] of
+   '-' : begin
+           negativ:=true;
+           inc(code);
+         end;
+   '+' : inc(code);
+  end;
+{Base}
+  if code<=length(s) then
+   begin
+     case s[code] of
+      '$',
+      'X',
+      'x' : begin
+              base:=16;
+              inc(code);
+            end;
+      '%' : begin
+              base:=2;
+              inc(code);
+            end;
+      '&' : begin
+              Base:=8;
+              inc(code);
+            end;
+      '0' : begin
+              if (code < length(s)) and (s[code+1] in ['x', 'X']) then
+              begin
+                inc(code, 2);
+                base := 16;
+              end;
+            end;
+     end;
+  end;
+  { strip leading zeros }
+  while ((code < length(s)) and (s[code] = '0')) do begin
+    inc(code);
+  end;
+  InitVal:=code;
+>>>>>>> graemeg/fixes_2_2
 end;
 
 
 procedure fpc_chararray_smallint(v : smallint;len : SizeInt;out a : array of char);compilerproc;
 var
+<<<<<<< HEAD
+<<<<<<< HEAD
   ss : shortstring;
   maxlen : SizeInt;
 begin
@@ -981,6 +1325,26 @@ begin
     ss:=space(len-length(ss))+ss;
   if length(ss)<high(a)+1 then
     maxlen:=length(ss)
+=======
+  temp, prev, maxPrevValue, maxNewValue: ValUInt;
+  base,u : byte;
+  negative : boolean;
+begin
+  fpc_Val_SInt_ShortStr := 0;
+  Temp:=0;
+  Code:=InitVal(s,negative,base);
+  if Code>length(s) then
+   exit;
+  if (s[Code]=#0) then
+    begin
+      if (Code>1) and (s[Code-1]='0') then
+        Code:=0;
+      exit;
+    end;
+  maxPrevValue := ValUInt(MaxUIntValue) div ValUInt(Base);
+  if (base = 10) then
+    maxNewValue := MaxSIntValue + ord(negative)
+>>>>>>> origin/fixes_2_2
   else
     maxlen:=high(a)+1;
   fpc_shortstr_chararray_intern_charmove(ss,a,maxlen);
@@ -1004,28 +1368,80 @@ begin
 end;
 {$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPC_STR_ENUM_INTERN}
 { currently, the avr code generator fails on this procedure, so we disable it,
   this is not a good solution but fixing compilation of this procedure for
   avr is hard, requires significant changes to the register allocator to take
   care of different register classes }
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
 procedure fpc_chararray_enum(ordinal,len:sizeint;typinfo,ord2strindex:pointer;out a : array of char);compilerproc;
 var
   ss : shortstring;
   maxlen : SizeInt;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef EXCLUDE_COMPLEX_PROCS}
   runerror(219);
 {$else EXCLUDE_COMPLEX_PROCS}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   fpc_shortstr_enum(ordinal,len,typinfo,ord2strindex,ss);
   if length(ss)<high(a)+1 then
     maxlen:=length(ss)
   else
     maxlen:=high(a)+1;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   fpc_shortstr_chararray_intern_charmove(ss,a,maxlen);
 {$endif EXCLUDE_COMPLEX_PROCS}
 end;
 {$endif not FPC_STR_ENUM_INTERN}
+=======
+  move(ss[1],pchar(@a)^,maxlen);
+end;
+
+>>>>>>> graemeg/cpstrnew
+=======
+  move(ss[1],pchar(@a)^,maxlen);
+end;
+
+>>>>>>> graemeg/cpstrnew
+=======
+  move(ss[1],pchar(@a)^,maxlen);
+end;
+
+>>>>>>> graemeg/cpstrnew
+=======
+  move(ss[1],pchar(@a)^,maxlen);
+end;
+
+>>>>>>> origin/cpstrnew
 
 procedure fpc_chararray_bool(b : boolean;len:sizeint;out a : array of char);compilerproc;
 var
@@ -1037,12 +1453,29 @@ begin
     maxlen:=length(ss)
   else
     maxlen:=high(a)+1;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   fpc_shortstr_chararray_intern_charmove(ss,a,maxlen);
 end;
 
 
 {$ifndef FPC_HAS_CHARARRAY_CURRENCY}
 {$define FPC_HAS_CHARARRAY_CURRENCY}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  move(ss[1],pchar(@a)^,maxlen);
+end;
+
+
+{$ifdef FPC_HAS_STR_CURRENCY}
+>>>>>>> graemeg/cpstrnew
 procedure fpc_chararray_Currency(c : Currency;len,fr : SizeInt;out a : array of char);compilerproc;
 {$ifdef EXCLUDE_COMPLEX_PROCS}
 begin
@@ -1131,6 +1564,12 @@ var
   base,u : byte;
   negative : boolean;
 begin
+=======
+  temp, prev, maxPrevValue, maxNewValue: ValUInt;
+  base,u : byte;
+  negative : boolean;
+begin
+>>>>>>> graemeg/fixes_2_2
   fpc_Val_SInt_ShortStr := 0;
   Temp:=0;
   Code:=InitVal(s,negative,base);
@@ -1194,6 +1633,14 @@ Function int_Val_SInt_ShortStr(DestSize: SizeInt; Const S: ShortString; out Code
 
 Function fpc_Val_UInt_Shortstr(Const S: ShortString; out Code: ValSInt): ValUInt; [public, alias:'FPC_VAL_UINT_SHORTSTR']; compilerproc;
 var
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  prev : ValUInt;
+>>>>>>> graemeg/fixes_2_2
+=======
+  prev : ValUInt;
+>>>>>>> origin/fixes_2_2
   base,u : byte;
   negative : boolean;
 begin
@@ -1234,8 +1681,16 @@ end;
 
   Function fpc_val_int64_shortstr(Const S: ShortString; out Code: ValSInt): Int64; [public, alias:'FPC_VAL_INT64_SHORTSTR']; compilerproc;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   var  u : sizeuint;
        temp, prev, maxprevvalue, maxnewvalue : qword;
+=======
+  var  u, temp, prev, maxprevvalue, maxnewvalue : qword;
+>>>>>>> graemeg/fixes_2_2
+=======
+  var  u, temp, prev, maxprevvalue, maxnewvalue : qword;
+>>>>>>> origin/fixes_2_2
        base : byte;
        negative : boolean;
 
@@ -1295,7 +1750,15 @@ end;
 
   Function fpc_val_qword_shortstr(Const S: ShortString; out Code: ValSInt): QWord; [public, alias:'FPC_VAL_QWORD_SHORTSTR']; compilerproc;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   var  u : sizeuint;
+=======
+  var  u, prev: QWord;
+>>>>>>> graemeg/fixes_2_2
+=======
+  var  u, prev: QWord;
+>>>>>>> origin/fixes_2_2
        base : byte;
        negative : boolean;
 
@@ -1719,6 +2182,7 @@ end;
 Function fpc_Val_Real_ShortStr(const s : shortstring; out Code : ValSInt): ValReal; [public, alias:'FPC_VAL_REAL_SHORTSTR']; compilerproc;
 var
   hd,
+<<<<<<< HEAD
   sign : valreal;
   esign,
   exponent,
@@ -1728,6 +2192,12 @@ var
   nlz,
   explimit,
   explastdigit: SizeInt;
+=======
+  esign,sign : valreal;
+  exponent,
+  decpoint,i : SizeInt;
+  flags      : byte;
+>>>>>>> graemeg/cpstrnew
 begin
   fpc_Val_Real_ShortStr:=0.0;
   code:=1;
@@ -1757,6 +2227,7 @@ begin
   expstart:=code;
   while (Code<=Length(s)) do
     begin
+<<<<<<< HEAD
       case s[code] of
         '0':
           begin
@@ -1781,6 +2252,36 @@ begin
         break;
       end;
       inc(code);
+<<<<<<< HEAD
+=======
+=======
+    end;
+{ Decimal ? }
+  if (length(s)>=code) and (s[code]='.') then
+    begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      inc(code);
+      while (length(s)>=code) and (s[code] in ['0'..'9']) do
+        begin
+           { Read fractional part. }
+          flags:=flags or 2;
+          fpc_Val_Real_ShortStr:=fpc_Val_Real_ShortStr*10+(ord(s[code])-ord('0'));
+          inc(decpoint);
+          inc(code);
+        end;
+   end;
+ { Again, read integer and fractional part}
+  if flags=0 then
+    begin
+      fpc_Val_Real_ShortStr:=0.0;
+      exit;
+>>>>>>> graemeg/cpstrnew
     end;
   { must have seen at least one digit }
   if (code-expstart)<1+ord(decpoint<>0) then
@@ -1843,7 +2344,40 @@ begin
       esign:=-1;
       exponent:=-exponent;
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{ adjust exponent based on decimal point }
+  if esign>0 then
+    begin
+      dec(exponent,decpoint);
+      if (exponent<0) then
+        begin
+          esign:=-1;
+          exponent:=-exponent;
+        end
+    end
+  else
+    inc(exponent,decpoint);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 { evaluate sign }
 { (before exponent, because the exponent may turn it into a denormal) }
   fpc_Val_Real_ShortStr:=hd*sign;
@@ -1977,11 +2511,17 @@ function fpc_val_enum_shortstr(str2ordindex:pointer;const s:shortstring;out code
 {$endif FPC_STR_ENUM_INTERN}
 
 function fpc_Val_Currency_ShortStr(const s : shortstring; out Code : ValSInt): currency; [public, alias:'FPC_VAL_CURRENCY_SHORTSTR']; compilerproc;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef EXCLUDE_COMPLEX_PROCS}
 begin
   runerror(217);
 end;
 {$else EXCLUDE_COMPLEX_PROCS}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 const
   MaxInt64 : Int64  = $7FFFFFFFFFFFFFFF;
   Int64Edge : Int64 = ($7FFFFFFFFFFFFFFF - 10) div 10;
@@ -2170,5 +2710,81 @@ begin
     ShortCompareText := L1 - L2;
 end;
 {$endif FPC_HAS_COMPARETEXT_SHORTSTR}
+
+
+function ShortCompareText(const S1, S2: shortstring): SizeInt;
+var
+  c1, c2: Byte;
+  i: Integer;
+  L1, L2, Count: SizeInt;
+  P1, P2: PChar;
+begin
+  L1 := Length(S1);
+  L2 := Length(S2);
+  if L1 > L2 then
+    Count := L2
+  else
+    Count := L1;
+  i := 0;
+  P1 := @S1[1];
+  P2 := @S2[1];
+  while i < count do
+  begin
+    c1 := byte(p1^);
+    c2 := byte(p2^);
+    if c1 <> c2 then
+    begin
+      if c1 in [97..122] then
+        Dec(c1, 32);
+      if c2 in [97..122] then
+        Dec(c2, 32);
+      if c1 <> c2 then
+        Break;
+    end;
+    Inc(P1); Inc(P2); Inc(I);
+  end;
+  if i < count then
+    ShortCompareText := c1 - c2
+  else
+    ShortCompareText := L1 - L2;
+end;
+
+
+function ShortCompareText(const S1, S2: shortstring): SizeInt;
+var
+  c1, c2: Byte;
+  i: Integer;
+  L1, L2, Count: SizeInt;
+  P1, P2: PChar;
+begin
+  L1 := Length(S1);
+  L2 := Length(S2);
+  if L1 > L2 then
+    Count := L2
+  else
+    Count := L1;
+  i := 0;
+  P1 := @S1[1];
+  P2 := @S2[1];
+  while i < count do
+  begin
+    c1 := byte(p1^);
+    c2 := byte(p2^);
+    if c1 <> c2 then
+    begin
+      if c1 in [97..122] then
+        Dec(c1, 32);
+      if c2 in [97..122] then
+        Dec(c2, 32);
+      if c1 <> c2 then
+        Break;
+    end;
+    Inc(P1); Inc(P2); Inc(I);
+  end;
+  if i < count then
+    ShortCompareText := c1 - c2
+  else
+    ShortCompareText := L1 - L2;
+end;
 
 

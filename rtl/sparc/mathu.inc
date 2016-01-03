@@ -16,6 +16,23 @@
 function get_fsr : dword;external name 'FPC_GETFSR';
 procedure set_fsr(fsr : dword);external name 'FPC_SETFSR';
 
+function FPUExceptionMaskToSoftFloatMask(const Mask: TFPUExceptionMask): byte;
+begin
+    result:=0;
+    if exInvalidOp in Mask then
+      result:=result or (1 shl ord(exInvalidOp));
+    if exDenormalized in Mask then
+      result:=result or (1 shl ord(exDenormalized));
+    if exZeroDivide in Mask then
+      result:=result or (1 shl ord(exZeroDivide));
+    if exOverflow in Mask then
+      result:=result or (1 shl ord(exOverflow));
+    if exUnderflow in Mask then
+      result:=result or (1 shl ord(exUnderflow));
+    if exPrecision in Mask then
+      result:=result or (1 shl ord(exPrecision));
+end;
+
 function GetRoundMode: TFPURoundingMode;
   begin
     result:=TFPURoundingMode(get_fsr shr 30);
@@ -25,9 +42,27 @@ function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
   var
     cw: dword;
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     cw:=get_fsr;
     result:=TFPURoundingMode(cw shr 30);
     set_fsr((cw and $3fffffff) or (dword(RoundMode) shl 30));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    case (RoundMode) of
+      rmNearest :
+        softfloat_rounding_mode := float_round_nearest_even;
+      rmTruncate :
+        softfloat_rounding_mode := float_round_to_zero;
+      rmUp :
+        softfloat_rounding_mode := float_round_up;
+      rmDown :
+        softfloat_rounding_mode := float_round_down;
+    end;
+    set_fsr((get_fsr and $3fffffff) or (dword(RoundMode) shl 30));
+    result:=TFPURoundingMode(get_fsr shr 30);
+>>>>>>> graemeg/fixes_2_2
   end;
 
 
@@ -113,6 +148,8 @@ function SetExceptionMask(const Mask: TFPUExceptionMask): TFPUExceptionMask;
 
     { update control register contents }
     set_fsr(fsr);
+
+    softfloat_exception_mask:=FPUExceptionMaskToSoftFloatMask(mask);
   end;
 
 

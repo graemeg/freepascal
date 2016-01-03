@@ -107,7 +107,14 @@ implementation
       end;
 
 
+<<<<<<< HEAD
     function trgx86.do_spill_replace(list:TAsmList;instr:tai_cpu_abstract_sym;orgreg:tsuperregister;const spilltemp:treference):boolean;
+=======
+    function trgx86.do_spill_replace(list:TAsmList;instr:taicpu;orgreg:tsuperregister;const spilltemp:treference):boolean;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     {Decide wether a "replace" spill is possible, i.e. wether we can replace a register
      in an instruction by a memory reference. For example, in "mov ireg26d,0", the imaginary
@@ -115,7 +122,13 @@ implementation
 
       var
         n,replaceoper : longint;
+<<<<<<< HEAD
+<<<<<<< HEAD
         is_subh: Boolean;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       begin
         result:=false;
         with taicpu(instr) do
@@ -133,7 +146,10 @@ implementation
                     end;
                 end;
               2,3 :
+<<<<<<< HEAD
+<<<<<<< HEAD
                 begin
+<<<<<<< HEAD
                   { avx instruction?
                     currently this rule is sufficient but it might be extended }
                   if (ops=3) and (opcode<>A_SHRD) and (opcode<>A_SHLD) and (opcode<>A_IMUL) then
@@ -161,6 +177,69 @@ implementation
                         replaceoper:=0;
                     end
                   else
+=======
+=======
+                begin 
+>>>>>>> graemeg/fixes_2_2
+=======
+                begin 
+>>>>>>> origin/fixes_2_2
+                  { We can handle opcodes with 2 and 3 operands the same way. The opcodes
+                    with 3 registers are shrd/shld, where the 3rd operand is const or CL,
+                    that doesn't need spilling.
+                    However, due to AT&T order inside the compiler, the 3rd operand is
+                    numbered 0, so look at operand no. 1 and 2 if we have 3 operands by
+                    adding a "n". }
+                  n:=0;
+                  if ops=3 then
+                    n:=1;
+                  if (oper[n+0]^.typ=top_reg) and
+                     (oper[n+1]^.typ=top_reg) and
+<<<<<<< HEAD
+<<<<<<< HEAD
+                     ((getregtype(oper[n+0]^.reg)<>regtype) or
+                      (getregtype(oper[n+1]^.reg)<>regtype) or
+                      (get_alias(getsupreg(oper[n+0]^.reg))<>get_alias(getsupreg(oper[n+1]^.reg)))) then
+                    begin
+                      if (getregtype(oper[n+0]^.reg)=regtype) and
+                         (get_alias(getsupreg(oper[n+0]^.reg))=orgreg) then
+                        replaceoper:=0+n
+                      else if (getregtype(oper[n+1]^.reg)=regtype) and
+                         (get_alias(getsupreg(oper[n+1]^.reg))=orgreg) then
+                        replaceoper:=1+n;
+                    end
+                  else if (oper[n+0]^.typ=top_reg) and
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                     (get_alias(getsupreg(oper[n+0]^.reg))<>get_alias(getsupreg(oper[n+1]^.reg))) then
+                    begin
+                      { One of the arguments shall be able to be replaced }
+                      if (getregtype(oper[n+0]^.reg)=regtype) and
+                         (get_alias(getsupreg(oper[n+0]^.reg))=orgreg) then
+                        replaceoper:=0+n
+                      else
+                        if (getregtype(oper[n+1]^.reg)=regtype) and
+                           (get_alias(getsupreg(oper[n+1]^.reg))=orgreg) then
+                          replaceoper:=1+n
+<<<<<<< HEAD
+                      else
+                        internalerror(200704281);
+                    end;
+                  if (oper[n+0]^.typ=top_reg) and
+>>>>>>> graemeg/fixes_2_2
+                     (oper[n+1]^.typ=top_const) then
+                    begin
+                      if (getregtype(oper[0+n]^.reg)=regtype) and
+                         (get_alias(getsupreg(oper[0+n]^.reg))=orgreg) then
+                        replaceoper:=0+n
+                      else
+                        internalerror(200704282);
+<<<<<<< HEAD
+                    end
+                  else if (oper[n+0]^.typ=top_const) and
+                     (oper[n+1]^.typ=top_reg) then
+>>>>>>> graemeg/cpstrnew
                     begin
                       { We can handle opcodes with 2 and 3-op imul/shrd/shld the same way, where the 3rd operand is const or CL,
                         that doesn't need spilling.
@@ -320,19 +399,158 @@ implementation
                                 replaceoper:=-1;
                             end;
                           end;
+=======
+=======
+                      else
+                        internalerror(200704281);
+                    end;
+                  if (oper[n+0]^.typ=top_reg) and
+                     (oper[n+1]^.typ=top_const) then
+                    begin
+                      if (getregtype(oper[0+n]^.reg)=regtype) and
+                         (get_alias(getsupreg(oper[0+n]^.reg))=orgreg) then
+                        replaceoper:=0+n
+                      else
+                        internalerror(200704282);
+>>>>>>> origin/fixes_2_2
+                    end;
+                  if (oper[n+0]^.typ=top_const) and
+                     (oper[n+1]^.typ=top_reg) then
+                    begin
+                      if (getregtype(oper[1+n]^.reg)=regtype) and
+                         (get_alias(getsupreg(oper[1+n]^.reg))=orgreg) then
+                        replaceoper:=1+n
+                      else
+                        internalerror(200704283);
+                    end;
+                  case replaceoper of
+                    0 :
+                      begin
+                        { Some instructions don't allow memory references
+                          for source }
+                        case instr.opcode of
+                          A_BT,
+                          A_BTS,
+                          A_BTC,
+                          A_BTR :
+                            replaceoper:=-1;
+                        end;
+                      end;
+                    1 :
+                      begin
+                        { Some instructions don't allow memory references
+                          for destination }
+                        case instr.opcode of
+                          A_MOVZX,
+                          A_MOVSX,
+                          A_MULSS,
+                          A_MULSD,
+                          A_SUBSS,
+                          A_SUBSD,
+                          A_ADDSD,
+                          A_ADDSS,
+                          A_DIVSD,
+                          A_DIVSS,
+                          A_SHLD,
+                          A_SHRD,
+                          A_CVTDQ2PD,
+                          A_CVTDQ2PS,
+                          A_CVTPD2DQ,
+                          A_CVTPD2PI,
+                          A_CVTPD2PS,
+                          A_CVTPI2PD,
+                          A_CVTPS2DQ,
+                          A_CVTPS2PD,
+                          A_CVTSD2SI,
+                          A_CVTSD2SS,
+                          A_CVTSI2SD,
+                          A_CVTSS2SD,
+                          A_CVTTPD2PI,
+                          A_CVTTPD2DQ,
+                          A_CVTTPS2DQ,
+                          A_CVTTSD2SI,
+                          A_CVTPI2PS,
+                          A_CVTPS2PI,
+                          A_CVTSI2SS,
+                          A_CVTSS2SI,
+                          A_CVTTPS2PI,
+                          A_CVTTSS2SI,
+                          A_IMUL,
+                          A_XORPD,
+                          A_XORPS,
+                          A_ORPD,
+                          A_ORPS,
+                          A_ANDPD,
+                          A_ANDPS:
+                            replaceoper:=-1;
+                        end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                       end;
                     end;
                 end;
              end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef x86_64}
+=======
+            {$ifdef x86_64}
+>>>>>>> graemeg/cpstrnew
+=======
+            {$ifdef x86_64}
+>>>>>>> graemeg/cpstrnew
+=======
+            {$ifdef x86_64}
+>>>>>>> graemeg/cpstrnew
+=======
+            {$ifdef x86_64}
+>>>>>>> origin/cpstrnew
+=======
+            {$ifdef x86_64}
+>>>>>>> origin/fixes_2.4
             { 32 bit operations on 32 bit registers on x86_64 can result in
               zeroing the upper 32 bits of the register. This does not happen
               with memory operations, so we have to perform these calculations
               in registers.  }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             if (opsize=S_L) then
               replaceoper:=-1;
 {$endif x86_64}
+=======
+            if (instr.opsize=S_L) then
+              replaceoper:=-1;
+            {$endif x86_64}
+>>>>>>> graemeg/cpstrnew
+=======
+            if (instr.opsize=S_L) then
+              replaceoper:=-1;
+            {$endif x86_64}
+>>>>>>> graemeg/cpstrnew
+=======
+            if (instr.opsize=S_L) then
+              replaceoper:=-1;
+            {$endif x86_64}
+>>>>>>> graemeg/cpstrnew
+=======
+            if (instr.opsize=S_L) then
+              replaceoper:=-1;
+            {$endif x86_64}
+>>>>>>> origin/cpstrnew
+=======
+            if (instr.opsize=S_L) then
+              replaceoper:=-1;
+            {$endif x86_64}
+>>>>>>> origin/fixes_2.4
 
             { Replace register with spill reference }
             if replaceoper<>-1 then

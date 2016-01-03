@@ -38,6 +38,15 @@
 var
   dlexitproc: pointer; { atexit from loader }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure libc_exit; external name '__libc_exit';
+procedure libc_init; external name '__libc_init';
+procedure libc_setfpucw; external name '__setfpucw';
+>>>>>>> graemeg/fixes_2_2
 procedure libc_start_main; external name '__libc_start_main';
 procedure PASCALMAIN; external name 'PASCALMAIN';
 
@@ -51,6 +60,7 @@ end;
 {******************************************************************************
                        glibc 2.1 lib + profiling start/halt
  ******************************************************************************}
+{$asmmode ATT}
 
 procedure _FPC_libc21_start; assembler; nostackframe; public name '_start';
 asm
@@ -61,7 +71,22 @@ asm
 
   movl    %esp,%ebx               { Esp now points to the arguments }
   leal    4(%esp,%ecx,4),%eax     { The start of the environment is: esp+4*eax+4 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   andl    $0xfffffff0,%esp        { Align stack to 16 bytes }
+=======
+=======
+>>>>>>> origin/cpstrnew
+  andl    $0xfffffff8,%esp        { Align stack }
+>>>>>>> graemeg/cpstrnew
+=======
+  andl    $0xfffffff8,%esp        { Align stack }
+>>>>>>> graemeg/cpstrnew
+=======
+  andl    $0xfffffff8,%esp        { Align stack }
+>>>>>>> graemeg/cpstrnew
 
   {$ifdef FPC_PIC}
         pushl %edx
@@ -71,7 +96,23 @@ asm
 	call .Lpiclab
 .Lpiclab:
         popl  %ebx
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         addl  $_GLOBAL_OFFSET_TABLE_+1,%ebx
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> graemeg/cpstrnew
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> graemeg/cpstrnew
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> graemeg/cpstrnew
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> origin/cpstrnew
 
 	movl  dlexitproc@GOT(%ebx),%ecx
 	movl  %edx,(%ecx)
@@ -100,7 +141,23 @@ asm
         call  .Lpiclab2
 .Lpiclab2:
         popl  %ebx
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         addl  $_GLOBAL_OFFSET_TABLE_+1,%ebx
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> graemeg/cpstrnew
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> graemeg/cpstrnew
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> graemeg/cpstrnew
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> origin/cpstrnew
 	movl  initialstkptr@GOT(%ebx),%ebx
   	movl  %esp,(%ebx)
 	popl  %ebx
@@ -134,11 +191,43 @@ end;
 
 procedure _FPC_libc21_haltproc(e: longint); cdecl; assembler; public name '_haltproc';
 asm
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+.Lhaltproc:
+>>>>>>> graemeg/cpstrnew
+=======
+.Lhaltproc:
+>>>>>>> graemeg/cpstrnew
+=======
+.Lhaltproc:
+>>>>>>> graemeg/cpstrnew
+=======
+.Lhaltproc:
+>>>>>>> origin/cpstrnew
   {$ifdef FPC_PIC}
         call  .Lpiclab
 .Lpiclab:
         popl  %ebx
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         addl  $_GLOBAL_OFFSET_TABLE_+1,%ebx
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> graemeg/cpstrnew
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> graemeg/cpstrnew
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> graemeg/cpstrnew
+=======
+        addl  $_GLOBAL_OFFSET_TABLE_,%ebx
+>>>>>>> origin/cpstrnew
         movl  dlexitproc@GOT(%ebx),%eax
         movl  (%eax),%eax
   {$else FPC_PIC}
@@ -149,6 +238,10 @@ asm
   call    *%eax
 .Lnodlexitproc:
   movl    syscall_nr_exit_group,%eax
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   movl    e,%ebx
   int     $0x80
 
@@ -157,4 +250,66 @@ asm
 
   int     $0x80
   jmp     .Lnodlexitproc
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+{$ifdef FPC_PIC}
+  call    .Lpiclab2
+.Lpiclab2:
+  popl    %ebx
+  addl    $_GLOBAL_OFFSET_TABLE_,%ebx
+  movl    ExitCode@GOT(%ebx),%ebx
+ {$if sizeof(ExitCode)=2}
+  movzwl  (%ebx),%ebx
+ {$else}
+  mov     (%ebx),%ebx
+ {$endif}
+{$else FPC_PIC}
+ {$if sizeof(ExitCode)=2}
+  movzwl  ExitCode,%ebx
+ {$else}
+  mov     ExitCode,%ebx
+ {$endif}
+{$endif FPC_PIC}
+
+  int     $0x80
+  movl    syscall_nr_exit,%eax
+
+{$ifdef FPC_PIC}
+  call    .Lpiclab3
+.Lpiclab3:
+  popl    %ebx
+  addl    $_GLOBAL_OFFSET_TABLE_,%ebx
+  movl    ExitCode@GOT(%ebx),%ebx
+ {$if sizeof(ExitCode)=2}
+  movzwl  (%ebx),%ebx
+ {$else}
+  mov     (%ebx),%ebx
+ {$endif}
+{$else FPC_PIC}
+
+ {$if sizeof(ExitCode)=2}
+  movzwl  ExitCode,%ebx
+ {$else}
+  mov     ExitCode,%ebx
+ {$endif}
+{$endif FPC_PIC}
+
+  int     $0x80
+  jmp     .Lhaltproc
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;

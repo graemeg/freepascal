@@ -1,5 +1,9 @@
 { don't edit, this file is generated from armreg.dat }
 0,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 110,
 129,
 92,
@@ -25,6 +29,18 @@
 100,
 101,
 102,
+=======
+89,
+>>>>>>> graemeg/cpstrnew
+=======
+89,
+>>>>>>> graemeg/cpstrnew
+=======
+89,
+>>>>>>> graemeg/cpstrnew
+=======
+89,
+>>>>>>> origin/cpstrnew
 27,
 30,
 57,
@@ -67,6 +83,10 @@
 22,
 23,
 24,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 122,
 127,
 90,
@@ -81,6 +101,18 @@
 119,
 118,
 116,
+=======
+90,
+>>>>>>> graemeg/cpstrnew
+=======
+90,
+>>>>>>> graemeg/cpstrnew
+=======
+90,
+>>>>>>> graemeg/cpstrnew
+=======
+90,
+>>>>>>> origin/cpstrnew
 1,
 2,
 11,

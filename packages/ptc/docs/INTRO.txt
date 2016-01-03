@@ -1,56 +1,40 @@
-For more detailed documentation please see the API reference found in the
+For more complete documentation please see the API reference found in the
 'api-reference' directory (as well as online on the official PTCPas website).
 
 This will explain the basics of creating a simple graphics application using
 PTC for FPC. :)
 
-(If you aren't familiar with Delphi classes and interfaces, please refer to the
-Free Pascal Reference guide, Chapter 6 - Classes and Chapter 7 - Interfaces.)
+(If you aren't familiar with Delphi classes, please refer to the Free Pascal
+Reference guide, Chapter 5 - Classes.)
 
-There are 3 interfaces you should get familiar with: IPTCFormat, IPTCSurface
-and IPTCConsole.
+There are 3 classes you should get familiar with: TPTCFormat, TPTCSurface and
+TPTCConsole.
 
-Ok, what is IPTCFormat? It basically describes a pixel format. To create a
+Ok, what is TPTCFormat? It basically describes a pixel format. To create a
 pixel format for 32 bpp use:
-
-var
-  Format: IPTCFormat;
-begin
-  Format := TPTCFormatFactory.CreateNew(32, $FF0000, $FF00, $FF);
+  Format := TPTCFormat.Create(32, $FF0000, $FF00, $FF);
 
 32 is the number of bits per pixel. (Only formats with 8, 16, 24 and 32 bits
 per pixel are supported). $FF0000, $FF00 and $FF are the red, green and blue
 masks.
 
-Note that you no longer need to call Format.Free. The object is reference
-counted and will be freed automatically when it's no longer needed. This also
-applies to all the other PTC objects created by their TPTC*Factory.CreateNew
-methods.
-
 
 Now, when you have created your favourite pixel format, you should create a
 surface:
-var
-  Surface: IPTCSurface;
-begin
-  Surface := TPTCSurfaceFactory.CreateNew(320, 200, Format);
+  Surface := TPTCSurface.Create(320, 200, Format);
 
 This will create a buffer in RAM to hold a single 320x200 frame in the given
-format. Note that surfaces, created by TPTCSurfaceFactory.CreateNew are always
-created in normal RAM, not video RAM, so it's not a problem if your video card
-doesn't have enough memory for it, or doesn't support the exact resolution that
-you requested. You just create a IPTCConsole and open it in whatever mode is
-supported by the hardware and then PTC will blit the image stored in
-IPTCSurface to the console, doing any conversions that are necessary (i.e.
-converting to another pixel format, stretch the image to another resolution,
-etc...).
+format. Note that TPTCSurface is always created in normal RAM, not video RAM,
+so it's not a problem if your video card doesn't have enough memory for it,
+or doesn't support e.g. 320x200x32bpp. You just create a TPTCConsole and open
+it in whatever mode is supported by the hardware and then PTC will blit the
+image stored in TPTCSurface to the console, doing any conversions that are
+necessary (i.e. converting to another pixel format, stretching the image to
+another resolution, etc...).
 
 
-How to use this IPTCConsole? Easy! First create it:
-var
-  Console: IPTCConsole;
-begin
-  Console := TPTCConsoleFactory.CreateNew;
+How to use this TPTCConsole? Easy! First create it:
+  Console := TPTCConsole.Create;
 
 This still doesn't do anything, just allocates memory and initializes stuff.
 Then you switch to the desired mode:
@@ -62,9 +46,9 @@ to switch to the best mode. If (for example) your card doesn't support
 To see the actual mode that PTC has set use these properties:
   Console.Width Console.Height and Console.Format
 
-Ok, now that you have created an IPTCSurface and opened an IPTCConsole, what to
-do next? Draw stuff... The lock function of IPTCSurface will give you a pointer
-to its internal buffer.
+Ok, now that you have created a TPTCSurface and opened a TPTCConsole, what to
+do next? Draw stuff... The lock function of TPTCSurface will give you a pointer
+to the internal buffer.
   ptr := Surface.Lock;
 
 Now you can draw your frame in the buffer, pointed by ptr. Note that this buffer
@@ -77,10 +61,10 @@ When you're done you have to unlock the surface and copy it to the console:
 
 The Surface.Copy(Console) will do the conversion (if necessary) to the actual
 mode. Console.Update will actually show the new frame (if the console driver
-supports multiple video pages and you have enough video RAM for that, etc... :) ).
+supports multiple pages and you have enough video RAM for that, etc... :) ).
 
-See the example programs for additional details. (keyboard and mouse input,
-high resolution timers - they're pretty much straightforward)
+See the example programs for additional details. (keyboard input, high
+resolution timers - they're pretty much straightforward)
 
 Enjoy!
 

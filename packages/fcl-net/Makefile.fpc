@@ -4,10 +4,121 @@
 
 [package]
 name=fcl-net
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units_linux=netdb resolve ssockets fpsock cnetdb
+units_freebsd=netdb resolve ssockets fpsock cnetdb
+units_netbsd=netdb resolve ssockets fpsock 
+units_openbsd=netdb resolve ssockets fpsock
+units_darwin=netdb resolve ssockets 
+units_iphonesim=netdb resolve ssockets 
+units_solaris=netdb resolve ssockets 
+units_qnx=netdb resolve ssockets 
+units_beos=netdb resolve ssockets 
+units_haiku=netdb resolve ssockets 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=servlets
+units_linux=netdb resolve ssockets fpsock httpbase httpclient httpsvlt xmlrpc
+units_freebsd=netdb resolve ssockets fpsock httpbase httpclient httpsvlt xmlrpc
+units_netbsd=netdb resolve ssockets fpsock httpbase httpclient httpsvlt xmlrpc
+units_openbsd=netdb resolve ssockets fpsock httpbase httpclient httpsvlt xmlrpc
+units_darwin=netdb resolve ssockets 
+units_solaris=netdb resolve ssockets 
+units_qnx=netdb resolve ssockets 
+units_beos=netdb resolve ssockets 
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+units_emx=resolve ssockets 
+units_os2=resolve ssockets 
+units_win32=resolve ssockets 
+units_win64=resolve ssockets 
+units_wince=resolve ssockets 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+programs_linux=mkxmlrpc
+programs_freebsd=mkxmlrpc
+programs_darwin=mkxmlrpc
+programs_solaris=mkxmlrpc
+programs_netbsd=mkxmlrpc
+programs_openbsd=mkxmlrpc
+rsts_linux=fpsock httpsvlt mkxmlrpc
+rsts_freebsd=fpsock httpsvlt mkxmlrpc
+rsts_darwin=fpsock httpsvlt mkxmlrpc
+rsts_netbsd=fpsock httpsvlt mkxmlrpc
+rsts_openbsd=fpsock httpsvlt mkxmlrpc
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+
+[require]
+packages=fcl-base fcl-xml fcl-passrc fcl-async
+
+[compiler]
+options=-S2h
+includedir=src/$(OS_TARGET)
+includedir_linux=src/unix
+includedir_freebsd=src/unix
+includedir_darwin=src/unix
+<<<<<<< HEAD
+<<<<<<< HEAD
+includedir_iphonesim=src/unix
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+includedir_netbsd=src/unix
+includedir_openbsd=src/unix
+includedir_solaris=src/unix
+includedir_qnx=src/unix
+includedir_beos=src/unix
+<<<<<<< HEAD
+<<<<<<< HEAD
+includedir_haiku=src/unix
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+includedir_emx=src/os2
+includedir_win32=src/win
+includedir_win64=src/win
+includedir_wince=src/win
+sourcedir=src/$(OS_TARGET) src
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y

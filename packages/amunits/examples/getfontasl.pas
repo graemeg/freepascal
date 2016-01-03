@@ -1,6 +1,6 @@
 PROGRAM GetFontAsltest;
 
-uses easyasl,amsgbox,amigautils;
+uses easyasl,msgbox,amigautils;
 
 {
    An example to get a font with easyasl.

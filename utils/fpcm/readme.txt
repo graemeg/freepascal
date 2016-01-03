@@ -8,6 +8,8 @@ Some tips:
 - To regenerate the complete makefile tree
   for all targets (under UNIX): 
     fpcmake -Tall -w `find . -name Makefile.fpc`
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   To avoid svn conflicts for each locally changed Makefile
 instead of using the current date for fpcmake executable,
@@ -20,3 +22,7 @@ is modified, revision.inc content is modified.
 revision.inc content even on systems that do not have
 svnversion binary or on exported trees.
 PM 2013-04-26
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

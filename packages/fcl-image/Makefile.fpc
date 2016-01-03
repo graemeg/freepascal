@@ -4,10 +4,74 @@
 
 [package]
 name=fcl-image
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+=======
+version=2.2.5
+>>>>>>> graemeg/fixes_2_2
+=======
+version=2.2.5
+>>>>>>> origin/fixes_2_2
+
+[target]
+units=fpimgcmn fpimage pngcomn fpreadpng fpwritepng fpreadxpm fpwritexpm \
+      clipping fpcanvas pixtools fppixlcanv fpimgcanv pscanvas fpwritebmp \
+      fpreadbmp bmpcomn fpreadpnm fpwritepnm fpreadjpeg fpwritejpeg \
+      pcxcomn fpreadpcx fpwritepcx fptiffcmn fpreadtiff fpwritetiff \
+      targacmn fpreadtga fpwritetga ellipses fpcolhash fpditherer fpquantizer \ 
+      extinterpolation fpreadgif fpreadpsd xwdfile fpreadxwd
+units_win32=freetypeh freetype ftfont
+<<<<<<< HEAD
+units_win64=freetypeh freetype ftfont
+=======
+>>>>>>> origin/fixes_2.4
+units_beos=freetypeh freetype ftfont
+units_haiku=freetypeh freetype ftfont
+units_linux=freetypeh freetype ftfont
+units_freebsd=freetypeh freetype ftfont
+units_darwin=freetypeh freetype ftfont
+<<<<<<< HEAD
+<<<<<<< HEAD
+units_iphonesim=freetypeh freetype ftfont
+units_solaris=freetypeh freetype ftfont
+rsts=pscanvas
+exampledirs=examples
+>>>>>>> graemeg/cpstrnew
 
 [require]
 packages=rtl fpmkunit
+=======
+units_solaris=freetypeh freetype ftfont
+rsts=pscanvas
+exampledirs=examples
+
+[require]
+=======
+units_solaris=freetypeh freetype ftfont
+rsts=pscanvas
+exampledirs=examples
+
+[require]
+>>>>>>> origin/fixes_2_2
+packages=pasjpeg paszlib fcl-base
+
+[compiler]
+options=-S2h
+sourcedir=src
+>>>>>>> graemeg/fixes_2_2
 
 [install]
 fpcpackage=y

@@ -1,4 +1,4 @@
-Program Bezier2;
+Program Bezier;
 
 
 {  This program draws Bezier curves in the slow, simple, recursive
@@ -26,7 +26,7 @@ Program Bezier2;
    nils.sjoholm@mailbox.swipnet.se
 }
 
-uses exec, intuition, agraphics, utility, systemvartags;
+uses exec, intuition, graphics, utility, pastoc, systemvartags;
 
 type
     PointRec = Record
@@ -72,7 +72,7 @@ end;
 
 Procedure DrawLine;
 begin
-    GfxMove(rp, Points[PointCount].X, Points[PointCount].Y);
+    Move(rp, Points[PointCount].X, Points[PointCount].Y);
     Draw(rp, LastX, LastY);
 end;
 
@@ -133,10 +133,10 @@ var
     end;
 
 begin
-    GfxMove(rp, 252, 30);
-    GfxText(rp, 'Enter points by pressing the left mouse button', 46);
-    GfxMove(rp, 252, 40);
-    GfxText(rp, 'Double click on the last point to begin drawing', 47);
+    Move(rp, 252, 30);
+    GText(rp, 'Enter points by pressing the left mouse button', 46);
+    Move(rp, 252, 40);
+    GText(rp, 'Double click on the last point to begin drawing', 47);
     ModifyIDCMP(w, IDCMP_CLOSEWINDOW or IDCMP_MOUSEBUTTONS or IDCMP_MOUSEMOVE);
     SetDrMd(rp, COMPLEMENT);
     PointCount := 0;
@@ -223,7 +223,7 @@ begin
     increment := 0.01; { This could be a function of PointCount }
     t := 0.0;
     tprime := 1.0;
-    GfxMove(rp, Trunc(BezierX(Pred(PointCount), 1)),
+    Move(rp, Trunc(BezierX(Pred(PointCount), 1)),
              Trunc(BezierY(Pred(PointCount), 1)));
     t := t + increment;
     tprime := 1.0 - t;

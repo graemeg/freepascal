@@ -1,4 +1,6 @@
 Type
+<<<<<<< HEAD
+<<<<<<< HEAD
   HKEY = THandle;
   PHKEY = ^HKEY;
   
@@ -32,6 +34,38 @@ Const
 {$else}
 
 Const
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  LPDWORD = ^DWord;
+  LPVOID  = Pointer;
+  WINBOOL = LongBool;
+  LPCSTR  = PChar;
+  LPSTR   = Pchar;
+  LONG    = LongInt;
+  LPBYTE  = ^Byte;
+
+  ACCESS_MASK = DWORD;
+       REGSAM = ACCESS_MASK;
+
+  SECURITY_ATTRIBUTES = record
+    nLength : DWORD;
+    lpSecurityDescriptor : LPVOID;
+    bInheritHandle : WINBOOL;
+  end;
+  LPSECURITY_ATTRIBUTES = ^SECURITY_ATTRIBUTES;
+
+
+  HKEY = THandle;
+  PHKEY = ^HKEY;
+
+
+
+Const
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   HKEY_CLASSES_ROOT     = HKEY($80000000);
   HKEY_CURRENT_USER     = HKEY($80000001);
   HKEY_LOCAL_MACHINE    = HKEY($80000002);
@@ -50,7 +84,32 @@ Const
   KEY_READ               = $20019;
   KEY_SET_VALUE          = 2;
   KEY_WRITE              = $20006;
+<<<<<<< HEAD
   KEY_WOW64_64KEY        = $100;
   KEY_WOW64_32KEY        = $200;
   
 {$endif windows}
+=======
+
+  REG_BINARY                     = 3;
+  REG_DWORD                      = 4;
+  REG_DWORD_LITTLE_ENDIAN        = 4;
+  REG_DWORD_BIG_ENDIAN           = 5;
+  REG_EXPAND_SZ                  = 2;
+  REG_FULL_RESOURCE_DESCRIPTOR   = 9;
+  REG_LINK                       = 6;
+  REG_MULTI_SZ                   = 7;
+  REG_NONE                       = 0;
+  REG_RESOURCE_LIST              = 8;
+  REG_RESOURCE_REQUIREMENTS_LIST = 10;
+  REG_SZ                         = 1;
+
+  REG_OPTION_VOLATILE            = 1;
+  REG_OPTION_NON_VOLATILE        = 0;
+  REG_CREATED_NEW_KEY            = 1;
+  REG_OPENED_EXISTING_KEY        = 2;
+
+  ERROR_SUCCESS = 0;
+
+
+>>>>>>> graemeg/fixes_2_2

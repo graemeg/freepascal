@@ -72,10 +72,35 @@ var
     _title: NSString;
     _itemArray: id;
     _extra: id;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __mFlags: record
       case byte of
        0: (_anonbitfield_NSMenu0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __mFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSMenu0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         noAutoenable: 0..1;
         inMain: 0..1;
         internalPerformAction: 0..1;
@@ -92,7 +117,19 @@ var
         invertedCMPluginTypes: 0..((1 shl 2)-1);
         allowsDifferentSelection: 0..1;
         RESERVED: 0..((1 shl 15)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _name: NSString;

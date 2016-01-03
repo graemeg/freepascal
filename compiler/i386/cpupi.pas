@@ -45,7 +45,15 @@ unit cpupi;
     uses
       cutils,
       systems,globals,globtype,
+<<<<<<< HEAD
+<<<<<<< HEAD
       cgobj,tgobj,paramgr,
+=======
+      cgobj,tgobj,
+>>>>>>> graemeg/fixes_2_2
+=======
+      cgobj,tgobj,
+>>>>>>> origin/fixes_2_2
       cpubase,
       cgutils,
       symconst;
@@ -76,8 +84,22 @@ unit cpupi;
       begin
         { align to 4 bytes at least
           otherwise all those subl $2,%esp are meaningless PM }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if target_info.stackalign<=4 then
           result:=Align(tg.direction*tg.lasttemp,min(current_settings.alignment.localalignmax,4))
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        if not(target_info.system in [system_i386_darwin,system_i386_iphonesim]) then
+          result:=Align(tg.direction*tg.lasttemp,min(current_settings.alignment.localalignmin,4))
+>>>>>>> graemeg/cpstrnew
         else
           { aligned during stack frame allocation, because also depends number
             of saved registers }
@@ -97,7 +119,31 @@ unit cpupi;
 
     procedure ti386procinfo.allocate_got_register(list: tasmlist);
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if (cs_create_pic in current_settings.moduleswitches) then
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        if (target_info.system in [system_i386_darwin,system_i386_iphonesim]) and
+           (cs_create_pic in current_settings.moduleswitches) then
+>>>>>>> graemeg/cpstrnew
+=======
+        if (target_info.system = system_i386_darwin) and
+           (cs_create_pic in current_settings.moduleswitches) then
+>>>>>>> graemeg/fixes_2_2
+=======
+        if (target_info.system = system_i386_darwin) and
+           (cs_create_pic in current_settings.moduleswitches) then
+>>>>>>> origin/fixes_2_2
           begin
             got := cg.getaddressregister(list);
           end;

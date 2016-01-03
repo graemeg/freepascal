@@ -53,9 +53,21 @@ implementation
     {$ifndef NOTARGETWII}
       ,t_wii
     {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$ifndef NOTARGETAIX}
       ,t_aix
     {$endif}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 {**************************************
              Assemblers

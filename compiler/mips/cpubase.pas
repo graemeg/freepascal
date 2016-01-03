@@ -112,14 +112,34 @@ unit cpubase;
     type
       TAsmCond=(C_None,
         C_EQ, C_NE, C_LT, C_LE, C_GT, C_GE, C_LTU, C_LEU, C_GTU, C_GEU,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         C_LTZ, C_LEZ, C_GTZ, C_GEZ,
         C_COP1TRUE,
         C_COP1FALSE
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        C_FEQ,  {Equal}
+        C_FNE, {Not Equal}
+        C_FGT,  {Greater}
+        C_FLT,  {Less}
+        C_FGE, {Greater or Equal}
+        C_FLE  {Less or Equal}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
       );
 
     const
       cond2str : array[TAsmCond] of string[3]=('',
         'eq','ne','lt','le','gt','ge','ltu','leu','gtu','geu',
+<<<<<<< HEAD
         'ltz','lez','gtz','gez',
         'c1t','c1f'
       );
@@ -132,7 +152,44 @@ unit cpubase;
         False: (reg2: TRegister);
         True: (value: aint);
       end;
+=======
+        C_FEQ,  {Equal}
+        C_FNE, {Not Equal}
+        C_FGT,  {Greater}
+        C_FLT,  {Less}
+        C_FGE, {Greater or Equal}
+        C_FLE  {Less or Equal}
 
+      );
+
+=======
+      );
+
+>>>>>>> graemeg/cpstrnew
+=======
+      );
+
+>>>>>>> origin/cpstrnew
+    const
+      cond2str : array[TAsmCond] of string[3]=('',
+        'eq','ne','lt','le','gt','ge','ltu','leu','gtu','geu',
+        'feq','fne','fgt','flt','fge','fle'
+      );
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+
+=======
+        'feq','fne','fgt','flt','fge','fle'
+      );
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
 {*****************************************************************************
                                  Constants
 *****************************************************************************}
@@ -140,7 +197,33 @@ unit cpubase;
     const
       max_operands = 4;
 
+<<<<<<< HEAD
       maxintregs = 31;
+=======
+      { Constant defining possibly all registers which might require saving }
+      ALL_OTHERREGISTERS = [];
+
+      general_superregisters = [RS_R0..RS_R31];
+
+      { Table of registers which can be allocated by the code generator
+        internally, when generating the code.
+      }
+      { legend:                                                                }
+      { xxxregs = set of all possibly used registers of that type in the code  }
+      {           generator                                                    }
+      { usableregsxxx = set of all 32bit components of registers that can be   }
+      {           possible allocated to a regvar or using getregisterxxx (this }
+      {           excludes registers which can be only used for parameter      }
+      {           passing on ABI's that define this)                           }
+      { c_countusableregsxxx = amount of registers in the usableregsxxx set    }
+
+      maxintregs = 31;
+      { to determine how many registers to use for regvars }
+      maxintscratchregs = 3;
+      usableregsint = [RS_R4..RS_R10];
+      c_countusableregsint = 7;
+
+>>>>>>> graemeg/cpstrnew
       maxfpuregs = 8;
       maxaddrregs = 0;
 
@@ -176,6 +259,10 @@ unit cpubase;
                           Generic Register names
 *****************************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
       { PIC Code }
       NR_GP = NR_R28;
@@ -187,11 +274,43 @@ unit cpubase;
       NR_VMT = NR_R24;
       RS_VMT = RS_R24;
 
+=======
+      STK2_PTR = NR_R23;
+      NR_GP = NR_R28;
+>>>>>>> graemeg/cpstrnew
+=======
+      STK2_PTR = NR_R23;
+      NR_GP = NR_R28;
+>>>>>>> graemeg/cpstrnew
+=======
+      STK2_PTR = NR_R23;
+      NR_GP = NR_R28;
+>>>>>>> graemeg/cpstrnew
+=======
+      STK2_PTR = NR_R23;
+      NR_GP = NR_R28;
+>>>>>>> origin/cpstrnew
       NR_SP = NR_R29;
       NR_S8 = NR_R30;
       NR_FP = NR_R30;
       NR_RA = NR_R31;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+      RS_GP = RS_R28;
+>>>>>>> graemeg/cpstrnew
+=======
+      RS_GP = RS_R28;
+>>>>>>> graemeg/cpstrnew
+=======
+      RS_GP = RS_R28;
+>>>>>>> graemeg/cpstrnew
+=======
+      RS_GP = RS_R28;
+>>>>>>> origin/cpstrnew
       RS_SP = RS_R29;
       RS_S8 = RS_R30;
       RS_FP = RS_R30;
@@ -231,7 +350,36 @@ unit cpubase;
       NR_FPU_RESULT_REG = NR_F0;
       NR_MM_RESULT_REG  = NR_NO;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       NR_DEFAULTFLAGS = NR_NO;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      NR_TCR0 = NR_R15;
+      NR_TCR1 = NR_R3;
+
+      NR_TCR10 = NR_R20;
+      NR_TCR11 = NR_R21;
+      NR_TCR12 = NR_R18;
+      NR_TCR13 = NR_R19;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 {*****************************************************************************
                        GCC /ABI linking information
@@ -245,13 +393,38 @@ unit cpubase;
         This value can be deduced from the CALLED_USED_REGISTERS array in the
         GCC source.
       }
+<<<<<<< HEAD
       saved_standard_registers : array[0..0] of tsuperregister =
         (RS_NO);
 
       { this is only for the generic code which is not used for this architecture }
+<<<<<<< HEAD
       saved_address_registers : array[0..0] of tsuperregister = (RS_INVALID);
       saved_mm_registers : array[0..0] of tsuperregister = (RS_INVALID);
+=======
+      saved_mm_registers : array[0..0] of tsuperregister = (RS_NO);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
+=======
+      saved_standard_registers : array[0..8] of tsuperregister =
+        (RS_R16,RS_R17,RS_R18,RS_R19,RS_R20,RS_R21,RS_R22,RS_R23,RS_R30);
+        
+      { this is only for the generic code which is not used for this architecture }
+      saved_mm_registers : array[0..0] of tsuperregister = (RS_NO);
+      
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       { Required parameter alignment when calling a routine declared as
         stdcall and cdecl. The alignment value should be the one defined
         by GCC or the target ABI.
@@ -283,7 +456,29 @@ unit cpubase;
     function findreg_by_number(r:Tregister):tregisterindex;
     function std_regnum_search(const s:string):Tregister;
     function std_regname(r:Tregister):string;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function dwarf_reg(r:tregister):shortint;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+    var
+      STK2_dummy: aint;
+      STK2_Localsize: aint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
   implementation
 
@@ -307,6 +502,10 @@ unit cpubase;
 
     function cgsize2subreg(regtype: tregistertype; s:tcgsize):tsubregister;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         case regtype of
           R_FPUREGISTER:
             if s=OS_F32 then
@@ -318,6 +517,27 @@ unit cpubase;
         else
           result:=R_SUBWHOLE;
         end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        if s in [OS_64,OS_S64] then
+          cgsize2subreg:=R_SUBQ
+        else
+          cgsize2subreg:=R_SUBWHOLE;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -348,6 +568,10 @@ unit cpubase;
     function inverse_cond(const c: TAsmCond): TAsmCond; {$ifdef USEINLINE}inline;{$endif USEINLINE}
       const
         inverse: array[TAsmCond] of TAsmCond=(C_None,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         C_NE, C_EQ, C_GE, C_GT, C_LE, C_LT, C_GEU, C_GTU, C_LEU, C_LTU,
         C_GEZ, C_GTZ, C_LEZ, C_LTZ,
         C_COP1FALSE,
@@ -357,7 +581,66 @@ unit cpubase;
         result := inverse[c];
       end;      
       function findreg_by_number(r:Tregister):tregisterindex;
+=======
+        C_EQ, C_NE, C_LT, C_LE, C_GT, C_GE, C_LTU, C_LEU, C_GTU, C_GEU,
+        C_FEQ,  {Equal}
+        C_FNE, {Not Equal}
+        C_FGT,  {Greater}
+        C_FLT,  {Less}
+        C_FGE, {Greater or Equal}
+        C_FLE  {Less or Equal}
+
+        );
       begin
+        result := inverse[c];
+      end;      function findreg_by_number(r:Tregister):tregisterindex;
+>>>>>>> graemeg/cpstrnew
+      begin
+=======
+        C_EQ, C_NE, C_LT, C_LE, C_GT, C_GE, C_LTU, C_LEU, C_GTU, C_GEU,
+        C_FEQ,  {Equal}
+        C_FNE, {Not Equal}
+        C_FGT,  {Greater}
+        C_FLT,  {Less}
+        C_FGE, {Greater or Equal}
+        C_FLE  {Less or Equal}
+
+        );
+      begin
+        result := inverse[c];
+      end;      function findreg_by_number(r:Tregister):tregisterindex;
+      begin
+>>>>>>> graemeg/cpstrnew
+=======
+        C_EQ, C_NE, C_LT, C_LE, C_GT, C_GE, C_LTU, C_LEU, C_GTU, C_GEU,
+        C_FEQ,  {Equal}
+        C_FNE, {Not Equal}
+        C_FGT,  {Greater}
+        C_FLT,  {Less}
+        C_FGE, {Greater or Equal}
+        C_FLE  {Less or Equal}
+
+        );
+      begin
+        result := inverse[c];
+      end;      function findreg_by_number(r:Tregister):tregisterindex;
+      begin
+>>>>>>> graemeg/cpstrnew
+=======
+        C_EQ, C_NE, C_LT, C_LE, C_GT, C_GE, C_LTU, C_LEU, C_GTU, C_GEU,
+        C_FEQ,  {Equal}
+        C_FNE, {Not Equal}
+        C_FGT,  {Greater}
+        C_FLT,  {Less}
+        C_FGE, {Greater or Equal}
+        C_FLE  {Less or Equal}
+
+        );
+      begin
+        result := inverse[c];
+      end;      function findreg_by_number(r:Tregister):tregisterindex;
+      begin
+>>>>>>> origin/cpstrnew
         result:=rgBase.findreg_by_number_table(r,regnumber_index);
       end;
 
@@ -395,6 +678,10 @@ unit cpubase;
           result:=generic_regname(r);
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function dwarf_reg(r:tregister):shortint;
       begin
         result:=regdwarf_table[findreg_by_number(r)];
@@ -403,4 +690,25 @@ unit cpubase;
       end;
 
 begin
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+begin
+  STK2_dummy := 10;
+  STK2_Localsize := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end.

@@ -97,6 +97,7 @@ interface
           procedure ppuwrite(ppufile:tcompilerppufile);override;
           procedure buildderefimpl;override;
           procedure derefimpl;override;
+          procedure derefnode;override;
           function dogetcopy : tnode;override;
           procedure printnodetree(var t:text);override;
           procedure insertintolist(l : tnodelist);override;
@@ -241,8 +242,21 @@ implementation
          t:=self;
          if isbinaryoverloaded(t) then
            begin
+<<<<<<< HEAD
              result:=t;
              exit;
+=======
+             { we need to create a setconstn }
+             pst:=createsetconst(tsetdef(ttypenode(right).resultdef));
+             t:=csetconstnode.create(pst,ttypenode(right).resultdef);
+             dispose(pst);
+             right.free;
+             right:=t;
+             typecheckpass(right);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            end;
 
          if right.resultdef.typ<>setdef then
@@ -321,12 +335,27 @@ implementation
                  { to the rule above -> will give range check error if      }
                  { value > high(longint) if we don't take the signedness    }
                  { into account                                             }
+<<<<<<< HEAD
+<<<<<<< HEAD
                  if Tordconstnode(left).value.signed then
                    t:=cordconstnode.create(byte(tordconstnode(left).value.svalue in Tsetconstnode(right).value_set^),
                      pasbool8type,true)
                  else
                    t:=cordconstnode.create(byte(tordconstnode(left).value.uvalue in Tsetconstnode(right).value_set^),
                      pasbool8type,true);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                 if is_signed(left.resultdef) then
+                   t:=cordconstnode.create(byte(tordconstnode(left).value in Tsetconstnode(right).value_set^),
+                     booltype,true)
+                 else
+                   t:=cordconstnode.create(byte(TConstExprUInt(tordconstnode(left).value) in Tsetconstnode(right).value_set^),
+                     booltype,true);                   
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                  typecheckpass(t);
                  result:=t;
                  exit;
@@ -638,6 +667,18 @@ implementation
       end;
 
 
+    procedure tcasenode.derefnode;
+      var
+        i : integer;
+      begin
+        inherited derefnode;
+        if assigned(elseblock) then
+          elseblock.derefnode;
+        for i:=0 to blocks.count-1 do
+          pcaseblock(blocks[i])^.statement.derefnode;
+      end;
+
+
     function tcasenode.pass_typecheck : tnode;
       var
         i : integer;
@@ -671,6 +712,7 @@ implementation
 
     function tcasenode.pass_1 : tnode;
       var
+<<<<<<< HEAD
          i: integer;
          node_thenblock, node_elseblock, if_node,temp_cleanup : tnode;
          tempcaseexpr : ttempcreatenode;
@@ -737,13 +779,69 @@ implementation
             end;
           { will free its elements too because of create(true) }
           blocklist.free;
+=======
+         i  : integer;
+         node_thenblock,node_elseblock,if_node : tnode;
+         tempcaseexpr : ttempcreatenode;
+         if_block, init_block,stmt_block : tblocknode;
+         stmt : tstatementnode;
+         endlabel : tlabelnode;
+
+      function makeifblock(const labtree : pcaselabel; prevconditblock : tnode): tnode;
+        var
+          condit : tnode;
+        begin
+          if assigned(labtree^.less) then
+            result := makeifblock(labtree^.less, prevconditblock)
+          else
+            result := prevconditblock;
+
+          condit := caddnode.create(equaln, left.getcopy, labtree^._low_str.getcopy);
+
+          if (labtree^._low_str.fullcompare(labtree^._high_str)<>0) then
+            begin
+              condit.nodetype := gten;
+              condit := caddnode.create(
+                andn, condit, caddnode.create(
+                  lten, left.getcopy, labtree^._high_str.getcopy));
+            end;
+
+          result :=
+            cifnode.create(
+              condit, cgotonode.create(pcaseblock(blocks[labtree^.blockid])^.statementlabel.labsym), result);
+
+          if assigned(labtree^.greater) then
+            result := makeifblock(labtree^.greater, result);
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           typecheckpass(result);
         end;
 
       begin
          result:=nil;
          init_block:=nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          temp_cleanup:=nil;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
          expectloc:=LOC_VOID;
 
          { evalutes the case expression }
@@ -762,7 +860,19 @@ implementation
              tempcaseexpr :=
                ctempcreatenode.create(
                  left.resultdef, left.resultdef.size, tt_persistent, true);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
              temp_cleanup := ctempdeletenode.create(tempcaseexpr);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
              typecheckpass(tnode(tempcaseexpr));
 
              addstatement(stmt, tempcaseexpr);
@@ -800,11 +910,50 @@ implementation
 
          if (labels^.label_type = ltConstString) then
            begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
              if_node:=makeifblock(labels, elseblock);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+             endlabel:=clabelnode.create(cnothingnode.create,tlabelsym.create('$casestrofend'));
+             stmt_block:=internalstatements(stmt);
+             for i:=0 to blocks.count-1 do
+               begin
+                 pcaseblock(blocks[i])^.statementlabel:=clabelnode.create(cnothingnode.create,tlabelsym.create('$casestrof'));
+                 addstatement(stmt,pcaseblock(blocks[i])^.statementlabel);
+                 addstatement(stmt,pcaseblock(blocks[i])^.statement);
+                 pcaseblock(blocks[i])^.statement:=nil;
+                 addstatement(stmt,cgotonode.create(endlabel.labsym));
+               end;
+
+             firstpass(tnode(stmt_block));
+
+             if_node := makeifblock(labels, elseblock);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
              if assigned(init_block) then
                firstpass(tnode(init_block));
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
              if_block:=internalstatements(stmt);
 
              if assigned(init_block) then
@@ -814,6 +963,34 @@ implementation
                addstatement(stmt,temp_cleanup);
              result:=if_block;
              elseblock:= nil;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+             if_block := internalstatements(stmt);
+
+             if assigned(init_block) then
+               addstatement(stmt, init_block);
+
+             addstatement(stmt, if_node);
+             addstatement(stmt,cgotonode.create(endlabel.labsym));
+             addstatement(stmt, stmt_block);
+             addstatement(stmt, endlabel);
+             result := if_block;
+             elseblock := nil;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
              exit;
            end;
 
@@ -1076,7 +1253,19 @@ implementation
                begin
                  dispose(hcaselabel);
                  Message(parser_e_double_caselabel);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                  result:=nil;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                end
           end;
 
@@ -1114,7 +1303,19 @@ implementation
               hcaselabel^._high_str.free;
               dispose(hcaselabel);
               Message(parser_e_double_caselabel);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               result:=nil;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
             end;
         end;
 

@@ -155,6 +155,19 @@ type
     _CLASS,
     _CONST,
     _EQUAL,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    _FALSE,
+>>>>>>> graemeg/cpstrnew
     _FAR16,
     _FINAL,
     _INDEX,
@@ -204,7 +217,19 @@ type
     _PRIVATE,
     _PROGRAM,
     _R12BASE,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _RTLPROC,
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     _SECTION,
     _STDCALL,
     _SYSCALL,
@@ -226,7 +251,19 @@ type
     _MULTIPLY,
     _MWPASCAL,
     _NEGATIVE,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _NORETURN,
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     _NOTEQUAL,
     _OPERATOR,
     _OPTIONAL,
@@ -295,6 +332,10 @@ type
     _RESOURCESTRING,
     _LESSTHANOREQUAL,
     _GREATERTHANOREQUAL
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   );
 
   { sub_expr(opmultiply) is need to get -1 ** 4 to be
@@ -304,19 +345,43 @@ type
     opaddition,
     opmultiply,
     oppower
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   );
 
 const
   tokenlenmin = 1;
   tokenlenmax = 18;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   postfixoperator_tokens = [_CARET,_POINT,_LECKKLAMMER];
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
   { last operator which can be overloaded, the first_overloaded should
     be declared directly after NOTOKEN }
   first_overloaded = succ(NOTOKEN);
   last_overloaded  = _OP_DEC;
   last_operator = _GENERICSPECIALTOKEN;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   highest_precedence = oppower;
 
@@ -327,6 +392,14 @@ const
        [_CARET,_SYMDIF,_STARSTAR,_STAR,_SLASH,
         _OP_AS,_OP_IS,_OP_AND,_AMPERSAND,_OP_DIV,_OP_MOD,_OP_SHL,_OP_SHR],
        [_STARSTAR] );
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 type
   tokenrec=record
@@ -350,6 +423,7 @@ const
   arraytokeninfo : ttokenarray =(
       (str:''              ;special:true ;keyword:[m_none];op:NOTOKEN),
     { Operators which can be overloaded }
+<<<<<<< HEAD
       (str:'+'             ;special:true ;keyword:[m_none];op:NOTOKEN),
       (str:'-'             ;special:true ;keyword:[m_none];op:NOTOKEN),
       (str:'*'             ;special:true ;keyword:[m_none];op:NOTOKEN),
@@ -404,6 +478,62 @@ const
       (str:'const wchar'   ;special:true ;keyword:[m_none];op:NOTOKEN),
       (str:'<'             ;special:true ;keyword:[m_none];op:NOTOKEN),
       (str:'>'             ;special:true ;keyword:[m_none];op:NOTOKEN),
+=======
+      (str:'+'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'-'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'*'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'/'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'='             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'>'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'<'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'>='            ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'<='            ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'<>'            ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'><'            ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'**'            ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'as'            ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'in'            ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'is'            ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'or'            ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'and'           ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'div'           ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'mod'           ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'not'           ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'shl'           ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'shr'           ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'xor'           ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:':='            ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'explicit'      ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'enumerator'    ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'inc'           ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'dec'           ;special:true ;keyword:m_none;op:NOTOKEN),
+    { Special chars }
+      (str:'^'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'['             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:']'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'.'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:','             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'('             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:')'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:':'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:';'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'@'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'..'            ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'...'           ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'|'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'&'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'end of file'   ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'identifier'    ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'non identifier';special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'const real'    ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'ordinal const' ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'const string'  ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'const char'    ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'const wstring' ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'const wchar'   ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'<'             ;special:true ;keyword:m_none;op:NOTOKEN),
+      (str:'>'             ;special:true ;keyword:m_none;op:NOTOKEN),
+>>>>>>> graemeg/cpstrnew
     { C like operators }
       (str:'+='            ;special:true ;keyword:[m_none];op:NOTOKEN),
       (str:'-='            ;special:true ;keyword:[m_none];op:NOTOKEN),
@@ -418,6 +548,7 @@ const
       (str:'gen. spec.'    ;special:true ;keyword:[m_none];op:NOTOKEN),
     { Normal words -- ATTENTION: These words must be sorted: }
     { first in length order, then in alphabetical order.     }
+<<<<<<< HEAD
       (str:'C'             ;special:false;keyword:[m_none];op:NOTOKEN),
       (str:'AS'            ;special:false;keyword:[m_class];op:_OP_AS),
       (str:'AT'            ;special:false;keyword:[m_none];op:NOTOKEN),
@@ -673,6 +804,210 @@ const
     'IMPLEMENTS',
     'INSTANCEOF',
     'SYNCHRONIZED'
+=======
+      (str:'C'             ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'AS'            ;special:false;keyword:m_class;op:_OP_AS),
+      (str:'AT'            ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'DO'            ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'IF'            ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'IN'            ;special:false;keyword:m_all;op:_OP_IN),
+      (str:'IS'            ;special:false;keyword:m_class;op:_OP_IS),
+      (str:'OF'            ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'ON'            ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'OR'            ;special:false;keyword:m_all;op:_OP_OR),
+      (str:'TO'            ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'ADD'           ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'AND'           ;special:false;keyword:m_all;op:_OP_AND),
+      (str:'ASM'           ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'DEC'           ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'DIV'           ;special:false;keyword:m_all;op:_OP_DIV),
+      (str:'END'           ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'FAR'           ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'FOR'           ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'INC'           ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'MOD'           ;special:false;keyword:m_all;op:_OP_MOD),
+      (str:'NIL'           ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'NOT'           ;special:false;keyword:m_all;op:_OP_NOT),
+      (str:'OUT'           ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'SET'           ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'SHL'           ;special:false;keyword:m_all;op:_OP_SHL),
+      (str:'SHR'           ;special:false;keyword:m_all;op:_OP_SHR),
+      (str:'TRY'           ;special:false;keyword:m_except;op:NOTOKEN),
+      (str:'VAR'           ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'XOR'           ;special:false;keyword:m_all;op:_OP_XOR),
+      (str:'CASE'          ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'CVAR'          ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'ELSE'          ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'EXIT'          ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'FAIL'          ;special:false;keyword:m_none;op:NOTOKEN), { only set within constructors PM }
+      (str:'FILE'          ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'GOTO'          ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'NAME'          ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'NEAR'          ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'READ'          ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'SELF'          ;special:false;keyword:m_none;op:NOTOKEN), {set inside methods only PM }
+      (str:'SYSV'          ;special:false;keyword:m_none;op:NOTOKEN),   { Syscall variation on MorphOS }
+      (str:'THEN'          ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'TRUE'          ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'TYPE'          ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'UNIT'          ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'UNIV'          ;special:false;keyword:m_mac;op:NOTOKEN),
+      (str:'USES'          ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'WITH'          ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'ALIAS'         ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'ARRAY'         ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'BEGIN'         ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'BREAK'         ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'CDECL'         ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'CLASS'         ;special:false;keyword:m_class;op:NOTOKEN),
+      (str:'CONST'         ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'EQUAL'         ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'FALSE'         ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'FAR16'         ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'FINAL'         ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'INDEX'         ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'LABEL'         ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'LOCAL'         ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'RAISE'         ;special:false;keyword:m_except;op:NOTOKEN),
+      (str:'UNTIL'         ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'WHILE'         ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'WRITE'         ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'DISPID'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'DIVIDE'        ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'DOWNTO'        ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'EXCEPT'        ;special:false;keyword:m_except;op:NOTOKEN),
+      (str:'EXPORT'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'INLINE'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'LEGACY'        ;special:false;keyword:m_none;op:NOTOKEN),   { Syscall variation on MorphOS }
+      (str:'NESTED'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'OBJECT'        ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'PACKED'        ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'PASCAL'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'PUBLIC'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'RECORD'        ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'REPEAT'        ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'RESULT'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'RETURN'        ;special:false;keyword:m_mac;op:NOTOKEN),
+      (str:'SEALED'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'STATIC'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'STORED'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'STRICT'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'STRING'        ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'SYSTEM'        ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'ASMNAME'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'CPPDECL'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'DEFAULT'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'DYNAMIC'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'EXPORTS'       ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'FINALLY'       ;special:false;keyword:m_except;op:NOTOKEN),
+      (str:'FORWARD'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'GENERIC'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'IOCHECK'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'LIBRARY'       ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'MESSAGE'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'MODULUS'       ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'PACKAGE'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'PRIVATE'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'PROGRAM'       ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'R12BASE'       ;special:false;keyword:m_none;op:NOTOKEN),   { Syscall variation on MorphOS }
+      (str:'SECTION'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'STDCALL'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'SYSCALL'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'VARARGS'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'VIRTUAL'       ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'ABSOLUTE'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'ABSTRACT'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'BASESYSV'      ;special:false;keyword:m_none;op:NOTOKEN),   { Syscall variation on MorphOS }
+      (str:'CONSTREF'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'CONTAINS'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'CONTINUE'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'CPPCLASS'      ;special:false;keyword:m_fpc;op:NOTOKEN),
+      (str:'EXPLICIT'      ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'EXTERNAL'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'FUNCTION'      ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'IMPLICIT'      ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'LESSTHAN'      ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'LOCATION'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'MULTIPLY'      ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'MWPASCAL'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'NEGATIVE'      ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'NOTEQUAL'      ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'OPERATOR'      ;special:false;keyword:m_fpc;op:NOTOKEN),
+      (str:'OPTIONAL'      ;special:false;keyword:m_none;op:NOTOKEN), { optional methods in an Objective-C protocol }
+      (str:'OVERLOAD'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'OVERRIDE'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'PLATFORM'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'POSITIVE'      ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'PROPERTY'      ;special:false;keyword:m_property;op:NOTOKEN),
+      (str:'READONLY'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'REGISTER'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'REQUIRED'      ;special:false;keyword:m_none;op:NOTOKEN), { required methods in an Objective-C protocol }
+      (str:'REQUIRES'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'RESIDENT'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'SAFECALL'      ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'SUBTRACT'      ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'SYSVBASE'      ;special:false;keyword:m_none;op:NOTOKEN),   { Syscall variation on MorphOS }
+      (str:'ASSEMBLER'     ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'BITPACKED'     ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'BITWISEOR'     ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'INHERITED'     ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'INTDIVIDE'     ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'INTERFACE'     ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'INTERRUPT'     ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'LEFTSHIFT'     ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'LOGICALOR'     ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'NODEFAULT'     ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'OBJCCLASS'     ;special:false;keyword:m_objectivec1;op:NOTOKEN),
+      (str:'OTHERWISE'     ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'PROCEDURE'     ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'PROTECTED'     ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'PUBLISHED'     ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'SOFTFLOAT'     ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'THREADVAR'     ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'WRITEONLY'     ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'BITWISEAND'    ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'BITWISEXOR'    ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'DEPRECATED'    ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'DESTRUCTOR'    ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'ENUMERATOR'    ;special:false;keyword:m_none;op:_OP_ENUMERATOR),
+      (str:'IMPLEMENTS'    ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'INTERNPROC'    ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'LOGICALAND'    ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'LOGICALNOT'    ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'LOGICALXOR'    ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'OLDFPCCALL'    ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'OPENSTRING'    ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'RIGHTSHIFT'    ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'SPECIALIZE'    ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'CONSTRUCTOR'   ;special:false;keyword:m_all;op:NOTOKEN),
+      (str:'GREATERTHAN'   ;special:false;keyword:m_none;op:NOTOKEN), { delphi operator name }
+      (str:'INTERNCONST'   ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'REINTRODUCE'   ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'SHORTSTRING'   ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'COMPILERPROC'  ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'EXPERIMENTAL'  ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'FINALIZATION'  ;special:false;keyword:m_initfinal;op:NOTOKEN),
+      (str:'NOSTACKFRAME'  ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'OBJCCATEGORY'  ;special:false;keyword:m_objectivec1;op:NOTOKEN), { Objective-C category }
+      (str:'OBJCPROTOCOL'  ;special:false;keyword:m_objectivec1;op:NOTOKEN), { Objective-C protocol }
+      (str:'WEAKEXTERNAL'  ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'DISPINTERFACE' ;special:false;keyword:m_class;op:NOTOKEN),
+      (str:'UNIMPLEMENTED' ;special:false;keyword:m_none;op:NOTOKEN),
+      (str:'IMPLEMENTATION';special:false;keyword:m_all;op:NOTOKEN),
+      (str:'INITIALIZATION';special:false;keyword:m_initfinal;op:NOTOKEN),
+      (str:'RESOURCESTRING';special:false;keyword:m_all;op:NOTOKEN),
+      (str:'LESSTHANOREQUAL';special:false;keyword:m_none;op:NOTOKEN),    { delphi operator name }
+      (str:'GREATERTHANOREQUAL';special:false;keyword:m_none;op:NOTOKEN)  { delphi operator name }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   );
 
   jvmtokenlenmin = 3;

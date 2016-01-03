@@ -38,13 +38,13 @@ Function XF86DGAQueryVersion(
     dpy : PDisplay;
     majorVersion : Pcint;
     minorVersion : Pcint
-  ) : TBoolResult; CDecl; External libXxf86dga;
+  ) : TBool; CDecl; External libXxf86dga;
 
 Function XF86DGAQueryExtension(
     dpy : PDisplay;
     event_base : Pcint;
     error_base : Pcint
-  ) : TBoolResult; CDecl; External libXxf86dga;
+  ) : TBool; CDecl; External libXxf86dga;
 
 Function XF86DGAGetVideoLL(
     dpy : PDisplay;
@@ -122,4 +122,4 @@ Function XF86DGAViewPortChanged(
     dpy : PDisplay;
     screen : cint;
     n : cint
-  ) : TBoolResult; CDecl; External libXxf86dga;
+  ) : TBool; CDecl; External libXxf86dga;

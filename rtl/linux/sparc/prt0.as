@@ -104,6 +104,8 @@ _start:
 .globl  _haltproc
 .type   _haltproc,@function
 _haltproc:
+<<<<<<< HEAD
+<<<<<<< HEAD
         save    %o6,-96,%o6
 .ifdef PIC
         call   1f
@@ -130,6 +132,15 @@ _haltproc:
         unimp                           /* Die very horribly if exit returns.  */
 
 .size _haltproc,.-_haltproc
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	mov	188, %g1			/* "exit_group" system call */
+	ta	0x10			/* dot the system call */
+	nop				/* delay slot */
+	/* Die very horribly if exit returns.  */
+	unimp
+>>>>>>> graemeg/fixes_2_2
 
 
         .comm __stkptr,4

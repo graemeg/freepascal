@@ -34,6 +34,10 @@ unit iso7185;
     Function Eoln(Var t: Text): Boolean;
     Function Eoln:Boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Procedure Page;
     Procedure Page(Var t: Text);
 
@@ -60,6 +64,31 @@ unit iso7185;
         Assign(t,'fpc_'+HexStr(NextIndex,4)+'.tmp');
         Inc(NextIndex);
 {$endif FPC_HAS_FEATURE_RANDOM}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  implementation
+
+  {$i textrec.inc}
+
+{$i-}
+    procedure DoAssign(var t : Text);
+      begin
+        Assign(t,'fpc_'+HexStr(random(1000000000),8)+'.tmp');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -91,6 +120,10 @@ unit iso7185;
       var
         OldCtrlZMarksEof : Boolean;
       Begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         { not sure if this is correct, but we are always at eof when
           writing to a file }
         if TextRec(t).mode=fmOutput then
@@ -102,6 +135,27 @@ unit iso7185;
             Eof:=System.Eof(t);
             CtrlZMarksEof:=OldCtrlZMarksEOF;
           end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        OldCtrlZMarksEof:=CtrlZMarksEOF;
+        CtrlZMarksEof:=false;
+        Eof:=System.Eof(t);
+        CtrlZMarksEof:=OldCtrlZMarksEOF;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -127,6 +181,10 @@ unit iso7185;
         Eoln:=Eoln(Input);
       End;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     Procedure Page;[IOCheck];
       begin
@@ -188,3 +246,29 @@ begin
   Filemode:=0;
 end.
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+begin
+  { we shouldn't do this because it might confuse user programs, but for now it
+    is good enough to get pretty unique tmp file names }
+  Randomize;
+end.
+
+
+
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

@@ -6,7 +6,15 @@ type
   tr = packed record
     l: longint;
     case byte of
+<<<<<<< HEAD
+<<<<<<< HEAD
       0: (x: longint);
+=======
+      0: (l: longint);
+>>>>>>> graemeg/fixes_2_2
+=======
+      0: (l: longint);
+>>>>>>> origin/fixes_2_2
       1: (e: ta);
   end;
 

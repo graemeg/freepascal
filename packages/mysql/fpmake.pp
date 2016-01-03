@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('mysql');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ShortName:='mysq';
 {$ifdef ALLPACKAGES}
     P.Directory:=ADirectory;
@@ -21,6 +23,18 @@ begin
     P.SourcePath.Add('src');
     P.IncludePath.Add('src');
     P.OSes := AllUnixOSes+AllWindowsOSes-[qnx];
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='mysql';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     T:=P.Targets.AddUnit('my4_sys.pp');
     T:=P.Targets.AddUnit('mysql3_comdyn.pp');
@@ -55,7 +69,13 @@ begin
         begin
           AddInclude('mysql.inc');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T.ResourceStrings := True;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     T:=P.Targets.AddUnit('mysql40.pp');
       with T.Dependencies do
         begin
@@ -66,7 +86,13 @@ begin
         begin
           AddInclude('mysql.inc');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T.ResourceStrings := True;;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     T:=P.Targets.AddUnit('mysql41.pp');
       with T.Dependencies do
         begin
@@ -91,7 +117,13 @@ begin
           AddUnit('my4_sys');
           AddUnit('mysql4_comdyn');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T.ResourceStrings := True;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     T:=P.Targets.AddUnit('mysql4.pp');
       with T.Dependencies do
         begin
@@ -106,12 +138,20 @@ begin
         begin
           AddInclude('mysql.inc');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T.ResourceStrings := True;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     T:=P.Targets.AddUnit('mysql50.pp');
       with T.Dependencies do
         begin
           AddInclude('mysql.inc');
         end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     T:=P.Targets.AddUnit('mysql51.pp');
       with T.Dependencies do
         begin
@@ -153,6 +193,10 @@ begin
     P.Targets.AddExampleProgram('testdb4.pp');
     P.Targets.AddExampleProgram('mysqls.pp');
     // 'mysqls.c
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$ifndef ALLPACKAGES}
     Run;

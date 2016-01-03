@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
@@ -15,6 +17,26 @@
     <BuildModes Count="1">
       <Item1 Name="default" Default="True"/>
     </BuildModes>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <PathDelim Value="/"/>
+    <Version Value="5"/>
+    <General>
+      <SessionStorage Value="InProjectDir"/>
+      <MainUnit Value="0"/>
+      <TargetFileExt Value=""/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+    </VersionInfo>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -27,19 +49,51 @@
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
+<<<<<<< HEAD
+<<<<<<< HEAD
     <RequiredPackages Count="1">
       <Item1>
         <PackageName Value="FCL"/>
       </Item1>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    <RequiredPackages Count="2">
+      <Item1>
+        <PackageName Value="FPCUnitConsoleRunner"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+      </Item2>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     </RequiredPackages>
     <Units Count="3">
       <Unit0>
         <Filename Value="testjsonconf.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="testjsonconf"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="testjsonconf"/>
+>>>>>>> origin/fixes_2_2
       </Unit0>
       <Unit1>
         <Filename Value="jsonconftest.pp"/>
         <IsPartOfProject Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        <UnitName Value="jsonconftest"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <UnitName Value="jsonconftest"/>
+>>>>>>> origin/fixes_2_2
       </Unit1>
       <Unit2>
         <Filename Value="../src/jsonconf.pp"/>
@@ -49,6 +103,8 @@
     </Units>
   </ProjectOptions>
   <CompilerOptions>
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Version Value="11"/>
     <SearchPaths>
       <OtherUnitFiles Value="../src"/>
@@ -58,5 +114,22 @@
         <UseAnsiStrings Value="False"/>
       </SyntaxOptions>
     </Parsing>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    <Version Value="5"/>
+    <SearchPaths>
+      <OtherUnitFiles Value="../src/"/>
+    </SearchPaths>
+    <CodeGeneration>
+      <Generate Value="Faster"/>
+    </CodeGeneration>
+    <Other>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   </CompilerOptions>
 </CONFIG>

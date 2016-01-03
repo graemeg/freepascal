@@ -9,19 +9,35 @@
    to use them.
 */
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 #if defined(__BORLANDC__)
 #define long_long __int64
 #else
 #define long_long long long
 #endif
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 unsigned char global_u8bit;
 unsigned short global_u16bit;
 unsigned int global_u32bit;
 short global_s16bit;
 int global_s32bit;
+<<<<<<< HEAD
+<<<<<<< HEAD
 long_long global_s64bit;
 unsigned long_long global_u64bit;
+=======
+long long global_s64bit;
+unsigned long long global_u64bit;
+>>>>>>> graemeg/fixes_2_2
+=======
+long long global_s64bit;
+unsigned long long global_u64bit;
+>>>>>>> origin/fixes_2_2
 float global_float;
 double global_double;
 long double global_long_double;
@@ -65,7 +81,15 @@ struct _5BYTE_
 struct _7BYTE_
 {
 	unsigned char u8;
+<<<<<<< HEAD
+<<<<<<< HEAD
 	long_long s64;
+=======
+	long long s64;
+>>>>>>> graemeg/fixes_2_2
+=======
+	long long s64;
+>>>>>>> origin/fixes_2_2
 	unsigned short u16;
 };
 
@@ -102,12 +126,28 @@ void test_param_s32(int v)
 }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 void test_param_s64(long_long v)
+=======
+void test_param_s64(long long v)
+>>>>>>> graemeg/fixes_2_2
+=======
+void test_param_s64(long long v)
+>>>>>>> origin/fixes_2_2
 {
   global_s64bit = v;
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 void test_param_u64(unsigned long_long v)
+=======
+void test_param_u64(unsigned long long v)
+>>>>>>> graemeg/fixes_2_2
+=======
+void test_param_u64(unsigned long long v)
+>>>>>>> origin/fixes_2_2
 {
   global_u64bit = v;
 }
@@ -157,12 +197,28 @@ void test_array_param_s32(int v[2])
 }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 void test_array_param_s64(long_long v[2])
+=======
+void test_array_param_s64(long long v[2])
+>>>>>>> graemeg/fixes_2_2
+=======
+void test_array_param_s64(long long v[2])
+>>>>>>> origin/fixes_2_2
 {
   global_s64bit = v[1];
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 void test_array_param_u64(unsigned long_long v[2])
+=======
+void test_array_param_u64(unsigned long long v[2])
+>>>>>>> graemeg/fixes_2_2
+=======
+void test_array_param_u64(unsigned long long v[2])
+>>>>>>> origin/fixes_2_2
 {
   global_u64bit = v[1];
 }
@@ -202,7 +258,15 @@ void test_param_mixed_u32(unsigned char z, unsigned int x, unsigned char y)
 	global_u8bit = y;
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 void test_param_mixed_s64(unsigned char z, long_long x, unsigned char y)
+=======
+void test_param_mixed_s64(unsigned char z, long long x, unsigned char y)
+>>>>>>> graemeg/fixes_2_2
+=======
+void test_param_mixed_s64(unsigned char z, long long x, unsigned char y)
+>>>>>>> origin/fixes_2_2
 {
 	global_s64bit = x;
 	global_u8bit = y;
@@ -311,7 +375,15 @@ unsigned int test_function_u32()
 	return RESULT_U32BIT;
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 unsigned long_long test_function_u64()
+=======
+unsigned long long test_function_u64()
+>>>>>>> graemeg/fixes_2_2
+=======
+unsigned long long test_function_u64()
+>>>>>>> origin/fixes_2_2
 {
 	return RESULT_U64BIT;
 }
@@ -326,7 +398,15 @@ unsigned int test_function_s32()
 	return RESULT_S32BIT;
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 unsigned long_long test_function_s64()
+=======
+unsigned long long test_function_s64()
+>>>>>>> graemeg/fixes_2_2
+=======
+unsigned long long test_function_s64()
+>>>>>>> origin/fixes_2_2
 {
 	return RESULT_S64BIT;
 }

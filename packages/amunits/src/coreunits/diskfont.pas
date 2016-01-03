@@ -34,13 +34,17 @@
 
     nils.sjoholm@mailbox.swipnet.se Nils Sjoholm
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
 
 unit diskfont;
 
 INTERFACE
 
-uses exec, agraphics,utility;
+uses exec, graphics,utility;
 
 Const
 
@@ -139,13 +143,13 @@ const
 
 VAR DiskfontBase : pLibrary;
 
-FUNCTION AvailFonts(buffer : pCHAR location 'a0'; bufBytes : LONGINT location 'd0'; flags : LONGINT location 'd1') : LONGINT; syscall DiskfontBase 036;
-PROCEDURE DisposeFontContents(fontContentsHeader : pFontContentsHeader location 'a1'); syscall DiskfontBase 048;
-FUNCTION NewFontContents(fontsLock : BPTR location 'a0'; fontName : pCHAR location 'a1') : pFontContentsHeader; syscall DiskfontBase 042;
-FUNCTION NewScaledDiskFont(sourceFont : pTextFont location 'a0'; destTextAttr : pTextAttr location 'a1') : pDiskFontHeader; syscall DiskfontBase 054;
-FUNCTION OpenDiskFont(textAttr : pTextAttr location 'a0') : pTextFont; syscall DiskfontBase 030;
-FUNCTION GetDiskFontCtrl(tagid : LONGINT location 'd0') : LONGINT; syscall DiskfontBase 060;
-PROCEDURE SetDiskFontCtrlA(taglist : pTagItem location 'a0'); syscall DiskfontBase 066;
+FUNCTION AvailFonts(buffer : pCHAR; bufBytes : LONGINT; flags : LONGINT) : LONGINT;
+PROCEDURE DisposeFontContents(fontContentsHeader : pFontContentsHeader);
+FUNCTION NewFontContents(fontsLock : BPTR; fontName : pCHAR) : pFontContentsHeader;
+FUNCTION NewScaledDiskFont(sourceFont : pTextFont; destTextAttr : pTextAttr) : pDiskFontHeader;
+FUNCTION OpenDiskFont(textAttr : pTextAttr) : pTextFont;
+FUNCTION GetDiskFontCtrl(tagid : LONGINT) : LONGINT;
+PROCEDURE SetDiskFontCtrlA(taglist : pTagItem);
 
 {Here we read how to compile this unit}
 {You can remove this include and use a define instead}
@@ -165,9 +169,94 @@ IMPLEMENTATION
 }
 uses
 {$ifndef dont_use_openlib}
-amsgbox;
+msgbox;
 {$endif dont_use_openlib}
 
+FUNCTION AvailFonts(buffer : pCHAR; bufBytes : LONGINT; flags : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L buffer,A0
+    MOVE.L  bufBytes,D0
+    MOVE.L  flags,D1
+    MOVEA.L DiskfontBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE DisposeFontContents(fontContentsHeader : pFontContentsHeader);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L fontContentsHeader,A1
+    MOVEA.L DiskfontBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION NewFontContents(fontsLock : BPTR; fontName : pCHAR) : pFontContentsHeader;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L fontsLock,A0
+    MOVEA.L fontName,A1
+    MOVEA.L DiskfontBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION NewScaledDiskFont(sourceFont : pTextFont; destTextAttr : pTextAttr) : pDiskFontHeader;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L sourceFont,A0
+    MOVEA.L destTextAttr,A1
+    MOVEA.L DiskfontBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenDiskFont(textAttr : pTextAttr) : pTextFont;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L textAttr,A0
+    MOVEA.L DiskfontBase,A6
+    JSR -030(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetDiskFontCtrl(tagid : LONGINT) : LONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVE.L  tagid,D0
+        MOVEA.L DiskfontBase,A6
+        JSR     -060(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE SetDiskFontCtrlA(taglist : pTagItem);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L taglist,A0
+        MOVEA.L DiskfontBase,A6
+        JSR     -066(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
 
 const
     { Change VERSION and LIBVERSION to proper values }

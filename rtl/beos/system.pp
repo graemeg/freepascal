@@ -1,4 +1,12 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 Unit System;
+=======
+Unit system;
+>>>>>>> graemeg/fixes_2_2
+=======
+Unit system;
+>>>>>>> origin/fixes_2_2
 
 interface
 
@@ -55,8 +63,13 @@ End;
     myheaprealsize:longint;
     heap_handle:longint;
     zero:longint;
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> origin/fixes_2_2
 { first address of heap }
 function getheapstart:pointer;
 begin
@@ -106,6 +119,11 @@ begin
       begin
         WriteLn('B_OK');
         Sbrk:=pointer(heapstart+myheapsize);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
         myheapsize:=newsize;
         myheaprealsize:=newrealsize;
         exit;
@@ -116,10 +134,30 @@ begin
     else
       begin
         Sbrk:=pointer(heapstart+myheapsize);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
         myheapsize:=newsize;
         myheaprealsize:=newrealsize;
         exit;
       end;
+<<<<<<< HEAD
+    B_BAD_VALUE : WriteLn('B_BAD_VALUE');
+    B_NO_MEMORY : WriteLn('B_NO_MEMORY');
+    B_ERROR : WriteLn('B_ERROR');
+    else
+      begin
+        Sbrk:=pointer(heapstart+myheapsize);
+=======
+>>>>>>> origin/fixes_2_2
+        myheapsize:=newsize;
+        myheaprealsize:=newrealsize;
+        exit;
+      end;
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
 //  Sbrk:=nil;
@@ -288,6 +326,7 @@ End;
 function GetProcessID: SizeUInt;
 begin
   GetProcessID := SizeUInt (fpGetPID);
+<<<<<<< HEAD
 end;
 
 {*****************************************************************************
@@ -298,7 +337,10 @@ function  reenable_signal(sig : longint) : boolean;
 var
   e : TSigSet;
   i,j : byte;
+<<<<<<< HEAD
   olderrno: cint;
+=======
+>>>>>>> graemeg/fixes_2_2
 begin
   fillchar(e,sizeof(e),#0);
   { set is 1 based PM }
@@ -306,6 +348,7 @@ begin
   i:=sig mod (sizeof(cuLong) * 8);
   j:=sig div (sizeof(cuLong) * 8);
   e[j]:=1 shl i;
+<<<<<<< HEAD
   { this routine is called from a signal handler, so must not change errno }
   olderrno:=geterrno;
   fpsigprocmask(SIG_UNBLOCK,@e,nil);
@@ -352,8 +395,82 @@ begin
   FpSigAction(SIGBUS,@oldsigbus,nil);
   FpSigAction(SIGILL,@oldsigill,nil);
 end;
+=======
+end;
 
+{*****************************************************************************
+                         SystemUnit Initialization
+*****************************************************************************}
 
+function  reenable_signal(sig : longint) : boolean;
+var
+  e : TSigSet;
+  i,j : byte;
+begin
+  fillchar(e,sizeof(e),#0);
+  { set is 1 based PM }
+  dec(sig);
+  i:=sig mod (sizeof(cuLong) * 8);
+  j:=sig div (sizeof(cuLong) * 8);
+  e[j]:=1 shl i;
+  fpsigprocmask(SIG_UNBLOCK,@e,nil);
+  reenable_signal:=geterrno=0;
+end;
+
+// signal handler is arch dependant due to processorexception to language
+// exception translation
+
+{$i sighnd.inc}
+>>>>>>> origin/fixes_2_2
+
+var
+  act: SigActionRec;
+
+<<<<<<< HEAD
+=======
+  fpsigprocmask(SIG_UNBLOCK,@e,nil);
+  reenable_signal:=geterrno=0;
+end;
+
+// signal handler is arch dependant due to processorexception to language
+// exception translation
+
+{$i sighnd.inc}
+
+var
+  act: SigActionRec;
+
+Procedure InstallSignals;
+begin
+  { Initialize the sigaction structure }
+  { all flags and information set to zero }
+  FillChar(act, sizeof(SigActionRec),0);
+  { initialize handler                    }
+  act.sa_handler := SigActionHandler(@SignalToRunError);
+  act.sa_flags:=SA_SIGINFO;
+  FpSigAction(SIGFPE,@act,nil);
+  FpSigAction(SIGSEGV,@act,nil);
+  FpSigAction(SIGBUS,@act,nil);
+  FpSigAction(SIGILL,@act,nil);
+end;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+Procedure InstallSignals;
+begin
+  { Initialize the sigaction structure }
+  { all flags and information set to zero }
+  FillChar(act, sizeof(SigActionRec),0);
+  { initialize handler                    }
+  act.sa_handler := SigActionHandler(@SignalToRunError);
+  act.sa_flags:=SA_SIGINFO;
+  FpSigAction(SIGFPE,@act,nil);
+  FpSigAction(SIGSEGV,@act,nil);
+  FpSigAction(SIGBUS,@act,nil);
+  FpSigAction(SIGILL,@act,nil);
+end;
+
+>>>>>>> origin/fixes_2_2
 procedure SysInitStdIO;
 begin
   { Setup stdin, stdout and stderr, for GUI apps redirect stderr,stdout to be
@@ -373,17 +490,51 @@ var
   s : string;
 begin
   IsConsole := TRUE;
+<<<<<<< HEAD
+<<<<<<< HEAD
   StackLength := CheckInitialStkLen(InitialStkLen);
   StackBottom := Sptr - StackLength;
 
   { Set up signals handlers (may be needed by init code to test cpu features) }
   InstallSignals;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef cpui386}
   fpc_cpucodeinit;
 {$endif}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   { Setup heap }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  IsLibrary := FALSE;
+  StackLength := CheckInitialStkLen(InitialStkLen);
+  StackBottom := Sptr - StackLength;
+
+  SysResetFPU;
+  if not(IsLibrary) then
+    SysInitFPU;
+
+  { Set up signals handlers }
+  InstallSignals;
+
+  SysInitStdIO;
+{ Setup heap }
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   myheapsize:=4096*1;// $ 20000;
   myheaprealsize:=4096*1;// $ 20000;
   heapstart:=nil;
@@ -435,9 +586,23 @@ begin
 { Reset IO Error }
   InOutRes:=0;
   InitSystemThreads;
+<<<<<<< HEAD
+<<<<<<< HEAD
   InitSystemDynLibs;
   setupexecname;
   { restore original signal handlers in case this is a library }
   if IsLibrary then
     RestoreOldSignalHandlers;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef HASVARIANT}
+  initvariantmanager;
+{$endif HASVARIANT}
+  initwidestringmanager;
+  setupexecname;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.

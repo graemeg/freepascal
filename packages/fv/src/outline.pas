@@ -333,17 +333,7 @@ end;
 function Toutlineviewer.firstthat(test:pointer):pointer;
 
 begin
-  firstthat:=do_recurse(test,
-      { On most systems, locals are accessed relative to base pointer,
-        but for MIPS cpu, they are accessed relative to stack pointer.
-        This needs adaptation for so low level routines,
-        like MethodPointerLocal and related objects unit functions. }
-{$ifndef FPC_LOCALS_ARE_STACK_REG_RELATIVE}
-      get_caller_frame(get_frame,get_pc_addr)
-{$else}
-      get_frame
-{$endif}
-      ,true);
+  firstthat:=do_recurse(test,get_caller_frame(get_frame),true);
 end;
 
 procedure Toutlineviewer.focused(i:sw_integer);
@@ -355,17 +345,7 @@ end;
 procedure Toutlineviewer.foreach(action:pointer);
 
 begin
-  do_recurse(action,
-      { On most systems, locals are accessed relative to base pointer,
-        but for MIPS cpu, they are accessed relative to stack pointer.
-        This needs adaptation for so low level routines,
-        like MethodPointerLocal and related objects unit functions. }
-{$ifndef FPC_LOCALS_ARE_STACK_REG_RELATIVE}
-      get_caller_frame(get_frame,get_pc_addr)
-{$else}
-      get_frame
-{$endif}
-      ,false);
+  do_recurse(action,get_caller_frame(get_frame),false);
 end;
 
 function Toutlineviewer.getchild(node:pointer;i:sw_integer):pointer;

@@ -1,13 +1,128 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for Free Component Library
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for Free Component Library
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=graph
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[require]
+libc=y
+packages_linux=ptc
+packages_win32=ptc
+packages_win64=ptc
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[require]
+libc=y
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+packages_linux_i386=sdl
+packages_linux_powerpc=sdl
+packages_freebsd_i386=sdl
+packages_win32=sdl
+packages_darwin_powerpc=sdl
+packages_darwin_i386=sdl
+
+# clean package units
+[clean]
+units=$(GGIGRAPH_UNIT) $(GRAPH_UNIT)
+
+[target]
+dirs=
+units=
+<<<<<<< HEAD
+<<<<<<< HEAD
+units_linux=$(GRAPH_UNIT) $(GGIGRAPH_UNIT) ptcgraph ptccrt
+=======
+units_linux=$(GRAPH_UNIT) $(GGIGRAPH_UNIT)
+>>>>>>> graemeg/fixes_2_2
+=======
+units_linux=$(GRAPH_UNIT) $(GGIGRAPH_UNIT)
+>>>>>>> origin/fixes_2_2
+units_freebsd=graph $(GGIGRAPH_UNIT)
+units_win32=graph wincrt winmouse
+units_go32v2=graph
+units_amiga=graph
+units_i386_linux=sdlgraph
+units_powerpc_linux=sdlgraph
+<<<<<<< HEAD
+<<<<<<< HEAD
+units_i386_freebsd=sdlgraph
+units_win32=sdlgraph
+units_powerpc_darwin=sdlgraph
+units_i386_darwin=sdlgraph
+units_win32=ptcgraph ptccrt
+units_win64=ptcgraph ptccrt
+=======
+=======
+>>>>>>> origin/fixes_2_2
+units_freebsd=sdlgraph
+units_win32=sdlgraph
+units_powerpc_darwin=sdlgraph
+units_i386_darwin=sdlgraph
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+
+[compiler]
+options=-S2
+includedir=src/$(OS_TARGET) src/inc
+includedir_linux=src/unix
+includedir_freebsd=src/unix
+includedir_darwin=src/unix
+includedir_netbsd=src/unix
+includedir_openbsd=src/unix
+<<<<<<< HEAD
+<<<<<<< HEAD
+sourcedir=src/$(OS_TARGET) src/inc src/ptcgraph tests examples
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+sourcedir=src/$(OS_TARGET) src/inc tests examples
+>>>>>>> graemeg/fixes_2_2
+=======
+sourcedir=src/$(OS_TARGET) src/inc tests examples
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -15,6 +130,8 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +217,64 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[shared]
+build=n
+
+[prerules]
+GRAPHDIR=src/inc
+UNIXINC=src/unix
+
+ifndef USELIBGGI
+USELIBGGI=NO
+endif
+
+GGIGRAPH_UNIT=ggigraph
+GRAPH_UNIT=graph
+GRAPHUNIT_DIR=src/$(OS_TARGET)
+
+ifeq ($(OS_TARGET),linux)
+GRAPHUNIT_DIR=src/unix
+UNIXINCDEPS=$(UNIXINC)/graph16.inc
+
+ifeq ($(CPU_TARGET),powerpc64)
+GGIGRAPH_UNIT=
+endif
+
+ifneq ($(CPU_TARGET),i386)
+GRAPH_UNIT=
+endif
+endif
+
+ifeq ($(OS_TARGET),freebsd)
+GRAPHUNIT_DIR=src/unix
+UNIXINCDEPS=$(UNIXINC)/graph16.inc
+endif
+
+[rules]
+include src/inc/makefile.inc
+GRAPHINCDEPS=$(addprefix $(GRAPHDIR)/,$(GRAPHINCNAMES)) $(UNIXINCDEPS)
+
+graph$(PPUEXT) : graph.pp $(GRAPHINCDEPS)
+        $(COMPILER) -I$(GRAPHDIR) $(GRAPHUNIT_DIR)/graph.pp
+
+ggigraph$(PPUEXT) : $(UNIXINC)/ggigraph.pp $(GRAPHINCDEPS)
+        $(COMPILER) -I$(GRAPHDIR) $(UNIXINC)/ggigraph.pp
+
+winmouse$(PPUEXT) : src/win32/winmouse.pp graph$(PPUEXT)
+	$(COMPILER) src/win32/winmouse.pp
+
+wincrt$(PPUEXT) : src/win32/wincrt.pp graph$(PPUEXT)
+        $(COMPILER) src/win32/wincrt.pp
+
+sdlgraph$(PPUEXT) : src/sdlgraph/sdlgraph.pp $(GRAPHINCDEPS)
+        $(COMPILER) -I$(GRAPHDIR) src/sdlgraph/sdlgraph.pp
+
+.NOTPARALLEL:
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

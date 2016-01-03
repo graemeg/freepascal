@@ -1,9 +1,23 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for Hermes
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for Hermes
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=hermes
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
@@ -11,10 +25,67 @@ packages=rtl fpmkunit
 
 [install]
 fpcpackage=y
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=hermes
+
+[compiler]
+options_i386_linux=-dI386_ASSEMBLER
+options_i386_win32=-dI386_ASSEMBLER
+options_i386_go32v2=-dI386_ASSEMBLER
+options_i386_freebsd=-dI386_ASSEMBLER
+options_i386_haiku=-dI386_ASSEMBLER
+options_i386_beos=-dI386_ASSEMBLER
+
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=hermes
+loaders=$(CPU_LOADERS)
+
+[compiler]
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+unitdir=
+targetdir=.
+includedir=src
+sourcedir=src tests
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+
+[install]
+fpcpackage=y
+<<<<<<< HEAD
+
+[install]
+fpcpackage=y
+
+[install]
+fpcpackage=y
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -42,6 +113,9 @@ FPMAKE_OPT+=$(addprefix -o ,$(FPCOPT))
 FPMAKE_OPT+=--compiler=$(FPC)
 FPMAKE_OPT+=-bu
 .NOTPARALLEL:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 fpmake$(SRCEXEEXT): fpmake.pp
 	$(FPCFPMAKE) fpmake.pp $(FPMAKE_SKIP_CONFIG) $(addprefix -Fu,$(COMPILER_FPMAKE_UNITDIR)) $(FPCMAKEOPT) $(OPT)
@@ -100,3 +174,51 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+
+[default]
+fpcdir=../..
+
+[rules]
+.NOTPARALLEL:
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[rules]
+.NOTPARALLEL:
+mmx_clr$(OEXT):src/$(CPU_TARGET)/mmx_clr.as
+        $(AS) --32 -o $(UNITTARGETDIRPREFIX)mmx_clr$(OEXT) src/$(CPU_TARGET)/mmx_clr.as
+
+mmxp_32$(OEXT):src/$(CPU_TARGET)/mmxp_32.as
+        $(AS) --32 -o $(UNITTARGETDIRPREFIX)mmxp_32$(OEXT) src/$(CPU_TARGET)/mmxp_32.as
+
+mmx_main$(OEXT):src/$(CPU_TARGET)/mmx_main.as
+        $(AS) --32 -o $(UNITTARGETDIRPREFIX)mmx_main$(OEXT) src/$(CPU_TARGET)/mmx_main.as
+
+mmxp2_32$(OEXT):src/$(CPU_TARGET)/mmxp2_32.as
+        $(AS) --32 -o $(UNITTARGETDIRPREFIX)mmxp2_32$(OEXT) src/$(CPU_TARGET)/mmxp2_32.as
+
+hm_i386$(OEXT): $(I386_LOADERSSRC)
+        $(AS) --32 -o $(UNITTARGETDIRPREFIX)hm_i386$(OEXT) $(I386_LOADERSSRC)
+
+[prerules]
+I386_LOADERSSRC=src/i386/x86_main.as src/i386/x86p_cpy.as \
+        src/i386/x86pscpy.as src/i386/x86p_16.as \
+        src/i386/x86p_i8.as src/i386/x86_clr.as \
+        src/i386/x86p_32.as src/i386/x86p_s32.as
+ifeq ($(CPU_TARGET),i386)
+CPU_LOADERS=mmx_clr mmxp_32 mmx_main mmxp2_32 hm_i386
+else
+CPU_LOADERS=
+endif
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

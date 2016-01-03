@@ -26,6 +26,7 @@ begin
   case sig of
     SIGFPE :
         begin
+<<<<<<< HEAD
           if assigned(siginfo) then
             begin
               addr := siginfo^._sifields._sigfault._addr;
@@ -44,6 +45,23 @@ begin
                   res:=207;
               end;
             end;
+=======
+          addr := siginfo^._sifields._sigfault._addr;
+          case  siginfo^.si_code of
+            FPE_INTDIV:
+              res:=200;
+            FPE_INTOVF:
+              res:=205;
+            FPE_FLTDIV:
+              res:=200;
+            FPE_FLTOVF:
+              res:=205;
+            FPE_FLTUND:
+              res:=206;
+            else
+              res:=207;
+          end;
+>>>>>>> graemeg/fixes_2_2
         end;
     SIGBUS :
         begin

@@ -4,6 +4,7 @@
 type
   FifoChannels = integer;
 const
+<<<<<<< HEAD
   FIFO_PM      : FifoChannels = 0;
   FIFO_SOUND   : FifoChannels = 1;
   FIFO_SYSTEM  : FifoChannels = 2;
@@ -20,6 +21,24 @@ const
   FIFO_USER_06 : FifoChannels = 13;	    
   FIFO_USER_07 : FifoChannels = 14;	    
   FIFO_USER_08 : FifoChannels = 15;
+=======
+  FIFO_PM     : FifoChannels = 0;
+  FIFO_SOUND  : FifoChannels = 1;
+  FIFO_SYSTEM : FifoChannels = 2;
+  FIFO_MAXMOD : FifoChannels = 3;
+  FIFO_DSWIFI : FifoChannels = 4;
+  FIFO_RSVD_01: FifoChannels = 5;
+  FIFO_RSVD_02: FifoChannels = 6;
+  FIFO_RSVD_03: FifoChannels = 7;
+  FIFO_USER_01: FifoChannels = 8;
+  FIFO_USER_02: FifoChannels = 9;
+  FIFO_USER_03: FifoChannels = 10;	    
+  FIFO_USER_04: FifoChannels = 11;	    
+  FIFO_USER_05: FifoChannels = 12;	    
+  FIFO_USER_06: FifoChannels = 13;	    
+  FIFO_USER_07: FifoChannels = 14;	    
+  FIFO_USER_08: FifoChannels = 15;
+>>>>>>> graemeg/cpstrnew
   
   
 type
@@ -44,6 +63,10 @@ const
   SYS_REQ_KEYS       : FifoSystemCommands = 1;
   SYS_REQ_TIME       : FifoSystemCommands = 2;
   SYS_SET_TIME       : FifoSystemCommands = 3;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   SDMMC_INSERT       : FifoSystemCommands = 4;
   SDMMC_REMOVE       : FifoSystemCommands = 5;  
   
@@ -60,6 +83,27 @@ type
 const
 	FW_READ  = 0;
 	FW_WRITE = 1;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  SYS_HAVE_SD        : FifoSystemCommands = 4;
+	SYS_SD_START       : FifoSystemCommands = 5;
+	SYS_SD_IS_INSERTED : FifoSystemCommands = 6;
+	SYS_SD_STOP        : FifoSystemCommands = 7;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 type
   FifoPMCommands = integer;

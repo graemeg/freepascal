@@ -538,6 +538,20 @@ begin
   FileOpen := FileCreate(pointer(SystemFileName),ShareMode,Rights);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
 function FileRead (Handle: longint; Out Buffer; Count: longint): longint;
                                                                      assembler;
 asm

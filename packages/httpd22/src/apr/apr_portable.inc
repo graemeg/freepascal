@@ -144,7 +144,7 @@ type
   apr_os_file_t: Integer;        {< native file }
 typedef DIR                   apr_os_dir_t;         {< native dir }
   apr_os_sock_t: Integer;        {< native dir }
-typedef struct apr_os_proc_mutex_t  apr_os_proc_mutex_t; {< native process
+typedef struct apr_os_proc_mutex_t  apr_os_proc_mutex_t; {< native proces
                                                           *   mutex
                                                           }
 {$if defined(APR_HAS_THREADS) and defined(APR_HAVE_PTHREAD_H)}

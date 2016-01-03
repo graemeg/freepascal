@@ -1,28 +1,123 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for TDataSet for FCL
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for TDataSet for FCL
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for TDataSet for FCL
+>>>>>>> graemeg/cpstrnew
+=======
+#   Makefile.fpc for TDataSet for FCL
+>>>>>>> origin/cpstrnew
 #
 
 [package]
 name=fcl-web
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=httpdefs fphttp custcgi fpcgi fptemplate fphtml websession fpweb \
+      webutil fpdatasetform cgiapp ezcgi fpapache 
+rsts=fpcgi fphtml fpweb websession cgiapp
+
+[require]
+packages=fcl-base fcl-xml fcl-db fcl-process httpd22
+
+[compiler]
+options=-S2h
+sourcedir=src
+>>>>>>> graemeg/fixes_2_2
 
 [install]
 fpcpackage=y
+=======
+version=2.5.1
+
+[require]
+packages=rtl fpmkunit
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+
+[require]
+packages=rtl fpmkunit
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+
+[require]
+packages=rtl fpmkunit
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+
+[require]
+packages=rtl fpmkunit
+>>>>>>> origin/cpstrnew
 
 [default]
 fpcdir=../..
 
 [prerules]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+# If no fpmake exists and clean is called, do not try to build fpmake, it will
+# most often fail because the dependencies are cleared. So simply skip the
+# clean by replacing the command with 'echo'
+FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
+ifeq ($(FPMAKE_BIN_CLEAN),)
+FPMAKE_BIN_CLEAN=$(ECHO)
+endif
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 ifdef OS_TARGET
 FPC_TARGETOPT+=--os=$(OS_TARGET)
 endif
 ifdef CPU_TARGET
 FPC_TARGETOPT+=--cpu=$(CPU_TARGET)
 endif
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 LOCALFPMAKE=./fpmake$(SRCEXEEXT)
 
 [rules]
@@ -100,3 +195,49 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+LOCALFPMAKE=.$(PATHSEP)fpmake$(EXEEXT)
+
+[rules]
+=======
+LOCALFPMAKE=.$(PATHSEP)fpmake$(EXEEXT)
+
+[rules]
+>>>>>>> graemeg/cpstrnew
+=======
+LOCALFPMAKE=.$(PATHSEP)fpmake$(EXEEXT)
+
+[rules]
+>>>>>>> graemeg/cpstrnew
+=======
+LOCALFPMAKE=.$(PATHSEP)fpmake$(EXEEXT)
+
+[rules]
+>>>>>>> origin/cpstrnew
+$(COMPILER_UNITTARGETDIR):
+        $(MKDIRTREE) $(COMPILER_UNITTARGETDIR)
+fpmake: $(COMPILER_UNITTARGETDIR) fpmake.pp
+	$(FPC) fpmake.pp $(FPCOPT)
+all:	fpmake
+	$(LOCALFPMAKE) build --localunitdir=../.. --globalunitdir=.. $(FPC_TARGETOPT) $(addprefix -o ,$(FPCOPT)) --compiler=$(FPC)
+smart:	fpmake
+	$(LOCALFPMAKE) build --localunitdir=../.. --globalunitdir=.. $(FPC_TARGETOPT) $(addprefix -o ,$(FPCOPT)) --compiler=$(FPC) -o "-XX -CX"
+release:	fpmake
+	$(LOCALFPMAKE) build --localunitdir=../.. --globalunitdir=.. $(FPC_TARGETOPT) $(addprefix -o ,$(FPCOPT)) --compiler=$(FPC) -o "-dRELEASE"
+debug:	fpmake
+	$(LOCALFPMAKE) build --localunitdir=../.. --globalunitdir=.. $(FPC_TARGETOPT) $(addprefix -o ,$(FPCOPT)) --compiler=$(FPC) -o "-dDEBUG"
+clean:	
+	$(FPMAKE_BIN_CLEAN) clean --localunitdir=../.. --globalunitdir=.. $(FPC_TARGETOPT) $(addprefix -o ,$(FPCOPT)) --compiler=$(FPC)
+install:	fpmake
+	$(LOCALFPMAKE) install --localunitdir=../.. --globalunitdir=.. $(FPC_TARGETOPT) $(addprefix -o ,$(FPCOPT)) --compiler=$(FPC) --prefix=$(INSTALL_PREFIX)
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

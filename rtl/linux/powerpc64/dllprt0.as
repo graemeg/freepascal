@@ -3,7 +3,23 @@
  * Copyright (c) 2005 by Thomas Schatzl,
  * member of the Free Pascal development team.
  *
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  * Startup code for shared libraries, PowerPC64 version.
+=======
+ * Startup code for normal programs, PowerPC64 version.
+>>>>>>> graemeg/cpstrnew
+=======
+ * Startup code for normal programs, PowerPC64 version.
+>>>>>>> graemeg/cpstrnew
+=======
+ * Startup code for normal programs, PowerPC64 version.
+>>>>>>> graemeg/cpstrnew
+=======
+ * Startup code for normal programs, PowerPC64 version.
+>>>>>>> origin/cpstrnew
  *
  * See the file COPYING.FPC, included in this distribution,
  * for details about the copyright.
@@ -56,7 +72,23 @@
     std     2, 40(1)
     mtctr   0
     ld      2, 8(11)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     ld      11, 16(11)
+=======
+    ld      11, 8(11)
+>>>>>>> graemeg/cpstrnew
+=======
+    ld      11, 8(11)
+>>>>>>> graemeg/cpstrnew
+=======
+    ld      11, 8(11)
+>>>>>>> graemeg/cpstrnew
+=======
+    ld      11, 8(11)
+>>>>>>> origin/cpstrnew
     bctr
 .long 0
 .byte 0, 12, 128, 0, 0, 0, 0, 0
@@ -286,6 +318,12 @@ _savevr_30: addi r12,r0,-32
 _savevr_31: addi r12,r0,-16
     stvx v31,r12,r0
     blr
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/cpstrnew
 */
 /* The _restvr_M routines restore the vector registers from vM to v31. When the
  * routine is called, r0 must point to the word just beyound the end of the
@@ -318,8 +356,239 @@ _restvr_30: addi r12,r0,-32
 _restvr_31: addi r12,r0,-16
     lvx v31,r12,r0
     blr
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+*/
+/* The _restvr_M routines restore the vector registers from vM to v31. When the
+ * routine is called, r0 must point to the word just beyound the end of the
+ * vector register save area. On return the value of r0 is unchanged while r12
+ * may be modified.
+ */
+/* commented out for now, unused
+_restvr_20: addi r12,r0,-192
+    lvx v20,r12,r0
+_restvr_21: addi r12,r0,-176
+    lvx v21,r12,r0
+_restvr_22: addi r12,r0,-160
+    lvx v22,r12,r0
+_restvr_23: addi r12,r0,-144
+    lvx v23,r12,r0
+_restvr_24: addi r12,r0,-128
+    lvx v24,r12,r0
+_restvr_25: addi r12,r0,-112
+    lvx v25,r12,r0
+_restvr_26: addi r12,r0,-96
+    lvx v26,r12,r0
+_restvr_27: addi r12,r0,-80
+    lvx v27,r12,r0
+_restvr_28: addi r12,r0,-64
+    lvx v28,r12,r0
+_restvr_29: addi r12,r0,-48
+    lvx v29,r12,r0
+_restvr_30: addi r12,r0,-32
+    lvx v30,r12,r0
+_restvr_31: addi r12,r0,-16
+    lvx v31,r12,r0
+    blr
+=======
+>>>>>>> graemeg/cpstrnew
+*/
+/* The _restvr_M routines restore the vector registers from vM to v31. When the
+ * routine is called, r0 must point to the word just beyound the end of the
+ * vector register save area. On return the value of r0 is unchanged while r12
+ * may be modified.
+ */
+/* commented out for now, unused
+_restvr_20: addi r12,r0,-192
+    lvx v20,r12,r0
+_restvr_21: addi r12,r0,-176
+    lvx v21,r12,r0
+_restvr_22: addi r12,r0,-160
+    lvx v22,r12,r0
+_restvr_23: addi r12,r0,-144
+    lvx v23,r12,r0
+_restvr_24: addi r12,r0,-128
+    lvx v24,r12,r0
+_restvr_25: addi r12,r0,-112
+    lvx v25,r12,r0
+_restvr_26: addi r12,r0,-96
+    lvx v26,r12,r0
+_restvr_27: addi r12,r0,-80
+    lvx v27,r12,r0
+_restvr_28: addi r12,r0,-64
+    lvx v28,r12,r0
+_restvr_29: addi r12,r0,-48
+    lvx v29,r12,r0
+_restvr_30: addi r12,r0,-32
+    lvx v30,r12,r0
+_restvr_31: addi r12,r0,-16
+    lvx v31,r12,r0
+    blr
+=======
+>>>>>>> origin/cpstrnew
 */
 
+/*
+ * Main program entry point label (function), called by the loader
+ */
+FUNCTION_PROLOG FPC_SHARED_LIB_START
+
+    mflr    0
+    std     0, 16(1)        /* save LR */
+    stdu    1, -144(1)      /* save back chain, make frame */
+
+    /* store argument count (in r3?)*/
+    LOAD_64BIT_VAL 10, operatingsystem_parameter_argc
+    stw     3, 0(10)
+    /* store argument vector (in r4?) */
+    LOAD_64BIT_VAL 10, operatingsystem_parameter_argv
+    std     4, 0(10)
+    /* store environment pointer (in r5?) */
+    LOAD_64BIT_VAL 10, operatingsystem_parameter_envp
+    std     5, 0(10)
+
+    /* update library flag in RTL */
+    LOAD_64BIT_VAL 8, TC_SYSTEM_ISLIBRARY
+    li      6, 1
+    stw     6, 0(8)
+
+    LOAD_64BIT_VAL 8, __stkptr
+    std     1,0(8)
+
+    bl      PASCALMAIN
+    nop
+
+    /* return to the caller */
+    addi    1,1,144   /* restore stack */ 
+    ld      0,16(1)   /* prepare for method return */
+    mtlr    0
+    blr
+
+/* this routine is only called when the halt() routine of the RTL embedded in
+   the shared library is called */
+FUNCTION_PROLOG _haltproc
+FUNCTION_PROLOG FPC_SHARED_LIB_EXIT
+    /* exit_group call */
+    LOAD_64BIT_VAL 3, operatingsystem_result
+    lwz     3, 0(3)
+    li      0, 234
+    sc
+    /* exit call */
+    LOAD_64BIT_VAL 3, operatingsystem_result
+    lwz     3, 0(3)
+    li      0, 1
+    sc
+    b       .FPC_SHARED_LIB_EXIT
+
+    /* Define a symbol for the first piece of initialized data.  */
+    .section ".data"
+    .globl  __data_start
+__data_start:
+data_start:
+
+    .section ".bss"
+
+    .type __stkptr, @object
+    .size __stkptr, 8
+    .global __stkptr
+__stkptr:
+    .skip 8
+
+    .type operatingsystem_parameters, @object
+    .size operatingsystem_parameters, 24
+operatingsystem_parameters:
+    .skip 3 * 8
+    .global operatingsystem_parameter_argc
+    .global operatingsystem_parameter_argv
+    .global operatingsystem_parameter_envp
+    .set operatingsystem_parameter_argc, operatingsystem_parameters+0
+    .set operatingsystem_parameter_argv, operatingsystem_parameters+8
+    .set operatingsystem_parameter_envp, operatingsystem_parameters+16
+<<<<<<< HEAD
+
+<<<<<<< HEAD
+/*
+ * Main program entry point label (function), called by the loader
+ */
+FUNCTION_PROLOG FPC_SHARED_LIB_START
+
+    mflr    0
+    std     0, 16(1)        /* save LR */
+    stdu    1, -144(1)      /* save back chain, make frame */
+
+    /* store argument count (in r3?)*/
+    LOAD_64BIT_VAL 10, operatingsystem_parameter_argc
+    stw     3, 0(10)
+    /* store argument vector (in r4?) */
+    LOAD_64BIT_VAL 10, operatingsystem_parameter_argv
+    std     4, 0(10)
+    /* store environment pointer (in r5?) */
+    LOAD_64BIT_VAL 10, operatingsystem_parameter_envp
+    std     5, 0(10)
+
+    /* update library flag in RTL */
+    LOAD_64BIT_VAL 8, TC_SYSTEM_ISLIBRARY
+    li      6, 1
+    stw     6, 0(8)
+
+    LOAD_64BIT_VAL 8, __stkptr
+    std     1,0(8)
+
+    bl      PASCALMAIN
+    nop
+
+    /* return to the caller */
+    addi    1,1,144   /* restore stack */ 
+    ld      0,16(1)   /* prepare for method return */
+    mtlr    0
+    blr
+
+/* this routine is only called when the halt() routine of the RTL embedded in
+   the shared library is called */
+FUNCTION_PROLOG _haltproc
+FUNCTION_PROLOG FPC_SHARED_LIB_EXIT
+    /* exit_group call */
+    LOAD_64BIT_VAL 3, operatingsystem_result
+    lwz     3, 0(3)
+    li      0, 234
+    sc
+    /* exit call */
+    LOAD_64BIT_VAL 3, operatingsystem_result
+    lwz     3, 0(3)
+    li      0, 1
+    sc
+    b       .FPC_SHARED_LIB_EXIT
+
+    /* Define a symbol for the first piece of initialized data.  */
+    .section ".data"
+    .globl  __data_start
+__data_start:
+data_start:
+
+    .section ".bss"
+
+    .type __stkptr, @object
+    .size __stkptr, 8
+    .global __stkptr
+__stkptr:
+    .skip 8
+
+    .type operatingsystem_parameters, @object
+    .size operatingsystem_parameters, 24
+operatingsystem_parameters:
+    .skip 3 * 8
+    .global operatingsystem_parameter_argc
+    .global operatingsystem_parameter_argv
+    .global operatingsystem_parameter_envp
+    .set operatingsystem_parameter_argc, operatingsystem_parameters+0
+    .set operatingsystem_parameter_argv, operatingsystem_parameters+8
+    .set operatingsystem_parameter_envp, operatingsystem_parameters+16
+<<<<<<< HEAD
+
+<<<<<<< HEAD
 /*
  * Main program entry point label (function), called by the loader
  *
@@ -399,4 +668,14 @@ operatingsystem_parameters:
     .set operatingsystem_parameter_argv, operatingsystem_parameters+8
     .set operatingsystem_parameter_envp, operatingsystem_parameters+16
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
 .section .note.GNU-stack,"",%progbits

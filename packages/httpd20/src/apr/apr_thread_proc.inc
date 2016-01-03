@@ -679,7 +679,7 @@ const
 // external LibAPR name LibNamePrefix + 'apr_proc_detach' + LibSuff4;
 
 {
- * Register another_child -- a child associated to its registered 
+ * Register an other_child -- a child associated to its registered 
  * maintence callback.  This callback is invoked when the process
  * dies, is disconnected or disappears.
  * @param proc The child process to register.

@@ -24,7 +24,19 @@ type
    end;
 
    TSimpleRWSync = class(TInterfacedObject,IReadWriteSync)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_HAS_FEATURE_THREADING}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
    private
       crit : TRtlCriticalSection;
    public
@@ -38,7 +50,19 @@ type
    end;
 
    TMultiReadExclusiveWriteSynchronizer = class(TInterfacedObject,IReadWriteSync)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef FPC_HAS_FEATURE_THREADING}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
    private
       freaderqueue: peventstate;
       fwritelock : TRtlCriticalSection;
@@ -52,5 +76,17 @@ type
       procedure Endwrite;
       procedure Beginread;
       procedure Endread;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif FPC_HAS_FEATURE_THREADING}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
    end;

@@ -56,7 +56,15 @@
     std     2, 40(1)
     mtctr   0
     ld      2, 8(11)
+<<<<<<< HEAD
+<<<<<<< HEAD
     ld      11, 16(11)
+=======
+    ld      11, 8(11)
+>>>>>>> graemeg/fixes_2_2
+=======
+    ld      11, 8(11)
+>>>>>>> origin/fixes_2_2
     bctr
 .long 0
 .byte 0, 12, 128, 0, 0, 0, 0, 0
@@ -321,6 +329,8 @@ _restvr_31: addi r12,r0,-16
 */
 
 /*
+<<<<<<< HEAD
+<<<<<<< HEAD
  * Main program entry point for dynamic executables.
  *
  * r7 contains the function pointer that needs to be registered for calling at exit.
@@ -398,6 +408,10 @@ FUNCTION_PROLOG _start
     trap
 
 FUNCTION_PROLOG _haltproc
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     mflr  0
     std   0,16(1)
     stdu  1,-144(1)
@@ -422,12 +436,89 @@ FUNCTION_PROLOG _haltproc
     lwz     3,0(3)
     /* exit call */
     li      0,1
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    /* exit group call */
+    LOAD_64BIT_VAL 3, operatingsystem_result
+    lwz     3, 0(3)
+    li      0, 234
+    sc
+    /* exit call */
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    /* exit group call */
+    LOAD_64BIT_VAL 3, operatingsystem_result
+    lwz     3, 0(3)
+    li      0, 234
+    sc
+    /* exit call */
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    LOAD_64BIT_VAL 3, operatingsystem_result
+    lwz     3, 0(3)
+    li      0, 1
+>>>>>>> graemeg/cpstrnew
     sc
     /* we should not reach here. Crash horribly */
     trap
     /* do not bother cleaning up the stack frame, we should not reach here */
 .long 0
 .byte 0, 12, 64, 0, 0, 0, 0, 0
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ * Main program entry point label (function), called by the loader
+ */
+FUNCTION_PROLOG _start
+
+    mr   26, 1            /* save stack pointer */
+    /* Set up an initial stack frame, and clear the LR */
+    clrrdi  1, 1, 5       /* align r1 */
+    li      0, 0
+    stdu    1,-128(1)
+    mtlr    0
+    std     0, 0(1)       /* r1 = pointer to NULL value */
+
+    /* store argument count (= 0(r1) )*/
+    ld      3, 0(26)
+    LOAD_64BIT_VAL 10, operatingsystem_parameter_argc
+    stw     3, 0(10)
+    /* calculate argument vector address and store (= 8(r1) + 8 ) */
+    addi    4, 26, 8
+    LOAD_64BIT_VAL 10, operatingsystem_parameter_argv
+    std     4, 0(10)
+    /* store environment pointer (= argv + (argc+1)* 8 ) */
+    addi    5, 3, 1
+    sldi    5, 5, 3
+    add     5, 4, 5
+    LOAD_64BIT_VAL 10, operatingsystem_parameter_envp
+    std     5, 0(10)
+
+    LOAD_64BIT_VAL 8, __stkptr
+    std     1,0(8)
+
+    bl      .PASCALMAIN
+    nop
+
+    /* directly jump to exit procedure, not via the function pointer */
+    b       ._haltproc
+
+FUNCTION_PROLOG _haltproc
+    /* exit call */
+    li      0, 1
+    sc
+    b       ._haltproc
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     /* Define a symbol for the first piece of initialized data.  */
     .section ".data"
@@ -435,6 +526,8 @@ FUNCTION_PROLOG _haltproc
 __data_start:
 data_start:
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     .section ".bss"
 
     .type __stkptr, @object
@@ -442,12 +535,24 @@ data_start:
     .global __stkptr
 __stkptr:
     .skip 8
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     .type __dl_fini, @object
     .size __dl_fini, 8
     .global __dl_fini
 __dl_fini:
     .skip 8
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     .type operatingsystem_parameters, @object
     .size operatingsystem_parameters, 24
@@ -461,3 +566,17 @@ operatingsystem_parameters:
     .set operatingsystem_parameter_envp, operatingsystem_parameters+16
 
 .section .note.GNU-stack,"",%progbits
+=======
+=======
+>>>>>>> origin/fixes_2_2
+.text
+    .comm __stkptr, 8
+
+    .comm operatingsystem_parameter_argc, 4
+    .comm operatingsystem_parameter_argv, 8
+    .comm operatingsystem_parameter_envp, 8
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

@@ -18,7 +18,7 @@ unit fpWeb;
 interface
 
 uses
-  Classes, SysUtils, httpdefs, fphttp, fptemplate;
+  Classes, SysUtils, httpdefs, fphttp, fptemplate, websession;
 
 Type
 
@@ -111,8 +111,6 @@ Type
     procedure SetOnGetAction(const AValue: TGetActionEvent);
     procedure SetTemplate(const AValue: TFPTemplate);
   Protected
-    Function HandleActions(ARequest : TRequest): Boolean; virtual;
-    procedure DoOnRequest(ARequest: TRequest; AResponse: TResponse; var AHandled: Boolean); virtual;
     Procedure DoBeforeRequest(ARequest : TRequest); virtual;
     Procedure DoAfterResponse(AResponse : TResponse); virtual;
     Procedure GetParam(Const ParamName : String; Out Value : String); virtual; // Called by template
@@ -129,7 +127,7 @@ Type
     Property AfterResponse : TResponseEvent Read FAfterResponse Write FAfterResponse;
     Property OnGetAction : TGetActionEvent Read GetOnGetAction Write SetOnGetAction;
     Property DefActionWhenUnknown : Boolean read GetDefActionWhenUnknown write SetDefActionWhenUnknown default true;
-    Property ModuleTemplate : TFPTemplate Read FTemplate Write SetTemplate;
+    Property Template : TFPTemplate Read FTemplate Write SetTemplate;
     Property OnGetParam : TGetParamEvent Read FOnGetParam Write FOnGetParam;
     Property OnTemplateContent : TGetParamEvent Read FOnGetParam Write FOnGetParam;
     Property Request: TRequest Read FRequest;
@@ -152,10 +150,9 @@ Type
     property Kind;
     Property OnNewSession;
     Property OnSessionExpired;
-    Property AfterInitModule;
   end;
 
-  EFPWebError = Class(EHTTP);
+  EFPWebError = Class(HTTPError);
 
 resourcestring
   SErrInvalidVar        = 'Invalid template variable name : "%s"';
@@ -207,7 +204,6 @@ end;
 
 destructor TFPWebAction.destroy;
 begin
-  FreeandNil(FContents);
   FreeAndNil(FTemplate);
   inherited destroy;
 end;
@@ -362,11 +358,6 @@ begin
     FTemplate.Assign(AValue);
 end;
 
-function TCustomFPWebModule.HandleActions(ARequest: TRequest): Boolean;
-begin
-  Result:=True;
-end;
-
 procedure TCustomFPWebModule.DoBeforeRequest(ARequest : TRequest);
 begin
   If Assigned(FBeforeRequest) then
@@ -415,7 +406,6 @@ Var
 begin
   S:=TStringStream.Create('');
   Try
-    B:=False;
     FActions.GetContent(TFPWebTemplate(FTemplate).Request,S,B);
     If Not B then
       Raise EFPWebError.Create(SErrNoContentProduced);
@@ -442,13 +432,6 @@ begin
 end;
 
 
-procedure TCustomFPWebModule.DoOnRequest(ARequest: TRequest; AResponse: TResponse; Var AHandled : Boolean);
-
-begin
-  If Assigned(FOnRequest) then
-    FOnRequest(Self,ARequest,AResponse,AHandled);
-end;
-
 procedure TCustomFPWebModule.HandleRequest(ARequest: TRequest; AResponse: TResponse);
 
 Var
@@ -464,7 +447,8 @@ begin
   DoBeforeRequest(ARequest);
   B:=False;
   InitSession(AResponse);
-  DoOnRequest(ARequest,AResponse,B);
+  If Assigned(FOnRequest) then
+    FOnRequest(Self,ARequest,AResponse,B);
   If B then
     begin
     if not AResponse.ContentSent then
@@ -473,7 +457,7 @@ begin
   else
     if FTemplate.HasContent then
       GetTemplateContent(ARequest,AResponse)
-    else if HandleActions(ARequest) then
+    else
       begin
       Actions.HandleRequest(ARequest,AResponse,B);
       FTemplate.Template := '';//if apache mod, then need to clear for next call because it is a webmodule global property,
@@ -481,6 +465,7 @@ begin
       If Not B then
         Raise EFPWebError.Create(SErrRequestNotHandled);
       end;
+      
   DoAfterResponse(AResponse);
   UpdateSession(AResponse);
   FRequest := Nil;

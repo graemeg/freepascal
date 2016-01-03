@@ -66,7 +66,15 @@ uses
 type
   // TODO STUBS  see CmdTree.h (cmdtree.idl)
   IFilter = Pointer;
+<<<<<<< HEAD
+<<<<<<< HEAD
   IUnknown = Pointer;
+=======
+  IUnkown = Pointer;
+>>>>>>> graemeg/fixes_2_2
+=======
+  IUnkown = Pointer;
+>>>>>>> origin/fixes_2_2
   ICommand = Pointer;
   {$IFNDEF JWA_INCLUDEMODE}
   PPWCHAR = ^PWCHAR;
@@ -115,7 +123,15 @@ function LoadIFilterEx(pwcsPath: PWCHAR; dwFlags: DWORD; const riid: REFIID; out
 function BindIFilterFromStorage(pStg: IStorage; pUnkOuter: IUnknown; out ppIUnk: IFilter): HRESULT; stdcall;
 {$EXTERNALSYM BindIFilterFromStorage}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function BindIFilterFromStream(pStm: IStream; pUnkOuter: IUnknown; out ppIUnk: IFilter): HRESULT; stdcall;
+=======
+function BindIFilterFromStream(pStm: IStream; pUnkOuter: IUnkown; out ppIUnk: IFilter): HRESULT; stdcall;
+>>>>>>> graemeg/fixes_2_2
+=======
+function BindIFilterFromStream(pStm: IStream; pUnkOuter: IUnkown; out ppIUnk: IFilter): HRESULT; stdcall;
+>>>>>>> origin/fixes_2_2
 {$EXTERNALSYM BindIFilterFromStream}
 
 function LocateCatalogsW(pwszScope: PWCHAR; iBmk: ULONG; pwszMachine: PWCHAR;

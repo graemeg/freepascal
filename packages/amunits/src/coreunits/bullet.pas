@@ -31,7 +31,11 @@
 
     nils.sjoholm@mailbox.swipnet.se Nils Sjoholm
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
 
 unit bullet;
 
@@ -374,11 +378,11 @@ const
     BULLETNAME : PChar = 'bullet.library';
 
 
-PROCEDURE CloseEngine(glyphEngine : pGlyphEngine location 'a0'); syscall BulletBase 036;
-FUNCTION ObtainInfoA(glyphEngine : pGlyphEngine location 'a0'; tagList : pTagItem location 'a1') : ULONG; syscall BulletBase 048;
-FUNCTION OpenEngine : pGlyphEngine; syscall BulletBase 030;
-FUNCTION ReleaseInfoA(glyphEngine : pGlyphEngine location 'a0'; tagList : pTagItem location 'a1') : ULONG; syscall BulletBase 054;
-FUNCTION SetInfoA(glyphEngine : pGlyphEngine location 'a0'; tagList : pTagItem location 'a1') : ULONG; syscall BulletBase 042;
+PROCEDURE CloseEngine(glyphEngine : pGlyphEngine);
+FUNCTION ObtainInfoA(glyphEngine : pGlyphEngine; tagList : pTagItem) : ULONG;
+FUNCTION OpenEngine : pGlyphEngine;
+FUNCTION ReleaseInfoA(glyphEngine : pGlyphEngine; tagList : pTagItem) : ULONG;
+FUNCTION SetInfoA(glyphEngine : pGlyphEngine; tagList : pTagItem) : ULONG;
 
 {Here we read how to compile this unit}
 {You can remove this include and use a define instead}
@@ -398,8 +402,70 @@ IMPLEMENTATION
 }
 uses
 {$ifndef dont_use_openlib}
-amsgbox;
+msgbox;
 {$endif dont_use_openlib}
+
+PROCEDURE CloseEngine(glyphEngine : pGlyphEngine);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L glyphEngine,A0
+    MOVEA.L BulletBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION ObtainInfoA(glyphEngine : pGlyphEngine; tagList : pTagItem) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L glyphEngine,A0
+    MOVEA.L tagList,A1
+    MOVEA.L BulletBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenEngine : pGlyphEngine;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L BulletBase,A6
+    JSR -030(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ReleaseInfoA(glyphEngine : pGlyphEngine; tagList : pTagItem) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L glyphEngine,A0
+    MOVEA.L tagList,A1
+    MOVEA.L BulletBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetInfoA(glyphEngine : pGlyphEngine; tagList : pTagItem) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L glyphEngine,A0
+    MOVEA.L tagList,A1
+    MOVEA.L BulletBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
 
 const
     { Change VERSION and LIBVERSION to proper values }
@@ -484,3 +550,6 @@ begin
 
 
 END. (* UNIT BULLET *)
+
+
+

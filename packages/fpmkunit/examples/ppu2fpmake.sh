@@ -1,4 +1,12 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 #!/usr/bin/env bash
+=======
+#!/bin/sh
+>>>>>>> graemeg/fixes_2_2
+=======
+#!/bin/sh
+>>>>>>> origin/fixes_2_2
 
 ppudump=ppudump
 

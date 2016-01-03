@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('httpd20');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ShortName:='hd20';
 {$ifdef ALLPACKAGES}
     P.Directory:=ADirectory;
@@ -39,6 +41,18 @@ begin
     P.IncludePath.Add('src/apr');
     P.IncludePath.Add('src/apriconv');
     P.IncludePath.Add('src/aprutil');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='httpd20';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 //    P.Dependencies.Add('x11');
 
     T:=P.Targets.AddUnit('apriconv.pas');
@@ -107,6 +121,8 @@ begin
           AddUnit('aprutil');
         end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ExamplePath.Add('examples');
     T:=P.Targets.AddExampleProgram('minimain.pas');
     T:=P.Targets.AddExampleProgram('mod_hello.pp');
@@ -116,6 +132,10 @@ begin
     T.Dependencies.AddInclude('define.inc');	
     T:=P.Targets.AddExampleProgram('testmodule.pp');
     T.Dependencies.AddInclude('define.inc');	
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$ifndef ALLPACKAGES}
     Run;

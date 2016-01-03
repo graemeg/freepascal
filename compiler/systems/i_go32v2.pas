@@ -34,7 +34,31 @@ unit i_go32v2;
             system       : system_i386_GO32V2;
             name         : 'GO32 V2 DOS extender';
             shortname    : 'Go32v2';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             flags        : [tf_use_8_3,tf_smartlink_sections];
+=======
+            flags        : [tf_use_8_3,tf_smartlink_library];
+>>>>>>> graemeg/cpstrnew
+=======
+            flags        : [tf_use_8_3,tf_smartlink_library];
+>>>>>>> graemeg/cpstrnew
+=======
+            flags        : [tf_use_8_3,tf_smartlink_library];
+>>>>>>> graemeg/cpstrnew
+=======
+            flags        : [tf_use_8_3,tf_smartlink_library];
+>>>>>>> origin/cpstrnew
+=======
+            flags        : [tf_use_8_3,tf_use_function_relative_addresses,tf_smartlink_library];
+>>>>>>> graemeg/fixes_2_2
+=======
+            flags        : [tf_use_8_3,tf_use_function_relative_addresses,tf_smartlink_library];
+>>>>>>> origin/fixes_2_2
             cpu          : cpu_i386;
             unit_env     : 'GO32V2UNITS';
             extradefines : 'DPMI';

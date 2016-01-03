@@ -54,7 +54,15 @@ type
 
         Tcompressionstream=class(Tcustomzlibstream)
         protected
+<<<<<<< HEAD
+<<<<<<< HEAD
           raw_written,compressed_written: int64;
+=======
+          raw_written,compressed_written:longint;
+>>>>>>> graemeg/fixes_2_2
+=======
+          raw_written,compressed_written:longint;
+>>>>>>> origin/fixes_2_2
         public
           constructor create(level:Tcompressionlevel;
                              dest:Tstream;
@@ -63,22 +71,50 @@ type
           function write(const buffer;count:longint):longint;override;
           procedure flush;
           function get_compressionrate:single;
+<<<<<<< HEAD
+<<<<<<< HEAD
           property OnProgress;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         end;
 
         Tdecompressionstream=class(Tcustomzlibstream)
         protected
+<<<<<<< HEAD
+<<<<<<< HEAD
           raw_read,compressed_read:int64;
           skipheader:boolean;
           procedure reset;
           function GetPosition() : Int64; override;
+=======
+          raw_read,compressed_read:longint;
+          skipheader:boolean;
+          procedure reset;
+>>>>>>> graemeg/fixes_2_2
+=======
+          raw_read,compressed_read:longint;
+          skipheader:boolean;
+          procedure reset;
+>>>>>>> origin/fixes_2_2
         public
           constructor create(Asource:Tstream;Askipheader:boolean=false);
           destructor destroy;override;
           function read(var buffer;count:longint):longint;override;
+<<<<<<< HEAD
+<<<<<<< HEAD
           function Seek(const Offset: Int64; Origin: TSeekOrigin): Int64;  override;
           function get_compressionrate:single;
           property OnProgress;
+=======
+          function seek(offset:longint;origin:word):longint;override;
+          function get_compressionrate:single;
+>>>>>>> graemeg/fixes_2_2
+=======
+          function seek(offset:longint;origin:word):longint;override;
+          function get_compressionrate:single;
+>>>>>>> origin/fixes_2_2
         end;
 
         TGZFileStream = Class(TStream)
@@ -324,6 +360,8 @@ begin
     raise Edecompressionerror.create(zerror(err));
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function Tdecompressionstream.GetPosition() : Int64; 
 begin
   GetPosition := raw_read;
@@ -356,6 +394,35 @@ begin
             c:=bufsize;
           c:=read(Fbuffer^,c);
           dec(off,c);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function Tdecompressionstream.seek(offset:longint;origin:word):longint;
+
+var c:longint;
+
+begin
+  if (origin=sofrombeginning) or
+     ((origin=sofromcurrent) and (offset+raw_read>=0)) then
+    begin
+      if origin=sofrombeginning then
+        dec(offset,raw_read);
+      if offset<0 then
+        begin
+          inc(offset,raw_read);
+          reset;
+        end;
+      while offset>0 do
+        begin
+          c:=offset;
+          if c>bufsize then
+            c:=bufsize;
+          c:=read(Fbuffer^,c);
+          dec(offset,c);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         end;
     end
   else

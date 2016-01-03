@@ -20,9 +20,9 @@ type
   ViewInfo = record
     image: PImage;
 
-    id: culong;
+    id: Cardinal;
 
-    signature: culong;
+    signature: Cardinal;
   end;
   
   PViewInfo = ^ViewInfo;

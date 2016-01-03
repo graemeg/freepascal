@@ -25,6 +25,10 @@ type
     ins    : array[0..7] of longint;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* MIPS OABI32 structure 
 struct sigcontext {
   unsigned int sc_regmask;
@@ -92,5 +96,39 @@ typedef struct ucontext
     uc_stack : TStack;
     uc_mcontext : TSigContext;
     uc_sigmask : TSigSet;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  PSigContext = ^TSigContext;
+  TSigContext = record
+    sigc_onstack,      { state to restore }
+    sigc_mask,         { sigmask to restore }
+    sigc_sp,           { stack pointer }
+    sigc_pc,           { program counter }
+    sigc_npc,          { next program counter }
+    sigc_psr,          { for condition codes etc }
+    sigc_g1,           { User uses these two registers }
+    sigc_o0, { within the trampoline code. }
+    { Now comes information regarding the users window set
+      * at the time of the signal. }
+    sigc_oswins : longint;       { outstanding windows }
+    { stack ptrs for each regwin buf }
+    sigc_spbuf  : array[0..__SUNOS_MAXWIN-1] of pchar;
+    { Windows to restore after signal }
+    sigc_wbuf   : array[0..__SUNOS_MAXWIN] of twbuf;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 

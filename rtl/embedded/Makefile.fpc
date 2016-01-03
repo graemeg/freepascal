@@ -6,6 +6,7 @@
 main=rtl
 
 [target]
+<<<<<<< HEAD
 loaders=$(LOADERS)
 
 
@@ -21,6 +22,22 @@ units=$(SYSTEMUNIT) $(CPU_UNITS) uuchar objpas iso7185 extpas strings heapmgr co
 #implicitunits=exeinfo \
 #      cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
 #      cp437 cp646 cp850 cp856 cp866 cp874 cp932 cp936 cp949 cp950 cp8859_1 cp8859_5 cp8859_2 cp852
+=======
+loaders=
+units=$(SYSTEMUNIT) $(CPU_UNITS) objpas # macpas iso7185 strings \
+#      dos \
+#       sysutils \
+#       classes math typinfo varutils fmtbcd \
+#       charset ucomplex getopts matrix \
+#       variants types rtlconsts sysconst dateutil
+#implicitunits=exeinfo
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 #rsts=math rtlconsts varutils typinfo variants classes sysconst dateutil
 
@@ -62,6 +79,10 @@ SYSINIT_UNITS=
 CPU_SPECIFIC_COMMON_UNITS=
 
 ifeq ($(ARCH),arm)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 CPU_SPECIFIC_COMMON_UNITS=sysutils math classes fgl macpas typinfo types rtlconsts getopts lineinfo
 ifeq ($(SUBARCH),armv7m)
 CPU_UNITS=lm3fury lm3tempest stm32f10x_ld stm32f10x_md stm32f10x_hd stm32f10x_xl stm32f10x_conn stm32f10x_cl lpc13xx lpc1768 lm4f120 sam3x8e xmc4500 cortexm3 cortexm4 # thumb2_bare
@@ -140,6 +161,28 @@ endif
 ifeq ($(CPU_UNITS),)
 $(error Invalid value set for SUBARCH)
 endif
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+CPU_UNITS=lpc21x4 at91sam7x256 stellaris stm32f103
+endif
+
+ifeq ($(ARCH),i386)
+CPU_UNITS=multiboot
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 endif
 
 # Paths
@@ -270,7 +313,15 @@ dateutil$(PPUEXT) : $(OBJPASDIR)/dateutil.pp $(SYSTEMUNIT)$(PPUEXT)
 # Mac Pascal Model
 #
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
+=======
+macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT)
+>>>>>>> graemeg/fixes_2_2
+=======
+macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT)
+>>>>>>> origin/fixes_2_2
         $(COMPILER) $(INC)/macpas.pp $(REDIR)
 
 #

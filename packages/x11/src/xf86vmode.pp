@@ -172,58 +172,58 @@ Type
   End;
 
 {$IFDEF MACROS}
-Function XF86VidModeSelectNextMode(disp : PDisplay; scr : cint) : TBoolResult;
-Function XF86VidModeSelectPrevMode(disp : PDisplay; scr : cint) : TBoolResult;
+Function XF86VidModeSelectNextMode(disp : PDisplay; scr : cint) : TBool;
+Function XF86VidModeSelectPrevMode(disp : PDisplay; scr : cint) : TBool;
 {$ENDIF MACROS}
 
 Function XF86VidModeQueryVersion(
     dpy : PDisplay;
     majorVersion : Pcint;
     minorVersion : Pcint
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeQueryExtension(
     dpy : PDisplay;
     event_base : Pcint;
     error_base : Pcint
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeSetClientVersion(
     dpy : PDisplay
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeGetModeLine(
     dpy : PDisplay;
     screen : cint;
     dotclock : Pcint;
     modeline : PXF86VidModeModeLine
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeGetAllModeLines(
     dpy : PDisplay;
     screen : cint;
     modecount : Pcint;
     modelinesPtr : PPPXF86VidModeModeInfo
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeAddModeLine(
     dpy : PDisplay;
     screen : cint;
     new_modeline : PXF86VidModeModeInfo;
     after_modeline : PXF86VidModeModeInfo
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeDeleteModeLine(
     dpy : PDisplay;
     screen : cint;
     modeline : PXF86VidModeModeInfo
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeModModeLine(
     dpy : PDisplay;
     screen : cint;
     modeline : PXF86VidModeModeLine
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeValidateModeLine(
     dpy : PDisplay;
@@ -235,39 +235,39 @@ Function XF86VidModeSwitchMode(
     dpy : PDisplay;
     screen : cint;
     zoom : cint
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeSwitchToMode(
     dpy : PDisplay;
     screen : cint;
     modeline : PXF86VidModeModeInfo
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeLockModeSwitch(
     dpy : PDisplay;
     screen : cint;
     lock : cint
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeGetMonitor(
     dpy : PDisplay;
     screen : cint;
     monitor : PXF86VidModeMonitor
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeGetViewPort(
     dpy : PDisplay;
     screen : cint;
     x_return : Pcint;
     y_return : Pcint
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeSetViewPort(
     dpy : PDisplay;
     screen : cint;
     x : cint;
     y : cint
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeGetDotClocks(
     dpy : PDisplay;
@@ -276,19 +276,19 @@ Function XF86VidModeGetDotClocks(
     number_of_clocks_return : Pcint;
     max_dot_clock_return : Pcint;
     clocks_return : PPcint
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeGetGamma(
     dpy : PDisplay;
     screen : cint;
     Gamma : PXF86VidModeGamma
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeSetGamma(
     dpy : PDisplay;
     screen : cint;
     Gamma : PXF86VidModeGamma
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeSetGammaRamp(
     dpy : PDisplay;
@@ -297,7 +297,7 @@ Function XF86VidModeSetGammaRamp(
     red_array : Pcushort;
     green_array : Pcushort;
     blue_array : Pcushort
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeGetGammaRamp(
     dpy : PDisplay;
@@ -306,30 +306,30 @@ Function XF86VidModeGetGammaRamp(
     red_array : Pcushort;
     green_array : Pcushort;
     blue_array : Pcushort
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeGetGammaRampSize(
     dpy : PDisplay;
     screen : cint;
     size : Pcint
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Function XF86VidModeGetPermissions(
     dpy : PDisplay;
     screen : cint;
     permissions : Pcint
-  ) : TBoolResult; CDecl; External libXxf86vm;
+  ) : TBool; CDecl; External libXxf86vm;
 
 Implementation
 
 {$IFDEF MACROS}
-Function XF86VidModeSelectNextMode(disp : PDisplay; scr : cint) : TBoolResult;
+Function XF86VidModeSelectNextMode(disp : PDisplay; scr : cint) : TBool;
 
 Begin
   XF86VidModeSelectNextMode := XF86VidModeSwitchMode(disp, scr, 1);
 End;
 
-Function XF86VidModeSelectPrevMode(disp : PDisplay; scr : cint) : TBoolResult;
+Function XF86VidModeSelectPrevMode(disp : PDisplay; scr : cint) : TBool;
 
 Begin
   XF86VidModeSelectPrevMode := XF86VidModeSwitchMode(disp, scr, -1);

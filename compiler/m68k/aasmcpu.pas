@@ -472,6 +472,7 @@ type
         result:=operand_read;
 
         case opcode of
+<<<<<<< HEAD
           // CPU opcodes
           A_MOVE, A_MOVEQ, A_MOVEA, A_MVZ, A_MVS, A_MOV3Q, A_LEA,
           A_BSET, A_BCLR:
@@ -515,6 +516,24 @@ type
           A_FCMP, A_FTST:
              begin end; { operand_read }
 
+=======
+          A_MOVE, A_MOVEQ, A_ADD, A_ADDQ, A_ADDX, A_SUB, A_SUBQ,
+          A_AND, A_LSR, A_LSL, A_ASR, A_ASL, A_EOR, A_EORI, A_OR:
+            if opnr=1 then begin
+              result:=operand_write;
+            end else begin
+              result:=operand_read;
+            end;
+          A_TST,A_CMP,A_CMPI:
+            result:=operand_read;
+          A_CLR, A_SXX:
+            result:=operand_write;
+          A_NEG, A_EXT, A_EXTB, A_NOT:
+            result:=operand_readwrite;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           else begin
             internalerror(2004040903);
           end;

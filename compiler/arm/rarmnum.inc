@@ -25,6 +25,10 @@ tregister($02000005),
 tregister($02000006),
 tregister($02000007),
 tregister($04060000),
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 tregister($04060020),
 tregister($04070000),
 tregister($04060001),
@@ -71,6 +75,69 @@ tregister($0406002E),
 tregister($0407000E),
 tregister($0406000F),
 tregister($0406002F),
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+tregister($04060000),
+tregister($04070000),
+tregister($04060001),
+tregister($04060001),
+tregister($04070001),
+tregister($04060002),
+tregister($04060002),
+tregister($04070002),
+tregister($04060003),
+tregister($04060003),
+tregister($04070003),
+tregister($04060004),
+tregister($04060004),
+tregister($04070004),
+tregister($04060005),
+tregister($04060005),
+tregister($04070005),
+tregister($04060006),
+tregister($04060006),
+tregister($04070006),
+tregister($04060007),
+tregister($04060007),
+tregister($04070007),
+tregister($04060008),
+tregister($04060008),
+tregister($04070008),
+tregister($04060009),
+tregister($04060009),
+tregister($04070009),
+tregister($0406000A),
+tregister($0406000A),
+tregister($0407000A),
+tregister($0406000B),
+tregister($0406000B),
+tregister($0407000B),
+tregister($0406000C),
+tregister($0406000C),
+tregister($0407000C),
+tregister($0406000D),
+tregister($0406000D),
+tregister($0407000D),
+tregister($0406000E),
+tregister($0406000E),
+tregister($0407000E),
+tregister($0406000F),
+tregister($0406000F),
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 tregister($0407000F),
 tregister($04070010),
 tregister($04070011),
@@ -89,6 +156,10 @@ tregister($0407001D),
 tregister($0407001E),
 tregister($0407001F),
 tregister($05000000),
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 tregister($05000001),
 tregister($05000002),
 tregister($05000003),
@@ -130,3 +201,15 @@ tregister($05000026),
 tregister($05000027),
 tregister($05000028),
 tregister($05000029)
+=======
+tregister($05000001)
+>>>>>>> graemeg/cpstrnew
+=======
+tregister($05000001)
+>>>>>>> graemeg/cpstrnew
+=======
+tregister($05000001)
+>>>>>>> graemeg/cpstrnew
+=======
+tregister($05000001)
+>>>>>>> origin/cpstrnew

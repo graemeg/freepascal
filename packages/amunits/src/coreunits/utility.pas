@@ -31,7 +31,11 @@
 
     nils.sjoholm@mailbox.swipnet.se
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+    {$smartlink on}
+{$endif use_amiga_smartlink}
 
 unit utility;
 
@@ -308,7 +312,7 @@ CONST
  TAG_SKIP          = 3; { skip this AND the next ti_Data items         }
 
 { differentiates user tags from control tags }
- TAG_USER          = LongInt($80000000);    { differentiates user tags from system tags}
+ TAG_USER          = $80000000;    { differentiates user tags from system tags}
 
 {* If the TAG_USER bit is set in a tag number, it tells utility.library that
  * the tag is not a control tag (like TAG_DONE, TAG_IGNORE, TAG_MORE) and is
@@ -336,45 +340,44 @@ Type
     ub_Reserved  : Byte;
  END;
 
-function AddNamedObject(nameSpace : pNamedObject location 'a0';obj : pNamedObject location 'a1') : LongBool; syscall _UtilityBase 222;
-function AllocateTagItems(num : ULONG location 'd0') : pTagItem; syscall _UtilityBase 066;
-function AllocNamedObjectA(const name : STRPTR location 'a0';const TagList : pTagItem location 'a1') : pNamedObject; syscall _UtilityBase 228;
-procedure Amiga2Date(amigatime : ULONG location 'd0';resultat : pClockData location 'a0'); syscall _UtilityBase 120;
-procedure ApplyTagChanges(TagList : pTagItem location 'a0'; const ChangeList : pTagItem location 'a1'); syscall _UtilityBase 186;
-function AttemptRemNamedObject(obj : pNamedObject location 'a0') : LongInt; syscall _UtilityBase 234;
-function CallHookPkt(h : pHook location 'a0';obj: APTR location 'a2'; paramPkt : APTR location 'a1') : ULONG; syscall _UtilityBase 102;
-function CheckDate(const date : pClockData location 'a0') : ULONG; syscall _UtilityBase 132;
-function CloneTagItems(const tagList : pTagItem location 'a0') : pTagItem; syscall _UtilityBase 072;
-function Date2Amiga(const date : pClockData location 'a0') : ULONG; syscall _UtilityBase 126;
-procedure FilterTagChanges(changelist: PTagItem location 'a0'; oldvalues : pTagItem location 'a1';apply : ULONG location 'd0'); syscall _UtilityBase 054;
-function FilterTagItems(taglist : pTagItem  location 'a0';const tagArray : pULONG location 'a1';logic : ULONG location 'd0') : ULONG; syscall _UtilityBase 096;
-function FindNamedObject(nameSpace : pNamedObject location 'a0';const name : STRPTR location 'a1';lastobject: pNamedObject location 'a2') : pNamedObject; syscall _UtilityBase 240;
-function FindTagItem(TagVal : Tag location 'd0';const TagList : pTagItem location 'a0') : pTagItem; syscall _UtilityBase 030;
-procedure FreeNamedObject(Obj : pNamedObject location 'a0'); syscall _UtilityBase 246;
-procedure FreeTagItems(TagList : pTagItem location 'a0'); syscall _UtilityBase 078;
-function GetTagData(tagval : Tag location 'd0';default : ULONG location 'd1';const TagList : pTagItem location 'a0') : ULONG; syscall _UtilityBase 036;
-function GetUniqueID : ULONG; syscall _UtilityBase 270;
-procedure MapTags(TagList : pTagItem location 'a0';const maplist : pTagItem location 'a1';IncludeMiss : ULONG location 'd0'); syscall _UtilityBase 060;
-function NamedObjectName(Obj : pNamedObject location 'a0') : STRPTR; syscall _UtilityBase 252;
-function NextTagItem(ItemPtr : ppTagItem location 'a0') : pTagItem; overload; syscall _UtilityBase 048;
-function NextTagItem(var Item : pTagItem location 'a0') : pTagItem; overload; syscall _UtilityBase 048;
-function PackBoolTags(InitialFlags : ULONG location 'd0';const TagList: PTagItem location 'a0'; const boolmap : pTagItem location 'a1') : ULONG; syscall _UtilityBase 042;
-function PackStructureTags(packk: APTR location 'a0';const packTable : pULONG location 'a1';const TagList : pTagItem location 'a2') : ULONG; syscall _UtilityBase 210;
-procedure RefreshTagItemClones(cloneTagItem : pTagItem location 'a0'; const OriginalTagItems : pTagItem location 'a1'); syscall _UtilityBase 084;
-procedure ReleaseNamedObject(Obj : pNamedObject location 'a0'); syscall _UtilityBase 258;
-procedure RemNamedObject(Obj : pNamedObject location 'a0';Msg : pointer location 'a1'); syscall _UtilityBase 264;
-function SDivMod32( dividend: LongInt location 'd0'; divisor : LongInt location 'd1') : LongInt; syscall _UtilityBase 150;
-function SMult32(Arg1: LongInt location 'd0'; Arg2 : LongInt location 'd1') : LongInt; syscall _UtilityBase 138;
-function SMult64(Arg1: LongInt location 'd0'; Arg2 : LongInt location 'd1') : LongInt; syscall _UtilityBase 198;
-function Stricmp(const Str1: STRPTR location 'a0';const Str2 : STRPTR location 'a1') : LongInt; syscall _UtilityBase 162;
-function Strnicmp(const Str1: STRPTR location 'a0';const Str2 : STRPTR location 'a1';len : LongInt location 'd0') : LongInt; syscall _UtilityBase 168;
-function TagInArray(t : Tag location 'd0';const TagArray : pULONG location 'a0') : LongBool; syscall _UtilityBase 090;
-function ToLower(c : ULONG location 'd0') : Char; syscall _UtilityBase 180;
-function ToUpper(c : ULONG location 'd0') : Char; syscall _UtilityBase 174;
-function UDivMod32( dividend: ULONG location 'd0'; divisor : ULONG location 'd1') : ULONG; syscall _UtilityBase 156;
-function UMult32(Arg1: ULONG location 'd0'; Arg2 : ULONG location 'd1') : ULONG; syscall _UtilityBase 144;
-function UMult64(Arg1: ULONG location 'd0'; Arg2 : ULONG location 'd1') : ULONG; syscall _UtilityBase 204;
-function UnpackStructureTags(const pac: APTR location 'a0';const packTable: pULONG location 'a1';TagList : pTagItem location 'a2') : ULONG; syscall _UtilityBase 216;
+function AddNamedObject(nameSpace,obj : pNamedObject) : Boolean;
+function AllocateTagItems(num : ULONG) : pTagItem;
+function AllocNamedObjectA(const name : STRPTR;const TagList : pTagItem) : pNamedObject;
+procedure Amiga2Date(amigatime : ULONG;resultat : pClockData);
+procedure ApplyTagChanges(TagList : pTagItem; const ChangeList : pTagItem);
+function AttemptRemNamedObject(obj : pNamedObject) : LongInt;
+function CallHookPkt(h : pHook;obj, paramPkt : APTR) : ULONG;
+function CheckDate(const date : pClockData) : ULONG;
+function CloneTagItems(const tagList : pTagItem) : pTagItem;
+function Date2Amiga(const date : pClockData) : ULONG;
+procedure FilterTagChanges(changelist, oldvalues : pTagItem;apply : ULONG);
+function FilterTagItems(taglist : pTagItem ;const tagArray : pULONG;logic : ULONG) : ULONG;
+function FindNamedObject(nameSpace : pNamedObject;const name : STRPTR;lastobject: pNamedObject) : pNamedObject;
+function FindTagItem(TagVal : Tag;const TagList : pTagItem) : pTagItem;
+procedure FreeNamedObject(Obj : pNamedObject);
+procedure FreeTagItems(TagList : pTagItem);
+function GetTagData(tagval : Tag;default : ULONG;const TagList : pTagItem) : ULONG;
+function GetUniqueID : ULONG;
+procedure MapTags(TagList : pTagItem;const maplist : pTagItem;IncludeMiss : ULONG);
+function NamedObjectName(Obj : pNamedObject) : STRPTR;
+function NextTagItem(Item : ppTagItem) : pTagItem;
+function PackBoolTags(InitialFlags : ULONG;const TagList, boolmap : pTagItem) : ULONG;
+function PackStructureTags(packk: APTR;const packTable : pULONG;const TagList : pTagItem) : ULONG;
+procedure RefreshTagItemClones(cloneTagItem : pTagItem; const OriginalTagItems : pTagItem);
+procedure ReleaseNamedObject(Obj : pNamedObject);
+procedure RemNamedObject(Obj : pNamedObject;Msg : pointer);
+function SDivMod32( dividend , divisor : LongInt) : LongInt;
+function SMult32(Arg1, Arg2 : LongInt) : LongInt;
+function SMult64(Arg1, Arg2 : LongInt) : LongInt;
+function Stricmp(const Str1: STRPTR;const Str2 : STRPTR) : LongInt;
+function Strnicmp(const Str1: STRPTR;const Str2 : STRPTR;len : LongInt) : LongInt;
+function TagInArray(t : Tag;const TagArray : pULONG) : Boolean;
+function ToLower(c : ULONG) : Char;
+function ToUpper(c : ULONG) : Char;
+function UDivMod32( dividend , divisor : ULONG) : ULONG;
+function UMult32(Arg1, Arg2 : ULONG) : ULONG;
+function UMult64(Arg1, Arg2 : ULONG) : ULONG;
+function UnpackStructureTags(const pac: APTR;const packTable: pULONG;TagList : pTagItem) : ULONG;
 
 function AllocNamedObjectA(const name : string;const TagList : pTagItem) : pNamedObject;
 FUNCTION FindNamedObject(nameSpace : pNamedObject; CONST name : string; lastObject : pNamedObject) : pNamedObject;
@@ -388,45 +391,540 @@ FUNCTION Strnicmp(CONST string1 : string; CONST string2 : string; length : LONGI
 
 IMPLEMENTATION
 
+uses pastoc;
+
+function AddNamedObject(nameSpace,obj : pNamedObject) : Boolean;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  nameSpace,a0
+       MOVE.L  obj,a1
+       MOVE.L  _UtilityBase,A6
+       JSR -222(A6)
+       MOVE.L  (A7)+,A6
+       TST.L   d0
+       bne     @success
+       bra     @end
+   @success:
+       move.b  #1,d0
+   @end:
+       move.b  d0,@RESULT
+   end;
+end;
+
+function AllocateTagItems(num : ULONG) : pTagItem;
+begin
+  asm
+      MOVE.L  A6,-(A7)
+      MOVE.L  num,d0
+      MOVE.L  _UtilityBase,A6
+      JSR -066(A6)
+      MOVE.L  (A7)+,A6
+      MOVE.L  d0,@RESULT
+  end;
+end;
+
+function AllocNamedObjectA(const name : STRPTR;const TagList : pTagItem) : pNamedObject;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  name,a0
+       MOVE.L  TagList,a1
+       MOVE.L  _UtilityBase,A6
+       JSR -228(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+procedure Amiga2Date(amigatime : ULONG;resultat : pClockData);
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  amigatime,d0
+       MOVE.L  resultat,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -120(A6)
+       MOVE.L  (A7)+,A6
+   end;
+end;
+
+procedure ApplyTagChanges(TagList : pTagItem;const ChangeList : pTagItem);
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  TagList,a0
+       MOVE.L  ChangeList,a1
+       MOVE.L  _UtilityBase,A6
+       JSR -186(A6)
+       MOVE.L  (A7)+,A6
+   end;
+end;
+
+function AttemptRemNamedObject(obj : pNamedObject) : LongInt;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  obj,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -234(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function CallHookPkt(h : pHook;obj, paramPkt : APTR) : ULONG;
+begin
+   asm
+       MOVEM.L a2/a6,-(A7)
+       MOVE.L  h,a0
+       MOVE.L  obj,a2
+       MOVE.L  paramPkt,a1
+       MOVE.L  _UtilityBase,A6
+       JSR -102(A6)
+       MOVEM.L (A7)+,a2/a6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function CheckDate(const date : pClockData) : ULONG;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  date,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -132(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function CloneTagItems(const tagList : pTagItem) : pTagItem;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  taglist,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -072(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function Date2Amiga(const date : pClockData) : ULONG;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  date,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -126(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+procedure FilterTagChanges(changelist, oldvalues : pTagItem;apply : ULONG);
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  changelist,a0
+       MOVE.L  oldvalues,a1
+       MOVE.L  apply,d0
+       MOVE.L  _UtilityBase,A6
+       JSR -054(A6)
+       MOVE.L  (A7)+,A6
+   end;
+end;
+
+function FilterTagItems(taglist : pTagItem ;const tagArray : pULONG;logic : ULONG) : ULONG;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  taglist,a0
+       MOVE.L  tagArray,a1
+       MOVE.L  logic,d0
+       MOVE.L  _UtilityBase,A6
+       JSR -096(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function FindNamedObject(nameSpace : pNamedObject;const name : STRPTR;lastobject: pNamedObject) : pNamedObject;
+begin
+   asm
+       MOVEM.L a2/a6,-(A7)
+       MOVE.L  nameSpace,a0
+       MOVE.L  name,a1
+       MOVE.L  lastobject,a2
+       MOVE.L  _UtilityBase,A6
+       JSR -240(A6)
+       MOVEM.L (A7)+,a2/a6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function FindTagItem(TagVal : Tag;const TagList : pTagItem) : pTagItem;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  TagVal,d0
+       MOVE.L  TagList,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -030(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+procedure FreeNamedObject(Obj : pNamedObject);
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  Obj,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -246(A6)
+       MOVE.L  (A7)+,A6
+   end;
+end;
+
+procedure FreeTagItems(TagList : pTagItem);
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  TagList,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -078(A6)
+       MOVE.L  (A7)+,A6
+   end;
+end;
+
+function GetTagData(tagval : Tag;default : ULONG;const TagList : pTagItem) : ULONG;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  tagval,d0
+       MOVE.L  default,d1
+       MOVE.L  TagList,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -036(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function GetUniqueID : ULONG;
+begin
+   asm
+      MOVE.L  A6,-(A7)
+      MOVE.L  _UtilityBase,A6
+      JSR -270(A6)
+      MOVE.L  (A7)+,A6
+      MOVE.L  d0,@RESULT
+   end;
+end;
+
+procedure MapTags(TagList : pTagItem;const maplist : pTagItem;IncludeMiss : ULONG);
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  TagList,a0
+       MOVE.L  maplist,a1
+       MOVE.L  IncludeMiss,d0
+       MOVE.L  _UtilityBase,A6
+       JSR -060(A6)
+       MOVE.L  (A7)+,A6
+   end;
+end;
+
+function NamedObjectName(Obj : pNamedObject) : STRPTR;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  Obj,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -252(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function NextTagItem(Item : ppTagItem) : pTagItem;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  Item,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -048(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function PackBoolTags(InitialFlags : ULONG;const TagList, boolmap : pTagItem) : ULONG;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  InitialFlags,d0
+       MOVE.L  TagList,a0
+       MOVE.L  boolmap,a1
+       MOVE.L  _UtilityBase,A6
+       JSR -042(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function PackStructureTags(packk: APTR;const packTable : pULONG;const TagList : pTagItem) : ULONG;
+begin
+   asm
+       MOVEM.L a2/a6,-(A7)
+       MOVE.L  packk,a0
+       MOVE.L  packTable,a1
+       MOVE.L  TagList,a2
+       MOVE.L  _UtilityBase,A6
+       JSR -210(A6)
+       MOVEM.L (A7)+,a2/a6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+procedure RefreshTagItemClones(cloneTagItem : pTagItem; const OriginalTagItems : pTagItem);
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  cloneTagItem,a0
+       MOVE.L  OriginalTagItems,a1
+       MOVE.L  _UtilityBase,A6
+       JSR -084(A6)
+       MOVE.L  (A7)+,A6
+   end;
+end;
+
+procedure ReleaseNamedObject(Obj : pNamedObject);
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  Obj,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -258(A6)
+       MOVE.L  (A7)+,A6
+   end;
+end;
+
+procedure RemNamedObject(Obj : pNamedObject;Msg : pointer);
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  Obj,a0
+       MOVE.L  Msg,a1
+       MOVE.L  _UtilityBase,A6
+       JSR -264(A6)
+       MOVE.L  (A7)+,A6
+   end;
+end;
+
+function SDivMod32( dividend , divisor : LongInt) : LongInt;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  dividend,d0
+       MOVE.L  divisor,d1
+       MOVE.L  _UtilityBase,A6
+       JSR -150(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function SMult32(Arg1, Arg2 : LongInt) : LongInt;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  Arg1,d0
+       MOVE.L  Arg2,d1
+       MOVE.L  _UtilityBase,A6
+       JSR -138(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function SMult64(Arg1, Arg2 : LongInt) : LongInt;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  Arg1,d0
+       MOVE.L  Arg2,d1
+       MOVE.L  _UtilityBase,A6
+       JSR -198(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function Stricmp(const Str1: STRPTR;const Str2 : STRPTR) : LongInt;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  Str1,a0
+       MOVE.L  Str2,a1
+       MOVE.L  _UtilityBase,A6
+       JSR -162(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function Strnicmp(const Str1: STRPTR;const Str2 : STRPTR;len : LongInt) : LongInt;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  Str1,a0
+       MOVE.L  Str2,a1
+       MOVE.L  len,d0
+       MOVE.L  _UtilityBase,A6
+       JSR -168(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function TagInArray(t : Tag;const TagArray : pULONG) : Boolean;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  t,d0
+       MOVE.L  TagArray,a0
+       MOVE.L  _UtilityBase,A6
+       JSR -090(A6)
+       MOVE.L  (A7)+,A6
+       TST.L   d0
+       bne     @success
+       bra     @end
+   @success:
+       move.b  #1,d0
+   @end:
+       move.b  d0,@RESULT
+   end;
+end;
+
+function ToLower(c : ULONG) : Char;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  c,d0
+       MOVE.L  _UtilityBase,A6
+       JSR -180(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.B  d0,@RESULT
+   end;
+end;
+
+function ToUpper(c : ULONG) : Char;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  c,d0
+       MOVE.L  _UtilityBase,A6
+       JSR -174(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.B  d0,@RESULT
+   end;
+end;
+
+function UDivMod32( dividend , divisor : ULONG) : ULONG;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  dividend,d0
+       MOVE.L  divisor,d1
+       MOVE.L  _UtilityBase,A6
+       JSR -156(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function UMult32(Arg1, Arg2 : ULONG) : ULONG;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  Arg1,d0
+       MOVE.L  Arg2,d1
+       MOVE.L  _UtilityBase,A6
+       JSR -144(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function UMult64(Arg1, Arg2 : ULONG) : ULONG;
+begin
+   asm
+       MOVE.L  A6,-(A7)
+       MOVE.L  Arg1,d0
+       MOVE.L  Arg2,d1
+       MOVE.L  _UtilityBase,A6
+       JSR -204(A6)
+       MOVE.L  (A7)+,A6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
+function UnpackStructureTags(const pac: APTR;const packTable: pULONG;TagList : pTagItem) : ULONG;
+begin
+   asm
+       MOVEM.L a2/a6,-(A7)
+       MOVE.L  pac,a0
+       MOVE.L  packTable,a1
+       MOVE.L  TagList,a2
+       MOVE.L  _UtilityBase,A6
+       JSR -216(A6)
+       MOVEM.L (A7)+,a2/a6
+       MOVE.L  d0,@RESULT
+   end;
+end;
+
 
 function AllocNamedObjectA(const name : string;const TagList : pTagItem) : pNamedObject;
 begin
-       AllocNamedObjectA := AllocNamedObjectA(PChar(RawByteString(name)),TagList);
+       AllocNamedObjectA := AllocNamedObjectA(pas2c(name),TagList);
 end;
 
 FUNCTION FindNamedObject(nameSpace : pNamedObject; CONST name : string; lastObject : pNamedObject) : pNamedObject;
 begin
-       FindNamedObject := FindNamedObject(nameSpace,PChar(RawByteString(name)),lastObject);
+       FindNamedObject := FindNamedObject(nameSpace,pas2c(name),lastObject);
 end;
 
 FUNCTION Stricmp(CONST string1 : string; CONST string2 : pCHAR) : LONGINT;
 begin
-       Stricmp := Stricmp(PChar(RawbyteString(string1)),string2);
+       Stricmp := Stricmp(pas2c(string1),string2);
 end;
 
 FUNCTION Stricmp(CONST string1 : pCHAR; CONST string2 : string) : LONGINT;
 begin
-       Stricmp := Stricmp(string1,PChar(RawbyteString(string2)));
+       Stricmp := Stricmp(string1,pas2c(string2));
 end;
 
 FUNCTION Stricmp(CONST string1 : string; CONST string2 : string) : LONGINT;
 begin
-       Stricmp := Stricmp(PChar(RawbyteString(string1)),PChar(RawbyteString(string2)));
+       Stricmp := Stricmp(pas2c(string1),pas2c(string2));
 end;
 
 FUNCTION Strnicmp(CONST string1 : string; CONST string2 : pCHAR; length : LONGINT) : LONGINT;
 begin
-       Strnicmp := Strnicmp(PChar(RawbyteString(string1)),string2,length);
+       Strnicmp := Strnicmp(pas2c(string1),string2,length);
 end;
 
 FUNCTION Strnicmp(CONST string1 : pCHAR; CONST string2 : string; length : LONGINT) : LONGINT;
 begin
-       Strnicmp := Strnicmp(string1,PChar(RawbyteString(string2)),length);
+       Strnicmp := Strnicmp(string1,pas2c(string2),length);
 end;
 
 FUNCTION Strnicmp(CONST string1 : string; CONST string2 : string; length : LONGINT) : LONGINT;
 begin
-       Strnicmp := Strnicmp(PChar(RawbyteString(string1)),PChar(RawbyteString(string2)),length);
+       Strnicmp := Strnicmp(pas2c(string1),pas2c(string2),length);
 end;
 
 

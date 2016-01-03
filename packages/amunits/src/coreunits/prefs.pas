@@ -32,7 +32,7 @@
 unit prefs;
 
 INTERFACE
-uses exec, iffparse, agraphics, timer, intuition;
+uses exec, iffparse, graphics, timer, intuition;
 
 
 { Asl }

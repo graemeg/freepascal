@@ -52,7 +52,7 @@ uses
      Windows,
  {$ENDIF WIN32}
 {$ENDIF OS2}
- Unzip51g, Dos;
+ Unzip, Dos;
 
 type
  UzpMainFunc = function (ArgC: longint; var ArgV: TArgV): longint; cdecl;
@@ -237,6 +237,6 @@ begin
   WriteLn ('under some conditions (e.g. for long names and drives not supporting them).');
   Write (#13#10'Do you want to continue now (y/N)? ');
   ReadLn (C);
-  if UpCase (C) = 'Y' then FileUnzipEx := TFileUnzipEx (@Unzip51g.FileUnzipEx) else Halt (255);
+  if UpCase (C) = 'Y' then FileUnzipEx := TFileUnzipEx (@Unzip.FileUnzipEx) else Halt (255);
  end;
 end.

@@ -1,6 +1,14 @@
 { lNet Timer
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   CopyRight (C) 2006-2008 Micha Nelissen
+=======
+  CopyRight (C) 2006-2007 Micha Nelissen
+>>>>>>> graemeg/fixes_2_2
+=======
+  CopyRight (C) 2006-2007 Micha Nelissen
+>>>>>>> origin/fixes_2_2
 
   This library is Free software; you can rediStribute it and/or modify it
   under the terms of the GNU Library General Public License as published by

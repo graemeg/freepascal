@@ -47,6 +47,7 @@
        { methods }
        vmtMethodStart          = vmtParent+sizeof(pointer)*10;
        vmtDestroy              = vmtMethodStart;
+<<<<<<< HEAD
        vmtNewInstance          = vmtMethodStart+sizeof(codepointer);
        vmtFreeInstance         = vmtMethodStart+sizeof(codepointer)*2;
        vmtSafeCallException    = vmtMethodStart+sizeof(codepointer)*3;
@@ -59,6 +60,29 @@
        vmtEquals               = vmtMethodStart+sizeof(codepointer)*10;
        vmtGetHashCode          = vmtMethodStart+sizeof(codepointer)*11;
        vmtToString             = vmtMethodStart+sizeof(codepointer)*12;
+=======
+       vmtNewInstance          = vmtMethodStart+sizeof(pointer);
+       vmtFreeInstance         = vmtMethodStart+sizeof(pointer)*2;
+       vmtSafeCallException    = vmtMethodStart+sizeof(pointer)*3;
+       vmtDefaultHandler       = vmtMethodStart+sizeof(pointer)*4;
+       vmtAfterConstruction    = vmtMethodStart+sizeof(pointer)*5;
+       vmtBeforeDestruction    = vmtMethodStart+sizeof(pointer)*6;
+       vmtDefaultHandlerStr    = vmtMethodStart+sizeof(pointer)*7;
+       vmtDispatch             = vmtMethodStart+sizeof(pointer)*8;
+       vmtDispatchStr          = vmtMethodStart+sizeof(pointer)*9;
+       vmtEquals               = vmtMethodStart+sizeof(pointer)*10;
+       vmtGetHashCode          = vmtMethodStart+sizeof(pointer)*11;
+       vmtToString             = vmtMethodStart+sizeof(pointer)*12;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
        { IInterface }
        S_OK          = 0;
@@ -110,6 +134,7 @@
          vAutoTable: Pointer;
          vIntfTable: PInterfaceTable;
          vMsgStrPtr: pstringmessagetable;
+<<<<<<< HEAD
          vDestroy: CodePointer;
          vNewInstance: CodePointer;
          vFreeInstance: CodePointer;
@@ -123,6 +148,30 @@
          vEquals: CodePointer;
          vGetHashCode: CodePointer;
          vToString: CodePointer;
+=======
+         vDestroy: Pointer;
+         vNewInstance: Pointer;
+         vFreeInstance: Pointer;
+         vSafeCallException: Pointer;
+         vDefaultHandler: Pointer;
+         vAfterConstruction: Pointer;
+         vBeforeDestruction: Pointer;
+         vDefaultHandlerStr: Pointer;
+         vDispatch: Pointer;
+         vDispatchStr: Pointer;
+         vEquals: Pointer;
+         vGetHashCode: Pointer;
+         vToString: Pointer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
        end;
 
        PGuid = ^TGuid;
@@ -154,10 +203,35 @@
        tinterfaceentrytype = (etStandard,
          etVirtualMethodResult,
          etStaticMethodResult,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          etFieldValue,
          etVirtualMethodClass,
          etStaticMethodClass,
          etFieldValueClass
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+         etFieldValue, 
+         etVirtualMethodClass,
+         etStaticMethodClass,
+         etFieldValueClass           
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
        );
 
        pinterfaceentry = ^tinterfaceentry;
@@ -173,10 +247,17 @@
 {$else ENDIAN_BIG}
            true      : (IType       : tinterfaceentrytype);
 {$endif ENDIAN_BIG}
+<<<<<<< HEAD
+<<<<<<< HEAD
            false     : (__pad_dummy : sizeint);
 {$else  VER2_6}
          IType       : tinterfaceentrytype;
 {$endif VER2_6}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+           false     : (__pad_dummy : pointer);
+>>>>>>> graemeg/fixes_2_2
        end;
 
        tinterfacetable = record
@@ -200,7 +281,23 @@
           class function newinstance : tobject;virtual;
           procedure FreeInstance;virtual;
           function SafeCallException(exceptobject : tobject;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             exceptaddr : codepointer) : HResult;virtual;
+=======
+            exceptaddr : pointer) : HResult;virtual;
+>>>>>>> graemeg/cpstrnew
+=======
+            exceptaddr : pointer) : HResult;virtual;
+>>>>>>> graemeg/cpstrnew
+=======
+            exceptaddr : pointer) : HResult;virtual;
+>>>>>>> graemeg/cpstrnew
+=======
+            exceptaddr : pointer) : HResult;virtual;
+>>>>>>> origin/cpstrnew
           procedure DefaultHandler(var message);virtual;
 
           procedure Free;
@@ -232,9 +329,17 @@
 
           { interface functions }
           function GetInterface(const iid : tguid; out obj) : boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
           function GetInterface(const iidstr : shortstring;out obj) : boolean;
           function GetInterfaceByStr(const iidstr : shortstring; out obj) : boolean;
           function GetInterfaceWeak(const iid : tguid; out obj) : boolean; // equal to GetInterface but the interface returned is not referenced
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          function GetInterface(const iidstr : string;out obj) : boolean;{$ifdef SYSTEMINLINE}inline;{$endif}
+          function GetInterfaceByStr(const iidstr : string; out obj) : boolean;
+>>>>>>> graemeg/fixes_2_2
           class function GetInterfaceEntry(const iid : tguid) : pinterfaceentry;
           class function GetInterfaceEntryByStr(const iidstr : shortstring) : pinterfaceentry;
           class function GetInterfaceTable : pinterfacetable;
@@ -314,8 +419,18 @@
        end;
 
        TContainedObject = class(TAggregatedObject,IInterface)
+<<<<<<< HEAD
+<<<<<<< HEAD
          protected
            function QueryInterface({$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF} iid : tguid;out obj) : longint;virtual; {$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+=======
+         protected 
+           function QueryInterface(const iid : tguid;out obj) : longint;virtual; stdcall;
+>>>>>>> graemeg/fixes_2_2
+=======
+         protected 
+           function QueryInterface(const iid : tguid;out obj) : longint;virtual; stdcall;
+>>>>>>> origin/fixes_2_2
          end;
 
        { some pointer definitions }
@@ -380,9 +495,33 @@
       vtInteger       = 0;
       vtBoolean       = 1;
       vtChar          = 2;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPUNONE}
       vtExtended      = 3;
 {$endif}
+=======
+{$ifndef FPUNONE}     
+      vtExtended      = 3;
+{$endif}              
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifndef FPUNONE}     
+      vtExtended      = 3;
+{$endif}              
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifndef FPUNONE}     
+      vtExtended      = 3;
+{$endif}              
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifndef FPUNONE}     
+      vtExtended      = 3;
+{$endif}              
+>>>>>>> origin/cpstrnew
       vtString        = 4;
       vtPointer       = 5;
       vtPChar         = 6;
@@ -403,16 +542,52 @@
       PVarRec = ^TVarRec;
       TVarRec = record
          case VType : sizeint of
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef ENDIAN_BIG}
+=======
+{$ifdef ENDIAN_BIG}        
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef ENDIAN_BIG}        
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef ENDIAN_BIG}        
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef ENDIAN_BIG}        
+>>>>>>> origin/cpstrnew
            vtInteger       : ({$IFDEF CPU64}integerdummy1 : Longint;{$ENDIF CPU64}VInteger: Longint);
            vtBoolean       : ({$IFDEF CPU64}booldummy : Longint;{$ENDIF CPU64}booldummy1,booldummy2,booldummy3: byte; VBoolean: Boolean);
            vtChar          : ({$IFDEF CPU64}chardummy : Longint;{$ENDIF CPU64}chardummy1,chardummy2,chardummy3: byte; VChar: Char);
            vtWideChar      : ({$IFDEF CPU64}widechardummy : Longint;{$ENDIF CPU64}wchardummy1,VWideChar: WideChar);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$else ENDIAN_BIG}
+=======
+{$else ENDIAN_BIG}         
+>>>>>>> graemeg/cpstrnew
+=======
+{$else ENDIAN_BIG}         
+>>>>>>> graemeg/cpstrnew
+=======
+{$else ENDIAN_BIG}         
+>>>>>>> graemeg/cpstrnew
+=======
+{$else ENDIAN_BIG}         
+>>>>>>> origin/cpstrnew
            vtInteger       : (VInteger: Longint);
            vtBoolean       : (VBoolean: Boolean);
            vtChar          : (VChar: Char);
            vtWideChar      : (VWideChar: WideChar);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif ENDIAN_BIG}
 {$ifndef FPUNONE}
            vtExtended      : (VExtended: PExtended);
@@ -420,6 +595,30 @@
            vtString        : (VString: PShortString);
            vtPointer       : (VPointer: Pointer);
            vtPChar         : (VPChar: PAnsiChar);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$endif ENDIAN_BIG}        
+{$ifndef FPUNONE}          
+           vtExtended      : (VExtended: PExtended);
+{$endif}                   
+           vtString        : (VString: PShortString);
+           vtPointer       : (VPointer: Pointer);
+           vtPChar         : (VPChar: PChar);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
            vtObject        : (VObject: TObject);
            vtClass         : (VClass: TClass);
            vtPWideChar     : (VPWideChar: PWideChar);
@@ -434,11 +633,28 @@
        end;
 
   var
+<<<<<<< HEAD
     DispCallByIDProc : codepointer;
+=======
+    DispCallByIDProc : pointer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
   const
     { for safe as operator support }
     IObjectInstance: TGuid = '{D91C9AF4-3C93-420F-A303-BF5BA82BFD23}';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 
 {*****************************************************************************
@@ -453,3 +669,11 @@
        DefaultValue : AnsiString;
        HashValue    : LongWord;
      end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

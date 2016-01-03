@@ -1,8 +1,20 @@
 {
     This file is part of the Free Pascal run time library.
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (c) 2012 by the Free Pascal development team
 
     Tiff writer for fpImage.
+=======
+    Copyright (c) 2008 by the Free Pascal development team
+
+    Tiff reader for fpImage.
+>>>>>>> graemeg/fixes_2_2
+=======
+    Copyright (c) 2008 by the Free Pascal development team
+
+    Tiff reader for fpImage.
+>>>>>>> origin/fixes_2_2
 
     See the file COPYING.FPC, included in this distribution,
     for details about the copyright.
@@ -13,6 +25,8 @@
 
  **********************************************************************
 
+<<<<<<< HEAD
+<<<<<<< HEAD
  Working:
    Grayscale 8,16bit (optional alpha),
    RGB 8,16bit (optional alpha),
@@ -30,11 +44,36 @@
    bigtiff 64bit offsets
    endian - currently using system endianess
    orientation with rotation
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  Working:
+    Grayscale 8,16bit (optional alpha),
+    RGB 8,16bit (optional alpha),
+    Orientation,
+
+  ToDo:
+    Compression: LZW, packbits, deflate, jpeg, ...
+    thumbnail
+    Planar
+    ColorMap
+    multiple images
+    separate mask
+    pages
+    fillorder - not needed by baseline tiff reader
+    bigtiff 64bit offsets
+    endian - currently using system endianess
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 }
 unit FPWriteTiff;
 
 {$mode objfpc}{$H+}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 interface
 
 uses
@@ -45,6 +84,25 @@ type
   { TTiffWriterEntry }
 
   TTiffWriterEntry = class
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{off $DEFINE VerboseTiffWriter}
+
+interface
+
+uses
+  Math, Classes, SysUtils, FPimage, FPTiffCmn;
+
+type
+
+  { TTiffWriteEntry }
+
+  TTiffWriteEntry = class
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   public
     Tag: Word;
     EntryType: Word;
@@ -55,6 +113,8 @@ type
     destructor Destroy; override;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   TTiffWriterChunk = record
     Data: Pointer;
     Bytes: DWord;
@@ -68,6 +128,26 @@ type
     Chunks: PTiffWriterChunk;
     ChunkByteCounts: TTiffWriterEntry;
     constructor Create(ChunkType: TTiffChunkType);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  TTiffWriteStrip = record
+    Data: Pointer;
+    Bytes: DWord;
+  end;
+  PTiffWriteStrip = ^TTiffWriteStrip;
+
+  { TTiffWriteStripOffsets }
+
+  TTiffWriteStripOffsets = class(TTiffWriteEntry)
+  public
+    Strips: PTiffWriteStrip;
+    StripByteCounts: TTiffWriteEntry;
+    constructor Create;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     destructor Destroy; override;
     procedure SetCount(NewCount: DWord);
   end;
@@ -78,16 +158,37 @@ type
   private
     FSaveCMYKAsRGB: boolean;
     fStartPos: Int64;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FEntries: TFPList; // list of TFPList of TTiffWriterEntry
+=======
+    FEntries: TFPList; // list of TFPList of TTiffWriteEntry
+>>>>>>> graemeg/fixes_2_2
+=======
+    FEntries: TFPList; // list of TFPList of TTiffWriteEntry
+>>>>>>> origin/fixes_2_2
     fStream: TStream;
     fPosition: DWord;
     procedure ClearEntries;
     procedure WriteTiff;
     procedure WriteHeader;
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure WriteIFDs;
     procedure WriteEntry(Entry: TTiffWriterEntry);
     procedure WriteData;
     procedure WriteEntryData(Entry: TTiffWriterEntry);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    procedure WriteIDFs;
+    procedure WriteEntry(Entry: TTiffWriteEntry);
+    procedure WriteData;
+    procedure WriteEntryData(Entry: TTiffWriteEntry);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     procedure WriteBuf(var Buf; Count: DWord);
     procedure WriteWord(w: Word);
     procedure WriteDWord(d: DWord);
@@ -96,14 +197,30 @@ type
     procedure AddEntryString(Tag: word; const s: string);
     procedure AddEntryShort(Tag: word; Value: Word);
     procedure AddEntryLong(Tag: word; Value: DWord);
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure AddEntryShortOrLong(Tag: word; Value: DWord);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     procedure AddEntryRational(Tag: word; const Value: TTiffRational);
     procedure AddEntry(Tag: Word; EntryType: Word; EntryCount: DWord;
                        Data: Pointer; Bytes: DWord;
                        CopyData: boolean = true);
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure AddEntry(Entry: TTiffWriterEntry);
     procedure TiffError(Msg: string);
     procedure EncodeDeflate(var Buffer: Pointer; var Count: DWord);
+=======
+    procedure AddEntry(Entry: TTiffWriteEntry);
+    procedure TiffError(Msg: string);
+>>>>>>> graemeg/fixes_2_2
+=======
+    procedure AddEntry(Entry: TTiffWriteEntry);
+    procedure TiffError(Msg: string);
+>>>>>>> origin/fixes_2_2
   public
     constructor Create; override;
     destructor Destroy; override;
@@ -115,14 +232,22 @@ type
 
 function CompareTiffWriteEntries(Entry1, Entry2: Pointer): integer;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function CompressDeflate(InputData: PByte; InputCount: cardinal;
   out Compressed: PByte; var CompressedCount: cardinal;
   ErrorMsg: PAnsiString = nil): boolean;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 implementation
 
 function CompareTiffWriteEntries(Entry1, Entry2: Pointer): integer;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result:=integer(TTiffWriterEntry(Entry1).Tag)-integer(TTiffWriterEntry(Entry2).Tag);
 end;
 
@@ -203,6 +328,12 @@ begin
     exit;
   end;
   Result:=true;
+=======
+  Result:=integer(TTiffWriteEntry(Entry1).Tag)-integer(TTiffWriteEntry(Entry2).Tag);
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result:=integer(TTiffWriteEntry(Entry1).Tag)-integer(TTiffWriteEntry(Entry2).Tag);
+>>>>>>> origin/fixes_2_2
 end;
 
 { TFPWriterTiff }
@@ -238,12 +369,28 @@ end;
 
 procedure TFPWriterTiff.WriteTiff;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$IFDEF FPC_Debug_Image}
+=======
+  {$IFDEF VerboseTiffWriter}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$IFDEF VerboseTiffWriter}
+>>>>>>> origin/fixes_2_2
   writeln('TFPWriterTiff.WriteTiff fStream=',fStream<>nil);
   {$ENDIF}
   fPosition:=0;
   WriteHeader;
+<<<<<<< HEAD
+<<<<<<< HEAD
   WriteIFDs;
+=======
+  WriteIDFs;
+>>>>>>> graemeg/fixes_2_2
+=======
+  WriteIDFs;
+>>>>>>> origin/fixes_2_2
   WriteData;
 end;
 
@@ -257,23 +404,53 @@ begin
   WriteDWord(8);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TFPWriterTiff.WriteIFDs;
+=======
+procedure TFPWriterTiff.WriteIDFs;
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TFPWriterTiff.WriteIDFs;
+>>>>>>> origin/fixes_2_2
 var
   i: Integer;
   List: TFPList;
   j: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
   Entry: TTiffWriterEntry;
   NextIFDPos: DWord;
+=======
+  Entry: TTiffWriteEntry;
+  NextIDFPos: DWord;
+>>>>>>> graemeg/fixes_2_2
+=======
+  Entry: TTiffWriteEntry;
+  NextIDFPos: DWord;
+>>>>>>> origin/fixes_2_2
 begin
   for i:=0 to FEntries.Count-1 do begin
     List:=TFPList(FEntries[i]);
     // write count
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$IFDEF FPC_Debug_Image}
     writeln('TFPWriterTiff.WriteIFDs List=',i,' Count=',List.Count);
+=======
+    {$IFDEF VerboseTiffWriter}
+    writeln('TFPWriterTiff.WriteIDFs Count=',List.Count);
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$IFDEF VerboseTiffWriter}
+    writeln('TFPWriterTiff.WriteIDFs Count=',List.Count);
+>>>>>>> origin/fixes_2_2
     {$ENDIF}
     WriteWord(List.Count);
     // write array of entries
     for j:=0 to List.Count-1 do begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       Entry:=TTiffWriterEntry(List[j]);
       WriteEntry(Entry);
     end;
@@ -292,6 +469,31 @@ var
 begin
   {$IFDEF FPC_Debug_Image}
   //writeln('TFPWriterTiff.WriteEntry Tag=',Entry.Tag,' Type=',Entry.EntryType,' Count=',Entry.Count,' Bytes=',Entry.Bytes);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      Entry:=TTiffWriteEntry(List[j]);
+      WriteEntry(Entry);
+    end;
+    // write position of next IDF
+    if i<FEntries.Count-1 then
+      NextIDFPos:=fPosition+4
+    else
+      NextIDFPos:=0;
+    WriteDWord(NextIDFPos);
+  end;
+end;
+
+procedure TFPWriterTiff.WriteEntry(Entry: TTiffWriteEntry);
+var
+  PadBytes: DWord;
+begin
+  {$IFDEF VerboseTiffWriter}
+  writeln('TFPWriterTiff.WriteEntry Tag=',Entry.Tag,' Type=',Entry.EntryType,' Count=',Entry.Count,' Bytes=',Entry.Bytes);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   {$ENDIF}
   WriteWord(Entry.Tag);
   WriteWord(Entry.EntryType);
@@ -311,8 +513,18 @@ var
   i: Integer;
   List: TFPList;
   j: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
   Entry: TTiffWriterEntry;
   Chunks: TTiffWriterChunkOffsets;
+=======
+  Entry: TTiffWriteEntry;
+  Strips: TTiffWriteStripOffsets;
+>>>>>>> graemeg/fixes_2_2
+=======
+  Entry: TTiffWriteEntry;
+  Strips: TTiffWriteStripOffsets;
+>>>>>>> origin/fixes_2_2
   k: Integer;
   Bytes: DWord;
 begin
@@ -320,6 +532,8 @@ begin
     List:=TFPList(FEntries[i]);
     // write entry data
     for j:=0 to List.Count-1 do begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       Entry:=TTiffWriterEntry(List[j]);
       WriteEntryData(Entry);
     end;
@@ -338,13 +552,46 @@ begin
           {$ENDIF}
           if Bytes>0 then
             WriteBuf(Chunks.Chunks[k].Data^,Bytes);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      Entry:=TTiffWriteEntry(List[j]);
+      WriteEntryData(Entry);
+    end;
+    // write strips
+    for j:=0 to List.Count-1 do begin
+      Entry:=TTiffWriteEntry(List[j]);
+      if Entry is TTiffWriteStripOffsets then begin
+        Strips:=TTiffWriteStripOffsets(Entry);
+        // write Strips
+        for k:=0 to Strips.Count-1 do begin
+          PDWord(Strips.Data)[k]:=fPosition;
+          Bytes:=Strips.Strips[k].Bytes;
+          PDWord(Strips.StripByteCounts.Data)[k]:=Bytes;
+          {$IFDEF VerboseTiffWriter}
+          //writeln('TFPWriterTiff.WriteData Strip fPosition=',fPosition,' Bytes=',Bytes);
+          {$ENDIF}
+          if Bytes>0 then
+            WriteBuf(Strips.Strips[k].Data^,Bytes);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         end;
       end;
     end;
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TFPWriterTiff.WriteEntryData(Entry: TTiffWriterEntry);
+=======
+procedure TFPWriterTiff.WriteEntryData(Entry: TTiffWriteEntry);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TFPWriterTiff.WriteEntryData(Entry: TTiffWriteEntry);
+>>>>>>> origin/fixes_2_2
 begin
   if Entry.Bytes>4 then begin
     Entry.DataPos:=fPosition;
@@ -362,14 +609,33 @@ end;
 
 procedure TFPWriterTiff.AddImage(Img: TFPCustomImage);
 var
+<<<<<<< HEAD
+<<<<<<< HEAD
   IFD: TTiffIFD;
   GrayBits, RedBits, GreenBits, BlueBits, AlphaBits: Word;
   ImgWidth, ImgHeight: DWord;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  IDF: TTiffIDF;
+  GrayBits: Word;
+  RedBits: Word;
+  GreenBits: Word;
+  BlueBits: Word;
+  AlphaBits: Word;
+  ImgWidth: DWord;
+  ImgHeight: DWord;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Compression: Word;
   BitsPerSample: array[0..3] of Word;
   SamplesPerPixel: Integer;
   BitsPerPixel: DWord;
   i: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
   OrientedWidth, OrientedHeight: DWord;
   BytesPerLine: DWord;
   ChunkType: TTiffChunkType;
@@ -393,11 +659,41 @@ begin
   ChunkOffsets:=nil;
   Chunk:=nil;
   IFD:=TTiffIFD.Create;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  OrientedWidth: DWord;
+  OrientedHeight: DWord;
+  y: integer;
+  x: Integer;
+  StripOffsets: TTiffWriteStripOffsets;
+  Row: DWord;
+  BytesPerLine: DWord;
+  StripBytes: DWord;
+  Strip: PByte;
+  Run: PByte;
+  StripIndex: DWord;
+  Col: TFPColor;
+  Value: Integer;
+  dx: Integer;
+  dy: Integer;
+  CurEntries: TFPList;
+  StripCounts: TTiffWriteEntry;
+begin
+  StripOffsets:=nil;
+  Strip:=nil;
+  IDF:=TTiffIDF.Create;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   try
     // add new list of entries
     CurEntries:=TFPList.Create;
     FEntries.Add(CurEntries);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     IFD.ReadFPImgExtras(Img);
     if SaveCMYKAsRGB and (IFD.PhotoMetricInterpretation=5) then
       IFD.PhotoMetricInterpretation:=2;
@@ -451,10 +747,55 @@ begin
       OrientedHeight:=ImgHeight;
     end else begin
       // rotated
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    if Img.Extra[TiffPhotoMetric]='' then
+      IDF.PhotoMetricInterpretation:=2
+    else begin
+      IDF.PhotoMetricInterpretation:=StrToInt64Def(Img.Extra[TiffPhotoMetric],High(IDF.PhotoMetricInterpretation));
+      if SaveCMYKAsRGB and (IDF.PhotoMetricInterpretation=5) then
+        IDF.PhotoMetricInterpretation:=2;
+    end;
+    if not (IDF.PhotoMetricInterpretation in [0,1,2]) then
+      TiffError('PhotoMetricInterpretation="'+Img.Extra[TiffPhotoMetric]+'" not supported');
+    IDF.Artist:=Img.Extra[TiffArtist];
+    IDF.Copyright:=Img.Extra[TiffCopyright];
+    IDF.DocumentName:=Img.Extra[TiffDocumentName];
+    IDF.DateAndTime:=Img.Extra[TiffDateTime];
+    IDF.ImageDescription:=Img.Extra[TiffImageDescription];
+    IDF.Orientation:=StrToIntDef(Img.Extra[TiffOrientation],1);
+    if not (IDF.Orientation in [1..8]) then
+      IDF.Orientation:=1;
+    IDF.ResolutionUnit:=StrToIntDef(Img.Extra[TiffResolutionUnit],2);
+    if not (IDF.ResolutionUnit in [1..3]) then
+      IDF.ResolutionUnit:=2;
+    IDF.XResolution:=StrToTiffRationalDef(Img.Extra[TiffXResolution],TiffRational72);
+    IDF.YResolution:=StrToTiffRationalDef(Img.Extra[TiffYResolution],TiffRational72);
+
+    GrayBits:=StrToIntDef(Img.Extra[TiffGrayBits],8);
+    RedBits:=StrToIntDef(Img.Extra[TiffRedBits],8);
+    GreenBits:=StrToIntDef(Img.Extra[TiffGreenBits],8);
+    BlueBits:=StrToIntDef(Img.Extra[TiffBlueBits],8);
+    AlphaBits:=StrToIntDef(Img.Extra[TiffAlphaBits],8);
+    ImgWidth:=Img.Width;
+    ImgHeight:=Img.Height;
+    Compression:=1;
+
+    if IDF.Orientation in [1..4] then begin
+      OrientedWidth:=ImgWidth;
+      OrientedHeight:=ImgHeight;
+    end else begin
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       OrientedWidth:=ImgHeight;
       OrientedHeight:=ImgWidth;
     end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$IFDEF FPC_Debug_Image}
     writeln('TFPWriterTiff.AddImage PhotoMetricInterpretation=',IFD.PhotoMetricInterpretation);
     writeln('TFPWriterTiff.AddImage ImageWidth=',ImgWidth,' ImageHeight=',ImgHeight);
@@ -477,6 +818,50 @@ begin
     AddEntryRational(282,IFD.XResolution);
     AddEntryRational(283,IFD.YResolution);
     if AlphaBits>0 then begin
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    {$IFDEF VerboseTiffWriter}
+    writeln('TFPWriterTiff.AddImage PhotoMetricInterpretation=',IDF.PhotoMetricInterpretation);
+    writeln('TFPWriterTiff.AddImage ImageWidth=',ImgWidth,' ImageHeight=',ImgHeight);
+    writeln('TFPWriterTiff.AddImage Orientation=',IDF.Orientation);
+    writeln('TFPWriterTiff.AddImage ResolutionUnit=',IDF.ResolutionUnit);
+    writeln('TFPWriterTiff.AddImage XResolution=',TiffRationalToStr(IDF.XResolution));
+    writeln('TFPWriterTiff.AddImage YResolution=',TiffRationalToStr(IDF.YResolution));
+    writeln('TFPWriterTiff.AddImage GrayBits=',GrayBits,' RedBits=',RedBits,' GreenBits=',GreenBits,' BlueBits=',BlueBits,' AlphaBits=',AlphaBits);
+    writeln('TFPWriterTiff.AddImage Compression=',Compression);
+    {$ENDIF}
+
+    // required meta entries
+    AddEntryShort(262,IDF.PhotoMetricInterpretation);
+    AddEntryLong(256,ImgWidth);
+    AddEntryLong(257,ImgHeight);
+    AddEntryShort(259,Compression);
+    AddEntryShort(274,IDF.Orientation);
+    AddEntryShort(296,IDF.ResolutionUnit);
+    AddEntryRational(282,IDF.XResolution);
+    AddEntryRational(283,IDF.YResolution);
+    case IDF.PhotoMetricInterpretation of
+    0,1:
+      begin
+        BitsPerSample[0]:=GrayBits;
+        SamplesPerPixel:=1;
+      end;
+    2:
+      begin
+        BitsPerSample[0]:=RedBits;
+        BitsPerSample[1]:=GreenBits;
+        BitsPerSample[2]:=BlueBits;
+        SamplesPerPixel:=3;
+      end;
+    end;
+    if AlphaBits>0 then begin
+      BitsPerSample[SamplesPerPixel]:=AlphaBits;
+      inc(SamplesPerPixel);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       // ExtraSamples
       AddEntryShort(338,2);// 2=unassociated alpha
     end;
@@ -484,11 +869,21 @@ begin
     AddEntry(258,3,SamplesPerPixel,@BitsPerSample[0],SamplesPerPixel*2);
     AddEntryShort(277,SamplesPerPixel);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     // BitsPerPixel, BytesPerLine
+=======
+    // RowsPerStrip (required)
+>>>>>>> graemeg/fixes_2_2
+=======
+    // RowsPerStrip (required)
+>>>>>>> origin/fixes_2_2
     BitsPerPixel:=0;
     for i:=0 to SamplesPerPixel-1 do
       inc(BitsPerPixel,BitsPerSample[i]);
     BytesPerLine:=(BitsPerPixel*OrientedWidth+7) div 8;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     // optional entries
     NewSubFileType:=0;
@@ -679,11 +1074,151 @@ begin
         // next chunk
       end;
       // created chunks
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    if OrientedWidth=0 then
+      IDF.RowsPerStrip:=8
+    else
+      IDF.RowsPerStrip:=8192 div BytesPerLine;
+    if IDF.RowsPerStrip<1 then
+      IDF.RowsPerStrip:=1;
+    {$IFDEF VerboseTiffWriter}
+    writeln('TFPWriterTiff.AddImage BitsPerPixel=',BitsPerPixel,' OrientedWidth=',OrientedWidth,' BytesPerLine=',BytesPerLine,' RowsPerStrip=',IDF.RowsPerStrip);
+    {$ENDIF}
+    AddEntryLong(278,IDF.RowsPerStrip);
+
+    // optional entries
+    if IDF.Artist<>'' then
+      AddEntryString(315,IDF.Artist);
+    if IDF.Copyright<>'' then
+      AddEntryString(33432,IDF.Copyright);
+    if IDF.DocumentName<>'' then
+      AddEntryString(269,IDF.DocumentName);
+    if IDF.DateAndTime<>'' then
+      AddEntryString(306,IDF.DateAndTime);
+    if IDF.ImageDescription<>'' then
+      AddEntryString(270,IDF.ImageDescription);
+
+    // StripOffsets: StripOffsets, StripByteCounts
+    StripOffsets:=TTiffWriteStripOffsets.Create;
+    AddEntry(StripOffsets);
+    StripCounts:=TTiffWriteEntry.Create;
+    StripCounts.Tag:=279;
+    StripCounts.EntryType:=4;
+    StripOffsets.StripByteCounts:=StripCounts;
+    AddEntry(StripCounts);
+    if OrientedHeight>0 then begin
+      StripOffsets.SetCount((OrientedHeight+IDF.RowsPerStrip-1) div IDF.RowsPerStrip);
+      // compute StripOffsets
+      Row:=0;
+      StripIndex:=0;
+      dx:=0;
+      dy:=0;
+      for y:=0 to OrientedHeight-1 do begin
+        if Row=0 then begin
+          // allocate Strip for the next rows
+          StripBytes:=Min(IDF.RowsPerStrip,OrientedHeight-y)*BytesPerLine;
+          //writeln('TFPWriterTiff.AddImage StripIndex=',StripIndex,' StripBytes=',StripBytes);
+          GetMem(Strip,StripBytes);
+          FillByte(Strip^,StripBytes,0);
+          StripOffsets.Strips[StripIndex].Data:=Strip;
+          StripOffsets.Strips[StripIndex].Bytes:=StripBytes;
+          inc(StripIndex);
+          Run:=Strip;
+        end;
+        // write line
+        for x:=0 to OrientedWidth-1 do begin
+          // Orientation
+          case IDF.Orientation of
+          1: begin dx:=x; dy:=y; end;// 0,0 is left, top
+          2: begin dx:=OrientedWidth-x-1; dy:=y; end;// 0,0 is right, top
+          3: begin dx:=OrientedWidth-x-1; dy:=OrientedHeight-y-1; end;// 0,0 is right, bottom
+          4: begin dx:=x; dy:=OrientedHeight-y; end;// 0,0 is left, bottom
+          5: begin dx:=y; dy:=x; end;// 0,0 is top, left (rotated)
+          6: begin dx:=OrientedHeight-y-1; dy:=x; end;// 0,0 is top, right (rotated)
+          7: begin dx:=OrientedHeight-y-1; dy:=OrientedWidth-x-1; end;// 0,0 is bottom, right (rotated)
+          8: begin dx:=y; dy:=OrientedWidth-x-1; end;// 0,0 is bottom, left (rotated)
+          end;
+          Col:=Img.Colors[dx,dy];
+          case IDF.PhotoMetricInterpretation of
+          0,1:
+            begin
+              // grayscale
+              Value:=(DWord(Col.red)+Col.green+Col.blue) div 3;
+              if IDF.PhotoMetricInterpretation=0 then
+                Value:=$ffff-Value;// 0 is white
+              if GrayBits=8 then begin
+                Run^:=Value shr 8;
+                inc(Run);
+              end else if GrayBits=16 then begin
+                PWord(Run)^:=Value;
+                inc(Run,2);
+              end;
+              if AlphaBits=8 then begin
+                Run^:=Col.alpha shr 8;
+                inc(Run);
+              end else if AlphaBits=16 then begin
+                PWord(Run)^:=Col.alpha;
+                inc(Run,2);
+              end;
+            end;
+          2:
+            begin
+              // RGB
+              if RedBits=8 then begin
+                Run^:=Col.red shr 8;
+                inc(Run);
+              end else if RedBits=16 then begin
+                PWord(Run)^:=Col.red;
+                inc(Run,2);
+              end;
+              if GreenBits=8 then begin
+                Run^:=Col.green shr 8;
+                inc(Run);
+              end else if GreenBits=16 then begin
+                PWord(Run)^:=Col.green;
+                inc(Run,2);
+              end;
+              if BlueBits=8 then begin
+                Run^:=Col.blue shr 8;
+                inc(Run);
+              end else if BlueBits=16 then begin
+                PWord(Run)^:=Col.blue;
+                inc(Run,2);
+              end;
+              if AlphaBits=8 then begin
+                Run^:=Col.alpha shr 8;
+                inc(Run);
+              end else if AlphaBits=16 then begin
+                PWord(Run)^:=Col.alpha;
+                inc(Run,2);
+              end;
+            end;
+          end;
+        end;
+        // next row
+        inc(Row);
+        if (Row=IDF.RowsPerStrip) then
+          Row:=0;
+      end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     end;
 
     CurEntries.Sort(@CompareTiffWriteEntries);
   finally
+<<<<<<< HEAD
+<<<<<<< HEAD
     IFD.Free;
+=======
+    IDF.Free;
+>>>>>>> graemeg/fixes_2_2
+=======
+    IDF.Free;
+>>>>>>> origin/fixes_2_2
   end;
 end;
 
@@ -723,6 +1258,8 @@ begin
   AddEntry(Tag,4,1,@Value,4);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TFPWriterTiff.AddEntryShortOrLong(Tag: word; Value: DWord);
 begin
   if Value<=High(Word) then
@@ -731,6 +1268,10 @@ begin
     AddEntryLong(Tag,Value);
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 procedure TFPWriterTiff.AddEntryRational(Tag: word; const Value: TTiffRational
   );
 begin
@@ -740,9 +1281,21 @@ end;
 procedure TFPWriterTiff.AddEntry(Tag: Word; EntryType: Word; EntryCount: DWord;
   Data: Pointer; Bytes: DWord; CopyData: boolean);
 var
+<<<<<<< HEAD
+<<<<<<< HEAD
   Entry: TTiffWriterEntry;
 begin
   Entry:=TTiffWriterEntry.Create;
+=======
+  Entry: TTiffWriteEntry;
+begin
+  Entry:=TTiffWriteEntry.Create;
+>>>>>>> graemeg/fixes_2_2
+=======
+  Entry: TTiffWriteEntry;
+begin
+  Entry:=TTiffWriteEntry.Create;
+>>>>>>> origin/fixes_2_2
   Entry.Tag:=Tag;
   Entry.EntryType:=EntryType;
   Entry.Count:=EntryCount;
@@ -759,7 +1312,15 @@ begin
   AddEntry(Entry);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TFPWriterTiff.AddEntry(Entry: TTiffWriterEntry);
+=======
+procedure TFPWriterTiff.AddEntry(Entry: TTiffWriteEntry);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TFPWriterTiff.AddEntry(Entry: TTiffWriteEntry);
+>>>>>>> origin/fixes_2_2
 var
   List: TFPList;
 begin
@@ -772,6 +1333,8 @@ begin
   raise Exception.Create('TFPWriterTiff.TiffError: '+Msg);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TFPWriterTiff.EncodeDeflate(var Buffer: Pointer; var Count: DWord);
 var
   NewBuffer: PByte;
@@ -793,6 +1356,10 @@ begin
   end;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 constructor TFPWriterTiff.Create;
 begin
   inherited Create;
@@ -812,14 +1379,28 @@ begin
   ClearEntries;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 { TTiffWriterEntry }
 
 destructor TTiffWriterEntry.Destroy;
+=======
+{ TTiffWriteEntry }
+
+destructor TTiffWriteEntry.Destroy;
+>>>>>>> graemeg/fixes_2_2
+=======
+{ TTiffWriteEntry }
+
+destructor TTiffWriteEntry.Destroy;
+>>>>>>> origin/fixes_2_2
 begin
   ReAllocMem(Data,0);
   inherited Destroy;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 { TTiffWriterChunkOffsets }
 
 constructor TTiffWriterChunkOffsets.Create(ChunkType: TTiffChunkType);
@@ -844,10 +1425,35 @@ begin
     for i:=0 to Count-1 do
       ReAllocMem(Chunks[i].Data,0);
     ReAllocMem(Chunks,0);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{ TTiffWriteStripOffsets }
+
+constructor TTiffWriteStripOffsets.Create;
+begin
+  Tag:=273;
+  EntryType:=4;
+end;
+
+destructor TTiffWriteStripOffsets.Destroy;
+var
+  i: Integer;
+begin
+  if Strips<>nil then begin
+    for i:=0 to Count-1 do
+      ReAllocMem(Strips[i].Data,0);
+    ReAllocMem(Strips,0);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
   inherited Destroy;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TTiffWriterChunkOffsets.SetCount(NewCount: DWord);
 var
   Size: DWord;
@@ -874,5 +1480,35 @@ end;
 initialization
   if ImageHandlers.ImageWriter[TiffHandlerName]=nil then
     ImageHandlers.RegisterImageWriter (TiffHandlerName, 'tif;tiff', TFPWriterTiff);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure TTiffWriteStripOffsets.SetCount(NewCount: DWord);
+var
+  Size: DWord;
+begin
+  {$IFDEF VerboseTiffWriter}
+  writeln('TTiffWriteStripOffsets.SetCount OldCount=',Count,' NewCount=',NewCount);
+  {$ENDIF}
+  Count:=NewCount;
+  Size:=Count*SizeOf(TTiffWriteStrip);
+  ReAllocMem(Strips,Size);
+  if Size>0 then FillByte(Strips^,Size,0);
+  Size:=Count*SizeOf(DWord);
+  // StripOffsets
+  ReAllocMem(Data,Size);
+  if Size>0 then FillByte(Data^,Size,0);
+  Bytes:=Size;
+  // StripByteCounts
+  ReAllocMem(StripByteCounts.Data,Size);
+  if Size>0 then FillByte(StripByteCounts.Data^,Size,0);
+  StripByteCounts.Count:=Count;
+  StripByteCounts.Bytes:=Size;
+end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.
 

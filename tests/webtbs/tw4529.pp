@@ -3,7 +3,15 @@
 { e-mail: vsnijders@quicknet.nl }
 program Project1;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$mode objfpc}{$H+}
+=======
+{$mode objfpc}{$H+}{$static on}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$mode objfpc}{$H+}{$static on}
+>>>>>>> origin/fixes_2_2
 
 uses
   Classes

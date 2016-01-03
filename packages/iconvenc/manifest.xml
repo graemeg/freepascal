@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<packages>
+<package name="iconvenc">
+<version release="2" major="0" minor="0" suffix=""/>
+<filename>iconvenc-2.0.0.zip</filename>
+<author>Marco van de Voort</author>
+<license>modified LGPL</license>
+<email>marco@freepascal.org</email>
+<dependencies>
+<dependency><package packagename="rtl"/></dependency>
+</dependencies>
+</package>
+</packages>

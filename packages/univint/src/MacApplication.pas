@@ -3,19 +3,67 @@
  
      Contains:   Application-level APIs
  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      Version:    HIToolbox-624~3
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> origin/cpstrnew
  
      Copyright:  © 2000-2008 by Apple Inc., all rights reserved.
+=======
+     Version:    HIToolbox-219.4.81~2
+ 
+     Copyright:  © 2000-2005 by Apple Computer, Inc., all rights reserved.
+>>>>>>> graemeg/fixes_2_2
+=======
+     Version:    HIToolbox-219.4.81~2
+ 
+     Copyright:  © 2000-2005 by Apple Computer, Inc., all rights reserved.
+>>>>>>> origin/fixes_2_2
+=======
+     Version:    HIToolbox-437~1
+ 
+     Copyright:  © 2000-2008 by Apple Inc., all rights reserved.
+>>>>>>> origin/fixes_2.4
  
      Bugs?:      For bug reports, consult the following page on
                  the World Wide Web:
  
+<<<<<<< HEAD
+<<<<<<< HEAD
                      http://bugs.freepascal.org
  
 }
 {       Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
 {       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2012 }
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {
     Modified for use with Free Pascal
     Version 308
@@ -23,6 +71,28 @@
 }
 
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                     http://www.freepascal.org/bugs.html
+ 
+}
+{       Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
+{       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+{
+    Modified for use with Free Pascal
+    Version 308
+    Please report any bugs to <gpc@microbizz.nl>
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4
 {$mode macpas}
 {$packenum 1}
 {$macro on}
@@ -31,8 +101,23 @@
 
 unit MacApplication;
 interface
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$setc UNIVERSAL_INTERFACES_VERSION := $0400}
 {$setc GAP_INTERFACES_VERSION := $0308}
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> origin/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0400}
+{$setc GAP_INTERFACES_VERSION := $0308}
+>>>>>>> origin/fixes_2.4
 
 {$ifc not defined USE_CFSTR_CONSTANT_MACROS}
     {$setc USE_CFSTR_CONSTANT_MACROS := TRUE}
@@ -45,21 +130,50 @@ interface
 	{$error Conflicting initial definitions for FPC_BIG_ENDIAN and FPC_LITTLE_ENDIAN}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __ppc__ and defined CPUPOWERPC32}
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC32}
+>>>>>>> origin/fixes_2.4
 	{$setc __ppc__ := 1}
 {$elsec}
 	{$setc __ppc__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __ppc64__ and defined CPUPOWERPC64}
 	{$setc __ppc64__ := 1}
 {$elsec}
 	{$setc __ppc64__ := 0}
 {$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __i386__ and defined CPUI386}
 	{$setc __i386__ := 1}
 {$elsec}
 	{$setc __i386__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __x86_64__ and defined CPUX86_64}
 	{$setc __x86_64__ := 1}
 {$elsec}
@@ -70,11 +184,26 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -82,6 +211,13 @@ interface
   {$setc __LP64__ := 0}
 {$endc}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined __ppc__ and __ppc__ and defined __i386__ and __i386__}
 	{$error Conflicting definitions for __ppc__ and __i386__}
@@ -89,7 +225,14 @@ interface
 
 {$ifc defined __ppc__ and __ppc__}
 	{$setc TARGET_CPU_PPC := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_PPC64 := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
@@ -98,40 +241,124 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elifc defined __ppc64__ and __ppc64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := TRUE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elsec}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elifc defined __x86_64__ and __x86_64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := TRUE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
@@ -174,8 +401,162 @@ interface
 {$ifc defined __LP64__ and __LP64__ }
   {$setc TARGET_CPU_64 := TRUE}
 {$elsec}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/cpstrnew
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   {$setc TARGET_CPU_64 := FALSE}
 {$endc}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	{$setc TARGET_CPU_PPC64 := FALSE}
+>>>>>>> origin/fixes_2.4
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __i386__ and __i386__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := TRUE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+{$ifc defined(iphonesim)}
+ 	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+  {$setc TARGET_CPU_64 := FALSE}
+{$endc}
+<<<<<<< HEAD
+{$setc TARGET_CPU_PPC_64 := FALSE}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined FPC_BIG_ENDIAN}
 	{$setc TARGET_RT_BIG_ENDIAN := TRUE}
@@ -201,6 +582,17 @@ interface
 {$setc TARGET_CPU_68K := FALSE}
 {$setc TARGET_CPU_MIPS := FALSE}
 {$setc TARGET_CPU_SPARC := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$setc TARGET_OS_UNIX := FALSE}
 {$setc TARGET_OS_WIN32 := FALSE}
 {$setc TARGET_RT_MAC_68881 := FALSE}
@@ -210,12 +602,26 @@ interface
 {$setc TYPE_BOOL := FALSE}
 {$setc TYPE_EXTENDED := FALSE}
 {$setc TYPE_LONGLONG := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 uses MacTypes,CGImage,Menus,CGContext,QuickdrawTypes,HIObject,TextCommon,HIGeometry,CFBase,CFDictionary,CGAffineTransforms,CGGeometry,CTFont;
 {$endc} {not MACOSALLINCLUDE}
 
 
 {$ifc TARGET_OS_MAC}
 
+<<<<<<< HEAD
+=======
+uses MacTypes,CGImage,Menus,CGContext,Quickdraw,HIObjectCore,TextCommon,CFBase,CFDictionary;
+>>>>>>> graemeg/fixes_2_2
+=======
+uses MacTypes,CGImage,Menus,CGContext,Quickdraw,HIObjectCore,TextCommon,CFBase,CFDictionary;
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ALIGN POWER}
 
 
@@ -247,6 +653,11 @@ const
 	kHIToolboxVersionNumber10_3_4 = 145.41;
 const
 	kHIToolboxVersionNumber10_3_5 = 145.43;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 const
 	kHIToolboxVersionNumber10_3_9 = 145.48;
 const
@@ -283,7 +694,83 @@ const
 	kHIToolboxVersionNumber10_5_6 = 353;
 const
 	kHIToolboxVersionNumber10_5_7 = 353;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+
+{
+ *  kHIApplicationClassID
+ *  
+ *  Discussion:
+ *    HIObject class ID for the HIApplication object. Available in Mac
+ *    OS X 10.3 and later.
+ }
+{$ifc USE_CFSTR_CONSTANT_MACROS}
+{$definec kHIApplicationClassID CFSTRP('com.apple.HIApplication')}
+{$endc}
+
+{
+ *  kHIApplicationClassID
+ *  
+ *  Discussion:
+ *    HIObject class ID for the HIApplication object. Available in Mac
+ *    OS X 10.3 and later.
+ }
+{$ifc USE_CFSTR_CONSTANT_MACROS}
+{$definec kHIApplicationClassID CFSTRP('com.apple.HIApplication')}
+{$endc}
+
+{
+ *  kHIApplicationClassID
+ *  
+ *  Discussion:
+ *    HIObject class ID for the HIApplication object. Available in Mac
+ *    OS X 10.3 and later.
+ }
+{$ifc USE_CFSTR_CONSTANT_MACROS}
+{$definec kHIApplicationClassID CFSTRP('com.apple.HIApplication')}
+{$endc}
+=======
+>>>>>>> origin/cpstrnew
+
+{
+ *  kHIApplicationClassID
+ *  
+ *  Discussion:
+ *    HIObject class ID for the HIApplication object. Available in Mac
+ *    OS X 10.3 and later.
+ }
+{$ifc USE_CFSTR_CONSTANT_MACROS}
+{$definec kHIApplicationClassID CFSTRP('com.apple.HIApplication')}
+{$endc}
+=======
+>>>>>>> origin/fixes_2.4
+
+{
+ *  kHIApplicationClassID
+ *  
+ *  Discussion:
+ *    HIObject class ID for the HIApplication object. Available in Mac
+ *    OS X 10.3 and later.
+ }
+{$ifc USE_CFSTR_CONSTANT_MACROS}
+{$definec kHIApplicationClassID CFSTRP('com.apple.HIApplication')}
+{$endc}
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 
 {
  *  kHIApplicationClassID
@@ -369,6 +856,8 @@ const
 	kUIOptionAutoShowMenuBar = 1 shl 0;
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
    * Requests that the menubar animate on or offscreen, if the UIMode
    * is also being changed such that the menubar will change
    * visibility. Unlike other UI options, this option is not stored and
@@ -378,6 +867,10 @@ const
 	kUIOptionAnimateMenuBar = 1 shl 1;
 
   {
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    * Disables all items in the Apple menu. Valid for all modes.
    }
 	kUIOptionDisableAppleMenu = 1 shl 2;
@@ -417,6 +910,11 @@ const
    }
 	kUIOptionDisableHide = 1 shl 6;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
   {
    * Provides the ability to specify whether the menu bar will disable
    * its adaptive transparency. Note this should be used in conjunction
@@ -428,6 +926,13 @@ const
    }
 	kUIOptionDisableMenuBarTransparency = 1 shl 9;
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 type
 	SystemUIOptions = OptionBits;
 	SystemUIOptionsPtr = ^SystemUIOptions;
@@ -445,6 +950,11 @@ type
  *    mode, a kEventAppSystemUIModeChanged Carbon event is sent to all
  *    applications that have registered for the event. This event is
  *    also sent when an application is activated; it contains the newly
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    active application's presentation mode. 
  *    
  *    Note that SetSystemUIMode should _not_ be used from UIElement or
@@ -454,6 +964,15 @@ type
  *    of a UIElement or BackgroundOnly application will be ignored,
  *    since these types of applications can't be the frontmost faceful
  *    application.
+<<<<<<< HEAD
+=======
+ *    active application's presentation mode.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    active application's presentation mode.
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -464,9 +983,23 @@ type
  *      The new mode.
  *    
  *    inOptions:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      Options controlling how the new mode behaves. Not all options
  *      are valid for all modes. Options that are invalid for the
  *      specified mode are silently ignored.
+=======
+ *      Options controlling how the new mode behaves.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      Options controlling how the new mode behaves.
+>>>>>>> origin/fixes_2_2
+=======
+ *      Options controlling how the new mode behaves. Not all options
+ *      are valid for all modes. Options that are invalid for the
+ *      specified mode are silently ignored.
+>>>>>>> origin/fixes_2.4
  *  
  *  Result:
  *    An operating system result code.
@@ -484,6 +1017,11 @@ function SetSystemUIMode( inMode: SystemUIMode; inOptions: SystemUIOptions ): OS
  *  GetSystemUIMode()
  *  
  *  Summary:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    Returns the presentation mode of the current application.
  *  
  *  Discussion:
@@ -496,6 +1034,15 @@ function SetSystemUIMode( inMode: SystemUIMode; inOptions: SystemUIOptions ): OS
  *    will not be in use. You may use the kEventAppSystemUIModeChanged
  *    Carbon event to track changes in the login session's presentation
  *    mode.
+<<<<<<< HEAD
+=======
+ *    Returns the current presentation mode of the application.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Returns the current presentation mode of the application.
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -519,6 +1066,9 @@ procedure GetSystemUIMode( outMode: SystemUIModePtr { can be NULL }; outOptions:
 (* AVAILABLE_MAC_OS_X_VERSION_10_2_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
 {
  *  HIApplicationGetCurrent()
@@ -531,6 +1081,32 @@ procedure GetSystemUIMode( outMode: SystemUIModePtr { can be NULL }; outOptions:
  *    This HIObject's EventTargetRef is what will be returned from
  *    GetApplicationEventTarget. In Mac OS X 10.5, you can use this API
  *    to install your own HIObject delegates on the application object.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
+{
+ *  HIApplicationGetCurrent()
+ *  
+ *  Summary:
+ *    Returns the HIObjectRef of the currently running application
+<<<<<<< HEAD
+ *    object. This HIObject's EventTargetRef is what will be returned
+ *    from GetApplicationEventTarget.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    object.
+ *  
+ *  Discussion:
+ *    This HIObject's EventTargetRef is what will be returned from
+ *    GetApplicationEventTarget. In Mac OS X 10.5, you can use this API
+ *    to install your own HIObject delegates on the application object.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -539,7 +1115,19 @@ procedure GetSystemUIMode( outMode: SystemUIModePtr { can be NULL }; outOptions:
  *    The HIObjectRef of the currently running application object.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.2 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.2 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.2 and later
  *    Non-Carbon CFM:   not available
  }
@@ -548,6 +1136,11 @@ function HIApplicationGetCurrent: HIObjectRef; external name '_HIApplicationGetC
 
 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  HIApplicationGetFocus()
  *  
  *  Summary:
@@ -586,10 +1179,28 @@ function HIApplicationGetFocus( inConsideringModalFocus: Boolean ): WindowRef; e
 
 
 {
+<<<<<<< HEAD
  *  SetApplicationDockTileImage()
  *  
  *  Discussion:
  *    Sets the image for the tile in the Dock that represents your
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *  SetApplicationDockTileImage()
+ *  
+ *  Discussion:
+ *    Sets the image for the tile in the dock that represents your
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  SetApplicationDockTileImage()
+ *  
+ *  Discussion:
+ *    Sets the image for the tile in the Dock that represents your
+>>>>>>> origin/fixes_2.4
  *    application while it is running. If you set the image, it will
  *    NOT revert back to its original image when your application
  *    terminates. You need to manually restore it before quitting.
@@ -606,7 +1217,19 @@ function HIApplicationGetFocus( inConsideringModalFocus: Boolean ): WindowRef; e
  *    An operating system status code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -619,7 +1242,19 @@ function SetApplicationDockTileImage( inImage: CGImageRef ): OSStatus; external 
  *  
  *  Discussion:
  *    Takes the image passed in and composites it on top of the current
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    image of your application's Dock tile. You might do this to put a
+=======
+ *    image of your application's dock tile. You might do this to put a
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    image of your application's dock tile. You might do this to put a
+>>>>>>> origin/fixes_2_2
+=======
+ *    image of your application's Dock tile. You might do this to put a
+>>>>>>> origin/fixes_2.4
  *    standard badge over your application's icon to indicate something
  *    to the user.
  *  
@@ -635,7 +1270,19 @@ function SetApplicationDockTileImage( inImage: CGImageRef ): OSStatus; external 
  *    An operating system status code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -647,7 +1294,19 @@ function OverlayApplicationDockTileImage( inImage: CGImageRef ): OSStatus; exter
  *  RestoreApplicationDockTileImage()
  *  
  *  Discussion:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Restores the tile for your appliation in the Dock to its normal
+=======
+ *    Restores the tile for your appliation in the dock to its normal
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Restores the tile for your appliation in the dock to its normal
+>>>>>>> origin/fixes_2_2
+=======
+ *    Restores the tile for your appliation in the Dock to its normal
+>>>>>>> origin/fixes_2.4
  *    image (your application icon). You would use this if some overlay
  *    or change of the application icon needed to be removed.
  *  
@@ -658,7 +1317,19 @@ function OverlayApplicationDockTileImage( inImage: CGImageRef ): OSStatus; exter
  *    An operating system status code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -667,6 +1338,11 @@ function RestoreApplicationDockTileImage: OSStatus; external name '_RestoreAppli
 
 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  HIApplicationCreateDockTileContext()
  *  
  *  Summary:
@@ -705,10 +1381,22 @@ function HIApplicationCreateDockTileContext( var outContextSize: HISize ): CGCon
 
 
 {
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  BeginCGContextForApplicationDockTile()
  *  
  *  Discussion:
  *    Creates and returns a CGContextRef. You can use this context to
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    draw into your application's Dock tile with Quartz. You MUST call
  *    EndCGContextForApplicationDockTile and NOT CGContextRelease when
  *    using this API, as it locks your application's tile in the Dock.
@@ -722,18 +1410,55 @@ function HIApplicationCreateDockTileContext( var outContextSize: HISize ): CGCon
  *    your content from 128x128 up to the actual tile window size. You
  *    can get an unscaled CGContextRef using the
  *    HIApplicationCreateDockTileContext API.
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    draw into your application's dock tile with Quartz. You **MUST**
+ *    call EndCGContextForApplicationDockTile and NOT CGEndContext when
+ *    using this API, as it locks your application's tile in the dock.
+ *    If you call CGEndContext, the dock will never know you are done
+ *    with the tile.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Result:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    A CGContextRef for drawing into the application's Dock tile. You
  *    must use EndCGContextForApplicationDockTile to release this
  *    context. To ensure that drawing to the context appears onscreen,
  *    make sure to call CGContextFlush before releasing the context.
+<<<<<<< HEAD
  *  
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    An Quartz (Core Graphics) context reference.
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -746,11 +1471,30 @@ function BeginCGContextForApplicationDockTile: CGContextRef; external name '_Beg
  *  
  *  Discussion:
  *    Ends the CG context for your application tile and frees the lock
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    on the application Dock tile. You MUST call this routine and NOT
  *    CGContextRelease when using BeginCGContextForApplicationDockTile
  *    or HIApplicationCreateDockTileContext, as those APIs lock your
  *    application's tile in the Dock. If you call CGContextRelease, the
  *    Dock will never know you are done with the tile.
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    on the application dock tile. You **MUST** call this routine and
+ *    NOT CGEndContext when using BeginCGContextForApplicationDockTile,
+ *    as it locks your application's tile in the dock. If you call
+ *    CGEndContext, the dock will never know you are done with the tile.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -758,13 +1502,36 @@ function BeginCGContextForApplicationDockTile: CGContextRef; external name '_Beg
  *  Parameters:
  *    
  *    inContext:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *      The context to release. The context is invalid after this call
  *      and should no longer be used. To ensure that drawing to the
  *      context appears onscreen, make sure to call CGContextFlush
  *      before releasing the context.
+<<<<<<< HEAD
  *  
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *      The context to end. The context is invalid after this call and
+ *      should no longer be used.
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -773,12 +1540,18 @@ procedure EndCGContextForApplicationDockTile( inContext: CGContextRef ); externa
 
 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  BeginQDContextForApplicationDockTile()   *** DEPRECATED ***
  *  
  *  Deprecated:
  *    Use HIApplicationCreateDockTileContext or
  *    BeginCGContextForApplicationDockTile instead, and draw with
  *    Quartz instead of QuickDraw.
+<<<<<<< HEAD
  *  
  *  Discussion:
  *    Creates and returns a CGrafPtr for your application's tile in the
@@ -787,20 +1560,66 @@ procedure EndCGContextForApplicationDockTile( inContext: CGContextRef ); externa
  *    EndQDContextForApplicationDockTile and NOT DisposePort when using
  *    this API, as it locks your application's tile in the Dock. If you
  *    call DisposePort, the Dock will never know you are done with the
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *  BeginQDContextForApplicationDockTile()
+=======
+>>>>>>> origin/fixes_2.4
+ *  
+ *  Discussion:
+ *    Creates and returns a CGrafPtr for your application's tile in the
+ *    Dock. You can use this port to draw into your application's Dock
+ *    tile with QuickDraw. You MUST call
+ *    EndQDContextForApplicationDockTile and NOT DisposePort when using
+<<<<<<< HEAD
+ *    this API, as it locks your application's tile in the dock. If you
+ *    call DisposePort, the dock will never know you are done with the
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    this API, as it locks your application's tile in the Dock. If you
+ *    call DisposePort, the Dock will never know you are done with the
+>>>>>>> origin/fixes_2.4
  *    tile.
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Result:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    A QuickDraw port reference.
  *  
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    A Quickdraw port reference.
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    A QuickDraw port reference.
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
  *    Non-Carbon CFM:   not available
  }
 function BeginQDContextForApplicationDockTile: CGrafPtr; external name '_BeginQDContextForApplicationDockTile';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -815,6 +1634,37 @@ function BeginQDContextForApplicationDockTile: CGrafPtr; external name '_BeginQD
  *    the lock on the application Dock tile. You MUST call this routine
  *    and NOT DisposePort when using
  *    BeginQDContextForApplicationDockTile, else the Dock will never
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
+
+
+{
+ *  EndQDContextForApplicationDockTile()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Use EndCGContextForApplicationDockTile instead.
+ *  
+ *  Discussion:
+<<<<<<< HEAD
+ *    Disposes the Quickdraw port for your application tile and frees
+ *    the lock on the application dock tile. You **MUST** call this
+ *    routine and NOT DisposePort when using
+ *    BeginQDContextForApplicationDockTile, else the dock will never
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Disposes the QuickDraw port for your application tile and frees
+ *    the lock on the application Dock tile. You MUST call this routine
+ *    and NOT DisposePort when using
+ *    BeginQDContextForApplicationDockTile, else the Dock will never
+>>>>>>> origin/fixes_2.4
  *    know you are done with the tile.
  *  
  *  Mac OS X threading:
@@ -827,19 +1677,55 @@ function BeginQDContextForApplicationDockTile: CGrafPtr; external name '_BeginQD
  *      should no longer be used.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
  *    Non-Carbon CFM:   not available
  }
 procedure EndQDContextForApplicationDockTile( inContext: CGrafPtr ); external name '_EndQDContextForApplicationDockTile';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 
 {
  *  SetApplicationDockTileMenu()
  *  
  *  Summary:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Sets the menu that is displayed by the application's Dock tile.
+=======
+ *    Sets the menu that is displayed by the application's dock tile.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Sets the menu that is displayed by the application's dock tile.
+>>>>>>> origin/fixes_2_2
+=======
+ *    Sets the menu that is displayed by the application's Dock tile.
+>>>>>>> origin/fixes_2.4
  *  
  *  Discussion:
  *    The Carbon Window Manager and the Dock will always automatically
@@ -848,6 +1734,11 @@ procedure EndQDContextForApplicationDockTile( inContext: CGrafPtr ); external na
  *    items, it can use the SetApplicationDockTileMenu API to provide
  *    those items. The items in the specified menu will be combined
  *    with the window title items. This API increments the refcount of
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    the specified menu. 
  *    
  *    Before the menu is actually displayed, it will receive
@@ -864,6 +1755,24 @@ procedure EndQDContextForApplicationDockTile( inContext: CGrafPtr ); external na
  *    It is also possible to use the kEventAppGetDockTileMenu Carbon
  *    event to provide custom Dock tile menu contents; see
  *    CarbonEvents.h for details.
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    the specified menu. Before the menu is actually displayed, it
+ *    will receive kEventMenuPopulate, kEventMenuOpening, and
+ *    kEventMenuEnableItems Carbon events, so any event handlers for
+ *    these events may update the menu appropriately for the current
+ *    state of the application. The application should set a command ID
+ *    for each menu item in the dock tile menu, and when that item is
+ *    chosen, a kEventCommandProcess Carbon event containing the item's
+ *    command ID will be sent to the user focus target.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -871,11 +1780,33 @@ procedure EndQDContextForApplicationDockTile( inContext: CGrafPtr ); external na
  *  Parameters:
  *    
  *    inMenu:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      The menu to display, or NULL to remove the current Dock tile
  *      menu.
  *  
  *  Availability:
  *    Mac OS X:         in version 10.1 and later in Carbon.framework [32-bit only]
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *      The menu to display, or NULL to remove the current dock tile
+ *      menu.
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.1 and later in Carbon.framework
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *      The menu to display, or NULL to remove the current Dock tile
+ *      menu.
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.1 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.1 and later
  *    Non-Carbon CFM:   not available
  }
@@ -887,6 +1818,11 @@ function SetApplicationDockTileMenu( inMenu: MenuRef ): OSStatus; external name 
  *  GetApplicationDockTileMenu()
  *  
  *  Summary:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    Returns the menu that is displayed by the application's Dock tile.
  *  
  *  Discussion:
@@ -894,15 +1830,44 @@ function SetApplicationDockTileMenu( inMenu: MenuRef ): OSStatus; external name 
  *    to SetApplicationDockTileMenu. If SetApplicationDockTileMenu has
  *    not been called (or has been called with NULL), then this API
  *    will return NULL.
+<<<<<<< HEAD
+=======
+ *    Returns the menu that is displayed by the application's dock tile.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Returns the menu that is displayed by the application's dock tile.
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Result:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    The application's Dock tile menu, or NULL if none.
  *  
  *  Availability:
  *    Mac OS X:         in version 10.1 and later in Carbon.framework [32-bit only]
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    The application's dock tile menu, or NULL if none.
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.1 and later in Carbon.framework
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    The application's Dock tile menu, or NULL if none.
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.1 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.1 and later
  *    Non-Carbon CFM:   not available
  }
@@ -917,7 +1882,19 @@ function GetApplicationDockTileMenu: MenuRef; external name '_GetApplicationDock
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -925,8 +1902,19 @@ function CreateCGImageFromPixMaps( inImage: PixMapHandle; inMask: PixMapHandle; 
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  GetApplicationTextEncoding()
  *  
@@ -956,7 +1944,17 @@ function GetApplicationTextEncoding: TextEncoding; external name '_GetApplicatio
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  GetApplicationScript()
  *  
@@ -971,7 +1969,19 @@ function GetApplicationTextEncoding: TextEncoding; external name '_GetApplicatio
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.3 and later
  *    Non-Carbon CFM:   not available
  }
@@ -985,8 +1995,19 @@ function GetApplicationScript: ScriptCode; external name '_GetApplicationScript'
 {  HIAboutBox function, described below.                                       }
 {------------------------------------------------------------------------------}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {$ifc USE_CFSTR_CONSTANT_MACROS}
 {$definec kHIAboutBoxNameKey CFSTRP('HIAboutBoxName')}
 {$endc}
@@ -1003,7 +2024,17 @@ function GetApplicationScript: ScriptCode; external name '_GetApplicationScript'
 {$definec kHIAboutBoxStringFileKey CFSTRP('HIAboutBoxStringFile')}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  HIAboutBox()
  *  
@@ -1063,7 +2094,19 @@ function GetApplicationScript: ScriptCode; external name '_GetApplicationScript'
  *    An operating system status code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.3 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.3 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.3 and later
  *    Non-Carbon CFM:   not available
  }
@@ -1071,17 +2114,50 @@ function HIAboutBox( inOptions: CFDictionaryRef ): OSStatus; external name '_HIA
 (* AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  HISearchWindowShow()
  *  
  *  Summary:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Requests that the Spotlight search window be displayed.
  *  
  *  Discussion:
  *    Brings up "search for string" Spotlight UI. The window is shown
  *    in the default configuration.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Sends a message to the System UI server to put up Spotlight UI.
+ *  
+ *  Discussion:
+ *    Brings up "search for string" Spotlight UI. The window is shown
+ *    in the default configuration (Search scope and grouping rules)
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Requests that the Spotlight search window be displayed.
+ *  
+ *  Discussion:
+ *    Brings up "search for string" Spotlight UI. The window is shown
+ *    in the default configuration.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -1089,8 +2165,23 @@ function HIAboutBox( inOptions: CFDictionaryRef ): OSStatus; external name '_HIA
  *  Parameters:
  *    
  *    inSearchString:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      A CFString for which to search. You may pass NULL to open the
  *      search window with no initial query string.
+=======
+ *      A CFString to search for. You may pass NULL to open the search
+ *      window with no initial query string.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      A CFString to search for. You may pass NULL to open the search
+ *      window with no initial query string.
+>>>>>>> origin/fixes_2_2
+=======
+ *      A CFString for which to search. You may pass NULL to open the
+ *      search window with no initial query string.
+>>>>>>> origin/fixes_2.4
  *    
  *    inFlags:
  *      Optional flags. Use kNilOptions for now.
@@ -1107,6 +2198,11 @@ function HISearchWindowShow( inSearchString: CFStringRef { can be NULL }; inFlag
 (* AVAILABLE_MAC_OS_X_VERSION_10_4_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {
  *  HIDictionaryWindowShow()
  *  
@@ -1172,5 +2268,16 @@ procedure HIDictionaryWindowShow( dictionary: DCSDictionaryRef { can be NULL }; 
 {$endc} {TARGET_OS_MAC}
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
 
+<<<<<<< HEAD
 end.
 {$endc} {not MACOSALLINCLUDE}
+=======
+end.
+>>>>>>> graemeg/fixes_2_2
+=======
+end.
+>>>>>>> origin/fixes_2_2
+=======
+end.
+{$endc} {not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4

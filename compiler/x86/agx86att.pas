@@ -46,6 +46,14 @@ interface
         constructor create(info: pasminfo; smart: boolean); override;
       end;
 
+      Tx86AoutGNUAssembler=class(TAoutGNUassembler)
+        constructor create(smart: boolean); override;
+      end;
+
+      Tx86AoutGNUAssembler=class(TAoutGNUassembler)
+        constructor create(smart: boolean); override;
+      end;
+
 
      Tx86InstrWriter=class(TCPUInstrWriter)
        private
@@ -65,7 +73,21 @@ interface
   implementation
 
     uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       cutils,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      globtype,
+      cutils,systems,
+>>>>>>> graemeg/cpstrnew
       verbose,
       itcpugas,
       cgbase,
@@ -145,6 +167,26 @@ interface
       end;
 
 {****************************************************************************
+                          Tx86AoutGNUAssembler
+ ****************************************************************************}
+
+    constructor Tx86AoutGNUAssembler.create(smart: boolean);
+      begin
+        inherited create(smart);
+        InstrWriter := Tx86InstrWriter.create(self);
+      end;
+
+{****************************************************************************
+                          Tx86AoutGNUAssembler
+ ****************************************************************************}
+
+    constructor Tx86AoutGNUAssembler.create(smart: boolean);
+      begin
+        inherited create(smart);
+        InstrWriter := Tx86InstrWriter.create(self);
+      end;
+
+{****************************************************************************
                             Tx86InstrWriter
  ****************************************************************************}
 
@@ -159,9 +201,18 @@ interface
            if segment<>NR_NO then
              owner.writer.AsmWrite(gas_regname(segment)+':');
            if assigned(symbol) then
+<<<<<<< HEAD
              owner.writer.AsmWrite(symbol.name);
            if assigned(relsymbol) then
              owner.writer.AsmWrite('-'+relsymbol.name);
+=======
+             owner.AsmWrite(symbol.name);
+           if assigned(relsymbol) then
+             owner.AsmWrite('-'+relsymbol.name);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            if ref.refaddr=addr_pic then
              begin
                { @GOT and @GOTPCREL references are only allowed for symbol alone,
@@ -169,9 +220,38 @@ interface
                if assigned(relsymbol) or (offset<>0) or (index<>NR_NO) then
                  InternalError(2015011801);
 {$ifdef x86_64}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                if (base<>NR_RIP) then
                  InternalError(2015011802);
                owner.writer.AsmWrite('@GOTPCREL');
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+             begin
+               { local symbols don't have to (and in case of Mac OS X: cannot)
+                 be accessed via the GOT
+               }
+               if not assigned(ref.symbol) or
+                  (ref.symbol.bind<>AB_LOCAL) then
+                 owner.AsmWrite('@GOTPCREL');
+             end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$else x86_64}
                owner.writer.AsmWrite('@GOT');
 {$endif x86_64}
@@ -289,15 +369,37 @@ interface
     procedure Tx86InstrWriter.WriteInstruction(hp: tai);
       var
        op       : tasmop;
+       val      : aint;
        calljmp  : boolean;
+       need_second_mov : boolean;
        i        : integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        sreg     : string;
+=======
+       comment  : tai_comment;
+>>>>>>> graemeg/cpstrnew
+=======
+       comment  : tai_comment;
+>>>>>>> graemeg/cpstrnew
+=======
+       comment  : tai_comment;
+>>>>>>> graemeg/cpstrnew
+=======
+       comment  : tai_comment;
+>>>>>>> origin/cpstrnew
       begin
         if hp.typ <> ait_instruction then
           exit;
         taicpu(hp).SetOperandOrder(op_att);
         op:=taicpu(hp).opcode;
         calljmp:=is_calljmp(op);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
         // BUGFIX GAS-assembler
         // Intel "Intel 64 and IA-32 Architectures Software Developers manual 12/2011"
@@ -338,6 +440,38 @@ interface
               end;
           end;
         owner.writer.AsmWrite(#9);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        { constant values in the 32 bit range are sign-extended to
+          64 bits, but this is not what we want.  PM 2010-09-02
+          the fix consists of simply setting only the 4-byte register
+          as the upper 4-bytes will be zeroed at the same time. }
+        need_second_mov:=false;
+        if (op=A_MOV) and (taicpu(hp).opsize=S_Q) and
+           (taicpu(hp).oper[0]^.typ = top_const) then
+           begin
+             val := taicpu(hp).oper[0]^.val;
+	     if (val > int64($7fffffff)) and (val < int64($100000000)) then
+               begin
+                 owner.AsmWrite(target_asm.comment);
+                 owner.AsmWritePChar('Fix for Win64-GAS bug');
+                 owner.AsmLn;
+                 taicpu(hp).opsize:=S_L;
+                 if taicpu(hp).oper[1]^.typ = top_reg then
+                   setsubreg(taicpu(hp).oper[1]^.reg,R_SUBD)
+                 else if taicpu(hp).oper[1]^.typ = top_ref then
+                   need_second_mov:=true
+                 else
+                   internalerror(2010090211);
+               end;
+           end;
+        owner.AsmWrite(#9);
+>>>>>>> graemeg/cpstrnew
         { movsd should not be translated to movsl when there
           are (xmm) arguments }
         if (op=A_MOVSD) and (taicpu(hp).ops>0) then
@@ -422,7 +556,26 @@ interface
                  end;
              end;
           end;
+<<<<<<< HEAD
         owner.writer.AsmLn;
+=======
+        owner.AsmLn;
+        if need_second_mov then
+          begin
+            taicpu(hp).oper[0]^.val:=0;
+            inc(taicpu(hp).oper[1]^.ref^.offset,4);
+            WriteInstruction(hp);
+          end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -474,6 +627,46 @@ interface
             dollarsign: '$';
           );
 
+       as_x86_64_gas_info : tasminfo =
+          (
+            id     : as_ggas;
+            idtxt  : 'GAS';
+            asmbin : 'gas';
+            asmcmd : '--64 -o $OBJ $ASM';
+            supported_targets : [system_x86_64_solaris];
+            flags : [af_allowdirect,af_needar,af_smartlink_sections,af_supports_dwarf];
+            labelprefix : '.L';
+            comment : '# ';
+          );
+
+       as_x86_64_gas_info : tasminfo =
+          (
+            id     : as_ggas;
+            idtxt  : 'GAS';
+            asmbin : 'gas';
+            asmcmd : '--64 -o $OBJ $ASM';
+            supported_targets : [system_x86_64_solaris];
+            flags : [af_allowdirect,af_needar,af_smartlink_sections,af_supports_dwarf];
+            labelprefix : '.L';
+            comment : '# ';
+          );
+
+       as_x86_64_gas_info : tasminfo =
+          (
+            id     : as_ggas;
+            idtxt  : 'GAS';
+            asmbin : 'gas';
+            asmcmd : '--64 -o $OBJ $ASM';
+            supported_targets : [system_x86_64_solaris];
+            flags : [af_allowdirect,af_needar,af_smartlink_sections,af_supports_dwarf];
+            labelprefix : '.L';
+            comment : '# ';
+          );
+
+
+<<<<<<< HEAD
+
+
 
        as_x86_64_solaris_info : tasminfo =
           (
@@ -489,6 +682,8 @@ interface
           );
 
 
+=======
+>>>>>>> origin/cpstrnew
 
        as_x86_64_gas_darwin_info : tasminfo =
           (
@@ -526,8 +721,22 @@ interface
             supported_targets : [system_i386_GO32V2,system_i386_linux,system_i386_Win32,system_i386_freebsd,system_i386_solaris,system_i386_beos,
                                 system_i386_netbsd,system_i386_Netware,system_i386_qnx,system_i386_wdosx,system_i386_openbsd,
                                 system_i386_netwlibc,system_i386_wince,system_i386_embedded,system_i386_symbian,system_i386_haiku,system_x86_6432_linux,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 system_i386_nativent,system_i386_android,system_i386_aros];
             flags : [af_needar,af_smartlink_sections,af_supports_dwarf];
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                                system_i386_nativent];
+            flags : [af_allowdirect,af_needar,af_smartlink_sections,af_supports_dwarf];
+>>>>>>> graemeg/cpstrnew
             labelprefix : '.L';
             comment : '# ';
             dollarsign: '$';
@@ -557,7 +766,23 @@ interface
             asmbin : 'as';
             asmcmd : '-o $OBJ $EXTRAOPT $ASM';
             supported_targets : [system_i386_linux,system_i386_OS2,system_i386_freebsd,system_i386_netbsd,system_i386_openbsd,system_i386_EMX,system_i386_embedded];
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             flags : [af_needar,af_stabs_use_function_absolute_addresses];
+=======
+            flags : [af_allowdirect,af_needar,af_stabs_use_function_absolute_addresses];
+>>>>>>> graemeg/cpstrnew
+=======
+            flags : [af_allowdirect,af_needar,af_stabs_use_function_absolute_addresses];
+>>>>>>> graemeg/cpstrnew
+=======
+            flags : [af_allowdirect,af_needar,af_stabs_use_function_absolute_addresses];
+>>>>>>> graemeg/cpstrnew
+=======
+            flags : [af_allowdirect,af_needar,af_stabs_use_function_absolute_addresses];
+>>>>>>> origin/cpstrnew
             labelprefix : 'L';
             comment : '# ';
             dollarsign: '$';
@@ -569,9 +794,22 @@ interface
             id     : as_darwin;
             idtxt  : 'AS-DARWIN';
             asmbin : 'as';
+<<<<<<< HEAD
             asmcmd : '-o $OBJ $EXTRAOPT $ASM -arch i386';
             supported_targets : [system_i386_darwin,system_i386_iphonesim];
             flags : [af_needar,af_smartlink_sections,af_supports_dwarf,af_stabs_use_function_absolute_addresses];
+=======
+            asmcmd : '-o $OBJ $ASM -arch i386';
+            supported_targets : [system_i386_darwin,system_i386_iphonesim];
+            flags : [af_allowdirect,af_needar,af_smartlink_sections,af_supports_dwarf,af_stabs_use_function_absolute_addresses];
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
             labelprefix : 'L';
             comment : '# ';
             dollarsign: '$';
@@ -585,6 +823,8 @@ interface
             asmcmd : '-c -o $OBJ $EXTRAOPT -arch i386 $DARWINVERSION -x assembler $ASM';
             supported_targets : [system_i386_darwin,system_i386_iphonesim];
             flags : [af_needar,af_smartlink_sections,af_supports_dwarf];
+=======
+>>>>>>> origin/cpstrnew
             labelprefix : 'L';
             comment : '# ';
             dollarsign: '$';
@@ -625,7 +865,19 @@ interface
 initialization
 {$ifdef x86_64}
   RegisterAssembler(as_x86_64_as_info,Tx86ATTAssembler);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   RegisterAssembler(as_x86_64_yasm_info,Tx86ATTAssembler);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   RegisterAssembler(as_x86_64_gas_info,Tx86ATTAssembler);
   RegisterAssembler(as_x86_64_gas_darwin_info,Tx86AppleGNUAssembler);
   RegisterAssembler(as_x86_64_clang_darwin_info,Tx86AppleGNUAssembler);
@@ -635,8 +887,16 @@ initialization
   RegisterAssembler(as_i386_gas_info,Tx86ATTAssembler);
   RegisterAssembler(as_i386_yasm_info,Tx86ATTAssembler);
   RegisterAssembler(as_i386_gas_darwin_info,Tx86AppleGNUAssembler);
+<<<<<<< HEAD
+<<<<<<< HEAD
   RegisterAssembler(as_i386_clang_darwin_info,Tx86AppleGNUAssembler);
   RegisterAssembler(as_i386_as_aout_info,Tx86AoutGNUAssembler);
   RegisterAssembler(as_i386_solaris_info,Tx86ATTAssembler);
+=======
+  RegisterAssembler(as_i386_as_aout_info,Tx86AoutGNUAssembler);
+>>>>>>> graemeg/fixes_2_2
+=======
+  RegisterAssembler(as_i386_as_aout_info,Tx86AoutGNUAssembler);
+>>>>>>> origin/fixes_2_2
 {$endif x86_64}
 end.

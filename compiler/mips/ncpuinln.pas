@@ -36,7 +36,19 @@ type
     procedure second_abs_real; override;
     procedure second_sqr_real; override;
     procedure second_sqrt_real; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure second_get_frame; override;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   private
     procedure load_fpu_location;
   end;
@@ -53,7 +65,23 @@ uses
   cgbase, pass_2,
   cpubase, paramgr,
   nbas, ncon, ncal, ncnv, nld,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   hlcgobj, ncgutil, cgobj, cgutils;
+=======
+  ncgutil, cgobj, cgutils;
+>>>>>>> graemeg/cpstrnew
+=======
+  ncgutil, cgobj, cgutils;
+>>>>>>> graemeg/cpstrnew
+=======
+  ncgutil, cgobj, cgutils;
+>>>>>>> graemeg/cpstrnew
+=======
+  ncgutil, cgobj, cgutils;
+>>>>>>> origin/cpstrnew
 
 {*****************************************************************************
                               tMIPSELinlinenode
@@ -62,7 +90,23 @@ uses
 procedure tMIPSELinlinenode.load_fpu_location;
 begin
   secondpass(left);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   hlcg.location_force_fpureg(current_asmdata.CurrAsmList, left.location, left.resultdef, True);
+=======
+  location_force_fpureg(current_asmdata.CurrAsmList, left.location, True);
+>>>>>>> graemeg/cpstrnew
+=======
+  location_force_fpureg(current_asmdata.CurrAsmList, left.location, True);
+>>>>>>> graemeg/cpstrnew
+=======
+  location_force_fpureg(current_asmdata.CurrAsmList, left.location, True);
+>>>>>>> graemeg/cpstrnew
+=======
+  location_force_fpureg(current_asmdata.CurrAsmList, left.location, True);
+>>>>>>> origin/cpstrnew
   location_copy(location, left.location);
   if left.location.loc = LOC_CFPUREGISTER then
   begin
@@ -134,6 +178,10 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 procedure tMIPSELinlinenode.second_get_frame;
 begin
@@ -142,6 +190,14 @@ begin
 end;
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 begin
   cInlineNode := tMIPSELinlinenode;
 end.

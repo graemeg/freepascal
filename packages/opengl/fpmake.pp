@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('opengl');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ShortName:='ogl';
 {$ifdef ALLPACKAGES}
     P.Directory:=ADirectory;
@@ -45,6 +47,28 @@ begin
     P.Targets.AddExampleProgram('glutdemo.pp');
     P.Targets.AddExampleProgram('glxtest.pp');
     P.Sources.AddSrc('readme');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='opengl';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.OSes:=AllUnixOSes+[Win32,Win64];
+
+    P.Dependencies.Add('x11',AllUnixOSes);
+
+    P.SourcePath.Add('src');
+
+    T:=P.Targets.AddUnit('glext.pp');
+    T:=P.Targets.AddUnit('gl.pp');
+    T:=P.Targets.AddUnit('glu.pp');
+    T:=P.Targets.AddUnit('glut.pp');
+    T:=P.Targets.AddUnit('glx.pp',AllUnixOSes);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$ifndef ALLPACKAGES}
     Run;

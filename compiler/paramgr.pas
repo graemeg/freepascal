@@ -90,6 +90,34 @@ unit paramgr;
           }
           procedure allocparaloc(list: TAsmList; const paraloc: pcgparalocation);
 
+          {# allocate an individual pcgparalocation that's part of a tcgpara
+
+            @param(list Current assembler list)
+            @param(loc Parameter location element)
+          }
+          procedure allocparaloc(list: TAsmList; const paraloc: pcgparalocation);
+
+          {# allocate an individual pcgparalocation that's part of a tcgpara
+
+            @param(list Current assembler list)
+            @param(loc Parameter location element)
+          }
+          procedure allocparaloc(list: TAsmList; const paraloc: pcgparalocation);
+
+          {# allocate an individual pcgparalocation that's part of a tcgpara
+
+            @param(list Current assembler list)
+            @param(loc Parameter location element)
+          }
+          procedure allocparaloc(list: TAsmList; const paraloc: pcgparalocation);
+
+          {# allocate an individual pcgparalocation that's part of a tcgpara
+
+            @param(list Current assembler list)
+            @param(loc Parameter location element)
+          }
+          procedure allocparaloc(list: TAsmList; const paraloc: pcgparalocation);
+
           {# allocate a parameter location created with create_paraloc_info
 
             @param(list Current assembler list)
@@ -114,8 +142,24 @@ unit paramgr;
             function result instead of its actual result. Used if the compiler
             forces the function result to something different than the real
             result.  }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           function  get_funcretloc(p : tabstractprocdef; side: tcallercallee; forcetempdef: tdef): tcgpara;virtual;abstract;
           procedure create_funcretloc_info(p : tabstractprocdef; side: tcallercallee);
+=======
+          function  get_funcretloc(p : tabstractprocdef; side: tcallercallee; def: tdef): tcgpara;virtual;abstract;
+>>>>>>> graemeg/cpstrnew
+=======
+          function  get_funcretloc(p : tabstractprocdef; side: tcallercallee; def: tdef): tcgpara;virtual;abstract;
+>>>>>>> graemeg/cpstrnew
+=======
+          function  get_funcretloc(p : tabstractprocdef; side: tcallercallee; def: tdef): tcgpara;virtual;abstract;
+>>>>>>> graemeg/cpstrnew
+=======
+          function  get_funcretloc(p : tabstractprocdef; side: tcallercallee; def: tdef): tcgpara;virtual;abstract;
+>>>>>>> origin/cpstrnew
 
           { This is used to populate the location information on all parameters
             for the routine when it is being inlined. It returns
@@ -129,7 +173,23 @@ unit paramgr;
           }
           function  create_varargs_paraloc_info(p : tabstractprocdef; varargspara:tvarargsparalist):longint;virtual;abstract;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           function is_stack_paraloc(paraloc: pcgparalocation): boolean;virtual;
+=======
+          function is_stack_paraloc(paraloc: pcgparalocation): boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+          function is_stack_paraloc(paraloc: pcgparalocation): boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+          function is_stack_paraloc(paraloc: pcgparalocation): boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+          function is_stack_paraloc(paraloc: pcgparalocation): boolean;
+>>>>>>> origin/cpstrnew
           procedure createtempparaloc(list: TAsmList;calloption : tproccalloption;parasym : tparavarsym;can_use_final_stack_loc : boolean;var cgpara:TCGPara);virtual;
           procedure duplicatecgparaloc(const orgparaloc: pcgparalocation; intonewparaloc: pcgparalocation);
           procedure duplicateparaloc(list: TAsmList;calloption : tproccalloption;parasym : tparavarsym;var cgpara:TCGPara);
@@ -139,6 +199,10 @@ unit paramgr;
 
           { allocate room for parameters on the stack in the entry code? }
           function use_fixed_stack: boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           { whether stack pointer can be changed in the middle of procedure }
           function use_stackalloc: boolean;
          strict protected
@@ -155,6 +219,14 @@ unit paramgr;
             for which the def is paradef and the integer length is restlen.
             fullsize is true if restlen equals the full paradef size }
           function get_paraloc_def(paradef: tdef; restlen: aint; fullsize: boolean): tdef;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
        end;
 
 
@@ -186,7 +258,22 @@ implementation
            (def.typ=recorddef) or
            (def.typ=stringdef) or
            ((def.typ=procvardef) and not tprocvardef(def).is_addressonly) or
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
            ((def.typ=objectdef) and (is_object(def))) or
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+           { interfaces are also passed by reference to be compatible with delphi and COM }
+           ((def.typ=objectdef) and (is_object(def) or is_interface(def) or is_dispinterface(def))) or
+           (def.typ=variantdef) or
+>>>>>>> graemeg/cpstrnew
            ((def.typ=setdef) and not is_smallset(def));
       end;
 
@@ -310,6 +397,37 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+=======
+    procedure tparamanager.allocparaloc(list: TAsmList; const paraloc: pcgparalocation);
+      begin
+        case paraloc^.loc of
+          LOC_REGISTER,
+          LOC_CREGISTER:
+            begin
+              if getsupreg(paraloc^.register)<first_int_imreg then
+                cg.getcpuregister(list,paraloc^.register);
+            end;
+{$ifndef x86}
+{ don't allocate ST(x), they're not handled by the register allocator }
+          LOC_FPUREGISTER,
+          LOC_CFPUREGISTER:
+            begin
+              if getsupreg(paraloc^.register)<first_fpu_imreg then
+                cg.getcpuregister(list,paraloc^.register);
+            end;
+{$endif not x86}
+          LOC_MMREGISTER,
+          LOC_CMMREGISTER :
+            begin
+              if getsupreg(paraloc^.register)<first_mm_imreg then
+                cg.getcpuregister(list,paraloc^.register);
+            end;
+        end;
+      end;
+
+
+>>>>>>> origin/cpstrnew
     procedure tparamanager.alloccgpara(list: TAsmList; const cgpara: TCGPara);
       var
         paraloc : pcgparalocation;
@@ -393,7 +511,22 @@ implementation
         cgpara.size:=parasym.paraloc[callerside].size;
         cgpara.intsize:=parasym.paraloc[callerside].intsize;
         cgpara.alignment:=parasym.paraloc[callerside].alignment;
+<<<<<<< HEAD
         cgpara.def:=parasym.paraloc[callerside].def;
+=======
+{$ifdef powerpc}
+        cgpara.composite:=parasym.paraloc[callerside].composite;
+{$endif powerpc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         while assigned(paraloc) do
           begin
             if paraloc^.size=OS_NO then
@@ -441,10 +574,26 @@ implementation
                     duplicatecgparaloc(paraloc,newparaloc)
                   else
                     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                       if assigned(cgpara.def) then
                         tg.gethltemp(list,cgpara.def,len,tt_persistent,href)
                       else
                         tg.gettemp(list,len,cgpara.alignment,tt_persistent,href);
+=======
+                      tg.gettemp(list,len,cgpara.alignment,tt_persistent,href);
+>>>>>>> graemeg/cpstrnew
+=======
+                      tg.gettemp(list,len,cgpara.alignment,tt_persistent,href);
+>>>>>>> graemeg/cpstrnew
+=======
+                      tg.gettemp(list,len,cgpara.alignment,tt_persistent,href);
+>>>>>>> graemeg/cpstrnew
+=======
+                      tg.gettemp(list,len,cgpara.alignment,tt_persistent,href);
+>>>>>>> origin/cpstrnew
                       newparaloc^.reference.index:=href.base;
                       newparaloc^.reference.offset:=href.offset;
                     end;
@@ -513,7 +662,23 @@ implementation
     function tparamanager.use_fixed_stack: boolean;
       begin
 {$ifdef i386}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         result := target_info.stackalign > 4;
+=======
+        result := (target_info.system in [system_i386_darwin,system_i386_iphonesim]);
+>>>>>>> graemeg/cpstrnew
+=======
+        result := (target_info.system in [system_i386_darwin,system_i386_iphonesim]);
+>>>>>>> graemeg/cpstrnew
+=======
+        result := (target_info.system in [system_i386_darwin,system_i386_iphonesim]);
+>>>>>>> graemeg/cpstrnew
+=======
+        result := (target_info.system in [system_i386_darwin,system_i386_iphonesim]);
+>>>>>>> origin/cpstrnew
 {$else i386}
 {$ifdef cputargethasfixedstack}
         result := true;
@@ -523,6 +688,10 @@ implementation
 {$endif i386}
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     { This is a separate function because at least win64 allows stack allocations
       despite of fixed stack semantics (actually supporting it requires generating
       a compliant stack frame, not yet possible) }
@@ -637,6 +806,14 @@ implementation
         cgpara:=tparavarsym(pd.paras[nr-1]).paraloc[callerside].getcopy;
       end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 initialization
   ;

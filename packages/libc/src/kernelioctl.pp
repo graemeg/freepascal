@@ -1,10 +1,6 @@
 {$mode objfpc}
 {$h+}
 
-{$if not defined(linux) or not defined(cpui386)}
-  {$error The KernelIoctl unit is a legacy Kylix-compatibility unit that is only supported on Linux/i386. It is known not to work in various ways on other OSes and architectures (including Linux/x86_64). }
-{$endif}
-
 Unit kernelioctl;
 
 Interface

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 0.99.14
  - added new unit ptcmouse for use with ptcgraph & ptccrt applications. It is
    similar to the winmouse and msmouse units.
@@ -39,6 +43,14 @@
       relatively easy to fix. See the files INTF-CHANGES-0.99.12.txt and
       INTF-CHANGES-FAQ-0.99.12.txt for details.
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 0.99.11
  - added ptcgraph - an implementation of FPC's BGI-compatible graph unit on top
    of PTCPas. It should work on all platforms, supported by PTCPas,  except for

@@ -24,7 +24,7 @@ begin
                             -1);
   gdk_draw_rectangle (pixmap,
                               widget^.style^.white_gc,
-                              gint(gTRUE),
+                              gTRUE,
                               0, 0,
                               widget^.allocation.width,
                               widget^.allocation.height);
@@ -61,7 +61,7 @@ begin
 
   gdk_draw_rectangle (pixmap,
                               widget^.style^.black_gc,
-                          gint(gTRUE),
+                          gTRUE,
                               update_rect.x, update_rect.y,
                               update_rect.width, update_rect.height);
 
@@ -86,7 +86,7 @@ var
   state : TGdkModifierType;
 
 begin
-  if event^.is_hint = gint(gTRUE) then
+  if event^.is_hint = gTRUE then
     gdk_window_get_pointer (event^.window, @x, @y, @state)
   else begin
     x := round (event^.x);

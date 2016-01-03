@@ -79,6 +79,19 @@ Type
     procedure EndOverview; override;
     procedure WriteOverviewMember(const ALabel,AName,Access,ADescr : String); override;
     procedure WriteOverviewMember(const ALabel,AName,ADescr : String); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    Class Function FileNameExtension : String; override;
+>>>>>>> graemeg/cpstrnew
     // Description node conversion
     procedure DescrBeginBold; override;
     procedure DescrEndBold; override;
@@ -131,7 +144,15 @@ Type
     Property ImageDir : String Read FImageDir Write FImageDir;
   public
     Function InterPretOption(Const Cmd,Arg : String) : boolean; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Class Function FileNameExtension : String; override;
+=======
+    Property ImageDir : String Read FImageDir Write FImageDir;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Property ImageDir : String Read FImageDir Write FImageDir;
+>>>>>>> origin/fixes_2_2
   end;
 
 
@@ -606,7 +627,20 @@ begin
   Writeln('\VersionInfo');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TLaTeXWriter.StartAccess;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+Procedure TLatexWriter.StartAccess;
+>>>>>>> graemeg/cpstrnew
 
 begin
   Writeln('\Access')
@@ -661,14 +695,60 @@ begin
   WriteLn('\end{tabularx}');
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TLaTeXWriter.WriteOverviewMember(const ALabel, AName, Access,
   ADescr: String);
+=======
+procedure TLatexWriter.WriteOverviewMember(const ALabel,AName,Access,ADescr : String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TLatexWriter.WriteOverviewMember(const ALabel,AName,Access,ADescr : String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TLatexWriter.WriteOverviewMember(const ALabel,AName,Access,ADescr : String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TLatexWriter.WriteOverviewMember(const ALabel,AName,Access,ADescr : String);
+>>>>>>> origin/cpstrnew
+=======
+procedure TLatexWriter.WriteOverviewMember(ALabel,AName,Access,ADescr : String);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 begin
   WriteLnF('\pageref{%s} & %s & %s & %s \\',[ALabel,EscapeText(AName),Access,ADescr]);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TLaTeXWriter.WriteOverviewMember(const ALabel, AName, ADescr: String);
+=======
+procedure TLatexWriter.WriteOverviewMember(const ALabel,AName,ADescr : String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TLatexWriter.WriteOverviewMember(const ALabel,AName,ADescr : String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TLatexWriter.WriteOverviewMember(const ALabel,AName,ADescr : String);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TLatexWriter.WriteOverviewMember(const ALabel,AName,ADescr : String);
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+procedure TLatexWriter.WriteOverviewMember(ALabel,AName,ADescr : String);
+>>>>>>> graemeg/fixes_2_2
 
 begin
   WriteLnF('\pageref{%s} & %s  & %s \\',[ALabel,EscapeText(AName),ADescr]);

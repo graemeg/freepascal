@@ -43,7 +43,7 @@ type
     procedure ClearExpressions; override;
 
     procedure ParseExpression(AExpression: string); virtual;
-    function ExtractFromBuffer(Buffer: TRecordBuffer): PChar; virtual;
+    function ExtractFromBuffer(Buffer: PChar): PChar; virtual;
 
     property Dataset: TDataSet read FDataset; // write FDataset;
     property Expression: string read FCurrentExpression;
@@ -72,7 +72,7 @@ type
   public
     constructor Create(UseField: TField);
 
-    procedure Refresh(Buffer: TRecordBuffer); virtual; abstract;
+    procedure Refresh(Buffer: PChar); virtual; abstract;
 
     property FieldVal: Pointer read GetFieldVal;
     property FieldDef: TField read FField;
@@ -90,7 +90,7 @@ type
     constructor Create(UseField: TField);
     destructor Destroy; override;
 
-    procedure Refresh(Buffer: TRecordBuffer); override;
+    procedure Refresh(Buffer: PChar); override;
   end;
 
   TFloatFieldVar = class(TFieldVar)
@@ -100,7 +100,7 @@ type
     function GetFieldVal: Pointer; override;
     function GetFieldType: TExpressionType; override;
   public
-    procedure Refresh(Buffer: TRecordBuffer); override;
+    procedure Refresh(Buffer: PChar); override;
   end;
 
   TIntegerFieldVar = class(TFieldVar)
@@ -110,7 +110,7 @@ type
     function GetFieldVal: Pointer; override;
     function GetFieldType: TExpressionType; override;
   public
-    procedure Refresh(Buffer: TRecordBuffer); override;
+    procedure Refresh(Buffer: PChar); override;
   end;
 
   TLargeIntFieldVar = class(TFieldVar)
@@ -120,7 +120,7 @@ type
     function GetFieldVal: Pointer; override;
     function GetFieldType: TExpressionType; override;
   public
-    procedure Refresh(Buffer: TRecordBuffer); override;
+    procedure Refresh(Buffer: PChar); override;
   end;
 
   TDateTimeFieldVar = class(TFieldVar)
@@ -130,7 +130,7 @@ type
   protected
     function GetFieldVal: Pointer; override;
   public
-    procedure Refresh(Buffer: TRecordBuffer); override;
+    procedure Refresh(Buffer: PChar); override;
   end;
 
   TBooleanFieldVar = class(TFieldVar)
@@ -140,14 +140,8 @@ type
   protected
     function GetFieldVal: Pointer; override;
   public
-    procedure Refresh(Buffer: TRecordBuffer); override;
+    procedure Refresh(Buffer: PChar); override;
   end;
-
-  TBCDFieldVar = class(TFloatFieldVar)
-  public
-    procedure Refresh(Buffer: TRecordBuffer); override;
-  end;
-
 
 //--TFieldVar----------------------------------------------------------------
 constructor TFieldVar.Create(UseField: TField);
@@ -185,13 +179,15 @@ begin
   inherited;
 end;
 
-procedure TStringFieldVar.Refresh(Buffer: TRecordBuffer);
+procedure TStringFieldVar.Refresh(Buffer: PChar);
 var Fieldbuf : TStringFieldBuffer;
+    s        : string;
 begin
   if not FField.DataSet.GetFieldData(FField,@Fieldbuf) then
-    FFieldVal^:=#0
+    s := ''
   else
-    strcopy(FFieldVal,@Fieldbuf[0]);
+    s := Fieldbuf;
+  strcopy(FFieldVal,@s[1]);
 end;
 
 //--TFloatFieldVar-----------------------------------------------------------
@@ -205,7 +201,7 @@ begin
   Result := etFloat;
 end;
 
-procedure TFloatFieldVar.Refresh(Buffer: TRecordBuffer);
+procedure TFloatFieldVar.Refresh(Buffer: PChar);
 begin
   if not FField.DataSet.GetFieldData(FField,@FFieldVal) then
     FFieldVal := 0;
@@ -222,7 +218,7 @@ begin
   Result := etInteger;
 end;
 
-procedure TIntegerFieldVar.Refresh(Buffer: TRecordBuffer);
+procedure TIntegerFieldVar.Refresh(Buffer: PChar);
 begin
   if not FField.DataSet.GetFieldData(FField,@FFieldVal) then
     FFieldVal := 0;
@@ -239,7 +235,7 @@ begin
   Result := etLargeInt;
 end;
 
-procedure TLargeIntFieldVar.Refresh(Buffer: TRecordBuffer);
+procedure TLargeIntFieldVar.Refresh(Buffer: PChar);
 begin
   if not FField.DataSet.GetFieldData(FField,@FFieldVal) then
     FFieldVal := 0;
@@ -256,7 +252,7 @@ begin
   Result := etDateTime;
 end;
 
-procedure TDateTimeFieldVar.Refresh(Buffer:TRecordBuffer );
+procedure TDateTimeFieldVar.Refresh(Buffer: PChar);
 begin
   if not FField.DataSet.GetFieldData(FField,@FFieldVal) then
     FFieldVal := 0;
@@ -273,21 +269,11 @@ begin
   Result := etBoolean;
 end;
 
-procedure TBooleanFieldVar.Refresh(Buffer: TRecordBuffer);
+procedure TBooleanFieldVar.Refresh(Buffer: PChar);
 begin
   if not FField.DataSet.GetFieldData(FField,@FFieldVal) then
     FFieldVal := False;
 end;
-
-procedure TBCDFieldVar.Refresh(Buffer: TRecordBuffer);
-var c: currency;
-begin
-  if FField.DataSet.GetFieldData(FField,@c) then
-    FFieldVal := c
-  else
-    FFieldVal := 0;
-end;
-
 
 //--TBufDatasetParser---------------------------------------------------------------
 
@@ -387,7 +373,7 @@ begin
 
   // define field in parser
   case FieldInfo.DataType of
-    ftString, ftFixedChar:
+    ftString:
       begin
       TempFieldVar := TStringFieldVar.Create(FieldInfo);
       TempFieldVar.FExprWord := DefineStringVariable(VarName, TempFieldVar.FieldVal);
@@ -403,7 +389,7 @@ begin
         TempFieldVar := TFloatFieldVar.Create(FieldInfo);
         TempFieldVar.FExprWord := DefineFloatVariable(VarName, TempFieldVar.FieldVal);
       end;
-    ftAutoInc, ftInteger, ftSmallInt, ftWord:
+    ftAutoInc, ftInteger, ftSmallInt:
       begin
         TempFieldVar := TIntegerFieldVar.Create(FieldInfo);
         TempFieldVar.FExprWord := DefineIntegerVariable(VarName, TempFieldVar.FieldVal);
@@ -418,13 +404,8 @@ begin
         TempFieldVar := TDateTimeFieldVar.Create(FieldInfo);
         TempFieldVar.FExprWord := DefineDateTimeVariable(VarName, TempFieldVar.FieldVal);
       end;
-    ftBCD:
-      begin
-        TempFieldVar := TBCDFieldVar.Create(FieldInfo);
-        TempFieldVar.FExprWord := DefineFloatVariable(VarName, TempFieldVar.FieldVal);
-      end;
   else
-    raise EDatabaseError.CreateFmt(SErrIndexBasedOnInvField, [VarName,Fieldtypenames[FieldInfo.DataType]]);
+    raise EDatabaseError.CreateFmt(SErrIndexBasedOnInvField, [VarName]);
   end;
 
   // add to our own list
@@ -456,7 +437,7 @@ end;
 
 procedure TBufDatasetParser.ParseExpression(AExpression: string);
 var
-  TempBuffer: TRecordBuffer;
+  TempBuffer: pchar;
 begin
   // clear any current expression
   ClearExpressions;
@@ -505,7 +486,7 @@ begin
   FCurrentExpression := AExpression;
 end;
 
-function TBufDatasetParser.ExtractFromBuffer(Buffer: TRecordBuffer): PChar;
+function TBufDatasetParser.ExtractFromBuffer(Buffer: PChar): PChar;
 var
   I: Integer;
 begin

@@ -43,7 +43,7 @@ type
 
   { Interbase redefinitions }
 
-  ISC_LONG             = PtrInt; // Bug 17360
+  ISC_LONG             = Long;
   UISC_LONG            = ULong;
   ISC_STATUS           = Long;
   UISC_STATUS          = ULong;

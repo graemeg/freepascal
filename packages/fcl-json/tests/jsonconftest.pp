@@ -1,7 +1,13 @@
 unit jsonconftest;
 
 {$mode objfpc}{$H+}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$codepage utf8}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 interface
 
@@ -14,8 +20,14 @@ type
 
   TTestJSONConfig= class(TTestCase)
   Private
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure AssertStrings(Msg: String; L: TStrings;
       const Values: array of string);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Function CreateConf(AFileName : String) : TJSONCOnfig;
     Procedure DeleteConf(C : TJSONConfig; DeleteConfFile : Boolean = true);
   published
@@ -25,8 +37,14 @@ type
     procedure TestEnumValues;
     procedure TestClear;
     procedure TestKey;
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure TestStrings;
     procedure TestUnicodeStrings;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
 implementation
@@ -53,11 +71,24 @@ end;
 procedure TTestJSONConfig.TestDataTypes;
 
 Const
+<<<<<<< HEAD
+<<<<<<< HEAD
   A = Integer(1);
   B = 'A string';
   C = 1.23;
   D = True;
   E = Int64($FFFFFFFFFFFFF);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  A = 1;
+  B = 'A string';
+  C = 1.23;
+  D = True;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 Var
   Co : TJSONCOnfig;
@@ -73,8 +104,14 @@ begin
     AssertEquals('Float read/Write',c,Co.GetValue('c',0.0),0.01);
     Co.SetValue('d',d);
     AssertEquals('Boolean read/Write',d,Co.GetValue('d',False));
+<<<<<<< HEAD
+<<<<<<< HEAD
     Co.SetValue('e',E);
     AssertEquals('Int64 read/Write',e,Co.GetValue('e',Int64(0)));
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Co.Flush;
   finally
     DeleteConf(Co,True);
@@ -258,6 +295,8 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TTestJSONConfig.AssertStrings(Msg: String; L: TStrings;
   const Values: array of string);
 
@@ -348,6 +387,10 @@ begin
   end;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 initialization
 

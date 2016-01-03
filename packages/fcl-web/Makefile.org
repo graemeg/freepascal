@@ -1,0 +1,30 @@
+#
+#   Makefile.fpc for TDataSet for FCL
+#
+
+[package]
+name=fcl-web
+version=2.5.1
+
+[target]
+dirs=src/base src/webdata src/jsonrpc
+
+[require]
+packages=fcl-base fcl-xml fcl-db fcl-json fcl-net fcl-process
+
+[compiler]
+options=-S2h
+
+[install]
+fpcpackage=y
+
+[default]
+fpcdir=../..
+
+[rules]
+.NOTPARALLEL:
+distclean: $(addsuffix _distclean,$(TARGET_DIRS)) fpc_distclean 
+clean: $(addsuffix _clean,$(TARGET_DIRS)) fpc_clean
+cleanall: $(addsuffix _cleanall,$(TARGET_DIRS)) fpc_cleanall
+
+

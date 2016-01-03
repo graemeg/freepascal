@@ -47,7 +47,15 @@ begin
     halt(3);
   d:=nil;
   d:=c.da;
+<<<<<<< HEAD
+<<<<<<< HEAD
   c.da:=nil;
+=======
+  c.fda:=nil;
+>>>>>>> graemeg/fixes_2_2
+=======
+  c.fda:=nil;
+>>>>>>> origin/fixes_2_2
   if (length(d)<>4) or
      (d[0]<>245) or
      (d[1]<>1) or

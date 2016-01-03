@@ -1,0 +1,89 @@
+The daemonapp unit implements support for daemon (service) applications
+in free pascal.
+
+On Windows, these applications will act as services. On Linux, they are
+normal command-line applications.
+
+The unit implements 3 classes:
+
+TDaemonApplication
+------------------
+
+  A TCustomApplication descendent. It is the main entry point for the
+  application. It handles the starting/stopping/installing of the service.
+
+TDaemon
+-------
+
+  A TDatamodule descendent. Here, the actual daemon service code should be
+  implemented. There are several events:
+
+  before/after install
+    Executed before/after the service is being installed. Mainly useful on
+    windows. Triggered if the binary is run with the --install option. 
+
+  before/after uninstall
+    Executed before/after the service is being installed. Mainly useful on
+    windows. Triggered if the binary is run with the --uninstall option.
+
+  OnStart
+    Executed when the service is started. This event handler should return
+    as soon as possible. So at most it should start some event loops or
+    start a thread which does the actual work. if it takes a long time
+    to start, call ReportStatus at regular intervals to report the current 
+    status (important on  Windows)
+
+  OnStop
+    Executed when the service is stopped. This event handler should return
+    as soon as possible.  if it takes a long time to stop, call ReportStatus 
+     at regular intervals to report the current status (important on  Windows)
+
+  OnPause
+    Executed when the service should be paused.
+
+  OnContinue
+    Executed when the service should be continued.
+
+  OnShutdown
+    If stop does not work, the service will be forcedly shut down.
+
+The TDaemon class has a property Logger, which is a TEventLog descendent, which
+can be used to write messages to the system log.
+
+An application can contain many daemons/services. Each of them will be run
+in it's own thread. Only the main program will run in the main thread.
+
+TDaemonMapper
+-------------
+
+  This is used to define the service(s) in the system: it contains all
+  properties with which to define the services in this binary to the system.
+  The definitions are kept in the DaemonDefs property (a collection)
+
+  Each item in the daemondefs collection defines a service: it needs a TDaemon 
+  descendent classname, a name (must be a unique name on the system) a 
+  display name. The winbindings property contains options which are specific to
+  windows: they correspond to the options one sees in the service manager.
+
+  Note that the TDaemonMapper can be used to define 2 services, but they can
+  use 2 instances of the same TDaemon descendent class to handle the service.
+
+  for example: the daemonmapper can be used to create 2 http server daemons,
+  each which listens on a separate port. TDaemon has a property Definition,
+  which is the definiton that was used to create the instance.
+
+Schematically one could draw it like this:
+
+TDaemonApplication
+ +- TDaemonMapper
+     +-TDaemonDef1 -> TDaemon instance
+     +-TDaemonDef2 -> TDaemon instance
+
+Note that the daemon instances work independently, they are each running
+in their own thread. (plus an additional thread which handles the control
+messages from the windows service manager)
+
+There is a lazarus package available which installs support for daemons in 
+the IDE.
+
+Michael.

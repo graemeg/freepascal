@@ -22,9 +22,18 @@
 'ldf',
 'lfm',
 'clz',
+<<<<<<< HEAD
 'cps',
 'cpsid',
 'cpsie',
+=======
+'cnf',
+'cos',
+'cps',
+'cpsid',
+'cpsie',
+'dvf',
+>>>>>>> graemeg/cpstrnew
 'eor',
 'ldc',
 'ldm',
@@ -259,6 +268,12 @@
 'fsitos',
 'fsqrtd',
 'fsqrts',
+<<<<<<< HEAD
+=======
+'fstd',
+'fstm',
+'fsts',
+>>>>>>> graemeg/cpstrnew
 'fsubd',
 'fsubs',
 'ftosid',
@@ -269,11 +284,41 @@
 'fuitos',
 'fmdrr',
 'fmrrd',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 'pop',
 'push',
 'sdiv',
 'udiv',
 'movt',
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+'asr',
+'lsr',
+'lsl',
+'ror',
+'sdiv',
+'udiv',
+'movt',
+'ldrex',
+'strex',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 'it',
 'ite',
 'itt',
@@ -288,6 +333,10 @@
 'iteet',
 'ittet',
 'itett',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 'itttt',
 'tbb',
 'tbh',
@@ -354,4 +403,16 @@
 'frd',
 'lgn',
 'log'
+=======
+'itttt'
+>>>>>>> graemeg/cpstrnew
+=======
+'itttt'
+>>>>>>> graemeg/cpstrnew
+=======
+'itttt'
+>>>>>>> graemeg/cpstrnew
+=======
+'itttt'
+>>>>>>> origin/cpstrnew
 );

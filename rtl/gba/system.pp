@@ -23,9 +23,23 @@ interface
 {$i systemh.inc}
 {$i gbabiosh.inc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$i libch.inc}
 
 
+=======
+{$i systemh.inc}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$i systemh.inc}
+>>>>>>> origin/fixes_2_2
+=======
+{$i libch.inc}
+
+
+>>>>>>> origin/fixes_2.4
 
 {$define fpc_softfpu_interface}
   {$i softfpu.pp}
@@ -48,7 +62,31 @@ const
  MaxPathLen = 255;
  AllFilesMask = '*';
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  sLineBreak = LineEnding;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
+ sLineBreak : string[1] = LineEnding;
+>>>>>>> graemeg/cpstrnew
  DefaultTextLineBreakStyle : TTextLineBreakStyle = tlbsCRLF;
 
   UnusedHandle    = $ffff;
@@ -56,14 +94,60 @@ const
   StdOutputHandle = 1;
   StdErrorHandle  = $ffff;
 
+<<<<<<< HEAD
+=======
+
+
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 var
   argc: LongInt = 0;
   argv: PPChar;
   envp: PPChar;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+//  errno: integer;
+>>>>>>> graemeg/cpstrnew
+=======
+//  errno: integer;
+>>>>>>> graemeg/cpstrnew
+=======
+//  errno: integer;
+>>>>>>> graemeg/cpstrnew
+=======
+//  errno: integer;
+>>>>>>> origin/cpstrnew
+=======
+//  errno: integer;
+>>>>>>> origin/fixes_2.4
   fake_heap_end: ^byte; cvar; external;
 
 
 procedure randomize(value: integer);
+=======
+  errno: integer;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 implementation
 
@@ -86,6 +170,13 @@ implementation
 {$define FPC_SYSTEM_HAS_extractFloat32Sign}
 
 {$i system.inc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+>>>>>>> graemeg/fixes_2_2
 {$i gbabios.inc}
 
 {$i libc.inc}
@@ -177,8 +268,24 @@ end;
 
 begin
   StackLength := CheckInitialStkLen(InitialStkLen);
+<<<<<<< HEAD
+<<<<<<< HEAD
   StackBottom := Sptr - StackLength;
 { OS specific startup }
+
+{ Set up signals handlers }
+//  fpc_cpucodeinit;
+=======
+  StackBottom := StackTop - StackLength;
+{ OS specific startup }
+>>>>>>> graemeg/fixes_2_2
+=======
+  StackBottom := StackTop - StackLength;
+{ OS specific startup }
+>>>>>>> origin/fixes_2_2
+
+{ Set up signals handlers }
+  fpc_cpucodeinit;
 
 { Setup heap }
   InitHeap;
@@ -188,10 +295,18 @@ begin
   SysInitStdIO;
   { Reset IO Error }
   InOutRes:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif FPC_HAS_FEATURE_CONSOLEIO}
 
 {$ifdef FPC_HAS_FEATURE_THREADING}
   { threading }
+=======
+{ Arguments }
+>>>>>>> graemeg/fixes_2_2
+=======
+{ Arguments }
+>>>>>>> origin/fixes_2_2
   InitSystemThreads;
 {$endif FPC_HAS_FEATURE_THREADING}
 end.

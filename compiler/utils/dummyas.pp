@@ -84,7 +84,15 @@ begin
       halt(1);
     end;
   Assign(ofile,assembler_name);
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}{$I-}
+=======
+{$I-}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$I-}
+>>>>>>> origin/fixes_2_2
   Reset(ofile);
   if IOResult<>0 then
     begin
@@ -108,5 +116,11 @@ begin
   Writeln(ofile,'assembler file=',assembler_name);
   Writeln(ofile,'object file=',object_name);
   Close(ofile);
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$pop}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.

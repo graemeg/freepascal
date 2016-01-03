@@ -41,7 +41,7 @@ interface
 
 uses
   {$ifdef UNIX}
-  UnixType,BaseUnix,
+  BaseUnix,
   {$endif}
   {$ifdef Windows}
   WinSock, Windows,

@@ -3,20 +3,68 @@
  
      Contains:   Control Manager interfaces
  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      Version:    HIToolbox-624~3
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIToolbox-437~1
+>>>>>>> origin/cpstrnew
  
      Copyright:  © 1985-2008 by Apple Computer, Inc., all rights reserved
+=======
+     Version:    HIToolbox-219.4.81~2
+ 
+     Copyright:  © 1985-2005 by Apple Computer, Inc., all rights reserved
+>>>>>>> graemeg/fixes_2_2
+=======
+     Version:    HIToolbox-219.4.81~2
+ 
+     Copyright:  © 1985-2005 by Apple Computer, Inc., all rights reserved
+>>>>>>> origin/fixes_2_2
+=======
+     Version:    HIToolbox-437~1
+ 
+     Copyright:  © 1985-2008 by Apple Computer, Inc., all rights reserved
+>>>>>>> origin/fixes_2.4
  
      Bugs?:      For bug reports, consult the following page on
                  the World Wide Web:
  
+<<<<<<< HEAD
+<<<<<<< HEAD
                      http://bugs.freepascal.org
  
 }
 {       Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
 {       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
 {       Pascal Translation Updated:  Gorazd Krosl, <gorazd_1957@yahoo.ca>, October 2009 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2012 }
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {
     Modified for use with Free Pascal
     Version 308
@@ -24,6 +72,29 @@
 }
 
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                     http://www.freepascal.org/bugs.html
+ 
+}
+{       Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
+{       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+{       Pascal Translation Updated:  Gorazd Krosl, <gorazd_1957@yahoo.ca>, October 2009 }
+{
+    Modified for use with Free Pascal
+    Version 308
+    Please report any bugs to <gpc@microbizz.nl>
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4
 {$mode macpas}
 {$packenum 1}
 {$macro on}
@@ -32,8 +103,23 @@
 
 unit Controls;
 interface
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$setc UNIVERSAL_INTERFACES_VERSION := $0400}
 {$setc GAP_INTERFACES_VERSION := $0308}
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> origin/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0400}
+{$setc GAP_INTERFACES_VERSION := $0308}
+>>>>>>> origin/fixes_2.4
 
 {$ifc not defined USE_CFSTR_CONSTANT_MACROS}
     {$setc USE_CFSTR_CONSTANT_MACROS := TRUE}
@@ -46,21 +132,50 @@ interface
 	{$error Conflicting initial definitions for FPC_BIG_ENDIAN and FPC_LITTLE_ENDIAN}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __ppc__ and defined CPUPOWERPC32}
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC32}
+>>>>>>> origin/fixes_2.4
 	{$setc __ppc__ := 1}
 {$elsec}
 	{$setc __ppc__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __ppc64__ and defined CPUPOWERPC64}
 	{$setc __ppc64__ := 1}
 {$elsec}
 	{$setc __ppc64__ := 0}
 {$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __i386__ and defined CPUI386}
 	{$setc __i386__ := 1}
 {$elsec}
 	{$setc __i386__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __x86_64__ and defined CPUX86_64}
 	{$setc __x86_64__ := 1}
 {$elsec}
@@ -71,11 +186,26 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -83,6 +213,13 @@ interface
   {$setc __LP64__ := 0}
 {$endc}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined __ppc__ and __ppc__ and defined __i386__ and __i386__}
 	{$error Conflicting definitions for __ppc__ and __i386__}
@@ -90,42 +227,121 @@ interface
 
 {$ifc defined __ppc__ and __ppc__}
 	{$setc TARGET_CPU_PPC := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_PPC64 := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __ppc64__ and __ppc64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := TRUE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/cpstrnew
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elsec}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
 {$elifc defined __x86_64__ and __x86_64__}
 	{$setc TARGET_CPU_PPC := FALSE}
@@ -175,8 +391,156 @@ interface
 {$ifc defined __LP64__ and __LP64__ }
   {$setc TARGET_CPU_64 := TRUE}
 {$elsec}
+=======
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+=======
+>>>>>>> origin/cpstrnew
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   {$setc TARGET_CPU_64 := FALSE}
 {$endc}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	{$setc TARGET_CPU_PPC64 := FALSE}
+>>>>>>> origin/fixes_2.4
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __i386__ and __i386__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := TRUE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+{$ifc defined(iphonesim)}
+ 	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+  {$setc TARGET_CPU_64 := FALSE}
+{$endc}
+<<<<<<< HEAD
+{$setc TARGET_CPU_PPC_64 := FALSE}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined FPC_BIG_ENDIAN}
 	{$setc TARGET_RT_BIG_ENDIAN := TRUE}
@@ -202,6 +566,17 @@ interface
 {$setc TARGET_CPU_68K := FALSE}
 {$setc TARGET_CPU_MIPS := FALSE}
 {$setc TARGET_CPU_SPARC := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$setc TARGET_OS_UNIX := FALSE}
 {$setc TARGET_OS_WIN32 := FALSE}
 {$setc TARGET_RT_MAC_68881 := FALSE}
@@ -211,11 +586,47 @@ interface
 {$setc TYPE_BOOL := FALSE}
 {$setc TYPE_EXTENDED := FALSE}
 {$setc TYPE_LONGLONG := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+uses MacTypes,Appearance,Collections,Drag,Events,Files,IconsCore,Icons,Menus,QuickdrawTypes,CFBase,CGImage,HIObject;
+{$endc} {not MACOSALLINCLUDE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> graemeg/cpstrnew
+
+{$ifc TARGET_OS_MAC}
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+
+=======
+
+
+>>>>>>> origin/cpstrnew
+{$ifc TARGET_OS_MAC}
+=======
+uses MacTypes,CFBase,Files,Events,CGImage,Quickdraw,Menus,TextEdit,Drag,Icons,Collections,MacErrors,Appearance;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+uses MacTypes,CFBase,Files,Events,CGImage,Quickdraw,Menus,TextEdit,Drag,Icons,Collections,MacErrors,Appearance;
+
+>>>>>>> origin/fixes_2_2
+=======
 uses MacTypes,Appearance,Collections,Drag,Events,Files,IconsCore,Icons,Menus,QuickdrawTypes,CFBase,CGImage,HIObject;
 {$endc} {not MACOSALLINCLUDE}
 
 
 {$ifc TARGET_OS_MAC}
+>>>>>>> origin/fixes_2.4
 
 {$ALIGN MAC68K}
 
@@ -236,7 +647,19 @@ type
 		controlRect: Rect;
 		controlValue: SInt16;
 		controlVisible: Boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		fill: UInt8;
+=======
+		fill: SInt8;
+>>>>>>> graemeg/fixes_2_2
+=======
+		fill: SInt8;
+>>>>>>> origin/fixes_2_2
+=======
+		fill: UInt8;
+>>>>>>> origin/fixes_2.4
 		controlMaximum: SInt16;
 		controlMinimum: SInt16;
 		controlDefProcID: SInt16;
@@ -248,6 +671,28 @@ type
 	ControlTemplateHandle = ^ControlTemplatePtr;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+{  ¥ ControlRef                                                                                        }
+{ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+type
+	ControlRef = ^SInt32; { an opaque 32-bit type }
+	ControlRefPtr = ^ControlRef;  { when a var xx:ControlRef parameter can be nil, it is changed to xx: ControlRefPtr }
+
+{ ControlHandle is obsolete. Use ControlRef.}
+type
+	ControlHandle = ControlRef;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 type
 	ControlPartCode = SInt16;
 	ControlPartCodePtr = ^ControlPartCode; { when a var xx:ControlPartCode parameter can be nil, it is changed to xx: ControlPartCodePtr }
@@ -344,6 +789,11 @@ const
 const
 	kControlEntireControl = kControlNoPart;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 
 {
  *  Control meta-parts
@@ -360,6 +810,7 @@ const
  *    get the regions of the parts. Not all controls fully support this
  *    at the time this was written.
  }
+<<<<<<< HEAD
 const
 {
    * The entire area that the control will draw into. When a composited
@@ -422,6 +873,92 @@ const
    * X 10.3 or later.
    }
 	kControlClickableMetaPart = -4;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{  Meta-Parts                                                                          }
+{  If you haven't guessed from looking at other toolbox headers. We like the word      }
+{  'meta'. It's cool. So here's one more for you. A meta-part is a part used in a call }
+{  to the GetControlRegion API. These parts are parts that might be defined by a       }
+{  control, but should not be returned from calls like TestControl, et al. They define }
+{  a region of a control, presently the structure and the content region. The content  }
+{  region is only defined by controls that can embed other controls. It is the area    }
+{  that embedded content can live.                                                     }
+{  Along with these parts, you can also pass in normal part codes to get the regions   }
+{  of the parts. Not all controls fully support this at the time this was written.     }
+=======
+>>>>>>> origin/fixes_2.4
+const
+{
+   * The entire area that the control will draw into. When a composited
+   * control is drawn, the Control Manager clips the control's drawing
+   * to the structure area. This area may extend beyond the bounds of
+   * the control (for example, if the control draws a focus ring
+   * outside of its bounds). You may return a superset of the drawn
+   * area if this is computationally easier to construct. This area is
+   * used to determine the area of a window that should be invalidated
+   * and redrawn when a control is invalidated. It is not necessary for
+   * a control to return a shape that precisely describes the structure
+   * area; for example, a control whose structure is an oval may simply
+   * return the oval's bounding rectangle. The default handler for the
+   * kEventControlGetPartRegion event will return the control's bounds
+   * when this part is requested.
+   }
+	kControlStructureMetaPart = -1;
+
+  {
+   * The area of the control in which embedded controls should be
+   * positioned. This part is only defined for controls that can
+   * contain other controls (for example, the group box). This area is
+   * largely informational and is not used by the Control Manager
+   * itself. The default handler for the kEventControlGetPartRegion
+   * event will return errInvalidPartCode when this part is requested.
+   }
+	kControlContentMetaPart = -2;
+<<<<<<< HEAD
+	kControlOpaqueMetaPart = -3;   { Jaguar or later}
+	kControlClickableMetaPart = -4;    { Panther or later, only used for async window dragging. Default is structure region.}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+
+  {
+   * The area of the control that, when drawn, is filled with opaque
+   * pixels. You may also return a subset of the opaque area if this is
+   * computationally easier to construct. If a control is contained in
+   * a composited window, the Control Manager will use this area to
+   * optimize drawing of other controls that intersect this area;
+   * controls that are entirely contained within the opaque area, and
+   * that are z-ordered underneath this control, will not be drawn at
+   * all, since any drawing would be completely overwritten by this
+   * control. The default handler for the kEventControlGetPartRegion
+   * event will return an empty area when this part is requested. This
+   * meta-part is available in Mac OS X 10.2 or later.
+   }
+	kControlOpaqueMetaPart = -3;
+
+  {
+   * The area of the control that causes a mouse event to be captured
+   * by that control. If a mouse event falls inside the control bounds
+   * but outside of this area, then the Control Manager will allow the
+   * event to pass through the control to the next control behind it in
+   * z-order. This area is used to determine which parts of a window
+   * should allow async window dragging when clicked (the draggable
+   * area is computed by subtracting the clickable areas of controls in
+   * the window from the window's total area). You can also customize
+   * the clickable area of a control if you want the control to have an
+   * effectively transparent area (for example, a control that draws
+   * multiple tabs might want clicks in the space between the tabs to
+   * fall through to the next control rather than be captured by the
+   * tab-drawing control). The default handler for the
+   * kEventControlGetPartRegion event will return the control's bounds
+   * when this part is requested. This meta-part is available in Mac OS
+   * X 10.3 or later.
+   }
+	kControlClickableMetaPart = -4;
+>>>>>>> origin/fixes_2.4
 
 { focusing part codes }
 const
@@ -482,7 +1019,19 @@ const
 	kControlCollectionTagVisibility = FourCharCode('visi');
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * SRefCon - the refCon
+=======
+   * SInt32 - the refCon
+>>>>>>> graemeg/fixes_2_2
+=======
+   * SInt32 - the refCon
+>>>>>>> origin/fixes_2_2
+=======
+   * SRefCon - the refCon
+>>>>>>> origin/fixes_2.4
    }
 	kControlCollectionTagRefCon = FourCharCode('refc');
 
@@ -520,11 +1069,17 @@ const
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ Control Image Content                                                                             }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 
 {
  *  Summary:
  *    Control image content types
  }
+<<<<<<< HEAD
 const
 {
    * The control has no content other than text.
@@ -610,6 +1165,103 @@ const
    * placed in HIViewContentInfo.u.imageRef. This content type is
    * supported on Mac OS X 10.4 and later.
    }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
+const
+{
+   * The control has no content other than text.
+   }
+	kControlContentTextOnly = 0;
+
+  {
+   * The control has no content.
+   }
+	kControlNoContent = 0;
+
+  {
+   * The control's content is an icon suite identified by a resource
+   * ID. The resource ID of the 'icns' resource should be placed in
+   * ControlImageContentInfo.u.resID .
+   }
+	kControlContentIconSuiteRes = 1;
+
+  {
+   * The control's content is a color icon identified by a resource ID.
+   * The resource ID of the 'cicn' resource should be placed in
+   * ControlImageContentInfo.u.resID .
+   }
+	kControlContentCIconRes = 2;
+
+  {
+   * The control's content is a picture identified by a resource ID.
+   * The resource ID of the 'PICT' resource should be placed in
+   * ControlImageContentInfo.u.resID .
+   }
+	kControlContentPictRes = 3;
+
+  {
+   * The control's content is an icon identified by a resource ID. The
+   * resource ID of the 'ICON' resource should be placed in
+   * ControlImageContentInfo.u.resID .
+   }
+	kControlContentICONRes = 4;
+
+  {
+   * The control's content is a note, caution, or stop icon identified
+   * by a resource ID. The resource ID should be placed in
+   * ControlImageContentInfo.u.resID. The resource ID must be one of
+   * kStopIcon, kNoteIcon, or kCautionIcon. When the icon is drawn, it
+   * may be modified to correspond to the current Mac OS X user
+   * interface guidelines. This content type is supported on Mac OS X
+   * 10.1 and later by the Icon control.
+   }
+	kControlContentAlertIconRes = 5;
+
+  {
+   * The control's content is an IconSuiteHandle. The icon suite handle
+   * should be placed in HIViewContentInfo.u.iconSuite.
+   }
+	kControlContentIconSuiteHandle = 129;
+
+  {
+   * The control's content is a CIconHandle. The color icon handle
+   * should be placed in HIViewContentInfo.u.cIconHandle.
+   }
+	kControlContentCIconHandle = 130;
+
+  {
+   * The control's content is a PicHandle. The picture handle should be
+   * placed in HIViewContentInfo.u.picture.
+   }
+	kControlContentPictHandle = 131;
+
+  {
+   * The control's content is an IconRef. The IconRef should be placed
+   * in HIViewContentInfo.u.iconRef.
+   }
+	kControlContentIconRef = 132;
+
+  {
+   * The control's content is a handle to a monochrome icon. The icon
+   * handle should be placed in HIViewContentInfo.u.ICONHandle.
+   }
+	kControlContentICON = 133;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+
+  {
+   * The control's content is a CGImageRef. The CGImageRef should be
+   * placed in HIViewContentInfo.u.imageRef. This content type is
+   * supported on Mac OS X 10.4 and later.
+   }
+>>>>>>> origin/fixes_2.4
 	kControlContentCGImageRef = 134;
 
 type
@@ -619,6 +1271,9 @@ type
 		contentType: ControlContentType;
 		case SInt16 of
 		0: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 			resID: SInt16;
 			);
 		1: (
@@ -641,10 +1296,56 @@ type
 			ICONHandle: Handle;
 			);
 {$endc} {not TARGET_CPU_64}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+			resID:				SInt16;
+=======
+			resID: SInt16;
+>>>>>>> origin/fixes_2.4
+			);
+		1: (
+			iconRef: IconRef_fix;
+			);
+		2: (
+			imageRef: CGImageRef;
+			);
+{$ifc not TARGET_CPU_64}
+		3: (
+			cIconHandle: CIconHandle_fix;
+			);
+		4: (
+			iconSuite: Handle;
+			);
+		5: (
+			picture: PicHandle;
+			);
+		6: (
+			ICONHandle: Handle;
+			);
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 	end;
 	ControlButtonContentInfoPtr = ^ControlButtonContentInfo;
 type
 	ControlImageContentInfo = ControlButtonContentInfo;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+type
+>>>>>>> graemeg/fixes_2_2
+=======
+type
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	ControlImageContentInfoPtr = ControlButtonContentInfoPtr;
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ Control Key Script Behavior                                                                       }
@@ -722,8 +1423,21 @@ type
 		foreColor: RGBColor;
 		backColor: RGBColor;
 	end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 type
 	ControlFontStylePtr = ControlFontStyleRecPtr;
+=======
+	ControlFontStylePtr = ^ControlFontStyleRec;
+>>>>>>> graemeg/fixes_2_2
+=======
+	ControlFontStylePtr = ^ControlFontStyleRec;
+>>>>>>> origin/fixes_2_2
+=======
+type
+	ControlFontStylePtr = ControlFontStyleRecPtr;
+>>>>>>> origin/fixes_2.4
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ Click Activation Results                                                                          }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
@@ -747,7 +1461,19 @@ type
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Summary:
+=======
+ *  Discussion:
+>>>>>>> graemeg/fixes_2_2
+=======
+ *  Discussion:
+>>>>>>> origin/fixes_2_2
+=======
+ *  Summary:
+>>>>>>> origin/fixes_2.4
  *    Get/SetControlData Common Tags
  }
 const
@@ -761,6 +1487,11 @@ const
 	kControlKindTag = FourCharCode('kind');
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
    * Sent with a pointer to a ControlSize. Only valid with explicitly
    * sizeable controls. Supported in 10.2 by the check box, combo box,
    * progress bar, indeterminate progress bar, radio button, round
@@ -797,6 +1528,7 @@ const
    * 
    * Also as of 10.5, the group box now supports the normal, small, and
    * mini sizes. <BR><BR> Still check your return values!
+<<<<<<< HEAD
    }
 	kControlSizeTag = FourCharCode('size');
 
@@ -854,18 +1586,113 @@ const
    }
 	kControlThemeTextInfoTag = FourCharCode('thti');
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   * Sent with a pointer to a ControlSize.  Only valid with explicitly
+   * sizeable controls.  Currently supported by the check box, combo
+   * box, progress bar, indeterminate progress bar, radio button, round
+   * button, scroll bar, slider and the tab.  Check your return value!
+   * As of 10.2.5, the push button and data browser accept this tag.
+   * The data browser only changes the size of its scrollbars. As of
+   * Mac OS X 10.3, chasing arrows, disclosure button, popup button,
+   * scroll view, search field and little arrows control also accept
+   * this tag. As of Mac OS X 10.4, if the font of the editable text
+   * has not been overridden, the font size of the combo box and search
+   * field will adjust to respect the size of the control. Still check
+   * your return values!
+   }
+	kControlSizeTag = FourCharCode('size');
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+   }
+	kControlSizeTag = FourCharCode('size');
+
+  {
+   * Sent with a pointer to a ControlImageContentInfo (or
+   * HIViewContentInfo) structure. Valid for both GetControlData and
+   * SetControlData. All controls that support this tag will retain
+   * refcountable image content when SetControlData is used to supply
+   * new image content. Most controls that support this tag will not
+   * retain refcountable image content when GetControlData is used to
+   * retrieve image content; the exception is the tab control, which
+   * does retain IconRef and CGImageRef content in response to
+   * GetControlData. If you are implementing support for this tag in a
+   * new view, you should retain refcountable image content when new
+   * content is provided with SetControlData, but should not retain
+   * refcountable image content when returning current image content in
+   * response to GetControlData.
+   }
+	kControlContentTag = FourCharCode('cont');
+
+  {
+   * Sent with a pointer to a CTFontRef. Valid for both GetControlData
+   * and SetControlData. The value of this CTFontRef must be retained
+   * by the view when SetControlData is used and the view must retain
+   * it when passing it back as a result of GetControlData. It is up to
+   * the caller to release this value when it is no longer needed.
+   }
+	kControlThemeTextFontTag = FourCharCode('thft');
+
+  {
+   * Sent with a pointer to an HIThemeTextHorizontalFlush. Valid for
+   * both GetControlData and SetControlData.
+   }
+	kControlThemeTextHorizontalFlushTag = FourCharCode('thhf');
+
+  {
+   * Sent with a pointer to an HIThemeTextVerticalFlush. Valid for both
+   * GetControlData and SetControlData.
+   }
+	kControlThemeTextVerticalFlushTag = FourCharCode('thvf');
+
+  {
+   * Sent with a pointer to an HIThemeTextTruncation. Valid for both
+   * GetControlData and SetControlData.
+   }
+	kControlThemeTextTruncationTag = FourCharCode('thtt');
+
+  {
+   * Sent with a pointer to an HIThemeTextInfo. Valid for
+   * GetControlData. The version field of the HIThemeTextInfo must be
+   * initialized to the version number of the structure that the client
+   * is requesting the information for. When being requested with the
+   * API HIViewGetThemeTextInfo, the version field will be initialized
+   * to that which is given in the inVersion parameter.
+   }
+	kControlThemeTextInfoTag = FourCharCode('thti');
+
+>>>>>>> origin/fixes_2.4
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ Control Feature Bits                                                                              }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 
 {
  *  Discussion:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    Control Feature Bits - Returned by GetControlFeatures 
  *    
  *    This list is similar to the list of HIView features in HIView.h.
  *    Historical note: This list is longer because some of these
  *    constants were introduced to enable the Control Manager to tell
  *    whether a CDEF supported a new CDEF message.
+<<<<<<< HEAD
+=======
+ *    Control Feature Bits - Returned by GetControlFeatures
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Control Feature Bits - Returned by GetControlFeatures
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  }
 const
 	kControlSupportsGhosting = 1 shl 0;
@@ -903,7 +1730,17 @@ const
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ Control Messages                                                                                  }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 const
 	drawCntl = 0;
 	testCntl = 1;
@@ -947,8 +1784,19 @@ const
 
 type
 	ControlDefProcMessage = SInt16;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ Control Sizes                                                                     }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
@@ -956,47 +1804,141 @@ type
 {
  *  Discussion:
  *    ControlSize values to be used in conjunction with SetControlData
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    and the kControlSizeTag constant.
  }
 const
 {
    * Use the control's default drawing variant. This does not apply to
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    and the kControlSizeTag.
+ }
+const
+{
+   * Use the control's default drawing variant.  This does not apply to
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    and the kControlSizeTag constant.
+ }
+const
+{
+   * Use the control's default drawing variant. This does not apply to
+>>>>>>> origin/fixes_2.4
    * Scroll Bars, for which Normal is Large.
    }
 	kControlSizeNormal = 0;
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
    * Use the control's small drawing variant. Supported in 10.4 by the
    * Check Box, Combo Box, Disclosure Button, HIScrollView,
    * HISearchField, HISegmentedView, Little Arrows, Popup Button, Push
    * Button, Radio Button, Scroll Bar, Slider, Static Text, and Tab
    * controls. Supported in 10.5 by the Bevel Button and Group Box.
+<<<<<<< HEAD
+=======
+   * Use the control's small drawing variant.  Currently supported by
+   * the Check Box, Combo Box, Radio Button, Scroll Bar, Slider and Tab
+   * controls.
+>>>>>>> graemeg/fixes_2_2
+=======
+   * Use the control's small drawing variant.  Currently supported by
+   * the Check Box, Combo Box, Radio Button, Scroll Bar, Slider and Tab
+   * controls.
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
    }
 	kControlSizeSmall = 1;
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    * Use the control's large drawing variant. Supported in 10.4 by the
    * Indeterminate Progress Bar, Progress Bar, Round Button, and Static
    * Text controls. Supported in 10.5 by the Chasing Arrows control.
+=======
+   * Use the control's large drawing variant.  Currently supported by
+   * the Indeterminate Progress Bar, Progress Bar and Round Button
+   * controls.
+>>>>>>> graemeg/fixes_2_2
+=======
+   * Use the control's large drawing variant.  Currently supported by
+   * the Indeterminate Progress Bar, Progress Bar and Round Button
+   * controls.
+>>>>>>> origin/fixes_2_2
+=======
+   * Use the control's large drawing variant. Supported in 10.4 by the
+   * Indeterminate Progress Bar, Progress Bar, Round Button, and Static
+   * Text controls. Supported in 10.5 by the Chasing Arrows control.
+>>>>>>> origin/fixes_2.4
    }
 	kControlSizeLarge = 2;
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
    * Use the control's miniature drawing variant. Supported in 10.4 by
    * the Check Box, Combo Box, Disclosure Button, HISearchField, Little
    * Arrows, Popup Button, Push Button, Radio Button, Slider, Static
    * Text, and Tabs controls. Supported in 10.5 by the Group Box
    * control.
+<<<<<<< HEAD
+=======
+   * Use the control's miniature drawing variant. This does not apply
+   * to many of the controls, since this is a brand new control size.
+>>>>>>> graemeg/fixes_2_2
+=======
+   * Use the control's miniature drawing variant. This does not apply
+   * to many of the controls, since this is a brand new control size.
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
    }
 	kControlSizeMini = 3;
 
   {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
    * Used by certain controls to support their legacy behavior of
    * drawing differently based on the control's bounds. Supported in
    * 10.4 by the Scroll Bar, Popup Button, Push Button, and Static Text
    * controls. Supported in 10.5 by the Bevel Button and Chasing Arrows
    * controls. It is preferred to explicitly use one of the available
    * control sizes.
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   * Control drawing variant determined by the control's bounds.  This
+   * ControlSize is currently only available with Scroll Bars and Popup
+   * Buttons to support their legacy behavior of drawing differently
+   * within different bounds. It is preferred to explicitly use one of
+   * the available control sizes.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
    }
 	kControlSizeAuto = $FFFF;
 
@@ -1009,7 +1951,17 @@ const
 	kDrawControlEntireControl = 0;
 	kDrawControlIndicatorOnly = 129;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ Constants for dragCntl message (passed in param)                                  }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
@@ -1017,7 +1969,17 @@ const
 	kDragControlEntireControl = 0;
 	kDragControlIndicator = 1;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ Drag Constraint Structure for thumbCntl message (passed in param)                 }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
@@ -1028,7 +1990,17 @@ type
 		axis: DragConstraint;
 	end;
 	IndicatorDragConstraintPtr = ^IndicatorDragConstraint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  CDEF should return as result of kControlMsgTestNewMsgSupport                        }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
@@ -1166,6 +2138,11 @@ type
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ ÔCDEFÕ entrypoint                                                                 }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 
 {
  *  ControlDefProcPtr
@@ -1173,6 +2150,13 @@ type
  *  Summary:
  *    Callback function for a custom control definition.
  }
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 type
 	ControlDefProcPtr = function( varCode: SInt16; theControl: ControlRef; message: ControlDefProcMessage; param: SInt32 ): SInt32;
 type
@@ -1186,7 +2170,19 @@ type
  *    Non-Carbon CFM:   available as macro/inline
  }
 function NewControlDefUPP( userRoutine: ControlDefProcPtr ): ControlDefUPP; external name '_NewControlDefUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 {
  *  DisposeControlDefUPP()
@@ -1197,7 +2193,19 @@ function NewControlDefUPP( userRoutine: ControlDefProcPtr ): ControlDefUPP; exte
  *    Non-Carbon CFM:   available as macro/inline
  }
 procedure DisposeControlDefUPP( userUPP: ControlDefUPP ); external name '_DisposeControlDefUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 {
  *  InvokeControlDefUPP()
@@ -1208,9 +2216,23 @@ procedure DisposeControlDefUPP( userUPP: ControlDefUPP ); external name '_Dispos
  *    Non-Carbon CFM:   available as macro/inline
  }
 function InvokeControlDefUPP( varCode: SInt16; theControl: ControlRef; message: ControlDefProcMessage; param: SInt32; userUPP: ControlDefUPP ): SInt32; external name '_InvokeControlDefUPP';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 {$endc} {not TARGET_CPU_64}
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+{$endc} {not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  Control Key Filter                                                                  }
@@ -1237,7 +2259,23 @@ const
 
 type
 	ControlKeyFilterResult = SInt16;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	ControlKeyFilterProcPtr = function( theControl: ControlRef; var keyCode: SInt16; var charCode: SInt16; var modifiers: EventModifiers ): ControlKeyFilterResult;
+=======
+type
+	ControlKeyFilterProcPtr = function( theControl: ControlRef; var keyCode: SInt16; var charCode: SInt16; var modifiers: EventModifiers ): ControlKeyFilterResult;
+type
+>>>>>>> graemeg/fixes_2_2
+=======
+type
+	ControlKeyFilterProcPtr = function( theControl: ControlRef; var keyCode: SInt16; var charCode: SInt16; var modifiers: EventModifiers ): ControlKeyFilterResult;
+type
+>>>>>>> origin/fixes_2_2
+=======
+	ControlKeyFilterProcPtr = function( theControl: ControlRef; var keyCode: SInt16; var charCode: SInt16; var modifiers: EventModifiers ): ControlKeyFilterResult;
+>>>>>>> origin/fixes_2.4
 	ControlKeyFilterUPP = ControlKeyFilterProcPtr;
 {
  *  NewControlKeyFilterUPP()
@@ -1285,7 +2323,19 @@ const
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ Control Creation/Deletion/Persistence                                             }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+{  CreateCustomControl is only available as part of Carbon                             }
+>>>>>>> graemeg/fixes_2_2
+=======
+{  CreateCustomControl is only available as part of Carbon                             }
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 const
 	kControlDefProcPtr = 0;    { raw proc-ptr based access}
 	kControlDefObjectClass = 1;     { event-based definition (Mac OS X only)}
@@ -1298,6 +2348,9 @@ type
 		defType: ControlDefType;
 		case SInt16 of
 		0: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 			defProc: ControlDefUPP;
 			);
 		1: (
@@ -1318,16 +2371,65 @@ type
  *  Summary:
  *    Creates a control using a custom ControlDefProcPtr or
  *    ToolboxObjectClassRef.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+			defProc:			ControlDefUPP;
+=======
+			defProc: ControlDefUPP;
+>>>>>>> origin/fixes_2.4
+			);
+		1: (
+			classRef: UnivPtr;
+			);
+	end;
+{$endc} {not TARGET_CPU_64}
+
+{$ifc not TARGET_CPU_64}
+{
+<<<<<<< HEAD
+ *  CreateCustomControl()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  CreateCustomControl()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    On Mac OS X 10.2 and later, register your own custom subclass of
+ *    the HIView class and create an instance of your class using
+ *    HIObjectCreate.
+ *  
+ *  Summary:
+ *    Creates a control using a custom ControlDefProcPtr or
+ *    ToolboxObjectClassRef.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function CreateCustomControl( owningWindow: WindowRef; const (*var*) contBounds: Rect; const (*var*) def: ControlDefSpec; initData: Collection; var outControl: ControlRef ): OSStatus; external name '_CreateCustomControl';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -1349,17 +2451,76 @@ function CreateCustomControl( owningWindow: WindowRef; const (*var*) contBounds:
  *    oolbox/ControlManager/ControlMgr8Ref/ControlMgrRef.11.html#28136>
  *    for documentation on the parameter semantics for each type of
  *    control proc.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+{
+ *  NewControl()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  NewControl()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Use one of the Create*Control APIs (CreatePushButtonControl,
+ *    CreateIconControl, etc) instead.
+ *  
+ *  Summary:
+ *    Creates a new control.
+ *  
+ *  Discussion:
+ *    The parameters to this API are overloaded with different meanings
+ *    depending on the control proc ID. See the "Settings Values for
+ *    Standard Controls" section of the Mac OS 8 Control Manager
+ *    reference documentation at
+ *    oolbox/ControlManager/ControlMgr8Ref/ControlMgrRef.11.html#28136>
+ *    for documentation on the parameter semantics for each type of
+ *    control proc.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 function NewControl( owningWindow: WindowRef; const (*var*) boundsRect: Rect; const (*var*) controlTitle: Str255; initiallyVisible: Boolean; initialValue: SInt16; minimumValue: SInt16; maximumValue: SInt16; procID: SInt16; controlReference: SRefCon ): ControlRef; external name '_NewControl';
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+function NewControl( owningWindow: WindowRef; const (*var*) boundsRect: Rect; const (*var*) controlTitle: Str255; initiallyVisible: Boolean; initialValue: SInt16; minimumValue: SInt16; maximumValue: SInt16; procID: SInt16; controlReference: SInt32 ): ControlRef; external name '_NewControl';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+function NewControl( owningWindow: WindowRef; const (*var*) boundsRect: Rect; const (*var*) controlTitle: Str255; initiallyVisible: Boolean; initialValue: SInt16; minimumValue: SInt16; maximumValue: SInt16; procID: SInt16; controlReference: SRefCon ): ControlRef; external name '_NewControl';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 
 {
@@ -1369,7 +2530,19 @@ function NewControl( owningWindow: WindowRef; const (*var*) boundsRect: Rect; co
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1384,7 +2557,19 @@ function GetNewControl( resourceID: SInt16; owningWindow: WindowRef ): ControlRe
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1399,7 +2584,19 @@ procedure DisposeControl( theControl: ControlRef ); external name '_DisposeContr
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1407,6 +2604,9 @@ procedure KillControls( theWindow: WindowRef ); external name '_KillControls';
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ Control Definition Registration                                                   }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
@@ -1415,6 +2615,47 @@ procedure KillControls( theWindow: WindowRef ); external name '_KillControls';
 {$ifc not TARGET_CPU_64}
 type
 	ControlCNTLToCollectionProcPtr = function( const (*var*) bounds: Rect; value: SInt16; visible: Boolean; max: SInt16; min: SInt16; procID: SInt16; refCon: SRefCon; const (*var*) title: Str255; collection_: Collection ): OSStatus;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{
+ *  FlattenControl()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   not available
+ }
+
+
+{
+ *  UnflattenControl()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   not available
+ }
+
+
+=======
+>>>>>>> origin/fixes_2.4
+{ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+{  ¥ Control Definition Registration                                                   }
+{ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+{$endc} {not TARGET_CPU_64}
+
+{$ifc not TARGET_CPU_64}
+type
+<<<<<<< HEAD
+	ControlCNTLToCollectionProcPtr = function( const (*var*) bounds: Rect; value: SInt16; visible: Boolean; max: SInt16; min: SInt16; procID: SInt16; refCon: SInt32; const (*var*) title: Str255; collection_: Collection ): OSStatus;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	ControlCNTLToCollectionProcPtr = function( const (*var*) bounds: Rect; value: SInt16; visible: Boolean; max: SInt16; min: SInt16; procID: SInt16; refCon: SRefCon; const (*var*) title: Str255; collection_: Collection ): OSStatus;
+>>>>>>> origin/fixes_2.4
 type
 	ControlCNTLToCollectionUPP = ControlCNTLToCollectionProcPtr;
 {
@@ -1447,12 +2688,33 @@ procedure DisposeControlCNTLToCollectionUPP( userUPP: ControlCNTLToCollectionUPP
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   available as macro/inline
  }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function InvokeControlCNTLToCollectionUPP( const (*var*) bounds: Rect; value: SInt16; visible: Boolean; max: SInt16; min: SInt16; procID: SInt16; refCon: SRefCon; const (*var*) title: Str255; collection_: Collection; userUPP: ControlCNTLToCollectionUPP ): OSStatus; external name '_InvokeControlCNTLToCollectionUPP';
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 {$endc} {not TARGET_CPU_64}
 
 {$ifc not TARGET_CPU_64}
+=======
+function InvokeControlCNTLToCollectionUPP( const (*var*) bounds: Rect; value: SInt16; visible: Boolean; max: SInt16; min: SInt16; procID: SInt16; refCon: SInt32; const (*var*) title: Str255; collection_: Collection; userUPP: ControlCNTLToCollectionUPP ): OSStatus; external name '_InvokeControlCNTLToCollectionUPP';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+>>>>>>> graemeg/fixes_2_2
+=======
+function InvokeControlCNTLToCollectionUPP( const (*var*) bounds: Rect; value: SInt16; visible: Boolean; max: SInt16; min: SInt16; procID: SInt16; refCon: SInt32; const (*var*) title: Str255; collection_: Collection; userUPP: ControlCNTLToCollectionUPP ): OSStatus; external name '_InvokeControlCNTLToCollectionUPP';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+>>>>>>> origin/fixes_2_2
+=======
+function InvokeControlCNTLToCollectionUPP( const (*var*) bounds: Rect; value: SInt16; visible: Boolean; max: SInt16; min: SInt16; procID: SInt16; refCon: SRefCon; const (*var*) title: Str255; collection_: Collection; userUPP: ControlCNTLToCollectionUPP ): OSStatus; external name '_InvokeControlCNTLToCollectionUPP';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+{$endc} {not TARGET_CPU_64}
+
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  RegisterControlDefinition()
  *  
@@ -1502,7 +2764,19 @@ function InvokeControlCNTLToCollectionUPP( const (*var*) bounds: Rect; value: SI
  *    An OSStatus code indicating success or failure.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -1520,7 +2794,19 @@ function RegisterControlDefinition( inCDEFResID: SInt16; const (*var*) inControl
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1535,7 +2821,19 @@ procedure HiliteControl( theControl: ControlRef; hiliteState: ControlPartCode );
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1550,7 +2848,19 @@ procedure ShowControl( theControl: ControlRef ); external name '_ShowControl';
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1566,7 +2876,19 @@ procedure HideControl( theControl: ControlRef ); external name '_HideControl';
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -1602,7 +2924,19 @@ function IsControlActive( inControl: ControlRef ): Boolean; external name '_IsCo
  *    or hidden (false).
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -1617,7 +2951,19 @@ function IsControlVisible( inControl: ControlRef ): Boolean; external name '_IsC
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -1632,7 +2978,19 @@ function ActivateControl( inControl: ControlRef ): OSErr; external name '_Activa
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -1647,7 +3005,19 @@ function DeactivateControl( inControl: ControlRef ): OSErr; external name '_Deac
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -1663,7 +3033,19 @@ function SetControlVisibility( inControl: ControlRef; inIsVisible: Boolean; inDo
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -1678,7 +3060,19 @@ function IsControlEnabled( inControl: ControlRef ): Boolean; external name '_IsC
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -1693,7 +3087,19 @@ function EnableControl( inControl: ControlRef ): OSStatus; external name '_Enabl
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available in CarbonLib 1.x, is available on Mac OS X version 10.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -1711,7 +3117,19 @@ function DisableControl( inControl: ControlRef ): OSStatus; external name '_Disa
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1726,7 +3144,19 @@ procedure DrawControls( theWindow: WindowRef ); external name '_DrawControls';
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1759,7 +3189,19 @@ procedure DrawOneControl( theControl: ControlRef ); external name '_Draw1Control
  *      controls intersecting the visible region of the window.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -1775,7 +3217,19 @@ procedure UpdateControls( inWindow: WindowRef; inUpdateRegion: RgnHandle { can b
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -1790,7 +3244,19 @@ function GetBestControlRect( inControl: ControlRef; var outRect: Rect; var outBa
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -1805,7 +3271,19 @@ function SetControlFontStyle( inControl: ControlRef; const (*var*) inStyle: Cont
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -1861,7 +3339,19 @@ procedure DrawControlInCurrentPort( inControl: ControlRef ); external name '_Dra
  *    to draw.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -1916,7 +3406,19 @@ function SetUpControlBackground( inControl: ControlRef; inDepth: SInt16; inIsCol
  *    to draw.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -1924,10 +3426,22 @@ function SetUpControlTextColor( inControl: ControlRef; inDepth: SInt16; inIsColo
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$endc} {not TARGET_CPU_64}
 
 {$ifc not TARGET_CPU_64}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {
  *  ControlColorProcPtr
  *  
@@ -1942,7 +3456,19 @@ function SetUpControlTextColor( inControl: ControlRef; inDepth: SInt16; inIsColo
  *  Parameters:
  *    
  *    inControl:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      A reference to the control for whom your proc is setting up
+=======
+ *      A reference to the Control for whom your proc is setting up
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      A reference to the Control for whom your proc is setting up
+>>>>>>> origin/fixes_2_2
+=======
+ *      A reference to the control for whom your proc is setting up
+>>>>>>> origin/fixes_2.4
  *      colors.
  *    
  *    inMessage:
@@ -2017,9 +3543,21 @@ procedure DisposeControlColorUPP( userUPP: ControlColorUPP ); external name '_Di
 function InvokeControlColorUPP( inControl: ControlRef; inMessage: SInt16; inDrawDepth: SInt16; inDrawInColor: Boolean; userUPP: ControlColorUPP ): OSStatus; external name '_InvokeControlColorUPP';
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  SetControlColorProc()
  *  
@@ -2065,7 +3603,19 @@ function InvokeControlColorUPP( inControl: ControlRef; inMessage: SInt16; inDraw
  *    ControlRef.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.1 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -2094,7 +3644,19 @@ function SetControlColorProc( inControl: ControlRef; inProc: ControlColorUPP ): 
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2109,7 +3671,19 @@ function TrackControl( theControl: ControlRef; startPoint: Point; actionProc: Co
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2140,7 +3714,19 @@ procedure DragControl( theControl: ControlRef; startPoint: Point; const (*var*) 
  *    The control part code that was at the specified location.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2184,7 +3770,19 @@ function TestControl( theControl: ControlRef; testPoint: Point ): ControlPartCod
  *    The control part code that was at the specified location.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2235,7 +3833,19 @@ function FindControl( testPoint: Point; theWindow: WindowRef; var theControl: Co
  *    The control that was at the specified location.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -2250,7 +3860,19 @@ function FindControlUnderMouse( inWhere: Point; inWindow: WindowRef; outPart: Co
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -2270,7 +3892,19 @@ function HandleControlClick( inControl: ControlRef; inWhere: Point; inModifiers:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 9.0 and later
  }
@@ -2291,7 +3925,19 @@ function HandleControlContextualMenuClick( inControl: ControlRef; inWhere: Point
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 9.0 and later
  }
@@ -2303,6 +3949,11 @@ function GetControlClickActivation( inControl: ControlRef; inWhere: Point; inMod
 {  ¥ Control Events (available only with Appearance 1.0 and later)                     }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  HandleControlKey()   *** DEPRECATED ***
  *  
  *  Deprecated:
@@ -2317,10 +3968,24 @@ function GetControlClickActivation( inControl: ControlRef; inWhere: Point; inMod
  *  Summary:
  *    Sends WorldScript-encoded keyboard input to a control using
  *    kControlMsgKeyDown.
+<<<<<<< HEAD
+=======
+ *  HandleControlKey()
+>>>>>>> graemeg/fixes_2_2
+=======
+ *  HandleControlKey()
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  Parameters:
  *    
  *    inControl:
@@ -2339,13 +4004,38 @@ function GetControlClickActivation( inControl: ControlRef; inWhere: Point; inMod
  *  Result:
  *    The part code that was modified by keyboard event processing.
  *  
+<<<<<<< HEAD
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *  Availability:
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *  Availability:
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *  Availability:
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
 function HandleControlKey( inControl: ControlRef; inKeyCode: SInt16; inCharCode: SInt16; inModifiers: EventModifiers ): ControlPartCode; external name '_HandleControlKey';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
@@ -2364,7 +4054,19 @@ function HandleControlKey( inControl: ControlRef; inKeyCode: SInt16; inCharCode:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 9.0 and later
  }
@@ -2382,7 +4084,19 @@ function HandleControlSetCursor( control: ControlRef; localPoint: Point; modifie
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2397,7 +4111,19 @@ procedure MoveControl( theControl: ControlRef; h: SInt16; v: SInt16 ); external 
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2409,6 +4135,11 @@ procedure SizeControl( theControl: ControlRef; w: SInt16; h: SInt16 ); external 
 {  ¥ Control Title                                                                     }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  SetControlTitle()   *** DEPRECATED ***
  *  
  *  Deprecated:
@@ -2417,16 +4148,40 @@ procedure SizeControl( theControl: ControlRef; w: SInt16; h: SInt16 ); external 
  *  
  *  Summary:
  *    Sets the title of a control to a Pascal string.
+<<<<<<< HEAD
+=======
+ *  SetControlTitle()
+>>>>>>> graemeg/fixes_2_2
+=======
+ *  SetControlTitle()
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 procedure SetControlTitle( theControl: ControlRef; const (*var*) title: Str255 ); external name '_SetControlTitle';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
 
 
@@ -2439,22 +4194,77 @@ procedure SetControlTitle( theControl: ControlRef; const (*var*) title: Str255 )
  *  
  *  Summary:
  *    Retrieves the title of a control as a Pascal string.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+{
+ *  GetControlTitle()
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+
+
+{
+ *  GetControlTitle()   *** DEPRECATED ***
+ *  
+ *  Deprecated:
+ *    Use HIViewCopyText or CopyControlTitleAsCFString instead of
+ *    GetControlTitle.
+ *  
+ *  Summary:
+ *    Retrieves the title of a control as a Pascal string.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.5
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 procedure GetControlTitle( theControl: ControlRef; var title: Str255 ); external name '_GetControlTitle';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> graemeg/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2_2
+=======
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_5 *)
+>>>>>>> origin/fixes_2.4
 
 
 {
  *  SetControlTitleWithCFString()
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  Summary:
  *    Sets the title of a control to the text contained in a CFString.
  *  
@@ -2475,6 +4285,7 @@ procedure GetControlTitle( theControl: ControlRef; var title: Str255 ); external
  *    use HIViewSetText, or SetControlData with
  *    kControlStatic/EditTextTextTag.
  *  
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Not thread safe
  *  
@@ -2488,6 +4299,32 @@ procedure GetControlTitle( theControl: ControlRef; var title: Str255 ); external
  *  
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
+ *  Mac OS X threading:
+ *    Not thread safe
+ *  
+ *  Parameters:
+ *    
+ *    inControl:
+ *      The control whose title to set.
+ *    
+ *    inString:
+ *      The string containing the new control title text.
+ *  
+ *  Availability:
+<<<<<<< HEAD
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.1 and later
  *    Non-Carbon CFM:   not available
  }
@@ -2498,6 +4335,11 @@ function SetControlTitleWithCFString( inControl: ControlRef; inString: CFStringR
 {
  *  CopyControlTitleAsCFString()
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  Summary:
  *    Returns a CFString containing the title of a control.
  *  
@@ -2509,6 +4351,7 @@ function SetControlTitleWithCFString( inControl: ControlRef; inString: CFStringR
  *    the text that is displayed by such a control, use HIViewCopyText,
  *    or SetControlData with kControlStatic/EditTextTextTag.
  *  
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Not thread safe
  *  
@@ -2523,6 +4366,33 @@ function SetControlTitleWithCFString( inControl: ControlRef; inString: CFStringR
  *  
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
+ *  Mac OS X threading:
+ *    Not thread safe
+ *  
+ *  Parameters:
+ *    
+ *    inControl:
+ *      The control whose title to return.
+ *    
+ *    outString:
+ *      On exit, a CFString containing the control's title. This string
+ *      must be released by the caller.
+ *  
+ *  Availability:
+<<<<<<< HEAD
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.1 and later
  *    Non-Carbon CFM:   not available
  }
@@ -2540,7 +4410,19 @@ function CopyControlTitleAsCFString( inControl: ControlRef; var outString: CFStr
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2555,7 +4437,19 @@ function GetControlValue( theControl: ControlRef ): SInt16; external name '_GetC
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2570,7 +4464,19 @@ procedure SetControlValue( theControl: ControlRef; newValue: SInt16 ); external 
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2585,7 +4491,19 @@ function GetControlMinimum( theControl: ControlRef ): SInt16; external name '_Ge
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2600,7 +4518,19 @@ procedure SetControlMinimum( theControl: ControlRef; newMinimum: SInt16 ); exter
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2615,7 +4545,19 @@ function GetControlMaximum( theControl: ControlRef ): SInt16; external name '_Ge
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -2632,7 +4574,19 @@ procedure SetControlMaximum( theControl: ControlRef; newMaximum: SInt16 ); exter
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -2647,7 +4601,19 @@ function GetControlViewSize( theControl: ControlRef ): SInt32; external name '_G
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -2662,7 +4628,19 @@ procedure SetControlViewSize( theControl: ControlRef; newViewSize: SInt32 ); ext
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -2677,7 +4655,19 @@ function GetControl32BitValue( theControl: ControlRef ): SInt32; external name '
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -2692,7 +4682,19 @@ procedure SetControl32BitValue( theControl: ControlRef; newValue: SInt32 ); exte
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -2707,7 +4709,19 @@ function GetControl32BitMaximum( theControl: ControlRef ): SInt32; external name
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -2722,7 +4736,19 @@ procedure SetControl32BitMaximum( theControl: ControlRef; newMaximum: SInt32 ); 
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -2737,7 +4763,19 @@ function GetControl32BitMinimum( theControl: ControlRef ): SInt32; external name
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -2757,7 +4795,19 @@ procedure SetControl32BitMinimum( theControl: ControlRef; newMinimum: SInt32 ); 
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -2769,7 +4819,17 @@ function IsValidControlHandle( theControl: ControlRef ): Boolean; external name 
 { ¥ Control IDs                                                                        }
 { Carbon only.                                                                         }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 
 {
  *  ControlID
@@ -2795,7 +4855,17 @@ type
    }
 		id: SInt32;
 	end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  SetControlID()
  *  
@@ -2803,7 +4873,19 @@ type
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -2818,7 +4900,19 @@ function SetControlID( inControl: ControlRef; const (*var*) inID: ControlID ): O
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -2832,7 +4926,19 @@ function GetControlID( inControl: ControlRef; var outID: ControlID ): OSStatus; 
  *  Discussion:
  *    Find a control in a window by its unique ID. 
  *    
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    HIView Notes: As of Mac OS X 10.3, this call is replaced by
+=======
+ *    HIView Notes: This call is replaced as of Mac OS X 10.3 by
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    HIView Notes: This call is replaced as of Mac OS X 10.3 by
+>>>>>>> origin/fixes_2_2
+=======
+ *    HIView Notes: As of Mac OS X 10.3, this call is replaced by
+>>>>>>> origin/fixes_2.4
  *    HIViewFindByID. That call lets you start your search at any point
  *    in the hierarchy, as the first parameter is a view and not a
  *    window. Either will work, but the HIView API is preferred.
@@ -2853,7 +4959,19 @@ function GetControlID( inControl: ControlRef; var outID: ControlID ): OSStatus; 
  *      had the ID specified.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
@@ -2872,7 +4990,19 @@ function GetControlByID( inWindow: WindowRef; const (*var*) inID: ControlID; var
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.1 and later
  *    Non-Carbon CFM:   not available
  }
@@ -2887,7 +5017,19 @@ function SetControlCommandID( inControl: ControlRef; inCommandID: UInt32 ): OSSt
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.1 and later
  *    Non-Carbon CFM:   not available
  }
@@ -2899,8 +5041,19 @@ function GetControlCommandID( inControl: ControlRef; var outCommandID: UInt32 ):
 { ¥ Control Identification                                                             }
 { Carbon only.                                                                         }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 type
 	ControlKindPtr = ^ControlKind;
 	ControlKind = record
@@ -2918,7 +5071,17 @@ const
    }
 	kControlKindSignatureApple = FourCharCode('appl');
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  GetControlKind()
  *  
@@ -2926,6 +5089,9 @@ const
  *    Returns the kind of the given control.
  *  
  *  Discussion:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    GetControlKind allows you to query the kind of any control.
  *    
  *    
@@ -2935,6 +5101,31 @@ const
  *    HIToolbox-supplied controls as of Mac OS X 10.3 or later due to
  *    the fact that the class IDs underwent naming changes between Mac
  *    OS X 10.2 and Mac OS X 10.3.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    GetControlKind allows you to query the kind of any control. This
+ *    function is only available in Mac OS X. 
+=======
+ *    GetControlKind allows you to query the kind of any control.
+ *    
+>>>>>>> origin/fixes_2.4
+ *    
+ *    HIView Note: With the advent of HIView, you can just as easily
+ *    use HIObjectCopyClassID to determine what kind of control you are
+ *    looking at. The class ID is only truly deterministic for
+ *    HIToolbox-supplied controls as of Mac OS X 10.3 or later due to
+<<<<<<< HEAD
+ *    the fact that the class IDs underwent naming changes before that
+ *    release.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    the fact that the class IDs underwent naming changes between Mac
+ *    OS X 10.2 and Mac OS X 10.3.
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -2950,7 +5141,19 @@ const
  *      control.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.5 and later
  *    Non-Carbon CFM:   not available
  }
@@ -2961,12 +5164,33 @@ function GetControlKind( inControl: ControlRef; var outControlKind: ControlKind 
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 { ¥ Properties                                                                         }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
 const
 	kControlPropertyPersistent = $00000001; { whether this property gets saved when flattening the control}
 
 {$ifc not TARGET_CPU_64}
+=======
+const
+	kControlPropertyPersistent = $00000001; { whether this property gets saved when flattening the control}
+
+>>>>>>> graemeg/fixes_2_2
+=======
+const
+	kControlPropertyPersistent = $00000001; { whether this property gets saved when flattening the control}
+
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+const
+	kControlPropertyPersistent = $00000001; { whether this property gets saved when flattening the control}
+
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  GetControlProperty()
  *  
@@ -3002,8 +5226,26 @@ const
  *      whichever is smaller, and an error is returned.
  *    
  *    actualSize:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      On output, the actual size of the property data. Pass NULL if
  *      you don't want this information.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *      On input, a pointer to an unsigned 32-bit integer. On return,
+ *      this value is set to the actual size of the associated data.
+ *      You may pass null for the actualSize parameter if you are not
+ *      interested in this information.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *      On output, the actual size of the property data. Pass NULL if
+ *      you don't want this information.
+>>>>>>> origin/fixes_2.4
  *    
  *    propertyBuffer:
  *      On input, a pointer to a buffer. This buffer must be big enough
@@ -3017,11 +5259,33 @@ const
  *    controlPropertyInvalid and controlPropertyNotFoundErr.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
 function GetControlProperty( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; bufferSize: ByteCount; actualSize: ByteCountPtr { can be NULL }; propertyBuffer: UnivPtr ): OSStatus; external name '_GetControlProperty';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in ControlsLib 8.5 and later
+ }
+function GetControlProperty( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; bufferSize: UInt32; actualSize: UInt32Ptr { can be NULL }; propertyBuffer: UnivPtr ): OSStatus; external name '_GetControlProperty';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in ControlsLib 8.5 and later
+ }
+function GetControlProperty( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; bufferSize: ByteCount; actualSize: ByteCountPtr { can be NULL }; propertyBuffer: UnivPtr ): OSStatus; external name '_GetControlProperty';
+>>>>>>> origin/fixes_2.4
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
@@ -3032,11 +5296,33 @@ function GetControlProperty( control: ControlRef; propertyCreator: OSType; prope
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
 function GetControlPropertySize( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; var size: ByteCount ): OSStatus; external name '_GetControlPropertySize';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in ControlsLib 8.5 and later
+ }
+function GetControlPropertySize( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; var size: UInt32 ): OSStatus; external name '_GetControlPropertySize';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in ControlsLib 8.5 and later
+ }
+function GetControlPropertySize( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; var size: ByteCount ): OSStatus; external name '_GetControlPropertySize';
+>>>>>>> origin/fixes_2.4
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
@@ -3086,11 +5372,33 @@ function GetControlPropertySize( control: ControlRef; propertyCreator: OSType; p
  *    controlPropertyInvalid
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
 function SetControlProperty( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; propertySize: ByteCount; propertyData: {const} UnivPtr ): OSStatus; external name '_SetControlProperty';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in ControlsLib 8.5 and later
+ }
+function SetControlProperty( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; propertySize: UInt32; propertyData: {const} UnivPtr ): OSStatus; external name '_SetControlProperty';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in ControlsLib 8.5 and later
+ }
+function SetControlProperty( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; propertySize: ByteCount; propertyData: {const} UnivPtr ): OSStatus; external name '_SetControlProperty';
+>>>>>>> origin/fixes_2.4
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
@@ -3101,7 +5409,19 @@ function SetControlProperty( control: ControlRef; propertyCreator: OSType; prope
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -3116,11 +5436,33 @@ function RemoveControlProperty( control: ControlRef; propertyCreator: OSType; pr
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function GetControlPropertyAttributes( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; var attributes: OptionBits ): OSStatus; external name '_GetControlPropertyAttributes';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   not available
+ }
+function GetControlPropertyAttributes( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; var attributes: UInt32 ): OSStatus; external name '_GetControlPropertyAttributes';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   not available
+ }
+function GetControlPropertyAttributes( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; var attributes: OptionBits ): OSStatus; external name '_GetControlPropertyAttributes';
+>>>>>>> origin/fixes_2.4
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
@@ -3131,11 +5473,33 @@ function GetControlPropertyAttributes( control: ControlRef; propertyCreator: OST
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   not available
  }
 function ChangeControlPropertyAttributes( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; attributesToSet: OptionBits; attributesToClear: OptionBits ): OSStatus; external name '_ChangeControlPropertyAttributes';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   not available
+ }
+function ChangeControlPropertyAttributes( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; attributesToSet: UInt32; attributesToClear: UInt32 ): OSStatus; external name '_ChangeControlPropertyAttributes';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   not available
+ }
+function ChangeControlPropertyAttributes( control: ControlRef; propertyCreator: OSType; propertyTag: OSType; attributesToSet: OptionBits; attributesToClear: OptionBits ): OSStatus; external name '_ChangeControlPropertyAttributes';
+>>>>>>> origin/fixes_2.4
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
@@ -3150,7 +5514,19 @@ function ChangeControlPropertyAttributes( control: ControlRef; propertyCreator: 
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 8.5 and later
  }
@@ -3168,7 +5544,19 @@ function GetControlRegion( inControl: ControlRef; inPart: ControlPartCode; outRe
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -3186,7 +5574,19 @@ function GetControlVariant( theControl: ControlRef ): ControlVariant; external n
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -3201,7 +5601,19 @@ procedure SetControlAction( theControl: ControlRef; actionProc: ControlActionUPP
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
@@ -3239,11 +5651,33 @@ function GetControlAction( theControl: ControlRef ): ControlActionUPP; external 
  *      The new reference value for the control.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 procedure SetControlReference( theControl: ControlRef; data: SRefCon ); external name '_SetControlReference';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+procedure SetControlReference( theControl: ControlRef; data: SInt32 ); external name '_SetControlReference';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+procedure SetControlReference( theControl: ControlRef; data: SRefCon ); external name '_SetControlReference';
+>>>>>>> origin/fixes_2.4
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
@@ -3274,6 +5708,9 @@ procedure SetControlReference( theControl: ControlRef; data: SRefCon ); external
  *    The current reference value for the specified control.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
@@ -3282,6 +5719,37 @@ function GetControlReference( theControl: ControlRef ): SRefCon; external name '
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+function GetControlReference( theControl: ControlRef ): SRefCon; external name '_GetControlReference';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+<<<<<<< HEAD
+{
+ *  SetControlColor()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
 {  ¥ Control Hierarchy (Appearance 1.0 and later only)                                 }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
@@ -3292,7 +5760,19 @@ function GetControlReference( theControl: ControlRef ): SRefCon; external name '
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3301,6 +5781,33 @@ function SendControlMessage( inControl: ControlRef; inMessage: SInt16; inParam: 
 
 
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *  DumpControlHierarchy()
+ *  
+ *  Mac OS X threading:
+ *    Not thread safe
+ *  
+ *  Availability:
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+ *    CarbonLib:        in CarbonLib 1.0 and later
+ *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
+ }
+function DumpControlHierarchy( inWindow: WindowRef; const (*var*) inDumpFile: FSSpec ): OSErr; external name '_DumpControlHierarchy';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+
+{
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  CreateRootControl()
  *  
  *  Discussion:
@@ -3332,7 +5839,19 @@ function SendControlMessage( inControl: ControlRef; inMessage: SInt16; inParam: 
  *    is returned if the window already has a root control.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3374,7 +5893,19 @@ function CreateRootControl( inWindow: WindowRef; outControl: ControlRefPtr { can
  *    An operating system result code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3410,7 +5941,19 @@ function GetRootControl( inWindow: WindowRef; var outControl: ControlRef ): OSEr
  *    embed into the content view in compositing windows.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3447,7 +5990,19 @@ function EmbedControl( inControl: ControlRef; inContainer: ControlRef ): OSErr; 
  *    An operating system result code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3480,7 +6035,19 @@ function AutoEmbedControl( inControl: ControlRef; inWindow: WindowRef ): OSErr; 
  *    An operating system result code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3493,7 +6060,21 @@ function GetSuperControl( inControl: ControlRef; var outParent: ControlRef ): OS
  *  
  *  Discussion:
  *    Returns the number of children a given control has. This count
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    can then be used for calls to GetIndexedSubControl. 
+=======
+ *    can then be used for calls to GetIndexedSubControl.
+ *    
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    can then be used for calls to GetIndexedSubControl.
+ *    
+>>>>>>> origin/fixes_2_2
+=======
+ *    can then be used for calls to GetIndexedSubControl. 
+>>>>>>> origin/fixes_2.4
  *    
  *    HIView Note: As of Mac OS X 10.2, the preferred way to walk the
  *    control hierarchy is to use HIViewGetFirstSubView followed by
@@ -3515,7 +6096,19 @@ function GetSuperControl( inControl: ControlRef; var outParent: ControlRef ): OS
  *    An operating system result code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3554,7 +6147,19 @@ function CountSubControls( inControl: ControlRef; var outNumChildren: UInt16 ): 
  *    An operating system result code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3590,7 +6195,19 @@ function GetIndexedSubControl( inControl: ControlRef; inIndex: UInt16; var outSu
  *    An operating system result code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3624,7 +6241,19 @@ function SetControlSupervisor( inControl: ControlRef; inBoss: ControlRef { can b
  *    An operating system result code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3664,7 +6293,19 @@ function GetKeyboardFocus( inWindow: WindowRef; var outControl: ControlRef ): OS
  *    An operating system result code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3677,7 +6318,19 @@ function SetKeyboardFocus( inWindow: WindowRef; inControl: ControlRef; inPart: C
  *  
  *  Discussion:
  *    Advances the focus to the next most appropriate control. Unless
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    overridden in some fashion (either by overriding certain carbon
+=======
+ *    overriden in some fashion (either by overriding certain carbon
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    overriden in some fashion (either by overriding certain carbon
+>>>>>>> origin/fixes_2_2
+=======
+ *    overridden in some fashion (either by overriding certain carbon
+>>>>>>> origin/fixes_2.4
  *    events or using the HIViewSetNextFocus API), the Toolbox will use
  *    a spacially determinant method of focusing, attempting to focus
  *    left to right, top to bottom in a window, taking groups of
@@ -3701,7 +6354,19 @@ function SetKeyboardFocus( inWindow: WindowRef; inControl: ControlRef; inPart: C
  *    An operating system result code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3714,7 +6379,19 @@ function AdvanceKeyboardFocus( inWindow: WindowRef ): OSErr; external name '_Adv
  *  
  *  Discussion:
  *    Reverses the focus to the next most appropriate control. Unless
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    overridden in some fashion (either by overriding certain carbon
+=======
+ *    overriden in some fashion (either by overriding certain carbon
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    overriden in some fashion (either by overriding certain carbon
+>>>>>>> origin/fixes_2_2
+=======
+ *    overridden in some fashion (either by overriding certain carbon
+>>>>>>> origin/fixes_2.4
  *    events or using the HIViewSetNextFocus API), the Toolbox will use
  *    a spacially determinant method of focusing, attempting to focus
  *    left to right, top to bottom in a window, taking groups of
@@ -3738,7 +6415,19 @@ function AdvanceKeyboardFocus( inWindow: WindowRef ): OSErr; external name '_Adv
  *    An operating system result code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3766,7 +6455,19 @@ function ReverseKeyboardFocus( inWindow: WindowRef ): OSErr; external name '_Rev
  *    An operating system result code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3802,7 +6503,19 @@ function ClearKeyboardFocus( inWindow: WindowRef ): OSErr; external name '_Clear
  *    An operating system error code.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3817,7 +6530,19 @@ function GetControlFeatures( inControl: ControlRef; var outFeatures: UInt32 ): O
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3832,7 +6557,19 @@ function SetControlData( inControl: ControlRef; inPart: ControlPartCode; inTagNa
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3847,7 +6584,19 @@ function GetControlData( inControl: ControlRef; inPart: ControlPartCode; inTagNa
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -3859,7 +6608,17 @@ function GetControlDataSize( inControl: ControlRef; inPart: ControlPartCode; inT
 {  ¥ Control Drag & Drop                                                               }
 {      Carbon only.                                                                    }
 {ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 
 {
  *  Discussion:
@@ -3887,7 +6646,17 @@ const
 	kDragTrackingLeaveControl = 4;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  HandleControlDragTracking()
  *  
@@ -3901,11 +6670,25 @@ const
  *    control to have any chance of responding to this API, you must
  *    enable the control's drag and drop support with
  *    SetControlDragTrackingEnabled. 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    
  *    HIView Note: The HandleControlDragTracking API should not be
  *    called in a composited window. Instead, the
  *    SetAutomaticControlDragTrackingEnabledForWindow API should be
  *    used to enable automatic control drag tracking.
+<<<<<<< HEAD
+=======
+ *    <br>HIView Note: This should not be called in a composited window.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    <br>HIView Note: This should not be called in a composited window.
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -3941,7 +6724,19 @@ const
  *    A result code indicating success or failure.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 9.0 and later
  }
@@ -3962,11 +6757,25 @@ function HandleControlDragTracking( inControl: ControlRef; inMessage: DragTracki
  *    into itself. Note that in order for a control to have any chance
  *    of responding to this API, you must enable the control's drag and
  *    drop support with SetControlDragTrackingEnabled. 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    
  *    HIView Note: The HandleControlDragReceive API should not be
  *    called in a composited window. Instead, the
  *    SetAutomaticControlDragTrackingEnabledForWindow API should be
  *    used to enable automatic control drag tracking.
+<<<<<<< HEAD
+=======
+ *    <br>HIView Note: This should not be called in a composited window.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    <br>HIView Note: This should not be called in a composited window.
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -3974,7 +6783,19 @@ function HandleControlDragTracking( inControl: ControlRef; inMessage: DragTracki
  *  Parameters:
  *    
  *    inControl:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *      The control that should accept the data. Most controls won't
+=======
+ *      The control who should accept the data. Most controls won't
+>>>>>>> graemeg/fixes_2_2
+=======
+ *      The control who should accept the data. Most controls won't
+>>>>>>> origin/fixes_2_2
+=======
+ *      The control that should accept the data. Most controls won't
+>>>>>>> origin/fixes_2.4
  *      accept drags unless you enable drag tracking on it with
  *      SetControlDragTrackingEnabled.
  *    
@@ -3985,7 +6806,19 @@ function HandleControlDragTracking( inControl: ControlRef; inMessage: DragTracki
  *    A result code indicating success or failure.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 9.0 and later
  }
@@ -3997,6 +6830,9 @@ function HandleControlDragReceive( inControl: ControlRef; inDrag: DragReference 
  *  SetControlDragTrackingEnabled()
  *  
  *  Summary:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Tells a control that it should track and receive drags, including
  *    the kEventControlDrag* suite of Carbon events.
  *  
@@ -4010,6 +6846,36 @@ function HandleControlDragReceive( inControl: ControlRef; inDrag: DragReference 
  *    with true (but they will receive the Carbon events, so you can
  *    add your own drag handling to a control by installing your own
  *    Carbon event handlers).
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Tells a control that it should track and receive drags.
+ *  
+ *  Discussion:
+ *    Call SetControlDragTrackingEnabled to turn enable a control's
+ *    support for drag and drop. Controls won't track drags unless you
+ *    first turn on drag and drop support with this API. Some controls
+ *    don't support drag and drop at all; these controls won't track or
+ *    receive drags even if you call this API with true.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    Tells a control that it should track and receive drags, including
+ *    the kEventControlDrag* suite of Carbon events.
+ *  
+ *  Discussion:
+ *    Call SetControlDragTrackingEnabled to enable a control's support
+ *    for drag and drop, including receipt of the kEventControlDrag*
+ *    suite of Carbon events. Controls won't receive these events or
+ *    track drags unless you first turn on drag and drop support with
+ *    this API. Some controls don't support drag and drop at all; these
+ *    controls won't track or receive drags even if you call this API
+ *    with true (but they will receive the Carbon events, so you can
+ *    add your own drag handling to a control by installing your own
+ *    Carbon event handlers).
+>>>>>>> origin/fixes_2.4
  *  
  *  Mac OS X threading:
  *    Not thread safe
@@ -4027,7 +6893,19 @@ function HandleControlDragReceive( inControl: ControlRef; inDrag: DragReference 
  *    A result code indicating success or failure.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 9.0 and later
  }
@@ -4065,7 +6943,19 @@ function SetControlDragTrackingEnabled( inControl: ControlRef; inTracks: Boolean
  *    A result code indicating success or failure.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 9.0 and later
  }
@@ -4083,6 +6973,11 @@ function IsControlDragTrackingEnabled( inControl: ControlRef; var outTracks: Boo
  *  Discussion:
  *    Call SetAutomaticControlDragTrackingEnabledForWindow to turn on
  *    or off the Control Manager's automatic drag tracking support for
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    a given window. If you are using a composited window or the
  *    standard event handler, you should generally always call this API
  *    if you need drag support for controls in your window. 
@@ -4092,6 +6987,21 @@ function IsControlDragTrackingEnabled( inControl: ControlRef; var outTracks: Boo
  *    Control Manager, however, has support for automatically tracking
  *    and receiving drags over controls. The Control Manager will
  *    detect the control the drag is over and call
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    a given window. By default, your application code is responsible
+ *    for installing drag tracking and receive handlers on a given
+ *    window. The Control Manager, however, has support for
+ *    automatically tracking and receiving drags over controls. The
+ *    Control Manager will detect the control the drag is over and call
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *    HandleControlDragTracking and HandleControlDragReceive
  *    appropriately. By default, this automatic support is turned off.
  *    You can turn on this support by calling
@@ -4119,7 +7029,19 @@ function IsControlDragTrackingEnabled( inControl: ControlRef; var outTracks: Boo
  *    A result code indicating success or failure.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 9.0 and later
  }
@@ -4157,14 +7079,113 @@ function SetAutomaticControlDragTrackingEnabledForWindow( inWindow: WindowRef; i
  *    A result code indicating success or failure.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in ControlsLib 9.0 and later
  }
 function IsAutomaticControlDragTrackingEnabledForWindow( inWindow: WindowRef; var outTracks: Boolean ): OSStatus; external name '_IsAutomaticControlDragTrackingEnabledForWindow';
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+{ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+{  ¥ C Glue                                                                            }
+{ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ}
+{
+ *  dragcontrol()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  newcontrol()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  findcontrol()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  getcontroltitle()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  setcontroltitle()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  trackcontrol()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+{
+ *  testcontrol()
+ *  
+ *  Availability:
+ *    Mac OS X:         not available
+ *    CarbonLib:        not available
+ *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
+ }
+
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 
 (*
 #if OLDROUTINENAMES
@@ -4204,7 +7225,17 @@ const
 *)
 
 { Getters }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  GetControlBounds()
  *  
@@ -4213,7 +7244,19 @@ const
  *    coordinates. 
  *    
  *    HIView Notes: When called in a composited window, this routine
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    returns the view's frame; i.e., it is equivalent to calling
+=======
+ *    returns the view's frame, i.e. it is equivalent to calling
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    returns the view's frame, i.e. it is equivalent to calling
+>>>>>>> origin/fixes_2_2
+=======
+ *    returns the view's frame; i.e., it is equivalent to calling
+>>>>>>> origin/fixes_2.4
  *    HIViewGetFrame.
  *  
  *  Mac OS X threading:
@@ -4231,7 +7274,19 @@ const
  *    A pointer to the rectangle passed in bounds.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in CarbonAccessors.o 1.0 and later
  }
@@ -4246,7 +7301,19 @@ function GetControlBounds( control: ControlRef; var bounds: Rect ): RectPtr; ext
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in CarbonAccessors.o 1.0 and later
  }
@@ -4261,7 +7328,19 @@ function IsControlHilited( control: ControlRef ): Boolean; external name '_IsCon
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in CarbonAccessors.o 1.0 and later
  }
@@ -4274,7 +7353,19 @@ function GetControlHilite( control: ControlRef ): UInt16; external name '_GetCon
  *  
  *  Discussion:
  *    Returns the window a control is bound to, or NULL if the control
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    is not currently attached to any window. 
+=======
+ *    is not currently attached to any window.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    is not currently attached to any window.
+>>>>>>> origin/fixes_2_2
+=======
+ *    is not currently attached to any window. 
+>>>>>>> origin/fixes_2.4
  *    
  *    HIView replacement: HIViewGetWindow (Mac OS X 10.3 or later).
  *    Either call will work in a composited or non-composited view.
@@ -4292,7 +7383,19 @@ function GetControlHilite( control: ControlRef ): UInt16; external name '_GetCon
  *    window
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in CarbonAccessors.o 1.0 and later
  }
@@ -4307,7 +7410,19 @@ function GetControlOwner( control: ControlRef ): WindowRef; external name '_GetC
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in CarbonAccessors.o 1.0 and later
  }
@@ -4322,7 +7437,19 @@ function GetControlDataHandle( control: ControlRef ): Handle; external name '_Ge
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in CarbonAccessors.o 1.0 and later
  }
@@ -4339,7 +7466,19 @@ function GetControlPopupMenuRef( control: ControlRef ): MenuRef; external name '
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in CarbonAccessors.o 1.0 and later
  }
@@ -4355,7 +7494,19 @@ function GetControlPopupMenuID( control: ControlRef ): SInt16; external name '_G
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in CarbonAccessors.o 1.0 and later
  }
@@ -4388,7 +7539,19 @@ procedure SetControlDataHandle( control: ControlRef; dataHandle: Handle ); exter
  *      A pointer to a Quickdraw rectangle to be used by this call.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in CarbonAccessors.o 1.0 and later
  }
@@ -4403,7 +7566,19 @@ procedure SetControlBounds( control: ControlRef; const (*var*) bounds: Rect ); e
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in CarbonAccessors.o 1.0 and later
  }
@@ -4420,7 +7595,19 @@ procedure SetControlPopupMenuRef( control: ControlRef; popupMenu: MenuRef ); ext
  *    Not thread safe
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in CarbonAccessors.o 1.0 and later
  }
@@ -4428,8 +7615,19 @@ procedure SetControlPopupMenuID( control: ControlRef; menuID: SInt16 ); external
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {--------------------------------------------------------------------------------------}
 {  ¥ DEPRECATED                                                                        }
 {  All functions below this point are either deprecated (they continue to function     }
@@ -4437,7 +7635,17 @@ procedure SetControlPopupMenuID( control: ControlRef; menuID: SInt16 ); external
 {  completely unavailable on Mac OS X.                                                 }
 {--------------------------------------------------------------------------------------}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  IdleControls()   *** DEPRECATED ***
  *  
@@ -4469,7 +7677,19 @@ procedure SetControlPopupMenuID( control: ControlRef; menuID: SInt16 ); external
  *      The WindowRef whose controls are offered idle time.
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.4
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework but deprecated in 10.4
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework but deprecated in 10.4
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         in version 10.0 and later in Carbon.framework [32-bit only] but deprecated in 10.4
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in AppearanceLib 1.0 and later
  }
@@ -4477,12 +7697,35 @@ procedure IdleControls( inWindow: WindowRef ); external name '_IdleControls';
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4 *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$endc} {not TARGET_CPU_64}
 
 
 {$endc} {not TARGET_OS_MAC}
+<<<<<<< HEAD
 
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
 
 end.
 {$endc} {not MACOSALLINCLUDE}
+=======
+
+
+end.
+>>>>>>> graemeg/fixes_2_2
+=======
+=======
+>>>>>>> origin/fixes_2.4
+
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+
+end.
+<<<<<<< HEAD
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4

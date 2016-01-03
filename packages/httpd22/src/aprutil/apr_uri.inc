@@ -100,7 +100,6 @@ type
     { The port number, numeric, valid only if port_str != NULL }
     port: apr_port_t;
     
-    BitFlags : Cardinal; // Takes care of is_initialized, dns_looked_up and dns_resolved
     { has the structure been initialized }
 //    unsigned is_initialized:1;
 

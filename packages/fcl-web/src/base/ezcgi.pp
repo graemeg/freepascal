@@ -17,7 +17,7 @@ unit ezcgi;
 
 interface
 
-uses classes, sysutils;
+uses classes, strings, sysutils;
 
 const
    hexTable = '0123456789ABCDEF';
@@ -41,7 +41,7 @@ type
       aLenSep : Integer;
 
       procedure InitToken(aStr, aSep : String);
-      function NextToken(var aToken : String; out aSepChar : Char) : Boolean;
+      function NextToken(var aToken : String; var aSepChar : Char) : Boolean;
 
       procedure GetQueryItems;
       procedure ProcessRequest;
@@ -338,7 +338,7 @@ begin
      aLenSep := Length(aSepStr);
 end;
 
-function TEZcgi.NextToken(var aToken : String; out aSepChar : Char) : Boolean;
+function TEZcgi.NextToken(var aToken : String; var aSepChar : Char) : Boolean;
 var
    i : Integer;
    j : Integer;

@@ -14,7 +14,23 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function fpc_setjmp(var S:jmp_buf):longint;assembler;[public,alias:'FPC_SETJMP'];nostackframe;compilerproc;
+=======
+function fpc_setjmp(var S : jmp_buf) : longint;assembler;[Public, alias : 'FPC_SETJMP'];nostackframe;compilerproc;
+>>>>>>> graemeg/cpstrnew
+=======
+function fpc_setjmp(var S : jmp_buf) : longint;assembler;[Public, alias : 'FPC_SETJMP'];nostackframe;compilerproc;
+>>>>>>> graemeg/cpstrnew
+=======
+function fpc_setjmp(var S : jmp_buf) : longint;assembler;[Public, alias : 'FPC_SETJMP'];nostackframe;compilerproc;
+>>>>>>> graemeg/cpstrnew
+=======
+function fpc_setjmp(var S : jmp_buf) : longint;assembler;[Public, alias : 'FPC_SETJMP'];nostackframe;compilerproc;
+>>>>>>> origin/cpstrnew
   asm
 {$ifdef win64}
     // xmm6..xmm15, xmm control word and FPU control word are nonvolatile in win64.
@@ -60,7 +76,23 @@ function fpc_setjmp(var S:jmp_buf):longint;assembler;[public,alias:'FPC_SETJMP']
   end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure fpc_longjmp(var S:jmp_buf;value:longint);assembler;[public,alias:'FPC_LONGJMP'];nostackframe;compilerproc;
+=======
+procedure fpc_longjmp(var S : jmp_buf;value : longint);assembler;[Public, alias : 'FPC_LONGJMP'];compilerproc;
+>>>>>>> graemeg/cpstrnew
+=======
+procedure fpc_longjmp(var S : jmp_buf;value : longint);assembler;[Public, alias : 'FPC_LONGJMP'];compilerproc;
+>>>>>>> graemeg/cpstrnew
+=======
+procedure fpc_longjmp(var S : jmp_buf;value : longint);assembler;[Public, alias : 'FPC_LONGJMP'];compilerproc;
+>>>>>>> graemeg/cpstrnew
+=======
+procedure fpc_longjmp(var S : jmp_buf;value : longint);assembler;[Public, alias : 'FPC_LONGJMP'];compilerproc;
+>>>>>>> origin/cpstrnew
   asm
 {$ifdef win64}
     cmpl     $1,%edx

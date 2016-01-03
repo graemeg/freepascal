@@ -4,11 +4,40 @@
 
 [package]
 main=fcl-db
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> origin/cpstrnew
 
 [target]
 units=dbconst db dbwhtml bufdataset_parser bufdataset dbcoll sqlscript xmldatapacketreader
 rsts=dbconst dbcoll sqlscript xmldatapacketreader
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+[target]
+units=dbconst db dbwhtml bufdataset_parser bufdataset dbcoll sqlscript
+rsts=dbwhtml dbconst dbcoll
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [require]
 packages=fcl-base fcl-xml

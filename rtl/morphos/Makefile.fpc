@@ -7,6 +7,11 @@ main=rtl
 
 [target]
 loaders=prt0
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=$(SYSTEMUNIT) uuchar objpas macpas iso7185 extpas strings \
       fpintres dos heaptrc ctypes \
       sysutils classes fgl math typinfo \
@@ -19,6 +24,40 @@ units=$(SYSTEMUNIT) uuchar objpas macpas iso7185 extpas strings \
 #      kvm \
 # disabled temporarily because it doesn't build
 #     sockets \
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+units=$(SYSTEMUNIT) objpas macpas iso7185 strings \
+=======
+units=$(SYSTEMUNIT) objpas macpas strings \
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+      dos heaptrc ctypes \
+      sysutils classes fgl strutils math typinfo varutils \
+      charset ucomplex getopts matrix fmtbcd \
+      variants types rtlconsts sysconst dateutil objects \
+      exec timer doslib utility hardware inputevent keymap graphics layers \
+      intuition aboxlib mui \
+# these units are here, because they depend on system interface units above
+<<<<<<< HEAD
+<<<<<<< HEAD
+      kvm video mouse keyboard sockets \
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 # these can be moved to packages later
 #      clipboard datatypes asl ahi tinygl get9 muihelper
 #implicitunits=exeinfo\
@@ -26,6 +65,15 @@ implicitunits=cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852
 
 rsts=math rtlconsts typinfo classes sysconst
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      kvm video keyboard mouse sockets \
+# these can be moved to packages later
+      clipboard datatypes asl ahi tinygl get9 muihelper
+#implicitunits=exeinfo
+rsts=math rtlconsts varutils typinfo variants classes sysconst dateutil
+>>>>>>> graemeg/fixes_2_2
 
 [require]
 nortl=y
@@ -127,7 +175,20 @@ sysutils$(PPUEXT) : sysutils.pp $(wildcard $(OBJPASDIR)/sysutils/*.inc) \
 
 classes$(PPUEXT) : classes.pp $(wildcard $(OBJPASDIR)/classes/*.inc) \
                    sysutils$(PPUEXT) rtlconsts$(PPUEXT) typinfo$(PPUEXT) types$(PPUEXT) fgl$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         $(COMPILER) -Fi$(OBJPASDIR)/classes $(AMIINC)/classes.pp
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        $(COMPILER) -Fi$(OBJPASDIR)/classes classes.pp
+>>>>>>> graemeg/cpstrnew
 
 fgl$(PPUEXT) : $(OBJPASDIR)/fgl.pp objpas$(PPUEXT) types$(PPUEXT) system$(PPUEXT) sysutils$(PPUEXT)
         $(COMPILER) $(OBJPASDIR)/fgl.pp
@@ -222,3 +283,16 @@ athreadss$(PPUEXT) : $(AMIINC)/athreads.pp $(SYSTEMUNIT)$(PPUEXT)
 
 ctypes$(PPUEXT) :  $(INC)/ctypes.pp $(SYSTEMUNIT)$(PPUEXT)
 
+<<<<<<< HEAD
+=======
+keyboard$(PPUEXT) : keyboard.pp 
+#windows$(PPUEXT) dos$(PPUEXT) winevent$(PPUEXT)
+
+ctypes$(PPUEXT) :  $(INC)/ctypes.pp $(SYSTEMUNIT)$(PPUEXT)
+
+sockets$(PPUEXT) : sockets.pp $(INC)/textrec.inc $(INC)/filerec.inc \
+                   ctypes$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

@@ -16,7 +16,13 @@ uses
 
 const
   DEFDIALECT = 3;
+<<<<<<< HEAD
+<<<<<<< HEAD
   MAXBLOBSEGMENTSIZE = 65535; //Maximum number of bytes that fit in a blob segment.
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 type
   TDatabaseInfo = record
@@ -54,6 +60,7 @@ type
 
   TIBConnection = class (TSQLConnection)
   private
+<<<<<<< HEAD
     FSQLDatabaseHandle     : pointer;
     FStatus                : array [0..19] of ISC_STATUS;
     FDatabaseInfo          : TDatabaseInfo;
@@ -63,6 +70,10 @@ type
     procedure ConnectFB;
 
     procedure AllocSQLDA(var aSQLDA : PXSQLDA;Count : integer);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     // Metadata:
     procedure GetDatabaseInfo; //Queries for various information from server once connected
@@ -71,6 +82,31 @@ type
     function GetODSMajorVersion: integer;
     function ParseServerVersion(const CompleteVersion: string): string; //Extract version info from complete version identification string
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    procedure TranslateFldType(SQLType, SQLSubType, SQLLen, SQLScale : integer;
+=======
+    FSQLDatabaseHandle   : pointer;
+    FStatus              : array [0..19] of ISC_STATUS;
+    FDialect             : integer;
+    FDBDialect           : integer;
+    FBLobSegmentSize     : word;
+
+    procedure ConnectFB;
+    function GetDialect: integer;
+    procedure AllocSQLDA(var aSQLDA : PXSQLDA;Count : integer);
+    procedure TranslateFldType(SQLType, SQLLen, SQLScale : integer;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+      var TrType : TFieldType; var TrLen : word);
+>>>>>>> graemeg/cpstrnew
     // conversion methods
     procedure TranslateFldType(SQLType, SQLSubType, SQLLen, SQLScale : integer;
       var TrType : TFieldType; var TrLen : word);
@@ -107,18 +143,38 @@ type
     procedure CommitRetaining(trans : TSQLHandle); override;
     procedure RollBackRetaining(trans : TSQLHandle); override;
     procedure UpdateIndexDefs(IndexDefs : TIndexDefs;TableName : string); override;
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure LoadBlobIntoBuffer(FieldDef: TFieldDef;ABlobBuf: PBufBlobField; cursor: TSQLCursor; ATransaction : TSQLTransaction); override;
     function RowsAffected(cursor: TSQLCursor): TRowsCount; override;
     function GetSchemaInfoSQL(SchemaType : TSchemaType; SchemaObjectName, SchemaPattern : string) : string; override;
     function GetNextValueSQL(const SequenceName: string; IncrementBy: Integer): string; override;
+=======
+    function GetSchemaInfoSQL(SchemaType : TSchemaType; SchemaObjectName, SchemaPattern : string) : string; override;
+    procedure LoadBlobIntoBuffer(FieldDef: TFieldDef;ABlobBuf: PBufBlobField; cursor: TSQLCursor; ATransaction : TSQLTransaction); override;
+    function RowsAffected(cursor: TSQLCursor): TRowsCount; override;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function GetSchemaInfoSQL(SchemaType : TSchemaType; SchemaObjectName, SchemaPattern : string) : string; override;
+    procedure LoadBlobIntoBuffer(FieldDef: TFieldDef;ABlobBuf: PBufBlobField; cursor: TSQLCursor; ATransaction : TSQLTransaction); override;
+    function RowsAffected(cursor: TSQLCursor): TRowsCount; override;
+>>>>>>> origin/fixes_2_2
   public
     constructor Create(AOwner : TComponent); override;
     function GetConnectionInfo(InfoType:TConnInfoType): string; override;
     procedure CreateDB; override;
     procedure DropDB; override;
+<<<<<<< HEAD
     //Segment size is not used in the code; property kept for backward compatibility
     property BlobSegmentSize : word read FBlobSegmentSize write FBlobSegmentSize; deprecated;
     property ODSMajorVersion : integer read GetODSMajorVersion; //ODS major version number; influences database compatibility/feature level.
+=======
+    property BlobSegmentSize : word read FBlobSegmentSize write FBlobSegmentSize;
+    function GetDBDialect: integer;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   published
     property DatabaseName;
     property Dialect : integer read GetDialect write FDialect stored IsDialectStored default DEFDIALECT;
@@ -143,16 +199,34 @@ type
 implementation
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   StrUtils, FmtBCD;
 
 const
   SQL_BOOLEAN_INTERBASE = 590;
   SQL_BOOLEAN_FIREBIRD = 32764;
   INVALID_DATA = -1;
+=======
+  strutils;
+>>>>>>> graemeg/cpstrnew
+=======
+  strutils;
+>>>>>>> graemeg/cpstrnew
+=======
+  strutils;
+>>>>>>> graemeg/cpstrnew
+=======
+  strutils;
+>>>>>>> origin/cpstrnew
 
 
 procedure TIBConnection.CheckError(ProcName : string; Status : PISC_STATUS);
 var
+<<<<<<< HEAD
+<<<<<<< HEAD
   ErrorCode : longint;
   Msg, SQLState : string;
   Buf : array [0..1023] of char;
@@ -172,6 +246,25 @@ begin
     while isc_interprete(Buf, @Status) > 0 do
       Msg := Msg + LineEnding + ' -' + StrPas(Buf);
     raise EIBDatabaseError.CreateFmt('%s : %s', [ProcName,Msg], Self, ErrorCode, SQLState);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  buf : array [0..1023] of char;
+  Msg : string;
+  E   : EIBDatabaseError;
+  Err : longint;
+  
+begin
+  if ((Status[0] = 1) and (Status[1] <> 0)) then
+  begin
+    Err := Status[1];
+    msg := '';
+    while isc_interprete(Buf, @Status) > 0 do
+      Msg := Msg + LineEnding +' -' + StrPas(Buf);
+    E := EIBDatabaseError.CreateFmt('%s : %s : %s',[self.Name,ProcName,Msg]);
+    E.GDSErrorCode := Err;
+    Raise E;
+>>>>>>> graemeg/fixes_2_2
   end;
 end;
 
@@ -180,10 +273,40 @@ constructor TIBConnection.Create(AOwner : TComponent);
 
 begin
   inherited;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   FConnOptions := FConnOptions + [sqSupportParams, sqEscapeRepeat, sqSupportReturning];
   FBlobSegmentSize := 65535; //Shows we're using the maximum segment size
   FDialect := INVALID_DATA;
   ResetDatabaseInfo;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  FConnOptions := FConnOptions + [sqSupportParams] + [sqEscapeRepeat];
+  FieldNameQuoteChars:=DoubleQuotes;
+  FBLobSegmentSize := 80;
+  FDialect := -1;
+  FDBDialect := -1;
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  FConnOptions := FConnOptions + [sqSupportParams] + [sqEscapeRepeat] + [sqQuoteFieldnames];
+  FBLobSegmentSize := 80;
+  FDialect := -1;
+  FDBDialect := -1;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 
@@ -322,8 +445,14 @@ begin
   pagesize := params.Values['PAGE_SIZE'];
   if pagesize <> '' then
     CreateSQL := CreateSQL + ' PAGE_SIZE '+pagesize;
+<<<<<<< HEAD
+<<<<<<< HEAD
   if CharSet <> '' then
     CreateSQL := CreateSQL + ' DEFAULT CHARACTER SET ' + CharSet;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   if isc_dsql_execute_immediate(@FStatus[0],@ASQLDatabaseHandle,@ASQLTransactionHandle,length(CreateSQL),@CreateSQL[1],Dialect,nil) <> 0 then
     CheckError('CreateDB', FStatus);
@@ -347,8 +476,18 @@ end;
 
 procedure TIBConnection.DoInternalDisconnect;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   Inherited;
   FDialect := INVALID_DATA;
+=======
+  FDialect := -1;
+  FDBDialect := -1;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FDialect := -1;
+  FDBDialect := -1;
+>>>>>>> origin/fixes_2_2
   if not Connected then
   begin
     ResetDatabaseInfo;
@@ -402,16 +541,26 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIBConnection.GetDatabaseInfo;
 // Asks server for multiple values
 const
   ResBufHigh = 512; //hopefully enough to include version string as well.
+=======
+function TIBConnection.GetDBDialect: integer;
+>>>>>>> graemeg/fixes_2_2
+=======
+function TIBConnection.GetDBDialect: integer;
+>>>>>>> origin/fixes_2_2
 var
   x : integer;
   Len : integer;
   ReqBuf : array [0..3] of byte;
   ResBuf : array [0..ResBufHigh] of byte; // should be big enough for version string etc
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   ResetDatabaseInfo;
   if Connected then
   begin
@@ -424,12 +573,31 @@ begin
         CheckError('CacheServerInfo', FStatus);
     x := 0;
     while x < ResBufHigh+1 do
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  result := -1;
+  if Connected then
+    begin
+    Buffer[0] := isc_info_db_sql_dialect;
+    Buffer[1] := isc_info_end;
+    if isc_database_info(@FStatus[0], @FSQLDatabaseHandle, Length(Buffer),
+      pchar(@Buffer[0]), SizeOf(ResBuf), pchar(@ResBuf[0])) <> 0 then
+        CheckError('SetDBDialect', FStatus);
+    x := 0;
+    while x < 40 do
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       case ResBuf[x] of
         isc_info_db_sql_dialect :
           begin
           Inc(x);
           Len := isc_vax_integer(pchar(@ResBuf[x]), 2);
           Inc(x, 2);
+<<<<<<< HEAD
+<<<<<<< HEAD
           FDatabaseInfo.Dialect := isc_vax_integer(pchar(@ResBuf[x]), Len);
           Inc(x, Len);
           end;
@@ -497,6 +665,21 @@ begin
     begin
       EndPos := i - 1;
       break;
+=======
+          Result := isc_vax_integer(pchar(@ResBuf[x]), Len);
+          Inc(x, Len);
+          end;
+=======
+          Result := isc_vax_integer(pchar(@ResBuf[x]), Len);
+          Inc(x, Len);
+          end;
+>>>>>>> origin/fixes_2_2
+        isc_info_end : Break;
+      else
+        inc(x);
+      end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
     end;
     if (BeginPos = 0) and
       (CompleteVersion[i] >= '0') and (CompleteVersion[i] <= '9') then
@@ -521,6 +704,8 @@ begin
         result := result + rightstr(StringOfChar('0',DigitsPerNumber)+copy(NumericPart,BeginPos,Length(NumericPart)),DigitsPerNumber);
         break;
       end;
+=======
+>>>>>>> origin/fixes_2_2
     end;
     result := leftstr(result + StringOfChar('0',DigitsPerNumber * MaxNumbers), DigitsPerNumber * MaxNumbers);
   end;
@@ -555,12 +740,27 @@ end;
 
 function TIBConnection.GetDialect: integer;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if FDialect = INVALID_DATA then
   begin
     if FDatabaseInfo.Dialect=0 then
       Result := DEFDIALECT
     else
       Result := FDatabaseInfo.Dialect;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if FDialect = -1 then
+  begin
+    if FDBDialect = -1 then
+      Result := DEFDIALECT
+    else
+      Result := FDBDialect;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end else
     Result := FDialect;
 end;
@@ -584,6 +784,8 @@ begin
     reAllocMem(aSQLDA,0);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIBConnection.TranslateFldType(SQLType, SQLSubType, SQLLen, SQLScale : integer;
            var TrType : TFieldType; var TrLen : word);
 begin
@@ -592,23 +794,71 @@ begin
     begin
     TrLen := abs(SQLScale);
     if (TrLen <= MaxBCDScale) then //Note: NUMERIC(18,3) or (17,2) must be mapped to ftFmtBCD, but we do not know Precision
+=======
+procedure TIBConnection.TranslateFldType(SQLType, SQLLen, SQLScale : integer;
+           var TrType : TFieldType; var TrLen : word);
+begin
+=======
+procedure TIBConnection.TranslateFldType(SQLType, SQLLen, SQLScale : integer;
+           var TrType : TFieldType; var TrLen : word);
+begin
+>>>>>>> origin/fixes_2_2
+  trlen := 0;
+  if SQLScale < 0 then
+    begin
+    if (SQLScale >= -4) and (SQLScale <= -1) then //in [-4..-1] then
+      begin
+      TrLen := abs(SQLScale);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       TrType := ftBCD
     else
       TrType := ftFMTBcd;
     end
   else case (SQLType and not 1) of
-    SQL_VARYING :
+    SQL_VARYING,SQL_TEXT :
       begin
         TrType := ftString;
+<<<<<<< HEAD
+<<<<<<< HEAD
         TrLen := SQLLen;
       end;
     SQL_TEXT :
       begin
         TrType := ftFixedChar;
         TrLen := SQLLen;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        if SQLLen > dsMaxStringSize then
+          TrLen := dsMaxStringSize
+        else
+          TrLen := SQLLen;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
     SQL_TYPE_DATE :
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         TrType := ftDate;
+=======
+      TrType := ftDate;
+>>>>>>> graemeg/cpstrnew
+=======
+      TrType := ftDate;
+>>>>>>> graemeg/cpstrnew
+=======
+      TrType := ftDate;
+>>>>>>> graemeg/cpstrnew
+=======
+      TrType := ftDate;
+>>>>>>> origin/cpstrnew
     SQL_TYPE_TIME :
         TrType := ftTime;
     SQL_TIMESTAMP :
@@ -620,10 +870,43 @@ begin
       end;
     SQL_BLOB :
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if SQLSubType = isc_blob_text then
           TrType := ftMemo
         else
           TrType := ftBlob;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        if SQLSubType = 1 then
+           TrType := ftMemo
+        else
+           TrType := ftBlob;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+        TrType := ftBlob;
+>>>>>>> graemeg/fixes_2_2
+=======
+        TrType := ftBlob;
+>>>>>>> origin/fixes_2_2
         TrLen := SQLLen;
       end;
     SQL_SHORT :
@@ -636,8 +919,14 @@ begin
         TrType := ftFloat;
     SQL_FLOAT :
         TrType := ftFloat;
+<<<<<<< HEAD
+<<<<<<< HEAD
     SQL_BOOLEAN_INTERBASE, SQL_BOOLEAN_FIREBIRD :
         TrType := ftBoolean;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     else
         TrType := ftUnknown;
   end;
@@ -715,9 +1004,33 @@ begin
         else
           SQLData := AllocMem(in_SQLDA^.SQLVar[x].SQLLen);
         // Always force the creation of slqind for parameters. It could be
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         // that a database trigger takes care of inserting null values, so
         // it should always be possible to pass null parameters. If that fails,
         // the database server will generate the appropriate error.
+=======
+        // that a database-trigger takes care of inserting null-values, so
+        // it should always be possible to pass null-parameters. If that fails,
+        // the database-server will generate the appropiate error.
+>>>>>>> graemeg/cpstrnew
+=======
+        // that a database-trigger takes care of inserting null-values, so
+        // it should always be possible to pass null-parameters. If that fails,
+        // the database-server will generate the appropiate error.
+>>>>>>> graemeg/cpstrnew
+=======
+        // that a database-trigger takes care of inserting null-values, so
+        // it should always be possible to pass null-parameters. If that fails,
+        // the database-server will generate the appropiate error.
+>>>>>>> graemeg/cpstrnew
+=======
+        // that a database-trigger takes care of inserting null-values, so
+        // it should always be possible to pass null-parameters. If that fails,
+        // the database-server will generate the appropiate error.
+>>>>>>> origin/cpstrnew
         sqltype := sqltype or 1;
         new(sqlind);
         end;
@@ -822,6 +1135,28 @@ begin
     FieldNameQuoteChars := DoubleQuotes;
 end;
 
+function TIBConnection.IsDialectStored: boolean;
+begin
+  result := (FDialect<>-1);
+end;
+
+procedure TIBConnection.DoConnect;
+begin
+  inherited DoConnect;
+  FDbDialect := GetDBDialect;
+end;
+
+function TIBConnection.IsDialectStored: boolean;
+begin
+  result := (FDialect<>-1);
+end;
+
+procedure TIBConnection.DoConnect;
+begin
+  inherited DoConnect;
+  FDbDialect := GetDBDialect;
+end;
+
 procedure TIBConnection.FreeFldBuffers(cursor : TSQLCursor);
 
 begin
@@ -868,6 +1203,7 @@ begin
     setlength(FieldBinding,SQLDA^.SQLD);
     for x := 0 to SQLDA^.SQLD - 1 do
       begin
+<<<<<<< HEAD
       TranslateFldType(SQLDA^.SQLVar[x].SQLType, SQLDA^.SQLVar[x].sqlsubtype, SQLDA^.SQLVar[x].SQLLen, SQLDA^.SQLVar[x].SQLScale,
         TransType, TransLen);
 
@@ -878,6 +1214,20 @@ begin
           SQL_SHORT : FD.precision := 4;
           SQL_LONG  : FD.precision := 9;
           SQL_DOUBLE,
+=======
+      TranslateFldType(SQLDA^.SQLVar[x].SQLType, SQLDA^.SQLVar[x].SQLLen, SQLDA^.SQLVar[x].SQLScale,
+        TransType, TransLen);
+
+      FD := TFieldDef.Create(FieldDefs, FieldDefs.MakeNameUnique(SQLDA^.SQLVar[x].AliasName), TransType,
+         TransLen, (SQLDA^.SQLVar[x].sqltype and 1)=0, (x + 1));
+      if TransType = ftBCD then
+        case (SQLDA^.SQLVar[x].sqltype and not 1) of
+          SQL_SHORT : FD.precision := 4;
+          SQL_LONG  : FD.precision := 9;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           SQL_INT64 : FD.precision := 18;
           else FD.precision := SQLDA^.SQLVar[x].SQLLen;
         end;
@@ -947,6 +1297,46 @@ var ParNr,SQLVarNr : integer;
     BlobBytesWritten  : longint;
     
   procedure SetBlobParam;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  
+  begin
+{$R-}
+    with cursor as TIBCursor do
+      begin
+      TransactionHandle := transaction.Handle;
+      blobhandle := nil;
+      if isc_create_blob(@FStatus[0], @FSQLDatabaseHandle, @TransactionHandle, @blobHandle, @blobId) <> 0 then
+       CheckError('TIBConnection.CreateBlobStream', FStatus);
+
+      s := AParams[ParNr].AsString;
+      BlobSize := length(s);
+
+      BlobBytesWritten := 0;
+      i := 0;
+
+      while BlobBytesWritten < (BlobSize-BlobSegmentSize) do
+        begin
+        isc_put_segment(@FStatus[0], @blobHandle, BlobSegmentSize, @s[(i*BlobSegmentSize)+1]);
+        inc(BlobBytesWritten,BlobSegmentSize);
+        inc(i);
+        end;
+      if BlobBytesWritten <> BlobSize then
+        isc_put_segment(@FStatus[0], @blobHandle, BlobSize-BlobBytesWritten, @s[(i*BlobSegmentSize)+1]);
+
+      if isc_close_blob(@FStatus[0], @blobHandle) <> 0 then
+        CheckError('TIBConnection.CreateBlobStream isc_close_blob', FStatus);
+      Move(blobId, in_sqlda^.SQLvar[SQLVarNr].SQLData^, in_SQLDA^.SQLVar[SQLVarNr].SQLLen);
+      end;
+{$R+}
+  end;
+
+var
+  // This should be a pointer, because the ORIGINAL variables must
+  // be modified.
+  VSQLVar: ^XSQLVAR;
+>>>>>>> origin/fixes_2_2
 
   begin
     {$push}
@@ -957,6 +1347,44 @@ var ParNr,SQLVarNr : integer;
       blobhandle := FB_API_NULLHANDLE;
       if isc_create_blob(@FStatus[0], @FSQLDatabaseHandle, @TransactionHandle, @blobHandle, @blobId) <> 0 then
        CheckError('TIBConnection.CreateBlobStream', FStatus);
+=======
+  
+  begin
+{$R-}
+    with cursor as TIBCursor do
+      begin
+      TransactionHandle := transaction.Handle;
+      blobhandle := nil;
+      if isc_create_blob(@FStatus[0], @FSQLDatabaseHandle, @TransactionHandle, @blobHandle, @blobId) <> 0 then
+       CheckError('TIBConnection.CreateBlobStream', FStatus);
+
+      s := AParams[ParNr].AsString;
+      BlobSize := length(s);
+
+      BlobBytesWritten := 0;
+      i := 0;
+
+      while BlobBytesWritten < (BlobSize-BlobSegmentSize) do
+        begin
+        isc_put_segment(@FStatus[0], @blobHandle, BlobSegmentSize, @s[(i*BlobSegmentSize)+1]);
+        inc(BlobBytesWritten,BlobSegmentSize);
+        inc(i);
+        end;
+      if BlobBytesWritten <> BlobSize then
+        isc_put_segment(@FStatus[0], @blobHandle, BlobSize-BlobBytesWritten, @s[(i*BlobSegmentSize)+1]);
+
+      if isc_close_blob(@FStatus[0], @blobHandle) <> 0 then
+        CheckError('TIBConnection.CreateBlobStream isc_close_blob', FStatus);
+      Move(blobId, in_sqlda^.SQLvar[SQLVarNr].SQLData^, in_SQLDA^.SQLVar[SQLVarNr].SQLLen);
+      end;
+{$R+}
+  end;
+
+var
+  // This should be a pointer, because the ORIGINAL variables must
+  // be modified.
+  VSQLVar: ^XSQLVAR;
+>>>>>>> graemeg/fixes_2_2
 
       s := AParams[ParNr].AsString;
       BlobSize := length(s);
@@ -1001,6 +1429,7 @@ begin
     ParNr := ParamBinding[SQLVarNr];
     VSQLVar := @in_sqlda^.SQLvar[SQLVarNr];
     if AParams[ParNr].IsNull then
+<<<<<<< HEAD
       VSQLVar^.SQLInd^ := -1
     else
       begin
@@ -1017,6 +1446,51 @@ begin
             Move(i, VSQLVar^.SQLData^, VSQLVar^.SQLLen);
           end;
         SQL_LONG :
+=======
+      begin
+      If Assigned(VSQLVar^.SQLInd) then
+        VSQLVar^.SQLInd^ := -1;
+      end
+    else
+      begin
+      if assigned(VSQLVar^.SQLInd) then VSQLVar^.SQLInd^ := 0;
+
+      case (VSQLVar^.sqltype and not 1) of
+        SQL_LONG :
+          begin
+            if VSQLVar^.sqlscale = 0 then
+              i := AParams[ParNr].AsInteger
+            else
+              i := Round(AParams[ParNr].AsCurrency * IntPower(10, -VSQLVar^.sqlscale));
+            Move(i, VSQLVar^.SQLData^, VSQLVar^.SQLLen);
+          end;
+        SQL_SHORT :
+<<<<<<< HEAD
+=======
+          begin
+            if VSQLVar^.sqlscale = 0 then
+              si := AParams[ParNr].AsSmallint
+            else
+              si := Round(AParams[ParNr].AsCurrency * IntPower(10, -VSQLVar^.sqlscale));
+            i := si;
+            Move(i, VSQLVar^.SQLData^, VSQLVar^.SQLLen);
+          end;
+        SQL_BLOB :
+          SetBlobParam;
+        SQL_VARYING, SQL_TEXT :
+>>>>>>> origin/fixes_2_2
+          begin
+            if VSQLVar^.sqlscale = 0 then
+              si := AParams[ParNr].AsSmallint
+            else
+              si := Round(AParams[ParNr].AsCurrency * IntPower(10, -VSQLVar^.sqlscale));
+            i := si;
+            Move(i, VSQLVar^.SQLData^, VSQLVar^.SQLLen);
+          end;
+        SQL_BLOB :
+          SetBlobParam;
+        SQL_VARYING, SQL_TEXT :
+>>>>>>> graemeg/fixes_2_2
           begin
             if VSQLVar^.sqlscale = 0 then
               i := AParams[ParNr].AsInteger
@@ -1073,11 +1547,33 @@ begin
             s := PadRight(s,w);
             end;
           Move(s[1], CurrBuff^, w);
+<<<<<<< HEAD
           end;
         SQL_TYPE_DATE, SQL_TYPE_TIME, SQL_TIMESTAMP :
           SetDateTime(VSQLVar^.SQLData, AParams[ParNr].AsDateTime, VSQLVar^.SQLType);
+<<<<<<< HEAD
         SQL_BOOLEAN_FIREBIRD:
           PByte(VSQLVar^.SQLData)^ := Byte(AParams[ParNr].AsBoolean);
+=======
+          end;
+        SQL_TYPE_DATE, SQL_TYPE_TIME, SQL_TIMESTAMP :
+          SetDateTime(VSQLVar^.SQLData, AParams[ParNr].AsDateTime, VSQLVar^.SQLType);
+=======
+>>>>>>> origin/fixes_2_2
+        SQL_INT64:
+          begin
+            if VSQLVar^.sqlscale = 0 then
+              li := AParams[ParNr].AsLargeInt
+            else
+              li := Round(AParams[ParNr].AsCurrency * IntPower(10, -VSQLVar^.sqlscale));
+            Move(li, VSQLVar^.SQLData^, VSQLVar^.SQLLen);
+          end;
+        SQL_DOUBLE, SQL_FLOAT:
+          SetFloat(VSQLVar^.SQLData, AParams[ParNr].AsFloat, VSQLVar^.SQLLen);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       else
         DatabaseErrorFmt(SUnsupportedParameter,[Fieldtypenames[AParams[ParNr].DataType]],self);
       end {case}
@@ -1093,6 +1589,8 @@ var
   VarcharLen : word;
   CurrBuff     : pchar;
   c            : currency;
+<<<<<<< HEAD
+<<<<<<< HEAD
   AFmtBcd      : tBCD;
 
   function BcdDivPower10(Dividend: largeint; e: integer): TBCD;
@@ -1101,6 +1599,16 @@ var
     d := Dividend / IntPower10(e);
     Result := StrToBCD( FloatToStr(d) );
   end;
+=======
+  smalli       : smallint;
+  longi        : longint;
+  largei       : largeint;
+>>>>>>> graemeg/fixes_2_2
+=======
+  smalli       : smallint;
+  longi        : longint;
+  largei       : largeint;
+>>>>>>> origin/fixes_2_2
 
 begin
   CreateBlob := False;
@@ -1126,6 +1634,8 @@ begin
         if ((SQLType and not 1) = SQL_VARYING) then
           begin
           Move(SQLData^, VarcharLen, 2);
+          if VarcharLen > dsMaxStringSize then
+            VarcharLen:=dsMaxStringSize;
           CurrBuff := SQLData + 2;
           end
         else
@@ -1138,6 +1648,9 @@ begin
       case FieldDef.DataType of
         ftBCD :
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             case VSQLVar^.SQLLen of
               2 : c := PSmallint(CurrBuff)^ / IntPower10(-VSQLVar^.SQLScale);
               4 : c := PLongint(CurrBuff)^  / IntPower10(-VSQLVar^.SQLScale);
@@ -1145,6 +1658,38 @@ begin
                     c := PDouble(CurrBuff)^
                   else
                     c := PLargeint(CurrBuff)^ / IntPower10(-VSQLVar^.SQLScale);
+=======
+            case SQLDA^.SQLVar[x].SQLLen of
+              2 : begin
+                  Move(CurrBuff^, smalli, 2);
+                  c := smalli*intpower(10,SQLDA^.SQLVar[x].SQLScale);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+            case SQLDA^.SQLVar[x].SQLLen of
+              2 : begin
+                  Move(CurrBuff^, smalli, 2);
+                  c := longi*intpower(10,SQLDA^.SQLVar[x].SQLScale);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+                  end;
+              4 : begin
+                  Move(CurrBuff^, longi, 4);
+                  c := longi*intpower(10,SQLDA^.SQLVar[x].SQLScale);
+                  end;
+              8 : begin
+                  Move(CurrBuff^, largei, 8);
+                  c := largei*intpower(10,SQLDA^.SQLVar[x].SQLScale);
+                  end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               else
                 Result := False; // Just to be sure, in principle this will never happen
             end; {case}
@@ -1179,6 +1724,16 @@ begin
             FillByte(buffer^,sizeof(Smallint),0);
             Move(CurrBuff^, Buffer^, VSQLVar^.SQLLen);
           end;
+        ftSmallint :
+          begin
+            FillByte(buffer^,sizeof(Smallint),0);
+            Move(CurrBuff^, Buffer^, SQLDA^.SQLVar[x].SQLLen);
+          end;
+        ftSmallint :
+          begin
+            FillByte(buffer^,sizeof(Smallint),0);
+            Move(CurrBuff^, Buffer^, SQLDA^.SQLVar[x].SQLLen);
+          end;
         ftDate, ftTime, ftDateTime:
           GetDateTime(CurrBuff, Buffer, VSQLVar^.SQLType);
         ftString, ftFixedChar  :
@@ -1187,11 +1742,33 @@ begin
             PChar(Buffer + VarCharLen)^ := #0;
           end;
         ftFloat   :
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           GetFloat(CurrBuff, Buffer, VSQLVar^.SQLLen);
+=======
+          GetFloat(CurrBuff, Buffer, SQLDA^.SQLVar[x].SQLLen);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         ftBlob,
         ftMemo :
           begin  // load the BlobIb in field's buffer
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          GetFloat(CurrBuff, Buffer, SQLDA^.SQLVar[x].SQLLen);
+        ftBlob : begin  // load the BlobIb in field's buffer
+>>>>>>> graemeg/fixes_2_2
             FillByte(buffer^,sizeof(TBufBlobField),0);
+<<<<<<< HEAD
             Move(CurrBuff^, Buffer^, VSQLVar^.SQLLen);
           end;
         ftBoolean :
@@ -1235,6 +1812,21 @@ end;
     end;
   {$PACKRECORDS DEFAULT}
 {$ENDIF}
+=======
+            Move(CurrBuff^, Buffer^, SQLDA^.SQLVar[x].SQLLen);
+          end;
+
+        else
+          begin
+            result := false;
+            databaseerrorfmt(SUnsupportedFieldType, [Fieldtypenames[FieldDef.DataType], Self]);
+          end
+      end;  { case }
+      end; { if/else }
+{$R+}
+    end; { with cursor }
+end;
+>>>>>>> graemeg/cpstrnew
 
 procedure TIBConnection.GetDateTime(CurrBuff, Buffer : pointer; AType : integer);
 var
@@ -1503,7 +2095,15 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure TIBConnection.GetFloat(CurrBuff, Buffer: pointer; Size: Byte);
+=======
+procedure TIBConnection.GetFloat(CurrBuff, Buffer : pointer; Size : byte);
+>>>>>>> graemeg/fixes_2_2
+=======
+procedure TIBConnection.GetFloat(CurrBuff, Buffer : pointer; Size : byte);
+>>>>>>> origin/fixes_2_2
 var
   Ext : extended;
   Dbl : double;
@@ -1573,6 +2173,100 @@ begin
     else
       CheckError('TIBConnection.CreateBlobStream isc_get_segment', FStatus);
   end;
+end;
+
+function TIBConnection.RowsAffected(cursor: TSQLCursor): TRowsCount;
+
+var info_request       : string;
+    resbuf             : array[0..63] of byte;
+    i                  : integer;
+    BlockSize,
+    subBlockSize       : integer;
+    SelectedRows,
+    InsertedRows       : integer;
+    
+begin
+  SelectedRows:=-1;
+  InsertedRows:=-1;
+
+  if assigned(cursor) then with cursor as TIBCursor do
+   if assigned(statement) then
+    begin
+    info_request := chr(isc_info_sql_records);
+    if isc_dsql_sql_info(@Status[0],@Statement,Length(info_request), @info_request[1],sizeof(resbuf),@resbuf) <> 0 then
+      CheckError('RowsAffected', Status);
+
+    i := 0;
+    while not (byte(resbuf[i]) in [isc_info_end,isc_info_truncated]) do
+      begin
+      BlockSize:=isc_vax_integer(@resbuf[i+1],2);
+      if resbuf[i]=isc_info_sql_records then
+        begin
+        inc(i,3);
+        BlockSize:=BlockSize+i;
+        while (resbuf[i] <> isc_info_end) and (i < BlockSize) do
+          begin
+          subBlockSize:=isc_vax_integer(@resbuf[i+1],2);
+          if resbuf[i] = isc_info_req_select_count then
+            SelectedRows := isc_vax_integer(@resbuf[i+3],subBlockSize)
+          else if resbuf[i] = isc_info_req_insert_count then
+            InsertedRows := isc_vax_integer(@resbuf[i+3],subBlockSize);
+          inc(i,subBlockSize+3);
+          end;
+        end
+      else
+        inc(i,BlockSize+3);
+      end;
+    end;
+  if SelectedRows>0 then result:=SelectedRows
+  else Result:=InsertedRows;
+end;
+
+function TIBConnection.RowsAffected(cursor: TSQLCursor): TRowsCount;
+
+var info_request       : string;
+    resbuf             : array[0..63] of byte;
+    i                  : integer;
+    BlockSize,
+    subBlockSize       : integer;
+    SelectedRows,
+    InsertedRows       : integer;
+    
+begin
+  SelectedRows:=-1;
+  InsertedRows:=-1;
+
+  if assigned(cursor) then with cursor as TIBCursor do
+   if assigned(statement) then
+    begin
+    info_request := chr(isc_info_sql_records);
+    if isc_dsql_sql_info(@Status[0],@Statement,Length(info_request), @info_request[1],sizeof(resbuf),@resbuf) <> 0 then
+      CheckError('RowsAffected', Status);
+
+    i := 0;
+    while not (byte(resbuf[i]) in [isc_info_end,isc_info_truncated]) do
+      begin
+      BlockSize:=isc_vax_integer(@resbuf[i+1],2);
+      if resbuf[i]=isc_info_sql_records then
+        begin
+        inc(i,3);
+        BlockSize:=BlockSize+i;
+        while (resbuf[i] <> isc_info_end) and (i < BlockSize) do
+          begin
+          subBlockSize:=isc_vax_integer(@resbuf[i+1],2);
+          if resbuf[i] = isc_info_req_select_count then
+            SelectedRows := isc_vax_integer(@resbuf[i+3],subBlockSize)
+          else if resbuf[i] = isc_info_req_insert_count then
+            InsertedRows := isc_vax_integer(@resbuf[i+3],subBlockSize);
+          inc(i,subBlockSize+3);
+          end;
+        end
+      else
+        inc(i,BlockSize+3);
+      end;
+    end;
+  if SelectedRows>0 then result:=SelectedRows
+  else Result:=InsertedRows;
 end;
 
 function TIBConnection.RowsAffected(cursor: TSQLCursor): TRowsCount;

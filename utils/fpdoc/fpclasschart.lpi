@@ -1,13 +1,25 @@
 <?xml version="1.0"?>
 <CONFIG>
   <ProjectOptions>
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Version Value="9"/>
+=======
+    <PathDelim Value="/"/>
+    <Version Value="6"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+    <PathDelim Value="/"/>
+    <Version Value="6"/>
+>>>>>>> origin/fixes_2_2
     <General>
       <Flags>
         <SaveOnlyProjectUnits Value="True"/>
         <MainUnitHasUsesSectionForAllUnits Value="False"/>
         <MainUnitHasCreateFormStatements Value="False"/>
         <MainUnitHasTitleStatement Value="False"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
         <LRSInOutputDirectory Value="False"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
@@ -19,6 +31,21 @@
     <BuildModes Count="1">
       <Item1 Name="default" Default="True"/>
     </BuildModes>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      </Flags>
+      <SessionStorage Value="InProjectDir"/>
+      <MainUnit Value="0"/>
+      <TargetFileExt Value=""/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+    </VersionInfo>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -31,7 +58,15 @@
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Units Count="3">
+=======
+    <Units Count="2">
+>>>>>>> graemeg/fixes_2_2
+=======
+    <Units Count="2">
+>>>>>>> origin/fixes_2_2
       <Unit0>
         <Filename Value="fpclasschart.pp"/>
         <IsPartOfProject Value="True"/>
@@ -42,6 +77,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="dGlobals"/>
       </Unit1>
+<<<<<<< HEAD
+<<<<<<< HEAD
       <Unit2>
         <Filename Value="fpdocclasstree.pp"/>
         <IsPartOfProject Value="True"/>
@@ -56,6 +93,17 @@
         <UseAnsiStrings Value="False"/>
       </SyntaxOptions>
     </Parsing>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="8"/>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     <Other>
       <CompilerPath Value="$(CompPath)"/>
     </Other>

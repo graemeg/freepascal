@@ -3,7 +3,23 @@
 #
 [package]
 name=libgbafpc-audio-examples
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+version=2.4.0
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.4.0
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.4.0
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.4.0
+>>>>>>> origin/cpstrnew
 
 [target]
 dirs=PlayBoyScout 

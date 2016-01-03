@@ -95,8 +95,17 @@ const
       one:  double = 1.0;
       zero: double = 0;
 
+<<<<<<< HEAD
 {$if not defined(FPC_SYSTEM_HAS_SIN) or not defined(FPC_SYSTEM_HAS_COS)}
 const sincof : array[0..5] of Real = (
+=======
+      DP1 =   7.85398125648498535156E-1;
+      DP2 =   3.77489470793079817668E-8;
+      DP3 =   2.69515142907905952645E-15;
+
+{$if not defined(FPC_SYSTEM_HAS_SIN) or not defined(FPC_SYSTEM_HAS_COS)}
+const sincof : TabCoef = (
+>>>>>>> graemeg/fixes_2_2
                 1.58962301576546568060E-10,
                -2.50507477628578072866E-8,
                 2.75573136213857245213E-6,
@@ -109,7 +118,14 @@ const sincof : array[0..5] of Real = (
                -2.75573141792967388112E-7,
                 2.48015872888517045348E-5,
                -1.38888888888730564116E-3,
+<<<<<<< HEAD
                 4.16666666666665929218E-2);
+=======
+                4.16666666666665929218E-2, 0);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif}
 
 {*
@@ -1149,7 +1165,21 @@ type
         hi:=0.0;
         lo:=0.0;
         k:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
         hx:=float64high(d);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef FPC_DOUBLE_HILO_SWAPPED}
+        hx:=float64(d).low;
+{$else}
+        hx:=float64(d).high;
+{$endif FPC_DOUBLE_HILO_SWAPPED}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         xsb := (hx shr 31) and 1;               { sign bit of d }
         hx := hx and $7fffffff;                 { high word of |d| }
 
@@ -1158,7 +1188,21 @@ type
           begin                  { if |d|>=709.78... }
             if hx >= $7ff00000 then
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 lx:=float64low(d);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef FPC_DOUBLE_HILO_SWAPPED}
+                lx:=float64(d).high;
+{$else}
+                lx:=float64(d).low;
+{$endif FPC_DOUBLE_HILO_SWAPPED}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                 if ((hx and $fffff) or lx)<>0 then
                   begin
                     result:=d+d; { NaN }
@@ -1224,14 +1268,46 @@ type
 
         if k >= -1021 then
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
             hy:=float64high(y);
             float64sethigh(y,longint(hy)+(k shl 20));        { add k to y's exponent }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef FPC_DOUBLE_HILO_SWAPPED}
+            hy:=float64(y).low;
+            float64(y).low:=longint(hy)+(k shl 20);        { add k to y's exponent }
+{$else}
+            hy:=float64(y).high;
+            float64(y).high:=longint(hy)+(k shl 20);        { add k to y's exponent }
+{$endif FPC_DOUBLE_HILO_SWAPPED}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             result:=y;
           end
         else
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
             hy:=float64high(y);
             float64sethigh(y,longint(hy)+((k+1000) shl 20)); { add k to y's exponent }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef FPC_DOUBLE_HILO_SWAPPED}
+            hy:=float64(y).low;
+            float64(y).low:=longint(hy)+((k+1000) shl 20); { add k to y's exponent }
+{$else}
+            hy:=float64(y).high;
+            float64(y).high:=longint(hy)+((k+1000) shl 20); { add k to y's exponent }
+{$endif FPC_DOUBLE_HILO_SWAPPED}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             result:=y*twom1000;
           end;
       end;
@@ -1318,6 +1394,8 @@ type
 {$ifndef FPC_SYSTEM_HAS_ROUND}
     function fpc_round_real(d : ValReal) : int64;compilerproc;
      var
+<<<<<<< HEAD
+<<<<<<< HEAD
       tmp: double;
       j0: longint;
       hx: longword;
@@ -1362,6 +1440,56 @@ type
         end;
       if sx<>0 then
         result:=-result;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      fr: ValReal;
+      tr: Int64;
+    Begin
+      fr := abs(Frac(d));
+      tr := Trunc(d);
+      case softfloat_rounding_mode of
+        float_round_nearest_even:
+          begin
+            if fr > 0.5 then
+              if d >= 0 then
+                result:=tr+1
+              else
+                result:=tr-1
+            else
+            if fr < 0.5 then
+               result:=tr
+            else { fr = 0.5 }
+               { check sign to decide ... }
+               { as in Turbo Pascal...    }
+              begin
+                if d >= 0.0 then
+                  result:=tr+1
+                else
+                  result:=tr;
+                { round to even }
+                result:=result and not(1);
+              end;
+          end;
+        float_round_down:
+          if (d >= 0.0) or
+             (fr = 0.0) then
+            result:=tr
+          else
+            result:=tr-1;
+        float_round_up:
+          if (d >= 0.0) and
+             (fr <> 0.0) then
+            result:=tr+1
+          else
+            result:=tr;
+        float_round_to_zero:
+          result:=tr;
+      end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     end;
 {$endif FPC_SYSTEM_HAS_ROUND}
 

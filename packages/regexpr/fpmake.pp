@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('regexpr');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ShortName:='reg';
     P.Description := 'Library for working with regular expressions.';
 {$ifdef ALLPACKAGES}
@@ -35,6 +37,20 @@ begin
     P.ExamplePath.Add('examples');
     P.Targets.AddExampleProgram('testreg1.pp');
     P.Sources.AddExampleFiles('examples/*',P.Directory,false,'.');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='regexpr';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+
+    T:=P.Targets.AddUnit('regexpr.pp');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$ifndef ALLPACKAGES}
     Run;

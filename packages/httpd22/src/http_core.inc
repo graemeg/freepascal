@@ -534,7 +534,7 @@ type
   
     response_code_strings: PPChar; { from ErrorDocument, not from
                                    * ap_custom_response() }
-    flags : cardinal; // takes care of  hostname_lookup, content_md5, use_canonical_name d_is_fnmatch and add_default_charse
+
     { Hostname resolution etc }
 {    unsigned int hostname_lookups : 4; }
 
@@ -591,7 +591,7 @@ type
     etag_bits: etag_components_t;
     etag_add: etag_components_t;
     etag_remove: etag_components_t;
-    flags2 : cardinal; // Takes care of   enable_mmap, enable_sendfile, allow_encoded_slashes and use_canonical_phys_port
+
     {
      * Run-time performance tuning
      }

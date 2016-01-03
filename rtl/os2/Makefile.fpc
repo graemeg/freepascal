@@ -7,9 +7,24 @@ main=rtl
 
 [target]
 loaders=prt0
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=$(SYSTEMUNIT) uuchar ctypes objpas macpas iso7185 extpas strings \
       ports os2def doscalls doscall2 moncalls kbdcalls moucalls viocalls \
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+units=$(SYSTEMUNIT) ctypes objpas macpas iso7185 strings \
+      ports os2def doscalls moncalls kbdcalls moucalls viocalls \
+>>>>>>> graemeg/cpstrnew
       pmbitmap pmwin pmgpi pmstddlg pmhelp pmdev pmspl pmshl pmwp pmwsock pmbidi \
+<<<<<<< HEAD
       dos \
       sysutils fgl classes math typinfo \
       charset cpall cpu mmx getopts heaptrc lineinfo lnfodwrf dynlibs \
@@ -20,6 +35,18 @@ rsts=math typinfo pmhelp classes sysconst
 implicitunits=exeinfo \
       cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852
+=======
+      dos crt objects printer matrix \
+      sysutils fgl classes math typinfo varutils winsock \
+      charset ucomplex cpu mmx getopts heaptrc lineinfo lnfodwrf dynlibs \
+      video mouse keyboard variants types rtlconst sysconst dateutil \
+      strutils convutil stdconvs fmtbcd so32dll sockets
+rsts=math varutils typinfo variants pmhelp classes sysconst dateutil stdconvs
+implicitunits=exeinfo
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [require]
 nortl=y
@@ -187,11 +214,41 @@ rtlconst$(PPUEXT) : $(OBJPASDIR)/rtlconst.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUE
 sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) $(OBJPASDIR)/sysconst.pp
 
+<<<<<<< HEAD
+=======
+dateutil$(PPUEXT) : $(OBJPASDIR)/dateutil.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
+        $(COMPILER) -Fi$(OBJPASDIR) $(OBJPASDIR)/dateutil.pp
+
+convutil$(PPUEXT) : $(OBJPASDIR)/convutil.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
+        $(COMPILER) -Fi$(OBJPASDIR) $(OBJPASDIR)/convutil.pp
+
+strutils$(PPUEXT) : $(OBJPASDIR)/strutils.pp sysutils$(PPUEXT) objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
+        $(COMPILER) $(OBJPASDIR)/strutils.pp
+
+stdconvs$(PPUEXT) : $(OBJPASDIR)/stdconvs.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT) \
+                    sysutils$(PPUEXT)
+        $(COMPILER) $(OBJPASDIR)/stdconvs.pp
+
+fmtbcd$(PPUEXT) : $(OBJPASDIR)/fmtbcd.pp objpas$(PPUEXT) sysutils$(PPUEXT) variants$(PPUEXT) classes$(PPUEXT) system$(PPUEXT)
+        $(COMPILER) $(OBJPASDIR)/fmtbcd.pp
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 #
 # Mac Pascal Model
 #
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
+=======
+macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT)
+>>>>>>> graemeg/fixes_2_2
+=======
+macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT)
+>>>>>>> origin/fixes_2_2
         $(COMPILER) $(INC)/macpas.pp $(REDIR)
 
 #

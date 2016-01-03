@@ -81,7 +81,7 @@ begin
 end;
 
 begin
-   { application default. Can be overridden by the command line options }
+   { application default. Can be overriden by the command line options }
    fl_set_border_width(-2);
 
    fl_initialize(@argc, argv, 'FormDemo', nil, 0);

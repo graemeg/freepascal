@@ -20,11 +20,10 @@
 
    PPangoDirection = ^TPangoDirection;
    TPangoDirection = (
-     PANGO_DIRECTION_LTR,      // A strong left-to-right direction
-     PANGO_DIRECTION_RTL,      // A strong right-to-left direction
-     PANGO_DIRECTION_TTB_LTR,  // A weak left-to-right direction
-     PANGO_DIRECTION_TTB_RTL,  // A weak right-to-left direction
-     PANGO_DIRECTION_NEUTRAL   // No direction specified
+     PANGO_DIRECTION_LTR,
+     PANGO_DIRECTION_RTL,
+     PANGO_DIRECTION_TTB_LTR,
+     PANGO_DIRECTION_TTB_RTL
    );
 {$ENDIF read_interface_types}
 

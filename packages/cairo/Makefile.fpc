@@ -1,6 +1,9 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
 #
+<<<<<<< HEAD
 
 [package]
 name=cairo
@@ -8,6 +11,93 @@ version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+[require]
+packages=fcl-image
+#packages_win32=
+packages_beos=x11
+packages_haiku=x11
+=======
+=======
+>>>>>>> origin/fixes_2_2
+#   Makefile.fpc for cairo
+#
+[require]
+packages=fcl-image
+#packages_win32=
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+packages_beos=x11
+packages_haiku=x11
+>>>>>>> origin/fixes_2.4
+packages_linux=x11
+packages_freebsd=x11
+packages_netbsd=x11
+packages_openbsd=x11
+packages_solaris=x11
+packages_darwin=x11
+<<<<<<< HEAD
+<<<<<<< HEAD
+packages_iphonesim=x11
+
+[package]
+name=cairo
+version=2.5.1
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+[package]
+name=cairo
+version=2.2.5
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+
+[target]
+units=cairo cairoft
+units_win32=cairowin32
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+units_beos=cairoxlib
+units_haiku=cairoxlib
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+units_beos=cairoxlib
+units_haiku=cairoxlib
+>>>>>>> origin/fixes_2.4
+units_linux=cairoxlib
+units_freebsd=cairoxlib
+units_netbsd=cairoxlib
+units_openbsd=cairoxlib
+units_solaris=cairoxlib
+units_darwin=cairoxlib
+<<<<<<< HEAD
+<<<<<<< HEAD
+units_iphonesim=cairoxlib
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -15,6 +105,8 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +192,16 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[compiler]
+includedir=src
+sourcedir=src tests
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

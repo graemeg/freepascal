@@ -1,6 +1,14 @@
 {
     This file is part of the Free Pascal run time library.
+<<<<<<< HEAD
+<<<<<<< HEAD
     Copyright (c) 2012 by the Free Pascal development team
+=======
+    Copyright (c) 2008 by the Free Pascal development team
+>>>>>>> graemeg/fixes_2_2
+=======
+    Copyright (c) 2008 by the Free Pascal development team
+>>>>>>> origin/fixes_2_2
 
     Common stuff for Tiff image format.
 
@@ -28,8 +36,14 @@ type
   end;
 
 const
+<<<<<<< HEAD
+<<<<<<< HEAD
   TiffHandlerName = 'Tagged Image File Format';
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   TiffRational0: TTiffRational = (Numerator: 0; Denominator: 0);
   TiffRational72: TTiffRational = (Numerator: 72; Denominator: 1);
 
@@ -46,6 +60,8 @@ const
   TiffDocumentName = TiffExtraPrefix+'DocumentName';
   TiffDateTime = TiffExtraPrefix+'DateTime';
   TiffImageDescription = TiffExtraPrefix+'ImageDescription';
+<<<<<<< HEAD
+<<<<<<< HEAD
   TiffHostComputer = TiffExtraPrefix+'HostComputer';
   TiffMake_ScannerManufacturer = TiffExtraPrefix+'Make_ScannerManufacturer';
   TiffModel_Scanner = TiffExtraPrefix+'Model_Scanner';
@@ -110,6 +126,24 @@ type
   public
     IFDStart: DWord; // tiff position
     IFDNext: DWord; // tiff position
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  TiffOrientation = TiffExtraPrefix+'Orientation';
+  TiffResolutionUnit = TiffExtraPrefix+'ResolutionUnit';
+  TiffXResolution = TiffExtraPrefix+'XResolution';
+  TiffYResolution = TiffExtraPrefix+'YResolution';
+
+type
+
+  { TTiffIDF }
+
+  TTiffIDF = class
+  public
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Artist: String;
     BitsPerSample: DWord; // tiff position of entry
     BitsPerSampleArray: array of Word;
@@ -117,7 +151,13 @@ type
     CellWidth: DWord;
     ColorMap: DWord;// tiff position of entry
     Compression: DWord;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Predictor: Word;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Copyright: string;
     DateAndTime: string;
     DocumentName: string;
@@ -133,9 +173,15 @@ type
     Make_ScannerManufacturer: string;
     Model_Scanner: string;
     Orientation: DWord;
+<<<<<<< HEAD
+<<<<<<< HEAD
     PageNumber: word; // the page number starting at 0, the total number of pages is PageCount
     PageCount: word; // see PageNumber
     PageName: string;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     PhotoMetricInterpretation: DWord;
     PlanarConfiguration: DWord;
     ResolutionUnit: DWord;
@@ -144,16 +190,30 @@ type
     Software: string;
     StripByteCounts: DWord;// tiff position of entry
     StripOffsets: DWord; // tiff position of entry
+<<<<<<< HEAD
+<<<<<<< HEAD
     TileWidth: DWord;
     TileLength: DWord; // = Height
     TileOffsets: DWord; // tiff position of entry
     TileByteCounts: DWord; // tiff position of entry
     Tresholding: DWord;
+=======
+    Treshholding: DWord;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Treshholding: DWord;
+>>>>>>> origin/fixes_2_2
     XResolution: TTiffRational;
     YResolution: TTiffRational;
     // image
     Img: TFPCustomImage;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FreeImg: boolean;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     RedBits: word;
     GreenBits: word;
     BlueBits: word;
@@ -161,11 +221,19 @@ type
     AlphaBits: word;
     BytesPerPixel: Word;
     procedure Clear;
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure Assign(IFD: TTiffIFD);
     procedure ReadFPImgExtras(Src: TFPCustomImage);
     function ImageLength: DWord; inline;
     constructor Create;
     destructor Destroy; override;
+=======
+    procedure Assign(IDF: TTiffIDF);
+>>>>>>> graemeg/fixes_2_2
+=======
+    procedure Assign(IDF: TTiffIDF);
+>>>>>>> origin/fixes_2_2
   end;
 
 function TiffRationalToStr(const r: TTiffRational): string;
@@ -173,7 +241,13 @@ function StrToTiffRationalDef(const s: string; const Def: TTiffRational): TTiffR
 procedure ClearTiffExtras(Img: TFPCustomImage);
 procedure CopyTiffExtras(SrcImg, DestImg: TFPCustomImage);
 procedure WriteTiffExtras(Msg: string; Img: TFPCustomImage);
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TiffCompressionName(c: Word): string;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 implementation
 
@@ -218,11 +292,21 @@ var
   i: Integer;
 begin
   writeln('WriteTiffExtras ',Msg);
+<<<<<<< HEAD
+<<<<<<< HEAD
   for i:=0 to Img.ExtraCount-1 do
+=======
+  for i:=Img.ExtraCount-1 downto 0 do
+>>>>>>> graemeg/fixes_2_2
+=======
+  for i:=Img.ExtraCount-1 downto 0 do
+>>>>>>> origin/fixes_2_2
     //if SysUtils.CompareText(copy(Img.ExtraKey[i],1,4),'Tiff')=0 then
       writeln('  ',i,' ',Img.ExtraKey[i],'=',Img.ExtraValue[i]);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TiffCompressionName(c: Word): string;
 begin
   case c of
@@ -266,6 +350,20 @@ begin
   PlanarConfiguration:=TiffPlanarConfigurationChunky;
   Compression:=TiffCompressionNone;
   Predictor:=1;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{ TTiffIDF }
+
+procedure TTiffIDF.Clear;
+begin
+  PhotoMetricInterpretation:=High(PhotoMetricInterpretation);
+  PlanarConfiguration:=0;
+  Compression:=0;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   ImageHeight:=0;
   ImageWidth:=0;
   ImageIsThumbNail:=false;
@@ -292,6 +390,8 @@ begin
   CellLength:=0;
   FillOrder:=0;
   Orientation:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
   PageNumber:=0;
   PageCount:=0;
   PageName:='';
@@ -303,6 +403,12 @@ begin
   TileByteCounts:=0;
 
   Tresholding:=0;
+=======
+  Treshholding:=0;
+>>>>>>> graemeg/fixes_2_2
+=======
+  Treshholding:=0;
+>>>>>>> origin/fixes_2_2
 
   RedBits:=0;
   GreenBits:=0;
@@ -310,6 +416,8 @@ begin
   GrayBits:=0;
   AlphaBits:=0;
   BytesPerPixel:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   if FreeImg then begin
     FreeImg:=false;
@@ -423,6 +531,54 @@ begin
   if FreeImg then
     FreeAndNil(Img);
   inherited Destroy;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+end;
+
+procedure TTiffIDF.Assign(IDF: TTiffIDF);
+begin
+  PhotoMetricInterpretation:=IDF.PhotoMetricInterpretation;
+  PlanarConfiguration:=IDF.PlanarConfiguration;
+  Compression:=IDF.Compression;
+  ImageHeight:=IDF.ImageHeight;
+  ImageWidth:=IDF.ImageWidth;
+  ImageIsThumbNail:=IDF.ImageIsThumbNail;
+  ImageIsPage:=IDF.ImageIsPage;
+  ImageIsMask:=IDF.ImageIsMask;
+  BitsPerSample:=IDF.BitsPerSample;
+  BitsPerSampleArray:=IDF.BitsPerSampleArray;
+  ResolutionUnit:=IDF.ResolutionUnit;
+  XResolution:=IDF.XResolution;
+  YResolution:=IDF.YResolution;
+  RowsPerStrip:=IDF.RowsPerStrip;
+  StripOffsets:=IDF.StripOffsets;
+  StripByteCounts:=IDF.StripByteCounts;
+  SamplesPerPixel:=IDF.SamplesPerPixel;
+  Artist:=IDF.Artist;
+  HostComputer:=IDF.HostComputer;
+  ImageDescription:=IDF.ImageDescription;
+  Make_ScannerManufacturer:=IDF.Make_ScannerManufacturer;
+  Model_Scanner:=IDF.Model_Scanner;
+  Copyright:=IDF.Copyright;
+  DateAndTime:=IDF.DateAndTime;
+  Software:=IDF.Software;
+  CellWidth:=IDF.CellWidth;
+  CellLength:=IDF.CellLength;
+  FillOrder:=IDF.FillOrder;
+  Orientation:=IDF.Orientation;
+  Treshholding:=IDF.Treshholding;
+  RedBits:=IDF.RedBits;
+  GreenBits:=IDF.GreenBits;
+  BlueBits:=IDF.BlueBits;
+  GrayBits:=IDF.GrayBits;
+  AlphaBits:=IDF.AlphaBits;
+  if (Img<>nil) and (IDF.Img<>nil) then
+    Img.Assign(IDF.Img);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 end.

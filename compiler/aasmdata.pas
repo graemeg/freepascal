@@ -65,11 +65,14 @@ interface
         al_picdata,
         al_indirectpicdata,
         al_resourcestrings,
+<<<<<<< HEAD
         { Objective-C related sections }
         al_objc_data,
         { keep pool data separate, so we can generate new pool entries
           while emitting other data }
         al_objc_pools,
+=======
+>>>>>>> origin/fixes_2.4
         al_end
       );
 
@@ -83,16 +86,36 @@ interface
          sp_longstr,
          sp_ansistr,
          sp_widestr,
+<<<<<<< HEAD
          sp_unicodestr,
          sp_objcclassnamerefs,
          sp_varnamerefs,
          sp_objcclassnames,
          sp_objcvarnames,
          sp_objcvartypes,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          sp_objcprotocolrefs,
          sp_varsets,
          sp_floats,
          sp_guids
+=======
+         sp_objcprotocolrefs
+>>>>>>> graemeg/cpstrnew
+=======
+         sp_objcprotocolrefs
+>>>>>>> graemeg/cpstrnew
+=======
+         sp_objcprotocolrefs
+>>>>>>> graemeg/cpstrnew
+=======
+         sp_objcprotocolrefs
+>>>>>>> origin/cpstrnew
+=======
+         sp_unicodestr
+>>>>>>> origin/fixes_2.4
       );
       
     const
@@ -117,8 +140,11 @@ interface
         'al_picdata',
         'al_indirectpicdata',
         'al_resourcestrings',
+<<<<<<< HEAD
         'al_objc_data',
         'al_objc_pools',
+=======
+>>>>>>> origin/fixes_2.4
         'al_end'
       );
 
@@ -162,8 +188,23 @@ interface
         AsmLists      : array[TAsmListType] of TAsmList;
         CurrAsmList   : TAsmList;
         WideInits     : TLinkedList;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         ResStrInits   : TLinkedList;
         constructor create(n: pshortstring);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        { hash tables for reusing constant storage }
+        ConstPools    : array[TConstPoolType] of THashSet;
+        constructor create(const n:string);
+>>>>>>> graemeg/cpstrnew
         destructor  destroy;override;
         { asmsymbol }
         function  DefineAsmSymbolByClass(symclass: TAsmSymbolClass; const s : TSymStr;_bind:TAsmSymBind;_typ:Tasmsymtype) : TAsmSymbol;
@@ -204,9 +245,36 @@ interface
         constructor Create(asym: tsym; aoffset: aint; alabel: TAsmSymbol);
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     const
       casmdata: TAsmDataClass = TAsmData;
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      TTCInitItem = class(TLinkedListItem)
+        sym: tsym;
+        offset: aint;
+        datalabel: TAsmLabel;
+        constructor Create(asym: tsym; aoffset: aint; alabel: TAsmLabel);
+      end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     var
       CAsmCFI : TAsmCFIClass;
@@ -275,6 +343,31 @@ implementation
       begin
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{*****************************************************************************
+                                 TTCInitItem
+*****************************************************************************}
+
+
+    constructor TTCInitItem.Create(asym: tsym; aoffset: aint; alabel: TAsmLabel);
+      begin
+        inherited Create;
+        sym:=asym;
+        offset:=aoffset;
+        datalabel:=alabel;
+      end;
+
+>>>>>>> graemeg/cpstrnew
 {*****************************************************************************
                                  TTCInitItem
 *****************************************************************************}
@@ -357,8 +450,26 @@ implementation
         CurrAsmList:=TAsmList.create;
         for hal:=low(TAsmListType) to high(TAsmListType) do
           AsmLists[hal]:=TAsmList.create;
+<<<<<<< HEAD
         WideInits :=TLinkedList.create;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         ResStrInits:=TLinkedList.create;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+        { PIC data }
+        if (target_info.system in systems_darwin) then
+          AsmLists[al_picdata].concat(tai_directive.create(asd_non_lazy_symbol_pointer,''));
+>>>>>>> graemeg/fixes_2_2
         { CFI }
         FAsmCFI:=CAsmCFI.Create;
       end;
@@ -390,7 +501,19 @@ implementation
 {$ifdef MEMDEBUG}
          memasmlists.start;
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         ResStrInits.free;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         WideInits.free;
          for hal:=low(TAsmListType) to high(TAsmListType) do
            AsmLists[hal].free;
@@ -498,6 +621,10 @@ implementation
 
     procedure TAsmData.getlabel(out l : TAsmLabel;alt:TAsmLabeltype);
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if (target_info.system in (systems_linux + systems_bsd + systems_android)) and
            { the next condition was
              (cs_create_smart in current_settings.moduleswitches) and
@@ -505,6 +632,27 @@ implementation
            (create_smartlink_library) and
            (alt = alt_dbgline) then
           l:=TAsmLabel.createglobal(AsmSymbolDict,name^,FNextLabelNr[alt],alt)
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        if (target_info.system in systems_linux) and
+           (cs_link_smart in current_settings.globalswitches) and
+           (alt = alt_dbgline) then
+          l:=TAsmLabel.createglobal(AsmSymbolDict,name,FNextLabelNr[alt],alt)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         else
           l:=TAsmLabel.createlocal(AsmSymbolDict,FNextLabelNr[alt],alt);
         inc(FNextLabelNr[alt]);
@@ -519,6 +667,8 @@ implementation
 
     procedure TAsmData.getglobaljumplabel(out l : TAsmLabel);
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
         l:=TAsmLabel.createglobal(AsmSymbolDict,name^,FNextLabelNr[alt_jump],alt_jump);
         inc(FNextLabelNr[alt_jump]);
       end;
@@ -537,6 +687,16 @@ implementation
         inc(FNextLabelNr[alt_data]);
       end;
 
+=======
+        l:=TAsmLabel.createglobal(AsmSymbolDict,name,FNextLabelNr[alt_jump],alt_jump);
+        inc(FNextLabelNr[alt_jump]);
+      end;
+>>>>>>> graemeg/fixes_2_2
+=======
+        l:=TAsmLabel.createglobal(AsmSymbolDict,name,FNextLabelNr[alt_jump],alt_jump);
+        inc(FNextLabelNr[alt_jump]);
+      end;
+>>>>>>> origin/fixes_2_2
 
     procedure TAsmData.getlocaldatalabel(out l: TAsmLabel);
       begin

@@ -19,6 +19,19 @@
 {$define FPC_SYSTEM_FPC_MOVE}
 {$endif FPC_SYSTEM_HAS_MOVE}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifndef FPC_SYSTEM_HAS_MOVE}
+{$define FPC_SYSTEM_FPC_MOVE}
+{$endif FPC_SYSTEM_HAS_MOVE}
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifdef FPC_SYSTEM_FPC_MOVE}
 const
   cpu_has_edsp : boolean = false;
@@ -26,9 +39,33 @@ const
 {$endif FPC_SYSTEM_FPC_MOVE}
 
 {$if not(defined(wince)) and not(defined(gba)) and not(defined(nds)) and not(defined(FPUSOFT)) and not(defined(FPULIBGCC))}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 {$define FPC_SYSTEM_HAS_SYSINITFPU}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if not defined(darwin) and not defined(FPUVFPV2) and not defined(FPUVFPV3) and not defined(FPUVFPV3_D16)}
+=======
+{$if not defined(darwin) and not defined(FPUVFPV2) and not defined(FPUVFPV3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if not defined(darwin) and not defined(FPUVFPV2) and not defined(FPUVFPV3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if not defined(darwin) and not defined(FPUVFPV2) and not defined(FPUVFPV3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if not defined(darwin) and not defined(FPUVFPV2) and not defined(FPUVFPV3)}
+>>>>>>> origin/cpstrnew
+=======
+{$define FPC_SYSTEM_HAS_SYSINITFPU}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$define FPC_SYSTEM_HAS_SYSINITFPU}
+>>>>>>> origin/fixes_2_2
 Procedure SysInitFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
 begin
   { Enable FPU exceptions, but disable INEXACT, UNDERFLOW, DENORMAL }
@@ -39,6 +76,8 @@ begin
     wfs r0
   end;
 end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$else}
 Procedure SysInitFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
 begin
@@ -50,7 +89,23 @@ begin
     // mask "exception happened" and overflow flags
     and  r0,r0,#0xffffff20
     // mask exception flags
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     and  r0,r0,#0xffff40ff
+=======
+    and  r0,r0,#0xffff40ff    
+>>>>>>> graemeg/cpstrnew
+=======
+    and  r0,r0,#0xffff40ff    
+>>>>>>> graemeg/cpstrnew
+=======
+    and  r0,r0,#0xffff40ff    
+>>>>>>> graemeg/cpstrnew
+=======
+    and  r0,r0,#0xffff40ff    
+>>>>>>> origin/cpstrnew
 {$ifndef darwin}
     // Floating point exceptions cause kernel panics on iPhoneOS 2.2.1...
 
@@ -63,13 +118,26 @@ begin
   end;
 end;
 {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
 {$endif}
 
 procedure fpc_cpuinit;
 begin
+<<<<<<< HEAD
   { don't let libraries influence the FPU cw set by the host program }
   if not IsLibrary then
     SysInitFPU;
+=======
+  SysInitFPU;
+>>>>>>> graemeg/fixes_2_2
+=======
+{$endif}
+
+procedure fpc_cpuinit;
+begin
+  SysInitFPU;
+>>>>>>> origin/fixes_2_2
 end;
 
 {$ifdef wince}
@@ -78,11 +146,25 @@ function _controlfp(new: DWORD; mask: DWORD): DWORD; cdecl; external 'coredll';
 {$define FPC_SYSTEM_HAS_SYSRESETFPU}
 Procedure SysResetFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
 begin
+<<<<<<< HEAD
+=======
+  softfloat_exception_flags:=0;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 {$define FPC_SYSTEM_HAS_SYSINITFPU}
 Procedure SysInitFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  softfloat_exception_mask:=float_flag_underflow or float_flag_inexact or float_flag_denormal;
+>>>>>>> graemeg/fixes_2_2
   { Enable FPU exceptions, but disable INEXACT, UNDERFLOW, DENORMAL }
   { FPU precision 64 bit, rounding to nearest, affine infinity }
   _controlfp($000C0003, $030F031F);
@@ -99,33 +181,63 @@ function get_frame:pointer;assembler;nostackframe;
 asm
 {$ifndef darwin}
   mov    r0,r11
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$else}
   mov    r0,r7
 {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 {$ENDIF not INTERNAL_BACKTRACE}
 
 {$define FPC_SYSTEM_HAS_GET_CALLER_ADDR}
 function get_caller_addr(framebp:pointer;addr:pointer=nil):pointer;assembler;nostackframe;
 asm
+<<<<<<< HEAD
   cmp r0,#0
 {$ifndef darwin}
   ldrne r0,[r0,#-4]
 {$else}
   ldrne r0,[r0,#4]
 {$endif}
+=======
+  movs r0,r0
+  beq .Lg_a_null
+  ldr r0,[r0,#-4]
+.Lg_a_null:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 
 {$define FPC_SYSTEM_HAS_GET_CALLER_FRAME}
 function get_caller_frame(framebp:pointer;addr:pointer=nil):pointer;assembler;nostackframe;
 asm
+<<<<<<< HEAD
   cmp r0,#0
 {$ifndef darwin}
   ldrne r0,[r0,#-12]
 {$else}
   ldrne r0,[r0]
 {$endif}
+=======
+  movs r0,r0
+  beq .Lgnf_null
+  // see comments in arm/cgcpu.pas, g_proc_entry
+  ldr r0,[r0,#-12]
+.Lgnf_null:
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 
@@ -141,11 +253,28 @@ end;
 Procedure FillChar(var x;count:longint;value:byte);assembler;nostackframe;
 asm
         // less than 0?
+<<<<<<< HEAD
         cmp     r1,#0
 {$ifdef CPUARM_HAS_BX}
         bxle    lr
 {$else}
         movle   pc,lr
+=======
+        cmp r1,#0
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+        movlt pc,lr
+{$else}
+        bxlt  lr
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endif}
         mov     r3,r0
 
@@ -164,6 +293,7 @@ asm
         // Do 16 bytes per loop
         // More unrolling is uncessary, as we'll just stall on the write buffers
         stmia   r3!,{r2,ip}
+<<<<<<< HEAD
         subs    r1,r1,#8
         stmplia r3!,{r2,ip}
         subpls  r1,r1,#8
@@ -210,17 +340,70 @@ asm
         tst r3,#3
         bne .LFillchar_do_align
         b .LFillchar_is_aligned
+=======
+        sub     r1,r1,#8
+        cmp     r1,#8           // 8 bytes still to do?
+        blt     .LFillchar2
+        stmia   r3!,{r2,ip}
+        sub     r1,r1,#8
+        cmp     r1,#8           // 8 bytes still to do?
+        blt     .LFillchar2
+        stmia   r3!,{r2,ip}
+        sub     r1,r1,#8
+        cmp     r1,#8           // 8 bytes still to do?
+        stmgeia r3!,{r2,ip}
+        subge   r1,r1,#8
+        bge     .LFillchar1
+.LFillchar2:
+        movs r1,r1              // anything left?
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+        moveq   pc,lr
+{$else}
+        bxeq    lr
+{$endif}
+        rsb     r1,r1,#7
+        add     pc,pc,r1,lsl #2
+        mov     r0,r0
+        strb r2,[r3],#1
+        strb r2,[r3],#1
+        strb r2,[r3],#1
+        strb r2,[r3],#1
+        strb r2,[r3],#1
+        strb r2,[r3],#1
+        strb r2,[r3],#1
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+        mov pc,lr
+{$else}
+        bx  lr
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;
 {$endif FPC_SYSTEM_HAS_FILLCHAR}
 
 {$ifndef FPC_SYSTEM_HAS_MOVE}
 {$define FPC_SYSTEM_HAS_MOVE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_EDSP}
 procedure Move(const source;var dest;count:longint);[public, alias: 'FPC_MOVE'];assembler;nostackframe;
 {$else CPUARM_HAS_EDSP}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 procedure Move_pld(const source;var dest;count:longint);assembler;nostackframe;
 {$endif CPUARM_HAS_EDSP}
 asm
+<<<<<<< HEAD
   // pld [r0]
   // encode this using .long so the rtl assembles also with instructions sets not supporting pld
   .long 0xf5d0f000
@@ -236,6 +419,39 @@ asm
   subs   r3, r1, r0    // if (dest > source) and
   cmphi  r2, r3        //    (count > dest - src) then
   bhi    .Loverlapped  //   DoReverseByteCopy;
+=======
+  pld [r0]
+  // count <=0 ?
+  cmp r2,#0
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  movle pc,lr
+{$else}
+  bxle  lr
+{$endif}
+  // overlap?
+  cmp r1,r0
+  bls .Lnooverlap
+  add r3,r0,r2
+  cmp r3,r1
+  bls .Lnooverlap
+  // overlap, copy backward
+.Loverlapped:
+  subs r2,r2,#1
+  ldrb r3,[r0,r2]
+  strb r3,[r1,r2]
+  bne .Loverlapped
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  mov pc,lr
+{$else}
+  bx  lr
+{$endif}
+.Lnooverlap:
+  // less then 16 bytes to copy?
+  cmp r2,#8
+  // yes, the forget about the whole optimizations
+  // and do a bytewise copy
+  blt .Lbyteloop
+>>>>>>> graemeg/cpstrnew
 
   cmp r2,#8            // if (count < 8) then
   blt .Lbyteloop       //    DoForwardByteCopy;
@@ -248,10 +464,43 @@ asm
   // encode this using .long so the rtl assembles also with instructions sets not supporting pld
   .long 0xf5d0f020
 
+<<<<<<< HEAD
+=======
+  bne .Lbyteloop
+(*
+  // yes, then align
+  // alignment to 4 byte boundries is enough
+  ldrb ip,[r0],#1
+  sub r2,r2,#1
+  stb ip,[r1],#1
+  tst r3,#2
+  bne .Ldifferentaligned
+  ldrh ip,[r0],#2
+  sub r2,r2,#2
+  sth ip,[r1],#2
+
+.Ldifferentaligned
+  // qword aligned?
+  orrs r3,r0,r1
+  tst r3,#7
+  bne .Ldwordloop
+*)
+  pld [r0,#32]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 .Ldwordloop:
   ldmia r0!, {r3, ip}
 
   // preload
+<<<<<<< HEAD
   // pld   [r0,#64]
   // encode this using .long so the rtl assembles also with instructions sets not supporting pld
   .long 0xf5d0f040
@@ -265,12 +514,36 @@ asm
   bxeq  lr
 {$else}
   moveq pc,lr
+=======
+  pld [r0,#64]
+  cmp r2,#4
+  str r3,[r1],#4
+  bcs .Ldwordloop
+  cmp r2,#0
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  moveq pc,lr
+{$else}
+  bxeq  lr
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endif}
 .Lbyteloop:
   subs r2,r2,#1
   ldrb r3,[r0],#1
   strb r3,[r1],#1
   bne .Lbyteloop
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_BX}
   bx  lr
 {$else}
@@ -281,6 +554,28 @@ asm
   ldrb r3,[r0,r2]
   strb r3,[r1,r2]
   bne .Loverlapped
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  mov pc,lr
+{$else}
+  bx  lr
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;
 
 {$ifndef CPUARM_HAS_EDSP}
@@ -288,6 +583,10 @@ procedure Move_blended(const source;var dest;count:longint);assembler;nostackfra
 asm
   // count <=0 ?
   cmp r2,#0
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_BX}
   bxle  lr
 {$else}
@@ -297,6 +596,46 @@ asm
   subs   r3, r1, r0    // if (dest > source) and
   cmphi  r2, r3        //    (count > dest - src) then
   bhi    .Loverlapped  //   DoReverseByteCopy;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  movle pc,lr
+=======
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  movle pc,lr
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  movle pc,lr
+>>>>>>> origin/cpstrnew
+{$else}
+  bxle  lr
+{$endif}
+  // overlap?
+  cmp r1,r0
+  bls .Lnooverlap
+  add r3,r0,r2
+  cmp r3,r1
+  bls .Lnooverlap
+  // overlap, copy backward
+.Loverlapped:
+  subs r2,r2,#1
+  ldrb r3,[r0,r2]
+  strb r3,[r1,r2]
+  bne .Loverlapped
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  mov pc,lr
+{$else}
+  bx  lr
+{$endif}
+.Lnooverlap:
+  // less then 16 bytes to copy?
+  cmp r2,#8
+  // yes, the forget about the whole optimizations
+  // and do a bytewise copy
+  blt .Lbyteloop
+>>>>>>> graemeg/cpstrnew
 
   cmp r2,#8            // if (count < 8) then
   blt .Lbyteloop       //    DoForwardByteCopy;
@@ -306,6 +645,7 @@ asm
   bne   .Lbyteloop     //   DoForwardByteCopy;
 
 .Ldwordloop:
+<<<<<<< HEAD
   ldmia r0!, {r3, ip}
   sub   r2,r2,#8
   cmp   r2, #8
@@ -316,12 +656,37 @@ asm
   bxeq  lr
 {$else}
   moveq pc,lr
+=======
+  sub r2,r2,#4
+  ldr r3,[r0],#4
+  cmp r2,#4
+  str r3,[r1],#4
+  bcs .Ldwordloop
+  cmp r2,#0
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  moveq pc,lr
+{$else}
+  bxeq  lr
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endif}
 .Lbyteloop:
   subs r2,r2,#1
   ldrb r3,[r0],#1
   strb r3,[r1],#1
   bne .Lbyteloop
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_BX}
   bx  lr
 {$else}
@@ -332,17 +697,53 @@ asm
   ldrb r3,[r0,r2]
   strb r3,[r1,r2]
   bne .Loverlapped
+=======
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  mov pc,lr
+{$else}
+  bx  lr
+{$endif}
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  mov pc,lr
+{$else}
+  bx  lr
+{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+  mov pc,lr
+{$else}
+  bx  lr
+{$endif}
+>>>>>>> origin/cpstrnew
 end;
 
 const
   moveproc : procedure(const source;var dest;count:longint) = @move_blended;
 
+<<<<<<< HEAD
 procedure Move(const source;var dest;count:longint);[public, alias: 'FPC_MOVE']; {$ifndef FPC_PIC} assembler;nostackframe; {$endif FPC_PIC}
 {$ifdef FPC_PIC}
 begin
   moveproc(source,dest,count);
 end;
 {$else FPC_PIC}
+=======
+const
+  moveproc : pointer = @move_blended;
+
+const
+  moveproc : pointer = @move_blended;
+
+procedure Move(const source;var dest;count:longint);[public, alias: 'FPC_MOVE'];assembler;nostackframe;
+>>>>>>> graemeg/fixes_2_2
 asm
   ldr ip,.Lmoveproc
   ldr pc,[ip]
@@ -362,7 +763,21 @@ end;
 {$ifndef FPC_SYSTEM_HAS_FPC_SHORTSTR_ASSIGN}
 {$define FPC_SYSTEM_HAS_FPC_SHORTSTR_ASSIGN}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure fpc_shortstr_to_shortstr(out res:shortstring;const sstr:shortstring);assembler;nostackframe;[public,alias: 'FPC_SHORTSTR_TO_SHORTSTR'];compilerproc;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifndef FPC_STRTOSHORTSTRINGPROC}
+function fpc_shortstr_to_shortstr(len:longint;const sstr:shortstring):shortstring;assembler;nostackframe;[public,alias: 'FPC_SHORTSTR_TO_SHORTSTR'];compilerproc;
+{$else}
+procedure fpc_shortstr_to_shortstr(out res:shortstring;const sstr:shortstring);assembler;nostackframe;[public,alias: 'FPC_SHORTSTR_TO_SHORTSTR'];compilerproc;
+{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {r0: __RESULT
  r1: len
  r2: sstr}
@@ -480,12 +895,25 @@ end;
 
 {$ifndef FPC_SYSTEM_HAS_FPC_PCHAR_LENGTH}
 {$define FPC_SYSTEM_HAS_FPC_PCHAR_LENGTH}
+<<<<<<< HEAD
+<<<<<<< HEAD
 function fpc_Pchar_length(p:Pchar):sizeint;assembler;nostackframe;[public,alias:'FPC_PCHAR_LENGTH'];compilerproc;
 
 asm
     cmp r0,#0
     mov r1,r0
     beq .Ldone
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function fpc_Pchar_length(p:Pchar):longint;assembler;nostackframe;[public,alias:'FPC_PCHAR_LENGTH'];compilerproc;
+
+asm
+    mov r1,r0
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 .Lnextchar:
     (*Are we aligned?*)
     tst r1,#3
@@ -508,18 +936,54 @@ asm
     (*Dirty trick: we need to subtract 1 extra because we have counted the
       terminating 0, due to the known carry flag sbc can do this.*)
     sbc r0,r1,r0
+<<<<<<< HEAD
+<<<<<<< HEAD
 .Ldone:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_BX}
     bx  lr
 {$else}
     mov pc,lr
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+    mov pc,lr
+{$else}
+    bx  lr
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv3) or defined(cpuarmv4) or defined(cpuarmv5)}
+    mov pc,lr
+{$else}
+    bx  lr
+>>>>>>> origin/cpstrnew
 {$endif}
+=======
+    mov pc,lr
+>>>>>>> graemeg/fixes_2_2
+=======
+    mov pc,lr
+>>>>>>> origin/fixes_2_2
 .L01010101:
     .long 0x01010101
 end;
 {$endif}
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef darwin}
 {$define FPC_SYSTEM_HAS_ANSISTR_DECR_REF}
 Procedure fpc_ansistr_decr_ref (Var S : Pointer); [Public,Alias:'FPC_ANSISTR_DECR_REF'];assembler;nostackframe; compilerproc;
@@ -608,16 +1072,42 @@ end;
 
   {$endif FPC_PIC}
 {$endif}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+var
+  fpc_system_lock: longint; export name 'fpc_system_lock';
+>>>>>>> graemeg/fixes_2_2
 
 function InterLockedDecrement (var Target: longint) : longint; assembler; nostackframe;
 asm
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_LDREX}
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> origin/cpstrnew
 .Lloop:
   ldrex r1, [r0]
   sub   r1, r1, #1
   strex r2, r1, [r0]
   cmp r2, #0
   bne .Lloop
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   movs r0, r1
   bx  lr
 {$else}
@@ -656,6 +1146,26 @@ asm
   b .Latomic_dec_loop // kuser_cmpxchg sets C flag on error
 
 {$else}
+=======
+  mov r0, r1
+  bx  lr
+{$else}
+>>>>>>> graemeg/cpstrnew
+=======
+  mov r0, r1
+  bx  lr
+{$else}
+>>>>>>> graemeg/cpstrnew
+=======
+  mov r0, r1
+  bx  lr
+{$else}
+>>>>>>> graemeg/cpstrnew
+=======
+  mov r0, r1
+  bx  lr
+{$else}
+>>>>>>> origin/cpstrnew
 // lock
   {$ifdef FPC_PIC}
     push {r0,lr}
@@ -681,16 +1191,46 @@ asm
   movs r0, r1
 // unlock and return
   str r2, [r3]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_BX}
   bx  lr
 {$else}
   mov pc,lr
 {$endif}
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> origin/cpstrnew
 
 {$ifndef FPC_PIC}
 .Lfpc_system_lock:
   .long fpc_system_lock
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif FPC_PIC}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$endif}
+end;
+>>>>>>> graemeg/cpstrnew
 
 {$endif}
 {$endif}
@@ -698,7 +1238,23 @@ end;
 
 function InterLockedIncrement (var Target: longint) : longint; assembler; nostackframe;
 asm
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_LDREX}
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> origin/cpstrnew
 .Lloop:
   ldrex r1, [r0]
   add   r1, r1, #1
@@ -708,6 +1264,10 @@ asm
   mov r0, r1
   bx  lr
 {$else}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef SYSTEM_HAS_KUSER_CMPXCHG}
   stmfd r13!, {lr}
   mov r2, r0   // kuser_cmpxchg does not clobber r2 by definition
@@ -741,6 +1301,14 @@ asm
   b .Latomic_inc_loop // kuser_cmpxchg sets C flag on error
 
 {$else}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 // lock
   {$ifdef FPC_PIC}
     push {r0,lr}
@@ -766,16 +1334,46 @@ asm
   mov r0, r1
 // unlock and return
   str r2, [r3]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_BX}
   bx  lr
 {$else}
   mov pc,lr
 {$endif}
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> origin/cpstrnew
 
 {$ifndef FPC_PIC}
 .Lfpc_system_lock:
   .long fpc_system_lock
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif FPC_PIC}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$endif}
+end;
+>>>>>>> graemeg/cpstrnew
 
 {$endif}
 {$endif}
@@ -783,7 +1381,23 @@ end;
 
 function InterLockedExchange (var Target: longint;Source : longint) : longint; assembler; nostackframe;
 asm
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_LDREX}
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> origin/cpstrnew
 // swp is deprecated on ARMv6 and above
 .Lloop:
   ldrex r2, [r0]
@@ -793,6 +1407,10 @@ asm
   mov r0, r2
   bx  lr
 {$else}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef SYSTEM_HAS_KUSER_CMPXCHG}
   stmfd r13!, {r4, lr}
   mov r2, r0   // kuser_cmpxchg does not clobber r2 (and r1) by definition
@@ -863,12 +1481,44 @@ asm
 {$endif FPC_PIC}
 
 {$endif}
+=======
+  swp r1, r1, [r0]
+  mov r0,r1
+>>>>>>> graemeg/cpstrnew
+=======
+  swp r1, r1, [r0]
+  mov r0,r1
+>>>>>>> graemeg/cpstrnew
+=======
+  swp r1, r1, [r0]
+  mov r0,r1
+>>>>>>> graemeg/cpstrnew
+=======
+  swp r1, r1, [r0]
+  mov r0,r1
+>>>>>>> origin/cpstrnew
 {$endif}
 end;
 
 function InterLockedExchangeAdd (var Target: longint;Source : longint) : longint; assembler; nostackframe;
 asm
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_LDREX}
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> origin/cpstrnew
 .Lloop:
   ldrex r2, [r0]
   add   r12, r1, r2
@@ -878,6 +1528,10 @@ asm
   mov  r0, r2
   bx  lr
 {$else}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef SYSTEM_HAS_KUSER_CMPXCHG}
   stmfd r13!, {r4, lr}
   mov r2, r0   // kuser_cmpxchg does not clobber r2 by definition
@@ -916,6 +1570,14 @@ asm
   b .Latomic_add_loop // kuser_cmpxchg failed, loop back
 
 {$else}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 // lock
   {$ifdef FPC_PIC}
     push {r0,r1,lr}
@@ -942,25 +1604,69 @@ asm
 // unlock and return
   mov r2, #0
   str r2, [r3]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_BX}
   bx  lr
 {$else}
   mov pc,lr
 {$endif}
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> origin/cpstrnew
 
 {$ifndef FPC_PIC}
 .Lfpc_system_lock:
   .long fpc_system_lock
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif FPC_PIC}
 
 {$endif}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endif}
 end;
 
 
 function InterlockedCompareExchange(var Target: longint; NewValue: longint; Comperand: longint): longint; assembler; nostackframe;
 asm
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_LDREX}
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> graemeg/cpstrnew
+=======
+{$if defined(cpuarmv6) or defined(cpuarmv7m) or defined(cpucortexm3)}
+>>>>>>> origin/cpstrnew
 .Lloop:
   ldrex    r3, [r0]
   mov      r12, #0
@@ -971,6 +1677,10 @@ asm
   mov      r0, r3
   bx       lr
 {$else}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef SYSTEM_HAS_KUSER_CMPXCHG}
   stmfd r13!, {r4, lr}
 
@@ -1009,6 +1719,14 @@ asm
   b    .Linterlocked_compare_exchange_loop
 
 {$else}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 // lock
   {$ifdef FPC_PIC}
     push {r0,r1,r2,lr}
@@ -1035,18 +1753,46 @@ asm
 // unlock and return
   mov r3, #0
   str r3, [r12]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef CPUARM_HAS_BX}
   bx  lr
 {$else}
   mov pc,lr
 {$endif}
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> graemeg/cpstrnew
+=======
+  bx  lr
+>>>>>>> origin/cpstrnew
 
 {$ifndef FPC_PIC}
 .Lfpc_system_lock:
   .long fpc_system_lock
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif FPC_PIC}
 
 {$endif}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endif}
 end;
 
@@ -1067,15 +1813,29 @@ end;
 procedure fpc_cpucodeinit;
 begin
 {$ifdef FPC_SYSTEM_FPC_MOVE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef CPUARM_HAS_EDSP}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   cpu_has_edsp:=true;
   in_edsp_test:=true;
   asm
     bic r0,sp,#7
+<<<<<<< HEAD
+<<<<<<< HEAD
 
     // ldrd r0,r1,[r0]
     // encode this using .long so the rtl assembles also with instructions sets not supporting pld
     .long 0xe1c000d0
+=======
+    ldrd r0,[r0]
+>>>>>>> graemeg/fixes_2_2
+=======
+    ldrd r0,[r0]
+>>>>>>> origin/fixes_2_2
   end;
   in_edsp_test:=false;
   if cpu_has_edsp then
@@ -1088,6 +1848,8 @@ begin
 {$endif FPC_SYSTEM_FPC_MOVE}
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$define FPC_SYSTEM_HAS_SWAPENDIAN}
 
 { SwapEndian(<16 Bit>) being inlined is faster than using assembler }
@@ -1263,3 +2025,13 @@ end;
 
 {include hand-optimized assembler division code}
 {$i divide.inc}
+=======
+{include hand-optimized assembler division code}
+{$i divide.inc}
+
+>>>>>>> graemeg/fixes_2_2
+=======
+{include hand-optimized assembler division code}
+{$i divide.inc}
+
+>>>>>>> origin/fixes_2_2

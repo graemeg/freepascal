@@ -20,6 +20,8 @@ interface
 {$mode objfpc}
 {$PACKRECORDS C}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if defined(BSD)}
   uses initc,BaseUnix, unixtype;
   {$i pthrbsd.inc}
@@ -41,8 +43,44 @@ interface
   {$i pthraix.inc}
 {$else}
   {$error operating system not detected}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef BSD}
+uses initc,BaseUnix, unixtype;
+{$i pthrbsd.inc}
+{$else}
+ {$ifdef linux}
+ uses initc,unixtype;
+ {$i pthrlinux.inc}
+ {$else}
+
+  {$ifdef sunos}
+  uses initc,unixtype;
+  {$i pthrsnos.inc}
+  {$else}
+   {$ifdef beos}
+   uses initc, baseunix, unixtype;
+   {$i pthrbeos.inc}
+   {$else}
+    {$error operating system not detected}
+   {$endif}
+  {$endif}
+ {$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$endif}
 
 implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 end.
+=======
+end.
+>>>>>>> graemeg/fixes_2_2
+=======
+end.
+>>>>>>> origin/fixes_2_2

@@ -189,7 +189,15 @@ begin
        bit9_15 := 63;
        assert((AsWord and $7fff) = $7FFF, 'Is: ' + IntToHex(Asword,4) + ' Should be $7FFF');
 {$else}
+<<<<<<< HEAD
+<<<<<<< HEAD
        assert((AsWord and $fffe) = $c000, 'Is: ' + IntToHex(Asword,4) + ' Should be $C000');
+=======
+       assert((AsWord and $fffe) = $c000, 'Is: ' + IntToHex(Asword,4) + ' Should be $C001');
+>>>>>>> graemeg/fixes_2_2
+=======
+       assert((AsWord and $fffe) = $c000, 'Is: ' + IntToHex(Asword,4) + ' Should be $C001');
+>>>>>>> origin/fixes_2_2
 
        bit1_8 := $FE;
        assert((AsWord and $fffe) = $FF00, 'Is: ' + IntToHex(Asword,4) + ' Should be $FF00');

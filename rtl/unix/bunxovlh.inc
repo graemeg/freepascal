@@ -26,6 +26,7 @@ Function  FpExecv   (const path : RawByteString; argv : ppchar): cInt; inline;
 Function  FpOpendir (const dirname : RawByteString): pDir; inline;
 Function  FpOpendir (dirname : ShortString): pDir; inline;
 Function  FpOpen    (path : pChar; flags : cInt):cInt; inline;
+<<<<<<< HEAD
 Function  FpOpen    (const path : RawByteString; flags : cInt):cInt; inline;
 Function  FpOpen    (const path : RawByteString; flags : cInt; Mode: TMode):cInt; inline;
 Function  FpOpen    (path : ShortString; flags : cInt):cInt;
@@ -41,6 +42,23 @@ Function  fpLstat   (const path: RawByteString; Info: pstat):cint; inline;
 Function  fpLstat   (path:pchar;var Info:stat):cint; inline;
 Function  fpLstat   (const Filename: RawByteString;var Info:stat):cint; inline;
 Function  FpAccess  (const pathname : RawByteString; aMode : cInt): cInt; inline;
+=======
+Function  FpOpen    (path : AnsiString; flags : cInt):cInt; inline;
+Function  FpOpen    (path : AnsiString; flags : cInt; Mode: TMode):cInt; inline;
+Function  FpOpen    (path : String; flags : cInt):cInt;
+Function  FpOpen    (path : String; flags : cInt; Mode: TMode):cInt;
+Function  FpChdir   (path : AnsiString): cInt; inline;
+Function  FpMkdir   (path : AnsiString; Mode: TMode):cInt; inline;
+Function  FpUnlink  (path : AnsiString): cInt; inline;
+Function  FpRmdir   (path : AnsiString): cInt; inline;
+Function  FpRename  (old  : AnsiString;newpath: AnsiString): cInt; inline;
+Function  FpStat    (path: AnsiString; var buf : stat): cInt; inline;
+Function  FpStat    (path: String; var buf : stat): cInt;
+Function  fpLstat   (path: Ansistring; Info: pstat):cint; inline;
+Function  fpLstat   (path:pchar;var Info:stat):cint; inline;
+Function  fpLstat   (Filename: ansistring;var Info:stat):cint; inline;
+Function  FpAccess  (pathname : AnsiString; aMode : cInt): cInt; inline;
+>>>>>>> graemeg/fixes_2_2
 function  FpWaitPid (pid : TPid; Var Status : cInt; Options : cint) : TPid;
 
 Function  FPFStat   (var F:Text;Var Info:stat):Boolean; inline;

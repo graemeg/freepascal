@@ -1,6 +1,6 @@
 {
     Free Pascal port of the OpenPTC C++ library.
-    Copyright (C) 2001-2007, 2009-2012  Nikolay Nikolov (nickysn@users.sourceforge.net)
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -30,51 +30,10 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }
 
-type
-  TPTCColor = class(TInterfacedObject, IPTCColor)
-  private
-    FIndex: Integer;
-    FRed, FGreen, FBlue, FAlpha: Single;
-    FIndexed: Boolean;
-
-    function GetIndex: Integer;
-    function GetR: Single;
-    function GetG: Single;
-    function GetB: Single;
-    function GetA: Single;
-    function GetDirect: Boolean;
-    function GetIndexed: Boolean;
-    function Equals(AColor: IPTCColor): Boolean; reintroduce;
-  public
-    constructor Create;
-    constructor Create(AIndex: Integer);
-    constructor Create(ARed, AGreen, ABlue: Single; AAlpha: Single = 1);
-    constructor Create(AColor: IPTCColor);
-  end;
-
-class function TPTCColorFactory.CreateNew: IPTCColor;
-begin
-  Result := TPTCColor.Create;
-end;
-
-class function TPTCColorFactory.CreateNew(AIndex: Integer): IPTCColor;
-begin
-  Result := TPTCColor.Create(AIndex);
-end;
-
-class function TPTCColorFactory.CreateNew(ARed, AGreen, ABlue: Single; AAlpha: Single = 1): IPTCColor;
-begin
-  Result := TPTCColor.Create(ARed, AGreen, ABlue, AAlpha);
-end;
-
-class function TPTCColorFactory.CreateNew(AColor: IPTCColor): IPTCColor;
-begin
-  Result := TPTCColor.Create(AColor);
-end;
-
 constructor TPTCColor.Create;
 begin
   FIndexed := False;
+  FDirect  := False;
   FIndex   := 0;
   FRed     := 0;
   FGreen   := 0;
@@ -85,6 +44,7 @@ end;
 constructor TPTCColor.Create(AIndex: Integer);
 begin
   FIndexed := True;
+  FDirect  := False;
   FIndex   := AIndex;
   FRed     := 0;
   FGreen   := 0;
@@ -95,6 +55,7 @@ end;
 constructor TPTCColor.Create(ARed, AGreen, ABlue: Single; AAlpha: Single = 1);
 begin
   FIndexed := False;
+  FDirect  := True;
   FIndex   := 0;
   FRed     := ARed;
   FGreen   := AGreen;
@@ -102,57 +63,35 @@ begin
   FAlpha   := AAlpha;
 end;
 
-constructor TPTCColor.Create(AColor: IPTCColor);
+constructor TPTCColor.Create(const AColor: TPTCColor);
 begin
-  FIndex   := AColor.Index;
-  FRed     := AColor.R;
-  FGreen   := AColor.G;
-  FBlue    := AColor.B;
-  FAlpha   := AColor.A;
-  FIndexed := AColor.Indexed;
+  FIndex   := AColor.FIndex;
+  FRed     := AColor.FRed;
+  FGreen   := AColor.FGreen;
+  FBlue    := AColor.FBlue;
+  FAlpha   := AColor.FAlpha;
+  FDirect  := AColor.FDirect;
+  FIndexed := AColor.FIndexed;
 end;
 
-function TPTCColor.Equals(AColor: IPTCColor): Boolean;
+procedure TPTCColor.Assign(const AColor: TPTCColor);
 begin
-  Result := (FIndexed = AColor.Indexed) and
-            (FIndex   = AColor.Index) and
-            (FRed     = AColor.R) and
-            (FGreen   = AColor.G) and
-            (FBlue    = AColor.B) and
-            (FAlpha   = AColor.A);
+  FIndex   := AColor.FIndex;
+  FRed     := AColor.FRed;
+  FGreen   := AColor.FGreen;
+  FBlue    := AColor.FBlue;
+  FAlpha   := AColor.FAlpha;
+  FDirect  := AColor.FDirect;
+  FIndexed := AColor.FIndexed;
 end;
 
-function TPTCColor.GetIndex: Integer;
+function TPTCColor.Equals(const AColor: TPTCColor): Boolean;
 begin
-  Result := FIndex;
-end;
-
-function TPTCColor.GetR: Single;
-begin
-  Result := FRed;
-end;
-
-function TPTCColor.GetG: Single;
-begin
-  Result := FGreen;
-end;
-
-function TPTCColor.GetB: Single;
-begin
-  Result := FBlue;
-end;
-
-function TPTCColor.GetA: Single;
-begin
-  Result := FAlpha;
-end;
-
-function TPTCColor.GetDirect: Boolean;
-begin
-  Result := not FIndexed;
-end;
-
-function TPTCColor.GetIndexed: Boolean;
-begin
-  Result := FIndexed;
+  Result := (FIndexed = AColor.FIndexed) and
+            (FDirect  = AColor.FDirect) and
+            (FIndex   = AColor.FIndex) and
+            (FRed     = AColor.FRed) and
+            (FGreen   = AColor.FGreen) and
+            (FBlue    = AColor.FBlue) and
+            (FAlpha   = AColor.FAlpha);
 end;

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     Copyright (c) 2009 by Jonas Maebe
 
@@ -167,3 +168,5 @@ function tobjcprotocolnode.pass_1: tnode;
 
 end.
 
+=======
+>>>>>>> origin/fixes_2.4

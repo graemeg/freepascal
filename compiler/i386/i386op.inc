@@ -269,6 +269,7 @@ A_POPAW,
 A_POPF,
 A_POPFD,
 A_POPFW,
+A_POPFQ,
 A_POR,
 A_PREFETCH,
 A_PREFETCHW,
@@ -302,6 +303,7 @@ A_PUSHAW,
 A_PUSHF,
 A_PUSHFD,
 A_PUSHFW,
+A_PUSHFQ,
 A_PXOR,
 A_RCL,
 A_RCR,
@@ -590,11 +592,23 @@ A_XSHA1,
 A_XSHA256,
 A_DMINT,
 A_RDM,
+<<<<<<< HEAD
+=======
+A_MOVABS,
+A_MOVSXD,
+A_CQO,
+A_CMPXCHG16B,
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 A_MOVNTSS,
 A_MOVNTSD,
 A_INSERTQ,
 A_EXTRQ,
 A_LZCNT,
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_PABSB,
 A_PABSW,
 A_PABSD,
@@ -627,9 +641,35 @@ A_PBLENDW,
 A_PCMPEQQ,
 A_PEXTRB,
 A_PEXTRD,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_PHMINPOSUW,
 A_PINSRB,
 A_PINSRD,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+A_PEXTRQ,
+A_PHMINPOSUW,
+A_PINSRB,
+A_PINSRD,
+A_PINSRQ,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A_PMAXSB,
 A_PMAXSD,
 A_PMAXUD,
@@ -651,13 +691,37 @@ A_PMOVZXWD,
 A_PMOVZXWQ,
 A_PMOVZXDQ,
 A_PMULDQ,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_PMULLD,
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A_PTEST,
 A_ROUNDPS,
 A_ROUNDPD,
 A_ROUNDSS,
 A_ROUNDSD,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_CRC32,
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A_PCMPESTRI,
 A_PCMPESTRM,
 A_PCMPISTRI,
@@ -669,6 +733,10 @@ A_AESENCLAST,
 A_AESDEC,
 A_AESDECLAST,
 A_AESIMC,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_AESKEYGENASSIST,
 A_RDTSCP,
 A_VADDPD,
@@ -1026,4 +1094,31 @@ A_VFNMSUB231SD,
 A_VFNMSUB132SS,
 A_VFNMSUB213SS,
 A_VFNMSUB231SS
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+A_AESKEYGEN,
+A_STOSQ,
+A_LODSQ,
+A_CMPSQ
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+A_POPCNT
+>>>>>>> graemeg/fixes_2_2
+=======
+A_POPCNT
+>>>>>>> origin/fixes_2_2
 );

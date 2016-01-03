@@ -39,7 +39,15 @@ const
   AllowDriveSeparators : set of char = [':'];
   maxExitCode = 255;
   MaxPathLen = 256;
+<<<<<<< HEAD
+<<<<<<< HEAD
   AllFilesMask = '#?';
+=======
+  AllFilesMask = '*';
+>>>>>>> graemeg/fixes_2_2
+=======
+  AllFilesMask = '*';
+>>>>>>> origin/fixes_2_2
 
 const
   UnusedHandle    : LongInt = -1;
@@ -285,8 +293,15 @@ begin
         tmpbuf[0]:=Char(counter-1);
         GetArgv0Ambient:=tmpbuf;
         { Append slash,if we're not in root directory of a volume }
+<<<<<<< HEAD
+<<<<<<< HEAD
         if tmpbuf[counter-1]<>':' then
           GetArgv0Ambient:=GetArgv0Ambient+'/';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        if tmpbuf[counter-1]<>':' then GetArgv0Ambient+='/';
+>>>>>>> graemeg/fixes_2_2
       end;
     end;
 
@@ -297,7 +312,15 @@ begin
       counter:=0;
       while (progname[counter]<>#0) do begin
         tmpbuf[counter+1]:=progname[counter];
+<<<<<<< HEAD
+<<<<<<< HEAD
         inc(counter);
+=======
+        counter+=1;
+>>>>>>> graemeg/fixes_2_2
+=======
+        counter+=1;
+>>>>>>> origin/fixes_2_2
       end;
       tmpbuf[0]:=Char(counter);
       GetArgv0Ambient:=GetArgv0Ambient+tmpbuf;
@@ -420,6 +443,9 @@ begin
   IsConsole := TRUE;
   StackLength := CheckInitialStkLen(InitialStkLen);
   StackBottom := Sptr - StackLength;
+  SysResetFPU;
+  if not(IsLibrary) then
+    SysInitFPU;
 { OS specific startup }
   MOS_ambMsg:=nil;
   ASYS_origDir:=0;

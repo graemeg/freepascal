@@ -56,10 +56,35 @@
     _action: SEL;
     _tag: NSInteger;
     _extraData: id;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __miFlags: record
       case byte of
        0: (_anonbitfield_NSMenuItem0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __miFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSMenuItem0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         disabled: 0..1;
         isSeparator: 0..1;
         hidden: 0..1;
@@ -75,7 +100,19 @@
         hiddenActiveKE: 0..1;
         noRepeatKEs: 0..1;
         RESERVED: 0..1;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     

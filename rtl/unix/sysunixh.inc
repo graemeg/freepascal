@@ -29,12 +29,27 @@ const
  LineEnding = #10;
  LFNSupport = true;
  DirectorySeparator = '/';
+<<<<<<< HEAD
+<<<<<<< HEAD
  DriveSeparator = '';
+=======
+ DriveSeparator = '/';
+>>>>>>> graemeg/fixes_2_2
+=======
+ DriveSeparator = '/';
+>>>>>>> origin/fixes_2_2
  ExtensionSeparator = '.';
  PathSeparator = ':';
  AllowDirectorySeparators : set of char = ['\','/'];
  AllowDriveSeparators : set of char = [];
+<<<<<<< HEAD
+<<<<<<< HEAD
 { FileNameCaseSensitive and FileNameCasePreserving are defined below! }
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{ FileNameCaseSensitive is defined below! }
+>>>>>>> graemeg/fixes_2_2
  maxExitCode = 255;
  {$ifdef LINUX}
  MaxPathLen = 4096; // linux has always got to be BIGGER

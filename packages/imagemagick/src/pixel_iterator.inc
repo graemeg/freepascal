@@ -18,7 +18,7 @@
 
 type
   PixelIterator = record
-    id: culong;
+    id: Cardinal;
 
     name: array[0..MaxTextExtent] of char;
 
@@ -28,13 +28,13 @@ type
 
     region: RectangleInfo;
 
-    y: cint;
+    y: Integer;
 
     pixel_wand: PPPixelWand;
 
     debug: MagickBooleanType;
 
-    signature: culong;
+    signature: Cardinal;
   end;
   
   PPixelIterator = ^PixelIterator;
@@ -46,17 +46,17 @@ function PixelGetIteratorException(const iterator: PPixeliterator;
 function IsPixelIterator(const iterator: PPixeliterator): MagickBooleanType; cdecl; external WandExport;
 function PixelClearIteratorException(iterator: PPixeliterator): MagickBooleanType; cdecl; external WandExport;
 function PixelSetIteratorRow(iterator: PPixeliterator;
- const row: cint): MagickBooleanType; cdecl; external WandExport;
+ const row: Integer): MagickBooleanType; cdecl; external WandExport;
 function PixelSyncIterator(iterator: PPixeliterator): MagickBooleanType; cdecl; external WandExport;
 
 function DestroyPixelIterator(iterator: PPixeliterator): PPixelIterator; cdecl; external WandExport;
 function NewPixelIterator(wand: PMagickWand): PPixelIterator; cdecl; external WandExport;
 function NewPixelRegionIterator(
- wand: PMagickWand; const x, y: cint; const columns, rows: culong;
+ wand: PMagickWand; const x, y: Integer; const columns, rows: Cardinal;
  const modify: MagickBooleanType): PPixelIterator; cdecl; external WandExport;
 
-function PixelGetNextIteratorRow(iterator: PPixeliterator; var wandCount: culong): PPPixelWand; cdecl; external WandExport;
-function PixelGetPreviousIteratorRow(iterator: PPixeliterator; var wandCount: culong): PPPixelWand; cdecl; external WandExport;
+function PixelGetNextIteratorRow(iterator: PPixeliterator; var wandCount: Cardinal): PPPixelWand; cdecl; external WandExport;
+function PixelGetPreviousIteratorRow(iterator: PPixeliterator; var wandCount: Cardinal): PPPixelWand; cdecl; external WandExport;
 
 procedure ClearPixelIterator(iterator: PPixeliterator); cdecl; external WandExport;
 procedure PixelResetIterator(iterator: PPixeliterator); cdecl; external WandExport;

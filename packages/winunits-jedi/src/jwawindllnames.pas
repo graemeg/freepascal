@@ -118,7 +118,15 @@ const
   versionlib = 'version.dll';
   winberapi = 'wldap32.dll';
   winfax = 'winfax.dll';
+<<<<<<< HEAD
+<<<<<<< HEAD
   winspool32 = 'winspool.drv';
+=======
+  winspool32 = 'winspool32.drv';
+>>>>>>> graemeg/fixes_2_2
+=======
+  winspool32 = 'winspool32.drv';
+>>>>>>> origin/fixes_2_2
   winstaDLL = 'winsta.dll';
   winternl_lib = 'ntdll.dll';
   wow16lib = 'kernel32.dll';

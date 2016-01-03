@@ -100,10 +100,6 @@ function DoSuperMethodA(cl : pIClass; obj : pObject_; msg : APTR): ulong;
 function CoerceMethodA(cl : pIClass; obj : pObject_; msg : APTR): ulong;
 function SetSuperAttrsA(cl : pIClass; obj: pObject_; msg : APTR): ulong;
 
-function DoMethod(obj: PObject_; Params: array of DWord): LongWord; inline;
-
-procedure HookEntry;
-
 {
 
    NAME
@@ -163,10 +159,12 @@ procedure HookEntry;
 
 }
 
-procedure printf(Fmtstr : pchar; const Args : array of const);
-procedure printf(Fmtstr : string; const Args : array of const);
+procedure printf(Fmtstr : pchar; Args : array of const);
+procedure printf(Fmtstr : string; Args : array of const);
 
 IMPLEMENTATION
+
+uses pastoc;
 
 {*  Exec support functions from amiga.lib  *}
 
@@ -188,7 +186,7 @@ begin
     IOReq := NIL;
     if port <> NIL then
     begin
-        IOReq := ExecAllocMem(size, MEMF_CLEAR or MEMF_PUBLIC);
+        IOReq := AllocMem(size, MEMF_CLEAR or MEMF_PUBLIC);
         if IOReq <> NIL then
         begin
             IOReq^.io_Message.mn_Node.ln_Type   := NT_REPLYMSG;
@@ -231,7 +229,7 @@ var
 begin
    sigbit := AllocSignal(-1);
    if sigbit = -1 then CreatePort := nil;
-   port := ExecAllocmem(sizeof(tMsgPort),MEMF_CLEAR or MEMF_PUBLIC);
+   port := Allocmem(sizeof(tMsgPort),MEMF_CLEAR or MEMF_PUBLIC);
    if port = nil then begin
       FreeSignal(sigbit);
       CreatePort := nil;
@@ -277,7 +275,7 @@ begin
     stackSize   := (stackSize + 3) and not 3;
     totalsize := sizeof(tMemList) + sizeof(tTask) + stackSize;
 
-    memlist := ExecAllocMem(totalsize, MEMF_PUBLIC + MEMF_CLEAR);
+    memlist := AllocMem(totalsize, MEMF_PUBLIC + MEMF_CLEAR);
     if memlist <> NIL then begin
        memlist^.ml_NumEntries := 1;
        memlist^.ml_ME[0].me_Un.meu_Addr := Pointer(memlist + 1);
@@ -362,15 +360,13 @@ begin
 end;
 
 function DoMethodA(obj : pObject_; msg : APTR): ulong;
+var
+    o : p_Object;
 begin
     if assigned(obj) then begin
-       DoMethodA := CallHookPkt(@THook(OCLASS(obj)^.cl_Dispatcher), obj, msg);
+       o := p_Object(obj);
+       DoMethodA := CallHookPkt(@o^.o_Class^.cl_Dispatcher, obj,msg);
     end else DoMethodA := 0;
-end;
-
-function DoMethod(obj: PObject_; Params: array of DWord): LongWord;
-begin
-  DoMethod := DoMethodA(obj, @Params);
 end;
 
 function DoSuperMethodA(cl : pIClass; obj : pObject_; msg : APTR): ulong;
@@ -397,49 +393,35 @@ begin
     SetSuperAttrsA := DoSuperMethodA(cl, obj, @arr);
 end;
 
-{ Do *NOT* change this to nostackframe! }
-{ The compiler will build a stackframe with link/unlk. So that will actually correct
-  the stackpointer for both Pascal/StdCall and cdecl functions, so the stackpointer will
-  be correct on exit. It also needs no manual RTS. The argument push order is also
-  correct for both. (KB) }
-procedure HookEntry; assembler;
-asm
-  move.l a1,-(a7)    // Msg
-  move.l a2,-(a7)    // Obj
-  move.l a0,-(a7)    // PHook
-  move.l 12(a0),a0   // h_SubEntry = Offset 12
-  jsr (a0)           // Call the SubEntry
-end;
-
-procedure printf(Fmtstr : pchar; const Args : array of const);
 var
-  i,j : longint;
-  argarray : array of longint;
-  strarray : array of RawByteString;
+  argarray : array [0..20] of longint;
+
+function gettheconst(args : array of const): pointer;
+var
+   i : longint;
+
 begin
-  SetLength(argarray, length(args));
-  SetLength(strarray, length(args));
-  j:=0;
-  for i := low(args) to High(args) do
-    begin
-      case args[i].vtype of
-        vtinteger : argarray[i] := longint(args[i].vinteger);
-        vtpchar   : argarray[i] := longint(args[i].vpchar);
-        vtchar    : argarray[i] := longint(args[i].vchar);
-        vtpointer : argarray[i] := longint(args[i].vpointer);
-        vtstring  : begin
-            strarray[j]:=RawByteString(args[i].vstring^);
-            argarray[i]:=longint(PChar(strarray[j]));
-            inc(j);
-          end;
-      end;
+
+    for i := 0 to High(args) do begin
+        case args[i].vtype of
+            vtinteger : argarray[i] := longint(args[i].vinteger);
+            vtpchar   : argarray[i] := longint(args[i].vpchar);
+            vtchar    : argarray[i] := longint(args[i].vchar);
+            vtpointer : argarray[i] := longint(args[i].vpointer);
+            vtstring  : argarray[i] := longint(pas2c(args[i].vstring^));
+        end;
     end;
-  VPrintf(Fmtstr,@argarray[0]);
+    gettheconst := @argarray;
 end;
 
-procedure printf(Fmtstr : string; const Args : array of const);
+procedure printf(Fmtstr : pchar; Args : array of const);
 begin
-  printf(PChar(RawByteString(Fmtstr)), Args);
+    VPrintf(Fmtstr,gettheconst(Args));
+end;
+
+procedure printf(Fmtstr : string; Args : array of const);
+begin
+    VPrintf(pas2c(Fmtstr) ,gettheconst(Args));
 end;
 
 

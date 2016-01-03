@@ -136,8 +136,7 @@ type
     procedure GetServiceStatus(SHandle : THandle; Var Status : TServiceStatus); overload;
     procedure GetServiceStatus(ServiceName : String; Var Status : TServiceStatus); overload;
     Property  Handle : THandle Read FHandle;
-    Property  Access : DWord read FAccess Write FAccess;    
-    Property  Acces : DWord read FAccess Write FAccess; deprecated; //Kept for compatibility
+    Property  Acces : DWord read FAccess Write FAccess;
     Property  Services : TServiceEntries Read FServices;
   published
     { Published declarations }
@@ -699,7 +698,7 @@ begin
     Pargs:=StringsToPcharList(Args);
     end;
   Try
-    If not jwawinsvc.StartService(SHandle,Argc,Pchar(PArgs)) then
+    If not jwawinsvc.StartService(SHandle,Argc,PArgs^) then
       RaiseLastOSError;
   Finally
     If (PArgs<>Nil) then

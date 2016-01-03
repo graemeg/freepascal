@@ -134,6 +134,16 @@ const
      pthread_condattr_t, pthread_mutex_t, pthread_mutexattr_t.
     }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+     TThreadID = pthread_t;
+     PThreadID = ^TThreadID;
+>>>>>>> graemeg/fixes_2_2
+=======
+     TThreadID = pthread_t;
+     PThreadID = ^TThreadID;
+>>>>>>> origin/fixes_2_2
      TThreadAttr = pthread_attr_t;
      PThreadAttr = ^TThreadAttr;
      TPthreadMutex = pthread_mutex_t;

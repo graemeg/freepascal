@@ -66,10 +66,10 @@ begin
     if TFileRec(f).Mode <> fmClosed  then
     {$ENDIF}
     begin
-      {$PUSH} {$I-}
+      {$IFOPT I+} {$DEFINE IOCheck} {$I-} {$ENDIF}
       Seek(f, FPos);
       BlockRead(f, Buffer, BufMemSize, BufSize);
-      {$POP}
+      {$IFDEF IOCheck} {$I+} {$ENDIF}
       if (IOResult = 0) and (BufSize <> 0) then
         active := true;
     end;
@@ -105,10 +105,10 @@ Begin
   with fc do
   if active then
   begin
-    {$push}{$I-}
+    {$I-}
     Seek(FVarPtr^, FileOfs);
     BlockRead(FVarPtr^, Buffer, BufMemSize, BufSize);
-    {$pop}
+    {$IFDEF IOCheck} {$I+} {$ENDIF}
     BufPos := 0;
     active := (IOResult = 0) and (BufSize <> 0);
   end;

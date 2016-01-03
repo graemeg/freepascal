@@ -49,20 +49,18 @@ type
     green,
     blue,
     opacity,
-    index: culong;
+    index: Cardinal;
   end;
 
 type
   MagickPixelPacket = record
-    storage_class: ClassType; // Added after 6.2
-
     colorspace: ColorspaceType;
 
     matte: MagickBooleanType;
 
     fuzz: double;
 
-    depth: culong;
+    depth: Cardinal;
 
     red,
     green,

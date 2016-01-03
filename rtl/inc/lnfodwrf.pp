@@ -51,6 +51,8 @@ uses
 { some type definitions }
 type
   Bool8 = ByteBool;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 const
   EBUF_SIZE = 100;
@@ -61,6 +63,17 @@ var
   e : TExeFile;
   EBuf: Array [0..EBUF_SIZE-1] of Byte;
   EBufCnt, EBufPos: Integer;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+var
+  { the input file to read DWARF debug info from, i.e. paramstr(0) }
+  e : TExeFile;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   DwarfErr : boolean;
   { the offset and size of the DWARF debug_line section in the file }
   DwarfOffset : longint;
@@ -158,7 +171,15 @@ begin
         exit;
     end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   e.processaddress:=ptruint(baseaddr)-e.processaddress;
+=======
+  e.processaddress:=e.processaddress+dword(baseaddr);
+>>>>>>> graemeg/fixes_2_2
+=======
+  e.processaddress:=e.processaddress+dword(baseaddr);
+>>>>>>> origin/fixes_2_2
 
   if FindExeSection(e,'.debug_line',dwarfoffset,dwarfsize) then
     Opendwarf:=true
@@ -182,8 +203,14 @@ begin
   limit := aLimit;
   Init := (aBase + limit) <= e.size;
   seek(e.f, base);
+<<<<<<< HEAD
+<<<<<<< HEAD
   EBufCnt := 0;
   EBufPos := 0;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   index := 0;
 end;
 
@@ -203,13 +230,21 @@ procedure Seek(const newIndex : Int64);
 begin
   index := newIndex;
   system.seek(e.f, base + index);
+<<<<<<< HEAD
+<<<<<<< HEAD
   EBufCnt := 0;
   EBufPos := 0;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 
 { Returns the next Byte from the input stream, or -1 if there has been
   an error }
+<<<<<<< HEAD
+<<<<<<< HEAD
 function ReadNext() : Longint; inline;
 var
   bytesread : SizeInt;
@@ -235,7 +270,7 @@ end;
 { Reads the next size bytes into dest. Returns true if successful,
   false otherwise. Note that dest may be partially overwritten after
   returning false. }
-function ReadNext(var dest; size : SizeInt) : Boolean;
+function ReadNext(var dest; size : SizeInt) : Boolean; inline;
 var
   bytesread, totalread : SizeInt;
   r: Boolean;
@@ -267,6 +302,58 @@ begin
   ReadNext := r;
 end;
 
+=======
+function ReadNext() : Longint;
+var
+  bytesread : SizeInt;
+  b : Byte;
+begin
+  ReadNext := -1;
+  if (index < limit) then begin
+    blockread(e.f, b, 1, bytesread);
+    ReadNext := b;
+    inc(index);
+  end;
+  if (bytesread <> 1) then
+    ReadNext := -1;
+end;
+
+=======
+function ReadNext() : Longint;
+var
+  bytesread : SizeInt;
+  b : Byte;
+begin
+  ReadNext := -1;
+  if (index < limit) then begin
+    blockread(e.f, b, 1, bytesread);
+    ReadNext := b;
+    inc(index);
+  end;
+  if (bytesread <> 1) then
+    ReadNext := -1;
+end;
+
+>>>>>>> origin/fixes_2_2
+{ Reads the next size bytes into dest. Returns true if successful,
+  false otherwise. Note that dest may be partially overwritten after
+  returning false. }
+function ReadNext(var dest; size : SizeInt) : Boolean;
+var
+  bytesread : SizeInt;
+begin
+  bytesread := 0;
+  if ((index + size) < limit) then begin
+    blockread(e.f, dest, size, bytesread);
+    inc(index, size);
+  end;
+  ReadNext := (bytesread = size);
+end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 { Reads an unsigned LEB encoded number from the input stream }
 function ReadULEB128() : QWord;
@@ -353,6 +440,7 @@ end;
 function ReadUHalf() : Word;
 begin
   ReadNext(ReadUHalf, sizeof(ReadUHalf));
+<<<<<<< HEAD
 end;
 
 
@@ -394,6 +482,49 @@ begin
 end;
 
 
+=======
+end;
+
+
+{---------------------------------------------------------------------------
+
+ Generic Dwarf lineinfo reader
+
+ The line info reader is based on the information contained in
+
+   DWARF Debugging Information Format Version 3
+   Chapter 6.2 "Line Number Information"
+
+ from the
+
+   DWARF Debugging Information Format Workgroup.
+
+ For more information on this document see also
+
+   http://dwarf.freestandards.org/
+
+---------------------------------------------------------------------------}
+
+{ initializes the line info state to the default values }
+procedure InitStateRegisters(var state : TMachineState; const aIs_Stmt : Bool8);
+begin
+  with state do begin
+    address := 0;
+    file_id := 1;
+    line := 1;
+    column := 0;
+    is_stmt := aIs_Stmt;
+    basic_block := false;
+    end_sequence := false;
+    prolouge_end := false;
+    epilouge_begin := false;
+    isa := 0;
+    append_row := false;
+  end;
+end;
+
+
+>>>>>>> origin/fixes_2_2
 { Skips all line info directory entries }
 procedure SkipDirectories();
 var s : ShortString;
@@ -483,7 +614,15 @@ var
   adjusted_opcode : Int64;
 
   opcode : PtrInt;
+<<<<<<< HEAD
+<<<<<<< HEAD
   extended_opcode : PtrInt;
+=======
+  extended_opcode : Byte;
+>>>>>>> graemeg/fixes_2_2
+=======
+  extended_opcode : Byte;
+>>>>>>> origin/fixes_2_2
   extended_opcode_length : PtrInt;
   i, addrIncrement, lineIncrement : PtrInt;
 

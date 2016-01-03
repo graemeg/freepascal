@@ -15,7 +15,7 @@ PROGRAM EasyGadtools;
 
 }
 
-USES Intuition, Exec, AGraphics, GadTools, Utility, pastoc,systemvartags;
+USES Intuition, Exec, Graphics, GadTools, Utility, pastoc,systemvartags;
 
 CONST
 

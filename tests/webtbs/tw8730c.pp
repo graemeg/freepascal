@@ -1,4 +1,12 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %target=win32,win64,wince,darwin,linux,freebsd,solaris,beos,aix,android }
+=======
+{ %target=win32,win64,wince,darwin,linux,freebsd,solaris,beos}
+>>>>>>> graemeg/fixes_2_2
+=======
+{ %target=win32,win64,wince,darwin,linux,freebsd,solaris,beos}
+>>>>>>> origin/fixes_2_2
 { %NEEDLIBRARY }
 
 {$mode delphi}
@@ -29,7 +37,13 @@ begin
     deletefile('tw8730a.txt');
   if (fileexists('tw8730b.txt')) then
     deletefile('tw8730b.txt');
+<<<<<<< HEAD
+<<<<<<< HEAD
   if error<>0 then
     writeln('tw8730c did not complete successfully');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   halt(error);
 end.

@@ -1455,7 +1455,15 @@ BEGIN
      {$IFNDEF OS_WINDOWS}
      MoveChar(B[I], #179, Byte(CNormal), 1);          { '|' char to buffer }
      {$ELSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
      MoveChar(B[I], #124, Byte(CNormal), 1);          { '|' char to buffer }
+=======
+     MoveChar(B[I], #166, Byte(CNormal), 1);          { '|' char to buffer }
+>>>>>>> graemeg/fixes_2_2
+=======
+     MoveChar(B[I], #166, Byte(CNormal), 1);          { '|' char to buffer }
+>>>>>>> origin/fixes_2_2
      {$ENDIF}
      Inc(I, 2);                                       { Move along }
      MoveStr(B[I], HintBuf, Byte(CNormal));           { Move hint to buffer }

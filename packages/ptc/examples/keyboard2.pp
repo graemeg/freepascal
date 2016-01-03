@@ -11,12 +11,13 @@ uses
   ptc;
 
 var
-  console: IPTCConsole;
-  surface: IPTCSurface;
-  format: IPTCFormat;
-  color: IPTCColor;
-  timer: IPTCTimer;
-  key: IPTCKeyEvent;
+  console: TPTCConsole = nil;
+  surface: TPTCSurface = nil;
+  format: TPTCFormat = nil;
+  color: TPTCColor = nil;
+  timer: TPTCTimer = nil;
+  key: TPTCKeyEvent = nil;
+  area: TPTCArea;
   x, y, delta: Real;
   left, right, up, down: Boolean;
   size: Integer;
@@ -28,29 +29,32 @@ begin
   down := False;
   try
     try
+      { create key }
+      key := TPTCKeyEvent.Create;
+
       { create console }
-      console := TPTCConsoleFactory.CreateNew;
+      console := TPTCConsole.Create;
 
       { enable key release events }
       console.KeyReleaseEnabled := True;
 
       { create format }
-      format := TPTCFormatFactory.CreateNew(32, $00FF0000, $0000FF00, $000000FF);
+      format := TPTCFormat.Create(32, $00FF0000, $0000FF00, $000000FF);
 
       { open the console }
       console.open('Keyboard example 2', format);
 
       { create timer }
-      timer := TPTCTimerFactory.CreateNew;
+      timer := TPTCTimer.Create;
 
       { create surface matching console dimensions }
-      surface := TPTCSurfaceFactory.CreateNew(console.width, console.height, format);
+      surface := TPTCSurface.Create(console.width, console.height, format);
 
       { setup cursor data }
       x := surface.width div 2;
       y := surface.height div 2;
       size := surface.width div 10;
-      color := TPTCColorFactory.CreateNew(1, 1, 1);
+      color := TPTCColor.Create(1, 1, 1);
 
       { start timer }
       timer.start;
@@ -88,8 +92,14 @@ begin
         { clear surface }
         surface.clear;
 
-        { draw cursor as a quad }
-        surface.clear(color, TPTCAreaFactory.CreateNew(Trunc(x) - size, Trunc(y) - size, Trunc(x) + size, Trunc(y) + size));
+        { setup cursor area }
+        area := TPTCArea.Create(Trunc(x) - size, Trunc(y) - size, Trunc(x) + size, Trunc(y) + size);
+        try
+          { draw cursor as a quad }
+          surface.clear(color, area);
+        finally
+          area.Free;
+        end;
 
         { copy to console }
         surface.copy(console);
@@ -98,8 +108,13 @@ begin
         console.update;
       until Done;
     finally
-      if Assigned(console) then
-        console.close;
+      color.Free;
+      console.close;
+      console.Free;
+      surface.Free;
+      key.Free;
+      timer.Free;
+      format.Free;
     end;
   except
     on error: TPTCError do

@@ -1,20 +1,14 @@
 This file describes the TProcess object.
 
-Important remark:
-
-As of version 2.5.1 (April 2011) the CommandLine and ApplicationName
-properties are deprecated in favour of properties Executable and Parameters.
-If CommandLine or ApplicationName is set, it will automatically be converted
-to Executable and Parameters. If you wish to use the latter 2 properties, 
-simply clear the CommandLine and ApplicationName properties.
-
 The TProcess object provides an easy way to start and manipulate
 the running of other programs (processes) by your application.
 On top of that, it allows you to redirect the program's input, output
 and standard error to streams that are readable/writeable by your
 program.
 
-It is a descendent class of TComponent.
+It is a descendent class of TObject, but this is easily changeable to
+TComponent, should you desire to do so. None of the properties will
+conflict with the existing properties of TComponent.
 
 Furthermore it is written in such a way that it is easily extensible,
 although most of the properties that a Process has, are accessible and
@@ -25,11 +19,21 @@ In what follows, is a description of the object's methods and properties.
 The following two types control the creation of the TProcess Object.
 See The constructor description for a description on what they do.
 
-TProcessOptions = (poExecuteOnCreate,poRunSuspended,poUsePipes,poNewConsole,
-                    poNoConsole,poStderrToOutPut,poWaitOnExit);
+TProcessOptions = (poExecuteOnCreate,poRunSuspended,poUsePipes,
+                     poNoConsole,poStderrToOutPut,poWaitOnExit);
 TCreateOptions = Set of TPRocessOptions;
 
 
+
+Constructor Create (Const ACommandline : String;
+                          Options : TCreateOptions);
+
+This creates an TPRocess object.
+
+ACommandline is the commandline to execute, including any options
+you wish to pass to the program. If you don't specify an explicit path
+Windows will look for your program in the Windows directory and in the
+path.
 
 Options control the behaviour of the object. It can be a set of the
 following constants:
@@ -70,17 +74,6 @@ poWaitOnExit
   This option will be ignored if you also specified ExecuteOnCreate and
   CreateSuspended.
 
-poNewConsole 
-  If you specify this option, then the Execute method will open a console to
-  execute the program in. On windows, the standard console is used.
-  On Unix, the console program is detected as follows:
-  - XTermProgram is used if it is set.
-  - the terminals in TryTerminals are tested
-  - the 'DESKTOP_SESSION' variable is examined and the corresponding
-    terminal is tested for availability.
-  - A set of standard terminals is tested:
-    ('x-terminal-emulator','xterm','aterm','wterm','rxvt')
-  if none of these can be detected, an exception is raised.
      
 Destructor Destroy; virtual;
 
@@ -116,18 +109,10 @@ Function WaitOnExit : Boolean;
 Property ApplicationName : String;
   Sets the name of the application.
   
-Property CommandLine : String; (Deprecated)
-  contains the commandline of the application. method of TProcess.
-  If Set, it overrides the Executable and Parameters properties
-
-Property Executable : String;
-  The binary program to be executed. It will be searched in the PATH.
-
-Property Parameters : TStrings
-  The command-line parameters to be passed to Executable. One parameter per
-  line must be specified. If 2 or more words, separated by a space, are detected 
-  in an argument, they will be treated as 1 argument and quoted if the OS
-  requires it.
+Property CommandLine : String;
+  Read-Only
+  contains the commandline of the application, as set by the create
+  method of TProcess.
   
 Property ConsoleTitle : String;
   For console applications only :
@@ -160,12 +145,6 @@ Property ExitStatus : Integer;
   Read-Only
   This returns the exit status of the application, or STILL_ACTIVE
   (defined in Windows.pas) if the application is still running.
-  This is the low-level exit status as reported by the OS.
-
-Property ExitCode : Integer;  
-  Read-Only
-  This returns the exit code as returned by the application, if it exited correcly.
-  It returns 0 if the process didn't exit correctly (e.g. a signal).
   
 Property FillAttribute : Integer;
   For console processes only.

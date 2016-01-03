@@ -162,8 +162,16 @@ begin
   Result:=false;
   OldAccess:=FAccess;
   try
+<<<<<<< HEAD
+<<<<<<< HEAD
     FAccess:=KEY_QUERY_VALUE or KEY_ENUMERATE_SUB_KEYS or STANDARD_RIGHTS_READ 
     {$ifndef WinCE} or (OldAccess and (KEY_WOW64_64KEY or KEY_WOW64_32KEY)) {$endif};
+=======
+    FAccess:=KEY_QUERY_VALUE or KEY_ENUMERATE_SUB_KEYS or STANDARD_RIGHTS_READ;
+>>>>>>> graemeg/fixes_2_2
+=======
+    FAccess:=KEY_QUERY_VALUE or KEY_ENUMERATE_SUB_KEYS or STANDARD_RIGHTS_READ;
+>>>>>>> origin/fixes_2_2
     KeyHandle:=GetKey(Key);
     if KeyHandle<>0 then
       begin
@@ -291,6 +299,16 @@ end;
 procedure TRegistry.CloseKey(key:HKEY);
 begin
   RegCloseKey(key);
+end;
+
+procedure TRegistry.CloseKey(key:HKEY);
+begin
+  RegCloseKey(CurrentKey)
+end;
+
+procedure TRegistry.CloseKey(key:HKEY);
+begin
+  RegCloseKey(CurrentKey)
 end;
 
 procedure TRegistry.ChangeKey(Value: HKey; const Path: String);

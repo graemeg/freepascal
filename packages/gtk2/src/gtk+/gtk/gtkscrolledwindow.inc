@@ -12,7 +12,15 @@
         container : TGtkBin;
         hscrollbar : PGtkWidget;
         vscrollbar : PGtkWidget;
+<<<<<<< HEAD
+<<<<<<< HEAD
         flag0 : {$ifdef windows}longint{$else}word{$endif};
+=======
+        flag0 : {$ifdef win32}longint{$else}word{$endif};
+>>>>>>> graemeg/fixes_2_2
+=======
+        flag0 : {$ifdef win32}longint{$else}word{$endif};
+>>>>>>> origin/fixes_2_2
         shadow_type : guint16;
      end;
 

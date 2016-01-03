@@ -30,6 +30,7 @@ interface
 var
   Tzseconds : Longint;
 
+<<<<<<< HEAD
 Function StringToPPChar(S: PChar;ReserveEntries:integer):ppchar;
 Function StringToPPChar(Var S:AnsiString;ReserveEntries:integer):ppchar;
 function ArrayStringToPPchar(const S:Array of AnsiString;reserveentries:Longint):ppchar; // const ?
@@ -37,6 +38,29 @@ Function LocalToEpoch(year,month,day,hour,minute,second:Word):Longint; deprecate
 Procedure EpochToLocal(epoch:longint;var year,month,day,hour,minute,second:Word); deprecated 'use DateUtils.UnixToDateTime';
 Procedure JulianToGregorian(JulianDN:LongInt;Var Year,Month,Day:Word); deprecated 'use DateUtils.DateTimetoJulianDate';
 Function GregorianToJulian(Year,Month,Day:Longint):LongInt; deprecated 'use DateUtils.JulianDateToDateTime';
+=======
+Type
+  ComStr  = String[255];
+  PathStr = String[255];
+  DirStr  = String[255];
+  NameStr = String[255];
+  ExtStr  = String[255];
+
+Function Dirname(Const path:pathstr):pathstr; deprecated;
+Function StringToPPChar(S: PChar;ReserveEntries:integer):ppchar;
+Function StringToPPChar(Var S:String;ReserveEntries:integer):ppchar; deprecated; 
+Function StringToPPChar(Var S:AnsiString;ReserveEntries:integer):ppchar;
+function ArrayStringToPPchar(const S:Array of AnsiString;reserveentries:Longint):ppchar; // const ?
+Function Basename(Const path:pathstr;Const suf:pathstr):pathstr; deprecated;
+Function FNMatch(const Pattern,Name:string):Boolean; deprecated;
+Function GetFS (var T:Text):longint;
+Function GetFS(Var F:File):longint;
+Procedure FSplit(const Path:PathStr;Var Dir:DirStr;Var Name:NameStr;Var Ext:ExtStr); deprecated;
+Function LocalToEpoch(year,month,day,hour,minute,second:Word):Longint;
+Procedure EpochToLocal(epoch:longint;var year,month,day,hour,minute,second:Word);
+Procedure JulianToGregorian(JulianDN:LongInt;Var Year,Month,Day:Word);
+Function GregorianToJulian(Year,Month,Day:Longint):LongInt;
+>>>>>>> graemeg/fixes_2_2
 
 implementation
 
@@ -64,6 +88,62 @@ begin
   ArrayStringToPPchar:=p;
 end;
 
+<<<<<<< HEAD
+=======
+
+Procedure FSplit(const Path:PathStr;Var Dir:DirStr;Var Name:NameStr;Var Ext:ExtStr);
+Var
+  DotPos,SlashPos,i : longint;
+Begin
+  SlashPos:=0;
+  DotPos:=256;
+  i:=Length(Path);
+  While (i>0) and (SlashPos=0) Do
+   Begin
+     If (DotPos=256) and (Path[i]='.') Then
+      begin
+        DotPos:=i;
+      end;
+     If (Path[i]='/') Then
+      SlashPos:=i;
+     Dec(i);
+   End;
+  Ext:=Copy(Path,DotPos,255);
+  Dir:=Copy(Path,1,SlashPos);
+  Name:=Copy(Path,SlashPos + 1,DotPos - SlashPos - 1);
+End;
+
+
+Function Dirname(Const path:pathstr):pathstr;
+{
+  This function returns the directory part of a complete path.
+  Unless the directory is root '/', The last character is not
+  a slash.
+}
+var
+  Dir  : PathStr;
+  Name : NameStr;
+  Ext  : ExtStr;
+begin
+  FSplit(Path,Dir,Name,Ext);
+  if length(Dir)>1 then
+   Delete(Dir,length(Dir),1);
+  DirName:=Dir;
+end;
+
+Function StringToPPChar(Var S:String;ReserveEntries:integer):ppchar;
+{
+  Create a PPChar to structure of pchars which are the arguments specified
+  in the string S. Especially useful for creating an ArgV for Exec-calls
+  Note that the string S is destroyed by this call.
+}
+
+begin
+  S:=S+#0;
+  StringToPPChar:=StringToPPChar(pchar(@S[1]),ReserveEntries);
+end;
+
+>>>>>>> graemeg/cpstrnew
 Function StringToPPChar(Var S:AnsiString;ReserveEntries:integer):ppchar;
 {
   Create a PPChar to structure of pchars which are the arguments specified

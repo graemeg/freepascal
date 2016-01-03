@@ -53,8 +53,22 @@ interface
       { I suppose the parser/pass_1 must make sure the generated real  }
       { constants are actually supported by the target processor? (JM) }
       const
+<<<<<<< HEAD
         floattype2ait:array[tfloattype] of tairealconsttype=
           (aitrealconst_s32bit,aitrealconst_s64bit,aitrealconst_s80bit,aitrealconst_s80bit,aitrealconst_s64comp,aitrealconst_s64comp,aitrealconst_s128bit);
+=======
+        floattype2ait:array[tfloattype] of taitype=
+          (ait_real_32bit,ait_real_64bit,ait_real_80bit,ait_real_80bit,ait_comp_64bit,ait_comp_64bit,ait_real_128bit);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       var
          lastlabel : tasmlabel;
          realait : tairealconsttype;
@@ -97,7 +111,23 @@ interface
 
               aitrealconst_s80bit :
                 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   current_procinfo.aktlocaldata.concat(tai_realconst.create_s80real(value_real,tfloatdef(resultdef).size));
+=======
+                  current_procinfo.aktlocaldata.concat(Tai_real_80bit.Create(value_real,tfloatdef(resultdef).size));
+>>>>>>> graemeg/cpstrnew
+=======
+                  current_procinfo.aktlocaldata.concat(Tai_real_80bit.Create(value_real,tfloatdef(resultdef).size));
+>>>>>>> graemeg/cpstrnew
+=======
+                  current_procinfo.aktlocaldata.concat(Tai_real_80bit.Create(value_real,tfloatdef(resultdef).size));
+>>>>>>> graemeg/cpstrnew
+=======
+                  current_procinfo.aktlocaldata.concat(Tai_real_80bit.Create(value_real,tfloatdef(resultdef).size));
+>>>>>>> origin/cpstrnew
 
                   { range checking? }
                   if floating_point_range_check_error and

@@ -76,7 +76,23 @@ var
   NSUserDefaults = objcclass external (NSObject)
   private
     _private: id;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _reserved: array[0..(4)-1] of Pointer;
+=======
+        _reserved: array[0..3] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..3] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..3] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..3] of Pointer;
+>>>>>>> origin/cpstrnew
     
   public
     class function standardUserDefaults: NSUserDefaults; message 'standardUserDefaults';

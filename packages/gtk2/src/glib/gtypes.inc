@@ -12,6 +12,7 @@
      qword = Int64;
    {$ENDIF}
 
+   PPPchar  = ^PPchar;
    PPPgchar = ^PPgchar;
    PPgchar  = ^Pgchar;
    {$IFNDEF KYLIX}
@@ -32,11 +33,7 @@
    gint  = cint;
 
    Pgboolean = ^gboolean;
-{$ifdef noboolean32}
    gboolean  = longbool;
-{$else}
-   gboolean  = boolean32;
-{$endif}
 
    Pguchar = ^guchar;
    PPguchar = ^Pguchar;

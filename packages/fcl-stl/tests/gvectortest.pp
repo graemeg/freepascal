@@ -1,5 +1,17 @@
 {$mode objfpc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ASSERTIONS ON}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 unit gvectortest;
 
@@ -36,8 +48,20 @@ begin
     data.pushBack(i);
   for i:=0 to 10 do
     AssertEquals('Wrong data', i, data[i]);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   writeln(data[11]);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   
   AssertEquals('Wrong size', 11, data.size);
   AssertEquals('IsEmpty', false, data.IsEmpty);

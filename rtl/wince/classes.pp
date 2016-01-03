@@ -13,6 +13,16 @@
 
  **********************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$define UNICODE}  //ce is unicode only, needed here for classes.inc
+
+>>>>>>> graemeg/fixes_2_2
+=======
+{$define UNICODE}  //ce is unicode only, needed here for classes.inc
+
+>>>>>>> origin/fixes_2_2
 {$mode objfpc}
 
 { determine the type of the resource/form file }

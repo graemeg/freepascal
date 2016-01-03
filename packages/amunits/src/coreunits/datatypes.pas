@@ -45,14 +45,18 @@
 
     nils.sjoholm@mailbox.swipnet.se
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
 
 unit datatypes;
 
 INTERFACE
 
 uses exec, amigados, intuition, utility,
-     agraphics, iffparse, amigaprinter, prtbase;
+     graphics, iffparse, amigaprinter, prtbase;
 
 const
 {***************************************************************************}
@@ -1277,26 +1281,25 @@ const
 
 }
 
-FUNCTION AddDTObject(win : pWindow location 'a0'; req : pRequester location 'a1'; o : pObject_ location 'a2'; pos : LONGINT location 'd0') : LONGINT; syscall DataTypesBase 072;
-PROCEDURE DisposeDTObject(o : pObject_ location 'a0'); syscall DataTypesBase 054;
-FUNCTION DoAsyncLayout(o : pObject_ location 'a0'; gpl : pgpLayout location 'a1') : ULONG; syscall DataTypesBase 084;
-FUNCTION DoDTMethodA(o : pObject_ location 'a0'; win : pWindow location 'a1'; req : pRequester location 'a2'; msg : pLONGINT location 'a3') : ULONG; syscall DataTypesBase 090;
-FUNCTION GetDTAttrsA(o : pObject_ location 'a0'; attrs : pTagItem location 'a2') : ULONG; syscall DataTypesBase 066;
-FUNCTION GetDTMethods(obj : pObject_ location 'a0') : POINTER; syscall DataTypesBase 102;
-FUNCTION GetDTString(id : ULONG location 'a0') : pCHAR; syscall DataTypesBase 138;
-FUNCTION GetDTTriggerMethods(obj : pObject_ location 'a0') : pDTMethod; syscall DataTypesBase 108;
-FUNCTION NewDTObjectA(name : POINTER location 'd0'; attrs : pTagItem location 'a0') : POINTER; syscall DataTypesBase 048;
-FUNCTION ObtainDataTypeA(typ : ULONG location 'd0'; handle : POINTER location 'a0'; attrs : pTagItem location 'a1') : pDataType; syscall DataTypesBase 036;
-FUNCTION PrintDTObjectA(o : pObject_ location 'a0'; w : pWindow location 'a1'; r : pRequester location 'a2'; msg : pdtPrint location 'a3') : ULONG; syscall DataTypesBase 114;
-PROCEDURE RefreshDTObjectA(o : pObject_ location 'a0'; win : pWindow location 'a1'; req : pRequester location 'a2'; attrs : pTagItem location 'a3'); syscall DataTypesBase 078;
-PROCEDURE ReleaseDataType(dt : pDataType location 'a0'); syscall DataTypesBase 042;
-FUNCTION RemoveDTObject(win : pWindow location 'a0'; o : pObject_ location 'a1') : LONGINT; syscall DataTypesBase 096;
-FUNCTION SetDTAttrsA(o : pObject_ location 'a0'; win : pWindow location 'a1'; req : pRequester location 'a2'; attrs : pTagItem location 'a3') : ULONG; syscall DataTypesBase 060;
+FUNCTION AddDTObject(win : pWindow; req : pRequester; o : pObject_; pos : LONGINT) : LONGINT;
+PROCEDURE DisposeDTObject(o : pObject_);
+FUNCTION DoAsyncLayout(o : pObject_; gpl : pgpLayout) : ULONG;
+FUNCTION DoDTMethodA(o : pObject_; win : pWindow; req : pRequester; msg : pLONGINT) : ULONG;
+FUNCTION GetDTAttrsA(o : pObject_; attrs : pTagItem) : ULONG;
+FUNCTION GetDTMethods(obj : pObject_) : Pointer;
+FUNCTION GetDTString(id : ULONG) : pCHAR;
+FUNCTION GetDTTriggerMethods(obj : pObject_) : pDTMethod;
+FUNCTION NewDTObjectA(name : POINTER; attrs : pTagItem): POINTER;
+FUNCTION ObtainDataTypeA(typ : ULONG; handle : POINTER; attrs : pTagItem) : pDataType;
+FUNCTION PrintDTObjectA(o : pObject_; w : pWindow; r : pRequester; msg : pdtPrint) : ULONG;
+PROCEDURE RefreshDTObjectA(o : pObject_; win : pWindow; req : pRequester; attrs : pTagItem);
+PROCEDURE ReleaseDataType(dt : pDataType);
+FUNCTION RemoveDTObject(win : pWindow; o : pObject_) : LONGINT;
+FUNCTION SetDTAttrsA(o : pObject_; win : pWindow; req : pRequester; attrs : pTagItem) : ULONG;
 
-FUNCTION ObtainDTDrawInfoA( o : pObject_ location 'a0'; attrs : pTagItem location 'a1') : POINTER; syscall DataTypesBase 120;
-FUNCTION DrawDTObjectA(rp : pRastPort location 'a0';  o : pObject_ location 'a1'; x : LONGINT location 'd0'; y : LONGINT location 'd1'; w : LONGINT location 'd2'; h : LONGINT location 'd3'; th : LONGINT location 'd4'; tv : LONGINT location 'd5'; attrs : pTagItem location 'a2') : LONGINT; syscall DataTypesBase 126;
-PROCEDURE ReleaseDTDrawInfo( o : pObject_ location 'a0'; handle : POINTER location 'a1'); syscall DataTypesBase 132;
-
+FUNCTION ObtainDTDrawInfoA( o : pObject_; attrs : pTagItem) : POINTER;
+FUNCTION DrawDTObjectA(rp : pRastPort; o : pObject_; x : LONGINT; y : LONGINT; w : LONGINT; h : LONGINT; th : LONGINT; tv : LONGINT; attrs : pTagItem) : LONGINT;
+PROCEDURE ReleaseDTDrawInfo( o : pObject_; handle : POINTER);
 
 {Here we read how to compile this unit}
 {You can remove this include and use a define instead}
@@ -1313,8 +1316,252 @@ var
 IMPLEMENTATION
 
 {$ifndef dont_use_openlib}
-uses amsgbox;
+uses msgbox;
 {$endif dont_use_openlib}
+
+FUNCTION AddDTObject(win : pWindow; req : pRequester; o : pObject_; pos : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L win,A0
+    MOVEA.L req,A1
+    MOVEA.L o,A2
+    MOVE.L  pos,D0
+    MOVEA.L DataTypesBase,A6
+    JSR -072(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE DisposeDTObject(o : pObject_);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L o,A0
+    MOVEA.L DataTypesBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION DoAsyncLayout(o : pObject_; gpl : pgpLayout) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L o,A0
+    MOVEA.L gpl,A1
+    MOVEA.L DataTypesBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION DoDTMethodA(o : pObject_; win : pWindow; req : pRequester; msg : pLONGINT) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L o,A0
+    MOVEA.L win,A1
+    MOVEA.L req,A2
+    MOVEA.L msg,A3
+    MOVEA.L DataTypesBase,A6
+    JSR -090(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetDTAttrsA(o : pObject_; attrs : pTagItem) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L o,A0
+    MOVEA.L attrs,A2
+    MOVEA.L DataTypesBase,A6
+    JSR -066(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetDTMethods(obj : pObject_) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L obj,A0
+    MOVEA.L DataTypesBase,A6
+    JSR -102(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetDTString(id : ULONG) : pCHAR;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  id,D0
+    MOVEA.L DataTypesBase,A6
+    JSR -138(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetDTTriggerMethods(obj : pObject_) : pDTMethod;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L obj,A0
+    MOVEA.L DataTypesBase,A6
+    JSR -108(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION NewDTObjectA(name : POINTER; attrs : pTagItem) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  name,D0
+    MOVEA.L attrs,A0
+    MOVEA.L DataTypesBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ObtainDataTypeA(typ : ULONG; handle : POINTER; attrs : pTagItem) : pDataType;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  typ,D0
+    MOVEA.L handle,A0
+    MOVEA.L attrs,A1
+    MOVEA.L DataTypesBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION PrintDTObjectA(o : pObject_; w : pWindow; r : pRequester; msg : pdtPrint) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L o,A0
+    MOVEA.L w,A1
+    MOVEA.L r,A2
+    MOVEA.L msg,A3
+    MOVEA.L DataTypesBase,A6
+    JSR -114(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE RefreshDTObjectA(o : pObject_; win : pWindow; req : pRequester; attrs : pTagItem);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L o,A0
+    MOVEA.L win,A1
+    MOVEA.L req,A2
+    MOVEA.L attrs,A3
+    MOVEA.L DataTypesBase,A6
+    JSR -078(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ReleaseDataType(dt : pDataType);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L dt,A0
+    MOVEA.L DataTypesBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION RemoveDTObject(win : pWindow; o : pObject_) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L win,A0
+    MOVEA.L o,A1
+    MOVEA.L DataTypesBase,A6
+    JSR -096(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetDTAttrsA(o : pObject_; win : pWindow; req : pRequester; attrs : pTagItem) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L o,A0
+    MOVEA.L win,A1
+    MOVEA.L req,A2
+    MOVEA.L attrs,A3
+    MOVEA.L DataTypesBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+
+FUNCTION ObtainDTDrawInfoA( o : pObject_; attrs : pTagItem) : POINTER;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L o,A0
+        MOVEA.L attrs,A1
+        MOVEA.L DataTypesBase,A6
+        JSR     -120(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION DrawDTObjectA(rp : pRastPort;  o : pObject_; x : LONGINT; y : LONGINT; w : LONGINT; h : LONGINT; th : LONGINT; tv : LONGINT; attrs : pTagItem) : LONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L rp,A0
+        MOVEA.L o,A1
+        MOVE.L  x,D0
+        MOVE.L  y,D1
+        MOVE.L  w,D2
+        MOVE.L  h,D3
+        MOVE.L  th,D4
+        MOVE.L  tv,D5
+        MOVEA.L attrs,A2
+        MOVEA.L DataTypesBase,A6
+        JSR     -126(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ReleaseDTDrawInfo( o : pObject_; handle : POINTER);
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L o,A0
+        MOVEA.L handle,A1
+        MOVEA.L DataTypesBase,A6
+        JSR     -132(A6)
+        MOVEA.L (A7)+,A6
+  END;
+END;
 
 
 const

@@ -11,7 +11,7 @@
         container : TGtkContainer;
         children : PGList;
         spacing : gint16;
-        flag0 : {$ifdef windows}longint{$else}word{$endif};
+        flag0 : word;
      end;
 
    PGtkBoxClass = ^TGtkBoxClass;

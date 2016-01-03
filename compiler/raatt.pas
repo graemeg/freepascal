@@ -52,9 +52,30 @@ unit raatt;
         {------------------ Assembler directives --------------------}
         AS_DB,AS_DW,AS_DD,AS_DQ,AS_GLOBAL,
         AS_ALIGN,AS_BALIGN,AS_P2ALIGN,AS_ASCII,
+<<<<<<< HEAD
         AS_ASCIIZ,AS_LCOMM,AS_COMM,AS_SINGLE,AS_DOUBLE,AS_EXTENDED,AS_CEXTENDED,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         AS_DATA,AS_TEXT,AS_INIT,AS_FINI,AS_RVA,
         AS_SET,AS_WEAK,AS_SECTION,AS_END,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        AS_DATA,AS_TEXT,AS_INIT,AS_FINI,AS_END,
+>>>>>>> graemeg/cpstrnew
+=======
+        AS_ASCIIZ,AS_LCOMM,AS_COMM,AS_SINGLE,AS_DOUBLE,AS_EXTENDED,
+        AS_DATA,AS_TEXT,AS_INIT,AS_FINI,AS_END,
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         {------------------ Assembler Operators  --------------------}
         AS_TYPE,AS_SIZEOF,AS_VMTOFFSET,AS_MOD,AS_SHL,AS_SHR,AS_NOT,AS_AND,AS_OR,AS_XOR,AS_NOR,AS_AT,
         AS_LO,AS_HI,
@@ -79,11 +100,32 @@ unit raatt;
         '=',
         '.byte','.word','.long','.quad','.globl',
         '.align','.balign','.p2align','.ascii',
+<<<<<<< HEAD
         '.asciz','.lcomm','.comm','.single','.double','.tfloat','.tcfloat',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         '.data','.text','.init','.fini','.rva',
         '.set','.weak','.section','END',
         'TYPE','SIZEOF','VMTOFFSET','%','<<','>>','!','&','|','^','~','@','lo','hi',
         'directive');
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+        '.asciz','.lcomm','.comm','.single','.double','.tfloat',
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+        '.data','.text','.init','.fini','END',
+        'TYPE','SIZEOF','VMTOFFSET','%','<<','>>','!','&','|','^','~','@','lo','hi');
+>>>>>>> graemeg/cpstrnew
 
     type
        tattreader = class(tasmreader)
@@ -288,13 +330,33 @@ unit raatt;
            end;
 {$endif POWERPC}
 {$if defined(ARM)}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
            {
              Thumb-2 instructions can have a .W postfix to indicate 32bit instructions,
              Also in unified syntax sizes and types are indicated with something like a .<dt> prefix for example
+=======
+           { Thumb-2 instructions can have a .W postfix to indicate 32bit instructions
+>>>>>>> graemeg/cpstrnew
+=======
+           { Thumb-2 instructions can have a .W postfix to indicate 32bit instructions
+>>>>>>> graemeg/cpstrnew
+=======
+           { Thumb-2 instructions can have a .W postfix to indicate 32bit instructions
+>>>>>>> graemeg/cpstrnew
+=======
+           { Thumb-2 instructions can have a .W postfix to indicate 32bit instructions
+>>>>>>> origin/cpstrnew
            }
            case c of
              '.':
                begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                  if len>1 then
                    begin
                      while c in ['A'..'Z','a'..'z','0'..'9','_','.'] do
@@ -306,6 +368,18 @@ unit raatt;
                      actasmpattern[0]:=chr(len);
                    end;
                  {actasmpattern:=actasmpattern+c;
+=======
+                 actasmpattern:=actasmpattern+c;
+>>>>>>> graemeg/cpstrnew
+=======
+                 actasmpattern:=actasmpattern+c;
+>>>>>>> graemeg/cpstrnew
+=======
+                 actasmpattern:=actasmpattern+c;
+>>>>>>> graemeg/cpstrnew
+=======
+                 actasmpattern:=actasmpattern+c;
+>>>>>>> origin/cpstrnew
                  c:=current_scanner.asmgetchar;
 
                  if upcase(c) = 'W' then
@@ -314,6 +388,10 @@ unit raatt;
                      c:=current_scanner.asmgetchar;
                    end
                  else
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                    internalerror(2010122301);}
                end
            end;
@@ -330,6 +408,27 @@ unit raatt;
                end;
            end;
 {$endif aarch64}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                   internalerror(2010122301);
+               end
+           end;
+{$endif ARM}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
            { Opcode ? }
            If is_asmopcode(upper(actasmpattern)) then
             Begin

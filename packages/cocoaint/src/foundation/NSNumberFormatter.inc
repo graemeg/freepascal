@@ -86,7 +86,23 @@ type
     _attributes: NSMutableDictionary;
     _formatter: CFNumberFormatterRef; {garbage collector: __strong }
     _counter: NSUInteger;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _reserved: array[0..(12)-1] of Pointer;
+=======
+        _reserved: array[0..11] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..11] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..11] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..11] of Pointer;
+>>>>>>> origin/cpstrnew
     
   public
     function getObjectValue_forString_range_error(obj: idPtr; string_: NSString; rangep: NSRangePtr; error: NSErrorPointer): Boolean; message 'getObjectValue:forString:range:error:';

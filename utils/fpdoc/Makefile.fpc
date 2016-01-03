@@ -4,10 +4,49 @@
 
 [package]
 name=fpdoc
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> origin/cpstrnew
 
 [require]
 packages=rtl fpmkunit
+=======
+version=2.2.5
+
+[require]
+=======
+version=2.2.5
+
+[require]
+>>>>>>> origin/fixes_2_2
+packages=fcl-xml fcl-passrc chm
+
+[target]
+programs=fpdoc makeskel unitdiff fpclasschart
+rst=dwriter fpdoc dglobals makeskel dwlinear
+# removed to reduce dependencies of rpm.
+#dirs_linux_i386=fpde
+#dirs_win32=fpde
+
+[compiler]
+options=-S2h
+>>>>>>> graemeg/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -15,6 +54,7 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -24,6 +64,11 @@ ifdef CPU_TARGET
 FPC_TARGETOPT+=--cpu=$(CPU_TARGET)
 endif
 LOCALFPMAKE=./fpmake$(SRCEXEEXT)
+=======
+[clean]
+units=dglobals dwriter dw_xml sh_pas dw_html dw_latex dw_ipf dw_txt dw_man dwlinear dw_linrtf 
+files=dwriter.rst fpdoc.rst dglobals.rst makeskel.rst
+>>>>>>> graemeg/cpstrnew
 
 [rules]
 # Do not pass the Makefile's unit and binary target locations. Fpmake uses it's own.
@@ -42,6 +87,14 @@ FPMAKE_OPT+=$(addprefix -o ,$(FPCOPT))
 FPMAKE_OPT+=--compiler=$(FPC)
 FPMAKE_OPT+=-bu
 .NOTPARALLEL:
+<<<<<<< HEAD
+=======
+fpdoc$(EXEEXT): fpdoc.pp dglobals.pp dwriter.pp dw_xml.pp sh_pas.pp dw_html.pp\
+  dw_latex.pp dwlinear.pp dw_txt.pp dw_linrtf.pp
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 fpmake$(SRCEXEEXT): fpmake.pp
 	$(FPCFPMAKE) fpmake.pp $(FPMAKE_SKIP_CONFIG) $(addprefix -Fu,$(COMPILER_FPMAKE_UNITDIR)) $(FPCMAKEOPT) $(OPT)

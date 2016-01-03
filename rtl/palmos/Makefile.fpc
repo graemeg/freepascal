@@ -7,7 +7,31 @@ main=rtl
 
 [target]
 loaders= prt0
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=$(SYSTEMUNIT) uuchar ctypes objpas macpas iso7185 extpas strings \
+=======
+units=$(SYSTEMUNIT) ctypes objpas macpas iso7185 strings \
+>>>>>>> graemeg/cpstrnew
+=======
+units=$(SYSTEMUNIT) ctypes objpas macpas iso7185 strings \
+>>>>>>> graemeg/cpstrnew
+=======
+units=$(SYSTEMUNIT) ctypes objpas macpas iso7185 strings \
+>>>>>>> graemeg/cpstrnew
+=======
+units=$(SYSTEMUNIT) ctypes objpas macpas iso7185 strings \
+>>>>>>> origin/cpstrnew
+=======
+units=$(SYSTEMUNIT) ctypes objpas macpas strings \
+>>>>>>> graemeg/fixes_2_2
+=======
+units=$(SYSTEMUNIT) ctypes objpas macpas strings \
+>>>>>>> origin/fixes_2_2
       lnfodwrf lineinfo heaptrc \
       windows messages dynlibs \
       dos objects \
@@ -16,15 +40,31 @@ units=$(SYSTEMUNIT) uuchar ctypes objpas macpas iso7185 extpas strings \
       strutils convutils math dateutils \
       varutils variants \
       matrix ucomplex \
+<<<<<<< HEAD
+<<<<<<< HEAD
       charset cpall getopts winsock sockets
+=======
+      charset getopts winsock sockets
+>>>>>>> graemeg/fixes_2_2
+=======
+      charset getopts winsock sockets
+>>>>>>> origin/fixes_2_2
 # initc cmem signals \
 #    crt graph \
 #    wincrt winmouse winevent  printer \
 #    video mouse keyboard \
 #    winsysut
+<<<<<<< HEAD
+<<<<<<< HEAD
 implicitunits=exeinfo \
       cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852
+=======
+implicitunits=exeinfo
+>>>>>>> graemeg/fixes_2_2
+=======
+implicitunits=exeinfo
+>>>>>>> origin/fixes_2_2
 
 # rsts=math varutils typinfo variants classes dateutils sysconst
 
@@ -103,8 +143,14 @@ $(PRT0)$(OEXT) : $(CPU_TARGET)/$(PRT0).as
 $(SYSTEMUNIT)$(PPUEXT) : $(SYSTEMUNIT).pp $(SYSDEPS)
         $(COMPILER) -Us -Sg $(SYSTEMUNIT).pp
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uuchar$(PPUEXT): $(SYSTEMUNIT)$(PPUEXT) $(INC)/uuchar.pp
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 objpas$(PPUEXT): $(OBJPASDIR)/objpas.pp $(INC)/except.inc $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) -I$(OBJPASDIR) $(OBJPASDIR)/objpas.pp
 
@@ -138,8 +184,14 @@ strings$(PPUEXT) : $(INC)/strings.pp $(INC)/stringsi.inc\
 fmtbcd$(PPUEXT) : $(OBJPASDIR)/fmtbcd.pp objpas$(PPUEXT) sysutils$(PPUEXT) variants$(PPUEXT) classes$(PPUEXT) system$(PPUEXT)
         $(COMPILER) $(OBJPASDIR)/fmtbcd.pp
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 cpall$(PPUEXT): $(RTL)/charmaps/cpall.pas system$(PPUEXT) charset$(PPUEXT)
         $(COMPILER) -Fu$(INC) -Fi$(RTL)/charmaps $(RTL)/charmaps/cpall.pas
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 #####################################################################
 # Libs
 #####################################################################
@@ -170,5 +222,29 @@ libinstall: staticlibinstall sharedlibinstall
 
 libsclean : clean
 	-$(DEL) *$(SMARTLIBEXT) *$(SHAREDLIBEXT) *$(PPLEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2

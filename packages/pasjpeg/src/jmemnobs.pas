@@ -27,7 +27,7 @@ uses
   NB: jmemmgr.c expects that MAX_ALLOC_CHUNK will be representable as type
   size_t and will be a multiple of sizeof(align_type). }
 
-{$IFDEF CPU16}
+{$IFDEF WINDOWS}
 const
   MAX_ALLOC_CHUNK = long(32752);
 {$ELSE}

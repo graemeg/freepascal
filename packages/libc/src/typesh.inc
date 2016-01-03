@@ -37,7 +37,7 @@ type
         __val : array[0..1] of longint;
      end;
    __daddr_t = longint;
-   __caddr_t = pchar;
+   __caddr_t = char;
    __time_t = longint;
    __useconds_t = dword;
    __suseconds_t = longint;
@@ -169,7 +169,7 @@ Type
   Ppid_t = ^pid_t;
   Pssize_t = ^ssize_t;
   Pdaddr_t = ^daddr_t;
-//  Pcaddr_t = ^caddr_t;
+  Pcaddr_t = ^caddr_t;
   Pkey_t = ^key_t;
   Puseconds_t = ^useconds_t;
   Psuseconds_t = ^suseconds_t;
@@ -207,7 +207,7 @@ Type
   P__id_t = ^__id_t;
   P__fsid_t = ^__fsid_t;
   P__daddr_t = ^__daddr_t;
-  //P__caddr_t = ^__caddr_t;
+  P__caddr_t = ^__caddr_t;
   P__time_t = ^__time_t;
   P__useconds_t = ^__useconds_t;
   P__suseconds_t = ^__suseconds_t;

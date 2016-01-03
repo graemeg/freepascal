@@ -5,6 +5,33 @@
 #  Generate Sample Free Pascal configuration file
 #
 
+<<<<<<< HEAD
+=======
+setgccdir() {
+# Find path to libgcc.a
+GCCSPEC=`(gcc -v $@ 2>&1)| head -n 1| awk '{ print $4 } '`
+if [ -z "$GCCSPEC" ] ; then
+  GCCSPEC=`gcc -print-libgcc-file-name $@ 2>/dev/null`
+fi
+GCCDIR=`dirname "$GCCSPEC"`
+}
+
+
+setgccdirarch() {
+# First argument is fpc define for CPU type; remaining args are passed to gcc to set corresponding architecture
+FPCDEFINE=$1
+shift
+setgccdir $@
+
+if [ -z "$GCCDIR" ] ; then
+  return
+fi
+GCCDIR="#ifdef $FPCDEFINE
+-Fl$GCCDIR
+#endif"
+}
+
+>>>>>>> graemeg/fixes_2_2
 HOSTOS=`uname -s | tr A-Z a-z`
 echo Running on $HOSTOS
 
@@ -23,7 +50,13 @@ else
 fi
 FPCBIN=`dirname "$1"`/../../bin/fpc
 FPBIN=`dirname "$1"`/../../bin/fp
+<<<<<<< HEAD
+<<<<<<< HEAD
 FPPKGBIN=`dirname "$1"`/../../bin/fppkg
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 FPCMKCFGBIN=`dirname "$1"`/../../bin/fpcmkcfg
 SHAREPATH=`dirname "$1"`/../../share/fpc/\$fpcversion
 # Look for one in the PATH, if no new one was installed.
@@ -31,14 +64,35 @@ if [ ! -f $FPCMKCFGBIN ]; then
   FPCMKCFGBIN=fpcmkcfg
 fi
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 sysfpdirbase=`dirname "$1"`/`"$FPCBIN" -iV`
 sysfpdirbase2=$sysfpdirbase/ide
 sysfpdir=$sysfpdirbase2/text
+=======
+=======
+>>>>>>> origin/fixes_2_2
+sysfpdirbase=`dirname "$1"`/`$FPCBIN -iV`
+sysfpdirbase2=$sysfpdirbase/ide
+sysfpdir=$sysfpdirbase2/text
+fpctargetos=`$FPCBIN -iTO`
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 # Detect if we have write permission in sysdir.
 if [ -w "$sysdir" ] ; then
   echo Write permission in $sysdir.
   fpccfgfile="$sysdir"/fpc.cfg
+<<<<<<< HEAD
+<<<<<<< HEAD
   fppkgfile="$sysdir"/fppkg.cfg
   defaultfile="$sysdir"/fppkg/default
   compilerconfigdir="-d CompilerConfigDir=$sysdir/fppkg"
@@ -49,6 +103,374 @@ else
   defaultfile="$HOME"/.fppkg/config/default
 fi
 #
+=======
+else
+  echo No write premission in $sysdir.
+  fpccfgfile="$HOME"/.fpc.cfg
+fi
+#
+
+# Don't mess with IDE configuration if fp binary does not exist
+if [ -f "$FPBIN" ] ; then
+
+# Assume local FP IDE configuration unless writing system-wide version possible
+  fpinifile="$HOME"/.fp/fp.ini
+  fpcfgfile="$HOME"/.fp/fp.cfg
+
+# Detect if we have write permission in sysfpdirbase.
+  if [ -w "$sysfpdirbase" ] ; then
+    echo Write permission in $sysfpdirbase.
+    if ! [ -d "$sysfpdirbase2" ] ; then
+      echo Directory $sysfpdirbase2 did not exist, attempting to create it now
+      mkdir $sysfpdirbase2  >/dev/null 2>&1
+      echo Attempting to create directory $sysfpdir
+      mkdir $sysfpdir  >/dev/null 2>&1
+    elif ! [ -d "$sysfpdir" ] ; then
+      echo Directory $sysfpdir did not exist, attempting to create it now
+      mkdir $sysfpdir  >/dev/null 2>&1
+    fi
+    if [ -w "$sysfpdir" ] ; then
+      fpinifile="$sysfpdir"/fp.ini
+      fpcfgfile="$sysfpdir"/fp.cfg
+    fi
+  fi
+#
+
+# When the local FP IDE configuration is used, check if the directory exists
+  if [ $fpcfgfile = "$HOME"/.fp/fp.cfg -a ! -d "$HOME"/.fp ] ; then
+    echo Directory $HOME/.fp did not exist, attempting to create it now
+    mkdir "$HOME"/.fp >/dev/null 2>&1     
+  fi
+fi
+#
+
+=======
+else
+  echo No write premission in $sysdir.
+  fpccfgfile="$HOME"/.fpc.cfg
+fi
+#
+
+# Don't mess with IDE configuration if fp binary does not exist
+if [ -f "$FPBIN" ] ; then
+
+# Assume local FP IDE configuration unless writing system-wide version possible
+  fpinifile="$HOME"/.fp/fp.ini
+  fpcfgfile="$HOME"/.fp/fp.cfg
+
+# Detect if we have write permission in sysfpdirbase.
+  if [ -w "$sysfpdirbase" ] ; then
+    echo Write permission in $sysfpdirbase.
+    if ! [ -d "$sysfpdirbase2" ] ; then
+      echo Directory $sysfpdirbase2 did not exist, attempting to create it now
+      mkdir $sysfpdirbase2  >/dev/null 2>&1
+      echo Attempting to create directory $sysfpdir
+      mkdir $sysfpdir  >/dev/null 2>&1
+    elif ! [ -d "$sysfpdir" ] ; then
+      echo Directory $sysfpdir did not exist, attempting to create it now
+      mkdir $sysfpdir  >/dev/null 2>&1
+    fi
+    if [ -w "$sysfpdir" ] ; then
+      fpinifile="$sysfpdir"/fp.ini
+      fpcfgfile="$sysfpdir"/fp.cfg
+    fi
+  fi
+#
+
+# When the local FP IDE configuration is used, check if the directory exists
+  if [ $fpcfgfile = "$HOME"/.fp/fp.cfg -a ! -d "$HOME"/.fp ] ; then
+    echo Directory $HOME/.fp did not exist, attempting to create it now
+    mkdir "$HOME"/.fp >/dev/null 2>&1     
+  fi
+fi
+#
+
+>>>>>>> origin/fixes_2_2
+if [ -f "$fpccfgfile" ] ; then
+  mv "$fpccfgfile" "$fpccfgfile.orig"  >/dev/null 2>&1
+  if [ $? = 0 ]; then
+    echo Saved old compiler config to $fpccfgfile.orig
+  else
+    echo Could not save old compiler config. Bailing out...
+    exit
+  fi
+fi
+
+if [ -f "$FPBIN" ] ; then
+  if [ -f "$fpinifile" ] ; then
+    mv "$fpinifile" "$fpinifile.orig"  >/dev/null 2>&1
+    if [ $? = 0 ]; then
+      echo Saved old fp.ini to $fpinifile.orig
+    else
+      echo Could not save old fp.ini. Bailing out...
+      exit
+    fi
+  fi
+
+  if [ -f "$fpcfgfile" ] ; then
+    mv "$fpcfgfile" "$fpcfgfile.orig"  >/dev/null 2>&1
+    if [ $? = 0 ]; then
+      echo Saved old fp.cfg to $fpcfgfile.orig
+    else
+      echo Could not save old fp.cfg. Bailing out...
+      exit
+    fi
+  fi
+fi
+
+setgccdir
+GCCDIR2=""
+GCCDIR3=""
+GCCDIR4=""
+
+singlearch() {
+  if [ -d "$GCCDIR" ]; then	
+    echo Found libgcc.a in "$GCCDIR"
+    GCCDIR=-Fl$GCCDIR
+  fi
+}
+
+# include ports tree dir for FreeBSDers.
+case "$HOSTOS" in
+ freebsd)
+    GCCDIR=-Fl/usr/local/lib
+     ;;
+ openbsd)
+    GCCDIR=-Fl/usr/local/lib
+     ;;
+ netbsd)
+   GCCDIR=-Fl/usr/pkg/lib
+     ;;
+ darwin)
+   setgccdirarch cpupowerpc -arch ppc
+   GCCDIR2="$GCCDIR"
+   setgccdirarch cpupowerpc64 -arch ppc64
+   GCCDIR3="$GCCDIR"
+   setgccdirarch cpui386 -arch i386
+   GCCDIR4="$GCCDIR"
+   setgccdirarch cpux86_64 -arch x86_64
+     ;;
+  linux)
+    case `"$FPCBIN" -PP` in
+      i?86|x86_64|amd64)
+      # Allow for the possibility of both 32 and 64 bit compilation on same system
+        setgccdirarch cpui386 -m32
+        GCCDIR4="$GCCDIR"
+        setgccdirarch cpux86_64 -m64
+        ;;
+      powerpc|powerpc64)
+      # Allow for the possibility of both 32 and 64 bit compilation on same system
+        setgccdirarch cpupowerpc -m32
+	GCCDIR4="$GCCDIR"
+	setgccdirarch cpupowerpc64 -m64
+	;;
+      # Add cases for other linux dual architectures here
+      *) singlearch # Default          
+        ;;
+    esac
+    ;;
+
+ *) singlearch
+    ;;
+   
+esac
+
+CPUCROSSIFDEF1="#DEFINE NEEDCROSSBINUTILS"
+CPUCROSSIFDEF2=""
+
+case `"$FPCBIN" -PP` in
+  i?86|x86_64|amd64)
+    # Cross-binutils are not needed to compile for i386 on an x86_64 system
+    CPUCROSSIFDEF1="
+#IFNDEF CPUI386
+#IFNDEF CPUAMD64
+#DEFINE NEEDCROSSBINUTILS
+#ENDIF
+#ENDIF
+"
+    CPUCROSSIFDEF2="
+#IFNDEF $HOSTOS
+#DEFINE NEEDCROSSBINUTILS
+#ENDIF
+"
+  ;;
+  *)
+    CPUCROSSIFDEF1="#DEFINE NEEDCROSSBINUTILS"
+    CPUCROSSIFDEF2=""
+  ;;
+esac
+
+# darwin->darwin does not need cross binutils
+case "$HOSTOS" in
+  darwin)
+    CPUCROSSIFDEF2="
+#ifdef darwin
+#undef NEEDCROSSBINUTILS
+#endif
+"
+  ;;
+esac
+
+
+# set right path to FPC with $fpcversion
+FPCPATH=`dirname "$1"`/\$fpcversion
+
+# Write (.)fpc.cfg
+echo Writing sample configuration file to $fpccfgfile
+cat <<EOFCFG > $fpccfgfile
+#
+# Example fpc.cfg for Free Pascal Compiler
+#
+
+# ----------------------
+# Defines (preprocessor)
+# ----------------------
+
+#
+# nested #IFNDEF, #IFDEF, #ENDIF, #ELSE, #DEFINE, #UNDEF are allowed
+#
+# -d is the same as #DEFINE
+# -u is the same as #UNDEF
+#
+
+#
+# Some examples (for switches see below, and the -? helppages)
+#
+# Try compiling with the -dRELEASE or -dDEBUG on the commandline
+#
+
+# For a release compile with optimizes and strip debuginfo
+#IFDEF RELEASE
+  -O2
+  -Xs
+  #WRITE Compiling Release Version
+#ENDIF
+
+# For a debug version compile with debuginfo and all codegeneration checks on
+#IFDEF DEBUG
+  -g
+  -Crtoi
+  #WRITE Compiling Debug Version
+#ENDIF
+
+# set binutils prefix
+$CPUCROSSIFDEF1
+$CPUCROSSIFDEF2
+
+#IFDEF FPC_CROSSCOMPILING
+#IFDEF NEEDCROSSBINUTILS
+  -XP\$fpctarget-
+#ENDIF NEEDCROSSBINUTILS
+#ENDIF
+
+# ----------------
+# Parsing switches
+# ----------------
+
+# Pascal language mode
+#      -Mfpc      free pascal dialect (default)
+#      -Mobjfpc   switch some Delphi 2 extensions on
+#      -Mdelphi   tries to be Delphi compatible
+#      -Mtp       tries to be TP/BP 7.0 compatible
+#      -Mgpc      tries to be gpc compatible
+#      -Mmacpas   tries to be compatible to the macintosh pascal dialects
+#
+# Turn on Object Pascal extensions by default
+#-Mobjfpc
+
+# Assembler reader mode
+#      -Rdefault  use default assembler
+#      -Ratt      read AT&T style assembler
+#      -Rintel    read Intel style assembler
+#
+# All assembler blocks are AT&T styled by default
+#-Ratt
+
+# Semantic checking
+#      -S2        same as -Mobjfpc
+#      -Sc        supports operators like C (*=,+=,/= and -=)
+#      -Sa        include assertion code.
+#      -Sd        same as -Mdelphi
+#      -Se<x>     error options. <x> is a combination of the following:
+#         <n> : compiler stops after the <n> errors (default is 1)
+#         w : compiler stops also after warnings
+#         n : compiler stops also after notes
+#         h : compiler stops also after hints
+#      -Sg        allow LABEL and GOTO
+#      -Sh        Use ansistrings
+#      -Si        support C++ styled INLINE
+#      -Sk        load fpcylix unit
+#      -SI<x>     set interface style to <x>
+#         -SIcom     COM compatible interface (default)
+#         -SIcorba   CORBA compatible interface
+#      -Sm        support macros like C (global)
+#      -So        same as -Mtp
+#      -Sp        same as -Mgpc
+#      -Ss        constructor name must be init (destructor must be done)
+#      -St        allow static keyword in objects
+#      -Sx        enable exception keywords (default in Delphi/ObjFPC modes)
+#
+# Allow goto, inline, C-operators, C-vars
+-Sgic
+
+# ---------------
+# Code generation
+# ---------------
+
+# Uncomment the next line if you always want static/dynamic units by default
+# (can be overruled with -CD, -CS at the commandline)
+#-CS
+#-CD
+
+# Set the default heapsize to 8Mb
+#-Ch8000000
+
+# Set default codegeneration checks (iocheck, overflow, range, stack)
+#-Ci
+#-Co
+#-Cr
+#-Ct
+
+# Optimizer switches
+# -Os        generate smaller code
+# -O1        level 1 optimizations (quick optimizations, debuggable)
+# -O2        level 2 optimizations (-O1 + optimizations which make debugging more difficult)
+# -O3        level 3 optimizations (-O2 + optimizations which also may make the program slower rather than faster)
+# -Op<x>     set target cpu for optimizing, see fpc -i for possible values
+#
+# See "fpc -i" also for more fine-grained control over which optimizations
+# to perform
+
+# -----------------------
+# Set Filenames and Paths
+# -----------------------
+
+# Slashes are also allowed under dos
+
+# path to the messagefile, not necessary anymore but can be used to override
+# the default language
+#-Fr$FPCPATH/msg/errore.msg
+#-Fr$FPCPATH/msg/errorn.msg
+
+# searchpath for includefiles
+#-Fi/pp/inc;/pp/rtl/inc
+
+#IFDEF FPCAPACHE_1_3
+-Fu$FPCPATH/units/\$fpctarget/httpd13/
+#ELSE
+#IFDEF FPCAPACHE_2_0
+-Fu$FPCPATH/units/\$fpctarget/httpd20
+#ELSE
+-Fu$FPCPATH/units/\$fpctarget/httpd22
+#ENDIF
+#ENDIF
+
+# searchpath for units and other system dependent things
+-Fu$FPCPATH/units/\$fpctarget
+-Fu$FPCPATH/units/\$fpctarget/*
+-Fu$FPCPATH/units/\$fpctarget/rtl
+#-Fu~/fpc/packages/base/*/units/$fpctarget;~/fpc/fcl/units/$fpctarget;~/fpc/rtl/units/$fpctarget
+>>>>>>> graemeg/fixes_2_2
 
 # Don't mess with IDE configuration if fp binary does not exist
 if [ -f "$FPBIN" ] ; then
@@ -74,23 +496,43 @@ FPCGLOBALPREFIX=`dirname "$1"`/../../
 
 # Write (.)fpc.cfg
 echo Writing sample configuration file to $fpccfgfile
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 ${FPCMKCFGBIN} -d "basepath=$FPCPATH" -d "sharepath=$SHAREPATH" -o $fpccfgfile
 
 if [ -f "$FPBIN" ] ; then
   # Write fp.cfg
   echo Writing sample configuration file to $fpcfgfile
   ${FPCMKCFGBIN} -p -1 -d "basepath=$FPCPATH" -d "sharepath=$SHAREPATH" -o $fpcfgfile
+=======
+fpcmkcfg -d "basepath=$FPCPATH" -o $fpccfgfile
+>>>>>>> graemeg/cpstrnew
 
   # Write fp.ini
   echo Writing sample configuration file to $fpinifile
   ${FPCMKCFGBIN} -p -2 -o $fpinifile
 fi
+=======
+fpcmkcfg -d "basepath=$FPCPATH" -o $fpccfgfile
+>>>>>>> graemeg/cpstrnew
+=======
+fpcmkcfg -d "basepath=$FPCPATH" -o $fpccfgfile
+>>>>>>> graemeg/cpstrnew
 
 # Do not write fppkg configuration when fppkg is not available
 if ! [ -f "$FPPKGBIN" ] ; then
+=======
+fpcmkcfg -d "basepath=$FPCPATH" -o $fpccfgfile
+
+if ! [ -f "$FPBIN" ] ; then
+>>>>>>> origin/cpstrnew
   exit
 fi
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 # Write fppkg.cfg
 echo Writing sample configuration file to $fppkgfile
 ${FPCMKCFGBIN} -p -3 $compilerconfigdir -o $fppkgfile
@@ -98,3 +540,190 @@ ${FPCMKCFGBIN} -p -3 $compilerconfigdir -o $fppkgfile
 # Write default
 echo Writing sample configuration file to $defaultfile
 ${FPCMKCFGBIN} -p -4 -d "GlobalPrefix=$FPCGLOBALPREFIX" -d "FpcBin=$FPCBIN" -o $defaultfile
+=======
+# Write fp.cfg
+echo Writing sample configuration file to $fpcfgfile
+fpcmkcfg -p -1 -d "basepath=$FPCPATH" -o $fpcfgfile
+
+# Write fp.ini
+echo Writing sample configuration file to $fpinifile
+fpcmkcfg -p -2 -o $fpinifile
+
+# Do not write fppkg configuration when fppkg is not available
+if ! [ -f "$FPPKGBIN" ] ; then
+  exit
+fi
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/cpstrnew
+
+# Write fppkg.cfg
+echo Writing sample configuration file to $fppkgfile
+fpcmkcfg -p -3 $compilerconfigdir -o $fppkgfile
+
+# Write default
+echo Writing sample configuration file to $defaultfile
+fpcmkcfg -p -4 -d "GlobalPrefix=$FPCGLOBALPREFIX" -o $defaultfile
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+
+# Write fppkg.cfg
+echo Writing sample configuration file to $fppkgfile
+fpcmkcfg -p -3 $compilerconfigdir -o $fppkgfile
+
+# Write default
+echo Writing sample configuration file to $defaultfile
+fpcmkcfg -p -4 -d "GlobalPrefix=$FPCGLOBALPREFIX" -o $defaultfile
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+#
+# That's all folks
+#
+EOFCFG
+
+if ! [ -f "$FPBIN" ] ; then
+  exit
+fi
+
+# Write fp.cfg
+echo Writing sample configuration file to $fpcfgfile
+cat <<EOFFPCFG > $fpcfgfile
+#IFDEF NORMAL
+ -Ci
+ -XS
+ -T$fpctargetos
+ -Sg
+ -O1
+ -Fu$FPCPATH/units/\$fpctarget
+ -Fu$FPCPATH/units/\$fpctarget\*
+ -Fu$FPCPATH/units/\$fpctarget\rtl
+ $GCCDIR
+ $GCCDIR2
+ $GCCDIR3
+ $GCCDIR4
+ -g-
+ -p-
+ -b-
+#ENDIF
+
+#IFDEF DEBUG
+ -Ci
+ -XS
+ -T$fpctargetos
+ -Sg
+ -Cr
+ -Co
+ -Fu$FPCPATH/units/\$fpctarget
+ -Fu$FPCPATH/units/\$fpctarget\*
+ -Fu$FPCPATH/units/\$fpctarget\rtl
+ $GCCDIR
+ $GCCDIR2
+ $GCCDIR3
+ $GCCDIR4
+ -g
+ -p-
+ -b-
+#ENDIF
+
+#IFDEF RELEASE
+ -XS
+ -T$fpctargetos
+ -Sg
+ -O2
+ -Fu$FPCPATH/units/\$fpctarget
+ -Fu$FPCPATH/units/\$fpctarget\*
+ -Fu$FPCPATH/units/\$fpctarget\rtl
+ $GCCDIR
+ $GCCDIR2
+ $GCCDIR3
+ $GCCDIR4
+ -g-
+ -p-
+ -b-
+#ENDIF
+EOFFPCFG
+
+# Write fp.ini
+echo Writing sample configuration file to $fpinifile
+cat <<EOFFPINI > $fpinifile
+[Compile]
+CompileMode=DEBUG
+
+[Editor]
+DefaultTabSize=8
+DefaultFlags=20599
+DefaultSaveExt=.pas
+DefaultIndentSize=1
+
+[Highlight]
+Exts="*.pas;*.pp;*.inc"
+NeedsTabs="make*;make*.*"
+
+[SourcePath]
+SourceList=""
+
+[Mouse]
+DoubleDelay=8
+ReverseButtons=0
+AltClickAction=6
+CtrlClickAction=1
+
+[Search]
+FindFlags=4
+
+[Breakpoints]
+Count=0
+
+[Watches]
+Count=0
+
+[Preferences]
+DesktopFileFlags=209
+CenterCurrentLineWhileDebugging=1
+AutoSaveFlags=7
+MiscOptions=6
+DesktopLocation=1
+
+[Misc]
+ShowReadme=1
+
+[Files]
+OpenExts="*.pas;*.pp;*.inc"
+
+[Tools]
+Title1="svn ~u~p (curr. dir)"
+Program1="svn"
+Params1="up \$CAP_MSG()"
+HotKey1=23296
+Title2="svn c~i~ (curr. dir)"
+Program2="svn"
+Params2="ci \$CAP_MSG()"
+HotKey2=23552
+Title3="svn ~d~iff"
+Program3="svn"
+Params3="diff \$CAP_MSG() \$EDNAME"
+HotKey3=23808
+Title4="svn ~l~og"
+Program4="svn"
+Params4="log \$CAP_MSG() \$EDNAME"
+HotKey4=34560
+Title5="svn ~b~lame"
+Program5="svn"
+Params5="blame \$CAP_MSG() \$EDNAME"
+HotKey5=34816
+Title6="svn ~a~dd"
+Program6="svn"
+Params6="add \$CAP_MSG() \$EDNAME"
+HotKey6=0'
+EOFFPINI
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

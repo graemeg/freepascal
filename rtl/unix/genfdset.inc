@@ -28,7 +28,15 @@ function fpFD_CLR(fdno:cint;var nset : TFDSet): cint;
 Begin
    if (fdno<0) or (fdno >  FD_MAXFDSET) Then
        exit(-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
    nset[(fdno) shr ln2bitsinword]:=nset[(fdno) shr ln2bitsinword] AND cuLong(NOT (culong(1) shl ((fdno) and ln2bitmask)));
+=======
+   nset[(fdno) shr ln2bitsinword]:=nset[(fdno) shr ln2bitsinword] AND Cardinal(NOT (culong(1) shl ((fdno) and ln2bitmask)));
+>>>>>>> graemeg/fixes_2_2
+=======
+   nset[(fdno) shr ln2bitsinword]:=nset[(fdno) shr ln2bitsinword] AND Cardinal(NOT (culong(1) shl ((fdno) and ln2bitmask)));
+>>>>>>> origin/fixes_2_2
    fpFD_CLR:=0;
 End;
 

@@ -5,7 +5,23 @@ unit fpwebdata;
 interface
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Classes, SysUtils, httpdefs, fphttp, db;
+=======
+  Classes, SysUtils, httpdefs, fphttp, db, websession;
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, httpdefs, fphttp, db, websession;
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, httpdefs, fphttp, db, websession;
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, httpdefs, fphttp, db, websession;
+>>>>>>> origin/cpstrnew
 
 
 type
@@ -17,12 +33,36 @@ type
   TWebDataAction = (wdaUnknown,wdaRead,wdaUpdate,wdaInsert,wdaDelete);
 
   { TCustomWebdataInputAdaptor }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   TTransCodeEvent = Procedure (Sender : TObject; Var S : String);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
   TCustomWebdataInputAdaptor = class(TComponent)
   private
     FAction: TWebDataAction;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FOntransCode: TTransCodeEvent;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     FRequest: TRequest;
     FBatchCount : Integer;
     FRequestPathInfo : String;
@@ -41,7 +81,19 @@ type
     Function GetFieldValue(Const AFieldName : String) : String;
     Property Request : TRequest Read FRequest Write SetRequest;
     Property Action : TWebDataAction Read GetAction Write FAction;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Property OnTransCode : TTransCodeEvent Read FOntransCode Write FOnTransCode;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
   TCustomWebdataInputAdaptorClass = Class of TCustomWebdataInputAdaptor;
 
@@ -608,8 +660,20 @@ begin
   Result:=(I<>-1);
   If Result then
     L.GetNameValue(I,N,AValue);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   If (AValue<>'') and Assigned(FOnTranscode) then
     FOnTransCode(Self,Avalue);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;
 
 function TCustomWebdataInputAdaptor.TryFieldValue(const AFieldName: String;

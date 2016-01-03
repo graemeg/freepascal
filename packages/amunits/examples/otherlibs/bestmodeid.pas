@@ -17,7 +17,7 @@ PROGRAM BestModeID;
     nils.sjoholm@mailbox.swipnet.se
 }
 
-uses exec, amigados, agraphics, picasso96api, utility;
+uses exec, amigados, graphics, picasso96api, utility;
 
 Const
 

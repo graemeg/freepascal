@@ -11,12 +11,6 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  **********************************************************************}
-{
-    This program demonstrates the use of libcurl.
-    It requires the libcurl library. Should work on Unix/Linux.
-    It would need modifications to run on Windows.
-}
-
 {$mode objfpc}
 {$H+}
 program testcurl;

@@ -11,6 +11,8 @@ uses
   fpcunit,  testreport, testregistry,
   DigestTestReport,
   toolsunit,
+<<<<<<< HEAD
+<<<<<<< HEAD
 // List of supported database connectors
   sqldbtoolsunit,
   dbftoolsunit,
@@ -35,12 +37,20 @@ uses
 
 Procedure LegacyOutput;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+// Units wich contains the tests
+  testbasics, testfieldtypes, TestDatasources, testdbbasics;
+  
+>>>>>>> graemeg/fixes_2_2
 var
   FXMLResultsWriter: TXMLResultsWriter;
   FDigestResultsWriter: TDigestResultsWriter;
   testResult: TTestResult;
 
 begin
+  InitialiseDBConnector;
   testResult := TTestResult.Create;
   FXMLResultsWriter := TXMLResultsWriter.Create;
   FDigestResultsWriter := TDigestResultsWriter.Create(nil);
@@ -59,6 +69,10 @@ begin
     FXMLResultsWriter.Free;
     FDigestResultsWriter.Free;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 end;
   
 Var
@@ -85,4 +99,16 @@ begin
   Finally    
     FreeDBConnector;
   end;  
+=======
+  FreeDBConnector;
+>>>>>>> graemeg/cpstrnew
+=======
+  FreeDBConnector;
+>>>>>>> graemeg/cpstrnew
+=======
+  FreeDBConnector;
+>>>>>>> graemeg/cpstrnew
+=======
+  FreeDBConnector;
+>>>>>>> origin/cpstrnew
 end.

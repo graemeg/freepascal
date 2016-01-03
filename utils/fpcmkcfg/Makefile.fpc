@@ -1,4 +1,8 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
 #
 
@@ -8,10 +12,37 @@ version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+#   Makefile.fpc for fpcmkcfg
+#
+
+[target]
+programs=fpcmkcfg
+rst=fpcmkcfg
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 [install]
 fpcpackage=y
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 [default]
 fpcdir=../..
 
@@ -100,3 +131,60 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+[require]
+tools=data2inc
+packages=fcl-base fcl-process
+tools=data2inc
+
+[default]
+fpcdir=../..
+
+[shared]
+build=n
+
+[rules]
+#
+# PPU Tools
+#
+
+# not parallel because systems using an external linker will get conflicts
+# due to overwriting each other's link.res file
+.NOTPARALLEL:
+
+fpcmkcfg$(EXEEXT): fpcmkcfg.pp fpccfg.inc fpcfg.inc fpini.inc fppkg.inc default.inc
+
+ifneq ($(DATA2INC),)
+fpccfg.inc: fpc.cft
+        $(DATA2INC) -b -s fpc.cft fpccfg.inc DefaultConfig
+
+fpcfg.inc : fpinc.cfg
+        $(DATA2INC) -b -s fpinc.cfg fpcfg.inc fpcfg
+
+fpini.inc : fpinc.ini
+        $(DATA2INC) -b -s fpinc.ini fpini.inc fpini
+
+fppkg.inc : fppkg.cfg
+        $(DATA2INC) -b -s fppkg.cfg fppkg.inc fppkg
+
+default.inc : default.cft
+        $(DATA2INC) -b -s default.cft default.inc fppkg_default
+
+endif
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

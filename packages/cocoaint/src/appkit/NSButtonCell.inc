@@ -61,6 +61,10 @@ type
 { Records }
 type
   __BCFlags = record
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     case byte of
     0: (_anonbitfield_NSButtonCell0: cuint);
     1: (data: bitpacked record
@@ -115,12 +119,82 @@ type
 {$endif}
          end;
        );
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef fpc_big_endian}
+    pushIn: 0..1;
+    changeContents: 0..1;
+    changeBackground: 0..1;
+    changeGray: 0..1;
+    lightByContents: 0..1;
+    lightByBackground: 0..1;
+    lightByGray: 0..1;
+    drawing: 0..1;
+    bordered: 0..1;
+    imageOverlaps: 0..1;
+    horizontal: 0..1;
+    bottomOrLeft: 0..1;
+    imageAndText: 0..1;
+    imageSizeDiff: 0..1;
+    hasKeyEquivalentInsteadOfImage: 0..1;
+    lastState: 0..1;
+    transparent: 0..1;
+    inset: 0..((1 shl 2)-1);
+    doesNotDimImage: 0..1;
+    suppressAXValueChangeNote: 0..1;
+    reserved: 0..((1 shl 2)-1);
+    useButtonImageSource: 0..1;
+    alternateMnemonicLocation: 0..((1 shl 8)-1);
+{$else}
+    alternateMnemonicLocation: 0..((1 shl 8)-1);
+    useButtonImageSource: 0..1;
+    reserved: 0..((1 shl 2)-1);
+    suppressAXValueChangeNote: 0..1;
+    doesNotDimImage: 0..1;
+    inset: 0..((1 shl 2)-1);
+    transparent: 0..1;
+    lastState: 0..1;
+    hasKeyEquivalentInsteadOfImage: 0..1;
+    imageSizeDiff: 0..1;
+    imageAndText: 0..1;
+    bottomOrLeft: 0..1;
+    horizontal: 0..1;
+    imageOverlaps: 0..1;
+    bordered: 0..1;
+    drawing: 0..1;
+    lightByGray: 0..1;
+    lightByBackground: 0..1;
+    lightByContents: 0..1;
+    changeGray: 0..1;
+    changeBackground: 0..1;
+    changeContents: 0..1;
+    pushIn: 0..1;
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 _BCFlags = __BCFlags;
 __BCFlagsPtr = ^__BCFlags;
 
 type
   __BCFlags2 = record
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     case byte of
     0: (_anonbitfield_NSButtonCell1: cuint);
     1: (data: bitpacked record
@@ -141,6 +215,38 @@ type
 {$endif}
          end;
        );
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef fpc_big_endian}
+    keyEquivalentModifierMask: 0..((1 shl 24)-1);
+    imageScaling: 0..((1 shl 2)-1);
+    bezelStyle2: 0..1;
+    mouseInside: 0..1;
+    showsBorderOnlyWhileMouseInside: 0..1;
+    bezelStyle: 0..((1 shl 3)-1);
+{$else}
+    bezelStyle: 0..((1 shl 3)-1);
+    showsBorderOnlyWhileMouseInside: 0..1;
+    mouseInside: 0..1;
+    bezelStyle2: 0..1;
+    imageScaling: 0..((1 shl 2)-1);
+    keyEquivalentModifierMask: 0..((1 shl 24)-1);
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 _BCFlags2 = __BCFlags2;
 __BCFlags2Ptr = ^__BCFlags2;

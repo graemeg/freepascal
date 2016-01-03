@@ -1,0 +1,7 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TFPWebModule1','FORMDATA',[
+  'TPF0'#13'TFPWebModule1'#12'FPWebModule1'#14'OldCreateOrder'#8#7'Actions'#14#0
+  +#13'CreateSession'#8#6'Height'#3','#1#16'HorizontalOffset'#3'I'#2#14'Vertica'
+  +'lOffset'#3#230#0#5'Width'#3#144#1#0#0
+]);

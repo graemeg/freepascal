@@ -865,46 +865,30 @@ typedef int rlim_t;
 #define NEED_STRDUP
 
 {$else}{$if defined(BEOS)}
-const
-  PLATFORM = 'BeOS';
-//#undef PLATFORM
-//#define PLATFORM "BeOS"
-//#include <stddef.h>
-//#include <kernel/OS.h>
+#undef PLATFORM
+#define PLATFORM "BeOS"
+#include <stddef.h>
+#include <kernel/OS.h>
 
-//#define HAVE_BEOS_SERIALIZED_ACCEPT
-{$define HAVE_BEOS_SERIALIZED_ACCEPT}
-//#define SINGLE_LISTEN_UNSERIALIZED_ACCEPT
-{$define SINGLE_LISTEN_UNSERIALIZED_ACCEPT}
+#define HAVE_BEOS_SERIALIZED_ACCEPT
+#define SINGLE_LISTEN_UNSERIALIZED_ACCEPT
 
-//#define NO_WRITEV
-{$define NO_WRITEV}
-//#define NO_KILLPG
-{$define NO_KILLPG}
-//#define NEED_INITGROUPS
-{$define NEED_INITGROUPS}
-//#define PF_INET AF_INET
-{$define PF_INET AF_INET}
-//#define S_IEXEC S_IXUSR
-{$define S_IEXEC S_IXUSR}
+#define NO_WRITEV
+#define NO_KILLPG
+#define NEED_INITGROUPS
+#define PF_INET AF_INET
+#define S_IEXEC S_IXUSR
 
 {$else}{$if defined(BONE)}
-const
-  PLATFORM = 'BeOS BONE';
-//#undef PLATFORM
-//#define PLATFORM "BeOS BONE"
-//#include <kernel/OS.h>
+#undef PLATFORM
+#define PLATFORM "BeOS BONE"
+#include <kernel/OS.h>
 
-//#define NO_KILLPG
-{$define NO_KILLPG}
-//#define NEED_INITGROUPS
-{$define NEED_INITGROUPS}
-//#define S_IEXEC S_IXUSR
-{$define S_IEXEC S_IXUSR}
-//#define HAVE_BEOS_SERIALIZED_ACCEPT
-{$define HAVE_BEOS_SERIALIZED_ACCEPT}
-//#define SINGLE_LISTEN_UNSERIALIZED_ACCEPT
-{$define SINGLE_LISTEN_UNSERIALIZED_ACCEPT}
+#define NO_KILLPG
+#define NEED_INITGROUPS
+#define S_IEXEC S_IXUSR
+#define HAVE_BEOS_SERIALIZED_ACCEPT
+#define SINGLE_LISTEN_UNSERIALIZED_ACCEPT
 
 {$else}{$if defined(_CX_SX)}
 #define JMP_BUF sigjmp_buf
@@ -1509,5 +1493,4 @@ extern double difftime(time_t time1, time_t time0);
 type
   ap_wait_t = cint;
 {$endif}
-
 

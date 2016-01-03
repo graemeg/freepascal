@@ -47,10 +47,35 @@
     _fWindow: NSWindow;
     _fView: NSView;
     _fPriority: cint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __fFlags: record
       case byte of
        0: (_anonbitfield_NSStatusItem0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __fFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSStatusItem0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         customView: 0..1;
         _highlightMode: 0..1;
         hasAlternateImage: 0..1;
@@ -58,7 +83,19 @@
         backgroundStyle: 0..((1 shl 4)-1);
         inAdjustLength: 0..1;
         reserved: 0..((1 shl 23)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _statusItemMenu: id;

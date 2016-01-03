@@ -4,10 +4,73 @@
 
 [package]
 name=fcl-db
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+dirs=src/sdf src/memds src/sqldb src/base src/sql
+dirs_beos=src/dbase src/sqlite src/paradox src/export src/datadict src/codegen
+dirs_haiku=src/dbase src/sqlite src/paradox src/export src/datadict src/codegen
+dirs_linux=src/dbase src/sqlite src/paradox src/export src/datadict src/codegen 
+dirs_freebsd=src/dbase src/sqlite src/paradox src/export src/datadict src/codegen
+dirs_darwin=src/dbase src/sqlite
+dirs_iphonesim=src/dbase src/sqlite
+=======
+version=2.2.5
+
+[target]
+=======
+version=2.2.5
+
+[target]
+>>>>>>> origin/fixes_2_2
+dirs=src/sdf src/memds src/sqldb src/base 
+dirs_beos=src/dbase src/sqlite src/paradox src/export src/datadict src/codegen
+dirs_linux=src/dbase src/sqlite src/paradox src/export src/datadict src/codegen 
+dirs_freebsd=src/dbase src/sqlite src/paradox src/export src/datadict src/codegen
+dirs_darwin=src/dbase src/sqlite
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+dirs_solaris=src/dbase src/sqlite
+dirs_netbsd=src/dbase src/sqlite src/paradox
+dirs_openbsd=src/dbase src/sqlite src/paradox
+dirs_win32=src/dbase src/paradox src/sqlite src/export src/datadict src/codegen 
+dirs_win64=src/dbase src/export src/datadict src/codegen 
+dirs_wince=src/dbase src/sqlite src/export src/datadict src/codegen
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+[require]
+packages=fcl-base fcl-xml
+
+[compiler]
+options=-S2h
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -15,6 +78,10 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +167,51 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+[rules]
+distclean: $(addsuffix _distclean,$(TARGET_DIRS)) fpc_distclean 
+clean: $(addsuffix _clean,$(TARGET_DIRS)) fpc_clean
+cleanall: $(addsuffix _cleanall,$(TARGET_DIRS)) fpc_cleanall
+
+.NOTPARALLEL:
+
+src/export_all: src/base_all src/dbase_all
+src/export_debug: src/base_debug src/dbase_debug
+src/export_smart: src/base_smart src/dbase_smart
+src/export_release: src/base_release src/dbase_release
+src/export_shared: src/base_shared src/dbase_shared
+
+src/sdf_all: src/base_all
+src/sdf_debug: src/base_debug
+src/sdf_smart: src/base_smart
+src/sdf_release: src/base_release
+src/sdf_shared: src/base_shared
+
+src/dbase_all: src/base_all
+src/dbase_debug: src/base_debug
+src/dbase_smart: src/base_smart
+src/dbase_release: src/base_release
+src/dbase_shared: src/base_shared
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

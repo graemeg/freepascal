@@ -1,4 +1,11 @@
 {==================================================================================================
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     File:       CoreAudio/CoreAudioTypes.h
 
     Contains:   Definitions types common to the Core Audio APIs
@@ -14,6 +21,68 @@
 {  Pascal Translation:  Gale R Paeper, <gpaeper@empirenet.com>, 2006 }
 {  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
 {  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2012 }
+=======
+	File:       CoreAudio/CoreAudioTypes.h
+
+	Contains:   Definitions types common to the Core Audio APIs
+
+	Copyright:  (c) 1985-2008 by Apple Inc., all rights reserved.
+
+	Bugs?:      For bug reports, consult the following page on
+                 the World Wide Web:
+
+=======
+	File:       CoreAudio/CoreAudioTypes.h
+
+	Contains:   Definitions types common to the Core Audio APIs
+
+	Copyright:  (c) 1985-2008 by Apple Inc., all rights reserved.
+
+	Bugs?:      For bug reports, consult the following page on
+                 the World Wide Web:
+
+>>>>>>> origin/cpstrnew
+                     http://www.freepascal.org/bugs.html
+
+==================================================================================================}
+{	 Pascal Translation:  Gale R Paeper, <gpaeper@empirenet.com>, 2006 }
+{  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+	File:       CoreAudio/CoreAudioTypes.h
+
+	Contains:   Definitions types common to the Core Audio APIs
+
+	Copyright:  (c) 1985-2008 by Apple Inc., all rights reserved.
+
+	Bugs?:      For bug reports, consult the following page on
+                 the World Wide Web:
+
+                     http://www.freepascal.org/bugs.html
+
+==================================================================================================}
+{	 Pascal Translation:  Gale R Paeper, <gpaeper@empirenet.com>, 2006 }
+{  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+>>>>>>> graemeg/cpstrnew
+=======
+	File:       CoreAudio/CoreAudioTypes.h
+
+	Contains:   Definitions types common to the Core Audio APIs
+
+	Copyright:  (c) 1985-2008 by Apple Inc., all rights reserved.
+
+	Bugs?:      For bug reports, consult the following page on
+                 the World Wide Web:
+
+                     http://www.freepascal.org/bugs.html
+
+==================================================================================================}
+{	 Pascal Translation:  Gale R Paeper, <gpaeper@empirenet.com>, 2006 }
+{  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {
     Modified for use with Free Pascal
     Version 308
@@ -21,6 +90,40 @@
 }
 
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+     File:       CoreAudio/CoreAudioTypes.h
+=======
+	File:       CoreAudio/CoreAudioTypes.h
+>>>>>>> origin/fixes_2.4
+
+	Contains:   Definitions types common to the Core Audio APIs
+
+	Copyright:  (c) 1985-2008 by Apple Inc., all rights reserved.
+
+	Bugs?:      For bug reports, consult the following page on
+                 the World Wide Web:
+
+                     http://www.freepascal.org/bugs.html
+
+==================================================================================================}
+{	 Pascal Translation:  Gale R Paeper, <gpaeper@empirenet.com>, 2006 }
+{  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+{
+    Modified for use with Free Pascal
+    Version 308
+    Please report any bugs to <gpc@microbizz.nl>
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4
 {$mode macpas}
 {$packenum 1}
 {$macro on}
@@ -29,8 +132,23 @@
 
 unit CoreAudioTypes;
 interface
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$setc UNIVERSAL_INTERFACES_VERSION := $0400}
 {$setc GAP_INTERFACES_VERSION := $0308}
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> origin/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0400}
+{$setc GAP_INTERFACES_VERSION := $0308}
+>>>>>>> origin/fixes_2.4
 
 {$ifc not defined USE_CFSTR_CONSTANT_MACROS}
     {$setc USE_CFSTR_CONSTANT_MACROS := TRUE}
@@ -43,21 +161,50 @@ interface
 	{$error Conflicting initial definitions for FPC_BIG_ENDIAN and FPC_LITTLE_ENDIAN}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __ppc__ and defined CPUPOWERPC32}
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC32}
+>>>>>>> origin/fixes_2.4
 	{$setc __ppc__ := 1}
 {$elsec}
 	{$setc __ppc__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __ppc64__ and defined CPUPOWERPC64}
 	{$setc __ppc64__ := 1}
 {$elsec}
 	{$setc __ppc64__ := 0}
 {$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __i386__ and defined CPUI386}
 	{$setc __i386__ := 1}
 {$elsec}
 	{$setc __i386__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __x86_64__ and defined CPUX86_64}
 	{$setc __x86_64__ := 1}
 {$elsec}
@@ -68,11 +215,26 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -80,6 +242,13 @@ interface
   {$setc __LP64__ := 0}
 {$endc}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined __ppc__ and __ppc__ and defined __i386__ and __i386__}
 	{$error Conflicting definitions for __ppc__ and __i386__}
@@ -87,42 +256,109 @@ interface
 
 {$ifc defined __ppc__ and __ppc__}
 	{$setc TARGET_CPU_PPC := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_PPC64 := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __ppc64__ and __ppc64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := TRUE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/cpstrnew
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+<<<<<<< HEAD
 {$elsec}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
 {$elifc defined __x86_64__ and __x86_64__}
 	{$setc TARGET_CPU_PPC := FALSE}
@@ -131,6 +367,10 @@ interface
 	{$setc TARGET_CPU_X86_64 := TRUE}
 	{$setc TARGET_CPU_ARM := FALSE}
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
@@ -140,6 +380,8 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
 {$elifc defined __arm__ and __arm__}
 	{$setc TARGET_CPU_PPC := FALSE}
@@ -154,19 +396,156 @@ interface
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elifc defined __arm64__ and __arm64__}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM := FALSE}
 	{$setc TARGET_CPU_ARM64 := TRUE}
+=======
+	{$setc TARGET_CPU_ARM := TRUE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_CPU_ARM := TRUE}
+>>>>>>> graemeg/cpstrnew
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elsec}
 	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ nor __arm64__ is defined.}
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+=======
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+=======
+>>>>>>> origin/cpstrnew
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  {$setc TARGET_CPU_64 := FALSE}
+{$endc}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+>>>>>>> origin/fixes_2.4
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __i386__ and __i386__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := TRUE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+{$ifc defined(iphonesim)}
+ 	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
 {$endc}
 
 {$ifc defined __LP64__ and __LP64__ }
@@ -174,6 +553,14 @@ interface
 {$elsec}
   {$setc TARGET_CPU_64 := FALSE}
 {$endc}
+<<<<<<< HEAD
+{$setc TARGET_CPU_PPC_64 := FALSE}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined FPC_BIG_ENDIAN}
 	{$setc TARGET_RT_BIG_ENDIAN := TRUE}
@@ -199,6 +586,17 @@ interface
 {$setc TARGET_CPU_68K := FALSE}
 {$setc TARGET_CPU_MIPS := FALSE}
 {$setc TARGET_CPU_SPARC := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$setc TARGET_OS_UNIX := FALSE}
 {$setc TARGET_OS_WIN32 := FALSE}
 {$setc TARGET_RT_MAC_68881 := FALSE}
@@ -209,8 +607,19 @@ interface
 {$setc TYPE_EXTENDED := FALSE}
 {$setc TYPE_LONGLONG := TRUE}
 uses MacTypes;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not MACOSALLINCLUDE}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not MACOSALLINCLUDE}
+
+>>>>>>> origin/fixes_2.4
 {$ALIGN POWER}
 
 {!
@@ -220,6 +629,11 @@ uses MacTypes;
 
 //==================================================================================================
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 const
 	COREAUDIOTYPES_VERSION = 1051;
 
@@ -238,6 +652,11 @@ const
 
 
 //==================================================================================================
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 {!
     @enum           General Audio error codes
@@ -259,6 +678,20 @@ const
 	kAudio_MemFullError = -108;
       
 //==================================================================================================
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {!
     @struct         AudioValueRange
@@ -321,8 +754,23 @@ type
                         A variable length array of AudioBuffers.
 }
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	AudioBufferListPtr = ^AudioBufferList;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	AudioBufferListPtrPtr = ^AudioBufferListPtr;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 	AudioBufferList = record
 		mNumberBuffers: UInt32;
 		mBuffers: array[0..0] of AudioBuffer;
@@ -345,6 +793,41 @@ const
 {$endc} {not CA_PREFER_FIXED_POINT}
 
 {!
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	AudioBufferListPtr = ^AudioBufferList;
+>>>>>>> origin/fixes_2.4
+	AudioBufferList = record
+		mNumberBuffers: UInt32;
+		mBuffers: array[0..0] of AudioBuffer;
+	end;
+
+{!
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+    @typedef        AudioSampleType
+    @abstract       The canonical audio sample type used by the various CoreAudio APIs
+}
+{$ifc not CA_PREFER_FIXED_POINT}
+type
+	AudioSampleType = Float32;
+	AudioUnitSampleType = Float32;
+{$elsec} {not CA_PREFER_FIXED_POINT}
+type
+	AudioSampleType = SInt16;
+	AudioUnitSampleType = SInt32;
+const
+	kAudioUnitSampleFractionBits = 24;
+{$endc} {not CA_PREFER_FIXED_POINT}
+
+{!
+>>>>>>> origin/fixes_2.4
     @struct         AudioStreamBasicDescription
     @abstract       This structure encapsulates all the information for describing the basic
                     format properties of a stream of audio data.
@@ -418,6 +901,9 @@ const
     @constant       kAudioFormatAppleIMA4
                         Apples implementation of IMA 4:1 ADPCM, has no flags.
     @constant       kAudioFormatMPEG4AAC
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                         MPEG-4 Low Complexity AAC audio object, has no flags.
     @constant       kAudioFormatMPEG4CELP
                         MPEG-4 CELP audio object, has no flags.
@@ -425,6 +911,29 @@ const
                         MPEG-4 HVXC audio object, has no flags.
     @constant       kAudioFormatMPEG4TwinVQ
                         MPEG-4 TwinVQ audio object type, has no flags.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                        MPEG-4 AAC, the flags field contains the MPEG-4 audio object type constant
+                        indicating the specific kind of data.
+=======
+                        MPEG-4 Low Complexity AAC audio object, has no flags.
+>>>>>>> origin/fixes_2.4
+    @constant       kAudioFormatMPEG4CELP
+                        MPEG-4 CELP audio object, has no flags.
+    @constant       kAudioFormatMPEG4HVXC
+                        MPEG-4 HVXC audio object, has no flags.
+    @constant       kAudioFormatMPEG4TwinVQ
+<<<<<<< HEAD
+                        MPEG-4 TwinVQ, the flags field contains the MPEG-4 audio object type
+                        constant indicating the specific kind of data.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+                        MPEG-4 TwinVQ audio object type, has no flags.
+>>>>>>> origin/fixes_2.4
     @constant       kAudioFormatMACE3
                         MACE 3:1, has no flags.
     @constant       kAudioFormatMACE6
@@ -445,6 +954,22 @@ const
                         MPEG-1/2, Layer 2 audio, has no flags
     @constant       kAudioFormatMPEGLayer3
                         MPEG-1/2, Layer 3 audio, has no flags
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    @constant       kAudioFormatDVAudio
+                        DV Audio, has no flags
+    @constant       kAudioFormatVariableDurationDVAudio
+                        Variable duration DV Audio, has no flags.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
     @constant       kAudioFormatTimeCode
                         A stream of IOAudioTimeStamps, uses the IOAudioTimeStamp flags (see
                         IOKit/audio/IOAudioTypes.h).
@@ -463,16 +988,36 @@ const
                         third of the sample rate of the audio). The Sample Rate of the ASBD
                         describes this relationship. It has no flags.
     @constant       kAudioFormatAppleLossless
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
                         Apple Lossless, the flags indicate the bit depth of the source material.
     @constant       kAudioFormatMPEG4AAC_HE
                         MPEG-4 High Efficiency AAC audio object, has no flags.
     @constant       kAudioFormatMPEG4AAC_LD
                         MPEG-4 AAC Low Delay audio object, has no flags.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     @constant       kAudioFormatMPEG4AAC_ELD
                         MPEG-4 AAC Enhanced Low Delay audio object, has no flags. This is the formatID of
                         the base layer without the SBR extension. See also kAudioFormatMPEG4AAC_ELD_SBR
     @constant       kAudioFormatMPEG4AAC_ELD_SBR
                         MPEG-4 AAC Enhanced Low Delay audio object with SBR extension layer, has no flags.
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
     @constant       kAudioFormatMPEG4AAC_HE_V2
                         MPEG-4 High Efficiency AAC Version 2 audio object, has no flags. 
     @constant       kAudioFormatMPEG4AAC_Spatial
@@ -491,6 +1036,15 @@ const
                         This format is defined by AES3-2003, and adopted into MXF and MPEG-2
                         containers and SDTI transport streams with SMPTE specs 302M-2002 and
                         331M-2000. It has no flags.
+<<<<<<< HEAD
+=======
+                        Apple Lossless, has no flags.
+>>>>>>> graemeg/fixes_2_2
+=======
+                        Apple Lossless, has no flags.
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 }
 const
 	kAudioFormatLinearPCM = FourCharCode('lpcm');
@@ -511,15 +1065,47 @@ const
 	kAudioFormatMPEGLayer1 = FourCharCode('.mp1');
 	kAudioFormatMPEGLayer2 = FourCharCode('.mp2');
 	kAudioFormatMPEGLayer3 = FourCharCode('.mp3');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	kAudioFormatDVAudio = FourCharCode('dvca');
+	kAudioFormatVariableDurationDVAudio = FourCharCode('vdva');
+>>>>>>> graemeg/fixes_2_2
+=======
+	kAudioFormatDVAudio = FourCharCode('dvca');
+	kAudioFormatVariableDurationDVAudio = FourCharCode('vdva');
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	kAudioFormatTimeCode = FourCharCode('time');
 	kAudioFormatMIDIStream = FourCharCode('midi');
 	kAudioFormatParameterValueStream = FourCharCode('apvs');
 	kAudioFormatAppleLossless = FourCharCode('alac');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kAudioFormatMPEG4AAC_HE = FourCharCode('aach');
 	kAudioFormatMPEG4AAC_LD = FourCharCode('aacl');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kAudioFormatMPEG4AAC_ELD = FourCharCode('aace');
 	kAudioFormatMPEG4AAC_ELD_SBR = FourCharCode('aacf');
 	kAudioFormatMPEG4AAC_ELD_V2 = FourCharCode('aacg');
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+	kAudioFormatMPEG4AAC_HE = FourCharCode('aach');
+	kAudioFormatMPEG4AAC_LD = FourCharCode('aacl');
+>>>>>>> origin/fixes_2.4
 	kAudioFormatMPEG4AAC_HE_V2 = FourCharCode('aacp');
 	kAudioFormatMPEG4AAC_Spatial = FourCharCode('aacs');
 	kAudioFormatAMR = FourCharCode('samr');
@@ -528,6 +1114,13 @@ const
 	kAudioFormatDVIIntelIMA = $6D730011;
 	kAudioFormatMicrosoftGSM = $6D730031;
 	kAudioFormatAES3 = FourCharCode('aes3');
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {!
     @enum           Standard Flag Values for AudioStreamBasicDescription
@@ -556,11 +1149,19 @@ const
                         kAudioFormatFlagIsFloat is clear.
     @constant       kAudioFormatFlagIsPacked
                         Set if the sample bits occupy the entire available bits for the channel,
+<<<<<<< HEAD
+<<<<<<< HEAD
                         clear if they are high or low aligned within the channel. Note that even if
                         this flag is clear, it is implied that this flag is set if the
                         AudioStreamBasicDescription is filled out such that the fields have the
                         following relationship:
                            ((mBitsPerSample / 8) * mChannelsPerFrame) == mBytesPerFrame
+=======
+                        clear if they are high or low aligned within the channel.
+>>>>>>> graemeg/fixes_2_2
+=======
+                        clear if they are high or low aligned within the channel.
+>>>>>>> origin/fixes_2_2
     @constant       kAudioFormatFlagIsAlignedHigh
                         Set if the sample bits are placed into the high bits of the channel, clear
                         for low bit placement. This is only valid if kAudioFormatFlagIsPacked is
@@ -592,6 +1193,11 @@ const
                         Synonym for kAudioFormatFlagIsNonMixable.
     @constant       kLinearPCMFormatFlagsAreAllClear
                         Synonym for kAudioFormatFlagsAreAllClear.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
     @constant       kLinearPCMFormatFlagsSampleFractionShift
                         The linear PCM flags contain a 6-bit bitfield indicating that an integer
                         format is to be interpreted as fixed point. The value indicates the number
@@ -602,6 +1208,13 @@ const
                         number_fractional_bits = (mFormatFlags & 
                         kLinearPCMFormatFlagsSampleFractionMask) >>
                         kLinearPCMFormatFlagsSampleFractionShift
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
     @constant       kAppleLosslessFormatFlag_16BitSourceData
                         This flag is set for Apple Lossless data that was sourced from 16 bit native
                         endian signed integer data.
@@ -616,6 +1229,11 @@ const
                         endian signed integer data.
 }
 const
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 	kAudioFormatFlagIsFloat = 1 shl 0;     // 0x1
 	kAudioFormatFlagIsBigEndian = 1 shl 1;     // 0x2
 	kAudioFormatFlagIsSignedInteger = 1 shl 2;     // 0x4
@@ -623,7 +1241,27 @@ const
 	kAudioFormatFlagIsAlignedHigh = 1 shl 4;     // 0x10
 	kAudioFormatFlagIsNonInterleaved = 1 shl 5;     // 0x20
 	kAudioFormatFlagIsNonMixable = 1 shl 6;     // 0x40
+<<<<<<< HEAD
 	kAudioFormatFlagsAreAllClear = 1 shl 31;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	kAudioFormatFlagIsFloat = 1 shl 0;
+	kAudioFormatFlagIsBigEndian = 1 shl 1;
+	kAudioFormatFlagIsSignedInteger = 1 shl 2;
+	kAudioFormatFlagIsPacked = 1 shl 3;
+	kAudioFormatFlagIsAlignedHigh = 1 shl 4;
+	kAudioFormatFlagIsNonInterleaved = 1 shl 5;
+	kAudioFormatFlagIsNonMixable = 1 shl 6;
+	kAudioFormatFlagsAreAllClear = 1 shl 31;
+	
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	kAudioFormatFlagsAreAllClear = 1 shl 31;
+>>>>>>> origin/fixes_2.4
 	kLinearPCMFormatFlagIsFloat = kAudioFormatFlagIsFloat;
 	kLinearPCMFormatFlagIsBigEndian = kAudioFormatFlagIsBigEndian;
 	kLinearPCMFormatFlagIsSignedInteger = kAudioFormatFlagIsSignedInteger;
@@ -631,9 +1269,25 @@ const
 	kLinearPCMFormatFlagIsAlignedHigh = kAudioFormatFlagIsAlignedHigh;
 	kLinearPCMFormatFlagIsNonInterleaved = kAudioFormatFlagIsNonInterleaved;
 	kLinearPCMFormatFlagIsNonMixable = kAudioFormatFlagIsNonMixable;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kLinearPCMFormatFlagsSampleFractionShift = 7;
 	kLinearPCMFormatFlagsSampleFractionMask = $3F shl kLinearPCMFormatFlagsSampleFractionShift;
 	kLinearPCMFormatFlagsAreAllClear = kAudioFormatFlagsAreAllClear;
+=======
+	kLinearPCMFormatFlagsAreAllClear = kAudioFormatFlagsAreAllClear;
+	
+>>>>>>> graemeg/fixes_2_2
+=======
+	kLinearPCMFormatFlagsAreAllClear = kAudioFormatFlagsAreAllClear;
+	
+>>>>>>> origin/fixes_2_2
+=======
+	kLinearPCMFormatFlagsSampleFractionShift = 7;
+	kLinearPCMFormatFlagsSampleFractionMask = $3F shl kLinearPCMFormatFlagsSampleFractionShift;
+	kLinearPCMFormatFlagsAreAllClear = kAudioFormatFlagsAreAllClear;
+>>>>>>> origin/fixes_2.4
 	kAppleLosslessFormatFlag_16BitSourceData = 1;
 	kAppleLosslessFormatFlag_20BitSourceData = 2;
 	kAppleLosslessFormatFlag_24BitSourceData = 3;
@@ -645,13 +1299,33 @@ const
     @constant       kAudioFormatFlagsNativeEndian
                         Defined to set or clear kAudioFormatFlagIsBigEndian depending on the
                         endianness of the processor at build time.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
     @constant       kAudioFormatFlagsCanonical
                         The flags for the canonical audio sample type. This matches AudioSampleType.
     @constant       kAudioFormatFlagsAudioUnitCanonical
                         The flags for the canonical audio unit sample type. This matches
                         AudioUnitSampleType.
+<<<<<<< HEAD
     @constant       kAudioFormatFlagsNativeFloatPacked
                         The flags for fully packed, native endian floating point data.
+=======
+    @constant       kAudioFormatFlagsNativeFloatPacked
+                        The flags for the canonical format of fully packed, native endian floating
+                        point data.
+>>>>>>> graemeg/fixes_2_2
+=======
+    @constant       kAudioFormatFlagsNativeFloatPacked
+                        The flags for the canonical format of fully packed, native endian floating
+                        point data.
+>>>>>>> origin/fixes_2_2
+=======
+    @constant       kAudioFormatFlagsNativeFloatPacked
+                        The flags for fully packed, native endian floating point data.
+>>>>>>> origin/fixes_2.4
 }
 const
 {$ifc TARGET_RT_BIG_ENDIAN}
@@ -659,6 +1333,11 @@ const
 {$elsec}
 	kAudioFormatFlagsNativeEndian = 0;
 {$endc}  {TARGET_RT_BIG_ENDIAN}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not CA_PREFER_FIXED_POINT}
 	kAudioFormatFlagsCanonical = kAudioFormatFlagIsFloat or kAudioFormatFlagsNativeEndian or kAudioFormatFlagIsPacked;
 	kAudioFormatFlagsAudioUnitCanonical = kAudioFormatFlagIsFloat or kAudioFormatFlagsNativeEndian or kAudioFormatFlagIsPacked or kAudioFormatFlagIsNonInterleaved;
@@ -666,6 +1345,13 @@ const
 	kAudioFormatFlagsCanonical = kAudioFormatFlagIsSignedInteger or kAudioFormatFlagsNativeEndian or kAudioFormatFlagIsPacked;
 	kAudioFormatFlagsAudioUnitCanonical = kAudioFormatFlagIsSignedInteger or kAudioFormatFlagsNativeEndian or kAudioFormatFlagIsPacked or kAudioFormatFlagIsNonInterleaved or (kAudioUnitSampleFractionBits shl kLinearPCMFormatFlagsSampleFractionShift);
 {$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	kAudioFormatFlagsNativeFloatPacked = kAudioFormatFlagIsFloat or kAudioFormatFlagsNativeEndian or kAudioFormatFlagIsPacked;
 
 {!
@@ -683,6 +1369,11 @@ const
     @result     Whether or not the ASBD indicates native endian linear PCM data.
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {!
     @function   CalculateLPCMFlags
     @abstract   A C++ inline function for calculating the mFormatFlags for linear PCM data. Note
@@ -699,6 +1390,15 @@ const
     @param      isIsBigEndian
                     Whether the samples are big endian or little endian.
     @result     A UInt32 containing the format flags.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
 }
 
 {!
@@ -722,6 +1422,90 @@ const
                     Whether the samples are big endian or little endian.
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/cpstrnew
+}
+
+{!
+    @function   FillOutASBDForLPCM
+    @abstract   A C++ inline function for filling out an AudioStreamBasicDescription to describe
+                linear PCM data. Note that this function does not support specifying sample formats
+                that are either unsigned integer or low-aligned.
+    @param      outASBD
+                    The AudioStreamBasicDescription to fill out.
+    @param      inSampleRate
+                    The number of sample frames per second of the data in the stream.
+    @param      inChannelsPerFrame
+                    The number of channels in each frame of data.
+    @param      inValidBitsPerChannel
+                    The number of valid bits in each sample.
+    @param      inTotalBitsPerChannel
+                    The total number of bits in each sample.
+    @param      inIsFloat
+                    Whether or not the samples are represented with floating point numbers.
+    @param      isIsBigEndian
+                    Whether the samples are big endian or little endian.
+}
+
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{! @enum           MPEG-4 Audio Object IDs
+    @abstract       Constants that describe the various kinds of MPEG-4 audio data.
+    @discussion     These constants are used in the flags field of an AudioStreamBasicDescription
+                    that describes an MPEG-4 audio stream.
+}
+const
+	kMPEG4Object_AAC_Main = 1;
+	kMPEG4Object_AAC_LC = 2;
+	kMPEG4Object_AAC_SSR = 3;
+	kMPEG4Object_AAC_LTP = 4;
+	kMPEG4Object_AAC_SBR = 5;
+	kMPEG4Object_AAC_Scalable = 6;
+	
+	kMPEG4Object_TwinVQ = 7;
+	kMPEG4Object_CELP = 8;
+	kMPEG4Object_HVXC = 9;    
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+}
+
+{!
+    @function   FillOutASBDForLPCM
+    @abstract   A C++ inline function for filling out an AudioStreamBasicDescription to describe
+                linear PCM data. Note that this function does not support specifying sample formats
+                that are either unsigned integer or low-aligned.
+    @param      outASBD
+                    The AudioStreamBasicDescription to fill out.
+    @param      inSampleRate
+                    The number of sample frames per second of the data in the stream.
+    @param      inChannelsPerFrame
+                    The number of channels in each frame of data.
+    @param      inValidBitsPerChannel
+                    The number of valid bits in each sample.
+    @param      inTotalBitsPerChannel
+                    The total number of bits in each sample.
+    @param      inIsFloat
+                    Whether or not the samples are represented with floating point numbers.
+    @param      isIsBigEndian
+                    Whether the samples are big endian or little endian.
+}
+
+>>>>>>> origin/fixes_2.4
 
 {!
     @struct         AudioStreamPacketDescription
@@ -738,7 +1522,17 @@ const
                         The number of bytes in the packet.
 }
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	AudioStreamPacketDescriptionPtr = ^AudioStreamPacketDescription;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	AudioStreamPacketDescriptionPtr = ^AudioStreamPacketDescription;
+>>>>>>> origin/fixes_2.4
 	AudioStreamPacketDescription = record
 		mStartOffset: SInt64;
 		mVariableFramesInPacket: UInt32;
@@ -765,7 +1559,19 @@ type
     @field          mFlags
                         A set of flags that indicate the SMPTE state.
     @field          mHours
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                         The number of hours in the full message.
+=======
+                        The number of hourse in the full message.
+>>>>>>> graemeg/fixes_2_2
+=======
+                        The number of hourse in the full message.
+>>>>>>> origin/fixes_2_2
+=======
+                        The number of hours in the full message.
+>>>>>>> origin/fixes_2.4
     @field          mMinutes
                         The number of minutes in the full message.
     @field          mSeconds
@@ -805,6 +1611,11 @@ type
                         60 Frame
     @constant       kSMPTETimeType5994
                         59.94 Frame
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
     @constant       kSMPTETimeType60Drop
                         60 Drop Frame
     @constant       kSMPTETimeType5994Drop
@@ -813,6 +1624,13 @@ type
                         50 Frame
     @constant       kSMPTETimeType2398
                         23.98 Frame
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 }
 const
 	kSMPTETimeType24 = 0;
@@ -823,10 +1641,22 @@ const
 	kSMPTETimeType2997Drop = 5;
 	kSMPTETimeType60 = 6;
 	kSMPTETimeType5994 = 7;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 	kSMPTETimeType60Drop = 8;
 	kSMPTETimeType5994Drop = 9;
 	kSMPTETimeType50 = 10;
 	kSMPTETimeType2398 = 11;
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {!
     @enum           SMPTE State Flags
@@ -844,11 +1674,33 @@ const
 
 {!
     @struct         AudioTimeStamp
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     @abstract       A structure that holds different representations of the same point in time.
     @field          mSampleTime
                         The absolute sample frame time.
     @field          mHostTime
                         The host machine's time base, mach_absolute_time.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    @abstract       A strucutre that holds different representations of the same point in time.
+    @field          mSampleTime
+                        The absolute sample frame time.
+    @field          mHostTime
+                        The host machine's time base (see <CoreAudio/HostTime.h>).
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+    @abstract       A structure that holds different representations of the same point in time.
+    @field          mSampleTime
+                        The absolute sample frame time.
+    @field          mHostTime
+                        The host machine's time base, mach_absolute_time.
+>>>>>>> origin/fixes_2.4
     @field          mRateScalar
                         The ratio of actual host ticks per sample frame to the nominal host ticks
                         per sample frame.
@@ -904,6 +1756,11 @@ const
 	kAudioTimeStampSampleHostTimeValid = kAudioTimeStampSampleTimeValid or kAudioTimeStampHostTimeValid;
 
 {!
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
     @function   FillOutAudioTimeStampWithSampleTime
     @abstract   A C++ inline function for filling out an AudioTimeStamp with a sample time
     @param      outATS
@@ -934,6 +1791,13 @@ const
 }
 
 {!
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
     @struct         AudioClassDescription
     @abstract       This structure is used to describe codecs installed on the system.
     @field          mType
@@ -979,7 +1843,19 @@ type
 	AudioChannelDescription = record
 		mChannelLabel: AudioChannelLabel;
 		mChannelFlags: UInt32;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		mCoordinates: array[0..2] of Float32;
+=======
+        mCoordinates: array[0..2] of Float32;
+>>>>>>> graemeg/fixes_2_2
+=======
+        mCoordinates: array[0..2] of Float32;
+>>>>>>> origin/fixes_2_2
+=======
+		mCoordinates: array[0..2] of Float32;
+>>>>>>> origin/fixes_2.4
 	end;
 
 {!
@@ -997,12 +1873,34 @@ type
                         layout.
 }
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	AudioChannelLayoutPtr = ^AudioChannelLayout;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	AudioChannelLayoutPtr = ^AudioChannelLayout;
+>>>>>>> origin/fixes_2.4
 	AudioChannelLayout = record
 		mChannelLayoutTag: AudioChannelLayoutTag;
 		mChannelBitmap: UInt32;
 		mNumberChannelDescriptions: UInt32;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 		mChannelDescriptions: array[0..0] of AudioChannelDescription;
+=======
+        mChannelDescriptions: array[0..0] of AudioChannelDescription;
+>>>>>>> graemeg/fixes_2_2
+=======
+        mChannelDescriptions: array[0..0] of AudioChannelDescription;
+>>>>>>> origin/fixes_2_2
+=======
+		mChannelDescriptions: array[0..0] of AudioChannelDescription;
+>>>>>>> origin/fixes_2.4
 	end;
 
 {!
@@ -1044,6 +1942,17 @@ const
 	kAudioChannelLabel_TopBackLeft = 16;
 	kAudioChannelLabel_TopBackCenter = 17;
 	kAudioChannelLabel_TopBackRight = 18;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	
+>>>>>>> graemeg/fixes_2_2
+=======
+	
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	kAudioChannelLabel_RearSurroundLeft = 33;
 	kAudioChannelLabel_RearSurroundRight = 34;
 	kAudioChannelLabel_LeftWide = 35;
@@ -1055,9 +1964,25 @@ const
 	kAudioChannelLabel_Narration = 41;
 	kAudioChannelLabel_Mono = 42;
 	kAudioChannelLabel_DialogCentricMix = 43;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kAudioChannelLabel_CenterSurroundDirect = 44;           // back center, non diffuse
     
 	kAudioChannelLabel_Haptic = 45;
+=======
+	
+	kAudioChannelLabel_CenterSurroundDirect = 44;           // back center, non diffuse
+>>>>>>> graemeg/fixes_2_2
+=======
+	
+	kAudioChannelLabel_CenterSurroundDirect = 44;           // back center, non diffuse
+>>>>>>> origin/fixes_2_2
+=======
+	kAudioChannelLabel_CenterSurroundDirect = 44;           // back center, non diffuse
+    
+	kAudioChannelLabel_Haptic = 45;
+>>>>>>> origin/fixes_2.4
 
     // first order ambisonic channels
 	kAudioChannelLabel_Ambisonic_W = 200;
@@ -1230,16 +2155,55 @@ const
 	kAudioChannelLayoutTag_Binaural = (106 shl 16) or 2;   // binaural stereo (left, right)
 	kAudioChannelLayoutTag_Ambisonic_B_Format = (107 shl 16) or 4;   // W, X, Y, Z
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 	kAudioChannelLayoutTag_Quadraphonic = (108 shl 16) or 4;   // L R Ls Rs  -- 90 degree speaker separation
 	kAudioChannelLayoutTag_Pentagonal = (109 shl 16) or 5;   // L R Ls Rs C  -- 72 degree speaker separation
 	kAudioChannelLayoutTag_Hexagonal = (110 shl 16) or 6;   // L R Ls Rs C Cs  -- 60 degree speaker separation
 	kAudioChannelLayoutTag_Octagonal = (111 shl 16) or 8;   // L R Ls Rs C Cs Lw Rw  -- 45 degree speaker separation
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	kAudioChannelLayoutTag_Quadraphonic = (108 shl 16) or 4;   // front left, front right, back left, back right
+
+	kAudioChannelLayoutTag_Pentagonal = (109 shl 16) or 5;   // left, right, rear left, rear right, center
+
+	kAudioChannelLayoutTag_Hexagonal = (110 shl 16) or 6;   // left, right, rear left, rear right, center, rear
+
+	kAudioChannelLayoutTag_Octagonal = (111 shl 16) or 8;   // front left, front right, rear left, rear right,
+                                                                        // front center, rear center, side left, side right
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 	kAudioChannelLayoutTag_Cube = (112 shl 16) or 8;   // left, right, rear left, rear right
                                                                         // top left, top right, top rear left, top rear right
 
     //  MPEG defined layouts
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kAudioChannelLayoutTag_MPEG_1_0 = kAudioChannelLayoutTag_Mono;         //  C
 	kAudioChannelLayoutTag_MPEG_2_0 = kAudioChannelLayoutTag_Stereo;       //  L R
+=======
+	kAudioChannelLayoutTag_MPEG_1_0 = kAudioChannelLayoutTag_Mono;          //  C
+	kAudioChannelLayoutTag_MPEG_2_0 = kAudioChannelLayoutTag_Stereo;        //  L R
+>>>>>>> graemeg/fixes_2_2
+=======
+	kAudioChannelLayoutTag_MPEG_1_0 = kAudioChannelLayoutTag_Mono;          //  C
+	kAudioChannelLayoutTag_MPEG_2_0 = kAudioChannelLayoutTag_Stereo;        //  L R
+>>>>>>> origin/fixes_2_2
+=======
+	kAudioChannelLayoutTag_MPEG_1_0 = kAudioChannelLayoutTag_Mono;         //  C
+	kAudioChannelLayoutTag_MPEG_2_0 = kAudioChannelLayoutTag_Stereo;       //  L R
+>>>>>>> origin/fixes_2.4
 	kAudioChannelLayoutTag_MPEG_3_0_A = (113 shl 16) or 3;                       //  L R C
 	kAudioChannelLayoutTag_MPEG_3_0_B = (114 shl 16) or 3;                       //  C L R
 	kAudioChannelLayoutTag_MPEG_4_0_A = (115 shl 16) or 4;                       //  L R C Cs
@@ -1258,6 +2222,9 @@ const
 	kAudioChannelLayoutTag_MPEG_7_1_C = (128 shl 16) or 8;                       //  L R C LFE Ls R Rls Rrs
 	kAudioChannelLayoutTag_Emagic_Default_7_1 = (129 shl 16) or 8;                       //  L R Ls Rs C LFE Lc Rc
 	kAudioChannelLayoutTag_SMPTE_DTV = (130 shl 16) or 8;                       //  L R C LFE Ls Rs Lt Rt
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 																						   //      (kAudioChannelLayoutTag_ITU_5_1 plus a matrix encoded stereo mix)
 
     //  ITU defined layouts
@@ -1296,6 +2263,59 @@ const
 	kAudioChannelLayoutTag_DVD_18 = (138 shl 16) or 5;                       // L R Ls Rs LFE
 	kAudioChannelLayoutTag_DVD_19 = kAudioChannelLayoutTag_MPEG_5_0_B;   // L R Ls Rs C
 	kAudioChannelLayoutTag_DVD_20 = kAudioChannelLayoutTag_MPEG_5_1_B;   // L R Ls Rs C LFE
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                                                                                            //      (kAudioChannelLayoutTag_ITU_5_1 plus a matrix encoded stereo mix)
+=======
+																						   //      (kAudioChannelLayoutTag_ITU_5_1 plus a matrix encoded stereo mix)
+>>>>>>> origin/fixes_2.4
+
+    //  ITU defined layouts
+	kAudioChannelLayoutTag_ITU_1_0 = kAudioChannelLayoutTag_Mono;         //  C
+	kAudioChannelLayoutTag_ITU_2_0 = kAudioChannelLayoutTag_Stereo;       //  L R
+
+	kAudioChannelLayoutTag_ITU_2_1 = (131 shl 16) or 3;                       //  L R Cs
+	kAudioChannelLayoutTag_ITU_2_2 = (132 shl 16) or 4;                       //  L R Ls Rs
+	kAudioChannelLayoutTag_ITU_3_0 = kAudioChannelLayoutTag_MPEG_3_0_A;   //  L R C
+	kAudioChannelLayoutTag_ITU_3_1 = kAudioChannelLayoutTag_MPEG_4_0_A;   //  L R C Cs
+
+	kAudioChannelLayoutTag_ITU_3_2 = kAudioChannelLayoutTag_MPEG_5_0_A;   //  L R C Ls Rs
+	kAudioChannelLayoutTag_ITU_3_2_1 = kAudioChannelLayoutTag_MPEG_5_1_A;   //  L R C LFE Ls Rs
+	kAudioChannelLayoutTag_ITU_3_4_1 = kAudioChannelLayoutTag_MPEG_7_1_C;   //  L R C LFE Ls Rs Rls Rrs
+
+    // DVD defined layouts
+	kAudioChannelLayoutTag_DVD_0 = kAudioChannelLayoutTag_Mono;         // C (mono)
+	kAudioChannelLayoutTag_DVD_1 = kAudioChannelLayoutTag_Stereo;       // L R
+	kAudioChannelLayoutTag_DVD_2 = kAudioChannelLayoutTag_ITU_2_1;      // L R Cs
+	kAudioChannelLayoutTag_DVD_3 = kAudioChannelLayoutTag_ITU_2_2;      // L R Ls Rs
+	kAudioChannelLayoutTag_DVD_4 = (133 shl 16) or 3;                       // L R LFE
+	kAudioChannelLayoutTag_DVD_5 = (134 shl 16) or 4;                       // L R LFE Cs
+	kAudioChannelLayoutTag_DVD_6 = (135 shl 16) or 5;                       // L R LFE Ls Rs
+	kAudioChannelLayoutTag_DVD_7 = kAudioChannelLayoutTag_MPEG_3_0_A;   // L R C
+	kAudioChannelLayoutTag_DVD_8 = kAudioChannelLayoutTag_MPEG_4_0_A;   // L R C Cs
+	kAudioChannelLayoutTag_DVD_9 = kAudioChannelLayoutTag_MPEG_5_0_A;   // L R C Ls Rs
+	kAudioChannelLayoutTag_DVD_10 = (136 shl 16) or 4;                       // L R C LFE
+	kAudioChannelLayoutTag_DVD_11 = (137 shl 16) or 5;                       // L R C LFE Cs
+	kAudioChannelLayoutTag_DVD_12 = kAudioChannelLayoutTag_MPEG_5_1_A;   // L R C LFE Ls Rs
+    // 13 through 17 are duplicates of 8 through 12.
+	kAudioChannelLayoutTag_DVD_13 = kAudioChannelLayoutTag_DVD_8;        // L R C Cs
+	kAudioChannelLayoutTag_DVD_14 = kAudioChannelLayoutTag_DVD_9;        // L R C Ls Rs
+	kAudioChannelLayoutTag_DVD_15 = kAudioChannelLayoutTag_DVD_10;       // L R C LFE
+	kAudioChannelLayoutTag_DVD_16 = kAudioChannelLayoutTag_DVD_11;       // L R C LFE Cs
+	kAudioChannelLayoutTag_DVD_17 = kAudioChannelLayoutTag_DVD_12;       // L R C LFE Ls Rs
+	kAudioChannelLayoutTag_DVD_18 = (138 shl 16) or 5;                       // L R Ls Rs LFE
+<<<<<<< HEAD
+	kAudioChannelLayoutTag_DVD_19 = kAudioChannelLayoutTag_MPEG_5_0_B;    // L R Ls Rs C
+	kAudioChannelLayoutTag_DVD_20 = kAudioChannelLayoutTag_MPEG_5_1_B;    // L R Ls Rs C LFE
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	kAudioChannelLayoutTag_DVD_19 = kAudioChannelLayoutTag_MPEG_5_0_B;   // L R Ls Rs C
+	kAudioChannelLayoutTag_DVD_20 = kAudioChannelLayoutTag_MPEG_5_1_B;   // L R Ls Rs C LFE
+>>>>>>> origin/fixes_2.4
 
     // These layouts are recommended for AudioUnit usage
         // These are the symmetrical layouts
@@ -1304,6 +2324,9 @@ const
 	kAudioChannelLayoutTag_AudioUnit_6 = kAudioChannelLayoutTag_Hexagonal;
 	kAudioChannelLayoutTag_AudioUnit_8 = kAudioChannelLayoutTag_Octagonal;
         // These are the surround-based layouts
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kAudioChannelLayoutTag_AudioUnit_5_0 = kAudioChannelLayoutTag_MPEG_5_0_B;   // L R Ls Rs C
 	kAudioChannelLayoutTag_AudioUnit_6_0 = (139 shl 16) or 6;                       // L R Ls Rs C Cs
 	kAudioChannelLayoutTag_AudioUnit_7_0 = (140 shl 16) or 7;                       // L R Ls Rs C Rls Rrs
@@ -1322,11 +2345,27 @@ const
 	kAudioChannelLayoutTag_AAC_6_1 = (142 shl 16) or 7;                       // C L R Ls Rs Cs Lfe
 	kAudioChannelLayoutTag_AAC_7_0 = (143 shl 16) or 7;                       // C L R Ls Rs Rls Rrs
 	kAudioChannelLayoutTag_AAC_7_1 = kAudioChannelLayoutTag_MPEG_7_1_B;   // C Lc Rc L R Ls Rs Lfe
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kAudioChannelLayoutTag_AAC_7_1_B = (183 shl 16) or 8;                       // C L R Ls Rs Rls Rrs LFE
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 	kAudioChannelLayoutTag_AAC_Octagonal = (144 shl 16) or 8;                       // C L R Ls Rs Rls Rrs Cs
 
 	kAudioChannelLayoutTag_TMH_10_2_std = (145 shl 16) or 16;                      // L R C Vhc Lsd Rsd Ls Rs Vhl Vhr Lw Rw Csd Cs LFE1 LFE2
 	kAudioChannelLayoutTag_TMH_10_2_full = (146 shl 16) or 21;                      // TMH_10_2_std plus: Lc Rc HI VI Haptic
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 	kAudioChannelLayoutTag_AC3_1_0_1 = (149 shl 16) or 2;                       // C LFE
 	kAudioChannelLayoutTag_AC3_3_0 = (150 shl 16) or 3;                       // L C R
@@ -1376,6 +2415,64 @@ const
 {! @enum           MPEG-4 Audio Object IDs
     @deprecated     in version 10.5
 
+=======
+
+	kAudioChannelLayoutTag_AC3_1_0_1 = (149 shl 16) or 2;                       // C LFE
+	kAudioChannelLayoutTag_AC3_3_0 = (150 shl 16) or 3;                       // L C R
+	kAudioChannelLayoutTag_AC3_3_1 = (151 shl 16) or 4;                       // L C R Cs
+	kAudioChannelLayoutTag_AC3_3_0_1 = (152 shl 16) or 4;                       // L C R LFE
+	kAudioChannelLayoutTag_AC3_2_1_1 = (153 shl 16) or 4;                       // L R Cs LFE
+	kAudioChannelLayoutTag_AC3_3_1_1 = (154 shl 16) or 5;                       // L C R Cs LFE
+
+=======
+
+	kAudioChannelLayoutTag_AC3_1_0_1 = (149 shl 16) or 2;                       // C LFE
+	kAudioChannelLayoutTag_AC3_3_0 = (150 shl 16) or 3;                       // L C R
+	kAudioChannelLayoutTag_AC3_3_1 = (151 shl 16) or 4;                       // L C R Cs
+	kAudioChannelLayoutTag_AC3_3_0_1 = (152 shl 16) or 4;                       // L C R LFE
+	kAudioChannelLayoutTag_AC3_2_1_1 = (153 shl 16) or 4;                       // L R Cs LFE
+	kAudioChannelLayoutTag_AC3_3_1_1 = (154 shl 16) or 5;                       // L C R Cs LFE
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+	kAudioChannelLayoutTag_AC3_1_0_1 = (149 shl 16) or 2;                       // C LFE
+	kAudioChannelLayoutTag_AC3_3_0 = (150 shl 16) or 3;                       // L C R
+	kAudioChannelLayoutTag_AC3_3_1 = (151 shl 16) or 4;                       // L C R Cs
+	kAudioChannelLayoutTag_AC3_3_0_1 = (152 shl 16) or 4;                       // L C R LFE
+	kAudioChannelLayoutTag_AC3_2_1_1 = (153 shl 16) or 4;                       // L R Cs LFE
+	kAudioChannelLayoutTag_AC3_3_1_1 = (154 shl 16) or 5;                       // L C R Cs LFE
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+	kAudioChannelLayoutTag_AC3_1_0_1 = (149 shl 16) or 2;                       // C LFE
+	kAudioChannelLayoutTag_AC3_3_0 = (150 shl 16) or 3;                       // L C R
+	kAudioChannelLayoutTag_AC3_3_1 = (151 shl 16) or 4;                       // L C R Cs
+	kAudioChannelLayoutTag_AC3_3_0_1 = (152 shl 16) or 4;                       // L C R LFE
+	kAudioChannelLayoutTag_AC3_2_1_1 = (153 shl 16) or 4;                       // L R Cs LFE
+	kAudioChannelLayoutTag_AC3_3_1_1 = (154 shl 16) or 5;                       // L C R Cs LFE
+
+>>>>>>> origin/cpstrnew
+	kAudioChannelLayoutTag_DiscreteInOrder = (147 shl 16) or 0;                       // needs to be ORed with the actual number of channels  
+	kAudioChannelLayoutTag_Unknown = $FFFF0000;                           // needs to be ORed with the actual number of channels  
+
+
+// Deprecated constants
+
+{! @enum           MPEG-4 Audio Object IDs
+    @deprecated     in version 10.5
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     @abstract       Constants that describe the various kinds of MPEG-4 audio data.
     @discussion     These constants are used in the flags field of an AudioStreamBasicDescription
                     that describes an MPEG-4 audio stream.
@@ -1395,3 +2492,74 @@ const
 
 end.
 {$endc} {not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+	kAudioChannelLayoutTag_AudioUnit_5_0 = kAudioChannelLayoutTag_MPEG_5_0_B;    // L R Ls Rs C
+=======
+	kAudioChannelLayoutTag_AudioUnit_5_0 = kAudioChannelLayoutTag_MPEG_5_0_B;   // L R Ls Rs C
+>>>>>>> origin/fixes_2.4
+	kAudioChannelLayoutTag_AudioUnit_6_0 = (139 shl 16) or 6;                       // L R Ls Rs C Cs
+	kAudioChannelLayoutTag_AudioUnit_7_0 = (140 shl 16) or 7;                       // L R Ls Rs C Rls Rrs
+	kAudioChannelLayoutTag_AudioUnit_7_0_Front = (148 shl 16) or 7;                       // L R Ls Rs C Lc Rc
+	kAudioChannelLayoutTag_AudioUnit_5_1 = kAudioChannelLayoutTag_MPEG_5_1_A;   // L R C LFE Ls Rs
+	kAudioChannelLayoutTag_AudioUnit_6_1 = kAudioChannelLayoutTag_MPEG_6_1_A;   // L R C LFE Ls Rs Cs
+	kAudioChannelLayoutTag_AudioUnit_7_1 = kAudioChannelLayoutTag_MPEG_7_1_C;   // L R C LFE Ls Rs Rls Rrs
+	kAudioChannelLayoutTag_AudioUnit_7_1_Front = kAudioChannelLayoutTag_MPEG_7_1_A;   // L R C LFE Ls Rs Lc Rc
+
+	kAudioChannelLayoutTag_AAC_3_0 = kAudioChannelLayoutTag_MPEG_3_0_B;   // C L R
+	kAudioChannelLayoutTag_AAC_Quadraphonic = kAudioChannelLayoutTag_Quadraphonic; // L R Ls Rs
+	kAudioChannelLayoutTag_AAC_4_0 = kAudioChannelLayoutTag_MPEG_4_0_B;   // C L R Cs
+	kAudioChannelLayoutTag_AAC_5_0 = kAudioChannelLayoutTag_MPEG_5_0_D;   // C L R Ls Rs
+	kAudioChannelLayoutTag_AAC_5_1 = kAudioChannelLayoutTag_MPEG_5_1_D;   // C L R Ls Rs Lfe
+	kAudioChannelLayoutTag_AAC_6_0 = (141 shl 16) or 6;                       // C L R Ls Rs Cs
+	kAudioChannelLayoutTag_AAC_6_1 = (142 shl 16) or 7;                       // C L R Ls Rs Cs Lfe
+	kAudioChannelLayoutTag_AAC_7_0 = (143 shl 16) or 7;                       // C L R Ls Rs Rls Rrs
+	kAudioChannelLayoutTag_AAC_7_1 = kAudioChannelLayoutTag_MPEG_7_1_B;   // C Lc Rc L R Ls Rs Lfe
+	kAudioChannelLayoutTag_AAC_Octagonal = (144 shl 16) or 8;                       // C L R Ls Rs Rls Rrs Cs
+
+	kAudioChannelLayoutTag_TMH_10_2_std = (145 shl 16) or 16;                      // L R C Vhc Lsd Rsd Ls Rs Vhl Vhr Lw Rw Csd Cs LFE1 LFE2
+	kAudioChannelLayoutTag_TMH_10_2_full = (146 shl 16) or 21;                      // TMH_10_2_std plus: Lc Rc HI VI Haptic
+
+	kAudioChannelLayoutTag_AC3_1_0_1 = (149 shl 16) or 2;                       // C LFE
+	kAudioChannelLayoutTag_AC3_3_0 = (150 shl 16) or 3;                       // L C R
+	kAudioChannelLayoutTag_AC3_3_1 = (151 shl 16) or 4;                       // L C R Cs
+	kAudioChannelLayoutTag_AC3_3_0_1 = (152 shl 16) or 4;                       // L C R LFE
+	kAudioChannelLayoutTag_AC3_2_1_1 = (153 shl 16) or 4;                       // L R Cs LFE
+	kAudioChannelLayoutTag_AC3_3_1_1 = (154 shl 16) or 5;                       // L C R Cs LFE
+
+	kAudioChannelLayoutTag_DiscreteInOrder = (147 shl 16) or 0;                       // needs to be ORed with the actual number of channels  
+	kAudioChannelLayoutTag_Unknown = $FFFF0000;                           // needs to be ORed with the actual number of channels  
+
+
+// Deprecated constants
+
+{! @enum           MPEG-4 Audio Object IDs
+    @deprecated     in version 10.5
+
+    @abstract       Constants that describe the various kinds of MPEG-4 audio data.
+    @discussion     These constants are used in the flags field of an AudioStreamBasicDescription
+                    that describes an MPEG-4 audio stream.
+}
+const
+	kMPEG4Object_AAC_Main = 1;
+	kMPEG4Object_AAC_LC = 2;
+	kMPEG4Object_AAC_SSR = 3;
+	kMPEG4Object_AAC_LTP = 4;
+	kMPEG4Object_AAC_SBR = 5;
+	kMPEG4Object_AAC_Scalable = 6;
+	kMPEG4Object_TwinVQ = 7;
+	kMPEG4Object_CELP = 8;
+	kMPEG4Object_HVXC = 9;    
+
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+
+end.
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4

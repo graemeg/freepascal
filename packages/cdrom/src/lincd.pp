@@ -708,6 +708,8 @@ procedure set_sense_key(var a : Trequest_sense; __sense_key : Tu8);
 { ---------------------------------------------------------------------
     Utility functions
   ---------------------------------------------------------------------}
+<<<<<<< HEAD
+<<<<<<< HEAD
 type
   TCDSearchRec = record
     Name: String;
@@ -717,6 +719,14 @@ type
 Function IsCDDevice(Device : String) : Boolean;
 Function FindFirstCD(var ACDSearchRec: TCDSearchRec): Boolean;
 Function FindNextCD(var ACDSearchRec: TCDSearchRec): Boolean;
+=======
+
+Function IsCDDevice(Device : String) : Boolean;
+>>>>>>> graemeg/fixes_2_2
+=======
+
+Function IsCDDevice(Device : String) : Boolean;
+>>>>>>> origin/fixes_2_2
 Function DetectCd : String;
 
 implementation
@@ -1105,6 +1115,8 @@ Const
   '/dev/sr?',
   '/dev/optcd');
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function FindFirstCD(var ACDSearchRec: TCDSearchRec): Boolean;
 begin
   Result := False;
@@ -1160,6 +1172,10 @@ begin
   ACDSearchRec.Name:=FoundDev;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Function DetectCD : String;
 
 Var
@@ -1225,6 +1241,8 @@ begin
   If fpStat(Device,info)<>0 then
     exit;
   DeviceMajor:=info.st_rdev shr 8;
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$ifdef debug}
   Writeln('Device major : ',DeviceMajor);
   {$endif}
@@ -1249,6 +1267,30 @@ begin
         end;
       end;
     end;  
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  If DeviceMajor in [IDE0_MAJOR,IDE1_MAJOR,IDE2_MAJOR,IDE3_MAJOR] then
+      Result:=TestCDRomIOCTL(Device)
+  else
+    begin
+    Result:=DeviceMajor in CDMajor;
+    If Not Result then
+      begin
+      // test SCSI
+      end
+    else
+      begin
+      F:=fpOpen(Device,OPEN_RDONLY or OPEN_NONBLOCK);
+      Result:=(F>=0);
+      If Result then
+        fpClose(F);
+      end;
+    end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 Function TestCDRomIOCTL(Device : String) : Boolean;

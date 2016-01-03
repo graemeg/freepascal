@@ -3,11 +3,79 @@
 #
 
 [package]
+<<<<<<< HEAD
 name=fppkg-util
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+name=fppkg
+<<<<<<< HEAD
+<<<<<<< HEAD
+version=2.5.1
+
+[target]
+programs=fppkg
+<<<<<<< HEAD
+
+units=fprepos fpxmlrep pkgoptions pkgglobals pkgmessages pkghandler pkgmkconv pkgdownload pkgfpmake pkgcommands pkgrepos
+units_linux=pkgwget  pkglnet
+units_beos=pkgwget pkglnet
+units_haiku=pkgwget pkglnet
+units_freebsd=pkgwget pkglnet
+units_netbsd=pkgwget pkglnet
+nits_openbsd=pkgwget pkglnet
+units_darwin=pkgwget pkglnet
+units_iphonesim=pkgwget pkglnet
+units_solaris=pkgwget pkglnet
+units_win32=pkgwget pkglnet
+units_win64=pkgwget pkglnet
+units_wince=pkgwget pkglnet
+=======
+version=2.2.5
+
+[target]
+programs=fppkg
+=======
+version=2.2.5
+
+[target]
+programs=fppkg
+>>>>>>> origin/fixes_2_2
+=======
+units=buildfppkg
+>>>>>>> origin/fixes_2.4
+implicitunits=fprepos fpxmlrep pkgoptions pkgglobals pkgmessages pkghandler pkgmkconv pkgdownload pkgfpmake pkgcommands pkgrepos
+implicitunits_linux=pkgwget  pkglnet
+implicitunits_beos=pkgwget pkglnet
+implicitunits_freebsd=pkgwget pkglnet
+implicitunits_netbsd=pkgwget pkglnet
+implicitunits_openbsd=pkgwget pkglnet
+implicitunits_darwin=pkgwget pkglnet
+implicitunits_solaris=pkgwget pkglnet
+implicitunits_win32=pkgwget pkglnet
+implicitunits_win64=pkgwget pkglnet
+implicitunits_wince=pkgwget pkglnet
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+rsts=fprepos fpxmlrep pkgmessages
+
+[compiler]
+unitdir=lnet
+includedir=lnet/sys
+
+[clean]
+units=lcommon lcontrolstack levents ltelnet lftp lhttp lhttputil lnet lstrbuffer
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -15,6 +83,9 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -24,6 +95,32 @@ ifdef CPU_TARGET
 FPC_TARGETOPT+=--cpu=$(CPU_TARGET)
 endif
 LOCALFPMAKE=./fpmake$(SRCEXEEXT)
+=======
+[require]
+packages=fcl-base fcl-xml fcl-process fcl-net paszlib libcurl
+tools=data2inc
+packages_darwin=univint
+packages_iphonesim=univint
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+[require]
+packages=fcl-base fcl-xml fcl-process fcl-net paszlib libcurl
+tools=data2inc
+>>>>>>> graemeg/fixes_2_2
+=======
+[require]
+packages=fcl-base fcl-xml fcl-process fcl-net paszlib libcurl
+tools=data2inc
+>>>>>>> origin/fixes_2_2
 
 [rules]
 # Do not pass the Makefile's unit and binary target locations. Fpmake uses it's own.
@@ -42,6 +139,8 @@ FPMAKE_OPT+=$(addprefix -o ,$(FPCOPT))
 FPMAKE_OPT+=--compiler=$(FPC)
 FPMAKE_OPT+=-bu
 .NOTPARALLEL:
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 fpmake$(SRCEXEEXT): fpmake.pp
 	$(FPCFPMAKE) fpmake.pp $(FPMAKE_SKIP_CONFIG) $(addprefix -Fu,$(COMPILER_FPMAKE_UNITDIR)) $(FPCMAKEOPT) $(OPT)
@@ -100,3 +199,18 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ifneq ($(DATA2INC),)
+fpmkunitsrc.inc: $(DEFAULT_FPCDIR)/packages/fpmkunit/src/fpmkunit.pp
+        $(DATA2INC) -b -s $(DEFAULT_FPCDIR)/packages/fpmkunit/src/fpmkunit.pp fpmkunitsrc.inc fpmkunitsrc
+endif
+
+# Don't include the dependency on fpmkunitsrc.inc by default so we can control
+# better when we want to update the internal fpmkunitsrc
+fppkg$(EXEEXT): $(wildcard pkg*.pp)
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

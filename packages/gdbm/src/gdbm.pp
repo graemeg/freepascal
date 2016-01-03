@@ -89,7 +89,8 @@ type
   end;
   PGDBM_FILE = ^TGDBM_FILE;
 
-  TGDBMErrorCallBack = Procedure; cdecl;
+  TGDBMErrorCallBack = Procedure;
+
 
 
 var

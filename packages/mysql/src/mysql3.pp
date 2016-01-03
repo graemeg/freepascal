@@ -2,6 +2,7 @@
 unit mysql3;
 
 {$undef use_mysql_321} { if undefined, use mysql 3.23 interface }
+
 {
   Import unit for the mysql header files.
 
@@ -59,7 +60,6 @@ Function mysql_error(mysql : PMYSQL) : pchar; extdecl; external mysqllib;
 function mysql_init(mysql: PMYSQL) : PMYSQL;extdecl; external mysqllib name 'mysql_init';
 function mysql_connect (mysql : PMYSQL; host,user,passwd: pchar) : PMYSQL;extdecl; external mysqllib name 'mysql_connect';
 function mysql_real_connect (mysql : PMYSQL; const host,user,passwd : pchar;
-		                   {$ifndef use_mysql_321} const db : Pchar; {$endif}  // strictly speaking 3.22+ not 3.21+	      		
                                    port : cardinal;
                                    unix_socket : pchar;
                                    clientflag : cardinal) : PMYSQL;extdecl; external mysqllib;

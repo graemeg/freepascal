@@ -27,7 +27,11 @@
 
     nils.sjoholm@mailbox.swipnet.se Nils Sjoholm
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
 
 UNIT nonvolatile;
 
@@ -82,13 +86,13 @@ VAR NVBase : pLibrary;
 const
     NONVOLATILENAME : PChar = 'nonvolatile.library';
 
-FUNCTION DeleteNV(const appName : pCHAR location 'a0'; const itemName : pCHAR location 'a1'; killRequesters : LONGINT location 'd1') : LongBool; syscall NVBase 048;
-PROCEDURE FreeNVData(data : POINTER location 'a0'); syscall NVBase 036;
-FUNCTION GetCopyNV(const appName : pCHAR location 'a0'; const itemName : pCHAR location 'a1'; killRequesters : LONGINT location 'd1') : POINTER; syscall NVBase 030;
-FUNCTION GetNVInfo(killRequesters : LONGINT location 'd1') : pNVInfo; syscall NVBase 054;
-FUNCTION GetNVList(const appName : pCHAR location 'a0'; killRequesters : LONGINT location 'd1') : pMinList; syscall NVBase 060;
-FUNCTION SetNVProtection(const appName : pCHAR location 'a0'; const itemName : pCHAR location 'a1'; mask : LONGINT location 'd2'; killRequesters : LONGINT location 'd1') : LongBool; syscall NVBase 066;
-FUNCTION StoreNV(const appName : pCHAR location 'a0'; const itemName : pCHAR location 'a1'; const data : POINTER location 'a2'; length : ULONG location 'd0'; killRequesters : LONGINT location 'd1') : WORD; syscall NVBase 042;
+FUNCTION DeleteNV(const appName : pCHAR;const itemName : pCHAR; killRequesters : LONGINT) : BOOLEAN;
+PROCEDURE FreeNVData(data : POINTER);
+FUNCTION GetCopyNV(const appName : pCHAR;const itemName : pCHAR; killRequesters : LONGINT) : POINTER;
+FUNCTION GetNVInfo(killRequesters : LONGINT) : pNVInfo;
+FUNCTION GetNVList(const appName : pCHAR; killRequesters : LONGINT) : pMinList;
+FUNCTION SetNVProtection(const appName : pCHAR;const itemName : pCHAR; mask : LONGINT; killRequesters : LONGINT) : BOOLEAN;
+FUNCTION StoreNV(const appName : pCHAR;const itemName : pCHAR;const data : POINTER; length : ULONG; killRequesters : LONGINT) : WORD;
 
 {Here we read how to compile this unit}
 {You can remove this include and use a define instead}
@@ -104,8 +108,109 @@ var
 IMPLEMENTATION
 
 {$ifndef dont_use_openlib}
-uses amsgbox;
+uses msgbox;
 {$endif dont_use_openlib}
+
+FUNCTION DeleteNV(const appName : pCHAR;const itemName : pCHAR; killRequesters : LONGINT) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L appName,A0
+    MOVEA.L itemName,A1
+    MOVE.L  killRequesters,D1
+    MOVEA.L NVBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE FreeNVData(data : POINTER);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L data,A0
+    MOVEA.L NVBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION GetCopyNV(const appName : pCHAR;const itemName : pCHAR; killRequesters : LONGINT) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L appName,A0
+    MOVEA.L itemName,A1
+    MOVE.L  killRequesters,D1
+    MOVEA.L NVBase,A6
+    JSR -030(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetNVInfo(killRequesters : LONGINT) : pNVInfo;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  killRequesters,D1
+    MOVEA.L NVBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetNVList(const appName : pCHAR; killRequesters : LONGINT) : pMinList;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L appName,A0
+    MOVE.L  killRequesters,D1
+    MOVEA.L NVBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetNVProtection(const appName : pCHAR;const itemName : pCHAR; mask : LONGINT; killRequesters : LONGINT) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L appName,A0
+    MOVEA.L itemName,A1
+    MOVE.L  mask,D2
+    MOVE.L  killRequesters,D1
+    MOVEA.L NVBase,A6
+    JSR -066(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION StoreNV(const appName : pCHAR;const itemName : pCHAR;const data : POINTER; length : ULONG; killRequesters : LONGINT) : WORD;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L appName,A0
+    MOVEA.L itemName,A1
+    MOVEA.L data,A2
+    MOVE.L  length,D0
+    MOVE.L  killRequesters,D1
+    MOVEA.L NVBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
 
 const
     { Change VERSION and LIBVERSION to proper values }

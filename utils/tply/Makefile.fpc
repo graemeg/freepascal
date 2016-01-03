@@ -3,8 +3,30 @@
 #
 
 [package]
+<<<<<<< HEAD
 name=tply
 version=3.1.1
+=======
+name=lexyacc
+<<<<<<< HEAD
+<<<<<<< HEAD
+version=2.5.1
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+version=2.2.5
+>>>>>>> graemeg/fixes_2_2
+=======
+version=2.2.5
+>>>>>>> origin/fixes_2_2
 
 [require]
 packages=rtl fpmkunit

@@ -54,18 +54,34 @@ unit JwaTlHelp32;
 {$IFNDEF JWA_OMIT_SECTIONS}
 {$I jediapilib.inc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 // switch back to default (natural alignment), bug 16361
 {$ifdef FPC} {$ifdef cpu64}{$packrecords 8} {$endif} {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 interface
 
 uses
   JwaWinType;
 {$ENDIF JWA_OMIT_SECTIONS}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 
 {$IFNDEF JWA_IMPLEMENTATIONSECTION}
 
 
+=======
+{$IFNDEF JWA_IMPLEMENTATIONSECTION}
+
+>>>>>>> graemeg/fixes_2_2
+=======
+{$IFNDEF JWA_IMPLEMENTATIONSECTION}
+
+>>>>>>> origin/fixes_2_2
 const
   MAX_MODULE_NAME32 = 255;
   {$EXTERNALSYM MAX_MODULE_NAME32}

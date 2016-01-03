@@ -54,6 +54,10 @@ type
 { Records }
 type
   __TvFlags = record
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     case byte of
     0: (_anonbitfield_NSTableView0: cuint);
     1: (data: bitpacked record
@@ -100,6 +104,64 @@ type
 {$endif}
          end;
        );
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef fpc_big_endian}
+    allowsColumnReordering: 0..1;
+    allowsColumnResizing: 0..1;
+    oldDrawsGridFlag: 0..1;
+    allowsEmptySelection: 0..1;
+    allowsMultipleSelection: 0..1;
+    allowsColumnSelection: 0..1;
+    selectionType: 0..((1 shl 2)-1);
+    changingLayout: 0..1;
+    compareWidthWithSuperview: 0..((1 shl 2)-1);
+    delegateWillDisplayCell: 0..1;
+    delegateShouldEditTableColumn: 0..1;
+    delegateShouldSelectRow: 0..1;
+    delegateShouldSelectTableColumn: 0..1;
+    delegateSelectionShouldChangeInTableView: 0..1;
+    oldAutoresizesAllColumnsToFit: 0..1;
+    dataSourceSetObjectValue: 0..1;
+    selectionPostingDisableCount: 0..((1 shl 7)-1);
+    movedPostingDisableCount: 0..((1 shl 6)-1);
+    refusesFirstResponder: 0..1;
+{$else}
+    refusesFirstResponder: 0..1;
+    movedPostingDisableCount: 0..((1 shl 6)-1);
+    selectionPostingDisableCount: 0..((1 shl 7)-1);
+    dataSourceSetObjectValue: 0..1;
+    oldAutoresizesAllColumnsToFit: 0..1;
+    delegateSelectionShouldChangeInTableView: 0..1;
+    delegateShouldSelectTableColumn: 0..1;
+    delegateShouldSelectRow: 0..1;
+    delegateShouldEditTableColumn: 0..1;
+    delegateWillDisplayCell: 0..1;
+    compareWidthWithSuperview: 0..((1 shl 2)-1);
+    changingLayout: 0..1;
+    selectionType: 0..((1 shl 2)-1);
+    allowsColumnSelection: 0..1;
+    allowsMultipleSelection: 0..1;
+    allowsEmptySelection: 0..1;
+    oldDrawsGridFlag: 0..1;
+    allowsColumnResizing: 0..1;
+    allowsColumnReordering: 0..1;
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 _TvFlags = __TvFlags;
 __TvFlagsPtr = ^__TvFlags;

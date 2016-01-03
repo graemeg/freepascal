@@ -5,7 +5,23 @@ unit wmext;
 interface
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Classes, SysUtils, HTTPDefs, websession, fpHTTP, fpWeb, 
+=======
+  Classes, SysUtils, FileUtil, LResources, HTTPDefs, websession, fpHTTP, fpWeb, 
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, FileUtil, LResources, HTTPDefs, websession, fpHTTP, fpWeb, 
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, FileUtil, LResources, HTTPDefs, websession, fpHTTP, fpWeb, 
+>>>>>>> graemeg/cpstrnew
+=======
+  Classes, SysUtils, FileUtil, LResources, HTTPDefs, websession, fpHTTP, fpWeb, 
+>>>>>>> origin/cpstrnew
     fpjsonrpc, webjsonrpc, fpextdirect, fpjson;
 
 type
@@ -27,8 +43,20 @@ var
 
 implementation
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$R *.lfm}
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 { TDemoClass }
 
 procedure TDemoClass.AddExecute(Sender: TObject;
@@ -47,6 +75,26 @@ begin
 end;
 
 initialization
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  {$I wmext.lrs}
+
+>>>>>>> graemeg/cpstrnew
+=======
+  {$I wmext.lrs}
+
+>>>>>>> graemeg/cpstrnew
+=======
+  {$I wmext.lrs}
+
+>>>>>>> graemeg/cpstrnew
+=======
+  {$I wmext.lrs}
+
+>>>>>>> origin/cpstrnew
   RegisterHTTPModule('demo', TDemoClass);
 end.
 

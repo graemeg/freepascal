@@ -13,6 +13,10 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('libogcfpc');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.OSes:=[wii];
     P.CPUs:=[powerpc];
 {$ifdef ALLPACKAGES}
@@ -150,6 +154,31 @@ begin
      end;
 
      P.Sources.AddExampleFiles('examples/*',P.Directory,true,'.');
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef ALLPACKAGES}
+    P.Directory:='libogcfpc';
+{$endif ALLPACKAGES}
+    P.Version:='2.5.1';
+    P.SourcePath.Add('src');
+    P.Dependencies.Add('mad');
+
+    // not linux compilable, skip
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 {$ifndef ALLPACKAGES}
     Run;

@@ -38,8 +38,14 @@ Type
   TVisibility = (vPrivate,vProtected,vPublic,vPublished);
   TVisibilities = Set of TVisibility;
   TPropAccess = (paReadWrite,paReadonly,paWriteonly);
+<<<<<<< HEAD
+<<<<<<< HEAD
   TPropSetter = (psRead,psWrite);
   TPropSetters = set of TPropSetter;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
   TFieldPropDefs = Class;
@@ -53,7 +59,13 @@ Type
     FFieldType: TFieldType;
     FPropAccess: TPropAccess;
     FPropDef: String;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FPropSetters: TPropSetters;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     FPropType : TPropType;
     FPRopSize: Integer;
     FPropName : String;
@@ -69,8 +81,18 @@ Type
     Constructor Create(ACollection : TCollection) ; override;
     Procedure Assign(ASource : TPersistent); override;
     Function FieldPropDefs : TFieldPropDefs;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Function HasGetter : Boolean; Virtual; // Checks Propsetters for psRead
     Function HasSetter : Boolean; Virtual; // True for streams/strings or if Propsetters has pswrite
+=======
+    Function HasGetter : Boolean; Virtual; // Always false.
+    Function HasSetter : Boolean; Virtual; // True for streams/strings
+>>>>>>> graemeg/fixes_2_2
+=======
+    Function HasGetter : Boolean; Virtual; // Always false.
+    Function HasSetter : Boolean; Virtual; // True for streams/strings
+>>>>>>> origin/fixes_2_2
     Function ObjPasTypeDef : String; virtual; // Object pascal definition of type
     Function ObjPasReadDef : String; virtual; // Object pascal definition of getter
     Function ObjPasWriteDef : String; virtual; // Object pascal definition of setter
@@ -84,7 +106,13 @@ Type
     Property PropertyDef : String Read FPropDef Write FPropDef;
     Property PropertyVisibility : TVisibility Read FPropVis Write FPropVis;
     Property PropertyAccess : TPropAccess Read FPropAccess Write FPropAccess;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Property PropSetters : TPropSetters Read FPropSetters Write FPropSetters;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
   
   { TFieldPropDefs }
@@ -117,7 +145,13 @@ Type
     FInterfaceUnits: String;
     FOptions: TCodeOptions;
     FUnitName: String;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FExtraSetterLine : string;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     procedure SetImplementationUnits(const AValue: String);
     procedure SetInterfaceUnits(const AValue: String);
     procedure SetUnitname(const AValue: String);
@@ -127,6 +161,8 @@ Type
     Constructor create; virtual;
     Procedure Assign(ASource : TPersistent); override;
   Published
+<<<<<<< HEAD
+<<<<<<< HEAD
     // Line of code that will be added to each property setter. Use %PROPNAME% to include property name in the line.
     Property ExtraSetterLine : String Read FExtraSetterLine Write FExtraSetterLine;
     // options
@@ -136,6 +172,16 @@ Type
     // Comma-separated list of  units that will be put in the interface units clause
     Property InterfaceUnits : String Read FInterfaceUnits Write SetInterfaceUnits;
     //  Comma-separated list of  units that will be put in the implementation units clause
+=======
+    Property Options : TCodeOptions Read FOptions Write SetOPtions;
+    Property UnitName : String Read FUnitName Write SetUnitname;
+    Property InterfaceUnits : String Read FInterfaceUnits Write SetInterfaceUnits;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Property Options : TCodeOptions Read FOptions Write SetOPtions;
+    Property UnitName : String Read FUnitName Write SetUnitname;
+    Property InterfaceUnits : String Read FInterfaceUnits Write SetInterfaceUnits;
+>>>>>>> origin/fixes_2_2
     Property ImplementationUnits : String Read FImplementationUnits Write SetImplementationUnits;
   end;
   TCodeGeneratorOptionsClass = Class of TCodeGeneratorOptions;
@@ -224,6 +270,16 @@ Type
     procedure SetAncestorClass(const AValue: String);
     procedure SetClassName(const AValue: String);
     procedure SetUnitname(const AValue: String);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    procedure WritePropertyGetterImpl(Strings: TStrings; F: TFieldPropDef);
+    procedure WritePropertySetterImpl(Strings: TStrings; F: TFieldPropDef);
+>>>>>>> graemeg/fixes_2_2
+=======
+    procedure WritePropertyGetterImpl(Strings: TStrings; F: TFieldPropDef);
+    procedure WritePropertySetterImpl(Strings: TStrings; F: TFieldPropDef);
+>>>>>>> origin/fixes_2_2
   Protected
     // Overrides from base class
     Function GetFieldDefs: TFieldPropDefs; override;
@@ -238,10 +294,16 @@ Type
     //
     // Interface routines
     //
+<<<<<<< HEAD
+<<<<<<< HEAD
     // Write property getter implementation
     procedure WritePropertyGetterImpl(Strings: TStrings; F: TFieldPropDef); virtual;
     // Write property setter implementation
     procedure WritePropertySetterImpl(Strings: TStrings; F: TFieldPropDef); virtual;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     // Create class declaration.
     procedure CreateDeclaration(Strings: TStrings); virtual;
     // Create class head. Override to add after class start.
@@ -552,13 +614,29 @@ end;
 
 function TFieldPropDef.HasGetter: Boolean;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result:=psRead in PropSetters;
+=======
+  Result:=False;
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result:=False;
+>>>>>>> origin/fixes_2_2
 end;
 
 function TFieldPropDef.HasSetter: Boolean;
 begin
   Result:=(PropertyAccess in [paReadWrite,paWriteOnly])
+<<<<<<< HEAD
+<<<<<<< HEAD
           and ((PropertyType in [ptStream,ptTStrings]) or (psWrite in Propsetters));
+=======
+          and (PropertyType in [ptStream,ptTStrings]);
+>>>>>>> graemeg/fixes_2_2
+=======
+          and (PropertyType in [ptStream,ptTStrings]);
+>>>>>>> origin/fixes_2_2
 end;
 
 function TFieldPropDef.ObjPasTypeDef: String;
@@ -722,8 +800,14 @@ constructor TDDClassCodeGenerator.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FFieldDefs:=CreateFieldPropDefs;
+<<<<<<< HEAD
+<<<<<<< HEAD
   StringsClass:='TStringList';
   StreamClass:='TMemoryStream';
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 destructor TDDClassCodeGenerator.Destroy;
@@ -847,7 +931,15 @@ begin
   For I:=0 to Fields.Count-1 do
     begin
     F:=Fields[i];
+<<<<<<< HEAD
+<<<<<<< HEAD
     if AllowPropertyDeclaration(F,[]) and F.HasSetter then
+=======
+    if AllowPropertyDeclaration(F,[]) and F.HasGetter then
+>>>>>>> graemeg/fixes_2_2
+=======
+    if AllowPropertyDeclaration(F,[]) and F.HasGetter then
+>>>>>>> origin/fixes_2_2
       begin
       If not B then
         begin
@@ -871,7 +963,15 @@ begin
   AddLn(Strings,'begin');
   IncIndent;
   Try
+<<<<<<< HEAD
+<<<<<<< HEAD
     AddLn(Strings,Format('Result:=F%s;',[F.PropertyName]));
+=======
+    AddLn(Strings,Format('Result:=F%s',[F.PropertyName]));
+>>>>>>> graemeg/fixes_2_2
+=======
+    AddLn(Strings,Format('Result:=F%s',[F.PropertyName]));
+>>>>>>> origin/fixes_2_2
   Finally
     DecIndent;
   end;
@@ -882,21 +982,41 @@ Procedure TDDClassCodeGenerator.WritePropertySetterImpl(Strings : TStrings; F : 
 
 Var
   S : String;
+<<<<<<< HEAD
+<<<<<<< HEAD
   L : Integer;
 
 begin
   S:=PropertySetterDeclaration(F,True);
+=======
+
+begin
+  S:=PropertyGetterDeclaration(F,True);
+>>>>>>> graemeg/fixes_2_2
+=======
+
+begin
+  S:=PropertyGetterDeclaration(F,True);
+>>>>>>> origin/fixes_2_2
   BeginMethod(Strings,S);
   AddLn(Strings,'begin');
   IncIndent;
   Try
+<<<<<<< HEAD
+<<<<<<< HEAD
     AddLn(Strings,Format('if (F%s=AValue) then exit;',[F.PropertyName]));
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Case F.PropertyType of
       ptTStrings :
         S:=Format('F%s.Assign(AValue);',[F.PropertyName]);
       ptStream :
         S:=Format('F%s.CopyFrom(AValue,0);',[F.PropertyName]);
     else
+<<<<<<< HEAD
+<<<<<<< HEAD
        S:=Format('F%s:=AValue;',[F.PropertyName]);
     end;
     AddLn(Strings,S);
@@ -910,6 +1030,16 @@ begin
         S:=S+';';
       AddLn(Strings,S);  
       end;
+=======
+       S:=Format('F%s:=AValue',[F.PropertyName]);
+    end;
+    AddLn(Strings,S);
+>>>>>>> graemeg/fixes_2_2
+=======
+       S:=Format('F%s:=AValue',[F.PropertyName]);
+    end;
+    AddLn(Strings,S);
+>>>>>>> origin/fixes_2_2
   Finally
     DecIndent;
   end;
@@ -955,7 +1085,13 @@ begin
   S:=ConstructorDeclaration(True);
   BeginMethod(Strings,S);
   AddLn(Strings,'begin');
+<<<<<<< HEAD
+<<<<<<< HEAD
   AddLn(Strings,'  inherited;');
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   IncIndent;
   Try
     For I:=0 to Fields.Count-1 do
@@ -1121,7 +1257,15 @@ begin
   Result:='Procedure ';
   If Impl then
     Result:=Result+ClassOptions.ObjectClassName+'.';
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result:=Result+Def.ObjPasWriteDef+' (AValue  : '+Def.ObjPasTypeDef+');';
+=======
+  Result:=Result+Def.ObjPasReadDef+' (AValue  : '+Def.ObjPasTypeDef+');';
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result:=Result+Def.ObjPasReadDef+' (AValue  : '+Def.ObjPasTypeDef+');';
+>>>>>>> origin/fixes_2_2
 end;
 
 function TDDClassCodeGenerator.NeedsConstructor: Boolean;
@@ -1159,9 +1303,17 @@ begin
   Result:='Destructor ';
   If Impl then
     Result:=Result+ClassOptions.ObjectClassName+'.';
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result:=Result+'Destroy;';
   if not Impl then
     Result:=Result+' Override;';
+=======
+  Result:=Result+'Destroy; Override;';
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result:=Result+'Destroy; Override;';
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure TDDClassCodeGenerator.GenerateClass(Stream: TStream);
@@ -1309,8 +1461,14 @@ begin
     begin
     Addln(Strings,'Unit '+CodeOptions.UnitName+';');
     Addln(Strings);
+<<<<<<< HEAD
+<<<<<<< HEAD
     Addln(Strings, '{$mode objfpc}{$H+}');
     Addln(Strings);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Addln(Strings,'Interface');
     Addln(Strings);
     S:=GetInterfaceUsesClause;
@@ -1508,11 +1666,21 @@ begin
   If ASource is TCodeGeneratorOptions then
     begin
     CG:=ASource as TCodeGeneratorOptions;
+<<<<<<< HEAD
+<<<<<<< HEAD
     FInterfaceUnits:=CG.InterfaceUnits;
     FImplementationUnits:=CG.ImplementationUnits;
     FOptions:=CG.FOptions;
     FUnitName:=CG.UnitName;
     FExtraSetterLine:=CG.ExtraSetterLine;
+=======
+    FOptions:=CG.FOptions;
+    FUnitName:=CG.UnitName;
+>>>>>>> graemeg/fixes_2_2
+=======
+    FOptions:=CG.FOptions;
+    FUnitName:=CG.UnitName;
+>>>>>>> origin/fixes_2_2
     end
   else
     inherited Assign(ASource);

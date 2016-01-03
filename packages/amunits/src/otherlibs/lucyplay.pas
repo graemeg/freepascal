@@ -127,7 +127,7 @@ var
 IMPLEMENTATION
 
 {$ifndef dont_use_openlib}
-uses amsgbox;
+uses msgbox;
 {$endif dont_use_openlib}
 
 PROCEDURE lucAudioFree(smp : pLucyPlaySample);

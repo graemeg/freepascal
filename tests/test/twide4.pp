@@ -5,7 +5,15 @@
 
 uses
 {$ifdef unix}
+<<<<<<< HEAD
+<<<<<<< HEAD
   cthreads, {$ifdef darwin}iosxwstr{$else}cwstring{$endif},
+=======
+  cthreads, cwstring,
+>>>>>>> graemeg/fixes_2_2
+=======
+  cthreads, cwstring,
+>>>>>>> origin/fixes_2_2
 {$endif}
   Classes, SysUtils;
 

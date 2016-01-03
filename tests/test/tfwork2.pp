@@ -1,6 +1,14 @@
 { %target=linux,solaris,freebsd,win32 }
 { %fail }
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %opt=-vw -Sew }
+=======
+{ %opt=-Sew }
+>>>>>>> graemeg/fixes_2_2
+=======
+{ %opt=-Sew }
+>>>>>>> origin/fixes_2_2
 
 { just some random non-darwin targets }
 

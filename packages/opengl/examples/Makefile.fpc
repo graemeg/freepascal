@@ -3,13 +3,27 @@
 #
 
 [target]
+<<<<<<< HEAD
+<<<<<<< HEAD
 programs=glutdemo morph3d bounce radblur glutdemova freeglutdemo
+=======
+programs=glutdemo morph3d bounce radblur
+>>>>>>> graemeg/fixes_2_2
+=======
+programs=glutdemo morph3d bounce radblur
+>>>>>>> origin/fixes_2_2
 programs_linux=glxtest
 programs_freebsd=glxtest
 programs_netbsd=glxtest
 programs_openbsd=glxtest
 programs_darwin=glxtest
+<<<<<<< HEAD
+<<<<<<< HEAD
 programs_iphonesim=glxtest
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [require]
 packages=opengl

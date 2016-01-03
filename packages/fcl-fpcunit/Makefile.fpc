@@ -4,10 +4,48 @@
 
 [package]
 name=fcl-fpcunit
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+=======
+version=2.2.5
+>>>>>>> graemeg/fixes_2_2
+=======
+version=2.2.5
+>>>>>>> origin/fixes_2_2
+
+[target]
+units=testregistry testreport testdecorator ubmockobject xmlreporter \
+      fpcunitreport latextestreport xmltestreport plaintestreport fpcunit \
+      testutils digesttestreport
+#exampledirs=exampletests
+>>>>>>> graemeg/cpstrnew
 
 [require]
+<<<<<<< HEAD
+<<<<<<< HEAD
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> origin/fixes_2_2
+packages=paszlib fcl-xml
+
+[compiler]
+options=-S2h
+sourcedir=src
+>>>>>>> graemeg/fixes_2_2
 
 [install]
 fpcpackage=y

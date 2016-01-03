@@ -45,14 +45,18 @@
    nils.sjoholm@mailbox.swipnet.se Nils Sjoholm
 
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+    {$smartlink on}
+{$endif use_amiga_smartlink}
 
 unit intuition;
 
 INTERFACE
 
 
-uses exec, agraphics, utility, inputevent, timer, layers;
+uses exec, graphics, utility, inputevent, timer, layers;
 
 {
  * NOTE:  intuition/iobsolete.h is included at the END of this file!
@@ -1085,7 +1089,7 @@ Type
 { ======================================================================== }
 
 Type
-    pScreen = ^tScreen;
+
     pWindow = ^tWindow;
     tWindow = record
         NextWindow      : pWindow;      { for the linked list in a screen }
@@ -1115,7 +1119,7 @@ Type
 
         ReqCount        : smallint;        { count of reqs blocking Window }
 
-        WScreen         : PScreen;      { this Window's Screen }
+        WScreen         : Pointer;      { this Window's Screen }
         RPort           : pRastPort;  { this Window's very own RastPort }
 
     { the border variables describe the window border.   If you specify
@@ -1216,71 +1220,6 @@ Type
         MoreFlags       : ULONG;
 
     {**** Data beyond this point are Intuition Private.  DO NOT USE ****}
-
-    end;
-
-{ ======================================================================== }
-{ === Screen ============================================================= }
-{ ======================================================================== }
-
-    tScreen = record
-        NextScreen      : pScreen;      { linked list of screens }
-        FirstWindow     : pWindow;      { linked list Screen's Windows }
-
-        LeftEdge,
-        TopEdge         : smallint;        { parameters of the screen }
-        Width,
-        Height          : smallint;        { parameters of the screen }
-
-        MouseY,
-        MouseX          : smallint;        { position relative to upper-left }
-
-        Flags           : Word;        { see definitions below }
-
-        Title           : STRPTR;       { null-terminated Title text }
-        DefaultTitle    : STRPTR;       { for Windows without ScreenTitle }
-
-    { Bar sizes for this Screen and all Window's in this Screen }
-        BarHeight,
-        BarVBorder,
-        BarHBorder,
-        MenuVBorder,
-        MenuHBorder     : Shortint;
-        WBorTop,
-        WBorLeft,
-        WBorRight,
-        WBorBottom      : Shortint;
-
-        Font            : pTextAttr;  { this screen's default font       }
-
-    { the display data structures for this Screen (note the prefix S)}
-        ViewPort        : tViewPort;     { describing the Screen's display }
-        RastPort        : tRastPort;     { describing Screen rendering      }
-        BitMap          : tBitMap;       { extra copy of RastPort BitMap   }
-        LayerInfo       : tLayer_Info;   { each screen gets a LayerInfo     }
-
-    { You supply a linked-list of Gadgets for your Screen.
-     *  This list DOES NOT include system Gadgets.  You get the standard
-     *  system Screen Gadgets by default
-     }
-
-        FirstGadget     : pGadget;
-
-        DetailPen,
-        BlockPen        : Byte;         { for bar/border/gadget rendering }
-
-    { the following variable(s) are maintained by Intuition to support the
-     * DisplayBeep() color flashing technique
-     }
-        SaveColor0      : Word;
-
-    { This layer is for the Screen and Menu bars }
-        BarLayer        : pLayer;
-
-        ExtData         : Pointer;
-        UserData        : Pointer;
-                        { general-purpose pointer to User data extension }
-    {**** Data below this point are SYSTEM PRIVATE ****}
 
     end;
 
@@ -1790,8 +1729,6 @@ CONST
     SELECTDOWN          = IECODE_LBUTTON;
     MENUUP              = IECODE_RBUTTON + IECODE_UP_PREFIX;
     MENUDOWN            = IECODE_RBUTTON;
-    MIDDLEUP            = IECODE_MBUTTON + IECODE_UP_PREFIX;
-    MIDDLEDOWN          = IECODE_MBUTTON;
     ALTLEFT             = IEQUALIFIER_LALT;
     ALTRIGHT            = IEQUALIFIER_RALT;
     AMIGALEFT           = IEQUALIFIER_LCOMMAND;
@@ -1858,7 +1795,7 @@ Type
  tDrawInfo = record
     dri_Version : Word;    { will be  DRI_VERSION                 }
     dri_NumPens : Word;    { guaranteed to be >= numDrIPens       }
-    dri_Pens    : PWord;  { pointer to pen array                 }
+    dri_Pens    : Pointer;  { pointer to pen array                 }
 
     dri_Font    : pTextFont;      { screen default font          }
     dri_Depth   : Word;            { (initial) depth of screen bitmap     }
@@ -1909,6 +1846,74 @@ CONST
  PEN_C1        =  $FEFE;          { Complement of color 1 }
  PEN_C0        =  $FEFF;          { Complement of color 0 }
 
+{ ======================================================================== }
+{ === Screen ============================================================= }
+{ ======================================================================== }
+
+Type
+
+    pScreen = ^tScreen;
+    tScreen = record
+        NextScreen      : pScreen;      { linked list of screens }
+        FirstWindow     : pWindow;      { linked list Screen's Windows }
+
+        LeftEdge,
+        TopEdge         : smallint;        { parameters of the screen }
+        Width,
+        Height          : smallint;        { parameters of the screen }
+
+        MouseY,
+        MouseX          : smallint;        { position relative to upper-left }
+
+        Flags           : Word;        { see definitions below }
+
+        Title           : STRPTR;       { null-terminated Title text }
+        DefaultTitle    : STRPTR;       { for Windows without ScreenTitle }
+
+    { Bar sizes for this Screen and all Window's in this Screen }
+        BarHeight,
+        BarVBorder,
+        BarHBorder,
+        MenuVBorder,
+        MenuHBorder     : Shortint;
+        WBorTop,
+        WBorLeft,
+        WBorRight,
+        WBorBottom      : Shortint;
+
+        Font            : pTextAttr;  { this screen's default font       }
+
+    { the display data structures for this Screen (note the prefix S)}
+        ViewPort        : tViewPort;     { describing the Screen's display }
+        RastPort        : tRastPort;     { describing Screen rendering      }
+        BitMap          : tBitMap;       { extra copy of RastPort BitMap   }
+        LayerInfo       : tLayer_Info;   { each screen gets a LayerInfo     }
+
+    { You supply a linked-list of Gadgets for your Screen.
+     *  This list DOES NOT include system Gadgets.  You get the standard
+     *  system Screen Gadgets by default
+     }
+
+        FirstGadget     : pGadget;
+
+        DetailPen,
+        BlockPen        : Byte;         { for bar/border/gadget rendering }
+
+    { the following variable(s) are maintained by Intuition to support the
+     * DisplayBeep() color flashing technique
+     }
+        SaveColor0      : Word;
+
+    { This layer is for the Screen and Menu bars }
+        BarLayer        : pLayer;
+
+        ExtData         : Pointer;
+        UserData        : Pointer;
+                        { general-purpose pointer to User data extension }
+    {**** Data below this point are SYSTEM PRIVATE ****}
+
+    end;
+
 Const
 
 { The screen flags have the suffix "_f" added to avoid conflicts with
@@ -1918,22 +1923,21 @@ Const
 { The SCREENTYPE bits are reserved for describing various Screen types
  * available under Intuition.
  }
-    SCREENTYPE_F        = $000F;        { all the screens types available       }
+    SCREENTYPE_f        = $000F;        { all the screens types available       }
 { --- the definitions for the Screen Type ------------------------------- }
-    WBENCHSCREEN_F      = $0001;        { Ta Da!  The Workbench         }
-    PUBLICSCREEN_F      = $0002;        { Public shared (custom) screen }
-    CUSTOMSCREEN_F      = $000F;        { for that special look         }
+    WBENCHSCREEN_f      = $0001;        { Ta Da!  The Workbench         }
+    CUSTOMSCREEN_f      = $000F;        { for that special look         }
 
-    SHOWTITLE_F         = $0010;        { this gets set by a call to ShowTitle() }
+    SHOWTITLE_f         = $0010;        { this gets set by a call to ShowTitle() }
 
-    BEEPING_F           = $0020;        { set when Screen is beeping            }
+    BEEPING_f           = $0020;        { set when Screen is beeping            }
 
-    CUSTOMBITMAP_F      = $0040;        { if you are supplying your own BitMap }
+    CUSTOMBITMAP_f      = $0040;        { if you are supplying your own BitMap }
 
-    SCREENBEHIND_F      = $0080;        { if you want your screen to open behind
+    SCREENBEHIND_f      = $0080;        { if you want your screen to open behind
                                          * already open screens
                                          }
-    SCREENQUIET_F       = $0100;        { if you do not want Intuition to render
+    SCREENQUIET_f       = $0100;        { if you do not want Intuition to render
                                          * into your screen (gadgets, title)     }
     SCREENHIRES         = $0200;        { do no use lowres gadgets (private)       }
 
@@ -2510,8 +2514,8 @@ Const
     BAUD_MIDI           = $07;
 
 { PaperType }
-    FANFOLD_PT           = $00;
-    SINGLE_PT            = $80;
+    FANFOLD             = $00;
+    SINGLE              = $80;
 
 { PrintPitch }
     PICA                = $000;
@@ -2750,7 +2754,6 @@ Type
 Type
  Object_ = ULONG;
  pObject_ = ^Object_;
- ppObject_ = ^pObject_;
  ClassID = ^Byte;
 
 {
@@ -4062,136 +4065,135 @@ CONST
  *      uses this processing when activating a string gadget.
  }
 
-FUNCTION ActivateGadget(gadgets : pGadget location 'a0'; window : pWindow location 'a1'; requester : pRequester location 'a2') : LongBool syscall _IntuitionBase 462;
-PROCEDURE ActivateWindow(window : pWindow location 'a0'); syscall _IntuitionBase 450;
-PROCEDURE AddClass(classPtr : pIClass location 'a0'); syscall _IntuitionBase 684;
-FUNCTION AddGadget(window : pWindow location 'a0'; gadget : pGadget location 'a1'; position : ULONG location 'd0') : WORD; syscall _IntuitionBase 042;
-FUNCTION AddGList(window : pWindow location 'a0'; gadget : pGadget location 'a1'; position : ULONG location 'd0'; numGad : LONGINT location 'd1'; requester : pRequester location 'a2') : WORD; syscall _IntuitionBase 438;
-FUNCTION AllocRemember(var rememberKey : pRemember location 'a0'; size : ULONG location 'd0'; flags : ULONG location 'd1') : POINTER syscall _IntuitionBase 396;
-FUNCTION AllocScreenBuffer(sc : pScreen location 'a0'; bm : pBitMap location 'a1'; flags : ULONG location 'd0') : pScreenBuffer;  syscall _IntuitionBase 768;
-FUNCTION AutoRequest(window : pWindow location 'a0';const body : pIntuiText location 'a1';const posText : pIntuiText location 'a2';const negText : pIntuiText location 'a3'; pFlag : ULONG location 'd0'; nFlag : ULONG location 'd1'; width : ULONG location 'd2'; height : ULONG location 'd3') : LongBool; syscall _IntuitionBase 348;
-PROCEDURE BeginRefresh(window : pWindow location 'a0'); syscall _IntuitionBase 354;
-FUNCTION BuildEasyRequestArgs(window : pWindow location 'a0';const easyStruct : pEasyStruct location 'a1'; idcmp : ULONG location 'd0';const args : POINTER location 'a3') : pWindow; syscall _IntuitionBase 594;
-FUNCTION BuildSysRequest(window : pWindow location 'a0';const body : pIntuiText location 'a1';const posText : pIntuiText location 'a2';const negText : pIntuiText location 'a3'; flags : ULONG location 'd0'; width : ULONG location 'd1'; height : ULONG location 'd2') : pWindow; syscall _IntuitionBase 360;
-FUNCTION ChangeScreenBuffer(sc : pScreen location 'a0'; sb : pScreenBuffer location 'a1') : ULONG; syscall _IntuitionBase 780;
-PROCEDURE ChangeWindowBox(window : pWindow location 'a0'; left : LONGINT location 'd0'; top : LONGINT location 'd1'; width : LONGINT location 'd2'; height : LONGINT location 'd3'); syscall _IntuitionBase 486;
-FUNCTION ClearDMRequest(window : pWindow location 'a0') : LongBool; syscall _IntuitionBase 048;
-PROCEDURE ClearMenuStrip(window : pWindow location 'a0'); syscall _IntuitionBase 054;
-PROCEDURE ClearPointer(window : pWindow location 'a0'); syscall _IntuitionBase 060;
-function CloseScreen(screen : pScreen location 'a0'): LongBool; syscall _IntuitionBase 066;
-PROCEDURE CloseWindow(window : pWindow location 'a0'); syscall _IntuitionBase 072;
-FUNCTION CloseWorkBench : LongBool; syscall _IntuitionBase 078;
-PROCEDURE CurrentTime(VAR seconds : ULONG location 'a0'; VAR micros : ULONG location 'a1'); syscall _IntuitionBase 084;
-FUNCTION DisplayAlert(alertNumber : ULONG location 'd0';const string_ : pCHAR location 'a0'; height : ULONG location 'd1') : LongBool; syscall _IntuitionBase 090;
-PROCEDURE DisplayBeep(screen : pScreen location 'a0'); syscall _IntuitionBase 096;
-PROCEDURE DisposeObject(obj : POINTER location 'a0'); syscall _IntuitionBase 642;
-FUNCTION DoGadgetMethodA(gad : pGadget location 'a0'; win : pWindow location 'a1'; req : pRequester location 'a2'; message : tMsg location 'a3') : ULONG; syscall _IntuitionBase 810;
-FUNCTION DoubleClick(sSeconds : ULONG location 'd0'; sMicros : ULONG location 'd1'; cSeconds : ULONG location 'd2'; cMicros : ULONG location 'd3') : LongBool; syscall _IntuitionBase 102;
-PROCEDURE DrawBorder(rp : pRastPort location 'a0';const border : pBorder location 'a1'; leftOffset : LONGINT location 'd0'; topOffset : LONGINT location 'd1'); syscall _IntuitionBase 108;
-PROCEDURE DrawImage(rp : pRastPort location 'a0'; image : pImage location 'a1'; leftOffset : LONGINT location 'd0'; topOffset : LONGINT location 'd1'); syscall _IntuitionBase 114;
-PROCEDURE DrawImageState(rp : pRastPort location 'a0'; image : pImage location 'a1'; leftOffset : LONGINT location 'd0'; topOffset : LONGINT location 'd1'; state : ULONG location 'd2';const drawInfo : pDrawInfo location 'a2'); syscall _IntuitionBase 618;
-FUNCTION EasyRequestArgs(window : pWindow location 'a0';const easyStruct : pEasyStruct location 'a1'; idcmpPtr : pULONG location 'a2';const args : POINTER location 'a3') : LONGINT; syscall _IntuitionBase 588;
-PROCEDURE EndRefresh(window : pWindow location 'a0'; complete : LONGBOOL location 'd0'); syscall _IntuitionBase 366;
-PROCEDURE EndRequest(requester : pRequester location 'a0'; window : pWindow location 'a1'); syscall _IntuitionBase 120;
-PROCEDURE EraseImage(rp : pRastPort location 'a0'; image : pImage location 'a1'; leftOffset : LONGINT location 'd0'; topOffset : LONGINT location 'd1'); syscall _IntuitionBase 630;
-FUNCTION FreeClass(classPtr : pIClass location 'a0') : LongBool; syscall _IntuitionBase 714;
-PROCEDURE FreeRemember(VAR rememberKey : pRemember location 'a0'; reallyForget : LONGINT location 'd0'); syscall _IntuitionBase 408;
-PROCEDURE FreeScreenBuffer(sc : pScreen location 'a0'; sb : pScreenBuffer location 'a1'); syscall _IntuitionBase 774;
-PROCEDURE FreeScreenDrawInfo(screen : pScreen location 'a0'; drawInfo : pDrawInfo location 'a1'); syscall _IntuitionBase 696;
-PROCEDURE FreeSysRequest(window : pWindow location 'a0'); syscall _IntuitionBase 372;
-PROCEDURE GadgetMouse(gadget : pGadget location 'a0'; gInfo : pGadgetInfo location 'a1'; mousePoint : psmallint location 'a2'); syscall _IntuitionBase 570;
-FUNCTION GetAttr(attrID : ULONG location 'd0'; obj : POINTER location 'a0'; storagePtr : pULONG location 'a1') : ULONG; overload; syscall _IntuitionBase 654;
-FUNCTION GetAttr(attrID : ULONG location 'd0'; obj : POINTER location 'a0'; var storage : ULONG location 'a1') : ULONG; overload; syscall _IntuitionBase 654;
-PROCEDURE GetDefaultPubScreen(nameBuffer : pCHAR location 'a0'); syscall _IntuitionBase 582;
-FUNCTION GetDefPrefs(preferences : pPreferences location 'a0'; size : LONGINT location 'd0') : pPreferences; syscall _IntuitionBase 126;
-FUNCTION GetPrefs(preferences : pPreferences location 'a0'; size : LONGINT location 'd0') : pPreferences; syscall _IntuitionBase 132;
-FUNCTION GetScreenData(buffer : POINTER location 'a0'; size : ULONG location 'D0'; type_ : ULONG location 'd1';const screen : pScreen location 'a1') : LongBool; syscall _IntuitionBase 426;
-FUNCTION GetScreenDrawInfo(screen : pScreen location 'a0') : pDrawInfo; syscall _IntuitionBase 690;
-PROCEDURE HelpControl(win : pWindow location 'a0'; flags : ULONG location 'd0'); syscall _IntuitionBase 828;
-PROCEDURE InitRequester(requester : pRequester location 'a0'); syscall _IntuitionBase 138;
-FUNCTION IntuiTextLength(const iText : pIntuiText location 'a0') : LONGINT; syscall _IntuitionBase 330;
-FUNCTION ItemAddress(const menuStrip : pMenu location 'a0'; menuNumber : ULONG location 'd0') : pMenuItem; syscall _IntuitionBase 144;
-PROCEDURE LendMenus(fromwindow : pWindow location 'a0'; towindow : pWindow location 'a1'); syscall _IntuitionBase 804;
-FUNCTION LockIBase(dontknow : ULONG location 'd0') : ULONG; syscall _IntuitionBase 414;
-FUNCTION LockPubScreen(const name : pCHAR location 'a0') : pScreen; syscall _IntuitionBase 510;
-FUNCTION LockPubScreenList : pList; syscall _IntuitionBase 522;
-FUNCTION MakeClass(const classID : pCHAR location 'a0';const superClassID : pCHAR location 'a1';const superClassPtr : pIClass location 'a2'; instanceSize : ULONG location 'd0'; flags : ULONG location 'd1') : pIClass; syscall _IntuitionBase 678;
-FUNCTION MakeScreen(screen : pScreen location 'a0') : LONGINT; syscall _IntuitionBase 378;
-FUNCTION ModifyIDCMP(window : pWindow location 'a0'; flags : ULONG location 'd0') : LongBool; syscall _IntuitionBase 150;
-PROCEDURE ModifyProp(gadget : pGadget location 'a0'; window : pWindow location 'a1'; requester : pRequester location 'a2'; flags : ULONG location 'd0'; horizPot : ULONG location 'd1'; vertPot : ULONG location 'd2'; horizBody : ULONG location 'd3'; vertBody : ULONG location 'd4'); syscall _IntuitionBase 156;
-PROCEDURE MoveScreen(screen : pScreen location 'a0'; dx : LONGINT location 'd0'; dy : LONGINT location 'd1'); syscall _IntuitionBase 162;
-PROCEDURE MoveWindow(window : pWindow location 'a0'; dx : LONGINT location 'd0'; dy : LONGINT location 'd1'); syscall _IntuitionBase 168;
-PROCEDURE MoveWindowInFrontOf(window : pWindow location 'a0'; behindWindow : pWindow location 'a1'); syscall _IntuitionBase 480;
-PROCEDURE NewModifyProp(gadget : pGadget location 'a0'; window : pWindow location 'a1'; requester : pRequester location 'a2'; flags : ULONG location 'd0'; horizPot : ULONG location 'd1'; vertPot : ULONG location 'd2'; horizBody : ULONG location 'd3'; vertBody : ULONG location 'd4'; numGad : LONGINT location 'd5'); syscall _IntuitionBase 468;
-FUNCTION NewObjectA(classPtr : pIClass location 'a0';const classID : pCHAR location 'a1';const tagList : pTagItem location 'a2') : POINTER; syscall _IntuitionBase 636;
-FUNCTION NextObject(objectPtrPtr : POINTER location 'a0') : POINTER; syscall _IntuitionBase 666;
-FUNCTION NextPubScreen(const screen : pScreen location 'a0'; namebuf : pCHAR location 'a1') : pCHAR; syscall _IntuitionBase 534;
-FUNCTION ObtainGIRPort(gInfo : pGadgetInfo location 'a0') : pRastPort; syscall _IntuitionBase 558;
-PROCEDURE OffGadget(gadget : pGadget location 'a0'; window : pWindow location 'a1'; requester : pRequester location 'a2'); syscall _IntuitionBase 174;
-PROCEDURE OffMenu(window : pWindow location 'a0'; menuNumber : ULONG location 'd0'); syscall _IntuitionBase 180;
-PROCEDURE OnGadget(gadget : pGadget location 'a0'; window : pWindow location 'a1'; requester : pRequester location 'a2'); syscall _IntuitionBase 186;
-PROCEDURE OnMenu(window : pWindow location 'a0'; menuNumber : ULONG location 'd0'); syscall _IntuitionBase 192;
-FUNCTION OpenScreen(const newScreen : pNewScreen location 'a0') : pScreen; syscall _IntuitionBase 198;
-FUNCTION OpenScreenTagList(const newScreen : pNewScreen location 'a0'; const tagList : pTagItem location 'a1') : pScreen; syscall _IntuitionBase 612;
-FUNCTION OpenWindow(const newWindow : pNewWindow location 'a0') : pWindow; syscall _IntuitionBase 204;
-FUNCTION OpenWindowTagList(const newWindow : pNewWindow location 'a0'; const tagList : pTagItem location 'a1') : pWindow; syscall _IntuitionBase 606;
-FUNCTION OpenWorkBench : ULONG; syscall _IntuitionBase 210;
-FUNCTION PointInImage(point : ULONG location 'd0'; image : pImage location 'a0') : LongBool; syscall _IntuitionBase 624;
-PROCEDURE PrintIText(rp : pRastPort location 'a0';const iText : pIntuiText location 'a1'; left : LONGINT location 'd0'; top : LONGINT location 'd1'); syscall _IntuitionBase 216;
-FUNCTION PubScreenStatus(screen : pScreen location 'a0'; statusFlags : ULONG location 'd0') : WORD; syscall _IntuitionBase 552;
-FUNCTION QueryOverscan(displayID : ULONG location 'a0'; rect : pRectangle location 'a1'; oScanType : LONGINT location 'd0') : LONGINT; syscall _IntuitionBase 474;
-PROCEDURE RefreshGadgets(gadgets : pGadget location 'a0'; window : pWindow location 'a1'; requester : pRequester location 'a2'); syscall _IntuitionBase 222;
-PROCEDURE RefreshGList(gadgets : pGadget location 'a0'; window : pWindow location 'a1'; requester : pRequester location 'a2'; numGad : LONGINT location 'd0'); syscall _IntuitionBase 432;
-PROCEDURE RefreshWindowFrame(window : pWindow location 'a0'); syscall _IntuitionBase 456;
-PROCEDURE ReleaseGIRPort(rp : pRastPort location 'a0'); syscall _IntuitionBase 564;
-FUNCTION RemakeDisplay : LONGINT; syscall _IntuitionBase 384;
-PROCEDURE RemoveClass(classPtr : pIClass location 'a0'); syscall _IntuitionBase 708;
-FUNCTION RemoveGadget(window : pWindow; gadget : pGadget) : WORD; syscall _IntuitionBase 228;
-FUNCTION RemoveGList(remPtr : pWindow location 'a0'; gadget : pGadget location 'a1'; numGad : LONGINT location 'd0') : WORD; syscall _IntuitionBase 444;
-PROCEDURE ReportMouse(flag : LONGINT location 'd0'; window : pWindow location 'a0'); syscall _IntuitionBase 234;
-FUNCTION Request(requester : pRequester location 'a0'; window : pWindow location 'a1') : LongBool; syscall _IntuitionBase 240;
-FUNCTION ResetMenuStrip(window : pWindow location 'a0'; menu : pMenu location 'a1') : LongBool; syscall _IntuitionBase 702;
-FUNCTION RethinkDisplay : LONGINT; syscall _IntuitionBase 390;
-PROCEDURE ScreenDepth(screen : pScreen location 'a0'; flags : ULONG location 'd0'; reserved : POINTER location 'a1'); syscall _IntuitionBase 786;
-PROCEDURE ScreenPosition(screen : pScreen location 'a0'; flags : ULONG location 'd0'; x1 : LONGINT location 'd1'; y1 : LONGINT location 'd2'; x2 : LONGINT location 'd3'; y2 : LONGINT location 'd4'); syscall _IntuitionBase 792;
-PROCEDURE ScreenToBack(screen : pScreen location 'a0'); syscall _IntuitionBase 246;
-PROCEDURE ScreenToFront(screen : pScreen location 'a0'); syscall _IntuitionBase 252;
-PROCEDURE ScrollWindowRaster(win : pWindow location 'a0'; dx : LONGINT location 'd0'; dy : LONGINT location 'd1'; xMin : LONGINT location 'd2'; yMin : LONGINT location 'd3'; xMax : LONGINT location 'd4'; yMax : LONGINT location 'd5'); syscall _IntuitionBase 798;
-FUNCTION SetAttrsA(obj : POINTER location 'a0';const tagList : pTagItem location 'a1') : ULONG; syscall _IntuitionBase 648;
-PROCEDURE SetDefaultPubScreen(const name : pCHAR location 'a0'); syscall _IntuitionBase 540;
-FUNCTION SetDMRequest(window : pWindow location 'a0'; requester : pRequester location 'a1') : LongBool; syscall _IntuitionBase 258;
-FUNCTION SetEditHook(hook : pHook location 'a0') : pHook; syscall _IntuitionBase 492;
-FUNCTION SetGadgetAttrsA(gadget : pGadget location 'a0'; window : pWindow location 'a1'; requester : pRequester location 'a2';const tagList : pTagItem location 'a3') : ULONG; syscall _IntuitionBase 660;
-FUNCTION SetMenuStrip(window : pWindow location 'a0'; menu : pMenu location 'a1') : LongBool; syscall _IntuitionBase 264;
-FUNCTION SetMouseQueue(window : pWindow location 'a0'; queueLength : ULONG location 'd0') : LONGINT; syscall _IntuitionBase 498;
-PROCEDURE SetPointer(window : pWindow location 'a0'; pointer_ : pword location 'a1'; height : LONGINT location 'd0'; width : LONGINT location 'd1'; xOffset : LONGINT location 'd2'; yOffset : LONGINT location 'd3'); syscall _IntuitionBase 270;
-FUNCTION SetPrefs(const   preferences : pPreferences location 'a0'; size : LONGINT location 'd0'; inform : LONGINT location 'd1') : pPreferences; syscall _IntuitionBase 324;
-FUNCTION SetPubScreenModes(modes : ULONG location 'd0') : WORD; syscall _IntuitionBase 546;
-PROCEDURE SetWindowPointerA(win : pWindow location 'a0';const taglist : pTagItem location 'a1'); syscall _IntuitionBase 816;
-PROCEDURE SetWindowTitles(window : pWindow location 'a0';const windowTitle : pCHAR location 'a1';const screenTitle : pCHAR location 'a2'); syscall _IntuitionBase 276;
-PROCEDURE ShowTitle(screen : pScreen location 'a0'; showIt : LONGINT location 'd0'); syscall _IntuitionBase 282;
-PROCEDURE SizeWindow(window : pWindow location 'a0'; dx : LONGINT location 'd0'; dy : LONGINT location 'd1'); syscall _IntuitionBase 288;
-FUNCTION SysReqHandler(window : pWindow location 'a0'; idcmpPtr : pULONG location 'a1'; waitInput : LONGINT location 'd0') : LONGINT; syscall _IntuitionBase 600;
-FUNCTION TimedDisplayAlert(alertNumber : ULONG location 'd0';const string_ : pCHAR location 'a0'; height : ULONG location 'd1'; time : ULONG location 'a1') : LongBool; syscall _IntuitionBase 822;
-PROCEDURE UnlockIBase(ibLock : ULONG location 'a0'); syscall _IntuitionBase 420;
-PROCEDURE UnlockPubScreen(const name : pCHAR location 'a0'; screen : pScreen location 'a1'); syscall _IntuitionBase 516;
-PROCEDURE UnlockPubScreenList; syscall _IntuitionBase 528;
-FUNCTION ViewAddress : pView; syscall _IntuitionBase 294;
-FUNCTION ViewPortAddress(const window : pWindow location 'a0') : pViewPort; syscall _IntuitionBase 300;
-FUNCTION WBenchToBack : LongBool; syscall _IntuitionBase 336;
-FUNCTION WBenchToFront : LongBool; syscall _IntuitionBase 342;
-FUNCTION WindowLimits(window : pWindow location 'a0'; widthMin : LONGINT location 'd0'; heightMin : LONGINT location 'd1'; widthMax : ULONG location 'd2'; heightMax : ULONG location 'd3') : LongBool; syscall _IntuitionBase 318;
-PROCEDURE WindowToBack(window : pWindow location 'a0'); syscall _IntuitionBase 306;
-PROCEDURE WindowToFront(window : pWindow location 'a0'); syscall _IntuitionBase 312;
-PROCEDURE ZipWindow(window : pWindow location 'a0'); syscall _IntuitionBase 504;
+FUNCTION ActivateGadget(gadgets : pGadget; window : pWindow; requester : pRequester) : BOOLEAN;
+PROCEDURE ActivateWindow(window : pWindow);
+PROCEDURE AddClass(classPtr : pIClass);
+FUNCTION AddGadget(window : pWindow; gadget : pGadget; position : ULONG) : WORD;
+FUNCTION AddGList(window : pWindow; gadget : pGadget; position : ULONG; numGad : LONGINT; requester : pRequester) : WORD;
+FUNCTION AllocRemember(VAR rememberKey : pRemember; size : ULONG; flags : ULONG) : POINTER;
+FUNCTION AllocScreenBuffer(sc : pScreen; bm : pBitMap; flags : ULONG) : pScreenBuffer;
+FUNCTION AutoRequest(window : pWindow;const body : pIntuiText;const posText : pIntuiText;const negText : pIntuiText; pFlag : ULONG; nFlag : ULONG; width : ULONG; height : ULONG) : BOOLEAN;
+PROCEDURE BeginRefresh(window : pWindow);
+FUNCTION BuildEasyRequestArgs(window : pWindow;const easyStruct : pEasyStruct; idcmp : ULONG;const args : POINTER) : pWindow;
+FUNCTION BuildSysRequest(window : pWindow;const body : pIntuiText;const posText : pIntuiText;const negText : pIntuiText; flags : ULONG; width : ULONG; height : ULONG) : pWindow;
+FUNCTION ChangeScreenBuffer(sc : pScreen; sb : pScreenBuffer) : ULONG;
+PROCEDURE ChangeWindowBox(window : pWindow; left : LONGINT; top : LONGINT; width : LONGINT; height : LONGINT);
+FUNCTION ClearDMRequest(window : pWindow) : BOOLEAN;
+PROCEDURE ClearMenuStrip(window : pWindow);
+PROCEDURE ClearPointer(window : pWindow);
+PROCEDURE CloseScreen(screen : pScreen);
+PROCEDURE CloseWindow(window : pWindow);
+FUNCTION CloseWorkBench : BOOLEAN;
+PROCEDURE CurrentTime(VAR seconds : ULONG; VAR micros : ULONG);
+FUNCTION DisplayAlert(alertNumber : ULONG;const string_ : pCHAR; height : ULONG) : BOOLEAN;
+PROCEDURE DisplayBeep(screen : pScreen);
+PROCEDURE DisposeObject(obj : POINTER);
+FUNCTION DoGadgetMethodA(gad : pGadget; win : pWindow; req : pRequester; message : tMsg) : ULONG;
+FUNCTION DoubleClick(sSeconds : ULONG; sMicros : ULONG; cSeconds : ULONG; cMicros : ULONG) : BOOLEAN;
+PROCEDURE DrawBorder(rp : pRastPort;const border : pBorder; leftOffset : LONGINT; topOffset : LONGINT);
+PROCEDURE DrawImage(rp : pRastPort; image : pImage; leftOffset : LONGINT; topOffset : LONGINT);
+PROCEDURE DrawImageState(rp : pRastPort; image : pImage; leftOffset : LONGINT; topOffset : LONGINT; state : ULONG;const drawInfo : pDrawInfo);
+FUNCTION EasyRequestArgs(window : pWindow;const easyStruct : pEasyStruct; idcmpPtr : pULONG;const args : POINTER) : LONGINT;
+PROCEDURE EndRefresh(window : pWindow; complete : LONGINT);
+PROCEDURE EndRequest(requester : pRequester; window : pWindow);
+PROCEDURE EraseImage(rp : pRastPort; image : pImage; leftOffset : LONGINT; topOffset : LONGINT);
+FUNCTION FreeClass(classPtr : pIClass) : BOOLEAN;
+PROCEDURE FreeRemember(VAR rememberKey : pRemember; reallyForget : LONGINT);
+PROCEDURE FreeScreenBuffer(sc : pScreen; sb : pScreenBuffer);
+PROCEDURE FreeScreenDrawInfo(screen : pScreen; drawInfo : pDrawInfo);
+PROCEDURE FreeSysRequest(window : pWindow);
+PROCEDURE GadgetMouse(gadget : pGadget; gInfo : pGadgetInfo; mousePoint : psmallint);
+FUNCTION GetAttr(attrID : ULONG; obj : POINTER; storagePtr : pULONG) : ULONG;
+PROCEDURE GetDefaultPubScreen(nameBuffer : pCHAR);
+FUNCTION GetDefPrefs(preferences : pPreferences; size : LONGINT) : pPreferences;
+FUNCTION GetPrefs(preferences : pPreferences; size : LONGINT) : pPreferences;
+FUNCTION GetScreenData(buffer : POINTER; size : ULONG; type_ : ULONG;const screen : pScreen) : BOOLEAN;
+FUNCTION GetScreenDrawInfo(screen : pScreen) : pDrawInfo;
+PROCEDURE HelpControl(win : pWindow; flags : ULONG);
+PROCEDURE InitRequester(requester : pRequester);
+FUNCTION IntuiTextLength(const iText : pIntuiText) : LONGINT;
+FUNCTION ItemAddress(const menuStrip : pMenu; menuNumber : ULONG) : pMenuItem;
+PROCEDURE LendMenus(fromwindow : pWindow; towindow : pWindow);
+FUNCTION LockIBase(dontknow : ULONG) : ULONG;
+FUNCTION LockPubScreen(const name : pCHAR) : pScreen;
+FUNCTION LockPubScreenList : pList;
+FUNCTION MakeClass(const classID : pCHAR;const superClassID : pCHAR;const superClassPtr : pIClass; instanceSize : ULONG; flags : ULONG) : pIClass;
+FUNCTION MakeScreen(screen : pScreen) : LONGINT;
+FUNCTION ModifyIDCMP(window : pWindow; flags : ULONG) : BOOLEAN;
+PROCEDURE ModifyProp(gadget : pGadget; window : pWindow; requester : pRequester; flags : ULONG; horizPot : ULONG; vertPot : ULONG; horizBody : ULONG; vertBody : ULONG);
+PROCEDURE MoveScreen(screen : pScreen; dx : LONGINT; dy : LONGINT);
+PROCEDURE MoveWindow(window : pWindow; dx : LONGINT; dy : LONGINT);
+PROCEDURE MoveWindowInFrontOf(window : pWindow; behindWindow : pWindow);
+PROCEDURE NewModifyProp(gadget : pGadget; window : pWindow; requester : pRequester; flags : ULONG; horizPot : ULONG; vertPot : ULONG; horizBody : ULONG; vertBody : ULONG; numGad : LONGINT);
+FUNCTION NewObjectA(classPtr : pIClass;const classID : pCHAR;const tagList : pTagItem) : POINTER;
+FUNCTION NextObject(objectPtrPtr : POINTER) : POINTER;
+FUNCTION NextPubScreen(const screen : pScreen; namebuf : pCHAR) : pCHAR;
+FUNCTION ObtainGIRPort(gInfo : pGadgetInfo) : pRastPort;
+PROCEDURE OffGadget(gadget : pGadget; window : pWindow; requester : pRequester);
+PROCEDURE OffMenu(window : pWindow; menuNumber : ULONG);
+PROCEDURE OnGadget(gadget : pGadget; window : pWindow; requester : pRequester);
+PROCEDURE OnMenu(window : pWindow; menuNumber : ULONG);
+FUNCTION OpenScreen(const newScreen : pNewScreen) : pScreen;
+FUNCTION OpenScreenTagList(const newScreen : pNewScreen;const tagList : pTagItem) : pScreen;
+FUNCTION OpenWindow(const newWindow : pNewWindow) : pWindow;
+FUNCTION OpenWindowTagList(const newWindow : pNewWindow;const tagList : pTagItem) : pWindow;
+FUNCTION OpenWorkBench : ULONG;
+FUNCTION PointInImage(point : ULONG; image : pImage) : BOOLEAN;
+PROCEDURE PrintIText(rp : pRastPort;const iText : pIntuiText; left : LONGINT; top : LONGINT);
+FUNCTION PubScreenStatus(screen : pScreen; statusFlags : ULONG) : WORD;
+FUNCTION QueryOverscan(displayID : ULONG; rect : pRectangle; oScanType : LONGINT) : LONGINT;
+PROCEDURE RefreshGadgets(gadgets : pGadget; window : pWindow; requester : pRequester);
+PROCEDURE RefreshGList(gadgets : pGadget; window : pWindow; requester : pRequester; numGad : LONGINT);
+PROCEDURE RefreshWindowFrame(window : pWindow);
+PROCEDURE ReleaseGIRPort(rp : pRastPort);
+FUNCTION RemakeDisplay : LONGINT;
+PROCEDURE RemoveClass(classPtr : pIClass);
+FUNCTION RemoveGadget(window : pWindow; gadget : pGadget) : WORD;
+FUNCTION RemoveGList(remPtr : pWindow; gadget : pGadget; numGad : LONGINT) : WORD;
+PROCEDURE ReportMouse(flag : LONGINT; window : pWindow);
+FUNCTION Request(requester : pRequester; window : pWindow) : BOOLEAN;
+FUNCTION ResetMenuStrip(window : pWindow; menu : pMenu) : BOOLEAN;
+FUNCTION RethinkDisplay : LONGINT;
+PROCEDURE ScreenDepth(screen : pScreen; flags : ULONG; reserved : POINTER);
+PROCEDURE ScreenPosition(screen : pScreen; flags : ULONG; x1 : LONGINT; y1 : LONGINT; x2 : LONGINT; y2 : LONGINT);
+PROCEDURE ScreenToBack(screen : pScreen);
+PROCEDURE ScreenToFront(screen : pScreen);
+PROCEDURE ScrollWindowRaster(win : pWindow; dx : LONGINT; dy : LONGINT; xMin : LONGINT; yMin : LONGINT; xMax : LONGINT; yMax : LONGINT);
+FUNCTION SetAttrsA(obj : POINTER;const tagList : pTagItem) : ULONG;
+PROCEDURE SetDefaultPubScreen(const name : pCHAR);
+FUNCTION SetDMRequest(window : pWindow; requester : pRequester) : BOOLEAN;
+FUNCTION SetEditHook(hook : pHook) : pHook;
+FUNCTION SetGadgetAttrsA(gadget : pGadget; window : pWindow; requester : pRequester;const tagList : pTagItem) : ULONG;
+FUNCTION SetMenuStrip(window : pWindow; menu : pMenu) : BOOLEAN;
+FUNCTION SetMouseQueue(window : pWindow; queueLength : ULONG) : LONGINT;
+PROCEDURE SetPointer(window : pWindow; pointer_ : pword; height : LONGINT; width : LONGINT; xOffset : LONGINT; yOffset : LONGINT);
+FUNCTION SetPrefs(const   preferences : pPreferences; size : LONGINT; inform : LONGINT) : pPreferences;
+FUNCTION SetPubScreenModes(modes : ULONG) : WORD;
+PROCEDURE SetWindowPointerA(win : pWindow;const taglist : pTagItem);
+PROCEDURE SetWindowTitles(window : pWindow;const windowTitle : pCHAR;const screenTitle : pCHAR);
+PROCEDURE ShowTitle(screen : pScreen; showIt : LONGINT);
+PROCEDURE SizeWindow(window : pWindow; dx : LONGINT; dy : LONGINT);
+FUNCTION SysReqHandler(window : pWindow; idcmpPtr : pULONG; waitInput : LONGINT) : LONGINT;
+FUNCTION TimedDisplayAlert(alertNumber : ULONG;const string_ : pCHAR; height : ULONG; time : ULONG) : BOOLEAN;
+PROCEDURE UnlockIBase(ibLock : ULONG);
+PROCEDURE UnlockPubScreen(const name : pCHAR; screen : pScreen);
+PROCEDURE UnlockPubScreenList;
+FUNCTION ViewAddress : pView;
+FUNCTION ViewPortAddress(const window : pWindow) : pViewPort;
+FUNCTION WBenchToBack : BOOLEAN;
+FUNCTION WBenchToFront : BOOLEAN;
+FUNCTION WindowLimits(window : pWindow; widthMin : LONGINT; heightMin : LONGINT; widthMax : ULONG; heightMax : ULONG) : BOOLEAN;
+PROCEDURE WindowToBack(window : pWindow);
+PROCEDURE WindowToFront(window : pWindow);
+PROCEDURE ZipWindow(window : pWindow);
 
 { Intuition macros }
 function INST_DATA (cl: pIClass; o: p_Object): Pointer;
 function SIZEOF_INSTANCE (cl: pIClass): Longint;
 function BASEOBJECT (o: p_Object): Pointer;
-function _OBJ(o: p_Object): p_Object; inline;
-function __OBJECT (o: Pointer): p_Object; inline;
-function OCLASS (o: Pointer): pIClass; inline;
+function _OBJ(o: p_Object): p_Object;
+function __OBJECT (o: Pointer): p_Object;
+function OCLASS (o: Pointer): pIClass;
 function SHIFTITEM (n: smallint): word;
 function SHIFTMENU (n: smallint): word;
 function SHIFTSUB (n: smallint): word;
@@ -4212,57 +4214,65 @@ FUNCTION MakeClass(const classID : pCHAR;const superClassID : string;const super
 FUNCTION MakeClass(const classID : string;const superClassID : string;const superClassPtr : pIClass; instanceSize : ULONG; flags : ULONG) : pIClass;
 FUNCTION NewObjectA(classPtr : pIClass;const classID : string;const tagList : pTagItem) : POINTER;
 PROCEDURE SetDefaultPubScreen(const name : string);
+PROCEDURE SetWindowTitles(window : pWindow;const windowTitle : string;const screenTitle : pCHAR);
+PROCEDURE SetWindowTitles(window : pWindow;const windowTitle : pCHAR;const screenTitle : string);
+PROCEDURE SetWindowTitles(window : pWindow;const windowTitle : string;const screenTitle : string);
 FUNCTION TimedDisplayAlert(alertNumber : ULONG;const string_ : string; height : ULONG; time : ULONG) : BOOLEAN;
 PROCEDURE UnlockPubScreen(const name : string; screen : pScreen);
 
 IMPLEMENTATION
 
-function INST_DATA (cl: pIClass; o: p_Object): Pointer; inline;
+uses pastoc;
+
+function INST_DATA (cl: pIClass; o: p_Object): Pointer;
 begin
     INST_DATA := Pointer(Longint(o) + cl^.cl_InstOffset);
 end;
 
-function SIZEOF_INSTANCE (cl: pIClass): Longint; inline;
+function SIZEOF_INSTANCE (cl: pIClass): Longint;
 begin
     SIZEOF_INSTANCE := cl^.cl_InstOffset + cl^.cl_InstSize + sizeof(t_Object);
 end;
 
-function BASEOBJECT (o: p_Object): Pointer; inline;
+function BASEOBJECT (o: p_Object): Pointer;
 begin
     BASEOBJECT := Pointer(Longint(o) + sizeof(t_Object));
 end;
 
-function _OBJ(o: p_Object): p_Object; inline;
+function _OBJ(o: p_Object): p_Object;
 begin
      _OBJ := p_Object(o);
 END;
 
-function __OBJECT (o: Pointer): p_Object; inline;
+function __OBJECT (o: Pointer): p_Object;
 begin
     __OBJECT := p_Object(Longint(o) - sizeof(t_Object))
 end;
 
-function OCLASS (o: Pointer): pIClass; inline;
+function OCLASS (o: Pointer): pIClass;
+var
+    obj: p_Object;
 begin
-    OCLASS := p_Object(o - sizeof(t_Object))^.o_Class;
+    obj := p_Object(Longint(o) - sizeof(t_Object));
+    OCLASS := obj^.o_Class;
 end;
 
-function SHIFTITEM (n: smallint): word; inline;
+function SHIFTITEM (n: smallint): word;
 begin
     SHIFTITEM := (n and $3f) shl 5
 end;
 
-function SHIFTMENU (n: smallint): word; inline;
+function SHIFTMENU (n: smallint): word;
 begin
     SHIFTMENU := n and $1f
 end;
 
-function SHIFTSUB (n: smallint): word; inline;
+function SHIFTSUB (n: smallint): word;
 begin
     SHIFTSUB := (n and $1f) shl 11
 end;
 
-function FULLMENUNUM (menu, item, sub: smallint): word; inline;
+function FULLMENUNUM (menu, item, sub: smallint): word;
 begin
     FULLMENUNUM := ((sub and $1f) shl 11) or
                     ((item and $3f) shl 5) or
@@ -4276,89 +4286,1716 @@ end;
   A/BPen values of the image class objects as well. This can't work
   in pascal, of course! }
 
-function IM_BGPEN (im: pImage): byte; inline;
+function IM_BGPEN (im: pImage): byte;
 begin
     IM_BGPEN := im^.PlaneOnOff;
 end;
 
-function IM_BOX (im: pImage): pIBox; inline;
+function IM_BOX (im: pImage): pIBox;
 begin
     IM_BOX := pIBox(@im^.LeftEdge);
 END;
 
-function IM_FGPEN (im: pImage): byte; inline;
+function IM_FGPEN (im: pImage): byte;
 begin
     IM_FGPEN := im^.PlanePick;
 end;
 
-function GADGET_BOX (g: pGadget): pIBox; inline;
+function GADGET_BOX (g: pGadget): pIBox;
 begin
     GADGET_BOX := pIBox(@g^.LeftEdge);
 end;
 
-function CUSTOM_HOOK (gadget: pGadget): pHook; inline;
+function CUSTOM_HOOK (gadget: pGadget): pHook;
 begin
     CUSTOM_HOOK := pHook(gadget^.MutualExclude);
 end;
 
-function ITEMNUM( n : Word): Word; inline;
+function ITEMNUM( n : Word): Word;
 begin
     ITEMNUM := (n shr 5) and $3F
 end;
 
-function MENUNUM( n : Word): Word; inline;
+function MENUNUM( n : Word): Word;
 begin
     MENUNUM := n and $1f
 end;
 
-function SUBNUM( n : Word): Word; inline;
+function SUBNUM( n : Word): Word;
 begin
     SUBNUM := (n shr 11) and $1f
 end;
 
-FUNCTION DisplayAlert(alertNumber : ULONG;const string_ : string; height : ULONG) : BOOLEAN; inline;
+FUNCTION ActivateGadget(gadgets : pGadget; window : pWindow; requester : pRequester) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gadgets,A0
+    MOVEA.L window,A1
+    MOVEA.L requester,A2
+    MOVEA.L _IntuitionBase,A6
+    JSR -462(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ActivateWindow(window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -450(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE AddClass(classPtr : pIClass);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L classPtr,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -684(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION AddGadget(window : pWindow; gadget : pGadget; position : ULONG) : WORD;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L gadget,A1
+    MOVE.L  position,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AddGList(window : pWindow; gadget : pGadget; position : ULONG; numGad : LONGINT; requester : pRequester) : WORD;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L gadget,A1
+    MOVE.L  position,D0
+    MOVE.L  numGad,D1
+    MOVEA.L requester,A2
+    MOVEA.L _IntuitionBase,A6
+    JSR -438(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AllocRemember(VAR rememberKey : pRemember; size : ULONG; flags : ULONG) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L rememberKey,A0
+    MOVE.L  size,D0
+    MOVE.L  flags,D1
+    MOVEA.L _IntuitionBase,A6
+    JSR -396(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AllocScreenBuffer(sc : pScreen; bm : pBitMap; flags : ULONG) : pScreenBuffer;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L sc,A0
+    MOVEA.L bm,A1
+    MOVE.L  flags,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -768(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION AutoRequest(window : pWindow;const body : pIntuiText;const posText : pIntuiText;const negText : pIntuiText; pFlag : ULONG; nFlag : ULONG; width : ULONG; height : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L body,A1
+    MOVEA.L posText,A2
+    MOVEA.L negText,A3
+    MOVE.L  pFlag,D0
+    MOVE.L  nFlag,D1
+    MOVE.L  width,D2
+    MOVE.L  height,D3
+    MOVEA.L _IntuitionBase,A6
+    JSR -348(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE BeginRefresh(window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -354(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION BuildEasyRequestArgs(window : pWindow;const easyStruct : pEasyStruct; idcmp : ULONG;const args : POINTER) : pWindow;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L easyStruct,A1
+    MOVE.L  idcmp,D0
+    MOVEA.L args,A3
+    MOVEA.L _IntuitionBase,A6
+    JSR -594(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION BuildSysRequest(window : pWindow;const body : pIntuiText;const posText : pIntuiText;const negText : pIntuiText; flags : ULONG; width : ULONG; height : ULONG) : pWindow;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L body,A1
+    MOVEA.L posText,A2
+    MOVEA.L negText,A3
+    MOVE.L  flags,D0
+    MOVE.L  width,D1
+    MOVE.L  height,D2
+    MOVEA.L _IntuitionBase,A6
+    JSR -360(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ChangeScreenBuffer(sc : pScreen; sb : pScreenBuffer) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L sc,A0
+    MOVEA.L sb,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -780(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ChangeWindowBox(window : pWindow; left : LONGINT; top : LONGINT; width : LONGINT; height : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVE.L  left,D0
+    MOVE.L  top,D1
+    MOVE.L  width,D2
+    MOVE.L  height,D3
+    MOVEA.L _IntuitionBase,A6
+    JSR -486(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION ClearDMRequest(window : pWindow) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ClearMenuStrip(window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ClearPointer(window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE CloseScreen(screen : pScreen);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -066(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE CloseWindow(window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -072(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION CloseWorkBench : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L _IntuitionBase,A6
+    JSR -078(A6)
+    MOVEA.L (A7)+,A6
+    TST.L   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+    @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE CurrentTime(VAR seconds : ULONG; VAR micros : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L seconds,A0
+    MOVEA.L micros,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION DisplayAlert(alertNumber : ULONG;const string_ : pCHAR; height : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  alertNumber,D0
+    MOVEA.L string_,A0
+    MOVE.L  height,D1
+    MOVEA.L _IntuitionBase,A6
+    JSR -090(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE DisplayBeep(screen : pScreen);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -096(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE DisposeObject(obj : POINTER);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L obj,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -642(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION DoGadgetMethodA(gad : pGadget; win : pWindow; req : pRequester; message : tMsg) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gad,A0
+    MOVEA.L win,A1
+    MOVEA.L req,A2
+    MOVEA.L message,A3
+    MOVEA.L _IntuitionBase,A6
+    JSR -810(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION DoubleClick(sSeconds : ULONG; sMicros : ULONG; cSeconds : ULONG; cMicros : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  sSeconds,D0
+    MOVE.L  sMicros,D1
+    MOVE.L  cSeconds,D2
+    MOVE.L  cMicros,D3
+    MOVEA.L _IntuitionBase,A6
+    JSR -102(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE DrawBorder(rp : pRastPort;const border : pBorder; leftOffset : LONGINT; topOffset : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L rp,A0
+    MOVEA.L border,A1
+    MOVE.L  leftOffset,D0
+    MOVE.L  topOffset,D1
+    MOVEA.L _IntuitionBase,A6
+    JSR -108(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE DrawImage(rp : pRastPort; image : pImage; leftOffset : LONGINT; topOffset : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L rp,A0
+    MOVEA.L image,A1
+    MOVE.L  leftOffset,D0
+    MOVE.L  topOffset,D1
+    MOVEA.L _IntuitionBase,A6
+    JSR -114(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE DrawImageState(rp : pRastPort; image : pImage; leftOffset : LONGINT; topOffset : LONGINT; state : ULONG;const drawInfo : pDrawInfo);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L rp,A0
+    MOVEA.L image,A1
+    MOVE.L  leftOffset,D0
+    MOVE.L  topOffset,D1
+    MOVE.L  state,D2
+    MOVEA.L drawInfo,A2
+    MOVEA.L _IntuitionBase,A6
+    JSR -618(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION EasyRequestArgs(window : pWindow;const easyStruct : pEasyStruct; idcmpPtr : pULONG;const args : POINTER) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L easyStruct,A1
+    MOVEA.L idcmpPtr,A2
+    MOVEA.L args,A3
+    MOVEA.L _IntuitionBase,A6
+    JSR -588(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE EndRefresh(window : pWindow; complete : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVE.L  complete,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -366(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE EndRequest(requester : pRequester; window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L requester,A0
+    MOVEA.L window,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -120(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE EraseImage(rp : pRastPort; image : pImage; leftOffset : LONGINT; topOffset : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L rp,A0
+    MOVEA.L image,A1
+    MOVE.L  leftOffset,D0
+    MOVE.L  topOffset,D1
+    MOVEA.L _IntuitionBase,A6
+    JSR -630(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION FreeClass(classPtr : pIClass) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L classPtr,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -714(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE FreeRemember(VAR rememberKey : pRemember; reallyForget : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L rememberKey,A0
+    MOVE.L  reallyForget,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -408(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE FreeScreenBuffer(sc : pScreen; sb : pScreenBuffer);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L sc,A0
+    MOVEA.L sb,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -774(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE FreeScreenDrawInfo(screen : pScreen; drawInfo : pDrawInfo);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVEA.L drawInfo,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -696(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE FreeSysRequest(window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -372(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE GadgetMouse(gadget : pGadget; gInfo : pGadgetInfo; mousePoint : psmallint);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gadget,A0
+    MOVEA.L gInfo,A1
+    MOVEA.L mousePoint,A2
+    MOVEA.L _IntuitionBase,A6
+    JSR -570(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION GetAttr(attrID : ULONG; obj : POINTER; storagePtr : pULONG) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  attrID,D0
+    MOVEA.L obj,A0
+    MOVEA.L storagePtr,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -654(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE GetDefaultPubScreen(nameBuffer : pCHAR);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L nameBuffer,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -582(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION GetDefPrefs(preferences : pPreferences; size : LONGINT) : pPreferences;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L preferences,A0
+    MOVE.L  size,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -126(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetPrefs(preferences : pPreferences; size : LONGINT) : pPreferences;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L preferences,A0
+    MOVE.L  size,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -132(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetScreenData(buffer : POINTER; size : ULONG; type_ : ULONG;const screen : pScreen) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L buffer,A0
+    MOVE.L  size,D0
+    MOVE.L  type_,D1
+    MOVEA.L screen,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -426(A6)
+    MOVEA.L (A7)+,A6
+    TST.L   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+    @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION GetScreenDrawInfo(screen : pScreen) : pDrawInfo;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -690(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE HelpControl(win : pWindow; flags : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L win,A0
+    MOVE.L  flags,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -828(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE InitRequester(requester : pRequester);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L requester,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -138(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION IntuiTextLength(const iText : pIntuiText) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L iText,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -330(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ItemAddress(const menuStrip : pMenu; menuNumber : ULONG) : pMenuItem;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L menuStrip,A0
+    MOVE.L  menuNumber,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -144(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE LendMenus(fromwindow : pWindow; towindow : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L fromwindow,A0
+    MOVEA.L towindow,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -804(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION LockIBase(dontknow : ULONG) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  dontknow,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -414(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION LockPubScreen(const name : pCHAR) : pScreen;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L name,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -510(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION LockPubScreenList : pList;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L _IntuitionBase,A6
+    JSR -522(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MakeClass(const  classID : pCHAR;const superClassID : pCHAR;const superClassPtr : pIClass; instanceSize : ULONG; flags : ULONG) : pIClass;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L classID,A0
+    MOVEA.L superClassID,A1
+    MOVEA.L superClassPtr,A2
+    MOVE.L  instanceSize,D0
+    MOVE.L  flags,D1
+    MOVEA.L _IntuitionBase,A6
+    JSR -678(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MakeScreen(screen : pScreen): LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -378(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ModifyIDCMP(window : pWindow; flags : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVE.L  flags,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -150(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ModifyProp(gadget : pGadget; window : pWindow; requester : pRequester; flags : ULONG; horizPot : ULONG; vertPot : ULONG; horizBody : ULONG; vertBody : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gadget,A0
+    MOVEA.L window,A1
+    MOVEA.L requester,A2
+    MOVE.L  flags,D0
+    MOVE.L  horizPot,D1
+    MOVE.L  vertPot,D2
+    MOVE.L  horizBody,D3
+    MOVE.L  vertBody,D4
+    MOVEA.L _IntuitionBase,A6
+    JSR -156(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE MoveScreen(screen : pScreen; dx : LONGINT; dy : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVE.L  dx,D0
+    MOVE.L  dy,D1
+    MOVEA.L _IntuitionBase,A6
+    JSR -162(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE MoveWindow(window : pWindow; dx : LONGINT; dy : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVE.L  dx,D0
+    MOVE.L  dy,D1
+    MOVEA.L _IntuitionBase,A6
+    JSR -168(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE MoveWindowInFrontOf(window : pWindow; behindWindow : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L behindWindow,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -480(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE NewModifyProp(gadget : pGadget; window : pWindow; requester : pRequester; flags : ULONG; horizPot : ULONG; vertPot : ULONG; horizBody : ULONG; vertBody : ULONG; numGad : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gadget,A0
+    MOVEA.L window,A1
+    MOVEA.L requester,A2
+    MOVE.L  flags,D0
+    MOVE.L  horizPot,D1
+    MOVE.L  vertPot,D2
+    MOVE.L  horizBody,D3
+    MOVE.L  vertBody,D4
+    MOVE.L  numGad,D5
+    MOVEA.L _IntuitionBase,A6
+    JSR -468(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION NewObjectA(classPtr : pIClass;const classID : pCHAR;const tagList : pTagItem) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L classPtr,A0
+    MOVEA.L classID,A1
+    MOVEA.L tagList,A2
+    MOVEA.L _IntuitionBase,A6
+    JSR -636(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION NextObject(objectPtrPtr : POINTER) : POINTER;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L objectPtrPtr,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -666(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION NextPubScreen(const screen : pScreen; namebuf : pCHAR) : pCHAR;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVEA.L namebuf,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -534(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ObtainGIRPort(gInfo : pGadgetInfo) : pRastPort;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gInfo,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -558(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE OffGadget(gadget : pGadget; window : pWindow; requester : pRequester);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gadget,A0
+    MOVEA.L window,A1
+    MOVEA.L requester,A2
+    MOVEA.L _IntuitionBase,A6
+    JSR -174(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE OffMenu(window : pWindow; menuNumber : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVE.L  menuNumber,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -180(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE OnGadget(gadget : pGadget; window : pWindow; requester : pRequester);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gadget,A0
+    MOVEA.L window,A1
+    MOVEA.L requester,A2
+    MOVEA.L _IntuitionBase,A6
+    JSR -186(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE OnMenu(window : pWindow; menuNumber : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVE.L  menuNumber,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -192(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION OpenScreen(const newScreen : pNewScreen) : pScreen;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L newScreen,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -198(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenScreenTagList(const newScreen : pNewScreen;const tagList : pTagItem) : pScreen;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L newScreen,A0
+    MOVEA.L tagList,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -612(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenWindow(const newWindow : pNewWindow) : pWindow;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L newWindow,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -204(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenWindowTagList(const newWindow : pNewWindow;const tagList : pTagItem) : pWindow;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L newWindow,A0
+    MOVEA.L tagList,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -606(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION OpenWorkBench : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L _IntuitionBase,A6
+    JSR -210(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION PointInImage(point : ULONG; image : pImage) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  point,D0
+    MOVEA.L image,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -624(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE PrintIText(rp : pRastPort;const iText : pIntuiText; left : LONGINT; top : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L rp,A0
+    MOVEA.L iText,A1
+    MOVE.L  left,D0
+    MOVE.L  top,D1
+    MOVEA.L _IntuitionBase,A6
+    JSR -216(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION PubScreenStatus(screen : pScreen; statusFlags : ULONG) : WORD;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVE.L  statusFlags,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -552(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION QueryOverscan(displayID : ULONG; rect : pRectangle; oScanType : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L displayID,A0
+    MOVEA.L rect,A1
+    MOVE.L  oScanType,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -474(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE RefreshGadgets(gadgets : pGadget; window : pWindow; requester : pRequester);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gadgets,A0
+    MOVEA.L window,A1
+    MOVEA.L requester,A2
+    MOVEA.L _IntuitionBase,A6
+    JSR -222(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE RefreshGList(gadgets : pGadget; window : pWindow; requester : pRequester; numGad : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gadgets,A0
+    MOVEA.L window,A1
+    MOVEA.L requester,A2
+    MOVE.L  numGad,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -432(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE RefreshWindowFrame(window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -456(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ReleaseGIRPort(rp : pRastPort);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L rp,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -564(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION RemakeDisplay : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L _IntuitionBase,A6
+    JSR -384(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE RemoveClass(classPtr : pIClass);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L classPtr,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -708(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION RemoveGadget(window : pWindow; gadget : pGadget) : WORD;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L gadget,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -228(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION RemoveGList(remPtr : pWindow; gadget : pGadget; numGad : LONGINT) : WORD;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L remPtr,A0
+    MOVEA.L gadget,A1
+    MOVE.L  numGad,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -444(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ReportMouse(flag : LONGINT; window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  flag,D0
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -234(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION Request(requester : pRequester; window : pWindow) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L requester,A0
+    MOVEA.L window,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -240(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION ResetMenuStrip(window : pWindow; menu : pMenu) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L menu,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -702(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION RethinkDisplay : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L _IntuitionBase,A6
+    JSR -390(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ScreenDepth(screen : pScreen; flags : ULONG; reserved : POINTER);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVE.L  flags,D0
+    MOVEA.L reserved,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -786(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ScreenPosition(screen : pScreen; flags : ULONG; x1 : LONGINT; y1 : LONGINT; x2 : LONGINT; y2 : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVE.L  flags,D0
+    MOVE.L  x1,D1
+    MOVE.L  y1,D2
+    MOVE.L  x2,D3
+    MOVE.L  y2,D4
+    MOVEA.L _IntuitionBase,A6
+    JSR -792(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ScreenToBack(screen : pScreen);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -246(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ScreenToFront(screen : pScreen);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -252(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ScrollWindowRaster(win : pWindow; dx : LONGINT; dy : LONGINT; xMin : LONGINT; yMin : LONGINT; xMax : LONGINT; yMax : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L win,A1
+    MOVE.L  dx,D0
+    MOVE.L  dy,D1
+    MOVE.L  xMin,D2
+    MOVE.L  yMin,D3
+    MOVE.L  xMax,D4
+    MOVE.L  yMax,D5
+    MOVEA.L _IntuitionBase,A6
+    JSR -798(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION SetAttrsA(obj : POINTER;const tagList : pTagItem) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L obj,A0
+    MOVEA.L tagList,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -648(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE SetDefaultPubScreen(const name : pCHAR);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L name,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -540(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION SetDMRequest(window : pWindow; requester : pRequester) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L requester,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -258(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetEditHook(hook : pHook) : pHook;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L hook,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -492(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetGadgetAttrsA(gadget : pGadget; window : pWindow; requester : pRequester;const tagList : pTagItem) : ULONG;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L gadget,A0
+    MOVEA.L window,A1
+    MOVEA.L requester,A2
+    MOVEA.L tagList,A3
+    MOVEA.L _IntuitionBase,A6
+    JSR -660(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetMenuStrip(window : pWindow; menu : pMenu) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L menu,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -264(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetMouseQueue(window : pWindow; queueLength : ULONG) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVE.L  queueLength,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -498(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE SetPointer(window : pWindow; pointer_ : pword; height : LONGINT; width : LONGINT; xOffset : LONGINT; yOffset : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L pointer_,A1
+    MOVE.L  height,D0
+    MOVE.L  width,D1
+    MOVE.L  xOffset,D2
+    MOVE.L  yOffset,D3
+    MOVEA.L _IntuitionBase,A6
+    JSR -270(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION SetPrefs(const preferences : pPreferences; size : LONGINT; inform : LONGINT) : pPreferences;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L preferences,A0
+    MOVE.L  size,D0
+    MOVE.L  inform,D1
+    MOVEA.L _IntuitionBase,A6
+    JSR -324(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION SetPubScreenModes(modes : ULONG) : WORD;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  modes,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -546(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE SetWindowPointerA(win : pWindow;const taglist : pTagItem);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L win,A0
+    MOVEA.L taglist,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -816(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE SetWindowTitles(window : pWindow;const windowTitle : pCHAR;const screenTitle : pCHAR);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L windowTitle,A1
+    MOVEA.L screenTitle,A2
+    MOVEA.L _IntuitionBase,A6
+    JSR -276(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ShowTitle(screen : pScreen; showIt : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L screen,A0
+    MOVE.L  showIt,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -282(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE SizeWindow(window : pWindow; dx : LONGINT; dy : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVE.L  dx,D0
+    MOVE.L  dy,D1
+    MOVEA.L _IntuitionBase,A6
+    JSR -288(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION SysReqHandler(window : pWindow; idcmpPtr : pULONG; waitInput : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L idcmpPtr,A1
+    MOVE.L  waitInput,D0
+    MOVEA.L _IntuitionBase,A6
+    JSR -600(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION TimedDisplayAlert(alertNumber : ULONG;const string_ : pCHAR; height : ULONG; time : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVE.L  alertNumber,D0
+    MOVEA.L string_,A0
+    MOVE.L  height,D1
+    MOVEA.L time,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -822(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE UnlockIBase(ibLock : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L ibLock,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -420(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE UnlockPubScreen(const name : pCHAR; screen : pScreen);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L name,A0
+    MOVEA.L screen,A1
+    MOVEA.L _IntuitionBase,A6
+    JSR -516(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE UnlockPubScreenList;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L _IntuitionBase,A6
+    JSR -528(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION ViewAddress : pView;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L _IntuitionBase,A6
+    JSR -294(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION ViewPortAddress(const window : pWindow) : pViewPort;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -300(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION WBenchToBack : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L _IntuitionBase,A6
+    JSR -336(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION WBenchToFront : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L _IntuitionBase,A6
+    JSR -342(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+FUNCTION WindowLimits(window : pWindow; widthMin : LONGINT; heightMin : LONGINT; widthMax : ULONG; heightMax : ULONG) : BOOLEAN;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVE.L  widthMin,D0
+    MOVE.L  heightMin,D1
+    MOVE.L  widthMax,D2
+    MOVE.L  heightMax,D3
+    MOVEA.L _IntuitionBase,A6
+    JSR -318(A6)
+    MOVEA.L (A7)+,A6
+    TST.W   D0
+    BEQ.B   @end
+    MOVEQ   #1,D0
+  @end: MOVE.B  D0,@RESULT
+  END;
+END;
+
+PROCEDURE WindowToBack(window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -306(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE WindowToFront(window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -312(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ZipWindow(window : pWindow);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L window,A0
+    MOVEA.L _IntuitionBase,A6
+    JSR -504(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+
+FUNCTION DisplayAlert(alertNumber : ULONG;const string_ : string; height : ULONG) : BOOLEAN;
 begin
-      DisplayAlert := DisplayAlert(alertNumber,PChar(RawByteString(string_)),height);
+      DisplayAlert := DisplayAlert(alertNumber,pas2c(string_),height);
 end;
 
-FUNCTION LockPubScreen(const name : string) : pScreen; inline;
+FUNCTION LockPubScreen(const name : string) : pScreen;
 begin
-      LockPubScreen := LockPubScreen(PChar(RawByteString(name)));
+      LockPubScreen := LockPubScreen(pas2c(name));
 end;
 
 FUNCTION MakeClass(const classID : string;const superClassID : pCHAR;const superClassPtr : pIClass; instanceSize : ULONG; flags : ULONG) : pIClass;
 begin
-      MakeClass := MakeClass(PChar(RawByteString(classID)),superClassID,superClassPtr,instanceSize,flags);
+      MakeClass := MakeClass(pas2c(classID),superClassID,superClassPtr,instanceSize,flags);
 end;
 
 FUNCTION MakeClass(const classID : pCHAR;const superClassID : string;const superClassPtr : pIClass; instanceSize : ULONG; flags : ULONG) : pIClass;
 begin
-      MakeClass := MakeClass(classID,PChar(RawByteString(superClassID)),superClassPtr,instanceSize,flags);
+      MakeClass := MakeClass(classID,pas2c(superClassID),superClassPtr,instanceSize,flags);
 end;
 
 FUNCTION MakeClass(const classID : string;const superClassID : string;const superClassPtr : pIClass; instanceSize : ULONG; flags : ULONG) : pIClass;
 begin
-      MakeClass := MakeClass(PChar(RawByteString(classID)),PChar(RawByteString(superClassID)),superClassPtr,instanceSize,flags);
+      MakeClass := MakeClass(pas2c(classID),pas2c(superClassID),superClassPtr,instanceSize,flags);
 end;
 
 FUNCTION NewObjectA(classPtr : pIClass;const classID : string;const tagList : pTagItem) : POINTER;
 begin
-      NewObjectA := NewObjectA(classPtr,PChar(RawByteString(classID)),taglist);
+      NewObjectA := NewObjectA(classPtr,pas2c(classID),taglist);
 end;
 
 PROCEDURE SetDefaultPubScreen(const name : string);
 begin
-      SetDefaultPubScreen(PChar(RawByteString(name)));
+      SetDefaultPubScreen(pas2c(name));
+end;
+
+PROCEDURE SetWindowTitles(window : pWindow;const windowTitle : string;const screenTitle : pCHAR);
+begin
+      SetWindowTitles(window,pas2c(windowTitle),screenTitle);
+end;
+
+PROCEDURE SetWindowTitles(window : pWindow;const windowTitle : pCHAR;const screenTitle : string);
+begin
+      SetWindowTitles(window,windowTitle,pas2c(screenTitle));
+end;
+
+PROCEDURE SetWindowTitles(window : pWindow;const windowTitle : string;const screenTitle : string);
+begin
+      SetWindowTitles(window,pas2c(windowTitle),pas2c(screenTitle));
 end;
 
 FUNCTION TimedDisplayAlert(alertNumber : ULONG;const string_ : string; height : ULONG; time : ULONG) : BOOLEAN;
 begin
-      TimedDisplayAlert := TimedDisplayAlert(alertNumber,PChar(RawByteString(string_)),height,time);
+      TimedDisplayAlert := TimedDisplayAlert(alertNumber,pas2c(string_),height,time);
 end;
 
 PROCEDURE UnlockPubScreen(const name : string; screen : pScreen);
 begin
-      UnlockPubScreen(PChar(RawByteString(name)),screen);
+      UnlockPubScreen(pas2c(name),screen);
 end;
 
 

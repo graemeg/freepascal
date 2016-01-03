@@ -19,6 +19,19 @@ interface
 
 {$define FPC_IS_SYSTEM}
 {$define HAS_CMDLINE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$define FPC_HAS_FEATURE_THREADING}
+>>>>>>> graemeg/cpstrnew
 {$define FPC_HAS_FEATURE_CONSOLEIO}
 {$define FPC_HAS_FEATURE_COMMANDARGS}
 {$define FPC_HAS_FEATURE_TEXTIO}
@@ -27,19 +40,30 @@ interface
 
 {$i systemh.inc}
 {$i ndsbiosh.inc}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$i ndsh.inc}
 {$i libch.inc}
 
 
+=======
+{$i systemh.inc}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$i systemh.inc}
+>>>>>>> origin/fixes_2_2
 
 {$define fpc_softfpu_interface}
 {$i softfpu.pp}
 {$undef fpc_softfpu_interface}
 
+function IsARM9(): boolean;
 
 const
   LineEnding = #10;
   LFNSupport = true;
+<<<<<<< HEAD
+<<<<<<< HEAD
   DirectorySeparator = '/';
   DriveSeparator = ':';
   ExtensionSeparator = '.';
@@ -52,12 +76,44 @@ const
   AllFilesMask = '*';
 
   UnusedHandle    = -1;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  CtrlZMarksEOF: boolean = false;
+  DirectorySeparator = '/';
+  DriveSeparator = ':';
+  ExtensionSeparator = '.';
+  PathSeparator = ';';
+  AllowDirectorySeparators : set of char = ['\','/'];
+  AllowDriveSeparators : set of char = [':'];
+  FileNameCaseSensitive = false;
+  maxExitCode = 255;
+  MaxPathLen = 255;
+  AllFilesMask = '*';
+
+  sLineBreak: string[1] = LineEnding;
+  DefaultTextLineBreakStyle: TTextLineBreakStyle = tlbsCRLF;
+
+  UnusedHandle    = $ffff;
+>>>>>>> graemeg/fixes_2_2
   StdInputHandle  = 0;
   StdOutputHandle = 1;
   StdErrorHandle  = 2;
 
   FileNameCaseSensitive : boolean = true;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   FileNameCasePreserving: boolean = true;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   CtrlZMarksEOF: boolean = true; (* #26 not considered as end of file *)
 
   sLineBreak = LineEnding;
@@ -67,6 +123,7 @@ var
   argc: LongInt = 0;
   argv: PPChar;
   envp: PPChar;
+<<<<<<< HEAD
 //  errno: integer;
   fake_heap_end: ^byte; cvar; external;
   irq_vector: integer; external name '__irq_vector';
@@ -74,6 +131,13 @@ var
 function get_cmdline:Pchar;
 
 property cmdline:Pchar read get_cmdline;
+=======
+  errno: integer;
+  fake_heap_end: ^byte; cvar;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 implementation
 
@@ -105,6 +169,54 @@ const
 {$i libc.inc}
 
 
+
+
+{
+  NDS CPU detecting function (thanks to 21o6):
+  --------------------------------------------
+   "You see, the ARM7 can't write to bank A of VRAM, but it doesn't give any
+    error ... it just doesn't write there... so it's easily determinable what
+    CPU is running the code"
+
+   ARM946E-S processor can handle dsp extensions extensions, but ARM7TDMI does
+   not. FPC can't retrieve the CPU target at compiling time, so this small
+   function takes care to check if the code is running on an ARM9 or on an ARM7
+   CPU. It works on Nintendo DS only, I guess :)
+}
+function IsARM9(): boolean;
+var
+  Dummy : pword absolute $06800000;
+  tmp: word;
+begin
+  tmp := Dummy^;
+  Dummy^ := $C0DE;
+  IsARM9 := Dummy^ = $C0DE;
+  Dummy^ := tmp;
+end;
+
+
+{
+  NDS CPU detecting function (thanks to 21o6):
+  --------------------------------------------
+   "You see, the ARM7 can't write to bank A of VRAM, but it doesn't give any
+    error ... it just doesn't write there... so it's easily determinable what
+    CPU is running the code"
+
+   ARM946E-S processor can handle dsp extensions extensions, but ARM7TDMI does
+   not. FPC can't retrieve the CPU target at compiling time, so this small
+   function takes care to check if the code is running on an ARM9 or on an ARM7
+   CPU. It works on Nintendo DS only, I guess :)
+}
+function IsARM9(): boolean;
+var
+  Dummy : pword absolute $06800000;
+  tmp: word;
+begin
+  tmp := Dummy^;
+  Dummy^ := $C0DE;
+  IsARM9 := Dummy^ = $C0DE;
+  Dummy^ := tmp;
+end;
 
 {$ifdef FPC_HAS_FEATURE_PROCESSES}
 function GetProcessID: SizeUInt;
@@ -139,6 +251,8 @@ procedure randomize;
 var
   IPC_Timer: array [0..2] of byte absolute $27FF01B;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   RandSeed := (IPC_Timer[0]  * 3600) + (IPC_Timer[1] * 60) + IPC_Timer[2]; 
 end;
 
@@ -146,6 +260,9 @@ function random(): integer;
 begin	
 	RandSeed := QRAN_A * RandSeed + QRAN_C;
 	random := (RandSeed shr 16) and QRAN_MAX;
+=======
+  paramcount := 0;
+>>>>>>> graemeg/fixes_2_2
 end;
 
 function random(value: integer): integer; 
@@ -155,6 +272,9 @@ begin
 	RandSeed := QRAN_A * RandSeed + QRAN_C;
 	a := (RandSeed shr 16) and QRAN_MAX;
   random := (a * value) shr 15;
+=======
+  paramcount := 0;
+>>>>>>> origin/fixes_2_2
 end;
 
 
@@ -203,6 +323,8 @@ var
   end;
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if argc<=0 then
     exit;
   GetMem(buf,ARG_MAX);
@@ -235,7 +357,23 @@ begin
         buf[bufsize]:='"';
         inc(bufsize);
       end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      if i<argc-1 then
+=======
+     if i<argc then
+>>>>>>> graemeg/cpstrnew
+=======
+     if i<argc then
+>>>>>>> graemeg/cpstrnew
+=======
+     if i<argc then
+>>>>>>> graemeg/cpstrnew
+=======
+     if i<argc then
+>>>>>>> origin/cpstrnew
       buf[bufsize]:=' '
      else
       buf[bufsize]:=#0;
@@ -244,23 +382,79 @@ begin
    end;
   AddBuf;
   FreeMem(buf,ARG_MAX);
+=======
+  paramstr := '';
+>>>>>>> graemeg/fixes_2_2
+=======
+  paramstr := '';
+>>>>>>> origin/fixes_2_2
 end;
 
 function get_cmdline:Pchar;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if calculated_cmdline=nil then
     setupcmdline;
   get_cmdline:=calculated_cmdline;
+=======
+  // Boo!
+>>>>>>> graemeg/fixes_2_2
+=======
+  // Boo!
+>>>>>>> origin/fixes_2_2
 end;
 
 
 procedure SysInitStdIO;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   OpenStdIO(Input,fmInput,StdInputHandle);
   OpenStdIO(Output,fmOutput,StdOutputHandle);
   OpenStdIO(ErrOutput,fmOutput,StdErrorHandle);
   OpenStdIO(StdOut,fmOutput,StdOutputHandle);
   OpenStdIO(StdErr,fmOutput,StdErrorHandle);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  OpenStdIO(Input,fmInput,0);
+  OpenStdIO(Output,fmOutput,0);
+  OpenStdIO(ErrOutput,fmOutput,0);
+  OpenStdIO(StdOut,fmOutput,0);
+  OpenStdIO(StdErr,fmOutput,0);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end;
 
 
@@ -272,18 +466,55 @@ end;
 
 begin
   StackLength := CheckInitialStkLen(InitialStkLen);
+<<<<<<< HEAD
+<<<<<<< HEAD
   StackBottom := Sptr - StackLength;
 { OS specific startup }
 
 { Set up signals handlers }
   fpc_cpucodeinit;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  StackBottom := StackTop - StackLength;
+{ OS specific startup }
+
+{ Set up signals handlers }
+<<<<<<< HEAD
+  if IsARM9 then
+    fpc_cpucodeinit;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+  fpc_cpucodeinit;
+>>>>>>> origin/fixes_2.4
 
 { Setup heap }
   InitHeap;
   SysInitExceptions;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   SetupCmdLine;
   
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> graemeg/cpstrnew
+=======
+  
+>>>>>>> origin/cpstrnew
 {$ifdef FPC_HAS_FEATURE_CONSOLEIO}
   { Setup stdin, stdout and stderr }
   SysInitStdIO;
@@ -295,4 +526,18 @@ begin
   { threading }
   InitSystemThreads;
 {$endif FPC_HAS_FEATURE_THREADING}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{ Setup stdin, stdout and stderr }
+  SysInitStdIO;
+{ Reset IO Error }
+  InOutRes:=0;
+{ Arguments }
+  InitSystemThreads;
+  initvariantmanager;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.

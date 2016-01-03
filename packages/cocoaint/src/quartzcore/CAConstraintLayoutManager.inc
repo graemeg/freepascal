@@ -70,6 +70,10 @@ type
   CAConstraint = objcclass external (NSObject, NSCodingProtocol)
   private
     _srcId: NSString;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _anoninternstruct_CAConstraintLayoutManager0: record
       case byte of
        0: (_anonbitfield_CAConstraintLayoutManager0: CAConstraintAttribute);
@@ -77,6 +81,29 @@ type
         _srcAttr: 0..((1 shl 16)-1);
         _attr: 0..((1 shl 16)-1);
        end;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    _anoninternstruct_CAConstraintLayoutManager0: bitpacked record
+      case byte of
+       0: (_anonbitfield_CAConstraintLayoutManager0: CAConstraintAttribute);
+       1: (
+        _srcAttr: 0..((1 shl 16)-1);
+        _attr: 0..((1 shl 16)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _scale, _offset: CGFloat;

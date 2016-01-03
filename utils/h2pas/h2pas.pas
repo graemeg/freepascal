@@ -657,7 +657,7 @@ program h2pas;
                    write(outfile,'args:array of const');
                    (* if variable number of args we must allways pop *)
                    no_pop:=false;
-                   (* Needs 2 declarations, also one without args, becuase
+                   (* Needs 2 declarations, also one without args, because
                       in C you can omit the second parameter. Default parameter
                       doesn't help as that isn't possible with array of const *)
                    NeedEllipsisOverload:=true;
@@ -2070,7 +2070,11 @@ begin
          end
          else
          writeln(outfile);
+<<<<<<< HEAD
          shift(2);
+=======
+         shift(3);
+>>>>>>> origin/fixes_2.4
          (* write as pointer *)
          writeln(outfile,'(* generic typedef  *)');
          writeln(outfile,aktspace,yyv[yysp-1]^.p,' = pointer;');
@@ -6265,6 +6269,8 @@ yya : array [1..yynacts] of YYARec = (
   ( sym: 286; act: 30 ),
   ( sym: 287; act: 31 ),
   ( sym: 303; act: 171 ),
+<<<<<<< HEAD
+=======
   ( sym: 327; act: 32 ),
   ( sym: 328; act: 33 ),
   ( sym: 329; act: 34 ),
@@ -6295,6 +6301,131 @@ yya : array [1..yynacts] of YYARec = (
   ( sym: 329; act: 34 ),
   ( sym: 330; act: 35 ),
   ( sym: 331; act: 36 ),
+{ 290: }
+  ( sym: 324; act: 149 ),
+  ( sym: 325; act: 150 ),
+  ( sym: 265; act: -155 ),
+  ( sym: 266; act: -155 ),
+  ( sym: 267; act: -155 ),
+  ( sym: 268; act: -155 ),
+  ( sym: 269; act: -155 ),
+  ( sym: 270; act: -155 ),
+  ( sym: 271; act: -155 ),
+  ( sym: 272; act: -155 ),
+  ( sym: 273; act: -155 ),
+  ( sym: 291; act: -155 ),
+  ( sym: 301; act: -155 ),
+  ( sym: 304; act: -155 ),
+  ( sym: 306; act: -155 ),
+  ( sym: 307; act: -155 ),
+  ( sym: 308; act: -155 ),
+  ( sym: 309; act: -155 ),
+  ( sym: 310; act: -155 ),
+  ( sym: 311; act: -155 ),
+  ( sym: 312; act: -155 ),
+  ( sym: 313; act: -155 ),
+  ( sym: 314; act: -155 ),
+  ( sym: 315; act: -155 ),
+  ( sym: 316; act: -155 ),
+  ( sym: 317; act: -155 ),
+  ( sym: 318; act: -155 ),
+  ( sym: 319; act: -155 ),
+  ( sym: 320; act: -155 ),
+  ( sym: 321; act: -155 ),
+{ 291: }
+  ( sym: 268; act: 111 ),
+  ( sym: 277; act: 23 ),
+  ( sym: 278; act: 112 ),
+  ( sym: 279; act: 113 ),
+  ( sym: 280; act: 24 ),
+  ( sym: 281; act: 25 ),
+  ( sym: 282; act: 26 ),
+  ( sym: 283; act: 27 ),
+  ( sym: 284; act: 28 ),
+  ( sym: 285; act: 29 ),
+  ( sym: 286; act: 30 ),
+  ( sym: 314; act: 115 ),
+  ( sym: 315; act: 116 ),
+  ( sym: 316; act: 117 ),
+  ( sym: 321; act: 118 ),
+>>>>>>> origin/fixes_2.4
+  ( sym: 327; act: 32 ),
+  ( sym: 328; act: 33 ),
+  ( sym: 329; act: 34 ),
+  ( sym: 330; act: 35 ),
+  ( sym: 331; act: 36 ),
+<<<<<<< HEAD
+  ( sym: 269; act: -94 ),
+{ 287: }
+  ( sym: 269; act: 302 ),
+{ 288: }
+{ 289: }
+=======
+{ 292: }
+  ( sym: 268; act: 305 ),
+{ 293: }
+  ( sym: 268; act: 274 ),
+  ( sym: 270; act: 275 ),
+  ( sym: 267; act: -113 ),
+  ( sym: 269; act: -113 ),
+{ 294: }
+  ( sym: 268; act: 123 ),
+  ( sym: 270; act: 276 ),
+  ( sym: 267; act: -99 ),
+  ( sym: 269; act: -99 ),
+{ 295: }
+  ( sym: 269; act: 306 ),
+{ 296: }
+  ( sym: 271; act: 307 ),
+  ( sym: 304; act: 204 ),
+  ( sym: 306; act: 205 ),
+  ( sym: 307; act: 206 ),
+  ( sym: 308; act: 207 ),
+  ( sym: 309; act: 208 ),
+  ( sym: 310; act: 209 ),
+  ( sym: 311; act: 210 ),
+  ( sym: 312; act: 211 ),
+  ( sym: 313; act: 212 ),
+  ( sym: 314; act: 213 ),
+  ( sym: 315; act: 214 ),
+  ( sym: 316; act: 215 ),
+  ( sym: 317; act: 216 ),
+  ( sym: 318; act: 217 ),
+  ( sym: 319; act: 218 ),
+  ( sym: 320; act: 219 ),
+  ( sym: 321; act: 220 ),
+{ 297: }
+{ 298: }
+{ 299: }
+  ( sym: 268; act: 123 ),
+  ( sym: 270; act: 276 ),
+  ( sym: 267; act: -100 ),
+  ( sym: 269; act: -100 ),
+{ 300: }
+  ( sym: 257; act: 180 ),
+  ( sym: 266; act: 181 ),
+>>>>>>> origin/fixes_2.4
+  ( sym: 268; act: 111 ),
+  ( sym: 277; act: 23 ),
+  ( sym: 278; act: 112 ),
+  ( sym: 279; act: 113 ),
+  ( sym: 280; act: 24 ),
+  ( sym: 281; act: 25 ),
+  ( sym: 282; act: 26 ),
+  ( sym: 283; act: 27 ),
+  ( sym: 284; act: 28 ),
+  ( sym: 285; act: 29 ),
+  ( sym: 286; act: 30 ),
+  ( sym: 314; act: 115 ),
+  ( sym: 315; act: 116 ),
+  ( sym: 316; act: 117 ),
+  ( sym: 321; act: 118 ),
+  ( sym: 327; act: 32 ),
+  ( sym: 328; act: 33 ),
+  ( sym: 329; act: 34 ),
+  ( sym: 330; act: 35 ),
+  ( sym: 331; act: 36 ),
+<<<<<<< HEAD
 { 290: }
   ( sym: 324; act: 149 ),
   ( sym: 325; act: 150 ),
@@ -6410,6 +6541,8 @@ yya : array [1..yynacts] of YYARec = (
   ( sym: 329; act: 34 ),
   ( sym: 330; act: 35 ),
   ( sym: 331; act: 36 ),
+=======
+>>>>>>> origin/fixes_2.4
   ( sym: 273; act: -26 ),
 { 301: }
   ( sym: 269; act: 309 ),

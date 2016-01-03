@@ -1,17 +1,107 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for libasync
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for libasync
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=fcl-async
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> origin/cpstrnew
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=libasync fpasync
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+[compiler]
+sourcedir=src
+sourcedir_linux=src/unix
+sourcedir_beos=src/unix
+<<<<<<< HEAD
+<<<<<<< HEAD
+sourcedir_haiku=src/unix
+sourcedir_freebsd=src/unix
+sourcedir_darwin=src/unix
+sourcedir_iphonesim=src/unix
+=======
+sourcedir_freebsd=src/unix
+sourcedir_darwin=src/unix
+>>>>>>> graemeg/fixes_2_2
+=======
+sourcedir_freebsd=src/unix
+sourcedir_darwin=src/unix
+>>>>>>> origin/fixes_2_2
+sourcedir_solaris=src/unix
+sourcedir_netbsd=src/unix
+sourcedir_openbsd=src/unix
+includedir=src
+includedir_linux=src/unix
+includedir_beos=src/unix
+<<<<<<< HEAD
+<<<<<<< HEAD
+includedir_haiku=src/unix
+includedir_freebsd=src/unix
+includedir_darwin=src/unix
+includedir_iphonesim=src/unix
+=======
+includedir_freebsd=src/unix
+includedir_darwin=src/unix
+>>>>>>> graemeg/fixes_2_2
+=======
+includedir_freebsd=src/unix
+includedir_darwin=src/unix
+>>>>>>> origin/fixes_2_2
+includedir_solaris=src/unix
+includedir_netbsd=src/unix
+includedir_openbsd=src/unix
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
 [default]
 fpcdir=../..
 
@@ -100,3 +190,15 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[default]
+fpcdir=../..
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

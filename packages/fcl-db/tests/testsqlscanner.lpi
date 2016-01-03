@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
@@ -7,10 +11,41 @@
       <MainUnit Value="0"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="8"/>
+    <General>
+      <MainUnit Value="0"/>
+      <TargetFileExt Value=""/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <ActiveWindowIndexAtStart Value="0"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     </General>
     <VersionInfo>
       <Language Value=""/>
       <CharSet Value=""/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       <StringTable ProductVersion=""/>
     </VersionInfo>
     <BuildModes Count="2">
@@ -46,6 +81,22 @@
         </CompilerOptions>
       </Item2>
     </BuildModes>
+=======
+      <StringTable Comments="" CompanyName="" FileDescription="" FileVersion="" InternalName="" LegalCopyright="" LegalTrademarks="" OriginalFilename="" ProductName="" ProductVersion=""/>
+    </VersionInfo>
+>>>>>>> graemeg/cpstrnew
+=======
+      <StringTable Comments="" CompanyName="" FileDescription="" FileVersion="" InternalName="" LegalCopyright="" LegalTrademarks="" OriginalFilename="" ProductName="" ProductVersion=""/>
+    </VersionInfo>
+>>>>>>> graemeg/cpstrnew
+=======
+      <StringTable Comments="" CompanyName="" FileDescription="" FileVersion="" InternalName="" LegalCopyright="" LegalTrademarks="" OriginalFilename="" ProductName="" ProductVersion=""/>
+    </VersionInfo>
+>>>>>>> graemeg/cpstrnew
+=======
+      <StringTable Comments="" CompanyName="" FileDescription="" FileVersion="" InternalName="" LegalCopyright="" LegalTrademarks="" OriginalFilename="" ProductName="" ProductVersion=""/>
+    </VersionInfo>
+>>>>>>> origin/cpstrnew
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -55,6 +106,10 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         <CommandLineParams Value="--skiptiming --format=plain --all"/>
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
@@ -65,40 +120,236 @@
       </Item1>
     </RequiredPackages>
     <Units Count="7">
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="2">
+      <Item1>
+        <PackageName Value="FPCUnitConsoleRunner"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+      </Item2>
+    </RequiredPackages>
+    <Units Count="9">
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       <Unit0>
         <Filename Value="testsqlscanner.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="testsqlscanner"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="3" Y="12"/>
+        <UsageCount Value="208"/>
+        <Loaded Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       </Unit0>
       <Unit1>
         <Filename Value="tcsqlscanner.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tcsqlscanner"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="873"/>
+        <CursorPos X="3" Y="875"/>
+        <UsageCount Value="208"/>
+        <Loaded Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       </Unit1>
       <Unit2>
         <Filename Value="../src/sql/fpsqltree.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="fpsqltree"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4751"/>
+        <CursorPos X="49" Y="4767"/>
+        <UsageCount Value="208"/>
+        <Loaded Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       </Unit2>
       <Unit3>
         <Filename Value="../src/sql/fpsqlscanner.pp"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="fpsqlscanner"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="43"/>
+        <CursorPos X="126" Y="62"/>
+        <UsageCount Value="208"/>
+        <Loaded Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       </Unit3>
       <Unit4>
         <Filename Value="../src/sql/fpsqlparser.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="fpsqlparser"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <EditorIndex Value="7"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3562"/>
+        <CursorPos X="12" Y="3588"/>
+        <UsageCount Value="208"/>
+        <Loaded Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       </Unit4>
       <Unit5>
         <Filename Value="tcparser.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tcparser"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="7911"/>
+        <CursorPos X="30" Y="7924"/>
+        <UsageCount Value="220"/>
+        <Loaded Value="True"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       </Unit5>
       <Unit6>
         <Filename Value="tcgensql.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tcgensql"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       </Unit6>
     </Units>
   </ProjectOptions>
@@ -130,6 +381,186 @@
       </Optimizations>
     </CodeGeneration>
     <Other>
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2449"/>
+        <CursorPos X="13" Y="2452"/>
+        <UsageCount Value="371"/>
+        <Loaded Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../../../../FPC/fpc/packages/fcl-fpcunit/src/fpcunit.pp"/>
+        <UnitName Value="fpcunit"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="113"/>
+        <CursorPos X="10" Y="120"/>
+        <UsageCount Value="156"/>
+        <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../../../../FPC/trunk/rtl/inc/systemh.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="438"/>
+        <CursorPos X="3" Y="453"/>
+        <UsageCount Value="0"/>
+      </Unit8>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="2286" Column="1" TopLine="2258"/>
+      </Position1>
+      <Position2>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="4607" Column="32" TopLine="4586"/>
+      </Position2>
+      <Position3>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="2327" Column="1" TopLine="2315"/>
+      </Position3>
+      <Position4>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="159" Column="28" TopLine="143"/>
+      </Position4>
+      <Position5>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="2394" Column="14" TopLine="2372"/>
+      </Position5>
+      <Position6>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="2395" Column="9" TopLine="2376"/>
+      </Position6>
+      <Position7>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="2390" Column="22" TopLine="2376"/>
+      </Position7>
+      <Position8>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="1781" Column="1" TopLine="1759"/>
+      </Position8>
+      <Position9>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="4632" Column="4" TopLine="4625"/>
+      </Position9>
+      <Position10>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="4625" Column="16" TopLine="4625"/>
+      </Position10>
+      <Position11>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="1774" Column="42" TopLine="1759"/>
+      </Position11>
+      <Position12>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="1726" Column="3" TopLine="1707"/>
+      </Position12>
+      <Position13>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="4640" Column="52" TopLine="4625"/>
+      </Position13>
+      <Position14>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="4534" Column="3" TopLine="4527"/>
+      </Position14>
+      <Position15>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="4640" Column="46" TopLine="4625"/>
+      </Position15>
+      <Position16>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="1781" Column="20" TopLine="1760"/>
+      </Position16>
+      <Position17>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="82" Column="14" TopLine="67"/>
+      </Position17>
+      <Position18>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="1789" Column="3" TopLine="1772"/>
+      </Position18>
+      <Position19>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="4594" Column="31" TopLine="4576"/>
+      </Position19>
+      <Position20>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="1726" Column="74" TopLine="1711"/>
+      </Position20>
+      <Position21>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="4549" Column="3" TopLine="4531"/>
+      </Position21>
+      <Position22>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="4765" Column="32" TopLine="4742"/>
+      </Position22>
+      <Position23>
+        <Filename Value="../src/sql/fpsqltree.pp"/>
+        <Caret Line="4771" Column="57" TopLine="4749"/>
+      </Position23>
+      <Position24>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="160" Column="25" TopLine="144"/>
+      </Position24>
+      <Position25>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="2443" Column="1" TopLine="2413"/>
+      </Position25>
+      <Position26>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="2426" Column="1" TopLine="2413"/>
+      </Position26>
+      <Position27>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="2451" Column="1" TopLine="2421"/>
+      </Position27>
+      <Position28>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="2419" Column="1" TopLine="2406"/>
+      </Position28>
+      <Position29>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="2490" Column="1" TopLine="2475"/>
+      </Position29>
+      <Position30>
+        <Filename Value="tcgensql.pas"/>
+        <Caret Line="2414" Column="1" TopLine="2400"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="9"/>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)/"/>
+      <OtherUnitFiles Value="/home/michael/fpc/packages/fcl-db/src/sql/"/>
+    </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <UseAnsiStrings Value="False"/>
+      </SyntaxOptions>
+    </Parsing>
+    <Other>
+      <CompilerMessages>
+        <UseMsgFile Value="True"/>
+      </CompilerMessages>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>

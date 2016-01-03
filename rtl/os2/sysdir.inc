@@ -19,16 +19,62 @@
                            Directory Handling
 *****************************************************************************}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure do_MkDir(s: rawbytestring);
 var 
     Rc : word;
 begin
+<<<<<<< HEAD
   DoDirSeparators(s);
   Rc := DosCreateDir(pchar(s),nil);
+=======
+Procedure MkDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+var 
+    Rc : word;
+begin
+=======
+Procedure MkDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+var 
+    Rc : word;
+begin
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure MkDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+var 
+    Rc : word;
+begin
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure MkDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_MKDIR'];
+var 
+    Rc : word;
+begin
+>>>>>>> origin/cpstrnew
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+    exit;
+  DoDirSeparators(s);
+  Rc := DosCreateDir(s,nil);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   if Rc <> 0 then
     begin
       InOutRes := Rc;
       Errno2Inoutres;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       OSErrorWatch (RC);
     end;
 end;
@@ -44,16 +90,98 @@ begin
     end;
   DoDirSeparators(s);
   Rc := DosDeleteDir(pchar(s));
+=======
+    end;
+end;
+
+=======
+    end;
+=======
+  If (s='') or (InOutRes <> 0) then
+   exit;
+      move(s[1],buffer,length(s));
+      buffer[length(s)]:=#0;
+      DoDirSeparators(Pchar(@buffer));
+      Rc := DosCreateDir(buffer,nil);
+      if Rc <> 0 then
+       begin
+         InOutRes := Rc;
+         Errno2Inoutres;
+       end;
+>>>>>>> graemeg/fixes_2_2
+end;
+
+>>>>>>> graemeg/cpstrnew
+=======
+    end;
+end;
+
+>>>>>>> graemeg/cpstrnew
+=======
+    end;
+end;
+
+>>>>>>> origin/cpstrnew
+Procedure RmDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_RMDIR'];
+var 
+    Rc : word;
+begin
+  if (len=1) and (s^ = '.' ) then
+    InOutRes := 16;
+<<<<<<< HEAD
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+    exit;
+  DoDirSeparators(s);
+  Rc := DosDeleteDir(s);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   if Rc <> 0 then
     begin
       InOutRes := Rc;
       Errno2Inoutres;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       OSErrorWatch (RC);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     end;
+=======
+  If (s='') or (InOutRes <> 0) then
+   exit;
+      move(s[1],buffer,length(s));
+      buffer[length(s)]:=#0;
+      DoDirSeparators(Pchar(@buffer));
+      Rc := DosDeleteDir(buffer);
+      if Rc <> 0 then
+       begin
+         InOutRes := Rc;
+         Errno2Inoutres;
+       end;
+>>>>>>> graemeg/fixes_2_2
 end;
 
 {$ASMMODE INTEL}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure do_ChDir(s: rawbytestring);
 
 var RC: cardinal;
@@ -62,8 +190,43 @@ var RC: cardinal;
 begin
   Len := Length (S);
   if (Len >= 2) and (S[2] = ':') then
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+Procedure ChDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_CHDIR'];
+
+var RC: cardinal;
+
+begin
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+    exit;
+  if (Len >= 2) and (S[1] = ':') then
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure ChDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_CHDIR'];
+
+var RC: cardinal;
+
+begin
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+    exit;
+  if (Len >= 2) and (S[1] = ':') then
+>>>>>>> graemeg/cpstrnew
+=======
+Procedure ChDir(s: pchar;len:sizeuint);[IOCheck, public, alias : 'FPC_SYS_CHDIR'];
+
+var RC: cardinal;
+
+begin
+  If not assigned(s) or (len=0) or (InOutRes <> 0) then
+    exit;
+  if (Len >= 2) and (S[1] = ':') then
+>>>>>>> origin/cpstrnew
   begin
-    RC := DosSetDefaultDisk ((Ord (S [1]) and not ($20)) - $40);
+    RC := DosSetDefaultDisk ((Ord (S [0]) and not ($20)) - $40);
     if RC <> 0 then
      begin
       InOutRes := RC;
@@ -72,10 +235,33 @@ begin
     else
       if Len > 2 then
       begin
+<<<<<<< HEAD
         DoDirSeparators (s);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if (S [Len] = DirectorySeparator) and (Len <> 3) then
          S [Len] := #0;
         RC := DosSetCurrentDir (pchar (s));
+=======
+        RC := DosSetCurrentDir (s);
+>>>>>>> graemeg/cpstrnew
+=======
+        RC := DosSetCurrentDir (s);
+>>>>>>> graemeg/cpstrnew
+=======
+        RC := DosSetCurrentDir (s);
+>>>>>>> graemeg/cpstrnew
+=======
+        RC := DosSetCurrentDir (s);
+>>>>>>> origin/cpstrnew
+=======
+        Move (S [1], Buffer, Length (S));
+        Buffer [Length (S)] := #0;
+        DoDirSeparators (PChar (@Buffer));
+        RC := DosSetCurrentDir (@Buffer);
+>>>>>>> graemeg/fixes_2_2
         if RC <> 0 then
         begin
           InOutRes := RC;
@@ -84,10 +270,33 @@ begin
         end;
       end;
   end else begin
+<<<<<<< HEAD
     DoDirSeparators (s);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     if (Len > 1) and (S [Len] = DirectorySeparator) then
      S [Len] := #0;
     RC := DosSetCurrentDir (pchar (s));
+=======
+    RC := DosSetCurrentDir (s);
+>>>>>>> graemeg/cpstrnew
+=======
+    RC := DosSetCurrentDir (s);
+>>>>>>> graemeg/cpstrnew
+=======
+    RC := DosSetCurrentDir (s);
+>>>>>>> graemeg/cpstrnew
+=======
+    RC := DosSetCurrentDir (s);
+>>>>>>> origin/cpstrnew
+=======
+    Move (S [1], Buffer, Length (S));
+    Buffer [Length (S)] := #0;
+    DoDirSeparators (PChar (@Buffer));
+    RC := DosSetCurrentDir (@Buffer);
+>>>>>>> graemeg/fixes_2_2
     if RC <> 0 then
     begin
       InOutRes:= RC;
@@ -136,6 +345,13 @@ begin
             { convert path name to DOS }
             if dir[i] in AllowDirectorySeparators then
               dir[i]:=DirectorySeparator;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+            dir[0]:=char(i);
+>>>>>>> graemeg/fixes_2_2
             inc(i);
         end;
     setlength(dir,i-1);

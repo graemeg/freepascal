@@ -1,6 +1,14 @@
 { %norun }
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %needlibrary }
 { %target=win32,win64,wince,linux,android}
+=======
+{ %target=win32,win64,wince,linux}
+>>>>>>> graemeg/fixes_2_2
+=======
+{ %target=win32,win64,wince,linux}
+>>>>>>> origin/fixes_2_2
 
 library tw7838a;
 

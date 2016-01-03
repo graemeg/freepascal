@@ -59,10 +59,10 @@ const
    *)
   function file_is_valid (var f: file): boolean;
   begin
-    {$push}{$I-}
+    {$I-}
     if eof(f) then
       exit (TRUE);
-    {$pop}
+    {$I+}
     if IOResult <> 0 then
       file_is_valid := FALSE
     else
@@ -645,10 +645,10 @@ begin
       exit;
   end;
 
-  {$push}{$I-}
+  {$I-}
   assign (f, full_name);
   reset (f);
-  {$pop}
+  {$I+}
 
   if IOResult <> 0 then
     g_print ('Cannot open %s:  file not found'#13#10, [full_name]);

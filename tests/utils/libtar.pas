@@ -2,7 +2,7 @@
  Copyright (c) 2000-2006 by Stefan Heymann
 
  See the file COPYING.FPC, included in this distribution,
- for details about the copyright.
+ for details about the copyright. 
 
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -45,7 +45,7 @@ TTarWriter Usage
 - Now your tar file is ready.
 
 
-Source
+Source 
 --------------------------
 The official site to get this code is http://www.destructor.de/
 
@@ -86,13 +86,13 @@ INTERFACE
      {$DEFINE Kylix}
      {$DEFINE LIBCUNIT}
   {$ENDIF}
-{$ENDIF}
+{$ENDIF} 
 
 USES
 {$IFDEF LIBCUNIT}
    Libc,		// MvdV: Nothing is used from this???
 {$ENDIF}
-{$ifdef Unix}
+{$ifdef Unix} 
   BaseUnix, Unix,
 {$endif}
 (*$IFDEF MSWINDOWS *)
@@ -187,7 +187,7 @@ TYPE
                  CONSTRUCTOR Create (TargetStream   : TStream);                            OVERLOAD;
                  CONSTRUCTOR Create (TargetFilename : STRING; Mode : INTEGER = fmCreate);  OVERLOAD;
                  DESTRUCTOR Destroy; OVERRIDE;                   // Writes End-Of-File Tag
-                 FUNCTION AddFile   (Filename : STRING;  TarFilename : STRING = '') : BOOLEAN;
+                 PROCEDURE AddFile   (Filename : STRING;  TarFilename : STRING = '');
                  PROCEDURE AddStream (Stream   : TStream; TarFilename : STRING; FileDateGmt : TDateTime);
                  PROCEDURE AddString (Contents : STRING;  TarFilename : STRING; FileDateGmt : TDateTime);
                  PROCEDURE AddDir          (Dirname            : STRING; DateGmt : TDateTime; MaxDirSize : INT64 = 0);
@@ -250,7 +250,7 @@ END;
 
 FUNCTION ConvertFilename  (Filename : STRING) : STRING;
 // Converts the filename to Unix conventions
-// could be empty and inlined away for FPC. FPC I/O should be
+// could be empty and inlined away for FPC. FPC I/O should be 
 // forward/backward slash safe.
 BEGIN
   (*$IFDEF Unix *)
@@ -787,32 +787,20 @@ BEGIN
 END;
 
 
-FUNCTION TTarWriter.AddFile   (Filename : STRING;  TarFilename : STRING = '') : BOOLEAN;
+PROCEDURE TTarWriter.AddFile   (Filename : STRING;  TarFilename : STRING = '');
 VAR
   S    : TFileStream;
   Date : TDateTime;
 BEGIN
-  AddFile:=false;
   Date := FileTimeGMT (Filename);
   IF TarFilename = '' THEN
     TarFilename := ConvertFilename (Filename);
-  TRY
   S := TFileStream.Create (Filename, fmOpenRead OR fmShareDenyWrite);
-  EXCEPT
-    ON EFOpenError DO
-      BEGIN
-        Writeln(stderr,'LibTar error: unable to open file "',Filename,'" for reading.');
-        exit;
-      END;
-  END;
-
   TRY
     AddStream (S, TarFilename, Date);
-    // No error, AddFile succeeded
-    AddFile:=true;
   FINALLY
     S.Free
-  END;
+    END;
 END;
 
 

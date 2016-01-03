@@ -259,7 +259,15 @@ begin
       begin
         Result := Result + System.sLineBreak;
         Result := Result + '  Error: ' + System.sLineBreak;
+<<<<<<< HEAD
         WriteFailure(TTestFailure(Errors.Items[i]));
+=======
+        f := TTestFailure(Errors.Items[i]);
+        Result := Result + '    Message:           ' + f.AsString + System.sLineBreak;
+        Result := Result + '    Exception class:   ' + f.ExceptionClassName + System.sLineBreak;
+        Result := Result + '    Exception message: ' + f.ExceptionMessage + System.sLineBreak;
+        Result := Result + '        at ' + f.LocationInfo + System.sLineBreak;
+>>>>>>> origin/fpcunit
       end;
     end;
     if NumberOfFailures <> 0 then
@@ -270,7 +278,15 @@ begin
       for i := 0 to Failures.Count - 1 do
       begin
         Result := Result + '  Failure: ' + System.sLineBreak;
+<<<<<<< HEAD
         WriteFailure(TTestFailure(Failures.Items[i]));
+=======
+        f := TTestFailure(Failures.Items[i]);
+        Result := Result + '    Message:           ' + f.AsString + System.sLineBreak;
+        Result := Result + '    Exception class:   ' + f.ExceptionClassName + System.sLineBreak;
+        Result := Result + '    Exception message: ' + f.ExceptionMessage + System.sLineBreak;
+        Result := Result + '        at ' + f.LocationInfo + System.sLineBreak;
+>>>>>>> origin/fpcunit
       end;
     end;
    if NumberOfIgnoredTests <> 0 then

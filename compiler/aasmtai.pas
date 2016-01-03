@@ -72,13 +72,39 @@ interface
 {$ifdef m68k}
           ait_labeled_instruction,
 {$endif m68k}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           ait_symbolpair,
           ait_weak,
+=======
+{$ifdef arm}
+          ait_thumb_func,
+{$endif arm}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef arm}
+          ait_thumb_func,
+{$endif arm}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef arm}
+          ait_thumb_func,
+{$endif arm}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef arm}
+          ait_thumb_func,
+{$endif arm}
+>>>>>>> origin/cpstrnew
           { used to split into tiny assembler files }
           ait_cutobject,
           ait_regalloc,
           ait_tempalloc,
           { used to mark assembler blocks and inlined functions }
+<<<<<<< HEAD
+<<<<<<< HEAD
           ait_marker,
           { used to describe a new location of a variable }
           ait_varloc,
@@ -94,6 +120,12 @@ interface
 {$endif}
           { SEH directives used in ARM,MIPS and x86_64 COFF targets }
           ait_seh_directive
+=======
+          ait_marker
+>>>>>>> graemeg/fixes_2_2
+=======
+          ait_marker
+>>>>>>> origin/fixes_2_2
           );
 
         taiconst_type = (
@@ -108,6 +140,14 @@ interface
           aitconst_rva_symbol,
           aitconst_secrel32_symbol,
           { darwin only }
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+          aitconst_indirect_symbol,
+>>>>>>> graemeg/fixes_2_2
+=======
+          aitconst_indirect_symbol,
+>>>>>>> origin/fixes_2_2
           { From gcc/config/darwin.c (darwin_asm_output_dwarf_delta):
             ***
             Output a difference of two labels that will be an assembly time
@@ -122,6 +162,8 @@ interface
             relsyms (nor do they support dwarf, for that matter)
           }
           aitconst_darwin_dwarf_delta64,
+<<<<<<< HEAD
+<<<<<<< HEAD
           aitconst_darwin_dwarf_delta32,
           { ARM Thumb-2 only }
           aitconst_half16bit, { used for table jumps. The actual value is the 16bit value shifted left once }
@@ -158,6 +200,12 @@ interface
           aitrealconst_s80bit,
           aitrealconst_s128bit,
           aitrealconst_s64comp
+=======
+          aitconst_darwin_dwarf_delta32
+>>>>>>> graemeg/fixes_2_2
+=======
+          aitconst_darwin_dwarf_delta32
+>>>>>>> origin/fixes_2_2
         );
 
     const
@@ -203,11 +251,37 @@ interface
 {$ifdef m68k}
           'labeled_instr',
 {$endif m68k}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           'symbolpair',
           'weak',
+=======
+{$ifdef arm}
+          'thumb_func',
+{$endif arm}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef arm}
+          'thumb_func',
+{$endif arm}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef arm}
+          'thumb_func',
+{$endif arm}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef arm}
+          'thumb_func',
+{$endif arm}
+>>>>>>> origin/cpstrnew
           'cut',
           'regalloc',
           'tempalloc',
+<<<<<<< HEAD
+<<<<<<< HEAD
           'marker',
           'varloc',
 {$ifdef JVM}
@@ -220,6 +294,12 @@ interface
           'llvmdecl',
 {$endif}
           'seh_directive'
+=======
+          'marker'
+>>>>>>> graemeg/fixes_2_2
+=======
+          'marker'
+>>>>>>> origin/fixes_2_2
           );
 
     type
@@ -228,8 +308,23 @@ interface
 {$ifdef arm}
        { ARM only }
        ,top_regset
+<<<<<<< HEAD
        ,top_modeflags
        ,top_specialreg
+=======
+       ,top_shifterop
+       ,top_conditioncode
+       ,top_modeflags
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endif arm}
 {$if defined(arm) or defined(aarch64)}
        ,top_conditioncode
@@ -276,6 +371,32 @@ interface
       end;
       plocaloper = ^tlocaloper;
 
+<<<<<<< HEAD
+=======
+      { please keep the size of this record <=12 bytes and keep it properly aligned }
+      toper = record
+        ot : longint;
+        case typ : toptype of
+          top_none   : ();
+          top_reg    : (reg:tregister);
+          top_ref    : (ref:preference);
+          top_const  : (val:aint);
+          top_bool   : (b:boolean);
+          { local varsym that will be inserted in pass_generate_code }
+          top_local  : (localoper:plocaloper);
+      {$ifdef arm}
+          top_regset : (regset:^tcpuregisterset; regtyp: tregistertype; subreg: tsubregister);
+          top_shifterop : (shifterop : pshifterop);
+          top_conditioncode : (cc : TAsmCond);
+          top_modeflags : (modeflags : tcpumodeflags);
+      {$endif arm}
+      {$ifdef m68k}
+          top_regset : (regset:^tcpuregisterset);
+      {$endif m68k}
+      end;
+      poper=^toper;
+
+>>>>>>> graemeg/cpstrnew
     const
       { ait_* types which don't result in executable code or which don't influence
         the way the program runs/behaves, but which may be encountered by the
@@ -283,6 +404,8 @@ interface
         a new ait type!                                                              }
       SkipInstr = [ait_comment, ait_symbol,ait_section
                    ,ait_stab, ait_function_name, ait_force_line
+<<<<<<< HEAD
+<<<<<<< HEAD
                    ,ait_regalloc, ait_tempalloc, ait_symbol_end
                    ,ait_directive
                    ,ait_varloc,
@@ -290,12 +413,19 @@ interface
                    ait_jvar,
 {$endif JVM}
                    ait_seh_directive];
+=======
+                   ,ait_regalloc, ait_tempalloc, ait_symbol_end, ait_directive];
+>>>>>>> graemeg/fixes_2_2
+=======
+                   ,ait_regalloc, ait_tempalloc, ait_symbol_end, ait_directive];
+>>>>>>> origin/fixes_2_2
 
       { ait_* types which do not have line information (and hence which are of type
         tai, otherwise, they are of type tailineinfo }
       SkipLineInfo =[ait_label,
                      ait_regalloc,ait_tempalloc,
                      ait_stab,ait_function_name,
+<<<<<<< HEAD
                      ait_cutobject,ait_marker,ait_varloc,ait_align,ait_section,ait_comment,
                      ait_const,ait_directive,
                      ait_symbolpair,ait_weak,
@@ -308,6 +438,21 @@ interface
                      ait_llvmdecl,
 {$endif llvm}
                      ait_seh_directive
+=======
+                     ait_cutobject,ait_marker,ait_align,ait_section,ait_comment,
+                     ait_const,
+{$ifdef arm}
+                     ait_thumb_func,
+{$endif arm}
+                     ait_real_32bit,ait_real_64bit,ait_real_80bit,ait_comp_64bit,ait_real_128bit,
+                     ait_symbol
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                     ];
 
 
@@ -340,6 +485,10 @@ interface
         asd_indirect_symbol,
         asd_extern,asd_nasm_import, asd_toc_entry,
         asd_reference,asd_no_dead_strip,asd_weak_reference,asd_lazy_reference,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         asd_weak_definition,
         { for Jasmin }
         asd_jclass,asd_jinterface,asd_jsuper,asd_jfield,asd_jlimit,asd_jline,
@@ -349,6 +498,18 @@ interface
         asd_data_region, asd_end_data_region,
         { .thumb_func for ARM }
         asd_thumb_func
+=======
+        asd_weak_definition
+>>>>>>> graemeg/cpstrnew
+=======
+        asd_weak_definition
+>>>>>>> graemeg/cpstrnew
+=======
+        asd_weak_definition
+>>>>>>> graemeg/cpstrnew
+=======
+        asd_weak_definition
+>>>>>>> origin/cpstrnew
       );
 
       TAsmSehDirective=(
@@ -375,6 +536,10 @@ interface
       directivestr : array[TAsmDirective] of string[23]=(
         'indirect_symbol',
         'extern','nasm_import', 'tc', 'reference',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         'no_dead_strip','weak_reference','lazy_reference','weak_definition',
         { for Jasmin }
         'class','interface','super','field','limit','line',
@@ -394,6 +559,18 @@ interface
       );
       symbolpairkindstr: array[TSymbolPairKind] of string[11]=(
         '.set', '.thumb_set', '.localentry'
+=======
+        'no_dead_strip','weak_reference','lazy_reference','weak_definition'
+>>>>>>> graemeg/cpstrnew
+=======
+        'no_dead_strip','weak_reference','lazy_reference','weak_definition'
+>>>>>>> graemeg/cpstrnew
+=======
+        'no_dead_strip','weak_reference','lazy_reference','weak_definition'
+>>>>>>> graemeg/cpstrnew
+=======
+        'no_dead_strip','weak_reference','lazy_reference','weak_definition'
+>>>>>>> origin/cpstrnew
       );
 
     type
@@ -559,12 +736,37 @@ interface
           destructor Destroy;override;
           constructor ppuload(t:taitype;ppufile:tcompilerppufile);override;
           procedure ppuwrite(ppufile:tcompilerppufile);override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}{$warnings off}
          private
           { this constructor is made private on purpose }
           { because sections should be created via new_section() }
           constructor Create(Asectype:TAsmSectiontype;const Aname:string;Aalign:byte;Asecorder:TasmSectionorder=secorder_default);
 {$pop}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+         private
+          { this constructor is made private on purpose }
+          { because sections should be created via new_section() }
+          constructor Create(Asectype:TAsmSectiontype;Aname:string;Aalign:byte;Asecorder:TasmSectionorder=secorder_default);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
        end;
 
 
@@ -573,7 +775,23 @@ interface
           is_global : boolean;
           sym       : tasmsymbol;
           size      : asizeint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           constructor Create(const _name : string;_size : asizeint);
+=======
+          constructor Create(const _name : string;_size : aint);
+>>>>>>> graemeg/cpstrnew
+=======
+          constructor Create(const _name : string;_size : aint);
+>>>>>>> graemeg/cpstrnew
+=======
+          constructor Create(const _name : string;_size : aint);
+>>>>>>> graemeg/cpstrnew
+=======
+          constructor Create(const _name : string;_size : aint);
+>>>>>>> origin/cpstrnew
           constructor Create_global(const _name : string;_size : asizeint);
           constructor ppuload(t:taitype;ppufile:tcompilerppufile);override;
           procedure ppuwrite(ppufile:tcompilerppufile);override;
@@ -621,6 +839,10 @@ interface
           constructor Create_rel_sym(_typ:taiconst_type;_sym,_endsym:tasmsymbol);
           constructor Create_rel_sym_offset(_typ : taiconst_type; _sym,_endsym : tasmsymbol; _ofs : int64);
           constructor Create_rva_sym(_sym:tasmsymbol);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           constructor Createname(const name:string;ofs:asizeint);
           constructor Createname(const name:string;_symtyp:Tasmsymtype;ofs:asizeint);
           constructor Create_type_name(_typ:taiconst_type;const name:string;ofs:asizeint);
@@ -634,6 +856,21 @@ interface
           constructor Create_dgroup;
           constructor Create_fardataseg;
 {$endif i8086}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          constructor Createname(const name:string;ofs:aint);
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           constructor ppuload(t:taitype;ppufile:tcompilerppufile);override;
           procedure ppuwrite(ppufile:tcompilerppufile);override;
           procedure derefimpl;override;
@@ -657,6 +894,7 @@ interface
 {$ifdef ARM}
           formatoptions : tformatoptions;
 {$endif ARM}
+<<<<<<< HEAD
           constructor create_s32real(val: ts32real);
           constructor create_s64real(val: ts64real);
 {$ifdef ARM}
@@ -669,6 +907,30 @@ interface
           procedure ppuwrite(ppufile: tcompilerppufile); override;
           function getcopy:tlinkedlistitem;override;
           function datasize: word;
+=======
+          constructor Create(_value : ts64real);
+          constructor ppuload(t:taitype;ppufile:tcompilerppufile);override;
+          procedure ppuwrite(ppufile:tcompilerppufile);override;
+       end;
+
+
+       { Generates an extended float (80 bit real) }
+       tai_real_80bit = class(tai)
+          value : ts80real;
+          savesize : byte;
+          constructor Create(_value : ts80real; _savesize: byte);
+          constructor ppuload(t:taitype;ppufile:tcompilerppufile);override;
+          procedure ppuwrite(ppufile:tcompilerppufile);override;
+       end;
+
+
+       { Generates an float128 (128 bit real) }
+       tai_real_128bit = class(tai)
+          value : ts128real;
+          constructor Create(_value : ts128real);
+          constructor ppuload(t:taitype;ppufile:tcompilerppufile);override;
+          procedure ppuwrite(ppufile:tcompilerppufile);override;
+>>>>>>> graemeg/cpstrnew
        end;
 
        { tai_stab }
@@ -740,7 +1002,13 @@ interface
           constructor dealloc(r : tregister;ainstr:tai);
           constructor sync(r : tregister);
           constructor resize(r : tregister);
+<<<<<<< HEAD
+<<<<<<< HEAD
           constructor markused(r : tregister);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           constructor ppuload(t:taitype;ppufile:tcompilerppufile);override;
           procedure ppuwrite(ppufile:tcompilerppufile);override;
        end;
@@ -913,7 +1181,19 @@ interface
       { target specific tais, possibly overwritten in target specific aasmcpu }
       cai_align : tai_align_class = tai_align_abstract;
       cai_cpu   : tai_cpu_class = tai_cpu_abstract;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       cai_seh_directive: tai_seh_directive_class = tai_seh_directive;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
       { hook to notify uses of registers }
       add_reg_instruction_hook : tadd_reg_instruction_proc;
@@ -1648,6 +1928,8 @@ implementation
     constructor tai_const.Create_sym(_sym:tasmsymbol);
       begin
          self.create_sym_offset(_sym,0);
+<<<<<<< HEAD
+<<<<<<< HEAD
       end;
 
 
@@ -1703,6 +1985,10 @@ implementation
          { update sym info }
          if assigned(sym) then
            sym.increfs;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -1710,7 +1996,14 @@ implementation
       begin
          inherited Create;
          typ:=ait_const;
+<<<<<<< HEAD
          consttype:=_typ;
+=======
+         consttype:=aitconst_ptr;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
          { sym is allowed to be nil, this is used to write nil pointers }
          sym:=_sym;
          endsym:=nil;
@@ -1749,14 +2042,39 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     constructor tai_const.Createname(const name:string;ofs:asizeint);
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
          self.Createname(name,AT_NONE,ofs);
+=======
+         self.create_sym_offset(_sym,0);
+         consttype:=aitconst_indirect_symbol;
+>>>>>>> graemeg/fixes_2_2
+=======
+         self.create_sym_offset(_sym,0);
+         consttype:=aitconst_indirect_symbol;
+>>>>>>> origin/fixes_2_2
       end;
 
 
     constructor tai_const.Createname(const name:string;_symtyp:Tasmsymtype;ofs:asizeint);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    constructor tai_const.Createname(const name:string;ofs:aint);
+>>>>>>> graemeg/cpstrnew
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
          self.create_sym_offset(current_asmdata.RefAsmSymbol(name,_symtyp),ofs);
       end;
 
@@ -1783,6 +2101,9 @@ implementation
     constructor tai_const.Create_nil_dataptr;
       begin
         self.Create_int_dataptr(0);
+=======
+         self.create_sym_offset(current_asmdata.RefAsmSymbol(name),ofs);
+>>>>>>> graemeg/fixes_2_2
       end;
 
 
@@ -1829,6 +2150,9 @@ implementation
       begin
         self.Createname(name,0);
         self.consttype:=aitconst_seg;
+=======
+         self.create_sym_offset(current_asmdata.RefAsmSymbol(name),ofs);
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -1890,12 +2214,43 @@ implementation
             result:=1;
           aitconst_16bit,aitconst_16bit_unaligned :
             result:=2;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           aitconst_32bit,aitconst_darwin_dwarf_delta32,
 	  aitconst_32bit_unaligned:
             result:=4;
           aitconst_64bit,aitconst_darwin_dwarf_delta64,
 	  aitconst_64bit_unaligned:
+=======
+          aitconst_32bit,aitconst_darwin_dwarf_delta32:
+            result:=4;
+          aitconst_64bit,aitconst_darwin_dwarf_delta64:
+>>>>>>> graemeg/cpstrnew
+=======
+          aitconst_32bit,aitconst_darwin_dwarf_delta32:
+            result:=4;
+          aitconst_64bit,aitconst_darwin_dwarf_delta64:
+>>>>>>> graemeg/cpstrnew
+=======
+          aitconst_32bit,aitconst_darwin_dwarf_delta32:
+            result:=4;
+          aitconst_64bit,aitconst_darwin_dwarf_delta64:
+>>>>>>> graemeg/cpstrnew
+=======
+          aitconst_32bit,aitconst_darwin_dwarf_delta32:
+            result:=4;
+          aitconst_64bit,aitconst_darwin_dwarf_delta64:
+>>>>>>> origin/cpstrnew
             result:=8;
+<<<<<<< HEAD
+=======
+          aitconst_indirect_symbol,
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           aitconst_secrel32_symbol,
           aitconst_rva_symbol :
             if target_info.system=system_x86_64_win64 then
@@ -1960,24 +2315,73 @@ implementation
       end;
 
 {$endif ARM}
+<<<<<<< HEAD
+=======
+      end;
+
+
+{****************************************************************************
+                               TAI_real_80bit
+ ****************************************************************************}
+
+    constructor tai_real_80bit.Create(_value : ts80real; _savesize: byte);
+
+      begin
+         inherited Create;
+         typ:=ait_real_80bit;
+         value:=_value;
+         savesize:=_savesize;
+      end;
+
+>>>>>>> graemeg/cpstrnew
 
     constructor tai_realconst.create_s80real(val: ts80real; _savesize: byte);
       begin
+<<<<<<< HEAD
         inherited create;
         typ:=ait_realconst;
         realtyp:=aitrealconst_s80bit;
         savesize:=_savesize;
         value.s80val:=val;
+=======
+        inherited ppuload(t,ppufile);
+        value:=ppufile.getreal;
+        savesize:=ppufile.getbyte;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
     constructor tai_realconst.create_s128real(val: ts128real);
       begin
+<<<<<<< HEAD
         inherited create;
         typ:=ait_realconst;
         realtyp:=aitrealconst_s128bit;
         savesize:=16;
         value.s128val:=val;
+=======
+        inherited ppuwrite(ppufile);
+        ppufile.putreal(value);
+        ppufile.putbyte(savesize);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -2145,6 +2549,22 @@ implementation
         typ:=ait_label;
         labsym:=_labsym;
         labsym.is_set:=true;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        is_global:=(labsym.bind in [AB_GLOBAL,AB_PRIVATE_EXTERN]);
+>>>>>>> graemeg/cpstrnew
+=======
+        is_global:=(labsym.bind in [AB_GLOBAL,AB_PRIVATE_EXTERN]);
+>>>>>>> graemeg/cpstrnew
+=======
+        is_global:=(labsym.bind in [AB_GLOBAL,AB_PRIVATE_EXTERN]);
+>>>>>>> graemeg/cpstrnew
+=======
+        is_global:=(labsym.bind in [AB_GLOBAL,AB_PRIVATE_EXTERN]);
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -2612,6 +3032,8 @@ implementation
             if (ref^.segment<>NR_NO) and (ref^.segment<>NR_DS) then
               segprefix:=ref^.segment;
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef llvm}
             if (cs_create_pic in current_settings.moduleswitches) and
               assigned(r.symbol) and
@@ -2626,6 +3048,20 @@ implementation
               then
               internalerror(200502052);
 {$endif not llvm}
+=======
+            if (cs_create_pic in current_settings.moduleswitches) and
+              assigned(r.symbol) and
+              not assigned(r.relsymbol) and
+              (r.refaddr=addr_no) then
+              internalerror(200502052);
+>>>>>>> graemeg/fixes_2_2
+=======
+            if (cs_create_pic in current_settings.moduleswitches) and
+              assigned(r.symbol) and
+              not assigned(r.relsymbol) and
+              (r.refaddr=addr_no) then
+              internalerror(200502052);
+>>>>>>> origin/fixes_2_2
             typ:=top_ref;
             if assigned(add_reg_instruction_hook) then
               begin
@@ -3046,6 +3482,10 @@ implementation
         ppufile.putbyte(byte(use_op));
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 {****************************************************************************
                               tai_seh_directive
@@ -3251,9 +3691,28 @@ implementation
 {$endif JVM}
 
 begin
+<<<<<<< HEAD
 {$push}{$warnings off}
   { taitype should fit into a 4 byte set for speed reasons }
   if ord(high(taitype))>31 then
     internalerror(201108181);
 {$pop}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+  cai_cpu:=tai_cpu_abstract;
+  { aasmcpu is earlier in the unit order and can
+    already set the cai_align }
+  if not assigned(cai_align) then
+    cai_align:=tai_align_abstract;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.

@@ -13,12 +13,36 @@ uses
 function fatInit(cacheSize: cuint32; setAsDefaultDevice: cbool): cbool; cdecl; external;
 function fatInitDefault: cbool; cdecl; external;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+type
+  PDISC_INTERFACE = ^DISC_INTERFACE;
+>>>>>>> graemeg/cpstrnew
+=======
+type
+  PDISC_INTERFACE = ^DISC_INTERFACE;
+>>>>>>> graemeg/cpstrnew
+=======
+type
+  PDISC_INTERFACE = ^DISC_INTERFACE;
+>>>>>>> graemeg/cpstrnew
+=======
+type
+  PDISC_INTERFACE = ^DISC_INTERFACE;
+>>>>>>> origin/cpstrnew
 function fatMountSimple(name_: pcchar; interface_: PDISC_INTERFACE): cbool; cdecl; external;
 
 function fatMount(name_: pcchar; interface_: PDISC_INTERFACE; startSector: sec_t; cacheSize, SectorsPerPage: cuint32): cbool; cdecl; external;
 procedure fatUnmount(name_: pcchar); cdecl; external;
 procedure fatGetVolumeLabel(name_, label_: pcchar); cdecl; external;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 // File attributes
 const
   ATTR_ARCHIVE = $20;         // Archive
@@ -36,6 +60,14 @@ function FAT_setAttr(const _file: pcchar; attr: cint): cint; cdecl; external;
 
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 implementation
 
 initialization

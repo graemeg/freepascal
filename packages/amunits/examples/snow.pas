@@ -23,7 +23,7 @@ takes a long time, and frankly doesn't look as good as level 5.  }
 }
 
 
-uses exec,intuition,agraphics,utility,systemvartags;
+uses exec,intuition,graphics,utility,systemvartags;
 
 
 
@@ -145,7 +145,7 @@ begin
         for n := 0 to nc do
             sn[n] := 0;
 
-        GfxMove(rp, trunc(x), trunc(y));
+        Move(rp, trunc(x), trunc(y));
 
         repeat
             d := 0;

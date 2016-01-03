@@ -50,6 +50,8 @@ interface
       aasmbase,aasmtai,aasmdata,aasmcpu,
       cgbase,procinfo,
       ncon,nset,cgutils,tgobj,
+<<<<<<< HEAD
+<<<<<<< HEAD
       cga,ncgutil,cgobj,cg64f32,cgx86,
       hlcgobj;
 
@@ -86,6 +88,12 @@ interface
       else
         inherited second_addordinal;
     end;
+=======
+      cga,ncgutil,cgobj,cg64f32,cgx86;
+>>>>>>> graemeg/fixes_2_2
+=======
+      cga,ncgutil,cgobj,cg64f32,cgx86;
+>>>>>>> origin/fixes_2_2
 
 {*****************************************************************************
                                 Add64bit
@@ -356,8 +364,25 @@ interface
         { then one must be demanded    }
         if not (left.location.loc in [LOC_REGISTER,LOC_CREGISTER]) then
          begin
+<<<<<<< HEAD
            if not (right.location.loc in [LOC_REGISTER,LOC_CREGISTER]) then
              hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,left.resultdef,true)
+=======
+           if (right.location.loc<>LOC_REGISTER) then
+            begin
+              { we can reuse a CREGISTER for comparison }
+              if (left.location.loc<>LOC_CREGISTER) then
+               begin
+                 hregister:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
+                 hregister2:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
+                 cg64.a_load64_loc_reg(current_asmdata.CurrAsmList,left.location,joinreg64(hregister,hregister2));
+                 location_freetemp(current_asmdata.CurrAsmList,left.location);
+                 location_reset(left.location,LOC_REGISTER,left.location.size);
+                 left.location.register64.reglo:=hregister;
+                 left.location.register64.reghi:=hregister2;
+               end;
+            end
+>>>>>>> graemeg/fixes_2_2
            else
             begin
               location_swap(left.location,right.location);
@@ -400,9 +425,48 @@ interface
                 end;
             end;
         else
+<<<<<<< HEAD
           internalerror(200203282);
         end;
 
+=======
+         begin
+           case right.location.loc of
+             LOC_CREGISTER :
+               begin
+                 emit_reg_reg(A_CMP,S_L,right.location.register64.reghi,left.location.register64.reghi);
+                 firstjmp64bitcmp;
+                 emit_reg_reg(A_CMP,S_L,right.location.register64.reglo,left.location.register64.reglo);
+                 secondjmp64bitcmp;
+               end;
+             LOC_CREFERENCE,
+             LOC_REFERENCE :
+               begin
+                 tcgx86(cg).make_simple_ref(current_asmdata.CurrAsmList,right.location.reference);
+                 href:=right.location.reference;
+                 inc(href.offset,4);
+                 emit_ref_reg(A_CMP,S_L,href,left.location.register64.reghi);
+                 firstjmp64bitcmp;
+                 emit_ref_reg(A_CMP,S_L,right.location.reference,left.location.register64.reglo);
+                 secondjmp64bitcmp;
+                 cg.a_jmp_always(current_asmdata.CurrAsmList,current_procinfo.CurrFalseLabel);
+                 location_freetemp(current_asmdata.CurrAsmList,right.location);
+               end;
+             LOC_CONSTANT :
+               begin
+                 current_asmdata.CurrAsmList.concat(taicpu.op_const_reg(A_CMP,S_L,aint(hi(right.location.value64)),left.location.register64.reghi));
+                 firstjmp64bitcmp;
+                 current_asmdata.CurrAsmList.concat(taicpu.op_const_reg(A_CMP,S_L,aint(lo(right.location.value64)),left.location.register64.reglo));
+                 secondjmp64bitcmp;
+               end;
+             else
+               internalerror(200203282);
+           end;
+         end;
+
+        { we have LOC_JUMP as result }
+        location_reset(location,LOC_JUMP,OS_NO)
+>>>>>>> graemeg/fixes_2_2
       end;
 
 
@@ -436,8 +500,14 @@ interface
     end;
 
 
+<<<<<<< HEAD
     procedure ti386addnode.second_mul(unsigned: boolean);
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     var reg:Tregister;
         ref:Treference;
         use_ref:boolean;
@@ -448,12 +518,23 @@ interface
 
     begin
       pass_left_right;
+<<<<<<< HEAD
       reg:=NR_NO;
       reference_reset(ref,sizeof(pint));
 
       { Mul supports registers and references, so if not register/reference,
         load the location into a register.
         The variant of IMUL which is capable of doing 32->64 bits has the same restrictions. }
+=======
+
+      {The location.register will be filled in later (JM)}
+      location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
+      { Mul supports registers and references, so if not register/reference,
+        load the location into a register}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       use_ref:=false;
       if left.location.loc in [LOC_REGISTER,LOC_CREGISTER] then
         reg:=left.location.register
@@ -467,7 +548,15 @@ interface
         begin
           {LOC_CONSTANT for example.}
           reg:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
+<<<<<<< HEAD
+<<<<<<< HEAD
           hlcg.a_load_loc_reg(current_asmdata.CurrAsmList,left.resultdef,osuinttype,left.location,reg);
+=======
+          cg.a_load_loc_reg(current_asmdata.CurrAsmList,OS_INT,left.location,reg);
+>>>>>>> graemeg/fixes_2_2
+=======
+          cg.a_load_loc_reg(current_asmdata.CurrAsmList,OS_INT,left.location,reg);
+>>>>>>> origin/fixes_2_2
         end;
       {Allocate EAX.}
       cg.getcpuregister(current_asmdata.CurrAsmList,NR_EAX);
@@ -476,6 +565,8 @@ interface
       {Also allocate EDX, since it is also modified by a mul (JM).}
       cg.getcpuregister(current_asmdata.CurrAsmList,NR_EDX);
       if use_ref then
+<<<<<<< HEAD
+<<<<<<< HEAD
         emit_ref(asmops[unsigned],S_L,ref)
       else
         emit_reg(asmops[unsigned],S_L,reg);
@@ -589,6 +680,28 @@ interface
 
       { Result is now in EDX:EAX. Copy it to virtual registers. }
       set_mul_result_location;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        emit_ref(A_MUL,S_L,ref)
+      else
+        emit_reg(A_MUL,S_L,reg);
+      if cs_check_overflow in current_settings.localswitches  then
+       begin
+         current_asmdata.getjumplabel(hl4);
+         cg.a_jmp_flags(current_asmdata.CurrAsmList,F_AE,hl4);
+         cg.a_call_name(current_asmdata.CurrAsmList,'FPC_OVERFLOW');
+         cg.a_label(current_asmdata.CurrAsmList,hl4);
+       end;
+      {Free EAX,EDX}
+      cg.ungetcpuregister(current_asmdata.CurrAsmList,NR_EDX);
+      cg.ungetcpuregister(current_asmdata.CurrAsmList,NR_EAX);
+      {Allocate a new register and store the result in EAX in it.}
+      location.register:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
+      cg.a_load_reg_reg(current_asmdata.CurrAsmList,OS_INT,OS_INT,NR_EAX,location.register);
+      location_freetemp(current_asmdata.CurrAsmList,left.location);
+      location_freetemp(current_asmdata.CurrAsmList,right.location);
+>>>>>>> graemeg/fixes_2_2
     end;
 
 

@@ -24,7 +24,23 @@ uses
 
 // Helpers for converting Pascal string types to NT's UNICODE_STRING
 procedure ShortStrToNTStr(aStr: ShortString; var aNTStr: UNICODE_STRING);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure AnsiStrToNTStr(const aStr: RawByteString; var aNTStr: UNICODE_STRING);
+=======
+procedure AnsiStrToNTStr(const aStr: String; var aNTStr: UNICODE_STRING);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure AnsiStrToNTStr(const aStr: String; var aNTStr: UNICODE_STRING);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure AnsiStrToNTStr(const aStr: String; var aNTStr: UNICODE_STRING);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure AnsiStrToNTStr(const aStr: String; var aNTStr: UNICODE_STRING);
+>>>>>>> origin/cpstrnew
 procedure UnicodeStrToNtStr(const aStr: UnicodeString;
     var aNTStr: UNICODE_STRING);
 procedure PCharToNTStr(aStr: PChar; aLen: Cardinal; var aNTStr: UNICODE_STRING);
@@ -53,7 +69,23 @@ begin
   aNTStr.MaximumLength := aNTStr.Length;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 procedure AnsiStrToNTStr(const aStr: RawByteString; var aNTStr: UNICODE_STRING);
+=======
+procedure AnsiStrToNTStr(const aStr: String; var aNTStr: UNICODE_STRING);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure AnsiStrToNTStr(const aStr: String; var aNTStr: UNICODE_STRING);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure AnsiStrToNTStr(const aStr: String; var aNTStr: UNICODE_STRING);
+>>>>>>> graemeg/cpstrnew
+=======
+procedure AnsiStrToNTStr(const aStr: String; var aNTStr: UNICODE_STRING);
+>>>>>>> origin/cpstrnew
 var
   buf: PWideChar;
   i: Integer;

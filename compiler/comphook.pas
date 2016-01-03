@@ -78,7 +78,15 @@ type
     currentsource : string;   { filename }
     currentline,
     currentcolumn : longint;  { current line and column }
+<<<<<<< HEAD
+<<<<<<< HEAD
     currentmodulestate : string[20];
+=======
+		currentmodulestate : string[20];
+>>>>>>> graemeg/fixes_2_2
+=======
+		currentmodulestate : string[20];
+>>>>>>> origin/fixes_2_2
   { Total Status }
     compiledlines : longint;  { the number of lines which are compiled }
     errorcount,               { this field should never be increased directly,
@@ -106,7 +114,13 @@ type
     use_redir,
     use_bugreport,
     use_gccoutput,
+<<<<<<< HEAD
+<<<<<<< HEAD
     sources_avail,
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     print_source_path : boolean;
   { Redirection support }
     redirfile : text;
@@ -387,8 +401,16 @@ end;
 function def_CheckVerbosity(v:longint):boolean;
 begin
   result:=status.use_bugreport or
+<<<<<<< HEAD
+<<<<<<< HEAD
           ((v<>V_None) and
            ((status.verbosity and (v and V_LevelMask))=(v and V_LevelMask)));
+=======
+          ((status.verbosity and (v and V_LevelMask))=(v and V_LevelMask));
+>>>>>>> graemeg/fixes_2_2
+=======
+          ((status.verbosity and (v and V_LevelMask))=(v and V_LevelMask));
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure def_initsymbolinfo;

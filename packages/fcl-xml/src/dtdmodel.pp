@@ -71,19 +71,69 @@ type
     FData: PNodeData;
     FDataType: TAttrDataType;
     FDefault: TAttrDefault;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FIndex: Cardinal;
     FIsNamespaceDecl: Boolean;
     FEnumeration: array of XMLString;
+=======
+    FTag: Cardinal;
+    FIsNamespaceDecl: Boolean;
+    FEnumeration: array of WideString;
+>>>>>>> graemeg/cpstrnew
+=======
+    FTag: Cardinal;
+    FIsNamespaceDecl: Boolean;
+    FEnumeration: array of WideString;
+>>>>>>> graemeg/cpstrnew
+=======
+    FTag: Cardinal;
+    FIsNamespaceDecl: Boolean;
+    FEnumeration: array of WideString;
+>>>>>>> graemeg/cpstrnew
+=======
+    FTag: Cardinal;
+    FIsNamespaceDecl: Boolean;
+    FEnumeration: array of WideString;
+>>>>>>> origin/cpstrnew
   public
     constructor Create(aName: PHashItem; aColonPos: Integer);
     destructor Destroy; override;
     function AddEnumToken(Buf: PWideChar; Len: Integer): Boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function HasEnumToken(const aValue: XMLString): Boolean;
     function ValidateSyntax(const aValue: XMLString; Namespaces: Boolean): Boolean;
     property Data: PNodeData read FData;
     property Default: TAttrDefault read FDefault write FDefault;
     property DataType: TAttrDataType read FDataType write FDataType;
     property Index: Cardinal read FIndex;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    function HasEnumToken(const aValue: WideString): Boolean;
+    property Data: PNodeData read FData;
+    property Default: TAttrDefault read FDefault write FDefault;
+    property DataType: TAttrDataType read FDataType write FDataType;
+    property Tag: Cardinal read FTag write FTag;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     property IsNamespaceDecl: Boolean read FIsNamespaceDecl;
   end;
 
@@ -99,7 +149,19 @@ type
   private
     FAttrDefs: TFPList;
     FNeedsDefaultPass: Boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FHasRequiredAtts: Boolean;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     function GetAttrDefCount: Integer;
     function AttrDefByIndex(index: Integer): TAttributeDef;
   public
@@ -113,11 +175,27 @@ type
     property AttrDefCount: Integer read GetAttrDefCount;
     property AttrDefs[index: Integer]: TAttributeDef read AttrDefByIndex;
     property NeedsDefaultPass: Boolean read FNeedsDefaultPass;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     property HasRequiredAtts: Boolean read FHasRequiredAtts;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 
   TEntityDecl = class(TDTDObject)
   public
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FName: XMLString;   // TODO: change to PHashItem
     FInputEncoding: XMLString;
     FXMLEncoding: XMLString;
@@ -126,6 +204,31 @@ type
     FNotationName: XMLString;
     FURI: XMLString;
     FReplacementText: XMLString;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    FName: WideString;   // TODO: change to PHashItem
+    FInputEncoding: WideString;
+    FXMLEncoding: WideString;
+    FPublicID: WideString;
+    FSystemID: WideString;
+    FNotationName: WideString;
+    FURI: WideString;
+    FReplacementText: WideString;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     FXMLVersion: TXMLVersion;
     FPrefetched: Boolean;
     FResolved: Boolean;
@@ -138,10 +241,34 @@ type
 
   TNotationDecl = class(TDTDObject)
   public
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FName: XMLString;
     FPublicID: XMLString;
     FSystemID: XMLString;
     FURI: XMLString;
+=======
+    FName: WideString;
+    FPublicID: WideString;
+    FSystemID: WideString;
+>>>>>>> graemeg/cpstrnew
+=======
+    FName: WideString;
+    FPublicID: WideString;
+    FSystemID: WideString;
+>>>>>>> graemeg/cpstrnew
+=======
+    FName: WideString;
+    FPublicID: WideString;
+    FSystemID: WideString;
+>>>>>>> graemeg/cpstrnew
+=======
+    FName: WideString;
+    FPublicID: WideString;
+    FSystemID: WideString;
+>>>>>>> origin/cpstrnew
   end;
 
   TDTDModel = class
@@ -153,10 +280,35 @@ type
     function GetEntities: THashTable;
     function GetNotations: THashTable;
   public
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FName: XMLString;
     FSystemID: XMLString;
     FPublicID: XMLString;
     FInternalSubset: XMLString;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    FName: WideString;
+    FSystemID: WideString;
+    FPublicID: WideString;
+    FInternalSubset: WideString;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     constructor Create(aNameTable: THashTable);
     destructor Destroy; override;
     function Reference: TDTDModel;
@@ -379,11 +531,35 @@ procedure TElementDecl.AddAttrDef(aDef: TAttributeDef);
 begin
   if FAttrDefs = nil then
     FAttrDefs := TFPList.Create;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   aDef.FIndex := FAttrDefs.Add(aDef);
   if aDef.Default in [adRequired, adDefault, adFixed] then
     FNeedsDefaultPass := True;
   if aDef.Default = adRequired then
     FHasRequiredAtts := True;
+=======
+  FAttrDefs.Add(aDef);
+  if aDef.Default in [adRequired, adDefault, adFixed] then
+    FNeedsDefaultPass := True;
+>>>>>>> graemeg/cpstrnew
+=======
+  FAttrDefs.Add(aDef);
+  if aDef.Default in [adRequired, adDefault, adFixed] then
+    FNeedsDefaultPass := True;
+>>>>>>> graemeg/cpstrnew
+=======
+  FAttrDefs.Add(aDef);
+  if aDef.Default in [adRequired, adDefault, adFixed] then
+    FNeedsDefaultPass := True;
+>>>>>>> graemeg/cpstrnew
+=======
+  FAttrDefs.Add(aDef);
+  if aDef.Default in [adRequired, adDefault, adFixed] then
+    FNeedsDefaultPass := True;
+>>>>>>> origin/cpstrnew
 end;
 
 { TAttributeDef }
@@ -397,7 +573,23 @@ begin
   FData^.FColonPos := aColonPos;
   FData^.FTypeInfo := Self;
   FIsNamespaceDecl := ((Length(aName^.Key) = 5) or (aColonPos = 6)) and
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     (Pos(XMLString('xmlns'), aName^.Key) = 1);
+=======
+    (Pos(WideString('xmlns'), aName^.Key) = 1);
+>>>>>>> graemeg/cpstrnew
+=======
+    (Pos(WideString('xmlns'), aName^.Key) = 1);
+>>>>>>> graemeg/cpstrnew
+=======
+    (Pos(WideString('xmlns'), aName^.Key) = 1);
+>>>>>>> graemeg/cpstrnew
+=======
+    (Pos(WideString('xmlns'), aName^.Key) = 1);
+>>>>>>> origin/cpstrnew
 end;
 
 destructor TAttributeDef.Destroy;
@@ -432,7 +624,23 @@ begin
   Result := True;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TAttributeDef.HasEnumToken(const aValue: XMLString): Boolean;
+=======
+function TAttributeDef.HasEnumToken(const aValue: WideString): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function TAttributeDef.HasEnumToken(const aValue: WideString): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function TAttributeDef.HasEnumToken(const aValue: WideString): Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function TAttributeDef.HasEnumToken(const aValue: WideString): Boolean;
+>>>>>>> origin/cpstrnew
 var
   I: Integer;
 begin
@@ -447,6 +655,10 @@ begin
   Result := False;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TAttributeDef.ValidateSyntax(const aValue: XMLString; Namespaces: Boolean): Boolean;
 begin
   case FDataType of
@@ -463,4 +675,12 @@ begin
   end;
 end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end.

@@ -59,8 +59,29 @@ implementation
     const
       line_length = 70;
 
+<<<<<<< HEAD
       secnames : array[TAsmSectiontype] of string[4] = ('','',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         'CODE','DATA','DATA','DATA','BSS','TLS',
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        'CODE','DATA','DATA','DATA','BSS','',
+>>>>>>> graemeg/cpstrnew
+=======
+      secnames : array[TAsmSectiontype] of string[4] = ('',
+        'CODE','DATA','DATA','DATA','BSS','',
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         '','','','','','',
         '','','','',
         '',
@@ -72,6 +93,9 @@ implementation
         '',
         '',
         '',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         '',
         '',
         '',
@@ -106,13 +130,52 @@ implementation
         '',
         '',
         '',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         '',
         '',
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         ''
       );
 
       secnamesml64 : array[TAsmSectiontype] of string[7] = ('','',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         '_TEXT','_DATA','_DATA','_DATA','_BSS','_TLS',
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        '_TEXT','_DATE','_DATA','_DATA','_BSS','',
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
+        ''
+      );
+
+      secnamesml64 : array[TAsmSectiontype] of string[7] = ('',
+        '_TEXT','_DATE','_DATA','_DATA','_BSS','',
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         '','','','',
         'idata$2','idata$4','idata$5','idata$6','idata$7','edata',
         '',
@@ -124,6 +187,9 @@ implementation
         '',
         '',
         '',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         '',
         '',
         '',
@@ -158,8 +224,26 @@ implementation
         '',
         '',
         '',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         '',
         '',
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
         ''
       );
 
@@ -308,7 +392,23 @@ implementation
           top_reg :
             writer.AsmWrite(masm_regname(o.reg));
           top_const :
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             writer.AsmWrite(tostr(o.val));
+=======
+            AsmWrite(tostr(o.val));
+>>>>>>> graemeg/cpstrnew
+=======
+            AsmWrite(tostr(o.val));
+>>>>>>> graemeg/cpstrnew
+=======
+            AsmWrite(tostr(o.val));
+>>>>>>> graemeg/cpstrnew
+=======
+            AsmWrite(tostr(o.val));
+>>>>>>> origin/cpstrnew
           top_ref :
             begin
               if o.ref^.refaddr in [addr_no,addr_pic,addr_pic_no_got] then
@@ -392,7 +492,23 @@ implementation
         top_reg :
           writer.AsmWrite(masm_regname(o.reg));
         top_const :
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           writer.AsmWrite(tostr(o.val));
+=======
+          AsmWrite(tostr(o.val));
+>>>>>>> graemeg/cpstrnew
+=======
+          AsmWrite(tostr(o.val));
+>>>>>>> graemeg/cpstrnew
+=======
+          AsmWrite(tostr(o.val));
+>>>>>>> graemeg/cpstrnew
+=======
+          AsmWrite(tostr(o.val));
+>>>>>>> origin/cpstrnew
         top_ref :
           { what about lcall or ljmp ??? }
           begin
@@ -430,7 +546,15 @@ implementation
       ait_const2str : array[aitconst_128bit..aitconst_secrel32_symbol] of string[20]=(
         #9''#9,#9'DQ'#9,#9'DD'#9,#9'DW'#9,#9'DB'#9,
         #9'FIXMESLEB',#9'FIXEMEULEB',
+<<<<<<< HEAD
+<<<<<<< HEAD
         #9'DD RVA'#9,#9'DD SECREL32'#9
+=======
+        #9'DD RVA'#9,#9'DD SECREL32'#9,#9'FIXMEINDIRECT'#9
+>>>>>>> graemeg/fixes_2_2
+=======
+        #9'DD RVA'#9,#9'DD SECREL32'#9,#9'FIXMEINDIRECT'#9
+>>>>>>> origin/fixes_2_2
       );
 
     Function PadTabs(const p:string;addch:char):string;
@@ -478,6 +602,7 @@ implementation
       hp:=tai(p.first);
       while assigned(hp) do
        begin
+<<<<<<< HEAD
          prefetch(pointer(hp.next)^);
          if not(hp.typ in SkipLineInfo) then
           begin
@@ -486,6 +611,53 @@ implementation
             if do_line and (inlinelevel=0) and not DoNotSplitLine then
               WriteSourceLine(hp as tailineinfo);
           end;
+=======
+         if do_line and not(hp.typ in SkipLineInfo) and
+            not DoNotSplitLine and (InlineLevel=0) then
+           begin
+              hp1:=hp as tailineinfo;
+           { load infile }
+             if lastfileinfo.fileindex<>hp1.fileinfo.fileindex then
+              begin
+                infile:=current_module.sourcefiles.get_file(hp1.fileinfo.fileindex);
+                if assigned(infile) then
+                 begin
+                   { open only if needed !! }
+                   if (cs_asm_source in current_settings.globalswitches) then
+                    infile.open;
+                 end;
+                { avoid unnecessary reopens of the same file !! }
+                lastfileinfo.fileindex:=hp1.fileinfo.fileindex;
+                { be sure to change line !! }
+                lastfileinfo.line:=-1;
+              end;
+           { write source }
+             if (cs_asm_source in current_settings.globalswitches) and
+                assigned(infile) then
+              begin
+                if (infile<>lastinfile) then
+                  begin
+                    AsmWriteLn(target_asm.comment+'['+infile.name^+']');
+                    if assigned(lastinfile) then
+                      lastinfile.close;
+                  end;
+                if (hp1.fileinfo.line<>lastfileinfo.line) and
+                   ((hp1.fileinfo.line<infile.maxlinebuf) or (InlineLevel>0)) then
+                  begin
+                    if (hp1.fileinfo.line<>0) and
+                       ((infile.linebuf^[hp1.fileinfo.line]>=0) or (InlineLevel>0)) then
+                      AsmWriteLn(target_asm.comment+'['+tostr(hp1.fileinfo.line)+'] '+
+                        fixline(infile.GetLineStr(hp1.fileinfo.line)));
+                    { set it to a negative value !
+                    to make that is has been read already !! PM }
+                    if (infile.linebuf^[hp1.fileinfo.line]>=0) then
+                      infile.linebuf^[hp1.fileinfo.line]:=-infile.linebuf^[hp1.fileinfo.line]-1;
+                  end;
+              end;
+             lastfileinfo:=hp1.fileinfo;
+             lastinfile:=infile;
+           end;
+>>>>>>> graemeg/cpstrnew
          DoNotSplitLine:=false;
 
          case hp.typ of
@@ -558,7 +730,15 @@ implementation
                  aitconst_16bit,
                  aitconst_8bit,
                  aitconst_rva_symbol,
+<<<<<<< HEAD
+<<<<<<< HEAD
                  aitconst_secrel32_symbol :
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                 aitconst_secrel32_symbol,
+                 aitconst_indirect_symbol :
+>>>>>>> graemeg/fixes_2_2
                    begin
                      writer.AsmWrite(ait_const2str[consttype]);
                      l:=0;
@@ -574,7 +754,14 @@ implementation
                          end
                        else
                          s:=tostr(tai_const(hp).value);
+<<<<<<< HEAD
                        writer.AsmWrite(s);
+=======
+                       AsmWrite(s);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                        inc(l,length(s));
                        if (l>line_length) or
                           (hp.next=nil) or
@@ -594,6 +781,7 @@ implementation
                end;
              end;
 
+<<<<<<< HEAD
            ait_realconst:
              begin
                case tai_realconst(hp).realtyp of
@@ -609,6 +797,19 @@ implementation
                    internalerror(2014050604);
                end;
              end;
+=======
+           ait_real_32bit :
+             AsmWriteLn(#9#9'DD'#9+single2str(tai_real_32bit(hp).value));
+           ait_real_64bit :
+             AsmWriteLn(#9#9'DQ'#9+double2str(tai_real_64bit(hp).value));
+           ait_real_80bit :
+             AsmWriteLn(#9#9'DT'#9+extended2str(tai_real_80bit(hp).value));
+           ait_comp_64bit :
+             AsmWriteLn(#9#9'DQ'#9+extended2str(tai_comp_64bit(hp).value));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            ait_string :
              begin
                counter := 0;
@@ -741,17 +942,30 @@ implementation
                    (fixed_opcode =  A_REPZ) or
                    (fixed_opcode = A_REPNE)) then
                 Begin
+<<<<<<< HEAD
                   prefix:=std_op2str[fixed_opcode]+#9;
+=======
+                  prefix:=std_op2str[taicpu(hp).opcode]+#9;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                   { there can be a stab inbetween when the opcode was on
                     a different line in the source code }
                   repeat
                     hp:=tai(hp.next);
                   until (hp=nil) or (hp.typ=ait_instruction);
+<<<<<<< HEAD
+<<<<<<< HEAD
 
                   { next instruction ... }
                   fixed_opcode:=taicpu(hp).FixNonCommutativeOpcodes;
                   taicpu(hp).SetOperandOrder(op_intel);
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                   { this is theorically impossible... }
                   if hp=nil then
                    begin
@@ -928,7 +1142,14 @@ implementation
       if current_module.mainsource<>'' then
        comment(v_info,'Start writing intel-styled assembler output for '+current_module.mainsource);
 {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
       if asminfo^.id<>as_x86_64_masm then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      if target_asm.id<>as_x86_64_masm then
+>>>>>>> graemeg/fixes_2_2
         begin
           writer.AsmWriteLn(#9'.386p');
           { masm 6.11 does not seem to like LOCALS PM }
@@ -954,7 +1175,22 @@ implementation
 
       { better do this at end of WriteTree, but then there comes a trouble with
         al_const which does not have leading ait_section and thus goes out of segment }
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      { TODO: probably ml64 needs 'closing' last section, too }
+>>>>>>> graemeg/cpstrnew
       if LastSecType <> sec_none then
         begin
           if asminfo^.id=as_x86_64_masm then
@@ -966,6 +1202,18 @@ implementation
 
       writer.AsmWriteLn(#9'END');
       writer.AsmLn;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        
+      { TODO: probably ml64 needs 'closing' last section, too }
+      if LastSecType <> sec_none then
+        AsmWriteLn('_'+secnames[LasTSecType]+#9#9'ENDS');
+      LastSecType := sec_none;
+
+      AsmWriteLn(#9'END');
+      AsmLn;
+>>>>>>> graemeg/fixes_2_2
 
 {$ifdef EXTDEBUG}
       if current_module.mainsource<>'' then

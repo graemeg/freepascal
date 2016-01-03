@@ -17,7 +17,7 @@ Program P96CheckBoards;
 }
 
 
-uses exec, amigados, agraphics, picasso96api,utility,amigalib;
+uses exec, amigados, graphics, picasso96api,utility,amigalib;
 
 var
    NumBoards : Longint;

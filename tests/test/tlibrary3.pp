@@ -1,6 +1,26 @@
 { %NORUN }
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %SKIPTARGET=macos, go32v2, win64 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %delfiles=tlibrary3 }
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+{ %SKIPTARGET=macos, win64 }
+>>>>>>> graemeg/fixes_2_2
+=======
+{ %SKIPTARGET=macos, win64 }
+>>>>>>> origin/fixes_2_2
 
 {$ifdef darwin}
 {$PIC+}

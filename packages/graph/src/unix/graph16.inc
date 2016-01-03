@@ -267,11 +267,23 @@ begin
   ScrOfs := y * ScrWidth + x div 8;
   HLength := x2 div 8 - x div 8;
   LMask := $ff shr (x and 7);
-{$push}
+{$ifopt r+}
+{$define rangeOn}
 {$r-}
+{$endif}
+{$ifopt q+}
+{$define overflowOn}
 {$q-}
+{$endif}
   RMask:=$ff shl (7 - (x2 and 7));
-{$pop}
+{$ifdef rangeOn}
+{$undef rangeOn}
+{$r+}
+{$endif}
+{$ifdef overflowOn}
+{$undef overflowOn}
+{$q+}
+{$endif}
   if HLength=0 then
     LMask:=LMask and RMask;
   WritePortB($3ce, 0);
@@ -296,11 +308,23 @@ begin
 
   WritePortB($3ce, 8);
   WritePortB($3cf, LMask);
-{$push}
+{$ifopt r+}
+{$define rangeOn}
 {$r-}
+{$endif}
+{$ifopt q+}
+{$define overflowOn}
 {$q-}
+{$endif}
   VidMem^[ScrOfs] := VidMem^[ScrOfs] + 1;
-{$pop}
+{$ifdef rangeOn}
+{$undef rangeOn}
+{$r+}
+{$endif}
+{$ifdef overflowOn}
+{$undef overflowOn}
+{$q+}
+{$endif}
   if HLength>0 then
   begin
     Dec(HLength);
@@ -313,11 +337,23 @@ begin
     end else
       WritePortB($3ce, 8);
     WritePortB($3cf, RMask);
-{$push}
+{$ifopt r+}
+{$define rangeOn}
 {$r-}
+{$endif}
+{$ifopt q+}
+{$define overflowOn}
 {$q-}
+{$endif}
     VidMem^[ScrOfs] := VidMem^[ScrOfs] + 1;
-{$pop}
+{$ifdef rangeOn}
+{$undef rangeOn}
+{$r+}
+{$endif}
+{$ifdef overflowOn}
+{$undef overflowOn}
+{$q+}
+{$endif}
   end;
 end;
 
@@ -369,11 +405,23 @@ begin
   end;
   for i:=y to y2 do
   begin
-{$push}
+{$ifopt r+}
+{$define rangeOn}
 {$r-}
+{$endif}
+{$ifopt q+}
+{$define overflowOn}
 {$q-}
+{$endif}
     VidMem^[ScrOfs]:=VidMem^[ScrOfs]+1;
-{$pop}
+{$ifdef rangeOn}
+{$undef rangeOn}
+{$r+}
+{$endif}
+{$ifdef overflowOn}
+{$undef overflowOn}
+{$q+}
+{$endif}
     Inc(ScrOfs, ScrWidth);
   end;
 end;

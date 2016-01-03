@@ -3,19 +3,69 @@
  
      Contains:   Process Manager Interfaces.
  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
      Version:    HIServices-416~44
+=======
+     Version:    HIServices-308~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIServices-308~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIServices-308~1
+>>>>>>> graemeg/cpstrnew
+=======
+     Version:    HIServices-308~1
+>>>>>>> origin/cpstrnew
  
      Copyright:  © 1989-2008 by Apple Computer, Inc., all rights reserved
+=======
+     Version:    HIServices-162.0.81~21
+ 
+     Copyright:  © 1989-2005 by Apple Computer, Inc., all rights reserved
+>>>>>>> graemeg/fixes_2_2
+=======
+     Version:    HIServices-162.0.81~21
+ 
+     Copyright:  © 1989-2005 by Apple Computer, Inc., all rights reserved
+>>>>>>> origin/fixes_2_2
+=======
+     Version:    HIServices-308~1
+ 
+     Copyright:  © 1989-2008 by Apple Computer, Inc., all rights reserved
+>>>>>>> origin/fixes_2.4
  
      Bugs?:      For bug reports, consult the following page on
                  the World Wide Web:
  
+<<<<<<< HEAD
+<<<<<<< HEAD
                      http://bugs.freepascal.org
  
 }
+<<<<<<< HEAD
 {  Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
 {  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
 {  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2012 }
+=======
+{       Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
+{       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {
     Modified for use with Free Pascal
     Version 308
@@ -23,6 +73,28 @@
 }
 
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                     http://www.freepascal.org/bugs.html
+ 
+}
+{       Pascal Translation Updated:  Peter N Lewis, <peter@stairways.com.au>, August 2005 }
+{       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, October 2009 }
+{
+    Modified for use with Free Pascal
+    Version 308
+    Please report any bugs to <gpc@microbizz.nl>
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4
 {$mode macpas}
 {$packenum 1}
 {$macro on}
@@ -31,8 +103,23 @@
 
 unit Processes;
 interface
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$setc UNIVERSAL_INTERFACES_VERSION := $0400}
 {$setc GAP_INTERFACES_VERSION := $0308}
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0342}
+{$setc GAP_INTERFACES_VERSION := $0210}
+>>>>>>> origin/fixes_2_2
+=======
+{$setc UNIVERSAL_INTERFACES_VERSION := $0400}
+{$setc GAP_INTERFACES_VERSION := $0308}
+>>>>>>> origin/fixes_2.4
 
 {$ifc not defined USE_CFSTR_CONSTANT_MACROS}
     {$setc USE_CFSTR_CONSTANT_MACROS := TRUE}
@@ -45,21 +132,50 @@ interface
 	{$error Conflicting initial definitions for FPC_BIG_ENDIAN and FPC_LITTLE_ENDIAN}
 {$endc}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __ppc__ and defined CPUPOWERPC32}
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC}
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not defined __ppc__ and defined CPUPOWERPC32}
+>>>>>>> origin/fixes_2.4
 	{$setc __ppc__ := 1}
 {$elsec}
 	{$setc __ppc__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __ppc64__ and defined CPUPOWERPC64}
 	{$setc __ppc64__ := 1}
 {$elsec}
 	{$setc __ppc64__ := 0}
 {$endc}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __i386__ and defined CPUI386}
 	{$setc __i386__ := 1}
 {$elsec}
 	{$setc __i386__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc not defined __x86_64__ and defined CPUX86_64}
 	{$setc __x86_64__ := 1}
 {$elsec}
@@ -70,11 +186,26 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -82,6 +213,13 @@ interface
   {$setc __LP64__ := 0}
 {$endc}
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined __ppc__ and __ppc__ and defined __i386__ and __i386__}
 	{$error Conflicting definitions for __ppc__ and __i386__}
@@ -89,7 +227,14 @@ interface
 
 {$ifc defined __ppc__ and __ppc__}
 	{$setc TARGET_CPU_PPC := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_PPC64 := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
@@ -98,41 +243,109 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __ppc64__ and __ppc64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := TRUE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+=======
+>>>>>>> origin/cpstrnew
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$elsec}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __x86_64__ and __x86_64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := TRUE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
@@ -142,13 +355,32 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
 {$elifc defined __arm__ and __arm__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
@@ -162,13 +394,83 @@ interface
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
 	{$setc TARGET_CPU_ARM64 := TRUE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elsec}
 	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ nor __arm64__ is defined.}
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> origin/cpstrnew
 {$endc}
 
 {$ifc defined __LP64__ and __LP64__ }
@@ -176,6 +478,78 @@ interface
 {$elsec}
   {$setc TARGET_CPU_64 := FALSE}
 {$endc}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	{$setc TARGET_CPU_PPC64 := FALSE}
+>>>>>>> origin/fixes_2.4
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __ppc64__ and __ppc64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := TRUE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __i386__ and __i386__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := TRUE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := FALSE}
+{$ifc defined(iphonesim)}
+ 	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := TRUE}
+{$elsec}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$endc}
+{$elifc defined __x86_64__ and __x86_64__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := TRUE}
+	{$setc TARGET_CPU_ARM := FALSE}
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elifc defined __arm__ and __arm__}
+	{$setc TARGET_CPU_PPC := FALSE}
+	{$setc TARGET_CPU_PPC64 := FALSE}
+	{$setc TARGET_CPU_X86 := FALSE}
+	{$setc TARGET_CPU_X86_64 := FALSE}
+	{$setc TARGET_CPU_ARM := TRUE}
+	{ will require compiler define when/if other Apple devices with ARM cpus ship }
+	{$setc TARGET_OS_MAC := FALSE}
+	{$setc TARGET_OS_IPHONE := TRUE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+{$endc}
+
+{$ifc defined __LP64__ and __LP64__ }
+  {$setc TARGET_CPU_64 := TRUE}
+{$elsec}
+  {$setc TARGET_CPU_64 := FALSE}
+{$endc}
+<<<<<<< HEAD
+{$setc TARGET_CPU_PPC_64 := FALSE}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 {$ifc defined FPC_BIG_ENDIAN}
 	{$setc TARGET_RT_BIG_ENDIAN := TRUE}
@@ -201,6 +575,17 @@ interface
 {$setc TARGET_CPU_68K := FALSE}
 {$setc TARGET_CPU_MIPS := FALSE}
 {$setc TARGET_CPU_SPARC := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$setc TARGET_OS_MAC := TRUE}
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 {$setc TARGET_OS_UNIX := FALSE}
 {$setc TARGET_OS_WIN32 := FALSE}
 {$setc TARGET_RT_MAC_68881 := FALSE}
@@ -210,9 +595,46 @@ interface
 {$setc TYPE_BOOL := FALSE}
 {$setc TYPE_EXTENDED := FALSE}
 {$setc TYPE_LONGLONG := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses MacTypes,CFBase,CFDictionary,Events,Files,MacOSXPosix;
 {$endc} {not MACOSALLINCLUDE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+{$ifc TARGET_OS_MAC}
+
+{$ifc TARGET_OS_MAC}
+
+{$ifc TARGET_OS_MAC}
+
+{$ifc TARGET_OS_MAC}
+
+{$ifc TARGET_OS_MAC}
+=======
+uses MacTypes,CFBase,CFDictionary,Quickdraw,AEDataModel,Events,Files,TextCommon,CFString,MacOSXPosix;
+=======
+uses MacTypes,CFBase,CFDictionary,Events,Files,MacOSXPosix;
+{$endc} {not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4
+
+>>>>>>> graemeg/fixes_2_2
+=======
+uses MacTypes,CFBase,CFDictionary,Quickdraw,AEDataModel,Events,Files,TextCommon,CFString,MacOSXPosix;
+
+>>>>>>> origin/fixes_2_2
 
 {$ifc TARGET_OS_MAC}
 
@@ -246,6 +668,11 @@ type
 	end;
 	AppParametersPtr = ^AppParameters;
 { Parameter block to _Launch }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc TARGET_CPU_64}
 type
 	LaunchParamBlockRec = record
@@ -263,7 +690,19 @@ type
 		launchAppParameters: AppParametersPtr;
 	end;
 {$elsec}
+<<<<<<< HEAD
 type
+=======
+type
+	LaunchParamBlockRecPtr = ^LaunchParamBlockRec;
+>>>>>>> graemeg/fixes_2_2
+=======
+type
+	LaunchParamBlockRecPtr = ^LaunchParamBlockRec;
+>>>>>>> origin/fixes_2_2
+=======
+type
+>>>>>>> origin/fixes_2.4
 	LaunchParamBlockRec = record
 		reserved1: UInt32;
 		reserved2: UInt16;
@@ -278,9 +717,21 @@ type
 		launchAvailableSize: UInt32;
 		launchAppParameters: AppParametersPtr;
 	end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {TARGET_CPU_64}
 	LaunchParamBlockRecPtr = ^LaunchParamBlockRec;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {TARGET_CPU_64}
+	LaunchParamBlockRecPtr = ^LaunchParamBlockRec;
+
+>>>>>>> origin/fixes_2.4
 type
 	LaunchPBPtr = LaunchParamBlockRecPtr;
 { Set launchBlockID to extendedBlock to specify that extensions exist.
@@ -313,8 +764,14 @@ type
 	ProcessApplicationTransformState = UInt32;
 const
 	kProcessTransformToForegroundApplication = 1;
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kProcessTransformToBackgroundApplication = 2; { functional in Mac OS X Barolo and later }
 	kProcessTransformToUIElementApplication = 4; { functional in Mac OS X Barolo and later }
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {
    Record returned by GetProcessInformation
@@ -338,6 +795,11 @@ const
     set.
     
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc TARGET_CPU_64}
 type
 	ProcessInfoRec = record
@@ -356,6 +818,13 @@ type
 		processAppRef: FSRefPtr;
 	end;
 {$elsec}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 type
 	ProcessInfoRec = record
 		processInfoLength: UInt32;
@@ -372,8 +841,19 @@ type
 		processActiveTime: UInt32;
 		processAppSpec: FSSpecPtr;
 	end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 	ProcessInfoRecPtr = ^ProcessInfoRec;
 {
     Some applications assumed the size of a ProcessInfoRec would never change,
@@ -397,6 +877,11 @@ type
     set.
     
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 {$ifc TARGET_CPU_64}
 type
 	ProcessInfoExtendedRec = record
@@ -417,6 +902,13 @@ type
 		processPurgeableTempMemTotal: UInt32;
 	end;
 {$elsec}
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 type
 	ProcessInfoExtendedRec = record
 		processInfoLength: UInt32;
@@ -435,8 +927,19 @@ type
 		processTempMemTotal: UInt32;
 		processPurgeableTempMemTotal: UInt32;
 	end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 	ProcessInfoExtendedRecPtr = ^ProcessInfoExtendedRec;
 { Record corresponding to the SIZE resource definition }
 type
@@ -482,9 +985,21 @@ const
 {
  *  LaunchApplication()
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
  *    CarbonLib:        in CarbonLib 1.0 and later
@@ -494,19 +1009,52 @@ function LaunchApplication( LaunchParams: LaunchPBPtr ): OSErr; external name '_
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  LaunchDeskAccessory()
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         not available [32-bit only]
+=======
+ *    Mac OS X:         not available
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         not available
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         not available [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  [Mac]GetCurrentProcess()
  *  
@@ -560,9 +1108,21 @@ function LaunchApplication( LaunchParams: LaunchPBPtr ): OSErr; external name '_
  *    or use it in an AppleEvent, you do need to get the canonical PSN
  *    with this routine.
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Parameters:
  *    
  *    PSN:
@@ -577,19 +1137,54 @@ function LaunchApplication( LaunchParams: LaunchPBPtr ): OSErr; external name '_
  *    CarbonLib:        in CarbonLib 1.0 and later
  *    Non-Carbon CFM:   in InterfaceLib 7.1 and later
  }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc TARGET_OS_MAC}
 function MacGetCurrentProcess( var PSN: ProcessSerialNumber ): OSErr; external name '_GetCurrentProcess';
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
 {$endc} {TARGET_OS_MAC}
 function GetCurrentProcess( var PSN: ProcessSerialNumber ): OSErr; external name '_GetCurrentProcess';
 (* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function GetCurrentProcess( var PSN: ProcessSerialNumber ): OSErr; external name '_GetCurrentProcess';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+function MacGetCurrentProcess( var PSN: ProcessSerialNumber ): OSErr; external name '_GetCurrentProcess';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc TARGET_OS_MAC}
+function MacGetCurrentProcess( var PSN: ProcessSerialNumber ): OSErr; external name '_GetCurrentProcess';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+{$endc} {TARGET_OS_MAC}
+function GetCurrentProcess( var PSN: ProcessSerialNumber ): OSErr; external name '_GetCurrentProcess';
+(* AVAILABLE_MAC_OS_X_VERSION_10_0_AND_LATER *)
+>>>>>>> origin/fixes_2.4
 
 {
  *  GetFrontProcess()
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
  *    CarbonLib:        in CarbonLib 1.0 and later
@@ -602,9 +1197,21 @@ function GetFrontProcess( var PSN: ProcessSerialNumber ): OSErr; external name '
 {
  *  GetNextProcess()
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
  *    CarbonLib:        in CarbonLib 1.0 and later
@@ -643,6 +1250,11 @@ function GetNextProcess( var PSN: ProcessSerialNumber ): OSErr; external name '_
  *    
  *    On Mac OS X, the processSize and processFreeMem fields are
  *    returned with the value 0.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *    
  *    On Mac OS X 10.6 and later, the processLaunchDate field is an
  *    integer value with the same scale as CFAbsoluteTime.  Prior
@@ -653,6 +1265,13 @@ function GetNextProcess( var PSN: ProcessSerialNumber ): OSErr; external name '_
  *  
  *  Mac OS X threading:
  *    Thread safe since version 10.3
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  
  *  Parameters:
  *    
@@ -680,9 +1299,21 @@ function GetProcessInformation( const (*var*) PSN: ProcessSerialNumber; var info
  *    process. This is intended to return a superset of the information
  *    returned by GetProcessInformation(), in more modern datatypes.
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Parameters:
  *    
  *    PSN:
@@ -706,7 +1337,19 @@ function GetProcessInformation( const (*var*) PSN: ProcessSerialNumber; var info
  *    loaded into an application's address space.  The assigned values
  *    at present are:  Mac OS Classic aplications have the value 0,
  *    Carbon applications have the value 2, Cocoa applications have the
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    value 3. Other undocumented values may also be returned.
+=======
+ *    value 4. Other undocumented values may also be returned.
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    value 4. Other undocumented values may also be returned.
+>>>>>>> origin/fixes_2_2
+=======
+ *    value 3. Other undocumented values may also be returned.
+>>>>>>> origin/fixes_2.4
  *     "Attributes"                CFNumber, kCFNumberSInt32 
  *     "ParentPSN" *               CFNumber, kCFNumberLongLong 
  *     "FileType" *                CFString, file type 
@@ -716,6 +1359,9 @@ function GetProcessInformation( const (*var*) PSN: ProcessSerialNumber; var info
  *    "LSUIElement"               CFBoolean 
  *    "IsHiddenAttr"              CFBoolean 
  *    "IsCheckedInAttr"           CFBoolean 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    "RequiresCarbon"            CFBoolean 
  *    "LSUserQuitOnly" *          CFBoolean 
  *    "LSUIPresentationMode"      CFNumber, kCFNumberShortType 
@@ -723,6 +1369,29 @@ function GetProcessInformation( const (*var*) PSN: ProcessSerialNumber; var info
  *    kCFBundleExecutableKey *    CFString 
  *    kCFBundleNameKey *          CFString 
  *    kCFBundleIdentifierKey *    CFString
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    "RequiresClassic"           CFBoolean 
+=======
+>>>>>>> origin/fixes_2.4
+ *    "RequiresCarbon"            CFBoolean 
+ *    "LSUserQuitOnly" *          CFBoolean 
+ *    "LSUIPresentationMode"      CFNumber, kCFNumberShortType 
+ *     "BundlePath" *              CFString 
+<<<<<<< HEAD
+ *    kIOBundleExecutableKey *    CFString 
+ *    kIOBundleNameKey *          CFString 
+ *    kIOBundleIdentifierKey *    CFString
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *    kCFBundleExecutableKey *    CFString 
+ *    kCFBundleNameKey *          CFString 
+ *    kCFBundleIdentifierKey *    CFString
+>>>>>>> origin/fixes_2.4
  *  
  *  Availability:
  *    Mac OS X:         in version 10.2 and later in ApplicationServices.framework
@@ -736,9 +1405,21 @@ function ProcessInformationCopyDictionary( const (*var*) PSN: ProcessSerialNumbe
 {
  *  SetFrontProcess()
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
  *    CarbonLib:        in CarbonLib 1.0 and later
@@ -759,7 +1440,17 @@ const
    * brought forward.
    }
 	kSetFrontProcessFrontWindowOnly = 1 shl 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kSetFrontProcessCausedByUser = 1 shl 1; {    indicates that direct user activity is causing this SetFrontProcessWithOptions() call }
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+	kSetFrontProcessCausedByUser = 1 shl 1; {    indicates that direct user activity is causing this SetFrontProcessWithOptions() call }
+>>>>>>> origin/fixes_2.4
 
 
 {
@@ -774,9 +1465,21 @@ const
  *    without bringing all of the process's windows forward (just the
  *    front window of the process will come forward).
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Parameters:
  *    
  *    inProcess:
@@ -800,9 +1503,21 @@ function SetFrontProcessWithOptions( const (*var*) inProcess: ProcessSerialNumbe
 {
  *  WakeUpProcess()
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
  *    CarbonLib:        in CarbonLib 1.0 and later
@@ -815,9 +1530,21 @@ function WakeUpProcess( const (*var*) PSN: ProcessSerialNumber ): OSErr; externa
 {
  *  SameProcess()
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
  *    CarbonLib:        in CarbonLib 1.0 and later
@@ -831,6 +1558,11 @@ function SameProcess( const (*var*) PSN1: ProcessSerialNumber; const (*var*) PSN
 {
  *  ExitToShell()
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
  *  Discussion:
  *    In general, you need to call ExitToShell only if you want your
  *    application to terminate without reaching the end of its main
@@ -842,6 +1574,13 @@ function SameProcess( const (*var*) PSN1: ProcessSerialNumber; const (*var*) PSN
  *    necessary, the Application Died Apple event is sent to the
  *    process that launched your application.
  *  
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
  *  Availability:
  *    Mac OS X:         in version 10.0 and later in ApplicationServices.framework
  *    CarbonLib:        in CarbonLib 1.0 and later
@@ -863,9 +1602,21 @@ procedure ExitToShell; external name '_ExitToShell';
  *    target application will be killed, even if this function returns
  *    noErr and seems to work.
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Parameters:
  *    
  *    inProcess:
@@ -887,19 +1638,52 @@ function KillProcess( const (*var*) inProcess: ProcessSerialNumber ): OSErr; ext
    LaunchControlPanel is similar to LaunchDeskAccessory, but for Control Panel files instead.
    It launches a control panel in an application shell maintained by the Process Manager.
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not TARGET_CPU_64}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifc not TARGET_CPU_64}
+>>>>>>> origin/fixes_2.4
 {
  *  LaunchControlPanel()
  *  
  *  Availability:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Mac OS X:         not available [32-bit only]
+=======
+ *    Mac OS X:         not available
+>>>>>>> graemeg/fixes_2_2
+=======
+ *    Mac OS X:         not available
+>>>>>>> origin/fixes_2_2
+=======
+ *    Mac OS X:         not available [32-bit only]
+>>>>>>> origin/fixes_2.4
  *    CarbonLib:        not available
  *    Non-Carbon CFM:   in InterfaceLib 9.0 and later
  }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {not TARGET_CPU_64}
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {not TARGET_CPU_64}
+
+>>>>>>> origin/fixes_2.4
 {
  *  GetProcessBundleLocation()
  *  
@@ -913,9 +1697,21 @@ function KillProcess( const (*var*) inProcess: ProcessSerialNumber ): OSErr; ext
  *    bundle, this will be the app bundle directory; otherwise it will
  *    be the location of the executable itself.
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Parameters:
  *    
  *    psn:
@@ -948,9 +1744,21 @@ function GetProcessBundleLocation( const (*var*) psn: ProcessSerialNumber; var l
  *    multi-lingual name, whereas previously only a mac-encoded string
  *    was possible.
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Parameters:
  *    
  *    psn:
@@ -981,9 +1789,21 @@ function CopyProcessName( const (*var*) psn: ProcessSerialNumber; var name: CFSt
  *    sense for Classic apps, since they all share a single UNIX
  *    process ID.
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Parameters:
  *    
  *    psn:
@@ -1013,9 +1833,21 @@ function GetProcessPID( const (*var*) psn: ProcessSerialNumber; var pid: pid_t )
  *    not make sense for Classic apps, since they all share a single
  *    UNIX process ID.
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Parameters:
  *    
  *    psn:
@@ -1046,9 +1878,21 @@ function GetProcessForPID( pid: pid_t; var psn: ProcessSerialNumber ): OSStatus;
  *    Given a psn, this call will return true or false depending on
  *    whether or not the process is currently visible.
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Parameters:
  *    
  *    psn:
@@ -1075,9 +1919,21 @@ function IsProcessVisible( const (*var*) psn: ProcessSerialNumber ): Boolean; ex
  *    or hide the process with the visible parameter. True passed into
  *    visible indicates you wish for the process to become visible.
  *  
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *  Mac OS X threading:
  *    Thread safe since version 10.3
  *  
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+>>>>>>> origin/fixes_2.4
  *  Parameters:
  *    
  *    psn:
@@ -1103,6 +1959,8 @@ function ShowHideProcess( const (*var*) psn: ProcessSerialNumber; visible: Boole
  *     The type is specified in the transformState parameter.
  *  
  *  Discussion:
+<<<<<<< HEAD
+<<<<<<< HEAD
  *    Given a psn for an application, this call transforms that
  *    application into the given type.  Foreground applications have a
  *    menu bar and appear in the Dock.  Background applications do not
@@ -1121,6 +1979,36 @@ function ShowHideProcess( const (*var*) psn: ProcessSerialNumber; visible: Boole
  *    the application after it is transformed into a foreground
  *    application. Applications can only transform themselves; this
  *    call cannot change the type of another application.
+ *  
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+ *  
+ *  Mac OS X threading:
+ *    Thread safe since version 10.3
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ *    Given a psn which is a background-only application, this call can
+ *    cause that application to be transformed into a foreground
+ *    application.  A background only application does not appear in
+ *    the Dock or in the Force Quit dialog, and never has a menu bar or
+ *    is frontmost, while a foreground application does appear in the
+ *    Dock and Force Quit dialog and does have a menu bar.  This call
+ *    does not cause the application to be brought to the front ( use
+ *    SetFrontProcess for that ).
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  *  
  *  Mac OS X threading:
  *    Thread safe since version 10.3
@@ -1170,8 +2058,28 @@ const
 { Control Panel Default Proc }
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endc} {TARGET_OS_MAC}
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
 
 end.
 {$endc} {not MACOSALLINCLUDE}
+=======
+
+
+end.
+>>>>>>> graemeg/fixes_2_2
+=======
+
+
+end.
+>>>>>>> origin/fixes_2_2
+=======
+{$endc} {TARGET_OS_MAC}
+{$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
+
+end.
+{$endc} {not MACOSALLINCLUDE}
+>>>>>>> origin/fixes_2.4

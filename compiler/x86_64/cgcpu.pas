@@ -35,10 +35,24 @@ unit cgcpu;
     type
       tcgx86_64 = class(tcgx86)
         procedure init_register_allocators;override;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        procedure done_register_allocators;override;
+
+        procedure g_proc_exit(list : TAsmList;parasize:longint;nostackframe:boolean);override;
+        procedure g_intf_wrapper(list: TAsmList; procdef: tprocdef; const labelname: string; ioffset: longint);override;
+>>>>>>> graemeg/fixes_2_2
 
         procedure a_loadfpu_ref_cgpara(list: TAsmList; size: tcgsize; const ref: treference; const cgpara: TCGPara); override;
         procedure a_loadfpu_reg_ref(list: TAsmList; fromsize, tosize: tcgsize; reg: tregister; const ref: treference); override;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         procedure g_proc_entry(list : TAsmList;localsize:longint; nostackframe:boolean);override;
         procedure g_proc_exit(list : TAsmList;parasize:longint;nostackframe:boolean);override;
         procedure g_local_unwind(list: TAsmList; l: TAsmLabel);override;
@@ -50,6 +64,22 @@ unit cgcpu;
       private
         function use_push: boolean;
         function saved_xmm_reg_size: longint;
+=======
+        procedure a_loadmm_intreg_reg(list: TAsmList; fromsize, tosize : tcgsize;intreg, mmreg: tregister; shuffle: pmmshuffle); override;
+        procedure a_loadmm_reg_intreg(list: TAsmList; fromsize, tosize : tcgsize;mmreg, intreg: tregister;shuffle : pmmshuffle); override;
+>>>>>>> graemeg/cpstrnew
+=======
+        procedure a_loadmm_intreg_reg(list: TAsmList; fromsize, tosize : tcgsize;intreg, mmreg: tregister; shuffle: pmmshuffle); override;
+        procedure a_loadmm_reg_intreg(list: TAsmList; fromsize, tosize : tcgsize;mmreg, intreg: tregister;shuffle : pmmshuffle); override;
+>>>>>>> graemeg/cpstrnew
+=======
+        procedure a_loadmm_intreg_reg(list: TAsmList; fromsize, tosize : tcgsize;intreg, mmreg: tregister; shuffle: pmmshuffle); override;
+        procedure a_loadmm_reg_intreg(list: TAsmList; fromsize, tosize : tcgsize;mmreg, intreg: tregister;shuffle : pmmshuffle); override;
+>>>>>>> graemeg/cpstrnew
+=======
+        procedure a_loadmm_intreg_reg(list: TAsmList; fromsize, tosize : tcgsize;intreg, mmreg: tregister; shuffle: pmmshuffle); override;
+        procedure a_loadmm_reg_intreg(list: TAsmList; fromsize, tosize : tcgsize;mmreg, intreg: tregister;shuffle : pmmshuffle); override;
+>>>>>>> origin/cpstrnew
       end;
 
     procedure create_codegen;
@@ -77,14 +107,23 @@ unit cgcpu;
 
         if (length(saved_standard_registers)<>saved_regs_length[target_info.system=system_x86_64_win64]) then
           begin
+<<<<<<< HEAD
             if target_info.system=system_x86_64_win64 then
               begin
                 SetLength(saved_standard_registers,Length(win64_saved_std_regs));
                 SetLength(saved_mm_registers,Length(win64_saved_xmm_regs));
+=======
+            SetLength(saved_standard_registers,Length(win64_saved_std_regs));
+            SetLength(saved_mm_registers,Length(win64_saved_xmm_regs));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
                 for i:=low(win64_saved_std_regs) to high(win64_saved_std_regs) do
                   saved_standard_registers[i]:=win64_saved_std_regs[i];
 
+<<<<<<< HEAD
                 for i:=low(win64_saved_xmm_regs) to high(win64_saved_xmm_regs) do
                   saved_mm_registers[i]:=win64_saved_xmm_regs[i];
               end
@@ -92,11 +131,24 @@ unit cgcpu;
               begin
                 SetLength(saved_standard_registers,Length(others_saved_std_regs));
                 SetLength(saved_mm_registers,0);
+=======
+            for i:=low(win64_saved_xmm_regs) to high(win64_saved_xmm_regs) do
+              saved_mm_registers[i]:=win64_saved_xmm_regs[i];
+          end
+        else
+          begin
+            SetLength(saved_standard_registers,Length(others_saved_std_regs));
+            SetLength(saved_mm_registers,0);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
                 for i:=low(others_saved_std_regs) to high(others_saved_std_regs) do
                   saved_standard_registers[i]:=others_saved_std_regs[i];
               end;
           end;
+<<<<<<< HEAD
         if target_info.system=system_x86_64_win64 then
           begin
             if (cs_userbp in current_settings.optimizerswitches) and assigned(current_procinfo) and (current_procinfo.framepointer=NR_STACK_POINTER_REG) then
@@ -108,9 +160,36 @@ unit cgcpu;
               rg[R_INTREGISTER]:=trgcpu.create(R_INTREGISTER,R_SUBWHOLE,[RS_RAX,RS_RDX,RS_RCX,RS_R8,RS_R9,RS_R10,
                 RS_R11,RS_RBX,RS_RSI,RS_RDI,RS_R12,RS_R13,RS_R14,RS_R15],first_int_imreg,[])
           end
+=======
+        if assigned(current_procinfo) then
+          framepointer:=getsupreg(current_procinfo.framepointer)
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         else
+<<<<<<< HEAD
           rg[R_INTREGISTER]:=trgcpu.create(R_INTREGISTER,R_SUBWHOLE,[RS_RAX,RS_RDX,RS_RCX,RS_RSI,RS_RDI,RS_R8,
             RS_R9,RS_R10,RS_R11,RS_RBX,RS_R12,RS_R13,RS_R14,RS_R15],first_int_imreg,[]);
+=======
+          { in intf. wrapper code generation }
+          framepointer:=RS_FRAME_POINTER_REG;
+        if target_info.system=system_x86_64_win64 then
+          rg[R_INTREGISTER]:=trgcpu.create(R_INTREGISTER,R_SUBWHOLE,[RS_RAX,RS_RDX,RS_RCX,RS_R8,RS_R9,RS_R10,
+            RS_R11,RS_RBX,RS_RSI,RS_RDI,RS_R12,RS_R13,RS_R14,RS_R15],first_int_imreg,[framepointer])
+        else
+          rg[R_INTREGISTER]:=trgcpu.create(R_INTREGISTER,R_SUBWHOLE,[RS_RAX,RS_RDX,RS_RCX,RS_RSI,RS_RDI,RS_R8,
+            RS_R9,RS_R10,RS_R11,RS_RBX,RS_R12,RS_R13,RS_R14,RS_R15],first_int_imreg,[framepointer]);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
         rg[R_MMREGISTER]:=trgcpu.create(R_MMREGISTER,R_SUBWHOLE,[RS_XMM0,RS_XMM1,RS_XMM2,RS_XMM3,RS_XMM4,RS_XMM5,RS_XMM6,RS_XMM7,
           RS_XMM8,RS_XMM9,RS_XMM10,RS_XMM11,RS_XMM12,RS_XMM13,RS_XMM14,RS_XMM15],first_mm_imreg,[]);
@@ -118,6 +197,8 @@ unit cgcpu;
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure tcgx86_64.a_loadfpu_ref_cgpara(list: TAsmList; size: tcgsize; const ref: treference; const cgpara: TCGPara);
       begin
         { a record containing an extended value is returned on the x87 stack
@@ -132,6 +213,9 @@ unit cgcpu;
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure tcgx86_64.a_loadfpu_reg_ref(list: TAsmList; fromsize, tosize: tcgsize; reg: tregister; const ref: treference);
       begin
         { same as with a_loadfpu_ref_cgpara() above, but on the callee side
@@ -149,6 +233,7 @@ unit cgcpu;
       end;
 
 
+<<<<<<< HEAD
     function tcgx86_64.saved_xmm_reg_size: longint;
       var
         i: longint;
@@ -314,6 +399,50 @@ unit cgcpu;
           begin
             for r:=low(saved_standard_registers) to high(saved_standard_registers) do
               if saved_standard_registers[r] in rg[R_INTREGISTER].used_in_proc then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    procedure Tcgx86_64.done_register_allocators;
+      begin
+        inherited done_register_allocators;
+        setlength(saved_standard_registers,0);
+        setlength(saved_mm_registers,0);
+      end;
+
+
+    procedure tcgx86_64.a_param_ref(list : TAsmList;size : tcgsize;const r : treference;const paraloc : TCGPara);
+      var
+        tmpref, ref: treference;
+        location: pcgparalocation;
+        sizeleft: aint;
+        sourcesize: tcgsize;
+      begin
+        location := paraloc.location;
+        tmpref := r;
+        { make sure we handle passing a 32 bit value in memory to a }
+        { 64 bit register location etc. correctly                   }
+        if (size<>OS_NO) and
+           (tcgsize2size[size]<paraloc.intsize) then
+          begin
+            paraloc.check_simple_location;
+            if not(location^.loc in [LOC_REGISTER,LOC_CREGISTER]) then
+              internalerror(2008031801);
+            sizeleft:=tcgsize2size[size]
+          end
+        else
+          sizeleft:=paraloc.intsize;
+        while assigned(location) do
+          begin
+            case location^.loc of
+              LOC_REGISTER,LOC_CREGISTER:
+                begin
+                  sourcesize:=int_cgsize(sizeleft);
+                  if (sourcesize=OS_NO) then
+                    sourcesize:=location^.size;
+                  a_load_ref_reg(list,sourcesize,location^.size,tmpref,location^.register);
+                end;
+              LOC_REFERENCE:
+>>>>>>> graemeg/fixes_2_2
                 begin
                   templist.concat(cai_seh_directive.create_reg_offset(ash_savereg,
                     newreg(R_INTREGISTER,saved_standard_registers[r],R_SUBWHOLE),
@@ -347,6 +476,14 @@ unit cgcpu;
       end;
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     procedure tcgx86_64.g_proc_exit(list : TAsmList;parasize:longint;nostackframe:boolean);
 
       procedure increase_sp(a : tcgint);
@@ -372,6 +509,7 @@ unit cgcpu;
           begin
             if use_push then
               begin
+<<<<<<< HEAD
                 if (saved_xmm_reg_size<>0) then
                   begin
                     href:=current_procinfo.save_regs_ref;
@@ -402,6 +540,26 @@ unit cgcpu;
                 reference_reset_base(href,current_procinfo.framepointer,0,sizeof(pint));
                 list.concat(Taicpu.op_ref_reg(A_LEA,tcgsize2opsize[OS_ADDR],href,NR_STACK_POINTER_REG));
                 list.concat(Taicpu.op_reg(A_POP,tcgsize2opsize[OS_ADDR],current_procinfo.framepointer));
+=======
+                stacksize:=current_procinfo.calc_stackframe_size;
+<<<<<<< HEAD
+<<<<<<< HEAD
+                if (target_info.system in systems_need_16_byte_stack_alignment) and
+=======
+                if (target_info.system in [system_x86_64_win64,system_x86_64_linux,system_x86_64_freebsd]) and
+>>>>>>> graemeg/fixes_2_2
+=======
+                if (target_info.system in [system_x86_64_win64,system_x86_64_linux,system_x86_64_freebsd]) and
+>>>>>>> origin/fixes_2_2
+                   ((stacksize <> 0) or
+                    (pi_do_call in current_procinfo.flags) or
+                    { can't detect if a call in this case -> use nostackframe }
+                    { if you (think you) know what you are doing              }
+                    (po_assembler in current_procinfo.procdef.procoptions)) then
+                  stacksize := align(stacksize+sizeof(aint),16) - sizeof(aint);
+                if (stacksize<>0) then
+                  cg.a_op_const_reg(list,OP_ADD,OS_ADDR,stacksize,current_procinfo.framepointer);
+>>>>>>> graemeg/cpstrnew
               end
             else
               generate_leave(list);
@@ -419,17 +577,67 @@ unit cgcpu;
 
     procedure tcgx86_64.g_save_registers(list: TAsmList);
       begin
+<<<<<<< HEAD
         if (not use_push) then
           inherited g_save_registers(list);
       end;
+=======
+        if not(procdef.proctypeoption in [potype_function,potype_procedure]) then
+          Internalerror(200006137);
+        if not assigned(procdef.struct) or
+           (procdef.procoptions*[po_classmethod, po_staticmethod,
+             po_methodpointer, po_interrupt, po_iocheck]<>[]) then
+          Internalerror(200006138);
+        if procdef.owner.symtabletype<>ObjectSymtable then
+          Internalerror(200109191);
+
+        make_global:=false;
+        if (not current_module.is_unit) or
+           (procdef.owner.defowner.owner.symtabletype=globalsymtable) then
+          make_global:=true;
+
+        if make_global then
+          List.concat(Tai_symbol.Createname_global(labelname,AT_FUNCTION,0))
+        else
+          List.concat(Tai_symbol.Createname(labelname,AT_FUNCTION,0));
+>>>>>>> graemeg/cpstrnew
 
 
+<<<<<<< HEAD
     procedure tcgx86_64.g_restore_registers(list: TAsmList);
       begin
         if (not use_push) then
           inherited g_restore_registers(list);
       end;
 
+=======
+        if po_virtualmethod in procdef.procoptions then
+          begin
+            if (procdef.extnumber=$ffff) then
+              Internalerror(200006139);
+            { load vmt from first paramter }
+            { win64 uses a different abi }
+            if target_info.system=system_x86_64_win64 then
+              reference_reset_base(href,NR_RCX,0,sizeof(pint))
+            else
+              reference_reset_base(href,NR_RDI,0,sizeof(pint));
+            cg.a_load_ref_reg(list,OS_ADDR,OS_ADDR,href,NR_RAX);
+            { jmp *vmtoffs(%eax) ; method offs }
+            reference_reset_base(href,NR_RAX,tobjectdef(procdef.struct).vmtmethodoffset(procdef.extnumber),sizeof(pint));
+            list.concat(taicpu.op_ref_reg(A_MOV,S_Q,href,NR_RAX));
+            list.concat(taicpu.op_reg(A_JMP,S_Q,NR_RAX));
+          end
+        else
+          begin
+            sym:=current_asmdata.RefAsmSymbol(procdef.mangledname);
+            reference_reset_symbol(r,sym,0,sizeof(pint));
+            if (cs_create_pic in current_settings.moduleswitches) and
+               { darwin/x86_64's assembler doesn't want @PLT after call symbols }
+               (target_info.system<>system_x86_64_darwin) then
+              r.refaddr:=addr_pic
+            else
+              r.refaddr:=addr_full;
+>>>>>>> graemeg/cpstrnew
 
     procedure tcgx86_64.g_local_unwind(list: TAsmList; l: TAsmLabel);
       var
@@ -483,6 +691,51 @@ unit cgcpu;
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    procedure tcgx86_64.a_loadmm_intreg_reg(list: TAsmList; fromsize, tosize : tcgsize; intreg, mmreg: tregister; shuffle: pmmshuffle);
+      var
+        opc: tasmop;
+      begin
+        { this code can only be used to transfer raw data, not to perform
+          conversions }
+        if (tcgsize2size[fromsize]<>tcgsize2size[tosize]) or
+           not(tosize in [OS_F32,OS_F64,OS_M64]) then
+          internalerror(2009112505);
+        case fromsize of
+          OS_32,OS_S32:
+            opc:=A_MOVD;
+          OS_64,OS_S64:
+            opc:=A_MOVQ;
+          else
+            internalerror(2009112506);
+        end;
+        if assigned(shuffle) and
+           not shufflescalar(shuffle) then
+          internalerror(2009112517);
+        list.concat(taicpu.op_reg_reg(opc,S_NO,intreg,mmreg));
+      end;
+
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     procedure tcgx86_64.a_loadmm_reg_intreg(list: TAsmList; fromsize, tosize : tcgsize; mmreg, intreg: tregister;shuffle : pmmshuffle);
       var
         opc: tasmop;
@@ -507,10 +760,30 @@ unit cgcpu;
       end;
 
 
+<<<<<<< HEAD
     procedure create_codegen;
       begin
         cg:=tcgx86_64.create;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         cg128:=tcg128.create;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
+=======
+begin
+  cg:=tcgx86_64.create;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.

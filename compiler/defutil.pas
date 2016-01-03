@@ -26,8 +26,23 @@ unit defutil;
 interface
 
     uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        globtype,globals,constexp,
        symconst,symtype,symdef,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+       cclasses,
+       globtype,globals,constexp,node,
+       symconst,symbase,symtype,symdef,
+>>>>>>> graemeg/cpstrnew
        cgbase,cpubase;
 
     type
@@ -45,6 +60,10 @@ interface
     {# Returns true, if definition defines a string type }
     function is_string(def : tdef): boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     {# Returns True, if definition defines a type that behaves like a string,
        namely that can be joined and compared with another string-like type }
     function is_stringlike(def : tdef) : boolean;
@@ -55,6 +74,14 @@ interface
     {# Returns True, if definition defines a set type }
     function is_set(def : tdef) : boolean;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     {# Returns the minimal integer value of the type }
     function get_min_value(def : tdef) : TConstExprInt;
 
@@ -255,6 +282,8 @@ interface
     {# Returns true, if def is a 64 bit type }
     function is_64bit(def : tdef) : boolean;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     { true, if def is an int type, larger than the processor's native int size }
     function is_oversizedint(def : tdef) : boolean;
 
@@ -277,6 +306,18 @@ interface
       the value is placed within the range
     }
     procedure testrange(todef : tdef;var l : tconstexprint;explicit,forcerangecheck:boolean);
+=======
+    {# If @var(l) isn't in the range of todef a range check error (if not explicit) is generated and
+      the value is placed within the range
+    }
+    procedure testrange(fromdef, todef : tdef;var l : tconstexprint;explicit:boolean);
+>>>>>>> graemeg/fixes_2_2
+=======
+    {# If @var(l) isn't in the range of todef a range check error (if not explicit) is generated and
+      the value is placed within the range
+    }
+    procedure testrange(fromdef, todef : tdef;var l : tconstexprint;explicit:boolean);
+>>>>>>> origin/fixes_2_2
 
     {# Returns the range of def, where @var(l) is the low-range and @var(h) is
       the high-range.
@@ -306,9 +347,15 @@ interface
        vectors and return OS_M* sizes for them }
     function def_cgmmsize(def: tdef): tcgsize;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     {# returns true, if the type passed is can be used with windows automation }
     function is_automatable(p : tdef) : boolean;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     { # returns true if the procdef has no parameters and no specified return type }
     function is_bareprocdef(pd : tprocdef): boolean;
 
@@ -325,6 +372,10 @@ interface
         or not }
     function is_nested_pd(def: tabstractprocdef): boolean;{$ifdef USEINLINE}inline;{$endif}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     { # returns whether def is a type parameter of a generic }
     function is_typeparam(def : tdef) : boolean;{$ifdef USEINLINE}inline;{$endif}
 
@@ -334,6 +385,14 @@ interface
     { returns true if def is a C "block" }
     function is_block(def: tdef): boolean;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 implementation
 
     uses
@@ -478,6 +537,10 @@ implementation
         is_string := (assigned(def) and (def.typ = stringdef));
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function is_stringlike(def : tdef) : boolean;
       begin
         result := is_string(def) or
@@ -500,6 +563,14 @@ implementation
       begin
         result:=def.typ=setdef;
       end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     { returns the min. value of the type }
     function get_min_value(def : tdef) : TConstExprInt;
@@ -619,16 +690,39 @@ implementation
            end;
          case def_from.typ of
            orddef:
+<<<<<<< HEAD
+<<<<<<< HEAD
              is_in_limit:=(torddef(def_from).low>=torddef(def_to).low) and
                           (torddef(def_from).high<=torddef(def_to).high);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+             begin
+               fromqword := torddef(def_from).ordtype = u64bit;
+               toqword := torddef(def_to).ordtype = u64bit;
+               is_in_limit:=(toqword and is_signed(def_from)) or
+                            ((not fromqword) and
+                             (torddef(def_from).low>=torddef(def_to).low) and
+                             (torddef(def_from).high<=torddef(def_to).high));
+             end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
            enumdef:
              is_in_limit:=(tenumdef(def_from).min>=tenumdef(def_to).min) and
                           (tenumdef(def_from).max<=tenumdef(def_to).max);
            setdef:
              is_in_limit:=(tsetdef(def_from).setbase>=tsetdef(def_to).setbase) and
                           (tsetdef(def_from).setmax<=tsetdef(def_to).setmax);
+<<<<<<< HEAD
+<<<<<<< HEAD
          else
            is_in_limit:=false;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
          end;
       end;
 
@@ -636,6 +730,10 @@ implementation
     function is_managed_type(def: tdef): boolean;{$ifdef USEINLINE}inline;{$endif}
       begin
         result:=def.needs_inittable;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       end;
 
 
@@ -649,6 +747,14 @@ implementation
             (tstringdef(def).stringtype in [st_ansistring,st_widestring,st_unicodestring])
           )
         );
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -938,6 +1044,7 @@ implementation
       end;
 
 
+<<<<<<< HEAD
     { true, if def is an int type, equal in size to the processor's native int size }
     function is_nativeint(def: tdef): boolean;
       begin
@@ -972,6 +1079,7 @@ implementation
          result:=is_nativeint(def) and (def.typ=orddef) and (torddef(def).ordtype in [u64bit,u32bit,u16bit,u8bit]);
       end;
 
+<<<<<<< HEAD
     { true, if def is a signed int type, equal in size to the processor's native int size }
     function is_nativesint(def: tdef): boolean;
       begin
@@ -981,11 +1089,23 @@ implementation
     { if l isn't in the range of todef a range check error (if not explicit) is generated and
       the value is placed within the range }
     procedure testrange(todef : tdef;var l : tconstexprint;explicit,forcerangecheck:boolean);
+=======
+    { if l isn't in the range of todef a range check error (if not explicit) is generated and
+      the value is placed within the range }
+    procedure testrange(fromdef, todef : tdef;var l : tconstexprint;explicit:boolean);
+>>>>>>> graemeg/fixes_2_2
+=======
+    { if l isn't in the range of todef a range check error (if not explicit) is generated and
+      the value is placed within the range }
+    procedure testrange(fromdef, todef : tdef;var l : tconstexprint;explicit:boolean);
+>>>>>>> origin/fixes_2_2
       var
          lv,hv: TConstExprInt;
       begin
          { for 64 bit types we need only to check if it is less than }
          { zero, if def is a qword node                              }
+<<<<<<< HEAD
+<<<<<<< HEAD
          getrange(todef,lv,hv);
          if (l<lv) or (l>hv) then
            begin
@@ -997,10 +1117,70 @@ implementation
                      not(m_delphi in current_settings.modeswitches)) or
                     (cs_check_range in current_settings.localswitches) or
                     forcerangecheck then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                    Message3(type_e_range_check_error_bounds,tostr(l),tostr(lv),tostr(hv))
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                   Message(parser_e_range_check_error)
+>>>>>>> graemeg/cpstrnew
                  else
                    Message3(type_w_range_check_error_bounds,tostr(l),tostr(lv),tostr(hv));
                end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+         if is_64bitint(todef) then
+           begin
+              if (l<0) and
+                 (torddef(todef).ordtype=u64bit) and
+                 { since tconstexprint is an int64, values > high(int64) will }
+                 { always be stored as negative numbers                       }
+                 (not is_64bitint(fromdef) or
+                  (torddef(fromdef).ordtype<>u64bit)) then
+                begin
+                   { don't zero the result, because it may come from hex notation
+                     like $ffffffffffffffff! (JM)
+                   l:=0; }
+                   if not explicit then
+                    begin
+                      if (cs_check_range in current_settings.localswitches) then
+                        Message(parser_e_range_check_error)
+                      else
+                        Message(parser_w_range_check_error);
+                    end;
+                   error := true;
+                end;
+           end
+         else
+           begin
+              getrange(todef,lv,hv);
+              if (l<lv) or (l>hv) then
+                begin
+                   if not explicit then
+                    begin
+                      if ((todef.typ=enumdef) and
+                          { delphi allows range check errors in
+                           enumeration type casts FK }
+                          not(m_delphi in current_settings.modeswitches)) or
+                         (cs_check_range in current_settings.localswitches) then
+                        Message(parser_e_range_check_error)
+                      else
+                        Message(parser_w_range_check_error);
+                    end;
+                   error := true;
+                end;
+           end;
+         if error then
+          begin
+>>>>>>> graemeg/fixes_2_2
              { Fix the value to fit in the allocated space for this type of variable }
              case longint(todef.size) of
                1: l := l and $ff;
@@ -1013,9 +1193,18 @@ implementation
              if is_signed(todef) then
               begin
                 case longint(todef.size) of
+<<<<<<< HEAD
+<<<<<<< HEAD
                   1: l.svalue := shortint(l.svalue);
                   2: l.svalue := smallint(l.svalue);
                   4: l.svalue := longint(l.svalue);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                  1: l := shortint(l);
+                  2: l := smallint(l);
+                  4: l := longint(l);
+>>>>>>> graemeg/fixes_2_2
                 end;
                 l.signed:=true;
               end;
@@ -1208,19 +1397,73 @@ implementation
           classrefdef,
           pointerdef:
             begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               result:=int_cgsize(def.size);
               { can happen for far/huge pointers on non-i8086 }
               if result=OS_NO then
                 internalerror(2013052201);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+              if not tprocvardef(def).is_addressonly then
+                {$if sizeof(pint) = 4}
+                  result:=OS_64
+                {$else} {$if sizeof(pint) = 8}
+                  result:=OS_128
+                {$else}
+                  internalerror(200707141)
+                {$endif} {$endif}
+              else
+                result:=OS_ADDR;
+>>>>>>> graemeg/cpstrnew
+=======
+              if tprocvardef(def).is_methodpointer and
+                 (not tprocvardef(def).is_addressonly) then
+                if (sizeof(aint) = 4) then
+                  result:=OS_64
+                else if (sizeof(aint) = 8) then
+                  result:=OS_128
+                else
+                  internalerror(200707141)
+              else
+                result:=OS_ADDR;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
             end;
           formaldef:
             result := int_cgsize(voidpointertype.size);
           procvardef:
             result:=int_cgsize(def.size);
           stringdef :
+<<<<<<< HEAD
             result:=int_cgsize(def.size);
           objectdef :
             result:=int_cgsize(def.size);
+=======
+            begin
+              if is_ansistring(def) or is_wide_or_unicode_string(def) then
+                result := OS_ADDR
+              else
+                result:=int_cgsize(def.size);
+            end;
+          objectdef :
+            begin
+              if is_implicit_pointer_object_type(def) then
+                result := OS_ADDR
+              else
+                result:=int_cgsize(def.size);
+            end;
+>>>>>>> graemeg/cpstrnew
           floatdef:
             if cs_fp_emulation in current_settings.moduleswitches then
               result:=int_cgsize(def.size)
@@ -1243,6 +1486,10 @@ implementation
         end;
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function cgsize_orddef(size: tcgsize): torddef;
       begin
         case size of
@@ -1297,6 +1544,14 @@ implementation
         end;
       end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     { In Windows 95 era, ordinals were restricted to [u8bit,s32bit,s16bit,bool16bit]
       As of today, both signed and unsigned types from 8 to 64 bits are supported. }
     function is_automatable(p : tdef) : boolean;
@@ -1305,7 +1560,23 @@ implementation
         case p.typ of
           orddef:
             result:=torddef(p).ordtype in [u8bit,s8bit,u16bit,s16bit,u32bit,s32bit,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               u64bit,s64bit,bool16bit,scurrency];
+=======
+              u64bit,s64bit,bool16bit];
+>>>>>>> graemeg/cpstrnew
+=======
+              u64bit,s64bit,bool16bit];
+>>>>>>> graemeg/cpstrnew
+=======
+              u64bit,s64bit,bool16bit];
+>>>>>>> graemeg/cpstrnew
+=======
+              u64bit,s64bit,bool16bit];
+>>>>>>> origin/cpstrnew
           floatdef:
             result:=tfloatdef(p).floattype in [s64currency,s64real,s32real];
           stringdef:
@@ -1319,8 +1590,10 @@ implementation
 
 
     {# returns true, if the type passed is a varset }
+<<<<<<< HEAD
     function is_smallset(p : tdef) : boolean;
       begin
+<<<<<<< HEAD
         {$if defined(cpu8bitalu)}
           result:=(p.typ=setdef) and (p.size = 1)
         {$elseif defined(cpu16bitalu)}
@@ -1328,6 +1601,14 @@ implementation
         {$else}
           result:=(p.typ=setdef) and (p.size in [1,2,4])
         {$endif}
+=======
+    function is_varset(p : tdef) : boolean;
+      begin
+        result:=(p.typ=setdef) and not(p.size in [1,2,4])
+>>>>>>> graemeg/fixes_2_2
+=======
+        result:=(p.typ=setdef) and not(p.size in [1,2,4])
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -1343,8 +1624,35 @@ implementation
       var
         llow, lhigh: tconstexprint;
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         llow:=min(ld.low,rd.low);
         lhigh:=max(ld.high,rd.high);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        llow:=rd.low;
+        if llow<ld.low then
+          llow:=ld.low;
+        lhigh:=rd.high;
+        if lhigh<ld.high then
+          lhigh:=ld.high;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         case range_to_basetype(llow,lhigh) of
           s8bit:
             result:=torddef(s8inttype);
@@ -1406,6 +1714,10 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function is_typeparam(def : tdef) : boolean;{$ifdef USEINLINE}inline;{$endif}
       begin
         result:=(def.typ=undefineddef);
@@ -1423,4 +1735,12 @@ implementation
         result:=(def.typ=procvardef) and (po_is_block in tprocvardef(def).procoptions)
       end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 end.

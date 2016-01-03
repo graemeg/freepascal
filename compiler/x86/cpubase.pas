@@ -542,7 +542,14 @@ implementation
       begin
         if getregtype(r) in [R_MMREGISTER,R_MMXREGISTER] then
           r:=newreg(getregtype(r),getsupreg(r),R_SUBNONE);
+<<<<<<< HEAD
+<<<<<<< HEAD
         p:=findreg_by_number(r);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        p:=findreg_by_number_table(r,regnumber_index);
+>>>>>>> graemeg/fixes_2_2
         if p<>0 then
           result:=std_regname_table[p]
         else

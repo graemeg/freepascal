@@ -21,12 +21,37 @@ Type TGrpArr = Array [0..0] of TGid;            { C style array workarounds}
 // if you are looking for macro definitions or non C template overloaded versions, they are moved to bunxovlh.inc
 
     Function  FpSigProcMask  (how : cInt; nset : pSigSet; oset : pSigSet): cInt; external name 'FPC_SYSC_SIGPROCMASK';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Function  FpSigProcMask  (how : cInt; constref nset : TSigSet; var oset : TSigSet): cInt; external name 'FPC_SYSC_SIGPROCMASK';
     Function  FpSigPending   (var nset : TSigSet): cInt;
     Function  FpSigSuspend   (Const sigmask : TSigSet): cInt;
 {$ifndef FPC_SYS_SIGTIMEDWAIT_UNAVAILABLE}
     Function  FpSigTimedWait (Const sigset : TSigSet; info : Psiginfo; timeout:Ptimespec): cInt;
 {$endif ndef FPC_SYS_SIGTIMEDWAIT_UNAVAILABLE}
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    Function  FpSigProcMask  (how : cInt; Const nset : TSigSet; var oset : TSigSet): cInt; external name 'FPC_SYSC_SIGPROCMASK';
+    Function  FpSigPending   (var nset : TSigSet): cInt;
+    Function  FpSigSuspend   (Const sigmask : TSigSet): cInt;
+    Function  FpSigTimedWait (Const sigset : TSigSet; info : Psiginfo; timeout:Ptimespec): cInt;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
     Function  FpUmask      (cmask : TMode): TMode;
     Function  FpLink       (existing : pChar; newone : pChar): cInt;
@@ -94,7 +119,13 @@ Type TGrpArr = Array [0..0] of TGid;            { C style array workarounds}
     Function  FpFtruncate  (fd : cInt; flength : TOff): cInt;  external name 'FPC_SYSC_FTRUNCATE';
     Function  FPSigaction  (sig: cInt; act : pSigActionRec; oact : pSigActionRec): cint;  external name 'FPC_SYSC_SIGACTION';
     Function  FPSelect     (N:cint;readfds,writefds,exceptfds:pfdSet;TimeOut:PTimeVal):cint;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Function  FpPoll       (fds: ppollfd; nfds: cuint; timeout: clong): cint;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Function  FpIOCtl      (Handle:cint;Ndx: TIOCtlRequest; Data: Pointer):cint; external name  'FPC_SYSC_IOCTL';
     Function  FpNanoSleep  (req : ptimespec;rem : ptimespec):cint; external name 'FPC_SYSC_NANOSLEEP';
     Function  fpLstat(path:pchar;Info:pstat):cint;

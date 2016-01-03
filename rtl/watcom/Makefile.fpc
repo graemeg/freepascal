@@ -8,6 +8,11 @@ main=rtl
 [target]
 loaders=prt0
 #exceptn fpu
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=system uuchar objpas macpas iso7185 extpas strings watcom dos \
       cpu charset cpall types getopts heaptrc lnfodwrf lineinfo ctypes fgl \
       math typinfo mmx \
@@ -15,6 +20,31 @@ units=system uuchar objpas macpas iso7185 extpas strings watcom dos \
 implicitunits=exeinfo \
       cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+units=system objpas macpas iso7185 strings watcom dos crt objects \
+=======
+units=system objpas macpas strings watcom dos crt objects \
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+      cpu charset types getopts heaptrc lnfodwrf lineinfo ctypes fgl \
+      math typinfo mmx ucomplex \
+      varutils variants sysutils
+implicitunits=exeinfo
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 # dpmiexcp initc ports profile dxeload emu387 \
 # printer graph classes \
@@ -178,6 +208,21 @@ rtlconst$(PPUEXT) : $(OBJPASDIR)/rtlconst.pp
         $(COMPILER) -Fi$(OBJPASDIR) $(OBJPASDIR)/rtlconst.pp
 sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT)
         $(COMPILER) $(OBJPASDIR)/sysconst.pp
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+dateutil$(PPUEXT) : $(OBJPASDIR)/dateutil.pp
+        $(COMPILER) -Fi$(OBJPASDIR) $(OBJPASDIR)/dateutil.pp
+convutil$(PPUEXT) : $(OBJPASDIR)/convutil.pp
+        $(COMPILER) -Fi$(OBJPASDIR) $(OBJPASDIR)/convutil.pp
+strutils$(PPUEXT) : $(OBJPASDIR)/strutils.pp
+        $(COMPILER) $(OBJPASDIR)/strutils.pp
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 #
 # Mac Pascal Model

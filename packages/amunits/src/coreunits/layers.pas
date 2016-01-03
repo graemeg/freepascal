@@ -31,12 +31,16 @@
 
     nils.sjoholm@mailbox.swipnet.se
 }
-{$PACKRECORDS 2}
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
 
 UNIT layers;
 
 INTERFACE
-USES exec, agraphics, utility;
+USES exec, graphics, utility;
 
 const
 
@@ -86,38 +90,38 @@ const
 
 VAR LayersBase : pLibrary;
 
-FUNCTION BeginUpdate(l : pLayer location 'a0') : LONGINT; syscall LayersBase 078;
-FUNCTION BehindLayer(dummy : LONGINT location 'a0'; layer : pLayer location 'a1') : LONGINT; syscall LayersBase 054;
-FUNCTION CreateBehindHookLayer(li : pLayer_Info location 'a0'; bm : pBitMap location 'a1'; x0 : LONGINT location 'd0'; y0 : LONGINT location 'd1'; x1 : LONGINT location 'd2'; y1 : LONGINT location 'd3'; flags : LONGINT location 'd4'; hook : pHook location 'a3'; bm2 : pBitMap location 'a2') : pLayer; syscall LayersBase 192;
-FUNCTION CreateBehindLayer(li : pLayer_Info location 'a0'; bm : pBitMap location 'a1'; x0 : LONGINT location 'd0'; y0 : LONGINT location 'd1'; x1 : LONGINT location 'd2'; y1 : LONGINT location 'd3'; flags : LONGINT location 'd4'; bm2 : pBitMap location 'a2') : pLayer; syscall LayersBase 042;
-FUNCTION CreateUpfrontHookLayer(li : pLayer_Info location 'a0'; bm : pBitMap location 'a1'; x0 : LONGINT location 'd0'; y0 : LONGINT location 'd1'; x1 : LONGINT location 'd2'; y1 : LONGINT location 'd3'; flags : LONGINT location 'd4'; hook : pHook location 'a3'; bm2 : pBitMap location 'a2') : pLayer; syscall LayersBase 186;
-FUNCTION CreateUpfrontLayer(li : pLayer_Info location 'a0'; bm : pBitMap location 'a1'; x0 : LONGINT location 'd0'; y0 : LONGINT location 'd1'; x1 : LONGINT location 'd2'; y1 : LONGINT location 'd3'; flags : LONGINT location 'd4'; bm2 : pBitMap location 'a2') : pLayer; syscall LayersBase 036;
-FUNCTION DeleteLayer(dummy : LONGINT location 'a0'; layer : pLayer location 'a1') : LONGINT; syscall LayersBase 090;
-PROCEDURE DisposeLayerInfo(li : pLayer_Info location 'a0'); syscall LayersBase 150;
-PROCEDURE DoHookClipRects(hook : pHook location 'a0'; rport : pRastPort location 'a1'; const rect : pRectangle location 'a2'); syscall LayersBase 216;
-PROCEDURE EndUpdate(layer : pLayer location 'a0'; flag : ULONG location 'd0'); syscall LayersBase 084;
-FUNCTION FattenLayerInfo(li : pLayer_Info location 'a0') : LONGINT; syscall LayersBase 156;
-PROCEDURE InitLayers(li : pLayer_Info location 'a0'); syscall LayersBase 030;
-FUNCTION InstallClipRegion(layer : pLayer location 'a0';const region : pRegion location 'a1') : pRegion; syscall LayersBase 174;
-FUNCTION InstallLayerHook(layer : pLayer location 'a0'; hook : pHook location 'a1') : pHook; syscall LayersBase 198;
-FUNCTION InstallLayerInfoHook(li : pLayer_Info location 'a0'; const hook : pHook location 'a1') : pHook; syscall LayersBase 204;
-PROCEDURE LockLayer(dummy : LONGINT location 'a0'; layer : pLayer location 'a1'); syscall LayersBase 096;
-PROCEDURE LockLayerInfo(li : pLayer_Info location 'a0'); syscall LayersBase 120;
-PROCEDURE LockLayers(li : pLayer_Info location 'a0'); syscall LayersBase 108;
-FUNCTION MoveLayer(dummy : LONGINT location 'a0'; layer : pLayer location 'a1'; dx : LONGINT location 'd0'; dy : LONGINT location 'd1') : LONGINT; syscall LayersBase 060;
-FUNCTION MoveLayerInFrontOf(layer_to_move : pLayer location 'a0'; other_layer : pLayer location 'a1') : LONGINT; syscall LayersBase 168;
-FUNCTION MoveSizeLayer(layer : pLayer location 'a0'; dx : LONGINT location 'd0'; dy : LONGINT location 'd1'; dw : LONGINT location 'd2'; dh : LONGINT location 'd3') : LONGINT; syscall LayersBase 180;
-FUNCTION NewLayerInfo : pLayer_Info; syscall LayersBase 144;
-PROCEDURE ScrollLayer(dummy : LONGINT location 'a0'; layer : pLayer location 'a1'; dx : LONGINT location 'd0'; dy : LONGINT location 'd1'); syscall LayersBase 072;
-FUNCTION SizeLayer(dummy : LONGINT location 'a0'; layer : pLayer location 'a1'; dx : LONGINT location 'd0'; dy : LONGINT location 'd1') : LONGINT; syscall LayersBase 066;
-PROCEDURE SortLayerCR(layer : pLayer location 'a0'; dx : LONGINT location 'd0'; dy : LONGINT location 'd1'); syscall LayersBase 210;
-PROCEDURE SwapBitsRastPortClipRect(rp : pRastPort location 'a0'; cr : pClipRect location 'a1'); syscall LayersBase 126;
-PROCEDURE ThinLayerInfo(li : pLayer_Info location 'a0'); syscall LayersBase 162;
-PROCEDURE UnlockLayer(layer : pLayer location 'a0'); syscall LayersBase 102;
-PROCEDURE UnlockLayerInfo(li : pLayer_Info location 'a0'); syscall LayersBase 138;
-PROCEDURE UnlockLayers(li : pLayer_Info location 'a0'); syscall LayersBase 114;
-FUNCTION UpfrontLayer(dummy : LONGINT location 'a0'; layer : pLayer location 'a1') : LONGINT; syscall LayersBase 048;
-FUNCTION WhichLayer(li : pLayer_Info location 'a0'; x : LONGINT location 'd0'; y : LONGINT location 'd1') : pLayer; syscall LayersBase 132;
+FUNCTION BeginUpdate(l : pLayer) : LONGINT;
+FUNCTION BehindLayer(dummy : LONGINT; layer : pLayer) : LONGINT;
+FUNCTION CreateBehindHookLayer(li : pLayer_Info; bm : pBitMap; x0 : LONGINT; y0 : LONGINT; x1 : LONGINT; y1 : LONGINT; flags : LONGINT; hook : pHook; bm2 : pBitMap) : pLayer;
+FUNCTION CreateBehindLayer(li : pLayer_Info; bm : pBitMap; x0 : LONGINT; y0 : LONGINT; x1 : LONGINT; y1 : LONGINT; flags : LONGINT; bm2 : pBitMap) : pLayer;
+FUNCTION CreateUpfrontHookLayer(li : pLayer_Info; bm : pBitMap; x0 : LONGINT; y0 : LONGINT; x1 : LONGINT; y1 : LONGINT; flags : LONGINT; hook : pHook; bm2 : pBitMap) : pLayer;
+FUNCTION CreateUpfrontLayer(li : pLayer_Info; bm : pBitMap; x0 : LONGINT; y0 : LONGINT; x1 : LONGINT; y1 : LONGINT; flags : LONGINT; bm2 : pBitMap) : pLayer;
+FUNCTION DeleteLayer(dummy : LONGINT; layer : pLayer) : LONGINT;
+PROCEDURE DisposeLayerInfo(li : pLayer_Info);
+PROCEDURE DoHookClipRects(hook : pHook; rport : pRastPort;const rect : pRectangle);
+PROCEDURE EndUpdate(layer : pLayer; flag : ULONG);
+FUNCTION FattenLayerInfo(li : pLayer_Info) : LONGINT;
+PROCEDURE InitLayers(li : pLayer_Info);
+FUNCTION InstallClipRegion(layer : pLayer;const region : pRegion) : pRegion;
+FUNCTION InstallLayerHook(layer : pLayer; hook : pHook) : pHook;
+FUNCTION InstallLayerInfoHook(li : pLayer_Info;const hook : pHook) : pHook;
+PROCEDURE LockLayer(dummy : LONGINT; layer : pLayer);
+PROCEDURE LockLayerInfo(li : pLayer_Info);
+PROCEDURE LockLayers(li : pLayer_Info);
+FUNCTION MoveLayer(dummy : LONGINT; layer : pLayer; dx : LONGINT; dy : LONGINT) : LONGINT;
+FUNCTION MoveLayerInFrontOf(layer_to_move : pLayer; other_layer : pLayer) : LONGINT;
+FUNCTION MoveSizeLayer(layer : pLayer; dx : LONGINT; dy : LONGINT; dw : LONGINT; dh : LONGINT) : LONGINT;
+FUNCTION NewLayerInfo : pLayer_Info;
+PROCEDURE ScrollLayer(dummy : LONGINT; layer : pLayer; dx : LONGINT; dy : LONGINT);
+FUNCTION SizeLayer(dummy : LONGINT; layer : pLayer; dx : LONGINT; dy : LONGINT) : LONGINT;
+PROCEDURE SortLayerCR(layer : pLayer; dx : LONGINT; dy : LONGINT);
+PROCEDURE SwapBitsRastPortClipRect(rp : pRastPort; cr : pClipRect);
+PROCEDURE ThinLayerInfo(li : pLayer_Info);
+PROCEDURE UnlockLayer(layer : pLayer);
+PROCEDURE UnlockLayerInfo(li : pLayer_Info);
+PROCEDURE UnlockLayers(li : pLayer_Info);
+FUNCTION UpfrontLayer(dummy : LONGINT; layer : pLayer) : LONGINT;
+FUNCTION WhichLayer(li : pLayer_Info; x : LONGINT; y : LONGINT) : pLayer;
 
 {Here we read how to compile this unit}
 {You can remove this include and use a define instead}
@@ -134,8 +138,436 @@ IMPLEMENTATION
 
 uses
 {$ifndef dont_use_openlib}
-amsgbox;
+msgbox;
 {$endif dont_use_openlib}
+
+FUNCTION BeginUpdate(l : pLayer) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L l,A0
+    MOVEA.L LayersBase,A6
+    JSR -078(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION BehindLayer(dummy : LONGINT; layer : pLayer) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L dummy,A0
+    MOVEA.L layer,A1
+    MOVEA.L LayersBase,A6
+    JSR -054(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CreateBehindHookLayer(li : pLayer_Info; bm : pBitMap; x0 : LONGINT; y0 : LONGINT; x1 : LONGINT; y1 : LONGINT; flags : LONGINT; hook : pHook; bm2 : pBitMap) : pLayer;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L bm,A1
+    MOVE.L  x0,D0
+    MOVE.L  y0,D1
+    MOVE.L  x1,D2
+    MOVE.L  y1,D3
+    MOVE.L  flags,D4
+    MOVEA.L hook,A3
+    MOVEA.L bm2,A2
+    MOVEA.L LayersBase,A6
+    JSR -192(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CreateBehindLayer(li : pLayer_Info; bm : pBitMap; x0 : LONGINT; y0 : LONGINT; x1 : LONGINT; y1 : LONGINT; flags : LONGINT; bm2 : pBitMap) : pLayer;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L bm,A1
+    MOVE.L  x0,D0
+    MOVE.L  y0,D1
+    MOVE.L  x1,D2
+    MOVE.L  y1,D3
+    MOVE.L  flags,D4
+    MOVEA.L bm2,A2
+    MOVEA.L LayersBase,A6
+    JSR -042(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CreateUpfrontHookLayer(li : pLayer_Info; bm : pBitMap; x0 : LONGINT; y0 : LONGINT; x1 : LONGINT; y1 : LONGINT; flags : LONGINT; hook : pHook; bm2 : pBitMap) : pLayer;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L bm,A1
+    MOVE.L  x0,D0
+    MOVE.L  y0,D1
+    MOVE.L  x1,D2
+    MOVE.L  y1,D3
+    MOVE.L  flags,D4
+    MOVEA.L hook,A3
+    MOVEA.L bm2,A2
+    MOVEA.L LayersBase,A6
+    JSR -186(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION CreateUpfrontLayer(li : pLayer_Info; bm : pBitMap; x0 : LONGINT; y0 : LONGINT; x1 : LONGINT; y1 : LONGINT; flags : LONGINT; bm2 : pBitMap) : pLayer;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L bm,A1
+    MOVE.L  x0,D0
+    MOVE.L  y0,D1
+    MOVE.L  x1,D2
+    MOVE.L  y1,D3
+    MOVE.L  flags,D4
+    MOVEA.L bm2,A2
+    MOVEA.L LayersBase,A6
+    JSR -036(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION DeleteLayer(dummy : LONGINT; layer : pLayer) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L dummy,A0
+    MOVEA.L layer,A1
+    MOVEA.L LayersBase,A6
+    JSR -090(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE DisposeLayerInfo(li : pLayer_Info);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L LayersBase,A6
+    JSR -150(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE DoHookClipRects(hook : pHook; rport : pRastPort;const rect : pRectangle);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L hook,A0
+    MOVEA.L rport,A1
+    MOVEA.L rect,A2
+    MOVEA.L LayersBase,A6
+    JSR -216(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE EndUpdate(layer : pLayer; flag : ULONG);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L layer,A0
+    MOVE.L  flag,D0
+    MOVEA.L LayersBase,A6
+    JSR -084(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION FattenLayerInfo(li : pLayer_Info) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L LayersBase,A6
+    JSR -156(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE InitLayers(li : pLayer_Info);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L LayersBase,A6
+    JSR -030(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION InstallClipRegion(layer : pLayer;const region : pRegion) : pRegion;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L layer,A0
+    MOVEA.L region,A1
+    MOVEA.L LayersBase,A6
+    JSR -174(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION InstallLayerHook(layer : pLayer; hook : pHook) : pHook;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L layer,A0
+    MOVEA.L hook,A1
+    MOVEA.L LayersBase,A6
+    JSR -198(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION InstallLayerInfoHook(li : pLayer_Info;const hook : pHook) : pHook;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L hook,A1
+    MOVEA.L LayersBase,A6
+    JSR -204(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE LockLayer(dummy : LONGINT; layer : pLayer);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L dummy,A0
+    MOVEA.L layer,A1
+    MOVEA.L LayersBase,A6
+    JSR -096(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE LockLayerInfo(li : pLayer_Info);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L LayersBase,A6
+    JSR -120(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE LockLayers(li : pLayer_Info);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L LayersBase,A6
+    JSR -108(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION MoveLayer(dummy : LONGINT; layer : pLayer; dx : LONGINT; dy : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L dummy,A0
+    MOVEA.L layer,A1
+    MOVE.L  dx,D0
+    MOVE.L  dy,D1
+    MOVEA.L LayersBase,A6
+    JSR -060(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MoveLayerInFrontOf(layer_to_move : pLayer; other_layer : pLayer) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L layer_to_move,A0
+    MOVEA.L other_layer,A1
+    MOVEA.L LayersBase,A6
+    JSR -168(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION MoveSizeLayer(layer : pLayer; dx : LONGINT; dy : LONGINT; dw : LONGINT; dh : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L layer,A0
+    MOVE.L  dx,D0
+    MOVE.L  dy,D1
+    MOVE.L  dw,D2
+    MOVE.L  dh,D3
+    MOVEA.L LayersBase,A6
+    JSR -180(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION NewLayerInfo : pLayer_Info;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L LayersBase,A6
+    JSR -144(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE ScrollLayer(dummy : LONGINT; layer : pLayer; dx : LONGINT; dy : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L dummy,A0
+    MOVEA.L layer,A1
+    MOVE.L  dx,D0
+    MOVE.L  dy,D1
+    MOVEA.L LayersBase,A6
+    JSR -072(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION SizeLayer(dummy : LONGINT; layer : pLayer; dx : LONGINT; dy : LONGINT) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L dummy,A0
+    MOVEA.L layer,A1
+    MOVE.L  dx,D0
+    MOVE.L  dy,D1
+    MOVEA.L LayersBase,A6
+    JSR -066(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+PROCEDURE SortLayerCR(layer : pLayer; dx : LONGINT; dy : LONGINT);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L layer,A0
+    MOVE.L  dx,D0
+    MOVE.L  dy,D1
+    MOVEA.L LayersBase,A6
+    JSR -210(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE SwapBitsRastPortClipRect(rp : pRastPort; cr : pClipRect);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L rp,A0
+    MOVEA.L cr,A1
+    MOVEA.L LayersBase,A6
+    JSR -126(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE ThinLayerInfo(li : pLayer_Info);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L LayersBase,A6
+    JSR -162(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE UnlockLayer(layer : pLayer);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L layer,A0
+    MOVEA.L LayersBase,A6
+    JSR -102(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE UnlockLayerInfo(li : pLayer_Info);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L LayersBase,A6
+    JSR -138(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+PROCEDURE UnlockLayers(li : pLayer_Info);
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVEA.L LayersBase,A6
+    JSR -114(A6)
+    MOVEA.L (A7)+,A6
+  END;
+END;
+
+FUNCTION UpfrontLayer(dummy : LONGINT; layer : pLayer) : LONGINT;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L dummy,A0
+    MOVEA.L layer,A1
+    MOVEA.L LayersBase,A6
+    JSR -048(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION WhichLayer(li : pLayer_Info; x : LONGINT; y : LONGINT) : pLayer;
+BEGIN
+  ASM
+    MOVE.L  A6,-(A7)
+    MOVEA.L li,A0
+    MOVE.L  x,D0
+    MOVE.L  y,D1
+    MOVEA.L LayersBase,A6
+    JSR -132(A6)
+    MOVEA.L (A7)+,A6
+    MOVE.L  D0,@RESULT
+  END;
+END;
 
 const
     { Change VERSION and LIBVERSION to proper values }

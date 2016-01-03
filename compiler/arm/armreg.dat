@@ -34,6 +34,10 @@ F6,$02,$00,$06,f6,32,22
 F7,$02,$00,$07,f7,32,23
 
 ; MM registers
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 ; odd numbered single registers must not be made available to the register
 ; allocator because it cannot deal with D0 conflicting with both S0 and S1. 
 ; This unfortunately means that we can only use 16 single precision registers 
@@ -88,6 +92,74 @@ S29,$04,$06,$2E,s29,0,0
 D14,$04,$07,$0E,d14,0,0
 S30,$04,$06,$0F,s30,0,0
 S31,$04,$06,$2F,s31,0,0
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+; S0/S1/D0 etc have the same register number because the register allocated
+; cannot deal with D0 conflicting with both S0 and S1. This unfortunately
+; means that we can only use 16 single precision registers instead of 32,
+; even if no double precision ones are used...
+S0,$04,$06,$00,s0,0,0
+S1,$04,$06,$00,s1,0,0
+D0,$04,$07,$00,d0,0,0
+S2,$04,$06,$01,s2,0,0
+S3,$04,$06,$01,s3,0,0
+D1,$04,$07,$01,d1,0,0
+S4,$04,$06,$02,s4,0,0
+S5,$04,$06,$02,s5,0,0
+D2,$04,$07,$02,d2,0,0
+S6,$04,$06,$03,s6,0,0
+S7,$04,$06,$03,s7,0,0
+D3,$04,$07,$03,d3,0,0
+S8,$04,$06,$04,s8,0,0
+S9,$04,$06,$04,s9,0,0
+D4,$04,$07,$04,d4,0,0
+S10,$04,$06,$05,s10,0,0
+S11,$04,$06,$05,s11,0,0
+D5,$04,$07,$05,d5,0,0
+S12,$04,$06,$06,s12,0,0
+S13,$04,$06,$06,s13,0,0
+D6,$04,$07,$06,d6,0,0
+S14,$04,$06,$07,s14,0,0
+S15,$04,$06,$07,s15,0,0
+D7,$04,$07,$07,d7,0,0
+S16,$04,$06,$08,s16,0,0
+S17,$04,$06,$08,s17,0,0
+D8,$04,$07,$08,d8,0,0
+S18,$04,$06,$09,s18,0,0
+S19,$04,$06,$09,s19,0,0
+D9,$04,$07,$09,d9,0,0
+S20,$04,$06,$0A,s20,0,0
+S21,$04,$06,$0A,s21,0,0
+D10,$04,$07,$0A,d10,0,0
+S22,$04,$06,$0B,s22,0,0
+S23,$04,$06,$0B,s23,0,0
+D11,$04,$07,$0B,d11,0,0
+S24,$04,$06,$0C,s24,0,0
+S25,$04,$06,$0C,s25,0,0
+D12,$04,$07,$0C,d12,0,0
+S26,$04,$06,$0D,s26,0,0
+S27,$04,$06,$0D,s27,0,0
+D13,$04,$07,$0D,d13,0,0
+S28,$04,$06,$0E,s28,0,0
+S29,$04,$06,$0E,s29,0,0
+D14,$04,$07,$0E,d14,0,0
+S30,$04,$06,$0F,s20,0,0
+S31,$04,$06,$0F,s21,0,0
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 D15,$04,$07,$0F,d15,0,0
 D16,$04,$07,$10,d16,0,0
 D17,$04,$07,$11,d17,0,0
@@ -107,6 +179,10 @@ D30,$04,$07,$1E,d30,0,0
 D31,$04,$07,$1F,d31,0,0
 
 ; special registers
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 CPSR,$05,$00,$00,cpsr,0,0
 FPSCR,$05,$00,$01,fpscr,0,0
 SPSR,$05,$00,$02,spsr,0,0
@@ -153,3 +229,19 @@ FPEXC,$05,$00,$26,fpexc,0,0
 APSR_nzcvq,$05,$00,$27,apsr_nzcvq,0,0
 APSR_g,$05,$00,$28,apsr_g,0,0
 APSR_nzcvqg,$05,$00,$29,apsr_nzcvqg,0,0
+=======
+CPSR_C,$05,$00,$00,cpsr_c,0,0
+FPSCR,$05,$00,$01,fpscr,0,0
+>>>>>>> graemeg/cpstrnew
+=======
+CPSR_C,$05,$00,$00,cpsr_c,0,0
+FPSCR,$05,$00,$01,fpscr,0,0
+>>>>>>> graemeg/cpstrnew
+=======
+CPSR_C,$05,$00,$00,cpsr_c,0,0
+FPSCR,$05,$00,$01,fpscr,0,0
+>>>>>>> graemeg/cpstrnew
+=======
+CPSR_C,$05,$00,$00,cpsr_c,0,0
+FPSCR,$05,$00,$01,fpscr,0,0
+>>>>>>> origin/cpstrnew

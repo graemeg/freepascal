@@ -6,9 +6,29 @@
 main=fcl-db
 
 [target]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=mysql40conn mysql41conn mysql50conn mysql51conn mysql55conn mysql56conn mysql57conn
 rsts=mysql40conn mysql41conn mysql50conn mysql51conn mysql55conn mysql56conn mysql57conn
 
+=======
+units=mysql40conn mysql41conn mysql50conn mysql4conn mysql51conn
+rsts=mysql40conn mysql41conn mysql50conn mysql4conn mysql51conn
+>>>>>>> graemeg/cpstrnew
+=======
+units=mysql40conn mysql41conn mysql50conn mysql4conn mysql51conn
+rsts=mysql40conn mysql41conn mysql50conn mysql4conn mysql51conn
+>>>>>>> graemeg/cpstrnew
+=======
+units=mysql40conn mysql41conn mysql50conn mysql4conn mysql51conn
+rsts=mysql40conn mysql41conn mysql50conn mysql4conn mysql51conn
+>>>>>>> graemeg/cpstrnew
+=======
+units=mysql40conn mysql41conn mysql50conn mysql4conn mysql51conn
+rsts=mysql40conn mysql41conn mysql50conn mysql4conn mysql51conn
+>>>>>>> origin/cpstrnew
 [require]
 packages=fcl-xml mysql
 

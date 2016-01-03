@@ -63,7 +63,21 @@ implementation
       cgbase,cgutils,
       pass_1,pass_2,procinfo,ncal,
       ncgutil,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       cpubase,cpuinfo,aasmcpu,cgobj,hlcgobj,cgcpu;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+      cpubase,cpuinfo,aasmcpu,
+      rgobj,tgobj,cgobj,cgcpu;
+>>>>>>> graemeg/cpstrnew
 
 
 {*****************************************************************************
@@ -115,9 +129,25 @@ implementation
               fpu_fpa11:
                 expectloc:=LOC_FPUREGISTER;
               fpu_vfpv2,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               fpu_vfpv3,
               fpu_vfpv3_d16,
               fpu_fpv4_s16:
+=======
+              fpu_vfpv3:
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+>>>>>>> graemeg/cpstrnew
+=======
+              fpu_vfpv3:
+>>>>>>> origin/cpstrnew
                 expectloc:=LOC_MMREGISTER;
               else
                 internalerror(2009112702);
@@ -170,9 +200,33 @@ implementation
 
     procedure tarmtypeconvnode.second_int_to_real;
       const
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         signedprec2vfppf: array[boolean,OS_F32..OS_F64] of toppostfix =
           ((PF_F32U32,PF_F64U32),
            (PF_F32S32,PF_F64S32));
+=======
+        signedprec2vfpop: array[boolean,OS_F32..OS_F64] of tasmop =
+          ((A_FUITOS,A_FUITOD),
+           (A_FSITOS,A_FSITOD));
+>>>>>>> graemeg/cpstrnew
+=======
+        signedprec2vfpop: array[boolean,OS_F32..OS_F64] of tasmop =
+          ((A_FUITOS,A_FUITOD),
+           (A_FSITOS,A_FSITOD));
+>>>>>>> graemeg/cpstrnew
+=======
+        signedprec2vfpop: array[boolean,OS_F32..OS_F64] of tasmop =
+          ((A_FUITOS,A_FUITOD),
+           (A_FSITOS,A_FSITOD));
+>>>>>>> graemeg/cpstrnew
+=======
+        signedprec2vfpop: array[boolean,OS_F32..OS_F64] of tasmop =
+          ((A_FUITOS,A_FUITOD),
+           (A_FSITOS,A_FSITOD));
+>>>>>>> origin/cpstrnew
       var
         instr : taicpu;
         href : treference;
@@ -180,6 +234,7 @@ implementation
         hregister : tregister;
         signed : boolean;
       begin
+<<<<<<< HEAD
         case current_settings.fputype of
           fpu_fpa,
           fpu_fpa10,
@@ -187,10 +242,45 @@ implementation
             begin
               { convert first to double to avoid precision loss }
               location_reset(location,LOC_FPUREGISTER,def_cgsize(resultdef));
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,u32inttype,true);
+=======
+              location_force_reg(current_asmdata.CurrAsmList,left.location,OS_32,true);
+>>>>>>> graemeg/cpstrnew
+=======
+              location_force_reg(current_asmdata.CurrAsmList,left.location,OS_32,true);
+>>>>>>> graemeg/cpstrnew
+=======
+              location_force_reg(current_asmdata.CurrAsmList,left.location,OS_32,true);
+>>>>>>> graemeg/cpstrnew
+=======
+              location_force_reg(current_asmdata.CurrAsmList,left.location,OS_32,true);
+>>>>>>> origin/cpstrnew
               location.register:=cg.getfpuregister(current_asmdata.CurrAsmList,location.size);
               instr:=taicpu.op_reg_reg(A_FLT,location.register,left.location.register);
               if is_signed(left.resultdef) then
+=======
+
+        { convert first to double to avoid precision loss }
+        location_reset(location,LOC_FPUREGISTER,def_cgsize(resultdef));
+        location_force_reg(current_asmdata.CurrAsmList,left.location,OS_32,true);
+        location.register:=cg.getfpuregister(current_asmdata.CurrAsmList,location.size);
+        instr:=taicpu.op_reg_reg(A_FLT,location.register,left.location.register);
+        if is_signed(left.resultdef) then
+          begin
+            instr.oppostfix:=cgsize2fpuoppostfix[def_cgsize(resultdef)];
+            current_asmdata.CurrAsmList.concat(instr);
+          end
+        else
+          begin
+            { flt does a signed load, fix this }
+            case tfloatdef(resultdef).floattype of
+              s32real,
+              s64real:
+>>>>>>> graemeg/fixes_2_2
                 begin
                   instr.oppostfix:=cgsize2fpuoppostfix[def_cgsize(resultdef)];
                   current_asmdata.CurrAsmList.concat(instr);
@@ -206,6 +296,10 @@ implementation
                         instr.oppostfix:=PF_D;
                         current_asmdata.CurrAsmList.concat(instr);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                         current_asmdata.getglobaldatalabel(l1);
                         current_asmdata.getjumplabel(l2);
                         reference_reset_symbol(href,l1,0,const_align(8));
@@ -217,6 +311,17 @@ implementation
 
                         hregister:=cg.getfpuregister(current_asmdata.CurrAsmList,OS_F64);
                         new_section(current_asmdata.asmlists[al_typedconsts],sec_rodata_norel,l1.name,const_align(8));
+=======
+                        current_asmdata.getdatalabel(l1);
+                        current_asmdata.getjumplabel(l2);
+                        reference_reset_symbol(href,l1,0,const_align(8));
+
+                        current_asmdata.CurrAsmList.concat(Taicpu.op_reg_const(A_CMP,left.location.register,0));
+                        cg.a_jmp_flags(current_asmdata.CurrAsmList,F_GE,l2);
+
+                        hregister:=cg.getfpuregister(current_asmdata.CurrAsmList,OS_F64);
+                        current_asmdata.asmlists[al_typedconsts].concat(tai_align.create(const_align(8)));
+>>>>>>> graemeg/cpstrnew
                         current_asmdata.asmlists[al_typedconsts].concat(Tai_label.Create(l1));
                         { I got this constant from a test program (FK) }
                         current_asmdata.asmlists[al_typedconsts].concat(Tai_const.Create_32bit($41f00000));
@@ -226,12 +331,84 @@ implementation
                         current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg_reg(A_ADF,location.register,hregister,location.register),PF_D));
                         cg.a_label(current_asmdata.CurrAsmList,l2);
 
+=======
+                        current_asmdata.getdatalabel(l1);
+                        current_asmdata.getjumplabel(l2);
+                        reference_reset_symbol(href,l1,0,const_align(8));
+
+                        current_asmdata.CurrAsmList.concat(Taicpu.op_reg_const(A_CMP,left.location.register,0));
+                        cg.a_jmp_flags(current_asmdata.CurrAsmList,F_GE,l2);
+
+                        hregister:=cg.getfpuregister(current_asmdata.CurrAsmList,OS_F64);
+                        current_asmdata.asmlists[al_typedconsts].concat(tai_align.create(const_align(8)));
+                        current_asmdata.asmlists[al_typedconsts].concat(Tai_label.Create(l1));
+                        { I got this constant from a test program (FK) }
+                        current_asmdata.asmlists[al_typedconsts].concat(Tai_const.Create_32bit($41f00000));
+                        current_asmdata.asmlists[al_typedconsts].concat(Tai_const.Create_32bit(0));
+
+                        cg.a_loadfpu_ref_reg(current_asmdata.CurrAsmList,OS_F64,OS_F64,href,hregister);
+                        current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg_reg(A_ADF,location.register,hregister,location.register),PF_D));
+                        cg.a_label(current_asmdata.CurrAsmList,l2);
+
+>>>>>>> graemeg/cpstrnew
+=======
+                        current_asmdata.getdatalabel(l1);
+                        current_asmdata.getjumplabel(l2);
+                        reference_reset_symbol(href,l1,0,const_align(8));
+
+                        current_asmdata.CurrAsmList.concat(Taicpu.op_reg_const(A_CMP,left.location.register,0));
+                        cg.a_jmp_flags(current_asmdata.CurrAsmList,F_GE,l2);
+
+                        hregister:=cg.getfpuregister(current_asmdata.CurrAsmList,OS_F64);
+                        current_asmdata.asmlists[al_typedconsts].concat(tai_align.create(const_align(8)));
+                        current_asmdata.asmlists[al_typedconsts].concat(Tai_label.Create(l1));
+                        { I got this constant from a test program (FK) }
+                        current_asmdata.asmlists[al_typedconsts].concat(Tai_const.Create_32bit($41f00000));
+                        current_asmdata.asmlists[al_typedconsts].concat(Tai_const.Create_32bit(0));
+
+                        cg.a_loadfpu_ref_reg(current_asmdata.CurrAsmList,OS_F64,OS_F64,href,hregister);
+                        current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg_reg(A_ADF,location.register,hregister,location.register),PF_D));
+                        cg.a_label(current_asmdata.CurrAsmList,l2);
+
+>>>>>>> graemeg/cpstrnew
+=======
+                        current_asmdata.getdatalabel(l1);
+                        current_asmdata.getjumplabel(l2);
+                        reference_reset_symbol(href,l1,0,const_align(8));
+
+                        current_asmdata.CurrAsmList.concat(Taicpu.op_reg_const(A_CMP,left.location.register,0));
+                        cg.a_jmp_flags(current_asmdata.CurrAsmList,F_GE,l2);
+
+                        hregister:=cg.getfpuregister(current_asmdata.CurrAsmList,OS_F64);
+                        current_asmdata.asmlists[al_typedconsts].concat(tai_align.create(const_align(8)));
+                        current_asmdata.asmlists[al_typedconsts].concat(Tai_label.Create(l1));
+                        { I got this constant from a test program (FK) }
+                        current_asmdata.asmlists[al_typedconsts].concat(Tai_const.Create_32bit($41f00000));
+                        current_asmdata.asmlists[al_typedconsts].concat(Tai_const.Create_32bit(0));
+
+                        cg.a_loadfpu_ref_reg(current_asmdata.CurrAsmList,OS_F64,OS_F64,href,hregister);
+                        current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg_reg(A_ADF,location.register,hregister,location.register),PF_D));
+                        cg.a_label(current_asmdata.CurrAsmList,l2);
+
+>>>>>>> origin/cpstrnew
                         { cut off if we should convert to single }
                         if tfloatdef(resultdef).floattype=s32real then
                           begin
                             hregister:=location.register;
                             location.register:=cg.getfpuregister(current_asmdata.CurrAsmList,location.size);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                             cg.a_reg_alloc(current_asmdata.CurrAsmList,NR_DEFAULTFLAGS);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                             current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_MVF,location.register,hregister),PF_S));
                           end;
                       end;
@@ -241,16 +418,40 @@ implementation
               end;
             end;
           fpu_vfpv2,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           fpu_vfpv3,
           fpu_vfpv3_d16:
             begin
               location_reset(location,LOC_MMREGISTER,def_cgsize(resultdef));
               signed:=left.location.size=OS_S32;
               hlcg.location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,left.resultdef,false);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          fpu_vfpv3:
+            begin
+              location_reset(location,LOC_MMREGISTER,def_cgsize(resultdef));
+              signed:=left.location.size=OS_S32;
+              location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,false);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
               if (left.location.size<>OS_F32) then
                 internalerror(2009112703);
               if left.location.size<>location.size then
                 location.register:=cg.getmmregister(current_asmdata.CurrAsmList,location.size)
+<<<<<<< HEAD
+<<<<<<< HEAD
               else
                 location.register:=left.location.register;
               current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_VCVT,
@@ -262,16 +463,45 @@ implementation
               location_reset(location,LOC_MMREGISTER,def_cgsize(resultdef));
               signed:=left.location.size=OS_S32;
               hlcg.location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,left.resultdef,false);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
               if (left.location.size<>OS_F32) then
                 internalerror(2009112703);
               if left.location.size<>location.size then
                 location.register:=cg.getmmregister(current_asmdata.CurrAsmList,location.size)
+<<<<<<< HEAD
+<<<<<<< HEAD
               else
                 location.register:=left.location.register;
               if signed then
                 current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_VCVT,location.register,left.location.register), PF_F32S32))
               else
                 current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_VCVT,location.register,left.location.register), PF_F32U32));
+=======
+=======
+>>>>>>> origin/cpstrnew
+              else
+                location.register:=left.location.register;
+              current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(
+                signedprec2vfpop[signed,location.size],location.register,left.location.register));
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+              else
+                location.register:=left.location.register;
+              current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(
+                signedprec2vfpop[signed,location.size],location.register,left.location.register));
+>>>>>>> graemeg/cpstrnew
+=======
+              else
+                location.register:=left.location.register;
+              current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(
+                signedprec2vfpop[signed,location.size],location.register,left.location.register));
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
             end;
         end;
       end;

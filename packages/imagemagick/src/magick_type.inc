@@ -25,7 +25,7 @@ const
   MagickTrue = 1;
 
 type
-  MagickBooleanType = culong;
+  MagickBooleanType = Cardinal;
 
   PMagickBooleanType = ^MagickBooleanType;
 
@@ -177,31 +177,19 @@ type
   PCompositeOperator = ^CompositeOperator;
 
 type
-  // Verified with imagemagick 6.7.7-10
-  CompressionType = (
-    UndefinedCompression,
-    NoCompression,
-    BZipCompression,
-    DXT1Compression,
-    DXT3Compression,
-    DXT5Compression,
-    FaxCompression,           {* CCITT Group 3 compression *}
-    Group4Compression,        {* CCITT Group 4 compression (also used in faxes) *}
-    JPEGCompression,
-    JPEG2000Compression,      {* ISO/IEC std 15444-1 *}
-    LosslessJPEGCompression,
-    LZWCompression,
-    RLECompression,
-    ZipCompression,
-    ZipSCompression,
-    PizCompression,
-    Pxr24Compression,
-    B44Compression,
-    B44ACompression,
-    LZMACompression,          {* Lempel-Ziv-Markov chain algorithm *}
-    JBIG1Compression,         {* ISO/IEC std 11544 / ITU-T rec T.82 *}
-    JBIG2Compression          {* ISO/IEC std 14492 / ITU-T rec T.88 *}
-  );
+ CompressionType = (
+  UndefinedCompression,
+  NoCompression,
+  BZipCompression,
+  FaxCompression,
+  Group4Compression,
+  JPEGCompression,
+  JPEG2000Compression,
+  LosslessJPEGCompression,
+  LZWCompression,
+  RLECompression,
+  ZipCompression
+ );
 
   PCompressionType = ^CompressionType;
   
@@ -463,7 +451,7 @@ type
   ColorPacket = record
    pixel: PixelPacket;
    index: IndexPacket;
-   count: culong;
+   count: Cardinal;
   end;
   
   PColorPacket = ^ColorPacket;
@@ -481,17 +469,17 @@ type
 type 
   ProfileInfo = record
    name: PChar;
-   length: cint;
+   length: Integer;
    info: PChar;
-   signature: culong;
+   signature: Cardinal;
   end;
   
   PProfileInfo = ^ProfileInfo;
 
 type 
   RectangleInfo = record
-   width, height: culong;
-   x, y: culong;
+   width, height: Cardinal;
+   x, y: Cardinal;
   end;
 
 type
@@ -510,7 +498,7 @@ type
   TimerInfo = record
    user, elapsed: Timer;
    state: TimerState;
-   signature: culong;
+   signature: Cardinal;
   end;
   
   PTimerInfo = ^TimerInfo;
@@ -524,13 +512,13 @@ type
   ExceptionInfo = record
    //severity: ExceptionType;
    //error_number: Shortint;
-   severity: culong;
-   error_number: culong;
+   severity: Cardinal;
+   error_number: Cardinal;
    reason, description: PChar;
 	 exceptions: Pointer;
 	 relinquish: MagickBooleanType;
    semaphore: Pointer; //PSemaphoreInfo;
-   signature: culong;
+   signature: Cardinal;
   end;
   
   PExceptionInfo = ^ExceptionInfo;
@@ -548,10 +536,10 @@ type
    storage_class: ClassType;
    colorspace: ColorspaceType;
    compression: CompressionType;
-   quality: culong;
+   quality: Cardinal;
    orientation: OrientationType;
    taint, matte: MagickBooleanType;
-   columns, rows, depth, colors: culong;
+   columns, rows, depth, colors: Cardinal;
    colormap: PPixelPacket;
    background_color, border_color, matte_color: PixelPacket;
    gamma: double;
@@ -560,7 +548,7 @@ type
    profiles: Pointer;
    units: ResolutionType;
    montage, directory, geometry: PChar;
-   offset: cint;
+   offset: Integer;
    x_resolution, y_resolution: double;
    page, extract_info, tile_info: RectangleInfo;  // deprecated
    bias, blur, fuzz: double;
@@ -571,8 +559,8 @@ type
    compose: CompositeOperator;
    dispose: DisposeType;
    clip_mask: Pointer; // PImage
-   scene, delay, ticks_per_second, iterations, total_colors: culong;
-   start_loop: cint;
+   scene, delay, ticks_per_second, iterations, total_colors: Cardinal;
+   start_loop: Integer;
    error: ErrorInfo;
    timer: TimerInfo;
    progress_monitor: MagickProgressMonitor;
@@ -582,15 +570,15 @@ type
    ascii85: Pointer; //_Ascii85Info_
    blob: Pointer; // _BlobInfo_
    filename, magick_filename, magick: array[1..MaxTextExtent] of char;
-   magick_columns, magick_rows: culong;
+   magick_columns, magick_rows: Cardinal;
    exception: ExceptionInfo;
    debug: MagickBooleanType;
    reference_count: Longint;
    semaphore: Pointer; //PSemaphoreInfo;
    color_profile, iptc_profile: ProfileInfo;
    generic_profile: PProfileInfo;
-   generic_profiles: culong;  // this & ProfileInfo is deprecated
-   signature: culong;
+   generic_profiles: Cardinal;  // this & ProfileInfo is deprecated
+   signature: Cardinal;
    previous, list, next: Pointer;
 {  struct _Image
     *previous,
@@ -610,16 +598,16 @@ type
    orientation: OrientationType;
    temporary, adjoin, affirm, antialias: MagickBooleanType;
    size, extract, page, scenes: PChar;
-   scene, number_scenes, depth: culong;
+   scene, number_scenes, depth: Cardinal;
    interlace: InterlaceType;
    endian: EndianType;
    units: ResolutionType;
-   quality: culong;
+   quality: Cardinal;
    sampling_factor, server_name, font, texture, density: PChar;
    pointsize, fuzz: double;
    background_color, border_color, matte_color: PixelPacket;
    dither, monochrome: MagickBooleanType;
-   colors: culong;
+   colors: Cardinal;
    colorspace: ColorspaceType;
    type_: ImageType ;
    preview_type: PreviewType;
@@ -631,10 +619,10 @@ type
    options: Pointer;
    progress_monitor: MagickProgressMonitor;
    client_data, cache: Pointer;
-   stream: culong; //StreamHandler;
+   stream: Cardinal; //StreamHandler;
    file_: Pointer; // *file
    blob: Pointer;
-   length: cint;
+   length: Integer;
    magick, unique, zero, filename: array[1..MaxTextExtent] of char;
    debug: MagickBooleanType;
 
@@ -642,9 +630,9 @@ type
     Deprecated.
   }
    tile: PChar;
-   subimage, subrange: culong;
+   subimage, subrange: Cardinal;
    pen: PixelPacket;
-   signature: culong;
+   signature: Cardinal;
  end;
 
   PImageInfo = ^ImageInfo;

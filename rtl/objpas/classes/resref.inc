@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 {
     This file is part of the Free Pascal Run Time Library (rtl)
     Copyright (c) 2007 by Michael Van Canneyt,
@@ -11,6 +13,12 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  **********************************************************************}
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 
 type
   // Quadruple representing an unresolved component property.
@@ -94,6 +102,14 @@ type
 var
   NeedResolving : TLinkedList;
   ResolveSection : TRTLCriticalSection;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  LastAddInstance : TUnresolvedInstance;
+>>>>>>> graemeg/fixes_2_2
+=======
+  LastAddInstance : TUnresolvedInstance;
+>>>>>>> origin/fixes_2_2
 
 // Add an instance to the global list of instances which need resolving.
 Function FindUnresolvedInstance(AInstance: TPersistent) : TUnResolvedInstance;
@@ -150,6 +166,19 @@ end;
 
 procedure GlobalFixupReferences;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+var
+  V : TResolveReferenceVisitor;
+  I : Integer;
+    
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   If (NeedResolving=Nil) then 
     Exit;

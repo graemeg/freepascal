@@ -822,11 +822,3 @@ procedure ap_finalize_sub_req_protocol(sub_r: Prequest_rec);
  {$IFDEF WINDOWS} stdcall; {$ELSE} cdecl; {$ENDIF}
  external LibHTTPD name LibNamePrefix + 'ap_finalize_sub_req_protocol' + LibSuff4;
 
-{**
- * Send an interim (HTTP 1xx) response immediately.
- * @param r The request
- * @param send_headers Whether to send&clear headers in r->headers_out
- *}//added in Apache 2.2.7
-procedure ap_send_interim_response(r: Prequest_rec; send_headers: Integer);
- {$IFDEF WINDOWS} stdcall; {$ELSE} cdecl; {$ENDIF}
- external LibHTTPD name LibNamePrefix + 'ap_send_interim_response' + LibSuff8;

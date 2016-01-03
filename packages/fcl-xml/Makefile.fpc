@@ -4,10 +4,66 @@
 
 [package]
 name=fcl-xml
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=htmldefs sax xmlutils dom sax_html dom_html xmlcfg xmlread xmlstreaming xmlwrite xhtml htmwrite xpath htmlelements htmlwriter xmlconf sax_xml dtdmodel
+units_linux=xmliconv
+units_freebsd=xmliconv
+units_darwin=xmliconv
+units_iphonesim=xmliconv
+units_win64=xmliconv_windows
+units_win32=xmliconv_windows
+=======
+version=2.2.5
+
+[target]
+units=htmldefs sax xmlutils dom sax_html dom_html xmlcfg xmlread xmlstreaming xmlwrite xhtml htmwrite xpath htmlelements htmlwriter xmlconf sax_xml
+>>>>>>> graemeg/fixes_2_2
+=======
+version=2.2.5
+
+[target]
+units=htmldefs sax xmlutils dom sax_html dom_html xmlcfg xmlread xmlstreaming xmlwrite xhtml htmwrite xpath htmlelements htmlwriter xmlconf sax_xml
+>>>>>>> origin/fixes_2_2
+rsts=sax xpath htmlwriter xmlconf
+
+[require]
+packages=fcl-base
+<<<<<<< HEAD
+<<<<<<< HEAD
+packages_beos=iconvenc
+packages_haiku=iconvenc
+packages_linux=iconvenc
+packages_darwin=iconvenc
+packages_iphonesim=iconvenc
+packages_freebsd=iconvenc
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+
+[compiler]
+options=-S2h
+sourcedir=src
+>>>>>>> graemeg/cpstrnew
 
 [install]
 fpcpackage=y
@@ -26,6 +82,10 @@ endif
 LOCALFPMAKE=./fpmake$(SRCEXEEXT)
 
 [rules]
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 # Do not pass the Makefile's unit and binary target locations. Fpmake uses it's own.
 override FPCOPT:=$(filter-out -FU%,$(FPCOPT))
 override FPCOPT:=$(filter-out -FE%,$(FPCOPT))
@@ -100,3 +160,15 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+.NOTPARALLEL:
+>>>>>>> graemeg/cpstrnew
+=======
+.NOTPARALLEL:
+>>>>>>> graemeg/cpstrnew
+=======
+.NOTPARALLEL:
+>>>>>>> graemeg/cpstrnew
+=======
+.NOTPARALLEL:
+>>>>>>> origin/cpstrnew

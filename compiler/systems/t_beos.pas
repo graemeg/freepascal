@@ -248,8 +248,16 @@ begin
    LinkRes.Add('ld -o $1 -e 0 $2 $3 $4 $5 $6 $7 $8 $9\');
   }
   LinkRes.Add('-m');
+<<<<<<< HEAD
+<<<<<<< HEAD
 //  LinkRes.Add('elf_i386_be');
   LinkRes.Add('elf_i386_haiku');
+=======
+  LinkRes.Add('elf_i386_be');
+>>>>>>> graemeg/fixes_2_2
+=======
+  LinkRes.Add('elf_i386_be');
+>>>>>>> origin/fixes_2_2
   LinkRes.Add('-shared');
   LinkRes.Add('-Bsymbolic');
 
@@ -362,8 +370,15 @@ function TLinkerBeOS.MakeExecutable:boolean;
 var
   binstr,
   cmdstr : TCmdStr;
+<<<<<<< HEAD
+<<<<<<< HEAD
   success,
   useshell : boolean;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  success : boolean;
+>>>>>>> graemeg/fixes_2_2
   DynLinkStr : string[60];
   GCSectionsStr,
   StaticStr,
@@ -455,11 +470,27 @@ var
 { Write used files and libraries }
   WriteResponseFile(true,true);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   SoNameStr:='-soname '+ExtractFileName(current_module.sharedlibfilename);
 
 { Call linker }
   SplitBinCmd(Info.DllCmd[1],binstr,cmdstr);
   Replace(cmdstr,'$EXE',maybequoted(current_module.sharedlibfilename));
+=======
+  SoNameStr:='-soname '+ExtractFileName(current_module.sharedlibfilename^);
+
+{ Call linker }
+  SplitBinCmd(Info.DllCmd[1],binstr,cmdstr);
+  Replace(cmdstr,'$EXE',maybequoted(current_module.sharedlibfilename^));
+>>>>>>> graemeg/fixes_2_2
+=======
+  SoNameStr:='-soname '+ExtractFileName(current_module.sharedlibfilename^);
+
+{ Call linker }
+  SplitBinCmd(Info.DllCmd[1],binstr,cmdstr);
+  Replace(cmdstr,'$EXE',maybequoted(current_module.sharedlibfilename^));
+>>>>>>> origin/fixes_2_2
   Replace(cmdstr,'$OPT',Info.ExtraOptions);
   Replace(cmdstr,'$CATRES',CatFileContent(outputexedir+Info.ResName));
   Replace(cmdstr,'$RES',maybequoted(outputexedir+Info.ResName));

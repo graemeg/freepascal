@@ -194,7 +194,15 @@ function g_io_channel_unix_get_fd(channel:PGIOChannel):gint;cdecl;external glibl
 { Hook for GClosure / GSource integration. Don't touch  }
 //GLIB_VAR GSourceFuncs g_io_watch_funcs;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef WINDOWS}
+=======
+{$ifdef WIN32}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef WIN32}
+>>>>>>> origin/fixes_2_2
 
 const
   G_WIN32_MSG_HANDLE = 19981206;

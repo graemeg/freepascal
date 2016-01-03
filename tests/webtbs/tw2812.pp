@@ -1,5 +1,13 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 {%skiptarget=wince,os2,emx}
 {%delfiles=blockwritetest.tmp}
+=======
+{%skiptarget=wince}
+>>>>>>> graemeg/fixes_2_2
+=======
+{%skiptarget=wince}
+>>>>>>> origin/fixes_2_2
 var
   f:file;
   p:pointer;

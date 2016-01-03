@@ -1,6 +1,6 @@
 {
     Free Pascal port of the OpenPTC C++ library.
-    Copyright (C) 2001-2007, 2009, 2010, 2012  Nikolay Nikolov (nickysn@users.sourceforge.net)
+    Copyright (C) 2001-2006  Nikolay Nikolov (nickysn@users.sourceforge.net)
     Original C++ version by Glenn Fiedler (ptc@gaffer.org)
 
     This library is free software; you can redistribute it and/or
@@ -62,23 +62,9 @@ begin
   FMessage := AError.FMessage;
 end;
 
-function TPTCError.Equals(Obj: TObject): Boolean;
-var
-  OtherError: TPTCError;
+function TPTCError.Equals(const AError: TPTCError): Boolean;
 begin
-  if Obj = nil then
-    exit(False);
-
-  if Obj = Self then
-    exit(True);
-
-  if Obj is TPTCError then
-  begin
-    OtherError := TPTCError(Obj);
-    Equals := (FMessage = OtherError.FMessage);
-  end
-  else
-    Result := False;
+  Equals := (FMessage = AError.FMessage);
 end;
 
 procedure TPTCError.Report;
@@ -100,7 +86,7 @@ begin
   {$IFDEF Win32}
 //  Win32Cursor_resurrect;
   txt := FMessage;
-  MessageBoxA(0, PChar(txt), 'Error', MB_OK or MB_ICONERROR or MB_SETFOREGROUND or MB_TOPMOST);
+  MessageBox(0, PChar(txt), 'Error', MB_OK or MB_ICONERROR or MB_SETFOREGROUND or MB_TOPMOST);
   {$ENDIF Win32}
 
   {$IFDEF WinCE}

@@ -121,9 +121,15 @@ _start:
         ldr ip,=__stkptr
         str sp, [ip]
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 	/* keep stack aligned as required by eabi */
         sub sp,sp,#4
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 	/* Push stack limit */
 	str a3, [sp, #-4]!
 
@@ -181,5 +187,11 @@ __data_start:
 2:      .long 0
         .long 2,0,0
 3:      .align 4
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 .section .note.GNU-stack,"",%progbits
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

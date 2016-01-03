@@ -19,7 +19,23 @@ unit JSScanner;
 
 interface
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses SysUtils, Classes, jstoken;
+=======
+uses SysUtils, Classes;
+>>>>>>> graemeg/cpstrnew
+=======
+uses SysUtils, Classes;
+>>>>>>> graemeg/cpstrnew
+=======
+uses SysUtils, Classes;
+>>>>>>> graemeg/cpstrnew
+=======
+uses SysUtils, Classes;
+>>>>>>> origin/cpstrnew
 
 resourcestring
   SErrInvalidCharacter = 'Invalid character ''%s''';
@@ -29,8 +45,98 @@ resourcestring
   SErrInvalidPPElse = '$ELSE without matching $IFxxx';
   SErrInvalidPPEndif = '$ENDIF without matching $IFxxx';
   SInvalidHexadecimalNumber = 'Invalid decimal number';
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   SErrInvalidNonEqual = 'Syntax Error: != or !== expected';
   SErrInvalidRegularExpression = 'Syntax error in regular expression: / expected, got: %s';
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  SErrInvalidNonEqual = 'SyntaxError: != or !== expected';
+
+type
+
+   TJSToken = (tjsUnknown,
+   // Specials
+   tjsEOF,tjsWhiteSpace,tjsChar,tjsString, tjsIdentifier,tjsNumber, tjsComment,tjsREGEX, tjsRESERVED,
+   tjsANDAND, tjsANDEQ,
+   tjsBraceOpen,tjsBraceClose,tjsSQuaredBraceOpen,tjsSQuaredBraceClose,tjsCurlyBraceOpen,tjsCurlyBraceClose,
+   tjsCOMMA,tjsCOLON,  tjsDOT,tjsSEMICOLON, tjsASSIGN,tjsGT,tjsLT, tjsConditional,
+   tjsPLUS,tjsMINUS,tjsMUL,tjsDIV,tjsAnd,tjsOR, tjsInv, tjsMod, tjsXOR, tjsNot,
+   tjsEQ,
+   tjsGE,
+   tjsLE, tjsLSHIFT, tjsLSHIFTEQ,
+   tjsMINUSEQ, tjsMINUSMINUS, tjsMODEQ,tjsDIVEQ,tjsXOREq,
+   tjsNE,
+   tjsOREQ, tjsOROR,
+   tjsPLUSEQ, tjsPLUSPLUS,
+   tjsURSHIFT, tjsURSHIFTEQ,
+   tjsRSHIFT, tjsRSHIFTEQ,
+   tjsSEQ, tjsSNE, tjsMULEQ,
+   { Reserved words start here. They must be last }
+   tjsBREAK,tjsCASE, tjsCATCH, tjsCONTINUE,
+   tjsDEFAULT, tjsDELETE, tjsDO,
+   tjsELSE,
+   tjsFalse, tjsFINALLY, tjsFOR, tjsFUNCTION,
+   tjsIF, tjsIN, tjsINSTANCEOF,
+   tjsNEW,tjsNULL,
+   tjsRETURN,
+   tjsSWITCH,
+   tjsTHIS, tjsTHROW, tjsTrue, tjsTRY, tjsTYPEOF,
+   tjsVAR, tjsVOID,
+   tjsWHILE, tjsWITH
+ );
+
+const
+  FirstKeyword = tjsBreak;
+  LastKeyWord = tJSWith;
+
+  TokenInfos: array[TJSToken] of string = ('unknown',
+     // Specials
+      'EOF','whitespace','Char','String', 'identifier','number','comment','regular expression', 'reserved word',
+      '&&','&=',
+      '(',')','[',']','{','}',
+      ',',':','.',';','=','>','<','?',
+      '+','-','*','/','&','|','~','%','^','!',
+      '==',
+      '>=',
+      '<=', '<<', '<<=',
+      '-=', '--', '%=', '/=','^=',
+      '!=',
+      '|=', '||',
+      '+=', '++',
+      '>>>', '>>>=',
+      '>>', '>>=',
+      '===', '!==', '*=',
+      // Identifiers last
+      'break','case','catch', 'continue',
+   'default','delete', 'do',
+   'else',
+   'false','finally', 'for', 'function',
+   'if', 'in', 'instanceof',
+   'new','null',
+   'return',
+   'switch',
+   'this', 'throw', 'true', 'try', 'typeof',
+   'var', 'void',
+   'while', 'with'
+  );
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 Type
   TLineReader = class
@@ -94,7 +200,19 @@ Type
     function FetchLine: Boolean;
     function GetCurColumn: Integer;
     function ReadUnicodeEscape: WideChar;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Function ReadRegex : TJSToken;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   protected
     procedure Error(const Msg: string);overload;
     procedure Error(const Msg: string; Args: array of Const);overload;
@@ -103,7 +221,19 @@ Type
     constructor Create(AStream : TStream);
     destructor Destroy; override;
     procedure OpenFile(const AFilename: string);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     Function FetchRegexprToken: TJSToken;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     Function FetchToken: TJSToken;
     Function IsEndOfLine : Boolean;
     Property WasEndOfLine : Boolean Read FWasEndOfLine;
@@ -173,6 +303,10 @@ begin
   FSourceFilename := AFilename;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function TJSScanner.FetchRegexprToken: TJSToken;
 begin
   if (CurToken in [tjsDiv,tjsDivEq]) then
@@ -181,6 +315,14 @@ begin
     Result:=CurToken
 end;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 procedure TJSScanner.Error(const Msg: string);
 begin
@@ -306,7 +448,23 @@ begin
     Result:=tjsDiv;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TJSScanner.ReadUnicodeEscape: WideChar;
+=======
+Function TJSScanner.ReadUnicodeEscape : WideChar;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TJSScanner.ReadUnicodeEscape : WideChar;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TJSScanner.ReadUnicodeEscape : WideChar;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TJSScanner.ReadUnicodeEscape : WideChar;
+>>>>>>> origin/cpstrnew
 
 Var
   S : String;
@@ -328,6 +486,10 @@ begin
   Result:=WideChar(StrToInt('$'+S));
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function TJSScanner.ReadRegex: TJSToken;
 
 Var
@@ -373,6 +535,18 @@ begin
 end;
 
 function TJSScanner.DoStringLiteral: TJSToken;
+=======
+Function TJSScanner.DoStringLiteral : TJSToken;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TJSScanner.DoStringLiteral : TJSToken;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TJSScanner.DoStringLiteral : TJSToken;
+>>>>>>> graemeg/cpstrnew
+=======
+Function TJSScanner.DoStringLiteral : TJSToken;
+>>>>>>> origin/cpstrnew
 
 Var
   Delim : Char;
@@ -520,7 +694,23 @@ begin
     end
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function TJSScanner.FetchToken: TJSToken;
+=======
+function TJSScanner.FetchToken: TJSToken;
+>>>>>>> graemeg/cpstrnew
+=======
+function TJSScanner.FetchToken: TJSToken;
+>>>>>>> graemeg/cpstrnew
+=======
+function TJSScanner.FetchToken: TJSToken;
+>>>>>>> graemeg/cpstrnew
+=======
+function TJSScanner.FetchToken: TJSToken;
+>>>>>>> origin/cpstrnew
 
 
 var
@@ -824,7 +1014,23 @@ begin
         ((Result=tjsWhiteSpace) and ReturnWhiteSpace);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function TJSScanner.IsEndOfLine: Boolean;
+=======
+function TJSScanner.IsEndOfLine: Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function TJSScanner.IsEndOfLine: Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function TJSScanner.IsEndOfLine: Boolean;
+>>>>>>> graemeg/cpstrnew
+=======
+function TJSScanner.IsEndOfLine: Boolean;
+>>>>>>> origin/cpstrnew
 begin
   Result:=(TokenStr=Nil) or (TokenStr[0] in [#0,#10,#13]);
 end;

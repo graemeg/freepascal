@@ -32,7 +32,14 @@ Procedure TEventLog.ActivateSystemLog;
 
 begin
   CheckIdentification;
+<<<<<<< HEAD
   FLogHandle := Pointer(OpenEventLogA(Nil,Pchar(Identification)));
+=======
+  FLogHandle := Pointer(OpenEventLog(Nil,Pchar(Identification)));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   If (FLogHandle=Nil) and FRaiseExceptionOnError then
     Raise ELogError.CreateFmt(SErrNoSysLog,[GetLastError]);
 end;

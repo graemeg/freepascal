@@ -63,7 +63,23 @@ type
 { NSPropertyListSerialization }
   NSPropertyListSerialization = objcclass external (NSObject)
   private
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     reserved: array[0..(6)-1] of Pointer;
+=======
+        reserved: array[0..5] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        reserved: array[0..5] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        reserved: array[0..5] of Pointer;
+>>>>>>> graemeg/cpstrnew
+=======
+        reserved: array[0..5] of Pointer;
+>>>>>>> origin/cpstrnew
     
   public
     class function propertyList_isValidForFormat(plist: id; format: NSPropertyListFormat): Boolean; message 'propertyList:isValidForFormat:';

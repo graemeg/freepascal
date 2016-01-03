@@ -99,7 +99,23 @@ unit cg64f32;
        globtype,systems,constexp,
        verbose,cutils,
        symbase,symconst,symdef,symtable,defutil,paramgr,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        tgobj,hlcgobj;
+=======
+       tgobj;
+>>>>>>> graemeg/cpstrnew
+=======
+       tgobj;
+>>>>>>> graemeg/cpstrnew
+=======
+       tgobj;
+>>>>>>> graemeg/cpstrnew
+=======
+       tgobj;
+>>>>>>> origin/cpstrnew
 
 {****************************************************************************
                                      Helpers
@@ -763,6 +779,7 @@ unit cg64f32;
         tmploclo.init;
         tmplochi.init;
         splitparaloc64(paraloc,tmploclo,tmplochi);
+<<<<<<< HEAD
         if target_info.endian=endian_big then
           begin
             { Keep this order of first lo before hi to have
@@ -777,6 +794,21 @@ unit cg64f32;
             cg.a_load_reg_cgpara(list,OS_32,reg.reghi,tmplochi);
             cg.a_load_reg_cgpara(list,OS_32,reg.reglo,tmploclo);
           end;
+=======
+        { Keep this order of first hi before lo to have
+          the correct push order for i386 }
+        cg.a_load_reg_cgpara(list,OS_32,reg.reghi,tmplochi);
+        cg.a_load_reg_cgpara(list,OS_32,reg.reglo,tmploclo);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         tmploclo.done;
         tmplochi.done;
       end;
@@ -789,6 +821,7 @@ unit cg64f32;
         tmploclo.init;
         tmplochi.init;
         splitparaloc64(paraloc,tmploclo,tmplochi);
+<<<<<<< HEAD
         if target_info.endian=endian_big then
           begin
             { Keep this order of first lo before hi to have
@@ -803,6 +836,21 @@ unit cg64f32;
             cg.a_load_const_cgpara(list,OS_32,longint(hi(value)),tmplochi);
             cg.a_load_const_cgpara(list,OS_32,longint(lo(value)),tmploclo);
           end;
+=======
+        { Keep this order of first hi before lo to have
+          the correct push order for i386 }
+        cg.a_load_const_cgpara(list,OS_32,aint(hi(value)),tmplochi);
+        cg.a_load_const_cgpara(list,OS_32,aint(lo(value)),tmploclo);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         tmploclo.done;
         tmplochi.done;
       end;
@@ -827,6 +875,7 @@ unit cg64f32;
             cg.a_load_ref_cgpara(list,OS_32,tmprefhi,tmplochi);
           end
         else
+<<<<<<< HEAD
           begin
             { Keep this order of first hi before lo to have
               the correct push order for i386 }
@@ -834,6 +883,22 @@ unit cg64f32;
             cg.a_load_ref_cgpara(list,OS_32,tmprefhi,tmplochi);
             cg.a_load_ref_cgpara(list,OS_32,tmpreflo,tmploclo);
           end;
+=======
+          inc(tmprefhi.offset,4);
+        { Keep this order of first hi before lo to have
+          the correct push order for i386 }
+        cg.a_load_ref_cgpara(list,OS_32,tmprefhi,tmplochi);
+        cg.a_load_ref_cgpara(list,OS_32,tmpreflo,tmploclo);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         tmploclo.done;
         tmplochi.done;
       end;

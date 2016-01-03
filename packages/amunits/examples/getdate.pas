@@ -17,7 +17,7 @@ const template : pchar = 'Format/K,Help/S';
       version : pchar = '$VER: GetDate 1.0 (21.2.95)';
 
 VAR DS : tDateStamp;
-    DT : _tDateTime;
+    DT : tDateTime;
     rda : pRDArgs;
     WeekDay, Date, Time, hours, mins, secs, day, month, year : pchar;
     vec : Array[0..1] of longint;
@@ -104,7 +104,7 @@ begin
  DT.dat_StrDay:=WeekDay;
  DT.dat_StrDate:=Date;
  DT.dat_StrTime:=Time;
- If DOSDateToStr(@DT) then begin
+ If DateToStr(@DT) then begin
 
  StrlCopy(hours,Time,2);
 

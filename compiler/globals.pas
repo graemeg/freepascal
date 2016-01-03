@@ -48,9 +48,15 @@ interface
 
     const
        delphimodeswitches =
+<<<<<<< HEAD
+<<<<<<< HEAD
          [m_delphi,m_class,m_objpas,m_result,m_string_pchar,
           m_pointer_2_procedure,m_autoderef,m_tp_procvar,m_initfinal,m_default_ansistring,
           m_out,m_default_para,m_duplicate_names,m_hintdirective,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           m_property,m_default_inline,m_except,m_advanced_records,m_type_helpers];
        delphiunicodemodeswitches = delphimodeswitches + [m_systemcodepage,m_default_unicodestring];
        fpcmodeswitches =
@@ -59,15 +65,56 @@ interface
           m_property,m_default_inline];
        objfpcmodeswitches =
          [m_objfpc,m_fpc,m_class,m_objpas,m_result,m_string_pchar,m_nested_comment,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          m_property,m_default_inline,m_except,m_advanced_records];
+=======
+=======
+>>>>>>> origin/fixes_2_2
+         [m_delphi,m_all,m_class,m_objpas,m_result,m_string_pchar,
+          m_pointer_2_procedure,m_autoderef,m_tp_procvar,m_initfinal,m_default_ansistring,
+          m_out,m_default_para,m_duplicate_names,m_hintdirective,m_add_pointer,
+          m_property,m_default_inline,m_except];
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+       fpcmodeswitches =
+         [m_fpc,m_all,m_string_pchar,m_nested_comment,m_repeat_forward,
+          m_cvar_support,m_initfinal,m_hintdirective,
+          m_property,m_default_inline];
+       objfpcmodeswitches =
+         [m_objfpc,m_fpc,m_all,m_class,m_objpas,m_result,m_string_pchar,m_nested_comment,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           m_repeat_forward,m_cvar_support,m_initfinal,m_out,m_default_para,m_hintdirective,
           m_property,m_default_inline,m_except];
        tpmodeswitches =
+<<<<<<< HEAD
+<<<<<<< HEAD
          [m_tp7,m_tp_procvar,m_duplicate_names];
 {$ifdef gpc_mode}
        gpcmodeswitches =
          [m_gpc,m_tp_procvar];
 {$endif}
        macmodeswitches =
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          [m_mac,m_cvar_support,m_mac_procvar,m_nested_procvars,m_non_local_goto,m_isolike_unary_minus,m_default_inline];
        isomodeswitches =
          [m_iso,m_tp_procvar,m_duplicate_names,m_nested_procvars,m_non_local_goto,m_isolike_unary_minus,m_isolike_io,
@@ -77,6 +124,37 @@ interface
          [m_extpas,m_tp_procvar,m_duplicate_names,m_nested_procvars,m_non_local_goto,m_isolike_unary_minus,m_isolike_io,
           m_isolike_program_para,
           m_isolike_mod];
+=======
+         [m_mac,m_all,m_cvar_support,m_mac_procvar,m_nested_procvars,m_non_local_goto];
+       isomodeswitches =
+         [m_iso,m_all,m_tp_procvar,m_duplicate_names,m_nested_procvars,m_non_local_goto];
+>>>>>>> graemeg/cpstrnew
+=======
+         [m_mac,m_all,m_cvar_support,m_mac_procvar,m_nested_procvars,m_non_local_goto];
+       isomodeswitches =
+         [m_iso,m_all,m_tp_procvar,m_duplicate_names,m_nested_procvars,m_non_local_goto];
+>>>>>>> graemeg/cpstrnew
+=======
+         [m_mac,m_all,m_cvar_support,m_mac_procvar,m_nested_procvars,m_non_local_goto];
+       isomodeswitches =
+         [m_iso,m_all,m_tp_procvar,m_duplicate_names,m_nested_procvars,m_non_local_goto];
+>>>>>>> graemeg/cpstrnew
+=======
+         [m_mac,m_all,m_cvar_support,m_mac_procvar,m_nested_procvars,m_non_local_goto];
+       isomodeswitches =
+         [m_iso,m_all,m_tp_procvar,m_duplicate_names,m_nested_procvars,m_non_local_goto];
+>>>>>>> origin/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+         [m_tp7,m_all,m_tp_procvar,m_duplicate_names];
+{$ifdef gpc_mode}
+       gpcmodeswitches =
+         [m_gpc,m_all,m_tp_procvar];
+{$endif}
+       macmodeswitches =
+         [m_mac,m_all,m_result,m_cvar_support,m_mac_procvar];
+>>>>>>> graemeg/fixes_2_2
 
        { maximum nesting of routines }
        maxnesting = 32;
@@ -108,6 +186,22 @@ interface
        MathPiExtended : tcompextendedrec = (bytes : (64,0,201,15,218,162,33,104,194,53));
 {$endif FPC_LITTLE_ENDIAN}
 {$endif}
+       CP_UTF8 = 65001;
+       CP_UTF16 = 1200;
+       CP_NONE  = 65535;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+=======
+
+>>>>>>> origin/cpstrnew
+
+>>>>>>> graemeg/cpstrnew
+
+>>>>>>> graemeg/cpstrnew
+
 
        CP_UTF8 = 65001;
        CP_UTF16LE = 1200;
@@ -134,10 +228,16 @@ interface
          localswitches   : tlocalswitches;
          modeswitches    : tmodeswitches;
          optimizerswitches : toptimizerswitches;
+<<<<<<< HEAD
+<<<<<<< HEAD
          { generate information necessary to perform these wpo's during a subsequent compilation }
          genwpoptimizerswitches: twpoptimizerswitches;
          { perform these wpo's using information generated during a previous compilation }
          dowpoptimizerswitches: twpoptimizerswitches;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
          debugswitches   : tdebugswitches;
          { 0: old behaviour for sets <=256 elements
            >0: round to this size }
@@ -155,6 +255,7 @@ interface
          defproccall     : tproccalloption;
          sourcecodepage  : tstringencoding;
 
+<<<<<<< HEAD
          minfpconstprec  : tfloattype;
 
          disabledircache : boolean;
@@ -172,6 +273,15 @@ interface
 
          { WARNING: this pointer cannot be written as such in record token }
          pmessage : pmessagestaterecord;
+=======
+         packrecords     : shortint;
+         maxfpuregisters : shortint;
+
+         minfpconstprec  : tfloattype;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
        end;
 
     const
@@ -387,7 +497,23 @@ interface
         globalswitches : [cs_check_unit_name,cs_link_static];
         targetswitches : [];
         moduleswitches : [cs_extsyntax,cs_implicit_exceptions];
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         localswitches : [cs_check_io,cs_typed_const_writable,cs_pointermath{$ifdef i8086},cs_force_far_calls{$endif}];
+=======
+        localswitches : [cs_check_io,cs_typed_const_writable,cs_pointermath];
+>>>>>>> graemeg/cpstrnew
+=======
+        localswitches : [cs_check_io,cs_typed_const_writable,cs_pointermath];
+>>>>>>> graemeg/cpstrnew
+=======
+        localswitches : [cs_check_io,cs_typed_const_writable,cs_pointermath];
+>>>>>>> graemeg/cpstrnew
+=======
+        localswitches : [cs_check_io,cs_typed_const_writable,cs_pointermath];
+>>>>>>> origin/cpstrnew
         modeswitches : fpcmodeswitches;
         optimizerswitches : [];
         genwpoptimizerswitches : [];
@@ -451,6 +577,7 @@ interface
         cputype : cpuinfo.cpu_avr5;
         optimizecputype : cpuinfo.cpu_avr5;
         fputype : fpu_none;
+<<<<<<< HEAD
   {$endif avr}
   {$ifdef mips}
         cputype : cpu_mips2;
@@ -473,6 +600,23 @@ interface
         fputype : fpu_x87;
   {$endif i8086}
 {$endif not GENERIC_CPU}
+=======
+{$endif avr}
+{$ifdef mips}
+        cputype : cpu_mips32;
+        optimizecputype : cpu_mips32;
+        fputype : fpu_mips2;
+{$endif mips}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         asmmode : asmmode_standard;
 {$ifndef jvm}
         interfacetype : it_interfacecom;
@@ -492,6 +636,152 @@ interface
 {$endif defined(ARM)}
         controllertype : ct_none;
         pmessage : nil;
+      );
+
+    const
+      default_settings : TSettings = (
+        globalswitches : [cs_check_unit_name,cs_link_static];
+        moduleswitches : [cs_extsyntax,cs_implicit_exceptions];
+        localswitches : [cs_check_io,cs_typed_const_writable];
+        modeswitches : fpcmodeswitches;
+        optimizerswitches : [];
+        debugswitches : [];
+        setalloc : 0;
+        packenum : 4;
+        alignment : (
+          procalign : 0;
+          loopalign : 0;
+          jumpalign : 0;
+          constalignmin : 0;
+          constalignmax : 0;
+          varalignmin : 0;
+          varalignmax : 0;
+          localalignmin : 0;
+          localalignmax : 0;
+          recordalignmin : 0;
+          recordalignmax : 0;
+          maxCrecordalign : 0;
+        );
+{$ifdef i386}
+        cputype : cpu_Pentium;
+        optimizecputype : cpu_Pentium3;
+        fputype : fpu_x87;
+{$endif i386}
+{$ifdef m68k}
+        cputype : cpu_MC68020;
+        optimizecputype : cpu_MC68020;
+        fputype : fpu_soft;
+{$endif m68k}
+{$ifdef powerpc}
+        cputype : cpu_PPC604;
+        optimizecputype : cpu_ppc7400;
+        fputype : fpu_standard;
+{$endif powerpc}
+{$ifdef POWERPC64}
+        cputype : cpu_PPC970;
+        optimizecputype : cpu_ppc970;
+        fputype : fpu_standard;
+{$endif POWERPC64}
+{$ifdef sparc}
+        cputype : cpu_SPARC_V8;
+        optimizecputype : cpu_SPARC_V8;
+        fputype : fpu_hard;
+{$endif sparc}
+{$ifdef arm}
+        cputype : cpu_armv3;
+        optimizecputype : cpu_armv3;
+        fputype : fpu_fpa;
+{$endif arm}
+{$ifdef x86_64}
+        cputype : cpu_athlon64;
+        optimizecputype : cpu_athlon64;
+        fputype : fpu_sse64;
+{$endif x86_64}
+{$ifdef avr}
+        cputype : cpuinfo.cpu_avr;
+        optimizecputype : cpuinfo.cpu_avr;
+        fputype : fpu_none;
+{$endif avr}
+        asmmode : asmmode_standard;
+        interfacetype : it_interfacecom;
+        defproccall : pocall_default;
+        sourcecodepage : '8859-1';
+        packrecords     : 0;
+        maxfpuregisters : 0;
+        minfpconstprec : s32real;
+      );
+
+    const
+      default_settings : TSettings = (
+        globalswitches : [cs_check_unit_name,cs_link_static];
+        moduleswitches : [cs_extsyntax,cs_implicit_exceptions];
+        localswitches : [cs_check_io,cs_typed_const_writable];
+        modeswitches : fpcmodeswitches;
+        optimizerswitches : [];
+        debugswitches : [];
+        setalloc : 0;
+        packenum : 4;
+        alignment : (
+          procalign : 0;
+          loopalign : 0;
+          jumpalign : 0;
+          constalignmin : 0;
+          constalignmax : 0;
+          varalignmin : 0;
+          varalignmax : 0;
+          localalignmin : 0;
+          localalignmax : 0;
+          recordalignmin : 0;
+          recordalignmax : 0;
+          maxCrecordalign : 0;
+        );
+{$ifdef i386}
+        cputype : cpu_Pentium;
+        optimizecputype : cpu_Pentium3;
+        fputype : fpu_x87;
+{$endif i386}
+{$ifdef m68k}
+        cputype : cpu_MC68020;
+        optimizecputype : cpu_MC68020;
+        fputype : fpu_soft;
+{$endif m68k}
+{$ifdef powerpc}
+        cputype : cpu_PPC604;
+        optimizecputype : cpu_ppc7400;
+        fputype : fpu_standard;
+{$endif powerpc}
+{$ifdef POWERPC64}
+        cputype : cpu_PPC970;
+        optimizecputype : cpu_ppc970;
+        fputype : fpu_standard;
+{$endif POWERPC64}
+{$ifdef sparc}
+        cputype : cpu_SPARC_V8;
+        optimizecputype : cpu_SPARC_V8;
+        fputype : fpu_hard;
+{$endif sparc}
+{$ifdef arm}
+        cputype : cpu_armv3;
+        optimizecputype : cpu_armv3;
+        fputype : fpu_fpa;
+{$endif arm}
+{$ifdef x86_64}
+        cputype : cpu_athlon64;
+        optimizecputype : cpu_athlon64;
+        fputype : fpu_sse64;
+{$endif x86_64}
+{$ifdef avr}
+        cputype : cpuinfo.cpu_avr;
+        optimizecputype : cpuinfo.cpu_avr;
+        fputype : fpu_none;
+{$endif avr}
+        asmmode : asmmode_standard;
+        interfacetype : it_interfacecom;
+        defproccall : pocall_default;
+        sourcecodepage : '8859-1';
+        packrecords     : 0;
+        maxfpuregisters : 0;
+        minfpconstprec : s32real;
       );
 
     var
@@ -522,7 +812,16 @@ interface
     function Setoptimizecputype(const s:string;var a:tcputype):boolean;
     function Setcputype(const s:string;var a:tsettings):boolean;
     function SetFpuType(const s:string;var a:tfputype):boolean;
+<<<<<<< HEAD
     function SetControllerType(const s:string;var a:tcontrollertype):boolean;
+=======
+    function UpdateAlignmentStr(s:string;var a:talignmentinfo):boolean;
+    function UpdateOptimizerStr(s:string;var a:toptimizerswitches):boolean;
+    function UpdateDebugStr(s:string;var a:tdebugswitches):boolean;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     function IncludeFeature(const s : string) : boolean;
     function SetMinFPConstPrec(const s: string; var a: tfloattype) : boolean;
 
@@ -532,18 +831,31 @@ interface
     function var_align_size(siz: longint): shortint;
     {# Routine to get the required alignment for size of data, which will
        be placed in data/const segment, according to the current alignment requirements }
+<<<<<<< HEAD
     function const_align(want_align: longint): shortint;
     function const_align_size(siz: longint): shortint;
+=======
+    function const_align(siz: longint): shortint;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifdef ARM}
     function is_double_hilo_swapped: boolean;{$ifdef USEINLINE}inline;{$endif}
 {$endif ARM}
     function floating_point_range_check_error : boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
     function use_dotted_functions: boolean;
 
   { hide Sysutils.ExecuteProcess in units using this one after SysUtils}
   const
     ExecuteProcess = 'Do not use' deprecated 'Use cfileutil.RequotedExecuteProcess instead, ExecuteProcess cannot deal with single quotes as used by Unix command lines';
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 implementation
 
@@ -552,7 +864,33 @@ implementation
       macutils,
 {$endif}
 {$ifdef mswindows}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       windirs,
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef VER2_4}
+      cwindirs,
+{$else VER2_4}
+      windirs,
+{$endif VER2_4}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$endif}
       comphook;
 
@@ -823,6 +1161,10 @@ implementation
            Replace(s,'$FPCTARGET',target_os_string)
          else
            Replace(s,'$FPCTARGET',target_full_string);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          Replace(s,'$FPCSUBARCH',lower(cputypestr[init_settings.cputype]));
          Replace(s,'$FPCABI',lower(abiinfo[target_info.abi].name));
 {$ifdef i8086}
@@ -830,6 +1172,14 @@ implementation
 {$else i8086}
          Replace(s,'$FPCMEMORYMODEL','flat');
 {$endif i8086}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifdef mswindows}
          ReplaceSpecialFolder('$LOCAL_APPDATA',CSIDL_LOCAL_APPDATA);
          ReplaceSpecialFolder('$APPDATA',CSIDL_APPDATA);
@@ -929,6 +1279,36 @@ implementation
       {$endif}
       end;
 
+<<<<<<< HEAD
+=======
+{$if defined(MORPHOS) or defined(AMIGA)}
+  {$define AMIGASHELL}
+{$endif}
+
+    function Shell(const command:ansistring): longint;
+      { This is already defined in the linux.ppu for linux, need for the *
+        expansion under linux }
+{$ifdef hasunix}
+      begin
+        result := Unix.fpsystem(command);
+      end;
+{$else hasunix}
+  {$ifdef amigashell}
+      begin
+        result := ExecuteProcess('',command);
+      end;
+  {$else amigashell}
+      var
+        comspec : string;
+      begin
+        comspec:=GetEnvironmentVariable('COMSPEC');
+        result := ExecuteProcess(comspec,' /C '+command);
+      end;
+   {$endif amigashell}
+{$endif hasunix}
+
+{$UNDEF AMIGASHELL}
+>>>>>>> graemeg/fixes_2_2
       function is_number_float(d : double) : boolean;
         var
            bytearray : array[0..7] of byte;
@@ -1029,7 +1409,15 @@ implementation
           FillChar(GUID,SizeOf(GUID),0);
           string2guid:=true;
           end
+<<<<<<< HEAD
+<<<<<<< HEAD
         else
+=======
+        else  
+>>>>>>> graemeg/fixes_2_2
+=======
+        else  
+>>>>>>> origin/fixes_2_2
           string2guid:=false;
       end;
 
@@ -1167,6 +1555,114 @@ implementation
               break;
             end;
       end;
+<<<<<<< HEAD
+=======
+{$endif defined(arm) or defined(avr)}
+
+
+    function UpdateAlignmentStr(s:string;var a:talignmentinfo):boolean;
+      var
+        tok  : string;
+        vstr : string;
+        l    : longint;
+        code : integer;
+        b    : talignmentinfo;
+      begin
+        UpdateAlignmentStr:=true;
+        uppervar(s);
+        fillchar(b,sizeof(b),0);
+        repeat
+          tok:=GetToken(s,'=');
+          if tok='' then
+           break;
+          vstr:=GetToken(s,',');
+          val(vstr,l,code);
+          if tok='PROC' then
+           b.procalign:=l
+          else if tok='JUMP' then
+           b.jumpalign:=l
+          else if tok='LOOP' then
+           b.loopalign:=l
+          else if tok='CONSTMIN' then
+           begin
+             b.constalignmin:=l;
+             if l>b.constalignmax then
+               b.constalignmax:=l;
+           end
+          else if tok='CONSTMAX' then
+           b.constalignmax:=l
+          else if tok='VARMIN' then
+           begin
+             b.varalignmin:=l;
+             if l>b.varalignmax then
+               b.varalignmax:=l;
+           end
+          else if tok='VARMAX' then
+           b.varalignmax:=l
+          else if tok='LOCALMIN' then
+           begin
+             b.localalignmin:=l;
+             if l>b.localalignmax then
+               b.localalignmax:=l;
+           end
+          else if tok='LOCALMAX' then
+           b.localalignmax:=l
+          else if tok='RECORDMIN' then
+           begin
+             b.recordalignmin:=l;
+             if l>b.recordalignmax then
+               b.recordalignmax:=l;
+           end
+          else if tok='RECORDMAX' then
+           b.recordalignmax:=l
+          else { Error }
+           UpdateAlignmentStr:=false;
+        until false;
+        UpdateAlignment(a,b);
+      end;
+
+
+    function UpdateOptimizerStr(s:string;var a:toptimizerswitches):boolean;
+      var
+        tok   : string;
+        doset,
+        found : boolean;
+        opt   : toptimizerswitch;
+      begin
+        result:=true;
+        uppervar(s);
+        repeat
+          tok:=GetToken(s,',');
+          if tok='' then
+           break;
+          if Copy(tok,1,2)='NO' then
+            begin
+              delete(tok,1,2);
+              doset:=false;
+            end
+          else
+            doset:=true;
+          found:=false;
+          for opt:=low(toptimizerswitch) to high(toptimizerswitch) do
+            begin
+              if OptimizerSwitchStr[opt]=tok then
+                begin
+                  found:=true;
+                  break;
+                end;
+            end;
+          if found then
+            begin
+              if doset then
+                include(a,opt)
+              else
+                exclude(a,opt);
+            end
+          else
+            result:=false;
+        until false;
+      end;
+>>>>>>> graemeg/cpstrnew
 
 
     function SetControllerType(const s:string;var a:tcontrollertype):boolean;
@@ -1196,6 +1692,90 @@ implementation
           Result := true;
          end;
 {$POP}
+      end;
+
+
+    function UpdateDebugStr(s:string;var a:tdebugswitches):boolean;
+      var
+        tok   : string;
+        doset,
+        found : boolean;
+        opt   : tdebugswitch;
+      begin
+        result:=true;
+        uppervar(s);
+        repeat
+          tok:=GetToken(s,',');
+          if tok='' then
+           break;
+          if Copy(tok,1,2)='NO' then
+            begin
+              delete(tok,1,2);
+              doset:=false;
+            end
+          else
+            doset:=true;
+          found:=false;
+          for opt:=low(tdebugswitch) to high(tdebugswitch) do
+            begin
+              if DebugSwitchStr[opt]=tok then
+                begin
+                  found:=true;
+                  break;
+                end;
+            end;
+          if found then
+            begin
+              if doset then
+                include(a,opt)
+              else
+                exclude(a,opt);
+            end
+          else
+            result:=false;
+        until false;
+      end;
+
+
+    function UpdateDebugStr(s:string;var a:tdebugswitches):boolean;
+      var
+        tok   : string;
+        doset,
+        found : boolean;
+        opt   : tdebugswitch;
+      begin
+        result:=true;
+        uppervar(s);
+        repeat
+          tok:=GetToken(s,',');
+          if tok='' then
+           break;
+          if Copy(tok,1,2)='NO' then
+            begin
+              delete(tok,1,2);
+              doset:=false;
+            end
+          else
+            doset:=true;
+          found:=false;
+          for opt:=low(tdebugswitch) to high(tdebugswitch) do
+            begin
+              if DebugSwitchStr[opt]=tok then
+                begin
+                  found:=true;
+                  break;
+                end;
+            end;
+          if found then
+            begin
+              if doset then
+                include(a,opt)
+              else
+                exclude(a,opt);
+            end
+          else
+            result:=false;
+        until false;
       end;
 
 
@@ -1240,6 +1820,8 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     function var_align(want_align: longint): shortint;
       begin
         var_align := used_align(want_align,current_settings.alignment.varalignmin,current_settings.alignment.varalignmax);
@@ -1247,6 +1829,11 @@ implementation
 
 
     function var_align_size(siz: longint): shortint;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    function var_align(siz: longint): shortint;
+>>>>>>> graemeg/fixes_2_2
       begin
         siz := size_2_align(siz);
         var_align_size := var_align(siz);
@@ -1278,10 +1865,34 @@ implementation
       end;
 {$endif ARM}
 
+{$ifdef ARM}
+    function is_double_hilo_swapped: boolean;{$ifdef USEINLINE}inline;{$endif}
+      begin
+        result := (current_settings.fputype in [fpu_fpa,fpu_fpa10,fpu_fpa11]) and
+          not(cs_fp_emulation in current_settings.moduleswitches);
+{$ifdef FPC_DOUBLE_HILO_SWAPPED}
+        { inverse result if compiler was compiled with swapped hilo already }
+        result := not result;
+{$endif FPC_DOUBLE_HILO_SWAPPED}
+      end;
+{$endif ARM}
+
 
     function floating_point_range_check_error : boolean;
       begin
+        result:=((([cs_check_range,cs_check_overflow]*current_settings.localswitches)<>[]) and not
+                   (m_delphi in current_settings.modeswitches)
+                ); // or (cs_ieee_errors in current_settings.localswitches);
+      end;
+
+<<<<<<< HEAD
+    function floating_point_range_check_error : boolean;
+      begin
         result:=cs_ieee_errors in current_settings.localswitches;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       end;
 
 
@@ -1290,6 +1901,34 @@ implementation
         result:=
           (target_info.system in systems_dotted_function_names) and
           (target_info.abi<>abi_powerpc_elfv2);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+{$ifdef ARM}
+    function is_double_hilo_swapped: boolean;{$ifdef USEINLINE}inline;{$endif}
+      begin
+        result := (current_settings.fputype in [fpu_fpa,fpu_fpa10,fpu_fpa11]) and
+          not(cs_fp_emulation in current_settings.moduleswitches);
+{$ifdef FPC_DOUBLE_HILO_SWAPPED}
+        { inverse result if compiler was compiled with swapped hilo already }
+        result := not result;
+{$endif FPC_DOUBLE_HILO_SWAPPED}
+      end;
+{$endif ARM}
+
+
+    function floating_point_range_check_error : boolean;
+      begin
+        result:=((([cs_check_range,cs_check_overflow]*current_settings.localswitches)<>[]) and not
+                   (m_delphi in current_settings.modeswitches)
+                ); // or (cs_ieee_errors in current_settings.localswitches);
+>>>>>>> graemeg/fixes_2_2
       end;
 
 {****************************************************************************
@@ -1360,6 +1999,22 @@ implementation
         do_make:=true;
         compile_level:=0;
         codegenerror:=false;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+        DLLsource:=false;
+        paratarget:=system_none;
+        paratargetasm:=as_none;
+        paratargetdbg:=dbg_none;
+>>>>>>> graemeg/cpstrnew
 
         { Output }
         OutputFileName:='';
@@ -1406,8 +2061,21 @@ implementation
         GenerateImportSection:=false;
         RelocSection:=false;
         RelocSectionSetExplicitly:=false;
+<<<<<<< HEAD
         MacOSXVersionMin:='';
         iPhoneOSVersionMin:='';
+=======
+        LinkTypeSetExplicitly:=false;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         { memory sizes, will be overridden by parameter or default for target
           in options or init_parser }
         stacksize:=0;

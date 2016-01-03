@@ -206,6 +206,19 @@ uses
         'T','F','DNZ','DNZT','DNZF','DZ','DZT','DZF');
 
 
+<<<<<<< HEAD
+=======
+    const
+      CondAsmOps=3;
+      CondAsmOp:array[0..CondAsmOps-1] of TasmOp=(
+         A_BC, A_TW, A_TWI
+      );
+      CondAsmOpStr:array[0..CondAsmOps-1] of string[7]=(
+        'BC','TW','TWI'
+      );
+
+
+>>>>>>> graemeg/fixes_2_2
 {*****************************************************************************
                                    Flags
 *****************************************************************************}
@@ -352,8 +365,16 @@ uses
       );
 
       { this is only for the generic code which is not used for this architecture }
+<<<<<<< HEAD
+<<<<<<< HEAD
       saved_address_registers : array[0..0] of tsuperregister = (RS_INVALID);
       saved_mm_registers : array[0..0] of tsuperregister = (RS_INVALID);
+=======
+      saved_mm_registers : array[0..0] of tsuperregister = (RS_NO);
+>>>>>>> graemeg/fixes_2_2
+=======
+      saved_mm_registers : array[0..0] of tsuperregister = (RS_NO);
+>>>>>>> origin/fixes_2_2
 
       {# Required parameter alignment when calling a routine declared as
          stdcall and cdecl. The alignment value should be the one defined
@@ -388,9 +409,15 @@ uses
 
       maxfpuregs = 8;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
       { minimum size of the stack frame if one exists }
       MINIMUM_STACKFRAME_SIZE = 56;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {*****************************************************************************
                                   Helpers
 *****************************************************************************}

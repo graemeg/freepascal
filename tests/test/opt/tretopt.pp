@@ -259,7 +259,15 @@ begin
   asm
 {$ifdef cpupowerpc32}
     la  r3,t
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$if not defined(macos) and not defined(aix)}
+=======
+  {$ifndef macos}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$ifndef macos}
+>>>>>>> origin/fixes_2_2
     lis  r4,p3@ha
     addi r4,r4,p3@l
   {$else}
@@ -269,6 +277,8 @@ begin
 {$endif}
 {$ifdef cpupowerpc64}
     la  r3,t
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if defined(darwin)}
     lis  r4, p3@ha
     std  r3,p3@l(r4)
@@ -276,13 +286,33 @@ begin
     ld   r4,p3(r2)
     std  r3,0(r4)
 {$else}
+=======
+{$ifndef darwin}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifndef darwin}
+>>>>>>> origin/fixes_2_2
     lis  r4, p3@highesta
     ori  r4, r4, p3@highera
     sldi r4, r4, 32
     oris r4, r4, p3@ha
+<<<<<<< HEAD
+<<<<<<< HEAD
     std  r3,p3@l(r4)
 {$endif darwin}
 {$endif cpupowerpc64}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$else darwin}
+    lis  r4, p3@ha
+{$endif darwin}
+    std  r3,p3@l(r4)
+{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifdef cpui386}
     leal t,%eax
 {$ifndef FPC_PIC}
@@ -294,9 +324,19 @@ begin
 {$ifdef darwin}
     movl %eax,p3-.Lpic(%ecx)
 {$else darwin}
+<<<<<<< HEAD
+<<<<<<< HEAD
    addl $_GLOBAL_OFFSET_TABLE_+1,%ecx
    movl p3@GOT(%ecx),%edx
    movl %eax,(%edx)
+=======
+   addl $_GLOBAL_OFFSET_TABLE_,%ecx
+   movl %eax,p3@GOT(%ecx)
+>>>>>>> graemeg/fixes_2_2
+=======
+   addl $_GLOBAL_OFFSET_TABLE_,%ecx
+   movl %eax,p3@GOT(%ecx)
+>>>>>>> origin/fixes_2_2
 {$endif darwin}
 {$endif FPC_PIC}
 {$endif cpui386}
@@ -315,7 +355,15 @@ begin
   asm
 {$ifdef cpupowerpc32}
     la  r3,t
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$if not defined(macos) and not defined(aix)}
+=======
+  {$ifndef macos}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$ifndef macos}
+>>>>>>> origin/fixes_2_2
     lis  r4,p3@ha
     addi r4,r4,p3@l
   {$else}
@@ -325,6 +373,8 @@ begin
 {$endif}
 {$ifdef cpupowerpc64}
     la  r3,t
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$if defined(darwin)}
     lis  r4, p3@ha
     std  r3,p3@l(r4)
@@ -332,13 +382,33 @@ begin
     ld   r4,p3(r2)
     std  r3,0(r4)
 {$else}
+=======
+{$ifndef darwin}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifndef darwin}
+>>>>>>> origin/fixes_2_2
     lis  r4, p3@highesta
     ori  r4, r4, p3@highera
     sldi r4, r4, 32
     oris r4, r4, p3@ha
+<<<<<<< HEAD
+<<<<<<< HEAD
     std  r3,p3@l(r4)
 {$endif darwin}
 {$endif cpupowerpc64}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$else darwin}
+    lis  r4, p3@ha
+{$endif darwin}
+    std  r3,p3@l(r4)
+{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 {$ifdef cpui386}
     leal t,%eax
 {$ifndef FPC_PIC}
@@ -350,9 +420,19 @@ begin
 {$ifdef darwin}
     movl %eax,p3-.Lpic(%ecx)
 {$else darwin}
+<<<<<<< HEAD
+<<<<<<< HEAD
    addl $_GLOBAL_OFFSET_TABLE_+1,%ecx
    movl p3@GOT(%ecx),%edx
    movl %eax,(%edx)
+=======
+   addl $_GLOBAL_OFFSET_TABLE_,%ecx
+   movl %eax,p3@GOT(%ecx)
+>>>>>>> graemeg/fixes_2_2
+=======
+   addl $_GLOBAL_OFFSET_TABLE_,%ecx
+   movl %eax,p3@GOT(%ecx)
+>>>>>>> origin/fixes_2_2
 {$endif darwin}
 {$endif FPC_PIC}
 {$endif}

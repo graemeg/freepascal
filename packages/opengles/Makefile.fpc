@@ -4,10 +4,32 @@
 
 [package]
 name=opengles
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+# [require]
+# packages_linux=x11
+#
+
+[target]
+units_arm_darwin=gles11
+units_i386_iphonesim=gles11
+exampledirs=examples
+>>>>>>> graemeg/cpstrnew
 
 [install]
 fpcpackage=y

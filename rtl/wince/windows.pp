@@ -25,6 +25,8 @@ unit windows;
 
 { stuff like array of const is used }
 {$mode objfpc}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$modeswitch ADVANCEDRECORDS}
 {$modeswitch class}
 { convention is cdecl for WinCE API}
@@ -34,6 +36,16 @@ unit windows;
   {$define UNICODE}
 {$endif}
 
+=======
+{ convention is cdecl for WinCE API}
+{$calling cdecl}
+
+>>>>>>> graemeg/fixes_2_2
+=======
+{ convention is cdecl for WinCE API}
+{$calling cdecl}
+
+>>>>>>> origin/fixes_2_2
 interface
 
 

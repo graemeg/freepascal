@@ -12,7 +12,15 @@
 
   You should have received a copy of the GNU Library General Public License
   along with this library; if not, write to the Free Software Foundation,
+<<<<<<< HEAD
+<<<<<<< HEAD
   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+>>>>>>> graemeg/fixes_2_2
+=======
+  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+>>>>>>> origin/fixes_2_2
 }
 {
   See the file COPYING.FPC, included in this distribution,
@@ -25,6 +33,9 @@ unit chmtypes;
 interface
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Classes, SysUtils,xmlcfg;
 
 type
@@ -32,6 +43,28 @@ type
 
   TSectionNames = set of TSectionName;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  Classes, SysUtils; 
+  
+=======
+  Classes, SysUtils;
+
+>>>>>>> origin/fixes_2.4
+type
+  TSectionName = (snMSCompressed, snUnCompressed);
+
+  TSectionNames = set of TSectionName;
+<<<<<<< HEAD
+  
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2.4
    { TDirectoryChunk }
 
   TDirectoryChunk = class(TObject)
@@ -52,7 +85,19 @@ type
     property ItemCount: Word read FItemCount;
     constructor Create(AHeaderSize: Integer);
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> graemeg/fixes_2_2
+=======
+  
+>>>>>>> origin/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2.4
   { TPMGIDirectoryChunk }
 
   TPMGIDirectoryChunk = class(TDirectoryChunk)
@@ -91,6 +136,9 @@ type
 
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   TValidWindowFieldsEnum = (valid_Unknown1 {:=1},
                             valid_Navigation_pane_style {:= 2},
                             valid_Window_style_flags {:= 4},
@@ -142,6 +190,8 @@ type
                 end;
 
 
+=======
+>>>>>>> origin/fixes_2.4
   TTOCIdxHeader = record
     BlockSize: DWord; // 4096
     EntriesOffset: DWord;
@@ -239,12 +289,36 @@ type
                       end;
 
 function PageBookInfoRecordSize(ARecord: PTOCEntryPageBookInfo): Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 Const defvalidflags = [valid_Navigation_pane_style,valid_Window_style_flags,valid_Initial_window_position,valid_Navigation_pane_width,valid_Buttons,valid_Tab_position];
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 
 implementation
 uses chmbase;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 function PageBookInfoRecordSize(ARecord: PTOCEntryPageBookInfo): Integer;
 begin
   if (TOC_ENTRY_HAS_CHILDREN and ARecord^.Props) > 0 then
@@ -253,11 +327,26 @@ begin
     Result := 20;
 end;
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
 { TDirectoryChunk }
 
 function TDirectoryChunk.CanHold(ASize: Integer): Boolean;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   Result := CurrentPos < $1000 - ASize - (SizeOf(Word) * (FQuickRefEntries+2));
+=======
+  Result := CurrentPos < $1000-1 - ASize - (SizeOf(Word) * (FQuickRefEntries+2));
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result := CurrentPos < $1000-1 - ASize - (SizeOf(Word) * (FQuickRefEntries+2));
+>>>>>>> origin/fixes_2_2
 end;
 
 function TDirectoryChunk.FreeSpace: Integer;
@@ -279,12 +368,30 @@ begin
   Move(Data^, Buffer[CurrentPos], Size);
   Inc(CurrentPos, Size);
   Inc(FItemCount);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
 
   // now put a quickref entry if needed
   if ItemCount mod 5 = 0 then begin
     Inc(FQuickRefEntries);
     ReversePos := ($1000) - SizeOf(Word) - (SizeOf(Word)*FQuickRefEntries);
     Value := NtoLE(Word(CurrentPos - Size - FHeaderSize));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  
+  // now put a quickref entry if needed
+  if ItemCount mod 5 = 0 then begin
+    Inc(FQuickRefEntries);
+    ReversePos := ($1000-1) - SizeOf(Word) - (SizeOf(Word)*FQuickRefEntries);
+    Value := NtoLE(Word(CurrentPos - Size));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     Move(Value, Buffer[ReversePos], SizeOf(Word));
   end;
 end;
@@ -292,11 +399,24 @@ end;
 procedure TDirectoryChunk.WriteChunkToStream(Stream: TStream);
 var
   ReversePos: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
   TmpItemCount: Word;
 begin
   ReversePos := $1000 - SizeOf(Word);
   TmpItemCount := NtoLE(Word(FItemCount));
   Move(TmpItemCount, Buffer[ReversePos], SizeOf(Word));
+=======
+=======
+>>>>>>> origin/fixes_2_2
+begin
+  ReversePos := $1000-1 - SizeOf(Word);
+  FItemCount := NtoLE(ItemCount);
+  Move(ItemCount, Buffer[ReversePos], SizeOf(Word));
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   Stream.Write(Buffer[0], $1000);
   {$IFDEF DEBUG_CHM_CHUNKS}
@@ -409,9 +529,17 @@ var
   end;
 begin
   if FItemCount < 1 then begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$ifdef chm_debug}
     WriteLn('WHAT ARE YOU DOING!!');
     {$endif}
+=======
+    WriteLn('WHAT ARE YOU DOING!!');
+>>>>>>> graemeg/fixes_2_2
+=======
+    WriteLn('WHAT ARE YOU DOING!!');
+>>>>>>> origin/fixes_2_2
     Dec(AIndex);
     Exit;
   end;
@@ -419,7 +547,19 @@ begin
   WriteChunkToStream(Stream);
   NewPos := Stream.Position;
   Inc(FChunkLevelCount);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> graemeg/fixes_2_2
+=======
+  
+>>>>>>> origin/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2.4
   if Final and (ChunkLevelCount < 2) then begin
     FParentChunk.Free;
     FParentChunk := nil;
@@ -439,15 +579,62 @@ begin
   if not FParentChunk.CanHold(WriteSize) then begin
     FinishBlock;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> graemeg/fixes_2_2
+=======
+  
+>>>>>>> origin/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2.4
   FParentChunk.WriteEntry(WriteSize, @NewBuffer[0]);
   if Final then FinishBlock;
   //WriteLn(ChunkLevelCount);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function getnext(const s:string;var i: integer;len:integer):string;
 var
     ind : integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+begin
+ if i>len then exit('');
+ ind:=i;
+ if s[ind]='"' then
+   begin
+     inc(ind);
+     while (ind<=len) and (s[ind]<>'"') do inc(ind);
+     result:=copy(s,i+1,ind-i-1);
+     inc(ind); // skip "
+   end
+ else
+   begin
+     while (ind<=len) and (s[ind]<>',') do inc(ind);
+     result:=copy(s,i,ind-i);
+   end;
+ i:=ind+1; // skip ,
+end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+<<<<<<< HEAD
+=======
 
 begin
  if i>len then exit('');
@@ -467,6 +654,15 @@ begin
  i:=ind+1; // skip ,
 end;
 
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> graemeg/cpstrnew
+=======
+
+>>>>>>> origin/cpstrnew
 function getnextint(const txt:string;var ind: integer;len:integer;var flags : TValidWindowFields;x:TValidWindowFieldsEnum):integer;
 
 var s : string;
@@ -486,22 +682,66 @@ var ind,len,
     j,k     : integer;
     arr     : array[0..3] of integer;
     s2      : string;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     bArr    : Boolean;
 begin
+=======
+begin
+  flags:=[];
+>>>>>>> graemeg/cpstrnew
+=======
+begin
+  flags:=[];
+>>>>>>> graemeg/cpstrnew
+=======
+begin
+  flags:=[];
+>>>>>>> graemeg/cpstrnew
+=======
+begin
+  flags:=[];
+>>>>>>> origin/cpstrnew
   j:=pos('=',txt);
   if j>0 then
     txt[j]:=',';
   ind:=1; len:=length(txt);
   window_type       :=getnext(txt,ind,len);
   Title_bar_text    :=getnext(txt,ind,len);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Toc_file          :=getnext(txt,ind,len);
   index_file        :=getnext(txt,ind,len);
+=======
+  index_file        :=getnext(txt,ind,len);
+  Toc_file          :=getnext(txt,ind,len);
+>>>>>>> graemeg/cpstrnew
+=======
+  index_file        :=getnext(txt,ind,len);
+  Toc_file          :=getnext(txt,ind,len);
+>>>>>>> graemeg/cpstrnew
+=======
+  index_file        :=getnext(txt,ind,len);
+  Toc_file          :=getnext(txt,ind,len);
+>>>>>>> graemeg/cpstrnew
+=======
+  index_file        :=getnext(txt,ind,len);
+  Toc_file          :=getnext(txt,ind,len);
+>>>>>>> origin/cpstrnew
   Default_File      :=getnext(txt,ind,len);
   Home_button_file  :=getnext(txt,ind,len);
   Jumpbutton_1_File :=getnext(txt,ind,len);
   Jumpbutton_1_Text :=getnext(txt,ind,len);
   Jumpbutton_2_File :=getnext(txt,ind,len);
   Jumpbutton_2_Text :=getnext(txt,ind,len);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   nav_style         :=getnextint(txt,ind,len,flags,valid_navigation_pane_style);
   navpanewidth      :=getnextint(txt,ind,len,flags,valid_navigation_pane_width);
   buttons           :=getnextint(txt,ind,len,flags,valid_buttons);
@@ -534,6 +774,38 @@ begin
     until (bArr <> True) or (j<>0) or (ind>len);
   end;
    
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+
+  nav_style         :=getnextint(txt,ind,len,flags,valid_navigation_pane_style);
+  navpanewidth      :=getnextint(txt,ind,len,flags,valid_navigation_pane_width);
+  buttons           :=getnextint(txt,ind,len,flags,valid_buttons);
+  k:=0;
+  repeat
+   s2:=getnext(txt,ind,len);
+   if (length(s2)>0) and (s2[1]='[') then delete(s2,1,1);
+   j:=pos(']',s2);
+   if j>0 then delete(s2,j,1);
+   if length(trim(s2))>0 then
+     include(flags,valid_tab_position);
+   arr[k]:=strtointdef(s2,0);
+   inc(k);
+  until (j<>0) or (ind>len);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   left  :=arr[0];
   top   :=arr[1];
   right :=arr[2];
@@ -607,7 +879,19 @@ end;
 Constructor TCHMWindow.create(s:string='');
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  flags:=defvalidflags;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
  if s<>'' then
    load_from_ini(s);
 end;
@@ -643,3 +927,11 @@ begin
 end;
 
 end.
+=======
+end.
+
+>>>>>>> graemeg/fixes_2_2
+=======
+end.
+
+>>>>>>> origin/fixes_2_2

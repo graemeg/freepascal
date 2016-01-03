@@ -185,10 +185,16 @@ Type
   function kse_release(timeout: PTimeSpec): cInt; extdecl;
   function kse_switchin(tmbx: PKseThrMailBox; flags: cInt): cInt; extdecl;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef FPC_USE_LIBC}
 function fpgetfsstat(buf:pstatfs;bufsize:clong;flags:cint):cint;
 {$endif} 
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Const
  MAP_FILE         = $0000;  { map from file (default) }
  MAP_ANON         = $1000;  { allocated from memory, swap space }
@@ -202,6 +208,8 @@ Const
  MAP_NOSYNC       = $0800; { page to but do not sync underlying file}
  MAP_NOCORE       = $20000;{ dont include these pages in a coredump}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 function kernproc_getgenvalue(pid:pid_t;kernproc_variable:cint;var s:ansistring):cint;
 function kernproc_getargs(pid:pid_t;var fn:ansistring):cint;
@@ -234,6 +242,13 @@ function clock_gettime(clk_id: clockid_t; tp: ptimespec): cint;  {$ifdef FPC_USE
 function clock_settime(clk_id: clockid_t; tp: ptimespec): cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'clock_settime'; {$ENDIF}
 
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/graemeg/clock_gettime
 implementation
 
 Uses Sysctl,
@@ -334,6 +349,13 @@ function fpgetfsstat(buf:pstatfs;bufsize:clong;flags:cint):cint;
 begin
   fpgetfsstat:=do_syscall(syscall_nr_getfsstat,TSysParam(buf),TSysParam(Bufsize),TSysParam(Flags));
 end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/graemeg/clock_gettime
 
 function clock_getres(clk_id: clockid_t; res: ptimespec): cint;
 begin
@@ -350,6 +372,17 @@ begin
   clock_settime := do_SysCall(syscall_nr_clock_settime,tsysparam(clk_id),tsysparam(tp));
 end;
 
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/graemeg/clock_gettime
 {$ENDIF}
 
 function kernproc_getgenvalue(pid:pid_t;kernproc_variable:cint;var s:ansistring):cint;

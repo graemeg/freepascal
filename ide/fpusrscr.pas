@@ -24,9 +24,21 @@ uses
 {$ifdef Unix}
   baseunix,
   termio,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef linux}
   linuxvcs,
 {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+{$ifdef linux}
+  linuxvcs,
+{$endif}
+>>>>>>> origin/fixes_2.4
 {$endif}
   video,Objects;
 
@@ -484,9 +496,17 @@ begin
       GetMem(VIDEBuffer,IDEVideoInfo.ScreenSize);
       VIDEBufferSize:=IDEVideoInfo.ScreenSize;
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   HideMouse;
   DosmemGet(VSeg,SOfs,VIDEBuffer^,IDEVideoInfo.ScreenSize);
   ShowMouse;
+=======
+  DosmemGet(VSeg,SOfs,VIDEBuffer^,IDEVideoInfo.ScreenSize);
+>>>>>>> graemeg/fixes_2_2
+=======
+  DosmemGet(VSeg,SOfs,VIDEBuffer^,IDEVideoInfo.ScreenSize);
+>>>>>>> origin/fixes_2_2
 end;
 
 procedure TDosScreen.SaveConsoleScreen;
@@ -770,11 +790,23 @@ begin
 {$ifdef linux}
                 FName:='/dev/vcsa' + ThisTTY[9];
                 TTYFd:=fpOpen(FName, &666, O_RdWr); { open console }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2.4
                 if TTYFd = -1 then
                 begin
                   if try_grab_vcsa then
                     TTYFd:=fpOpen(FName, &666, O_RdWr); { try again }
                 end;
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+>>>>>>> origin/fixes_2.4
                 If TTYFd <>-1 Then
                   Console:=ttyLinux;
 {$endif}
@@ -1581,7 +1613,7 @@ begin
           UserScreen:=New(PNWLScreen, Init);
         {$else}
           {$ifdef AMIGASCREEN}
-            UserScreen:=New(PAmigaScreen, Init);
+            UserScreen:=nil; //New(PAmigaScreen, Init);
           {$else}
             UserScreen:=New(PScreen, Init);
           {$endif AMIGASCREEN}

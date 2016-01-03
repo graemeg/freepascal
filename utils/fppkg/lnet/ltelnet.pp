@@ -1,4 +1,12 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 { lTelnet CopyRight (C) 2004-2008 Ales Katona
+=======
+{ lTelnet CopyRight (C) 2004-2007 Ales Katona
+>>>>>>> graemeg/fixes_2_2
+=======
+{ lTelnet CopyRight (C) 2004-2007 Ales Katona
+>>>>>>> origin/fixes_2_2
 
   This library is Free software; you can rediStribute it and/or modify it
   under the terms of the GNU Library General Public License as published by
@@ -95,10 +103,23 @@ type
     FOnError: TLSocketErrorEvent;
     FCommandArgs: string[3];
     FOrders: TLTelnetControlChars;
+<<<<<<< HEAD
     FBuffer: array of Char;
     FBufferIndex: Integer;
     FBufferEnd: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FSubcommandCallbacks: TLSubcommandArray;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     procedure InflateBuffer;
     function AddToBuffer(const aStr: string): Boolean; inline;
     
@@ -106,6 +127,16 @@ type
     
     function GetConnected: Boolean;
     
+=======
+    FConnected: Boolean;
+    FBuffer: string;
+
+    function Question(const Command: Char; const Value: Boolean): Char;
+    
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     function GetTimeout: Integer;
     procedure SetTimeout(const Value: Integer);
 
@@ -119,7 +150,23 @@ type
     procedure StackFull;
     procedure DoubleIAC(var s: string);
     function TelnetParse(const msg: string): Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     function React(const Operation, Command: Char): boolean; virtual; abstract;
+=======
+    procedure React(const Operation, Command: Char); virtual; abstract;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure React(const Operation, Command: Char); virtual; abstract;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure React(const Operation, Command: Char); virtual; abstract;
+>>>>>>> graemeg/cpstrnew
+=======
+    procedure React(const Operation, Command: Char); virtual; abstract;
+>>>>>>> origin/cpstrnew
     procedure SendCommand(const Command: Char; const Value: Boolean); virtual; abstract;
 
     procedure OnCs(aSocket: TLSocket);
@@ -137,16 +184,36 @@ type
     function RegisterOption(const aOption: Char; const aCommand: Boolean): Boolean;
     procedure SetOption(const Option: Char);
     procedure UnSetOption(const Option: Char);
+<<<<<<< HEAD
 
     function RegisterSubcommand(aOption: char; callback: TLSubcommandCallback;
                 const defaultResponse: string= ''; requiredParams: integer= 0): boolean;
 
+=======
+    
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     procedure Disconnect(const Forced: Boolean = True); override;
     
     procedure SendCommand(const aCommand: Char; const How: TLHowEnum); virtual;
    public
     property Output: TMemoryStream read FOutput;
+<<<<<<< HEAD
     property Connected: Boolean read GetConnected;
+=======
+    property Connected: Boolean read FConnected;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     property Timeout: Integer read GetTimeout write SetTimeout;
     property OnReceive: TLSocketEvent read FOnReceive write FOnReceive;
     property OnDisconnect: TLSocketEvent read FOnDisconnect write FOnDisconnect;
@@ -167,7 +234,14 @@ type
     procedure OnRe(aSocket: TLSocket);
     procedure OnCo(aSocket: TLSocket);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     function React(const Operation, Command: Char): boolean; override;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    procedure React(const Operation, Command: Char); override;
+>>>>>>> graemeg/fixes_2_2
     
     procedure SendCommand(const Command: Char; const Value: Boolean); override;
    public
@@ -193,9 +267,25 @@ function LTelnetSubcommandCallback(command: char; const parameters, defaultRespo
 implementation
 
 uses
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   Math;
 
 const   subcommandEndLength= 2;
+=======
+  SysUtils, Math;
+>>>>>>> graemeg/cpstrnew
+=======
+  SysUtils, Math;
+>>>>>>> graemeg/cpstrnew
+=======
+  SysUtils, Math;
+>>>>>>> graemeg/cpstrnew
+=======
+  SysUtils, Math;
+>>>>>>> origin/cpstrnew
 
 var
   zz: Char;
@@ -207,8 +297,16 @@ constructor TLTelnet.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
   
+<<<<<<< HEAD
+<<<<<<< HEAD
   FConnection := TLTCP.Create(nil);
   FConnection.Creator := Self;
+=======
+  FConnection := TLTCP.Create(aOwner);
+>>>>>>> graemeg/fixes_2_2
+=======
+  FConnection := TLTCP.Create(aOwner);
+>>>>>>> origin/fixes_2_2
   FConnection.OnCanSend := @OnCs;
   
   FOutput := TMemoryStream.Create;
@@ -369,6 +467,34 @@ begin
   end;
 end;
 
+procedure TLTelnet.OnCs(aSocket: TLSocket);
+var
+  n: Integer;
+begin
+  n := 1;
+
+  while n > 0 do begin
+    n := FConnection.SendMessage(FBuffer);
+
+    if n > 0 then
+      System.Delete(FBuffer, 1, n);
+  end;
+end;
+
+procedure TLTelnet.OnCs(aSocket: TLSocket);
+var
+  n: Integer;
+begin
+  n := 1;
+
+  while n > 0 do begin
+    n := FConnection.SendMessage(FBuffer);
+
+    if n > 0 then
+      System.Delete(FBuffer, 1, n);
+  end;
+end;
+
 function TLTelnet.OptionIsSet(const Option: Char): Boolean;
 begin
   Result := False;
@@ -399,6 +525,10 @@ begin
     SendCommand(Option, False);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 (* If already set, the callback can be reverted to nil but it can't be changed  *)
 (* in a single step. The default response, if specified, is used by the         *)
 (* LTelnetSubcommandCallback() function and is available to others; the         *)
@@ -422,6 +552,22 @@ end { TLTelnet.RegisterSubcommand } ;
 
 procedure TLTelnet.Disconnect(const Forced: Boolean = True);
 begin
+=======
+procedure TLTelnet.Disconnect(const Forced: Boolean = True);
+begin
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TLTelnet.Disconnect(const Forced: Boolean = True);
+begin
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TLTelnet.Disconnect(const Forced: Boolean = True);
+begin
+>>>>>>> graemeg/cpstrnew
+=======
+procedure TLTelnet.Disconnect(const Forced: Boolean = True);
+begin
+>>>>>>> origin/cpstrnew
   FConnection.Disconnect(Forced);
 end;
 
@@ -430,7 +576,15 @@ begin
   {$ifdef debug}
   Writeln('**SENT** ', TNames[Char(How)], ' ', TNames[aCommand]);
   {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
   AddToBuffer(TS_IAC + Char(How) + aCommand);
+=======
+  FBuffer := FBuffer + TS_IAC + Char(How) + aCommand;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FBuffer := FBuffer + TS_IAC + Char(How) + aCommand;
+>>>>>>> origin/fixes_2_2
   OnCs(nil);
 end;
 
@@ -444,6 +598,13 @@ begin
   FConnection.OnReceive := @OnRe;
   FConnection.OnConnect := @OnCo;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  FConnected := False;
+>>>>>>> graemeg/fixes_2_2
   FPossible := [TS_ECHO, TS_HYI, TS_SGA];
   FActiveOpts := [];
   FOrders := [];
@@ -486,7 +647,15 @@ function TLTelnetClient.React(const Operation, Command: Char): boolean;
     {$ifdef debug}
     Writeln('**SENT** ', TNames[Operation], ' ', TNames[Command]);
     {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
     AddToBuffer(TS_IAC + Operation + Command);
+=======
+    FBuffer := FBuffer + TS_IAC + Operation + Command;
+>>>>>>> graemeg/fixes_2_2
+=======
+    FBuffer := FBuffer + TS_IAC + Operation + Command;
+>>>>>>> origin/fixes_2_2
     OnCs(nil);
   end;
   
@@ -496,7 +665,15 @@ function TLTelnetClient.React(const Operation, Command: Char): boolean;
     {$ifdef debug}
     Writeln('**SENT** ', TNames[Operation], ' ', TNames[Command]);
     {$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
     AddToBuffer(TS_IAC + Operation + Command);
+=======
+    FBuffer := FBuffer + TS_IAC + Operation + Command;
+>>>>>>> graemeg/fixes_2_2
+=======
+    FBuffer := FBuffer + TS_IAC + Operation + Command;
+>>>>>>> origin/fixes_2_2
     OnCs(nil);
   end;
 
@@ -565,6 +742,10 @@ begin
               else Refuse(TS_DONT, Command);
                  
     TS_WONT : if Command in FPossible then FActiveOpts := FActiveOpts - [Command];
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     TS_SB   : if not Assigned(FSubcommandCallbacks[command].callback) then
                 refuse(TS_WONT, command)
               else
@@ -574,6 +755,14 @@ begin
 (* parameters to keep the subcommand happy have not yet been parsed out of the  *)
 (* message.                                                                     *)
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 end;
 
@@ -586,7 +775,15 @@ begin
     case Question(Command, Value) of
       TS_WILL : FActiveOpts := FActiveOpts + [Command];
     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     AddToBuffer(TS_IAC + Question(Command, Value) + Command);
+=======
+    FBuffer := FBuffer + TS_IAC + Question(Command, Value) + Command;
+>>>>>>> graemeg/fixes_2_2
+=======
+    FBuffer := FBuffer + TS_IAC + Question(Command, Value) + Command;
+>>>>>>> origin/fixes_2_2
     OnCs(nil);
   end;
 end;
@@ -636,7 +833,15 @@ begin
     if LocalEcho and (not OptionIsSet(TS_ECHO)) and (not OptionIsSet(TS_HYI)) then
       FOutput.Write(PChar(Tmp)^, Length(Tmp));
       
+<<<<<<< HEAD
+<<<<<<< HEAD
     AddToBuffer(Tmp);
+=======
+    FBuffer := FBuffer + Tmp;
+>>>>>>> graemeg/fixes_2_2
+=======
+    FBuffer := FBuffer + Tmp;
+>>>>>>> origin/fixes_2_2
     OnCs(nil);
     
     Result := aSize;

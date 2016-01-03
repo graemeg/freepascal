@@ -38,7 +38,7 @@ begin
   (* Initialize the pixmap to white *)
   gdk_draw_rectangle (da_pixmap,
                       widget^.style^.white_gc,
-                      gint(gTRUE),
+                      gTRUE,
                       0, 0,
                       widget^.allocation.width,
                       widget^.allocation.height);
@@ -85,7 +85,7 @@ begin
   (* Paint to the pixmap, where we store our state *)
   gdk_draw_rectangle (da_pixmap,
               widget^.style^.black_gc,
-                      gint(gTRUE),
+                      gTRUE,
                       update_rect.x, update_rect.y,
                       update_rect.width, update_rect.height);
 
@@ -199,7 +199,7 @@ begin
            *)
           gdk_draw_rectangle (da^.window,
                               gc,
-                              gint(gTRUE),
+                              gTRUE,
                               i, j,
                               CHECK_SIZE,
                               CHECK_SIZE);

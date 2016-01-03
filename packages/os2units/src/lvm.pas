@@ -18,8 +18,7 @@
 
    You should have received a copy of the GNU General Public License
    along with this program;  if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-   MA 02110-1301, USA.
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 }
 Unit LVM;
@@ -4983,7 +4982,7 @@ CARDINAL32 * Error);
 //*          exception to this is if ProcessItem sets *Error to       */
 //*          DLIST_SEARCH_COMPLETE, in which case ForEachItem         */
 //*          terminates and sets *Error to DLIST_SUCCESS.  This is    */
-//*          useful for using ForEachItem to search a list and then  */
+//*          usefull for using ForEachItem to search a list and then  */
 //*          terminating the search once the desired item is found.   */
 //*                                                                   */
 //*          A word about the Parameters parameter.  This parameter   */
@@ -5084,7 +5083,7 @@ CARDINAL32 * Error);
 //*          exception to this is if KillItem sets *Error to          */
 //*          DLIST_SEARCH_COMPLETE, in which case KillItem            */
 //*          terminates and sets *Error to DLIST_SUCCESS.  This is    */
-//*          useful for using KillItem to search a list and then     */
+//*          usefull for using KillItem to search a list and then     */
 //*          terminating the search once the desired item is found.   */
 //*                                                                   */
 //*          A word about the Parameters parameter.  This parameter   */

@@ -32,11 +32,22 @@ begin
   FEpollReadFD := epoll_create(BASE_SIZE);
   FEpollMasterFD := epoll_create(2);
   if (FEPollFD < 0) or (FEpollReadFD < 0) or (FEpollMasterFD < 0) then
+<<<<<<< HEAD
     raise Exception.Create('Unable to create epoll: ' + StrError(fpgeterrno));
   lEvent.events := EPOLLIN or EPOLLOUT or EPOLLPRI or EPOLLERR or EPOLLHUP or EPOLLET;
   lEvent.data.fd := FEpollFD;
   if epoll_ctl(FEpollMasterFD, EPOLL_CTL_ADD, FEpollFD, @lEvent) < 0 then
     raise Exception.Create('Unable to add FDs to master epoll FD: ' + StrError(fpGetErrno));
+=======
+    raise Exception.Create('Unable to create epoll');
+  lEvent.events := EPOLLIN or EPOLLOUT or EPOLLPRI or EPOLLERR or EPOLLHUP or EPOLLET;
+  lEvent.data.fd := FEpollFD;
+  if epoll_ctl(FEpollMasterFD, EPOLL_CTL_ADD, FEpollFD, @lEvent) < 0 then
+    raise Exception.Create('Unable to add FDs to master epoll FD');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   lEvent.data.fd := FEpollReadFD;
   if epoll_ctl(FEpollMasterFD, EPOLL_CTL_ADD, FEpollReadFD, @lEvent) < 0 then
     raise Exception.Create('Unable to add FDs to master epoll FD: ' + StrError(fpGetErrno));

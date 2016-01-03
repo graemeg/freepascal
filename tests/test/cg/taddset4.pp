@@ -21,7 +21,15 @@ var
   b:boolean;
 begin
   b:=true;
+<<<<<<< HEAD
+<<<<<<< HEAD
   t({$ifdef CPU16}byte{$else}longint{$endif}([
+=======
+  t(longint([
+>>>>>>> graemeg/fixes_2_2
+=======
+  t(longint([
+>>>>>>> origin/fixes_2_2
       TCompilerIntfFlag(ord(ifHasGuid)*ord(b)),
       TCompilerIntfFlag(ord(ifHasStrGUID)*ord(b)),
       TCompilerIntfFlag(ord(ifDispInterface)*ord(b))

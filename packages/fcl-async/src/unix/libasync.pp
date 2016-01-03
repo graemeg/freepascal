@@ -39,7 +39,7 @@ type
 
 implementation
 
-uses unixtype, baseunix, Unix;
+uses baseunix, Unix;
 
 const
   MaxHandle = SizeOf(TFDSet) * 8 - 1;
@@ -86,20 +86,14 @@ var
   CurIOCallback: PIOCallbackData;
 begin
   if Handle^.Data.HighestHandle < 0 then
-    begin
-      // No I/O checks to do, so just wait...
-      repeat
-        AsyncResult := fpselect(0, nil, nil, nil, TimeOut)
-      until (AsyncResult<>-1) or (fpgeterrno<>ESysEINTR);
-    end
+    // No I/O checks to do, so just wait...
+    AsyncResult := fpselect(0, nil, nil, nil, TimeOut)
   else
   begin
     CurReadFDSet := PFDSet(Handle^.Data.FDData)[0];
     CurWriteFDSet := PFDSet(Handle^.Data.FDData)[1];
-    repeat
-      AsyncResult := fpselect(Handle^.Data.HighestHandle + 1,
-        @CurReadFDSet, @CurWriteFDSet, nil, TimeOut);
-    until (AsyncResult<>-1) or (fpgeterrno<>ESysEINTR);
+    AsyncResult := fpselect(Handle^.Data.HighestHandle + 1,
+      @CurReadFDSet, @CurWriteFDSet, nil, TimeOut);
 
     if AsyncResult > 0 then
     begin

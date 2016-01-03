@@ -1,3 +1,4 @@
+<<<<<<< HEAD
   add_a52(ADirectory+IncludeTrailingPathDelimiter('a52'));
   add_ami_extra(ADirectory+IncludeTrailingPathDelimiter('ami-extra'));
   add_amunits(ADirectory+IncludeTrailingPathDelimiter('amunits'));
@@ -126,3 +127,115 @@
   add_libenet(ADirectory+IncludeTrailingPathDelimiter('libenet'));
   add_zorba(ADirectory+IncludeTrailingPathDelimiter('zorba'));
   add_Google(ADirectory+IncludeTrailingPathDelimiter('googleapi'));
+=======
+  add_a52;
+  add_amunits;
+  add_aspell;
+  add_bfd;
+  add_bzip2;
+  add_cairo;
+  add_cdrom;
+  add_chm;
+  add_dbus;
+  add_dts;
+  add_fastcgi;
+  add_fcl_async;
+  add_fcl_base;
+  add_fcl_db;
+  add_fcl_extra;
+  add_fcl_fpcunit;
+  add_fcl_image;
+  add_fcl_json;
+  add_fcl_net;
+  add_fcl_passrc;
+  add_fcl_process;
+  add_fcl_registry;
+  add_fcl_res;
+  add_fcl_web;
+  add_fcl_xml;
+  add_fftw;
+  add_fpgtk;
+  add_fpmkunit;
+  add_fpvectorial;
+  add_fv;
+  add_gdbint;
+  add_gdbm;
+  add_ggi;
+  add_gnome1;
+  add_graph;
+  add_gtk1;
+  add_gtk2;
+  add_hash;
+  add_httpd13;
+  add_httpd20;
+  add_httpd22;
+  add_ibase;
+  add_iconvenc;
+  add_imagemagick;
+  add_imlib;
+  add_ldap;
+  add_libc;
+  add_libcurl;
+  add_libgbafpc;
+  add_libgd;
+  add_libndsfpc;
+  add_libpng;
+  add_librsvg;
+  add_libsee;
+  add_libxml;
+  add_lua;
+  add_mad;
+  add_matroska;
+  add_modplug;
+  add_mysql;
+  add_ncurses;
+  add_newt;
+  add_numlib;
+  add_nvapi;
+  add_objcrtl;
+  add_odbc;
+  add_oggvorbis;
+  add_openal;
+  add_opencl;
+  add_opengl;
+  add_openssl;
+  add_oracle;
+  add_os2units;
+  add_palmunits;
+  add_pasjpeg;
+  add_paszlib;
+  add_pcap;
+  add_postgres;
+  add_proj4;
+  add_pthreads;
+  add_pxlib;
+  add_regexpr;
+  add_rexx;
+  add_sdl;
+  add_sqlite;
+  add_svgalib;
+  add_symbolic;
+  add_syslog;
+  add_tcl;
+  add_univint;
+  add_unixutil;
+  add_unzip;
+  add_users;
+  add_utmp;
+  add_uuid;
+  add_winunits_base;
+  add_winunits_jedi;
+  add_x11;
+  add_xforms;
+  add_zlib;
+  add_zorba;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew

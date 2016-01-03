@@ -208,8 +208,21 @@ end;
        { bit 0..7 only which are considered }
        { signed values.                     }
 { disable range check mode }
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}
 {$R-}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifopt R+}
+{$define OPT_R_WAS_ON}
+{$R-}
+{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
        b1:=b1 and $7f;
        b2:=b2 and $7f;
        { Now if the MSB of these values are set }
@@ -220,7 +233,19 @@ end;
        x:=smallint(b1);
        y:=smallint(b2);
 { restore previous range check mode }
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$pop}
+=======
+{$ifdef OPT_R_WAS_ON}
+{$R+}
+{$endif}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef OPT_R_WAS_ON}
+{$R+}
+{$endif}
+>>>>>>> origin/fixes_2_2
      end;
 
 
@@ -452,7 +477,13 @@ end;
          curX2, curY2, xpos2, ypos2, x2, y2: graph_float;
          oldvalues     : linesettingstype;
          fontbitmap    : TBitmapChar;
+<<<<<<< HEAD
+<<<<<<< HEAD
          fontbitmapbyte: byte;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
          chr           : char;
          curx2i,cury2i,
          xpos2i,ypos2i : longint;
@@ -484,6 +515,8 @@ end;
                      if CharSize = 1 then
                       Begin
                         for j:=0 to 7 do
+<<<<<<< HEAD
+<<<<<<< HEAD
                           begin
                             fontbitmapbyte:=Fontbitmap[j];
                             for k:=0 to 7 do
@@ -495,6 +528,18 @@ end;
                                 fontbitmapbyte:=fontbitmapbyte shl 1;
                               end;
                           end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                           for k:=0 to 7 do
+                             if Fontbitmap[j,k]<>0 then
+                               PutPixel(xpos+k,j+y,CurrentColor)
+                             else if DrawTextBackground then
+                               PutPixel(xpos+k,j+y,CurrentBkColor);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                       end
                      else
                       { perform scaling of bitmap font }
@@ -509,19 +554,43 @@ end;
                            begin
                              k:=0;
                              cnt2 := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
                              fontbitmapbyte:=Fontbitmap[j];
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                              while k <= 7  do
                                 begin
                                   for cnt1 := 0 to charsize-1 do
                                     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                                        If (fontbitmapbyte and $80) <> 0 then
+=======
+                                       If FontBitmap[j,k] <> 0 then
+>>>>>>> graemeg/fixes_2_2
+=======
+                                       If FontBitmap[j,k] <> 0 then
+>>>>>>> origin/fixes_2_2
                                            PutPixel(xpos+cnt1+cnt2,y+cnt3+cnt4,CurrentColor)
                                        else if DrawTextBackground then
                                            PutPixel(xpos+cnt1+cnt2,y+cnt3+cnt4,CurrentBkColor);
                                     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
                                   Inc(k);
                                   Inc(cnt2,charsize);
                                   fontbitmapbyte:=fontbitmapbyte shl 1;
+=======
+                                    Inc(k);
+                                    Inc(cnt2,charsize);
+>>>>>>> graemeg/fixes_2_2
+=======
+                                    Inc(k);
+                                    Inc(cnt2,charsize);
+>>>>>>> origin/fixes_2_2
                                 end;
                            end;
                           Inc(j);
@@ -544,6 +613,8 @@ end;
                 if CharSize = 1 then
                  Begin
                    for j:=0 to 7 do
+<<<<<<< HEAD
+<<<<<<< HEAD
                      begin
                        fontbitmapbyte:=Fontbitmap[j];
                        for k:=0 to 7 do
@@ -555,6 +626,18 @@ end;
                            fontbitmapbyte:=fontbitmapbyte shl 1;
                          end;
                      end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                      for k:=0 to 7 do
+                        if Fontbitmap[j,k] <> 0 then
+                          PutPixel(xpos+j,ypos-k,CurrentColor)
+                        else if DrawTextBackground then
+                          PutPixel(xpos+j,ypos-k,CurrentBkColor);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                  end
                 else
                  { perform scaling of bitmap font }
@@ -569,19 +652,43 @@ end;
                       begin
                         k:=0;
                         cnt2 := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
                         fontbitmapbyte:=Fontbitmap[j];
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                         while k<=7  do
                            begin
                              for cnt1 := 0 to charsize-1 do
                                begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                                   If (fontbitmapbyte and $80) <> 0 then
+=======
+                                  If FontBitmap[j,k] <> 0 then
+>>>>>>> graemeg/fixes_2_2
+=======
+                                  If FontBitmap[j,k] <> 0 then
+>>>>>>> origin/fixes_2_2
                                     PutPixel(xpos+cnt3-cnt4,ypos+cnt1-cnt2,CurrentColor)
                                   else if DrawTextBackground then
                                     PutPixel(xpos+cnt3-cnt4,ypos+cnt1-cnt2,CurrentBkColor);
                                end;
+<<<<<<< HEAD
+<<<<<<< HEAD
                              Inc(k);
                              Inc(cnt2,charsize);
                              fontbitmapbyte:=fontbitmapbyte shl 1;
+=======
+                               Inc(k);
+                               Inc(cnt2,charsize);
+>>>>>>> graemeg/fixes_2_2
+=======
+                               Inc(k);
+                               Inc(cnt2,charsize);
+>>>>>>> origin/fixes_2_2
                            end;
                       end;
                      Inc(j);
@@ -802,10 +909,27 @@ end;
          if (font>DefaultFont) and not assigned(fonts[font].instr) then
            begin
               assign(f,bgipath+fonts[font].name+'.CHR');
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$push}
 {$i-}
               reset(f,1);
 {$pop}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifopt I+}
+{$define IOCHECK_WAS_ON}
+{$i-}
+{$endif}
+              reset(f,1);
+{$ifdef IOCHECK_WAS_ON}
+{$i+}
+{$endif}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               if ioresult<>0 then
                 begin
                    _graphresult:=grFontNotFound;

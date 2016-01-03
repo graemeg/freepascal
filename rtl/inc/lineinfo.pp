@@ -22,6 +22,8 @@ interface
 {$S-}
 {$Q-}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IF FPC_VERSION<3}
 Type 
   CodePointer = Pointer;
@@ -30,6 +32,12 @@ Type
 function GetLineInfo(addr:ptruint;var func,source:string;var line:longint) : boolean;
 function StabBackTraceStr(addr:CodePointer):string;
 procedure CloseStabs;
+=======
+function GetLineInfo(addr:ptruint;var func,source:string;var line:longint) : boolean;
+>>>>>>> graemeg/fixes_2_2
+=======
+function GetLineInfo(addr:ptruint;var func,source:string;var line:longint) : boolean;
+>>>>>>> origin/fixes_2_2
 
 implementation
 
@@ -66,6 +74,14 @@ type
 {$WARNING This code is not thread-safe, and needs improvement }  
 var
   e          : TExeFile;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  staberr    : boolean;
+>>>>>>> graemeg/fixes_2_2
+=======
+  staberr    : boolean;
+>>>>>>> origin/fixes_2_2
   stabcnt,              { amount of stabs }
   stablen,
   stabofs,              { absolute stab section offset in executable }
@@ -78,6 +94,8 @@ var
   dirstab,              { stab with current directory info }
   filestab   : tstab;   { stab with current file info }
   filename,
+<<<<<<< HEAD
+<<<<<<< HEAD
   lastfilename,         { store last processed file }
   dbgfn : string;
   lastopenstabs: Boolean; { store last result of processing a file }
@@ -147,6 +165,50 @@ begin
   else
     begin
       CloseExeFile(e);
+=======
+  dbgfn : string;
+
+=======
+  dbgfn : string;
+
+>>>>>>> origin/fixes_2_2
+
+function OpenStabs(addr : pointer) : boolean;
+  var
+    baseaddr : pointer;
+begin
+  OpenStabs:=false;
+  if staberr then
+    exit;
+
+  GetModuleByAddr(addr,baseaddr,filename);
+{$ifdef DEBUG_LINEINFO}
+  writeln(stderr,filename,' Baseaddr: ',hexstr(ptruint(baseaddr),sizeof(baseaddr)*2));
+{$endif DEBUG_LINEINFO}
+
+  if not OpenExeFile(e,filename) then
+    exit;
+  if ReadDebugLink(e,dbgfn) then
+    begin
+      CloseExeFile(e);
+      if not OpenExeFile(e,dbgfn) then
+        exit;
+    end;
+  e.processaddress:=e.processaddress+dword(baseaddr);
+  StabsFunctionRelative := E.FunctionRelative;
+  if FindExeSection(e,'.stab',stabofs,stablen) and
+     FindExeSection(e,'.stabstr',stabstrofs,stabstrlen) then
+    begin
+      stabcnt:=stablen div sizeof(tstab);
+      OpenStabs:=true;
+    end
+  else
+    begin
+      staberr:=true;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       exit;
     end;
 end;
@@ -154,6 +216,8 @@ end;
 
 procedure CloseStabs;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if e.isopen then
   begin
     CloseExeFile(e);
@@ -164,6 +228,18 @@ begin
 end;
 
 
+=======
+  CloseExeFile(e);
+end;
+
+
+>>>>>>> graemeg/fixes_2_2
+=======
+  CloseExeFile(e);
+end;
+
+
+>>>>>>> origin/fixes_2_2
 function GetLineInfo(addr:ptruint;var func,source:string;var line:longint) : boolean;
 var
   res,
@@ -179,6 +255,8 @@ begin
   fillchar(func,high(func)+1,0);
   fillchar(source,high(source)+1,0);
   line:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
   if not OpenStabs(pointer(addr)) then
     exit;
@@ -186,6 +264,24 @@ begin
   { correct the value to the correct address in the file }
   { processaddress is set in OpenStabs                   }
   addr := dword(addr - e.processaddress);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if staberr then
+    exit;
+  if not e.isopen then
+   begin
+     if not OpenStabs(pointer(addr)) then
+      exit;
+   end;
+
+  { correct the value to the correct address in the file }
+  { processaddress is set in OpenStabs                   }
+  addr := addr - e.processaddress;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$ifdef DEBUG_LINEINFO}
   writeln(stderr,'Addr: ',hexstr(addr,sizeof(addr)*2));
@@ -289,7 +385,17 @@ begin
      if i>0 then
       Delete(func,i,255);
    end;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  if e.isopen then
+    CloseStabs;
+>>>>>>> graemeg/fixes_2_2
+=======
+  if e.isopen then
+    CloseStabs;
+>>>>>>> origin/fixes_2_2
   GetLineInfo:=true;
 end;
 
@@ -332,7 +438,15 @@ begin
       end;
      StabBackTraceStr:=StabBackTraceStr+' of '+source;
    end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   BackTraceStrFunc:=Store;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  if Success then
+    BackTraceStrFunc:=Store;
+>>>>>>> graemeg/fixes_2_2
 end;
 
 
@@ -342,6 +456,16 @@ initialization
   BackTraceStrFunc:=@StabBackTraceStr;
 
 finalization
+<<<<<<< HEAD
+<<<<<<< HEAD
   CloseStabs;
 
+=======
+  if e.isopen then
+   CloseStabs;
+>>>>>>> graemeg/fixes_2_2
+=======
+  if e.isopen then
+   CloseStabs;
+>>>>>>> origin/fixes_2_2
 end.

@@ -116,7 +116,23 @@ type
     _containerClassDescription: NSScriptClassDescription;
     _containerIsObjectBeingTested: Boolean;
     _containerIsRangeContainerObject: Boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _padding: array[0..(2)-1] of char;
+=======
+        _padding: array[0..1] of char;
+>>>>>>> graemeg/cpstrnew
+=======
+        _padding: array[0..1] of char;
+>>>>>>> graemeg/cpstrnew
+=======
+        _padding: array[0..1] of char;
+>>>>>>> graemeg/cpstrnew
+=======
+        _padding: array[0..1] of char;
+>>>>>>> origin/cpstrnew
     _descriptor: NSAppleEventDescriptor;
     _error: NSInteger;
     

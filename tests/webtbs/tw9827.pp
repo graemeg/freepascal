@@ -2,9 +2,19 @@
 
 type
   generic GList<_T> = class
+<<<<<<< HEAD
+<<<<<<< HEAD
     private
       var
         i : integer;
+=======
+    var private
+      i : integer;
+>>>>>>> graemeg/fixes_2_2
+=======
+    var private
+      i : integer;
+>>>>>>> origin/fixes_2_2
     function some_func(): integer;
   end;
 

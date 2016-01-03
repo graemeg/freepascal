@@ -71,12 +71,34 @@ Procedure SetLength(Var S : AStringType; Len : Integer);
 Procedure SetLength(Var A : DynArrayType; Len : Integer);
 Function Length(S : AStringType) : Integer;
 Function Length(A : DynArrayType) : Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function Power(Base:double;expon:double):double;
 Function Power(Base:Longint;expon:Longint):Longint;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
 Procedure WriteStr(Out S : String; Args : Arguments);
 Procedure ReadStr(Const S : String; Args : Arguments);
 Procedure Pack(Const A : UnpackedArrayType; StartIndex : TIndexType; Out Z : PackedArrayType);
 Procedure UnPack(Const Z : PackedArrayType; Out A : UnpackedArrayType; StartIndex : TIndexType);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function Slice(Const A : ArrayType; ACount : Integer) : ArrayType2;
 Function Default(Const T : AnyType) : AnyType;
 Function TypeInfo(Const T : AnyType) : Pointer;
@@ -84,6 +106,14 @@ Procedure Fail;
 Function TypeOf(T : TObjectType) : Pointer;
 Procedure Initialize(Var T : TAnyType; ACount : Integer = 1);
 Procedure Finalize(Var T : TAnyType; ACount : Integer = 1);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 {$IFNDEF GO32V2}
 Var
@@ -91,3 +121,10 @@ Var
   memw : array[0..($7fffffff div sizeof(word))-1] of word;
   meml : array[0..($7fffffff div sizeof(longint))-1] of longint;
 {$ENDIF}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2.4

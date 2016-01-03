@@ -36,7 +36,15 @@ Var
   B : Boolean;
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   B:=Assigned(DataSource) and Not (DataSource.State in [dsInactive,dsOpening]);
+=======
+  B:=Assigned(DataSource) and (DataSource.State<>dsInactive);
+>>>>>>> graemeg/fixes_2_2
+=======
+  B:=Assigned(DataSource) and (DataSource.State<>dsInactive);
+>>>>>>> origin/fixes_2_2
   If B<>FActive then
     begin
     FActive:=B;
@@ -245,8 +253,14 @@ end;
 Procedure TDataLink.SetDataSource(Value : TDatasource);
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if FDataSource = Value then
     Exit;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   if not FDataSourceFixed then
     begin
     if Assigned(DataSource) then
@@ -302,6 +316,8 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TDataLink.ExecuteAction(Action: TBasicAction): Boolean;
 begin
  if Action.HandlesTarget(DataSource) then
@@ -321,6 +337,10 @@ begin
  end
  else Result := False;
 end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
 { ---------------------------------------------------------------------
@@ -360,12 +380,27 @@ Procedure TMasterDataLink.ActiveChanged;
 begin
   FFields.Clear;
   if Active then
+<<<<<<< HEAD
+<<<<<<< HEAD
     try
       DataSet.GetFieldList(FFields, FFieldNames);
     except
       FFields.Clear;
       raise;
     end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  try
+    DataSet.GetFieldList(FFields, FFieldNames);
+  except
+    FFields.Clear;
+    raise;
+  end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   if FDetailDataSet.Active and not (csDestroying in FDetailDataSet.ComponentState) then
     if Active and (FFields.Count > 0) then
       DoMasterChange
@@ -429,7 +464,15 @@ begin
 end;
 
 { ---------------------------------------------------------------------
+<<<<<<< HEAD
+<<<<<<< HEAD
     TMasterParamsDataLink
+=======
+    TMasterDataLink
+>>>>>>> graemeg/fixes_2_2
+=======
+    TMasterDataLink
+>>>>>>> origin/fixes_2_2
   ---------------------------------------------------------------------}
 
 constructor TMasterParamsDataLink.Create(ADataSet: TDataSet);
@@ -448,7 +491,15 @@ begin
 end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Procedure TMasterParamsDataLink.SetParams(AValue : TParams);
+=======
+Procedure TMasterParamsDataLink.SetParams(AVAlue : TParams);  
+>>>>>>> graemeg/fixes_2_2
+=======
+Procedure TMasterParamsDataLink.SetParams(AVAlue : TParams);  
+>>>>>>> origin/fixes_2_2
 
 begin
   FParams:=AValue;
@@ -463,8 +514,14 @@ Var
   DS : TDataset;
   F  : TField;
   I : Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
   P : TParam;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 begin
   FN:='';
@@ -474,6 +531,8 @@ begin
     F:=Nil;
     For I:=0 to FParams.Count-1 do
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       P:=FParams[i];
       if not P.Bound then
         begin
@@ -485,6 +544,20 @@ begin
             FN:=FN+';';
           FN:=FN+P.Name;
           end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      If Assigned(DS) then
+        F:=DS.FindField(FParams[i].Name);
+      If (Not Assigned(DS)) or (not DS.Active) or (F<>Nil) then
+        begin
+        If (FN<>'') then
+          FN:=FN+';';
+        FN:=FN+FParams[i].Name; 
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         end;
       end;
     end;
@@ -502,8 +575,18 @@ Procedure TMasterParamsDataLink.DoMasterDisable;
 
 begin
   Inherited;
+<<<<<<< HEAD
+<<<<<<< HEAD
   // If master dataset is closing, leave detail dataset intact (Delphi compatible behavior)
   // If master dataset is reopened, relationship will be reestablished
+=======
+  If Assigned(DetailDataset) and DetailDataset.Active then
+    DetailDataset.Close;
+>>>>>>> graemeg/fixes_2_2
+=======
+  If Assigned(DetailDataset) and DetailDataset.Active then
+    DetailDataset.Close;
+>>>>>>> origin/fixes_2_2
 end;
 
 Procedure TMasterParamsDataLink.DoMasterChange; 
@@ -667,7 +750,15 @@ begin
     else
       FState:=dsInactive;
     // Don't do events if nothing changed.
+<<<<<<< HEAD
+<<<<<<< HEAD
     If FState=FLastState then
+=======
+    If FState=FlastState then
+>>>>>>> graemeg/fixes_2_2
+=======
+    If FState=FlastState then
+>>>>>>> origin/fixes_2_2
       exit;
     end
   else

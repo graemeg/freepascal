@@ -64,11 +64,25 @@ It's highly recommended to use Detect (0 constant) for grDriver and grmode: init
 }
 
  //Detect      =0;     is in the graphh.inc
+<<<<<<< HEAD
+<<<<<<< HEAD
  //CGA           =1;   is in graphh.inc
  //MCGA	       =2;   is in graphh.inc
  //EGA           =3;   is in graphh.inc
  //EGA64         =4;   is in graphh.inc
  //EGAMono       =5;   is in graphh.inc
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ CGA           =1;
+ MCGA	       =2;
+ EGA           =3;
+ EGA64         =4;
+ EGAMono       =5;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  IBM8514       =6;
  //HercMono      =7;   is in the graphh.inc
  ATT400        =8;
@@ -76,6 +90,8 @@ It's highly recommended to use Detect (0 constant) for grDriver and grmode: init
  PC3270        =10;
 
 {Graphics Modes for Each Driver}
+<<<<<<< HEAD
+<<<<<<< HEAD
  //CGAC0         =0;   is in graphh.inc
  //CGAC          =1;   is in graphh.inc
  //CGAC2         =2;   is in graphh.inc
@@ -90,15 +106,49 @@ It's highly recommended to use Detect (0 constant) for grDriver and grmode: init
  //MCGAHi        =5;   is in graphh.inc
  
  //EGAMonoHi     =3;   is in graphh.inc
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ CGAC0         =0;
+ CGAC          =1;
+ CGAC2         =2;
+ CGAC3         =3;
+ CGAHi         =4;
+ 
+ MCGAC0        =0;
+ MCGAC         =1;
+ MCGAC2        =2;
+ MCGAC3        =3;
+ MCGAMed       =4;
+ MCGAHi        =5;
+ 
+ EGAMonoHi     =3;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  //HercMonoHi    =0;      is in the graphh.inc
  //VGALo         =0;      is in the graphh.inc
  //VGAMed        =1;      is in the graphh.inc
  //VGAHi         =2;      is in the graphh.inc
  
+<<<<<<< HEAD
+<<<<<<< HEAD
  //EGALo         =0;   is in graphh.inc
  //EGAHi         =1;   is in graphh.inc
  //EGA64Lo       =0;   is in graphh.inc
  //EGA64Hi       =1;   is in graphh.inc
+=======
+=======
+>>>>>>> origin/fixes_2_2
+ EGALo         =0;
+ EGAHi         =1;
+ EGA64Lo       =0;
+ EGA64Hi       =1;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
  
  ATT400C0      =0;
  ATT400C1      =1;

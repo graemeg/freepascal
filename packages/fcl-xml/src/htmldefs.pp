@@ -58,6 +58,8 @@ type
       );
 
   THTMLAttributeTag = (
+<<<<<<< HEAD
+<<<<<<< HEAD
       atabbr, atalink, atacceptcharset, ataccept, ataccesskey, ataction, atalign, atalt, atarchive,
       ataxis, atbackground, atbgcolor, atborder, atcellpadding, atcellspacing, atchar, atcharoff, atcharset,
       atchecked, atcite, atclass, atclassid, atclear, atcode, atcodebase, atcodetype, atcolor, atcols,
@@ -73,6 +75,28 @@ type
       atselected, atshape, atsize, atspan, atsrc, atstandby, atstart, atstyle, atsummary,
       attabindex, attarget, attext, attitle, attype, atusemap, atvalign, atvalue,
       atvaluetype, atversion, atvlink, atvspace, atwidth
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      atabbr, atacceptcharset, ataccept, ataccesskey, ataction, atalign, atalt, atarchive,
+      ataxis, atborder, atcellpadding, atcellspacing, atchar, atcharoff, atcharset,
+      atchecked, atcite, atclass, atclassid, atcodebase, atcodetype, atcols,
+      atcolspan, atcontent, atcoords, atdata, atdatetime, atdeclare,atdefer,
+      atdir, atdisabled, atenctype, atfor, atframe, atframeborder, atheaders,
+      atheight, athref, athreflang, athttpequiv, atid, atismap, atlabel, atlang,
+      atlongdesc, atmarginheight, atmarginwidth, atmaxlength, atmedia, atmethod,
+      atmultiple, atname, atnohref, atnoresize, atonblur, atonchange, atonclick,
+      atondblclick, atonfocus, atonkeydown, atonkeypress, atonkeyup, atonload,
+      atonmousedown, atonmousemove, atonmouseout, atonmouseover, atonmouseup,
+      atonreset, atonselect, atonsubmit, atonunload, atprofile, atreadonly,
+      atrel, atrev, atrows, atrowspan, atrules, atscheme, atscope, atscrolling,
+      atselected, atshape, atsize, atspan, atsrc, atstandby, atstyle, atsummary,
+      attabindex, attarget, attitle, attype, atusemap, atvalign, atvalue,
+      atvaluetype, atwidth
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       );
   THTMLAttributeSet = set of THTMLAttributeTag;
 
@@ -97,9 +121,19 @@ type
     efPCDATAContent,                    // may have PCDATA content
     efPreserveWhitespace,               // preserve all whitespace
     efDeprecated,                       // can be dropped in future versions
+<<<<<<< HEAD
+<<<<<<< HEAD
     efNoChecks,                         // Checks (attributes,subtags,...) can only be implemented in descendants
     efEndTagOptional
   );
+=======
+    efNoChecks                          // Checks (attributes,subtags,...) can only be implemented in descendants
+    );
+>>>>>>> graemeg/fixes_2_2
+=======
+    efNoChecks                          // Checks (attributes,subtags,...) can only be implemented in descendants
+    );
+>>>>>>> origin/fixes_2_2
   THTMLElementFlags = set of THTMLElementFlag;
 
   PHTMLElementProps = ^THTMLElementProps;
@@ -115,10 +149,16 @@ const
   BooleanAttributes = [atchecked,atdeclare,atdefer,atdisabled,atnohref,atnoresize,
                     atmultiple,atreadonly,atselected];
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   DeprecatedAttributes = [atalink, atbackground, atbgcolor, atclear, atcode, atcolor,
     atcompact, atface, athspace, atlink, atnoshade, atnowrap, atobject, atprompt,
     atstart, attext, atvlink, atversion, atvspace];
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   efSubcontent = [efSubelementContent, efPCDATAContent];
 
   atsi18n = [atlang, atdir];
@@ -189,10 +229,23 @@ const
     (Name: 'col';       Flags: [];
      Attributes: atsattrs+atscellhalign+[atvalign,atspan,atwidth]),
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     (Name: 'colgroup';  Flags: [efSubelementContent, efEndTagOptional];
      Attributes: atsattrs+atscellhalign+[atvalign,atspan,atwidth]),
 
     (Name: 'dd';        Flags: efSubcontent+[efEndTagOptional]; Attributes: atsattrs),
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    (Name: 'colgroup';  Flags: [efSubelementContent];
+     Attributes: atsattrs+atscellhalign+[atvalign,atspan,atwidth]),
+
+    (Name: 'dd';        Flags: efSubcontent; Attributes: atsattrs),
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     (Name: 'del';       Flags: [efSubelementContent]; Attributes: atsattrs+[atcite,atdatetime]),
 
@@ -200,11 +253,25 @@ const
 
     (Name: 'dir';       Flags: [efSubelementContent,efDeprecated]; Attributes: atsattrs),
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     (Name: 'div';       Flags: efSubContent; Attributes: atsattrs),
 
     (Name: 'dl';        Flags: [efSubelementContent]; Attributes: atsattrs),
 
     (Name: 'dt';        Flags: [efPCDataContent, efEndTagOptional]; Attributes: atsattrs),
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    (Name: 'div';       Flags: [efSubelementContent]; Attributes: atsattrs),
+
+    (Name: 'dl';        Flags: [efSubelementContent]; Attributes: atsattrs),
+
+    (Name: 'dt';        Flags: [efPCDataContent]; Attributes: atsattrs),
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     (Name: 'em';        Flags: efSubcontent; Attributes: atsattrs),
 
@@ -265,7 +332,15 @@ const
 
     (Name: 'legend';    Flags: efSubcontent; Attributes: atsattrs+[ataccesskey]),
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     (Name: 'li';        Flags: efSubcontent+[efEndTagOptional]; Attributes: atsattrs),
+=======
+    (Name: 'li';        Flags: efSubcontent; Attributes: atsattrs),
+>>>>>>> graemeg/fixes_2_2
+=======
+    (Name: 'li';        Flags: efSubcontent; Attributes: atsattrs),
+>>>>>>> origin/fixes_2_2
 
     (Name: 'link';      Flags: [];
      Attributes: atsattrs+[atcharset,athref,athreflang,attype,atrel,atrev,atmedia]),
@@ -288,10 +363,23 @@ const
 
     (Name: 'optgroup';  Flags: efSubcontent; Attributes: atsattrs+[atdisabled,atlabel]),
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     (Name: 'option';    Flags: efSubcontent+[efEndTagOptional];
      Attributes: atsattrs+[atselected,atdisabled,atlabel,atvalue]),
 
     (Name: 'p';         Flags: efSubcontent+[efEndTagOptional]; Attributes: atsattrs),
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    (Name: 'option';    Flags: efSubcontent;
+     Attributes: atsattrs+[atselected,atdisabled,atlabel,atvalue]),
+
+    (Name: 'p';         Flags: efSubcontent; Attributes: atsattrs),
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     (Name: 'param';     Flags: []; Attributes: [atid,atname,atvalue,atvaluetype,attype]),
 
@@ -329,13 +417,23 @@ const
 
     (Name: 'tbody';     Flags: [efSubelementContent]; Attributes: atsattrs+atscellhalign+[atvalign]),
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     (Name: 'td';        Flags: efSubcontent+[efEndTagOptional];
+=======
+    (Name: 'td';        Flags: efSubcontent;
+>>>>>>> graemeg/fixes_2_2
+=======
+    (Name: 'td';        Flags: efSubcontent;
+>>>>>>> origin/fixes_2_2
      Attributes: atsattrs+atscellhalign+[atvalign,atabbr,ataxis,atheaders,atscope,atrowspan,atcolspan]),
 
     (Name: 'textarea';  Flags: [efPCDATAContent];
      Attributes: atsattrs+[atname,atrows,atcols,atdisabled,atreadonly,attabindex,
                  ataccesskey,atonfocus,atonblur,atonselect,atonchange]),
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     (Name: 'tfoot';     Flags: [efSubelementContent,efEndTagOptional]; Attributes: atsattrs+atscellhalign+[atvalign]),
 
     (Name: 'th';        Flags: efSubcontent+[efEndTagOptional];
@@ -346,6 +444,23 @@ const
     (Name: 'title';     Flags: efSubcontent; Attributes: atsi18n),
 
     (Name: 'tr';        Flags: [efSubelementContent, efEndTagOptional];
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    (Name: 'tfoot';     Flags: [efSubelementContent]; Attributes: atsattrs+atscellhalign+[atvalign]),
+
+    (Name: 'th';        Flags: efSubcontent;
+     Attributes: atsattrs+atscellhalign+[atvalign,atabbr,ataxis,atheaders,atscope,atrowspan,atcolspan]),
+
+    (Name: 'thead';     Flags: [efSubelementContent]; Attributes: atsattrs+atscellhalign+[atvalign]),
+
+    (Name: 'title';     Flags: efSubcontent; Attributes: atsi18n),
+
+    (Name: 'tr';        Flags: [efSubelementContent];
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
      Attributes: atsattrs+atscellhalign+[atvalign]),
 
     (Name: 'tt';        Flags: efSubcontent; Attributes: atsattrs),
@@ -362,6 +477,8 @@ const
 
     );
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   HTMLAttributeTag : array [THTMLAttributeTag] of String = (
       'abbr', 'alink', 'accept-charset', 'accept', 'accesskey', 'action', 'align', 'alt', 'archive',
       'axis', 'background', 'bgcolor', 'border', 'cellpadding', 'cellspacing', 'char', 'charoff', 'charset',
@@ -378,6 +495,29 @@ const
       'selected', 'shape', 'size', 'span', 'src', 'standby', 'start', 'style', 'summary',
       'tabindex', 'target', 'text', 'title', 'type', 'usemap', 'valign', 'value',
       'valuetype', 'version', 'vlink', 'vspace', 'width');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  HTMLAttributeTag : array [THTMLAttributeTag] of string = (
+      'abbr', 'accept-charset', 'accept', 'accesskey', 'action', 'align', 'alt', 'archive',
+      'axis', 'border', 'cellpadding', 'cellspacing', 'char', 'charoff', 'charset',
+      'checked', 'cite', 'class', 'classid', 'codebase', 'codetype', 'cols',
+      'colspan', 'content', 'coords', 'data', 'datetime', 'declare', 'defer',
+      'dir', 'disabled', 'enctype', 'for', 'frame', 'frameborder', 'headers',
+      'height', 'href', 'hreflang', 'http-equiv', 'id', 'ismap', 'label', 'lang',
+      'longdesc', 'marginheight', 'marginwidth', 'maxlength', 'media', 'method',
+      'multiple', 'name', 'nohref', 'noresize', 'onblur', 'onchange', 'onclick',
+      'ondblclick', 'onfocus', 'onkeydown', 'onkeypress', 'onkeyup', 'onload',
+      'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup',
+      'onreset', 'onselect', 'onsubmit', 'onunload', 'profile', 'readonly',
+      'rel', 'rev', 'rows', 'rowspan', 'rules', 'scheme', 'scope', 'scrolling',
+      'selected', 'shape', 'size', 'span', 'src', 'standby', 'style', 'summary',
+      'tabindex', 'target', 'title', 'type', 'usemap', 'valign', 'value',
+      'valuetype', 'width');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   HTMLColor : array [THTMLColor] of string =
     ('Black', 'Silver', 'Gray', 'White', 'Maroon', 'Red', 'Purple', 'Fuchsia',
@@ -394,6 +534,8 @@ const
       'radio','submit','reset','file','hidden','image','button');
   HTMLbuttontype : array [THTMLbuttontype] of string = ('','submit','reset','button');
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function ResolveHTMLEntityReference(const Name: WideString;
   var Entity: WideChar): Boolean;
 
@@ -858,6 +1000,237 @@ begin
       end;
       Exit;
     end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  // ISO8859-1 mapping:
+  HTMLEntities: array[#160..#255] of String = (
+    // 160-191
+    'nbsp', 'iexcl', 'cent', 'pound', 'curren', 'yen', 'brvbar', 'sect',
+    'uml', 'copy', 'ordf', 'laquo', 'not', 'shy', 'reg', 'macr',
+    'deg', 'plusmn', 'sup2', 'sup3', 'acute', 'micro', 'para', 'middot',
+    'cedil', 'sup1', 'ordm', 'raquo', 'frac14', 'frac12', 'frac34', 'iquest',
+    // 192-223
+    'Agrave', 'Aacute', 'Acirc', 'Atilde', 'Auml', 'Aring', 'AElig', 'Ccedil',
+    'Egrave', 'Eacute', 'Ecirc', 'Euml', 'Igrave', 'Iacute', 'Icirc', 'Iuml',
+    'ETH', 'Ntilde', 'Ograve', 'Oacute', 'Ocirc', 'Otilde', 'Ouml', 'times',
+    'Oslash', 'Ugrave', 'Uacute', 'Ucirc', 'Uuml', 'Yacute', 'THORN', 'szlig',
+    // 224-255
+    'agrave', 'aacute', 'acirc', 'atilde', 'auml', 'aring', 'aelig', 'ccedil',
+    'egrave', 'eacute', 'ecirc', 'euml', 'igrave', 'iacute', 'icirc', 'iuml',
+    'eth', 'ntilde', 'ograve', 'oacute', 'ocirc', 'otilde', 'ouml', 'divide',
+    'oslash', 'ugrave', 'uacute', 'ucirc', 'uuml', 'yacute', 'thorn', 'yuml');
+
+
+  UnicodeHTMLEntities: array[0..141] of String = (
+    'Alpha',    // #913
+    'Beta',     // #914
+    'Gamma',    // #915
+    'Delta',    // #916
+    'Epsilon',  // #917
+    'Zeta',     // #918
+    'Eta',      // #919
+    'Theta',    // #920
+    'Iota',     // #921
+    'Kappa',    // #922
+    'Lambda',   // #923
+    'Mu',       // #924
+    'Nu',       // #925
+    'Xi',       // #926
+    'Omicron',  // #927
+    'Pi',       // #928
+    'Rho',      // #929
+    'Sigma',    // #931
+    'Tau',      // #932
+    'Upsilon',  // #933
+    'Phi',      // #934
+    'Chi',      // #935
+    'Psi',      // #936
+    'Omega',    // #937
+    'alpha',    // #945
+    'beta',     // #946
+    'gamma',    // #947
+    'delta',    // #948
+    'epsilon',  // #949
+    'zeta',     // #950
+    'eta',      // #951
+    'theta',    // #952
+    'iota',     // #953
+    'kappa',    // #954
+    'lambda',   // #955
+    'mu',       // #956
+    'nu',       // #957
+    'xi',       // #958
+    'omicron',  // #959
+    'pi',       // #960
+    'rho',      // #961
+    'sigmaf',   // #962
+    'sigma',    // #963
+    'tau',      // #964
+    'upsilon',  // #965
+    'phi',      // #966
+    'chi',      // #967
+    'psi',      // #968
+    'omega',    // #969
+    'thetasym', // #977
+    'upsih',    // #978
+    'piv',      // #982
+    'ensp',     // #8194
+    'emsp',     // #8195
+    'thinsp',   // #8201
+    'zwnj',     // #8204
+    'zwj',      // #8205
+    'lrm',      // #8206
+    'rlm',      // #8207
+    'ndash',    // #8211
+    'mdash',    // #8212
+    'lsquo',    // #8216
+    'rsquo',    // #8217
+    'sbquo',    // #8218
+    'ldquo',    // #8220
+    'rdquo',    // #8221
+    'bdquo',    // #8222
+    'dagger',   // #8224
+    'Dagger',   // #8225
+    'bull',     // #8226
+    'hellip',   // #8230
+    'permil',   // #8240
+    'prime',    // #8242
+    'lsaquo',   // #8249
+    'rsaquo',   // #8250
+    'oline',    // #8254
+    'frasl',    // #8260
+    'image',    // #8465
+    'weierp',   // #8472
+    'real',     // #8476
+    'trade',    // #8482
+    'alefsym',  // #8501
+    'larr',     // #8592
+    'uarr',     // #8593
+    'rarr',     // #8594
+    'darr',     // #8595
+    'harr',     // #8596
+    'crarr',    // #8629
+    'lArr',     // #8656
+    'uArr',     // #8657
+    'rArr',     // #8658
+    'dArr',     // #8659
+    'hArr',     // #8660
+    'forall',   // #8704
+    'part',     // #8706
+    'exist',    // #8707
+    'empty',    // #8709
+    'nabla',    // #8711
+    'isin',     // #8712
+    'notin',    // #8713
+    'ni',       // #8715
+    'prod',     // #8719
+    'sum',      // #8721
+    'minus',    // #8722
+    'lowast',   // #8727
+    'radic',    // #8730
+    'prop',     // #8733
+    'infin',    // #8734
+    'ang',      // #8736
+    'and',      // #8743
+    'or',       // #8744
+    'cap',      // #8745
+    'cup',      // #8746
+    'int',      // #8747
+    'there4',   // #8756
+    'sim',      // #8764
+    'cong',     // #8773
+    'asymp',    // #8776
+    'ne',       // #8800
+    'equiv',    // #8801
+    'le',       // #8804
+    'ge',       // #8805
+    'sub',      // #8834
+    'sup',      // #8835
+    'nsub',     // #8836
+    'sube',     // #8838
+    'supe',     // #8839
+    'oplus',    // #8853
+    'otimes',   // #8855
+    'perp',     // #8869
+    'sdot',     // #8901
+    'lceil',    // #8968
+    'rceil',    // #8969
+    'lfloor',   // #8970
+    'rfloor',   // #8971
+    'lang',     // #9001
+    'rang',     // #9002
+    'loz',      // #9674
+    'spades',   // #9824
+    'clubs',    // #9827
+    'hearts',   // #9829
+    'diams'     // #9830
+  );
+
+
+
+function ResolveHTMLEntityReference(const Name: String;
+  var Entity: Char): Boolean;
+
+
+
+implementation
+
+uses SysUtils;
+
+function ResolveHTMLEntityReference(const Name: String;
+  var Entity: Char): Boolean;
+var
+  Ent: Char;
+  i: Integer;
+begin
+  if Name = 'quot' then
+  begin
+    Entity := '"';
+    Result := True;
+  end else if Name = 'apos' then
+  begin
+    Entity := '''';
+    Result := True;
+  end else if Name = 'amp' then
+  begin
+    Entity := '&';
+    Result := True;
+  end else if Name = 'lt' then
+  begin
+    Entity := '<';
+    Result := True;
+  end else if Name = 'gt' then
+  begin
+    Entity := '>';
+    Result := True;
+  end else if (Length(Name) > 0) and (Name[1] = '#') then
+  begin
+    for i := 2 to Length(Name) do
+      if (Name[i] < '0') or (Name[i] > '9') then
+        break;
+    if i > 2 then
+    begin
+      Entity := Chr(StrToInt(Copy(Name, 2, i - 1)));
+      Result := True;
+    end else
+      Result := False;
+  end else
+  begin
+    for Ent := Low(HTMLEntities) to High(HTMLEntities) do
+      if HTMLEntities[Ent] = Name then
+      begin
+        Entity := Ent;
+        Result := True;
+        exit;
+      end;
+    Result := False;
+  end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 end.

@@ -17,8 +17,28 @@ const
   HIDP_STATE_LISTEN = $01;
   HIDP_STATE_CONNECTING = $02;
   HIDP_STATE_CONNECTED = $04;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   HIDP_CONTROL_CHANNEL = $11;
   HIDP_DATA_CHANNEL = $13;
+=======
+  HIDP_OUTPUT_CHANNEL = $11;
+  HIDP_INPUT_CHANNEL = $13;
+>>>>>>> graemeg/cpstrnew
+=======
+  HIDP_OUTPUT_CHANNEL = $11;
+  HIDP_INPUT_CHANNEL = $13;
+>>>>>>> graemeg/cpstrnew
+=======
+  HIDP_OUTPUT_CHANNEL = $11;
+  HIDP_INPUT_CHANNEL = $13;
+>>>>>>> graemeg/cpstrnew
+=======
+  HIDP_OUTPUT_CHANNEL = $11;
+  HIDP_INPUT_CHANNEL = $13;
+>>>>>>> origin/cpstrnew
   HIDP_HDR_TRANS_MASK = $f0;
   HIDP_HDR_PARAM_MASK = $0f;
   HIDP_TRANS_HANDSHAKE = $00;
@@ -97,8 +117,28 @@ type
     ctrl_req_tail : Pctrl_req_t;
     cmdq : lwpq_t;
     bdaddr : _bd_addr;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     ctl_pcb : Pl2cap_pcb;
     data_pcb : Pl2cap_pcb;
+=======
+    out_pcb : Pl2cap_pcb;
+    in_pcb : Pl2cap_pcb;
+>>>>>>> graemeg/cpstrnew
+=======
+    out_pcb : Pl2cap_pcb;
+    in_pcb : Pl2cap_pcb;
+>>>>>>> graemeg/cpstrnew
+=======
+    out_pcb : Pl2cap_pcb;
+    in_pcb : Pl2cap_pcb;
+>>>>>>> graemeg/cpstrnew
+=======
+    out_pcb : Pl2cap_pcb;
+    in_pcb : Pl2cap_pcb;
+>>>>>>> origin/cpstrnew
     recv : Trecv;
     conn_cfm : Tconn_cfm;
     disconn_cfm : Tdisconn_cfm;
@@ -121,8 +161,20 @@ function BTE_InitSub(cb: btecallback): cint32; cdecl; external;
 function BTE_ReadStoredLinkKey(keys: Plinkkey_info; max_cnt: cuint8;
   cb: btecallback): cint32; cdecl; external;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function BTE_ReadBdAddr(bdaddr: P_bd_addr; cb: btecallback): cint32; cdecl; external;
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 type
   TAuxCCB1 = procedure(bdaddr: P_bd_addr; reason: cuint8); cdecl;
   TAuxCCB0 = procedure(bdaddr: P_bd_addr; reason: cuint8); cdecl;

@@ -6,19 +6,7 @@
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version
-    with the following modification:
-
-    As a special exception, the copyright holders of this library give you
-    permission to link this library with independent modules to produce an
-    executable, regardless of the license terms of these independent modules,and
-    to copy and distribute the resulting executable under terms of your choice,
-    provided that you also meet, for each linked independent module, the terms
-    and conditions of the license of that module. An independent module is a
-    module which is not derived from or based on this library. If you modify
-    this library, you may extend this exception to your version of the library,
-    but you are not obligated to do so. If you do not wish to do so, delete this
-    exception statement from your version.
+    version 2.1 of the License, or (at your option) any later version.
 
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -31,20 +19,28 @@
 }
 
 
-{$IFDEF I386_ASSEMBLER}
+{$IFDEF CPU86}
+  {$DEFINE I386_ASSEMBLER}
   {$IFNDEF win32}
-    {$IFNDEF go32v2}
-    const
-      ExternalAsmPrefix='_'; // targets other than go32v2 and win32
-    {$ELSE go32v2}
-    const
-      ExternalAsmPrefix=''; // go32v2
-    {$ENDIF go32v2}
+    Const
+      ExternalAsmPrefix='_';
   {$ELSE win32}
-    const
-      ExternalAsmPrefix=''; // win32
+    Const
+      ExternalAsmPrefix='';
   {$ENDIF win32}
-{$ENDIF I386_ASSEMBLER}
+{$ENDIF CPU86}
+
+{$IFDEF VER1_0}
+  {$IFDEF ENDIAN_LITTLE}
+    {$DEFINE FPC_LITTLE_ENDIAN}
+  {$ENDIF ENDIAN_LITTLE}
+  {$IFDEF ENDIAN_BIG}
+    {$DEFINE FPC_BIG_ENDIAN}
+  {$ENDIF ENDIAN_BIG}
+  Type
+    PtrInt = LongInt;
+    PtrUInt = Cardinal;
+{$ENDIF VER1_0}
 
 {$IFDEF FPC_LITTLE_ENDIAN}
   {$IFDEF FPC_BIG_ENDIAN}
@@ -55,3 +51,10 @@
     {$FATAL Neither FPC_LITTLE_ENDIAN, nor FPC_BIG_ENDIAN defined?!}
   {$ENDIF FPC_BIG_ENDIAN}
 {$ENDIF FPC_LITTLE_ENDIAN}
+
+{$IFDEF FPC_LITTLE_ENDIAN}
+  {$INFO FPC_LITTLE_ENDIAN}
+{$ENDIF FPC_LITTLE_ENDIAN}
+{$IFDEF FPC_BIG_ENDIAN}
+  {$INFO FPC_BIG_ENDIAN}
+{$ENDIF FPC_BIG_ENDIAN}

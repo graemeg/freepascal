@@ -1,13 +1,64 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for the Multimedia Toolkit (interface units for MMPM)
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for the Multimedia Toolkit (interface units for MMPM)
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=palmunits
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> graemeg/cpstrnew
+=======
+version=2.5.1
+>>>>>>> origin/cpstrnew
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=aboutbox alarmmgr applaunchcmd attentionmgr bitmap category chars clipboard \
+connectionmgr consolemgr control coretraps crc datamgr datetime day dlserver \
+encrypt errorbase event_ exglib exgmgr expansionmgr fatalalert featuremgr \
+field filestream find_ floatmgr font fontselect_ form fslib graffiti \
+graffitireference graffitishift hal helper helperserviceclass hwrmiscflags \
+imcutils inetmgr inspoint intlmgr irlib keyboard keymgr launcher libtraps \
+list localemgr localize lz77mgr m68khwr memorymgr menu_ modemmgr  \
+netbitutils netmgr notifymgr overlaymgr palmcompatibility palmlocale palmos \
+password pdiconst pdilib penmgr phonelookup preferences privaterecords progress \
+rect scrollbar selday seltime seltimezone seriallinkmgr serialmgr serialmgrold \
+slotdrvrlib smslib soundmgr stringmgr sysevent sysevtmgr systemmgr \
+systemresources sysutil table telephonymgr telephonymgrtypes telephonymgrui \
+textmgr textservicesmgr timemgr udamgr uicolor uicontrols uiresources vfsmgr window
+
+exampledirs=
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -15,6 +66,8 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +153,16 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[compiler]
+includedir=src
+sourcedir=src tests
+
+[rules]
+.NOTPARALLEL:
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

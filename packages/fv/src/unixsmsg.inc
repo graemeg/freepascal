@@ -3,8 +3,21 @@
 
    Copyright (c) 2002 by Pierre Muller
 
+<<<<<<< HEAD
+<<<<<<< HEAD
    See the file COPYING.FPC, included in this distribution,
    for details about the copyright.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   This library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Library General Public
+   License as published by the Free Software Foundation; either
+   version 2 of the License, or (at your option) any later version.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
    This library is distributed in the hope that it will be useful,
@@ -14,8 +27,16 @@
 
    You should have received a copy of the GNU Library General Public
    License along with this library; if not, write to the Free
+<<<<<<< HEAD
+<<<<<<< HEAD
    Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
    MA 02110-1301, USA.
+=======
+   Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+>>>>>>> graemeg/fixes_2_2
+=======
+   Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+>>>>>>> origin/fixes_2_2
 }
 
 

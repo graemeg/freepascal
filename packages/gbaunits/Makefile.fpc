@@ -1,0 +1,37 @@
+#
+#   Makefile.fpc for gba units
+#
+
+[package]
+name=gbaunits
+version=2.2.5
+
+[target]
+loaders=bios_asm core_asm
+units=gba_bg gba_blend gba_core gba_dma gba_irq gba_sio gba_mosaic gba_regs \
+gba_sprites gba_timer gba_types gba_video gba_window gba_bios gba_input gba_fade
+examples=
+
+[compiler]
+options=-CX
+includedir=src
+sourcedir=src tests
+
+[install]
+fpcpackage=y
+#prefix=d:/fpc4gba
+
+[default]
+cpu=arm
+target=gba
+fpcdir=../..
+
+[require]
+nortl=y
+
+[rules]
+.NOTPARALLEL:
+core_asm$(OEXT):src/core_asm.as
+        $(AS) -o $(UNITTARGETDIRPREFIX)core_asm$(OEXT) src/core_asm.as
+bios_asm$(OEXT):src/bios_asm.as
+        $(AS) -o $(UNITTARGETDIRPREFIX)bios_asm$(OEXT) src/bios_asm.as

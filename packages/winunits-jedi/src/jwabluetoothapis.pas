@@ -584,7 +584,15 @@ function BluetoothRemoveDevice(var pAddress: BLUETOOTH_ADDRESS): DWORD; stdcall;
 //              if ( pbtdi->fAuthenticated || pbtdi->fRemembered )
 //              {
 //                  //
+<<<<<<< HEAD
+<<<<<<< HEAD
 //                  //  TODO:   Do something useful with the device info
+=======
+//                  //  TODO:   Do something usefull with the device info
+>>>>>>> graemeg/fixes_2_2
+=======
+//                  //  TODO:   Do something usefull with the device info
+>>>>>>> origin/fixes_2_2
 //                  //
 //              }
 //

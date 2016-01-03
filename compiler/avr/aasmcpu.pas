@@ -106,10 +106,22 @@ uses
 
     function setcondition(i : taicpu;c : tasmcond) : taicpu;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     { replaces cond. branches by rjmp/jmp and the inverse cond. branch if needed
       and transforms special instructions to valid instruction encodings }
     procedure finalizeavrcode(list : TAsmList);
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 implementation
 
 {*****************************************************************************
@@ -345,6 +357,7 @@ implementation
       begin
         case getregtype(r) of
           R_INTREGISTER :
+<<<<<<< HEAD
             if ref.offset<>0 then
               result:=taicpu.op_reg_ref(A_LDD,r,ref)
             else
@@ -354,6 +367,24 @@ implementation
               result:=taicpu.op_reg_ref(A_LDD,r,ref)
             else
               result:=taicpu.op_reg_ref(A_LD,r,ref);
+=======
+            result:=taicpu.op_ref_reg(A_LD,ref,r);
+          R_ADDRESSREGISTER :
+            result:=taicpu.op_ref_reg(A_LD,ref,r);
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+          R_ADDRESSREGISTER :
+            result:=taicpu.op_ref_reg(A_LD,ref,r);
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+          R_ADDRESSREGISTER :
+            result:=taicpu.op_ref_reg(A_LD,ref,r);
+>>>>>>> origin/cpstrnew
           else
             internalerror(200401041);
         end;
@@ -364,6 +395,7 @@ implementation
       begin
         case getregtype(r) of
           R_INTREGISTER :
+<<<<<<< HEAD
             if ref.offset<>0 then
               result:=taicpu.op_ref_reg(A_STD,ref,r)
             else
@@ -373,6 +405,22 @@ implementation
               result:=taicpu.op_ref_reg(A_STD,ref,r)
             else
               result:=taicpu.op_ref_reg(A_ST,ref,r);
+=======
+            result:=taicpu.op_reg_ref(A_ST,r,ref);
+          R_ADDRESSREGISTER :
+            result:=taicpu.op_reg_ref(A_ST,r,ref);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+          R_ADDRESSREGISTER :
+            result:=taicpu.op_reg_ref(A_ST,r,ref);
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           else
             internalerror(200401041);
         end;
@@ -396,6 +444,10 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     procedure finalizeavrcode(list : TAsmList);
       var
         CurrOffset : longint;
@@ -478,6 +530,14 @@ implementation
       end;
 
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 begin
   cai_cpu:=taicpu;
   cai_align:=tai_align;

@@ -9,7 +9,15 @@
 
 function Expression1: Integer;
 asm
+<<<<<<< HEAD
+<<<<<<< HEAD
   mov eax, 4 * 3 - 2 + (-1) / 2
+=======
+//  mov eax, 4 * 3 - 2 + (-1) / 2
+>>>>>>> graemeg/fixes_2_2
+=======
+//  mov eax, 4 * 3 - 2 + (-1) / 2
+>>>>>>> origin/fixes_2_2
 end;
 
 function Expression2: Integer;

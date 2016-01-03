@@ -17,7 +17,7 @@ Program RequestModeID;
     nils.sjoholm@mailbox.swipnet.se
 }
 
-uses exec, amigados, agraphics, intuition, picasso96api, utility;
+uses exec, amigados, graphics, intuition, picasso96api, utility;
 
 Const
     template    :   pchar = 'Width=W/N,Height=H/N,Depth=D/N';

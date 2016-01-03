@@ -15,8 +15,18 @@
 
   You should have received a copy of the GNU Library General Public License
   along with this library; see the file COPYING.LIB.  If not, write to
+<<<<<<< HEAD
+<<<<<<< HEAD
   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
   Boston, MA 02111-1301, USA.
+=======
+  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+  Boston, MA 02111-1307, USA.
+>>>>>>> graemeg/fixes_2_2
+=======
+  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+  Boston, MA 02111-1307, USA.
+>>>>>>> origin/fixes_2_2
 }
 {
   !!!!! Maybe wrong for kylix !!!!!
@@ -39,7 +49,15 @@ uses
 const
 // OS dependent defines
 // !!!!! Maybe wrong for platforms other than linux !!!!!
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef windows}
+=======
+{$ifdef win32}
+>>>>>>> graemeg/fixes_2_2
+=======
+{$ifdef win32}
+>>>>>>> origin/fixes_2_2
   {$DEFINE GTK_WINDOWING_WIN32}
   gtkhtmllib = 'libgtkhtml-win32-2.0-0.dll';
   {$IFDEF FPC}

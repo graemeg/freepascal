@@ -78,10 +78,18 @@ begin
  if assigned(intf) and supports(intf,IInterfaceComponentReference,ref) then
    begin
     comp:=ref.getcomponent;
+<<<<<<< HEAD
+<<<<<<< HEAD
     if op = opInsert then
       comp.FreeNotification(Self)
     else
       comp.RemoveFreeNotification(Self); 
+=======
+    comp.notification(self,op); 
+>>>>>>> graemeg/fixes_2_2
+=======
+    comp.notification(self,op); 
+>>>>>>> origin/fixes_2_2
    end;
 end;
 
@@ -563,8 +571,18 @@ begin
     FFreeNotifies:=TFpList.Create;
   If FFreeNotifies.IndexOf(AComponent)=-1 then
     begin
+<<<<<<< HEAD
     FFreeNotifies.Add(AComponent);
     AComponent.FreeNotification (self);
+=======
+    If not (Assigned(FFreeNotifies)) then
+      FFreeNotifies:=TFpList.Create;
+    If FFreeNotifies.IndexOf(AComponent)=-1 then
+      begin
+      FFreeNotifies.Add(AComponent);
+      AComponent.FreeNotification (self);
+      end;
+>>>>>>> graemeg/cpstrnew
     end;
 end;
 
@@ -622,7 +640,23 @@ end;
 
 
 Function  TComponent.SafeCallException(ExceptObject: TObject;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   ExceptAddr: CodePointer): HResult;
+=======
+  ExceptAddr: Pointer): HResult;
+>>>>>>> graemeg/cpstrnew
+=======
+  ExceptAddr: Pointer): HResult;
+>>>>>>> graemeg/cpstrnew
+=======
+  ExceptAddr: Pointer): HResult;
+>>>>>>> graemeg/cpstrnew
+=======
+  ExceptAddr: Pointer): HResult;
+>>>>>>> origin/cpstrnew
 begin
   if Assigned(VCLComObject) then
     Result := IVCLComObject(VCLComObject).SafeCallException(ExceptObject, ExceptAddr)
@@ -659,9 +693,22 @@ begin
     Result := S_OK
   else
     Result := E_NOINTERFACE;
+<<<<<<< HEAD
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TComponent._AddRef: Longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+=======
+function TComponent._AddRef: Integer;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+>>>>>>> graemeg/cpstrnew
+=======
+function TComponent._AddRef: Integer;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+>>>>>>> graemeg/cpstrnew
+=======
+function TComponent._AddRef: Integer;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+>>>>>>> graemeg/cpstrnew
 begin
   if Assigned(VCLComObject) then
     Result := IVCLComObject(VCLComObject)._AddRef
@@ -669,7 +716,19 @@ begin
     Result := -1;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TComponent._Release: Longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+=======
+function TComponent._Release: Integer;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+>>>>>>> graemeg/cpstrnew
+=======
+function TComponent._Release: Integer;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+>>>>>>> graemeg/cpstrnew
+=======
+function TComponent._Release: Integer;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+>>>>>>> graemeg/cpstrnew
 begin
   if Assigned(VCLComObject) then
     Result := IVCLComObject(VCLComObject)._Release
@@ -691,12 +750,31 @@ begin
     Result := E_NOTIMPL;
 end;
 
+<<<<<<< HEAD
 function TComponent.GetTypeInfo(Index, LocaleID: Integer; out TypeInfo): HResult; stdcall;
 begin
   if Assigned(VCLComObject) then
     Result := IVCLComObject(VCLComObject).GetTypeInfo(Index, LocaleID, TypeInfo)
   else
     Result := E_NOTIMPL;
+=======
+end;
+
+function TComponent._AddRef: Integer;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+begin
+  if Assigned(VCLComObject) then
+    Result := IVCLComObject(VCLComObject)._AddRef
+  else
+    Result := -1;
+end;
+
+function TComponent._Release: Integer;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+begin
+  if Assigned(VCLComObject) then
+    Result := IVCLComObject(VCLComObject)._Release
+  else
+    Result := -1;
+>>>>>>> origin/cpstrnew
 end;
 
 function TComponent.GetIDsOfNames(const IID: TGUID; Names: Pointer; NameCount,
@@ -717,4 +795,53 @@ begin
       VarResult, ExcepInfo, ArgErr)
   else
     Result := E_NOTIMPL;
+end;
+
+function TComponent.GetTypeInfoCount(out Count: Integer): HResult; stdcall;
+begin
+  if Assigned(VCLComObject) then
+    Result := IVCLComObject(VCLComObject).GetTypeInfoCount(Count)
+  else
+    Result := E_NOTIMPL;
+end;
+
+function TComponent.GetTypeInfo(Index, LocaleID: Integer; out TypeInfo): HResult; stdcall;
+begin
+  if Assigned(VCLComObject) then
+    Result := IVCLComObject(VCLComObject).GetTypeInfo(Index, LocaleID, TypeInfo)
+  else
+    Result := E_NOTIMPL;
+end;
+
+<<<<<<< HEAD
+function TComponent.GetIDsOfNames(const IID: TGUID; Names: Pointer; NameCount,
+  LocaleID: Integer; DispIDs: Pointer): HResult; stdcall;
+begin
+  if Assigned(VCLComObject) then
+    Result := IVCLComObject(VCLComObject).GetIDsOfNames(IID, Names, NameCount, LocaleID, DispIDs)
+  else
+    Result := E_NOTIMPL;
+end;
+
+function TComponent.Invoke(DispID: Integer; const IID: TGUID;
+  LocaleID: Integer; Flags: Word; var Params; VarResult, ExcepInfo,
+  ArgErr: Pointer): HResult; stdcall;
+begin
+  if Assigned(VCLComObject) then
+    Result := IVCLComObject(VCLComObject).Invoke(DispID, IID, LocaleID, Flags, Params,
+      VarResult, ExcepInfo, ArgErr)
+  else
+    Result := E_NOTIMPL;
+=======
+function TComponent.iicrGetComponent: TComponent;
+
+begin
+  result:=self;
+>>>>>>> graemeg/fixes_2_2
+=======
+function TComponent.iicrGetComponent: TComponent;
+
+begin
+  result:=self;
+>>>>>>> origin/fixes_2_2
 end;

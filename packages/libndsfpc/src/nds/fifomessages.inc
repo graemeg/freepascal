@@ -3,6 +3,7 @@
 type
   FifoMessageType = integer;
 const
+<<<<<<< HEAD
   SOUND_PLAY_MESSAGE        : FifoMessageType = $1234;
   SOUND_PSG_MESSAGE         : FifoMessageType = $1235;
   SOUND_NOISE_MESSAGE       : FifoMessageType = $1236;
@@ -11,6 +12,25 @@ const
   SYS_INPUT_MESSAGE         : FifoMessageType = $1239;
 	SDMMC_SD_READ_SECTORS     : FifoMessageType = $123A;
 	SDMMC_SD_WRITE_SECTORS    : FifoMessageType = $123B;
+=======
+  SOUND_PLAY_MESSAGE      : FifoMessageType = $1234;
+  SOUND_PSG_MESSAGE       : FifoMessageType = $1235;
+  SOUND_NOISE_MESSAGE     : FifoMessageType = $1236;
+  MIC_RECORD_MESSAGE      : FifoMessageType = $1237;
+  MIC_BUFFER_FULL_MESSAGE : FifoMessageType = $1238;
+  SYS_INPUT_MESSAGE       : FifoMessageType = $1239;
+	SYS_SD_READ_SECTORS     : FifoMessageType = $1240;
+	SYS_SD_WRITE_SECTORS    : FifoMessageType = $1241;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 type
 {$PACKRECORDS 4} 
@@ -21,8 +41,13 @@ type
         SundPlay: record
           _type: cuint16;
           data: pointer;
+<<<<<<< HEAD
           dataSize: cuint16;
           loopPoint: cuint16;
+=======
+          loopPoint: cuint16;
+          dataSize: cuint16;
+>>>>>>> origin/fixes_2.4
           freq: cuint16;
           volume: cuint8;
           pan: cuint8;
@@ -36,7 +61,10 @@ type
           dutyCycle: cuint8;
           volume: cuint8;
           pan: cuint8;
+<<<<<<< HEAD
           channel: cuint8;
+=======
+>>>>>>> origin/fixes_2.4
         end;
       );
       2: (
@@ -59,6 +87,7 @@ type
           keys: cuint16;
         end;
       );
+<<<<<<< HEAD
       5: (
         sdParams: record
           buffer: pointer;
@@ -66,6 +95,10 @@ type
 			    numsectors: cuint32;
 			  end;
 		  );
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       6: (
         fwParams: record
           buffer: pointer;
@@ -74,6 +107,16 @@ type
         end;      
       );  
         
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
   end;
   TFifoMessage = FifoMessage;
   PFifoMessage = ^FifoMessage;

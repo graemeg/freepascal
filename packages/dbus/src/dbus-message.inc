@@ -17,8 +17,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  }
 
@@ -139,9 +138,7 @@ function dbus_message_iter_get_arg_type(iter: PDBusMessageIter): cint; cdecl; ex
 function dbus_message_iter_get_element_type(iter: PDBusMessageIter): cint; cdecl; external LibDBus;
 procedure dbus_message_iter_recurse(iter, sub: PDBusMessageIter); cdecl; external LibDBus;
 procedure dbus_message_iter_get_basic(iter: PDBusMessageIter; value: Pointer); cdecl; external LibDBus;
-//deprecated:
 function dbus_message_iter_get_array_len(iter: PDBusMessageIter): cint; cdecl; external LibDBus;
-
 procedure dbus_message_iter_get_fixed_array(iter: PDBusMessageIter; value: Pointer; n_elements: Pcint); cdecl; external LibDBus;
 
 
@@ -166,10 +163,4 @@ function dbus_message_get_data(message_: PDBusMessage; slot: dbus_int32_t): Poin
 
 function dbus_message_type_from_string(const type_str: PChar): cint; cdecl; external LibDBus;
 function dbus_message_type_to_string(type_: cint): PChar; cdecl; external LibDBus;
-
-function dbus_message_marshal(msg: PDBusMessage;
- marshalled_data_p: PPChar;
- len_p: pcint): dbus_bool_t; cdecl; external LibDBus;
-function dbus_message_demarshal(const str: PChar;
- len: cint; error: PDBusError): PDBusMessage; cdecl; external LibDBus;
 

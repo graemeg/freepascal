@@ -67,7 +67,7 @@ unit doublebuffer;
 
 interface
 
-uses exec, intuition, agraphics;
+uses exec, intuition, graphics;
 
 {
     OpenDoubleBuffer opens the Screen described in "ns" without
@@ -141,7 +141,7 @@ begin
         OpenDoubleBuffer := Nil;
     end;
 
-    bm := ExecAllocMem(SizeOf(tBitMap), MEMF_PUBLIC);
+    bm := AllocMem(SizeOf(tBitMap), MEMF_PUBLIC);
     if bm = Nil then begin
         CloseWindow(w);
         CloseScreen(s);
@@ -181,7 +181,7 @@ var
     bm1,
     bm2 : pBitMap;
     rp : pRastPort;
-    Temp : Array [0..7] of TPLANEPTR;
+    Temp : Array [0..7] of PLANEPTR;
 begin
     s := w^.WScreen;
     rp := w^.RPort;

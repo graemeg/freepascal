@@ -28,10 +28,10 @@ Const piInheritablePipe : TSecurityAttributes = (
       PipeBufSize = 1024;
 
 
-Function CreatePipeHandles (Var Inhandle,OutHandle : THandle; APipeBufferSize : Cardinal = PipeBufSize) : Boolean;
+Function CreatePipeHandles (Var Inhandle,OutHandle : THandle) : Boolean;
 
 begin
-  Result := CreatePipe (@Inhandle,@OutHandle,@piNonInheritablePipe,APipeBufferSize);
+  Result := CreatePipe (@Inhandle,@OutHandle,@piInheritablePipe,PipeBufSize);
 end;
 
 
@@ -41,17 +41,3 @@ begin
     Result := 0;
 end;
 
-function TInputPipeStream.GetPosition: Int64;
-begin
-  Result:=FPos;
-end;
-
-procedure TInputPipeStream.InvalidSeek;
-begin
-  Raise EPipeSeek.Create (ENoSeekMsg);
-end;
-
-procedure PipeClose (const FHandle: THandle); inline;
-begin
-  FileClose(FHandle);
-end;

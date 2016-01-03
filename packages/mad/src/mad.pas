@@ -19,8 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301, USA.
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * If you would like to negotiate alternate licensing terms, you may do
  * so by contacting: Underbit Technologies, Inc. <info@underbit.com>
@@ -40,7 +39,7 @@ uses
   {$DEFINE DYNLINK}
 {$ENDIF}
 
-{.$DEFINE MAD_DISABLE_BUILTIN_DECODER}
+{$DEFINE MAD_DISABLE_BUILTIN_DECODER}
 
 {$IFDEF DYNLINK}
 const
@@ -157,54 +156,53 @@ const
   mad_timer_zero                    : mad_timer_t = (seconds:0; fraction:0);
 
 type
-  mad_units = cuint;
-
-const
-    MAD_UNITS_HOURS                 =    -2;
-    MAD_UNITS_MINUTES               =    -1;
-    MAD_UNITS_SECONDS               =     0;
+  mad_units = (
+    MAD_UNITS_HOURS                 =    -2,
+    MAD_UNITS_MINUTES               =    -1,
+    MAD_UNITS_SECONDS               =     0,
 
     { metric units }
 
-    MAD_UNITS_DECISECONDS           =    10;
-    MAD_UNITS_CENTISECONDS          =   100;
-    MAD_UNITS_MILLISECONDS          =  1000;
+    MAD_UNITS_DECISECONDS           =    10,
+    MAD_UNITS_CENTISECONDS          =   100,
+    MAD_UNITS_MILLISECONDS          =  1000,
 
     { audio sample units }
 
-    MAD_UNITS_8000_HZ               =  8000;
-    MAD_UNITS_11025_HZ              = 11025;
-    MAD_UNITS_12000_HZ              = 12000;
+    MAD_UNITS_8000_HZ               =  8000,
+    MAD_UNITS_11025_HZ              = 11025,
+    MAD_UNITS_12000_HZ              = 12000,
 
-    MAD_UNITS_16000_HZ              = 16000;
-    MAD_UNITS_22050_HZ              = 22050;
-    MAD_UNITS_24000_HZ              = 24000;
+    MAD_UNITS_16000_HZ              = 16000,
+    MAD_UNITS_22050_HZ              = 22050,
+    MAD_UNITS_24000_HZ              = 24000,
 
-    MAD_UNITS_32000_HZ              = 32000;
-    MAD_UNITS_44100_HZ              = 44100;
-    MAD_UNITS_48000_HZ              = 48000;
+    MAD_UNITS_32000_HZ              = 32000,
+    MAD_UNITS_44100_HZ              = 44100,
+    MAD_UNITS_48000_HZ              = 48000,
 
     { video frame/field units }
 
-    MAD_UNITS_24_FPS                =    24;
-    MAD_UNITS_25_FPS                =    25;
-    MAD_UNITS_30_FPS                =    30;
-    MAD_UNITS_48_FPS                =    48;
-    MAD_UNITS_50_FPS                =    50;
-    MAD_UNITS_60_FPS                =    60;
+    MAD_UNITS_24_FPS                =    24,
+    MAD_UNITS_25_FPS                =    25,
+    MAD_UNITS_30_FPS                =    30,
+    MAD_UNITS_48_FPS                =    48,
+    MAD_UNITS_50_FPS                =    50,
+    MAD_UNITS_60_FPS                =    60,
 
     { CD audio frames }
 
-    MAD_UNITS_75_FPS                =    75;
+    MAD_UNITS_75_FPS                =    75,
 
     { video drop-frame units }
 
-    MAD_UNITS_23_976_FPS            =   -24;
-    MAD_UNITS_24_975_FPS            =   -25;
-    MAD_UNITS_29_97_FPS             =   -30;
-    MAD_UNITS_47_952_FPS            =   -48;
-    MAD_UNITS_49_95_FPS             =   -50;
-    MAD_UNITS_59_94_FPS             =   -60;
+    MAD_UNITS_23_976_FPS            =   -24,
+    MAD_UNITS_24_975_FPS            =   -25,
+    MAD_UNITS_29_97_FPS             =   -30,
+    MAD_UNITS_47_952_FPS            =   -48,
+    MAD_UNITS_49_95_FPS             =   -50,
+    MAD_UNITS_59_94_FPS             =   -60
+  );
 
 
 procedure mad_timer_reset(var timer: mad_timer_t);
@@ -315,8 +313,8 @@ type
   mad_emphasis = (
     MAD_EMPHASIS_NONE               = 0,    { no emphasis }
     MAD_EMPHASIS_50_15_US           = 1,    { 50/15 microseconds emphasis }
-    MAD_EMPHASIS_RESERVED           = 2,    { unknown emphasis }
-    MAD_EMPHASIS_CCITT_J_17         = 3     { CCITT J.17 emphasis }
+    MAD_EMPHASIS_CCITT_J_17         = 3,    { CCITT J.17 emphasis }
+    MAD_EMPHASIS_RESERVED           = 2     { unknown emphasis }
   );
 
   mad_header = record
@@ -634,8 +632,8 @@ begin
       begin
         if Assigned(decoder^.stream.next_frame) then
         begin
-          remaining := ptruint(decoder^.stream.bufend) - ptruint(decoder^.stream.next_frame);
-          inbuf_ptr := pointer(ptruint(@decoder^.inbuf) + remaining);
+          remaining := ptrint(decoder^.stream.bufend) - ptrint(decoder^.stream.next_frame);
+          inbuf_ptr := pointer(ptrint(@decoder^.inbuf) + remaining);
           len  := MAD_INPUT_BUFFER_SIZE - remaining;
           Move(decoder^.stream.next_frame^, decoder^.inbuf, remaining);
         end else begin
@@ -702,8 +700,8 @@ begin
 
     for i := 0 to len - 1 do
     begin
-      pcint16(ptruint(buffer) + ofs + 0)^ := decoder^.synth.pcm.samples[0][decoder^.sampleofs];
-      pcint16(ptruint(buffer) + ofs + 2)^ := decoder^.synth.pcm.samples[1][decoder^.sampleofs];
+      pcint16(ptrint(buffer) + ofs + 0)^ := decoder^.synth.pcm.samples[0][decoder^.sampleofs];
+      pcint16(ptrint(buffer) + ofs + 2)^ := decoder^.synth.pcm.samples[1][decoder^.sampleofs];
 
       Inc(decoder^.sampleofs);
       Dec(decoder^.samplecnt);

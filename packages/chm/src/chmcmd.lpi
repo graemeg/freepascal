@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <CONFIG>
   <ProjectOptions>
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Version Value="9"/>
     <General>
       <Flags>
@@ -17,6 +19,26 @@
     <BuildModes Count="1">
       <Item1 Name="default" Default="True"/>
     </BuildModes>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    <PathDelim Value="/"/>
+    <Version Value="5"/>
+    <General>
+      <MainUnit Value="0"/>
+      <IconPath Value="./"/>
+      <TargetFileExt Value=""/>
+      <ActiveEditorIndexAtStart Value="1"/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+      <Language Value=""/>
+      <CharSet Value=""/>
+    </VersionInfo>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     <PublishOptions>
       <Version Value="2"/>
       <IgnoreBinaries Value="False"/>
@@ -29,11 +51,21 @@
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
+<<<<<<< HEAD
+<<<<<<< HEAD
     <Units Count="1">
+=======
+    <Units Count="22">
+>>>>>>> graemeg/fixes_2_2
+=======
+    <Units Count="22">
+>>>>>>> origin/fixes_2_2
       <Unit0>
         <Filename Value="chmcmd.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="chmcmd"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
       </Unit0>
     </Units>
   </ProjectOptions>
@@ -49,15 +81,252 @@
     </Parsing>
     <CodeGeneration>
       <SmartLinkUnit Value="True"/>
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        <CursorPos X="1" Y="20"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="9"/>
+        <UsageCount Value="212"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="../chmfilewriter.pas"/>
+        <UnitName Value="chmfilewriter"/>
+        <CursorPos X="5" Y="70"/>
+        <TopLine Value="58"/>
+        <UsageCount Value="5"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmwriter.pas"/>
+        <UnitName Value="chmwriter"/>
+        <CursorPos X="21" Y="849"/>
+        <TopLine Value="820"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="107"/>
+        <Bookmarks Count="1">
+          <Item0 X="31" Y="622" ID="0"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmreader.pas"/>
+        <UnitName Value="chmreader"/>
+        <CursorPos X="20" Y="436"/>
+        <TopLine Value="416"/>
+        <UsageCount Value="5"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="../chmtypes.pas"/>
+        <UnitName Value="chmtypes"/>
+        <CursorPos X="24" Y="186"/>
+        <TopLine Value="163"/>
+        <UsageCount Value="5"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmbase.pas"/>
+        <UnitName Value="chmbase"/>
+        <CursorPos X="19" Y="126"/>
+        <TopLine Value="32"/>
+        <EditorIndex Value="4"/>
+        <UsageCount Value="86"/>
+        <Loaded Value="True"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="../../../fpc/rtl/objpas/classes/classesh.inc"/>
+        <CursorPos X="15" Y="791"/>
+        <TopLine Value="774"/>
+        <UsageCount Value="11"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../../../fpc/rtl/objpas/classes/streams.inc"/>
+        <CursorPos X="3" Y="592"/>
+        <TopLine Value="587"/>
+        <UsageCount Value="11"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmfilewriter.pas"/>
+        <UnitName Value="chmfilewriter"/>
+        <CursorPos X="5" Y="65"/>
+        <TopLine Value="43"/>
+        <EditorIndex Value="0"/>
+        <UsageCount Value="100"/>
+        <Loaded Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="../../../../olddrive/downloads/hhm-0.1.1/hhm.c"/>
+        <CursorPos X="26" Y="1225"/>
+        <TopLine Value="1219"/>
+        <UsageCount Value="105"/>
+        <SyntaxHighlighter Value="C++"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/paslzxcomp.pas"/>
+        <UnitName Value="paslzxcomp"/>
+        <CursorPos X="6" Y="51"/>
+        <TopLine Value="35"/>
+        <EditorIndex Value="6"/>
+        <UsageCount Value="90"/>
+        <Loaded Value="True"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/paslznonslide.pas"/>
+        <UnitName Value="paslznonslide"/>
+        <CursorPos X="11" Y="245"/>
+        <TopLine Value="215"/>
+        <EditorIndex Value="7"/>
+        <UsageCount Value="117"/>
+        <Loaded Value="True"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/paslznonslide.s"/>
+        <CursorPos X="21" Y="786"/>
+        <TopLine Value="629"/>
+        <UsageCount Value="23"/>
+        <SyntaxHighlighter Value="None"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="../../../../olddrive/downloads/hhm-0.1.1/lzx_compress/lz_nonslide.s"/>
+        <CursorPos X="4" Y="56"/>
+        <TopLine Value="27"/>
+        <UsageCount Value="4"/>
+        <SyntaxHighlighter Value="None"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="../../../../olddrive/downloads/hhm-0.1.1/lzx_compress/lz_nonslide.c"/>
+        <CursorPos X="80" Y="233"/>
+        <TopLine Value="54"/>
+        <EditorIndex Value="8"/>
+        <UsageCount Value="104"/>
+        <Loaded Value="True"/>
+        <SyntaxHighlighter Value="C++"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="../../../../olddrive/downloads/hhm-0.1.1/lzx_compress/lz_nonslide.test"/>
+        <CursorPos X="15" Y="843"/>
+        <TopLine Value="708"/>
+        <UsageCount Value="21"/>
+        <SyntaxHighlighter Value="None"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="../../../../olddrive/downloads/hhm-0.1.1/lzx_compress/lzx_layer.c"/>
+        <CursorPos X="14" Y="432"/>
+        <TopLine Value="414"/>
+        <EditorIndex Value="11"/>
+        <UsageCount Value="82"/>
+        <Loaded Value="True"/>
+        <SyntaxHighlighter Value="C++"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="../../../../olddrive/downloads/hhm-0.1.1/lzx_compress/lzx_compress.h"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="5"/>
+        <EditorIndex Value="10"/>
+        <UsageCount Value="82"/>
+        <Loaded Value="True"/>
+        <SyntaxHighlighter Value="C++"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="../../../../olddrive/downloads/hhm-0.1.1/lzx_compress/lz_nonslide.h"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="12"/>
+        <UsageCount Value="82"/>
+        <Loaded Value="True"/>
+        <SyntaxHighlighter Value="C++"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmspecialfiles.pas"/>
+        <UnitName Value="chmspecialfiles"/>
+        <CursorPos X="45" Y="93"/>
+        <TopLine Value="45"/>
+        <EditorIndex Value="5"/>
+        <UsageCount Value="80"/>
+        <Loaded Value="True"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/fiftimaintree.pas"/>
+        <UnitName Value="fiftimaintree"/>
+        <CursorPos X="7" Y="16"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="35"/>
+        <Loaded Value="True"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmtypes.pas"/>
+        <UnitName Value="chmtypes"/>
+        <CursorPos X="46" Y="232"/>
+        <TopLine Value="11"/>
+        <EditorIndex Value="2"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit21>
+    </Units>
+    <JumpHistory Count="8" HistoryIndex="7">
+      <Position1>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmwriter.pas"/>
+        <Caret Line="823" Column="20" TopLine="813"/>
+      </Position1>
+      <Position2>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmwriter.pas"/>
+        <Caret Line="766" Column="12" TopLine="735"/>
+      </Position2>
+      <Position3>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmwriter.pas"/>
+        <Caret Line="89" Column="104" TopLine="63"/>
+      </Position3>
+      <Position4>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmwriter.pas"/>
+        <Caret Line="794" Column="34" TopLine="782"/>
+      </Position4>
+      <Position5>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmwriter.pas"/>
+        <Caret Line="365" Column="55" TopLine="348"/>
+      </Position5>
+      <Position6>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmwriter.pas"/>
+        <Caret Line="486" Column="53" TopLine="469"/>
+      </Position6>
+      <Position7>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmwriter.pas"/>
+        <Caret Line="498" Column="21" TopLine="481"/>
+      </Position7>
+      <Position8>
+        <Filename Value="../../../lazarus/components/chmhelp/packages/chm/chmwriter.pas"/>
+        <Caret Line="798" Column="32" TopLine="781"/>
+      </Position8>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="5"/>
+    <SearchPaths>
+      <OtherUnitFiles Value="/home/andrew/programming/projects/chmmaker/;/home/andrew/programming/lazarus/components/chmhelp/packages/chm/;/home/andrew/programming/projects/lzxcompress/"/>
+    </SearchPaths>
+    <CodeGeneration>
+      <SmartLinkUnit Value="True"/>
+      <Generate Value="Faster"/>
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       <Optimizations>
         <OptimizationLevel Value="2"/>
       </Optimizations>
     </CodeGeneration>
     <Linking>
       <Debugging>
+<<<<<<< HEAD
+<<<<<<< HEAD
         <UseHeaptrc Value="True"/>
         <UseValgrind Value="True"/>
         <GenGProfCode Value="True"/>
+=======
+        <GenerateDebugInfo Value="True"/>
+>>>>>>> graemeg/fixes_2_2
+=======
+        <GenerateDebugInfo Value="True"/>
+>>>>>>> origin/fixes_2_2
       </Debugging>
     </Linking>
     <Other>

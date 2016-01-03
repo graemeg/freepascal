@@ -120,10 +120,30 @@ var
   NSWorkspace = objcclass external (NSObject)
   private
     _notificationCenter: NSNotificationCenter;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef cpu64}
     deviceStatusCount: cint;
     applicationStatusCount: cint;
 {$endif cpu64}
+=======
+    deviceStatusCount: cint;
+    applicationStatusCount: cint;
+>>>>>>> graemeg/cpstrnew
+=======
+    deviceStatusCount: cint;
+    applicationStatusCount: cint;
+>>>>>>> graemeg/cpstrnew
+=======
+    deviceStatusCount: cint;
+    applicationStatusCount: cint;
+>>>>>>> graemeg/cpstrnew
+=======
+    deviceStatusCount: cint;
+    applicationStatusCount: cint;
+>>>>>>> origin/cpstrnew
     _reservedWorkspace1: id;
     
   public

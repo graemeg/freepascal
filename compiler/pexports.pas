@@ -34,7 +34,15 @@ implementation
        { common }
        cutils,
        { global }
+<<<<<<< HEAD
+<<<<<<< HEAD
        globals,globtype,tokens,verbose,constexp,
+=======
+       globals,globtype,tokens,verbose,
+>>>>>>> graemeg/fixes_2_2
+=======
+       globals,globtype,tokens,verbose,
+>>>>>>> origin/fixes_2_2
        systems,
        ppu,fmodule,
        { symtable }
@@ -135,14 +143,104 @@ implementation
                        DefString:=srsym.realname+'='+InternalProcName;
                      end;
                     if try_to_consume(_INDEX) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                      begin
+<<<<<<< HEAD
                        pt:=comp_expr([ef_accept_equal]);
+=======
+                       pt:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+                     begin
+                       pt:=comp_expr(true,false);
+>>>>>>> graemeg/cpstrnew
+=======
+                     begin
+                       pt:=comp_expr(true,false);
+>>>>>>> origin/cpstrnew
                        if pt.nodetype=ordconstn then
                         if (Tordconstnode(pt).value<int64(low(index))) or
                            (Tordconstnode(pt).value>int64(high(index))) then
                           begin
                             index:=0;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                             message3(type_e_range_check_error_bounds,tostr(Tordconstnode(pt).value),tostr(low(index)),tostr(high(index)))
+=======
+                            message(parser_e_range_check_error)
+>>>>>>> graemeg/cpstrnew
+=======
+                            message(parser_e_range_check_error)
+>>>>>>> graemeg/cpstrnew
+=======
+                            message(parser_e_range_check_error)
+>>>>>>> origin/cpstrnew
+                          end
+                        else
+                          index:=Tordconstnode(pt).value.svalue
+                       else
+                        begin
+                          index:=0;
+                          consume(_INTCONST);
+                        end;
+                       options:=options or eo_index;
+                       pt.free;
+                       if target_info.system in [system_i386_win32,system_i386_wdosx,system_arm_wince,system_i386_wince] then
+                        DefString:=srsym.realname+'='+InternalProcName+' @ '+tostr(index)
+                       else
+                        DefString:=srsym.realname+'='+InternalProcName; {Index ignored!}
+                     end;
+<<<<<<< HEAD
+                    if try_to_consume(_NAME) then
+                     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+                       pt:=comp_expr([ef_accept_equal]);
+                       if pt.nodetype=stringconstn then
+                         hpname:=strpas(tstringconstnode(pt).value_str)
+                       else if is_constcharnode(pt) then
+                         hpname:=chr(tordconstnode(pt).value.svalue and $ff)
+=======
+                       pt:=comp_expr(true,false);
+                       if pt.nodetype=stringconstn then
+                         hpname:=strpas(tstringconstnode(pt).value_str)
+>>>>>>> graemeg/cpstrnew
+=======
+                       pt:=comp_expr(true,false);
+                       if pt.nodetype=stringconstn then
+                         hpname:=strpas(tstringconstnode(pt).value_str)
+>>>>>>> graemeg/cpstrnew
+=======
+                       pt:=comp_expr(true,false);
+                       if pt.nodetype=stringconstn then
+                         hpname:=strpas(tstringconstnode(pt).value_str)
+>>>>>>> origin/cpstrnew
+                       else
+                         consume(_CSTRING);
+                       options:=options or eo_name;
+                       pt.free;
+                       DefString:=hpname+'='+InternalProcName;
+                     end;
+                    if try_to_consume(_RESIDENT) then
+<<<<<<< HEAD
+<<<<<<< HEAD
+                     begin
+                       options:=options or eo_resident;
+                       DefString:=srsym.realname+'='+InternalProcName;{Resident ignored!}
+                     end;
+=======
+                     begin
+                       pt:=comp_expr(true,false);
+                       if pt.nodetype=ordconstn then
+                        if (Tordconstnode(pt).value<int64(low(index))) or
+                           (Tordconstnode(pt).value>int64(high(index))) then
+                          begin
+                            index:=0;
+                            message(parser_e_range_check_error)
                           end
                         else
                           index:=Tordconstnode(pt).value.svalue
@@ -160,11 +258,9 @@ implementation
                      end;
                     if try_to_consume(_NAME) then
                      begin
-                       pt:=comp_expr([ef_accept_equal]);
+                       pt:=comp_expr(true,false);
                        if pt.nodetype=stringconstn then
                          hpname:=strpas(tstringconstnode(pt).value_str)
-                       else if is_constcharnode(pt) then
-                         hpname:=chr(tordconstnode(pt).value.svalue and $ff)
                        else
                          consume(_CSTRING);
                        options:=options or eo_name;
@@ -176,6 +272,19 @@ implementation
                        options:=options or eo_resident;
                        DefString:=srsym.realname+'='+InternalProcName;{Resident ignored!}
                      end;
+>>>>>>> graemeg/cpstrnew
+=======
+                     begin
+                       options:=options or eo_resident;
+                       DefString:=srsym.realname+'='+InternalProcName;{Resident ignored!}
+                     end;
+>>>>>>> graemeg/cpstrnew
+=======
+                     begin
+                       options:=options or eo_resident;
+                       DefString:=srsym.realname+'='+InternalProcName;{Resident ignored!}
+                     end;
+>>>>>>> origin/cpstrnew
                     if (DefString<>'') and UseDeffileForExports then
                      DefFile.AddExport(DefString);
                   end;
@@ -239,6 +348,97 @@ implementation
                       end;
                     end;
                 end
+=======
+                   if length(InternalProcName)<2 then
+                    Message(parser_e_procname_to_short_for_export);
+                   DefString:=srsym.realname+'='+InternalProcName;
+                 end;
+                if try_to_consume(_INDEX) then
+                 begin
+                   pt:=comp_expr(true);
+                   if pt.nodetype=ordconstn then
+                     index:=tordconstnode(pt).value
+                   else
+                    begin
+                      index:=0;
+                      consume(_INTCONST);
+                    end;
+                   options:=options or eo_index;
+                   pt.free;
+                   if target_info.system in [system_i386_win32,system_i386_wdosx,system_arm_wince,system_i386_wince] then
+                    DefString:=srsym.realname+'='+InternalProcName+' @ '+tostr(index)
+                   else
+                    DefString:=srsym.realname+'='+InternalProcName; {Index ignored!}
+                 end;
+                if try_to_consume(_NAME) then
+                 begin
+                   pt:=comp_expr(true);
+                   if pt.nodetype=stringconstn then
+                    hpname:=strpas(tstringconstnode(pt).value_str)
+                   else
+                    begin
+                      consume(_CSTRING);
+                    end;
+                   options:=options or eo_name;
+                   pt.free;
+                   DefString:=hpname+'='+InternalProcName;
+                 end;
+                if try_to_consume(_RESIDENT) then
+                 begin
+                   options:=options or eo_resident;
+                   DefString:=srsym.realname+'='+InternalProcName;{Resident ignored!}
+                 end;
+                if (DefString<>'') and UseDeffileForExports then
+                 DefFile.AddExport(DefString);
+
+                if srsym.typ=procsym then
+                  begin
+                    { if no specific name or index was given, then if }
+                    { the procedure has aliases defined export those, }
+                    { otherwise export the name as it appears in the  }
+                    { export section (it doesn't make sense to export }
+                    { the generic mangled name, because the name of   }
+                    { the parent unit is used in that)                }
+                    if ((options and (eo_name or eo_index))=0) and
+                       (tprocdef(tprocsym(srsym).procdeflist[0]).aliasnames.count>1) then
+                      exportallprocsymnames(tprocsym(srsym),options)
+                    else
+                      begin
+                        { there's a name or an index -> export only one name   }
+                        { correct? Or can you export multiple names with the   }
+                        { same index? And/or should we also export the aliases }
+                        { if a name is specified? (JM)                         }
+
+                        if ((options and eo_name)=0) then
+                          { Export names are not mangled on Windows and OS/2 }
+                          if (target_info.system in (system_all_windows+[system_i386_emx, system_i386_os2])) then
+                            hpname:=orgs
+                          { Use set mangled name in case of cdecl/cppdecl/mwpascal }
+                          { and no name specified                                  }
+                          else if (tprocdef(tprocsym(srsym).procdeflist[0]).proccalloption in [pocall_cdecl,pocall_mwpascal]) then
+                            hpname:=target_info.cprefix+tprocsym(srsym).realname
+                          else if (tprocdef(tprocsym(srsym).procdeflist[0]).proccalloption in [pocall_cppdecl]) then
+                            hpname:=target_info.cprefix+tprocdef(tprocsym(srsym).procdeflist[0]).cplusplusmangledname
+                          else
+                            hpname:=orgs;
+
+                        exportprocsym(srsym,hpname,index,options);
+                      end
+                  end
+                else
+                  begin
+                    if ((options and eo_name)=0) then
+                      { for "cvar" }
+                      if (vo_has_mangledname in tstaticvarsym(srsym).varoptions) then
+                        hpname:=srsym.mangledname
+                      else
+                        hpname:=orgs;
+                    exportvarsym(srsym,hpname,index,options);
+                  end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
              end
            else
              consume(_ID);

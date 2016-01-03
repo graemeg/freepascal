@@ -118,6 +118,25 @@ asm
         nop
         call    SetErrno
         nop
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        sethi   %hi(Errno+4),%o0
+        ba      .LNoThread
+        or      %o0,%lo(Errno+4),%o0
+.LThread:
+        sethi   %hi(Errno),%o0
+        or      %o0,%lo(Errno),%o0
+        call    %o3
+        ld      [%o0],%o0
+.LNoThread:
+        st      %l0,[%o0]
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         mov     -1,%o0
 .LSyscOK:
         mov     %o0,%i0

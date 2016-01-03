@@ -37,8 +37,14 @@ const
   parserName = parser;
   os = 'Unknown OS';
   runtime = 'FPC RTL';
+<<<<<<< HEAD
+<<<<<<< HEAD
   { Defines which tests to skip (sets for editions 1-4 and edition 5 are mutually exclusive) }
   FifthEditionCompliant = True;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
 type
@@ -79,7 +85,13 @@ type
     destructor Destroy; override;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 { obsolete, now TDOMNode.BaseURI does the job }
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 function GetBaseURI(Element: TDOMNode; const DocumentURI: string): string;
 var
   Ent: TDOMNode;
@@ -171,7 +183,15 @@ begin
   try
     for I := 0 to tables.Count-1 do
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
       el := TDOMElement(tables[I]);
+=======
+      el := TDOMElement(tables.Item[I]);
+>>>>>>> graemeg/fixes_2_2
+=======
+      el := TDOMElement(tables.Item[I]);
+>>>>>>> origin/fixes_2_2
       id := el['id'];
       if id = 'valid' then
         table_valid := el
@@ -211,7 +231,15 @@ begin
   Index := 0;
 
   repeat
+<<<<<<< HEAD
+<<<<<<< HEAD
     Child := Children[Index];
+=======
+    Child := Children.Item[Index];
+>>>>>>> graemeg/fixes_2_2
+=======
+    Child := Children.Item[Index];
+>>>>>>> origin/fixes_2_2
     if Child = nil then Break;
     Inc(index);
 
@@ -309,15 +337,36 @@ var
   I: Integer;
 begin
   FRootURI := FilenameToURI(Tests);
+<<<<<<< HEAD
+<<<<<<< HEAD
   writeln('Loading test suite from ', Tests);
   ReadXMLFile(FDoc, Tests);
   FSuiteTitle := FDoc.DocumentElement['PROFILE'];
   Cases := FDoc.DocumentElement.GetElementsByTagName('TEST');
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  ReadXMLFile(FDoc, Tests);
+  FSuiteTitle := FDoc.DocumentElement['PROFILE'];
+  Cases := FDoc.DocumentElement.GetElementsByTagName('TEST');
+  writeln('Using test suite: ', Tests);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   writeln;
   writeln('Testing, validation = ', FValidating);
   try
     for I := 0 to Cases.Count-1 do
+<<<<<<< HEAD
+<<<<<<< HEAD
       RunTest(Cases[I] as TDOMElement);
+=======
+      RunTest(Cases.Item[I] as TDOMElement);
+>>>>>>> graemeg/fixes_2_2
+=======
+      RunTest(Cases.Item[I] as TDOMElement);
+>>>>>>> origin/fixes_2_2
     I := Cases.Count;
   finally
     Cases.Free;
@@ -345,33 +394,75 @@ end;
 
 procedure TTestSuite.RunTest(Element: TDOMElement);
 var
+<<<<<<< HEAD
+<<<<<<< HEAD
   s: string;
+=======
+  s: UTF8string;
+>>>>>>> graemeg/fixes_2_2
+=======
+  s: UTF8string;
+>>>>>>> origin/fixes_2_2
   TestType: DOMString;
   TempDoc, RefDoc: TXMLDocument;
   table: TDOMNode;
   Positive: Boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
   outURI: string;
   FailMsg: string;
   ExceptionClass: TClass;
+=======
+  outURI: UTF8string;
+  FailMsg: string;
+>>>>>>> graemeg/fixes_2_2
+=======
+  outURI: UTF8string;
+  FailMsg: string;
+>>>>>>> origin/fixes_2_2
   docNode, refNode: TDOMNode;
   docMap, refMap: TDOMNamedNodeMap;
   docN, refN: TDOMNotation;
   I: Integer;
+<<<<<<< HEAD
+<<<<<<< HEAD
   root: string;
   xmlEdition: DOMString;
+=======
+  root: UTF8String;
+>>>>>>> graemeg/fixes_2_2
+=======
+  root: UTF8String;
+>>>>>>> origin/fixes_2_2
 begin
   FErrLine := -1;
   FErrCol := -1;
   FTestID := Element['ID'];
   TestType := Element['TYPE'];
+<<<<<<< HEAD
+<<<<<<< HEAD
   xmlEdition := Element['EDITION'];
   if (xmlEdition <> '') and ((Pos(WideChar('5'), Element['EDITION']) = 0) = FifthEditionCompliant) then
+=======
+  if Pos(WideChar('5'), Element['EDITION']) > 0 then
+>>>>>>> graemeg/fixes_2_2
+=======
+  if Pos(WideChar('5'), Element['EDITION']) > 0 then
+>>>>>>> origin/fixes_2_2
   begin
     Inc(FSkipped);
     Exit;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   root := Element.BaseURI;
+=======
+  root := GetBaseURI(Element, FRootUri);
+>>>>>>> graemeg/fixes_2_2
+=======
+  root := GetBaseURI(Element, FRootUri);
+>>>>>>> origin/fixes_2_2
   ResolveRelativeURI(root, UTF8Encode(Element['URI']), s);
 
   table := nil;
@@ -413,7 +504,13 @@ begin
       on E: Exception do
         if E.ClassType <> EAbort then
         begin
+<<<<<<< HEAD
+<<<<<<< HEAD
           ExceptionClass := E.ClassType;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           FailMsg := E.Message;
           FValError := '';
         end;
@@ -442,7 +539,15 @@ begin
         if FailMsg <> '' then  // Fatal error
         begin
           { outside not-wf category it is a test failure }
+<<<<<<< HEAD
+<<<<<<< HEAD
           if (table <> table_not_wf) or (ExceptionClass <> EXMLReadError) then
+=======
+          if table <> table_not_wf then
+>>>>>>> graemeg/fixes_2_2
+=======
+          if table <> table_not_wf then
+>>>>>>> origin/fixes_2_2
           begin
             Inc(FFailCount);
             Diagnose(Element, table, dcFail, FailMsg);
@@ -487,6 +592,14 @@ begin
       end;
 
     if outURI = '' then Exit;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    TempDoc.DocumentElement.Normalize;
+>>>>>>> graemeg/fixes_2_2
+=======
+    TempDoc.DocumentElement.Normalize;
+>>>>>>> origin/fixes_2_2
     try
       // reference data must be parsed in non-validating mode because it contains DTDs
       // only when Notations need to be reported

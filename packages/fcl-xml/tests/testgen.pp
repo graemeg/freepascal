@@ -26,7 +26,13 @@ var
   forced: Boolean = False;
   TestCount: Integer = 0;
   FailCount: Integer = 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
   IgnoreCount: Integer = 0;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 function PascalType(const s: WideString): string;
 begin
@@ -40,8 +46,16 @@ begin
     result := '_collection'
   else if s = 'List' then
     result := '_list'
+<<<<<<< HEAD
+<<<<<<< HEAD
   else if (Pos(WideString('DOM'), s) = 1) or (Pos(WideString('XPath'), s) = 1) or
           (Pos(WideString('HTML'), s) = 1) then
+=======
+  else if (Pos(WideString('DOM'), s) = 1) or (Pos(WideString('XPath'), s) = 1) then
+>>>>>>> graemeg/fixes_2_2
+=======
+  else if (Pos(WideString('DOM'), s) = 1) or (Pos(WideString('XPath'), s) = 1) then
+>>>>>>> origin/fixes_2_2
     result := 'T' + s
   else
     result := 'TDOM'+s;
@@ -71,7 +85,15 @@ begin
   if n.HasAttribute(attName) then
     s := s + ReplaceQuotes(n[attName])
   else
+<<<<<<< HEAD
+<<<<<<< HEAD
     s := s + 'nil';
+=======
+    s := s + '''''';
+>>>>>>> graemeg/fixes_2_2
+=======
+    s := s + '''''';
+>>>>>>> origin/fixes_2_2
   s := s + ', ';
 end;
 
@@ -197,7 +219,15 @@ var
   child, subchild: TDOMNode;
   n: DOMString;
   SuccessVarFlag: Boolean;
+<<<<<<< HEAD
+<<<<<<< HEAD
   FailFlag, IgnoreFlag: Boolean;
+=======
+  FailFlag: Boolean;
+>>>>>>> graemeg/fixes_2_2
+=======
+  FailFlag: Boolean;
+>>>>>>> origin/fixes_2_2
   Inits, VarTypes: TStringList;
 
 function TypeOfVar(const varname: string): string;
@@ -234,6 +264,8 @@ begin
   end;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function fixname(e: TDOMElement): string;
 begin
   if e.HasAttribute('_fixup_') then
@@ -268,11 +300,31 @@ begin
 end;
 
 function func_call(e: TDOMElement; args: TDOMNodeList; const rsltType: string=''; IsDefProp: Boolean=False): string;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function prop_call(e: TDOMElement): string;
+begin
+  if e.HasAttribute('var') then
+    Result := e['var'] + ' := ' + getobj(e) + '.' + e.TagName + ';'
+  else
+    Result := getobj(e) + '.' + e.TagName + ' := ' + ReplaceQuotes(e['value']) + ';';
+end;
+
+function func_call(e: TDOMElement; const args: array of DOMString; const rsltType: string=''): string;
+var
+  I: Integer;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 begin
   if (rsltType <> '') and (TypeOfVar(e['var']) <> rsltType) then
     Result := rsltType + '(' + e['var'] + ')'
   else
     Result := e['var'];
+<<<<<<< HEAD
+<<<<<<< HEAD
   if IsDefProp then
     Result := Result + ' := ' + getobj(e) + '[' + argstring(e, args) + ']'
   else
@@ -289,6 +341,12 @@ var
   I: Integer;
 begin
   Result := e['var'] + ' := ' + getobj(e) + '.' + e.TagName;
+=======
+  Result := Result + ' := ' + getobj(e) + '.' + e.TagName;
+>>>>>>> graemeg/fixes_2_2
+=======
+  Result := Result + ' := ' + getobj(e) + '.' + e.TagName;
+>>>>>>> origin/fixes_2_2
   if Length(args) > 0 then
   begin
     Result := Result + '(';
@@ -304,10 +362,34 @@ begin
 end;
 
 function method_call(e: TDOMElement; args: TDOMNodeList): string;
+<<<<<<< HEAD
+<<<<<<< HEAD
 begin
   Result := getobj(e) + '.' + fixname(e);
   if args.Length > 0 then
     Result := Result + '(' + argstring(e, args) + ')';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+var
+  I: Integer;
+begin
+  Result := getobj(e) + '.' + e.TagName;
+  if args.Length > 0 then
+  begin
+    Result := Result + '(';
+    for I := 0 to args.Length-1 do
+    begin
+      Result := Result + ReplaceQuotes(e[args[I].TextContent]);
+      if I <> args.Length-1 then
+        Result := Result + ', ';
+    end;
+    Result := Result + ')';
+  end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   Result := Result + ';';
 end;
 
@@ -330,6 +412,16 @@ var
   cond: string;
   apinode: TDOMElement;
   arglist: TDOMNodeList;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  args: array of DOMString;
+  I: Integer;
+>>>>>>> graemeg/fixes_2_2
+=======
+  args: array of DOMString;
+  I: Integer;
+>>>>>>> origin/fixes_2_2
 begin
   FixKeywords(node, 'var');
   FixKeywords(node, 'obj');
@@ -343,6 +435,8 @@ begin
   if assigned(apinode) then
   begin
     // handle most of DOM API in consistent way
+<<<<<<< HEAD
+<<<<<<< HEAD
     
     if apinode.HasAttribute('rename') then   // handles reserved words, e.g 'type' -> 'htmlType'
       node['_fixup_'] := apinode['rename'];  // use this trick because DOM node cannot be renamed (yet)
@@ -352,10 +446,31 @@ begin
     if apinode.HasAttribute('objtype') then
       CastTo(node, apinode['objtype']);
       
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    arglist := apinode.GetElementsByTagName('arg');
+    SetLength(args, arglist.Length);
+    for I := 0 to arglist.Length-1 do
+      args[I] := arglist[I].TextContent;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     if apinode['type'] = 'prop' then
       rslt.Add(indent + prop_call(node))
     else if apinode['type'] = 'method' then
     begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+      if apinode.HasAttribute('objtype') then
+        CastTo(node, apinode['objtype']);
+>>>>>>> graemeg/fixes_2_2
+=======
+      if apinode.HasAttribute('objtype') then
+        CastTo(node, apinode['objtype']);
+>>>>>>> origin/fixes_2_2
       rslt.Add(indent + method_call(node, arglist));
     end
     else
@@ -364,7 +479,19 @@ begin
         cond := PascalType(apinode['result'])
       else
         cond := '';
+<<<<<<< HEAD
+<<<<<<< HEAD
       rslt.Add(indent + func_call(node, arglist, cond, apinode['type']='defprop'));
+=======
+      if apinode.HasAttribute('objtype') then
+        CastTo(node, apinode['objtype']);
+      rslt.Add(indent + func_call(node, args, cond));
+>>>>>>> graemeg/fixes_2_2
+=======
+      if apinode.HasAttribute('objtype') then
+        CastTo(node, apinode['objtype']);
+      rslt.Add(indent + func_call(node, args, cond));
+>>>>>>> origin/fixes_2_2
       if apinode['gc'] = 'yes' then
         rslt.Add(indent + 'GC(' + node['var'] + ');');
     end;
@@ -372,7 +499,21 @@ begin
   end;
 
   // now, various hacks and workarounds
+<<<<<<< HEAD
+<<<<<<< HEAD
   if s = 'length' then
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  // TODO: modify DOM to expose item() as function
+  if s = 'item' then
+    rslt.Add(indent + 'TDOMNode('+node['var'] + ') := ' + node['obj'] + '['+node['index']+'];')
+  else if s = 'length' then
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   begin
     if node['interface'] = 'DOMString' then
       rslt.Add(indent + node['var'] + ' := system.length(' + node['obj'] + ');')
@@ -427,10 +568,16 @@ begin
       rslt.Add(indent + 'AssertEqualsCollection(''' + node['id'] + ''', ' + ReplaceQuotes(node['expected']) + ', ' + node['actual'] + ');')
     else if cond = '_list' then
       rslt.Add(indent + 'AssertEqualsList(''' + node['id'] + ''', ' + ReplaceQuotes(node['expected']) + ', ' + node['actual'] + ');')
+<<<<<<< HEAD
+<<<<<<< HEAD
     else if cond = 'DOMString' then
       rslt.Add(indent + 'AssertEqualsW(''' + node['id'] + ''', ' + ReplaceQuotes(node['expected']) + ', ' + node['actual'] + ');')
     else if node['ignoreCase'] = 'true' then
       rslt.Add(indent + 'AssertEqualsNoCase(''' + node['id'] + ''', ' + ReplaceQuotes(node['expected']) + ', ' + node['actual'] + ');')
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     else
       rslt.Add(indent + s + '(''' + node['id'] + ''', ' + ReplaceQuotes(node['expected']) + ', ' + node['actual'] + ');');
   end
@@ -475,11 +622,19 @@ begin
   else if n = 'load' then
     rslt.Add(indent + 'Load('+node['var']+', '''+ node['href']+''');')
   else if s = 'implementationAttribute' then
+<<<<<<< HEAD
+<<<<<<< HEAD
   begin
     if (node['name']='signed') and (node['value']='true') then
       IgnoreFlag := True;
     rslt.Add(indent + s + '[''' + node['name'] + '''] := ' + node['value'] + ';')
   end
+=======
+    rslt.Add(indent + s + '[''' + node['name'] + '''] := ' + node['value'] + ';')
+>>>>>>> graemeg/fixes_2_2
+=======
+    rslt.Add(indent + s + '[''' + node['name'] + '''] := ' + node['value'] + ';')
+>>>>>>> origin/fixes_2_2
   else if s = 'createXPathEvaluator' then
     rslt.Add(indent + node['var'] + ' := CreateXPathEvaluator(' + node['document'] + ');')
   else if s = 'comment' then
@@ -631,7 +786,15 @@ begin
       // having loop var name globally unique isn't a must.
       cond := 'loop'+IntToStr(cntr);
       Inc(cntr);
+<<<<<<< HEAD
+<<<<<<< HEAD
       rslt.Insert(rslt.IndexOf('var')+1, '  ' + cond + ': Integer;');
+=======
+      rslt.Insert(2, '  ' + cond + ': Integer;');
+>>>>>>> graemeg/fixes_2_2
+=======
+      rslt.Insert(2, '  ' + cond + ': Integer;');
+>>>>>>> origin/fixes_2_2
       IsColl := IsCollection(element);
       if IsColl then
         rslt.Add(indent+'for '+cond+' := 0 to ' + 'High(' + element['collection'] + ') do')
@@ -754,7 +917,13 @@ end;
 begin
   SuccessVarFlag := False;
   FailFlag := False;
+<<<<<<< HEAD
+<<<<<<< HEAD
   IgnoreFlag := False;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   VarTypes := TStringList.Create;
   Inits := TStringList.Create;
   ConvertVars;
@@ -772,11 +941,17 @@ begin
       rslt.Clear;
     Inc(FailCount);
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   if IgnoreFlag then
   begin
     rslt.Clear;
     Inc(IgnoreCount);
   end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end;
 
 // Intercepting validation errors while loading API
@@ -791,6 +966,8 @@ begin
   raise E;
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function IsBlacklisted(const s: string; const list: array of string): Boolean;
 var
   I: Integer;
@@ -804,6 +981,10 @@ begin
   Result := False;
 end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 const
   UnitHeader =
 
@@ -811,18 +992,41 @@ const
 '  This Pascal source file was generated by testgen program'#10 +
 '  and is a derived work from the source document.'#10 +
 '  The source document contained the following notice:'#10+
+<<<<<<< HEAD
+<<<<<<< HEAD
 '%0:s}'#10+
 'unit %1:s;'#10 +
+=======
+'%s}'#10+
+'unit %s;'#10 +
+>>>>>>> graemeg/fixes_2_2
+=======
+'%s}'#10+
+'unit %s;'#10 +
+>>>>>>> origin/fixes_2_2
 '{$mode objfpc}{$h+}'#10 +
 '{$notes off}'#10 +
 '{$codepage utf8}'#10 +
 'interface'#10 +
 #10 +
 'uses'#10 +
+<<<<<<< HEAD
+<<<<<<< HEAD
 '  SysUtils, Classes, DOM, xmlread, fpcunit, contnrs, domunit, testregistry%3:s;'#10 +
 #10 +
 'type'#10 +
 '  %2:s = class(TDOMTestBase)'#10 +
+=======
+=======
+>>>>>>> origin/fixes_2_2
+'  SysUtils, Classes, DOM, xmlread, fpcunit, contnrs, domunit, testregistry;'#10 +
+#10 +
+'type'#10 +
+'  %s = class(TDOMTestBase)'#10 +
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 '  protected'#10 +
 '    function GetTestFilesURI: string; override;'#10 +
 '  published'#10;
@@ -837,9 +1041,19 @@ var
   sl, all, impl: TStringList;
   Pars: TDOMParser;
   eh: TErrHandler;
+<<<<<<< HEAD
+<<<<<<< HEAD
   class_name, unit_name, notice, casename, add_units: string;
   comment: TDOMNode;
   blacklist: array of string;
+=======
+  class_name, unit_name, notice: string;
+  comment: TDOMNode;
+>>>>>>> graemeg/fixes_2_2
+=======
+  class_name, unit_name, notice: string;
+  comment: TDOMNode;
+>>>>>>> origin/fixes_2_2
 begin
   Pars := TDOMParser.Create;
   eh := TErrHandler.Create;
@@ -848,6 +1062,8 @@ begin
   // API database must be loaded in validating mode
   Pars.ParseURI('file:api.xml', api);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   // Prepare the array of blacklisted test names
   testlist := api.GetElementsByTagName('blacklist');
   try
@@ -858,6 +1074,10 @@ begin
     testlist.Free;
   end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   sl := TStringList.Create;
   all := TStringList.Create;
   impl := TStringList.Create;
@@ -879,6 +1099,8 @@ begin
     comment := comment.nextSibling;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   // Check if we need the additional units to use
   add_units := '';
   testlist := api.GetElementsByTagName('uses');
@@ -897,6 +1119,17 @@ begin
   class_name := 'TTest' + UpperCase(unit_name[1]) + copy(unit_name, 2, MaxInt);
   // provide unit header
   all.Text := Format(UnitHeader, [notice, unit_name, class_name, add_units]);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  unit_name := ChangeFileExt(ExtractFileName(UnitFileName), '');
+  class_name := 'TTest' + UpperCase(unit_name[1]) + copy(unit_name, 2, MaxInt);
+  // provide unit header
+  all.Text := Format(UnitHeader, [notice, unit_name, class_name]);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   // emit the 'GetPathToModuleFiles' function body
   impl.Add('implementation');
   impl.Add('');
@@ -913,13 +1146,25 @@ begin
   for I := 0 to testcount-1 do
   begin
     href := TDOMElement(testlist[I])['href'];
+<<<<<<< HEAD
+<<<<<<< HEAD
     ResolveRelativeURI(BaseURI, href, testuri);
 
+=======
+    // simple concatenation should suffice, but be paranoid
+    ResolveRelativeURI(BaseURI, href, testuri);
+>>>>>>> graemeg/fixes_2_2
+=======
+    // simple concatenation should suffice, but be paranoid
+    ResolveRelativeURI(BaseURI, href, testuri);
+>>>>>>> origin/fixes_2_2
     Pars.ParseURI(testuri, testdoc);
     try
       sl.Clear;
       root := testdoc.DocumentElement;
       // fix clash with local vars having the same name
+<<<<<<< HEAD
+<<<<<<< HEAD
       casename := root['name'];
       if casename = 'attrname' then
         casename := 'attr_name';
@@ -933,11 +1178,33 @@ begin
         ConvertTest(root, sl);
       except
         Writeln('An exception occured while converting ', casename);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      if root['name'] = 'attrname' then
+        root['name'] := 'attr_name';
+      sl.Add('procedure ' + class_name + '.' + root['name'] + ';');
+      try
+      ConvertTest(root, sl);
+      except
+        Writeln('An exception occured while converting '+root['name']);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         raise;
       end;
       if sl.Count > 0 then
       begin
+<<<<<<< HEAD
+<<<<<<< HEAD
         all.add('    procedure '+casename+';');
+=======
+        all.add('    procedure '+root['name']+';');
+>>>>>>> graemeg/fixes_2_2
+=======
+        all.add('    procedure '+root['name']+';');
+>>>>>>> origin/fixes_2_2
         impl.AddStrings(sl)
       end;
     finally
@@ -971,13 +1238,29 @@ var
   I: Integer;
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   writeln('testgen - w3.org DOM test suite to Object Pascal converter');
+=======
+  writeln('testgen - w3.org DOM test suite to Pascal converter');
+>>>>>>> graemeg/fixes_2_2
+=======
+  writeln('testgen - w3.org DOM test suite to Pascal converter');
+>>>>>>> origin/fixes_2_2
   writeln('Copyright (c) 2008 by Sergei Gorelkin');
   
   if ParamCount < 2 then
   begin
     writeln;
+<<<<<<< HEAD
+<<<<<<< HEAD
     writeln('Usage: ', ExtractFileName(ParamStr(0)), ' <suite dir> <outputunit.pp> [-f]');
+=======
+    writeln('Usage: ', ParamStr(0), ' <suite dir> <outputunit.pp> [-f]');
+>>>>>>> graemeg/fixes_2_2
+=======
+    writeln('Usage: ', ParamStr(0), ' <suite dir> <outputunit.pp> [-f]');
+>>>>>>> origin/fixes_2_2
     writeln('  -f: force conversion of tests which contain unknown tags');
     Exit;
   end;
@@ -1000,7 +1283,15 @@ begin
 
   ConvertSuite(FilenameToURI(SuiteName), OutputUnit);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   writeln(testcount - FailCount - IgnoreCount, ' tests converted successfully');
+=======
+  writeln(testcount - FailCount, ' tests converted successfully');
+>>>>>>> graemeg/fixes_2_2
+=======
+  writeln(testcount - FailCount, ' tests converted successfully');
+>>>>>>> origin/fixes_2_2
   if FailCount > 0 then
   begin
     writeln(FailCount, ' tests contain tags that are not supported yet');
@@ -1012,10 +1303,16 @@ begin
     else
       writeln('These tests were skipped');
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
   if IgnoreCount > 0 then
   begin
     writeln(IgnoreCount, ' tests were skipped because they are not');
     writeln('   applicable to our DOM implementation.');
   end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 end.
 

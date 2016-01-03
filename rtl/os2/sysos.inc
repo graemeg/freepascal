@@ -322,7 +322,15 @@ type
     Nested_RepRec: PExceptionReportRecord;
     Address: pointer;
     ParamCount: cardinal;
+<<<<<<< HEAD
+<<<<<<< HEAD
     Parameters: array [0..Pred (MaxExceptionParameters)] of cardinal;
+=======
+    Parameters: array [0..MaxExceptionParameters] of cardinal;
+>>>>>>> graemeg/fixes_2_2
+=======
+    Parameters: array [0..MaxExceptionParameters] of cardinal;
+>>>>>>> origin/fixes_2_2
   end;
 
   TContextRecord = packed record
@@ -346,6 +354,11 @@ type
     Reg_ESP,
     Reg_SS: cardinal;
   end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
 
 
 function DosSetExceptionHandler (var RegRec: TExceptionRegistrationRecord):
@@ -369,10 +382,45 @@ external 'DOSCALLS' index 378;
  SignalNum  = Signal number to acknowlegde.}
 function DosAcknowledgeSignalException (SignalNum: cardinal): cardinal; cdecl;
 external 'DOSCALLS' index 418;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
 
 function DosError (Error: cardinal): cardinal; cdecl;
 external 'DOSCALLS' index 212;
 
+<<<<<<< HEAD
+function DosSetExceptionHandler (var RegRec: TExceptionRegistrationRecord):
+                                                               cardinal; cdecl;
+external 'DOSCALLS' index 354;
+
+function DosUnsetExceptionHandler (var RegRec: TExceptionRegistrationRecord):
+                                                               cardinal; cdecl;
+external 'DOSCALLS' index 355;
+
+{Full screen applications can get Ctrl-C and Ctrl-Break focus. For all
+ processes sharing one screen, only one can have Ctrl-C focus.
+ Enable     = 0 = Release focus, 1 = Get focus.
+ Times      = Number of times focus has been get minus number of times it
+              has been released.}
+function DosSetSignalExceptionFocus (Enable: cardinal;
+                                         var Times: cardinal): cardinal; cdecl;
+external 'DOSCALLS' index 378;
+
+{Tell we want further signal exceptions.
+ SignalNum  = Signal number to acknowlegde.}
+function DosAcknowledgeSignalException (SignalNum: cardinal): cardinal; cdecl;
+external 'DOSCALLS' index 418;
+=======
+>>>>>>> origin/fixes_2_2
+
+function DosError (Error: cardinal): cardinal; cdecl;
+external 'DOSCALLS' index 212;
+
+<<<<<<< HEAD
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 type
   TWinMessageBox = function (Parent, Owner: cardinal;
@@ -419,6 +467,8 @@ const
 
 function DosQueryMem (P: pointer; var Size, Flag: cardinal): cardinal; cdecl;
 external 'DOSCALLS' index 306;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 function DosQuerySysInfo (First, Last: cardinal; var Buf; BufSize: cardinal):
                                                                cardinal; cdecl;
@@ -530,3 +580,7 @@ asm
   dd $0FFFF0000
 end;
 {$ASMMODE DEFAULT}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

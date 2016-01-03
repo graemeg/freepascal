@@ -125,7 +125,7 @@ unit winmouse;
          Windows.ShowCursor(false);
       end;
 
-    function msghandler(Window: HWnd; AMessage:UInt; WParam : WParam; LParam: LParam): LResult; stdcall;
+    function msghandler(Window: HWnd; AMessage:UInt; WParam : WParam; LParam: LParam): Longint; stdcall;
 
       begin
          { we catch the double click messages here too, }

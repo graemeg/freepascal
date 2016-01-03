@@ -6,19 +6,7 @@
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version
-    with the following modification:
-
-    As a special exception, the copyright holders of this library give you
-    permission to link this library with independent modules to produce an
-    executable, regardless of the license terms of these independent modules,and
-    to copy and distribute the resulting executable under terms of your choice,
-    provided that you also meet, for each linked independent module, the terms
-    and conditions of the license of that module. An independent module is a
-    module which is not derived from or based on this library. If you modify
-    this library, you may extend this exception to your version of the library,
-    but you are not obligated to do so. If you do not wish to do so, delete this
-    exception statement from your version.
+    version 2.1 of the License, or (at your option) any later version.
 
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,568 +22,596 @@
    Generic format conversion routines for the HERMES library
    Copyright (c) 1998 Christian Nentwich (c.nentwich@cs.ucl.ac.uk)
    This source code is licensed under the GNU LGPL
-
+  
    Please refer to the file COPYING.LIB contained in the distribution for
    licensing conditions
 }
 
-procedure ConvertP_Generic32_A_Generic32_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  count: DWord;
-  source, dest: PUint8;
-begin
-  source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
-    count := iface^.s_width;
-    repeat
-      s_pixel := PUint32(source)^;
+Procedure ConvertP_Generic32_A_Generic32_A(iface : PHermesConverterInterface); CDecl;
 
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+Var
+  s_pixel, r, g, b, a : int32;
+  count : DWord;
+  source, dest : Pchar8;
+
+Begin
+  source := iface^.s_pixels; dest := iface^.d_pixels;
+  Repeat
+    count := iface^.s_width;
+    Repeat
+      s_pixel := Pint32(source)^;
+
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
 
-      PUint32(dest)^ := r or g or b or a;
+      Pint32(dest)^ := r Or g Or b Or a;
 
       Inc(source, 4);
       Inc(dest, 4);
       Dec(count);
-    until count = 0;
+    Until count = 0;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
-procedure ConvertP_Generic32_A_Generic24_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  d_ptr: PUint8;
-  count: DWord;
-  source, dest: PUint8;
-begin
-  d_ptr := PUint8(@s_pixel) + (R_32 - R_24);
+Procedure ConvertP_Generic32_A_Generic24_A(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  d_ptr : Pchar8;
+  count : DWord;
+  source, dest : Pchar8;
+
+Begin
+  d_ptr := @s_pixel;
   source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
+  Repeat
     count := iface^.s_width;
-    repeat
-      s_pixel := PUint32(source)^;
+    Repeat
+      s_pixel := Pint32(source)^;
 
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
 
-      s_pixel := r or g or b or a;
+      s_pixel := r Or g Or b Or a;
 
-      (dest+0)^ := (d_ptr+0)^;
-      (dest+1)^ := (d_ptr+1)^;
-      (dest+2)^ := (d_ptr+2)^;
+      (dest+R_24)^ := (d_ptr+R_32)^;
+      (dest+G_24)^ := (d_ptr+G_32)^;
+      (dest+B_24)^ := (d_ptr+B_32)^;
 
       Inc(source, 4);
       Inc(dest, 3);
       Dec(count);
-    until count = 0;
+    Until count = 0;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
-procedure ConvertP_Generic32_A_Generic16_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  count: DWord;
-  source, dest: PUint8;
-begin
+Procedure ConvertP_Generic32_A_Generic16_A(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  count : DWord;
+  source, dest : Pchar8;
+
+Begin
   source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
-    count := iface^.s_width shr 1;
+  Repeat
+    count := iface^.s_width Shr 1;
 
-    if count <> 0 then
-      repeat
-        r := (((PUint32(source)^) shr iface^.info.r_right) shl iface^.info.r_left) and
-              iface^.mask_r;
-        g := (((PUint32(source)^) shr iface^.info.g_right) shl iface^.info.g_left) and
-              iface^.mask_g;
-        b := (((PUint32(source)^) shr iface^.info.b_right) shl iface^.info.b_left) and
-              iface^.mask_b;
-        a := (((PUint32(source)^) shr iface^.info.a_right) shl iface^.info.a_left) and
-              iface^.mask_a;
+    If count <> 0 Then
+      Repeat
+        r := (((Pint32(source)^) Shr iface^.info.r_right) Shl iface^.info.r_left) And
+	      iface^.mask_r;
+        g := (((Pint32(source)^) Shr iface^.info.g_right) Shl iface^.info.g_left) And
+	      iface^.mask_g;
+        b := (((Pint32(source)^) Shr iface^.info.b_right) Shl iface^.info.b_left) And
+	      iface^.mask_b;
+        a := (((Pint32(source)^) Shr iface^.info.a_right) Shl iface^.info.a_left) And
+	      iface^.mask_a;
 
-        s_pixel := (r or g or b or a) shl DWORD_SMALLINT0_SHL;
+        s_pixel := (r Or g Or b Or a) And $FFFF;
+      
+        r := ((((Pint32(source)+1)^) Shr iface^.info.r_right) Shl iface^.info.r_left) And
+	      iface^.mask_r;
+        g := ((((Pint32(source)+1)^) Shr iface^.info.g_right) Shl iface^.info.g_left) And
+	      iface^.mask_g;
+        b := ((((Pint32(source)+1)^) Shr iface^.info.b_right) Shl iface^.info.b_left) And
+	      iface^.mask_b;
+        a := ((((Pint32(source)+1)^) Shr iface^.info.a_right) Shl iface^.info.a_left) And
+	      iface^.mask_a;
 
-        r := ((((PUint32(source)+1)^) shr iface^.info.r_right) shl iface^.info.r_left) and
-              iface^.mask_r;
-        g := ((((PUint32(source)+1)^) shr iface^.info.g_right) shl iface^.info.g_left) and
-              iface^.mask_g;
-        b := ((((PUint32(source)+1)^) shr iface^.info.b_right) shl iface^.info.b_left) and
-              iface^.mask_b;
-        a := ((((PUint32(source)+1)^) shr iface^.info.a_right) shl iface^.info.a_left) and
-              iface^.mask_a;
+        s_pixel := s_pixel Or ((r Or g Or b Or a) Shl 16);
 
-        s_pixel := s_pixel or ((r or g or b or a) shl DWORD_SMALLINT1_SHL);
-
-        PUint32(dest)^ := s_pixel;
+        Pint32(dest)^ := s_pixel;
 
         Inc(source, 8);
         Inc(dest, 4);
         Dec(count);
-      until count = 0;
+      Until count = 0;
 
 
     { Trailing pixel }
+    
+    If (iface^.s_width And 1) <> 0 Then
+    Begin
+      r := (((Pint32(source)^) Shr iface^.info.r_right) Shl iface^.info.r_left) And
+	    iface^.mask_r;
+      g := (((Pint32(source)^) Shr iface^.info.g_right) Shl iface^.info.g_left) And
+	    iface^.mask_g;
+      b := (((Pint32(source)^) Shr iface^.info.b_right) Shl iface^.info.b_left) And
+	    iface^.mask_b;
+      a := (((Pint32(source)^) Shr iface^.info.a_right) Shl iface^.info.a_left) And
+	    iface^.mask_a;
 
-    if (iface^.s_width and 1) <> 0 then
-    begin
-      r := (((PUint32(source)^) shr iface^.info.r_right) shl iface^.info.r_left) and
-            iface^.mask_r;
-      g := (((PUint32(source)^) shr iface^.info.g_right) shl iface^.info.g_left) and
-            iface^.mask_g;
-      b := (((PUint32(source)^) shr iface^.info.b_right) shl iface^.info.b_left) and
-            iface^.mask_b;
-      a := (((PUint32(source)^) shr iface^.info.a_right) shl iface^.info.a_left) and
-            iface^.mask_a;
-
-      PUint16(dest)^ := r or g or b or a;
+      Pshort16(dest)^ := r Or g Or b Or a;
       Inc(dest, 2);
       Inc(source, 4);
-    end;
+    End;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
-procedure ConvertP_Generic32_A_Generic8_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  count: DWord;
-  source, dest: PUint8;
-begin
+Procedure ConvertP_Generic32_A_Generic8_A(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  count : DWord;
+  source, dest : Pchar8;
+
+Begin
   source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
+  Repeat
     count := iface^.s_width;
-    repeat
-      s_pixel := PUint32(source)^;
+    Repeat
+      s_pixel := Pint32(source)^;
 
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
 
-      dest^ := r or g or b or a;
+      dest^ := r Or g Or b Or a;
 
       Inc(source, 4);
       Inc(dest);
       Dec(count);
-    until count = 0;
+    Until count = 0;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
-procedure ConvertP_Generic24_A_Generic32_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  count: DWord;
-  source, dest: PUint8;
-begin
+Procedure ConvertP_Generic24_A_Generic32_A(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  count : DWord;
+  source, dest : Pchar8;
+
+Begin
   source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
+  Repeat
     count := iface^.s_width;
-    repeat
-      s_pixel := ((PUint32(source+R_24)^) shl 16) or
-                 ((PUint32(source+G_24)^) shl 8) or
-                 (PUint32(source+B_24)^);
+    Repeat
+      s_pixel := ((Pint32(source+R_24)^) Shl 16) Or
+                 ((Pint32(source+G_24)^) Shl 8) Or
+                 (PInt32(source+B_24)^);
 
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
 
-      PUint32(dest)^ := r or g or b or a;
+      Pint32(dest)^ := r Or g Or b Or a;
 
       Inc(source, 3);
       Inc(dest, 4);
       Dec(count);
-    until count = 0;
+    Until count = 0;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
-procedure ConvertP_Generic24_A_Generic24_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  d_ptr: PUint8;
-  count: DWord;
-  source, dest: PUint8;
-begin
-  d_ptr := PUint8(@s_pixel) + (R_32 - R_24);
+Procedure ConvertP_Generic24_A_Generic24_A(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  d_ptr : Pchar8;
+  count : DWord;
+  source, dest : PChar8;
+
+Begin
+  d_ptr := @s_pixel;
   source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
+  Repeat
     count := iface^.s_width;
-    repeat
-      s_pixel := ((PUint32(source+R_24)^) shl 16) or
-                 ((PUint32(source+G_24)^) shl 8) or
-                 (PUint32(source+B_24)^);
-
-      r := ((s_pixel shl iface^.info.r_left) shr iface^.info.r_right) and
+    Repeat
+      s_pixel := ((Pint32(source+R_24)^) Shl 16) Or
+                 ((Pint32(source+G_24)^) Shl 8) Or
+                 (PInt32(source+B_24)^);
+    
+      r := ((s_pixel Shl iface^.info.r_left) Shr iface^.info.r_right) And
         iface^.mask_r;
-      g := ((s_pixel shl iface^.info.g_left) shr iface^.info.g_right) and
+      g := ((s_pixel Shl iface^.info.g_left) Shr iface^.info.g_right) And
         iface^.mask_g;
-      b := ((s_pixel shl iface^.info.b_left) shr iface^.info.b_right) and
+      b := ((s_pixel Shl iface^.info.b_left) Shr iface^.info.b_right) And
         iface^.mask_b;
-      a := ((s_pixel shl iface^.info.a_left) shr iface^.info.a_right) and
+      a := ((s_pixel Shl iface^.info.a_left) Shr iface^.info.a_right) And
         iface^.mask_a;
 
-      s_pixel := r or g or b or a;
+      s_pixel := r Or g Or b Or a;
 
-      (dest + 0)^ := (d_ptr + 0)^;
-      (dest + 1)^ := (d_ptr + 1)^;
-      (dest + 2)^ := (d_ptr + 2)^;
-
+      (dest + R_24)^ := (d_ptr + R_32)^;
+      (dest + G_24)^ := (d_ptr + G_32)^;
+      (dest + B_24)^ := (d_ptr + B_32)^;
+    
       Inc(source, 3);
       Inc(dest, 3);
       Dec(count);
-    until count = 0;
+    Until count = 0;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
-procedure ConvertP_Generic24_A_Generic16_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  count: DWord;
-  source, dest: PUint8;
-begin
+Procedure ConvertP_Generic24_A_Generic16_A(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  count : DWord;
+  source, dest : Pchar8;
+
+Begin
   source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
+  Repeat
     count := iface^.s_width;
-    repeat
-      s_pixel := ((PUint32(source+R_24)^) shl 16) or
-                 ((PUint32(source+G_24)^) shl 8) or
-                 (PUint32(source+B_24)^);
-
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+    Repeat
+      s_pixel := ((Pint32(source+R_24)^) Shl 16) Or
+                 ((Pint32(source+G_24)^) Shl 8) Or
+                 (PInt32(source+B_24)^);
+    
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
 
-      PUint16(dest)^ := r or g or b or a;
+      Pshort16(dest)^ := r Or g Or b Or a;
 
       Inc(source, 3);
       Inc(dest, 2);
       Dec(count);
-    until count = 0;
+    Until count = 0;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
-procedure ConvertP_Generic24_A_Generic8_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  count: DWord;
-  source, dest: PUint8;
-begin
+Procedure ConvertP_Generic24_A_Generic8_A(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  count : DWord;
+  source, dest : Pchar8;
+
+Begin
   source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
+  Repeat
     count := iface^.s_width;
-    repeat
-      s_pixel := ((PUint32(source+R_24)^) shl 16) or
-                 ((PUint32(source+G_24)^) shl 8) or
-                 (PUint32(source+B_24)^);
-
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+    Repeat
+      s_pixel := ((Pint32(source+R_24)^) Shl 16) Or
+                 ((Pint32(source+G_24)^) Shl 8) Or
+                 (PInt32(source+B_24)^);
+    
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
-
-      dest^ := r or g or b or a;
-
+    
+      dest^ := r Or g Or b Or a;
+    
       Inc(source, 3);
       Inc(dest);
       Dec(count);
-    until count = 0;
+    Until count = 0;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
-procedure ConvertP_Generic16_A_Generic32_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  count: DWord;
-  source, dest: PUint8;
-begin
+Procedure ConvertP_Generic16_A_Generic32_A(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  count : DWord;
+  source, dest : Pchar8;
+
+Begin
   source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
+  Repeat
     count := iface^.s_width;
-    repeat
-      s_pixel := PUint16(source)^;
+    Repeat
+      s_pixel := Pshort16(source)^;
 
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
 
-      PUint32(dest)^ := r or g or b or a;
+      Pint32(dest)^ := r Or g Or b Or a;
 
       Inc(source, 2);
       Inc(dest, 4);
       Dec(count);
-    until count = 0;
+    Until count = 0;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
-procedure ConvertP_Generic16_A_Generic24_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  d_ptr: PUint8;
-  count: DWord;
-  source, dest: PUint8;
-begin
-  d_ptr := PUint8(@s_pixel) + (R_32 - R_24);
+Procedure ConvertP_Generic16_A_Generic24_A(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  d_ptr : Pchar8;
+  count : DWord;
+  source, dest : Pchar8;
+
+Begin
+  d_ptr := @s_pixel;
   source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
+  Repeat
     count := iface^.s_width;
-    repeat
-      s_pixel := PUint16(source)^;
+    Repeat
+      s_pixel := Pshort16(source)^;
 
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
+    
+      s_pixel := r Or g Or b Or a;
 
-      s_pixel := r or g or b or a;
-
-      (dest + 0)^ := (d_ptr + 0)^;
-      (dest + 1)^ := (d_ptr + 1)^;
-      (dest + 2)^ := (d_ptr + 2)^;
-
+      (dest + R_24)^ := (d_ptr + R_32)^;
+      (dest + G_24)^ := (d_ptr + G_32)^;
+      (dest + B_24)^ := (d_ptr + B_32)^;
+    
       Inc(source, 2);
       Inc(dest, 3);
       Dec(count);
-    until count = 0;
+    Until count = 0;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
-procedure ConvertP_Generic16_A_Generic16_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  count: DWord;
-  source, dest: PUint8;
-begin
+Procedure ConvertP_Generic16_A_Generic16_A(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  count : DWord;
+  source, dest : Pchar8;
+
+Begin
   source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
+  Repeat
     count := iface^.s_width;
-    repeat
-      s_pixel := PUint16(source)^;
+    Repeat
+      s_pixel := Pshort16(source)^;
 
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
 
-      PUint16(dest)^ := r or g or b or a;
+      Pshort16(dest)^ := r Or g Or b Or a;
 
       Inc(source, 2);
       Inc(dest, 2);
       Dec(count);
-    until count = 0;
+    Until count = 0;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
-procedure ConvertP_Generic16_A_Generic8_A(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  count: DWord;
-  source, dest: PUint8;
-begin
+Procedure ConvertP_Generic16_A_Generic8_A(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  count : DWord;
+  source, dest : Pchar8;
+
+Begin
   source := iface^.s_pixels; dest := iface^.d_pixels;
-  repeat
+  Repeat
     count := iface^.s_width;
-    repeat
-      s_pixel := PUint16(source)^;
+    Repeat
+      s_pixel := Pshort16(source)^;
 
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
 
-      dest^ := r or g or b or a;
+      dest^ := r Or g Or b Or a;
 
       Inc(source, 2);
       Inc(dest);
       Dec(count);
-    until count = 0;
+    Until count = 0;
 
     Inc(source, iface^.s_add);
     Inc(dest, iface^.d_add);
     Dec(iface^.s_height);
-  until iface^.s_height = 0;
-end;
+  Until iface^.s_height = 0;
+End;
 
 { -------------------------------------------------------------------------
 
                              STRETCH CONVERTERS
-
+   
   ------------------------------------------------------------------------- }
 
 
-procedure ConvertP_Generic32_A_Generic32_A_S(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  count: DWord;
-  source, dest: PUint8;
-  dx, dy, x, y: DWord;
-begin
+Procedure ConvertP_Generic32_A_Generic32_A_S(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  count : DWord;
+  source, dest : Pchar8;
+  dx, dy, x, y : DWord;
+
+Begin
   source := iface^.s_pixels;
   dest := iface^.d_pixels;
-  dy := (iface^.s_height shl 16) div iface^.d_height;
-  dx := (iface^.s_width shl 16) div iface^.d_width;
+  dy := (iface^.s_height Shl 16) Div iface^.d_height;
+  dx := (iface^.s_width Shl 16) Div iface^.d_width;
   y := 0;
-  repeat
+  Repeat
     count := iface^.d_width;
     x := 0;
-    repeat
-      s_pixel := (PUint32(source)+(x shr 16))^;
+    Repeat
+      s_pixel := (Pint32(source)+(x Shr 16))^;
 
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
-
-      PUint32(dest)^ := r or g or b or a;
-
+    
+      Pint32(dest)^ := r Or g Or b Or a;
+    
       Inc(x, dx);
       Inc(dest, 4);
       Dec(count);
-    until count = 0;
-
+    Until count = 0;
+    
     Inc(dest, iface^.d_add);
-
+    
     Inc(y, dy);
-    Inc(source, (y shr 16)*DWord(iface^.s_pitch));
-    y := y and $ffff;
+    Inc(source, (y Shr 16)*DWord(iface^.s_pitch));
+    y := y And $ffff;
 
     Dec(iface^.d_height);
-  until iface^.d_height = 0;
-end;
+  Until iface^.d_height = 0;
+End;
 
-procedure ConvertP_Generic32_A_Generic16_A_S(iface: PHermesConverterInterface); cdecl;
-var
-  s_pixel, r, g, b, a: Uint32;
-  count: DWord;
-  source, dest: PUint8;
-  dx, dy, x, y: DWord;
-begin
+Procedure ConvertP_Generic32_A_Generic16_A_S(iface : PHermesConverterInterface); CDecl;
+
+Var
+  s_pixel, r, g, b, a : int32;
+  count : DWord;
+  source, dest : Pchar8;
+  dx, dy, x, y : DWord;
+
+Begin
   source := iface^.s_pixels;
   dest := iface^.d_pixels;
-  dy := (iface^.s_height shl 16) div iface^.d_height;
-  dx := (iface^.s_width shl 16) div iface^.d_width;
+  dy := (iface^.s_height Shl 16) Div iface^.d_height;
+  dx := (iface^.s_width Shl 16) Div iface^.d_width;
   y := 0;
-  repeat
+  Repeat
     count := iface^.d_width;
     x := 0;
-    repeat
-      s_pixel := (PUint32(source)+(x shr 16))^;
+    Repeat
+      s_pixel := (Pint32(source)+(x Shr 16))^;
 
-      r := ((s_pixel shr iface^.info.r_right) shl iface^.info.r_left) and
+      r := ((s_pixel Shr iface^.info.r_right) Shl iface^.info.r_left) And
         iface^.mask_r;
-      g := ((s_pixel shr iface^.info.g_right) shl iface^.info.g_left) and
+      g := ((s_pixel Shr iface^.info.g_right) Shl iface^.info.g_left) And
         iface^.mask_g;
-      b := ((s_pixel shr iface^.info.b_right) shl iface^.info.b_left) and
+      b := ((s_pixel Shr iface^.info.b_right) Shl iface^.info.b_left) And
         iface^.mask_b;
-      a := ((s_pixel shr iface^.info.a_right) shl iface^.info.a_left) and
+      a := ((s_pixel Shr iface^.info.a_right) Shl iface^.info.a_left) And
         iface^.mask_a;
-
-      PUint16(dest)^ := r or g or b or a;
-
+    
+      Pshort16(dest)^ := r Or g Or b Or a;
+    
       Inc(x, dx);
       Inc(dest, 2);
       Dec(count);
-    until count = 0;
-
+    Until count = 0;
+    
     Inc(dest, iface^.d_add);
-
+    
     Inc(y, dy);
-    Inc(source, (y shr 16)*DWord(iface^.s_pitch));
-    y := y and $ffff;
+    Inc(source, (y Shr 16)*DWord(iface^.s_pitch));
+    y := y And $ffff;
 
     Dec(iface^.d_height);
-  until iface^.d_height = 0;
-end;
+  Until iface^.d_height = 0;
+End;

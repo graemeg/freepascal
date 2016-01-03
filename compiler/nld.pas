@@ -51,7 +51,19 @@ interface
        protected
           fprocdef : tprocdef;
           fprocdefderef : tderef;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           function handle_threadvar_access: tnode; virtual;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
        public
           loadnodeflags : set of tloadnodeflags;
           symtableentry : tsym;
@@ -92,7 +104,15 @@ interface
           function dogetcopy : tnode;override;
           function pass_1 : tnode;override;
           function pass_typecheck:tnode;override;
+<<<<<<< HEAD
+<<<<<<< HEAD
           function simplify(forinline : boolean) : tnode;override;
+=======
+          function simplify : tnode;override;
+>>>>>>> graemeg/fixes_2_2
+=======
+          function simplify : tnode;override;
+>>>>>>> origin/fixes_2_2
        {$ifdef state_tracking}
           function track_state_pass(exec_known:boolean):boolean;override;
        {$endif state_tracking}
@@ -178,8 +198,16 @@ implementation
       defutil,defcmp,
       htypechk,pass_1,procinfo,paramgr,
       cpuinfo,
+<<<<<<< HEAD
+<<<<<<< HEAD
       ncon,ninl,ncnv,nmem,ncal,nutils,
       cgbase
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      ncon,ninl,ncnv,nmem,ncal,nutils,nbas,
+      cgobj,cgbase
+>>>>>>> graemeg/fixes_2_2
       ;
 
 {*****************************************************************************
@@ -221,7 +249,19 @@ implementation
         ppufile.getderef(symtableentryderef);
         symtable:=nil;
         ppufile.getderef(fprocdefderef);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         ppufile.getsmallset(loadnodeflags);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -230,7 +270,19 @@ implementation
         inherited ppuwrite(ppufile);
         ppufile.putderef(symtableentryderef);
         ppufile.putderef(fprocdefderef);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         ppufile.putsmallset(loadnodeflags);
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       end;
 
 
@@ -333,6 +385,7 @@ implementation
                    { and behaves as if its address escapes its parent block         }
                    make_not_regable(self,[ra_addr_taken]);
                  end;
+<<<<<<< HEAD
                resultdef:=tabstractvarsym(symtableentry).vardef;
                { self for objects is passed as var-parameter on the caller
                  side, but on the callee-side we use it as a pointer ->
@@ -345,6 +398,24 @@ implementation
                    else if (resultdef=objc_idtype) and
                       (po_classmethod in tprocdef(symtableentry.owner.defowner).procoptions) then
                      resultdef:=cclassrefdef.create(tprocdef(symtableentry.owner.defowner).struct)
+=======
+               { fix self type which is declared as voidpointer in the
+                 definition }
+               if vo_is_self in tabstractvarsym(symtableentry).varoptions then
+                 begin
+                   resultdef:=tprocdef(symtableentry.owner.defowner).struct;
+                   if (po_classmethod in tprocdef(symtableentry.owner.defowner).procoptions) or
+                      (po_staticmethod in tprocdef(symtableentry.owner.defowner).procoptions) then
+                     resultdef:=tclassrefdef.create(resultdef)
+                   else if (is_object(resultdef) or is_record(resultdef)) and
+                           (nf_load_self_pointer in flags) then
+                     resultdef:=tpointerdef.create(resultdef);
+                 end
+               else if vo_is_vmt in tabstractvarsym(symtableentry).varoptions then
+                 begin
+                   resultdef:=tprocdef(symtableentry.owner.defowner).struct;
+                   resultdef:=tclassrefdef.create(resultdef);
+>>>>>>> graemeg/cpstrnew
                  end
              end;
            procsym :
@@ -476,7 +547,23 @@ implementation
               begin
                 { parent frame pointer pointer as "self" }
                 left.free;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                 left:=cloadparentfpnode.create(tprocdef(p.owner.defowner),lpf_forpara);
+=======
+                left:=cloadparentfpnode.create(tprocdef(p.owner.defowner));
+>>>>>>> graemeg/cpstrnew
+=======
+                left:=cloadparentfpnode.create(tprocdef(p.owner.defowner));
+>>>>>>> graemeg/cpstrnew
+=======
+                left:=cloadparentfpnode.create(tprocdef(p.owner.defowner));
+>>>>>>> graemeg/cpstrnew
+=======
+                left:=cloadparentfpnode.create(tprocdef(p.owner.defowner));
+>>>>>>> origin/cpstrnew
               end;
           end
         { we should never go from nested to non-nested }
@@ -505,6 +592,8 @@ implementation
          assigntype:=at_normal;
          if r.nodetype = typeconvn then
            ttypeconvnode(r).warn_pointer_to_signed:=false;
+<<<<<<< HEAD
+<<<<<<< HEAD
       end;
 
 
@@ -512,6 +601,10 @@ implementation
       begin
         create(l,r);
         include(flags,nf_internal);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 
@@ -541,7 +634,15 @@ implementation
       end;
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     function tassignmentnode.simplify(forinline : boolean) : tnode;
+=======
+    function tassignmentnode.simplify : tnode;
+>>>>>>> graemeg/fixes_2_2
+=======
+    function tassignmentnode.simplify : tnode;
+>>>>>>> origin/fixes_2_2
       begin
         result:=nil;
         { assignment nodes can perform several floating point }
@@ -570,11 +671,17 @@ implementation
         set_unique(left);
 
         typecheckpass(left);
+<<<<<<< HEAD
+<<<<<<< HEAD
 
         { PI. This is needed to return correct resultdef of add nodes for ansistrings
           rawbytestring return needs to be replaced by left.resultdef }
         oldassignmentnode:=aktassignmentnode;
         aktassignmentnode:=self;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         typecheckpass(right);
         aktassignmentnode:=oldassignmentnode;
 
@@ -680,6 +787,8 @@ implementation
                 { sse register to an extended value in memory more      }
                 { efficiently than a type conversion node, so don't     }
                 { bother implementing support for that                  }
+<<<<<<< HEAD
+<<<<<<< HEAD
                 and (use_vectorfpu(left.resultdef) or not(use_vectorfpu(right.resultdef)))
 {$endif}
 
@@ -695,10 +804,24 @@ implementation
           begin
             if not(nf_internal in flags) then
               check_ranges(fileinfo,right,left.resultdef);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                and (use_sse(left.resultdef) or not(use_sse(right.resultdef)))
+{$endif}
+        then
+          begin
+            check_ranges(fileinfo,right,left.resultdef);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           end
         else
           begin
             { check if the assignment may cause a range check error }
+<<<<<<< HEAD
+<<<<<<< HEAD
             if not(nf_internal in flags) then
               check_ranges(fileinfo,right,left.resultdef);
 
@@ -713,13 +836,29 @@ implementation
               inserttypeconv_internal(right,left.resultdef)
             else
               inserttypeconv(right,left.resultdef);
+=======
+            check_ranges(fileinfo,right,left.resultdef);
+            inserttypeconv(right,left.resultdef);
+>>>>>>> graemeg/fixes_2_2
+=======
+            check_ranges(fileinfo,right,left.resultdef);
+            inserttypeconv(right,left.resultdef);
+>>>>>>> origin/fixes_2_2
           end;
 
         { call helpers for interface }
         if is_interfacecom_or_dispinterface(left.resultdef) then
          begin
 	   { Normal interface assignments are handled by the generic refcount incr/decr }
+<<<<<<< HEAD
+<<<<<<< HEAD
            if not def_is_related(right.resultdef,left.resultdef) then
+=======
+           if not right.resultdef.is_related(left.resultdef) then
+>>>>>>> graemeg/fixes_2_2
+=======
+           if not right.resultdef.is_related(left.resultdef) then
+>>>>>>> origin/fixes_2_2
              begin
                { remove property flag to avoid errors, see comments for }
                { tf_winlikewidestring assignments below                 }
@@ -777,6 +916,66 @@ implementation
          if codegenerror then
            exit;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+         { if right is a function call for which the address of the result  }
+         { is allocated by the caller and passed to the function via an     }
+         { invisible function result, try to pass the x in "x:=f(...)" as   }
+         { that function result instead. Condition: x cannot be accessible  }
+         { from within f. This is the case if x is a temp, or x is a local  }
+         { variable or value parameter of the current block and its address }
+         { is not passed to f. One problem: what if someone takes the       }
+         { address of x, puts it in a pointer variable/field and then       }
+         { accesses it that way from within the function? This is solved    }
+         { (in a conservative way) using the ti_addr_taken/addr_taken flags }
+         if (cs_opt_level1 in current_settings.optimizerswitches) and
+            (right.nodetype = calln) and
+            (right.resultdef=left.resultdef) and
+            { left must be a temp, since otherwise as soon as you modify the }
+            { result, the current left node is modified and that one may     }
+            { still be an argument to the function or even accessed in the   }
+            { function                                                       }
+            (
+             (
+              (((left.nodetype = temprefn) and
+                not(ti_addr_taken in ttemprefnode(left).tempinfo^.flags) and
+                not(ti_may_be_in_reg in ttemprefnode(left).tempinfo^.flags)) or
+               ((left.nodetype = loadn) and
+                { nested procedures may access the current procedure's locals }
+                (tcallnode(right).procdefinition.parast.symtablelevel=normal_function_level) and
+                { must be a local variable or a value para }
+                ((tloadnode(left).symtableentry.typ = localvarsym) or
+                 ((tloadnode(left).symtableentry.typ = paravarsym) and
+                  (tparavarsym(tloadnode(left).symtableentry).varspez = vs_value)
+                 )
+                ) and
+                { the address may not have been taken of the variable/parameter, because }
+                { otherwise it's possible that the called function can access it via a   }
+                { global variable or other stored state                                  }
+                not(tabstractvarsym(tloadnode(left).symtableentry).addr_taken) and
+                (tabstractvarsym(tloadnode(left).symtableentry).varregable in [vr_none,vr_addr])
+               )
+              ) and
+              paramanager.ret_in_param(right.resultdef,tcallnode(right).procdefinition.proccalloption)
+             ) or
+             { there's special support for ansi/widestrings in the callnode }
+             is_ansistring(right.resultdef) or
+             is_widestring(right.resultdef)
+            )  then
+           begin
+             if assigned(tcallnode(right).funcretnode) then
+               internalerror(2007080201);
+             tcallnode(right).funcretnode := left;
+             result := right;
+             left := nil;
+             right := nil;
+             exit;
+           end;
+
+>>>>>>> graemeg/fixes_2_2
          { assignment to refcounted variable -> inc/decref }
          if is_managed_type(left.resultdef) then
            include(current_procinfo.flags,pi_do_call);
@@ -790,9 +989,15 @@ implementation
               if (right.nodetype<>stringconstn) or
                  (tstringconstnode(right).len<>0) then
                begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                  { remove property flag to avoid errors, see comments for }
                  { tf_winlikewidestring assignments below                 }
                  exclude(left.flags, nf_isproperty);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                  hp:=ccallparanode.create
                        (right,
                   ccallparanode.create(left,nil));
@@ -802,17 +1007,48 @@ implementation
                  right:=nil;
                end;
             end;
+<<<<<<< HEAD
+<<<<<<< HEAD
             exit;
            end
         { call helpers for composite types containing automated types }
         else if is_managed_type(left.resultdef) and
             (left.resultdef.typ in [arraydef,objectdef,recorddef]) and
             not is_interfacecom_or_dispinterface(left.resultdef) and
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             not is_dynamic_array(left.resultdef) and
             not(target_info.system in systems_garbage_collected_managed_types) then
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+            not is_dynamic_array(left.resultdef) then
+>>>>>>> graemeg/cpstrnew
          begin
            hp:=ccallparanode.create(caddrnode.create_internal(
                   crttinode.create(tstoreddef(left.resultdef),initrtti,rdt_normal)),
+=======
+=======
+>>>>>>> origin/fixes_2_2
+           end
+        { call helpers for composite types containing automated types }
+        else if (left.resultdef.needs_inittable) and
+            (left.resultdef.typ in [arraydef,objectdef,recorddef]) and
+            not is_interfacecom(left.resultdef) and
+            not is_dynamic_array(left.resultdef) then
+         begin
+           hp:=ccallparanode.create(caddrnode.create_internal(
+                  crttinode.create(tstoreddef(left.resultdef),initrtti)),
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                ccallparanode.create(ctypeconvnode.create_internal(
                  caddrnode.create_internal(left),voidpointertype),
                ccallparanode.create(ctypeconvnode.create_internal(
@@ -826,6 +1062,8 @@ implementation
          end
         { call helpers for variant, they can contain non ref. counted types like
           vararrays which must be really copied }
+<<<<<<< HEAD
+<<<<<<< HEAD
         else if (left.resultdef.typ=variantdef) and
             not(target_info.system in systems_garbage_collected_managed_types)  then
          begin
@@ -837,6 +1075,19 @@ implementation
                  right,hdef),
                ccallparanode.create(ctypeconvnode.create_internal(
                  left,hdef),
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        else if left.resultdef.typ=variantdef then
+         begin
+           hp:=ccallparanode.create(ctypeconvnode.create_internal(
+                 caddrnode.create_internal(right),voidpointertype),
+               ccallparanode.create(ctypeconvnode.create_internal(
+                 caddrnode.create_internal(left),voidpointertype),
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                nil));
            result:=ccallnode.createintern('fpc_variant_copy',hp);
            firstpass(result);
@@ -844,6 +1095,8 @@ implementation
            right:=nil;
            exit;
          end
+<<<<<<< HEAD
+<<<<<<< HEAD
         else if not(target_info.system in systems_garbage_collected_managed_types) and
           not(is_const(left)) then
           begin
@@ -866,6 +1119,39 @@ implementation
           end
         else
           exit;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        { call helpers for windows widestrings, they aren't ref. counted }
+        else if (tf_winlikewidestring in target_info.flags) and is_widestring(left.resultdef) then
+         begin
+           { The first argument of fpc_widestr_assign is a var parameter. Properties cannot   }
+           { be passed to var or out parameters, because in that case setters/getters are not }
+           { used. Further, if we would allow it in case there are no getters or setters, you }
+           { would need source changes in case these are introduced later on, thus defeating  }
+           { part of the transparency advantages of properties. In this particular case,      }
+           { however:                                                                         }
+           {   a) if there is a setter, this code will not be used since then the assignment  }
+           {      will be converted to a procedure call                                       }
+           {   b) the getter is irrelevant, because fpc_widestr_assign must always decrease   }
+           {      the refcount of the field to which we are writing                           }
+           {   c) source code changes are not required if a setter is added/removed, because  }
+           {      this transformation is handled at compile time                              }
+           {  -> we can remove the nf_isproperty flag (if any) from left, so that in case it  }
+           {     is a property which refers to a field without a setter call, we will not get }
+           {     an error about trying to pass a property as a var parameter                  }
+           exclude(left.flags,nf_isproperty);
+           hp:=ccallparanode.create(ctypeconvnode.create_internal(right,voidpointertype),
+               ccallparanode.create(ctypeconvnode.create_internal(left,voidpointertype),
+               nil));
+           result:=ccallnode.createintern('fpc_widestr_assign',hp);
+           firstpass(result);
+           left:=nil;
+           right:=nil;
+           exit;
+         end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
 
         { The first argument of these procedures is a var parameter. Properties cannot     }
         { be passed to var or out parameters, because in that case setters/getters are not }
@@ -895,6 +1181,14 @@ implementation
         firstpass(result);
         left:=nil;
         right:=nil;
+=======
+
+         registersint:=left.registersint+right.registersint;
+         registersfpu:=max(left.registersfpu,right.registersfpu);
+{$ifdef SUPPORT_MMX}
+         registersmmx:=max(left.registersmmx,right.registersmmx);
+{$endif SUPPORT_MMX}
+>>>>>>> origin/fixes_2_2
       end;
 
 

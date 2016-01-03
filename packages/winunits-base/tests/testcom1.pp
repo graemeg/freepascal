@@ -19,7 +19,7 @@ begin
   For I:=1 to 5 do
     For J:=1 to 5 do
       begin
-      Cells:=ActiveSheet.Cells[I,J];
+      Cells:=ActiveSheet[I,J];
       Cells.Value:=I+J;
       end;
 end.

@@ -74,10 +74,35 @@ type
     _timeInterval: NSTimeInterval;
     _minDate: NSDate;
     _maxDate: NSDate;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __dcFlags: record
       case byte of
        0: (_anonbitfield_NSDatePickerCell0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __dcFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSDatePickerCell0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         elements: 0..((1 shl 16)-1);
         controlStyle: 0..((1 shl 3)-1);
         controlMode: 0..((1 shl 2)-1);
@@ -87,7 +112,19 @@ type
         digitsEntered: 0..((1 shl 2)-1);
         forcesLeadingZeroes: 0..1;
         wrapsDateComponentArithmetic: 0..1;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _delegate: id;

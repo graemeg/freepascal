@@ -1,4 +1,20 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %skiptarget=go32v2,os2 }
+=======
+{ %skiptarget=go32v2 }
+>>>>>>> graemeg/cpstrnew
+=======
+{ %skiptarget=go32v2 }
+>>>>>>> graemeg/cpstrnew
+=======
+{ %skiptarget=go32v2 }
+>>>>>>> graemeg/cpstrnew
+=======
+{ %skiptarget=go32v2 }
+>>>>>>> origin/cpstrnew
 { %opt=-gl -O- }
 { %needlibrary }
 { %delfiles=tlib1a }
@@ -29,10 +45,26 @@ w:
   s2:=ExtractFilename(s2);
   writeln( 'Func: ',s1,' Source: ',s2,' Line: ',l);
   { GetLineInfo of dwarf doesn't return the function name }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   { gdb reports line number 12 instead of 10 for the label
     (the real one is 11; lineinfo matches it with the previous
      line, gdb with the next one) }
   if { (s1<>'P') or } (s2<>'tlib1a.pp') or ((l<>10) and (l<>12)) then
+=======
+  if { (s1<>'P') or } (s2<>'tlib1a.pp') or (l<>10) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if { (s1<>'P') or } (s2<>'tlib1a.pp') or (l<>10) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if { (s1<>'P') or } (s2<>'tlib1a.pp') or (l<>10) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if { (s1<>'P') or } (s2<>'tlib1a.pp') or (l<>10) then
+>>>>>>> origin/cpstrnew
     halt(1);
 
   { main program }
@@ -40,7 +72,23 @@ w:
   s2:=ExtractFilename(s2);
   writeln( 'Func: ',s1,' Source: ',s2,' Line: ',l);
   { GetLineInfo of dwarf doesn't return the function name }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   if { (s1<>'P') or } (s2<>'tlib1b.pp') or ((l<>24) and (l<>27)) then
+=======
+  if { (s1<>'P') or } (s2<>'tlib1b.pp') or (l<>24) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if { (s1<>'P') or } (s2<>'tlib1b.pp') or (l<>24) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if { (s1<>'P') or } (s2<>'tlib1b.pp') or (l<>24) then
+>>>>>>> graemeg/cpstrnew
+=======
+  if { (s1<>'P') or } (s2<>'tlib1b.pp') or (l<>24) then
+>>>>>>> origin/cpstrnew
     halt(1);
 
   writeln('ok');

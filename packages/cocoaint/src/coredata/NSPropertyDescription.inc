@@ -49,10 +49,35 @@
     _name: NSString;
     _validationPredicates: NSArray;
     _validationWarnings: NSArray;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __propertyDescriptionFlags: record
       case byte of
        0: (_anonbitfield_NSPropertyDescription0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __propertyDescriptionFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSPropertyDescription0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         _isReadOnly: 0..1;
         _isTransient: 0..1;
         _isOptional: 0..1;
@@ -61,7 +86,19 @@
         _isIndexedBySpotlight: 0..1;
         _isStoredInExternalRecord: 0..1;
         _reservedPropertyDescription: 0..((1 shl 25)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _extraIvars: Pointer; {garbage collector: __strong }

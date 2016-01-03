@@ -14,6 +14,10 @@
 { Records }
 type
   __SFlags = record
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     case byte of
     0: (_anonbitfield_NSScrollView0: cuint);
     1: (data: bitpacked record
@@ -58,6 +62,62 @@ type
 {$endif}
          end;
        );
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef fpc_big_endian}
+    vScrollerRequired: 0..1;
+    hScrollerRequired: 0..1;
+    vScrollerStatus: 0..1;
+    hScrollerStatus: 0..1;
+    noDynamicScrolling: 0..1;
+    borderType: 0..((1 shl 2)-1);
+    oldRulerInstalled: 0..1;
+    showRulers: 0..1;
+    hasHorizontalRuler: 0..1;
+    hasVerticalRuler: 0..1;
+    needsTile: 0..1;
+    doesNotDrawBackground: 0..1;
+    skipRemoveSuperviewCheck: 0..1;
+    focusRingNeedsRedisplay: 0..1;
+    hasCustomLineBorderColor: 0..1;
+    autohidesScrollers: 0..1;
+    autoforwardsScrollWheelEvents: 0..1;
+    RESERVED: 0..((1 shl 14)-1);
+{$else}
+    RESERVED: 0..((1 shl 14)-1);
+    autoforwardsScrollWheelEvents: 0..1;
+    autohidesScrollers: 0..1;
+    hasCustomLineBorderColor: 0..1;
+    focusRingNeedsRedisplay: 0..1;
+    skipRemoveSuperviewCheck: 0..1;
+    doesNotDrawBackground: 0..1;
+    needsTile: 0..1;
+    hasVerticalRuler: 0..1;
+    hasHorizontalRuler: 0..1;
+    showRulers: 0..1;
+    oldRulerInstalled: 0..1;
+    borderType: 0..((1 shl 2)-1);
+    noDynamicScrolling: 0..1;
+    hScrollerStatus: 0..1;
+    vScrollerStatus: 0..1;
+    hScrollerRequired: 0..1;
+    vScrollerRequired: 0..1;
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 _SFlags = __SFlags;
 __SFlagsPtr = ^__SFlags;

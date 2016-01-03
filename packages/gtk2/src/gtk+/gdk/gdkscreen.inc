@@ -66,6 +66,14 @@ procedure gdk_screen_get_monitor_geometry(screen:PGdkScreen; monitor_num:gint; d
 function gdk_screen_get_monitor_at_point(screen:PGdkScreen; x:gint; y:gint):gint; cdecl; external gdklib;
 function gdk_screen_get_monitor_at_window(screen:PGdkScreen; window:PGdkWindow):gint; cdecl; external gdklib;
 procedure gdk_screen_broadcast_client_message(screen:PGdkScreen; event:PGdkEvent); cdecl; external gdklib;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+function gdk_get_default_screen:PGdkScreen; cdecl; external gdklib;
+>>>>>>> graemeg/fixes_2_2
+=======
+function gdk_get_default_screen:PGdkScreen; cdecl; external gdklib;
+>>>>>>> origin/fixes_2_2
 function gdk_screen_get_setting(screen:PGdkScreen; name:Pgchar; value:PGValue):gboolean; cdecl; external gdklib;
 function gdk_screen_make_display_name(screen: PGdkScreen): Pgchar; cdecl; external gdklib;
 {$endif read_interface_rest}

@@ -7,6 +7,10 @@ main=rtl
 
 [target]
 loaders=prt0
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=$(SYSTEMUNIT) uuchar objpas macpas iso7185 extpas strings \
       fpextres dos heaptrc lineinfo ctypes \
       sysutils fgl classes math typinfo \
@@ -15,12 +19,32 @@ units=$(SYSTEMUNIT) uuchar objpas macpas iso7185 extpas strings \
       athreads
 implicitunits=cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+units=$(SYSTEMUNIT) objpas macpas iso7185 strings \
+      dos heaptrc \
+      sysutils fgl classes strutils math typinfo varutils fmtbcd \
+      charset ucomplex getopts matrix \
+      variants types rtlconsts sysconst dateutil objects 
+>>>>>>> graemeg/cpstrnew
 # \
 #      exec timer doslib utility hardware inputevent graphics layers \
 #      intuition aboxlib mui \
 # these can be moved to packages later
 #      clipboard datatypes asl ahi tinygl get9 muihelper \
+<<<<<<< HEAD
 rsts=math rtlconsts typinfo classes sysconst
+=======
+rsts=math rtlconsts varutils typinfo variants classes sysconst dateutil
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 #implicitunits=exeinfo
 
 [require]

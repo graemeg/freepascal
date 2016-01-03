@@ -291,6 +291,10 @@ procedure recordpendingverbosityswitch(sw: char; state: char);
   end;
 
 procedure recordpendingmessagestate(msg: longint; state: tmsgstate);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   var
     pstate : pmessagestaterecord;
   begin
@@ -299,6 +303,22 @@ procedure recordpendingmessagestate(msg: longint; state: tmsgstate);
     pstate^.value:=msg;
     pstate^.state:=state;
     pendingstate.nextmessagerecord:=pstate;
+=======
+  begin
+    { todo }
+>>>>>>> graemeg/cpstrnew
+=======
+  begin
+    { todo }
+>>>>>>> graemeg/cpstrnew
+=======
+  begin
+    { todo }
+>>>>>>> graemeg/cpstrnew
+=======
+  begin
+    { todo }
+>>>>>>> origin/cpstrnew
   end;
 
 procedure recordpendinglocalswitch(sw: tlocalswitch; state: char);

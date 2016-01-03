@@ -111,6 +111,20 @@ Function UpperCase(Const S : AnsiString) : AnsiString;
     Result:=InternalChangeCase(S,['a'..'z'],-32);
   end;
 
+<<<<<<< HEAD
+=======
+begin
+  Result := S;
+  if not assigned(pointer(result)) then exit;
+  UniqueString(Result);
+  P:=Pchar(pointer(Result));
+  for i := 1 to Length(Result) do
+    begin
+    if (P^ in ['a'..'z']) then P^ := char(byte(p^) - 32);
+      Inc(P);
+    end;
+end;
+>>>>>>> graemeg/fixes_2_2
 
 {   LowerCase returns a copy of S where all uppercase characters ( from A to Z )
     have been converted to lowercase  }
@@ -119,6 +133,26 @@ Function Lowercase(Const S : AnsiString) : AnsiString;
     Result:=InternalChangeCase(S,['A'..'Z'],32);
   end;
 
+<<<<<<< HEAD
+=======
+Function Lowercase(Const S : String) : String;
+
+Var
+  i : Integer;
+  P : PChar;
+
+begin
+  Result := S;
+  if not assigned(pointer(result)) then exit;
+  UniqueString(Result);
+  P:=Pchar(pointer(Result));
+  for i := 1 to Length(Result) do
+    begin
+    if (P^ in ['A'..'Z']) then P^ := char(byte(p^) + 32);
+      Inc(P);
+    end;
+end;
+>>>>>>> graemeg/fixes_2_2
 
 function LowerCase(const V: variant): string; overload;{$ifdef SYSUTILSINLINE}inline;{$endif}
   begin
@@ -185,7 +219,11 @@ begin
     Count := Count2
   else
     Count := Count1;
+  P1 := @S1[1];
+  P2 := @S2[1];
   i := 0;
+<<<<<<< HEAD
+<<<<<<< HEAD
   if count>0 then
     begin
       P1 := @S1[1];
@@ -206,6 +244,34 @@ begin
           Inc(P1); Inc(P2); Inc(I);
         end;
     end;
+=======
+  while i < Count do
+  begin
+    Chr1 := byte(p1^);
+    Chr2 := byte(p2^);
+    if Chr1 <> Chr2 then
+    begin
+=======
+  while i < Count do
+  begin
+    Chr1 := byte(p1^);
+    Chr2 := byte(p2^);
+    if Chr1 <> Chr2 then
+    begin
+>>>>>>> origin/fixes_2_2
+      if Chr1 in [97..122] then
+        dec(Chr1,32);
+      if Chr2 in [97..122] then
+        dec(Chr2,32);
+      if Chr1 <> Chr2 then
+        Break;
+    end;
+    Inc(P1); Inc(P2); Inc(I);
+  end;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   if i < Count then
     result := Chr1-Chr2
   else
@@ -226,7 +292,15 @@ end;
 
 type
   TCaseTranslationTable = array[0..255] of char;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> graemeg/fixes_2_2
+=======
+  
+>>>>>>> origin/fixes_2_2
 var
   { Tables with upper and lowercase forms of character sets.
     MUST be initialized with the correct code-pages }
@@ -308,7 +382,15 @@ begin
     Result:=Ord(S1^)-Ord(S2^); //!! Must be replaced by ansi characters !!
     Inc(S1);
     Inc(S2);
+<<<<<<< HEAD
+<<<<<<< HEAD
   end;
+=======
+  end;  
+>>>>>>> graemeg/fixes_2_2
+=======
+  end;  
+>>>>>>> origin/fixes_2_2
   if (Result=0) and (S1^<>S2^) then // loop ended because exactly one has #0
     if S1^=#0 then // shorter string is smaller
       result:=-1
@@ -799,7 +881,15 @@ begin
   result:=IntToHex(Int64(Value),Digits);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TryStrToInt(const s: string; out i : Longint) : boolean;
+=======
+function TryStrToInt(const s: string; out i : integer) : boolean;
+>>>>>>> graemeg/fixes_2_2
+=======
+function TryStrToInt(const s: string; out i : integer) : boolean;
+>>>>>>> origin/fixes_2_2
 var Error : word;
 begin
   Val(s, i, Error);
@@ -1180,6 +1270,8 @@ Var
   Negative: Boolean;
   DS: Char;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   function RemoveLeadingNegativeSign(var AValue: String): Boolean;
   // removes negative sign in case when result is zero eg. -0.00
   var
@@ -1203,6 +1295,10 @@ Var
       Delete(AValue, 1, 1);
   end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 Begin
   DS:=FormatSettings.DecimalSeparator;
   Case format Of
@@ -1245,6 +1341,10 @@ Begin
             Exponent := Exponent*10 + Ord(Result[Q])-Ord('0');
             Inc(Q);
           end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           if Result[PE+1] = '-' then
             Exponent := -Exponent;
           if (P+Exponent < PE) and (Exponent > -6) then begin
@@ -1302,6 +1402,63 @@ Begin
             while Result[PE+1] = '0' do
               { Delete leading zeros in exponent }
               System.Delete(Result,PE+1,1)
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          Negative := Result[1] = '-';
+          P := Pos('.', Result);
+          if P<>0 then
+            Result[P] := DS;
+          TooLarge :=(P > Precision + ord(Negative) + 1) or (Pos('E', Result)<>0);
+        End;
+
+        If TooSmall Or TooLarge Then
+          begin
+            Result := FloatToStrFIntl(Value, ffExponent, Precision, Digits, ValueType,FormatSettings);
+            // Strip unneeded zeroes.
+            P:=Pos('E',result)-1;
+            If P<>-1 then
+              begin
+                { delete superfluous +? }
+                if result[p+2]='+' then
+                  system.Delete(Result,P+2,1);
+                While (P>1) and (Result[P]='0') do
+                  begin
+                    system.Delete(Result,P,1);
+                    Dec(P);
+                  end;
+                If (P>0) and (Result[P]=DS) Then
+                  begin
+                    system.Delete(Result,P,1);
+                    Dec(P);
+                  end;
+              end;
+            end
+        else if (P<>0) then // we have a decimalseparator
+          begin
+            { it seems that in this unit "precision" must mean "number of }
+            { significant digits" rather than "number of digits after the }
+            { decimal point" (as it does in the system unit) -> adjust    }
+            { (precision+1 to count the decimal point character)          }
+            { don't just cut off the string, as rounding must be taken    }
+            { into account based on the final digit                       }
+            
+            if (Length(Result) > Precision + ord(Negative) + 1) and
+               (Precision + ord(Negative) + 1 >= P) then
+              Result := FloatToStrFIntl(Value, ffFixed,
+                0, Precision - (P - Ord(Negative) - 1),
+                ValueType, FormatSettings);
+            P := Length(Result);
+            While (P>0) and (Result[P] = '0') Do
+              Dec(P);
+            If (P>0) and (Result[P]=DS) Then
+              Dec(P);
+            SetLength(Result, P);
+>>>>>>> graemeg/cpstrnew
           end;
         end;
       End;
@@ -1724,6 +1881,14 @@ begin
   Result:=FloatToStrF(Value,ffGeneral,-1,0);
 end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+function AnsiDequotedStr(const S: string; AQuote: Char): string;
+>>>>>>> graemeg/fixes_2_2
+=======
+function AnsiDequotedStr(const S: string; AQuote: Char): string;
+>>>>>>> origin/fixes_2_2
 
 Function CurrToStr(Value: Currency; Const FormatSettings: TFormatSettings): string;
 begin
@@ -1733,14 +1898,32 @@ end;
 
 function StrToCurr(const S: string): Currency;
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not TextToFloat(PChar(pointer(S)), Result, fvCurrency) then
     Raise EConvertError.createfmt(SInValidFLoat,[S]);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  p:=pchar(pointer(s)); // work around CONST. Ansiextract is safe for nil
+  result:=AnsiExtractquotedStr(p,AQuote);
+  if result='' Then
+    result:=s;
+>>>>>>> graemeg/fixes_2_2
 end;
 
 
 function StrToCurr(const S: string; Const FormatSettings: TFormatSettings): Currency; 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   if not TextToFloat(PChar(pointer(S)), Result, fvCurrency,FormatSettings) then
+=======
+  if not TextToFloat(PChar(pointer(S)), Result, fvCurrency) then
+>>>>>>> graemeg/fixes_2_2
+=======
+  if not TextToFloat(PChar(pointer(S)), Result, fvCurrency) then
+>>>>>>> origin/fixes_2_2
     Raise EConvertError.createfmt(SInValidFLoat,[S]);
 end;
 
@@ -2162,7 +2345,15 @@ Var
 
       { Find and cut out exponent. Always the
         last 6 characters in the string.
+<<<<<<< HEAD
+<<<<<<< HEAD
         -> 0000E+0000
+=======
+        -> 0000E+0000                         
+>>>>>>> graemeg/fixes_2_2
+=======
+        -> 0000E+0000                         
+>>>>>>> origin/fixes_2_2
         *** No, not always the last 6 characters, this depends on
             the maximally supported precision (JM)}
       I:=Pos('E',Digits);
@@ -2284,7 +2475,20 @@ Var
                       Buf[0] := Digits[N];
                       Inc(Buf);
                     end;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   If thousand And (Not (Digits[N] in [' ','-'])) Then
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+                  If thousand And (Digits[N]<>'-') Then
+>>>>>>> graemeg/cpstrnew
                     Begin
                     If (DigitExponent Mod 3 = 0) And (DigitExponent>0) Then
                       Begin
@@ -2899,7 +3103,15 @@ function sscanf(const s: string; const fmt : string;const Pointers : array of Po
       while (Length(s) > n) and (s[n] = ' ')  do
         inc(n);
       while (Length(s) >= n) and
+<<<<<<< HEAD
+<<<<<<< HEAD
             (s[n] in ['0'..'9', '+', '-', FormatSettings.DecimalSeparator, 'e', 'E']) do
+=======
+            (s[n] in ['0'..'9', '+', '-', '.', 'e', 'E']) do
+>>>>>>> graemeg/fixes_2_2
+=======
+            (s[n] in ['0'..'9', '+', '-', '.', 'e', 'E']) do
+>>>>>>> origin/fixes_2_2
         begin
           s1 := s1+s[n];
           inc(n);

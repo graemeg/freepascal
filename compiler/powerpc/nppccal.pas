@@ -96,8 +96,16 @@ implementation
                   cg.getcpuregister(current_asmdata.CurrAsmList,NR_R0);
                   cg.getcpuregister(current_asmdata.CurrAsmList,NR_R12);
 
+<<<<<<< HEAD
                   reference_reset(tmpref,sizeof(pint));
                   tmpref.symbol:=current_asmdata.RefAsmSymbol(tstaticvarsym(tcpuprocdef(procdefinition).libsym).mangledname);
+=======
+                  reference_reset(tmpref);
+                  tmpref.symbol:=current_asmdata.RefAsmSymbol(tstaticvarsym(tprocdef(procdefinition).libsym).mangledname);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                   tmpref.refaddr:=addr_higha;
                   current_asmdata.CurrAsmList.concat(taicpu.op_reg_ref(A_LIS,NR_R12,tmpref));
                   tmpref.base:=NR_R12;

@@ -3,7 +3,7 @@
 {$endif FPC}
 program excel;
 
-uses variants,Windows,activeX,comobj;
+uses variants,Windows,activeX;
 
 Const
   IID_IDISPATCH : TGUID = '{00020400-0000-0000-C000-000000000046}';
@@ -13,7 +13,6 @@ Type
   tArguments = array[0..63] of variant;
 
   ExcelRange = dispinterface ['{00020846-0000-0000-C000-000000000046}']
-    property _Default[{optional}RowIndex: OleVariant; {optional} ColumnIndex: OleVariant]: OleVariant dispid 0; default;
     property Value: OleVariant dispid 6;
   end;
 
@@ -25,13 +24,13 @@ Type
   end;
 
   WorkbooksDisp = dispinterface ['{000208DB-0000-0000-C000-000000000046}']
-    function Add({optional} Template: OleVariant): ExcelWorkbook; dispid 181;
+    function Add(Template: OleVariant; lcid: Integer): ExcelWorkbook; dispid 181;
   end;
 
   ExcelApplicationDisp = dispinterface ['{000208D5-0000-0000-C000-000000000046}']
     property ActiveSheet: IDispatch readonly dispid 307;
     property Workbooks: IDispatch readonly dispid 572;
-    property Visible: WordBool dispid 558;
+    property Visible[lcid: Integer]: WordBool dispid 558;
   end;
 
 Function CheckOle(Msg : string;hres : HResult) : HResult;
@@ -65,10 +64,10 @@ begin
   hres := CheckOle('CLSIDFromProgID',CLSIDFromProgID('Excel.Application', aclsid));
   hres := CheckOle('CoCreate',CoCreateInstance(aclsid, Nil, {CLSCTX_INPROC_SERVER or }CLSCTX_LOCAL_SERVER, IID_IDispatch, excelApp));
 
-  ExcelApp.Visible := true;
+  ExcelApp.Visible[0] := true;
   { Following should also be possible as ExcelApp.Workbooks.Add !!}
   WorkBooks := ExcelApp.WorkBooks as WorkBooksDisp;
-  WorkBooks.Add(EmptyParam);
+  WorkBooks.Add(Null,0);
   {
     The following should also work as
       For I:=1 to 5 do
@@ -79,8 +78,8 @@ begin
   For I:=1 to 5 do
     for j:=1 to 5 do
       begin
-      Cells:=ActiveSheet.Cells[I,J];
-      Cells.Value:=I+J;
+//      Cells:=ActiveSheet.Cells[I,J];
+//      Cells.Value:=I+J;
       end;
   // Free everything.
   Cells:=Nil;

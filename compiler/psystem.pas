@@ -54,6 +54,7 @@ implementation
         all intern procedures for the system unit
       }
       begin
+<<<<<<< HEAD
         systemunit.insert(csyssym.create('Concat',in_concat_x));
         systemunit.insert(csyssym.create('Write',in_write_x));
         systemunit.insert(csyssym.create('WriteLn',in_writeln_x));
@@ -107,6 +108,69 @@ implementation
         systemunit.insert(csyssym.create('SetString',in_setstring_x_y_z));
         systemunit.insert(cconstsym.create_ord('False',constord,0,pasbool8type));
         systemunit.insert(cconstsym.create_ord('True',constord,1,pasbool8type));
+=======
+        systemunit.insert(tsyssym.create('Concat',in_concat_x));
+        systemunit.insert(tsyssym.create('Write',in_write_x));
+        systemunit.insert(tsyssym.create('WriteLn',in_writeln_x));
+        systemunit.insert(tsyssym.create('WriteStr',in_writestr_x));
+        systemunit.insert(tsyssym.create('Assigned',in_assigned_x));
+        systemunit.insert(tsyssym.create('Read',in_read_x));
+        systemunit.insert(tsyssym.create('ReadLn',in_readln_x));
+        systemunit.insert(tsyssym.create('ReadStr',in_readstr_x));
+        systemunit.insert(tsyssym.create('Ofs',in_ofs_x));
+        systemunit.insert(tsyssym.create('SizeOf',in_sizeof_x));
+        systemunit.insert(tsyssym.create('BitSizeOf',in_bitsizeof_x));
+        systemunit.insert(tsyssym.create('TypeOf',in_typeof_x));
+        systemunit.insert(tsyssym.create('Low',in_low_x));
+        systemunit.insert(tsyssym.create('High',in_high_x));
+        systemunit.insert(tsyssym.create('Slice',in_slice_x));
+        systemunit.insert(tsyssym.create('Seg',in_seg_x));
+        systemunit.insert(tsyssym.create('Ord',in_ord_x));
+        systemunit.insert(tsyssym.create('Pred',in_pred_x));
+        systemunit.insert(tsyssym.create('Succ',in_succ_x));
+        systemunit.insert(tsyssym.create('Exclude',in_exclude_x_y));
+        systemunit.insert(tsyssym.create('Include',in_include_x_y));
+        systemunit.insert(tsyssym.create('Pack',in_pack_x_y_z));
+        systemunit.insert(tsyssym.create('Unpack',in_unpack_x_y_z));
+        systemunit.insert(tsyssym.create('Break',in_break));
+        systemunit.insert(tsyssym.create('Exit',in_exit));
+        systemunit.insert(tsyssym.create('Continue',in_continue));
+        systemunit.insert(tsyssym.create('Leave',in_leave)); {macpas only}
+        systemunit.insert(tsyssym.create('Cycle',in_cycle)); {macpas only}
+        systemunit.insert(tsyssym.create('Dec',in_dec_x));
+        systemunit.insert(tsyssym.create('Inc',in_inc_x));
+        systemunit.insert(tsyssym.create('Str',in_str_x_string));
+        systemunit.insert(tsyssym.create('Assert',in_assert_x_y));
+        systemunit.insert(tsyssym.create('Val',in_val_x));
+        systemunit.insert(tsyssym.create('Addr',in_addr_x));
+        systemunit.insert(tsyssym.create('TypeInfo',in_typeinfo_x));
+        systemunit.insert(tsyssym.create('SetLength',in_setlength_x));
+        systemunit.insert(tsyssym.create('Copy',in_copy_x));
+        systemunit.insert(tsyssym.create('Initialize',in_initialize_x));
+        systemunit.insert(tsyssym.create('Finalize',in_finalize_x));
+        systemunit.insert(tsyssym.create('Length',in_length_x));
+        systemunit.insert(tsyssym.create('New',in_new_x));
+        systemunit.insert(tsyssym.create('Dispose',in_dispose_x));
+{$if defined(x86) or defined(arm)}
+        systemunit.insert(tsyssym.create('Get_Frame',in_get_frame));
+{$endif defined(x86) or defined(arm)}
+        systemunit.insert(tsyssym.create('Unaligned',in_unaligned_x));
+<<<<<<< HEAD
+        systemunit.insert(tsyssym.create('ObjCSelector',in_objc_selector_x)); { objc only }
+        systemunit.insert(tsyssym.create('ObjCEncode',in_objc_encode_x)); { objc only }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+{$endif SUPPORT_UNALIGNED}
+>>>>>>> origin/fixes_2.4
       end;
 
 
@@ -200,10 +264,26 @@ implementation
         begin
           if init_settings.fputype<>fpu_none then
             begin
+<<<<<<< HEAD
               s32floattype:=cfloatdef.create(s32real,true);
               s64floattype:=cfloatdef.create(s64real,true);
               s80floattype:=cfloatdef.create(s80real,true);
               sc80floattype:=cfloatdef.create(sc80real,true);
+=======
+              s32floattype:=tfloatdef.create(s32real);
+              s64floattype:=tfloatdef.create(s64real);
+              s80floattype:=tfloatdef.create(s80real);
+              sc80floattype:=tfloatdef.create(sc80real);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
             end else begin
               s32floattype:=nil;
               s64floattype:=nil;
@@ -247,10 +327,17 @@ implementation
         cwidechartype:=corddef.create(uwidechar,0,65535,true);
         cshortstringtype:=cstringdef.createshort(255,true);
         { should we give a length to the default long and ansi string definition ?? }
+<<<<<<< HEAD
         clongstringtype:=cstringdef.createlong(-1,true);
         cansistringtype:=cstringdef.createansi(0,true);
         if target_info.system in systems_windows then
           cwidestringtype:=cstringdef.createwide(true)
+=======
+        clongstringtype:=tstringdef.createlong(-1);
+        cansistringtype:=tstringdef.createansi;
+        if target_info.system in systems_windows then
+          cwidestringtype:=tstringdef.createwide
+>>>>>>> graemeg/cpstrnew
         else
           cwidestringtype:=cstringdef.createunicode(true);
         cunicodestringtype:=cstringdef.createunicode(true);
@@ -293,6 +380,7 @@ implementation
         s64currencytype:=corddef.create(scurrency,low(int64),high(int64),true);
 {$endif aarch64}
 {$ifdef avr}
+<<<<<<< HEAD
         s32floattype:=cfloatdef.create(s32real,true);
         s64floattype:=cfloatdef.create(s64real,true);
         s80floattype:=cfloatdef.create(s80real,true);
@@ -308,6 +396,49 @@ implementation
         s64currencytype:=corddef.create(scurrency,low(int64),high(int64),true);
 {$endif jvm}
         set_default_int_types;
+=======
+        s32floattype:=tfloatdef.create(s32real);
+        s64floattype:=tfloatdef.create(s64real);
+        s80floattype:=tfloatdef.create(s80real);
+        sc80floattype:=tfloatdef.create(sc80real);
+        s64currencytype:=torddef.create(scurrency,low(int64),high(int64));
+{$endif avr}
+{$ifdef cpu64bitaddr}
+        uinttype:=u64inttype;
+        sinttype:=s64inttype;
+        ptruinttype:=u64inttype;
+        ptrsinttype:=s64inttype;
+{$endif cpu64bitaddr}
+{$ifdef cpu32bitaddr}
+        ptruinttype:=u32inttype;
+        ptrsinttype:=s32inttype;
+{$endif cpu32bitaddr}
+{$ifdef cpu32bitalu}
+        uinttype:=u32inttype;
+        sinttype:=s32inttype;
+{$endif cpu32bitalu}
+{$ifdef cpu16bitaddr}
+        ptruinttype:=u16inttype;
+        ptrsinttype:=s16inttype;
+{$endif cpu16bitaddr}
+{$ifdef cpu16bitalu}
+        uinttype:=u16inttype;
+        sinttype:=s16inttype;
+{$endif cpu16bitalu}
+{$ifdef cpu8bitalu}
+        uinttype:=u8inttype;
+        sinttype:=s8inttype;
+{$endif cpu8bitalu}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         { some other definitions }
         openchararraytype:=carraydef.create(0,-1,ptrsinttype);
         tarraydef(openchararraytype).elementdef:=cansichartype;
@@ -366,6 +497,10 @@ implementation
             addtype('Extended',pbestrealtype^);
             { CExtended corresponds to the C version of the Extended type
               (either "long double" or "double") }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             if target_info.system in systems_android then
               { Android has "long double"="double" even for x86 }
               addtype('CExtended',s64floattype)
@@ -374,6 +509,27 @@ implementation
                 addtype('CExtended',sc80floattype)
               else
                 addtype('CExtended',pbestrealtype^);
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+            if tfloatdef(pbestrealtype^).floattype=s80real then
+              addtype('CExtended',sc80floattype)
+            else
+              addtype('CExtended',pbestrealtype^);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           end;
 {$ifdef x86}
 {$ifndef FPC_SUPPORT_X87_TYPES_ON_WIN64}
@@ -493,6 +649,7 @@ implementation
             addtype('$sc80real',sc80floattype);
           end;
         addtype('$s64currency',s64currencytype);
+<<<<<<< HEAD
         if not(target_info.system in systems_managed_vm) then
           begin
             { Add a type for virtual method tables }
@@ -525,6 +682,66 @@ implementation
         addfield(hrecst,cfieldvarsym.create('$proc',vs_value,voidcodepointertype,[],true));
         addfield(hrecst,cfieldvarsym.create('$self',vs_value,voidpointertype,[],true));
         methodpointertype:=crecorddef.create('',hrecst);
+=======
+        { Add a type for virtual method tables }
+        hrecst:=trecordsymtable.create('',current_settings.packrecords);
+        vmttype:=trecorddef.create('',hrecst);
+        pvmttype:=tpointerdef.create(vmttype);
+        { can't use addtype for pvmt because the rtti of the pointed
+          type is not available. The rtti for pvmt will be written implicitly
+          by thev tblarray below }
+        systemunit.insert(ttypesym.create('$pvmt',pvmttype));
+<<<<<<< HEAD
+<<<<<<< HEAD
+        addfield(hrecst,tfieldvarsym.create('$length',vs_value,ptrsinttype,[]));
+        addfield(hrecst,tfieldvarsym.create('$mlength',vs_value,ptrsinttype,[]));
+        addfield(hrecst,tfieldvarsym.create('$parent',vs_value,pvmttype,[]));
+=======
+        hrecst.insertfield(tfieldvarsym.create('$length',vs_value,ptrsinttype,[]));
+        hrecst.insertfield(tfieldvarsym.create('$mlength',vs_value,ptrsinttype,[]));
+        hrecst.insertfield(tfieldvarsym.create('$parent',vs_value,pvmttype,[]));
+>>>>>>> graemeg/fixes_2_2
+=======
+        hrecst.insertfield(tfieldvarsym.create('$length',vs_value,ptrsinttype,[]));
+        hrecst.insertfield(tfieldvarsym.create('$mlength',vs_value,ptrsinttype,[]));
+        hrecst.insertfield(tfieldvarsym.create('$parent',vs_value,pvmttype,[]));
+>>>>>>> origin/fixes_2_2
+        { it seems vmttype is used both for TP objects and Delphi classes,
+          so the next entry could either be the first virtual method (vm1)
+          (object) or the class name (class). We can't easily create separate
+          vtable formats for both, as gdb is hard coded to search for
+          __vtbl_ptr_type in all cases (JM) }
+<<<<<<< HEAD
+<<<<<<< HEAD
+        addfield(hrecst,tfieldvarsym.create('$vm1_or_classname',vs_value,tpointerdef.create(cshortstringtype),[]));
+=======
+        hrecst.insertfield(tfieldvarsym.create('$vm1_or_classname',vs_value,tpointerdef.create(cshortstringtype),[]));
+>>>>>>> graemeg/fixes_2_2
+=======
+        hrecst.insertfield(tfieldvarsym.create('$vm1_or_classname',vs_value,tpointerdef.create(cshortstringtype),[]));
+>>>>>>> origin/fixes_2_2
+        vmtarraytype:=tarraydef.create(0,0,s32inttype);
+        tarraydef(vmtarraytype).elementdef:=voidpointertype;
+        addfield(hrecst,tfieldvarsym.create('$__pfn',vs_value,vmtarraytype,[]));
+        addtype('$__vtbl_ptr_type',vmttype);
+        vmtarraytype:=tarraydef.create(0,1,s32inttype);
+        tarraydef(vmtarraytype).elementdef:=pvmttype;
+        addtype('$vtblarray',vmtarraytype);
+        { Add a type for methodpointers }
+        hrecst:=trecordsymtable.create('',1);
+        addfield(hrecst,tfieldvarsym.create('$proc',vs_value,voidpointertype,[]));
+        addfield(hrecst,tfieldvarsym.create('$self',vs_value,voidpointertype,[]));
+        methodpointertype:=trecorddef.create('',hrecst);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         addtype('$methodpointer',methodpointertype);
         { Add a type for nested proc pointers }
         hrecst:=trecordsymtable.create('',1,current_settings.alignment.recordalignmin,current_settings.alignment.maxCrecordalign);
@@ -633,8 +850,25 @@ implementation
         loadtype('methodpointer',methodpointertype);
         loadtype('nestedprocpointer',nestedprocpointertype);
         loadtype('HRESULT',hresultdef);
+<<<<<<< HEAD
         set_default_int_types;
         set_default_ptr_types;
+=======
+{$ifdef cpu64bit}
+        uinttype:=u64inttype;
+        sinttype:=s64inttype;
+        ptruinttype:=u64inttype;
+        ptrsinttype:=s64inttype;
+{$else cpu64bit}
+        uinttype:=u32inttype;
+        sinttype:=s32inttype;
+        ptruinttype:=u32inttype;
+        ptrsinttype:=s32inttype;
+{$endif cpu64bit}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         set_current_module(oldcurrentmodule);
       end;
 
@@ -750,17 +984,47 @@ implementation
 {$ifdef SPARC}
 //        aiclass[ait_labeled_instruction]:=tai_labeled_instruction;
 {$endif SPARC}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         aiclass[ait_symbolpair]:=tai_symbolpair;
         aiclass[ait_weak]:=tai_weak;
+=======
+{$ifdef arm}
+        aiclass[ait_thumb_func]:=tai_thumb_func;
+{$endif arm}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef arm}
+        aiclass[ait_thumb_func]:=tai_thumb_func;
+{$endif arm}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef arm}
+        aiclass[ait_thumb_func]:=tai_thumb_func;
+{$endif arm}
+>>>>>>> graemeg/cpstrnew
+=======
+{$ifdef arm}
+        aiclass[ait_thumb_func]:=tai_thumb_func;
+{$endif arm}
+>>>>>>> origin/cpstrnew
         aiclass[ait_cutobject]:=tai_cutobject;
         aiclass[ait_regalloc]:=tai_regalloc;
         aiclass[ait_tempalloc]:=tai_tempalloc;
         aiclass[ait_marker]:=tai_marker;
+<<<<<<< HEAD
+<<<<<<< HEAD
         aiclass[ait_seh_directive]:=tai_seh_directive;
 {$ifdef JVM}
         aiclass[ait_jvar]:=tai_jvar;
         aiclass[ait_jcatch]:=tai_jcatch;
 {$endif JVM}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       end;
 
 end.

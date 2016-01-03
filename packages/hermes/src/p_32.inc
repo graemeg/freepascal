@@ -6,19 +6,7 @@
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version
-    with the following modification:
-
-    As a special exception, the copyright holders of this library give you
-    permission to link this library with independent modules to produce an
-    executable, regardless of the license terms of these independent modules,and
-    to copy and distribute the resulting executable under terms of your choice,
-    provided that you also meet, for each linked independent module, the terms
-    and conditions of the license of that module. An independent module is a
-    module which is not derived from or based on this library. If you modify
-    this library, you may extend this exception to your version of the library,
-    but you are not obligated to do so. If you do not wish to do so, delete this
-    exception statement from your version.
+    version 2.1 of the License, or (at your option) any later version.
 
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -47,472 +35,470 @@
 
 
 { TO 32 BGR }
-procedure ConvertP_32rgb888_32bgr888(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  s_pixel: Uint32;
-  s_ptr: PUint8;
-  tmp: Uint8;
-begin
+Procedure ConvertP_32rgb888_32bgr888(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  s_pixel : int32;
+  s_ptr : Pchar8;
+  tmp : char8;
+
+Begin
   s_ptr := @s_pixel;
-  repeat
-    s_pixel := PUint32(source)^;
+  Repeat
+    s_pixel := Pint32(source)^;
 
     tmp := (s_ptr + R_32)^;
     (s_ptr + R_32)^ := (s_ptr + B_32)^;
     (s_ptr + B_32)^ := tmp;
 
-    PUint32(dest)^ := s_pixel;
+    Pint32(dest)^ := s_pixel;
 
     Inc(dest, 4);
     Inc(source, 4);
     Dec(count);
-  until count = 0;
-end;
+  Until count = 0;
+End;
 
 { 32 RGBA }
-procedure ConvertP_32rgb888_32rgba888(source, dest: PUint8; count, inc_source: DWord); cdecl;
-begin
-  repeat
-    PUint32(dest)^ := (PUint32(source)^ shl 8) or $ff;
+Procedure ConvertP_32rgb888_32rgba888(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Begin
+  Repeat
+    Pint32(dest)^ := (Pint32(source)^ Shl 8) Or $ff;
 
     Inc(dest, 4);
     Inc(source, 4);
     Dec(count);
-  until count = 0;
-end;
+  Until count = 0;
+End;
 
 { 32 BGRA }
-procedure ConvertP_32rgb888_32bgra888(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  s_pixel: Uint32;
-  s_ptr: PUint8;
-  tmp: Uint8;
-begin
+Procedure ConvertP_32rgb888_32bgra888(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  s_pixel : int32;
+  s_ptr : Pchar8;
+  tmp : char8;
+
+Begin
   s_ptr := @s_pixel;
-  repeat
-    s_pixel := PUint32(source)^;
+  Repeat
+    s_pixel := Pint32(source)^;
 
     tmp := (s_ptr + R_32)^;
     (s_ptr + R_32)^ := (s_ptr + B_32)^;
     (s_ptr + B_32)^ := tmp;
 
-    PUint32(dest)^ := (s_pixel shl 8) or $ff;
+    Pint32(dest)^ := (s_pixel Shl 8) Or $ff;
 
     Inc(dest, 4);
     Inc(source, 4);
     Dec(count);
-  until count = 0;
-end;
+  Until count = 0;
+End;
 
 { TO 24 RGB }
-procedure ConvertP_32rgb888_24rgb888(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  s_pixel, s_pixel2: Uint32;
-  s_point: PUint8;
-  c: DWord;
-begin
-  s_point := PUint8(@s_pixel) + (R_32 - R_24);
+Procedure ConvertP_32rgb888_24rgb888(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  s_pixel, s_pixel2 : int32;
+  s_point : Pchar8;
+  c : DWord;
+
+Begin
+  s_point := @s_pixel;
 
   { Align mod 4 (quite important in this case.. ) }
 
-  while (PtrUInt(dest) and $3) <> 0 do
-  begin
-    s_pixel := PUint32(source)^;
+  While (PtrUInt(dest) And $3) <> 0 Do
+  Begin
+    s_pixel := Pint32(source)^;
 
-    (dest + 0)^ := (s_point + 0)^;
-    (dest + 1)^ := (s_point + 1)^;
-    (dest + 2)^ := (s_point + 2)^;
+    (dest + R_24)^ := (s_point + R_32)^;
+    (dest + G_24)^ := (s_point + G_32)^;
+    (dest + B_24)^ := (s_point + B_32)^;
 
     Inc(source, 4);
     Inc(dest, 3);
 
     Dec(count);
-    if count = 0 then
-      exit;
-  end;
+    If count = 0 Then
+      Exit;
+  End;
 
-  { Main loop. }
+  { Main loop. TODO: Big endian check! }
 
-  c := count shr 2;
-  while c <> 0 do
-  begin
+  c := count Shr 2;
+  While c <> 0 Do
+  Begin
     Dec(c);
-    s_pixel := PUint32(source)^;
-    s_pixel2 := (PUint32(source) + 1)^;
+    s_pixel := Pint32(source)^;
+    s_pixel2 := (Pint32(source) + 1)^;
 
-    {$IFDEF FPC_LITTLE_ENDIAN}
-    s_pixel := (s_pixel and $ffffff) or (s_pixel2 shl 24);
-    {$ELSE FPC_LITTLE_ENDIAN}
-    s_pixel := (s_pixel shl 8) or ((s_pixel2 shr 16) and $FF);
-    {$ENDIF FPC_LITTLE_ENDIAN}
-    PUint32(dest)^ := s_pixel;
+    s_pixel := (s_pixel And $ffffff) Or (s_pixel2 Shl 24);
+    Pint32(dest)^ := s_pixel;
 
-    s_pixel := (PUint32(source) + 2)^;
-    {$IFDEF FPC_LITTLE_ENDIAN}
-    s_pixel2 := ((s_pixel2 shr 8) and $ffff) or (s_pixel shl 16);
-    {$ELSE FPC_LITTLE_ENDIAN}
-    s_pixel2 := (s_pixel2 shl 16) or ((s_pixel shr 8) and $FFFF);
-    {$ENDIF FPC_LITTLE_ENDIAN}
-    (PUint32(dest) + 1)^ := s_pixel2;
+    s_pixel := (Pint32(source) + 2)^;
+    s_pixel2 := ((s_pixel2 Shr 8) And $ffff) Or (s_pixel Shl 16);
+    (Pint32(dest) + 1)^ := s_pixel2;
 
-    s_pixel2 := (PUint32(source) + 3)^;
-    {$IFDEF FPC_LITTLE_ENDIAN}
-    s_pixel := ((s_pixel shr 16) and $ff) or (s_pixel2 shl 8);
-    {$ELSE FPC_LITTLE_ENDIAN}
-    s_pixel := (s_pixel shl 24) or (s_pixel2 and $FFFFFF);
-    {$ENDIF FPC_LITTLE_ENDIAN}
-    (PUint32(dest) + 2)^ := s_pixel;
+    s_pixel2 := (Pint32(source) + 3)^;
+    s_pixel := ((s_pixel Shr 16) And $ff) Or (s_pixel2 Shl 8);
+    (Pint32(dest) + 2)^ := s_pixel;
 
     Inc(source, 16);
     Inc(dest, 12);
-  end;
+  End;
 
   { Convert trailing pixels }
 
-  count := count and $3;
-  while count <> 0 do
-  begin
+  count := count And $3;
+  While count <> 0 Do
+  Begin
     Dec(count);
-    s_pixel := PUint32(source)^;
+    s_pixel := Pint32(source)^;
 
-    (dest + 0)^ := (s_point + 0)^;
-    (dest + 1)^ := (s_point + 1)^;
-    (dest + 2)^ := (s_point + 2)^;
+    (dest + R_24)^ := (s_point + R_32)^;
+    (dest + G_24)^ := (s_point + G_32)^;
+    (dest + B_24)^ := (s_point + B_32)^;
 
     Inc(source, 4);
     Inc(dest, 3);
-  end;
-end;
+  End;
+End;
 
 { TO 24 BGR }
-procedure ConvertP_32rgb888_24bgr888(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  s_pixel: Uint32;
-  s_point: PUint8;
-begin
-  s_point := PUint8(@s_pixel) + (R_32 - R_24);
-  repeat
-    s_pixel := PUint32(source)^;
+Procedure ConvertP_32rgb888_24bgr888(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  s_pixel : int32;
+  s_point : Pchar8;
+
+Begin
+  s_point := @s_pixel;
+  Repeat
+    s_pixel := Pint32(source)^;
 
     { Note that R and B are swapped }
-    (dest + 0)^ := (s_point + 2)^;
-    (dest + 1)^ := (s_point + 1)^;
-    (dest + 2)^ := (s_point + 0)^;
+    (dest + B_24)^ := (s_point + R_32)^;
+    (dest + G_24)^ := (s_point + G_32)^;
+    (dest + R_24)^ := (s_point + B_32)^;
 
     Inc(source, 4);
     Inc(dest, 3);
     Dec(count);
-  until count = 0;
-end;
+  Until count = 0;
+End;
 
 { TO 16 RGB 565 }
-procedure ConvertP_32rgb888_16rgb565(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  i: DWord;
-  s_pixel: Uint32;
-  source_32, dest_32: PUint32;
-begin
-  dest_32 := PUint32(dest);
-  source_32 := PUint32(source);
+Procedure ConvertP_32rgb888_16rgb565(source, dest : Pchar8; count, inc_source : DWord); CDecl;
 
-  { if the current pixel isn't dword aligned, try write one pixel first }
-  if (PtrUInt(dest_32) and $3) <> 0 then
-  begin
-    s_pixel := ((source_32^ shr 8) and $f800) or
-               ((source_32^ shr 5) and $7e0) or
-               ((source_32^ shr 3) and $1f);
+Var
+  i : DWord;
+  s_pixel : int32;
+  source_32, dest_32 : Pint32;
 
-    PUint16(dest_32)^ := s_pixel;
+Begin
+  dest_32 := Pint32(dest);
+  source_32 := Pint32(source);
 
-    dest_32 := PUint32(dest + 2);
+  { If the current pixel isn't dword aligned, try write one pixel first }
+  If (PtrUInt(dest_32) And $3) <> 0 Then
+  Begin
+    s_pixel := ((source_32^ Shr 8) And $f800) Or
+               ((source_32^ Shr 5) And $7e0) Or
+               ((source_32^ Shr 3) And $1f);
+
+    Pshort16(dest_32)^ := s_pixel;
+
+    dest_32 := Pint32(dest + 2);
     Inc(source_32);
 
     Dec(count);
-  end;
+  End;
 
   { Write blocks of two pixels }
 
-  for i := 1 to count shr 1 do
-  begin
+  For i := 1 To count Shr 1 Do
+  Begin
     {This horrible construct is actually faster than loading into a variable}
-    {$IFDEF FPC_LITTLE_ENDIAN}
-    dest_32^ := ((source_32^ shr 8) and $f800) or
-                ((source_32^ shr 5) and $7e0) or
-                ((source_32^ shr 3) and $1f) or
-                (((source_32 + 1)^ shl 8) and $f8000000) or
-                (((source_32 + 1)^ shl 11) and $7e00000) or
-                (((source_32 + 1)^ shl 13) and $1f0000);
-    {$ELSE FPC_LITTLE_ENDIAN}
-    dest_32^ := ((source_32^ shl 8) and $f8000000) or
-                ((source_32^ shl 11) and $7e00000) or
-                ((source_32^ shl 13) and $1f0000) or
-                (((source_32 + 1)^ shr 8) and $f800) or
-                (((source_32 + 1)^ shr 5) and $7e0) or
-                (((source_32 + 1)^ shr 3) and $1f);
-    {$ENDIF FPC_LITTLE_ENDIAN}
+    dest_32^ := ((source_32^ Shr 8) And $f800) Or
+                ((source_32^ Shr 5) And $7e0) Or
+                ((source_32^ Shr 3) And $1f) Or
+                (((source_32 + 1)^ Shl 8) And $f8000000) Or
+                (((source_32 + 1)^ Shl 11) And $7e00000) Or
+                (((source_32 + 1)^ Shl 13) And $1f0000);
 
     Inc(dest_32);
     Inc(source_32, 2);
-  end;
+  End;
 
   { Eventually, write a single odd pixel that might be left }
-  if (count and 1) <> 0 then
-  begin
+  If (count And 1) <> 0 Then
+  Begin
     s_pixel := source_32^;
-    PUint16(dest_32)^ := ((s_pixel shr 8) and $f800) or
-                          ((s_pixel shr 5) and $7e0) or
-                          ((s_pixel shr 3) and $1f);
-  end;
-end;
+    Pshort16(dest_32)^ := ((s_pixel Shr 8) And $f800) Or
+                          ((s_pixel Shr 5) And $7e0) Or
+                          ((s_pixel Shr 3) And $1f);
+  End;
+End;
 
 { TO 16 BGR 565 }
-procedure ConvertP_32rgb888_16bgr565(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  i: DWord;
-  r, g, b: Uint32;
-  s_pixel, d_pixelblock: Uint32;
-  d_pixel: Uint16;
-begin
-  { if the current pixel isn't dword aligned, try write one pixel first }
-  if (PtrUInt(dest) and $3) <> 0 then
-  begin
-    s_pixel := PUint32(source)^;
+Procedure ConvertP_32rgb888_16bgr565(source, dest : Pchar8; count, inc_source : DWord); CDecl;
 
-    r := (s_pixel shr 19) and $1f;
-    g := (s_pixel shr 5) and $7e0;
-    b := (s_pixel shl 8) and $f800;
+Var
+  i : DWord;
+  r, g, b : int32;
+  s_pixel, d_pixelblock : int32;
+  d_pixel : short16;
 
-    d_pixel := r or g or b;
+Begin
+  { If the current pixel isn't dword aligned, try write one pixel first }
+  If (PtrUInt(dest) And $3) <> 0 Then
+  Begin
+    s_pixel := Pint32(source)^;
 
-    PUint16(dest)^ := d_pixel;
+    r := (s_pixel Shr 19) And $1f;
+    g := (s_pixel Shr 5) And $7e0;
+    b := (s_pixel Shl 8) And $f800;
+
+    d_pixel := r Or g Or b;
+
+    Pshort16(dest)^ := d_pixel;
 
     Inc(source, 4);
     Inc(dest, 2);
     Dec(count);
-  end;
+  End;
 
   { Write blocks of two pixels }
-  for i := 1 to count shr 1 do
-  begin
-    s_pixel := PUint32(source)^;
+  For i := 1 To count Shr 1 Do
+  Begin
+    s_pixel := Pint32(source)^;
 
-    d_pixelblock := (((s_pixel shr 19) and $1f) or
-                     ((s_pixel shr 5) and $7e0) or
-                     ((s_pixel shl 8) and $f800)) shl DWORD_SMALLINT0_SHL;
+    d_pixelblock := ((s_pixel Shr 19) And $1f) Or
+                    ((s_pixel Shr 5) And $7e0) Or
+                    ((s_pixel Shl 8) And $f800);
 
-    s_pixel := (PUint32(source) + 1)^;
+    s_pixel := (Pint32(source) + 1)^;
 
-    d_pixelblock := d_pixelblock or
-                  ((((s_pixel shr 19) and $1f) or
-                    ((s_pixel shr 5) and $7e0) or
-                    ((s_pixel shl 8) and $f800)) shl DWORD_SMALLINT1_SHL);
+    d_pixelblock := d_pixelblock Or
+                  ((((s_pixel Shr 19) And $1f) Or
+                    ((s_pixel Shr 5) And $7e0) Or
+                    ((s_pixel Shl 8) And $f800)) Shl 16);
 
-    PUint32(dest)^ := d_pixelblock;
+    Pint32(dest)^ := d_pixelblock;
     Inc(source, 8);
     Inc(dest, 4);
-  end;
+  End;
 
   { Eventually, write a single odd pixel that might be left }
-  if (count and 1) <> 0 then
-  begin
-    s_pixel := PUint32(source)^;
+  If (count And 1) <> 0 Then
+  Begin
+    s_pixel := Pint32(source)^;
 
-    r := (s_pixel shr 19) and $1f;
-    g := (s_pixel shr 5) and $7e0;
-    b := (s_pixel shl 8) and $f800;
+    r := (s_pixel Shr 19) And $1f;
+    g := (s_pixel Shr 5) And $7e0;
+    b := (s_pixel Shl 8) And $f800;
 
-    d_pixel := r or g or b;
+    d_pixel := r Or g Or b;
 
-    PUint16(dest)^ := d_pixel;
-  end;
-end;
+    Pshort16(dest)^ := d_pixel;
+  End;
+End;
 
 { TO 16 RGB 555 }
-procedure ConvertP_32rgb888_16rgb555(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  r, g, b: Uint32;
-  s_pixel, d_pixelblock: Uint32;
-  d_pixel: Uint16;
-  i: DWord;
-begin
-  if (PtrUInt(dest) and $3) <> 0 then
-  begin
-    s_pixel := PUint32(source)^;
+Procedure ConvertP_32rgb888_16rgb555(source, dest : Pchar8; count, inc_source : DWord); CDecl;
 
-    r := (s_pixel shr 9) and $7c00;
-    g := (s_pixel shr 6) and $3e0;
-    b := (s_pixel shr 3) and $1f;
+Var
+  r, g, b : int32;
+  s_pixel, d_pixelblock : int32;
+  d_pixel : short16;
+  i : DWord;
 
-    d_pixel := r or g or b;
+Begin
+  If (PtrUInt(dest) And $3) <> 0 Then
+  Begin
+    s_pixel := Pint32(source)^;
 
-    PUint16(dest)^ := d_pixel;
+    r := (s_pixel Shr 9) And $7c00;
+    g := (s_pixel Shr 6) And $3e0;
+    b := (s_pixel Shr 3) And $1f;
+
+    d_pixel := r Or g Or b;
+
+    Pshort16(dest)^ := d_pixel;
 
     Inc(source, 4);
     Inc(dest, 2);
     Dec(count);
-  end;
+  End;
 
-  for i := 1 to count shr 1 do
-  begin
-    s_pixel := PUint32(source)^;
+  For i := 1 To count Shr 1 Do
+  Begin
+    s_pixel := Pint32(source)^;
 
-    d_pixelblock := (((s_pixel shr 9) and $7c00) or
-                     ((s_pixel shr 6) and $3e0) or
-                     ((s_pixel shr 3) and $1f)) shl DWORD_SMALLINT0_SHL;
+    d_pixelblock := ((s_pixel Shr 9) And $7c00) Or
+                    ((s_pixel Shr 6) And $3e0) Or
+                    ((s_pixel Shr 3) And $1f);
 
-    s_pixel := (PUint32(source) + 1)^;
+    s_pixel := (Pint32(source) + 1)^;
 
-    d_pixelblock := d_pixelblock or
-                  ((((s_pixel shr 9) and $7c00) or
-                    ((s_pixel shr 6) and $3e0) or
-                    ((s_pixel shr 3) and $1f)) shl DWORD_SMALLINT1_SHL);
+    d_pixelblock := d_pixelblock Or
+                  ((((s_pixel Shr 9) And $7c00) Or
+                    ((s_pixel Shr 6) And $3e0) Or
+                    ((s_pixel Shr 3) And $1f)) Shl 16);
 
-    PUint32(dest)^ := d_pixelblock;
+    Pint32(dest)^ := d_pixelblock;
     Inc(source, 8);
     Inc(dest, 4);
-  end;
+  End;
 
-  if (count and 1) <> 0 then
-  begin
-    s_pixel := PUint32(source)^;
+  If (count And 1) <> 0 Then
+  Begin
+    s_pixel := Pint32(source)^;
 
-    r := (s_pixel shr 9) and $7c00;
-    g := (s_pixel shr 6) and $3e0;
-    b := (s_pixel shr 3) and $1f;
+    r := (s_pixel Shr 9) And $7c00;
+    g := (s_pixel Shr 6) And $3e0;
+    b := (s_pixel Shr 3) And $1f;
 
-    d_pixel := r or g or b;
+    d_pixel := r Or g Or b;
 
-    PUint16(dest)^ := d_pixel;
-  end;
-end;
+    Pshort16(dest)^ := d_pixel;
+  End;
+End;
 
 { TO 16 BGR 555 }
-procedure ConvertP_32rgb888_16bgr555(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  r, g, b: Uint32;
-  s_pixel, d_pixelblock: Uint32;
-  d_pixel: Uint16;
-  i: DWord;
-begin
-  if (PtrUInt(dest) and $3) <> 0 then
-  begin
-    s_pixel := PUint32(source)^;
+Procedure ConvertP_32rgb888_16bgr555(source, dest : Pchar8; count, inc_source : DWord); CDecl;
 
-    r := (s_pixel shr 19) and $1f;
-    g := (s_pixel shr 6) and $3e0;
-    b := (s_pixel shl 7) and $7c00;
+Var
+  r, g, b : int32;
+  s_pixel, d_pixelblock : int32;
+  d_pixel : short16;
+  i : DWord;
 
-    d_pixel := r or g or b;
+Begin
+  If (PtrUInt(dest) And $3) <> 0 Then
+  Begin
+    s_pixel := Pint32(source)^;
 
-    PUint16(dest)^ := d_pixel;
+    r := (s_pixel Shr 19) And $1f;
+    g := (s_pixel Shr 6) And $3e0;
+    b := (s_pixel Shl 7) And $7c00;
+
+    d_pixel := r Or g Or b;
+
+    Pshort16(dest)^ := d_pixel;
 
     Inc(source, 4);
     Inc(dest, 2);
     Dec(count);
-  end;
+  End;
 
-  for i := 1 to count shr 1 do
-  begin
-    s_pixel := PUint32(source)^;
+  For i := 1 To count Shr 1 Do
+  Begin
+    s_pixel := Pint32(source)^;
 
-    d_pixelblock := (((s_pixel shr 19) and $1f) or
-                     ((s_pixel shr 6) and $3e0) or
-                     ((s_pixel shl 7) and $7c00)) shl DWORD_SMALLINT0_SHL;
+    d_pixelblock := ((s_pixel Shr 19) And $1f) Or
+                    ((s_pixel Shr 6) And $3e0) Or
+                    ((s_pixel Shl 7) And $7c00);
 
-    s_pixel := (PUint32(source) + 1)^;
+    s_pixel := (Pint32(source) + 1)^;
 
-    d_pixelblock := d_pixelblock or
-                  ((((s_pixel shr 19) and $1f) or
-                    ((s_pixel shr 6) and $3e0) or
-                    ((s_pixel shl 7) and $7c00)) shl DWORD_SMALLINT1_SHL);
+    d_pixelblock := d_pixelblock Or
+                  ((((s_pixel Shr 19) And $1f) Or
+                    ((s_pixel Shr 6) And $3e0) Or
+                    ((s_pixel Shl 7) And $7c00)) Shl 16);
 
-    PUint32(dest)^ := d_pixelblock;
+    Pint32(dest)^ := d_pixelblock;
     Inc(source, 8);
     Inc(dest, 4);
-  end;
+  End;
 
-  if (count and 1) <> 0 then
-  begin
-    s_pixel := PUint32(source)^;
+  If (count And 1) <> 0 Then
+  Begin
+    s_pixel := Pint32(source)^;
 
-    r := (s_pixel shr 19) and $1f;
-    g := (s_pixel shr 6) and $3e0;
-    b := (s_pixel shl 7) and $7c00;
+    r := (s_pixel Shr 19) And $1f;
+    g := (s_pixel Shr 6) And $3e0;
+    b := (s_pixel Shl 7) And $7c00;
 
-    d_pixel := r or g or b;
+    d_pixel := r Or g Or b;
 
-    PUint16(dest)^ := d_pixel;
-  end;
-end;
+    Pshort16(dest)^ := d_pixel;
+  End;
+End;
 
 { TO 8 RGB 332 }
-procedure ConvertP_32rgb888_8rgb332(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  i: DWord;
-  s_pixel, d_block: Uint32;
-  d_pixel: Uint8;
-begin
-  { Process single pixels until we are dword aligned }
-  while (PtrUInt(dest) and $3) <> 0 do
-  begin
-    s_pixel := PUint32(source)^;
+Procedure ConvertP_32rgb888_8rgb332(source, dest : Pchar8; count, inc_source : DWord); CDecl;
 
-    d_pixel := ((s_pixel shr 16) and $e0) or
-               ((s_pixel shr 11) and $1c) or
-               ((s_pixel shr 6) and $3);
+Var
+  i : DWord;
+  s_pixel, d_block : int32;
+  d_pixel : char8;
+
+Begin
+  { Process single pixels until we are dword aligned }
+  While (PtrUInt(dest) And $3) <> 0 Do
+  Begin
+    s_pixel := Pint32(source)^;
+
+    d_pixel := ((s_pixel Shr 16) And $e0) Or
+               ((s_pixel Shr 11) And $1c) Or
+               ((s_pixel Shr 6) And $3);
 
     dest^ := d_pixel;
 
     Dec(count);
-    if count = 0 then
-      exit;
+    If count = 0 Then
+      Exit;
     Inc(dest);
     Inc(source, 4);
-  end;
+  End;
 
   { Now process blocks of four pixels }
-  for i := 1 to count shr 2 do
-  begin
-    s_pixel := PUint32(source)^;
-    d_block := (((s_pixel shr 16) and $e0) or
-                ((s_pixel shr 11) and $1c) or
-                ((s_pixel shr 6) and $3)) shl DWORD_BYTE0_SHL;
+  For i := 1 To count Shr 2 Do
+  Begin
+    s_pixel := Pint32(source)^;
+    d_block := ((s_pixel Shr 16) And $e0) Or
+               ((s_pixel Shr 11) And $1c) Or
+               ((s_pixel Shr 6) And $3);
 
-    s_pixel := (PUint32(source) + 1)^;
-    d_block := ((((s_pixel shr 16) and $e0) or
-                 ((s_pixel shr 11) and $1c) or
-                 ((s_pixel shr 6) and $3)) shl DWORD_BYTE1_SHL) or d_block;
+    s_pixel := (Pint32(source) + 1)^;
+    d_block := ((((s_pixel Shr 16) And $e0) Or
+                 ((s_pixel Shr 11) And $1c) Or
+                 ((s_pixel Shr 6) And $3)) Shl 8) Or d_block;
 
-    s_pixel := (PUint32(source) + 2)^;
-    d_block := ((((s_pixel shr 16) and $e0) or
-                 ((s_pixel shr 11) and $1c) or
-                 ((s_pixel shr 6) and $3)) shl DWORD_BYTE2_SHL) or d_block;
+    s_pixel := (Pint32(source) + 2)^;
+    d_block := ((((s_pixel Shr 16) And $e0) Or
+                 ((s_pixel Shr 11) And $1c) Or
+                 ((s_pixel Shr 6) And $3)) Shl 16) Or d_block;
 
-    s_pixel := (PUint32(source) + 3)^;
-    d_block := ((((s_pixel shr 16) and $e0) or
-                 ((s_pixel shr 11) and $1c) or
-                 ((s_pixel shr 6) and $3)) shl DWORD_BYTE3_SHL) or d_block;
+    s_pixel := (Pint32(source) + 3)^;
+    d_block := ((((s_pixel Shr 16) And $e0) Or
+                 ((s_pixel Shr 11) And $1c) Or
+                 ((s_pixel Shr 6) And $3)) Shl 24) Or d_block;
 
-    PUint32(dest)^ := d_block;
+    Pint32(dest)^ := d_block;
     Inc(source, 16);
     Inc(dest, 4);
-  end;
+  End;
 
   { Write all possibly remaining pixel }
-  count := count and $3;
-  while count <> 0 do
-  begin
+  count := count And $3;
+  While count <> 0 Do
+  Begin
     Dec(count);
-    s_pixel := PUint32(source)^;
+    s_pixel := Pint32(source)^;
 
-    dest^ := ((s_pixel shr 16) and $e0) or
-             ((s_pixel shr 11) and $1c) or
-             ((s_pixel shr 6) and $3);
+    dest^ := ((s_pixel Shr 16) And $e0) Or
+             ((s_pixel Shr 11) And $1c) Or
+             ((s_pixel Shr 6) And $3);
 
     Inc(dest);
     Inc(source, 4);
-  end;
-end;
+  End;
+End;
 
 { -------------------------------------------------------------------------
 
@@ -520,439 +506,438 @@ end;
 
   ------------------------------------------------------------------------- }
 
-procedure ConvertP_32rgb888_32bgr888_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x: DWord;
-  s_pixel: Uint32;
-  s_ptr: PUint8;
-  tmp: Uint8;
-begin
+Procedure ConvertP_32rgb888_32bgr888_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x : DWord;
+  s_pixel : int32;
+  s_ptr : Pchar8;
+  tmp : char8;
+
+Begin
   x := 0;
   s_ptr := @s_pixel;
-  repeat
-    s_pixel := (PUint32(source)+(x shr 16))^;
+  Repeat
+    s_pixel := (Pint32(source)+(x Shr 16))^;
 
     tmp := (s_ptr + R_32)^;
     (s_ptr + R_32)^ := (s_ptr + B_32)^;
     (s_ptr + B_32)^ := tmp;
 
-    PUint32(dest)^ := s_pixel;
+    Pint32(dest)^ := s_pixel;
 
     Inc(dest, 4);
     Inc(x, inc_source);
     Dec(count);
-  until count = 0;
-end;
+  Until count = 0;
+End;
 
-procedure ConvertP_32rgb888_32rgba888_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x: DWord;
-begin
+Procedure ConvertP_32rgb888_32rgba888_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x : DWord;
+
+Begin
   x := 0;
-  repeat
-    PUint32(dest)^ := ((PUint32(source) + (x shr 16))^ shl 8) or $ff;
+  Repeat
+    Pint32(dest)^ := ((Pint32(source) + (x Shr 16))^ Shl 8) Or $ff;
 
     Inc(dest, 4);
     Inc(x, inc_source);
     Dec(count);
-  until count = 0;
-end;
+  Until count = 0;
+End;
 
-procedure ConvertP_32rgb888_32bgra888_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x: DWord;
-  s_pixel: Uint32;
-  s_ptr: PUint8;
-  tmp: Uint8;
-begin
+Procedure ConvertP_32rgb888_32bgra888_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x : DWord;
+  s_pixel : int32;
+  s_ptr : Pchar8;
+  tmp : char8;
+
+Begin
   x := 0;
   s_ptr := @s_pixel;
-  repeat
-    s_pixel := (PUint32(source)+(x shr 16))^;
+  Repeat
+    s_pixel := (Pint32(source)+(x Shr 16))^;
 
     tmp := (s_ptr + R_32)^;
     (s_ptr + R_32)^ := (s_ptr + B_32)^;
     (s_ptr + B_32)^ := tmp;
 
-    PUint32(dest)^ := (s_pixel shl 8) or $ff;
+    Pint32(dest)^ := (s_pixel Shl 8) Or $ff;
 
     Inc(dest, 4);
     Inc(x, inc_source);
     Dec(count);
-  until count = 0;
-end;
+  Until count = 0;
+End;
 
-procedure ConvertP_32rgb888_24rgb888_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-const
-  endian_fixup = R_32 - R_24;
-var
-  x, c: DWord;
-  s1, s2: DWord;
-begin
+Procedure ConvertP_32rgb888_24rgb888_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x, c : DWord;
+  s1, s2 : DWord;
+
+Begin
   x := 0;
-  while (PtrUInt(dest) and 3) <> 0 do
-  begin
-    (dest + 0)^ := (source + 0 + endian_fixup)^;
-    (dest + 1)^ := (source + 1 + endian_fixup)^;
-    (dest + 2)^ := (source + 2 + endian_fixup)^;
-
+  While (PtrUInt(dest) And 3) <> 0 Do
+  Begin
+    Pshort16(dest)^ := Pshort16(source)^;
+    (dest + 2)^ := (source + 2)^;
+    
     Inc(x, inc_source);
-    Inc(source, (x shr 16)*4);
-    x := x and $FFFF;
-
+    Inc(source, (x Shr 16)*4);
+    x := x And $FFFF;
+    
     Inc(dest, 3);
     Dec(count);
-    if count = 0 then
-      exit;
-  end;
-
-  c := count shr 2;
-  while c > 0 do
-  begin
-    {$IFDEF FPC_LITTLE_ENDIAN}
-    s1 := (PUint32(source) + ((x + inc_source) shr 16))^ and $FFFFFF;
-    PUint32(dest)^ := ((PUint32(source) + (x shr 16))^ and $FFFFFF) or (s1 shl 24);
-    s2 := (PUint32(source) + ((x + 2*inc_source) shr 16))^ and $FFFFFF;
-    PUint32(dest + 4)^ := (s1 shr 8) or (s2 shl 16);
-    PUint32(dest + 8)^ := (s2 shr 16) or ((PUint32(source) + ((x + 3*inc_source) shr 16))^ shl 8);
-    {$ELSE FPC_LITTLE_ENDIAN}
-    s1 := (PUint32(source) + ((x + inc_source) shr 16))^ and $FFFFFF;
-    PUint32(dest)^ := ((PUint32(source) + (x shr 16))^ shl 8) or (s1 shr 16);
-    s2 := (PUint32(source) + ((x + 2*inc_source) shr 16))^ and $FFFFFF;
-    PUint32(dest + 4)^ := (s1 shl 16) or (s2 shr 8);
-    PUint32(dest + 8)^ := (s2 shl 24) or ((PUint32(source) + ((x + 3*inc_source) shr 16))^ and $FFFFFF);
-    {$ENDIF FPC_LITTLE_ENDIAN}
-
+    If count = 0 Then
+      Exit;
+  End;
+  
+  c := count Shr 2;
+  While c > 0 Do
+  Begin
+    s1 := (Pint32(source) + ((x + inc_source) Shr 16))^ And $FFFFFF;
+    Pint32(dest)^ := ((Pint32(source) + (x Shr 16))^ And $FFFFFF) Or (s1 Shl 24);
+    s2 := (Pint32(source) + ((x + 2*inc_source) Shr 16))^ And $FFFFFF;
+    Pint32(dest + 4)^ := (s1 Shr 8) Or (s2 Shl 16);
+    Pint32(dest + 8)^ := (s2 Shr 16) Or ((Pint32(source) + ((x + 3*inc_source) Shr 16))^ Shl 8);
     Inc(x, 4*inc_source);
-
+    
     Inc(dest, 12);
     Dec(c);
-  end;
-  Inc(source, (x shr 16) * 4);
-  x := x and $FFFF;
-
-  count := count and $3;
-  while count > 0 do
-  begin
-    (dest + 0)^ := (source + 0 + endian_fixup)^;
-    (dest + 1)^ := (source + 1 + endian_fixup)^;
-    (dest + 2)^ := (source + 2 + endian_fixup)^;
-
+  End;
+  Inc(source, (x Shr 16) * 4);
+  x := x And $FFFF;
+  
+  count := count And $3;
+  While count > 0 Do
+  Begin
+    Pshort16(dest)^ := Pshort16(source)^;
+    (dest + 2)^ := (source + 2)^;
+    
     Inc(x, inc_source);
-    Inc(source, (x shr 16)*4);
-    x := x and $FFFF;
-
+    Inc(source, (x Shr 16)*4);
+    x := x And $FFFF;
+    
     Inc(dest, 3);
     Dec(count);
-  end;
-end;
+  End;
+End;
 
-procedure ConvertP_32rgb888_24bgr888_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-const
-  endian_fixup = R_32 - R_24;
-var
-  x, c: DWord;
-  s1, s2, s3, s4: DWord;
-begin
+Procedure ConvertP_32rgb888_24bgr888_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x, c : DWord;
+  s1, s2, s3, s4 : DWord;
+
+Begin
   x := 0;
-  while (PtrUInt(dest) and 3) <> 0 do
-  begin
-    (dest + 0)^ := (source + 2 + endian_fixup)^;
-    (dest + 1)^ := (source + 1 + endian_fixup)^;
-    (dest + 2)^ := (source + 0 + endian_fixup)^;
-
+  While (PtrUInt(dest) And 3) <> 0 Do
+  Begin
+    (dest)^ := (source + 2)^;
+    (dest + 1)^ := (source + 1)^;
+    (dest + 2)^ := (source)^;
+    
     Inc(x, inc_source);
-    Inc(source, (x shr 16)*4);
-    x := x and $FFFF;
-
+    Inc(source, (x Shr 16)*4);
+    x := x And $FFFF;
+    
     Inc(dest, 3);
     Dec(count);
-    if count = 0 then
-      exit;
-  end;
-
-  c := count shr 2;
-  while c > 0 do
-  begin
-    s1 := (PUint32(source) + (x shr 16))^;
-    s2 := (PUint32(source) + ((x + inc_source) shr 16))^;
-    s3 := (PUint32(source) + ((x + 2*inc_source) shr 16))^;
-    s4 := (PUint32(source) + ((x + 3*inc_source) shr 16))^;
-
-    {$IFDEF FPC_LITTLE_ENDIAN}
-    PUint32(dest + 0)^ := ((s2 and $FF0000) shl 8) or ((s1 and $FF) shl 16) or (s1 and $FF00) or ((s1 shr 16) and $FF);
-    PUint32(dest + 4)^ := ((s3 and $FF00) shl 16) or (s3 and $FF0000) or ((s2 and $FF) shl 8) or ((s2 shr 8) and $FF);
-    PUint32(dest + 8)^ := ((s4 and $FF) shl 24) or ((s4 and $FF00) shl 8) or ((s4 shr 8) and $FF00) or (s3 and $FF);
-    {$ELSE FPC_LITTLE_ENDIAN}
-    PUint32(dest + 0)^ := ((s1 and $FF) shl 24) or ((s1 and $FF00) shl 8) or ((s1 and $FF0000) shr 8) or (s2 and $FF);
-    PUint32(dest + 4)^ := ((s2 and $FF00) shl 16) or (s2 and $FF0000) or ((s3 and $FF) shl 8) or ((s3 and $FF00) shr 8);
-    PUint32(dest + 8)^ := ((s3 and $FF0000) shl 8) or ((s4 and $FF) shl 16) or (s4 and $FF00) or ((s4 and $FF0000) shr 16);
-    {$ENDIF FPC_LITTLE_ENDIAN}
-
+    If count = 0 Then
+      Exit;
+  End;
+  
+  c := count Shr 2;
+  While c > 0 Do
+  Begin
+    s1 := (Pint32(source) + (x Shr 16))^;
+    s2 := (Pint32(source) + ((x + inc_source) Shr 16))^;
+    s3 := (Pint32(source) + ((x + 2*inc_source) Shr 16))^;
+    s4 := (Pint32(source) + ((x + 3*inc_source) Shr 16))^;
+    
+    Pint32(dest + 0)^ := ((s2 And $FF0000) Shl 8) Or ((s1 And $FF) Shl 16) Or (s1 And $FF00) Or ((s1 Shr 16) And $FF);
+    Pint32(dest + 4)^ := ((s3 And $FF00) Shl 16) Or (s3 And $FF0000) Or ((s2 And $FF) Shl 8) Or ((s2 Shr 8) And $FF);
+    Pint32(dest + 8)^ := ((s4 And $FF) Shl 24) Or ((s4 And $FF00) Shl 8) Or ((s4 Shr 8) And $FF00) Or (s3 And $FF);
+    
     Inc(x, 4*inc_source);
-
+    
     Inc(dest, 12);
     Dec(c);
-  end;
-  Inc(source, (x shr 16) * 4);
-  x := x and $FFFF;
-
-  count := count and $3;
-  while count > 0 do
-  begin
-    (dest + 0)^ := (source + 2 + endian_fixup)^;
-    (dest + 1)^ := (source + 1 + endian_fixup)^;
-    (dest + 2)^ := (source + 0 + endian_fixup)^;
-
+  End;
+  Inc(source, (x Shr 16) * 4);
+  x := x And $FFFF;
+  
+  count := count And $3;
+  While count > 0 Do
+  Begin
+    (dest)^ := (source + 2)^;
+    (dest + 1)^ := (source + 1)^;
+    (dest + 2)^ := (source)^;
+    
     Inc(x, inc_source);
-    Inc(source, (x shr 16)*4);
-    x := x and $FFFF;
-
+    Inc(source, (x Shr 16)*4);
+    x := x And $FFFF;
+    
     Inc(dest, 3);
     Dec(count);
-  end;
-end;
+  End;
+End;
 
-procedure ConvertP_32rgb888_16rgb565_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x, c: DWord;
-  p: Uint32;
-begin
+Procedure ConvertP_32rgb888_16rgb565_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x, c : DWord;
+  p : int32;
+
+Begin
   x := 0;
   { Align mod 4 }
-  if (PtrUInt(dest) and 3) <> 0 then
-  begin
-    PUint16(dest)^ := (((PUint32(source) + (x shr 16))^ shr 8) and $f800) or
-                       (((PUint32(source) + (x shr 16))^ shr 5) and $7e0) or
-                       (((PUint32(source) + (x shr 16))^ shr 3) and $1f);
+  If (PtrUInt(dest) And 3) <> 0 Then
+  Begin
+    Pshort16(dest)^ := (((Pint32(source) + (x Shr 16))^ Shr 8) And $f800) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 5) And $7e0) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 3) And $1f);
     Inc(x, inc_source);
     Inc(dest, 2);
     Dec(count);
-  end;
+  End;
 
   { Try to write 2 pixel blocks }
-  c := count shr 1;
-  while c <> 0 do
-  begin
+  c := count Shr 1;
+  While c <> 0 Do
+  Begin
     Dec(c);
-    p := ((((PUint32(source) + (x shr 16))^ shr 8) and $f800) or
-          (((PUint32(source) + (x shr 16))^ shr 5) and $7e0) or
-          (((PUint32(source) + (x shr 16))^ shr 3) and $1f)) shl DWORD_SMALLINT0_SHL;
+    p := (((Pint32(source) + (x Shr 16))^ Shr 8) And $f800) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 5) And $7e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 3) And $1f);
     Inc(x, inc_source);
 
-    p := p or
-       (((((PUint32(source) + (x shr 16))^ shr 8) and $f800) or
-         (((PUint32(source) + (x shr 16))^ shr 5) and $7e0) or
-         (((PUint32(source) + (x shr 16))^ shr 3) and $1f)) shl DWORD_SMALLINT1_SHL);
+    p := p Or
+       (((((Pint32(source) + (x Shr 16))^ Shr 8) And $f800) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 5) And $7e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 3) And $1f)) Shl 16);
     Inc(x, inc_source);
 
-    PUint32(dest)^ := p;
+    Pint32(dest)^ := p;
 
     Inc(dest, 4);
-  end;
+  End;
 
   { Write trailing pixel }
-  if (count and 1) <> 0 then
-    PUint16(dest)^ := (((PUint32(source) + (x shr 16))^ shr 8) and $f800) or
-                       (((PUint32(source) + (x shr 16))^ shr 5) and $7e0) or
-                       (((PUint32(source) + (x shr 16))^ shr 3) and $1f);
-end;
+  If (count And 1) <> 0 Then
+    Pshort16(dest)^ := (((Pint32(source) + (x Shr 16))^ Shr 8) And $f800) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 5) And $7e0) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 3) And $1f);
+End;
 
-procedure ConvertP_32rgb888_16bgr565_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x, c: DWord;
-  p: Uint32;
-begin
+Procedure ConvertP_32rgb888_16bgr565_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x, c : DWord;
+  p : int32;
+
+Begin
   x := 0;
   { Align mod 4 }
-  if (PtrUInt(dest) and 3) <> 0 then
-  begin
-    PUint16(dest)^ := (((PUint32(source) + (x shr 16))^ shr 19) and $1f) or
-                       (((PUint32(source) + (x shr 16))^ shr 5) and $7e0) or
-                       (((PUint32(source) + (x shr 16))^ shl 8) and $f800);
+  If (PtrUInt(dest) And 3) <> 0 Then
+  Begin
+    Pshort16(dest)^ := (((Pint32(source) + (x Shr 16))^ Shr 19) And $1f) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 5) And $7e0) Or
+                       (((Pint32(source) + (x Shr 16))^ Shl 8) And $f800);
     Inc(x, inc_source);
     Inc(dest, 2);
     Dec(count);
-  end;
+  End;
 
   { Try to write 2 pixel blocks }
-  c := count shr 1;
-  while c <> 0 do
-  begin
+  c := count Shr 1;
+  While c <> 0 Do
+  Begin
     Dec(c);
-    p := ((((PUint32(source) + (x shr 16))^ shr 19) and $1f) or
-          (((PUint32(source) + (x shr 16))^ shr 5) and $7e0) or
-          (((PUint32(source) + (x shr 16))^ shl 8) and $f800)) shl DWORD_SMALLINT0_SHL;
+    p := (((Pint32(source) + (x Shr 16))^ Shr 19) And $1f) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 5) And $7e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shl 8) And $f800);
     Inc(x, inc_source);
 
-    p := p or
-       (((((PUint32(source) + (x shr 16))^ shr 19) and $1f) or
-         (((PUint32(source) + (x shr 16))^ shr 5) and $7e0) or
-         (((PUint32(source) + (x shr 16))^ shl 8) and $f800)) shl DWORD_SMALLINT1_SHL);
+    p := p Or
+       (((((Pint32(source) + (x Shr 16))^ Shr 19) And $1f) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 5) And $7e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shl 8) And $f800)) Shl 16);
     Inc(x, inc_source);
 
-    PUint32(dest)^ := p;
+    Pint32(dest)^ := p;
 
     Inc(dest, 4);
-  end;
+  End;
 
   { Write trailing pixel }
-  if (count and 1) <> 0 then
-    PUint16(dest)^ := (((PUint32(source) + (x shr 16))^ shr 19) and $1f) or
-                       (((PUint32(source) + (x shr 16))^ shr 5) and $7e0) or
-                       (((PUint32(source) + (x shr 16))^ shl 8) and $f800);
-end;
+  If (count And 1) <> 0 Then
+    Pshort16(dest)^ := (((Pint32(source) + (x Shr 16))^ Shr 19) And $1f) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 5) And $7e0) Or
+                       (((Pint32(source) + (x Shr 16))^ Shl 8) And $f800);
+End;
 
-procedure ConvertP_32rgb888_16rgb555_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x, c: DWord;
-  p: Uint32;
-begin
+Procedure ConvertP_32rgb888_16rgb555_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x, c : DWord;
+  p : int32;
+
+Begin
   x := 0;
   { Align mod 4 }
-  if (PtrUInt(dest) and 3) <> 0 then
-  begin
-    PUint16(dest)^ := (((PUint32(source) + (x shr 16))^ shr 9) and $7c00) or
-                       (((PUint32(source) + (x shr 16))^ shr 6) and $3e0) or
-                       (((PUint32(source) + (x shr 16))^ shr 3) and $1f);
+  If (PtrUInt(dest) And 3) <> 0 Then
+  Begin
+    Pshort16(dest)^ := (((Pint32(source) + (x Shr 16))^ Shr 9) And $7c00) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 6) And $3e0) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 3) And $1f);
     Inc(x, inc_source);
     Inc(dest, 2);
     Dec(count);
-  end;
+  End;
 
   { Try to write 2 pixel blocks }
-  c := count shr 1;
-  while c <> 0 do
-  begin
+  c := count Shr 1;
+  While c <> 0 Do
+  Begin
     Dec(c);
-    p := ((((PUint32(source) + (x shr 16))^ shr 9) and $7c00) or
-          (((PUint32(source) + (x shr 16))^ shr 6) and $3e0) or
-          (((PUint32(source) + (x shr 16))^ shr 3) and $1f)) shl DWORD_SMALLINT0_SHL;
+    p := (((Pint32(source) + (x Shr 16))^ Shr 9) And $7c00) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 6) And $3e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 3) And $1f);
     Inc(x, inc_source);
 
-    p := p or
-       (((((PUint32(source) + (x shr 16))^ shr 9) and $7c00) or
-         (((PUint32(source) + (x shr 16))^ shr 6) and $3e0) or
-         (((PUint32(source) + (x shr 16))^ shr 3) and $1f)) shl DWORD_SMALLINT1_SHL);
+    p := p Or
+       (((((Pint32(source) + (x Shr 16))^ Shr 9) And $7c00) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 6) And $3e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 3) And $1f)) Shl 16);
     Inc(x, inc_source);
 
-    PUint32(dest)^ := p;
+    Pint32(dest)^ := p;
 
     Inc(dest, 4);
-  end;
+  End;
 
   { Write trailing pixel }
-  if (count and 1) <> 0 then
-    PUint16(dest)^ := (((PUint32(source) + (x shr 16))^ shr 9) and $7c00) or
-                       (((PUint32(source) + (x shr 16))^ shr 6) and $3e0) or
-                       (((PUint32(source) + (x shr 16))^ shr 3) and $1f);
-end;
+  If (count And 1) <> 0 Then
+    Pshort16(dest)^ := (((Pint32(source) + (x Shr 16))^ Shr 9) And $7c00) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 6) And $3e0) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 3) And $1f);
+End;
 
-procedure ConvertP_32rgb888_16bgr555_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x, c: DWord;
-  p: Uint32;
-begin
+Procedure ConvertP_32rgb888_16bgr555_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x, c : DWord;
+  p : int32;
+
+Begin
   x := 0;
   { Align mod 4 }
-  if (PtrUInt(dest) and 3) <> 0 then
-  begin
-    PUint16(dest)^ := (((PUint32(source) + (x shr 16))^ shr 19) and $1f) or
-                       (((PUint32(source) + (x shr 16))^ shr 6) and $3e0) or
-                       (((PUint32(source) + (x shr 16))^ shl 7) and $7c00);
+  If (PtrUInt(dest) And 3) <> 0 Then
+  Begin
+    Pshort16(dest)^ := (((Pint32(source) + (x Shr 16))^ Shr 19) And $1f) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 6) And $3e0) Or
+                       (((Pint32(source) + (x Shr 16))^ Shl 7) And $7c00);
     Inc(x, inc_source);
     Inc(dest, 2);
     Dec(count);
-  end;
+  End;
 
   { Try to write 2 pixel blocks }
-  c := count shr 1;
-  while c <> 0 do
-  begin
+  c := count Shr 1;
+  While c <> 0 Do
+  Begin
     Dec(c);
-    p := ((((PUint32(source) + (x shr 16))^ shr 19) and $1f) or
-          (((PUint32(source) + (x shr 16))^ shr 6) and $3e0) or
-          (((PUint32(source) + (x shr 16))^ shl 7) and $7c00)) shl DWORD_SMALLINT0_SHL;
+    p := (((Pint32(source) + (x Shr 16))^ Shr 19) And $1f) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 6) And $3e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shl 7) And $7c00);
     Inc(x, inc_source);
 
-    p := p or
-       (((((PUint32(source) + (x shr 16))^ shr 19) and $1f) or
-         (((PUint32(source) + (x shr 16))^ shr 6) and $3e0) or
-         (((PUint32(source) + (x shr 16))^ shl 7) and $7c00)) shl DWORD_SMALLINT1_SHL);
+    p := p Or
+       (((((Pint32(source) + (x Shr 16))^ Shr 19) And $1f) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 6) And $3e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shl 7) And $7c00)) Shl 16);
     Inc(x, inc_source);
 
-    PUint32(dest)^ := p;
+    Pint32(dest)^ := p;
 
     Inc(dest, 4);
-  end;
+  End;
 
   { Write trailing pixel }
-  if (count and 1) <> 0 then
-    PUint16(dest)^ := (((PUint32(source) + (x shr 16))^ shr 19) and $1f) or
-                       (((PUint32(source) + (x shr 16))^ shr 6) and $3e0) or
-                       (((PUint32(source) + (x shr 16))^ shl 7) and $7c00);
-end;
+  If (count And 1) <> 0 Then
+    Pshort16(dest)^ := (((Pint32(source) + (x Shr 16))^ Shr 19) And $1f) Or
+                       (((Pint32(source) + (x Shr 16))^ Shr 6) And $3e0) Or
+                       (((Pint32(source) + (x Shr 16))^ Shl 7) And $7c00);
+End;
 
-procedure ConvertP_32rgb888_8rgb332_S(source, dest: PUint8; count, inc_source: DWord); cdecl;
-var
-  x, c: DWord;
-  p: Uint32;
-begin
+Procedure ConvertP_32rgb888_8rgb332_S(source, dest : Pchar8; count, inc_source : DWord); CDecl;
+
+Var
+  x, c : DWord;
+  p : int32;
+
+Begin
   x := 0;
   { Write single pixels until the destination address is aligned mod 4 }
-  while (PtrUInt(dest) and $3) <> 0 do
-  begin
-    dest^ := (((PUint32(source) + (x shr 16))^ shr 16) and $e0) or
-             (((PUint32(source) + (x shr 16))^ shr 11) and $1c) or
-             (((PUint32(source) + (x shr 16))^ shr 6) and $3);
+  While (PtrUInt(dest) And $3) <> 0 Do
+  Begin
+    dest^ := (((Pint32(source) + (x Shr 16))^ Shr 16) And $e0) Or
+             (((Pint32(source) + (x Shr 16))^ Shr 11) And $1c) Or
+             (((Pint32(source) + (x Shr 16))^ Shr 6) And $3);
     Inc(x, inc_source);
     Inc(dest);
     Dec(count);
-    if count = 0 then
-      exit;
-  end;
+    If count = 0 Then
+      Exit;
+  End;
 
   { Write blocks of four pixels now }
-  c := count shr 2;
-  while c <> 0 do
-  begin
+  c := count Shr 2;
+  While c <> 0 Do
+  Begin
     Dec(c);
-    p := ((((PUint32(source) + (x shr 16))^ shr 16) and $e0) or
-          (((PUint32(source) + (x shr 16))^ shr 11) and $1c) or
-          (((PUint32(source) + (x shr 16))^ shr 6) and $3)) shl DWORD_BYTE0_SHL;
+    p := (((Pint32(source) + (x Shr 16))^ Shr 16) And $e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 11) And $1c) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 6) And $3);
     Inc(x, inc_source);
 
-    p := p or
-       (((((PUint32(source) + (x shr 16))^ shr 16) and $e0) or
-         (((PUint32(source) + (x shr 16))^ shr 11) and $1c) or
-         (((PUint32(source) + (x shr 16))^ shr 6) and $3)) shl DWORD_BYTE1_SHL);
+    p := p Or
+       (((((Pint32(source) + (x Shr 16))^ Shr 16) And $e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 11) And $1c) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 6) And $3)) Shl 8);
     Inc(x, inc_source);
 
-    p := p or
-       (((((PUint32(source) + (x shr 16))^ shr 16) and $e0) or
-         (((PUint32(source) + (x shr 16))^ shr 11) and $1c) or
-         (((PUint32(source) + (x shr 16))^ shr 6) and $3)) shl DWORD_BYTE2_SHL);
+    p := p Or
+       (((((Pint32(source) + (x Shr 16))^ Shr 16) And $e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 11) And $1c) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 6) And $3)) Shl 16);
     Inc(x, inc_source);
 
-    p := p or
-       (((((PUint32(source) + (x shr 16))^ shr 16) and $e0) or
-         (((PUint32(source) + (x shr 16))^ shr 11) and $1c) or
-         (((PUint32(source) + (x shr 16))^ shr 6) and $3)) shl DWORD_BYTE3_SHL);
+    p := p Or
+       (((((Pint32(source) + (x Shr 16))^ Shr 16) And $e0) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 11) And $1c) Or
+         (((Pint32(source) + (x Shr 16))^ Shr 6) And $3)) Shl 24);
     Inc(x, inc_source);
 
-    PUint32(dest)^ := p;
+    Pint32(dest)^ := p;
     Inc(dest, 4);
-  end;
+  End;
 
   { Write up to three trailing pixels }
-  c := count and $3;
-  while c <> 0 do
-  begin
+  c := count And $3;
+  While c <> 0 Do
+  Begin
     Dec(c);
-    dest^ := (((PUint32(source) + (x shr 16))^ shr 16) and $e0) or
-             (((PUint32(source) + (x shr 16))^ shr 11) and $1c) or
-             (((PUint32(source) + (x shr 16))^ shr 6) and $3);
+    dest^ := (((Pint32(source) + (x Shr 16))^ Shr 16) And $e0) Or
+             (((Pint32(source) + (x Shr 16))^ Shr 11) And $1c) Or
+             (((Pint32(source) + (x Shr 16))^ Shr 6) And $3);
     Inc(x, inc_source);
     Inc(dest);
-  end;
-end;
+  End;
+End;

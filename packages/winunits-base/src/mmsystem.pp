@@ -11,10 +11,16 @@ Unit mmsystem;
   {$smartlink on}
 {$endif}
 {$MODE DELPHI}
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 {$ifdef FPC_OS_UNICODE}
   {$define UNICODE}
 {$endif}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 interface
 uses
  windows;
@@ -249,8 +255,14 @@ Const
     MOD_SQSYNTH = 3;
     MOD_FMSYNTH = 4;
     MOD_MAPPER = 5;
+<<<<<<< HEAD
+<<<<<<< HEAD
     MOD_WAVETABLE =  6;  { hardware wavetable synth }
     MOD_SWSYNTH   =  7;  { software synth }
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     MIDICAPS_VOLUME = 1;
     MIDICAPS_LRVOLUME = 2;
     MIDICAPS_CACHE = 4;
@@ -1002,11 +1014,25 @@ Type
                             lpData: PChar;
                             dwBufferLength: DWORD;
                             dwBytesRecorded: DWORD;
+<<<<<<< HEAD
+<<<<<<< HEAD
                             dwUser: DWORD_PTR;
                             dwFlags: DWORD;
                             dwLoops: DWORD;
                             lpNext: PWAVEHDR;
                             reserved: DWORD_PTR;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                            dwUser: DWORD;
+                            dwFlags: DWORD;
+                            dwLoops: DWORD;
+                            lpNext: PWAVEHDR;
+                            reserved: DWORD;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
           End;
  WAVEHDR = _wavehdr;
  TWAVEHDR=  WAVEHDR;
@@ -1147,9 +1173,17 @@ Type
  HMIDISTRM = THandle;
  LPHMIDI = ^HMIDI;
  LPHMIDIIN = ^HMIDIIN;
+<<<<<<< HEAD
+<<<<<<< HEAD
  PHMIDIIN = LPHMIDIIN;
  LPHMIDIOUT = ^HMIDIOUT;
  PHMIDIOUT =  LPHMIDIOUT;
+=======
+ LPHMIDIOUT = ^HMIDIOUT;
+>>>>>>> graemeg/fixes_2_2
+=======
+ LPHMIDIOUT = ^HMIDIOUT;
+>>>>>>> origin/fixes_2_2
  LPHMIDISTRM = ^HMIDISTRM;
  LPMIDICALLBACK = PDRVCALLBACK;
 
@@ -1239,19 +1273,41 @@ Type
   LPMIDIINCAPS  = LPMIDIINCAPSA;
  {$endif}
  TMIDIINCAPS  = MIDIINCAPS;
+<<<<<<< HEAD
+<<<<<<< HEAD
  TMIDIOUTCAPS = MIDIOUTCAPS;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
  PMIDIHDR = ^_midihdr;
  _midihdr = packed Record
                     lpData: PChar;
                     dwBufferLength: DWORD;
                     dwBytesRecorded: DWORD;
+<<<<<<< HEAD
+<<<<<<< HEAD
                     dwUser: DWORD_PTR;
+=======
+                    dwUser: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                    dwUser: DWORD;
+>>>>>>> origin/fixes_2_2
                     dwFlags: DWORD;
                     lpNext: PMIDIHDR;
                     reserved: DWORD;
                     dwOffset: DWORD;
+<<<<<<< HEAD
+<<<<<<< HEAD
                     dwReserved: array [0..Pred(8)] Of DWORD_PTR;
+=======
+                    dwReserved: array [0..Pred(8)] Of DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                    dwReserved: array [0..Pred(8)] Of DWORD;
+>>>>>>> origin/fixes_2_2
 	    End;
  MIDIHDR   = _midihdr;
  NPMIDIHDR = ^_midihdr;
@@ -1383,7 +1439,15 @@ Type
                        dwSource: DWORD;
                        dwLineID: DWORD;
                        fdwLine: DWORD;
+<<<<<<< HEAD
+<<<<<<< HEAD
                        dwUser: DWORD_PTR;
+=======
+                       dwUser: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                       dwUser: DWORD;
+>>>>>>> origin/fixes_2_2
                        dwComponentType: DWORD;
                        cChannels: DWORD;
                        cConnections: DWORD;
@@ -1408,7 +1472,15 @@ Type
                        dwSource: DWORD;
                        dwLineID: DWORD;
                        fdwLine: DWORD;
+<<<<<<< HEAD
+<<<<<<< HEAD
                        dwUser: DWORD_PTR;
+=======
+                       dwUser: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                       dwUser: DWORD;
+>>>>>>> origin/fixes_2_2
                        dwComponentType: DWORD;
                        cChannels: DWORD;
                        cConnections: DWORD;
@@ -1782,7 +1854,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
   TYIELDPROC = YIELDPROC;
 
  _MCI_GENERIC_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                               dwCallback: DWORD_PTR;
+=======
+                              dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                              dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
 			     End;
  MCI_GENERIC_PARMS   = _MCI_GENERIC_PARMS;
  PMCI_GENERIC_PARMS  = ^_MCI_GENERIC_PARMS;
@@ -1790,7 +1870,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_GENERIC_PARMS  = MCI_GENERIC_PARMS;
 
  _MCI_OPEN_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                             dwCallback: DWORD_PTR;
+=======
+                            dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                            dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                             wDeviceID: MCIDEVICEID;
                             lpstrDeviceType: LPCSTR;
                             lpstrElementName: LPCSTR;
@@ -1802,7 +1890,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_OPEN_PARMSA  = MCI_OPEN_PARMSA;
 
  _MCI_OPEN_PARMSW = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                             dwCallback: DWORD_PTR;
+=======
+                            dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                            dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                             wDeviceID: MCIDEVICEID;
                             lpstrDeviceType: LPCWSTR;
                             lpstrElementName: LPCWSTR;
@@ -1824,7 +1920,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
   TMCI_OPEN_PARMS = MCI_OPEN_PARMS;
 
  _MCI_PLAY_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                            dwCallback: DWORD_PTR;
+=======
+                           dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                           dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                            dwFrom: DWORD;
                            dwTo: DWORD;
 			 End;
@@ -1834,7 +1938,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_PLAY_PARMS  = _MCI_PLAY_PARMS;
 
  _MCI_SEEK_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                            dwCallback: DWORD_PTR;
+=======
+                           dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                           dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                            dwTo: DWORD;
 			  End;
  MCI_SEEK_PARMS   = _MCI_SEEK_PARMS;
@@ -1843,8 +1955,18 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_SEEK_PARMS  = _MCI_SEEK_PARMS;
 
  _MCI_STATUS_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                              dwCallback: DWORD_PTR;
                              dwReturn: DWORD_PTR;
+=======
+                             dwCallback: DWORD;
+                             dwReturn: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                             dwCallback: DWORD;
+                             dwReturn: DWORD;
+>>>>>>> origin/fixes_2_2
                              dwItem: DWORD;
                              dwTrack: DWORD;
 			    End;
@@ -1854,7 +1976,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_STATUS_PARMS  = _MCI_STATUS_PARMS;
 
  _MCI_INFO_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                             dwCallback: DWORD_PTR;
+=======
+                            dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                            dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                             lpstrReturn: PChar;
                             dwRetSize: DWORD;
 			  End;
@@ -1863,7 +1993,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_INFO_PARMSA  = _MCI_INFO_PARMSA;
 
  _MCI_INFO_PARMSW  = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                             dwCallback: DWORD_PTR;
+=======
+                            dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                            dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                             lpstrReturn: LPWSTR;
                             dwRetSize: DWORD;
 			End;
@@ -1881,7 +2019,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
   TMCI_INFO_PARMS = MCI_INFO_PARMS;
 
  _MCI_GETDEVCAPS_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  dwReturn: DWORD;
                                  dwItem: DWORD;
 				End;
@@ -1893,7 +2039,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
 
 
  _MCI_SYSINFO_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                dwCallback: DWORD_PTR;
+=======
+                               dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                               dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                lpstrReturn: PChar;
                                dwRetSize: DWORD;
                                dwNumber: DWORD;
@@ -1905,7 +2059,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_SYSINFO_PARMSA  = _MCI_SYSINFO_PARMSA;
 
  _MCI_SYSINFO_PARMSW = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                dwCallback: DWORD_PTR;
+=======
+                               dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                               dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                lpstrReturn: LPWSTR;
                                dwRetSize: DWORD;
                                dwNumber: DWORD;
@@ -1927,7 +2089,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_SYSINFO_PARMS = MCI_SYSINFO_PARMS;
 
  _MCI_SET_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                           dwCallback: DWORD_PTR;
+=======
+                          dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                          dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                           dwTimeFormat: DWORD;
                           dwAudio: DWORD;
 			 End;
@@ -1937,7 +2107,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_SET_PARMS  = _MCI_SET_PARMS;
 
  _MCI_BREAK_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                             dwCallback: DWORD_PTR;
+=======
+                            dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                            dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                             nVirtKey: longint;
                             hwndBreak: HWND;
 			  End;
@@ -1947,7 +2125,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_BREAK_PARMS  = _MCI_BREAK_PARMS;
 
  _MCI_SAVE_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                             dwCallback: DWORD_PTR;
+=======
+                            dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                            dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                             lpfilename: LPCSTR;
 			   End;
  MCI_SAVE_PARMSA   = _MCI_SAVE_PARMSA;
@@ -1957,7 +2143,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_SaveParmsA   = TMCI_SAVE_PARMSA;
 
  _MCI_SAVE_PARMSW = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                             dwCallback: DWORD_PTR;
+=======
+                            dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                            dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                             lpfilename: LPCWSTR;
 			   End;
  MCI_SAVE_PARMSW   = _MCI_SAVE_PARMSW;
@@ -1979,7 +2173,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
   TMCI_SaveParms   = TMCI_SAVE_PARMS;
 
  _MCI_LOAD_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                             dwCallback: DWORD_PTR;
+=======
+                            dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                            dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                             lpfilename: LPCSTR;
 			 End;
  MCI_LOAD_PARMSA   = _MCI_LOAD_PARMSA;
@@ -1988,7 +2190,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_LOAD_PARMSA  = _MCI_LOAD_PARMSA;
 
  _MCI_LOAD_PARMSW  = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                             dwCallback: DWORD_PTR;
+=======
+                            dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                            dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                             lpfilename: LPCWSTR;
 			   End;
 
@@ -2009,7 +2219,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_LOAD_PARMS = MCI_LOAD_PARMS;
 
  _MCI_RECORD_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                              dwCallback: DWORD_PTR;
+=======
+                             dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                             dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                              dwFrom: DWORD;
                              dwTo: DWORD;
 			    End;
@@ -2018,7 +2236,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_RECORD_PARMS  = _MCI_RECORD_PARMS;
 
  _MCI_VD_PLAY_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                               dwCallback: DWORD_PTR;
+=======
+                              dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                              dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                               dwFrom: DWORD;
                               dwTo: DWORD;
                               dwSpeed: DWORD;
@@ -2029,7 +2255,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_VD_PLAY_PARMS  = _MCI_VD_PLAY_PARMS;
 
  _MCI_VD_STEP_PARMS  = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                               dwCallback: DWORD_PTR;
+=======
+                              dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                              dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                               dwFrames: DWORD;
 			    End;
  MCI_VD_STEP_PARMS     = _MCI_VD_STEP_PARMS;
@@ -2037,7 +2271,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  LPMCI_VD_STEP_PARMS   = ^_MCI_VD_STEP_PARMS;
 
  _MCI_VD_ESCAPE_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  lpstrCommand: LPCSTR;
 				End;
  MCI_VD_ESCAPE_PARMSA   = _MCI_VD_ESCAPE_PARMSA;
@@ -2046,7 +2288,15 @@ _MIXERCONTROLDETAILS_BOOLEAN = packed Record
  TMCI_VD_ESCAPE_PARMSA  = _MCI_VD_ESCAPE_PARMSA;
 
 _MCI_VD_ESCAPE_PARMSW   = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  lpstrCommand: LPCWSTR;
 				 End;
  MCI_VD_ESCAPE_PARMSW   = _MCI_VD_ESCAPE_PARMSW;
@@ -2065,7 +2315,15 @@ _MCI_VD_ESCAPE_PARMSW   = packed Record
  TMCI_VD_ESCAPE_PARMS   = MCI_VD_ESCAPE_PARMS;
 
  _MCI_WAVE_OPEN_PARMSA  = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  wDeviceID: MCIDEVICEID;
                                  lpstrDeviceType: LPCSTR;
                                  lpstrElementName: LPCSTR;
@@ -2078,7 +2336,15 @@ _MCI_VD_ESCAPE_PARMSW   = packed Record
  TMCI_WAVE_OPEN_PARMSA  = _MCI_WAVE_OPEN_PARMSA;
 
  _MCI_WAVE_OPEN_PARMSW  = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  wDeviceID: MCIDEVICEID;
                                  lpstrDeviceType: LPCWSTR;
                                  lpstrElementName: LPCWSTR;
@@ -2101,7 +2367,15 @@ _MCI_VD_ESCAPE_PARMSW   = packed Record
  TMCI_WAVE_OPEN_PARMS   = MCI_WAVE_OPEN_PARMS;
 
  _MCI_WAVE_DELETE_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                   dwCallback: DWORD_PTR;
+=======
+                                  dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                  dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                   dwFrom: DWORD;
                                   dwTo: DWORD;
 				End;
@@ -2111,7 +2385,15 @@ _MCI_VD_ESCAPE_PARMSW   = packed Record
  TMCI_WAVE_DELETE_PARMS = _MCI_WAVE_DELETE_PARMS;
 
  _MCI_WAVE_SET_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                dwCallback: DWORD_PTR;
+=======
+                               dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                               dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                dwTimeFormat: DWORD;
                                dwAudio: DWORD;
                                wInput: UINT;
@@ -2133,7 +2415,15 @@ _MCI_VD_ESCAPE_PARMSW   = packed Record
  TMCI_WAVE_SET_PARMS  = _MCI_WAVE_SET_PARMS;
 
  _MCI_SEQ_SET_PARMS  = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                               dwCallback: DWORD_PTR;
+=======
+                              dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                              dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                               dwTimeFormat: DWORD;
                               dwAudio: DWORD;
                               dwTempo: DWORD;
@@ -2148,7 +2438,15 @@ _MCI_VD_ESCAPE_PARMSW   = packed Record
  TMCI_SEQ_SET_PARMS  = _MCI_SEQ_SET_PARMS;
 
  _MCI_ANIM_OPEN_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  wDeviceID: MCIDEVICEID;
                                  lpstrDeviceType: LPCSTR;
                                  lpstrElementName: LPCSTR;
@@ -2162,7 +2460,15 @@ _MCI_VD_ESCAPE_PARMSW   = packed Record
  TMCI_ANIM_OPEN_PARMSA  = _MCI_ANIM_OPEN_PARMSA;
 
  _MCI_ANIM_OPEN_PARMSW = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  wDeviceID: MCIDEVICEID;
                                  lpstrDeviceType: LPCWSTR;
                                  lpstrElementName: LPCWSTR;
@@ -2185,7 +2491,15 @@ _MCI_VD_ESCAPE_PARMSW   = packed Record
  TMCI_ANIM_OPEN_PARMS = MCI_ANIM_OPEN_PARMS;
 
  _MCI_ANIM_WINDOW_PARMSW = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                    dwCallback: DWORD_PTR;
+=======
+                                   dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                   dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                    Wnd: HWND;
                                    nCmdShow: UINT;
                                    lpstrText: LPCWSTR;
@@ -2196,7 +2510,15 @@ _MCI_VD_ESCAPE_PARMSW   = packed Record
  TMCI_ANIM_WINDOW_PARMSW  = _MCI_ANIM_WINDOW_PARMSW;
 
  _MCI_ANIM_STEP_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 dwCallback: DWORD_PTR;
+=======
+                                dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                 dwFrames: DWORD;
 				End;
  MCI_ANIM_STEP_PARMS   = _MCI_ANIM_STEP_PARMS;
@@ -2205,7 +2527,15 @@ _MCI_VD_ESCAPE_PARMSW   = packed Record
  TMCI_ANIM_STEP_PARMS  = _MCI_ANIM_STEP_PARMS;
 
  _MCI_ANIM_WINDOW_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                    dwCallback: DWORD_PTR;
+=======
+                                   dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                   dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                    Wnd: HWND;
                                    nCmdShow: UINT;
                                    lpstrText: LPCSTR;
@@ -2215,7 +2545,15 @@ _MCI_VD_ESCAPE_PARMSW   = packed Record
  LPMCI_ANIM_WINDOW_PARMSA = ^_MCI_ANIM_WINDOW_PARMSA;
  TMCI_ANIM_WINDOW_PARMSA  = _MCI_ANIM_WINDOW_PARMSA;
 _MCI_ANIM_PLAY_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 dwCallback: DWORD_PTR;
+=======
+                                dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                 dwFrom: DWORD;
                                 dwTo: DWORD;
                                 dwSpeed: DWORD;
@@ -2234,7 +2572,15 @@ _MCI_ANIM_PLAY_PARMS = packed Record
  {$endif}
   TMCI_ANIM_WINDOW_PARMS  = MCI_Anim_Window_Parms;
  _MCI_ANIM_RECT_PARMS  = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 dwCallback: DWORD_PTR;
+=======
+                                dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                 rc: TRECT;
 			       End;
  MCI_ANIM_RECT_PARMS   = _MCI_ANIM_RECT_PARMS;
@@ -2243,7 +2589,15 @@ _MCI_ANIM_PLAY_PARMS = packed Record
  TMCI_ANIM_RECT_PARMS  = _MCI_ANIM_RECT_PARMS;
 
  _MCI_ANIM_UPDATE_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                   dwCallback: DWORD_PTR;
+=======
+                                  dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                  dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                   rc: TRECT;
                                   hDC: HDC;
 				End;
@@ -2253,7 +2607,15 @@ _MCI_ANIM_PLAY_PARMS = packed Record
  TMCI_ANIM_UPDATE_PARMS  = _MCI_ANIM_UPDATE_PARMS;
 
  _MCI_OVLY_OPEN_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  wDeviceID: MCIDEVICEID;
                                  lpstrDeviceType: LPCSTR;
                                  lpstrElementName: LPCSTR;
@@ -2267,7 +2629,15 @@ _MCI_ANIM_PLAY_PARMS = packed Record
  TMCI_OVLY_OPEN_PARMSA  = _MCI_OVLY_OPEN_PARMSA;
 
  _MCI_OVLY_OPEN_PARMSW = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  wDeviceID: MCIDEVICEID;
                                  lpstrDeviceType: LPCWSTR;
                                  lpstrElementName: LPCWSTR;
@@ -2292,7 +2662,15 @@ _MCI_ANIM_PLAY_PARMS = packed Record
  TMCI_OVLY_OPEN_PARMS   = MCI_OVLY_OPEN_PARMS;
 
 _MCI_OVLY_WINDOW_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                    dwCallback: DWORD_PTR;
+=======
+                                   dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                   dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                    hWnd: HWND;
                                    nCmdShow: UINT;
                                    lpstrText: LPCSTR;
@@ -2303,7 +2681,15 @@ _MCI_OVLY_WINDOW_PARMSA = packed Record
  TMCI_OVLY_WINDOW_PARMSA   = _MCI_OVLY_WINDOW_PARMSA;
 
  _MCI_OVLY_WINDOW_PARMSW = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                    dwCallback: DWORD_PTR;
+=======
+                                   dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                   dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                    hWnd: HWND;
                                    nCmdShow: UINT;
                                    lpstrText: LPCWSTR;
@@ -2325,7 +2711,15 @@ _MCI_OVLY_WINDOW_PARMSA = packed Record
  TMCI_OVLY_WINDOW_PARMS   = MCI_OVLY_WINDOW_PARMSW;
 
  _MCI_OVLY_RECT_PARMS = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                 dwCallback: DWORD_PTR;
+=======
+                                dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                 rc: TRECT;
 				End;
  MCI_OVLY_RECT_PARMS   = _MCI_OVLY_RECT_PARMS;
@@ -2334,7 +2728,15 @@ _MCI_OVLY_WINDOW_PARMSA = packed Record
  TMCI_OVLY_RECT_PARMS  = _MCI_OVLY_RECT_PARMS;
 
  _MCI_OVLY_SAVE_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  lpfilename: LPCSTR;
                                  rc: TRECT;
 				End;
@@ -2344,7 +2746,15 @@ _MCI_OVLY_WINDOW_PARMSA = packed Record
  TMCI_OVLY_SAVE_PARMSA  = _MCI_OVLY_SAVE_PARMSA;
 
  _MCI_OVLY_SAVE_PARMSW = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  lpfilename: LPCWSTR;
                                  rc: TRECT;
 				End;
@@ -2365,7 +2775,15 @@ _MCI_OVLY_WINDOW_PARMSA = packed Record
  TMCI_OVLY_SAVE_PARMS = MCI_OVLY_SAVE_PARMS;
 
  _MCI_OVLY_LOAD_PARMSA = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  lpfilename: LPCSTR;
                                  rc: TRECT;
 				End;
@@ -2374,7 +2792,15 @@ _MCI_OVLY_WINDOW_PARMSA = packed Record
  LPMCI_OVLY_LOAD_PARMSA = ^_MCI_OVLY_LOAD_PARMSA;
  TMCI_OVLY_LOAD_PARMSA  = _MCI_OVLY_LOAD_PARMSA;
  _MCI_OVLY_LOAD_PARMSW = packed Record
+<<<<<<< HEAD
+<<<<<<< HEAD
                                  dwCallback: DWORD_PTR;
+=======
+                                 dwCallback: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+                                 dwCallback: DWORD;
+>>>>>>> origin/fixes_2_2
                                  lpfilename: LPCWSTR;
                                  rc: TRECT;
 				End;
@@ -2441,9 +2867,21 @@ Function mmioSendMessage(x1: HMMIO; x2: UINT; x3: LPARAM; x4: LPARAM): LRESULT;s
 Function mmioDescend(x1: HMMIO; x2: LPMMCKINFO; x3: PMMCKINFO; x4: UINT): MMRESULT;stdcall; external 'winmm.dll' name 'mmioDescend';
 Function mmioAscend(x1: HMMIO; x2: LPMMCKINFO; x3: UINT): MMRESULT;stdcall; external 'winmm.dll' name 'mmioAscend';
 Function mmioCreateChunk(x1: HMMIO; x2: LPMMCKINFO; x3: UINT): MMRESULT;stdcall; external 'winmm.dll' name 'mmioCreateChunk';
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function mciSendCommandA(x1: MCIDEVICEID; x2: UINT; x3: DWORD_PTR; x4: DWORD_PTR): MCIERROR;stdcall; external 'winmm.dll' name 'mciSendCommandA';
 Function mciSendCommandW(x1: MCIDEVICEID; x2: UINT; x3: DWORD_PTR; x4: DWORD_PTR): MCIERROR;stdcall; external 'winmm.dll' name 'mciSendCommandW';
 Function mciSendCommand(x1: MCIDEVICEID; x2: UINT; x3: DWORD_PTR; x4: DWORD_PTR): MCIERROR;stdcall; external 'winmm.dll' name
+=======
+Function mciSendCommandA(x1: MCIDEVICEID; x2: UINT; x3: DWORD; x4: DWORD): MCIERROR;stdcall; external 'winmm.dll' name 'mciSendCommandA';
+Function mciSendCommandW(x1: MCIDEVICEID; x2: UINT; x3: DWORD; x4: DWORD): MCIERROR;stdcall; external 'winmm.dll' name 'mciSendCommandW';
+Function mciSendCommand(x1: MCIDEVICEID; x2: UINT; x3: DWORD; x4: DWORD): MCIERROR;stdcall; external 'winmm.dll' name
+>>>>>>> graemeg/fixes_2_2
+=======
+Function mciSendCommandA(x1: MCIDEVICEID; x2: UINT; x3: DWORD; x4: DWORD): MCIERROR;stdcall; external 'winmm.dll' name 'mciSendCommandA';
+Function mciSendCommandW(x1: MCIDEVICEID; x2: UINT; x3: DWORD; x4: DWORD): MCIERROR;stdcall; external 'winmm.dll' name 'mciSendCommandW';
+Function mciSendCommand(x1: MCIDEVICEID; x2: UINT; x3: DWORD; x4: DWORD): MCIERROR;stdcall; external 'winmm.dll' name
+>>>>>>> origin/fixes_2_2
  {$ifdef UNICODE}'mciSendCommandW' {$else}'mciSendCommandA' {$endif};
 Function mciSendStringA(x1: LPCSTR; x2: LPSTR; x3: UINT; x4: HWND): MCIERROR;stdcall; external 'winmm.dll' name 'mciSendStringA';
 Function mciSendStringW(x1: LPCWSTR; x2: LPWSTR; x3: UINT; x4: HWND): MCIERROR;stdcall; external 'winmm.dll' name 'mciSendStringW';
@@ -2482,7 +2920,15 @@ Function waveOutGetErrorTextA(x1: MMRESULT; x2: LPSTR; x3: UINT): MMRESULT;stdca
 Function waveOutGetErrorTextW(x1: MMRESULT; x2: LPWSTR; x3: UINT): MMRESULT;stdcall; external 'winmm.dll' name 'waveOutGetErrorTextW';
 Function waveOutGetErrorText(x1: MMRESULT; x2: PChar; x3: UINT): MMRESULT;stdcall; external 'winmm.dll' name
  {$ifdef UNICODE}'waveOutGetErrorTextW' {$else}'waveOutGetErrorTextA' {$endif};
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function waveOutOpen(x1: LPHWAVEOUT; x2: UINT; x3: LPCWAVEFORMATEX; x4: DWORD_PTR; x5: DWORD_PTR;
+=======
+Function waveOutOpen(x1: LPHWAVEOUT; x2: UINT; x3: LPCWAVEFORMATEX; x4: DWORD; x5: DWORD;
+>>>>>>> graemeg/fixes_2_2
+=======
+Function waveOutOpen(x1: LPHWAVEOUT; x2: UINT; x3: LPCWAVEFORMATEX; x4: DWORD; x5: DWORD;
+>>>>>>> origin/fixes_2_2
                      x6: DWORD): MMRESULT;stdcall; external 'winmm.dll' name 'waveOutOpen';
 Function waveOutClose(x1: HWAVEOUT): MMRESULT;stdcall; external 'winmm.dll' name 'waveOutClose';
 Function waveOutPrepareHeader(x1: HWAVEOUT; x2: LPWAVEHDR; x3: UINT): MMRESULT;stdcall; external 'winmm.dll' name 'waveOutPrepareHeader';
@@ -2508,7 +2954,15 @@ Function waveInGetErrorTextA(x1: MMRESULT; x2: LPSTR; x3: UINT): MMRESULT;stdcal
 Function waveInGetErrorTextW(x1: MMRESULT; x2: LPWSTR; x3: UINT): MMRESULT;stdcall; external 'winmm.dll' name 'waveInGetErrorTextW';
 Function waveInGetErrorText(x1: MMRESULT; x2: PChar; x3: UINT): MMRESULT;stdcall; external 'winmm.dll' name
  {$ifdef UNICODE}'waveInGetErrorTextW' {$else}'waveInGetErrorTextA' {$endif};
+<<<<<<< HEAD
+<<<<<<< HEAD
 Function waveInOpen(x1: LPHWAVEIN; x2: UINT; x3: LPCWAVEFORMATEX; x4: DWORD_PTR; x5: DWORD_PTR; x6 : DWORD): MMRESULT;stdcall; external 'winmm.dll' name 'waveInOpen';
+=======
+Function waveInOpen(x1: LPHWAVEIN; x2: UINT; x3: LPCWAVEFORMATEX; x4: DWORD; x5: DWORD; x6                    : DWORD): MMRESULT;stdcall; external 'winmm.dll' name 'waveInOpen';
+>>>>>>> graemeg/fixes_2_2
+=======
+Function waveInOpen(x1: LPHWAVEIN; x2: UINT; x3: LPCWAVEFORMATEX; x4: DWORD; x5: DWORD; x6                    : DWORD): MMRESULT;stdcall; external 'winmm.dll' name 'waveInOpen';
+>>>>>>> origin/fixes_2_2
 Function waveInClose(x1: HWAVEIN): MMRESULT;stdcall; external 'winmm.dll' name 'waveInClose';
 Function waveInPrepareHeader(x1: HWAVEIN; x2: LPWAVEHDR; x3: UINT): MMRESULT;stdcall; external 'winmm.dll' name 'waveInPrepareHeader';
 Function waveInUnprepareHeader(x1: HWAVEIN; x2: LPWAVEHDR; x3: UINT): MMRESULT;stdcall; external 'winmm.dll' name 'waveInUnprepareHeader';

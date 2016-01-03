@@ -125,7 +125,7 @@ ProjectStart;
                    SetTRTag(TRAT_Value,5);
                    SetTRTag(TRAT_ID,ScrollGadID);
                    Space;
-                   ClippedTextBoxMW(PChar('5'),ScrollGadTextID,2);
+                   ClippedTextBoxMW('5',ScrollGadTextID,2);
                 EndLine;
                 Space;
                 BeginLine;

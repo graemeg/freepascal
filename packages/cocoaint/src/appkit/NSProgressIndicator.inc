@@ -77,10 +77,35 @@ const
     _roundColor: id;
     _reserved: id;
      {garbage collector: volatile }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __progressIndicatorFlags: record
       case byte of
        0: (_anonbitfield_NSProgressIndicator0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __progressIndicatorFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSProgressIndicator0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         isSpinning: 0..1;
         isVector: 0..1;
         isLocked: 0..1;
@@ -96,7 +121,19 @@ const
         _isHeartBeatInstalled: 0..1;
         _lastFrame: 0..((1 shl 8)-1);
         RESERVED: 0..((1 shl 8)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _NSProgressIndicatorReserved1: id;

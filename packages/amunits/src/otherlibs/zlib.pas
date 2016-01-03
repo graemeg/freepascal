@@ -28,6 +28,12 @@
   nils.sjoholm@mailbox.swipnet.se
 }
 
+
+{$I useamigasmartlink.inc}
+{$ifdef use_amiga_smartlink}
+   {$smartlink on}
+{$endif use_amiga_smartlink}
+
 UNIT ZLIB;
 
 INTERFACE
@@ -50,16 +56,16 @@ const
      GZ_COMPRESS_BEST = 9;
 
 
-FUNCTION GZ_Close(handle : POINTER location 'a0') : LONGINT; syscall ZLibBase 042;
-FUNCTION GZ_CompressMem(srcbuf : POINTER location 'a0'; srclen : longword location 'd0'; destbuf : POINTER location 'a1'; destlen : longword location 'd1'; strategy : longword location 'd2'; level : longword location 'd3'; VAR poutlen : longword location 'a2') : LONGINT; syscall ZLibBase 114;
-FUNCTION GZ_DecompressMem(srcbuf : POINTER location 'a0'; srclen : longword location 'd0'; destbuf : POINTER location 'a1'; destlen : longword location 'd1') : LONGINT; syscall ZLibBase 120;
-FUNCTION GZ_FGetC(handle : POINTER location 'a0') : pLONGINT; syscall ZLibBase 060;
-FUNCTION GZ_FGetS(handle : POINTER location 'a0'; buf : pCHAR location 'a1'; len : longword location 'd0') : pCHAR; syscall ZLibBase 054;
-FUNCTION GZ_FileLength(handle : POINTER location 'a0') : longword; syscall ZLibBase 138;
-FUNCTION GZ_Open(filename : pCHAR location 'a0'; openmode : longword location 'd0'; strategy : longword location 'd1'; level : longword location 'd2') : POINTER; syscall ZLibBase 030;
-FUNCTION GZ_OpenFromFH(fh : LONGINT location 'a0'; openmode : longword location 'd0'; strategy : longword location 'd1'; level : longword location 'd2') : POINTER; syscall ZLibBase 036;
-FUNCTION GZ_Read(handle : POINTER location 'a0'; buf : POINTER location 'a1'; len : longword location 'd0') : LONGINT; syscall ZLibBase 048;
-FUNCTION GZ_Write(handle : POINTER location 'a0'; buf : POINTER location 'a1'; len : longword location 'd0') : LONGINT; syscall ZLibBase 066;
+FUNCTION GZ_Close(handle : POINTER) : LONGINT;
+FUNCTION GZ_CompressMem(srcbuf : POINTER; srclen : longword; destbuf : POINTER; destlen : longword; strategy : longword; level : longword; VAR poutlen : longword) : LONGINT;
+FUNCTION GZ_DecompressMem(srcbuf : POINTER; srclen : longword; destbuf : POINTER; destlen : longword) : LONGINT;
+FUNCTION GZ_FGetC(handle : POINTER) : pLONGINT;
+FUNCTION GZ_FGetS(handle : POINTER; buf : pCHAR; len : longword) : pCHAR;
+FUNCTION GZ_FileLength(handle : POINTER) : longword;
+FUNCTION GZ_Open(filename : pCHAR; openmode : longword; strategy : longword; level : longword) : POINTER;
+FUNCTION GZ_OpenFromFH(fh : LONGINT; openmode : longword; strategy : longword; level : longword) : POINTER;
+FUNCTION GZ_Read(handle : POINTER; buf : POINTER; len : longword) : LONGINT;
+FUNCTION GZ_Write(handle : POINTER; buf : POINTER; len : longword) : LONGINT;
 
 {You can remove this include and use a define instead}
 {$I useautoopenlib.inc}
@@ -74,8 +80,149 @@ var
 IMPLEMENTATION
 
 {$ifndef dont_use_openlib}
-uses amsgbox;
+uses msgbox;
 {$endif dont_use_openlib}
+
+FUNCTION GZ_Close(handle : POINTER) : LONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L handle,A0
+        MOVEA.L ZLibBase,A6
+        JSR     -042(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GZ_CompressMem(srcbuf : POINTER; srclen : longword; destbuf : POINTER; destlen : longword; strategy : longword; level : longword; VAR poutlen : longword) : LONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L srcbuf,A0
+        MOVE.L  srclen,D0
+        MOVEA.L destbuf,A1
+        MOVE.L  destlen,D1
+        MOVE.L  strategy,D2
+        MOVE.L  level,D3
+        MOVEA.L poutlen,A2
+        MOVEA.L ZLibBase,A6
+        JSR     -114(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GZ_DecompressMem(srcbuf : POINTER; srclen : longword; destbuf : POINTER; destlen : longword) : LONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L srcbuf,A0
+        MOVE.L  srclen,D0
+        MOVEA.L destbuf,A1
+        MOVE.L  destlen,D1
+        MOVEA.L ZLibBase,A6
+        JSR     -120(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GZ_FGetC(handle : POINTER) : pLONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L handle,A0
+        MOVEA.L ZLibBase,A6
+        JSR     -060(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GZ_FGetS(handle : POINTER; buf : pCHAR; len : longword) : pCHAR;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L handle,A0
+        MOVEA.L buf,A1
+        MOVE.L  len,D0
+        MOVEA.L ZLibBase,A6
+        JSR     -054(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GZ_FileLength(handle : POINTER) : longword;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L handle,A0
+        MOVEA.L ZLibBase,A6
+        JSR     -138(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GZ_Open(filename : pCHAR; openmode : longword; strategy : longword; level : longword) : POINTER;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L filename,A0
+        MOVE.L  openmode,D0
+        MOVE.L  strategy,D1
+        MOVE.L  level,D2
+        MOVEA.L ZLibBase,A6
+        JSR     -030(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GZ_OpenFromFH(fh : LONGINT; openmode : longword; strategy : longword; level : longword) : POINTER;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L fh,A0
+        MOVE.L  openmode,D0
+        MOVE.L  strategy,D1
+        MOVE.L  level,D2
+        MOVEA.L ZLibBase,A6
+        JSR     -036(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GZ_Read(handle : POINTER; buf : POINTER; len : longword) : LONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L handle,A0
+        MOVEA.L buf,A1
+        MOVE.L  len,D0
+        MOVEA.L ZLibBase,A6
+        JSR     -048(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
+
+FUNCTION GZ_Write(handle : POINTER; buf : POINTER; len : longword) : LONGINT;
+BEGIN
+  ASM
+        MOVE.L  A6,-(A7)
+        MOVEA.L handle,A0
+        MOVEA.L buf,A1
+        MOVE.L  len,D0
+        MOVEA.L ZLibBase,A6
+        JSR     -066(A6)
+        MOVEA.L (A7)+,A6
+        MOVE.L  D0,@RESULT
+  END;
+END;
 
 const
     { Change VERSION and LIBVERSION to proper values }

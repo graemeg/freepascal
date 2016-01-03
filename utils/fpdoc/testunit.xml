@@ -1,0 +1,1052 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fpdoc-descriptions>
+<package name="fpdoc">
+
+<!--
+  ====================================================================
+    testunit
+  ====================================================================
+-->
+
+<module name="testunit">
+<short></short>
+<descr>
+</descr>
+
+<!-- constant Visibility: default -->
+<element name="AnIntegerConst">
+<short></short>
+<descr>
+</descr>
+<version>
+Appears in 2.0
+</version>
+<seealso>
+</seealso>
+</element>
+
+<!-- constant Visibility: default -->
+<element name="AStringConst">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- constant Visibility: default -->
+<element name="AFLoatconst">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- constant Visibility: default -->
+<element name="ABooleanConst">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- constant Visibility: default -->
+<element name="ATypedConst">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- constant Visibility: default -->
+<element name="AnArrayConst">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- constant Visibility: default -->
+<element name="ARecordConst">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- constant Visibility: default -->
+<element name="ASetConst">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- constant Visibility: default -->
+<element name="ADeprecatedConst">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- enumeration type Visibility: default -->
+<element name="TAnEnumType">
+<short></short>
+<descr>
+</descr>
+<version>
+Appears in 2.0
+</version>
+<seealso>
+</seealso>
+</element>
+
+<!-- enumeration value Visibility: default -->
+<element name="TAnEnumType.one">
+<short></short>
+</element>
+
+<!-- enumeration value Visibility: default -->
+<element name="TAnEnumType.two">
+<short></short>
+</element>
+
+<!-- enumeration value Visibility: default -->
+<element name="TAnEnumType.three">
+<short></short>
+</element>
+
+<!-- set type Visibility: default -->
+<element name="TASetType">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- array type Visibility: default -->
+<element name="TAnArrayType">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- range type Visibility: default -->
+<element name="TASubRangeType">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- array type Visibility: default -->
+<element name="TABooleanArrayType">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- record type Visibility: default -->
+<element name="TARecordType">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TARecordType.X">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TARecordType.Y">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TARecordType.Z">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- record type Visibility: default -->
+<element name="TAVariantRecordType">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TAVariantRecordType.A">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TAVariantRecordType.X">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TAVariantRecordType.Y">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TAVariantRecordType.phi">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TAVariantRecordType.Omega">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- record type Visibility: default -->
+<element name="TAVariantRecordType2">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TAVariantRecordType2.A">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TAVariantRecordType2.X">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TAVariantRecordType2.Y">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TAVariantRecordType2.phi">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="TAVariantRecordType2.Omega">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="ASimpleVar">
+<short></short>
+<descr>
+</descr>
+<version>
+Appears in 2.0
+</version>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="ATypedVar">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="ARecordVar">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="A">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="B">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="AnArrayVar">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="ATypedArray">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="AInitVar">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="ADeprecatedVar">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="ACVarVar">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="AnExternalVar">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: default -->
+<element name="AnExternalLibVar">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="SimpleProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<version>
+Appears in 2.0
+</version>
+<seealso>
+</seealso>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="OverloadedProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="OverloadedProc.A">
+<short></short>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="OverloadedProc.B">
+<short></short>
+</element>
+
+<!-- function Visibility: default -->
+<element name="SimpleFunc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- function result Visibility: default -->
+<element name="SimpleFunc.Result">
+<short></short>
+</element>
+
+<!-- function Visibility: default -->
+<element name="OverloadedFunc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- function result Visibility: default -->
+<element name="OverloadedFunc.Result">
+<short></short>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="OverloadedFunc.A">
+<short></short>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="OverloadedFunc.B">
+<short></short>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="ConstArgProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="ConstArgProc.A">
+<short></short>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="VarArgProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="VarArgProc.A">
+<short></short>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="OutArgProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="OutArgProc.A">
+<short></short>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="UntypedVarArgProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="UntypedVarArgProc.A">
+<short></short>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="UntypedConstArgProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="UntypedConstArgProc.A">
+<short></short>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="UntypedOutArgProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="UntypedOutArgProc.A">
+<short></short>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="ArrayArgProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="ArrayArgProc.A">
+<short></short>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="OpenArrayArgProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="OpenArrayArgProc.A">
+<short></short>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="ConstArrayArgProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="ConstArrayArgProc.A">
+<short></short>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="externalproc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="externalnameProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- procedure Visibility: default -->
+<element name="externallibnameProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- class Visibility: default -->
+<element name="TMyParentClass">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<version>
+Appears in 2.0
+</version>
+<seealso>
+</seealso>
+</element>
+
+<!-- variable Visibility: private -->
+<element name="TMyParentClass.FI">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- function Visibility: private -->
+<element name="TMyParentClass.GetA">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- function result Visibility: default -->
+<element name="TMyParentClass.GetA.Result">
+<short></short>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="TMyParentClass.GetA.AIndex">
+<short></short>
+</element>
+
+<!-- function Visibility: private -->
+<element name="TMyParentClass.GetIP">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- function result Visibility: default -->
+<element name="TMyParentClass.GetIP.Result">
+<short></short>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="TMyParentClass.GetIP.AIndex">
+<short></short>
+</element>
+
+<!-- procedure Visibility: private -->
+<element name="TMyParentClass.SetA">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="TMyParentClass.SetA.AIndex">
+<short></short>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="TMyParentClass.SetA.AValue">
+<short></short>
+</element>
+
+<!-- procedure Visibility: private -->
+<element name="TMyParentClass.SetIP">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="TMyParentClass.SetIP.AIndex">
+<short></short>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="TMyParentClass.SetIP.AValue">
+<short></short>
+</element>
+
+<!-- procedure Visibility: private -->
+<element name="TMyParentClass.WriteI">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="TMyParentClass.WriteI.AI">
+<short></short>
+</element>
+
+<!-- function Visibility: private -->
+<element name="TMyParentClass.ReadI">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- function result Visibility: default -->
+<element name="TMyParentClass.ReadI.Result">
+<short></short>
+</element>
+
+<!-- procedure Visibility: protected -->
+<element name="TMyParentClass.AProtectedMethod">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- property Visibility: protected -->
+<element name="TMyParentClass.AProtectedProp">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- constructor Visibility: public -->
+<element name="TMyParentClass.Create">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="TMyParentClass.Create.AOwner">
+<short></short>
+</element>
+
+<!-- destructor Visibility: public -->
+<element name="TMyParentClass.Destroy">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- procedure Visibility: public -->
+<element name="TMyParentClass.AVirtualProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<version>
+Appears in 2.0
+</version>
+<seealso>
+</seealso>
+</element>
+
+<!-- procedure Visibility: public -->
+<element name="TMyParentClass.AnAbstractProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- procedure Visibility: public -->
+<element name="TMyParentClass.AMessageProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="TMyParentClass.AMessageProc.Msg">
+<short></short>
+</element>
+
+<!-- procedure Visibility: public -->
+<element name="TMyParentClass.AStringMessageProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="TMyParentClass.AStringMessageProc.Msg">
+<short></short>
+</element>
+
+<!-- procedure Visibility: public -->
+<element name="TMyParentClass.ADeprecatedProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- procedure Visibility: public -->
+<element name="TMyParentClass.APlatformProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- property Visibility: public -->
+<element name="TMyParentClass.IntProp">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- property Visibility: public -->
+<element name="TMyParentClass.IntROProp">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- property Visibility: public -->
+<element name="TMyParentClass.GetIntProp">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- property Visibility: public -->
+<element name="TMyParentClass.AnArrayProp">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- argument Visibility: default -->
+<element name="TMyParentClass.AnArrayProp.AIndex">
+<short></short>
+</element>
+
+<!-- property Visibility: public -->
+<element name="TMyParentClass.AnIndexProp">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- property Visibility: public -->
+<element name="TMyParentClass.AnIndexProp2">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+<!-- procedure Visibility: published -->
+<element name="TMyParentClass.SomePublishedMethod">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- class Visibility: default -->
+<element name="TMyChildClass">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- procedure Visibility: public -->
+<element name="TMyChildClass.AVirtualProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- procedure Visibility: public -->
+<element name="TMyChildClass.AnAbstractProc">
+<short></short>
+<descr>
+</descr>
+<errors>
+</errors>
+<seealso>
+</seealso>
+</element>
+
+<!-- property Visibility: published -->
+<element name="TMyChildClass.AProtectedProp">
+<short></short>
+<descr>
+</descr>
+<seealso>
+</seealso>
+</element>
+
+</module> <!-- testunit -->
+
+</package>
+</fpdoc-descriptions>

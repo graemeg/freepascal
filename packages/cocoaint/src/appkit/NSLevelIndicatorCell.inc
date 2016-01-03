@@ -62,15 +62,52 @@ type
     _criticalValue: double;
     _numberOfTickMarks: cint;
     _numberOfMajorTickMarks: cint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __liFlags: record
       case byte of
        0: (_anonbitfield_NSLevelIndicatorCell0: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __liFlags: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSLevelIndicatorCell0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         indicatorStyle: 0..((1 shl 4)-1);
         _tickMarkPosition: 0..1;
         selectable: 0..1;
         reserved: 0..((1 shl 26)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     _cellFrame: NSRect;

@@ -584,6 +584,8 @@ A_MOVNTSD,
 A_INSERTQ,
 A_EXTRQ,
 A_LZCNT,
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_PABSB,
 A_PABSW,
 A_PABSD,
@@ -642,13 +644,37 @@ A_PMOVZXWD,
 A_PMOVZXWQ,
 A_PMOVZXDQ,
 A_PMULDQ,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_PMULLD,
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A_PTEST,
 A_ROUNDPS,
 A_ROUNDPD,
 A_ROUNDSS,
 A_ROUNDSD,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_CRC32,
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 A_PCMPESTRI,
 A_PCMPESTRM,
 A_PCMPISTRI,
@@ -660,6 +686,10 @@ A_AESENCLAST,
 A_AESDEC,
 A_AESDECLAST,
 A_AESIMC,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 A_AESKEYGENASSIST,
 A_RDTSCP,
 A_STOSQ,
@@ -1020,4 +1050,31 @@ A_VFNMSUB231SD,
 A_VFNMSUB132SS,
 A_VFNMSUB213SS,
 A_VFNMSUB231SS
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+A_AESKEYGEN,
+A_STOSQ,
+A_LODSQ,
+A_CMPSQ
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+A_POPCNT
+>>>>>>> graemeg/fixes_2_2
+=======
+A_POPCNT
+>>>>>>> origin/fixes_2_2
 );

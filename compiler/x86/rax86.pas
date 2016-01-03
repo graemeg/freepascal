@@ -45,10 +45,16 @@ type
     Procedure SetSize(_size:longint;force:boolean);override;
     Procedure SetCorrectSize(opcode:tasmop);override;
     Function CheckOperand: boolean; override;
+<<<<<<< HEAD
+<<<<<<< HEAD
     { handles the @Code symbol }
     Procedure SetupCode;
     { handles the @Data symbol }
     Procedure SetupData;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
   { Operands are always in AT&T order.
@@ -218,6 +224,10 @@ begin
         OS_64 : opsize:=S_IQ;
       end;
     end
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   else if gas_needsuffix[opcode]=AttSufMM then
   begin
     if (opr.typ=OPR_Reference) then
@@ -228,6 +238,14 @@ begin
       end;
     end;
   end
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   else
     begin
       if size=OS_64 then
@@ -242,6 +260,10 @@ begin
   if (opr.typ=OPR_Reference) then
     begin
       if not hasvar then
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/fixes_2_2
         begin
           if (getsupreg(opr.ref.base)=RS_EBP) and (opr.ref.offset>0) then
             begin
@@ -257,6 +279,8 @@ begin
         end;
       if (cs_create_pic in current_settings.moduleswitches) and
          assigned(opr.ref.symbol) and
+<<<<<<< HEAD
+<<<<<<< HEAD
          not assigned(opr.ref.relsymbol) then
         begin
           if not(opr.ref.refaddr in [addr_pic,addr_pic_no_got]) then
@@ -283,6 +307,54 @@ begin
                 message(asmr_w_global_access_without_got);
 {$endif x86_64}
             end;
+=======
+         not assigned(opr.ref.relsymbol) and
+         not(opr.ref.refaddr in [addr_pic,addr_pic_no_got]) then
+        begin
+          if (opr.ref.symbol.name <> '_GLOBAL_OFFSET_TABLE_') then
+            begin
+              message(asmr_e_need_pic_ref);
+              result:=false;
+            end
+          else
+            opr.ref.refaddr:=addr_pic;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+        begin
+          if (getsupreg(opr.ref.base)=RS_EBP) and (opr.ref.offset>0) then
+            begin
+              if current_procinfo.procdef.proccalloption=pocall_register then
+                message(asmr_w_no_direct_ebp_for_parameter)
+              else
+                message(asmr_w_direct_ebp_for_parameter_regcall);
+            end
+          else if (getsupreg(opr.ref.base)=RS_EBP) and (opr.ref.offset<0) then
+            message(asmr_w_direct_ebp_neg_offset)
+          else if (getsupreg(opr.ref.base)=RS_ESP) and (opr.ref.offset<0) then
+            message(asmr_w_direct_esp_neg_offset);
+        end;
+      if (cs_create_pic in current_settings.moduleswitches) and
+         assigned(opr.ref.symbol) and
+=======
+>>>>>>> origin/fixes_2_2
+         not assigned(opr.ref.relsymbol) and
+         (opr.ref.refaddr<>addr_pic) then
+        begin
+          message(asmr_e_need_pic_ref);
+          result:=false;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
         end;
     end;
 end;
@@ -1234,7 +1306,19 @@ begin
                          integer operations it is seen as 32bit
 
                          this applies only to i386, see tw16622}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
                        if gas_needsuffix[opcode] in [attsufFPU,attsufFPUint] then
                          asize:=OT_BITS64
 {$ifdef i386}
@@ -1261,10 +1345,17 @@ begin
  { Condition ? }
   if condition<>C_None then
    ai.SetCondition(condition);
+  
+  { Set is_jmp, it enables asmwriter to emit short jumps if appropriate }
+  if (opcode=A_JMP) or (opcode=A_JCC) then
+    ai.is_jmp := True;
+<<<<<<< HEAD
 
   { Set is_jmp, it enables asmwriter to emit short jumps if appropriate }
   if (opcode=A_JMP) or (opcode=A_JCC) then
     ai.is_jmp := True;
+=======
+>>>>>>> origin/fixes_2_2
 
  { Concat the opcode or give an error }
   if assigned(ai) then

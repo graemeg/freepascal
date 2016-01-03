@@ -1,9 +1,23 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for PTCPas
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for PTCPas
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=ptc
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
@@ -11,10 +25,70 @@ packages=rtl fpmkunit
 
 [install]
 fpcpackage=y
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+
+[target]
+units=ptc ptcwrapper ptceventqueue
+units_win32=p_ddraw
+units_win64=p_ddraw
+exampledirs=examples
+
+[compiler]
+#unitdir=src/ptcwrapper src/x11
+unitdir_go32v2=src/dos/base src/dos/cga src/dos/vga src/dos/textfx2 src/dos/timeunit src/dos/vesa
+unitdir_win32=src/win32/directx
+unitdir_win64=src/win32/directx
+sourcedir_win32=src/win32/directx
+sourcedir_win64=src/win32/directx
+unitdir_wince=src/wince/gapi
+sourcedir=src src/ptcwrapper
+
+[require]
+packages=hermes fcl-base
+packages_linux=x11
+packages_freebsd=x11
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+version=2.2.5
+
+[target]
+units=ptc
+loaders=$(CPU_LOADERS)
+exampledirs=demos examples
+
+[compiler]
+unitdir=src/x11 src/dos/cga src/dos/fakemode src/dos/textfx2 src/dos/timeunit src/dos/vesa \
+        src/win32/directx src
+includedir=src
+targetdir=.
+
+[require]
+packages=hermes
+packages_linux=x11
+packages_freebsd=x11
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -24,6 +98,22 @@ ifdef CPU_TARGET
 FPC_TARGETOPT+=--cpu=$(CPU_TARGET)
 endif
 LOCALFPMAKE=./fpmake$(SRCEXEEXT)
+=======
+[install]
+fpcpackage=y
+>>>>>>> graemeg/cpstrnew
+=======
+[install]
+fpcpackage=y
+>>>>>>> graemeg/cpstrnew
+=======
+[install]
+fpcpackage=y
+>>>>>>> graemeg/cpstrnew
+=======
+[install]
+fpcpackage=y
+>>>>>>> origin/cpstrnew
 
 [rules]
 # Do not pass the Makefile's unit and binary target locations. Fpmake uses it's own.
@@ -100,3 +190,13 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+
+[rules]
+.NOTPARALLEL:
+>>>>>>> graemeg/fixes_2_2
+=======
+
+[rules]
+.NOTPARALLEL:
+>>>>>>> origin/fixes_2_2

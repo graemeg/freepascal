@@ -806,7 +806,15 @@ BEGIN
   { the orginal code can't be used here because of the limited
     video unit capabilities, the mono modus can't be handled
   }
+<<<<<<< HEAD
+<<<<<<< HEAD
   Drivers.DetectVideo;
+=======
+{  Drivers.InitVideo;}
+>>>>>>> graemeg/fixes_2_2
+=======
+{  Drivers.InitVideo;}
+>>>>>>> origin/fixes_2_2
   if (ScreenMode.Col div ScreenMode.Row<2) then
     ShadowSize.X := 1
   else
@@ -900,6 +908,8 @@ begin
   ScreenMode:=Mode;
 {  InitMouse;
   InitMemory;}
+<<<<<<< HEAD
+<<<<<<< HEAD
 {  InitScreen;
    Warning: InitScreen calls DetectVideo which
     resets ScreenMode to old value, call it after
@@ -908,6 +918,14 @@ begin
 
   { Update ScreenMode to new value }
   InitScreen;
+=======
+  InitScreen;
+  Video.SetVideoMode(Mode);
+>>>>>>> graemeg/fixes_2_2
+=======
+  InitScreen;
+  Video.SetVideoMode(Mode);
+>>>>>>> origin/fixes_2_2
   ScreenWidth:=Video.ScreenWidth;
   ScreenHeight:=Video.ScreenHeight;
   Buffer := Views.PVideoBuf(VideoBuf);
@@ -947,6 +965,8 @@ BEGIN
            Drivers.GetMouseEvent(Event);              { Load mouse event }
            If (Event.What = evNothing) Then
              begin
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$IFNDEF HASAMIGA}
                { due to isses with the event handling in FV itself,
                  we skip this here, and let the IDE to handle it
@@ -955,6 +975,14 @@ BEGIN
                Drivers.GetSystemEvent(Event);         { Load system event }
                If (Event.What = evNothing) Then
 {$ENDIF}
+=======
+               Drivers.GetSystemEvent(Event);         { Load system event }
+               If (Event.What = evNothing) Then
+>>>>>>> graemeg/fixes_2_2
+=======
+               Drivers.GetSystemEvent(Event);         { Load system event }
+               If (Event.What = evNothing) Then
+>>>>>>> origin/fixes_2_2
                  Idle;     { Idle if no event }
              end;
          End;

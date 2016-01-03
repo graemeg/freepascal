@@ -1,15 +1,56 @@
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  * Copyright (c) 2002-2010,2012-2013 Apple Inc. All Rights Reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
  *
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+ * Copyright (c) 2002-2009 Apple Inc. All Rights Reserved.
+ * 
+ * @APPLE_LICENSE_HEADER_START@
+ * 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *
+=======
+ * 
+>>>>>>> graemeg/cpstrnew
+=======
+ * 
+>>>>>>> graemeg/cpstrnew
+=======
+ * 
+>>>>>>> graemeg/cpstrnew
+=======
+ * 
+>>>>>>> origin/cpstrnew
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,12 +58,37 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
  *
  * @APPLE_LICENSE_HEADER_END@
  }
 {  Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, September 2010 }
 {  Pascal Translation Update: Jonas Maebe <jonas@freepascal.org>, October 2012 }
 {  Pascal Translation Update: Jonas Maebe <jonas@freepascal.org>, August 2015 }
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+ * 
+ * @APPLE_LICENSE_HEADER_END@
+ }
+{       Pascal Translation Updated:  Jonas Maebe, <jonas@freepascal.org>, September 2010 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {
     Modified for use with Free Pascal
     Version 308
@@ -77,11 +143,23 @@ interface
 {$elsec}
 	{$setc __arm__ := 0}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifc not defined __arm64__ and defined CPUAARCH64}
   {$setc __arm64__ := 1}
 {$elsec}
   {$setc __arm64__ := 0}
 {$endc}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 {$ifc defined cpu64}
   {$setc __LP64__ := 1}
@@ -100,29 +178,89 @@ interface
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __ppc64__ and __ppc64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := TRUE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 	{$setc TARGET_OS_MAC := TRUE}
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __i386__ and __i386__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := TRUE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
@@ -132,13 +270,29 @@ interface
 	{$setc TARGET_OS_IPHONE := FALSE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$elifc defined __x86_64__ and __x86_64__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := TRUE}
 	{$setc TARGET_CPU_ARM := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
 {$ifc defined(iphonesim)}
  	{$setc TARGET_OS_MAC := FALSE}
@@ -150,17 +304,47 @@ interface
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
 {$endc}
 	{$setc TARGET_OS_EMBEDDED := FALSE}
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> graemeg/cpstrnew
+=======
+	{$setc TARGET_OS_MAC := TRUE}
+	{$setc TARGET_OS_IPHONE := FALSE}
+	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+>>>>>>> origin/cpstrnew
 {$elifc defined __arm__ and __arm__}
 	{$setc TARGET_CPU_PPC := FALSE}
 	{$setc TARGET_CPU_PPC64 := FALSE}
 	{$setc TARGET_CPU_X86 := FALSE}
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_CPU_ARM64 := FALSE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elifc defined __arm64__ and __arm64__}
 	{$setc TARGET_CPU_PPC := FALSE}
@@ -169,13 +353,35 @@ interface
 	{$setc TARGET_CPU_X86_64 := FALSE}
 	{$setc TARGET_CPU_ARM := FALSE}
 	{$setc TARGET_CPU_ARM64 := TRUE}
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
 	{ will require compiler define when/if other Apple devices with ARM cpus ship }
 	{$setc TARGET_OS_MAC := FALSE}
 	{$setc TARGET_OS_IPHONE := TRUE}
 	{$setc TARGET_IPHONE_SIMULATOR := FALSE}
+<<<<<<< HEAD
+<<<<<<< HEAD
 	{$setc TARGET_OS_EMBEDDED := TRUE}
 {$elsec}
 	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ nor __arm64__ is defined.}
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> graemeg/cpstrnew
+=======
+{$elsec}
+	{$error __ppc__ nor __ppc64__ nor __i386__ nor __x86_64__ nor __arm__ is defined.}
+>>>>>>> origin/cpstrnew
 {$endc}
 
 {$ifc defined __LP64__ and __LP64__ }
@@ -217,11 +423,31 @@ interface
 {$setc TYPE_BOOL := FALSE}
 {$setc TYPE_EXTENDED := FALSE}
 {$setc TYPE_LONGLONG := TRUE}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses MacTypes,SecBase,cssmtype,cssmapple,CFBase,CFArray,CFData,CFDate,CFDictionary;
+=======
+uses MacTypes,SecBase,cssmtype,cssmapple,CFBase,CFArray,CFData,CFDate;
+>>>>>>> graemeg/cpstrnew
+=======
+uses MacTypes,SecBase,cssmtype,cssmapple,CFBase,CFArray,CFData,CFDate;
+>>>>>>> graemeg/cpstrnew
+=======
+uses MacTypes,SecBase,cssmtype,cssmapple,CFBase,CFArray,CFData,CFDate;
+>>>>>>> graemeg/cpstrnew
+=======
+uses MacTypes,SecBase,cssmtype,cssmapple,CFBase,CFArray,CFData,CFDate;
+>>>>>>> origin/cpstrnew
 {$endc} {not MACOSALLINCLUDE}
 
 
 {!
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     @header SecTrust
     The functions and data types in SecTrust implement trust computation
     and allow the caller to apply trust decisions to the evaluation.
@@ -272,6 +498,43 @@ uses MacTypes,SecBase,cssmtype,cssmapple,CFBase,CFArray,CFData,CFDate,CFDictiona
 
 type
 	SecTrustResultType = UInt32;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+	@header SecTrust
+	The functions and data types in SecTrust implement trust computation and allow the user to apply trust decisions to the trust configuration.
+}
+
+
+{!
+	@typedef SecTrustResultType
+	@abstract Specifies the trust result type.
+	@constant kSecTrustResultInvalid Indicates an invalid setting or result.
+	@constant kSecTrustResultProceed Indicates you may proceed.  This value may be returned by the SecTrustEvaluate function or stored as part of the user trust settings. 
+	@constant kSecTrustResultConfirm Indicates confirmation with the user is required before proceeding.  This value may be returned by the SecTrustEvaluate function or stored as part of the user trust settings. 
+	@constant kSecTrustResultDeny Indicates a user-configured deny; do not proceed. This value may be returned by the SecTrustEvaluate function or stored as part of the user trust settings. 
+	@constant kSecTrustResultUnspecified Indicates user intent is unknown. This value may be returned by the SecTrustEvaluate function or stored as part of the user trust settings. 
+	@constant kSecTrustResultRecoverableTrustFailure Indicates a trust framework failure; retry after fixing inputs. This value may be returned by the SecTrustEvaluate function but not stored as part of the user trust settings. 
+	@constant kSecTrustResultFatalTrustFailure Indicates a trust framework failure; no "easy" fix. This value may be returned by the SecTrustEvaluate function but not stored as part of the user trust settings.
+	@constant kSecTrustResultOtherError Indicates a failure other than that of trust evaluation. This value may be returned by the SecTrustEvaluate function but not stored as part of the user trust settings.
+ }
+type
+	SecTrustResultType = UInt32;
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 const
 	kSecTrustResultInvalid = 0;
 	kSecTrustResultProceed = 1;
@@ -280,6 +543,10 @@ const
 	kSecTrustResultUnspecified = 4;
 	kSecTrustResultRecoverableTrustFailure = 5;
 	kSecTrustResultFatalTrustFailure = 6;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 	kSecTrustResultOtherError = 7; (* CF_ENUM_DEPRECATED(10_0, 10_9, NA, NA) *)
 
 {!
@@ -835,6 +1102,241 @@ function SecTrustCopyAnchorCertificates( var anchors: CFArrayRef ): OSStatus; ex
 
 {$endc} {TARGET_OS_MAC}
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+	kSecTrustResultOtherError = 7;
+
+{!
+	@typedef SecTrustUserSetting
+	@abstract Specifies user-specified trust settings.
+}
+type
+	SecTrustUserSetting = SecTrustResultType;
+
+{!
+	@typedef SecTrustRef
+	@abstract A pointer to an opaque trust management structure.
+}
+type
+	SecTrustRef = ^OpaqueSecTrustRef; { an opaque type }
+	{ already defined in SecBase 
+	OpaqueSecTrustRef = record end; }
+
+{!
+	@function SecTrustGetTypeID
+	@abstract Returns the type identifier of SecTrust instances.
+	@result The CFTypeID of SecTrust instances.
+}
+function SecTrustGetTypeID: CFTypeID; external name '_SecTrustGetTypeID';
+
+{!
+	@function SecTrustCreateWithCertificates
+	@abstract Creates a trust based on the given certificates and policies.
+    @param certificates The group of certificates to verify.
+    @param policies An array of one or more policies. You may pass a SecPolicyRef to represent a single policy.
+	@param trustRef On return, a pointer to the trust management reference.
+	@result A result code. See "Security Error Codes" (SecBase.h).
+}
+function SecTrustCreateWithCertificates( certificates: CFArrayRef; policies: CFTypeRef; var trustRef: SecTrustRef ): OSStatus; external name '_SecTrustCreateWithCertificates';
+
+{!
+    @function SecTrustSetPolicies
+    @abstract Set (replace) the set of policies to evaluate.
+    @param trust The reference to the trust to change.
+    @param policies An array of one or more policies. A single SecPolicyRef may also be passed, representing an array of one policy.
+    @result A result code. See "Security Error Codes" (SecBase.h).
+}    
+function SecTrustSetPolicies( trust: SecTrustRef; policies: CFTypeRef ): OSStatus; external name '_SecTrustSetPolicies';
+
+{$ifc TARGET_OS_MAC}
+{!
+	@function SecTrustSetParameters
+	@abstract Sets the action and action data for a trust.
+	@param trustRef The reference to the trust to change.
+	@param action A CSSM trust action.
+	@param actionData A reference to action data.
+	@result A result code. See "Security Error Codes" (SecBase.h).
+ }
+function SecTrustSetParameters( trustRef: SecTrustRef; action: CSSM_TP_ACTION; actionData: CFDataRef ): OSStatus; external name '_SecTrustSetParameters';
+{$endc} {TARGET_OS_MAC}
+
+{!
+	@function SecTrustSetAnchorCertificates
+	@abstract Sets the anchor certificates for a given trust.
+	@param trust A reference to a trust.
+	@param anchorCertificates An array of anchor certificates.
+	@result A result code. See "Security Error Codes" (SecBase.h).
+}
+function SecTrustSetAnchorCertificates( trust: SecTrustRef; anchorCertificates: CFArrayRef ): OSStatus; external name '_SecTrustSetAnchorCertificates';
+
+{!
+	@function SecTrustSetAnchorCertificatesOnly
+	@abstract Reenables trusting anchor certificates in addition to those passed in
+    via the SecTrustSetAnchorCertificates API.
+	@param trust A reference to a trust object.
+	@param anchorCertificatesOnly If true, disables trusting any anchors other
+    than the ones passed in via SecTrustSetAnchorCertificates().  If false,
+    the built in anchor certificates are also trusted.
+	@result A result code.  See "Security Error Codes" (SecBase.h).
+}
+function SecTrustSetAnchorCertificatesOnly( trust: SecTrustRef; anchorCertificatesOnly: Boolean ): OSStatus; external name '_SecTrustSetAnchorCertificatesOnly';
+
+{!
+	@function SecTrustSetKeychains
+	@abstract Sets the keychains for a given trust.
+	@param trust A reference to a trust.
+    @param keychainOrArray A reference to an array of keychains to search, a single keychain or NULL to search the user's default keychain search list.
+	@result A result code. See "Security Error Codes" (SecBase.h).
+}
+function SecTrustSetKeychains( trust: SecTrustRef; keychainOrArray: CFTypeRef ): OSStatus; external name '_SecTrustSetKeychains';
+
+{!
+	@function SecTrustSetVerifyDate
+	@abstract Specifies the date for verification of a given trust.
+	@param trust A reference to the trust to verify.
+	@param verifyDate The date to verify.
+	@result A result code. See "Security Error Codes" (SecBase.h).
+}
+function SecTrustSetVerifyDate( trust: SecTrustRef; verifyDate: CFDateRef ): OSStatus; external name '_SecTrustSetVerifyDate';
+
+{!
+	@function SecTrustGetVerifyTime
+	@abstract Returns the verify time.
+	@param trust A reference to the trust object to verify.
+	@result A CFAbsoluteTime value representing the time at which certificates
+	should be checked for validity.
+}
+function SecTrustGetVerifyTime( trust: SecTrustRef ): CFAbsoluteTime; external name '_SecTrustGetVerifyTime';
+
+{!
+	@function SecTrustEvaluate
+	@abstract Evaluates a trust.
+	@param trust A reference to the trust to evaluate.
+	@param result A pointer to a result type.
+	@result A result code. See "Security Error Codes" (SecBase.h).	
+}
+function SecTrustEvaluate( trust: SecTrustRef; var result: SecTrustResultType ): OSStatus; external name '_SecTrustEvaluate';
+
+{$ifc TARGET_OS_MAC}
+{!
+	@function SecTrustGetResult
+	@abstract Returns detail information on the outcome of a call to SecTrustEvaluate.
+	@param trustRef A reference to a trust.
+	@param result A pointer to the result from the call to SecTrustEvaluate.
+	@param certChain On return, a pointer to the certificate chain used to validate the input certificate. Call the CFRelease function to release this pointer.
+	@param statusChain On return, a pointer to the status of the certificate chain. Do not attempt to free this pointer; it remains valid until the trust is destroyed or the next call to SecTrustEvaluate.
+	@result A result code. See "Security Error Codes" (SecBase.h).
+}
+function SecTrustGetResult( trustRef: SecTrustRef; var result: SecTrustResultType; var certChain: CFArrayRef; statusChain: CSSM_TP_APPLE_EVIDENCE_INFOArrayPtr): OSStatus; external name '_SecTrustGetResult';
+
+{!
+	@function SecTrustGetCssmResult
+	@abstract Gets the CSSM trust result.
+	@param trust A reference to a trust.
+	@param result On return, a pointer to the CSSM trust result.
+	@result A result code. See "Security Error Codes" (SecBase.h).
+}
+function SecTrustGetCssmResult( trust: SecTrustRef; var result: CSSM_TP_VERIFY_CONTEXT_RESULT_PTR ): OSStatus; external name '_SecTrustGetCssmResult';
+
+{!
+	@function SecTrustGetCssmResultCode
+	@abstract Gets the result code from the most recent call to SecTrustEvaluate for the specified trust.
+	@param trust A reference to a trust.
+	@param resultCode On return, the result code produced by the most recent evaluation of the given trust (cssmerr.h). The value of resultCode is undefined if SecTrustEvaluate has not been called.
+	@result A result code. See "Security Error Codes" (SecBase.h). Returns errSecTrustNotAvailable if SecTrustEvaluate has not been called for the specified trust.
+}
+function SecTrustGetCssmResultCode( trust: SecTrustRef; var resultCode: OSStatus ): OSStatus; external name '_SecTrustGetCssmResultCode';
+
+{!
+	@function SecTrustGetTPHandle
+	@abstract Gets the CSSM trust handle
+	@param trust A reference to a trust.
+	@param handle On return, a CSSM trust handle.
+	@result A result code. See "Security Error Codes" (SecBase.h).
+}
+function SecTrustGetTPHandle( trust: SecTrustRef; var handle: CSSM_TP_HANDLE ): OSStatus; external name '_SecTrustGetTPHandle';
+{$endc} {TARGET_OS_MAC}
+
+{!
+    @function SecTrustCopyPolicies
+    @abstract Returns an array of policies used by a given trust.
+    @param trust  A reference to a trust.
+    @param policies On return, an array of policies used by this trust. Call the CFRelease function to release this reference.
+    @result A result code. See "Security Error Codes" (SecBase.h).
+}    
+function SecTrustCopyPolicies( trust: SecTrustRef; var policies: CFArrayRef ): OSStatus; external name '_SecTrustCopyPolicies';
+
+{!
+    @function SecTrustCopyCustomAnchorCertificates
+    @abstract Returns an array of custom anchor certificates used by a given trust, as set by a prior call to SecTrustSetAnchorCertificates, or NULL if no custom anchors have been specified.
+    @param trust  A reference to a trust.
+    @param anchors On return, an array of custom anchor certificates (roots) used by this trust, or NULL if no custom anchors have been specified. Call the CFRelease function to release this reference.
+    @result A result code. See "Security Error Codes" (SecBase.h).
+	@availability Mac OS X version 10.5.
+}    
+function SecTrustCopyCustomAnchorCertificates( trust: SecTrustRef; var anchors: CFArrayRef ): OSStatus; external name '_SecTrustCopyCustomAnchorCertificates';
+
+{!
+    @function SecTrustCopyAnchorCertificates
+    @abstract Returns an array of default anchor (root) certificates used by the system.
+    @param anchors On return, an array containing the system's default anchors (roots). Call the CFRelease function to release this pointer.
+    @result A result code. See "Security Error Codes" (SecBase.h).
+}
+function SecTrustCopyAnchorCertificates( var anchors: CFArrayRef ): OSStatus; external name '_SecTrustCopyAnchorCertificates';
+
+{$ifc TARGET_OS_MAC}
+{!
+	@function SecTrustGetCSSMAnchorCertificates
+	@abstract Retrieves the CSSM anchor certificates.
+	@param cssmAnchors A pointer to an array of anchor certificates.
+	@param cssmAnchorCount A pointer to the number of certificates in anchors.
+	@result A result code. See "Security Error Codes" (SecBase.h).
+	@availability Mac OS X version 10.4. Deprecated in Mac OS X version 10.5.
+}
+function SecTrustGetCSSMAnchorCertificates( {const} cssmAnchors: CSSM_DATAArrayPtr; var cssmAnchorCount: UInt32 ): OSStatus; external name '_SecTrustGetCSSMAnchorCertificates';
+(* DEPRECATED_IN_MAC_OS_X_VERSION_10_5_AND_LATER *)
+
+{!
+	@function SecTrustGetUserTrust
+	@abstract Gets the user-specified trust settings of a certificate and policy.
+	@param certificate A reference to a certificate.
+	@param policy A reference to a policy.
+	@param trustSetting On return, a pointer to the user specified trust settings.
+	@result A result code. See "Security Error Codes" (SecBase.h).
+	@availability Mac OS X version 10.4. Deprecated in Mac OS X version 10.5.
+}
+function SecTrustGetUserTrust( certificate: SecCertificateRef; policy: SecPolicyRef; var trustSetting: SecTrustUserSetting ): OSStatus; external name '_SecTrustGetUserTrust';
+(* DEPRECATED_IN_MAC_OS_X_VERSION_10_5_AND_LATER *)
+
+{!
+	@function SecTrustSetUserTrust
+	@abstract Sets the user-specified trust settings of a certificate and policy.
+	@param certificate A reference to a certificate.
+	@param policy A reference to a policy.
+	@param trustSetting The user-specified trust settings.
+	@result A result code. See "Security Error Codes" (SecBase.h).
+	@availability Mac OS X version 10.4. Deprecated in Mac OS X version 10.5.
+	@discussion as of Mac OS version 10.5, this will result in a call to 
+	 SecTrustSettingsSetTrustSettings(). 
+}
+function SecTrustSetUserTrust( certificate: SecCertificateRef; policy: SecPolicyRef; trustSetting: SecTrustUserSetting ): OSStatus; external name '_SecTrustSetUserTrust';
+(* DEPRECATED_IN_MAC_OS_X_VERSION_10_5_AND_LATER *)
+{$endc} {TARGET_OS_MAC}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 {$ifc not defined MACOSALLINCLUDE or not MACOSALLINCLUDE}
 
 end.

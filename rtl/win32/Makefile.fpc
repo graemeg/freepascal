@@ -7,7 +7,23 @@ main=rtl
 
 [target]
 loaders=$(LOADERS)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=system uuchar objpas macpas iso7185 buildrtl cpall lineinfo lnfodwrf
+=======
+units=system objpas macpas iso7185 buildrtl lineinfo lnfodwrf
+>>>>>>> graemeg/cpstrnew
+=======
+units=system objpas macpas iso7185 buildrtl lineinfo lnfodwrf
+>>>>>>> graemeg/cpstrnew
+=======
+units=system objpas macpas iso7185 buildrtl lineinfo lnfodwrf
+>>>>>>> graemeg/cpstrnew
+=======
+units=system objpas macpas iso7185 buildrtl lineinfo lnfodwrf
+>>>>>>> origin/cpstrnew
 implicitunits=sysinitpas sysinitcyg sysinitgprof \
       extpas \
       ctypes strings \
@@ -15,6 +31,7 @@ implicitunits=sysinitpas sysinitcyg sysinitgprof \
       windows initc cmem dynlibs signals \
       dos messages \
       rtlconsts sysconst sysutils math types \
+<<<<<<< HEAD
       typinfo fgl classes \
       cpu mmx charset character getopts \
       fpwidestring \
@@ -22,6 +39,30 @@ implicitunits=sysinitpas sysinitcyg sysinitgprof \
       cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp850 cp856 cp866 cp874 cp8859_1 cp8859_5 cp8859_2 cp852 \
       unicodedata  unicodenumtable
+=======
+      strutils dateutils varutils variants typinfo fgl classes \
+      convutils stdconvs cpu mmx charset ucomplex getopts \
+      winevent sockets printer \
+      video mouse keyboard fmtbcd \
+<<<<<<< HEAD
+<<<<<<< HEAD
+      winsysut sharemem exeinfo fpintres windirs
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+      winsysut sharemem exeinfo
+>>>>>>> graemeg/fixes_2_2
+=======
+      winsysut sharemem exeinfo
+>>>>>>> origin/fixes_2_2
 
 # shared=$(DLLS)
 
@@ -98,7 +139,14 @@ objpas$(PPUEXT): $(OBJPASDIR)/objpas.pp $(INC)/except.inc system$(PPUEXT)
         $(COMPILER) -I$(OBJPASDIR) $(OBJPASDIR)/objpas.pp
 
 macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) buildrtl$(PPUEXT)
+<<<<<<< HEAD
+<<<<<<< HEAD
         $(COMPILER) $(INC)/macpas.pp
+=======
+=======
+>>>>>>> origin/fixes_2_2
+        $(COMPILER) $(INC)/macpas.pp $(REDIR)
+>>>>>>> graemeg/fixes_2_2
 
 iso7185$(PPUEXT) : $(INC)/iso7185.pp buildrtl$(PPUEXT)
         $(COMPILER) $(INC)/iso7185.pp

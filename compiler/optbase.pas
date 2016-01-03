@@ -29,24 +29,44 @@ unit optbase;
       globtype;
 
     type
+<<<<<<< HEAD
+<<<<<<< HEAD
       { this should maybe replaced by a spare set,
         using a dyn. array makes assignments cheap }
       tdfaset = array of byte;
       PDFASet = ^TDFASet;
+=======
+      tdfaset = array of byte;
+>>>>>>> graemeg/fixes_2_2
+=======
+      tdfaset = array of byte;
+>>>>>>> origin/fixes_2_2
 
       toptinfo = record
         { index of the current node inside the dfa sets, aword(-1) if no entry }
         index : aword;
+<<<<<<< HEAD
+<<<<<<< HEAD
         { dfa }
         def : tdfaset;
         use : tdfaset;
         life : tdfaset;
         defsum : tdfaset;
         avail : tdfaset;
+=======
+        defined_nodes : tdfaset;
+        used_nodes : tdfaset;
+>>>>>>> graemeg/fixes_2_2
+=======
+        defined_nodes : tdfaset;
+        used_nodes : tdfaset;
+>>>>>>> origin/fixes_2_2
       end;
 
       poptinfo = ^toptinfo;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     { basic set operations for dfa sets }
 
     { add e to s }
@@ -227,4 +247,12 @@ unit optbase;
       end;
 
 
+=======
+  implementation
+
+>>>>>>> graemeg/fixes_2_2
+=======
+  implementation
+
+>>>>>>> origin/fixes_2_2
 end.

@@ -69,6 +69,10 @@ type
 { Records }
 type
   __VFlags = record
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     case byte of
     0: (_anonbitfield_NSView0: cuint);
     1: (data: bitpacked record
@@ -121,6 +125,70 @@ type
 {$endif}
          end;
        );
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+{$ifdef fpc_big_endian}
+    rotatedFromBase: 0..1;
+    rotatedOrScaledFromBase: 0..1;
+    autosizing: 0..((1 shl 6)-1);
+    autoresizeSubviews: 0..1;
+    wantsGState: 0..1;
+    needsDisplay: 0..1;
+    validGState: 0..1;
+    newGState: 0..1;
+    noVerticalAutosizing: 0..1;
+    frameChangeNotesSuspended: 0..1;
+    needsFrameChangeNote: 0..1;
+    focusChangeNotesSuspended: 0..1;
+    boundsChangeNotesSuspended: 0..1;
+    needsBoundsChangeNote: 0..1;
+    removingWithoutInvalidation: 0..1;
+    interfaceStyle0: 0..1;
+    needsDisplayForBounds: 0..1;
+    specialArchiving: 0..1;
+    interfaceStyle1: 0..1;
+    retainCount: 0..((1 shl 6)-1);
+    retainCountOverMax: 0..1;
+    aboutToResize: 0..1;
+{$else}
+    aboutToResize: 0..1;
+    retainCountOverMax: 0..1;
+    retainCount: 0..((1 shl 6)-1);
+    interfaceStyle1: 0..1;
+    specialArchiving: 0..1;
+    needsDisplayForBounds: 0..1;
+    interfaceStyle0: 0..1;
+    removingWithoutInvalidation: 0..1;
+    needsBoundsChangeNote: 0..1;
+    boundsChangeNotesSuspended: 0..1;
+    focusChangeNotesSuspended: 0..1;
+    needsFrameChangeNote: 0..1;
+    frameChangeNotesSuspended: 0..1;
+    noVerticalAutosizing: 0..1;
+    newGState: 0..1;
+    validGState: 0..1;
+    needsDisplay: 0..1;
+    wantsGState: 0..1;
+    autoresizeSubviews: 0..1;
+    autosizing: 0..((1 shl 6)-1);
+    rotatedOrScaledFromBase: 0..1;
+    rotatedFromBase: 0..1;
+{$endif}
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
   end;
 _VFlags = __VFlags;
 __VFlagsPtr = ^__VFlags;
@@ -183,17 +251,54 @@ var
     _dragTypes: id;
     _viewAuxiliary: _NSViewAuxiliary;
     _vFlags: _VFlags;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     __vFlags2: record
       case byte of
        0: (_anonbitfield_NSView1: cuint);
        1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+    __vFlags2: bitpacked record
+      case byte of
+       0: (_anonbitfield_NSView0: cuint);
+       1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
         nextKeyViewRefCount: 0..((1 shl 14)-1);
         previousKeyViewRefCount: 0..((1 shl 14)-1);
         isVisibleRect: 0..1;
         hasToolTip: 0..1;
         needsRealLockFocus: 0..1;
         menuWasSet: 0..1;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
        end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       );
       end;
     

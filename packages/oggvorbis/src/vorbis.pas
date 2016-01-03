@@ -54,6 +54,16 @@ const
 (***********************************************************************)
 
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  csize_t = culong;
+
+>>>>>>> graemeg/fixes_2_2
+=======
+  csize_t = culong;
+
+>>>>>>> origin/fixes_2_2
   ppcfloat = ^pcfloat;
 
   pvorbis_info = ^vorbis_info;
@@ -438,7 +448,15 @@ begin
 
   while num > 0 do
   begin
+<<<<<<< HEAD
+<<<<<<< HEAD
     res := ov_read(vf, pointer(ptruint(buffer) + ofs), num, bigendianp, word, sgned, nil);
+=======
+    res := ov_read(vf, pointer(ptrint(buffer) + ofs), num, bigendianp, word, sgned, nil);
+>>>>>>> graemeg/fixes_2_2
+=======
+    res := ov_read(vf, pointer(ptrint(buffer) + ofs), num, bigendianp, word, sgned, nil);
+>>>>>>> origin/fixes_2_2
     if res < 0 then
       Exit(res);
 

@@ -2,12 +2,35 @@
   Dummy process.inc - the simplest version based on SysUtils.ExecuteProcess
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 Resourcestring
   SNoCommandLine        = 'Cannot execute empty command-line';
   SErrCannotExecute     = 'Failed to execute %s : %d';
   SErrNoSuchProgram     = 'Executable not found: "%s"';
 
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+>>>>>>> origin/fixes_2.4
+{
+  prevent compilation error for the versions mentioned below
+} 
+{$if defined(VER2_4) or defined(VER2_5_1)}
+{$warning Temporary workaround - unit does nothing}
+{$else}
+{$fatal Proper implementation of TProcess for version of this target needed}
+{$endif}
+>>>>>>> graemeg/cpstrnew
 
 procedure TProcess.CloseProcessHandles;
 begin

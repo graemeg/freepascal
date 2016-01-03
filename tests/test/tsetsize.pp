@@ -1,5 +1,7 @@
 program SetSizes;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifdef fpc}
   {$APPTYPE CONSOLE}
   {$mode delphi}
@@ -30,6 +32,22 @@ const
 {$else}
   three_or_four = 4;
 {$endif}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$APPTYPE CONSOLE}
+
+{$ifdef fpc}
+  {$mode delphi}
+  {$packset 1}
+{$endif}
+
+const
+  _a= 0;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 type
   TIntRange1_a =  0 + _a.. Pred( 1 * 8) + _a;
@@ -155,7 +173,15 @@ begin
   WriteLn(Low(TIntRange2_a),'..',High(TIntRange2_a),' -> ', SizeOf(TSet2_a));
   test(SizeOf(TSet2_a),2);
   WriteLn(Low(TIntRange3_a),'..',High(TIntRange3_a),' -> ', SizeOf(TSet3_a));
+<<<<<<< HEAD
+<<<<<<< HEAD
   test(SizeOf(TSet3_a),three_or_four);
+=======
+  test(SizeOf(TSet3_a),4);
+>>>>>>> graemeg/fixes_2_2
+=======
+  test(SizeOf(TSet3_a),4);
+>>>>>>> origin/fixes_2_2
   WriteLn(Low(TIntRange4_a),'..',High(TIntRange4_a),' -> ', SizeOf(TSet4_a));
   test(SizeOf(TSet4_a),4);
   WriteLn(Low(TIntRange5_a),'..',High(TIntRange5_a),' -> ', SizeOf(TSet5_a));
@@ -188,7 +214,15 @@ begin
   WriteLn(Low(TIntRange1_b),'..',High(TIntRange1_b),' -> ', SizeOf(TSet1_b));
   test(SizeOf(TSet1_b),2);
   WriteLn(Low(TIntRange2_b),'..',High(TIntRange2_b),' -> ', SizeOf(TSet2_b));
+<<<<<<< HEAD
+<<<<<<< HEAD
   test(SizeOf(TSet2_b),three_or_four);
+=======
+  test(SizeOf(TSet2_b),4);
+>>>>>>> graemeg/fixes_2_2
+=======
+  test(SizeOf(TSet2_b),4);
+>>>>>>> origin/fixes_2_2
   WriteLn(Low(TIntRange3_b),'..',High(TIntRange3_b),' -> ', SizeOf(TSet3_b));
   test(SizeOf(TSet3_b),4);
   WriteLn(Low(TIntRange4_b),'..',High(TIntRange4_b),' -> ', SizeOf(TSet4_b));
@@ -223,7 +257,15 @@ begin
   WriteLn(Low(TIntRange1_c),'..',High(TIntRange1_c),' -> ', SizeOf(TSet1_c));
   test(SizeOf(TSet1_c),2);
   WriteLn(Low(TIntRange2_c),'..',High(TIntRange2_c),' -> ', SizeOf(TSet2_c));
+<<<<<<< HEAD
+<<<<<<< HEAD
   test(SizeOf(TSet2_c),three_or_four);
+=======
+  test(SizeOf(TSet2_c),4);
+>>>>>>> graemeg/fixes_2_2
+=======
+  test(SizeOf(TSet2_c),4);
+>>>>>>> origin/fixes_2_2
   WriteLn(Low(TIntRange3_c),'..',High(TIntRange3_c),' -> ', SizeOf(TSet3_c));
   test(SizeOf(TSet3_c),4);
   WriteLn(Low(TIntRange4_c),'..',High(TIntRange4_c),' -> ', SizeOf(TSet4_c));

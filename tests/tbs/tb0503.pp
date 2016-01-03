@@ -1,3 +1,8 @@
+uses
+{$ifdef unix}
+  cwstring,
+{$endif unix}
+  SysUtils;
 procedure testansi;
 var
   s, q: ansistring;

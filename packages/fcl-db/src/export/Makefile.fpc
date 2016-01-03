@@ -6,11 +6,25 @@
 main=fcl-db
 
 [target]
+<<<<<<< HEAD
+<<<<<<< HEAD
 units=fpdbexport fpcsvexport fpfixedexport fpsqlexport fpsimplexmlexport fpsimplejsonexport fpdbfexport fptexexport fprtfexport fpxmlxsdexport fpstdexports 
 rsts=fpdbexport fpcsvexport fpfixedexport fpsqlexport fpsimplexmlexport fpsimplejsonexport fpdbfexport fptexexport fprtfexport fpxmlxsdexport fpstdexports
 
 [require]
 packages=fcl-base fcl-xml
+=======
+=======
+>>>>>>> origin/fixes_2_2
+units=fpdbexport fpcsvexport fpfixedexport fpsqlexport fpsimplexmlexport fpsimplejsonexport fpdbfexport fptexexport fprtfexport fpstdexports 
+rsts=fpdbexport fpcsvexport fpfixedexport fpsqlexport fpsimplexmlexport fpsimplejsonexport fpdbfexport fptexexport fprtfexport fpstdexports
+
+[require]
+packages=fcl-base
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [compiler]
 options=-S2h
@@ -37,6 +51,14 @@ fpcdir=../../../..
 
 #fpdbfexport$(PPUEXT): fpdbexport$(PPEXT)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 #fpxmlxsdexport$(PPUEXT): fpdbexport$(PPEXT)
 
 #fpstdexports$(PPUEXT): $(addsufficx t$(PPEXT), pdbexport fpcsvexport fpfixedexport fpsqlexport fpxmlxsdexport fpsimplexmlexport fpsimplejsonexport fpdbfexport)
+=======
+#fpstdexports$(PPUEXT): $(addsufficx t$(PPEXT), pdbexport fpcsvexport fpfixedexport fpsqlexport fpsimplexmlexport fpsimplejsonexport fpdbfexport)
+>>>>>>> graemeg/fixes_2_2
+=======
+#fpstdexports$(PPUEXT): $(addsufficx t$(PPEXT), pdbexport fpcsvexport fpfixedexport fpsqlexport fpsimplexmlexport fpsimplejsonexport fpdbfexport)
+>>>>>>> origin/fixes_2_2

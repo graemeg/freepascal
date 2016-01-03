@@ -108,7 +108,15 @@ implementation
 
 uses LibTar,
 {$IFDEF UNIX}
+<<<<<<< HEAD
+<<<<<<< HEAD
      UnixType,Unix,BaseUnix,
+=======
+     Unix,BaseUnix,
+>>>>>>> graemeg/fixes_2_2
+=======
+     Unix,BaseUnix,
+>>>>>>> origin/fixes_2_2
 {$ENDIF}
 {$IFDEF MSWINDOWS}
      windows,
@@ -136,6 +144,8 @@ var
   t : text;
 begin
   assign(t,logfile);
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$I-}
   append(t);
   {$pop}
@@ -144,6 +154,21 @@ begin
     {$push}{$I-}
     rewrite(t);
     {$pop}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  {$I-}
+  append(t);
+  {$I+}
+  if ioresult<>0 then
+    begin
+    {$I-}
+    rewrite(t);
+    {$I+}
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     if ioresult<>0 then
       begin
       writeln('Can''t append to '+logfile);
@@ -179,9 +204,21 @@ begin
       { Try parent first }
       mkdirtree(SplitPath(hs));
       { make this dir }
+<<<<<<< HEAD
+<<<<<<< HEAD
       {$push}{$I-}
        mkdir(s);
       {$pop}
+=======
+      {$I-}
+       mkdir(s);
+      {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+      {$I-}
+       mkdir(s);
+      {$I+}
+>>>>>>> origin/fixes_2_2
       ioresult;
     end;
 end;
@@ -298,9 +335,21 @@ begin
   else
     begin
     getdir(0,OldDir);
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}{$I-}
     chdir(FOutputDir+'/'+ATestSuite.TestName);
     {$pop}
+=======
+    {$I-}
+    chdir(FOutputDir+'/'+ATestSuite.TestName);
+    {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$I-}
+    chdir(FOutputDir+'/'+ATestSuite.TestName);
+    {$I+}
+>>>>>>> origin/fixes_2_2
     if IOResult<>0 then
       begin
       mkdirtree(FOutputDir+'/'+ATestSuite.TestName);

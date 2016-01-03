@@ -17,7 +17,7 @@ Program WriteTrueColorData;
     nils.sjoholm@mailbox.swipnet.se
 }
 
-uses exec, amigados, intuition, agraphics, picasso96api, utility,systemvartags;
+uses exec, amigados, intuition, graphics, picasso96api, utility,systemvartags;
 
 
 Const

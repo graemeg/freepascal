@@ -25,7 +25,7 @@ unit gdk2x;
 interface
 
 uses
-  Classes, SysUtils, UnixType, Unix, BaseUnix, glib2, gdk2, XLib, X, XRender;
+  Classes, SysUtils, Unix, BaseUnix, glib2, gdk2, XLib, X, XRender;
 
 {$ifdef FREEBSD}
   {$linklib pthread}

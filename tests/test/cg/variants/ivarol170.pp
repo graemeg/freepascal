@@ -20,6 +20,14 @@ procedure test170(a: boolean); overload;
 procedure test170(a: widechar); overload;
   begin
     writeln('widechar called instead of boolean');
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    halt(1)
+>>>>>>> graemeg/fixes_2_2
+=======
+    halt(1)
+>>>>>>> origin/fixes_2_2
   end;
 
 var
@@ -42,11 +50,23 @@ begin
   try
     v := y170;
     test170(v);
+<<<<<<< HEAD
+<<<<<<< HEAD
     Writeln('Exception expected, but none was raised');
     Halt(1);
   except
     on E : TObject do
       Writeln('Caught exception, as expected : ',E.ClassName);
+=======
+  except
+    on E : TObject do
+      halt(1);
+>>>>>>> graemeg/fixes_2_2
+=======
+  except
+    on E : TObject do
+      halt(1);
+>>>>>>> origin/fixes_2_2
   end;
 end;
 

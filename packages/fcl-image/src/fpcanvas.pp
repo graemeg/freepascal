@@ -17,7 +17,15 @@ unit FPCanvas;
 
 interface
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 uses Math, sysutils, classes, FPImage, Types;
+=======
+uses Math, sysutils, classes, FPImage;
+>>>>>>> graemeg/fixes_2_2
+=======
+uses Math, sysutils, classes, FPImage;
+>>>>>>> origin/fixes_2_2
 
 const
   PatternBitCount = sizeof(longword) * 8;
@@ -102,7 +110,20 @@ type
     property Bold : boolean index 5 read GetFlags write SetFlags;
     property Italic : boolean index 6 read GetFlags write SetFlags;
     property Underline : boolean index 7 read GetFlags write SetFlags;
+<<<<<<< HEAD
     property StrikeThrough : boolean index 8 read GetFlags write SetFlags;
+=======
+    property StrikeTrough : boolean index 8 read GetFlags write SetFlags;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     property Orientation: Integer read GetOrientation write SetOrientation default 0;
         
   end;
@@ -251,7 +272,23 @@ type
     FDefaultBrush, FBrush : TFPCustomBrush;
     FDefaultPen, FPen : TFPCustomPen;
     FPenPos : TPoint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     FClipRegion : TFPCustomRegion;
+=======
+    FClipRect : TRect;
+>>>>>>> graemeg/cpstrnew
+=======
+    FClipRect : TRect;
+>>>>>>> graemeg/cpstrnew
+=======
+    FClipRect : TRect;
+>>>>>>> graemeg/cpstrnew
+=======
+    FClipRect : TRect;
+>>>>>>> origin/cpstrnew
     function DoCreateDefaultFont : TFPCustomFont; virtual; abstract;
     function DoCreateDefaultPen : TFPCustomPen; virtual; abstract;
     function DoCreateDefaultBrush : TFPCustomBrush; virtual; abstract;
@@ -323,6 +360,7 @@ type
     procedure Ellipse (Const Bounds:TRect); virtual;
     procedure Ellipse (left,top,right,bottom:integer); virtual;
     procedure EllipseC (x,y:integer; rx,ry:longword);
+<<<<<<< HEAD
     procedure Polygon (Const points:array of TPoint); virtual;
     procedure Polyline (Const points:array of TPoint); virtual;
     procedure RadialPie(x1, y1, x2, y2, StartAngle16Deg, Angle16DegLength: Integer); virtual;
@@ -336,6 +374,30 @@ type
     procedure Rectangle (left,top,right,bottom:integer); virtual;
     procedure FillRect(const ARect: TRect);  virtual;
     procedure FillRect(X1,Y1,X2,Y2: Integer); virtual;
+=======
+    procedure Polygon (Const points:array of TPoint);
+    procedure Polyline (Const points:array of TPoint);
+    procedure RadialPie(x1, y1, x2, y2, StartAngle16Deg, Angle16DegLength: Integer);
+    procedure PolyBezier(Points: PPoint; NumPts: Integer;
+                         Filled: boolean = False;
+                         Continuous: boolean = False); 
+    procedure PolyBezier(const Points: array of TPoint;  
+                         Filled: boolean = False;
+                         Continuous: boolean = False);
+    procedure Rectangle (Const Bounds : TRect);
+    procedure Rectangle (left,top,right,bottom:integer);
+    procedure FillRect(const ARect: TRect); 
+    procedure FillRect(X1,Y1,X2,Y2: Integer);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
     // using brush
     procedure FloodFill (x,y:integer); virtual;
     procedure Clear;

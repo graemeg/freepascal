@@ -114,12 +114,18 @@ _start:
     .type   _haltproc,#function
 _haltproc:
         /* r0 contains exitcode */
+<<<<<<< HEAD
+<<<<<<< HEAD
 .ifdef __thumb__
         ldr r0,=operatingsystem_result
         ldr r0,[r0]
         mov r7,#248  /* exit group call */
 	swi 0x0
 .else
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 	swi 0x900001
 .endif
 	b _haltproc

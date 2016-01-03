@@ -19,10 +19,35 @@ const
 
 { Records }
 type
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   __SPFlags = record
     case byte of
     0: (_anonbitfield_NSSavePanel0: cuint);
     1: (data: bitpacked record
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+  __SPFlags = bitpacked record
+    case byte of
+    0: (_anonbitfield_NSSavePanel0: cuint);
+    1: (
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
           saveMode: 0..1;
           isExpanded: 0..1;
           allowsOtherFileTypes: 0..1;
@@ -38,7 +63,19 @@ type
           movingAccessoryView: 0..1;
           userAccessoryViewFrameChange: 0..1;
           reserved: 0..((1 shl 18)-1);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
          end;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
        );
   end;
 _SPFlags = __SPFlags;
@@ -103,7 +140,23 @@ __SPFlagsPtr = ^__SPFlags;
     _newFolderController: id;
     _spFlags: _SPFlags;
     _spAuxiliaryStorage: NSSavePanelAuxiliary;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     _reserved: array[0..(5)-1] of char;
+=======
+        _reserved: array[0..4] of char;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..4] of char;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..4] of char;
+>>>>>>> graemeg/cpstrnew
+=======
+        _reserved: array[0..4] of char;
+>>>>>>> origin/cpstrnew
     _openProgressIndicator: NSProgressIndicator;
     
   public

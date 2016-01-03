@@ -80,7 +80,23 @@ begin
   end;
   it:=data.Iterator;
   repeat
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     inc(x[it.Data]);
+=======
+    inc(x[it.GetValue]);
+>>>>>>> graemeg/cpstrnew
+=======
+    inc(x[it.GetValue]);
+>>>>>>> graemeg/cpstrnew
+=======
+    inc(x[it.GetValue]);
+>>>>>>> graemeg/cpstrnew
+=======
+    inc(x[it.GetValue]);
+>>>>>>> origin/cpstrnew
   until not it.next;
   for i:=0 to 1000 do begin
     AssertEquals('som not 1', 1, x[i]);

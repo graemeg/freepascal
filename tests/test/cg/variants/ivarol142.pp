@@ -15,12 +15,26 @@ type
 procedure test142(a: shortstring); overload;
   begin
     writeln('shortstring called instead of widestring');
+<<<<<<< HEAD
+<<<<<<< HEAD
     halt(1)
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   end;
 
 procedure test142(a: widestring); overload;
   begin
     writeln('widestring called instead of shortstring');
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    halt(1)
+>>>>>>> graemeg/fixes_2_2
+=======
+    halt(1)
+>>>>>>> origin/fixes_2_2
   end;
 
 var

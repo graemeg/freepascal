@@ -29,11 +29,42 @@ type
    POleStr = Types.POleStr;
    PPOleStr = Types.PPOleStr;
    TBStr = POleStr;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    TBStrList = array[0..65535] of TBstr;
    PBStrList = ^TBStrList;
    POleStrList = ^TOleStrList;
    TOleStrList = array[0..65535] of POleStr;
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+   TBStrList = array[0..(high(integer) div sizeof(TBSTR))-1] of TBstr;
+   PBStrList = ^TBStrList;
+   POleStrList = ^TOleStrList;
+   TOleStrList = array[0..(high(integer) div sizeof(POleStr))-1] of POleStr;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    PBStr = ^TBStr;
    TOleEnum = type LongWord;
    LargeInt = Types.LargeInt;
@@ -44,7 +75,15 @@ type
    pFMTID = pGUID;
 
    { Glue types, should be linked to the proper windows unit types}
+<<<<<<< HEAD
+<<<<<<< HEAD
    Size_t              = PTRUINT;       {??, probably, like Unix, typecastable to pointer?!?}
+=======
+   Size_t              = DWord;       {??, probably, like Unix, typecastable to pointer?!?}
+>>>>>>> graemeg/fixes_2_2
+=======
+   Size_t              = DWord;       {??, probably, like Unix, typecastable to pointer?!?}
+>>>>>>> origin/fixes_2_2
    OleChar             = WChar;
    LPOLESTR            = ^OLECHAR;
    POLECHAR            = LPOLESTR;
@@ -58,8 +97,15 @@ type
    CY		       = CURRENCY;
    DATE	               = DOUBLE;
    BSTR	               = POLESTR;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    TOleDate	       = DATE;
    POleDate	       = ^TOleDate;	
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    TOleBool	       = wordbool;
    OLE_HANDLE	       = UINT;
    OLE_XSIZE_HIMETRIC = LONG;
@@ -84,6 +130,18 @@ type
    FONTITALIC = WordBool;
    FONTUNDERSCORE = WordBool;
    FONTSTRIKETHROUGH = WordBool;
+=======
+   OLE_HANDLE	       = UINT;
+>>>>>>> graemeg/cpstrnew
+=======
+   OLE_HANDLE	       = UINT;
+>>>>>>> graemeg/cpstrnew
+=======
+   OLE_HANDLE	       = UINT;
+>>>>>>> graemeg/cpstrnew
+=======
+   OLE_HANDLE	       = UINT;
+>>>>>>> origin/cpstrnew
    LPOLE_HANDLE        = ^OLE_HANDLE;
    OLE_COLOR	       = DWORD;
    LPOLE_COLOR         = ^OLE_COLOR;
@@ -91,7 +149,19 @@ type
    POleHandle          = LPOLE_HANDLE;
    TOleColor           = OLE_COLOR;
    POleColor           = LPOle_Color;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    HHandle             = UINT_PTR;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
 
 CONST
    GUID_NULL  : TGUID =  '{00000000-0000-0000-0000-000000000000}';
@@ -181,6 +251,20 @@ CONST
    IID_IOleCacheControl : TGUID = '{00000129-0000-0000-C000-000000000046}';
    IID_IOleItemContainer : TGUID = '{0000011C-0000-0000-C000-000000000046}';
 
+=======
+=======
+   TOleDate	       = DATE;
+   POleDate	       = ^TOleDate;	
+>>>>>>> origin/fixes_2.4
+
+CONST
+   GUID_NULL  : TGUID =  '{00000000-0000-0000-0000-000000000000}';
+>>>>>>> graemeg/fixes_2_2
+=======
+
+CONST
+   GUID_NULL  : TGUID =  '{00000000-0000-0000-0000-000000000000}';
+>>>>>>> origin/fixes_2_2
 
      // bit flags for IExternalConnection
 CONST
@@ -593,6 +677,8 @@ Const
     DISPID_DESTRUCTOR           = -7;
     DISPID_COLLECT              = -8;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     DISPID_AUTOSIZE             = -500;
     DISPID_BACKCOLOR            = -501;
     DISPID_BACKSTYLE            = -502;
@@ -667,6 +753,10 @@ Const
 
     MEMBERID_NIL            = -1;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     DISPATCH_METHOD         = $1;
     DISPATCH_PROPERTYGET    = $2;
     DISPATCH_PROPERTYPUT    = $4;
@@ -989,6 +1079,8 @@ Const
     PROPSETFLAG_NONSIMPLE = DWORD(1);
     PROPSETFLAG_ANSI      = DWORD(2);
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 Type
     OLECMDF 	  = LongWord;
     OLECMDTEXTF   = LongWord;
@@ -1130,6 +1222,24 @@ TYPE
     HREFTYPE            = DWord;
     TResultList		= array[0..high(integer) div 4-50] of HResult;
     PResultList         = ^TResultList;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+TYPE
+    VARTYPE             = USHORT;
+
+//TypeInfo stuff.
+
+    DISPID              = Long ;
+    SCODE               = Long;
+    pSCODE              = ^SCODE;
+    lpDISPID            = ^DISPID;
+    MEMBERID            = DispId;
+    HREFTYPE            = DWord;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     PSYSINT = ^SYSINT;
     SYSINT = LongInt;
@@ -1480,7 +1590,13 @@ TYPE
    wireHFONT                    = ^RemotableHandle;
    wireHDC                      = ^RemotableHandle;
    wireHICON                    = ^RemotableHandle;
+<<<<<<< HEAD
+<<<<<<< HEAD
    wireHRGN                     = ^RemotableHandle;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    HCursor                      = HICON;
 
 
@@ -1531,9 +1647,21 @@ TYPE
                                     End;
    TBind_Opts                   = tagBIND_OPTS;
    PBind_Opts                   = ^TBind_Opts;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
    TBindOpts		        = tagBIND_OPTS;
    PBindOpts			= ^TBindOpts;
    Bind_Opts			= tagBind_opts;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+   TBindOpts		        = tagBIND_OPTS;
+   PBindOpts			= ^TBindOpts;
+   Bind_Opts			= tagBind_opts;
+>>>>>>> origin/fixes_2.4
 
    tagBIND_OPTS2_CPP            = Record
                                     dwTrackFlags,
@@ -1591,7 +1719,13 @@ TYPE
 
    DVTARGETDEVICE               = TagDVTARGETDEVICE;
    PDVTARGETDEVICE              = ^tagDVTARGETDEVICE;
+<<<<<<< HEAD
+<<<<<<< HEAD
    PTAGDVTARGETDEVICE           = PDVTARGETDEVICE;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    LPCLIPFORMAT                 = ^TCLIPFORMAT;
    TCLIPFORMAT                  = Word;
    CLIPFORMAT                   = TCLIPFORMAT;
@@ -1672,9 +1806,15 @@ TYPE
 
    userSTGMEDIUM                = _userSTGMEDIUM;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
    P_userSTGMEDIUM              = ^_userSTGMEDIUM;
 
    wireSTGMEDIUM                = P_userSTGMEDIUM;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
    LPSTGMEDIUM                  = ^STGMEDIUM;
 
@@ -1696,6 +1836,8 @@ TYPE
                                     End;
    FLAG_STGMEDIUM               = _FLAG_STGMEDIUM;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
    PPSafeArray = ^PSafeArray;
    PSafeArray = ^TSafeArray;
 
@@ -1775,12 +1917,31 @@ TYPE
 
    PDispIDList = ^TDispIDList;
    TDispIDList = array[0..65535] of TDispID;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+   VARIANTARG                   = VARIANT;
+   LPVARIANT                    = ^VARIANT;
+   LPVARIANTARG                 = ^VARIANT;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 // parameter description
 
    tagPARAMDESCEX               = Record
                                     cBytes         : ULong;      // size of this structure
+<<<<<<< HEAD
+<<<<<<< HEAD
                                     varDefaultValue: TVariantArg; // default value of this parameter
+=======
+                                    varDefaultValue: VariantARG; // default value of this parameter
+>>>>>>> graemeg/fixes_2_2
+=======
+                                    varDefaultValue: VariantARG; // default value of this parameter
+>>>>>>> origin/fixes_2_2
                                     End;
 
    PARAMDESCEX                  = tagPARAMDESCEX;
@@ -1801,8 +1962,14 @@ TYPE
                                      End;
    SAFEARRAYBOUND               = tagSAFEARRAYBOUND;
    LPSAFEARRAYBOUND             = ^SAFEARRAYBOUND;
+<<<<<<< HEAD
+<<<<<<< HEAD
    TSafeArrayBound = tagSAFEARRAYBOUND;
    PSafeArrayBound = ^TSafeArrayBound;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
    tagSAFEARRAY = record
      cDims: USHORT;
@@ -1814,6 +1981,14 @@ TYPE
    end;
    TSafeArray = tagSAFEARRAY;
    SAFEARRAY = TSafeArray;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+   PSafeArray = ^TSafeArray;
+>>>>>>> graemeg/fixes_2_2
+=======
+   PSafeArray = ^TSafeArray;
+>>>>>>> origin/fixes_2_2
 
 // additional interface information about the incoming call
    tagINTERFACEINFO             = Record
@@ -1847,7 +2022,13 @@ TYPE
 
    StorageLayout                = tagStorageLayout;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
    PtagSTATDATA                 = ^tagSTATDATA;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    tagSTATDATA                  = Record
                                                                 // field used by:
                                     FORMATETC   : Tformatetc;   // EnumAdvise, EnumData (cache), EnumFormats
@@ -1855,8 +2036,14 @@ TYPE
                                     padvSink    : Pointer {IAdviseSink};  // EnumAdvise
                                     dwConnection: DWord;        // EnumAdvise
                                     End;
+<<<<<<< HEAD
+<<<<<<< HEAD
    PStatData                    = PtagSTATDATA;
    TStatData                    = tagSTATDATA;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    STATDATA                     = TagStatData;
    LPStatData                   = ^StatData;
 
@@ -1864,17 +2051,33 @@ TYPE
    pTYPEDESC                    = ^TYPEDESC;
    tagTYPEKIND                  = Dword;
    TYPEKIND                     = tagTYPEKIND;
+<<<<<<< HEAD
+<<<<<<< HEAD
    TTYPEKIND			= TYPEKIND;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    INVOKEKIND                   = Dword;
    tagTYPEDESC                  = Record
                                     Case Integer OF
                                       VT_PTR,
+<<<<<<< HEAD
+<<<<<<< HEAD
                                       VT_SAFEARRAY   :  (lptdesc : PTYPEDESC;vt : TVarType);
+=======
+                                      VT_SAFEARRAY   :  (lptdesc : PTYPEDESC;vt : VARTYPE);
+>>>>>>> graemeg/fixes_2_2
+=======
+                                      VT_SAFEARRAY   :  (lptdesc : PTYPEDESC;vt : VARTYPE);
+>>>>>>> origin/fixes_2_2
                                       VT_CARRAY      :  (lpadesc : PARRAYDESC);
                                       VT_USERDEFINED :  (hreftype : HREFTYPE);
                                       End;
    TYPEDESC                     = tagTYPEDESC;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
    PtagOBJECTDESCRIPTOR = ^tagOBJECTDESCRIPTOR;
    tagOBJECTDESCRIPTOR = packed record
      cbSize : LongWord;
@@ -1889,6 +2092,14 @@ TYPE
    POBJECTDESCRIPTOR = PtagOBJECTDESCRIPTOR;
    TOBJECTDESCRIPTOR = tagOBJECTDESCRIPTOR;
    OBJECTDESCRIPTOR = TOBJECTDESCRIPTOR;
+=======
+
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+
+>>>>>>> origin/fixes_2_2
 
    tagARRAYDESC                 = Record
                                      tdescElem   : TYPEDESC;                       // element type
@@ -1912,7 +2123,15 @@ TYPE
                                       0 : (idldesc    : IDLDESC);
                                       1 : (paramdesc  : PARAMDESC);
                                       END;
+<<<<<<< HEAD
+<<<<<<< HEAD
    TElemDesc	                = tagELEMDESC;
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
    ELEMDESC                     = tagELEMDESC;
    LPELEMDESC                   = ^ELEMDESC;
    tagVARDESC                   = Record
@@ -1929,10 +2148,22 @@ TYPE
                                     End;
   VARDESC                       = tagVARDESC;
   LPVARDESC                     = ^VARDESC;
+<<<<<<< HEAD
+<<<<<<< HEAD
   pVARDESC			= LPVARDESC;
   tagDISPPARAMS                 = Record
                                    rgvarg            : PVariantArgList;
                                    rgdispidNamedArgs : PDispIDList;
+=======
+  tagDISPPARAMS                 = Record
+                                   rgvarg            : lpVARIANTARG;
+                                   rgdispidNamedArgs : lpDISPID;
+>>>>>>> graemeg/fixes_2_2
+=======
+  tagDISPPARAMS                 = Record
+                                   rgvarg            : lpVARIANTARG;
+                                   rgdispidNamedArgs : lpDISPID;
+>>>>>>> origin/fixes_2_2
                                    cArgs,
                                    cNamedArgs        : UINT;
                                    End;
@@ -1990,7 +2221,17 @@ TYPE
   TYPEATTR                       = tagTYPEATTR;
 
   LPTYPEATTR                     = ^TYPEATTR;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   PTYPEAttr			 = LPTYPEATTR;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+  PTYPEAttr			 = LPTYPEATTR;
+>>>>>>> origin/fixes_2.4
 
   tagTLIBATTR                    = Record
                                      GUID        : guid;
@@ -2006,11 +2247,24 @@ TYPE
   PTLIBAttr			 = LPTLIBATTR;
 
   LPFUNCDESC                     = ^FUNCDESC;
+<<<<<<< HEAD
+<<<<<<< HEAD
   PFUNCDESC			 = LPFUNCDESC;
 
   tagFUNCDESC                    = Record
                                      memid             : MEMBERID;
                                      lprgscode         : PResultList;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  tagFUNCDESC                    = Record
+                                     memid             : MEMBERID;
+                                     lprgscode         : pSCODE;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
                                      lprgelemdescParam : lpELEMDESC;    // array of param types
                                      FUNCKIND          : funckind;
                                      invkind           : INVOKEKIND;
@@ -2036,7 +2290,15 @@ TYPE
 
   tagCUSTDATAITEM                = Record
                                      GUID         : TGuid;           // guid identifying this custom data item
+<<<<<<< HEAD
+<<<<<<< HEAD
                                      varValue     : TVariantArg;     // value of this custom data item
+=======
+                                     varValue     : VARIANTARG;      // value of this custom data item
+>>>>>>> graemeg/fixes_2_2
+=======
+                                     varValue     : VARIANTARG;      // value of this custom data item
+>>>>>>> origin/fixes_2_2
                                      End;
 
   CUSTDATAITEM                   = tagCUSTDATAITEM;
@@ -2069,7 +2331,15 @@ TYPE
   tagSTATPROPSTG = record
                     lpwstrName : LPOLESTR ;
                     propid:PROPID ;
+<<<<<<< HEAD
+<<<<<<< HEAD
                     vt : TVarType;
+=======
+                    vt : VARTYPE;
+>>>>>>> graemeg/fixes_2_2
+=======
+                    vt : VARTYPE;
+>>>>>>> origin/fixes_2_2
                     end;
   STATPROPSTG = tagSTATPROPSTG;
   TSTATPROPSTG = STATPROPSTG;
@@ -2094,11 +2364,37 @@ TYPE
      end;
    VERSIONEDSTREAM = tagVersionedStream;
    TVERSIONEDSTREAM = tagVersionedStream;
+<<<<<<< HEAD
+<<<<<<< HEAD
    LPVERSIONEDSTREAM = ^tagVersionedStream;
+=======
+   LPVERSIONEDSTREAM = tagVersionedStream;
+>>>>>>> graemeg/fixes_2_2
+=======
+   LPVERSIONEDSTREAM = tagVersionedStream;
+>>>>>>> origin/fixes_2_2
    PVERSIONEDSTREAM = ^TagVersionedStream;
 
 
    LPSAFEARRAY = ^SAFEARRAY;
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+   tagDEC = record //  simpler remoting variant without nested unions. see wtypes.h
+         wReserved : ushort;
+         scale,
+         sign : byte;
+         hi32 : ULONG;
+         lo64 : ULONGLONG;
+         end;
+   TDECIMAL=tagDEC;
+   PDecimal=^TDECIMAL;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
    tagCAC = record
         cElems : ULONG;
@@ -2255,9 +2551,19 @@ TYPE
    IPropertyStorage    = Interface;
    IEnumSTATPROPSETSTG = interface;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
    { size of this record must be 16, i.e. match Variant }
    TPROPVARIANT = packed record
           vt : TVarType;
+=======
+   TPROPVARIANT = record
+          vt : VARTYPE;
+>>>>>>> graemeg/fixes_2_2
+=======
+   TPROPVARIANT = record
+          vt : VARTYPE;
+>>>>>>> origin/fixes_2_2
           wReserved1 : PROPVAR_PAD1;
           wReserved2 : PROPVAR_PAD2;
           wReserved3 : PROPVAR_PAD3;
@@ -2338,6 +2644,8 @@ TYPE
              end;
      PROPVARIANT=TPROPVARIANT;
      TagPROPVARIANT = TPROPVARIANT;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 
      tagCONTROLINFO = packed record
@@ -2406,10 +2714,24 @@ TYPE
                   pElems : PLongWord;
                  end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 // Unknwn.idl
 
 // IUnknown is in classesh.inc
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+
+>>>>>>> origin/fixes_2_2
    AsyncIUnknown = Interface(IUnknown)
       ['{000e0000-0000-0000-C000-000000000046}']
         Function Begin_QueryInterface(Const riid : TIID): HResult; StdCall;
@@ -2526,7 +2848,15 @@ TYPE
      IEnumUnknown = Interface(IUnknown)
         ['{00000100-0000-0000-C000-000000000046}']
         //    pointer_default(unique)
+<<<<<<< HEAD
+<<<<<<< HEAD
      Function Next(Celt:Ulong; out rgelt;pCeltFetched:pulong):HRESULT;StdCall;
+=======
+     Function Next(Celt:Ulong;out rgelt:IUnknown;out pCeltFetched:pulong):HRESULT;StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+     Function Next(Celt:Ulong;out rgelt:IUnknown;out pCeltFetched:pulong):HRESULT;StdCall;
+>>>>>>> origin/fixes_2_2
 //    HRESULT RemoteNext(        [in] ULONG celt,        [out, size_is(celt), length_is( *pceltFetched)]        IUnknown **rgelt,        [out] ULONG *pceltFetched);
      Function Skip(Celt:Ulong):HResult;StdCall;
      Function Reset():HResult;
@@ -2584,7 +2914,15 @@ TYPE
 
     IPersist = Interface (IUnknown)
        ['{0000010c-0000-0000-C000-000000000046}']
+<<<<<<< HEAD
+<<<<<<< HEAD
        Function GetClassId(out clsid:TClsId):HResult; StdCall;
+=======
+       Function GetClassId(clsid:TClsId):HResult; StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+       Function GetClassId(clsid:TClsId):HResult; StdCall;
+>>>>>>> origin/fixes_2_2
        End;
 
     IPersistStream = Interface(IPersist)
@@ -2595,6 +2933,8 @@ TYPE
        Function GetSizeMax(Out cbSize:ULarge_Integer):HResult; StdCall;
        End;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
      IPersistStreamInit = interface(IPersist)
        ['{7FD52380-4E07-101B-AE2D-08002B2EC713}']
        Function IsDirty:HResult;StdCall;
@@ -2614,6 +2954,10 @@ TYPE
       end;
 
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     PIMoniker = ^IMoniker;
     IMoniker = Interface (IPersistStream)
       ['{0000000f-0000-0000-C000-000000000046}']
@@ -2652,14 +2996,34 @@ TYPE
        End;
 
     ISequentialStream = Types.ISequentialStream;
+<<<<<<< HEAD
+<<<<<<< HEAD
     (*interface(IUnknown)
+=======
+    {interface(IUnknown)
+>>>>>>> graemeg/fixes_2_2
+=======
+    {interface(IUnknown)
+>>>>>>> origin/fixes_2_2
        ['{0c733a30-2a1c-11ce-ade5-00aa0044773d}']
        function Read(pv : Pointer;cb : ULONG;pcbRead : PULONG) : HRESULT;stdcall;
        function Write(pv : Pointer;cb : ULONG;pcbWritten : PULONG): HRESULT;stdcall;
      end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     *)
 
     (* defined above by pulling it in from types IStream = interface(ISequentialStream)
+=======
+    }
+
+    { defined above by pulling it in from types IStream = interface(ISequentialStream)
+>>>>>>> graemeg/fixes_2_2
+=======
+    }
+
+    { defined above by pulling it in from types IStream = interface(ISequentialStream)
+>>>>>>> origin/fixes_2_2
        ['{0000000C-0000-0000-C000-000000000046}']
        function Seek(dlibMove : LargeInt; dwOrigin: Longint;
             out libNewPosition : LargeInt): HResult; stdcall;
@@ -2675,7 +3039,15 @@ TYPE
        Function Stat(out statstg : TStatStg; grfStatFlag: Longint): HRESULT;stdcall;
        function Clone(out stm : IStream) : HRESULT; stdcall;
      end;
+<<<<<<< HEAD
+<<<<<<< HEAD
     *)
+=======
+    }
+>>>>>>> graemeg/fixes_2_2
+=======
+    }
+>>>>>>> origin/fixes_2_2
     IEnumSTATSTG = Interface (IUnknown)
        ['{0000000d-0000-0000-C000-000000000046}']
         Function Next (Celt:ULong;Out xcelt;pceltfetched : PUlong):HResult; StdCall;
@@ -2943,10 +3315,23 @@ TYPE
     IConnectionPoint = Interface (IUnknown)
        ['{B196B286-BAB4-101A-B69C-00AA00341D07}']
        Function GetConnectionInterface(out piid : TIID):HResult;StdCall;
+<<<<<<< HEAD
+<<<<<<< HEAD
        Function GetConnectionPointContainer(out CPC : IConnectionPointContainer):HResult;StdCall;
        Function Advise(Const unkSink : IUnknown;Out dwCookie : DWord):HResult;StdCall;
        Function UnAdvise(dwCookie : DWord):HResult;StdCall;
        Function EnumConnections(out pEnum : IEnumConnections):HResult;StdCall;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+       Function GetConnectionPointContainer(CPC : IConnectionPointContainer):HResult;StdCall;
+       Function Advise(unkSink : IUnknown;Out dwCookie : DWord):HResult;StdCall;
+       Function UnAdvise(dwCookie : DWord):HResult;StdCall;
+       Function EnumConnection(out pEnum : IEnumConnections):HResult;stdCall;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       End;
 
     IConnectionPointContainer = Interface (IUnknown)
@@ -3294,9 +3679,21 @@ TYPE
    IEnumVARIANT = Interface (IUnknown)
      ['{00020404-0000-0000-C000-000000000046}']
      {$ifndef Call_as}
+<<<<<<< HEAD
+<<<<<<< HEAD
       Function  Next(celt: ULONG; OUT rgVar: OLEVARIANT;  out pCeltFetched: ULONG):HResult;StdCall;
      {$else}
       Function  Next(celt: ULONG; OUT rgVar: OLEVARIANT;  pCeltFetched: pULONG=nil):HResult;StdCall;
+=======
+      Function  Next(celt: ULONG; OUT rgVar: VARIANT;  pCeltFetched: pULONG=nil):HResult;StdCall;
+     {$else}
+      Function  Next(celt: ULONG; OUT rgVar: VARIANT;  pCeltFetched: pULONG=nil):HResult;StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+      Function  Next(celt: ULONG; OUT rgVar: VARIANT;  pCeltFetched: pULONG=nil):HResult;StdCall;
+     {$else}
+      Function  Next(celt: ULONG; OUT rgVar: VARIANT;  pCeltFetched: pULONG=nil):HResult;StdCall;
+>>>>>>> origin/fixes_2_2
      {$endif}
      Function  Skip(celt: ULONG):HResult;StdCall;
      Function  Reset():HResult;StdCall;
@@ -3325,11 +3722,25 @@ TYPE
      {$ifndef Call_as}
       Function  GetFuncDesc(index: UINT; OUT ppFuncDesc: lpFUNCDESC):HResult;StdCall;
       Function  GetVarDesc(index: UINT; OUT ppVarDesc: lpVARDESC):HResult;StdCall;
+<<<<<<< HEAD
+<<<<<<< HEAD
       Function  GetNames(memid: MEMBERID;  rgBstrNames: PBStrList; cMaxNames: UINT; OUT pcNames: UINT):HResult;StdCall;
      {$else}
       Function  GetFuncDesc(index: UINT; OUT ppFuncDesc: LPFUNCDESC; OUT pDummy: CLEANLOCALSTORAGE):HResult;StdCall;
       Function  GetVarDesc(index: UINT; OUT ppVarDesc: LPVARDESC; OUT pDummy: CLEANLOCALSTORAGE):HResult;StdCall;
       Function  GetNames(memid: MEMBERID;  rgBstrNames: PBStrList; cMaxNames: UINT; OUT pcNames: UINT):HResult;StdCall;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+      Function  GetNames(memid: MEMBERID; OUT rgBstrNames: WideString; cMaxNames: UINT; OUT pcNames: UINT):HResult;StdCall;
+     {$else}
+      Function  GetFuncDesc(index: UINT; OUT ppFuncDesc: LPFUNCDESC; OUT pDummy: CLEANLOCALSTORAGE):HResult;StdCall;
+      Function  GetVarDesc(index: UINT; OUT ppVarDesc: LPVARDESC; OUT pDummy: CLEANLOCALSTORAGE):HResult;StdCall;
+      Function  GetNames(memid: MEMBERID; OUT rgBstrNames: WideString; cMaxNames: UINT; OUT pcNames: UINT):HResult;StdCall;
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
      {$endif}
      Function  GetRefTypeOfImplType(index: UINT; OUT pRefType: HREFTYPE):HResult;StdCall;
      Function  GetImplTypeFlags(index: UINT; OUT pImplTypeFlags: WINT):HResult;StdCall;
@@ -3339,15 +3750,35 @@ TYPE
       Function  LocalGetIDsOfNames():HResult;StdCall;
      {$endif}
      {$ifndef Call_as}
+<<<<<<< HEAD
+<<<<<<< HEAD
      Function  Invoke(pvInstance: Pointer; memid: MEMBERID; wFlags: WORD; VAR pDispParams: DISPPARAMS; pVarResult: PVARIANT; pExcepInfo: PEXCEPINFO; puArgErr: PUINT):HResult;StdCall;
+=======
+     Function  Invoke(pvInstance: Pointer; memid: MEMBERID; wFlags: WORD; VAR pDispParams: DISPPARAMS; OUT pVarResult: VARIANT; OUT pExcepInfo: EXCEPINFO; OUT puArgErr: UINT):HResult;StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+     Function  Invoke(pvInstance: Pointer; memid: MEMBERID; wFlags: WORD; VAR pDispParams: DISPPARAMS; OUT pVarResult: VARIANT; OUT pExcepInfo: EXCEPINFO; OUT puArgErr: UINT):HResult;StdCall;
+>>>>>>> origin/fixes_2_2
      {$else}
      Function  LocalInvoke ():HResult;StdCall;
      {$endif}
      {$ifndef Call_as}
+<<<<<<< HEAD
+<<<<<<< HEAD
      //Function  GetDocumentation(memid: MEMBERID; OUT pBstrName: WideString; OUT pBstrDocString: WideString; OUT pdwHelpContext: DWORD; OUT pBstrHelpFile: WideString):HResult;StdCall;
 	 Function  GetDocumentation(memid: MEMBERID; pBstrName: PWideString; pBstrDocString: PWideString; pdwHelpContext: PDWORD; pBstrHelpFile: PWideString):HResult;StdCall;
      {$else}
 	 Function  GetDocumentation(memid: MEMBERID; refPtrFlags: DWORD; OUT pBstrName: WideString; OUT pBstrDocString: WideString; OUT pdwHelpContext: DWORD; OUT pBstrHelpFile: WideString):HResult;StdCall;
+=======
+     Function  GetDocumentation(memid: MEMBERID; OUT pBstrName: WideString; OUT pBstrDocString: WideString; OUT pdwHelpContext: DWORD; OUT pBstrHelpFile: WideString):HResult;StdCall;
+     {$else}
+     Function  GetDocumentation(memid: MEMBERID; refPtrFlags: DWORD; OUT pBstrName: WideString; OUT pBstrDocString: WideString; OUT pdwHelpContext: DWORD; OUT pBstrHelpFile: WideString):HResult;StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+     Function  GetDocumentation(memid: MEMBERID; OUT pBstrName: WideString; OUT pBstrDocString: WideString; OUT pdwHelpContext: DWORD; OUT pBstrHelpFile: WideString):HResult;StdCall;
+     {$else}
+     Function  GetDocumentation(memid: MEMBERID; refPtrFlags: DWORD; OUT pBstrName: WideString; OUT pBstrDocString: WideString; OUT pdwHelpContext: DWORD; OUT pBstrHelpFile: WideString):HResult;StdCall;
+>>>>>>> origin/fixes_2_2
      {$endif}
 
      {$ifndef Call_as}
@@ -3376,18 +3807,42 @@ TYPE
      Function  GetContainingTypeLib(OUT ppTLib: ITypeLib; OUT pIndex: UINT):HResult;StdCall;
      {$endif}
      {$ifndef Call_as}
+<<<<<<< HEAD
+<<<<<<< HEAD
       Procedure ReleaseTypeAttr( pTypeAttr: pTypeAttr); StdCall;
+=======
+      Procedure ReleaseTypeAttr(Const pTypeAttr: TypeAttr); StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+      Procedure ReleaseTypeAttr(Const pTypeAttr: TypeAttr); StdCall;
+>>>>>>> origin/fixes_2_2
      {$else}
       Function  ReleaseTypeAttr():HResult;StdCall;
      {$endif}
 
      {$ifndef Call_as}
+<<<<<<< HEAD
+<<<<<<< HEAD
       Procedure ReleaseFuncDesc( pFuncDesc : lpFUNCDESC); StdCall;
+=======
+      Procedure ReleaseFuncDesc(const pFuncDesc : FUNCDESC); StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+      Procedure ReleaseFuncDesc(const pFuncDesc : FUNCDESC); StdCall;
+>>>>>>> origin/fixes_2_2
      {$else}
       Function  LocalReleaseFuncDesc():HResult;StdCall;
      {$endif}
      {$ifndef Call_as}
+<<<<<<< HEAD
+<<<<<<< HEAD
       Procedure ReleaseVarDesc( pVarDesc : lpVarDesc); stdcall;
+=======
+      Procedure ReleaseVarDesc(Const pVarDesc : VarDesc);
+>>>>>>> graemeg/fixes_2_2
+=======
+      Procedure ReleaseVarDesc(Const pVarDesc : VarDesc);
+>>>>>>> origin/fixes_2_2
      {$else}
       Function  LocalReleaseVarDesc():HResult;StdCall;
      {$endif}
@@ -3405,9 +3860,21 @@ TYPE
      Function  GetVarCustData(index: UINT; CONST guid: TGUID; OUT pVarVal: VARIANT):HResult;StdCall;
      Function  GetImplTypeCustData(index: UINT; CONST guid: TGUID; OUT pVarVal: VARIANT):HResult;StdCall;
      {$ifndef Call_as}
+<<<<<<< HEAD
+<<<<<<< HEAD
       Function  GetDocumentation2(memid: MEMBERID; lcid: LCID;  pbstrHelpString: PWideString; pdwHelpStringContext: PDWORD; pbstrHelpStringDll: PWideString):HResult;StdCall;
      {$else}
       Function  GetDocumentation2(memid: MEMBERID; lcid: LCID; refPtrFlags: DWORD; pbstrHelpString: PWideString;  pdwHelpStringContext: PDWORD; pbstrHelpStringDll: PWideString):HResult;StdCall;
+=======
+      Function  GetDocumentation2(memid: MEMBERID; lcid: LCID; OUT pbstrHelpString: WideString; OUT pdwHelpStringContext: DWORD; OUT pbstrHelpStringDll: WideString):HResult;StdCall;
+     {$else}
+      Function  GetDocumentation2(memid: MEMBERID; lcid: LCID; refPtrFlags: DWORD; OUT pbstrHelpString: WideString; OUT pdwHelpStringContext: DWORD; OUT pbstrHelpStringDll: WideString):HResult;StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+      Function  GetDocumentation2(memid: MEMBERID; lcid: LCID; OUT pbstrHelpString: WideString; OUT pdwHelpStringContext: DWORD; OUT pbstrHelpStringDll: WideString):HResult;StdCall;
+     {$else}
+      Function  GetDocumentation2(memid: MEMBERID; lcid: LCID; refPtrFlags: DWORD; OUT pbstrHelpString: WideString; OUT pdwHelpStringContext: DWORD; OUT pbstrHelpStringDll: WideString):HResult;StdCall;
+>>>>>>> origin/fixes_2_2
      {$endif}
      Function  GetAllCustData(OUT pCustData: CUSTDATA):HResult;StdCall;
      Function  GetAllFuncCustData(index: UINT; OUT pCustData: CUSTDATA):HResult;StdCall;
@@ -3434,9 +3901,21 @@ TYPE
 
      Function  GetTypeComp(OUT ppTComp: ITypeComp):HResult;StdCall;
      {$ifndef Call_as}
+<<<<<<< HEAD
+<<<<<<< HEAD
      Function  GetDocumentation(index: WINT; pBstrName: PWideString; pBstrDocString: PWideString; pdwHelpContext: PDWORD; pBstrHelpFile: PWideString):HResult;StdCall;
      {$else}
      Function  GetDocumentation(index: WINT; refPtrFlags: DWORD; pBstrName: PWideString; pBstrDocString: PWideString; pdwHelpContext: PDWORD; pBstrHelpFile: PWideString):HResult;StdCall;
+=======
+     Function  GetDocumentation(index: WINT; OUT pBstrName: WideString; OUT pBstrDocString: WideString; OUT pdwHelpContext: DWORD; OUT pBstrHelpFile: WideString):HResult;StdCall;
+     {$else}
+     Function  GetDocumentation(index: WINT; refPtrFlags: DWORD; OUT pBstrName: WideString; OUT pBstrDocString: WideString; OUT pdwHelpContext: DWORD; OUT pBstrHelpFile: WideString):HResult;StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+     Function  GetDocumentation(index: WINT; OUT pBstrName: WideString; OUT pBstrDocString: WideString; OUT pdwHelpContext: DWORD; OUT pBstrHelpFile: WideString):HResult;StdCall;
+     {$else}
+     Function  GetDocumentation(index: WINT; refPtrFlags: DWORD; OUT pBstrName: WideString; OUT pBstrDocString: WideString; OUT pdwHelpContext: DWORD; OUT pBstrHelpFile: WideString):HResult;StdCall;
+>>>>>>> origin/fixes_2_2
      {$endif}
 
      {$ifndef Call_as}
@@ -3450,7 +3929,15 @@ TYPE
      Function  FindName(szNameBuf: pOleStr; lHashVal: ULONG; OUT ppTInfo: ITypeInfo; OUT rgMemId: MEMBERID; VAR pcFound: USHORT; OUT pBstrLibName: WideString):HResult;StdCall;
      {$endif}
      {$ifndef Call_as}
+<<<<<<< HEAD
+<<<<<<< HEAD
       Procedure ReleaseTLibAttr( pTLibAttr : LPTLIBATTR); StdCall;
+=======
+      Procedure ReleaseTLibAttr(Const pTLibAttr : TLIBATTR); StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+      Procedure ReleaseTLibAttr(Const pTLibAttr : TLIBATTR); StdCall;
+>>>>>>> origin/fixes_2_2
       {$else}
      Function  LocalReleaseTLibAttr:HResult;StdCall;
      {$endif}
@@ -3465,9 +3952,21 @@ TYPE
      Function  GetLibStatistics(OUT pcUniqueNames: ULONG; OUT pcchUniqueNames: ULONG):HResult;StdCall;
      {$endif}
      {$ifndef Call_as}
+<<<<<<< HEAD
+<<<<<<< HEAD
      Function  GetDocumentation2(index: WINT; lcid: LCID;  pbstrHelpString: PWideString;  pdwHelpStringContext: PDWORD;  pbstrHelpStringDll: PWideString):HResult;StdCall;
      {$else}
      Function  GetDocumentation2(index: WINT; lcid: LCID; refPtrFlags: DWORD; pbstrHelpString: PWideString; pdwHelpStringContext: PDWORD; pbstrHelpStringDll: PWideString):HResult;StdCall;
+=======
+     Function  GetDocumentation2(index: WINT; lcid: LCID; OUT pbstrHelpString: WideString; OUT pdwHelpStringContext: DWORD; OUT pbstrHelpStringDll: WideString):HResult;StdCall;
+     {$else}
+     Function  GetDocumentation2(index: WINT; lcid: LCID; refPtrFlags: DWORD; OUT pbstrHelpString: WideString; OUT pdwHelpStringContext: DWORD; OUT pbstrHelpStringDll: WideString):HResult;StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+     Function  GetDocumentation2(index: WINT; lcid: LCID; OUT pbstrHelpString: WideString; OUT pdwHelpStringContext: DWORD; OUT pbstrHelpStringDll: WideString):HResult;StdCall;
+     {$else}
+     Function  GetDocumentation2(index: WINT; lcid: LCID; refPtrFlags: DWORD; OUT pbstrHelpString: WideString; OUT pdwHelpStringContext: DWORD; OUT pbstrHelpStringDll: WideString):HResult;StdCall;
+>>>>>>> origin/fixes_2_2
      {$endif}
      Function  GetAllCustData(OUT pCustData: CUSTDATA):HResult;StdCall;
      End;
@@ -3550,6 +4049,8 @@ TYPE
      Function  Write(pszPropName: pOleStr; CONST pVar: VARIANT):HResult;StdCall;
      End;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
    IPersistPropertyBag = interface(IPersist)
      ['{37D84F60-42CB-11CE-8135-00AA004BB851}']
      function InitNew:HResult;stdcall;
@@ -3557,6 +4058,10 @@ TYPE
      function Save(pPropBag:IPropertyBag;fClearDirty:Bool;fSaveAllProperties:Bool):HResult;stdcall;
      end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    IEnumGUID = interface(IUnknown)
      ['{0002E000-0000-0000-C000-000000000046}']
      Function Next(celt: UINT; OUT rgelt: TGUID;  pceltFetched: pUINT=nil):HResult;StdCall;
@@ -3581,6 +4086,8 @@ TYPE
      Function ParseDisplayName(CONST bc: IBindCtx; pszDisplayName: POleStr;OUT chEaten: Longint; OUT mkOut: IMoniker): HResult;StdCall;
      End;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 const
      // IOleContainer.EnumObjects() flags
      OLECONTF_EMBEDDINGS    = 1;
@@ -3590,6 +4097,10 @@ const
      OLECONTF_ONLYIFRUNNING = 16;
 
 type
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
    IOleContainer = interface(IParseDisplayName)
      ['{0000011B-0000-0000-C000-000000000046}']
      Function EnumObjects(grfFlags: Longint; OUT Enum: IEnumUnknown):HResult;StdCall;
@@ -3621,18 +4132,32 @@ type
   LPOLEMENUGROUPWIDTHS = ^OLEMENUGROUPWIDTHS;
   POleMenuGroupWidths = LPOLEMENUGROUPWIDTHS;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   IProvideClassInfo = Interface (IUnknown)
     ['{B196B283-BAB4-101A-B69C-00AA00341D07}']
     function GetClassInfo(out pptti : ITypeInfo):HResult; StdCall;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   IProvideClassInfo2 = Interface (IProvideClassInfo)
     ['{A6BC3AC0-DBAA-11CE-9DE3-00AA004BB851}']
     function GetGUID(dwguid:DWord;out pguid:TGUID):HResult; StdCall;
   end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   IProvideMultipleClassInfo = interface(IProvideClassInfo2)
    ['{A7ABA9C1-8983-11CF-8F20-00805F2CD064}']
    function GetMultiTypeInfoCount(out pcti:LongWord):HResult; StdCall;
@@ -3785,6 +4310,10 @@ type
    ['{7BF80981-BF32-101A-8BBB-00AA00300CAB}']
   end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 { ******************************************************************************************************************
                                                           stuff from objbase.h
   ****************************************************************************************************************** }
@@ -3801,6 +4330,8 @@ type
   LPOleInPlaceFrameInfo = POleInPlaceFrameInfo;
   OLEINPLACEFRAMEINFO = tagOIFI;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
    PtagPAGESET = ^tagPAGESET;
 
    PtagPAGERANGE = ^tagPAGERANGE;
@@ -3837,23 +4368,46 @@ type
    end;
    POLECMDTEXT = P_tagOLECMDTEXT;
    TOLECMDTEXT = _tagOLECMDTEXT;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 { redefinitions }
   function CoCreateGuid(out _para1:TGUID):HRESULT;stdcall;external 'ole32.dll' name 'CoCreateGuid';
 
 { additional definitions }
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef wince}
   function IsEqualGUID(const guid1,guid2 : TGUID) : Boolean;stdcall;external 'ole32.dll' name 'IsEqualGUID';
   function IsEqualIID(const iid1,iid2 : TIID) : Boolean;stdcall;external 'ole32.dll' name 'IsEqualGUID';
   function IsEqualCLSID(const clsid1,clsid2 : TCLSID) : Boolean;stdcall;external 'ole32.dll' name 'IsEqualGUID';
 {$endif wince}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  function IsEqualGUID(const guid1,guid2 : TGUID) : Boolean;stdcall;external 'ole32.dll' name 'IsEqualGUID';
+  function IsEqualIID(const iid1,iid2 : TIID) : Boolean;stdcall;external 'ole32.dll' name 'IsEqualGUID';
+  function IsEqualCLSID(const clsid1,clsid2 : TCLSID) : Boolean;stdcall;external 'ole32.dll' name 'IsEqualGUID';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 { OleIdl.h }
 type
   IOleInPlaceActiveObject = interface;
+<<<<<<< HEAD
+<<<<<<< HEAD
   IPrint 		  = interface;
   IOleCommandTarget 	  = interface;
   IContinueCallback       = interface;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   IOleAdviseHolder = interface(IUnknown)
     ['{00000111-0000-0000-C000-000000000046}']
@@ -3876,8 +4430,18 @@ type
   IDropSource = interface(IUnknown)
     ['{00000121-0000-0000-C000-000000000046}']
     function QueryContinueDrag(fEscapePressed: BOOL;
+<<<<<<< HEAD
+<<<<<<< HEAD
       grfKeyState: DWORD):HResult;StdCall;
     function GiveFeedback(dwEffect: DWORD): HResult;StdCall;
+=======
+      grfKeyState: Longint):HResult;StdCall;
+    function GiveFeedback(dwEffect: Longint): HResult;StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+      grfKeyState: Longint):HResult;StdCall;
+    function GiveFeedback(dwEffect: Longint): HResult;StdCall;
+>>>>>>> origin/fixes_2_2
   end;
 
   IOleObject = interface(IUnknown)
@@ -3957,9 +4521,21 @@ type
 
    IOleInPlaceSite = interface(IOleWindow)
       ['{00000119-0000-0000-C000-000000000046}']
+<<<<<<< HEAD
+<<<<<<< HEAD
       function CanInPlaceActivate : HResult;stdcall;
       function OnInPlaceActivate : HResult;stdcall;
       function OnUIActivate : HResult;stdcall;
+=======
+      function CanInPlaceActivate : HResult;
+      function OnInPlaceActivate : HResult;
+      function OnUIActivate : HResult;
+>>>>>>> graemeg/fixes_2_2
+=======
+      function CanInPlaceActivate : HResult;
+      function OnInPlaceActivate : HResult;
+      function OnUIActivate : HResult;
+>>>>>>> origin/fixes_2_2
       function GetWindowContext(out ppframe:IOleInPlaceFrame;out ppdoc:IOleInPlaceUIWindow;lprcposrect:LPRECT;lprccliprect:LPRECT;lpframeinfo:LPOLEINPLACEFRAMEINFO):hresult; stdcall;
       function Scroll(scrollExtant:TSIZE):hresult; stdcall;
       function OnUIDeactivate(fUndoable:BOOL):hresult; stdcall;
@@ -3969,6 +4545,8 @@ type
       function OnPosRectChange(lprcPosRect:LPRect):hresult; stdcall;
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
    IOleInPlaceSiteEx = interface(IOleInPlaceSite)
       ['{9C2CAD80-3424-11CF-B670-00AA004CD6D8}']
       function OnInPlaceActivateEx(out pfNoRedraw:Bool;dwFlags:LongWord):HResult;stdcall;
@@ -4006,6 +4584,21 @@ type
       function GetDropTarget(out ppDropTarget:IDropTarget):HRESULT;stdcall;
     end;
 
+=======
+=======
+>>>>>>> origin/fixes_2_2
+    IOleInPlaceObject = interface(IOleWindow)
+      ['{00000113-0000-0000-C000-000000000046}']
+      function InPlaceDeactivate : HResult;
+      function UIDeactivate : HResult;
+      function SetObjectRects(lprcPosRect:LPRect;lprcClipRect:LPRect):hresult; stdcall;
+      function ReactivateAndUndo : HResult;
+     end;
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     IOleDocumentView = interface(IUnknown)
         ['{b722bcc6-4e68-101b-a2bc-00aa00404770}']
         function SetInPlaceSite(ppipsite:IOleInPlaceSite):hresult; stdcall;
@@ -4015,12 +4608,28 @@ type
         function Getrect(prcView:LPRect):hresult; stdcall;
         function SetRectComplex(prcview:LPRect;prcHScroll:LPRect;prcVScroll:LPRect;prcSizeBox:LPRect):hresult; stdcall;
         function Show(fshow:Bool) :hresult; stdcall;
+<<<<<<< HEAD
+<<<<<<< HEAD
         function UIActivate(fUIActive :BOOL): HResult;stdcall;
+=======
+        function UIActivate(fUIActive :BOOL): HResult;
+>>>>>>> graemeg/fixes_2_2
+=======
+        function UIActivate(fUIActive :BOOL): HResult;
+>>>>>>> origin/fixes_2_2
         function Open :hresult; stdcall;
         function Closeview(dwreserved:DWORD):hresult; stdcall;
         function SaveViewState(pstm:IStream):hresult; stdcall;
         function ApplyViewState(pstm:IStream):hresult; stdcall;
+<<<<<<< HEAD
+<<<<<<< HEAD
         function Clone(pipsitenew: IOleInPlaceSite;out ppviewNew:IOleDocumentView):HResult;stdcall;
+=======
+        function Clone(pipsitenew: IOleInPlaceSite;out ppviewNew:IOleDocumentView):HResult;
+>>>>>>> graemeg/fixes_2_2
+=======
+        function Clone(pipsitenew: IOleInPlaceSite;out ppviewNew:IOleDocumentView):HResult;
+>>>>>>> origin/fixes_2_2
         end;
 
     IEnumOleDocumentViews = Interface(IUnknown)
@@ -4043,6 +4652,8 @@ type
        function ActivateMe(pviewtoactivate:IOleDocumentView):hresult; stdcall;
        end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     IPrint = interface(IUnknown)
        ['{B722BCC9-4E68-101B-A2BC-00AA00404770}']
        function SetInitialPageNum(nFirstPage:Integer):HRESULT;stdcall;
@@ -4084,12 +4695,24 @@ type
        function IsRunning(pszItem:PWideChar):HRESULT;stdcall;
       end;
 
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
     IContinueCallback = interface(IUnknown)
        ['{b722bcca-4e68-101b-a2bc-00aa00404770}']
         function FContinue:HResult;Stdcall;
         function FContinuePrinting( nCntPrinted:LONG;nCurPage:Long;pwzprintstatus:polestr):HResult;Stdcall;
       end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 { ObjSafe.idl}
   IObjectSafety = interface(IUnknown)
     ['{CB5BDC81-93C1-11cf-8F20-00805F2CD064}']
@@ -4115,11 +4738,17 @@ type
     function GetExtent(dwDrawAspect:dword;lindex:DWord;ptd:pDVTARGETDEVICE;lpsizel:LPSIZEL):HRESULT;stdcall;
     end;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   IObjectWithSite = interface
     ['{FC4801A3-2BA9-11CF-A229-00AA003D7352}']
     function SetSite(const pUnkSite: IUnknown):HRESULT; stdcall;
     function GetSite(const riid: TIID; out Site: IUnknown):HRESULT; stdcall;
   end;
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
 { COMCAT}
@@ -4162,7 +4791,15 @@ Type
 
    ICatInformation = interface(IUnknown)
      ['{0002E013-0000-0000-C000-000000000046}']
+<<<<<<< HEAD
+<<<<<<< HEAD
      function EnumCategories(lcid:lcid;out ppenumCategoryInfo : IEnumCategoryInfo):HResult; StdCall;
+=======
+     function EnumCategories(lcid:lcid;out ppenumCategoryInfo : ICatInformation):HResult; StdCall;
+>>>>>>> graemeg/fixes_2_2
+=======
+     function EnumCategories(lcid:lcid;out ppenumCategoryInfo : ICatInformation):HResult; StdCall;
+>>>>>>> origin/fixes_2_2
      function GetCategoryDesc(rcatid:PCATID;lcid:LCID;out pszdesc:lpwstr):HResult; StdCall;
      function EnumClassesOfCategories(cImplemented : ULong; rgcatidImpl:PCATID;cRequired:ULong; rgcatidreq:PCATID; out ppenumclsid : IEnumClsID):HResult; StdCall;
      function ISClassOfCategories(rclsid:pclsid;cImplemented:ULong;rgcatidimpl:PCATID;CRequired:ULONG;rgcatidreq : pcatid):HResult; StdCall;
@@ -4172,7 +4809,15 @@ Type
 
     IPropertySetStorage = Interface(IUnknown)
      ['{0000013A-0000-0000-C000-000000000046}']
+<<<<<<< HEAD
+<<<<<<< HEAD
      function Create(const rfmtid:FMTID; const pclsid:CLSID; grfFlags:DWORD; grfMode:DWORD; out ppprstg:IPropertyStorage):HRESULT; StdCall;
+=======
+     function Create(const rfmtid:FMTID; const pclsid:CLSID; grfFlags:DWORD; grfMode:DWORD; out ppprstg:IPropertyStorage):HRESULT;
+>>>>>>> graemeg/fixes_2_2
+=======
+     function Create(const rfmtid:FMTID; const pclsid:CLSID; grfFlags:DWORD; grfMode:DWORD; out ppprstg:IPropertyStorage):HRESULT;
+>>>>>>> origin/fixes_2_2
      function Open(const fmtid:FMTID; grfMode:DWORD; out ppprstg:IPropertyStorage):HRESULT; StdCall;
      function Delete(const rfmtid:FMTID):HRESULT; StdCall;
      function Enum(out ppenum:IEnumSTATPROPSETSTG):HRESULT; StdCall;
@@ -4224,7 +4869,13 @@ Type
      OLEIVERB_UIACTIVATE = -(4);
      OLEIVERB_INPLACEACTIVATE = -(5);
      OLEIVERB_DISCARDUNDOSTATE = -(6);
+<<<<<<< HEAD
+<<<<<<< HEAD
      OLEIVERB_PROPERTIES = -(7);
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   { for OleCreateEmbeddingHelper flags; roles low word; options high word }
      EMBDHLP_INPROC_HANDLER = $0000;
      EMBDHLP_INPROC_SERVER = $0001;
@@ -4233,6 +4884,8 @@ Type
   { extended create function flags  }
      OLECREATE_LEAVERUNNING = $00000001;
   { pull the MIDL generated header  }
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef wince}
   function OleBuildVersion:DWORD;stdcall;external 'ole32.dll' name 'OleBuildVersion';
 {$endif wince}
@@ -4243,15 +4896,46 @@ Type
   function WriteClassStm(pStm:IStream;const rclsid:TCLSID):WINOLEAPI;stdcall;external 'ole32.dll' name 'WriteClassStm';
 {$ifndef wince}
   function WriteFmtUserTypeStg(pstg:IStorage; cf:CLIPFORMAT; lpszUserType:LPOLESTR):WINOLEAPI;stdcall;external 'ole32.dll' name 'WriteFmtUserTypeStg';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  function OleBuildVersion:DWORD;stdcall;external 'ole32.dll' name 'OleBuildVersion';
+
+  { helper functions  }
+  function ReadClassStg(pStg:IStorage; pclsid:PCLSID):WINOLEAPI;stdcall;external 'ole32.dll' name 'ReadClassStg';
+
+  function WriteClassStg(pStg:IStorage;const rclsid:TCLSID):WINOLEAPI;stdcall;external 'ole32.dll' name 'WriteClassStg';
+
+  function ReadClassStm(pStm:IStream; pclsid:PCLSID):WINOLEAPI;stdcall;external 'ole32.dll' name 'ReadClassStm';
+
+  function WriteClassStm(pStm:IStream;const rclsid:TCLSID):WINOLEAPI;stdcall;external 'ole32.dll' name 'WriteClassStm';
+
+  function WriteFmtUserTypeStg(pstg:IStorage; cf:CLIPFORMAT; lpszUserType:LPOLESTR):WINOLEAPI;stdcall;external 'ole32.dll' name 'WriteFmtUserTypeStg';
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   function ReadFmtUserTypeStg(pstg:IStorage; pcf:PCLIPFORMAT;out lplpszUserType:POleStr):WINOLEAPI;stdcall;external 'ole32.dll' name 'ReadFmtUserTypeStg';
 
   { init/term  }
   function OleInitialize(pvReserved:LPVOID):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleInitialize';
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
   procedure OleUninitialize;stdcall;external 'ole32.dll' name 'OleUninitialize';
 
   { APIs to query whether (Embedded/Linked) object can be created from
      the data object  }
   function OleQueryLinkFromData(pSrcDataObject:IDataObject):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleQueryLinkFromData';
+<<<<<<< HEAD
+<<<<<<< HEAD
   function OleQueryCreateFromData(pSrcDataObject:IDataObject):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleQueryCreateFromData';
 {$endif wince}
   { Object creation APIs  }
@@ -4260,6 +4944,21 @@ Type
              pStg:IStorage; out ppvObj):WINOLEAPI;stdcall;external 'ole32.dll' name
              'OleCreate';
 {$ifndef wince}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  function OleQueryCreateFromData(pSrcDataObject:IDataObject):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleQueryCreateFromData';
+
+  { Object creation APIs  } function OleCreate(const rclsid:TCLSID; const riid:TIID;
+  renderopt:DWORD; pFormatEtc:LPFORMATETC; pClientSite:IOleClientSite;
+  pStg:IStorage; out ppvObj):WINOLEAPI;stdcall;external 'ole32.dll' name
+  'OleCreate';
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   function OleCreateEx(const rclsid:TCLSID; const riid:TIID; dwFlags:DWORD; renderopt:DWORD; cFormats:ULONG;
              rgAdvf:PDWORD; rgFormatEtc:LPFORMATETC; lpAdviseSink:IAdviseSink; rgdwConnection:PDWORD; pClientSite:IOleClientSite;
              pStg:IStorage; out ppvObj):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleCreateEx';
@@ -4303,6 +5002,8 @@ Type
              pClientSite:IOleClientSite; pStg:IStorage; out ppvObj):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleCreateFromFileEx';
 
   function OleLoad(pStg:IStorage; const riid:TIID; pClientSite:IOleClientSite; out ppvObj):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleLoad';
+<<<<<<< HEAD
+<<<<<<< HEAD
   function OleLoadFromStream(pStm:IStream; const iidInterface:TIID; out ppvObj):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleLoadFromStream';
   function OleSaveToStream(pPStm:IPersistStream; pStm:IStream):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleSaveToStream';
   function OleNoteObjectVisible(pUnknown:IUnknown; fVisible:BOOL):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleNoteObjectVisible';
@@ -4314,19 +5015,59 @@ Type
 {$ifndef wince}
   function RegisterDragDrop(hwnd:HWND; pDropTarget:IDropTarget):WINOLEAPI;stdcall;external 'ole32.dll' name 'RegisterDragDrop';
   function RevokeDragDrop(hwnd:HWND):WINOLEAPI;stdcall;external 'ole32.dll' name 'RevokeDragDrop';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  function OleSave(pPS:IPersistStorage; pStg:IStorage; fSameAsLoad:BOOL):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleSave';
+
+  function OleLoadFromStream(pStm:IStream; const iidInterface:TIID; out ppvObj):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleLoadFromStream';
+
+  function OleSaveToStream(pPStm:IPersistStream; pStm:IStream):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleSaveToStream';
+
+  function OleSetContainedObject(pUnknown:IUnknown; fContained:BOOL):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleSetContainedObject';
+
+  function OleNoteObjectVisible(pUnknown:IUnknown; fVisible:BOOL):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleNoteObjectVisible';
+
+  { Drag/Drop APIs  }
+  function RegisterDragDrop(hwnd:HWND; pDropTarget:IDropTarget):WINOLEAPI;stdcall;external 'ole32.dll' name 'RegisterDragDrop';
+
+  function RevokeDragDrop(hwnd:HWND):WINOLEAPI;stdcall;external 'ole32.dll' name 'RevokeDragDrop';
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   function DoDragDrop(pDataObj:IDataObject; pDropSource:IDropSource; dwOKEffects:DWORD; pdwEffect:LPDWORD):WINOLEAPI;stdcall;external 'ole32.dll' name 'DoDragDrop';
 
   { Clipboard APIs  }
   function OleSetClipboard(pDataObj:IDataObject):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleSetClipboard';
+<<<<<<< HEAD
+<<<<<<< HEAD
   function OleGetClipboard(out ppDataObj:IDataObject):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleGetClipboard';
   function OleFlushClipboard:WINOLEAPI;stdcall;external 'ole32.dll' name 'OleFlushClipboard';
   function OleIsCurrentClipboard(pDataObj:IDataObject):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleIsCurrentClipboard';
 {$endif wince}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  function OleGetClipboard(out ppDataObj:IDataObject):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleGetClipboard';
+
+  function OleFlushClipboard:WINOLEAPI;stdcall;external 'ole32.dll' name 'OleFlushClipboard';
+
+  function OleIsCurrentClipboard(pDataObj:IDataObject):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleIsCurrentClipboard';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 type
   HOLEMENU = HMenu;
 
   { InPlace Editing APIs  }
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef wince}
   function OleCreateMenuDescriptor(hmenuCombined:HMENU; lpMenuWidths:LPOLEMENUGROUPWIDTHS):HOLEMENU;stdcall;external 'ole32.dll' name 'OleCreateMenuDescriptor';
   function OleDestroyMenuDescriptor(holemenu:HOLEMENU):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleDestroyMenuDescriptor';
@@ -4365,6 +5106,58 @@ type
   function OleRegEnumFormatEtc(const clsid:TCLSID; dwDirection:DWORD;out ppenum:IEnumFormatEtc):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleRegEnumFormatEtc';
   function OleRegEnumVerbs(const clsid:TCLSID;out ppenum:IEnumOLEVERB):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleRegEnumVerbs';
 {$endif wince}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  function OleCreateMenuDescriptor(hmenuCombined:HMENU; lpMenuWidths:LPOLEMENUGROUPWIDTHS):HOLEMENU;stdcall;external 'ole32.dll' name 'OleCreateMenuDescriptor';
+
+  function OleSetMenuDescriptor(holemenu:HOLEMENU; hwndFrame:HWND; hwndActiveObject:HWND; lpFrame:IOleInPlaceFrame; lpActiveObj:IOleInPlaceActiveObject):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleSetMenuDescriptor';
+
+  function OleDestroyMenuDescriptor(holemenu:HOLEMENU):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleDestroyMenuDescriptor';
+
+  function OleTranslateAccelerator(lpFrame:IOleInPlaceFrame; lpFrameInfo:TOleInPlaceFrameInfo; lpmsg:LPMSG):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleTranslateAccelerator';
+
+  { Helper APIs  }
+  function OleDuplicateData(hSrc:HANDLE; cfFormat:CLIPFORMAT; uiFlags:UINT):HANDLE;stdcall;external 'ole32.dll' name 'OleDuplicateData';
+
+  function OleDraw(pUnknown:IUnknown; dwAspect:DWORD; hdcDraw:HDC;const lprcBounds:TRect):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleDraw';
+
+  function OleRun(pUnknown:IUnknown):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleRun';
+
+  function OleIsRunning(pObject:IOleObject):BOOL;stdcall;external 'ole32.dll' name 'OleIsRunning';
+
+  function OleLockRunning(pUnknown:IUnknown; fLock:BOOL; fLastUnlockCloses:BOOL):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleLockRunning';
+
+  procedure ReleaseStgMedium(_para1:LPSTGMEDIUM);stdcall;external 'ole32.dll' name 'ReleaseStgMedium';
+
+  function CreateOleAdviseHolder(out ppOAHolder:IOleAdviseHolder):WINOLEAPI;stdcall;external 'ole32.dll' name 'CreateOleAdviseHolder';
+
+  function OleCreateDefaultHandler(const clsid:TCLSID; pUnkOuter:IUnknown; const riid:TIID; out lplpObj):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleCreateDefaultHandler';
+
+  function OleCreateEmbeddingHelper(const clsid:TCLSID; pUnkOuter:IUnknown; flags:DWORD; pCF:IClassFactory; const riid:TIID;
+             out lplpObj):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleCreateEmbeddingHelper';
+
+  function IsAccelerator(hAccel:HACCEL; cAccelEntries:longint; lpMsg:LPMSG; lpwCmd:PWORD):BOOL;stdcall;external 'ole32.dll' name 'IsAccelerator';
+
+  { Icon extraction Helper APIs  }
+  function OleGetIconOfFile(lpszPath:LPOLESTR; fUseFileAsLabel:BOOL):HGLOBAL;stdcall;external 'ole32.dll' name 'OleGetIconOfFile';
+
+  function OleGetIconOfClass(const rclsid:TCLSID; lpszLabel:LPOLESTR; fUseTypeAsLabel:BOOL):HGLOBAL;stdcall;external 'ole32.dll' name 'OleGetIconOfClass';
+
+  function OleMetafilePictFromIconAndLabel(hIcon:HICON; lpszLabel:LPOLESTR; lpszSourceFile:LPOLESTR; iIconIndex:UINT):HGLOBAL;stdcall;external 'ole32.dll' name 'OleMetafilePictFromIconAndLabel';
+
+  { Registration Database Helper APIs  }
+  function OleRegGetUserType(const clsid:TCLSID; dwFormOfType:DWORD;out pszUserType:POleStr):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleRegGetUserType';
+
+  function OleRegGetMiscStatus(const clsid:TCLSID; dwAspect:DWORD; pdwStatus:PDWORD):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleRegGetMiscStatus';
+
+  function OleRegEnumFormatEtc(const clsid:TCLSID; dwDirection:DWORD;out ppenum:IEnumFormatEtc):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleRegEnumFormatEtc';
+
+  function OleRegEnumVerbs(const clsid:TCLSID;out ppenum:IEnumOLEVERB):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleRegEnumVerbs';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 {$ifdef _MAC}
   { WlmOLE helper APIs  }
@@ -4412,6 +5205,8 @@ type
      OLESTREAM = _OLESTREAM;
 (* Const before type ignored *)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef wince}
   function OleConvertOLESTREAMToIStorage(_lpolestream:LPOLESTREAM; pstg:IStorage; ptd:PDVTARGETDEVICE):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleConvertOLESTREAMToIStorage';
   function OleConvertIStorageToOLESTREAM(pstg:IStorage; lpolestream:LPOLESTREAM):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleConvertIStorageToOLESTREAM';
@@ -4431,6 +5226,35 @@ type
   function OleGetAutoConvert(const clsidOld:TCLSID; pClsidNew:LPCLSID):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleGetAutoConvert';
   function OleSetAutoConvert(const clsidOld:TCLSID; clsidNew:TCLSID):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleSetAutoConvert';
   function GetConvertStg(pStg:IStorage):WINOLEAPI;stdcall;external 'ole32.dll' name 'GetConvertStg';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  function OleConvertOLESTREAMToIStorage(_lpolestream:LPOLESTREAM; pstg:IStorage; ptd:PDVTARGETDEVICE):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleConvertOLESTREAMToIStorage';
+
+  function OleConvertIStorageToOLESTREAM(pstg:IStorage; lpolestream:LPOLESTREAM):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleConvertIStorageToOLESTREAM';
+
+  { Storage Utility APIs  }
+  function GetHGlobalFromILockBytes(plkbyt:ILockBytes;out phglobal:HGLOBAL):WINOLEAPI;stdcall;external 'ole32.dll' name 'GetHGlobalFromILockBytes';
+
+  function CreateILockBytesOnHGlobal(hGlobal:HGLOBAL; fDeleteOnRelease:BOOL;out pplkbyt:ILockBytes):WINOLEAPI;stdcall;external 'ole32.dll' name 'CreateILockBytesOnHGlobal';
+
+  function GetHGlobalFromStream(pstm:IStream;out phglobal:HGLOBAL):WINOLEAPI;stdcall;external 'ole32.dll' name 'GetHGlobalFromStream';
+
+  function CreateStreamOnHGlobal(hGlobal:HGLOBAL; fDeleteOnRelease:BOOL;out stm:IStream):WINOLEAPI;stdcall;external 'ole32.dll' name 'CreateStreamOnHGlobal';
+
+  { ConvertTo APIS  }
+  function OleDoAutoConvert(pStg:IStorage; pClsidNew:LPCLSID):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleDoAutoConvert';
+
+  function OleGetAutoConvert(const clsidOld:TCLSID; pClsidNew:LPCLSID):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleGetAutoConvert';
+
+  function OleSetAutoConvert(const clsidOld:TCLSID; clsidNew:TCLSID):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleSetAutoConvert';
+
+  function GetConvertStg(pStg:IStorage):WINOLEAPI;stdcall;external 'ole32.dll' name 'GetConvertStg';
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   function SetConvertStg(pStg:IStorage; fConvert:BOOL):WINOLEAPI;stdcall;external 'ole32.dll' name 'SetConvertStg';
 
   { Presentation data to OLESTREAM }
@@ -4449,7 +5273,15 @@ type
   {      size bytes }
   function OleConvertOLESTREAMToIStorageEx(polestm:LPOLESTREAM; pstg:IStorage; pcfFormat:PCLIPFORMAT; plwWidth:PLONG; plHeight:PLONG;
              pdwSize:PDWORD; pmedium:LPSTGMEDIUM):WINOLEAPI;stdcall;external 'ole32.dll' name 'OleConvertOLESTREAMToIStorageEx';
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif wince}
+=======
+
+>>>>>>> graemeg/fixes_2_2
+=======
+
+>>>>>>> origin/fixes_2_2
 
 const
   DROPEFFECT_NONE   = 0;
@@ -4467,6 +5299,8 @@ type
   TBorderWidths = TRect;
   PBorderWidths = PRect;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   function CoInitializeEx(_para1:LPVOID; _para2:DWORD):HRESULT;stdcall; external  'ole32.dll' name 'CoInitializeEx';
   procedure CoUninitialize;stdcall; external  'ole32.dll' name 'CoUninitialize';
   function CoGetClassObject(const _para1:TCLSID; _para2:DWORD; _para3:PVOID; const _para4:TIID; out _para5):HRESULT;stdcall; external  'ole32.dll' name 'CoGetClassObject';
@@ -4543,11 +5377,146 @@ type
 
 (* Const before type ignored *)
   function StgCreateDocfile(_para1:POLESTR; _para2:DWORD; _para3:DWORD; out _para4:IStorage):HRESULT;stdcall; external  'ole32.dll' name 'StgCreateDocfile';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+  function CoBuildVersion:DWORD;stdcall; external  'ole32.dll' name 'CoBuildVersion';
+
+  function CoInitialize(_para1:PVOID):HRESULT;stdcall; external  'ole32.dll' name 'CoInitialize';
+
+  function CoInitializeEx(_para1:LPVOID; _para2:DWORD):HRESULT;stdcall; external  'ole32.dll' name 'CoInitializeEx';
+
+  procedure CoUninitialize;stdcall; external  'ole32.dll' name 'CoUninitialize';
+
+  function CoGetMalloc(_para1:DWORD; out _para2:IMalloc):HRESULT;stdcall; external  'ole32.dll' name 'CoGetMalloc';
+
+  function CoGetCurrentProcess:DWORD;stdcall; external  'ole32.dll' name 'CoGetCurrentProcess';
+
+  function CoRegisterMallocSpy(_para1:IMallocSpy):HRESULT;stdcall; external  'ole32.dll' name 'CoRegisterMallocSpy';
+
+  function CoRevokeMallocSpy:HRESULT;stdcall; external  'ole32.dll' name 'CoRevokeMallocSpy';
+
+  function CoCreateStandardMalloc(_para1:DWORD; out _para2:IMalloc):HRESULT;stdcall; external  'ole32.dll' name 'CoGetMalloc';
+
+  function CoGetClassObject(const _para1:TCLSID; _para2:DWORD; _para3:PVOID; const _para4:TIID; out _para5):HRESULT;stdcall; external  'ole32.dll' name 'CoGetClassObject';
+
+  function CoRegisterClassObject(const _para1:TCLSID; _para2:IUnknown; _para3:DWORD; _para4:DWORD; _para5:PDWORD):HRESULT;stdcall; external  'ole32.dll' name 'CoRegisterClassObject';
+
+  function CoRevokeClassObject(_para1:DWORD):HRESULT;stdcall; external  'ole32.dll' name 'CoRevokeClassObject';
+
+  function CoGetMarshalSizeMax(_para1:PULONG;const _para2:TIID; _para3:IUnknown; _para4:DWORD; _para5:PVOID;
+             _para6:DWORD):HRESULT;stdcall; external  'ole32.dll' name 'CoGetMarshalSizeMax';
+
+  function CoMarshalInterface(_para1:IStream;const _para2:TIID; _para3:IUnknown; _para4:DWORD; _para5:PVOID;
+             _para6:DWORD):HRESULT;stdcall; external  'ole32.dll' name 'CoMarshalInterface';
+
+  function CoUnmarshalInterface(_para1:IStream;const _para2:TIID; out _para3):HRESULT;stdcall; external  'ole32.dll' name 'CoUnmarshalInterface';
+
+  function CoMarshalHresult(_para1:IStream; _para2:HRESULT):HRESULT;stdcall; external  'ole32.dll' name 'CoMarshalHresult';
+
+  function CoUnmarshalHresult(_para1:IStream; _para2:HRESULT):HRESULT;stdcall; external  'ole32.dll' name 'CoUnmarshalHresult';
+
+  function CoReleaseMarshalData(_para1:IStream):HRESULT;stdcall; external  'ole32.dll' name 'CoReleaseMarshalData';
+
+  function CoDisconnectObject(_para1:IUnknown; _para2:DWORD):HRESULT;stdcall; external  'ole32.dll' name 'CoDisconnectObject';
+
+  function CoLockObjectExternal(_para1:IUnknown; _para2:BOOL; _para3:BOOL):HRESULT;stdcall; external  'ole32.dll' name 'CoLockObjectExternal';
+
+  function CoGetStandardMarshal(const _para1:TIID; _para2:IUnknown; _para3:DWORD; _para4:PVOID; _para5:DWORD;
+             out _para6:IMarshal):HRESULT;stdcall; external  'ole32.dll' name 'CoGetStandardMarshal';
+
+  function CoGetStdMarshalEx(_para1:IUnknown; _para2:DWORD; out _para3:IUnknown):HRESULT;stdcall; external  'ole32.dll' name 'CoGetStdMarshalEx';
+
+  function CoIsHandlerConnected(_para1:IUnknown):BOOL;stdcall; external  'ole32.dll' name 'CoIsHandlerConnected';
+
+  function CoHasStrongExternalConnections(_para1:IUnknown):BOOL;stdcall; external  'ole32.dll' name 'CoHasStrongExternalConnections';
+
+  function CoMarshalInterThreadInterfaceInStream(const _para1:TIID; _para2:IUnknown; out _para3:IStream):HRESULT;stdcall; external  'ole32.dll' name 'CoMarshalInterThreadInterfaceInStream';
+
+  function CoGetInterfaceAndReleaseStream(_para1:IStream;const _para2:TIID; out _para3):HRESULT;stdcall; external  'ole32.dll' name 'CoGetInterfaceAndReleaseStream';
+
+  function CoCreateFreeThreadedMarshaler(_para1:IUnknown; out _para2:IUnknown):HRESULT;stdcall; external  'ole32.dll' name 'CoCreateFreeThreadedMarshaler';
+
+  function CoLoadLibrary(_para1:LPOLESTR; _para2:BOOL):THandle;stdcall; external  'ole32.dll' name 'CoLoadLibrary';
+
+  procedure CoFreeLibrary(_para1:THandle);stdcall; external  'ole32.dll' name 'CoFreeLibrary';
+
+  procedure CoFreeAllLibraries;stdcall; external  'ole32.dll' name 'CoFreeAllLibraries';
+
+  procedure CoFreeUnusedLibraries;stdcall; external  'ole32.dll' name 'CoFreeUnusedLibraries';
+
+  function CoCreateInstance(const _para1:TCLSID; _para2:IUnknown; _para3:DWORD;const _para4:TIID;out _para5):HRESULT;stdcall; external  'ole32.dll' name 'CoCreateInstance';
+
+  function CoCreateInstanceEx(const _para1:TCLSID; _para2:IUnknown; _para3:DWORD; _para4:PCOSERVERINFO; _para5:DWORD;
+             _para6:PMULTI_QI):HRESULT;stdcall; external  'ole32.dll' name 'CoCreateInstanceEx';
+
+  function StringFromCLSID(const _para1:TCLSID; out _para2:POLESTR):HRESULT;stdcall; external  'ole32.dll' name 'StringFromCLSID';
+
+  function CLSIDFromString(_para1:LPOLESTR; _para2:LPCLSID):HRESULT;stdcall; external  'ole32.dll' name 'CLSIDFromString';
+
+  function StringFromIID(const _para1:TIID; out _para2:POLESTR):HRESULT;stdcall; external  'ole32.dll' name 'StringFromIID';
+
+  function IIDFromString(_para1:LPOLESTR; out _para2:TIID):HRESULT;stdcall; external  'ole32.dll' name 'IIDFromString';
+
+  function CoIsOle1Class(const _para1:TCLSID):BOOL;stdcall; external  'ole32.dll' name 'CoIsOle1Class';
+
+  function ProgIDFromCLSID(para:PCLSID; out _para2:POLESTR):HRESULT;stdcall; external  'ole32.dll' name 'ProgIDFromCLSID';
+  function ProgIDFromCLSID(const _para1:TCLSID; out _para2:POLESTR):HRESULT;stdcall; external  'ole32.dll' name 'ProgIDFromCLSID';
+
+  function CLSIDFromProgID(_para1:POLESTR; _para2:LPCLSID):HRESULT;stdcall; external  'ole32.dll' name 'CLSIDFromProgID';
+  function CLSIDFromProgID(_para1:POLESTR; out _para2:TCLSID):HRESULT;stdcall; external  'ole32.dll' name 'CLSIDFromProgID';
+
+  function StringFromGUID2(const _para1:TGUID; _para2:LPOLESTR; _para3:longint):longint;stdcall; external  'ole32.dll' name 'StringFromGUID2';
+
+  function CoCreateGuid(_para1:PGUID):HRESULT;stdcall; external  'ole32.dll' name 'CoCreateGuid';
+
+  function CoFileTimeToDosDateTime(_para1:PFILETIME; _para2:LPWORD; _para3:LPWORD):BOOL;stdcall; external  'ole32.dll' name 'CoFileTimeToDosDateTime';
+
+  function CoDosDateTimeToFileTime(_para1:WORD; _para2:WORD; _para3:PFILETIME):BOOL;stdcall; external  'ole32.dll' name 'CoDosDateTimeToFileTime';
+
+  function CoFileTimeNow(_para1:PFILETIME):HRESULT;stdcall; external  'ole32.dll' name 'CoFileTimeNow';
+
+  function CoRegisterMessageFilter(_para1:IMessageFilter;out _para2:IMessageFilter):HRESULT;stdcall; external  'ole32.dll' name 'CoRegisterMessageFilter';
+
+  function CoGetTreatAsClass(const _para1:TCLSID; _para2:LPCLSID):HRESULT;stdcall; external  'ole32.dll' name 'CoGetTreatAsClass';
+
+  function CoTreatAsClass(const _para1:TCLSID; const _para2:TCLSID):HRESULT;stdcall; external  'ole32.dll' name 'CoTreatAsClass';
+
+
+  type
+
+     LPFNGETCLASSOBJECT = function (const _para1:TCLSID; const _para2:TIID;out _para3):HRESULT;stdcall;
+
+     LPFNCANUNLOADNOW = function:HRESULT;stdcall;
+
+  function DllGetClassObject(const _para1:TCLSID; const _para2:TIID; out _para3):HRESULT;stdcall; external  'ole32.dll' name 'DllGetClassObject';
+
+  function DllCanUnloadNow:HRESULT;stdcall; external  'ole32.dll' name 'DllCanUnloadNow';
+
+  function CoTaskMemAlloc(_para1:ULONG):PVOID;stdcall; external  'ole32.dll' name 'CoTaskMemAlloc';
+
+  function CoTaskMemRealloc(_para1:PVOID; _para2:ULONG):PVOID;stdcall; external  'ole32.dll' name 'CoTaskMemRealloc';
+
+  procedure CoTaskMemFree(_para1:PVOID);stdcall; external  'ole32.dll' name 'CoTaskMemFree';
+
+  function CreateDataAdviseHolder(_para1:IDataAdviseHolder):HRESULT;stdcall; external  'ole32.dll' name 'CreateDataAdviseHolder';
+
+  function CreateDataCache(_para1:IUnknown; const _para2:TCLSID; const _para3:TIID; out _para4):HRESULT;stdcall; external  'ole32.dll' name 'CreateDataCache';
+
+(* Const before type ignored *)
+  function StgCreateDocfile(_para1:POLESTR; _para2:DWORD; _para3:DWORD; out _para4:IStorage):HRESULT;stdcall; external  'ole32.dll' name 'StgCreateDocfile';
+
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   function StgCreateDocfileOnILockBytes(_para1:ILockBytes; _para2:DWORD; _para3:DWORD; out _para4:IStorage):HRESULT;stdcall; external  'ole32.dll' name 'StgCreateDocfileOnILockBytes';
 
 (* Const before type ignored *)
   function StgOpenStorage(_para1:POLESTR; _para2:IStorage; _para3:DWORD; _para4:SNB; _para5:DWORD;
              out _para6:IStorage):HRESULT;stdcall; external  'ole32.dll' name 'StgOpenStorage';
+<<<<<<< HEAD
+<<<<<<< HEAD
   function StgOpenStorageOnILockBytes(_para1:ILockBytes; _para2:IStorage; _para3:DWORD; _para4:SNB; _para5:DWORD;
              out _para6:IStorage):HRESULT;stdcall; external  'ole32.dll' name 'StgOpenStorageOnILockBytes';
 {$ifndef wince}
@@ -4598,6 +5567,91 @@ type
   function GetErrorInfo(dwReserved:ULONG;out errinfo:IErrorInfo):HResult;stdcall; external 'ole32.dll' name 'GetErrorInfo';
   function CreateErrorInfo(out errinfo:ICreateErrorInfo):HResult;stdcall; external 'ole32.dll' name 'CreateErrorInfo';
 {$endif wince}
+=======
+=======
+>>>>>>> origin/fixes_2_2
+
+  function StgOpenStorageOnILockBytes(_para1:ILockBytes; _para2:IStorage; _para3:DWORD; _para4:SNB; _para5:DWORD;
+             out _para6:IStorage):HRESULT;stdcall; external  'ole32.dll' name 'StgOpenStorageOnILockBytes';
+
+  function StgIsStorageFile(_para1:POLESTR):HRESULT;stdcall; external  'ole32.dll' name 'StgIsStorageFile';
+
+  function StgIsStorageILockBytes(_para1:ILockBytes):HRESULT;stdcall; external  'ole32.dll' name 'StgIsStorageILockBytes';
+
+  function StgSetTimes(_para1:POLESTR; _para2:PFILETIME; _para3:PFILETIME; _para4:PFILETIME):HRESULT;stdcall; external  'ole32.dll' name 'StgSetTimes';
+
+  function CoGetObject(pszname:lpwstr; bndop:PBind_Opts; const riid:TIID; out ppv):HRESULT; stdcall; external  'ole32.dll' name 'CoGetObject';
+
+  function BindMoniker(_para1:IMoniker; _para2:DWORD; const _para3:TIID; out _para4):HRESULT;stdcall; external  'ole32.dll' name 'BindMoniker';
+
+  function MkParseDisplayName(_para1:IBindCtx; _para2:POLESTR; out _para3:PULONG; out _para4:IMoniker):HRESULT;stdcall; external  'ole32.dll' name 'MkParseDisplayName';
+
+  function MonikerRelativePathTo(_para1:IMoniker; _para2:IMoniker; out _para3:IMoniker; _para4:BOOL):HRESULT;stdcall; external  'ole32.dll' name 'MonikerRelativePathTo';
+
+  function MonikerCommonPrefixWith(_para1:IMoniker; _para2:IMoniker; _para3:PIMoniker):HRESULT;stdcall; external  'ole32.dll' name 'MonikerCommonPrefixWith';
+
+  function CreateBindCtx(_para1:DWORD;out _para2:IBindCtx):HRESULT;stdcall; external  'ole32.dll' name 'CreateBindCtx';
+
+  function CreateGenericComposite(_para1:IMoniker; _para2:IMoniker; out _para3:IMoniker):HRESULT;stdcall; external  'ole32.dll' name 'CreateGenericComposite';
+
+  function GetClassFile(_para1:POLESTR; out _para2:TCLSID):HRESULT;stdcall; external  'ole32.dll' name 'GetClassFile';
+
+  function CreateFileMoniker(_para1:POLESTR; out _para2:IMoniker):HRESULT;stdcall; external  'ole32.dll' name 'CreateFileMoniker';
+
+  function CreateItemMoniker(_para1:POLESTR; _para2:POLESTR;out _para3:IMoniker):HRESULT;stdcall; external  'ole32.dll' name 'CreateItemMoniker';
+
+  function CreateAntiMoniker(_para1:PIMoniker):HRESULT;stdcall; external  'ole32.dll' name 'CreateAntiMoniker';
+
+  function CreatePointerMoniker(_para1:IUnknown; out _para2:IMoniker):HRESULT;stdcall; external  'ole32.dll' name 'CreatePointerMoniker';
+
+  function GetRunningObjectTable(_para1:DWORD; _para2:IRunningObjectTable):HRESULT;stdcall; external  'ole32.dll' name 'GetRunningObjectTable';
+
+  function CoInitializeSecurity(_para1:PSECURITY_DESCRIPTOR; _para2:LONG; _para3:PSOLE_AUTHENTICATION_SERVICE; _para4:pointer; _para5:DWORD;
+             _para6:DWORD; _para7:pointer; _para8:DWORD; _para9:pointer):HRESULT;stdcall; external  'ole32.dll' name 'CoInitializeSecurity';
+
+  function CoGetCallContext(const _para1:TIID; _para2:Ppointer):HRESULT;stdcall; external  'ole32.dll' name 'CoGetCallContext';
+
+  function CoQueryProxyBlanket(_para1:IUnknown; _para2:PDWORD; _para3:PDWORD; _para4:POLESTR; _para5:PDWORD;
+             _para6:PDWORD; _para7:Pointer; _para8:PDWORD):HRESULT;stdcall; external  'ole32.dll' name 'CoQueryProxyBlanket';
+
+  function CoSetProxyBlanket(_para1:IUnknown; _para2:DWORD; _para3:DWORD; _para4:POLESTR; _para5:DWORD;
+             _para6:DWORD; _para7:pointer; _para8:DWORD):HRESULT;stdcall; external  'ole32.dll' name 'CoSetProxyBlanket';
+
+  function CoCopyProxy(_para1:IUnknown; var _para2:IUnknown):HRESULT;stdcall; external  'ole32.dll' name 'CoCopyProxy';
+
+  function CoQueryClientBlanket(_para1:PDWORD; _para2:PDWORD; _para3:POLESTR; _para4:PDWORD; _para5:PDWORD;
+             _para6:pointer; _para7:PDWORD):HRESULT;stdcall; external  'ole32.dll' name 'CoQueryClientBlanket';
+
+  function CoImpersonateClient:HRESULT;stdcall; external  'ole32.dll' name 'CoImpersonateClient';
+
+  function CoRevertToSelf:HRESULT;stdcall; external  'ole32.dll' name 'CoRevertToSelf';
+
+  function CoQueryAuthenticationServices(_para1:PDWORD; _para2:PSOLE_AUTHENTICATION_SERVICE):HRESULT;stdcall; external  'ole32.dll' name 'CoQueryAuthenticationServices';
+
+  function CoSwitchCallContext(_para1:IUnknown; var _para2:IUnknown):HRESULT;stdcall; external  'ole32.dll' name 'CoSwitchCallContext';
+
+  function CoGetInstanceFromFile(_para1:PCOSERVERINFO; _para2:PCLSID; _para3:IUnknown; _para4:DWORD; _para5:DWORD;
+             _para6:POLESTR; _para7:DWORD; _para8:PMULTI_QI):HRESULT;stdcall; external  'ole32.dll' name 'CoGetInstanceFromFile';
+
+  function CoGetInstanceFromIStorage(_para1:PCOSERVERINFO; _para2:PCLSID; _para3:IUnknown; _para4:DWORD; _para5:IStorage;
+             _para6:DWORD; _para7:PMULTI_QI):HRESULT;stdcall; external  'ole32.dll' name 'CoGetInstanceFromIStorage';
+
+  type
+    TDispID = DISPID;
+
+    TDispIDList = array[0..65535] of TDispID;
+    PDispIDList = ^TDispIDList;
+
+    REFIID = TIID;
+    TREFIID = TIID;
+
+  function SetErrorInfo(dwReserved:ULONG;errinfo:IErrorInfo):HResult;stdcall; external 'ole32.dll' name 'SetErrorInfo';
+  function GetErrorInfo(dwReserved:ULONG;out errinfo:IErrorInfo):HResult;stdcall; external 'ole32.dll' name 'GetErrorInfo';
+  function CreateErrorInfo(out errinfo:ICreateErrorInfo):HResult;stdcall; external 'ole32.dll' name 'CreateErrorInfo';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
   const
     oleaut32dll   = 'oleaut32.dll';
@@ -4606,12 +5660,24 @@ type
   function  SysAllocStringLen(psz: pointer; len:dword): Integer; stdcall; external oleaut32dll name 'SysAllocStringLen';
   procedure SysFreeString(bstr:pointer); stdcall; external oleaut32dll name 'SysFreeString';
   function  SysStringLen(bstr:pointer):UINT; stdcall; external oleaut32dll name 'SysStringLen';
+<<<<<<< HEAD
+<<<<<<< HEAD
   function  SysStringByteLen(bstr:pointer):UINT; stdcall; external oleaut32dll name 'SysStringByteLen';
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
   function  SysReAllocString(var bstr:pointer;psz: pointer): Integer; stdcall; external oleaut32dll name 'SysReAllocString';
   function  SysReAllocStringLen(var bstr:pointer;psz: pointer; len:dword): Integer; stdcall; external oleaut32dll name 'SysReAllocStringLen';
 
 	{ Active object registration API }
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$ifndef wince}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 	const
 	  ACTIVEOBJECT_STRONG = 0;
 	  ACTIVEOBJECT_WEAK = 1;
@@ -4619,7 +5685,13 @@ type
 	function RegisterActiveObject(unk: IUnknown; const clsid: TCLSID; dwFlags: DWORD; out dwRegister: culong): HResult; stdcall; external oleaut32dll name 'RegisterActiveObject';
 	function RevokeActiveObject(dwRegister: culong; pvReserved: Pointer) : HResult; stdcall; external oleaut32dll name 'RevokeActiveObject';
 	function GetActiveObject(const clsid: TCLSID; pvReserved: Pointer; out unk: IUnknown) : HResult; stdcall; external oleaut32dll name 'GetActiveObject';
+<<<<<<< HEAD
+<<<<<<< HEAD
 {$endif wince}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 function Succeeded(Res: HResult) : Boolean;inline;
 function Failed(Res: HResult) : Boolean;inline;
@@ -4629,6 +5701,8 @@ function ResultSeverity(Res: HResult): Longint;inline;
 function MakeResult(Severity, Facility, Code: Longint): HResult;inline;
 
 function LoadTypeLib(szfile : lpolestr; var pptlib: ITypelib):HResult; stdcall; external oleaut32dll name 'LoadTypeLib';
+<<<<<<< HEAD
+<<<<<<< HEAD
 function LoadRegTypeLib(const rguid:TGUID;wVerMajor:ushort;wVerMinor:ushort;_lcid:lcid;out pptlib:ITypeLib):HResult; stdcall; external oleaut32dll name 'LoadRegTypeLib';
 function RegisterTypeLib(const ptrlib :ITypeLib;szfullpath:lpolestr;szhelpdir:lpolestr):HResult; stdcall; external oleaut32dll name 'RegisterTypeLib';
 function CreateTypeLib2(sysk:TSysKind;szfile:lpolestr;out ppctlib:ICreateTypeLib2):HResult; stdcall; external oleaut32dll name 'CreateTypeLib2';
@@ -4646,6 +5720,27 @@ function VariantTimeToDosDateTime( vtime:DOUBLE;pwdosdate:PUSHORT;pwDosTime:PUSH
 
 function SystemTimeToVariantTime(var lpsystemtime:TSystemTime;out pvtime: TOleDate):LONGINT; stdcall; external oleaut32dll name 'SystemTimeToVariantTime';
 function VariantTimeToSystemTime(vtime:TOleDate; out lpsystemtime: TSystemTime):LONGINT; stdcall; external oleaut32dll name 'VariantTimeToSystemTime';
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function LoadTypeLibEx(szfile : lpolestr; regk:tregkind; var pptlib: ITypelib):HResult; stdcall; external oleaut32dll name 'LoadTypeLibEx';
+function LoadRegTypeLib(const rguid:TGUID;wVerMajor:ushort;wVerMinor:ushort;_lcid:lcid;out pptlib:ITypeLib):HResult; stdcall; external oleaut32dll name 'LoadRegTypeLib';
+function QueryPathOfRegTypeLib(const guid:TGUID;wVerMajor:ushort;wVerMinor:ushort;_lcid:lcid;lpbstr:LPolestr):HResult; stdcall; external oleaut32dll name 'QueryPathOfRegTypeLib';
+function RegisterTypeLib(const ptrlib :ITypeLib;szfullpath:lpolestr;szhelpdir:lpolestr):HResult; stdcall; external oleaut32dll name 'RegisterTypeLib';
+function UnRegisterTypeLib(const libid:TGUID; wVerMajor:ushort;wVerMinor:ushort;_lcid:lcid;sysk:TSysKind):HResult; stdcall; external oleaut32dll name 'UnRegisterTypeLib';
+function CreateTypeLib(sysk:TSysKind;szfile:lpolestr;out ppctlib:ICreateTypeLib):HResult; stdcall; external oleaut32dll name 'CreateTypeLib';
+function CreateTypeLib2(sysk:TSysKind;szfile:lpolestr;out ppctlib:ICreateTypeLib2):HResult; stdcall; external oleaut32dll name 'CreateTypeLib2';
+function DispInvoke(this:pointer;const ptinfo: ITypeInfo;dispidMember:TDISPID;wflags:ushort;pparams:pDISPParams;var pvarresult:OLEVARIANT;pexcepinfo:EXCEPINFO;puArgErr:puint):HRESULT; stdcall; external oleaut32dll name 'CreateTypeLib2';
+
+function DosDateTimeToVariantTime( wDosDate: ushort; wDosTime:ushort;pvtime:pdouble):longint; stdcall; external oleaut32dll name 'DosDateTimeToVariantTime';
+function VariantTimeToDosDateTime( vtime:DOUBLE;pwdosdate:PUSHORT;pwDosTime:PUSHORT):longint; stdcall; external oleaut32dll name 'VariantTimeToDosDateTime';
+
+function SystemTimeToVariantTime(LPSYSTEMTIME:lpSystemTime;pvtime: PDOUBLE):LONGINT; stdcall; external oleaut32dll name 'SystemTimeToVariantTime';
+function VariantTimeToSystemTime(vtime:DOUBLE; lpsystemtime: LPSYSTEMTIME):LONGINT; stdcall; external oleaut32dll name 'VariantTimeToSystemTime';
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 
 {--------------------------------------------------------------------- }
@@ -4895,6 +5990,8 @@ function VarUI8FromUI4(ulIn:ULONG; pi64Out:PULONG64):HResult;stdcall;external ol
 function VarUI8FromDec(var pdecIn:TDecimal; pi64Out:PULONG64):HResult;stdcall;external oleaut32dll name 'VarUI8FromDec';
 function VarUI8FromInt(intIn:cint; pi64Out:PULONG64):HResult;stdcall;external oleaut32dll name 'VarUI8FromInt';
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 { SafeArray API }
 
 function SafeArrayAllocDescriptor(cDims: UINT; out psaOut: PSafeArray): HResult; stdcall;
@@ -4940,6 +6037,10 @@ function SafeArrayCopy(psa: PSafeArray; out psaOut: PSafeArray): HResult; stdcal
 function SafeArrayPtrOfIndex(psa: PSafeArray; rgIndices: PLongint; out pvData: Pointer): HResult; stdcall;
   external oleaut32dll name 'SafeArrayPtrOfIndex';
   
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 implementation
 
 function Succeeded(Res: HResult) : Boolean;inline;

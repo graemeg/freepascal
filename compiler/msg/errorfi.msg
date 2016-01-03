@@ -1,14 +1,34 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 %%% Reordering of errorfi.msg respective to errore.msg
 %%% Contains all comments from errorfi.msg
 #
 #   This file is part of the Free Pascal Compiler
 #   Copyright (c) 1999-2013 by the Free Pascal Development team
+=======
+#
+#   This file is part of the Free Pascal Compiler
+#   Copyright (c) 1999-2008 by the Free Pascal Development team
+>>>>>>> graemeg/fixes_2_2
+=======
+#
+#   This file is part of the Free Pascal Compiler
+#   Copyright (c) 1999-2008 by the Free Pascal Development team
+>>>>>>> origin/fixes_2_2
 #
 #   French (ISO 8859-1) Language File for Free Pascal
 #   Latest updates contributed by Rémi Dorlet <remi at dorlet.org>
 #   Based on errore.msg of SVN revision 4165
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   See the file COPYING.v2, included in this distribution,
+=======
+#   See the file COPYING.FPC, included in this distribution,
+>>>>>>> graemeg/fixes_2_2
+=======
+#   See the file COPYING.FPC, included in this distribution,
+>>>>>>> origin/fixes_2_2
 #   for details about the copyright.
 #
 #   This program is distributed in the hope that it will be useful,
@@ -44,20 +64,42 @@
 #   x_   executable informations
 #
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 # <type> can contain a minus sign at the beginning to mark that
 # the message is off by default. Look at type_w_explicit_string_cast
 # for example
 
 #
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 # General
 #
 # 01023 is the last used one
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 # BeginOfTeX
 % \section{Messages généraux du compilateur}
 % Cette partie détaille les messages non fatals,
 % mais pouvant apporter une information. La quantité de ces messages
 % peut être contrôlé avec l'option de niveau de verbosité \var{-v}.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+general_text_bytes_code=01019_Code de type octet
+general_text_bytes_data=01020_Donnée de type octet
+# BeginOfTeX
+% \section{General compiler messages}
+% This section gives the compiler messages which are not fatal, but which
+% display useful information. The number of such messages can be
+% controlled with the various verbosity level \var{-v} switches.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 % \begin{description}
 general_t_compilername=01000_T_Compilateur: $1
 % When the \var{-vt} switch is used, this line tells you what compiler
@@ -120,10 +162,16 @@ general_e_path_does_not_exist=01017_E_Le chemin "$1" n'existe pas
 % The specified path does not exist.
 general_f_compilation_aborted=01018_F_Compilation interrompue
 % Compilation was aborted.
+<<<<<<< HEAD
+<<<<<<< HEAD
 general_text_bytes_code=01019_bytes code
 % The size of the generated executable code, in bytes.
 general_text_bytes_data=01020_bytes data
 % The size of the generated program data, in bytes.
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 general_i_number_of_warnings=01021_I_$1 avertissement(s) émis
 % Total number of warnings issued during compilation.
 general_i_number_of_hints=01022_I_$1 conseil(s) émis
@@ -142,6 +190,8 @@ general_i_number_of_notes=01023_I_$1 note(s) émises
 % reserved words, strings, etc. It also takes care of directives and
 % conditional compiling handling.
 % \begin{description}
+<<<<<<< HEAD
+<<<<<<< HEAD
 general_f_ioerror=01024_F_I/O error: $1
 % During compilation an I/O error happened which allows no further compilation.
 general_f_oserror=01025_F_Operating system error: $1
@@ -158,6 +208,10 @@ general_f_oserror=01025_F_Operating system error: $1
 % reserved words, strings, etc. It also takes care of directives and
 % conditional compilation handling.
 % \begin{description}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 scan_f_end_of_file=02000_F_Fin de fichier inattendue
 % this typically happens in one of the following cases :
 % \begin{itemize}
@@ -315,6 +369,14 @@ scan_w_only_one_resourcefile_supported=02056_W_Un seul fichier de ressource est 
 % The target you are compiling for supports only one resource file.
 % The first resource file found is used, the others are discarded.
 scan_w_macro_support_turned_off=02057_W_L'utilisation des macros à été désactivée
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+ 	
+>>>>>>> graemeg/fixes_2_2
+=======
+ 	
+>>>>>>> origin/fixes_2_2
 % A macro declaration has been found, but macro support is currently off,
 % so the declaration will be ignored. To turn macro support on compile with
 % -Sm on the commandline or add \{\$MACRO ON\} in the source
@@ -377,6 +439,8 @@ scan_w_maxstacksize_not_support=02078_W_MAXSTACKSIZE n'est pas supporté sur l'OS
 % semantics of you language, i.e. it determines if your pascal constructs
 % are correct.
 % \begin{description}
+<<<<<<< HEAD
+<<<<<<< HEAD
 scanner_e_illegal_warn_state=02079_E_Illegal state "$1" for $WARN directive
 % Only ON and OFF can be used as state with a \var{\{\$WARN\}} compiler directive.
 scan_e_only_packset=02080_E_Illegal set packing value
@@ -443,6 +507,10 @@ scan_e_illegal_hugepointernormalization=02098_E_Illegal argument for HUGEPOINTER
 % semantics of you language, i.e. it determines if your Pascal constructs
 % are correct.
 % \begin{description}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 parser_e_syntax_error=03000_E_Analyseur syntaxique - Erreur de syntaxe
 % An error against the Turbo Pascal language was encountered. This happens
 % typically when an illegal character is found in the sources file.
@@ -460,7 +528,13 @@ parser_e_export_ordinal_double=03009_E_Index de fonction exportée "$1" dupliqué
 parser_e_export_invalid_index=03010_E_Index de fonction exportée invalide
 % DLL function index must be in the range \var{1..\$FFFF}
 parser_w_parser_reloc_no_debug=03011_W_Les DLL ou EXE relogeables sont incompatibles avec les informations de débogage, débogage désactivé.
+<<<<<<< HEAD
+<<<<<<< HEAD
 % It is currently not possible to include debug information in a relocatable DLL.
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 parser_w_parser_win32_debug_needs_WN=03012_W_Pour permettre le débogage de code win32, utilisez l'option -WN
 % Stabs info is wrong for relocatable DLL or EXES use -WN
 % if you want to debug win32 executables.
@@ -584,7 +658,15 @@ parser_e_fail_only_in_constructor=03051_E_FAIL ne peut être utilisé que dans un 
 parser_e_no_paras_for_destructor=03052_E_Les destructeurs ne peuvent pas avoir de paramètres
 % You are declaring a destructor with a parameter list. Destructor methods
 % cannot have parameters.
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_only_class_members_via_class_ref=03053_E_Only class methods, class properties and class variables can be referred with class references
+=======
+parser_e_only_class_methods_via_class_ref=03053_E_Seules des références de classe peuvent faire référence à des méthodes de classe
+>>>>>>> graemeg/fixes_2_2
+=======
+parser_e_only_class_methods_via_class_ref=03053_E_Seules des références de classe peuvent faire référence à des méthodes de classe
+>>>>>>> origin/fixes_2_2
 % This error occurs in a situation like the following:
 % \begin{verbatim}
 % Type :
@@ -598,9 +680,21 @@ parser_e_only_class_members_via_class_ref=03053_E_Only class methods, class prop
 % \end{verbatim}
 % \var{Free} is not a class method and hence cannot be called with a class
 % reference.
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_only_class_members=03054_E_Only class methods, class properties and class variables can be accessed in class methods
 % This is related to the previous error. You cannot call a method of an object
 % from inside a class method. The following code would produce this error:
+=======
+parser_e_only_class_methods=03054_E_Seules des méthodes de classe peuvent être appelées dans des méthodes de classe
+% This is related to the previous error. You cannot call a method of an object
+% from a inside a class method. The following code would produce this error:
+>>>>>>> graemeg/fixes_2_2
+=======
+parser_e_only_class_methods=03054_E_Seules des méthodes de classe peuvent être appelées dans des méthodes de classe
+% This is related to the previous error. You cannot call a method of an object
+% from a inside a class method. The following code would produce this error:
+>>>>>>> origin/fixes_2_2
 % \begin{verbatim}
 % class procedure tobject.x;
 %
@@ -694,8 +788,18 @@ parser_e_void_function=03080_E_Les procédures ne peuvent pas retourner une valeu
 % In \fpc, you can specify a return value for a function when using
 % the \var{exit} statement. This error occurs when you try to do this with a
 % procedure. Procedures cannot return a value.
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_only_methods_allowed=03081_E_Les constructeurs, les destructeurs et les class operators doivent être des méthodes
 % You're declaring a procedure as destructor, constructor or class operators, when the
+=======
+parser_e_constructors_always_objects=03081_E_Les constructeurs et les destructeurs doivent être des méthodes
+% You're declaring a procedure as destructor or constructor, when the
+>>>>>>> graemeg/fixes_2_2
+=======
+parser_e_constructors_always_objects=03081_E_Les constructeurs et les destructeurs doivent être des méthodes
+% You're declaring a procedure as destructor or constructor, when the
+>>>>>>> origin/fixes_2_2
 % procedure isn't a class method.
 parser_e_operator_not_overloaded=03082_E_L'opérateur n'est pas surchargé
 % You're trying to use an overloaded operator when it is not overloaded for
@@ -736,14 +840,44 @@ parser_e_mix_of_classes_and_objects=03093_E_Le mélange de différents types d'obj
 % a class cannot have an object as parent and vice versa.
 parser_w_unknown_proc_directive_ignored=03094_W_Une directive de procédure inconnue a due être ignorée : "$1"
 % The procedure directive you specified is unknown.
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_directive_only_one_var=03095_E_$1 can be associated with only one variable
 % You cannot specify more than one variable before the \var{absolute}, \var{export}, \var{external},
 % \var{weakexternal}, \var{public} and \var{cvar} directives.
 % As a result, for example the following construct will provide this error:
+=======
+parser_e_absolute_only_one_var=03095_E_absolute ne peut être associé qu'à une seule variable
+% You cannot specify more than one variable before the \var{absolute} directive.
+% Thus, the following construct will provide this error:
+>>>>>>> graemeg/fixes_2_2
+=======
+parser_e_absolute_only_one_var=03095_E_absolute ne peut être associé qu'à une seule variable
+% You cannot specify more than one variable before the \var{absolute} directive.
+% Thus, the following construct will provide this error:
+>>>>>>> origin/fixes_2_2
 % \begin{verbatim}
 % Var Z : Longint;
 %     X,Y : Longint absolute Z;
 % \end{verbatim}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/fixes_2_2
+% \item [ absolute can only be associated a var or const ]
+% The address of a \var{absolute} directive can only point to a variable or a
+% typed constant. Therefore, the following code will produce this error:
+% \begin{verbatim}
+%   Procedure X;
+%
+%  var p : longint absolute x;
+% \end{verbatim}
+%
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 parser_e_absolute_only_to_var_or_const=03096_E_absolute ne peut être associé qu'à une variable ou une constante
 % The address of a \var{absolute} directive can only point to a variable or
 % constant. Therefore, the following code will produce this error:
@@ -831,9 +965,21 @@ parser_e_function_already_declared_public_forward=03120_E_La fonction "$1" est d
 % declaration in the \var{implmentation} section.
 parser_e_not_external_and_export=03121_E_Impossible d'utiliser à la fois EXPORT et EXTERNAL
 % These two procedure directives are mutually exclusive
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_h_not_supported_for_inline=03123_H_"$1" n'est pas encore supporté à l'intérieur de procédures/fonctions INLINE
 % Inline procedures don't support this declaration.
 parser_h_inlining_disabled=03124_H_Inlining désactivé
+=======
+parser_w_not_supported_for_inline=03123_W_"$1" n'est pas encore supporté à l'intérieur de procédures/fonctions INLINE
+% Inline procedures don't support this declaration.
+parser_w_inlining_disabled=03124_W_Inlining désactivé
+>>>>>>> graemeg/fixes_2_2
+=======
+parser_w_not_supported_for_inline=03123_W_"$1" n'est pas encore supporté à l'intérieur de procédures/fonctions INLINE
+% Inline procedures don't support this declaration.
+parser_w_inlining_disabled=03124_W_Inlining désactivé
+>>>>>>> origin/fixes_2_2
 % Inlining of procedures is disabled.
 parser_i_writing_browser_log=03125_I_Ecriture du Browser log $1
 % When information messages are on, the compiler warns you when it
@@ -899,7 +1045,15 @@ parser_e_threadvars_only_sg=03147_E_Les variables de Threads peuvent seulement ê
 % are stored on the stack
 parser_f_direct_assembler_not_allowed=03148_F_Assembleur direct non supporté pour la sortie binaire
 % You can't use direct assembler when using a binary writer, choose an
+<<<<<<< HEAD
+<<<<<<< HEAD
 % other outputformat or use another assembler reader
+=======
+% other outputformat or use an other assembler reader
+>>>>>>> graemeg/fixes_2_2
+=======
+% other outputformat or use an other assembler reader
+>>>>>>> origin/fixes_2_2
 parser_w_no_objpas_use_mode=03149_W_Ne chargez pas l'unité OBJPAS manuellement, utilisez de préférence \{\$mode Objfpc\} ou \{\$mode Delphi\}
 % You are trying to load the ObjPas unit manually from a uses clause. This is
 % not a good idea. Use the \var{\{\$mode objfpc\}} or
@@ -925,10 +1079,23 @@ parser_e_ill_property_storage_sym=03155_E_Ce symbole n'est pas admis comme symbo
 % You can't use this type of symbol as storage specifier in property
 % declaration. You can use only methods with the result type boolean,
 % boolean class fields or boolean constants
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_only_publishable_classes_can_be_published=03156_E_Only classes which are compiled in $M+ mode can be published
 % A class-typed field in the published section of a class can only be a class which was
 % compiled in \var{\{\$M+\}} or which is derived from such a class. Normally
 % such a class should be derived from \var{TPersistent}.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+parser_e_only_publishable_classes_can__be_published=03156_E_Seules les classes compilées avec le mode $M+ peuvent être PUBLISHED
+% In the published section of a class can be only class as fields used which
+% are compiled in \var{\{\$M+\}} or which are derived from such a class. Normally
+% such a class should be derived from TPersitent
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 parser_e_proc_directive_expected=03157_E_Directive de procédure attendue
 % This error is triggered when you have a \var{\{\$Calling\}} directive without
 % a calling convention specified.
@@ -1165,6 +1332,8 @@ parser_e_dispid_must_be_ord_const=03219_E_Les Dispatch ID doivent être des const
 % This section lists all errors that can occur when type checking is
 % performed.
 % \begin{description}
+<<<<<<< HEAD
+<<<<<<< HEAD
 parser_e_array_range_out_of_bounds=03220_E_The range of the array is too large
 % Regardless of the size taken up by its elements, an array cannot have more
 % than high(ptrint) elements. Additionally, the range type must be a subrange
@@ -1579,6 +1748,10 @@ parser_u_already_compiled=03340_UL_Unit $1 has been already compiled meanwhile.
 % This section lists all errors that can occur when type checking is
 % performed.
 % \begin{description}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 type_e_mismatch=04000_E_Type non valable
 % This can happen in many cases:
 % \begin{itemize}
@@ -1718,12 +1891,27 @@ type_e_interface_type_expected=04034_E_Type interface attendu, "$1" spécifié
 % Type
 %   TMyStream = Class(TStream,Integer)
 % \end{verbatim}
+<<<<<<< HEAD
+<<<<<<< HEAD
 type_h_mixed_signed_unsigned=04035_H_Mixing signed expressions and longwords gives a 64bit result
 % If you divide (or calculate the modulus of) a signed expression by a longword (or vice versa),
 % or if you have overflow and/or range checking turned on and use an arithmetic
 % expression (+, -, *, div, mod) in which both signed numbers and longwords appear,
 % then everything has to be evaluated in 64-bit arithmetic which is slower than normal
 % 32-bit arithmetic. You can avoid this by typecasting one operand so it
+=======
+=======
+>>>>>>> origin/fixes_2_2
+type_w_mixed_signed_unsigned=04035_W_Le mélange d'expressions signées et de mots longs (longwords) donne un résultat sur 64 bits
+% If you divide (or calculate the modulus of) a signed expression by a longword (or vice versa),
+% or if you have overflow and/or range checking turned on and use an arithmetic
+% expression (+, -, *, div, mod) in which both signed numbers and longwords appear,
+% then everything has to be evaluated in 64bit which is slower than normal
+% 32bit arithmetic. You can avoid this by typecasting one operand so it
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 % matches the result type of the other one.
 type_w_mixed_signed_unsigned2=04036_W_Le mélange d'expressions signées et de cardinaux ici peut provoquer une erreur de dépassement d'intervalle
 % If you use a binary operator (and, or, xor) and one of
@@ -1756,6 +1944,8 @@ type_e_type_is_not_completly_defined=04042_E_Le type "$1" n'est pas complètement
 type_w_string_too_long=04043_W_La chaîne contient plus de caractères que ne peut en contenir une chaîne courte
 % The size of the constant string, which is assigned to a shortstring,
 % is longer than the maximum size of the shortstring
+<<<<<<< HEAD
+<<<<<<< HEAD
 type_w_comparison_always_false=04044_W_Comparison might be always false due to range of constant and expression
 % There is a comparison between a constant and an expression where the constant is out of the
 % valid range of values of the expression. Because of type promotion, the statement will always evaluate to
@@ -1770,7 +1960,40 @@ type_w_instance_with_abstract=04046_W_Construction d´une classe "$1" avec des mé
 % An instance of a class is created which contains non-implemented abstract
 % methods. This will probably lead to a runtime error 211 in the code if that
 % routine is ever called. All abstract methods should be overridden.
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 type_h_in_range_check=04047_H_L´opérande à gauche de l´opérateur IN doit avoir la longueur d´un octet (8 bits)
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+type_h_in_range_check=L´opérande à gauche de l´opérateur IN doit avoir la longueur d´un octet (8 bits)
+>>>>>>> graemeg/cpstrnew
+=======
+=======
+>>>>>>> origin/fixes_2_2
+type_w_signed_unsigned_always_false=04044_W_La comparaison est toujours FAUSSE du fait de l'intervalle des valeurs
+% There is a comparison between an unsigned value and a signed constant which is
+% less than zero. Because of type promotion, the statement will always evaluate to
+% false. Exlicitly typecast the constant to the correct range to avoid this problem.
+type_w_signed_unsigned_always_true=04045_W_La comparaison est toujours VRAIE du fait de l'intervalle des valeurs
+% There is a comparison between an unsigned value and a signed constant which is
+% less than zero. Because of type promotion, the statement will always evaluate to
+% true. Exlicitly typecast the constant to the correct range to avoid this problem.
+type_w_instance_with_abstract=04046_W_Construction d´une classe "$1" avec des méthodes abstraites
+% An instance of a class is created which contains non-implemented abstract
+% methods. This will probably lead to a runtime error 211 in the code if that
+% routine is ever called. All abstract methods should be overriden.
+type_h_in_range_check=L´opérande à gauche de l´opérateur IN doit avoir la longueur d´un octet (8 bits)
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 % The left operand of the \var{in} operator is not an ordinal or enumeration which fits
 % within 8-bits, this may lead to range check errors. The \var{in} operator
 % currently only supports a left operand which fits within a byte. In the case of
@@ -1784,9 +2007,21 @@ type_h_smaller_possible_range_check=04049_H_Taille des types non concordante, po
 % this may cause a range-check error, or may lead to possible loss of data.
 type_e_cant_take_address_of_abstract_method=04050_E_L'adresse d'une méthode abstraite ne peut pas être utilisée
 % An abstract method has no body, so the address of an abstract method can't be taken.
+<<<<<<< HEAD
+<<<<<<< HEAD
 type_e_assignment_not_allowed=04051_E_Assignments to formal parameters and open arrays are not possible
 % You are trying to assign a value to a formal (untyped var, const or out)
 % parameter, or to an open array.
+=======
+type_e_operator_not_allowed=04051_E_L'opérateur n'est pas utilisable pour le type d'opérande
+% You are trying an operator that is not available for the type of the
+% operands
+>>>>>>> graemeg/fixes_2_2
+=======
+type_e_operator_not_allowed=04051_E_L'opérateur n'est pas utilisable pour le type d'opérande
+% You are trying an operator that is not available for the type of the
+% operands
+>>>>>>> origin/fixes_2_2
 type_e_constant_expr_expected=04052_E_Expression constante attendue
 % The compiler expects an constant expression, but gets a variable expression.
 type_e_operator_not_supported_for_types=04053_E_L'opération "$1" n'est pas supportée pour les types "$2" et "$3"
@@ -1794,7 +2029,15 @@ type_e_operator_not_supported_for_types=04053_E_L'opération "$1" n'est pas suppo
 type_e_illegal_type_conversion=04054_E_Conversion de types illégale: de "$1" vers "$2"
 % When doing a type-cast, you must take care that the sizes of the variable and
 % the destination type are the same.
+<<<<<<< HEAD
+<<<<<<< HEAD
 type_h_pointer_to_longint_conv_not_portable=04055_H_La conversion entre types scalaires et pointeurs n´est pas portable
+=======
+type_h_pointer_to_longint_conv_not_portable=La conversion entre types scalaires et pointeurs n´est pas portable
+>>>>>>> graemeg/fixes_2_2
+=======
+type_h_pointer_to_longint_conv_not_portable=La conversion entre types scalaires et pointeurs n´est pas portable
+>>>>>>> origin/fixes_2_2
 % If you typecast a pointer to a longint (or vice-versa), this code will not compile
 % on a machine using 64-bit for pointer storage.
 type_w_pointer_to_longint_conv_not_portable=04056_W_La conversion entre cardinaux et pointeurs n'est pas portable
@@ -1826,6 +2069,8 @@ type_e_class_or_cominterface_type_expected=04060_E_Classe ou interface COM atten
 % This section lists all the messages that concern the handling of symbols.
 % This means all things that have to do with procedure and variable names.
 % \begin{description}
+<<<<<<< HEAD
+<<<<<<< HEAD
 type_e_no_const_packed_array=04061_E_Constant packed arrays are not yet supported
 % You cannot declare a (bit)packed array as a typed constant.
 type_e_got_expected_packed_array=04062_E_Incompatible type for arg no. $1: Got "$2" expected "(Bit)Packed Array"
@@ -2026,6 +2271,10 @@ type_e_anonymous_function_unsupported=04999_E_Function references are not yet su
 % This section lists all the messages that concern the handling of symbols.
 % This means all things that have to do with procedure and variable names.
 % \begin{description}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 sym_e_id_not_found=05000_E_Identificateur "$1" non trouvé
 % The compiler doesn't know this symbol. Usually happens when you misspel
 % the name of a variable or procedure, or when you forgot to declare a
@@ -2057,8 +2306,18 @@ sym_e_forward_type_not_resolved=05009_E_Déclaration forward "$1" non résolue
 % A symbol was forward defined, but no declaration was encountered.
 sym_e_only_static_in_static=05010_E_Seules les variables statiques peuvent être utilisées dans les méthodes statiques ou en dehors des méthodes
 % A static method of an object can only access static variables.
+<<<<<<< HEAD
+<<<<<<< HEAD
 sym_e_type_must_be_rec_or_object_or_class=05012_E_Record or object or class type expected
 % The variable or expression isn't of the type \var{record} or \var{object} or \var{class}.
+=======
+sym_f_type_must_be_rec_or_class=05012_F_Type record ou classe attendu
+% The variable or expression isn't of the type \var{record} or \var{class}.
+>>>>>>> graemeg/fixes_2_2
+=======
+sym_f_type_must_be_rec_or_class=05012_F_Type record ou classe attendu
+% The variable or expression isn't of the type \var{record} or \var{class}.
+>>>>>>> origin/fixes_2_2
 sym_e_no_instance_of_abstract_object=05013_E_Les instances de classes ou les objets avec une méthode abstraite ne sont pas autorisés
 % You are trying to generate an instance of a class which has an abstract
 % method that wasn't overridden.
@@ -2190,6 +2449,8 @@ sym_w_identifier_only_read=05061_W_La variable "$1" est lue mais ne reçoit de va
 % This section lists all messages that can be displayed if the code
 % generator encounters an error condition.
 % \begin{description}
+<<<<<<< HEAD
+<<<<<<< HEAD
 sym_h_abstract_method_list=05062_H_Found abstract method: $1
 % When getting a warning about constructing a class/object with abstract methods
 % you get this hint to assist you in finding the affected method.
@@ -2349,6 +2610,10 @@ sym_w_duplicate_id=05095_W_Duplicate identifier "$1"
 % This section lists all messages that can be displayed if the code
 % generator encounters an error condition.
 % \begin{description}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 cg_e_parasize_too_big=06009_E_La taille de la liste de paramètre dépasse 65535 octets
 % The I386 processor limits the parameter list to 65535 bytes (the \var{RET}
 % instruction causes this)
@@ -2464,6 +2729,8 @@ cg_f_unknown_compilerproc=06046_F_Procédure "$1" inconnue. Verifiez que vous uti
 #
 # 07097 is the last used one
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 cg_f_unknown_system_type=06047_F_Cannot find system type "$1". Check if you use the correct run time library.
 % The compiler expects that the runtime library contains certain type definitions. If you see this error
 % and you didn't change the runtime library code, it's very likely that the runtime library
@@ -2507,6 +2774,10 @@ cg_f_max_units_reached=06057_F_Maximum number of units ($1) reached for the curr
 #
 # 07125 is the last used one
 #
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 asmr_d_start_reading=07000_DL_Début d'analyse assembleur de style $1
 % This informs you that an assembler block is being parsed
 asmr_d_finish_reading=07001_DL_Analyse assembleur de style $1 terminée
@@ -2685,7 +2956,15 @@ asmr_e_unable_to_determine_reference_size=07083_E_Taille non spécifiée et imposs
 % You should specify explicitly a size for the reference, because
 % the compiler is unable to determine what size (byte,word,dword,etc.) it
 % should use for the reference.
+<<<<<<< HEAD
+<<<<<<< HEAD
 asmr_e_cannot_use_RESULT_here=07084_E_Impossible d'utiliser RESULT dans cette fonction
+=======
+asmr_e_cannot_use_RESULT_here=Impossible d'utiliser RESULT dans cette fonction
+>>>>>>> graemeg/fixes_2_2
+=======
+asmr_e_cannot_use_RESULT_here=Impossible d'utiliser RESULT dans cette fonction
+>>>>>>> origin/fixes_2_2
 % Some functions which return complex types cannot use the \var{result}
 % keyword.
 asmr_w_adding_explicit_args_fXX=07086_W_"$1" sans paramètre traduit en "$1 %st,%st(1)"
@@ -2727,6 +3006,8 @@ asmr_e_illegal_shifterop_syntax=07099_E_Erreur de syntaxe durant l'analyse d'une
 #
 # 08018 is the last used one
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 asmr_e_packed_element=07100_E_Address of packed component is not at a byte boundary
 % Packed components (record fields and array elements) may start at an arbitrary
 % bit inside a byte. On CPU which do not support bit-addressable memory (which
@@ -2817,6 +3098,10 @@ asmr_e_invalid_ref_register=07125_E_Invalid register used in memory reference ex
 #
 # 08029 is the last used one
 #
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 asmw_f_too_many_asm_files=08000_F_Trop peu de fichiers assembleur
 % With smartlinking enabled, there are too many assembler
 % files generated. Disable smartlinking.
@@ -2853,6 +3138,8 @@ asmw_e_64bit_not_supported=08021_E_Asm: paramètres 64 bits non supportés
 % This section lists errors that occur when the compiler is processing the
 % command line or handling the configuration files.
 % \begin{description}
+<<<<<<< HEAD
+<<<<<<< HEAD
 asmw_e_bad_reg_with_rex=08022_E_Asm: AH,BH,CH or DH cannot be used in an instruction requiring REX prefix
 % x86_64 only: instruction encoding of this platform does not allow using
 % 8086 high byte registers (AH,BH,CH or DH) together with REX prefix in a single instruction.
@@ -2888,6 +3175,10 @@ asmw_e_32bit_not_supported=08029_E_Asm: 32 Bit references not supported
 % This section lists errors that occur when the compiler is processing the
 % command line or handling the configuration files.
 % \begin{description}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 exec_w_source_os_redefined=09000_W_Système d'exploitation source redéfini
 % The source operating system is redefined.
 exec_i_assembling_pipe=09001_I_Assemblage (pipe) de $1
@@ -2941,9 +3232,15 @@ exec_e_exe_not_supported=09018_E_Création d'exécutables non supportée
 exec_e_dll_not_supported=09019_E_Création de bibliothèques dynamiques/partagées non supportée
 % Creating dynamically loadable libraries is not supported for this platform, because it was
 % not yet implemented in the compiler.
+<<<<<<< HEAD
+<<<<<<< HEAD
 exec_e_static_lib_not_supported=09035_E_Creation of Static Libraries not supported
 % Creating static libraries is not supported for this platform, because it was
 % not yet implemented in the compiler.
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 exec_i_closing_script=09020_I_Fermeture du script $1
 % Informational message showing when the external assembling an linking script is finished.
 exec_e_res_not_found=09021_E_Compilateur de ressource non trouvé, utilisation d'un compilateur externe
@@ -2973,6 +3270,8 @@ exec_d_resbin_params=09028_D_Exécution du compilateur de ressource "$1" avec "$2
 % This section lists all messages that the compiler emits when an executable program is produced,
 % and only when the internal linker is used.
 % \begin{description}
+<<<<<<< HEAD
+<<<<<<< HEAD
 exec_e_error_while_compiling_resources=09029_E_Error while compiling resources
 % The resource compiler or converter returned an error.
 exec_e_cant_call_resource_compiler=09030_E_Can't call the resource compiler "$1", switching to external mode
@@ -3002,6 +3301,10 @@ exec_w_init_file_not_found=09034_W_"$1" not found, this will probably cause a li
 % This section lists all messages that the compiler emits when an executable program is produced,
 % and only when the internal linker is used.
 % \begin{description}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 execinfo_f_cant_process_executable=09128_F_Post-traitement de l'exécutable $1 impossible
 % Fatal error when the compiler is unable to post-process an executable.
 execinfo_f_cant_open_executable=09129_F_Impossible d'ouvrir l'exécutable $1
@@ -3029,6 +3332,8 @@ execinfo_x_stackcommit=09134_X_Taille de pile validée: $1 octets
 % loading a unit from disk into memory. Many of these messages are
 % informational messages.
 % \begin{description}
+<<<<<<< HEAD
+<<<<<<< HEAD
 link_f_executable_too_big=09200_F_Executable image size is too big for $1 target.
 % Fatal error when resulting executable is too big.
 link_w_32bit_absolute_reloc=09201_W_Object file "$1" contains 32-bit absolute relocation to symbol "$2".
@@ -3049,6 +3354,10 @@ link_w_32bit_absolute_reloc=09201_W_Object file "$1" contains 32-bit absolute re
 % loading a unit from disk into memory. Many of these messages are
 % informational messages.
 % \begin{description}
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 unit_t_unitsearch=10000_T_Recherche de l'unité $1
 % When you use the \var{-vt}, the compiler tells you where it tries to find
 % unit files.
@@ -3169,8 +3478,21 @@ unit_u_check_time=10037_U_Vérification du fichier PPU $1, date/heure $2
 unit_w_cant_compile_unit_with_changed_incfile=10040_W_Impossible de recompiler l'unité $1 alors que des fichiers inclus ont été trouvés
 % A unit was found to have modified include files, but
 % some source files were not found, so recompilation is impossible.
+<<<<<<< HEAD
+<<<<<<< HEAD
 unit_u_source_modified=10041_U_File $1 is newer than the one used for creating PPU file $2
 % A modified source file for a compiler unit was found.
+=======
+=======
+>>>>>>> origin/fixes_2_2
+unit_h_source_modified=10041_H_Le fichier $1 est plus récent que le fichier PPU $2
+% A modified source file for a unit was found that was compiled with the
+% release flag (-Ur). The unit will not implicitly be recompiled because
+% this release flag is set.
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 unit_u_ppu_invalid_fpumode=10042_U_Utilisation d'une unité compilée avec un mode FPU incorrect
 % Trying to compile code while using units which were not compiled with
 % the same floating point format mode. Either all code should be compiled
@@ -3238,6 +3560,8 @@ unit_u_skipping_reresolving_unit=10059_U_Saut de la re-resolution de l'unité $1,
 #
 # 11039 is the last used one
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 unit_u_unload_resunit=10060_U_Unloading resource unit $1 (not needed)
 % When you use the \var{-vu} flag, the compiler warns that it is unloading the
 % resource handling unit, since no resources are used.
@@ -3261,6 +3585,10 @@ unit_u_ppu_invalid_memory_model=10063_U_PPU is compiled for another i8086 memory
 #
 # 11057 is the last used one
 #
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 option_usage=11000_O_$1 [options] <nom_fichier> [options]
 # BeginOfTeX
 %
@@ -3337,14 +3665,22 @@ option_using_env=11027_T_Lecture des options depuis la variable d'environnement 
 option_handling_option=11028_D_Utilisation de l'option "$1"
 % Debug info that an option is found and will be handled
 option_help_press_enter=11029__*** Appuyez sur Entrée ***
+<<<<<<< HEAD
+<<<<<<< HEAD
 % Message shown when help is shown page per page. When pressing the ENTER
 % Key, the next page of help is shown. If you press q and then ENTER, the
 % compiler exits.
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 option_start_reading_configfile=11030_H_Début de la lecture du fichier de configuration $1
 % Starting of config file parsing.
 option_end_reading_configfile=11031_H_Fin de la lecture du fichier de configuration $1
 % End of config file parsing.
 option_interpreting_option=11032_D_Interprétation de l'option "$1"
+<<<<<<< HEAD
+<<<<<<< HEAD
 % The compiler is interpreting an option
 option_interpreting_firstpass_option=11036_D_Interprétation de l'option de 1ère passe "$1"
 % The compiler is interpreting an option for the first time.
@@ -3352,14 +3688,30 @@ option_interpreting_file_option=11033_D_Interprétation de l'option de fichier "$
 % The compiler is interpreting an option which it read from the configuration file.
 option_read_config_file=11034_D_Lecture du fichier de configuration "$1"
 % The compiler is starting to read the configuration file.
+=======
+option_interpreting_firstpass_option=11036_D_Interprétation de l'option de 1ère passe "$1"
+option_interpreting_file_option=11033_D_Interprétation de l'option de fichier "$1"
+option_read_config_file=11034_D_Lecture du fichier de configuration "$1"
+>>>>>>> graemeg/fixes_2_2
+=======
+option_interpreting_firstpass_option=11036_D_Interprétation de l'option de 1ère passe "$1"
+option_interpreting_file_option=11033_D_Interprétation de l'option de fichier "$1"
+option_read_config_file=11034_D_Lecture du fichier de configuration "$1"
+>>>>>>> origin/fixes_2_2
 option_found_file=11035_D_Fichier source "$1" trouvé
 % Additional infos about options, displayed
 % when you have debug option turned on.
 option_code_page_not_available=11039_E_Page de codes inconnue
+<<<<<<< HEAD
+<<<<<<< HEAD
 % An unknown codepage for the source files was requested.
 % The compiler is compiled with support for several codepages built-in.
 % The requested codepage is not in that list. You will need to recompile
 % the compiler with support for the codepage you need.
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 option_config_is_dir=11040_F_Le fichier de configuration $1 est un répertoire
 % Directories can not be used as configuration files.
 %\end{description}
@@ -3367,6 +3719,8 @@ option_config_is_dir=11040_F_Le fichier de configuration $1 est un répertoire
 #
 # Logo (option -l)
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 option_confict_asm_debug=11041_W_Assembler output selected "$1" cannot generate debug info, debugging disabled
 % The selected assembler output cannot generate
 % debugging information, debugging option is therefore disabled.
@@ -3496,7 +3850,31 @@ wpo_cant_create_feedback_file=12019_E_Cannot create specified whole program opti
 # Logo (option -l)
 #
 option_logo=11023_[ Compilateur Free Pascal version $FPCFULLVERSION [$FPCDATE] for $FPCCPU
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 Copyright (c) 1993-2015, Florian Klaempfl and others]
+=======
+Copyright (c) 1993-2011, Florian Klaempfl ]
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011, Florian Klaempfl ]
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011, Florian Klaempfl ]
+>>>>>>> graemeg/cpstrnew
+=======
+Copyright (c) 1993-2011, Florian Klaempfl ]
+>>>>>>> origin/cpstrnew
+=======
+option_logo=11023_[ Compilateur Free Pascal version $FPCFULLVERSION [$FPCDATE] for $FPCCPU
+Copyright (c) 1993-2008, Florian Klaempfl ]
+>>>>>>> graemeg/fixes_2_2
+=======
+option_logo=11023_[ Compilateur Free Pascal version $FPCFULLVERSION [$FPCDATE] for $FPCCPU
+Copyright (c) 1993-2008, Florian Klaempfl ]
+>>>>>>> origin/fixes_2_2
 #
 # Info (option -i)
 #
@@ -3508,10 +3886,20 @@ Jeu d'instructions CPU supportés: $INSTRUCTIONSETS
 Jeu d'instructions FPU supportés: $FPUINSTRUCTIONSETS
 Optimisations supportées: $OPTIMIZATIONS
 Ce programme est fourni sous la License Publique Générale GNU (GNU GPL).
+<<<<<<< HEAD
+<<<<<<< HEAD
 Pour plus d'informations, consultez le fichier COPYING.v2.
 Rapports de bogues, suggestions, etc. à:
     http://bugs.freepascal.org
 ]
+=======
+Pour plus d'informations, consultez le fichier COPYING.FPC.
+Rapports de bogues, suggestions, etc. à: bugs@freepascal.org ]
+>>>>>>> graemeg/fixes_2_2
+=======
+Pour plus d'informations, consultez le fichier COPYING.FPC.
+Rapports de bogues, suggestions, etc. à: bugs@freepascal.org ]
+>>>>>>> origin/fixes_2_2
 #
 # Help pages (option -? and -h)
 #
@@ -3532,6 +3920,8 @@ Rapports de bogues, suggestions, etc. à:
 #    L = UNIX systems
 #  The third character represents the indentation level.
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 option_info=11024_[
 Free Pascal Compiler version $FPCVERSION
 
@@ -3606,6 +3996,10 @@ new features, etc.):
 #    L = UNIX systems
 #  The third character represents the indentation level.
 #
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 option_help_pages=11025_[
 **0*_mettre + après un booléen pour activer l'option, - pour la désactiver
 **1a_conserve les fichiers assembleurs créés pendant la compilation
@@ -3749,6 +4143,14 @@ S*2Aas_assembler avec GNU AS
 **2So_identique à -Mtp
 **2Sp_identique à -Mgpc
 **2Ss_les constructeurs doivent s'appeler init (et les destructeurs done)
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+**2St_autorise "static" dans les objects
+>>>>>>> graemeg/fixes_2_2
+=======
+**2St_autorise "static" dans les objects
+>>>>>>> origin/fixes_2_2
 **1s_n'appelle pas l'assembleur ni le linker
 **2sh_générer un script à lier sur l'hôte
 **2st_générer un script à lier sur la cible
@@ -3826,6 +4228,8 @@ P*2WT_générer une application utilitaire (MPW tool, MacOS seulement)
 
 #
 # The End...
+<<<<<<< HEAD
+<<<<<<< HEAD
 %%% parser_e_only_class_methods_via_class_ref=03053_E_Seules des références de classe peuvent faire référence à des méthodes de classe
 % This error occurs in a situation like the following:
 % \begin{verbatim}
@@ -3893,3 +4297,7 @@ P*2WT_générer une application utilitaire (MPW tool, MacOS seulement)
 % A modified source file for a unit was found that was compiled with the
 % release flag (-Ur). The unit will not implicitly be recompiled because
 % this release flag is set.
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

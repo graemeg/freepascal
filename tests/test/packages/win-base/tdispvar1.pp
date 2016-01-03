@@ -1,8 +1,14 @@
 { %TARGET=win32,win64 }
 { %NOTE=This test requires an installed OpenOffice }
+<<<<<<< HEAD
+<<<<<<< HEAD
 { %INTERACTIVE }
 { This test does create Open Office crashes.
   So we restrict it to interactive mode }
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 program ttt;
 
 {$ifdef fpc}
@@ -15,6 +21,8 @@ uses
 var StarOffice : Variant;
 	Document : Variant;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 function TSampleCode_Connect(OleName : string) : boolean;
 begin
     if  VarIsEmpty(StarOffice) then
@@ -30,6 +38,17 @@ begin
             end;
           end;
       end;
+=======
+=======
+>>>>>>> origin/fixes_2_2
+function TSampleCode_Connect() : boolean;
+begin
+    if  VarIsEmpty(StarOffice) then
+        StarOffice := CreateOleObject('com.sun.star.ServiceManager');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
     Result := not (VarIsEmpty(StarOffice) or VarIsNull(StarOffice));
 end;
@@ -75,6 +94,8 @@ begin
 end;
 
 begin
+<<<<<<< HEAD
+<<<<<<< HEAD
   CoInitialize(nil);
   if TSampleCode_Connect('com.sun.star.ServiceManager') then
     begin
@@ -89,4 +110,14 @@ begin
         Document.Close(false);
     end;
   CoUnInitialize;
+=======
+	CoInitialize(nil);
+	TSampleCode_Connect();
+        TSampleCode_CreateDocument(false);
+>>>>>>> graemeg/fixes_2_2
+=======
+	CoInitialize(nil);
+	TSampleCode_Connect();
+        TSampleCode_CreateDocument(false);
+>>>>>>> origin/fixes_2_2
 end.

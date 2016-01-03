@@ -527,9 +527,31 @@ implementation
           if source_info.endian<>target_info.endian then
             with h do
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 address:=swapendian(address);
                 info:=swapendian(info);
                 addend:=swapendian(addend);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                result.e_type:=swapendian(e_type);
+                result.e_machine:=swapendian(e_machine);
+                result.e_version:=swapendian(e_version);
+                result.e_entry:=swapendian(e_entry);
+                result.e_phoff:=swapendian(e_phoff);
+                result.e_shoff:=swapendian(e_shoff);
+                result.e_flags:=swapendian(e_flags);
+                result.e_ehsize:=swapendian(e_ehsize);
+                result.e_phentsize:=swapendian(e_phentsize);
+                result.e_phnum:=swapendian(e_phnum);
+                result.e_shentsize:=swapendian(e_shentsize);
+                result.e_shnum:=swapendian(e_shnum);
+                result.e_shstrndx:=swapendian(e_shstrndx);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               end;
         end;
 
@@ -539,9 +561,31 @@ implementation
           if source_info.endian<>target_info.endian then
             with h do
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 address:=swapendian(address);
                 info:=swapendian(info);
                 addend:=swapendian(addend);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                result.e_type:=swapendian(e_type);
+                result.e_machine:=swapendian(e_machine);
+                result.e_version:=swapendian(e_version);
+                result.e_entry:=swapendian(e_entry);
+                result.e_phoff:=swapendian(e_phoff);
+                result.e_shoff:=swapendian(e_shoff);
+                result.e_flags:=swapendian(e_flags);
+                result.e_ehsize:=swapendian(e_ehsize);
+                result.e_phentsize:=swapendian(e_phentsize);
+                result.e_phnum:=swapendian(e_phnum);
+                result.e_shentsize:=swapendian(e_shentsize);
+                result.e_shnum:=swapendian(e_shnum);
+                result.e_shstrndx:=swapendian(e_shstrndx);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               end;
         end;
 
@@ -551,8 +595,27 @@ implementation
           if source_info.endian<>target_info.endian then
             with h do
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 d_tag:=swapendian(d_tag);
                 d_val:=swapendian(d_val);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                result.sh_name:=swapendian(sh_name);
+                result.sh_type:=swapendian(sh_type);
+                result.sh_flags:=swapendian(sh_flags);
+                result.sh_addr:=swapendian(sh_addr);
+                result.sh_offset:=swapendian(sh_offset);
+                result.sh_size:=swapendian(sh_size);
+                result.sh_link:=swapendian(sh_link);
+                result.sh_info:=swapendian(sh_info);
+                result.sh_addralign:=swapendian(sh_addralign);
+                result.sh_entsize:=swapendian(sh_entsize);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               end;
         end;
 
@@ -562,8 +625,27 @@ implementation
           if source_info.endian<>target_info.endian then
             with h do
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 d_tag:=swapendian(d_tag);
                 d_val:=swapendian(d_val);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                result.sh_name:=swapendian(sh_name);
+                result.sh_type:=swapendian(sh_type);
+                result.sh_flags:=swapendian(sh_flags);
+                result.sh_addr:=swapendian(sh_addr);
+                result.sh_offset:=swapendian(sh_offset);
+                result.sh_size:=swapendian(sh_size);
+                result.sh_link:=swapendian(sh_link);
+                result.sh_info:=swapendian(sh_info);
+                result.sh_addralign:=swapendian(sh_addralign);
+                result.sh_entsize:=swapendian(sh_entsize);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               end;
         end;
 
@@ -573,6 +655,8 @@ implementation
           if source_info.endian<>target_info.endian then
             with h do
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 vd_version:=swapendian(vd_version);
                 vd_flags:=swapendian(vd_flags);
                 vd_ndx:=swapendian(vd_ndx);
@@ -580,6 +664,17 @@ implementation
                 vd_hash:=swapendian(vd_hash);
                 vd_aux:=swapendian(vd_aux);
                 vd_next:=swapendian(vd_next);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                result.st_name:=swapendian(st_name);
+                result.st_value:=swapendian(st_value);
+                result.st_size:=swapendian(st_size);
+                result.st_shndx:=swapendian(st_shndx);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               end;
         end;
 
@@ -589,8 +684,21 @@ implementation
           if source_info.endian<>target_info.endian then
             with h do
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 vda_name:=swapendian(vda_name);
                 vda_next:=swapendian(vda_next);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+                result.st_name:=swapendian(st_name);
+                result.st_value:=swapendian(st_value);
+                result.st_size:=swapendian(st_size);
+                result.st_shndx:=swapendian(st_shndx);
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
               end;
         end;
 
@@ -600,11 +708,21 @@ implementation
           if source_info.endian<>target_info.endian then
             with h do
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 vn_version:=swapendian(vn_version);
                 vn_cnt:=swapendian(vn_cnt);
                 vn_file:=swapendian(vn_file);
                 vn_aux:=swapendian(vn_aux);
                 vn_next:=swapendian(vn_next);
+=======
+                result.address:=swapendian(address);
+                result.info:=swapendian(info);
+>>>>>>> graemeg/fixes_2_2
+=======
+                result.address:=swapendian(address);
+                result.info:=swapendian(info);
+>>>>>>> origin/fixes_2_2
               end;
         end;
 
@@ -614,11 +732,21 @@ implementation
           if source_info.endian<>target_info.endian then
             with h do
               begin
+<<<<<<< HEAD
+<<<<<<< HEAD
                 vna_hash:=swapendian(vna_hash);
                 vna_flags:=swapendian(vna_flags);
                 vna_other:=swapendian(vna_other);
                 vna_name:=swapendian(vna_name);
                 vna_next:=swapendian(vna_next);
+=======
+                result.address:=swapendian(address);
+                result.info:=swapendian(info);
+>>>>>>> graemeg/fixes_2_2
+=======
+                result.address:=swapendian(address);
+                result.info:=swapendian(info);
+>>>>>>> origin/fixes_2_2
               end;
         end;
 
@@ -739,17 +867,77 @@ implementation
 ****************************************************************************}
 
     constructor TElfObjData.create(const n:string);
+      var
+        need_datarel : boolean;
       begin
         inherited create(n);
         CObjSection:=TElfObjSection;
+<<<<<<< HEAD
+=======
+        { we need at least the following sections }
+        createsection(sec_code);
+        if (cs_create_pic in current_settings.moduleswitches) and
+           not(target_info.system in systems_darwin) then
+          begin
+            { We still need an empty data section }
+            system.exclude(current_settings.moduleswitches,cs_create_pic);
+            need_datarel:=true;
+          end
+        else
+          need_datarel:=false;
+        createsection(sec_data);
+        if need_datarel then
+          system.include(current_settings.moduleswitches,cs_create_pic);
+        createsection(sec_bss);
+        if need_datarel then
+          createsection(sec_data);
+        if tf_section_threadvars in target_info.flags then
+          createsection(sec_threadvar);
+        if (tf_needs_dwarf_cfi in target_info.flags) and
+           (af_supports_dwarf in target_asm.flags) then
+             createsection(sec_debug_frame);
+      end;
+
+
+    destructor TElfObjData.destroy;
+      begin
+        inherited destroy;
+>>>>>>> graemeg/cpstrnew
       end;
 
 
     function TElfObjData.sectionname(atype:TAsmSectiontype;const aname:string;aorder:TAsmSectionOrder):string;
       const
+<<<<<<< HEAD
         secnames : array[TAsmSectiontype] of string[length('__DATA, __datacoal_nt,coalesced')] = ('','',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           { TODO: sec_rodata is still writable }
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+        secnames : array[TAsmSectiontype] of string[13] = ('',
+>>>>>>> origin/fixes_2.4
+{$ifdef userodata}
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
           '.text','.data','.data','.rodata','.bss','.threadvar',
+=======
+=======
+>>>>>>> origin/fixes_2_2
+          '.text','.data','.data','.rodata','.bss','.threadvar',
+{$else userodata}
+          '.text','.data','.data','.data','.bss','.threadvar',
+{$endif userodata}
+>>>>>>> graemeg/fixes_2_2
           '.pdata',
           '.text', { darwin stubs }
           '__DATA,__nl_symbol_ptr',
@@ -763,6 +951,9 @@ implementation
           '.fpc',
           '.toc',
           '.init',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           '.fini',
           '.objc_class',
           '.objc_meta_class',
@@ -797,20 +988,149 @@ implementation
           '.objc_nlclasslist',
           '.objc_catlist',
           '.obcj_nlcatlist',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
           '.objc_protolist',
           '.stack',
           '.heap'
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+          '.objc_protolist'
+=======
+          '.fini'
+>>>>>>> graemeg/fixes_2_2
+=======
+          '.fini'
+>>>>>>> origin/fixes_2_2
+        );
+        secnames_pic : array[TAsmSectiontype] of string[length('__DATA, __datacoal_nt,coalesced')] = ('','',
+=======
+          '.fini'
+        );
+        secnames_pic : array[TAsmSectiontype] of string[17] = ('',
+>>>>>>> origin/fixes_2.4
+          '.text',
+          '.data.rel',
+          '.data.rel',
+          '.data.rel',
+          '.bss',
+          '.threadvar',
+          '.pdata',
+          '', { stubs }
+          '__DATA,__nl_symbol_ptr',
+          '__DATA,__la_symbol_ptr',
+          '__DATA,__mod_init_func',
+          '__DATA,__mod_term_func',
+          '.stab',
+          '.stabstr',
+          '.idata$2','.idata$4','.idata$5','.idata$6','.idata$7','.edata',
+          '.eh_frame',
+          '.debug_frame','.debug_info','.debug_line','.debug_abbrev',
+          '.fpc',
+          '.toc',
+          '.init',
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+          '.fini',
+          '.objc_class',
+          '.objc_meta_class',
+          '.objc_cat_cls_meth',
+          '.objc_cat_inst_meth',
+          '.objc_protocol',
+          '.objc_string_object',
+          '.objc_cls_meth',
+          '.objc_inst_meth',
+          '.objc_cls_refs',
+          '.objc_message_refs',
+          '.objc_symbols',
+          '.objc_category',
+          '.objc_class_vars',
+          '.objc_instance_vars',
+          '.objc_module_info',
+          '.objc_class_names',
+          '.objc_meth_var_types',
+          '.objc_meth_var_names',
+          '.objc_selector_strs',
+          '.objc_protocol_ext',
+          '.objc_class_ext',
+          '.objc_property',
+          '.objc_image_info',
+          '.objc_cstring_object',
+          '.objc_sel_fixup',
+          '__DATA,__objc_data',
+          '__DATA,__objc_const',
+          '.objc_superrefs',
+          '__DATA, __datacoal_nt,coalesced',
+          '.objc_classlist',
+          '.objc_nlclasslist',
+          '.objc_catlist',
+          '.obcj_nlcatlist',
+          '.objc_protolist'
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+=======
+          '.fini'
+>>>>>>> graemeg/fixes_2_2
+=======
+          '.fini'
+>>>>>>> origin/fixes_2_2
+=======
+          '.fini'
+>>>>>>> origin/fixes_2.4
         );
       var
         sep : string[3];
         secname : string;
       begin
+<<<<<<< HEAD
         { section type user gives the user full controll on the section name }
         if atype=sec_user then
           result:=aname
         else
           begin
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             secname:=secnames[atype];
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+            if (cs_create_pic in current_settings.moduleswitches) and
+               not(target_info.system in systems_darwin) then
+              secname:=secnames_pic[atype]
+            else
+              secname:=secnames[atype];
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
             if (atype=sec_fpc) and (Copy(aname,1,3)='res') then
               begin
                 result:=secname+'.'+aname;
@@ -831,6 +1151,32 @@ implementation
             else
               result:=secname;
           end;
+=======
+        if (cs_create_pic in current_settings.moduleswitches) and
+           not(target_info.system in systems_darwin) then
+          secname:=secnames_pic[atype]
+        else
+          secname:=secnames[atype];
+        if (atype=sec_fpc) and (Copy(aname,1,3)='res') then
+          begin
+            result:=secname+'.'+aname;
+            exit;
+          end;
+        if create_smartlink_sections and (aname<>'') then
+          begin
+            case aorder of
+              secorder_begin :
+                sep:='.b_';
+              secorder_end :
+                sep:='.z_';
+              else
+                sep:='.n_';
+            end;
+            result:=secname+sep+aname
+          end
+        else
+          result:=secname;
+>>>>>>> graemeg/fixes_2_2
       end;
 
 
@@ -847,7 +1193,19 @@ implementation
     procedure TElfObjData.writereloc(data:aint;len:aword;p:TObjSymbol;reltype:TObjRelocationType);
       var
         symaddr : aint;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         objreloc: TObjRelocation;
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
       begin
         if CurrObjSec=nil then
           internalerror(200403292);
@@ -874,6 +1232,7 @@ implementation
              end
            else
              begin
+<<<<<<< HEAD
                objreloc:=TObjRelocation.CreateSymbol(CurrObjSec.Size,p,reltype);
                CurrObjSec.ObjRelocations.Add(objreloc);
                { If target is a local label and it isn't handled above,
@@ -881,6 +1240,13 @@ implementation
                  This may happen e.g. when taking address of Pascal label in PIC mode. }
                if (p.bind=AB_LOCAL) and (p.typ=AT_LABEL) then
                  p.typ:=AT_ADDR;
+=======
+               CurrObjSec.addsymreloc(CurrObjSec.Size,p,reltype);
+{$ifndef x86_64}
+               if (reltype=RELOC_RELATIVE) or (reltype=RELOC_PLT32) then
+                 dec(data,len);
+{$endif x86_64}
+>>>>>>> graemeg/cpstrnew
             end;
          end;
         if assigned(objreloc) then
@@ -934,6 +1300,7 @@ implementation
       var
         dyn:boolean;
       begin
+<<<<<<< HEAD
         dyn:=(aKind=esk_dyn);
         create_ext(aObjData,symsecnames[dyn],symsectypes[dyn],symsecattrs[dyn],sizeof(pint),sizeof(TElfSymbol));
         fstrsec:=TElfObjSection.create_ext(aObjData,strsecnames[dyn],SHT_STRTAB,symsecattrs[dyn],1,0);
@@ -942,6 +1309,107 @@ implementation
         symidx:=1;
         shinfo:=1;
         kind:=aKind;
+=======
+        with elf32data do
+         begin
+{$ifdef userodata}
+           { rodata can't have relocations }
+           if s.sectype=sec_rodata then
+             begin
+               if assigned(s.relocations.first) then
+                 internalerror(200408251);
+               exit;
+             end;
+{$endif userodata}
+           { create the reloc section }
+{$ifdef i386}
+           relocsect:=TElfObjSection.create_ext(ObjSectionList,'.rel'+s.name,SHT_REL,0,symtabsect.secshidx,s.secshidx,4,sizeof(TElfReloc));
+{$else i386}
+           relocsect:=TElfObjSection.create_ext(ObjSectionList,'.rela'+s.name,SHT_RELA,0,symtabsect.secshidx,s.secshidx,4,sizeof(TElfReloc));
+{$endif i386}
+           { add the relocations }
+           for i:=0 to s.Objrelocations.count-1 do
+             begin
+               objreloc:=TObjRelocation(s.Objrelocations[i]);
+               fillchar(rel,sizeof(rel),0);
+               rel.address:=objreloc.dataoffset;
+
+               { when things settle down, we can create processor specific
+                 derived classes }
+               case objreloc.typ of
+{$ifdef i386}
+                 RELOC_RELATIVE :
+                   reltyp:=R_386_PC32;
+                 RELOC_ABSOLUTE :
+                   reltyp:=R_386_32;
+                 RELOC_GOT32 :
+                   reltyp:=R_386_GOT32;
+                 RELOC_GOTPC :
+                   reltyp:=R_386_GOTPC;
+                 RELOC_PLT32 :
+                   begin
+                     reltyp:=R_386_PLT32;
+                   end;
+{$endif i386}
+{$ifdef sparc}
+                 RELOC_ABSOLUTE :
+                   reltyp:=R_SPARC_32;
+{$endif sparc}
+{$ifdef x86_64}
+                 RELOC_RELATIVE :
+                   begin
+                     reltyp:=R_X86_64_PC32;
+                     { length of the relocated location is handled here }
+                     rel.addend:=qword(-4);
+                   end;
+                 RELOC_ABSOLUTE :
+                   reltyp:=R_X86_64_64;
+                 RELOC_ABSOLUTE32 :
+                   reltyp:=R_X86_64_32S;
+                 RELOC_GOTPCREL :
+                   begin
+                     reltyp:=R_X86_64_GOTPCREL;
+                     { length of the relocated location is handled here }
+                     rel.addend:=qword(-4);
+                   end;
+                 RELOC_PLT32 :
+                   begin
+                     reltyp:=R_X86_64_PLT32;
+                     { length of the relocated location is handled here }
+                     rel.addend:=qword(-4);
+                   end;
+{$endif x86_64}
+                 else
+                   internalerror(200602261);
+               end;
+
+               { Symbol }
+               if assigned(objreloc.symbol) then
+                 begin
+                   if objreloc.symbol.symidx=-1 then
+                     begin
+                       writeln(objreloc.symbol.Name);
+                       internalerror(200603012);
+                     end;
+                   relsym:=objreloc.symbol.symidx;
+                 end
+               else
+                 begin
+                   if objreloc.objsection<>nil then
+                     relsym:=objreloc.objsection.secsymidx
+                   else
+                     relsym:=SHN_UNDEF;
+                 end;
+{$ifdef cpu64bitaddr}
+               rel.info:=(qword(relsym) shl 32) or reltyp;
+{$else cpu64bitaddr}
+               rel.info:=(relsym shl 8) or reltyp;
+{$endif cpu64bitaddr}
+               { write reloc }
+               relocsect.write(MaybeSwapElfReloc(rel),sizeof(rel));
+             end;
+         end;
+>>>>>>> graemeg/cpstrnew
       end;
 
     procedure TElfSymtab.writeInternalSymbol(avalue:aword;astridx:longword;ainfo:byte;ashndx:word);
@@ -979,6 +1447,7 @@ implementation
         case objsym.bind of
           AB_LOCAL :
             begin
+<<<<<<< HEAD
               elfsym.st_info:=STB_LOCAL shl 4;
               inc(shinfo);
             end;
@@ -1017,6 +1486,31 @@ implementation
             if kind<>esk_obj then
               begin
                 if assigned(objsym.objsection) and assigned(objsym.objsection.ExeSection) then
+=======
+              fillchar(elfsym,sizeof(elfsym),0);
+              { symbolname, write the #0 separate to overcome 255+1 char not possible }
+              elfsym.st_name:=strtabsect.Size;
+              strtabsect.writestr(objsym.name);
+              strtabsect.writestr(#0);
+              elfsym.st_size:=objsym.size;
+              case objsym.bind of
+                AB_LOCAL :
+                  begin
+                    elfsym.st_value:=objsym.address;
+                    elfsym.st_info:=STB_LOCAL shl 4;
+                    inc(localsyms);
+                  end;
+                AB_COMMON :
+                  begin
+                    elfsym.st_value:=$10;
+                    elfsym.st_info:=STB_GLOBAL shl 4;
+                  end;
+                AB_EXTERNAL :
+                  elfsym.st_info:=STB_GLOBAL shl 4;
+                AB_WEAK_EXTERNAL :
+                  elfsym.st_info:=STB_WEAK shl 4;
+                AB_GLOBAL :
+>>>>>>> graemeg/cpstrnew
                   begin
                     if (objsym.typ=AT_TLS) then
                       elfsym.st_value:=elfsym.st_value-tlsbase
@@ -1222,11 +1716,28 @@ implementation
         with data do
          begin
            { default sections }
+<<<<<<< HEAD
            symtabsect:=TElfSymtab.create(data,esk_obj);
            shstrtabsect:=TElfObjSection.create_ext(data,'.shstrtab',SHT_STRTAB,0,1,0);
            { "no executable stack" marker }
            { TODO: used by OpenBSD/NetBSD as well? }
            if (target_info.system in (systems_linux + systems_android + systems_freebsd + systems_dragonfly)) and
+=======
+           symtabsect:=TElfObjSection.create_ext(ObjSectionList,'.symtab',SHT_SYMTAB,0,0,0,4,sizeof(telfsymbol));
+           strtabsect:=TElfObjSection.create_ext(ObjSectionList,'.strtab',SHT_STRTAB,0,0,0,1,0);
+           shstrtabsect:=TElfObjSection.create_ext(ObjSectionList,'.shstrtab',SHT_STRTAB,0,0,0,1,0);
+           { "no executable stack" marker for Linux }
+           if (target_info.system in systems_linux) and
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
               not(cs_executable_stack in current_settings.moduleswitches) then
              TElfObjSection.create_ext(data,'.note.GNU-stack',SHT_PROGBITS,0,1,0);
            { symbol for filename }
@@ -1972,6 +2483,7 @@ implementation
                                   TElfExeOutput
 *****************************************************************************}
 
+<<<<<<< HEAD
     constructor TElfExeOutput.Create;
       begin
         inherited Create;
@@ -3460,4 +3972,62 @@ implementation
       end;
 
 
+=======
+{$ifdef i386}
+     const
+       as_i386_elf32_info : tasminfo =
+          (
+            id     : as_i386_elf32;
+            idtxt  : 'ELF';
+            asmbin : '';
+            asmcmd : '';
+            supported_targets : [system_i386_linux,system_i386_beos,system_i386_freebsd,system_i386_haiku,system_i386_Netware,system_i386_netwlibc,
+	                              system_i386_solaris,system_i386_embedded];
+            flags : [af_outputbinary,af_smartlink_sections,af_supports_dwarf];
+            labelprefix : '.L';
+            comment : '';
+          );
+{$endif i386}
+{$ifdef x86_64}
+     const
+       as_x86_64_elf64_info : tasminfo =
+          (
+            id     : as_x86_64_elf64;
+            idtxt  : 'ELF';
+            asmbin : '';
+            asmcmd : '';
+            supported_targets : [system_x86_64_linux];
+            flags : [af_outputbinary,af_smartlink_sections,af_supports_dwarf];
+            labelprefix : '.L';
+            comment : '';
+          );
+{$endif x86_64}
+{$ifdef sparc}
+     const
+       as_sparc_elf32_info : tasminfo =
+          (
+            id     : as_sparc_elf32;
+            idtxt  : 'ELF';
+            asmbin : '';
+            asmcmd : '';
+            supported_targets : [];
+//            flags : [af_outputbinary,af_smartlink_sections];
+            flags : [af_outputbinary,af_supports_dwarf];
+            labelprefix : '.L';
+            comment : '';
+          );
+{$endif sparc}
+
+
+initialization
+{$ifdef i386}
+  RegisterAssembler(as_i386_elf32_info,TElfAssembler);
+{$endif i386}
+{$ifdef sparc}
+  RegisterAssembler(as_sparc_elf32_info,TElfAssembler);
+{$endif sparc}
+{$ifdef x86_64}
+  RegisterAssembler(as_x86_64_elf64_info,TElfAssembler);
+{$endif x86_64}
+>>>>>>> graemeg/cpstrnew
 end.

@@ -1,0 +1,15 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TFPWebModule1','FORMDATA',[
+  'TPF0'#13'TFPWebModule1'#12'FPWebModule1'#8'OnCreate'#7#16'DataModuleCreate'
+  +#14'OldCreateOrder'#8#7'Actions'#14#1#4'Name'#6#6'Manual'#7'Default'#9#9'OnR'
+  +'equest'#7#21'TFPWebActions0Request'#0#1#4'Name'#6#8'Dispatch'#7'Default'#8#9
+  +'OnRequest'#7#21'TFPWebActions1Request'#0#1#4'Name'#6#10'Registered'#7'Defau'
+  +'lt'#8#9'OnRequest'#7#21'TFPWebActions2Request'#0#1#4'Name'#6#9'ExtDirect'#7
+  +'Default'#8#9'OnRequest'#7#21'TFPWebActions3Request'#0#1#4'Name'#6#7'Content'
+  +#7'Default'#8#9'OnRequest'#7#21'TFPWebActions4Request'#0#1#4'Name'#6#12'ExtD'
+  +'irectAPI'#7'Default'#8#9'OnRequest'#7#21'TFPWebActions5Request'#0#1#4'Name'
+  +#6#6'Module'#7'Default'#8#9'OnRequest'#7#21'TFPWebActions6Request'#0#0#9'Act'
+  +'ionVar'#6#6'Action'#13'CreateSession'#8#6'Height'#3#4#1#16'HorizontalOffset'
+  +#3'B'#2#14'VerticalOffset'#3'u'#1#5'Width'#3#186#1#0#0
+]);

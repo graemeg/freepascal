@@ -13,6 +13,8 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('graph');
+<<<<<<< HEAD
+<<<<<<< HEAD
     P.ShortName:='grph';
 {$ifdef ALLPACKAGES}
     P.Directory:=ADirectory;
@@ -80,6 +82,20 @@ begin
         end;
     // Graph unit other targets
     T:=P.Targets.AddUnit('graph.pp',[go32v2,amiga,win32,win64,freebsd,msdos]);
+=======
+=======
+>>>>>>> origin/fixes_2_2
+{$ifdef ALLPACKAGES}
+    P.Directory:='graph';
+{$endif ALLPACKAGES}
+    P.Version:='2.2.4';
+    P.SourcePath.Add('src');
+
+    T:=P.Targets.AddUnit('ggigraph.pp');
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
       with T.Dependencies do
         begin
           AddInclude('graphh.inc');
@@ -90,12 +106,22 @@ begin
           AddInclude('modes.inc');
           AddInclude('fills.inc');
           AddInclude('gtext.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
           AddInclude('graph16.inc',[freebsd,linux]);
           AddInclude('vesa.inc',[go32v2,msdos]);
           AddInclude('vesah.inc',[go32v2,msdos]);
         end;
 
     T:=P.Targets.AddUnit('src/sdlgraph/sdlgraph.pp',[i386,powerpc],[win32,linux,freebsd,darwin]);
+=======
+        end;
+    T:=P.Targets.AddUnit('graph.pp');
+>>>>>>> graemeg/fixes_2_2
+=======
+        end;
+    T:=P.Targets.AddUnit('graph.pp');
+>>>>>>> origin/fixes_2_2
       with T.Dependencies do
         begin
           AddInclude('graphh.inc');
@@ -106,6 +132,8 @@ begin
           AddInclude('modes.inc');
           AddInclude('fills.inc');
           AddInclude('gtext.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
         end;
     T:=P.Targets.AddUnit('wincrt.pp',[win32, win64]);
       with T.Dependencies do
@@ -118,6 +146,16 @@ begin
           AddUnit('graph');
         end;
     T:=P.Targets.AddUnit('ptcgraph.pp',[win32,win64,linux]);
+=======
+          AddInclude('graph16.inc');
+        end;
+    T:=P.Targets.AddUnit('sdlgraph.pp');
+>>>>>>> graemeg/fixes_2_2
+=======
+          AddInclude('graph16.inc');
+        end;
+    T:=P.Targets.AddUnit('sdlgraph.pp');
+>>>>>>> origin/fixes_2_2
       with T.Dependencies do
         begin
           AddInclude('graphh.inc');
@@ -128,6 +166,8 @@ begin
           AddInclude('modes.inc');
           AddInclude('fills.inc');
           AddInclude('gtext.inc');
+<<<<<<< HEAD
+<<<<<<< HEAD
         end;
     T:=P.Targets.AddUnit('ptccrt.pp',[win32,win64,linux]);
       with T.Dependencies do
@@ -138,6 +178,16 @@ begin
       with T.Dependencies do
         begin
           AddUnit('ptcgraph');
+=======
+          AddUnit('sdl');
+          AddUnit('sdlutils');
+          AddUnit('logger');
+>>>>>>> graemeg/fixes_2_2
+=======
+          AddUnit('sdl');
+          AddUnit('sdlutils');
+          AddUnit('logger');
+>>>>>>> origin/fixes_2_2
         end;
 
 

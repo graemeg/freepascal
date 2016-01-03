@@ -58,9 +58,21 @@ begin
 
   while true do begin
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}{$I-}
     blockread (infile, buf, BUFLEN, len);
     {$pop}
+=======
+    {$I-}
+    blockread (infile, buf, BUFLEN, len);
+    {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$I-}
+    blockread (infile, buf, BUFLEN, len);
+    {$I+}
+>>>>>>> origin/fixes_2_2
     ioerr := IOResult;
     if (ioerr <> 0) then begin
       writeln ('read error: ',ioerr);
@@ -101,17 +113,41 @@ begin
     if (len = 0)
       then break;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     {$push}{$I-}
     blockwrite (outfile, buf, len, written);
     {$pop}
+=======
+    {$I-}
+    blockwrite (outfile, buf, len, written);
+    {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+    {$I-}
+    blockwrite (outfile, buf, len, written);
+    {$I+}
+>>>>>>> origin/fixes_2_2
     if (written <> len)
       then error ('write error');
 
   end; {WHILE}
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$I-}
   close (outfile);
   {$pop}
+=======
+  {$I-}
+  close (outfile);
+  {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$I-}
+  close (outfile);
+  {$I+}
+>>>>>>> origin/fixes_2_2
   ioerr := IOResult;
   if (ioerr <> 0) then begin
     writeln ('close error: ',ioerr);
@@ -138,9 +174,21 @@ var
   outname : string;
 begin
   Assign (infile, filename);
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$I-}
   Reset (infile,1);
   {$pop}
+=======
+  {$I-}
+  Reset (infile,1);
+  {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$I-}
+  Reset (infile,1);
+  {$I+}
+>>>>>>> origin/fixes_2_2
   ioerr := IOResult;
   if (ioerr <> 0) then begin
     writeln ('open error: ',ioerr);
@@ -193,9 +241,21 @@ begin
   end;
 
   Assign (outfile, outname);
+<<<<<<< HEAD
+<<<<<<< HEAD
   {$push}{$I-}
   Rewrite (outfile,1);
   {$pop}
+=======
+  {$I-}
+  Rewrite (outfile,1);
+  {$I+}
+>>>>>>> graemeg/fixes_2_2
+=======
+  {$I-}
+  Rewrite (outfile,1);
+  {$I+}
+>>>>>>> origin/fixes_2_2
   ioerr := IOResult;
   if (ioerr <> 0) then begin
     writeln ('open error: ',ioerr);
@@ -245,4 +305,12 @@ begin
   if (uncompr = true)
     then file_uncompress (ParamStr(ParamCount))
     else file_compress (ParamStr(ParamCount), outmode);
+<<<<<<< HEAD
+<<<<<<< HEAD
 end.
+=======
+end.
+>>>>>>> graemeg/fixes_2_2
+=======
+end.
+>>>>>>> origin/fixes_2_2

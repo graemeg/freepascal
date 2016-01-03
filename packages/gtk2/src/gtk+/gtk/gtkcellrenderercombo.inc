@@ -36,7 +36,7 @@
     function GTK_CELL_RENDERER_COMBO_GET_CLASS(obj: pointer): PGtkCellRendererComboClass;
 
     function gtk_cell_renderer_combo_get_type:TGtkType; cdecl; external gtklib;
-    function gtk_cell_renderer_combo_new: PGtkCellRenderer; cdecl; external gtklib;
+    function gtk_cell_renderer_combo_new: PGtkCellRendererCombo; cdecl; external gtklib;
 
 {$ENDIF read_interface_rest}
 

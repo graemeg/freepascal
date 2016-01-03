@@ -1,13 +1,75 @@
 #
+<<<<<<< HEAD
+<<<<<<< HEAD
 #   Makefile.fpc for running fpmake
+=======
+#   Makefile.fpc for Free Pascal GTK 1.2.x Bindings
+>>>>>>> graemeg/fixes_2_2
+=======
+#   Makefile.fpc for Free Pascal GTK 1.2.x Bindings
+>>>>>>> origin/fixes_2_2
 #
 
 [package]
 name=gtk1
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 version=3.1.1
 
 [require]
 packages=rtl fpmkunit
+=======
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> origin/cpstrnew
+version=2.5.1
+=======
+version=2.2.5
+>>>>>>> graemeg/fixes_2_2
+=======
+version=2.2.5
+>>>>>>> origin/fixes_2_2
+
+[require]
+libc=y
+packages=opengl
+
+[target]
+units=glib gmodule gdk gtk gdkpixbuf
+units_beos=gtkglarea
+units_freebsd=gtkglarea
+units_darwin=gtkglarea
+<<<<<<< HEAD
+<<<<<<< HEAD
+units_iphonesim=gtkglarea
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+units_solaris=gtkglarea
+units_netbsd=gtkglarea
+units_openbsd=gtkglarea
+units_linux=gtkglarea
+units_win32=gtkglarea
+units_win64=gtkglarea
+exampledirs=examples
+
+[compiler]
+sourcedir=src/glib src/gdk src/gtk src/gtkgl
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> graemeg/cpstrnew
+=======
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
 
 [install]
 fpcpackage=y
@@ -15,6 +77,8 @@ fpcpackage=y
 [default]
 fpcdir=../..
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 [prerules]
 FPMAKE_BIN_CLEAN=$(wildcard ./fpmake$(SRCEXEEXT))
 ifdef OS_TARGET
@@ -100,3 +164,26 @@ ifdef UNIXHier
 else
 	$(LOCALFPMAKE) archive $(FPMAKE_OPT) --zipprefix=$(DIST_DESTDIR)/$(ZIPPREFIX) --prefix=source\\$(INSTALL_FPCSUBDIR)\\\$$\(PACKAGEDIRECTORY\)
 endif
+=======
+=======
+>>>>>>> origin/fixes_2_2
+[shared]
+build=n
+
+[rules]
+.NOTPARALLEL:
+glib$(PPUEXT): $(wildcard src/glib/glib*.pp)
+
+gmodule$(PPUEXT): $(wildcard src/glib/gmodule*.pp) glib$(PPUEXT)
+
+gdk$(PPUEXT): $(wildcard src/gdk/gdk*.pp) glib$(PPUEXT)
+
+gdkpixbuf$(PPUEXT): src/gdk/gdkpixbuf.pp gdk$(PPUEXT)
+
+gtk$(PPUEXT): $(wildcard src/gtk/gtk*.pp) gdk$(PPUEXT)
+
+gtkglarea$(PPUEXT): $(wildcard src/gtkgl/gtkgla*.pp) gdk$(PPUEXT) gtk$(PPUEXT)
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2

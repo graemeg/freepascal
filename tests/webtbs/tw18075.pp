@@ -27,7 +27,23 @@ Begin
     halt(1);
 
   Writeln('widestring');
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
   n:=pos(WideString('狃狄'),cad2); //Is correct position 3
+=======
+  n:=pos('狃狄',cad2); //Is correct position 3
+>>>>>>> graemeg/cpstrnew
+=======
+  n:=pos('狃狄',cad2); //Is correct position 3
+>>>>>>> graemeg/cpstrnew
+=======
+  n:=pos('狃狄',cad2); //Is correct position 3
+>>>>>>> graemeg/cpstrnew
+=======
+  n:=pos('狃狄',cad2); //Is correct position 3
+>>>>>>> origin/cpstrnew
 
   Writeln(n);
   if n<>3 then

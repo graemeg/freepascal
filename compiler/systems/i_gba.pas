@@ -34,8 +34,21 @@ unit i_gba;
             system       : system_arm_gba;
             name         : 'GameBoy Advance';
             shortname    : 'gba';
+<<<<<<< HEAD
+<<<<<<< HEAD
             flags        : [tf_needs_symbol_size,tf_files_case_sensitive,
                             tf_requires_proper_alignment,tf_smartlink_sections];
+=======
+            flags        : [tf_needs_symbol_size,tf_files_case_sensitive,tf_use_function_relative_addresses
+	                          ,tf_smartlink_sections,tf_requires_proper_alignment];
+<<<<<<< HEAD
+>>>>>>> graemeg/fixes_2_2
+=======
+>>>>>>> origin/fixes_2_2
+=======
+            flags        : [tf_needs_symbol_size,tf_files_case_sensitive,
+                            tf_use_function_relative_addresses,tf_requires_proper_alignment,tf_smartlink_sections];
+>>>>>>> origin/fixes_2.4
             cpu          : cpu_arm;
             unit_env     : '';
             extradefines : '';
@@ -88,9 +101,29 @@ unit i_gba;
               );
             first_parm_offset : 8;
             stacksize    : 16384;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             stackalign   : 8;
             abi : abi_eabi;
             llvmdatalayout : 'todo';
+=======
+            abi : abi_eabi
+>>>>>>> graemeg/cpstrnew
+=======
+            abi : abi_eabi
+>>>>>>> graemeg/cpstrnew
+=======
+            abi : abi_eabi
+>>>>>>> graemeg/cpstrnew
+=======
+            abi : abi_eabi
+>>>>>>> origin/cpstrnew
+=======
+            abi : abi_eabi
+>>>>>>> origin/fixes_2.4
           );
 
   implementation
