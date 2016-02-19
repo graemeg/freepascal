@@ -37,6 +37,9 @@ type
 
   TFPSList = class;
   TFPSListCompareFunc = function(Key1, Key2: Pointer): Integer of object;
+  TFPGListNotification = (lnAdded, lnRemoved, lnExtracted);
+  generic TFPGListNotifyEvent<T> = procedure(Sender: TObject; const Item: T; Action: TFPGListNotification) of object;
+
 
   TFPSList = class(TObject)
   protected
@@ -107,6 +110,8 @@ type
     property Current: T read GetCurrent;
   end;
 
+  { TFPGList }
+
   generic TFPGList<T> = class(TFPSList)
   private
     type
@@ -115,8 +120,10 @@ type
       PTypeList = ^TTypeList;
       PT = ^T;
       TFPGListEnumeratorSpec = specialize TFPGListEnumerator<T>;
+      TFPGListNotifyEventSpec = specialize TFPGListNotifyEvent<T>;
   {$ifndef OldSyntax}protected var{$else}var protected{$endif}
       FOnCompare: TCompareFunc;
+      FOnNotify : TFPGListNotifyEventSpec;
     procedure CopyItem(Src, Dest: Pointer); override;
     procedure Deref(Item: Pointer); override;
     function  Get(Index: Integer): T; {$ifdef CLASSESINLINE} inline; {$endif}
@@ -127,6 +134,8 @@ type
     procedure SetLast(const Value: T); {$ifdef CLASSESINLINE} inline; {$endif}
     function GetFirst: T; {$ifdef CLASSESINLINE} inline; {$endif}
     procedure SetFirst(const Value: T); {$ifdef CLASSESINLINE} inline; {$endif}
+  protected
+     procedure Notify(Item: T; Action: TFPGListNotification); {$ifdef CLASSESINLINE} inline; {$endif}
   public
     constructor Create;
     function Add(const Item: T): Integer; {$ifdef CLASSESINLINE} inline; {$endif}
@@ -140,10 +149,14 @@ type
     procedure Assign(Source: TFPGList);
 {$endif VER2_4}
     function Remove(const Item: T): Integer; {$ifdef CLASSESINLINE} inline; {$endif}
+    procedure Delete(Index: Integer); reintroduce;
     procedure Sort(Compare: TCompareFunc);
     property Items[Index: Integer]: T read Get write Put; default;
     property List: PTypeList read GetList;
+    property OnNotity: TFPGListNotifyEventSpec read FOnNotify write FOnNotify;
   end;
+
+  { TFPGObjectList }
 
   generic TFPGObjectList<T> = class(TFPSList)
   private
@@ -153,9 +166,11 @@ type
       PTypeList = ^TTypeList;
       PT = ^T;
       TFPGListEnumeratorSpec = specialize TFPGListEnumerator<T>;
+      TFPGListNotifyEventSpec = specialize TFPGListNotifyEvent<T>;
   {$ifndef OldSyntax}protected var{$else}var protected{$endif}
       FOnCompare: TCompareFunc;
       FFreeObjects: Boolean;
+      FOnNotify : TFPGListNotifyEventSpec;
     procedure CopyItem(Src, Dest: Pointer); override;
     procedure Deref(Item: Pointer); override;
     function  Get(Index: Integer): T; {$ifdef CLASSESINLINE} inline; {$endif}
@@ -166,6 +181,8 @@ type
     procedure SetLast(const Value: T); {$ifdef CLASSESINLINE} inline; {$endif}
     function GetFirst: T; {$ifdef CLASSESINLINE} inline; {$endif}
     procedure SetFirst(const Value: T); {$ifdef CLASSESINLINE} inline; {$endif}
+  protected
+     procedure Notify(Item: T; Action: TFPGListNotification); {$ifdef CLASSESINLINE} inline; {$endif}
   public
     constructor Create(FreeObjects: Boolean = True);
     function Add(const Item: T): Integer; {$ifdef CLASSESINLINE} inline; {$endif}
@@ -179,10 +196,12 @@ type
     procedure Assign(Source: TFPGObjectList);
 {$endif VER2_4}
     function Remove(const Item: T): Integer; {$ifdef CLASSESINLINE} inline; {$endif}
+    procedure Delete(Index: Integer); reintroduce;
     procedure Sort(Compare: TCompareFunc);
     property Items[Index: Integer]: T read Get write Put; default;
     property List: PTypeList read GetList;
     property FreeObjects: Boolean read FFreeObjects write FFreeObjects;
+    property OnNotify : TFPGListNotifyEventSpec read FOnNotify write FOnNotify;
   end;
 
   generic TFPGInterfacedObjectList<T> = class(TFPSList)
@@ -867,11 +886,15 @@ end;
 function TFPGList.Add(const Item: T): Integer;
 begin
   Result := inherited Add(@Item);
+  if Assigned(FOnNotify) then
+    Notify(Item, lnAdded);
 end;
 
 function TFPGList.Extract(const Item: T): T;
 begin
   inherited Extract(@Item, @Result);
+  if Assigned(FOnNotify) then
+    Notify(Item, lnExtracted);
 end;
 
 function TFPGList.GetFirst: T;
@@ -882,6 +905,11 @@ end;
 procedure TFPGList.SetFirst(const Value: T);
 begin
   inherited SetFirst(@Value);
+end;
+
+procedure TFPGList.Notify(Item: T; Action: TFPGListNotification);
+begin
+  FOnNotify(Self, Item, Action);
 end;
 
 function TFPGList.GetEnumerator: TFPGListEnumeratorSpec;
@@ -930,6 +958,20 @@ begin
   Result := IndexOf(Item);
   if Result >= 0 then
     Delete(Result);
+end;
+
+procedure TFPGList.Delete(Index: Integer);
+var
+  item: T;
+begin
+  if Assigned(FOnNotify) then
+  begin
+    item := Get(Index);
+    inherited Delete(Index);
+    Notify(Item, lnRemoved);
+  end
+  else
+    inherited Delete(Index);
 end;
 
 procedure TFPGList.Sort(Compare: TCompareFunc);
@@ -983,11 +1025,15 @@ end;
 function TFPGObjectList.Add(const Item: T): Integer;
 begin
   Result := inherited Add(@Item);
+  if Assigned(FOnNotify) then
+     Notify(Item, lnAdded);
 end;
 
 function TFPGObjectList.Extract(const Item: T): T;
 begin
   inherited Extract(@Item, @Result);
+  if Assigned(FOnNotify) then
+     Notify(Item, lnExtracted);
 end;
 
 function TFPGObjectList.GetFirst: T;
@@ -998,6 +1044,11 @@ end;
 procedure TFPGObjectList.SetFirst(const Value: T);
 begin
   inherited SetFirst(@Value);
+end;
+
+procedure TFPGObjectList.Notify(Item: T; Action: TFPGListNotification);
+begin
+  FOnNotify(Self, Item, Action);
 end;
 
 function TFPGObjectList.GetEnumerator: TFPGListEnumeratorSpec;
@@ -1046,6 +1097,20 @@ begin
   Result := IndexOf(Item);
   if Result >= 0 then
     Delete(Result);
+end;
+
+procedure TFPGObjectList.Delete(Index: Integer);
+var
+  item: T;
+begin
+  if Assigned(FOnNotify) then
+  begin
+		item := Get(Index);
+    inherited Delete(Index);
+    Notify(item, lnRemoved);
+  end
+  else
+    inherited Delete(Index);
 end;
 
 procedure TFPGObjectList.Sort(Compare: TCompareFunc);
