@@ -179,7 +179,7 @@ const
  NSUBEXP = 90; // max number of subexpression //###0.929
  // Cannot be more than NSUBEXPMAX
  // Be carefull - don't use values which overflow CLOSE opcode
- // (in this case you'll get compiler erorr).
+ // (in this case you'll get compiler error).
  // Big NSUBEXP will cause more slow work and more stack required
  NSUBEXPMAX = 255; // Max possible value for NSUBEXP. //###0.945
  // Don't change it! It's defined by internal TRegExpr design.
