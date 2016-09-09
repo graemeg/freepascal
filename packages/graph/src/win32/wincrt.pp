@@ -150,27 +150,125 @@ unit wincrt;
            WM_KEYDOWN:
              begin
                 case wparam of
+                   49..57:
+                     if ctrlkey then addextchar(chr(wparam-47));
+                   48:
+                     if ctrlkey then addextchar(#11);
+                   189:
+                     if ctrlkey then addextchar(#12);
+                   187:
+                     if ctrlkey then addextchar(#13);
+                   222:
+                     if ctrlkey then addextchar(#39);
+                   186:
+                     if ctrlkey then addextchar(#40);
+                   192:
+                     if ctrlkey then addextchar(#41);
+                   188:
+                     if ctrlkey then addextchar(#51);
+                   190:
+                     if ctrlkey then addextchar(#52);
+                   191,111:
+                     if ctrlkey then addextchar(#149);
+                   106:
+                     if ctrlkey then addextchar(#150);
+                   109:
+                     if ctrlkey then addextchar(#142);
+                   103:
+                     if ctrlkey then addextchar(#119);
+                   104:
+                     if ctrlkey then addextchar(#141);
+                   105:
+                     if ctrlkey then addextchar(#132);
+                   107:
+                     if ctrlkey then addextchar(#78);
+                   100:
+                     if ctrlkey then addextchar(#115);
+                   101:
+                     if ctrlkey then addextchar(#143);
+                   102:
+                     if ctrlkey then addextchar(#116);
+                    97:
+                     if ctrlkey then addextchar(#117);
+                    98:
+                     if ctrlkey then addextchar(#145);
+                    99:
+                     if ctrlkey then addextchar(#118);
+                    96:
+                     if ctrlkey then addextchar(#146);
+                   110:
+                     if ctrlkey then addextchar(#147);
                    VK_LEFT:
-                     addextchar(#75);
+                     begin
+                        if ctrlkey then
+                         addextchar(#115)
+                        else
+                         addextchar(#75);
+                      end;
                    VK_RIGHT:
-                     addextchar(#77);
+                     begin
+                        if ctrlkey then
+                         addextchar(#116)
+                        else
+                         addextchar(#77);
+                      end;
                    VK_DOWN:
-                     addextchar(#80);
+                     begin
+                        if ctrlkey then
+                         addextchar(#145)
+                        else
+                         addextchar(#80);
+                      end;
                    VK_UP:
-                     addextchar(#72);
+                     begin
+                        if ctrlkey then
+                         addextchar(#141)
+                        else
+                         addextchar(#72);
+                      end;
                    VK_INSERT:
-                     addextchar(#82);
+                     begin
+                        if ctrlkey then
+                         addextchar(#146)
+                        else
+                         addextchar(#82);
+                      end;
                    VK_DELETE:
-                     addextchar(#83);
+                     begin
+                        if ctrlkey then
+                         addextchar(#147)
+                        else
+                         addextchar(#83);
+                      end;
                    VK_END:
-                     addextchar(#79);
+                     begin
+                        if ctrlkey then
+                         addextchar(#117)
+                        else
+                         addextchar(#79);
+                      end;
                    VK_HOME:
-                     addextchar(#71);
+                     begin
+                        if ctrlkey then
+                         addextchar(#119)
+                        else
+                         addextchar(#71);
+                      end;
                    VK_PRIOR:
-                     addextchar(#73);
+                     begin
+                        if ctrlkey then
+                         addextchar(#132)
+                        else
+                         addextchar(#73);
+                      end;
                    VK_NEXT:
-                     addextchar(#81);
-                   VK_F1..VK_F10:
+                     begin
+                        if ctrlkey then
+                         addextchar(#118)
+                        else
+                         addextchar(#81);
+                      end;
+                   VK_F1..VK_F12:
                      begin
                         if ctrlkey then
                           addextchar(chr(wparam+24))
