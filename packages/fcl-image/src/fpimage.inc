@@ -507,6 +507,7 @@ end;
 procedure TFPMemoryImage.SetSize (AWidth, AHeight : integer);
 var w, h, r, old : integer;
     NewData : PFPIntegerArray;
+    eSize: Byte;
 begin
   if (AWidth <> Width) or (AHeight <> Height) then
     begin
@@ -514,9 +515,10 @@ begin
     r:=AWidth*AHeight;
     if Assigned(FPalette)
     then
-      r:=SizeOf(integer)*r
+      eSize := SizeOf(integer);
     else
-      r:=SizeOf(TFPColor)*r;
+      eSize := SizeOf(TFPColor);
+    r := r * eSize;
     if r = 0 then
       NewData := nil
     else
@@ -529,7 +531,7 @@ begin
       begin
       if r <> 0 then
         begin
-        w := Lowest(Width, AWidth);
+        w := Lowest(Width, AWidth) * eSize;
         h := Lowest(Height, AHeight);
         for r := 0 to h-1 do
           move (FData^[r*Width], NewData^[r*AWidth], w);
