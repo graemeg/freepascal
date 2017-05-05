@@ -505,36 +505,35 @@ begin
 end;
 
 procedure TFPMemoryImage.SetSize (AWidth, AHeight : integer);
-var w, h, r, old : integer;
+var w, r, old : integer;
+    OldIntWidth, IntWidth: integer;
     NewData : PFPIntegerArray;
+	eMult: 1..2;
 begin
   if (AWidth <> Width) or (AHeight <> Height) then
-    begin
+  begin
     old := Height * Width;
-    r:=AWidth*AHeight;
-    if Assigned(FPalette)
-    then
-      r:=SizeOf(integer)*r
+	eMult := 1;
+    if not Assigned(FPalette) then eMult := SizeOf(TFPColor) div SizeOf(integer);
+    r:= AWidth * AHeight * eMult; // The area as number of Integers
+    if r = 0 then NewData := nil
     else
-      r:=SizeOf(TFPColor)*r;
-    if r = 0 then
-      NewData := nil
-    else
-      begin
-      GetMem (NewData, r);
-      FillWord (Newdata^[0], r div sizeof(word), 0);
-      end;
+    begin
+      GetMem (NewData, r * SizeOf(integer));
+      FillDWord (NewData^[0], r, 0);
+    end;
     // MG: missing "and (NewData<>nil)"
     if (old <> 0) and assigned(FData) and (NewData<>nil) then
-      begin
+    begin
       if r <> 0 then
-        begin
-        w := Lowest(Width, AWidth);
-        h := Lowest(Height, AHeight);
-        for r := 0 to h-1 do
-          move (FData^[r*Width], NewData^[r*AWidth], w);
-        end;
+      begin
+        w := Lowest(Width, AWidth) * eMult * SizeOf(Integer);
+		OldIntWidth := Width * eMult;
+		IntWidth := AWidth * eMult;
+        for r := 0 to Lowest(Height, AHeight) - 1 do
+          Move(FData^[r * OldIntWidth], NewData^[r * IntWidth], w);
       end;
+    end;
     if Assigned(FData) then FreeMem(FData);
     FData := NewData;
     inherited;
