@@ -7,7 +7,7 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  sysutils, Classes, fphttpserver, fpmimetypes, wmecho;
+  sysutils, Classes, fphttpserver, fpmimetypes;
 
 Type
 
