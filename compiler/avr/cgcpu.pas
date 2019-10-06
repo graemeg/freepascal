@@ -513,7 +513,7 @@ unit cgcpu;
                            if op=OP_SHL then
                              list.concat(taicpu.op_reg(A_ROL,GetOffsetReg64(dst,NR_NO,i-1)))
                            else
-                             list.concat(taicpu.op_reg(A_ROR,GetOffsetReg64(dst,NR_NO,tcgsize2size[size]-i-b)));
+                             list.concat(taicpu.op_reg(A_ROR,GetOffsetReg64(dst,NR_NO,tcgsize2size[size]-i)));
                        end;
                      list.concat(taicpu.op_reg(A_DEC,countreg));
                      a_jmp_flags(list,F_NE,l1);
