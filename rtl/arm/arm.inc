@@ -83,9 +83,9 @@ const
   FPSCR_UFC = 1 shl 3;
   FPSCR_IXC = 1 shl 4;
   FPSCR_IDC = 1 shl 7;
+  FPSCR_EXCEPTIONS = FPSCR_IOC or FPSCR_DZC or FPSCR_OFC or FPSCR_UFC or FPSCR_IXC or FPSCR_IDC;
 
-
-procedure fpc_throwfpuexception;[public,alias:'FPC_THROWFPUEXCEPTION'];
+procedure RaisePendingExceptions;
   var
     fpscr : longint;
     f: TFPUException;
@@ -112,6 +112,34 @@ procedure fpc_throwfpuexception;[public,alias:'FPC_THROWFPUEXCEPTION'];
   end;
 
 
+procedure fpc_throwfpuexception;[public,alias:'FPC_THROWFPUEXCEPTION'];
+  var
+    fpscr : dword;
+    f: TFPUException;
+  begin
+    { at this point, we know already, that an exception will be risen }
+    fpscr:=getfpscr;
+
+    { check, if the exception is masked, as ARM without hardware exceptions have no masking functionality,
+      we use the software mask }
+    if ((fpscr and FPSCR_DZC) <> 0) and (exZeroDivide in softfloat_exception_mask) then
+      fpscr:=fpscr and not(FPSCR_DZC);
+    if ((fpscr and FPSCR_OFC) <> 0) and (exOverflow in softfloat_exception_mask) then
+      fpscr:=fpscr and not(FPSCR_OFC);
+    if ((fpscr and FPSCR_UFC) <> 0) and (exUnderflow in softfloat_exception_mask) then
+      fpscr:=fpscr and not(FPSCR_UFC);
+    if ((fpscr and FPSCR_IOC) <> 0) and (exInvalidOp in softfloat_exception_mask) then
+      fpscr:=fpscr and not(FPSCR_IOC);
+    if ((fpscr and FPSCR_IXC) <> 0) and (exPrecision in softfloat_exception_mask) then
+      fpscr:=fpscr and not(FPSCR_IXC);
+    if ((fpscr and FPSCR_IDC) <> 0) and (exDenormalized in softfloat_exception_mask) then
+      fpscr:=fpscr and not(FPSCR_IDC);
+    setfpscr(fpscr);
+    if (fpscr and FPSCR_EXCEPTIONS)<>0 then
+      RaisePendingExceptions;
+  end;
+
+
 Procedure SysInitFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
 begin
   { Enable FPU exceptions, but disable INEXACT, UNDERFLOW, DENORMAL }
@@ -133,7 +161,18 @@ begin
 {$endif}
     fmxr fpscr,r0
   end;
+  softfloat_exception_mask:=[float_flag_underflow,float_flag_inexact,float_flag_denormal];
+  softfloat_exception_flags:=[];
 end;
+
+{$define FPC_SYSTEM_HAS_SYSRESETFPU}
+Procedure SysResetFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
+begin
+  softfloat_exception_flags:=[];
+  setfpscr(getfpscr and not(FPSCR_EXCEPTIONS));
+end;
+
+
 {$endif}
 {$endif}
 

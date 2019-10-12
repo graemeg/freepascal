@@ -121,21 +121,34 @@ procedure fpc_throwfpuexception;[public,alias:'FPC_THROWFPUEXCEPTION'];
   end;
 
 
-procedure fpc_enable_fpu_exceptions;
+{$define FPC_SYSTEM_HAS_SYSINITFPU}
+procedure SysInitFPU;
   begin
+    softfloat_rounding_mode:=rmNearest;
+    { 0 is rmNearest }
+    setfpcr(getfpcr and $ff3fffff);
     { clear all "exception happened" flags we care about}
     setfpsr(getfpsr and not(fpu_exception_mask shr fpu_exception_mask_to_status_mask_shift));
     { enable invalid operations and division by zero exceptions. }
-    setfpcr((getfpcr and not(fpu_exception_mask)));
-    softfloat_exception_mask:=[exPrecision,exUnderflow,exInvalidOp];
+    setfpcr(((getfpcr and not(fpu_exception_mask)) or fpu_dze or fpu_ofe or fpu_ioe));
+    softfloat_exception_mask:=[float_flag_underflow,float_flag_inexact,float_flag_denormal];
+    softfloat_exception_flags:=[];
   end;
+
+
+{$define FPC_SYSTEM_HAS_SYSRESETFPU}
+Procedure SysResetFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
+begin
+  softfloat_exception_flags:=[];
+  setfpsr(getfpsr and not(FPSR_EXCEPTIONS));
+end;
 
 
 procedure fpc_cpuinit;
   begin
     { don't let libraries influence the FPU cw set by the host program }
     if not IsLibrary then
-      fpc_enable_fpu_exceptions;
+      SysInitFPU;
   end;
 
 

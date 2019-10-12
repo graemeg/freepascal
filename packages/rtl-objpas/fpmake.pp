@@ -25,9 +25,10 @@ Const
   FmtBCDOSes    = [atari,emx,gba,go32v2,msdos,nativent,nds,netware,netwlibc,os2,symbian,watcom,wii,win32,win64,wince]+UnixLikes+AllAmigaLikeOSes;
   VariantsOSes  = [atari,emx,gba,go32v2,msdos,nativent,nds,netware,netwlibc,os2,symbian,watcom,wii,win32,win64,wince]+UnixLikes+AllAmigaLikeOSes;
   RttiOSes      = [atari,emx,gba,go32v2,msdos,nativent,nds,netware,netwlibc,os2,watcom,wii,win32,win64,wince]+UnixLikes+AllAmigaLikeOSes;
+  UItypesOSes   = [atari,emx,gba,go32v2,msdos,nativent,nds,netware,netwlibc,os2,watcom,wii,win32,win64,wince]+UnixLikes+AllAmigaLikeOSes-ConvUtilOSes;
   AllTargetsObjPas = DateUtilsOses +DateUtilOSes+
                   VarutilsOses + ConvutilsOSes + ConvutilOSes + StdConvsOSes+
-                  FmtBCDOSes + StrUtilsOSes;
+                  FmtBCDOSes + StrUtilsOSes + UITypesOSes;
 
   CommonSrcOSes = [atari,emx,gba,go32v2,msdos,nds,netware,wince,nativent,os2,netwlibc,symbian,watcom,wii]+UnixLikes+AllAmigaLikeOSes;
 
@@ -62,6 +63,8 @@ begin
     P.IncludePath.Add('src/$(OS)');
     P.IncludePath.Add('src/$(CPU)');
     P.IncludePath.Add('src/common',CommonSrcOSes);
+
+    T:=P.Targets.AddUnit('system.uitypes.pp',uitypesOses);
 
     T:=P.Targets.AddUnit('strutils.pp',StrUtilsOses);
       T.ResourceStrings:=true;

@@ -250,7 +250,12 @@ function VFPCw2ExceptionMask(cw: dword): TFPUExceptionMask;
 
 function GetExceptionMask: TFPUExceptionMask;
   begin
-    Result:=VFPCw2ExceptionMask(VFP_GetCW);
+    { some ARM CPUs ignore writing to the hardware mask and just return 0, so we need to return
+      the softfloat mask which should be in sync with the hard one }
+    if VFP_GetCW=0 then
+      Result:=softfloat_exception_mask
+    else
+      Result:=VFPCw2ExceptionMask(VFP_GetCW);
   end;
 
 
@@ -290,6 +295,7 @@ procedure ClearExceptions(RaisePending: Boolean =true);
   begin
     { RaisePending has no effect on ARM, it always raises them at the correct location }
     VFP_SetCW(VFP_GetCW and (not _VFP_EXCEPTIONS_PENDING_MASK));
+    softfloat_exception_flags:=[];
   end;
 
 {$else FPUARM_HAS_VFP_EXTENSION}

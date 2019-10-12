@@ -593,7 +593,8 @@ implementation
           '.objc_protolist',
           '.stack',
           '.heap',
-          '.gcc_except_table'
+          '.gcc_except_table',
+          '.ARM.attributes'
         );
 
 const go32v2stub : array[0..2047] of byte=(

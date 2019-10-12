@@ -1558,6 +1558,7 @@ Implementation
         objsym,
         objsymend : TObjSymbol;
         cpu: tcputype;
+        eabi_section, TmpSection: TObjSection;
       begin
         while assigned(hp) do
          begin
@@ -1672,7 +1673,10 @@ Implementation
                end;
              ait_section:
                begin
-                 ObjData.CreateSection(Tai_section(hp).sectype,Tai_section(hp).name^,Tai_section(hp).secorder);
+                 if Tai_section(hp).sectype=sec_user then
+                   ObjData.CreateSection(Tai_section(hp).sectype,Tai_section(hp).secflags,Tai_section(hp).secprogbits,Tai_section(hp).name^,Tai_section(hp).secorder)
+                 else
+                   ObjData.CreateSection(Tai_section(hp).sectype,Tai_section(hp).name^,Tai_section(hp).secorder);
                  Tai_section(hp).sec:=ObjData.CurrObjSec;
                end;
              ait_symbol :
@@ -1696,6 +1700,28 @@ Implementation
              ait_cutobject :
                if SmartAsm then
                 break;
+             ait_eabi_attribute :
+               begin
+                 eabi_section:=ObjData.findsection('.ARM.attributes');
+                 if not(assigned(eabi_section)) then
+                   begin
+                     TmpSection:=ObjData.CurrObjSec;
+                     ObjData.CreateSection(sec_arm_attribute,[],SPB_ARM_ATTRIBUTES,'',secorder_default);
+                     eabi_section:=ObjData.CurrObjSec;
+                     ObjData.setsection(TmpSection);
+                   end;
+                 if eabi_section.Size=0 then
+                   eabi_section.alloc(16);
+                 eabi_section.alloc(LengthUleb128(tai_eabi_attribute(hp).tag));
+                 case tai_eabi_attribute(hp).eattr_typ of
+                   eattrtype_dword:
+                     eabi_section.alloc(LengthUleb128(tai_eabi_attribute(hp).value));
+                   eattrtype_ntbs:
+                     eabi_section.alloc(Length(tai_eabi_attribute(hp).valuestr^)+1);
+                   else
+                     Internalerror(2019100701);
+                 end;
+               end;
              else
                ;
            end;
@@ -1710,6 +1736,7 @@ Implementation
         objsym,
         objsymend : TObjSymbol;
         cpu: tcputype;
+        eabi_section: TObjSection;
       begin
         while assigned(hp) do
          begin
@@ -1853,6 +1880,23 @@ Implementation
                      internalerror(2010011102);
                  end;
                end;
+             ait_eabi_attribute :
+               begin
+                 eabi_section:=ObjData.findsection('.ARM.attributes');
+                 if not(assigned(eabi_section)) then
+                   Internalerror(2019100702);
+                 if eabi_section.Size=0 then
+                   eabi_section.alloc(16);
+                 eabi_section.alloc(LengthUleb128(tai_eabi_attribute(hp).tag));
+                 case tai_eabi_attribute(hp).eattr_typ of
+                   eattrtype_dword:
+                     eabi_section.alloc(LengthUleb128(tai_eabi_attribute(hp).value));
+                   eattrtype_ntbs:
+                     eabi_section.alloc(Length(tai_eabi_attribute(hp).valuestr^)+1);
+                   else
+                     Internalerror(2019100703);
+                 end;
+               end;
              else
                ;
            end;
@@ -1885,6 +1929,10 @@ Implementation
         ccomp : comp;
         tmp    : word;
         cpu: tcputype;
+        ddword : dword;
+        eabi_section: TObjSection;
+        s: String;
+        TmpDataPos: TObjSectionOfs;
       begin
         fillchar(zerobuf,sizeof(zerobuf),0);
         fillchar(objsym,sizeof(objsym),0);
@@ -2182,6 +2230,52 @@ Implementation
              ait_seh_directive :
                tai_seh_directive(hp).generate_code(objdata);
 {$endif DISABLE_WIN64_SEH}
+             ait_eabi_attribute :
+               begin
+                 eabi_section:=ObjData.findsection('.ARM.attributes');
+                 if not(assigned(eabi_section)) then
+                   Internalerror(2019100704);
+                 if eabi_section.Size=0 then
+                   begin
+                     s:='A';
+                     eabi_section.write(s[1],1);
+                     ddword:=eabi_section.Size-1;
+                     eabi_section.write(ddword,4);
+                     s:='aeabi'#0;
+                     eabi_section.write(s[1],6);
+                     s:=#1;
+                     eabi_section.write(s[1],1);
+                     ddword:=eabi_section.Size-1-4-6-1;
+                     eabi_section.write(ddword,4);
+                   end;
+                 leblen:=EncodeUleb128(tai_eabi_attribute(hp).tag,lebbuf,0);
+                 eabi_section.write(lebbuf,leblen);
+
+                 case tai_eabi_attribute(hp).eattr_typ of
+                   eattrtype_dword:
+                     begin
+                       leblen:=EncodeUleb128(tai_eabi_attribute(hp).value,lebbuf,0);
+                       eabi_section.write(lebbuf,leblen);
+                     end;
+                   eattrtype_ntbs:
+                     begin
+                       s:=tai_eabi_attribute(hp).valuestr^+#0;
+                       eabi_section.write(s[1],Length(s));
+                     end
+                   else
+                     Internalerror(2019100705);
+                 end;
+                 { update size of attributes section, write directly to the dyn. arrays as
+                   we do not increase the size of section }
+                 TmpDataPos:=eabi_section.Data.Pos;
+                 eabi_section.Data.seek(1);
+                 ddword:=eabi_section.Size-1;
+                 eabi_section.Data.write(ddword,4);
+                 eabi_section.Data.seek(12);
+                 ddword:=eabi_section.Size-1-4-6;
+                 eabi_section.Data.write(ddword,4);
+                 eabi_section.Data.Seek(TmpDataPos);
+               end;
              else
                ;
            end;

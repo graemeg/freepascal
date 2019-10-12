@@ -114,6 +114,7 @@ interface
     SHT_GNU_verdef = $6ffffffd;
     SHT_GNU_verneed = $6ffffffe;
     SHT_GNU_versym = $6fffffff;
+    SHT_ARM_ATTRIBUTES = $70000003;
 
     { ElfSechdr.sh_flags }
     SHF_WRITE     = 1;

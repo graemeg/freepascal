@@ -851,7 +851,7 @@ var rtl = {
           for (var i=0; i<lastlen; i++)
             a[i]=(i<oldlen)?src[i]:defaultvalue;
         }
-        while ((depth>0) && (stack[depth-1].i===stack[depth-1].dim)){
+        while ((depth>0) && (stack[depth-1].i>=stack[depth-1].dim)){
           depth--;
         };
         if (depth===0){

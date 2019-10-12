@@ -134,20 +134,21 @@ Begin
   pflags := @softfloat_exception_flags;
   pflags^:=pflags^ + i;
   unmasked_flags := pflags^ - softfloat_exception_mask;
+  { before we raise the exception, we mark it as handled,
+    this behaviour is similiar to the hardware handler in SignalToRunerror }
+  SysResetFPU;
   if (float_flag_invalid in unmasked_flags) then
      HandleError(207)
-  else
-  if (float_flag_divbyzero in unmasked_flags) then
+  else if (float_flag_divbyzero in unmasked_flags) then
      HandleError(200)
-  else
-  if (float_flag_overflow in unmasked_flags) then
+  else if (float_flag_overflow in unmasked_flags) then
      HandleError(205)
-  else
-  if (float_flag_underflow in unmasked_flags) then
+  else if (float_flag_underflow in unmasked_flags) then
      HandleError(206)
-  else
-  if (float_flag_inexact in unmasked_flags) then
-     HandleError(207);
+  else if (float_flag_inexact in unmasked_flags) then
+     HandleError(207)
+  else if (float_flag_denormal in unmasked_flags) then
+     HandleError(216);
 end;
 
 

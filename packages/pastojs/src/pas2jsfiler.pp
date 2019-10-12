@@ -172,7 +172,8 @@ const
     'ExternalClass',
     'PrefixedAttributes',
     'OmitRTTI',
-    'MultiHelpers'
+    'MultiHelpers',
+    'ImplicitFunctionSpecialization'
     ); // Dont forget to update ModeSwitchToInt !
 
   PCUDefaultBoolSwitches: TBoolSwitches = [
@@ -1424,6 +1425,7 @@ begin
     // msIgnoreAttributes: Result:=47;
     msOmitRTTI: Result:=48;
     msMultiHelpers: Result:=49;
+    msImplicitFunctionSpec: Result:=50;
   end;
 end;
 

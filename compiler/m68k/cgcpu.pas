@@ -1155,6 +1155,13 @@ unit cgcpu;
       begin
         optimize_op_const(size, op, a);
         opcode := topcg2tasmop[op];
+        if (a >0) and (a<=high(dword)) then
+          a:=longint(dword(a))
+        else if (a>=low(longint)) then
+          a:=longint(a)
+        else
+	  internalerror(201810201);
+          
         case op of
           OP_NONE :
             begin
@@ -2549,16 +2556,16 @@ unit cgcpu;
             begin
               hreg:=cg.getintregister(list,OS_INT);
               { cg.a_load_const_reg provides optimized loading to register for special cases }
-              cg.a_load_const_reg(list,OS_S32,longint(highvalue),hreg);
+              cg.a_load_const_reg(list,OS_S32,tcgint(highvalue),hreg);
               { don't use cg.a_op_const_reg() here, because a possible optimized
                 ADDQ/SUBQ wouldn't set the eXtend bit }
-              list.concat(taicpu.op_const_reg(opcode,S_L,longint(lowvalue),regdst.reglo));
+              list.concat(taicpu.op_const_reg(opcode,S_L,tcgint(lowvalue),regdst.reglo));
               list.concat(taicpu.op_reg_reg(xopcode,S_L,hreg,regdst.reghi));
             end;
           OP_AND,OP_OR,OP_XOR:
             begin
-              cg.a_op_const_reg(list,op,OS_S32,longint(lowvalue),regdst.reglo);
-              cg.a_op_const_reg(list,op,OS_S32,longint(highvalue),regdst.reghi);
+              cg.a_op_const_reg(list,op,OS_S32,tcgint(lowvalue),regdst.reglo);
+              cg.a_op_const_reg(list,op,OS_S32,tcgint(highvalue),regdst.reghi);
             end;
           { this is handled in 1st pass for 32-bit cpus (helper call) }
           OP_IDIV,OP_DIV,

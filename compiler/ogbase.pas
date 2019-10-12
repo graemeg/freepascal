@@ -189,7 +189,11 @@ interface
        { Section to support the resolution of multiple symbols with the same name }
        oso_comdat,
        { section containing thread variables }
-       oso_threadvar
+       oso_threadvar,
+       { being a notes section }
+       oso_note,
+       { arm attributes section }
+       oso_arm_attributes
      );
 
      TObjSectionOptions = set of TObjSectionOption;
@@ -394,6 +398,7 @@ interface
        function  sectiontype2options(atype:TAsmSectiontype):TObjSectionOptions;virtual;
        function  sectiontype2align(atype:TAsmSectiontype):longint;virtual;
        function  createsection(atype:TAsmSectionType;const aname:string='';aorder:TAsmSectionOrder=secorder_default):TObjSection;virtual;
+       function  createsection(atype:TAsmSectionType;secflags:TSectionFlags;aprogbits:TSectionProgbits;const aname:string='';aorder:TAsmSectionOrder=secorder_default):TObjSection;virtual;
        function  createsection(const aname:string;aalign:longint;aoptions:TObjSectionOptions;DiscardDuplicate:boolean=true):TObjSection;virtual;
        function  createsectiongroup(const aname:string):TObjSectionGroup;
        procedure CreateDebugSections;virtual;
@@ -1271,7 +1276,8 @@ implementation
           {sec_objc_protolist'} [oso_data,oso_load],
           {stack} [oso_load,oso_write],
           {heap} [oso_load,oso_write],
-          {gcc_except_table} [oso_data,oso_load]
+          {gcc_except_table} [oso_data,oso_load],
+          {arm_attribute} [oso_data]
         );
       begin
         result:=secoptions[atype];
@@ -1281,7 +1287,8 @@ implementation
     function TObjData.sectiontype2align(atype:TAsmSectiontype):longint;
       begin
         case atype of
-          sec_stabstr,sec_debug_info,sec_debug_line,sec_debug_abbrev,sec_debug_aranges,sec_debug_ranges:
+          sec_stabstr,sec_debug_info,sec_debug_line,sec_debug_abbrev,sec_debug_aranges,sec_debug_ranges,
+          sec_arm_attribute:
             result:=1;
           sec_code,
           sec_bss,
@@ -1304,6 +1311,27 @@ implementation
     function TObjData.createsection(atype:TAsmSectionType;const aname:string;aorder:TAsmSectionOrder):TObjSection;
       begin
         result:=createsection(sectionname(atype,aname,aorder),sectiontype2align(atype),sectiontype2options(atype));
+      end;
+
+
+    function TObjData.createsection(atype: TAsmSectionType; secflags: TSectionFlags; aprogbits: TSectionProgbits; const aname: string; aorder: TAsmSectionOrder): TObjSection;
+      var
+        flags : TObjSectionOptions;
+      begin
+        flags:=[oso_data];
+        if SF_A in secflags then
+          Include(flags,oso_load);
+        if SF_W in secflags then
+          Include(flags,oso_write);
+        if SF_X in secflags then
+          Include(flags,oso_executable);
+        if aprogbits=SPB_NOBITS then
+          Exclude(flags,oso_data);
+        if aprogbits=SPB_NOTE then
+          Include(flags,oso_note);
+        if aprogbits=SPB_ARM_ATTRIBUTES then
+          Include(flags,oso_arm_attributes);
+        result:=createsection(sectionname(atype,aname,aorder),sectiontype2align(atype),flags);
       end;
 
 

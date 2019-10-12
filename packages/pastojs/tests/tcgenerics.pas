@@ -40,6 +40,7 @@ type
 
     // generic functions
     // ToDo: Fly<word>(3);
+    // ToDo: TestGenProc_ProcT
     // ToDo: inference Fly(3);
   end;
 

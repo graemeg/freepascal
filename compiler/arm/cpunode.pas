@@ -46,7 +46,8 @@ unit cpunode;
        narmcnv,
        narmcon,
        narmset,
-       narmmem
+       narmmem,
+       narmutil
 {$else}
        llvmnode
 {$endif}

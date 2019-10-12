@@ -4299,7 +4299,7 @@ begin
     RaiseInternalError(20170504161340,'internal error: TPas2jsCompiler.Run FileCount>0');
 
   try
-    // set working directory, need by all relative filenames
+    // set working directory, needed by all relative filenames
     SetWorkingDir(aWorkingDir);
 
     CompilerExe:=aCompilerExe; // maybe needed to find the default config
