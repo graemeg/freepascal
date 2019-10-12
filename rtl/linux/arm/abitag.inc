@@ -14,7 +14,7 @@
 
 procedure ABITag;nostackframe;assembler;
 asm
-  .section ".note.ABI-tag", "a"
+  .section ".note.ABI-tag", "a", %note
   .align 4
   .long 4
   .long 16

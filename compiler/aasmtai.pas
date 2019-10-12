@@ -94,7 +94,8 @@ interface
           { SEH directives used in ARM,MIPS and x86_64 COFF targets }
           ait_seh_directive,
           { Dwarf CFI directive }
-          ait_cfi
+          ait_cfi,
+          ait_eabi_attribute
           );
 
         taiconst_type = (
@@ -233,7 +234,8 @@ interface
           'llvmmetadatarefop',
 {$endif}
           'cfi',
-          'seh_directive'
+          'seh_directive',
+          'eabi_attribute'
           );
 
     type
@@ -337,7 +339,8 @@ interface
                      ait_llvmmetadatarefoperand,
 {$endif llvm}
                      ait_seh_directive,
-                     ait_cfi
+                     ait_cfi,
+                     ait_eabi_attribute
                     ];
 
 
@@ -607,10 +610,6 @@ interface
           procedure ppuwrite(ppufile:tcompilerppufile);override;
           function getcopy:tlinkedlistitem;override;
        end;
-
-       type
-         TSectionFlags = (SF_None,SF_A,SF_W,SF_X);
-         TSectionProgbits = (SPB_None,SPB_PROGBITS,SPB_NOBITS);
 
        { Generates a section / segment directive }
        tai_section = class(tai)
@@ -983,6 +982,18 @@ interface
           procedure ppuwrite(ppufile:tcompilerppufile);override;
         end;
 
+        teattrtyp = (eattrtype_none,eattrtype_dword,eattrtype_ntbs);
+        tai_eabi_attribute = class(tai)
+          eattr_typ : teattrtyp;
+          tag,value : dword;
+          valuestr : pstring;
+          constructor create(atag,avalue : dword);
+          constructor create(atag : dword;const avalue : string);
+          destructor destroy;override;
+          constructor ppuload(t:taitype;ppufile:tcompilerppufile);override;
+          procedure ppuwrite(ppufile:tcompilerppufile);override;
+        end;
+
     var
       { array with all class types for tais }
       aiclass : taiclassarray;
@@ -1260,7 +1271,7 @@ implementation
         sectype:=TAsmSectiontype(ppufile.getbyte);
         secalign:=ppufile.getlongint;
         name:=ppufile.getpshortstring;
-        secflags:=TSectionFlags(ppufile.getbyte);
+        secflags:=TSectionFlags(ppufile.getdword);
         secprogbits:=TSectionProgbits(ppufile.getbyte);
         sec:=nil;
       end;
@@ -1278,7 +1289,7 @@ implementation
         ppufile.putbyte(byte(sectype));
         ppufile.putlongint(secalign);
         ppufile.putstring(name^);
-        ppufile.putbyte(byte(secflags));
+        ppufile.putbyte(dword(secflags));
         ppufile.putbyte(byte(secprogbits));
       end;
 
@@ -3412,6 +3423,50 @@ implementation
     procedure tai_seh_directive.generate_code(objdata:TObjData);
       begin
       end;
+
+
+{****************************************************************************
+                              tai_eabi_attribute
+ ****************************************************************************}
+
+    constructor tai_eabi_attribute.create(atag,avalue : dword);
+      begin
+        inherited Create;
+        typ:=ait_eabi_attribute;
+        eattr_typ:=eattrtype_dword;
+        tag:=atag;
+        value:=avalue;
+      end;
+
+
+    constructor tai_eabi_attribute.create(atag: dword; const avalue: string);
+      begin
+        inherited Create;
+        typ:=ait_eabi_attribute;
+        eattr_typ:=eattrtype_ntbs;
+        tag:=atag;
+        valuestr:=NewStr(avalue);
+      end;
+
+
+    destructor tai_eabi_attribute.destroy;
+      begin
+        Inherited Destroy;
+      end;
+
+
+    constructor tai_eabi_attribute.ppuload(t:taitype;ppufile:tcompilerppufile);
+      begin
+      end;
+
+
+    procedure tai_eabi_attribute.ppuwrite(ppufile:tcompilerppufile);
+      begin
+        inherited ppuwrite(ppufile);
+        ppufile.putdword(tag);
+        ppufile.putdword(value);
+      end;
+
 
 {$ifdef JVM}
 

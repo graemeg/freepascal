@@ -19,7 +19,7 @@ unit tcsqlscanner;
 interface
 
 uses
-  Classes, SysUtils, fpcunit, testutils, testregistry, fpsqlscanner;
+  Classes, SysUtils, fpcunit, testregistry, fpsqlscanner;
 
 type
 
@@ -223,6 +223,11 @@ type
     procedure TestWhile;
     procedure TestWith;
     procedure TestWork;
+    procedure TestTerm;
+    procedure TestTermExclude;
+    procedure TestRecreate;
+    procedure TestRestart;
+    procedure TestSequence;
     Procedure Test2Words;
     procedure Test3Words;
     procedure TestIdentifier;
@@ -1348,6 +1353,33 @@ end;
 procedure TTestSQLScanner.TestWork;
 begin
   CheckToken(tsqlWork,'work');
+end;
+
+procedure TTestSQLScanner.TestTerm;
+begin
+  CheckToken(tsqlTerm,'term');
+end;
+
+procedure TTestSQLScanner.TestTermExclude;
+begin
+  CreateScanner('term');
+  FScanner.Excludekeywords.Add('term');
+  AssertEquals('Term is identifier',tsqlIdentifier,FScanner.FetchToken);
+end;
+
+procedure TTestSQLScanner.TestRecreate;
+begin
+  CheckToken(tsqlRecreate,'recreate');
+end;
+
+procedure TTestSQLScanner.TestRestart;
+begin
+  CheckToken(tsqlRestart,'restart');
+end;
+
+procedure TTestSQLScanner.TestSequence;
+begin
+  CheckToken(tsqlSequence,'sequence');
 end;
 
 procedure TTestSQLScanner.CheckTokens(ASource : String; ATokens : Array of TSQLToken);

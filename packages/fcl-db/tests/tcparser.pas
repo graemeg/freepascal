@@ -19,7 +19,7 @@ unit tcparser;
 interface
 
 uses
-  Classes, SysUtils, fpcunit, testutils, fpsqltree, fpsqlscanner, fpsqlparser, testregistry;
+  Classes, SysUtils, fpcunit, fpsqltree, fpsqlscanner, fpsqlparser, testregistry;
 
 type
 
@@ -37,16 +37,18 @@ type
 
   TTestSQLParser = class(TTestCase)
   Private
+    FParserOptions: TParserOptions;
     FSource : TStringStream;
     FParser : TTestParser;
     FToFree : TSQLElement; //will be freed by test teardown
     FErrSource : string;
+    function GetParserOptions: TParserOptions;
   protected
     procedure AssertTypeDefaults(TD: TSQLTypeDefinition; Len: Integer=0);
     procedure TestStringDef(ASource: String; ExpectDT: TSQLDataType; ExpectLen: Integer; ExpectCharset : TSQLStringType='');
     function TestType(ASource : string; AFlags : TParseTypeFlags; AExpectedType : TSQLDataType) : TSQLTypeDefinition;
     function TestCheck(ASource : string; AExpectedConstraint : TSQLElementClass) : TSQLExpression;
-    procedure CreateParser(Const ASource : string);
+    procedure CreateParser(Const ASource : string; aOptions : TParserOptions = []);
     function CheckClass(E : TSQLElement; C : TSQLElementClass) : TSQLElement;
     procedure TestDropStatement(Const ASource : string;C : TSQLElementClass);
     function TestCreateStatement(Const ASource,AName : string;C: TSQLElementClass) : TSQLCreateOrAlterStatement;
@@ -81,6 +83,7 @@ type
     procedure SetUp; override;
     procedure TearDown; override;
     property Parser : TTestParser Read FParser;
+    property ParserOptions : TParserOptions Read GetParserOptions Write FParserOptions;
     property ToFree : TSQLElement Read FToFree Write FTofree;
   end;
 
@@ -107,8 +110,19 @@ type
   TTestGeneratorParser = Class(TTestSQLParser)
   Published
     procedure TestCreateGenerator;
+    procedure TestCreateSequence;
+    procedure TestAlterSequence;
     procedure TestSetGenerator;
   end;
+
+  { TTestSetTermParser }
+
+  TTestSetTermParser = Class(TTestSQLParser)
+  Published
+    procedure TestSetTermNoOption;
+    procedure TestSetTermOption;
+  end;
+
 
   { TTestRoleParser }
 
@@ -660,6 +674,7 @@ type
     procedure TestParseStatementError;
     function TestStatement(Const ASource : String) : TSQLStatement;
     procedure TestStatementError(Const ASource : String);
+  Public
     property Statement : TSQLStatement Read FStatement;
   Published
     procedure TestException;
@@ -855,6 +870,21 @@ implementation
 
 uses typinfo;
 
+{ TTestSetTermParser }
+
+procedure TTestSetTermParser.TestSetTermNoOption;
+begin
+  FErrSource:='SET TERM ^ ;';
+  AssertException(ESQLParser,@TestParseError);
+end;
+
+procedure TTestSetTermParser.TestSetTermOption;
+begin
+  CreateParser('SET TERM ^ ;');
+  FToFree:=Parser.Parse([poAllowSetTerm]);
+  AssertEquals('Terminator set','^',Parser.Scanner.AlternateTerminator);
+end;
+
 { TTestGlobalParser }
 
 procedure TTestGlobalParser.TestEmpty;
@@ -904,11 +934,13 @@ begin
   FreeAndNil(FToFree);
 end;
 
-procedure TTestSQLParser.CreateParser(const ASource: string);
+procedure TTestSQLParser.CreateParser(const ASource: string; aOptions: TParserOptions = []);
 begin
   FSource:=TStringStream.Create(ASource);
+  FParserOptions:=aOptions;
   FParser:=TTestParser.Create(FSource);
 end;
+
 
 Function TTestSQLParser.CheckClass(E: TSQLElement; C: TSQLElementClass) : TSQLElement;
 begin
@@ -1062,9 +1094,6 @@ end;
 
 procedure TTestSQLParser.AssertEquals(const AMessage: String; Expected,
   Actual: TTriggerOperations);
-Var
-  NE,NA : String;
-
 begin
   If Expected<>Actual then
     Fail(Amessage)
@@ -1270,13 +1299,21 @@ begin
   AssertEquals('End of stream reached',tsqlEOF,Parser.CurrentToken);
 end;
 
+function TTestSQLParser.GetParserOptions: TParserOptions;
+begin
+  if Assigned(FParser) then
+    Result:=FParser.Options
+  else
+    Result:=FParserOptions;
+end;
+
 procedure TTestSQLParser.AssertTypeDefaults(TD : TSQLTypeDefinition;Len : Integer = 0);
 
 begin
   AssertNull(TD.DefaultValue);
   AssertNull(TD.Check);
   AssertNull(TD.Collation);
-  AssertEquals('Array dim 0',0,TD.ArrayDim);
+  AssertEquals('Array dim 0',0,Length(TD.ArrayDims));
   AssertEquals('Blob type 0',0,TD.BlobType);
   AssertEquals('Not required',False,TD.NotNull);
   AssertEquals('Length',Len,TD.Len);
@@ -1402,6 +1439,26 @@ procedure TTestGeneratorParser.TestCreateGenerator;
 
 begin
   TestCreateStatement('CREATE GENERATOR A','A',TSQLCreateGeneratorStatement);
+end;
+
+procedure TTestGeneratorParser.TestCreateSequence;
+
+Var
+  C : TSQLCreateOrAlterStatement;
+begin
+  C:=TestCreateStatement('CREATE SEQUENCE A','A',TSQLCreateGeneratorStatement);
+  AssertEquals('Sequence detected',True,TSQLCreateGeneratorStatement(c).IsSequence);
+end;
+
+procedure TTestGeneratorParser.TestAlterSequence;
+Var
+  C : TSQLCreateOrAlterStatement;
+  D : TSQLAlterGeneratorStatement absolute C;
+begin
+  C:=TestCreateStatement('ALTER SEQUENCE A RESTART WITH 100','A',TSQLAlterGeneratorStatement);
+  AssertEquals('Sequence detected',True,D.IsSequence);
+  AssertEquals('Sequence restart ',True,D.HasRestart);
+  AssertEquals('Sequence restart value',100,D.Restart);
 end;
 
 procedure TTestGeneratorParser.TestSetGenerator;
@@ -1611,7 +1668,9 @@ Var
 
 begin
   TD:=TestType('INT [3]',[],sdtInteger);
-  AssertEquals('Array of length 3',3,TD.ArrayDim);
+  AssertEquals('Array of length',1,Length(TD.ArrayDims));
+  AssertEquals('Upper bound',3,TD.ArrayDims[0][2]);
+  AssertEquals('Lower bound',1,TD.ArrayDims[0][1]);
   AssertEquals('End of stream reached',tsqlEOF,Parser.CurrentToken);
 end;
 
@@ -1781,31 +1840,26 @@ end;
 
 procedure TTestTypeParser.TestSmallInt;
 
-Var
-  TD : TSQLTypeDefinition;
 begin
-  TD:=TestType('SMALLINT',[],sdtSmallint);
+  TestType('SMALLINT',[],sdtSmallint);
 end;
 
 procedure TTestTypeParser.TestFloat;
-Var
-  TD : TSQLTypeDefinition;
+
 begin
-  TD:=TestType('FLOAT',[],sdtFloat);
+  TestType('FLOAT',[],sdtFloat);
 end;
 
 procedure TTestTypeParser.TestDoublePrecision;
-var
-  TD : TSQLTypeDefinition;
+
 begin
-  TD:=TestType('DOUBLE PRECISION',[],sdtDoublePrecision);
+  TestType('DOUBLE PRECISION',[],sdtDoublePrecision);
 end;
 
 procedure TTestTypeParser.TestDoublePrecisionDefault;
-var
-  TD : TSQLTypeDefinition;
+
 begin
-  TD:=TestType('DOUBLE PRECISION DEFAULT 0',[],sdtDoublePrecision);
+  TestType('DOUBLE PRECISION DEFAULT 0',[],sdtDoublePrecision);
 end;
 
 procedure TTestTypeParser.TestBlobError1;
@@ -4736,7 +4790,6 @@ end;
 procedure TTestSelectParser.TestWhereExists;
 
 Var
-  F : TSQLSelectField;
   E : TSQLExistsExpression;
   S : TSQLSelectStatement;
 
@@ -6163,19 +6216,14 @@ end;
 
 procedure TTestProcedureStatement.TestExit;
 
-Var
-  E : TSQLExitStatement;
 begin
-  E:=TSQLExitStatement(CheckClass(TestStatement('EXIT'),TSQLExitStatement));
+  CheckClass(TestStatement('EXIT'),TSQLExitStatement);
 end;
 
 procedure TTestProcedureStatement.TestSuspend;
 
-Var
-  E : TSQLSuspendStatement;
-
 begin
-  E:=TSQLSuspendStatement(CheckClass(TestStatement('Suspend'),TSQLSuspendStatement));
+  CheckClass(TestStatement('Suspend'),TSQLSuspendStatement);
 end;
 
 procedure TTestProcedureStatement.TestEmptyBlock;
@@ -7594,8 +7642,6 @@ end;
 procedure TTestGrantParser.TestPublicPrivilege;
 Var
   t : TSQLTableGrantStatement;
-  P : TSQLPublicGrantee;
-
 begin
   TestGrant('GRANT SELECT ON A TO PUBLIC');
   T:=TSQLTableGrantStatement(CheckClass(Statement,TSQLTableGrantStatement));
@@ -8051,8 +8097,6 @@ end;
 procedure TTestRevokeParser.TestPublicPrivilege;
 Var
   t : TSQLTableRevokeStatement;
-  P : TSQLPublicGrantee;
-
 begin
   TestRevoke('Revoke SELECT ON A FROM PUBLIC');
   T:=TSQLTableRevokeStatement(CheckClass(Statement,TSQLTableRevokeStatement));
@@ -8171,6 +8215,7 @@ initialization
                  TTestDeclareExternalFunctionParser,
                  TTestGrantParser,
                  TTestRevokeParser,
-                 TTestGlobalParser]);
+                 TTestGlobalParser,
+                 TTestSetTermParser]);
 end.
 

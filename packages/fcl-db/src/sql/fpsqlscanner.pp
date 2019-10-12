@@ -44,7 +44,7 @@ type
    tsqlIntegerNumber,tsqlFloatNumber,tsqlComment,
    tsqlBraceOpen,tsqlBraceClose,tsqlSquareBraceOpen,tsqlSquareBraceClose,
    tsqlPlaceHolder {question mark},
-   tsqlCOMMA,tsqlCOLON,tsqlDOT,tsqlSEMICOLON,
+   tsqlCOMMA,tsqlCOLON,tsqlDOT,tsqlSEMICOLON,tsqlTerminator,
    tsqlGT,tsqlLT,tsqlPLUS,tsqlMINUS,tsqlMUL,tsqlDIV,tsqlConcatenate,
    tsqlEQ,tsqlGE,tsqlLE,tsqlNE,
    { Reserved words/keywords start here. They must be last }
@@ -70,13 +70,13 @@ type
    tSQLTABLE, tsqlText, tsqlTrigger, tsqlTime, tsqlTimeStamp, tsqlType, tsqlTo, tsqlTransaction, tsqlThen,
    tsqlUNION, tsqlUPDATE, tsqlUPPER,  tsqlUNIQUE, tsqlUSER,
    tsqlValue, tsqlVALUES, tsqlVARIABLE,  tsqlVIEW, tsqlVARCHAR,TSQLVARYING,
-   tsqlWHERE, tsqlWITH, tsqlWHILE, tsqlWork, tsqlWhen
+   tsqlWHERE, tsqlWITH, tsqlWHILE, tsqlWork, tsqlWhen,tsqlSequence,tsqlRestart,tsqlrecreate,tsqlterm
  );
    TSQLTokens = set of TSQLToken;
 
 const
   FirstKeyword = tsqlAll;
-  LastKeyWord = tsqlWhen;
+  LastKeyWord = tsqlTerm;
   sqlComparisons = [tsqleq,tsqlGE,tsqlLE,tsqlNE,tsqlGT,tsqlLT,tsqlIn,tsqlIS,
                     tsqlbetween,tsqlLike,tsqlContaining,tsqlStarting,tsqlNOT];
   sqlInvertableComparisons = [tsqlLike,tsqlContaining,tsqlStarting,tsqlIN,tsqlIS, tsqlBetween];
@@ -90,7 +90,8 @@ const
        'symbol string',
        'integer number','float number', 'comment',
        '(',')', '[',']',
-       '?',',',':','.',';','>','<',
+       '?',',',':','.',';','',
+       '>','<',
        '+','-','*','/','||',
        '=','>=','<=','<>',
        // Identifiers last:
@@ -115,7 +116,7 @@ const
        'TABLE', 'TEXT', 'TRIGGER', 'TIME', 'TIMESTAMP', 'TYPE', 'TO', 'TRANSACTION', 'THEN',
        'UNION', 'UPDATE', 'UPPER', 'UNIQUE', 'USER',
        'VALUE','VALUES','VARIABLE', 'VIEW','VARCHAR','VARYING',
-       'WHERE', 'WITH', 'WHILE','WORK','WHEN'
+       'WHERE', 'WITH', 'WHILE','WORK','WHEN','SEQUENCE','RESTART','RECREATE','TERM'
   );
 
 Type
@@ -166,9 +167,8 @@ Type
 
   TSQLScanner = class
   private
+    FAlternateTerminator: String;
     FOptions: TSQLScannerOptions;
-    FReturnComments: Boolean;
-    FReturnWhiteSpace: Boolean;
     FSourceFile: TLineReader;
     FSourceFilename: string;
     FCurRow: Integer;
@@ -219,6 +219,7 @@ Type
     property CurToken: TSQLToken read FCurToken;
     property CurTokenString: string read FCurTokenString;
     Property ExcludeKeywords : TStrings Read GetExcludeKeywords Write SetExcludeKeywords;
+    Property AlternateTerminator : String Read FAlternateTerminator Write FAlternateTerminator;
   end;
 
 
@@ -240,6 +241,7 @@ Var
 begin
   For T:=FirstKeyword to LastKeyWord do
     IdentifierTokens[T]:=T;
+  IdentifierTokensOK:=True;
 end;
 
 constructor TFileLineReader.Create(const AFilename: string);
@@ -479,7 +481,7 @@ Var
   Delim : Char;
   TokenStart : PChar;
   Len,OLen : Integer;
-  S : String;
+  S : UnicodeString;
 
   Procedure AppendBufToTokenString(DoNextToken : Boolean);
 
@@ -653,7 +655,10 @@ begin
     BuildKeyWords;
   P:=FKeyWords.Find(S);
   If (P<>Nil) then
-    Result:=P^; //keyword found
+    Result:=P^ //keyword found
+  else if (AlternateTerminator<>'') and (S=AlternateTerminator) then
+    Result:=tsqlTerminator;
+
   { I:=FirstKeyword;
   While (Result=tsqlIdentifier) and (I<=Lastkeyword) do
     begin
@@ -687,6 +692,8 @@ begin
     result:=tsqlSymbolString;
     SetLength(FCurTokenString,Len);
     Move(TokenStart^,FCurTokenString[1],Len);
+    if (AlternateTerminator<>'') and (CurtokenString=AlternateTerminator) then
+      Exit(tsqlTerminator);
 
     // Check if this is a keyword or identifier/literal
     // Probably not (due to naming rules) but it doesn't hurt
@@ -950,7 +957,7 @@ Var
 
 begin
   FPos:=FBufPos;
-  SetLength(Result,0);
+  Result:='';
   Repeat
     PRun:=@Buffer[FBufPos];
     While (FBufPos<FBufLen) and Not (PRun^ in [10,13]) do

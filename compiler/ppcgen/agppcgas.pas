@@ -58,7 +58,7 @@ unit agppcgas;
       constructor CreateWithWriter(info: pasminfo; wr: TExternalAssemblerOutputFile; freewriter, smart: boolean); override;
      protected
       function sectionname(atype: TAsmSectiontype; const aname: string; aorder: TAsmSectionOrder): string; override;
-      procedure WriteSection(atype:TAsmSectiontype;const aname:string;aorder:TAsmSectionOrder;secalign:longint;secflags:TSectionFlags=SF_None;secprogbits:TSectionProgbits=SPB_None); override;
+      procedure WriteSection(atype:TAsmSectiontype;const aname:string;aorder:TAsmSectionOrder;secalign:longint;secflags:TSectionFlags=[];secprogbits:TSectionProgbits=SPB_None); override;
       procedure WriteAsmList; override;
       procedure WriteExtraHeader; override;
       procedure WriteExtraFooter; override;
@@ -487,7 +487,7 @@ unit agppcgas;
       end;
 
     procedure TPPCAIXAssembler.WriteSection(atype:TAsmSectiontype;const aname:string;aorder:TAsmSectionOrder;secalign:longint;
-      secflags:TSectionFlags=SF_None;secprogbits:TSectionProgbits=SPB_None);
+      secflags:TSectionFlags=[];secprogbits:TSectionProgbits=SPB_None);
 
       begin
         secalign:=max_alignment[atype];

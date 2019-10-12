@@ -82,11 +82,11 @@ unit ra68kmot;
          function try_to_consume(t : tasmtoken):boolean;
          procedure consume_all_until(tokens : tasmtokenset);
          function findopcode(const s: string; var opsize: topsize): tasmop;
-         Function BuildExpression(allow_symbol : boolean; asmsym : pshortstring) : longint;
-         Procedure BuildConstant(maxvalue: longint);
+         Function BuildExpression(allow_symbol : boolean; asmsym : pshortstring) : tcgint;
+         Procedure BuildConstant(maxvalue: tcgint);
          Procedure BuildRealConstant(typ : tfloattype);
          Procedure BuildScaling(const oper:tm68koperand);
-         Function BuildRefExpression: longint;
+         Function BuildRefExpression: tcgint;
          procedure BuildReference(const oper:tm68koperand);
          procedure BuildRegList(const oper:tm68koperand);
          procedure BuildRegPair(const oper:tm68koperand);
@@ -621,9 +621,9 @@ const
 
 
 
-    Function tm68kmotreader.BuildExpression(allow_symbol : boolean; asmsym : pshortstring) : longint;
+    Function tm68kmotreader.BuildExpression(allow_symbol : boolean; asmsym : pshortstring) : tcgint;
   {*********************************************************************}
-  { FUNCTION BuildExpression: longint                                   }
+  { FUNCTION BuildExpression: tcgint                                    }
   {  Description: This routine calculates a constant expression to      }
   {  a given value. The return value is the value calculated from       }
   {  the expression.                                                    }
@@ -934,7 +934,7 @@ const
   end;
 
 
-  Procedure tm68kmotreader.BuildConstant(maxvalue: longint);
+  Procedure tm68kmotreader.BuildConstant(maxvalue: tcgint);
   {*********************************************************************}
   { PROCEDURE BuildConstant                                             }
   {  Description: This routine takes care of parsing a DB,DD,or DW      }
@@ -948,7 +948,7 @@ const
   {*********************************************************************}
   var
    expr: string;
-   value : longint;
+   value : tcgint;
   begin
       Repeat
         Case actasmtoken of
@@ -1059,9 +1059,9 @@ const
   end;
 
 
-  Function TM68kMotreader.BuildRefExpression: longint;
+  Function TM68kMotreader.BuildRefExpression: tcgint;
   {*********************************************************************}
-  { FUNCTION BuildRefExpression: longint                                   }
+  { FUNCTION BuildRefExpression: tcgint                                 }
   {  Description: This routine calculates a constant expression to      }
   {  a given value. The return value is the value calculated from       }
   {  the expression.                                                    }
@@ -1177,7 +1177,7 @@ const
   {*********************************************************************}
   procedure TM68kMotreader.BuildReference(const oper:tm68koperand);
     var
-      l:longint;
+      l:tcgint;
       code: integer;
       str: string;
     begin
@@ -1423,7 +1423,8 @@ const
                          Message(asmr_e_invalid_operand_type);
                       { identifiers are handled by BuildExpression }
                       oper.opr.typ := OPR_CONSTANT;
-                      oper.opr.val :=BuildExpression(true,@tempstr);
+		      l:=BuildExpression(true,@tempstr);
+                      oper.opr.val :=aint(l);
                       if tempstr<>'' then
                         begin
                           l:=oper.opr.val;
@@ -1712,7 +1713,7 @@ const
               AS_DD:
                 begin
                   Consume(AS_DD);
-                  BuildConstant(longint($ffffffff));
+                  BuildConstant(tcgint($ffffffff));
                 end;
               AS_XDEF:
                 begin

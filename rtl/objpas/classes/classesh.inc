@@ -242,7 +242,7 @@ Type
     function Add(Item: Pointer): Integer; {$ifdef CLASSESINLINE} inline; {$endif CLASSESINLINE}
     procedure Clear;
     procedure Delete(Index: Integer); {$ifdef CLASSESINLINE} inline; {$endif CLASSESINLINE}
-    class procedure Error(const Msg: string; Data: PtrInt);
+    class procedure Error(const Msg: string; Data: PtrInt); static;
     procedure Exchange(Index1, Index2: Integer);
     function Expand: TFPList; {$ifdef CLASSESINLINE} inline; {$endif CLASSESINLINE}
     function Extract(Item: Pointer): Pointer;
@@ -288,15 +288,9 @@ Type
   TListNotification = (lnAdded, lnExtracted, lnDeleted);
   TList = class;
 
-  TListEnumerator = class
-  private
-    FList: TList;
-    FPosition: Integer;
+  TListEnumerator = class(TFPListEnumerator)
   public
     constructor Create(AList: TList);
-    function GetCurrent: Pointer;
-    function MoveNext: Boolean;
-    property Current: Pointer read GetCurrent;
   end;
 
   TList = class(TObject,IFPObserved)
@@ -312,15 +306,15 @@ Type
     procedure DoOr(ListA, ListB : TList);
     procedure DoXOr(ListA, ListB : TList);
   protected
-    function Get(Index: Integer): Pointer;
+    function Get(Index: Integer): Pointer; inline;
     procedure Grow; virtual;
     procedure Put(Index: Integer; Item: Pointer);
     procedure Notify(Ptr: Pointer; Action: TListNotification); virtual;
-    procedure SetCapacity(NewCapacity: Integer);
-    function GetCapacity: integer;
+    procedure SetCapacity(NewCapacity: Integer); inline;
+    function GetCapacity: Integer; inline;
     procedure SetCount(NewCount: Integer);
-    function GetCount: integer;
-    function GetList: PPointerList;
+    function GetCount: Integer; inline;
+    function GetList: PPointerList; inline;
   public
     constructor Create;
     destructor Destroy; override;
@@ -335,19 +329,19 @@ Type
     procedure Exchange(Index1, Index2: Integer);
     function Expand: TList;
     function Extract(item: Pointer): Pointer;
-    function First: Pointer;
+    function First: Pointer; inline;
     function GetEnumerator: TListEnumerator;
-    function IndexOf(Item: Pointer): Integer;
+    function IndexOf(Item: Pointer): Integer; inline;
     procedure Insert(Index: Integer; Item: Pointer);
-    function Last: Pointer;
-    procedure Move(CurIndex, NewIndex: Integer);
+    function Last: Pointer; inline;
+    procedure Move(CurIndex, NewIndex: Integer); inline;
     procedure Assign (ListA: TList; AOperator: TListAssignOp=laCopy; ListB: TList=nil);
     function Remove(Item: Pointer): Integer;
-    procedure Pack;
-    procedure Sort(Compare: TListSortCompare);
-    procedure Sort(Compare: TListSortCompare; SortingAlgorithm: PSortingAlgorithm);
-    procedure Sort(Compare: TListSortComparer_Context; Context: Pointer);
-    procedure Sort(Compare: TListSortComparer_Context; Context: Pointer; SortingAlgorithm: PSortingAlgorithm);
+    procedure Pack; inline;
+    procedure Sort(Compare: TListSortCompare); inline;
+    procedure Sort(Compare: TListSortCompare; SortingAlgorithm: PSortingAlgorithm); inline;
+    procedure Sort(Compare: TListSortComparer_Context; Context: Pointer); inline;
+    procedure Sort(Compare: TListSortComparer_Context; Context: Pointer; SortingAlgorithm: PSortingAlgorithm); inline;
     property Capacity: Integer read GetCapacity write SetCapacity;
     property Count: Integer read GetCount write SetCount;
     property Items[Index: Integer]: Pointer read Get write Put; default;

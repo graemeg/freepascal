@@ -2410,8 +2410,11 @@ begin
     CloseDataSets;
     If LogEvent(detCommit) then
       Log(detCommit,SCommitting);
-    // FTrans=Nil for the case of forced close.
-    if (FTrans=Nil) or (stoUseImplicit in Options) or SQLConnection.AttemptCommit(FTrans) then
+    // The inherited closetrans must always be called.
+    // So the last (FTrans=Nil) is for the case of forced close. (Bug IDs 35246 and 33737)
+    // Order is important:
+    // some connections do not have FTrans, but they must still go through AttemptCommit.
+    if (stoUseImplicit in Options) or SQLConnection.AttemptCommit(FTrans) or (FTrans=Nil) then
       begin
       CloseTrans;
       FreeAndNil(FTrans);
@@ -2438,8 +2441,12 @@ begin
     CloseDataSets;
     If LogEvent(detRollback) then
       Log(detRollback,SRollingBack);
+    // The inherited closetrans must always be called.
+    // So the last (FTrans=Nil) is for the case of forced close. (Bug IDs 35246 and 33737)
+    // Order is important:
+    // some connections do not have FTrans, but they must still go through AttemptCommit.
     // FTrans=Nil for the case of forced close.
-    if (FTrans=Nil) or SQLConnection.AttemptRollBack(FTrans) then
+    if SQLConnection.AttemptRollBack(FTrans) or (FTrans=Nil) then
       begin
       CloseTrans;
       FreeAndNil(FTrans);

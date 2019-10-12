@@ -87,7 +87,8 @@ interface
       'objc_protolist',
       'stack',
       'heap',
-      'gcc_except_table'
+      'gcc_except_table',
+      'ARM_attributes'
     );
 
     { OMF record types }
@@ -3020,7 +3021,8 @@ implementation
         {objc_protolist} 'DATA',
         {stack} 'STACK',
         {heap} 'HEAP',
-        {gcc_except_table} 'DATA'
+        {gcc_except_table} 'DATA',
+        {ARM_attributes} 'DATA'
       );
     begin
       result:=segclass[atype];

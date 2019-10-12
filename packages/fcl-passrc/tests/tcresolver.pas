@@ -6483,8 +6483,8 @@ begin
   StartProgram(false);
   Add([
   'type',
-  '  integer = longint;',
-  '  TValue = type longint;',
+  '  integer = word;',
+  '  TValue = type word;',
   '  TAliasValue = TValue;',
   'procedure DoIt(i: integer); external;',
   'procedure DoIt(i: TAliasValue); external;',

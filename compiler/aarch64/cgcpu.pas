@@ -1024,6 +1024,7 @@ implementation
             { Notify the register allocator that we have written a move
               instruction so it can try to eliminate it. }
             add_move_instruction(instr);
+            { FMOV cannot generate a floating point exception }
           end
         else
           begin
@@ -1031,9 +1032,9 @@ implementation
                (reg_cgsize(reg2)<>tosize) then
               internalerror(2014110913);
             instr:=taicpu.op_reg_reg(A_FCVT,reg2,reg1);
+            maybe_check_for_fpu_exception(list);
           end;
         list.Concat(instr);
-        maybe_check_for_fpu_exception(list);
       end;
 
 

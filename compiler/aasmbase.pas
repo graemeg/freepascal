@@ -170,12 +170,17 @@ interface
          { initial heap segment for 16-bit DOS }
          sec_heap,
          { dwarf based/gcc style exception handling }
-         sec_gcc_except_table
+         sec_gcc_except_table,
+         sec_arm_attribute
        );
 
        TObjCAsmSectionType = sec_objc_class..sec_objc_protolist;
 
        TAsmSectionOrder = (secorder_begin,secorder_default,secorder_end);
+
+       TSectionFlag = (SF_A,SF_W,SF_X);
+       TSectionFlags = set of TSectionFlag;
+       TSectionProgbits = (SPB_None,SPB_PROGBITS,SPB_NOBITS,SPB_NOTE,SPB_ARM_ATTRIBUTES);
 
        TAsmSymbol = class(TFPHashObject)
        private

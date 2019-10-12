@@ -2691,10 +2691,14 @@ function(){
     An external class is not a TObject and has none of its methods.<br>
     All members are external. If you omit the <i>external</i> modifier the
     external name is the member name. Keep in mind that JS is case sensitive.<br>
-    Destructors are not allowed.<br>
-    Constructors are only allowed with the name <i>New</i> and a call
-    translates to <i>new ExtClass(params)</i>.
     Properties work the same as with Pascal classes, i.e. are replaced by Getter/Setter.<br>
+    Destructors are not allowed.<br>
+    Constructors are supported in three ways:
+    <ul>
+      <li>With name <i>New</i> it is translated to <i>new ExtClass(params)</i>.</li>
+      <li>With external name <i>'{}'</i> it is translated to <i>{}</i>.</li>
+      <li>Otherwise it is translated to <i>new ExtClass.FuncName(params)</i>.</li>
+    </ul>
 
     <table class="sample">
       <tbody>

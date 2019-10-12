@@ -228,6 +228,8 @@ Works:
   - destructor forbidden
   - constructor must not be virtual
   - constructor 'new' -> new extclass(params)
+  - constructor Name -> new extclass.name(params)
+  - constructor Name external name '{}' -> {}
   - identifiers are renamed to avoid clashes with external names
   - call inherited
   - Pascal descendant can override newinstance
@@ -508,7 +510,7 @@ const
   nVirtualMethodNameMustMatchExternal = 4013;
   nPublishedNameMustMatchExternal = 4014;
   nInvalidVariableModifier = 4015;
-  nExternalObjectConstructorMustBeNamedNew = 4016;
+  // was nExternalObjectConstructorMustBeNamedNew = 4016;
   nNewInstanceFunctionMustBeVirtual = 4017;
   nNewInstanceFunctionMustHaveTwoParameters = 4018;
   nNewInstanceFunctionMustNotHaveOverloadAtX = 4019;
@@ -540,7 +542,7 @@ resourcestring
   sVirtualMethodNameMustMatchExternal = 'Virtual method name must match external';
   sInvalidVariableModifier = 'Invalid variable modifier "%s"';
   sPublishedNameMustMatchExternal = 'Published name must match external';
-  sExternalObjectConstructorMustBeNamedNew = 'external object constructor must be named "new"';
+  // was sExternalObjectConstructorMustBeNamedNew = 'external object constructor must be named "new"';
   sNewInstanceFunctionMustBeVirtual = 'NewInstance function must be virtual';
   sNewInstanceFunctionMustHaveTwoParameters = 'NewInstance function must have two parameters';
   sNewInstanceFunctionMustNotHaveOverloadAtX = 'NewInstance function must not have overload at %s';
@@ -4073,16 +4075,13 @@ begin
               // constructor of external class can't be overriden -> forbid virtual
               RaiseMsg(20170323100447,nInvalidXModifierY,sInvalidXModifierY,
                 [Proc.ElementTypeName,'virtual,external'],Proc);
+            ExtName:=ComputeConstString(Proc.LibrarySymbolName,true,true);
             if CompareText(Proc.Name,'new')=0 then
               begin
-              ExtName:=ComputeConstString(Proc.LibrarySymbolName,true,true);
               if ExtName<>Proc.Name then
                 RaiseMsg(20170323083511,nVirtualMethodNameMustMatchExternal,
                   sVirtualMethodNameMustMatchExternal,[],Proc.LibrarySymbolName);
-              end
-            else
-              RaiseMsg(20190116211019,nExternalObjectConstructorMustBeNamedNew,
-                sExternalObjectConstructorMustBeNamedNew,[],El);
+              end;
             end
           else
             RaiseMsg(20170322163210,nPasElementNotSupported,sPasElementNotSupported,
@@ -10371,68 +10370,83 @@ var
   OldAccess: TCtxAccess;
   ExtNameEl: TJSElement;
   WithData: TPas2JSWithExprScope;
+  PosEl: TPasElement;
+  aResolver: TPas2JSResolver;
 begin
   Result:=nil;
+  aResolver:=AContext.Resolver;
   NewExpr:=nil;
   ExtNameEl:=nil;
   try
     Proc:=Ref.Declaration as TPasConstructor;
-    ExtNameEl:=nil;
-
-    if Left<>nil then
-      begin
-      if AContext.Resolver<>nil then
-        begin
-        AContext.Resolver.ComputeElement(Left,LeftResolved,[]);
-        if LeftResolved.BaseType=btModule then
-          begin
-          // e.g. Unit.TExtA
-          // ExtName is global -> omit unit
-          Left:=nil;
-          end
-        else ;
-        end;
-      if Left<>nil then
-        begin
-        // convert left side
-        OldAccess:=AContext.Access;
-        AContext.Access:=caRead;
-        ExtNameEl:=ConvertExpression(Left,AContext);
-        AContext.Access:=OldAccess;
-        end;
-      end;
-    if ExtNameEl=nil then
-      begin
-      if Ref.WithExprScope<>nil then
-        begin
-        // using local WITH var
-        WithData:=Ref.WithExprScope as TPas2JSWithExprScope;
-        ExtName:=WithData.WithVarName;
-        if ExtName='' then
-          RaiseNotSupported(ParamsExpr,AContext,20190209092049);
-        end
-      else
-        // use external class name
-        ExtName:=(Proc.Parent as TPasClassType).ExternalName;
-      if ExtName='' then
-        DoError(20180511163944,nJSNewNotSupported,sJSNewNotSupported,[],ParamsExpr);
-      ExtNameEl:=CreatePrimitiveDotExpr(ExtName,Ref.Element);
-      end;
+    PosEl:=Ref.Element;
 
     if CompareText(Proc.Name,'new')=0 then
       begin
-      // create "new ExtName(params)"
-      NewExpr:=TJSNewMemberExpression(CreateElement(TJSNewMemberExpression,Ref.Element));
-      NewExpr.MExpr:=ExtNameEl;
-      NewExpr.Args:=TJSArguments(CreateElement(TJSArguments,Ref.Element));
-      ExtNameEl:=nil;
-      if ParamsExpr<>nil then
-        CreateProcedureCallArgs(NewExpr.Args.Elements,ParamsExpr,Proc.ProcType,AContext);
-      Result:=NewExpr;
-      NewExpr:=nil;
+      if Left<>nil then
+        begin
+        if aResolver<>nil then
+          begin
+          aResolver.ComputeElement(Left,LeftResolved,[]);
+          if LeftResolved.BaseType=btModule then
+            begin
+            // e.g. Unit.TExtA
+            // ExtName is global -> omit unit
+            Left:=nil;
+            end
+          else ;
+          end;
+        if Left<>nil then
+          begin
+          // convert left side
+          OldAccess:=AContext.Access;
+          AContext.Access:=caRead;
+          ExtNameEl:=ConvertExpression(Left,AContext);
+          AContext.Access:=OldAccess;
+          end;
+        end;
+      if ExtNameEl=nil then
+        begin
+        if Ref.WithExprScope<>nil then
+          begin
+          // using local WITH var
+          WithData:=Ref.WithExprScope as TPas2JSWithExprScope;
+          ExtName:=WithData.WithVarName;
+          if ExtName='' then
+            RaiseNotSupported(ParamsExpr,AContext,20190209092049);
+          end
+        else
+          // use external class name
+          ExtName:=(Proc.Parent as TPasClassType).ExternalName;
+        if ExtName='' then
+          DoError(20180511163944,nJSNewNotSupported,sJSNewNotSupported,[],ParamsExpr);
+        ExtNameEl:=CreatePrimitiveDotExpr(ExtName,PosEl);
+        end;
       end
     else
-      RaiseNotSupported(Ref.Element,AContext,20190116210204);
+      begin
+      // external constructor ProcName
+      ExtName:='';
+      if aResolver<>nil then
+        ExtName:=aResolver.ComputeConstString(Proc.LibrarySymbolName,true,true);
+      if ExtName='{}' then
+        begin
+        // external constructor {} -> "{}"
+        Result:=TJSObjectLiteral(CreateElement(TJSObjectLiteral,PosEl));
+        exit;
+        end;
+      // external constructor ProcName -> "new ExtA.ProcName()"
+      ExtNameEl:=CreateReferencePathExpr(Proc,AContext,true);
+      end;
+
+    NewExpr:=TJSNewMemberExpression(CreateElement(TJSNewMemberExpression,PosEl));
+    NewExpr.MExpr:=ExtNameEl;
+    ExtNameEl:=nil;
+    NewExpr.Args:=TJSArguments(CreateElement(TJSArguments,PosEl));
+    if ParamsExpr<>nil then
+      CreateProcedureCallArgs(NewExpr.Args.Elements,ParamsExpr,Proc.ProcType,AContext);
+    Result:=NewExpr;
+    NewExpr:=nil;
   finally
     ExtNameEl.Free;
     NewExpr.Free;

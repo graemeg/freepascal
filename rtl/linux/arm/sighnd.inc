@@ -70,6 +70,7 @@ begin
         begin
           { don't know how to find the different causes, maybe via xer? }
           res := 207;
+          SysResetFPU;
         end;
     SIGILL:
 {$ifdef FPC_SYSTEM_FPC_MOVE}

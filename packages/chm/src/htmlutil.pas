@@ -119,11 +119,13 @@ begin
     inc(S); // skip space
     P:= S;
 
-    // Skip 
+    // Skip tag name
     while not (P^ in ['=', ' ', '>', #0]) do
       inc(P);
 
-    if (P^ = '=') then inc(P);
+    // Skip spaces and '='
+    while (P^ in ['=', ' ']) do
+      inc(P);
     
     while not (P^ in [' ','>',#0]) do
     begin
@@ -161,12 +163,15 @@ var
   S: Pchar;
   C: Char;
 begin
+  Result := '';
+
   P:= Pchar(namevalpair);
   S:= StrPos(P, '=');
 
   if S <> nil then     
   begin
     inc(S); // skip equal
+    while S^ = ' ' do inc(S);  // skip any spaces after =
     P:= S;  // set P to a character after =
 
     if (P^ in ['"','''']) then
@@ -181,9 +186,7 @@ begin
       inc(P);
 
     if (P <> S) then { Thanks to Dave Keighan (keighand@yahoo.com) }
-      Result:= CopyBuffer(S, P - S) 
-    else
-      Result:= '';
+      Result:= CopyBuffer(S, P - S); 
   end;
 end;
 

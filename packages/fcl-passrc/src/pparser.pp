@@ -4354,6 +4354,36 @@ function TPasParser.ParseGenericTypeDecl(Parent: TPasElement;
       end;
   end;
 
+  procedure ParseProcType(const TypeName: string;
+    const NamePos: TPasSourcePos; TypeParams: TFPList;
+    IsReferenceTo: boolean);
+  var
+    ProcTypeEl: TPasProcedureType;
+    ProcType: TProcType;
+  begin
+    case CurToken of
+    tkFunction:
+      begin
+      ProcTypeEl := CreateFunctionType(TypeName, 'Result', Parent, False,
+                                       NamePos, TypeParams);
+      ProcType:=ptFunction;
+      end;
+    tkprocedure:
+      begin
+      ProcTypeEl := TPasProcedureType(CreateElement(TPasProcedureType,
+                          TypeName, Parent, visDefault, NamePos, TypeParams));
+      ProcType:=ptProcedure;
+      end;
+    else
+      ParseExcTokenError('procedure or function');
+    end;
+    ProcTypeEl.IsReferenceTo:=IsReferenceTo;
+    if AddToParent and (Parent is TPasDeclarations) then
+      TPasDeclarations(Parent).Functions.Add(ProcTypeEl);
+    InitGenericType(ProcTypeEl,TypeParams);
+    ParseProcedureOrFunction(ProcTypeEl, ProcTypeEl, ProcType, True);
+  end;
+
 var
   TypeName, AExternalNameSpace, AExternalName: String;
   NamePos: TPasSourcePos;
@@ -4361,8 +4391,6 @@ var
   ClassEl: TPasClassType;
   RecordEl: TPasRecordType;
   ArrEl: TPasArrayType;
-  ProcTypeEl: TPasProcedureType;
-  ProcType: TProcType;
   i: Integer;
   AObjKind: TPasObjKind;
 begin
@@ -4433,24 +4461,17 @@ begin
        Engine.FinishScope(stTypeDef,ArrEl);
        end;
     tkprocedure,tkfunction:
-      begin
-      if CurToken=tkFunction then
+      ParseProcType(TypeName,NamePos,TypeParams,false);
+    tkIdentifier:
+      if CurTokenIsIdentifier('reference') then
         begin
-        ProcTypeEl := CreateFunctionType(TypeName, 'Result', Parent, False,
-                                         NamePos, TypeParams);
-        ProcType:=ptFunction;
+        NextToken;
+        CheckToken(tkto);
+        NextToken;
+        ParseProcType(TypeName,NamePos,TypeParams,true);
         end
       else
-        begin
-        ProcTypeEl := TPasProcedureType(CreateElement(TPasProcedureType,
-                            TypeName, Parent, visDefault, NamePos, TypeParams));
-        ProcType:=ptProcedure;
-        end;
-      if AddToParent and (Parent is TPasDeclarations) then
-        TPasDeclarations(Parent).Functions.Add(ProcTypeEl);
-      InitGenericType(ProcTypeEl,TypeParams);
-      ParseProcedureOrFunction(ProcTypeEl, ProcTypeEl, ProcType, True);
-      end;
+        ParseExcTypeParamsNotAllowed;
     else
       ParseExcTypeParamsNotAllowed;
     end;

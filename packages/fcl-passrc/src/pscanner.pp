@@ -298,7 +298,8 @@ type
     msExternalClass,       { Allow external class definitions }
     msPrefixedAttributes,  { Allow attributes, disable proc modifier [] }
     msOmitRTTI,            { treat class section 'published' as 'public' and typeinfo does not work on symbols declared with this switch }
-    msMultiHelpers         { off=only one helper per type, on=all }
+    msMultiHelpers,        { off=only one helper per type, on=all }
+    msImplicitFunctionSpec { implicit function specialization }
     );
   TModeSwitches = Set of TModeSwitch;
 
@@ -1001,7 +1002,7 @@ const
     'Tab'
   );
 
-  SModeSwitchNames : array[TModeSwitch] of string{$ifdef fpc}[20]{$endif} =
+  SModeSwitchNames : array[TModeSwitch] of string =
   ( '', // msNone
     '', // Fpc,
     '', // Objfpc,
@@ -1051,7 +1052,8 @@ const
     'EXTERNALCLASS',
     'PREFIXEDATTRIBUTES',
     'OMITRTTI',
-    'MULTIHELPERS'
+    'MULTIHELPERS',
+    'IMPLICITFUNCTIONSPECIALIZATION'
     );
 
   LetterSwitchNames: array['A'..'Z'] of string=(
@@ -1140,7 +1142,7 @@ const
      msPointer2Procedure,msAutoDeref,msTPProcVar,msInitFinal,msDefaultAnsistring,
      msOut,msDefaultPara,msDuplicateNames,msHintDirective,
      msProperty,msDefaultInline,msExcept,msAdvancedRecords,msTypeHelpers,
-     msPrefixedAttributes,msArrayOperators
+     msPrefixedAttributes,msArrayOperators,msImplicitFunctionSpec
      ];
 
   DelphiUnicodeModeSwitches = delphimodeswitches + [msSystemCodePage,msDefaultUnicodestring];

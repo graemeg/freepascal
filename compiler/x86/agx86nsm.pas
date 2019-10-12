@@ -558,7 +558,8 @@ interface
           '.objc_protolist',
           '.stack',
           '.heap',
-          ',gcc_except_table'
+          ',gcc_except_table',
+          ',ARM_attributes'
         );
       var
         secname,secgroup: string;

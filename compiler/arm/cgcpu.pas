@@ -3101,11 +3101,12 @@ unit cgcpu;
         list.concat(instr);
         case instr.opcode of
           A_VMOV:
+            { VMOV cannot generate an FPU exception, so we do not need a check here }
             add_move_instruction(instr);
           else
-            ;
+            { VCVT can generate an exception }
+            maybe_check_for_fpu_exception(list);
         end;
-        maybe_check_for_fpu_exception(list);
       end;
 
 
@@ -3165,13 +3166,10 @@ unit cgcpu;
             end;
           end
         else
-          begin
-             handle_load_store(list,A_VLDR,PF_None,tmpmmreg,ref);
-          end;
+          handle_load_store(list,A_VLDR,PF_None,tmpmmreg,ref);
 
         if (tmpmmreg<>reg) then
           a_loadmm_reg_reg(list,fromsize,tosize,tmpmmreg,reg,shuffle);
-        maybe_check_for_fpu_exception(list);
       end;
 
 
@@ -3234,10 +3232,8 @@ unit cgcpu;
             end;
           end
         else
-          begin
-             handle_load_store(list,A_VSTR,PF_None,tmpmmreg,ref);
-          end;
-        maybe_check_for_fpu_exception(list);
+          handle_load_store(list,A_VSTR,PF_None,tmpmmreg,ref);
+        { VSTR cannot generate an FPU exception, VCVT is handled seperately, so we do not need a check here }
       end;
 
 
@@ -3253,7 +3249,7 @@ unit cgcpu;
            not shufflescalar(shuffle) then
           internalerror(2009112516);
         list.concat(taicpu.op_reg_reg(A_VMOV,mmreg,intreg));
-        maybe_check_for_fpu_exception(list);
+        { VMOV cannot generate an FPU exception, so we do not need a check here }
       end;
 
 
@@ -3269,7 +3265,7 @@ unit cgcpu;
            not shufflescalar(shuffle) then
           internalerror(2009112514);
         list.concat(taicpu.op_reg_reg(A_VMOV,intreg,mmreg));
-        maybe_check_for_fpu_exception(list);
+        { VMOV cannot generate an FPU exception, so we do not need a check here }
       end;
 
 
@@ -3410,7 +3406,7 @@ unit cgcpu;
         if (mmsize<>OS_F64) then
           internalerror(2009112405);
         list.concat(taicpu.op_reg_reg_reg(A_VMOV,mmreg,intreg.reglo,intreg.reghi));
-        cg.maybe_check_for_fpu_exception(list);
+        { VMOV cannot generate an FPU exception, so we do not need a check here }
       end;
 
 
@@ -3421,7 +3417,7 @@ unit cgcpu;
         if (mmsize<>OS_F64) then
           internalerror(2009112406);
         list.concat(taicpu.op_reg_reg_reg(A_VMOV,intreg.reglo,intreg.reghi,mmreg));
-        cg.maybe_check_for_fpu_exception(list);
+        { VMOV cannot generate an FPU exception, so we do not need a check here }
       end;
 
 
@@ -5263,7 +5259,7 @@ unit cgcpu;
             instr:=setoppostfix(taicpu.op_reg_reg(A_VMOV,reg2,reg1), PF_F32);
             list.Concat(instr);
             add_move_instruction(instr);
-            maybe_check_for_fpu_exception(list);
+            { VMOV cannot generate an FPU exception, so we do not need a check here }
           end
         else if (fromsize=OS_F64) and
           (tosize=OS_F64) then
@@ -5289,7 +5285,7 @@ unit cgcpu;
     procedure tthumb2cgarm.a_loadmm_reg_ref(list: TAsmList; fromsize, tosize: tcgsize; reg: tregister; const ref: treference; shuffle: pmmshuffle);
       begin
         handle_load_store(list,A_VSTR,PF_None,reg,ref);
-        maybe_check_for_fpu_exception(list);
+        { VSTR cannot generate an FPU exception, so we do not need a check here }
       end;
 
 
@@ -5309,7 +5305,7 @@ unit cgcpu;
           (fromsize=OS_F32) then
           begin
             list.Concat(taicpu.op_reg_reg(A_VMOV,intreg,mmreg));
-            maybe_check_for_fpu_exception(list);
+            { VMOV cannot generate an FPU exception, so we do not need a check here }
           end
         else
           internalerror(2012100814);

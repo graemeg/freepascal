@@ -559,10 +559,21 @@ begin
 end;
 
 
-Function TDataSource.IsLinkedTo(ADataSet: TDataSet): Boolean;
+Function TDataSource.IsLinkedTo(ADataset: TDataSet): Boolean;
+
+var
+  DS: TDataSource;
 
 begin
   Result:=False;
+  Repeat
+    DS:=aDataset.GetDataSource;
+    Result:=(DS=Self);
+    if Assigned(DS) then
+      aDataSet := DS.DataSet
+    else
+      aDataSet := Nil;
+  Until Result or (aDataset=Nil)
 end;
 
 
@@ -615,6 +626,8 @@ begin
     End;
   If ADataset<>Nil Then
     begin
+    if IsLinkedTo(aDataset) then
+      DatabaseError(SErrCircularDataSourceReferenceNotAllowed,Self);
     FDataSet:=ADataset;
     ADataset.RegisterDatasource(Self);
     ProcessEvent(deUpdateState,0);

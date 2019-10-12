@@ -1863,13 +1863,13 @@ implementation
 
         if not is_packed_array(def) then
           begin
-            elestrideattr := DW_AT_byte_stride;
-            elesize := def.elesize;
+            elestrideattr:=DW_AT_byte_stride;
+            elesize:=def.elesize;
           end
         else
           begin
-            elestrideattr := DW_AT_stride_size;
-            elesize := def.elepackedbitsize;
+            elestrideattr:=DW_AT_stride_size;
+            elesize:=def.elepackedbitsize;
           end;
 
         if is_special_array(def) then
@@ -1877,16 +1877,18 @@ implementation
             { no known size, no known upper bound }
             if assigned(def.typesym) then
               append_entry(DW_TAG_array_type,true,[
-                DW_AT_name,DW_FORM_string,symname(def.typesym, false)+#0
+                DW_AT_name,DW_FORM_string,symname(def.typesym, false)+#0,
+                elestrideattr,DW_FORM_udata,elesize
                 ])
             else
-              append_entry(DW_TAG_array_type,true,[]);
+              append_entry(DW_TAG_array_type,true,[
+              elestrideattr,DW_FORM_udata,elesize
+              ]);
             append_labelentry_ref(DW_AT_type,def_dwarf_lab(def.elementdef));
             finish_entry;
             { a missing upper bound means "unknown"/default }
             append_entry(DW_TAG_subrange_type,false,[
-              DW_AT_lower_bound,DW_FORM_sdata,def.lowrange,
-              elestrideattr,DW_FORM_udata,elesize
+              DW_AT_lower_bound,DW_FORM_sdata,def.lowrange
               ]);
           end
         else
@@ -1895,19 +1897,20 @@ implementation
             if assigned(def.typesym) then
               append_entry(DW_TAG_array_type,true,[
                 DW_AT_name,DW_FORM_string,symname(def.typesym, false)+#0,
-                DW_AT_byte_size,DW_FORM_udata,size
+                DW_AT_byte_size,DW_FORM_udata,size,
+                elestrideattr,DW_FORM_udata,elesize
                 ])
             else
               append_entry(DW_TAG_array_type,true,[
-                DW_AT_byte_size,DW_FORM_udata,size
+                DW_AT_byte_size,DW_FORM_udata,size,
+                elestrideattr,DW_FORM_udata,elesize
                 ]);
             append_labelentry_ref(DW_AT_type,def_dwarf_lab(def.elementdef));
             finish_entry;
             { to simplify things, we don't write a multidimensional array here }
             append_entry(DW_TAG_subrange_type,false,[
               DW_AT_lower_bound,DW_FORM_sdata,def.lowrange,
-              DW_AT_upper_bound,DW_FORM_sdata,def.highrange,
-              elestrideattr,DW_FORM_udata,elesize
+              DW_AT_upper_bound,DW_FORM_sdata,def.highrange
               ]);
           end;
         append_labelentry_ref(DW_AT_type,def_dwarf_lab(def.rangedef));
@@ -4234,11 +4237,13 @@ implementation
         if assigned(def.typesym) then
           append_entry(DW_TAG_array_type,true,[
             DW_AT_name,DW_FORM_string,symname(def.typesym, false)+#0,
-            DW_AT_data_location,DW_FORM_block1,2
+            DW_AT_data_location,DW_FORM_block1,2,
+            DW_AT_byte_stride,DW_FORM_udata,def.elesize
             ])
         else
           append_entry(DW_TAG_array_type,true,[
-            DW_AT_data_location,DW_FORM_block1,2
+            DW_AT_data_location,DW_FORM_block1,2,
+            DW_AT_byte_stride,DW_FORM_udata,def.elesize
             ]);
         current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_push_object_address)));
         current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_deref)));
@@ -4247,7 +4252,6 @@ implementation
         finish_entry;
         { to simplify things, we don't write a multidimensional array here }
         append_entry(DW_TAG_subrange_type,false,[
-          DW_AT_byte_stride,DW_FORM_udata,def.elesize,
           DW_AT_lower_bound,DW_FORM_udata,0,
           DW_AT_upper_bound,DW_FORM_block1,14
           ]);

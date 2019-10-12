@@ -19,6 +19,7 @@
 Procedure SysInitFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
 begin
   softfloat_exception_mask:=[float_flag_underflow,float_flag_inexact,float_flag_denormal];
+  softfloat_exception_flags:=[];
 end;
 
 

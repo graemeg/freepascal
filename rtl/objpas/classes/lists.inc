@@ -140,7 +140,7 @@ begin
   begin
     SetCount(0);
     SetCapacity(0);
-    FList := nil;
+    // FList := nil; // Already set by SetCapacity
   end;
 end;
 
@@ -535,21 +535,9 @@ end;
 
 constructor TListEnumerator.Create(AList: TList);
 begin
-  inherited Create;
-  FList := AList;
-  FPosition := -1;
+  inherited Create(AList.FList);
 end;
 
-function TListEnumerator.GetCurrent: Pointer;
-begin
-  Result := FList[FPosition];
-end;
-
-function TListEnumerator.MoveNext: Boolean;
-begin
-  Inc(FPosition);
-  Result := FPosition < FList.Count;
-end;
 
 {****************************************************************************}
 {*                TList                                                     *}

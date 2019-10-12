@@ -54,6 +54,9 @@ Type
        cpu_armv7r,
        cpu_armv7m,
        cpu_armv7em
+       { when new elements added afterwards,
+         update class procedure tarmnodeutils.InsertObjectInfo; in narmutil.pas
+       }
       );
 
    tinstructionset = (is_thumb,is_arm);
@@ -73,7 +76,8 @@ Type
       fpu_fpv4_s16,
       fpu_vfpv4,
       fpu_neon_vfpv4
-      { when new elements added afterwards, update also fpu_vfp_last below }
+      { when new elements added afterwards, update also fpu_vfp_last below and
+        update class procedure tarmnodeutils.InsertObjectInfo; in narmutil.pas }
      );
 
 Const

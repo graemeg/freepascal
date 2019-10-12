@@ -388,11 +388,16 @@ implementation
     procedure encodesechdrflags(aoptions:TObjSectionOptions;out AshType:longint;out Ashflags:longint);
       begin
         { Section Type }
-        AshType:=SHT_PROGBITS;
         if oso_strings in aoptions then
           AshType:=SHT_STRTAB
         else if not(oso_data in aoptions) then
-          AshType:=SHT_NOBITS;
+          AshType:=SHT_NOBITS
+        else if oso_note in aoptions then
+          AshType:=SHT_NOTE
+        else if oso_arm_attributes in aoptions then
+          AshType:=SHT_ARM_ATTRIBUTES
+        else
+          AshType:=SHT_PROGBITS;
         { Section Flags }
         Ashflags:=0;
         if oso_load in aoptions then
@@ -562,7 +567,8 @@ implementation
           '.objc_protolist',
           '.stack',
           '.heap',
-          '.gcc_except_table'
+          '.gcc_except_table',
+          '.ARM.attributes'
         );
       var
         sep : string[3];
