@@ -114,6 +114,8 @@ begin
   except
     FCanvas := nil;
     FAllocated := False;
+
+    raise;
   end;
 end;
 

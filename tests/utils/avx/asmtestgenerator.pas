@@ -219,7 +219,10 @@ type
       IF_TMEM128,
       IF_THV,
       IF_THVM,
-      IF_TOVM
+      IF_TOVM,
+
+      IF_SCL32,
+      IF_SCL64
 
 
     );
@@ -273,7 +276,7 @@ const
         but this requires adjusting the opcode table }
       //OT_SIZE_MASK = $3000001F;  { all the size attributes  }
       OT_SIZE_MASK = $E000001F;  { all the size attributes  }
-      OT_NON_SIZE  = longint(not OT_SIZE_MASK);
+      OT_NON_SIZE  = int64(not int64(OT_SIZE_MASK));
 
       { Bits 8..11: modifiers }
       OT_SIGNED    = $00000100;  { the operand need to be signed -128-127 }

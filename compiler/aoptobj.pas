@@ -1553,7 +1553,7 @@ Unit AoptObj;
 
     procedure TAOptObj.PeepHoleOptPass1;
       var
-        p,hp1,hp2 : tai;
+        p,hp1,hp2,hp3 : tai;
         stoploop:boolean;
       begin
         repeat
@@ -1649,13 +1649,22 @@ Unit AoptObj;
                                     <code>
                                   lab_2:
                                 }
+                                hp3:=hp1;
                                 if hp1.typ = ait_label then
                                   SkipLabels(hp1,hp1);
                                 if (tai(hp1).typ=ait_instruction) and
                                   IsJumpToLabelUncond(taicpu(hp1)) and
                                   GetNextInstruction(hp1, hp2) and
                                   IsJumpToLabel(taicpu(p)) and
-                                  FindLabel(tasmlabel(JumpTargetOp(taicpu(p))^.ref^.symbol), hp2) then
+                                  FindLabel(tasmlabel(JumpTargetOp(taicpu(p))^.ref^.symbol), hp2) and
+                                  { prevent removal of infinite loop from
+                                        jmp<cond> lab_1
+                                      lab_2:
+                                        jmp lab2
+                                      ..
+                                      lab_1:
+                                  }
+                                  not FindLabel(tasmlabel(JumpTargetOp(taicpu(hp1))^.ref^.symbol), hp3) then
                                   begin
                                     if (taicpu(p).opcode=aopt_condjmp)
 {$if defined(arm) or defined(aarch64)}

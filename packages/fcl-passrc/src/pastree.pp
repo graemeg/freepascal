@@ -848,6 +848,7 @@ type
     Args: TFPList;        // List of TPasArgument objects
     CallingConvention: TCallingConvention;
     Modifiers: TProcTypeModifiers;
+    VarArgsType: TPasType;
     property IsOfObject: Boolean read GetIsOfObject write SetIsOfObject;
     property IsNested : Boolean read GetIsNested write SetIsNested;
     property IsReferenceTo : Boolean Read GetIsReference write SetIsReference;
@@ -3501,6 +3502,7 @@ begin
   for i := 0 to Args.Count - 1 do
     TPasArgument(Args[i]).Release{$IFDEF CheckPasTreeRefCount}('TPasProcedureType.Args'){$ENDIF};
   FreeAndNil(Args);
+  ReleaseAndNil(TPasElement(VarArgsType){$IFDEF CheckPasTreeRefCount},'CreateElement'{$ENDIF});
   inherited Destroy;
 end;
 
@@ -3526,6 +3528,7 @@ begin
   inherited ForEachCall(aMethodCall, Arg);
   for i:=0 to Args.Count-1 do
     ForEachChildCall(aMethodCall,Arg,TPasElement(Args[i]),false);
+  ForEachChildCall(aMethodCall,Arg,VarArgsType,false);
 end;
 
 { TPasResultElement }
@@ -4092,6 +4095,7 @@ procedure TPasAliasType.ForEachCall(const aMethodCall: TOnForEachPasElement;
 begin
   inherited ForEachCall(aMethodCall, Arg);
   ForEachChildCall(aMethodCall,Arg,DestType,true);
+  ForEachChildCall(aMethodCall,Arg,Expr,false);
 end;
 
 procedure TPasAliasType.ClearTypeReferences(aType: TPasElement);

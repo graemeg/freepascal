@@ -321,6 +321,7 @@
             ,abi_old_win32_gnu
             ,abi_aarch64_darwin
             ,abi_riscv_hf
+            ,abi_linux386_sysv
        );
 
      const

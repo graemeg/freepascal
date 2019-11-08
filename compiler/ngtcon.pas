@@ -342,20 +342,33 @@ function get_next_varsym(def: tabstractrecorddef; const SymList:TFPHashObjectLis
         if (target_info.endian=endian_big) then
           begin
             { bitpacked format: left-aligned (i.e., "big endian bitness") }
-            bp.curval:=bp.curval or ((value shl (AIntBits-bp.packedbitsize)) shr bp.curbitoffset);
+            { work around broken x86 shifting }
+            if (AIntBits<>bp.packedbitsize) and
+               (bp.curbitoffset<AIntBits) then
+              bp.curval:=bp.curval or ((value shl (AIntBits-bp.packedbitsize)) shr bp.curbitoffset);
             shiftcount:=((AIntBits-bp.packedbitsize)-bp.curbitoffset);
             { carry-over to the next element? }
             if (shiftcount<0) then
-              bp.nextval:=(value and ((aword(1) shl (-shiftcount))-1)) shl
-                          (AIntBits+shiftcount)
+              begin
+                if shiftcount>=AIntBits then
+                  bp.nextval:=(value and ((aword(1) shl (-shiftcount))-1)) shl
+                              (AIntBits+shiftcount)
+                else
+                  bp.nextval:=0
+              end
           end
         else
           begin
             { bitpacked format: right aligned (i.e., "little endian bitness") }
-            bp.curval:=bp.curval or (value shl bp.curbitoffset);
+            { work around broken x86 shifting }
+            if bp.curbitoffset<AIntBits then
+              bp.curval:=bp.curval or (value shl bp.curbitoffset);
             { carry-over to the next element? }
             if (bp.curbitoffset+bp.packedbitsize>AIntBits) then
-              bp.nextval:=value shr (AIntBits-bp.curbitoffset)
+              if bp.curbitoffset>0 then
+                bp.nextval:=value shr (AIntBits-bp.curbitoffset)
+              else
+                bp.nextval:=0;
           end;
         inc(bp.curbitoffset,bp.packedbitsize);
       end;
@@ -1237,6 +1250,7 @@ function get_next_varsym(def: tabstractrecorddef; const SymList:TFPHashObjectLis
           end
         { packed array constant }
         else if is_packed_array(def) and
+                (def.elementdef.typ in [orddef,enumdef]) and
                 ((def.elepackedbitsize mod 8 <> 0) or
                  not ispowerof2(def.elepackedbitsize div 8,i)) then
           begin

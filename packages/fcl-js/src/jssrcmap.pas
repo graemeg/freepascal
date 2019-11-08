@@ -1118,7 +1118,9 @@ begin
   SetLength(s,aStream.Size-aStream.Position);
   if s<>'' then
     aStream.Read(s[1],length(s));
-  if LeftStr(s,3)=')]}' then
+  if LeftStr(s,4)=')]}''' then
+    Delete(s,1,4)
+  else if LeftStr(s,3)=')]}' then
     Delete(s,1,3);
   P:=TJSONParser.Create(s,[joUTF8]);
   try

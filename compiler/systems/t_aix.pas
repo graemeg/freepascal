@@ -101,9 +101,9 @@ begin
   Inherited Create;
   if not Dontlinkstdlibpath then
     if not(cs_profile in current_settings.moduleswitches) then
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib;/usr/X11R6/lib;/opt/freeware/lib',true)
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib;=/usr/X11R6/lib;=/opt/freeware/lib',true)
     else
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/profiled;/usr/X11R6/lib;/opt/freeware/lib',true)
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/profiled;=/usr/X11R6/lib;=/opt/freeware/lib',true)
 end;
 
 

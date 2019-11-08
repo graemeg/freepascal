@@ -97,6 +97,7 @@ Type
     function FindSourceFileName(const aFilename: string): String; virtual; abstract;
   Public
     // Public Abstract. Must be overridden
+    function FindResourceFileName(const aFilename, ModuleDir: string): String; virtual; abstract;
     function FindIncludeFileName(const aFilename, ModuleDir: string): String; virtual; abstract;
     function LoadFile(Filename: string; Binary: boolean = false): TPas2jsFile; virtual; abstract;
     Function FileExists(Const aFileName: String): Boolean; virtual; abstract;
@@ -164,6 +165,7 @@ Type
   public
     constructor Create(aFS: TPas2jsFS); reintroduce;
     // Redirect all calls to FS.
+    function FindResourceFileName(const aFilename: string): String; override;
     function FindIncludeFileName(const aFilename: string): String; override;
     function FindIncludeFile(const aFilename: string): TLineReader; override;
     function FindSourceFile(const aFilename: string): TLineReader; override;
@@ -430,7 +432,13 @@ end;
 
 constructor TPas2jsFSResolver.Create(aFS: TPas2jsFS);
 begin
+  Inherited Create;
   FFS:=aFS;
+end;
+
+function TPas2jsFSResolver.FindResourceFileName(const aFilename: string): String;
+begin
+  Result:=FS.FindResourceFileName(aFilename,BaseDirectory);
 end;
 
 function TPas2jsFSResolver.FindIncludeFileName(const aFilename: string): String;

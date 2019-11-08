@@ -231,7 +231,12 @@ interface
             if (right.location.value and $ff)=0 then
               current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_CP,left.location.register,NR_R1))
             else
-              current_asmdata.CurrAsmList.concat(taicpu.op_reg_const(A_CPI,left.location.register,right.location.value and $ff))
+              begin
+                cg.getcpuregister(current_asmdata.CurrAsmList,NR_R26);
+                current_asmdata.CurrAsmList.concat(taicpu.op_reg_const(A_LDI,NR_R26,right.location.value and $ff));
+                current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_CP,left.location.register,NR_R26));
+                cg.ungetcpuregister(current_asmdata.CurrAsmList,NR_R26);
+              end;
           end
         { on the left side, we allow only a constant if it is 0 }
         else if (left.location.loc=LOC_CONSTANT) and (left.location.value=0) then

@@ -25,7 +25,7 @@ uses sysutils, dynlibs;
 
 
 initialization
-  InitializeFreetype(FreeTypeDLL);
+  //InitializeFreetype(FreeTypeDLL); - do not load DLL in initialization, it is loaded when needed in ftfont.InitEngine
 
 finalization
   ReleaseFreetype;

@@ -71,7 +71,7 @@ unit PasResolveEval;
 interface
 
 uses
-  Sysutils, Math, PasTree, PScanner;
+  Sysutils, Classes, Math, PasTree, PScanner;
 
 // message numbers
 const
@@ -106,7 +106,7 @@ const
   nTypesAreNotRelatedXY = 3029;
   nAbstractMethodsCannotBeCalledDirectly = 3030;
   nMissingParameterX = 3031;
-  nCannotAccessThisMemberFromAX = 3032;
+  nInstanceMemberXInaccessible = 3032;
   nInOperatorExpectsSetElementButGot = 3033;
   nWrongNumberOfParametersForTypeCast = 3034;
   nIllegalTypeConversionTo = 3035;
@@ -250,7 +250,7 @@ resourcestring
   sTypesAreNotRelatedXY = 'Types are not related: "%s" and "%s"';
   sAbstractMethodsCannotBeCalledDirectly = 'Abstract methods cannot be called directly';
   sMissingParameterX = 'Missing parameter %s';
-  sCannotAccessThisMemberFromAX = 'Cannot access this member from a %s';
+  sInstanceMemberXInaccessible = 'Instance member "%s" inaccessible here';
   sInOperatorExpectsSetElementButGot = 'the in-operator expects a set element, but got %s';
   sWrongNumberOfParametersForTypeCast = 'wrong number of parameters for type cast to %s';
   sIllegalTypeConversionTo = 'Illegal type conversion: "%s" to "%s"';
@@ -798,6 +798,8 @@ function CodePointToUnicodeString(u: longword): UnicodeString;
 function GetObjName(o: TObject): string;
 function GetObjPath(o: TObject): string;
 function GetGenericParamCommas(Cnt: integer): string;
+function GetElementNameAndParams(El: TPasElement; MaxLvl: integer = 3): string;
+function GetTypeParamNames(Templates: TFPList; MaxLvl: integer = 3): string;
 function dbgs(const Flags: TResEvalFlags): string; overload;
 function dbgs(v: TResEvalValue): string; overload;
 function LastPos(c: char; const s: string): sizeint;
@@ -1079,6 +1081,40 @@ begin
     Result:=''
   else
     Result:='<'+StringOfChar(',',Cnt-1)+'>';
+end;
+
+function GetElementNameAndParams(El: TPasElement; MaxLvl: integer): string;
+begin
+  if El=nil then
+    exit('(nil)');
+  Result:=El.Name;
+  if El is TPasGenericType then
+    Result:=Result+GetTypeParamNames(TPasGenericType(El).GenericTemplateTypes,MaxLvl-1);
+end;
+
+function GetTypeParamNames(Templates: TFPList; MaxLvl: integer): string;
+var
+  i: Integer;
+  El: TPasElement;
+begin
+  if (Templates=nil) or (Templates.Count=0) then
+    exit('');
+  if MaxLvl<=0 then
+    exit('...');
+  Result:='<';
+  for i:=0 to Templates.Count-1 do
+    begin
+    if i>0 then
+      Result:=Result+',';
+    El:=TPasElement(Templates[i]);
+    if El.Name<>'' then
+      Result:=Result+GetElementNameAndParams(El,MaxLvl-1)
+    else if El is TPasArrayType then
+      Result:=Result+'array...'
+    else
+      Result:=Result+'...';
+    end;
+  Result:=Result+'>';
 end;
 
 function dbgs(const Flags: TResEvalFlags): string;

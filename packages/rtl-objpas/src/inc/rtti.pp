@@ -331,6 +331,7 @@ type
     function GetHandle: Pointer; override;
   public
     constructor Create(AParent: TRttiType; APropInfo: PPropInfo);
+    destructor Destroy; override;
     function GetAttributes: specialize TArray<TCustomAttribute>; override;
     function GetValue(Instance: pointer): TValue;
     procedure SetValue(Instance: pointer; const AValue: TValue);
@@ -3747,6 +3748,15 @@ constructor TRttiProperty.Create(AParent: TRttiType; APropInfo: PPropInfo);
 begin
   inherited Create(AParent);
   FPropInfo := APropInfo;
+end;
+
+destructor TRttiProperty.Destroy;
+var
+  attr: TCustomAttribute;
+begin
+  for attr in FAttributes do
+    attr.Free;
+  inherited Destroy;
 end;
 
 function TRttiProperty.GetAttributes: specialize TArray<TCustomAttribute>;

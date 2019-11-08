@@ -1510,7 +1510,7 @@ unit scandir;
           with current_scanner,current_module,localunitsearchpath do
             begin
               skipspace;
-              AddPath(path,readcomment,false);
+              AddPath(path+source_info.DirSep+readcomment,false);
             end;
       end;
 

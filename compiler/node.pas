@@ -521,6 +521,7 @@ implementation
 {$ifdef DEBUG_NODE_XML}
        cutils,
 {$endif DEBUG_NODE_XML}
+       ppu,
        symconst,
        nutils,nflw,
        defutil;
@@ -797,10 +798,10 @@ implementation
         { tnode fields }
         blocktype:=tblock_type(ppufile.getbyte);
         ppufile.getposinfo(fileinfo);
-        ppufile.getsmallset(localswitches);
+        ppufile.getset(tppuset5(localswitches));
         verbosity:=ppufile.getlongint;
         ppufile.getderef(resultdefderef);
-        ppufile.getsmallset(flags);
+        ppufile.getset(tppuset4(flags));
         { updated by firstpass }
         expectloc:=LOC_INVALID;
         { updated by secondpass }
@@ -812,10 +813,10 @@ implementation
       begin
         ppufile.putbyte(byte(block_type));
         ppufile.putposinfo(fileinfo);
-        ppufile.putsmallset(localswitches);
+        ppufile.putset(tppuset5(localswitches));
         ppufile.putlongint(verbosity);
         ppufile.putderef(resultdefderef);
-        ppufile.putsmallset(flags);
+        ppufile.putset(tppuset4(flags));
       end;
 
 

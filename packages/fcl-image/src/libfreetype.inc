@@ -427,7 +427,7 @@ Var
 function InitializeFreetype(const LibraryName: UnicodeString = ''): Integer;
 function  InitializeFreetype(const LibraryName: AnsiString):integer;
 function TryInitializeFreetype(const LibraryName: Unicodestring = ''): Integer;
-function ReleaseFreetype: Integer;
+procedure ReleaseFreetype;
 {$ENDIF}
 
 implementation
@@ -536,7 +536,7 @@ begin
   result:=InitializeFreetype(UnicodeString(LibraryName));
 end;
 
-function ReleaseFreetype:integer;
+procedure ReleaseFreetype;
 begin
   if InterlockedDecrement(RefCount) <= 0 then
     begin

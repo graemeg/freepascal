@@ -507,7 +507,7 @@ implementation
        paramgr,
        procinfo,
        { ppu }
-       entfile
+       entfile,ppu
        ;
 
 {****************************************************************************
@@ -568,7 +568,7 @@ implementation
          current_module.symlist[SymId]:=self;
          ppufile.getposinfo(fileinfo);
          visibility:=tvisibility(ppufile.getbyte);
-         ppufile.getsmallset(symoptions);
+         ppufile.getset(tppuset2(symoptions));
          if sp_has_deprecated_msg in symoptions then
            deprecatedmsg:=ppufile.getpshortstring
          else
@@ -594,7 +594,7 @@ implementation
          }
          oldintfcrc:=ppufile.do_interface_crc;
          ppufile.do_interface_crc:=false;
-         ppufile.putsmallset(symoptions);
+         ppufile.putset(tppuset2(symoptions));
          if sp_has_deprecated_msg in symoptions then
            ppufile.putstring(deprecatedmsg^);
          ppufile.do_interface_crc:=oldintfcrc;
@@ -1380,7 +1380,7 @@ implementation
         pap : tpropaccesslisttypes;
       begin
          inherited ppuload(propertysym,ppufile);
-         ppufile.getsmallset(propoptions);
+         ppufile.getset(tppuset2(propoptions));
          if ppo_overrides in propoptions then
            ppufile.getderef(overriddenpropsymderef);
          ppufile.getderef(propdefderef);
@@ -1602,7 +1602,7 @@ implementation
         pap : tpropaccesslisttypes;
       begin
         inherited ppuwrite(ppufile);
-        ppufile.putsmallset(propoptions);
+        ppufile.putset(tppuset2(propoptions));
         if ppo_overrides in propoptions then
           ppufile.putderef(overriddenpropsymderef);
         ppufile.putderef(propdefderef);
@@ -1641,7 +1641,7 @@ implementation
          addr_taken:=ppufile.getboolean;
          different_scope:=ppufile.getboolean;
          ppufile.getderef(vardefderef);
-         ppufile.getsmallset(varoptions);
+         ppufile.getset(tppuset4(varoptions));
       end;
 
 
@@ -1675,7 +1675,7 @@ implementation
          ppufile.putboolean(different_scope);
          ppufile.do_crc:=oldintfcrc;
          ppufile.putderef(vardefderef);
-         ppufile.putsmallset(varoptions);
+         ppufile.putset(tppuset4(varoptions));
       end;
 
 
@@ -2453,7 +2453,7 @@ implementation
              begin
                ppufile.getderef(constdefderef);
                new(ps);
-               ppufile.getnormalset(ps^);
+               ppufile.getset(tppuset32(ps^));
                value.valueptr:=ps;
              end;
            constguid :
@@ -2561,7 +2561,7 @@ implementation
            constset :
              begin
                ppufile.putderef(constdefderef);
-               ppufile.putnormalset(value.valueptr^);
+               ppufile.putset(tppuset32(value.valueptr^));
              end;
            constguid :
              begin

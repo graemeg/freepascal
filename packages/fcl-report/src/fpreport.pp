@@ -2498,7 +2498,7 @@ function ReportSectionsToString(AValue: TFPReportSections): string;
     lIndex: integer;
   begin
     Result := '';
-    for lIndex := Ord(Low(TFPReportSection)) to Ord(High(TFPReportSection)) do
+    for lIndex := Ord(Low(TFPReportSections)) to Ord(High(TFPReportSections)) do
     begin
       if TFPReportSection(lIndex) in AValue then
       begin

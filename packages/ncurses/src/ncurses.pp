@@ -69,7 +69,12 @@ const
    NCURSES_VERSION_MINOR = 6;
    NCURSES_VERSION_PATCH = 20061217;
    NCURSES_VERSION = '5.6';
-   NCURSES_MOUSE_VERSION = 1;
+
+{$MACRO ON}
+{$IFNDEF NCURSES_MOUSE_VERSION}
+{$DEFINE NCURSES_MOUSE_VERSION:=2} // Can be changed for ancient versions of ncurses
+{$ENDIF}
+{$MACRO OFF}
 
 type
    pchtype = ^chtype;
@@ -939,6 +944,18 @@ const
    BUTTON4_DOUBLE_CLICKED = 8 shl (3 * 6);
    BUTTON4_TRIPLE_CLICKED = 16 shl (3 * 6);
 
+{$IF NCURSES_MOUSE_VERSION > 1}
+   BUTTON5_RELEASED       = BUTTON1_RELEASED shl (4 * 6);
+   BUTTON5_PRESSED        = BUTTON1_PRESSED shl (4 * 6);
+   BUTTON5_CLICKED        = BUTTON1_CLICKED shl (4 * 6);
+   BUTTON5_DOUBLE_CLICKED = BUTTON1_DOUBLE_CLICKED shl (4 * 6);
+   BUTTON5_TRIPLE_CLICKED = BUTTON1_TRIPLE_CLICKED shl (4 * 6);
+
+   BUTTON_CTRL            = 1 shl (5 * 6);
+   BUTTON_SHIFT           = 2 shl (5 * 6);
+   BUTTON_ALT             = 4 shl (5 * 6);
+   REPORT_MOUSE_POSITION  = 8 shl (5 * 6);
+{$ELSE}
    BUTTON1_RESERVED_EVENT = 32;
    BUTTON2_RESERVED_EVENT = 32 shl 6;
    BUTTON3_RESERVED_EVENT = 32 shl (2 * 6);
@@ -948,6 +965,7 @@ const
    BUTTON_SHIFT           = 2 shl (4 * 6);
    BUTTON_ALT             = 4 shl (4 * 6);
    REPORT_MOUSE_POSITION  = 8 shl (4 * 6);
+{$ENDIF}
 
    ALL_MOUSE_EVENTS       = REPORT_MOUSE_POSITION - 1;
 

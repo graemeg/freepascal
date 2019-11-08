@@ -156,8 +156,8 @@ Type
     Procedure DoProgress(ItemNo : Integer); Virtual;
     // Override if each field can be written as-is.
     Procedure ExportField(EF : TExportFieldItem); virtual;
-    // Format field as string, according to settings
-    Function FormatField(F : TField) : String; virtual;
+    // Format field as UTF8 string, according to settings
+    Function FormatField(F : TField) : UTF8String; virtual;
     // Raise EDataExporter error
     Procedure ExportError(Msg : String); overload;
     Procedure ExportError(Fmt : String; Args: Array of const); overload;
@@ -581,7 +581,7 @@ begin
   // Do nothing
 end;
 
-Function TCustomDatasetExporter.FormatField(F: TField) : String;
+Function TCustomDatasetExporter.FormatField(F: TField) : UTF8String;
 
 Var
   FS : TFormatSettings;
@@ -594,7 +594,7 @@ begin
     else if FormatSettings.UseDisplayText then
       Result:=F.DisplayText
     else
-      Result:=F.AsString;  
+      Result:=F.AsUTF8String;  
     end
   else if (F.DataType=ftBoolean) then
     begin
@@ -606,7 +606,7 @@ begin
       if FormatSettings.UseDisplayText then
         Result:=F.DisplayText
       else
-        Result:=F.AsString;  
+        Result:=F.AsUTF8String;
     end
   else if (F.DataType=ftDate) then
     begin
@@ -615,7 +615,7 @@ begin
     else if FormatSettings.UseDisplayText then
       Result:=F.DisplayText
     else
-      Result:=F.AsString;
+      Result:=F.AsUTF8String;
     end
   else if (F.DataType=ftTime) then
     begin
@@ -624,7 +624,7 @@ begin
     else if FormatSettings.UseDisplayText then
       Result:=F.DisplayText
     else
-      Result:=F.AsString;  
+      Result:=F.AsUTF8String;
     end
   else if (F.DataType in [ftDateTime,ftTimeStamp]) then
     begin
@@ -633,7 +633,7 @@ begin
     else if FormatSettings.UseDisplayText then
       Result:=F.DisplayText
     else
-      Result:=F.AsString;
+      Result:=F.AsUTF8String;
     end 
   else if (F.DataType=ftCurrency) then
     begin
@@ -646,12 +646,12 @@ begin
     else  if FormatSettings.UseDisplayText then
       Result:=F.DisplayText
     else 
-      Result:=F.AsString;
+      Result:=F.AsUTF8String;
     end
   else if FormatSettings.UseDisplayText then
     Result:=F.DisplayText
   else
-    Result:=F.AsString;  
+    Result:=F.AsUTF8String;
 end;
 
 procedure TCustomDatasetExporter.ExportError(Msg: String);

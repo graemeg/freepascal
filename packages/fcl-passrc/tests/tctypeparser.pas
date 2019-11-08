@@ -361,6 +361,9 @@ type
     Procedure TestAdvRec_ProcOverrideFail;
     Procedure TestAdvRec_ProcMessageFail;
     Procedure TestAdvRec_DestructorFail;
+    Procedure TestAdvRecordInFunction;
+    Procedure TestAdvRecordInAnonFunction;
+    Procedure TestAdvRecordClassOperator;
   end;
 
   { TTestProcedureTypeParser }
@@ -2605,6 +2608,84 @@ begin
   StartRecord(true);
   AddMember('destructor Free;');
   ParseRecordFail(SParserNoConstructorAllowed,nParserNoConstructorAllowed);
+end;
+
+procedure TTestRecordTypeParser.TestAdvRecordInFunction;
+
+// Src from bug report 36179
+
+Const
+   Src =
+    '{$mode objfpc}'+sLineBreak+
+    '{$modeswitch advancedrecords}'+sLineBreak+
+    'program afile;'+sLineBreak+
+    '  procedure DoThis;'+sLineBreak+
+    '  type'+sLineBreak+
+    '    TMyRecord = record'+sLineBreak+
+    '      private'+sLineBreak+
+    '        x, y, z: integer;'+sLineBreak+
+    '    end;'+sLineBreak+
+    '  begin'+sLineBreak+
+    '  end;'+sLineBreak+
+    'begin'+sLineBreak+
+    'end.';
+
+begin
+  Source.Text:=Src;
+  ParseModule; // We're just interested in that it parses.
+end;
+
+procedure TTestRecordTypeParser.TestAdvRecordInAnonFunction;
+
+// Src from bug report 36179, modified to put record in anonymous function
+//  Delphi 10.3.2 allows this
+
+Const
+   Src =
+    '{$mode objfpc}'+sLineBreak+
+    '{$modeswitch advancedrecords}'+sLineBreak+
+    'program afile;'+sLineBreak+
+    'var a : Procedure;'+sLineBreak+
+    'begin'+sLineBreak+
+    ' a := '+sLineBreak+
+    '  procedure '+sLineBreak+
+    '  type'+sLineBreak+
+    '    TMyRecord = record'+sLineBreak+
+    '      private'+sLineBreak+
+    '        x, y, z: integer;'+sLineBreak+
+    '    end;'+sLineBreak+
+    '  begin'+sLineBreak+
+    '  end;'+sLineBreak+
+    'end.';
+
+begin
+  Source.Text:=Src;
+  ParseModule; // We're just interested in that it parses.
+end;
+
+procedure TTestRecordTypeParser.TestAdvRecordClassOperator;
+
+// Source from bug id 36180
+
+Const
+   SRC =
+    '{$mode objfpc}'+sLineBreak+
+    '{$modeswitch advancedrecords}'+sLineBreak+
+    'program afile;'+sLineBreak+
+    'type'+sLineBreak+
+    '  TMyRecord = record'+sLineBreak+
+    '    class operator = (a, b: TMyRecord): boolean;'+sLineBreak+
+    '  end;'+sLineBreak+
+    'class operator TMyRecord.= (a, b: TMyRecord): boolean;'+sLineBreak+
+    'begin'+sLineBreak+
+    '  result := (@a = @b);'+sLineBreak+
+    'end;'+sLineBreak+
+    'begin'+sLineBreak+
+    'end.';
+
+begin
+  Source.Text:=Src;
+  ParseModule;   // We're just interested in that it parses.
 end;
 
 { TBaseTestTypeParser }

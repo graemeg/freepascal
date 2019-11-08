@@ -26,10 +26,10 @@ Unit rarv32gas;
   Interface
 
     uses
-      raatt,rarv32;
+      raatt,rarv32,rarvgas;
 
     type
-      trv32attreader = class(tattreader)                             
+      trv32attreader = class(trvattreader)                             
         function is_register(const s: string): boolean; override;
         function is_asmopcode(const s: string):boolean;override;
         procedure handleopcode;override;

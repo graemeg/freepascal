@@ -191,8 +191,6 @@ type
   { bestreal is defined based on the target architecture }
   entryreal=bestreal;
 
-
-
   { common part of the header for all kinds of entry files }
   tentryheader=record
     id       : array[1..3] of char;
@@ -300,8 +298,7 @@ type
     function  getstring:string;
     function  getpshortstring:pshortstring;
     function  getansistring:ansistring;
-    procedure getnormalset(out b);
-    procedure getsmallset(out b);
+    procedure getset(out arr: array of byte);
     function  skipuntilentry(untilb:byte):boolean;
   {write}
     function  createfile:boolean;virtual;
@@ -326,8 +323,8 @@ type
     procedure putboolean(b:boolean); {$ifdef USEINLINE}inline;{$endif}
     procedure putstring(const s:string); {$ifdef USEINLINE}inline;{$endif}
     procedure putansistring(const s:ansistring);
-    procedure putnormalset(const b); {$ifdef USEINLINE}inline;{$endif}
-    procedure putsmallset(const b); {$ifdef USEINLINE}inline;{$endif}
+
+    procedure putset(const arr: array of byte); {$ifdef USEINLINE}inline;{$endif}
     procedure tempclose;        // MG: not used, obsolete?
     function  tempopen:boolean; // MG: not used, obsolete?
   end;
@@ -1386,44 +1383,21 @@ begin
 end;
 
 
-procedure tentryfile.getsmallset(out b);
+procedure tentryfile.getset(out arr: array of byte);
 var
   i : longint;
 begin
 {$ifdef DEBUG_PPU}
-  ppu_log('putsmallset');
+  ppu_log('putset');
   inc_log_level;
-  { putsmallset uses putlongint, thus we need
-    to add a call to ppu_log('longint') to get the same output }
-  ppu_log('longint');
 {$endif}
-  getdata(b,4);
+  getdata(arr,sizeof(arr));
   if change_endian then
-    for i:=0 to 3 do
-      Pbyte(@b)[i]:=reverse_byte(Pbyte(@b)[i]);
+    for i:=low(arr) to high(arr) do
+      arr[i]:=reverse_byte(arr[i]);
 {$ifdef DEBUG_PPU}
   for i:=0 to 3 do
-    ppu_log_val('byte['+tostr(i)+']=$'+hexstr(pbyte(@b)[i],2));
-  dec_log_level;
-{$endif}
-end;
-
-
-procedure tentryfile.getnormalset(out b);
-var
-  i : longint;
-begin
-{$ifdef DEBUG_PPU}
-  ppu_log('putnormalset');
-  inc_log_level;
-{$endif}
-  getdata(b,32);
-  if change_endian then
-    for i:=0 to 31 do
-      Pbyte(@b)[i]:=reverse_byte(Pbyte(@b)[i]);
-{$ifdef DEBUG_PPU}
-  for i:=0 to 31 do
-    ppu_log_val('byte['+tostr(i)+']=$'+hexstr(pbyte(@b)[i],2));
+    ppu_log_val('byte['+tostr(i)+']=$'+hexstr(arr[i],2));
   dec_log_level;
 {$endif}
 end;
@@ -1881,41 +1855,20 @@ procedure tentryfile.putansistring(const s:ansistring);
   end;
 
 
-procedure tentryfile.putsmallset(const b);
-  var
-    l : longint;
-{$ifdef DEBUG_PPU}
-    i : byte;
-{$endif}
-  begin
-{$ifdef DEBUG_PPU}
-  ppu_log('putsmallset');
-  inc_log_level;
-{$endif}
-    l:=longint(b);
-    putlongint(l);
-{$ifdef DEBUG_PPU}
-  for i:=0 to 3 do
-    ppu_log_val('byte['+tostr(i)+']=$'+hexstr(pbyte(@b)[i],2));
-  dec_log_level;
-{$endif}
-  end;
-
-
-procedure tentryfile.putnormalset(const b);
+procedure tentryfile.putset(const arr: array of byte);
 {$ifdef DEBUG_PPU}
   var
     i : byte;
 {$endif}
   begin
 {$ifdef DEBUG_PPU}
-  ppu_log('putnormalset');
+  ppu_log('putset');
   inc_log_level;
 {$endif}
-    putdata(b,32);
+    putdata(arr,sizeof(arr));
 {$ifdef DEBUG_PPU}
   for i:=0 to 31 do
-    ppu_log_val('byte['+tostr(i)+']=$'+hexstr(pbyte(@b)[i],2));
+    ppu_log_val('byte['+tostr(i)+']=$'+hexstr(arr[i],2));
   dec_log_level;
 {$endif}
   end;

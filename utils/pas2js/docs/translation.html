@@ -2506,7 +2506,10 @@ function(){
     <div class="section">
     <h2 id="varargs">The procedure modifier varargs</h2>
     Appending the <b>varargs</b> modifier to a procedure allows to pass arbitrary
-    more parameters to a function. To access these non typed arguments use
+    more parameters to a function. By default these parameters are untyped, i.e.
+    any type fits. Alternatively you can use <b>varargs of aType</b> to allow
+    only specific types.<br>
+    To access these arguments use
     either <i>JSArguments</i> from unit JS or an <i>asm..end</i> block.
     <table class="sample">
       <tbody>
@@ -2693,10 +2696,11 @@ function(){
     external name is the member name. Keep in mind that JS is case sensitive.<br>
     Properties work the same as with Pascal classes, i.e. are replaced by Getter/Setter.<br>
     Destructors are not allowed.<br>
-    Constructors are supported in three ways:
+    Constructors are supported in four ways:
     <ul>
-      <li>With name <i>New</i> it is translated to <i>new ExtClass(params)</i>.</li>
-      <li>With external name <i>'{}'</i> it is translated to <i>{}</i>.</li>
+      <li><i>constructor New</i> is translated to <i>new ExtClass(params)</i>.</li>
+      <li><i>constructor New; external name ''GlobalFunc''</i> is translated to <i>new GlobalFunc(params)</i>.</li>
+      <li><i>constructor SomeName; external name <i>'{}'</i> is translated to <i>{}</i>.</li>
       <li>Otherwise it is translated to <i>new ExtClass.FuncName(params)</i>.</li>
     </ul>
 

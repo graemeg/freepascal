@@ -218,7 +218,7 @@ implementation
 
     uses
       cutils,
-      verbose,systems,sysutils,
+      verbose,systems,sysutils,ppu,
       defcmp,defutil,procinfo,
       aasmdata,aasmtai,
       cgbase,
@@ -1235,7 +1235,7 @@ implementation
         inherited ppuload(t,ppufile);
         ppufile.getderef(typedefderef);
         new(value_set);
-        ppufile.getnormalset(value_set^);
+        ppufile.getset(tppuset32(value_set^));
       end;
 
 
@@ -1243,7 +1243,7 @@ implementation
       begin
         inherited ppuwrite(ppufile);
         ppufile.putderef(typedefderef);
-        ppufile.putnormalset(value_set^);
+        ppufile.putset(tppuset32(value_set^));
       end;
 
 

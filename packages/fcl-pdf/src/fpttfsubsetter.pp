@@ -676,19 +676,22 @@ end;
 function TFontSubsetter.buildFpgmTable: TStream;
 begin
   Result := GetRawTable('fpgm');
-  Result.Position := 0;
+  if Assigned(Result) then
+    Result.Position := 0;
 end;
 
 function TFontSubsetter.buildPrepTable: TStream;
 begin
   Result := GetRawTable('prep');
+  if Assigned(Result) then
   Result.Position := 0;
 end;
 
 function TFontSubsetter.buildCvtTable: TStream;
 begin
   Result := GetRawTable('cvt ');
-  Result.Position := 0;
+  if Assigned(Result) then
+    Result.Position := 0;
 end;
 
 function TFontSubsetter.buildGlyfTable(var newOffsets: TArrayUInt32): TStream;

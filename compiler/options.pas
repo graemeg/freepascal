@@ -952,7 +952,14 @@ begin
         if not ParseMacVersionMin(MacOSXVersionMin,iPhoneOSVersionMin,'MAC_OS_X_VERSION_MIN_REQUIRED',envstr,false) then
           Message1(option_invalid_macosx_deployment_target,envstr)
         else
-          exit;
+          begin
+{$ifdef llvm}
+             { We only support libunwind as part of libsystem, which happened in Mac OS X 10.6 }
+            if CompareVersionStrings(MacOSXVersionMin,'10.6')<=0 then
+              Message1(option_invalid_macosx_deployment_target,envstr);
+{$endif}
+            exit;
+          end;
     end
   else
     begin
@@ -970,30 +977,16 @@ begin
         set_system_compvar('MAC_OS_X_VERSION_MIN_REQUIRED','1030');
         MacOSXVersionMin:='10.3';
       end;
-    system_powerpc64_darwin,
-    system_i386_darwin:
+    system_powerpc64_darwin:
       begin
-{$ifdef llvm}
-        { We only support libunwind as part of libsystem }
-        set_system_compvar('MAC_OS_X_VERSION_MIN_REQUIRED','1060');
-        MacOSXVersionMin:='10.6';
-{$else llvm}
         set_system_compvar('MAC_OS_X_VERSION_MIN_REQUIRED','1040');
         MacOSXVersionMin:='10.4';
-{$endif llvm}
       end;
+    system_i386_darwin,
     system_x86_64_darwin:
       begin
-{$ifdef llvm}
-        { We only support libunwind as part of libsystem }
-        set_system_compvar('MAC_OS_X_VERSION_MIN_REQUIRED','1060');
-        MacOSXVersionMin:='10.6';
-{$else llvm}
-        { actually already works on 10.4, but it's unlikely any 10.4 system
-          with an x86-64 is still in use, so don't default to it }
-        set_system_compvar('MAC_OS_X_VERSION_MIN_REQUIRED','1050');
-        MacOSXVersionMin:='10.5';
-{$endif llvm}
+        set_system_compvar('MAC_OS_X_VERSION_MIN_REQUIRED','1080');
+        MacOSXVersionMin:='10.8';
       end;
     system_arm_darwin,
     system_i386_iphonesim:
@@ -1678,16 +1671,10 @@ begin
                    Message2(option_obsolete_switch_use_new,'-Fg','-Fl');
                  'l' :
                    begin
-                     if path_absolute(More) then
-                       if ispara then
-                         ParaLibraryPath.AddPath(sysrootpath,More,false)
-                       else
-                         LibrarySearchPath.AddPath(sysrootpath,More,true)
+                     if ispara then
+                       ParaLibraryPath.AddLibraryPath(sysrootpath,More,false)
                      else
-                       if ispara then
-                         ParaLibraryPath.AddPath('',More,false)
-                       else
-                         LibrarySearchPath.AddPath('',More,true);
+                       LibrarySearchPath.AddLibraryPath(sysrootpath,More,true)
                    end;
                  'L' :
                    begin
@@ -3313,7 +3300,7 @@ begin
 {$if defined(atari) or defined(hasamiga)}
    { enable vlink as default linker on Atari, Amiga, and MorphOS, but not for cross compilers (for now) }
    if (target_info.system in [system_m68k_amiga,system_m68k_atari,
-                              system_powerpc_amiga,system_powerpc_morphos]) and
+                              system_powerpc_amiga]) and
       not LinkerSetExplicitly then
      include(init_settings.globalswitches,cs_link_vlink);
 {$endif}
@@ -4260,7 +4247,8 @@ begin
         end
       else
         begin
-          if not(FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[init_settings.fputype]) then
+          if (not(FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[init_settings.fputype]))
+	     or (target_info.system = system_arm_darwin) then
             begin
               Message(option_illegal_fpu_eabihf);
               StopOptions(1);
@@ -4384,6 +4372,8 @@ begin
             init_settings.fputype:=fpu_none;
           end;
       end;
+    else
+      ;
   end;
 {$endif m68k}
 

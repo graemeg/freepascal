@@ -251,6 +251,8 @@ unit aoptcpu;
                           result:=true;
                         end;
                   end;
+                else
+                  ;
               end;
             end;
           exit;
@@ -423,8 +425,12 @@ unit aoptcpu;
                       end;
                     result:=result or MaybeRealConstOperSimplify(p);
                   end;
+              else
+                ;
             end;
           end;
+        else
+          ;
       end;
     end;
 

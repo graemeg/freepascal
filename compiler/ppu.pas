@@ -50,7 +50,7 @@ const
   CurrentPPUVersion = 207;
   { for any other changes to the ppu format, increase this version number
     (it's a cardinal) }
-  CurrentPPULongVersion = 6;
+  CurrentPPULongVersion = 7;
 
 { unit flags }
   uf_big_endian          = $000004;
@@ -66,6 +66,42 @@ const
 type
   { bestreal is defined based on the target architecture }
   ppureal=bestreal;
+
+  { set type aliases. We cast all sets to a corresponding array type so
+    that if the set changes size, compilation will fail and we know that
+    we have have to increase the ppu version }
+  tppuset1 = array[0..0] of byte;
+  tppuset2 = array[0..1] of byte;
+  { tppuset3 = array[0..2] of byte; (sets of 3 bytes are rounded up to 4 bytes) }
+  tppuset4 = array[0..3] of byte;
+  tppuset5 = array[0..4] of byte;
+  tppuset6 = array[0..5] of byte;
+  tppuset7 = array[0..6] of byte;
+  tppuset8 = array[0..7] of byte;
+  tppuset9 = array[0..8] of byte;
+  tppuset10 = array[0..9] of byte;
+  tppuset11 = array[0..10] of byte;
+  tppuset12 = array[0..11] of byte;
+  tppuset13 = array[0..12] of byte;
+  tppuset14 = array[0..13] of byte;
+  tppuset15 = array[0..14] of byte;
+  tppuset16 = array[0..15] of byte;
+  tppuset17 = array[0..16] of byte;
+  tppuset18 = array[0..17] of byte;
+  tppuset19 = array[0..18] of byte;
+  tppuset20 = array[0..19] of byte;
+  tppuset21 = array[0..20] of byte;
+  tppuset22 = array[0..21] of byte;
+  tppuset23 = array[0..22] of byte;
+  tppuset24 = array[0..23] of byte;
+  tppuset25 = array[0..24] of byte;
+  tppuset26 = array[0..25] of byte;
+  tppuset27 = array[0..26] of byte;
+  tppuset28 = array[0..27] of byte;
+  tppuset29 = array[0..28] of byte;
+  tppuset30 = array[0..29] of byte;
+  tppuset31 = array[0..30] of byte;
+  tppuset32 = array[0..31] of byte;
 
   tppuerror=(ppuentrytoobig,ppuentryerror);
 

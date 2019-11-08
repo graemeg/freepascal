@@ -190,6 +190,7 @@ begin
     strm.SetSize(ae.ArgLen);
     Move(ae.ArgData^, strm.Memory^, ae.ArgLen);
     CheckProcs[i](strm);
+    strm.Free;
   end;
   Writeln('ok');
 end.

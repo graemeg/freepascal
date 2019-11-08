@@ -160,6 +160,8 @@ unit rgcpu;
                 (instr.opcode in [A_ADDQ,A_SUBQ,A_MOV3Q])) then
                 opidx:=1;
             end;
+          else
+            ;
         end;
 
         if (opidx<0) then
@@ -170,6 +172,8 @@ unit rgcpu;
         case taicpu(instr).opsize of
           S_B: inc(instr.oper[opidx]^.ref^.offset,3);
           S_W: inc(instr.oper[opidx]^.ref^.offset,2);
+          else
+            ;
         end;
         result:=true;
       end;

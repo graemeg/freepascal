@@ -561,6 +561,8 @@ var
             with TClassRefDef(d) do begin
               ClassRef:=_GetRef(it.Get('Ref', TJSONObject(nil)));;
             end;
+          dtNone, dtUnit, dtType, dtJniObject, dtJniEnv:
+            ;  // no action
         end;
       end;
   end;

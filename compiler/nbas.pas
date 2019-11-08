@@ -338,6 +338,7 @@ implementation
 
     uses
       verbose,globals,systems,
+      ppu,
       symconst,symdef,defutil,defcmp,
       pass_1,
       nutils,nld,
@@ -1287,7 +1288,7 @@ implementation
         size:=ppufile.getlongint;
         new(tempinfo);
         fillchar(tempinfo^,sizeof(tempinfo^),0);
-        ppufile.getsmallset(tempinfo^.flags);
+        ppufile.getset(tppuset2(tempinfo^.flags));
         ppufile.getderef(tempinfo^.typedefderef);
         tempinfo^.temptype := ttemptype(ppufile.getbyte);
         tempinfo^.owner:=self;
@@ -1300,7 +1301,7 @@ implementation
       begin
         inherited ppuwrite(ppufile);
         ppufile.putlongint(size);
-        ppufile.putsmallset(tempinfo^.flags);
+        ppufile.putset(tppuset2(tempinfo^.flags));
         ppufile.putderef(tempinfo^.typedefderef);
         ppufile.putbyte(byte(tempinfo^.temptype));
         ppuwritenode(ppufile,tempinfo^.withnode);

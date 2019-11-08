@@ -22,13 +22,14 @@
 unit nutils;
 
 {$i fpcdefs.inc}
+{$modeswitch nestedprocvars}
 
 interface
 
   uses
     globtype,constexp,
     symtype,symsym,symbase,symtable,
-    node;
+    node,compinnr;
 
   const
     NODE_COMPLEXITY_INF = 255;
@@ -168,10 +169,24 @@ interface
       if it is not an orn/andn with boolean operans, the result is undefined }
     function doshortbooleval(p : tnode) : Boolean;
 
+    { returns true if the node has the int value l }
+    function is_constintvalue(p : tnode;l : Tconstexprint) : Boolean;
+
+    { returns true if the node is an inline node of type i }
+    function is_inlinefunction(p : tnode;i : tinlinenumber) : Boolean;
+
+    type
+      TMatchProc2 = function(n1,n2 : tnode) : Boolean is nested;
+      TTransformProc2 = function(n1,n2 : tnode) : tnode is nested;
+
+    { calls matchproc with n1 and n2 as parameters, if it returns true, transformproc is called, does the same with the nodes swapped,
+      the result of transformproc is assigned to res }
+    function MatchAndTransformNodesCommutative(n1,n2 : tnode;matchproc : TMatchProc2;transformproc : TTransformProc2;var res : tnode) : Boolean;
+
 implementation
 
     uses
-      cutils,verbose,globals,compinnr,
+      cutils,verbose,globals,
       symconst,symdef,
       defcmp,defutil,
       nbas,ncon,ncnv,nld,nflw,nset,ncal,nadd,nmem,ninl,
@@ -762,7 +777,8 @@ implementation
                   if (tloadnode(p).symtableentry.typ=staticvarsym) and
                      (vo_is_thread_var in tstaticvarsym(tloadnode(p).symtableentry).varoptions) then
                     inc(result,5)
-                  else
+                  else if not((tloadnode(p).symtableentry.typ in [staticvarsym,localvarsym,paravarsym,fieldvarsym]) and
+                    (tabstractvarsym(tloadnode(p).symtableentry).varregable in [vr_intreg,vr_mmreg,vr_fpureg])) then
                     inc(result);
                   if (tloadnode(p).symtableentry.typ=paravarsym) and tloadnode(p).is_addr_param_load then
                     inc(result);
@@ -775,7 +791,9 @@ implementation
                   if is_implicit_pointer_object_type(tunarynode(p).left.resultdef) or
                     is_bitpacked_access(p) then
                     inc(result,2)
-                  else if tstoreddef(p.resultdef).is_intregable then
+                  { non-packed, int. regable records cause no extra
+                    overhead no overhead if the fields are aligned to register boundaries }
+                  else if tstoreddef(p.resultdef).is_intregable and (tsubscriptnode(p).vs.fieldoffset mod sizeof(aint)<>0) then
                     inc(result,1);
                   if (result = NODE_COMPLEXITY_INF) then
                     exit;
@@ -1528,6 +1546,31 @@ implementation
     function doshortbooleval(p : tnode) : Boolean;
       begin
         Result:=(p.nodetype in [orn,andn]) and ((nf_short_bool in taddnode(p).flags) or not(cs_full_boolean_eval in p.localswitches));
+      end;
+
+
+    function is_constintvalue(p: tnode; l: Tconstexprint): Boolean;
+      begin
+        Result:=is_constintnode(p) and (tordconstnode(p).value=l);
+      end;
+
+
+    function is_inlinefunction(p: tnode; i: tinlinenumber): Boolean;
+      begin
+        Result:=(p.nodetype=inlinen) and (tinlinenode(p).inlinenumber=i);
+      end;
+
+
+    function MatchAndTransformNodesCommutative(n1,n2 : tnode;matchproc : TMatchProc2;transformproc : TTransformProc2;var res : tnode) : Boolean;
+      begin
+        res:=nil;
+        result:=true;
+        if matchproc(n1,n2) then
+          res:=transformproc(n1,n2)
+        else if matchproc(n2,n1) then
+          res:=transformproc(n2,n1)
+        else
+          result:=false;
       end;
 
 end.

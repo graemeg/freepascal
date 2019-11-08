@@ -1083,7 +1083,7 @@ implementation
                   ) and
                 ((flags*([pi_has_assembler_block,pi_is_assembler,
                         pi_needs_stackframe]+
-                        exception_flags[(target_info.cpu=cpu_i386)
+                        exception_flags[((target_info.cpu=cpu_i386) and (not paramanager.use_fixed_stack))
 {$ifndef DISABLE_WIN64_SEH}
                         or (target_info.system=system_x86_64_win64)
 {$endif DISABLE_WIN64_SEH}
@@ -1100,7 +1100,7 @@ implementation
                 generate_parameter_info;
 
                 if not(procdef.stack_tainting_parameter(calleeside)) and
-                   not(has_assembler_child) and (para_stack_size=0) then
+                   not(has_assembler_child) {and (para_stack_size=0)} then
                   begin
                     { Only need to set the framepointer }
                     framepointer:=NR_STACK_POINTER_REG;

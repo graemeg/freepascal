@@ -18,6 +18,7 @@ unit System;
 
 interface
 
+{$define FPC_IS_SYSTEM}
 {$define FPC_STDOUT_TRUE_ALIAS}
 {$define FPC_ANSI_TEXTFILEREC}
 {$define FPC_ATARI_USE_TINYHEAP}

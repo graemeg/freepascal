@@ -24,6 +24,8 @@ begin
    if EOF(test_file) then
       writeln('EOF reached');
    pos := filepos(test_file);
+   if pos<>9 then
+     halt(1);
    writeln('File position: ', pos);
    read(test_file, my_bits);
    writeln(my_bits);

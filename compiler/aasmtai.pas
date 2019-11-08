@@ -1021,7 +1021,8 @@ implementation
 {$endif x86}
       SysUtils,
       verbose,
-      globals;
+      globals,
+      ppu;
 
     const
       pputaimarker = 254;
@@ -1260,6 +1261,7 @@ implementation
         sectype:=asectype;
         secalign:=Aalign;
         secorder:=Asecorder;
+        TObjData.sectiontype2progbitsandflags(sectype,secprogbits,secflags);
         name:=stringdup(Aname);
         sec:=nil;
       end;
@@ -1271,7 +1273,7 @@ implementation
         sectype:=TAsmSectiontype(ppufile.getbyte);
         secalign:=ppufile.getlongint;
         name:=ppufile.getpshortstring;
-        secflags:=TSectionFlags(ppufile.getdword);
+        ppufile.getset(tppuset1(secflags));
         secprogbits:=TSectionProgbits(ppufile.getbyte);
         sec:=nil;
       end;
@@ -1289,7 +1291,7 @@ implementation
         ppufile.putbyte(byte(sectype));
         ppufile.putlongint(secalign);
         ppufile.putstring(name^);
-        ppufile.putbyte(dword(secflags));
+        ppufile.putset(tppuset1(secflags));
         ppufile.putbyte(byte(secprogbits));
       end;
 

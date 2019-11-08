@@ -706,23 +706,23 @@ begin
     q:=qword(l);
 
   a:=mtwist_u32rand;
- b:=mtwist_u32rand;
+  b:=mtwist_u32rand;
 
- c:=q shr 32;
- d:=cardinal(q);
+  c:=q shr 32;
+  d:=cardinal(q);
 
- bd:=b*d;
- ad:=a*d;
- bc:=b*c;
- ac:=a*c;
+  bd:=qword(b)*d;
+  ad:=qword(a)*d;
+  bc:=qword(b)*c;
+  ac:=qword(a)*c;
 
- // We only need the carry bit
- carry:=((bd shr 32)+cardinal(ad)+cardinal(bc)) shr 32;
+  // We only need the carry bit
+  carry:=((bd shr 32)+cardinal(ad)+cardinal(bc)) shr 32;
 
- // Calculate the final result
- result:=int64(carry+(ad shr 32)+(bc shr 32)+ac);
- if l<0 then
-   result:=-result;
+  // Calculate the final result
+  result:=int64(carry+(ad shr 32)+(bc shr 32)+ac);
+  if l<0 then
+    result:=-result;
 end;
 
 {$ifndef FPUNONE}

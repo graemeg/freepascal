@@ -694,6 +694,7 @@ type
     procedure AddReferenceToArray(Arr: TJSONArray; El: TPasElement; WriteNull: boolean = true); virtual;
     procedure AddReferenceToObj(Obj: TJSONObject; const PropName: string;
       El: TPasElement; WriteNil: boolean = false); virtual;
+    procedure CreateAutoElReferenceId(Ref: TPCUFilerElementRef); virtual;
     procedure CreateElReferenceId(Ref: TPCUFilerElementRef); virtual;
     function CreateElementRef(El: TPasElement): TPCUFilerElementRef; override;
     procedure AddedBuiltInRef(Ref: TPCUFilerElementRef); override;
@@ -2086,12 +2087,17 @@ begin
     end;
 end;
 
-procedure TPCUWriter.CreateElReferenceId(Ref: TPCUFilerElementRef);
+procedure TPCUWriter.CreateAutoElReferenceId(Ref: TPCUFilerElementRef);
 begin
   if Ref.Id<>0 then
     RaiseMsg(20180207114300,Ref.Element,IntToStr(Ref.Id));
   inc(FElementIdCounter);
   Ref.Id:=FElementIdCounter;
+end;
+
+procedure TPCUWriter.CreateElReferenceId(Ref: TPCUFilerElementRef);
+begin
+  CreateAutoElReferenceId(Ref);
   Ref.Obj.Add('Id',Ref.Id);
 end;
 
@@ -3528,6 +3534,7 @@ var
   ScopeIntf: TFPList;
   o: TObject;
   SubObj: TJSONObject;
+  Ref: TPCUFilerElementRef;
 begin
   WriteIdentifierScope(Obj,Scope,aContext);
   aClass:=Scope.Element as TPasClassType;
@@ -3549,6 +3556,10 @@ begin
       RaiseMsg(20180217143857,aClass);
     if CanonicalClassOf.SourceLinenumber<>aClass.SourceLinenumber then
       RaiseMsg(20180217143905,aClass);
+    Ref:=GetElementReference(CanonicalClassOf);
+    CreateAutoElReferenceId(Ref);
+    Obj.Add('ClassOf',Ref.Id);
+    ResolvePendingElRefs(Ref);
     end
   else if CanonicalClassOf<>nil then
     RaiseMsg(20180329110817,aClass,GetObjName(CanonicalClassOf));
@@ -7213,10 +7224,11 @@ procedure TPCUReader.ReadClassScope(Obj: TJSONObject; Scope: TPas2JSClassScope;
 var
   aClass: TPasClassType;
   CanonicalClassOf: TPasClassOfType;
+  CanonicalClassOfId: integer;
 begin
   aClass:=Scope.Element as TPasClassType;
 
-  if aClass.ObjKind=okClass then
+  if aClass.ObjKind in ([okClass]+okAllHelpers) then
     begin
     CanonicalClassOf:=TPasClassOfType(CreateElement(TPasClassOfType,'Self',aClass));
     Scope.CanonicalClassOf:=CanonicalClassOf;
@@ -7225,6 +7237,8 @@ begin
     CanonicalClassOf.SourceLinenumber:=aClass.SourceLinenumber;
     CanonicalClassOf.DestType:=aClass;
     aClass.AddRef{$IFDEF CheckPasTreeRefCount}('TPasClassScope.CanonicalClassOf'){$ENDIF};
+    if ReadInteger(Obj,'ClassOf',CanonicalClassOfId,CanonicalClassOf) then
+      AddElReference(CanonicalClassOfId,CanonicalClassOf,CanonicalClassOf);
     end;
 
   ReadElementReference(Obj,Scope,'NewInstanceFunction',@Set_ClassScope_NewInstanceFunction);

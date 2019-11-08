@@ -88,7 +88,7 @@ implementation
 Constructor TLinkerMPW.Create;
 begin
   Inherited Create;
-  //LibrarySearchPath.AddPath(sysrootpath,'/lib;/usr/lib;/usr/X11R6/lib',true);
+  //LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib;=/usr/lib;=/usr/X11R6/lib',true);
 end;
 
 

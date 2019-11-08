@@ -184,6 +184,7 @@ implementation
 
     uses
       verbose,globtype,globals,systems,constexp,compinnr,
+      ppu,
       symtable,
       defutil,defcmp,
       cpuinfo,
@@ -231,7 +232,7 @@ implementation
         ppufile.getderef(symtableentryderef);
         symtable:=nil;
         ppufile.getderef(fprocdefderef);
-        ppufile.getsmallset(loadnodeflags);
+        ppufile.getset(tppuset1(loadnodeflags));
       end;
 
 
@@ -240,7 +241,7 @@ implementation
         inherited ppuwrite(ppufile);
         ppufile.putderef(symtableentryderef);
         ppufile.putderef(fprocdefderef);
-        ppufile.putsmallset(loadnodeflags);
+        ppufile.putset(tppuset1(loadnodeflags));
       end;
 
 

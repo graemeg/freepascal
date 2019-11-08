@@ -180,6 +180,8 @@ unit cpupara;
           procvardef :
             { Handling of methods must match that of records }
             result:=false;
+           else
+             ;
         end;
       end;
 
@@ -195,6 +197,8 @@ unit cpupara;
                 result:=false;
                 exit;
               end;
+          else
+            ;
         end;
         result:=inherited ret_in_param(def,pd);
       end;
@@ -638,6 +642,8 @@ unit cpupara;
                         break;
                       dec(i);
                     end;
+                  else
+                    ;
                 end;
               end;
           end;

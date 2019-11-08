@@ -3,6 +3,7 @@ unit System;
 
 interface
 
+{$define FPC_IS_SYSTEM}
 { The heap for MSDOS is implemented
   in tinyheap.inc include file,
   but it uses default SysGetMem names }

@@ -135,11 +135,11 @@ type
       function GetGlyph (c : cardinal) : PMgrGlyph;
       function CreateGlyph (c : cardinal) : PMgrGlyph;
       procedure MakeTransformation (angle:real; out Transformation:FT_Matrix);
-      procedure InitMakeString (FontID, Size:integer);
-      function MakeString (FontId:integer; Text:string; size:integer; angle:real) : TStringBitmaps;
-      function MakeString (FontId:integer; Text:string; Size:integer) : TStringBitmaps;
-      function MakeString (FontId:integer; Text:Unicodestring; size:integer; angle:real) : TUnicodeStringBitmaps;
-      function MakeString (FontId:integer; Text:Unicodestring; Size:integer) : TUnicodeStringBitmaps;
+      procedure InitMakeString (FontID, Size:real);
+      function MakeString (FontId:integer; Text:string; size:real; angle:real) : TStringBitmaps;
+      function MakeString (FontId:integer; Text:string; Size:real) : TStringBitmaps;
+      function MakeString (FontId:integer; Text:Unicodestring; size:real; angle:real) : TUnicodeStringBitmaps;
+      function MakeString (FontId:integer; Text:Unicodestring; Size:real) : TUnicodeStringBitmaps;
     public
       constructor Create;
       destructor destroy; override;
@@ -147,17 +147,17 @@ type
       function RequestFont (afilename:string) : integer;
       function RequestFont (afilename:string; anindex:integer) : integer;
       function GetFreeTypeFont (aFontID:integer) : PFT_Face;
-      function GetString (FontId:integer; Text:string; size:integer; angle:real) : TStringBitmaps;
-      function GetString (FontId:integer; Text:Unicodestring; size:integer; angle:real) : TUnicodeStringBitmaps;
+      function GetString (FontId:integer; Text:string; size:real; angle:real) : TStringBitmaps;
+      function GetString (FontId:integer; Text:Unicodestring; size:real; angle:real) : TUnicodeStringBitmaps;
       // Black and white
-      function GetStringGray (FontId:integer; Text:string; size:integer; angle:real) : TStringBitmaps;
-      function GetStringGray (FontId:integer; Text:unicodestring; size:integer; angle:real) : TUnicodeStringBitmaps;
+      function GetStringGray (FontId:integer; Text:string; size:real; angle:real) : TStringBitmaps;
+      function GetStringGray (FontId:integer; Text:unicodestring; size:real; angle:real) : TUnicodeStringBitmaps;
       // Anti Aliased gray scale
-      function GetString (FontId:integer; Text:string; Size:integer) : TStringBitmaps;
-      function GetString (FontId:integer; Text:Unicodestring; Size:integer) : TUnicodeStringBitmaps;
+      function GetString (FontId:integer; Text:string; Size:real) : TStringBitmaps;
+      function GetString (FontId:integer; Text:Unicodestring; Size:real) : TUnicodeStringBitmaps;
       // Black and white, following the direction of the font (left to right, top to bottom, ...)
-      function GetStringGray (FontId:integer; Text: String; Size:integer) : TStringBitmaps;
-      function GetStringGray (FontId:integer; Text:Unicodestring; Size:integer) : TUnicodeStringBitmaps;
+      function GetStringGray (FontId:integer; Text: String; Size:real) : TStringBitmaps;
+      function GetStringGray (FontId:integer; Text:Unicodestring; Size:real) : TUnicodeStringBitmaps;
       // Anti Aliased gray scale, following the direction of the font (left to right, top to bottom, ...)
       property SearchPath : string read GetSearchPath write SetSearchPath;
       property DefaultExtention : string read FExtention write SetExtention;
@@ -195,7 +195,7 @@ const
   {$IFDEF MAC}
   DefaultResolution : integer = 72;
   {$ELSE}
-  DefaultResolution : integer = 97;
+  DefaultResolution : integer = 96;
   {$ENDIF}
 
 implementation
@@ -518,8 +518,7 @@ procedure TFontManager.SetPixelSize (aSize, aResolution : integer);
       end;
   end;
 
-var s : longint;
-    Err : integer;
+var Err : integer;
 
 begin
   with Curfont, Font^ do
@@ -532,8 +531,7 @@ begin
       end
     else
       begin
-      s := aSize shl 6;
-      Err := FT_Set_char_size (Font, s, s, aResolution, aResolution);
+      Err := FT_Set_char_size (Font, aSize, aSize, aResolution, aResolution);
       if Err <> 0 then
         FTError (format(sErrSetCharSize,[aSize,aResolution]), Err);
       end;
@@ -587,31 +585,33 @@ begin
     end;
 end;
 
-procedure TFontManager.InitMakeString (FontID, Size:integer);
+procedure TFontManager.InitMakeString (FontID, Size:real);
 begin
-  GetSize (size,Resolution);
+  GetSize (round(size*64),Resolution);
   UseKerning := ((Curfont.font^.face_flags and FT_FACE_FLAG_KERNING) <> 0);
 end;
 
-function TFontManager.MakeString (FontId:integer; Text:string; size:integer; angle:real) : TStringBitmaps;
+function TFontManager.MakeString (FontId:integer; Text:string; size:real; angle:real) : TStringBitmaps;
 
 Var
   T : Array of cardinal;
   C,I : Integer;
+  U: UnicodeString;
 
 begin
   CurFont := GetFont(FontID);
   InitMakeString (FontID, Size);
-  c := length(text);
+  U := UnicodeString(Text);
+  c := length(U);
   result := TStringBitmaps.Create(c);
   result.FText := Text;
-  SetLength(T,Length(Text));
-  For I:=1 to Length(Text) do
-    T[I-1]:=Ord(Text[i]);
+  SetLength(T,c);
+  For I:=1 to c do
+    T[I-1]:=Ord(U[i]);
   DoMakeString(T,Angle,Result);
 end;
 
-function TFontManager.MakeString (FontId:integer; Text:Unicodestring; size:integer; angle:real) : TUnicodeStringBitmaps;
+function TFontManager.MakeString (FontId:integer; Text:Unicodestring; size:real; angle:real) : TUnicodeStringBitmaps;
 
 Var
   T : Array of cardinal;
@@ -736,25 +736,27 @@ begin
     end;
 end;
 
-function TFontManager.MakeString (FontId:integer; Text:string; Size:integer) : TStringBitmaps;
+function TFontManager.MakeString (FontId:integer; Text:string; Size:real) : TStringBitmaps;
 
 Var
   T : Array of Cardinal;
   C,I : Integer;
+  U : UnicodeString;
   
 begin
   CurFont := GetFont(FontID);
   InitMakeString (FontID, Size);
-  c := length(text);
+  U := UnicodeString(Text);
+  c := length(U);
   result := TStringBitmaps.Create(c);
   result.FText := Text;
-  SetLength(T,Length(Text));
-  For I:=1 to Length(Text) do
-    T[I-1]:=Ord(Text[i]);
+  SetLength(T,c);
+  For I:=1 to c do
+    T[I-1]:=Ord(U[i]);
   DoMakeString(T,Result);
 end;
 
-function TFontManager.MakeString (FontId:integer; Text:Unicodestring; Size:integer) : TUnicodeStringBitmaps;
+function TFontManager.MakeString (FontId:integer; Text:Unicodestring; Size:real) : TUnicodeStringBitmaps;
 
 Var
   T : Array of Cardinal;
@@ -853,14 +855,14 @@ begin
   ABitmaps.CalculateGlobals;
 end;
 
-function TFontManager.GetString (FontId:integer; Text:string; size:integer; angle:real) : TStringBitmaps;
+function TFontManager.GetString (FontId:integer; Text:string; size:real; angle:real) : TStringBitmaps;
 // Black and white
 begin
   CurRenderMode := FT_RENDER_MODE_MONO;
   result := MakeString (FontID, text, Size, angle);
 end;
 
-function TFontManager.GetStringGray (FontId:integer; Text:string; size:integer; angle:real) : TStringBitmaps;
+function TFontManager.GetStringGray (FontId:integer; Text:string; size:real; angle:real) : TStringBitmaps;
 // Anti Aliased gray scale
 begin
   CurRenderMode := FT_RENDER_MODE_NORMAL;
@@ -869,28 +871,28 @@ end;
 
 { Procedures without angle have own implementation to have better speed }
 
-function TFontManager.GetString (FontId:integer; Text:string; Size:integer) : TStringBitmaps;
+function TFontManager.GetString (FontId:integer; Text:string; Size:real) : TStringBitmaps;
 // Black and white, following the direction of the font (left to right, top to bottom, ...)
 begin
   CurRenderMode := FT_RENDER_MODE_MONO;
   result := MakeString (FontID, text, Size);
 end;
 
-function TFontManager.GetStringGray (FontId:integer; Text:string; Size:integer) : TStringBitmaps;
+function TFontManager.GetStringGray (FontId:integer; Text:string; Size:real) : TStringBitmaps;
 // Anti Aliased gray scale, following the direction of the font (left to right, top to bottom, ...)
 begin
   CurRenderMode := FT_RENDER_MODE_NORMAL;
   result := MakeString (FontID, text, Size);
 end;
 
-function TFontManager.GetString (FontId:integer; Text:Unicodestring; size:integer; angle:real) : TUnicodeStringBitmaps;
+function TFontManager.GetString (FontId:integer; Text:Unicodestring; size:real; angle:real) : TUnicodeStringBitmaps;
 // Black and white
 begin
   CurRenderMode := FT_RENDER_MODE_MONO;
   result := MakeString (FontID, text, Size, angle);
 end;
 
-function TFontManager.GetStringGray (FontId:integer; Text:Unicodestring; size:integer; angle:real) : TUnicodeStringBitmaps;
+function TFontManager.GetStringGray (FontId:integer; Text:Unicodestring; size:real; angle:real) : TUnicodeStringBitmaps;
 // Anti Aliased gray scale
 begin
   CurRenderMode := FT_RENDER_MODE_NORMAL;
@@ -899,14 +901,14 @@ end;
 
 { Procedures without angle have own implementation to have better speed }
 
-function TFontManager.GetString (FontId:integer; Text:Unicodestring; Size:integer) : TUnicodeStringBitmaps;
+function TFontManager.GetString (FontId:integer; Text:Unicodestring; Size:real) : TUnicodeStringBitmaps;
 // Black and white, following the direction of the font (left to right, top to bottom, ...)
 begin
   CurRenderMode := FT_RENDER_MODE_MONO;
   result := MakeString (FontID, text, Size);
 end;
 
-function TFontManager.GetStringGray (FontId:integer; Text:Unicodestring; Size:integer) : TUnicodeStringBitmaps;
+function TFontManager.GetStringGray (FontId:integer; Text:Unicodestring; Size:real) : TUnicodeStringBitmaps;
 // Anti Aliased gray scale, following the direction of the font (left to right, top to bottom, ...)
 begin
   CurRenderMode := FT_RENDER_MODE_NORMAL;

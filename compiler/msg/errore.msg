@@ -1600,6 +1600,9 @@ parser_e_callthrough_varargs=03350_E_Cannot redeclare C-style variadic function 
 % platforms. Even on platforms where it is supported, this is quite inefficient.
 parser_e_unbound_attribute=03351_E_Unbound custom attribute: "$1".
 % A custom attribute is defined, but there is no identifier to bind it to.
+parser_e_enumeration_out_of_range=03352_E_Enumeration symbols can only have values in the range of -2^31 to 2^31-1
+% The size of enumeration values is limited to 4 bytes. As the value can be signed, the range
+% of valid values is limited to a signed 32 Bit value (i.e. \var{longint}).
 %
 % \end{description}
 %
@@ -3831,6 +3834,7 @@ F*0*_Only options valid for the default or selected platform are listed.
 6*2Agas_GNU Motorola assembler
 6*2Amit_MIT Syntax (old GAS)
 6*2Amot_Standard Motorola assembler
+6*2Avasm_Use vasm to assemble
 A*2Aas_Assemble using GNU AS
 P*2Aas_Assemble using GNU AS
 S*2Aas_Assemble using GNU AS

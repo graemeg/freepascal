@@ -87,6 +87,8 @@ type
     function GetClassInfo(Index: integer): TClassInfo;
   end;
 
+  TMatchType = (mtNone, mtExact, mtWildcard, mtParams);
+
   { TWriter }
 
   TWriter = class
@@ -105,6 +107,7 @@ type
 
     procedure WriteFileComment(st: TTextOutStream);
     function FindInStringList(list: TStringList; const s: string): integer;
+    function FindInStringListEx(list: TStringList; const s: string; AllMatch: boolean; out MatchType: TMatchType): integer;
 
     procedure ProcessRules(d: TDef; const Prefix: string = '');
     function GetUniqueNum: integer;
@@ -178,7 +181,7 @@ const
 
   TextIndent = 2;
 
-  ExcludeStd: array[1..44] of string = (
+  ExcludeStd: array[1..45] of string = (
     'classes.TStream.ReadComponent', 'classes.TStream.ReadComponentRes', 'classes.TStream.WriteComponent', 'classes.TStream.WriteComponentRes',
     'classes.TStream.WriteDescendent', 'classes.TStream.WriteDescendentRes', 'classes.TStream.WriteResourceHeader', 'classes.TStream.FixupResourceHeader',
     'classes.TStream.ReadResHeader', 'classes.TComponent.WriteState', 'classes.TComponent.ExecuteAction', 'classes.TComponent.UpdateAction',
@@ -190,17 +193,28 @@ const
     'system.TObject.FieldAddress', 'classes.TComponent.ComponentState', 'classes.TComponent.ComponentStyle', 'classes.TList.GetEnumerator',
     'classes.TList.List', 'classes.TList.FPOAttachObserver', 'classes.TList.FPODetachObserver', 'classes.TList.FPONotifyObservers',
     'classes.TPersistent.FPOAttachObserver', 'classes.TPersistent.FPODetachObserver', 'classes.TPersistent.FPONotifyObservers',
-    'system.fma'
+    'system.fma', 'system.TExtended80Rec'
   );
 
-  ExcludeDelphi7: array[1..26] of string = (
+  ExcludeDelphi7: array[1..57] of string = (
     'system.TObject.StringMessageTable', 'system.TObject.GetInterfaceEntryByStr', 'system.TObject.UnitName', 'system.TObject.Equals',
-    'system.TObject.GetHashCode', 'system.TObject.ToString','system.TObject.QualifiedClassName','classes.TStream.ReadByte', 'classes.TStream.ReadWord',
+    'system.TObject.GetHashCode', 'system.TObject.ToString','system.TObject.QualifiedClassName',
+    'sysutils.TEncoding',
+    'classes.TStream.ReadByte', 'classes.TStream.ReadWord',
     'classes.TStream.ReadDWord', 'classes.TStream.ReadQWord', 'classes.TStream.ReadAnsiString', 'classes.TStream.WriteByte',
     'classes.TStream.WriteWord', 'classes.TStream.WriteDWord', 'classes.TStream.WriteQWord', 'classes.TStream.WriteAnsiString',
+    'classes.TStream.ReadData', 'classes.TStream.ReadBufferData', 'classes.TStream.WriteData', 'classes.TStream.WriteBufferData',
     'classes.TCollection.Exchange', 'classes.TStrings.Equals', 'classes.TStrings.GetNameValue', 'classes.TStrings.ExtractName',
     'classes.TStrings.TextLineBreakStyle', 'classes.TStrings.StrictDelimiter', 'classes.TStrings.GetEnumerator', 'classes.TStringList.OwnsObjects',
-    'classes.TList.AddList'
+    'classes.TStrings.Filter', 'classes.TStrings.ForEach', 'classes.TStrings.Reduce', 'classes.TStrings.Map', 'classes.TStrings.AddPair',
+    'classes.TStrings.AddText', 'classes.TStrings.Fill', 'classes.TStrings.LastIndexOf', 'classes.TStrings.Pop', 'classes.TStrings.Reverse',
+    'classes.TStrings.Shift', 'classes.TStrings.Slice', 'classes.TStrings.AlwaysQuote', 'classes.TStrings.LineBreak',
+    'classes.TStrings.MissingNameValueSeparatorAction', 'classes.TStrings.SkipLastLineBreak', 'classes.TStrings.TrailingLineBreak', 'classes.TStrings.WriteBOM',
+    'classes.TStrings.AddStrings#ClearFirst', 'classes.TStrings.IndexOf#aStart', 'classes.TStrings.LoadFromFile#IgnoreEncoding',
+    'classes.TStrings.LoadFromStream#IgnoreEncoding',
+    'classes.TStringList.SortStyle',
+    'classes.TList.AddList', 'classes.TCustomMemoryStream.SizeBoundsSeek', 'classes.TBytesStream',
+    'sortbase'
   );
 
   SUnsupportedType = '<unsupported type>';
@@ -376,10 +390,22 @@ end;
 
 function TWriter.FindInStringList(list: TStringList; const s: string): integer;
 var
+  mt: TMatchType;
+begin
+  Result:=FindInStringListEx(list, s, False, mt);
+end;
+
+function TWriter.FindInStringListEx(list: TStringList; const s: string; AllMatch: boolean; out MatchType: TMatchType): integer;
+var
   len, cnt: integer;
   ss: string;
 begin
-  if list.Find(s, Result) or (Result < 0) then
+  MatchType:=mtNone;
+  if list.Find(s, Result) then begin
+    MatchType:=mtExact;
+    exit;
+  end;
+  if Result < 0 then
     exit;
   if Result < list.Count then begin
     cnt:=3;
@@ -392,22 +418,36 @@ begin
     while cnt > 0 do begin
       ss:=list[Result];
       len:=Length(ss);
-      if (len > 1) and (ss[len] = '*') then begin
-        Dec(len);
-        if AnsiCompareText(Copy(s, 1, len), Copy(ss, 1, len)) = 0 then
+      if len > 1 then begin
+        if ss[len] = '*' then begin
+          Dec(len);
+          MatchType:=mtWildcard;
+        end
+        else
+          if AllMatch then begin
+            len:=Pos('#', ss) - 1;
+            MatchType:=mtParams;
+          end
+          else
+            len:=0;
+
+        if (len > 0) and (AnsiCompareText(Copy(s, 1, len), Copy(ss, 1, len)) = 0) then
           exit;
       end;
       Inc(Result);
       Dec(cnt);
     end;
   end;
+  MatchType:=mtNone;
   Result:=-1;
 end;
 
 procedure TWriter.ProcessRules(d: TDef; const Prefix: string);
 var
   i: integer;
-  s: string;
+  s, c: string;
+  b: boolean;
+  mt: TMatchType;
 begin
   if d.DefType = dtClass then
     with TClassDef(d) do
@@ -415,15 +455,31 @@ begin
         SetNotUsed;
         exit;
       end;
-  s:=Prefix + d.Name;
-  if FindInStringList(ExcludeList, s) >= 0 then
-    d.SetNotUsed
+  s:=Prefix + d.AliasName;
+  if FindInStringListEx(ExcludeList, s, (d.DefType = dtProc), mt) >= 0 then begin
+    if mt <> mtParams then begin
+      if d.DefType = dtParam then
+        d.Parent.SetNotUsed
+      else
+        d.SetNotUsed;
+    end;
+  end
   else
     if FindInStringList(IncludeList, s) >= 0 then
       d.IsUsed:=True;
-  if not (d.DefType in [dtUnit, dtClass]) then
+  b:=not (d.DefType in [dtUnit, dtClass]);
+  // Check exclusion rules for parameters of overloaded procs
+  if (d.DefType = dtProc) and (mt = mtParams) then begin
+    b:=False;
+    c:='#';
+  end
+  else
+    c:='.';
+
+  if b then
     exit;
-  s:=s + '.';
+
+  s:=s + c;
   for i:=0 to d.Count - 1 do
     ProcessRules(d[i], s);
 end;
@@ -586,6 +642,8 @@ var
                 WriteProc(TProcDef(p), nil, d);
               dtProp, dtField:
                 WriteVar(TVarDef(p), d);
+              else
+                ; // no action
             end;
           end;
         end;
@@ -622,6 +680,8 @@ var
             WriteProc(TProcDef(it));
         dtProp, dtField:
           WriteVar(TVarDef(it));
+        else
+          ; // no action
       end;
     end;
   end;
@@ -738,6 +798,8 @@ begin
         end;
         Fjs.WriteLn(Format('protected %s(long objptr, boolean cleanup) { super(objptr, cleanup); }', [d.Name]));
       end;
+    else
+      ; // no action
   end;
 
   WriteTypeCast(n, False);
@@ -858,10 +920,13 @@ begin
           if (VarType <> nil) and (VarType.DefType = dtJniEnv) then
             continue;
           s:=s + '; ' + Name + ': ';
+          ss:=DefToJniType(VarType, err);
           if not IsJavaVarParam(vd) then
-            s:=s + DefToJniType(VarType, err)
+            s:=s + ss
           else begin
-            s:=s + 'jarray';
+            if not err then
+              ss:='jarray';
+            s:=s + ss;
             if tempvars = nil then
               tempvars:=TStringList.Create;
             if VarType = nil then
@@ -1301,11 +1366,15 @@ begin
               v:='true'
             else
               v:='false';
+          else
+            ; // no action
         end;
       dtArray:
         with TArrayDef(d.VarType) do
           if (ElType.DefType = dtType) and (TTypeDef(ElType).BasicType in [btChar, btWideChar]) then
             s:='String';
+      else
+        ; // no action
     end;
     if s = '' then
       s:=DefToJavaType(d.VarType);
@@ -2084,6 +2153,8 @@ begin
           WritePointer(TPointerDef(d), True);
         dtClassRef:
           WriteClassRef(TClassRefDef(d), True);
+        else
+          ; // no action
       end;
     end;
 
@@ -2111,6 +2182,8 @@ begin
           WritePointer(TPointerDef(d), False);
         dtClassRef:
           WriteClassRef(TClassRefDef(d), False);
+        else
+          ; // no action
       end;
     end;
 
@@ -2300,6 +2373,14 @@ begin
 end;
 
 function TWriter.JniToPasType(d: TDef; const v: string; CheckNil: boolean): string;
+
+  function _GetFullName(d: TDef): string;
+  begin
+    Result:=Format('%s.%s', [d.Parent.Name, d.Name]);
+    if Result = 'types.TDuplicates' then
+      Result:='classes.TDuplicates';  // Hack for Delphi 7 compatibility
+  end;
+
 var
   n: string;
 begin
@@ -2344,7 +2425,7 @@ begin
     dtProcType:
       Result:=Format('%sGetHandler(_env, %s, %s)', [GetClassPrefix(d), Result, GetTypeInfoVar(d)]);
     dtEnum:
-      Result:=Format('%s.%s(_GetIntObjValue(_env, %s, %s))', [d.Parent.Name, d.Name, Result, GetTypeInfoVar(d)]);
+      Result:=Format('%s(_GetIntObjValue(_env, %s, %s))', [_GetFullName(d), Result, GetTypeInfoVar(d)]);
     dtSet:
       Result:=Format('%s.%s(%s(_GetIntObjValue(_env, %s, %s)))', [d.Parent.Name, d.Name, GetPasIntType(TSetDef(d).Size), Result, GetTypeInfoVar(d)]);
     dtPointer:
@@ -2359,6 +2440,8 @@ begin
         Result:=Format('_GetClass(_env, %s, %s)', [Result, GetTypeInfoVar(d)]);
         Result:=Format('%s.%s(%s)', [d.Parent.Name, d.Name, Result]);
       end;
+    else
+      ; // no action
   end;
 end;
 
@@ -2383,6 +2466,8 @@ begin
             Result:=Format('jint(%s)', [Result]);
           btGuid:
             Result:=Format('_StringToJString(_env, _JNIString(GUIDToString(%s)))', [Result]);
+          else
+            ; // no action
         end;
     dtClass:
       case TClassDef(d).CType of
@@ -2406,6 +2491,8 @@ begin
         Result:=Format('ptruint(pointer(%s))', [Result]);
     dtClassRef:
       Result:=Format('_CreateJavaObj(_env, -jlong(ptruint(pointer(%s))), %s)', [Result, GetTypeInfoVar(d)])
+    else
+      ; // no action
   end;
 end;
 
@@ -2482,6 +2569,7 @@ begin
 
     if s <> '' then
       s:='(' + s + ')';
+    ss:='';
     case ProcType of
       ptConstructor:
         ss:='constructor';
@@ -2491,8 +2579,6 @@ begin
         ss:='procedure';
       ptFunction:
         ss:='function';
-      else
-        ss:='';
     end;
     if ProcType in [ptConstructor, ptFunction] then
       s:=s + ': ' + GetPasType(ReturnType, FullTypeNames);
@@ -2758,8 +2844,6 @@ begin
 end;
 }
 constructor TWriter.Create;
-var
-  i: integer;
 begin
   Units:=TStringList.Create;
   FClasses:=TClassList.Create;
@@ -2768,12 +2852,6 @@ begin
   IncludeList.Duplicates:=dupIgnore;
   ExcludeList:=TStringList.Create;
   ExcludeList.Duplicates:=dupIgnore;
-
-  for i:=Low(ExcludeStd) to High(ExcludeStd) do
-    ExcludeList.Add(ExcludeStd[i]);
-  for i:=Low(ExcludeDelphi7) to High(ExcludeDelphi7) do
-    ExcludeList.Add(ExcludeDelphi7[i]);
-
   FThisUnit:=TUnitDef.Create(nil, dtUnit);
   FRecords:=TObjectList.Create(False);
   FRealClasses:=TObjectList.Create(False);
@@ -2857,6 +2935,13 @@ begin
   for i:=0 to ExcludeList.Count - 1 do
     ExcludeList[i]:=Trim(ExcludeList[i]);
   ExcludeList.Sorted:=True;
+
+  for i:=Low(ExcludeStd) to High(ExcludeStd) do
+    if IncludeList.IndexOf(ExcludeStd[i]) < 0 then
+      ExcludeList.Add(ExcludeStd[i]);
+  for i:=Low(ExcludeDelphi7) to High(ExcludeDelphi7) do
+    if IncludeList.IndexOf(ExcludeDelphi7[i]) < 0 then
+      ExcludeList.Add(ExcludeDelphi7[i]);
 
   FThisUnit.Name:=LibName;
   FThisUnit.AliasName:='system';

@@ -287,7 +287,7 @@ type
     procedure InternalInitFieldDefs; override;
     function BufToStore(Buffer: TRecordBuffer): String; override;
     function StoreToBuf(Source: String): String; override;
-    function ExtractDelimited(const S: String; var Pos: integer): string;
+    function ExtractDelimited(const S: String; var Pos: integer): string; virtual;
   public
     constructor Create(AOwner: TComponent); override;
   published

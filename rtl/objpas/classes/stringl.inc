@@ -163,6 +163,7 @@ begin
 end;
 
 
+
 Function TStrings.GetNameValueSeparator :Char;
 begin
   CheckSpecialChars;
@@ -283,6 +284,159 @@ begin
     Result:='';
 end;
 
+
+procedure TStrings.Filter(aFilter: TStringsFilterMethod; aList: TStrings);
+
+var
+  S : string;
+
+begin
+  for S in self do
+    if aFilter(S) then
+      aList.Add(S);
+end;
+
+
+procedure TStrings.ForEach(aCallback: TStringsForeachMethod);
+
+var
+  S : String;
+
+begin
+  for S in self do
+    aCallBack(S);
+end;
+
+
+procedure TStrings.ForEach(aCallback: TStringsForeachMethodEx);
+
+var
+  i: integer;
+
+begin
+  for i:=0 to Count-1 do
+    aCallBack(Strings[i],i);
+end;
+
+
+procedure TStrings.ForEach(aCallback: TStringsForeachMethodExObj);
+
+var
+  i: integer;
+
+begin
+  for i:=0 to Count-1 do
+    aCallback(Strings[i],i,Objects[i]);
+end;
+
+
+function TStrings.Filter(aFilter: TStringsFilterMethod): TStrings;
+
+begin
+  Result:=TStringsClass(Self.ClassType).Create;
+  try
+    Filter(aFilter,Result);
+  except
+    FreeAndNil(Result);
+    Raise;
+  end;
+end;
+
+procedure TStrings.Fill(const aValue: String; aStart, aEnd: Integer);
+var
+  i: integer;
+begin
+  if aEnd<0 then
+    aEnd:=Self.Count+aEnd;
+  if aEnd>=Count then
+    aEnd:=Count-1;
+  for i:=aStart to aEnd do
+    Strings[i]:=aValue;
+end;
+
+
+Procedure TStrings.Map(aMap: TStringsMapMethod; aList : TStrings);
+
+Var
+  S : String;
+
+begin
+  For S in self do
+    aList.Add(aMap(S));
+end;
+
+
+Function TStrings.Map(aMap: TStringsMapMethod) : TStrings;
+
+begin
+  Result:=TStringsClass(Self.ClassType).Create;
+  try
+    Map(aMap,Result);
+  except
+    FreeAndNil(Result);
+    Raise;
+  end;
+end;
+
+
+function TStrings.Reduce(aReduceMethod: TStringsReduceMethod; const startingValue: string): string;
+
+var
+  S : String;
+
+begin
+  Result:=startingValue;
+  for S in self do
+    Result:=aReduceMethod(Result, S);
+end;
+
+
+Function TStrings.Reverse : TStrings;
+
+begin
+  Result:=TStringsClass(Self.ClassType).Create;
+  try
+    Reverse(Result);
+  except
+    FreeAndNil(Result);
+    Raise;
+  end;
+end;
+
+
+Procedure TStrings.Reverse(aList : TStrings);
+
+Var
+  I : Integer;
+
+begin
+  for I:=Count-1 downto 0 do
+    aList.Add(Strings[i]);
+end;
+
+
+Procedure TStrings.Slice(fromIndex: integer; aList : TStrings);
+
+var
+  i: integer;
+
+begin
+  for i:=fromIndex to Count-1 do
+    aList.Add(Self[i]);
+end;
+
+Function TStrings.Slice(fromIndex: integer) :  TStrings;
+
+begin
+  Result:=TStringsClass(Self.ClassType).Create;
+  try
+    Slice(FromIndex,Result);
+  except
+    FreeAndNil(Result);
+    Raise;
+  end;
+end;
+
 function TStrings.GetName(Index: Integer): string;
 
 Var
@@ -290,6 +444,11 @@ Var
 
 begin
   GetNameValue(Index,Result,V);
+end;
+
+function TStrings.GetTrailingLineBreak: Boolean;
+begin
+  Result:=Not SkipLastLineBreak;
 end;
 
 Function TStrings.GetValue(const Name: string): string;
@@ -344,10 +503,25 @@ end;
 
 
 Procedure TStrings.SetDelimitedText(const AValue: string);
-var i,j: SizeInt;
-    aNotFirst:boolean;
+
 begin
- CheckSpecialChars;
+  CheckSpecialChars;
+  DoSetDelimitedText(aValue,True,FStrictDelimiter,FQuoteChar,FDelimiter);
+end;
+
+Procedure TStrings.DoSetDelimitedText(const AValue: string; DoClear,aStrictDelimiter : Boolean; aQuoteChar,aDelimiter : Char);
+
+var
+  len,i,j: SizeInt;
+  aNotFirst:boolean;
+
+  Procedure AddQuoted;
+
+  begin
+    Add(StringReplace(Copy(AValue,i+1,j-i-1),aQuoteChar+aQuoteChar,aQuoteChar, [rfReplaceAll]));
+  end;
+
+begin
  BeginUpdate;
 
  i:=1;
@@ -360,73 +534,74 @@ begin
  QuoteChars in the string must be repeated to distinguish them from the QuoteChars enclosing the string.
  }
  try
-  Clear;
-  If StrictDelimiter then
+  if DoClear then
+    Clear;
+  len:=length(AValue);
+  If aStrictDelimiter then
     begin
-    while i<=length(AValue) do begin
+    while i<=Len do begin
      // skip delimiter
-     if aNotFirst and (i<=length(AValue)) and (AValue[i]=FDelimiter) then inc(i);
+     if aNotFirst and (i<=len) and (AValue[i]=aDelimiter) then
+       inc(i);
 
      // read next string
-     if i<=length(AValue) then begin
-      if AValue[i]=FQuoteChar then begin
+     if i<=len then begin
+      if AValue[i]=aQuoteChar then begin
        // next string is quoted
        j:=i+1;
-       while (j<=length(AValue)) and
-             ( (AValue[j]<>FQuoteChar) or
-               ( (j+1<=length(AValue)) and (AValue[j+1]=FQuoteChar) ) ) do begin
-        if (j<=length(AValue)) and (AValue[j]=FQuoteChar) then inc(j,2)
-                                                          else inc(j);
-       end;
-       // j is position of closing quote
-       Add( StringReplace (Copy(AValue,i+1,j-i-1),
-                           FQuoteChar+FQuoteChar,FQuoteChar, [rfReplaceAll]));
+       while (j<=len) and
+             ((AValue[j]<>aQuoteChar) or
+              ((j+1<=len) and (AValue[j+1]=aQuoteChar))) do
+        begin
+        if (j<=len) and (AValue[j]=aQuoteChar) then
+          inc(j,2)
+        else
+          inc(j);
+        end;
+       AddQuoted;
        i:=j+1;
       end else begin
        // next string is not quoted; read until delimiter
        j:=i;
-       while (j<=length(AValue)) and
-             (AValue[j]<>FDelimiter) do inc(j);
+       while (j<=len) and
+             (AValue[j]<>aDelimiter) do inc(j);
        Add( Copy(AValue,i,j-i));
        i:=j;
       end;
      end else begin
       if aNotFirst then Add('');
      end;
-
      aNotFirst:=true;
     end;
     end
   else 
     begin
-    while i<=length(AValue) do begin
+    while i<=len do begin
      // skip delimiter
-     if aNotFirst and (i<=length(AValue)) and (AValue[i]=FDelimiter) then inc(i);
+     if aNotFirst and (i<=len) and (AValue[i]=aDelimiter) then inc(i);
 
      // skip spaces
-     while (i<=length(AValue)) and (Ord(AValue[i])<=Ord(' ')) do inc(i);
+     while (i<=len) and (Ord(AValue[i])<=Ord(' ')) do inc(i);
     
      // read next string
-     if i<=length(AValue) then begin
-      if AValue[i]=FQuoteChar then begin
+     if i<=len then begin
+      if AValue[i]=aQuoteChar then begin
        // next string is quoted
        j:=i+1;
-       while (j<=length(AValue)) and
-             ( (AValue[j]<>FQuoteChar) or
-               ( (j+1<=length(AValue)) and (AValue[j+1]=FQuoteChar) ) ) do begin
-        if (j<=length(AValue)) and (AValue[j]=FQuoteChar) then inc(j,2)
+       while (j<=len) and
+             ( (AValue[j]<>aQuoteChar) or
+               ( (j+1<=len) and (AValue[j+1]=aQuoteChar) ) ) do begin
+        if (j<=len) and (AValue[j]=aQuoteChar) then inc(j,2)
                                                           else inc(j);
        end;
-       // j is position of closing quote
-       Add( StringReplace (Copy(AValue,i+1,j-i-1),
-                           FQuoteChar+FQuoteChar,FQuoteChar, [rfReplaceAll]));
+       AddQuoted;
        i:=j+1;
       end else begin
        // next string is not quoted; read until control character/space/delimiter
        j:=i;
-       while (j<=length(AValue)) and
+       while (j<=len) and
              (Ord(AValue[j])>Ord(' ')) and
-             (AValue[j]<>FDelimiter) do inc(j);
+             (AValue[j]<>aDelimiter) do inc(j);
        Add( Copy(AValue,i,j-i));
        i:=j;
       end;
@@ -435,7 +610,7 @@ begin
      end;
 
      // skip spaces
-     while (i<=length(AValue)) and (Ord(AValue[i])<=Ord(' ')) do inc(i);
+     while (i<=len) and (Ord(AValue[i])<=Ord(' ')) do inc(i);
 
      aNotFirst:=true;
     end;
@@ -474,6 +649,11 @@ end;
 Procedure TStrings.SetStringsAdapter(const Value: IStringsAdapter);
 
 begin
+end;
+
+procedure TStrings.SetTrailingLineBreak(AValue: Boolean);
+begin
+  SkipLastLineBreak:=Not aValue;
 end;
 
 
@@ -762,6 +942,32 @@ begin
   DoSetTextStr(S,False);
 end;
 
+procedure TStrings.AddCommaText(const S: String);
+var
+  L: TStringList;
+begin
+  L := TStringList.Create;
+  try
+    L.CommaText := S;
+    AddStrings(L);
+  finally
+    L.Free;
+  end;
+end;
+
+procedure TStrings.AddDelimitedText(const S: String; ADelimiter: Char; AStrictDelimiter: Boolean);
+
+begin
+  CheckSpecialChars;
+  DoSetDelimitedText(S,False,AStrictDelimiter,FQuoteChar,ADelimiter);
+end;
+
+procedure TStrings.AddDelimitedText(const S: String);
+begin
+  CheckSpecialChars;
+  DoSetDelimitedText(S,False,FStrictDelimiter,FQuoteChar,FDelimiter);
+end;
+
 Procedure TStrings.SetUpdateState(Updating: Boolean);
 
 begin
@@ -1007,6 +1213,19 @@ begin
   if Result=Count then Result:=-1;
 end;
 
+function TStrings.IndexOf(const S: string; aStart: Integer): Integer;
+begin
+  if aStart<0 then
+    begin
+    aStart:=Count+aStart;
+    if aStart<0 then
+      aStart:=0;
+    end;
+  Result:=aStart;
+  While (Result<Count) and (DoCompareText(Strings[Result],S)<>0) do Result:=Result+1;
+  if Result=Count then Result:=-1;
+end;
+
 
 Function TStrings.IndexOfName(const Name: string): Integer;
 Var
@@ -1043,7 +1262,26 @@ begin
   Objects[Index]:=AObject;
 end;
 
+function TStrings.LastIndexOf(const S: string): Integer;
 
+begin
+  Result:=LastIndexOf(S,Count-1);
+end;
+
+function TStrings.LastIndexOf(const S: string; aStart : Integer): Integer;
+begin
+  if aStart<0 then
+    begin
+    aStart:=Count+aStart;
+    if aStart<0 then
+      aStart:=0;
+    end;
+  Result:=aStart;
+  if Result>=Count-1 then
+    Result:=Count-1;
+  While (Result>=0) and (DoCompareText(Strings[Result],S)<>0) do
+    Result:=Result-1;
+end;
 
 Procedure TStrings.LoadFromFile(const FileName: string);
 
@@ -1053,7 +1291,7 @@ end;
 
 Procedure TStrings.LoadFromFile(const FileName: string; IgnoreEncoding : Boolean);
 Var
-        TheStream : TFileStream;
+  TheStream : TFileStream;
 begin
   TheStream:=TFileStream.Create(FileName,fmOpenRead or fmShareDenyWrite);
   try
@@ -1185,7 +1423,31 @@ begin
     end;
 end;
 
+function TStrings.Pop: string;
 
+var
+  C : Integer;
+
+begin
+  Result:='';
+  C:=Count-1;
+  if (C>=0) then
+    begin
+    Result:=Strings[C];
+    Delete(C);
+    end;
+end;
+
+function TStrings.Shift: String;
+
+begin
+  Result:='';
+  if (Count > 0) then
+    begin
+    Result:=Strings[0];
+    Delete(0);
+    end;
+end;
 
 Procedure TStrings.SaveToFile(const FileName: string);
 

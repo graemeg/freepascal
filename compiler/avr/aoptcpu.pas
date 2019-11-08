@@ -377,14 +377,14 @@ Implementation
                   begin
                     { turn
                       ldi reg0, imm
-                      cp/mov reg1, reg0
+                      <op> reg1, reg0
                       dealloc reg0
                       into
-                      cpi/ldi reg1, imm
+                      <op>i reg1, imm
                     }
                     if MatchOpType(taicpu(p),top_reg,top_const) and
                        GetNextInstructionUsingReg(p, hp1, taicpu(p).oper[0]^.reg) and
-                       MatchInstruction(hp1,[A_CP,A_MOV],2) and
+                       MatchInstruction(hp1,[A_CP,A_MOV,A_AND,A_SUB],2) and
                        (not RegModifiedBetween(taicpu(p).oper[0]^.reg, p, hp1)) and
                        MatchOpType(taicpu(hp1),top_reg,top_reg) and
                        (getsupreg(taicpu(hp1).oper[0]^.reg) in [16..31]) and
@@ -392,6 +392,8 @@ Implementation
                        not(MatchOperand(taicpu(hp1).oper[0]^,taicpu(hp1).oper[1]^)) then
                       begin
                         TransferUsedRegs(TmpUsedRegs);
+                        UpdateUsedRegs(TmpUsedRegs,tai(p.next));
+                        UpdateUsedRegs(TmpUsedRegs,tai(hp1.next));
                         if not(RegUsedAfterInstruction(taicpu(hp1).oper[1]^.reg, hp1, TmpUsedRegs)) then
                           begin
                             case taicpu(hp1).opcode of
@@ -399,6 +401,10 @@ Implementation
                                 taicpu(hp1).opcode:=A_CPI;
                               A_MOV:
                                 taicpu(hp1).opcode:=A_LDI;
+                              A_AND:
+                                taicpu(hp1).opcode:=A_ANDI;
+                              A_SUB:
+                                taicpu(hp1).opcode:=A_SUBI;
                               else
                                 internalerror(2016111901);
                             end;
@@ -415,7 +421,7 @@ Implementation
                                 dealloc.Free;
                               end;
 
-                            DebugMsg('Peephole LdiMov/Cp2Ldi/Cpi performed', p);
+                            DebugMsg('Peephole LdiOp2Opi performed', p);
 
                             RemoveCurrentP(p);
                           end;

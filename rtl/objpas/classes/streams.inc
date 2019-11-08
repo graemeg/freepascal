@@ -1522,7 +1522,7 @@ begin
   Result:=FEncoding.GetAnsiString(Bytes,0,Size);
 end;
 
-function TStringStream.GetUnicodeDataString: String;
+function TStringStream.GetUnicodeDataString: UnicodeString;
 begin
   Result:=FEncoding.GetString(Bytes, 0, Size);
 end;

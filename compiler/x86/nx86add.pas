@@ -245,8 +245,8 @@ unit nx86add;
               { maybe we can reuse a constant register when the
                 operation is a comparison that doesn't change the
                 value of the register }
-                hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,opdef,(nodetype in [ltn,lten,gtn,gten,equaln,unequaln]));
-                location:=left.location;
+              hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,opdef,(nodetype in [ltn,lten,gtn,gten,equaln,unequaln]));
+              location:=left.location;
             end
            else
             begin
@@ -1474,8 +1474,9 @@ unit nx86add;
 
        pass_left_right;
 
-       { do have to allocate a register? If yes, then three opcode instructions are better }
-       if ((left.location.loc<>LOC_REGISTER) and (right.location.loc<>LOC_REGISTER)) or
+       { do have to allocate a register? If yes, then three opcode instructions are better, however for sub three op code instructions
+         make no sense if right is a reference }
+       if ((left.location.loc<>LOC_REGISTER) and (right.location.loc<>LOC_REGISTER) and ((nodetype<>subn) or not(right.location.loc in [LOC_REFERENCE,LOC_CREFERENCE]))) or
          ((nodetype=addn) and (left.location.loc in [LOC_REGISTER,LOC_CREGISTER,LOC_CONSTANT]) and (right.location.loc in [LOC_REGISTER,LOC_CREGISTER,LOC_CONSTANT])) then
          begin
            { allocate registers }
@@ -1524,12 +1525,10 @@ unit nx86add;
               begin
                 if right.location.loc<>LOC_REGISTER then
                   begin
-    {                tmpreg:=cg.getintregister(current_asmdata.CurrAsmList,opsize);
+                    tmpreg:=cg.getintregister(current_asmdata.CurrAsmList,opsize);
                     cg.a_load_loc_reg(current_asmdata.CurrAsmList,opsize,left.location,tmpreg);
                     location_reset(left.location,LOC_REGISTER,opsize);
                     left.location.register:=tmpreg;
-    }
-                    Internalerror(2018031102);
                   end
                 else
                   begin

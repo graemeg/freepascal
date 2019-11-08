@@ -5,6 +5,28 @@ Type
   TStringArray = Array of string;
   TCharArray = Array of char;
   TEndian = ObjPas.TEndian;
+  TByteBitIndex = 0..7;
+  TShortIntBitIndex = 0..7;
+  TWordBitIndex = 0..15;
+  TSmallIntBitIndex = 0..15;
+  TCardinalBitIndex = 0..31;
+  TIntegerBitIndex = 0..31;
+  TLongIntBitIndex = TIntegerBitIndex;
+  TQwordBitIndex = 0..63;
+  TInt64BitIndex = 0..63;
+{$IFDEF cpu16}
+  TNativeUIntBitIndex = TWordBitIndex;
+  TNativeIntBitIndex = TSmallIntBitIndex;
+{$ENDIF}
+{$IFDEF cpu32}
+  TNativeUIntBitIndex = TCardinalBitIndex;
+  TNativeIntBitIndex = TIntegerBitIndex;
+{$ENDIF}
+{$IFDEF cpu64}
+  TNativeUIntBitIndex = TQWordBitIndex;
+  TNativeIntBitIndex = TInt64BitIndex;
+{$ENDIF}
+
   
 Const
   CPUEndian = {$IFDEF FPC_LITTLE_ENDIAN}TEndian.Little{$ELSE}TEndian.Big{$ENDIF};
@@ -373,10 +395,15 @@ Type
     Function ToBoolean: Boolean; inline;
     Function ToDouble: Double; inline;
     Function ToExtended: Extended; inline;
+    Function ToBinString:string;
     Function ToHexString(const AMinDigits: Integer): string; overload; inline;
     Function ToHexString: string; overload; inline;
     Function ToSingle: Single; inline;
     Function ToString: string; overload; inline;
+    Function SetBit(const Index: TByteBitIndex) : Byte; inline;
+    Function ClearBit(const Index: TByteBitIndex) : Byte; inline;
+    Function ToggleBit(const Index: TByteBitIndex) : Byte; inline;
+    Function TestBit(const Index:TByteBitIndex):Boolean; inline;
   end;
 
   TShortIntHelper = Type Helper for ShortInt
@@ -393,10 +420,15 @@ Type
     Function ToBoolean: Boolean; inline;
     Function ToDouble: Double; inline;
     Function ToExtended: Extended; inline;
+    Function ToBinString:string; inline;
     Function ToHexString(const AMinDigits: Integer): string; overload; inline;
     Function ToHexString: string; overload; inline;
     Function ToSingle: Single; inline;
     Function ToString: string; overload; inline;
+    Function SetBit(const Index: TShortIntBitIndex): Shortint; inline;
+    Function ClearBit(const Index: TShortIntBitIndex): Shortint; inline;
+    Function ToggleBit(const Index: TShortIntBitIndex): Shortint; inline;
+    Function TestBit(const Index:TShortIntBitIndex):Boolean;
   end;
 
   TSmallIntHelper = Type Helper for SmallInt
@@ -412,11 +444,16 @@ Type
   public
     Function ToString: string; overload; inline;
     Function ToBoolean: Boolean; inline;
+    Function ToBinString:string; inline;
     Function ToHexString: string; overload; inline;
     Function ToHexString(const AMinDigits: Integer): string; overload; inline;
     Function ToSingle: Single; inline;
     Function ToDouble: Double; inline;
     Function ToExtended: Extended; inline;
+    Function SetBit(const Index: TSmallIntBitIndex) : Smallint; inline;
+    Function ClearBit(const Index: TSmallIntBitIndex) : Smallint; inline;
+    Function ToggleBit(const Index: TSmallIntBitIndex) : Smallint; inline;
+    Function TestBit(const Index:TSmallIntBitIndex):Boolean;    
   end;
 
   TWordHelper = Type Helper for Word
@@ -433,10 +470,15 @@ Type
     Function ToBoolean: Boolean; inline;
     Function ToDouble: Double; inline;
     Function ToExtended: Extended; inline;
+    Function ToBinString:string; inline;
     Function ToHexString(const AMinDigits: Integer): string; overload; inline;
     Function ToHexString: string; overload; inline;
     Function ToSingle: Single; inline;
     Function ToString: string; overload; inline;
+    Function SetBit(const Index: TWordBitIndex) : Word; inline;
+    Function ClearBit(const Index: TWordBitIndex) : Word; inline;
+    Function ToggleBit(const Index: TWordBitIndex) : Word; inline;
+    Function TestBit(const Index:TWordBitIndex):Boolean; inline;    
   end;
 
   TCardinalHelper = Type Helper for Cardinal { for LongWord Type too }
@@ -453,10 +495,15 @@ Type
     Function ToBoolean: Boolean; inline;
     Function ToDouble: Double; inline;
     Function ToExtended: Extended; inline;
+    Function ToBinString:string; inline;
     Function ToHexString(const AMinDigits: Integer): string; overload; inline;
     Function ToHexString: string; overload; inline;
     Function ToSingle: Single; inline;
     Function ToString: string; overload; inline;
+    Function SetBit(const Index: TCardinalBitIndex) : Cardinal; inline;
+    Function ClearBit(const Index: TCardinalBitIndex) : Cardinal; inline;
+    Function ToggleBit(const Index: TCardinalBitIndex) : Cardinal; inline;
+    Function TestBit(const Index:TCardinalBitIndex):Boolean; inline;   
   end;
 
   TIntegerHelper = Type Helper for Integer { for LongInt Type too }
@@ -473,10 +520,15 @@ Type
     Function ToBoolean: Boolean; inline;
     Function ToDouble: Double; inline;
     Function ToExtended: Extended; inline;
+    Function ToBinString:string; inline;
     Function ToHexString(const AMinDigits: Integer): string; overload; inline;
     Function ToHexString: string; overload; inline;
     Function ToSingle: Single; inline;
     Function ToString: string; overload; inline;
+    Function SetBit(const Index: TIntegerBitIndex) : Integer; inline;
+    Function ClearBit(const Index: TIntegerBitIndex) : Integer; inline;
+    Function ToggleBit(const Index: TIntegerBitIndex) : Integer; inline;
+    Function TestBit(const Index:TIntegerBitIndex):Boolean; inline;   
   end;
 
   TInt64Helper = Type Helper for Int64
@@ -493,10 +545,15 @@ Type
     Function ToBoolean: Boolean; inline;
     Function ToDouble: Double; inline;
     Function ToExtended: Extended; inline;
+    Function ToBinString:string; inline;
     Function ToHexString(const AMinDigits: Integer): string; overload; inline;
     Function ToHexString: string; overload; inline;
     Function ToSingle: Single; inline;
     Function ToString: string; overload; inline;
+    Function SetBit(const Index: TInt64BitIndex) : Int64; inline;
+    Function ClearBit(const Index: TInt64BitIndex) : Int64; inline;
+    Function ToggleBit(const Index: TInt64BitIndex) : Int64; inline;
+    Function TestBit(const Index:TInt64BitIndex):Boolean; inline; 
   end;
 
   TQWordHelper = Type Helper for QWord
@@ -513,10 +570,15 @@ Type
     Function ToBoolean: Boolean; inline;
     Function ToDouble: Double; inline;
     Function ToExtended: Extended; inline;
+    Function ToBinString:string; inline;
     Function ToHexString(const AMinDigits: Integer): string; overload; inline;
     Function ToHexString: string; overload; inline;
     Function ToSingle: Single; inline;
     Function ToString: string; overload; inline;
+    Function SetBit(const Index: TQwordBitIndex) : QWord; inline;
+    Function ClearBit(const Index: TQwordBitIndex) : QWord; inline;
+    Function ToggleBit(const Index: TQwordBitIndex) : QWord; inline;
+    Function TestBit(const Index:TQwordBitIndex):Boolean; inline; 
   end;
 
   TNativeIntHelper = Type Helper for NativeInt
@@ -533,10 +595,15 @@ Type
     Function ToBoolean: Boolean; inline;
     Function ToDouble: Double; inline;
     Function ToExtended: Extended; inline;
+    Function ToBinString:string; inline;
     Function ToHexString(const AMinDigits: Integer): string; overload; inline;
     Function ToHexString: string; overload; inline;
     Function ToSingle: Single; inline;
     Function ToString: string; overload; inline;
+    Function SetBit(const Index: TNativeIntBitIndex) : NativeInt; inline;
+    Function ClearBit(const Index: TNativeIntBitIndex) : NativeInt; inline;
+    Function ToggleBit(const Index: TNativeIntBitIndex) : NativeInt; inline;
+    Function TestBit(const Index:TNativeIntBitIndex):Boolean; inline; 
   end;
 
   TNativeUIntHelper = Type Helper for NativeUInt
@@ -553,10 +620,15 @@ Type
     Function ToBoolean: Boolean; inline;
     Function ToDouble: Double; inline;
     Function ToExtended: Extended; inline;
+    Function ToBinString:string; inline;
     Function ToHexString(const AMinDigits: Integer): string; overload; inline;
     Function ToHexString: string; overload; inline;
     Function ToSingle: Single; inline;
     Function ToString: string; overload; inline;
+    Function SetBit(const Index: TNativeUIntBitIndex) : NativeUint; inline;
+    Function ClearBit(const Index: TNativeUIntBitIndex): NativeUint; inline;
+    Function ToggleBit(const Index: TNativeUIntBitIndex) : NativeUint; inline;
+    Function TestBit(const Index:TNativeUIntBitIndex) :Boolean; inline;
   end;
 
   {$SCOPEDENUMS ON}

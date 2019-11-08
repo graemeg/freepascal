@@ -155,12 +155,39 @@ var
 {$ENDIF}
 
 {$ELSE} (* !LIBXML_THREAD_ALLOC_ENABLED *)
+{$IFDEF NO_EXTERNAL_VARS}
 var
-  xmlMalloc: xmlMallocFunc; {$IFNDEF NO_EXTERNAL_VARS}cvar; external;{$ENDIF}
-  xmlMallocAtomic: xmlMallocFunc; {$IFNDEF NO_EXTERNAL_VARS}cvar; external;{$ENDIF}
-  xmlRealloc: xmlReallocFunc; {$IFNDEF NO_EXTERNAL_VARS}cvar; external;{$ENDIF}
-  xmlFree: xmlFreeFunc; {$IFNDEF NO_EXTERNAL_VARS}cvar; external;{$ENDIF}
-  xmlMemStrdup: xmlStrdupFunc; {$IFNDEF NO_EXTERNAL_VARS}cvar; external;{$ENDIF}
+  varxmlMalloc: PxmlMallocFunc;
+  varxmlMallocAtomic: PxmlMallocFunc;
+  varxmlRealloc: PxmlReallocFunc;
+  varxmlFree: PxmlFreeFunc;
+  varxmlMemStrdup: PxmlStrdupFunc;
+
+function GetxmlMalloc: xmlMallocFunc; inline;
+procedure SetxmlMalloc(AValue: xmlMallocFunc); inline;
+function GetxmlMallocAtomic: xmlMallocFunc; inline;
+procedure SetxmlMallocAtomic(AValue: xmlMallocFunc); inline;
+function GetxmlRealloc: xmlReallocFunc; inline;
+procedure SetxmlRealloc(AValue: xmlReallocFunc); inline;
+function GetxmlFree: xmlFreeFunc; inline;
+procedure SetxmlFree(AValue: xmlFreeFunc); inline;
+function GetxmlMemStrdup: xmlStrdupFunc; inline;
+procedure SetxmlMemStrdup(AValue: xmlStrdupFunc); inline;
+
+property xmlMalloc: xmlMallocFunc read GetxmlMalloc write SetxmlMalloc;
+property xmlMallocAtomic: xmlMallocFunc read GetxmlMallocAtomic write SetxmlMallocAtomic;
+property xmlRealloc: xmlReallocFunc read GetxmlRealloc write SetxmlRealloc;
+property xmlFree: xmlFreeFunc read GetxmlFree write SetxmlFree;
+property xmlMemStrdup: xmlStrdupFunc read GetxmlMemStrdup write SetxmlMemStrdup;
+
+{$ELSE}
+var
+  xmlMalloc: xmlMallocFunc; cvar; external;
+  xmlMallocAtomic: xmlMallocFunc; cvar; external;
+  xmlRealloc: xmlReallocFunc; cvar; external;
+  xmlFree: xmlFreeFunc; cvar; external;
+  xmlMemStrdup: xmlStrdupFunc; cvar; external;
+{$ENDIF}
 {$ENDIF} (* LIBXML_THREAD_ALLOC_ENABLED *)
 
 {$IFDEF LIBXML_DOCB_ENABLED}

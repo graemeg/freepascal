@@ -18,6 +18,9 @@
                                  Var sets
  ****************************************************************************}
 
+const
+  maxsetsize = 32;
+
 {$ifndef FPC_SYSTEM_HAS_FPC_VARSET_LOAD_SMALL}
 {
   convert sets
@@ -135,7 +138,7 @@ procedure fpc_varset_set_range(const orgset; var dest;l,h,size : ptrint); compil
 }
 procedure fpc_varset_add_sets(const set1,set2; var dest;size : ptrint); compilerproc;
   type
-    tbytearray = array[0..high(sizeint)-1] of byte;
+    tbytearray = array[0..maxsetsize-1] of byte;
   var
     i : ptrint;
   begin
@@ -151,7 +154,7 @@ procedure fpc_varset_add_sets(const set1,set2; var dest;size : ptrint); compiler
 }
 procedure fpc_varset_mul_sets(const set1,set2; var dest;size : ptrint); compilerproc;
   type
-    tbytearray = array[0..high(sizeint)-1] of byte;
+    tbytearray = array[0..maxsetsize-1] of byte;
   var
     i : ptrint;
   begin
@@ -167,7 +170,7 @@ procedure fpc_varset_mul_sets(const set1,set2; var dest;size : ptrint); compiler
 }
 procedure fpc_varset_sub_sets(const set1,set2; var dest;size : ptrint); compilerproc;
   type
-    tbytearray = array[0..high(sizeint)-1] of byte;
+    tbytearray = array[0..maxsetsize-1] of byte;
   var
     i : ptrint;
   begin
@@ -183,7 +186,7 @@ procedure fpc_varset_sub_sets(const set1,set2; var dest;size : ptrint); compiler
 }
 procedure fpc_varset_symdif_sets(const set1,set2; var dest;size : ptrint); compilerproc;
   type
-    tbytearray = array[0..high(sizeint)-1] of byte;
+    tbytearray = array[0..maxsetsize-1] of byte;
   var
     i : ptrint;
    begin
@@ -199,7 +202,7 @@ procedure fpc_varset_symdif_sets(const set1,set2; var dest;size : ptrint); compi
 }
 function fpc_varset_comp_sets(const set1,set2;size : ptrint):boolean; compilerproc;
   type
-    tbytearray = array[0..high(sizeint)-1] of byte;
+    tbytearray = array[0..maxsetsize-1] of byte;
   var
     i : ptrint;
   begin
@@ -218,7 +221,7 @@ function fpc_varset_comp_sets(const set1,set2;size : ptrint):boolean; compilerpr
 }
 function fpc_varset_contains_sets(const set1,set2;size : ptrint):boolean; compilerproc;
   type
-    tbytearray = array[0..high(sizeint)-1] of byte;
+    tbytearray = array[0..maxsetsize-1] of byte;
   var
     i : ptrint;
   begin

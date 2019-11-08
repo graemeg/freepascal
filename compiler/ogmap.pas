@@ -40,6 +40,7 @@ interface
        public
          constructor Create(const s:string);
          destructor Destroy;override;
+         procedure Flush;
          procedure Add(const s:string);
          procedure AddHeader(const s:string);
          procedure AddCommonSymbolsHeader;
@@ -108,6 +109,12 @@ implementation
      destructor TExeMap.Destroy;
        begin
          Close(t);
+       end;
+
+
+     procedure TExeMap.Flush;
+       begin
+         System.Flush(t);
        end;
 
 

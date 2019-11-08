@@ -177,9 +177,9 @@ Var
   Function DetectXTerm : String;
 {$endif unix}
 
-function RunCommandIndir(const curdir:TProcessString;const exename:TProcessString;const commands:array of TProcessString;out outputstring:string; out exitstatus:integer; Options : TProcessOptions = []):integer;
-function RunCommandIndir(const curdir:TProcessString;const exename:TProcessString;const commands:array of TProcessString;out outputstring:string; Options : TProcessOptions = []):boolean;
-function RunCommand(const exename:TProcessString;const commands:array of TProcessString;out outputstring:string; Options : TProcessOptions = []):boolean;
+function RunCommandIndir(const curdir:TProcessString;const exename:TProcessString;const commands:array of TProcessString;out outputstring:string; out exitstatus:integer; Options : TProcessOptions = [];SWOptions:TShowWindowOptions=swoNone):integer;
+function RunCommandIndir(const curdir:TProcessString;const exename:TProcessString;const commands:array of TProcessString;out outputstring:string; Options : TProcessOptions = [];SWOptions:TShowWindowOptions=swoNone):boolean;
+function RunCommand(const exename:TProcessString;const commands:array of TProcessString;out outputstring:string; Options : TProcessOptions = [];SWOptions:TShowWindowOptions=swoNone):boolean;
 
 function RunCommandInDir(const curdir,cmdline:TProcessString;out outputstring:string):boolean; deprecated;
 function RunCommand(const cmdline:TProcessString;out outputstring:string):boolean; deprecated;
@@ -593,7 +593,7 @@ end;
 Const
   ForbiddenOptions = [poRunSuspended,poWaitOnExit];
 
-function RunCommandIndir(const curdir:TProcessString;const exename:TProcessString;const commands:array of TProcessString;out outputstring:string;out exitstatus:integer; Options : TProcessOptions = []):integer;
+function RunCommandIndir(const curdir:TProcessString;const exename:TProcessString;const commands:array of TProcessString;out outputstring:string;out exitstatus:integer; Options : TProcessOptions = [];SWOptions:TShowWindowOptions=swoNone):integer;
 Var
     p : TProcessnamemacro;
     i : integer;
@@ -602,6 +602,7 @@ begin
   p:=DefaultTProcess.create(nil);
   if Options<>[] then
     P.Options:=Options - ForbiddenOptions;
+  P.ShowWindow:=SwOptions;
   p.Executable:=exename;
   if curdir<>'' then
     p.CurrentDirectory:=curdir;
@@ -633,7 +634,7 @@ begin
   if exitstatus<>0 then result:=false;
 end;
 
-function RunCommandIndir(const curdir:TProcessString;const exename:TProcessString;const commands:array of TProcessString;out outputstring:string; Options : TProcessOptions = []):boolean;
+function RunCommandIndir(const curdir:TProcessString;const exename:TProcessString;const commands:array of TProcessString;out outputstring:string; Options : TProcessOptions = [];SWOptions:TShowWindowOptions=swoNone):boolean;
 Var
     p : TProcessnamemacro;
     i,
@@ -643,6 +644,7 @@ begin
   p:=DefaultTProcess.create(nil);
   if Options<>[] then
     P.Options:=Options - ForbiddenOptions;
+  P.ShowWindow:=SwOptions;
   p.Executable:=exename;
   if curdir<>'' then
     p.CurrentDirectory:=curdir;
@@ -673,7 +675,7 @@ begin
   if exitstatus<>0 then result:=false;
 end;
 
-function RunCommand(const exename:TProcessString;const commands:array of TProcessString;out outputstring:string; Options : TProcessOptions = []):boolean;
+function RunCommand(const exename:TProcessString;const commands:array of TProcessString;out outputstring:string; Options : TProcessOptions = [];SWOptions:TShowWindowOptions=swoNone):boolean;
 Var
     p : TProcessnamemacro;
     i,
@@ -683,6 +685,7 @@ begin
   p:=DefaultTProcess.create(nil);
   if Options<>[] then
     P.Options:=Options - ForbiddenOptions;
+  P.ShowWindow:=SwOptions;
   p.Executable:=exename;
   if high(commands)>=0 then
    for i:=low(commands) to high(commands) do

@@ -353,9 +353,9 @@ interface
         Ch : set of TInsChange;
       end;
 
-      TMemRefSizeInfo = (msiUnkown, msiUnsupported, msiNoSize,
-                         msiMultiple, msiMultiple8, msiMultiple16, msiMultiple32,
-                         msiMultiple64, msiMultiple128, msiMultiple256, msiMultiple512,
+      TMemRefSizeInfo = (msiUnknown, msiUnsupported, msiNoSize, msiNoMemRef,
+                         msiMultiple, msiMultipleMinSize8, msiMultipleMinSize16, msiMultipleMinSize32,
+                         msiMultipleMinSize64, msiMultipleMinSize128, msiMultipleminSize256, msiMultipleMinSize512,
                          msiMemRegSize, msiMemRegx16y32, msiMemRegx16y32z64, msiMemRegx32y64, msiMemRegx32y64z128, msiMemRegx64y128, msiMemRegx64y128z256,
                          msiMemRegx64y256, msiMemRegx64y256z512,
                          msiMem8, msiMem16, msiMem32, msiBMem32, msiMem64, msiBMem64, msiMem128, msiMem256, msiMem512,
@@ -367,7 +367,7 @@ interface
       TMemRefSizeInfoBCSTType = (btUnknown, bt1to2, bt1to4, bt1to8, bt1to16);
 
       TEVEXTupleState = (etsUnknown, etsIsTuple, etsNotTuple);
-      TConstSizeInfo  = (csiUnkown, csiMultiple, csiNoSize, csiMem8, csiMem16, csiMem32, csiMem64);
+      TConstSizeInfo  = (csiUnknown, csiMultiple, csiNoSize, csiMem8, csiMem16, csiMem32, csiMem64);
 
       TInsTabMemRefSizeInfoRec = record
         MemRefSize               : TMemRefSizeInfo;
@@ -381,10 +381,10 @@ interface
 
 
     const
-      MemRefMultiples: set of TMemRefSizeInfo = [msiMultiple, msiMultiple8,
-                                                 msiMultiple16, msiMultiple32,
-                                                 msiMultiple64, msiMultiple128,
-                                                 msiMultiple256, msiMultiple512,
+      MemRefMultiples: set of TMemRefSizeInfo = [msiMultiple, msiMultipleMinSize8,
+                                                 msiMultipleMinSize16, msiMultipleMinSize32,
+                                                 msiMultipleMinSize64, msiMultipleMinSize128,
+                                                 msiMultipleMinSize256, msiMultipleMinSize512,
                                                  msiVMemMultiple];
 
       MemRefSizeInfoVMems: Set of TMemRefSizeInfo = [msiXMem32, msiXMem64, msiYMem32, msiYMem64,
@@ -515,6 +515,7 @@ interface
         IF_THV,
         IF_THVM,
         IF_TOVM
+
       );
       tinsflags=set of tinsflag;
 
@@ -1620,7 +1621,7 @@ implementation
                   // special handling (opsize can different from const-size)
                   // (e.g. "pextrw  reg/m16, xmmreg, imm8" =>> opsize (16 bit), const-size (8 bit)
                   if (InsTabMemRefSizeInfoCache^[opcode].ExistsSSEAVX) and
-                     (not(InsTabMemRefSizeInfoCache^[opcode].ConstSize in [csiMultiple, csiUnkown])) then
+                     (not(InsTabMemRefSizeInfoCache^[opcode].ConstSize in [csiMultiple, csiUnknown])) then
                   begin
                     case InsTabMemRefSizeInfoCache^[opcode].ConstSize of
                       csiNoSize: ot := ot and OT_NON_SIZE or OT_IMMEDIATE;
@@ -3244,7 +3245,7 @@ implementation
             &331,&332: ;
             &325:
 {$ifdef i8086}
-              inc(len)
+                inc(len)
 {$endif i8086}
               ;
 
@@ -3270,6 +3271,9 @@ implementation
               omit_rexw:=true
 {$endif x86_64}
               ;
+            &336,
+            &337: {nothing};
+
             &100..&227 :
               begin
 {$ifdef x86_64}
@@ -3505,7 +3509,9 @@ implementation
        * \332	       - disassemble a rep (0xF3 byte) prefix as repe not rep.
        * \333          - 0xF3 prefix for SSE instructions
        * \334          - 0xF2 prefix for SSE instructions
-       * \335          - Indicates 64-bit operand size with REX.W not necessary
+       * \335          - Indicates 64-bit operand size with REX.W not necessary / 64-bit scalar vector operand size
+       * \336          - Indicates 32-bit scalar vector operand size
+       * \337          - Indicates 64-bit scalar vector operand size
 
        * \350          - EVEX prefix for AVX instructions
        * \351          - EVEX Vector length 512
@@ -3690,6 +3696,7 @@ implementation
         data,s,opidx : longint;
         ea_data : ea;
         relsym : TObjSymbol;
+
         needed_VEX_Extension: boolean;
         needed_VEX: boolean;
         needed_EVEX: boolean;
@@ -4410,7 +4417,7 @@ implementation
             &323 : {no action needed};
             &325:
 {$ifdef i8086}
-              write0x66prefix(objdata);
+               write0x66prefix(objdata);
 {$else i8086}
               {no action needed};
 {$endif i8086}
@@ -4447,6 +4454,8 @@ implementation
               end;
             &335:
               ;
+            &336: ; // indicates 32-bit scalar vector operand {no action needed}
+            &337: ; // indicates 64-bit scalar vector operand {no action needed}
             &312,
             &327,
             &331,&332 :
@@ -4925,8 +4934,12 @@ implementation
       RegBCSTXMMSizeMask: int64;
       RegBCSTYMMSizeMask: int64;
       RegBCSTZMMSizeMask: int64;
+      ExistsMemRef      : boolean;
 
-      bitcount: integer;
+      bitcount          : integer;
+      ExistsCode336     : boolean;
+      ExistsCode337     : boolean;
+      ExistsSSEAVXReg   : boolean;
 
       function bitcnt(aValue: int64): integer;
       var
@@ -4955,10 +4968,10 @@ implementation
 
         if i >= 0 then
         begin
-          InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize           := msiUnkown;
+          InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize           := msiUnknown;
           InsTabMemRefSizeInfoCache^[AsmOp].MemRefSizeBCST       := msbUnknown;
           InsTabMemRefSizeInfoCache^[AsmOp].BCSTXMMMultiplicator := 0;
-          InsTabMemRefSizeInfoCache^[AsmOp].ConstSize            := csiUnkown;
+          InsTabMemRefSizeInfoCache^[AsmOp].ConstSize            := csiUnknown;
           InsTabMemRefSizeInfoCache^[AsmOp].ExistsSSEAVX         := false;
           InsTabMemRefSizeInfoCache^[AsmOp].BCSTTypes            := [];
 
@@ -4977,10 +4990,11 @@ implementation
           RegBCSTXMMSizeMask := 0;
           RegBCSTYMMSizeMask := 0;
           RegBCSTZMMSizeMask := 0;
+          ExistsMemRef       := false;
 
           while (insentry^.opcode=AsmOp) do
           begin
-            MRefInfo         := msiUnkown;
+            MRefInfo         := msiUnknown;
 
             actRegSize       := 0;
             actRegCount      := 0;
@@ -4996,6 +5010,34 @@ implementation
 
             actConstSize     := 0;
             actConstCount    := 0;
+
+            ExistsCode336   := false; // indicate fixed operand size 32 bit
+            ExistsCode337   := false; // indicate fixed operand size 64 bit
+            ExistsSSEAVXReg := false;
+
+            // parse insentry^.code for &336 and &337
+            // &336 (octal) = 222 (decimal) == fixed operand size 32 bit
+            // &337 (octal) = 223 (decimal) == fixed operand size 64 bit
+            for i := low(insentry^.code) to high(insentry^.code) do
+            begin
+              case insentry^.code[i] of
+                #222: ExistsCode336 := true;
+                #223: ExistsCode337 := true;
+                #0,#1,#2,#3: break;
+              end;
+            end;
+
+            for i := 0 to insentry^.ops -1 do
+            begin
+              if (insentry^.optypes[i] and OT_REGISTER) = OT_REGISTER then
+               case insentry^.optypes[i] and (OT_XMMREG or OT_YMMREG or OT_ZMMREG or OT_KREG or OT_REG_EXTRA_MASK) of
+                  OT_XMMREG,
+                  OT_YMMREG,
+                  OT_ZMMREG: ExistsSSEAVXReg := true;
+                        else;
+               end;
+            end;
+
 
             for j := 0 to insentry^.ops -1 do
             begin
@@ -5056,7 +5098,14 @@ implementation
                 begin
                   inc(actMemCount);
 
-                  actMemSize:=actMemSize or (insentry^.optypes[j] and (OT_SIZE_MASK OR OT_VECTORBCST));
+
+                  if ExistsSSEAVXReg and ExistsCode336 then
+                    actMemSize := actMemSize or OT_BITS32
+                  else if ExistsSSEAVXReg and ExistsCode337 then
+                    actMemSize := actMemSize or OT_BITS64
+                  else
+                    actMemSize:=actMemSize or (insentry^.optypes[j] and (OT_SIZE_MASK OR OT_VECTORBCST));
+
                   if (insentry^.optypes[j] and OT_REGMEM) = OT_REGMEM then
                     begin
                       actRegMemTypes  := actRegMemTypes or insentry^.optypes[j];
@@ -5081,7 +5130,7 @@ implementation
                 else SConstInfo := csiMultiple;
               end;
 
-              if InsTabMemRefSizeInfoCache^[AsmOp].ConstSize = csiUnkown then
+              if InsTabMemRefSizeInfoCache^[AsmOp].ConstSize = csiUnknown then
               begin
                 InsTabMemRefSizeInfoCache^[AsmOp].ConstSize := SConstInfo;
               end
@@ -5140,7 +5189,7 @@ implementation
                   end;
 
 
-                  if InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize = msiUnkown then
+                  if InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize = msiUnknown then
                   begin
                     InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize := MRefInfo;
                   end
@@ -5161,16 +5210,20 @@ implementation
               begin
                 if (actMemCount=2) and ((AsmOp=A_MOVS) or (AsmOp=A_CMPS)) then actMemCount:=1;
 
+                ExistsMemRef := ExistsMemRef or (actMemCount > 0);
+
                 case actMemCount of
                   0: ; // nothing todo
                   1: begin
-                       MRefInfo := msiUnkown;
-                       case actRegMemTypes and (OT_MMXRM or OT_XMMRM or OT_YMMRM or OT_ZMMRM or OT_REG_EXTRA_MASK) of
-                         OT_MMXRM: actMemSize := actMemSize or OT_BITS64;
-                         OT_XMMRM: actMemSize := actMemSize or OT_BITS128;
-                         OT_YMMRM: actMemSize := actMemSize or OT_BITS256;
-                         OT_ZMMRM: actMemSize := actMemSize or OT_BITS512;
-                       end;
+                       MRefInfo := msiUnknown;
+
+                       if not(ExistsCode336 or ExistsCode337) then
+                         case actRegMemTypes and (OT_MMXRM or OT_XMMRM or OT_YMMRM or OT_ZMMRM or OT_REG_EXTRA_MASK) of
+                           OT_MMXRM: actMemSize := actMemSize or OT_BITS64;
+                           OT_XMMRM: actMemSize := actMemSize or OT_BITS128;
+                           OT_YMMRM: actMemSize := actMemSize or OT_BITS256;
+                           OT_ZMMRM: actMemSize := actMemSize or OT_BITS512;
+                         end;
 
                        case actMemSize of
                                   0: MRefInfo := msiNoSize;
@@ -5196,7 +5249,7 @@ implementation
                            end;
                        end;
 
-                       if InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize = msiUnkown then
+                       if InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize = msiUnknown then
                          begin
                            InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize := MRefInfo;
                          end
@@ -5209,13 +5262,13 @@ implementation
                            begin
                              with InsTabMemRefSizeInfoCache^[AsmOp] do
                              begin
-                               if ((MemRefSize = msiMem8)        OR (MRefInfo = msiMem8))   then MemRefSize := msiMultiple8
-                               else if ((MemRefSize = msiMem16)  OR (MRefInfo = msiMem16))  then MemRefSize := msiMultiple16
-                               else if ((MemRefSize = msiMem32)  OR (MRefInfo = msiMem32))  then MemRefSize := msiMultiple32
-                               else if ((MemRefSize = msiMem64)  OR (MRefInfo = msiMem64))  then MemRefSize := msiMultiple64
-                               else if ((MemRefSize = msiMem128) OR (MRefInfo = msiMem128)) then MemRefSize := msiMultiple128
-                               else if ((MemRefSize = msiMem256) OR (MRefInfo = msiMem256)) then MemRefSize := msiMultiple256
-                               else if ((MemRefSize = msiMem512) OR (MRefInfo = msiMem512)) then MemRefSize := msiMultiple512
+                               if ((MemRefSize in [msiMem8, msiMULTIPLEMinSize8]) OR (MRefInfo = msiMem8))   then MemRefSize := msiMultipleMinSize8
+                               else if ((MemRefSize in [ msiMem16,  msiMULTIPLEMinSize16])  OR (MRefInfo =  msiMem16)) then MemRefSize := msiMultipleMinSize16
+                               else if ((MemRefSize in [ msiMem32,  msiMULTIPLEMinSize32])  OR (MRefInfo =  msiMem32)) then MemRefSize := msiMultipleMinSize32
+                               else if ((MemRefSize in [ msiMem64,  msiMULTIPLEMinSize64])  OR (MRefInfo =  msiMem64)) then MemRefSize := msiMultipleMinSize64
+                               else if ((MemRefSize in [msiMem128, msiMULTIPLEMinSize128])  OR (MRefInfo = msiMem128)) then MemRefSize := msiMultipleMinSize128
+                               else if ((MemRefSize in [msiMem256, msiMULTIPLEMinSize256])  OR (MRefInfo = msiMem256)) then MemRefSize := msiMultipleMinSize256
+                               else if ((MemRefSize in [msiMem512, msiMULTIPLEMinSize512])  OR (MRefInfo = msiMem512)) then MemRefSize := msiMultipleMinSize512
                                else MemRefSize := msiMultiple;
                              end;
                            end;
@@ -5426,6 +5479,12 @@ implementation
               InternalError(777205);
             end;
 
+          end
+          else if (InsTabMemRefSizeInfoCache^[AsmOp].ExistsSSEAVX) and
+                  (InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize = msiUnknown) and
+                  (not(ExistsMemRef)) then
+          begin
+            InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize := msiNoMemRef;
           end;
         end;
       end;
@@ -5437,8 +5496,8 @@ implementation
         // only supported intructiones with SSE- or AVX-operands
         if not(InsTabMemRefSizeInfoCache^[AsmOp].ExistsSSEAVX) then
         begin
-          InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize  := msiUnkown;
-          InsTabMemRefSizeInfoCache^[AsmOp].ConstSize   := csiUnkown;
+          InsTabMemRefSizeInfoCache^[AsmOp].MemRefSize  := msiUnknown;
+          InsTabMemRefSizeInfoCache^[AsmOp].ConstSize   := csiUnknown;
         end;
       end;
     end;
@@ -5451,6 +5510,7 @@ implementation
 
         if not assigned(InsTabMemRefSizeInfoCache) then
           BuildInsTabMemRefSizeInfoCache;
+
       end;
 
 

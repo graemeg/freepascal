@@ -228,6 +228,7 @@ type
     FOnReadFile: TPas2jsReadFileEvent;
     FOnWriteFile: TPas2jsWriteFileEvent;
     FResetStamp: TChangeStamp;
+    FResourcePaths: TStringList;
     FUnitPaths: TStringList;
     FUnitPathsFromCmdLine: integer;
     FPCUPaths: TStringList;
@@ -257,6 +258,7 @@ type
     function FindCustomJSFileName(const aFilename: string): String; override;
     function FindUnitJSFileName(const aUnitFilename: string): String; override;
     function FindUnitFileName(const aUnitname, InFilename, ModuleDir: string; out IsForeign: boolean): String; override;
+    function FindResourceFileName(const aFilename, ModuleDir: string): String; override;
     function FindIncludeFileName(const aFilename, ModuleDir: string): String; override;
     function AddIncludePaths(const Paths: string; FromCmdLine: boolean; out ErrorMsg: string): boolean;
     function AddUnitPaths(const Paths: string; FromCmdLine: boolean; out ErrorMsg: string): boolean;
@@ -286,6 +288,7 @@ type
   public
     property BaseDirectory: string read FBaseDirectory write SetBaseDirectory; // includes trailing pathdelim
     property ForeignUnitPaths: TStringList read FForeignUnitPaths;
+    property ResourcePaths : TStringList read FResourcePaths;
     property ForeignUnitPathsFromCmdLine: integer read FForeignUnitPathsFromCmdLine;
     property IncludePaths: TStringList read FIncludePaths;
     property IncludePathsFromCmdLine: integer read FIncludePathsFromCmdLine;
@@ -1453,6 +1456,7 @@ begin
   FIncludePaths:=TStringList.Create;
   FForeignUnitPaths:=TStringList.Create;
   FUnitPaths:=TStringList.Create;
+  FResourcePaths:=TStringList.Create;
   FFiles:=TPasAnalyzerKeySet.Create(
     {$IFDEF Pas2js}
     @Pas2jsCachedFileToKeyName,@PtrFilenameToKeyName
@@ -1970,6 +1974,50 @@ begin
     // finally search in unit paths
     for i:=0 to UnitPaths.Count-1 do
       if SearchInDir(UnitPaths[i],Result) then exit;
+  finally
+    SearchedDirs.Free;
+  end;
+
+  Result:='';
+end;
+
+function TPas2jsFilesCache.FindResourceFileName(const aFilename, ModuleDir: string): String;
+
+var
+  SearchedDirs: TStringList;
+
+  function SearchInDir(Dir: string; var Filename: string): boolean;
+  // search in Dir for pp, pas, p times given case, lower case, upper case
+  begin
+    Dir:=IncludeTrailingPathDelimiter(Dir);
+    if IndexOfFile(SearchedDirs,Dir)>=0 then exit(false);
+    SearchedDirs.Add(Dir);
+    if SearchLowUpCase(Filename) then exit(true);
+    Result:=false;
+  end;
+
+var
+  i: Integer;
+
+begin
+  //writeln('TPas2jsFilesCache.FindUnitFileName "',aUnitname,'" ModuleDir="',ModuleDir,'"');
+  Result:='';
+  SearchedDirs:=TStringList.Create;
+  try
+    Result:=SetDirSeparators(aFilename);
+
+    // First search in ModuleDir
+    if SearchInDir(ModuleDir,Result) then
+      exit;
+
+    // Then in resource paths
+    for i:=0 to ResourcePaths.Count-1 do
+      if SearchInDir(ResourcePaths[i],Result) then
+        exit;
+    // Not sure
+    // finally search in unit paths
+    // for i:=0 to UnitPaths.Count-1 do
+    //  if SearchInDir(UnitPaths[i],Result) then exit;
   finally
     SearchedDirs.Free;
   end;

@@ -482,7 +482,7 @@ implementation
       { codegen }
       procinfo,
       { ppu }
-      entfile,
+      entfile,ppu,
       { parser }
       scanner
       ;
@@ -525,7 +525,7 @@ implementation
         { load the table's flags }
         if ppufile.readentry<>ibsymtableoptions then
           Message(unit_f_ppu_read_error);
-        ppufile.getsmallset(tableoptions);
+        ppufile.getset(tppuset1(tableoptions));
 
         { load definitions }
         loaddefs(ppufile);
@@ -544,7 +544,7 @@ implementation
            needs_init_final;
 
          { write the table's flags }
-         ppufile.putsmallset(tableoptions);
+         ppufile.putset(tppuset1(tableoptions));
          ppufile.writeentry(ibsymtableoptions);
 
          { write definitions }
@@ -1246,7 +1246,7 @@ implementation
         recordalignmin:=shortint(ppufile.getbyte);
         if (usefieldalignment=C_alignment) then
           fieldalignment:=shortint(ppufile.getbyte);
-        ppufile.getsmallset(has_fields_with_mop);
+        ppufile.getset(tppuset1(has_fields_with_mop));
         inherited ppuload(ppufile);
       end;
 
@@ -1267,7 +1267,7 @@ implementation
          { it's not really a "symtableoption", but loading this from the record
            def requires storing the set in the recorddef at least between
            ppuload and deref/derefimpl }
-         ppufile.putsmallset(has_fields_with_mop);
+         ppufile.putset(tppuset1(has_fields_with_mop));
          ppufile.writeentry(ibrecsymtableoptions);
 
          inherited ppuwrite(ppufile);
@@ -3916,8 +3916,17 @@ implementation
               exit;
           end;
         { now search all helpers using the extendeddef as the starting point }
-        if m_multi_helpers in current_settings.modeswitches then
-          result:=search_best_objectpascal_helper(s,classh.extendeddef,contextclassh,srsym,srsymtable);
+        if (m_multi_helpers in current_settings.modeswitches) and
+            (
+              (current_structdef<>classh) or
+              assigned(classh.extendeddef)
+            ) then
+          begin
+            { this is only allowed if classh is currently parsed }
+            if not assigned(classh.extendeddef) then
+              internalerror(2019110101);
+            result:=search_best_objectpascal_helper(s,classh.extendeddef,contextclassh,srsym,srsymtable);
+          end;
       end;
 
     function search_specific_assignment_operator(assignment_type:ttoken;from_def,to_def:Tdef):Tprocdef;

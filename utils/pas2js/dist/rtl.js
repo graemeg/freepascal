@@ -8,6 +8,8 @@ var rtl = {
   debug_load_units: false,
   debug_rtti: false,
 
+  $res : {},
+
   debug: function(){
     if (rtl.quiet || !console || !console.log) return;
     console.log(arguments);
@@ -1314,6 +1316,7 @@ var rtl = {
     newBaseTI("tTypeInfoClassRef",14 /* tkClassRef */);
     newBaseTI("tTypeInfoInterface",18 /* tkInterface */,rtl.tTypeInfoStruct);
     newBaseTI("tTypeInfoHelper",19 /* tkHelper */,rtl.tTypeInfoStruct);
+    newBaseTI("tTypeInfoExtClass",20 /* tkExtClass */,rtl.tTypeInfoClass);
   },
 
   tSectionRTTI: {
@@ -1364,7 +1367,8 @@ var rtl = {
     $ClassRef: function(name,o){ return this.$inherited(name,rtl.tTypeInfoClassRef,o); },
     $Pointer: function(name,o){ return this.$inherited(name,rtl.tTypeInfoPointer,o); },
     $Interface: function(name,o){ return this.$Scope(name,rtl.tTypeInfoInterface,o); },
-    $Helper: function(name,o){ return this.$Scope(name,rtl.tTypeInfoHelper,o); }
+    $Helper: function(name,o){ return this.$Scope(name,rtl.tTypeInfoHelper,o); },
+    $ExtClass: function(name,o){ return this.$Scope(name,rtl.tTypeInfoExtClass,o); }
   },
 
   newTIParam: function(param){
@@ -1393,5 +1397,23 @@ var rtl = {
       flags: flags
     };
     return s;
+  },
+
+  addResource: function(aRes){
+    rtl.$res[aRes.name]=aRes;
+  },
+
+  getResource: function(aName){
+    var res = rtl.$res[aName];
+    if (res !== undefined) {
+      return res;
+    } else {
+      return null;
+    }
+  },
+
+  getResourceList: function(){
+    return Object.keys(rtl.$res);
   }
 }
+

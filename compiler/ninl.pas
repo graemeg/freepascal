@@ -3153,6 +3153,14 @@ implementation
                   resultdef:=typekindtype;
                 end;
 
+              in_ismanagedtype_x:
+                begin
+                  if target_info.system in systems_managed_vm then
+                    message(parser_e_feature_unsupported_for_vm);
+                  set_varstate(left,vs_read,[vsf_must_be_valid]);
+                  resultdef:=pasbool1type;
+                end;
+
               in_assigned_x:
                 begin
                   { the parser has already made sure the expression is valid }
@@ -3834,6 +3842,14 @@ implementation
               if sym.typ<>enumsym then
                 internalerror(2017081102);
               result:=genenumnode(tenumsym(sym));
+            end;
+
+          in_ismanagedtype_x:
+            begin
+              if left.resultdef.needs_inittable then
+                result:=cordconstnode.create(1,resultdef,false)
+              else
+                result:=cordconstnode.create(0,resultdef,false);
             end;
 
           in_assigned_x:

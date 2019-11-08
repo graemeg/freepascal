@@ -395,18 +395,16 @@
 {$ifndef FPC_SYSTEM_HAS_MUL_QWORD}
     function fpc_mul_qword(f1,f2 : qword) : qword;[public,alias: 'FPC_MUL_QWORD']; compilerproc;
       var
-         bitpos : qword;
-         l : longint;
+        b : byte;
       begin
         result:=0;
-        bitpos:=1;
 
-        for l:=0 to 63 do
+        for b:=0 to 63 do
           begin
-            if (f2 and bitpos)<>0 then
+            if odd(f2) then
               result:=result+f1;
             f1:=f1 shl 1;
-            bitpos:=bitpos shl 1;
+            f2:=f2 shr 1;
           end;
       end;
 
@@ -414,14 +412,14 @@
     function fpc_mul_qword_checkoverflow(f1,f2 : qword) : qword;[public,alias: 'FPC_MUL_QWORD_CHECKOVERFLOW']; compilerproc;
       var
          _f1,bitpos : qword;
-         l : longint;
+         b : byte;
          f1overflowed : boolean;
       begin
         result:=0;
         bitpos:=1;
         f1overflowed:=false;
 
-        for l:=0 to 63 do
+        for b:=0 to 63 do
           begin
             if (f2 and bitpos)<>0 then
               begin

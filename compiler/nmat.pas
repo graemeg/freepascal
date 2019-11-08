@@ -884,8 +884,6 @@ implementation
 
 
     function tshlshrnode.pass_1 : tnode;
-      var
-         regs : longint;
       begin
          result:=nil;
          firstpass(left);
@@ -893,24 +891,12 @@ implementation
          if codegenerror then
            exit;
 
+         expectloc:=LOC_REGISTER;
 {$if not defined(cpu64bitalu) and not defined(cpuhighleveltarget)}
          { 64 bit ints have their own shift handling }
          if is_64bit(left.resultdef) then
-           begin
-             result := first_shlshr64bitint;
-             if assigned(result) then
-               exit;
-             regs:=2;
-           end
-         else
+           result := first_shlshr64bitint;
 {$endif not cpu64bitalu and not cpuhighleveltarget}
-           begin
-             regs:=1
-           end;
-
-         if (right.nodetype<>ordconstn) then
-           inc(regs);
-         expectloc:=LOC_REGISTER;
       end;
 
 

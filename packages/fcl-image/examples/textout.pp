@@ -50,6 +50,8 @@ begin
       Font.FPColor:=colBlack;
       S:='Hello, world!';
       Canvas.TextOut(20,20,S);
+      F.Size := 14.5;
+      Canvas.TextOut(20,30,S);
       U:=UTF8Decode('привет, Мир!');
       Font.FPColor:=colBlue;
       Canvas.TextOut(50,50,U);

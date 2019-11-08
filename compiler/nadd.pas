@@ -22,6 +22,7 @@
 unit nadd;
 
 {$i fpcdefs.inc}
+{$modeswitch nestedprocvars}
 
 { define addstringopt}
 
@@ -445,6 +446,35 @@ implementation
 
           result:=true;
         end;
+
+      function IsLengthZero(n1,n2 : tnode) : Boolean;
+        begin
+          result:=is_inlinefunction(n1,in_length_x) and is_constintvalue(n2,0) and not(is_shortstring(tinlinenode(n1).left.resultdef));
+        end;
+
+
+      function TransformLengthZero(n1,n2 : tnode) : tnode;
+        var
+          len : Tconstexprint;
+        begin
+          if is_dynamic_array(tinlinenode(n1).left.resultdef) then
+            len:=-1
+          else
+            len:=0;
+          result:=caddnode.create_internal(orn,
+            caddnode.create_internal(equaln,ctypeconvnode.create_internal(tinlinenode(n1).left.getcopy,voidpointertype),
+                cpointerconstnode.create(0,voidpointertype)),
+              caddnode.create_internal(equaln,
+                ctypeconvnode.create_internal(
+                  cderefnode.create(
+                    caddnode.create_internal(subn,ctypeconvnode.create_internal(tinlinenode(n1).left.getcopy,voidpointertype),
+                      cordconstnode.create(sizesinttype.size,sizesinttype,false))
+                  ),sizesinttype
+                ),
+              cordconstnode.create(len,sizesinttype,false))
+            );
+        end;
+
 
       var
         t       , vl: tnode;
@@ -1172,7 +1202,12 @@ implementation
                       else
                         ;
                     end;
-                  end;
+                  end
+{$ifndef jvm}
+                else if (nodetype=equaln) and MatchAndTransformNodesCommutative(left,right,@IsLengthZero,@TransformLengthZero,Result) then
+                   exit
+{$endif jvm}
+                   ;
               end;
 
             { using sqr(x) for reals instead of x*x might reduces register pressure and/or

@@ -284,10 +284,8 @@ const
 
       if c = ':' then
       begin
-           case token of
-             AS_NONE: token := AS_LABEL;
-             AS_LLABEL: ; { do nothing }
-           end; { end case }
+           if token = AS_NONE then
+             token := AS_LABEL;
            { let us point to the next character }
            c := current_scanner.asmgetchar;
            actasmtoken := token;
@@ -1518,6 +1516,8 @@ const
                                 if oper.opr.typ=OPR_SYMBOL then
                                   oper.initref;
                               end;
+                            else
+                              ;
                           end;
                         end
                        else

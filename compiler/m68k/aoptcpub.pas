@@ -123,6 +123,8 @@ End;
           top_ref:
             if (taicpu(p1).spilling_get_operation_type_ref(i,Reg)<>operand_read) then
               exit(true);
+          else
+            ;
         end;
     end;
 

@@ -1301,7 +1301,7 @@ implementation
       { parser }
       pgenutil,
       { module }
-      fmodule,
+      fmodule,ppu,
       { other }
       aasmbase,
       gendef,
@@ -1790,7 +1790,7 @@ implementation
         cnt,i : longint;
         intfderef : pderef;
       begin
-        ppufile.getsmallset(flags);
+        ppufile.getset(tppuset1(flags));
         cnt:=ppufile.getlongint;
         for i:=0 to cnt-1 do
           begin
@@ -1805,7 +1805,7 @@ implementation
       var
         i : longint;
       begin
-        ppufile.putsmallset(flags);
+        ppufile.putset(tppuset1(flags));
         ppufile.putlongint(interfacesderef.count);
         for i:=0 to interfacesderef.count-1 do
           ppufile.putderef(pderef(interfacesderef[i])^);
@@ -1941,8 +1941,8 @@ implementation
 {$endif}
          { load }
          ppufile.getderef(typesymderef);
-         ppufile.getsmallset(defoptions);
-         ppufile.getsmallset(defstates);
+         ppufile.getset(tppuset2(defoptions));
+         ppufile.getset(tppuset1(defstates));
          if df_genconstraint in defoptions then
            begin
              genconstraintdata:=tgenericconstraintdata.create;
@@ -2109,10 +2109,10 @@ implementation
           internalerror(2015101401);
         ppufile.putlongint(DefId);
         ppufile.putderef(typesymderef);
-        ppufile.putsmallset(defoptions);
+        ppufile.putset(tppuset2(defoptions));
         oldintfcrc:=ppufile.do_crc;
         ppufile.do_crc:=false;
-        ppufile.putsmallset(defstates);
+        ppufile.putset(tppuset1(defstates));
         if df_genconstraint in defoptions then
           genconstraintdata.ppuwrite(ppufile);
         if [df_generic,df_specialization]*defoptions<>[] then
@@ -4125,7 +4125,7 @@ implementation
          ppufile.getderef(rangedefderef);
          lowrange:=ppufile.getasizeint;
          highrange:=ppufile.getasizeint;
-         ppufile.getsmallset(arrayoptions);
+         ppufile.getset(tppuset1(arrayoptions));
          ppuload_platform(ppufile);
          symtable:=tarraysymtable.create(self);
          tarraysymtable(symtable).ppuload(ppufile)
@@ -4165,7 +4165,7 @@ implementation
          ppufile.putderef(rangedefderef);
          ppufile.putasizeint(lowrange);
          ppufile.putasizeint(highrange);
-         ppufile.putsmallset(arrayoptions);
+         ppufile.putset(tppuset1(arrayoptions));
          writeentry(ppufile,ibarraydef);
          tarraysymtable(symtable).ppuwrite(ppufile);
       end;
@@ -4393,7 +4393,7 @@ implementation
         { only used for external C++ classes and Java classes/records }
         if (import_lib^='') then
           stringdispose(import_lib);
-        ppufile.getsmallset(objectoptions);
+        ppufile.getset(tppuset4(objectoptions));
       end;
 
     procedure tabstractrecorddef.ppuwrite(ppufile: tcompilerppufile);
@@ -4404,7 +4404,7 @@ implementation
           ppufile.putstring(import_lib^)
         else
           ppufile.putstring('');
-        ppufile.putsmallset(objectoptions);
+        ppufile.putset(tppuset4(objectoptions));
       end;
 
     destructor tabstractrecorddef.destroy;
@@ -4901,7 +4901,7 @@ implementation
              trecordsymtable(symtable).recordalignmin:=shortint(ppufile.getbyte);
              trecordsymtable(symtable).datasize:=ppufile.getasizeint;
              trecordsymtable(symtable).paddingsize:=ppufile.getword;
-             ppufile.getsmallset(trecordsymtable(symtable).managementoperators);
+             ppufile.getset(tppuset1(trecordsymtable(symtable).managementoperators));
              { position of ppuload_platform call must correspond
                to position of writeentry in ppuwrite method }
              ppuload_platform(ppufile);
@@ -5059,7 +5059,7 @@ implementation
              ppufile.putbyte(byte(trecordsymtable(symtable).recordalignmin));
              ppufile.putasizeint(trecordsymtable(symtable).datasize);
              ppufile.putword(trecordsymtable(symtable).paddingsize);
-             ppufile.putsmallset(trecordsymtable(symtable).managementoperators);
+             ppufile.putset(tppuset1(trecordsymtable(symtable).managementoperators));
              { the variantrecdesc is needed only for iso-like new statements new(prec,1,2,3 ...);
                but because iso mode supports no units, there is no need to store the variantrecdesc
                in the ppu
@@ -5293,7 +5293,7 @@ implementation
          ppufile.getderef(returndefderef);
          proctypeoption:=tproctypeoption(ppufile.getbyte);
          proccalloption:=tproccalloption(ppufile.getbyte);
-         ppufile.getnormalset(procoptions);
+         ppufile.getset(tppuset8(procoptions));
 
          funcretloc[callerside].init;
          if po_explicitparaloc in procoptions then
@@ -5318,7 +5318,7 @@ implementation
          ppufile.do_interface_crc:=false;
          ppufile.putbyte(ord(proctypeoption));
          ppufile.putbyte(ord(proccalloption));
-         ppufile.putnormalset(procoptions);
+         ppufile.putset(tppuset8(procoptions));
          ppufile.do_interface_crc:=oldintfcrc;
 
          if (po_explicitparaloc in procoptions) then
@@ -5986,7 +5986,7 @@ implementation
          ppufile.getderef(procsymderef);
          ppufile.getposinfo(fileinfo);
          visibility:=tvisibility(ppufile.getbyte);
-         ppufile.getsmallset(symoptions);
+         ppufile.getset(tppuset2(symoptions));
          if sp_has_deprecated_msg in symoptions then
            deprecatedmsg:=ppufile.getpshortstring
          else
@@ -6008,12 +6008,12 @@ implementation
          if (po_dispid in procoptions) then
            dispid:=ppufile.getlongint;
          { inline stuff }
-         ppufile.getsmallset(implprocoptions);
+         ppufile.getset(tppuset1(implprocoptions));
          if has_inlininginfo then
            begin
              ppufile.getderef(funcretsymderef);
              new(inlininginfo);
-             ppufile.getsmallset(inlininginfo^.flags);
+             ppufile.getset(tppuset4(inlininginfo^.flags));
            end
          else
            begin
@@ -6159,7 +6159,7 @@ implementation
          ppufile.putderef(procsymderef);
          ppufile.putposinfo(fileinfo);
          ppufile.putbyte(byte(visibility));
-         ppufile.putsmallset(symoptions);
+         ppufile.putset(tppuset2(symoptions));
          if sp_has_deprecated_msg in symoptions then
            ppufile.putstring(deprecatedmsg^);
          { import }
@@ -6177,11 +6177,11 @@ implementation
          { inline stuff }
          oldintfcrc:=ppufile.do_crc;
          ppufile.do_crc:=false;
-         ppufile.putsmallset(implprocoptions);
+         ppufile.putset(tppuset1(implprocoptions));
          if has_inlininginfo then
            begin
              ppufile.putderef(funcretsymderef);
-             ppufile.putsmallset(inlininginfo^.flags);
+             ppufile.putset(tppuset4(inlininginfo^.flags));
            end;
 
          { count alias names }

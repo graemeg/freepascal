@@ -52,7 +52,8 @@ implementation
       nbas,nmem,nld,ncnv,
       parabase,
       symdef,symsym,symcpu,symconst,
-      cga,cgobj,cpuinfo;
+      cga,cgobj,cgx86,
+      cpuinfo;
 
 
 {*****************************************************************************
@@ -104,16 +105,21 @@ implementation
     procedure ti386callnode.pop_parasize(pop_size:longint);
       var
         hreg : tregister;
+        href : treference;
       begin
-        if (paramanager.use_fixed_stack) then
+        if paramanager.use_fixed_stack then
           begin
             { very weird: in this case the callee does a "ret $4" and the }
             { caller immediately a "subl $4,%esp". Possibly this is for   }
             { use_fixed_stack code to be able to transparently call       }
             { old-style code (JM)                                         }
             dec(pop_size,pushedparasize);
-            if (pop_size < 0) then
-              current_asmdata.CurrAsmList.concat(taicpu.op_const_reg(A_SUB,S_L,-pop_size,NR_ESP));
+            if pop_size<0 then
+              begin
+                reference_reset_base(href,NR_STACK_POINTER_REG,pop_size,ctempposinvalid,0,[]);
+                { it is better to use lea here }
+                current_asmdata.CurrAsmList.concat(Taicpu.op_ref_reg(A_LEA,TCGSize2OpSize[OS_ADDR],href,NR_ESP));
+              end;
             exit;
           end;
 

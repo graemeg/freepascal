@@ -1730,7 +1730,7 @@ begin
       if SModeSwitchNames[M]<>'' then
         begin
         Scanner.CurrentModeSwitches:=[];
-        NewSource('{$MODESWITCH '+SModeSwitchNames[M]+' '+C+'}');
+        NewSource('{$MODESWITCH '+SModeSwitchNames[M]+C+'}');
         While not (Scanner.FetchToken=tkEOF) do;
         if C in [' ','+'] then
           AssertTrue(SModeSwitchNames[M]+C+' sets '+GetEnumName(TypeInfo(TModeSwitch),Ord(M)),M in Scanner.CurrentModeSwitches)

@@ -3,7 +3,7 @@ program testfpimage;
 {$mode objfpc}{$H+}
 
 uses
-  sysutils,Classes, consoletestrunner, tcbarcodes, fpbarcode, barcode;
+  sysutils,Classes, consoletestrunner, tcbarcodes, fpbarcode;
 
 type
 

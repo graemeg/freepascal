@@ -38,7 +38,7 @@ uses
   Classes, SysUtils, contnrs,
   jsbase, jstree, jswriter, JSSrcMap, fpjson,
   PScanner, PParser, PasTree, PasResolver, PasResolveEval, PasUseAnalyzer,
-  pas2jsresstrfile,
+  pas2jsresstrfile, pas2jsresources, pas2jshtmlresources, pas2jsjsresources,
   FPPas2Js, FPPJsSrcMap, Pas2jsLogger, Pas2jsFS, Pas2jsPParser, Pas2jsUseAnalyzer;
 
 const
@@ -150,11 +150,14 @@ type
     rvcUnit
     );
   TP2JSResourceStringFile = (rsfNone,rsfUnit,rsfProgram);
+  TResourceMode = (rmNone,rmHTML,rmJS);
 
 const
   DefaultP2jsCompilerOptions = [coShowErrors,coSourceMapXSSIHeader,coUseStrict];
   DefaultP2JSResourceStringFile = rsfProgram;
   DefaultP2jsRTLVersionCheck = rvcNone;
+  DefaultResourceMode = rmHTML;
+
   coShowAll = [coShowErrors..coShowDebug];
   coO1Enable = [coEnumValuesAsNumbers];
   coO1Disable = [coKeepNotUsedPrivates,coKeepNotUsedDeclarationsWPO];
@@ -350,6 +353,7 @@ type
     FPCUFilename: string;
     FPCUSupport: TPCUSupport;
     FReaderState: TPas2jsReaderState;
+    FResourceHandler: TPas2jsResourceHandler;
     FScanner: TPas2jsPasScanner;
     FShowDebug: boolean;
     FUnitFilename: string;
@@ -357,6 +361,7 @@ type
     FUsedBy: array[TUsedBySection] of TFPList; // list of TPas2jsCompilerFile
     function GetUsedBy(Section: TUsedBySection; Index: integer): TPas2jsCompilerFile;
     function GetUsedByCount(Section: TUsedBySection): integer;
+    procedure HandleResources(Sender: TObject; const aFileName: String; aOptions: TStrings);
     function OnConverterIsElementUsed(Sender: TObject; El: TPasElement): boolean;
     function OnConverterIsTypeInfoUsed(Sender: TObject; El: TPasElement): boolean;
     procedure OnPasResolverLog(Sender: TObject; const Msg: String);
@@ -403,6 +408,7 @@ type
     function GetModuleName: string;
     class function GetFile(aModule: TPasModule): TPas2jsCompilerFile;
   public
+    Property ResourceHandler : TPas2jsResourceHandler Read FResourceHandler Write FResourceHandler;
     property PasFileName: String Read FPasFileName;
     property PasUnitName: string read FPasUnitName write FPasUnitName;// unit name in source, initialized from UnitFilename
     property Converter: TPasToJSConverter read FConverter;
@@ -497,6 +503,8 @@ type
     FSrcMapSourceRoot: string;
     FUnits: TPasAnalyzerKeySet; // set of TPas2jsCompilerFile, key is PasUnitName
     FWPOAnalyzer: TPas2JSAnalyzer;
+    FResourceMode : TResourceMode;
+    FResources : TPas2JSResourceHandler;
     FResourceStrings : TResourceStringsFile;
     FResourceStringFile :  TP2JSResourceStringFile;
     procedure AddInsertJSFilename(const aFilename: string);
@@ -551,6 +559,7 @@ type
     procedure SetWriteMsgToStdErr(const AValue: boolean);
     procedure WriteJSToFile(const MapFileName: string; aFileWriter: TPas2JSMapper);
     procedure WriteResourceStrings(aFileName: String);
+    procedure WriteResources(aFileName: String);
     procedure WriteSrcMap(const MapFileName: string; aFileWriter: TPas2JSMapper);
   private
     procedure AddDefinesForTargetPlatform;
@@ -561,6 +570,7 @@ type
   private
     // params, cfg files
     FCurParam: string;
+    FResourceOutputFile: String;
     procedure LoadConfig(CfgFilename: string);
     procedure ReadEnvironment;
     procedure ReadParam(Param: string; Quick, FromCmdLine: boolean);
@@ -603,7 +613,7 @@ type
     procedure CreateJavaScript(aFile: TPas2jsCompilerFile;
       Checked: TPasAnalyzerKeySet { set of TPas2jsCompilerFile, key is UnitFilename });
     procedure FinishSrcMap(SrcMap: TPas2JSSrcMap); virtual;
-    // WriteSingleJSFile does not
+    // WriteSingleJSFile does not recurse
     procedure WriteSingleJSFile(aFile: TPas2jsCompilerFile; CombinedFileWriter: TPas2JSMapper);
     // WriteJSFiles recurses uses clause
     procedure WriteJSFiles(aFile: TPas2jsCompilerFile;
@@ -618,6 +628,8 @@ type
     function GetExitCode: Longint; virtual;
     procedure SetExitCode(Value: Longint); virtual;
     Procedure SetWorkingDir(const aDir: String); virtual;
+    Procedure CreateResourceSupport; virtual;
+
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -698,6 +710,8 @@ type
     property SrcMapBaseDir: string read FSrcMapBaseDir write SetSrcMapBaseDir; // includes trailing pathdelim
     property Namespaces: TStringList read FNamespaces;
     property NamespacesFromCmdLine: integer read FNamespacesFromCmdLine;
+    Property ResourceMode : TResourceMode Read FResourceMode Write FResourceMode;
+    Property ResourceOutputFile : String Read FResourceOutputFile Write FResourceOutputFile;
     // can be set optionally, will be freed by compiler
     property ConfigSupport: TPas2JSConfigSupport Read FConfigSupport Write FConfigSupport;
     property PostProcessorSupport: TPas2JSPostProcessorSupport Read FPostProcessorSupport Write FPostProcessorSupport;
@@ -1052,6 +1066,7 @@ begin
   Scanner.LogEvents:=PascalResolver.ScannerLogEvents;
   Scanner.OnLog:=@OnScannerLog;
   Scanner.OnFormatPath:=@Compiler.FormatPath;
+  Scanner.RegisterResourceHandler('*',@HandleResources);
 
   // create parser (Note: this sets some scanner options to defaults)
   FParser := TPas2jsPasParser.Create(Scanner, FileResolver, PascalResolver);
@@ -1145,6 +1160,13 @@ end;
 function TPas2jsCompilerFile.GetUsedByCount(Section: TUsedBySection): integer;
 begin
   Result:=FUsedBy[Section].Count;
+end;
+
+procedure TPas2jsCompilerFile.HandleResources(Sender: TObject; const aFileName: String; aOptions: TStrings);
+begin
+  // maybe emit message ?
+  FResourceHandler.StartUnit(PasModule.Name);
+  FResourceHandler.HandleResource(aFileName,aOptions);
 end;
 
 function TPas2jsCompilerFile.OnConverterIsElementUsed(Sender: TObject;
@@ -1506,6 +1528,8 @@ begin
     Converter.OnIsElementUsed:=@OnConverterIsElementUsed;
     Converter.OnIsTypeInfoUsed:=@OnConverterIsTypeInfoUsed;
     FJSModule:=Converter.ConvertPasElement(PasModule,PascalResolver);
+    if FResourceHandler.Outputmode=romJS then
+      FJSModule:=FResourceHandler.WriteJS(PasUnitName,FJSModule);
   except
     on E: ECompilerTerminate do
       raise;
@@ -2633,6 +2657,55 @@ begin
 
 end;
 
+procedure TPas2jsCompiler.WriteResources(aFileName: String);
+
+Var
+  {$IFDEF Pas2js}
+  buf: TJSArray;
+  {$ELSE}
+  buf: TMemoryStream;
+  {$ENDIF}
+  S : TJSONStringType;
+begin
+    Log.LogMsg(nWritingFile,[FullFormatPath(aFilename)],'',0,0,False);
+    try
+      {$IFDEF Pas2js}
+      buf:=TJSArray.new;
+      {$ELSE}
+      buf:=TMemoryStream.Create;
+      {$ENDIF}
+      try
+        S:=FResources.AsString;
+        {$ifdef pas2js}
+        buf.push(S);
+        {$else}
+        buf.Write(S[1],length(S));
+        {$endif}
+        FS.SaveToFile(buf,aFilename);
+      finally
+        {$IFDEF Pas2js}
+        buf:=nil;
+        {$ELSE}
+        buf.Free;
+        {$ENDIF}
+      end;
+    except
+      on E: Exception do begin
+        if ShowDebug then
+          Log.LogExceptionBackTrace(E);
+        {$IFDEF FPC}
+        if E.Message<>SafeFormat(SFCreateError,[aFileName]) then
+        {$ENDIF}
+          Log.LogPlain('Error: '+E.Message);
+        Log.LogMsg(nUnableToWriteFile,[FullFormatPath(aFilename)]);
+        Terminate(ExitCodeWriteError);
+      end
+      {$IFDEF Pas2js}
+      else HandleJSException('[20181031190737] TPas2jsCompiler.WriteJSFiles',JSExceptValue);
+      {$ENDIF}
+    end;
+end;
+
 procedure TPas2jsCompiler.WriteSingleJSFile(aFile: TPas2jsCompilerFile; CombinedFileWriter: TPas2JSMapper);
 
   Procedure WriteToStandardOutput(aFileWriter : TPas2JSMapper);
@@ -2674,7 +2747,7 @@ procedure TPas2jsCompiler.WriteSingleJSFile(aFile: TPas2jsCompilerFile; Combined
 Var
   aFileWriter : TPas2JSMapper;
   isSingleFile : Boolean;
-  MapFilename : String;
+  ResFileName,MapFilename : String;
 
 begin
   aFileWriter:=CombinedFileWriter;
@@ -2685,11 +2758,16 @@ begin
       begin
       aFileWriter:=CreateFileWriter(aFile,'');
       if aFile.IsMainFile and Not AllJSIntoMainJS then
+        begin
         InsertCustomJSFiles(aFileWriter);
+        if FResources.OutputMode=romExtraJS then
+          aFileWriter.WriteFile(FResources.AsString,GetResolvedMainJSFile);
+        end;
       end;
 
     if FResourceStringFile<>rsfNone then
       AddUnitResourceStrings(aFile);
+    FResources.DoneUnit(aFile.isMainFile);
     EmitJavaScript(aFile,aFileWriter);
 
 
@@ -2719,6 +2797,16 @@ begin
       if (FResourceStringFile=rsfUnit) or (aFile.IsMainFile and (FResourceStringFile<>rsfNone)) then
         if FResourceStrings.StringsCount>0 then
           WriteResourceStrings(ChangeFileExt(aFileWriter.DestFileName,'.jrs'));
+//      Writeln('IsSingleFile ',isSingleFile,' mainfile: ',aFile.IsMainFile,' filename: ', aFileWriter.DestFileName);
+      if aFile.isMainFile and (FResources.OutputMode=romFile) and (FResources.ResourceCount>0) then
+        begin
+        ResFileName:=FResourceOutputFile;
+        if ResFileName='' then
+          // default is projectname-res.ext, to avoid projectname.html, used in web projects in Lazarus IDE
+          ResFileName:=ChangeFileExt(aFileWriter.DestFileName,'-res'+FResources.OutputFileExtension);
+        WriteResources(ResFileName);
+        end;
+
       // write source map
       if aFileWriter.SrcMap<>nil then
         WriteSrcMap(MapFileName,aFileWriter);
@@ -2759,17 +2847,21 @@ begin
   if Checked.ContainsItem(aFile) then exit;
   Checked.Add(aFile);
 
+
   aFileWriter:=CombinedFileWriter;
   if AllJSIntoMainJS and (aFileWriter=nil) then
     begin
     // create CombinedFileWriter
     aFileWriter:=CreateFileWriter(aFile,GetResolvedMainJSFile);
     InsertCustomJSFiles(aFileWriter);
+    if FResources.OutputMode=romExtraJS then
+      aFileWriter.WriteFile(FResources.AsString,GetResolvedMainJSFile);
     end;
   Try
     // convert dependencies
     CheckUsesClause(aFileWriter,aFile.GetPasMainUsesClause);
     CheckUsesClause(aFileWriter,aFile.GetPasImplUsesClause);
+
     // Write me...
     WriteSingleJSFile(aFile,aFileWriter);
   finally
@@ -2877,6 +2969,15 @@ procedure TPas2jsCompiler.SetWorkingDir(const aDir: String);
 begin
   // Do nothing
   if aDir='' then ;
+end;
+
+procedure TPas2jsCompiler.CreateResourceSupport;
+begin
+  Case FResourceMode of
+    rmNone : FResources:=TNoResources.Create(FS);
+    rmHTML : FResources:=THTMLResourceLinkHandler.Create(FS);
+    rmJS : FResources:=TJSResourceHandler.Create(FS);
+  end;
 end;
 
 procedure TPas2jsCompiler.Terminate(TheExitCode: integer);
@@ -3441,6 +3542,27 @@ begin
       FResourceStringFile:=rsfProgram
     else
       ParamFatal('invalid resource string file format (-Jr) "'+aValue+'"');
+    end;
+  'R': // -JR<...>
+    begin
+    I:=Pos('=',aValue);
+    if I=0 then
+      I:=Length(aValue)+1;
+    S:=Copy(aValue,1,I-1);
+    if S='' then
+      ParamFatal('missing value for -JR option')
+    else if (S='none') then
+      FResourceMode:=rmNone
+    else if (S='js') then
+      FResourceMode:= rmJS
+    else if (S='html') then
+      begin
+      FResourceMode:=rmHTML;
+      S:=Copy(aValue,I+1,Length(aValue)-I);
+      FResourceOutputFile:=S;
+      if (FResourceOutputFile<>'') and (ExtractFileExt(FResourceOutputFile)='') then
+        FResourceOutputFile:=FResourceOutputFile+'.html';
+      end;
     end;
   'u': // -Ju<foreign path>
     if not Quick then
@@ -4028,6 +4150,7 @@ begin
 
   FFiles:=CreateSetOfCompilerFiles(kcFilename);
   FUnits:=CreateSetOfCompilerFiles(kcUnitName);
+  FResourceMode:=DefaultResourceMode;
   FResourceStrings:=TResourceStringsFile.Create;
   FReadingModules:=TFPList.Create;
   InitParamMacros;
@@ -4323,6 +4446,9 @@ begin
     for i:=0 to ParamList.Count-1 do
       ReadParam(ParamList[i],false,true);
 
+    // At this point we know what kind of resources we must use
+    CreateResourceSupport;
+
     // now we know, if the logo can be displayed
     if ShowLogo then
       WriteLogo;
@@ -4514,6 +4640,10 @@ begin
   w('     -Jrnone: Do not write resource string file');
   w('     -Jrunit: Write resource string file per unit with all resource strings');
   w('     -Jrprogram: Write resource string file per program with all used resource strings in program');
+  w('   -Jr<x> Control writing of linked resources');
+  w('     -JRnone: Do not write resources');
+  w('     -JRjs: Write resources in Javascript structure');
+  w('     -JRhtml[=filename] : Write resources as preload links in HTML file (default is projectfile-res.html)');
   w('   -Jpcmd<command>: Run postprocessor. For each generated js execute command passing the js as stdin and read the new js from stdout. This option can be added multiple times to call several postprocessors in succession.');
   w('   -Ju<x>: Add <x> to foreign unit paths. Foreign units are not compiled.');
   WritePrecompiledFormats;
@@ -4809,6 +4939,7 @@ begin
     aPasTree.ParserLogEvents:=aPasTree.ParserLogEvents+[pleInterface,pleImplementation];
 
   // scanner
+  aFile.ResourceHandler:=FResources;;
   aFile.CreateScannerAndParser(FS.CreateResolver);
 
   if ShowDebug then

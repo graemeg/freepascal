@@ -318,7 +318,7 @@ implementation
 
    uses
       globtype,systems,constexp,compinnr,
-      cutils,verbose,globals,widestr,
+      cutils,verbose,globals,widestr,ppu,
       symconst,symdef,symsym,symcpu,symtable,
       ncon,ncal,nset,nadd,nmem,nmat,nbas,nutils,ninl,
       cgbase,procinfo,
@@ -990,7 +990,7 @@ implementation
         inherited ppuload(t,ppufile);
         ppufile.getderef(totypedefderef);
         convtype:=tconverttype(ppufile.getbyte);
-        ppufile.getsmallset(convnodeflags);
+        ppufile.getset(tppuset1(convnodeflags));
       end;
 
 
@@ -999,7 +999,7 @@ implementation
         inherited ppuwrite(ppufile);
         ppufile.putderef(totypedefderef);
         ppufile.putbyte(byte(convtype));
-        ppufile.putsmallset(convnodeflags);
+        ppufile.putset(tppuset1(convnodeflags));
       end;
 
 
@@ -3151,6 +3151,7 @@ implementation
         { must be done before code below, because we need the
           typeconversions for ordconstn's as well }
         case convtype of
+          tc_int_2_bool,
           tc_int_2_int:
             begin
               if (localswitches * [cs_check_range,cs_check_overflow] = []) and

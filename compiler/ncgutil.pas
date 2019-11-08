@@ -775,9 +775,9 @@ implementation
         else
           begin
             parasize:=current_procinfo.para_stack_size;
-            { the parent frame pointer para has to be removed by the caller in
+            { the parent frame pointer para has to be removed always by the caller in
               case of Delphi-style parent frame pointer passing }
-            if not paramanager.use_fixed_stack and
+            if (not(paramanager.use_fixed_stack) or (target_info.abi=abi_linux386_sysv)) and
                (po_delphi_nested_cc in current_procinfo.procdef.procoptions) then
               dec(parasize,sizeof(pint));
           end;

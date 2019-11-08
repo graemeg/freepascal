@@ -20,6 +20,7 @@ unit System;
 
 interface
 
+{$define FPC_IS_SYSTEM}
 { include system-independent routine headers }
 
 {$I systemh.inc}

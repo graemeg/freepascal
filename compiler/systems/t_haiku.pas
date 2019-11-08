@@ -172,11 +172,11 @@ end;
 
 Constructor TLinkerHaiku.Create;
 const
-  HomeNonPackagedDevLib = '/boot/home/config/non-packaged/develop/lib';
-  HomeDevLib = '/boot/home/config/develop/lib';
-  CommonNonPackagedDevLib = '/boot/common/non-packaged/develop/lib';
-  CommonDevLib = '/boot/common/develop/lib';
-  SystemDevLib = '/boot/system/develop/lib';
+  HomeNonPackagedDevLib = '=/boot/home/config/non-packaged/develop/lib';
+  HomeDevLib = '=/boot/home/config/develop/lib';
+  CommonNonPackagedDevLib = '=/boot/common/non-packaged/develop/lib';
+  CommonDevLib = '=/boot/common/develop/lib';
+  SystemDevLib = '=/boot/system/develop/lib';
 var
   s : string;
   i : integer;
@@ -195,13 +195,13 @@ begin
   // Under Haiku with package management, BELIBRARIES is empty by default
   // We have to look at those system paths, in this order.
   // User can still customize BELIBRARIES. That is why it is looked at first.
-  LibrarySearchPath.AddPath(sysrootpath,s,true); {format:'path1;path2;...'}
+  LibrarySearchPath.AddLibraryPath(sysrootpath,s,true); {format:'path1;path2;...'}
 
-  LibrarySearchPath.AddPath(sysrootpath, HomeNonPackagedDevLib, false);
-  LibrarySearchPath.AddPath(sysrootpath, HomeDevLib, false);
-  LibrarySearchPath.AddPath(sysrootpath, CommonNonPackagedDevLib, false);
-  LibrarySearchPath.AddPath(sysrootpath, CommonDevLib, false);
-  LibrarySearchPath.AddPath(sysrootpath, SystemDevLib, false);
+  LibrarySearchPath.AddLibraryPath(sysrootpath, HomeNonPackagedDevLib, false);
+  LibrarySearchPath.AddLibraryPath(sysrootpath, HomeDevLib, false);
+  LibrarySearchPath.AddLibraryPath(sysrootpath, CommonNonPackagedDevLib, false);
+  LibrarySearchPath.AddLibraryPath(sysrootpath, CommonDevLib, false);
+  LibrarySearchPath.AddLibraryPath(sysrootpath, SystemDevLib, false);
 end;
 
 

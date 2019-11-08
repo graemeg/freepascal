@@ -4237,13 +4237,13 @@ implementation
         if assigned(def.typesym) then
           append_entry(DW_TAG_array_type,true,[
             DW_AT_name,DW_FORM_string,symname(def.typesym, false)+#0,
-            DW_AT_data_location,DW_FORM_block1,2,
-            DW_AT_byte_stride,DW_FORM_udata,def.elesize
+            DW_AT_byte_stride,DW_FORM_udata,def.elesize,
+            DW_AT_data_location,DW_FORM_block1,2
             ])
         else
           append_entry(DW_TAG_array_type,true,[
-            DW_AT_data_location,DW_FORM_block1,2,
-            DW_AT_byte_stride,DW_FORM_udata,def.elesize
+            DW_AT_byte_stride,DW_FORM_udata,def.elesize,
+            DW_AT_data_location,DW_FORM_block1,2
             ]);
         current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_push_object_address)));
         current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_deref)));
@@ -4267,7 +4267,7 @@ implementation
         current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_skip)));
         current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_16bit_unaligned(3));
         { no -> load length }
-        current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_lit0)+sizeof(ptrint)));
+        current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_lit0)+sizesinttype.size));
         current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_minus)));
         current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_deref)));
         append_labelentry_ref(DW_AT_type,def_dwarf_lab(def.rangedef));
@@ -4337,7 +4337,11 @@ implementation
               { yes -> length = 0 }
               current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_lit0)));
               current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_skip)));
-              current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_16bit_unaligned(3));
+              if upperopcodes=16 then
+                { skip the extra deref_size argument and the division by two of the length }
+                current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_16bit_unaligned(6))
+              else
+                current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_16bit_unaligned(3));
               { no -> load length }
               if upperopcodes=16 then
                 { for Windows WideString the size is always a DWORD }
@@ -4455,15 +4459,21 @@ implementation
           else
             append_entry(DW_TAG_structure_type,true,[]);
           append_attribute(DW_AT_byte_size,DW_FORM_udata,[tobjectsymtable(def.symtable).datasize]);
-          // The pointer to the class-structure is hidden. The debug-information
-          // does not contain an implicit pointer, but the data-adress is dereferenced here.
-          // In case of a nil-pointer, report the class as being unallocated.
-          append_block1(DW_AT_allocated,2);
-          current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_push_object_address)));
-          current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_deref)));
-          append_block1(DW_AT_data_location,2);
-          current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_push_object_address)));
-          current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_deref)));
+          { an old style object and a cpp class are accessed directly, so we do not need DW_AT_allocated and DW_AT_data_location tags,
+            see issue #36017 }
+          if not(is_object(def) or is_cppclass(def)) then
+            begin
+              { The pointer to the class-structure is hidden. The debug-information
+                does not contain an implicit pointer, but the data-adress is dereferenced here.
+                In case of a nil-pointer, report the class as being unallocated.
+              }
+              append_block1(DW_AT_allocated,2);
+              current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_push_object_address)));
+              current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_deref)));
+              append_block1(DW_AT_data_location,2);
+              current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_push_object_address)));
+              current_asmdata.asmlists[al_dwarf_info].concat(tai_const.create_8bit(ord(DW_OP_deref)));
+            end;
           finish_entry;
         end;
 

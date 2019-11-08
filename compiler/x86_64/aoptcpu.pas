@@ -79,16 +79,15 @@ uses
                 A_MOVSX,
                 A_MOVZX:
                   Result:=OptPass1Movx(p);
+                A_MOVAPD,
+                A_MOVAPS,
+                A_MOVUPD,
+                A_MOVUPS,
                 A_VMOVAPS,
                 A_VMOVAPD,
                 A_VMOVUPS,
                 A_VMOVUPD:
-                  result:=OptPass1VMOVAP(p);
-                A_MOVAPD,
-                A_MOVAPS,
-                A_MOVUPD,
-                A_MOVUPS:
-                  result:=OptPass1MOVAP(p);
+                  result:=OptPass1_V_MOVAP(p);
                 A_VDIVSD,
                 A_VDIVSS,
                 A_VSUBSD,
@@ -152,6 +151,8 @@ uses
                   Result:=OptPass2Jmp(p);
                 A_Jcc:
                   Result:=OptPass2Jcc(p);
+                A_Lea:
+                  Result:=OptPass2Lea(p);
                 else
                   ;
               end;

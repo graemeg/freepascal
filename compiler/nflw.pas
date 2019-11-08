@@ -284,7 +284,7 @@ implementation
 
     uses
       globtype,systems,constexp,compinnr,
-      cutils,verbose,globals,
+      cutils,verbose,globals,ppu,
       symtable,paramgr,defcmp,defutil,htypechk,pass_1,
       ncal,nadd,ncon,nmem,nld,ncnv,nbas,nutils,ninl,nset,ngenutil,
     {$ifdef state_tracking}
@@ -1020,7 +1020,7 @@ implementation
         inherited ppuload(t,ppufile);
         t1:=ppuloadnode(ppufile);
         t2:=ppuloadnode(ppufile);
-        ppufile.getsmallset(loopflags);
+        ppufile.getset(tppuset1(loopflags));
       end;
 
 
@@ -1029,7 +1029,7 @@ implementation
         inherited ppuwrite(ppufile);
         ppuwritenode(ppufile,t1);
         ppuwritenode(ppufile,t2);
-        ppufile.putsmallset(loopflags);
+        ppufile.putset(tppuset1(loopflags));
       end;
 
 

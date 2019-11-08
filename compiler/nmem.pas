@@ -159,7 +159,7 @@ implementation
 
     uses
       globtype,systems,constexp,
-      cutils,verbose,globals,
+      cutils,verbose,globals,ppu,
       symconst,defutil,defcmp,
       nadd,nbas,nflw,nutils,objcutil,
       wpobase,
@@ -438,7 +438,7 @@ implementation
       begin
         inherited ppuload(t,ppufile);
         ppufile.getderef(getprocvardefderef);
-        ppufile.getsmallset(addrnodeflags);
+        ppufile.getset(tppuset1(addrnodeflags));
       end;
 
 
@@ -446,7 +446,7 @@ implementation
       begin
         inherited ppuwrite(ppufile);
         ppufile.putderef(getprocvardefderef);
-        ppufile.putsmallset(addrnodeflags);
+        ppufile.putset(tppuset1(addrnodeflags));
       end;
 
     procedure Taddrnode.mark_write;

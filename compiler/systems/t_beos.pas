@@ -176,14 +176,15 @@ begin
   Inherited Create;
   s:=GetEnvironmentVariable('BELIBRARIES');
   { convert to correct format in case under unix system }
-  for i:=1 to length(s) do
-    if s[i] = ':' then
-      s[i] := ';';
+  Replace(s,':',';=');
+  Insert('=',s,1);
+  if s[length(s)]='=' then
+    setlength(s,length(s)-1);
   { just in case we have a single path : add the ending ; }
   { since that is what the compiler expects.              }
   if pos(';',s) = 0 then
     s:=s+';';
-  LibrarySearchPath.AddPath(sysrootpath,s,true); {format:'path1;path2;...'}
+  LibrarySearchPath.AddLibraryPath(sysrootpath,s,true); {format:'path1;path2;...'}
 end;
 
 

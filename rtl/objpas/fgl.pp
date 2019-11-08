@@ -45,7 +45,7 @@ type
   protected
     FList: PByte;
     FCount: Integer;
-    FCapacity: Integer; { list is one longer sgthan capacity, for temp }
+    FCapacity: Integer; { list has room for capacity+1 items, contains room for a temporary item }
     FItemSize: Integer;
     procedure CopyItem(Src, Dest: Pointer); virtual;
     procedure Deref(Item: Pointer); virtual; overload;

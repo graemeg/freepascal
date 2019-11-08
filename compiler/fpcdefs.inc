@@ -7,13 +7,7 @@
 
 { This reduces the memory requirements a lot }
 {$PACKENUM 1}
-{$ifndef FPC_BIG_ENDIAN}
-{ $define USE_PACKSET1}
-{$endif}
-
-{$ifdef USE_PACKSET1}
 {$PACKSET 1}
-{$endif USE_PACKSET1}
 
 { We don't use exceptions, so turn off the implicit
   exceptions in the constructors }

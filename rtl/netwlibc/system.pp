@@ -17,6 +17,7 @@ unit System;
 
 interface
 
+{$define FPC_IS_SYSTEM}
 {$define netware}
 {$define netware_libc}
 

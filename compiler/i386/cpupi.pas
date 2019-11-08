@@ -88,10 +88,11 @@ unit cpupi;
     procedure tcpuprocinfo.generate_parameter_info;
       begin
         inherited generate_parameter_info;
-        { Para_stack_size is only used to determine how many bytes to remove }
-        { from the stack at the end of the procedure (in the "ret $xx").     }
-        { If the stack is fixed, nothing has to be removed by the callee     }
-        if paramanager.use_fixed_stack then
+        { Para_stack_size is only used to determine how many bytes to remove
+          from the stack at the end of the procedure (in the "ret $xx").
+          If the stack is fixed, nothing has to be removed by the callee, except
+          if a 16 byte aligned stack on i386-linux is used     }
+        if paramanager.use_fixed_stack and not(target_info.abi=abi_linux386_sysv) then
           para_stack_size := 0;
       end;
 

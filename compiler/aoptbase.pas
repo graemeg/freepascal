@@ -104,7 +104,7 @@ unit aoptbase;
 
         { compares reg1 and reg2 having the same type and being the same super registers
           so the register size is neglected }
-        function SuperRegistersEqual(reg1,reg2 : TRegister) : Boolean;
+        function SuperRegistersEqual(reg1,reg2 : TRegister) : Boolean;{$ifdef USEINLINE}inline;{$endif}
     end;
 
     function labelCanBeSkipped(p: tai_label): boolean;
@@ -316,10 +316,16 @@ unit aoptbase;
     end;
 
 
-  function TAOptBase.SuperRegistersEqual(reg1,reg2 : TRegister) : Boolean;
+  function TAOptBase.SuperRegistersEqual(reg1,reg2 : TRegister) : Boolean;{$ifdef USEINLINE}inline;{$endif}
   Begin
-    Result:=(getregtype(reg1) = getregtype(reg2)) and
-            (getsupreg(reg1) = getsupreg(Reg2));
+    { Do an optimized version of
+
+      Result:=(getregtype(reg1) = getregtype(reg2)) and
+      (getsupreg(reg1) = getsupreg(Reg2));
+
+      as SuperRegistersEqual is used a lot
+    }
+    Result:=(DWord(reg1) and $ff00ffff)=(DWord(reg2) and $ff00ffff);
   end;
 
   { ******************* Processor dependent stuff *************************** }

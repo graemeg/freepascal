@@ -547,9 +547,15 @@ begin
                   A_SUB:
                     if OptPass1Sub(p) then
                       continue;
+                  A_MOVAPD,
+                  A_MOVAPS,
+                  A_MOVUPD,
+                  A_MOVUPS,
                   A_VMOVAPS,
-                  A_VMOVAPD:
-                    if OptPass1VMOVAP(p) then
+                  A_VMOVAPD,
+                  A_VMOVUPS,
+                  A_VMOVUPD:
+                    if OptPass1_V_MOVAP(p) then
                       continue;
                   A_VDIVSD,
                   A_VDIVSS,
@@ -572,10 +578,6 @@ begin
                   A_ADDSD,
                   A_ADDSS:
                     if OptPass1OP(p) then
-                      continue;
-                  A_MOVAPD,
-                  A_MOVAPS:
-                    if OptPass1MOVAP(p) then
                       continue;
                   A_VMOVSD,
                   A_VMOVSS,
@@ -622,6 +624,9 @@ begin
             case taicpu(p).opcode Of
               A_Jcc:
                 if OptPass2Jcc(p) then
+                  continue;
+              A_Lea:
+                if OptPass2Lea(p) then
                   continue;
               A_FSTP,A_FISTP:
                 if OptPass1FSTP(p) then

@@ -131,7 +131,8 @@ end;
 procedure TPas2JSMapper.Writing;
 var
   S: TJSString;
-  p, l, Line: Integer;
+  p, l, Line, CurSrcLine, CurSrcColumn: Integer;
+  CurSrcFilename: String;
 begin
   inherited Writing;
   if SrcMap=nil then exit;
@@ -143,12 +144,22 @@ begin
   if FSrcFilename='' then
     exit; // built-in element -> do not add a mapping
 
+  CurSrcFilename:=FSrcFilename;
+  CurSrcLine:=FSrcLine;
+  CurSrcColumn:=FSrcColumn;
+  //system.writeln('TPas2JSMapper.Writing ',FSrcFilename);
+  if ExtractFileExt(CurSrcFilename)='.pju' then
+    begin
+    // precompiled js -> map to js
+    exit;
+    end;
+
   FNeedMapping:=false;
   //system.writeln('TPas2JSMapper.Writing Generated.Line=',CurLine,',Col=',CurColumn-1,
   //  ' Orig:',ExtractFileName(FSrcFilename),',Line=',FSrcLine,',Col=',FSrcColumn-1);
 
   SrcMap.AddMapping(CurLine,Max(0,CurColumn-1),
-    FSrcFilename,Max(0,FSrcLine),Max(0,FSrcColumn-1));
+    CurSrcFilename,Max(0,CurSrcLine),Max(0,CurSrcColumn-1));
 
   if (CurElement is TJSLiteral)
       and (TJSLiteral(CurElement).Value.CustomValue<>'') then
@@ -171,7 +182,7 @@ begin
         //system.writeln('TPas2JSMapper.Writing Generated.Line=',CurLine+Line,',Col=',0,
         //  ' Orig:',ExtractFileName(FSrcFilename),',Line=',FSrcLine+Line,',Col=',0);
         SrcMap.AddMapping(CurLine+Line,0,
-          FSrcFilename,FSrcLine+Line,0);
+          CurSrcFilename,CurSrcLine+Line,0);
         end;
       else
         inc(p);

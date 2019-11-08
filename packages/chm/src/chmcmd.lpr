@@ -23,7 +23,7 @@ program chmcmd;
 {$mode objfpc}{$H+}
 
 uses
-  {$ifdef Unix}cthreads,{$endif} Classes, Sysutils, chmfilewriter, GetOpts;
+  {$ifdef Unix}cthreads, cwstring, {$endif} Classes, Sysutils, chmfilewriter, GetOpts;
 
 Const
   CHMCMDVersion = {$I %FPCVERSION%};

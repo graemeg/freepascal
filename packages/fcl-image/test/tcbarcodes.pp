@@ -739,17 +739,17 @@ procedure TTestBarcodes.CheckParamsType;
 
 begin
   AssertParams(0, bcWhite, bw100,  bhFull);
-  AssertParams(1, bcWhite, bw100w, bhFull);
-  AssertParams(2, bcWhite, bw150w, bhFull);
-  AssertParams(3, bcWhite, bw200w, bhFull);
+  AssertParams(1, bcWhite, bwWeighted, bhFull);
+  AssertParams(2, bcWhite, bw150, bhFull);
+  AssertParams(3, bcWhite, bw200, bhFull);
   AssertParams(4, bcBlack, bw100,  bhFull);
-  AssertParams(5, bcBlack, bw100w, bhFull);
-  AssertParams(6, bcBlack, bw150w, bhFull);
-  AssertParams(7, bcBlack, bw200w, bhFull);
+  AssertParams(5, bcBlack, bwWeighted, bhFull);
+  AssertParams(6, bcBlack, bw150, bhFull);
+  AssertParams(7, bcBlack, bw200, bhFull);
   AssertParams(8, bcBlack, bw100,  bhTwoFifth);
-  AssertParams(9, bcBlack, bw100w, bhTwoFifth);
-  AssertParams(10, bcBlack, bw150w, bhTwoFifth);
-  AssertParams(11, bcBlack, bw200w, bhTwoFifth);
+  AssertParams(9, bcBlack, bwWeighted, bhTwoFifth);
+  AssertParams(10, bcBlack, bw150, bhTwoFifth);
+  AssertParams(11, bcBlack, bw200, bhTwoFifth);
 end;
 
 procedure TTestBarcodes.CheckNumerictypes;

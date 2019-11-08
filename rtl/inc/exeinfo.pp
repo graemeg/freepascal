@@ -98,12 +98,15 @@ uses
         begin
           baseaddr:=Tmm.AllocationBase;
           TST[0]:= #0;
-          GetModuleFileName(THandle(Tmm.AllocationBase), TST, Length(TST));
+          if baseaddr <> nil then
+            begin
+              GetModuleFileName(THandle(Tmm.AllocationBase), TST, Length(TST));
 {$ifdef FPC_OS_UNICODE}
-          filename:= String(PWideChar(@TST));
+              filename:= String(PWideChar(@TST));
 {$else}
-          filename:= String(PChar(@TST));
+              filename:= String(PChar(@TST));
 {$endif FPC_OS_UNICODE}
+            end;
         end;
     end;
 

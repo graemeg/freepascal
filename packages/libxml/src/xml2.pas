@@ -34,6 +34,58 @@ const
 
 implementation
 
+{$IFDEF NO_EXTERNAL_VARS}
+function GetxmlMalloc: xmlMallocFunc; inline;
+begin
+  Result := varxmlMalloc^;
+end;
+
+procedure SetxmlMalloc(AValue: xmlMallocFunc); inline;
+begin
+  varxmlMalloc^ := AValue;
+end;
+
+function GetxmlMallocAtomic: xmlMallocFunc; inline;
+begin
+  Result := varxmlMallocAtomic^;
+end;
+
+procedure SetxmlMallocAtomic(AValue: xmlMallocFunc); inline;
+begin
+  varxmlMallocAtomic^ := AValue;
+end;
+
+function GetxmlRealloc: xmlReallocFunc; inline;
+begin
+  Result := varxmlRealloc^;
+end;
+
+procedure SetxmlRealloc(AValue: xmlReallocFunc); inline;
+begin
+  varxmlRealloc^ := AValue;
+end;
+
+function GetxmlFree: xmlFreeFunc; inline;
+begin
+  Result := varxmlFree^;
+end;
+
+procedure SetxmlFree(AValue: xmlFreeFunc); inline;
+begin
+  varxmlFree^ := AValue;
+end;
+
+function GetxmlMemStrdup: xmlStrdupFunc; inline;
+begin
+  Result := varxmlMemStrdup^;
+end;
+
+procedure SetxmlMemStrdup(AValue: xmlStrdupFunc); inline;
+begin
+  varxmlMemStrdup^ := AValue;
+end;
+{$ENDIF}
+
 procedure fpcxmlFree(mem: pointer); EXTDECL;
 begin
   FreeMem(mem);
@@ -48,6 +100,16 @@ function fpcxmlRealloc(mem: pointer; size: csize_t): pointer; EXTDECL;
 begin
   Result := mem;
   ReallocMem(Result, size);
+end;
+
+function fpcxmlStrdup(str: pchar): pchar; EXTDECL;
+var
+  L: SizeInt;
+begin
+  L := Length(str) + 1;
+  Getmem(Result, L);
+  if Result <> nil then
+    Move(str^, Result^, L);
 end;
 
 procedure fpcxmlStructuredErrorHandler(userData: pointer; error: xmlErrorPtr); EXTDECL;
@@ -272,11 +334,11 @@ begin
     __xmlIsPubidChar_tab := GetProcAddress(libHandle, 'xmlIsPubidChar_tab');
     
   { globals.inc }
-    xmlMalloc := xmlMallocFunc(GetProcAddress(libHandle, 'xmlMalloc'));
-    xmlMallocAtomic := xmlMallocFunc(GetProcAddress(libHandle, 'xmlMallocAtomic'));
-    xmlRealloc := xmlReallocFunc(GetProcAddress(libHandle, 'xmlRealloc'));
-    xmlFree := xmlFreeFunc(GetProcAddress(libHandle, 'xmlFree'));
-    xmlMemStrdup := xmlStrdupFunc(GetProcAddress(libHandle, 'xmlMemStrdup'));
+    varxmlMalloc := PxmlMallocFunc(GetProcAddress(libHandle, 'xmlMalloc'));
+    varxmlMallocAtomic := PxmlMallocFunc(GetProcAddress(libHandle, 'xmlMallocAtomic'));
+    varxmlRealloc := PxmlReallocFunc(GetProcAddress(libHandle, 'xmlRealloc'));
+    varxmlFree := PxmlFreeFunc(GetProcAddress(libHandle, 'xmlFree'));
+    varxmlMemStrdup := PxmlStrdupFunc(GetProcAddress(libHandle, 'xmlMemStrdup'));
     
   { xpath.inc }
    {__xmlXPathNAN := PDouble(GetProcAddress(libHandle, 'xmlXPathNAN'));
@@ -294,16 +356,16 @@ initialization
 {$ENDIF}
 
 (*
+ * overloading the memory functions
+ *)
+  xmlMemSetup(@fpcxmlFree, @fpcxmlMalloc, @fpcxmlRealloc, @fpcxmlStrdup);
+
+(*
  * this initialize the library and check potential ABI mismatches
  * between the version it was compiled for and the actual shared
  * library used.
  *)
   LIBXML_TEST_VERSION;
-
-(*
- * overloading the memory functions
- *)
-  xmlMemSetup(@fpcxmlFree, @fpcxmlMalloc, @fpcxmlRealloc, nil);
 
 (*
  * overloading the error functions
@@ -315,11 +377,11 @@ finalization
 (*
  * Cleanup function for the XML library.
  *)
-  //xmlCleanupParser();
+  xmlCleanupParser();
 
 (*
  * this is to debug memory for regression tests
  *)
-  xmlMemoryDump();
+  //xmlMemoryDump();
 
 end.

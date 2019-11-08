@@ -1572,7 +1572,7 @@ end;
 {$ifndef FPC_SYSTEM_HAS_MUL_BYTE}
     function fpc_mul_byte(f1,f2 : byte) : byte;[public,alias: 'FPC_MUL_BYTE']; compilerproc;
       var
-        _f1, bitpos : byte;
+        bitpos : byte;
         b : byte;
       begin
         fpc_mul_byte := 0;
@@ -1581,10 +1581,7 @@ end;
         for b := 0 to 7 do
           begin
             if (f2 and bitpos) <> 0 then
-              begin
-                _f1 := fpc_mul_byte;
-                fpc_mul_byte := fpc_mul_byte + f1;
-              end;
+              fpc_mul_byte := fpc_mul_byte + f1;
             f1 := f1 shl 1;
             bitpos := bitpos shl 1;
           end;
@@ -1677,7 +1674,7 @@ end;
 {$ifndef FPC_SYSTEM_HAS_MUL_WORD}
     function fpc_mul_word(f1,f2 : word) : word;[public,alias: 'FPC_MUL_WORD']; compilerproc;
       var
-        _f1,bitpos : word;
+        bitpos : word;
         b : byte;
       begin
         fpc_mul_word:=0;
@@ -1686,10 +1683,7 @@ end;
         for b:=0 to 15 do
           begin
             if (f2 and bitpos)<>0 then
-              begin
-                _f1:=fpc_mul_word;
-                fpc_mul_word:=fpc_mul_word+f1;
-              end;
+              fpc_mul_word:=fpc_mul_word+f1;
             f1:=f1 shl 1;
             bitpos:=bitpos shl 1;
           end;
@@ -1783,7 +1777,7 @@ end;
 {$ifndef FPC_SYSTEM_HAS_MUL_DWORD}
     function fpc_mul_dword(f1,f2 : dword) : dword;[public,alias: 'FPC_MUL_DWORD']; compilerproc;
       var
-        _f1,bitpos : dword;
+        bitpos : dword;
         b : byte;
       begin
         fpc_mul_dword:=0;
@@ -1792,10 +1786,7 @@ end;
         for b:=0 to 31 do
           begin
             if (f2 and bitpos)<>0 then
-              begin
-                _f1:=fpc_mul_dword;
-                fpc_mul_dword:=fpc_mul_dword+f1;
-              end;
+              fpc_mul_dword:=fpc_mul_dword+f1;
             f1:=f1 shl 1;
             bitpos:=bitpos shl 1;
           end;

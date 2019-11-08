@@ -127,29 +127,23 @@ begin
     begin
 {$ifdef x86_64}
       { some linuxes might not have the lib64 variants (Arch, LFS }
-      if PathExists('/usr/X11R6/lib64',true) then
-        LibrarySearchPath.AddPath(sysrootpath,'/usr/X11R6/lib64',true)
-      else if PathExists('/usr/X11R6/lib',true) then
-        LibrarySearchPath.AddPath(sysrootpath,'/usr/X11R6/lib',true);
-
-      if PathExists('/usr/lib64',true) then
-        LibrarySearchPath.AddPath(sysrootpath,'/usr/lib64',true)
-      else if PathExists('/usr/lib',true) then
-        LibrarySearchPath.AddPath(sysrootpath,'/usr/lib',true);
-
+      { don't use PathExists checks, as we need to take sysroots and
+        cross-compiling into account }
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/X11R6/lib',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/X11R6/lib64',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib64',true);
       { /lib64 should be the really first, so add it before everything else }
-      if PathExists('/lib64',true) then
-        LibrarySearchPath.AddPath(sysrootpath,'/lib64',true)
-      else if PathExists('/lib',true) then
-        LibrarySearchPath.AddPath(sysrootpath,'/lib',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib64',true);
 {$else}
 {$ifdef powerpc64}
       if target_info.abi<>abi_powerpc_elfv2 then
-        LibrarySearchPath.AddPath(sysrootpath,'/lib64;/usr/lib64;/usr/X11R6/lib64',true)
+        LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib64;=/usr/lib64;=/usr/X11R6/lib64',true)
       else
-        LibrarySearchPath.AddPath(sysrootpath,'/lib64;/usr/lib/powerpc64le-linux-gnu;/usr/X11R6/powerpc64le-linux-gnu',true);
+        LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib64;=/usr/lib/powerpc64le-linux-gnu;=/usr/X11R6/powerpc64le-linux-gnu',true);
 {$else powerpc64}
-      LibrarySearchPath.AddPath(sysrootpath,'/lib;/usr/lib;/usr/X11R6/lib',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib;=/usr/lib;=/usr/X11R6/lib',true);
 {$endif powerpc64}
 {$endif x86_64}
 
@@ -157,41 +151,41 @@ begin
   { some newer Debian have the crt*.o files at uncommon locations,
     for other arm flavours, this cannot hurt }
 {$ifdef FPC_ARMHF}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/arm-linux-gnueabihf',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/arm-linux-gnueabihf',true);
 {$endif FPC_ARMHF}
 {$ifdef FPC_ARMEL}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/arm-linux-gnueabi',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/arm-linux-gnueabi',true);
 {$endif}
 {$endif arm}
 {$ifdef x86_64}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/x86_64-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/x86_64-linux-gnu',true);
 {$endif x86_64}
 {$ifdef i386}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/i386-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/i386-linux-gnu',true);
 {$endif i386}
 {$ifdef aarch64}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/aarch64-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/aarch64-linux-gnu',true);
 {$endif aarch64}
 {$ifdef powerpc}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/powerpc-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/powerpc-linux-gnu',true);
 {$endif powerpc}
 {$ifdef m68k}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/m68k-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/m68k-linux-gnu',true);
 {$endif m68k}
 {$ifdef mipsel}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/mipsel-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/mipsel-linux-gnu',true);
 {$endif mipsel}
 {$ifdef mips}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/mips-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/mips-linux-gnu',true);
 {$endif mips}
 {$ifdef sparc64}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/sparc64-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/sparc64-linux-gnu',true);
 {$endif sparc64}
 {$ifdef riscv32}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/riscv32-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/riscv32-linux-gnu',true);
 {$endif riscv32}
 {$ifdef riscv64}
-      LibrarySearchPath.AddPath(sysrootpath,'/usr/lib/riscv64-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/riscv64-linux-gnu',true);
 {$endif riscv64}
     end;
 end;
@@ -1333,7 +1327,7 @@ begin
             add('  .rodata1        : { *(.rodata1) }');
             add('  .eh_frame_hdr : { *(.eh_frame_hdr) }');
             add('  .eh_frame       : ONLY_IF_RO { KEEP (*(.eh_frame)) }');
-            add('  .gcc_except_table   : { KEEP *(.gcc_except_table .gcc_except_table.*) }');
+            add('  .gcc_except_table   : { KEEP (*(.gcc_except_table .gcc_except_table.*)) }');
 
             {Adjust the address for the data segment.  We want to adjust up to
              the same address within the page on the next page up.}
