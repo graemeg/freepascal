@@ -35,6 +35,7 @@ unit cpugas;
         constructor CreateWithWriter(info: pasminfo; wr: TExternalAssemblerOutputFile; freewriter, smart: boolean); override;
         {# Constructs the command line for calling the assembler }
         function MakeCmdLine: TCmdStr; override;
+        procedure WriteExtraHeader; override;
       end;
 
       TMIPSInstrWriter = class(TCPUInstrWriter)
@@ -87,6 +88,15 @@ unit cpugas;
          Replace(result,'$ARCH','-march='+lower(cputypestr[current_settings.cputype]));
 //          Replace(result,'$ARCH','-march=pic32mx -mtune=pic32mx');      
       end;
+
+    procedure TMIPSGNUAssembler.WriteExtraHeader;
+      var
+        i : longint;
+      begin
+        if not (cs_asm_pre_binutils_2_25 in current_settings.globalswitches) then
+          writer.AsmWriteln(#9'.module nomips16');
+      end;
+
 
 {****************************************************************************}
 {                  Helper routines for Instruction Writer                    }

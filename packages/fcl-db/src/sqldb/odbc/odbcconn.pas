@@ -563,7 +563,19 @@ begin
           CType:=SQL_C_BIT;
           SqlType:=SQL_BIT;
           ColumnSize:=Size;
-        end
+        end;
+      ftUnknown:
+        begin
+          if AParams[ParamIndex].IsNull then // Null variant is stored as ftUnknown - send it over as TINYINT (it doesn't really matter what type)
+          begin
+            PVal:=nil;
+            Size:=0;
+            CType:=SQL_C_TINYINT;
+            SqlType:=SQL_TINYINT;
+            ColumnSize:=Size;
+          end else
+            raise EDataBaseError.CreateFmt('Not-null unknown Parameter (index %d) is not supported.',[ParamIndex]);
+        end;
       else
         raise EDataBaseError.CreateFmt('Parameter %d is of type %s, which not supported yet',[ParamIndex, Fieldtypenames[AParams[ParamIndex].DataType]]);
     end;
@@ -572,7 +584,8 @@ begin
        StrLenOrInd:=SQL_NULL_DATA;
 
     Buf:=GetMem(Size+SizeOf(StrLenOrInd));
-    Move(PVal^, Buf^, Size);
+    if Size>0 then
+      Move(PVal^, Buf^, Size);
     if StrLenOrInd<>0 then
        begin
        PStrLenOrInd:=Buf + Size;

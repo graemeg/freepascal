@@ -60,7 +60,7 @@ procedure FillFloodImageRel (Canv:TFPCustomCanvas; x,y :integer; const Image:TFP
 
 implementation
 
-uses clipping, ellipses;
+uses clipping;
 
 procedure FillRectangleColor (Canv:TFPCustomCanvas; x1,y1, x2,y2:integer);
 begin
@@ -587,7 +587,7 @@ type
     DoneList : TList;
   end;
 
-function FindDoneIndex (const data:PFloodFillData; x:integer; var index:integer):boolean;
+function FindDoneIndex (const data:PFloodFillData; x:integer; out index:integer):boolean;
 begin
   with data^.DoneList do
     begin

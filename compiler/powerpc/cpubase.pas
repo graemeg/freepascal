@@ -395,6 +395,10 @@ uses
 
     function inverse_cond(const c: TAsmCond): Tasmcond; {$ifdef USEINLINE}inline;{$endif USEINLINE}
     function conditions_equal(const c1, c2: TAsmCond): boolean;
+
+    { Checks if Subset is a subset of c (e.g. "less than" is a subset of "less than or equal" }
+    function condition_in(const Subset, c: TAsmCond): Boolean;
+
     function dwarf_reg(r:tregister):shortint;
     function dwarf_reg_no_error(r:tregister):shortint;
     function eh_return_data_regno(nr: longint): longint;
@@ -471,6 +475,16 @@ implementation
           ((not(c1.cond in [C_T..C_DZF]) and
            (c1.cr = c2.cr)) or
            (c1.crbit = c2.crbit));
+      end;
+
+
+    { Checks if Subset is a subset of c (e.g. "less than" is a subset of "less than or equal" }
+    function condition_in(const Subset, c: TAsmCond): Boolean;
+      begin
+        Result := (c.cond = C_None) or conditions_equal(Subset, c);
+
+        { TODO: Can a PowerPC programmer please update this procedure to
+          actually detect subsets? Thanks. [Kit] }
       end;
 
 

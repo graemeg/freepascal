@@ -618,6 +618,21 @@ implementation
     begin
       result:=maybe_insert_trashing(pd,n);
 
+      { initialise safecall result variable }
+      if pd.generate_safecall_wrapper then
+        begin
+          ressym:=tsym(pd.localst.Find('safecallresult'));
+          block:=internalstatements(stat);
+          addstatement(stat,
+            cassignmentnode.create(
+              cloadnode.create(ressym,ressym.owner),
+              genintconstnode(0)
+            )
+          );
+          addstatement(stat,result);
+          result:=block;
+        end;
+
       if (m_isolike_program_para in current_settings.modeswitches) and
         (pd.proctypeoption=potype_proginit) then
         begin
@@ -687,7 +702,7 @@ implementation
           end;
         end;
       if (target_info.system in systems_fpnestedstruct) and
-         pd.getfuncretsyminfo(ressym,resdef) and
+         pd.get_funcretsym_info(ressym,resdef) and
          (tabstractnormalvarsym(ressym).inparentfpstruct) then
         begin
           block:=internalstatements(stat);

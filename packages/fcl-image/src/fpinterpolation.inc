@@ -139,7 +139,6 @@ var
   yEntry: Pointer;
   SrcStartY: LongInt;
   LastSrcStartY: LongInt;
-  LastyEntry: Pointer;
   sy: Integer;
   xEntry: Pointer;
   sx: LongInt;
@@ -162,7 +161,6 @@ begin
     // current y line
     GetMem(HorzResized,w*ySupport*SizeOf(TFPColor));
 
-    LastyEntry:=nil;
     SrcStartY:=0;
     for dy:=0 to h-1 do
     begin
@@ -173,7 +171,6 @@ begin
         NewSupportLines:=ySupport;
       end else
       begin
-        LastyEntry:=yEntry;
         LastSrcStartY:=SrcStartY;
         inc(yEntry,yEntrySize);
         SrcStartY:=PInteger(yEntry)^;

@@ -100,6 +100,7 @@ type
     procedure buildderef;override;
     procedure deref;override;
     function getcopy: tstoreddef; override;
+    function generate_safecall_wrapper: boolean; override;
   end;
   tcpuprocvardefclass = class of tcpuprocvardef;
 
@@ -109,7 +110,8 @@ type
     exprasmlist      : TAsmList;
     function  jvmmangledbasename(signature: boolean): TSymStr;
     function mangledname: TSymStr; override;
-    function getfuncretsyminfo(out ressym: tsym; out resdef: tdef): boolean; override;
+    function get_funcretsym_info(out ressym: tsym; out resdef: tdef): boolean; override;
+    function generate_safecall_wrapper: boolean; override;
     destructor destroy; override;
   end;
   tcpuprocdefclass = class of tcpuprocdef;
@@ -748,13 +750,20 @@ implementation
         result:=_mangledname;
     end;
 
-  function tcpuprocdef.getfuncretsyminfo(out ressym: tsym; out resdef: tdef): boolean;
+
+  function tcpuprocdef.get_funcretsym_info(out ressym: tsym; out resdef: tdef): boolean;
     begin
       { constructors don't have a result on the JVM platform }
       if proctypeoption<>potype_constructor then
         result:=inherited
       else
         result:=false;
+    end;
+
+
+  function tcpuprocdef.generate_safecall_wrapper: boolean;
+    begin
+      result:=false;
     end;
 
 
@@ -799,6 +808,12 @@ implementation
     begin
       result:=inherited;
       tcpuprocvardef(result).classdef:=classdef;
+    end;
+
+
+  function tcpuprocvardef.generate_safecall_wrapper: boolean;
+    begin
+      result:=false;
     end;
 
 

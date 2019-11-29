@@ -169,6 +169,8 @@ resourcestring
   SUsageOption190  = '                  e.g. --package=fcl';
   SUsageOption200  = '--project=file    Use file as project file';
   SUsageOption210  = '--show-private    Show private methods.';
+  SUsageOption215  = '--stop-on-parser-error';
+  SUsageOption215A = '                  Stop when a parser error occurs. Default is to ignore parser errors.';
   SUsageOption220  = '--warn-no-node    Warn if no documentation node was found.';
   SUsageOption230  = '--mo-dir=dir      Set directory where language files reside to dir';
   SUsageOption240  = '--parse-impl      (Experimental) try to parse implementation too';

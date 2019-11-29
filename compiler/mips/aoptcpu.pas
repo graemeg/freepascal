@@ -36,6 +36,10 @@ unit aoptcpu;
       TAsmOpSet = set of TAsmOp;
 
       TCpuAsmOptimizer = class(TAsmOptimizer)
+        { Converts a conditional jump into an unconditional jump.  Only call this
+          procedure on an instruction that you already know is a conditional jump }
+        procedure MakeUnconditional(p: taicpu); override;
+
         function RegModifiedByInstruction(Reg: TRegister; p1: tai): boolean; override;
         function GetNextInstructionUsingReg(Current: tai;
           var Next: tai; reg: TRegister): Boolean;
@@ -145,6 +149,28 @@ unit aoptcpu;
     begin
     end;
 {$endif DEBUG_AOPTCPU}
+
+
+  { Converts a conditional jump into an unconditional jump.  Only call this
+    procedure on an instruction that you already know is a conditional jump }
+  procedure TCpuAsmOptimizer.MakeUnconditional(p: taicpu);
+    var
+      idx, topidx: Byte;
+    begin
+      inherited MakeUnconditional(p);
+
+      topidx := p.ops-1;
+      if topidx = 0 then
+        Exit;
+
+      { Move destination address into first register, then delete the rest }
+      p.loadoper(0, p.oper[topidx]^);
+      for idx := topidx downto 1 do
+        p.freeop(idx);
+      p.ops := 1;
+      p.opercnt := 1;
+
+    end;
 
 
  function TCpuAsmOptimizer.InstructionLoadsFromReg(const reg: TRegister; const hp: tai): boolean;
@@ -340,6 +366,7 @@ unit aoptcpu;
         Assigned(FindRegDealloc(taicpu(p).oper[0]^.reg,tai(next.next)));
       if result then
         begin
+          AllocRegBetween(taicpu(p).oper[1]^.reg,p,next,UsedRegs);
           next.oper[1]^.ref^.base:=taicpu(p).oper[1]^.reg;
           DebugMsg('Peephole: Move removed 4',p);
           asml.remove(p);

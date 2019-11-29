@@ -64,7 +64,6 @@ end;
 
 procedure TFPCustomCanvas.RemoveHelpers;
 var r : integer;
-    OldState : boolean;
 begin
   for r := FHelpers.count-1 downto 0 do
     with TFPCanvasHelper(FHelpers[r]) do
@@ -334,6 +333,7 @@ end;
 
 function TFPCustomCanvas.TextExtent(const Text: string): TSize;
 begin
+  Result:=Default(TSize);
   GetTextSize(Text, Result.cx, Result.cy);
 end;
 
@@ -381,6 +381,7 @@ end;
 
 function TFPCustomCanvas.TextExtent(const Text: unicodestring): TSize;
 begin
+  Result:=Default(TSize);
   GetTextSize(Text, Result.cx, Result.cy);
 end;
 
@@ -684,7 +685,7 @@ begin
 end;
         
 procedure TFPCustomCanvas.Rectangle (const Bounds:TRect);
-var np,nb,dp,db,pb : boolean;
+var np,nb,dp,db: boolean;
 begin
   np:= Pen.style <> psClear; // Need pen ?
   nb:= Brush.style <> bsClear;  // Need brush ?
@@ -781,15 +782,18 @@ procedure TFPCustomCanvas.Draw (x,y:integer; image:TFPCustomImage);
 var xx,xi,yi,xm,ym,r,t : integer;
 begin
   xm := x + image.width-1;
+  if (xm<0) or (x>width) then exit;
   if xm >= width then
     xm := width - 1;
   ym := y + image.height-1;
+  if (ym<0) or (y>width) then exit;
   if ym >= height then
     ym := height - 1;
   xi := x;
   yi := y;
   if clipping then
-    CheckRectClipping (ClipRect, xi,yi, xm,ym);
+    if not CheckRectClipping (ClipRect, xi,yi, xm,ym) then
+      exit;
   for r := xi to xm do
     begin
     xx := r - x;
@@ -799,7 +803,7 @@ begin
 end;
 
 procedure TFPCustomCanvas.StretchDraw(x, y, w, h: integer; source: TFPCustomImage);
-var i : TFPCustomInterpolation;
+var
     FreeInterpolation : boolean;
     IP : TFPCustomInterpolation;
 begin

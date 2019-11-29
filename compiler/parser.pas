@@ -126,6 +126,16 @@ implementation
            system_x86_64_aros:
              include(supported_calling_conventions,pocall_syscall);
 {$ifdef i8086}
+           system_i8086_embedded:
+             begin
+               if stacksize=0 then
+                 begin
+                   if init_settings.x86memorymodel in x86_far_data_models then
+                     stacksize:=16384
+                   else
+                     stacksize:=2048;
+                 end;
+             end;
            system_i8086_msdos:
              begin
                if stacksize=0 then

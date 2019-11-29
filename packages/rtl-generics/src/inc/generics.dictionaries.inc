@@ -2163,7 +2163,7 @@ end;
 
 { TDeamortizedDArrayCuckooMap<CUCKOO_CONSTRAINTS>.TPKeyEnumerator }
 
-function TDeamortizedDArrayCuckooMap<CUCKOO_CONSTRAINTS>.TPKeyEnumerator.GetCurrent: TKey;
+function TDeamortizedDArrayCuckooMap<CUCKOO_CONSTRAINTS>.TPKeyEnumerator.GetCurrent: PKey;
 begin
   if FMainIndex = TCuckooCfg.D then
     Result := @(TDeamortizedDArrayCuckooMap<CUCKOO_CONSTRAINTS>(FDictionary).FQueue.FItems[FIndex].Pair.Value.Pair.Key)

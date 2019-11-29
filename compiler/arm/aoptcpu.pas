@@ -34,6 +34,9 @@ uses cgbase, cgutils, cpubase, aasmtai, aasmcpu,aopt, aoptobj;
 
 Type
   TCpuAsmOptimizer = class(TAsmOptimizer)
+    { Can't be done in some cases due to the limited range of jumps }
+    function CanDoJumpOpts: Boolean; override;
+
     { uses the same constructor as TAopObj }
     function PeepHoleOptPass1Cpu(var p: tai): boolean; override;
     procedure PeepHoleOptPass2;override;
@@ -378,6 +381,16 @@ Implementation
     begin
     end;
 {$endif DEBUG_AOPTCPU}
+
+
+  function TCpuAsmOptimizer.CanDoJumpOpts: Boolean;
+    begin
+      { Cannot perform these jump optimisations if the ARM architecture has 16-bit thumb codes }
+      Result := not (
+        (current_settings.instructionset = is_thumb) and not (CPUARM_HAS_THUMB2 in cpu_capabilities[current_settings.cputype])
+      );
+    end;
+
 
   function TCpuAsmOptimizer.RemoveSuperfluousMove(const p: tai; movp: tai; const optimizer: string):boolean;
     var

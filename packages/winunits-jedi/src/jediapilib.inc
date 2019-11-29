@@ -35,14 +35,14 @@
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
 {                                                                              }
 {******************************************************************************}
-{$Z4}
+
 
 // This file is intended for C header conversions.
 // It defines several mutually exclusive IFDEFs which determine
 // the Windows version the API conversion is usable with.
 
 {$I jedi.inc}
-
+{$Z4}
 {$IFNDEF JEDI_INC}
 ALERT_jedi_inc_incompatible
 // secure against old versions of jedi.inc.

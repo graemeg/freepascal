@@ -41,6 +41,8 @@ type
   TFPSList = class;
   TFPSListCompareFunc = function(Key1, Key2: Pointer): Integer of object;
 
+  { TFPSList }
+
   TFPSList = class(TObject)
   protected
     FList: PByte;
@@ -48,6 +50,7 @@ type
     FCapacity: Integer; { list has room for capacity+1 items, contains room for a temporary item }
     FItemSize: Integer;
     procedure CopyItem(Src, Dest: Pointer); virtual;
+    procedure CopyItems(Src, Dest: Pointer; aCount : Integer); virtual;
     procedure Deref(Item: Pointer); virtual; overload;
     procedure Deref(FromIndex, ToIndex: Integer); overload;
     function Get(Index: Integer): Pointer;
@@ -68,6 +71,7 @@ type
   public
     constructor Create(AItemSize: Integer = sizeof(Pointer));
     destructor Destroy; override;
+    class Function ItemIsManaged : Boolean; virtual;
     function Add(Item: Pointer): Integer;
     procedure Clear;
     procedure Delete(Index: Integer);
@@ -114,6 +118,8 @@ type
     property Current: T read GetCurrent;
   end;
 
+  { TFPGList }
+
   generic TFPGList<T> = class(TFPSList)
   private
     type
@@ -137,6 +143,8 @@ type
     Type
       TFPGListEnumeratorSpec = specialize TFPGListEnumerator<T>;
     constructor Create;
+
+    class Function ItemIsManaged : Boolean; override;
     function Add(const Item: T): Integer; {$ifdef FGLINLINE} inline; {$endif}
     function Extract(const Item: T): T; {$ifdef FGLINLINE} inline; {$endif}
     property First: T read GetFirst write SetFirst;
@@ -460,6 +468,11 @@ begin
   System.Move(Src^, Dest^, FItemSize);
 end;
 
+procedure TFPSList.CopyItems(Src, Dest: Pointer; aCount: Integer);
+begin
+  System.Move(Src^, Dest^, FItemSize*aCount);
+end;
+
 procedure TFPSList.RaiseIndexError(Index : Integer);
 begin
   Error(SListIndexError, Index);
@@ -550,6 +563,11 @@ procedure TFPSList.CheckIndex(AIndex : Integer);
 begin
   if (AIndex < 0) or (AIndex >= FCount) then
     Error(SListIndexError, AIndex);
+end;
+
+class function TFPSList.ItemIsManaged: Boolean;
+begin
+  Result:=False;
 end;
 
 
@@ -838,8 +856,21 @@ var
 begin
   if Obj.ItemSize <> FItemSize then
     Error(SListItemSizeError, 0);
-  for I := 0 to Obj.Count - 1 do
-    Add(Obj[i]);
+  // Do this now.
+  Capacity:=Capacity+Obj.Count;
+  if ItemIsManaged then
+    begin
+    // nothing for it, need to do it manually to give deref a chance.
+    For I:=0 to Obj.Count-1 do
+      Add(Obj[i])
+    end
+  else
+    begin
+    if Obj.Count=0 then
+      exit;
+    CopyItems(Obj.InternalItems[0],InternalItems[FCount],Obj.Count);
+    FCount:=FCount+Obj.Count;
+    end
 end;
 
 procedure TFPSList.Assign(Obj: TFPSList);
@@ -890,7 +921,7 @@ end;
 
 procedure TFPGList.Deref(Item: Pointer);
 begin
-  Finalize(T(Item^));
+ Finalize(T(Item^));
 end;
 
 function TFPGList.Get(Index: Integer): T;
@@ -936,6 +967,19 @@ begin
   inherited SetFirst(@Value);
 end;
 
+class function TFPGList.ItemIsManaged: Boolean;
+begin
+{$IFNDEF VER3_0}
+{$IFNDEF VER3_2}
+  Result:=IsManagedType(T);
+{$ELSE}  
+  Result:=True; // Fallback to old behaviour  
+{$ENDIF}
+{$ELSE}
+  Result:=True; // Fallback to old behaviour  
+{$ENDIF}
+end;
+
 function TFPGList.GetEnumerator: TFPGListEnumeratorSpec;
 begin
   Result := TFPGListEnumeratorSpec.Create(Self);
@@ -976,14 +1020,25 @@ var
   i: Integer;
   
 begin
-  for I := 0 to Source.Count - 1 do
-    Add(Source[i]);
+  if ItemIsManaged then
+    begin
+    Capacity:=Capacity+Source.Count;
+    for I := 0 to Source.Count - 1 do
+      Add(Source[i]);
+    end
+  else
+    Inherited AddList(TFPSList(source))
 end;
 
 procedure TFPGList.Assign(Source: TFPGList);
 begin
-  Clear;
-  AddList(Source);
+  if ItemIsManaged then
+    begin
+    Clear;
+    AddList(Source);
+    end
+  else
+    Inherited Assign(TFPSList(source))
 end;
 {$endif VER2_4}
 

@@ -414,6 +414,7 @@ var i, j, k, couples, singles, lastsingle : integer;
     nibline : pbyte; { temporary array of nibbles }
     even : boolean;
 begin
+  even:=false;
   getmem(nibline,width);
   try
     k:=(Width div 2) + (Width mod 2);

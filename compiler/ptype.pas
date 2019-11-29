@@ -1719,7 +1719,10 @@ implementation
                       storepos:=current_tokenpos;
                       current_tokenpos:=defpos;
                       if (l.svalue<low(longint)) or (l.svalue>high(longint)) then
-                        Message(parser_e_enumeration_out_of_range);
+                        if m_delphi in current_settings.modeswitches then
+                          Message(parser_w_enumeration_out_of_range)
+                        else
+                          Message(parser_e_enumeration_out_of_range);
                       tenumsymtable(aktenumdef.symtable).insert(cenumsym.create(s,aktenumdef,longint(l.svalue)));
                       if not (cs_scopedenums in current_settings.localswitches) then
                         tstoredsymtable(aktenumdef.owner).insert(cenumsym.create(s,aktenumdef,longint(l.svalue)));

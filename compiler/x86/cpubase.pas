@@ -353,6 +353,9 @@ topsize2memsize: array[topsize] of integer =
     function inverse_cond(const c: TAsmCond): TAsmCond; {$ifdef USEINLINE}inline;{$endif USEINLINE}
     function conditions_equal(const c1, c2: TAsmCond): boolean; {$ifdef USEINLINE}inline;{$endif USEINLINE}
 
+    { Checks if Subset is a subset of c (e.g. "less than" is a subset of "less than or equal" }
+    function condition_in(const Subset, c: TAsmCond): Boolean;
+
     { checks whether two segment registers are normally equal in the current memory model }
     function segment_regs_equal(r1,r2:tregister):boolean;
 
@@ -665,6 +668,49 @@ implementation
         result := c1 = c2;
       end;
 
+
+    { Checks if Subset is a subset of c (e.g. "less than" is a subset of "less than or equal" }
+    function condition_in(const Subset, c: TAsmCond): Boolean;
+      begin
+        Result := (c = C_None) or conditions_equal(Subset, c);
+        if not Result then
+          case Subset of
+            C_A,  C_NBE:
+              Result := (c in [C_A,  C_AE, C_NB, C_NBE]);
+            C_AE, C_NB:
+              Result := (c in [C_AE, C_NB]);
+            C_B,  C_NAE:
+              Result := (c in [C_B,  C_BE, C_C,  C_NA, C_NAE]);
+            C_BE, C_NA:
+              Result := (c in [C_BE, C_NA]);
+            C_C:
+              { C_B  / C_NAE: CF = 1
+                C_BE / C_NA:  CF = 1 or ZF = 1 }
+              Result := (c in [C_B,  C_BE, C_NA, C_NAE]);
+            C_E,  C_Z:
+              Result := (c in [C_AE, C_BE, C_E,  C_NA, C_NB, C_NG, C_NL]);
+            C_G,  C_NLE:
+              Result := (c in [C_G,  C_GE, C_NL, C_NLE]);
+            C_GE, C_NL:
+              Result := (c in [C_GE, C_NL]);
+            C_L,  C_NGE:
+              Result := (c in [C_L,  C_LE, C_NG, C_NGE]);
+            C_LE, C_NG:
+              Result := (c in [C_LE, C_NG]);
+            C_NC:
+              { C_A  / C_NBE: CF = 0 and ZF = 0; not a subset because ZF has to be zero as well
+                C_AE / C_NB:  CF = 0 }
+              Result := (c in [C_AE, C_NB]);
+            C_NE, C_NZ:
+              Result := (c in [C_NE, C_NZ, C_A,  C_B,  C_NAE,C_NBE,C_L,  C_G,  C_NLE,C_NGE]);
+            C_NP, C_PO:
+              Result := (c in [C_NP, C_PO]);
+            C_P,  C_PE:
+              Result := (c in [C_P,  C_PE]);
+            else
+              Result := False;
+          end;
+      end;
 
     function dwarf_reg(r:tregister):shortint;
       begin

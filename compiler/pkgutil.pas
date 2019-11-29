@@ -82,12 +82,16 @@ implementation
         begin
           pd:=tprocdef(tprocsym(sym).procdeflist[i]);
           if not(pd.proccalloption in [pocall_internproc]) and
+              not (df_generic in pd.defoptions) and
               ((pd.procoptions*[po_external])=[]) and
               (
                 (symtable.symtabletype in [globalsymtable,recordsymtable,objectsymtable]) or
                 (
                   (symtable.symtabletype=staticsymtable) and
-                  ([po_public,po_has_public_name]*pd.procoptions<>[])
+                  (
+                    ([po_public,po_has_public_name]*pd.procoptions<>[]) or
+                    (df_has_global_ref in pd.defoptions)
+                  )
                 )
               ) then
             begin
@@ -167,7 +171,7 @@ implementation
   procedure export_typedef(def:tdef;symtable:tsymtable;global:boolean);
     begin
       if not (global or is_class(def)) or
-          (df_internal in def.defoptions) or
+          ([df_internal,df_generic]*def.defoptions<>[]) or
           { happens with type renaming declarations ("abc = xyz") }
           (def.owner<>symtable) then
         exit;
@@ -216,7 +220,7 @@ implementation
           end;
         staticvarsym:
           begin
-            if publiconly and not (vo_is_public in tstaticvarsym(sym).varoptions) then
+            if publiconly and ([vo_is_public,vo_has_global_ref]*tstaticvarsym(sym).varoptions=[]) then
               exit;
             varexport(tsym(sym).mangledname);
           end;

@@ -130,6 +130,7 @@ begin
     end;
   with TTextRec(F) do
     begin
+    
     OpenFunc:=@StreamOpen;
     CloseFunc:=@StreamClose;
     Case DefaultTextLineBreakStyle Of
@@ -143,6 +144,7 @@ begin
     BufPtr:=@Buffer;
     Name[0]:=#0;
     end;
+   SetTextCodePage(F,CP_ACP); 
 end;
 
 

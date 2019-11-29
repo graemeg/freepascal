@@ -461,6 +461,8 @@ type
   end;
 
 
+  { TTestReportMemo }
+
   TTestReportMemo = class(TTestCase)
   private
     FMemo: TFPReportMemo;
@@ -473,6 +475,9 @@ type
     procedure TestPrepareTextBlocks;
     procedure TestPrepareTextBlocks_multiline_data;
     procedure TestPrepareTextBlocks_multiline_wraptext;
+    procedure TestPrepareTextBlocks_multiline_wraptext_oneword;
+    procedure TestPrepareTextBlocks_multiline_wraptext_oneword_overflow;
+    procedure TestPrepareTextBlocks_multiline_wraptext_oneword_split;
     procedure TestRGBToReportColor;
     procedure TestHTMLColorToReportColor_length7;
     procedure TestHTMLColorToReportColor_length6;
@@ -3402,6 +3407,61 @@ begin
   TMemoFriend(FMemo).CreateRTLayout;
   TMemoFriend(FMemo).RecalcLayout;
   AssertEquals('Failed on 2', 2, FMemo.TextLines.Count);
+end;
+
+procedure TTestReportMemo.TestPrepareTextBlocks_multiline_wraptext_oneword;
+begin
+  gTTFontCache.Clear;
+  gTTFontCache.SearchPath.Text := 'fonts';
+  gTTFontCache.BuildFontCache;
+
+  FMemo.Layout.Width := 10;
+  FMemo.Text := 'abc123';
+  FMemo.UseParentFont := False;
+  FMemo.Font.Name := 'Calibri';
+  FMemo.StretchMode := smActualHeight;
+  TMemoFriend(FMemo).CreateRTLayout;
+  TMemoFriend(FMemo).RecalcLayout;
+  AssertEquals('Failed on 1', 1, FMemo.TextLines.Count);
+  // The length of abc1 fits.
+  AssertEquals('Failed on 1', 'abc1', FMemo.TextLines[0]);
+end;
+
+procedure TTestReportMemo.TestPrepareTextBlocks_multiline_wraptext_oneword_overflow;
+begin
+  gTTFontCache.Clear;
+  gTTFontCache.SearchPath.Text := 'fonts';
+  gTTFontCache.BuildFontCache;
+
+  FMemo.Layout.Width := 10;
+  FMemo.Text := 'abc123';
+  FMemo.UseParentFont := False;
+  FMemo.Font.Name := 'Calibri';
+  FMemo.StretchMode := smActualHeight;
+  TMemoFriend(FMemo).WordWrapOverflow:=wwoOverflow;
+  TMemoFriend(FMemo).CreateRTLayout;
+  TMemoFriend(FMemo).RecalcLayout;
+  AssertEquals('Failed on 1', 1, FMemo.TextLines.Count);
+  AssertEquals('Failed on 1', 'abc123', FMemo.TextLines[0]);
+end;
+
+procedure TTestReportMemo.TestPrepareTextBlocks_multiline_wraptext_oneword_split;
+begin
+  gTTFontCache.Clear;
+  gTTFontCache.SearchPath.Text := 'fonts';
+  gTTFontCache.BuildFontCache;
+
+  FMemo.Layout.Width := 10;
+  FMemo.Text := 'abc123';
+  FMemo.UseParentFont := False;
+  FMemo.Font.Name := 'Calibri';
+  FMemo.StretchMode := smActualHeight;
+  TMemoFriend(FMemo).WordWrapOverflow:=wwoSplit;
+  TMemoFriend(FMemo).CreateRTLayout;
+  TMemoFriend(FMemo).RecalcLayout;
+  AssertEquals('Failed on 1', 2, FMemo.TextLines.Count);
+  AssertEquals('Failed on 2', 'abc1', FMemo.TextLines[0]);
+  AssertEquals('Failed on 3', '23', FMemo.TextLines[1]);
 end;
 
 procedure TTestReportMemo.TestRGBToReportColor;

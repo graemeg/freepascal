@@ -140,6 +140,11 @@ unit procinfo;
             need to be checked explicitly like on RISC-V or certain ARM architectures }
           FPUExceptionCheckNeeded : Boolean;
 
+          { local symbols and defs referenced by global functions; these need
+            to be exported in case the function gets inlined }
+          localrefsyms : tfpobjectlist;
+          localrefdefs : tfpobjectlist;
+
           constructor create(aparent:tprocinfo);virtual;
           destructor destroy;override;
 
@@ -169,6 +174,11 @@ unit procinfo;
           function get_first_nestedproc: tprocinfo;
           function has_nestedprocs: boolean;
           function get_normal_proc: tprocinfo;
+
+          procedure add_local_ref_sym(sym:tsym);
+          procedure export_local_ref_syms;
+          procedure add_local_ref_def(def:tdef);
+          procedure export_local_ref_defs;
 
           function create_for_outlining(const basesymname: string; astruct: tabstractrecorddef; potype: tproctypeoption; resultdef: tdef; entrynodeinfo: tnode): tprocinfo;
 
@@ -203,7 +213,7 @@ unit procinfo;
 implementation
 
     uses
-      globals,cutils,systems,
+      globals,cutils,systems,verbose,
       procdefutil;
 
 {****************************************************************************
@@ -244,6 +254,8 @@ implementation
          nestedprocs.free;
          aktproccode.free;
          aktlocaldata.free;
+         localrefsyms.free;
+         localrefdefs.free;
       end;
 
     procedure tprocinfo.destroy_tree;
@@ -286,6 +298,54 @@ implementation
         result:=self;
         while assigned(result.parent) and (result.procdef.parast.symtablelevel>normal_function_level) do
           result:=result.parent;
+      end;
+
+    procedure tprocinfo.add_local_ref_sym(sym:tsym);
+      begin
+        if not assigned(localrefsyms) then
+          localrefsyms:=tfpobjectlist.create(false);
+        if localrefsyms.indexof(sym)<0 then
+          localrefsyms.add(sym);
+      end;
+
+    procedure tprocinfo.export_local_ref_syms;
+      var
+        i : longint;
+        sym : tsym;
+      begin
+        if not assigned(localrefsyms) then
+          exit;
+        for i:=0 to localrefsyms.count-1 do
+          begin
+            sym:=tsym(localrefsyms[i]);
+            if sym.typ<>staticvarsym then
+              internalerror(2019110901);
+            include(tstaticvarsym(sym).varoptions,vo_has_global_ref);
+          end;
+      end;
+
+    procedure tprocinfo.add_local_ref_def(def:tdef);
+      begin
+        if not assigned(localrefdefs) then
+          localrefdefs:=tfpobjectlist.create(false);
+        if localrefdefs.indexof(def)<0 then
+          localrefdefs.add(def);
+      end;
+
+    procedure tprocinfo.export_local_ref_defs;
+      var
+        i : longint;
+        def : tdef;
+      begin
+        if not assigned(localrefdefs) then
+          exit;
+        for i:=0 to localrefdefs.count-1 do
+          begin
+            def:=tdef(localrefdefs[i]);
+            if def.typ<>symconst.procdef then
+              internalerror(2019111801);
+            include(tprocdef(def).defoptions,df_has_global_ref);
+          end;
       end;
 
     function tprocinfo.create_for_outlining(const basesymname: string; astruct: tabstractrecorddef; potype: tproctypeoption; resultdef: tdef; entrynodeinfo: tnode): tprocinfo;

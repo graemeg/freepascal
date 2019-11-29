@@ -3787,7 +3787,7 @@ implementation
             { add reference to corresponding procsym; may not be the one
               originally found/passed to the constructor because of overloads }
             if procdefinition.typ = procdef then
-              addsymref(tprocdef(procdefinition).procsym);
+              addsymref(tprocdef(procdefinition).procsym,procdefinition);
 
             { add needed default parameters }
             if (paralength<procdefinition.maxparacount) then
@@ -4944,6 +4944,14 @@ implementation
       end;
 
 
+    function UsesTmp(var n: tnode; arg: pointer): foreachnoderesult;
+      begin
+        Result:=fen_false;
+        if (n.nodetype=temprefn) and (ttemprefnode(n).tempinfo=arg) then
+          Result:=fen_norecurse_true;
+      end;
+
+
     function tcallnode.optimize_funcret_assignment(inlineblock: tblocknode): tnode;
       var
         hp  : tstatementnode;
@@ -4955,6 +4963,10 @@ implementation
            not(cnf_return_value_used in callnodeflags) then
           exit;
 
+        { block already optimized? }
+        if not(inlineblock.nodetype=blockn) then
+          exit;
+
         { tempcreatenode for the function result }
         hp:=tstatementnode(inlineblock.left);
         if not(assigned(hp)) or
@@ -4962,13 +4974,22 @@ implementation
            not(nf_is_funcret in hp.left.flags) then
           exit;
 
-        { constant assignment? right must be a constant (mainly to avoid trying
-          to reuse local temps which may already be freed afterwards once these
-          checks are made looser) }
         hp:=tstatementnode(hp.right);
         if not(assigned(hp)) or
-           (hp.left.nodetype<>assignn) or
-           not is_constnode(tassignmentnode(hp.left).right) then
+           (hp.left.nodetype<>assignn)
+          { FK: check commented, original comment was:
+
+              constant assignment? right must be a constant (mainly to avoid trying
+              to reuse local temps which may already be freed afterwards once these
+              checks are made looser)
+
+            or
+            not is_constnode(tassignmentnode(hp.left).right)
+
+            So far I found no example why removing this check might be a problem.
+            If this needs to be revert, issue #36279 must be checked/solved again.
+          }
+          then
           exit;
 
         { left must be function result }
@@ -4979,7 +5000,9 @@ implementation
         if (hp2.nodetype=typeconvn) and (ttypeconvnode(hp2).convtype=tc_equal) then
           hp2:=ttypeconvnode(hp2).left;
         if (hp2.nodetype<>temprefn) or
-           not(nf_is_funcret in hp2.flags) then
+          { check if right references the temp. being removed, i.e. using an uninitialized result }
+          foreachnodestatic(resassign.right,@UsesTmp,ttemprefnode(hp2).tempinfo) or
+          not(nf_is_funcret in hp2.flags) then
           exit;
 
         { tempdelete to normal of the function result }
@@ -5000,7 +5023,7 @@ implementation
           exit;
 
         { we made it! }
-        result:=tassignmentnode(resassign).right.getcopy;
+        result:=ctypeconvnode.create_internal(tassignmentnode(resassign).right.getcopy,hp2.resultdef);
         firstpass(result);
       end;
 
@@ -5141,9 +5164,18 @@ implementation
         inlineinitstatement:=nil;
         inlinecleanupstatement:=nil;
 
-        { if all that's left of the inlined function is an constant assignment
-          to the result, replace the whole block with the constant only }
-        n:=optimize_funcret_assignment(inlineblock);
+        { we cannot replace the whole block by a single assignment if the call
+          has an init/cleanup block
+
+          we could though (not yet done), convert this into a bew block
+          consisting of the init code, the single assignment and the cleanup block
+          This might even enable new transformations }
+        if not(assigned(callinitblock)) and not(assigned(callcleanupblock)) then
+          { if all that's left of the inlined function is an constant assignment
+            to the result, replace the whole block with the constant only }
+          n:=optimize_funcret_assignment(inlineblock)
+        else
+          n:=nil;
         if assigned(n) then
           begin
             inlineblock.free;

@@ -43,34 +43,25 @@ type
 
   TEllipseInfo = class
   private
-    fcx, fcy, frx,fry,
-    fa1, fa2, frot : real;
-    fx1,fy1, fx2,fy2 : integer;
+    fcx, fcy, frx,fry : double;
     InfoList : TList;
     procedure FreeList;
     procedure ClearList;
     function FindXIndex (x:integer) : integer;
-    procedure PrepareCalculation (var np:integer; var delta:real);
+    procedure PrepareCalculation (out np:integer; out delta:real);
     function NewInfoRec (anX:integer) : PEllipseInfoData;
-    procedure CalculateCircular (const b:TRect; var x,y,rx,ry:real);
+    procedure CalculateCircular (const b:TRect; out x,y,rx,ry:real);
   public
     constructor create;
     destructor destroy; override;
     function GetInfoForX (x:integer; var ytopmax,ytopmin,ybotmax,ybotmin:integer):boolean;
     function GetInfoForX (x:integer; var Info:PEllipseInfoData):boolean;
     procedure GatherEllipseInfo (const bounds:TRect);
-    procedure GatherArcInfo (const bounds:TRect; alpha1,alpha2:real);
-    property cx : real read fcx; // center point
-    property cy : real read fcy;
-    property rhor : real read frx; // radius
-    property rver : real read fry;
+    property cx : double read fcx; // center point
+    property cy : double read fcy;
+    property rhor : double read frx; // radius
+    property rver : double read fry;
     { only usable when created with GatherArcInfo }
-    property a1 : real read fa1;    // angle 1 and point on ellipse
-    property x1 : integer read fx1;
-    property y1 : integer read fy1;
-    property a2 : real read fa2;    // angle 2 and point on ellipse
-    property x2 : integer read fx2;
-    property y2 : integer read fy2;
   end;
 
 implementation
@@ -115,6 +106,7 @@ end;
 function TEllipseInfo.GetInfoForX (x:integer; var ytopmax,ytopmin,ybotmax,ybotmin:integer):boolean;
 var r : PEllipseInfoData;
 begin
+  R:=Nil;
   result := GetInfoForX (x, r);
   if assigned(r) then
     begin
@@ -142,7 +134,7 @@ begin
     Info := PEllipseInfoData(InfoList[r])
 end;
 
-procedure TEllipseInfo.PrepareCalculation (var np:integer; var delta:real);
+procedure TEllipseInfo.PrepareCalculation (out np:integer; out delta:real);
 begin
   np := round(1.5708 * sqrt(sqr(frx)+sqr(fry)) );
   // number of pixel in quarter circel to calculate without gaps in drawing
@@ -163,7 +155,7 @@ begin
     end;
 end;
 
-procedure TEllipseInfo.CalculateCircular (const b:TRect; var x,y,rx,ry:real);
+procedure TEllipseInfo.CalculateCircular (const b:TRect; out x,y,rx,ry:real);
 begin
   with b do
     begin
@@ -294,25 +286,6 @@ begin
     end;
 end;
 
-procedure TEllipseInfo.GatherArcInfo (const bounds:TRect; alpha1,alpha2:real);
-var stAngle,endAngle:real;
-
-  procedure CheckAngles;
-  begin
-    if a1 < a2 then
-      begin
-      stAngle := a1;
-      endAngle := a2;
-      end
-    else
-      begin
-      stAngle := a2;
-      endAngle := a1;
-      end;
-  end;
-
-begin
-end;
 
 { The drawing routines }
 
@@ -403,6 +376,7 @@ begin
   infoIn := TEllipseInfo.Create;
   infoOut := TEllipseInfo.Create;
   dec (width);
+  id:=Nil;
   try
     infoOut.GatherEllipseInfo(bounds);
     with bounds do
@@ -438,6 +412,7 @@ var info : TEllipseInfo;
     id : PEllipseInfoData;
     CountDown, CountUp, half : integer;
 begin
+  id:=Nil;
   with canv.pen do
     case mode of
       pmMask : MyPutPix := @PutPixelAnd;
@@ -499,7 +474,6 @@ end;
 procedure FillEllipseColor (Canv:TFPCustomCanvas; const Bounds:TRect; const c:TFPColor);
 var info : TEllipseInfo;
     r, y : integer;
-    id : PEllipseInfoData;
 begin
   info := TEllipseInfo.Create;
   try
@@ -521,7 +495,6 @@ end;
 procedure FillEllipseHashHorizontal (Canv:TFPCustomCanvas; const Bounds:TRect; width:integer; const c:TFPColor);
 var info : TEllipseInfo;
     r, y : integer;
-    id : PEllipseInfoData;
 begin
   info := TEllipseInfo.Create;
   try
@@ -539,7 +512,6 @@ end;
 procedure FillEllipseHashVertical (Canv:TFPCustomCanvas; const Bounds:TRect; width:integer; const c:TFPColor);
 var info : TEllipseInfo;
     r, y : integer;
-    id : PEllipseInfoData;
 begin
   info := TEllipseInfo.Create;
   try
@@ -557,7 +529,6 @@ end;
 procedure FillEllipseHashDiagonal (Canv:TFPCustomCanvas; const Bounds:TRect; width:integer; const c:TFPColor);
 var info : TEllipseInfo;
     r, y : integer;
-    id : PEllipseInfoData;
     w : integer;
 begin
   info := TEllipseInfo.Create;
@@ -579,7 +550,6 @@ end;
 procedure FillEllipseHashBackDiagonal (Canv:TFPCustomCanvas; const Bounds:TRect; width:integer; const c:TFPColor);
 var info : TEllipseInfo;
     r, y : integer;
-    id : PEllipseInfoData;
     w : integer;
 begin
   info := TEllipseInfo.Create;
@@ -601,7 +571,6 @@ end;
 procedure FillEllipseHashDiagCross (Canv:TFPCustomCanvas; const Bounds:TRect; width:integer; const c:TFPColor);
 var info : TEllipseInfo;
     r, y : integer;
-    id : PEllipseInfoData;
     wy,w1,w2 : integer;
 begin
   info := TEllipseInfo.Create;
@@ -627,7 +596,6 @@ end;
 procedure FillEllipseHashCross (Canv:TFPCustomCanvas; const Bounds:TRect; width:integer; const c:TFPColor);
 var info : TEllipseInfo;
     r, y : integer;
-    id : PEllipseInfoData;
 begin
   info := TEllipseInfo.Create;
   try
@@ -649,7 +617,6 @@ end;
 procedure FillEllipseImage (Canv:TFPCustomCanvas; const Bounds:TRect; const Image:TFPCustomImage);
 var info : TEllipseInfo;
     r, y : integer;
-    id : PEllipseInfoData;
     w : integer;
 begin
   info := TEllipseInfo.Create;
@@ -670,7 +637,6 @@ end;
 procedure FillEllipseImageRel (Canv:TFPCustomCanvas; const Bounds:TRect; const Image:TFPCustomImage);
 var info : TEllipseInfo;
     r, y : integer;
-    id : PEllipseInfoData;
     xo,yo, xi,yi : integer;
 begin
   info := TEllipseInfo.Create;

@@ -223,8 +223,8 @@ implementation
                        CGMessage(parser_e_case_lower_less_than_upper_bound);
                      if not casedeferror then
                        begin
-                         adaptrange(casedef,hl1,rc_default);
-                         adaptrange(casedef,hl2,rc_default);
+                         adaptrange(casedef,hl1,false,false,cs_check_range in current_settings.localswitches);
+                         adaptrange(casedef,hl2,false,false,cs_check_range in current_settings.localswitches);
                        end;
                    end
                  else
@@ -252,7 +252,7 @@ implementation
                    begin
                      hl1:=get_ordinal_value(p);
                      if not casedeferror then
-                       adaptrange(casedef,hl1,rc_default);
+                       adaptrange(casedef,hl1,false,false,cs_check_range in current_settings.localswitches);
                      casenode.addlabel(blockid,hl1,hl1);
                    end;
                end;
@@ -362,7 +362,7 @@ implementation
           begin
             if (hp.nodetype=ordconstn) and
                (fordef.typ<>errordef) then
-              adaptrange(fordef,tordconstnode(hp).value,rc_always);
+              adaptrange(fordef,tordconstnode(hp).value,false,false,true);
           end;
 
         function for_loop_create(hloopvar: tnode): tnode;

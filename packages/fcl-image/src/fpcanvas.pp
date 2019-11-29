@@ -371,9 +371,9 @@ type
     procedure Line (const p1,p2:TPoint);
     procedure Line (const points:TRect);
     // other procedures
-    procedure CopyRect (x,y:integer; canvas:TFPCustomCanvas; SourceRect:TRect);
-    procedure Draw (x,y:integer; image:TFPCustomImage);
-    procedure StretchDraw (x,y,w,h:integer; source:TFPCustomImage);
+    procedure CopyRect (x,y:integer; canvas:TFPCustomCanvas; SourceRect:TRect); virtual;
+    procedure Draw (x,y:integer; image:TFPCustomImage); virtual;
+    procedure StretchDraw (x,y,w,h:integer; source:TFPCustomImage); virtual;
     procedure Erase;virtual;
     procedure DrawPixel(const x, y: integer; const newcolor: TFPColor);
     // properties

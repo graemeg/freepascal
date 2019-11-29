@@ -548,6 +548,7 @@ implementation
                           MessagePos2(implprocdef.fileinfo,type_w_interface_lower_visibility,proc.fullprocname(false),implprocdef.fullprocname(false));
 {$endif}
                         result:=implprocdef;
+                        addsymref(result.procsym,result);
                         exit;
                       end;
                   end;

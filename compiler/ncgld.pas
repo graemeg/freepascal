@@ -307,18 +307,17 @@ implementation
                internalerror(2012120901);
 
              { FPC_THREADVAR_RELOCATE is nil? }
-             issystemunit:=not current_module.is_unit or
-                             (
-                               assigned(current_module.globalsymtable) and
-                               (current_module.globalsymtable=systemunit)
-                             ) or
-                             (
-                               not assigned(current_module.globalsymtable) and
-                               (current_module.localsymtable=systemunit)
-                             );
+             issystemunit:=(
+                             assigned(current_module.globalsymtable) and
+                             (current_module.globalsymtable=systemunit)
+                           ) or
+                           (
+                             not assigned(current_module.globalsymtable) and
+                             (current_module.localsymtable=systemunit)
+                           );
              indirect:=(tf_supports_packages in target_info.flags) and
                          (target_info.system in systems_indirect_var_imports) and
-                         (cs_imported_data in current_settings.localswitches) and
+                         (cs_imported_data in localswitches) and
                          not issystemunit;
              if not(vo_is_weak_external in gvs.varoptions) then
                reference_reset_symbol(tvref,current_asmdata.RefAsmSymbol(gvs.mangledname,AT_DATA,use_indirect_symbol(gvs)),0,sizeof(pint),[])
@@ -398,7 +397,7 @@ implementation
                 (target_info.system in systems_indirect_var_imports) and
                 (gvs.varoptions*[vo_is_external,vo_is_weak_external]=[]) and
                 (gvs.owner.symtabletype in [globalsymtable,staticsymtable]) and
-                (cs_imported_data in current_settings.localswitches) and
+                (cs_imported_data in localswitches) and
                 not sym_is_owned_by(gvs,current_module.globalsymtable) and
                 (
                   (current_module.globalsymtable=current_module.localsymtable) or
@@ -445,7 +444,7 @@ implementation
                      location_reset_ref(location,LOC_CREFERENCE,def_cgsize(cansistringtype),cansistringtype.size,[]);
                      indirect:=(tf_supports_packages in target_info.flags) and
                                  (target_info.system in systems_indirect_var_imports) and
-                                 (cs_imported_data in current_settings.localswitches) and
+                                 (cs_imported_data in localswitches) and
                                  (symtableentry.owner.moduleid<>current_module.moduleid);
                      name:=make_mangledname('RESSTR',symtableentry.owner,symtableentry.name);
                      location.reference.symbol:=current_asmdata.RefAsmSymbol(name,AT_DATA,indirect);
@@ -1522,7 +1521,7 @@ implementation
       begin
         indirect := (tf_supports_packages in target_info.flags) and
                       (target_info.system in systems_indirect_var_imports) and
-                      (cs_imported_data in current_settings.localswitches) and
+                      (cs_imported_data in localswitches) and
                       (rttidef.owner.moduleid<>current_module.moduleid);
 
         location_reset_ref(location,LOC_CREFERENCE,OS_NO,sizeof(pint),[]);

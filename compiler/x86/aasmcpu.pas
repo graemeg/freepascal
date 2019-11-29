@@ -2572,6 +2572,9 @@ implementation
         else
         { it's an indirection }
          begin
+           if ((br=NR_RIP) and (ir<>NR_NO)) or
+             (ir=NR_RIP) then
+             message(asmw_e_illegal_use_of_rip);
            { 16 bit? }
 
            if ((ir<>NR_NO) and (isub in [R_SUBMMX,R_SUBMMY,R_SUBMMZ]) and
@@ -3722,11 +3725,8 @@ implementation
 
       begin
         { safety check }
-
         if objdata.currobjsec.size<>longword(insoffset) then
-        begin
           internalerror(200130121);
-        end;
 
         { those variables are initialized inside local procedures, the dfa cannot handle this yet }
         currsym:=nil;

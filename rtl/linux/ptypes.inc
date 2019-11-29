@@ -155,11 +155,7 @@ Type
     TGid     = gid_t;
     pGid     = ^gid_t;
 
-{$ifdef cpusparc64}
     TIOCtlRequest = culong;
-{$else cpusparc64}
-    TIOCtlRequest = cInt;
-{$endif cpusparc64}
 
     socklen_t= cuint32;
     TSockLen = socklen_t;

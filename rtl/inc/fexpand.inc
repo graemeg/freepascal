@@ -186,7 +186,7 @@ begin
 {$IFDEF FPC_FEXPAND_TILDE}
     {Replace ~/ with $HOME/}
     if (Length (Pa) >= 1) and (Pa [1] = '~') and
-                      ((Pa [2] = DirectorySeparator) or (Length (Pa) = 1)) then
+                      ((Length (Pa) = 1) or (Pa [2] = DirectorySeparator)) then
         begin
  {$IFDEF FPC_FEXPAND_SYSUTILS}
    {$IFDEF SYSUTILSUNICODE}

@@ -781,6 +781,7 @@ type
     procedure WritePropertyScope(Obj: TJSONObject; Scope: TPasPropertyScope; aContext: TPCUWriterContext); virtual;
     procedure WriteProperty(Obj: TJSONObject; El: TPasProperty; aContext: TPCUWriterContext); virtual;
     procedure WriteMethodResolution(Obj: TJSONObject; El: TPasMethodResolution; aContext: TPCUWriterContext); virtual;
+    procedure WriteGenericTemplateType(Obj: TJSONObject; El: TPasGenericTemplateType; aContext: TPCUWriterContext); virtual;
     procedure WriteProcedureNameParts(Obj: TJSONObject; El: TPasProcedure; aContext: TPCUWriterContext); virtual;
     procedure WriteProcedureModifiers(Obj: TJSONObject; const PropName: string; const Value, DefaultValue: TProcedureModifiers); virtual;
     procedure WriteProcScopeFlags(Obj: TJSONObject; const PropName: string; const Value, DefaultValue: TPasProcedureScopeFlags); virtual;
@@ -1009,6 +1010,7 @@ type
     procedure ReadPropertyScope(Obj: TJSONObject; Scope: TPasPropertyScope; aContext: TPCUReaderContext); virtual;
     procedure ReadProperty(Obj: TJSONObject; El: TPasProperty; aContext: TPCUReaderContext); virtual;
     procedure ReadMethodResolution(Obj: TJSONObject; El: TPasMethodResolution; aContext: TPCUReaderContext); virtual;
+    procedure ReadGenericTemplateType(Obj: TJSONObject; El: TPasGenericTemplateType; aContext: TPCUReaderContext); virtual;
     procedure ReadProcedureNameParts(Obj: TJSONObject; El: TPasProcedure; aContext: TPCUReaderContext); virtual;
     function ReadProcedureModifiers(Obj: TJSONObject; El: TPasElement;
       const PropName: string; const DefaultValue: TProcedureModifiers): TProcedureModifiers; virtual;
@@ -3812,6 +3814,15 @@ begin
   WriteExpr(Obj,El,'ImplementationProc',El.ImplementationProc,aContext);
 end;
 
+procedure TPCUWriter.WriteGenericTemplateType(Obj: TJSONObject;
+  El: TPasGenericTemplateType; aContext: TPCUWriterContext);
+begin
+  WritePasElement(Obj,El,aContext);
+  if not (El.CustomData is TPasGenericParamsScope) then
+    RaiseMsg(20191120175118,El,GetObjName(El.CustomData));
+  WriteElementArray(Obj,El,'Constraints',El.Constraints,aContext,true);
+end;
+
 procedure TPCUWriter.WriteProcedureNameParts(Obj: TJSONObject;
   El: TPasProcedure; aContext: TPCUWriterContext);
 var
@@ -3841,8 +3852,7 @@ begin
           GenType:=TPasGenericTemplateType(Templates[j]);
           TemplObj:=TJSONObject.Create;
           TemplArr.Add(TemplObj);
-          TemplObj.Add('Name',GenType.Name);
-          WriteElementArray(TemplObj,El,'Constraints',GenType.Constraints,aContext,true);
+          WriteGenericTemplateType(TemplObj,GenType,aContext);
           end;
         end;
       end;
@@ -3905,6 +3915,7 @@ var
   i: Integer;
   DeclProc: TPasProcedure;
   DeclScope: TPas2JsProcedureScope;
+  TemplTypes: TFPList;
 begin
   WritePasElement(Obj,El,aContext);
   Scope:=El.CustomData as TPas2JSProcedureScope;
@@ -3940,27 +3951,42 @@ begin
 
   if (Scope.ImplProc=nil) and (El.Body<>nil) then
     begin
-    // Note: although the References are in the declaration scope,
-    //       they are stored with the implementation scope, so that
-    //       all references can be resolved immediately by the reader
-    DeclProc:=Scope.DeclarationProc;
-    if DeclProc=nil then
-      DeclProc:=El;
-    DeclScope:=NoNil(DeclProc.CustomData) as TPas2JSProcedureScope;
-    WriteScopeReferences(Obj,DeclScope.References,'Refs',aContext);
-
-    // precompiled body
-    if Scope.BodyJS<>'' then
+    TemplTypes:=Resolver.GetProcTemplateTypes(El);
+    if TemplTypes<>nil then
       begin
-      if Scope.GlobalJS<>nil then
+      // generic function: store pascal elements
+      if Scope.BodyJS<>'' then
+        RaiseMsg(20191120171941,El);
+      // ToDo
+      Obj.Add('Body','');
+      Obj.Add('Empty',true);
+      end
+    else
+      begin
+      // normal procedure: store references and precompiled JS
+
+      // Note: although the References are in the declaration scope,
+      //       they are stored with the implementation scope, so that
+      //       all references can be resolved immediately by the reader
+      DeclProc:=Scope.DeclarationProc;
+      if DeclProc=nil then
+        DeclProc:=El;
+      DeclScope:=NoNil(DeclProc.CustomData) as TPas2JSProcedureScope;
+      WriteScopeReferences(Obj,DeclScope.References,'Refs',aContext);
+
+      // precompiled body
+      if Scope.BodyJS<>'' then
         begin
-        Arr:=TJSONArray.Create;
-        Obj.Add('Globals',Arr);
-        for i:=0 to Scope.GlobalJS.Count-1 do
-          Arr.Add(Scope.GlobalJS[i]);
+        if Scope.GlobalJS<>nil then
+          begin
+          Arr:=TJSONArray.Create;
+          Obj.Add('Globals',Arr);
+          for i:=0 to Scope.GlobalJS.Count-1 do
+            Arr.Add(Scope.GlobalJS[i]);
+          end;
+        Obj.Add('Body',Scope.BodyJS);
+        Obj.Add('Empty',Scope.EmptyJS);
         end;
-      Obj.Add('Body',Scope.BodyJS);
-      Obj.Add('Empty',Scope.EmptyJS);
       end;
     end;
   if (Scope.BodyJS<>'') and (Scope.ImplProc<>nil) then
@@ -7598,6 +7624,20 @@ begin
   El.ImplementationProc:=ReadExpr(Obj,El,'ImplementationProc',aContext);
 end;
 
+procedure TPCUReader.ReadGenericTemplateType(Obj: TJSONObject;
+  El: TPasGenericTemplateType; aContext: TPCUReaderContext);
+var
+  Scope: TPasGenericParamsScope;
+begin
+  ReadPasElement(Obj,El,aContext);
+  Scope:=TPasGenericParamsScope(Resolver.CreateScope(El,TPasGenericParamsScope));
+  El.CustomData:=Scope;
+  // Scope.GenericType only needed during parsing
+  ReadElementArray(Obj,El,'Constraints',El.Constraints,
+     {$IFDEF CheckPasTreeRefCount}'TPasGenericTemplateType.Constraints'{$ELSE}true{$ENDIF},
+     aContext);
+end;
+
 procedure TPCUReader.ReadProcedureNameParts(Obj: TJSONObject;
   El: TPasProcedure; aContext: TPCUReaderContext);
 var
@@ -7624,19 +7664,18 @@ begin
         begin
         if not ReadString(NamePartObj,'Name',Name,El) then
           RaiseMsg(20190718113739,El,IntToStr(i));
-        if not ReadArray(NamePartObj,'Templates',TemplArr,El) then
-          continue; // Templates=nil
-        Templates:=TFPList.Create;
-        for j:=0 to TemplArr.Count-1 do
+        if ReadArray(NamePartObj,'Templates',TemplArr,El) then
           begin
-          TemplObj:=CheckJSONObject(TemplArr[j],20190718114058);
-          if not ReadString(TemplObj,'Name',GenTypeName,El) or (GenTypeName='') then
-            RaiseMsg(20190718114244,El,IntToStr(i)+','+IntToStr(j));
-          GenType:=TPasGenericTemplateType(CreateElement(TPasGenericTemplateType,GenTypeName,El));
-          Templates.Add(GenType);
-          ReadElementArray(TemplObj,El,'Constraints',GenType.Constraints,
-             {$IFDEF CheckPasTreeRefCount}'TPasGenericTemplateType.Constraints'{$ELSE}true{$ENDIF},
-             aContext);
+          Templates:=TFPList.Create;
+          for j:=0 to TemplArr.Count-1 do
+            begin
+            TemplObj:=CheckJSONObject(TemplArr[j],20190718114058);
+            if not ReadString(TemplObj,'Name',GenTypeName,El) or (GenTypeName='') then
+              RaiseMsg(20190718114244,El,IntToStr(i)+','+IntToStr(j));
+            GenType:=TPasGenericTemplateType(CreateElement(TPasGenericTemplateType,GenTypeName,El));
+            Templates.Add(GenType);
+            ReadGenericTemplateType(TemplObj,GenType,aContext);
+            end;
           end;
         end;
       end;

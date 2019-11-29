@@ -291,17 +291,17 @@ interface
 
   type
     tperformrangecheck = (
-      rc_internal,  { never at all, internal conversion }
-      rc_explicit,  { no, but this is a user conversion and hence can still give warnings in some cases }
-      rc_default,   { only if range checking is enabled }
-      rc_always     { always }
+      rc_internal,  { nothing, internal conversion }
+      rc_explicit,  { no, but this is an explcit user conversion and hence can still give warnings in some cases (or errors in case of enums) }
+      rc_implicit,  { no, but this is an implicit conversion and hence can still give warnings/errors in some cases }
+      rc_yes        { yes }
     );
     {# If @var(l) isn't in the range of todef a range check error (if not explicit) is generated and
       the value is placed within the range
     }
     procedure adaptrange(todef : tdef;var l : tconstexprint; rangecheck: tperformrangecheck);
-    { for when used with nf_explicit/nf_internal nodeflags }
-    procedure adaptrange(todef : tdef;var l : tconstexprint; internal, explicit: boolean);
+    { for when used with nf_explicit/nf_internal/cs_check_range nodeflags }
+    procedure adaptrange(todef : tdef;var l : tconstexprint; internal, explicit, rangecheckstate: boolean);
 
     {# Returns the range of def, where @var(l) is the low-range and @var(h) is
       the high-range.
@@ -1107,11 +1107,10 @@ implementation
          if (l<lv) or (l>hv) then
            begin
              warned:=false;
-             if rangecheck in [rc_default,rc_always] then
+             if rangecheck in [rc_implicit,rc_yes] then
                begin
-                 if (rangecheck=rc_always) or
-                    (todef.typ=enumdef) or
-                    (cs_check_range in current_settings.localswitches) then
+                 if (rangecheck=rc_yes) or
+                    (todef.typ=enumdef) then
                    Message3(type_e_range_check_error_bounds,tostr(l),tostr(lv),tostr(hv))
                  else
                    Message3(type_w_range_check_error_bounds,tostr(l),tostr(lv),tostr(hv));
@@ -1165,14 +1164,16 @@ implementation
       end;
 
 
-    procedure adaptrange(todef: tdef; var l: tconstexprint; internal, explicit: boolean);
+    procedure adaptrange(todef: tdef; var l: tconstexprint; internal, explicit, rangecheckstate: boolean);
       begin
         if internal then
           adaptrange(todef, l, rc_internal)
         else if explicit then
           adaptrange(todef, l, rc_explicit)
+        else if not rangecheckstate then
+          adaptrange(todef, l, rc_implicit)
         else
-          adaptrange(todef, l, rc_default)
+          adaptrange(todef, l, rc_yes)
       end;
 
 

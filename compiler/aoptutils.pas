@@ -36,7 +36,7 @@ unit aoptutils;
 {$endif max_operands>2}
 
     { skips all labels and returns the next "real" instruction }
-    function SkipLabels(hp: tai; var hp2: tai): boolean;
+    function SkipLabels(hp: tai; out hp2: tai): boolean;
 
     { sets hp2 to hp and returns True if hp is not nil }
     function SetAndTest(const hp: tai; out hp2: tai): Boolean;
@@ -68,7 +68,7 @@ unit aoptutils;
 
 
     { skips all labels and returns the next "real" instruction }
-    function SkipLabels(hp: tai; var hp2: tai): boolean;
+    function SkipLabels(hp: tai; out hp2: tai): boolean;
       begin
         while assigned(hp.next) and
               (tai(hp.next).typ in SkipInstr + [ait_label,ait_align]) Do

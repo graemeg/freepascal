@@ -87,7 +87,7 @@ implementation
     uses
       systems,
       globtype,globals,
-      verbose,compinnr,
+      verbose,compinnr,fmodule,
       defutil,
       aasmbase,aasmdata,aasmcpu,
       symconst,symtype,symdef,symcpu,
@@ -557,8 +557,16 @@ implementation
 
 
      procedure tx86inlinenode.second_abs_real;
+
+       function needs_indirect:boolean; inline;
+         begin
+           result:=(tf_supports_packages in target_info.flags) and
+                     (target_info.system in systems_indirect_var_imports);
+         end;
+
        var
          href : treference;
+         sym : tasmsymbol;
        begin
          if use_vectorfpu(resultdef) then
            begin
@@ -575,7 +583,9 @@ implementation
              case tfloatdef(resultdef).floattype of
                s32real:
                  begin
-                   reference_reset_symbol(href,current_asmdata.RefAsmSymbol(target_info.cprefix+'FPC_ABSMASK_SINGLE',AT_DATA),0,4,[]);
+                   sym:=current_asmdata.RefAsmSymbol(target_info.cprefix+'FPC_ABSMASK_SINGLE',AT_DATA,needs_indirect);
+                   reference_reset_symbol(href,sym,0,4,[]);
+                   current_module.add_extern_asmsym(sym);
                    tcgx86(cg).make_simple_ref(current_asmdata.CurrAsmList, href);
                    if UseAVX then
                      current_asmdata.CurrAsmList.concat(taicpu.op_ref_reg_reg(
@@ -585,7 +595,9 @@ implementation
                  end;
                s64real:
                  begin
-                   reference_reset_symbol(href,current_asmdata.RefAsmSymbol(target_info.cprefix+'FPC_ABSMASK_DOUBLE',AT_DATA),0,4,[]);
+                   sym:=current_asmdata.RefAsmSymbol(target_info.cprefix+'FPC_ABSMASK_DOUBLE',AT_DATA,needs_indirect);
+                   reference_reset_symbol(href,sym,0,4,[]);
+                   current_module.add_extern_asmsym(sym);
                    tcgx86(cg).make_simple_ref(current_asmdata.CurrAsmList, href);
                    if UseAVX then
                      current_asmdata.CurrAsmList.concat(taicpu.op_ref_reg_reg(

@@ -734,7 +734,7 @@ begin
       if LastGeneratedLine<Item.GeneratedLine then
         begin
         // new line
-        //LastGeneratedColumn:=0;
+        LastGeneratedColumn:=0; // column is reset every generated line
         for j:=LastGeneratedLine+1 to Item.GeneratedLine do
           begin
           AddChar(';');
@@ -869,6 +869,7 @@ begin
       begin
       // next line
       inc(GeneratedLine);
+      LastColumn:=0;
       inc(p);
       end;
     else

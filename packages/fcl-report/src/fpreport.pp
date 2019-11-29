@@ -33,6 +33,7 @@ uses
   contnrs,
   fpCanvas,
   fpImage,
+  fpTTF,
   fpreportstreamer,
 {$IF FPC_FULLVERSION>=30101}
   fpexprpars,
@@ -142,6 +143,12 @@ type
             moResetAggregateOnColumn
             );
   TFPReportMemoOptions    = set of TFPReportMemoOption;
+  TFPReportWordOverflow = (woTruncate, // truncate the word
+                           woOverflow, // Allow to overflow
+                           woSplit,    // Split word at max char count that fits length.
+                           woAsterisk,  // Replace word with * chars.
+                           woEllipsis  // Truncate word, add ... ellipsis.
+                           );
 
   TFPReportSections    = set of rsPage..rsColumn;
 
@@ -244,6 +251,7 @@ const
   cMMperInch = 25.4;
   cCMperInch = 2.54;
   cMMperCM = 10;
+  cEllipsis : UnicodeChar = #$2026; // '…';
   DefaultBandNames : Array[TFPReportBandType] of string
     = ('Unknown','Page Header','Report Title','Column Header', 'Data Header','Group Header','Data','Group Footer',
        'Data Footer','Column Footer','Report Summary','PageFooter','Child');
@@ -1929,12 +1937,13 @@ type
     ExpressionNodes: array of TExprNodeInfoRec;
     FFont: TFPReportFont;
     FUseParentFont: Boolean;
+    FWordOverflow: TFPReportWordOverflow;
     function    GetParentFont: TFPReportFont;
     procedure   HandleFontChange(Sender: TObject);
     procedure   SetCullThreshold(AValue: TFPReportCullThreshold);
     procedure   SetText(AValue: TFPReportString);
     procedure   SetUseParentFont(AValue: Boolean);
-    procedure   WrapText(const AText: String; var ALines: TStrings; const ALineWidth: TFPReportUnits; out AHeight: TFPReportUnits);
+    procedure   SetWordOverflow(AValue: TFPReportWordOverflow);
     procedure   ApplyHorzTextAlignment;
     procedure   ApplyVertTextAlignment;
     function    GetTextLines: TStrings;
@@ -1958,6 +1967,8 @@ type
     procedure   SetFont(const AValue: TFPReportFont);
     procedure   CullTextOutOfBounds;
   protected
+    procedure   AddTextLine(lFC: TFPFontCacheItem; var S: UTF8String; MaxW: TFPReportUnits);
+    procedure   WrapText(const AText: UTF8String; lFC: TFPFontCacheItem; const ALineWidth: TFPReportUnits; out AHeight: TFPReportUnits);  virtual;
     procedure   ReassignParentFont;
     procedure   ParentFontChanged; override;
     function    CreateTextAlignment: TFPReportTextAlignment; virtual;
@@ -1981,6 +1992,7 @@ type
     property    UseParentFont: Boolean read FUseParentFont write SetUseParentFont default True;
     { % of line height that should be visible, otherwise it's culled if StretchMode = smDontStretch. Valid range is 1-100% and default is 75%}
     property    CullThreshold: TFPReportCullThreshold read FCullThreshold write SetCullThreshold default 75;
+    Property    WordOverflow : TFPReportWordOverflow read FWordOverflow write SetWordOverflow;
   protected
     // *****************************
     //   This block is made Protected simply for Unit Testing purposes.
@@ -2022,6 +2034,7 @@ type
     property  LineSpacing;
     property  LinkColor;
     property  Options;
+    Property  WordOverflow;
     property  StretchMode;
     property  Text;
     property  TextAlignment;
@@ -2348,8 +2361,7 @@ uses
   typinfo,
   FPReadPNG,
   FPWritePNG,
-  base64,
-  fpTTF;
+  base64;
 
 resourcestring
   cPageCountMarker = '~PC~';
@@ -3911,82 +3923,109 @@ begin
   Changed;
 end;
 
-procedure TFPReportCustomMemo.WrapText(const AText: String; var ALines: TStrings; const ALineWidth: TFPReportUnits; out
-  AHeight: TFPReportUnits);
+procedure TFPReportCustomMemo.SetWordOverflow(AValue: TFPReportWordOverflow);
+begin
+  if FWordOverflow=AValue then Exit;
+  FWordOverflow:=AValue;
+  Changed;
+end;
+
+{ All = True) indicates that if the text is split over multiple lines the last
+  line must also be processed before continuing. If All = False, then double
+  CR can be ignored. }
+
+procedure TFPReportCustomMemo.AddTextLine(lFC: TFPFontCacheItem; Var S : UTF8String; MaxW : TFPReportUnits);
+
+var
+  w: single;
+  m: integer;
+  s2, s3: UTF8String;
+
+begin
+  s2  := s;
+  w   := lFC.TextWidth(s2, Font.Size);
+  if (Length(s2) > 1) and (w > maxw) then
+  begin
+    while w > maxw do
+    begin
+      m := Length(s);
+      repeat
+        Dec(m);
+        s2  := Copy(s,1,m);
+        w   := lFC.TextWidth(s2, Font.Size);
+      until w <= maxw;
+
+      s3 := s2; // we might need the value of s2 later again
+
+      // are we in the middle of a word. If so find the beginning of word.
+      while (m > 0) and (s2[m] <> ' ') do
+        Dec(m);
+      s2  := Copy(s,1,m);
+
+      if s2 = '' then
+        begin
+        // Single word does not fit. S3 is max word that fits.
+        s2 := s3;
+        Case WordOverflow of
+          woOverflow:
+            begin
+              { We reached the beginning of the line without finding a word that fits the maxw.
+                So we are forced to use a longer than maxw word. We were in the middle of
+                a word, so now find the end of the current word. }
+            m := Length(s2);
+            while (m < Length(s)) and (s[m]<> ' ') do
+              Inc(m);
+            s2:=Copy(s,1,m);
+            end;
+          woTruncate:
+            m:=Length(S); // Discard the remainder of the word.
+          woSplit:
+            m:=Length(S3); // S3 was the longest possible part of the word. Split after
+          woEllipsis:
+            begin
+            repeat
+              S2:=Copy(S2,1,Length(S2)-1);
+            Until (Length(S2)<1) or (lFC.TextWidth(s2+UTF8Encode(cEllipsis), Font.Size)<MaxW);
+            S2:=S2+UTF8Encode(cEllipsis);
+            m:=Length(S); // Discard the remainder of the word.
+            end;
+          woAsterisk:
+            begin
+            w:= lFC.TextWidth('*', Font.Size);
+            S2:=StringOfChar('*',round(MaxW / w));
+            m:=Length(S); // Discard the remainder of the word.
+            end;
+       end;
+       end;
+      FTextLines.Add(s2);
+      s   := Copy(s, m+1, Length(s));
+      s2  := s;
+      w   := lFC.TextWidth(s2, Font.Size);
+    end; { while }
+    if s2 <> '' then
+      FTextLines.Add(s2);
+    s := '';
+  end
+  else
+  begin
+    if s2 <> '' then
+      FTextLines.Add(s2);
+    s := '';
+  end; { if/else }
+end;
+
+procedure TFPReportCustomMemo.WrapText(const AText: UTF8String; lFC: TFPFontCacheItem; const ALineWidth: TFPReportUnits; out AHeight: TFPReportUnits);
+
 var
   maxw: single; // value in pixels
   n: integer;
-  s: string;
+  s: UTF8String;
   c: char;
   lWidth: single;
-  lFC: TFPFontCacheItem;
+
   lDescenderHeight: single;
   lHeight: single;
 
-  // -----------------
-  { All = True) indicates that if the text is split over multiple lines the last
-    line must also be processed before continuing. If All = False, then double
-    CR can be ignored. }
-  procedure AddLine(all: boolean);
-  var
-    w: single;
-    m: integer;
-    s2, s3: string;
-  begin
-    s2  := s;
-    w   := lFC.TextWidth(s2, Font.Size);
-    if (Length(s2) > 1) and (w > maxw) then
-    begin
-      while w > maxw do
-      begin
-        m := Length(s);
-        repeat
-          Dec(m);
-          s2  := Copy(s,1,m);
-          w   := lFC.TextWidth(s2, Font.Size);
-        until w <= maxw;
-
-        s3 := s2; // we might need the value of s2 later again
-
-        // are we in the middle of a word. If so find the beginning of word.
-        while (m > 0) and (Copy(s2, m, m+1) <> ' ') do
-        begin
-          Dec(m);
-          s2  := Copy(s,1,m);
-        end;
-
-        if s2 = '' then
-        begin
-          s2 := s3;
-          m := Length(s2);
-          { We reached the beginning of the line without finding a word that fits the maxw.
-            So we are forced to use a longer than maxw word. We were in the middle of
-            a word, so now find the end of the current word. }
-          while (m < Length(s)) and (Copy(s2, m, m+1) <> ' ') do
-          begin
-            Inc(m);
-            s2  := Copy(s,1,m);
-          end;
-        end;
-        ALines.Add(s2);
-        s   := Copy(s, m+1, Length(s));
-        s2  := s;
-        w   := lFC.TextWidth(s2, Font.Size);
-      end; { while }
-      if all then
-      begin
-        if s2 <> '' then
-          ALines.Add(s2);
-        s := '';
-      end;
-    end
-    else
-    begin
-      if s2 <> '' then
-        ALines.Add(s2);
-      s := '';
-    end; { if/else }
-  end;
 
 begin
   if AText = '' then
@@ -3994,10 +4033,6 @@ begin
 
   if ALineWidth = 0 then
     Exit;
-  { We are doing a PostScript Name lookup (it contains Bold, Italic info) }
-  lFC := gTTFontCache.FindFont(Font.Name);
-  if not Assigned(lFC) then
-    raise EReportFontNotFound.CreateFmt(SErrFontNotFound, [Font.Name]);
   { result is in pixels }
   lWidth := lFC.TextWidth(Text, Font.Size);
   lHeight := lFC.TextHeight(Text, Font.Size, lDescenderHeight);
@@ -4005,35 +4040,34 @@ begin
   AHeight := PixelsToMM(lHeight+lDescenderHeight);
 
   s := '';
-  ALines.Clear;
   n := 1;
   maxw := mmToPixels(ALineWidth - TextAlignment.LeftMargin - TextAlignment.RightMargin);
   { Do we really need to do text wrapping? There must be no linefeed characters and lWidth must be less than maxw. }
   if ((Pos(#13, AText) = 0) and (Pos(#10, AText) = 0)) and (lWidth <= maxw) then
   begin
-    ALines.Add(AText);
+    FTextLines.Add(AText);
     Exit;
   end;
 
   { We got here, so wrapping is needed. First process line wrapping as indicated
     by LineEnding characters in the text. }
   while n <= Length(AText) do
-  begin
+    begin
     c := AText[n];
     if (c = #13) or (c = #10) then
     begin
       { See code comment of AddLine() for the meaning of the True argument. }
-      AddLine(true);
+      AddTextLine(lfc,S,maxw);
       if (c = #13) and (n < Length(AText)) and (AText[n+1] = #10) then
         Inc(n);
     end
     else
       s := s + c;
     Inc(n);
-  end; { while }
+    end; { while }
 
   { Now wrap lines that are longer than ALineWidth }
-  AddLine(true);
+  AddTextLine(lfc,S,maxW);
 end;
 
 procedure TFPReportElement.ApplyStretchMode(const ADesiredHeight: TFPReportUnits);
@@ -4878,7 +4912,10 @@ procedure TFPReportCustomMemo.RecalcLayout;
   end;
 
 var
-  h: TFPReportUnits;
+  h, maxW: TFPReportUnits;
+  lFC : TFPFontCacheItem;
+  S : UTF8String;
+
 begin
   FTextBlockList.Clear;
   FCurTextBlock := nil;
@@ -4886,11 +4923,18 @@ begin
     FTextLines := TStringList.Create
   else
     FTextLines.Clear;
-
+  { We are doing a PostScript Name lookup (it contains Bold, Italic info) }
+  lFC := gTTFontCache.FindFont(Font.Name);
+  if not Assigned(lFC) then
+    raise EReportFontNotFound.CreateFmt(SErrFontNotFound, [Font.Name]);
   if not (moDisableWordWrap in Options) then
-    WrapText(Text, FTextLines, Layout.Width, h)
+    WrapText(Text, lfc, Layout.Width, h)
   else
-    FTextLines.Add(Text);
+    begin
+    maxw := mmToPixels(Layout.Width - TextAlignment.LeftMargin - TextAlignment.RightMargin);
+    S:=Text;
+    AddTextLine(lfc,S,maxw);
+    end;
 
   if StretchMode <> smDontStretch then
     ApplyStretchMode(CalcNeededHeight(h));
@@ -5114,6 +5158,7 @@ begin
     TextAlignment.Assign(E.TextAlignment);
     Options := E.Options;
     Original := E;
+    WordOverflow:= E.WordOverflow;
   end;
 end;
 

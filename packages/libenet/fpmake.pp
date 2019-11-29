@@ -28,30 +28,10 @@ begin
 
     P.Dependencies.Add('rtl-extra'); // winsock2
     
-    T:=P.Targets.AddUnit('enettypes.pp');
-    T:=P.Targets.AddUnit('enetlist.pp');
-    T:=P.Targets.AddUnit('enetcallbacks.pp');
-    with T.Dependencies do
-      AddUnit('enettypes');   
-    T:=P.Targets.AddUnit('enetplatform.pp');
-    T:=P.Targets.AddUnit('enetprotocol.pp');
-    T:=P.Targets.AddUnit('enettime.pp');
     T:=P.Targets.AddUnit('enet.pp');
-    with T.Dependencies do
-      begin
-      AddUnit('enettypes');
-      AddUnit('enetprotocol');
-      AddUnit('enetlist');
-      AddUnit('enetcallbacks');
-      AddUnit('enetprotocol');
-      end;
     T:=P.Targets.AddUnit('uenetclass.pp');
     with T.Dependencies do
-      begin
       AddUnit('enet');
-      AddUnit('enettime');
-      AddUnit('enetprotocol');
-      end;
     // Examples
     P.ExamplePath.Add('examples');
       P.Targets.AddExampleProgram('serverapp.pp');

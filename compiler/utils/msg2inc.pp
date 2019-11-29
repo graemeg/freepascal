@@ -714,7 +714,7 @@ begin
                end;
               if s[i+k]='_' then
                inc(i,k+1);
-              writeln(t,'\item ['+s1+escapestring(Copy(s,i,255))+']');
+              writeln(t,'\item ['+s1+escapestring(Copy(s,i,255))+'] \hfill \\');
             end
            else
             writeln('error in line: ',line,' skipping');

@@ -300,14 +300,14 @@ implementation
         sl       : tpropaccesslist;
         hs       : string;
       begin
+        storepos:=current_tokenpos;
+        current_tokenpos:=pd.fileinfo;
+
         { The result from constructors and destructors can't be accessed directly }
         if not(pd.proctypeoption in [potype_constructor,potype_destructor]) and
            not is_void(pd.returndef) and
            (not(po_assembler in pd.procoptions) or paramanager.asm_result_var(pd.returndef,pd)) then
          begin
-           storepos:=current_tokenpos;
-           current_tokenpos:=pd.fileinfo;
-
            { We need to insert a varsym for the result in the localst
              when it is returning in a register }
            { we also need to do this for a generic procdef as we didn't allow
@@ -348,8 +348,17 @@ implementation
               tlocalsymtable(pd.localst).insert(aliasvs);
             end;
 
-           current_tokenpos:=storepos;
          end;
+
+        if pd.generate_safecall_wrapper then
+          begin
+            { vo_is_funcret is necessary so the local only gets freed after we loaded its
+              value into the return register }
+            vs:=clocalvarsym.create('$safecallresult',vs_value,search_system_type('HRESULT').typedef,[vo_is_funcret]);
+            pd.localst.insert(vs);
+          end;
+
+        current_tokenpos:=storepos;
       end;
 
 

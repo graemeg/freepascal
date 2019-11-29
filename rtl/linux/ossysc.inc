@@ -114,7 +114,7 @@ function Fpstat(path: pchar; var buf: stat):cint; [public, alias : 'FPC_SYSC_STA
 
 begin
 { standard stat call is 32 bit on sparc64, so explicitly force a stat64 call }
-{$if defined(cpu64) and not(defined(cpusparc64))}
+{$if (defined(cpu64) or defined(riscv32)) and not(defined(cpusparc64))}
   {$if defined(generic_linux_syscalls)}
     Fpstat:=do_syscall(syscall_nr_fstatat,AT_FDCWD,TSysParam(path),TSysParam(@buf),0);
   {$else}

@@ -2593,10 +2593,7 @@ unit cgx86;
           end;
 {$endif x86_64}
         cg.a_reg_alloc(list,NR_DEFAULTFLAGS);
-        if (a = 0) then
-          list.concat(taicpu.op_reg_reg(A_TEST,tcgsize2opsize[size],reg,reg))
-        else
-          list.concat(taicpu.op_const_reg(A_CMP,tcgsize2opsize[size],a,reg));
+        list.concat(taicpu.op_const_reg(A_CMP,tcgsize2opsize[size],a,reg));
         a_jmp_cond(list,cmp_op,l);
         cg.a_reg_dealloc(list,NR_DEFAULTFLAGS);
       end;
@@ -3548,7 +3545,8 @@ unit cgx86;
             list.concat(Taicpu.Op_reg(A_PUSH,S_L,NR_ECX));
             list.concat(Taicpu.Op_reg(A_PUSH,S_L,NR_EBX));
             list.concat(Taicpu.Op_reg(A_PUSH,S_L,NR_EAX));
-            inc(stackmisalignment,4*2+6*8);
+            { pushf, push %cs, 4*selector registers, 6*general purpose registers }
+            inc(stackmisalignment,4+4+4*2+6*4);
           end;
 {$endif i386}
 

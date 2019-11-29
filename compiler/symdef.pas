@@ -688,6 +688,7 @@ interface
           function ofs_address_type:tdef;virtual;
           procedure declared_far;virtual;
           procedure declared_near;virtual;
+          function generate_safecall_wrapper: boolean; virtual;
        private
           procedure count_para(p:TObject;arg:pointer);
           procedure insert_para(p:TObject;arg:pointer);
@@ -878,7 +879,8 @@ interface
           procedure make_external;
           procedure init_genericdecl;
 
-          function getfuncretsyminfo(out ressym: tsym; out resdef: tdef): boolean; virtual;
+          function get_funcretsym_info(out ressym: tsym; out resdef: tdef): boolean; virtual;
+          function get_safecall_funcretsym_info(out ressym: tsym; out resdef: tdef): boolean; virtual;
 
           { returns whether the mangled name or any of its aliases is equal to
             s }
@@ -5716,6 +5718,19 @@ implementation
       end;
 
 
+    function tabstractprocdef.generate_safecall_wrapper: boolean;
+      begin
+{$ifdef SUPPORT_SAFECALL}
+        result:=
+          (proccalloption=pocall_safecall) and
+          not(po_assembler in procoptions) and
+          (tf_safecall_exceptions in target_info.flags);
+{$else SUPPORT_SAFECALL}
+        result:=false;
+{$endif}
+      end;
+
+
 {***************************************************************************
                                   TPROCDEF
 ***************************************************************************}
@@ -6382,7 +6397,7 @@ implementation
       end;
 
 
-    function tprocdef.getfuncretsyminfo(out ressym: tsym; out resdef: tdef): boolean;
+    function tprocdef.get_funcretsym_info(out ressym: tsym; out resdef: tdef): boolean;
       begin
         result:=false;
         if proctypeoption=potype_constructor then
@@ -6394,12 +6409,33 @@ implementation
             if is_object(resdef) then
               resdef:=cpointerdef.getreusable(resdef);
           end
+        else if (proccalloption=pocall_safecall) and
+           (tf_safecall_exceptions in target_info.flags) then
+          begin
+            result:=true;
+            ressym:=tsym(localst.Find('safecallresult'));
+            resdef:=tabstractnormalvarsym(ressym).vardef;
+          end
         else if not is_void(returndef) then
           begin
             result:=true;
             ressym:=funcretsym;
             resdef:=tabstractnormalvarsym(ressym).vardef;
           end;
+      end;
+
+
+    function tprocdef.get_safecall_funcretsym_info(out ressym: tsym; out resdef: tdef): boolean;
+      begin
+        result:=false;
+        if (proctypeoption<>potype_constructor) and
+           (proccalloption=pocall_safecall) and
+           (tf_safecall_exceptions in target_info.flags) then
+          begin
+            result:=true;
+            ressym:=tsym(localst.Find('safecallresult'));
+            resdef:=tabstractnormalvarsym(ressym).vardef;
+          end
       end;
 
 

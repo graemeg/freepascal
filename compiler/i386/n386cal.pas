@@ -86,19 +86,18 @@ implementation
         end;
       end;
 
+
     procedure ti386callnode.gen_syscall_para(para: tcallparanode);
       begin
         { lib parameter has no special type but proccalloptions must be a syscall }
         para.left:=cloadnode.create(tcpuprocdef(procdefinition).libsym,tcpuprocdef(procdefinition).libsym.owner);
       end;
 
+
     procedure ti386callnode.extra_interrupt_code;
       begin
-        if not(target_info.system in [system_i386_darwin,system_i386_iphonesim,system_i386_android]) then
-          begin
-            emit_none(A_PUSHF,S_L);
-            emit_reg(A_PUSH,S_L,NR_CS);
-          end;
+        emit_none(A_PUSHF,S_L);
+        emit_reg(A_PUSH,S_L,NR_CS);
       end;
 
 
@@ -168,5 +167,5 @@ implementation
 
 
 begin
-   ccallnode:=ti386callnode;
+  ccallnode:=ti386callnode;
 end.

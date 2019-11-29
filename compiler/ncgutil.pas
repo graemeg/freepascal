@@ -767,9 +767,8 @@ implementation
             parasize:=0;
             { For safecall functions with safecall-exceptions enabled the funcret is always returned as a para
               which is considered a normal para on the c-side, so the funcret has to be pop'ed normally. }
-            if not ( (current_procinfo.procdef.proccalloption=pocall_safecall) and
-                     (tf_safecall_exceptions in target_info.flags) ) and
-                   paramanager.ret_in_param(current_procinfo.procdef.returndef,current_procinfo.procdef) then
+            if not current_procinfo.procdef.generate_safecall_wrapper and
+               paramanager.ret_in_param(current_procinfo.procdef.returndef,current_procinfo.procdef) then
               inc(parasize,sizeof(pint));
           end
         else

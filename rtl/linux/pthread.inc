@@ -153,6 +153,7 @@ Type
     function pthread_cond_timedwait(__cond:ppthread_cond_t; __mutex:ppthread_mutex_t; __abstime:ptimespec):longint;cdecl;external;
     function pthread_condattr_init(__attr:ppthread_condattr_t):longint;cdecl;external;
     function pthread_condattr_destroy(__attr:ppthread_condattr_t):longint;cdecl;external;
+    function pthread_condattr_setclock(__attr:ppthread_condattr_t; __clock_id: longint):longint;cdecl;external;
     function pthread_key_create(__key:ppthread_key_t; __destr_function:__destr_function_t):longint;cdecl;external;
     function pthread_key_delete(__key:pthread_key_t):longint;cdecl;external;
     function pthread_setspecific(__key:pthread_key_t; __pointer:pointer):longint;cdecl;external;
@@ -228,6 +229,7 @@ Var
 {$ifndef ANDROID}
     pthread_condattr_init : Function(__attr:ppthread_condattr_t):longint;cdecl;
     pthread_condattr_destroy : Function(__attr:ppthread_condattr_t):longint;cdecl;
+    pthread_condattr_setclock: Function(__attr:ppthread_condattr_t; __clock_id: longint):longint;cdecl;
 {$endif}
     pthread_key_create : Function(__key:ppthread_key_t; __destr_function:__destr_function_t):longint;cdecl;
     pthread_key_delete : Function(__key:pthread_key_t):longint;cdecl;
@@ -321,6 +323,7 @@ begin
 {$ifndef ANDROID}
   Pointer(pthread_condattr_init) := dlsym(PthreadDLL,'pthread_condattr_init');
   Pointer(pthread_condattr_destroy) := dlsym(PthreadDLL,'pthread_condattr_destroy');
+  Pointer(pthread_condattr_setclock) := dlsym(PthreadDLL,'pthread_condattr_setclock');
 {$endif}
   Pointer(pthread_key_create) := dlsym(PthreadDLL,'pthread_key_create');
   Pointer(pthread_key_delete) := dlsym(PthreadDLL,'pthread_key_delete');

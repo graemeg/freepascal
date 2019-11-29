@@ -48,6 +48,8 @@ type
     procedure TestGetIsReadable;
     procedure TestIsWritable;
 
+    procedure TestIsType;
+
     procedure TestMakeNil;
     procedure TestMakeObject;
     procedure TestMakeArrayDynamic;
@@ -837,6 +839,33 @@ begin
   finally
     c.Free;
   end;
+end;
+
+procedure TTestCase1.TestIsType;
+type
+  TMyLongInt = type LongInt;
+var
+  v: TValue;
+  l: LongInt;
+  ml: TMyLongInt;
+begin
+  l := 42;
+  ml := 42;
+  TValue.Make(@l, TypeInfo(l), v);
+  Check(v.IsType(TypeInfo(l)));
+  Check(not v.IsType(TypeInfo(ml)));
+  Check(not v.IsType(TypeInfo(String)));
+  Check(v.specialize IsType<LongInt>);
+  Check(not v.specialize IsType<TMyLongInt>);
+  Check(not v.specialize IsType<String>);
+
+  TValue.Make(@ml, TypeInfo(ml), v);
+  Check(v.IsType(TypeInfo(ml)));
+  Check(not v.IsType(TypeInfo(l)));
+  Check(not v.IsType(TypeInfo(String)));
+  Check(v.specialize IsType<TMyLongInt>);
+  Check(not v.specialize IsType<LongInt>);
+  Check(not v.specialize IsType<String>);
 end;
 
 procedure TTestCase1.TestPropGetValueBoolean;

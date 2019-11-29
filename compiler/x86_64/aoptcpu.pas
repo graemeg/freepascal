@@ -125,6 +125,8 @@ uses
                   result:=OptPass1FSTP(p);
                 A_FLD:
                   result:=OptPass1FLD(p);
+                A_CMP:
+                  result:=OptPass1Cmp(p);
                 else
                   ;
               end;

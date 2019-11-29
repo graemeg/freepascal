@@ -477,7 +477,7 @@ implementation
 
 
       var
-        t       , vl: tnode;
+        t       , vl, hp: tnode;
         lt,rt   : tnodetype;
         hdef,
         rd,ld   : tdef;
@@ -593,7 +593,7 @@ implementation
                      t := cpointerconstnode.create(qword(v),resultdef)
                    else
                      if is_integer(ld) then
-                       t := create_simplified_ord_const(v,resultdef,forinline)
+                       t := create_simplified_ord_const(v,resultdef,forinline,cs_check_overflow in localswitches)
                      else
                        t := cordconstnode.create(v,resultdef,(ld.typ<>enumdef));
                  end;
@@ -618,7 +618,7 @@ implementation
                        t := cpointerconstnode.create(qword(v),resultdef)
                    else
                      if is_integer(ld) then
-                       t := create_simplified_ord_const(v,resultdef,forinline)
+                       t := create_simplified_ord_const(v,resultdef,forinline,cs_check_overflow in localswitches)
                      else
                        t:=cordconstnode.create(v,resultdef,(ld.typ<>enumdef));
                  end;
@@ -632,21 +632,21 @@ implementation
                        t:=genintconstnode(0)
                      end
                    else
-                     t := create_simplified_ord_const(v,resultdef,forinline)
+                     t := create_simplified_ord_const(v,resultdef,forinline,cs_check_overflow in localswitches)
                  end;
                xorn :
                  if is_integer(ld) then
-                   t := create_simplified_ord_const(lv xor rv,resultdef,forinline)
+                   t := create_simplified_ord_const(lv xor rv,resultdef,forinline,false)
                  else
                    t:=cordconstnode.create(lv xor rv,resultdef,true);
                orn :
                  if is_integer(ld) then
-                   t:=create_simplified_ord_const(lv or rv,resultdef,forinline)
+                   t:=create_simplified_ord_const(lv or rv,resultdef,forinline,false)
                  else
                    t:=cordconstnode.create(lv or rv,resultdef,true);
                andn :
                  if is_integer(ld) then
-                   t:=create_simplified_ord_const(lv and rv,resultdef,forinline)
+                   t:=create_simplified_ord_const(lv and rv,resultdef,forinline,false)
                  else
                    t:=cordconstnode.create(lv and rv,resultdef,true);
                ltn :
@@ -671,7 +671,8 @@ implementation
                else
                  internalerror(2008022101);
              end;
-             include(t.flags,nf_internal);
+             if not forinline then
+               include(t.flags,nf_internal);
              result:=t;
              exit;
           end
@@ -726,6 +727,58 @@ implementation
                   else
                     ;
                 end;
+              end
+            { try to fold
+                          op
+                         /  \
+                       op  const1
+                      /  \
+                  const2 val
+            }
+            else if left.nodetype=nodetype then
+              begin
+                if is_constintnode(taddnode(left).left) then
+                  begin
+                    case left.nodetype of
+                      xorn,
+                      addn,
+                      andn,
+                      orn,
+                      muln:
+                        begin
+                          hp:=right;
+                          right:=taddnode(left).right;
+                          taddnode(left).right:=hp;
+                          left:=left.simplify(false);
+                          result:=getcopy;
+                          result.resultdef:=nil;
+                          do_typecheckpass(result);
+                        end;
+                      else
+                        ;
+                    end;
+                  end
+                else if is_constintnode(taddnode(left).right) then
+                  begin
+                    case left.nodetype of
+                      xorn,
+                      addn,
+                      andn,
+                      orn,
+                      muln:
+                        begin
+                          hp:=right;
+                          right:=taddnode(left).left;
+                          taddnode(left).left:=hp;
+                          left:=left.simplify(false);
+                          result:=getcopy;
+                          result.resultdef:=nil;
+                          do_typecheckpass(result);
+                        end;
+                      else
+                        ;
+                    end;
+                  end
               end;
             if assigned(result) then
               exit;
@@ -758,11 +811,7 @@ implementation
                     ;
                 end;
               end
-{$ifdef VER2_2}
-            else if (tordconstnode(left).value.svalue = -1) and (tordconstnode(left).value.signed) then
-{$else}
             else if tordconstnode(left).value = -1 then
-{$endif}
               begin
                 case nodetype of
                   muln:
@@ -770,6 +819,58 @@ implementation
                   else
                     ;
                 end;
+              end
+            { try to fold
+                          op
+                         /  \
+                     const1  op
+                            /  \
+                        const2 val
+            }
+            else if right.nodetype=nodetype then
+              begin
+                if is_constintnode(taddnode(right).left) then
+                  begin
+                    case right.nodetype of
+                      xorn,
+                      addn,
+                      andn,
+                      orn,
+                      muln:
+                        begin
+                          hp:=left;
+                          left:=taddnode(right).right;
+                          taddnode(right).right:=hp;
+                          right:=right.simplify(false);
+                          result:=getcopy;
+                          result.resultdef:=nil;
+                          do_typecheckpass(result);
+                        end;
+                      else
+                        ;
+                    end;
+                  end
+                else if is_constintnode(taddnode(right).right) then
+                  begin
+                    case right.nodetype of
+                      xorn,
+                      addn,
+                      andn,
+                      orn,
+                      muln:
+                        begin
+                          hp:=left;
+                          left:=taddnode(right).left;
+                          taddnode(right).left:=hp;
+                          right:=right.simplify(false);
+                          result:=getcopy;
+                          result.resultdef:=nil;
+                          do_typecheckpass(result);
+                        end;
+                      else
+                        ;
+                    end;
+                  end
               end;
             if assigned(result) then
               exit;

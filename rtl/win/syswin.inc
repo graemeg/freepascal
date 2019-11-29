@@ -209,7 +209,7 @@ begin
     CurFilt:=@PFilterRec(Filter+sizeof(Longint))[i];
     if (CurFilt^.RvaClass=$FFFFFFFF) or
       { TODO: exception might be coming from another module, need more advanced comparing }
-      (ExClass.InheritsFrom(TClass(imagebase+CurFilt^.RvaClass))) then
+      (ExClass.InheritsFrom({$if not defined(ver3_0) and not defined(ver3_2)}PClass(imagebase+CurFilt^.RvaClass)^{$else}TClass(imagebase+CurFilt^.RvaClass){$endif})) then
     begin
       result:=Pointer(imagebase+CurFilt^.RvaHandler);
       exit;

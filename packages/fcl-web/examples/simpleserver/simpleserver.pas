@@ -1,3 +1,17 @@
+{
+    This file is part of the Free Pascal run time library.
+    Copyright (c) 2019 by the Free Pascal development team
+
+    Sample HTTP server application
+
+    See the file COPYING.FPC, included in this distribution,
+    for details about the copyright.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+ **********************************************************************}
 {$mode objfpc}
 {$h+}
 
@@ -22,7 +36,9 @@ uses
 {$endif}
   custhttpapp,
 {$ELSE}
+{$ifdef unix}
   cthreads,
+{$endif}  
   custmicrohttpapp,
 {$ENDIF}
   {$ifdef unix}
@@ -49,6 +65,7 @@ Type
     FBackground : Boolean;
     FPassword : string;
     FEcho : Boolean;
+    FMaxAge : Integer;
     procedure AddProxy(const aProxyDef: String);
     procedure DoEcho(ARequest: TRequest; AResponse: TResponse);
     procedure DoProxyLog(Sender: TObject; const aMethod, aLocation, aFromURL, aToURL: String);
@@ -224,6 +241,7 @@ Const
   KeyEcho = 'echo';
   KeyNoIndexPage = 'noindexpage';
   KeyBackground = 'background';
+  KeyMaxAge = 'MaxAge';
 
 Var
   L : TStringList;
@@ -246,6 +264,7 @@ begin
       FBackground:=ReadBool(SConfig,Keybackground,FBackGround);
       FPassword:=ReadString(SConfig,KeyQuit,FPassword);
       FEcho:=ReadBool(SConfig,KeyEcho,FEcho);
+      FMaxAge:=ReadInteger(SConfig,KeyMaxAge,FMaxAge);
       L:=TstringList.Create;
       ReadSectionValues(SProxy,L,[]);
       For I:=0 to L.Count-1 do
@@ -282,6 +301,7 @@ begin
     NoIndexPage:=True
   else
     IndexPageName:=GetOptionValue('i','indexpage');
+  FMaxAge:=StrToIntDef(GetOptionValue('a','max-age'),FMaxAge);
   FBackground:=HasOption('b','background');
 end;
 
@@ -305,7 +325,8 @@ Var
   S,ConfigFile : String;
 
 begin
-  S:=Checkoptions('hqd:ni:p:sH:m:x:c:beQ:',['help','quiet','noindexpage','directory:','port:','indexpage:','ssl','hostname:','mimetypes:','proxy:','config:','background','echo','quit:']);
+  FMaxAge:=31557600;
+  S:=Checkoptions('hqd:ni:p:sH:m:x:c:beQ:a:',['help','quiet','noindexpage','directory:','port:','indexpage:','ssl','hostname:','mimetypes:','proxy:','config:','background','echo','quit:','max-age:']);
   if (S<>'') or HasOption('h','help') then
     usage(S);
   if HasOption('c','config') then
@@ -331,6 +352,7 @@ begin
     TProxyWebModule.RegisterModule('Proxy',True);
     ProxyManager.OnLog:=@DoProxyLog;
     end;
+  DefaultCacheControlMaxAge:=FMaxAge; // one year by default
   if BaseDir='' then
     BaseDir:=GetCurrentDir;
   if (BaseDir<>'') then

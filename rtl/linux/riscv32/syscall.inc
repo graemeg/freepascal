@@ -11,7 +11,7 @@ function FpSysCall(sysnr:TSysParam):TSysResult;
 assembler; nostackframe; [public,alias:'FPC_SYSCALL0'];
 asm
   addi x17, sysnr, 0
-  scall
+  ecall
   bge x10,x0,.Ldone
   sw x1, -4(x2)
   addi x2, x2, -4
@@ -28,7 +28,7 @@ assembler; nostackframe; [public,alias:'FPC_SYSCALL1'];
 asm
   addi x17, sysnr, 0
   addi x10, x11, 0
-  scall
+  ecall
   bge x10,x0,.Ldone
   sw x1, -4(x2)
   addi x2, x2, -4
@@ -46,7 +46,7 @@ asm
   addi x17, sysnr, 0
   addi x10, x11, 0
   addi x11, x12, 0
-  scall
+  ecall
   bge x10,x0,.Ldone
   sw x1, -4(x2)
   addi x2, x2, -4
@@ -65,7 +65,7 @@ asm
   addi x10, x11, 0
   addi x11, x12, 0
   addi x12, x13, 0
-  scall
+  ecall
   bge x10,x0,.Ldone
   sw x1, -4(x2)
   addi x2, x2, -4
@@ -85,7 +85,7 @@ asm
   addi x11, x12, 0
   addi x12, x13, 0
   addi x13, x14, 0
-  scall
+  ecall
   bge x10,x0,.Ldone
   sw x1, -4(x2)
   addi x2, x2, -4
@@ -106,7 +106,7 @@ asm
   addi x12, x13, 0
   addi x13, x14, 0
   addi x14, x15, 0
-  scall
+  ecall
   bge x10,x0,.Ldone
   sw x1, -4(x2)
   addi x2, x2, -4
@@ -128,7 +128,7 @@ asm
   addi x13, x14, 0
   addi x14, x15, 0
   addi x15, x16, 0
-  scall
+  ecall
   bge x10,x0,.Ldone
   sw x1, -4(x2)
   addi x2, x2, -4

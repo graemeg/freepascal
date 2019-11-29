@@ -1603,6 +1603,9 @@ parser_e_unbound_attribute=03351_E_Unbound custom attribute: "$1".
 parser_e_enumeration_out_of_range=03352_E_Enumeration symbols can only have values in the range of -2^31 to 2^31-1
 % The size of enumeration values is limited to 4 bytes. As the value can be signed, the range
 % of valid values is limited to a signed 32 Bit value (i.e. \var{longint}).
+parser_w_enumeration_out_of_range=03353_W_Enumeration symbols can only have values in the range of -2^31 to 2^31-1
+% The size of enumeration values is limited to 4 bytes. As the value can be signed, the range
+% of valid values is limited to a signed 32 Bit value (i.e. \var{longint}).
 %
 % \end{description}
 %
@@ -2934,6 +2937,7 @@ asmw_f_code_segment_too_large=08030_F_Code segment too large
 asmw_f_data_segment_too_large=08031_F_Data segment too large
 asmw_e_instruction_not_supported_by_cpu=08032_E_Instruction not supported by the selected instruction set
 asmw_e_brxx_out_of_range=08033_E_Asm: conditional branch destination is out of range
+asmw_e_illegal_use_of_rip=08034_E_Asm: RIP cannot be used as index register or with another register in a reference
 #
 # Executing linker/assembler
 #
@@ -3072,7 +3076,7 @@ execinfo_x_stackcommit=09134_X_Stack space committed: $1 bytes
 #
 # Internal linker messages
 #
-# 09220 is the last used one
+# 09222 is the last used one
 #
 # BeginOfTeX
 % \section{Linker messages}
@@ -3132,6 +3136,11 @@ link_e_comdat_content_differs=09219_E_Content of duplicate COMDAT symbol "$1" di
 % The COMDAT section specifies that all sections with the same name need to have the same content,
 % but this section had a different size.
 link_e_comdat_selection_differs=09220_E_COMDAT selection mode for symbol "$1" differs
+% Two COMDAT sections with the same name have different COMDAT selection modes.
+link_e_undefined_symbol_in_obj=09221_E_Undefined symbol: $1 (first seen in $2)
+% The specified symbol is used, but not defined and was first seen in the specified object file.
+link_e_undefined_symbol=09222_E_Undefined symbol: $1
+% The specified symbol is used, but not defined.
 %\end{description}
 # EndOfTeX
 

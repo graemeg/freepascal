@@ -144,6 +144,9 @@ type
     function GetArrayElement(AIndex: SizeInt): TValue;
     procedure SetArrayElement(AIndex: SizeInt; constref AValue: TValue);
     function IsType(ATypeInfo: PTypeInfo): boolean; inline;
+{$ifndef NoGenericMethods}
+    generic function IsType<T>: Boolean; inline;
+{$endif}
     function TryAsOrdinal(out AResult: int64): boolean;
     function GetReferenceToRawData: Pointer;
     procedure ExtractRawData(ABuffer: Pointer);
@@ -1855,6 +1858,13 @@ function TValue.IsType(ATypeInfo: PTypeInfo): boolean;
 begin
   result := ATypeInfo = TypeInfo;
 end;
+
+{$ifndef NoGenericMethods}
+generic function TValue.IsType<T>: Boolean;
+begin
+  Result := IsType(PTypeInfo(System.TypeInfo(T)));
+end;
+{$endif}
 
 function TValue.AsObject: TObject;
 begin

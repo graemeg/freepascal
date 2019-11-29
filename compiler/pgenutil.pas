@@ -454,7 +454,6 @@ uses
     function generate_specialization_phase1(out context:tspecializationcontext;genericdef:tdef;parsedtype:tdef;symname:string;parsedpos:tfileposinfo):tdef;
       var
         pt2 : tnode;
-        errorrecovery,
         found,
         first,
         err : boolean;
@@ -469,96 +468,25 @@ uses
         result:=nil;
 
         { either symname must be given or genericdef needs to be valid }
-        errorrecovery:=false;
         if (symname='') and
             (not assigned(genericdef) or
-            not assigned(genericdef.typesym) or
-            (genericdef.typesym.typ<>typesym)) then
+              (
+                (genericdef.typ<>procdef) and
+                (
+                  not assigned(genericdef.typesym) or
+                  (genericdef.typesym.typ<>typesym)
+                )
+              ) or
+              (
+                (genericdef.typ=procdef) and
+                (
+                  not assigned(tprocdef(genericdef).procsym) or
+                  (tprocdef(genericdef).procsym.typ<>procsym)
+                )
+              )
+            ) then
           begin
-            errorrecovery:=true;
-            result:=generrordef;
-          end;
-
-        { Only parse the parameters for recovery or
-          for recording in genericbuf }
-        if errorrecovery then
-          begin
-            first:=assigned(parsedtype);
-            if not first and not try_to_consume(_LT) then
-              consume(_LSHARPBRACKET);
-            gencount:=0;
-            { handle "<>" }
-            if not first and ((token=_RSHARPBRACKET) or (token=_GT)) then
-              Message(type_e_type_id_expected)
-            else
-              repeat
-                if not first then
-                  begin
-                    pt2:=factor(false,[ef_type_only]);
-                    pt2.free;
-                  end;
-                first:=false;
-                inc(gencount);
-              until not try_to_consume(_COMMA);
-            if not try_to_consume(_GT) then
-              consume(_RSHARPBRACKET);
-            { we need to return a def that can later pass some checks like
-              whether it's an interface or not }
-            if not errorrecovery and
-                (not assigned(result) or (result.typ=undefineddef)) then
-              begin
-                if (symname='') and tstoreddef(genericdef).is_generic then
-                  { this happens in non-Delphi modes }
-                  result:=genericdef
-                else
-                  begin
-                    { find the corresponding generic symbol so that any checks
-                      done on the returned def will be handled correctly }
-                    str(gencount,countstr);
-                    if symname='' then
-                      genname:=ttypesym(genericdef.typesym).realname
-                    else
-                      genname:=symname;
-                    genname:=genname+'$'+countstr;
-                    ugenname:=upper(genname);
-                    { first check whether the found name is the same as that of
-                      the current def or one of its (generic) surrounding defs;
-                      this is necessary as the symbol of the generic can not yet
-                      be used for lookup as it still contains a reference to an
-                      errordef) }
-                    def:=current_genericdef;
-                    repeat
-                      if def.typ in [objectdef,recorddef] then
-                        if tabstractrecorddef(def).objname^=ugenname then
-                          begin
-                            result:=def;
-                            break;
-                          end;
-                      def:=tstoreddef(def.owner.defowner);
-                    until not assigned(def) or not (df_generic in def.defoptions);
-                    { it's not part of the current object hierarchy, so search
-                      for the symbol }
-                    if not assigned(result) then
-                      begin
-                      srsym:=nil;
-                      if not searchsym(ugenname,srsym,st) or
-                          (srsym.typ<>typesym) then
-                        begin
-                          identifier_not_found(genname);
-                          result:=generrordef;
-                          exit;
-                        end;
-                      result:=ttypesym(srsym).typedef;
-                      { this happens in non-Delphi modes if we encounter a
-                        specialization of the generic class or record we're
-                        currently parsing }
-                      if (result.typ=errordef) and assigned(current_structdef) and
-                          (current_structdef.objname^=ugenname) then
-                        result:=current_structdef;
-                    end;
-                  end;
-              end;
-            exit;
+            internalerror(2019112401);
           end;
 
         if not assigned(parsedtype) and not try_to_consume(_LT) then
@@ -592,7 +520,12 @@ uses
         { use the name of the symbol as procvars return a user friendly version
           of the name }
         if symname='' then
-          genname:=ttypesym(genericdef.typesym).realname
+          begin
+            if genericdef.typ=procdef then
+              genname:=tprocdef(genericdef).procsym.realname
+            else
+              genname:=ttypesym(genericdef.typesym).realname;
+          end
         else
           genname:=symname;
 
@@ -737,6 +670,7 @@ uses
         old_current_specializedef,
         old_current_genericdef : tstoreddef;
         old_current_procinfo : tprocinfo;
+        old_module_procinfo : tobject;
         hmodule : tmodule;
         oldcurrent_filepos : tfileposinfo;
         recordbuf : tdynamicarray;
@@ -861,7 +795,13 @@ uses
         { decide in which symtable to put the specialization }
         if parse_generic and not assigned(result) then
           begin
-            if assigned(current_procinfo) and (df_generic in current_procinfo.procdef.defoptions) then
+            srsymtable:=symtablestack.top;
+            if (srsymtable.symtabletype in [localsymtable,parasymtable]) and tstoreddef(srsymtable.defowner).is_specialization then
+              { if we are currently specializing a routine we need to specialize into
+                the routine's local- or parasymtable so that they are correctly
+                registered should the specialization be finalized }
+              specializest:=srsymtable
+            else if assigned(current_procinfo) and (df_generic in current_procinfo.procdef.defoptions) then
               { if we are parsing the definition of a method we specialize into
                 the local symtable of it }
               specializest:=current_procinfo.procdef.getsymtable(gs_local)
@@ -945,8 +885,10 @@ uses
                 old_current_genericdef:=nil;
                 old_current_structdef:=nil;
                 old_current_procinfo:=current_procinfo;
+                old_module_procinfo:=current_module.procinfo;
 
                 current_procinfo:=nil;
+                current_module.procinfo:=nil;
 
                 if parse_class_parent then
                   begin
@@ -1128,6 +1070,7 @@ uses
 
                 block_type:=old_block_type;
                 current_procinfo:=old_current_procinfo;
+                current_module.procinfo:=old_module_procinfo;
                 if parse_class_parent then
                   begin
                     current_structdef:=old_current_structdef;

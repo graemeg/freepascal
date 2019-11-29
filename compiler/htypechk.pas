@@ -857,7 +857,7 @@ implementation
             exit;
           end;
 
-        addsymref(operpd.procsym);
+        addsymref(operpd.procsym,operpd);
 
         { the nil as symtable signs firstcalln that this is
           an overloaded operator }
@@ -1052,7 +1052,7 @@ implementation
             exit;
           end;
 
-        addsymref(operpd.procsym);
+        addsymref(operpd.procsym,operpd);
 
         { the nil as symtable signs firstcalln that this is
           an overloaded operator }

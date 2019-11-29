@@ -23,10 +23,10 @@ Type
     FEnabled: Boolean;
     FField: TField;
     FFieldName: String;
-    FExportedName: String;
-    function GetExportedName: String;
+    FExportedName: UTF8String;
+    function GetExportedName: UTF8String;
     function GetExporter: TCustomDatasetExporter;
-    procedure SetExportedName(const AValue: String);
+    procedure SetExportedName(const AValue: UTF8String);
   Protected
     Procedure BindField (ADataset : TDataset); virtual;
     procedure SetFieldName(const AValue: String); virtual;
@@ -38,7 +38,7 @@ Type
   Published
     Property Enabled : Boolean Read FEnabled Write FEnabled default True;
     Property FieldName : String Read FFieldName Write SetFieldName;
-    Property ExportedName : String Read GetExportedName Write SetExportedName;
+    Property ExportedName : UTF8String Read GetExportedName Write SetExportedName;
   end;
   
   { TExportFields }
@@ -69,12 +69,14 @@ Type
     FCurrencySymbol : String;
     FDateFormat : String;
     FIntegerFormat: String;
+    FHandleNullField: Boolean;
     FTimeFormat : String;
     FDateTimeFormat : String;
     FDecimalSeparator: Char;
     FUseDisplayText : Boolean;
   Protected
     Procedure InitSettings; virtual;
+    Property HandleNullField : Boolean Read FHandleNullField Write FHandleNullField;
     Property UseDisplayText : Boolean Read FUseDisplayText Write FUseDisplayText;
     Property IntegerFormat : String Read FIntegerFormat Write FIntegerFormat;
     Property DecimalSeparator : Char Read FDecimalSeparator Write FDecimalSeparator;
@@ -295,6 +297,7 @@ Procedure UnRegisterExportFormat(Const AName : String);
 Const
   StringFieldTypes = [ftString,ftFixedChar,ftWidestring,ftFixedWideChar];
   IntFieldTypes    = [ftInteger,ftWord,ftSmallint,ftAutoinc];
+  FloatFieldTypes = [ftFloat, ftCurrency, ftFMTBcd, ftBCD];
   OrdFieldTypes    = IntFieldTypes +[ftBoolean,ftLargeInt];
   DateFieldTypes   = [ftDate,ftTime,ftDateTime,ftTimeStamp];
   MemoFieldTypes   = [ftMemo,ftFmtMemo,ftWideMemo];
@@ -332,7 +335,7 @@ begin
   FEnabled:=True;
 end;
 
-function TExportFieldItem.GetExportedName: String;
+function TExportFieldItem.GetExportedName: UTF8String;
 begin
   Result:=FExportedName;
   If (Result='') then
@@ -345,7 +348,7 @@ begin
     Result:=(Collection as TExportFields).Exporter;
 end;
 
-procedure TExportFieldItem.SetExportedName(const AValue: String);
+procedure TExportFieldItem.SetExportedName(const AValue: UTF8String);
 
 Var
   I : TExportFieldItem;
@@ -587,9 +590,11 @@ Var
   FS : TFormatSettings;
 
 begin
+  if F.IsNull and FormatSettings.HandleNullField then
+    Exit('');
   If (F.DataType in IntFieldTypes) then
     begin
-    If (FormatSettings.IntegerFormat)<>'' then
+    If ((FormatSettings.IntegerFormat)<>'') and (not F.IsNull) then
       Result:=Format(FormatSettings.IntegerFormat,[F.AsInteger])
     else if FormatSettings.UseDisplayText then
       Result:=F.DisplayText
@@ -598,10 +603,11 @@ begin
     end
   else if (F.DataType=ftBoolean) then
     begin
-    If F.AsBoolean then
-      Result:=FormatSettings.BooleanTrue
-    else
-      Result:=FormatSettings.BooleanFalse;
+    if (Not F.IsNull) then
+      If F.AsBoolean then
+        Result:=FormatSettings.BooleanTrue
+      else
+        Result:=FormatSettings.BooleanFalse;
     If (Result='') then
       if FormatSettings.UseDisplayText then
         Result:=F.DisplayText
@@ -610,7 +616,7 @@ begin
     end
   else if (F.DataType=ftDate) then
     begin
-    If (FormatSettings.DateFormat<>'') then
+    If (FormatSettings.DateFormat<>'') and (not F.IsNull) then
       Result:=FormatDateTime(FormatSettings.DateFormat,F.AsDateTime)
     else if FormatSettings.UseDisplayText then
       Result:=F.DisplayText
@@ -619,7 +625,7 @@ begin
     end
   else if (F.DataType=ftTime) then
     begin
-    If (FormatSettings.TimeFormat<>'') then
+    If (FormatSettings.TimeFormat<>'') and (not F.IsNull) then
       Result:=FormatDateTime(FormatSettings.TimeFormat,F.AsDateTime)
     else if FormatSettings.UseDisplayText then
       Result:=F.DisplayText
@@ -628,7 +634,7 @@ begin
     end
   else if (F.DataType in [ftDateTime,ftTimeStamp]) then
     begin
-    If (FormatSettings.DateTimeFormat<>'') then
+    If (FormatSettings.DateTimeFormat<>'') and (not F.IsNull) then
       Result:=FormatDateTime(FormatSettings.DateTimeFormat,F.AsDateTime)
     else if FormatSettings.UseDisplayText then
       Result:=F.DisplayText
@@ -637,13 +643,13 @@ begin
     end 
   else if (F.DataType=ftCurrency) then
     begin
-    If (FormatSettings.CurrencySymbol<>'') then
+    If (FormatSettings.CurrencySymbol<>'') and (not F.IsNull) then
       begin
       FS:=DefaultFormatSettings;
       FS.CurrencyString:=FormatSettings.CurrencySymbol;
       Result:=CurrToStrF(F.AsCurrency,ffCurrency,FormatSettings.CurrencyDigits,FS);
       end
-    else  if FormatSettings.UseDisplayText then
+    else if FormatSettings.UseDisplayText then
       Result:=F.DisplayText
     else 
       Result:=F.AsUTF8String;
@@ -839,6 +845,7 @@ end;
 procedure TCustomExportFormatSettings.InitSettings;
 begin
   FIntegerFormat:='%d';
+  FHandleNullField:=True;
   FDateFormat:=ShortDateFormat;
   FTimeFormat:=ShortTimeFormat;
   FDateTimeFormat:=ShortDateFormat+' '+ShortTimeFormat;
@@ -863,6 +870,7 @@ begin
   If (Source is TCustomExportFormatSettings) then
     begin
     FS:=Source as TCustomExportFormatSettings;
+    FHandleNullField:=FS.FHandleNullField;
     FBooleanFalse:=FS.FBooleanFalse;
     FBooleanTrue:=FS.FBooleanTrue;
     FCurrencyDigits:=FS.FCurrencyDigits;

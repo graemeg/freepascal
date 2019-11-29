@@ -3692,7 +3692,7 @@ procedure TRegExpr.SetInputString (const AInputString : RegExprString);
   fInputStart := PChar (fInputString);
   Len := length (fInputString);
   fInputEnd := PRegExprChar (integer (fInputStart) + Len); ??
-  !! startp/endp все равно будет опасно использовать ?
+  !! startp/endp still dangerous to use ?
   }
  end; { of procedure TRegExpr.SetInputString
 --------------------------------------------------------------}

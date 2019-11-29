@@ -1338,6 +1338,8 @@ begin
   list.concat(Taicpu.op_const_const(A_P_MASK,aint(mask),-(LocalSize-lastintoffset)));
   list.concat(Taicpu.op_const_const(A_P_FMASK,aint(Fmask),-(LocalSize-lastfpuoffset)));
   list.concat(Taicpu.op_none(A_P_SET_NOREORDER));
+  if tcpuprocinfo(current_procinfo).setnoat then
+    list.concat(Taicpu.op_none(A_P_SET_NOAT));
   if (cs_create_pic in current_settings.moduleswitches) and
      (pi_needs_got in current_procinfo.flags) then
     begin
@@ -1466,6 +1468,7 @@ begin
            list.concat(taicpu.op_reg(A_JR, NR_R31));
            { correct stack pointer in the delay slot }
            list.concat(taicpu.op_reg_reg_reg(A_ADD,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,NR_R1));
+           tcpuprocinfo(current_procinfo).setnoat:=true;
          end;
        list.concat(Taicpu.op_none(A_P_SET_MACRO));
        list.concat(Taicpu.op_none(A_P_SET_REORDER));
@@ -1677,6 +1680,7 @@ procedure TCGMIPS.g_profilecode(list:TAsmList);
     list.concat(taicpu.op_reg_reg(A_MOVE,NR_R1,NR_RA));
     list.concat(taicpu.op_reg_reg_const(A_ADDIU,NR_SP,NR_SP,-8));
     a_call_sym_pic(list,current_asmdata.RefAsmSymbol('_mcount',AT_FUNCTION));
+    tcpuprocinfo(current_procinfo).setnoat:=true;
   end;
 
 

@@ -75,6 +75,7 @@ type
     procedure CheckRestoredProcScope(const Path: string; Orig, Rest: TPas2JSProcedureScope); virtual;
     procedure CheckRestoredScopeRefs(const Path: string; Orig, Rest: TPasScopeReferences); virtual;
     procedure CheckRestoredPropertyScope(const Path: string; Orig, Rest: TPasPropertyScope); virtual;
+    procedure CheckRestoredGenericParamScope(const Path: string; Orig, Rest: TPasGenericParamsScope); virtual;
     procedure CheckRestoredResolvedReference(const Path: string; Orig, Rest: TResolvedReference); virtual;
     procedure CheckRestoredEvalValue(const Path: string; Orig, Rest: TResEvalValue); virtual;
     procedure CheckRestoredCustomData(const Path: string; RestoredEl: TPasElement; Orig, Rest: TObject); virtual;
@@ -170,6 +171,8 @@ type
     procedure TestPC_BoolSwitches;
     procedure TestPC_ClassInterface;
     procedure TestPC_Attributes;
+
+    procedure TestPC_GenericFunction;
 
     procedure TestPC_UseUnit;
     procedure TestPC_UseUnit_Class;
@@ -898,6 +901,15 @@ begin
   CheckRestoredIdentifierScope(Path,Orig,Rest);
 end;
 
+procedure TCustomTestPrecompile.CheckRestoredGenericParamScope(
+  const Path: string; Orig, Rest: TPasGenericParamsScope);
+begin
+  // Orig.GenericType only needed during parsing
+  if Path='' then ;
+  if Orig<>nil then ;
+  if Rest<>nil then ;
+end;
+
 procedure TCustomTestPrecompile.CheckRestoredResolvedReference(
   const Path: string; Orig, Rest: TResolvedReference);
 var
@@ -1009,6 +1021,8 @@ begin
     CheckRestoredProcScope(Path+'[TPas2JSProcedureScope]',TPas2JSProcedureScope(Orig),TPas2JSProcedureScope(Rest))
   else if C=TPasPropertyScope then
     CheckRestoredPropertyScope(Path+'[TPasPropertyScope]',TPasPropertyScope(Orig),TPasPropertyScope(Rest))
+  else if C=TPasGenericParamsScope then
+    CheckRestoredGenericParamScope(Path+'[TPasGenericParamScope]',TPasGenericParamsScope(Orig),TPasGenericParamsScope(Rest))
   else if C.InheritsFrom(TResEvalValue) then
     CheckRestoredEvalValue(Path+'['+Orig.ClassName+']',TResEvalValue(Orig),TResEvalValue(Rest))
   else
@@ -2388,7 +2402,22 @@ begin
   '[TCustom]',
   'constructor TObject.Create; begin end;',
   'constructor TCustomAttribute.Create(Id: word); begin end;',
-  'end.',
+  '']);
+  WriteReadUnit;
+end;
+
+procedure TTestPrecompile.TestPC_GenericFunction;
+begin
+  StartUnit(false);
+  Add([
+  'interface',
+  'generic function Run<T>(a: T): T;',
+  'implementation',
+  'generic function Run<T>(a: T): T;',
+  'var b: T;',
+  'begin',
+  '  b:=a; Result:=b;',
+  'end;',
   '']);
   WriteReadUnit;
 end;

@@ -907,6 +907,7 @@ type
     Destructor Destroy; override;
     Procedure CreateStreamedData(AUseCompression: Boolean); overload;
     Procedure CreateStreamedData(aOptions : TPDFImageStreamOptions); overload;
+    Procedure DetachImage;
     procedure SetStreamedMask(const AValue: TBytes; const ACompression: TPDFImageCompression);
     Function WriteImageStream(AStream: TStream): int64;
     Function WriteMaskStream(AStream: TStream): int64;
@@ -1081,7 +1082,6 @@ type
     function IndexOfGlobalXRef(const AValue: string): integer;
     Function FindGlobalXRef(Const AName : String) : TPDFXRef;
     Function GlobalXRefByName(Const AName : String) : TPDFXRef;
-    Function ImageStreamOptions : TPDFImageStreamOptions;
     Property GlobalXRefs[AIndex : Integer] : TPDFXRef Read GetX;
     Property GlobalXRefCount : Integer Read GetXC;
     Property CurrentColor: string Read FCurrentColor Write FCurrentColor;
@@ -1119,6 +1119,7 @@ type
     Property Fonts : TPDFFontDefs Read FFonts Write SetFonts;
     Property Pages : TPDFPages Read FPages;
     Property Images : TPDFImages Read FImages;
+    Function ImageStreamOptions : TPDFImageStreamOptions;
     Property Catalogue: integer Read FCatalogue;
     Property Trailer: TPDFDictionary Read FTrailer;
     Property FontFiles : TStrings Read FFontFiles Write SetFontFiles;
@@ -3031,6 +3032,11 @@ begin
   end;
 end;
 
+Procedure TPDFImageItem.DetachImage;
+begin
+  FImage := nil;
+end;
+
 function TPDFImageItem.WriteStream(const AStreamedData: TBytes;
   AStream: TStream): int64;
 var
@@ -3207,10 +3213,12 @@ begin
       Reader.Free;
     end;
     IP.Image:=I;
-    if Not KeepImage then
+    if KeepImage then
+      IP.OwnsImage := True
+    else
       begin
       IP.CreateStreamedData(Owner.ImageStreamOptions);
-      IP.FImage:=Nil; // not through property, that would clear the image
+      IP.DetachImage; // not through property, that would clear the image
       i.Free;
       end;
   end;

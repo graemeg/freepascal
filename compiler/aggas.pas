@@ -216,9 +216,9 @@ implementation
 { TODO: .data.ro not yet working}
 {$if defined(arm) or defined(riscv64) or defined(powerpc)}
           '.rodata',
-{$else arm}
+{$else defined(arm) or defined(riscv64) or defined(powerpc)}
           '.data',
-{$endif arm}
+{$endif defined(arm) or defined(riscv64) or defined(powerpc)}
           '.rodata',
           '.bss',
           '.threadvar',
@@ -521,8 +521,13 @@ implementation
          else
            begin
              writer.AsmWrite('.section ');
-             sectionflags:=true;
-             sectionprogbits:=true;
+             { sectionname may rename those sections, so we do not write flags/progbits for them,
+               the assembler will ignore them/spite out a warning anyways }
+             if not(atype in [sec_data,sec_rodata,sec_rodata_norel]) then
+               begin
+                 sectionflags:=true;
+                 sectionprogbits:=true;
+               end;
            end
         end;
         s:=sectionname(atype,aname,aorder);

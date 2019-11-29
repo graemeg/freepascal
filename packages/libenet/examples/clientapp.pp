@@ -102,7 +102,7 @@ begin
   Writeln('-p --port=portno    Port to connect to (default 30000)');
   Writeln('-m --message=msg    Message to send to server (none means no message is sent)');
   Writeln('-c --messagecount=N Number of times the message should be sent');
-  Writeln('-p --pingcout=N     Number of times the server should be pinged. (default 0)');
+  Writeln('-P --pingcout=N     Number of times the server should be pinged. (default 0)');
   Writeln('-c --messagecount=N Number of times the message should be sent (default 1)');
 end;
 
@@ -118,7 +118,7 @@ begin
     exit;
     end;
   DoConnect;
-  PingCount:=StrToIntDef(GetOptionValue('p','pingcount'),0);
+  PingCount:=StrToIntDef(GetOptionValue('P','pingcount'),0);
   if PingCount>0 then
     begin
     Writeln('Pinging server');

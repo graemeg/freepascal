@@ -482,6 +482,8 @@ Var
   I : Integer;
   
 begin
+  if aStartLine='' then 
+    exit;
   Request.Method:=GetNextWord(AStartLine);
   Request.URL:=GetNextWord(AStartLine);
   S:=Request.URL;
@@ -494,7 +496,7 @@ begin
     S:='';
   Request.PathInfo:=S;
   S:=GetNextWord(AStartLine);
-  If (Pos('HTTP/',S)<>1) then
+  If (S<>'') and (Pos('HTTP/',S)<>1) then
     Raise EHTTPServer.CreateHelp(SErrMissingProtocol,400);
   Delete(S,1,5);
   Request.ProtocolVersion:=trim(S);

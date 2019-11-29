@@ -2729,7 +2729,8 @@ const
      { this should never happen for defs stored to a ppu file }
      (mask:df_not_registered_no_free;  str:'Unregistered/No free (invalid)'),
      (mask:df_llvm_no_struct_packing;  str:'LLVM unpacked struct'),
-     (mask:df_internal;       str:'Internal')
+     (mask:df_internal;       str:'Internal'),
+     (mask:df_has_global_ref; str:'Has Global Ref')
   );
   defstate : array[1..ord(high(tdefstate))] of tdefstateinfo=(
      (mask:ds_vmt_written;           str:'VMT Written'),
@@ -3068,10 +3069,23 @@ const
      (mask:vo_has_section;     str:'HasSection'),
      (mask:vo_force_finalize;  str:'ForceFinalize'),
      (mask:vo_is_default_var;  str:'DefaultIntrinsicVar'),
-     (mask:vo_is_far;          str:'IsFar')
+     (mask:vo_is_far;          str:'IsFar'),
+     (mask:vo_has_global_ref;  str:'HasGlobalRef')
+  );
+type
+  tvaraccessdesc=record
+    mask: tvarsymaccessflag;
+    str: string[30];
+  end;
+const
+  varaccessstr : array[ord(low(tvarsymaccessflag))..ord(high(tvarsymaccessflag))] of tvaraccessdesc=(
+    (mask: vsa_addr_taken;         str:'Address taken'),
+    (mask: vsa_different_scope;    str:'Accessed from different scope')
   );
 var
   i : longint;
+  accessflag: tvarsymaccessflag;
+  varsymaccessflags: tvarsymaccessflags;
   first : boolean;
 begin
   readcommonsym(s, VarDef);
@@ -3087,8 +3101,21 @@ begin
       end;
   writeln([space,'         Spez : ',Varspez2Str(i)]);
   writeln([space,'      Regable : ',Varregable2Str(ppufile.getbyte)]);
-  writeln([space,'   Addr Taken : ',(ppufile.getbyte<>0)]);
-  writeln([space,'Escaped Scope : ',(ppufile.getbyte<>0)]);
+  ppufile.getset(tppuset1(varsymaccessflags));
+  write([space, ' Access Flags : ']);
+  first:=true;
+  for i:=low(varaccessstr) to high(varaccessstr) do
+    begin
+      if varaccessstr[i].mask in varsymaccessflags then
+        begin
+          if first then
+            first:=false
+          else
+            write([', ']);
+          write([varaccessstr[i].str]);
+        end
+    end;
+  writeln;
   write  ([space,'     Var Type : ']);
   if VarDef <> nil then
     readderef('',VarDef.VarType)

@@ -36,6 +36,7 @@ begin
     Writeln('TypeInfo failure; expected: ', aType, ', got: ', aTypeInfo^.Kind);
     Halt(NextErrorCode);
   end;
+  NextErrorCode;
 end;
 
 generic procedure TestTypeKind<T>(aType: TTypeKind); inline;

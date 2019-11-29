@@ -60,7 +60,11 @@ procedure _FPC_dynamic_proc_start; assembler; nostackframe; public name '_dynami
     .option norelax
 .L1:
     auipc t0, %pcrel_hi(dlexitproc)
+{$ifdef RISCV64}
     sd    a0, %pcrel_lo(.L1)(t0)
+{$else 32-bit code }
+    sw    a0, %pcrel_lo(.L1)(t0)
+{$endif}
     .option pop
 
     jal   x0, _FPC_proc_start

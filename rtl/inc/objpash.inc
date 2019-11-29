@@ -298,18 +298,18 @@
 
        TInterfacedObject = class(TObject,IUnknown)
        protected
-          frefcount : longint;
+          FRefCount : longint;
           FDestroyCount : longint;
           { implement methods of IUnknown }
           function QueryInterface({$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF} iid : tguid;out obj) : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
           function _AddRef : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
           function _Release : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
         public
-          destructor destroy; override;
+          destructor Destroy; override;
           procedure AfterConstruction;override;
           procedure BeforeDestruction;override;
           class function NewInstance : TObject;override;
-          property RefCount : longint read frefcount;
+          property RefCount : longint read FRefCount;
        end;
        TInterfacedClass = class of TInterfacedObject;
 

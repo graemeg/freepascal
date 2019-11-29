@@ -50,7 +50,7 @@ const
   CurrentPPUVersion = 207;
   { for any other changes to the ppu format, increase this version number
     (it's a cardinal) }
-  CurrentPPULongVersion = 7;
+  CurrentPPULongVersion = 8;
 
 { unit flags }
   uf_big_endian          = $000004;

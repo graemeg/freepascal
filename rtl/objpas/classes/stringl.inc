@@ -622,21 +622,9 @@ end;
 
 Procedure TStrings.SetCommaText(const Value: string);
 
-Var
-  C1,C2 : Char;
-
 begin
   CheckSpecialChars;
-  C1:=Delimiter;
-  C2:=QuoteChar;
-  Delimiter:=',';
-  QuoteChar:='"';
-  Try
-    SetDelimitedText(Value);
-  Finally
-    Delimiter:=C1;
-    QuoteChar:=C2;
-  end;
+  DoSetDelimitedText(Value,True,StrictDelimiter,'"',',');
 end;
 
 procedure TStrings.SetMissingNameValueSeparatorAction(AValue: TMissingNameValueSeparatorAction);
@@ -943,16 +931,9 @@ begin
 end;
 
 procedure TStrings.AddCommaText(const S: String);
-var
-  L: TStringList;
+
 begin
-  L := TStringList.Create;
-  try
-    L.CommaText := S;
-    AddStrings(L);
-  finally
-    L.Free;
-  end;
+  DoSetDelimitedText(S,False,StrictDelimiter,'"',',');
 end;
 
 procedure TStrings.AddDelimitedText(const S: String; ADelimiter: Char; AStrictDelimiter: Boolean);
@@ -975,7 +956,6 @@ begin
 end;
 
 
-
 destructor TSTrings.Destroy;
 
 begin
@@ -983,7 +963,6 @@ begin
     FreeAndNil(FEncoding);
   if (FDefaultEncoding<>nil) and not TEncoding.IsStandardEncoding(FDefaultEncoding) then
     FreeAndNil(FDefaultEncoding);
-
   inherited destroy;
 end;
 

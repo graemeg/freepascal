@@ -1067,13 +1067,13 @@
            end;
       end;
 
-   destructor TInterfacedObject.destroy;
+   destructor TInterfacedObject.Destroy;
 
    begin
      // We must explicitly reset. Bug ID 32353
      FRefCount:=0;
      FDestroyCount:=0;
-     inherited destroy;
+     inherited Destroy;
    end;
 
     procedure TInterfacedObject.AfterConstruction;

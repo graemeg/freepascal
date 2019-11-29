@@ -366,6 +366,7 @@ begin
 {$ELSE USE_SHELL}
   S:=TProcess.Create(Nil);
   S.Commandline:=ACompiler+' '+AOptions;
+  S.ShowWindow:=swoHIDE;
   S.Options:=[poUsePipes];
   S.execute;
   Count:=s.output.read(buf,BufSize);

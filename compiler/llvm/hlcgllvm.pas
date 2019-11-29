@@ -526,15 +526,24 @@ implementation
       end;
     { the Pascal level may expect a different returndef compared to the
       declared one }
-    if not assigned(forceresdef) then
-      hlretdef:=pd.returndef
+    if pd.generate_safecall_wrapper then
+      begin
+        hlretdef:=ossinttype;
+        llvmretdef:=ossinttype;
+      end
     else
-      hlretdef:=forceresdef;
-    { llvm will always expect the original return def }
-    if not paramanager.ret_in_param(hlretdef, pd) then
-      llvmretdef:=llvmgetcgparadef(pd.funcretloc[callerside], true, callerside)
-    else
-      llvmretdef:=voidtype;
+      begin
+        if not assigned(forceresdef) then
+          hlretdef:=pd.returndef
+        else
+          hlretdef:=forceresdef;
+        { llvm will always expect the original return def }
+        if not paramanager.ret_in_param(hlretdef, pd) or
+           pd.generate_safecall_wrapper then
+          llvmretdef:=llvmgetcgparadef(pd.funcretloc[callerside], true, callerside)
+        else
+          llvmretdef:=voidtype;
+      end;
     if not is_void(llvmretdef) then
       res:=getregisterfordef(list, llvmretdef)
     else
@@ -1354,10 +1363,11 @@ implementation
       retpara:=get_call_result_cgpara(current_procinfo.procdef,nil);
       retpara.check_simple_location;
       retdef:=retpara.location^.def;
-      if is_void(retdef) or
-         { don't check retdef here, it is e.g. a pshortstring in case it's
-           shortstring that's returned in a parameter }
-         paramanager.ret_in_param(current_procinfo.procdef.returndef,current_procinfo.procdef) then
+      if (is_void(retdef) or
+          { don't check retdef here, it is e.g. a pshortstring in case it's
+            shortstring that's returned in a parameter }
+          paramanager.ret_in_param(current_procinfo.procdef.returndef,current_procinfo.procdef)) and
+         not current_procinfo.procdef.generate_safecall_wrapper then
         list.concat(taillvm.op_size(la_ret,voidtype))
       else
         begin
@@ -1371,7 +1381,8 @@ implementation
                   in the code generator -> remove any explicit extensions here }
                 retreg:=retpara.location^.register;
                 if (current_procinfo.procdef.returndef.typ in [orddef,enumdef]) and
-                   (retdef.typ in [orddef,enumdef]) then
+                   (retdef.typ in [orddef,enumdef]) and
+                   not current_procinfo.procdef.generate_safecall_wrapper then
                   begin
                     if (current_procinfo.procdef.returndef.size<retpara.location^.def.size) then
                       begin
@@ -1951,8 +1962,9 @@ implementation
       hreg: tregister;
       rettemp: treference;
     begin
-      if not is_void(hlretdef) and
-         not paramanager.ret_in_param(hlretdef, pd) then
+      if (not is_void(hlretdef) and
+          not paramanager.ret_in_param(hlretdef, pd)) or
+         pd.generate_safecall_wrapper then
         begin
           { should already be a copy, because it currently describes the llvm
             return location }

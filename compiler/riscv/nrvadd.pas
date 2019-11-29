@@ -69,7 +69,7 @@ implementation
 {$ifopt Q+}
   {$define AVOID_OVERFLOW}
   const
-     low_value = {$ifdef CPUALU64} low(int64) {$else} low(longint) {$endif};
+     low_value = {$ifdef CPU64BITALU} low(int64) {$else} low(longint) {$endif};
 {$endif}
 
     procedure trvaddnode.Cmp(signed: boolean);

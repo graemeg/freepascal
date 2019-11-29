@@ -578,8 +578,8 @@ unit cgobj;
 implementation
 
     uses
-       globals,systems,
-       verbose,paramgr,symsym,
+       globals,systems,fmodule,
+       verbose,paramgr,symsym,symtable,
        tgobj,cutils,procinfo;
 
 {*****************************************************************************
@@ -2817,6 +2817,8 @@ implementation
     procedure tcg.g_call(list: TAsmList;const s: string);
       begin
         allocallcpuregisters(list);
+        if systemunit<>current_module.globalsymtable then
+          current_module.add_extern_asmsym(s,AB_EXTERNAL,AT_FUNCTION);
         a_call_name(list,s,false);
         deallocallcpuregisters(list);
       end;

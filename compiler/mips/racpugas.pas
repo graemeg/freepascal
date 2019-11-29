@@ -93,7 +93,7 @@ Interface
         len:=1;
         actasmpattern[len]:='%';
         c:=current_scanner.asmgetchar;
-        while c in ['a'..'z','A'..'Z','0'..'9'] do
+        while c in ['a'..'z','A'..'Z','0'..'9','_'] do
           Begin
             inc(len);
             actasmpattern[len]:=c;
@@ -102,12 +102,26 @@ Interface
          actasmpattern[0]:=chr(len);
          uppervar(actasmpattern);
          actrel:=addr_no;
-         if (actasmpattern='%HI') then
-           actrel:=addr_high
-         else if (actasmpattern='%LO')then
-           actrel:=addr_low
-         else
-           Message(asmr_e_invalid_reference_syntax);
+         case actasmpattern of
+           '%CALL_LO':
+             actrel:=addr_low_call;
+           '%CALL_HI':
+             actrel:=addr_high_call;
+           '%GOT':
+             actrel:=addr_pic;
+           '%HIGH':
+             actrel:=addr_high;
+           '%LO':
+             actrel:=addr_low;
+           '%CALL16':
+             actrel:=addr_pic_call16;
+           '%GOT_LO':
+             actrel:=addr_low_pic;
+           '%GOT_HI':
+             actrel:=addr_high_pic;
+           else
+             Message(asmr_e_invalid_reference_syntax);
+         end;
          if actrel<>addr_no then
            actasmtoken:=AS_RELTYPE;
       end;

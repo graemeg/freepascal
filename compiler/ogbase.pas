@@ -1208,10 +1208,10 @@ implementation
           {user} [oso_Data,oso_load,oso_write],
           {code} [oso_Data,oso_load,oso_executable],
           {Data} [oso_Data,oso_load,oso_write],
-{ Readonly data with relocations must be initially writable for some targets.
-  Moreover, e.g. for ELF it depends on whether the executable is linked statically or
-  dynamically. Here we declare it writable, target-specific descendants must provide
-  further handling. }
+          { Readonly data with relocations must be initially writable for some targets.
+            Moreover, e.g. for ELF it depends on whether the executable is linked statically or
+            dynamically. Here we declare it writable, target-specific descendants must provide
+            further handling. }
           {roData} [oso_Data,oso_load,oso_write],
           {roData_norel} [oso_Data,oso_load],
           {bss} [oso_load,oso_write],
@@ -1317,6 +1317,7 @@ implementation
           both progbits and flags as parameters }
         options:=sectiontype2options(atype);
         flags:=[];
+        progbits:=SPB_None;
         if oso_load in options then
           include(flags,SF_A);
         if oso_write in options then
@@ -3064,7 +3065,12 @@ implementation
             begin
               exesym:=TExeSymbol(UnresolvedExeSymbols[i]);
               if (exesym.State=symstate_undefined) then
-                Comment(V_Error,'Undefined symbol: '+exesym.name);
+                begin
+                  if assigned(exesym.ObjSymbol) and assigned(exesym.ObjSymbol.ObjData) then
+                    Message2(link_e_undefined_symbol_in_obj,exesym.name,exesym.objsymbol.ObjData.Name)
+                  else
+                    Message1(link_e_undefined_symbol,exesym.name);
+                end;
             end;
 
         {

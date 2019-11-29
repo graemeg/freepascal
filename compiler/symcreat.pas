@@ -1394,7 +1394,10 @@ implementation
       hstaticvs.visibility:=fieldvs.visibility;
 {$else jvm}
       include(hstaticvs.symoptions,sp_internal);
-      tabstractrecordsymtable(recst).get_unit_symtable.insert(hstaticvs);
+      if df_generic in tdef(recst.defowner).defoptions then
+        tabstractrecordsymtable(recst).insert(hstaticvs)
+      else
+        tabstractrecordsymtable(recst).get_unit_symtable.insert(hstaticvs);
 {$endif jvm}
       { generate the symbol for the access }
       sl:=tpropaccesslist.create;
