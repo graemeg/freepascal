@@ -216,7 +216,7 @@ implementation
     uses
        systems,constexp,globals,
        cutils,verbose,
-       symtable,
+       symtable,symutil,
        defutil,defcmp,
        nbas,ncnv,nld,nmem,ncal,nmat,ninl,nutils,procinfo,
        pgenutil
@@ -333,6 +333,7 @@ implementation
                              (treetyp in order_theoretic_operators)
                            ) or
                            (
+                             (m_mac in current_settings.modeswitches) and
                              is_stringlike(rd) and
                              (ld.typ=orddef) and
                              (treetyp in string_comparison_operators)) or
@@ -3651,7 +3652,7 @@ implementation
           for i:=0 to def.symtable.symlist.count-1 do
             begin
               sym:=tsym(def.symtable.symlist[i]);
-              if (sym.typ<>fieldvarsym) or (sp_static in sym.symoptions) then
+              if not is_normal_fieldvarsym(sym) then
                 continue;
               if not is_valid_for_default(tfieldvarsym(sym).vardef) then
                 begin

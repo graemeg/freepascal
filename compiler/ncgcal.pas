@@ -1206,7 +1206,7 @@ implementation
            This does not apply to interrupt procedures, their ret statment never clears any stack parameters }
          else if paramanager.use_fixed_stack and
                  not(po_interrupt in procdefinition.procoptions) and
-                 (target_info.abi=abi_linux386_sysv) then
+                 (target_info.abi=abi_i386_dynalignedstack) then
            begin
              { however, a delphi style frame pointer for a nested subroutine
                is not cleared by the callee, so we have to compensate for this
@@ -1267,7 +1267,7 @@ implementation
              pd:=search_system_proc('fpc_safecallcheck');
              cgpara.init;
              { fpc_safecallcheck returns its parameter value (= function result of function we just called) }
-             paramanager.getintparaloc(current_asmdata.CurrAsmList,pd,1,cgpara);
+             paramanager.getcgtempparaloc(current_asmdata.CurrAsmList,pd,1,cgpara);
              location_reset(tmploc,LOC_REGISTER,def_cgsize(retloc.Def));
              tmploc.register:=hlcg.getregisterfordef(current_asmdata.CurrAsmList,retloc.Def);
              hlcg.gen_load_cgpara_loc(current_asmdata.CurrAsmList,retloc.Def,retloc,tmploc,true);

@@ -3218,6 +3218,12 @@ begin
     else
       undef_system_macro('FPC_REQUIRES_PROPER_ALIGNMENT');
 
+  if (tf_init_final_units_by_calls in target_info.flags) then
+    if def then
+      def_system_macro('FPC_INIT_FINAL_UNITS_BY_CALLS')
+    else
+      undef_system_macro('FPC_INIT_FINAL_UNITS_BY_CALLS');
+
   if source_info.system<>target_info.system then
     if def then
       def_system_macro('FPC_CROSSCOMPILING')

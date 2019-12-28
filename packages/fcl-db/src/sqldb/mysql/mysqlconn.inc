@@ -92,7 +92,10 @@ Type
   TCursorName = Class(TSQLCursor)
   protected
     FRes: PMYSQL_RES;                   { Record pointer }
-    FStatement : String;
+    // Statement with param placeholders $1 $2 etc.
+    FPreparedStatement : String;
+    // Statement with param placeholders replaced with actual values.
+    FActualStatement : String;
     Row : MYSQL_ROW;
     Lengths : pculong;                  { Lengths of the columns of the current row }
     RowsAffected : QWord;
@@ -589,9 +592,9 @@ begin
 //    DatabaseError('Parameters (not) yet supported for the MySQL SqlDB connection.',self);
   With Cursor as TCursorName do
     begin
-    FStatement:=Buf;
+    FPreparedStatement:=Buf;
     if assigned(AParams) and (AParams.count > 0) then
-      FStatement := AParams.ParseSQL(FStatement,false,sqEscapeSlash in ConnOptions, sqEscapeRepeat in ConnOptions,psSimulated,paramBinding,ParamReplaceString);
+      FPreparedStatement := AParams.ParseSQL(FPreparedStatement,false,sqEscapeSlash in ConnOptions, sqEscapeRepeat in ConnOptions,psSimulated,paramBinding,ParamReplaceString);
     FPrepared:=True;
     end
 end;
@@ -621,6 +624,7 @@ begin
     mysql_free_result(C.FRes);
     C.FRes:=Nil;
     end;
+  C.FInitFieldDef:=True;
   SetLength(c.MapDSRowToMSQLRow,0);
   inherited;
 end;
@@ -648,18 +652,19 @@ begin
         ParamNames[AParams.count-i-1] := C.ParamReplaceString+inttostr(AParams[i].Index+1);
         ParamValues[AParams.count-i-1] := GetAsSQLText(AParams[i]);
         end;
-      // paramreplacestring kan een probleem geven bij postgres als hij niet meer gewoon $ is?
-      C.FStatement := stringsreplace(C.FStatement,ParamNames,ParamValues,[rfReplaceAll]);
-      end;
+      C.FActualStatement := stringsreplace(C.FPreparedStatement,ParamNames,ParamValues,[rfReplaceAll]);
+      end
+    else
+      C.FActualStatement:=C.FPreparedStatement;
 
     if LogEvent(detParamValue) then
       LogParams(AParams);
     if LogEvent(detExecute) then
-      Log(detExecute, C.FStatement);
+      Log(detExecute, C.FPreparedStatement);
     if LogEvent(detActualSQL) then
-      Log(detActualSQL,C.FStatement);
+      Log(detActualSQL,C.FActualStatement);
 
-    if mysql_query(FMySQL,Pchar(C.FStatement))<>0 then
+    if mysql_query(FMySQL,Pchar(C.FActualStatement))<>0 then
       begin
       if not ForcedClose then
         MySQLError(FMYSQL,SErrExecuting,Self)

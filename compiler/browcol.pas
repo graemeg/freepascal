@@ -1560,15 +1560,10 @@ end;
                    Symbol^.Flags:=(Symbol^.Flags or sfPointer);
                    Symbol^.RelatedTypeID:=Ptrint(tpointerdef(vardef).pointeddef);
                  end;
-               if typ=fieldvarsym then
-                 MemInfo.Addr:=tfieldvarsym(sym).fieldoffset
+               if tabstractnormalvarsym(sym).localloc.loc=LOC_REFERENCE then
+                 MemInfo.Addr:=tabstractnormalvarsym(sym).localloc.reference.offset
                else
-                 begin
-                   if tabstractnormalvarsym(sym).localloc.loc=LOC_REFERENCE then
-                     MemInfo.Addr:=tabstractnormalvarsym(sym).localloc.reference.offset
-                   else
-                     MemInfo.Addr:=0;
-                 end;
+                 MemInfo.Addr:=0;
                if assigned(vardef) and (vardef.typ=arraydef) then
                  begin
                    if tarraydef(vardef).highrange<tarraydef(vardef).lowrange then

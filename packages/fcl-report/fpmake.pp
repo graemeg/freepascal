@@ -31,7 +31,7 @@ begin
     P.Email := '';
     P.Description := 'GUI-independent Reporting Engine';
     P.NeedLibC:= false;
-    P.OSes:=[linux, win32, darwin, freebsd];
+    P.OSes:=[linux, win32, win64, darwin, freebsd];
     P.SourcePath.Add('src');
 {$IFDEF VER2_6}    
     T:=P.Targets.AddUnit('fprepexprpars.pp');

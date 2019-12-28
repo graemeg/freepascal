@@ -353,7 +353,7 @@ type
 
   { TDataPacketReader }
 
-  TDataPacketFormat = (dfBinary,dfXML,dfXMLUTF8,dfAny);
+  TDataPacketFormat = (dfBinary,dfXML,dfXMLUTF8,dfAny,dfDefault);
 
   TDatapacketReaderClass = class of TDatapacketReader;
   TDataPacketReader = class(TObject)
@@ -564,6 +564,10 @@ type
     Property BufIndexes[Aindex : Integer] : TBufIndex Read GetBufIndex;
   protected
     // abstract & virtual methods of TDataset
+    class function DefaultReadFileFormat : TDataPacketFormat; virtual;
+    class function DefaultWriteFileFormat : TDataPacketFormat; virtual;
+    class function DefaultPacketClass : TDataPacketReaderClass ; virtual;
+    function CreateDefaultPacketReader(aStream : TStream): TDataPacketReader ; virtual;
     procedure SetPacketRecords(aValue : integer); virtual;
     procedure SetRecNo(Value: Longint); override;
     function  GetRecNo: Longint; override;
@@ -640,9 +644,9 @@ type
 
     procedure SetDatasetPacket(AReader : TDataPacketReader);
     procedure GetDatasetPacket(AWriter : TDataPacketReader);
-    procedure LoadFromStream(AStream : TStream; Format: TDataPacketFormat = dfAny);
+    procedure LoadFromStream(AStream : TStream; Format: TDataPacketFormat = dfDefault);
     procedure SaveToStream(AStream : TStream; Format: TDataPacketFormat = dfBinary);
-    procedure LoadFromFile(AFileName: string = ''; Format: TDataPacketFormat = dfAny);
+    procedure LoadFromFile(AFileName: string = ''; Format: TDataPacketFormat = dfDefault);
     procedure SaveToFile(AFileName: string = ''; Format: TDataPacketFormat = dfBinary);
     procedure CreateDataset;
     Procedure Clear; // Will close and remove all field definitions.
@@ -738,17 +742,18 @@ var
 
 begin
   Result := False;
-  for i := 0 to length(RegisteredDatapacketReaders)-1 do if ((AFormat=dfAny) or (AFormat=RegisteredDatapacketReaders[i].Format)) then
-    begin
-    if (AStream=nil) or (RegisteredDatapacketReaders[i].ReaderClass.RecognizeStream(AStream)) then
+  for i := 0 to length(RegisteredDatapacketReaders)-1 do
+    if ((AFormat=dfAny) or (AFormat=RegisteredDatapacketReaders[i].Format)) then
       begin
-      ADataReaderClass := RegisteredDatapacketReaders[i];
-      Result := True;
-      if (AStream <> nil) then AStream.Seek(0,soFromBeginning);
-      break;
+      if (AStream=nil) or (RegisteredDatapacketReaders[i].ReaderClass.RecognizeStream(AStream)) then
+        begin
+        ADataReaderClass := RegisteredDatapacketReaders[i];
+        Result := True;
+        if (AStream <> nil) then AStream.Seek(0,soFromBeginning);
+        break;
+        end;
+      AStream.Seek(0,soFromBeginning);
       end;
-    AStream.Seek(0,soFromBeginning);
-    end;
 end;
 
 function DBCompareText(subValue, aValue: pointer; size: integer; options: TLocateOptions): LargeInt;
@@ -1431,8 +1436,8 @@ end;
 procedure TCustomBufDataset.DoBeforeClose;
 begin
   inherited DoBeforeClose;
-  if FFileName<>'' then
-    SaveToFile(FFileName);
+  if (FFileName<>'') then
+    SaveToFile(FFileName,dfDefault);
 end;
 
 procedure TCustomBufDataset.InternalClose;
@@ -2258,6 +2263,27 @@ begin
       FMaxIndexesCount:=FIndexes.Count+2; // Custom+Default order
 end;
 
+class function TCustomBufDataset.DefaultReadFileFormat: TDataPacketFormat;
+begin
+  Result:=dfAny;
+end;
+
+class function TCustomBufDataset.DefaultWriteFileFormat: TDataPacketFormat;
+begin
+  Result:=dfBinary;
+end;
+
+class function TCustomBufDataset.DefaultPacketClass: TDataPacketReaderClass;
+begin
+  Result:=TFpcBinaryDatapacketReader;
+end;
+
+function TCustomBufDataset.CreateDefaultPacketReader(aStream : TStream): TDataPacketReader;
+begin
+  Result:=DefaultPacketClass.Create(Self,aStream);
+end;
+
+
 procedure TCustomBufDataset.SetIndexFieldNames(const AValue: String);
 
 begin
@@ -3056,11 +3082,17 @@ end;
 
 function TCustomBufDataset.GetPacketReader(const Format: TDataPacketFormat; const AStream: TStream): TDataPacketReader;
 
-var APacketReader: TDataPacketReader;
-    APacketReaderReg: TDatapacketReaderRegistration;
-
+var
+  APacketReader: TDataPacketReader;
+  APacketReaderReg: TDatapacketReaderRegistration;
+  Fmt : TDataPacketFormat;
 begin
-  if GetRegisterDatapacketReader(AStream, format, APacketReaderReg) then
+  fmt:=Format;
+  if (Fmt=dfDefault) then
+    fmt:=DefaultReadFileFormat;
+  if fmt=dfDefault then
+    APacketReader := CreateDefaultPacketReader(AStream)
+  else if GetRegisterDatapacketReader(AStream, fmt, APacketReaderReg) then
     APacketReader := APacketReaderReg.ReaderClass.Create(Self, AStream)
   else if TFpcBinaryDatapacketReader.RecognizeStream(AStream) then
     begin
@@ -3433,11 +3465,17 @@ end;
 procedure TCustomBufDataset.SaveToStream(AStream: TStream; Format: TDataPacketFormat);
 var APacketReaderReg : TDatapacketReaderRegistration;
     APacketWriter : TDataPacketReader;
+    Fmt : TDataPacketFormat;
 begin
   CheckBiDirectional;
-  if GetRegisterDatapacketReader(Nil,format,APacketReaderReg) then
+  fmt:=Format;
+  if Fmt=dfDefault then
+    fmt:=DefaultWriteFileFormat;
+  if fmt=dfDefault then
+    APacketWriter := CreateDefaultPacketReader(AStream)
+  else if GetRegisterDatapacketReader(Nil,fmt,APacketReaderReg) then
     APacketWriter := APacketReaderReg.ReaderClass.Create(Self, AStream)
-  else if Format = dfBinary then
+  else if fmt = dfBinary then
     APacketWriter := TFpcBinaryDatapacketReader.Create(Self, AStream)
   else
     DatabaseError(SNoReaderClassRegistered,Self);
@@ -3449,9 +3487,13 @@ begin
 end;
 
 procedure TCustomBufDataset.LoadFromFile(AFileName: string; Format: TDataPacketFormat);
-var AFileStream : TFileStream;
+
+var
+  AFileStream : TFileStream;
+
 begin
-  if AFileName='' then AFileName := FFileName;
+  if AFileName='' then
+     AFileName := FFileName;
   AFileStream := TFileStream.Create(AFileName,fmOpenRead);
   try
     LoadFromStream(AFileStream, Format);
@@ -3460,11 +3502,14 @@ begin
   end;
 end;
 
-procedure TCustomBufDataset.SaveToFile(AFileName: string;
-  Format: TDataPacketFormat);
-var AFileStream : TFileStream;
+procedure TCustomBufDataset.SaveToFile(AFileName: string; Format: TDataPacketFormat);
+
+var
+  AFileStream : TFileStream;
+
 begin
-  if AFileName='' then AFileName := FFileName;
+  if AFileName='' then
+    AFileName := FFileName;
   AFileStream := TFileStream.Create(AFileName,fmCreate);
   try
     SaveToStream(AFileStream, Format);
@@ -3536,7 +3581,7 @@ begin
   if not assigned(FDatasetReader) then
     begin
     FFileStream := TFileStream.Create(FileName, fmOpenRead);
-    FDatasetReader := GetPacketReader(dfAny, FFileStream);
+    FDatasetReader := GetPacketReader(dfDefault, FFileStream);
     end;
 
   FieldDefs.Clear;

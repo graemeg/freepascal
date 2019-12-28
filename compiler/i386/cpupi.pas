@@ -92,7 +92,7 @@ unit cpupi;
           from the stack at the end of the procedure (in the "ret $xx").
           If the stack is fixed, nothing has to be removed by the callee, except
           if a 16 byte aligned stack on i386-linux is used     }
-        if paramanager.use_fixed_stack and not(target_info.abi=abi_linux386_sysv) then
+        if paramanager.use_fixed_stack and not(target_info.abi=abi_i386_dynalignedstack) then
           para_stack_size := 0;
       end;
 

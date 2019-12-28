@@ -161,7 +161,7 @@ implementation
                 else
                   list.concat(taicpu.op_reg_const(A_LUI,register,(a shr 12) and $FFFFF));
 
-                list.concat(taicpu.op_reg_reg_const(A_ADDIW,register,register,SarSmallint(a shl 4,4)));
+                list.concat(taicpu.op_reg_reg_const(A_ADDIW,register,register,SarSmallint(smallint(a shl 4),4)));
               end
             else
               begin
@@ -524,9 +524,9 @@ implementation
         paraloc1.init;
         paraloc2.init;
         paraloc3.init;
-        paramanager.getintparaloc(list, pd, 1, paraloc1);
-        paramanager.getintparaloc(list, pd, 2, paraloc2);
-        paramanager.getintparaloc(list, pd, 3, paraloc3);
+        paramanager.getcgtempparaloc(list, pd, 1, paraloc1);
+        paramanager.getcgtempparaloc(list, pd, 2, paraloc2);
+        paramanager.getcgtempparaloc(list, pd, 3, paraloc3);
         a_load_const_cgpara(list, OS_SINT, len, paraloc3);
         a_loadaddr_ref_cgpara(list, dest, paraloc2);
         a_loadaddr_ref_cgpara(list, Source, paraloc1);

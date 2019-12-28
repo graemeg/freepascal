@@ -162,9 +162,9 @@ unit cgexcept;
 
         { fpc_pushexceptaddr(exceptionframetype, setjmp_buffer, exception_address_chain_entry) }
         pd:=search_system_proc('fpc_pushexceptaddr');
-        paramanager.getintparaloc(list,pd,1,paraloc1);
-        paramanager.getintparaloc(list,pd,2,paraloc2);
-        paramanager.getintparaloc(list,pd,3,paraloc3);
+        paramanager.getcgtempparaloc(list,pd,1,paraloc1);
+        paramanager.getcgtempparaloc(list,pd,2,paraloc2);
+        paramanager.getcgtempparaloc(list,pd,3,paraloc3);
         if pd.is_pushleftright then
           begin
             { type of exceptionframe }
@@ -197,7 +197,7 @@ unit cgexcept;
 
         { fpc_setjmp(result_of_pushexceptaddr_call) }
         pd:=search_system_proc('fpc_setjmp');
-        paramanager.getintparaloc(list,pd,1,paraloc1);
+        paramanager.getcgtempparaloc(list,pd,1,paraloc1);
 
         hlcg.a_load_reg_cgpara(list,pushexceptres.def,tmpresloc.register,paraloc1);
         paramanager.freecgpara(list,paraloc1);
@@ -302,7 +302,7 @@ unit cgexcept;
         reference_reset_symbol(href2, current_asmdata.RefAsmSymbol(excepttype.vmt_mangledname, AT_DATA, indirect), 0, sizeof(pint), []);
         if otherunit then
           current_module.add_extern_asmsym(excepttype.vmt_mangledname, AB_EXTERNAL, AT_DATA);
-        paramanager.getintparaloc(list, pd, 1, paraloc1);
+        paramanager.getcgtempparaloc(list, pd, 1, paraloc1);
         hlcg.a_loadaddr_ref_cgpara(list, excepttype.vmt_def, href2, paraloc1);
         paramanager.freecgpara(list, paraloc1);
         fpc_catches_res:=hlcg.g_call_system_proc(list, pd, [@paraloc1], nil);

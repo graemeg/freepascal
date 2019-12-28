@@ -1021,7 +1021,7 @@
 (Ch: [Ch_REDX, Ch_Rop1, Ch_Wop2, Ch_Wop3]),
 (Ch: [Ch_Rop1, Ch_Rop2, Ch_Wop3]),
 (Ch: [Ch_Rop1, Ch_Rop2, Ch_Wop3]),
-(Ch: [Ch_Rop1, Ch_Wop2]),
+(Ch: [Ch_Rop2, Ch_Wop3]),
 (Ch: [Ch_Rop1, Ch_Rop2, Ch_Wop3]),
 (Ch: [Ch_Rop1, Ch_Rop2, Ch_Wop3]),
 (Ch: [Ch_Rop1, Ch_Rop2, Ch_Wop3]),

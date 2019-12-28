@@ -8,7 +8,7 @@ uses fpmkunit;
 procedure add_fppkg_util(const ADirectory: string);
 
 const
-  lnetOSes = [linux,beos,haiku,freebsd,netbsd,openbsd,darwin,iphonesim,solaris,win32,win64,wince,aix];
+  lnetOSes = [linux,beos,haiku,freebsd,netbsd,openbsd,darwin,iphonesim,solaris,win32,win64,wince,aix,dragonfly];
   WindowsOSes = [win32,win64,wince];
 Var
   P : TPackage;

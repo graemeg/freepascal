@@ -41,7 +41,7 @@ unit i_embed;
             name         : 'Embedded';
             shortname    : 'embedded';
             flags        : [tf_needs_symbol_size,tf_files_case_sensitive,tf_requires_proper_alignment,
-                            tf_smartlink_sections];
+                            tf_smartlink_sections,tf_init_final_units_by_calls];
             cpu          : cpu_arm;
             unit_env     : '';
             extradefines : '';
@@ -108,7 +108,7 @@ unit i_embed;
             name         : 'Embedded';
             shortname    : 'embedded';
             flags        : [tf_needs_symbol_size,tf_files_case_sensitive,
-                            tf_smartlink_sections];
+                            tf_smartlink_sections,tf_init_final_units_by_calls];
             cpu          : cpu_avr;
             unit_env     : '';
             extradefines : '';

@@ -28,7 +28,7 @@ unit widestr;
   interface
 
     uses
-       {$if FPC_FULLVERSION<20700}ccharset{$else}charset{$endif},globtype;
+      charset,globtype;
 
 
     type
@@ -69,7 +69,6 @@ unit widestr;
   implementation
 
     uses
-      {$if FPC_FULLVERSION>20700}
       { use only small codepage maps, others will be }
       { loaded on demand from -FM path               }
 
@@ -81,7 +80,6 @@ unit widestr;
       cp8859_1,cp850,cp437,cp1252,cp646,
       cp874, cp856,cp852,cp8859_2,
       cp1250,cp1254,cp1255,cp1256,cp1257,cp1258,
-      {$endif}
       globals,cutils;
 
 
@@ -292,19 +290,15 @@ unit widestr;
     function cpavailable(const s: string): boolean;
       begin
         result:=mappingavailable(lower(s));
-        {$if FPC_FULLVERSION>20700}
         if not result then
           result:=(unicodepath<>'')and(registerbinarymapping(unicodepath+'charset',lower(s)));
-        {$ifend}
       end;
 
     function cpavailable(cp: word): boolean;
       begin
         result:=mappingavailable(cp);
-        {$if FPC_FULLVERSION>20700}
         if not result then
           result:=(unicodepath<>'')and(registerbinarymapping(unicodepath+'charset','cp'+tostr(cp)));
-        {$ifend}
       end;
 
     procedure changecodepage(

@@ -499,6 +499,7 @@ const
   nBitWiseOperationIs32Bit = 4028;
   nDuplicateMessageIdXAtY = 4029;
   nDispatchRequiresX = 4030;
+  nConstRefNotForXAsConst = 4031;
 // resourcestring patterns of messages
 resourcestring
   sPasElementNotSupported = 'Pascal element not supported: %s';
@@ -531,6 +532,7 @@ resourcestring
   sBitWiseOperationIs32Bit = 'Bitwise operation is 32-bit';
   sDuplicateMessageIdXAtY = 'Duplicate message id "%s" at %s';
   sDispatchRequiresX = 'Dispatch requires %s';
+  sConstRefNotForXAsConst = 'ConstRef not yet implemented for %s. Treating as Const';
 
 const
   ExtClassBracketAccessor = '[]'; // external name '[]' marks the array param getter/setter
@@ -3939,19 +3941,30 @@ end;
 procedure TPas2JSResolver.FinishArgument(El: TPasArgument);
 var
   TypeEl, ElTypeEl: TPasType;
+  C: TClass;
 begin
   inherited FinishArgument(El);
   if El.ArgType<>nil then
     begin
     TypeEl:=ResolveAliasType(El.ArgType);
+    C:=TypeEl.ClassType;
 
-    if TypeEl.ClassType=TPasPointerType then
+    if C=TPasPointerType then
       begin
       ElTypeEl:=ResolveAliasType(TPasPointerType(TypeEl).DestType);
       if ElTypeEl.ClassType=TPasRecordType then
         // ^record
       else
         RaiseMsg(20180423110239,nNotSupportedX,sNotSupportedX,['pointer'],El);
+      end;
+
+    if El.Access=argConstRef then
+      begin
+      if (C=TPasRecordType) or (C=TPasArrayType) then
+        // argConstRef works same as argConst for records -> ok
+      else
+        LogMsg(20191215133912,mtWarning,nConstRefNotForXAsConst,sConstRefNotForXAsConst,
+          [GetElementTypeName(TypeEl)],El);
       end;
     end;
 end;
@@ -17380,7 +17393,7 @@ begin
   // add flags
   case Arg.Access of
     argDefault: ;
-    argConst: inc(Flags,pfConst);
+    argConst,argConstRef: inc(Flags,pfConst);
     argVar: inc(Flags,pfVar);
     argOut: inc(Flags,pfOut);
   else
@@ -22346,7 +22359,7 @@ begin
     exit;
     end;
 
-  if not (TargetArg.Access in [argDefault,argVar,argOut,argConst]) then
+  if not (TargetArg.Access in [argDefault,argVar,argOut,argConst,argConstRef]) then
     DoError(20170213220927,nPasElementNotSupported,sPasElementNotSupported,
             [AccessNames[TargetArg.Access]],El);
   aResolver:=AContext.Resolver;

@@ -139,11 +139,7 @@ unit aoptcpu;
             begin
               current_filepos:=taicpu(p).fileinfo;
               if InsContainsSegRef(taicpu(p)) then
-                begin
-                  p:=tai(p.next);
-                  Result:=true;
-                  exit;
-                end;
+                exit;
               case taicpu(p).opcode Of
                 A_AND:
                   Result:=OptPass1And(p);

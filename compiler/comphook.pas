@@ -305,8 +305,7 @@ begin
      if status.currentcolumn>0 then
       begin
         if status.use_gccoutput then
-          hs:=gccfilename(status.currentsource)+':'+tostr(status.currentline)+': '+hs+' '+
-              tostr(status.currentcolumn)+': '+s
+          hs:=gccfilename(status.currentsource)+':'+tostr(status.currentline)+':'+tostr(status.currentcolumn)+': '+hs+' '+s
         else
           begin
             hs:=status.currentsource+'('+tostr(status.currentline)+

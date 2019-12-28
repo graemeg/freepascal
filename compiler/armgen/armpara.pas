@@ -43,7 +43,7 @@ type
 implementation
 
   uses
-    symconst,symdef,symsym,defutil;
+    symconst,symdef,symsym,symutil,defutil;
 
 
   function tarmgenparamanager.is_hfa(p: tdef; out basedef: tdef): boolean;
@@ -106,7 +106,7 @@ implementation
             for i:=0 to tabstractrecorddef(p).symtable.symlist.count-1 do
               begin
                 sym:=tsym(tabstractrecorddef(p).symtable.symlist[i]);
-                if sym.typ<>fieldvarsym then
+                if not is_normal_fieldvarsym(sym) then
                   continue;
                 if not is_hfa_internal(tfieldvarsym(sym).vardef,basedef,elecount) then
                   exit

@@ -1,0 +1,29 @@
+object DaemonMapper1: TDaemonMapper1
+  DaemonDefs = <  
+    item
+      DaemonClassName = 'TDaemon1'
+      Name = 'TDaemon1'
+      Options = [doAllowStop, doAllowPause]
+      WinBindings.Dependencies = <>
+      WinBindings.StartType = stBoot
+      WinBindings.WaitHint = 0
+      WinBindings.IDTag = 0
+      WinBindings.ServiceType = stWin32
+      WinBindings.ErrorSeverity = esIgnore
+      LogStatusReport = False
+    end  
+    item
+      DaemonClassName = 'TDaemon2'
+      Name = 'TDaemon2'
+      Options = [doAllowStop, doAllowPause]
+      WinBindings.Dependencies = <>
+      WinBindings.StartType = stBoot
+      WinBindings.WaitHint = 0
+      WinBindings.IDTag = 0
+      WinBindings.ServiceType = stWin32
+      WinBindings.ErrorSeverity = esIgnore
+      LogStatusReport = False
+    end>
+  Left = 284
+  Top = 140
+end

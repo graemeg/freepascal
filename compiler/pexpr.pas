@@ -1380,7 +1380,12 @@ implementation
                                  not(po_staticmethod in tcallnode(p1).procdefinition.procoptions) and
                                  (not assigned(current_structdef) or
                                   not def_is_related(current_structdef,structh)) then
-                                Message(parser_e_only_static_members_via_object_type);
+                                begin
+                                  p1.free;
+                                  p1:=cerrornode.create;
+                                  Message(parser_e_only_static_members_via_object_type);
+                                  exit;
+                                end;
                             end;
                           { in Java, constructors are not automatically inherited
                             -> calling a constructor from a parent type will create

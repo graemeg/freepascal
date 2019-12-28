@@ -68,7 +68,7 @@ procedure TStringBuilder.SetLength(AValue: Integer);
 begin
   CheckNegative(AValue,'AValue');
   CheckRange(AValue,0,MaxCapacity);
-  if AValue>Capacity then
+  While AValue>Capacity do
     Grow;
   Flength:=AValue;
 end;

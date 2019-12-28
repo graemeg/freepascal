@@ -1263,7 +1263,7 @@ end;
 constructor TOracleConnection.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  FConnOptions := FConnOptions + [sqEscapeRepeat];
+  FConnOptions := FConnOptions + [sqEscapeRepeat,sqSequences];
   FOciEnvironment := nil;
   FOciError := nil;
   FOciServer := nil;

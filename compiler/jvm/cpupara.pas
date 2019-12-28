@@ -44,7 +44,7 @@ interface
         {Returns a structure giving the information on the storage of the parameter
         (which must be an integer parameter)
         @param(nr Parameter number of routine, starting from 1)}
-        procedure getintparaloc(list: TAsmList; pd : tabstractprocdef; nr : longint; var cgpara : tcgpara);override;
+        procedure getcgtempparaloc(list: TAsmList; pd : tabstractprocdef; nr : longint; var cgpara : tcgpara);override;
         function  create_paraloc_info(p : TAbstractProcDef; side: tcallercallee):longint;override;
         function  create_varargs_paraloc_info(p : tabstractprocdef; side: tcallercallee; varargspara:tvarargsparalist):longint;override;
         function  get_funcretloc(p : tabstractprocdef; side: tcallercallee; forcetempdef: tdef): tcgpara;override;
@@ -65,7 +65,7 @@ implementation
       hlcgobj;
 
 
-    procedure tcpuparamanager.GetIntParaLoc(list: TAsmList; pd : tabstractprocdef; nr : longint; var cgpara : tcgpara);
+    procedure tcpuparamanager.getcgtempparaloc(list: TAsmList; pd : tabstractprocdef; nr : longint; var cgpara : tcgpara);
       begin
         { not yet implemented/used }
         internalerror(2010121001);

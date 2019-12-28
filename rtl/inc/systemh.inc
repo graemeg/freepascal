@@ -193,18 +193,10 @@ Type
   {$ifndef FPUNONE}
     ValReal = Double;
   {$endif}
-
-  { map comp to int64, but this doesn't mean we compile the comp support in! }
-  Comp = Int64;
-  PComp = ^Comp;
 {$endif FPC_HAS_TYPE_EXTENDED}
 
   {$define SUPPORT_SINGLE}
   {$define SUPPORT_DOUBLE}
-
-  {$ifndef VER2_6}
-  FarPointer = Pointer;
-  {$endif}
 {$endif CPUX86_64}
 
 {$ifdef CPUM68K}
@@ -224,12 +216,6 @@ Type
 
     ValReal = Real;
   {$endif}
-
-  { Comp type does not exist on fpu }
-  Comp    = int64;
-  PComp = ^Comp;
-
-  FarPointer = Pointer;
 {$endif CPUM68K}
 
 {$ifdef CPUPOWERPC}
@@ -243,90 +229,62 @@ Type
 
     ValReal = Double;
   {$endif}
-
-  { map comp to int64, but this doesn't mean we compile the comp support in! }
-  Comp = Int64;
-  PComp = ^Comp;
-
-  FarPointer = Pointer;
 {$endif CPUPOWERPC}
 
 {$ifdef CPUSPARC}
   {$define DEFAULT_DOUBLE}
 
-  {$define SUPPORT_SINGLE}
-  {$define SUPPORT_DOUBLE}
-
   {$define FPC_INCLUDE_SOFTWARE_SHIFT_INT64}
 
   {$ifndef FPUNONE}
+    {$define SUPPORT_SINGLE}
+    {$define SUPPORT_DOUBLE}
+
     ValReal = Double;
   {$endif}
-
-  { map comp to int64, but this doesn't mean we compile the comp support in! }
-  Comp = Int64;
-  PComp = ^Comp;
-
-  FarPointer = Pointer;
 {$endif CPUSPARC}
 
 {$ifdef CPUSPARC64}
   {$define DEFAULT_DOUBLE}
 
-  {$define SUPPORT_SINGLE}
-  {$define SUPPORT_DOUBLE}
-
   {$ifndef FPUNONE}
+    {$define SUPPORT_SINGLE}
+    {$define SUPPORT_DOUBLE}
+
     ValReal = Double;
   {$endif}
-
-  { map comp to int64, but this doesn't mean we compile the comp support in! }
-  Comp = Int64;
-  PComp = ^Comp;
-
-  FarPointer = Pointer;
 {$endif CPUSPARC64}
 
 {$if defined(CPUMIPS32) or defined(CPUMIPSEL32)}
   {$define DEFAULT_DOUBLE}
 
-  {$define SUPPORT_SINGLE}
-  {$define SUPPORT_DOUBLE}
-
   {$define FPC_INCLUDE_SOFTWARE_SHIFT_INT64}
 
   {$ifndef FPUNONE}
+    {$define SUPPORT_SINGLE}
+    {$define SUPPORT_DOUBLE}
+
     {$define FPC_INCLUDE_SOFTWARE_INT64_TO_DOUBLE}
+
     ValReal = Double;
   {$endif}
-
-  { map comp to int64, but this doesn't mean we compile the comp support in! }
-  Comp = Int64;
-  PComp = ^Comp;
-
-  FarPointer = Pointer;
 {$endif CPUMIPS32}
 
 
 {$ifdef CPUARM}
   {$define DEFAULT_DOUBLE}
 
-  {$define SUPPORT_SINGLE}
-  {$define SUPPORT_DOUBLE}
-
   {$define FPC_INCLUDE_SOFTWARE_MOD_DIV}
   {$define FPC_INCLUDE_SOFTWARE_SHIFT_INT64}
-  {$define FPC_INCLUDE_SOFTWARE_INT64_TO_DOUBLE}
 
   {$ifndef FPUNONE}
+    {$define SUPPORT_SINGLE}
+    {$define SUPPORT_DOUBLE}
+
+    {$define FPC_INCLUDE_SOFTWARE_INT64_TO_DOUBLE}
+
     ValReal = Real;
   {$endif}
-
-  { map comp to int64, but this doesn't mean we compile the comp support in! }
-  Comp = Int64;
-  PComp = ^Comp;
-
-  FarPointer = Pointer;
 {$endif CPUARM}
 
 {$ifdef CPUAVR}
@@ -344,12 +302,6 @@ Type
 
     ValReal = Real;
   {$endif}
-
-  { map comp to int64, but this doesn't mean we compile the comp support in! }
-  Comp = Int64;
-  PComp = ^Comp;
-
-  FarPointer = Pointer;
 {$endif CPUAVR}
 
 {$ifdef CPUAARCH64}
@@ -359,19 +311,10 @@ Type
   {$define SUPPORT_DOUBLE}
 
   ValReal = Double;
-
-  { map comp to int64, but this doesn't mean we compile the comp support in! }
-  Comp = Int64;
-  PComp = ^Comp;
-
-  FarPointer = Pointer;
 {$endif CPUAARCH64}
 
 {$ifdef CPURISCV32}
   {$define DEFAULT_DOUBLE}
-
-  {$define SUPPORT_SINGLE}
-  {$define SUPPORT_DOUBLE}
 
   {$define FPC_INCLUDE_SOFTWARE_MOD_DIV}
   {$define FPC_INCLUDE_SOFTWARE_MUL}
@@ -379,38 +322,35 @@ Type
   {$define FPC_INCLUDE_SOFTWARE_INT64_TO_DOUBLE}
 
   {$ifndef FPUNONE}
+    {$define SUPPORT_SINGLE}
+    {$define SUPPORT_DOUBLE}
+
     {$define FPC_INCLUDE_SOFTWARE_INT64_TO_DOUBLE}
+
     ValReal = Double;
   {$endif}
-
-  { map comp to int64, but this doesn't mean we compile the comp support in! }
-  Comp = Int64;
-  PComp = ^Comp;
-
-  FarPointer = Pointer;
 {$endif CPURISCV32}
 
 {$ifdef CPURISCV64}
   {$define DEFAULT_DOUBLE}
-
-  {$define SUPPORT_SINGLE}
-  {$define SUPPORT_DOUBLE}
 
   {$define FPC_INCLUDE_SOFTWARE_MOD_DIV}
   {$define FPC_INCLUDE_SOFTWARE_MUL}
   {$define FPC_INCLUDE_SOFTWARE_INT64_TO_DOUBLE}
 
   {$ifndef FPUNONE}
+    {$define SUPPORT_SINGLE}
+    {$define SUPPORT_DOUBLE}
+
     {$define FPC_INCLUDE_SOFTWARE_INT64_TO_DOUBLE}
+
     ValReal = Double;
   {$endif}
-
-  { map comp to int64, but this doesn't mean we compile the comp support in! }
-  Comp = Int64;
-  PComp = ^Comp;
-
-  FarPointer = Pointer;
 {$endif CPURISCV64}
+
+{$if not declared(FarPointer)}
+  FarPointer = Pointer;
+{$endif}
 
 
 {$ifdef CPU64}
@@ -511,6 +451,11 @@ Type
   UInt32  = Cardinal;
   UIntPtr = PtrUInt;
 
+{$if not declared(Comp)}
+  { map comp to int64, but this doesn't mean we compile the comp support in! }
+  Comp = type Int64;
+{$endif}
+
 { Zero - terminated strings }
   PChar               = ^Char;
   PPChar              = ^PChar;
@@ -568,9 +513,9 @@ Type
   PPDouble            = ^PDouble;
 {$endif}
   PCurrency           = ^Currency;
-{$ifdef SUPPORT_COMP}
+{$if declared(Comp)}
   PComp               = ^Comp;
-{$endif SUPPORT_COMP}
+{$endif declared(Comp)}
 
   PSmallInt           = ^Smallint;
   PShortInt           = ^Shortint;

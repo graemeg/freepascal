@@ -919,8 +919,32 @@ implementation
            end;
            result:=cifnode.create(left,node_thenblock,node_elseblock);
            left:=nil;
+           exit;
          end;
-      end;
+       { convert single case branch into if-statement }
+       if (flabels^.greater=nil) and (flabels^.less=nil) then
+         if flabels^.label_type=ltOrdinal then
+           begin
+             if flabels^._low=flabels^._high then
+               begin
+                 result:=cifnode.create_internal(
+                   caddnode.create_internal(equaln,left.getcopy,cordconstnode.create(flabels^._low,left.resultdef,false)),
+                   pcaseblock(blocks[flabels^.blockid])^.statement,elseblock);
+               end
+             else
+               begin
+                 result:=cifnode.create_internal(
+                   caddnode.create_internal(andn,
+                     caddnode.create_internal(gten,left.getcopy,cordconstnode.create(flabels^._low,left.resultdef,false)),
+                     caddnode.create_internal(lten,left.getcopy,cordconstnode.create(flabels^._high,left.resultdef,false))
+                   ),
+                   pcaseblock(blocks[flabels^.blockid])^.statement,elseblock);
+               end;
+             elseblock:=nil;
+             pcaseblock(blocks[flabels^.blockid])^.statement:=nil;
+             exit;
+           end;
+        end;
 
 
     function tcasenode.simplify(forinline:boolean):tnode;

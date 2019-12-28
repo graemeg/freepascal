@@ -394,7 +394,7 @@ begin
   else
     begin // short options have form '-o value'
     If (AIndex<ParamCount) then
-      if (Copy(Params[AIndex+1],1,1)<>'-') then
+      if (Copy(Params[AIndex+1],1,1)<>OptionChar) then
         Result:=Params[AIndex+1];
     end;
   end;

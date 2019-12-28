@@ -448,8 +448,8 @@ unit cgcpu;
         pd:=search_system_proc('_fpc_local_unwind');
         para1.init;
         para2.init;
-        paramanager.getintparaloc(list,pd,1,para1);
-        paramanager.getintparaloc(list,pd,2,para2);
+        paramanager.getcgtempparaloc(list,pd,1,para1);
+        paramanager.getcgtempparaloc(list,pd,2,para2);
         reference_reset_symbol(href,l,0,1,[]);
         { TODO: using RSP is correct only while the stack is fixed!!
           (true now, but will change if/when allocating from stack is implemented) }

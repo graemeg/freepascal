@@ -38,11 +38,23 @@ type
     procedure TestPropGetValueProcInteger;
     procedure TestPropGetValueProcBoolean;
     procedure TestPropGetValueProcShortString;
+    procedure TestPropGetValueObject;
+    procedure TestPropGetValueInterface;
+    procedure TestPropGetValueFloat;
+    procedure TestPropGetValueDynArray;
+    procedure TestPropGetValueEnumeration;
+    procedure TestPropGetValueChars;
 
     procedure TestPropSetValueString;
     procedure TestPropSetValueInteger;
     procedure TestPropSetValueBoolean;
     procedure TestPropSetValueShortString;
+    procedure TestPropSetValueObject;
+    procedure TestPropSetValueInterface;
+    procedure TestPropSetValueFloat;
+    procedure TestPropSetValueDynArray;
+    procedure TestPropSetValueEnumeration;
+    procedure TestPropSetValueChars;
 
     procedure TestGetValueStringCastError;
     procedure TestGetIsReadable;
@@ -116,6 +128,9 @@ type
   TGetClassPropertiesSub = class(TGetClassProperties)
 
   end;
+
+  TTestDynArray = array of Integer;
+  TTestEnumeration = (en1, en2, en3, en4);
   {$M-}
 
   { TTestValueClass }
@@ -123,18 +138,38 @@ type
   {$M+}
   TTestValueClass = class
   private
+    FAArray: TTestDynArray;
+    FAChar: AnsiChar;
+    FAComp: Comp;
+    FACurrency: Currency;
+    FADouble: Double;
+    FAEnumeration: TTestEnumeration;
+    FAExtended: Extended;
     FAInteger: integer;
+    FAObject: TObject;
+    FASingle: Single;
     FAString: string;
     FABoolean: boolean;
     FAShortString: ShortString;
+    FAUnknown: IUnknown;
+    FAWideChar: WideChar;
     function GetAInteger: integer;
     function GetAString: string;
     function GetABoolean: boolean;
     function GetAShortString: ShortString;
     procedure SetWriteOnly(AValue: integer);
   published
+    property AArray: TTestDynArray read FAArray write FAArray;
+    property AEnumeration: TTestEnumeration read FAEnumeration write FAEnumeration;
     property AInteger: Integer read FAInteger write FAInteger;
     property AString: string read FAString write FAString;
+    property ASingle: Single read FASingle write FASingle;
+    property ADouble: Double read FADouble write FADouble;
+    property AExtended: Extended read FAExtended write FAExtended;
+    property ACurrency: Currency read FACurrency write FACurrency;
+    property AObject: TObject read FAObject write FAObject;
+    property AUnknown: IUnknown read FAUnknown write FAUnknown;
+    property AComp: Comp read FAComp write FAComp;
     property ABoolean: boolean read FABoolean write FABoolean;
     property AShortString: ShortString read FAShortString write FAShortString;
     property AGetInteger: Integer read GetAInteger;
@@ -142,6 +177,8 @@ type
     property AGetBoolean: boolean read GetABoolean;
     property AGetShortString: ShortString read GetAShortString;
     property AWriteOnly: integer write SetWriteOnly;
+    property AChar: AnsiChar read FAChar write FAChar;
+    property AWideChar: WideChar read FAWideChar write FAWideChar;
   end;
   {$M-}
 
@@ -718,6 +755,7 @@ begin
 
   Check(v.GetReferenceToRawData <> @c);
   Check(AnsiChar(v.AsOrdinal) = #20);
+  Check(v.AsAnsiChar = #20);
 end;
 
 procedure TTestCase1.TestMakeWideChar;
@@ -737,6 +775,7 @@ begin
 
   Check(v.GetReferenceToRawData <> @c);
   Check(WideChar(v.AsOrdinal) = #$1234);
+  Check(v.AsWideChar = #$1234);
 end;
 
 procedure TTestCase1.MakeFromOrdinalTObject;
@@ -1059,6 +1098,225 @@ begin
   end;
 end;
 
+procedure TTestCase1.TestPropGetValueObject;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValue: TValue;
+  O: TObject;
+begin
+  c := TRttiContext.Create;
+  O := TObject.Create;
+  try
+    ATestClass := TTestValueClass.Create;
+    ATestClass.AObject := O;
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+      Check(assigned(ARttiType));
+      AProperty := ARttiType.GetProperty('AObject');
+      AValue := AProperty.GetValue(ATestClass);
+      CheckEquals(O.GetHashCode, AValue.AsObject.GetHashCode);
+    finally
+      AtestClass.Free;
+    end;
+    CheckEquals(O.GetHashCode, AValue.AsObject.GetHashCode);
+  finally
+    c.Free;
+    O.Free;
+  end;
+end;
+
+procedure TTestCase1.TestPropGetValueInterface;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValue: TValue;
+  i: IInterface;
+begin
+  c := TRttiContext.Create;
+  i := TInterfacedObject.Create;
+  try
+    ATestClass := TTestValueClass.Create;
+    ATestClass.AUnknown := i;
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+      Check(assigned(ARttiType));
+      AProperty := ARttiType.GetProperty('AUnknown');
+      AValue := AProperty.GetValue(ATestClass);
+      Check(i = AValue.AsInterface);
+    finally
+      AtestClass.Free;
+    end;
+    Check(i = AValue.AsInterface);
+  finally
+    c.Free;
+  end;
+end;
+
+procedure TTestCase1.TestPropGetValueFloat;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValueS, AValueD, AValueE, AValueC, AValueCm: TValue;
+begin
+  c := TRttiContext.Create;
+  try
+    ATestClass := TTestValueClass.Create;
+    ATestClass.ASingle := 1.1;
+    ATestClass.ADouble := 2.2;
+    ATestClass.AExtended := 3.3;
+    ATestClass.ACurrency := 4;
+    ATestClass.AComp := 5;
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+      Check(assigned(ARttiType));
+
+      AProperty := ARttiType.GetProperty('ASingle');
+      AValueS := AProperty.GetValue(ATestClass);
+      CheckEquals(1.1, AValueS.AsExtended, 0.001);
+
+      AProperty := ARttiType.GetProperty('ADouble');
+      AValueD := AProperty.GetValue(ATestClass);
+      CheckEquals(2.2, AValueD.AsExtended, 0.001);
+
+      AProperty := ARttiType.GetProperty('AExtended');
+      AValueE := AProperty.GetValue(ATestClass);
+      CheckEquals(3.3, AValueE.AsExtended, 0.001);
+
+      AProperty := ARttiType.GetProperty('ACurrency');
+      AValueC := AProperty.GetValue(ATestClass);
+      CheckEquals(4.0, AValueC.AsExtended, 0.001);
+
+      AProperty := ARttiType.GetProperty('AComp');
+      AValueCm := AProperty.GetValue(ATestClass);
+      CheckEquals(5.0, AValueCm.AsExtended, 0.001);
+    finally
+      AtestClass.Free;
+    end;
+
+    CheckEquals(1.1, AValueS.AsExtended, 0.001);
+    CheckEquals(2.2, AValueD.AsExtended, 0.001);
+    CheckEquals(3.3, AValueE.AsExtended, 0.001);
+    CheckEquals(4.0, AValueC.AsExtended, 0.001);
+    CheckEquals(5.0, AValueCm.AsExtended, 0.001);
+  finally
+    c.Free;
+  end;
+end;
+
+procedure TTestCase1.TestPropGetValueDynArray;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValue: TValue;
+  A: TTestDynArray;
+begin
+  c := TRttiContext.Create;
+  A := [1, 2, 3, 4];
+  try
+    ATestClass := TTestValueClass.Create;
+    ATestClass.AArray := A;
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+      Check(assigned(ARttiType));
+      AProperty := ARttiType.GetProperty('AArray');
+      AValue := AProperty.GetValue(ATestClass);
+
+      CheckEquals(A[0], AValue.GetArrayElement(0).AsInteger);
+      CheckEquals(A[1], AValue.GetArrayElement(1).AsInteger);
+      CheckEquals(A[2], AValue.GetArrayElement(2).AsInteger);
+      CheckEquals(A[3], AValue.GetArrayElement(3).AsInteger);
+    finally
+      AtestClass.Free;
+    end;
+  finally
+    c.Free;
+  end;
+end;
+
+procedure TTestCase1.TestPropGetValueEnumeration;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValue: TValue;
+begin
+  c := TRttiContext.Create;
+  try
+    ATestClass := TTestValueClass.Create;
+    ATestClass.AEnumeration := en3;
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+      Check(assigned(ARttiType));
+      AProperty := ARttiType.GetProperty('AEnumeration');
+      AValue := AProperty.GetValue(ATestClass);
+      CheckEquals(Ord(en3),AValue.AsOrdinal);
+      ATestClass.AEnumeration := en1;
+      CheckEquals(Ord(en3), AValue.AsOrdinal);
+      CheckEquals('en3', AValue.ToString);
+      CheckEquals(True, AValue.IsOrdinal);
+    finally
+      AtestClass.Free;
+    end;
+
+    CheckEquals(Ord(en3),AValue.AsOrdinal);
+  finally
+    c.Free;
+  end;
+end;
+
+procedure TTestCase1.TestPropGetValueChars;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValueC, AValueW: TValue;
+begin
+  c := TRttiContext.Create;
+  try
+    ATestClass := TTestValueClass.Create;
+    ATestClass.AChar := 'C';
+    ATestClass.AWideChar := 'W';
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+      Check(assigned(ARttiType));
+
+      AProperty := ARttiType.GetProperty('AChar');
+      AValueC := AProperty.GetValue(ATestClass);
+      CheckEquals('C',AValueC.AsAnsiChar);
+      ATestClass.AChar := 'N';
+      CheckEquals('C', AValueC.AsAnsiChar);
+      CheckEquals('C', AValueC.ToString);
+      CheckEquals(True, AValueC.IsOrdinal);
+
+      AProperty := ARttiType.GetProperty('AWideChar');
+      AValueW := AProperty.GetValue(ATestClass);
+      CheckEquals('W',AValueW.AsWideChar);
+      ATestClass.AWideChar := 'Z';
+      CheckEquals('W', AValueW.AsWideChar);
+      CheckEquals('W', AValueW.ToString);
+      CheckEquals(True, AValueW.IsOrdinal);
+    finally
+      AtestClass.Free;
+    end;
+
+    CheckEquals('C',AValueC.AsAnsiChar);
+    CheckEquals('W',AValueW.AsWideChar);
+  finally
+    c.Free;
+  end;
+end;
+
 procedure TTestCase1.TestPropSetValueString;
 var
   ATestClass : TTestValueClass;
@@ -1182,9 +1440,264 @@ begin
       CheckEquals(ATestClass.AShortString, ss);
       ss := 'Foobar';
       CheckEquals(ATestClass.AShortString, 'Hello World');
+
+      AProperty.SetValue(ATestClass, 'Another string');
+      CheckEquals(ATestClass.AShortString, 'Another string');
     finally
       AtestClass.Free;
     end;
+  finally
+    c.Free;
+  end;
+end;
+
+procedure TTestCase1.TestPropSetValueObject;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValue: TValue;
+  O: TObject;
+  TypeInfo: PTypeInfo;
+begin
+  c := TRttiContext.Create;
+  try
+    ATestClass := TTestValueClass.Create;
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+      AProperty := ARttiType.GetProperty('AObject');
+      TypeInfo := GetPropInfo(ATestClass, 'AObject')^.PropType;
+
+      O := TPersistent.Create;
+      TValue.Make(@O, TypeInfo, AValue);
+      AProperty.SetValue(ATestClass, AValue);
+      CheckEquals(ATestClass.AObject.GetHashCode, O.GetHashCode);
+      O.Free;
+
+      O := TPersistent.Create;
+      AProperty.SetValue(ATestClass, O);
+      CheckEquals(ATestClass.AObject.GetHashCode, O.GetHashCode);
+      O.Free;
+    finally
+      AtestClass.Free;
+    end;
+  finally
+    c.Free;
+  end;
+end;
+
+procedure TTestCase1.TestPropSetValueInterface;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValue: TValue;
+  TypeInfo: PTypeInfo;
+  i: IInterface;
+begin
+  c := TRttiContext.Create;
+  try
+    ATestClass := TTestValueClass.Create;
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+      AProperty := ARttiType.GetProperty('AUnknown');
+      TypeInfo := GetPropInfo(ATestClass, 'AUnknown')^.PropType;
+
+      i := TInterfacedObject.Create;
+      TValue.Make(@i, TypeInfo, AValue);
+      AProperty.SetValue(ATestClass, AValue);
+      Check(ATestClass.AUnknown = i);
+
+      i := TInterfacedObject.Create;
+      AProperty.SetValue(ATestClass, i);
+      Check(ATestClass.AUnknown = i);
+    finally
+      AtestClass.Free;
+    end;
+  finally
+    c.Free;
+  end;
+end;
+
+procedure TTestCase1.TestPropSetValueFloat;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValue: TValue;
+  TypeInfo: PTypeInfo;
+  S: Single;
+  D: Double;
+  E: Extended;
+  Cur: Currency;
+  Cmp: Comp;
+begin
+  c := TRttiContext.Create;
+  try
+    ATestClass := TTestValueClass.Create;
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+
+      AProperty := ARttiType.GetProperty('ASingle');
+      TypeInfo := GetPropInfo(ATestClass, 'ASingle')^.PropType;
+
+      S := 1.1;
+      TValue.Make(@S, TypeInfo, AValue);
+      AProperty.SetValue(ATestClass, AValue);
+      CheckEquals(S, ATestClass.ASingle, 0.001);
+
+      S := 1.2;
+      AProperty.SetValue(ATestClass, S);
+      CheckEquals(S, ATestClass.ASingle, 0.001);
+
+      AProperty := ARttiType.GetProperty('ADouble');
+      TypeInfo := GetPropInfo(ATestClass, 'ADouble')^.PropType;
+
+      D := 2.1;
+      TValue.Make(@D, TypeInfo, AValue);
+      AProperty.SetValue(ATestClass, AValue);
+      CheckEquals(D, ATestClass.ADouble, 0.001);
+
+      D := 2.2;
+      AProperty.SetValue(ATestClass, D);
+      CheckEquals(D, ATestClass.ADouble, 0.001);
+
+      AProperty := ARttiType.GetProperty('AExtended');
+      TypeInfo := GetPropInfo(ATestClass, 'AExtended')^.PropType;
+
+      E := 3.1;
+      TValue.Make(@E, TypeInfo, AValue);
+      AProperty.SetValue(ATestClass, AValue);
+      CheckEquals(E, ATestClass.AExtended, 0.001);
+
+      E := 3.2;
+      AProperty.SetValue(ATestClass, E);
+      CheckEquals(E, ATestClass.AExtended, 0.001);
+
+      AProperty := ARttiType.GetProperty('ACurrency');
+      TypeInfo := GetPropInfo(ATestClass, 'ACurrency')^.PropType;
+
+      Cur := 40;
+      TValue.Make(@Cur, TypeInfo, AValue);
+      AProperty.SetValue(ATestClass, AValue);
+      CheckEquals(Cur, ATestClass.ACurrency, 0.001);
+
+      Cur := 41;
+      AProperty.SetValue(ATestClass, Cur);
+      CheckEquals(Cur, ATestClass.ACurrency, 0.001);
+
+      AProperty := ARttiType.GetProperty('AComp');
+      TypeInfo := GetPropInfo(ATestClass, 'AComp')^.PropType;
+
+      Cmp := 50;
+      TValue.Make(@Cmp, TypeInfo, AValue);
+      AProperty.SetValue(ATestClass, AValue);
+      CheckEquals(Cmp, ATestClass.AComp, 0.001);
+
+      Cmp := 51;
+      AProperty.SetValue(ATestClass, Cmp);
+      CheckEquals(Cmp, ATestClass.AComp, 0.001);
+    finally
+      AtestClass.Free;
+    end;
+  finally
+    c.Free;
+  end;
+end;
+
+procedure TTestCase1.TestPropSetValueDynArray;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValue: TValue;
+  A: TTestDynArray;
+  TypeInfo: PTypeInfo;
+  i: Integer;
+begin
+  c := TRttiContext.Create;
+  try
+    ATestClass := TTestValueClass.Create;
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+      AProperty := ARttiType.GetProperty('AArray');
+      TypeInfo := GetPropInfo(ATestClass, 'AArray')^.PropType;
+
+      A := [1, 2, 3, 4, 5];
+      TValue.Make(@A, TypeInfo, AValue);
+      AProperty.SetValue(ATestClass, AValue);
+
+      for i := 0 to High(A) do
+        CheckEquals(A[i], ATestClass.AArray[i]);
+    finally
+      AtestClass.Free;
+    end;
+  finally
+    c.Free;
+  end;
+end;
+
+procedure TTestCase1.TestPropSetValueEnumeration;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValue: TValue;
+  E: TTestEnumeration;
+begin
+  c := TRttiContext.Create;
+  try
+    ATestClass := TTestValueClass.Create;
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+      AProperty := ARttiType.GetProperty('AEnumeration');
+
+      E := en2;
+      TValue.Make(@E, TypeInfo(TTestEnumeration), AValue);
+      AProperty.SetValue(ATestClass, AValue);
+      CheckEquals(Ord(E), Ord(ATestClass.AEnumeration));
+    finally
+      AtestClass.Free;
+    end;
+  finally
+    c.Free;
+  end;
+end;
+
+procedure TTestCase1.TestPropSetValueChars;
+var
+  ATestClass : TTestValueClass;
+  c: TRttiContext;
+  ARttiType: TRttiType;
+  AProperty: TRttiProperty;
+  AValueC, AValueW: TValue;
+begin
+  c := TRttiContext.Create;
+  try
+    ATestClass := TTestValueClass.Create;
+    ATestClass.AChar := 'C';
+    ATestClass.AWideChar := 'W';
+    try
+      ARttiType := c.GetType(ATestClass.ClassInfo);
+      Check(assigned(ARttiType));
+
+      AProperty := ARttiType.GetProperty('AChar');
+      AValueC := AProperty.GetValue(ATestClass);
+      CheckEquals('C', AValueC.AsAnsiChar);
+
+      AProperty := ARttiType.GetProperty('AWideChar');
+      AValueW := AProperty.GetValue(ATestClass);
+      CheckEquals('W', AValueW.AsWideChar);
+    finally
+      AtestClass.Free;
+    end;
+      CheckEquals('C', AValueC.AsAnsiChar);
+      CheckEquals('W', AValueW.AsWideChar);
   finally
     c.Free;
   end;

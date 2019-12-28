@@ -18,14 +18,18 @@
 {$define FPC_SYSTEM_HAS_SYSINITFPU}
 Procedure SysInitFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
 begin
-  softfloat_exception_mask:=[float_flag_underflow,float_flag_inexact,float_flag_denormal];
-  softfloat_exception_flags:=[];
+{$ifndef FPUNONE}
+    softfloat_exception_mask:=[float_flag_underflow,float_flag_inexact,float_flag_denormal];
+    softfloat_exception_flags:=[];
+{$endif FPUNONE}
 end;
 
 
 procedure fpc_cpuinit;
 begin
+{$ifndef FPUNONE}
   SysInitFPU;
+{$endif FPUNONE}
 end;
 
 
@@ -37,7 +41,9 @@ end;
 {$define FPC_SYSTEM_HAS_SYSRESETFPU}
 Procedure SysResetFPU;{$ifdef SYSTEMINLINE}inline;{$endif}
 begin
+{$ifndef FPUNONE}
   softfloat_exception_flags:=[];
+{$endif FPUNONE}
 end;
 
 

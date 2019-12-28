@@ -564,6 +564,8 @@ unit cgrv;
           OS_64,
           OS_S64: op:=A_LD;
 {$else}
+          OS_64,OS_S64, { This only happens if tosize is smaller than fromsize }
+          { We can therefore only consider the low 32-bit of the 64bit value }
           OS_32,
           OS_S32: op:=A_LW;
 {$endif}
@@ -594,7 +596,7 @@ unit cgrv;
                 else
                   list.concat(taicpu.op_reg_const(A_LUI,register,(a shr 12) and $FFFFF));
 
-                list.concat(taicpu.op_reg_reg_const(A_ADDI,register,register,SarSmallint(a shl 4,4)));
+                list.concat(taicpu.op_reg_reg_const(A_ADDI,register,register,SarSmallint(smallint(a shl 4),4)));
               end;
           end;
       end;

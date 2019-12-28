@@ -288,6 +288,8 @@ implementation
 
         if expectloc=LOC_FLAGS then
           expectloc:=LOC_REGISTER;
+        if (expectloc=LOC_JUMP) and (nodetype in [equaln, unequaln, ltn, lten, gtn, gten]) then
+          expectloc:=LOC_REGISTER;
       end;
 
 

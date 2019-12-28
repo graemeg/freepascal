@@ -119,7 +119,8 @@ Const
      'PENTIUMM'
    );
 
-   fputypestr : array[tfputype] of string[6] = ('',
+   fputypestr : array[tfputype] of string[6] = (
+     'NONE',
 //     'SOFT',
      'X87',
      'SSE',

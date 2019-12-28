@@ -1276,6 +1276,7 @@ begin
 end;
 
 {$if defined(VALREAL_80) or defined(VALREAL_128)}
+{$ifndef FPC_SYSTEM_HAS_U128_DIV_U64_TO_U64}
 (*-------------------------------------------------------
  | u128_div_u64_to_u64 [local]
  |
@@ -1286,7 +1287,7 @@ end;
  | 128-bit integer into two 64-bit ones before converting it to ASCII.
  |
  *-------------------------------------------------------*)
-function u128_div_u64_to_u64( const xh, xl: qword; const y: qword; out quotient, reminder: qword ): boolean;
+function u128_div_u64_to_u64( const xh, xl: qword; const y: qword; out quotient, remainder: qword ): boolean;
 var
     b,                // Number base
     v,                // Norm. divisor
@@ -1342,10 +1343,11 @@ begin
             break;
     end;
     // Result
-    reminder := ( un21 * b + un0 - q0 * v ) shr s;
+    remainder := ( un21 * b + un0 - q0 * v ) shr s;
     quotient := q1 * b + q0;
     u128_div_u64_to_u64 := true;
 end;
+{$endif FPC_SYSTEM_HAS_U128_DIV_U64_TO_U64}
 {$endif VALREAL_80 | VALREAL_128}
 
 (*-------------------------------------------------------

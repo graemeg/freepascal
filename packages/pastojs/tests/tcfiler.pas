@@ -172,7 +172,8 @@ type
     procedure TestPC_ClassInterface;
     procedure TestPC_Attributes;
 
-    procedure TestPC_GenericFunction;
+    procedure TestPC_GenericClassSkip; // ToDo
+    procedure TestPC_GenericFunctionSkip;
 
     procedure TestPC_UseUnit;
     procedure TestPC_UseUnit_Class;
@@ -2406,7 +2407,31 @@ begin
   WriteReadUnit;
 end;
 
-procedure TTestPrecompile.TestPC_GenericFunction;
+procedure TTestPrecompile.TestPC_GenericClassSkip;
+begin
+  exit;
+
+  StartUnit(false);
+  Add([
+  'interface',
+  'type',
+  '  TObject = class',
+  '  end;',
+  '  generic TBird<T> = class',
+  '    a: T;',
+  '    generic function Run<T>(a: T): T;',
+  '  end;',
+  'implementation',
+  'function TBird.Run<T>(a: T): T;',
+  'var b: T;',
+  'begin',
+  '  b:=a; Result:=b;',
+  'end;',
+  '']);
+  WriteReadUnit;
+end;
+
+procedure TTestPrecompile.TestPC_GenericFunctionSkip;
 begin
   StartUnit(false);
   Add([

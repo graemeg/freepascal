@@ -107,6 +107,7 @@ Type
     procedure checkerror(const aerror: integer);
     function stringsquery(const asql: string): TArrayStringArray;
     procedure execsql(const asql: string);
+    function GetNextValueSQL(const SequenceName: string; IncrementBy: Integer): string; override;
   public
     constructor Create(AOwner : TComponent); override;
     procedure GetFieldNames(const TableName : string; List :  TStrings); override;
@@ -296,7 +297,7 @@ end;
 constructor TSQLite3Connection.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  FConnOptions := [sqEscapeRepeat, sqEscapeSlash, sqImplicitTransaction, sqLastInsertID];
+  FConnOptions := [sqEscapeRepeat, sqEscapeSlash, sqImplicitTransaction, sqLastInsertID, sqSequences];
   FieldNameQuoteChars:=DoubleQuotes;
   FOpenFlags:=DefaultOpenFlags;
 end;
@@ -893,6 +894,11 @@ begin
    databaseerror(str1);
 end;
 
+function TSQLite3Connection.GetNextValueSQL(const SequenceName: string; IncrementBy: Integer): string;
+begin
+  Result:=Format('SELECT seq+%d FROM sqlite_sequence WHERE (name=''%s'')',[IncrementBy,SequenceName]);
+end;
+
 function execcallback(adata: pointer; ncols: longint; //adata = PStringArray
                 avalues: PPchar; anames: PPchar):longint; cdecl;
 var
@@ -939,6 +945,14 @@ begin
     stTables     : result := 'select name as table_name from sqlite_master where type = ''table'' order by 1';
     stSysTables  : result := 'select ''sqlite_master'' as table_name';
     stColumns    : result := 'pragma table_info(''' + (SchemaObjectName) + ''')';
+    stSequences  : Result := 'SELECT 1 as recno, '+
+                          '''' + DatabaseName + ''' as sequence_catalog,' +
+                          '''''                     as sequence_schema,' +
+                          'name as sequence_name ' +
+                        'FROM ' +
+                          'sqlite_sequence ' +
+                        'ORDER BY ' +
+                          'name';
   else
     DatabaseError(SMetadataUnavailable)
   end; {case}

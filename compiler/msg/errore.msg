@@ -436,7 +436,7 @@ scan_n_changecputype=02105_N_Changed CPU type to be consistent with specified co
 #
 # Parser
 #
-# 03351 is the last used one
+# 03353 is the last used one
 #
 % \section{Parser messages}
 % This section lists all parser messages. The parser takes care of the
@@ -1611,7 +1611,7 @@ parser_w_enumeration_out_of_range=03353_W_Enumeration symbols can only have valu
 %
 # Type Checking
 #
-# 04124 is the last used one
+# 04126 is the last used one
 #
 % \section{Type checking errors}
 % This section lists all errors that can occur when type checking is
@@ -2047,6 +2047,10 @@ type_e_function_reference_kind=04123_E_Subroutine references cannot be declared 
 type_e_seg_procvardef_wrong_memory_model=04124_E_Procedure variables in that memory model do not store segment information
 type_w_empty_constant_range_set=04125_W_The first value of a set constructur range is greater then the second value, so the range describes an empty set.
 % If a set is constructed like this: \var{s:=[9..7];]}, then an empty set is generated. As this is something normally not desired, the compiler warns about it.
+type_e_cblock_callconv=04126_E_C block reference must use CDECL or MWPASCAL calling convention.
+% When declaring a C block reference ensure that it uses either the \var{cdecl} or \var{mwpascal}
+% calling convention either by adding the corresponding function directive or by using the
+% \var{$Calling} compiler directive.
 % \end{description}
 #
 # Symtable

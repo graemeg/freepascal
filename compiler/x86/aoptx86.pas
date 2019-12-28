@@ -41,6 +41,7 @@ unit aoptx86;
         function RegReadByInstruction(reg : TRegister; hp : tai) : boolean;
         function RegInInstruction(Reg: TRegister; p1: tai): Boolean;override;
         function GetNextInstructionUsingReg(Current: tai; out Next: tai; reg: TRegister): Boolean;
+        function RegModifiedByInstruction(Reg: TRegister; p1: tai): boolean; override;
       protected
         { checks whether loading a new value in reg1 overwrites the entirety of reg2 }
         function Reg1WriteOverwritesReg2Entirely(reg1, reg2: tregister): boolean;
@@ -322,6 +323,8 @@ unit aoptx86;
               regReadByInstruction :=
                 reginop(reg,p.oper[0]^) or
                 reginop(reg,p.oper[1]^);
+            else
+              InternalError(2019112801);
           end;
         A_MUL:
           begin
@@ -581,6 +584,144 @@ unit aoptx86;
         exit(true);
       Result:=inherited RegInInstruction(Reg, p1);
     end;
+
+
+    function TX86AsmOptimizer.RegModifiedByInstruction(Reg: TRegister; p1: tai): boolean;
+      begin
+        Result := False;
+        if p1.typ <> ait_instruction then
+          exit;
+
+        with insprop[taicpu(p1).opcode] do
+          if SuperRegistersEqual(reg,NR_DEFAULTFLAGS) then
+            begin
+              case getsubreg(reg) of
+                R_SUBW,R_SUBD,R_SUBQ:
+                  Result :=
+                    [Ch_WCarryFlag,Ch_WParityFlag,Ch_WAuxiliaryFlag,Ch_WZeroFlag,Ch_WSignFlag,Ch_WOverflowFlag,
+                     Ch_RWCarryFlag,Ch_RWParityFlag,Ch_RWAuxiliaryFlag,Ch_RWZeroFlag,Ch_RWSignFlag,Ch_RWOverflowFlag,
+                     Ch_W0DirFlag,Ch_W1DirFlag,Ch_W0IntFlag,Ch_W1IntFlag,Ch_WFlags,Ch_RWFlags]*Ch<>[];
+                R_SUBFLAGCARRY:
+                  Result:=[Ch_WCarryFlag,Ch_RWCarryFlag,Ch_WFlags,Ch_RWFlags]*Ch<>[];
+                R_SUBFLAGPARITY:
+                  Result:=[Ch_WParityFlag,Ch_RWParityFlag,Ch_WFlags,Ch_RWFlags]*Ch<>[];
+                R_SUBFLAGAUXILIARY:
+                  Result:=[Ch_WAuxiliaryFlag,Ch_RWAuxiliaryFlag,Ch_WFlags,Ch_RWFlags]*Ch<>[];
+                R_SUBFLAGZERO:
+                  Result:=[Ch_WZeroFlag,Ch_RWZeroFlag,Ch_WFlags,Ch_RWFlags]*Ch<>[];
+                R_SUBFLAGSIGN:
+                  Result:=[Ch_WSignFlag,Ch_RWSignFlag,Ch_WFlags,Ch_RWFlags]*Ch<>[];
+                R_SUBFLAGOVERFLOW:
+                  Result:=[Ch_WOverflowFlag,Ch_RWOverflowFlag,Ch_WFlags,Ch_RWFlags]*Ch<>[];
+                R_SUBFLAGINTERRUPT:
+                  Result:=[Ch_W0IntFlag,Ch_W1IntFlag,Ch_WFlags,Ch_RWFlags]*Ch<>[];
+                R_SUBFLAGDIRECTION:
+                  Result:=[Ch_W0DirFlag,Ch_W1DirFlag,Ch_WFlags,Ch_RWFlags]*Ch<>[];
+                else
+                  internalerror(2017042602);
+              end;
+              exit;
+            end;
+
+        case taicpu(p1).opcode of
+          A_CALL:
+            { We could potentially set Result to False if the register in
+              question is non-volatile for the subroutine's calling convention,
+              but this would require detecting the calling convention in use and
+              also assuming that the routine doesn't contain malformed assembly
+              language, for example... so it could only be done under -O4 as it
+              would be considered a side-effect. [Kit] }
+            Result := True;
+          A_MOVSD:
+            { special handling for SSE MOVSD }
+            if (taicpu(p1).ops>0) then
+              begin
+                if taicpu(p1).ops<>2 then
+                  internalerror(2017042703);
+                Result := (taicpu(p1).oper[1]^.typ=top_reg) and reginop(reg,taicpu(p1).oper[1]^);
+              end;
+          else
+            ;
+        end;
+        if Result then
+          exit;
+        with insprop[taicpu(p1).opcode] do
+          begin
+            if getregtype(reg)=R_INTREGISTER then
+              begin
+                case getsupreg(reg) of
+                  RS_EAX:
+                    if [Ch_WEAX,Ch_RWEAX,Ch_MEAX]*Ch<>[] then
+                      begin
+                        Result := True;
+                        exit
+                      end;
+                  RS_ECX:
+                    if [Ch_WECX,Ch_RWECX,Ch_MECX]*Ch<>[] then
+                      begin
+                        Result := True;
+                        exit
+                      end;
+                  RS_EDX:
+                    if [Ch_WEDX,Ch_RWEDX,Ch_MEDX]*Ch<>[] then
+                      begin
+                        Result := True;
+                        exit
+                      end;
+                  RS_EBX:
+                    if [Ch_WEBX,Ch_RWEBX,Ch_MEBX]*Ch<>[] then
+                      begin
+                        Result := True;
+                        exit
+                      end;
+                  RS_ESP:
+                    if [Ch_WESP,Ch_RWESP,Ch_MESP]*Ch<>[] then
+                      begin
+                        Result := True;
+                        exit
+                      end;
+                  RS_EBP:
+                    if [Ch_WEBP,Ch_RWEBP,Ch_MEBP]*Ch<>[] then
+                      begin
+                        Result := True;
+                        exit
+                      end;
+                  RS_ESI:
+                    if [Ch_WESI,Ch_RWESI,Ch_MESI]*Ch<>[] then
+                      begin
+                        Result := True;
+                        exit
+                      end;
+                  RS_EDI:
+                    if [Ch_WEDI,Ch_RWEDI,Ch_MEDI]*Ch<>[] then
+                      begin
+                        Result := True;
+                        exit
+                      end;
+                end;
+              end;
+            if ([CH_RWOP1,CH_WOP1,CH_MOP1]*Ch<>[]) and reginop(reg,taicpu(p1).oper[0]^) then
+              begin
+                Result := true;
+                exit
+              end;
+            if ([Ch_RWOP2,Ch_WOP2,Ch_MOP2]*Ch<>[]) and reginop(reg,taicpu(p1).oper[1]^) then
+              begin
+                Result := true;
+                exit
+              end;
+            if ([Ch_RWOP3,Ch_WOP3,Ch_MOP3]*Ch<>[]) and reginop(reg,taicpu(p1).oper[2]^) then
+              begin
+                Result := true;
+                exit
+              end;
+            if ([Ch_RWOP4,Ch_WOP4,Ch_MOP4]*Ch<>[]) and reginop(reg,taicpu(p1).oper[3]^) then
+              begin
+                Result := true;
+                exit
+              end;
+          end;
+      end;
 
 
 {$ifdef DEBUG_AOPTCPU}
@@ -2027,7 +2168,7 @@ unit aoptx86;
                     DebugMsg(SPeepholeOptimization + 'MovOpMov2Op ('+
                           debug_op2str(taicpu(p).opcode)+debug_opsize2str(taicpu(p).opsize)+' '+
                           debug_op2str(taicpu(hp1).opcode)+debug_opsize2str(taicpu(hp1).opsize)+' '+
-                          debug_op2str(taicpu(hp2).opcode)+debug_opsize2str(taicpu(hp2).opsize),p);
+                          debug_op2str(taicpu(hp2).opcode)+debug_opsize2str(taicpu(hp2).opsize)+')',p);
                     taicpu(hp1).changeopsize(taicpu(hp2).opsize);
                     {
                       ->
@@ -2106,8 +2247,8 @@ unit aoptx86;
                           debug_op2str(taicpu(hp2).opcode)+debug_opsize2str(taicpu(hp2).opsize)+')',p);
                     { limit size of constants as well to avoid assembler errors, but
                       check opsize to avoid overflow when left shifting the 1 }
-                    if (taicpu(p).oper[0]^.typ=top_const) and (topsize2memsize[taicpu(hp2).opsize]<=4) then
-                      taicpu(p).oper[0]^.val:=taicpu(p).oper[0]^.val and ((qword(1) shl (topsize2memsize[taicpu(hp2).opsize]*8))-1);
+                    if (taicpu(p).oper[0]^.typ=top_const) and (topsize2memsize[taicpu(hp2).opsize]<=63) then
+                      taicpu(p).oper[0]^.val:=taicpu(p).oper[0]^.val and ((qword(1) shl topsize2memsize[taicpu(hp2).opsize])-1);
                     taicpu(hp1).changeopsize(taicpu(hp2).opsize);
                     taicpu(p).changeopsize(taicpu(hp2).opsize);
                     if taicpu(p).oper[0]^.typ=top_reg then
@@ -2799,7 +2940,7 @@ unit aoptx86;
 
     function TX86AsmOptimizer.OptPass1SETcc(var p: tai): boolean;
       var
-        hp1,hp2,next: tai; SetC, JumpC: TAsmCond;
+        hp1,hp2,next: tai; SetC, JumpC: TAsmCond; Unconditional: Boolean;
       begin
         Result:=false;
 
@@ -2833,22 +2974,39 @@ unit aoptx86;
             UpdateUsedRegs(TmpUsedRegs, next);
             UpdateUsedRegs(TmpUsedRegs, tai(hp1.next));
 
-            asml.Remove(hp1);
-            hp1.Free;
-
             JumpC := taicpu(hp2).condition;
+            Unconditional := False;
 
             if conditions_equal(JumpC, C_E) then
               SetC := inverse_cond(taicpu(p).condition)
             else if conditions_equal(JumpC, C_NE) then
               SetC := taicpu(p).condition
             else
-              InternalError(2018061400);
+              { We've got something weird here (and inefficent) }
+              begin
+                DebugMsg('DEBUG: Inefficient jump - check code generation', p);
+                SetC := C_NONE;
 
-            if SetC = C_NONE then
-              InternalError(2018061401);
+                { JAE/JNB will always branch (use 'condition_in', since C_AE <> C_NB normally) }
+                if condition_in(C_AE, JumpC) then
+                  Unconditional := True
+                else
+                  { Not sure what to do with this jump - drop out }
+                  Exit;
+              end;
 
-            taicpu(hp2).SetCondition(SetC);
+            asml.Remove(hp1);
+            hp1.Free;
+
+            if Unconditional then
+              MakeUnconditional(taicpu(hp2))
+            else
+              begin
+                if SetC = C_NONE then
+                  InternalError(2018061401);
+
+                taicpu(hp2).SetCondition(SetC);
+              end;
 
             if not RegUsedAfterInstruction(taicpu(p).oper[0]^.reg, hp2, TmpUsedRegs) then
               begin

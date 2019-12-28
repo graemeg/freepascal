@@ -5,7 +5,7 @@
 {$modeswitch cblocks}
 
 type
-  tblock = reference to procedure(j: longint); cdecl;
+  tblock = reference to procedure(j: longint); cdecl; cblock;
 
   tc = class
     i: longint;

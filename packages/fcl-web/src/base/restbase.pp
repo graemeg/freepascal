@@ -730,7 +730,7 @@ Var
   D : TJSONEnum;
   O : TObjectArray;
   I : Integer;
-  PA : ^pdynarraytypeinfo;
+  PTD : PTypeData;
   ET : PTypeInfo;
   LPN,AN : String;
   AP : Pointer;
@@ -760,10 +760,8 @@ begin
     begin
     // Get array value
     AP:=GetObjectProp(Self,P);
-    i:=Length(P^.PropType^.name);
-    PA:=@(pdynarraytypeinfo(P^.PropType)^.elesize)+i;
-    PA:=@(pdynarraytypeinfo(P^.PropType)^.eletype)+i;
-    ET:=PTYpeInfo(PA^);
+    PTD:=GetTypeData(P^.PropType);
+    ET:=PTD^.ElType2;
     if (ET^.Kind=tkClass) then
       begin
       // get object type name
@@ -814,7 +812,6 @@ Var
   I : Integer;
   L : TBaseObjectList;
   NL : TBaseNamedObjectList;
-  PA : ^pdynarraytypeinfo;
 
 begin
   if P^.PropType^.Kind=tkDynArray then
@@ -822,12 +819,9 @@ begin
     A:=GetDynArrayProp(P);
     For I:=0 to Length(TObjectArray(A))-1 do
       FreeAndNil(TObjectArray(A)[i]);
-    // Writeln(ClassName,' (Object) Setting length of array property ',P^.Name,'(type: ',P^.PropType^.Name,')  to ',AValue.Count,' (current: ',Length(TObjectArray(A)),')');
     SetLength(TObjectArray(A),AValue.Count);
-    i:=Length(P^.PropType^.name);
-    PA:=@(pdynarraytypeinfo(P^.PropType)^.elesize)+i;
-    PA:=@(pdynarraytypeinfo(P^.PropType)^.eletype)+i;
-    AN:=PTYpeInfo(PA^)^.Name;
+    T:=GetTypeData(P^.PropType);
+    AN:=T^.ElType2^.Name;
     I:=0;
     For D in AValue do
       begin
@@ -841,15 +835,6 @@ begin
       end;
     // Writeln(ClassName,' Done with array ',P^.Name,', final array length: ', Length(TObjectArray(A)));
     SetDynArrayProp(P,A);
-    {
-      For I:=0 to Length(TObjectArray(A))-1 do
-        if IsPublishedProp(TObjectArray(A)[i],'name') then
-    SetDynArrayProp(P,AP);
-      //   Writeln(ClassName,'.',P^.name,'[',i,'] : ',getStrProp(TObjectArray(A)[I],'name'));
-      B:=GetDynArrayProp(P);
-      If Pointer(B)<>Pointer(A) then
-      //  Writeln(ClassName,': Array ',P^.Name,'was not set correctly');
-    }
     Exit;
     end;
   if Not (P^.PropType^.Kind=tkClass) then
@@ -987,8 +972,8 @@ function TBaseObject.GetArrayProperty(P: PPropInfo): TJSONData;
 Var
   AO : TObject;
   I : Integer;
-  PA : ^pdynarraytypeinfo;
   ET : PTypeInfo;
+  PTD : PTypeData;
   AP : Pointer;
   A : TJSONArray;
   O : TJSONObject;
@@ -998,9 +983,8 @@ begin
   Result:=A;
   // Get array value type
   AP:=GetObjectProp(Self,P);
-  i:=Length(P^.PropType^.name);
-  PA:=@(pdynarraytypeinfo(P^.PropType)^.eletype)+i;
-  ET:=PTYpeInfo(PA^);
+  PTD:=GetTypeData(P^.PropType);
+  ET:=PTD^.ElType2;
   // Fill in all elements
   Case ET^.Kind of
   tkClass:
@@ -1069,7 +1053,7 @@ var
   P : PPropInfo;
   i,j,count,len:integer;
   A : pointer;
-  PA : ^pdynarraytypeinfo;
+  PTD : PTypeData;
   O : TObject;
 
 begin
@@ -1091,8 +1075,8 @@ begin
           if (ctArray in ChildTypes) then
             begin
             len:=Length(P^.PropType^.Name);
-            PA:=@(pdynarraytypeinfo(P^.PropType)^.eletype)+len;
-            if PTYpeInfo(PA^)^.Kind=tkClass then
+            PTD:=GetTypeData(P^.PropType);
+            if PTD^.ElType2^.Kind=tkClass then
               begin
               A:=GetDynArrayProp(P);
 {$IFDEF DUMPARRAY}              

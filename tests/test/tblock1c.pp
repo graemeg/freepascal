@@ -4,7 +4,7 @@
 {$modeswitch cblocks}
 
 type
-  tblock = reference to function(l: longint): longint; cdecl;
+  tblock = reference to function(l: longint): longint; cdecl; cblock;
 
 function test(b: tblock; l: longint): longint;
   begin

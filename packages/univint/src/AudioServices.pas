@@ -370,7 +370,7 @@ function AudioServicesDisposeSystemSoundID( inSystemSoundID: SystemSoundID ): OS
                         responsible for handling thread safety.
 }
 type
-  TCompletionBlock = reference to procedure; cdecl;
+  TCompletionBlock = reference to procedure; cblock;
 
 procedure AudioServicesPlayAlertSoundWithCompletion(inSystemSoundID: SystemSoundID; inCompletionBlock: TCompletionBlock); external name '_AudioServicesPlayAlertSoundWithCompletion';
 (* API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0)) *)

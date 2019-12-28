@@ -1,15 +1,15 @@
-program devds;
+program testjsondataset;
 
 {$DEFINE TESTCALCFIELDS}
 {$DEFINE TESTLOOKUPFIELDS}
 
-uses variants, varutils, sysutils, db, fpjson , fpjsondataset, ExtJSDataset, types;
+uses classes, variants, varutils, sysutils, db, fpjson , fpjsondataset, ExtJSDataset, types;
 
 Type
 
   { TApp }
 
-  TApp = Class(TObject)
+  TApp = Class(TComponent)
   private
     DS : TExtJSJSONObjectDataSet;
     DC : TExtJSJSONObjectDataSet;
@@ -70,7 +70,7 @@ Var
 
 begin
   Writeln('Creating dataset');
-  DS:=TExtJSJSONObjectDataSet.Create(Nil);
+  DS:=TExtJSJSONObjectDataSet.Create(Self);
   DS.MetaData:=GetJSON('{ "fields" : [ '+
                                           ' { "name": "firstname"}, '+
                                           ' { "name": "lastname"}, '+
@@ -85,7 +85,7 @@ begin
                                   '  {"firstname" : "Bruno", "lastname" : "Fierens", "children" : 3, "birthday" : "1970-07-09", "business" : true, "weight": 77.3, "country": "BE"  },'+
                                   '  {"firstname" : "Detlef", "lastname" : "Overbeek", "children" : 2, "birthday" : "1950-07-08", "business" : true, "weight": 78.8, "country": "NL"  }'+
                                   ' ]') as TJSONArray;
-  DC:=TExtJSJSONObjectDataSet.Create(Nil);
+  DC:=TExtJSJSONObjectDataSet.Create(Self);
   DC.MetaData:=GetJSON('{ "fields" : [ '+
                                        ' { "name": "code"}, '+
                                        ' { "name": "name"} '+
@@ -174,7 +174,7 @@ begin
   Writeln('Modified before  (expect False): ',DS.Modified);
   DumpRecord(DS);
   DS.FieldByName('firstname').AsString:='Florian';
-  Writeln('Old value of field first name (expect null): ', DS.FieldByName('firstname').OldValue);
+  Writeln('Old value of field first name (expect null): ', varisNull(DS.FieldByName('firstname').OldValue) );
   DS.FieldByName('lastname').AsString:='Klaempfl';
   DS.FieldByName('children').AsInteger:=1;
   DS.FieldByName('birthday').AsDateTime:=EncodeDate(1980,5,4);
@@ -288,7 +288,7 @@ begin
   DSS:=Nil;
   t:=TDataLink.Create;
   try
-    DSS:=TDatasource.Create(Nil);
+    DSS:=TDatasource.Create(self);
     DSS.DataSet:=DS;
     Writeln('Buffercount');
     t.BufferCount := 10;
@@ -323,6 +323,7 @@ begin
   DSS:=Nil;
   t:=TDataLink.Create;
   try
+    DSS:=TDatasource.Create(Self);
     DSS.DataSet:=DS;
     DSS.DataSet:=DS;
     t.DataSource := DSS;
@@ -421,9 +422,9 @@ begin
 
     DC.Open;
     DS.Open;
-//    TestLocate;
+    TestLocate;
     TestLookup;
-    exit;
+//    exit;
     TestNavigation;
     TestAppend;
     TestEdit;
@@ -444,7 +445,11 @@ begin
 end;
 
 begin
-  With Tapp.Create do
-    Run;
+  With Tapp.Create(nil) do
+    try
+      Run;
+    finally
+      Free;
+    end;  
 end.
 

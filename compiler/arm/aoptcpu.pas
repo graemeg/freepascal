@@ -2547,7 +2547,7 @@ Implementation
           exit;
         regtype:=getregtype(reg);
         supreg:=getsupreg(reg);
-        if (cg.rg[regtype].live_end[supreg]=hp1) and
+        if assigned(cg.rg[regtype]) and (cg.rg[regtype].live_end[supreg]=hp1) and
           RegInInstruction(reg,p) then
           cg.rg[regtype].live_end[supreg]:=p;
       end;
@@ -2562,7 +2562,7 @@ Implementation
           exit;
         regtype:=getregtype(reg);
         supreg:=getsupreg(reg);
-        if (cg.rg[regtype].live_start[supreg]=p) and
+        if assigned(cg.rg[regtype]) and (cg.rg[regtype].live_start[supreg]=p) and
           RegInInstruction(reg,hp1) then
          cg.rg[regtype].live_start[supreg]:=hp1;
       end;

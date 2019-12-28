@@ -56,6 +56,8 @@ type
     Function InternalGetFieldDataset : TDataSet; override;
   public
     procedure TryDropIfExist(ATableName : String);
+    procedure TryCreateSequence(ASequenceName : String);
+    procedure TryDropSequence(ASequenceName: String);
     destructor Destroy; override;
     constructor Create; override;
     procedure ExecuteDirect(const SQL: string);
@@ -683,6 +685,53 @@ begin
     FTransaction.RollbackRetaining;
   end;
 end;
+
+procedure TSQLDBConnector.TryDropSequence(ASequenceName: String);
+
+var
+  NoSeq : Boolean;
+
+begin
+  NoSeq:=False;
+  try
+    case SQLServerType of
+      ssInterbase,
+      ssFirebird: FConnection.ExecuteDirect('DROP GENERATOR '+ASequenceName);
+      ssOracle,
+      ssPostgreSQL,
+      ssSybase,
+      ssMSSQL : FConnection.ExecuteDirect('DROP SEQUENCE '+ASequenceName+' START WITH 1 INCREMENT BY 1');
+      ssSQLite : FConnection.ExecuteDirect('delete from sqlite_sequence where (name='''+ASequenceName+''')');
+    else
+      NoSeq:=True;
+    end;
+  except
+    FTransaction.RollbackRetaining;
+  end;
+  if NoSeq then
+    Raise EDatabaseError.Create('Engine does not support sequences');
+end;
+
+procedure TSQLDBConnector.TryCreateSequence(ASequenceName: String);
+
+var
+  NoSeq : Boolean;
+
+begin
+  NoSeq:=False;
+  case SQLServerType of
+    ssInterbase,
+    ssFirebird: FConnection.ExecuteDirect('CREATE GENERATOR '+ASequenceName);
+    ssOracle,
+    ssPostgreSQL,
+    ssSybase,
+    ssMSSQL : FConnection.ExecuteDirect('CREATE SEQUENCE '+ASequenceName+' START WITH 1 INCREMENT BY 1');
+    ssSQLite : FConnection.ExecuteDirect('insert into sqlite_sequence (name,seq) values ('''+ASequenceName+''',1)');
+  else
+    Raise EDatabaseError.Create('Engine does not support sequences');
+  end;
+end;
+
 
 procedure TSQLDBConnector.ExecuteDirect(const SQL: string);
 begin

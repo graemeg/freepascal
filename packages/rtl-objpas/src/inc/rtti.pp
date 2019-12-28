@@ -136,6 +136,9 @@ type
     function AsBoolean: boolean;
     function AsCurrency: Currency;
     function AsInteger: Integer;
+    function AsChar: Char; inline;
+    function AsAnsiChar: AnsiChar;
+    function AsWideChar: WideChar;
     function AsInt64: Int64;
     function AsUInt64: QWord;
     function AsInterface: IInterface;
@@ -159,11 +162,13 @@ type
     class operator := (AValue: Extended): TValue; inline;
 {$endif}
     class operator := (AValue: Currency): TValue; inline;
+    class operator := (AValue: Comp): TValue; inline;
     class operator := (AValue: Int64): TValue; inline;
     class operator := (AValue: QWord): TValue; inline;
     class operator := (AValue: TObject): TValue; inline;
     class operator := (AValue: TClass): TValue; inline;
     class operator := (AValue: Boolean): TValue; inline;
+    class operator := (AValue: IUnknown): TValue; inline;
     property DataSize: SizeInt read GetDataSize;
     property Kind: TTypeKind read GetTypeKind;
     property TypeData: PTypeData read GetTypeDataProp;
@@ -1834,6 +1839,8 @@ begin
       raise EInvalidCast.Create(SErrInvalidTypecast);
     end;
     end
+  else if Kind in [tkInteger, tkInt64, tkQWord] then
+    Result := AsInt64
   else
     raise EInvalidCast.Create(SErrInvalidTypecast);
 end;
@@ -1944,6 +1951,31 @@ begin
     raise EInvalidCast.Create(SErrInvalidTypecast);
 end;
 
+function TValue.AsAnsiChar: AnsiChar;
+begin
+  if Kind = tkChar then
+    Result := Chr(FData.FAsUByte)
+  else
+    raise EInvalidCast.Create(SErrInvalidTypecast);
+end;
+
+function TValue.AsWideChar: WideChar;
+begin
+  if Kind = tkWChar then
+    Result := WideChar(FData.FAsUWord)
+  else
+    raise EInvalidCast.Create(SErrInvalidTypecast);
+end;
+
+function TValue.AsChar: Char;
+begin
+{$if SizeOf(Char) = 1}
+  Result := AsAnsiChar;
+{$else}
+  Result := AsWideChar;
+{$endif}
+end;
+
 function TValue.AsInt64: Int64;
 begin
   if Kind in [tkInteger, tkInt64, tkQWord] then
@@ -2006,6 +2038,9 @@ begin
     tkPointer : result := '(pointer @ ' + HexStr(FData.FAsPointer) + ')';
     tkInterface : result := '(interface @ ' + HexStr(PPointer(FData.FValueData.GetReferenceToRawData)^) + ')';
     tkInterfaceRaw : result := '(raw interface @ ' + HexStr(FData.FAsPointer) + ')';
+    tkEnumeration: Result := GetEnumName(TypeInfo, Integer(AsOrdinal));
+    tkChar: Result := AnsiChar(FData.FAsUByte);
+    tkWChar: Result := UTF8Encode(WideChar(FData.FAsUWord));
   else
     result := '';
   end;
@@ -2257,6 +2292,11 @@ begin
   Make(@AValue, System.TypeInfo(AValue), Result);
 end;
 
+class operator TValue.:=(AValue: Comp): TValue;
+begin
+  Make(@AValue, System.TypeInfo(AValue), Result);
+end;
+
 class operator TValue.:=(AValue: Int64): TValue;
 begin
   Make(@AValue, System.TypeInfo(AValue), Result);
@@ -2282,6 +2322,10 @@ begin
   Make(@AValue, System.TypeInfo(AValue), Result);
 end;
 
+class operator TValue.:=(AValue: IUnknown): TValue;
+begin
+  Make(@AValue, System.TypeInfo(AValue), Result);
+end;
 
 function Invoke(aCodeAddress: CodePointer; const aArgs: TValueArray;
   aCallConv: TCallConv; aResultType: PTypeInfo; aIsStatic: Boolean;
@@ -3870,16 +3914,30 @@ function TRttiProperty.GetValue(Instance: pointer): TValue;
   end;
 
 var
-  s: string;
+  Values: record
+    case Integer of
+      0: (Enum: Int64);
+      1: (Bool: Int64);
+      2: (Int: Int64);
+      3: (Ch: Byte);
+      4: (Wch: Word);
+      5: (I64: Int64);
+      6: (Si: Single);
+      7: (Db: Double);
+      8: (Ex: Extended);
+      9: (Cur: Currency);
+     10: (Cp: Comp);
+     11: (A: Pointer;)
+  end;
+  s: String;
   ss: ShortString;
-  i: int64;
-  c: Char;
-  wc: WideChar;
+  O: TObject;
+  Int: IUnknown;
 begin
   case FPropinfo^.PropType^.Kind of
     tkSString:
       begin
-        ss := GetStrProp(TObject(Instance), FPropInfo);
+        ss := ShortString(GetStrProp(TObject(Instance), FPropInfo));
         TValue.Make(@ss, FPropInfo^.PropType, result);
       end;
     tkAString:
@@ -3887,32 +3945,82 @@ begin
         s := GetStrProp(TObject(Instance), FPropInfo);
         TValue.Make(@s, FPropInfo^.PropType, result);
       end;
+    tkEnumeration:
+      begin
+        Values.Enum := Integer(GetOrdProp(TObject(Instance), FPropInfo));
+        ValueFromInt(Values.Enum);
+      end;
     tkBool:
       begin
-        i := GetOrdProp(TObject(Instance), FPropInfo);
-        ValueFromBool(i);
+        Values.Bool := GetOrdProp(TObject(Instance), FPropInfo);
+        ValueFromBool(Values.Bool);
       end;
     tkInteger:
       begin
-        i := GetOrdProp(TObject(Instance), FPropInfo);
-        ValueFromInt(i);
+        Values.Int := GetOrdProp(TObject(Instance), FPropInfo);
+        ValueFromInt(Values.Int);
       end;
     tkChar:
       begin
-        c := AnsiChar(GetOrdProp(TObject(Instance), FPropInfo));
-        TValue.Make(@c, FPropInfo^.PropType, result);
+        Values.Ch := Byte(GetOrdProp(TObject(Instance), FPropInfo));
+        TValue.Make(@Values.Ch, FPropInfo^.PropType, result);
       end;
     tkWChar:
       begin
-        wc := WideChar(GetOrdProp(TObject(Instance), FPropInfo));
-        TValue.Make(@wc, FPropInfo^.PropType, result);
+        Values.Wch := Word(GetOrdProp(TObject(Instance), FPropInfo));
+        TValue.Make(@Values.Wch, FPropInfo^.PropType, result);
       end;
     tkInt64,
     tkQWord:
       begin
-        i := GetOrdProp(TObject(Instance), FPropInfo);
-        TValue.Make(@i, FPropInfo^.PropType, result);
+        Values.I64 := GetOrdProp(TObject(Instance), FPropInfo);
+        TValue.Make(@Values.I64, FPropInfo^.PropType, result);
       end;
+    tkClass:
+    begin
+      O := GetObjectProp(TObject(Instance), FPropInfo);
+      TValue.Make(@O, FPropInfo^.PropType, Result);
+    end;
+    tkInterface:
+    begin
+      Int := GetInterfaceProp(TObject(Instance), FPropInfo);
+      TValue.Make(@Int, FPropInfo^.PropType, Result);
+    end;
+    tkFloat:
+    begin
+      case GetTypeData(FPropInfo^.PropType)^.FloatType of
+        ftCurr   :
+          begin
+            Values.Cur := Currency(GetFloatProp(TObject(Instance), FPropInfo));
+            TValue.Make(@Values.Cur, FPropInfo^.PropType, Result);
+          end;
+        ftSingle :
+          begin
+            Values.Si := Single(GetFloatProp(TObject(Instance), FPropInfo));
+            TValue.Make(@Values.Si, FPropInfo^.PropType, Result);
+          end;
+        ftDouble :
+          begin
+            Values.Db := Double(GetFloatProp(TObject(Instance), FPropInfo));
+            TValue.Make(@Values.Db, FPropInfo^.PropType, Result);
+          end;
+        ftExtended:
+          begin
+            Values.Ex := GetFloatProp(TObject(Instance), FPropInfo);
+            TValue.Make(@Values.Ex, FPropInfo^.PropType, Result);
+          end;
+        ftComp   :
+          begin
+            Values.Cp := Comp(GetFloatProp(TObject(Instance), FPropInfo));
+            TValue.Make(@Values.Cp, FPropInfo^.PropType, Result);
+          end;
+      end;
+    end;
+    tkDynArray:
+      begin
+        Values.A := GetDynArrayProp(TObject(Instance), FPropInfo);
+        TValue.Make(@Values.A, FPropInfo^.PropType, Result);
+      end
   else
     result := TValue.Empty;
   end
@@ -3929,8 +4037,17 @@ begin
     tkQWord,
     tkChar,
     tkBool,
-    tkWChar:
+    tkWChar,
+    tkEnumeration:
       SetOrdProp(TObject(Instance), FPropInfo, AValue.AsOrdinal);
+    tkClass:
+      SetObjectProp(TObject(Instance), FPropInfo, AValue.AsObject);
+    tkInterface:
+      SetInterfaceProp(TObject(Instance), FPropInfo, AValue.AsInterface);
+    tkFloat:
+      SetFloatProp(TObject(Instance), FPropInfo, AValue.AsExtended);
+    tkDynArray:
+      SetDynArrayProp(TObject(Instance), FPropInfo, PPointer(AValue.GetReferenceToRawData)^);
   else
     raise exception.createFmt(SErrUnableToSetValueForType, [PropertyType.Name]);
   end

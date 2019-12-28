@@ -298,6 +298,8 @@ begin
   repeat
     Result:=FSSL.Read(@Buffer ,Count);
     e:=FSSL.GetError(Result);
+    if (e=SSL_ERROR_WANT_READ) and (Socket.IOTimeout>0) then
+      e:=SSL_ERROR_ZERO_RETURN;
   until Not (e in [SSL_ERROR_WANT_READ,SSL_ERROR_WANT_WRITE]);
   if (E=SSL_ERROR_ZERO_RETURN) then
     Result:=0

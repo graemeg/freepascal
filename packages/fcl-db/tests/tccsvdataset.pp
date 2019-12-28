@@ -15,6 +15,7 @@ type
   private
     FCSVDataset: TCSVDataset;
     // Load CSVDataset from CSV stream containing lines
+    procedure DoOpenClose(FieldNames: Boolean);
     Procedure LoadFromLines(Const Lines: Array of string);
     // Save CSVDataset to CSV stream, transform to lines
     Procedure SaveToLines(Const Lines: TStrings);
@@ -47,6 +48,8 @@ type
     Procedure TestLoadPriorFieldDefsNoFieldNamesWrongCount;
     Procedure TestLoadPriorFieldDefsFieldNamesWrongCount;
     Procedure TestLoadPriorFieldDefsFieldNamesWrongNames;
+    Procedure TestOpenCloseCycle1;
+    Procedure TestOpenCloseCycle2;
   end;
 
 implementation
@@ -420,6 +423,112 @@ begin
   if (OK<>'') then
     Fail(OK);
 end;
+
+const
+  FILENAME = 'test.dat';
+
+procedure TTestCSVDataset.DoOpenClose(FieldNames : Boolean);
+
+begin
+  CSVDataset.FileName := FILENAME;
+  With CSVDataset do
+     begin
+     CSVOptions.FirstLineAsFieldNames := FieldNames;
+     CSVOptions.DefaultFieldLength := 255;
+     CSVOptions.Delimiter := ',';
+     CSVOptions.QuoteChar := '"';
+     CSVOptions.IgnoreOuterWhitespace := False;
+     CSVOptions.QuoteOuterWhitespace := True;
+     end;
+  // When the program runs for the first time, the data file does not yet exist.
+  // We must create the FieldDefs and create the dataset.
+  if FileExists(CSVDataset.FileName) then
+    CSVDataset.Open
+  else
+    with CSVDataset do
+      begin
+      FieldDefs.Add('FirstName', ftString, 20);
+      FieldDefs.Add('LastName', ftstring, 20);
+      FieldDefs.Add('City', ftString, 20);
+      FieldDefs.Add('Address', ftString, 30);
+      FieldDefs.Add('Birthdate', ftDate);
+      CreateDataset;
+
+      // Open the dataset...
+      Open;
+
+      // ... and add some dummy data:
+      // Names from https://donatellanobatti.blogspot.de/
+      Append;
+      FieldByName('FirstName').AsString := 'Walter';
+      FieldByName('LastName').AsString := 'Mellon';
+      FieldByName('City').AsString := 'Oklahoma City';
+      FieldByName('Address').AsString :=  '1261, Main Street';
+      FieldbyName('Birthdate').AsDateTime := EncodeDate(1980, 1, 1);
+      Post;
+
+      Append;
+      FieldByName('FirstName').AsString := 'Mario';
+      FieldByName('LastName').AsString := 'Speedwagon';
+      FieldByName('City').AsString := 'Hollywood';
+      FieldByName('Address').AsString :=  '1500, Hollywood Blvd';
+      FieldbyName('Birthdate').AsDateTime := EncodeDate(1982, 12, 17);
+      Post;
+
+      Append;
+      FieldByName('FirstName').AsString := 'Anna';
+      FieldByName('LastName').AsString := 'Mull';
+      FieldByName('City').AsString := 'Los Angeles';
+      FieldByName('Address').AsString :=  '2202, Capitol Square';
+      FieldbyName('Birthdate').AsDateTime := EncodeDate(1982, 12, 17);
+      Post;
+      end;
+  // Would be 4 if first line misinterpreted
+  AssertEquals('RecordCount',3,CSVDataset.RecordCount);
+  // This will write the file;
+  CSVDataset.Close;
+end;
+
+procedure TTestCSVDataset.TestOpenCloseCycle1;
+begin
+  if FileExists(FileName) then
+    AssertTrue('Delete before',DeleteFile(FileName));
+  try
+    // This will create the file
+    DoOpenClose(True);
+    // Recreate to be sure
+    FreeAndNil(FCSVDataset);
+    FCSVDataset:=TCSVDataset.Create(Nil);
+    FCSVDataset.Name:='DS';
+    DoOpenClose(True);
+  except
+    On E : Exception do
+      Fail('Failed using exception %s : %s',[E.ClassName,E.Message]);
+  end;
+  if FileExists(FileName) then
+    AssertTrue('Delete after',DeleteFile(FileName));
+end;
+
+procedure TTestCSVDataset.TestOpenCloseCycle2;
+begin
+  if FileExists(FileName) then
+    AssertTrue('Delete before',DeleteFile(FileName));
+  try
+    // This will create the file
+    DoOpenClose(False);
+    // Recreate to be sure
+    FreeAndNil(FCSVDataset);
+    FCSVDataset:=TCSVDataset.Create(Nil);
+    FCSVDataset.Name:='DS';
+    DoOpenClose(False);
+  except
+    On E : Exception do
+      Fail('Failed using exception %s : %s',[E.ClassName,E.Message]);
+  end;
+  if FileExists(FileName) then
+    AssertTrue('Delete after',DeleteFile(FileName));
+end;
+
 
 procedure TTestCSVDataset.SetUp;
 begin

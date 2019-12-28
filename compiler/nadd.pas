@@ -918,6 +918,8 @@ implementation
                   internalerror(2008022102);
              end;
              result:=t;
+             if nf_is_currency in flags then
+               include(result.flags,nf_is_currency);
              exit;
           end;
 {$if (FPC_FULLVERSION>20700) and not defined(FPC_SOFT_FPUX80)}
@@ -1752,8 +1754,17 @@ implementation
                   left.resultdef := s64inttype;
                   right.resultdef := s64inttype;
                 end;
-            inserttypeconv(right,resultrealdef);
-            inserttypeconv(left,resultrealdef);
+            if current_settings.fputype=fpu_none then
+              begin
+                Message(parser_e_unsupported_real);
+                result:=cerrornode.create;
+                exit;
+              end
+            else
+              begin
+                inserttypeconv(right,resultrealdef);
+                inserttypeconv(left,resultrealdef);
+              end;
           end
 
          { if both are orddefs then check sub types }
@@ -2749,24 +2760,30 @@ implementation
                   hp:=nil;
                   if s64currencytype.typ=floatdef then
                     begin
-{$ifndef VER3_0}
                       { if left is a currency integer constant, we can get rid of the factor 10000 }
                       { int64(...) causes a cast on currency, so it is the currency value multiplied by 10000 }
-                      if (left.nodetype=realconstn) and (is_currency(left.resultdef)) and ((int64(trealconstnode(left).value_currency) mod 10000)=0) then
+                      if (left.nodetype=realconstn) and (is_currency(left.resultdef)) and (not(nf_is_currency in left.flags)) and ((trunc(trealconstnode(left).value_real) mod 10000)=0) then
                         begin
                           { trealconstnode expects that value_real and value_currency contain valid values }
-                          trealconstnode(left).value_currency:=trealconstnode(left).value_currency {$ifdef FPC_CURRENCY_IS_INT64}div{$else}/{$endif} 10000;
+{$ifdef FPC_CURRENCY_IS_INT64}
+                          trealconstnode(left).value_currency:=pint64(@(trealconstnode(left).value_currency))^ div 10000;
+{$else}
+                          trealconstnode(left).value_currency:=trealconstnode(left).value_currency / 10000;
+{$endif}
                           trealconstnode(left).value_real:=trealconstnode(left).value_real/10000;
                         end
                       { or if right is an integer constant, we can get rid of its factor 10000 }
-                      else if (right.nodetype=realconstn) and (is_currency(right.resultdef)) and ((int64(trealconstnode(right).value_currency) mod 10000)=0) then
+                      else if (right.nodetype=realconstn) and (is_currency(right.resultdef)) and (not(nf_is_currency in right.flags)) and ((trunc(trealconstnode(right).value_real) mod 10000)=0) then
                         begin
                           { trealconstnode expects that value and value_currency contain valid values }
-                          trealconstnode(right).value_currency:=trealconstnode(right).value_currency {$ifdef FPC_CURRENCY_IS_INT64}div{$else}/{$endif} 10000;
+{$ifdef FPC_CURRENCY_IS_INT64}
+                          trealconstnode(right).value_currency:=pint64(@(trealconstnode(right).value_currency))^ div 10000;
+{$else}
+                          trealconstnode(right).value_currency:=trealconstnode(right).value_currency / 10000;
+{$endif}
                           trealconstnode(right).value_real:=trealconstnode(right).value_real/10000;
                         end
                       else
-{$endif VER3_0}
                         begin
                           hp:=caddnode.create(slashn,getcopy,crealconstnode.create(10000.0,s64currencytype));
                           include(hp.flags,nf_is_currency);
@@ -2783,6 +2800,29 @@ implementation
                         tordconstnode(right).value:=tordconstnode(right).value div 10000
                       else
 {$endif VER3_0}
+                      if (right.nodetype=muln) and is_currency(right.resultdef) and
+                        { do not test swapped here as the internal conversions are only create as "var."*"10000" }
+                        is_currency(taddnode(right).right.resultdef)  and (taddnode(right).right.nodetype=ordconstn) and (tordconstnode(taddnode(right).right).value=10000) and
+                        is_currency(taddnode(right).left.resultdef) and (taddnode(right).left.nodetype=typeconvn) then
+                        begin
+                          hp:=taddnode(right).left.getcopy;
+                          include(hp.flags,nf_is_currency);
+                          right.free;
+                          right:=hp;
+                          hp:=nil;
+                        end
+                      else if (left.nodetype=muln) and is_currency(left.resultdef) and
+                        { do not test swapped here as the internal conversions are only create as "var."*"10000" }
+                        is_currency(taddnode(left).right.resultdef)  and (taddnode(left).right.nodetype=ordconstn) and (tordconstnode(taddnode(left).right).value=10000) and
+                        is_currency(taddnode(left).left.resultdef) and (taddnode(left).left.nodetype=typeconvn) then
+                        begin
+                          hp:=taddnode(left).left.getcopy;
+                          include(hp.flags,nf_is_currency);
+                          left.free;
+                          left:=hp;
+                          hp:=nil;
+                        end
+                      else
                         begin
                           hp:=cmoddivnode.create(divn,getcopy,cordconstnode.create(10000,s64currencytype,false));
                           include(hp.flags,nf_is_currency);

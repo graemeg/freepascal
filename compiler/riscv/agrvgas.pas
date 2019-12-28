@@ -243,6 +243,12 @@ unit agrvgas;
       begin
         result := inherited MakeCmdLine;
         Replace(result,'$ARCH',arch_str[current_settings.fputype=fpu_fd,current_settings.cputype]);
+{$ifdef RISCV32}
+        Replace(result,'$ABI','ilp32');
+{$endif RISCV32}
+{$ifdef RISCV64}
+        Replace(result,'$ABI','lp64');
+{$endif RISCV64}
       end;
 
 
@@ -253,7 +259,7 @@ unit agrvgas;
 
          idtxt  : 'AS';
          asmbin : 'as';
-         asmcmd : '-o $OBJ $EXTRAOPT -march=$ARCH $ASM';
+         asmcmd : '-o $OBJ $EXTRAOPT -march=$ARCH -mabi=$ABI $ASM';
          supported_targets : [system_riscv32_linux,system_riscv64_linux];
          flags : [af_needar,af_smartlink_sections];
          labelprefix : '.L';

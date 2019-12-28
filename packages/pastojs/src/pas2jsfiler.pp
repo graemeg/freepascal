@@ -3920,6 +3920,13 @@ begin
   WritePasElement(Obj,El,aContext);
   Scope:=El.CustomData as TPas2JSProcedureScope;
   //writeln('TPCUWriter.WriteProcedure ',GetObjName(El),' ',GetObjName(Scope),' ',Resolver.GetElementSourcePosStr(El));
+
+  if Scope.SpecializedFromItem<>nil then
+    begin
+    // ToDo: write spezialiation signature
+    RaiseMsg(20191120180305,El,GetObjPath(Scope.SpecializedFromItem.FirstSpecialize));
+    end;
+
   if Scope.DeclarationProc=nil then
     begin
     // declaration

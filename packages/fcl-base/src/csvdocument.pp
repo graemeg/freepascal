@@ -44,7 +44,7 @@ unit csvdocument;
 interface
 
 uses
-  Classes, SysUtils, Contnrs, csvreadwrite;
+  Classes, SysUtils, Contnrs, csvreadwrite, bufstream;
 
 type
   TCSVChar = csvreadwrite.TCSVChar;
@@ -73,13 +73,15 @@ type
     function  GetColCount(ARow: Integer): Integer;
     function  GetMaxColCount: Integer;
   public
-    constructor Create;
+    constructor Create; override;
     destructor  Destroy; override;
 
     // Input/output
 
-    // Load document from file AFileName
-    procedure LoadFromFile(const AFilename: String);
+    // Load document from file AFileName. Use default buffer size of 16kb
+    procedure LoadFromFile(const AFilename: String); overload;
+    // Load document from file AFileName. Buffer size is in Kb.
+    procedure LoadFromFile(const AFilename: String; ABufferSize : Integer); overload;
     // Load document from stream AStream
     procedure LoadFromStream(AStream: TStream);
     // Save document to file AFilename
@@ -392,14 +394,27 @@ begin
 end;
 
 procedure TCSVDocument.LoadFromFile(const AFilename: String);
+
+begin
+  LoadFromFile(aFileName,DefaultBufferCapacity);
+end;
+
+procedure TCSVDocument.LoadFromFile(const AFilename: String; ABufferSize : Integer);
 var
   FileStream: TFileStream;
+  B : TBufStream;
+
 begin
+  B:=Nil;
   FileStream := TFileStream.Create(AFilename, fmOpenRead or fmShareDenyNone);
   try
-    LoadFromStream(FileStream);
+    B:=TReadBufStream.Create(FileStream,aBufferSize);
+    B.SourceOwner:=True;
+    FileStream:=Nil;
+    LoadFromStream(B);
   finally
     FileStream.Free;
+    B.Free;
   end;
 end;
 

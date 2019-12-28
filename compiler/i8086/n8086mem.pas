@@ -168,7 +168,7 @@ implementation
                  internalerror(2012010601);
                pd:=tprocdef(tprocsym(sym).ProcdefList[0]);
                paraloc1.init;
-               paramanager.getintparaloc(current_asmdata.CurrAsmList,pd,1,paraloc1);
+               paramanager.getcgtempparaloc(current_asmdata.CurrAsmList,pd,1,paraloc1);
                hlcg.a_loadaddr_ref_cgpara(current_asmdata.CurrAsmList,resultdef,location.reference,paraloc1);
                paramanager.freecgpara(current_asmdata.CurrAsmList,paraloc1);
                paraloc1.done;

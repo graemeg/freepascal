@@ -512,7 +512,7 @@ implementation
      cutils,
      verbose,globals,systems,widestr,
      fmodule,
-     symtable,defutil;
+     symtable,symutil,defutil;
 
 {****************************************************************************
                        taggregateinformation
@@ -589,8 +589,7 @@ implementation
             repeat
               inc(i);
               sym:=tsym(tabstractrecorddef(def).symtable.symlist[i]);
-            until (sym.typ=fieldvarsym) and
-              not(sp_static in sym.symoptions);
+            until is_normal_fieldvarsym(sym);
             curfield:=tfieldvarsym(sym);
             nextoffset:=curfield.fieldoffset;
             curindex:=i;
@@ -2086,7 +2085,7 @@ implementation
          begin
            sym:=search_struct_member_no_helper(tabstractrecorddef(curdef),fields[i]);
            if not assigned(sym) or
-              (sym.typ<>fieldvarsym) or
+              not is_normal_fieldvarsym(sym) or
               ((i<>high(fields)) and
                not(tfieldvarsym(sym).vardef.typ in [objectdef,recorddef])) then
              internalerror(2015071505);

@@ -31,6 +31,7 @@ type
   private
     FMyQ: TSQLQuery;
     FPrepareCount:Integer;
+    procedure CreateAndFillIDField;
     procedure DoAfterPost(DataSet: TDataSet);
     Procedure DoApplyUpdates;
     procedure DoCount(Sender: TSQLConnection; EventType: TDBEventType; const Msg: String);
@@ -60,6 +61,7 @@ type
     procedure TestReturningUpdate;
     procedure TestMacros;
     Procedure TestPrepareCount;
+    Procedure TestPrepareCount2;
   end;
 
   { TTestTSQLConnection }
@@ -77,6 +79,7 @@ type
     procedure TestUseExplicitTransaction;
     procedure TestExplicitConnect;
     procedure TestGetStatementInfo;
+    procedure TestGetNextValue;
   end;
 
   { TTestTSQLScript }
@@ -760,40 +763,80 @@ begin
     end;
 end;
 
-procedure TTestTSQLQuery.TestPrepareCount;
+procedure TTestTSQLQuery.CreateAndFillIDField;
+
+Var
+  I : Integer;
 
 begin
   with SQLDBConnector do
     begin
+    TryDropIfExist('FPDEV2');
     ExecuteDirect('create table FPDEV2 (id integer not null, constraint PK_FPDEV2 primary key(id))');
     CommitDDL;
-    ExecuteDirect('insert into FPDEV2 (id) values (1)');
-    ExecuteDirect('insert into FPDEV2 (id) values (2)');
+    for I:=1 to 10 do
+      ExecuteDirect('insert into FPDEV2 (id) values ('+IntToStr(I)+')');
     Connection.OnLog:=@DoCount;
     Connection.LogEvents:=[detPrepare];
     end;
+end;
+
+procedure TTestTSQLQuery.TestPrepareCount;
+
+begin
+  CreateAndFillIDField;
   try
     With SQLDBConnector.Query do
       begin
-      Unidirectional:=True; // Disable server index defs etc
-      UsePrimaryKeyAsKey:=False; // Idem
-      SQL.Text:='Select ID from FPDEV2 where (ID=:ID)';
+      UsePrimaryKeyAsKey:=False; // Disable server index defs etc
+      SQL.Text:='Select ID from FPDEV2 where (ID>=:ID) order by ID';
       ParamByname('ID').AsInteger:=1;
-      Prepare;
+      AssertFalse('Not Prepared',SQLDBConnector.Query.Prepared);
       Open;
-      AssertEquals('Correct record count param 1',1,RecordCount);
-      AssertEquals('Correct SQL executed, correct paramete: ',1,Fields[0].AsInteger);
+      AssertEquals('Correct record count param 1',10,RecordCount);
+      AssertEquals('Correct SQL executed, correct parameter: ',1,Fields[0].AsInteger);
       Close;
+      AssertFalse('Still not prepared',SQLDBConnector.Query.Prepared);
       ParamByname('ID').AsInteger:=2;
       Open;
-      AssertEquals('Correct record count param 2',1,RecordCount);
+      AssertEquals('Correct record count param 2',9,RecordCount);
+      AssertEquals('Correct SQL executed, macro value changed: ',2,Fields[0].AsInteger);
+      Close;
+      AssertFalse('Still not prepared',SQLDBConnector.Query.Prepared);
+      end;
+    AssertEquals('Prepare called only once ',2,FPrepareCount);
+  finally
+    SQLDBConnector.Connection.OnLog:=Nil;
+  end;
+
+end;
+
+procedure TTestTSQLQuery.TestPrepareCount2;
+
+begin
+  CreateAndFillIDField;
+  try
+    With SQLDBConnector.Query do
+      begin
+      UsePrimaryKeyAsKey:=False; // Disable server index defs etc
+      SQL.Text:='Select ID from FPDEV2 where (ID>=:ID) order by ID';
+      ParamByname('ID').AsInteger:=1;
+      Prepare;
+      AssertTrue('Prepared',SQLDBConnector.Query.Prepared);
+      Open;
+      AssertEquals('Correct record count param 1',10,RecordCount);
+      AssertEquals('Correct SQL executed, correct parameter: ',1,Fields[0].AsInteger);
+      Close;
+      AssertTrue('Still prepared',SQLDBConnector.Query.Prepared);
+      ParamByname('ID').AsInteger:=2;
+      Open;
+      AssertEquals('Correct record count param 2',9,RecordCount);
       AssertEquals('Correct SQL executed, macro value changed: ',2,Fields[0].AsInteger);
       end;
     AssertEquals('Prepare called only once ',1,FPrepareCount);
   finally
     SQLDBConnector.Connection.OnLog:=Nil;
   end;
-
 end;
 
 
@@ -943,6 +986,22 @@ begin
   StmtInfo := SQLDBConnector.Connection.GetStatementInfo('SELECT * FROM dbo.fn1(1)');
   AssertEquals('TableName', '', StmtInfo.TableName);
   AssertEquals('Updateable', False, StmtInfo.Updateable);
+end;
+
+procedure TTestTSQLConnection.TestGetNextValue;
+begin
+  if not (sqSequences in SQLDBConnector.Connection.ConnOptions) then
+    Ignore('Connector '+SQLDBConnector.Connection.ClassName+' does not support sequences');
+  if SQLServerType=ssSQLite then
+    begin
+    SQLDBConnector.TryDropIfExist('me');
+    SQLDBConnector.ExecuteDirect('create table me (a integer primary key autoincrement,b int)');
+    SQLDBConnector.ExecuteDirect('insert into me (b) values (1)');// Will create table sqlite_sequence if it didn't exist yet
+    SQLDBConnector.ExecuteDirect('drop table me');
+    end;
+  SQLDBConnector.TryDropSequence('me');
+  SQLDBConnector.TryCreateSequence('me');
+  AssertTrue('Get value',SQLDBConnector.Connection.GetNextValue('me',1)>0);
 end;
 
 

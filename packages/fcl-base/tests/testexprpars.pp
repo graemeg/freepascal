@@ -783,10 +783,14 @@ type
   end;
 
   { TTestParserFunctions }
-
   TTestParserFunctions = Class(TTestExpressionParser)
   private
     FAccessAs : TResultType;
+    procedure ExprAveOf(var Result: TFPExpressionResult; const Args: TExprParameterArray);
+    procedure ExprMaxOf(var Result: TFPExpressionResult; const Args: TExprParameterArray);
+    procedure ExprMinOf(var Result: TFPExpressionResult; const Args: TExprParameterArray);
+    procedure ExprStdDevOf(var Result: TFPExpressionResult; const Args: TExprParameterArray);
+    procedure ExprSumOf(var Result: TFPExpressionResult; const Args: TExprParameterArray);
     Procedure TryRead;
     procedure TryWrite;
   Published
@@ -823,7 +827,15 @@ type
     procedure TestFunction31;
     procedure TestFunction32;
     procedure TestFunction33;
+    procedure TestVarArgs1;
+    procedure TestVarArgs2;
+    procedure TestVarArgs3;
+    procedure TestVarArgs4;
+    procedure TestVarArgs5;
   end;
+
+
+
 
   { TAggregateNode }
 
@@ -884,6 +896,8 @@ type
     procedure TestVariable7;
     procedure TestFunction1;
     procedure TestFunction2;
+    procedure TestDelete;
+    procedure TestRemove;
   end;
 
   TTestBuiltins = Class(TTestExpressionParser)
@@ -5464,6 +5478,105 @@ begin
   AssertCurrencyResult(1.234);
 end;
 
+procedure TTestParserFunctions.ExprMaxOf(var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var
+  mx: Double;
+  arg: TFPExpressionResult;
+begin
+  mx := -MaxDouble;
+  for arg in Args do
+    mx := math.Max(mx, ArgToFloat(arg));
+  result.ResFloat:= mx;
+end;
+
+procedure TTestParserFunctions.ExprMinOf(var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var
+  mn: Double;
+  arg: TFPExpressionResult;
+begin
+  mn := MaxDouble;
+  for arg in Args do
+    mn := math.Min(mn, ArgToFloat(arg));
+  result.ResFloat:= mn;
+end;
+
+procedure TTestParserFunctions.ExprSumOf(var Result: TFPExpressionResult; Const Args: TExprParameterArray);
+var
+  sum: Double;
+  arg: TFPExpressionResult;
+begin
+  sum := 0;
+  for arg in Args do
+    sum := sum + ArgToFloat(arg);
+  Result.ResFloat := sum;
+end;
+
+procedure TTestParserFunctions.ExprAveOf(var Result: TFPExpressionResult; const Args: TExprParameterArray);
+var
+  sum: Double;
+  arg: TFPExpressionResult;
+begin
+  if Length(Args) = 0 then
+    raise EExprParser.Create('At least 1 value needed for calculation of average');
+  sum := 0;
+  for arg in Args do
+    sum := sum + ArgToFloat(arg);
+  Result.ResFloat := sum / Length(Args);
+end;
+
+procedure TTestParserFunctions.ExprStdDevOf(var Result: TFPExpressionResult; const Args: TExprParameterArray);
+var
+  sum, ave: Double;
+  arg: TFPExpressionResult;
+begin
+  if Length(Args) < 2 then
+    raise EExprParser.Create('At least 2 values needed for calculation of standard deviation');
+  sum := 0;
+  for arg in Args do
+    sum := sum + ArgToFloat(arg);
+  ave := sum / Length(Args);
+  sum := 0;
+  for arg in Args do
+    sum := sum + sqr(ArgToFloat(arg) - ave);
+  Result.ResFloat := sqrt(sum / (Length(Args) - 1));
+end;
+
+procedure TTestParserFunctions.TestVarArgs1;
+begin
+ // FP.BuiltIns := [bcMath];
+  FP.Identifiers.AddFunction('MaxOf', 'F', 'F+', @ExprMaxOf);
+  FP.Expression := 'MaxOf(-1,2,3,4.1)';
+  AssertEquals('Result',4.1,FP.Evaluate.ResFloat,0.1);
+end;
+
+procedure TTestParserFunctions.TestVarArgs2;
+begin
+  FP.Identifiers.AddFunction('MinOf', 'F', 'F+', @ExprMinOf);
+  FP.Expression := 'MinOf(-1,2,3,4.1)';
+  AssertEquals('Result',-1,FP.Evaluate.ResFloat,0.1);
+end;
+
+procedure TTestParserFunctions.TestVarArgs3;
+begin
+  FP.Identifiers.AddFunction('SumOf', 'F', 'F+', @ExprSumOf);
+  FP.Expression := 'SumOf(-1,2,3,4.1)';
+  AssertEquals('Result',8.1,FP.Evaluate.ResFloat,0.1);
+end;
+
+procedure TTestParserFunctions.TestVarArgs4;
+begin
+  FP.Identifiers.AddFunction('AveOf', 'F', 'F+', @ExprAveOf);
+  FP.Expression := 'AveOf(-1,2,3,4.1)';
+  AssertEquals('Result',2.025,FP.Evaluate.ResFloat,0.001);
+end;
+
+procedure TTestParserFunctions.TestVarArgs5;
+begin
+  FP.Identifiers.AddFunction('StdDevOf', 'F', 'F+', @ExprStdDevOf);
+  FP.Expression := 'StdDevOf(-1,2,3,4.1)';
+  AssertEquals('Result',2.191,FP.Evaluate.ResFloat,0.001);
+end;
+
 procedure TTestParserFunctions.TestFunction17;
 
 Var
@@ -5843,6 +5956,34 @@ begin
   AssertEquals('Found no such identifier',-1,ind);
   I2:=FM.FindIdentifier('NoNoNo');
   AssertNull('FindIdentifier returns no result',I2);
+end;
+
+procedure TTestBuiltinsManager.TestDelete;
+
+begin
+  FM.AddFunction(bcUser,'EchoDate','D','D',@EchoDate);
+  FM.AddFunction(bcUser,'EchoDate2','D','D',@EchoDate);
+  FM.AddFunction(bcUser,'EchoDate3','D','D',@EchoDate);
+  AssertEquals('Count before',3,FM.IdentifierCount);
+  FM.Delete(2);
+  AssertEquals('Count after',2,FM.IdentifierCount);
+  AssertEquals('No more',-1,FM.IndexOfIdentifier('EchoDate3'));
+  AssertEquals('Left 1',0,FM.IndexOfIdentifier('EchoDate'));
+  AssertEquals('Left 2',1,FM.IndexOfIdentifier('EchoDate2'));
+end;
+
+procedure TTestBuiltinsManager.TestRemove;
+begin
+  FM.AddFunction(bcUser,'EchoDate','D','D',@EchoDate);
+  FM.AddFunction(bcUser,'EchoDate2','D','D',@EchoDate);
+  FM.AddFunction(bcUser,'EchoDate3','D','D',@EchoDate);
+  AssertEquals('Count before',3,FM.IdentifierCount);
+  AssertEquals('Result ',1,FM.Remove('EchoDate2'));
+  AssertEquals('Count after',2,FM.IdentifierCount);
+  AssertEquals('No more',-1,FM.IndexOfIdentifier('EchoDate2'));
+  AssertEquals('Left 1',0,FM.IndexOfIdentifier('EchoDate'));
+  AssertEquals('Left 2',1,FM.IndexOfIdentifier('EchoDate3'));
+  AssertEquals('Result ',-1,FM.Remove('Nono'));
 end;
 
 { TTestBuiltins }

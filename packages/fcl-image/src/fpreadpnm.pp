@@ -113,6 +113,7 @@ Var
   C : Char;
 
 begin
+  C:=#0;
   Stream.ReadBuffer(C,1);
   If (C<>'P') then
     Raise Exception.Create('Not a valid PNM image.');
@@ -157,7 +158,7 @@ begin
   Case FBitmapType of
     5,6 : FScanLineSize:=(FBitPP div 8) * FWidth;
   else  
-    FScanLineSize:=FBitPP*((FWidth+7)shr 3);
+    FScanLineSize:=FBitPP*((FWidth+7) shr 3);
   end;
   GetMem(FScanLine,FScanLineSize);
   try
@@ -165,6 +166,7 @@ begin
       begin
       ReadScanLine(Row,Stream);
       WriteScanLine(Row,Img);
+//      Writeln(Stream.Position,' ',Stream.Size);
       end;
   finally
     FreeMem(FScanLine);
@@ -212,7 +214,8 @@ begin
           Inc(P)
           end;
         end;
-    4,5,6 : Stream.ReadBuffer(FScanLine^,FScanLineSize);
+    4,5,6 :
+       Stream.ReadBuffer(FScanLine^,FScanLineSize);
     end;
 end;
 
@@ -222,7 +225,7 @@ procedure TFPReaderPNM.WriteScanLine(Row : Integer; Img : TFPCustomImage);
 Var
   C : TFPColor;
   L : Cardinal;
-  Scale: Cardinal;
+  Scale: Int64;
 
   function ScaleByte(B: Byte):Word;
   begin
@@ -235,7 +238,7 @@ Var
   function ScaleWord(W: Word):Word;
   begin
     if FMaxVal = 65535 then
-      Result := W
+      Result := BEtoN(W)
     else { Mimic the above with multiplications }
       Result := Int64(W*(FMaxVal+1) + W) * 65535 div Scale;
   end;

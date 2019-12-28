@@ -538,7 +538,13 @@ implementation
                 dospecialize:=false;
               end;
           end;
-        if dospecialize then
+        { recover from error? }
+        if def.typ=errordef then
+          begin
+            while (token<>_SEMICOLON) and (token<>_RKLAMMER) do
+              consume(token);
+          end
+        else if dospecialize then
           begin
             if def.typ=forwarddef then
               def:=ttypesym(srsym).typedef;

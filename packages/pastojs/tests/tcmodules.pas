@@ -339,6 +339,7 @@ type
     Procedure TestProc_LocalVarAbsolute;
     Procedure TestProc_LocalVarInit;
     Procedure TestProc_ReservedWords;
+    Procedure TestProc_ConstRefWord;
 
     // anonymous functions
     Procedure TestAnonymousProc_Assign_ObjFPC;
@@ -434,6 +435,7 @@ type
     Procedure TestArray_SetLengthProperty;
     Procedure TestArray_SetLengthMultiDim;
     Procedure TestArray_OpenArrayOfString;
+    Procedure TestArray_ConstRef;
     Procedure TestArray_Concat;
     Procedure TestArray_Copy;
     Procedure TestArray_InsertDelete;
@@ -456,6 +458,7 @@ type
     Procedure TestRecord_WithDo;
     Procedure TestRecord_Assign;
     Procedure TestRecord_AsParams;
+    Procedure TestRecord_ConstRef;
     Procedure TestRecordElement_AsParams;
     Procedure TestRecordElementFromFuncResult_AsParams;
     Procedure TestRecordElementFromWith_AsParams;
@@ -4528,7 +4531,7 @@ begin
   '  Nan:=&bOolean;',
   'end;',
   'begin',
-  ' Date(1);']);
+  '  Date(1);']);
   ConvertProgram;
   CheckSource('TestProc_ReservedWords',
     LinesToStr([ // statements
@@ -4542,6 +4545,50 @@ begin
     '']),
     LinesToStr([
     '  $mod.Date(1);'
+    ]));
+end;
+
+procedure TTestModule.TestProc_ConstRefWord;
+begin
+  StartProgram(false);
+  Add([
+  'procedure Run(constref w: word);',
+  'var l: word;',
+  'begin',
+  '  l:=w;',
+  '  Run(w);',
+  '  Run(l);',
+  'end;',
+  'procedure Fly(a: word; var b: word; out c: word; const d: word; constref e: word);',
+  'begin',
+  '  Run(a);',
+  '  Run(b);',
+  '  Run(c);',
+  '  Run(d);',
+  '  Run(e);',
+  'end;',
+  'begin',
+  '  Run(1);']);
+  ConvertProgram;
+  CheckHint(mtWarning,nConstRefNotForXAsConst,'ConstRef not yet implemented for Word. Treating as Const');
+  CheckSource('TestProc_ConstRefWord',
+    LinesToStr([ // statements
+    'this.Run = function (w) {',
+    '  var l = 0;',
+    '  l = w;',
+    '  $mod.Run(w);',
+    '  $mod.Run(l);',
+    '};',
+    'this.Fly = function (a, b, c, d, e) {',
+    '  $mod.Run(a);',
+    '  $mod.Run(b.get());',
+    '  $mod.Run(c.get());',
+    '  $mod.Run(d);',
+    '  $mod.Run(e);',
+    '};',
+    '']),
+    LinesToStr([
+    '$mod.Run(1);'
     ]));
 end;
 
@@ -9320,6 +9367,46 @@ begin
     '']));
 end;
 
+procedure TTestModule.TestArray_ConstRef;
+begin
+  StartProgram(false);
+  Add([
+  'type TArr = array of word;',
+  'procedure Run(constref a: TArr);',
+  'begin',
+  'end;',
+  'procedure Fly(a: TArr; var b: TArr; out c: TArr; const d: TArr; constref e: TArr);',
+  'var l: TArr;',
+  'begin',
+  '  Run(l);',
+  '  Run(a);',
+  '  Run(b);',
+  '  Run(c);',
+  '  Run(d);',
+  '  Run(e);',
+  'end;',
+  'begin',
+  '']);
+  ConvertProgram;
+  CheckResolverUnexpectedHints();
+  CheckSource('TestArray_ConstRef',
+    LinesToStr([ // statements
+    'this.Run = function (a) {',
+    '};',
+    'this.Fly = function (a, b, c, d, e) {',
+    '  var l = [];',
+    '  $mod.Run(l);',
+    '  $mod.Run(a);',
+    '  $mod.Run(b.get());',
+    '  $mod.Run(c.get());',
+    '  $mod.Run(d);',
+    '  $mod.Run(e);',
+    '};',
+    '']),
+    LinesToStr([
+    '']));
+end;
+
 procedure TTestModule.TestArray_Concat;
 begin
   StartProgram(false);
@@ -10385,6 +10472,56 @@ begin
     ]),
     LinesToStr([
     '$mod.DoIt($mod.TRecord.$clone($mod.i), $mod.i, $mod.i, $mod.i);',
+    '']));
+end;
+
+procedure TTestModule.TestRecord_ConstRef;
+begin
+  StartProgram(false);
+  Add([
+  'type TRec = record i: word; end;',
+  'procedure Run(constref a: TRec);',
+  'begin',
+  'end;',
+  'procedure Fly(a: TRec; var b: TRec; out c: TRec; const d: TRec; constref e: TRec);',
+  'var l: TRec;',
+  'begin',
+  '  Run(l);',
+  '  Run(a);',
+  '  Run(b);',
+  '  Run(c);',
+  '  Run(d);',
+  '  Run(e);',
+  'end;',
+  'begin',
+  '']);
+  ConvertProgram;
+  CheckResolverUnexpectedHints();
+  CheckSource('TestRecord_ConstRef',
+    LinesToStr([ // statements
+    'rtl.recNewT($mod, "TRec", function () {',
+    '  this.i = 0;',
+    '  this.$eq = function (b) {',
+    '    return this.i === b.i;',
+    '  };',
+    '  this.$assign = function (s) {',
+    '    this.i = s.i;',
+    '    return this;',
+    '  };',
+    '});',
+    'this.Run = function (a) {',
+    '};',
+    'this.Fly = function (a, b, c, d, e) {',
+    '  var l = $mod.TRec.$new();',
+    '  $mod.Run(l);',
+    '  $mod.Run(a);',
+    '  $mod.Run(b);',
+    '  $mod.Run(c);',
+    '  $mod.Run(d);',
+    '  $mod.Run(e);',
+    '};',
+    '']),
+    LinesToStr([
     '']));
 end;
 

@@ -112,7 +112,6 @@ begin
 end;
 
 initialization
-
   RegisterTest(TTestCSVReadWrite);
 end.
 

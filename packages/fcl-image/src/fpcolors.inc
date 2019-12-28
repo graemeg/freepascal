@@ -43,7 +43,7 @@ const
   colPurple     : TFPColor = (Red: $8000; Green: $0000; Blue: $8000; Alpha: alphaOpaque);
   colTeal       : TFPColor = (Red: $0000; Green: $8000; Blue: $8000; Alpha: alphaOpaque);
   colSilver     : TFPColor = (Red: $c000; Green: $c000; Blue: $c000; Alpha: alphaOpaque);
-  colLime       : TFPColor = (Red: $0000; Green: $ffff; Blue: $0000; Alpha: alphaOpaque);
+  colLime       : TFPColor = (Red: $bfbf; Green: $ffff; Blue: $0000; Alpha: alphaOpaque);
   colFuchsia    : TFPColor = (Red: $ffff; Green: $0000; Blue: $ffff; Alpha: alphaOpaque);
   colAqua       : TFPColor = (Red: $0000; Green: $ffff; Blue: $ffff; Alpha: alphaOpaque);
 

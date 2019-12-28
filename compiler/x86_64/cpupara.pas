@@ -56,7 +56,7 @@ unit cpupara;
        cutils,verbose,
        systems,
        globals,defutil,
-       symtable,
+       symtable,symutil,
        cpupi,
        cgx86,cgobj,cgcpu;
 
@@ -760,7 +760,7 @@ unit cpupara;
         (* Merge the fields of the structure.  *)
         for i:=0 to tabstractrecorddef(def).symtable.symlist.count-1 do
           begin
-            if tsym(tabstractrecorddef(def).symtable.symlist[i]).typ<>fieldvarsym then
+            if not is_normal_fieldvarsym(tsym(tabstractrecorddef(def).symtable.symlist[i])) then
               continue;
             vs:=tfieldvarsym(tabstractrecorddef(def).symtable.symlist[i]);
             checkalignment:=true;
@@ -1553,6 +1553,7 @@ unit cpupara;
                               else
                                 InternalError(2018012901);
                             end;
+                            paraloc^.def:=carraydef.getreusable_no_free_vector(paraloc^.def,j);
                           end;
                         else
                           if (x86_64_use_ms_abi(p.proccalloption) and (p.proccalloption <> pocall_vectorcall)) then
@@ -1858,6 +1859,7 @@ unit cpupara;
                                   else
                                     InternalError(2018012903);
                                 end;
+                                paraloc^.def:=carraydef.getreusable_no_free_vector(paraloc^.def,j);
                               end;
                             else
                               if (use_ms_abi and (p.proccalloption <> pocall_vectorcall)) then

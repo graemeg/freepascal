@@ -131,9 +131,8 @@ begin
   If FormatSettings.HeaderRow then
     begin
     For I:=0 to ExportFields.Count-1 do
-      begin
-      FCSVOut.AppendCell(ExportFields[i].ExportedName);
-      end;
+      if ExportFields[i].Enabled then
+        FCSVOut.AppendCell(ExportFields[i].ExportedName);
     FCSVOut.AppendRow; //close off with line ending
     end;
   inherited DoDataHeader;

@@ -336,7 +336,7 @@ implementation
                  reference_reset_base(tvref,hreg_tv_rec,0,ctempposinvalid,tvref.alignment,tvref.volatility)
                end;
              paraloc1.init;
-             paramanager.getintparaloc(current_asmdata.CurrAsmList,tprocvardef(pvd),1,paraloc1);
+             paramanager.getcgtempparaloc(current_asmdata.CurrAsmList,tprocvardef(pvd),1,paraloc1);
              hregister:=hlcg.getaddressregister(current_asmdata.CurrAsmList,pvd);
              reference_reset_symbol(href,current_asmdata.RefAsmSymbol('FPC_THREADVAR_RELOCATE',AT_DATA,indirect),0,pvd.alignment,[]);
              if not issystemunit then

@@ -568,7 +568,11 @@ Unit rarv32gas;
 
             oper.opr.ref.refaddr:=refaddr;
             Consume(AS_RPAREN);
-          end;
+          end
+        else if (oper.opr.typ=OPR_REFERENCE) and
+           (oper.opr.ref.refaddr=addr_no) and
+           assigned(oper.opr.ref.symbol) then
+          oper.opr.ref.refaddr:=addr_full;
       end;
 
 

@@ -1073,3 +1073,33 @@ asm
 {$endif win64}
   bswap %rax
 end;
+
+
+{$ifndef win64}
+{$define FPC_SYSTEM_HAS_U128_DIV_U64_TO_U64}
+function u128_div_u64_to_u64( const xh, xl: qword; const y: qword; out quotient, remainder: qword ): boolean;nostackframe;assembler;
+{
+  SysV:
+  xh: RDI
+  xl: RSI
+  y: RDX
+  quotient: RCX
+  remainder: R8
+}
+label
+  dodiv;
+asm
+  cmpq %rdi,%rdx
+  ja   dodiv
+  xorl %eax,%eax
+  ret
+dodiv:
+  movq %rdx,%r9
+  movq %rsi,%rax
+  movq %rdi,%rdx
+  divq %r9
+  movq %rax,(%rcx)
+  movq %rdx,(%r8)
+  movl $1,%eax
+end;
+{$endif win64}

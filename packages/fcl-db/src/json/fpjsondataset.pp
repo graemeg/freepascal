@@ -179,6 +179,7 @@ type
     Function Compare(aRowindex : integer) : Integer;
   Public
     Constructor Create(aDataset : TBaseJSONDataset; aFields : String; aValues : Variant; aOptions : TLocateOptions);
+    Destructor Destroy; override;
     Property Dataset : TBaseJSONDataset Read FDataset;
     property Items [Index : Integer] : TFieldComparer Read GetFieldComparer;
     Property Options : TLocateOptions Read FOptions Write FOptions;
@@ -408,7 +409,10 @@ var
 
 begin
   S1:=GetFieldValue(Rowindex).AsString;
-  S2:=String(aValue);
+  if varIsNull(aValue) then
+    S2:=''
+  else
+    S2:=String(aValue);
   if loPartialKey in Options then
     S1:=Copy(S1,1,Length(S2));
   if loCaseInsensitive in options then
@@ -541,6 +545,18 @@ begin
     end;
   Foptions:=aOptions;
   ConstructItems(aFields);
+end;
+
+destructor TRecordComparer.Destroy;
+
+Var
+  F : TFieldComparer;
+
+begin
+  For F in Fitems do
+     F.Free;
+  FItems:=Nil;
+  inherited Destroy;
 end;
 
 { TDefaultJSONIndex }
@@ -1049,7 +1065,7 @@ begin
   end;
   If (Ptrn='') then
     Case F.DataType of
-      ftDate : Result:=StrToDate(S,'y/m/d');
+      ftDate : Result:=StrToDate(S,'y/m/d','-');
       ftTime : Result:=StrToTime(S);
       ftDateTime : Result:=StrToDateTime(S);
     end
@@ -1077,7 +1093,7 @@ begin
   end;
   If (Ptrn='') then
     Case F.DataType of
-      ftDate : Result:=DateToStr(DT);
+      ftDate : Result:=FormatDateTime('yyyy/mm/dd',DT);
       ftTime : Result:=TimeToStr(DT);
       ftDateTime : Result:=DateTimeToStr(DT);
     end

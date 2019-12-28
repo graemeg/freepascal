@@ -499,6 +499,7 @@ Type
     FArgumentTypes: String;
     FIDType: TIdentifierType;
     FName: ShortString;
+    FVariableArgumentCount: Boolean;
     FOnGetValue: TFPExprFunctionEvent;
     FOnGetValueCB: TFPExprFunctionCallBack;
     function GetAsBoolean: Boolean;
@@ -544,6 +545,7 @@ Type
     Property OnGetFunctionValue : TFPExprFunctionEvent Read FOnGetValue Write FOnGetValue;
     Property OnGetVariableValue : TFPExprVariableEvent Read FOnGetVarValue Write FOnGetVarValue;
     Property NodeType : TFPExprFunctionClass Read FNodeType Write FNodeType;
+    property VariableArgumentCount: Boolean read FVariableArgumentCount write FVariableArgumentCount;
   end;
 
 
@@ -807,6 +809,8 @@ Type
     Function AddFunction(Const ACategory : TBuiltInCategory; Const AName : ShortString; Const AResultType : Char; Const AParamTypes : String; ACallBack : TFPExprFunctionCallBack) : TFPBuiltInExprIdentifierDef;
     Function AddFunction(Const ACategory : TBuiltInCategory; Const AName : ShortString; Const AResultType : Char; Const AParamTypes : String; ACallBack : TFPExprFunctionEvent) : TFPBuiltInExprIdentifierDef;
     Function AddFunction(Const ACategory : TBuiltInCategory; Const AName : ShortString; Const AResultType : Char; Const AParamTypes : String; ANodeClass : TFPExprFunctionClass) : TFPBuiltInExprIdentifierDef;
+    Procedure Delete(AIndex: Integer);
+    Function Remove(aIdentifier : String) : Integer;
     Property IdentifierCount : Integer Read GetCount;
     Property Identifiers[AIndex : Integer] :TFPBuiltInExprIdentifierDef Read GetI;
   end;
@@ -2270,7 +2274,11 @@ begin
   Result:=Add as TFPExprIdentifierDef;
   Result.Name:=Aname;
   Result.IdentifierType:=itFunctionCallBack;
-  Result.ParameterTypes:=AParamTypes;
+  if (AParamTypes <> '') and (AParamTypes[Length(AParamTypes)] = '+') then begin
+    Result.ParameterTypes := Copy(AParamTypes, 1, Length(AParamTypes)-1);
+    Result.FVariableArgumentCount := true;
+  end else
+    Result.ParameterTypes := AParamTypes;
   Result.ResultType:=CharToResultType(AResultType);
   Result.FOnGetValueCB:=ACallBack;
 end;
@@ -2282,7 +2290,11 @@ begin
   Result:=Add as TFPExprIdentifierDef;
   Result.Name:=Aname;
   Result.IdentifierType:=itFunctionHandler;
-  Result.ParameterTypes:=AParamTypes;
+  if (AParamTypes <> '') and (AParamTypes[Length(AParamTypes)] = '+') then begin
+    Result.ParameterTypes := Copy(AParamTypes, 1, Length(AParamTypes)-1);
+    Result.FVariableArgumentCount := true;
+  end else
+    Result.ParameterTypes := AParamTypes;
   Result.ResultType:=CharToResultType(AResultType);
   Result.FOnGetValue:=ACallBack;
 end;
@@ -2294,10 +2306,15 @@ begin
   Result:=Add as TFPExprIdentifierDef;
   Result.Name:=Aname;
   Result.IdentifierType:=itFunctionNode;
-  Result.ParameterTypes:=AParamTypes;
+  if (AParamTypes <> '') and (AParamTypes[Length(AParamTypes)] = '+') then begin
+    Result.ParameterTypes := Copy(AParamTypes, 1, Length(AParamTypes)-1);
+    Result.FVariableArgumentCount := true;
+  end else
+    Result.ParameterTypes := AParamTypes;
   Result.ResultType:=CharToResultType(AResultType);
   Result.FNodeType:=ANodeClass;
 end;
+
 
 { ---------------------------------------------------------------------
   TFPExprIdentifierDef
@@ -2361,7 +2378,10 @@ end;
 
 function TFPExprIdentifierDef.ArgumentCount: Integer;
 begin
-  Result:=Length(FArgumentTypes);
+  if FVariableArgumentCount then
+    Result := -Length(FArgumentTypes)
+  else
+    Result:=Length(FArgumentTypes);
 end;
 
 procedure TFPExprIdentifierDef.Assign(Source: TPersistent);
@@ -2376,6 +2396,7 @@ begin
     FStringValue:=EID.FStringValue;
     FValue:=EID.FValue;
     FArgumentTypes:=EID.FArgumentTypes;
+    FVariableArgumentCount := EID.FVariableArgumentCount;
     FIDType:=EID.FIDType;
     FName:=EID.FName;
     FOnGetValue:=EID.FOnGetValue;
@@ -2665,6 +2686,18 @@ function TExprBuiltInManager.AddFunction(const ACategory: TBuiltInCategory;
 begin
   Result:=TFPBuiltInExprIdentifierDef(FDefs.AddFunction(AName,AResultType,AParamTypes,ANodeClass));
   Result. Category:=ACategory;
+end;
+
+procedure TExprBuiltInManager.Delete(AIndex: Integer);
+begin
+  FDefs.Delete(AIndex);
+end;
+
+function TExprBuiltInManager.Remove(aIdentifier: String): Integer;
+begin
+  Result:=IndexOfIdentifier(aIdentifier);
+  if Result<>-1 then
+    Delete(Result);
 end;
 
 
@@ -3776,11 +3809,14 @@ Var
   rtp,rta : TResultType;
 
 begin
-  If Length(FArgumentNodes)<>FID.ArgumentCount then
+  If (Length(FArgumentNodes)<>FID.ArgumentCount) and not FID.VariableArgumentCount then
     RaiseParserError(ErrInvalidArgumentCount,[FID.Name]);
   For I:=0 to Length(FArgumentNodes)-1 do
     begin
-    rtp:=CharToResultType(FID.ParameterTypes[i+1]);
+    if (i < Length(FID.ParameterTypes)) then
+      rtp := CharToResultType(FID.ParameterTypes[i+1])
+    else if FID.VariableArgumentCount then
+      rtp := CharToResultType(FID.ParameterTypes[Length(FID.ParameterTypes)]);
     rta:=FArgumentNodes[i].NodeType;
     If (rtp<>rta) then
       FArgumentNodes[i]:=ConvertArgument(I+1,FArgumentNodes[i],rtp);
@@ -4448,3 +4484,4 @@ initialization
 finalization
   FreeBuiltins;
 end.
+

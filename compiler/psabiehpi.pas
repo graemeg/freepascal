@@ -642,7 +642,7 @@ implementation
 
             pd:=search_system_proc('_unwind_resume');
             cgpara1.init;
-            paramanager.getintparaloc(list,pd,1,cgpara1);
+            paramanager.getcgtempparaloc(list,pd,1,cgpara1);
             hlcg.a_load_reg_cgpara(list,voidpointertype,t.unwind_info,cgpara1);
             paramanager.freecgpara(list,cgpara1);
             hlcg.g_call_system_proc(list,'_unwind_resume',[@cgpara1],nil).resetiftemp;
@@ -741,7 +741,7 @@ implementation
           (current_procinfo as tpsabiehprocinfo).CurrentAction.AddAction(tobjectdef(-1));
 
         pd:=search_system_proc('fpc_psabi_begin_catch');
-        paramanager.getintparaloc(list, pd, 1, paraloc1);
+        paramanager.getcgtempparaloc(list, pd, 1, paraloc1);
         hlcg.a_load_reg_cgpara(list,voidpointertype,wrappedexception,paraloc1);
         begincatchres:=hlcg.g_call_system_proc(list,pd,[@paraloc1],nil);
         location_reset(exceptloc, LOC_REGISTER, def_cgsize(begincatchres.def));

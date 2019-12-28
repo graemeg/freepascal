@@ -3251,7 +3251,8 @@ const
    { ado_IsConstructor      } 'IsConstructor',
    { ado_IsArrayOfConst     } 'ArrayOfConst',
    { ado_IsConstString      } 'ConstString',
-   { ado_IsBitPacked        } 'BitPacked'
+   { ado_IsBitPacked        } 'BitPacked',
+   { ado_IsVector           } 'Vector'
   );
 var
   symoptions: tarraydefoptions;
@@ -4709,15 +4710,6 @@ begin
        b:=readentry;
        case b of
 
-         ibextraheader:
-           begin
-             CurUnit.LongVersion:=cardinal(getlongint);
-             Writeln(['LongVersion: ',CurUnit.LongVersion]);
-             getset(tppuset4(CurUnit.ModuleFlags));
-             if mf_symansistr in CurUnit.ModuleFlags then
-               SymAnsiStr:=true;
-           end;
-
          ibmodulename :
            begin
              CurUnit.Name:=getstring;
@@ -4908,7 +4900,9 @@ begin
   CurUnit.LongVersion:=cardinal(ppufile.getlongint);
   Writeln(['LongVersion: ',CurUnit.LongVersion]);
   ppufile.getset(tppuset4(CurUnit.ModuleFlags));
-  result:=ppufile.EndOfEntry;
+  result:=ppufile.EndOfEntry and (CurUnit.LongVersion=CurrentPPULongVersion);
+  if mf_symansistr in CurUnit.ModuleFlags then
+    SymAnsiStr:=true;
 end;
 
 procedure dofile (filename : string);

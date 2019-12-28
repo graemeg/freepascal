@@ -1175,19 +1175,19 @@ implementation
       sizepara.init;
       alignpara.init;
       volatilepara.init;
-      paramanager.getintparaloc(list,pd,1,destpara);
-      paramanager.getintparaloc(list,pd,2,sourcepara);
-      paramanager.getintparaloc(list,pd,3,sizepara);
+      paramanager.getcgtempparaloc(list,pd,1,destpara);
+      paramanager.getcgtempparaloc(list,pd,2,sourcepara);
+      paramanager.getcgtempparaloc(list,pd,3,sizepara);
       if indivalign then
         begin
-          paramanager.getintparaloc(list,pd,4,volatilepara);
+          paramanager.getcgtempparaloc(list,pd,4,volatilepara);
           destpara.Alignment:=-dest.alignment;
           sourcepara.Alignment:=-source.alignment;
         end
       else
         begin
-          paramanager.getintparaloc(list,pd,4,alignpara);
-          paramanager.getintparaloc(list,pd,5,volatilepara);
+          paramanager.getcgtempparaloc(list,pd,4,alignpara);
+          paramanager.getcgtempparaloc(list,pd,5,volatilepara);
           maxalign:=newalignment(max(source.alignment,dest.alignment),min(source.alignment,dest.alignment));
           a_load_const_cgpara(list,u32inttype,maxalign,alignpara);
         end;

@@ -661,7 +661,6 @@ implementation
          istyperenaming : boolean;
          generictypelist : tfphashobjectlist;
          generictokenbuf : tdynamicarray;
-         vmtbuilder : TVMTBuilder;
          p:tnode;
          gendef : tstoreddef;
          s : shortstring;
@@ -1054,21 +1053,19 @@ implementation
                              cgmessage(type_e_function_reference_kind)
                            else
                              begin
-                               if (po_hascallingconvention in tprocvardef(hdef).procoptions) and
-                                  (tprocvardef(hdef).proccalloption in [pocall_cdecl,pocall_mwpascal]) then
-                                 begin
-                                   include(tprocvardef(hdef).procoptions,po_is_block);
-                                   { can't check yet whether the parameter types
-                                     are valid for a block, since some of them
-                                     may still be forwarddefs }
-                                 end
-                               else
-                                 { a regular anonymous function type: not yet supported }
-                                 { the }
-                                 Comment(V_Error,'Function references are not yet supported, only C blocks (add "cdecl;" at the end)');
-                             end
+                               { this message is only temporary; once Delphi style anonymous functions
+                                 are supported, this check is no longer required }
+                               if not (po_is_block in tprocvardef(hdef).procoptions) then
+                                 comment(v_error,'Function references are not yet supported, only C blocks (add "cblock;" at the end)');
+                             end;
                          end;
                        handle_calling_convention(tprocvardef(hdef),hcc_default_actions_intf);
+                       if po_is_function_ref in tprocvardef(hdef).procoptions then
+                         begin
+                           if (po_is_block in tprocvardef(hdef).procoptions) and
+                              not (tprocvardef(hdef).proccalloption in [pocall_cdecl,pocall_mwpascal]) then
+                             message(type_e_cblock_callconv);
+                         end;
                        if try_consume_hintdirective(newtype.symoptions,newtype.deprecatedmsg) then
                          consume(_SEMICOLON);
                      end;
@@ -1088,11 +1085,7 @@ implementation
                     { Build VMT indexes, skip for type renaming and forward classes }
                     if (hdef.typesym=newtype) and
                        not(oo_is_forward in tobjectdef(hdef).objectoptions) then
-                      begin
-                        vmtbuilder:=TVMTBuilder.Create(tobjectdef(hdef));
-                        vmtbuilder.generate_vmt;
-                        vmtbuilder.free;
-                      end;
+                      build_vmt(tobjectdef(hdef));
 
                     { In case of an objcclass, verify that all methods have a message
                       name set. We only check this now, because message names can be set

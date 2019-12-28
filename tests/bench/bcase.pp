@@ -12,6 +12,8 @@ function GetRealTime(const st: TSystemTime): Real;
     Result := st.Hour*3600.0 + st.Minute*60.0 + st.Second + st.MilliSecond/1000.0;
   end;
 
+{$push}
+{$warn 5057 off}
 function GetRealTime : Real;
   var
     st:TSystemTime;
@@ -19,6 +21,7 @@ function GetRealTime : Real;
     GetLocalTime(st);
     result:=GetRealTime(st);
   end;
+{$pop}
 
 function IIf(Condition: Boolean; TrueRes, FalseRes: Integer): Integer; inline;
   begin
@@ -2527,7 +2530,7 @@ function TCStyleCascade.WriteResults: Boolean;
 
 procedure TCStyleCascade.DoTestIteration(Iteration: Integer);
   var
-    X, Tmp: Byte; P: TInstructionSet;
+    X, Tmp: Byte;
   label
     Set1, Set2, Set3, Set4, Default;
   begin

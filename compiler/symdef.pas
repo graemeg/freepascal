@@ -493,7 +493,6 @@ interface
           procedure buildderef;override;
           procedure deref;override;
           procedure derefimpl;override;
-          procedure resetvmtentries;
           procedure copyvmtentries(objdef:tobjectdef);
           function  getparentdef:tdef;override;
           function  size : asizeint;override;
@@ -559,19 +558,23 @@ interface
           _elementdef      : tdef;
           _elementdefderef : tderef;
           procedure setelementdef(def:tdef);
+          class function getreusable_intern(def: tdef; elems: asizeint; const options: tarraydefoptions): tarraydef;
        public
           function elesize : asizeint;
           function elepackedbitsize : asizeint;
           function elecount : asizeuint;
-          constructor create_from_pointer(def:tpointerdef);virtual;
-          constructor create(l,h:asizeint;def:tdef);virtual;
+          constructor create_from_pointer(def: tpointerdef);virtual;
+          constructor create(l, h: asizeint; def: tdef);virtual;
+          constructor create_vector(l,h:asizeint; def:tdef);
           constructor create_openarray;virtual;
-          class function getreusable(def: tdef; elems: asizeint): tarraydef; virtual;
+          class function getreusable(def: tdef; elems: asizeint): tarraydef;
+          class function getreusable_vector(def: tdef; elems: asizeint): tarraydef;
           { same as above, but in case the def must never be freed after the
             current module has been compiled -- even if the def was not written
             to the ppu file (for defs in para locations, as we don't reset them
             so we don't have to recalculate them all the time) }
           class function getreusable_no_free(def: tdef; elems: asizeint): tarraydef;
+          class function getreusable_no_free_vector(def: tdef; elems: asizeint): tarraydef;
           constructor ppuload(ppufile:tcompilerppufile);
           destructor destroy; override;
           function getcopy : tstoreddef;override;
@@ -589,6 +592,7 @@ interface
           function needs_separate_initrtti : boolean;override;
           property elementdef : tdef read _elementdef write setelementdef;
           function is_publishable : boolean;override;
+          function is_hwvector: boolean;
        end;
        tarraydefclass = class of tarraydef;
 
@@ -4036,7 +4040,7 @@ implementation
                            TARRAYDEF
 ***************************************************************************}
 
-    constructor tarraydef.create(l,h:asizeint;def:tdef);
+    constructor tarraydef.create(l, h: asizeint; def: tdef);
       begin
          inherited create(arraydef,true);
          lowrange:=l;
@@ -4049,6 +4053,12 @@ implementation
          symtable:=tarraysymtable.create(self);
       end;
 
+    constructor tarraydef.create_vector(l ,h: asizeint; def: tdef);
+      begin
+        self.create(l,h,def);
+        include(arrayoptions,ado_IsVector);
+      end;
+
 
     constructor tarraydef.create_openarray;
       begin
@@ -4056,19 +4066,21 @@ implementation
       end;
 
 
-    class function tarraydef.getreusable(def: tdef; elems: asizeint): tarraydef;
+    class function tarraydef.getreusable_intern(def: tdef; elems: asizeint; const options: tarraydefoptions): tarraydef;
       var
         res: PHashSetItem;
         oldsymtablestack: tsymtablestack;
         arrdesc: packed record
           def: tdef;
           elecount: asizeint;
+          options: tarraydefoptions
         end;
       begin
         if not assigned(current_module) then
           internalerror(2011081301);
         arrdesc.def:=def;
         arrdesc.elecount:=elems;
+        arrdesc.options:=options;
         res:=current_module.arraydefs.FindOrAdd(@arrdesc,sizeof(arrdesc));
         if not assigned(res^.Data) then
           begin
@@ -4083,6 +4095,7 @@ implementation
             symtablestack:=nil;
             result:=carraydef.create(0,elems-1,sizesinttype);
             result.elementdef:=def;
+            result.arrayoptions:=options;
             setup_reusable_def(def,result,res,oldsymtablestack);
             { res^.Data may still be nil -> don't overwrite result }
             exit;
@@ -4091,9 +4104,28 @@ implementation
       end;
 
 
+    class function tarraydef.getreusable(def: tdef; elems: asizeint): tarraydef;
+      begin
+        result:=getreusable_intern(def,elems,[]);
+      end;
+
+
+    class function tarraydef.getreusable_vector(def: tdef; elems: asizeint): tarraydef;
+      begin
+        result:=getreusable_intern(def,elems,[ado_IsVector]);
+      end;
+
+
     class function tarraydef.getreusable_no_free(def: tdef; elems: asizeint): tarraydef;
       begin
         result:=getreusable(def,elems);
+        if not result.is_registered then
+          include(result.defoptions,df_not_registered_no_free);
+      end;
+
+    class function tarraydef.getreusable_no_free_vector(def: tdef; elems: asizeint): tarraydef;
+      begin
+        result:=getreusable_vector(def,elems);
         if not result.is_registered then
           include(result.defoptions,df_not_registered_no_free);
       end;
@@ -4296,8 +4328,10 @@ implementation
 
     function tarraydef.alignment : shortint;
       begin
+        if ado_IsVector in arrayoptions then
+           alignment:=size
          { alignment of dyn. arrays doesn't depend on the element size }
-         if (ado_IsDynamicArray in arrayoptions) then
+         else if ado_IsDynamicArray in arrayoptions then
            alignment:=voidpointertype.alignment
          { alignment is the target alignment for the used load size }
          else if (ado_IsBitPacked in arrayoptions) and
@@ -4367,6 +4401,12 @@ implementation
     function tarraydef.is_publishable : boolean;
       begin
         Result:=ado_IsDynamicArray in arrayoptions;
+      end;
+
+
+    function tarraydef.is_hwvector: boolean;
+      begin
+        result:=ado_IsVector in arrayoptions;
       end;
 
 {***************************************************************************
@@ -4801,7 +4841,8 @@ implementation
           pname:=@n
         else
           begin
-            name:='$InternalRec'+tostr(current_module.deflist.count);
+            init_defid;
+            name:='$InternalRec'+unique_id_str;
             pname:=@name;
           end;
         oldsymtablestack:=symtablestack;
@@ -7266,6 +7307,8 @@ implementation
 
 
     destructor tobjectdef.destroy;
+      var
+        i: longint;
       begin
          if assigned(symtable) then
            begin
@@ -7286,7 +7329,8 @@ implementation
            end;
          if assigned(vmtentries) then
            begin
-             resetvmtentries;
+             for i:=0 to vmtentries.count-1 do
+               dispose(pvmtentry(vmtentries[i]));
              vmtentries.free;
              vmtentries:=nil;
            end;
@@ -7330,11 +7374,7 @@ implementation
             for i:=0 to ImplementedInterfaces.count-1 do
               tobjectdef(result).ImplementedInterfaces.Add(TImplementedInterface(ImplementedInterfaces[i]).Getcopy);
           end;
-        if assigned(vmtentries) then
-          begin
-            tobjectdef(result).vmtentries:=TFPList.Create;
-            tobjectdef(result).copyvmtentries(self);
-          end;
+        tobjectdef(result).copyvmtentries(self);
       end;
 
 
@@ -7535,22 +7575,13 @@ implementation
       end;
 
 
-    procedure tobjectdef.resetvmtentries;
-      var
-        i : longint;
-      begin
-        for i:=0 to vmtentries.Count-1 do
-          Dispose(pvmtentry(vmtentries[i]));
-        vmtentries.clear;
-      end;
-
-
     procedure tobjectdef.copyvmtentries(objdef:tobjectdef);
       var
         i : longint;
         vmtentry : pvmtentry;
       begin
-        resetvmtentries;
+        if vmtentries.count<>0 then
+          internalerror(2019081401);
         vmtentries.count:=objdef.vmtentries.count;
         for i:=0 to objdef.vmtentries.count-1 do
           begin

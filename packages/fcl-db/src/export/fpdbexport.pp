@@ -814,6 +814,7 @@ begin
     OpenStream;
   AssignStream(FTextFile,Stream);
   Rewrite(FTextFile);
+  SetTextCodePage(FTextFile,CP_UTF8);
   FTextFileOpen:=True;
 end;
 

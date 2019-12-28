@@ -14,6 +14,9 @@ type
   TValueHelper = record helper for TValue
     function AsUnicodeString: UnicodeString;
     function AsAnsiString: AnsiString;
+    function AsChar: Char; inline;
+    function AsAnsiChar: AnsiChar;
+    function AsWideChar: WideChar;
   end;
 {$endif}
 
@@ -55,6 +58,25 @@ end;
 function TValueHelper.AsAnsiString: AnsiString;
 begin
   Result := AnsiString(AsString);
+end;
+
+function TValue.AsWideChar: WideChar;
+begin
+  if Kind <> tkWideChar then
+    raise EInvalidCast.Create('Invalid cast');
+  Result := WideChar(Word(AsOrdinal));
+end;
+
+function TValue.AsAnsiChar: AnsiChar;
+begin
+  if Kind <> tkChar then
+    raise EInvalidCast.Create('Invalid cast');
+  Result := AnsiChar(Byte(AsOrdinal));
+end;
+
+function TValue.AsChar: Char;
+begin
+  Result := AsWideChar;
 end;
 {$endif}
 

@@ -596,31 +596,28 @@ implementation
             else
               nested:=true;
             opstart:=1;
-            if llvmflag_load_getelptr_type in llvmversion_properties[current_settings.llvmversion] then
+            owner.writer.AsmWrite(getopcodestr(taillvm(hp)));
+            opdone:=true;
+            if nested then
+              owner.writer.AsmWrite(' (')
+            else
+              owner.writer.AsmWrite(' ');
+            { can't just dereference the type, because it may be an
+              implicit pointer type such as a class -> resort to string
+              manipulation... Not very clean :( }
+            tmpstr:=llvmencodetypename(taillvm(hp).spilling_get_reg_type(0));
+            if op=la_getelementptr then
               begin
-                owner.writer.AsmWrite(getopcodestr(taillvm(hp)));
-                opdone:=true;
-                if nested then
-                  owner.writer.AsmWrite(' (')
-                else
-                  owner.writer.AsmWrite(' ');
-                { can't just dereference the type, because it may be an
-                  implicit pointer type such as a class -> resort to string
-                  manipulation... Not very clean :( }
-                tmpstr:=llvmencodetypename(taillvm(hp).spilling_get_reg_type(0));
-                if op=la_getelementptr then
+                if tmpstr[length(tmpstr)]<>'*' then
                   begin
-                    if tmpstr[length(tmpstr)]<>'*' then
-                      begin
-                        writeln(tmpstr);
-                        internalerror(2016071101);
-                      end
-                    else
-                      setlength(tmpstr,length(tmpstr)-1);
-                  end;
-                owner.writer.AsmWrite(tmpstr);
-                owner.writer.AsmWrite(',');
-              end
+                    writeln(tmpstr);
+                    internalerror(2016071101);
+                  end
+                else
+                  setlength(tmpstr,length(tmpstr)-1);
+              end;
+            owner.writer.AsmWrite(tmpstr);
+            owner.writer.AsmWrite(',');
           end;
         la_ret, la_br, la_switch, la_indirectbr,
         la_resume,
@@ -641,27 +638,24 @@ implementation
             if taillvm(hp).oper[1]^.reg<>NR_NO then
               owner.writer.AsmWrite(getregisterstring(taillvm(hp).oper[1]^.reg)+' = ');
             opstart:=2;
-            if llvmflag_call_no_ptr in llvmversion_properties[current_settings.llvmversion] then
+            owner.writer.AsmWrite(getopcodestr(taillvm(hp)));
+            tmpstr:=llvm_callingconvention_name(taillvm(hp).oper[2]^.callingconvention);
+            if tmpstr<>'' then
               begin
-                owner.writer.AsmWrite(getopcodestr(taillvm(hp)));
-                tmpstr:=llvm_callingconvention_name(taillvm(hp).oper[2]^.callingconvention);
-                if tmpstr<>'' then
-                  begin
-                    owner.writer.AsmWrite(' ');
-                    owner.writer.AsmWrite(tmpstr);
-                  end;
-                opdone:=true;
-                tmpstr:=llvmencodetypename(taillvm(hp).oper[3]^.def);
-                if tmpstr[length(tmpstr)]<>'*' then
-                  begin
-                    writeln(tmpstr);
-                    internalerror(2016071102);
-                  end
-                else
-                  setlength(tmpstr,length(tmpstr)-1);
+                owner.writer.AsmWrite(' ');
                 owner.writer.AsmWrite(tmpstr);
-                opstart:=4;
               end;
+            opdone:=true;
+            tmpstr:=llvmencodetypename(taillvm(hp).oper[3]^.def);
+            if tmpstr[length(tmpstr)]<>'*' then
+              begin
+                writeln(tmpstr);
+                internalerror(2016071102);
+              end
+            else
+              setlength(tmpstr,length(tmpstr)-1);
+            owner.writer.AsmWrite(tmpstr);
+            opstart:=4;
           end;
         la_blockaddress:
           begin
@@ -996,12 +990,7 @@ implementation
              AB_WEAK_EXTERNAL:
                writer.AsmWrite(' extern_weak');
              AB_PRIVATE_EXTERN:
-               begin
-                 if not(llvmflag_linker_private in llvmversion_properties[current_settings.llvmversion]) then
-                   writer.AsmWrite(' hidden')
-                 else
-                   writer.AsmWrite(' linker_private');
-               end
+               writer.AsmWrite(' hidden')
              else
                internalerror(2014020104);
            end;
@@ -1399,11 +1388,8 @@ implementation
               else
                 sstr:=llvmencodetypename(taillvmalias(hp).def);
               writer.AsmWrite(sstr);
-              if llvmflag_alias_double_type in llvmversion_properties[current_settings.llvmversion] then
-                begin
-                  writer.AsmWrite(', ');
-                  writer.AsmWrite(sstr);
-                end;
+              writer.AsmWrite(', ');
+              writer.AsmWrite(sstr);
               writer.AsmWrite('* ');
               writer.AsmWriteln(LlvmAsmSymName(taillvmalias(hp).oldsym));
             end;

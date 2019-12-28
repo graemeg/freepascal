@@ -1582,7 +1582,6 @@ implementation
         result:=nil;
         left:=caddnode.create(muln,left,crealconstnode.create(10000.0,left.resultdef));
         include(left.flags,nf_is_currency);
-        typecheckpass(left);
         { Convert constants directly, else call Round() }
         if left.nodetype=realconstn then
           result:=cordconstnode.create(round(trealconstnode(left).value_real),resultdef,false)
@@ -1610,6 +1609,7 @@ implementation
              begin
                left:=caddnode.create(muln,left,crealconstnode.create(10000.0,left.resultdef));
                include(left.flags,nf_is_currency);
+               include(flags,nf_is_currency);
                typecheckpass(left);
              end;
       end;
@@ -2992,6 +2992,8 @@ implementation
                 begin
                   hp:=result;
                   result:=crealconstnode.create(trealconstnode(hp).value_real,resultdef);
+                  if nf_is_currency in hp.flags then
+                    include(result.flags,nf_is_currency);
                   if ([nf_explicit,nf_internal] * flags <> []) then
                     include(result.flags, nf_explicit);
                   hp.free;

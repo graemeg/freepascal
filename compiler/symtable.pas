@@ -1556,8 +1556,7 @@ implementation
         for i:=0 to SymList.count-1 do
           begin
             sym:=tsym(symlist[i]);
-            if (sym.typ=fieldvarsym) and
-               not(sp_static in sym.symoptions) and
+            if is_normal_fieldvarsym(sym) and
                (tfieldvarsym(sym).fieldoffset>=offset) then
               begin
                 result:=tfieldvarsym(sym);
@@ -1638,8 +1637,7 @@ implementation
           { record has one field? }
           for i:=0 to currentsymlist.Count-1 do
             begin
-              if (tsym(currentsymlist[i]).typ=fieldvarsym) and
-                 not(sp_static in tsym(currentsymlist[i]).symoptions) then
+              if is_normal_fieldvarsym(tsym(currentsymlist[i])) then
                 begin
                   if result then
                     begin
@@ -1696,7 +1694,7 @@ implementation
         sublist : tfplist;
         i : longint;
       begin
-        if sym.typ<>fieldvarsym then
+        if not is_normal_fieldvarsym(sym) then
           exit;
         if not is_record(fsym.vardef) and not is_object(fsym.vardef) and not is_cppclass(fsym.vardef) then
           exit;
@@ -1872,7 +1870,7 @@ implementation
         for i:=0 to unionst.SymList.Count-1 do
           begin
             sym:=TSym(unionst.SymList[i]);
-            if sym.typ<>fieldvarsym then
+            if not is_normal_fieldvarsym(sym) then
               internalerror(200601272);
             if tfieldvarsym(sym).fieldoffset=0 then
               include(tfieldvarsym(sym).varoptions,vo_is_first_field);
@@ -2004,7 +2002,7 @@ implementation
                   )
                  ) then
                 begin
-                  { only watn when a parameter/local variable in a method
+                  { only warn when a parameter/local variable in a method
                     conflicts with a category method, because this can easily
                     happen due to all possible categories being imported via
                     CocoaAll }
@@ -2156,8 +2154,7 @@ implementation
         i:=0;
         while (i<equivst.symlist.count) do
           begin
-            if (tsym(equivst.symlist[i]).typ<>fieldvarsym) or
-               (sp_static in tsym(equivst.symlist[i]).symoptions) then
+            if not is_normal_fieldvarsym(tsym(equivst.symlist[i])) then
               begin
                 inc(i);
                 continue;
@@ -2215,8 +2212,7 @@ implementation
                       begin
                         inc(i);
                         while (i<equivst.symlist.count) and
-                              ((tsym(equivst.symlist[i]).typ<>fieldvarsym) or
-                               (sp_static in tsym(equivst.symlist[i]).symoptions) or
+                              (not is_normal_fieldvarsym(tsym(equivst.symlist[i])) or
                                (tfieldvarsym(equivst.symlist[i]).fieldoffset>sym.fieldoffset)) do
                           inc(i);
                         continue;
@@ -2243,8 +2239,7 @@ implementation
         lastvaroffsetprocessed:=-1;
         while (i<equivcount) do
           begin
-            if (tsym(equivst.symlist[i]).typ<>fieldvarsym) or
-               (sp_static in tsym(equivst.symlist[i]).symoptions) then
+            if not is_normal_fieldvarsym(tsym(equivst.symlist[i])) then
               begin
                 inc(i);
                 continue;
@@ -2285,8 +2280,7 @@ implementation
         i:=0;
         while (i < equivcount) do
           begin
-            if (tsym(equivst.symlist[i]).typ<>fieldvarsym) or
-               (sp_static in tsym(equivst.symlist[i]).symoptions) then
+            if not is_normal_fieldvarsym(tsym(equivst.symlist[i])) then
               begin
                 inc(i);
                 continue;
@@ -4236,6 +4230,16 @@ implementation
           anything }
         if current_module.extendeddefs.count=0 then
           exit;
+        if (df_genconstraint in pd.defoptions) then
+          begin
+            { if we have a constraint for a class type or a single interface we
+              use that to resolve helpers at declaration time of the generic,
+              otherwise there can't be any helpers as the type isn't known yet }
+            if pd.typ=objectdef then
+              pd:=tobjectdef(pd).getparentdef
+            else
+              exit;
+          end;
         { no helpers for anonymous types }
         if ((pd.typ in [recorddef,objectdef]) and
             (

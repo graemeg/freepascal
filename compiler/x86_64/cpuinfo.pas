@@ -120,7 +120,8 @@ Const
      'COREAVX2'
    );
 
-   fputypestr : array[tfputype] of string[7] = ('',
+   fputypestr : array[tfputype] of string[7] = (
+     'NONE',
 //     'SOFT',
      'SSE64',
      'SSE3',

@@ -453,15 +453,25 @@ Type
     Destructor Destroy;override;
     Procedure ZipAllFiles; virtual;
     // Saves zip to file and changes FileName
-    Procedure SaveToFile(AFileName: RawByteString);
+    Procedure SaveToFile(const AFileName: RawByteString);
     // Saves zip to stream
     Procedure SaveToStream(AStream: TStream);
     // Zips specified files into a zip with name AFileName
-    Procedure ZipFiles(AFileName : RawByteString; FileList : TStrings);
+    Procedure ZipFile(const aFileToBeZipped : RawByteString);
+    Procedure ZipFile(const AZipFileName,aFileToBeZipped : RawByteString);
+    Procedure ZipFiles(const AZipFileName : RawByteString; FileList : TStrings);
+    Procedure ZipFiles(const AZipFileName : RawByteString; const FileList : Array of RawbyteString);
+    Procedure ZipFiles(const aFileList : Array of RawbyteString);
     Procedure ZipFiles(FileList : TStrings);
     // Zips specified entries into a zip with name AFileName
-    Procedure ZipFiles(AFileName : RawByteString; Entries : TZipFileEntries);
+    Procedure ZipFiles(const AZipFileName : RawByteString; Entries : TZipFileEntries);
     Procedure ZipFiles(Entries : TZipFileEntries);
+    // Easy access method
+    // Zip single file
+    Class Procedure Zip(const AZipFileName : RawByteString; const aFileToBeZipped: RawByteString);
+    // Zip multiple file
+    Class Procedure Zip(const AZipFileName : RawByteString; aFileList : Array of RawByteString);
+    Class Procedure Zip(const AZipFileName : RawByteString; aFileList : TStrings);
     Procedure Clear;
     Procedure Terminate;
   Public
@@ -561,9 +571,20 @@ Type
     Constructor Create;
     Destructor Destroy;override;
     Procedure UnZipAllFiles; virtual;
-    Procedure UnZipFiles(AFileName : RawByteString; FileList : TStrings);
-    Procedure UnZipFiles(FileList : TStrings);
-    Procedure UnZipAllFiles(AFileName : RawByteString);
+    Procedure UnZipFile(const aExtractFileName: RawByteString);
+    Procedure UnZipFile(const AZipFileName, aExtractFileName: RawByteString);
+    Procedure UnZipFiles(const AZipFileName : RawByteString; FileList : TStrings);
+    Procedure UnZipFiles(const AZipFileName : RawByteString; aFileList : Array of RawBytestring);
+    Procedure UnZipFiles(aFileList : TStrings);
+    Procedure UnZipAllFiles(const AZipFileName : RawByteString);
+    // Easy access methods. No instance needed, uses default options.
+    // Unzip all files
+    Class Procedure Unzip(const AZipFileName : RawByteString);
+    // Unzip a single file.
+    Class Procedure Unzip(const AZipFileName : RawByteString;aExtractFileName : RawByteString);
+    // Unzip several files
+    Class Procedure Unzip(const AZipFileName : RawByteString; aFileList : Array of RawByteString);
+    Class Procedure Unzip(const AZipFileName : RawByteString; aFileList : TStrings);
     Procedure Clear;
     Procedure Examine;
     Procedure Terminate;
@@ -1933,7 +1954,7 @@ begin
   SaveToFile(FileName);
 end;
 
-procedure TZipper.SaveToFile(AFileName: RawByteString);
+procedure TZipper.SaveToFile(const AFileName: RawByteString);
 var
   lStream: TFileStream;
 begin
@@ -1973,6 +1994,17 @@ begin
   end;
 end;
 
+procedure TZipper.ZipFile(const aFileToBeZipped: RawByteString);
+begin
+  ZipFiles([aFileToBeZipped]);
+end;
+
+procedure TZipper.ZipFile(const AZipFileName, aFileToBeZipped: RawByteString);
+begin
+  FileName:=aZipFileName;
+  ZipFile(aFileToBeZipped);
+end;
+
 
 Procedure TZipper.SetBufSize(Value : LongWord);
 
@@ -1991,11 +2023,34 @@ begin
   FFileName:=Value;
 end;
 
-Procedure TZipper.ZipFiles(AFileName : RawByteString; FileList : TStrings);
+Procedure TZipper.ZipFiles(Const AZipFileName : RawByteString; FileList : TStrings);
 
 begin
-  FFileName:=AFileName;
+  FFileName:=AZipFileName;
   ZipFiles(FileList);
+end;
+
+procedure TZipper.ZipFiles(const AZipFileName: RawByteString; const FileList: array of RawbyteString);
+
+begin
+  FileName:=aZipFileName;
+  ZipFiles(FileList);
+end;
+
+procedure TZipper.ZipFiles(const aFileList: array of RawbyteString);
+Var
+  L : TStringList;
+  S : RawByteString;
+begin
+  L:=TStringList.Create;
+  try
+    L.Capacity:=Length(aFileList);
+    for S in aFileList do
+      L.Add(S);
+    ZipFiles(L);
+  finally
+    L.Free;
+  end;
 end;
 
 procedure TZipper.ZipFiles(FileList: TStrings);
@@ -2004,9 +2059,9 @@ begin
   ZipAllFiles;
 end;
 
-procedure TZipper.ZipFiles(AFileName: RawByteString; Entries: TZipFileEntries);
+procedure TZipper.ZipFiles(const AZipFileName: RawByteString; Entries: TZipFileEntries);
 begin
-  FFileName:=AFileName;
+  FFileName:=AZipFileName;
   ZipFiles(Entries);
 end;
 
@@ -2014,6 +2069,36 @@ procedure TZipper.ZipFiles(Entries: TZipFileEntries);
 begin
   FEntries.Assign(Entries);
   ZipAllFiles;
+end;
+
+class procedure TZipper.Zip(const AZipFileName: RawByteString; const aFileToBeZipped: RawByteString);
+begin
+  With Self.Create do
+    try
+      ZipFile(aZipFileName,aFileToBeZipped);
+    finally
+      Free;
+    end;
+end;
+
+class procedure TZipper.Zip(const AZipFileName: RawByteString; aFileList: array of RawByteString);
+begin
+  With Self.Create do
+    try
+      ZipFiles(aZipFileName,aFileList);
+    finally
+      Free;
+    end;
+end;
+
+class procedure TZipper.Zip(const AZipFileName: RawByteString; aFileList: TStrings);
+begin
+  With Self.Create do
+    try
+      ZipFiles(aZipFileName,aFileList);
+    finally
+      Free;
+    end;
 end;
 
 Procedure TZipper.DoEndOfFile;
@@ -2832,24 +2917,104 @@ begin
     end;
 end;
 
-procedure TUnZipper.UnZipFiles(AFileName: RawByteString; FileList: TStrings);
-
+procedure TUnZipper.UnZipFile(const aExtractFileName: RawByteString);
 begin
-  FFileName:=AFileName;
-  UNzipFiles(FileList);
+  UnzipFile(FFileName, aExtractFileName);
 end;
 
-procedure TUnZipper.UnZipFiles(FileList: TStrings);
+procedure TUnZipper.UnZipFile(const AZipFileName, aExtractFileName: RawByteString);
+var
+  L: TStrings;
 begin
-  FFiles.Assign(FileList);
+  FFileName := AZipFileName;
+  L := TStringList.Create;
+  try
+    L.Add(aExtractFileName);
+    UnzipFiles(L);
+  finally
+    L.Free;
+  end;
+end;
+
+procedure TUnZipper.UnZipFiles(const AZipFileName: RawByteString; FileList: TStrings);
+
+begin
+  FFileName:=AZipFileName;
+  UnZipFiles(FileList);
+end;
+
+procedure TUnZipper.UnZipFiles(const AZipFileName: RawByteString; aFileList: array of RawBytestring);
+
+Var
+  L : TStringList;
+  S : RawByteString;
+
+begin
+  L:=TStringList.Create;
+  try
+    L.Capacity:=Length(aFileList);
+    for S in aFileList do
+      L.Add(S);
+    UnZipFiles(aZipFileName,L);
+  finally
+    L.Free;
+  end;
+end;
+
+procedure TUnZipper.UnZipFiles(aFileList: TStrings);
+begin
+  FFiles.Assign(aFileList);
   UnZipAllFiles;
 end;
 
-procedure TUnZipper.UnZipAllFiles(AFileName: RawByteString);
+procedure TUnZipper.UnZipAllFiles(const AZipFileName: RawByteString);
 
 begin
-  FFileName:=AFileName;
+  FFileName:=AZipFileName;
   UnZipAllFiles;
+end;
+
+class procedure TUnZipper.Unzip(const AZipFileName: RawByteString);
+
+begin
+  With Self.Create do
+    try
+      FileName:=aZipFileName;
+      UnZipAllFiles;
+    finally
+      Free;
+    end;
+end;
+
+class procedure TUnZipper.Unzip(const AZipFileName: RawByteString; aExtractFileName: RawByteString);
+
+begin
+  With Self.Create do
+    try
+      UnZipFile(aZipFileName,aExtractFileName);
+    finally
+      Free;
+    end;
+end;
+
+class procedure TUnZipper.Unzip(const AZipFileName: RawByteString; aFileList: array of RawByteString);
+begin
+  With Self.Create do
+    try
+      UnZipFiles(aZipFileName,aFileList);
+    finally
+      Free;
+    end;
+end;
+
+class procedure TUnZipper.Unzip(const AZipFileName: RawByteString; aFileList: TStrings);
+begin
+  With Self.Create do
+    try
+      UnZipFiles(aZipFileName,aFileList);
+    finally
+      Free;
+    end;
 end;
 
 procedure TUnZipper.DoEndOfFile;

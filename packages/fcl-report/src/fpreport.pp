@@ -1953,9 +1953,11 @@ type
     function    PixelsToMM(APixels: single): single; inline;
     function    mmToPixels(mm: single): integer; inline;
     { Result is in millimeters. }
-    function    TextHeight(const AText: string; out ADescender: TFPReportUnits): TFPReportUnits;
+    function TextHeight(const AText, FontName: string; FontSize: Integer; out
+      ADescender: TFPReportUnits): TFPReportUnits;
     { Result is in millimeters. }
-    function    TextWidth(const AText: string): TFPReportUnits;
+    function TextWidth(const AText, FontName: string; FontSize: Integer
+      ): TFPReportUnits;
     procedure   SetLinkColor(AValue: TFPReportColor);
     procedure   SetTextAlignment(AValue: TFPReportTextAlignment);
     procedure   SetOptions(const AValue: TFPReportMemoOptions);
@@ -2598,6 +2600,16 @@ end;
 function StringToFramePen(AName: string): TFPPenStyle; inline;
 begin
   Result := TFPPenStyle(GetEnumValue(TypeInfo(TFPPenStyle), AName));
+end;
+
+function ColumnLayoutToString(AEnum: TFPReportColumnLayout): string; inline;
+begin
+  result := GetEnumName(TypeInfo(TFPReportColumnLayout), Ord(AEnum));
+end;
+
+function StringToColumnLayout(AName: string): TFPReportColumnLayout; inline;
+begin
+  Result := TFPReportColumnLayout(GetEnumValue(TypeInfo(TFPReportColumnLayout), AName));
 end;
 
 function OrientationToString(AEnum: TFPReportOrientation): string; inline;
@@ -4501,8 +4513,8 @@ begin
 
     FCurTextBlock.FontName := lNewFontName;
 
-    FCurTextBlock.Width := TextWidth(FCurTextBlock.Text);
-    FCurTextBlock.Height := TextHeight(FCurTextBlock.Text, lDescender);
+    FCurTextBlock.Width := TextWidth(FCurTextBlock.Text, FCurTextBlock.FontName, Font.Size);
+    FCurTextBlock.Height := TextHeight(FCurTextBlock.Text,FCurTextBlock.FontName, Font.Size, lDescender);
     FCurTextBlock.Descender := lDescender;
 
     // get X offset from previous textblocks
@@ -4529,36 +4541,35 @@ begin
   Result := Round(mm * (gTTFontCache.DPI / cMMperInch));
 end;
 
-function TFPReportCustomMemo.TextHeight(const AText: string; out ADescender: TFPReportUnits): TFPReportUnits;
+function TFPReportCustomMemo.TextHeight(const AText, FontName: string; FontSize: Integer; out ADescender: TFPReportUnits): TFPReportUnits;
 var
   lHeight: single;
   lDescenderHeight: single;
   lFC: TFPFontCacheItem;
 
 begin
-  // TODO: FontName might need to change to TextBlock.FontName.
-  lFC := gTTFontCache.FindFont(Font.Name); // we are doing a PostScript Name lookup (it contains Bold, Italic info)
+  lFC := gTTFontCache.FindFont(FontName); // we are doing a PostScript Name lookup (it contains Bold, Italic info)
   if not Assigned(lFC) then
-    raise EReportFontNotFound.CreateFmt(SErrFontNotFound, [Font.Name]);
+    raise EReportFontNotFound.CreateFmt(SErrFontNotFound, [FontName]);
   { Both lHeight and lDescenderHeight are in pixels }
-  lHeight := lFC.TextHeight(AText, Font.Size, lDescenderHeight);
+  lHeight := lFC.TextHeight(AText, FontSize, lDescenderHeight);
 
   { convert pixels to mm. }
   ADescender := PixelsToMM(lDescenderHeight);
   Result := PixelsToMM(lHeight);
 end;
 
-function TFPReportCustomMemo.TextWidth(const AText: string): TFPReportUnits;
+function TFPReportCustomMemo.TextWidth(const AText, FontName: string; FontSize: Integer): TFPReportUnits;
 var
   lWidth: single;
   lFC: TFPFontCacheItem;
 begin
   // TODO: FontName might need to change to TextBlock.FontName.
-  lFC := gTTFontCache.FindFont(Font.Name); // we are doing a PostScript Name lookup (it contains Bold, Italic info)
+  lFC := gTTFontCache.FindFont(FontName); // we are doing a PostScript Name lookup (it contains Bold, Italic info)
   if not Assigned(lFC) then
-    raise EReportFontNotFound.CreateFmt(SErrFontNotFound, [Font.Name]);
+    raise EReportFontNotFound.CreateFmt(SErrFontNotFound, [FontName]);
   { result is in pixels }
-  lWidth := lFC.TextWidth(AText, Font.Size);
+  lWidth := lFC.TextWidth(AText, FontSize);
 
   { convert pixels to mm. }
   Result := PixelsToMM(lWidth);
@@ -4678,8 +4689,8 @@ begin
   try
     FCurTextBlock.Text := AText;
     FCurTextBlock.FontName := Font.Name;
-    FCurTextBlock.Width := TextWidth(FCurTextBlock.Text);
-    FCurTextBlock.Height := TextHeight(FCurTextBlock.Text, lDescender);
+    FCurTextBlock.Width := TextWidth(FCurTextBlock.Text, FCurTextBlock.FontName, Font.Size);
+    FCurTextBlock.Height := TextHeight(FCurTextBlock.Text, FCurTextBlock.FontName, Font.Size, lDescender);
     FCurTextBlock.Descender := lDescender;
 
     // get X offset from previous textblocks
@@ -7727,6 +7738,9 @@ procedure TFPReportCustomPage.ReadElement(AReader: TFPReportStreamer);
 var
   E: TObject;
 begin
+  ColumnCount := AReader.ReadInteger('ColumnCount', 1);
+  ColumnGap := AReader.ReadFloat('ColumnGap', 0);
+  ColumnLayout := StringToColumnLayout(AReader.ReadString('ColumnLayout', 'clVertical'));
   Orientation := StringToPaperOrientation(AReader.ReadString('Orientation', 'poPortrait'));
   Pagesize.PaperName := AReader.ReadString('PageSize.PaperName', 'A4');
   Pagesize.Width := AReader.ReadFloat('PageSize.Width', 210);
@@ -7865,6 +7879,9 @@ end;
 procedure TFPReportCustomPage.DoWriteLocalProperties(AWriter: TFPReportStreamer; AOriginal: TFPReportElement);
 begin
   inherited DoWriteLocalProperties(AWriter, AOriginal);
+  AWriter.WriteFloat('ColumnCount', ColumnCount);
+  AWriter.WriteFloat('ColumnGap', ColumnGap);
+  AWriter.WriteString('ColumnLayout', ColumnLayoutToString(ColumnLayout));
   AWriter.WriteString('Orientation', PaperOrientationToString(Orientation));
   AWriter.WriteString('PageSize.PaperName', PageSize.PaperName);
   AWriter.WriteFloat('PageSize.Width', PageSize.Width);

@@ -43,7 +43,7 @@ type
       tproccalloption): boolean; override;
     function ret_in_param(def: tdef; pd: tabstractprocdef): boolean; override;
 
-    procedure getintparaloc(list: TAsmList; pd : tabstractprocdef; nr: longint; var cgpara: tcgpara); override;
+    procedure getcgtempparaloc(list: TAsmList; pd : tabstractprocdef; nr: longint; var cgpara: tcgpara); override;
     function create_paraloc_info(p: tabstractprocdef; side: tcallercallee): longint; override;
     function create_varargs_paraloc_info(p: tabstractprocdef; side: tcallercallee; varargspara: tvarargsparalist): longint; override;
     function get_funcretloc(p : tabstractprocdef; side: tcallercallee; forcetempdef: tdef): tcgpara;override;
@@ -92,7 +92,7 @@ begin
   result:=saved_regs;
 end;
 
-procedure tcpuparamanager.getintparaloc(list: TAsmList; pd : tabstractprocdef; nr: longint; var cgpara: tcgpara);
+procedure tcpuparamanager.getcgtempparaloc(list: TAsmList; pd : tabstractprocdef; nr: longint; var cgpara: tcgpara);
 var
   paraloc: pcgparalocation;
   psym: tparavarsym;

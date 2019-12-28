@@ -4,16 +4,25 @@ unit buildrtl;
   interface
 
     uses
-      system, unixtype, ctypes, baseunix, strings, objpas, macpas, syscall, unixutil,
-      fpintres, heaptrc, lineinfo, lnfodwrf,
-      termio, unix, linux, initc, cmem, mmx,
-      printer, linuxvcs,
-      sysutils, typinfo, math, matrix, varutils,
-      charset, character, ucomplex, getopts,
-      errors, sockets, gpm, ipc, serial, terminfo, dl, dynlibs,
-      variants, types, dateutils, sysconst, fmtbcd,
-      cthreads, classes, fgl, convutils, stdconvs, strutils, rtlconsts, dos, objects, cwstring, fpcylix, clocale,
-      exeinfo;
+      { those units are directly build using make:
+        system uuchar objpas macpas iso7185 cpall lineinfo lnfodwrf
+      }
+      macpas, iso7185,
+      fpintres, // $(SYSINIT_UNITS) \
+      si_prc, si_c, si_g, si_dll,
+      unixtype, ctypes, baseunix, strings, extpas, syscall, unixutil,
+      heaptrc,
+      termio, unix, linux, initc, cmem,
+{$ifdef CPUI386}
+      mmx,
+{$endif CPUI386}
+      linuxvcs,
+      sysutils, typinfo, math,
+      charset, cpall, character, unixcp, getopts,
+      errors, dl, dynlibs,
+      types, sysconst, fpwidestring,
+      cthreads, sortbase, classes, fgl, rtlconsts, dos, cwstring, fpcylix,
+      softfpu, sfpux80, ufloatx80, sfpu128, ufloat128;
 
   implementation
 

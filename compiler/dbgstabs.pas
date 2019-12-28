@@ -158,7 +158,8 @@ implementation
       defutil, cgutils, parabase,
       cpuinfo,cpubase,cpupi,paramgr,
       aasmbase,procinfo,
-      finput,fmodule,ppu;
+      finput,fmodule,ppu,
+      symutil;
 
 
     const
@@ -428,8 +429,7 @@ implementation
         if (tsym(p).visibility=vis_hidden) then
           exit;
         { static variables from objects are like global objects }
-        if (Tsym(p).typ=fieldvarsym) and
-           not(sp_static in Tsym(p).symoptions) then
+        if is_normal_fieldvarsym(Tsym(p)) then
           begin
            case tsym(p).visibility of
              vis_private,
@@ -557,8 +557,7 @@ implementation
 
     procedure TDebugInfoStabs.field_write_defs(p:TObject;arg:pointer);
       begin
-        if (Tsym(p).typ=fieldvarsym) and
-           not(sp_static in Tsym(p).symoptions) then
+        if is_normal_fieldvarsym(Tsym(p)) then
           appenddef(TAsmList(arg),tfieldvarsym(p).vardef);
       end;
 

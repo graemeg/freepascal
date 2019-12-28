@@ -675,7 +675,6 @@ uses
         oldcurrent_filepos : tfileposinfo;
         recordbuf : tdynamicarray;
         hadtypetoken : boolean;
-        vmtbuilder : tvmtbuilder;
         i,
         replaydepth : longint;
         item : tobject;
@@ -1000,9 +999,7 @@ uses
                             consume(_SEMICOLON);
                         end;
 
-                      vmtbuilder:=TVMTBuilder.Create(tobjectdef(result));
-                      vmtbuilder.generate_vmt;
-                      vmtbuilder.free;
+                      build_vmt(tobjectdef(result));
                     end;
                   { handle params, calling convention, etc }
                   procvardef:

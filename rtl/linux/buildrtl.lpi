@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="9"/>
+    <Version Value="12"/>
     <General>
       <Flags>
         <MainUnitHasUsesSectionForAllUnits Value="False"/>
@@ -9,28 +9,29 @@
         <MainUnitHasTitleStatement Value="False"/>
         <Runnable Value="False"/>
         <LRSInOutputDirectory Value="False"/>
+        <CompatibilityMode Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <MainUnit Value="0"/>
       <Title Value="buildrtl"/>
     </General>
-    <VersionInfo>
-      <StringTable ProductVersion=""/>
-    </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="default" Default="True"/>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
-      <IgnoreBinaries Value="False"/>
-      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
-      <ExcludeFileFilter Value="*.(bak|ppu|ppw|o|so);*~;backup"/>
     </PublishOptions>
     <RunParams>
       <local>
-        <FormatVersion Value="1"/>
-        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default">
+          <local>
+            <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+          </local>
+        </Mode0>
+      </Modes>
     </RunParams>
     <Units Count="1">
       <Unit0>
@@ -43,12 +44,14 @@
     <Version Value="11"/>
     <SearchPaths>
       <IncludeFiles Value="../inc;../$(TargetCPU);../unix;../objpas/classes;../objpas/sysutils;../objpas;$(TargetCPU)"/>
-      <OtherUnitFiles Value="../objpas;../objpas/classes;../objpas/sysutils;../inc;../unix;../$(TargetCPU)"/>
+      <OtherUnitFiles Value="../objpas;../objpas/classes;../objpas/sysutils;../inc;../unix;../$(TargetCPU);../charmaps"/>
       <UnitOutputDirectory Value="../units/$(TargetCPU)-linux"/>
     </SearchPaths>
     <Parsing>
       <Style Value="2"/>
       <SyntaxOptions>
+        <SyntaxMode Value="fpc"/>
+        <CStyleOperator Value="False"/>
         <UseAnsiStrings Value="False"/>
       </SyntaxOptions>
     </Parsing>
@@ -58,7 +61,8 @@
         <ShowHints Value="False"/>
       </Verbosity>
       <ExecuteBefore>
-        <Command Value="cmd.exe /c &quot;if not exist ../units/$(TargetCPU)-linux mkdir ../units/$(TargetCPU)-linux&quot;"/>
+        <Command Value="make RELEASE=1 clean system.ppu uuchar.ppu objpas.ppu lineinfo.ppu lnfodwrf.ppu prt0.o cprt0.o gprt0.o dllprt0.o"/>
+        <ScanForMakeMsgs Value="True"/>
         <ShowAllMessages Value="True"/>
       </ExecuteBefore>
     </Other>

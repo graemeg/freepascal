@@ -567,7 +567,8 @@ Const
      'ARMV7EM'
    );
 
-   fputypestr : array[tfputype] of string[10] = ('',
+   fputypestr : array[tfputype] of string[10] = (
+     'NONE',
      'SOFT',
      'LIBGCC',
      'FPA',

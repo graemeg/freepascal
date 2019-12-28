@@ -317,7 +317,7 @@ end;
 constructor TMSSQLConnection.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  FConnOptions := [sqSupportEmptyDatabaseName, sqEscapeRepeat, sqImplicitTransaction, sqLastInsertID];
+  FConnOptions := [sqSupportEmptyDatabaseName, sqEscapeRepeat, sqImplicitTransaction, sqLastInsertID, sqSequences];
   //FieldNameQuoteChars:=DoubleQuotes; //default
   Ftds := DBTDS_UNKNOWN;
 end;

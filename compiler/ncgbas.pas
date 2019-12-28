@@ -84,6 +84,9 @@ interface
       procinfo,
       cpuinfo,
       tgobj
+{$ifdef x86}
+      ,cgx86
+{$endif x86}
       ;
 
 {*****************************************************************************
@@ -215,7 +218,10 @@ interface
                     begin
                       op.typ:=top_reg;
                       op.reg:=sym.localloc.register;
-
+{$ifdef x86}
+                      if reg2opsize(op.reg)<>TCGSize2Opsize[sym.localloc.size] then
+                        op.reg:=newreg(getregtype(op.reg),getsupreg(op.reg),cgsize2subreg(getregtype(op.reg),sym.localloc.size));
+{$endif x86}
 {$ifdef avr}
                       case sofs of
                         1: op.reg:=cg.GetNextReg(op.reg);

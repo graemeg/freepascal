@@ -159,8 +159,8 @@ implementation
             sizepara.init;
             ptrpara.init;
             pd:=search_system_proc(procname);
-            paramanager.getintparaloc(list,pd,1,sizepara);
-            paramanager.getintparaloc(list,pd,2,ptrpara);
+            paramanager.getcgtempparaloc(list,pd,1,sizepara);
+            paramanager.getcgtempparaloc(list,pd,2,ptrpara);
             hlcg.a_load_const_cgpara(list,sizepara.def,temp^.size,sizepara);
             hlcg.a_loadaddr_ref_cgpara(list,temp^.def,ref,ptrpara);
             hlcg.g_call_system_proc(list,pd,[@sizepara,@ptrpara],nil).resetiftemp;

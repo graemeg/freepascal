@@ -243,8 +243,10 @@ interface
          nf_absolute,
 
          { taddnode }
+         { if the result type of a node is currency, then this flag denotes, that the value is already mulitplied by 10000 }
          nf_is_currency,
          nf_has_pointerdiv,
+         { the node shall be short boolean evaluated, this flag has priority over localswitches }
          nf_short_bool,
 
          { tmoddivnode }
@@ -1317,9 +1319,19 @@ implementation
       end;
 
 
+    function setuplabelnode(var n : tnode;arg : pointer) : foreachnoderesult;
+      begin
+        result:=fen_true;
+        if (n.nodetype=goton) and assigned(tgotonode(n).labelnode) and
+          assigned(tgotonode(n).labelnode.copiedto) then
+          tgotonode(n).labelnode:=tgotonode(n).labelnode.copiedto;
+      end;
+
+
     function tnode.getcopy : tnode;
       begin
         result:=dogetcopy;
+        foreachnodestatic(pm_postprocess,result,@setuplabelnode,nil);
         foreachnodestatic(pm_postprocess,self,@cleanupcopiedto,nil);
       end;
 

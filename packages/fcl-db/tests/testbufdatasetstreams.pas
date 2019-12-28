@@ -100,7 +100,7 @@ uses toolsunit, SQLDBToolsUnit, sqldb, XMLDatapacketReader;
 
 const TestXMLFileName = 'test.xml';
       TestBINFileName = 'test.dat';
-      TestFileNames: array[TDataPacketFormat] of string = (TestBINFileName, TestXMLFileName, TestXMLFileName, '');
+      TestFileNames: array[TDataPacketFormat] of string = (TestBINFileName, TestXMLFileName, TestXMLFileName, '','');
 
 { TMyCustomBufDataset }
 

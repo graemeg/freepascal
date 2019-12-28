@@ -1044,10 +1044,10 @@ begin
 end;
 
 
-{$ifdef CPUAVR}
+{$ifdef FPC_INIT_FINAL_UNITS_BY_CALLS}
 procedure FinalizeUnits; external name 'FPC_FINALIZE_FUNC_TABLE';
 
-{$else CPUAVR}
+{$else FPC_INIT_FINAL_UNITS_BY_CALLS}
 procedure FinalizeUnits;[public,alias:'FPC_FINALIZEUNITS'];
 begin
 {$ifdef FPC_HAS_INDIRECT_ENTRY_INFORMATION}
@@ -1066,7 +1066,7 @@ begin
       end;
    end;
 end;
-{$endif CPUAVR}
+{$endif FPC_INIT_FINAL_UNITS_BY_CALLS}
 
 {*****************************************************************************
                           Error / Exit / ExitProc

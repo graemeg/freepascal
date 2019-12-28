@@ -158,7 +158,7 @@ implementation
              current_asmdata.CurrAsmList.concat(taillvm.op_reg_size_const_size(la_sitofp,location.register,s64inttype,trunc(value_real),sc80floattype));
            s64currency:
              { sc80floattype instead of resultdef, see comment in thlcgllvm.a_loadfpu_ref_reg }
-             current_asmdata.CurrAsmList.concat(taillvm.op_reg_size_const_size(la_sitofp,location.register,s64inttype,trunc(value_currency),sc80floattype));
+             current_asmdata.CurrAsmList.concat(taillvm.op_reg_size_const_size(la_sitofp,location.register,s64inttype,round(value_real),sc80floattype));
 {$ifdef cpuextended}
            s80real,sc80real:
              current_asmdata.CurrAsmList.concat(taillvm.op_reg_size_fpconst80_size(la_bitcast,location.register,resultdef,value_real,resultdef));

@@ -140,7 +140,6 @@ implementation
 
     procedure jvm_maybe_create_enum_class(const name: TIDString; def: tdef);
       var
-        vmtbuilder: tvmtbuilder;
         arrdef: tarraydef;
         arrsym: ttypesym;
         juhashmap: tdef;
@@ -319,9 +318,7 @@ implementation
 
         symtablestack.pop(enumclass.symtable);
 
-        vmtbuilder:=TVMTBuilder.Create(enumclass);
-        vmtbuilder.generate_vmt;
-        vmtbuilder.free;
+        build_vmt(enumclass);
 
         restore_after_new_class(sstate,islocal,oldsymtablestack);
         current_structdef:=old_current_structdef;
@@ -330,7 +327,6 @@ implementation
 
     procedure jvm_create_procvar_class_intern(const name: TIDString; def: tdef; force_no_callback_intf: boolean);
       var
-        vmtbuilder: tvmtbuilder;
         oldsymtablestack: tsymtablestack;
         pvclass,
         pvintf: tobjectdef;
@@ -429,9 +425,7 @@ implementation
 
         symtablestack.pop(pvclass.symtable);
 
-        vmtbuilder:=TVMTBuilder.Create(pvclass);
-        vmtbuilder.generate_vmt;
-        vmtbuilder.free;
+        build_vmt(pvclass);
 
         restore_after_new_class(sstate,islocal,oldsymtablestack);
       end;

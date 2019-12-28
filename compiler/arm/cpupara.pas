@@ -40,7 +40,7 @@ unit cpupara;
           function get_saved_registers_int(calloption : tproccalloption):tcpuregisterarray;override;
           function push_addr_param(varspez:tvarspez;def : tdef;calloption : tproccalloption) : boolean;override;
           function ret_in_param(def:tdef;pd:tabstractprocdef):boolean;override;
-          procedure getintparaloc(list: TAsmList; pd : tabstractprocdef; nr : longint; var cgpara : tcgpara);override;
+          procedure getcgtempparaloc(list: TAsmList; pd : tabstractprocdef; nr : longint; var cgpara : tcgpara);override;
           function create_paraloc_info(p : tabstractprocdef; side: tcallercallee):longint;override;
           function create_varargs_paraloc_info(p : tabstractprocdef; side: tcallercallee; varargspara:tvarargsparalist):longint;override;
           function get_funcretloc(p : tabstractprocdef; side: tcallercallee; forcetempdef: tdef): tcgpara;override;
@@ -59,7 +59,7 @@ unit cpupara;
 
     uses
        verbose,systems,cutils,
-       defutil,symsym,symcpu,symtable,
+       defutil,symsym,symcpu,symtable,symutil,
        { PowerPC uses procinfo as well in cpupara, so this should not hurt }
        procinfo;
 
@@ -94,7 +94,7 @@ unit cpupara;
       end;
 
 
-    procedure tcpuparamanager.getintparaloc(list: TAsmList; pd : tabstractprocdef; nr : longint; var cgpara : tcgpara);
+    procedure tcpuparamanager.getcgtempparaloc(list: TAsmList; pd : tabstractprocdef; nr : longint; var cgpara : tcgpara);
       var
         paraloc : pcgparalocation;
         psym : tparavarsym;
@@ -294,7 +294,7 @@ unit cpupara;
                   for i:=0 to trecorddef(def).symtable.SymList.count-1 do
                     begin
                       sym:=tsym(trecorddef(def).symtable.SymList[i]);
-                      if sym.typ<>fieldvarsym then
+                      if not is_normal_fieldvarsym(sym) then
                         continue;
                       { bitfield -> ignore }
                       if (trecordsymtable(trecorddef(def).symtable).usefieldalignment=bit_alignment) and

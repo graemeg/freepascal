@@ -2162,8 +2162,11 @@ implementation
           end;
 
         p.labelsym:=labelsym;
+        { do not copy the label node here as we do not know if the label node is part of the tree or not,
+          this will be fixed after the copying in node.setuplabelnode: if the labelnode has copiedto set,
+          labelnode of the goto node is update }
         if assigned(labelnode) then
-          p.labelnode:=tlabelnode(labelnode.dogetcopy)
+          p.labelnode:=labelnode
         else
           begin
             { don't trigger IE when there was already an error, i.e. the

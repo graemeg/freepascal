@@ -700,7 +700,7 @@ function AudioComponentInstanceNew( inComponent: AudioComponent; var outInstance
                         called in an arbitrary thread context when instantiation is complete.
 }
 type
-  TAudioComponentinstantiateCompletionHandler = reference to procedure(instance: AudioComponentInstance; status: OSStatus); cdecl;
+  TAudioComponentinstantiateCompletionHandler = reference to procedure(instance: AudioComponentInstance; status: OSStatus); cblock;
 procedure AudioComponentInstantiate( inComponent: AudioComponent; inOptions: AudioComponentInstantiationOptions; inCompletionHandler: TAudioComponentinstantiateCompletionHandler); external name '_AudioComponentInstantiate';
 (* API_AVAILABLE(macos(10.11), ios(9.0), watchos(2.0), tvos(9.0)) *)
 

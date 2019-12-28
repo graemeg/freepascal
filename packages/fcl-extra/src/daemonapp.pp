@@ -56,6 +56,7 @@ Type
     Function Install : Boolean; virtual;
     Function UnInstall: boolean; virtual;
     Function HandleCustomCode(ACode : DWord) : Boolean; Virtual;
+    procedure DoThreadTerminate(Sender: TObject);virtual;
   Public
     Procedure CheckControlMessages(Wait : Boolean);
     Procedure LogMessage(const Msg : String);
@@ -694,7 +695,12 @@ begin
   Result:=False
 end;
 
-Procedure TCustomDaemon.CheckControlMessages(Wait : Boolean);
+procedure TCustomDaemon.DoThreadTerminate(Sender: TObject);
+begin
+  Self.FThread := NIL;
+end;
+
+procedure TCustomDaemon.CheckControlMessages(Wait: Boolean);
 
 begin
   If Assigned(FThread) then

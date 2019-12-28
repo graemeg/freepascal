@@ -555,7 +555,8 @@ type
     ado_IsConstructor,      // array constructor (e.g. something = [1,2,3])
     ado_IsArrayOfConst,     // array of const
     ado_IsConstString,      // string constant
-    ado_IsBitPacked         // bitpacked array
+    ado_IsBitPacked,        // bitpacked array
+    ado_IsVector            // Vector
   );
   tarraydefoptions=set of tarraydefoption;
 

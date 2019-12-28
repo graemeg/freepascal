@@ -167,9 +167,8 @@ begin
   Try
     T:=TDaemonThread.Create(FDaemon);
     T.FreeOnTerminate:=True;
+    T.OnTerminate := @FDaemon.DoThreadTerminate;
     T.Resume;
-    T.WaitFor;
-    FDaemon.FThread:=Nil;
   except
     On E : Exception do
       FDaemon.Logmessage(Format(SErrDaemonStartFailed,[FDaemon.Definition.Name,E.Message]));

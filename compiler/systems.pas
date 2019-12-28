@@ -173,7 +173,11 @@ interface
             { supports symbol order file (to ensure symbols in vectorised sections are kept in the correct order) }
             tf_supports_symbolorderfile,
             { supports hidden/private extern symbols: visible across object files, but local/private in exe/library }
-            tf_supports_hidden_symbols
+            tf_supports_hidden_symbols,
+            { units are initialized by direct calls and not table driven,
+              in particular for a small amount of units, this results in smaller
+              executables }
+            tf_init_final_units_by_calls
        );
 
        psysteminfo = ^tsysteminfo;

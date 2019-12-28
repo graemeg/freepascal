@@ -6012,9 +6012,9 @@ reg32,reg32,rm32                      \333\362\371\1\xf5\75\120           BMI2,P
 reg64,reg64,rm64                      \333\362\363\371\1\xf5\75\120       BMI2,PROT,X86_64
 
 [RORX]
-(Ch_Rop1, Ch_Wop2)
-reg32,rm32,imm8                       \334\362\372\1\xf0\110\26           BMI2,PROT
-reg64,rm64,imm8                       \334\362\363\372\1\xf0\110\26       BMI2,PROT,X86_64
+(Ch_Rop2, Ch_Wop3)
+reg32,rm32,imm8                      \334\362\372\1\xf0\110\26            BMI2,PROT
+reg64,rm64,imm8                      \334\362\363\372\1\xf0\110\26        BMI2,PROT,X86_64
 
 [SARX]
 (Ch_Rop1, Ch_Rop2, Ch_Wop3)

@@ -23,7 +23,6 @@ begin
 {$endif}
     if not Assigned(FStandardEncodings[seAnsi]) then
     begin
-      // DefaultSystemCodePage can be set to non-ANSI
       if Assigned(widestringmanager.GetStandardCodePageProc) then
         FStandardEncodings[seAnsi] := TMBCSEncoding.Create(widestringmanager.GetStandardCodePageProc(scpAnsi))
       else

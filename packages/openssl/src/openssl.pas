@@ -109,7 +109,7 @@ var
   { ADD NEW ONES WHEN THEY APPEAR!
     Always make .so/dylib first, then versions, in descending order!
     Add "." .before the version, first is always just "" }
-  DLLVersions: array[1..16] of string = ('', '.1.0.6', '.1.0.5', '.1.0.4', '.1.0.3',
+  DLLVersions: array[1..17] of string = ('', '.1.1', '.1.0.6', '.1.0.5', '.1.0.4', '.1.0.3',
                                         '.1.0.2', '.1.0.1','.1.0.0','.0.9.8',
                                         '.0.9.7', '.0.9.6', '.0.9.5', '.0.9.4',
                                         '.0.9.3', '.0.9.2', '.0.9.1');
@@ -5623,6 +5623,10 @@ Function LoadLibraries : Boolean;
 
 begin
   Result:=False;
+{$IFDEF DARWIN}  
+  // Mac OS no longer allows you to load the unversioned one. Bug ID 36484.
+  DLLVERSIONS[1]:=DLLVERSIONS[2];
+{$ENDIF}
   SSLUtilHandle := LoadLib(DLLUtilName);
   SSLLibHandle := LoadLib(DLLSSLName);
   {$IFDEF MSWINDOWS}

@@ -95,6 +95,10 @@ Type
     FCSVOptions: TCSVOptions;
     procedure SetCSVOptions(AValue: TCSVOptions);
   Protected
+    class function DefaultReadFileFormat : TDataPacketFormat; override;
+    class function DefaultWriteFileFormat : TDataPacketFormat; override;
+    class function DefaultPacketClass : TDataPacketReaderClass ; override;
+    function CreateDefaultPacketReader(aStream : TStream): TDataPacketReader ; override;
     function GetPacketReader(const Format: TDataPacketFormat; const AStream: TStream): TDataPacketReader; override;
     procedure LoadBlobIntoBuffer(FieldDef: TFieldDef;ABlobBuf: PBufBlobField); override;
     procedure InternalInitFieldDefs; override;
@@ -305,11 +309,31 @@ begin
   FCSVOptions.Assign(AValue);
 end;
 
+class function TCustomCSVDataset.DefaultReadFileFormat: TDataPacketFormat;
+begin
+  Result:=dfDefault;
+end;
+
+class function TCustomCSVDataset.DefaultWriteFileFormat: TDataPacketFormat;
+begin
+  Result:=dfDefault;
+end;
+
+class function TCustomCSVDataset.DefaultPacketClass: TDataPacketReaderClass;
+begin
+  Result:=TCSVDataPacketReader;
+end;
+
+function TCustomCSVDataset.CreateDefaultPacketReader(aStream: TStream): TDataPacketReader;
+begin
+  Result:=TCSVDataPacketReader.Create(Self,AStream,FCSVOptions)
+end;
+
 function TCustomCSVDataset.GetPacketReader(const Format: TDataPacketFormat;
   const AStream: TStream): TDataPacketReader;
 begin
-  If (Format=dfAny) then
-    Result:=TCSVDataPacketReader.Create(Self,AStream,FCSVOptions)
+  If (Format in [dfAny,dfDefault]) then
+    Result:=CreateDefaultPacketReader(AStream)
   else
     Result:=Inherited GetPacketReader(Format,AStream);
 end;
@@ -333,6 +357,8 @@ end;
 
 destructor TCustomCSVDataset.Destroy;
 begin
+  // We must close here, before freeing the options.
+  Active:=False;
   FreeAndNil(FCSVOptions);
   inherited Destroy;
 end;

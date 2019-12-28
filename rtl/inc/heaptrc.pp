@@ -14,7 +14,6 @@
  **********************************************************************}
 
 {$checkpointer off}
-
 unit heaptrc;
 interface
 
@@ -1239,6 +1238,59 @@ begin
   DumpHeap(GlobalSkipIfNoLeaks);
 end;
 
+const
+{$ifdef BSD}   // dlopen is in libc on FreeBSD.
+  LibDL = 'c';
+{$else}
+  {$ifdef HAIKU}
+    LibDL = 'root';
+  {$else}
+    LibDL = 'dl';
+  {$endif}
+{$endif}
+{$if defined(LINUX) or defined(BSD)}
+type
+  Pdl_info = ^dl_info;
+  dl_info = record
+    dli_fname      : Pchar;
+    dli_fbase      : pointer;
+    dli_sname      : Pchar;
+    dli_saddr      : pointer;
+  end;
+
+  function _dladdr(Lib:pointer; info: Pdl_info): Longint; cdecl; external LibDL name 'dladdr';
+{$elseif defined(MSWINDOWS)}
+  function _GetModuleFileNameA(hModule:HModule;lpFilename:PAnsiChar;nSize:cardinal):cardinal;stdcall; external 'kernel32' name 'GetModuleFileNameA';
+{$endif}
+
+function GetModuleName:string;
+{$ifdef MSWINDOWS}
+var
+  sz:cardinal;
+  buf:array[0..8191] of char;
+{$endif}
+{$if defined(LINUX) or defined(BSD)}
+var
+  res:integer;
+  dli:dl_info;
+{$endif}
+begin
+  GetModuleName:='';
+{$if defined(LINUX) or defined(BSD)}
+  res:=_dladdr(@ParamStr,@dli); { get any non-eliminated address in SO space }
+  if res<=0 then 
+    exit;
+  if Assigned(dli.dli_fname) then
+    GetModuleName:=PAnsiChar(dli.dli_fname);
+{$elseif defined(MSWINDOWS)}
+  sz:=_GetModuleFileNameA(hInstance,PChar(@buf),sizeof(buf));
+  if sz>0 then
+    setstring(GetModuleName,PAnsiChar(@buf),sz)
+{$else}
+  GetModuleName:=ParamStr(0);
+{$endif}
+end;
+
 procedure dumpheap(SkipIfNoLeaks : Boolean);
 var
   pp : pheap_mem_info;
@@ -1256,7 +1308,7 @@ begin
   pp:=loc_info^.heap_mem_root;
   if ((loc_info^.getmem_size-loc_info^.freemem_size)=0) and SkipIfNoLeaks then
     exit;
-  Writeln(ptext^,'Heap dump by heaptrc unit of '+ParamStr(0));
+  Writeln(ptext^,'Heap dump by heaptrc unit of "'+GetModuleName()+'"');
   Writeln(ptext^,loc_info^.getmem_cnt, ' memory blocks allocated : ',
     loc_info^.getmem_size,'/',loc_info^.getmem8_size);
   Writeln(ptext^,loc_info^.freemem_cnt,' memory blocks freed     : ',

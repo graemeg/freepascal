@@ -380,8 +380,10 @@ Unit AoptObj;
           procedure on an instruction that you already know is a conditional jump }
         procedure MakeUnconditional(p: taicpu); virtual;
 
-        { Removes all instructions between an unconditional jump and the next label }
-        procedure RemoveDeadCodeAfterJump(p: tai);
+        { Removes all instructions between an unconditional jump and the next label.
+          Returns True if a jump in between was removed (as it may open up new
+          optimisations if the label appeared earlier in the stream) }
+        function RemoveDeadCodeAfterJump(p: tai): Boolean;
 
         { If hp is a label, strip it if its reference count is zero.  Repeat until
           a non-label is found, or a label with a non-zero reference count.
@@ -1614,8 +1616,10 @@ Unit AoptObj;
       end;
 
 
-    { Removes all instructions between an unconditional jump and the next label }
-    procedure TAOptObj.RemoveDeadCodeAfterJump(p: tai);
+    { Removes all instructions between an unconditional jump and the next label.
+      Returns True if a jump in between was removed (as it may open up new
+      optimisations if the label appeared earlier in the stream) }
+    function TAOptObj.RemoveDeadCodeAfterJump(p: tai): Boolean;
       const
 {$ifdef JVM}
         TaiFence = SkipInstr + [ait_const, ait_realconst, ait_typedconst, ait_label, ait_jcatch];
@@ -1631,6 +1635,8 @@ Unit AoptObj;
         { the following code removes all code between a jmp and the next label,
           because it can never be executed
         }
+        Result := False;
+
         while GetNextInstruction(p, hp1) and
               (hp1 <> BlockEnd) and
               not (hp1.typ in TaiFence) do
@@ -1639,7 +1645,12 @@ Unit AoptObj;
                  taicpu(hp1).is_jmp and
                  (JumpTargetOp(taicpu(hp1))^.typ = top_ref) and
                  (JumpTargetOp(taicpu(hp1))^.ref^.symbol is TAsmLabel) then
-                 TAsmLabel(JumpTargetOp(taicpu(hp1))^.ref^.symbol).decrefs;
+                begin
+                  { If the destination label appears earlier, it may permit
+                    further optimisations, so signal this in the Result }
+                  Result := True;
+                  TAsmLabel(JumpTargetOp(taicpu(hp1))^.ref^.symbol).decrefs;
+                end;
               { don't kill start/end of assembler block,
                 no-line-info-start/end etc }
               if (hp1.typ<>ait_marker) and
@@ -1717,19 +1728,6 @@ Unit AoptObj;
                   if tmp = BlockEnd then
                     { End of block }
                     Exit;
-
-                  if (cs_debuginfo in current_settings.moduleswitches) or
-                     (cs_use_lineinfo in current_settings.globalswitches) then
-                     { Don't remove aligns if debuginfo is present }
-                    begin
-                      if (tmp.typ in [ait_label,ait_align]) then
-                        begin
-                          hp1 := tmp;
-                          Continue;
-                        end
-                      else
-                        Break;
-                    end;
 
                   repeat
 
@@ -1848,15 +1846,8 @@ Unit AoptObj;
             ait_align:
               begin
                 tmp := tai(hp.Next);
-                if not(
-                  (cs_debuginfo in current_settings.moduleswitches) or
-                  (cs_use_lineinfo in current_settings.globalswitches)
-                ) then
-                  { Don't remove aligns if debuginfo is present }
-                  begin
-                    asml.Remove(hp);
-                    hp.Free;
-                  end;
+                asml.Remove(hp);
+                hp.Free;
                 hp := tmp;
                 { Control flow will now return to 'repeat' }
               end;
@@ -1937,7 +1928,14 @@ Unit AoptObj;
                   begin
                     { Do it now to get it out of the way and to aid optimisations
                       later on in this method }
-                    RemoveDeadCodeAfterJump(taicpu(hp1));
+                    if RemoveDeadCodeAfterJump(taicpu(hp1)) then
+                      stoploop := False;
+
+                    hp2 := getlabelwithsym(NCJLabel);
+                    if Assigned(hp2) then
+                      { Collapse the cluster now to aid optimisation and potentially
+                        cut down on the number of iterations required }
+                      NCJLabel := CollapseLabelCluster(hp1, hp2);
 
                     { GetNextInstruction could be factored out, but hp2 might be
                       different after "RemoveDeadCodeAfterJump" }
@@ -1989,7 +1987,6 @@ Unit AoptObj;
                             taicpu(p).condition:=inverse_cond(taicpu(p).condition);
                             CJLabel.decrefs;
 
-                            CJLabel := NCJLabel;
                             JumpTargetOp(taicpu(p))^.ref^.symbol := NCJLabel;
 
                             { when freeing hp1, the reference count
@@ -2000,24 +1997,38 @@ Unit AoptObj;
                             asml.remove(hp1);
                             hp1.free;
 
-                            hp1 := tai(p.Next);
+                            if not CJLabel.is_used then
+                              begin
+                                CJLabel := NCJLabel;
 
-                            { Attempt another iteration in case more jumps follow }
-                            Continue;
+                                StripDeadLabels(tai(p.Next), hp1);
+                                if (hp1 = BlockEnd) then
+                                  Exit;
+
+                                { Attempt another iteration in case more jumps follow }
+                                if (hp1.typ in SkipInstr) then
+                                  GetNextInstruction(hp1, hp1);
+
+                                Continue;
+                              end;
 {$if defined(arm) or defined(aarch64)}
                           end;
 {$endif arm or aarch64}
                       end
                     else if CollapseZeroDistJump(hp1, NCJLabel) then
                       begin
+                        if (hp1 = BlockEnd) then
+                          Exit;
+
                         { Attempt another iteration in case more jumps follow }
+                        if (hp1.typ in SkipInstr) then
+                          GetNextInstruction(hp1, hp1);
+
                         Continue;
                       end;
                   end
                 else
                   begin
-                    GetNextInstruction(hp1, hp2);
-
                     { Check for:
                         jmp<cond1>    @Lbl1
                         jmp<cond2>    @Lbl2
@@ -2030,9 +2041,12 @@ Unit AoptObj;
                         DebugMsg(SPeepholeOptimization+'Dominated conditional jump',p);
 
                         NCJLabel.decrefs;
+                        GetNextInstruction(hp1, hp2);
+
                         AsmL.Remove(hp1);
                         hp1.Free;
-                        hp1 := tai(p.Next);
+
+                        hp1 := hp2;
 
                         { Flag another pass in case @Lbl2 appeared earlier in the procedure and is now a dead label }
                         stoploop := False;
@@ -2048,6 +2062,8 @@ Unit AoptObj;
                     }
                     if condition_in(inverse_cond(taicpu(hp1).condition), taicpu(p).condition) then
                       begin
+                        GetNextInstruction(hp1, hp2);
+
                         { If @lbl1 immediately follows jmp<cond2>, we can remove
                           the first jump completely }
                         if FindLabel(CJLabel, hp2) then
@@ -2185,11 +2201,9 @@ Unit AoptObj;
                   if IsJumpToLabelUncond(taicpu(p)) then
                     begin
                       { Remove unreachable code between the jump and the next label }
-                      RemoveDeadCodeAfterJump(taicpu(p));
+                      ThisPassResult := RemoveDeadCodeAfterJump(taicpu(p));
 
-                      ThisPassResult := GetFinalDestination(taicpu(p), 0);
-
-                      if ThisPassResult then
+                      if GetFinalDestination(taicpu(p), 0) or ThisPassResult then
                         { Might have caused some earlier labels to become dead }
                         stoploop := False;
                     end

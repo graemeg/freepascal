@@ -33,46 +33,19 @@ Type
    { possible supported processors for this target }
    tllvmversion =
       (llvmver_invalid,
-       llvmver_3_3,
-       llvmver_3_4,
-       llvmver_3_5,
        { Xcode versions use snapshots of LLVM and don't correspond to released
          versions of llvm (they don't ship with the llvm utilities either, but
          they do come with Clang, which can be used instead of opt/llc) }
-       llvmver_xc_6_4,
-       llvmver_3_6,
-       llvmver_3_7,
-       llvmver_xc_7_0,
-       llvmver_xc_7_1,
-       llvmver_xc_7_2,
-       llvmver_3_8,
-       llvmver_xc_7_3,
-       llvmver_3_9,
-       llvmver_xc_8_0,
-       llvmver_xc_8_1,
-       llvmver_xc_8_2,
-       llvmver_4_0,
-       llvmver_xc_9_0,
-       llvmver_5_0,
-       llvmver_xc_9_1,
-       llvmver_xc_9_2,
-       llvmver_xc_9_3,
-       llvmver_6_0,
        llvmver_xc_10_0,
        llvmver_xc_10_1,
        llvmver_7_0,
        llvmver_7_1,
-       llvmver_8_0
+       llvmver_8_0,
+       llvmver_9_0
       );
 
 type
    tllvmversionflag = (
-     llvmflag_metadata_keyword,    { use "metadata" keyword (others leave it away, except when metadata is an argument to call instructions) }
-     llvmflag_linker_private,      { have linker_private linkage type (later versions use global in combination with hidden visibility) }
-     llvmflag_load_getelptr_type,  { the return type of loads and the base type of getelementptr must be specified }
-     llvmflag_call_no_ptr,         { with direct calls, the function type is not a function pointer }
-     llvmflag_alias_double_type,   { with "alias" declarations, have to print both aliasee and aliasee* types }
-     llvmflag_fembed_bitcode,      { support embedding bitcode in object files }
      llvmflag_memcpy_indiv_align,  { memcpy intrinsic supports separate alignment for source and dest }
      llvmflag_null_pointer_valid   { supports "llvmflag_null_pointer_valid" attribute, which indicates access to nil should not be optimized as undefined behaviour }
    );
@@ -81,65 +54,23 @@ type
 Const
    llvmversionstr : array[tllvmversion] of string[14] = (
      '',
-     '3.3',
-     '3.4',
-     '3.5',
-     'Xcode-6.4',
-     '3.6',
-     '3.7',
-     'Xcode-7.0',
-     'Xcode-7.1',
-     'Xcode-7.2',
-     '3.8',
-     'Xcode-7.3',
-     '3.9',
-     'Xcode-8.0',
-     'Xcode-8.1',
-     'Xcode-8.2',
-     '4.0',
-     'Xcode-9.0',
-     '5.0',
-     'Xcode-9.1',
-     'Xcode-9.2',
-     'Xcode-9.3',
-     '6.0',
      'Xcode-10.0',
      'Xcode-10.1',
      '7.0',
      '7.1',
-     '8.0'
+     '8.0',
+     '9.0'
    );
 
    llvmversion_properties: array[tllvmversion] of tllvmversionflags =
      (
        { invalid         } [],
-       { llvmver_3_3     } [llvmflag_metadata_keyword,llvmflag_linker_private],
-       { llvmver_3_4     } [llvmflag_metadata_keyword,llvmflag_linker_private],
-       { llvmver_3_5     } [llvmflag_metadata_keyword],
-       { llvmver_xc_6_4  } [llvmflag_metadata_keyword],
-       { llvmver_3_6     } [],
-       { llvmver_3_7     } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr],
-       { llvmver_xc_7_0  } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr],
-       { llvmver_xc_7_1  } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr],
-       { llvmver_xc_7_2  } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr],
-       { llvmver_3_8     } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type],
-       { llvmver_xc_7_3  } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type],
-       { llvmver_3_9     } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_xc_8_0  } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_xc_8_1  } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_xc_8_2  } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_4_0     } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_xc_9_0  } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_5_0     } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_xc_9_0  } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_xc_9_1  } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_xc_9_2  } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_6_0     } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_xc_10_0 } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_xc_10_1 } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode],
-       { llvmver_7_0     } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode,llvmflag_memcpy_indiv_align,llvmflag_null_pointer_valid],
-       { llvmver_7_1     } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode,llvmflag_memcpy_indiv_align,llvmflag_null_pointer_valid],
-       { llvmver_8_0     } [llvmflag_load_getelptr_type,llvmflag_call_no_ptr,llvmflag_alias_double_type,llvmflag_fembed_bitcode,llvmflag_memcpy_indiv_align,llvmflag_null_pointer_valid]
+       { llvmver_xc_10_0 } [],
+       { llvmver_xc_10_1 } [],
+       { llvmver_7_0     } [llvmflag_memcpy_indiv_align,llvmflag_null_pointer_valid],
+       { llvmver_7_1     } [llvmflag_memcpy_indiv_align,llvmflag_null_pointer_valid],
+       { llvmver_8_0     } [llvmflag_memcpy_indiv_align,llvmflag_null_pointer_valid],
+       { llvmver_9_0     } [llvmflag_memcpy_indiv_align,llvmflag_null_pointer_valid]
      );
 
    { Supported optimizations, only used for information }

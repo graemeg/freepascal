@@ -383,7 +383,7 @@ type
     // procs
     Procedure TestProcParam;
     Procedure TestProcParamAccess;
-    Procedure TestProcParamConstRefFail;
+    Procedure TestProcParamConstRef;
     Procedure TestFunctionResult;
     Procedure TestProcedureResultFail;
     Procedure TestProc_ArgVarPrecisionLossFail;
@@ -6129,14 +6129,15 @@ begin
   ParseProgram;
 end;
 
-procedure TTestResolver.TestProcParamConstRefFail;
+procedure TTestResolver.TestProcParamConstRef;
 begin
   StartProgram(false);
-  Add('procedure Run(constref a: word);');
-  Add('begin');
-  Add('end;');
-  Add('begin');
-  CheckResolverException('not yet implemented: constref',nNotYetImplemented);
+  Add([
+  'procedure Run(constref a: word);',
+  'begin',
+  'end;',
+  'begin']);
+  ParseProgram;
 end;
 
 procedure TTestResolver.TestFunctionResult;

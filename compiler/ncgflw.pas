@@ -888,7 +888,7 @@ implementation
           nil otherwise. }
         pd:=search_system_proc('fpc_safecallhandler');
         cgpara.init;
-        paramanager.getintparaloc(current_asmdata.CurrAsmList,pd,1,cgpara);
+        paramanager.getcgtempparaloc(current_asmdata.CurrAsmList,pd,1,cgpara);
         if is_class(current_procinfo.procdef.struct) then
           begin
             selfsym:=tparavarsym(current_procinfo.procdef.parast.Find('self'));

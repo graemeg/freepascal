@@ -94,7 +94,8 @@ Const
     'RV64I'
     );
 
-  fputypestr: array[tfputype] of string[8] = ('',
+  fputypestr: array[tfputype] of string[8] = (
+    'NONE',
     'LIBGCC',
     'SOFT',
     'FD'

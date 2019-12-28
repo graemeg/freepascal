@@ -26,11 +26,12 @@ unit narmutil;
 interface
 
   uses
-    ngenutil;
+    cclasses,ngenutil;
 
   type
     tarmnodeutils = class(tnodeutils)
       class procedure InsertObjectInfo; override;
+      class procedure insert_init_final_table(entries: tfplist); override;
     end;
 
 
@@ -40,8 +41,10 @@ interface
       verbose,
       systems,
       globals,
-      cpuinfo,
-      aasmdata,aasmtai;
+      cpuinfo,cpubase,
+      cgbase,cgutils,
+      aasmbase,aasmdata,aasmtai,aasmcpu,
+      symdef;
 
     const
       Tag_File = 1;
@@ -234,6 +237,89 @@ interface
           end;
       end;
 
+    class procedure tarmnodeutils.insert_init_final_table(entries:tfplist);
+
+      procedure genentry(list : TAsmList);
+        var
+          ref: treference;
+        begin
+          if GenerateThumbCode then
+            list.concat(taicpu.op_regset(A_PUSH,R_INTREGISTER,R_SUBWHOLE,[RS_R14]))
+          else
+            begin
+              reference_reset(ref,4,[]);
+              ref.index:=NR_STACK_POINTER_REG;
+              ref.addressmode:=AM_PREINDEXED;
+              list.concat(setoppostfix(taicpu.op_ref_regset(A_STM,ref,R_INTREGISTER,R_SUBWHOLE,[RS_R14]),PF_FD));
+            end;
+        end;
+
+      procedure genexit(list : TAsmList);
+        var
+          ref: treference;
+        begin
+          if GenerateThumbCode then
+            list.concat(taicpu.op_regset(A_POP,R_INTREGISTER,R_SUBWHOLE,[RS_R15]))
+          else
+            begin
+              reference_reset(ref,4,[]);
+              ref.index:=NR_STACK_POINTER_REG;
+              ref.addressmode:=AM_PREINDEXED;
+              list.concat(setoppostfix(taicpu.op_ref_regset(A_LDM,ref,R_INTREGISTER,R_SUBWHOLE,[RS_R15]),PF_FD));
+            end;
+        end;
+
+      var
+        initList, finalList, header: TAsmList;
+        entry : pinitfinalentry;
+        i : longint;
+      begin
+        if not(tf_init_final_units_by_calls in target_info.flags) then
+          begin
+            inherited insert_init_final_table(entries);
+            exit;
+          end;
+        initList:=TAsmList.create;
+        finalList:=TAsmList.create;
+
+        genentry(finalList);
+        genentry(initList);
+
+        for i:=0 to entries.count-1 do
+          begin
+            entry:=pinitfinalentry(entries[i]);
+            if entry^.finifunc<>'' then
+              finalList.Concat(taicpu.op_sym(A_BL,current_asmdata.RefAsmSymbol(entry^.finifunc,AT_FUNCTION)));
+            if entry^.initfunc<>'' then
+              initList.Concat(taicpu.op_sym(A_BL,current_asmdata.RefAsmSymbol(entry^.initfunc,AT_FUNCTION)));
+          end;
+
+        genexit(finalList);
+        genexit(initList);
+
+        header:=TAsmList.create;
+        new_section(header, sec_code, 'FPC_INIT_FUNC_TABLE', 1);
+        header.concat(tai_symbol.Createname_global('FPC_INIT_FUNC_TABLE',AT_FUNCTION,0,voidcodepointertype));
+
+        initList.insertList(header);
+        header.free;
+
+        current_asmdata.AsmLists[al_procedures].concatList(initList);
+
+        header:=TAsmList.create;
+        new_section(header, sec_code, 'FPC_FINALIZE_FUNC_TABLE', 1);
+        header.concat(tai_symbol.Createname_global('FPC_FINALIZE_FUNC_TABLE',AT_FUNCTION,0,voidcodepointertype));
+
+        finalList.insertList(header);
+        header.free;
+
+        current_asmdata.AsmLists[al_procedures].concatList(finalList);
+
+        initList.Free;
+        finalList.Free;
+
+        inherited insert_init_final_table(entries);
+      end;
 
   begin
     cnodeutils:=tarmnodeutils;

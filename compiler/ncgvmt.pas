@@ -966,8 +966,6 @@ implementation
          hs : string;
 {$endif vtentry}
       begin
-        if not assigned(_class.VMTEntries) then
-          exit;
         for i:=0 to _class.VMTEntries.Count-1 do
          begin
            vmtentry:=pvmtentry(_class.vmtentries[i]);

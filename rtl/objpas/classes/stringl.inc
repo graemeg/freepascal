@@ -1765,7 +1765,7 @@ end;
 function TStringList.Add(const S: string): Integer;
 
 begin
-  If Not (SortStyle=sslAuto) then
+  If (SortStyle<>sslAuto) then
     Result:=FCount
   else
     If Find (S,Result) then
@@ -1953,7 +1953,7 @@ procedure TStringList.CustomSort(CompareFn: TStringListSortCompare; SortingAlgor
 var
   Context: TStringList_CustomSort_Context;
 begin
-  If (FForceSort or (Not (FSortStyle=sslAuto))) and (FCount>1) then
+  If (FCount>1) and (FForceSort or (FSortStyle<>sslAuto))  then
     begin
     Changing;
 

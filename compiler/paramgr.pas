@@ -94,7 +94,9 @@ unit paramgr;
           function get_saved_registers_fpu(calloption : tproccalloption):tcpuregisterarray;virtual;
           function get_saved_registers_mm(calloption : tproccalloption):tcpuregisterarray;virtual;
 
-          procedure getintparaloc(list: TAsmList; pd: tabstractprocdef; nr : longint; var cgpara: tcgpara);virtual;
+          { \brief Get a parameter location for calling a procdef directly instead of via a call node }
+          { \returns parameter location in \c cgpara for parameter \c nr of \c pd }
+          procedure getcgtempparaloc(list: TAsmList; pd: tabstractprocdef; nr : longint; var cgpara: tcgpara);virtual;
 
           {# allocate an individual pcgparalocation that's part of a tcgpara
 
@@ -746,7 +748,7 @@ implementation
       end;
 
 
-    procedure tparamanager.getintparaloc(list: TAsmList; pd: tabstractprocdef; nr : longint; var cgpara: tcgpara);
+    procedure tparamanager.getcgtempparaloc(list: TAsmList; pd: tabstractprocdef; nr : longint; var cgpara: tcgpara);
       begin
         if (nr<1) or (nr>pd.paras.count) then
           InternalError(2013060101);

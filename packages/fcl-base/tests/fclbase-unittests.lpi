@@ -36,7 +36,7 @@
         </Mode0>
       </Modes>
     </RunParams>
-    <Units Count="7">
+    <Units Count="8">
       <Unit0>
         <Filename Value="fclbase-unittests.pp"/>
         <IsPartOfProject Value="True"/>
@@ -65,6 +65,10 @@
         <Filename Value="tcbufferedfilestream.pp"/>
         <IsPartOfProject Value="True"/>
       </Unit6>
+      <Unit7>
+        <Filename Value="tccsvdocument.pp"/>
+        <IsPartOfProject Value="True"/>
+      </Unit7>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

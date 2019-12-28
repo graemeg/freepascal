@@ -27,7 +27,7 @@ unit MaskUtils;
 interface
 
 uses
-  Classes, SysUtils;
+  SysUtils;
 
 
 function FormatMaskText(const EditMask: string; const AValue: string): string;
@@ -107,7 +107,6 @@ type
 implementation
 
 resourcestring
-  exInvalidMaskValue = 'FormatMaskText function failed!';
   exValidationFailed = 'TMaskUtils.ValidateInput failed.';
 
 const

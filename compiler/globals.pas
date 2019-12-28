@@ -570,7 +570,7 @@ interface
         instructionset : is_arm;
 {$endif defined(ARM)}
 {$if defined(LLVM) and not defined(GENERIC_CPU)}
-        llvmversion    : llvmver_3_9;
+        llvmversion    : llvmver_7_0;
 {$endif defined(LLVM) and not defined(GENERIC_CPU)}
         controllertype : ct_none;
         pmessage : nil;
