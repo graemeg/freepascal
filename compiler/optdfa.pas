@@ -602,6 +602,10 @@ unit optdfa;
       if the tree has been changed without updating dfa }
     procedure TDFABuilder.resetdfainfo(node : tnode);
       begin
+        nodemap.Free;
+        nodemap:=nil;
+        resultnode.Free;
+        resultnode:=nil;
         foreachnodestatic(pm_postprocess,node,@ResetDFA,nil);
       end;
 

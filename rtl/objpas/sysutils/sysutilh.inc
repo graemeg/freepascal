@@ -306,7 +306,7 @@ Type
 
 {$macro on}
 {$define PathStr:=UnicodeString}
-{$define PathPChar:=PWideChar}
+{$define PathPChar:=PUnicodeChar}
   { Read filename handling functions declaration }
   {$i finah.inc}
 {$define PathStr:=RawByteString}

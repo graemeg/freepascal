@@ -1,3 +1,4 @@
+
 (**
  Copyright (c) 2000-2010 by Stefan Heymann
 
@@ -600,7 +601,7 @@ FUNCTION  TTarArchive.FindNext (VAR DirRec : TTarDirRec) : BOOLEAN;
           // The Stream pointer must point to the first byte of the tar header
 VAR
   Rec          : ARRAY [0..RECORDSIZE-1] OF CHAR;
-  CurFilePos   : INTEGER;
+  CurFilePos   : int64;
   Header       : TTarHeader ABSOLUTE Rec;
   I            : INTEGER;
   HeaderChkSum : WORD;

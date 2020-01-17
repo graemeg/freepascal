@@ -3,6 +3,8 @@
     Copyright (c) 2005 by Thomas Schatzl,
     member of the Free Pascal development team.
 
+    Linux powerpc syscall wrapper implementation 
+
     See the file COPYING.FPC, included in this distribution,
     for details about the copyright.
 

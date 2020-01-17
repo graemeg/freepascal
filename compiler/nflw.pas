@@ -110,6 +110,7 @@ interface
           constructor create(l,r,_t1,_t2 : tnode;back : boolean);virtual;reintroduce;
           function pass_typecheck:tnode;override;
           function pass_1 : tnode;override;
+          function makewhileloop : tnode;
           function simplify(forinline : boolean) : tnode;override;
        end;
        tfornodeclass = class of tfornode;
@@ -279,6 +280,10 @@ interface
     function create_enumerator_for_in_loop(hloopvar, hloopbody, expr: tnode;
        enumerator_get, enumerator_move: tprocdef; enumerator_current: tpropertysym): tnode;
     function create_for_in_loop(hloopvar, hloopbody, expr: tnode): tnode;
+
+    { converts all for nodes in the tree into while nodes,
+      returns true if something was converted }
+    function ConvertForLoops(var n : tnode) : Boolean;
 
 implementation
 
@@ -993,6 +998,28 @@ implementation
         current_filepos:=storefilepos;
       end;
 
+
+    function _ConvertForLoops(var n: tnode; arg: pointer): foreachnoderesult;
+      var
+        hp : tnode;
+      begin
+        Result:=fen_false;
+        if n.nodetype=forn then
+          begin
+            Result:=fen_true;
+            hp:=n;
+            n:=tfornode(n).makewhileloop;
+            do_firstpass(n);
+            hp.Free;
+          end;
+      end;
+
+
+    function ConvertForLoops(var n : tnode) : boolean;
+      begin
+        result:=foreachnodestatic(pm_postprocess,n,@_ConvertForLoops,nil);
+      end;
+
 {****************************************************************************
                                  TLOOPNODE
 *****************************************************************************}
@@ -1702,6 +1729,20 @@ implementation
 
 
     function tfornode.pass_1 : tnode;
+      begin
+        result:=nil;
+        expectloc:=LOC_VOID;
+
+        firstpass(left);
+        firstpass(right);
+        firstpass(t1);
+
+        if assigned(t2) then
+          firstpass(t2);
+      end;
+
+
+    function tfornode.makewhileloop : tnode;
       var
         ifblock,loopblock : tblocknode;
         ifstatements,statements,loopstatements : tstatementnode;
@@ -1716,6 +1757,7 @@ implementation
         usetotemp : boolean;
         { if the lower bound is not constant, it must be store in a temp before calculating the upper bound }
         usefromtemp : boolean;
+        storefilepos: tfileposinfo;
 
       procedure iterate_counter(var s : tstatementnode;fw : boolean);
         begin
@@ -1737,23 +1779,10 @@ implementation
 
       begin
         result:=nil;
-        expectloc:=LOC_VOID;
-        fromtemp:=nil;
         totemp:=nil;
-
-        firstpass(left);
-        firstpass(right);
-        firstpass(t1);
-
-        if assigned(t2) then
-          begin
-            firstpass(t2);
-            if codegenerror then
-              exit;
-          end;
-
-        { first set the to value
-          because the count var can be in the expression ! }
+        fromtemp:=nil;
+        storefilepos:=current_filepos;
+        current_filepos:=fileinfo;
         do_loopvar_at_end:=(lnf_dont_mind_loopvar_on_exit in loopflags)
         { if the loop is unrolled and there is a jump into the loop,
           then we can't do the trick with incrementing the loop var only at the
@@ -1892,6 +1921,7 @@ implementation
             addstatement(ifstatements,cwhilerepeatnode.create(caddnode.create_internal(cond,left.getcopy,t1.getcopy),loopblock,false,true));
             addstatement(statements,ifblock);
           end;
+        current_filepos:=storefilepos;
       end;
 
 

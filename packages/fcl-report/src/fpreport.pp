@@ -22,7 +22,7 @@ unit fpreport;
 // Global debugging
 { $define gdebug}
 // Separate for aggregate variables
-{$define gdebuga}
+{ $define gdebuga}
 
 interface
 
@@ -1676,6 +1676,7 @@ type
     Procedure SaveDataToNames;
     Procedure RestoreDataFromNames;
     procedure WriteElement(AWriter: TFPReportStreamer; AOriginal: TFPReportElement = nil); override;
+    procedure WriteRTElement(AWriter: TFPReportStreamer; AOriginal: TFPReportElement = nil);
     procedure ReadElement(AReader: TFPReportStreamer); override;
     procedure AddPage(APage: TFPReportCustomPage);
     procedure RemovePage(APage: TFPReportCustomPage);
@@ -2343,11 +2344,14 @@ Function ReportExportManager : TFPReportExportManager;
 { this should probably be more configurable or flexible per platform }
 
 Const
+
+  { Note, these are the postscript names, not the human-readable ones. }
+
 {$IFDEF UNIX}
   cDefaultFont = 'LiberationSans';
 {$ELSE}
 {$IFDEF WINDOWS}
-  cDefaultFont = 'Arial';
+  cDefaultFont = 'ArialMT';
 {$ELSE}
   cDefaultFont = 'Helvetica';
 {$ENDIF}
@@ -3302,9 +3306,9 @@ begin
   if (aNode is TFPExprVariable) then
     begin
     DS:=ExtractWord(1,TFPExprVariable(ANode).Identifier.Name,['.']);
-    If AData.FindReportData(DS)<>Nil then
+      If AData.FindReportData(DS)<>Nil then
       FDataName:=DS;
-    end
+      end
   else if (ANode is TFPExprFunction) then
     begin
     I:=0;
@@ -3509,11 +3513,7 @@ begin
   if Not SameText(aData.Name,FDataName) then
     exit;
   If not IsFirstPass then
-    begin
-    FLastValue.ResultType:=rtFloat;
-    FLastValue.ResFloat:=0;
     exit;
-    end;
   if (FResetValue=#0) then
     begin
     FResetValue:=#255;
@@ -3620,8 +3620,8 @@ begin
         inc(FAggregateValuesIndex);
         end;
       FResetValue:=lResetValue;
-      FAggregateValue:=PFPExpressionResult(FAggregateValues[FAggregateValuesIndex])^;
       FLastValue:=FAggregateValue;
+      FAggregateValue:=PFPExpressionResult(FAggregateValues[FAggregateValuesIndex])^;
       end
     else
       begin
@@ -3640,7 +3640,7 @@ begin
     begin
     WriteString('Name',Self.Name);
     WriteString('DataType',ResultTypeName(DataType));
-    WriteString('Value',Value);
+//    WriteString('Value',Value);
     WriteString('Expression',Expression);
     WriteString('ResetValueExpression',ResetValueExpression);
     WriteString('ResetType',GetEnumName(TypeInfo(TFPReportResetType),Ord(ResetType)));
@@ -3665,7 +3665,7 @@ begin
       DataType:=rtString
     else
       DataType:=TResultType(I);
-    Value:=ReadString('Value','');
+//    Value:=ReadString('Value','');
     Expression:=ReadString('Expression','');
     ResetValueExpression:=ReadString('ResetValueExpression','');
     S:=ReadString('ResetType','');
@@ -5134,6 +5134,7 @@ begin
   FUseParentFont := True;
   FFont := TFPReportFont.Create;
   FFont.OnChanged:=@HandleFontChange;
+  ReassignParentFont;
   FCullThreshold := 75;
 end;
 
@@ -7730,6 +7731,7 @@ begin
     Report := E.Report;
     Font.Assign(E.Font);
     ColumnCount := E.ColumnCount;
+    ColumnGap := E.ColumnGap;
   end;
   inherited Assign(Source);
 end;
@@ -8721,6 +8723,39 @@ begin
   // TODO: Implement writing OnRenderReport, OnBeginReport, OnEndReport
 end;
 
+procedure TFPCustomReport.WriteRTElement(AWriter: TFPReportStreamer; AOriginal: TFPReportElement);
+var
+  i: integer;
+begin
+  // ignore AOriginal here as we don't support whole report diffs, only element diffs
+  AWriter.PushElement('Report');
+  try
+    inherited WriteElement(AWriter, AOriginal);
+    // local properties
+    AWriter.WriteString('Title', Title);
+    AWriter.WriteString('Author', Author);
+    AWriter.WriteBoolean('TwoPass',TwoPass);
+    AWriter.WriteDateTime('DateCreated', DateCreated);
+    // now the pages
+    AWriter.PushElement('Pages');
+    try
+      for i := 0 to RTObjects.Count - 1 do
+      begin
+        AWriter.PushElement(IntToStr(i)); // use page index as identifier
+        try
+          TFPReportComponent(RTObjects[i]).WriteElement(AWriter);
+        finally
+          AWriter.PopElement;
+        end;
+      end;
+    finally
+      AWriter.PopElement;
+    end;
+  finally
+    AWriter.PopElement;
+  end;
+end;
+
 procedure TFPCustomReport.ReadElement(AReader: TFPReportStreamer);
 var
   E: TObject;
@@ -8924,6 +8959,7 @@ end;
 procedure TFPCustomReport.RunReport;
 begin
   DoBeginReport;
+  ClearPreparedReport;
   StartLayout;
   CollectReportData;
   Validate;
@@ -9436,6 +9472,7 @@ begin
   FBandPosition := bpNormal;
   FFont:=TFPReportFont.Create;
   FFont.OnChanged:=@HandleFontChange;
+  ReassignParentFont;
 end;
 
 destructor TFPReportCustomBand.Destroy;
@@ -11892,12 +11929,11 @@ begin
         {$endif}
         // DumpData(lData);
         PrepareRecord(lData);
+        Report.UpdateAggregates(lPage,lData);
         if FNewPage then
           StartNewPage;
         ShowDataHeaderBand;
         HandleGroupBands;
-        // This must be done after the groups were handled.
-        Report.UpdateAggregates(lPage,lData);
         ShowDataBand;
         lData.Next;
         end;  { while not lData.EOF }
@@ -12093,12 +12129,11 @@ begin
         {$endif}
         // DumpData(aPageData);
         PrepareRecord(aData);
+        Report.UpdateAggregates(aPage,aData);
         if FNewPage then
           StartNewPage;
         ShowDataHeaderBand;
         HandleGroupBands;
-        // This must be done after the groups were handled.
-        Report.UpdateAggregates(aPage,aData);
         ShowDataBand;
         aData.Next;
         end;

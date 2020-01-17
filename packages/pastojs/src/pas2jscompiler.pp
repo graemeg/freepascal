@@ -660,8 +660,9 @@ type
     function IsDefined(const aName: String): boolean;
     procedure SetOption(Flag: TP2jsCompilerOption; Enable: boolean);
 
-    function GetUnitInfo(const UseUnitName, InFileName, ModuleDir: String;
+    function GetUnitInfo(UseUnitName, InFileName, ModuleDir: String;
       PCUSupport: TPCUSupport): TFindUnitInfo;
+    procedure CheckUnitAlias(var UseUnitName: string); virtual;
     function FindFileWithUnitFilename(UnitFilename: string): TPas2jsCompilerFile;
     procedure LoadModuleFile(UnitFilename, UseUnitName: string;
       out aFile: TPas2jsCompilerFile; isPCU: Boolean);
@@ -5056,7 +5057,7 @@ begin
   Result:=FMainJSFileResolved;
 end;
 
-function TPas2jsCompiler.GetUnitInfo(const UseUnitName, InFileName,
+function TPas2jsCompiler.GetUnitInfo(UseUnitName, InFileName,
   ModuleDir: String; PCUSupport: TPCUSupport): TFindUnitInfo;
 
 var
@@ -5116,6 +5117,8 @@ begin
 
   if InFilename='' then
   begin
+    CheckUnitAlias(UseUnitName);
+
     if Pos('.',UseUnitname)<1 then
     begin
       // generic unit name -> search with namespaces
@@ -5173,6 +5176,11 @@ begin
     Result.isPCU:=False;
     Result.isForeign:=FoundPasIsForeign;
   end;
+end;
+
+procedure TPas2jsCompiler.CheckUnitAlias(var UseUnitName: string);
+begin
+  if UseUnitName='' then ;
 end;
 
 function TPas2jsCompiler.LoadUsedUnit(Info: TLoadUnitInfo;

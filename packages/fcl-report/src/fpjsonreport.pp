@@ -52,10 +52,13 @@ Type
     destructor Destroy; override;
     procedure LoadFromStream(const aStream: TStream);
     procedure SaveToStream(const aStream: TStream);
+    procedure SaveRenderToStream(const aStream: TStream);
     Procedure LoadFromJSON(aJSON : TJSONObject); virtual;
     Procedure SavetoJSON(aJSON : TJSONObject); virtual;
+    Procedure SaveRenderToJSON(aJSON : TJSONObject); virtual;
     Procedure LoadFromFile(const aFileName : String);
     Procedure SaveToFile(const aFileName : String);
+    procedure SaveRenderToFile(const aFileName: String);
     Property LoadErrors : TStrings Read FLoadErrors;
     Property DataManager : TFPCustomReportDataManager Read FDataManager Write SetDataManager;
     Property DesignDataName : String Read GetDesignDataName Write SetDesignDataName Stored StoreDesignDataName;
@@ -242,6 +245,23 @@ begin
   end;
 end;
 
+procedure TFPJSONReport.SaveRenderToJSON(aJSON: TJSONObject);
+
+Var
+  R : TFPReportJSONStreamer;
+
+begin
+  DoWriteJSON(aJSON);
+  R:=TFPReportJSONStreamer.Create(Nil);
+  try
+    R.OwnsJSON:=False;
+    R.JSON:=aJSON;
+    WriteRTElement(R);
+  finally
+    R.Free;
+  end;
+end;
+
 procedure TFPJSONReport.LoadFromStream(const aStream : TStream);
 
 Var
@@ -275,6 +295,23 @@ begin
   end;
 end;
 
+procedure TFPJSONReport.SaveRenderToStream(const aStream: TStream);
+
+Var
+  O : TJSONObject;
+  S : TJSONStringType;
+
+begin
+  O:=TJSONObject.Create;
+  try
+    SaveRendertoJSON(O);
+    S:=O.AsJSON;
+    aStream.WriteBuffer(S[1],Length(S));
+  finally
+    O.Free;
+  end;
+end;
+
 procedure TFPJSONReport.LoadFromFile(const aFileName: String);
 
 Var
@@ -297,6 +334,19 @@ begin
   F:=TFileStream.Create(aFileName,fmCreate);
   try
     SaveToStream(F);
+  finally
+    F.Free;
+  end;
+end;
+
+procedure TFPJSONReport.SaveRenderToFile(const aFileName: String);
+Var
+  F : TFileStream;
+
+begin
+  F:=TFileStream.Create(aFileName,fmCreate);
+  try
+    SaveRenderToStream(F);
   finally
     F.Free;
   end;

@@ -55,9 +55,9 @@ unit cpunode;
        n386mem,
        n386set,
        n386inl,
-{$ifdef TEST_WIN32_SEH}
+{$ifndef DISABLE_WIN32_SEH}
        n386flw,
-{$endif TEST_WIN32_SEH}
+{$endif not DISABLE_WIN32_SEH}
        n386mat,
        { symtable }
        symcpu,

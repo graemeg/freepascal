@@ -461,34 +461,6 @@ begin
   SetLength(Result, P-Pchar(Result));
 end;
 
-Type
-
-  { TRawStringStream }
-
-  TRawStringStream = Class(TMemoryStream)
-  public
-    Constructor Create (const aData : RawByteString); overload;
-    function DataString: RawByteString;
-  end;
-
-constructor TRawStringStream.Create(const aData: RawByteString);
-begin
-  Inherited Create;
-  If Length(aData)>0 then
-    begin
-    WriteBuffer(aData[1],Length(aData));
-    Position:=0;
-    end;
-end;
-
-function TRawStringStream.DataString: RawByteString;
-begin
-  Result:='';
-  SetLength(Result,Size);
-  if Size>0 then
-    Move(Memory^, Result[1], Size);
-end;
-
 { TProxyData }
 
 function TProxyData.GetProxyHeaders: String;
@@ -1491,10 +1463,10 @@ end;
 function TFPCustomHTTPClient.Get(const AURL: String): RawByteString;
 
 Var
-  SS : TRawStringStream;
+  SS : TRawByteStringStream;
 
 begin
-  SS:=TRawStringStream.Create;
+  SS:=TRawByteStringStream.Create;
   try
     Get(AURL,SS);
     Result:=SS.Datastring;
@@ -1606,9 +1578,9 @@ end;
 
 function TFPCustomHTTPClient.Post(const URL: string): RawByteString;
 Var
-  SS : TRawStringStream;
+  SS : TRawByteStringStream;
 begin
-  SS:=TRawStringStream.Create();
+  SS:=TRawByteStringStream.Create();
   try
     Post(URL,SS);
     Result:=SS.Datastring;
@@ -1699,9 +1671,9 @@ end;
 
 function TFPCustomHTTPClient.Put(const URL: string): RawByteString;
 Var
-  SS : TRawStringStream;
+  SS : TRawByteStringStream;
 begin
-  SS:=TRawStringStream.Create();
+  SS:=TRawByteStringStream.Create();
   try
     Put(URL,SS);
     Result:=SS.Datastring;
@@ -1789,9 +1761,9 @@ end;
 
 function TFPCustomHTTPClient.Delete(const URL: string): RawByteString;
 Var
-  SS : TRawStringStream;
+  SS : TRawByteStringStream;
 begin
-  SS:=TRawStringStream.Create();
+  SS:=TRawByteStringStream.Create();
   try
     Delete(URL,SS);
     Result:=SS.Datastring;
@@ -1879,9 +1851,9 @@ end;
 
 function TFPCustomHTTPClient.Options(const URL: string): RawByteString;
 Var
-  SS : TRawStringStream;
+  SS : TRawByteStringStream;
 begin
-  SS:=TRawStringStream.Create();
+  SS:=TRawByteStringStream.Create();
   try
     Options(URL,SS);
     Result:=SS.Datastring;
@@ -1956,7 +1928,7 @@ end;
 procedure TFPCustomHTTPClient.FormPost(const URL : String; FormData: RawBytestring; const Response: TStream);
 
 begin
-  RequestBody:=TRawStringStream.Create(FormData);
+  RequestBody:=TRawByteStringStream.Create(FormData);
   try
     AddHeader('Content-Type','application/x-www-form-urlencoded');
     Post(URL,Response);
@@ -1999,9 +1971,9 @@ end;
 
 function TFPCustomHTTPClient.FormPost(const URL : String;  Const FormData: RawBytestring): RawByteString;
 Var
-  SS : TRawStringStream;
+  SS : TRawByteStringStream;
 begin
-  SS:=TRawStringStream.Create();
+  SS:=TRawByteStringStream.Create();
   try
     FormPost(URL,FormData,SS);
     Result:=SS.Datastring;
@@ -2012,9 +1984,9 @@ end;
 
 function TFPCustomHTTPClient.FormPost(const URL: string; FormData: TStrings): RawByteString;
 Var
-  SS : TRawStringStream;
+  SS : TRawByteStringStream;
 begin
-  SS:=TRawStringStream.Create();
+  SS:=TRawByteStringStream.Create();
   try
     FormPost(URL,FormData,SS);
     Result:=SS.Datastring;
@@ -2130,13 +2102,13 @@ procedure TFPCustomHTTPClient.StreamFormPost(const AURL: string;
   const AStream: TStream; const Response: TStream);
 Var
   S, Sep : string;
-  SS : TRawStringStream;
+  SS : TRawByteStringStream;
   I: Integer;
   N,V: String;
 begin
   Sep:=Format('%.8x_multipart_boundary',[Random($ffffff)]);
   AddHeader('Content-Type','multipart/form-data; boundary='+Sep);
-  SS:=TRawStringStream.Create();
+  SS:=TRawByteStringStream.Create();
   try
     if (FormData<>Nil) then
       for I:=0 to FormData.Count -1 do

@@ -1580,16 +1580,25 @@ implementation
         if not is_currency(resultdef) then
           internalerror(200304221);
         result:=nil;
-        left:=caddnode.create(muln,left,crealconstnode.create(10000.0,left.resultdef));
-        include(left.flags,nf_is_currency);
-        { Convert constants directly, else call Round() }
-        if left.nodetype=realconstn then
-          result:=cordconstnode.create(round(trealconstnode(left).value_real),resultdef,false)
+        if not(nf_internal in flags) then
+          begin
+            left:=caddnode.create(muln,left,crealconstnode.create(10000.0,left.resultdef));
+            include(left.flags,nf_is_currency);
+            { Convert constants directly, else call Round() }
+            if left.nodetype=realconstn then
+              result:=cordconstnode.create(round(trealconstnode(left).value_real),resultdef,false)
+            else
+              begin
+                result:=cinlinenode.create(in_round_real,false,left);
+                { Internal type cast to currency }
+                result:=ctypeconvnode.create_internal(result,s64currencytype);
+                left:=nil;
+              end
+          end
         else
           begin
-            result:=cinlinenode.create(in_round_real,false,left);
-            { Internal type cast to currency }
-            result:=ctypeconvnode.create_internal(result,s64currencytype);
+            include(left.flags,nf_is_currency);
+            result:=left;
             left:=nil;
           end;
       end;
@@ -1598,20 +1607,25 @@ implementation
     function ttypeconvnode.typecheck_real_to_real : tnode;
       begin
          result:=nil;
-         if is_currency(left.resultdef) and not(is_currency(resultdef)) then
+         if not(nf_internal in flags) then
            begin
-             left:=caddnode.create(slashn,left,crealconstnode.create(10000.0,left.resultdef));
-             include(left.flags,nf_is_currency);
-             typecheckpass(left);
+             if is_currency(left.resultdef) and not(is_currency(resultdef)) then
+               begin
+                 left:=caddnode.create(slashn,left,crealconstnode.create(10000.0,left.resultdef));
+                 include(left.flags,nf_is_currency);
+                 typecheckpass(left);
+               end
+             else
+               if is_currency(resultdef) and not(is_currency(left.resultdef)) then
+                 begin
+                   left:=caddnode.create(muln,left,crealconstnode.create(10000.0,left.resultdef));
+                   include(left.flags,nf_is_currency);
+                   include(flags,nf_is_currency);
+                   typecheckpass(left);
+                 end;
            end
          else
-           if is_currency(resultdef) and not(is_currency(left.resultdef)) then
-             begin
-               left:=caddnode.create(muln,left,crealconstnode.create(10000.0,left.resultdef));
-               include(left.flags,nf_is_currency);
-               include(flags,nf_is_currency);
-               typecheckpass(left);
-             end;
+           include(flags,nf_is_currency);
       end;
 
 

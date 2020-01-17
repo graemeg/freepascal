@@ -239,7 +239,7 @@ type
 
   TTestReportChildren = class(TTestCase)
   private
-    FC: TMyFPReportElementWithChildren;
+    FC, FC2: TMyFPReportElementWithChildren;
     FChild: TFPReportElement;
   protected
     procedure SetUp; override;
@@ -743,11 +743,11 @@ begin
   Variable.DataType:=rtFloat;
   AssertEquals('Float type remains',rtFloat,Variable.DataType);
   AssertEquals('Float default value',0.0,Variable.AsFloat);
-  AssertEquals('Float as string',0.0,StrToFloat(Variable.Value));
+  AssertEquals('Float as string',' 0.0000000000000000E+000',Variable.Value);
   Variable.DataType:=rtBoolean;
   Variable.AsFloat:=1.23;
   AssertEquals('Float type remains',rtFloat,Variable.DataType);
-  AssertEquals('Float as string',1.23,StrToFloat(Variable.Value));
+  AssertEquals('Float as string',' 1.2300000000000000E+000',Variable.Value);
   AssertEquals('Float value',1.23,Variable.AsFloat);
   R:=Variable.AsExpressionResult;
   AssertEquals('Correct result',rtFloat,r.resulttype);
@@ -1520,13 +1520,15 @@ end;
 procedure TTestReportChildren.SetUp;
 begin
   FC := TMyFPReportElementWithChildren.Create(nil);
+  FC2 := TMyFPReportElementWithChildren.Create(nil);
   FChild := TFPReportElement.Create(nil);
 end;
 
 procedure TTestReportChildren.TearDown;
 begin
-  FreeAndNil(FC);
   FreeAndNil(FChild);
+  FreeAndNil(FC);
+  FreeAndNil(FC2);
 end;
 
 procedure TTestReportChildren.WrongParent;
@@ -1562,17 +1564,12 @@ begin
   AssertEquals('Parent childcount is 1', 1, FC.ChildCount);
   AssertSame('Parent first child is OK', FChild, FC.Child[0]);
   FC.ResetChanged;
-  E := TFPReportElementWithChildren.Create(nil);
-  try
-    FChild.Parent := E;
-    AssertSame('Parent was saved', E, FChild.parent);
-    AssertEquals('Changed was called', 1, FC.ChangedCalled);
-    AssertEquals('Old Parent childcount is 0', 0, FC.ChildCount);
-    AssertEquals('Parent childcount is 1', 1, E.ChildCount);
-    AssertSame('Parent first child is OK', FChild, E.Child[0]);
-  finally
-    E.Free;
-  end;
+  FChild.Parent := FC2;
+  AssertSame('Parent was saved', FC2, FChild.parent);
+  AssertEquals('Changed was called', 1, FC.ChangedCalled);
+  AssertEquals('Old Parent childcount is 0', 0, FC.ChildCount);
+  AssertEquals('Parent childcount is 1', 1, FC2.ChildCount);
+  AssertSame('Parent first child is OK', FChild, FC2.Child[0]);
 end;
 
 procedure TTestReportChildren.TestSetParent4;
@@ -1582,7 +1579,9 @@ begin
   AssertEquals('Parent childcount is 1', 1, FC.ChildCount);
   AssertSame('Parent first child is OK', FChild, FC.Child[0]);
   FreeAndNil(FC);
-  AssertNull('Child parent was removed when parent is freed', FChild.Parent);
+  //FChild is freed due to free of parent
+  //AssertNull('Child parent was removed when parent is freed', FChild.Parent);
+  FChild := Nil;
 end;
 
 procedure TTestReportChildren.TestSetParent6;
@@ -2188,21 +2187,20 @@ var
   B: TFPReportCustomBand;
   P: TMyFPReportPage;
 begin
-  B := TFPReportCustomBand.Create(nil);
+  P := TMyFPReportPage.Create(nil);
   try
-    P := TMyFPReportPage.Create(nil);
+    B := TFPReportCustomBand.Create(nil);
     try
       B.Parent := P;
       AssertSame('Parent stored correctly', P, B.Page);
       AssertEquals('Bandcount correct', 1, P.BandCount);
       AssertSame('Bands[0] correct', B, P.Bands[0]);
     finally
-      P.Free;
+      B.Free;
     end;
-    AssertNull('Band notified that page is gone', B.Parent);
-    AssertNull('Band notified that page is gone', B.Page);
+    AssertEquals('Page notified that Band is gone', 0, P.BandCount);
   finally
-    B.Free;
+    P.Free;
   end;
 end;
 
@@ -2775,6 +2773,7 @@ end;
 
 procedure TTestCustomReport.TestBeginReportEvent;
 begin
+  TMyFPReportPage.Create(Report); // add at least one page
   Report.OnBeginReport := @HandleOnBeginReport;
   AssertEquals('Failed on 1', 0, FBeginReportCount);
   Report.RunReport;
@@ -2784,6 +2783,7 @@ end;
 
 procedure TTestCustomReport.TestEndReportEvent;
 begin
+  TMyFPReportPage.Create(Report); // add at least one page
   Report.OnEndReport := @HandleOnEndReport;
   AssertEquals('Failed on 1', 0, FEndReportCount);
   Report.RunReport;
@@ -2814,9 +2814,10 @@ begin
   AssertEquals('Failed on 3', 0, TMyFPReportPage(Report.Pages[2]).FPrepareObjectsCalled);
 
   Report.RunReport;
-  AssertEquals('Failed on 4', 1, TMyFPReportPage(Report.Pages[0]).FPrepareObjectsCalled);
-  AssertEquals('Failed on 5', 1, TMyFPReportPage(Report.Pages[1]).FPrepareObjectsCalled);
-  AssertEquals('Failed on 6', 1, TMyFPReportPage(Report.Pages[2]).FPrepareObjectsCalled);
+  // due to Re-interpret of Page.Data, page is prepared per record (r38906)
+  AssertEquals('Failed on 4', 2, TMyFPReportPage(Report.Pages[0]).FPrepareObjectsCalled);
+  AssertEquals('Failed on 5', 2, TMyFPReportPage(Report.Pages[1]).FPrepareObjectsCalled);
+  AssertEquals('Failed on 6', 2, TMyFPReportPage(Report.Pages[2]).FPrepareObjectsCalled);
 end;
 
 procedure TTestCustomReport.TestBandPrepareObjects;
@@ -2870,7 +2871,8 @@ begin
   AssertEquals('Failed on 1', 0, Report.RTObjects.Count);
 
   Report.RunReport;
-  AssertEquals('Failed on 2', 3, Report.RTObjects.Count);
+  // due to Re-interpret of Page.Data, page is prepared per record (r38906)
+  AssertEquals('Failed on 2', 6, Report.RTObjects.Count);
 end;
 
 procedure TTestCustomReport.TestRTObjects2;
@@ -2895,7 +2897,8 @@ begin
 
   AssertEquals('Failed on 1', 0, Report.RTObjects.Count);
   Report.RunReport;
-  AssertEquals('Failed on 2', 1, Report.RTObjects.Count); // runtime objects adhere to same hierarchy as design time
+  // due to Re-interpret of Page.Data, page is prepared per record (r38906)
+  AssertEquals('Failed on 2', 2, Report.RTObjects.Count); // runtime objects adhere to same hierarchy as design time
   AssertEquals('Failed on 3', 'TFPReportCustomPage', TObject(Report.RTObjects[0]).ClassName);
   rtPage := TFPReportCustomPage(Report.RTObjects[0]);
   AssertEquals('Failed on 4', 1, rtPage.ChildCount);
@@ -3104,7 +3107,7 @@ begin
   Memo := TFPReportMemo.Create(DataBand);
   Memo.Layout.Top := 5;
   Memo.Layout.Left := 10;
-  Memo.Text := '[recno]';
+  Memo.Text := '[recno('''')]';
 
   AssertEquals('Failed on 1', 0, Report.RTObjects.Count);
   Report.RunReport;
@@ -3404,6 +3407,7 @@ begin
   FMemo.UseParentFont := False;
   FMemo.Font.Name := 'Calibri';
   FMemo.StretchMode := smActualHeight;
+  FMemo.WordOverflow := woOverflow;
   TMemoFriend(FMemo).CreateRTLayout;
   TMemoFriend(FMemo).RecalcLayout;
   AssertEquals('Failed on 2', 2, FMemo.TextLines.Count);
@@ -3438,7 +3442,7 @@ begin
   FMemo.UseParentFont := False;
   FMemo.Font.Name := 'Calibri';
   FMemo.StretchMode := smActualHeight;
-  TMemoFriend(FMemo).WordWrapOverflow:=wwoOverflow;
+  TMemoFriend(FMemo).WordOverflow:=woOverflow;
   TMemoFriend(FMemo).CreateRTLayout;
   TMemoFriend(FMemo).RecalcLayout;
   AssertEquals('Failed on 1', 1, FMemo.TextLines.Count);
@@ -3456,7 +3460,7 @@ begin
   FMemo.UseParentFont := False;
   FMemo.Font.Name := 'Calibri';
   FMemo.StretchMode := smActualHeight;
-  TMemoFriend(FMemo).WordWrapOverflow:=wwoSplit;
+  TMemoFriend(FMemo).WordOverflow:=woSplit;
   TMemoFriend(FMemo).CreateRTLayout;
   TMemoFriend(FMemo).RecalcLayout;
   AssertEquals('Failed on 1', 2, FMemo.TextLines.Count);

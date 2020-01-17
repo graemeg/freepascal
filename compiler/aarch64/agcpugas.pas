@@ -120,7 +120,9 @@ unit agcpugas;
                   else
                     result:=linux_addrpage2str[ref.refaddr]+ref.symbol.name
                 end;
-              addr_pic:
+              addr_pic,
+              { for locals replaced by temp symbols on LLVM }
+              addr_no:
                 result:=ref.symbol.name;
               else
                 internalerror(2015022302);

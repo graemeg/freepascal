@@ -28,10 +28,13 @@ Interface
 
 {$i fpcdefs.inc}
 
-uses cpubase, aoptobj, aoptcpub, aopt, aasmtai,aasmdata, aasmcpu;
+uses
+  cpubase,
+  aoptobj, aoptcpub, aopt, aoptcpurv,
+  aasmtai,aasmdata, aasmcpu;
 
 Type
-  TCpuAsmOptimizer = class(TAsmOptimizer)
+  TCpuAsmOptimizer = class(TRVCpuAsmOptimizer)
     { uses the same constructor as TAopObj }
     function PeepHoleOptPass1Cpu(var p: tai): boolean; override;
 
@@ -49,7 +52,10 @@ Implementation
       next1, next2: tai;
       l1, l2, shlcount: longint;
     begin
-      result := false;
+      result := inherited PeepHoleOptPass1Cpu(p);
+      if result then
+        exit;
+
       case p.typ of
         ait_instruction:
           begin
@@ -66,7 +72,10 @@ Implementation
     var
       next1: tai;
     begin
-      result := false;
+      result := inherited PostPeepHoleOptsCpu(p);
+      if result then
+        exit;
+
       case p.typ of
         ait_instruction:
           begin

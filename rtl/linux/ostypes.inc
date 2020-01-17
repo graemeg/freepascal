@@ -292,9 +292,19 @@ CONST
 {$endif not (cpusparc or cpusparc64)}
 
     AT_FDCWD = -100;
+    AT_SYMLINK_NOFOLLOW = $100;
     AT_REMOVEDIR = $200;
+    AT_SYMLINK_FOLLOW = $400;
+    AT_NO_AUTOMOUNT = $800;
+    AT_EMPTY_PATH = $1000;
+    AT_STATX_SYNC_TYPE = $6000;
+    AT_STATX_SYNC_AS_STAT = $0000;
+    AT_STATX_FORCE_SYNC = $2000;
+    AT_STATX_DONT_SYNC = $4000;
+    AT_RECURSIVE = $8000;
+
+    { SIGCHLD or CLONE_CHILD_CLEARTID or CLONE_CHILD_SETTID }
     clone_flags_fork = $01200011;
-      { SIGCHLD | CLONE_CHILD_CLEARTID | CLONE_CHILD_SETTID }
 
 {$if defined(cpuarm) or defined(cpualpha) or defined(cpublackfin) or defined(cpum68k) or defined(aarch64) or defined(riscv32) or defined(riscv64)}
     O_LARGEFILE =   $20000;
@@ -338,6 +348,9 @@ CONST
   S_IFREG = 32768; { regular }
   S_IFLNK = 40960; { symbolic link }
   S_IFSOCK= 49152; { socket }
+  S_ISUID = &4000;
+  S_ISGID = &2000;
+  S_ISVTX = &1000;
 
   { Constansts for MMAP }
  {$IFDEF FPC_IS_SYSTEM}

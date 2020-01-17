@@ -27,6 +27,7 @@ function ExtractFileExt(const FileName: PathStr): PathStr;
 function ExtractFileDir(Const FileName : PathStr): PathStr;
 function ExtractShortPathName(Const FileName : PathStr) : PathStr;
 function ExpandFileName (Const FileName : PathStr): PathStr;
+function ExpandFileName (Const FileName, BasePath : PathStr): PathStr;
 function ExpandFileNameCase (const FileName: PathStr; out MatchFound: TFilenameCaseMatch): PathStr;
 function ExpandUNCFileName (Const FileName : PathStr): PathStr;
 function ExtractRelativePath (Const BaseName,DestName : PathStr): PathStr;

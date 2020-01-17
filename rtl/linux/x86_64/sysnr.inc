@@ -389,3 +389,19 @@ const
   syscall_nr_pkey_mprotect      = 329;
   syscall_nr_pkey_alloc         = 330;
   syscall_nr_pkey_free          = 331;
+  syscall_nr_statx                        = 332;
+  syscall_nr_io_pgetevents                = 333;
+  syscall_nr_rseq                         = 334;
+  syscall_nr_pidfd_send_signal            = 424;
+  syscall_nr_io_uring_setup               = 425;
+  syscall_nr_io_uring_enter               = 426;
+  syscall_nr_io_uring_register            = 427;
+  syscall_nr_open_tree                    = 428;
+  syscall_nr_move_mount                   = 429;
+  syscall_nr_fsopen                       = 430;
+  syscall_nr_fsconfig                     = 431;
+  syscall_nr_fsmount                      = 432;
+  syscall_nr_fspick                       = 433;
+  syscall_nr_pidfd_open                   = 434;
+  syscall_nr_clone3                       = 435;
+

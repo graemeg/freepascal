@@ -925,7 +925,7 @@ var
   i:integer;
   ColNameLength,TypeNameLength,DataType,DecimalDigits,Nullable:SQLSMALLINT;
   ColumnSize:SQLULEN;
-  ColName,TypeName:string;
+  ColName,TypeName:RawByteString;
   FieldType:TFieldType;
   FieldSize:word;
   AutoIncAttr, FixedPrecScale, Unsigned, Updatable: SQLLEN;
@@ -974,6 +974,9 @@ begin
         SQL_HANDLE_STMT, ODBCCursor.FSTMTHandle, 'Could not get column name for column %d.',[i]
       );
     end;
+    // ColName is received in ANSI - convert to DefaultSystemCodePage
+    SetCodePage(ColName, CodePage, False);
+    SetCodePage(ColName, DefaultSystemCodePage, True);
 
     // convert type
     // NOTE: I made some guesses here after I found only limited information about TFieldType; please report any problems
@@ -1127,6 +1130,9 @@ begin
           SQL_HANDLE_STMT, ODBCCursor.FSTMTHandle, 'Could not get datasource dependent type name for column %s.',[ColName]
         );
       end;
+      // TypeName is received in ANSI - convert to DefaultSystemCodePage
+      SetCodePage(TypeName, CodePage, False);
+      SetCodePage(TypeName, DefaultSystemCodePage, True);
 
       DatabaseErrorFmt('Column %s has an unknown or unsupported column type. Datasource dependent type name: %s. ODBC SQL data type code: %d.', [ColName, TypeName, DataType]);
     end;

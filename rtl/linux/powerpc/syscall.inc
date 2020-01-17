@@ -3,6 +3,8 @@
     Copyright (c) 1999-2000 by Michael Van Canneyt,
     member of the Free Pascal development team.
 
+    Syscall implementation for Linux powerpc 
+
     See the file COPYING.FPC, included in this distribution,
     for details about the copyright.
 

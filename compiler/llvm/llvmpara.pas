@@ -127,6 +127,12 @@ unit llvmpara;
               if not(paraloc^.loc in [LOC_REGISTER,LOC_FPUREGISTER,LOC_MMREGISTER]) then
                 internalerror(2019011902);
               reducetosingleregparaloc(paraloc,hp.paraloc[side].def,paraloc^.register);
+            end
+          else if paraloc^.def=llvm_metadatatype then
+            begin
+              paraloc^.Loc:=LOC_REGISTER;
+              // will be overwritten with a "register" whose superregister is an index in the LLVM metadata table
+              paraloc^.register:=NR_INVALID;
             end;
         end;
     end;

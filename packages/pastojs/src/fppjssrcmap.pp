@@ -44,6 +44,7 @@ type
 
   TPas2JSMapper = class(TBufferWriter)
   private
+    FPCUExt: string;
     FDestFileName: String;
     FSrcMap: TPas2JSSrcMap;
     procedure SetSrcMap(const AValue: TPas2JSSrcMap);
@@ -52,16 +53,19 @@ type
     FGeneratedStartLine: integer; // first line where CurElement was set or a line was written
     // last valid CurElement position
     FSrcFilename: String;
+    FSrcIsBinary: boolean;
     FSrcLine: integer;
     FSrcColumn: integer;
     procedure SetCurElement(const AValue: TJSElement); override;
+    procedure SetSrcFilename(Value: string); virtual;
     procedure Writing; override;
   public
     property SrcMap: TPas2JSSrcMap read FSrcMap write SetSrcMap;
     destructor Destroy; override;
     procedure WriteFile(Src, Filename: string);
     // Final destination filename. Usually unit, unless combining javascript in single file.
-    Property DestFileName : String Read FDestFileName Write FDestFileName;
+    property DestFileName : String read FDestFileName Write FDestFileName;
+    property PCUExt: string read FPCUExt write FPCUExt;
   end;
 
 implementation
@@ -97,6 +101,7 @@ end;
 procedure TPas2JSMapper.SetCurElement(const AValue: TJSElement);
 var
   C: TClass;
+  NewSrcFilename: String;
 begin
   {$IFDEF VerboseSrcMap}
   system.write('TPas2JSMapper.SetCurElement ',CurLine,',',CurColumn);
@@ -112,20 +117,31 @@ begin
       or (C=TJSEmptyStatement) then
     exit; // do not switch position on brackets
 
-  if (AValue<>nil) and (AValue.Source<>'') then
+  if (AValue<>nil) then
     begin
-    if (FSrcFilename<>AValue.Source)
-        or (FSrcLine<>AValue.Line)
-        or (FSrcColumn<>AValue.Column) then
+    NewSrcFilename:=AValue.Source;
+    if NewSrcFilename<>'' then
       begin
-      FNeedMapping:=true;
-      FSrcFilename:=AValue.Source;
-      FSrcLine:=AValue.Line;
-      FSrcColumn:=AValue.Column;
+      if (FSrcFilename<>NewSrcFilename)
+          or (FSrcLine<>AValue.Line)
+          or (FSrcColumn<>AValue.Column) then
+        begin
+        FNeedMapping:=true;
+        SetSrcFilename(NewSrcFilename);
+        FSrcLine:=AValue.Line;
+        FSrcColumn:=AValue.Column;
+        end;
       end;
     end;
   if FGeneratedStartLine<1 then
     FGeneratedStartLine:=CurLine;
+end;
+
+procedure TPas2JSMapper.SetSrcFilename(Value: string);
+begin
+  if FSrcFilename=Value then exit;
+  FSrcFilename:=Value;
+  FSrcIsBinary:=SameText(ExtractFileExt(Value),FPCUExt);
 end;
 
 procedure TPas2JSMapper.Writing;
@@ -144,15 +160,22 @@ begin
   if FSrcFilename='' then
     exit; // built-in element -> do not add a mapping
 
-  CurSrcFilename:=FSrcFilename;
-  CurSrcLine:=FSrcLine;
-  CurSrcColumn:=FSrcColumn;
-  //system.writeln('TPas2JSMapper.Writing ',FSrcFilename);
-  if ExtractFileExt(CurSrcFilename)='.pju' then
+  if FSrcIsBinary then
     begin
     // precompiled js -> map to js
-    exit;
+    CurSrcFilename:=DestFileName;
+    CurSrcLine:=CurLine;
+    CurSrcColumn:=CurColumn;
+    FSrcLine:=CurLine;
+    FSrcColumn:=1;
+    end
+  else
+    begin
+    CurSrcFilename:=FSrcFilename;
+    CurSrcLine:=FSrcLine;
+    CurSrcColumn:=FSrcColumn;
     end;
+  //system.writeln('TPas2JSMapper.Writing ',FSrcFilename);
 
   FNeedMapping:=false;
   //system.writeln('TPas2JSMapper.Writing Generated.Line=',CurLine,',Col=',CurColumn-1,
@@ -201,7 +224,7 @@ var
   l, p, LineStart: integer;
 begin
   if Src='' then exit;
-  FSrcFilename:=Filename;
+  SetSrcFilename(Filename);
   FSrcLine:=1;
   FSrcColumn:=1;
   l:=length(Src);

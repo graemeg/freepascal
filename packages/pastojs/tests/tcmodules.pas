@@ -8028,38 +8028,40 @@ end;
 procedure TTestModule.TestTryExcept;
 begin
   StartProgram(false);
-  Add('type');
-  Add('  TObject = class end;');
-  Add('  Exception = class Msg: string; end;');
-  Add('  EInvalidCast = class(Exception) end;');
-  Add('var vI: longint;');
-  Add('begin');
-  Add('  try');
-  Add('    vi:=1;');
-  Add('  except');
-  Add('    vi:=2');
-  Add('  end;');
-  Add('  try');
-  Add('    vi:=3;');
-  Add('  except');
-  Add('    raise;');
-  Add('  end;');
-  Add('  try');
-  Add('    VI:=4;');
-  Add('  except');
-  Add('    on einvalidcast do');
-  Add('      raise;');
-  Add('    on E: exception do');
-  Add('      if e.msg='''' then');
-  Add('        raise e;');
-  Add('    else');
-  Add('      vi:=5');
-  Add('  end;');
-  Add('  try');
-  Add('    VI:=6;');
-  Add('  except');
-  Add('    on einvalidcast do ;');
-  Add('  end;');
+  Add([
+  'type',
+  '  TObject = class end;',
+  '  Exception = class Msg: string; end;',
+  '  EInvalidCast = class(Exception) end;',
+  'var vI: longint;',
+  'begin',
+  '  try',
+  '    vi:=1;',
+  '  except',
+  '    vi:=2',
+  '  end;',
+  '  try',
+  '    vi:=3;',
+  '  except',
+  '    raise;',
+  '  end;',
+  '  try',
+  '    VI:=4;',
+  '  except',
+  '    on einvalidcast do',
+  '      raise;',
+  '    on E: exception do',
+  '      if e.msg='''' then',
+  '        raise e;',
+  '    else',
+  '      vi:=5',
+  '  end;',
+  '  try',
+  '    VI:=6;',
+  '  except',
+  '    on einvalidcast do ;',
+  '  end;',
+  '']);
   ConvertProgram;
   CheckSource('TestTryExcept',
     LinesToStr([ // statements

@@ -36,7 +36,7 @@ unit opttail;
       globtype,
       symconst,symsym,
       defcmp,defutil,
-      nutils,nbas,nflw,ncal,nld,ncnv,
+      nutils,nbas,nflw,ncal,nld,ncnv,nmem,
       pass_1,
       paramgr;
 
@@ -120,20 +120,36 @@ unit opttail;
                     paranode:=tcallparanode(usedcallnode.left);
                     while assigned(paranode) do
                       begin
-                        tempnode:=ctempcreatenode.create(paranode.left.resultdef,paranode.left.resultdef.size,tt_persistent,true);
-                        addstatement(calcstatements,tempnode);
-                        addstatement(calcstatements,
-                          cassignmentnode.create(
-                            ctemprefnode.create(tempnode),
-                            paranode.left
-                            ));
+                        if paranode.parasym.varspez=vs_var then
+                          begin
+                            tempnode:=ctempcreatenode.create(voidcodepointertype,voidcodepointertype.size,tt_persistent,true);
+                            addstatement(calcstatements,tempnode);
+                            addstatement(calcstatements,
+                              cassignmentnode.create(
+                                ctemprefnode.create(tempnode),
+                                caddrnode.create_internal(paranode.left)
+                                ));
+                          end
+                        else
+                          begin
+                            tempnode:=ctempcreatenode.create(paranode.left.resultdef,paranode.left.resultdef.size,tt_persistent,true);
+                            addstatement(calcstatements,tempnode);
+                            addstatement(calcstatements,
+                              cassignmentnode.create_internal(
+                                ctemprefnode.create(tempnode),
+                                paranode.left
+                                ));
+                          end;
 
                         { "cast" away const varspezs }
                         loadnode:=cloadnode.create(paranode.parasym,paranode.parasym.owner);
                         include(tloadnode(loadnode).loadnodeflags,loadnf_isinternal_ignoreconst);
 
+                        { load the address of the symbol instead of symbol }
+                        if paranode.parasym.varspez=vs_var then
+                          include(tloadnode(loadnode).loadnodeflags,loadnf_load_addr);
                         addstatement(copystatements,
-                          cassignmentnode.create(
+                          cassignmentnode.create_internal(
                             loadnode,
                             ctemprefnode.create(tempnode)
                             ));
@@ -190,7 +206,7 @@ unit opttail;
         { check if the parameters actually would support tail recursion elimination }
         for i:=0 to p.paras.count-1 do
           with tparavarsym(p.paras[i]) do
-            if (varspez in [vs_out,vs_var,vs_constref]) or
+            if (varspez in [vs_out,{vs_var,}vs_constref]) or
               ((varspez=vs_const) and
                (paramanager.push_addr_param(varspez,vardef,p.proccalloption)) or
                { parameters requiring tables are too complicated to handle

@@ -29,8 +29,17 @@ interface
 uses
   BaseUnix, unixtype;
 
-Const
+const
   O_CLOEXEC = $80000;
+
+type
+  { used by newer Linux headers }
+  __u16 = Word;
+  __s16 = Smallint;
+  __u32 = DWord;
+  __s32 = Longint;
+  __u64 = QWord;
+  __s64 = Int64;
   
 type
   TSysInfo = record
@@ -472,6 +481,64 @@ function clock_settime(clk_id : clockid_t; tp : ptimespec) : cint; {$ifdef FPC_U
 function setregid(rgid,egid : uid_t): cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'setregid'; {$ENDIF} 
 function setreuid(ruid,euid : uid_t): cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'setreuid'; {$ENDIF} 
 
+Const
+  STATX_TYPE = $00000001;
+  STATX_MODE = $00000002;
+  STATX_NLINK = $00000004;
+  STATX_UID = $00000008;
+  STATX_GID = $00000010;
+  STATX_ATIME = $00000020;
+  STATX_MTIME = $00000040;
+  STATX_CTIME = $00000080;
+  STATX_INO = $00000100;
+  STATX_SIZE = $00000200;
+  STATX_BLOCKS = $00000400;
+  STATX_BASIC_STATS = $000007ff;
+  STATX_BTIME = $00000800;
+  STATX_ALL = $00000fff;
+  STATX__RESERVED = $80000000;
+  STATX_ATTR_COMPRESSED = $00000004;
+  STATX_ATTR_IMMUTABLE = $00000010;
+  STATX_ATTR_APPEND = $00000020;
+  STATX_ATTR_NODUMP = $00000040;
+  STATX_ATTR_ENCRYPTED = $00000800;
+  STATX_ATTR_AUTOMOUNT = $00001000;
+
+Type
+  statx_timestamp = record
+    tv_sec : __s64;
+    tv_nsec : __u32;
+    __reserved : __s32;
+  end;
+  pstatx_timestamp = ^statx_timestamp;
+
+  statx = record
+    stx_mask : __u32;
+    stx_blksize : __u32;
+    stx_attributes : __u64;
+    stx_nlink : __u32;
+    stx_uid : __u32;
+    stx_gid : __u32;
+    stx_mode : __u16;
+    __spare0 : array[0..0] of __u16;
+    stx_ino : __u64;
+    stx_size : __u64;
+    stx_blocks : __u64;
+    stx_attributes_mask : __u64;
+    stx_atime : statx_timestamp;
+    stx_btime : statx_timestamp;
+    stx_ctime : statx_timestamp;
+    stx_mtime : statx_timestamp;
+    stx_rdev_major : __u32;
+    stx_rdev_minor : __u32;
+    stx_dev_major : __u32;
+    stx_dev_minor : __u32;
+    __spare2 : array[0..13] of __u64;
+  end;
+  pstatx = ^statx;
+
+  function Fpstatx(dfd: cint; filename: pchar; flags,mask: cuint; var buf: statx):cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'statx'; {$ENDIF}
+
 implementation
 
 
@@ -770,5 +837,12 @@ begin
   setreuid:=do_syscall(syscall_nr_setreuid,ruid,euid);
 end;
 
+
+function Fpstatx(dfd: cint; filename: pchar; flags,mask: cuint; var buf: statx):cint;
+begin
+  Fpstatx:=do_syscall(syscall_nr_statx,TSysParam(dfd),TSysParam(filename),TSysParam(flags),TSysParam(mask),TSysParam(@buf));
+end;
+
 {$endif}
+
 end.

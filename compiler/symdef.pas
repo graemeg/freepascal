@@ -1233,6 +1233,15 @@ interface
        { FPC java procvar base class }
        java_procvarbase          : tobjectdef;
 
+       { x86 vector types }
+       x86_m64type,
+       x86_m128type,
+       x86_m128dtype,
+       x86_m128itype,
+       x86_m256type,
+       x86_m256dtype,
+       x86_m256itype             : tdef;
+
 
     function make_mangledname(const typeprefix:TSymStr;st:TSymtable;const suffix:TSymStr):TSymStr;
     function make_dllmangledname(const dllname,importname:TSymStr;
@@ -6015,6 +6024,8 @@ implementation
          import_nr:=0;
          inlininginfo:=nil;
          deprecatedmsg:=nil;
+         if cs_opt_fastmath in current_settings.optimizerswitches then
+           include(implprocoptions, pio_fastmath);
       end;
 
 

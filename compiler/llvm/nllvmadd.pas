@@ -47,20 +47,77 @@ interface
 implementation
 
      uses
-       verbose,globtype,
+       verbose,globtype,globals,cutils,
        aasmdata,
        symconst,symtype,symdef,defutil,
-       llvmbase,aasmllvm,
-       cgbase,cgutils,
+       llvmbase,aasmllvm,aasmllvmmetadata,
+       cgbase,cgutils,pass_1,
        hlcgobj,
-       nadd
+       nadd,ncal,ncnv,ncon
        ;
 
 { tllvmaddnode }
 
   function tllvmaddnode.pass_1: tnode;
+    var
+      exceptmode: ansistring;
+      intrname: string;
+      iscompcurrency: boolean;
     begin
       result:=inherited pass_1;
+      if not assigned(result) and
+         is_fpu(left.resultdef) and
+         not(cs_opt_fastmath in current_settings.optimizerswitches) then
+        begin
+          case nodetype of
+            addn:
+              begin
+                intrname:='LLVM_EXPERIMENTAL_CONSTRAINED_FADD';
+              end;
+            subn:
+              begin
+                intrname:='LLVM_EXPERIMENTAL_CONSTRAINED_FSUB';
+              end;
+            muln:
+              begin
+                intrname:='LLVM_EXPERIMENTAL_CONSTRAINED_FMUL';
+              end;
+            slashn:
+              begin
+                intrname:='LLVM_EXPERIMENTAL_CONSTRAINED_FDIV';
+              end;
+            else
+              begin
+                intrname:='';
+              end;
+          end;
+          if intrname<>'' then
+            begin
+              iscompcurrency:=tfloatdef(left.resultdef).floattype in [s64currency,s64comp];
+              if iscompcurrency then
+                begin
+                  inserttypeconv_internal(left,s80floattype);
+                  inserttypeconv_internal(right,s80floattype);
+                end;
+              exceptmode:=llvm_constrainedexceptmodestring;
+              result:=ccallnode.createintern(intrname,
+                ccallparanode.create(cstringconstnode.createpchar(ansistring2pchar(exceptmode),length(exceptmode),llvm_metadatatype),
+                  ccallparanode.create(cstringconstnode.createpchar(ansistring2pchar('round.dynamic'),length('round.dynamic'),llvm_metadatatype),
+                    ccallparanode.create(right,
+                      ccallparanode.create(left,nil)
+                    )
+                  )
+                )
+              );
+              if iscompcurrency then
+                begin
+                  result:=ctypeconvnode.create_internal(result,resultdef);
+                end;
+              left:=nil;
+              right:=nil;
+              exit;
+            end;
+        end;
       { there are no flags in LLVM }
       if expectloc=LOC_FLAGS then
         expectloc:=LOC_REGISTER;
@@ -225,50 +282,9 @@ implementation
       tmpreg: tregister;
       op    : tllvmop;
       llvmfpcmp : tllvmfpcmp;
-      size : tdef;
-      cmpop,
-      singleprec : boolean;
+      size  : tdef;
     begin
       pass_left_right;
-
-      cmpop:=false;
-      singleprec:=tfloatdef(left.resultdef).floattype=s32real;
-      { avoid uninitialised warning }
-      llvmfpcmp:=lfc_invalid;
-      case nodetype of
-        addn :
-          op:=la_fadd;
-        muln :
-          op:=la_fmul;
-        subn :
-          op:=la_fsub;
-        slashn :
-          op:=la_fdiv;
-        ltn,lten,gtn,gten,
-        equaln,unequaln :
-          begin
-            op:=la_fcmp;
-            cmpop:=true;
-            case nodetype of
-              ltn:
-                llvmfpcmp:=lfc_olt;
-              lten:
-                llvmfpcmp:=lfc_ole;
-              gtn:
-                llvmfpcmp:=lfc_ogt;
-              gten:
-                llvmfpcmp:=lfc_oge;
-              equaln:
-                llvmfpcmp:=lfc_oeq;
-              unequaln:
-                llvmfpcmp:=lfc_une;
-              else
-                internalerror(2015031506);
-            end;
-          end;
-        else
-          internalerror(2013102401);
-      end;
 
       { get the operands in the correct order; there are no special cases here,
         everything is register-based }
@@ -279,37 +295,58 @@ implementation
       hlcg.location_force_fpureg(current_asmdata.CurrAsmList,right.location,right.resultdef,true);
       hlcg.location_force_fpureg(current_asmdata.CurrAsmList,left.location,left.resultdef,true);
 
-      { initialize the result location }
-      if not cmpop then
-        begin
-          location_reset(location,LOC_FPUREGISTER,def_cgsize(resultdef));
-          location.register:=hlcg.getfpuregister(current_asmdata.CurrAsmList,resultdef);
-        end
-      else
-        begin
-          location_reset(location,LOC_REGISTER,OS_8);
-          location.register:=hlcg.getintregister(current_asmdata.CurrAsmList,llvmbool1type);
-        end;
-
       { see comment in thlcgllvm.a_loadfpu_ref_reg }
       if tfloatdef(left.resultdef).floattype in [s64comp,s64currency] then
         size:=sc80floattype
       else
         size:=left.resultdef;
 
-      { emit the actual operation }
-      if not cmpop then
+      if nodetype in [ltn,lten,gtn,gten,equaln,unequaln] then
         begin
-          current_asmdata.CurrAsmList.concat(taillvm.op_reg_size_reg_reg(op,location.register,size,
-            left.location.register,right.location.register))
-        end
-      else
-        begin
-          current_asmdata.CurrAsmList.concat(taillvm.op_reg_fpcond_size_reg_reg(op,
+          case nodetype of
+            ltn:
+              llvmfpcmp:=lfc_olt;
+            lten:
+              llvmfpcmp:=lfc_ole;
+            gtn:
+              llvmfpcmp:=lfc_ogt;
+            gten:
+              llvmfpcmp:=lfc_oge;
+            equaln:
+              llvmfpcmp:=lfc_oeq;
+            unequaln:
+              llvmfpcmp:=lfc_une;
+            else
+              internalerror(2015031506);
+          end;
+          location_reset(location,LOC_REGISTER,OS_8);
+          location.register:=hlcg.getintregister(current_asmdata.CurrAsmList,llvmbool1type);
+
+          current_asmdata.CurrAsmList.concat(taillvm.op_reg_fpcond_size_reg_reg(la_fcmp ,
             location.register,llvmfpcmp,size,left.location.register,right.location.register));
           tmpreg:=hlcg.getintregister(current_asmdata.CurrAsmList,resultdef);
           hlcg.a_load_reg_reg(current_asmdata.CurrAsmList,llvmbool1type,resultdef,location.register,tmpreg);
           location.register:=tmpreg;
+        end
+      else
+        begin
+          case nodetype of
+            addn :
+              op:=la_fadd;
+            muln :
+              op:=la_fmul;
+            subn :
+              op:=la_fsub;
+            slashn :
+              op:=la_fdiv;
+            else
+              internalerror(2013102401);
+          end;
+          location_reset(location,LOC_FPUREGISTER,def_cgsize(resultdef));
+          location.register:=hlcg.getfpuregister(current_asmdata.CurrAsmList,resultdef);
+
+          current_asmdata.CurrAsmList.concat(taillvm.op_reg_size_reg_reg(op,location.register,size,
+            left.location.register,right.location.register))
         end;
     end;
 

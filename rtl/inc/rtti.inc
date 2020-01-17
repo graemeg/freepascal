@@ -262,8 +262,10 @@ begin
         recordrtti(data,typeinfo,@int_finalize);
       end;
 {$endif VER3_0}
+{$ifdef FPC_HAS_FEATURE_CLASSES}
     tkInterface:
       Intf_Decr_Ref(PPointer(Data)^);
+{$endif FPC_HAS_FEATURE_CLASSES}
 {$ifdef FPC_HAS_FEATURE_DYNARRAYS}
     tkDynArray:
       fpc_dynarray_clear(PPointer(Data)^,TypeInfo);
@@ -315,8 +317,10 @@ begin
     tkDynArray:
       fpc_dynarray_incr_ref(PPointer(Data)^);
 {$endif FPC_HAS_FEATURE_DYNARRAYS}
+{$ifdef FPC_HAS_FEATURE_CLASSES}
     tkInterface:
       Intf_Incr_Ref(PPointer(Data)^);
+{$endif FPC_HAS_FEATURE_CLASSES}
 {$ifdef FPC_HAS_FEATURE_VARIANTS}
     tkVariant:
       variant_addref(pvardata(Data)^);
@@ -434,8 +438,10 @@ begin
     tkDynArray:
       fpc_dynarray_assign(PPointer(Dest)^,PPointer(Src)^,typeinfo);
 {$endif FPC_HAS_FEATURE_DYNARRAYS}
+{$ifdef FPC_HAS_FEATURE_CLASSES}
     tkInterface:
       fpc_intf_assign(PPointer(Dest)^,PPointer(Src)^);
+{$endif FPC_HAS_FEATURE_CLASSES}
 {$ifdef FPC_HAS_FEATURE_VARIANTS}
     tkVariant:
       begin

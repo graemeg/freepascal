@@ -292,6 +292,7 @@ unit cpupara;
          if not assigned(result.location) or
             not(result.location^.loc in [LOC_REGISTER,LOC_MMREGISTER,LOC_VOID]) then
            internalerror(2014113001);
+{$ifndef llvm}
          {
            According to ARM64 ABI: "If the size of the argument is less than 8 bytes then
            the size of the argument is set to 8 bytes. The effect is as if the argument
@@ -310,6 +311,7 @@ unit cpupara;
              result.location^.size:=OS_64;
              result.location^.def:=u64inttype;
            end;
+{$endif}
       end;
 
 
@@ -374,7 +376,7 @@ unit cpupara;
             else
               paralen:=tcgsize2size[def_cgsize(paradef)];
             loc:=getparaloc(p.proccalloption,paradef);
-            if (paradef.typ in [objectdef,arraydef,recorddef]) and
+            if (paradef.typ in [objectdef,arraydef,recorddef,setdef]) and
                not is_special_array(paradef) and
                (varspez in [vs_value,vs_const]) then
               paracgsize:=int_cgsize(paralen)
@@ -486,47 +488,45 @@ unit cpupara;
              end
            else
              begin
-{$ifndef llvm}
                paraloc^.size:=locsize;
                paraloc^.def:=locdef;
-{$else llvm}
-               case locsize of
-                 OS_8,OS_16,OS_32:
-                   begin
-                     paraloc^.size:=OS_64;
-                     paraloc^.def:=u64inttype;
-                   end;
-                 OS_S8,OS_S16,OS_S32:
-                   begin
-                     paraloc^.size:=OS_S64;
-                     paraloc^.def:=s64inttype;
-                   end;
-                 OS_F32:
-                   begin
-                     paraloc^.size:=OS_F32;
-                     paraloc^.def:=s32floattype;
-                   end;
-                 OS_F64:
-                   begin
-                     paraloc^.size:=OS_F64;
-                     paraloc^.def:=s64floattype;
-                   end;
-                 else
-                   begin
-                     if is_record(locdef) or
-                        ((locdef.typ=arraydef) and
-                         not is_special_array(locdef)) then
+{$ifdef llvm}
+               if not is_ordinal(paradef) then
+                 begin
+                   case locsize of
+                     OS_8,OS_16,OS_32:
                        begin
                          paraloc^.size:=OS_64;
                          paraloc^.def:=u64inttype;
-                       end
+                       end;
+                     OS_S8,OS_S16,OS_S32:
+                       begin
+                         paraloc^.size:=OS_S64;
+                         paraloc^.def:=s64inttype;
+                       end;
+                     OS_F32:
+                       begin
+                         paraloc^.size:=OS_F32;
+                         paraloc^.def:=s32floattype;
+                       end;
+                     OS_F64:
+                       begin
+                         paraloc^.size:=OS_F64;
+                         paraloc^.def:=s64floattype;
+                       end;
                      else
                        begin
-                         paraloc^.size:=locsize;
-                         paraloc^.def:=locdef;
+                         if is_record(locdef) or
+                            is_set(locdef) or
+                            ((locdef.typ=arraydef) and
+                             not is_special_array(locdef)) then
+                           begin
+                             paraloc^.size:=OS_64;
+                             paraloc^.def:=u64inttype;
+                           end
                        end;
                    end;
-               end;
+                 end;
 {$endif llvm}
              end;
 
@@ -559,6 +559,7 @@ unit cpupara;
                              paraloc^.def:=u32inttype;
                            end;
                        end
+{$ifndef llvm}
                      else
                        begin
                          if side=calleeside then
@@ -567,6 +568,7 @@ unit cpupara;
                              paraloc^.def:=u32inttype;
                            end;
                        end;
+{$endif llvm}
                    end;
 
                  { in case it's a composite, "The argument is passed as though

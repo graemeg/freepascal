@@ -2050,7 +2050,7 @@ type_w_empty_constant_range_set=04125_W_The first value of a set constructur ran
 type_e_cblock_callconv=04126_E_C block reference must use CDECL or MWPASCAL calling convention.
 % When declaring a C block reference ensure that it uses either the \var{cdecl} or \var{mwpascal}
 % calling convention either by adding the corresponding function directive or by using the
-% \var{$Calling} compiler directive.
+% \var{\{\$Calling\}} compiler directive.
 % \end{description}
 #
 # Symtable

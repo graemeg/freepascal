@@ -57,6 +57,8 @@ begin
     T:=P.Targets.AddUnit('commodities.pas');
     T:=P.Targets.AddUnit('datatypes.pas');
     T:=P.Targets.AddUnit('serial.pas');
+    T:=P.Targets.AddUnit('console.pas');
+    T:=P.Targets.AddUnit('conunit.pas');
 
 {$ifndef ALLPACKAGES}
     Run;

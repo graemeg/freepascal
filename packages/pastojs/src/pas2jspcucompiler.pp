@@ -34,7 +34,7 @@ uses
   PasTree, PScanner, PasResolveEval,
   FPPas2Js,
   Pas2jsCompiler, Pas2JSFS, Pas2JSFSCompiler, Pas2JsFiler,
-  Pas2jsLogger, Pas2jsFileUtils;
+  Pas2jsLogger, Pas2jsFileUtils, FPPJsSrcMap;
 
 Type
 
@@ -79,6 +79,7 @@ Type
   Private
     FPrecompileFormat: TPas2JSPrecompileFormat;
   Protected
+    function CreateJSMapper: TPas2JSMapper; override;
     procedure WritePrecompiledFormats; override;
     function CreateCompilerFile(const PasFileName, PCUFilename: String): TPas2jsCompilerFile; override;
     procedure HandleOptionPCUFormat(Value: string); override;
@@ -396,6 +397,13 @@ begin
 end;
 
 { TPas2jsPCUCompiler }
+
+function TPas2jsPCUCompiler.CreateJSMapper: TPas2JSMapper;
+begin
+  Result:=inherited CreateJSMapper;
+  if PrecompileFormat<>nil then
+    Result.PCUExt:='.'+PrecompileFormat.Ext;
+end;
 
 procedure TPas2jsPCUCompiler.WritePrecompiledFormats;
 Var

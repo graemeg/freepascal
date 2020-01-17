@@ -440,7 +440,9 @@ type
     { a nested routine accesses a local variable from this routine }
     pio_nested_access,
     { a stub/thunk }
-    pio_thunk
+    pio_thunk,
+    { compiled with fastmath enabled }
+    pio_fastmath
   );
   timplprocoptions = set of timplprocoption;
 

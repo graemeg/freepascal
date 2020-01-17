@@ -3215,7 +3215,8 @@ const
     (mask:pio_has_inlininginfo; str:'HasInliningInfo'),
     (mask:pio_inline_not_possible; str:'InlineNotPossible'),
     (mask:pio_nested_access; str:'NestedAccess'),
-    (mask:pio_thunk; str:'Thunk')
+    (mask:pio_thunk; str:'Thunk'),
+    (mask:pio_fastmath; str:'FastMath')
   );
 var
   i: timplprocoption;

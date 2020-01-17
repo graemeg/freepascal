@@ -18,7 +18,7 @@
 
 {$macro on}
 {$define PathStr:=UnicodeString}
-{$define PathPChar:=PWideChar}
+{$define PathPChar:=PUnicodeChar}
 {$define SYSUTILSUNICODE}
   { Read filename handling functions implementation }
   {$i fina.inc}

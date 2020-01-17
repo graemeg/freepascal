@@ -5676,7 +5676,7 @@ end;
 
 procedure TPasResolver.FinishUsesClause;
 var
-  Section, CurSection: TPasSection;
+  Section: TPasSection;
   i, j: Integer;
   PublicEl, UseModule: TPasElement;
   Scope: TPasSectionScope;
@@ -5722,25 +5722,6 @@ begin
       RaiseInternalError(20160922163403,'uses element has invalid resolver data: '
         +UseUnit.Name+'->'+GetObjName(PublicEl)+'->'+PublicEl.CustomData.ClassName);
     UsesScope:=TPasSectionScope(PublicEl.CustomData);
-
-    // check if module was already used by a different name
-    j:=i;
-    CurSection:=Section;
-    repeat
-      dec(j);
-      if j<0 then
-        begin
-        if CurSection.ClassType<>TImplementationSection then
-          break;
-        CurSection:=CurSection.GetModule.InterfaceSection;
-        if CurSection=nil then break;
-        j:=length(CurSection.UsesClause)-1;
-        if j<0 then break;
-        end;
-      if CurSection.UsesClause[j].Module=UseModule then
-        RaiseMsg(20170503004022,nDuplicateIdentifier,sDuplicateIdentifier,
-          [UseModule.Name,GetElementSourcePosStr(CurSection.UsesClause[j])],UseUnit);
-    until false;
 
     // add full uses name
     AddIdentifier(Scope,UseUnit.Name,UseUnit,pikSimple);
@@ -27934,7 +27915,8 @@ begin
   Templates:=GetProcTemplateTypes(Proc);
   if (Templates<>nil) and (Templates.Count>0) then
     exit(false);
-  if ProcScope.SpecializedFromItem=nil then exit(true);
+  if ProcScope.SpecializedFromItem=nil then
+    exit(true);
   Params:=ProcScope.SpecializedFromItem.Params;
   for i:=0 to length(Params)-1 do
     if Params[i] is TPasGenericTemplateType then exit(false);

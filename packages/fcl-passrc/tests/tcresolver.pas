@@ -370,7 +370,7 @@ type
     Procedure TestUnit_DottedUnit;
     Procedure TestUnit_DottedExpr;
     Procedure TestUnit_DuplicateDottedUsesFail;
-    Procedure TestUnit_DuplicateUsesDiffNameFail;
+    Procedure TestUnit_DuplicateUsesDiffName;
     Procedure TestUnit_Unit1DotUnit2Fail;
     Procedure TestUnit_InFilename;
     Procedure TestUnit_InFilenameAliasDelphiFail;
@@ -379,6 +379,7 @@ type
     Procedure TestUnit_UnitNotFoundErrorPos;
     Procedure TestUnit_AccessIndirectUsedUnitFail;
     Procedure TestUnit_Intf1Impl2Intf1;
+    Procedure TestUnit_Intf1Impl2Intf1_Duplicate;
 
     // procs
     Procedure TestProcParam;
@@ -2386,8 +2387,13 @@ function TCustomTestResolver.OnPasResolverFindUnit(SrcResolver: TPasResolver;
     {$ENDIF}
     CurEngine:=FindModuleWithFilename(aFilename);
     if CurEngine=nil then exit(false);
-    aModule:=InitUnit(CurEngine);
-    if aModule=nil then exit(false);
+    if CurEngine.Module=nil then
+      begin
+      aModule:=InitUnit(CurEngine);
+      if aModule=nil then exit(false);
+      end
+    else
+      aModule:=CurEngine.Module;
     OnPasResolverFindUnit:=aModule;
     Result:=true;
   end;
@@ -5924,7 +5930,7 @@ begin
     nParserDuplicateIdentifier);
 end;
 
-procedure TTestResolver.TestUnit_DuplicateUsesDiffNameFail;
+procedure TTestResolver.TestUnit_DuplicateUsesDiffName;
 begin
   MainFilename:='unitdots.main1.pas';
   AddModuleWithIntfImplSrc('unitdots.unit1.pp',
@@ -5942,8 +5948,7 @@ begin
   '  if unit1.j1=0 then ;',
   '  if unitdots.unit1.j1=0 then ;',
   '']);
-  CheckParserException('Duplicate identifier "unit1" at token ";" in file unitdots.main1.pas at line 2 column 27',
-    nParserDuplicateIdentifier);
+  ParseProgram;
 end;
 
 procedure TTestResolver.TestUnit_Unit1DotUnit2Fail;
@@ -6087,6 +6092,27 @@ begin
   Add([
   'interface',
   'uses unit1;',
+  'var i: number;',
+  'implementation']);
+  ParseUnit;
+end;
+
+procedure TTestResolver.TestUnit_Intf1Impl2Intf1_Duplicate;
+begin
+  AddModuleWithIntfImplSrc('unit1.pp',
+    LinesToStr([
+    'type number = longint;']),
+    LinesToStr([
+    'uses afile;',
+    'procedure DoIt;',
+    'begin',
+    '  i:=3;',
+    'end;']));
+
+  StartUnit(true);
+  Add([
+  'interface',
+  'uses unit1, foo in ''unit1.pp'';',
   'var i: number;',
   'implementation']);
   ParseUnit;

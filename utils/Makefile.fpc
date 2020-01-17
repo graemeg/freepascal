@@ -19,6 +19,9 @@ endif
 ifdef INSTALL_BINDIR
 FPMAKE_INSTALL_OPT+=--bininstalldir=$(INSTALL_BINDIR)
 endif
+ifdef INSTALL_LIBDIR
+FPMAKE_INSTALL_OPT+=--libinstalldir=$(INSTALL_LIBDIR)
+endif
 
 # Translate OS_TARGET and CPU_TARGET to fpmake's --os and --cpu parameters
 ifdef OS_TARGET

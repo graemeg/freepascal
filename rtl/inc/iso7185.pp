@@ -144,7 +144,7 @@ unit iso7185;
         else
           begin
             OldCtrlZMarksEof:=CtrlZMarksEOF;
-            CtrlZMarksEof:=false;
+            CtrlZMarksEof:=true;
             Eof:=System.Eof(t);
             CtrlZMarksEof:=OldCtrlZMarksEOF;
           end;

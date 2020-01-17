@@ -33,13 +33,9 @@ begin
     // here to be able to update all requirements to
     // compile fpmake from a single place
     D:=P.Dependencies.Add('hash');
-      D.Version:='3.3.1';
     D:=P.Dependencies.Add('paszlib');
-      D.Version:='3.3.1';
     D:=P.Dependencies.Add('fcl-process',AllOSes-[morphos,aros,amiga,go32v2,os2]);
-      D.Version:='3.3.1';
     D:=P.Dependencies.Add('libtar');
-      D.Version:='3.3.1';
 
     with P.Targets.AddUnit('src/fpmkunit.pp') do
       ResourceStrings:=true;

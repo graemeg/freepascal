@@ -463,6 +463,7 @@ uses
         countstr,genname,ugenname : string;
         srsym : tsym;
         st : tsymtable;
+        tmpstack : tfpobjectlist;
       begin
         context:=nil;
         result:=nil;
@@ -578,6 +579,28 @@ uses
           end
         else
           found:=searchsym(ugenname,context.sym,context.symtable);
+
+        if found and (context.sym.typ=absolutevarsym) and
+            (vo_is_funcret in tabstractvarsym(context.sym).varoptions) then
+          begin
+            { we found the function result alias of a generic function; go up the
+              symbol stack *before* this alias was inserted, so that we can
+              (hopefully) find the correct generic symbol }
+            tmpstack:=tfpobjectlist.create(false);
+            while assigned(symtablestack.top) do
+              begin
+                tmpstack.Add(symtablestack.top);
+                symtablestack.pop(symtablestack.top);
+                if tmpstack.Last=context.symtable then
+                  break;
+              end;
+            if not assigned(symtablestack.top) then
+              internalerror(2019123001);
+            found:=searchsym(ugenname,context.sym,context.symtable);
+            for i:=tmpstack.count-1 downto 0 do
+              symtablestack.push(tsymtable(tmpstack[i]));
+            tmpstack.free;
+          end;
 
         if not found or not (context.sym.typ in [typesym,procsym]) then
           begin

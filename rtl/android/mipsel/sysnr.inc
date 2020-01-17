@@ -240,6 +240,7 @@ const
   syscall_nr_copy_file_range = 4360;
   syscall_nr_preadv2 = 4361;
   syscall_nr_pwritev2 = 4362;
+  syscall_nr_statx = 4366;
 
 // The following syscalls are blocked by SECCOMP starting from Android 8.
 // Do not use them, unless you know what you are doing.

@@ -297,11 +297,16 @@ begin
   if not Assigned(Items) or (ItemCount < 2) or (ItemSize < 1) then
     exit;
   GetMem(TempBuf, ItemSize);
+{$ifdef FPC_HAS_FEATURE_EXCEPTIONS}
   try
     QuickSort(0, ItemCount - 1);
   finally
     FreeMem(TempBuf, ItemSize);
   end;
+{$else FPC_HAS_FEATURE_EXCEPTIONS}
+  QuickSort(0, ItemCount - 1);
+  FreeMem(TempBuf, ItemSize);
+{$endif FPC_HAS_FEATURE_EXCEPTIONS}
 end;
 
 procedure QuickSort_ItemList_CustomItemExchanger_Context(

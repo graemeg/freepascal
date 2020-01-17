@@ -3860,7 +3860,8 @@ implementation
                          same goes for Solaris native assembler
                          ... and riscv }
 
-                       (target_info.system in systems_darwin+[system_riscv32_linux,system_riscv64_linux]) or
+                       (target_info.system in systems_darwin+[system_riscv32_linux,system_riscv64_linux,
+                                                              system_riscv32_embedded,system_riscv64_embedded]) or
                        (target_asm.id=as_solaris_as) then
                       begin
                         asmline.concat(tai_const.create_8bit(DW_LNS_extended_op));

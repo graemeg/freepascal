@@ -130,6 +130,8 @@ type
           function  Floor   : TPoint;
           function  Round   : TPoint;
           function  Length  : Single;
+          class function Create(const ax, ay: Single): TPointF; overload; static; inline;
+          class function Create(const apt: TPoint): TPointF; overload; static; inline;
           class operator = (const apt1, apt2 : TPointF) : Boolean;
           class operator <> (const apt1, apt2 : TPointF): Boolean;
           class operator + (const apt1, apt2 : TPointF): TPointF;
@@ -662,6 +664,17 @@ begin
   x:=ax; y:=ay;
 end;
 
+class function TPointF.Create(const ax, ay: Single): TPointF;
+begin
+  Result.x := ax;
+  Result.y := ay;
+end;
+
+class function TPointF.Create(const apt: TPoint): TPointF;
+begin
+  Result.x := apt.X;
+  Result.y := apt.Y;
+end;
 { TRectF }
 
 function TRectF.GetHeight: Single;

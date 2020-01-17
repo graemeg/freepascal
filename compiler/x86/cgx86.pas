@@ -32,7 +32,8 @@ unit cgx86;
        cgbase,cgutils,cgobj,
        aasmbase,aasmtai,aasmdata,aasmcpu,
        cpubase,cpuinfo,rgx86,
-       symconst,symtype,symdef;
+       symconst,symtype,symdef,
+       parabase;
 
     type
 
@@ -89,6 +90,7 @@ unit cgx86;
         procedure a_loadfpu_reg_reg(list: TAsmList; fromsize, tosize: tcgsize; reg1, reg2: tregister); override;
         procedure a_loadfpu_ref_reg(list: TAsmList; fromsize, tosize: tcgsize; const ref: treference; reg: tregister); override;
         procedure a_loadfpu_reg_ref(list: TAsmList; fromsize, tosize: tcgsize; reg: tregister; const ref: treference); override;
+        procedure a_loadfpu_ref_cgpara(list : TAsmList;size : tcgsize;const ref : treference;const cgpara : TCGPara); override;
 
         { vector register move instructions }
         procedure a_loadmm_reg_reg(list: TAsmList; fromsize, tosize : tcgsize;reg1, reg2: tregister;shuffle : pmmshuffle); override;
@@ -158,26 +160,17 @@ unit cgx86;
       TCGSize2OpSize: Array[tcgsize] of topsize =
         (S_NO,S_B,S_W,S_L,S_Q,S_XMM,S_B,S_W,S_L,S_Q,S_XMM,
          S_FS,S_FL,S_FX,S_IQ,S_FXX,
-         S_NO,S_NO,S_NO,S_MD,S_XMM,S_YMM,S_ZMM,
-         S_NO,S_NO,S_NO,S_NO,S_XMM,S_YMM,S_ZMM,
-         S_NO,S_XMM,S_YMM,S_ZMM,
-         S_NO,S_XMM,S_YMM,S_ZMM);
+         S_NO,S_NO,S_NO,S_MD,S_XMM,S_YMM,S_ZMM);
 {$elseif defined(i386)}
       TCGSize2OpSize: Array[tcgsize] of topsize =
         (S_NO,S_B,S_W,S_L,S_L,S_T,S_B,S_W,S_L,S_L,S_L,
          S_FS,S_FL,S_FX,S_IQ,S_FXX,
-         S_NO,S_NO,S_NO,S_MD,S_XMM,S_YMM,S_ZMM,
-         S_NO,S_NO,S_NO,S_NO,S_XMM,S_YMM,S_ZMM,
-         S_NO,S_XMM,S_YMM,S_ZMM,
-         S_NO,S_XMM,S_YMM,S_ZMM);
+         S_NO,S_NO,S_NO,S_MD,S_XMM,S_YMM,S_ZMM);
 {$elseif defined(i8086)}
       TCGSize2OpSize: Array[tcgsize] of topsize =
         (S_NO,S_B,S_W,S_W,S_W,S_T,S_B,S_W,S_W,S_W,S_W,
          S_FS,S_FL,S_FX,S_IQ,S_FXX,
-         S_NO,S_NO,S_NO,S_MD,S_XMM,S_YMM,S_ZMM,
-         S_NO,S_NO,S_NO,S_NO,S_XMM,S_YMM,S_ZMM,
-         S_NO,S_XMM,S_YMM,S_ZMM,
-         S_NO,S_XMM,S_YMM,S_ZMM);
+         S_NO,S_NO,S_NO,S_MD,S_XMM,S_YMM,S_ZMM);
 {$endif}
 
 {$ifndef NOTARGETWIN}
@@ -294,17 +287,11 @@ unit cgx86;
           OS_M64:
             result:=rg[R_MMREGISTER].getregister(list,R_SUBQ);
           OS_M128,
-          OS_F128,
-          OS_MF128,
-          OS_MD128:
+          OS_F128:
             result:=rg[R_MMREGISTER].getregister(list,R_SUBMMX); { R_SUBMMWHOLE seems a bit dangerous and ambiguous, so changed to R_SUBMMX. [Kit] }
-          OS_M256,
-          OS_MF256,
-          OS_MD256:
+          OS_M256:
             result:=rg[R_MMREGISTER].getregister(list,R_SUBMMY);
-          OS_M512,
-          OS_MF512,
-          OS_MD512:
+          OS_M512:
             result:=rg[R_MMREGISTER].getregister(list,R_SUBMMZ);
           else
             internalerror(200506041);
@@ -1338,7 +1325,23 @@ unit cgx86;
        end;
 
 
-    function get_scalar_mm_op(fromsize,tosize : tcgsize) : tasmop;
+    procedure tcgx86.a_loadfpu_ref_cgpara(list: TAsmList; size: tcgsize; const ref: treference; const cgpara: TCGPara);
+      var
+        href: treference;
+      begin
+        if cgpara.location^.loc in [LOC_REFERENCE,LOC_CREFERENCE] then
+          begin
+            cgpara.check_simple_location;
+            reference_reset_base(href,cgpara.location^.reference.index,cgpara.location^.reference.offset,ctempposinvalid,cgpara.alignment,[]);
+            floatload(list,size,ref);
+            floatstore(list,size,href);
+          end
+        else
+          inherited a_loadfpu_ref_cgpara(list, size, ref, cgpara);
+      end;
+
+
+    function get_scalar_mm_op(fromsize,tosize : tcgsize;aligned : boolean) : tasmop;
       const
         convertopsse : array[OS_F32..OS_F128,OS_F32..OS_F128] of tasmop = (
           (A_MOVSS,A_CVTSS2SD,A_NONE,A_NONE,A_NONE),
@@ -1388,9 +1391,16 @@ unit cgx86;
               OS_M128:
                 { 128-bit aligned vector }
                 if UseAVX then
-                  result:=A_VMOVAPS
+                  begin
+                    if aligned then
+                      result:=A_VMOVAPS
+                    else
+                      result:=A_VMOVUPS;
+                  end
+                else if aligned then
+                  result:=A_MOVAPS
                 else
-                  result:=A_MOVAPS;
+                  result:=A_MOVUPS;
               OS_M256,
               OS_M512:
                 { 256-bit aligned vector }
@@ -1402,6 +1412,14 @@ unit cgx86;
               else
                 InternalError(2018012920);
             end;
+          end
+        else if (tcgsize2size[fromsize]=tcgsize2size[tosize]) and
+          (fromsize=OS_M128) then
+          begin
+            if UseAVX then
+              result:=A_VMOVDQU
+            else
+              result:=A_MOVDQU;
           end
         else
           internalerror(2010060104);
@@ -1420,14 +1438,12 @@ unit cgx86;
             if fromsize=tosize then
               { needs correct size in case of spilling }
               case fromsize of
-                OS_F32,
-                OS_MF128:
+                OS_F32:
                   if UseAVX then
                     instr:=taicpu.op_reg_reg(A_VMOVAPS,S_NO,reg1,reg2)
                   else
                     instr:=taicpu.op_reg_reg(A_MOVAPS,S_NO,reg1,reg2);
-                OS_F64,
-                OS_MD128:
+                OS_F64:
                   if UseAVX then
                     instr:=taicpu.op_reg_reg(A_VMOVAPD,S_NO,reg1,reg2)
                   else
@@ -1437,27 +1453,13 @@ unit cgx86;
                     instr:=taicpu.op_reg_reg(A_VMOVQ,S_NO,reg1,reg2)
                   else
                     instr:=taicpu.op_reg_reg(A_MOVQ,S_NO,reg1,reg2);
-                OS_M128, OS_MS128:
+                OS_M128:
                   if UseAVX then
                     instr:=taicpu.op_reg_reg(A_VMOVDQA,S_NO,reg1,reg2)
                   else
                     instr:=taicpu.op_reg_reg(A_MOVDQA,S_NO,reg1,reg2);
-                OS_MF256,
-                OS_MF512:
-                  if UseAVX then
-                    instr:=taicpu.op_reg_reg(A_VMOVAPS,S_NO,reg1,reg2)
-                  else
-                    { SSE doesn't support 512-bit vectors }
-                    InternalError(2018012931);
-                OS_MD256,
-                OS_MD512:
-                  if UseAVX then
-                    instr:=taicpu.op_reg_reg(A_VMOVAPD,S_NO,reg1,reg2)
-                  else
-                    { SSE doesn't support 512-bit vectors }
-                    InternalError(2018012932);
-                OS_M256, OS_MS256,
-                OS_M512, OS_MS512:
+                OS_M256,
+                OS_M512:
                   if UseAVX then
                     instr:=taicpu.op_reg_reg(A_VMOVDQA,S_NO,reg1,reg2)
                   else
@@ -1472,7 +1474,7 @@ unit cgx86;
           end
         else if shufflescalar(shuffle) then
           begin
-            op:=get_scalar_mm_op(fromsize,tosize);
+            op:=get_scalar_mm_op(fromsize,tosize,true);
 
             { MOVAPD/MOVAPS are normally faster }
             if op=A_MOVSD then
@@ -1544,39 +1546,7 @@ unit cgx86;
                    op := A_VMOVQ
                  else
                    op := A_MOVQ;
-               OS_MF128:
-                 { Use XMM transfer of packed singles }
-                 if UseAVX then
-                   begin
-                     if GetRefAlignment(tmpref) = 16 then
-                       op := A_VMOVAPS
-                     else
-                       op := A_VMOVUPS
-                   end
-                 else
-                   begin
-                     if GetRefAlignment(tmpref) = 16 then
-                       op := A_MOVAPS
-                     else
-                       op := A_MOVUPS
-                   end;
-               OS_MD128:
-                 { Use XMM transfer of packed doubles }
-                 if UseAVX then
-                   begin
-                     if GetRefAlignment(tmpref) = 16 then
-                       op := A_VMOVAPD
-                     else
-                       op := A_VMOVUPD
-                   end
-                 else
-                   begin
-                     if GetRefAlignment(tmpref) = 16 then
-                       op := A_MOVAPD
-                     else
-                       op := A_MOVUPD
-                   end;
-               OS_M128, OS_MS128:
+               OS_M128:
                  { Use XMM integer transfer }
                  if UseAVX then
                    begin
@@ -1590,33 +1560,9 @@ unit cgx86;
                      if GetRefAlignment(tmpref) = 16 then
                        op := A_MOVDQA
                      else
-                       op := A_MOVDQU
+                       op := A_MOVDQU;
                    end;
-               OS_MF256:
-                 { Use YMM transfer of packed singles }
-                 if UseAVX then
-                   begin
-                     if GetRefAlignment(tmpref) = 32 then
-                       op := A_VMOVAPS
-                     else
-                       op := A_VMOVUPS
-                   end
-                 else
-                   { SSE doesn't support 256-bit vectors }
-                   InternalError(2018012934);
-               OS_MD256:
-                 { Use YMM transfer of packed doubles }
-                 if UseAVX then
-                   begin
-                     if GetRefAlignment(tmpref) = 32 then
-                       op := A_VMOVAPD
-                     else
-                       op := A_VMOVUPD
-                   end
-                 else
-                   { SSE doesn't support 256-bit vectors }
-                   InternalError(2018012935);
-               OS_M256, OS_MS256:
+               OS_M256:
                  { Use YMM integer transfer }
                  if UseAVX then
                    begin
@@ -1627,32 +1573,8 @@ unit cgx86;
                    end
                  else
                    { SSE doesn't support 256-bit vectors }
-                   InternalError(2018012936);
-               OS_MF512:
-                 { Use ZMM transfer of packed singles }
-                 if UseAVX then
-                   begin
-                     if GetRefAlignment(tmpref) = 64 then
-                       op := A_VMOVAPS
-                     else
-                       op := A_VMOVUPS
-                   end
-                 else
-                   { SSE doesn't support 512-bit vectors }
-                   InternalError(2018012937);
-               OS_MD512:
-                 { Use ZMM transfer of packed doubles }
-                 if UseAVX then
-                   begin
-                     if GetRefAlignment(tmpref) = 64 then
-                       op := A_VMOVAPD
-                     else
-                       op := A_VMOVUPD
-                   end
-                 else
-                   { SSE doesn't support 512-bit vectors }
-                   InternalError(2018012938);
-               OS_M512, OS_MS512:
+                   Internalerror(2020010401);
+               OS_M512:
                  { Use ZMM integer transfer }
                  if UseAVX then
                    begin
@@ -1672,7 +1594,7 @@ unit cgx86;
            end
          else if shufflescalar(shuffle) then
            begin
-             op:=get_scalar_mm_op(fromsize,tosize);
+             op:=get_scalar_mm_op(fromsize,tosize,tcgsize2size[fromsize]=ref.alignment);
 
              { A_VCVTSD2SS and A_VCVTSS2SD require always three operands }
              if (op=A_VCVTSD2SS) or (op=A_VCVTSS2SD) then
@@ -1718,37 +1640,7 @@ unit cgx86;
                    op := A_VMOVQ
                  else
                    op := A_MOVQ;
-               OS_MF128:
-                 { Use XMM transfer of packed singles }
-                 if UseAVX then
-                 begin
-                   if GetRefAlignment(tmpref) = 16 then
-                     op := A_VMOVAPS
-                   else
-                     op := A_VMOVUPS
-                 end else
-                 begin
-                   if GetRefAlignment(tmpref) = 16 then
-                     op := A_MOVAPS
-                   else
-                     op := A_MOVUPS
-                 end;
-               OS_MD128:
-                 { Use XMM transfer of packed doubles }
-                 if UseAVX then
-                 begin
-                   if GetRefAlignment(tmpref) = 16 then
-                     op := A_VMOVAPD
-                   else
-                     op := A_VMOVUPD
-                 end else
-                 begin
-                   if GetRefAlignment(tmpref) = 16 then
-                     op := A_MOVAPD
-                   else
-                     op := A_MOVUPD
-                 end;
-               OS_M128, OS_MS128:
+               OS_M128:
                  { Use XMM integer transfer }
                  if UseAVX then
                  begin
@@ -1763,29 +1655,7 @@ unit cgx86;
                    else
                      op := A_MOVDQU
                  end;
-               OS_MF256:
-                 { Use XMM transfer of packed singles }
-                 if UseAVX then
-                 begin
-                   if GetRefAlignment(tmpref) = 32 then
-                     op := A_VMOVAPS
-                   else
-                     op := A_VMOVUPS
-                 end else
-                   { SSE doesn't support 256-bit vectors }
-                   InternalError(2018012940);
-               OS_MD256:
-                 { Use XMM transfer of packed doubles }
-                 if UseAVX then
-                 begin
-                   if GetRefAlignment(tmpref) = 32 then
-                     op := A_VMOVAPD
-                   else
-                     op := A_VMOVUPD
-                 end else
-                   { SSE doesn't support 256-bit vectors }
-                   InternalError(2018012941);
-               OS_M256, OS_MS256:
+               OS_M256:
                  { Use XMM integer transfer }
                  if UseAVX then
                  begin
@@ -1796,29 +1666,7 @@ unit cgx86;
                  end else
                    { SSE doesn't support 256-bit vectors }
                    InternalError(2018012942);
-               OS_MF512:
-                 { Use XMM transfer of packed singles }
-                 if UseAVX then
-                 begin
-                   if GetRefAlignment(tmpref) = 64 then
-                     op := A_VMOVAPS
-                   else
-                     op := A_VMOVUPS
-                 end else
-                   { SSE doesn't support 512-bit vectors }
-                   InternalError(2018012943);
-               OS_MD512:
-                 { Use XMM transfer of packed doubles }
-                 if UseAVX then
-                 begin
-                   if GetRefAlignment(tmpref) = 64 then
-                     op := A_VMOVAPD
-                   else
-                     op := A_VMOVUPD
-                 end else
-                   { SSE doesn't support 512-bit vectors }
-                   InternalError(2018012944);
-               OS_M512, OS_MS512:
+               OS_M512:
                  { Use XMM integer transfer }
                  if UseAVX then
                  begin
@@ -1840,7 +1688,7 @@ unit cgx86;
              if tcgsize2size[tosize]<>tcgsize2size[fromsize] then
                begin
                  hreg:=getmmregister(list,tosize);
-                 op:=get_scalar_mm_op(fromsize,tosize);
+                 op:=get_scalar_mm_op(fromsize,tosize,tcgsize2size[tosize]=ref.alignment);
 
                  { A_VCVTSD2SS and A_VCVTSS2SD require always three operands }
                  if (op=A_VCVTSD2SS) or (op=A_VCVTSS2SD) then
@@ -1848,10 +1696,10 @@ unit cgx86;
                  else
                    list.concat(taicpu.op_reg_reg(op,S_NO,reg,hreg));
 
-                 list.concat(taicpu.op_reg_ref(get_scalar_mm_op(tosize,tosize),S_NO,hreg,tmpref))
+                 list.concat(taicpu.op_reg_ref(get_scalar_mm_op(tosize,tosize,tcgsize2size[tosize]=tmpref.alignment),S_NO,hreg,tmpref))
                end
              else
-               list.concat(taicpu.op_reg_ref(get_scalar_mm_op(fromsize,tosize),S_NO,reg,tmpref));
+               list.concat(taicpu.op_reg_ref(get_scalar_mm_op(fromsize,tosize,tcgsize2size[tosize]=tmpref.alignment),S_NO,reg,tmpref));
            end
          else
            internalerror(200312252);

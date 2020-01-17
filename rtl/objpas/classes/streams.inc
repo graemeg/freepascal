@@ -1656,6 +1656,51 @@ end;
 
 
 {****************************************************************************}
+{*                          TRawByteStringStream                            *}
+{****************************************************************************}
+
+constructor TRawByteStringStream.Create(const aData: RawByteString);
+begin
+  Inherited Create;
+  If Length(aData)>0 then
+    begin
+    WriteBuffer(aData[1],Length(aData));
+    Position:=0;
+    end;
+end;
+
+function TRawByteStringStream.DataString: RawByteString;
+begin
+  Result:='';
+  SetLength(Result,Size);
+  if Size>0 then
+    Move(Memory^, Result[1], Size);
+end;
+
+function TRawByteStringStream.ReadString(Count: Longint): RawByteString;
+Var
+  NewLen : Longint;
+
+begin
+  NewLen:=Size-FPosition;
+  If NewLen>Count then NewLen:=Count;
+  Result:='';
+  if NewLen>0 then
+    begin
+    SetLength(Result, NewLen);
+    Move(FBytes[FPosition],Result[1],NewLen);
+    end;
+end;
+
+procedure TRawByteStringStream.WriteString(const AString: RawByteString);
+begin
+  if Length(AString)>0 then
+    WriteBuffer(AString[1],Length(AString));
+end;
+
+
+
+{****************************************************************************}
 {*                             TResourceStream                              *}
 {****************************************************************************}
 

@@ -1051,7 +1051,7 @@ begin
     OCI_SUCCESS : Result := True;
     OCI_SUCCESS_WITH_INFO : Begin
                             Result := True;
-                            HandleError;
+                            // HandleError;
                             end;
   end; {case}
 end;

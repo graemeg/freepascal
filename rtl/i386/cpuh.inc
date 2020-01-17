@@ -40,3 +40,6 @@ function fpc_x86_get_ds:longint;[internproc:fpc_in_x86_get_ds];
 function fpc_x86_get_es:longint;[internproc:fpc_in_x86_get_es];
 function fpc_x86_get_fs:longint;[internproc:fpc_in_x86_get_fs];
 function fpc_x86_get_gs:longint;[internproc:fpc_in_x86_get_gs];
+
+{ include automatically generated procs }
+{$i cpummprocs.inc}  

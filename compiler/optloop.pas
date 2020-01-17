@@ -266,7 +266,7 @@ unit optloop;
                 { no aliasing? }
                 result:=not(tabstractvarsym(tloadnode(expr).symtableentry).addr_taken) and
                 { no definition in the loop? }
-                  not(DFASetIn(loop.optinfo^.defsum,expr.optinfo^.index));
+                  not(DFASetIn(tfornode(loop).t2.optinfo^.defsum,expr.optinfo^.index));
             end;
           vecn:
             begin
@@ -287,6 +287,7 @@ unit optloop;
       function findpreviousstrengthreduction : boolean;
         var
           i : longint;
+          hp : tnode;
         begin
           result:=false;
           for i:=0 to inductionexprs.count-1 do
@@ -294,16 +295,17 @@ unit optloop;
               { do we already maintain one expression? }
               if tnode(inductionexprs[i]).isequal(n) then
                 begin
-                  n.free;
                   case n.nodetype of
                     muln:
-                      n:=ctemprefnode.create(ttempcreatenode(templist[i]));
+                      hp:=ctemprefnode.create(ttempcreatenode(templist[i]));
                     vecn:
-                      n:=ctypeconvnode.create_internal(cderefnode.create(ctemprefnode.create(
+                      hp:=ctypeconvnode.create_internal(cderefnode.create(ctemprefnode.create(
                         ttempcreatenode(templist[i]))),n.resultdef);
                     else
                       internalerror(200809211);
                   end;
+                  n.free;
+                  n:=hp;
                   result:=true;
                   exit;
                 end;
@@ -373,8 +375,7 @@ unit optloop;
 
                       addstatement(initcodestatements,tempnode);
                       addstatement(initcodestatements,cassignmentnode.create(ctemprefnode.create(tempnode),
-                        caddnode.create(muln,
-                          caddnode.create(subn,tfornode(arg).right.getcopy,cordconstnode.create(1,tfornode(arg).right.resultdef,false)),
+                        caddnode.create(muln,tfornode(arg).right.getcopy,
                           taddnode(n).right.getcopy)
                         )
                       );
@@ -394,6 +395,7 @@ unit optloop;
             begin
               { is the index the counter variable? }
               if not(is_special_array(tvecnode(n).left.resultdef)) and
+                not(is_packed_array(tvecnode(n).left.resultdef)) and
                 (tvecnode(n).right.isequal(tfornode(arg).left) or
                  { fpc usually creates a type cast to access an array }
                  ((tvecnode(n).right.nodetype=typeconvn) and
@@ -429,14 +431,14 @@ unit optloop;
 
                       if lnf_backward in tfornode(arg).loopflags then
                         addstatement(calccodestatements,
-                          geninlinenode(in_dec_x,false,
+                          cinlinenode.createintern(in_dec_x,false,
                           ccallparanode.create(ctemprefnode.create(tempnode),ccallparanode.create(
-                          cordconstnode.create(tcgvecnode(n).get_mul_size,tfornode(arg).right.resultdef,false),nil))))
+                          cordconstnode.create(tcgvecnode(n).get_mul_size,sizeuinttype,false),nil))))
                       else
                         addstatement(calccodestatements,
-                          geninlinenode(in_inc_x,false,
+                          cinlinenode.createintern(in_inc_x,false,
                           ccallparanode.create(ctemprefnode.create(tempnode),ccallparanode.create(
-                          cordconstnode.create(tcgvecnode(n).get_mul_size,tfornode(arg).right.resultdef,false),nil))));
+                          cordconstnode.create(tcgvecnode(n).get_mul_size,sizeuinttype,false),nil))));
 
                       addstatement(initcodestatements,tempnode);
                       addstatement(initcodestatements,cassignmentnode.create(ctemprefnode.create(tempnode),

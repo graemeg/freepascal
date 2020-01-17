@@ -79,6 +79,8 @@ const
   FPU68K_EXCEPT_SNAN       = 1 shl (FPU68K_EXCEPT_MASK_SHIFT + 6);
   FPU68K_EXCEPT_BSUN       = 1 shl (FPU68K_EXCEPT_MASK_SHIFt + 7);
 
+  FPU68K_AE_MASK           = $F8;
+
 
 function GetExceptionMask: TFPUExceptionMask;
 begin
@@ -88,9 +90,14 @@ end;
 function SetExceptionMask(const Mask: TFPUExceptionMask): TFPUExceptionMask;
 const
   FPCToFPUExceptionFlags: array[TFPUException] of DWord =
-      ( FPU68K_EXCEPT_OPERR, 0, FPU68K_EXCEPT_DZ, FPU68K_EXCEPT_OVFL, FPU68K_EXCEPT_UNFL, FPU68K_EXCEPT_INEX2 );
+      ( {exInvalidOp,} FPU68K_EXCEPT_OPERR or FPU68K_EXCEPT_SNAN or FPU68K_EXCEPT_BSUN,
+        {exDenormalized,} 0,
+        {exZeroDivide,} FPU68K_EXCEPT_DZ,
+        {exOverflow,} FPU68K_EXCEPT_OVFL,
+        {exUnderflow,} FPU68K_EXCEPT_UNFL,
+        {exPrecision} FPU68K_EXCEPT_INEX1 or FPU68K_EXCEPT_INEX2 );
   FPUToFPCExceptionFlags: array[0..7] of TFPUExceptionMask =
-      ( [], [exPrecision], [exZeroDivide], [exUnderflow], [exOverflow], [exInvalidOp], [], [] );
+      ( [exPrecision], [exPrecision], [exZeroDivide], [exUnderflow], [exOverflow], [exInvalidOp], [exInvalidOp], [exInvalidOp] );
 var
   oldMode, Mode: DWord;
   e: TFPUException;
@@ -104,10 +111,15 @@ begin
       result:=result+FPUToFPCExceptionFlags[i];
 
   mode:=0;
-  for e in Mask do
-    mode:=mode or FPCToFPUExceptionFlags[e];
+  { The bits set inside FPCR register are the enabled exceptions,
+    not the masked exceptions, thus we need to invert list }
+  for e:=low(TFPUException) to high(TFPUException) do
+    if not (e in Mask) then
+      mode:=mode or FPCToFPUExceptionFlags[e];
 
-  SetFPCR((GetFPCR and not FPU68K_EXCEPT_MASK) or (mode shl FPU68K_EXCEPT_MASK_SHIFT));
+  SetFPCR((GetFPCR and not FPU68K_EXCEPT_MASK) or (mode and FPU68K_EXCEPT_MASK));
+  { Wipe out any previous exception }
+  SetFPSR(GetFPSR and (not (FPU68K_AE_MASK or FPU68K_EXCEPT_MASK)));
   softfloat_exception_mask:=mask;
 end;
 

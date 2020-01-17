@@ -145,10 +145,15 @@ type
     procedure TestUS_Program_FE_o;
     procedure TestUS_IncludeSameDir;
 
+    // uses 'in' modifier
     procedure TestUS_UsesInFile;
     procedure TestUS_UsesInFile_Duplicate;
     procedure TestUS_UsesInFile_IndirectDuplicate;
     procedure TestUS_UsesInFile_WorkNotEqProgDir;
+    procedure TestUS_UsesInFileTwice;
+
+    procedure TestUS_UseUnitTwiceFail;
+    procedure TestUS_UseUnitTwiceViaNameSpace;
   end;
 
 function LinesToStr(const Lines: array of string): string;
@@ -738,6 +743,7 @@ end;
 
 procedure TTestCLI_UnitSearch.TestUS_UsesInFile_Duplicate;
 begin
+  // check if using two different units with same name
   AddUnit('system.pp',[''],['']);
   AddUnit('unit1.pas',
   ['var a: longint;'],
@@ -757,6 +763,7 @@ end;
 
 procedure TTestCLI_UnitSearch.TestUS_UsesInFile_IndirectDuplicate;
 begin
+  // check if using two different units with same name
   AddUnit('system.pp',[''],['']);
   AddUnit('unit1.pas',
   ['var a: longint;'],
@@ -789,6 +796,51 @@ begin
     'begin',
     'end.']);
   Compile(['sub/test1.pas','-Jc']);
+end;
+
+procedure TTestCLI_UnitSearch.TestUS_UsesInFileTwice;
+begin
+  AddUnit('system.pp',[''],['']);
+  AddUnit('unit1.pas',
+  ['var a: longint;'],
+  ['']);
+  AddFile('test1.pas',[
+    'uses foo in ''unit1.pas'', bar in ''unit1.pas'';',
+    'begin',
+    '  bar.a:=foo.a;',
+    '  a:=a;',
+    'end.']);
+  Compile(['test1.pas','-Jc']);
+end;
+
+procedure TTestCLI_UnitSearch.TestUS_UseUnitTwiceFail;
+begin
+  AddUnit('system.pp',[''],['']);
+  AddUnit('sub.unit1.pas',
+  ['var a: longint;'],
+  ['']);
+  AddFile('test1.pas',[
+    'uses sub.Unit1, sub.unit1;',
+    'begin',
+    '  a:=a;',
+    'end.']);
+  Compile(['test1.pas','-FNsub','-Jc'],ExitCodeSyntaxError);
+  AssertEquals('ErrorMsg','Duplicate identifier "sub.unit1"',ErrorMsg);
+end;
+
+procedure TTestCLI_UnitSearch.TestUS_UseUnitTwiceViaNameSpace;
+begin
+  AddUnit('system.pp',[''],['']);
+  AddUnit('sub.unit1.pas',
+  ['var a: longint;'],
+  ['']);
+  AddFile('test1.pas',[
+    'uses unit1, sub.unit1;',
+    'begin',
+    '  unit1.a:=sub.unit1.a;',
+    '  a:=a;',
+    'end.']);
+  Compile(['test1.pas','-FNsub','-Jc']);
 end;
 
 Initialization

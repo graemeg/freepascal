@@ -167,6 +167,15 @@ Begin
  Result:=Fexpand(S);
 end;
 
+function ExpandFileName (Const FileName, BasePath : PathStr): PathStr;
+
+Var S : PathStr;
+
+Begin
+ S:=FileName;
+ DoDirSeparators(S);
+ Result:=Fexpand(S,BasePath);
+end;
 
 {$ifndef HASEXPANDUNCFILENAME}
 function ExpandUNCFileName (Const FileName : PathStr): PathStr;

@@ -901,7 +901,9 @@ implementation
                 result := operand_read;
             //Thumb2
             A_LSL, A_LSR, A_ROR, A_ASR, A_SDIV, A_UDIV, A_MOVW, A_MOVT, A_MLS, A_BFI,
-            A_SMMLA,A_SMMLS:
+            A_QADD,
+            A_PKHTB,A_PKHBT,
+            A_SMMLA,A_SMMLS,A_SMUAD,A_SMUSD:
               if opnr in [0] then
                 result:=operand_write
               else

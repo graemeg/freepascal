@@ -521,7 +521,7 @@ Function fpLstat(path:pchar;Info:pstat):cint;
 
 begin
 {$if defined(generic_linux_syscalls)}
- fpLStat:=do_syscall(syscall_nr_fstatat,AT_FDCWD,TSysParam(path),TSysParam(info),0)
+ fpLStat:=do_syscall(syscall_nr_fstatat,AT_FDCWD,TSysParam(path),TSysParam(info),AT_SYMLINK_NOFOLLOW)
 {$else}
  fpLStat:=do_syscall(
 {$ifdef cpu64}

@@ -41,6 +41,7 @@ interface
         procedure maybe_add_constructor_wrapper(var tocode: tnode; withexceptblock: boolean);
         procedure add_entry_exit_code;
         procedure setup_tempgen;
+        procedure OptimizeNodeTree;
       public
         { code for the subroutine as tree }
         code : tnode;
@@ -931,7 +932,8 @@ implementation
            (pi_needs_implicit_finally in flags) and
            { but it's useless in init/final code of units }
            not(procdef.proctypeoption in [potype_unitfinalize,potype_unitinit]) and
-           not(target_info.system in systems_garbage_collected_managed_types) then
+           not(target_info.system in systems_garbage_collected_managed_types) and
+           (f_exceptions in features) then
           begin
             { Any result of managed type must be returned in parameter }
             if is_managed_type(procdef.returndef) and
@@ -968,7 +970,7 @@ implementation
             { constructors need destroy-on-exception code even if they don't
               have managed variables/temps }
             maybe_add_constructor_wrapper(code,
-              cs_implicit_exceptions in current_settings.moduleswitches);
+              (cs_implicit_exceptions in current_settings.moduleswitches) and (f_exceptions in features));
             current_filepos:=entrypos;
             addstatement(newstatement,code);
             current_filepos:=exitpos;
@@ -1133,6 +1135,92 @@ implementation
         { set the start offset to the start of the temp area in the stack }
         set_first_temp_offset;
       end;
+
+
+    procedure tcgprocinfo.OptimizeNodeTree;
+      var
+        i : integer;
+        RedoDFA: Boolean;
+        {RedoDFA : boolean;}
+      begin
+       { do this before adding the entry code else the tail recursion recognition won't work,
+         if this causes troubles, it must be if'ed
+       }
+       if (cs_opt_tailrecursion in current_settings.optimizerswitches) and
+         (pi_is_recursive in flags) then
+         do_opttail(code,procdef);
+
+       if cs_opt_constant_propagate in current_settings.optimizerswitches then
+         do_optconstpropagate(code);
+
+       if (cs_opt_nodedfa in current_settings.optimizerswitches) and
+         { creating dfa is not always possible }
+         ((flags*[pi_has_assembler_block,pi_uses_exceptions,pi_is_assembler])=[]) then
+         begin
+           dfabuilder:=TDFABuilder.Create;
+           dfabuilder.createdfainfo(code);
+           include(flags,pi_dfaavailable);
+           RedoDFA:=false;
+
+           if (cs_opt_loopstrength in current_settings.optimizerswitches)
+             { our induction variable strength reduction doesn't like
+               for loops with more than one entry }
+             and not(pi_has_label in flags) then
+             begin
+               RedoDFA:=OptimizeInductionVariables(code);
+             end;
+
+           RedoDFA:=ConvertForLoops(code) or RedoDFA;
+
+           if RedoDFA then
+             begin
+               dfabuilder.resetdfainfo(code);
+               dfabuilder.createdfainfo(code);
+               include(flags,pi_dfaavailable);
+             end;
+
+           { when life info is available, we can give more sophisticated warning about uninitialized
+             variables ...
+             ... but not for the finalization section of a unit, we would need global dfa to handle
+             it properly }
+           if potype_unitfinalize<>procdef.proctypeoption then
+             { iterate through life info of the first node }
+             for i:=0 to dfabuilder.nodemap.count-1 do
+               begin
+                 if DFASetIn(GetUserCode.optinfo^.life,i) then
+                   begin
+                     { do not warn for certain parameters: }
+                     if not((tnode(dfabuilder.nodemap[i]).nodetype=loadn) and (tloadnode(dfabuilder.nodemap[i]).symtableentry.typ=paravarsym) and
+                       { do not warn about parameters passed by var }
+                       (((tparavarsym(tloadnode(dfabuilder.nodemap[i]).symtableentry).varspez=vs_var) and
+                       { function result is passed by var but it must be initialized }
+                       not(vo_is_funcret in tparavarsym(tloadnode(dfabuilder.nodemap[i]).symtableentry).varoptions)) or
+                       { do not warn about initialized hidden parameters }
+                       ((tparavarsym(tloadnode(dfabuilder.nodemap[i]).symtableentry).varoptions*[vo_is_high_para,vo_is_parentfp,vo_is_result,vo_is_self])<>[]))) then
+                       CheckAndWarn(GetUserCode,tnode(dfabuilder.nodemap[i]));
+                   end
+                 else
+                   begin
+                     if (tnode(dfabuilder.nodemap[i]).nodetype=loadn) and
+                       (tloadnode(dfabuilder.nodemap[i]).symtableentry.typ in [staticvarsym,localvarsym]) then
+                       tabstractnormalvarsym(tloadnode(dfabuilder.nodemap[i]).symtableentry).noregvarinitneeded:=true
+                   end;
+               end;
+         end
+       else
+         begin
+           ConvertForLoops(code);
+         end;
+
+       if (pi_dfaavailable in flags) and (cs_opt_dead_store_eliminate in current_settings.optimizerswitches) then
+         do_optdeadstoreelim(code);
+
+       if (cs_opt_remove_emtpy_proc in current_settings.optimizerswitches) and
+         (procdef.proctypeoption in [potype_operator,potype_procedure,potype_function]) and
+         (code.nodetype=blockn) and (tblocknode(code).statements=nil) then
+         procdef.isempty:=true;
+      end;
+
 
     function tcgprocinfo.has_assembler_child : boolean;
       var
@@ -1477,24 +1565,22 @@ implementation
         oldswitches : tlocalswitches;
         templist : TAsmList;
         headertai : tai;
-        i : integer;
-        {RedoDFA : boolean;}
 
-        procedure delete_marker(anode: tasmnode);
-          var
-            ai: tai;
-          begin
-            if assigned(anode) then
-              begin
-                ai:=anode.currenttai;
-                if assigned(ai) then
-                  begin
-                    aktproccode.remove(ai);
-                    ai.free;
-                    anode.currenttai:=nil;
-                  end;
-              end;
-          end;
+      procedure delete_marker(anode: tasmnode);
+        var
+          ai: tai;
+        begin
+          if assigned(anode) then
+            begin
+              ai:=anode.currenttai;
+              if assigned(ai) then
+                begin
+                  aktproccode.remove(ai);
+                  ai.free;
+                  anode.currenttai:=nil;
+                end;
+            end;
+        end;
 
       begin
         { the initialization procedure can be empty, then we
@@ -1605,68 +1691,7 @@ implementation
         if paraprintnodetree <> 0 then
           printproc( 'after the firstpass');
 
-        { do this before adding the entry code else the tail recursion recognition won't work,
-          if this causes troubles, it must be if'ed
-        }
-        if (cs_opt_tailrecursion in current_settings.optimizerswitches) and
-          (pi_is_recursive in flags) then
-          do_opttail(code,procdef);
-
-        if cs_opt_constant_propagate in current_settings.optimizerswitches then
-          do_optconstpropagate(code);
-
-        if (cs_opt_nodedfa in current_settings.optimizerswitches) and
-          { creating dfa is not always possible }
-          ((flags*[pi_has_assembler_block,pi_uses_exceptions,pi_is_assembler])=[]) then
-          begin
-            dfabuilder:=TDFABuilder.Create;
-            dfabuilder.createdfainfo(code);
-            include(flags,pi_dfaavailable);
-
-            { when life info is available, we can give more sophisticated warning about uninitialized
-              variables ...
-              ... but not for the finalization section of a unit, we would need global dfa to handle
-              it properly }
-            if potype_unitfinalize<>procdef.proctypeoption then
-              { iterate through life info of the first node }
-              for i:=0 to dfabuilder.nodemap.count-1 do
-                begin
-                  if DFASetIn(GetUserCode.optinfo^.life,i) then
-                    begin
-                      { do not warn for certain parameters: }
-                      if not((tnode(dfabuilder.nodemap[i]).nodetype=loadn) and (tloadnode(dfabuilder.nodemap[i]).symtableentry.typ=paravarsym) and
-                        { do not warn about parameters passed by var }
-                        (((tparavarsym(tloadnode(dfabuilder.nodemap[i]).symtableentry).varspez=vs_var) and
-                        { function result is passed by var but it must be initialized }
-                        not(vo_is_funcret in tparavarsym(tloadnode(dfabuilder.nodemap[i]).symtableentry).varoptions)) or
-                        { do not warn about initialized hidden parameters }
-                        ((tparavarsym(tloadnode(dfabuilder.nodemap[i]).symtableentry).varoptions*[vo_is_high_para,vo_is_parentfp,vo_is_result,vo_is_self])<>[]))) then
-                        CheckAndWarn(GetUserCode,tnode(dfabuilder.nodemap[i]));
-                    end
-                  else
-                    begin
-                      if (tnode(dfabuilder.nodemap[i]).nodetype=loadn) and
-                        (tloadnode(dfabuilder.nodemap[i]).symtableentry.typ in [staticvarsym,localvarsym]) then
-                        tabstractnormalvarsym(tloadnode(dfabuilder.nodemap[i]).symtableentry).noregvarinitneeded:=true
-                    end;
-                end;
-          end;
-
-        if (pi_dfaavailable in flags) and (cs_opt_dead_store_eliminate in current_settings.optimizerswitches) then
-          do_optdeadstoreelim(code);
-
-        if (cs_opt_loopstrength in current_settings.optimizerswitches)
-          { our induction variable strength reduction doesn't like
-            for loops with more than one entry }
-          and not(pi_has_label in flags) then
-          begin
-            {RedoDFA:=}OptimizeInductionVariables(code);
-          end;
-
-        if (cs_opt_remove_emtpy_proc in current_settings.optimizerswitches) and
-          (procdef.proctypeoption in [potype_operator,potype_procedure,potype_function]) and
-          (code.nodetype=blockn) and (tblocknode(code).statements=nil) then
-          procdef.isempty:=true;
+        OptimizeNodeTree;
 
         { unit static/global symtables might contain threadvars which are not explicitly used but which might
           require a tls register, so check for such variables }

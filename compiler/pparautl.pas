@@ -355,6 +355,15 @@ implementation
             { vo_is_funcret is necessary so the local only gets freed after we loaded its
               value into the return register }
             vs:=clocalvarsym.create('$safecallresult',vs_value,search_system_type('HRESULT').typedef,[vo_is_funcret]);
+            { do not put this variable in a register. The register which will be bound
+              to this symbol will not be allocated automatically. Which means it will
+              be re-used wich breaks the code. Besides this it is questionable if it is
+              an optimization if one of the registers is kept allocated during the complete
+              function, without ever using it.
+              (It would be better to re-write the safecall-support in such a way that this
+              variable it not needed at all, but that the HRESULT is set when the method
+              is finalized) }
+            vs.varregable:=vr_none;
             pd.localst.insert(vs);
           end;
 

@@ -21,7 +21,9 @@ unit compinnr;
 interface
 
 const
-  fpc_in_cpu_first   = 10000;
+  { this file needs to be kept in sync with rtl/inc/innr.in }
+  in_cpu_first   = 10000;
+  in_x86_mm_first    = 11000;
 
 type
    tinlinenumber=(

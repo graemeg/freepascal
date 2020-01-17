@@ -108,6 +108,8 @@ Type
     function stringsquery(const asql: string): TArrayStringArray;
     procedure execsql(const asql: string);
     function GetNextValueSQL(const SequenceName: string; IncrementBy: Integer): string; override;
+    function GetAlwaysUseBigint : Boolean; virtual;
+    Procedure SetAlwaysUseBigint(aValue : Boolean); virtual;
   public
     constructor Create(AOwner : TComponent); override;
     procedure GetFieldNames(const TableName : string; List :  TStrings); override;
@@ -123,6 +125,7 @@ Type
     procedure LoadExtension(const LibraryFile: string);
   Published
     Property OpenFlags : TSQLiteOpenFlags Read FOpenFlags Write SetOpenFlags default DefaultOpenFlags;
+    Property AlwaysUseBigint : Boolean Read GetAlwaysUseBigint Write SetAlwaysUseBigint;
   end;
 
   { TSQLite3ConnectionDef }
@@ -171,7 +174,6 @@ type
  public
    RowsAffected : Largeint;
  end;
-
 procedure freebindstring(astring: pointer); cdecl;
 begin
   StrDispose(astring);
@@ -301,6 +303,32 @@ begin
   FieldNameQuoteChars:=DoubleQuotes;
   FOpenFlags:=DefaultOpenFlags;
 end;
+
+Const
+  SUseBigint = 'AlwaysUseBigint';
+
+function TSQLite3Connection.GetAlwaysUseBigint : Boolean; 
+
+begin
+  Result:=Params.Values[SUseBigint]='1'
+end;
+
+Procedure TSQLite3Connection.SetAlwaysUseBigint(aValue : Boolean); 
+
+Var
+  I : Integer;
+
+begin
+  if aValue then 
+    Params.Values[SUseBigint]:='1'
+  else
+    begin
+    I:=Params.IndexOfName(SUseBigint);
+    if I<>-1 then 
+      Params.Delete(I);
+    end;    
+end;
+
 
 procedure TSQLite3Connection.LoadBlobIntoBuffer(FieldDef: TFieldDef; ABlobBuf: PBufBlobField; cursor: TSQLCursor; ATransaction : TSQLTransaction);
 
@@ -504,6 +532,11 @@ begin
     size1:=0;
     size2:=0;
     case FT of
+      ftInteger,
+      ftSMallint,
+      ftWord: 
+        If AlwaysUseBigint then
+          ft:=ftLargeInt;
       ftString,
       ftFixedChar,
       ftFixedWideChar,

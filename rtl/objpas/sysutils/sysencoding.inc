@@ -93,7 +93,7 @@ end;
 
 class function TEncoding.GetDefault: TEncoding;
 begin
-  Result := GetANSI;
+  Result := GetSystemEncoding;
 end;
 
 class function TEncoding.GetSystemEncoding: TEncoding;
@@ -240,9 +240,14 @@ var
   Encoding: TEncoding;
 begin
   if Assigned(AEncoding) then
+  begin
     for Encoding in FStandardEncodings do
       if Encoding = AEncoding then
         Exit(True);
+    for Encoding in FSystemEncodings do
+      if Encoding = AEncoding then
+        Exit(True);
+  end;
   Result := False;
 end;
 
@@ -521,6 +526,11 @@ begin
   FCodePage := ACodePage;
   FMBToWCharFlags := MBToWCharFlags;
   FWCharToMBFlags := WCharToMBFlags;
+  case ACodePage of
+    CP_UTF7, CP_UTF8, CP_UTF16, CP_UTF16BE: FIsSingleByte := False;
+  else
+    FIsSingleByte := True;
+  end;
 end;
 
 function TMBCSEncoding.Clone: TEncoding;
@@ -559,7 +569,29 @@ end;
 
 function TMBCSEncoding.GetPreamble: TBytes;
 begin
-  Result := nil;
+  case CodePage of
+    CP_UTF8:
+    begin
+      SetLength(Result, 3);
+      Result[0] := $EF;
+      Result[1] := $BB;
+      Result[2] := $BF;
+    end;
+    CP_UTF16:
+    begin
+      SetLength(Result, 2);
+      Result[0] := $FF;
+      Result[1] := $FE;
+    end;
+    CP_UTF16BE:
+    begin
+      SetLength(Result, 2);
+      Result[0] := $FE;
+      Result[1] := $FF;
+    end;
+  else
+    Result := nil;
+  end;
 end;
 
 { TUTF7Encoding }

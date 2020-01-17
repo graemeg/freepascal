@@ -570,7 +570,8 @@ implementation
         if assigned(srsym) then
           begin
             result:=cloadnode.create(srsym,srsym.owner);
-            include(tloadnode(result).loadnodeflags,loadnf_load_self_pointer);
+            if is_object(tabstractvarsym(srsym).vardef) or is_record(tabstractvarsym(srsym).vardef) then
+              include(tloadnode(result).loadnodeflags,loadnf_load_addr);
           end
         else
           begin

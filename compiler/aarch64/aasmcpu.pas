@@ -552,7 +552,7 @@ implementation
       const
         { invalid sizes for aarch64 are 0 }
         subreg2bytesize: array[TSubRegister] of byte =
-          (0,0,0,0,4,8,0,0,0,4,8,0,0,0,0,0,0,0,0,0,0,0,0,8,16);
+          (0,0,0,0,4,8,0,0,0,4,8,0,0,0,0,0,0,0,0,0,0,0,0,8,16,0);
       var
         scalefactor: byte;
       begin

@@ -103,7 +103,7 @@ end;
 {$ENDIF FPC_FEXPAND_VOLUMES}
 
 
-function FExpand (const Path: PathStr): PathStr;
+function FExpand (const Path, BasePath: PathStr): PathStr;
 
 (* LFNSupport boolean constant, variable or function must be declared for all
    the platforms, at least locally in the Dos unit implementation part.
@@ -299,8 +299,15 @@ begin
 {$ENDIF FPC_FEXPAND_DRIVES}
         begin
 
-(* Get current directory on selected drive/volume. *)
-            GetDirIO (0, S);
+(* Get base path *)
+{$IF defined(FPC_FEXPAND_SYSUTILS) and not defined(SYSUTILSUNICODE)}
+            S := ToSingleByteFileSystemEncodedFileName (BasePath);
+{$ELSE FPC_FEXPAND_SYSUTILS and not SYSUTILSUNICODE}
+            S := BasePath;
+{$ENDIF FPC_FEXPAND_SYSUTILS and not SYSUTILSUNICODE}
+            if not FileNameCasePreserving then
+              S := UpCase(S);
+
 {$IFDEF FPC_FEXPAND_VOLUMES}
  {$IFDEF FPC_FEXPAND_DRIVESEP_IS_ROOT}
             PathStart := Pos (DriveSeparator, S);
@@ -611,6 +618,19 @@ begin
 {$ENDIF FPC_FEXPAND_SYSUTILS and not SYSUTILSUNICODE}
     FExpand := Pa;
 end;
+
+function FExpand (const Path: PathStr): PathStr;
+var
+  BaseDir: {$IF defined(FPC_FEXPAND_SYSUTILS) and not defined(SYSUTILSUNICODE)}RawByteString{$else}PathStr{$endif};
+begin
+  GetDirIO(0, BaseDir);
+{$IF defined(FPC_FEXPAND_SYSUTILS) and not defined(SYSUTILSUNICODE)}
+  { convert BaseDir to expected code page }
+  SetCodePage(BaseDir,DefaultRTLFileSystemCodePage);
+{$ENDIF FPC_FEXPAND_SYSUTILS and not SYSUTILSUNICODE}
+  FExpand := FExpand(Path, PathStr(BaseDir));
+end;
+
 
 (* Description of individual conditional defines supported for FExpand
    (disregard the used directory separators in examples, constant

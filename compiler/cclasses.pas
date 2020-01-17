@@ -2190,7 +2190,7 @@ end;
         while assigned(NewNode) do
          begin
            Next:=NewNode.Next;
-           prefetch(next.next);
+           prefetch(pointer(Next)^);
            NewNode.Free;
            NewNode:=Next;
           end;

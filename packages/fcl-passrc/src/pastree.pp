@@ -1557,6 +1557,7 @@ type
   end;
 
   { TPasImplAssign }
+
   TAssignKind = (akDefault,akAdd,akMinus,akMul,akDivision);
   TPasImplAssign = class (TPasImplStatement)
   public
@@ -1594,8 +1595,8 @@ type
     procedure ForEachCall(const aMethodCall: TOnForEachPasElement;
       const Arg: Pointer); override;
   public
-    FinallyExcept: TPasImplTryHandler;
-    ElseBranch: TPasImplTryExceptElse;
+    FinallyExcept: TPasImplTryHandler; // not in Elements
+    ElseBranch: TPasImplTryExceptElse; // not in Elements
   end;
 
   TPasImplTryHandler = class(TPasImplBlock)

@@ -37,6 +37,9 @@ interface
        end;
 
        tllvmstringconstnode = class(tcgstringconstnode)
+          constructor createpchar(s: pchar; l: longint; def: tdef); override;
+          function pass_typecheck: tnode; override;
+          function pass_1: tnode; override;
           procedure pass_generate_code; override;
        protected
           procedure load_dynstring(const strpointerdef: tdef; const elementdef: tdef; const winlikewidestring: boolean); override;
@@ -47,20 +50,63 @@ implementation
     uses
       globtype,globals,verbose,cutils,
       symbase,symtable,symconst,symdef,symsym,defutil,
-      aasmdata,aasmcnst,
+      aasmbase,aasmdata,aasmcnst,
       ncon,
-      llvmbase,aasmllvm,hlcgobj,
-      cgbase,cgutils;
+      llvmbase,aasmllvm,aasmllvmmetadata,hlcgobj,
+      cgbase,cgutils,
+      cpubase;
 
 {*****************************************************************************
                            tllvmstringconstnode
 *****************************************************************************}
+
+    constructor tllvmstringconstnode.createpchar(s: pchar; l: longint; def: tdef);
+      begin
+        inherited;
+        if def=llvm_metadatatype then
+          begin
+            { astringdef is only used if the constant type is ansitring }
+            cst_type:=cst_ansistring;
+            astringdef:=def;
+          end;
+      end;
+
+
+    function tllvmstringconstnode.pass_typecheck: tnode;
+      begin
+        if astringdef<>llvm_metadatatype then
+          begin
+            result:=inherited;
+            exit;
+          end;
+        resultdef:=llvm_metadatatype;
+        result:=nil;
+      end;
+
+
+    function tllvmstringconstnode.pass_1: tnode;
+      begin
+        if astringdef<>llvm_metadatatype then
+          begin
+            result:=inherited;
+            exit;
+          end;
+        expectloc:=LOC_CREGISTER;
+        result:=nil;
+      end;
+
 
     procedure tllvmstringconstnode.pass_generate_code;
       var
         datadef, resptrdef: tdef;
         hreg: tregister;
       begin
+        if astringdef=llvm_metadatatype then
+          begin
+            location_reset(location,LOC_CREGISTER,OS_ADDR);
+            location.register:=tllvmmetadata.getpcharreg(value_str,len);
+            exit;
+          end;
         inherited pass_generate_code;
         if cst_type in [cst_conststring,cst_shortstring] then
           begin

@@ -385,7 +385,10 @@ implementation
                ) and
                (hloopvar.resultdef.typ<>undefineddef)
                then
-               MessagePos(hloopvar.fileinfo,type_e_ordinal_expr_expected);
+               begin
+                 MessagePos(hloopvar.fileinfo,type_e_ordinal_expr_expected);
+                 hloopvar.resultdef:=generrordef;
+               end;
 
              hp:=hloopvar;
              while assigned(hp) and

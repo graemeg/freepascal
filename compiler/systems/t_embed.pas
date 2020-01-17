@@ -74,7 +74,7 @@ const
 begin
   with Info do
    begin
-     ExeCmd[1]:='ld -g '+platform_select+' $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP -L. -o $EXE -T $RES';
+     ExeCmd[1]:='ld -g '+platform_select+' $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP $MAP -L. -o $EXE -T $RES';
    end;
 end;
 
@@ -96,7 +96,7 @@ Var
 begin
   WriteResponseFile:=False;
   linklibc:=(SharedLibFiles.Find('c')<>nil);
-{$if defined(ARM) or defined(i386) or defined(x86_64) or defined(AVR) or defined(MIPSEL)}
+{$if defined(ARM) or defined(i386) or defined(x86_64) or defined(AVR) or defined(MIPSEL) or defined(RISCV32)}
   prtobj:='';
 {$else}
   prtobj:='prt0';
@@ -1241,6 +1241,107 @@ begin
     end;
 {$endif MIPSEL}
 
+{$ifdef RISCV32}
+  with linkres do
+    begin
+      Add('OUTPUT_ARCH("riscv")');
+      Add('ENTRY(_START)');
+      Add('MEMORY');
+      with embedded_controllers[current_settings.controllertype] do
+        begin
+          Add('{');
+          Add('  flash      (rx)   : ORIGIN = 0x'+IntToHex(flashbase,6)+', LENGTH = 0x'+IntToHex(flashsize,6));
+          Add('  ram        (rw!x) : ORIGIN = 0x'+IntToHex(srambase,6)+', LENGTH = 0x'+IntToHex(sramsize,6));
+          Add('}');
+          Add('_stack_top = 0x' + IntToHex(srambase+sramsize-1,4) + ';');
+        end;
+      Add('SECTIONS');
+      Add('{');
+      Add('  .text :');
+      Add('  {');
+      Add('    _text_start = .;');
+      Add('    KEEP(*(.init .init.*))');
+      Add('    *(.text .text.*)');
+      Add('    *(.strings)');
+      Add('    *(.rodata .rodata.*)');
+      Add('    *(.comment)');
+      Add('    . = ALIGN(4);');
+      Add('    _etext = .;');
+      if embedded_controllers[current_settings.controllertype].flashsize<>0 then
+        begin
+          Add('  } >flash');
+          //Add('    .note.gnu.build-id : { *(.note.gnu.build-id) } >flash ');
+        end
+      else
+        begin
+          Add('  } >ram');
+          //Add('    .note.gnu.build-id : { *(.note.gnu.build-id) } >ram ');
+        end;
+
+      Add('  .data :');
+      Add('  {');
+      Add('    _data = .;');
+      Add('    *(.data .data.*)');
+      Add('    KEEP (*(.fpc .fpc.n_version .fpc.n_links))');
+      Add('    _edata = .;');
+      if embedded_controllers[current_settings.controllertype].flashsize<>0 then
+        begin
+          Add('  } >ram AT >flash');
+        end
+      else
+        begin
+          Add('  } >ram');
+        end;
+      Add('  .bss :');
+      Add('  {');
+      Add('    _bss_start = .;');
+      Add('    *(.bss .bss.*)');
+      Add('    *(COMMON)');
+      Add('  } >ram');
+      Add('  . = ALIGN(4);');
+      Add('  _bss_end = . ;');
+      Add('  /* Stabs debugging sections.  */');
+      Add('  .stab          0 : { *(.stab) }');
+      Add('  .stabstr       0 : { *(.stabstr) }');
+      Add('  .stab.excl     0 : { *(.stab.excl) }');
+      Add('  .stab.exclstr  0 : { *(.stab.exclstr) }');
+      Add('  .stab.index    0 : { *(.stab.index) }');
+      Add('  .stab.indexstr 0 : { *(.stab.indexstr) }');
+      Add('  .comment       0 : { *(.comment) }');
+      Add('  /* DWARF debug sections.');
+      Add('     Symbols in the DWARF debugging sections are relative to the beginning');
+      Add('     of the section so we begin them at 0.  */');
+      Add('  /* DWARF 1 */');
+      Add('  .debug          0 : { *(.debug) }');
+      Add('  .line           0 : { *(.line) }');
+      Add('  /* GNU DWARF 1 extensions */');
+      Add('  .debug_srcinfo  0 : { *(.debug_srcinfo) }');
+      Add('  .debug_sfnames  0 : { *(.debug_sfnames) }');
+      Add('  /* DWARF 1.1 and DWARF 2 */');
+      Add('  .debug_aranges  0 : { *(.debug_aranges) }');
+      Add('  .debug_pubnames 0 : { *(.debug_pubnames) }');
+      Add('  /* DWARF 2 */');
+      Add('  .debug_info     0 : { *(.debug_info .gnu.linkonce.wi.*) }');
+      Add('  .debug_abbrev   0 : { *(.debug_abbrev) }');
+      Add('  .debug_line     0 : { *(.debug_line) }');
+      Add('  .debug_frame    0 : { *(.debug_frame) }');
+      Add('  .debug_str      0 : { *(.debug_str) }');
+      Add('  .debug_loc      0 : { *(.debug_loc) }');
+      Add('  .debug_macinfo  0 : { *(.debug_macinfo) }');
+      Add('  /* SGI/MIPS DWARF 2 extensions */');
+      Add('  .debug_weaknames 0 : { *(.debug_weaknames) }');
+      Add('  .debug_funcnames 0 : { *(.debug_funcnames) }');
+      Add('  .debug_typenames 0 : { *(.debug_typenames) }');
+      Add('  .debug_varnames  0 : { *(.debug_varnames) }');
+      Add('  /* DWARF 3 */');
+      Add('  .debug_pubtypes 0 : { *(.debug_pubtypes) }');
+      Add('  .debug_ranges   0 : { *(.debug_ranges) }');
+
+      Add('}');
+      Add('_end = .;');
+
+    end;
+  {$endif RISCV32}
 
   { Write and Close response }
   linkres.writetodisk;
@@ -1254,22 +1355,29 @@ end;
 function TlinkerEmbedded.MakeExecutable:boolean;
 var
   binstr,
-  cmdstr  : TCmdStr;
+  cmdstr,
+  mapstr: TCmdStr;
   success : boolean;
   StaticStr,
   GCSectionsStr,
   DynLinkStr,
-  StripStr: string;
+  StripStr,
+  FixedExeFileName: string;
 begin
   { for future use }
   StaticStr:='';
   StripStr:='';
+  mapstr:='';
   DynLinkStr:='';
+  FixedExeFileName:=maybequoted(ScriptFixFileName(ChangeFileExt(current_module.exefilename,'.elf')));
 
   GCSectionsStr:='--gc-sections';
   //if not(cs_link_extern in current_settings.globalswitches) then
   if not(cs_link_nolink in current_settings.globalswitches) then
    Message1(exec_i_linking,current_module.exefilename);
+
+  if (cs_link_map in current_settings.globalswitches) then
+   mapstr:='-Map '+maybequoted(ChangeFileExt(current_module.exefilename,'.map'));
 
 { Write used files and libraries }
   WriteResponseFile();
@@ -1279,19 +1387,21 @@ begin
   Replace(cmdstr,'$OPT',Info.ExtraOptions);
   if not(cs_link_on_target in current_settings.globalswitches) then
    begin
-    Replace(cmdstr,'$EXE',(maybequoted(ScriptFixFileName(ChangeFileExt(current_module.exefilename,'.elf')))));
+    Replace(cmdstr,'$EXE',FixedExeFileName);
     Replace(cmdstr,'$RES',(maybequoted(ScriptFixFileName(outputexedir+Info.ResName))));
     Replace(cmdstr,'$STATIC',StaticStr);
     Replace(cmdstr,'$STRIP',StripStr);
+    Replace(cmdstr,'$MAP',mapstr);
     Replace(cmdstr,'$GCSECTIONS',GCSectionsStr);
     Replace(cmdstr,'$DYNLINK',DynLinkStr);
    end
   else
    begin
-    Replace(cmdstr,'$EXE',maybequoted(ScriptFixFileName(ChangeFileExt(current_module.exefilename,'.elf'))));
+    Replace(cmdstr,'$EXE',FixedExeFileName);
     Replace(cmdstr,'$RES',maybequoted(ScriptFixFileName(outputexedir+Info.ResName)));
     Replace(cmdstr,'$STATIC',StaticStr);
     Replace(cmdstr,'$STRIP',StripStr);
+    Replace(cmdstr,'$MAP',mapstr);
     Replace(cmdstr,'$GCSECTIONS',GCSectionsStr);
     Replace(cmdstr,'$DYNLINK',DynLinkStr);
    end;
@@ -1303,16 +1413,16 @@ begin
 
 { Post process }
   if success and not(cs_link_nolink in current_settings.globalswitches) then
-    success:=PostProcessExecutable(current_module.exefilename+'.elf',false);
+    success:=PostProcessExecutable(FixedExeFileName,false);
 
   if success and (target_info.system in [system_arm_embedded,system_avr_embedded,system_mipsel_embedded]) then
     begin
       success:=DoExec(FindUtil(utilsprefix+'objcopy'),'-O ihex '+
-        maybequoted(ScriptFixFileName(ChangeFileExt(current_module.exefilename,'.elf')))+' '+
+        FixedExeFileName+' '+
         maybequoted(ScriptFixFileName(ChangeFileExt(current_module.exefilename,'.hex'))),true,false);
       if success then
         success:=DoExec(FindUtil(utilsprefix+'objcopy'),'-O binary '+
-          maybequoted(ScriptFixFileName(ChangeFileExt(current_module.exefilename,'.elf')))+' '+
+          FixedExeFileName+' '+
           maybequoted(ScriptFixFileName(ChangeFileExt(current_module.exefilename,'.bin'))),true,false);
     end;
 

@@ -158,7 +158,7 @@ unit cgcpu;
         regs, fregs: tcpuregisterset;
         r: TSuperRegister;
         href: treference;
-        stackcount: longint;
+        stackcount, stackAdjust: longint;
       begin
         if not(nostackframe) then
           begin
@@ -198,7 +198,16 @@ unit cgcpu;
                   end;
               end;
 
-            stackcount:=0;
+            stackAdjust:=0;
+            if (CPURV_HAS_COMPACT in cpu_capabilities[current_settings.cputype]) and
+               (stackcount>0) then
+              begin
+                list.concat(taicpu.op_reg_reg_const(A_ADDI,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,-stackcount));
+                inc(href.offset,stackcount);
+                stackAdjust:=stackcount;
+                dec(localsize,stackcount);
+              end;
+
             for r:=RS_X0 to RS_X31 do
               if r in regs then
                 begin
@@ -212,10 +221,10 @@ unit cgcpu;
                 begin
                   list.concat(taicpu.op_reg_ref(A_FSD,newreg(R_FPUREGISTER,r,R_SUBWHOLE),href));
                   dec(href.offset,8);
-                end;              
+                end;
 
             if current_procinfo.framepointer<>NR_STACK_POINTER_REG then
-              list.concat(taicpu.op_reg_reg_const(A_ADDI,NR_FRAME_POINTER_REG,NR_STACK_POINTER_REG,0));
+              list.concat(taicpu.op_reg_reg_const(A_ADDI,NR_FRAME_POINTER_REG,NR_STACK_POINTER_REG,stackAdjust));
 
             if localsize>0 then
               begin

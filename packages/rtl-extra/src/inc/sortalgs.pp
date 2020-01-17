@@ -349,7 +349,10 @@ begin
     exit;
 
   GetMem(TempBuf, ItemSize);
+  
+{$ifdef FPC_HAS_FEATURE_EXCEPTIONS}
   try
+{$endif FPC_HAS_FEATURE_EXCEPTIONS}
     HeapSize := ItemCount;
     for I := HeapSort_Parent(ItemCount - 1) downto 0 do
       Heapify(I);
@@ -361,9 +364,13 @@ begin
       Dec(HeapSize);
       Heapify(0);
     end;
+{$ifdef FPC_HAS_FEATURE_EXCEPTIONS}
   finally
+{$endif FPC_HAS_FEATURE_EXCEPTIONS}  
     FreeMem(TempBuf, ItemSize);
+{$ifdef FPC_HAS_FEATURE_EXCEPTIONS}
   end;
+{$endif FPC_HAS_FEATURE_EXCEPTIONS}
 end;
 
 procedure HeapSort_ItemList_CustomItemExchanger_Context(
@@ -959,11 +966,16 @@ begin
   if not Assigned(Items) or (ItemCount < 2) or (ItemSize < 1) then
     exit;
   GetMem(TempBuf, ItemSize);
+{$ifdef FPC_HAS_FEATURE_EXCEPTIONS}
   try
     IntroSort(0, ItemCount - 1, 2*IntLog2(ItemCount));
   finally
     FreeMem(TempBuf, ItemSize);
   end;
+{$else FPC_HAS_FEATURE_EXCEPTIONS}
+  IntroSort(0, ItemCount - 1, 2*IntLog2(ItemCount));
+  FreeMem(TempBuf, ItemSize);
+{$endif FPC_HAS_FEATURE_EXCEPTIONS}
 end;
 
 procedure IntroSort_ItemList_CustomItemExchanger_Context(

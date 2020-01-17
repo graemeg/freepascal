@@ -1596,7 +1596,14 @@ Implementation
                 A_ORR,
                 A_MLA,
                 A_MLS,
-                A_MUL:
+                A_MUL,
+                A_QADD,A_QADD16,A_QADD8,
+                A_QSUB,A_QSUB16,A_QSUB8,
+                A_QDADD,A_QDSUB,A_QASX,A_QSAX,
+                A_SHADD16,A_SHADD8,A_UHADD16,A_UHADD8,
+                A_SHSUB16,A_SHSUB8,A_UHSUB16,A_UHSUB8,
+                A_PKHTB,A_PKHBT,
+                A_SMUAD,A_SMUSD:
                   begin
                         {
                           optimize

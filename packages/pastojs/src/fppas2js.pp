@@ -1455,7 +1455,7 @@ type
     function ProcHasImplElements(Proc: TPasProcedure): boolean; override;
     function HasAnonymousFunctions(El: TPasImplElement): boolean;
     function GetTopLvlProcScope(El: TPasElement): TPas2JSProcedureScope;
-    function ProcCanBePrecompiled(Proc: TPasProcedure): boolean; virtual;
+    function ProcCanBePrecompiled(DeclProc: TPasProcedure): boolean; virtual;
     function IsTObjectFreeMethod(El: TPasExpr): boolean; virtual;
     function IsExternalBracketAccessor(El: TPasElement): boolean;
     function IsExternalClassConstructor(El: TPasElement): boolean;
@@ -5940,30 +5940,30 @@ begin
     end;
 end;
 
-function TPas2JSResolver.ProcCanBePrecompiled(Proc: TPasProcedure): boolean;
+function TPas2JSResolver.ProcCanBePrecompiled(DeclProc: TPasProcedure): boolean;
 var
   El: TPasElement;
   TemplTypes: TFPList;
   ProcScope: TPas2JSProcedureScope;
   GenScope: TPasGenericScope;
 begin
-  if GetProcTemplateTypes(Proc)<>nil then
-    exit(false); // generic proc
-  ProcScope:=Proc.CustomData as TPas2JSProcedureScope;
+  if GetProcTemplateTypes(DeclProc)<>nil then
+    exit(false); // generic DeclProc
+  ProcScope:=DeclProc.CustomData as TPas2JSProcedureScope;
   if ProcScope.SpecializedFromItem<>nil then
-    exit(false); // specialized generic proc
-  El:=Proc;
+    exit(false); // specialized generic DeclProc
+  El:=DeclProc;
   repeat
     El:=El.Parent;
     if El=nil then
       exit(true); // ok
     if El is TPasProcedure then
-      exit(false); // Proc is a local proc
+      exit(false); // DeclProc is a local DeclProc
     if El is TPasGenericType then
       begin
       TemplTypes:=TPasGenericType(El).GenericTemplateTypes;
       if (TemplTypes<>nil) and (TemplTypes.Count>0) then
-        exit(false); // not fully specialized
+        exit(false); // method of a generic class/record type
       GenScope:=El.CustomData as TPasGenericScope;
       if GenScope.SpecializedFromItem<>nil then
         exit(false); // method of a specialized class/record type

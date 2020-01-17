@@ -127,19 +127,19 @@ end;
   i:=i / j;
   if trunc(i) <> trunc(-9.99) then
     result := false;
-  if frac(i) <> frac(-9.99) then
+  if abs(frac(i) - frac(-9.99)) > 1e-9 then
     result := false;
   WriteLn('Result (-9.99) :',i);
   i:=j / i;
   if trunc(i) <> trunc(-1.001) then
     result := false;
-  if frac(i) <> frac(-1.001) then
+  if abs (frac(i) - frac(-1.001)) > 1e-9 then
     result := false;
   WriteLN('Result (-1.001) :',i);
   j:=i / 10.0;
   if trunc(j) <> trunc(-0.1001) then
     result := false;
-  if frac(j) <> frac(-0.1001) then
+  if abs(frac(j) - frac(-0.1001)) > 1e-9 then
     result := false;
   WriteLn('Result (-0.1001) :',j);
   if not result then

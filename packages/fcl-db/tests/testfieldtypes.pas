@@ -133,6 +133,8 @@ type
     procedure TestQueryAfterReconnect; // bug 16438
 
     procedure TestStringsReplace;
+    // Test SQLIte3 AlwaysUseBigInt, introduced after bug ID 36486.
+    Procedure TestAlwaysUseBigint;
   end;
 
 
@@ -2427,6 +2429,34 @@ begin
     inherited RunTest;
 end;
 
+Procedure TTestFieldTypes.TestAlwaysUseBigint;
+
+var
+  I : byte;
+
+begin
+  If SQLConnType<>sqlite3 then
+    Ignore('Test only for SQLite');
+  TSQLDBConnector(DBConnector).Connection.Params.Values['AlwaysUseBigint']:='1';
+
+  CreateTableWithFieldType(ftInteger,'INT');
+  TestFieldDeclaration(ftLargeInt,8);
+
+  for i := 0 to testIntValuesCount-1 do
+    TSQLDBConnector(DBConnector).Connection.ExecuteDirect('insert into FPDEV2 (FT) values (' + inttostr(testIntValues[i]) + ')');
+
+  with TSQLDBConnector(DBConnector).Query do
+    begin
+    Open;
+    for i := 0 to testIntValuesCount-1 do
+      begin
+      AssertEquals(testIntValues[i],fields[0].AsLargeInt);
+      Next;
+      end;
+    close;
+    end;
+    
+end;
 
 initialization
   // Only test if using sqldb

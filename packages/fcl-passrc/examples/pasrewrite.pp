@@ -154,7 +154,7 @@ begin
     end;
   // Indent
   if HasOption('t','indent') then
-    FIndentSize:=StrToIntDef(GetOptionValue('d','indent'),-1);
+    FIndentSize:=StrToIntDef(GetOptionValue('t','indent'),-1);
   if (FHeaderFile<>'') and Not FileExists(FheaderFile) then
     begin
     PrintUsage(Format('Header file "%s"does not exist',[FHeaderFile]));

@@ -272,11 +272,16 @@ implementation
 
     function getregisterstring(reg: tregister): ansistring;
       begin
-        if getregtype(reg)=R_TEMPREGISTER then
-          result:='%tmp.'
+        if getregtype(reg)=R_METADATAREGISTER then
+          result:='!"'+tllvmmetadata.getregstring(reg)+'"'
         else
-          result:='%reg.'+tostr(byte(getregtype(reg)))+'_';
-        result:=result+tostr(getsupreg(reg));
+          begin
+            if getregtype(reg)=R_TEMPREGISTER then
+              result:='%tmp.'
+            else
+              result:='%reg.'+tostr(byte(getregtype(reg)))+'_';
+            result:=result+tostr(getsupreg(reg));
+          end;
       end;
 
 
@@ -1019,6 +1024,8 @@ implementation
             writer.AsmWrite(' "thunk"');
           if llvmflag_null_pointer_valid in llvmversion_properties[current_settings.llvmversion] then
             writer.AsmWrite(' "null-pointer-is-valid"="true"');
+          if not(pio_fastmath in pd.implprocoptions) then
+            writer.AsmWrite(' strictfp');
         end;
 
 

@@ -4,7 +4,6 @@
     member of the Free Pascal development team.
 
     The syscalls for the new RTL, moved to platform dependant dir.
-    Old linux calling convention is still kept.
 
     See the file COPYING.FPC, included in this distribution,
     for details about the copyright.

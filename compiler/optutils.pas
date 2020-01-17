@@ -42,6 +42,7 @@ unit optutils;
     procedure SetNodeSucessors(p,last : tnode);
     procedure PrintDFAInfo(var f : text;p : tnode);
     procedure PrintIndexedNodeSet(var f : text;s : TIndexedNodeSet);
+
     { determines the optinfo.defsum field for the given node
       this field contains a sum of all expressions defined by
       all child expressions reachable through p
@@ -50,6 +51,12 @@ unit optutils;
 
     { calculates/estimates the field execution weight of optinfo }
     procedure CalcExecutionWeights(p : tnode;Initial : longint = 100);
+
+    { determines the optinfo.defsum field for the given node
+      this field contains a sum of all expressions defined by
+      all child expressions reachable through p
+    }
+    procedure CalcUseSum(p : tnode);
 
     { returns true, if n is a valid node and has life info }
     function has_life_info(n : tnode) : boolean;
@@ -336,12 +343,19 @@ unit optutils;
       end;
 
     var
-      sum : TDFASet;
+      defsum : TDFASet;
 
     function adddef(var n: tnode; arg: pointer): foreachnoderesult;
       begin
         if assigned(n.optinfo) then
-          DFASetIncludeSet(sum,n.optinfo^.def);
+          begin
+            DFASetIncludeSet(defsum,n.optinfo^.def);
+            { for nodes itself do not necessarily expose the definition of the counter as
+              the counter might be undefined after the for loop, so include here the counter
+              explicitly }
+            if (n.nodetype=forn) and assigned(tfornode(n).left.optinfo) then
+              DFASetInclude(defsum,tfornode(n).left.optinfo^.index);
+          end;
         Result:=fen_false;
       end;
 
@@ -351,12 +365,14 @@ unit optutils;
         p.allocoptinfo;
         if not assigned(p.optinfo^.defsum) then
           begin
-            sum:=nil;
+            defsum:=nil;
             foreachnodestatic(pm_postprocess,p,@adddef,nil);
-            p.optinfo^.defsum:=sum;
+            p.optinfo^.defsum:=defsum;
           end;
       end;
 
+    var
+      usesum : TDFASet;
 
     function SetExecutionWeight(var n: tnode; arg: pointer): foreachnoderesult;
       var
@@ -401,6 +417,26 @@ unit optutils;
       begin
         if assigned(p) then
           foreachnodestatic(pm_postprocess,p,@SetExecutionWeight,Pointer(@Initial));
+      end;
+
+
+    function adduse(var n: tnode; arg: pointer): foreachnoderesult;
+      begin
+        if assigned(n.optinfo) then
+          DFASetIncludeSet(usesum,n.optinfo^.use);
+        Result:=fen_false;
+      end;
+
+
+    procedure CalcUseSum(p : tnode);
+      begin
+        p.allocoptinfo;
+        if not assigned(p.optinfo^.usesum) then
+          begin
+            usesum:=nil;
+            foreachnodestatic(pm_postprocess,p,@adduse,nil);
+            p.optinfo^.usesum:=usesum;
+          end;
       end;
 
 

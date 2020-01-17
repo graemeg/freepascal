@@ -248,6 +248,7 @@ const
   syscall_nr_copy_file_range = 391;
   syscall_nr_preadv2 = 392;
   syscall_nr_pwritev2 = 393;
+  syscall_nr_statx = 397;
   syscall_nr___ARM_NR_cacheflush = 983042;
   syscall_nr_cacheflush = syscall_nr___ARM_NR_cacheflush;
   syscall_nr___ARM_NR_set_tls = 983045;

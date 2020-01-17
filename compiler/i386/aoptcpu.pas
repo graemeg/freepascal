@@ -324,6 +324,8 @@ unit aoptcpu;
                    end;
                 A_TEST, A_OR:
                   Result:=PostPeepholeOptTestOr(p);
+                A_MOVSX:
+                  Result:=PostPeepholeOptMOVSX(p);
                 else
                   ;
               end;

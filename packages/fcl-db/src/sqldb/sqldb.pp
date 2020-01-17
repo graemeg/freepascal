@@ -268,6 +268,7 @@ type
 
     Property Statements : TThreadList Read FStatements;
     property Port: cardinal read GetPort write SetPort;
+    property CodePage: TSystemCodePage read FCodePage;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;

@@ -47,6 +47,7 @@ unit nx86add;
         procedure second_addfloatsse;
         procedure second_addfloatavx;
       public
+        function pass_1 : tnode;override;
         function use_fma : boolean;override;
         procedure second_addfloat;override;
 {$ifndef i8086}
@@ -76,8 +77,9 @@ unit nx86add;
       symconst,symdef,
       cgobj,hlcgobj,cgx86,cga,cgutils,
       tgobj,ncgutil,
-      ncon,nset,ninl,
-      defutil;
+      ncon,nset,ninl,ncnv,
+      defutil,
+      htypechk;
 
 { Range check must be disabled explicitly as the code serves
   on three different architecture sizes }
@@ -1146,6 +1148,21 @@ unit nx86add;
       end;
 
 
+    function tx86addnode.pass_1: tnode;
+      begin
+        { on x86, we do not support fpu registers, so in case of operations using the x87, it
+          is normally useful, not to put the operands into registers which would be mm register }
+        if ((left.resultdef.typ=floatdef) or (right.resultdef.typ=floatdef)) and
+          (not(use_vectorfpu(left.resultdef)) and not(use_vectorfpu(right.resultdef)) and
+           not(use_vectorfpu(resultdef))) then
+          begin
+            make_not_regable(left,[ra_addr_regable]);
+            make_not_regable(right,[ra_addr_regable]);
+          end;
+        Result:=inherited pass_1;
+      end;
+
+
     function tx86addnode.use_fma : boolean;
       begin
 {$ifndef i8086}
@@ -1275,7 +1292,7 @@ unit nx86add;
         ops_rdiv: array[boolean] of TAsmOp = (A_FDIVRP,A_FDIVR);
       var
         op : TAsmOp;
-        refnode : tnode;
+        refnode, hp: tnode;
         hasref : boolean;
       begin
         if use_vectorfpu(resultdef) then
@@ -1285,6 +1302,22 @@ unit nx86add;
             else
               second_addfloatsse;
             exit;
+          end;
+
+        { can the operation do the conversion? }
+        if (left.nodetype=typeconvn) and (is_double(ttypeconvnode(left).left.resultdef) or is_single(ttypeconvnode(left).left.resultdef)) then
+          begin
+            hp:=left;
+            left:=ttypeconvnode(left).left;
+            ttypeconvnode(hp).left:=nil;
+            hp.Free;
+          end;
+        if (right.nodetype=typeconvn) and (is_double(ttypeconvnode(right).left.resultdef) or is_single(ttypeconvnode(right).left.resultdef)) then
+          begin
+            hp:=right;
+            right:=ttypeconvnode(right).left;
+            ttypeconvnode(hp).left:=nil;
+            hp.Free;
           end;
 
         pass_left_right;

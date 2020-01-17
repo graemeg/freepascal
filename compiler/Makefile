@@ -529,10 +529,10 @@ endif
 override LOCALOPT+=-dllvm -Fullvm
 endif
 ifeq ($(PPC_TARGET),i386)
-override LOCALOPT+=-Fux86
+override LOCALOPT+=-Fux86 -Fix86
 endif
 ifeq ($(PPC_TARGET),x86_64)
-override LOCALOPT+=-Fux86
+override LOCALOPT+=-Fux86 -Fix86
 endif
 ifeq ($(PPC_TARGET),powerpc)
 override LOCALOPT+=-Fuppcgen

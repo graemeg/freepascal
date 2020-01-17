@@ -232,8 +232,8 @@ unit agrvgas;
       const
         arch_str: array[boolean,tcputype] of string[10] = (
 {$ifdef RISCV32}
-          ('','rv32ima','rv32im','rv32i'),
-          ('','rv32imafd','rv32imfd','rv32ifd')
+          ('','rv32imac','rv32ima','rv32im','rv32i'),
+          ('','rv32imafdc','rv32imafd','rv32imfd','rv32ifd')
 {$endif RISCV32}
 {$ifdef RISCV64}
           ('','rv64imac','rv64ima','rv64im','rv64i'),
