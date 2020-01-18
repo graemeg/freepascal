@@ -7,7 +7,7 @@ unit udapp;
 interface
 
 uses
-  Classes, SysUtils, fpttf, fpreport,
+  Classes, SysUtils, fpttf, fpreport, fpjsonreport,
 
   {$IFDEF ExportPDF}
   fpreportpdfexport,
@@ -48,14 +48,15 @@ Type
 
   TReportDemoApp = class(TComponent)
   private
-    Frpt: TFPReport;
+    Frpt: TFPJSONReport;
   protected
     procedure InitialiseData; virtual;
     procedure CreateReportDesign; virtual;
   public
+    procedure TestInit;
     Class Function Description : string; virtual;
 //    procedure DoCreateJSON(const AFileName: String; RunTime: Boolean=False);
-    Property rpt : TFPReport read Frpt Write FRpt;
+    Property rpt : TFPJSONReport read Frpt Write FRpt;
   end;
   TReportDemoAppClass = Class of TReportDemoApp;
 
@@ -144,14 +145,20 @@ begin
     PaperManager.RegisterStandardSizes;
 end;
 
+procedure TReportDemoApp.TestInit;
+begin
+  Frpt := TFPJSONReport.Create(Self);
+  InitialiseData;
+  CreateReportDesign;
+end;
+
 class function TReportDemoApp.Description: string;
 begin
   Result:='';
 end;
 
 
-class function TReportDemoApplication.GetRenderClass(F: TRenderFormat
-  ): TFPReportExporterClass;
+class function TReportDemoApplication.GetRenderClass(F: TRenderFormat): TFPReportExporterClass;
 
 begin
   Case F of
@@ -465,7 +472,7 @@ begin
   if (F<>'') and (CompareText(F,'default')<>0) and (Fmt=rfDefault) then
     Usage(Format('Unknown output format: %s',[F]));
   FRunner.ReportApp:=GetReportClass(D).Create(Self);
-  FRunner.ReportApp.rpt:=TFPReport.Create(FRunner.ReportApp);
+  FRunner.ReportApp.rpt:=TFPJSONReport.Create(FRunner.ReportApp);
   FRunner.Format:=Fmt;
   FRunner.DesignFileName:=J;
   FRunner.Execute;

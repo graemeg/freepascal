@@ -135,7 +135,11 @@ begin
   Memo.Layout.Top := 20;
   Memo.Layout.Width := 50;
   Memo.Layout.Height := 8;
+  {$IFDEF fptestX}
+  Memo.Text := 'Report Date: 2020-01-15';
+  {$ELSE}
   Memo.Text := 'Report Date: [TODAY]';
+  {$ENDIF}
 
   Memo := TFPReportMemo.Create(TitleBand);
   Memo.Layout.Left := 0;

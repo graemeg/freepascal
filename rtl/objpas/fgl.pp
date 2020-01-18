@@ -970,11 +970,7 @@ end;
 class function TFPGList.ItemIsManaged: Boolean;
 begin
 {$IFNDEF VER3_0}
-{$IFNDEF VER3_2}
   Result:=IsManagedType(T);
-{$ELSE}  
-  Result:=True; // Fallback to old behaviour  
-{$ENDIF}
 {$ELSE}
   Result:=True; // Fallback to old behaviour  
 {$ENDIF}

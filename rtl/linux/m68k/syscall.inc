@@ -1,6 +1,6 @@
 {
     This file is part of the Free Pascal run time library.
-    Copyright (c) 2002 Marco van de Voort
+    Copyright (c) 2006 Sven Barth
     member of the Free Pascal development team.
 
     m68k syscall headers for Linux 

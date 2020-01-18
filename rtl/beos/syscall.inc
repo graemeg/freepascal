@@ -1,27 +1,21 @@
 {
-    $Id: syscall.inc,v 1.1 2003/01/08 22:32:28 marco Exp $
-    Copyright (c) 1998-2000 by Florian Klaempfl
+    This file is part of the Free Pascal run time library.
+    Copyright (c) 1998-2000 Florian P Klaempfl
+    Copyright (c) 2002 Marco van de Voort
+    member of the Free Pascal development team.
 
     This include implements the actual system call for the
     intel BeOS 80x86 platform.
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+    See the file COPYING.FPC, included in this distribution,
+    for details about the copyright.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-    MA 02110-1301, USA.
+ **********************************************************************}
 
- ****************************************************************************
-}
 // Under BeOS, we use stdcall for this line because the default calling convention in 1.9 
 // is register instead of stdcall. But assembler is already written, so i used the stdcall
 // calling convention !

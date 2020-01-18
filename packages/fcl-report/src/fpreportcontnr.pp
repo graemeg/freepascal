@@ -260,6 +260,7 @@ procedure TFPReportObjectData.DoClose;
 begin
   FIndex:=-1;
   inherited DoClose;
+  DataFields.Clear;
 end;
 
 function TFPReportObjectData.DoEOF: boolean;

@@ -192,7 +192,7 @@ begin
 
   GroupHeader1Region := TFPReportGroupHeaderBand.Create(Page);
   GroupHeader1Region.Layout.Height := 15;
-  GroupHeader1Region.GroupCondition := 'region';
+  GroupHeader1Region.GroupCondition := 'data.region';
   GroupHeader1Region.Frame.Shape := fsRectangle;
   GroupHeader1Region.Frame.BackgroundColor := clGroupHeaderFooter;
   //GroupHeader1Region.StartOnNewPage := True;
@@ -209,7 +209,7 @@ begin
     Memo.UseParentFont := False;
     Memo.Font.Size := 16;
     Memo.TextAlignment.Vertical := tlBottom;
-    Memo.Text := 'Region: [region] ([formatfloat(''#,##0.0'', grp1region_sum_population_in_M)] M)';
+    Memo.Text := 'Region: [data.region] ([formatfloat(''#,##0.0'', grp1region_sum_population_in_M)] M)';
 
     Memo := TFPReportMemo.Create(GroupHeader1Region);
     Memo.Layout.Left := 25;
@@ -235,7 +235,7 @@ begin
     Memo.Layout.Top := 1;
     Memo.Layout.Width := 170;
     Memo.Layout.Height := 4;
-    Memo.Text := 'Region: [region]';
+    Memo.Text := 'Region: [data.region]';
 
 
   {*** group header 2 subregion ***}
@@ -244,7 +244,7 @@ begin
 
   GroupHeader2Subregion := TFPReportGroupHeaderBand.Create(Page);
   GroupHeader2Subregion.Layout.Height := 2;
-  GroupHeader2Subregion.GroupCondition := 'subregion';
+  GroupHeader2Subregion.GroupCondition := 'data.subregion';
   GroupHeader2Subregion.ParentGroupHeader := GroupHeader1Region;
   //GroupHeader2Subregion.StartOnNewPage := True;
   GroupHeader2Subregion.ReprintedHeader := [rsPage];
@@ -295,7 +295,7 @@ begin
     Memo.UseParentFont := False;
     Memo.Font.Size := 14;
     Memo.TextAlignment.Vertical := tlBottom;
-    Memo.Text := 'Subregion: [subregion] ([formatfloat(''#,##0.0'', grp2subregion_sum_population_in_M)] M)';
+    Memo.Text := 'Subregion: [data.subregion] ([formatfloat(''#,##0.0'', grp2subregion_sum_population_in_M)] M)';
 
     Memo := TFPReportMemo.Create(ChildBand);
     Memo.Layout.Left := 25;
@@ -306,7 +306,7 @@ begin
     Memo.Font.Size := 10;
     Memo.TextAlignment.Vertical := tlBottom;
     Memo.TextAlignment.Horizontal := taRightJustified;
-    Memo.Text := '[formatfloat(''#0.0'', grp2subregion_sum_population / grp1region_sum_population * 100)] % in [region] - [formatfloat(''#0.0'', grp2subregion_sum_population / total_sum_population * 100)] % in World';
+    Memo.Text := '[formatfloat(''#0.0'', grp2subregion_sum_population / grp1region_sum_population * 100)] % in [data.region] - [formatfloat(''#0.0'', grp2subregion_sum_population / total_sum_population * 100)] % in World';
 
   {--- group header 2 subregion - band 3 ---}
 
@@ -340,7 +340,7 @@ begin
     Memo.Layout.Top := 1;
     Memo.Layout.Width := 170;
     Memo.Layout.Height := 4;
-    Memo.Text := 'Subregion: [subregion]';
+    Memo.Text := 'Subregion: [data.subregion]';
 
 
   {*** group header 3 initial ***}
@@ -349,7 +349,7 @@ begin
 
   GroupHeader3Initial := TFPReportGroupHeaderBand.Create(Page);
   GroupHeader3Initial.Layout.Height := 2;
-  GroupHeader3Initial.GroupCondition := 'copy(country,1,1)';
+  GroupHeader3Initial.GroupCondition := 'copy(data.country,1,1)';
   GroupHeader3Initial.ParentGroupHeader := GroupHeader2Subregion;
   GroupHeader3Initial.ReprintedHeader := [rsPage];
   GroupHeader3Initial.IntermediateFooter := [rsPage];
@@ -426,7 +426,7 @@ begin
     Memo.UseParentFont := False;
     Memo.Font.Size := 12;
     Memo.TextAlignment.Vertical := tlBottom;
-    Memo.Text := '[copy(country,1,1)]  ([formatfloat(''#,##0.0'', grp3initial_sum_population_in_M)] M)';
+    Memo.Text := '[copy(data.country,1,1)]  ([formatfloat(''#,##0.0'', grp3initial_sum_population_in_M)] M)';
 
     Memo := TFPReportMemo.Create(ChildBand);
     Memo.Layout.Left := 25;
@@ -437,7 +437,7 @@ begin
     Memo.Font.Size := 10;
     Memo.TextAlignment.Vertical := tlBottom;
     Memo.TextAlignment.Horizontal := taRightJustified;
-    Memo.Text := '[formatfloat(''#0.0'', grp3initial_sum_population / grp2subregion_sum_population * 100)] % in [subregion] - [formatfloat(''#0.0'', grp3initial_sum_population / grp1region_sum_population * 100)] % in [region] - [formatfloat(''#0.0'', grp3initial_sum_population / total_sum_population * 100)] % in World';
+    Memo.Text := '[formatfloat(''#0.0'', grp3initial_sum_population / grp2subregion_sum_population * 100)] % in [data.subregion] - [formatfloat(''#0.0'', grp3initial_sum_population / grp1region_sum_population * 100)] % in [data.region] - [formatfloat(''#0.0'', grp3initial_sum_population / total_sum_population * 100)] % in World';
 
     Memo := TFPReportMemo.Create(ChildBand);
     Memo.Layout.Left := 90;
@@ -521,7 +521,7 @@ begin
     Memo.Layout.Top := 1;
     Memo.Layout.Width := 170;
     Memo.Layout.Height := 4;
-    Memo.Text := '[copy(country,1,1)]';
+    Memo.Text := '[copy(data.country,1,1)]';
 
 
   {--- group header 3 initial - band 4 ---}
@@ -559,15 +559,15 @@ begin
 
   {*** variables ***}
 
-  rpt.Variables.AddExprVariable('population_in_M', 'StrToFloat(population) / 1000000', rtFloat, rtNone, '');
-  rpt.Variables.AddExprVariable('grp1region_sum_population_in_M', 'sum(StrToFloat(population) / 1000000)', rtFloat, GroupHeader1Region);
-  rpt.Variables.AddExprVariable('grp1region_sum_population', 'sum(StrToFloat(population))', rtFloat, GroupHeader1Region);
-  rpt.Variables.AddExprVariable('grp2subregion_sum_population_in_M', 'sum(StrToFloat(population) / 1000000)', rtFloat, GroupHeader2Subregion);
-  rpt.Variables.AddExprVariable('grp2subregion_sum_population', 'sum(StrToFloat(population))', rtFloat, GroupHeader2Subregion);
-  rpt.Variables.AddExprVariable('grp3initial_sum_population_in_M', 'sum(StrToFloat(population) / 1000000)', rtFloat, GroupHeader3Initial);
-  rpt.Variables.AddExprVariable('grp3initial_sum_population', 'sum(StrToFloat(population))', rtFloat, GroupHeader3Initial);
-  rpt.Variables.AddExprVariable('total_sum_population_in_M', 'sum(StrToFloat(population) / 1000000)', rtFloat);
-  rpt.Variables.AddExprVariable('total_sum_population', 'sum(StrToFloat(population))', rtFloat);
+  rpt.Variables.AddExprVariable('population_in_M', 'StrToFloat(data.population) / 1000000', rtFloat, rtNone, '');
+  rpt.Variables.AddExprVariable('grp1region_sum_population_in_M', 'sum(StrToFloat(data.population) / 1000000)', rtFloat, GroupHeader1Region);
+  rpt.Variables.AddExprVariable('grp1region_sum_population', 'sum(StrToFloat(data.population))', rtFloat, GroupHeader1Region);
+  rpt.Variables.AddExprVariable('grp2subregion_sum_population_in_M', 'sum(StrToFloat(data.population) / 1000000)', rtFloat, GroupHeader2Subregion);
+  rpt.Variables.AddExprVariable('grp2subregion_sum_population', 'sum(StrToFloat(data.population))', rtFloat, GroupHeader2Subregion);
+  rpt.Variables.AddExprVariable('grp3initial_sum_population_in_M', 'sum(StrToFloat(data.population) / 1000000)', rtFloat, GroupHeader3Initial);
+  rpt.Variables.AddExprVariable('grp3initial_sum_population', 'sum(StrToFloat(data.population))', rtFloat, GroupHeader3Initial);
+  rpt.Variables.AddExprVariable('total_sum_population_in_M', 'sum(StrToFloat(data.population) / 1000000)', rtFloat);
+  rpt.Variables.AddExprVariable('total_sum_population', 'sum(StrToFloat(data.population))', rtFloat);
 
 
   {****************}
@@ -639,7 +639,7 @@ begin
     Memo.Layout.Top := 2;
     Memo.Layout.Width := 45;
     Memo.Layout.Height := 5;
-    Memo.Text := '[country]';
+    Memo.Text := '[data.country]';
     Memo.Options := memo.Options + [moDisableWordWrap];
 
     Memo := TFPReportMemo.Create(DataBand);
@@ -648,7 +648,7 @@ begin
     Memo.Layout.Width := 25;
     Memo.Layout.Height := 5;
     Memo.TextAlignment.Horizontal := taRightJustified;
-    Memo.Text := '[formatfloat(''#,##0'', StrToFloat(population))]';
+    Memo.Text := '[formatfloat(''#,##0'', StrToFloat(data.population))]';
 
     Memo := TFPReportMemo.Create(DataBand);
     Memo.Layout.Left := 80;
@@ -658,7 +658,7 @@ begin
     Memo.Text := '> DEU';
     Memo.UseParentFont := false;
     Memo.Font.Color := clGreen;
-    Memo.VisibleExpr := 'StrToFloat(population) > 82667685';
+    Memo.VisibleExpr := 'StrToFloat(data.population) > 82667685';
 
     Memo := TFPReportMemo.Create(DataBand);
     Memo.Layout.Left := 80;
@@ -668,7 +668,7 @@ begin
     Memo.Text := '< DEU';
     Memo.UseParentFont := false;
     Memo.Font.Color := clRed;
-    Memo.VisibleExpr := 'StrToFloat(population) < 82667685';
+    Memo.VisibleExpr := 'StrToFloat(data.population) < 82667685';
 
     Memo := TFPReportMemo.Create(DataBand);
     Memo.Layout.Left := 95;
@@ -676,7 +676,7 @@ begin
     Memo.Layout.Width := 15;
     Memo.Layout.Height := 5;
     Memo.TextAlignment.Horizontal := taRightJustified;
-    Memo.Text := '[formatfloat(''#,##0.0'',StrToFloat(population)/grp3initial_sum_population*100)] %';
+    Memo.Text := '[formatfloat(''#,##0.0'',StrToFloat(data.population)/grp3initial_sum_population*100)] %';
 
     Memo := TFPReportMemo.Create(DataBand);
     Memo.Layout.Left := 115;
@@ -684,7 +684,7 @@ begin
     Memo.Layout.Width := 15;
     Memo.Layout.Height := 5;
     Memo.TextAlignment.Horizontal := taRightJustified;
-    Memo.Text := '[formatfloat(''#,##0.0'',StrToFloat(population)/grp2subregion_sum_population*100)] %';
+    Memo.Text := '[formatfloat(''#,##0.0'',StrToFloat(data.population)/grp2subregion_sum_population*100)] %';
 
     Memo := TFPReportMemo.Create(DataBand);
     Memo.Layout.Left := 135;
@@ -692,7 +692,7 @@ begin
     Memo.Layout.Width := 15;
     Memo.Layout.Height := 5;
     Memo.TextAlignment.Horizontal := taRightJustified;
-    Memo.Text := '[formatfloat(''#,##0.0'',StrToFloat(population)/grp1region_sum_population*100)] %';
+    Memo.Text := '[formatfloat(''#,##0.0'',StrToFloat(data.population)/grp1region_sum_population*100)] %';
 
     Memo := TFPReportMemo.Create(DataBand);
     Memo.Layout.Left := 155;
@@ -700,7 +700,7 @@ begin
     Memo.Layout.Width := 15;
     Memo.Layout.Height := 5;
     Memo.TextAlignment.Horizontal := taRightJustified;
-    Memo.Text := '[formatfloat(''#,##0.0'',StrToFloat(population)/total_sum_population*100)] %';
+    Memo.Text := '[formatfloat(''#,##0.0'',StrToFloat(data.population)/total_sum_population*100)] %';
 
 
   {**********************}
@@ -821,7 +821,7 @@ begin
     Memo.UseParentFont := False;
     Memo.Font.Size := 12;
     Memo.TextAlignment.Vertical := tlBottom;
-    Memo.Text := 'Population [copy(country,1,1)]: [formatfloat(''#,##0'', grp3initial_sum_population)]';
+    Memo.Text := 'Population [copy(data.country,1,1)]: [formatfloat(''#,##0'', grp3initial_sum_population)]';
 
   {--- group footer 3 initial - band 4 ---}
 
@@ -947,7 +947,7 @@ begin
     Memo.UseParentFont := False;
     Memo.Font.Size := 14;
     Memo.TextAlignment.Vertical := tlBottom;
-    Memo.Text := 'Population [subregion]: [formatfloat(''#,##0'', grp2subregion_sum_population)]';
+    Memo.Text := 'Population [data.subregion]: [formatfloat(''#,##0'', grp2subregion_sum_population)]';
 
   {--- group footer 2 subregion - band 4 ---}
 
@@ -1038,7 +1038,7 @@ begin
     Memo.UseParentFont := False;
     Memo.Font.Size := 16;
     Memo.TextAlignment.Vertical := tlBottom;
-    Memo.Text := 'Population [region]: [formatfloat(''#,##0'', grp1region_sum_population)]';
+    Memo.Text := 'Population [data.region]: [formatfloat(''#,##0'', grp1region_sum_population)]';
 
   {--- group footer 1 region - band 3 ---}
 
@@ -1182,6 +1182,7 @@ constructor TNestedGroupsDemo.Create(AOWner: TComponent);
 begin
   inherited;
   FReportData := TFPReportUserData.Create(nil);
+  FReportData.Name := 'Data';
   FReportData.OnGetValue := @GetReportDataValue;
   FReportData.OnGetEOF := @GetReportDataEOF;
   FReportData.OnFirst := @GetReportDataFirst;

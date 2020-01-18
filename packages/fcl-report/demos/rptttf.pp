@@ -153,7 +153,7 @@ begin
   GroupHeader := TFPReportGroupHeaderBand.Create(p);
   GroupHeader.Layout.Height := 15;
   GroupHeader.Data := lReportData;
-  GroupHeader.GroupCondition := '[copy(country,1,1)]';
+  GroupHeader.GroupCondition := 'copy(country,1,1)';
   GroupHeader.Frame.BackgroundColor := clYellow;    // this has no affect on rendered PDF because here Shape = fsNone
   GroupHeader.Frame.Color :=   TFPReportColor($01579B);
   GroupHeader.Frame.Lines := [flBottom];

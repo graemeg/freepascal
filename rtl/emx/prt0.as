@@ -1,9 +1,9 @@
 / prt0.s (emx+fpc) -- Made from crt0.s,
 /                     Copyright (c) 1990-1999-2001 by Eberhard Mattes.
 /                     Changed for Free Pascal in 1997 Daniel Mantione.
-/                     This code is _not_ under the Library GNU Public
-/                     License, because the original is not. See copying.emx
-/                     for details. You should have received it with this
+/                     This code is based on source distributed under the 
+/                     emx-lib license, see copying.emx for details.
+/		      You should have received it with this
 /                     product, write the author if you haven't.
 
         .globl  __text

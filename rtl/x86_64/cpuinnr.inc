@@ -28,4 +28,4 @@
   fpc_in_x86_get_gs   = fpc_in_cpu_first+13;
   
    { include automatically generated numbers }
-   { $i cpumminnr.inc}
+   {$i cpumminnr.inc}

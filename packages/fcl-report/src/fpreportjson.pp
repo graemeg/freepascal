@@ -251,6 +251,7 @@ end;
 procedure TFPReportJSONData.DoClose;
 begin
   inherited DoClose;
+  DataFields.Clear;
   FIndex:=-1;
 end;
 

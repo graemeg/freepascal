@@ -75,7 +75,7 @@
       <Filename Value="testfpreport"/>
     </Target>
     <SearchPaths>
-      <OtherUnitFiles Value="../src"/>
+      <OtherUnitFiles Value="../src;../demos;../demos/polygon"/>
       <UnitOutputDirectory Value="units"/>
     </SearchPaths>
     <Parsing>
