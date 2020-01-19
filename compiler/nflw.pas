@@ -1690,8 +1690,26 @@ implementation
 
          set_varstate(left,vs_written,[]);
 
+         { Make sure that the loop var and the
+           from and to values are compatible types }
+         if not(m_iso in current_settings.modeswitches) then
+           rangedef:=left.resultdef
+         else
+           rangedef:=get_iso_range_type(left.resultdef);
+
+         check_ranges(right.fileinfo,right,rangedef);
+         inserttypeconv(right,rangedef);
+
+         check_ranges(t1.fileinfo,t1,rangedef);
+         inserttypeconv(t1,rangedef);
+
+         if assigned(t2) then
+           typecheckpass(t2);
+         result:=simplify(false);
+
          { loop unrolling }
-         if (cs_opt_loopunroll in current_settings.optimizerswitches) and
+         if not(assigned(result)) and
+           (cs_opt_loopunroll in current_settings.optimizerswitches) and
            assigned(t2) and
            { statements must be error free }
            not(nf_error in t2.flags) then
@@ -1709,22 +1727,6 @@ implementation
                end;
            end;
 
-         { Make sure that the loop var and the
-           from and to values are compatible types }
-         if not(m_iso in current_settings.modeswitches) then
-           rangedef:=left.resultdef
-         else
-           rangedef:=get_iso_range_type(left.resultdef);
-
-         check_ranges(right.fileinfo,right,rangedef);
-         inserttypeconv(right,rangedef);
-
-         check_ranges(t1.fileinfo,t1,rangedef);
-         inserttypeconv(t1,rangedef);
-
-         if assigned(t2) then
-           typecheckpass(t2);
-         result:=simplify(false);
       end;
 
 
