@@ -1,5 +1,9 @@
     _start:
+{$ifdef CPUAVR_16_REGS}
+        clr r17
+{$else CPUAVR_16_REGS}
         clr r1
+{$endif CPUAVR_16_REGS}
 
         // load stack pointer
         ldi r30,lo8(_stack_top)
@@ -16,8 +20,13 @@
 
         rjmp .LCopyDataLoopEntry
 .LCopyDataLoop:
-        lpm r0, Z+
-        st X+, r0
+{$ifdef CPUAVR_16_REGS}
+        //!!!! FIXME? lpm r0, Z+
+        //!!!! FIXME? st X+, r0
+{$else CPUAVR_16_REGS}
+        lpm r16, Z+
+        st X+, r16
+{$endif CPUAVR_16_REGS}
 
 .LCopyDataLoopEntry:
         cpi XL, lo8(_edata)
@@ -35,7 +44,11 @@
         jmp .LZeroBssLoopEntry
 {$endif RELBRANCHES}
 .LZeroBssLoop:
+{$ifdef CPUAVR_16_REGS}
+        st X+, r17
+{$else CPUAVR_16_REGS}
         st X+, r1
+{$endif CPUAVR_16_REGS}
 
 .LZeroBssLoopEntry:
         cpi XL, lo8(_bss_end)

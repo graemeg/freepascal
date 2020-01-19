@@ -318,9 +318,9 @@ Implementation
               GetNextInstruction(p, hp1) and
               ((MatchInstruction(hp1, A_CP) and
                 (((taicpu(p).oper[0]^.reg = taicpu(hp1).oper[0]^.reg) and
-                  (taicpu(hp1).oper[1]^.reg = NR_R1)) or
+                  (taicpu(hp1).oper[1]^.reg = GetDefaultZeroReg)) or
                  ((taicpu(p).oper[0]^.reg = taicpu(hp1).oper[1]^.reg) and
-                  (taicpu(hp1).oper[0]^.reg = NR_R1) and
+                  (taicpu(hp1).oper[0]^.reg = GetDefaultZeroReg) and
                   (taicpu(p).opcode in [A_ADC,A_ADD,A_AND,A_ANDI,A_ASR,A_COM,A_EOR,
                                         A_LSL,A_LSR,
                                         A_OR,A_ORI,A_ROL,A_ROR,A_SUB,A_SBI])))) or
@@ -358,7 +358,7 @@ Implementation
                 // If we compare to the same value we are masking then invert the comparison
                 if (taicpu(hp1).opcode=A_CPI) or
                   { sub/sbc with reverted? }
-                  ((taicpu(hp1).oper[0]^.reg = NR_R1) and (taicpu(p).opcode in [A_SUB,A_SBI])) then
+                  ((taicpu(hp1).oper[0]^.reg = GetDefaultZeroReg) and (taicpu(p).opcode in [A_SUB,A_SBI])) then
                   taicpu(hp2).condition:=inverse_cond(taicpu(hp2).condition);
 
                 asml.InsertBefore(tai_regalloc.alloc(NR_DEFAULTFLAGS,p), p);
@@ -659,7 +659,7 @@ Implementation
                   end;
                 A_ADD:
                   begin
-                    if (taicpu(p).oper[1]^.reg=NR_R1) and
+                    if (taicpu(p).oper[1]^.reg=GetDefaultZeroReg) and
                     GetNextInstruction(p, hp1) and
                     MatchInstruction(hp1,A_ADC) then
                     begin
@@ -670,7 +670,7 @@ Implementation
                   end;
                 A_SUB:
                   begin
-                    if (taicpu(p).oper[1]^.reg=NR_R1) and
+                    if (taicpu(p).oper[1]^.reg=GetDefaultZeroReg) and
                     GetNextInstruction(p, hp1) and
                     MatchInstruction(hp1,A_SBC) then
                     begin
@@ -725,7 +725,7 @@ Implementation
                       begin
                         DebugMsg('Peephole ClrAdc2Adc performed', p);
 
-                        taicpu(hp1).oper[1]^.reg:=NR_R1;
+                        taicpu(hp1).oper[1]^.reg:=GetDefaultZeroReg;
 
                         alloc:=FindRegAllocBackward(taicpu(p).oper[0]^.reg,tai(p.Previous));
                         dealloc:=FindRegDeAlloc(taicpu(p).oper[0]^.reg,tai(hp1.Next));

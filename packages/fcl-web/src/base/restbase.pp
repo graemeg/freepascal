@@ -717,7 +717,7 @@ begin
         TStringArray(AP)[I]:=AValue.Strings[i];
         end;
     else
-      Raise ERESTAPI.CreateFmt('%s: unsupported array element type : %s',[ClassName,GetEnumName(TypeInfo(TTypeKind),Ord(ET^.Kind))]);
+      Raise ERESTAPI.CreateFmt('%s: unsupported array element type for property of type %s: %s',[ClassName,AN,GetEnumName(TypeInfo(TTypeKind),Ord(ET^.Kind))]);
     end;
     end;
 end;

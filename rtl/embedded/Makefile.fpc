@@ -101,6 +101,10 @@ endif
 
 ifeq ($(ARCH),avr)
 CPU_SPECIFIC_COMMON_UNITS=intrinsics
+ifeq ($(SUBARCH),avrtiny)
+CPU_UNITS=attiny4 attiny5 attiny9 attiny10 attiny20 attiny40
+CPU_UNITS_DEFINED=1
+endif
 ifeq ($(SUBARCH),avr25)
 CPU_UNITS=attiny44a attiny26 attiny48 attiny10 attiny84a attiny2313 attiny461 attiny43u \
           attiny24a attiny88 attiny40 attiny861 attiny85 attiny20 attiny24 attiny9 \

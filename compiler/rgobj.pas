@@ -1597,7 +1597,11 @@ unit rgobj;
           { FIXME: temp variable r is needed here to avoid Internal error 20060521 }
           {        while compiling the compiler. }
           tmpr:=NR_STACK_POINTER_REG;
-          if regtype=getregtype(tmpr) then
+          { e.g. AVR does not have a stack pointer register }
+{$push}{$warnings off}
+          if (RS_STACK_POINTER_REG<>RS_INVALID) and
+{$pop}
+            (regtype=getregtype(tmpr)) then
             include(adj_colours,RS_STACK_POINTER_REG);
           {Assume a spill by default...}
           found:=false;

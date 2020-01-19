@@ -24,8 +24,7 @@ begin
     P.Email := 'libffi-discuss@sourceware.org';
     P.Description := 'Headers for the libFFI library (Foreign Function Interface)';
     P.NeedLibC:= true;  // true for headers that indirectly link to libc?
-    P.OSes := [linux];
-    P.CPUs := [x86_64];
+    P.OSes := [linux,win32,win64] + AllBSDOSes;
     P.Dependencies.Add('rtl-objpas');
 
     P.SourcePath.Add('src');

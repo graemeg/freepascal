@@ -3,7 +3,7 @@ program simple;
 uses
   ffi;
 
-function WritePChar(s: PChar): LongInt; cdecl;
+function WritePChar(s: PChar): LongInt;{$ifdef windows}stdcall;{$else}cdecl;{$endif}
 begin
   Writeln(s);
   WritePChar := StrLen(s);

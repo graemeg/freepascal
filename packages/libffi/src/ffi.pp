@@ -184,7 +184,11 @@ const
   FFI_DEFAULT_ABI = ffi_abi(Ord(FFI_SYSV) {$ifdef FREEBSD}or FFI_SYSV_STRUCT_RET{$endif});
   {$endif}
 {$else}
+  {$ifdef WIN32}
+    FFI_DEFAULT_ABI = FFI_STDCALL;
+  {$else}
     FFI_DEFAULT_ABI = FFI_SYSV;
+  {$endif}
 {$endif}
 
 const
@@ -216,7 +220,7 @@ const
 {$endif}
 
 {$if defined(CPUARM)}
-  {$if definde(DARWIN)}
+  {$if defined(DARWIN)}
   FFI_TRAMPOLINE_SIZE = 12;
   FFI_TRAMPOLINE_CLOSURE_OFFSET = 8;
   {$elseif FFI_EXEC_TRAMPOLINE_TABLE}

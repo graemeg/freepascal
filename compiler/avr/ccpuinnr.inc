@@ -12,10 +12,11 @@
 
  **********************************************************************}
 
-  in_avr_cli = fpc_in_cpu_first,
-  in_avr_sei = fpc_in_cpu_first+1,
-  in_avr_wdr = fpc_in_cpu_first+2,
-  in_avr_sleep = fpc_in_cpu_first+3,
-  in_avr_nop = fpc_in_cpu_first+4,
-  in_avr_save = fpc_in_cpu_first+5,
-  in_avr_restore = fpc_in_cpu_first+6
+  in_avr_cli = in_cpu_first,
+  in_avr_sei = in_cpu_first+1,
+  in_avr_wdr = in_cpu_first+2,
+  in_avr_sleep = in_cpu_first+3,
+  in_avr_nop = in_cpu_first+4,
+  in_avr_save = in_cpu_first+5,
+  in_avr_restore = in_cpu_first+6
+

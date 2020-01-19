@@ -119,7 +119,7 @@ implementation
                            tmpreg:=left.location.registerhi
                          else
                            tmpreg:=cg.GetNextReg(tmpreg);
-                         current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_CPC,NR_R1,tmpreg));
+                         current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_CPC,GetDefaultZeroReg,tmpreg));
                        end;
                      location_reset(location,LOC_FLAGS,OS_NO);
                      location.resflags:=F_EQ;

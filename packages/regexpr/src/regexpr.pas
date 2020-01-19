@@ -49,7 +49,8 @@ interface
 { off $DEFINE DebugSynRegExpr }
 
 {$MODE DELPHI} // Delphi-compatible mode in FreePascal
-{$INLINE ON}
+// Disabling for now, seems to cause bug in Lazarus (bug ID 36603)
+{ $INLINE ON}
 
 // ======== Define base compiler options
 {$BOOLEVAL OFF}

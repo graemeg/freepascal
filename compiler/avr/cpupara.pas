@@ -57,7 +57,10 @@ unit cpupara;
 
     function tcpuparamanager.get_volatile_registers_int(calloption : tproccalloption):tcpuregisterset;
       begin
-        result:=VOLATILE_INTREGISTERS;
+        if CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype] then
+          result:=VOLATILE_INTREGISTERS-[RS_R18,RS_R19]
+        else
+          result:=VOLATILE_INTREGISTERS;
       end;
 
 
@@ -204,7 +207,8 @@ unit cpupara;
         begin
           { In case of po_delphi_nested_cc, the parent frame pointer
             is always passed on the stack. }
-           if (nextintreg>RS_R9) and
+           if (((nextintreg>RS_R9) and not(CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype])) or
+               (nextintreg>RS_R21)) and
               (not(vo_is_parentfp in hp.varoptions) or
                not(po_delphi_nested_cc in p.procoptions)) then
              begin
@@ -303,7 +307,8 @@ unit cpupara;
                    by adding paralen mod 2, make the size even
                  }
                  nextintreg:=curintreg-(paralen+(paralen mod 2))+1;
-                 if nextintreg>=RS_R8 then
+                 if ((nextintreg>=RS_R8) and not(CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype])) or
+                   (nextintreg>=RS_R20) then
                    curintreg:=nextintreg-1
                  else
                    begin
@@ -355,19 +360,19 @@ unit cpupara;
                       begin
                         if push_addr_param(hp.varspez,paradef,p.proccalloption) then
                           begin
-                            paraloc^.size:=OS_ADDR;
-                            paraloc^.def:=cpointerdef.getreusable_no_free(paradef);
-                            assignintreg
-                          end
+                           paraloc^.size:=OS_ADDR;
+                           paraloc^.def:=cpointerdef.getreusable_no_free(paradef);
+                           assignintreg;
+                         end
                         else
                           begin
-                             paraloc^.def:=hp.vardef;
-                             paraloc^.loc:=LOC_REFERENCE;
-                             paraloc^.reference.index:=NR_STACK_POINTER_REG;
-                             paraloc^.reference.offset:=stack_offset;
-                             inc(stack_offset,hp.vardef.size);
-                          end;
-                        dec(paralen,hp.vardef.size);
+                            paraloc^.def:=hp.vardef;
+                            paraloc^.loc:=LOC_REFERENCE;
+                            paraloc^.reference.index:=NR_STACK_POINTER_REG;
+                            paraloc^.reference.offset:=stack_offset;
+                            inc(stack_offset,paralen);
+                         end;
+                        paralen:=0;
                       end;
                     else
                       internalerror(2002071002);

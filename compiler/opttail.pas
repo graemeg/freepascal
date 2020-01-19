@@ -122,7 +122,7 @@ unit opttail;
                       begin
                         if paranode.parasym.varspez=vs_var then
                           begin
-                            tempnode:=ctempcreatenode.create(voidcodepointertype,voidcodepointertype.size,tt_persistent,true);
+                            tempnode:=ctempcreatenode.create(voidpointertype,voidpointertype.size,tt_persistent,true);
                             addstatement(calcstatements,tempnode);
                             addstatement(calcstatements,
                               cassignmentnode.create(

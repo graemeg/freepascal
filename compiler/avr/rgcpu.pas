@@ -49,8 +49,10 @@ unit rgcpu;
 
     uses
       verbose, cutils,
+      globals,
       cgobj,
-      procinfo;
+      procinfo,
+      cpuinfo;
 
 
     procedure trgcpu.add_constraints(reg:tregister);
@@ -95,7 +97,7 @@ unit rgcpu;
         helplist : TAsmList;
         hreg     : tregister;
       begin
-        if abs(spilltemp.offset)>63 then
+        if (abs(spilltemp.offset)>63) or (CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]) then
           begin
             helplist:=TAsmList.create;
 
@@ -121,7 +123,7 @@ unit rgcpu;
         helplist : TAsmList;
         hreg     : tregister;
       begin
-        if abs(spilltemp.offset)>63 then
+        if (abs(spilltemp.offset)>63) or (CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]) then
           begin
             helplist:=TAsmList.create;
 
@@ -187,7 +189,7 @@ unit rgcpu;
         b : byte;
       begin
         result:=false;
-        if not(spilltemp.offset in [0..63]) then
+        if not(spilltemp.offset in [0..63]) or (CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]) then
           exit;
 
         { Replace 'mov  dst,orgreg' with 'ldd  dst,spilltemp'
