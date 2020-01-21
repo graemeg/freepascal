@@ -1715,7 +1715,7 @@ option_asm_forced=11022_W_"$1" assembler use forced
 #
 option_logo=11023_[
 Compilateur Free Pascal version $FPCFULLVERSION [$FPCDATE] pour $FPCTARGET
-Copyright (c) 1993-2019 by Florian Klaempfl and others
+Copyright (c) 1993-2020 by Florian Klaempfl and others
 ]
 
 #

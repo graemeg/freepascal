@@ -94,9 +94,10 @@ unit aoptx86;
         function PostPeepholeOptCall(var p : tai) : Boolean;
         function PostPeepholeOptLea(var p : tai) : Boolean;
 
-        procedure OptReferences;
-
         procedure ConvertJumpToRET(const p: tai; const ret_p: tai);
+
+        { Processor-dependent reference optimisation }
+        class procedure OptimizeRefs(var p: taicpu); static;
       end;
 
     function MatchInstruction(const instr: tai; const op: TAsmOp; const opsize: topsizes): boolean;
@@ -5310,22 +5311,13 @@ unit aoptx86;
 {$endif}
 
 
-    procedure TX86AsmOptimizer.OptReferences;
+    class procedure TX86AsmOptimizer.OptimizeRefs(var p: taicpu);
       var
-        p: tai;
-        i: Integer;
+        OperIdx: Integer;
       begin
-        p := BlockStart;
-        while (p <> BlockEnd) Do
-          begin
-            if p.typ=ait_instruction then
-              begin
-                for i:=0 to taicpu(p).ops-1 do
-                  if taicpu(p).oper[i]^.typ=top_ref then
-                    optimize_ref(taicpu(p).oper[i]^.ref^,false);
-              end;
-            p:=tai(p.next);
-          end;
+        for OperIdx := 0 to p.ops - 1 do
+          if p.oper[OperIdx]^.typ = top_ref then
+            optimize_ref(p.oper[OperIdx]^.ref^, False);
       end;
 
 end.

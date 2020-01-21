@@ -530,14 +530,16 @@
          sign : boolean;
          q1,q2,q3 : qword;
       begin
-        sign:=false;
         if f1<0 then
           begin
-            sign:=not(sign);
             q1:=qword(-f1);
+            sign:=true;
           end
         else
-          q1:=f1;
+          begin
+            q1:=f1;
+            sign:=false;
+          end;
         if f2<0 then
           begin
             sign:=not(sign);
