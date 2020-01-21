@@ -110,7 +110,7 @@ implementation
                  LOC_REGISTER,LOC_CREGISTER,LOC_REFERENCE,LOC_CREFERENCE :
                    begin
                      hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,left.resultdef,true);
-                     current_asmdata.CurrAsmList.concat(taicpu.op_reg_const(A_CPI,left.location.register,0));
+                     current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_CP,GetDefaultZeroReg,left.location.register));
 
                      tmpreg:=left.location.register;
                      for i:=2 to tcgsize2size[left.location.size] do

@@ -94,6 +94,7 @@ begin
   if not ForceDirectories(FFilePath+'rendered') then
      Fail('Could not create directory for rendered JSON');
   gTTFontCache.Clear;
+  gTTFontCache.SearchPath.Clear;
   gTTFontCache.SearchPath.Add(FFilePath+'fonts/');
   gTTFontCache.SearchPath.Add(FFilePath+'../demos/fonts/');
 {$IFDEF UNIX}

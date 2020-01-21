@@ -168,7 +168,7 @@ begin
   with Info do
    begin
      { Specify correct max-page-size and common-page-size to prevent big gaps between sections in resulting executable }
-     s:='ld -z max-page-size=0x1000 -z common-page-size=0x1000 -z noexecstack -z now --build-id $OPT -L. -T $RES -o $EXE';
+     s:='ld -z max-page-size=0x1000 -z common-page-size=0x1000 -z noexecstack -z now -z relro --build-id $OPT -L. -T $RES -o $EXE';
      ExeCmd[1]:=s + ' --entry=_start';
      DllCmd[1]:=s + ' -shared -soname $SONAME';
      DllCmd[2]:='strip --strip-unneeded $EXE';
@@ -354,7 +354,7 @@ begin
       add('    KEEP (*(.fpc .fpc.n_version .fpc.n_links))');
       add('  }');
       add('}');
-      add('INSERT BEFORE .data1');
+      add('INSERT AFTER .data1');
 
       // Define different aliases for normal and JNI libraries
       if FJNIOnLoadName <> '' then

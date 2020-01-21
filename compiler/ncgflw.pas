@@ -412,6 +412,8 @@ implementation
            hlcg.g_local_unwind(current_asmdata.CurrAsmList,current_procinfo.CurrExitLabel)
          else
            hlcg.a_jmp_always(current_asmdata.CurrAsmList,current_procinfo.CurrExitLabel);
+         if not(cs_opt_size in current_settings.optimizerswitches) then
+           current_asmdata.CurrAsmList.concat(cai_align.create_max(current_settings.alignment.jumpalign,current_settings.alignment.jumpalignskipmax));
        end;
 
 
@@ -432,7 +434,9 @@ implementation
              if (fc_unwind_loop in flowcontrol) then
                hlcg.g_local_unwind(current_asmdata.CurrAsmList,current_procinfo.CurrBreakLabel)
              else
-               hlcg.a_jmp_always(current_asmdata.CurrAsmList,current_procinfo.CurrBreakLabel)
+               hlcg.a_jmp_always(current_asmdata.CurrAsmList,current_procinfo.CurrBreakLabel);
+             if not(cs_opt_size in current_settings.optimizerswitches) then
+               current_asmdata.CurrAsmList.concat(cai_align.create_max(current_settings.alignment.jumpalign,current_settings.alignment.jumpalignskipmax));
            end
          else
            CGMessage(cg_e_break_not_allowed);
@@ -456,7 +460,9 @@ implementation
              if (fc_unwind_loop in flowcontrol) then
                hlcg.g_local_unwind(current_asmdata.CurrAsmList,current_procinfo.CurrContinueLabel)
              else
-               hlcg.a_jmp_always(current_asmdata.CurrAsmList,current_procinfo.CurrContinueLabel)
+               hlcg.a_jmp_always(current_asmdata.CurrAsmList,current_procinfo.CurrContinueLabel);
+             if not(cs_opt_size in current_settings.optimizerswitches) then
+               current_asmdata.CurrAsmList.concat(cai_align.create_max(current_settings.alignment.jumpalign,current_settings.alignment.jumpalignskipmax));
            end
          else
            CGMessage(cg_e_continue_not_allowed);
@@ -476,7 +482,9 @@ implementation
 {$ifdef OLDREGVARS}
          load_all_regvars(current_asmdata.CurrAsmList);
 {$endif OLDREGVARS}
-         hlcg.a_jmp_always(current_asmdata.CurrAsmList,tcglabelnode(labelnode).getasmlabel)
+         hlcg.a_jmp_always(current_asmdata.CurrAsmList,tcglabelnode(labelnode).getasmlabel);
+         if not(cs_opt_size in current_settings.optimizerswitches) then
+           current_asmdata.CurrAsmList.concat(cai_align.create_max(current_settings.alignment.jumpalign,current_settings.alignment.jumpalignskipmax));
        end;
 
 
