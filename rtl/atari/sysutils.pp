@@ -76,30 +76,29 @@ begin
 end;
 
 
-function FileGetDate(Handle: THandle) : LongInt;
+function FileGetDate(Handle: THandle) : Int64;
 var
   td: TDOSTIME;
 begin
   { Fdatime doesn't report errors... }
   gemdos_fdatime(@td,handle,0);
-  LongRec(result).hi:=td.date;
-  LongRec(result).lo:=td.time;
+  result:=(td.date shl 16) or td.time;
 end;
 
 
-function FileSetDate(Handle: THandle; Age: LongInt) : LongInt;
+function FileSetDate(Handle: THandle; Age: Int64) : LongInt;
 var
   td: TDOSTIME;
 begin
-  td.date:=LongRec(Age).hi;
-  td.time:=LongRec(Age).lo;
+  td.date:=(Age shr 16) and $ffff;
+  td.time:=Age and $ffff;
   gemdos_fdatime(@td,handle,1);
   { Fdatime doesn't report errors... }
   result:=0;
 end;
 
 
-function FileSetDate(const FileName: RawByteString; Age: LongInt) : LongInt;
+function FileSetDate(const FileName: RawByteString; Age: Int64) : LongInt;
 var
   f: THandle;
 begin
@@ -203,7 +202,7 @@ end;
 (****** end of non portable routines ******)
 
 
-function FileAge (const FileName : RawByteString): Longint;
+function FileAge (const FileName : RawByteString): Int64;
 var
   f: THandle;
 begin
@@ -268,8 +267,7 @@ begin
       Name:=d_fname;
       SetCodePage(Name,DefaultFileSystemCodePage,false);
 
-      LongRec(Rslt.Time).hi:=d_date;
-      LongRec(Rslt.Time).lo:=d_time;
+      Rslt.Time:=(d_date shl 16) or d_time;
       Rslt.Size:=d_length;
 
       { "128" is Windows "NORMALFILE" attribute. Some buggy code depend on this... :( (KB) }
@@ -299,8 +297,7 @@ begin
       Name:=d_fname;
       SetCodePage(Name,DefaultFileSystemCodePage,false);
 
-      LongRec(Rslt.Time).hi:=d_date;
-      LongRec(Rslt.Time).lo:=d_time;
+      Rslt.Time:=(d_date shl 16) or d_time;
       Rslt.Size:=d_length;
 
       { "128" is Windows "NORMALFILE" attribute. Some buggy code depend on this... :( (KB) }

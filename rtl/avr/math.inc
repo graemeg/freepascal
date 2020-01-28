@@ -26,7 +26,11 @@
 function fpc_div_byte(n, z: byte): byte; assembler; nostackframe;
 {$ifdef FPC_IS_SYSTEM}[public,alias: 'FPC_DIV_BYTE'];{$endif}
 asm
+{$ifdef CPUAVR_16_REGS}
+  cp R24, R17
+{$else CPUAVR_16_REGS}
   cp R24, R1
+{$endif CPUAVR_16_REGS}  
   brne .LNonZero
 {$ifdef CPUAVR_HAS_JMP_CALL}
   call fpc_divbyzero
@@ -55,7 +59,11 @@ function fpc_div_byte(n, z: byte): byte; external name 'FPC_DIV_BYTE';
 function fpc_mod_byte(n, z: byte): byte; assembler; nostackframe;
 {$ifdef FPC_IS_SYSTEM}[public,alias: 'FPC_MOD_BYTE'];{$endif}
 asm
+{$ifdef CPUAVR_16_REGS}
+  cp R24, R17
+{$else CPUAVR_16_REGS}
   cp R24, R1
+{$endif CPUAVR_16_REGS}
   brne .LNonZero
 {$ifdef CPUAVR_HAS_JMP_CALL}
   call fpc_divbyzero
@@ -84,8 +92,13 @@ function fpc_mod_byte(n, z: byte): byte; external name 'FPC_MOD_BYTE';
 function fpc_div_word(n, z: word): word; assembler; nostackframe;
 {$ifdef FPC_IS_SYSTEM}[public,alias: 'FPC_DIV_WORD'];{$endif}
 asm
+{$ifdef CPUAVR_16_REGS}
+  cp R24, R17
+  cpc R25, R17
+{$else CPUAVR_16_REGS}
   cp R24, R1
   cpc R25, R1
+{$endif CPUAVR_16_REGS}
   brne .LNonZero
 {$ifdef CPUAVR_HAS_JMP_CALL}
   call fpc_divbyzero
@@ -97,7 +110,12 @@ asm
   rcall fpc_divmod_word
 {$endif CPUAVR_HAS_JMP_CALL}
 
+{$ifdef CPUAVR_16_REGS}
+  mov R24, R20
+  mov R25, R21
+{$else CPUAVR_16_REGS}
   movw R24, R22
+{$endif CPUAVR_16_REGS}
 end;
 
 {It is a compilerproc (systemh.inc), make an alias for internal use.}
@@ -114,8 +132,13 @@ function fpc_div_word(n, z: word): word; external name 'FPC_DIV_WORD';
 function fpc_mod_word(n, z: word): word; assembler; nostackframe;
 {$ifdef FPC_IS_SYSTEM}[public,alias: 'FPC_MOD_WORD'];{$endif}
 asm
+{$ifdef CPUAVR_16_REGS}
+  cp R24, R17
+  cpc R25, R17
+{$else CPUAVR_16_REGS}
   cp R24, R1
   cpc R25, R1
+{$endif CPUAVR_16_REGS}
   brne .LNonZero
 {$ifdef CPUAVR_HAS_JMP_CALL}
   call fpc_divbyzero
@@ -127,7 +150,12 @@ asm
   rcall fpc_divmod_word
 {$endif CPUAVR_HAS_JMP_CALL}
 
+{$ifdef CPUAVR_16_REGS}
+  mov R24, R20
+  mov R25, R21
+{$else CPUAVR_16_REGS}
   movw R24, R20
+{$endif CPUAVR_16_REGS}
 end;
 
 {It is a compilerproc (systemh.inc), make an alias for internal use.}
@@ -144,10 +172,17 @@ function fpc_mod_word(n, z: word): word; external name 'FPC_MOD_WORD';
 function fpc_div_dword(n, z: dword): dword; assembler; nostackframe;
 {$ifdef FPC_IS_SYSTEM}[public,alias: 'FPC_DIV_DWORD'];{$endif}
 asm
+{$ifdef CPUAVR_16_REGS}
+  cp R24, R17
+  cpc R25, R17
+  cpc R22, R17
+  cpc R23, R17
+{$else CPUAVR_16_REGS}
   cp R24, R1
   cpc R25, R1
   cpc R22, R1
   cpc R23, R1
+{$endif CPUAVR_16_REGS}
   brne .LNonZero
 {$ifdef CPUAVR_HAS_JMP_CALL}
   call fpc_divbyzero
@@ -159,8 +194,15 @@ asm
   rcall fpc_divmod_dword
 {$endif CPUAVR_HAS_JMP_CALL}
 
+{$ifdef CPUAVR_16_REGS}
+  mov R22, R18    // Move result from R18:R21 to R22:R25
+  mov R23, R19    // Move result from R18:R21 to R22:R25
+  mov R24, R20
+  mov R25, R21
+{$else CPUAVR_16_REGS}
   movw R22, R18    // Move result from R18:R21 to R22:R25
   movw R24, R20
+{$endif CPUAVR_16_REGS}
 end;
 
 {It is a compilerproc (systemh.inc), make an alias for internal use.}
@@ -177,10 +219,17 @@ function fpc_div_dword(n, z: dword): dword; external name 'FPC_DIV_DWORD';
 function fpc_mod_dword(n, z: dword): dword; assembler; nostackframe;
 {$ifdef FPC_IS_SYSTEM}[public,alias: 'FPC_MOD_DWORD'];{$endif}
 asm
+{$ifdef CPUAVR_16_REGS}
+  cp R24, R17
+  cpc R25, R17
+  cpc R22, R17
+  cpc R23, R17
+{$else CPUAVR_16_REGS}
   cp R24, R1
   cpc R25, R1
   cpc R22, R1
   cpc R23, R1
+{$endif CPUAVR_16_REGS}
   brne .LNonZero
 {$ifdef CPUAVR_HAS_JMP_CALL}
   call fpc_divbyzero

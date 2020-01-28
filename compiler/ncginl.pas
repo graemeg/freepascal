@@ -451,7 +451,9 @@ implementation
             begin
 {$if not defined(cpu64bitalu) and not defined(cpuhighleveltarget)}
               if def_cgsize(left.resultdef) in [OS_64,OS_S64] then
-                cg64.a_op64_const_loc(current_asmdata.CurrAsmList,addsubop[inlinenumber],def_cgsize(left.resultdef),addvalue,tcallparanode(left).left.location)
+                { use addvalue.svalue here to avoid an internal error if addvalue is unsigned and overflows int64, see #35298,
+                  we are only interested in the bit pattern here }
+                cg64.a_op64_const_loc(current_asmdata.CurrAsmList,addsubop[inlinenumber],def_cgsize(left.resultdef),addvalue.svalue,tcallparanode(left).left.location)
               else
 {$endif not cpu64bitalu and not cpuhighleveltarget}
                 hlcg.a_op_const_loc(current_asmdata.CurrAsmList,addsubop[inlinenumber],left.resultdef,

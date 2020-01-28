@@ -394,18 +394,22 @@ begin
 end;
 
 
-Function FileAge (Const FileName : UnicodeString): Longint;
+Function FileAge (Const FileName : UnicodeString): Int64;
 var
   Handle: THandle;
   FindData: TWin32FindDataW;
+  tmpdtime    : longint;
 begin
   Handle := FindFirstFileW(Pwidechar(FileName), FindData);
   if Handle <> INVALID_HANDLE_VALUE then
     begin
       Windows.FindClose(Handle);
       if (FindData.dwFileAttributes and FILE_ATTRIBUTE_DIRECTORY) = 0 then
-        If WinToDosTime(FindData.ftLastWriteTime,Result) then
-          exit;
+        If WinToDosTime(FindData.ftLastWriteTime,tmpdtime) then
+          begin
+            result:=tmpdtime;
+            exit;
+          end;
     end;
   Result := -1;
 end;
@@ -565,6 +569,8 @@ begin
 end;
 
 Function FindMatch(var f: TAbstractSearchRec; var Name: UnicodeString) : Longint;
+var
+  tmpdtime : longint;
 begin
   { Find file with correct attribute }
   While (F.FindData.dwFileAttributes and cardinal(F.ExcludeAttr))<>0 do
@@ -576,7 +582,8 @@ begin
       end;
    end;
   { Convert some attributes back }
-  WinToDosTime(F.FindData.ftLastWriteTime,F.Time);
+  WinToDosTime(F.FindData.ftLastWriteTime,tmpdtime);
+  F.Time:=tmpdtime;
   f.size:=F.FindData.NFileSizeLow+(qword(maxdword)+1)*F.FindData.NFileSizeHigh;
   f.attr:=F.FindData.dwFileAttributes;
   Name:=F.FindData.cFileName;
@@ -624,17 +631,21 @@ end;
 
 
 
-Function FileGetDate (Handle : THandle) : Longint;
+Function FileGetDate (Handle : THandle) : Int64;
 Var
   FT : TFileTime;
+  tmpdtime : longint;
 begin
   If GetFileTime(Handle,nil,nil,@ft) and
-     WinToDosTime(FT,Result) then
-    exit;
+     WinToDosTime(FT,tmpdtime) then
+    begin
+      result:=tmpdtime;
+      exit;
+    end;
   Result:=-1;
 end;
 
-Function FileSetDate (Handle : THandle;Age : Longint) : Longint;
+Function FileSetDate (Handle : THandle;Age : Int64) : Longint;
 Var
   FT: TFileTime;
 begin
@@ -646,7 +657,7 @@ begin
 end;
 
 {$IFDEF OS_FILESETDATEBYNAME}
-Function FileSetDate (Const FileName : UnicodeString;Age : Longint) : Longint;
+Function FileSetDate (Const FileName : UnicodeString;Age : Int64) : Longint;
 Var
   fd : THandle;
 begin

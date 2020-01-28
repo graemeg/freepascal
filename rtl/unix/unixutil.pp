@@ -33,8 +33,8 @@ var
 Function StringToPPChar(S: PChar;ReserveEntries:integer):ppchar;
 Function StringToPPChar(Var S:RawByteString;ReserveEntries:integer):ppchar;
 function ArrayStringToPPchar(const S:Array of RawByteString;reserveentries:Longint):ppchar; // const ?
-Function LocalToEpoch(year,month,day,hour,minute,second:Word):Longint; deprecated 'use DateUtils.DateTimeToUnix';
-Procedure EpochToLocal(epoch:longint;var year,month,day,hour,minute,second:Word); deprecated 'use DateUtils.UnixToDateTime';
+Function LocalToEpoch(year,month,day,hour,minute,second:Word):int64; deprecated 'use DateUtils.DateTimeToUnix';
+Procedure EpochToLocal(epoch:int64;var year,month,day,hour,minute,second:Word); deprecated 'use DateUtils.UnixToDateTime';
 Procedure JulianToGregorian(JulianDN:LongInt;Var Year,Month,Day:Word); deprecated 'use DateUtils.DateTimetoJulianDate';
 Function GregorianToJulian(Year,Month,Day:Longint):LongInt; deprecated 'use DateUtils.JulianDateToDateTime';
 
@@ -175,7 +175,7 @@ Begin
   Year:=YYear+(JulianDN*100);
 end;
 
-Procedure EpochToLocal(epoch:longint;var year,month,day,hour,minute,second:Word);
+Procedure EpochToLocal(epoch:Int64;var year,month,day,hour,minute,second:Word);
 {
   Transforms Epoch time into local time (hour, minute,seconds)
 }
@@ -192,13 +192,13 @@ Begin
   Second:=Epoch Mod 60;
 End;
 
-Function LocalToEpoch(year,month,day,hour,minute,second:Word):Longint;
+Function LocalToEpoch(year,month,day,hour,minute,second:Word):Int64;
 {
   Transforms local time (year,month,day,hour,minutes,second) to Epoch time
    (seconds since 00:00, january 1 1970, corrected for local time zone)
 }
 Begin
-  LocalToEpoch:=((GregorianToJulian(Year,Month,Day)-c1970)*86400)+
+  LocalToEpoch:=(Int64(GregorianToJulian(Year,Month,Day)-c1970)*86400)+
                 (LongInt(Hour)*3600)+(Longint(Minute)*60)+Second-TZSeconds;
 End;
 

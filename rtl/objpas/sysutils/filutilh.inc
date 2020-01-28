@@ -46,7 +46,7 @@ Type
 
   // The actual unicode search record
   TUnicodeSearchRec = Record
-    Time : Longint;
+    Time : Int64;
     Size : Int64;
     Attr : Longint;
     Name : UnicodeString;
@@ -65,7 +65,7 @@ Type
   end;
 
   TRawbyteSearchRec = Record
-    Time : Longint;
+    Time : Int64;
     Size : Int64;
     Attr : Longint;
     Name : RawByteString;
@@ -173,11 +173,11 @@ Function FileCreate (Const FileName : UnicodeString) : THandle;
 Function FileCreate (Const FileName : UnicodeString; Rights : Integer) : THandle;
 Function FileCreate (Const FileName : UnicodeString; ShareMode : Integer; Rights : Integer) : THandle;
 {$IFNDEF FPUNONE}
-Function FileAge (Const FileName : UnicodeString): Longint;
+Function FileAge (Const FileName : UnicodeString): Int64;
 {$ENDIF}
 Function FileExists (Const FileName : UnicodeString; FollowLink : Boolean = True) : Boolean;
 Function DirectoryExists (Const Directory : UnicodeString; FollowLink : Boolean = True) : Boolean;
-Function FileSetDate (Const FileName : UnicodeString;Age : Longint) : Longint;
+Function FileSetDate (Const FileName : UnicodeString;Age : Int64) : Longint;
 Function FileGetAttr (Const FileName : UnicodeString) : Longint;
 Function FileSetAttr (Const Filename : UnicodeString; Attr: longint) : Longint;
 Function DeleteFile (Const FileName : UnicodeString) : Boolean;
@@ -199,7 +199,7 @@ Function FileCreate (Const FileName : RawByteString; Rights : Integer) : THandle
 Function FileCreate (Const FileName : RawByteString; ShareMode : Integer; Rights : Integer) : THandle;
 Function FileExists (Const FileName : RawByteString; FollowLink : Boolean = True) : Boolean;
 Function DirectoryExists (Const Directory : RawByteString; FollowLink: Boolean = True) : Boolean;
-Function FileSetDate (Const FileName : RawByteString;Age : Longint) : Longint;
+Function FileSetDate (Const FileName : RawByteString;Age : Int64) : Longint;
 Function FileGetAttr (Const FileName : RawByteString) : Longint;
 Function FileSetAttr (Const Filename : RawByteString; Attr: longint) : Longint;
 Function DeleteFile (Const FileName : RawByteString) : Boolean;
@@ -211,7 +211,7 @@ Function ExeSearch  (Const Name : RawByteString; Const DirList : RawByteString =
 Function FileIsReadOnly(const FileName: RawByteString): Boolean;
 function FileAge(const FileName: RawByteString; out FileDateTime: TDateTime; FollowLink: Boolean = True): Boolean;
 {$ifndef FPUNONE}
-Function FileAge (Const FileName : RawByteString): Longint;
+Function FileAge (Const FileName : RawByteString): Int64;
 {$endif}
 function FileGetSymLinkTarget(const FileName: RawByteString; out SymLinkRec: TRawbyteSymLinkRec): Boolean;
 function FileGetSymLinkTarget(const FileName: RawByteString; out TargetName: RawByteString): Boolean; inline;
@@ -225,7 +225,7 @@ Procedure FileClose (Handle : THandle);
 Function FileTruncate (Handle : THandle;Size: Int64) : boolean;
 Function FindNext (Var Rslt : TRawByteSearchRec) : Longint;
 Procedure FindClose (Var F : TRawByteSearchrec);
-Function FileGetDate (Handle : THandle) : Longint;
-Function FileSetDate (Handle : THandle;Age : Longint) : Longint;
+Function FileGetDate (Handle : THandle) : Int64;
+Function FileSetDate (Handle : THandle;Age : Int64) : Longint;
 Function GetFileHandle(var f : File):THandle;
 Function GetFileHandle(var f : Text):THandle;

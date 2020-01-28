@@ -19,8 +19,10 @@
 type
   THandle = Word;
   TThreadID = THandle;
+  TOSTimestamp = Longint;
 
-   PRTLCriticalSection = ^TRTLCriticalSection;
-   TRTLCriticalSection = record
-     Locked: boolean
-   end;
+  PRTLCriticalSection = ^TRTLCriticalSection;
+  TRTLCriticalSection = record
+    Locked: boolean
+  end;
+

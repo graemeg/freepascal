@@ -507,6 +507,13 @@ implementation
                exclude(loopvarsym.varoptions,vo_is_loop_counter);
 
              result:=cfornode.create(hloopvar,hfrom,hto,hblock,backward);
+
+             { only in tp and mac pascal mode, we care about the value of the loop counter on loop exit
+
+               I am not sure though, if this is the right rule, at least in delphi the loop counter is undefined
+               on loop exit, we assume the same in all FPC modes }
+             if ([m_objfpc,m_fpc,m_delphi]*current_settings.modeswitches)<>[] then
+               Include(tfornode(Result).loopflags,lnf_dont_mind_loopvar_on_exit);
           end;
 
 

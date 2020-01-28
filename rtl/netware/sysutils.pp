@@ -176,7 +176,7 @@ begin
    FileTruncate:=(_chsize(Handle,Size) = 0);
 end;
 
-Function FileAge (Const FileName : RawByteString): Longint;
+Function FileAge (Const FileName : RawByteString): Int64;
 var Handle: longint;
 begin
   Handle := FileOpen(FileName, 0);
@@ -211,7 +211,7 @@ begin
   FileUnlock := FileUnlock (Handle, longint(FOffset),longint(FLen));
 end;
 
-Function FileAge (Const FileName : String): Longint;
+Function FileAge (Const FileName : String): Int64;
 
 VAR Info : NWStatBufT;
     PTM  : PNWTM;
@@ -362,7 +362,7 @@ begin
 end;
 
 
-Function FileGetDate (Handle : THandle) : Longint;
+Function FileGetDate (Handle : THandle) : Int64;
 Var Info : NWStatBufT;
     PTM  : PNWTM;
 begin
@@ -380,7 +380,7 @@ begin
 end;
 
 
-Function FileSetDate (Handle : THandle; Age : Longint) : Longint;
+Function FileSetDate (Handle : THandle; Age : Int64) : Longint;
 begin
   { i think its impossible under netware from FileHandle. I dident found a way to get the
     complete pathname of a filehandle, that would be needed for ChangeDirectoryEntry }

@@ -376,7 +376,7 @@ CPU_UNITS=lpc8xx lpc11xx lpc122x stm32f0xx nrf51 cortexm0
 CPU_UNITS_DEFINED=1
 endif
 ifeq ($(SUBARCH),armv7a)
-CPU_UNITS=allwinner_a20
+CPU_UNITS=allwinner_a20 raspi2
 CPU_UNITS_DEFINED=1
 endif
 ifeq ($(CPU_UNITS_DEFINED),)
@@ -389,11 +389,15 @@ ifeq ($(SUBARCH),avrtiny)
 CPU_UNITS=attiny4 attiny5 attiny9 attiny10 attiny20 attiny40
 CPU_UNITS_DEFINED=1
 endif
+ifeq ($(SUBARCH),avr2)
+CPU_UNITS=attiny26
+CPU_UNITS_DEFINED=1
+endif
 ifeq ($(SUBARCH),avr25)
-CPU_UNITS=attiny44a attiny26 attiny48 attiny10 attiny84a attiny2313 attiny461 attiny43u \
-	  attiny24a attiny88 attiny40 attiny861 attiny85 attiny20 attiny24 attiny9 \
-	  attiny87 attiny84 attiny13a attiny45 attiny5 attiny828 attiny4313 attiny13 attiny261 \
-	  attiny861a attiny28 attiny4 attiny44 attiny2313a attiny461a attiny261a attiny25
+CPU_UNITS=attiny44a attiny48 attiny84a attiny2313 attiny461 attiny43u \
+	  attiny24a attiny88 attiny861 attiny85 attiny24 \
+	  attiny87 attiny84 attiny13a attiny45 attiny828 attiny4313 attiny13 attiny261 \
+	  attiny861a attiny28 attiny44 attiny2313a attiny461a attiny261a attiny25
 CPU_UNITS_DEFINED=1
 endif
 ifeq ($(SUBARCH),avr35)
@@ -426,6 +430,13 @@ CPU_UNITS_DEFINED=1
 endif
 ifeq ($(SUBARCH),avr6)
 CPU_UNITS=atmega2561 atmega2560 avrsim
+CPU_UNITS_DEFINED=1
+endif
+ifeq ($(SUBARCH),avrxmega3)
+CPU_UNITS=atmega808 atmega809 atmega1608 atmega1609 atmega3208 atmega3209 atmega4808 atmega4809 \
+          attiny202 attiny204 attiny212 attiny214 attiny402 attiny404 attiny406 attiny412 attiny414 \
+          attiny416 attiny416auto attiny417 attiny804 attiny806 attiny807 attiny814 attiny816 attiny817 \
+          attiny1604 attiny1606 attiny1607 attiny1614 attiny1616 attiny1617 attiny3214 attiny3216 attiny3217
 CPU_UNITS_DEFINED=1
 endif
 ifeq ($(CPU_UNITS_DEFINED),)

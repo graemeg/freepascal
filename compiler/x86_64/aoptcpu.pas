@@ -154,6 +154,8 @@ uses
                   Result:=OptPass2Jcc(p);
                 A_Lea:
                   Result:=OptPass2Lea(p);
+                A_SUB:
+                  Result:=OptPass2SUB(p);
                 else
                   ;
               end;

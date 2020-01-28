@@ -1375,8 +1375,11 @@ unit cgcpu;
              // Write to 16 bit ioreg, first high byte then low byte
              // sequence required for 16 bit timer registers
              // See e.g. atmega328p manual para 15.3 Accessing 16 bit registers
-             if (fromsize in [OS_16, OS_S16]) and QuickRef and (href.offset > 31)
-               and (href.offset < cpuinfo.embedded_controllers[current_settings.controllertype].srambase) then
+             // Avrxmega3: write low byte first then high byte
+             // See e.g. megaAVR-0 family data sheet 7.5.6 Accessing 16-bit registers
+             if (current_settings.cputype <> cpu_avrxmega3) and
+               (fromsize in [OS_16, OS_S16]) and QuickRef and (href.offset > 31) and
+               (href.offset < cpuinfo.embedded_controllers[current_settings.controllertype].srambase) then
                begin
                  tmpreg:=GetNextReg(reg);
                  href.addressmode:=AM_UNCHANGED;
@@ -2592,23 +2595,24 @@ unit cgcpu;
                 dstref:=dest;
               end;
 
-            // CC
-            // If dest is an ioreg (31 < offset < srambase) and size = 16 bit then
-            // load high byte first, then low byte
-            if (len = 2) and DestQuickRef
-              and (dest.offset > 31)
-              and (dest.offset < cpuinfo.embedded_controllers[current_settings.controllertype].srambase) then
-              begin
-                // If src is also a 16 bit ioreg then read low byte then high byte
-                if SrcQuickRef and (srcref.offset > 31)
-                  and (srcref.offset < cpuinfo.embedded_controllers[current_settings.controllertype].srambase) then
-                  begin
-                    // First read source into temp registers
-                    tmpreg:=getintregister(list, OS_16);
-                    list.concat(taicpu.op_reg_ref(GetLoad(srcref),tmpreg,srcref));
-                    inc(srcref.offset);
-                    tmpreg2:=GetNextReg(tmpreg);
-                    list.concat(taicpu.op_reg_ref(GetLoad(srcref),tmpreg2,srcref));
+              // CC
+              // If dest is an ioreg (31 < offset < srambase) and size = 16 bit then
+              // write high byte first, then low byte
+              // but not for avrxmega3
+              if (len = 2) and DestQuickRef and (current_settings.cputype <> cpu_avrxmega3) and
+                (dest.offset > 31) and
+                (dest.offset < cpuinfo.embedded_controllers[current_settings.controllertype].srambase) then
+                begin
+                  // If src is also a 16 bit ioreg then read low byte then high byte
+                  if SrcQuickRef and (srcref.offset > 31)
+                    and (srcref.offset < cpuinfo.embedded_controllers[current_settings.controllertype].srambase) then
+                    begin
+                      // First read source into temp registers
+                      tmpreg:=getintregister(list, OS_16);
+                      list.concat(taicpu.op_reg_ref(GetLoad(srcref),tmpreg,srcref));
+                      inc(srcref.offset);
+                      tmpreg2:=GetNextReg(tmpreg);
+                      list.concat(taicpu.op_reg_ref(GetLoad(srcref),tmpreg2,srcref));
 
                     // then move temp registers to dest in reverse order
                     inc(dstref.offset);

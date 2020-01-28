@@ -508,6 +508,9 @@ Type
       ct_nrf52832_xxaa,
       ct_nrf52840_xxaa,
 
+      { Raspberry Pi 2 }
+      ct_raspi2,
+
       // generic Thumb2 target
       ct_thumb2bare
      );
@@ -1025,6 +1028,9 @@ Const
       (controllertypestr:'NRF52832_XXAA'; controllerunitstr:'NRF52'; cputype:cpu_armv7em; fputype:fpu_soft; flashbase:$00000000; flashsize:$00080000; srambase:$20000000; sramsize:$00010000),
       (controllertypestr:'NRF52840_XXAA'; controllerunitstr:'NRF52'; cputype:cpu_armv7em; fputype:fpu_soft; flashbase:$00000000; flashsize:$00080000; srambase:$20000000; sramsize:$00010000),
       
+      { Raspberry Pi 2 }
+      (controllertypestr:'RASPI2'; controllerunitstr:'RASPI2'; cputype:cpu_armv7a; fputype:fpu_vfpv4; flashbase:$00000000; flashsize:$00000000; srambase:$00008000; sramsize:$10000000),
+
       { Bare bones }
       (controllertypestr:'THUMB2_BARE';	controllerunitstr:'THUMB2_BARE';	cputype:cpu_armv7m; fputype:fpu_soft; flashbase:$00000000;	flashsize:$00002000;	srambase:$20000000;	sramsize:$00000400)
     );

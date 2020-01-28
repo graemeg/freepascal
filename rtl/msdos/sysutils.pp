@@ -289,7 +289,7 @@ begin
 end;
 
 
-Function FileAge (Const FileName : RawByteString): Longint;
+Function FileAge (Const FileName : RawByteString): Int64;
 var Handle: longint;
 begin
   Handle := FileOpen(FileName, 0);
@@ -423,7 +423,7 @@ begin
 end;
 
 
-Function FileGetDate (Handle : THandle) : Longint;
+Function FileGetDate (Handle : THandle) : Int64;
 var
   Regs: registers;
 begin
@@ -434,21 +434,18 @@ begin
   if Regs.Flags and fCarry <> 0 then
    result := -1
   else
-   begin
-     LongRec(result).Lo := Regs.cx;
-     LongRec(result).Hi := Regs.dx;
-   end ;
+   result:=(Regs.dx shl 16) or Regs.cx;
 end;
 
 
-Function FileSetDate (Handle : THandle; Age : Longint) : Longint;
+Function FileSetDate (Handle : THandle; Age : Int64) : Longint;
 var
   Regs: registers;
 begin
   Regs.bx := Handle;
   Regs.ax := $5701;
-  Regs.cx := Lo(Age);
-  Regs.dx := Hi(Age);
+  Regs.cx := Lo(dword(Age));
+  Regs.dx := Hi(dword(Age));
   MsDos(Regs);
   if Regs.Flags and fCarry <> 0 then
    result := -Regs.Ax

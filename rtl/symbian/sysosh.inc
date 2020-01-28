@@ -19,6 +19,7 @@
 type
   THandle = Longint;
   TThreadID = THandle;
+  TOSTimestamp = Longint;
 
   { pthread_mutex_t }
   PRTLCriticalSection = ^TRTLCriticalSection;

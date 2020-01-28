@@ -242,6 +242,8 @@ unit aoptcpu;
                   Result:=OptPass2Jmp(p);
                 A_MOV:
                   Result:=OptPass2MOV(p);
+                A_SUB:
+                  Result:=OptPass2SUB(p);
                 else
                   ;
               end;

@@ -18,7 +18,8 @@
 type
   THandle = DWord;
   TThreadID = THandle;
-  
+  TOSTimestamp = Longint;
+
   PRTLCriticalSection = ^TRTLCriticalSection;
   TRTLCriticalSection = packed record
       mutex : pointer;

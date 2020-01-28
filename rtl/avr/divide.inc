@@ -42,6 +42,50 @@ finish:
   mov R24, R22    // Move result from R22 to R24
 end;
 
+{$ifdef CPUAVR_16_REGS}
+function fpc_divmod_word(n, z: word): word; assembler; nostackframe;
+label
+  div1, div2, div3, finish;
+asm
+// Symbol  Name        Register(s)
+// z (A)   dividend    R23, R22
+// n (B)   divisor     R25, R24
+// p (P)   remainder   R21, R20
+// i       counter     R18
+
+  clr R20         // clear remainder low
+  clr R21         // clear remainder hi
+  ldi R18, 16     // iterate over 16 bits
+
+div1:
+  lsl R22         // shift left A_L
+  rol R23
+  rol R20         // shift left P with carry from A shift
+  rol R21
+  sub R20, R24    // Subtract B from P, P <= P - B
+  sbc R21, R25
+  brlo div2
+  ori R22, 1      // Set A[0] = 1
+  rjmp div3
+div2:             // negative branch, A[0] = 0 (default after shift), restore P
+  add R20, R24    // restore old value of P
+  adc R21, R25
+
+div3:
+  dec R18
+  brne div1
+
+finish:
+  mov  R24, R22    // Move result from R22:R23 to R24:R25
+  mov  R25, R23    // Move result from R22:R23 to R24:R25
+end;
+
+function fpc_divmod_dword(n, z: dword): dword; assembler; nostackframe;
+label
+  div1, div2, div3, finish;
+asm
+end;
+{$else CPUAVR_16_REGS}
 // z in Ra, n in Rb, 0 in Rp
 function fpc_divmod_word(n, z: word): word; assembler; nostackframe;
 label
@@ -135,3 +179,4 @@ finish:
   pop R16
   pop R17
 end;
+{$endif CPUAVR_16_REGS}

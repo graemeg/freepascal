@@ -175,10 +175,16 @@ function DelChars(const S: string; Chr: Char): string;
 function DelSpace1(const S: string): string;
 function Tab2Space(const S: string; Numb: Byte): string;
 function NPos(const C: string; S: string; N: Integer): SizeInt;
+
 Function RPosEX(C:char;const S : AnsiString;offs:cardinal):SizeInt; overload;
 Function RPosex (Const Substr : AnsiString; Const Source : AnsiString;offs:cardinal) : SizeInt; overload;
 Function RPos(c:char;const S : AnsiString):SizeInt; overload;
 Function RPos (Const Substr : AnsiString; Const Source : AnsiString) : SizeInt; overload;
+Function RPosEX(C:Unicodechar;const S : UnicodeString;offs:cardinal):SizeInt; overload;
+Function RPosex (Const Substr : UnicodeString; Const Source : UnicodeString;offs:cardinal) : SizeInt; overload;
+Function RPos(c:Unicodechar;const S : UnicodeString):SizeInt; overload;
+Function RPos (Const Substr : UnicodeString; Const Source : UnicodeString) : SizeInt; overload;
+
 function AddChar(C: Char; const S: string; N: Integer): string;
 function AddCharR(C: Char; const S: string; N: Integer): string;
 function PadLeft(const S: string; N: Integer): string;inline;
@@ -3091,6 +3097,95 @@ begin
    end;
 end;
 
+function RPosEX(C: unicodechar; const S: UnicodeString; offs: cardinal): SizeInt;
+
+var I   : SizeUInt;
+    p,p2: PUnicodeChar;
+
+Begin
+ I:=Length(S);
+ If (I<>0) and (offs<=i) Then
+   begin
+     p:=@s[offs];
+     p2:=@s[1];
+     while (p2<=p) and (p^<>c) do dec(p);
+     RPosEx:=(p-p2)+1;
+   end
+  else
+    RPosEX:=0;
+End;
+
+function RPos(c: Unicodechar; const S: UnicodeString): SizeInt;
+
+var I   : SizeInt;
+    p,p2: pUnicodeChar;
+
+Begin
+ I:=Length(S);
+ If I<>0 Then
+   begin
+     p:=@s[i];
+     p2:=@s[1];
+     while (p2<=p) and (p^<>c) do dec(p);
+     i:=p-p2+1;
+   end;
+  RPos:=i;
+End;
+
+function RPos(const Substr: UnicodeString; const Source: UnicodeString): SizeInt;
+var
+  MaxLen,llen : SizeInt;
+  c : Unicodechar;
+  pc,pc2 : PUnicodechar;
+begin
+  rPos:=0;
+  llen:=Length(SubStr);
+  maxlen:=length(source);
+  if (llen>0) and (maxlen>0) and ( llen<=maxlen) then
+   begin
+     pc:=@source[maxlen];
+     pc2:=@source[llen-1];
+     c:=substr[llen];
+     while pc>=pc2 do
+      begin
+        if (c=pc^) and
+           (CompareWord(Substr[1],punicodechar(pc-llen+1)^,Length(SubStr))=0) then
+         begin
+           rPos:=punicodechar(pc-llen+1)-punicodechar(@source[1])+1;
+           exit;
+         end;
+        dec(pc);
+      end;
+   end;
+end;
+
+function RPosex(const Substr: UnicodeString; const Source: UnicodeString; offs: cardinal): SizeInt;
+var
+  MaxLen,llen : SizeInt;
+  c : unicodechar;
+  pc,pc2 : punicodechar;
+begin
+  rPosex:=0;
+  llen:=Length(SubStr);
+  maxlen:=length(source);
+  if SizeInt(offs)<maxlen then maxlen:=offs;
+  if (llen>0) and (maxlen>0) and ( llen<=maxlen)  then
+   begin
+     pc:=@source[maxlen];
+     pc2:=@source[llen-1];
+     c:=substr[llen];
+     while pc>=pc2 do
+      begin
+        if (c=pc^) and
+           (Compareword(Substr[1],punicodechar(pc-llen+1)^,Length(SubStr))=0) then
+         begin
+           rPosex:=punicodechar(pc-llen+1)-punicodechar(@source[1])+1;
+           exit;
+         end;
+        dec(pc);
+      end;
+   end;
+end;
 
 // def from delphi.about.com:
 procedure BinToHex(BinValue, HexValue: PChar; BinBufSize: Integer);

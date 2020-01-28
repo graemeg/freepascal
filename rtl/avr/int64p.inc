@@ -13,6 +13,7 @@
 
  **********************************************************************}
 
+{$ifndef CPUAVR_16_REGS}
 {$define FPC_SYSTEM_HAS_SHR_QWORD}
 // Simplistic version with checking if whole bytes can be shifted
 // Doesn't change bitshift portion even if possible because of byteshift
@@ -563,3 +564,4 @@ asm
   adc R25, R1
   fin:
 end;
+{$endif CPUAVR_16_REGS}

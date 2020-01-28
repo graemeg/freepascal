@@ -182,7 +182,7 @@ begin
 end;
 
 
-function FileGetDate(Handle: THandle) : LongInt;
+function FileGetDate(Handle: THandle) : Int64;
 var
   tmpFIB : PFileInfoBlock;
   tmpDateTime: TDateTime;
@@ -205,7 +205,7 @@ begin
 end;
 
 
-function FileSetDate(Handle: THandle; Age: LongInt) : LongInt;
+function FileSetDate(Handle: THandle; Age: Int64) : LongInt;
 var
   tmpDateStamp: TDateStamp;
   tmpName: array[0..255] of char;
@@ -223,7 +223,7 @@ begin
 end;
 
 
-function FileSetDate(const FileName: RawByteString; Age: LongInt) : LongInt;
+function FileSetDate(const FileName: RawByteString; Age: Int64) : LongInt;
 var
   tmpDateStamp: TDateStamp;
   SystemFileName: RawByteString;
@@ -368,7 +368,7 @@ end;
 (****** end of non portable routines ******)
 
 
-function FileAge (const FileName : RawByteString): Longint;
+function FileAge (const FileName : RawByteString): Int64;
 var
   tmpLock: BPTR;
   tmpFIB : PFileInfoBlock;

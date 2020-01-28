@@ -53,13 +53,13 @@ begin
 end;
 
 
-function FileGetDate(Handle: LongInt) : LongInt;
+function FileGetDate(Handle: LongInt) : Int64;
 begin
   result := -1;
 end;
 
 
-function FileSetDate(Handle, Age: LongInt) : LongInt;
+function FileSetDate(Handle, Age: Int64) : LongInt;
 begin
   result := -1;
 end;
@@ -129,7 +129,7 @@ begin
 end;
 
 
-Function FileAge (Const FileName : RawByteString): Longint;
+Function FileAge (Const FileName : RawByteString): Int64;
 begin
   result := -1;
 end;

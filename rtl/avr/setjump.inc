@@ -100,10 +100,18 @@ procedure fpc_longjmp(var S : jmp_buf;value : shortint);assembler;[Public, alias
     // restore stack pointer
     ld r18,x+
     ld r19,x+
+{$ifdef CPUAVR_16_REGS}   
+    in r16,63
+{$else CPUAVR_16_REGS}   
     in r0,63
+{$endif CPUAVR_16_REGS}   
     cli
     out 62,r19
+{$ifdef CPUAVR_16_REGS}   
+    out	63,r16
+{$else CPUAVR_16_REGS}   
     out	63,r0
+{$endif CPUAVR_16_REGS}   
     out	61,r18
 
     // restore return address

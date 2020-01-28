@@ -2389,7 +2389,7 @@ class procedure TBinaryField.CheckTypeSize(AValue: Longint);
 begin
   // Just check for really invalid stuff; actual size is
   // dependent on the record...
-  If AValue<1 then
+  If AValue<0 then // MSSQL can have a null/0 field length in a view
     DatabaseErrorFmt(SInvalidFieldSize,[AValue]);
 end;
 

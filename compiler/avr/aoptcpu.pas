@@ -433,13 +433,21 @@ Implementation
                     (getsupreg(taicpu(p).oper[0]^.ref^.base)=RS_NO) and
                     (getsupreg(taicpu(p).oper[0]^.ref^.index)=RS_NO) and
                     (taicpu(p).oper[0]^.ref^.addressmode=AM_UNCHANGED) and
-                    (taicpu(p).oper[0]^.ref^.offset>=32) and
-                    (taicpu(p).oper[0]^.ref^.offset<=95) then
+                    // avrxmega3 doesn't map registers into data space so no offset to subtract
+                    (((current_settings.cputype = cpu_avrxmega3) and
+                      (taicpu(p).oper[0]^.ref^.offset>=0) and
+                      (taicpu(p).oper[0]^.ref^.offset<=63)) or
+                     ((current_settings.cputype <> cpu_avrxmega3) and
+                      (taicpu(p).oper[0]^.ref^.offset>=32) and
+                      (taicpu(p).oper[0]^.ref^.offset<=95))) then
                     begin
                       DebugMsg('Peephole Sts2Out performed', p);
 
                       taicpu(p).opcode:=A_OUT;
-                      taicpu(p).loadconst(0,taicpu(p).oper[0]^.ref^.offset-32);
+                      if current_settings.cputype = cpu_avrxmega3 then
+                        taicpu(p).loadconst(0,taicpu(p).oper[0]^.ref^.offset)
+                      else
+                        taicpu(p).loadconst(0,taicpu(p).oper[0]^.ref^.offset-32);
                     end;
                 A_LDS:
                   if (taicpu(p).oper[1]^.ref^.symbol=nil) and
@@ -447,13 +455,21 @@ Implementation
                     (getsupreg(taicpu(p).oper[1]^.ref^.base)=RS_NO) and
                     (getsupreg(taicpu(p).oper[1]^.ref^.index)=RS_NO) and
                     (taicpu(p).oper[1]^.ref^.addressmode=AM_UNCHANGED) and
-                    (taicpu(p).oper[1]^.ref^.offset>=32) and
-                    (taicpu(p).oper[1]^.ref^.offset<=95) then
+                    // avrxmega3 doesn't map registers into data space so no offset to subtract
+                    (((current_settings.cputype = cpu_avrxmega3) and
+                      (taicpu(p).oper[1]^.ref^.offset>=0) and
+                      (taicpu(p).oper[1]^.ref^.offset<=63)) or
+                     ((current_settings.cputype <> cpu_avrxmega3) and
+                      (taicpu(p).oper[1]^.ref^.offset>=32) and
+                      (taicpu(p).oper[1]^.ref^.offset<=95))) then
                     begin
                       DebugMsg('Peephole Lds2In performed', p);
 
                       taicpu(p).opcode:=A_IN;
-                      taicpu(p).loadconst(1,taicpu(p).oper[1]^.ref^.offset-32);
+                      if current_settings.cputype = cpu_avrxmega3 then
+                        taicpu(p).loadconst(1,taicpu(p).oper[1]^.ref^.offset)
+                      else
+                        taicpu(p).loadconst(1,taicpu(p).oper[1]^.ref^.offset-32);
                     end;
                 A_IN:
                     if GetNextInstruction(p,hp1) then

@@ -25,6 +25,7 @@ type
   {$else}
   TThreadID = THandle;
   {$endif}
+  TOSTimestamp = Int64;
 
   { pthread_mutex_t }
   PRTLCriticalSection = ^TRTLCriticalSection;

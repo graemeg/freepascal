@@ -19,6 +19,7 @@
 type
   THandle = Longint;
   TThreadID = THandle;
+  TOSTimestamp = Longint;
 
    PRTLCriticalSection = ^TRTLCriticalSection;
    TRTLCriticalSection = record

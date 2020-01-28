@@ -10,6 +10,7 @@ uses
 
 const
   use_temp_dir : boolean = true;
+  temp_dir_generated : boolean = false;
   need_cwsdpmi : boolean = false;
   cwsdpmi_file : string = '';
   hide_execution : boolean = true;
@@ -18,28 +19,33 @@ const
   DosBoxProcess: TProcess = nil;
   dosbox_timeout : integer = 400;  { default timeout in seconds }
   DosBoxExitStatus : integer = -1;
+  no_temp_dir_generated = '/no/temp/dir/generated/';
 var
   OutputFileName : String;
   SourceFileName : String;
   StartDir, DosBoxDir: string;
+  TempDir: String;
   ExitCode: Integer = 255;
   DosBoxBinaryPath: string;
   TmpFileList : TStringList;
 
 function GenerateTempDir: string;
 var
-  FileName: string;
-  TempDir: string;
+  TempDirName: string;
+  BaseTempDir: string;
   Done: Boolean = False;
 begin
-  TempDir := GetTempDir(False);
+  BaseTempDir := GetTempDir(False);
+  Result := no_temp_dir_generated;
   repeat
     try
-      FileName := TempDir + 'dosboxwrappertmp_' + IntToStr(Random(100000));
+      TempDirName := BaseTempDir + 'dosboxwrappertmp_' + IntToStr(Random(100000));
       if verbose then
-        writeln('Trying to create directory ',Filename);
-      MkDir(FileName);
+        writeln('Trying to create directory ',TempDirName);
+      MkDir(TempDirName);
       Done := True;
+      temp_dir_generated := True;
+      TempDir := TempDirName + DirectorySeparator;
     except
       on E: EInOutError do
       begin
@@ -52,7 +58,7 @@ begin
       end;
     end;
   until Done;
-  Result := FileName + DirectorySeparator;
+  Result := TempDirName + DirectorySeparator;
 end;
 
 procedure GenerateDosBoxConf(const ADosBoxDir: string);
@@ -347,8 +353,13 @@ begin
           CloseFile(StdText);
         end;
       finally
-        if use_temp_dir then
+        if use_temp_dir and SkipUntilSeen then
           DeleteFile(OutputFileName);
+        if use_temp_dir and not SkipUntilSeen then
+          begin
+            writeln('Setting temp_dir_generated to false');
+            temp_dir_generated:=false;
+          end;
       end;
     end;
 end;
@@ -356,11 +367,30 @@ end;
 function ReadExitCode(const ADosBoxDir: string): Integer;
 var
   F: TextFile;
+  S : ShortString;
+  value : Integer;
+  errpos : Word;
 begin
   AssignFile(F, ADosBoxDir + 'EXITCODE.TXT');
+  if verbose and not FileExists(ADosBoxDir + 'EXITCODE.TXT') then
+    writeln('ReadExitCode: '+ADosBoxDir + 'EXITCODE.TXT does not exist');
   try
     Reset(F);
-    Readln(F, Result);
+    if verbose then
+      begin
+        Readln(F, S);
+        system.Val(S,Value,errpos);
+        if errpos=0 then
+          Result:=value
+        else
+          begin
+            writeln('ReadExitCode: First line "'+S+'" generated error at pos=',errpos);
+            ReadExitCode:=126*256;
+            exit;
+          end;
+      end
+    else
+      Readln(F, Result);
     if Result <> 0 then
       Writeln('ExitCode=',Result);
     CloseFile(F);
@@ -368,8 +398,11 @@ begin
     Writeln('Unable to read exitcode value');
     if (DosBoxExitStatus <> 0) then
       Writeln('DosBox exit status = ',DosBoxExitStatus);
+    temp_dir_generated:=false;
     ReadExitCode:=127*256;
   end;
+  if verbose then
+    writeln('Test finished with ExitCode=',ReadExitCode);
 end;
 
 function ExecuteDosBox(const ADosBoxBinaryPath, ADosBoxDir: string) : Integer;
@@ -460,6 +493,8 @@ procedure Cleanup(const ADosBoxDir: string);
 var
    i : longint;
 begin
+  if verbose then
+    writeln('Cleanup '+ADosBoxDir);
   DeleteIfExists(ADosBoxDir + 'dosbox.conf');
   DeleteIfExists(ADosBoxDir + 'EXITCODE.TXT');
   DeleteIfExists(ADosBoxDir + 'EXITCODE.EXE');
@@ -573,7 +608,12 @@ begin
   if use_temp_dir then
     begin
       GetDir(0,StartDir);
-      DosBoxDir := GenerateTempDir;
+      Try
+        DosBoxDir := GenerateTempDir;
+      Except
+        Writeln('GenerateTempDir call failed');
+        halt(1);
+      end;
       { All executable test have t.*.pp pattern }
       if (paramcount>1) and (copy(paramstr(2),1,2)='-S') then
         SourceFileName:=copy(paramstr(2),3,length(paramstr(2)))
@@ -620,7 +660,7 @@ begin
 {$endif def UseSignals}
   ExitProc;
   ExitCode:=ReadExitCode(DosBoxDir);
-  if use_temp_dir then
+  if use_temp_dir and temp_dir_generated then
     Cleanup(DosBoxDir);
   halt(ExitCode);
 end.

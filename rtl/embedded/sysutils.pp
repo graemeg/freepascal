@@ -53,13 +53,13 @@ begin
 end;
 
 
-function FileGetDate(Handle: THandle) : Longint;
+function FileGetDate(Handle: THandle) : TOSTimestamp;
 begin
   result := -1;
 end;
 
 
-function FileSetDate(Handle: THandle; Age: LongInt) : Longint;
+function FileSetDate(Handle: THandle; Age: TOSTimestamp) : Longint;
 begin
   result := -1;
 end;
@@ -129,7 +129,7 @@ begin
 end;
 
 
-Function FileAge (Const FileName : RawByteString): Longint;
+Function FileAge (Const FileName : RawByteString): TOSTimestamp;
 begin
   result := -1;
 end;

@@ -332,7 +332,9 @@ unit optdfa;
                   begin
                     { if yes, then we should warn }
                     { !!!!!! }
-                  end;
+                  end
+                else
+                  Include(tfornode(node).loopflags,lnf_dont_mind_loopvar_on_exit);
 
                 { first update the dummy node }
 

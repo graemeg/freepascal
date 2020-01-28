@@ -40,7 +40,7 @@ begin
 end;
 
 
-Function FileAge (Const FileName : UnicodeString): Longint;
+Function FileAge (Const FileName : UnicodeString): Int64;
 begin
   Result:=FileAge(ToSingleByteFileSystemEncodedFileName(FileName));
 end;
@@ -92,7 +92,7 @@ end;
 
 
 {$ifdef OS_FILESETDATEBYNAME}
-Function FileSetDate (Const FileName : UnicodeString;Age : Longint) : Longint;
+Function FileSetDate (Const FileName : UnicodeString;Age : Int64) : Longint;
 begin
   Result:=FileSetDate(ToSingleByteFileSystemEncodedFileName(FileName),Age);
 end;
@@ -257,7 +257,7 @@ begin
 end;
 
 
-Function FileAge (Const FileName : RawByteString): Longint;
+Function FileAge (Const FileName : RawByteString): Int64;
 begin
   Result:=FileAge(UnicodeString(FileName));
 end;
@@ -306,7 +306,7 @@ end;
 {$endif}
 
 {$ifdef OS_FILESETDATEBYNAME}
-Function FileSetDate (Const FileName : RawByteString;Age : Longint) : Longint;
+Function FileSetDate (Const FileName : RawByteString;Age : Int64) : Longint;
 begin
   Result:=FileSetDate(UnicodeString(FileName),Age);
 end;
@@ -484,7 +484,7 @@ end;
 
 type
   TAbstractSearchRec = Record
-    Time : Longint;
+    Time : Int64;
     Size : Int64;
     Attr : Longint;
     { this will be assigned by the generic code; it is actually either a

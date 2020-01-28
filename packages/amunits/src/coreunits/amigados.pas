@@ -945,7 +945,10 @@ Type
           dol_AssignName : STRPTR;        {    name for non-OR-late-binding assign }
           dol_List       : pAssignList;   {    for multi-directory assigns (regular) }
         END;
-    dol_Name            : BSTR;           {    bptr to bcpl name }
+    );
+    3 : (
+        dol_Misc         : array[0..23] of byte;
+        dol_Name         : BSTR;  {    bptr to bcpl name }
     );
    END;
 
@@ -1827,7 +1830,7 @@ END;
 
 FUNCTION MKBADDR(adr : POINTER): BPTR; inline;
 BEGIN
-    MKBADDR := BPTR( LONGINT(adr) shr 2);
+    MKBADDR := BPTR( PTRUINT(adr) shr 2);
 END;
 
 FUNCTION AllocDosObjectTags(type_ : ULONG; Const argv : Array of PtrUInt) : POINTER;

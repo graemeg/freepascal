@@ -647,7 +647,7 @@ asm
 end {['eax', 'ebx', 'ecx', 'edx']};
 
 
-function FileAge (const FileName: RawByteString): longint;
+function FileAge (const FileName: RawByteString): Int64;
 var Handle: longint;
 begin
     Handle := FileOpen (FileName, 0);
@@ -838,7 +838,7 @@ begin
 end;
 
 
-function FileGetDate (Handle: longint): longint; assembler;
+function FileGetDate (Handle: longint): Int64; assembler;
 asm
  push ebx
 {$IFDEF REGCALL}
@@ -854,10 +854,11 @@ asm
  shld eax, ecx, 16
 @FGetDateEnd:
  pop ebx
+ xorl edx,edx
 end {['eax', 'ebx', 'ecx', 'edx']};
 
 
-function FileSetDate (Handle, Age: longint): longint;
+function FileSetDate (Handle: longint; Age: Int64): longint;
 var FStat: PFileStatus3;
     RC: cardinal;
 begin
@@ -870,10 +871,10 @@ begin
                 FileSetDate := -1
             else
                 begin
-                    FStat^.DateLastAccess := Hi (Age);
-                    FStat^.DateLastWrite := Hi (Age);
-                    FStat^.TimeLastAccess := Lo (Age);
-                    FStat^.TimeLastWrite := Lo (Age);
+                    FStat^.DateLastAccess := Hi (dword (Age));
+                    FStat^.DateLastWrite := Hi (dword (Age));
+                    FStat^.TimeLastAccess := Lo (dword (Age));
+                    FStat^.TimeLastWrite := Lo (dword (Age));
                     RC := DosSetFileInfo (Handle, ilStandard, FStat,
                                                               SizeOf (FStat^));
                     if RC <> 0 then

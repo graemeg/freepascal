@@ -1293,6 +1293,7 @@ implementation
          if (lnf_testatbegin in loopflags) and
             (left.nodetype=ordconstn) and
             (tordconstnode(left).value.uvalue=0) and
+            not(nf_internal in left.flags) and
             assigned(right) then
            CGMessagePos(right.fileinfo,cg_w_unreachable_code);
       end;
@@ -1556,7 +1557,7 @@ implementation
                   else
                     result:=cnothingnode.create;
                   right:=nil;
-                  if warn and assigned(t1) then
+                  if warn and assigned(t1) and not(nf_internal in left.flags) then
                     CGMessagePos(t1.fileinfo,cg_w_unreachable_code);
                end
              else
@@ -1566,7 +1567,7 @@ implementation
                   else
                     result:=cnothingnode.create;
                   t1:=nil;
-                  if warn and assigned(right) then
+                  if warn and assigned(right) and not(nf_internal in left.flags) then
                     CGMessagePos(right.fileinfo,cg_w_unreachable_code);
                end;
           end;
@@ -1744,6 +1745,15 @@ implementation
       end;
 
 
+    function checkcontinue(var n:tnode; arg: pointer): foreachnoderesult;
+      begin
+        if n.nodetype=continuen then
+          result:=fen_norecurse_true
+        else
+          result:=fen_false;
+      end;
+
+
     function tfornode.makewhileloop : tnode;
       var
         ifblock,loopblock : tblocknode;
@@ -1760,6 +1770,7 @@ implementation
         { if the lower bound is not constant, it must be store in a temp before calculating the upper bound }
         usefromtemp : boolean;
         storefilepos: tfileposinfo;
+        countermin, countermax: Tconstexprint;
 
       procedure iterate_counter(var s : tstatementnode;fw : boolean);
         begin
@@ -1785,22 +1796,48 @@ implementation
         fromtemp:=nil;
         storefilepos:=current_filepos;
         current_filepos:=fileinfo;
-        do_loopvar_at_end:=(lnf_dont_mind_loopvar_on_exit in loopflags)
-        { if the loop is unrolled and there is a jump into the loop,
-          then we can't do the trick with incrementing the loop var only at the
-          end
-        }
-          and not(assigned(entrylabel));
 
-         { calculate pointer value and check if changeable and if so
-           load into temporary variable                              }
-         if (right.nodetype<>ordconstn) or (t1.nodetype<>ordconstn) then
-           begin
-             do_loopvar_at_end:=false;
-             needsifblock:=true;
-           end
-         else
-           needsifblock:=false;
+        case left.resultdef.typ of
+          enumdef:
+            begin
+              countermin:=tenumdef(left.resultdef).min;
+              countermax:=tenumdef(left.resultdef).max;
+            end;
+          orddef:
+            begin
+              countermin:=torddef(left.resultdef).low;
+              countermax:=torddef(left.resultdef).high;
+            end;
+          else
+            Internalerror(2020012601);
+        end;
+
+        { check if we can pred/succ the loop var at the end }
+        do_loopvar_at_end:=(lnf_dont_mind_loopvar_on_exit in loopflags) and
+          is_constnode(right) and is_constnode(t1) and
+          { we cannot test at the end after the pred/succ if the to value is equal to the max./min. value of the counter variable
+            because we either get an overflow/underflow or the compiler removes the check as it never can be true }
+
+          { checking just the min./max. value depending on the pure size of the counter does not work as the check might
+            get optimized away
+          not(not(lnf_backward in loopflags) and not(is_signed(left.resultdef)) and (get_ordinal_value(t1)=((1 shl (left.resultdef.size*8))-1))) and
+          not(not(lnf_backward in loopflags) and is_signed(left.resultdef) and (get_ordinal_value(t1)=((1 shl (left.resultdef.size*8-1))-1))) and
+          not((lnf_backward in loopflags) and not(is_signed(left.resultdef)) and (get_ordinal_value(t1)=0)) and
+          not((lnf_backward in loopflags) and is_signed(left.resultdef) and (get_ordinal_value(t1)=(-Tconstexprint(1 shl (left.resultdef.size*8-1))))) and
+          }
+
+          not(not(lnf_backward in loopflags) and (get_ordinal_value(t1)=countermax)) and
+          not((lnf_backward in loopflags) and (get_ordinal_value(t1)=countermin)) and
+          { neither might the for loop contain a continue statement as continue in a while loop would skip the increment at the end
+            of the loop, this could be overcome by replacing the continue statement with an pred/succ; continue sequence }
+          not(foreachnodestatic(t2,@checkcontinue,nil)) and
+          { if the loop is unrolled and there is a jump into the loop,
+            then we can't do the trick with incrementing the loop var only at the
+            end
+          }
+          not(assigned(entrylabel));
+
+        needsifblock:=not(is_constnode(right)) or not(is_constnode(t1));
 
         { convert the for loop into a while loop }
         result:=internalstatements(statements);

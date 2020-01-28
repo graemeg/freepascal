@@ -158,8 +158,8 @@ function FormatDateTime(const FormatStr: string; DateTime: TDateTime; Options : 
 function FormatDateTime(const FormatStr: string; DateTime: TDateTime; const FormatSettings: TFormatSettings; Options : TFormatDateTimeOptions = []): string;
 procedure DateTimeToString(out Result: string; const FormatStr: string; const DateTime: TDateTime; Options : TFormatDateTimeOptions = []);
 procedure DateTimeToString(out Result: string; const FormatStr: string; const DateTime: TDateTime; const FormatSettings: TFormatSettings; Options : TFormatDateTimeOptions = []);
-Function DateTimeToFileDate(DateTime : TDateTime) : Longint;
-Function FileDateToDateTime (Filedate : Longint) :TDateTime;
+Function DateTimeToFileDate(DateTime : TDateTime) : int64;
+Function FileDateToDateTime (Filedate : Int64) :TDateTime;
 function TryStrToDate(const S: ShortString; out Value: TDateTime): Boolean;                         {$ifdef SYSUTILSINLINE}inline;{$endif}
 function TryStrToDate(const S: AnsiString; out Value: TDateTime): Boolean;                         {$ifdef SYSUTILSINLINE}inline;{$endif}
 function TryStrToDate(const S: ShortString; out Value: TDateTime; separator : char): Boolean;
