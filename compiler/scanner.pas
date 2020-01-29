@@ -75,11 +75,12 @@ interface
          patternw : pcompilerwidestring;
          settings : tsettings;
          tokenbuf : tdynamicarray;
+         tokenbuf_needs_swapping : boolean;
          next     : treplaystack;
          constructor Create(atoken: ttoken;aidtoken:ttoken;
            const aorgpattern,apattern:string;const acstringpattern:ansistring;
            apatternw:pcompilerwidestring;asettings:tsettings;
-           atokenbuf:tdynamicarray;anext:treplaystack);
+           atokenbuf:tdynamicarray;change_endian:boolean;anext:treplaystack);
          destructor destroy;override;
        end;
 
@@ -145,8 +146,8 @@ interface
 
           { true, if we are parsing preprocessor expressions }
           in_preproc_comp_expr : boolean;
-          { true if cross-compiling for a CPU in opposite endianess}
-          change_endian_for_tokens : boolean;
+          { true if tokens must be converted to opposite endianess}
+          change_endian_for_replay : boolean;
 
           constructor Create(const fn:string; is_macro: boolean = false);
           destructor Destroy;override;
@@ -184,7 +185,7 @@ interface
           procedure stoprecordtokens;
           function is_recording_tokens:boolean;
           procedure replaytoken;
-          procedure startreplaytokens(buf:tdynamicarray);
+          procedure startreplaytokens(buf:tdynamicarray; change_endian:boolean);
           { bit length asizeint is target depend }
           procedure tokenwritesizeint(val : asizeint);
           procedure tokenwritelongint(val : longint);
@@ -2645,7 +2646,7 @@ type
     constructor treplaystack.Create(atoken:ttoken;aidtoken:ttoken;
       const aorgpattern,apattern:string;const acstringpattern:ansistring;
       apatternw:pcompilerwidestring;asettings:tsettings;
-      atokenbuf:tdynamicarray;anext:treplaystack);
+      atokenbuf:tdynamicarray;change_endian:boolean;anext:treplaystack);
       begin
         token:=atoken;
         idtoken:=aidtoken;
@@ -2660,6 +2661,7 @@ type
           end;
         settings:=asettings;
         tokenbuf:=atokenbuf;
+        tokenbuf_needs_swapping:=change_endian;
         next:=anext;
       end;
 
@@ -2717,11 +2719,8 @@ type
         lasttoken:=NOTOKEN;
         nexttoken:=NOTOKEN;
         ignoredirectives:=TFPHashList.Create;
-        if (current_module is tppumodule) and assigned(tppumodule(current_module).ppufile) then
-          change_endian_for_tokens:=tppumodule(current_module).ppufile.change_endian
-        else
-          change_endian_for_tokens:=false;
-       end;
+        change_endian_for_replay:=false;
+      end;
 
 
     procedure tscannerfile.firstfile;
@@ -2921,7 +2920,7 @@ type
         val : asizeint;
       begin
         replaytokenbuf.read(val,sizeof(asizeint));
-        if change_endian_for_tokens then
+        if change_endian_for_replay then
           val:=swapendian(val);
         result:=val;
       end;
@@ -2931,7 +2930,7 @@ type
         val : longword;
       begin
         replaytokenbuf.read(val,sizeof(longword));
-        if change_endian_for_tokens then
+        if change_endian_for_replay then
           val:=swapendian(val);
         result:=val;
       end;
@@ -2941,7 +2940,7 @@ type
         val : longint;
       begin
         replaytokenbuf.read(val,sizeof(longint));
-        if change_endian_for_tokens then
+        if change_endian_for_replay then
           val:=swapendian(val);
         result:=val;
       end;
@@ -2967,7 +2966,7 @@ type
         val : smallint;
       begin
         replaytokenbuf.read(val,sizeof(smallint));
-        if change_endian_for_tokens then
+        if change_endian_for_replay then
           val:=swapendian(val);
         result:=val;
       end;
@@ -2977,7 +2976,7 @@ type
         val : word;
       begin
         replaytokenbuf.read(val,sizeof(word));
-        if change_endian_for_tokens then
+        if change_endian_for_replay then
           val:=swapendian(val);
         result:=val;
       end;
@@ -2999,7 +2998,7 @@ type
      i : longint;
    begin
      replaytokenbuf.read(b,size);
-     if change_endian_for_tokens then
+     if change_endian_for_replay then
        for i:=0 to size-1 do
          Pbyte(@b)[i]:=reverse_byte(Pbyte(@b)[i]);
    end;
@@ -3315,17 +3314,21 @@ type
       end;
 
 
-    procedure tscannerfile.startreplaytokens(buf:tdynamicarray);
+    procedure tscannerfile.startreplaytokens(buf:tdynamicarray; change_endian:boolean);
       begin
         if not assigned(buf) then
           internalerror(200511175);
+
         { save current scanner state }
         replaystack:=treplaystack.create(token,idtoken,orgpattern,pattern,
-          cstringpattern,patternw,current_settings,replaytokenbuf,replaystack);
+          cstringpattern,patternw,current_settings,replaytokenbuf,change_endian_for_replay,replaystack);
         if assigned(inputpointer) then
           dec(inputpointer);
         { install buffer }
         replaytokenbuf:=buf;
+
+        { Initialize value of change_endian_for_replay variable }
+        change_endian_for_replay:=change_endian;
 
         { reload next token }
         replaytokenbuf.seek(0);
@@ -3368,6 +3371,7 @@ type
             move(replaystack.patternw^.data^,patternw^.data^,replaystack.patternw^.len*sizeof(tcompilerwidechar));
             cstringpattern:=replaystack.cstringpattern;
             replaytokenbuf:=replaystack.tokenbuf;
+            change_endian_for_replay:=replaystack.tokenbuf_needs_swapping;
             { restore compiler settings }
             current_settings:=replaystack.settings;
             popreplaystack;

@@ -497,7 +497,6 @@ unit agppcgas;
     procedure TPPCAIXAssembler.WriteAsmList;
       var
         cur_sectype : TAsmSectionType;
-        cur_list : TAsmList;
         hal : tasmlisttype;
         hp : tai;
         max_al : longint;

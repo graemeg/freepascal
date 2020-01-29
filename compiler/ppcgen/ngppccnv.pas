@@ -72,7 +72,6 @@ implementation
         hreg2    : tregister;
 {$ifndef cpu64bitalu}
         href     : treference;
-        oldloc   : tlocation;
 {$endif not cpu64bitalu}
         resflags : tresflags;
         opsize   : tcgsize;

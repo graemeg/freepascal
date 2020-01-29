@@ -324,7 +324,7 @@ type
     procedure putstring(const s:string); {$ifdef USEINLINE}inline;{$endif}
     procedure putansistring(const s:ansistring);
 
-    procedure putset(const arr: array of byte); {$ifdef USEINLINE}inline;{$endif}
+    procedure putset(const arr: array of byte);
     procedure tempclose;        // MG: not used, obsolete?
     function  tempopen:boolean; // MG: not used, obsolete?
   end;

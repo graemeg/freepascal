@@ -307,9 +307,6 @@ Unit Rax86int;
         forcelabel : boolean;
         srsym : tsym;
         srsymtable : TSymtable;
-        scomment: string;
-        schar: char;
-        old_commentstyle: tcommentstyle;
       begin
         actoperextention := '';
 

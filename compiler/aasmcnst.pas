@@ -827,8 +827,6 @@ implementation
 
 
    destructor tai_aggregatetypedconst.destroy;
-     var
-       ai: tai_abstracttypedconst;
      begin
        fvalues.free;
        inherited destroy;

@@ -284,7 +284,6 @@ procedure ti386tryfinallynode.pass_generate_code;
     oldBreakLabel : tasmlabel;
     oldflowcontrol,tryflowcontrol : tflowcontrol;
     is_safecall: boolean;
-    hreg: tregister;
     sym : tasmsymbol;
   begin
     if (target_info.system<>system_i386_win32) then
@@ -300,7 +299,6 @@ procedure ti386tryfinallynode.pass_generate_code;
     breakfinallylabel:=nil;
     exceptlabel:=nil;
     safecalllabel:=nil;
-    hreg:=NR_NO;
     is_safecall:=implicitframe and (current_procinfo.procdef.proccalloption=pocall_safecall);
 
     { check if child nodes do a break/continue/exit }

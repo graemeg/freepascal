@@ -1632,11 +1632,10 @@ implementation
 
     function LengthSleb128(a: int64) : byte;
       var
-        b, size: byte;
+        b: byte;
         more: boolean;
       begin
         more := true;
-        size := sizeof(a)*8;
         result:=0;
         repeat
           b := a and $7f;
@@ -1677,12 +1676,11 @@ implementation
 
     function EncodeSleb128(a: int64;out buf;len : byte) : byte;
       var
-        b, size: byte;
+        b: byte;
         more: boolean;
         pbuf : pbyte;
       begin
         more := true;
-        size := sizeof(a)*8;
         result:=0;
         pbuf:=@buf;
         repeat

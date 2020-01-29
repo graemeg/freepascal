@@ -622,7 +622,7 @@ implementation
       var
         cgpara1: tcgpara;
         pd: tprocdef;
-        action, ReRaiseLandingPad: TPSABIEHAction;
+        ReRaiseLandingPad: TPSABIEHAction;
         psabiehprocinfo: tpsabiehprocinfo;
       begin
         if not(fc_catching_exceptions in flowcontrol) and
@@ -686,17 +686,11 @@ implementation
       var
         catchstartlab : tasmlabel;
         begincatchres,
-        typeidres,
         paraloc1: tcgpara;
         pd: tprocdef;
-        landingpadstructdef,
-        landingpadtypeiddef: tdef;
         rttisym: TAsmSymbol;
         rttidef: tdef;
-        rttiref: treference;
-        wrappedexception,
-        exceptiontypeidreg,
-        landingpadres: tregister;
+        wrappedexception: tregister;
         exceptloc: tlocation;
         indirect: boolean;
         otherunit: boolean;

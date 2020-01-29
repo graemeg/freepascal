@@ -441,7 +441,6 @@ procedure Tx86Instruction.AddReferenceSizes;
   operand is a register }
 var
   operand2,i,j,k : longint;
-  t: topsize;
   s : tasmsymbol;
   so : aint;
   ExistsMemRefNoSize: boolean;

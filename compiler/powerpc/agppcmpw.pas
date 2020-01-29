@@ -727,8 +727,6 @@ interface
       consttype : taiconst_type;
       do_line,DoNotSplitLine,
       quoted   : boolean;
-      sin      : single;
-      d        : double;
 
     begin
       if not assigned(p) then

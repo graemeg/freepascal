@@ -563,7 +563,6 @@ unit cgppc;
         );
     var
       ref2: TReference;
-      tmpreg: tregister;
       op: TAsmOp;
     begin
       if not (fromsize in [OS_8..OS_INT,OS_S8..OS_SINT]) then
@@ -812,9 +811,6 @@ unit cgppc;
       AutoDirectTOCLimit = (high(smallint) div sizeof(pint)) - 500;
     var
       tmpref: treference;
-      { can have more than 16384 (32 bit) or 8192 (64 bit) toc entries and, as
-        as consequence, toc subsections -> 5 extra characters for the number}
-      tocsecname: string[length('tocsubtable')+5];
       nlsymname: string;
       newsymname: ansistring;
       sym: TAsmSymbol;

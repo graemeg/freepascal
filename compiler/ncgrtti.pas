@@ -1860,7 +1860,7 @@ implementation
       end;
 
     var
-      count,i,len: word;
+      count,i: word;
       attr : trtti_attribute;
       tbltcb : ttai_typedconstbuilder;
       tbllab : tasmlabel;

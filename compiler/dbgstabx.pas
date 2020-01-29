@@ -299,7 +299,6 @@ implementation
       currsectype  : TAsmSectiontype;
       hp, inclinsertpos, last : tai;
       infile : tinputfile;
-      i,
       linenr, stabx_func_level,
       nolineinfolevel: longint;
       nextlineisfunstart: boolean;

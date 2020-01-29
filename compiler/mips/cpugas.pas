@@ -90,8 +90,6 @@ unit cpugas;
       end;
 
     procedure TMIPSGNUAssembler.WriteExtraHeader;
-      var
-        i : longint;
       begin
         if not (cs_asm_pre_binutils_2_25 in current_settings.globalswitches) then
           writer.AsmWriteln(#9'.module nomips16');

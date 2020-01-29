@@ -127,9 +127,7 @@ unit aoptcpu;
 
     function TCPUAsmOPtimizer.PeepHoleOptPass1Cpu(var p: tai): boolean;
       var
-        hp1,hp2 : tai;
-        hp3,hp4: tai;
-        v:aint;
+        hp1 : tai;
       begin
         result:=False;
         case p.Typ Of

@@ -660,7 +660,7 @@ implementation
          isunique,
          istyperenaming : boolean;
          generictypelist : tfphashobjectlist;
-         generictokenbuf : tdynamicarray;
+         localgenerictokenbuf : tdynamicarray;
          p:tnode;
          gendef : tstoreddef;
          s : shortstring;
@@ -682,7 +682,7 @@ implementation
            defpos:=current_tokenpos;
            istyperenaming:=false;
            generictypelist:=nil;
-           generictokenbuf:=nil;
+           localgenerictokenbuf:=nil;
 
            { class attribute definitions? }
            if m_prefixed_attributes in current_settings.modeswitches then
@@ -744,8 +744,8 @@ implementation
            { Start recording a generic template }
            if assigned(generictypelist) then
              begin
-               generictokenbuf:=tdynamicarray.create(256);
-               current_scanner.startrecordtokens(generictokenbuf);
+               localgenerictokenbuf:=tdynamicarray.create(256);
+               current_scanner.startrecordtokens(localgenerictokenbuf);
              end;
 
            { is the type already defined? -- must be in the current symtable,
@@ -1132,7 +1132,7 @@ implementation
            if assigned(generictypelist) then
              begin
                current_scanner.stoprecordtokens;
-               tstoreddef(hdef).generictokenbuf:=generictokenbuf;
+               tstoreddef(hdef).generictokenbuf:=localgenerictokenbuf;
                { Generic is never a type renaming }
                hdef.typesym:=newtype;
                generictypelist.free;

@@ -376,7 +376,6 @@ Implementation
         i,j  : longint;
         ImportLibrary : TImportLibrary;
         ImportSymbol  : TImportSymbol;
-        cmdstritem: TCmdStrListItem;
       begin
         with hp do
          begin

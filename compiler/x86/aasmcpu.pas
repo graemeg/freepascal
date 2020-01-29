@@ -3095,9 +3095,6 @@ implementation
         codes : pchar;
         c     : byte;
         len     : shortint;
-        len_ea_data: shortint;
-        len_ea_data_evex: shortint;
-        mref_offset: asizeint;
         ea_data : ea;
         exists_evex: boolean;
         exists_vex: boolean;
@@ -3108,17 +3105,12 @@ implementation
         exists_l256: boolean;
         exists_l512: boolean;
         exists_EVEXW1: boolean;
-        pmref_operand: poper;
 {$ifdef x86_64}
         omit_rexw : boolean;
 {$endif x86_64}
       begin
 
         len:=0;
-        len_ea_data := 0;
-        len_ea_data_evex:= 0;
-        mref_offset := 0;
-        pmref_operand := nil;
 
         codes:=@p^.code[0];
         exists_vex := false;
@@ -3716,7 +3708,6 @@ implementation
         EVEXx: byte;
         EVEXv: byte;
         EVEXll: byte;
-        EVEXw0: byte;
         EVEXw1: byte;
         EVEXz   : byte;
         EVEXaaa : byte;
@@ -3823,7 +3814,6 @@ implementation
         EVEXx    := 0;
         EVEXv    := 0;
         EVEXll   := 0;
-        EVEXw0   := 0;
         EVEXw1   := 0;
         EVEXz    := 0;
         EVEXaaa  := 0;
@@ -4902,8 +4892,6 @@ implementation
       AsmOp: TasmOp;
       i,j: longint;
       insentry  : PInsEntry;
-      codes : pchar;
-      c     : byte;
 
       MRefInfo: TMemRefSizeInfo;
       SConstInfo: TConstSizeInfo;

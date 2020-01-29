@@ -2419,7 +2419,7 @@ Unit AoptObj;
 
     procedure TAOptObj.PeepHoleOptPass1;
       var
-        p,hp1,hp2,hp3 : tai;
+        p : tai;
         stoploop, FirstInstruction, JumpOptsAvailable: boolean;
       begin
         JumpOptsAvailable := CanDoJumpOpts();

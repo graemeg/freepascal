@@ -22,6 +22,13 @@ begin
     halt(1);
   if (r[1]<>2) then
     halt(2);
+  r[0]:=f[1];
+  writeln(r[0]);
+  writeln(r[1]);
+  if (r[0]<>6) then
+    halt(1);
+  if (r[1]<>2) then
+    halt(2);
 end;
 
 begin

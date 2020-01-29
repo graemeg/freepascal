@@ -630,11 +630,7 @@ unit cpupara;
     function tcpuparamanager.create_varargs_paraloc_info(p : tabstractprocdef; side: tcallercallee; varargspara:tvarargsparalist):longint;
       var
         cur_stack_offset: aword;
-        parasize, l: longint;
         curintreg, firstfloatreg, curfloatreg, curmmreg: tsuperregister;
-        i : integer;
-        hp: tparavarsym;
-        paraloc: pcgparalocation;
       begin
         init_values(curintreg,curfloatreg,curmmreg,cur_stack_offset);
         firstfloatreg:=curfloatreg;

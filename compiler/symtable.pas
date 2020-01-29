@@ -4263,10 +4263,8 @@ implementation
 
     function search_best_objectpascal_helper(const name: string;pd : tdef;contextclassh : tabstractrecorddef;out srsym: tsym;out srsymtable: tsymtable):boolean;
       var
-        s : string;
         list : TFPObjectList;
         i : integer;
-        st : tsymtable;
         odef : tobjectdef;
       begin
         result:=false;
@@ -4287,7 +4285,6 @@ implementation
 
     function search_last_objectpascal_helper(pd : tdef;contextclassh : tabstractrecorddef;out odef : tobjectdef):boolean;
       var
-        s : string;
         list : TFPObjectList;
         i : integer;
       begin

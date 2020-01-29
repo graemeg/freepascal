@@ -1623,13 +1623,9 @@ implementation
 
   procedure thlcgobj.a_load_const_subsetref(list: TAsmlist; tosubsetsize: tdef; a: tcgint; const sref: tsubsetreference);
     var
-      tmpref: treference;
       tmpsref: tsubsetreference;
       tmpreg: tregister;
       slopt: tsubsetloadopt;
-      newdef: tdef;
-      newbytesize: longint;
-      loval, hival: longint;
     begin
       if sref.bitlen>AIntBits then
         begin

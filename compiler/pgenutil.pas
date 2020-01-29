@@ -453,16 +453,11 @@ uses
 
     function generate_specialization_phase1(out context:tspecializationcontext;genericdef:tdef;parsedtype:tdef;symname:string;parsedpos:tfileposinfo):tdef;
       var
-        pt2 : tnode;
         found,
-        first,
         err : boolean;
         i,
         gencount : longint;
-        def : tstoreddef;
         countstr,genname,ugenname : string;
-        srsym : tsym;
-        st : tsymtable;
         tmpstack : tfpobjectlist;
       begin
         context:=nil;
@@ -975,7 +970,7 @@ uses
                 replaydepth:=current_scanner.replay_stack_depth;
                 if genericdef.typ=procdef then
                   begin
-                    current_scanner.startreplaytokens(tprocdef(genericdef).genericdecltokenbuf);
+                    current_scanner.startreplaytokens(tprocdef(genericdef).genericdecltokenbuf,tprocdef(genericdef).generic_buf_needs_swapping);
                     parse_proc_head(tprocdef(genericdef).struct,tprocdef(genericdef).proctypeoption,false,genericdef,generictypelist,pd);
                     if assigned(pd) then
                       begin
@@ -989,7 +984,7 @@ uses
                   end
                 else
                   begin
-                    current_scanner.startreplaytokens(genericdef.generictokenbuf);
+                    current_scanner.startreplaytokens(genericdef.generictokenbuf,genericdef.generic_buf_needs_swapping);
                     hadtypetoken:=false;
                     read_named_type(result,srsym,genericdef,generictypelist,false,hadtypetoken);
                     ttypesym(srsym).typedef:=result;
@@ -1637,7 +1632,7 @@ uses
             { use the index the module got from the current compilation process }
             current_filepos.moduleindex:=hmodule.unit_index;
             current_tokenpos:=current_filepos;
-            current_scanner.startreplaytokens(tprocdef(def.genericdef).generictokenbuf);
+            current_scanner.startreplaytokens(tprocdef(def.genericdef).generictokenbuf,tprocdef(def.genericdef).generic_buf_needs_swapping);
             read_proc_body(def);
             current_filepos:=oldcurrent_filepos;
           end

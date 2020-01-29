@@ -5087,7 +5087,7 @@ unit aoptx86;
 
     function TX86AsmOptimizer.OptPass2SUB(var p: tai): Boolean;
       var
-        hp1, hp2: tai; NewRef: TReference;
+        hp1: tai; NewRef: TReference;
       begin
         { Change:
             subl/q $x,%reg1

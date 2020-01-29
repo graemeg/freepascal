@@ -93,8 +93,6 @@ implementation
          procedure genOrdConstNodeDiv;
          const
              negops : array[boolean] of tasmop = (A_NEG, A_NEGO);
-         var
-             divreg : tregister;
          begin
              if (tordconstnode(right).value = 0) then begin
                  internalerror(2005061701);
