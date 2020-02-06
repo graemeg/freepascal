@@ -250,10 +250,7 @@ begin
 end;
 
 
-type    TRec = record
-            T, D: word;
-        end;
-        PSearchRec = ^TSearchRec;
+type    PSearchRec = ^TSearchRec;
 
 Function InternalFindFirst (Const Path : RawByteString; Attr : Longint; out Rslt : TAbstractSearchRec; var Name: RawByteString) : Longint;
 
@@ -283,8 +280,7 @@ begin
   if Err = 0 then
    begin
     Rslt.ExcludeAttr := 0;
-    TRec (Rslt.Time).T := FStat^.TimeLastWrite;
-    TRec (Rslt.Time).D := FStat^.DateLastWrite;
+    Rslt.Time := cardinal (FStat^.DateLastWrite) shl 16 + FStat^.TimeLastWrite;
     if FSApi64 then
      begin
       Rslt.Size := FStat^.FileSize;
@@ -324,8 +320,7 @@ begin
   if Err = 0 then
   begin
     Rslt.ExcludeAttr := 0;
-    TRec (Rslt.Time).T := FStat^.TimeLastWrite;
-    TRec (Rslt.Time).D := FStat^.DateLastWrite;
+    Rslt.Time := cardinal (FStat^.DateLastWrite) shl 16 + FStat^.TimeLastWrite;
     if FSApi64 then
      begin
       Rslt.Size := FStat^.FileSize;

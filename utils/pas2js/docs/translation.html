@@ -133,6 +133,7 @@ Put + after a boolean switch option to enable it, - to disable it
     -iV   : Write short compiler version
     -iW   : Write full compiler version
     -ic   : Write list of supported JS processors usable by -P&lt;x&gt;
+    -im   : Write list of supported modeswitches usable by -M&lt;x&gt;
     -io   : Write list of supported optimizations usable by -Oo&lt;x&gt;
     -it   : Write list of supported targets usable by -T&lt;x&gt;
     -iJ   : Write list of supported JavaScript identifiers -JoRTL-&lt;x&gt;
@@ -179,8 +180,11 @@ Put + after a boolean switch option to enable it, - to disable it
                   postprocessors in succession.
    -Ju&lt;x&gt; : Add &lt;x&gt; to foreign unit paths. Foreign units are not compiled.
   -l      : Write logo
-  -MDelphi: Delphi 7 compatibility mode
-  -MObjFPC: FPC's Object Pascal compatibility mode (default)
+  -M&lt;x&gt;  : Set language mode or enable/disable a modeswitch
+    -MDelphi: Delphi 7 compatibility mode
+    -MObjFPC: FPC's Object Pascal compatibility mode (default)
+    Each mode (as listed above) enables its default set of modeswitches.
+    Other modeswitches are disabled and need to be enabled one by another.
   -NS&lt;x&gt;  : obsolete: add &lt;x&gt; to namespaces. Same as -FN&lt;x&gt;
   -n      : Do not read the default config files
   -o&lt;x&gt;   : Change main JavaScript file to &lt;x&gt;, "." means stdout
@@ -196,11 +200,12 @@ Put + after a boolean switch option to enable it, - to disable it
     -Pecmascript5  : default
     -Pecmascript6
   -S&lt;x&gt;   : Syntax options. &lt;x&gt; is a combination of the following letters:
+    2     : Same as -Mobjfpc (default)
     a     : Turn on assertions
     c     : Support operators like C (*=,+=,/= and -=)
     d     : Same as -Mdelphi
     m     : Enables macro replacements
-    2     : Same as -Mobjfpc (default)
+    j     : Allows typed constants to be writeable (default)
   -SI&lt;x&gt;   : Set interface style to &lt;x&gt;
     -SIcom   : COM, reference counted interface (default)
     -SIcorba : CORBA interface

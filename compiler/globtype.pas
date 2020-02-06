@@ -746,7 +746,9 @@ interface
          { set if the procedure has generated data which shall go in an except table }
          pi_has_except_table_data,
          { subroutine needs to load and maintain a tls register }
-         pi_needs_tls
+         pi_needs_tls,
+         { subroutine uses get_frame }
+         pi_uses_get_frame
        );
        tprocinfoflags=set of tprocinfoflag;
 

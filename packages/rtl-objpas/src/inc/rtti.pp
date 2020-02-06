@@ -975,6 +975,46 @@ asm
   jmp (a0)
 RawThunkEnd:
 end;
+{$elseif defined(cpuriscv64)}
+const
+  RawThunkPlaceholderProc = $8765876587658765;
+  RawThunkPlaceholderContext = $4321432143214321;
+
+type
+  TRawThunkProc = PtrUInt;
+  TRawThunkContext = PtrUInt;
+
+procedure RawThunk; assembler; nostackframe;
+asm
+  ld x5, .LProc
+  ld x10, .LContext
+  jalr x0, x5, 0
+.LProc:
+  .quad RawThunkPlaceholderProc
+.LContext:
+  .quad RawThunkPlaceholderContext
+RawThunkEnd:
+end;
+{$elseif defined(cpuriscv32)}
+const
+  RawThunkPlaceholderProc = $87658765;
+  RawThunkPlaceholderContext = $43214321;
+
+type
+  TRawThunkProc = PtrUInt;
+  TRawThunkContext = PtrUInt;
+
+procedure RawThunk; assembler; nostackframe;
+asm
+  lw x5, .LProc
+  lw x10, .LContext
+  jalr x0, x5, 0
+.LProc:
+  .long RawThunkPlaceholderProc
+.LContext:
+  .long RawThunkPlaceholderContext
+RawThunkEnd:
+end;
 {$endif}
 
 {$if declared(RawThunk)}

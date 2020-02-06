@@ -231,7 +231,7 @@ interface
        protected
           { in case of copy-out parameters: initialization code, and the code to
             copy back the parameter value after the call (including any required
-            finalization code }
+            finalization code) }
           fparainit,
           fparacopyback: tnode;
           procedure handlemanagedbyrefpara(orgparadef: tdef);virtual;

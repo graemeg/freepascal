@@ -1290,14 +1290,14 @@ end;
 function u128_div_u64_to_u64( const xh, xl: qword; const y: qword; out quotient, remainder: qword ): boolean;
 var
     b,                // Number base
-    v,                // Norm. divisor
+    v : qword;        // Norm. divisor
     un1, un0,         // Norm. dividend LSD's
-    vn1, vn0,         // Norm. divisor digits
+    vn1, vn0 : dword; // Norm. divisor digits
     q1, q0,           // Quotient digits
     un64, un21, un10, // Dividend digit pairs
     rhat: qword;      // A remainder
     s: integer;       // Shift amount for norm
-begin    
+begin
     // Overflow check
     if ( xh >= y ) then
     begin
@@ -1323,7 +1323,7 @@ begin
     q1 := un64 div vn1;
     rhat := un64 - q1 * vn1;
     b := qword(1) shl 32; // Number base
-    while ( q1 >= b ) or ( q1 * vn0 > b * rhat + un1 ) do
+    while ( hi(q1) <> 0 ) or ( q1 * vn0 > b * rhat + un1 ) do
     begin
         dec( q1 );
         inc( rhat, vn1 );
@@ -1335,11 +1335,11 @@ begin
     // Compute the second quotient digit, q0
     q0 := un21 div vn1;
     rhat := un21 - q0 * vn1;
-    while ( q0 >= b ) or ( q0 * vn0 > b * rhat + un0 ) do
+    while ( hi(q0) <> 0 ) or ( q0 * vn0 > b * rhat + un0 ) do
     begin
         dec( q0 );
         inc( rhat, vn1 );
-        if ( rhat >= b ) then
+        if ( hi(rhat) <> 0 ) then
             break;
     end;
     // Result

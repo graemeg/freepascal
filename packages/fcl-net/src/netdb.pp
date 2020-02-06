@@ -126,6 +126,7 @@ Type
 
 Var  
   DNSServers            : TDNSServerArray;
+  DNSOptions            : String;
   DefaultDomainList     : String;
   CheckResolveFileAge   : Boolean; 
   CheckHostsFileAge     : Boolean; 
@@ -176,6 +177,9 @@ uses
    BaseUnix,
    sysutils;
 
+var
+  DefaultDomainListArr : array of string;
+  NDots: Integer;
 
 const
   { from http://www.iana.org/assignments/dns-parameters }
@@ -568,6 +572,8 @@ begin
   Result:=0;
   ResolveFileName:=Fn;
   ResolveFileAge:=FileAge(FN);
+  DefaultDomainListArr:=[];
+  NDots:=1;
   {$push}{$i-}
   Assign(R,FN);
   Reset(R);
@@ -598,11 +604,16 @@ begin
         else if CheckDirective('domain') then
           DefaultDomainList:=L
         else if CheckDirective('search') then
-          DefaultDomainList:=L;
+          DefaultDomainList:=L
+        else if CheckDirective('options') then
+          DNSOptions:=L;
       end;
   Finally
     Close(R);
-  end;    
+  end;
+  L := GetEnvironmentVariable('LOCALDOMAIN');
+  if L <> '' then
+    DefaultDomainList := L;
 end;
 
 Procedure CheckResolveFile;
@@ -1143,14 +1154,70 @@ begin
    (HostAddr.u6_addr16[5] = $FFFF);
 end;
 
+Function HandleAsFullyQualifiedName(const HostName: String) : Boolean;
+var
+  I,J : Integer;
+begin
+  Result := False;
+  J := 0;
+  for I := 1 to Length(HostName) do
+    if HostName[I] = '.' then
+      begin
+      Inc(J);
+      if J >= NDots then
+        begin
+        Result := True;
+        Break;
+        end;
+      end;
+end;
+
 Function ResolveHostByName(HostName : String; Var H : THostEntry) : Boolean;
 
 Var
   Address : Array[1..MaxResolveAddr] of THostAddr;
+  AbsoluteQueryFirst : Boolean;
   L : Integer;
-  
+  K : Integer;
+
 begin
-  L:=ResolveName(HostName,Address);
+  // Use domain or search-list to append to the searched hostname.
+  // When the amount of dots in hostname is higher or equal to ndots,
+  // do the query without adding any search-domain first.
+  // See the resolv.conf manual for more info.
+  if (DefaultDomainList<>'') then
+    begin
+    // Fill the cached DefaultDomainListArr and NDots
+    if (Length(DefaultDomainListArr) = 0) then
+      begin
+      DefaultDomainListArr := DefaultDomainList.Split(' ',Char(9));
+      L := Pos('ndots:', DNSOptions);
+      if L > 0 then
+        NDots := StrToIntDef(Trim(Copy(DNSOptions, L+6, 2)), 1);
+      end;
+
+    AbsoluteQueryFirst := HandleAsFullyQualifiedName(HostName);
+    if AbsoluteQueryFirst then
+      L:=ResolveName(HostName,Address)
+    else
+      L := -1;
+
+    K := 0;
+    while (L < 1) and (K < Length(DefaultDomainListArr)) do
+      begin
+      L:=ResolveName(HostName + '.' + DefaultDomainListArr[K],Address);
+      Inc(K);
+      end;
+    end
+  else
+    begin
+    AbsoluteQueryFirst := False;
+    L := -1;
+    end;
+
+  if (L<1) and not AbsoluteQueryFirst then
+    L:=ResolveName(HostName,Address);
+
   Result:=(L>0);
   If Result then
     begin

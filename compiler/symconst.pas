@@ -442,7 +442,9 @@ type
     { a stub/thunk }
     pio_thunk,
     { compiled with fastmath enabled }
-    pio_fastmath
+    pio_fastmath,
+    { inline is forbidden (calls get_frame) }
+    pio_inline_forbidden
   );
   timplprocoptions = set of timplprocoption;
 

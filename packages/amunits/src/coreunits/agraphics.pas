@@ -371,12 +371,25 @@ type
         DestData : Longint;
 }
 
-    pCopIns = ^tCopIns;
-    tCopIns = record
-        OpCode  : smallint; { 0 = move, 1 = wait }
-        VWaitAddr : smallint; { vertical or horizontal wait position }
-        HWaitData : smallint; { destination Pointer or data to send }
-    end;
+  PCopList = ^TCopList;
+
+  // Copper structures
+  PCopIns = ^TCopIns;
+  TCopIns = record
+    OpCode: smallint; // 0 = move, 1 = wait
+    case SmallInt of
+    0:(
+      NxtList: PCopList;
+      );
+    1:(
+      DestAddr: SmallInt; // destination Pointer
+      DestData: SmallInt; // data to send      
+      );
+    2:(
+      VWaitPos: SmallInt; // vertical wait position
+      HWaitPos: SmallInt; // horizontal wait position      
+      );  
+  end;
 
 { structure of cprlist that points to list that hardware actually executes }
 
@@ -387,7 +400,7 @@ type
         MaxCount : smallint;       { number of long instructions }
     end;
 
-    pCopList = ^tCopList;
+    
     tCopList = record
         Next    : pCopList;     { next block for this copper list }
         _CopList : pCopList;    { system use }
@@ -2183,7 +2196,9 @@ type
         GfxFlags     : WORD;
         VBCounter    : ULONG;
         HashTableSemaphore  : pSignalSemaphore;
-        HWEmul       : Array[0..8] of Pointer;
+        case boolean of
+          true: ( ChunkyToPlanarPtr: PLongWord;);  // HWEmul[0];
+          false: (HWEmul: array[0..8] of PLongWord;);
     end;
 
 const

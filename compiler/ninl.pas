@@ -4471,6 +4471,7 @@ implementation
      function tinlinenode.first_get_frame: tnode;
        begin
          include(current_procinfo.flags,pi_needs_stackframe);
+         include(current_procinfo.flags,pi_uses_get_frame);
          expectloc:=LOC_CREGISTER;
          result:=nil;
        end;

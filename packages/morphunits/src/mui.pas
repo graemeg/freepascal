@@ -655,6 +655,7 @@ const
             mri_Window : PWindow;
             mri_RastPort : PRastPort;
             mri_Flags : LongWord;
+            mri_DummyWasTinyFont: PTextFont;
          end;
        pMUI_RenderInfo = ^tMUI_RenderInfo;
 

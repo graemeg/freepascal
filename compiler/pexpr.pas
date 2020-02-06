@@ -2463,22 +2463,32 @@ implementation
                    begin
                      if is_dynamic_array(p1.resultdef) then
                        begin
-                         if (token=_ID) and not try_type_helper(p1,nil) then
+                         if token=_ID then
                            begin
-                             if pattern='CREATE' then
+                             if not try_type_helper(p1,nil) then
                                begin
-                                 consume(_ID);
-                                 p2:=parse_array_constructor(tarraydef(p1.resultdef));
-                                 p1.destroy;
-                                 p1:=p2;
-                               end
-                             else
-                               begin
-                                 Message2(scan_f_syn_expected,'CREATE',pattern);
-                                 p1.destroy;
-                                 p1:=cerrornode.create;
-                                 consume(_ID);
+                                 if pattern='CREATE' then
+                                   begin
+                                     consume(_ID);
+                                     p2:=parse_array_constructor(tarraydef(p1.resultdef));
+                                     p1.destroy;
+                                     p1:=p2;
+                                   end
+                                 else
+                                   begin
+                                     Message2(scan_f_syn_expected,'CREATE',pattern);
+                                     p1.destroy;
+                                     p1:=cerrornode.create;
+                                     consume(_ID);
+                                   end;
                                end;
+                           end
+                         else
+                           begin
+                             Message(parser_e_invalid_qualifier);
+                             p1.destroy;
+                             p1:=cerrornode.create;
+                             consume(_ID);
                            end;
                        end
                      else

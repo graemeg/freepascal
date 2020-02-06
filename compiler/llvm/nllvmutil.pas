@@ -208,6 +208,10 @@ implementation
     begin
       inherited;
 
+      { insert newly created defs in the implementation rather than interface symtable
+        (the interface symtable is sealed at this point) }
+      symtablestack.push(current_module.localsymtable);
+
       { add the llvm.compiler.used array }
       InsertUsedList(current_module.llvmcompilerusedsyms,'llvm.compiler.used');
       { add the llvm.used array }
@@ -223,6 +227,8 @@ implementation
           inserttypeinfo;
           free;
         end;
+
+      symtablestack.pop(current_module.localsymtable);
     end;
 
 

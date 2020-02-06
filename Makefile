@@ -2935,7 +2935,11 @@ ifeq ($(findstring $(CPU_TARGET), $(BuildOnlyBaseCPUs)),)
 endif
 singlezipinstall: zipinstallall
 zipinstallall: $(BUILDSTAMP)
+ifeq ($(FULL_SOURCE),$(FULL_TARGET))
 	$(MAKE) fpc_zipinstall ZIPTARGET=install FULLZIPNAME=fpc-$(PACKAGE_VERSION).$(TARGETSUFFIX) $(INSTALLOPTS)
+else
+	$(MAKE) fpc_zipinstall ZIPTARGET=install FULLZIPNAME=fpc-$(PACKAGE_VERSION).$(TARGETSUFFIX).built.on.$(SOURCESUFFIX) $(INSTALLOPTS)
+endif
 .PHONY: crossall crossinstall crosszipinstall crosssinglezipinstall
 crossall:
 	$(MAKE) all CROSSINSTALL=1
@@ -2944,4 +2948,4 @@ crossinstall:
 crosszipinstall:
 	$(MAKE) zipinstall CROSSINSTALL=1
 crosssinglezipinstall:
-	$(MAKE) fpc_zipinstall ZIPTARGET=crossinstall ZIPNAME=fpc $(INSTALLOPTS)
+	$(MAKE) fpc_zipinstall ZIPTARGET=crossinstall FULLZIPNAME=fpc-$(PACKAGE_VERSION).$(SOURCESUFFIX).cross.$(TARGETSUFFIX) $(INSTALLOPTS)

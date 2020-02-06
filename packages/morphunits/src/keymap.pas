@@ -40,16 +40,15 @@ type
     kn_KeyMap: TKeyMap;
   end;
 
-{$PACKRECORDS 4}
   PExtendedKeyMapNode = ^TExtendedKeyMapNode;
   TExtendedKeyMapNode = record
     ekn_Node: TNode;
     ekn_KeyMap: TKeyMap;
+    pad1: Word; 
     ekn_Seglist: BPTR;
     ekn_Resident: PResident;
     ekn_Future0: APTR;        // keep 0 for now
   end;
-{$PACKRECORDS 2}
 
 // the structure of keymap.resource
   PKeyMapResource = ^TKeyMapResource;

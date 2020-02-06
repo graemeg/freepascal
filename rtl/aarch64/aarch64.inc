@@ -166,7 +166,14 @@ function get_caller_addr(framebp:pointer;addr:pointer=nil):pointer;assembler; no
   asm
     cbz x0, .Lcaller_addr_invalid
     ldur x0, [x0]
+{$ifndef cpullvm}
     cbz x0, .Lcaller_addr_invalid
+{$else cpullvm}
+    movn w1, #0
+    cmp x0, x1
+    csel x0, xzr, x0, ls
+    b.ls .Lcaller_addr_invalid
+{$endif cpullvm}
     ldur x0, [x0, #8]
    .Lcaller_addr_invalid:
   end;

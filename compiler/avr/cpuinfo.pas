@@ -240,7 +240,21 @@ Type
       ct_attiny1617,
       ct_attiny3214,
       ct_attiny3216,
-      ct_attiny3217
+      ct_attiny3217,
+      ct_attiny102,
+      ct_attiny104,
+      // Controller board aliases
+      ct_arduinoleonardo,
+      ct_arduinomega,
+      ct_arduinomicro,
+      ct_arduinonano,
+      ct_arduinonanoevery,
+      ct_arduinouno,
+      ct_atmega324xpro,
+      ct_atmega1284pxplained,
+      ct_atmega4809xpro,
+      ct_attiny817xpro,
+      ct_attiny3217xpro
      );
 
    tcontrollerdatatype = record
@@ -502,6 +516,20 @@ Const
         ,(controllertypestr:'ATTINY3214'; controllerunitstr:'ATTINY3214'; cputype: cpu_avrxmega3; fputype:fpu_soft; flashbase:0; flashsize:32768; srambase:14336; sramsize:2048; eeprombase:5120; eepromsize:256)
         ,(controllertypestr:'ATTINY3216'; controllerunitstr:'ATTINY3216'; cputype: cpu_avrxmega3; fputype:fpu_soft; flashbase:0; flashsize:32768; srambase:14336; sramsize:2048; eeprombase:5120; eepromsize:256)
         ,(controllertypestr:'ATTINY3217'; controllerunitstr:'ATTINY3217'; cputype: cpu_avrxmega3; fputype:fpu_soft; flashbase:0; flashsize:32768; srambase:14336; sramsize:2048; eeprombase:5120; eepromsize:256)
+        ,(controllertypestr:'ATTINY102'; controllerunitstr:'ATTINY102'; cputype: cpu_avrtiny; fputype:fpu_soft; flashbase:0; flashsize:1024; srambase:64; sramsize:32; eeprombase:0; eepromsize:0)
+        ,(controllertypestr:'ATTINY104'; controllerunitstr:'ATTINY104'; cputype: cpu_avrtiny; fputype:fpu_soft; flashbase:0; flashsize:1024; srambase:64; sramsize:32; eeprombase:0; eepromsize:0)
+        // Controller board aliases
+        ,(controllertypestr:'ARDUINOLEONARDO'; controllerunitstr:'ATMEGA32U4'; cputype: cpu_avr5; fputype:fpu_soft; flashbase:0; flashsize:32768; srambase:256; sramsize:2560; eeprombase:0; eepromsize:1024)
+        ,(controllertypestr:'ARDUINOMEGA'; controllerunitstr:'ATMEGA2560'; cputype: cpu_avr6; fputype:fpu_soft; flashbase:0; flashsize:262144; srambase:512; sramsize:8192; eeprombase:0; eepromsize:4096)
+        ,(controllertypestr:'ARDUINOMICRO'; controllerunitstr:'ATMEGA32U4'; cputype: cpu_avr5; fputype:fpu_soft; flashbase:0; flashsize:32768; srambase:256; sramsize:2560; eeprombase:0; eepromsize:1024)
+        ,(controllertypestr:'ARDUINONANO'; controllerunitstr:'ATMEGA328P'; cputype: cpu_avr5; fputype:fpu_soft; flashbase:0; flashsize:32768; srambase:256; sramsize:2048; eeprombase:0; eepromsize:1024)
+        ,(controllertypestr:'ARDUINONANOEVERY'; controllerunitstr:'ATMEGA4809'; cputype: cpu_avrxmega3; fputype:fpu_soft; flashbase:0; flashsize:49152; srambase:10240; sramsize:6144; eeprombase:5120; eepromsize:256)
+        ,(controllertypestr:'ARDUINOUNO'; controllerunitstr:'ATMEGA328P'; cputype: cpu_avr5; fputype:fpu_soft; flashbase:0; flashsize:32768; srambase:256; sramsize:2048; eeprombase:0; eepromsize:1024)
+        ,(controllertypestr:'ATMEGA324XPRO'; controllerunitstr:'ATMEGA324P'; cputype: cpu_avr5; fputype:fpu_soft; flashbase:0; flashsize:32768; srambase:256; sramsize:2048; eeprombase:0; eepromsize:1024)
+        ,(controllertypestr:'ATMEGA1284PXPLAINED'; controllerunitstr:'ATMEGA1284P'; cputype: cpu_avr51; fputype:fpu_soft; flashbase:0; flashsize:131072; srambase:256; sramsize:16384; eeprombase:0; eepromsize:4096)
+        ,(controllertypestr:'ATMEGA4809XPRO'; controllerunitstr:'ATMEGA4809'; cputype: cpu_avrxmega3; fputype:fpu_soft; flashbase:0; flashsize:49152; srambase:10240; sramsize:6144; eeprombase:5120; eepromsize:256)
+        ,(controllertypestr:'ATTINY817XPRO'; controllerunitstr:'ATTINY817'; cputype: cpu_avrxmega3; fputype:fpu_soft; flashbase:0; flashsize:8192; srambase:15872; sramsize:512; eeprombase:5120; eepromsize:128)
+        ,(controllertypestr:'ATTINY3217XPRO'; controllerunitstr:'ATTINY3217'; cputype: cpu_avrxmega3; fputype:fpu_soft; flashbase:0; flashsize:32768; srambase:14336; sramsize:2048; eeprombase:5120; eepromsize:256)
    );
 
    { Supported optimizations, only used for information }
@@ -510,12 +538,12 @@ Const
                                  genericlevel3optimizerswitches-
                                  { no need to write info about those }
                                  [cs_opt_level1,cs_opt_level2,cs_opt_level3]+
-                                 [cs_opt_regvar,cs_opt_loopunroll,cs_opt_tailrecursion,
+                                 [{$ifndef llvm}cs_opt_regvar,{$endif}cs_opt_loopunroll,cs_opt_tailrecursion,
                                   cs_opt_stackframe,cs_opt_nodecse,cs_opt_reorder_fields,cs_opt_fastmath];
 
    level1optimizerswitches = genericlevel1optimizerswitches;
    level2optimizerswitches = genericlevel2optimizerswitches + level1optimizerswitches +
-     [cs_opt_regvar,cs_opt_stackframe,cs_opt_tailrecursion];
+     [{$ifndef llvm}cs_opt_regvar,{$endif}cs_opt_stackframe,cs_opt_tailrecursion];
    level3optimizerswitches = genericlevel3optimizerswitches + level2optimizerswitches + [{,cs_opt_loopunroll}];
    level4optimizerswitches = genericlevel4optimizerswitches + level3optimizerswitches + [];
 
@@ -530,13 +558,14 @@ Const
        CPUAVR_HAS_ELPMX,
        CPUAVR_2_BYTE_PC,
        CPUAVR_3_BYTE_PC,
-       CPUAVR_16_REGS
+       CPUAVR_16_REGS,
+       CPUAVR_NOMEMMAPPED_REGS
       );
 
  const
    cpu_capabilities : array[tcputype] of set of tcpuflags =
      ( { cpu_none      } [],
-       { cpu_avrtiny   } [CPUAVR_16_REGS,CPUAVR_2_BYTE_PC],
+       { cpu_avrtiny   } [CPUAVR_16_REGS,CPUAVR_2_BYTE_PC,CPUAVR_NOMEMMAPPED_REGS],
        { cpu_avr1      } [CPUAVR_2_BYTE_PC],
        { cpu_avr2      } [CPUAVR_HAS_LPMX,CPUAVR_2_BYTE_PC],
        { cpu_avr25     } [CPUAVR_HAS_MOVW,CPUAVR_HAS_LPMX,CPUAVR_2_BYTE_PC],
@@ -547,7 +576,7 @@ Const
        { cpu_avr5      } [CPUAVR_HAS_JMP_CALL,CPUAVR_HAS_MOVW,CPUAVR_HAS_LPMX,CPUAVR_HAS_MUL,CPUAVR_2_BYTE_PC],
        { cpu_avr51     } [CPUAVR_HAS_JMP_CALL,CPUAVR_HAS_MOVW,CPUAVR_HAS_LPMX,CPUAVR_HAS_MUL,CPUAVR_HAS_RAMPZ,CPUAVR_HAS_ELPM,CPUAVR_HAS_ELPMX,CPUAVR_2_BYTE_PC],
        { cpu_avr6      } [CPUAVR_HAS_JMP_CALL,CPUAVR_HAS_MOVW,CPUAVR_HAS_LPMX,CPUAVR_HAS_MUL,CPUAVR_HAS_RAMPZ,CPUAVR_HAS_ELPM,CPUAVR_HAS_ELPMX,CPUAVR_3_BYTE_PC],
-       { cpu_avrxmega3 } [CPUAVR_HAS_JMP_CALL,CPUAVR_HAS_MOVW,CPUAVR_HAS_LPMX,CPUAVR_HAS_MUL,CPUAVR_2_BYTE_PC]
+       { cpu_avrxmega3 } [CPUAVR_HAS_JMP_CALL,CPUAVR_HAS_MOVW,CPUAVR_HAS_LPMX,CPUAVR_HAS_MUL,CPUAVR_2_BYTE_PC,CPUAVR_NOMEMMAPPED_REGS]
      );
 
 Implementation

@@ -36,6 +36,11 @@ ifndef TEST_OPT
 TEST_OPT=
 endif
 
+# Use TEST_USE_LONGLOG by default, as it transfers less data to server
+ifndef TEST_DISABLE_LONGLOG
+TEST_USE_LONGLOG=1
+endif
+
 # disable directory cache; completely loading all directories significantly
 # slows down running the testsuite because the programs use very few units
 # and most testsuite directories contain thousands of files

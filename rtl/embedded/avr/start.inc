@@ -16,17 +16,20 @@
         ldi XH,hi8(_data)
         ldi YH,hi8(_edata)
         ldi ZL,lo8(_etext)
+{$ifdef CPUAVR_16_REGS}
+        ldi ZH,hi8(_etext)+(0x40) // program memory mapped to $4000 in data space
+{$else CPUAVR_16_REGS}
         ldi ZH,hi8(_etext)
+{$endif CPUAVR_16_REGS}
 
         rjmp .LCopyDataLoopEntry
 .LCopyDataLoop:
 {$ifdef CPUAVR_16_REGS}
-        //!!!! FIXME? lpm r0, Z+
-        //!!!! FIXME? st X+, r0
+        ld r16, Z+
 {$else CPUAVR_16_REGS}
         lpm r16, Z+
-        st X+, r16
 {$endif CPUAVR_16_REGS}
+        st X+, r16
 
 .LCopyDataLoopEntry:
         cpi XL, lo8(_edata)

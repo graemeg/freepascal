@@ -112,7 +112,7 @@ Type
  pLocaleBase = ^tLocaleBase;
  tLocaleBase = record
     lb_LibNode      : tLibrary;
-    lb_SysPatches   : Boolean;   { TRUE if locale installed its patches }
+    lb_SysPatches   : WordBool;   { TRUE if locale installed its patches }
  end;
 
 {***************************************************************************}

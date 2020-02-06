@@ -282,6 +282,18 @@ begin
     415 :  Result:='Unsupported Media Type';
     416 :  Result:='Requested range not satisfiable';
     417 :  Result:='Expectation Failed';
+    418 :  Result:='I''m a teapot';
+    421 :  Result:='Misdirected Request';
+    422 :  Result:='Unprocessable Entity';
+    423 :  Result:='Locked';
+    424 :  Result:='Failed Dependency';
+    425 :  Result:='Too Early';
+    426 :  Result:='Upgrade Required';
+    428 :  Result:='Precondition Required';
+    429 :  Result:='Too Many Requests';
+    431 :  Result:='Request Header Fields Too Large';
+    451 :  Result:='Unavailable For Legal Reasons';
+
     500 :  Result:='Internal Server Error';
     501 :  Result:='Not Implemented';
     502 :  Result:='Bad Gateway';

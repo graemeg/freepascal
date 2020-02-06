@@ -133,6 +133,7 @@ interface
         moduleflags   : tmoduleflags; { ppu flags that do not need to be known by just reading the ppu header }
         islibrary     : boolean;  { if it is a library (win32 dll) }
         IsPackage     : boolean;
+        change_endian : boolean;  { if the unit is loaded on a system with a different endianess than it was compiled on }
         moduleid      : longint;
         unitmap       : punitmap; { mapping of all used units }
         unitmapsize   : longint;  { number of units in the map }
@@ -634,6 +635,7 @@ implementation
         is_unit:=_is_unit;
         islibrary:=false;
         ispackage:=false;
+        change_endian:=false;
         is_dbginfo_written:=false;
         mode_switch_allowed:= true;
         moduleoptions:=[];

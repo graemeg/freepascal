@@ -242,11 +242,11 @@ const
 {$endif MIPSEL}
 
    { Supported optimizations, only used for information }
-   supported_optimizerswitches = [cs_opt_regvar,cs_opt_loopunroll,cs_opt_nodecse,
+   supported_optimizerswitches = [{$ifndef llvm}cs_opt_regvar,{$endif}cs_opt_loopunroll,cs_opt_nodecse,
                                   cs_opt_reorder_fields,cs_opt_fastmath];
 
    level1optimizerswitches = genericlevel1optimizerswitches;
-   level2optimizerswitches = level1optimizerswitches + [cs_opt_regvar,cs_opt_stackframe,cs_opt_nodecse];
+   level2optimizerswitches = level1optimizerswitches + [{$ifndef llvm}cs_opt_regvar,{$endif}cs_opt_stackframe,cs_opt_nodecse];
    level3optimizerswitches = level2optimizerswitches + [cs_opt_loopunroll];
    level4optimizerswitches = genericlevel4optimizerswitches + level3optimizerswitches + [];
 

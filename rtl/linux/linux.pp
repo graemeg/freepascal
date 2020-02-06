@@ -279,7 +279,8 @@ type
   TEPoll_Data =  Epoll_Data;
   PEPoll_Data = ^Epoll_Data;
 
-  EPoll_Event = {$ifdef cpu64} packed {$endif} record
+  { x86_64 uses a packed record so it is compatible with i386 }
+  EPoll_Event = {$ifdef cpux86_64} packed {$endif} record
     Events: cuint32;
     Data  : TEpoll_Data;
   end;
@@ -622,7 +623,7 @@ function epoll_wait(epfd: cint; events: pepoll_event; maxevents, timeout: cint):
 begin
 {$if defined(generic_linux_syscalls)}
   epoll_wait := do_syscall(syscall_nr_epoll_pwait, tsysparam(epfd),
-    tsysparam(events), tsysparam(maxevents), tsysparam(timeout),0);
+    tsysparam(events), tsysparam(maxevents), tsysparam(timeout),0,sizeof(TSigSet));
 {$else}
   epoll_wait := do_syscall(syscall_nr_epoll_wait, tsysparam(epfd),
     tsysparam(events), tsysparam(maxevents), tsysparam(timeout));

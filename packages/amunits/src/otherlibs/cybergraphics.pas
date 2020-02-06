@@ -29,7 +29,7 @@
 }
 
 UNIT CYBERGRAPHICS;
-
+{$packrecords 2}
 INTERFACE
 USES Exec,agraphics,utility;
 

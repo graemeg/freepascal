@@ -248,7 +248,7 @@ unit i_linux;
             system       : system_powerpc_LINUX;
             name         : 'Linux for PowerPC';
             shortname    : 'Linux';
-            flags        : [tf_needs_symbol_size,tf_smartlink_sections,
+            flags        : [tf_needs_symbol_size,tf_smartlink_sections,tf_safecall_exceptions,
                             tf_needs_symbol_type,tf_files_case_sensitive,
                             tf_has_winlike_resources,tf_supports_hidden_symbols];
             cpu          : cpu_powerpc;
@@ -317,7 +317,7 @@ unit i_linux;
             name         : 'Linux for PowerPC64';
             shortname    : 'Linux';
             flags        : [tf_needs_symbol_size,tf_needs_symbol_type,tf_files_case_sensitive,
-                            tf_requires_proper_alignment,tf_smartlink_sections,tf_has_winlike_resources,
+                            tf_requires_proper_alignment,tf_safecall_exceptions,tf_smartlink_sections,tf_has_winlike_resources,
                             tf_supports_hidden_symbols];
             cpu          : cpu_powerpc64;
             unit_env     : '';
@@ -603,7 +603,7 @@ unit i_linux;
             name         : 'Linux for ARMHF';
             shortname    : 'Linux';
             flags        : [tf_needs_symbol_size,tf_needs_symbol_type,tf_files_case_sensitive,
-                            tf_requires_proper_alignment,
+                            tf_requires_proper_alignment,tf_safecall_exceptions,
 {$ifdef tls_threadvars}
                             tf_section_threadvars,
 {$endif tls_threadvars}
@@ -663,7 +663,7 @@ unit i_linux;
                 localalignmax   : 8;
                 recordalignmin  : 0;
                 recordalignmax  : 16;
-                maxCrecordalign : 8
+                maxCrecordalign : 16
               );
             first_parm_offset : 8;
             stacksize    : 8*1024*1024;
@@ -679,7 +679,7 @@ unit i_linux;
             name         : 'Linux for ARMEL';
             shortname    : 'Linux';
             flags        : [tf_needs_symbol_size,tf_needs_symbol_type,tf_files_case_sensitive,
-                            tf_requires_proper_alignment,
+                            tf_requires_proper_alignment,tf_safecall_exceptions,
 {$ifdef tls_threadvars}
                             tf_section_threadvars,
 {$endif tls_threadvars}
@@ -736,7 +736,7 @@ unit i_linux;
                 localalignmax   : 8;
                 recordalignmin  : 0;
                 recordalignmax  : 16;
-                maxCrecordalign : 8
+                maxCrecordalign : 16
               );
             first_parm_offset : 8;
             stacksize    : 8*1024*1024;
@@ -752,7 +752,7 @@ unit i_linux;
             name         : 'Linux for ARMEB';
             shortname    : 'Linux';
             flags        : [tf_needs_symbol_size,tf_needs_symbol_type,tf_files_case_sensitive,
-                            tf_requires_proper_alignment,
+                            tf_requires_proper_alignment,tf_safecall_exceptions,
                             tf_smartlink_sections,tf_pic_uses_got,
                             tf_has_winlike_resources,tf_supports_hidden_symbols];
             cpu          : cpu_arm;
@@ -821,7 +821,7 @@ unit i_linux;
             name         : 'Linux for ARM';
             shortname    : 'Linux';
             flags        : [tf_needs_symbol_size,tf_needs_symbol_type,tf_files_case_sensitive,
-                            tf_requires_proper_alignment,
+                            tf_requires_proper_alignment,tf_safecall_exceptions,
                             tf_smartlink_sections,tf_has_winlike_resources,tf_supports_hidden_symbols];
             cpu          : cpu_arm;
             unit_env     : 'LINUXUNITS';
@@ -894,7 +894,7 @@ unit i_linux;
             flags        : [tf_needs_symbol_size,
                             tf_needs_symbol_type,
                             tf_files_case_sensitive,
-                            tf_requires_proper_alignment,
+                            tf_requires_proper_alignment,tf_safecall_exceptions,
                             tf_smartlink_sections,tf_pic_uses_got,
                             tf_has_winlike_resources
 {$ifdef llvm}

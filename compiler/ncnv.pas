@@ -1523,11 +1523,13 @@ implementation
             begin
               result:=caddnode.create(muln,getcopy,cordconstnode.create(10000,resultdef,false));
               include(result.flags,nf_is_currency);
+              include(taddnode(result).left.flags,nf_internal);
             end
            else if is_currency(left.resultdef) then
             begin
               result:=cmoddivnode.create(divn,getcopy,cordconstnode.create(10000,resultdef,false));
               include(result.flags,nf_is_currency);
+              include(tmoddivnode(result).left.flags,nf_internal);
             end;
          end;
       end;

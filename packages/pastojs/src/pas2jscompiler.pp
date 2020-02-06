@@ -53,7 +53,7 @@ const
 const
   nOptionIsEnabled = 101; sOptionIsEnabled = 'Option "%s" is %s';
   nSyntaxModeIs = 102; sSyntaxModeIs = 'Syntax mode is %s';
-  // was: nMacroDefined = 103
+  nModeswitchXisY = 103; sModeswitchXisY = 'Modeswitch %s is %s';
   // 104 in unit Pas2JSFS
   // 105 in unit Pas2JSFS
   nNameValue = 106; sNameValue = '%s: %s';
@@ -125,6 +125,7 @@ type
     // features
     coAllowCAssignments,
     coAllowMacros,
+    coWriteableConst,
     // output
     coLowerCase,
     coUseStrict,
@@ -153,7 +154,7 @@ type
   TResourceMode = (rmNone,rmHTML,rmJS);
 
 const
-  DefaultP2jsCompilerOptions = [coShowErrors,coSourceMapXSSIHeader,coUseStrict];
+  DefaultP2jsCompilerOptions = [coShowErrors,coWriteableConst,coUseStrict,coSourceMapXSSIHeader];
   DefaultP2JSResourceStringFile = rsfProgram;
   DefaultP2jsRTLVersionCheck = rvcNone;
   DefaultResourceMode = rmHTML;
@@ -185,6 +186,7 @@ const
     'Assertions',
     'Allow C assignments',
     'Allow macros',
+    'Allows typed constants to be writeable',
     'Lowercase identifiers',
     'Use strict',
     'Write pas2jsdebug.log',
@@ -489,7 +491,7 @@ type
     FMainJSFileIsResolved: Boolean;
     FMainJSFileResolved: String;
     FMainSrcFile: String;
-    FMode: TP2jsMode;
+    FModeSwitches: TModeSwitches;
     FNamespaces: TStringList;
     FNamespacesFromCmdLine: integer;
     FOptions: TP2jsCompilerOptions;
@@ -541,6 +543,7 @@ type
     procedure SetCompilerExe(AValue: string);
     procedure SetFS(AValue: TPas2jsFS);
     procedure SetMode(AValue: TP2jsMode);
+    procedure SetModeSwitches(const AValue: TModeSwitches);
     procedure SetOptions(AValue: TP2jsCompilerOptions);
     procedure SetShowDebug(AValue: boolean);
     procedure SetShowFullPaths(AValue: boolean);
@@ -600,6 +603,7 @@ type
     procedure HandleOptionPCUFormat(aValue: String); virtual;
     function HandleOptionPaths(C: Char; aValue: String; FromCmdLine: Boolean): Boolean; virtual;
     function HandleOptionJ(C: Char; aValue: String; Quick,FromCmdLine: Boolean): Boolean; virtual;
+    function HandleOptionM(aValue: String; Quick: Boolean): Boolean; virtual;
     procedure HandleOptionConfigFile(aPos: Integer; const aFileName: string); virtual;
     procedure HandleOptionInfo(aValue: string);
     // DoWriteJSFile: return false to use the default write function.
@@ -681,7 +685,7 @@ type
     property InterfaceType: TPasClassInterfaceType read FInterfaceType write FInterfaceType;
     property Log: TPas2jsLogger read FLog;
     property MainFile: TPas2jsCompilerFile read FMainFile;
-    property Mode: TP2jsMode read FMode write SetMode;
+    property ModeSwitches: TModeSwitches read FModeSwitches write SetModeSwitches;
     property Options: TP2jsCompilerOptions read FOptions write SetOptions;
     property ConverterGlobals: TPasToJSConverterGlobals read FConverterGlobals write SetConverterGlobals;
     property ParamMacros: TPas2jsMacroEngine read FParamMacros;
@@ -1000,7 +1004,7 @@ end;
 
 function TPas2jsCompilerFile.GetInitialModeSwitches: TModeSwitches;
 begin
-  Result:=p2jsMode_SwitchSets[Compiler.Mode];
+  Result:=Compiler.ModeSwitches;
 end;
 
 function TPas2jsCompilerFile.GetInitialBoolSwitches: TBoolSwitches;
@@ -1008,8 +1012,12 @@ var
   bs: TBoolSwitches;
 begin
   bs:=[bsLongStrings,bsWriteableConst];
-  if coAllowMacros in Compiler.Options then
-    Include(bs,bsMacro);
+  if coShowHints in Compiler.Options then
+    Include(bs,bsHints);
+  if coShowNotes in Compiler.Options then
+    Include(bs,bsNotes);
+  if coShowWarnings in Compiler.Options then
+    Include(bs,bsWarnings);
   if coOverflowChecks in Compiler.Options then
     Include(bs,bsOverflowChecks);
   if coRangeChecks in Compiler.Options then
@@ -1018,12 +1026,10 @@ begin
     Include(bs,bsObjectChecks);
   if coAssertions in Compiler.Options then
     Include(bs,bsAssertions);
-  if coShowHints in Compiler.Options then
-    Include(bs,bsHints);
-  if coShowNotes in Compiler.Options then
-    Include(bs,bsNotes);
-  if coShowWarnings in Compiler.Options then
-    Include(bs,bsWarnings);
+  if coAllowMacros in Compiler.Options then
+    Include(bs,bsMacro);
+  if not (coWriteableConst in Compiler.Options) then
+    Exclude(bs,bsWriteableConst);
   Result:=bs;
 end;
 
@@ -1085,8 +1091,6 @@ begin
   Scanner.CurrentValueSwitch[vsInterfaces]:=InterfaceTypeNames[Compiler.InterfaceType];
   if coAllowCAssignments in Compiler.Options then
     Scanner.Options:=Scanner.Options+[po_cassignments];
-  if Compiler.Mode=p2jmDelphi then
-    Scanner.Options:=Scanner.Options+[po_delphi];
   // Note: some Scanner.Options are set by TPasResolver
   for i:=0 to Compiler.Defines.Count-1 do
     begin
@@ -1949,7 +1953,7 @@ begin
 
   // check modeswitches
   ms:=StrToModeSwitch(aName);
-  if (ms<>msNone) and (ms in p2jsMode_SwitchSets[Compiler.Mode]) then
+  if (ms<>msNone) and (ms in Compiler.ModeSwitches) then
   begin
     Value:=CondDirectiveBool[true];
     exit(true);
@@ -3068,12 +3072,17 @@ end;
 
 procedure TPas2jsCompiler.SetMode(AValue: TP2jsMode);
 begin
-  if FMode=AValue then Exit;
-  FMode:=AValue;
-  case FMode of
+  SetModeSwitches(p2jsMode_SwitchSets[AValue]);
+  case AValue of
     p2jmObjFPC: Options:=Options-[coAllowCAssignments];
     p2jmDelphi: Options:=Options-[coAllowCAssignments];
   end;
+end;
+
+procedure TPas2jsCompiler.SetModeSwitches(const AValue: TModeSwitches);
+begin
+  if FModeSwitches=AValue then Exit;
+  FModeSwitches:=AValue;
 end;
 
 procedure TPas2jsCompiler.SetOptions(AValue: TP2jsCompilerOptions);
@@ -3237,6 +3246,7 @@ begin
   LastMsgNumber:=-1;
   r(mtInfo,nOptionIsEnabled,sOptionIsEnabled);
   r(mtInfo,nSyntaxModeIs,sSyntaxModeIs);
+  r(mtInfo,nModeswitchXisY,sModeswitchXisY);
   LastMsgNumber:=-1; // was nMacroDefined 103
   r(mtInfo,nUsingPath,sUsingPath);
   r(mtNote,nFolderNotFound,sFolderNotFound);
@@ -3579,6 +3589,49 @@ begin
   end;
 end;
 
+function TPas2jsCompiler.HandleOptionM(aValue: String; Quick: Boolean): Boolean;
+var
+  Negated: Boolean;
+  ms: TModeSwitch;
+begin
+  Result:=True;
+  if aValue='' then
+    ParamFatal('invalid syntax mode (-M<x>) "'+aValue+'"');
+  if Quick then exit;
+
+  case lowerCase(aValue) of
+    'delphi': SetMode(p2jmDelphi);
+    'objfpc': SetMode(p2jmObjFPC);
+  else
+    if aValue[length(aValue)]='-' then
+    begin
+      aValue:=LeftStr(aValue,length(aValue)-1);
+      Negated:=true;
+    end else
+      Negated:=false;
+    for ms in TModeSwitch do
+      if (ms in msAllPas2jsModeSwitches)
+          and SameText(SModeSwitchNames[ms],aValue) then
+      begin
+        if (ms in ModeSwitches)<>Negated then
+        begin
+          // already set
+          exit;
+        end else if ms in msAllPas2jsModeSwitchesReadOnly then
+          ParamFatal('modeswitch is read only -M"'+aValue+'"')
+        else begin
+          // switch
+          if Negated then
+            ModeSwitches:=ModeSwitches-[ms]
+          else
+            ModeSwitches:=ModeSwitches+[ms];
+          exit;
+        end;
+      end;
+    ParamFatal('invalid syntax mode (-M) "'+aValue+'"');
+  end;
+end;
+
 procedure TPas2jsCompiler.HandleOptionConfigFile(aPos: Integer; const aFileName: string);
 
 Var
@@ -3613,6 +3666,7 @@ Var
   pl: TPasToJsPlatform;
   s: string;
   pbi: TPas2JSBuiltInName;
+  ms: TModeSwitch;
 begin
   // write information and halt
   InfoMsg:='';
@@ -3668,6 +3722,12 @@ begin
       // write list of supported JS processors
       for pr in TPasToJsProcessor do
         Log.LogPlain(PasToJsProcessorNames[pr]);
+    'm':
+      begin
+      // write list of supported modeswitches
+      for ms in (msAllPas2jsModeSwitches-msAllModes) do
+        Log.LogPlain(SModeSwitchNames[ms]);
+      end;
     'o':
       begin
         // write list of optimizations
@@ -3809,14 +3869,8 @@ begin
             UnknownParam;
         end;
       'M': // syntax mode
-        begin
-          case lowerCase(aValue) of
-            'delphi': Mode:=p2jmDelphi;
-            'objfpc': Mode:=p2jmObjFPC;
-          else
-            ParamFatal('invalid syntax mode  (-M) "'+aValue+'"');
-          end;
-        end;
+        if not HandleOptionM(aValue,Quick) then
+          UnknownParam;
       'N':
         begin
           if aValue='' then
@@ -3990,14 +4044,15 @@ var
   Enabled, Disabled: string;
   i: Integer;
 begin
-  ReadSingleLetterOptions(Param,p,'2acdm',Enabled,Disabled);
+  ReadSingleLetterOptions(Param,p,'2acdmj',Enabled,Disabled);
   for i:=1 to length(Enabled) do begin
     case Enabled[i] of
-    '2': Mode:=p2jmObjFPC;
+    '2': SetMode(p2jmObjFPC);
     'a': Options:=Options+[coAssertions];
     'c': Options:=Options+[coAllowCAssignments];
-    'd': Mode:=p2jmDelphi;
+    'd': SetMode(p2jmDelphi);
     'm': Options:=Options+[coAllowMacros];
+    'j': Options:=Options+[coWriteableConst];
     end;
   end;
   for i:=1 to length(Disabled) do begin
@@ -4007,6 +4062,7 @@ begin
     'c': Options:=Options-[coAllowCAssignments];
     'd': ;
     'm': Options:=Options-[coAllowMacros];
+    'j': Options:=Options-[coWriteableConst];
     end;
   end;
 end;
@@ -4368,7 +4424,7 @@ begin
   FMainSrcFile:='';
   FOptions:=DefaultP2jsCompilerOptions;
   FRTLVersionCheck:=DefaultP2jsRTLVersionCheck;
-  FMode:=p2jmObjFPC;
+  FModeSwitches:=p2jsMode_SwitchSets[p2jmObjFPC];
   FConverterGlobals.Reset;
   FConverterGlobals.RTLVersion:=(VersionMajor*100+VersionMinor)*100+VersionRelease;
   FConverterGlobals.TargetPlatform:=PlatformBrowser;
@@ -4594,6 +4650,7 @@ begin
   w('    -iV  : Write short compiler version');
   w('    -iW  : Write full compiler version');
   w('    -ic  : Write list of supported JS processors usable by -P<x>');
+  w('    -im  : Write list of supported modeswitches usable by -M<x>');
   w('    -io  : Write list of supported optimizations usable by -Oo<x>');
   w('    -it  : Write list of supported targets usable by -T<x>');
   w('    -iJ  : Write list of supported JavaScript identifiers -JoRTL-<x>');
@@ -4649,8 +4706,12 @@ begin
   w('   -Ju<x>: Add <x> to foreign unit paths. Foreign units are not compiled.');
   WritePrecompiledFormats;
   w('  -l     : Write logo');
-  w('  -MDelphi: Delphi 7 compatibility mode');
-  w('  -MObjFPC: FPC''s Object Pascal compatibility mode (default)');
+  w('  -M<x>  : Set language mode or enable/disable a modeswitch');
+  w('    -MDelphi: Delphi 7 compatibility mode');
+  w('    -MObjFPC: FPC''s Object Pascal compatibility mode (default)');
+  w('    -M<x>  : enable or disable modeswitch, see option -im');
+  w('    Each mode (as listed above) enables its default set of modeswitches.');
+  w('    Other modeswitches are disabled and need to be enabled one by another.');
   w('  -NS<x> : obsolete: add <x> to namespaces. Same as -FN<x>');
   w('  -n     : Do not read the default config files');
   w('  -o<x>  : Change main JavaScript file to <x>, "." means stdout');
@@ -4666,11 +4727,12 @@ begin
   w('    -Pecmascript5: default');
   w('    -Pecmascript6');
   w('  -S<x>  : Syntax options. <x> is a combination of the following letters:');
+  w('    2    : Same as -Mobjfpc (default)');
   w('    a    : Turn on assertions');
   w('    c    : Support operators like C (*=,+=,/= and -=)');
   w('    d    : Same as -Mdelphi');
+  w('    j    : Allows typed constants to be writeable (default)');
   w('    m    : Enables macro replacements');
-  w('    2    : Same as -Mobjfpc (default)');
   w('  -SI<x>  : Set interface style to <x>');
   w('    -SIcom  : COM, reference counted interface (default)');
   w('    -SIcorba: CORBA interface');
@@ -4740,14 +4802,25 @@ procedure TPas2jsCompiler.WriteOptions;
 var
   co: TP2jsCompilerOption;
   fco: TP2jsFSOption;
+  ms: TModeSwitch;
 begin
   // message encoding
   WriteEncoding;
   // target platform
   Log.LogMsgIgnoreFilter(nTargetPlatformIs,[PasToJsPlatformNames[TargetPlatform]]);
   Log.LogMsgIgnoreFilter(nTargetProcessorIs,[PasToJsProcessorNames[TargetProcessor]]);
-  // default syntax mode
-  Log.LogMsgIgnoreFilter(nSyntaxModeIs,[p2jscModeNames[Mode]]);
+  // syntax mode
+  for ms in msAllPas2jsModeSwitches do
+    case ms of
+    msObjfpc:
+      if ms in ModeSwitches then
+        Log.LogMsgIgnoreFilter(nSyntaxModeIs,[p2jscModeNames[p2jmObjFPC]]);
+    msDelphi:
+      if ms in ModeSwitches then
+        Log.LogMsgIgnoreFilter(nSyntaxModeIs,[p2jscModeNames[p2jmDelphi]]);
+    else
+      Log.LogMsgIgnoreFilter(nModeswitchXisY,[SModeSwitchNames[ms],BoolToStr(ms in ModeSwitches,'on','off')]);
+    end;
   Log.LogMsgIgnoreFilter(nClassInterfaceStyleIs,[InterfaceTypeNames[InterfaceType]]);
   // boolean options
   for co in TP2jsCompilerOption do

@@ -3743,6 +3743,9 @@ Supported inline assembler modes:
 Recognized compiler and RTL features:
   $FEATURELIST
 
+Recognized modeswitches:
+  $MODESWITCHES
+
 Supported ABI targets:
   $ABITARGETS
 
@@ -3970,6 +3973,7 @@ A*2CV<x>_Set section threadvar model to <x>
 **2ic_Return list of supported CPU instruction sets
 **2if_Return list of supported FPU instruction sets
 **2ii_Return list of supported inline assembler modes
+**2im_Return list of supported modeswitches
 **2io_Return list of supported optimizations
 **2ir_Return list of recognized compiler and RTL features
 **2it_Return list of supported targets
@@ -3978,7 +3982,7 @@ A*2CV<x>_Set section threadvar model to <x>
 **1I<x>_Add <x> to include path
 **1k<x>_Pass <x> to the linker
 **1l_Write logo
-**1M<x>_Set language mode to <x>
+**1M<x>_Set language mode to <x> / enable modeswitch <x> (see option -im)
 **2Mfpc_Free Pascal dialect (default)
 **2Mobjfpc_FPC mode with Object Pascal support
 **2Mdelphi_Delphi 7 compatibility mode
@@ -3987,6 +3991,9 @@ A*2CV<x>_Set section threadvar model to <x>
 **2Miso_ISO 7185 mode
 **2Mextendedpascal_ISO 10206 mode
 **2Mdelphiunicode_Delphi 2009 and later compatibility mode
+**2*_Each mode (as listed above) enables its default set of modeswitches.
+**2*_Other modeswitches are disabled and need to be enabled one by another.
+**1M<x>-_Disable modeswitch <x> (see option -im)
 **1n_Do not read the default config files
 **1o<x>_Change the name of the executable produced to <x>
 **1O<x>_Optimizations:

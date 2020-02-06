@@ -33,7 +33,7 @@ package=basedos.zip[basedos.zip],~B~asic system for Go32v2 (required)
 # Dos 2
 package=aslddos.zip[aslddos.zip],GNU ~L~inker and GNU Assembler for Go32v2 (required)
 # Dos 3
-package=units-idedos.zip[uidedos.zip],~I~DE with integrated debugger/compiler (BETA)
+package=idedos.zip[idedos.zip],~I~DE with integrated debugger/compiler (BETA)
 # Dos 4
 package=utilsdos.zip[utilsdos.zip],~E~xtra Utilities
 # Dos 5
@@ -168,7 +168,7 @@ package=base.i386-win32.zip,~B~asic system for Win32 (required)
 # Win32 2
 package=asld.i386-win32.zip,GNU ~L~inker and GNU Assembler for Win32 (required)
 # Win32 3
-package=units-ide.i386-win32.zip,~I~DE with integrated debugger/compiler (BETA)
+package=ide.i386-win32.zip,~I~DE with integrated debugger/compiler (BETA)
 # Win32 4
 package=utils.i386-win32.zip,~E~xtra Utilities
 # Win32 5
@@ -435,7 +435,7 @@ package=urtl-unicodeos2.zip[urtluos2.zip],RTL-miscellaneous Unicode support unit
 # OS/2-2 29
 package=utils-rmwaitos2.zip[rmwos2.zip],Remove (delete) file(s) with optional retries
 # OS/2-2 30
-package=utils-lexyaccos2.zip[ulexyos2.zip],Compiler generator for TP and compatibles
+package=utils-lexyaccos2.zip[lexyos2.zip],Compiler generator for TP and compatibles
 # OS/2-2 31
 package=utils-fpcmos2.zip[fpcmos2.zip],Generate Makefiles out of Makefile.fpc files
 # OS/2-2 32
@@ -451,6 +451,12 @@ pack=OS/2-3
 filecheck=*os2.zip
 # OS/2-3 1
 package=urtl-genericsos2.zip[urtlgos2.zip],RTL-generic collection library
+# OS/2-3 2
+package=utils-pas2jsos2.zip[p2jsos2.zip],Convert Pascal sources to Javascript
+# OS/2-3 3
+package=utils-webidlos2.zip[widlos2.zip],Web IDL parser and converter to Object Pascal classes
+# OS/2-3 4
+package=utils-json2pasos2.zip[js2pos2.zip],Create Object Pascal classes from JSON files
 
 #
 # EMX packages
@@ -606,6 +612,12 @@ pack=EMX-3
 filecheck=*emx.zip
 # EMX-3 1
 package=urtl-genericsemx.zip[urtlgemx.zip],RTL-generic collection library
+# EMX-3 2
+package=utils-pas2jsemx.zip[p2jsemx.zip],Convert Pascal sources to Javascript
+# EMX-3 3
+package=utils-webidlemx.zip[widlemx.zip],Web IDL parser and converter to Object Pascal classes
+# EMX-3 4
+package=utils-json2pasemx.zip[js2pemx.zip],Create Object Pascal classes from JSON files
 
 
 #
@@ -636,7 +648,7 @@ package=compiler.source.zip[compsrc.zip],~C~ompiler sources
 # Source 3
 package=rtl.source.zip[rtlsrc.zip],Run time library sources
 # Source 4
-package=units-ide-3.3.1.source.zip[uidesrc.zip],IDE sources
+package=ide-3.3.1.source.zip[idesrc.zip],IDE sources
 # Source 5
 package=utils-3.3.1.source.zip[utilssrc.zip],~U~tils sources
 # Source 6
@@ -831,7 +843,7 @@ package=utils-importtl-3.3.1.source.zip[uimptsrc.zip],
 # Source 13
 package=utils-instantfpc-3.3.1.source.zip[uifpcsrc.zip],Instantaneous Free Pascal source executer
 # Source 14
-package=utils-pas2js-3.3.1.source.zip[uupjssrc.zip],Pascal to JaaScript converter
+package=utils-pas2js-3.3.1.source.zip[up2jssrc.zip],Pascal to JavaScript converter
 # Source 15
 package=utils-pas2fpm-3.3.1.source.zip[up2fpsrc.zip],Generate fpmake.pp for Pascal source
 # Source 16

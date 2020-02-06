@@ -768,8 +768,8 @@ type
                                       compression technique (details to be
                                       released later). }
     ah_Mask: Byte;      // (XOR mode only - plane mask where each bit is set =1 if there is data and =0 if not.)
-    ah_Height: Word;    // (XOR mode only - width and height of the area represented
-    ah_Width: Word;     //   by the BODY to eliminate unnecessary un-changed data)
+    ah_Width: Word;    // (XOR mode only - width and height of the area represented
+    ah_Height: Word;     //   by the BODY to eliminate unnecessary un-changed data)
     ah_Left: SmallInt;  // (XOR mode only - position of rectangular
     ah_Top: SmallInt;   // area representd by the BODY)
     ah_AbsTime: LongWord;  // Timing for a frame relative to the time the first frame was displayed, in jiffies (1/60 sec)

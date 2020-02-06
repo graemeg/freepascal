@@ -151,6 +151,7 @@
   {$define cpumm}
   {$define cpurox}
   {$define cpurefshaveindexreg}
+  {$define SUPPORT_SAFECALL}
   {$define SUPPORT_GET_FRAME}
 {$endif powerpc}
 
@@ -163,6 +164,7 @@
   {$define cpurox}
   {$define cpurefshaveindexreg}
   {$define cpuno32bitops}
+  {$define SUPPORT_SAFECALL}
 {$endif powerpc64}
 
 {$ifdef arm}

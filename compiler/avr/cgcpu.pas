@@ -2225,9 +2225,9 @@ unit cgcpu;
               regs:=regs+[RS_R28,RS_R29];
 
             { we clear r1 }
-            include(regs,RS_R1);
+            include(regs,getsupreg(GetDefaultZeroReg));
 
-            regs:=regs+[RS_R0];
+            regs:=regs+[getsupreg(GetDefaultTmpReg)];
 
             for reg:=RS_R31 downto RS_R0 do
               if reg in regs then
@@ -2313,7 +2313,7 @@ unit cgcpu;
                   end;
 
                 { we clear r1 }
-                include(regs,RS_R1);
+                include(regs,getsupreg(GetDefaultZeroReg));
 
                 { Reload SREG }
                 regs:=regs+[getsupreg(GetDefaultTmpReg)];
@@ -2520,7 +2520,8 @@ unit cgcpu;
           begin
             SrcQuickRef:=false;
             DestQuickRef:=false;
-            if (CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]) or
+            if ((CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]) and
+              not((source.Base=NR_NO) and (source.Index=NR_NO) and (source.symbol=nil) and (source.Offset in [0..192-len]))) or
               (
                  not((source.addressmode=AM_UNCHANGED) and
                      (source.symbol=nil) and
@@ -2541,7 +2542,8 @@ unit cgcpu;
                 srcref:=source;
               end;
 
-            if (CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]) or
+            if ((CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]) and
+              not((dest.Base=NR_NO) and (dest.Index=NR_NO) and (dest.symbol=nil) and (dest.Offset in [0..192-len]))) or
               (
                  not((dest.addressmode=AM_UNCHANGED) and
                    (dest.symbol=nil) and

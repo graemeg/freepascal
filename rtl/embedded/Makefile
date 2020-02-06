@@ -386,7 +386,7 @@ endif
 ifeq ($(ARCH),avr)
 CPU_SPECIFIC_COMMON_UNITS=intrinsics
 ifeq ($(SUBARCH),avrtiny)
-CPU_UNITS=attiny4 attiny5 attiny9 attiny10 attiny20 attiny40
+CPU_UNITS=attiny4 attiny5 attiny9 attiny10 attiny20 attiny40 attiny102 attiny104
 CPU_UNITS_DEFINED=1
 endif
 ifeq ($(SUBARCH),avr2)

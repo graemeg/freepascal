@@ -662,6 +662,9 @@ var
   SystemFileName: RawByteString;
   isdir: Boolean;
 begin
+  // Do not call fpAccess with an empty name. (Valgrind will complain)
+  if Filename='' then
+    Exit(False);
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
   // Don't use stat. It fails on files >2 GB.
   // Access obeys the same access rules, so the result should be the same.

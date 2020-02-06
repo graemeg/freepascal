@@ -916,19 +916,8 @@ type
           dol_StackSize,              {    stacksize to use when starting process }
           dol_Priority: LongInt;               {    task priority when starting process }
           dol_Startup: BPTR;   {    startup msg: FileSysStartupMsg for disks }
-{$ifdef aros}
-          dol_NoAROS3: array[0..1] of BPTR;
-{$else}
           dol_SegList,                {    already loaded code for new task }
           dol_GlobVec: BPTR;      {    BCPL global vector to use when starting }
-{$endif}
-          dol_Name: BSTR;           {    bptr to bcpl name }
-{$ifdef aros}
-  {$ifndef AROS_DOS_PACKETS}
-          dol_Reserved: array[0..5] of IPTR;
-          dol_AROS: TDosListAROSExt;
-  {$endif}
-{$endif}
         end;
       );
       1 :(
@@ -944,6 +933,14 @@ type
           dol_AssignName: STRPTR;        {    name for non-OR-late-binding assign }
           dol_List: PAssignList;   {    for multi-directory assigns (regular) }
         end;
+      );
+      3 :(
+        {$ifdef CPU64}
+        dol_Misc: array[0..39] of Byte;
+        {$else}
+        dol_Misc: array[0..23] of Byte;
+        {$endif}
+        dol_Name: BSTR;           {    bptr to bcpl name }
       );
     end;
 

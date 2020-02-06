@@ -159,13 +159,13 @@ implementation
         end
       else if target_info.system in (systems_linux+systems_android) then
         llvm_target_name:=llvm_target_name+'-unknown-linux'
-      else if target_info.system in systems_windows then
+      else if target_info.system in systems_all_windows then
         begin
           { WinCE isn't supported (yet) by llvm, but if/when added this is
             presumably how they will differentiate it }
-          if not(target_info.system in [system_i386_wince,system_arm_wince]) then
+          if target_info.system in systems_windows then
             llvm_target_name:=llvm_target_name+'-pc';
-          llvm_target_name:=llvm_target_name+'-win32'
+          llvm_target_name:=llvm_target_name+'-windows-msvc19'
         end
       else if target_info.system in systems_freebsd then
         llvm_target_name:=llvm_target_name+'-freebsd'

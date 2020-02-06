@@ -225,6 +225,7 @@ implementation
         result.size:=size;
         result.intsize:=intsize;
         result.def:=def;
+        result.Temporary:=Temporary;
       end;
 
 
