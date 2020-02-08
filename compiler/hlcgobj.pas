@@ -4815,10 +4815,7 @@ implementation
             assigned(hp^.def) and
             is_managed_type(hp^.def) then
           begin
-            { If it needs an implicit finally block, the relevant flag should
-              have been set in the first pass.  Note that we can't set it here
-              because "add_entry_exit_code" has already been called, and
-              setting the flag now will raise Internal Error 200405231. [Kit] }
+            include(current_procinfo.flags,pi_needs_implicit_finally);
             tg.temp_to_ref(hp,href);
             g_finalize(list,hp^.def,href);
           end;

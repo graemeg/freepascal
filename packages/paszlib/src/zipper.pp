@@ -34,6 +34,7 @@ Const
   ZIP64_HEADER_ID                            = $0001;
   // infozip unicode path
   INFOZIP_UNICODE_PATH_ID                    = $7075;
+  EFS_LANGUAGE_ENCODING_FLAG                 = $800;
 
 const
   OS_FAT  = 0; //MS-DOS and OS/2 (FAT/VFAT/FAT32)
@@ -2275,7 +2276,7 @@ end;
 
 procedure TUnZipper.ReadZipHeader(Item: TFullZipFileEntry; out AMethod: Word);
 Var
-  S : String;
+  S : RawByteString;
   U : UTF8String;
   D : TDateTime;
   ExtraFieldHdr: Extensible_Data_Field_Header_Type;
@@ -2295,6 +2296,8 @@ Begin
       Item.FBitFlags:=Bit_Flag;
       SetLength(S,Filename_Length);
       FZipStream.ReadBuffer(S[1],Filename_Length);
+      if Bit_Flag and EFS_LANGUAGE_ENCODING_FLAG <> 0 then
+        SetCodePage(S, CP_UTF8, False);
       Item.ArchiveFileName:=S;
       Item.DiskFileName:=S;
       SavePos:=FZipStream.Position; //after filename, before extra fields
@@ -2506,7 +2509,7 @@ Var
   Zip64Field: Zip64_Extended_Info_Field_Type;
   NewNode   : TFullZipFileEntry;
   D : TDateTime;
-  S : String;
+  S : RawByteString;
   U : UTF8String;
   // infozip unicode path
   Infozip_unicode_path_ver : byte; // always 1
@@ -2561,6 +2564,8 @@ Begin
       NewNode.FBitFlags:=Bit_Flag;
       SetLength(S,Filename_Length);
       FZipStream.ReadBuffer(S[1],Filename_Length);
+      if Bit_Flag and EFS_LANGUAGE_ENCODING_FLAG <> 0 then
+        SetCodePage(S, CP_UTF8, False);
       SavePos:=FZipStream.Position; //After fixed part of central directory...
       // and the filename; before any extra field(s)
       NewNode.ArchiveFileName:=S;
@@ -2805,7 +2810,7 @@ Begin
       end
     else if Item.IsDirectory then
       begin
-        if (NOT Flat) then CreateDir(OutputFileName);
+        if (NOT Flat) then ForceDirectories(OutputFileName);
       end
     else
       begin

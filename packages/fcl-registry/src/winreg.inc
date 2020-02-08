@@ -59,12 +59,13 @@ Var
   Disposition: Dword;
   Handle: HKEY;
   SecurityAttributes: Pointer; //LPSECURITY_ATTRIBUTES;
+  U: UnicodeString;
 
 begin
   SecurityAttributes := Nil;
-  Key:=PrepKey(Key);
+  U:=PrepKey(Key);
   FLastError:=RegCreateKeyExW(GetBaseKey(RelativeKey(Key)),
-                              PWideChar(Key),
+                              PWideChar(U),
                               0,
                               '',
                               REG_OPTION_NON_VOLATILE,
