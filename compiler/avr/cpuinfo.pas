@@ -200,8 +200,11 @@ Type
       ct_attiny5,
       ct_attiny9,
       ct_attiny10,
+      ct_attiny11,
+      ct_attiny12,
       ct_attiny13,
       ct_attiny13a,
+      ct_attiny15,
       ct_attiny20,
       ct_attiny24,
       ct_attiny24a,
@@ -496,8 +499,11 @@ Const
         ,(controllertypestr:'ATTINY5';controllerunitstr:'ATTINY5';cputype:cpu_avrtiny;fputype:fpu_soft;flashbase:0;flashsize:512;srambase:64;sramsize:32;eeprombase:0;eepromsize:0)
         ,(controllertypestr:'ATTINY9';controllerunitstr:'ATTINY9';cputype:cpu_avrtiny;fputype:fpu_soft;flashbase:0;flashsize:1024;srambase:64;sramsize:32;eeprombase:0;eepromsize:0)
         ,(controllertypestr:'ATTINY10';controllerunitstr:'ATTINY10';cputype:cpu_avrtiny;fputype:fpu_soft;flashbase:0;flashsize:1024;srambase:64;sramsize:32;eeprombase:0;eepromsize:0)
+        ,(controllertypestr:'ATTINY11';controllerunitstr:'ATTINY11';cputype:cpu_avr1;fputype:fpu_soft;flashbase:0;flashsize:1024;srambase:0;sramsize:0;eeprombase:0;eepromsize:0)
+        ,(controllertypestr:'ATTINY12';controllerunitstr:'ATTINY12';cputype:cpu_avr1;fputype:fpu_soft;flashbase:0;flashsize:1024;srambase:0;sramsize:0;eeprombase:0;eepromsize:64)
         ,(controllertypestr:'ATTINY13';controllerunitstr:'ATTINY13';cputype:cpu_avr25;fputype:fpu_soft;flashbase:0;flashsize:1024;srambase:96;sramsize:64;eeprombase:0;eepromsize:64)
         ,(controllertypestr:'ATTINY13A';controllerunitstr:'ATTINY13A';cputype:cpu_avr25;fputype:fpu_soft;flashbase:0;flashsize:1024;srambase:96;sramsize:64;eeprombase:0;eepromsize:64)
+        ,(controllertypestr:'ATTINY15';controllerunitstr:'ATTINY15';cputype:cpu_avr1;fputype:fpu_soft;flashbase:0;flashsize:1024;srambase:0;sramsize:0;eeprombase:0;eepromsize:64)
         ,(controllertypestr:'ATTINY20';controllerunitstr:'ATTINY20';cputype:cpu_avrtiny;fputype:fpu_soft;flashbase:0;flashsize:2048;srambase:64;sramsize:128;eeprombase:0;eepromsize:0)
         ,(controllertypestr:'ATTINY24';controllerunitstr:'ATTINY24';cputype:cpu_avr25;fputype:fpu_soft;flashbase:0;flashsize:2048;srambase:96;sramsize:128;eeprombase:0;eepromsize:128)
         ,(controllertypestr:'ATTINY24A';controllerunitstr:'ATTINY24A';cputype:cpu_avr25;fputype:fpu_soft;flashbase:0;flashsize:2048;srambase:96;sramsize:128;eeprombase:0;eepromsize:128)

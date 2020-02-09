@@ -3725,7 +3725,7 @@ begin
     'm':
       begin
       // write list of supported modeswitches
-      for ms in (msAllPas2jsModeSwitches-msAllModes) do
+      for ms in (msAllPas2jsModeSwitches-AllLanguageModes) do
         Log.LogPlain(SModeSwitchNames[ms]);
       end;
     'o':
@@ -4882,6 +4882,33 @@ begin
 end;
 
 procedure TPas2jsCompiler.WriteInfo;
+var
+  Flags: string;
+
+  procedure AppendFlag(const s: string);
+  begin
+    if s='' then exit;
+    if Flags='' then
+      Flags:=Space(Log.Indent)
+    else
+      Flags:=Flags+',';
+    if length(Flags)+length(s)>Log.LineLen then
+    begin
+      Log.LogPlain(Flags);
+      Flags:=Space(Log.Indent);
+    end;
+    Flags:=Flags+s;
+  end;
+
+  procedure FlushFlags;
+  begin
+    if Flags='' then exit;
+    Log.LogPlain(Flags);
+    Flags:='';
+  end;
+
+var
+  ms: TModeSwitch;
 begin
   WriteVersionLine;
   Log.LogLn;
@@ -4895,10 +4922,30 @@ begin
   Log.LogPlain('Supported CPU instruction sets:');
   Log.LogPlain('  ECMAScript5, ECMAScript6');
   Log.LogLn;
+
   Log.LogPlain('Recognized compiler and RTL features:');
-  Log.LogPlain('  RTTI,CLASSES,EXCEPTIONS,EXITCODE,RANDOM,DYNARRAYS,COMMANDARGS,');
-  Log.LogPlain('  UNICODESTRINGS');
+  Flags:='';
+  AppendFlag('INITFINAL');
+  AppendFlag('RTTI');
+  AppendFlag('CLASSES');
+  AppendFlag('EXCEPTIONS');
+  AppendFlag('EXITCODE');
+  AppendFlag('WIDESTRINGS');
+  AppendFlag('RANDOM');
+  AppendFlag('DYNARRAYS');
+  AppendFlag('COMMANDARGS');
+  AppendFlag('RESOURCES');
+  AppendFlag('UNICODESTRINGS');
+  FlushFlags;
   Log.LogLn;
+
+  Log.LogPlain('Recognized modeswitches:');
+  Flags:='';
+  for ms in (msAllPas2jsModeSwitches-AllLanguageModes) do
+    AppendFlag(SModeSwitchNames[ms]);
+  FlushFlags;
+  Log.LogLn;
+
   Log.LogPlain('Supported Optimizations:');
   Log.LogPlain('  EnumNumbers');
   Log.LogPlain('  RemoveNotUsedPrivates');

@@ -390,7 +390,7 @@ CPU_UNITS=attiny4 attiny5 attiny9 attiny10 attiny20 attiny40 attiny102 attiny104
 CPU_UNITS_DEFINED=1
 endif
 ifeq ($(SUBARCH),avr1)
-CPU_UNITS=attiny28
+CPU_UNITS=attiny11 attiny12 attiny15 attiny28
 CPU_UNITS_DEFINED=1
 endif
 ifeq ($(SUBARCH),avr2)
@@ -398,7 +398,7 @@ CPU_UNITS=attiny26
 CPU_UNITS_DEFINED=1
 endif
 ifeq ($(SUBARCH),avr25)
-CPU_UNITS=attiny13 attiny13a attiny24 attiny24a attiny25 attiny28 attiny43u \
+CPU_UNITS=attiny13 attiny13a attiny24 attiny24a attiny25 attiny43u \
 	  attiny44 attiny44a attiny45 attiny48 attiny84a attiny84 attiny85 \
 	  attiny87 attiny88 attiny261 attiny261a attiny441 attiny461 attiny461a attiny828 \
 	  attiny841 attiny861 attiny861a attiny2313 attiny2313a attiny4313

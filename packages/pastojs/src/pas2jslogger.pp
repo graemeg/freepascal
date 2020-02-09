@@ -119,12 +119,14 @@ type
   private
     FDebugLog: TPas2JSStream;
     FEncoding: string;
+    FIndent: integer;
     FLastMsgCol: integer;
     FLastMsgFile: string;
     FLastMsgLine: integer;
     FLastMsgNumber: integer;
     FLastMsgTxt: string;
     FLastMsgType: TMessageType;
+    FLineLen: integer;
     FMsgNumberDisabled: TIntegerDynArray;// sorted ascending
     FMsg: TFPList; // list of TPas2jsMessage
     FOnFormatPath: TPScannerFormatPathEvent;
@@ -212,6 +214,8 @@ type
     property LastMsgTxt: string read FLastMsgTxt write FLastMsgTxt;
     property LastMsgNumber: integer read FLastMsgNumber write FLastMsgNumber;
     property DebugLog: TPas2jsStream read FDebugLog write FDebugLog;
+    property LineLen: integer read FLineLen write FLineLen; // used by LogPlainText
+    property Indent: integer read FIndent write FIndent; // used by LogPlainText
   end;
 
 function CompareP2JMessage(Item1, Item2: {$IFDEF Pas2JS}JSValue{$ELSE}Pointer{$ENDIF}): Integer;
@@ -723,6 +727,8 @@ constructor TPas2jsLogger.Create;
 begin
   FMsg:=TFPList.Create;
   FShowMsgTypes:=DefaultLogMsgTypes;
+  FLineLen:=78;
+  FIndent:=2;
 end;
 
 destructor TPas2jsLogger.Destroy;
