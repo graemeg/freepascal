@@ -110,7 +110,7 @@ asm
   rcall fpc_divmod_word
 {$endif CPUAVR_HAS_JMP_CALL}
 
-{$ifdef CPUAVR_16_REGS}
+{$if not(defined(CPUAVR_HAS_MOVW))}
   mov R24, R20
   mov R25, R21
 {$else CPUAVR_16_REGS}
@@ -150,12 +150,12 @@ asm
   rcall fpc_divmod_word
 {$endif CPUAVR_HAS_JMP_CALL}
 
-{$ifdef CPUAVR_16_REGS}
+{$if not(defined(CPUAVR_HAS_MOVW))}
   mov R24, R20
   mov R25, R21
-{$else CPUAVR_16_REGS}
+{$else not(defined(CPUAVR_HAS_MOVW))}
   movw R24, R20
-{$endif CPUAVR_16_REGS}
+{$endif not(defined(CPUAVR_HAS_MOVW))}
 end;
 
 {It is a compilerproc (systemh.inc), make an alias for internal use.}
@@ -194,15 +194,15 @@ asm
   rcall fpc_divmod_dword
 {$endif CPUAVR_HAS_JMP_CALL}
 
-{$ifdef CPUAVR_16_REGS}
+{$if not(defined(CPUAVR_HAS_MOVW))}
   mov R22, R18    // Move result from R18:R21 to R22:R25
   mov R23, R19    // Move result from R18:R21 to R22:R25
   mov R24, R20
   mov R25, R21
-{$else CPUAVR_16_REGS}
+{$else not(defined(CPUAVR_HAS_MOVW))}
   movw R22, R18    // Move result from R18:R21 to R22:R25
   movw R24, R20
-{$endif CPUAVR_16_REGS}
+{$endif not(defined(CPUAVR_HAS_MOVW))}
 end;
 
 {It is a compilerproc (systemh.inc), make an alias for internal use.}

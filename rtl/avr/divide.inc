@@ -42,7 +42,7 @@ finish:
   mov R24, R22    // Move result from R22 to R24
 end;
 
-{$ifdef CPUAVR_16_REGS}
+{$if defined(CPUAVR_16_REGS) or not(defined(CPUAVR_HAS_MOVW))}
 function fpc_divmod_word(n, z: word): word; assembler; nostackframe;
 label
   div1, div2, div3, finish;
@@ -85,7 +85,7 @@ label
   div1, div2, div3, finish;
 asm
 end;
-{$else CPUAVR_16_REGS}
+{$else defined(CPUAVR_16_REGS) or not(defined(CPUAVR_HAS_MOVW))}
 // z in Ra, n in Rb, 0 in Rp
 function fpc_divmod_word(n, z: word): word; assembler; nostackframe;
 label
@@ -179,4 +179,4 @@ finish:
   pop R16
   pop R17
 end;
-{$endif CPUAVR_16_REGS}
+{$endif defined(CPUAVR_16_REGS) or not(defined(CPUAVR_HAS_MOVW))}
