@@ -2006,6 +2006,8 @@ Unit AoptObj;
                             asml.remove(hp1);
                             hp1.free;
 
+                            stoploop := False;
+
                             if not CJLabel.is_used then
                               begin
                                 CJLabel := NCJLabel;

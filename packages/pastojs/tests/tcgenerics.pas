@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, fpcunit, testregistry,
-  TCModules, FPPas2Js;
+  TCModules, FPPas2Js, PScanner, PasResolveEval;
 
 type
 
@@ -34,9 +34,12 @@ type
     //Procedure TestGen_Class_ReferGenClass_DelphiFail;
     Procedure TestGen_Class_ClassConstructor;
     // ToDo: rename local const T
+    Procedure TestGen_Class_TypeCastSpecializesWarn;
 
     // generic external class
     procedure TestGen_ExtClass_Array;
+    // ToDo: TestGen_ExtClass_GenJSValueAssign  TExt<JSValue> := TExt<Word>
+    // ToDo: TestGen_ExtClass_TypeCastJSValue  TExt<Word>(aTExt<JSValue>) and vice versa
 
     // statements
     Procedure TestGen_InlineSpec_Constructor;
@@ -626,6 +629,53 @@ begin
     '})();',
     '$mod.TPoint$G1.x = 10;',
     '']));
+end;
+
+procedure TTestGenerics.TestGen_Class_TypeCastSpecializesWarn;
+begin
+  StartProgram(false);
+  Add([
+  '{$mode delphi}',
+  'type',
+  '  TObject = class end;',
+  '  TBird<T> = class F: T; end;',
+  '  TBirdWord = TBird<Word>;',
+  '  TBirdChar = TBird<Char>;',
+  'var',
+  '  w: TBirdWord;',
+  '  c: TBirdChar;',
+  'begin',
+  '  w:=TBirdWord(c);',
+  '']);
+  ConvertProgram;
+  CheckSource('TestGen_Class_TypeCastSpecializesWarn',
+    LinesToStr([ // statements
+    'rtl.createClass($mod, "TObject", null, function () {',
+    '  this.$init = function () {',
+    '  };',
+    '  this.$final = function () {',
+    '  };',
+    '});',
+    'rtl.createClass($mod, "TBird$G1", $mod.TObject, function () {',
+    '  this.$init = function () {',
+    '    $mod.TObject.$init.call(this);',
+    '    this.F = 0;',
+    '  };',
+    '});',
+    'rtl.createClass($mod, "TBird$G2", $mod.TObject, function () {',
+    '  this.$init = function () {',
+    '    $mod.TObject.$init.call(this);',
+    '    this.F = "";',
+    '  };',
+    '});',
+    'this.w = null;',
+    'this.c = null;',
+    '']),
+    LinesToStr([ // $mod.$main
+    '$mod.w = $mod.c;',
+    '']));
+  CheckHint(mtWarning,nClassTypesAreNotRelatedXY,'Class types "TBird$G2<Char>" and "TBird$G1<Word>" are not related');
+  CheckResolverUnexpectedHints();
 end;
 
 procedure TTestGenerics.TestGen_ExtClass_Array;

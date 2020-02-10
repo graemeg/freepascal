@@ -529,7 +529,8 @@ type
     Procedure TestClass_ExternalOverrideFail;
     Procedure TestClass_ExternalVar;
     Procedure TestClass_Const;
-    Procedure TestClass_LocalConstDuplicate;
+    Procedure TestClass_LocalConstDuplicate_Prg;
+    Procedure TestClass_LocalConstDuplicate_Unit;
     // ToDo: Procedure TestAdvRecord_LocalConstDuplicate;
     Procedure TestClass_LocalVarSelfFail;
     Procedure TestClass_ArgSelfFail;
@@ -14248,7 +14249,7 @@ begin
     '']));
 end;
 
-procedure TTestModule.TestClass_LocalConstDuplicate;
+procedure TTestModule.TestClass_LocalConstDuplicate_Prg;
 begin
   StartProgram(false);
   Add([
@@ -14279,7 +14280,7 @@ begin
   'begin',
   '']);
   ConvertProgram;
-  CheckSource('TestClass_LocalConstDuplicate',
+  CheckSource('TestClass_LocalConstDuplicate_Prg',
     LinesToStr([
     'rtl.createClass($mod, "TObject", null, function () {',
     '  this.cI = 3;',
@@ -14305,6 +14306,66 @@ begin
     '']),
     LinesToStr([
     '']));
+end;
+
+procedure TTestModule.TestClass_LocalConstDuplicate_Unit;
+begin
+  StartUnit(false);
+  Add([
+  'interface',
+  'type',
+  '  TObject = class',
+  '    const cI: longint = 3;',
+  '    procedure Fly;',
+  '    procedure Run;',
+  '  end;',
+  '  TBird = class',
+  '    procedure Go;',
+  '  end;',
+  'implementation',
+  'procedure tobject.fly;',
+  'const cI: word = 4;',
+  'begin',
+  '  if cI=Self.cI then ;',
+  'end;',
+  'procedure tobject.run;',
+  'const cI: word = 5;',
+  'begin',
+  '  if cI=Self.cI then ;',
+  'end;',
+  'procedure tbird.go;',
+  'const cI: word = 6;',
+  'begin',
+  '  if cI=Self.cI then ;',
+  'end;',
+  '']);
+  ConvertUnit;
+  CheckSource('TestClass_LocalConstDuplicate_Unit',
+    LinesToStr([
+    'rtl.createClass($mod, "TObject", null, function () {',
+    '  this.cI = 3;',
+    '  this.$init = function () {',
+    '  };',
+    '  this.$final = function () {',
+    '  };',
+    '  var cI$1 = 4;',
+    '  this.Fly = function () {',
+    '    if (cI$1 === this.cI) ;',
+    '  };',
+    '  var cI$2 = 5;',
+    '  this.Run = function () {',
+    '    if (cI$2 === this.cI) ;',
+    '  };',
+    '});',
+    'rtl.createClass($mod, "TBird", $mod.TObject, function () {',
+    '  var cI$3 = 6;',
+    '  this.Go = function () {',
+    '    if (cI$3 === this.cI) ;',
+    '  };',
+    '});',
+    '']),
+    '',
+    '');
 end;
 
 procedure TTestModule.TestClass_LocalVarSelfFail;

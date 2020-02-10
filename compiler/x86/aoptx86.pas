@@ -61,6 +61,15 @@ unit aoptx86;
           except where the register is being written }
         function ReplaceRegisterInInstruction(const p: taicpu; const AOldReg, ANewReg: TRegister): Boolean;
 
+        { Returns true if the reference only refers to ESP or EBP (or their 64-bit equivalents),
+          or writes to a global symbol }
+        class function IsRefSafe(const ref: PReference): Boolean; static; inline;
+
+
+        { Returns true if the given MOV instruction can be safely converted to CMOV }
+        class function CanBeCMOV(p : tai) : boolean; static;
+
+
         function DeepMOVOpt(const p_mov: taicpu; const hp: taicpu): Boolean;
 
         procedure DebugMsg(const s : string; p : tai);inline;
@@ -1624,6 +1633,23 @@ unit aoptx86;
             MatchInstruction(p, [A_RCL, A_RCR, A_ROL, A_ROR, A_SAL, A_SAR, A_SHL, A_SHLD, A_SHR, A_SHRD], [])
           ) then
             Result := ReplaceRegisterInOper(p, OperIdx, AOldReg, ANewReg) or Result;
+      end;
+
+
+    class function TX86AsmOptimizer.IsRefSafe(const ref: PReference): Boolean; inline;
+      begin
+        Result :=
+          (ref^.index = NR_NO) and
+          (
+{$ifdef x86_64}
+            (
+              (ref^.base = NR_RIP) and
+              (ref^.refaddr in [addr_pic, addr_pic_no_got])
+            ) or
+{$endif x86_64}
+            (ref^.base = NR_STACK_POINTER_REG) or
+            (ref^.base = current_procinfo.framepointer)
+          );
       end;
 
 
@@ -4638,7 +4664,7 @@ unit aoptx86;
       end;
 
 
-    function CanBeCMOV(p : tai) : boolean;
+    class function TX86AsmOptimizer.CanBeCMOV(p : tai) : boolean;
       begin
          CanBeCMOV:=assigned(p) and
            MatchInstruction(p,A_MOV,[S_W,S_L,S_Q]) and
@@ -4648,16 +4674,15 @@ unit aoptx86;
             or ((taicpu(p).oper[0]^.typ = top_ref) and
              (taicpu(p).oper[0]^.ref^.refaddr = addr_no))
            }
-           (MatchOpType(taicpu(p),top_reg,top_reg) or
-            { allow references, but only pure symbols or got rel. addressing with RIP as based,
-              it is not expected that this can cause a seg. violation }
-            (MatchOpType(taicpu(p),top_ref,top_reg) and
-             (((taicpu(p).oper[0]^.ref^.base=NR_NO) and (taicpu(p).oper[0]^.ref^.refaddr=addr_no)){$ifdef x86_64} or
-              ((taicpu(p).oper[0]^.ref^.base=NR_RIP) and (taicpu(p).oper[0]^.ref^.refaddr=addr_pic)){$endif x86_64}
-             ) and
-             (taicpu(p).oper[0]^.ref^.index=NR_NO) and
-             (taicpu(p).oper[0]^.ref^.offset=0)
-            )
+           (taicpu(p).oper[1]^.typ = top_reg) and
+           (
+             (taicpu(p).oper[0]^.typ = top_reg) or
+             { allow references, but only pure symbols or got rel. addressing with RIP as based,
+               it is not expected that this can cause a seg. violation }
+             (
+               (taicpu(p).oper[0]^.typ = top_ref) and
+               IsRefSafe(taicpu(p).oper[0]^.ref)
+             )
            );
       end;
 

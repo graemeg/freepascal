@@ -2229,15 +2229,20 @@ unit cgcpu;
 
             regs:=regs+[getsupreg(GetDefaultTmpReg)];
 
-            for reg:=RS_R31 downto RS_R0 do
-              if reg in regs then
-                list.concat(taicpu.op_reg(A_PUSH,newreg(R_INTREGISTER,reg,R_SUBWHOLE)));
+            if current_settings.cputype=cpu_avr1 then
+              message1(cg_w_interrupt_does_not_save_registers,current_procinfo.procdef.fullprocname(false))
+            else
+              begin
+                for reg:=RS_R31 downto RS_R0 do
+                  if reg in regs then
+                    list.concat(taicpu.op_reg(A_PUSH,newreg(R_INTREGISTER,reg,R_SUBWHOLE)));
+                { Save SREG }
+                cg.getcpuregister(list,GetDefaultTmpReg);
+                list.concat(taicpu.op_reg_const(A_IN, GetDefaultTmpReg, $3F));
+                list.concat(taicpu.op_reg(A_PUSH, GetDefaultTmpReg));
+                cg.ungetcpuregister(list,GetDefaultTmpReg);
+              end;
 
-            { Save SREG }
-            cg.getcpuregister(list,GetDefaultTmpReg);
-            list.concat(taicpu.op_reg_const(A_IN, GetDefaultTmpReg, $3F));
-            list.concat(taicpu.op_reg(A_PUSH, GetDefaultTmpReg));
-            cg.ungetcpuregister(list,GetDefaultTmpReg);
 
             list.concat(taicpu.op_reg(A_CLR,GetDefaultZeroReg));
 
@@ -2315,17 +2320,21 @@ unit cgcpu;
                 { we clear r1 }
                 include(regs,getsupreg(GetDefaultZeroReg));
 
-                { Reload SREG }
-                regs:=regs+[getsupreg(GetDefaultTmpReg)];
+                if current_settings.cputype<>cpu_avr1 then
+                  begin
+                    { Reload SREG }
+                    regs:=regs+[getsupreg(GetDefaultTmpReg)];
 
-                cg.getcpuregister(list,GetDefaultTmpReg);
-                list.concat(taicpu.op_reg(A_POP, GetDefaultTmpReg));
-                list.concat(taicpu.op_const_reg(A_OUT, $3F, GetDefaultTmpReg));
-                cg.ungetcpuregister(list,GetDefaultTmpReg);
 
-                for reg:=RS_R0 to RS_R31 do
-                  if reg in regs then
-                    list.concat(taicpu.op_reg(A_POP,newreg(R_INTREGISTER,reg,R_SUBWHOLE)));
+                    cg.getcpuregister(list,GetDefaultTmpReg);
+                    list.concat(taicpu.op_reg(A_POP, GetDefaultTmpReg));
+                    list.concat(taicpu.op_const_reg(A_OUT, $3F, GetDefaultTmpReg));
+                    cg.ungetcpuregister(list,GetDefaultTmpReg);
+
+                    for reg:=RS_R0 to RS_R31 do
+                      if reg in regs then
+                        list.concat(taicpu.op_reg(A_POP,newreg(R_INTREGISTER,reg,R_SUBWHOLE)));
+                  end;
               end;
             list.concat(taicpu.op_none(A_RETI));
           end

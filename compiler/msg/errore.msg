@@ -2377,7 +2377,7 @@ sym_e_type_must_be_rec_or_object=05098_E_Record or object type expected
 #
 # Codegenerator
 #
-# 06060 is the last used one
+# 06062 is the last used one
 #
 % \section{Code generator messages}
 % This section lists all messages that can be displayed if the code
@@ -2541,6 +2541,10 @@ cg_w_cannot_compile_subroutine=06061_W_The current subroutine "$1" cannot be com
 % Some processors have a very limited instruction set so some routines cannot be compiled for them. As it is not always
 % clear from the beginning if a subroutine can be compiled for a certain CPU or not, the compiler checks afterwards
 % and creates a dummy if it cannot compile the subroutine.
+cg_w_interrupt_does_not_save_registers=06062_W_The target CPU does not support preserving the registers in subroutine "$1"
+% Certain processors have no memory (e.~g. avr1 family), so they do not support storing/restoring the used registers
+% in an interrupt routine. The programmer has to ensure that while there is a chance for the interrupt routine being
+% called that no other code depending on registers being preserved is executed.
 %
 % \end{description}
 # EndOfTeX

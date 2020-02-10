@@ -409,6 +409,7 @@ implementation
           i: Integer;
           hp: tai;
         begin
+          exit;
           taicpu(firstinstruction).opcode:=A_SLEEP;
           for i:=0 to taicpu(firstinstruction).opercnt-1 do
             taicpu(firstinstruction).freeop(i);
@@ -508,33 +509,61 @@ implementation
                           end;
                         A_STS:
                           begin
-                            if current_settings.cputype=cpu_avr1 then
-                              begin
-                                remove_instruction;
-                                result:=false;
-                              end
-                            else if current_settings.cputype=cpu_avrtiny then
-                              with taicpu(curtai).oper[0]^ do
-                                if (ref^.base=NR_NO) and (ref^.index=NR_NO) and (ref^.symbol=nil) and (ref^.offset<$40) then
-                                  begin
-                                    taicpu(curtai).opcode:=A_OUT;
-                                    taicpu(curtai).loadconst(0,ref^.offset);
-                                  end;
+                            { certain cpu types do not support some instructions, so replace them }
+                            case current_settings.cputype of
+                              cpu_avr1:
+                                begin
+                                  with taicpu(curtai).oper[0]^ do
+                                    if (ref^.base=NR_NO) and (ref^.index=NR_NO) and (ref^.symbol=nil) and (ref^.offset<$40) then
+                                      begin
+                                        taicpu(curtai).opcode:=A_OUT;
+                                        taicpu(curtai).loadconst(0,ref^.offset);
+                                      end
+                                    else
+                                      begin
+                                        remove_instruction;
+                                        result:=false;
+                                      end;
+                                end;
+                              cpu_avrtiny:
+                                begin
+                                  with taicpu(curtai).oper[0]^ do
+                                    if (ref^.base=NR_NO) and (ref^.index=NR_NO) and (ref^.symbol=nil) and (ref^.offset<$40) then
+                                      begin
+                                        taicpu(curtai).opcode:=A_OUT;
+                                        taicpu(curtai).loadconst(0,ref^.offset);
+                                      end;
+                                end;
+                            end;
                           end;
                         A_LDS:
                           begin
-                            if current_settings.cputype=cpu_avr1 then
-                              begin
-                                remove_instruction;
-                                result:=false;
-                              end
-                            else if current_settings.cputype=cpu_avrtiny then
-                              with taicpu(curtai).oper[1]^ do
-                                if (ref^.base=NR_NO) and (ref^.index=NR_NO) and (ref^.symbol=nil) and (ref^.offset<$40) then
-                                  begin
-                                    taicpu(curtai).opcode:=A_IN;
-                                    taicpu(curtai).loadconst(1,ref^.offset)
-                                  end;
+                            { certain cpu types do not support some instructions, so replace them }
+                            case current_settings.cputype of
+                              cpu_avr1:
+                                begin
+                                  with taicpu(curtai).oper[1]^ do
+                                    if (ref^.base=NR_NO) and (ref^.index=NR_NO) and (ref^.symbol=nil) and (ref^.offset<$40) then
+                                      begin
+                                        taicpu(curtai).opcode:=A_IN;
+                                        taicpu(curtai).loadconst(1,ref^.offset)
+                                      end
+                                    else
+                                      begin
+                                        remove_instruction;
+                                        result:=false;
+                                      end;
+                                end;
+                              cpu_avrtiny:
+                                begin
+                                  with taicpu(curtai).oper[1]^ do
+                                    if (ref^.base=NR_NO) and (ref^.index=NR_NO) and (ref^.symbol=nil) and (ref^.offset<$40) then
+                                      begin
+                                        taicpu(curtai).opcode:=A_IN;
+                                        taicpu(curtai).loadconst(1,ref^.offset)
+                                      end;
+                                end;
+                            end;
                           end;
                         A_SBIW,
                         A_MULS,
@@ -548,6 +577,7 @@ implementation
                         A_POP,
                         A_PUSH:
                           begin
+                            { certain cpu types do not support some instructions, so replace them }
                             if current_settings.cputype=cpu_avr1 then
                               begin
                                 remove_instruction;

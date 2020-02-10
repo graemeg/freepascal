@@ -592,7 +592,7 @@ type
     Procedure TestClass_OperatorAsOnNonTypeFail;
     Procedure TestClassAsFuncResult;
     Procedure TestClassTypeCast;
-    Procedure TestClassTypeCastUnrelatedFail;
+    Procedure TestClassTypeCastUnrelatedWarn;
     Procedure TestClass_TypeCastSelf;
     Procedure TestClass_TypeCaseMultipleParamsFail;
     Procedure TestClass_TypeCastAssign;
@@ -10350,26 +10350,28 @@ begin
   ParseProgram;
 end;
 
-procedure TTestResolver.TestClassTypeCastUnrelatedFail;
+procedure TTestResolver.TestClassTypeCastUnrelatedWarn;
 begin
   StartProgram(false);
-  Add('type');
-  Add('  {#TOBJ}TObject = class');
-  Add('  end;');
-  Add('  {#A}TClassA = class');
-  Add('    id: longint;');
-  Add('  end;');
-  Add('  {#B}TClassB = class');
-  Add('    Name: string;');
-  Add('  end;');
-  Add('var');
-  Add('  {#o}{=TOBJ}o: TObject;');
-  Add('  {#va}{=A}va: TClassA;');
-  Add('  {#vb}{=B}vb: TClassB;');
-  Add('begin');
-  Add('  {@vb}vb:=TClassB({@va}va);');
-  CheckResolverException('Illegal type conversion: "TClassA" to "class TClassB"',
-    nIllegalTypeConversionTo);
+  Add([
+  'type',
+  '  {#TOBJ}TObject = class',
+  '  end;',
+  '  {#A}TClassA = class',
+  '    id: longint;',
+  '  end;',
+  '  {#B}TClassB = class',
+  '    Name: string;',
+  '  end;',
+  'var',
+  '  {#o}{=TOBJ}o: TObject;',
+  '  {#va}{=A}va: TClassA;',
+  '  {#vb}{=B}vb: TClassB;',
+  'begin',
+  '  {@vb}vb:=TClassB({@va}va);']);
+  ParseProgram;
+  CheckResolverHint(mtWarning,nClassTypesAreNotRelatedXY,'Class types "TClassA" and "TClassB" are not related');
+  CheckResolverUnexpectedHints;
 end;
 
 procedure TTestResolver.TestClass_TypeCastSelf;

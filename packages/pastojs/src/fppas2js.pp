@@ -2929,6 +2929,7 @@ var
   ElevatedLocals: TPas2jsElevatedLocals;
 begin
   Result:=0;
+  //if SameText(El.Name,'ci') then writeln('TPas2JSResolver.GetOverloadIndex ',GetObjPath(El),' ',HasOverloadIndex(El,true));
   if not HasOverloadIndex(El,true) then exit;
 
   ThisChanged:=false;
@@ -2949,6 +2950,7 @@ begin
 
       // check elevated locals
       ElevatedLocals:=GetElevatedLocals(Scope);
+      // if SameText(El.Name,'ci') then writeln('TPas2JSResolver.GetOverloadIndex ',GetObjPath(El),' ',Scope.Element.ClassName,' ',ElevatedLocals<>nil);
       if ElevatedLocals<>nil then
         begin
         Identifier:=ElevatedLocals.Find(El.Name);
@@ -3060,6 +3062,7 @@ var
 begin
   // => count overloads in this section
   OverloadIndex:=GetOverloadIndex(El);
+  //if SameText(El.Name,'ci') then writeln('TPas2JSResolver.RenameOverload ',GetObjPath(El),' ',OverloadIndex);
   if OverloadIndex=0 then
     exit(false); // there is no overload
 
@@ -3185,16 +3188,51 @@ begin
 end;
 
 procedure TPas2JSResolver.RenameSubOverloads(Declarations: TFPList);
+
+  procedure RestoreScopeLvl(OldScopeCount: integer);
+  begin
+    while FOverloadScopes.Count>OldScopeCount do
+      PopOverloadScope;
+  end;
+
+  procedure LocalPushClassOrRecScopes(Scope: TPasClassOrRecordScope);
+  var
+    CurScope: TPasClassOrRecordScope;
+    aParent: TPasElement;
+  begin
+    CurScope:=Scope;
+    repeat
+      PushOverloadScope(CurScope);
+      if Scope is TPas2JSClassScope then
+        CurScope:=TPas2JSClassScope(CurScope).AncestorScope
+      else
+        break;
+    until CurScope=nil;
+    aParent:=Scope.Element.Parent;
+    if not (aParent is TPasMembersType) then
+      exit;
+    // nested class -> push parent class scope...
+    CurScope:=aParent.CustomData as TPasClassOrRecordScope;
+    LocalPushClassOrRecScopes(CurScope);
+  end;
+
 var
   i, OldScopeCount: Integer;
   El: TPasElement;
-  Proc: TPasProcedure;
-  ProcScope: TPasProcedureScope;
+  Proc, ImplProc: TPasProcedure;
+  ProcScope, ImplProcScope: TPas2JSProcedureScope;
   ClassScope, aScope: TPasClassScope;
   ClassEl: TPasClassType;
   C: TClass;
   ProcBody: TProcedureBody;
+  IntfSection: TInterfaceSection;
+  ImplSection: TImplementationSection;
 begin
+  IntfSection:=RootElement.InterfaceSection;
+  if IntfSection<>nil then
+    ImplSection:=RootElement.ImplementationSection
+  else
+    ImplSection:=nil;
   for i:=0 to Declarations.Count-1 do
     begin
     El:=TPasElement(Declarations[i]);
@@ -3202,26 +3240,49 @@ begin
     if C.InheritsFrom(TPasProcedure) then
       begin
       Proc:=TPasProcedure(El);
-      ProcScope:=Proc.CustomData as TPasProcedureScope;
+      ProcScope:=Proc.CustomData as TPas2JSProcedureScope;
+
+      // handle each Proc only once, by handling only the DeclProc,
+      // except for DeclProc in the unit interface
       if ProcScope.DeclarationProc<>nil then
-        continue;
-      if ProcScope.ImplProc<>nil then
         begin
-        Proc:=ProcScope.ImplProc;
-        ProcScope:=TPasProcedureScope(Proc.CustomData);
+        // ImplProc with separate declaration
+        if (Proc.Parent=ImplSection)
+        and ProcScope.DeclarationProc.HasParent(IntfSection) then
+          // ImplProc in unit implementation, DeclProc in unit interface
+          // Note: The Unit Impl elements are renamed in a separate run, aka now
+        else
+          continue; // handled via DeclProc
+        end;
+      ImplProc:=ProcScope.ImplProc;
+      if ImplProc<>nil then
+        ImplProcScope:=TPas2JSProcedureScope(ImplProc.CustomData)
+      else
+        begin
+        ImplProc:=Proc;
+        ImplProcScope:=ProcScope;
         end;
       {$IFDEF VerbosePas2JS}
-      //writeln('TPas2JSResolver.RenameSubOverloads Proc=',Proc.Name,' DeclarationProc=',GetObjName(ProcScope.DeclarationProc),' ImplProc=',GetObjName(ProcScope.ImplProc),' ClassScope=',GetObjName(ProcScope.ClassOrRecordScope));
+      //writeln('TPas2JSResolver.RenameSubOverloads ImplProc=',ImplProc.Name,' DeclarationProc=',GetObjName(ProcScope.DeclarationProc),' ClassScope=',GetObjName(ImplProcScope.ClassOrRecordScope));
       {$ENDIF}
-      ProcBody:=Proc.Body;
+      ProcBody:=ImplProc.Body;
       if ProcBody<>nil then
         begin
-        PushOverloadScope(ProcScope);
+        OldScopeCount:=FOverloadScopes.Count;
+        if (ImplProcScope.ClassRecScope<>nil)
+            and not (Proc.Parent is TPasMembersType) then
+          begin
+          // push class scopes
+          LocalPushClassOrRecScopes(ImplProcScope.ClassRecScope);
+          end;
+
+        PushOverloadScope(ImplProcScope);
         // first rename all overloads on this level
         RenameOverloads(ProcBody,ProcBody.Declarations);
         // then process nested procedures
         RenameSubOverloads(ProcBody.Declarations);
         PopOverloadScope;
+        RestoreScopeLvl(OldScopeCount);
         end;
       end
     else if (C=TPasClassType) or (C=TPasRecordType) then
@@ -3253,8 +3314,7 @@ begin
       RenameSubOverloads(TPasMembersType(El).Members);
 
       // restore scope
-      while FOverloadScopes.Count>OldScopeCount do
-        PopOverloadScope;
+      RestoreScopeLvl(OldScopeCount);
       end;
     end;
   {$IFDEF VerbosePas2JS}

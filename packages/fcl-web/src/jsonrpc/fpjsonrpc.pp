@@ -54,7 +54,7 @@ Type
     function GetP(AIndex : Integer): TJSONParamDef;
     procedure SetP(AIndex : Integer; const AValue: TJSONParamDef);
   Public
-    Function AddParamDef(Const AName : TJSONStringType; AType : TJSONType = jtString) : TJSONParamDef;
+    Function AddParamDef(Const AName : TJSONStringType; AType : TJSONType = jtString; ARequired: Boolean = False) : TJSONParamDef;
     Function IndexOfParamDef(Const AName : TJSONStringType) : Integer;
     Function FindParamDef(Const AName : TJSONStringType) : TJSONParamDef;
     Function ParamDefByName(Const AName : TJSONStringType) : TJSONParamDef;
@@ -63,7 +63,7 @@ Type
 
   { TCustomJSONRPCHandler }
   TJSONParamErrorEvent = Procedure (Sender : TObject; Const E : Exception; Var Fatal : boolean) of Object;
-  TJSONRPCOption = (jroCheckParams,jroObjectParams,jroArrayParams);
+  TJSONRPCOption = (jroCheckParams,jroObjectParams,jroArrayParams,jroIgnoreExtraFields);
   TJSONRPCOptions = set of TJSONRPCOption;
 
   { TJSONRPCCallContext }
@@ -94,6 +94,8 @@ Type
   Protected
     function CreateParamDefs: TJSONParamDefs; virtual;
     Procedure DoCheckParams(Const Params : TJSONData); virtual;
+    Procedure DoCheckParamDefsOnObject(Const ParamObject: TJSONObject); virtual;
+    Procedure DoCheckParamArray(const ParamArray: TJSONArray); virtual;
     Function DoExecute(Const Params : TJSONData; AContext : TJSONRPCCallContext): TJSONData; virtual;
     Property BeforeExecute : TNotifyEvent Read FBeforeExecute Write FBeforeExecute;
     Property AfterExecute : TNotifyEvent Read FAfterExecute Write FAfterExecute;
@@ -332,8 +334,10 @@ Type
   TJSONErrorObject = Class(TJSONObject);
 
 // Raise EJSONRPC exceptions.
-Procedure JSONRPCError(Msg : String);
-Procedure JSONRPCError(Fmt : String; Args : Array of const);
+Procedure JSONRPCError(const Msg : String);
+Procedure JSONRPCError(const Fmt : String; const Args : Array of const);
+Procedure JSONRPCParamError(const Msg: String);
+Procedure JSONRPCParamError(const Fmt: String; const Args: array of const);
 
 // Create an 'Error' object for an error response.
 function CreateJSONErrorObject(Const AMessage : String; Const ACode : Integer) : TJSONObject;
@@ -371,6 +375,10 @@ resourcestring
   SErrParamsMustBeArrayorObject = 'Parameters must be passed in an object or an array.';
   SErrParamsMustBeObject = 'Parameters must be passed in an object.';
   SErrParamsMustBeArray  = 'Parameters must be passed in an array.';
+  SErrParamsRequiredParamNotFound = 'Required parameter "%s" not found.';
+  SErrParamsDataTypeMismatch = 'Expected parameter "%s" having type "%s", got "%s".';
+  SErrParamsNotAllowd = 'Parameter "%s" is not allowed.';
+  SErrParamsOnlyObjectsInArray = 'Array elements must be objects, got %s at position %d.';
   SErrRequestMustBeObject = 'JSON-RPC Request must be an object.';
   SErrNoIDProperty = 'No "id" property found in request.';
   SErrInvalidIDProperty = 'Type of "id" property is not correct.';
@@ -402,13 +410,15 @@ implementation
 uses dbugintf;
 {$ENDIF}
 
-function CreateJSONErrorObject(Const AMessage : String; Const ACode : Integer) : TJSONObject;
+function CreateJSONErrorObject(const AMessage: String; const ACode: Integer
+  ): TJSONObject;
 
 begin
   Result:=TJSONErrorObject.Create(['code',ACode,'message',AMessage])
 end;
 
-function CreateJSON2ErrorResponse(Const AMessage : String; Const ACode : Integer; ID : TJSONData = Nil; idname : TJSONStringType = 'id' ) : TJSONObject;
+function CreateJSON2ErrorResponse(const AMessage: String; const ACode: Integer;
+  ID: TJSONData; idname: TJSONStringType): TJSONObject;
 
 begin
   If (ID=Nil) then
@@ -418,7 +428,8 @@ begin
   Result:=TJSONErrorObject.Create(['jsonrpc','2.0','error',CreateJSONErrorObject(AMessage,ACode),idname,ID]);
 end;
 
-function CreateJSON2ErrorResponse(Const AFormat : String; Args : Array of const; Const ACode : Integer; ID : TJSONData = Nil; idname : TJSONStringType = 'id' ) : TJSONObject;
+function CreateJSON2ErrorResponse(const AFormat: String; Args: array of const;
+  const ACode: Integer; ID: TJSONData; idname: TJSONStringType): TJSONObject;
 
 begin
   If (ID=Nil) then
@@ -428,7 +439,7 @@ begin
   Result:=TJSONErrorObject.Create(['jsonrpc','2.0','error',CreateJSONErrorObject(Format(AFormat,Args),ACode),idname,ID]);
 end;
 
-Function CreateErrorForRequest(Const Req,Error : TJSONData) : TJSONData;
+function CreateErrorForRequest(const Req, Error: TJSONData): TJSONData;
 
 Var
   I : Integer;
@@ -456,17 +467,28 @@ begin
   JSONRPCHandlerManager:=TheHandler;
 end;
 
-Procedure JSONRPCError(Msg : String);
+procedure JSONRPCError(const Msg: String);
 
 begin
   Raise EJSONRPC.Create(Msg);
 end;
 
-Procedure JSONRPCError(Fmt : String; Args : Array of const);
+procedure JSONRPCError(const Fmt: String; const Args: array of const);
 
 begin
   Raise EJSONRPC.CreateFmt(Fmt,Args);
 end;
+
+procedure JSONRPCParamError(const Msg: String);
+begin
+  raise EJSONRPC.CreateFmt(SErrParams, [Msg]);
+end;
+
+procedure JSONRPCParamError(const Fmt: String; const Args: array of const);
+begin
+  raise EJSONRPC.CreateFmt(SErrParams, [Format(Fmt, Args)]);
+end;
+
 
 { TJSONParamDef }
 
@@ -529,13 +551,14 @@ begin
   Items[AIndex]:=AValue;
 end;
 
-function TJSONParamDefs.AddParamDef(const AName: TJSONStringType; AType: TJSONType
-  ): TJSONParamDef;
+function TJSONParamDefs.AddParamDef(const AName: TJSONStringType;
+  AType: TJSONType; ARequired: Boolean): TJSONParamDef;
 begin
   Result:=Add as TJSONParamDef;
   try
     Result.Name:=AName;
     Result.DataType:=Atype;
+    Result.Required:=ARequired;
   except
     FReeAndNil(Result);
     Raise;
@@ -626,10 +649,76 @@ end;
 
 procedure TCustomJSONRPCHandler.DoCheckParams(const Params: TJSONData);
 begin
-  If (jroObjectParams in Options) and Not (Params is TJSONobject) then
-    JSONRPCError(SErrParams,[SErrParamsMustBeObject]);
-  If (jroArrayParams in Options) and Not (Params is TJSONArray) then
-    JSONRPCError(SErrParams,[SErrParamsMustBeArray]);
+  if (Params is TJSONObject) then
+  begin
+    if (jroArrayParams in Options) then
+      JSONRPCParamError(SErrParamsMustBeArray);
+
+    DoCheckParamDefsOnObject(Params as TJSONObject);
+  end else
+  if (Params is TJSONArray) then
+  begin
+    If (jroObjectParams in Options) then
+      JSONRPCParamError(SErrParamsMustBeArray);
+
+    DoCheckParamArray(Params as TJSONArray);
+  end;
+end;
+
+procedure TCustomJSONRPCHandler.DoCheckParamDefsOnObject(
+  const ParamObject: TJSONObject);
+var
+  def: TJSONParamDef;
+  Param: TJSONData;
+  PropEnum: TJSONEnum;
+begin
+  for TCollectionItem(def) in ParamDefs do
+  begin
+    // assert the typecast in for loop
+    Assert(def is TJSONParamDef,'Unexpected ParamDef item class.');
+
+    Param:=ParamObject.Find(def.Name);
+    // check required parameters
+    if not Assigned(Param) then
+    begin
+      if def.Required then
+        JSONRPCParamError(SErrParamsRequiredParamNotFound,[def.Name])
+      else
+        Continue;
+    end;
+
+    // jtUnkown accepts all data types
+    if (def.DataType<>jtUnknown) and not (Param.JSONType=def.DataType) then
+      JSONRPCParamError(SErrParamsDataTypeMismatch,[def.Name,JSONTypeName(def.DataType),JSONTypeName(Param.JSONType)]);
+  end;
+
+  // check if additional parameters are given
+  if not (jroIgnoreExtraFields in Options) then
+  begin
+    for PropEnum in ParamObject do
+    begin
+      // only check for name is required other specs are checked before
+      if ParamDefs.FindParamDef(PropEnum.Key)=nil then
+        JSONRPCParamError(SErrParamsNotAllowd,[PropEnum.Key]);
+    end;
+  end;
+end;
+
+procedure TCustomJSONRPCHandler.DoCheckParamArray(const ParamArray: TJSONArray);
+var
+  element: TJSONEnum;
+begin
+  for element in ParamArray do
+  begin
+    // check object parameters if objects given
+    if (element.Value.JSONType=jtObject) then
+    begin
+      DoCheckParamDefsOnObject(element.Value as TJSONObject);
+    end else
+    // not an object
+    if (jroObjectParams in Options) then
+      JSONRPCParamError(SErrParamsOnlyObjectsInArray,[JSONTypeName(element.Value.JSONType),element.KeyNum]);
+  end;
 end;
 
 function TCustomJSONRPCHandler.DoExecute(Const Params: TJSONData;AContext : TJSONRPCCallContext): TJSONData;
