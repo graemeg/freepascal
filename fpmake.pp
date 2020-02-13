@@ -47,6 +47,7 @@ begin
 end;
 
 begin
+  add_packages_comandlineoptions();
   add_fpc('');
   Installer.Run;
 end.

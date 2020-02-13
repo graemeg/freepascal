@@ -72,7 +72,6 @@ Type
    Local_File_Header_Type = Packed Record //1 per zipped file
      Signature              :  LongInt; //4 bytes
      Extract_Version_Reqd   :  Word; //if zip64: >= 45
-     {$warning TODO implement EFS/language enooding using UTF-8}
      Bit_Flag               :  Word; //"General purpose bit flag in PKZip appnote
      Compress_Method        :  Word;
      Last_Mod_Time          :  Word;
@@ -434,6 +433,7 @@ Type
     FOnEndOfFile    : TOnEndOfFileEvent;
     FOnStartFile    : TOnStartFileEvent;
     FCurrentCompressor : TCompressor;
+    FUseLanguageEncoding: Boolean;
     function CheckEntries: Integer;
     procedure SetEntries(const AValue: TZipFileEntries);
   Protected
@@ -488,6 +488,8 @@ Type
     Property InMemSize : Int64 Read FInMemSize Write FInMemSize;
     Property Entries : TZipFileEntries Read FEntries Write SetEntries;
     Property Terminated : Boolean Read FTerminated;
+    // EFS/language encoding using UTF-8
+    Property UseLanguageEncoding : Boolean Read FUseLanguageEncoding Write FUseLanguageEncoding;
   end;
 
   { TFullZipFileEntry }
@@ -1496,7 +1498,10 @@ Begin
         Raise EZipError.CreateFmt(SErrMissingFileName,[I]);
       If FindFirst(F.DiskFileName, STDATTR, Info)=0 then
         try
-          F.Size:=Info.Size;
+          if Info.Attr and faDirectory <> 0 then //in Linux directory Size <> 0
+            F.Size := 0
+          else
+            F.Size:=Info.Size;
           F.DateTime:=FileDateToDateTime(Info.Time);
         {$IFDEF UNIX}
           if fplstat(F.DiskFileName, @UnixInfo) = 0 then
@@ -1605,12 +1610,16 @@ function TZipper.UpdateZipHeader(Item: TZipFileEntry; FZip: TStream;
 var
   IsZip64           : boolean; //Must the local header be in zip64 format?
   // Separate from zip64 status of entire zip file.
-  ZFileName         : String;
+  ZFileName         : RawByteString;
 Begin
   ZFileName := Item.ArchiveFileName;
   IsZip64 := false;
   With LocalHdr do
     begin
+    if FUseLanguageEncoding then begin
+      SetCodePage(ZFileName, CP_UTF8, True);
+      Bit_Flag := Bit_Flag or EFS_LANGUAGE_ENCODING_FLAG;
+    end;
     FileName_Length := Length(ZFileName);
     Crc32 := ACRC;
     if LocalZip64Fld.Original_Size > 0 then

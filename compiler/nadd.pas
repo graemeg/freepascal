@@ -476,6 +476,18 @@ implementation
         end;
 
 
+      function GetCopyAndTypeCheck: tnode;
+        begin
+          result:=getcopy;
+          result.resultdef:=nil;
+          do_typecheckpass(result);
+          { If the size of the new result after typecheckpass is smaller than
+            the size of the original result, use the original (bigger) size. }
+          if result.resultdef.size < resultdef.size then
+            result.resultdef:=resultdef;
+        end;
+
+
       var
         t       , vl, hp: tnode;
         lt,rt   : tnodetype;
@@ -750,9 +762,7 @@ implementation
                           right:=taddnode(left).right;
                           taddnode(left).right:=hp;
                           left:=left.simplify(false);
-                          result:=getcopy;
-                          result.resultdef:=nil;
-                          do_typecheckpass(result);
+                          result:=GetCopyAndTypeCheck;
                         end;
                       else
                         ;
@@ -771,9 +781,7 @@ implementation
                           right:=taddnode(left).left;
                           taddnode(left).left:=hp;
                           left:=left.simplify(false);
-                          result:=getcopy;
-                          result.resultdef:=nil;
-                          do_typecheckpass(result);
+                          result:=GetCopyAndTypeCheck;
                         end;
                       else
                         ;
@@ -842,9 +850,7 @@ implementation
                           left:=taddnode(right).right;
                           taddnode(right).right:=hp;
                           right:=right.simplify(false);
-                          result:=getcopy;
-                          result.resultdef:=nil;
-                          do_typecheckpass(result);
+                          result:=GetCopyAndTypeCheck;
                         end;
                       else
                         ;
@@ -863,9 +869,7 @@ implementation
                           left:=taddnode(right).left;
                           taddnode(right).left:=hp;
                           right:=right.simplify(false);
-                          result:=getcopy;
-                          result.resultdef:=nil;
-                          do_typecheckpass(result);
+                          result:=GetCopyAndTypeCheck;
                         end;
                       else
                         ;
