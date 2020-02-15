@@ -409,7 +409,6 @@ implementation
           i: Integer;
           hp: tai;
         begin
-          exit;
           taicpu(firstinstruction).opcode:=A_SLEEP;
           for i:=0 to taicpu(firstinstruction).opercnt-1 do
             taicpu(firstinstruction).freeop(i);

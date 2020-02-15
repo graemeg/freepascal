@@ -2491,8 +2491,15 @@ implementation
          { search for forward declarations }
          if not proc_add_definition(pd) then
            begin
-             { A method must be forward defined (in the object declaration) }
+             { One may not implement a method of a type declared in a different unit }
              if assigned(pd.struct) and
+                (pd.struct.symtable.moduleid<>current_module.moduleid) and
+                not pd.is_specialization then
+              begin
+                MessagePos1(pd.fileinfo,parser_e_method_for_type_in_other_unit,pd.struct.typesymbolprettyname);
+              end
+             { A method must be forward defined (in the object declaration) }
+             else if assigned(pd.struct) and
                 (not assigned(old_current_structdef)) then
               begin
                 MessagePos1(pd.fileinfo,parser_e_header_dont_match_any_member,pd.fullprocname(false));

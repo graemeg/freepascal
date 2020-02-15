@@ -125,7 +125,7 @@ unit procinfo;
           aktlocaldata : TAsmList;
 
           { max. of space need for parameters }
-          maxpushedparasize : aint;
+          maxpushedparasize : SizeInt;
 
           { some architectures need to know a stack size before the first compilation pass
             estimatedtempsize contains an estimated value how big temps will get }

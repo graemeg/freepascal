@@ -33,7 +33,8 @@ type
     procedure SetValue(Position: SizeUInt; const Value: T); inline;
     function GetValue(Position: SizeUInt): T; inline;
     function GetMutable(Position: SizeUInt): PT; inline;
-    procedure IncreaseCapacity; inline;
+    function NewCapacity: SizeUInt;
+    procedure IncreaseCapacity;
 
   const
     // todo: move these constants to implementation when
@@ -162,7 +163,7 @@ begin
   inc(FDataSize);
 end;
 
-procedure TVector.IncreaseCapacity();
+function TVector.NewCapacity: SizeUInt;
 const
   // if size is small, multiply by 2;
   // if size bigger but <256M, inc by 1/8*size;
@@ -174,15 +175,20 @@ var
 begin
   DataSize:=FCapacity*SizeOf(T);
   if FCapacity=0 then
-    FCapacity:=4
+    Result:=4
   else
   if DataSize<cSizeSmall then
-    FCapacity:=FCapacity*2
+    Result:=FCapacity*2
   else
   if DataSize<cSizeBig then
-    FCapacity:=FCapacity+FCapacity div 8
+    Result:=FCapacity+FCapacity div 8
   else
-    FCapacity:=FCapacity+FCapacity div 16;
+    Result:=FCapacity+FCapacity div 16;
+end;
+
+procedure TVector.IncreaseCapacity();
+begin
+  FCapacity:=NewCapacity;
   SetLength(FData, FCapacity);
 end;
 
@@ -239,7 +245,7 @@ procedure TVector.Reserve(Num: SizeUInt);
 begin
   if(Num < FCapacity) then 
     exit
-  else if(Num <= 2*FCapacity) then 
+  else if (Num <= NewCapacity) then 
     IncreaseCapacity
   else begin 
     SetLength(FData, Num);

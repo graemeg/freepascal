@@ -481,10 +481,6 @@ implementation
           result:=getcopy;
           result.resultdef:=nil;
           do_typecheckpass(result);
-          { If the size of the new result after typecheckpass is smaller than
-            the size of the original result, use the original (bigger) size. }
-          if result.resultdef.size < resultdef.size then
-            result.resultdef:=resultdef;
         end;
 
 
@@ -747,7 +743,10 @@ implementation
                       /  \
                   const2 val
             }
-            else if left.nodetype=nodetype then
+            else if (left.nodetype=nodetype) and
+              { there might be a mul operation e.g. longint*longint => int64 in this case
+                we cannot do this optimziation, see e.g. tests/webtbs/tw36587.pp on arm }
+              (compare_defs(resultdef,left.resultdef,nothingn)=te_exact) then
               begin
                 if is_constintnode(taddnode(left).left) then
                   begin
@@ -835,7 +834,10 @@ implementation
                             /  \
                         const2 val
             }
-            else if right.nodetype=nodetype then
+            else if (right.nodetype=nodetype) and
+              { there might be a mul operation e.g. longint*longint => int64 in this case
+                we cannot do this optimziation, see e.g. tests/webtbs/tw36587.pp on arm }
+              (compare_defs(resultdef,right.resultdef,nothingn)=te_exact)  then
               begin
                 if is_constintnode(taddnode(right).left) then
                   begin

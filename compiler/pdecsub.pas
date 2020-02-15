@@ -664,7 +664,7 @@ implementation
                       message(type_e_type_id_expected)
                     else
                       begin
-                        genericparams:=parse_generic_parameters(true);
+                        genericparams:=parse_generic_parameters(not(m_delphi in current_settings.modeswitches) or parse_only);
                         if not assigned(genericparams) then
                           internalerror(2015061201);
                         if genericparams.count=0 then

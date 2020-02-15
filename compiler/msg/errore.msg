@@ -436,7 +436,7 @@ scan_n_changecputype=02105_N_Changed CPU type to be consistent with specified co
 #
 # Parser
 #
-# 03353 is the last used one
+# 03355 is the last used one
 #
 % \section{Parser messages}
 % This section lists all parser messages. The parser takes care of the
@@ -1606,6 +1606,12 @@ parser_e_enumeration_out_of_range=03352_E_Enumeration symbols can only have valu
 parser_w_enumeration_out_of_range=03353_W_Enumeration symbols can only have values in the range of -2^31 to 2^31-1
 % The size of enumeration values is limited to 4 bytes. As the value can be signed, the range
 % of valid values is limited to a signed 32 Bit value (i.e. \var{longint}).
+parser_e_method_for_type_in_other_unit=03354_E_Implementing a method for type "$1" declared in another unit
+% This error occurs if one tries to define a method for a type that is originally declared
+% in a different unit.
+parser_e_generic_constraints_not_allowed_here=03355_E_Generic constraint not allowed here
+% At the current location specifying a constraint is not allowed. For example
+% in delphi mode, a constraint might not be specified in the header of the implementation.
 %
 % \end{description}
 %

@@ -719,6 +719,14 @@ implementation
       begin
         forwardfound:=false;
 
+        if assigned(currpd.struct) and
+           (currpd.struct.symtable.moduleid<>current_module.moduleid) and
+           not currpd.is_specialization then
+          begin
+            result:=false;
+            exit;
+          end;
+
         { check overloaded functions if the same function already exists }
         for i:=0 to tprocsym(currpd.procsym).ProcdefList.Count-1 do
          begin

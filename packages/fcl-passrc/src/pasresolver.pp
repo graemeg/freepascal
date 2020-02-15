@@ -1736,7 +1736,7 @@ type
     procedure CheckIsClass(El: TPasElement; const ResolvedEl: TPasResolverResult);
     function CheckTypeCastClassInstanceToClass(
       const FromClassRes, ToClassRes: TPasResolverResult;
-      ErrorEl: TPasElement): integer; virtual;
+      ErrorEl: TPasElement): integer; virtual; // type cast not related classes
     procedure CheckSetLitElCompatible(Left, Right: TPasExpr;
       const LHS, RHS: TPasResolverResult);
     function CheckIsOrdinal(const ResolvedEl: TPasResolverResult;
@@ -2226,6 +2226,7 @@ type
       const ResolvedSrcType, ResolvedDestType: TPasResolverResult): integer;
     function CheckClassIsClass(SrcType, DestType: TPasType): integer; virtual;
     function CheckClassesAreRelated(TypeA, TypeB: TPasType): integer;
+    function CheckAssignCompatibilityClasses(LType, RType: TPasClassType): integer; virtual; // not related classes
     function GetClassImplementsIntf(ClassEl, Intf: TPasClassType): TPasClassType;
     function CheckProcOverloadCompatibility(Proc1, Proc2: TPasProcedure): boolean;
     function CheckProcTypeCompatibility(Proc1, Proc2: TPasProcedureType;
@@ -25283,6 +25284,7 @@ var
   LArray, RArray: TPasArrayType;
   GotDesc, ExpDesc: String;
   CurTVarRec: TPasRecordType;
+  LeftClass, RightClass: TPasClassType;
 
   function RaiseIncompatType(Id: TMaxPrecInt): integer;
   begin
@@ -25316,18 +25318,22 @@ begin
       Result:=cIncompatible;
       if not (rrfReadable in RHS.Flags) then
         exit(RaiseIncompatType(20190215112914));
-      if TPasClassType(LTypeEl).ObjKind=TPasClassType(RTypeEl).ObjKind then
+      LeftClass:=TPasClassType(LTypeEl);
+      RightClass:=TPasClassType(RTypeEl);
+      if LeftClass.ObjKind=RightClass.ObjKind then
         Result:=CheckSrcIsADstType(RHS,LHS)
-      else if TPasClassType(LTypeEl).ObjKind=okInterface then
+      else if LeftClass.ObjKind=okInterface then
         begin
-        if (TPasClassType(RTypeEl).ObjKind=okClass)
-            and (not TPasClassType(RTypeEl).IsExternal) then
+        if (RightClass.ObjKind=okClass)
+            and (not RightClass.IsExternal) then
           begin
           // IntfVar:=ClassInstVar
-          if GetClassImplementsIntf(TPasClassType(RTypeEl),TPasClassType(LTypeEl))<>nil then
+          if GetClassImplementsIntf(RightClass,LeftClass)<>nil then
             exit(cTypeConversion);
           end;
         end;
+      if Result=cIncompatible then
+        Result:=CheckAssignCompatibilityClasses(LeftClass,RightClass);
       if (Result=cIncompatible) and RaiseOnIncompatible then
         RaiseIncompatibleType(20170216152458,nIncompatibleTypesGotExpected,
           [],RTypeEl,LTypeEl,ErrorEl);
@@ -28854,6 +28860,14 @@ begin
   Result:=CheckClassIsClass(TypeA,TypeB);
   if Result<>cIncompatible then exit;
   Result:=CheckClassIsClass(TypeB,TypeA);
+end;
+
+function TPasResolver.CheckAssignCompatibilityClasses(LType,
+  RType: TPasClassType): integer;
+begin
+  Result:=cIncompatible;
+  if LType=nil then ;
+  if RType=nil then ;
 end;
 
 function TPasResolver.GetClassImplementsIntf(ClassEl, Intf: TPasClassType

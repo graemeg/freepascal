@@ -35,11 +35,11 @@ type
     Procedure TestGen_Class_ClassConstructor;
     // ToDo: rename local const T
     Procedure TestGen_Class_TypeCastSpecializesWarn;
+    Procedure TestGen_Class_TypeCastSpecializesJSValueNoWarn;
 
     // generic external class
     procedure TestGen_ExtClass_Array;
-    // ToDo: TestGen_ExtClass_GenJSValueAssign  TExt<JSValue> := TExt<Word>
-    // ToDo: TestGen_ExtClass_TypeCastJSValue  TExt<Word>(aTExt<JSValue>) and vice versa
+    procedure TestGen_ExtClass_GenJSValueAssign;
 
     // statements
     Procedure TestGen_InlineSpec_Constructor;
@@ -678,6 +678,54 @@ begin
   CheckResolverUnexpectedHints();
 end;
 
+procedure TTestGenerics.TestGen_Class_TypeCastSpecializesJSValueNoWarn;
+begin
+  StartProgram(false);
+  Add([
+  '{$mode delphi}',
+  'type',
+  '  TObject = class end;',
+  '  TBird<T> = class F: T; end;',
+  '  TBirdWord = TBird<Word>;',
+  '  TBirdAny = TBird<JSValue>;',
+  'var',
+  '  w: TBirdWord;',
+  '  a: TBirdAny;',
+  'begin',
+  '  w:=TBirdWord(a);',
+  '  a:=TBirdAny(w);',
+  '']);
+  ConvertProgram;
+  CheckSource('TestGen_Class_TypeCastSpecializesJSValueNoWarn',
+    LinesToStr([ // statements
+    'rtl.createClass($mod, "TObject", null, function () {',
+    '  this.$init = function () {',
+    '  };',
+    '  this.$final = function () {',
+    '  };',
+    '});',
+    'rtl.createClass($mod, "TBird$G1", $mod.TObject, function () {',
+    '  this.$init = function () {',
+    '    $mod.TObject.$init.call(this);',
+    '    this.F = 0;',
+    '  };',
+    '});',
+    'rtl.createClass($mod, "TBird$G2", $mod.TObject, function () {',
+    '  this.$init = function () {',
+    '    $mod.TObject.$init.call(this);',
+    '    this.F = undefined;',
+    '  };',
+    '});',
+    'this.w = null;',
+    'this.a = null;',
+    '']),
+    LinesToStr([ // $mod.$main
+    '$mod.w = $mod.a;',
+    '$mod.a = $mod.w;',
+    '']));
+  CheckResolverUnexpectedHints();
+end;
+
 procedure TTestGenerics.TestGen_ExtClass_Array;
 begin
   StartProgram(false);
@@ -735,6 +783,42 @@ begin
     '$mod.wa[11] = $mod.w;',
     '$mod.w = $mod.wa[12];',
     '']));
+end;
+
+procedure TTestGenerics.TestGen_ExtClass_GenJSValueAssign;
+begin
+  StartProgram(false);
+  Add([
+  '{$mode delphi}',
+  '{$modeswitch externalclass}',
+  'type',
+  '  TExt<T> = class external name ''Ext''',
+  '    F: T;',
+  '  end;',
+  '  TExtWord = TExt<Word>;',
+  '  TExtAny = TExt<JSValue>;',
+  'procedure Run(e: TExtAny);',
+  'begin end;',
+  'var',
+  '  w: TExtWord;',
+  '  a: TExtAny;',
+  'begin',
+  '  a:=w;',
+  '  Run(w);',
+  '']);
+  ConvertProgram;
+  CheckSource('TestGen_ExtClass_GenJSValueAssign',
+    LinesToStr([ // statements
+    'this.Run = function (e) {',
+    '};',
+    'this.w = null;',
+    'this.a = null;',
+    '']),
+    LinesToStr([ // $mod.$main
+    '$mod.a = $mod.w;',
+    '$mod.Run($mod.w);',
+    '']));
+  CheckResolverUnexpectedHints();
 end;
 
 procedure TTestGenerics.TestGen_InlineSpec_Constructor;

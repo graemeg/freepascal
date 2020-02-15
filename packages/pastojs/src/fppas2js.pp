@@ -1433,6 +1433,8 @@ type
     procedure CheckAssignExprRangeToCustom(
       const LeftResolved: TPasResolverResult; RValue: TResEvalValue;
       RHS: TPasExpr); override;
+    function CheckAssignCompatibilityClasses(LType, RType: TPasClassType
+      ): integer; override;
     function HasStaticArrayCloneFunc(Arr: TPasArrayType): boolean;
     function IsTGUID(TypeEl: TPasRecordType): boolean; override;
     function GetAssignGUIDString(TypeEl: TPasRecordType; Expr: TPasExpr; out GUID: TGuid): boolean;
@@ -4739,18 +4741,55 @@ end;
 
 function TPas2JSResolver.CheckTypeCastClassInstanceToClass(const FromClassRes,
   ToClassRes: TPasResolverResult; ErrorEl: TPasElement): integer;
+// type cast not related classes
 var
-  ToClass: TPasClassType;
-  ClassScope: TPasClassScope;
+  ToClass, FromClass: TPasClassType;
+  ToClassScope, FromClassScope: TPas2JSClassScope;
+  ToSpecItem, FromSpecItem: TPRSpecializedItem;
+  i: Integer;
+  ToParam, FromParam: TPasType;
 begin
   if FromClassRes.BaseType=btNil then exit(cExact);
   ToClass:=ToClassRes.LoTypeEl as TPasClassType;
-  ClassScope:=ToClass.CustomData as TPasClassScope;
-  if ClassScope.AncestorScope=nil then
+  ToClassScope:=ToClass.CustomData as TPas2JSClassScope;
+  if ToClassScope.AncestorScope=nil then
     // type cast to root class
-    Result:=cTypeConversion+1
-  else
-    Result:=cIncompatible;
+    exit(cTypeConversion+1);
+
+  ToSpecItem:=ToClassScope.SpecializedFromItem;
+  if ToSpecItem<>nil then
+    begin
+    FromClass:=FromClassRes.LoTypeEl as TPasClassType;
+    FromClassScope:=FromClass.CustomData as TPas2JSClassScope;
+    FromSpecItem:=FromClassScope.SpecializedFromItem;
+    if FromSpecItem<>nil then
+      begin
+      // typecast a specialized instance to a specialized type TA<>(aB<>)
+      if FromSpecItem.GenericEl=ToSpecItem.GenericEl then
+        begin
+        // typecast to same generic class
+        Result:=cTypeConversion+1;
+        for i:=0 to length(FromSpecItem.Params)-1 do
+          begin
+          FromParam:=FromSpecItem.Params[i];
+          ToParam:=ToSpecItem.Params[i];
+          if IsSameType(FromParam,ToParam,prraAlias)
+              or IsJSBaseType(FromParam,pbtJSValue)
+              or IsJSBaseType(ToParam,pbtJSValue) then
+            // ok
+          else
+            begin
+            Result:=cIncompatible;
+            break;
+            end;
+          end;
+        if Result<cIncompatible then
+          exit; // e.g. TGen<JSValue>(aGen<Word>) or TGen<Word>(aGen<JSValue>)
+        end;
+      end;
+    end;
+
+  Result:=cIncompatible;
   if ErrorEl=nil then ;
 end;
 
@@ -5640,6 +5679,43 @@ begin
 
   if RHS=nil then ;
   if RValue=nil then ;
+end;
+
+function TPas2JSResolver.CheckAssignCompatibilityClasses(LType,
+  RType: TPasClassType): integer;
+// LType and RType are not related
+var
+  LeftScope, RightScope: TPas2JSClassScope;
+  LeftSpecItem, RightSpecItem: TPRSpecializedItem;
+  i: Integer;
+  LeftParam, RightParam: TPasType;
+begin
+  Result:=cIncompatible;
+  if LType.IsExternal and RType.IsExternal then
+    begin
+    LeftScope:=TPas2JSClassScope(LType.CustomData);
+    RightScope:=TPas2JSClassScope(RType.CustomData);
+    LeftSpecItem:=LeftScope.SpecializedFromItem;
+    RightSpecItem:=RightScope.SpecializedFromItem;
+    if (LeftSpecItem<>nil) and (RightSpecItem<>nil)
+        and (LeftSpecItem.GenericEl=RightSpecItem.GenericEl) then
+      begin
+      Result:=cExact;
+      for i:=0 to length(LeftSpecItem.Params)-1 do
+        begin
+        LeftParam:=LeftSpecItem.Params[i];
+        RightParam:=RightSpecItem.Params[i];
+        if IsSameType(LeftParam,RightParam,prraAlias)
+            or IsJSBaseType(LeftParam,pbtJSValue) then
+          // e.g. TExt<jsvalue>:=aExt<word>
+        else
+          begin
+          Result:=cIncompatible;
+          break;
+          end;
+        end;
+      end;
+    end;
 end;
 
 function TPas2JSResolver.HasStaticArrayCloneFunc(Arr: TPasArrayType): boolean;

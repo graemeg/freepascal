@@ -3011,11 +3011,11 @@ implementation
                wasgenericdummy:=false;
                if assigned(srsym) and
                    (sp_generic_dummy in srsym.symoptions) and
+                   (srsym.typ=typesym) and
                    (
                      (
                        (m_delphi in current_settings.modeswitches) and
                        not (token in [_LT, _LSHARPBRACKET]) and
-                       (srsym.typ=typesym) and
                        (ttypesym(srsym).typedef.typ=undefineddef)
                      )
                      or

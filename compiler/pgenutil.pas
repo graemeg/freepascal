@@ -1186,8 +1186,7 @@ uses
           if try_to_consume(_COLON) then
             begin
               if not allowconstraints then
-                { TODO }
-                Message(parser_e_illegal_expression{ parser_e_generic_constraints_not_allowed_here});
+                Message(parser_e_generic_constraints_not_allowed_here);
               { construct a name which can be used for a type specification }
               constraintdata:=tgenericconstraintdata.create;
               defname:='';
