@@ -3974,7 +3974,7 @@ type
   TMoveFileData = MOVE_FILE_DATA;
   PMoveFileData = PMOVE_FILE_DATA;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 //
 //  32/64 Bit thunking support structure
@@ -3994,7 +3994,7 @@ type
   TMoveFileData32 = MOVE_FILE_DATA32;
   PMoveFileData32 = PMOVE_FILE_DATA32;
   
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 //
 // Structures for FSCTL_FIND_FILES_BY_SID
@@ -4221,7 +4221,7 @@ type
   TMarkHandleInfo = MARK_HANDLE_INFO;
   PMarkHandleInfo = PMARK_HANDLE_INFO;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 //
 //  32/64 Bit thunking support structure
@@ -4238,7 +4238,7 @@ type
   TMarkHandleInfo32 = MARK_HANDLE_INFO32;
   PMarkHandleInfo32 = PMARK_HANDLE_INFO32;
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 //
 //  Flags for the additional source information above.

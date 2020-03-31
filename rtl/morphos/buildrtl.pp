@@ -12,7 +12,7 @@ unit buildrtl;
       rtlconsts, sysconst, math, types,
       typinfo, sortbase, fgl, classes,
       charset, character, getopts,
-      fpintres;
+      fpwidestring, fpintres;
 
   implementation
 

@@ -184,7 +184,7 @@ begin
   allocate_new_datablock := ldi;
 end;
 
-procedure free_datablock(ldi: linkedlist_datablock_internal_ptr);
+procedure free_datablock(var ldi: linkedlist_datablock_internal_ptr);
 var
   ldinext: linkedlist_datablock_internal_ptr;
 begin
@@ -686,6 +686,7 @@ begin
     err := add_data_in_datablock(@zi^.central_dir, zi^.ci.central_header, longint(zi^.ci.size_centralheader));
 
   FreeMem(zi^.ci.central_header);
+  zi^.ci.central_header := nil;
 
   if (err = ZIP_OK) then
   begin

@@ -305,8 +305,8 @@ begin
         with P.Sources do
         begin
         AddDoc('readme.ide');
-        AddSrc('readme.txt');
-        AddSrc('todo.txt');
+        AddSrc('README.txt');
+        AddSrc('TODO.txt');
         AddSrc('fp.ans');
         AddSrcFiles('*.tdf',P.Directory);
         AddSrcFiles('*.pas',P.Directory,true);

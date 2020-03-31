@@ -105,6 +105,9 @@ implementation
              paranr:=paranr_result_leftright
            else
 {$endif}
+           if is_managed_type(pd.returndef) then
+             paranr:=paranr_result_managed
+           else
              paranr:=paranr_result;
            { Generate result variable accessing function result }
            vs:=cparavarsym.create('$result',paranr,vs_var,pd.returndef,[vo_is_funcret,vo_is_hidden_para]);
@@ -644,6 +647,11 @@ implementation
                   messagepos1(fwtype.fileinfo,sym_e_generic_type_param_decl,fwtype.realname);
                   result:=false;
                 end;
+              if (fwpd.interfacedef or assigned(fwpd.struct)) and (df_genconstraint in currtype.typedef.defoptions) then
+                begin
+                  messagepos(tstoreddef(currtype.typedef).genconstraintdata.fileinfo,parser_e_generic_constraints_not_allowed_here);
+                  result:=false;
+                end;
             end;
         end;
 
@@ -664,15 +672,17 @@ implementation
             - proc declared in interface of unit (or in class/record/object)
               and defined in implementation; here the fwpd might contain
               constraints while currpd must only contain undefineddefs
-            - forward declaration in implementation }
+            - forward declaration in implementation: here constraints must be
+              repeated }
           foundretdef:=false;
           for i:=0 to fwpd.genericparas.count-1 do
             begin
               fwtype:=ttypesym(fwpd.genericparas[i]);
               currtype:=ttypesym(currpd.genericparas[i]);
-              { if the type in the currpd isn't a pure undefineddef, then we can
-                stop right there }
-              if (currtype.typedef.typ<>undefineddef) or (df_genconstraint in currtype.typedef.defoptions) then
+              { if the type in the currpd isn't a pure undefineddef (thus there
+                are constraints and the fwpd was declared in the interface, then
+                we can stop right there }
+              if fwpd.interfacedef and ((currtype.typedef.typ<>undefineddef) or (df_genconstraint in currtype.typedef.defoptions)) then
                 exit;
               if not foundretdef then
                 begin

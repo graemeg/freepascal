@@ -24,7 +24,7 @@ uses
 {$ifdef unix}
   baseunix, cthreads,
 {$endif}
-  Classes, SysUtils, TypInfo, custapp,
+  Classes, SysUtils, TypInfo, custapp, inifiles,
   // Repository handler objects
   fprepos, fpxmlrep,
   pkgmessages, pkgglobals, pkgoptions, pkgrepos,
@@ -38,6 +38,7 @@ uses
   ,pkgwget
   ,pkglnet
   ,pkgfphttp
+  ,opensslsockets
 {$endif}
   ;
 
@@ -54,11 +55,13 @@ Type
   Private
     ParaAction   : string;
     ParaPackages : TStringList;
+    procedure HandleConfig;
     procedure MaybeCreateLocalDirs;
-    procedure ShowUsage;
+    procedure ShowUsage(const aErrorMsg : String = '');
     procedure ShowVersion;
   Public
-    Constructor Create;
+    Constructor Create; overload;
+    Constructor Create(aOwner : TComponent); overload;  override;
     Destructor Destroy;override;
     Procedure LoadGlobalDefaults;
     Procedure ProcessCommandLine(FirstPass: boolean);
@@ -107,12 +110,16 @@ begin
 end;
 
 
-procedure TMakeTool.ShowUsage;
+procedure TMakeTool.ShowUsage(const aErrorMsg : String = '');
+
 begin
+  if (aErrorMsg<>'') then
+    Writeln(stdErr,'Error: ',aErrorMsg);
   Writeln('Usage: ',Paramstr(0),' [options] <action> <package>');
   Writeln('Options:');
   Writeln('  -C --config-file   Specify the configuration file to use');
   Writeln('  -c --config        Set compiler configuration to use');
+  Writeln('  -g --global        Prefer global configuration file over local configuration file.');
   Writeln('  -h --help          This help');
   Writeln('  -V --version       Show version and exit');
   Writeln('  -v --verbose       Show more information');
@@ -143,18 +150,29 @@ begin
   Writeln('  info              Show more information about a package');
   Writeln('  fixbroken         Recompile all (broken) packages with changed dependencies');
   Writeln('  listsettings      Show the values for all fppkg settings');
+  Writeln('  config            Get/Set configuration file values');
 //  Writeln('  addconfig          Add a compiler configuration for the supplied compiler');
-  Halt(0);
+  Writeln('Config commands:');
+  Writeln(' config get a.b            Get setting from config file, section a, key b');
+  Writeln(' config get a b            Get setting from config file, section a, key b');
+  Writeln(' config set a.b c          Set setting from config file, section a, key b to value c');
+  Writeln(' config set a b c          Set setting from config file, section a, key b to value c');
+  Halt(Ord(aErrorMsg<>''));
 end;
 
-Constructor TMakeTool.Create;
+constructor TMakeTool.Create;
 begin
-  inherited Create(nil);
+  Create(nil);
+end;
+
+constructor TMakeTool.Create(aOwner: TComponent);
+begin
+  Inherited;
   ParaPackages:=TStringList.Create;
 end;
 
 
-Destructor TMakeTool.Destroy;
+destructor TMakeTool.Destroy;
 begin
   FreeAndNil(ParaPackages);
   inherited Destroy;
@@ -250,6 +268,8 @@ begin
         GFPpkg.Options.CommandLineSection.ShowLocation:=true
       else if CheckOption(I,'s','skipbroken') then
         GFPpkg.Options.CommandLineSection.SkipFixBrokenAfterInstall:=true
+      else if CheckOption(I,'g','global') then
+        GFPpkg.Options.PreferGlobal:=true
       else if CheckOption(I,'o','options') and FirstPass then
         begin
           OptString := OptionArg(I);
@@ -303,9 +323,110 @@ begin
         end;
     end;
   if not HasAction then
-    ShowUsage;
+    ShowUsage('No action specified!');
 end;
 
+procedure TMakeTool.HandleConfig;
+
+Type
+  TConfigMode =  (cfUnknown,cfGet,cfSet);
+
+Const
+  cCount : array[TConfigMode] of byte = (0,2,3);
+
+var
+  aMode : TConfigMode;
+  aIni : TMemIniFile;
+  cfgFile,aSection,aKey,aValue : String;
+
+  function GetSectionKey(getValue : boolean) : Boolean;
+
+  var
+    p,pValue : Integer;
+
+  begin
+    aSection:=ParaPackages[1];
+    pValue:=2;
+    P:=Pos('.',aSection);
+    if P>0 then
+      begin
+      aKey:=Copy(aSection,P+1,Length(aSection));
+      Delete(aSection,P,Length(aSection));
+      end
+    else
+      begin
+      if ParaPackages.Count>=3 then
+        begin
+        aKey:=ParaPackages[2];
+        Inc(pValue);
+        end;
+      end;
+    Result:=Not ((aSection='') or (aKey=''));
+    if not Result then
+      ShowUsage('Config: No section and key specified!')
+    else if GetValue then
+      if pValue<ParaPackages.Count then
+        aValue:=ParaPackages[Pvalue]
+      else
+        ShowUsage('Config: No value specified!');
+    Writeln('S: ',aSection,', K: ',aKey,', V: ',aValue);
+  end;
+
+begin
+// We know there is at least 1 parapackage
+  aIni:=Nil;
+  aMode:=cfUnknown;
+  //writeln('args: ',parapackages.text);
+  if ParaPackages[0]='get' then
+    aMode:=cfGet
+  else if ParaPackages[0]='set' then
+    aMode:=cfSet;
+  if aMode=cfUnknown then
+    ShowUsage('Config: Unknown config command : '+ParaPackages[0])
+  else if Not (ParaPackages.Count in [cCount[aMode],cCount[aMode]+1]) then
+    begin
+    ShowUsage(Format('Config: Wrong amount of arguments. Expected %d, got %d.',[cCount[aMode],ParaPackages.Count]));
+    aMode:=cfUnknown;
+    end;
+  if HasOption('C','config-file') then
+    cfgfile:=GetOptionValue('C','config-file')
+  else
+    begin
+    cfgfile:=GetFppkgConfigFile(GFPpkg.Options.PreferGlobal,false);
+    if Not FileExists(cfgFile) then
+      cfgfile:=GetFppkgConfigFile(GFPpkg.Options.PreferGlobal,false);
+    end;
+  Writeln('Getting from file : ',CfgFile);
+  if aMode<>cfUnknown then
+    aIni:=TMemIniFile.Create(cfgFile);
+  Case aMode of
+    cfGet :
+      begin
+      if GetSectionKey(False) then
+        aValue:=aIni.ReadString(aSection,aKey,'')
+      else
+         exit;
+      writeln(aValue);
+      end;
+    cfSet :
+      begin
+      if GetSectionKey(True) then
+        begin
+        aIni.WriteString(aSection,aKey,aValue);
+        try
+          aIni.UpdateFile;
+        except
+          On EIO: EInoutError do
+            Writeln(stderr,'Failed to update file: ',cfgfile,'. Make sure you have sufficient rights to write this file.');
+        end;
+        end
+      else
+         exit;
+      end;
+  else
+    ShowUsage;
+  end;
+end;
 
 procedure TMakeTool.DoRun;
 var
@@ -316,6 +437,8 @@ var
   InstPackages: TFPCurrentDirectoryPackagesStructure;
   ArchivePackages: TFPArchiveFilenamePackagesStructure;
 begin
+  Terminate; // We run only once
+
   OldCurrDir:=GetCurrentDir;
   Try
     InitializeFppkg;
@@ -346,6 +469,17 @@ begin
     // The command-line is parsed for the second time, to make it possible
     // to override the values in the compiler-configuration file. (like prefix)
     ProcessCommandLine(false);
+
+    // Config command does not do anything except get/set values
+    if (ParaAction = 'config') then
+      begin
+      If ParaPackages.Count=0 then
+        ShowUsage('config command needs arguments')
+      else
+        HandleConfig;
+      exit;
+      end;
+
 
     // If CompilerVersion, CompilerOS or CompilerCPU is still empty, use the
     // compiler-executable to get them
@@ -439,7 +573,6 @@ begin
     if (ParaAction='install') and not GFPpkg.Options.CommandLineSection.SkipFixBrokenAfterInstall then
       pkghandler.ExecuteAction('','fixbroken',GFPpkg);
 
-    Terminate;
 
   except
     On E : Exception do

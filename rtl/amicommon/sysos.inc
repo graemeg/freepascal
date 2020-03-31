@@ -44,6 +44,8 @@
                     System Dependent Structures/Consts
 *****************************************************************************}
 
+{$packrecords default}
+
 {$ifndef FPC_SYSTEM_HAS_STACKTOP}
 {$define FPC_SYSTEM_HAS_STACKTOP}
 function StackTop: pointer;

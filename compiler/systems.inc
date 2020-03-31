@@ -54,7 +54,8 @@
              cpu_wasm,                     { 17 }
              cpu_sparc64,                  { 18 }
              cpu_riscv32,                  { 19 }
-             cpu_riscv64                   { 20 }
+             cpu_riscv64,                  { 20 }
+             cpu_xtensa                    { 21 }
        );
 
        tasmmode= (asmmode_none
@@ -74,6 +75,7 @@
             ,asmmode_i8086_intel
             ,asmmode_i8086_att
             ,asmmode_arm_gas_unified
+            ,asmmode_xtensa_gas
        );
 
      (* IMPORTANT NOTE:
@@ -188,7 +190,9 @@
              system_riscv32_embedded,   { 99 }
              system_aarch64_android,    { 100 }
              system_x86_64_android,     { 101 }
-             system_x86_64_haiku        { 102 }
+             system_x86_64_haiku,       { 102 }
+             system_xtensa_embedded,    { 103 }
+             system_xtensa_freertos     { 104 }
        );
 
      type
@@ -254,6 +258,7 @@
              ld_android,
              ld_beos,
              ld_bsd,
+             ld_darwin,
              ld_embedded,
              ld_emx,
              ld_gba,
@@ -281,7 +286,8 @@
              ld_int_netware,
              ld_int_windows,
              ld_int_msdos,
-             ld_int_win16
+             ld_int_win16,
+             ld_freertos
        );
 
        tar = (ar_none
@@ -326,6 +332,8 @@
               may still be removed by the callee (and then the stack needs to
               be restored by the caller) }
             ,abi_i386_dynalignedstack
+            ,abi_xtensa_windowed
+            ,abi_xtensa_call0
        );
 
      const

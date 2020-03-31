@@ -70,7 +70,7 @@ type
   TPDFUnitOfMeasure = (uomInches, uomMillimeters, uomCentimeters, uomPixels);
 
   TPDFOption = (poOutLine, poCompressText, poCompressFonts, poCompressImages, poUseRawJPEG, poNoEmbeddedFonts,
-    poPageOriginAtTop, poSubsetFont, poMetadataEntry, poNoTrailerID, poUseImageTransparency);
+    poPageOriginAtTop, poSubsetFont, poMetadataEntry, poNoTrailerID, poUseImageTransparency,poUTF16info);
   TPDFOptions = set of TPDFOption;
 
   EPDF = Class(Exception);
@@ -273,6 +273,16 @@ type
     property    Value: AnsiString read FValue;
   end;
 
+  TPDFUTF16String = class(TPDFAbstractString)
+  private
+    FValue: UnicodeString;
+  protected
+    procedure Write(const AStream: TStream); override;
+  public
+    constructor Create(Const ADocument : TPDFDocument; const AValue: UnicodeString; const AFontIndex : Integer); overload;
+    property    Value: UnicodeString read FValue;
+  end;
+
   { TPDFRawHexString }
 
   TPDFRawHexString = class(TPDFDocumentObject)
@@ -413,6 +423,17 @@ type
     constructor Create(const ADocument: TPDFDocument; const AX, AY: TPDFFloat; const AText: UTF8String; const AFont: TPDFEmbeddedFont; const ADegrees: single; const AUnderline: boolean; const AStrikethrough: boolean); overload;
     destructor  Destroy; override;
     property    Text: TPDFUTF8String read FString;
+  end;
+
+  TPDFUTF16Text = class(TPDFBaseText)
+  private
+    FString: TPDFUTF16String;
+  protected
+    procedure   Write(const AStream: TStream); override;
+  public
+    constructor Create(const ADocument: TPDFDocument; const AX, AY: TPDFFloat; const AText: UnicodeString; const AFont: TPDFEmbeddedFont; const ADegrees: single; const AUnderline: boolean; const AStrikethrough: boolean); overload;
+    destructor  Destroy; override;
+    property    Text: TPDFUTF16String read FString;
   end;
 
 
@@ -592,6 +613,7 @@ type
     procedure AddInteger(const AKey : String; AInteger : Integer);
     procedure AddReference(const AKey : String; AReference : Integer);
     procedure AddString(const AKey, AString : String);
+    procedure AddString(const AKey:string;const AString : UnicodeString);
     function IndexOfKey(const AValue: string): integer;
     procedure Write(const AStream: TStream); override;
     procedure WriteDictionary(const AObject: integer; const AStream: TStream);
@@ -1050,7 +1072,7 @@ type
     procedure CreateAnnotEntries(const APageNum: integer; const APageDict: TPDFDictionary); virtual;
     function CreateContentsEntry(const APageNum: integer): integer;virtual;
     function CreateCatalogEntry: integer;virtual;
-    procedure CreateInfoEntry;virtual;
+    procedure CreateInfoEntry(UseUTF16 : Boolean);virtual;
     procedure CreateMetadataEntry;virtual;
     procedure CreateTrailerID;virtual;
     procedure CreatePreferencesEntry;virtual;
@@ -1076,6 +1098,7 @@ type
     function CreateCIDToGIDMap(const AFontNum: integer): integer; virtual;
     procedure CreatePageStream(APage : TPDFPage; PageNum: integer);
     Function CreateString(Const AValue : String) : TPDFString;
+    Function CreateUTF16String(Const AValue : UnicodeString; const AFontIndex: integer) : TPDFUTF16String;
     Function CreateUTF8String(Const AValue : UTF8String; const AFontIndex: integer) : TPDFUTF8String;
     Function CreateGlobalXRef: TPDFXRef;
     Function AddGlobalXRef(AXRef : TPDFXRef) : Integer;
@@ -1098,6 +1121,7 @@ type
     Function CreateEmbeddedFont(const APage: TPDFPage; AFontIndex, AFontSize : Integer) : TPDFEmbeddedFont;
     Function CreateText(X,Y : TPDFFloat; AText : AnsiString; const AFont: TPDFEmbeddedFont; const ADegrees: single; const AUnderline: boolean; const AStrikethrough: boolean) : TPDFText; overload;
     Function CreateText(X,Y : TPDFFloat; AText : UTF8String; const AFont: TPDFEmbeddedFont; const ADegrees: single; const AUnderline: boolean; const AStrikethrough: boolean) : TPDFUTF8Text; overload;
+    Function CreateText(X,Y : TPDFFloat; AText : UnicodeString; const AFont: TPDFEmbeddedFont; const ADegrees: single; const AUnderline: boolean; const AStrikethrough: boolean) : TPDFUTF16Text; overload;
     Function CreateRectangle(const X,Y,W,H, ALineWidth: TPDFFloat; const AFill, AStroke: Boolean) : TPDFRectangle;
     function CreateRoundedRectangle(const X, Y, W, H, ARadius, ALineWidth: TPDFFloat; const AFill, AStroke: Boolean): TPDFRoundedRectangle;
     Function CreateColor(AColor : TARGBColor; AStroke : Boolean) : TPDFColor;
@@ -3366,6 +3390,54 @@ begin
     FValue := InsertEscape(FValue);
 end;
 
+
+{ TPDFUTF16String }
+
+constructor TPDFUTF16String.Create(Const ADocument : TPDFDocument; const AValue: Unicodestring; const AFontIndex : Integer);
+begin
+  inherited Create(ADocument);
+  FValue := AValue;
+  FFontIndex:=aFontIndex;
+end;
+
+function oct_str(b:byte):string;
+begin
+  Result:='';
+  repeat
+     Result:=IntToStr(b and $7)+Result;
+     b:=b shr 3;
+  until b=0;
+end;
+
+procedure TPDFUTF16String.Write(const AStream: TStream);
+var
+  i:integer;
+  us:utf8string;
+  s:ansistring;
+  wv:word;
+begin
+  us := Utf8Encode(FValue);
+  if (length(us)<>length(fValue)) then // quote
+  begin
+    s:='\376\377'; // UTF-16BE BOM
+    for i:=1 to length(fValue) do
+    begin
+      wv:=word(fValue[i]);
+      s:=s+'\'+oct_str(hi(wv));
+      s:=s+'\'+oct_str(lo(wv));
+    end;
+  end else
+  begin
+    if (Pos('(', FValue) > 0) or (Pos(')', FValue) > 0) or (Pos('\', FValue) > 0) then
+      s := InsertEscape(FValue)
+    else
+      s:=fValue;
+  end;
+  WriteString('('+s+')', AStream);
+end;
+
+
+
 { TPDFUTF8String }
 
 function TPDFUTF8String.RemapedText: AnsiString;
@@ -3793,6 +3865,101 @@ begin
   inherited Destroy;
 end;
 
+{ TPDFUTF16Text }
+
+procedure TPDFUTF16Text.Write(const AStream: TStream);
+var
+  t1, t2, t3: string;
+  rad: single;
+  lFC: TFPFontCacheItem;
+  lWidth: single;
+  lTextWidthInMM: single;
+  lHeight: single;
+  lTextHeightInMM: single;
+  lColor: string;
+  lLineWidth: string;
+  lDescender: single;
+  v : UTF8String;
+  
+begin
+  inherited Write(AStream);
+  WriteString('BT'+CRLF, AStream);
+  if Degrees <> 0.0 then
+  begin
+    rad := DegToRad(-Degrees);
+    t1 := FloatStr(Cos(rad));
+    t2 := FloatStr(-Sin(rad));
+    t3 := FloatStr(Sin(rad));
+    WriteString(Format('%s %s %s %s %s %s Tm', [t1, t2, t3, t1, FloatStr(X), FloatStr(Y)]) + CRLF, AStream);
+  end
+  else
+  begin
+    WriteString(FloatStr(X)+' '+FloatStr(Y)+' TD'+CRLF, AStream);
+  end;
+  FString.Write(AStream);
+  WriteString(' Tj'+CRLF, AStream);
+  WriteString('ET'+CRLF, AStream);
+
+  if (not Underline) and (not StrikeThrough) then
+    Exit;
+
+  // implement Underline and Strikethrough here
+  lFC := gTTFontCache.Find(Document.Fonts[Font.FontIndex].Name);
+  if not Assigned(lFC) then
+    Exit;  // we can't do anything further
+
+  // result is in Font Units
+  v:=UTF8Encode(FString.Value);
+  lWidth := lFC.TextWidth(v, Font.PointSize);
+  lHeight := lFC.TextHeight(v, Font.PointSize, lDescender);
+  { convert the Font Units to Millimeters. This is also because fontcache DPI (default 96) could differ from PDF DPI (72). }
+  lTextWidthInMM := (lWidth * cInchToMM) / gTTFontCache.DPI;
+  lTextHeightInMM := (lHeight * cInchToMM) / gTTFontCache.DPI;
+
+  if Degrees <> 0.0 then
+    // angled text
+    WriteString(Format('q %s %s %s %s %s %s cm', [t1, t2, t3, t1, FloatStr(X), FloatStr(Y)]) + CRLF, AStream)
+  else
+    // horizontal text
+    WriteString(Format('q 1 0 0 1 %s %s cm', [FloatStr(X), FloatStr(Y)]) + CRLF, AStream);
+
+  { set up a pen width and stroke color }
+  lColor := TPDFColor.Command(True, Color);
+  lLineWidth := FloatStr(mmToPDF(lTextHeightInMM / 12)) + ' w ';
+  WriteString(lLineWidth + lColor + CRLF, AStream);
+
+  { line segment is relative to matrix translation coordinate, set above }
+  if Underline then
+    WriteString(Format('0 -1.5 m %s -1.5 l S', [FloatStr(mmToPDF(lTextWidthInMM))]) + CRLF, AStream);
+  if StrikeThrough then
+    WriteString(Format('0 %s m %s %0:s l S', [FloatStr(mmToPDF(lTextHeightInMM) / 2), FloatStr(mmToPDF(lTextWidthInMM))]) + CRLF, AStream);
+
+  { restore graphics state to before the translation matrix adjustment }
+  WriteString('Q' + CRLF, AStream);
+
+end;
+
+constructor TPDFUTF16Text.Create(const ADocument: TPDFDocument; const AX, AY: TPDFFloat; const AText: UnicodeString;
+  const AFont: TPDFEmbeddedFont; const ADegrees: single; const AUnderline: boolean; const AStrikethrough: boolean);
+begin
+  inherited Create(ADocument);
+  X := AX;
+  Y := AY;
+  Font := AFont;
+  Degrees := ADegrees;
+  Underline := AUnderline;
+  if Assigned(AFont) and Assigned(AFont.Page) then
+    Color := AFont.Page.FLastFontColor;
+  StrikeThrough := AStrikeThrough;
+  FString := ADocument.CreateUTF16String(AText, AFont.FontIndex);
+end;
+
+destructor TPDFUTF16Text.Destroy;
+begin
+  FreeAndNil(FString);
+  inherited Destroy;
+end;
+
 { TPDFLineSegment  }
 
 procedure TPDFLineSegment.Write(const AStream: TStream);
@@ -4135,6 +4302,11 @@ end;
 procedure TPDFDictionary.AddString(const AKey, AString: String);
 begin
   AddElement(AKey,Document.CreateString(AString));
+end;
+
+procedure TPDFDictionary.AddString(const AKey:string;const AString: UnicodeString);
+begin
+  AddElement(AKey,Document.CreateUTF16String(AString,-1));
 end;
 
 function TPDFDictionary.IndexOfKey(const AValue: string): integer;
@@ -4513,7 +4685,7 @@ begin
   FInfos.Assign(AValue);
 end;
 
-procedure TPDFDocument.SetOptions(AValue: TPDFOptions);
+procedure TPDFDocument.SetOptions(aValue: TPDFOptions);
 begin
   if FOptions=AValue then Exit;
   if (poNoEmbeddedFonts in  aValue) then
@@ -4707,26 +4879,31 @@ begin
   Result:=GlobalXRefCount-1;
 end;
 
-procedure TPDFDocument.CreateInfoEntry;
+procedure TPDFDocument.CreateInfoEntry(UseUTF16 : Boolean);
 
 var
   IDict: TPDFDictionary;
+
+  Procedure DoEntry(aName, aValue : String; NoUnicode: boolean = false);
+  
+  begin
+    if aValue='' then exit;
+    if UseUTF16 and not NoUnicode then
+      IDict.AddString(aName,utf8decode(aValue))
+    else
+      IDict.AddString(aName,aValue);  
+  end;
 
 begin
   IDict:=CreateGlobalXRef.Dict;
   Trailer.AddReference('Info', GLobalXRefCount-1);
   (Trailer.ValueByName('Size') as TPDFInteger).Value:=GLobalXRefCount;
-  if Infos.Title <> '' then
-    IDict.AddString('Title',Infos.Title);
-  if Infos.Author <> '' then
-    IDict.AddString('Author',Infos.Author);
-  if Infos.ApplicationName <> '' then
-    IDict.AddString('Creator',Infos.ApplicationName);
-  IDict.AddString('Producer',Infos.Producer);
-  if Infos.CreationDate <> 0 then
-    IDict.AddString('CreationDate',DateToPdfDate(Infos.CreationDate));
-  if Infos.Keywords <> '' then
-    IDict.AddString('Keywords', Infos.Keywords);
+  DoEntry('Title',Infos.Title);
+  DoEntry('Author',Infos.Author);
+  DoEntry('Creator',Infos.ApplicationName);
+  DoEntry('Producer',Infos.Producer);
+  DoEntry('CreationDate',DateToPdfDate(Infos.CreationDate),True);
+  DoEntry('Keywords',Infos.Keywords);
 end;
 
 procedure TPDFDocument.CreateMetadataEntry;
@@ -5465,7 +5642,7 @@ begin
   CreateRefTable;
   CreateTrailer;
   FCatalogue:=CreateCatalogEntry;
-  CreateInfoEntry;
+  CreateInfoEntry(poUTF16Info in Options);
   if poMetadataEntry in Options then
     CreateMetadataEntry;
   if not (poNoTrailerID in Options) then
@@ -5775,6 +5952,12 @@ begin
   Result := TPDFUTF8Text.Create(Self, X, Y, AText, AFont, ADegrees, AUnderline, AStrikeThrough);
 end;
 
+function TPDFDocument.CreateText(X, Y: TPDFFloat; AText: UnicodeString; const AFont: TPDFEmbeddedFont;
+  const ADegrees: single; const AUnderline: boolean; const AStrikethrough: boolean): TPDFUTF16Text;
+begin
+  Result := TPDFUTF16Text.Create(Self, X, Y, AText, AFont, ADegrees, AUnderline, AStrikeThrough);
+end;
+
 function TPDFDocument.CreateRectangle(const X,Y,W,H, ALineWidth: TPDFFloat; const AFill, AStroke: Boolean): TPDFRectangle;
 begin
   Result:=TPDFRectangle.Create(Self,X,Y,W,H,ALineWidth,AFill, AStroke);
@@ -5809,6 +5992,11 @@ end;
 function TPDFDocument.CreateString(const AValue: String): TPDFString;
 begin
   Result:=TPDFString.Create(Self,AValue);
+end;
+
+function TPDFDocument.CreateUTF16String(const AValue: UnicodeString; const AFontIndex: integer): TPDFUTF16String;
+begin
+  Result:=TPDFUTF16String.Create(Self,AValue,aFontIndex);
 end;
 
 function TPDFDocument.CreateUTF8String(const AValue: UTF8String; const AFontIndex: integer): TPDFUTF8String;

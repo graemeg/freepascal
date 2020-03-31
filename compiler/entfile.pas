@@ -159,7 +159,8 @@ const
     { 17 } 32 {'wasm'},
     { 18 } 64 {'sparc64'},
     { 19 } 32 {'riscv32'},
-    { 20 } 64 {'riscv64'}
+    { 20 } 64 {'riscv64'},
+    { 21 } 32 {'xtensa'}
     );
   CpuAluBitSize : array[tsystemcpu] of longint =
     (
@@ -183,7 +184,8 @@ const
     { 17 } 64 {'wasm'},
     { 18 } 64 {'sparc64'},
     { 19 } 32 {'riscv32'},
-    { 20 } 64 {'riscv64'}
+    { 20 } 64 {'riscv64'},
+    { 21 } 32 {'xtensa'}
     );
 {$endif generic_cpu}
 

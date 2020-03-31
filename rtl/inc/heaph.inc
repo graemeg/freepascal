@@ -69,6 +69,10 @@ var
   {$define FPC_NO_DEFAULT_MEMORYMANAGER}
 {$endif EMBEDDED}
 
+{$ifdef FREERTOS}
+  {$define FPC_NO_DEFAULT_MEMORYMANAGER}
+{$endif FREERTOS}
+
 {$ifndef FPC_NO_DEFAULT_MEMORYMANAGER}
 { Default MemoryManager functions }
 Function  SysGetmem(Size:ptruint):Pointer;

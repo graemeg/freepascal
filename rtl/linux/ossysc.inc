@@ -583,11 +583,11 @@ end;
 begin
   {$if sizeof(TSysParam)>=sizeof(off_t)}
   Fpmmap:= pointer(do_syscall(syscall_nr_mmap2,TSysParam(adr),TSysParam(len),
-    TSysParam(prot),TSysParam(flags),TSysParam(fd),TSysParam(off)));
+    TSysParam(prot),TSysParam(flags),TSysParam(fd),TSysParam(off div 4096)));
   {$else off_t is larger than TsysParam }
   {$message warning need mmap64 syscall, hi(off) not used}
   Fpmmap:= pointer(do_syscall(syscall_nr_mmap2,TSysParam(adr),TSysParam(len),
-    TSysParam(prot),TSysParam(flags),TSysParam(fd),TSysParam(lo(off))));
+    TSysParam(prot),TSysParam(flags),TSysParam(fd),TSysParam(lo(off div 4096))));
  {$endif}
 end;
 {$else MMAP2}

@@ -63,6 +63,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="../../../src/jsonrpc"/>
     </SearchPaths>
   </CompilerOptions>
   <Debugging>

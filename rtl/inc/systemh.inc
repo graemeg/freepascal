@@ -348,6 +348,21 @@ Type
   {$endif}
 {$endif CPURISCV64}
 
+{$ifdef CPUXTENSA}
+  {$define DEFAULT_DOUBLE}
+
+  {$define FPC_INCLUDE_SOFTWARE_MOD_DIV}
+  {$define FPC_INCLUDE_SOFTWARE_MUL}
+  {$define FPC_INCLUDE_SOFTWARE_SHIFT_INT64}
+
+  {$ifndef FPUNONE}
+    {$define SUPPORT_SINGLE}
+    {$define SUPPORT_DOUBLE}
+
+    ValReal = Double;
+  {$endif}
+{$endif CPUXTENSA}
+
 {$if not declared(FarPointer)}
   FarPointer = Pointer;
 {$endif}
@@ -1567,10 +1582,12 @@ Procedure Halt;{$ifdef SYSTEMINLINE}inline;{$endif}noreturn;
 Procedure SysInitExceptions;
 {$endif FPC_HAS_FEATURE_EXCEPTIONS}
 {$ifdef FPC_HAS_FEATURE_CONSOLEIO}
-{$ifndef EMBEDDED}
+
+{$if not(defined(EMBEDDED)) and not(defined(FREERTOS))}
 procedure SysInitStdIO;
 procedure SysFlushStdIO;
-{$endif EMBEDDED}
+{$endif not(defined(EMBEDDED)) and not(defined(FREERTOS))}
+
 {$endif FPC_HAS_FEATURE_CONSOLEIO}
 {$ifndef FPUNONE}
 Procedure SysResetFPU;

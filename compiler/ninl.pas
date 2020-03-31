@@ -4367,6 +4367,9 @@ implementation
            end;
 
          resultnode := hp.getcopy;
+         { get varstates right }
+         node_reset_flags(resultnode,[nf_pass1_done,nf_modify]);
+
          { avoid type errors from the addn/subn }
          if not is_integer(resultnode.resultdef) then
            begin
@@ -5399,7 +5402,13 @@ implementation
          p: tnode;
        begin
          if count=1 then
-           set_varstate(left,vs_read,[vsf_must_be_valid])
+           begin
+             // Sometimes there are more callparanodes
+             if left is tcallparanode then
+               set_varstate(tcallparanode(left).left,vs_read,[vsf_must_be_valid])
+             else
+               set_varstate(left,vs_read,[vsf_must_be_valid])
+           end
          else
            begin
              p:=left;

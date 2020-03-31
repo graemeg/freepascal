@@ -32,7 +32,7 @@ fpcdir=..
 unexport FPC_VERSION FPC_COMPILERINFO
 
 # Which platforms are ready for inclusion in the cycle
-CYCLETARGETS=i386 powerpc sparc arm x86_64 powerpc64 m68k armeb mipsel mips avr jvm i8086 aarch64 sparc64 riscv32 riscv64
+CYCLETARGETS=i386 powerpc sparc arm x86_64 powerpc64 m68k armeb mipsel mips avr jvm i8086 aarch64 sparc64 riscv32 riscv64 xtensa
 
 # All supported targets used for clean
 ALLTARGETS=$(CYCLETARGETS)
@@ -88,6 +88,9 @@ PPC_TARGET=riscv32
 endif
 ifdef RISCV64
 PPC_TARGET=riscv64
+endif
+ifdef XTENSA
+PPC_TARGET=xtensa
 endif
 
 # Default is to generate a compiler for the same
@@ -223,6 +226,9 @@ CPUSUF=rv32
 endif
 ifeq ($(CPC_TARGET),riscv64)
 CPUSUF=rv64
+endif
+ifeq ($(CPC_TARGET),xtensa)
+CPUSUF=xtensa
 endif
 
 # Do not define the default -d$(CPU_TARGET) because that
@@ -585,8 +591,8 @@ endif
 # cpu targets
 #####################################################################
 
-PPC_TARGETS=i386 m68k powerpc sparc arm armeb x86_64 powerpc64 mips mipsel avr jvm i8086 aarch64 sparc64 riscv32 riscv64
-PPC_SUFFIXES=386 68k ppc sparc arm armeb x64 ppc64 mips mipsel avr jvm 8086 a64 sparc64 rv32 rv64
+PPC_TARGETS=i386 m68k powerpc sparc arm armeb x86_64 powerpc64 mips mipsel avr jvm i8086 aarch64 sparc64 riscv32 riscv64 xtensa
+PPC_SUFFIXES=386 68k ppc sparc arm armeb x64 ppc64 mips mipsel avr jvm 8086 a64 sparc64 rv32 rv64 xtensa
 INSTALL_TARGETS=$(addsuffix _exe_install,$(sort $(CYCLETARGETS) $(PPC_TARGETS)))
 SYMLINKINSTALL_TARGETS=$(addsuffix _symlink_install,$(sort $(CYCLETARGETS) $(PPC_TARGETS)))
 
@@ -984,7 +990,7 @@ ifeq ($(OS_SOURCE),win64)
   EXCLUDE_80BIT_TARGETS=1
 endif
 
-ifneq ($(findstring $(CPU_SOURCE),aarch64 arm avr jvm m68k mips mipsel powerpc powerpc64 sparc sparc64 riscv32 riscv64),)
+ifneq ($(findstring $(CPU_SOURCE),aarch64 arm avr jvm m68k mips mipsel powerpc powerpc64 sparc sparc64 riscv32 riscv64 xtensa),)
   EXCLUDE_80BIT_TARGETS=1
 endif
 

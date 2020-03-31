@@ -529,6 +529,7 @@ begin
   if Assigned (s^.outbuf) then
     FreeMem(s^.outbuf, Z_BUFSIZE);
   FreeMem(s, sizeof(gz_stream));
+  s := nil;
 
 end;
 

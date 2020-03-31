@@ -192,7 +192,6 @@ Unit aopt;
                       End
                     else if tai_regalloc(p).ratype=ra_dealloc then
                       Begin
-                        ExcludeRegFromUsedRegs(tai_regalloc(p).Reg,Regs);
                         hp1 := p;
                         hp2 := nil;
                         While Not(assigned(FindRegAlloc(tai_regalloc(p).Reg, tai(hp1.Next)))) And
@@ -233,7 +232,9 @@ Unit aopt;
                             AsmL.remove(p);
                             p.free;
                             p := hp1;
-                          end;
+                          end
+                        else
+                          ExcludeRegFromUsedRegs(tai_regalloc(p).Reg,Regs);
                       End
                   End
                 else

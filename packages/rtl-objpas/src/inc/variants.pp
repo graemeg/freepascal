@@ -1183,10 +1183,10 @@ begin
   if OpCode in [opCmpEq, opCmpNe] then
     if Length(WideString(Left)) <> Length(WideString(Right)) then
       Exit(-1);
-  Result := WideCompareStr(
+  Result := sign(WideCompareStr(
     WideString(Left),
     WideString(Right)
-  );
+  ));
 end;
 
 
@@ -1204,10 +1204,10 @@ begin
   if OpCode in [opCmpEq, opCmpNe] then
     if Length(AnsiString(Left)) <> Length(AnsiString(Right)) then
       Exit(-1);
-  Result := CompareStr(
+  Result := sign(CompareStr(
     AnsiString(Left),
     AnsiString(Right)
-  );
+  ));
 end;
 
 

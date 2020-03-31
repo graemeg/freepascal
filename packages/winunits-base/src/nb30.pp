@@ -37,7 +37,7 @@ Type
     ncb_post        : ncb_post_type;      { POST routine address        }
     ncb_lana_num    : UCHAR;              { lana (adapter) number          }
     ncb_cmd_cplt    : UCHAR;              { $ff => commmand pending       }
-{$ifdef _WIN64}
+{$ifdef WIN64}
     ncb_reserve     : array[0..17] of UCHAR; { reserved, used by BIOS         }
 {$else}
     ncb_reserve     : array[0..9] of UCHAR;  { reserved, used by BIOS         }

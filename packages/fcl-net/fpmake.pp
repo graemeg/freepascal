@@ -73,7 +73,7 @@ begin
         end;
     T.ResourceStrings := True;
 
-    T:=P.Targets.AddUnit('cnetdb.pp',[linux,freebsd,solaris]);
+    T:=P.Targets.AddUnit('cnetdb.pp',[linux,freebsd,solaris,android]);
 
     P.ExamplePath.Add('examples');
     P.Targets.AddExampleProgram('examples/ip6test.pp');

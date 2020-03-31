@@ -150,6 +150,7 @@ begin
         pushl   %ebp
         int     $0x33
         popl    %ebp
+        andl    $0xffff,%ebx
         andl    $0xffff,%ecx
         andl    $0xffff,%edx
         movl    x,%eax
@@ -157,7 +158,7 @@ begin
         movl    y,%eax
         movl    %edx,(%eax)
         movl    buttons,%eax
-        movw    %bx,(%eax)
+        movl    %ebx,(%eax)
   end;
 end;
 

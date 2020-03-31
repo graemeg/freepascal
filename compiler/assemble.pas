@@ -822,16 +822,20 @@ Implementation
       var
         asfound : boolean;
         UtilExe  : string;
+        asmbin : TCmdStr;
       begin
         asfound:=false;
+        asmbin:=asminfo^.asmbin;
+        if (af_llvm in asminfo^.flags) then
+          asmbin:=asmbin+llvmutilssuffix;
         if cs_link_on_target in current_settings.globalswitches then
          begin
            { If linking on target, don't add any path PM }
-           FindAssembler:=utilsprefix+ChangeFileExt(asminfo^.asmbin,target_info.exeext);
+           FindAssembler:=utilsprefix+ChangeFileExt(asmbin,target_info.exeext);
            exit;
          end
         else
-         UtilExe:=utilsprefix+ChangeFileExt(asminfo^.asmbin,source_info.exeext);
+         UtilExe:=utilsprefix+ChangeFileExt(asmbin,source_info.exeext);
         if lastas<>ord(asminfo^.id) then
          begin
            lastas:=ord(asminfo^.id);

@@ -44,6 +44,9 @@ implementation
     {$ifndef NOTARGETFREEBSD}
       ,t_bsd
     {$endif}
+    {$ifndef NOTARGETDARWIN}
+      ,t_darwin
+    {$endif}
     {$ifndef NOTARGETWIN}
       ,t_win
       ,win64unw

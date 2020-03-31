@@ -341,7 +341,7 @@ var
 
 begin
   Result:=nil;
-  if GetKeyInfo(Info) then
+  if GetKeyInfo(Info) and (Info.NumSubKeys > 0) then
   begin
     dwLen:=Info.MaxSubKeyLen+1;
     GetMem(lpName,dwLen*SizeOf(WideChar));
@@ -352,6 +352,8 @@ begin
       begin
         dwLen:=Info.MaxSubKeyLen+1;
         lResult:=RegEnumKeyExW(CurrentKey,dwIndex,lpName,dwLen,Nil,Nil,Nil,Nil);
+        if lResult=ERROR_NO_MORE_ITEMS then
+          Break;
         if lResult<>ERROR_SUCCESS then
           raise ERegistryException.Create(SysErrorMessage(lResult));
         if dwLen=0 then
@@ -381,7 +383,7 @@ var
 
 begin
   Result:=nil;
-  if GetKeyInfo(Info) then
+  if GetKeyInfo(Info) and (Info.NumValues > 0) then
   begin
     dwLen:=Info.MaxValueLen+1;
     GetMem(lpName,dwLen*SizeOf(WideChar));
@@ -391,6 +393,8 @@ begin
       begin
         dwLen:=Info.MaxValueLen+1;
         lResult:=RegEnumValueW(CurrentKey,dwIndex,lpName,dwLen,Nil,Nil,Nil,Nil);
+        if lResult=ERROR_NO_MORE_ITEMS then
+          Break;
         if lResult<>ERROR_SUCCESS then
           raise ERegistryException.Create(SysErrorMessage(lResult));
         if dwLen=0 then

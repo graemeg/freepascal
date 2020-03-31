@@ -1,0 +1,6 @@
+#
+# Here we set processor dependent include file names.
+#
+
+CPUNAMES=xtensa math set cpuh
+CPUINCNAMES=$(addsuffix .inc,$(CPUNAMES))

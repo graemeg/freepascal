@@ -56,7 +56,7 @@ type
 
         Tcompressionstream=class(Tcustomzlibstream)
         private
-          function ClearOutBuffer: Integer;
+          procedure ClearOutBuffer;
         protected
           raw_written,compressed_written: int64;
         public
@@ -206,13 +206,12 @@ begin
   get_compressionrate:=100*compressed_written/raw_written;
 end;
 
-Function TCompressionstream.ClearOutBuffer : Integer;
-
+procedure TCompressionstream.ClearOutBuffer;
 
 begin
   { Flush the buffer to the stream and update progress }
-  Result:=source.write(Fbuffer^,bufsize);
-  inc(compressed_written,Result);
+  source.writebuffer(Fbuffer^,bufsize-Fstream.avail_out);
+  inc(compressed_written,bufsize-Fstream.avail_out);
   progress(self);
   { reset output buffer }
   Fstream.next_out:=Fbuffer;
@@ -235,13 +234,7 @@ begin
       raise Ecompressionerror.create(zerror(err));
   until false;
   if Fstream.avail_out<bufsize then
-    begin
-      source.writebuffer(FBuffer^,bufsize-Fstream.avail_out);
-      inc(compressed_written,bufsize-Fstream.avail_out);
-      progress(self);
-      Fstream.next_out:=Fbuffer;
-      Fstream.avail_out:=bufsize;
-    end;
+    ClearOutBuffer;
 end;
 
 
@@ -271,7 +264,7 @@ begin
   else
     err:=inflateInit(Fstream);
   if err<>Z_OK then
-    raise Ecompressionerror.create(zerror(err));
+    raise Edecompressionerror.create(zerror(err));
 end;
 
 function Tdecompressionstream.read(var buffer;count:longint):longint;

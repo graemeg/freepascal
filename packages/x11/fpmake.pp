@@ -73,6 +73,7 @@ begin
         begin
           AddUnit('x');
           AddUnit('xlib');
+          AddInclude('xfixeswire.inc');
         end;
     T:=P.Targets.AddUnit('xinput2.pp');
       with T.Dependencies do

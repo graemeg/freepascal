@@ -5,13 +5,14 @@ unit wmdemo;
 interface
 
 uses
-  Classes, SysUtils, HTTPDefs, websession, fpHTTP, fpWeb; 
+  Classes, SysUtils, HTTPDefs, fpHTTP, fpWeb, jsonreader;
 
 type
 
-  { TFPWebModule1 }
+  { TEchoModule }
 
-  TFPWebModule1 = class(TFPWebModule)
+  TEchoModule = class(TFPWebModule)
+    procedure DataModuleCreate(Sender: TObject);
     procedure TFPWebActions0Request(Sender: TObject; ARequest: TRequest;
       AResponse: TResponse; var Handled: Boolean);
     procedure TFPWebActions1Request(Sender: TObject; ARequest: TRequest;
@@ -33,17 +34,22 @@ type
   end; 
 
 var
-  FPWebModule1: TFPWebModule1; 
+  EchoModule: TEchoModule;
 
 implementation
 
 {$R *.lfm}
 
-Uses fpjson,jsonparser,fpjsonrpc,webjsonrpc, fpextdirect;
+Uses fpjson,jsonparser,fpjsonrpc,webjsonrpc, jsonscanner, fpextdirect;
 
-{ TFPWebModule1 }
+{ TEchoModule }
 
-procedure TFPWebModule1.TFPWebActions0Request(Sender: TObject;
+procedure TEchoModule.DataModuleCreate(Sender: TObject);
+begin
+  Cors.Enabled:=True;
+end;
+
+procedure TEchoModule.TFPWebActions0Request(Sender: TObject;
   ARequest: TRequest; AResponse: TResponse; var Handled: Boolean);
 {
   Demo 1. Manually do everything.
@@ -64,7 +70,7 @@ begin
   Err:=Nil;
   ID:=Nil;
   try
-    P:=TJSONParser.Create(ARequest.Content);
+    P:=TJSONParser.Create(ARequest.Content,[joUTF8]);
     try
       Req:=P.Parse;
       try
@@ -117,7 +123,7 @@ begin
   Handled:=True;
 end;
 
-procedure TFPWebModule1.TFPWebActions1Request(Sender: TObject;
+procedure TEchoModule.TFPWebActions1Request(Sender: TObject;
   ARequest: TRequest; AResponse: TResponse; var Handled: Boolean);
 
 {
@@ -142,7 +148,7 @@ begin
       O:=Disp.Options;
       Include(O,jdoRequireClass);
       Disp.Options:=O;
-      P:= TJSONParser.Create(ARequest.Content);
+      P:= TJSONParser.Create(ARequest.Content,[joUTF8]);
       try
         Req:=P.Parse;
         try
@@ -173,7 +179,7 @@ begin
 
 end;
 
-procedure TFPWebModule1.TFPWebActions2Request(Sender: TObject;
+procedure TEchoModule.TFPWebActions2Request(Sender: TObject;
   ARequest: TRequest; AResponse: TResponse; var Handled: Boolean);
 {
   Demo 3. Use a dispatcher to dispatch the requests.
@@ -195,7 +201,7 @@ begin
       O:=Disp.Options;
       Include(O,jdoSearchRegistry);
       Disp.Options:=O;
-      P:= TJSONParser.Create(ARequest.Content);
+      P:= TJSONParser.Create(ARequest.Content,[joUTF8]);
       try
         Req:=P.Parse;
         try
@@ -225,7 +231,7 @@ begin
   end;
 end;
 
-procedure TFPWebModule1.TFPWebActions3Request(Sender: TObject;
+procedure TEchoModule.TFPWebActions3Request(Sender: TObject;
   ARequest: TRequest; AResponse: TResponse; var Handled: Boolean);
 
 {
@@ -248,7 +254,7 @@ begin
       O:=Disp.Options;
       Include(O,jdoSearchRegistry);
       Disp.Options:=O;
-      P:= TJSONParser.Create(ARequest.Content);
+      P:= TJSONParser.Create(ARequest.Content,[joUTF8]);
       try
         Req:=P.Parse;
         try
@@ -279,7 +285,7 @@ begin
   end;
 end;
 
-procedure TFPWebModule1.TFPWebActions4Request(Sender: TObject;
+procedure TEchoModule.TFPWebActions4Request(Sender: TObject;
   ARequest: TRequest; AResponse: TResponse; var Handled: Boolean);
 
 {
@@ -317,7 +323,7 @@ begin
   end;
 end;
 
-procedure TFPWebModule1.TFPWebActions5Request(Sender: TObject;
+procedure TEchoModule.TFPWebActions5Request(Sender: TObject;
   ARequest: TRequest; AResponse: TResponse; var Handled: Boolean);
 {
   Demo 6. Creating an API response for Ext.Direct
@@ -327,7 +333,6 @@ procedure TFPWebModule1.TFPWebActions5Request(Sender: TObject;
 
 Var
   D : TExtDirectDispatcher;
-  I : Integer;
 
 begin
   JSONRpcHandlerManager.RegisterHandler('test','echo',TJSONRPCEcho);
@@ -346,7 +351,7 @@ begin
   end;
 end;
 
-procedure TFPWebModule1.TFPWebActions6Request(Sender: TObject;
+procedure TEchoModule.TFPWebActions6Request(Sender: TObject;
   ARequest: TRequest; AResponse: TResponse; var Handled: Boolean);
 {
   Demo 6. Using a TJSONRPCModule instance to handle the request.
@@ -373,6 +378,6 @@ begin
 end;
 
 initialization
-  RegisterHTTPModule('echo', TFPWebModule1);
+  RegisterHTTPModule('echo', TEchoModule);
 end.
 

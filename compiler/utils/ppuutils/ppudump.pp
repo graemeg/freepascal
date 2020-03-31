@@ -85,7 +85,8 @@ const
     { 17 } 'wasm',
     { 18 } 'sparc64',
     { 19 } 'riscv32',
-    { 20 } 'riscv64'
+    { 20 } 'riscv64',
+    { 21 } 'xtensa'
     );
 
   CpuHasController : array[tsystemcpu] of boolean =
@@ -110,7 +111,8 @@ const
     { 17 } false {'wasm'},
     { 18 } false {'sparc64'},
     { 19 } false {'riscv32'},
-    { 20 } false {'riscv64'}
+    { 20 } false {'riscv64'},
+    { 21 } true  {'xtensa'}
     );
 
 { List of all supported system-cpu couples }
@@ -218,7 +220,9 @@ const
   { 99 }  'Embedded-RiscV64',
   { 100 } 'Android-AArch64',
   { 101 } 'Android-x86-64',
-  { 102 } 'Haiku-x86-64'
+  { 102 } 'Haiku-x86-64',
+  { 103 } 'Embedded-Xtensa',
+  { 104 } 'FreeRTos-Xtensa'
   );
 
 const
@@ -396,7 +400,7 @@ type
     cpu_variant_rv64im,
     cpu_variant_rv64i
   );
- 
+
   tcpu_type = record
      case tsystemcpu of
        cpu_no:                      { 0 }
@@ -443,7 +447,7 @@ type
           (cpu_riscv64 : tcpu_riscv64;);
      end;
 
-  
+
   TPpuModuleDef = class(TPpuUnitDef)
     ModuleFlags: tmoduleflags;
   end;
@@ -2748,7 +2752,7 @@ const
      (mask:gcf_class;       str:'Class'),
      (mask:gcf_record;      str:'Record')
   );
-  
+
 var
   defstates  : tdefstates;
   i, nb, len : longint;

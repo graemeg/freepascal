@@ -13,6 +13,9 @@
 
  **********************************************************************}
 
+{ these functions are only available v36+ (OS Release 2.0+) }
+{$IFNDEF AMIGA_V1_0_ONLY}
+{$IFNDEF AMIGA_V1_2_ONLY}
 
 function FindTagItem(tagVal : Cardinal location 'd0';
                      tagList: PTagItem location 'a0'): PTagItem;
@@ -163,3 +166,5 @@ SysCall AOS_UtilityBase 264;
 function GetUniqueID: Cardinal;
 SysCall AOS_UtilityBase 270;
 
+{$ENDIF AMIGA_V1_2_ONLY}
+{$ENDIF AMIGA_V1_0_ONLY}

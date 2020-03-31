@@ -469,13 +469,13 @@ const
       msg_programexitedwithexitcode = #3'Program exited with '#13+
                                       #3'exitcode = %d';
 
-      msg_programsignal             = #3'Program recieved signal %s'#13+
+      msg_programsignal             = #3'Program received signal %s'#13+
                                       #3'%s';
 
       msg_runningprogram  = 'Running...';
       msg_runningremotely = 'Executable running remotely on ';
       msg_connectingto    = 'Connecting to ';
-      msg_getting_info_on = 'Getting infos from ';
+      msg_getting_info_on = 'Getting info from ';
       msg_runninginanotherwindow = 'Executable running in another window..';
       msg_couldnotsetbreakpointat = #3'Could not set Breakpoint'#13+
                                     #3+'%s:%d';

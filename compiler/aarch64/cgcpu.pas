@@ -101,6 +101,7 @@ interface
         procedure g_concatcopy(list: TAsmList; const source, dest: treference; len: tcgint);override;
         procedure g_adjust_self_value(list: TAsmList; procdef: tprocdef; ioffset: tcgint);override;
         procedure g_check_for_fpu_exception(list: TAsmList; force, clear: boolean);override;
+        procedure g_profilecode(list: TAsmList);override;
        private
         function save_regs(list: TAsmList; rt: tregistertype; lowsr, highsr: tsuperregister; sub: tsubregister): longint;
         procedure load_regs(list: TAsmList; rt: tregistertype; lowsr, highsr: tsuperregister; sub: tsubregister);
@@ -1742,7 +1743,14 @@ implementation
         regsstored: boolean;
         sr: tsuperregister;
       begin
-        if not nostackframe then
+        if not(nostackframe) and
+          { we do not need an exit stack frame when we never return
+
+            * the final ret is left so the peephole optimizer can easily do call/ret -> jmp or call conversions
+            * the entry stack frame must be normally generated because the subroutine could be still left by
+              an exception and then the unwinding code might need to restore the registers stored by the entry code
+          }
+          not(po_noreturn in current_procinfo.procdef.procoptions) then
           begin
             { if no registers have been stored, we don't have to subtract the
               allocated temp space from the stack pointer }
@@ -2291,6 +2299,18 @@ implementation
             if clear then
               current_procinfo.FPUExceptionCheckNeeded:=false;
           end;
+      end;
+
+
+    procedure tcgaarch64.g_profilecode(list : TAsmList);
+      begin
+        if target_info.system = system_aarch64_linux then
+          begin
+            list.concat(taicpu.op_reg_reg(A_MOV,NR_X0,NR_X30));
+            a_call_name(list,'_mcount',false);
+          end
+        else
+          internalerror(2020021901);
       end;
 
 

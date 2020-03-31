@@ -92,7 +92,8 @@ if [ -f "$FPBIN" ] ; then
 fi
 
 # Do not write fppkg configuration when fppkg is not available
-if ! [ -f "$FPPKGBIN" ] ; then
+if [ ! -f "$FPPKGBIN" ] ; then
+  echo "No fppkg binary available, not generating fppkg config."
   exit
 fi
 
@@ -105,6 +106,7 @@ echo Writing sample configuration file to $defaultfile
 ${FPCMKCFGBIN} -p -4 -d "GlobalPrefix=$FPCGLOBALPREFIX" -d "FpcBin=$FPCBIN" -o $defaultfile
 
 # Create (empty) directory for fppkg-configuration files for extensions
-if ! [ -d "$fppkgconfdir" ] ; then
+if [ ! -d "$fppkgconfdir" ] ; then
+  echo "Creating fpkkg configuration extensions directory $fppkgconfdir"
   mkdir "$fppkgconfdir"
 fi

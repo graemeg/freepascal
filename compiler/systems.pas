@@ -76,6 +76,7 @@ interface
          ,af_no_debug
          ,af_stabs_use_function_absolute_addresses
          ,af_no_stabs
+         ,af_llvm
        );
 
        pasminfo = ^tasminfo;
@@ -298,7 +299,11 @@ interface
                            system_mips_embedded,system_arm_embedded,
                            system_powerpc64_embedded,system_avr_embedded,
                            system_jvm_java32,system_mipseb_embedded,system_mipsel_embedded,
-                           system_i8086_embedded,system_riscv32_embedded,system_riscv64_embedded];
+                           system_i8086_embedded,system_riscv32_embedded,system_riscv64_embedded,
+                           system_xtensa_embedded];
+
+       { all FreeRTOS systems }
+       systems_freertos = [system_xtensa_freertos];
 
        { all systems that allow section directive }
        systems_allow_section = systems_embedded;
@@ -358,7 +363,7 @@ interface
        systems_indirect_entry_information = systems_darwin+[system_i386_win32,system_x86_64_win64,system_x86_64_linux];
 
        { all systems for which weak linking has been tested/is supported }
-       systems_weak_linking = systems_darwin + systems_solaris + systems_linux + systems_android + systems_openbsd;
+       systems_weak_linking = systems_darwin + systems_solaris + systems_linux + systems_android + systems_openbsd + systems_freebsd;
 
        systems_internal_sysinit = [system_i386_win32,system_x86_64_win64,
                                    system_i386_linux,system_powerpc64_linux,system_sparc64_linux,system_x86_64_linux,
@@ -424,7 +429,7 @@ interface
        cpu2str : array[TSystemCpu] of string[10] =
             ('','i386','m68k','alpha','powerpc','sparc','vm','ia64','x86_64',
              'mips','arm', 'powerpc64', 'avr', 'mipsel','jvm', 'i8086',
-             'aarch64', 'wasm', 'sparc64','riscv32','riscv64');
+             'aarch64', 'wasm', 'sparc64', 'riscv32', 'riscv64', 'xtensa');
 
        abiinfo : array[tabi] of tabiinfo = (
          (name: 'DEFAULT'; supported: true),
@@ -438,7 +443,9 @@ interface
          (name: 'OLDWIN32GNU'; supported:{$ifdef I386}true{$else}false{$endif}),
          (name: 'AARCH64IOS'; supported:{$ifdef aarch64}true{$else}false{$endif}),
          (name: 'RISCVHF'; supported:{$if defined(riscv32) or defined(riscv64)}true{$else}false{$endif}),
-         (name: 'LINUX386_SYSV'; supported:{$if defined(i386)}true{$else}false{$endif})
+         (name: 'LINUX386_SYSV'; supported:{$if defined(i386)}true{$else}false{$endif}),
+         (name: 'WINDOWED'; supported:{$if defined(xtensa)}true{$else}false{$endif}),
+         (name: 'CALL0'; supported:{$if defined(xtensa)}true{$else}false{$endif})
        );
 
        { x86 asm modes with an Intel-style syntax }
@@ -1110,6 +1117,11 @@ begin
 {$ifdef riscv64}
   default_target(system_riscv64_linux);
 {$endif riscv64}
+
+{$ifdef xtensa}
+  default_target(system_xtensa_embedded);
+{$endif xtensa}
+
 end;
 
 

@@ -33,7 +33,7 @@ procedure inflate_blocks_reset (var s : inflate_blocks_state;
                                 c : Pcardinal); { check value on output }
 
 
-function inflate_blocks_free(s : pInflate_blocks_state;
+function inflate_blocks_free(var s : pInflate_blocks_state;
                              var z : z_stream) : integer;
 
 procedure inflate_set_dictionary(var s : inflate_blocks_state;
@@ -103,7 +103,10 @@ begin
   if (c <> nil) then
     c^ := s.check;
   if (s.mode = BTREE) or (s.mode = DTREE) then
+  begin
     freemem(s.sub.trees.blens);
+    s.sub.trees.blens := nil;
+  end;
   if (s.mode = CODES) then
     inflate_codes_free(s.sub.decode.codes, z);
 
@@ -587,6 +590,7 @@ begin
         if (t <> Z_OK) then
         begin
           freemem(s.sub.trees.blens);
+          s.sub.trees.blens := nil;
           r := t;
           if (r = Z_DATA_ERROR) then
             s.mode := BLKBAD;
@@ -707,6 +711,7 @@ begin
                ((c = 16) and (i < 1)) then
             begin
               freemem(s.sub.trees.blens);
+              s.sub.trees.blens := nil;
               s.mode := BLKBAD;
               z.msg := 'invalid bit length repeat';
               r := Z_DATA_ERROR;
@@ -741,6 +746,7 @@ begin
                   1 + ((t shr 5) and $1f),
                   s.sub.trees.blens^, bl, bd, tl, td, s.hufts^, z);
           freemem(s.sub.trees.blens);
+          s.sub.trees.blens := nil;
           if (t <> Z_OK) then
           begin
             if (t = cardinal(Z_DATA_ERROR)) then
@@ -913,13 +919,14 @@ begin
 end;
 
 
-function inflate_blocks_free(s : pInflate_blocks_state;
+function inflate_blocks_free(var s : pInflate_blocks_state;
                              var z : z_stream) : integer;
 begin
   inflate_blocks_reset(s^, z, nil);
   freemem(s^.window);
   freemem(s^.hufts);
   dispose(s);
+  s := nil;
   {$IFDEF ZLIB_DEBUG}
   Trace('inflate:   blocks freed');
   {$ENDIF}  

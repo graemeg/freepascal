@@ -245,6 +245,7 @@ Type
     Procedure ParseSingleSimpleElement;
     Procedure ParseSingleSimpleElementInheritance;
     Procedure ParseSingleSimpleElementAttributes;
+    Procedure ParseSingleSimpleElementAttributes2;
     Procedure ParseSingleSimpleElementRequired;
     Procedure ParseSingleSimpleElementDefaultString;
     Procedure ParseSingleSimpleElementRequiredDefaultString;
@@ -699,6 +700,7 @@ Var
 begin
   Src:=AName+' implements '+aImplements+';'+sLineBreak;
   InitSource(Src);
+  Parser.Version:=V1;
   Parser.Parse;
   AssertEquals('Correct class',TIDLImplementsDefinition,Definitions[0].ClassType);
   Result:=Definitions[0] as TIDLImplementsDefinition;
@@ -895,7 +897,16 @@ end;
 procedure TTestDictionaryParser.ParseSingleSimpleElementAttributes;
 begin
   ParseDictionary('A','',['[Replaceable] required string B']);
-  AssertMember(0,'B','string','',ctNull,False);
+  AssertMember(0,'B','string','',ctNull,True);
+  AssertTrue('Has attributes',Dict[0].HasAttributes);
+  AssertEquals('Attribute count',1,Dict[0].Attributes.Count);
+  AssertEquals('Has attributes','Replaceable',Dict[0].Attributes[0]);
+end;
+
+procedure TTestDictionaryParser.ParseSingleSimpleElementAttributes2;
+begin
+  ParseDictionary('A','',['[Replaceable] octet B']);
+  AssertMember(0,'B','octet','',ctNull,False);
   AssertTrue('Has attributes',Dict[0].HasAttributes);
   AssertEquals('Attribute count',1,Dict[0].Attributes.Count);
   AssertEquals('Has attributes','Replaceable',Dict[0].Attributes[0]);
@@ -1175,7 +1186,7 @@ Var
 
 begin
   Version:=v2;
-  D:=TestTypeDef(aDef ,'A','record'});
+  D:=TestTypeDef(aDef ,'A','record');
   AssertEquals('Correct class',TIDLRecordDefinition,D.ClassType);
   R:=TIDLRecordDefinition(D);
   AssertNotNull('Have key type',R.KeyType);

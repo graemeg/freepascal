@@ -40,7 +40,7 @@ interface
       TLinkerInfo=record
         ExeCmd,
         DllCmd,
-        ExtDbgCmd     : array[1..3] of string;
+        ExtDbgCmd     : array[1..3] of ansistring;
         ResName       : string[100];
         ScriptName    : string[100];
         ExtraOptions  : TCmdStr;
@@ -78,6 +78,8 @@ interface
        end;
 
       TExternalLinker = class(TLinker)
+      protected
+         Function WriteSymbolOrderFile: TCmdStr;
       public
          Info : TLinkerInfo;
          Constructor Create;override;
@@ -87,6 +89,8 @@ interface
          Function  DoExec(const command:TCmdStr; para:TCmdStr;showinfo,useshell:boolean):boolean;
          procedure SetDefaultInfo;virtual;
          Function  MakeStaticLibrary:boolean;override;
+
+         Function UniqueName(const str:TCmdStr): TCmdStr;
        end;
 
       TBooleanArray = array [1..1024] of boolean;
@@ -642,6 +646,30 @@ Implementation
                               TEXTERNALLINKER
 *****************************************************************************}
 
+    Function TExternalLinker.WriteSymbolOrderFile: TCmdStr;
+      var
+        item: TCmdStrListItem;
+        symfile: TScript;
+      begin
+        result:='';
+        { only for darwin for now; can also enable for other platforms when using
+          the LLVM linker }
+        if (OrderedSymbols.Empty) or
+           not(tf_supports_symbolorderfile in target_info.flags) then
+          exit;
+        symfile:=TScript.Create(outputexedir+'symbol_order.fpc');
+        item:=TCmdStrListItem(OrderedSymbols.First);
+        while assigned(item) do
+          begin
+            symfile.add(item.str);
+            item:=TCmdStrListItem(item.next);
+          end;
+        symfile.WriteToDisk;
+        result:=symfile.fn;
+        symfile.Free;
+      end;
+
+
     Constructor TExternalLinker.Create;
       begin
         inherited Create;
@@ -654,16 +682,8 @@ Implementation
           end
         else
           begin
-            if GetProcessID>0 then
-              begin
-                Info.ResName:='link'+tostr(GetProcessID)+'.res';
-                Info.ScriptName:='script'+tostr(GetProcessID)+'.res';
-              end
-            else
-              begin
-                Info.ResName:='link.res';
-                Info.ScriptName:='script.res';
-              end;
+            Info.ResName:=UniqueName('link')+'.res';
+            Info.ScriptName:=UniqueName('script')+'.res';
           end;
         { set the linker specific defaults }
         SetDefaultInfo;
@@ -939,6 +959,18 @@ Implementation
             AsmRes.AddDeleteDirCommand(smartpath);
           end;
         MakeStaticLibrary:=success;
+      end;
+
+    function TExternalLinker.UniqueName(const str: TCmdStr): TCmdStr;
+      const
+        pid: SizeUInt = 0;
+      begin
+        if pid=0 then
+          pid:=GetProcessID;
+        if pid>0 then
+          result:=str+tostr(pid)
+        else
+          result:=str;
       end;
 
 

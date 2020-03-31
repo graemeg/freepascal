@@ -274,6 +274,11 @@ implementation
                               A_UNPCKLPD,
                               A_UNPCKLPS :
                                 replaceoper:=-1;
+
+                              { movlhps/movhlps requires the second parameter to be XMM registers }
+                              A_MOVHLPS,
+                              A_MOVLHPS:
+                                replaceoper:=-1;
                               else
                                 ;
                             end;

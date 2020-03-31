@@ -664,7 +664,7 @@ implementation
                       message(type_e_type_id_expected)
                     else
                       begin
-                        genericparams:=parse_generic_parameters(not(m_delphi in current_settings.modeswitches) or parse_only);
+                        genericparams:=parse_generic_parameters(true);
                         if not assigned(genericparams) then
                           internalerror(2015061201);
                         if genericparams.count=0 then
@@ -833,6 +833,11 @@ implementation
                   begin
                     messagepos1(impltype.fileinfo,sym_e_generic_type_param_mismatch,impltype.realname);
                     messagepos1(decltype.fileinfo,sym_e_generic_type_param_decl,decltype.realname);
+                    result:=false;
+                  end;
+                if df_genconstraint in impltype.typedef.defoptions then
+                  begin
+                    messagepos(tstoreddef(impltype.typedef).genconstraintdata.fileinfo,parser_e_generic_constraints_not_allowed_here);
                     result:=false;
                   end;
               end;

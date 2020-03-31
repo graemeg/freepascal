@@ -76,9 +76,58 @@ implementation
          resultreg  : tregister;
          hl : tasmlabel;
          overflowloc: tlocation;
+         power: longint;
+
+       procedure genOrdConstNodeDiv;
+         var
+           helper1, helper2: TRegister;
+           so: tshifterop;
+         begin
+           if tordconstnode(right).value=0 then
+             internalerror(2020021601)
+           else if tordconstnode(right).value=1 then
+             cg.a_load_reg_reg(current_asmdata.CurrAsmList, OS_INT, OS_INT, numerator, resultreg)
+           else if (tordconstnode(right).value = int64(-1)) then
+             begin
+               // note: only in the signed case possible..., may overflow
+               if cs_check_overflow in current_settings.localswitches then
+                 cg.a_reg_alloc(current_asmdata.CurrAsmList,NR_DEFAULTFLAGS);
+
+               current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_NEG,
+                 resultreg,numerator),toppostfix(ord(cs_check_overflow in current_settings.localswitches)*ord(PF_S))));
+             end
+           else if ispowerof2(tordconstnode(right).value,power) then
+             begin
+               if (is_signed(right.resultdef)) then
+                 begin
+                    helper2:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
+                    if power = 1 then
+                      helper1:=numerator
+                    else
+                      begin
+                        helper1:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
+                        cg.a_op_const_reg_reg(current_asmdata.CurrAsmList,OP_SAR,OS_INT,63,numerator,helper1);
+                      end;
+                    shifterop_reset(so);
+                    so.shiftmode:=SM_LSR;
+                    so.shiftimm:=64-power;
+                    current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg_reg_shifterop(A_ADD,helper2,numerator,helper1,so));
+                    cg.a_op_const_reg_reg(current_asmdata.CurrAsmList,OP_SAR,OS_INT,power,helper2,resultreg);
+                  end
+               else
+                 cg.a_op_const_reg_reg(current_asmdata.CurrAsmList,OP_SHR,OS_INT,power,numerator,resultreg)
+             end
+           else
+             { Everything else is handled in the generic code }
+             cg.g_div_const_reg_reg(current_asmdata.CurrAsmList,def_cgsize(resultdef),
+               tordconstnode(right).value.svalue,numerator,resultreg);
+         end;
+
       begin
        secondpass(left);
        secondpass(right);
+       { avoid warning }
+       divider:=NR_NO;
 
        { set result location }
        location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
@@ -89,16 +138,32 @@ implementation
        hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,left.resultdef,true);
        numerator:=left.location.register;
 
-       { load divider in a register }
-       hlcg.location_force_reg(current_asmdata.CurrAsmList,right.location,right.resultdef,right.resultdef,true);
-       divider:=right.location.register;
-
-       { start division }
-       if is_signed(left.resultdef) then
-         op:=A_SDIV
+       if (right.nodetype=ordconstn) and
+          ((tordconstnode(right).value=1) or
+           (tordconstnode(right).value=int64(-1)) or
+           (tordconstnode(right).value=0) or
+           ispowerof2(tordconstnode(right).value,power)) then
+         begin
+           genOrdConstNodeDiv;
+           if nodetype=modn then
+             begin
+               divider:=cg.getintregister(current_asmdata.CurrAsmList,def_cgsize(resultdef));
+               cg.a_load_const_reg(current_asmdata.CurrAsmList,def_cgsize(resultdef),int64(tordconstnode(right).value),divider);
+             end;
+         end
        else
-         op:=A_UDIV;
-       current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg_reg(op,location.register,numerator,divider));
+         begin
+           { load divider in a register }
+           hlcg.location_force_reg(current_asmdata.CurrAsmList,right.location,right.resultdef,right.resultdef,true);
+           divider:=right.location.register;
+
+           { start division }
+           if is_signed(left.resultdef) then
+             op:=A_SDIV
+           else
+             op:=A_UDIV;
+           current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg_reg(op,location.register,numerator,divider));
+         end;
 
        { no divide-by-zero detection available in hardware, emulate (if it's a
          constant, this will have been detected earlier already) }

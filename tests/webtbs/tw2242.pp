@@ -8193,7 +8193,7 @@ s += chr(85);
 s += chr(86);
 s += chr(87);
 s += chr(88);
-{$if not defined(cpuarm) and not defined(cpusparc)}
+{$if not defined(cpuarm) and not defined(cpusparc) and not defined(cpuaarch64)}
 s += chr(89);
 s += chr(90);
 s += chr(65);

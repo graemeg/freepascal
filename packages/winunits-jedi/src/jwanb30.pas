@@ -100,11 +100,11 @@ type
     ncb_post: TNcbPost;  // POST routine address
     ncb_lana_num: UCHAR; // lana (adapter) number
     ncb_cmd_cplt: UCHAR; // 0xff => commmand pending
-    {$IFDEF _WIN64}
+    {$IFDEF WIN64}
     ncb_reserve: array [0..17] of Char; // reserved, used by BIOS
     {$ELSE}
     ncb_reserve: array [0..9] of Char;  // reserved, used by BIOS
-    {$ENDIF _WIN64}
+    {$ENDIF WIN64}
     ncb_event: HANDLE;   // HANDLE to Win32 event which
                          // will be set to the signalled
                          // state when an ASYNCH command

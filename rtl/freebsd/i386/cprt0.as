@@ -29,6 +29,9 @@
 # freebsd 7.0 700055
 # freebsd 8.0 800500  (-stable)
 # FreeBSD 9.0 900044
+# FreeBSD 11.0  1100122
+# FreeBSD 11.1  1101001
+# FreeBSD 12.1  1201000
 
         .file   "cprt0.as"
         .ident  "FreePascal 2.6.x/2.7.x series dynlinked to libc"

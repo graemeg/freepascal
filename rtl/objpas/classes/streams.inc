@@ -1276,9 +1276,21 @@ begin
 
   If (THandle(FHandle)=feInvalidHandle) then
     If Mode=fmcreate then
+    begin
+      {$if declared(GetLastOSError)}
+      raise EFCreateError.createfmt(SFCreateErrorEx,[AFileName, SysErrorMessage(GetLastOSError)])
+      {$else}
       raise EFCreateError.createfmt(SFCreateError,[AFileName])
+      {$endif}
+    end
     else
+    begin
+      {$if declared(GetLastOSError)}
+      raise EFOpenError.Createfmt(SFOpenErrorEx,[AFilename, SysErrorMessage(GetLastOSError)]);
+      {$else}
       raise EFOpenError.Createfmt(SFOpenError,[AFilename]);
+      {$endif}
+    end;
 end;
 
 

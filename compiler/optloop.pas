@@ -24,6 +24,7 @@ unit optloop;
 {$i fpcdefs.inc}
 
 { $define DEBUG_OPTSTRENGTH}
+{ $define DEBUG_OPTFORLOOP}
 
   interface
 
@@ -32,6 +33,7 @@ unit optloop;
 
     function unroll_loop(node : tnode) : tnode;
     function OptimizeInductionVariables(node : tnode) : boolean;
+    function OptimizeForLoop(var node : tnode) : boolean;
 
   implementation
 
@@ -262,9 +264,10 @@ unit optloop;
             begin
               if (pi_dfaavailable in current_procinfo.flags) and
                 assigned(loop.optinfo) and
-                assigned(expr.optinfo) then
+                assigned(expr.optinfo) and
+                not(expr.isequal(tfornode(loop).left)) then
                 { no aliasing? }
-                result:=not(tabstractvarsym(tloadnode(expr).symtableentry).addr_taken) and
+                result:=(([nf_write,nf_modify]*expr.flags)=[]) and not(tabstractvarsym(tloadnode(expr).symtableentry).addr_taken) and
                 { no definition in the loop? }
                   not(DFASetIn(tfornode(loop).t2.optinfo^.defsum,expr.optinfo^.index));
             end;
@@ -275,6 +278,8 @@ unit optloop;
             end;
           typeconvn:
             result:=is_loop_invariant(loop,ttypeconvnode(expr).left);
+          addn,subn:
+            result:=is_loop_invariant(loop,taddnode(expr).left) and is_loop_invariant(loop,taddnode(expr).right);
           else
             ;
         end;
@@ -520,7 +525,7 @@ unit optloop;
       end;
 
 
-    function iterforloops(var n: tnode; arg: pointer): foreachnoderesult;
+    function OptimizeInductionVariables_iterforloops(var n: tnode; arg: pointer): foreachnoderesult;
       var
         hp : tnode;
       begin
@@ -550,7 +555,74 @@ unit optloop;
     function OptimizeInductionVariables(node : tnode) : boolean;
       begin
         changedforloop:=false;
-        foreachnodestatic(pm_postprocess,node,@iterforloops,nil);
+        foreachnodestatic(pm_postprocess,node,@OptimizeInductionVariables_iterforloops,nil);
+        Result:=changedforloop;
+      end;
+
+
+    function OptimizeForLoop_iterforloops(var n: tnode; arg: pointer): foreachnoderesult;
+      var
+        hp : tnode;
+      begin
+        Result:=fen_false;
+        if (n.nodetype=forn) and
+          not(lnf_backward in tfornode(n).loopflags) and
+          (lnf_dont_mind_loopvar_on_exit in tfornode(n).loopflags) and
+          is_constintnode(tfornode(n).right) and
+          { this is not strictly necessary, but we do it for now }
+          is_constnode(tfornode(n).t1) and
+          (([cs_check_overflow,cs_check_range]*n.localswitches)=[]) and
+          (([cs_check_overflow,cs_check_range]*tfornode(n).left.localswitches)=[]) and
+          ((tfornode(n).left.nodetype=loadn) and (tloadnode(tfornode(n).left).symtableentry is tabstractvarsym) and
+            not(tabstractvarsym(tloadnode(tfornode(n).left).symtableentry).addr_taken) and
+            not(tabstractvarsym(tloadnode(tfornode(n).left).symtableentry).different_scope)) then
+          begin
+            { do we have DFA available? }
+            if pi_dfaavailable in current_procinfo.flags then
+              begin
+                CalcUseSum(tfornode(n).t2);
+                CalcDefSum(tfornode(n).t2);
+              end
+            else
+              Internalerror(2017122801);
+            if not(assigned(tfornode(n).left.optinfo)) then
+              exit;
+            if not(DFASetIn(tfornode(n).t2.optinfo^.usesum,tfornode(n).left.optinfo^.index)) and
+              not(DFASetIn(tfornode(n).t2.optinfo^.defsum,tfornode(n).left.optinfo^.index))  then
+              begin
+                { convert the loop from i:=a to b into i:=b-a+1 to 1 as this simplifies the
+                  abort condition }
+{$ifdef DEBUG_OPTFORLOOP}
+                writeln('**********************************************************************************');
+                writeln('Found loop for reverting: ');
+                printnode(n);
+                writeln('**********************************************************************************');
+{$endif DEBUG_OPTFORLOOP}
+                include(tfornode(n).loopflags,lnf_backward);
+                tfornode(n).right:=caddnode.create_internal(addn,caddnode.create_internal(subn,tfornode(n).t1,tfornode(n).right),
+                  cordconstnode.create(1,tfornode(n).left.resultdef,false));
+                tfornode(n).t1:=cordconstnode.create(1,tfornode(n).left.resultdef,false);
+                include(tfornode(n).loopflags,lnf_counter_not_used);
+                exclude(n.flags,nf_pass1_done);
+                do_firstpass(n);
+{$ifdef DEBUG_OPTFORLOOP}
+                writeln('Loop reverted: ');
+                printnode(n);
+                writeln('**********************************************************************************');
+{$endif DEBUG_OPTFORLOOP}
+                changedforloop:=true;
+              end;
+          end;
+      end;
+
+
+    function OptimizeForLoop(var node : tnode) : boolean;
+      begin
+        Result:=false;
+        if not(pi_dfaavailable in current_procinfo.flags) then
+          exit;
+        changedforloop:=false;
+        foreachnodestatic(pm_postprocess,node,@OptimizeForLoop_iterforloops,nil);
         Result:=changedforloop;
       end;
 

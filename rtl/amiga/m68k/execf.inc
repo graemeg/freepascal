@@ -306,6 +306,9 @@ function OpenLibrary(libname: PChar    location 'a1';
                      libver : Cardinal location 'd0'): Pointer;
 SysCall AOS_ExecBase 552;
 
+// these functions are only available v33+ (OS Release 1.2+)
+{$IFNDEF AMIGA_V1_0_ONLY}
+
 procedure InitSemaphore(sigSem: PSignalSemaphore location 'a0');
 SysCall AOS_ExecBase 558;
 
@@ -352,6 +355,9 @@ procedure CopyMemQuick(source: Pointer  location 'a0';
                        dest  : Pointer  location 'a1';
                        size  : Cardinal location 'd0');
 SysCall AOS_ExecBase 630;
+
+// these functions are only available v36+ (OS Release 2.0+)
+{$IFNDEF AMIGA_V1_2_ONLY}
 
 procedure CacheClearU;
 SysCall AOS_ExecBase 636;
@@ -400,9 +406,9 @@ function AllocPooled(poolHeader: Pointer  location 'a0';
                      memSize   : Cardinal location 'd0'): Pointer;
 SysCall AOS_ExecBase 708;
 
-function FreePooled(poolHeader: Pointer  location 'a0';
-                    memory    : Pointer  location 'a1';
-                    memSize   : Cardinal location 'd0'): Pointer;
+procedure FreePooled(poolHeader: Pointer  location 'a0';
+                      memory    : Pointer  location 'a1';
+                      memSize   : Cardinal location 'd0');
 SysCall AOS_ExecBase 714;
 
 function AttemptSemaphoreShared(sigSem: pSignalSemaphore location 'a0'): Cardinal;
@@ -432,5 +438,8 @@ SysCall AOS_ExecBase 780;
 
 function ObtainQuickVector(interruptCode: Pointer location 'a0'): Cardinal;
 SysCall AOS_ExecBase 786;
+
+{$ENDIF AMIGA_V1_2_ONLY}
+{$ENDIF AMIGA_V1_0_ONLY}
 
 { TODO: v45 functions (OS3.9) }

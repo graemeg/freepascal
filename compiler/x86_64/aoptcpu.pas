@@ -76,6 +76,7 @@ uses
                 A_MOV:
                   Result:=OptPass1MOV(p);
                 A_MOVSX,
+                A_MOVSXD,
                 A_MOVZX:
                   Result:=OptPass1Movx(p);
                 A_MOVAPD,

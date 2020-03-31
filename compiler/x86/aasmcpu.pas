@@ -4777,6 +4777,8 @@ implementation
                 R_SUBQ,
                 R_SUBMMWHOLE:
                   result:=taicpu.op_ref_reg(A_VMOVQ,S_NO,tmpref,r);
+                R_SUBMMX:
+                  result:=taicpu.op_ref_reg(A_VMOVDQU,S_NO,tmpref,r);
                 else
                   internalerror(200506043);
               end
@@ -4789,6 +4791,8 @@ implementation
                 R_SUBQ,
                 R_SUBMMWHOLE:
                   result:=taicpu.op_ref_reg(A_MOVQ,S_NO,tmpref,r);
+                R_SUBMMX:
+                  result:=taicpu.op_ref_reg(A_MOVDQA,S_NO,tmpref,r);
                 else
                   internalerror(200506043);
               end;

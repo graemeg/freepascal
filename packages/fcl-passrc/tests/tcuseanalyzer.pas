@@ -159,6 +159,7 @@ type
     procedure TestWP_TypeInfo;
     procedure TestWP_TypeInfo_PropertyEnumType;
     procedure TestWP_TypeInfo_Alias;
+    procedure TestWP_TypeInfo_Specialize;
     procedure TestWP_ForInClass;
     procedure TestWP_AssertSysUtils;
     procedure TestWP_RangeErrorSysUtils;
@@ -2822,6 +2823,30 @@ begin
     'begin',
     '  PInfo:=typeinfo(TDateTime);',
     'end.']);
+  AnalyzeWholeProgram;
+end;
+
+procedure TTestUseAnalyzer.TestWP_TypeInfo_Specialize;
+begin
+  StartProgram(false);
+  Add([
+  'type',
+  '  TObject = class end;',
+  '  generic TProc<T> = procedure(a: T) of object;',
+  '  TWordProc = specialize TProc<word>;',
+  '  {$M+}',
+  '  TPersistent = class',
+  '  private',
+  '    FWordProc: TWordProc;',
+  '  published',
+  '    property Proc: TWordProc read FWordProc write FWordProc;',
+  '  end;',
+  '  {$M-}',
+  'var',
+  '  {#p_notypeinfo}p: pointer;',
+  'begin',
+  '  p:=typeinfo(TPersistent);',
+  '']);
   AnalyzeWholeProgram;
 end;
 

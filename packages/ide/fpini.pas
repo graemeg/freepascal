@@ -118,6 +118,7 @@ const
   ieCompileMode      = 'CompileMode';
   iePalette          = 'Palette';
   ieHelpFiles        = 'Files';
+  ieHelpFile        = 'File';
   ieDefaultTabSize   = 'DefaultTabSize';
   ieDefaultIndentSize = 'DefaultIndentSize';
   ieDefaultEditorFlags='DefaultFlags';
@@ -456,12 +457,20 @@ begin
         SwitchesMode:=ts;
     end;
   { Help }
+  { Reading single string with help-file names }
   S:=INIFile^.GetEntry(secHelp,ieHelpFiles,'');
   repeat
     P:=Pos(';',S); if P=0 then P:=length(S)+1;
     PS:=copy(S,1,P-1);
     if PS<>'' then HelpFiles^.Insert(NewStr(PS));
     Delete(S,1,P);
+  until S='';
+  { Reading separate strings with help-file names }
+  I:=1;
+  repeat
+    S:=INIFile^.GetEntry(secHelp,ieHelpFile + IntToStr(I),'');
+    inc(I);
+    if S<>'' then HelpFiles^.Insert(NewStr(S));
   until S='';
   { Editor }
   DefaultTabSize:=INIFile^.GetIntEntry(secEditor,ieDefaultTabSize,DefaultTabSize);
@@ -583,15 +592,9 @@ var INIFile: PINIFile;
     S: string;
     S1,S2,S3: string;
     W: word;
-    BreakPointCount,WatchesCount:longint;
+    HelpFileCount, BreakPointCount,WatchesCount:longint;
     I(*,OpenFileCount*): integer;
     OK: boolean;
-
-procedure ConcatName(P: PString);
-begin
-  if (S<>'') then S:=S+';';
-  S:=S+P^;
-end;
 begin
 {$ifdef Unix}
   if not FromSaveAs and (DirOf(IniFileName)=DirOf(SystemIDEDir)) then
@@ -679,10 +682,16 @@ begin
   { Compile }
   INIFile^.SetEntry(secCompile,iePrimaryFile,PrimaryFile);
   INIFile^.SetEntry(secCompile,ieCompileMode,SwitchesModeStr[SwitchesMode]);
-  { Help }
-  S:='';
-  HelpFiles^.ForEach(TCallbackProcParam(@ConcatName));
-  INIFile^.SetEntry(secHelp,ieHelpFiles,EscapeIniText(S));
+  { Deleting single string with help-files list }
+  INIFile^.DeleteEntry(secHelp, ieHelpFiles);
+  { Saving help-files as separate strings }
+  { Will it produce compatibility problems? }
+  HelpFileCount:=HelpFiles^.Count;
+  for I := 1 to HelpFileCount do
+    begin
+      S:=HelpFiles^.At(I-1)^;
+      INIFile^.SetEntry(secHelp, ieHelpFile + IntToStr(I), EscapeIniText(S));
+    end;
   { Editor }
   INIFile^.SetIntEntry(secEditor,ieDefaultTabSize,DefaultTabSize);
   INIFile^.SetIntEntry(secEditor,ieDefaultIndentSize,DefaultIndentSize);

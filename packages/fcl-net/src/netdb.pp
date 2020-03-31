@@ -23,6 +23,9 @@ unit netdb;
   order to crash  your program.  So if you really want to depend on this
   in critical programs then you'd better fix a lot of code in here.
   Otherwise, it appears to work pretty well.
+
+  When compiling this unit with the FPC_USE_LIBC defined, the warning above
+  can be ignored, since the libc implementation should be robust.
 }
 
 Interface
@@ -49,15 +52,20 @@ Uses Sockets;
  {$DEFINE UNIX_ETC}
 {$ENDIF UNIX}
 
+{$if defined(android)}
+  {$define FPC_USE_LIBC}
+{$endif}
+
 Type
   THostAddr = in_addr;		// historical aliases for these.
   THostAddr6= Tin6_addr;
   TNetAddr  = THostAddr;	// but in net order.
 
 Const
-  DNSPort        = 53;
   MaxResolveAddr = 10;
-  SServicesFile  = 'services'; 
+{$ifndef FPC_USE_LIBC}
+  DNSPort        = 53;
+  SServicesFile  = 'services';
   SHostsFile     = 'hosts';
   SNetworksFile  = 'networks';
 {$IFDEF SFN_VERSION}
@@ -78,6 +86,7 @@ Const
 
 var
   EtcPath: string;
+{$endif FPC_USE_LIBC}
 
 Type
   TDNSServerArray = Array of THostAddr;
@@ -124,7 +133,8 @@ Type
     Next : PHostListEntry;
   end;
 
-Var  
+{$ifndef FPC_USE_LIBC}
+Var
   DNSServers            : TDNSServerArray;
   DNSOptions            : String;
   DefaultDomainList     : String;
@@ -137,46 +147,60 @@ Function GetDNSServers : Integer;
 {$else}
 Function GetDNSServers(FN : String) : Integer;
 {$endif android}
+{$endif FPC_USE_LIBC}
 
+// Addresses are returned in the net byte order
 Function ResolveName(HostName : String; Var Addresses : Array of THostAddr) : Integer;
 Function ResolveName6(HostName : String; Var Addresses : Array of THostAddr6) : Integer;
 
-
+// HostAddr is specified in the host byte order
 Function ResolveAddress(HostAddr : THostAddr; Var Addresses : Array of String) : Integer;
 Function ResolveAddress6(HostAddr: THostAddr6; var Addresses: Array of string) : Integer;
 
 function IN6_IS_ADDR_V4MAPPED(HostAddr: THostAddr6): boolean;
 
+// H.Addr is returned in the net byte order
 Function ResolveHostByName(HostName : String; Var H : THostEntry) : Boolean;
+// HostAddr is specified in the host byte order
 Function ResolveHostByAddr(HostAddr : THostAddr; Var H : THostEntry) : Boolean;
 
 Function ResolveHostByName6(Hostname : String; Var H : THostEntry6) : Boolean;
 Function ResolveHostByAddr6(HostAddr : THostAddr6; Var H : THostEntry6) : Boolean;
 
+// H.Addr is returned in the host byte order
 Function GetHostByName(HostName: String;  Var H : THostEntry) : boolean;
+// Addr is specified in the host byte order
 Function GetHostByAddr(Addr: THostAddr;  Var H : THostEntry) : boolean;
 
+// N.Addr is returned in the net byte order
 Function GetNetworkByName(NetName: String; Var N : TNetworkEntry) : boolean;
+// Addr is specified in the host byte order
 Function GetNetworkByAddr(Addr: THostAddr; Var N : TNetworkEntry) : boolean;
 
+// E.Port is returned in the host byte order
 Function GetServiceByName(Const Name,Proto : String; Var E : TServiceEntry) : Boolean;
+// Port is specified in the host byte order
 Function GetServiceByPort(Port : Word;Const Proto : String; Var E : TServiceEntry) : Boolean;
 
 Function GetProtocolByName(ProtoName: String;  Var H : TProtocolEntry) : boolean;
 Function GetProtocolByNumber(proto: Integer;  Var H : TProtocolEntry) : boolean;
 
-
-
+{$ifndef FPC_USE_LIBC}
 Function ProcessHosts(FileName : String) : PHostListEntry;
 Function FreeHostsList(var List : PHostListEntry) : Integer;
 Procedure HostsListToArray(var List : PHostListEntry; Var Hosts : THostEntryArray; FreeList : Boolean);
+{$endif FPC_USE_LIBC}
 
 Implementation
 
 uses 
+{$ifdef FPC_USE_LIBC}
+   cNetDB,
+{$endif FPC_USE_LIBC}
    BaseUnix,
    sysutils;
 
+{$ifndef FPC_USE_LIBC}
 var
   DefaultDomainListArr : array of string;
   NDots: Integer;
@@ -1128,7 +1152,7 @@ Var
 begin
   CheckResolveFile;
   Result:=0;
-  S := '0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.int';
+  S := '0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa';
   for i := 7 downto 0 do begin
     S[5+(7-i)*8] := hexdig[1+(HostAddr.u6_addr16[i] and $000F) shr 00];
     S[7+(7-i)*8] := hexdig[1+(HostAddr.u6_addr16[i] and $00F0) shr 04];
@@ -1141,17 +1165,6 @@ begin
     Result:=ResolveAddressAt(I,S,Addresses,1);
     Inc(I);
     end;
-end;
-
-function IN6_IS_ADDR_V4MAPPED(HostAddr: THostAddr6): boolean;
-begin
-  Result := 
-   (HostAddr.u6_addr16[0] = 0) and
-   (HostAddr.u6_addr16[1] = 0) and
-   (HostAddr.u6_addr16[2] = 0) and
-   (HostAddr.u6_addr16[3] = 0) and
-   (HostAddr.u6_addr16[4] = 0) and
-   (HostAddr.u6_addr16[5] = $FFFF);
 end;
 
 Function HandleAsFullyQualifiedName(const HostName: String) : Boolean;
@@ -1321,7 +1334,7 @@ Function GetNextProtoEntry(var F : Text; Var H : TProtocolEntry): boolean;
 Var
   Line,S : String;
   I      : integer;
-  
+
 begin
   Result:=False;
   Repeat
@@ -1330,7 +1343,7 @@ begin
     S:=NextWord(Line);
     If (S<>'') then
       begin
-        H.Name:=S;	
+        H.Name:=S;
         S:=NextWord(Line);
 	i:=strtointdef(s,-1);
         If (i<>-1) then
@@ -1344,19 +1357,19 @@ begin
               If (H.Aliases='') then
                 H.Aliases:=S
               else
-                H.Aliases:=H.Aliases+','+S;  
+                H.Aliases:=H.Aliases+','+S;
           until (S='');
           end;
       end;
   until Result or EOF(F);
-end;  
+end;
 
 Function FindProtoEntryInProtoFile(N: String; prot: integer; Var H : TProtocolEntry) : boolean;
 
 Var
   F : Text;
   HE : TProtocolEntry;
-  
+
 begin
   Result:=False;
   If FileExists (EtcPath + SProtocolFile) then
@@ -1373,7 +1386,7 @@ begin
           Result:=MatchNameOrAlias(N,HE.Name,HE.Aliases)
         else
           Result:=prot=he.number;
-        end; 
+        end;
       Close(f);
       If Result then
         begin
@@ -1381,7 +1394,7 @@ begin
         H.number:=he.number;
         H.Aliases:=HE.Aliases;
         end;
-      end;  
+      end;
     end;
 end;
 
@@ -1431,7 +1444,7 @@ Function GetNextNetworkEntry(var F : Text; Var N : TNetworkEntry): boolean;
 Var
   NN,Line,S : String;
   A : TNetAddr;
-  
+
 begin
   Result:=False;
   Repeat
@@ -1448,17 +1461,17 @@ begin
         N.Addr.s_addr:=A.s_addr; // keep it host.
         N.Name:=NN;
         N.Aliases:='';
-        end;      
+        end;
       end;
   until Result or EOF(F);
-end;  
+end;
 
 Function FindNetworkEntryInNetworksFile(Net: String; Addr: TNetAddr; Var N : TNetworkEntry) : boolean;
 
 Var
   F : Text;
   NE : TNetworkEntry;
-  
+
 begin
   Result:=False;
   If FileExists (EtcPath + SNetworksFile) then
@@ -1475,7 +1488,7 @@ begin
           Result:=MatchNameOrAlias(Net,NE.Name,NE.Aliases)
         else
           Result:=Cardinal(Addr)=Cardinal(NE.Addr);
-        end; 
+        end;
       Close(f);
       If Result then
         begin
@@ -1483,12 +1496,12 @@ begin
         N.Addr:=nettohost(NE.Addr);
         N.Aliases:=NE.Aliases;
         end;
-      end;  
+      end;
     end;
 end;
 
 Const NoNet : in_addr = (s_addr:0);
-  
+
 Function GetNetworkByName(NetName: String; Var N : TNetworkEntry) : boolean;
 
 begin
@@ -1511,7 +1524,7 @@ Function GetNextServiceEntry(Var F : Text; Var E : TServiceEntry) : Boolean;
 Var
   Line,S : String;
   P : INteger;
-  
+
 begin
   Result:=False;
   Repeat
@@ -1536,7 +1549,7 @@ begin
             If (S<>'') then
               If (Length(E.Aliases)=0) then
                 E.aliases:=S
-              else  
+              else
                 E.Aliases:=E.Aliases+','+S;
           until (S='');
           end;
@@ -1551,7 +1564,7 @@ Function FindServiceEntryInFile(Const Name,Proto : String; Port : Integer; Var E
 Var
   F : Text;
   TE : TServiceEntry;
-  
+
 begin
   Result:=False;
   If FileExists (EtcPath + SServicesFile) then
@@ -1566,11 +1579,11 @@ begin
         begin
         If (Port=-1) then
           Result:=MatchNameOrAlias(Name,TE.Name,TE.Aliases)
-        else 
+        else
           Result:=(Port=TE.Port);
         If Result and (Proto<>'') then
           Result:=(Proto=TE.Protocol);
-        end; 
+        end;
       Close(f);
       If Result then
         begin
@@ -1579,20 +1592,20 @@ begin
         E.Protocol:=TE.Protocol;
         E.Aliases:=TE.Aliases;
         end;
-      end;  
+      end;
     end;
 end;
 
 Function GetServiceByName(Const Name,Proto : String; Var E : TServiceEntry) : Boolean;
 
 begin
-  Result:=FindServiceEntryInFile(Name,Proto,-1,E);  
+  Result:=FindServiceEntryInFile(Name,Proto,-1,E);
 end;
 
 Function GetServiceByPort(Port : Word;Const Proto : String; Var E : TServiceEntry) : Boolean;
 
 begin
-  Result:=FindServiceEntryInFile('',Proto,Port,E);  
+  Result:=FindServiceEntryInFile('',Proto,Port,E);
 end;
 
 { ---------------------------------------------------------------------
@@ -1640,9 +1653,288 @@ begin
   FreeHostsList(HostsList);
 end;
 
+{$else FPC_USE_LIBC}
+
+{ ---------------------------------------------------------------------
+    Implementation based on libc
+  ---------------------------------------------------------------------}
+
+Function ResolveName(const HostName : String; Addresses: pointer; MaxAddresses, Family: integer) : Integer;
+var
+  h: TAddrInfo;
+  res, ai: PAddrInfo;
+begin
+  Result:=-1;
+  if MaxAddresses = 0 then
+    exit;
+  FillChar(h, SizeOf(h), 0);
+  h.ai_family:=Family;
+  h.ai_socktype:=SOCK_STREAM;
+  res:=nil;
+  if (getaddrinfo(PChar(HostName), nil, @h, @res) <> 0) or (res = nil) then
+    exit;
+  Result:=0;
+  ai:=res;
+  repeat
+    if ai^.ai_family = Family then begin
+      if Family = AF_INET then begin
+        Move(PInetSockAddr(ai^.ai_addr)^.sin_addr, Addresses^, SizeOf(TInAddr));
+        Inc(PInAddr(Addresses));
+      end
+      else begin
+        Move(PInetSockAddr6(ai^.ai_addr)^.sin6_addr, Addresses^, SizeOf(TIn6Addr));
+        Inc(PIn6Addr(Addresses));
+      end;
+      Inc(Result);
+    end;
+    ai:=ai^.ai_next;
+  until (ai = nil) or (Result >= MaxAddresses);
+  freeaddrinfo(res);
+end;
+
+Function ResolveName(HostName : String; Var Addresses : Array of THostAddr) : Integer;
+begin
+  Result:=ResolveName(HostName, @Addresses, Length(Addresses), AF_INET);
+end;
+
+Function ResolveName6(HostName : String; Var Addresses : Array of THostAddr6) : Integer;
+begin
+  Result:=ResolveName(HostName, @Addresses, Length(Addresses), AF_INET6);
+end;
+
+Function ResolveAddress(Addr : pointer; AddrLen: integer; Var Names : Array of String) : Integer;
+var
+  n: ansistring;
+begin
+  Result:=-1;
+  if Length(Names) = 0 then
+    exit;
+  n:='';
+  SetLength(n, NI_MAXHOST);
+  if getnameinfo(Addr, AddrLen, @n[1], Length(n), nil, 0, 0) = 0 then begin
+    Names[Low(Names)]:=PAnsiChar(n);
+    Result:=1;
+  end;
+end;
+
+Function ResolveAddress(HostAddr : THostAddr; Var Addresses : Array of String) : Integer;
+var
+  a: TInetSockAddr;
+begin
+  FillChar(a, SizeOf(a), 0);
+  a.sin_family:=AF_INET;
+  a.sin_addr.s_addr:=htonl(HostAddr.s_addr);
+  Result:=ResolveAddress(@a, SizeOf(a), Addresses);
+end;
+
+Function ResolveAddress6(HostAddr: THostAddr6; var Addresses: Array of string) : Integer;
+var
+  a: TInetSockAddr6;
+begin
+  FillChar(a, SizeOf(a), 0);
+  a.sin6_family:=AF_INET6;
+  Move(HostAddr, a.sin6_addr, SizeOf(TInetSockAddr6));
+  Result:=ResolveAddress(@a, SizeOf(a), Addresses);
+end;
+
+Function ResolveHostByName(HostName : String; Var H : THostEntry) : Boolean;
+Var
+  Address : Array[1..1] of THostAddr;
+begin
+  Result:=ResolveName(HostName,Address) > 0;
+  if Result then begin
+    H.Name:=HostName;
+    H.Addr:=Address[1];
+    H.aliases:='';
+  end;
+end;
+
+Function ResolveHostByName6(Hostname : String; Var H : THostEntry6) : Boolean;
+Var
+  Address : Array[1..1] of THostAddr6;
+begin
+  Result:=ResolveName6(HostName,Address) > 0;
+  if Result then begin
+    H.Name:=HostName;
+    H.Addr:=Address[1];
+    H.aliases:='';
+  end;
+end;
+
+Function ResolveHostByAddr(HostAddr : THostAddr; Var H : THostEntry) : Boolean;
+Var
+  Names : Array[1..MaxResolveAddr] of String;
+  I,L : Integer;
+begin
+  L:=ResolveAddress(HostAddr,Names);
+  Result:=(L>0);
+  If Result then
+    begin
+    H.Name:=Names[1];
+    H.Addr:=HostAddr;
+    H.Aliases:='';
+    If (L>1) then
+      For I:=2 to L do
+        If (I=2) then
+          H.Aliases:=Names[i]
+        else
+          H.Aliases:=H.Aliases+','+Names[i];
+    end;
+end;
+
+Function ResolveHostByAddr6(HostAddr : THostAddr6; Var H : THostEntry6) : Boolean;
+Var
+  Names : Array[1..MaxResolveAddr] of String;
+  I,L : Integer;
+begin
+  L:=ResolveAddress6(HostAddr,Names);
+  Result:=(L>0);
+  If Result then
+    begin
+    H.Name:=Names[1];
+    H.Addr:=HostAddr;
+    H.Aliases:='';
+    If (L>1) then
+      For I:=2 to L do
+        If (I=2) then
+          H.Aliases:=Names[i]
+        else
+          H.Aliases:=H.Aliases+','+Names[i];
+    end;
+end;
+
+Function GetHostByName(HostName: String;  Var H : THostEntry) : boolean;
+begin
+  Result:=False;
+end;
+
+Function GetHostByAddr(Addr: THostAddr;  Var H : THostEntry) : boolean;
+begin
+  Result:=False;
+end;
+
+function PPCharToString(list: PPChar): string;
+begin
+  Result:='';
+  if list = nil then
+    exit;
+  while list^ <> nil do begin
+    if Length(Result) = 0 then
+      Result:=list^
+    else
+      Result:=Result + ',' + list^;
+    Inc(list);
+  end;
+end;
+
+Function GetNetworkByName(NetName: String; Var N : TNetworkEntry) : boolean;
+var
+  ne: PNetEnt;
+begin
+  ne:=getnetbyname(PAnsiChar(NetName));
+  Result:=ne <> nil;
+  if Result then begin
+    N.Name:=ne^.n_name;
+    N.Addr.s_addr:=ne^.n_net;
+    N.Aliases:=PPCharToString(ne^.n_aliases);
+  end;
+end;
+
+Function GetNetworkByAddr(Addr: THostAddr; Var N : TNetworkEntry) : boolean;
+var
+  ne: PNetEnt;
+begin
+  ne:=getnetbyaddr(htonl(Addr.s_addr), AF_INET);
+  Result:=ne <> nil;
+  if Result then begin
+    N.Name:=ne^.n_name;
+    N.Addr.s_addr:=ne^.n_net;
+    N.Aliases:=PPCharToString(ne^.n_aliases);
+  end;
+end;
+
+Function GetServiceByName(Const Name,Proto : String; Var E : TServiceEntry) : Boolean;
+var
+  se: PServEnt;
+begin
+  se:=getservbyname(PAnsiChar(Name), PAnsiChar(Proto));
+  Result:=se <> nil;
+  if Result then begin
+    E.Name:=se^.s_name;
+    E.Port:=NToHs(se^.s_port);
+    E.Protocol:=se^.s_proto;
+    E.Aliases:=PPCharToString(se^.s_aliases);
+  end;
+end;
+
+Function GetServiceByPort(Port : Word;Const Proto : String; Var E : TServiceEntry) : Boolean;
+var
+  se: PServEnt;
+begin
+  se:=getservbyport(htons(Port), PAnsiChar(Proto));
+  Result:=se <> nil;
+  if Result then begin
+    E.Name:=se^.s_name;
+    E.Port:=NToHs(se^.s_port);
+    E.Protocol:=se^.s_proto;
+    E.Aliases:=PPCharToString(se^.s_aliases);
+  end;
+end;
+
+Function GetProtocolByName(ProtoName: String;  Var H : TProtocolEntry) : boolean;
+var
+  pe: PProtoEnt;
+begin
+  pe:=getprotobyname(PAnsiChar(ProtoName));
+  Result:=pe <> nil;
+  if Result then begin
+    H.Name:=pe^.p_name;
+    H.Number:=pe^.p_proto;
+    h.Aliases:=PPCharToString(pe^.p_aliases);
+  end;
+end;
+
+Function GetProtocolByNumber(proto: Integer;  Var H : TProtocolEntry) : boolean;
+var
+  pe: PProtoEnt;
+begin
+  pe:=getprotobynumber(proto);
+  Result:=pe <> nil;
+  if Result then begin
+    H.Name:=pe^.p_name;
+    H.Number:=pe^.p_proto;
+    h.Aliases:=PPCharToString(pe^.p_aliases);
+  end;
+end;
+
+Procedure InitResolver; inline;
+begin
+end;
+
+Procedure DoneResolver; inline;
+begin
+end;
+
+{$endif FPC_USE_LIBC}
+
+{ ---------------------------------------------------------------------
+    Common routines
+  ---------------------------------------------------------------------}
+
+function IN6_IS_ADDR_V4MAPPED(HostAddr: THostAddr6): boolean;
+begin
+  Result :=
+   (HostAddr.u6_addr16[0] = 0) and
+   (HostAddr.u6_addr16[1] = 0) and
+   (HostAddr.u6_addr16[2] = 0) and
+   (HostAddr.u6_addr16[3] = 0) and
+   (HostAddr.u6_addr16[4] = 0) and
+   (HostAddr.u6_addr16[5] = $FFFF);
+end;
 
 Initialization
   InitResolver;
 Finalization
   DoneResolver;  
 end.
+

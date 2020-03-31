@@ -14,13 +14,11 @@ type
 
   TDemoClass = class(TExtDirectModule)
     Add: TJSONRPCHandler;
-    procedure AddExecute(Sender: TObject; const Params: TJSONData; out
-      Res: TJSONData);
+    procedure AddExecute(Sender: TObject; const Params: TJSONData; out   Res: TJSONData);
+    procedure DataModuleCreate(Sender: TObject);
   private
     { private declarations }
-  public
-    { public declarations }
-  end; 
+  end;
 
 var
   DemoClass: TDemoClass;
@@ -30,6 +28,7 @@ implementation
 {$R *.lfm}
 
 { TDemoClass }
+
 
 procedure TDemoClass.AddExecute(Sender: TObject;
   const Params: TJSONData; out Res: TJSONData);
@@ -44,6 +43,12 @@ begin
     B:=TJSONArray(Params).Items[1];
     Res:=TJSONFLoatNumber.Create(B.AsFloat+A.AsFloat);
     end;
+end;
+
+procedure TDemoClass.DataModuleCreate(Sender: TObject);
+begin
+  Kind:=wkOneShot;
+  Cors.Enabled:=True;
 end;
 
 initialization

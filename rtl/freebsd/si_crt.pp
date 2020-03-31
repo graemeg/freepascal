@@ -21,6 +21,6 @@ interface
 implementation
 
 {$i sysnr.inc}
-{$i si_crt.inc}
+{$i si_c.inc}
 
 end.

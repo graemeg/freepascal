@@ -64,18 +64,14 @@ const
 var
   mach_task_self_: mach_port_t; cvar; external;
 
-  vm_page_size: vm_size_t; cvar; external;
-
-  vm_kernel_page_size: vm_size_t; cvar; weakexternal; //__OSX_AVAILABLE_STARTING(__MAC_10_9, __IPHONE_7_0)
-
   darwin_page_size: vm_size_t;
+
+
+  function getpagesize: longint; cdecl; external;
 
   procedure darwin_init_page_size;
     begin
-      if (@vm_kernel_page_size<>nil) and (vm_kernel_page_size>vm_page_size) then
-        darwin_page_size:=vm_kernel_page_size
-      else
-        darwin_page_size:=vm_page_size;
+      darwin_page_size:=getpagesize;
     end;
 
 

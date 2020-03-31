@@ -50,6 +50,8 @@ interface
          interfaces : tfpobjectlist;
          interfacesderef : tfplist;
          flags : tgenericconstraintflags;
+         { only required while parsing }
+         fileinfo : tfileposinfo;
          constructor create;
          destructor destroy;override;
          procedure ppuload(ppufile:tcompilerppufile);

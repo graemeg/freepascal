@@ -32,7 +32,7 @@ begin
      T.IncludePath.Add('src/gba');
      with T.Dependencies do
      begin
-       AddInclude('BoyScout.inc');
+       AddInclude('boyscout.inc');
        AddInclude('core_asm.as');
        AddInclude('disc.inc');
        AddInclude('disc_io.inc');

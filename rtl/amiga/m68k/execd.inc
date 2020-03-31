@@ -23,10 +23,11 @@
   *********************************************************************
   * }
 
+{$PACKRECORDS 2}
 
 type
   PNode = ^TNode;
-  TNode = packed record
+  TNode = record
     ln_Succ: PNode;
     ln_Pred: PNode;
     ln_Type: Byte;
@@ -36,7 +37,7 @@ type
 
 type
   PMinNode = ^TMinNode;
-  TMinNode = packed record
+  TMinNode = record
     mln_Succ: PMinNode;
     mln_Pred: PMinNode;
   end;
@@ -75,7 +76,7 @@ const
 
 type
   PList = ^TList;
-  TList = packed record
+  TList = record
     lh_Head    : PNode;
     lh_Tail    : PNode;
     lh_TailPred: PNode;
@@ -85,7 +86,7 @@ type
 
 type
   PMinList = ^TMinList;
-  TMinList = packed record
+  TMinList = record
     mlh_Head    : PMinNode;
     mlh_Tail    : PMinNode;
     mlh_TailPred: PMinNode;
@@ -422,7 +423,7 @@ const
 
 type
   PResident = ^TResident;
-  TResident = packed record
+  TResident = record
     rt_MatchWord: Word;
     rt_MatchTag : PResident;
     rt_EndSkip  : Pointer;
@@ -468,14 +469,14 @@ const
 
 type
   PMemChunk = ^TMemChunk;
-  TMemChunk = packed record
+  TMemChunk = record
     nc_Next : PMemChunk;
     nc_Bytes: DWord;
   end;
 
 type
   PMemHeader = ^TMemHeader;
-  TMemHeader = packed record
+  TMemHeader = record
     mh_Node      : TNode;
     mh_Attributes: Word;
     mh_First     : PMemChunk;
@@ -486,8 +487,8 @@ type
 
 type
   PMemEntry = ^TMemEntry;
-  TMemEntry = packed record
-    me_Un: packed record
+  TMemEntry = record
+    me_Un: record
     case Byte of
       0 : (meu_Reqs: DWord);
       1 : (meu_Addr: Pointer)
@@ -497,7 +498,7 @@ type
 
 type
   PMemList = ^TMemList;
-  TMemList = packed record
+  TMemList = record
     ml_Node      : TNode;
     ml_NumEntries: Word;
     ml_ME        : array [0..0] of TMemEntry;
@@ -527,7 +528,7 @@ const
 
 type
   PMemHandlerData = ^TMemHandlerData;
-  TMemHandlerData = packed record
+  TMemHandlerData = record
     memh_RequestSize : DWord;
     memh_RequestFlags: DWord;
     memh_Flags       : DWord;
@@ -550,7 +551,7 @@ const
 
 type
   PMsgPort = ^TMsgPort;
-  TMsgPort = packed record
+  TMsgPort = record
     mp_Node   : TNode;
     mp_Flags  : Byte;
     mp_SigBit : Byte;
@@ -568,7 +569,7 @@ const
 
 type
   PMessage = ^TMessage;
-  TMessage = packed record
+  TMessage = record
     mn_Node     : TNode;
     mn_ReplyPort: PMsgPort;
     mn_Length   : Word;
@@ -583,7 +584,7 @@ type
 
 type
   PTask = ^TTask;
-  TTask = packed record
+  TTask = record
     tc_Node     : TNode;
     tc_Flags    : Byte;
     tc_State    : Byte;
@@ -655,7 +656,7 @@ const
 
 type
   PTaskTrapMessage = ^TTaskTrapMessage;
-  TTaskTrapMessage = packed record
+  TTaskTrapMessage = record
     Message: TMessage;    { * Message Header * }
     Task   : TTask;       { * connected Task * }
     Version: DWord;       { * version of the structure * }
@@ -675,7 +676,7 @@ const
 
 type
   PETask = ^TETask;
-  TETask = packed record
+  TETask = record
     Message  : TMessage;
     Parent   : PTask;
     UniqueID : DWord;
@@ -732,7 +733,7 @@ type
 
 type
   PTaskInitExtension = ^TTaskInitExtension;
-  TTaskInitExtension = packed record
+  TTaskInitExtension = record
     { * Must be filled with TRAP_PPCTASK
       * }
     Trap     : Word;
@@ -855,15 +856,15 @@ const
     * }
 type
   PStackSwapStruct = ^TStackSwapStruct;
-  TStackSwapStruct = packed record
+  TStackSwapStruct = record
     stk_Lower  : Pointer; { * Lowest byte of stack * }
-    stk_Upper  : Pointer; { * Upper end of stack (size + Lowert) * }
+    stk_Upper  : Pointer; { * Upper end of stack (size + Lowert) * }
     stk_Pointer: Pointer; { * Stack pointer at switch point * }
   end;
 
 type
   PPPCStackSwapArgs = ^TPPCStackSwapArgs;
-  TPPCStackSwapArgs = packed record
+  TPPCStackSwapArgs = record
     Args: Array[0..7] Of DWord; { * The C register arguments from gpr3..gpr11 * }
   end;
 
@@ -952,7 +953,7 @@ const
     * }
 type
   PTaskFrame68k = ^TTaskFrame68k;
-  TTaskFrame68k = packed record
+  TTaskFrame68k = record
     PC: Pointer;
     SR: Word;
     Xn: Array[0..14] Of LongInt;
@@ -976,7 +977,7 @@ const
 
 type
   PInterrupt = ^TInterrupt;
-  TInterrupt = packed record
+  TInterrupt = record
     is_Node: TNode;
     is_Data: Pointer;
     is_Code: Pointer;
@@ -984,7 +985,7 @@ type
 
 type
   PIntVector = ^TIntVector;
-  TIntVector = packed record
+  TIntVector = record
     iv_Data: Pointer;
     iv_Code: Pointer;
     iv_Node: PNode;
@@ -992,7 +993,7 @@ type
 
 type
   PSoftIntList = ^TSoftIntList;
-  TSoftIntList = packed record
+  TSoftIntList = record
     sh_List: TList;
     sh_Pad : Word;
   end;
@@ -1016,14 +1017,14 @@ const
     * }
 type
   PSemaphoreRequest = ^TSemaphoreRequest;
-  TSemaphoreRequest = packed record
+  TSemaphoreRequest = record
     sr_Link  : TMinNode;
     sr_Waiter: PTask;
   end;
 
 type
   PSignalSemaphore = ^TSignalSemaphore;
-  TSignalSemaphore = packed record
+  TSignalSemaphore = record
     ss_Link        : TNode;
     ss_NestCount   : SmallInt;
     ss_WaitQueue   : TMinList;
@@ -1034,7 +1035,7 @@ type
 
 type
   PSemaphoreMessage = ^TSemaphoreMessage;
-  TSemaphoreMessage = packed record
+  TSemaphoreMessage = record
     ssm_Message  : TMessage;
     ssm_Semaphore: PSignalSemaphore;
   end;
@@ -1079,7 +1080,7 @@ const
 
 type
   PLibrary = ^TLibrary;
-  TLibrary = packed record
+  TLibrary = record
     lib_Node    : TNode;
     lib_Flags   : Byte;
     lib_pad     : Byte;
@@ -1257,13 +1258,13 @@ const
     {
 type
   PFuncEntry = ^TFuncEntry;
-  TFuncEntry = packed record
+  TFuncEntry = record
     EmulLibEntry : TEmulLibEntry;
     OldFunction  : Pointer;  { * Needed for bookkeeping * }
   end;
 
   PFuncOldEntry = ^TFuncOldEntry;
-  TFuncOldEntry = packed record
+  TFuncOldEntry = record
     Command  : Word;
     FuncEntry: PFuncEntry;
   end;
@@ -1413,13 +1414,13 @@ const
 
 type
   PDevice = ^TDevice;
-  TDevice = packed record
+  TDevice = record
     dd_Library: TLibrary;
   end;
 
 type
   PUnit = ^TUnit;
-  TUnit = packed record
+  TUnit = record
     unit_MsgPort: TMsgPort;
     unit_flags  : Byte;
     unit_pad    : Byte;
@@ -1440,7 +1441,7 @@ const
 
 type
   PIORequest = ^TIORequest;
-  TIORequest = packed record
+  TIORequest = record
     io_Message: TMessage;
     io_Device : PDevice;
     io_Unit   : PUnit;
@@ -1451,7 +1452,7 @@ type
 
 type
   PIOStdReq = ^TIOStdReq;
-  TIOStdReq = packed record
+  TIOStdReq = record
     io_Message: TMessage;
     io_Device : PDevice;
     io_Unit   : PUnit;
@@ -1492,7 +1493,7 @@ const
 
 type
   PExecBase = ^TExecBase;
-  TExecBase = packed record
+  TExecBase = record
     LIbNode     : TLibrary;
     SoftVer     : Word;
     LowMemChkSum: SmallInt;
@@ -1705,7 +1706,7 @@ const
     * }
 type
   PExecNotifyMessage = ^TExecNotifyMessage;
-  TExecNotifyMessage = packed record
+  TExecNotifyMessage = record
     MType    : DWord;
     Flags    : DWord;
     Extra    : DWord;

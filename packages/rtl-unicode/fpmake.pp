@@ -79,6 +79,10 @@ begin
         AddInclude('collation_ru_le.inc');
       end;
     T:=P.Targets.AddImplicitUnit('collation_de.pas',CollationOSes);
+    with T.Dependencies do
+      begin
+        AddInclude('collation_de_le.inc');
+      end;
     T:=P.Targets.AddImplicitUnit('collation_ja.pas',CollationOSes);
     with T.Dependencies do
       begin

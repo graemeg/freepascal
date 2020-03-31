@@ -152,34 +152,44 @@ begin
     for other arm flavours, this cannot hurt }
 {$ifdef FPC_ARMHF}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/arm-linux-gnueabihf',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/arm-linux-gnueabihf',true);
 {$endif FPC_ARMHF}
 {$ifdef FPC_ARMEL}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/arm-linux-gnueabi',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/arm-linux-gnueabi',true);
 {$endif}
 {$endif arm}
 {$ifdef x86_64}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/x86_64-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/x86_64-linux-gnu',true);
 {$endif x86_64}
 {$ifdef i386}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/i386-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/i386-linux-gnu',true);
 {$endif i386}
 {$ifdef aarch64}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/aarch64-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/aarch64-linux-gnu',true);
 {$endif aarch64}
 {$ifdef powerpc}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/powerpc-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/powerpc-linux-gnu',true);
 {$endif powerpc}
 {$ifdef m68k}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/m68k-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/m68k-linux-gnu',true);
 {$endif m68k}
 {$ifdef mipsel}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/mipsel-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/mipsel-linux-gnu',true);
 {$endif mipsel}
 {$ifdef mips}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/mips-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/mips-linux-gnu',true);
 {$endif mips}
 {$ifdef sparc64}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/sparc64-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/sparc64-linux-gnu',true);
 {$endif sparc64}
 {$ifdef riscv32}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/riscv32-linux-gnu',true);
@@ -566,7 +576,7 @@ begin
 
       { Write sharedlibraries like -l<lib>, also add the needed dynamic linker
         here to be sure that it gets linked this is needed for glibc2 systems (PFV) }
-      if (isdll) then
+      if isdll and not linklibc then
        begin
          Add('INPUT(');
          Add(sysrootpath+info.DynamicLinker);

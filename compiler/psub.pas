@@ -1179,6 +1179,15 @@ implementation
                RedoDFA:=OptimizeInductionVariables(code);
              end;
 
+           if RedoDFA then
+             begin
+               dfabuilder.resetdfainfo(code);
+               dfabuilder.createdfainfo(code);
+               include(flags,pi_dfaavailable);
+             end;
+
+           RedoDFA:=OptimizeForLoop(code);
+
            RedoDFA:=ConvertForLoops(code) or RedoDFA;
 
            if RedoDFA then

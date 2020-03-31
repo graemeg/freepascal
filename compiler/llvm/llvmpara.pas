@@ -148,7 +148,12 @@ unit llvmpara;
         paralocs }
       while assigned(paraloc) do
         begin
-          if vo_is_funcret in parasym.varoptions then
+          if (vo_is_funcret in parasym.varoptions)
+ {$ifdef aarch64}
+             { see AArch64's tcpuparamanager.create_paraloc_info_intern() }
+             and not is_managed_type(parasym.vardef)
+ {$endif aarch64}
+             then
             paraloc^.retvalloc:=true;
           { ordinal parameters must be passed as a single paraloc }
           if (cgpara.def.typ in [orddef,enumdef,floatdef]) and

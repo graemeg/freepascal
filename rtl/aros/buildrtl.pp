@@ -16,7 +16,7 @@ unit buildrtl;
 
       typinfo, sortbase, fgl, classes,
       charset, character, getopts,
-      fpintres;
+      fpwidestring, fpintres;
 
   implementation
 

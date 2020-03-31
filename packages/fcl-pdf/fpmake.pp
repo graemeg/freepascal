@@ -56,6 +56,7 @@ begin
       begin
       Dependencies.AddUnit('fpparsettf');
       Dependencies.AddUnit('fpttfsubsetter');
+      Dependencies.AddInclude('src/fontmetrics_stdpdf.inc');
       end;
     
     // md5.ref

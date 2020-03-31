@@ -701,7 +701,7 @@ implementation
           end;
 
         { Add,Sub,Mul,Or,Xor,Andn with constant 0, 1 or -1?  }
-        if is_constintnode(right) and is_integer(left.resultdef) then
+        if is_constintnode(right) and (is_integer(left.resultdef) or is_pointer(left.resultdef)) then
           begin
             if tordconstnode(right).value = 0 then
               begin
@@ -737,11 +737,11 @@ implementation
                 end;
               end
             { try to fold
-                          op
-                         /  \
-                       op  const1
-                      /  \
-                  const2 val
+                          op                         op
+                         /  \                       /  \
+                       op  const1       or        op  const1
+                      /  \                       /  \
+                  const2 val                   val const2
             }
             else if (left.nodetype=nodetype) and
               { there might be a mul operation e.g. longint*longint => int64 in this case
@@ -776,10 +776,12 @@ implementation
                       orn,
                       muln:
                         begin
-                          hp:=right;
-                          right:=taddnode(left).left;
-                          taddnode(left).left:=hp;
+                          { keep the order of val+const else pointer operations might cause an error }
+                          hp:=taddnode(left).left;
+                          taddnode(left).left:=right;
                           left:=left.simplify(false);
+                          right:=left;
+                          left:=hp;
                           result:=GetCopyAndTypeCheck;
                         end;
                       else
@@ -790,7 +792,7 @@ implementation
             if assigned(result) then
               exit;
           end;
-        if is_constintnode(left) and is_integer(right.resultdef) then
+        if is_constintnode(left) and (is_integer(right.resultdef) or is_pointer(right.resultdef)) then
           begin
             if tordconstnode(left).value = 0 then
               begin
@@ -1268,7 +1270,7 @@ implementation
                           { full boolean evaluation is only useful if the nodes are not too complex and if no flags/jumps must be converted,
                             further, we need to know the expectloc }
                           if (node_complexity(right)<=2) and
-                            not(left.expectloc in [LOC_FLAGS,LOC_JUMP,LOC_INVALID]) and not(right.expectloc in [LOC_FLAGS,LOC_JUMP,LOC_INVALID]) then
+                            not(left.expectloc in [LOC_JUMP,LOC_INVALID]) and not(right.expectloc in [LOC_JUMP,LOC_INVALID]) then
                             begin
                               { we need to copy the whole tree to force another pass_1 }
                               include(localswitches,cs_full_boolean_eval);
@@ -3903,6 +3905,10 @@ implementation
                  ((right.nodetype = ordconstn) and
                   ispowerof2(tordconstnode(right).value,i2))) then
                begin
+                 { it could be that we are converting a 32x32 -> 64 multiplication:
+                   in this case, we have to restore the type conversion }
+                 inserttypeconv_internal(left,resultdef);
+                 inserttypeconv_internal(right,resultdef);
                  if ((left.nodetype = ordconstn) and
                      ispowerof2(tordconstnode(left).value,i)) then
                    begin

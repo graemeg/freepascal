@@ -742,11 +742,16 @@ implementation
                 register (-> paranr_result is smaller than paranr_self for that
                 platform in symconst) }
 {$ifdef aarch64}
-              if not first then
+              if not first and
+                 not is_managed_type(hp.vardef) then
                 internalerror(2015101404);
 {$endif aarch64}
               if withattributes then
-                 if first then
+                 if first
+{$ifdef aarch64}
+                    and not is_managed_type(hp.vardef)
+{$endif aarch64}
+                    then
                    encodedstr:=encodedstr+' sret noalias nocapture'
                  else
                    encodedstr:=encodedstr+' noalias nocapture';

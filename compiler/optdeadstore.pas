@@ -94,8 +94,9 @@ unit optdeadstore;
                         tstatementnode(n).statement.free;
 
                         tstatementnode(n).statement:=cnothingnode.create;
-                        Exclude(tstatementnode(n).flags, nf_pass1_done);
-                        do_firstpass(n);
+                        { do not run firstpass on n here, as it will remove the statement node
+                          and this will make foreachnodestatic process the wrong nodes as the current statement
+                          node will disappear }
                       end
                   end;
               end;

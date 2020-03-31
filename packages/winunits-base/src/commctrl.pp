@@ -75,6 +75,7 @@ CONST CommCtrlDLL = 'comctl32.dll';
 
 {$ifdef win64}
   {$define _win32}
+  {$define _win64}
 {$endif win64}
 
 {$DEFINE WIN32_WINNT=0}                     // NO XP

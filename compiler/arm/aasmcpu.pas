@@ -866,6 +866,7 @@ implementation
             A_NEG,
             A_VABS,A_VADD,A_VCVT,A_VDIV,A_VLDR,A_VMOV,A_VMUL,A_VNEG,A_VSQRT,A_VSUB,
             A_VEOR,
+            A_VMRS,A_VMSR,
             A_MRS,A_MSR:
               if opnr=0 then
                 result:=operand_write
@@ -922,7 +923,10 @@ implementation
             A_STREX:
               result:=operand_write;
             else
-              internalerror(200403151);
+              begin
+                writeln(opcode);
+                internalerror(200403151);
+              end;
           end;
       end;
 

@@ -23879,6 +23879,16 @@ begin
   El:=ResolveSimpleAliasType(El);
   if El=nil then
     RaiseInconsistency(20170409172756,El);
+  C:=El.ClassType;
+
+  if C=TPasSpecializeType then
+    begin
+    if not (El.CustomData is TPasSpecializeTypeData) then
+      RaiseInconsistency(20200220113319,El);
+    El:=TPasSpecializeTypeData(El.CustomData).SpecializedType;
+    C:=El.ClassType;
+    end;
+
   if (El=AContext.PasElement) and not Full then
     begin
     // referring to itself
@@ -23891,7 +23901,6 @@ begin
     else
       RaiseNotSupported(ErrorEl,AContext,20170905150746,'cannot typeinfo itself');
     end;
-  C:=El.ClassType;
   if C=TPasUnresolvedSymbolRef then
     begin
     if El.Name='' then

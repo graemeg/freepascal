@@ -94,7 +94,7 @@ program fpc;
          ppcbin:=extrapath+ppcbin;
          findexe:=true;
        end
-      else if FileExists(path+ppcbin) then
+      else if (path<>'') and FileExists(path+ppcbin) then
        begin
          ppcbin:=path+ppcbin;
          findexe:=true;
@@ -180,6 +180,10 @@ program fpc;
      ppcbin:='ppcrv64';
      processorname:='riscv64';
 {$endif riscv64}
+{$ifdef xtensa}
+     ppcbin:='ppcxtensa';
+     processorname:='xtensa';
+{$endif xtensa}
      versionstr:='';                      { Default is just the name }
      if ParamCount = 0 then
        begin
@@ -263,6 +267,8 @@ program fpc;
                              cpusuffix:='sparc64'
                            else if processorstr='x86_64' then
                              cpusuffix:='x64'
+                           else if processorstr='xtensa' then
+                             cpusuffix:='xtensa'
                            else
                              error('Illegal processor type "'+processorstr+'"');
 

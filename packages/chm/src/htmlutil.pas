@@ -37,13 +37,13 @@ uses
   SysUtils, strutils;
 
 { most commonly used }
-function GetVal(tag, attribname_ci: string): string;
-function GetTagName(Tag: string): string;
+function GetVal(const tag, attribname_ci: string): string;
+function GetTagName(const Tag: string): string;
 
 { less commonly used, but useful }
-function GetUpTagName(tag: string): string;
-function GetNameValPair(tag, attribname_ci: string): string;
-function GetValFromNameVal(namevalpair: string): string;
+function GetUpTagName(const tag: string): string;
+function GetNameValPair(const tag, attribname_ci: string): string;
+function GetValFromNameVal(const namevalpair: string): string;
 
 { old buggy code}
 function GetVal_JAMES(tag, attribname_ci: string): string;
@@ -64,15 +64,17 @@ begin
 end;
 
 { Return tag name, case preserved }
-function GetTagName(Tag: string): string;
+function GetTagName(const Tag: string): string;
 var
   P : Pchar;
   S : Pchar;
 begin
   P := Pchar(Tag);
-  while P^ in ['<',' ',#9] do inc(P);
+  while P^ in ['<',' ',#9] do 
+    inc(P);
   S := P;
-  while Not (P^ in [' ','>',#0]) do inc(P);
+  while Not (P^ in [' ','>',#0]) do 
+    inc(P);
   if P > S then
     Result := CopyBuffer( S, P-S)
   else
@@ -80,15 +82,17 @@ begin
 end;
 
 { Return tag name in uppercase }
-function GetUpTagName(tag: string): string;
+function GetUpTagName(const tag: string): string;
 var
   P : Pchar;
   S : Pchar;
 begin
   P := Pchar(uppercase(Tag));
-  while P^ in ['<',' ',#9] do inc(P);
+  while P^ in ['<',' ',#9] do 
+    inc(P);
   S := P;
-  while Not (P^ in [' ','>',#0]) do inc(P);
+  while Not (P^ in [' ','>',#0]) do 
+    inc(P);
   if P > S then
     Result := CopyBuffer( S, P-S)
   else
@@ -98,7 +102,7 @@ end;
 
 { Return name=value pair ignoring case of NAME, preserving case of VALUE
   Lars' fixed version }
-function GetNameValPair(tag, attribname_ci: string): string;
+function GetNameValPair(const tag, attribname_ci: string): string;
 var
   P    : Pchar;
   S    : Pchar;
@@ -157,7 +161,7 @@ end;
 
 
 { Get value of attribute, e.g WIDTH=36 -return-> 36, preserves case sensitive }
-function GetValFromNameVal(namevalpair: string): string;
+function GetValFromNameVal(const namevalpair: string): string;
 var
   P: Pchar;
   S: Pchar;
@@ -192,7 +196,7 @@ end;
 
 
 { return value of an attribute (attribname_ci), case ignored for NAME portion, but return value case is preserved } 
-function GetVal(tag, attribname_ci: string): string;
+function GetVal(const tag, attribname_ci: string): string;
 var namevalpair: string;
 begin
   // returns full name=value pair
@@ -231,7 +235,8 @@ begin
     while not (P^ in ['=',' ','>',#0]) do
       inc(P);
 
-    if (P^ = '=') then inc(P);
+    if (P^ = '=') then 
+       inc(P);
     
     while not (P^ in [' ','>',#0]) do
     begin
@@ -286,7 +291,8 @@ begin
     while not (P^ in ['=',' ','>',#0]) do
       inc(P);
 
-    if (P^ = '=') then inc(P);
+    if (P^ = '=') then 
+      inc(P);
     
     while not (P^ in [' ','>',#0]) do
     begin
@@ -302,7 +308,8 @@ begin
       while not (P^ in [C, '>', #0]) do
         inc(P);
 
-      if (P^<>'>') then inc(P); { Skip current character, except '>' }
+      if (P^<>'>') then 
+        inc(P); { Skip current character, except '>' }
       break;
     end;
 

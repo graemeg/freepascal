@@ -95,10 +95,8 @@ begin
   Result := Result and (fStream.Read(fmt, sizeof(fmt)) = sizeof(fmt));
   LEtoN(fmt);
   Result := Result and (fmt.ChunkHeader.ID = AUDIO_CHUNK_ID_fmt);
-  if Result and (fmt.Format <> 1) then begin
-    writeln('WAVE file is using compression. Sorry, cannot load. Please provide uncompressed .wav');
+  if Result and (fmt.Format <> 1) then 
     Exit(False);
-  end;
 end;
 
 function Min(a, b: Integer): Integer;
@@ -116,7 +114,6 @@ var
   p: TByteArray absolute Buffer;
   i: Integer;
 begin
-  WriteLn('[TWavReader.ReadBuf] BufferSize = ', BufferSize);
   i := 0;
   while (not EoF) and (i < bufferSize) do begin
     if ChunkPos >= DataChunk.Size then begin

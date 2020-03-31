@@ -46,7 +46,10 @@ interface
          { Should the value of the loop variable on exit be correct. }
          lnf_dont_mind_loopvar_on_exit,
          { Loop simplify flag }
-         lnf_simplify_processing);
+         lnf_simplify_processing,
+         { set if in a for loop the counter is not used, so an easier exit check
+           can be carried out }
+         lnf_counter_not_used);
        tloopflags = set of tloopflag;
 
     const
@@ -1957,7 +1960,12 @@ implementation
           end
         else
           begin
-            addstatement(ifstatements,cwhilerepeatnode.create(caddnode.create_internal(cond,left.getcopy,t1.getcopy),loopblock,false,true));
+            { is a simple comparision for equality sufficient? }
+            if do_loopvar_at_end and (lnf_backward in loopflags) and (lnf_counter_not_used in loopflags) then
+              addstatement(ifstatements,cwhilerepeatnode.create(caddnode.create_internal(equaln,left.getcopy,
+                caddnode.create_internal(subn,t1.getcopy,cordconstnode.create(1,t1.resultdef,false))),loopblock,false,true))
+            else
+              addstatement(ifstatements,cwhilerepeatnode.create(caddnode.create_internal(cond,left.getcopy,t1.getcopy),loopblock,false,true));
             addstatement(statements,ifblock);
           end;
         current_filepos:=storefilepos;

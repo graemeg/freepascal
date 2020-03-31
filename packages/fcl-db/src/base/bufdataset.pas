@@ -2607,7 +2607,10 @@ begin
     if assigned(Buffer) then
       begin
       inc(CurrBuff,FFieldBufPositions[Field.FieldNo-1]);
-      Move(CurrBuff^, Buffer^, GetFieldSize(FieldDefs[Field.FieldNo-1]));
+      if Field.IsBlob then // we need GetFieldSize for BLOB but Field.DataSize for others - #36747
+        Move(CurrBuff^, Buffer^, GetFieldSize(FieldDefs[Field.FieldNo-1]))
+      else
+        Move(CurrBuff^, Buffer^, Field.DataSize);
       end;
     Result := True;
     end
@@ -2649,7 +2652,10 @@ begin
     inc(CurrBuff,FFieldBufPositions[Field.FieldNo-1]);
     if assigned(buffer) then
       begin
-      Move(Buffer^, CurrBuff^, GetFieldSize(FieldDefs[Field.FieldNo-1]));
+      if Field.IsBlob then // we need GetFieldSize for BLOB but Field.DataSize for others - #36747
+        Move(Buffer^, CurrBuff^, GetFieldSize(FieldDefs[Field.FieldNo-1]))
+      else
+        Move(Buffer^, CurrBuff^, Field.DataSize);
       unSetFieldIsNull(NullMask,Field.FieldNo-1);
       end
     else

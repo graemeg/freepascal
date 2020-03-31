@@ -1,15 +1,55 @@
 in_x86_movss
-,in_x86_movaps
-,in_x86_movups
+,in_x86_movapd
+,in_x86_movhpd
+,in_x86_movlpd
+,in_x86_movupd
+,in_x86_movsd_from_mem
+,in_x86_movd_from_mem
+,in_x86_pmovsxbd_from_mem
+,in_x86_pmovzxbd_from_mem
+,in_x86_pmovsxwq_from_mem
+,in_x86_pmovzxwq_from_mem
 : //out r0:xmm;r1:ptr32;
   begin
     CheckParameters(1);
     resultdef:=x86_m128type;
   end;
+in_x86_movaps
+,in_x86_movups
+,in_x86_sqrtpd_from_mem
+,in_x86_movdqa_from_mem
+,in_x86_movdqu_from_mem
+,in_x86_movsldup_from_mem
+,in_x86_movshdup_from_mem
+,in_x86_lddqu
+,in_x86_pabsb_from_mem
+,in_x86_pabsw_from_mem
+,in_x86_pabsd_from_mem
+,in_x86_movntdqa
+: //out r0:xmm;r1:ptr128;
+  begin
+    CheckParameters(1);
+    resultdef:=x86_m128type;
+  end;
 in_x86_movss_to_mem
-,in_x86_movaps_to_mem
-,in_x86_movups_to_mem
+,in_x86_movapd_to_mem
+,in_x86_movntpd_to_mem
+,in_x86_movhpd_to_mem
+,in_x86_movlpd_to_mem
+,in_x86_movupd_to_mem
+,in_x86_movsd_to_mem
+,in_x86_movd_to_mem
 : //r0:ptr32;r1:xmm;
+  begin
+    CheckParameters(2);
+    resultdef:=voidtype;
+  end;
+in_x86_movaps_to_mem
+,in_x86_movups_to_mem
+,in_x86_movdqa
+,in_x86_movdqu
+,in_x86_movntdq
+: //r0:ptr128;r1:xmm;
   begin
     CheckParameters(2);
     resultdef:=voidtype;
@@ -28,10 +68,31 @@ in_x86_movss_from_val
   end;
 in_x86_movlps
 ,in_x86_movhps
-: //var r0:xmm;r1:ptr32;
+,in_x86_cvtpi2ps_from_mem
+,in_x86_addsd_from_mem
+,in_x86_divsd_from_mem
+,in_x86_maxsd_from_mem
+,in_x86_minsd_from_mem
+,in_x86_mulsd_from_mem
+,in_x86_subsd_from_mem
+,in_x86_comisd_from_mem
+,in_x86_ucomisd_from_mem
+,in_x86_cvtdq2pd_from_mem
+,in_x86_cvtpi2pd_from_mem
+,in_x86_cvtps2pd_from_mem
+,in_x86_cvtsd2ss_from_mem
+: //var r0:xmm;r1:ptr64;
   begin
     CheckParameters(2);
     resultdef:=x86_m128type;
+  end;
+in_x86_movlps_to_mem
+,in_x86_movhps_to_mem
+,in_x86_movq_to_mem
+: //r0:ptr64;r1:xmm;
+  begin
+    CheckParameters(2);
+    resultdef:=voidtype;
   end;
 in_x86_movlhps
 ,in_x86_movhlps
@@ -59,15 +120,272 @@ in_x86_movlhps
 ,in_x86_andnps
 ,in_x86_unpckhps
 ,in_x86_unpcklps
-,in_x86_pmulhuw
-,in_x86_psadbw
-,in_x86_pavgb
-,in_x86_pavgw
-,in_x86_pmaxub
-,in_x86_pminub
-,in_x86_pmaxsw
-,in_x86_pminsw
+,in_x86_addpd
+,in_x86_addsd
+,in_x86_divpd
+,in_x86_divsd
+,in_x86_maxpd
+,in_x86_maxsd
+,in_x86_minpd
+,in_x86_minsd
+,in_x86_mulpd
+,in_x86_mulsd
+,in_x86_subpd
+,in_x86_subsd
+,in_x86_andpd
+,in_x86_andnpd
+,in_x86_orpd
+,in_x86_xorpd
+,in_x86_comisd
+,in_x86_ucomisd
+,in_x86_unpckhpd
+,in_x86_unpcklpd
+,in_x86_cvtdq2pd
+,in_x86_cvtdq2ps
+,in_x86_cvtpd2dq
+,in_x86_cvtpd2ps
+,in_x86_cvtps2dq
+,in_x86_cvtps2pd
+,in_x86_cvtsd2ss
+,in_x86_cvtss2sd
+,in_x86_cvttpd2dq
+,in_x86_cvttps2dq
+,in_x86_packssdw
+,in_x86_packsswb
+,in_x86_packuswb
+,in_x86_paddb
+,in_x86_paddw
+,in_x86_paddd
+,in_x86_paddq
+,in_x86_paddsb
+,in_x86_paddsw
+,in_x86_paddusb
+,in_x86_paddusw
+,in_x86_pand
+,in_x86_pandn
+,in_x86_por
+,in_x86_pxor
+,in_x86_pcmpeqb
+,in_x86_pcmpeqw
+,in_x86_pcmpeqd
+,in_x86_pcmpgtb
+,in_x86_pcmpgtw
+,in_x86_pcmpgtd
+,in_x86_pmullw
+,in_x86_pmulhw
+,in_x86_pmulhuw_sse2
+,in_x86_pmuludq
+,in_x86_psllw_sse2
+,in_x86_pslld_sse2
+,in_x86_psllq_sse2
+,in_x86_psrad_sse2
+,in_x86_psraw_sse2
+,in_x86_psrlw_sse2
+,in_x86_psrld_sse2
+,in_x86_psrlq_sse2
+,in_x86_psubb
+,in_x86_psubw
+,in_x86_psubd
+,in_x86_psubq
+,in_x86_psubsb
+,in_x86_psubsw
+,in_x86_pmaddwd
+,in_x86_psubusb
+,in_x86_psubusw
+,in_x86_punpckhbw
+,in_x86_punpckhwd
+,in_x86_punpckhdq
+,in_x86_punpcklbw
+,in_x86_punpcklwd
+,in_x86_punpckldq
+,in_x86_pavgb_sse2
+,in_x86_pavgw_sse2
+,in_x86_pminub_sse2
+,in_x86_pminsw_sse2
+,in_x86_pmaxsw_sse2
+,in_x86_pmaxub_sse2
+,in_x86_psadbw_sse2
+,in_x86_punpckhqdq
+,in_x86_punpcklqdq
+,in_x86_addsubps
+,in_x86_addsubpd
+,in_x86_haddps
+,in_x86_haddpd
+,in_x86_hsubps
+,in_x86_hsubpd
+,in_x86_psignb
+,in_x86_psignw
+,in_x86_psignd
+,in_x86_pshufb
+,in_x86_pmulhrsw
+,in_x86_pmaddubsw
+,in_x86_phsubw
+,in_x86_phsubsw
+,in_x86_phsubd
+,in_x86_phaddsw
+,in_x86_phaddw
+,in_x86_phaddd
+,in_x86_phminposuw
+,in_x86_pmulld
+,in_x86_pmuldq
+,in_x86_pminsb
+,in_x86_pminuw
+,in_x86_pminsd
+,in_x86_pminud
+,in_x86_pmaxsb
+,in_x86_pmaxuw
+,in_x86_pmaxsd
+,in_x86_pmaxud
+,in_x86_ptest
+,in_x86_pcmpeqq
+,in_x86_packusdw
+,in_x86_pcmpgtq
 : //var r0:xmm;r1:xmm;
+  begin
+    CheckParameters(2);
+    resultdef:=x86_m128type;
+  end;
+in_x86_addss_from_mem
+,in_x86_subss_from_mem
+,in_x86_mulss_from_mem
+,in_x86_divss_from_mem
+,in_x86_rcpss_from_mem
+,in_x86_sqrtss_from_mem
+,in_x86_maxss_from_mem
+,in_x86_minss_from_mem
+,in_x86_rsqrtss_from_mem
+,in_x86_cvtsi2ss_from_mem
+,in_x86_cvtsi2sd_from_mem
+,in_x86_cvtss2sd_from_mem
+: //var r0:xmm;r1:ptr32;
+  begin
+    CheckParameters(2);
+    resultdef:=x86_m128type;
+  end;
+in_x86_addps_from_mem
+,in_x86_subps_from_mem
+,in_x86_mulps_from_mem
+,in_x86_divps_from_mem
+,in_x86_rcpps_from_mem
+,in_x86_sqrtps_from_mem
+,in_x86_maxps_from_mem
+,in_x86_minps_from_mem
+,in_x86_rsqrtps_from_mem
+,in_x86_andps_from_mem
+,in_x86_orps_from_mem
+,in_x86_xorps_from_mem
+,in_x86_andnps_from_mem
+,in_x86_unpckhps_from_mem
+,in_x86_unpcklps_from_mem
+,in_x86_addpd_from_mem
+,in_x86_divpd_from_mem
+,in_x86_maxpd_from_mem
+,in_x86_minpd_from_mem
+,in_x86_mulpd_from_mem
+,in_x86_subpd_from_mem
+,in_x86_andpd_from_mem
+,in_x86_andnpd_from_mem
+,in_x86_orpd_from_mem
+,in_x86_xorpd_from_mem
+,in_x86_unpckhpd_from_mem
+,in_x86_unpcklpd_from_mem
+,in_x86_cvtdq2ps_from_mem
+,in_x86_cvtpd2dq_from_mem
+,in_x86_cvtpd2ps_from_mem
+,in_x86_cvtps2dq_from_mem
+,in_x86_cvttpd2dq_from_mem
+,in_x86_cvttps2dq_from_mem
+,in_x86_packssdw_from_mem
+,in_x86_packsswb_from_mem
+,in_x86_packuswb_from_mem
+,in_x86_paddb_from_mem
+,in_x86_paddw_from_mem
+,in_x86_paddd_from_mem
+,in_x86_paddq_from_mem
+,in_x86_paddsb_from_mem
+,in_x86_paddsw_from_mem
+,in_x86_paddusb_from_mem
+,in_x86_paddusw_from_mem
+,in_x86_pand_from_mem
+,in_x86_pandn_from_mem
+,in_x86_por_from_mem
+,in_x86_pxor_from_mem
+,in_x86_pcmpeqb_from_mem
+,in_x86_pcmpeqw_from_mem
+,in_x86_pcmpeqd_from_mem
+,in_x86_pcmpgtb_from_mem
+,in_x86_pcmpgtw_from_mem
+,in_x86_pcmpgtd_from_mem
+,in_x86_pmullw_from_mem
+,in_x86_pmulhw_from_mem
+,in_x86_pmulhuw_from_mem
+,in_x86_pmuludq_from_mem
+,in_x86_psllw_from_mem
+,in_x86_pslld_from_mem
+,in_x86_psllq_from_mem
+,in_x86_psrad_from_mem
+,in_x86_psraw_from_mem
+,in_x86_psrlw_from_mem
+,in_x86_psrld_from_mem
+,in_x86_psrlq_from_mem
+,in_x86_psubb_from_mem
+,in_x86_psubw_from_mem
+,in_x86_psubd_from_mem
+,in_x86_psubq_from_mem
+,in_x86_psubsb_from_mem
+,in_x86_psubsw_from_mem
+,in_x86_pmaddwd_from_mem
+,in_x86_psubusb_from_mem
+,in_x86_psubusw_from_mem
+,in_x86_punpckhbw_from_mem
+,in_x86_punpckhwd_from_mem
+,in_x86_punpckhdq_from_mem
+,in_x86_punpcklbw_from_mem
+,in_x86_punpcklwd_from_mem
+,in_x86_punpckldq_from_mem
+,in_x86_pavgb_from_mem
+,in_x86_pavgw_from_mem
+,in_x86_pminub_from_mem
+,in_x86_pminsw_from_mem
+,in_x86_pmaxsw_from_mem
+,in_x86_pmaxub_from_mem
+,in_x86_psadbw_from_mem
+,in_x86_punpckhqdq_from_mem
+,in_x86_punpcklqdq_from_mem
+,in_x86_addsubps_from_mem
+,in_x86_addsubpd_from_mem
+,in_x86_haddps_from_mem
+,in_x86_haddpd_from_mem
+,in_x86_hsubps_from_mem
+,in_x86_hsubpd_from_mem
+,in_x86_psignb_from_mem
+,in_x86_psignw_from_mem
+,in_x86_psignd_from_mem
+,in_x86_pshufb_from_mem
+,in_x86_pmulhrsw_from_mem
+,in_x86_pmaddubsw_from_mem
+,in_x86_phsubw_from_mem
+,in_x86_phsubsw_from_mem
+,in_x86_phsubd_from_mem
+,in_x86_phaddsw_from_mem
+,in_x86_phaddw_from_mem
+,in_x86_phaddd_from_mem
+,in_x86_phminposuw_from_mem
+,in_x86_pmulld_from_mem
+,in_x86_pmuldq_from_mem
+,in_x86_pminsb_from_mem
+,in_x86_pminuw_from_mem
+,in_x86_pminsd_from_mem
+,in_x86_pminud_from_mem
+,in_x86_pmaxsb_from_mem
+,in_x86_pmaxuw_from_mem
+,in_x86_pmaxsd_from_mem
+,in_x86_pmaxud_from_mem
+,in_x86_ptest_from_mem
+,in_x86_pcmpeqq_from_mem
+,in_x86_packusdw_from_mem
+,in_x86_pcmpgtq_from_mem
+: //var r0:xmm;r1:ptr128;
   begin
     CheckParameters(2);
     resultdef:=x86_m128type;
@@ -75,25 +393,76 @@ in_x86_movlhps
 in_x86_cmpss
 ,in_x86_cmpps
 ,in_x86_shufps
+,in_x86_cmppd
+,in_x86_cmpsd
+,in_x86_shufpd
+,in_x86_palignr
+,in_x86_dpps
+,in_x86_dppd
+,in_x86_blendps
+,in_x86_blendpd
+,in_x86_insertps
+,in_x86_mpsadbw
+,in_x86_pblendw
+,in_x86_pcmpestri
+,in_x86_pcmpestrm
+,in_x86_pcmpistri
+,in_x86_pcmpistrm
 : //var r0:xmm;r1:xmm;imm:i32;
   begin
     CheckParameters(3);
     resultdef:=x86_m128type;
   end;
+in_x86_cmpss_from_mem
+,in_x86_insertps_from_mem
+,in_x86_pinsrd_from_mem
+: //var r0:xmm;r1:ptr32;imm:i32;
+  begin
+    CheckParameters(3);
+    resultdef:=x86_m128type;
+  end;
+in_x86_cmpps_from_mem
+,in_x86_shufps_from_mem
+,in_x86_cmppd_from_mem
+,in_x86_shufpd_from_mem
+,in_x86_palignr_from_mem
+,in_x86_dpps_from_mem
+,in_x86_dppd_from_mem
+,in_x86_blendps_from_mem
+,in_x86_blendpd_from_mem
+,in_x86_mpsadbw_from_mem
+,in_x86_pblendw_from_mem
+,in_x86_pcmpestri_from_mem
+,in_x86_pcmpestrm_from_mem
+,in_x86_pcmpistri_from_mem
+,in_x86_pcmpistrm_from_mem
+: //var r0:xmm;r1:ptr128;imm:i32;
+  begin
+    CheckParameters(3);
+    resultdef:=x86_m128type;
+  end;
 in_x86_cvtsi2ss
-: //var r0:xmm;r1:r32;
+: //var r0:xmm;r1:reg;
   begin
     CheckParameters(2);
     resultdef:=x86_m128type;
   end;
 in_x86_cvtss2si
 ,in_x86_cvttss2si
-: //out r0:r32;r1:xmm;
+: //out r0:reg;r1:xmm;
   begin
     CheckParameters(1);
-    resultdef:=u32inttype;
+    resultdef:=uinttype;
+  end;
+in_x86_cvtss2si_from_mem
+,in_x86_cvttss2si_from_mem
+: //out r0:reg;r1:ptr32;
+  begin
+    CheckParameters(1);
+    resultdef:=uinttype;
   end;
 in_x86_cvtpi2ps
+,in_x86_cvtpi2pd
 : //var r0:xmm;r1:mm;
   begin
     CheckParameters(2);
@@ -101,7 +470,15 @@ in_x86_cvtpi2ps
   end;
 in_x86_cvtps2pi
 ,in_x86_cvttps2pi
+,in_x86_movdq2q
 : //out r0:mm;r1:xmm;
+  begin
+    CheckParameters(1);
+    resultdef:=x86_m64type;
+  end;
+in_x86_cvtps2pi_from_mem
+,in_x86_cvttps2pi_from_mem
+: //out r0:mm;r1:ptr64;
   begin
     CheckParameters(1);
     resultdef:=x86_m64type;
@@ -119,23 +496,36 @@ in_x86_pmulhuw_mmx
     CheckParameters(2);
     resultdef:=x86_m64type;
   end;
-in_x86_pextrw_mmx
-: //out r0:r32;r1:mm;imm:i32;
+in_x86_pmulhuw_mmx_from_mem
+,in_x86_psadbw_mmx_from_mem
+,in_x86_pavgb_mmx_from_mem
+,in_x86_pavgw_mmx_from_mem
+,in_x86_pmaxub_mmx_from_mem
+,in_x86_pminub_mmx_from_mem
+,in_x86_pmaxsw_mmx_from_mem
+,in_x86_pminsw_mmx_from_mem
+: //var r0:mm;r1:ptr64;
   begin
     CheckParameters(2);
-    resultdef:=u32inttype;
+    resultdef:=x86_m64type;
+  end;
+in_x86_pextrw_mmx
+: //out r0:reg;r1:mm;imm:i32;
+  begin
+    CheckParameters(2);
+    resultdef:=uinttype;
   end;
 in_x86_pinsrw_mmx
-: //var r0:mm;r1:r32;imm:i32;
+: //var r0:mm;r1:reg;imm:i32;
   begin
     CheckParameters(3);
     resultdef:=x86_m64type;
   end;
-in_x86_pmovmskb
-: //out r0:r32;r1:mm;
+in_x86_pmovmskb_mmx
+: //out r0:reg;r1:mm;
   begin
     CheckParameters(1);
-    resultdef:=u32inttype;
+    resultdef:=uinttype;
   end;
 in_x86_pshufw
 : //out r0:mm;r1:mm;imm:i32;
@@ -143,15 +533,293 @@ in_x86_pshufw
     CheckParameters(2);
     resultdef:=x86_m64type;
   end;
-in_x86_pextrw
+in_x86_pshufw_from_mem
+: //out r0:mm;r1:ptr64;imm:i32;
+  begin
+    CheckParameters(2);
+    resultdef:=x86_m64type;
+  end;
+in_x86_movmskpd
+,in_x86_movd_to_reg
+: //out r0:r32;r1:xmm;
+  begin
+    CheckParameters(1);
+    resultdef:=u32inttype;
+  end;
+in_x86_movsd_to_val
+: //out r0:f64;r1:xmm;
+  begin
+    CheckParameters(1);
+    resultdef:=s64floattype;
+  end;
+in_x86_movsd_from_val
+: //out r0:xmm;r1:f64;
+  begin
+    CheckParameters(1);
+    resultdef:=x86_m128type;
+  end;
+in_x86_sqrtpd
+,in_x86_sqrtsd
+,in_x86_movddup
+,in_x86_movsldup
+,in_x86_movshdup
+,in_x86_pabsb
+,in_x86_pabsw
+,in_x86_pabsd
+,in_x86_pmovsxbw
+,in_x86_pmovzxbw
+,in_x86_pmovsxbd
+,in_x86_pmovzxbd
+,in_x86_pmovsxbq
+,in_x86_pmovzxbq
+,in_x86_pmovsxwd
+,in_x86_pmovzxwd
+,in_x86_pmovsxwq
+,in_x86_pmovzxwq
+,in_x86_pmovsxdq
+,in_x86_pmovzxdq
+: //out r0:xmm;r1:xmm;
+  begin
+    CheckParameters(1);
+    resultdef:=x86_m128type;
+  end;
+in_x86_sqrtsd_from_mem
+,in_x86_movq_from_mem
+,in_x86_movddup_from_mem
+,in_x86_pmovsxbw_from_mem
+,in_x86_pmovzxbw_from_mem
+,in_x86_pmovsxwd_from_mem
+,in_x86_pmovzxwd_from_mem
+,in_x86_pmovsxdq_from_mem
+,in_x86_pmovzxdq_from_mem
+: //out r0:xmm;r1:ptr64;
+  begin
+    CheckParameters(1);
+    resultdef:=x86_m128type;
+  end;
+in_x86_cmpsd_from_mem
+: //var r0:xmm;r1:ptr64;imm:i32;
+  begin
+    CheckParameters(3);
+    resultdef:=x86_m128type;
+  end;
+in_x86_cvtpd2pi
+,in_x86_cvttpd2pi
+: //var r0:mm;r1:xmm;
+  begin
+    CheckParameters(2);
+    resultdef:=x86_m64type;
+  end;
+in_x86_cvtpd2pi_from_mem
+,in_x86_cvttpd2pi_from_mem
+: //var r0:mm;r1:ptr128;
+  begin
+    CheckParameters(2);
+    resultdef:=x86_m64type;
+  end;
+in_x86_cvtsd2si
+,in_x86_cvttsd2si
+: //var r0:sreg;r1:xmm;
+  begin
+    CheckParameters(2);
+    resultdef:=sinttype;
+  end;
+in_x86_cvtsd2si_from_mem
+,in_x86_cvttsd2si_from_mem
+: //var r0:sreg;r1:ptr64;
+  begin
+    CheckParameters(2);
+    resultdef:=sinttype;
+  end;
+in_x86_cvtsi2sd
+: //var r0:xmm;r1:r32;
+  begin
+    CheckParameters(2);
+    resultdef:=x86_m128type;
+  end;
+in_x86_movd_from_reg
+: //out r0:xmm;r1:r32;
+  begin
+    CheckParameters(1);
+    resultdef:=x86_m128type;
+  end;
+in_x86_pmovmskb
+: //var r0:r32;r1:xmm;
+  begin
+    CheckParameters(2);
+    resultdef:=u32inttype;
+  end;
+in_x86_pextrw_sse2
+: //out r0:r16;r1:xmm;imm:i32;
+  begin
+    CheckParameters(2);
+    resultdef:=u16inttype;
+  end;
+in_x86_pinsrw_sse2
+,in_x86_pinsrb
+,in_x86_pinsrd
+: //var r0:xmm;r1:r32;imm:i32;
+  begin
+    CheckParameters(3);
+    resultdef:=x86_m128type;
+  end;
+in_x86_pinsrw_from_mem
+: //var r0:xmm;r1:ptr16;imm:i32;
+  begin
+    CheckParameters(3);
+    resultdef:=x86_m128type;
+  end;
+in_x86_psllw_sse2_imm
+,in_x86_pslld_sse2_imm
+,in_x86_psllq_sse2_imm
+,in_x86_psrad_sse2_imm
+,in_x86_psraw_sse2_imm
+,in_x86_psrlw_sse2_imm
+,in_x86_psrld_sse2_imm
+,in_x86_psrlq_sse2_imm
+,in_x86_pslldq
+,in_x86_psrldq
+: //var r0:xmm;imm:i32;
+  begin
+    CheckParameters(2);
+    resultdef:=x86_m128type;
+  end;
+in_x86_maskmovdqu
+: //addr:edi_ptr;r0:xmm;r1:xmm;
+  begin
+    CheckParameters(3);
+    resultdef:=voidtype;
+  end;
+in_x86_movq2dq
+: //out r0:xmm;r1:mm;
+  begin
+    CheckParameters(1);
+    resultdef:=x86_m128type;
+  end;
+in_x86_pshufhw
+,in_x86_pshuflw
+,in_x86_pshufd
+,in_x86_roundps
+,in_x86_roundss
+,in_x86_roundpd
+,in_x86_roundsd
+: //out r0:xmm;r1:xmm;imm:i32;
+  begin
+    CheckParameters(2);
+    resultdef:=x86_m128type;
+  end;
+in_x86_pshufhw_from_mem
+,in_x86_pshuflw_from_mem
+,in_x86_pshufd_from_mem
+,in_x86_roundps_from_mem
+,in_x86_roundpd_from_mem
+: //out r0:xmm;r1:ptr128;imm:i32;
+  begin
+    CheckParameters(2);
+    resultdef:=x86_m128type;
+  end;
+in_x86_blendvps
+,in_x86_blendvpd
+,in_x86_pblendvb
+: //var r0:xmm;r1:xmm;mask:implicit_xmm0;
+  begin
+    CheckParameters(3);
+    resultdef:=x86_m128type;
+  end;
+in_x86_blendvps_from_mem
+,in_x86_blendvpd_from_mem
+,in_x86_pblendvb_from_mem
+: //var r0:xmm;r1:ptr128;mask:implicit_xmm0;
+  begin
+    CheckParameters(3);
+    resultdef:=x86_m128type;
+  end;
+in_x86_roundss_from_mem
+: //out r0:xmm;r1:ptr32;imm:i32;
+  begin
+    CheckParameters(2);
+    resultdef:=x86_m128type;
+  end;
+in_x86_roundsd_from_mem
+: //out r0:xmm;r1:ptr64;imm:i32;
+  begin
+    CheckParameters(2);
+    resultdef:=x86_m128type;
+  end;
+in_x86_extractps
+,in_x86_pextrd
 : //out r0:r32;r1:xmm;imm:i32;
   begin
     CheckParameters(2);
     resultdef:=u32inttype;
   end;
-in_x86_pinsrw
-: //var r0:xmm;r1:r32;imm:i32;
+in_x86_extractps_from_mem
+,in_x86_pextrd_to_mem
+: //r0:ptr32;r1:xmm;imm:i32;
   begin
     CheckParameters(3);
+    resultdef:=voidtype;
+  end;
+in_x86_pinsrb_from_mem
+: //var r0:xmm;r1:ptr8;imm:i32;
+  begin
+    CheckParameters(3);
+    resultdef:=x86_m128type;
+  end;
+{$ifdef X86_64}
+in_x86_pinsrq
+: //var r0:xmm;r1:reg;imm:i32;
+  begin
+    CheckParameters(3);
+    resultdef:=x86_m128type;
+  end;
+{$endif}
+{$ifdef X86_64}
+in_x86_pinsrq_from_mem
+: //var r0:xmm;r1:ptr64;imm:i32;
+  begin
+    CheckParameters(3);
+    resultdef:=x86_m128type;
+  end;
+{$endif}
+in_x86_pextrb
+: //out r0:r8;r1:xmm;imm:i32;
+  begin
+    CheckParameters(2);
+    resultdef:=u8inttype;
+  end;
+in_x86_pextrb_to_mem
+: //r0:ptr8;r1:xmm;imm:i32;
+  begin
+    CheckParameters(3);
+    resultdef:=voidtype;
+  end;
+in_x86_pextrw_sse41_to_mem
+: //r0:ptr16;r1:xmm;imm:i32;
+  begin
+    CheckParameters(3);
+    resultdef:=voidtype;
+  end;
+{$ifdef X86_64}
+in_x86_pextrq
+: //out r0:r32;r1:xmm;imm:i32;
+  begin
+    CheckParameters(2);
+    resultdef:=u32inttype;
+  end;
+{$endif}
+{$ifdef X86_64}
+in_x86_pextrq_to_mem
+: //r0:ptr64;r1:xmm;imm:i32;
+  begin
+    CheckParameters(3);
+    resultdef:=voidtype;
+  end;
+{$endif}
+in_x86_pmovsxbq_from_mem
+,in_x86_pmovzxbq_from_mem
+: //out r0:xmm;r1:ptr16;
+  begin
+    CheckParameters(1);
     resultdef:=x86_m128type;
   end;

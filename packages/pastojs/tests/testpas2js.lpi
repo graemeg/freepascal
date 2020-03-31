@@ -72,6 +72,7 @@
       <Unit7>
         <Filename Value="tcfiler.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="TCFiler"/>
       </Unit7>
       <Unit8>
         <Filename Value="../src/pas2jsfiler.pp"/>

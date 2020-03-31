@@ -19,7 +19,7 @@ begin
   if length(ADrive)=0 then
     Result:=0
   else
-    Result := (Ord(ADrive[1]))-64;
+    Result := Ord(UpCase(ADrive[1]))-64;
 end;
 
 {$push}

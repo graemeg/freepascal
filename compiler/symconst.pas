@@ -124,10 +124,10 @@ const
   paranr_blockselfpara = 1;
   paranr_parentfp_delphi_cc_leftright = 2;
 {$if defined(aarch64) and defined(llvm)}
-  { for AArch64 on LLVM, the "sret" parameter
-    must always be the first -> give it a higher number; can't do it for other
-    platforms, because that would change the register assignment/parameter order
-    and the current one is presumably Delphi-compatible }
+  { for AArch64 on LLVM, the "sret" parameter must always be the first
+    (it gets passed in a dedicated register, so it won't shift the register
+     assignments) -> give it a lower number; can't do it for other platforms,
+     because that would change the register assignment/parameter order }
   paranr_result = 2;
   paranr_parentfp = 3;
   paranr_self = 4;
@@ -136,12 +136,19 @@ const
   paranr_self = 3;
   paranr_result = 4;
 {$endif}
-  paranr_vmt = 5;
+  { pointers to managed result parameters must always be passed in the same way as the first regular
+    parameter, regardless of ABI conventions, because the RTL expects the two following declarations
+    to be handled in the same way:
+      function f: com_interface;
+      procedure p(out o: obj);
+  }
+  paranr_result_managed = 5;
+  paranr_vmt = 6;
 
   { the implicit parameters for Objective-C methods need to come
     after the hidden result parameter }
-  paranr_objc_self = 5;
-  paranr_objc_cmd = 6;
+  paranr_objc_self = 7;
+  paranr_objc_cmd = 8;
 
   { Required to support variations of syscalls on Amiga-likes }
   paranr_syscall_lib_first   = 9;             { for basefirst on MorphOS/ppc and AmigaOS4/ppc }

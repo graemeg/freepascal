@@ -758,6 +758,7 @@ begin
       HomepageURL:=P.HomepageURL;
       DownloadURL:=P.DownloadURL;
       SourcePath:=P.SourcePath;
+      License:=P.License;
       FPMakeOptionsString:=P.FPMakeOptionsString;
       OSes:=P.OSes;
       CPUs:=P.CPUs;

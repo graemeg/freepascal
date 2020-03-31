@@ -13,7 +13,7 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('vcl-compat');
-    P.ShortName:='vclcomp';
+    P.ShortName:='vcl';
     P.Author := 'Michael Van Canneyt';
     P.License := 'LGPL with modification';
     P.HomepageURL := 'www.freepascal.org';

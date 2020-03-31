@@ -2136,9 +2136,9 @@ function AllocPooled(poolHeader: Pointer  location 'a0';
                      memSize   : Cardinal location 'd0'): Pointer;
 SysCall MOS_ExecBase 708;
 
-function FreePooled(poolHeader: Pointer  location 'a0';
-                    memory    : Pointer  location 'a1';
-                    memSize   : Cardinal location 'd0'): Pointer;
+procedure FreePooled(poolHeader: Pointer  location 'a0';
+                     memory    : Pointer  location 'a1';
+                     memSize   : Cardinal location 'd0');
 SysCall MOS_ExecBase 714;
 
 function AttemptSemaphoreShared(sigSem: pSignalSemaphore location 'a0'): Cardinal;

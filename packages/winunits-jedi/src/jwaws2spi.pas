@@ -66,11 +66,11 @@ uses
  * Ensure structures are packed consistently.
  *)
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 {$ALIGN OFF}
 {$ELSE}
 {$ALIGN ON}
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 const
   WSPDESCRIPTION_LEN = 255;
@@ -457,7 +457,7 @@ type
   {$EXTERNALSYM LPWSCENUMPROTOCOLS}
   TWscEnumProtocols = LPWSCENUMPROTOCOLS;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 //
 // 64-bit architectures capable of running 32-bit code have
@@ -468,7 +468,7 @@ type
 function WSCEnumProtocols32(lpiProtocols: PINT; lpProtocolBuffer: LPWSAPROTOCOL_INFOW; lpdwBufferLength: LPDWORD; lpErrno: PINT): Integer; stdcall;
 {$EXTERNALSYM WSCEnumProtocols32}
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 function WSCDeinstallProvider(const lpProviderId: TGUID; var lpErrno: Integer): Integer; stdcall;
 {$EXTERNALSYM WSCDeinstallProvider}
@@ -478,12 +478,12 @@ type
   {$EXTERNALSYM LPWSCDEINSTALLPROVIDER}
   TWscDeinstallProvider = LPWSCDEINSTALLPROVIDER;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 function WSCDeinstallProvider32(lpProviderId: PGUID; lpErrno: PINT): Integer; stdcall;
 {$EXTERNALSYM WSCDeinstallProvider32}
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 function WSCInstallProvider(const lpProviderId: TGUID; lpszProviderDllPath: PWCHAR;
   lpProtocolInfoList: LPWSAPROTOCOL_INFOW; dwNumberOfEntries: DWORD; var lpErrno: Integer): Integer; stdcall;
@@ -495,7 +495,7 @@ type
   {$EXTERNALSYM LPWSCINSTALLPROVIDER}
   TWscInstallProvider = LPWSCINSTALLPROVIDER;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 //
 // This API manipulates 64-bit and 32-bit catalogs simulteneously.
@@ -507,7 +507,7 @@ function WSCInstallProvider64_32(lpProviderId: PGUID; lpszProviderDllPath: PWCHA
   dwNumberOfEntries: DWORD; lpErrno: PINT): Integer; stdcall;
 {$EXTERNALSYM WSCInstallProvider64_32}
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 function WSCGetProviderPath(const lpProviderId: TGUID; lpszProviderDllPath: PWCHAR;
   var lpProviderDllPathLen, lpErrno: Integer): Integer; stdcall;
@@ -519,12 +519,12 @@ type
   {$EXTERNALSYM LPWSCGETPROVIDERPATH}
   TWscGetProviderPath = LPWSCGETPROVIDERPATH;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 function WSCGetProviderPath32(lpProviderId: PGUID; lpszProviderDllPath: PWCHAR; lpProviderDllPathLen: PINT; lpErrno: PINT): Integer; stdcall;
 {$EXTERNALSYM WSCGetProviderPath32}
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 function WSCUpdateProvider(lpProviderId: PGUID; lpszProviderDllPath: PWCHAR; lpProtocolInfoList: LPWSAPROTOCOL_INFOW;
   dwNumberOfEntries: DWORD; lpErrno: PINT): Integer; stdcall;
@@ -535,13 +535,13 @@ type
     dwNumberOfEntries: DWORD; lpErrno: PINT): Integer; stdcall;
   {$EXTERNALSYM LPWSCUPDATEPROVIDER}
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 function WSCUpdateProvider32(lpProviderId: PGUID; lpszProviderDllPath: PWCHAR; lpProtocolInfoList: LPWSAPROTOCOL_INFOW;
   dwNumberOfEntries: DWORD; lpErrno: PINT): Integer; stdcall;
 {$EXTERNALSYM WSCUpdateProvider32}
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 function WSCInstallQOSTemplate(const Guid: TGUID; QosName: LPWSABUF; Qos: LPQOS): Integer; stdcall;
 {$EXTERNALSYM WSCInstallQOSTemplate}
@@ -632,12 +632,12 @@ function WPUCloseThread(lpThreadId: LPWSATHREADID; lpErrno: PINT): Integer; stdc
 //#define WSCEnumNameSpaceProviders WSAEnumNameSpaceProvidersW
 //#define LPFN_WSCENUMNAMESPACEPROVIDERS LPFN_WSAENUMNAMESPACEPROVIDERSW
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 function WSCEnumNameSpaceProviders32(lpdwBufferLength: LPDWORD; lpnspBuffer: LPWSANAMESPACE_INFOW): Integer; stdcall;
 {$EXTERNALSYM WSCEnumNameSpaceProviders32}
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 function WSCInstallNameSpace(lpszIdentifier, lpszPathName: LPWSTR; dwNameSpace,
   dwVersion: DWORD; const lpProviderId: TGUID): Integer; stdcall;
@@ -649,12 +649,12 @@ type
   {$EXTERNALSYM LPWSCINSTALLNAMESPACE}
   TWscInstallNamespace = LPWSCINSTALLNAMESPACE;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 function WSCInstallNameSpace32(lpszIdentifier, lpszPathName: LPWSTR; dwNameSpace, dwVersion: DWORD; lpProviderId: PGUID): Integer; stdcall;
 {$EXTERNALSYM WSCInstallNameSpace32}
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 function WSCUnInstallNameSpace(const lpProviderId: TGUID): Integer; stdcall;
 {$EXTERNALSYM WSCUnInstallNameSpace}
@@ -664,12 +664,12 @@ type
   {$EXTERNALSYM LPWSCUNINSTALLNAMESPACE}
   TWscUninstallNamespace = LPWSCUNINSTALLNAMESPACE;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 function WSCUnInstallNameSpace32(lpProviderId: PGUID): Integer; stdcall;
 {$EXTERNALSYM WSCUnInstallNameSpace32}
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 function WSCEnableNSProvider(const lpProviderId: TGUID; fEnable: BOOL): Integer; stdcall;
 {$EXTERNALSYM WSCEnableNSProvider}
@@ -679,12 +679,12 @@ type
   {$EXTERNALSYM LPWSCENABLENSPROVIDER}
   TWscEnableNsProvider = LPWSCENABLENSPROVIDER;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 function WSCEnableNSProvider32(lpProviderId: PGUID; fEnable: BOOL): Integer; stdcall;
 {$EXTERNALSYM WSCEnableNSProvider32}
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 (*
  * Pointers to the individual entries in the namespace proc table.
@@ -810,7 +810,7 @@ begin
   end;
 end;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 var
   _WSCEnumProtocols32: Pointer;
@@ -825,7 +825,7 @@ begin
   end;
 end;
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 var
   _WSCDeinstallProvider: Pointer;
@@ -840,7 +840,7 @@ begin
   end;
 end;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 var
   _WSCDeinstallProvider32: Pointer;
@@ -855,7 +855,7 @@ begin
   end;
 end;
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 var
   _WSCInstallProvider: Pointer;
@@ -870,7 +870,7 @@ begin
   end;
 end;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 var
   _WSCInstallProvider64_32: Pointer;
@@ -885,7 +885,7 @@ begin
   end;
 end;
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 var
   _WSCGetProviderPath: Pointer;
@@ -900,7 +900,7 @@ begin
   end;
 end;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 var
   _WSCGetProviderPath32: Pointer;
@@ -915,7 +915,7 @@ begin
   end;
 end;
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 var
   _WSCUpdateProvider: Pointer;
@@ -930,7 +930,7 @@ begin
   end;
 end;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 var
   _WSCUpdateProvider32: Pointer;
@@ -945,7 +945,7 @@ begin
   end;
 end;
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 var
   _WSCInstallQOSTemplate: Pointer;
@@ -973,7 +973,7 @@ begin
   end;
 end;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 var
   _WSCEnumNameSpaceProviders32: Pointer;
@@ -988,7 +988,7 @@ begin
   end;
 end;
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 var
   _WSCInstallNameSpace: Pointer;
@@ -1003,7 +1003,7 @@ begin
   end;
 end;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 var
   _WSCInstallNameSpace32: Pointer;
@@ -1018,7 +1018,7 @@ begin
   end;
 end;
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 var
   _WSCUnInstallNameSpace: Pointer;
@@ -1033,7 +1033,7 @@ begin
   end;
 end;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 var
   _WSCUnInstallNameSpace32: Pointer;
@@ -1048,7 +1048,7 @@ begin
   end;
 end;
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 var
   _WSCEnableNSProvider: Pointer;
@@ -1063,7 +1063,7 @@ begin
   end;
 end;
 
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 
 var
   _WSCEnableNSProvider32: Pointer;
@@ -1078,7 +1078,7 @@ begin
   end;
 end;
 
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 {$ELSE}
 
@@ -1092,7 +1092,7 @@ function WSCRemoveQOSTemplate; external qosname name 'WSCRemoveQOSTemplate';
 function WSCInstallNameSpace; external ws2_32 name 'WSCInstallNameSpace';
 function WSCUnInstallNameSpace; external ws2_32 name 'WSCUnInstallNameSpace';
 function WSCEnableNSProvider; external ws2_32 name 'WSCEnableNSProvider';
-{$IFDEF _WIN64}
+{$IFDEF WIN64}
 function WSCEnumProtocols32; external ws2_32 name 'WSCEnumProtocols32';
 function WSCDeinstallProvider32; external ws2_32 name 'WSCDeinstallProvider32';
 function WSCInstallProvider64_32; external ws2_32 name 'WSCInstallProvider64_32';
@@ -1102,7 +1102,7 @@ function WSCEnumNameSpaceProviders32; external ws2_32 name 'WSCEnumNameSpaceProv
 function WSCInstallNameSpace32; external ws2_32 name 'WSCInstallNameSpace32';
 function WSCUnInstallNameSpace32; external ws2_32 name 'WSCUnInstallNameSpace32';
 function WSCEnableNSProvider32; external ws2_32 name 'WSCEnableNSProvider32';
-{$ENDIF _WIN64}
+{$ENDIF WIN64}
 
 {$ENDIF DYNAMIC_LINK}
 

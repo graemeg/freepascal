@@ -142,6 +142,7 @@ var
 {$undef fpc_softfpu_interface}
 
 {$endif FPC_HAS_FEATURE_SOFTFPU}
+
 {$endif FPUNONE}
 
 {$ifdef CPUI8086}

@@ -129,7 +129,7 @@ implementation
 Resourcestring
   SErrInvalidToken = 'Invalid token: expected "%s", got: "%s"';
   SErrInvalidTokenList = 'Invalid token: expected one of "%s", got: "%s"';
-  SExpectedOther = 'Unexpected token in attribute list: "%s".';
+  // SExpectedOther = 'Unexpected token in attribute list: "%s".';
   SErrUnExpectedToken = 'Unexpected token : "%s"';
   SErrTypeNotAllowed = 'Type "%s" not allowed in "%s" type.';
   SErrDictionaryNotFound = 'Dictionary %s not found';
@@ -349,6 +349,11 @@ begin
       GetToken;
       end;
     Result.ArgumentType:=ParseType(Result,False);
+    if CurrentToken=tkEllipsis then
+      begin
+      Result.HasEllipsis:=True;
+      GetToken;
+      end;
     CheckCurrentToken(tkIdentifier);
     Result.Name:=CurrentTokenString;
   except
@@ -428,7 +433,7 @@ function TWebIDLParser.ParseOperation(aParent: TIDLBaseObject): TIDLFunctionDefi
   on exit, we're on the final ) }
 
 Const
-  Specials = [tkGetter, tkSetter, tkDeleter, tkLegacyCaller];
+  Specials = [tkGetter, tkSetter, tkDeleter, tkLegacyCaller, tkConstructor];
 
 Var
   Opts : TFunctionOptions;
@@ -443,16 +448,22 @@ begin
       tkSetter : FO:=foSetter;
       tkDeleter : FO:=foDeleter;
       tkLegacyCaller : FO:=foLegacyCaller;
+      tkConstructor : fo:=foConstructor;
     end;
     Include(Opts,FO);
     GetToken;
     end;
   Result:=TIDLFunctionDefinition(Context.Add(aParent,TIDLFunctionDefinition,''));
   try
-    Result.ReturnType:=ParseType(Result,False,True);
-    CheckCurrentToken(tkIdentifier);
-    Result.Name:=CurrentTokenString;
-    GetToken;
+    if (foConstructor in Opts) then
+      Result.Name:='New'
+    else
+      begin
+      Result.ReturnType:=ParseType(Result,False,True);
+      CheckCurrentToken(tkIdentifier);
+      Result.Name:=CurrentTokenString;
+      GetToken;
+      end;
     ParseArguments(Result.Arguments);
     Result.Options:=Result.Options+Opts;
   except
@@ -605,7 +616,7 @@ function TWebIDLParser.ParseConstValue(out aValue: UTF8String;
 
 Const
   ValueTokens = [tkTrue,tkFalse,tkNumberFloat,tkNumberInteger,tkNull,tkInfinity,tkNegInfinity,tkNan];
-  ExtendedTokens = [tkSquaredBraceOpen,tkString];
+  ExtendedTokens = [tkSquaredBraceOpen,tkString, tkCurlyBraceOpen];
   ExtendedValueTokens = ExtendedTokens + ValueTokens;
   AllowedTokens : Array[Boolean] of TIDLTokens = (ValueTokens,ExtendedValueTokens);
 
@@ -631,6 +642,15 @@ begin
         ExpectToken(tkSquaredBraceClose);
         aValue:=AValue+CurrentTokenString;
         Result:=ctEmptyArray
+        end
+      else
+        Error(SErrUnExpectedToken,[CurrentTokenString]);
+    tkCurlyBraceOpen :
+      If aExtended then
+        begin
+        ExpectToken(tkCurlyBraceClose);
+        aValue:=AValue+CurrentTokenString;
+        Result:=ctEmptyObject
         end
       else
         Error(SErrUnExpectedToken,[CurrentTokenString]);
@@ -903,11 +923,14 @@ Var
   aName : UTF8String;
 
 begin
+  aName:=CurrentTokenString;
   if version=v1 then
-    Result:=ParseImplements('',aParent)
+    begin
+    ExpectToken(tkImplements);
+    Result:=ParseImplements(aName,aParent)
+    end
   else
     begin
-    aName:=CurrentTokenString;
     ExpectTokens([tkImplements,tkIncludes]);
     case CurrentToken of
      tkIncludes: Result:=ParseIncludes(aName,aParent);
@@ -945,25 +968,28 @@ function TWebIDLParser.ParseDictionaryMember(aParent : TIDLBaseObject): TIDLDict
 Var
   Attrs : TAttributeList;
   tk : TIDLToken;
-  isRequired : Boolean;
+  isReq : Boolean;
   S : UTF8String;
 
 begin
   Attrs:=Nil;
   tk:=CurrentToken;
-  isRequired:=(tk=tkRequired);
-  if IsRequired then
+  isReq:=(tk=tkRequired);
+  if IsReq then
     tk:=GetToken;
   if tk=tkSquaredBraceOpen then
     begin
     Attrs:=ParseAttributes;
     tk:=GetToken;
+    isReq:=(tk=tkRequired);
+    if IsReq then
+      tk:=GetToken;
     end;
   Result:=TIDLDictionaryMemberDefinition(Context.Add(aParent,TIDLDictionaryMemberDefinition,''));
   try
     Result.Attributes:=Attrs;
-    Result.IsRequired:=isRequired;
-    Result.MemberType:=ParseType(Result,Assigned(Attrs),True);
+    Result.IsRequired:=isReq;
+    Result.MemberType:=ParseType(Result,False,True);
     CheckCurrentToken(tkIdentifier);
     Result.Name:=CurrentTokenString;
     tk:=GetToken;
@@ -1181,8 +1207,7 @@ Var
 begin
   if Version=V1 then
     begin
-    N:=CurrentTokenString;
-    ExpectToken(tkImplements);
+    N:=aName
     end
   else
     N:=aName;

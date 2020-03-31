@@ -136,7 +136,9 @@ const
                         + [system_i386_freebsd]
                         + [system_i386_netbsd]
                         + [system_i386_wdosx]
-                        + [system_riscv32_linux,system_riscv64_linux];
+                        + [system_riscv32_linux,system_riscv64_linux]
+                        + [system_aarch64_linux];
+
 
   suppported_targets_x_smallr = systems_linux + systems_solaris + systems_android
                              + [system_i386_haiku,system_x86_64_haiku]
@@ -1339,7 +1341,7 @@ begin
                       end;
 {$endif arm}
 {$ifdef llvm}
-                    'L':
+                    'l':
                       begin
                         l:=j+1;
                         while l<=length(More) do
@@ -1361,14 +1363,14 @@ begin
                                            exclude(init_settings.moduleswitches,cs_lto);
                                        end;
                                      'ltonosystem':
-                                         begin
-                                           if not disable then
-                                             begin
-                                               include(init_settings.globalswitches,cs_lto_nosystem);
-                                             end
-                                           else
-                                             exclude(init_settings.globalswitches,cs_lto_nosystem);
-                                         end;
+                                       begin
+                                         if not disable then
+                                           begin
+                                             include(init_settings.globalswitches,cs_lto_nosystem);
+                                           end
+                                         else
+                                           exclude(init_settings.globalswitches,cs_lto_nosystem);
+                                       end;
                                     else
                                       begin
                                         IllegalPara(opt);
@@ -2536,7 +2538,7 @@ begin
                       begin
 {$push}
 {$warn 6018 off} { Unreachable code due to compile time evaluation }
-                        if (target_info.system in systems_embedded) and
+                        if ((target_info.system in systems_embedded) or (target_info.system in systems_freertos)) and
                           ControllerSupport then
                           begin
                             s:=upper(copy(more,j+1,length(more)-j));
@@ -2675,7 +2677,25 @@ begin
                         else
                           include(init_settings.globalswitches,cs_link_native);
                       end;
-
+{$ifdef llvm}
+                    'l' :
+                      begin
+                        if j=length(more) then
+                          IllegalPara(opt)
+                        else
+                          begin
+                             case more[j+1] of
+                               'S':
+                                 begin
+                                   llvmutilssuffix:=copy(more,j+2,length(more));
+                                   j:=length(more);
+                                 end
+                               else
+                                 IllegalPara(opt);
+                             end;
+                          end;
+                      end;
+{$endif}
                     'm' :
                       begin
                         If UnsetBool(More, j, opt, false) then
@@ -3749,6 +3769,7 @@ procedure read_arguments(cmd:TCmdStr);
         def_system_macro('FPC_COMP_IS_INT64');
         def_system_macro('FPC_REQUIRES_PROPER_ALIGNMENT');
       {$endif riscv32}
+
       {$ifdef riscv64}
         def_system_macro('CPURISCV');
         def_system_macro('CPURISCV64');
@@ -3757,6 +3778,14 @@ procedure read_arguments(cmd:TCmdStr);
         def_system_macro('FPC_COMP_IS_INT64');
         def_system_macro('FPC_REQUIRES_PROPER_ALIGNMENT');
       {$endif riscv64}
+
+      {$ifdef xtensa}
+        def_system_macro('CPUXTENSA');
+        def_system_macro('CPU32');
+        def_system_macro('FPC_CURRENCY_IS_INT64');
+        def_system_macro('FPC_COMP_IS_INT64');
+        def_system_macro('FPC_REQUIRES_PROPER_ALIGNMENT');
+      {$endif xtensa}
 
       {$if defined(cpu8bitalu)}
         def_system_macro('CPUINT8');
@@ -4211,7 +4240,7 @@ begin
      ((target_info.system in [system_arm_wince,system_arm_gba,
          system_m68k_amiga,system_m68k_atari,
          system_arm_nds,system_arm_embedded,
-         system_riscv32_embedded,system_riscv64_embedded])
+         system_riscv32_embedded,system_riscv64_embedded,system_xtensa_embedded])
 {$ifdef arm}
       or (target_info.abi=abi_eabi)
 {$endif arm}
@@ -4623,7 +4652,7 @@ begin
 
 {$push}
 {$warn 6018 off} { Unreachable code due to compile time evaluation }
-  if ControllerSupport and (target_info.system in systems_embedded) and
+  if ControllerSupport and (target_info.system in (systems_embedded+systems_freertos)) and
     (init_settings.controllertype<>ct_none) then
     begin
       with embedded_controllers[init_settings.controllertype] do

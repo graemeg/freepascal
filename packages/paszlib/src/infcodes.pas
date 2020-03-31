@@ -25,7 +25,7 @@ function inflate_codes(var s : inflate_blocks_state;
                        var z : z_stream;
                        r : integer) : integer;
 
-procedure inflate_codes_free(c : pInflate_codes_state;
+procedure inflate_codes_free(var c : pInflate_codes_state;
                              var z : z_stream);
 
 implementation
@@ -575,10 +575,11 @@ begin
 end;
 
 
-procedure inflate_codes_free(c : pInflate_codes_state;
+procedure inflate_codes_free(var c : pInflate_codes_state;
                              var z : z_stream);
 begin
   dispose(c);
+  c := nil;
   {$IFDEF ZLIB_DEBUG}  
   Tracev('inflate:       codes free');
   {$ENDIF}

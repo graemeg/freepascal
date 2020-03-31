@@ -12283,7 +12283,7 @@ begin
       if CurrentLoop.FGroupHeaderList.Count > 0 then
       begin
         { when data band overflows use start with lowest gropup header }
-        if aBand is TFPReportCustomDataBand and
+        if (aBand is TFPReportCustomDataBand) and
         not Assigned(TFPReportCustomDataBand(aband).MasterBand) then
           lToMoveGrp := TFPReportCustomGroupHeaderBand(CurrentLoop.FGroupHeaderList[0])
         { when group header overflows use start with parent group header }

@@ -658,7 +658,8 @@ implementation
          first,
          isgeneric,
          isunique,
-         istyperenaming : boolean;
+         istyperenaming,
+         wasforward: boolean;
          generictypelist : tfphashobjectlist;
          localgenerictokenbuf : tdynamicarray;
          p:tnode;
@@ -764,6 +765,7 @@ implementation
                    (sp_generic_dummy in sym.symoptions)
                  ) then
                begin
+                 wasforward:=false;
                  if ((token=_CLASS) or
                      (token=_INTERFACE) or
                      (token=_DISPINTERFACE) or
@@ -774,6 +776,7 @@ implementation
                     is_implicit_pointer_object_type(ttypesym(sym).typedef) and
                     (oo_is_forward in tobjectdef(ttypesym(sym).typedef).objectoptions) then
                   begin
+                    wasforward:=true;
                     case token of
                       _CLASS :
                         objecttype:=default_class_type;
@@ -802,6 +805,9 @@ implementation
                     gendef:=determine_generic_def(gentypename);
                     { we can ignore the result, the definition is modified }
                     object_dec(objecttype,genorgtypename,newtype,gendef,generictypelist,tobjectdef(ttypesym(sym).typedef),ht_none);
+                    if wasforward and
+                      (tobjectdef(ttypesym(sym).typedef).objecttype<>objecttype) then
+                      Message1(type_e_forward_interface_type_does_not_match,tobjectdef(ttypesym(sym).typedef).GetTypeName);
                     newtype:=ttypesym(sym);
                     hdef:=newtype.typedef;
                   end

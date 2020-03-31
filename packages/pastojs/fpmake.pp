@@ -58,6 +58,11 @@ begin
     T:=P.Targets.AddUnit('pas2jspparser.pp');
     T:=P.Targets.AddUnit('pas2jsuseanalyzer.pp');
     T:=P.Targets.AddUnit('pas2jscompiler.pp');
+    T:=P.Targets.AddUnit('pas2jsresstrfile.pp');
+      T.ResourceStrings := True;
+    T:=P.Targets.AddUnit('pas2jsresources.pp');
+    T:=P.Targets.AddUnit('pas2jshtmlresources.pp');
+    T:=P.Targets.AddUnit('pas2jsjsresources.pp');
     T:=P.Targets.AddUnit('pas2jsfscompiler.pp');
       T.Dependencies.AddUnit('pas2jscompiler');
     T:=P.Targets.AddUnit('pas2jspcucompiler.pp');

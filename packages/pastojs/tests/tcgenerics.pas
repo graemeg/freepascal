@@ -40,6 +40,8 @@ type
     // generic external class
     procedure TestGen_ExtClass_Array;
     procedure TestGen_ExtClass_GenJSValueAssign;
+    procedure TestGen_ExtClass_AliasMemberType;
+    Procedure TestGen_ExtClass_RTTI;
 
     // statements
     Procedure TestGen_InlineSpec_Constructor;
@@ -59,7 +61,7 @@ type
     procedure TestGenProc_TypeInfo;
     procedure TestGenProc_Infer_Widen;
     procedure TestGenProc_Infer_PassAsArg;
-    // ToDo: FuncName:=
+    // ToDo: FuncName:= instead of Result:=
 
     // generic methods
     procedure TestGenMethod_ObjFPC;
@@ -819,6 +821,61 @@ begin
     '$mod.Run($mod.w);',
     '']));
   CheckResolverUnexpectedHints();
+end;
+
+procedure TTestGenerics.TestGen_ExtClass_AliasMemberType;
+begin
+  StartProgram(false);
+  Add([
+  '{$mode objfpc}',
+  '{$modeswitch externalclass}',
+  'type',
+  '  generic TExt<T> = class external name ''Ext''',
+  '  public type TRun = reference to function(a: T): T;',
+  '  end;',
+  '  TExtWord = specialize TExt<word>;',
+  '  TExtWordRun = TExtWord.TRun;',
+  'begin',
+  '']);
+  ConvertProgram;
+  CheckSource('TestGen_ExtClass_AliasMemberType',
+    LinesToStr([ // statements
+    '']),
+    LinesToStr([ // $mod.$main
+    '']));
+end;
+
+procedure TTestGenerics.TestGen_ExtClass_RTTI;
+begin
+  Converter.Options:=Converter.Options-[coNoTypeInfo];
+  StartProgram(false);
+  Add([
+  '{$mode objfpc}',
+  '{$modeswitch externalclass}',
+  'type',
+  '  generic TGJSSET<T> = class external name ''SET''',
+  '    A: T;',
+  '  end;',
+  '  TJSSet = specialize TGJSSET<JSValue>;',
+  '  TJSSetEventProc = reference to procedure(value : JSValue; key: NativeInt; set_: TJSSet);',
+  'var p: Pointer;',
+  'begin',
+  '  p:=typeinfo(TJSSetEventProc);',
+  '']);
+  ConvertProgram;
+  CheckSource('TestGen_ExtClass_RTTI',
+    LinesToStr([ // statements
+    '$mod.$rtti.$ExtClass("TGJSSET$G1", {',
+    '  jsclass: "SET"',
+    '});',
+    '$mod.$rtti.$RefToProcVar("TJSSetEventProc", {',
+    '  procsig: rtl.newTIProcSig([["value", rtl.jsvalue], ["key", rtl.nativeint], ["set_", $mod.$rtti["TGJSSET$G1"]]])',
+    '});',
+    'this.p = null;',
+    '']),
+    LinesToStr([ // $mod.$main
+    '$mod.p = $mod.$rtti["TJSSetEventProc"];',
+    '']));
 end;
 
 procedure TTestGenerics.TestGen_InlineSpec_Constructor;

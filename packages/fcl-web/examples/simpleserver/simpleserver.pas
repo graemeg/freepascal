@@ -340,7 +340,7 @@ begin
 {$ifdef unix}
     if FPFork>0 then Halt(0);
 {$else}
-    Log(erError,'Background option not supported');
+    Log(etError,'Background option not supported');
 {$endif}
     end;
   if FPassword<>'' then

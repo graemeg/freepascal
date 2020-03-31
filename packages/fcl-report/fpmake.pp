@@ -33,7 +33,8 @@ begin
     P.NeedLibC:= false;
     P.OSes:=[linux, win32, win64, darwin, freebsd];
     P.SourcePath.Add('src');
-{$IFDEF VER2_6}    
+    P.IncludePath.Add('src');
+{$IFDEF VER2_6}
     T:=P.Targets.AddUnit('fprepexprpars.pp');
     T.ResourceStrings := True;
 {$ENDIF}
@@ -48,6 +49,7 @@ begin
       begin
       AddUnit('fpreportstreamer');
       AddUnit('fpreporthtmlparser');
+      AddInclude('fpreportcheckbox.inc');
       end;
 
     T:=P.Targets.AddUnit('fpreportdata.pp');

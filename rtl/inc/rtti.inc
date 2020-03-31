@@ -402,7 +402,10 @@ begin
 {$endif VER3_0}
 {$ifndef VER3_0}
         if Assigned(recordop) and Assigned(recordop^.Copy) then
-          recordop^.Copy(Src,Dest)
+          begin
+            recordop^.Copy(Src,Dest);
+            Result:=PRecordInfoFull(Temp)^.Size;
+          end
         else
           begin
             Result:=PRecordInfoInit(Temp)^.Size;

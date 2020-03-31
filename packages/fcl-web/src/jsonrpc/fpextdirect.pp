@@ -20,7 +20,7 @@ unit fpextdirect;
 interface
 
 uses
-  Classes, SysUtils, fpjson, fpjsonrpc, fpdispextdirect, webjsonrpc, httpdefs;
+  Classes, SysUtils, fpjson, fpjsonrpc, fpdispextdirect, webjsonrpc, httpdefs, uriparser;
 
 Const
   // Redefinition for backwards compatibility
@@ -74,7 +74,12 @@ Type
   TCustomExtDirectModule = Class(TJSONRPCDispatchModule)
   private
     FAPIPath: String;
+    FCORSAllowCredentials: Boolean;
+    FCORSAllowedOrigins: String;
+    FCORSEmptyDomainToOrigin: Boolean;
+    FCORSMaxAge: Integer;
     FDispatcher: TCustomExtDirectDispatcher;
+    FHandleCors: Boolean;
     FNameSpace: String;
     FOptions: TJSONRPCDispatchOptions;
     FRequest: TRequest;
@@ -115,6 +120,7 @@ Type
     Property NameSpace;
     Property OnNewSession;
     Property OnSessionExpired;
+    Property CORS;
   end;
 
 implementation
@@ -236,7 +242,6 @@ procedure TCustomExtDirectModule.CreateAPI(ADispatcher : TCustomExtDirectDispatc
 begin
   AResponse.Content:=ADispatcher.APIAsString;
   AResponse.ContentLength:=Length(AResponse.Content);
-
 end;
 
 procedure TCustomExtDirectModule.HandleRequest(ARequest: TRequest;
@@ -248,39 +253,47 @@ Var
   R : String;
 
 begin
-  {$ifdef extdebug}SendDebug('Ext.Direct handlerequest: checking session');{$endif}
-  CheckSession(ARequest);
-  {$ifdef extdebug}SendDebug('Ext.Direct handlerequest: init session ');{$endif}
-  InitSession(AResponse);
-  {$ifdef extdebug}SendDebug('Ext.Direct creating dispatcher');{$endif}
-  If (Dispatcher=Nil) then
-    Dispatcher:=CreateDispatcher;
-  {$ifdef extdebug}SendDebugFmt('Ext.Direct handlerequest: dispatcher class is "%s"',[Dispatcher.Classname]);{$endif}
-  Disp:=Dispatcher as TCustomExtDirectDispatcher;
-  R:=ARequest.QueryFields.Values['action'];
-  If (R='') then
-    R:=ARequest.GetNextPathInfo;
-  {$ifdef extdebug}SendDebugFmt('Ext.Direct handlerequest: action is "%s"',[R]);{$endif}
-  If (CompareText(R,APIPath)=0) then
-    begin
-    CreateAPI(Disp,ARequest,AResponse);
-    UpdateSession(AResponse);
-    AResponse.SendResponse;
-    end
-  else if (CompareText(R,RouterPath)=0) then
-    begin
-    Res:=DispatchRequest(ARequest,Disp);
-    try
-      UpdateSession(AResponse);
-      If Assigned(Res) then
-        AResponse.Content:=Res.AsJSON;
-      AResponse.SendResponse;
-    finally
-      Res.Free;
-    end;
-    end
-  else
-    JSONRPCError(SErrInvalidPath);
+  Self.FRequest:=aRequest;
+  Self.FResponse:=aResponse;
+  try
+    {$ifdef extdebug}SendDebug('Ext.Direct handlerequest: checking session');{$endif}
+    CheckSession(ARequest);
+    {$ifdef extdebug}SendDebug('Ext.Direct handlerequest: init session ');{$endif}
+    InitSession(AResponse);
+    {$ifdef extdebug}SendDebug('Ext.Direct creating dispatcher');{$endif}
+    If (Dispatcher=Nil) then
+      Dispatcher:=CreateDispatcher;
+    {$ifdef extdebug}SendDebugFmt('Ext.Direct handlerequest: dispatcher class is "%s"',[Dispatcher.Classname]);{$endif}
+    Disp:=Dispatcher as TCustomExtDirectDispatcher;
+    R:=ARequest.QueryFields.Values['action'];
+    If (R='') then
+      R:=ARequest.GetNextPathInfo;
+    {$ifdef extdebug}SendDebugFmt('Ext.Direct handlerequest: action is "%s"',[R]);{$endif}
+    if not CORS.HandleRequest(aRequest,aResponse,[hcDetect,hcSend]) then
+      If (CompareText(R,APIPath)=0) then
+        begin
+        CreateAPI(Disp,ARequest,AResponse);
+        UpdateSession(AResponse);
+        AResponse.SendResponse;
+        end
+      else if (CompareText(R,RouterPath)=0) then
+        begin
+        Res:=DispatchRequest(ARequest,Disp);
+        try
+          UpdateSession(AResponse);
+          If Assigned(Res) then
+            AResponse.Content:=Res.AsJSON;
+          AResponse.SendResponse;
+        finally
+          Res.Free;
+        end;
+        end
+      else
+        JSONRPCError(SErrInvalidPath);
+  finally
+    Self.FRequest:=Nil;
+    Self.FResponse:=Nil;
+  end;
 end;
 
 end.

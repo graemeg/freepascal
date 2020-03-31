@@ -16,7 +16,7 @@
  Examples:
    ./testpas2js --suite=TTestPrecompile.TestPC_EmptyUnit
 }
-unit tcfiler;
+unit TCFiler;
 
 {$mode objfpc}{$H+}
 
@@ -31,7 +31,7 @@ uses
 
 type
   TPCCheckFlag = (
-    PCCGeneric
+    PCCGeneric // inside generic proc body
     );
   TPCCheckFlags = set of TPCCheckFlag;
 
@@ -81,6 +81,7 @@ type
     procedure CheckRestoredScopeRefs(const Path: string; Orig, Rest: TPasScopeReferences; Flags: TPCCheckFlags); virtual;
     procedure CheckRestoredPropertyScope(const Path: string; Orig, Rest: TPasPropertyScope; Flags: TPCCheckFlags); virtual;
     procedure CheckRestoredGenericParamScope(const Path: string; Orig, Rest: TPasGenericParamsScope; Flags: TPCCheckFlags); virtual;
+    procedure CheckRestoredSpecializeTypeData(const Path: string; Orig, Rest: TPasSpecializeTypeData; Flags: TPCCheckFlags); virtual;
     procedure CheckRestoredResolvedReference(const Path: string; Orig, Rest: TResolvedReference; Flags: TPCCheckFlags); virtual;
     procedure CheckRestoredEvalValue(const Path: string; Orig, Rest: TResEvalValue); virtual;
     procedure CheckRestoredCustomData(const Path: string; RestoredEl: TPasElement; Orig, Rest: TObject; Flags: TPCCheckFlags); virtual;
@@ -195,7 +196,6 @@ type
     procedure TestPC_ClassInterface;
     procedure TestPC_Attributes;
 
-    procedure TestPC_GenericClass; // ToDo
     procedure TestPC_GenericFunction_Assign;
     procedure TestPC_GenericFunction_Asm;
     procedure TestPC_GenericFunction_RepeatUntil;
@@ -209,6 +209,28 @@ type
     procedure TestPC_GenericFunction_TryExcept;
     procedure TestPC_GenericFunction_LocalProc;
     procedure TestPC_GenericFunction_AnonymousProc;
+    procedure TestPC_GenericClass;
+    procedure TestPC_GenericMethod;
+    procedure TestPC_SpecializeClassSameUnit; // ToDo
+    // ToDo: specialize local generic type in unit interface
+    // ToDo: specialize local generic type in unit implementation
+    // ToDo: specialize local generic type in proc decl
+    // ToDo: specialize local generic type in proc body
+    // ToDo: inline specialize local generic type in unit interface
+    // ToDo: inline specialize local generic type in unit implementation
+    // ToDo: inline specialize local generic type in proc decl
+    // ToDo: inline specialize local generic type in proc body
+    // ToDo: specialize extern generic type in unit interface
+    // ToDo: specialize extern generic type in unit implementation
+    // ToDo: specialize extern generic type in proc decl
+    // ToDo: specialize extern generic type in proc body
+    // ToDo: inline specialize extern generic type in unit interface
+    // ToDo: inline specialize extern generic type in unit implementation
+    // ToDo: inline specialize extern generic type in proc decl
+    // ToDo: inline specialize extern generic type in proc body
+    // ToDo: half specialize TBird<T> = class a: TAnt<word,T>; end;
+    // ToDo: no specialize: TBird<T> = class a: TBird<T>; end;
+    // ToDo: constraints
 
     procedure TestPC_UseUnit;
     procedure TestPC_UseUnit_Class;
@@ -958,6 +980,13 @@ begin
   if Flags=[] then ;
 end;
 
+procedure TCustomTestPrecompile.CheckRestoredSpecializeTypeData(
+  const Path: string; Orig, Rest: TPasSpecializeTypeData; Flags: TPCCheckFlags);
+begin
+  if Flags<>[] then ;
+  CheckRestoredReference(Path+'.SpecializedType',Orig.SpecializedType,Rest.SpecializedType);
+end;
+
 procedure TCustomTestPrecompile.CheckRestoredResolvedReference(
   const Path: string; Orig, Rest: TResolvedReference; Flags: TPCCheckFlags);
 var
@@ -1088,6 +1117,8 @@ begin
     CheckRestoredPropertyScope(Path+'[TPasPropertyScope]',TPasPropertyScope(Orig),TPasPropertyScope(Rest),Flags)
   else if C=TPasGenericParamsScope then
     CheckRestoredGenericParamScope(Path+'[TPasGenericParamScope]',TPasGenericParamsScope(Orig),TPasGenericParamsScope(Rest),Flags)
+  else if C=TPasSpecializeTypeData then
+    CheckRestoredSpecializeTypeData(Path+'[TPasSpecializeTypeData]',TPasSpecializeTypeData(Orig),TPasSpecializeTypeData(Rest),Flags)
   else if C.InheritsFrom(TResEvalValue) then
     CheckRestoredEvalValue(Path+'['+Orig.ClassName+']',TResEvalValue(Orig),TResEvalValue(Rest))
   else
@@ -2679,28 +2710,6 @@ begin
   WriteReadUnit;
 end;
 
-procedure TTestPrecompile.TestPC_GenericClass;
-begin
-  StartUnit(false);
-  Add([
-  'interface',
-  'type',
-  '  TObject = class',
-  '  end;',
-  '  generic TBird<T> = class',
-  '    a: T;',
-  '    function Run: T;',
-  '  end;',
-  'implementation',
-  'function TBird.Run: T;',
-  'var b: T;',
-  'begin',
-  '  b:=a; Result:=b;',
-  'end;',
-  '']);
-  WriteReadUnit;
-end;
-
 procedure TTestPrecompile.TestPC_GenericFunction_Assign;
 begin
   StartUnit(false);
@@ -3007,6 +3016,76 @@ begin
   '    exit(Result);',
   '  end;',
   'end;',
+  '']);
+  WriteReadUnit;
+end;
+
+procedure TTestPrecompile.TestPC_GenericClass;
+begin
+  StartUnit(false);
+  Add([
+  'interface',
+  'type',
+  '  TObject = class',
+  '  end;',
+  '  generic TBird<T> = class',
+  '    a: T;',
+  '    function Run: T;',
+  '  end;',
+  'implementation',
+  'function TBird.Run: T;',
+  'var b: T;',
+  'begin',
+  '  b:=a; Result:=b;',
+  'end;',
+  '']);
+  WriteReadUnit;
+end;
+
+procedure TTestPrecompile.TestPC_GenericMethod;
+begin
+  StartUnit(false);
+  Add([
+  '{$mode delphi}',
+  'interface',
+  'type',
+  '  TObject = class',
+  '  end;',
+  '  TBird = class',
+  '    function Run<T>(a: T): T;',
+  '  end;',
+  'implementation',
+  'function TBird.Run<T>(a: T): T;',
+  'var b: T;',
+  'begin',
+  '  b:=a;',
+  '  Result:=b;',
+  'end;',
+  '']);
+  WriteReadUnit;
+end;
+
+procedure TTestPrecompile.TestPC_SpecializeClassSameUnit;
+begin
+  exit;
+
+  StartUnit(false);
+  Add([
+  '{$mode delphi}',
+  'interface',
+  'type',
+  '  TObject = class',
+  '  end;',
+  '  TBird<T> = class',
+  '    a: T;',
+  '  end;',
+  '  TBigBird = TBIrd<double>;',
+  'var',
+  '  b: TBigBird;',
+  'implementation',
+  'begin',
+  '  b.a:=1.3;',
+  'end.',
   '']);
   WriteReadUnit;
 end;

@@ -110,7 +110,7 @@ begin
        AddInclude('dswifi9.inc');
        AddInclude('dswifi7.inc');
        AddInclude('netdb.inc');
-       AddInclude('sgIp_errno.inc');
+       AddInclude('sgIP_errno.inc');
      end;
      T.IncludePath.Add('src/dswifi/inc/netinet');
        T.Dependencies.AddInclude('in.inc');

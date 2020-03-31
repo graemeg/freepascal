@@ -38,8 +38,8 @@ implementation
     {$ifndef NOTARGETLINUX}
       ,t_linux
     {$endif}
-    {$ifndef NOTARGETBSD}
-      ,t_bsd
+    {$ifndef NOTARGETDARWIN}
+      ,t_darwin
     {$endif}
     {$ifndef NOTARGETANDROID}
       ,t_android

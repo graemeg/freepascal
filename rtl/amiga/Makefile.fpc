@@ -10,7 +10,7 @@ loaders=$(LOADERS)
 units=$(SYSTEMUNIT) $(RESUNIT) heaptrc uuchar objpas macpas iso7185 extpas buildrtl cpall
 implicitunits=$(SYSINITUNITS) $(EXEUNITS) athreads dos sysutils \
       ctypes strings rtlconsts sysconst math types \
-      typinfo sortbase fgl classes charset character getopts \
+      typinfo sortbase fgl classes charset character getopts fpwidestring \
       cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp737 cp775 cp850 cp852 cp855 cp856 cp857 cp860 cp861 cp862 \
       cp863 cp864 cp865 cp866 cp869 cp874 cp3021 cp8859_1 cp8859_2 cp8859_3 cp8859_4 \

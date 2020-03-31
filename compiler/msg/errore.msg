@@ -1617,7 +1617,7 @@ parser_e_generic_constraints_not_allowed_here=03355_E_Generic constraint not all
 %
 # Type Checking
 #
-# 04126 is the last used one
+# 04127 is the last used one
 #
 % \section{Type checking errors}
 % This section lists all errors that can occur when type checking is
@@ -2057,6 +2057,10 @@ type_e_cblock_callconv=04126_E_C block reference must use CDECL or MWPASCAL call
 % When declaring a C block reference ensure that it uses either the \var{cdecl} or \var{mwpascal}
 % calling convention either by adding the corresponding function directive or by using the
 % \var{\{\$Calling\}} compiler directive.
+type_e_forward_interface_type_does_not_match=04127_E_The interface type of the forward declaration and the declared interface type do not match for interface $1
+% When declaring an interface forward, the interface type must be the same as at the actual declaration of the interface.
+% This is in particular important with regard to the parent interface which implicitly sets the interface type for the
+% child interface.
 % \end{description}
 #
 # Symtable
@@ -3886,10 +3890,10 @@ S*2Aas_Assemble using GNU AS
 **2Ch<n>[,m]_<n> bytes min heap size (between 1023 and 67107840) and optionally [m] max heap size
 **2Ci_IO-checking
 A*2CI<x>_Select instruction set on ARM: ARM or THUMB
-L*2CL<x>_LLVM code generation options
-L*3CLflto_Enable Link-time optimisation (needed both when compiling units and programs/libraries)
-L*3CLfltonosystem_Disable LTO for the system unit (needed with at least Xcode 10.2 and earlier due to linker bugs)
-L*3CLv<x>_LLVM target version: 3.3, 3.4, .., Xcode-6.4, .., Xcode-10.1, 7.0, 8.0
+l*2CL<x>_LLVM code generation options
+l*3CLflto_Enable Link-time optimisation (needed both when compiling units and programs/libraries)
+l*3CLfltonosystem_Disable LTO for the system unit (needed with at least Xcode 10.2 and earlier due to linker bugs)
+l*3CLv<x>_LLVM target version: Xcode-10.1, 7.0, 8.0, .., 10.0
 **2Cn_Omit linking stage
 P*2CN_Generate nil-pointer checks (AIX-only)
 **2Co_Check overflow of integer operations
@@ -4271,6 +4275,7 @@ P*2WT_Specify MPW tool type application (Classic Mac OS)
 **2Xg_Create debuginfo in a separate file and add a debuglink section to executable
 **2XD_Try to link units dynamically      (defines FPC_LINK_DYNAMIC)
 **2Xi_Use internal linker
+L*2XlS<x>_LLVM utilties suffix (e.g. -7 in case clang is called clang-7)
 **2XLA_Define library substitutions for linking
 **2XLO_Define order of library linking
 **2XLD_Exclude default order of standard libraries

@@ -41,8 +41,11 @@ implementation
     {$ifndef NOTARGETMACOS}
       ,t_macos
     {$endif}
-    {$ifndef NOTARGETDARWIN}
+    {$ifndef NOTARGETBSD}
       ,t_bsd
+    {$endif}
+    {$ifndef NOTARGETDARWIN}
+      ,t_darwin
     {$endif}
     {$ifndef NOTARGETMORPHOS}
       ,t_morph

@@ -1340,7 +1340,7 @@ type
           if j0>=63 then     { Overflow, let trunc() raise an exception }
             exit(trunc(d))   { and/or return +/-MaxInt64 if it's masked }
           else
-            result:=((int64(hx) shl 32) or float64low(d)) shl (j0-52);
+            result:=((int64(hx) shl 32) or dword(float64low(d))) shl (j0-52);
         end
       else
         begin
