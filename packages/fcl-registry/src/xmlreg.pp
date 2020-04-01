@@ -81,6 +81,7 @@ Type
     // These interpret the Data buffer as unicode data
     Function GetValueDataUnicode(Name : UnicodeString; Out DataType : TDataType; Var Data; Var DataSize : Integer) : Boolean;
     Function SetValueDataUnicode(Name : UnicodeString; DataType : TDataType; Const Data; DataSize : Integer) : Boolean;
+    Property CurrentKey: UnicodeString read FCurrentKey; //used by TRegistry
     Property FileName : String Read FFileName Write SetFileName;
     Property RootKey : UnicodeString Read FRootKey Write SetRootkey;
     Property AutoFlush : Boolean Read FAutoFlush Write FAutoFlush;

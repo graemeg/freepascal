@@ -72,30 +72,34 @@ implementation
         isload   : boolean;
       begin
         isload:=op in [A_L32I,A_LSI];
-        //{ offset out of range for regular load/store? }
-        //if simple_ref_type(op,reg_cgsize(tempreg),PF_None,spilltemp)<>sr_simple then
-        //  begin
-        //    helplist:=TAsmList.create;
-        //
-        //    if getregtype(tempreg)=R_INTREGISTER then
-        //      hreg:=tempreg
-        //    else
-        //      hreg:=cg.getaddressregister(helplist);
-        //
-        //    cg.a_load_const_reg(helplist,OS_ADDR,spilltemp.offset,hreg);
-        //    reference_reset_base(tmpref,spilltemp.base,0,spilltemp.temppos,sizeof(pint),[]);
-        //    tmpref.index:=hreg;
-        //    if isload then
-        //      helpins:=spilling_create_load(tmpref,tempreg)
-        //    else
-        //      helpins:=spilling_create_store(tempreg,tmpref);
-        //    helplist.concat(helpins);
-        //    add_cpu_interferences(helpins);
-        //    list.insertlistafter(pos,helplist);
-        //    helplist.free;
-        //  end
-        //else
-        if isload then
+
+        if abs(spilltemp.offset)>1020 then
+          begin
+            helplist:=TAsmList.create;
+
+            if getregtype(tempreg)=R_INTREGISTER then
+              if isload then
+                hreg:=tempreg
+              else
+                hreg:=getregisterinline(helplist,[R_SUBWHOLE])
+            else
+              hreg:=cg.getintregister(helplist,OS_ADDR);
+
+            if spilltemp.index<>NR_NO then
+              Internalerror(2020032401);
+
+            helplist.concat(taicpu.op_reg_reg_const(A_ADDMI,hreg,spilltemp.base,(spilltemp.offset div 256)*256));
+
+            reference_reset(tmpref,sizeof(pint),[]);
+            tmpref.base:=hreg;
+            tmpref.offset:=spilltemp.offset mod 256;
+
+            helpins:=taicpu.op_reg_ref(op,tempreg,tmpref);
+            helplist.concat(helpins);
+            list.insertlistafter(pos,helplist);
+            helplist.free;
+          end
+        else if isload then
           inherited do_spill_read(list,pos,spilltemp,tempreg,orgsupreg)
         else
           inherited do_spill_written(list,pos,spilltemp,tempreg,orgsupreg)

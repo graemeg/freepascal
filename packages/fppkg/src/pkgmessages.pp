@@ -158,6 +158,7 @@ Resourcestring
   SDbgBackupFile             = 'Creating Backup File "%s"';
   SDbgPackageMultipleLocations = 'Multiple installations found for package %s, using installation "%s"';
   SDbgPackageDependencyOtherTarget  = 'Dependency on package %s is not for %s';
+  SDbgPackageDepOtherTarget  = 'Package %s is not for %s, skipping it''s dependencies';
   SDbgObsoleteDependency     = 'Package %s depends on package %s which is not installed anymore';
   SDbgForcePackageInstall    = 'Installation of package "%s" forced';
   SDbgPackageInstallRequired = 'Installation of package "%s" required for repository "%s"';

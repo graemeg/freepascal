@@ -81,21 +81,31 @@ uses
 {$ifdef beos}
   ,i_beos
 {$endif beos}
-{$ifdef fbsd}
-  ,i_fbsd
-{$endif fbsd}
+{$ifdef bsd}
+{$ifdef darwin}
+  ,i_darwin
+{$else darwin}
+  ,i_bsd
+{$endif darwin}
+{$endif bsd}
 {$ifdef gba}
   ,i_gba
 {$endif gba}
 {$ifdef go32v2}
   ,i_go32v2
 {$endif go32v2}
+{$ifdef haiku}
+  ,i_haiku
+{$endif haiku}
 {$ifdef linux}
   ,i_linux
 {$endif linux}
 {$ifdef macos}
   ,i_macos
 {$endif macos}
+{$ifdef morphos}
+  ,i_morph
+{$endif morphos}
 {$ifdef nds}
   ,i_nds
 {$endif nds}

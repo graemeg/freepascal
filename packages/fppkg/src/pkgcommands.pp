@@ -585,48 +585,52 @@ begin
     begin
       // Find and List dependencies
       L:=TStringList.Create;
-      for i:=0 to P.Dependencies.Count-1 do
-        begin
-          D:=P.Dependencies[i];
-          if not ((PackageManager.CompilerOptions.CompilerOS in D.OSes) and (PackageManager.CompilerOptions.CompilerCPU in D.CPUs)) then
-            Log(llDebug,SDbgPackageDependencyOtherTarget,[D.PackageName,MakeTargetString(PackageManager.CompilerOptions.CompilerCPU,PackageManager.CompilerOptions.CompilerOS)])
-          // Skip dependencies that are available within the fpmake-file itself
-          else if not (assigned(ManifestPackages) and assigned(ManifestPackages.FindPackage(D.PackageName))) then
-            begin
-              AvailP := nil;
-              InstalledP:=PackageManager.FindPackage(D.PackageName, pkgpkInstalled);
-              // Need installation?
-              if not assigned(InstalledP) or
-                 (InstalledP.Version.CompareVersion(D.MinVersion)<0) then
-                begin
-                  AvailP:=PackageManager.FindPackage(D.PackageName, pkgpkAvailable);
-                  if not assigned(AvailP) or
-                     (AvailP.Version.CompareVersion(D.MinVersion)<0) then
-                    begin
-                      status:='Not Available!';
-                      MissingDependency:=D;
-                    end
-                  else
-                    begin
-                      status:='Updating';
-                      L.Add(D.PackageName);
-                    end;
-                end
-              else
-                begin
-                  if PackageManager.PackageIsBroken(InstalledP, s, nil) then
-                    begin
-                      status:='Broken, recompiling';
-                      L.Add(D.PackageName);
-                    end
-                  else
-                    status:='OK';
-                end;
-              Log(llInfo,SLogPackageDependency,
-                  [D.PackageName,D.MinVersion.AsString,PackageVersionStr(InstalledP),
-                   PackageVersionStr(AvailP),status])
-            end
-        end;
+
+      if not ((PackageManager.CompilerOptions.CompilerOS in P.OSes) and (PackageManager.CompilerOptions.CompilerCPU in P.CPUs)) then
+        Log(llDebug,SDbgPackageDependencyOtherTarget,[P.Name,MakeTargetString(PackageManager.CompilerOptions.CompilerCPU,PackageManager.CompilerOptions.CompilerOS)])
+      else
+        for i:=0 to P.Dependencies.Count-1 do
+          begin
+            D:=P.Dependencies[i];
+            if not ((PackageManager.CompilerOptions.CompilerOS in D.OSes) and (PackageManager.CompilerOptions.CompilerCPU in D.CPUs)) then
+              Log(llDebug,SDbgPackageDependencyOtherTarget,[D.PackageName,MakeTargetString(PackageManager.CompilerOptions.CompilerCPU,PackageManager.CompilerOptions.CompilerOS)])
+            // Skip dependencies that are available within the fpmake-file itself
+            else if not (assigned(ManifestPackages) and assigned(ManifestPackages.FindPackage(D.PackageName))) then
+              begin
+                AvailP := nil;
+                InstalledP:=PackageManager.FindPackage(D.PackageName, pkgpkInstalled);
+                // Need installation?
+                if not assigned(InstalledP) or
+                   (InstalledP.Version.CompareVersion(D.MinVersion)<0) then
+                  begin
+                    AvailP:=PackageManager.FindPackage(D.PackageName, pkgpkAvailable);
+                    if not assigned(AvailP) or
+                       (AvailP.Version.CompareVersion(D.MinVersion)<0) then
+                      begin
+                        status:='Not Available!';
+                        MissingDependency:=D;
+                      end
+                    else
+                      begin
+                        status:='Updating';
+                        L.Add(D.PackageName);
+                      end;
+                  end
+                else
+                  begin
+                    if PackageManager.PackageIsBroken(InstalledP, s, nil) then
+                      begin
+                        status:='Broken, recompiling';
+                        L.Add(D.PackageName);
+                      end
+                    else
+                      status:='OK';
+                  end;
+                Log(llInfo,SLogPackageDependency,
+                    [D.PackageName,D.MinVersion.AsString,PackageVersionStr(InstalledP),
+                     PackageVersionStr(AvailP),status])
+              end
+          end;
       if assigned(ManifestPackages) and (PackNr<ManifestPackages.Count-1)  then
         begin
           inc(PackNr);

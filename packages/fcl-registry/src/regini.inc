@@ -300,18 +300,18 @@ begin
   S:=Section;
   If (S<>'') and (S[1] = '\') then
     Delete(S,1,1);
-  if CreateSection then
-    CreateKey('\'+FPath+S);
-  if Section <> '' then
+  if CreateSection and (S<>'') then
+    CreateKey('\'+CurrentPath+'\'+S);
+  if S <> '' then
+    k:=GetKey('\'+CurrentPath+'\'+S)
+  else
+    k:=GetKey('\'+CurrentPath);
+  if k = 0 then
     begin
-    k:=GetKey('\'+FPath+S);
-    if k = 0 then
-      begin
-      Result:=False;
-      exit;
-      end;
-    SetCurrentKey(k);
-  end;
+    Result:=False;
+    exit;
+    end;
+  SetCurrentKey(k);
   Result:=True;
 end;
 

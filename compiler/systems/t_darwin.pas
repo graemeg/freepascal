@@ -769,5 +769,6 @@ initialization
 {$endif aarch64}
 
   RegisterRes(res_macho_info,TWinLikeResourceFile);
+  RegisterRes(res_macosx_ext_info,TWinLikeResourceFile);
 end.
 

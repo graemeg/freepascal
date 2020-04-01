@@ -360,7 +360,6 @@ Var
     if OOptions<>'' then
       OOptions:=OOptions+' ';
     OOptions:=OOptions+maybequoted(s);
-    Writeln('Options: >>>>',OOptions,'<<<<');
   end;
 
   procedure CondAddOption(const Name,Value:string);
