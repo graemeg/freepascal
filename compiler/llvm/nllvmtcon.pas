@@ -408,7 +408,7 @@ implementation
   procedure tllvmtai_typedconstbuilder.emit_tai_procvar2procdef(p: tai; pvdef: tprocvardef);
     begin
       if not pvdef.is_addressonly then
-        pvdef:=cprocvardef.getreusableprocaddr(pvdef);
+        pvdef:=cprocvardef.getreusableprocaddr(pvdef,pc_address_only);
       emit_tai(p,pvdef);
     end;
 
@@ -731,7 +731,7 @@ implementation
         the procdef }
       if (fromdef.typ=procdef) and
          (todef.typ<>procdef) then
-        fromdef:=cprocvardef.getreusableprocaddr(tprocdef(fromdef));
+        fromdef:=cprocvardef.getreusableprocaddr(tprocdef(fromdef),pc_address_only);
       { typecasting a pointer-sized entity to a complex procvardef -> convert
         to the pointer-component of the complex procvardef (not always, because
         e.g. a tmethod to complex procvar initialises the entire complex
@@ -739,7 +739,7 @@ implementation
       if (todef.typ=procvardef) and
          not tprocvardef(todef).is_addressonly and
          (fromdef.size<todef.size) then
-        todef:=cprocvardef.getreusableprocaddr(tprocvardef(todef));
+        todef:=cprocvardef.getreusableprocaddr(tprocvardef(todef),pc_address_only);
       op:=llvmconvop(fromdef,todef,false);
       case op of
         la_ptrtoint_to_x,

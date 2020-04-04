@@ -48,8 +48,8 @@ interface
      tllvmprocdefdecltype = (lpd_def,lpd_decl,lpd_alias,lpd_procvar);
 
     { returns the identifier to use as typename for a def in llvm (llvm only
-      allows naming struct types) -- only supported for defs with a typesym, and
-      only for tabstractrecorddef descendantds and complex procvars }
+      allows naming struct types) -- only supported for tabstractrecorddef
+      descendantds and complex procvars }
     function llvmtypeidentifier(def: tdef): TSymStr;
 
     { encode a type into the internal format used by LLVM (for a type
@@ -130,9 +130,10 @@ implementation
 
   function llvmtypeidentifier(def: tdef): TSymStr;
     begin
-      if not assigned(def.typesym) then
-        internalerror(2015041901);
-      result:='%"typ.'+def.fullownerhierarchyname(false)+def.typesym.realname+'"'
+      if assigned(def.typesym) then
+        result:='%"typ.'+def.fullownerhierarchyname(false)+def.typesym.realname+'"'
+      else
+        result:='%"typ.'+def.fullownerhierarchyname(false)+def.unique_id_str+'"';
     end;
 
 
@@ -444,9 +445,7 @@ implementation
           recorddef :
             begin
               { avoid endlessly recursive definitions }
-              if assigned(def.typesym) and
-                 ((lef_inaggregate in flags) or
-                  not(lef_typedecl in flags)) then
+              if not(lef_typedecl in flags) then
                 encodedstr:=encodedstr+llvmtypeidentifier(def)
               else
                 llvmaddencodedabstractrecordtype(trecorddef(def),encodedstr);
@@ -537,9 +536,7 @@ implementation
                   if def.typ=procvardef then
                     encodedstr:=encodedstr+'*';
                 end
-              else if ((lef_inaggregate in flags) or
-                  not(lef_typedecl in flags)) and
-                 assigned(tprocvardef(def).typesym) then
+              else if not(lef_typedecl in flags) then
                 begin
                   { in case the procvardef recursively references itself, e.g.
                     via a pointer }
@@ -569,8 +566,7 @@ implementation
               odt_object,
               odt_cppclass:
                 begin
-                  if not(lef_typedecl in flags) and
-                     assigned(def.typesym) then
+                  if not(lef_typedecl in flags) then
                     encodedstr:=encodedstr+llvmtypeidentifier(def)
                   else
                     llvmaddencodedabstractrecordtype(tabstractrecorddef(def),encodedstr);

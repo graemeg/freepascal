@@ -220,6 +220,9 @@ interface
 {$elseif defined(sparcgen)}
         { Load left node into flag F_NE/F_E }
         resflags.Init(NR_ICC,F_NE);
+{$elseif defined(xtensa)}
+        { Xtensa uses its own implementation }
+        Internalerror(2020032901);
 {$else}
         { Load left node into flag F_NE/F_E }
         resflags:=F_NE;
@@ -572,7 +575,7 @@ interface
                     begin
                       location.register:=hlcg.getaddressregister(current_asmdata.CurrAsmList,resultdef);
                       { code field is the first one }
-                      hlcg.g_ptrtypecast_ref(current_asmdata.CurrAsmList,cpointerdef.getreusable(tprocvardef(tprocdef(left.resultdef).getcopyas(procvardef,pc_normal,''))),cpointerdef.getreusable(resultdef),left.location.reference);
+                      hlcg.g_ptrtypecast_ref(current_asmdata.CurrAsmList,cpointerdef.getreusable(cprocvardef.getreusableprocaddr(tprocdef(left.resultdef),pc_normal)),cpointerdef.getreusable(resultdef),left.location.reference);
                       hlcg.a_load_ref_reg(current_asmdata.CurrAsmList,resultdef,resultdef,left.location.reference,location.register);
                     end;
                   LOC_REGISTER,LOC_CREGISTER:

@@ -65,7 +65,7 @@ unit cpupi;
     constructor txtensaprocinfo.create(aparent: tprocinfo);
       begin
         inherited create(aparent);
-        maxpushedparasize := 0;
+        maxpushedparasize:=0;
         if target_info.abi=abi_xtensa_windowed then
           begin
             callins:=A_CALL8;
@@ -92,23 +92,15 @@ unit cpupi;
         localsize : aint;
         i : longint;
       begin
-        if (po_nostackframe in procdef.procoptions) then
-          begin
-             { maxpushedparasize sghould be zero,
-               if not we will get an error later. }
-             tg.setfirsttemp(maxpushedparasize);
-             exit;
-          end;
+        tg.setfirsttemp(maxpushedparasize);
 
-        if tg.direction = -1 then
-          tg.setfirsttemp(-(1+12)*4)
-        else
-          tg.setfirsttemp(maxpushedparasize);
+        if po_nostackframe in procdef.procoptions then
+          exit;
 
         { estimate stack frame size }
         if pi_estimatestacksize in flags then
           begin
-            stackframesize:=maxpushedparasize+32;
+            stackframesize:=maxpushedparasize;
             localsize:=0;
             for i:=0 to procdef.localst.SymList.Count-1 do
               if tsym(procdef.localst.SymList[i]).typ=localvarsym then
@@ -126,7 +118,6 @@ unit cpupi;
                   else
                     inc(localsize,tabstractnormalvarsym(procdef.parast.SymList[i]).getsize);
                 end;
-
             inc(stackframesize,localsize);
 
             if pi_needs_implicit_finally in flags then

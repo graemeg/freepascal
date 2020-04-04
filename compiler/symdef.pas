@@ -640,15 +640,16 @@ interface
          pno_mangledname, pno_noparams);
        tprocnameoptions = set of tprocnameoption;
        tproccopytyp = (pc_normal,
+                       { creates a procvardef describing only the code pointer
+                         of a method/netsted function/... }
+                       pc_address_only,
                        { everything except for hidden parameters }
                        pc_normal_no_hidden,
                        { always creates a top-level function, removes all
                          special parameters (self, vmt, parentfp, ...) }
-                       pc_bareproc,
-                       { creates a procvardef describing only the code pointer
-                         of a method/netsted function/... }
-                       pc_address_only
+                       pc_bareproc
                        );
+       tcacheableproccopytyp = pc_normal..pc_address_only;
 
        tabstractprocdef = class(tstoreddef)
           { saves a definition to the return type }
@@ -703,7 +704,7 @@ interface
        tprocvardef = class(tabstractprocdef)
           constructor create(level:byte);virtual;
           { returns a procvardef that represents the address of a proc(var)def }
-          class function getreusableprocaddr(def: tabstractprocdef): tprocvardef; virtual;
+          class function getreusableprocaddr(def: tabstractprocdef; copytyp: tcacheableproccopytyp): tprocvardef; virtual;
           { same as above, but in case the def must never be freed after the
             current module has been compiled -- even if the def was not written
             to the ppu file (for defs in para locations, as we don't reset them
@@ -2356,7 +2357,11 @@ implementation
 {$ifdef x86}
        result:=use_vectorfpu(self);
 {$else x86}
-       result:=(typ=floatdef) and not(cs_fp_emulation in current_settings.moduleswitches);
+       result:=(typ=floatdef) and not(cs_fp_emulation in current_settings.moduleswitches)
+{$ifdef xtensa}
+         and (FPUXTENSA_SINGLE in fpu_capabilities[init_settings.fputype]) and (tfloatdef(self).floattype=s32real)
+{$endif xtensa}
+         ;
 {$endif x86}
      end;
 
@@ -6958,14 +6963,21 @@ implementation
       end;
 
 
-    class function tprocvardef.getreusableprocaddr(def: tabstractprocdef): tprocvardef;
+    class function tprocvardef.getreusableprocaddr(def: tabstractprocdef; copytyp: tcacheableproccopytyp): tprocvardef;
       var
         res: PHashSetItem;
         oldsymtablestack: tsymtablestack;
+        key: packed record
+          def: tabstractprocdef;
+          copytyp: tcacheableproccopytyp;
+        end;
+
       begin
         if not assigned(current_module) then
           internalerror(2011081301);
-        res:=current_module.procaddrdefs.FindOrAdd(@def,sizeof(def));
+        key.def:=def;
+        key.copytyp:=copytyp;
+        res:=current_module.procaddrdefs.FindOrAdd(@key,sizeof(key));
         if not assigned(res^.Data) then
           begin
             { since these pointerdefs can be reused anywhere in the current
@@ -6977,7 +6989,7 @@ implementation
             { do not simply push/pop current_module.localsymtable, because
               that can have side-effects (e.g., it removes helpers) }
             symtablestack:=nil;
-            result:=tprocvardef(def.getcopyas(procvardef,pc_address_only,''));
+            result:=tprocvardef(def.getcopyas(procvardef,copytyp,''));
             setup_reusable_def(def,result,res,oldsymtablestack);
             { res^.Data may still be nil -> don't overwrite result }
             exit;
@@ -6988,7 +7000,7 @@ implementation
 
     class function tprocvardef.getreusableprocaddr_no_free(def: tabstractprocdef): tprocvardef;
       begin
-        result:=getreusableprocaddr(def);
+        result:=getreusableprocaddr(def,pc_address_only);
         if not result.is_registered then
           include(result.defoptions,df_not_registered_no_free);
       end;

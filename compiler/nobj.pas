@@ -889,7 +889,7 @@ implementation
         { now add the methods }
         for i:=0 to _class.vmtentries.count-1 do
           vmtdef.add_field_by_def('',
-            cprocvardef.getreusableprocaddr(pvmtentry(_class.vmtentries[i])^.procdef)
+            cprocvardef.getreusableprocaddr(pvmtentry(_class.vmtentries[i])^.procdef,pc_address_only)
           );
         { the VMT ends with a nil pointer }
         vmtdef.add_field_by_def('',voidcodepointertype);

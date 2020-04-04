@@ -121,24 +121,39 @@ implementation
     procedure tcpuunaryminusnode.second_float;
       begin
         secondpass(left);
-        case current_settings.fputype of
-          fpu_soft:
-            begin
+        if (current_settings.fputype=fpu_soft) or (tfloatdef(left.resultdef).floattype<>s32real) or
+          not(FPUXTENSA_SINGLE in fpu_capabilities[current_settings.fputype]) then
+          begin
+            if not(left.location.loc in [LOC_CREGISTER,LOC_REGISTER]) then
               hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,left.resultdef,false);
-              location:=left.location;
-              case location.size of
-                OS_32:
-                  cg.a_op_const_reg(current_asmdata.CurrAsmList,OP_XOR,OS_32,tcgint($80000000),location.register);
-                OS_64:
-                  cg.a_op_const_reg(current_asmdata.CurrAsmList,OP_XOR,OS_32,tcgint($80000000),location.registerhi);
-              else
-                internalerror(2014033101);
-              end;
-            end
-          else
-            internalerror(2009112602);
-        end;
+            location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
+            if location.size in [OS_64,OS_S64,OS_F64] then
+              begin
+                location.register64.reglo:=cg.getintregister(current_asmdata.CurrAsmList,OS_32);
+                location.register64.reghi:=cg.getintregister(current_asmdata.CurrAsmList,OS_32);
+              end
+            else
+              location.register:=cg.getintregister(current_asmdata.CurrAsmList,location.size);
+
+            case location.size of
+              OS_32:
+                cg.a_op_const_reg_reg(current_asmdata.CurrAsmList,OP_XOR,OS_32,tcgint($80000000),left.location.register,location.register);
+              OS_64:
+                cg.a_op_const_reg_reg(current_asmdata.CurrAsmList,OP_XOR,OS_32,tcgint($80000000),left.location.registerhi,location.registerhi);
+            else
+              internalerror(2014033101);
+            end;
+          end
+        else
+          begin
+            if not(left.location.loc in [LOC_CFPUREGISTER,LOC_FPUREGISTER]) then
+              hlcg.location_force_fpureg(current_asmdata.CurrAsmList,left.location,left.resultdef,false);
+            location_reset(location,LOC_FPUREGISTER,def_cgsize(resultdef));
+            location.register:=cg.getfpuregister(current_asmdata.CurrAsmList,location.size);
+            current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg(A_NEG_S,location.register,left.location.register));
+          end;
       end;
+
 
     procedure tcpushlshrnode.second_64bit;
       var

@@ -243,7 +243,9 @@ implementation
               s64floattype:=cfloatdef.create(s64real,true);
               s80floattype:=cfloatdef.create(s80real,true);
               sc80floattype:=cfloatdef.create(sc80real,true);
-            end else begin
+            end
+          else
+            begin
               s32floattype:=nil;
               s64floattype:=nil;
               s80floattype:=nil;

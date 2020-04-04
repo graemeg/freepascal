@@ -372,7 +372,8 @@ interface
 implementation
 
     uses
-       verbose,cutils;
+       verbose,cutils,
+       cpuinfo;
 
     { returns true, if def uses FPU }
     function is_fpu(def : tdef) : boolean;
@@ -1518,7 +1519,12 @@ implementation
           objectdef :
             result:=int_cgsize(def.size);
           floatdef:
-            if cs_fp_emulation in current_settings.moduleswitches then
+            if (cs_fp_emulation in current_settings.moduleswitches)
+{$ifdef xtensa}
+              or not(tfloatdef(def).floattype=s32real)
+              or not(FPUXTENSA_SINGLE in fpu_capabilities[current_settings.fputype])
+{$endif xtensa}
+              then
               result:=int_cgsize(def.size)
             else
               result:=tfloat2tcgsize[tfloatdef(def).floattype];

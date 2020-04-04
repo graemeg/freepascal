@@ -174,7 +174,7 @@ implementation
         begin
           pd:=tprocdef(procdefs[0]);
           fields[0]:=s32inttype;
-          fields[1]:=pd.getcopyas(procvardef,pc_address_only,'');
+          fields[1]:=cprocvardef.getreusableprocaddr(pd,pc_address_only);
           fields[2]:=voidpointertype;
           itemdef:=llvmgettemprecorddef(fields,C_alignment,
             targetinfos[target_info.system]^.alignment.recordalignmin);

@@ -501,7 +501,7 @@ implementation
         hlcg.location_force_reg(current_asmdata.CurrAsmList,right.location,right.resultdef,cpointerdef.getreusable(literaldef),true);
         { load the invoke pointer }
         hlcg.reference_reset_base(href,right.resultdef,right.location.register,0,ctempposinvalid,right.resultdef.alignment,[]);
-        callprocdef:=cprocvardef.getreusableprocaddr(procdefinition);
+        callprocdef:=cprocvardef.getreusableprocaddr(procdefinition,pc_address_only);
         toreg:=hlcg.getaddressregister(current_asmdata.CurrAsmList,callprocdef);
         hlcg.g_load_field_reg_by_name(current_asmdata.CurrAsmList,literaldef,callprocdef,'INVOKE',href,toreg);
      end;
@@ -851,7 +851,7 @@ implementation
            of far calls where the procvardef was defined does not matter,
            even though the procvardef constructor called by getcopyas looks at
            it) }
-         callprocdef:=cprocvardef.getreusableprocaddr(procdefinition);
+         callprocdef:=cprocvardef.getreusableprocaddr(procdefinition,pc_address_only);
          reg:=hlcg.getaddressregister(current_asmdata.CurrAsmList,callprocdef);
          { in case we have a method pointer on a big endian target in registers,
            the method address is stored in registerhi (it's the first field

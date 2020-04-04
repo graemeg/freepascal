@@ -332,7 +332,11 @@ implementation
                      LOC_FLAGS :
                        begin
                          cg.a_jmp_flags(list,p.location.resflags,truelabel);
+
+                         { e.g. xtensa has no default flags but uses a boolean register }
+{$ifndef xtensa}
                          cg.a_reg_dealloc(list,NR_DEFAULTFLAGS);
+{$endif xtensa}
                          cg.a_jmp_always(list,falselabel);
                        end;
 {$endif cpuflags}

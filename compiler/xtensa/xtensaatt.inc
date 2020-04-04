@@ -2,6 +2,7 @@
 'none',
 'abs',
 'add',
+'add.s',
 'addi',
 'addmi',
 'and',
@@ -28,9 +29,14 @@
 'mov.s',
 'movnez',
 'movi',
+'mul.s',
 'mull',
 'neg',
+'neg.s',
 'nop',
+'oeq.s',
+'ole.s',
+'olt.s',
 'or',
 'ret',
 'retw',
@@ -47,6 +53,7 @@
 'ssl',
 'ssr',
 'sub',
+'sub.s',
 'xor'
 );
 

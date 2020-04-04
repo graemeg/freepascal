@@ -2339,7 +2339,7 @@ implementation
              copytype:=pc_address_only
            else
              copytype:=pc_normal;
-           resultdef:=pd.getcopyas(procvardef,copytype,'');
+           resultdef:=cprocvardef.getreusableprocaddr(pd,copytype);
          end;
       end;
 

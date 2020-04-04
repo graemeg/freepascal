@@ -430,8 +430,8 @@ implementation
               ;
             constsym:
               begin
-                 if tconstsym(symtableentry).consttyp=constresourcestring then
-                   expectloc:=LOC_CREFERENCE;
+                if tconstsym(symtableentry).consttyp=constresourcestring then
+                  expectloc:=LOC_CREFERENCE;
               end;
             staticvarsym,
             localvarsym,
@@ -453,25 +453,25 @@ implementation
                   end;
               end;
             procsym :
-                begin
-                   { initialise left for nested procs if necessary }
-                   if (m_nested_procvars in current_settings.modeswitches) then
-                     setprocdef(fprocdef);
-                   { method pointer or nested proc ? }
-                   if assigned(left) then
-                     begin
-                        expectloc:=LOC_CREGISTER;
-                        firstpass(left);
-                     end;
-                end;
-           labelsym :
-             begin
-               if not assigned(tlabelsym(symtableentry).asmblocklabel) and
-                  not assigned(tlabelsym(symtableentry).code) then
-                 Message(parser_e_label_outside_proc);
-             end
-           else
-             internalerror(200104143);
+              begin
+                { initialise left for nested procs if necessary }
+                if (m_nested_procvars in current_settings.modeswitches) then
+                  setprocdef(fprocdef);
+                { method pointer or nested proc ? }
+                if assigned(left) then
+                  begin
+                     expectloc:=LOC_CREGISTER;
+                     firstpass(left);
+                  end;
+              end;
+            labelsym :
+              begin
+                if not assigned(tlabelsym(symtableentry).asmblocklabel) and
+                   not assigned(tlabelsym(symtableentry).code) then
+                  Message(parser_e_label_outside_proc);
+              end
+            else
+              internalerror(200104143);
          end;
       end;
 
@@ -751,6 +751,10 @@ implementation
                 and (use_vectorfpu(left.resultdef) and
                      use_vectorfpu(right.resultdef) and
                      (tfloatdef(left.resultdef).floattype=tfloatdef(right.resultdef).floattype))
+{$endif arm}
+{$ifdef xtensa}
+                and not((FPUXTENSA_SINGLE in fpu_capabilities[current_settings.fputype]) xor
+                  (FPUXTENSA_DOUBLE in fpu_capabilities[current_settings.fputype]))
 {$endif}
         then
           begin

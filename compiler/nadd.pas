@@ -92,6 +92,10 @@ interface
             the code generation phase.
           }
           function first_addfloat : tnode; virtual;
+          {
+            generates softfloat code for the node
+          }
+          function first_addfloat_soft: tnode; virtual;
        private
           { checks whether a muln can be calculated as a 32bit }
           { * 32bit -> 64 bit                                  }
@@ -3623,26 +3627,16 @@ implementation
       end;
 
 
-    function taddnode.first_addfloat : tnode;
+    function taddnode.first_addfloat_soft : tnode;
       var
         procname: string[31];
         { do we need to reverse the result ? }
         notnode : boolean;
         fdef : tdef;
       begin
-        result := nil;
-        notnode := false;
-        fdef := nil;
-        { In non-emulation mode, real opcodes are
-          emitted for floating point values.
-        }
-        if not ((cs_fp_emulation in current_settings.moduleswitches)
-{$ifdef cpufpemu}
-                or (current_settings.fputype=fpu_soft)
-{$endif cpufpemu}
-                ) then
-          exit;
-
+        notnode:=false;
+        result:=nil;
+        fdef:=nil;
         if not(target_info.system in systems_wince) then
           begin
             case tfloatdef(left.resultdef).floattype of
@@ -3741,7 +3735,6 @@ implementation
               else
                 internalerror(2005082602);
             end;
-
           end;
         { cast softfpu result? }
         if not(target_info.system in systems_wince) then
@@ -3762,6 +3755,21 @@ implementation
         { do we need to reverse the result }
         if notnode then
           result:=cnotnode.create(result);
+      end;
+
+    function taddnode.first_addfloat : tnode;
+      begin
+        result := nil;
+        { In non-emulation mode, real opcodes are
+          emitted for floating point values.
+        }
+        if not ((cs_fp_emulation in current_settings.moduleswitches)
+{$ifdef cpufpemu}
+                or (current_settings.fputype=fpu_soft)
+{$endif cpufpemu}
+                ) then
+          exit;
+        result:=first_addfloat_soft
       end;
 
 

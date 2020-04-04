@@ -116,7 +116,7 @@ interface
       { This table is kept OS,Cpu because it is easier to maintain (PFV) }
       OSCpuPossible : array[TOS,TCpu] of boolean = (
         { os          i386    m68k  ppc    sparc  x86_64 arm    ppc64  avr    armeb  armel  mips   mipsel mips64 misp64el jvm    i8086  aarch64 wasm sparc64 riscv32 riscv64 xtensa}
-        { linux }   ( true,  true,  true,  true,  true,  true,  true,  false, true,  false, true,  true,  false, false,   false, false, true,  false, true,  true,   true,    false),
+        { linux }   ( true,  true,  true,  true,  true,  true,  true,  false, true,  false, true,  true,  false, false,   false, false, true,  false, true,  true,   true,    true ),
         { go32v2 }  ( true,  false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false, false, false, false,  false,   false),
         { win32 }   ( true,  false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false, false, false, false,  false,   false),
         { os2 }     ( true,  false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false, false, false, false,  false,   false),

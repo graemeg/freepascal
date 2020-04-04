@@ -574,8 +574,7 @@ implementation
         symdeflist:=tabstractrecordsymtable(def.symtable).llvmst.symdeflist;
         for i:=0 to symdeflist.Count-1 do
           record_def(tllvmshadowsymtableentry(symdeflist[i]).def);
-        if assigned(def.typesym) then
-          list.concat(taillvm.op_size(LA_TYPE,record_def(def)));
+        list.concat(taillvm.op_size(LA_TYPE,record_def(def)));
       end;
 
 
@@ -605,8 +604,7 @@ implementation
         for i:=0 to def.paras.count-1 do
           appenddef(list,llvmgetcgparadef(tparavarsym(def.paras[i]).paraloc[callerside],true,calleeside));
         appenddef(list,llvmgetcgparadef(def.funcretloc[callerside],true,calleeside));
-        if assigned(def.typesym) and
-           not def.is_addressonly then
+        if not def.is_addressonly then
           list.concat(taillvm.op_size(LA_TYPE,record_def(def)));
       end;
 

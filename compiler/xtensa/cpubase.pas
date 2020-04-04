@@ -78,7 +78,7 @@ unit cpubase;
 
       { Float Super register first and last }
       first_fpu_supreg    = RS_F0;
-      first_fpu_imreg     = $08;
+      first_fpu_imreg     = $10;
 
       { MM Super register first and last }
       first_mm_supreg    = RS_INVALID;
@@ -109,10 +109,18 @@ unit cpubase;
         C_GE,C_LT,C_GEU,C_LTU,
         C_ANY,C_BNONE,C_ALL,C_NALL,C_BC,C_BS,
         C_EQZ,C_NEZ,C_LTZ,C_GEZ,
-        C_EQI,C_NEI,C_LTI,C_GEI,C_LTUI,C_GEUI
+        C_EQI,C_NEI,C_LTI,C_GEI,C_LTUI,C_GEUI,
+        C_F,C_T
       );
 
       TAsmConds = set of TAsmCond;
+
+      TResFlagsEnum = (F_Z,F_NZ);
+
+      TResFlags = record
+        register: TRegister;
+        flag: TResFlagsEnum;
+      end;
 
     const
       cond2str : array[TAsmCond] of string[4]=('',
@@ -120,7 +128,8 @@ unit cpubase;
         'ge','lt','geu','ltu',
         'any','none','all','nall','bc','bs',
         'eqz','nez','ltz','gez',
-        'eqi','nei','lti','gei','ltui','geui'
+        'eqi','nei','lti','gei','ltui','geui',
+        'f','t'
       );
 
       uppercond2str : array[TAsmCond] of string[4]=('',
@@ -128,7 +137,8 @@ unit cpubase;
         'GE','LT','GEU','LTU',
         'ANY','NONE','ALL','NALL','BC','BS',
         'EQZ','NEZ','LTZ','GEZ',
-        'EQI','NEI','LTI','GEI','LTUI','GEUI'
+        'EQI','NEI','LTI','GEI','LTUI','GEUI',
+        'F','T'
       );
 
 {*****************************************************************************
@@ -246,6 +256,8 @@ unit cpubase;
     function inverse_cond(const c: TAsmCond): TAsmCond; {$ifdef USEINLINE}inline;{$endif USEINLINE}
     function conditions_equal(const c1, c2: TAsmCond): boolean; {$ifdef USEINLINE}inline;{$endif USEINLINE}
 
+    function flags_to_cond(const f: TResFlagsEnum) : TAsmCond;
+
     { Checks if Subset is a subset of c (e.g. "less than" is a subset of "less than or equal" }
     function condition_in(const Subset, c: TAsmCond): Boolean;
 
@@ -361,10 +373,20 @@ unit cpubase;
           C_BNONE,C_ANY,C_NALL,C_BNONE,C_BS,C_BC,
 
           C_NEZ,C_EQZ,C_GEZ,C_LTZ,
-          C_NEI,C_EQI,C_GEI,C_LTI,C_GEUI,C_LTUI
+          C_NEI,C_EQI,C_GEI,C_LTI,C_GEUI,C_LTUI,
+          C_T,C_F
         );
       begin
         result := inverse[c];
+      end;
+
+
+    function flags_to_cond(const f: TResFlagsEnum) : TAsmCond;
+      const flags2cond: array[TResFlagsEnum] of tasmcond = (
+          C_F,
+          C_T);
+      begin
+        flags_to_cond := flags2cond[f];
       end;
 
 

@@ -223,7 +223,7 @@ unit cpupara;
           exit;
 
         paraloc:=result.add_location;
-        if retcgsize in [OS_64,OS_S64] then
+        if retcgsize in [OS_64,OS_S64,OS_F64] then
           begin
             { low 32bits }
             paraloc^.loc:=LOC_REGISTER;
@@ -275,7 +275,7 @@ unit cpupara;
               end
             else
               paraloc^.register:=newreg(R_INTREGISTER,RS_FUNCTION_RETURN_REG,cgsize2subreg(R_INTREGISTER,retcgsize));
-            paraloc^.size:=retcgsize;
+            paraloc^.size:=OS_32;
             paraloc^.def:=result.def;
           end;
       end;
@@ -424,30 +424,10 @@ unit cpupara;
                       inc(nextintreg);
                       dec(paralen,tcgsize2size[paraloc^.size]);
                     end
-                  else if (loc = LOC_FPUREGISTER) and
-                          (nextintreg <= maxintreg) then
-                    begin
-                      paraloc^.loc:=loc;
-                      paraloc^.size := paracgsize;
-                      paraloc^.def := paradef;
-                      paraloc^.register:=newreg(R_FPUREGISTER,nextintreg,R_SUBWHOLE);
-                      inc(nextintreg);
-                      dec(paralen,tcgsize2size[paraloc^.size]);
-                    end
                   else { LOC_REFERENCE }
                     begin
                        paraloc^.loc:=LOC_REFERENCE;
                        case loc of
-                         LOC_FPUREGISTER:
-                           begin
-                             paraloc^.size:=int_float_cgsize(paralen);
-                             case paraloc^.size of
-                               OS_F32: paraloc^.def:=s32floattype;
-                               OS_F64: paraloc^.def:=s64floattype;
-                               else
-                                 internalerror(2020031406);
-                             end;
-                           end;
                          LOC_REGISTER,
                          LOC_REFERENCE:
                            begin
@@ -496,7 +476,7 @@ unit cpupara;
       var
         cur_stack_offset: aword;
         parasize, l: longint;
-        curintreg, firstfloatreg: tsuperregister;
+        curintreg: tsuperregister;
         i : integer;
         hp: tparavarsym;
         paraloc: pcgparalocation;

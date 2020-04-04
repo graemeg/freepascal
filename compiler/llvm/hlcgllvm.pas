@@ -567,7 +567,7 @@ implementation
     { if this is a complex procvar, get the non-tmethod-like equivalent }
     if (pd.typ=procvardef) and
        not pd.is_addressonly then
-      pd:=tprocvardef(cprocvardef.getreusableprocaddr(pd));
+      pd:=tprocvardef(cprocvardef.getreusableprocaddr(pd,pc_address_only));
   end;
 
 

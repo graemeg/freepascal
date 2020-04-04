@@ -313,6 +313,7 @@
   {$define cpu32bitaddr}
   {$define cpu32bitalu}
   {$define cpufpemu}
+  {$define cpuflags} { xtensa has a boolean extension }
   {$define cputargethasfixedstack}
   {$define cpuneedsmulhelper}
   {$define cpuneedsdivhelper}

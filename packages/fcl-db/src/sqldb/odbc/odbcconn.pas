@@ -999,7 +999,14 @@ begin
       SQL_TINYINT:       begin FieldType:=ftSmallint;   FieldSize:=0; end;
       SQL_BIGINT:        begin FieldType:=ftLargeint;   FieldSize:=0; end;
       SQL_BINARY:        begin FieldType:=ftBytes;      FieldSize:=ColumnSize; end;
-      SQL_VARBINARY:     begin FieldType:=ftVarBytes;   FieldSize:=ColumnSize; end;
+      SQL_VARBINARY:
+      begin
+        FieldSize:=ColumnSize;
+        if FieldSize=BLOB_BUF_SIZE then // SQL_VARBINARY declared as VARBINARY(MAX) must be ftBlob - variable data size
+          FieldType:=ftBlob
+        else
+          FieldType:=ftVarBytes;
+      end;
       SQL_LONGVARBINARY: begin FieldType:=ftBlob;       FieldSize:=BLOB_BUF_SIZE; end; // is a blob
       SQL_TYPE_DATE:     begin FieldType:=ftDate;       FieldSize:=0; end;
       SQL_SS_TIME2,
