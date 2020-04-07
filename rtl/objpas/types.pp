@@ -64,6 +64,7 @@ type
   TShortIntDynArray = array of ShortInt;
   TSmallIntDynArray = array of SmallInt;
   TStringDynArray = array of AnsiString;
+  TObjectDynArray = array of TObject;
   TWideStringDynArray   = array of WideString;
   TWordDynArray = array of Word;
   TCurrencyArray = Array of currency;

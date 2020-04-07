@@ -694,6 +694,10 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+    function ToObjectArray(aStart,aEnd : Integer) : TObjectDynArray; overload;
+    function ToObjectArray: TObjectDynArray; overload;
+    function ToStringArray(aStart,aEnd : Integer) : TStringDynArray; overload;
+    function ToStringArray: TStringDynArray; overload;
     function Add(const S: string): Integer; virtual; overload;
     function AddObject(const S: string; AObject: TObject): Integer; virtual; overload;
     function Add(const Fmt : string; const Args : Array of const): Integer; overload;
@@ -704,6 +708,8 @@ type
     procedure AddStrings(TheStrings: TStrings; ClearFirst : Boolean); overload;
     procedure AddStrings(const TheStrings: array of string); overload; virtual;
     procedure AddStrings(const TheStrings: array of string; ClearFirst : Boolean); overload;
+    procedure SetStrings(TheStrings: TStrings); overload; virtual;
+    procedure SetStrings(TheStrings: array of string); overload; virtual;
     Procedure AddText(Const S : String); virtual;
     procedure AddCommaText(const S: String);
     procedure AddDelimitedText(const S: String; ADelimiter: char; AStrictDelimiter: Boolean); overload;

@@ -607,7 +607,7 @@ end;
 function epoll_create(size: cint): cint;
 begin
 {$if defined(generic_linux_syscalls)}
-  epoll_create := do_syscall(syscall_nr_epoll_create1,0)
+  epoll_create := do_syscall(syscall_nr_epoll_create1,0);
 {$else}
   epoll_create := do_syscall(syscall_nr_epoll_create,tsysparam(size));
 {$endif}

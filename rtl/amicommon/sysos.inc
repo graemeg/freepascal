@@ -31,6 +31,13 @@
 {$include execf.inc}
 {$include doslibf.inc}
 
+{$ifdef cpum68k}
+{$if defined(amiga_v1_0_only) or defined(amiga_v1_2_only)}
+{$include legacyexec.inc}
+{$include legacydos.inc}
+{$include legacyutil.inc}
+{$endif}
+{$endif}
 
 {*****************************************************************************
                              CPU specific

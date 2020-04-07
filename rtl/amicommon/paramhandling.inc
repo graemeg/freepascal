@@ -240,10 +240,15 @@ begin
     if l = 0 then
     begin
       s1 := GetProgDir;
-      if s1[Length(s1)] = ':' then
-        paramstr := s1 + GetProgramName
+      if length(s1) > 0 then
+      begin
+        if s1[Length(s1)] = ':' then
+          paramstr := s1 + GetProgramName
+        else
+          paramstr:=s1+'/'+GetProgramName;
+      end
       else
-        paramstr:=s1+'/'+GetProgramName;
+        paramstr:=GetProgramName;
     end
     else
     begin

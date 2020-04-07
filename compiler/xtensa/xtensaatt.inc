@@ -1,5 +1,5 @@
 (
-'none',
+'',
 'abs',
 'add',
 'add.s',
@@ -18,6 +18,7 @@
 'callx12',
 'entry',
 'extui',
+'ill',
 'l8ui',
 'l16si',
 'l16ui',
@@ -54,6 +55,7 @@
 'ssr',
 'sub',
 'sub.s',
+'syscall',
 'xor'
 );
 

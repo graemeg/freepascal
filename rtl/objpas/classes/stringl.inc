@@ -689,6 +689,7 @@ begin
     Exclude(FOptions,soUseLocale);
 end;
 
+
 procedure TStrings.SetWriteBOM(AValue: Boolean);
 begin
   if AValue then
@@ -1018,6 +1019,43 @@ begin
   inherited destroy;
 end;
 
+function TStrings.ToObjectArray: TObjectDynArray;
+
+begin
+  Result:=ToObjectArray(0,Count-1);
+end;
+
+function TStrings.ToObjectArray(aStart,aEnd : Integer): TObjectDynArray;
+Var
+  I : Integer;
+
+begin
+  Result:=Nil;
+  if aStart>aEnd then exit;
+  SetLength(Result,aEnd-aStart+1);
+  For I:=aStart to aEnd do
+    Result[i-aStart]:=Objects[i];
+end;
+
+function TStrings.ToStringArray: TStringDynArray;
+
+begin
+  Result:=ToStringArray(0,Count-1);
+end;
+
+function TStrings.ToStringArray(aStart,aEnd : Integer): TStringDynArray;
+
+Var
+  I : Integer;
+
+begin
+  Result:=Nil;
+  if aStart>aEnd then exit;
+  SetLength(Result,aEnd-aStart+1);
+  For I:=aStart to aEnd do
+    Result[i-aStart]:=Strings[i];
+end;
+
 
 constructor TStrings.Create;
 begin
@@ -1118,6 +1156,18 @@ begin
   finally
     EndUpdate;
   end;
+end;
+
+procedure TStrings.SetStrings(TheStrings: TStrings);
+
+begin
+  AddStrings(TheStrings,True);
+end;
+
+procedure TStrings.SetStrings(TheStrings: array of string);
+
+begin
+  AddStrings(TheStrings,True);
 end;
 
 Procedure TStrings.Assign(Source: TPersistent);

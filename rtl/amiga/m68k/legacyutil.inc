@@ -23,12 +23,12 @@
 }
 
 procedure Amiga2Date(seconds: Cardinal;
-                     result : PClockData);
+                     result : PClockData); public name '_fpc_amiga_amiga2date';
 begin
 {$warning Amiga2Date unimplemented!}
 end;
 
-function Date2Amiga(date: PClockData): Cardinal;
+function Date2Amiga(date: PClockData): Cardinal; public name '_fpc_amiga_date2amiga';
 begin
 {$warning Date2Amiga unimplemented!}
   Date2Amiga:=0;

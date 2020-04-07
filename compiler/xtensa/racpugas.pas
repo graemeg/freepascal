@@ -596,9 +596,10 @@ Unit racpugas;
               BuildReference(oper);
             end;
 
-          AS_HASH: { Constant expression  }
+          AS_MINUS,
+          AS_PLUS,
+          AS_INTNUM: { Constant expression  }
             Begin
-              Consume(AS_HASH);
               BuildConstantOperand(oper);
             end;
           AS_ID: { A constant expression, or a Variable ref.  }
@@ -841,14 +842,13 @@ Unit racpugas;
 
         actcondition:=C_None;
 
-        { first, handle B else BLS is read wrong }
-        if ((hs[1]='J') and (length(hs)=3)) then
+        if hs[1]='B' then
           begin
             for icond:=low(tasmcond) to high(tasmcond) do
               begin
-                if copy(hs,2,3)=uppercond2str[icond] then
+                if copy(hs,2,length(hs)-1)=uppercond2str[icond] then
                   begin
-                    actopcode:=A_J;
+                    actopcode:=A_Bcc;
                     actasmtoken:=AS_OPCODE;
                     actcondition:=icond;
                     is_asmopcode:=true;
@@ -856,7 +856,7 @@ Unit racpugas;
                   end;
               end;
           end;
-        maxlen:=min(length(hs),6);
+        maxlen:=min(length(hs),7);
         actopcode:=A_NONE;
         j2:=maxlen;
         hs2:=hs;

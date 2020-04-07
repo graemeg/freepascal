@@ -361,7 +361,7 @@ begin
   if UseVLink then
     begin
       if create_smartlink_sections then
-        GCSectionsStr:='-gc-all -sc -sd';
+        GCSectionsStr:='-gc-all -mtype';
     end;
 
   { Call linker }

@@ -48,6 +48,7 @@ implementation
     aasmbase,aasmtai,
     symconst,symsym,defutil,
     cpubase,aasmcpu,parabase,
+    procinfo,
     cgobj,cgcpu;
 
   procedure create_hlcodegen_cpu;
@@ -59,7 +60,53 @@ implementation
 
   procedure thlcgxtensa.g_intf_wrapper(list : TAsmList; procdef : tprocdef;
    const labelname : string; ioffset : longint);
+    var
+      make_global : boolean;
+      tmpref : treference;
+      l : TAsmLabel;
     begin
+      if not(procdef.proctypeoption in [potype_function,potype_procedure]) then
+        Internalerror(200006137);
+      if not assigned(procdef.struct) or
+         (procdef.procoptions*[po_classmethod, po_staticmethod,
+           po_methodpointer, po_interrupt, po_iocheck]<>[]) then
+        Internalerror(200006138);
+      if procdef.owner.symtabletype<>ObjectSymtable then
+        Internalerror(200109191);
+
+      make_global:=false;
+      if (not current_module.is_unit) or
+         create_smartlink or
+         (procdef.owner.defowner.owner.symtabletype=globalsymtable) then
+        make_global:=true;
+
+      if make_global then
+        list.concat(Tai_symbol.Createname_global(labelname,AT_FUNCTION,0,procdef))
+      else
+        list.concat(Tai_symbol.Createname_hidden(labelname,AT_FUNCTION,0,procdef));
+
+      { the wrapper might need aktlocaldata for the additional data to
+        load the constant }
+      current_procinfo:=cprocinfo.create(nil);
+
+      { set param1 interface to self  }
+      g_adjust_self_value(list,procdef,ioffset);
+
+      { case 4 }
+      if (po_virtualmethod in procdef.procoptions) and
+          not is_objectpascal_helper(procdef.struct) then
+        begin
+//          loadvmttor12;
+//          op_onr12methodaddr;
+        end
+      else
+        list.concat(taicpu.op_sym(A_CALL0,current_asmdata.RefAsmSymbol(procdef.mangledname,AT_FUNCTION)));
+      list.concatlist(current_procinfo.aktlocaldata);
+
+      current_procinfo.Free;
+      current_procinfo:=nil;
+
+      list.concat(Tai_symbol_end.Createname(labelname));
     end;
 
 

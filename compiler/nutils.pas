@@ -649,13 +649,21 @@ implementation
 
         block:=nil;
         stat:=nil;
+        self_temp:=nil;
         if docheck then
           begin
             { check for nil self-pointer }
             block:=internalstatements(stat);
-            self_temp:=ctempcreatenode.create_value(
-              self_resultdef,self_resultdef.size,tt_persistent,true,
-              self_node);
+            if is_object(self_resultdef) then
+              begin
+                self_temp:=ctempcreatenode.create_value(
+                  cpointerdef.getreusable(self_resultdef),cpointerdef.getreusable(self_resultdef).size,tt_persistent,true,
+                  caddrnode.create(self_node));
+              end
+            else
+              self_temp:=ctempcreatenode.create_value(
+                self_resultdef,self_resultdef.size,tt_persistent,true,
+                self_node);
             addstatement(stat,self_temp);
 
             { in case of an object, self can only be nil if it's a dereferenced
@@ -665,8 +673,6 @@ implementation
                (actualtargetnode(@self_node)^.nodetype=derefn) then
               begin
                 check_self:=ctemprefnode.create(self_temp);
-                if is_object(self_resultdef) then
-                  check_self:=caddrnode.create(check_self);
                 addstatement(stat,cifnode.create(
                   caddnode.create(equaln,
                     ctypeconvnode.create_explicit(
@@ -678,8 +684,10 @@ implementation
                   nil)
                 );
               end;
-            addstatement(stat,ctempdeletenode.create_normal_temp(self_temp));
-            self_node:=ctemprefnode.create(self_temp);
+            if is_object(self_resultdef) then
+              self_node:=cderefnode.create(ctemprefnode.create(self_temp))
+            else
+              self_node:=ctemprefnode.create(self_temp)
           end;
         { in case of a classref, the "instance" is a pointer
           to pointer to a VMT and there is no vmt field }
@@ -729,6 +737,7 @@ implementation
                 )
               );
             addstatement(stat,ctempdeletenode.create_normal_temp(vmt_temp));
+            addstatement(stat,ctempdeletenode.create(self_temp));
             addstatement(stat,ctemprefnode.create(vmt_temp));
             result:=block;
           end

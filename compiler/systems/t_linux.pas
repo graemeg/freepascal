@@ -253,9 +253,14 @@ const defdynlinker='/lib/ld-linux-aarch64.so.1';
 {$ifdef riscv32}
   const defdynlinker='/lib32/ld.so.1';
 {$endif riscv32}
+
 {$ifdef riscv64}
   const defdynlinker='/lib/ld-linux-riscv64-lp64d.so.1';
 {$endif riscv64}
+
+{$ifdef xtensa}
+  const defdynlinker='/lib/ld.so.1';
+{$endif xtensa}
 
 
 procedure SetupDynlinker(out DynamicLinker:string;out libctype:TLibcType);
@@ -363,6 +368,7 @@ const
 {$endif}
 {$ifdef riscv32}   platform_select='-m elf32lriscv';{$endif}
 {$ifdef riscv64}   platform_select='-m elf64lriscv';{$endif}
+{$ifdef xtensa}    platform_select='';{$endif}
 
 var
   platformopt: string;
@@ -2029,5 +2035,11 @@ initialization
   RegisterExport(system_riscv64_linux,texportliblinux);
   RegisterTarget(system_riscv64_linux_info);
 {$endif riscv64}
+{$ifdef xtensa}
+  RegisterImport(system_xtensa_linux,timportliblinux);
+  RegisterExport(system_xtensa_linux,texportliblinux);
+  RegisterTarget(system_xtensa_linux_info);
+{$endif xtensa}
   RegisterRes(res_elf_info,TWinLikeResourceFile);
 end.
+

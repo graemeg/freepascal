@@ -287,7 +287,9 @@ begin
   end;
 end;
 
+{$IFNDEF AMIGA_LEGACY}
 {$DEFINE ASYS_FILESIZE_USE_EXAMINEFH}
+{$ENDIF}
 { I changed the double-Seek filesize method which we
   were using for 10+ years to the new ExamineFH() method.
   It should be available AmigaOS 2.0+, and much faster.
@@ -335,12 +337,16 @@ end;
 procedure do_truncate(handle: THandle; pos: longint);
 begin
   checkCTRLC;
+{$IFNDEF AMIGA_LEGACY}
   if CheckInList(ASYS_fileList,handle)<>nil then begin
 
     { Seeking from OFFSET_BEGINNING }
     if SetFileSize(handle,pos,OFFSET_BEGINNING)<0 then
       dosError2InOut(IoErr);
   end;
+{$ELSE}
+  dosError2InOut(ERROR_NOT_IMPLEMENTED);
+{$ENDIF}
 end;
 
 procedure do_open(var f;p:pchar;flags:longint; pchangeable: boolean);

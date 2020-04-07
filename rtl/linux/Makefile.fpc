@@ -109,7 +109,6 @@ ifeq ($(ARCH),mipsel)
 override FPCOPT+=-Ur
 endif
 
-
 ifeq ($(ARCH),arm)
 override LOADERS+=ucprt0
 CPU_UNITS=cpu
@@ -123,6 +122,10 @@ ifeq ($(ARCH),sparc64)
   override FPCOPT+=-Fisparcgen
 endif
 
+ifeq ($(ARCH),xtensa)
+override LOADERS=
+SYSINIT_UNITS=si_prc si_dll si_c
+endif
 
 SYSTEMUNIT=system
 
@@ -364,13 +367,13 @@ initc$(PPUEXT) : $(UNIXINC)/initc.pp ctypes$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
 
 unixcp$(PPUEXT) : $(UNIXINC)/unixcp.pp $(SYSTEMUNIT)$(PPUEXT) objpas$(PPUEXT) baseunix$(PPUEXT)
         $(COMPILER) $(UNIXINC)/unixcp.pp
-		
+
 linux$(PPUEXT) :  linux.pp baseunix$(PPUEXT) unixtype$(PPUEXT) syscall$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) linux.pp
-		
+
 linuxvcs$(PPUEXT) :  linuxvcs.pp baseunix$(PPUEXT) strings$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) linuxvcs.pp
-		
+
 termio$(PPUEXT) : termio.pp baseunix$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) termio.pp
 

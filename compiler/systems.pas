@@ -257,7 +257,7 @@ interface
        systems_linux = [system_i386_linux,system_x86_64_linux,system_powerpc_linux,system_powerpc64_linux,
                        system_arm_linux,system_sparc_linux,system_sparc64_linux,system_m68k_linux,
                        system_x86_6432_linux,system_mipseb_linux,system_mipsel_linux,system_aarch64_linux,
-                       system_riscv32_linux,system_riscv64_linux];
+                       system_riscv32_linux,system_riscv64_linux,system_xtensa_linux];
        systems_dragonfly = [system_x86_64_dragonfly];
        systems_freebsd = [system_i386_freebsd,
                           system_x86_64_freebsd];

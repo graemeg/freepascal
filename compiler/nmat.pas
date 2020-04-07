@@ -1317,12 +1317,12 @@ implementation
            begin
              if (expectloc in [LOC_REFERENCE,LOC_CREFERENCE,LOC_CREGISTER]) then
                expectloc:=LOC_REGISTER;
-            { before loading it into flags we need to load it into
-              a register thus 1 register is need PM }
-{$ifdef cpuflags}
+             { xtensa has boolean registers which are treateed as flags but they
+               are not used for boolean expressions }
+{$if defined(cpuflags) and not(defined(xtensa))}
              if left.expectloc<>LOC_JUMP then
                expectloc:=LOC_FLAGS;
-{$endif def cpuflags}
+{$endif defined(cpuflags) and not(defined(xtensa)}
            end
          else
 {$ifdef SUPPORT_MMX}

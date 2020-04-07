@@ -24,7 +24,7 @@
 
 
 function AllocVec(byteSize    : Cardinal;
-                  requirements: Cardinal): Pointer;
+                  requirements: Cardinal): Pointer; public name '_fpc_amiga_allocvec';
 var
   p: pointer;
 begin
@@ -37,7 +37,7 @@ begin
   AllocVec:=p;
 end;
 
-procedure FreeVec(memoryBlock: Pointer);
+procedure FreeVec(memoryBlock: Pointer); public name '_fpc_amiga_freevec';
 begin
   if memoryBlock <> nil then
     begin
@@ -62,7 +62,7 @@ type
 
 function CreatePool(requirements: Cardinal;
                     puddleSize  : Cardinal;
-                    threshSize  : Cardinal): Pointer;
+                    threshSize  : Cardinal): Pointer; public name '_fpc_amiga_createpool';
 var
   p: PAmigaLegacyPool;
 begin
@@ -75,14 +75,8 @@ begin
   CreatePool:=p;
 end;
 
-procedure DeletePool(poolHeader: Pointer);
-begin
-  
-{$warning DeletePool unimplemented!}
-end;
-
 function AllocPooled(poolHeader: Pointer;
-                     memSize   : Cardinal): Pointer;
+                     memSize   : Cardinal): Pointer; public name '_fpc_amiga_allocpooled';
 var
   p: PAmigaLegacyPoolEntry;
   ph: PAmigaLegacyPool absolute poolHeader;
@@ -103,7 +97,7 @@ end;
 
 procedure FreePooled(poolHeader: Pointer;
                     memory    : Pointer;
-                    memSize   : Cardinal);
+                    memSize   : Cardinal); public name '_fpc_amiga_freepooled';
 var
   p: PAmigaLegacyPoolEntry;
   ph: PAmigaLegacyPool absolute poolHeader;
@@ -121,12 +115,64 @@ begin
     end;
 end;
 
-procedure StackSwap(newStack: PStackSwapStruct);
+procedure DeletePool(poolHeader: Pointer); public name '_fpc_amiga_deletepool';
+var
+  p: PAmigaLegacyPool absolute poolHeader;
+  pe: PAmigaLegacyPoolEntry;
 begin
-{$warning StackSwap unimplemented!}
+  if p <> nil then
+    begin
+      while p^.pool_chain <> nil do
+        begin
+          pe:=p^.pool_chain;
+          FreePooled(poolHeader, pointer(pe) + sizeof(TAmigaLegacyPoolEntry), pe^.pe_size);
+        end;
+      execFreeMem(p,sizeof(TAmigaLegacyPool));
+    end;
 end;
 
-procedure ObtainSemaphoreShared(sigSem: PSignalSemaphore);
+procedure StackSwap(newStack: PStackSwapStruct); assembler; nostackframe; public name '_fpc_amiga_stackswap';
+asm
+    move.l   a6,-(sp)
+    move.l   newStack,-(sp)
+
+    move.l   AOS_ExecBase,a6
+    sub.l    a1,a1
+    jsr      -294(a6)    // FindTask()
+    move.l   d0,-(sp)
+
+    move.l   AOS_ExecBase,a6
+    jsr      -120(a6)    // Disable()
+
+    move.l   (sp)+,a1    // task
+    move.l   (sp)+,a0    // newStack
+
+    move.l   58(a1),d0   // task^.tc_SPLower
+    move.l   (a0),58(a1)
+    move.l   d0,(a0)+
+
+    move.l   62(a1),d0   // task^.tc_SPUpper
+    move.l   (a0),62(a1)
+    move.l   d0,(a0)+
+
+    move.l   (sp)+,a6
+    move.l   (sp)+,d0     // return address
+
+    move.l   (a0),d1
+    move.l   sp,(a0)
+    move.l   d1,sp
+
+    move.l   d0,-(sp)
+    move.l   a6,-(sp)
+
+    move.l   AOS_ExecBase,a6
+    jsr      -126(a6)    // Enable()
+
+    move.l   (sp)+,a6
+    rts
+end;
+
+procedure ObtainSemaphoreShared(sigSem: PSignalSemaphore); public name '_fpc_amiga_obtainsemaphoreshared';
 begin
   { NOTE: this still needs v33+ (OS v1.2 or later) }
   { ObtainSemaphoreShared is used by athreads, and simply replacing
