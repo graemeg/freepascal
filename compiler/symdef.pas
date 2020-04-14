@@ -2361,6 +2361,10 @@ implementation
 {$ifdef xtensa}
          and (FPUXTENSA_SINGLE in fpu_capabilities[init_settings.fputype]) and (tfloatdef(self).floattype=s32real)
 {$endif xtensa}
+{$ifdef arm}
+         and (((FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[init_settings.fputype]) and (tfloatdef(self).floattype=s32real)) or
+              (FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[init_settings.fputype]))
+{$endif arm}
          ;
 {$endif x86}
      end;

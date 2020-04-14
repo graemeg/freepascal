@@ -390,7 +390,7 @@ Const
   syscall_nr_vmsplice                   = syscall_nr_base+343;
   syscall_nr_move_pages                 = syscall_nr_base+344;
   syscall_nr_getcpu                     = syscall_nr_base+345;
-                                        {* 346 for epoll_pwait *}
+  syscall_nr_epoll_pwait                = syscall_nr_base+346;
   syscall_nr_kexec_load                 = syscall_nr_base+347;
   syscall_nr_utimensat                  = syscall_nr_base+348;
   syscall_nr_signalfd                   = syscall_nr_base+349;

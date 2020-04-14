@@ -113,29 +113,191 @@ begin
   NextDosEntry:=nil;
 end;
 
+// Very first dirty version of MatchFirst/Next/End)
+//TODO: pattern detection, for now only simple "*" or "#?" or full name  (without patterns) is supported
 function MatchFirst(pat   : PChar;
                     anchor: PAnchorPath): LongInt; public name '_fpc_amiga_matchfirst';
+var
+  p: PChar;
+  len: LongInt;
+  Path,FileN: AnsiString;
+  LastSeparatorPos: Integer;
+  i: Integer;
+  DirLock: BPTR;
+  ib: TFileInfoBlock;
+  Res: LongInt;
+  NChain: PAChain;
 begin
-{$warning MatchFirst unimplemented!}
-  MatchFirst:=-1;
+  MatchFirst := -1;
+  if not Assigned(Anchor) then
+    Exit;
+  // Search for last '/' or ':' and determine length
+  Len := strlen(Pat);
+  P := Pat;
+  LastSeparatorPos := 0;
+  for i := 1 to Len do
+  begin
+    if (P^ = '/') or (P^ = ':') then
+    begin
+      LastSeparatorPos := i;
+    end;
+    Inc(P);
+  end;
+  // copy Directory name
+  SetLength(Path, LastSeparatorPos);
+  Move(Pat^, Path[1], LastSeparatorPos);
+  // copy filename
+  SetLength(FileN, Len - LastSeparatorPos);
+  P := Pat;
+  Inc(P, LastSeparatorPos);
+  Move(P^, FileN[1], Len - LastSeparatorPos);
+  // searchpattern lowercase
+  FileN := LowerCase(FileN);
+
+  // if no path is given use the current working dir, or try to lock the dir
+  if Path = '' then
+    DirLock := CurrentDir(0)
+  else
+    DirLock := Lock(PChar(Path), ACCESS_READ);
+  //
+  // no dirlock found -> dir not found
+  if DirLock = 0 then
+  begin
+    MatchFirst := -1;
+    Exit;
+  end;
+  // examine the dir to get the fib for ExNext
+  if Examine(DirLock, @ib) = 0 then
+  begin
+    MatchFirst := -1;
+    Exit;
+  end;
+  // we search here directly what we need to find
+  //  guess it's not meant that way but works
+  repeat
+    // get next dir entry
+    Res := ExNext(DirLock, @ib);
+    // nothing nore found -> exit
+    if Res = 0 then
+      break;
+    // include some nifty pattern compare here? later maybe!
+    if (FileN = '*') or (FileN = '#?') or (FileN = lowercase(AnsiString(ib.fib_FileName))) then
+    begin
+      // Match found
+      // new chain
+      NChain := AllocMem(SizeOf(TAChain));
+      if Assigned(Anchor^.ap_First) then
+      begin
+        // put chain entry to the list
+        Anchor^.ap_Last^.an_Child := NChain;
+        NChain^.an_Parent := Anchor^.ap_Last;
+        Anchor^.ap_Last := NChain;
+      end
+      else
+      begin
+        // first chain Entry
+        Anchor^.ap_Last := NChain;
+        Anchor^.ap_First := NChain;
+        NChain^.an_Parent := Pointer(Anchor);
+      end;
+      // copy the fileinfoblock into the chain
+      Move(ib, NChain^.an_Info, SizeOf(TFileInfoBlock));
+    end;
+  until Res = 0; // useless... we jump oput earlier
+  //
+  // if we found something
+  if Assigned(Anchor^.ap_Last) then
+  begin
+    // set current to the first entry we found
+    Anchor^.ap_Last := Anchor^.ap_First;
+    // we only copy the file info block, rest is not needed for freepascal stuff
+    Move(Anchor^.ap_First^.an_Info, Anchor^.ap_Info, SizeOf(TFileInfoBlock));
+    // most importantly set the return code
+    MatchFirst := 0;
+  end;
+  Unlock(DirLock);
 end;
 
 function MatchNext(anchor: PAnchorPath): LongInt; public name '_fpc_amiga_matchnext';
 begin
-{$warning MatchNext unimplemented!}
-  MatchNext:=-1;
+  MatchNext := -1;
+  if not Assigned(Anchor) then
+    Exit;
+  // was already last entry?
+  if not Assigned(Anchor^.ap_Last) then
+    Exit;
+  // Get the next Chain Entry
+  anchor^.ap_Last := anchor^.ap_Last^.an_Child;
+  // check if next one is valid and copy the file infoblock, or just set the error code ;)
+  if Assigned(anchor^.ap_Last) then
+  begin
+    Move(Anchor^.ap_Last^.an_Info, Anchor^.ap_Info, SizeOf(TFileInfoBlock));
+    MatchNext := 0;
+  end
+  else
+    MatchNext := ERROR_NO_MORE_ENTRIES;
 end;
 
 procedure MatchEnd(anchor: PAnchorPath); public name '_fpc_amiga_matchend';
+var
+  p, nextp: PAChain;
 begin
-{$warning MatchEnd unimplemented!}
+  if Assigned(Anchor) then
+  begin
+    // destroy all the chain entries we created before
+    p := Anchor^.ap_First;
+    while Assigned(p) do
+    begin
+      Nextp := p^.an_Child;
+      FreeMem(P);
+      P := NextP;
+    end;
+    // reset the contents (is this needed?)
+    Anchor^.ap_First := nil;
+    Anchor^.ap_Last := nil;
+  end;
 end;
 
+procedure NextTag(var Tag: PTagItem); inline;
+begin
+  if Tag^.ti_Tag = TAG_END then
+    Exit;
+  Inc(Tag);
+  repeat
+    case Tag^.ti_Tag of
+      TAG_IGNORE: Inc(Tag);
+      TAG_SKIP: Inc(Tag, Tag^.ti_Data);
+      TAG_MORE: Tag := PTagItem(Tag^.ti_Data);
+      else
+        Break;
+    end;
+  until False;
+end;
+
+// we emulate that by the old execute command, should be enough for most cases
 function SystemTagList(command: PChar;
                        tags   : PTagItem): LongInt; public name '_fpc_amiga_systemtaglist';
+var
+  I,O: BPTR; // in / ouput handles
+  tag: PTagItem;
 begin
-{$warning SystemTagList unimplemented!}
-  SystemTagList:=-1;
+  i := 0;
+  O := 0;
+  tag := Tags;
+  if Assigned(tag) then
+  begin
+    repeat
+      case Tag^.ti_Tag of
+        SYS_Input: I := Tag^.ti_Data;
+        SYS_Output: O := Tag^.ti_Data;
+      end;
+      NextTag(Tag);
+    until tag^.ti_Tag = TAG_END;
+  end;
+  if Execute(command, I, O) then
+    SystemTagList := 0
+  else
+    SystemTagList := -1;
 end;
 
 function GetVar(name  : PChar;
@@ -181,7 +343,7 @@ begin
         begin
           pn:=PChar(pcli^.cli_CommandName shl 2) + 1;
           pl:=Byte(pn[-1]);
-          if pl > len-1 then 
+          if pl > len-1 then
             pl:=len-1;
           move(pn[0],buf[0],pl);
           GetProgramName:=true;

@@ -71,13 +71,19 @@ Const
     { Ranges of the IEEE floating point types, including denormals }
 {$ifdef FPC_HAS_TYPE_SINGLE}
     const
-      MinSingle    =  1.5e-45;
-      MaxSingle    =  3.4e+38;
+      { values according to
+        https://en.wikipedia.org/wiki/Single-precision_floating-point_format#Single-precision_examples
+      }
+      MinSingle    =  1.1754943508e-38;
+      MaxSingle    =  3.4028234664e+38;
 {$endif FPC_HAS_TYPE_SINGLE}
 {$ifdef FPC_HAS_TYPE_DOUBLE}
     const
-      MinDouble    =  5.0e-324;
-      MaxDouble    =  1.7e+308;
+      { values according to
+        https://en.wikipedia.org/wiki/Double-precision_floating-point_format#Double-precision_examples
+      }
+      MinDouble    =  2.2250738585072014e-308;
+      MaxDouble    =  1.7976931348623157e+308;
 {$endif FPC_HAS_TYPE_DOUBLE}
 {$ifdef FPC_HAS_TYPE_EXTENDED}
     const

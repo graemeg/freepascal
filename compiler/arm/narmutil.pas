@@ -197,8 +197,12 @@ interface
                 Internalerror(2019100602);
             end;
             case current_settings.fputype of
+              fpu_none,
               fpu_soft,
-              fpu_libgcc:
+              fpu_libgcc,
+              fpu_fpa,
+              fpu_fpa10,
+              fpu_fpa11:
                 current_asmdata.asmlists[al_start].Concat(tai_eabi_attribute.create(Tag_FP_Arch,0));
               fpu_vfpv2:
                 current_asmdata.asmlists[al_start].Concat(tai_eabi_attribute.create(Tag_FP_Arch,2));
@@ -207,13 +211,14 @@ interface
                 current_asmdata.asmlists[al_start].Concat(tai_eabi_attribute.create(Tag_FP_Arch,3));
               fpu_vfpv3_d16:
                 current_asmdata.asmlists[al_start].Concat(tai_eabi_attribute.create(Tag_FP_Arch,4));
+              fpu_fpv4_sp_d16,
               fpu_fpv4_s16:
                 current_asmdata.asmlists[al_start].Concat(tai_eabi_attribute.create(Tag_FP_Arch,6));
               fpu_vfpv4,
               fpu_neon_vfpv4:
                 current_asmdata.asmlists[al_start].Concat(tai_eabi_attribute.create(Tag_FP_Arch,5));
-              else
-                Internalerror(2019100603);
+              { else not needed anymore PM 2020/04/13
+                Internalerror(2019100603); }
             end;
             if FPUARM_HAS_FMA in fpu_capabilities[current_settings.fputype] then
               current_asmdata.asmlists[al_start].Concat(tai_eabi_attribute.create(Tag_Advanced_SIMD_arch,2))

@@ -1081,33 +1081,39 @@ Var
   Res: Integer;
 begin
   SetLength(EnvList, 0);
-  ThisProcess := PProcess(FindTask(nil));  //Get the pointer to our process
-  LocalVars_List := @(ThisProcess^.pr_LocalVars);  //get the list of pr_LocalVars as pointer
-  LocalVar_Node  := pLocalVar(LocalVars_List^.mlh_head); //get the headnode of the LocalVars list
-
-  // loop through the localvar list
-  while ( Pointer(LocalVar_Node^.lv_node.ln_Succ) <> Pointer(LocalVars_List^.mlh_Tail)) do
+  // pr_LocalVars are introduced with OS2.0
+  {$ifdef AMIGA68k}
+  if PLibrary(AOS_ExecBase)^.lib_Version >= 36 then
+  {$endif}
   begin
-    // make sure the active node is valid instead of empty
-    If not(LocalVar_Node <> nil) then
-      break;
+    ThisProcess := PProcess(FindTask(nil));  //Get the pointer to our process
+    LocalVars_List := @(ThisProcess^.pr_LocalVars);  //get the list of pr_LocalVars as pointer
+    LocalVar_Node  := pLocalVar(LocalVars_List^.mlh_head); //get the headnode of the LocalVars list
 
-    { - process the current node - }
-    If (LocalVar_Node^.lv_node.ln_Type = LV_Var) then
+    // loop through the localvar list
+    while ( Pointer(LocalVar_Node^.lv_node.ln_Succ) <> Pointer(LocalVars_List^.mlh_Tail)) do
     begin
-      FillChar(Buffer[0], Length(Buffer), #0); // clear Buffer
+      // make sure the active node is valid instead of empty
+      If not(LocalVar_Node <> nil) then
+        break;
 
-      // get active node's name environment variable value ino buffer and make sure it's local
-      TempLen := GetVar(LocalVar_Node^.lv_Node.ln_Name, @Buffer[0], BUFFER_SIZE, GVF_LOCAL_ONLY);
-      If TempLen <> -1 then
+      { - process the current node - }
+      If (LocalVar_Node^.lv_node.ln_Type = LV_Var) then
       begin
-        SetLength(EnvList, Length(EnvList) + 1);
-        EnvList[High(EnvList)].Name := LocalVar_Node^.lv_Node.ln_Name;
-        EnvList[High(EnvList)].Value := string(PChar(@Buffer[0]));
-        EnvList[High(EnvList)].Local := True;
+        FillChar(Buffer[0], Length(Buffer), #0); // clear Buffer
+
+        // get active node's name environment variable value ino buffer and make sure it's local
+        TempLen := GetVar(LocalVar_Node^.lv_Node.ln_Name, @Buffer[0], BUFFER_SIZE, GVF_LOCAL_ONLY);
+        If TempLen <> -1 then
+        begin
+          SetLength(EnvList, Length(EnvList) + 1);
+          EnvList[High(EnvList)].Name := LocalVar_Node^.lv_Node.ln_Name;
+          EnvList[High(EnvList)].Value := string(PChar(@Buffer[0]));
+          EnvList[High(EnvList)].Local := True;
+        end;
       end;
+      LocalVar_Node := pLocalVar(LocalVar_Node^.lv_node.ln_Succ); //we need to get the next node
     end;
-    LocalVar_Node := pLocalVar(LocalVar_Node^.lv_node.ln_Succ); //we need to get the next node
   end;
   // search in env for all Variables
   FillChar(Anchor,sizeof(TAnchorPath),#0);

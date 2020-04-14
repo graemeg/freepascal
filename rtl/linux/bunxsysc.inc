@@ -460,7 +460,7 @@ Function fpSelect(N:cint;readfds,writefds,exceptfds:pfdSet;TimeOut:PTimeVal):cin
   Select checks whether the file descriptor sets in readfs/writefs/exceptfs
   have changed.
 }
-{$if defined(generic_linux_syscalls) and not defined(NO_SYSCALL_PSELECT6)}
+{$if (defined(generic_linux_syscalls) and not defined(NO_SYSCALL_PSELECT6)) or defined(CPUXTENSA)}
 
 var ts : timespec;
     pts : PTimeSpec;
@@ -542,12 +542,12 @@ function fpNice(N:cint):cint;
 Doesn't exist in BSD. Linux emu uses setpriority in a construct as below:
 }
 
-{$if defined(generic_linux_syscalls) or defined(cpux86_64)}
+{$if defined(generic_linux_syscalls) or defined(cpux86_64) or defined(cpuxtensa)}
 var
   oldprio : cint;
 {$endif}
 begin
-{$if defined(generic_linux_syscalls) or defined(cpux86_64)}
+{$if defined(generic_linux_syscalls) or defined(cpux86_64) or defined(cpuxtensa)}
   oldprio:=fpGetPriority(Prio_Process,0);
   fpNice:=fpSetPriority(Prio_Process,0,oldprio+N);
   if fpNice=0 then

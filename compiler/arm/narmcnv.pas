@@ -40,7 +40,9 @@ interface
 implementation
 
    uses
-      verbose,globtype,globals,symdef,aasmbase,aasmtai,aasmdata,symtable,
+      verbose,globtype,globals,
+      systems,
+      symdef,aasmbase,aasmtai,aasmdata,symtable,
       defutil,
       cgbase,cgutils,
       pass_1,pass_2,procinfo,ncal,
@@ -60,7 +62,7 @@ implementation
 {$ifdef cpufpemu}
           (current_settings.fputype=fpu_soft) or
 {$endif cpufpemu}
-          (FPUARM_HAS_VFP_SINGLE_ONLY in fpu_capabilities[current_settings.fputype]) then
+          not(FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[current_settings.fputype]) then
           result:=inherited first_int_to_real
         else
           begin
@@ -99,17 +101,19 @@ implementation
               fpu_fpa10,
               fpu_fpa11:
                 expectloc:=LOC_FPUREGISTER;
-              fpu_vfp_first..fpu_vfp_last:
-                expectloc:=LOC_MMREGISTER;
+              else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
+                expectloc:=LOC_MMREGISTER
               else
                 internalerror(2009112702);
             end;
           end;
       end;
 
+
     function tarmtypeconvnode.first_real_to_real: tnode;
       begin
-        if FPUARM_HAS_VFP_SINGLE_ONLY in fpu_capabilities[current_settings.fputype] then
+        if not(FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[current_settings.fputype]) and
+          not (target_info.system in systems_wince) then
           begin
             case tfloatdef(left.resultdef).floattype of
               s32real:
@@ -237,7 +241,7 @@ implementation
                 location.register,left.location.register),
                 signedprec2vfppf[signed,location.size]));
             end
-          else if FPUARM_HAS_VFP_SINGLE_ONLY in fpu_capabilities[current_settings.fputype] then
+          else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
             begin
               location_reset(location,LOC_MMREGISTER,def_cgsize(resultdef));
               signed:=left.location.size=OS_S32;

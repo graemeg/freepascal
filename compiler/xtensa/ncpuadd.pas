@@ -152,6 +152,10 @@ interface
     function TCPUAddNode.pass_1 : tnode;
       begin
         result:=inherited pass_1;
+        if not(assigned(result)) and (nodetype in [equaln,unequaln,ltn,lten,gtn,gten]) and
+          not((FPUXTENSA_SINGLE in fpu_capabilities[current_settings.fputype]) and
+            is_single(left.resultdef) and (nodetype<>slashn)) then
+          expectloc:=LOC_JUMP;
 {$ifdef dummy}
         if not(assigned(result)) then
           begin
@@ -283,7 +287,8 @@ interface
         { emit the actual operation }
         if cmpop then
           begin
-            current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg_reg(op,location.register,left.location.register,right.location.register));
+            cg.getcpuregister(current_asmdata.CurrAsmList,location.resflags.register);
+            current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg_reg(op,location.resflags.register,left.location.register,right.location.register));
             cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
 
             if inv then

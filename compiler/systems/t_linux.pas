@@ -150,14 +150,16 @@ begin
 {$ifdef arm}
   { some newer Debian have the crt*.o files at uncommon locations,
     for other arm flavours, this cannot hurt }
-{$ifdef FPC_ARMHF}
-      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/arm-linux-gnueabihf',true);
-      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/arm-linux-gnueabihf',true);
-{$endif FPC_ARMHF}
-{$ifdef FPC_ARMEL}
-      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/arm-linux-gnueabi',true);
-      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/arm-linux-gnueabi',true);
-{$endif}
+    if target_info.abi=abi_eabihf then
+      begin
+        LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/arm-linux-gnueabihf',true);
+        LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/arm-linux-gnueabihf',true);
+      end;
+    if target_info.abi=abi_eabi then
+      begin
+        LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/arm-linux-gnueabi',true);
+        LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib/arm-linux-gnueabi',true);
+      end;
 {$endif arm}
 {$ifdef x86_64}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/x86_64-linux-gnu',true);

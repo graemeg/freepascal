@@ -52,14 +52,34 @@ implementation
       cgobj;
 
     procedure trgcpu.do_spill_read(list: TAsmList; pos: tai; const spilltemp: treference; tempreg: tregister; orgsupreg: tsuperregister);
+      var
+        op: TAsmOp;
       begin
-        do_spill_op(list,A_L32I,pos,spilltemp,tempreg,orgsupreg);
+        case getregtype(tempreg) of
+          R_FPUREGISTER:
+            op:=A_LSI;
+          R_INTREGISTER:
+            op:=A_L32I;
+          else
+            Internalerror(2020041001);
+        end;
+        do_spill_op(list,op,pos,spilltemp,tempreg,orgsupreg);
       end;
 
 
     procedure trgcpu.do_spill_written(list: TAsmList; pos: tai; const spilltemp: treference; tempreg: tregister; orgsupreg: tsuperregister);
+      var
+        op: TAsmOp;
       begin
-        do_spill_op(list,A_S32I,pos,spilltemp,tempreg,orgsupreg);
+        case getregtype(tempreg) of
+          R_FPUREGISTER:
+            op:=A_SSI;
+          R_INTREGISTER:
+            op:=A_S32I;
+          else
+            Internalerror(2020041002);
+        end;
+        do_spill_op(list,op,pos,spilltemp,tempreg,orgsupreg);
       end;
 
 
@@ -78,10 +98,12 @@ implementation
             helplist:=TAsmList.create;
 
             if getregtype(tempreg)=R_INTREGISTER then
-              if isload then
-                hreg:=tempreg
-              else
-                hreg:=getregisterinline(helplist,[R_SUBWHOLE])
+              begin
+                if isload then
+                  hreg:=tempreg
+                else
+                  hreg:=getregisterinline(helplist,[R_SUBWHOLE]);
+              end
             else
               hreg:=cg.getintregister(helplist,OS_ADDR);
 
@@ -95,6 +117,8 @@ implementation
             tmpref.offset:=spilltemp.offset mod 256;
 
             helpins:=taicpu.op_reg_ref(op,tempreg,tmpref);
+            if getregtype(tempreg)=R_INTREGISTER then
+              ungetregisterinline(helplist,hreg);
             helplist.concat(helpins);
             list.insertlistafter(pos,helplist);
             helplist.free;
@@ -102,7 +126,7 @@ implementation
         else if isload then
           inherited do_spill_read(list,pos,spilltemp,tempreg,orgsupreg)
         else
-          inherited do_spill_written(list,pos,spilltemp,tempreg,orgsupreg)
+          inherited do_spill_written(list,pos,spilltemp,tempreg,orgsupreg);
       end;
 
 

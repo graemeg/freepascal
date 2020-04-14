@@ -86,7 +86,12 @@ implementation
                  location.loc := LOC_FPUREGISTER;
                end;
             end;
-          fpu_vfp_first..fpu_vfp_last:
+          fpu_soft:
+            begin
+              hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,left.resultdef,false);
+              location_copy(location,left.location);
+            end
+          else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
             begin
               hlcg.location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,left.resultdef,true);
               location_copy(location,left.location);
@@ -95,11 +100,6 @@ implementation
                  location.register:=cg.getmmregister(current_asmdata.CurrAsmList,location.size);
                  location.loc := LOC_MMREGISTER;
                end;
-            end;
-          fpu_soft:
-            begin
-              hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,left.resultdef,false);
-              location_copy(location,left.location);
             end
           else
             internalerror(2009111801);
@@ -125,7 +125,7 @@ implementation
                 expectloc:=LOC_FPUREGISTER;
               else if FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[current_settings.fputype] then
                 expectloc:=LOC_MMREGISTER
-              else if FPUARM_HAS_VFP_SINGLE_ONLY in fpu_capabilities[current_settings.fputype] then
+              else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
                 begin
                   if tfloatdef(left.resultdef).floattype=s32real then
                     expectloc:=LOC_MMREGISTER
@@ -153,7 +153,7 @@ implementation
                 expectloc:=LOC_FPUREGISTER;
               else if FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[current_settings.fputype] then
                 expectloc:=LOC_MMREGISTER
-              else if FPUARM_HAS_VFP_SINGLE_ONLY in fpu_capabilities[current_settings.fputype] then
+              else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
                 begin
                   if tfloatdef(left.resultdef).floattype=s32real then
                     expectloc:=LOC_MMREGISTER
@@ -181,7 +181,7 @@ implementation
                 expectloc:=LOC_FPUREGISTER;
               else if FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[current_settings.fputype] then
                 expectloc:=LOC_MMREGISTER
-              else if FPUARM_HAS_VFP_SINGLE_ONLY in fpu_capabilities[current_settings.fputype] then
+              else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
                 begin
                   if tfloatdef(left.resultdef).floattype=s32real then
                     expectloc:=LOC_MMREGISTER
@@ -265,7 +265,7 @@ implementation
               current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_VABS,location.register,left.location.register),pf));
               cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
             end
-          else if FPUARM_HAS_VFP_SINGLE_ONLY in fpu_capabilities[current_settings.fputype] then
+          else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
             begin
               current_asmdata.CurrAsmList.Concat(setoppostfix(taicpu.op_reg_reg(A_VABS,location.register,left.location.register), PF_F32));
               cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
@@ -296,7 +296,7 @@ implementation
               current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg_reg(A_VMUL,location.register,left.location.register,left.location.register),pf));
               cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
             end
-          else if FPUARM_HAS_VFP_SINGLE_ONLY in fpu_capabilities[current_settings.fputype] then
+          else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
             begin
               current_asmdata.CurrAsmList.Concat(setoppostfix(taicpu.op_reg_reg_reg(A_VMUL,location.register,left.location.register,left.location.register), PF_F32));
               cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
@@ -327,7 +327,7 @@ implementation
               current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_VSQRT,location.register,left.location.register),pf));
               cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
             end
-          else if FPUARM_HAS_VFP_SINGLE_ONLY in fpu_capabilities[current_settings.fputype] then
+          else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
             begin
               current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_VSQRT,location.register,left.location.register), PF_F32));
               cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);

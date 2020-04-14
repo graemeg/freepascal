@@ -39,7 +39,9 @@ command:
 
 msgfmt -o restest.<langcode>.mo restest.<langcode>.po
 
+(msgfmt is part of the GNU gettext tools)
+
 If you add a new language, please send the .po file to the Free Pascal
 developers.
 
-Michael. <Michael.VanCanneyt@Wisa.be>
+Michael. <michael@freepascal.org>

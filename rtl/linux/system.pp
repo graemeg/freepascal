@@ -48,9 +48,9 @@ const
 function get_cmdline:Pchar; deprecated 'use paramstr' ;
 property cmdline:Pchar read get_cmdline;
 
-{$if defined(CPURISCV32) or defined(CPURISCV64) or defined(CPUARM) or defined(CPUM68K) or (defined(CPUSPARC) and defined(VER2_6))}
+{$if defined(CPURISCV32) or defined(CPURISCV64) or defined(CPUARM) or defined(CPUM68K) or (defined(CPUSPARC) and defined(VER2_6)) or defined(CPUXTENSA)}
 {$define FPC_LOAD_SOFTFPU}
-{$endif defined(CPURISCV32) or defined(CPURISCV64) or defined(CPUARM) or defined(CPUM68K) or (defined(CPUSPARC) and defined(VER2_6))}
+{$endif defined(CPURISCV32) or defined(CPURISCV64) or defined(CPUARM) or defined(CPUM68K) or (defined(CPUSPARC) and defined(VER2_6)) or defined(CPUXTENSA)}
 
 {$ifdef FPC_SOFT_FPUX80}
 {$define FPC_SOFTFLOAT_FLOATX80}

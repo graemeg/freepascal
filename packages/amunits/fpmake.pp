@@ -122,6 +122,7 @@ begin
 
     P.ExamplePath.Add('examples');
     P.ExamplePath.Add('examples/otherlibs');
+    T:=P.Targets.AddExampleProgram('amicube.pas');
     T:=P.Targets.AddExampleProgram('simple_timer.pas');
     T:=P.Targets.AddExampleProgram('getfontasl.pas');
     T:=P.Targets.AddExampleProgram('asltest.pas');

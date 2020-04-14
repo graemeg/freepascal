@@ -92,6 +92,7 @@ unit cpupi;
         localsize : aint;
         i : longint;
       begin
+        maxpushedparasize:=Align(maxpushedparasize,4);
         tg.setfirsttemp(maxpushedparasize);
 
         if po_nostackframe in procdef.procoptions then

@@ -1228,9 +1228,46 @@ procedure TJSWriter.WriteStatementList(El: TJSStatementList);
 
 Var
   C : Boolean;
-  B : Boolean;
   LastEl: TJSElement;
+  ElStack: array of TJSElement;
+  ElStackIndex: integer;
 
+  procedure WriteNonListEl(CurEl: TJSElement);
+  begin
+    if IsEmptyStatement(CurEl) then exit;
+    if (LastEl<>nil) then
+      begin
+      if FLastChar<>';' then
+        Write(';');
+      if C then
+        Write(' ')
+      else
+        Writeln('');
+      end;
+    WriteJS(CurEl);
+    LastEl:=CurEl;
+  end;
+
+  procedure Push(CurEl: TJSElement);
+  begin
+    if CurEl=nil then exit;
+    if ElStackIndex=length(ElStack) then
+      SetLength(ElStack,ElStackIndex+8);
+    ElStack[ElStackIndex]:=CurEl;
+    inc(ElStackIndex);
+  end;
+
+  function Pop: TJSElement;
+  begin
+    if ElStackIndex=0 then exit(nil);
+    dec(ElStackIndex);
+    Result:=ElStack[ElStackIndex];
+  end;
+
+var
+  B : Boolean;
+  CurEl: TJSElement;
+  List: TJSStatementList;
 begin
   //write('TJSWriter.WriteStatementList '+BoolToStr(FSkipCurlyBrackets,true));
   //if El.A<>nil then write(' El.A='+El.A.ClassName) else write(' El.A=nil');
@@ -1239,43 +1276,55 @@ begin
 
   C:=(woCompact in Options);
   B:= Not FSkipCurlyBrackets;
+  FSkipCurlyBrackets:=True;
   if B then
     begin
     Write('{');
     Indent;
     if not C then writeln('');
     end;
-  if not IsEmptyStatement(El.A) then
+
+  // traverse statementlist using a heap stack to avoid large stack depths
+  LastEl:=nil;
+  ElStackIndex:=0;
+  CurEl:=El;
+  while CurEl<>nil do
     begin
-    WriteJS(El.A);
-    LastEl:=El.A;
-    if Assigned(El.B) then
+    if CurEl is TJSStatementList then
       begin
-      if not (LastEl is TJSStatementList) then
+      List:=TJSStatementList(CurEl);
+      if List.A is TJSStatementList then
         begin
-        if FLastChar<>';' then
-          Write(';');
-        if C then
-          Write(' ')
-        else
-          Writeln('');
-        end;
-      FSkipCurlyBrackets:=True;
-      WriteJS(El.B);
-      LastEl:=El.B;
-      end;
-    if (not C) and not (LastEl is TJSStatementList) then
-      writeln(';');
-    end
-  else if Assigned(El.B) and not IsEmptyStatement(El.B) then
-    begin
-    WriteJS(El.B);
-    if (not C) and not (El.B is TJSStatementList) then
-      if FLastChar=';' then
-        writeln('')
+        Push(List.B);
+        CurEl:=List.A;
+        end
       else
-        writeln(';');
+        begin
+        WriteNonListEl(List.A);
+        if List.B is TJSStatementList then
+          CurEl:=List.B
+        else
+          begin
+          WriteNonListEl(List.B);
+          CurEl:=nil;
+          end;
+        end;
+      end
+    else
+      begin
+      WriteNonListEl(CurEl);
+      CurEl:=nil;
+      end;
+    if CurEl=nil then
+      CurEl:=Pop;
     end;
+
+  if (LastEl<>nil) and not C then
+    if FLastChar=';' then
+      writeln('')
+    else
+      writeln(';');
+
   if B then
     begin
     Undent;

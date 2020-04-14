@@ -144,6 +144,9 @@ implementation
         rg[R_FPUREGISTER]:=trgcpu.create(R_FPUREGISTER,R_SUBNONE,
             [RS_F0,RS_F1,RS_F2,RS_F3,RS_F4,RS_F5,RS_F6,RS_F7,RS_F8,RS_F9,
              RS_F10,RS_F11,RS_F12,RS_F13,RS_F14,RS_F15],first_fpu_imreg,[]);
+        rg[R_SPECIALREGISTER]:=trgcpu.create(R_SPECIALREGISTER,R_SUBNONE,
+            [RS_B0,RS_B1,RS_B2,RS_B3,RS_B4,RS_B5,RS_B6,RS_B7,RS_B8,RS_B9,
+             RS_B10,RS_B11,RS_B12,RS_B13,RS_B14,RS_B15],first_flag_imreg,[]);
       end;
 
 
@@ -151,6 +154,7 @@ implementation
       begin
         rg[R_INTREGISTER].free;
         rg[R_FPUREGISTER].free;
+        rg[R_SPECIALREGISTER].free;
         inherited done_register_allocators;
       end;
 
@@ -175,14 +179,26 @@ implementation
                   list.concat(taicpu.op_reg_reg_const_const(A_EXTUI,reg2,reg1,0,8));
                 OS_S8:
                   begin
-                    list.concat(taicpu.op_reg_reg_const(A_SEXT,reg2,reg1,7));
+                    if CPUXTENSA_HAS_SEXT in cpu_capabilities[current_settings.cputype] then
+                      list.concat(taicpu.op_reg_reg_const(A_SEXT,reg2,reg1,7))
+                    else
+                      begin
+                        list.concat(taicpu.op_reg_reg_const(A_SLLI,reg2,reg1,24));
+                        list.concat(taicpu.op_reg_reg_const(A_SRAI,reg2,reg2,24));
+                      end;
                     if tosize=OS_16 then
                       list.concat(taicpu.op_reg_reg_const_const(A_EXTUI,reg2,reg2,0,16));
                   end;
                 OS_16:
                   list.concat(taicpu.op_reg_reg_const_const(A_EXTUI,reg2,reg1,0,16));
                 OS_S16:
-                  list.concat(taicpu.op_reg_reg_const(A_SEXT,reg2,reg1,15));
+                  if CPUXTENSA_HAS_SEXT in cpu_capabilities[current_settings.cputype] then
+                    list.concat(taicpu.op_reg_reg_const(A_SEXT,reg2,reg1,15))
+                  else
+                    begin
+                      list.concat(taicpu.op_reg_reg_const(A_SLLI,reg2,reg1,16));
+                      list.concat(taicpu.op_reg_reg_const(A_SRAI,reg2,reg2,16));
+                    end;
                 else
                   conv_done:=false;
               end;
@@ -266,7 +282,13 @@ implementation
         list.concat(taicpu.op_reg_ref(op,reg,href));
 
         if (fromsize=OS_S8) and not(tosize in [OS_S8,OS_8]) then
-          list.concat(taicpu.op_reg_reg_const(A_SEXT,reg,reg,7));
+          if CPUXTENSA_HAS_SEXT in cpu_capabilities[current_settings.cputype] then
+            list.concat(taicpu.op_reg_reg_const(A_SEXT,reg,reg,7))
+          else
+            begin
+              list.concat(taicpu.op_reg_reg_const(A_SLLI,reg,reg,24));
+              list.concat(taicpu.op_reg_reg_const(A_SRAI,reg,reg,24));
+            end;
         if (fromsize<>tosize) and (not (tosize in [OS_SINT,OS_INT])) then
           a_load_reg_reg(list,fromsize,tosize,reg,reg);
       end;

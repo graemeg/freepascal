@@ -149,7 +149,7 @@ unit cpupara;
                 getparaloc:=LOC_MMREGISTER
               else if (calloption in cdecl_pocalls) or
                  (cs_fp_emulation in current_settings.moduleswitches) or
-                 (current_settings.fputype in [fpu_vfp_first..fpu_vfp_last]) then
+                 (FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype]) then
                 { the ARM eabi also allows passing VFP values via VFP registers,
                   but Mac OS X doesn't seem to do that and linux only does it if
                   built with the "-mfloat-abi=hard" option }
@@ -782,7 +782,7 @@ unit cpupara;
               end
             else if (p.proccalloption in [pocall_softfloat]) or
                (cs_fp_emulation in current_settings.moduleswitches) or
-               (current_settings.fputype in [fpu_vfp_first..fpu_vfp_last]) then
+               (FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype]) then
               begin
                 case retcgsize of
                   OS_64,

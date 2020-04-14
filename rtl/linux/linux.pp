@@ -291,10 +291,14 @@ type
 
 { open an epoll file descriptor }
 function epoll_create(size: cint): cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'epoll_create'; {$endif}
+function epoll_create1(flags: cint): cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'epoll_create1'; {$endif}
+
 { control interface for an epoll descriptor }
 function epoll_ctl(epfd, op, fd: cint; event: pepoll_event): cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'epoll_ctl'; {$endif}
+
 { wait for an I/O event on an epoll file descriptor }
 function epoll_wait(epfd: cint; events: pepoll_event; maxevents, timeout: cint): cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'epoll_wait'; {$endif}
+function epoll_pwait(epfd: cint; events: pepoll_event; maxevents, timeout: cint; sigmask: PSigSet): cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'epoll_pwait'; {$endif}
 
 type Puser_cap_header=^user_cap_header;
      user_cap_header=record
@@ -630,6 +634,17 @@ begin
 {$endif}
 end;
 
+function epoll_create1(flags: cint): cint;
+begin
+  epoll_create1 := do_syscall(syscall_nr_epoll_create1, tsysparam(flags));
+end;
+
+function epoll_pwait(epfd: cint; events: pepoll_event; maxevents, timeout: cint; sigmask: PSigSet): cint;
+begin
+  epoll_pwait := do_syscall(syscall_nr_epoll_pwait, tsysparam(epfd),
+    tsysparam(events), tsysparam(maxevents), tsysparam(timeout), tsysparam(sigmask));
+end;
+
 function capget(header:Puser_cap_header;data:Puser_cap_data):cint;
 
 begin
@@ -668,7 +683,7 @@ end;
 
 function sync_file_range(fd: cInt; offset: off64_t; nbytes: off64_t; flags: cuInt): cInt;
 begin
-{$if defined(cpupowerpc) or defined(cpuarm)}
+{$if defined(cpupowerpc) or defined(cpuarm) or defined(cpuxtensa)}
   sync_file_range := do_syscall(syscall_nr_sync_file_range2, TSysParam(fd), TSysParam(flags),
     TSysParam(hi(offset)), TSysParam(lo(offset)), TSysParam(hi(nbytes)), TSysParam(lo(nbytes)));
 {$else}

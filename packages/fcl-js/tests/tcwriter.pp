@@ -157,6 +157,7 @@ type
     Procedure TestStatementListOneStatementCompact;
     Procedure TestStatementListTwoStatements;
     Procedure TestStatementListTwoStatementsCompact;
+    Procedure TestStatementListTree4;
     Procedure TestStatementListFor;
     Procedure TestEmptyFunctionDef;
     Procedure TestEmptyFunctionDefCompact;
@@ -1694,6 +1695,29 @@ begin
   S.A:=CreateAssignment(nil);
   S.B:=CreateAssignment(nil);
   AssertWrite('Statement list','{a=b; a=b}',S);
+end;
+
+procedure TTestStatementWriter.TestStatementListTree4;
+var
+  S1, S11, S12: TJSStatementList;
+begin
+  Writer.Options:=[woUseUTF8];
+  S1:=TJSStatementList.Create(0,0);
+  S11:=TJSStatementList.Create(0,0);
+  S1.A:=S11;
+  S12:=TJSStatementList.Create(0,0);
+  S1.B:=S12;
+  S11.A:=CreateAssignment(nil);
+  S11.B:=CreateAssignment(nil);
+  S12.A:=CreateAssignment(nil);
+  S12.B:=CreateAssignment(nil);
+  AssertWrite('Statement list',
+     '{'+sLineBreak
+    +'a = b;'+sLineBreak
+    +'a = b;'+sLineBreak
+    +'a = b;'+sLineBreak
+    +'a = b;'+sLineBreak
+    +'}',S1);
 end;
 
 procedure TTestStatementWriter.TestStatementListFor;

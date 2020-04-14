@@ -199,6 +199,15 @@ type
     class function Command: string;
   end;
 
+  { TPDFClipPath }
+
+  TPDFClipPath = class(TPDFDocumentObject)
+  protected
+    procedure   Write(const AStream: TStream); override;
+  public
+    class function Command: string;
+  end;
+
 
   TPDFPushGraphicsStack = class(TPDFDocumentObject)
   protected
@@ -668,6 +677,9 @@ type
 
   { When the WriteXXX() and DrawXXX() methods specify coordinates, they do it as
     per the PDF specification, from the bottom-left. }
+
+  { TPDFPage }
+
   TPDFPage = Class(TPDFDocumentObject)
   private
     FObjects : TObjectList;
@@ -731,6 +743,7 @@ type
     procedure DrawPolyLine(const APoints: array of TPDFCoord; const ALineWidth: TPDFFloat);
     { start a new subpath }
     procedure ResetPath;
+    procedure ClipPath;
     { Close the current subpath by appending a straight line segment from the current point to the starting point of the subpath. }
     procedure ClosePath;
     procedure ClosePathStroke;
@@ -740,6 +753,9 @@ type
     procedure FillStrokePath;
     { Fill using the Even-Odd rule. }
     procedure FillEvenOddStrokePath;
+    { Graphic stack management }
+    procedure PushGraphicsStack;
+    procedure PopGraphicsStack;
     { Move the current drawing position to (x, y) }
     procedure MoveTo(x, y: TPDFFloat); overload;
     procedure MoveTo(APos: TPDFCoord); overload;
@@ -849,10 +865,13 @@ type
   end;
 
 
+  { TPDFFontDefs }
+
   TPDFFontDefs = Class(TCollection)
   private
     function GetF(AIndex : Integer): TPDFFont;
   Public
+    Function FindFont(const AName:string):integer;
     Function AddFontDef : TPDFFont;
     Property FontDefs[AIndex : Integer] : TPDFFont Read GetF; Default;
   end;
@@ -1457,7 +1476,6 @@ begin
   SetLength(result, iPos - 1);
 end;
 
-
 { TPDFMemoryStream }
 
 procedure TPDFMemoryStream.Write(const AStream: TStream);
@@ -1814,6 +1832,19 @@ begin
   Result := 'S' + CRLF;
 end;
 
+{ TPDFClipPath }
+
+procedure TPDFClipPath.Write(const AStream: TStream);
+begin
+  WriteString(Command, AStream);
+end;
+
+class function TPDFClipPath.Command: string;
+begin
+  Result := 'W n' + CRLF;
+end;
+
+
 { TPDFPushGraphicsStack }
 
 procedure TPDFPushGraphicsStack.Write(const AStream: TStream);
@@ -1831,6 +1862,9 @@ end;
 procedure TPDFPopGraphicsStack.Write(const AStream: TStream);
 begin
   WriteString(Command, AStream);
+  // disable cache
+  Self.Document.CurrentWidth:='';
+  Self.Document.CurrentColor:='';
 end;
 
 class function TPDFPopGraphicsStack.Command: string;
@@ -2616,6 +2650,12 @@ begin
   AddObject(TPDFResetPath.Create(Document));
 end;
 
+procedure TPDFPage.ClipPath;
+begin
+  AddObject(TPDFClipPath.Create(Document));
+end;
+
+
 procedure TPDFPage.ClosePath;
 begin
   AddObject(TPDFClosePath.Create(Document));
@@ -2639,6 +2679,16 @@ end;
 procedure TPDFPage.FillEvenOddStrokePath;
 begin
   AddObject(TPDFFreeFormString.Create(Document, 'B*'+CRLF));
+end;
+
+procedure TPDFPage.PushGraphicsStack;
+begin
+  AddObject(TPDFPushGraphicsStack.Create(Document));
+end;
+
+procedure TPDFPage.PopGraphicsStack;
+begin
+  AddObject(TPDFPopGraphicsStack.Create(Document));
 end;
 
 procedure TPDFPage.MoveTo(x, y: TPDFFloat);
@@ -2762,6 +2812,21 @@ end;
 function TPDFFontDefs.GetF(AIndex : Integer): TPDFFont;
 begin
   Result:=Items[AIndex] as TPDFFont;
+end;
+
+function TPDFFontDefs.FindFont(const AName: string): integer;
+var
+  i:integer;
+begin
+  Result:=-1;
+  for i := 0 to Count-1 do
+  begin
+    if GetF(i).Name = AName then
+    begin
+      Result := i;
+      Exit;
+    end;
+  end;
 end;
 
 function TPDFFontDefs.AddFontDef: TPDFFont;
@@ -6046,14 +6111,8 @@ var
   i: integer;
 begin
   { reuse existing font definition if it exists }
-  for i := 0 to Fonts.Count-1 do
-  begin
-    if Fonts[i].Name = AName then
-    begin
-      Result := i;
-      Exit;
-    end;
-  end;
+  Result:=Fonts.FindFont(AName);
+  if Result>=0 then exit;
   F := Fonts.AddFontDef;
   F.Name := AName;
   F.IsStdFont := True;
@@ -6067,14 +6126,8 @@ var
   lFName: string;
 begin
   { reuse existing font definition if it exists }
-  for i := 0 to Fonts.Count-1 do
-  begin
-    if Fonts[i].Name = AName then
-    begin
-      Result := i;
-      Exit;
-    end;
-  end;
+  Result:=Fonts.FindFont(AName);
+  if Result>=0 then exit;
   F := Fonts.AddFontDef;
   if ExtractFilePath(AFontFile) <> '' then
     // assume AFontFile is the full path to the TTF file

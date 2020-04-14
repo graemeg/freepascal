@@ -32,10 +32,11 @@ Interface
     uses
       globtype, globals,
       cutils,
-      cgbase, cpubase, aasmtai, aasmcpu, aopt, aoptcpub;
+      cgbase, cpubase, aasmtai, aasmcpu,
+      aopt, aoptcpub, aoptarm;
 
     Type
-      TCpuAsmOptimizer = class(TAsmOptimizer)
+      TCpuAsmOptimizer = class(TARMAsmOptimizer)
         { uses the same constructor as TAopObj }
         function PeepHoleOptPass1Cpu(var p: tai): boolean; override;
         function PostPeepHoleOptsCpu(var p: tai): boolean; override;

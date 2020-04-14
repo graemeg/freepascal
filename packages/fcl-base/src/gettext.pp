@@ -23,7 +23,7 @@ interface
 uses SysUtils, Classes;
 
 const
-  MOFileHeaderMagic = $950412de;
+  MOFileHeaderMagic = $950412DE;
 
 type
   TMOFileHeader = packed record
@@ -201,14 +201,14 @@ var
 begin
   for i := 0 to StringCount - 1 do
   begin
-    Dispose(OrigStrings^[i]);
-    Dispose(TranslStrings^[i]);
+    FreeMem(OrigStrings^[i]);
+    FreeMem(TranslStrings^[i]);
   end;
-  Dispose(OrigTable);
-  Dispose(TranslTable);
-  Dispose(OrigStrings);
-  Dispose(TranslStrings);
-  Dispose(HashTable);
+  FreeMem(OrigTable);
+  FreeMem(TranslTable);
+  FreeMem(OrigStrings);
+  FreeMem(TranslStrings);
+  FreeMem(HashTable);
   inherited Destroy;
 end;
 
@@ -280,7 +280,7 @@ end;
 
 procedure TranslateUnitResourceStrings(const AUnitName:string; AFile: TMOFile);
 begin
-//  SetUnitResourceStrings(AUnitName,@Translate,AFile);
+  SetUnitResourceStrings(AUnitName,@Translate,AFile);
 end;
 
 
@@ -312,6 +312,7 @@ end;
 
 procedure GetLanguageIDs(var Lang, FallbackLang: string);
 begin
+  FallbackLang:='';
   lang := GetEnvironmentVariable('LC_ALL');
   if Length(lang) = 0 then
   begin

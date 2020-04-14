@@ -84,6 +84,9 @@ unit cpubase;
       first_mm_supreg    = RS_INVALID;
       first_mm_imreg     = $30;
 
+      { firs flag imaginary register }
+      first_flag_imreg     = $10;
+
       { TODO: Calculate bsstart}
       regnumber_count_bsstart = 16;
 
@@ -223,8 +226,9 @@ unit cpubase;
       { Offset where the parent framepointer is pushed }
       PARENT_FRAMEPOINTER_OFFSET = 0;
 
-      NR_DEFAULTFLAGS = NR_INVALID;
-      RS_DEFAULTFLAGS = RS_INVALID;
+      { we consider B0 as the default flag }
+      NR_DEFAULTFLAGS = NR_B0;
+      RS_DEFAULTFLAGS = RS_B0;
 
 {*****************************************************************************
                        GCC /ABI linking information
@@ -314,21 +318,9 @@ unit cpubase;
           R_INTREGISTER :
             reg_cgsize:=OS_32;
           R_FPUREGISTER :
-            reg_cgsize:=OS_F80;
-          R_MMREGISTER :
-            begin
-              case getsubreg(reg) of
-                R_SUBFD,
-                R_SUBWHOLE:
-                  result:=OS_F64;
-                R_SUBFS:
-                  result:=OS_F32;
-                else
-                  internalerror(2009112903);
-              end;
-            end;
+            reg_cgsize:=OS_F32;
           else
-            internalerror(200303181);
+            internalerror(2020040501);
           end;
         end;
 

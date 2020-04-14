@@ -681,15 +681,32 @@ implementation
     procedure tcgaarch64.a_load_const_ref(list: TAsmList; size: tcgsize; a: tcgint; const ref: treference);
       var
         reg: tregister;
+        href: treference;
+        i: Integer;
       begin
         { use the zero register if possible }
         if a=0 then
           begin
-            if size in [OS_64,OS_S64] then
-              reg:=NR_XZR
+            href:=ref;
+            inc(href.offset,tcgsize2size[size]-1);
+            if (tcgsize2size[size]>1) and (ref.alignment=1) and (simple_ref_type(A_STP,OS_8,PF_None,ref)=sr_simple) and
+              (simple_ref_type(A_STP,OS_8,PF_None,href)=sr_simple) then
+              begin
+                href:=ref;
+                for i:=0 to tcgsize2size[size]-1 do
+                  begin
+                    a_load_const_ref(list,OS_8,0,href);
+                    inc(href.offset);
+                  end;
+              end
             else
-              reg:=NR_WZR;
-            a_load_reg_ref(list,size,size,reg,ref);
+              begin
+                if size in [OS_64,OS_S64] then
+                  reg:=NR_XZR
+                else
+                  reg:=NR_WZR;
+                a_load_reg_ref(list,size,size,reg,ref);
+              end;
           end
         else
           inherited;
@@ -907,13 +924,13 @@ implementation
           begin
             case tosize of
               OS_8:
-                list.concat(setoppostfix(taicpu.op_reg_reg(A_UXT,reg2,makeregsize(reg1,OS_32)),PF_B));
+                list.concat(taicpu.op_reg_reg(A_UXTB,reg2,makeregsize(reg1,OS_32)));
               OS_16:
-                list.concat(setoppostfix(taicpu.op_reg_reg(A_UXT,reg2,makeregsize(reg1,OS_32)),PF_H));
+                list.concat(taicpu.op_reg_reg(A_UXTH,reg2,makeregsize(reg1,OS_32)));
               OS_S8:
-                list.concat(setoppostfix(taicpu.op_reg_reg(A_SXT,reg2,makeregsize(reg1,OS_32)),PF_B));
+                list.concat(taicpu.op_reg_reg(A_SXTB,reg2,makeregsize(reg1,OS_32)));
               OS_S16:
-                list.concat(setoppostfix(taicpu.op_reg_reg(A_SXT,reg2,makeregsize(reg1,OS_32)),PF_H));
+                list.concat(taicpu.op_reg_reg(A_SXTH,reg2,makeregsize(reg1,OS_32)));
               { while "mov wN, wM" automatically inserts a zero-extension and
                 hence we could encode a 64->32 bit move like that, the problem
                 is that we then can't distinguish 64->32 from 32->32 moves, and
@@ -928,7 +945,7 @@ implementation
                 list.concat(taicpu.op_reg_reg_const_const(A_UBFIZ,makeregsize(reg2,OS_64),makeregsize(reg1,OS_64),0,32));
               OS_64,
               OS_S64:
-                list.concat(setoppostfix(taicpu.op_reg_reg(A_SXT,reg2,makeregsize(reg1,OS_32)),PF_W));
+                list.concat(taicpu.op_reg_reg(A_SXTW,reg2,makeregsize(reg1,OS_32)));
               else
                 internalerror(2002090901);
             end;
@@ -1157,7 +1174,7 @@ implementation
         list.Concat(taicpu.op_reg_reg_reg_cond(A_CSINV,dst,dst,makeregsize(NR_XZR,dstsize),C_NE));
         { mask the -1 to 255 if src was 0 (anyone find a two-instruction
           branch-free version? All of mine are 3...) }
-        list.Concat(setoppostfix(taicpu.op_reg_reg(A_UXT,makeregsize(dst,OS_32),makeregsize(dst,OS_32)),PF_B));
+        list.Concat(taicpu.op_reg_reg(A_UXTB,makeregsize(dst,OS_32),makeregsize(dst,OS_32)));
       end;
 
 

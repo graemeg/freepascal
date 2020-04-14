@@ -3181,6 +3181,7 @@ implementation
         { must be done before code below, because we need the
           typeconversions for ordconstn's as well }
         case convtype of
+          tc_bool_2_int,
           tc_int_2_bool,
           tc_int_2_int:
             begin
@@ -3212,6 +3213,13 @@ implementation
                     typeconv (e.g. int32 to int32). If that's the case, we remove it }
                   if equal_defs(left.resultdef,resultdef) then
                     begin
+                      result:=left;
+                      left:=nil;
+                      exit;
+                    end;
+                  if (convtype=tc_int_2_int) and (left.nodetype=typeconvn) and (ttypeconvnode(left).convtype=tc_bool_2_int) then
+                    begin
+                      ttypeconvnode(left).resultdef:=resultdef;
                       result:=left;
                       left:=nil;
                       exit;

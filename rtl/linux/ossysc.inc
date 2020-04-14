@@ -428,12 +428,12 @@ function Fpfork : pid_t;  [public, alias : 'FPC_SYSC_FORK'];
   A negative value indicates that an error has occurred, the error is returned in
   LinuxError.
 }
-{$if defined(generic_linux_syscalls)}
+{$if defined(generic_linux_syscalls) or defined(cpuxtensa)}
 var
   pid : Int64;
 {$endif}
 Begin
-{$if defined(generic_linux_syscalls)}
+{$if defined(generic_linux_syscalls) or defined(cpuxtensa)}
  Fpfork:=Do_syscall(syscall_nr_clone,clone_flags_fork,0,0,0,TSysParam(@pid));
 {$else}
  Fpfork:=Do_syscall(SysCall_nr_fork);

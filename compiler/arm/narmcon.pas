@@ -55,7 +55,9 @@ interface
       begin
         result:=nil;
         if (FPUARM_HAS_VMOV_CONST in fpu_capabilities[current_settings.fputype]) and
-           IsVFPFloatImmediate(tfloatdef(resultdef).floattype,value_real) then
+           IsVFPFloatImmediate(tfloatdef(resultdef).floattype,value_real) and
+           ((tfloatdef(resultdef).floattype=s32real) or
+            (FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[init_settings.fputype])) then
            expectloc:=LOC_MMREGISTER
          else
            expectloc:=LOC_CREFERENCE;
@@ -76,7 +78,9 @@ interface
 
       begin
         if (FPUARM_HAS_VMOV_CONST in fpu_capabilities[current_settings.fputype]) and
-          IsVFPFloatImmediate(tfloatdef(resultdef).floattype,value_real) then
+          IsVFPFloatImmediate(tfloatdef(resultdef).floattype,value_real) and
+           ((tfloatdef(resultdef).floattype=s32real) or
+            (FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[init_settings.fputype])) then
           begin
             location_reset(location,LOC_MMREGISTER,def_cgsize(resultdef));
             location.register:=cg.getmmregister(current_asmdata.CurrAsmList,location.size);

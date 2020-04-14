@@ -2084,7 +2084,7 @@ unit cgcpu;
              begin
                reference_reset(ref,4,[]);
                if (tg.direction*tcpuprocinfo(current_procinfo).floatregstart>=1023) or
-                 (FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[current_settings.fputype]) then
+                 (FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype]) then
                  begin
                    if not is_shifter_const(tcpuprocinfo(current_procinfo).floatregstart,shift) then
                      begin
@@ -2115,13 +2115,15 @@ unit cgcpu;
                    begin
                      ref.index:=ref.base;
                      ref.base:=NR_NO;
-                     { FSTMX is deprecated on ARMv6 and later }
-                     {if (current_settings.cputype<cpu_armv6) then
-                       postfix:=PF_IAX
-                     else
-                       postfix:=PF_IAD;}
                      if mmregs<>[] then
                        list.concat(taicpu.op_ref_regset(A_VSTM,ref,R_MMREGISTER,R_SUBFD,mmregs));
+                   end
+                 else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
+                   begin
+                     ref.index:=ref.base;
+                     ref.base:=NR_NO;
+                     if mmregs<>[] then
+                       list.concat(taicpu.op_ref_regset(A_VSTM,ref,R_MMREGISTER,R_SUBFS,mmregs));
                    end
                  else
                    internalerror(2019050923);
@@ -2176,7 +2178,7 @@ unit cgcpu;
                         }
                       end;
                 end;
-              else if FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[current_settings.fputype] then
+              else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
                 begin
                   { restore vfp registers? }
                   { the *[0..31] is a hack to prevent that the compiler tries to save odd single-type registers,
@@ -2193,7 +2195,7 @@ unit cgcpu;
               begin
                 reference_reset(ref,4,[]);
                 if (tg.direction*tcpuprocinfo(current_procinfo).floatregstart>=1023) or
-                   (FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[current_settings.fputype]) then
+                   (FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype]) then
                   begin
                     if not is_shifter_const(tcpuprocinfo(current_procinfo).floatregstart,shift) then
                       begin
@@ -2223,13 +2225,15 @@ unit cgcpu;
                     begin
                       ref.index:=ref.base;
                       ref.base:=NR_NO;
-                      { FLDMX is deprecated on ARMv6 and later }
-                      {if (current_settings.cputype<cpu_armv6) then
-                        mmpostfix:=PF_IAX
-                      else
-                        mmpostfix:=PF_IAD;}
-                     if mmregs<>[] then
-                       list.concat(taicpu.op_ref_regset(A_VLDM,ref,R_MMREGISTER,R_SUBFD,mmregs));
+                      if mmregs<>[] then
+                        list.concat(taicpu.op_ref_regset(A_VLDM,ref,R_MMREGISTER,R_SUBFD,mmregs));
+                    end
+                  else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
+                    begin
+                      ref.index:=ref.base;
+                      ref.base:=NR_NO;
+                      if mmregs<>[] then
+                        list.concat(taicpu.op_ref_regset(A_VLDM,ref,R_MMREGISTER,R_SUBFS,mmregs));
                     end
                   else
                     internalerror(2019050921);
@@ -4328,11 +4332,18 @@ unit cgcpu;
         rg[R_FPUREGISTER]:=trgcpu.create(R_FPUREGISTER,R_SUBNONE,
             [RS_F0,RS_F1,RS_F2,RS_F3,RS_F4,RS_F5,RS_F6,RS_F7],first_fpu_imreg,[]);
 
-        if FPUARM_HAS_32REGS in fpu_capabilities[current_settings.fputype] then
+        if (FPUARM_HAS_32REGS in fpu_capabilities[current_settings.fputype]) and
+          (FPUARM_HAS_VFP_DOUBLE in fpu_capabilities[current_settings.fputype]) then
           rg[R_MMREGISTER]:=trgcpu.create(R_MMREGISTER,R_SUBFD,
               [RS_D0,RS_D1,RS_D2,RS_D3,RS_D4,RS_D5,RS_D6,RS_D7,
                RS_D16,RS_D17,RS_D18,RS_D19,RS_D20,RS_D21,RS_D22,RS_D23,RS_D24,RS_D25,RS_D26,RS_D27,RS_D28,RS_D29,RS_D30,RS_D31,
                RS_D8,RS_D9,RS_D10,RS_D11,RS_D12,RS_D13,RS_D14,RS_D15
+              ],first_mm_imreg,[])
+        else if (FPUARM_HAS_32REGS in fpu_capabilities[current_settings.fputype]) then
+          rg[R_MMREGISTER]:=trgcpu.create(R_MMREGISTER,R_SUBFS,
+              [RS_S0,RS_S1,RS_S2,RS_S3,RS_S4,RS_S5,RS_S6,RS_S7,
+               RS_S16,RS_S17,RS_S18,RS_S19,RS_S20,RS_S21,RS_S22,RS_S23,RS_S24,RS_S25,RS_S26,RS_S27,RS_S28,RS_S29,RS_S30,RS_S31,
+               RS_S8,RS_S9,RS_S10,RS_S11,RS_S12,RS_S13,RS_S14,RS_S15
               ],first_mm_imreg,[])
         else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
           rg[R_MMREGISTER]:=trgcpu.create(R_MMREGISTER,R_SUBFD,

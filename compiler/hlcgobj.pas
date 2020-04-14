@@ -4354,7 +4354,9 @@ implementation
                    LOC_FLAGS :
                      begin
                        a_jmp_flags(list,p.location.resflags,truelabel);
+{$ifndef xtensa}
                        a_reg_dealloc(list,NR_DEFAULTFLAGS);
+{$endif xtensa}
                        a_jmp_always(list,falselabel);
                      end;
 {$endif cpuflags}

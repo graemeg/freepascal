@@ -416,8 +416,7 @@ uses cutils, cclasses;
           R_FPUREGISTER:
             result:=
                (opcode=A_MOV_S) and
-               (oper[0]^.reg=oper[1]^.reg) and
-               (oper[0]^.reg=oper[2]^.reg);
+               (oper[0]^.reg=oper[1]^.reg);
          else
            result:=false;
         end;
@@ -426,13 +425,17 @@ uses cutils, cclasses;
 
     function taicpu.spilling_get_operation_type(opnr: longint): topertype;
       begin
-        result := operand_read;
+        if opnr=0 then
+          result := operand_write
+        else
+          result := operand_read;
         case opcode of
-          A_MOV:
-            if opnr=0 then
-              result:=operand_write
-            else
-              result:=operand_read;
+          A_S8I,
+          A_S16I,
+          A_S32I,
+          A_SSI,
+          A_Bcc:
+            result := operand_read;
           else
             ;
         end;
@@ -449,9 +452,9 @@ uses cutils, cclasses;
       begin
         case getregtype(r) of
           R_INTREGISTER:
-            result:=taicpu.op_reg_reg_const(A_L32I,r,ref.base,ref.offset);
+            result:=taicpu.op_reg_ref(A_L32I,r,ref);
           R_FPUREGISTER:
-            result:=taicpu.op_reg_reg_const(A_LSI,r,ref.base,ref.offset);
+            result:=taicpu.op_reg_ref(A_LSI,r,ref);
           else
             internalerror(2020030701);
         end;
@@ -462,9 +465,9 @@ uses cutils, cclasses;
       begin
         case getregtype(r) of
           R_INTREGISTER:
-            result:=taicpu.op_reg_reg_const(A_S32I,r,ref.base,ref.offset);
+            result:=taicpu.op_reg_ref(A_S32I,r,ref);
           R_FPUREGISTER:
-            result:=taicpu.op_reg_reg_const(A_SSI,r,ref.base,ref.offset);
+            result:=taicpu.op_reg_ref(A_SSI,r,ref);
           else
             internalerror(2020030701);
         end;

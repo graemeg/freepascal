@@ -99,6 +99,14 @@
   {$undef usestime}
 {$endif cpuriscv64}
 
+{$ifdef cpuxtensa}
+  {$define FPC_USEGETTIMEOFDAY}
+  {$define MMAP2}
+  {$define WAIT4}
+  {$undef usestime}
+{$endif cpuxtensa}
+
+
 {$ifdef android}
   {$define generic_linux_syscalls}
   {$ifdef cpuarm}
