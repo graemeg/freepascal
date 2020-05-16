@@ -88,7 +88,9 @@ var
   {$IFDEF WINDOWS}
   DLLSSLName: string = 'ssleay32.dll';
   DLLSSLName2: string = 'libssl32.dll';
+  DLLSSLName3: string = {$IFDEF WIN64}'libssl-1_1-x64.dll'{$ELSE}'libssl-1_1.dll'{$ENDIF};
   DLLUtilName: string = 'libeay32.dll';
+  DLLUtilName2: string = {$IFDEF WIN64}'libcrypto-1_1-x64.dll'{$ELSE}'libcrypto-1_1.dll'{$ENDIF};
   {$ELSE}
    {$IFDEF OS2}
     {$IFDEF OS2GCC}
@@ -5630,8 +5632,12 @@ begin
   SSLUtilHandle := LoadLib(DLLUtilName);
   SSLLibHandle := LoadLib(DLLSSLName);
   {$IFDEF MSWINDOWS}
+  if (SSLUtilHandle = 0) then
+    SSLUtilHandle := LoadLib(DLLUtilName2);
   if (SSLLibHandle = 0) then
     SSLLibHandle := LoadLib(DLLSSLName2);
+  if (SSLLibHandle = 0) then
+    SSLLibHandle := LoadLib(DLLSSLName3);
   {$ELSE MSWINDOWS}
    {$IFDEF OS2}
   if (SSLUtilHandle = 0) then
