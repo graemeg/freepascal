@@ -172,6 +172,10 @@ begin
 
   with LinkRes do
     begin
+      { Note: so of course merging the BSS section into text blows the resulting binary up by a
+        significant portion. But due to the relocations pointing into BSS, this is the easier way
+        now, until the linker situation is improved. It remains a relatively quick win for later,
+        when it comes to size optimizations. (KB) }
       Add('');
       Add('SECTIONS');
       Add('{');
