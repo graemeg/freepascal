@@ -90,7 +90,7 @@ unit i_sinclairql;
                 maxCrecordalign : 4
               );
             first_parm_offset : 8;
-            stacksize    : 16384;
+            stacksize    : 8192;
             stackalign   : 2;
             abi : abi_default;
             llvmdatalayout : 'todo';
