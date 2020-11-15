@@ -60,7 +60,7 @@ unit i_sinclairql;
             importlibprefix : 'libimp';
             importlibext : '.a';
             Cprefix      : '_';
-            newline      : #13#10;
+            newline      : #10;
             dirsep       : '/'; { ... the underlying tools (binutils/vlink/vasm) prefer Unix paths }
             assem        : as_m68k_vasm;
             assemextern  : as_m68k_vasm;
