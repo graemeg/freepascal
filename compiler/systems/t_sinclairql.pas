@@ -56,6 +56,7 @@ implementation
 
     const
        DefaultOrigin = $0;
+       ProgramHeaderName = 'main';
 
 
 constructor TLinkerSinclairQL.Create;
@@ -172,21 +173,27 @@ begin
 
   with LinkRes do
     begin
-      { Note: so of course merging the BSS section into text blows the resulting binary up by a
-        significant portion. But due to the relocations pointing into BSS, this is the easier way
-        now, until the linker situation is improved. It remains a relatively quick win for later,
-        when it comes to size optimizations. (KB) }
       Add('');
+      Add('PHDRS {');
+      Add('  '+ProgramHeaderName+' PT_LOAD;');
+      Add('}');
       Add('SECTIONS');
       Add('{');
       Add('  . = 0x'+hexstr(Origin,8)+';');
       Add('  .text : {');
       Add('      _stext = .;');
-      Add('      *(.text .text.* _CODE _CODE.* ) ');
-      Add('      *(.data .data.* .rodata .rodata.* .fpc.* ) ');
-      Add('      *(_BSS _BSS.*) *(.bss .bss.*) *(_BSSEND _BSSEND.*) *(_HEAP _HEAP.*) *(.stack .stack.*) *(_STACK _STACK.*) ');
+      Add('      *(.text .text.* )');
+      Add('      *(.data .data.* .rodata .rodata.* .fpc.* )');
+      Add('      *(.stack .stack.*)');
+      { force the end of section to be word aligned }
+      Add('      . = ALIGN(2); SHORT(0x514C);');
       Add('      _etext = .;');
-      Add('  }');
+      Add('  } :'+ProgramHeaderName);
+      Add('  .bss (NOLOAD): {');
+      Add('      _sbss = .;');
+      Add('      *(.bss .bss.*)');
+      Add('      _ebss = .;');
+      Add('  } :'+ProgramHeaderName);
       Add('}');
     end;
 
@@ -208,8 +215,13 @@ var
   FlagsStr : string;
   ExeName: string;
   fd,fs: file;
+  fhdr: text;
   buf: pointer;
   bufread,bufsize: longint;
+  HdrName: string;
+  HeaderLine: string;
+  HeaderSize: longint;
+  code: word;
 begin
   StripStr:='';
   GCSectionsStr:='';
@@ -227,6 +239,7 @@ begin
     end;
 
   ExeName:=current_module.exefilename;
+  HdrName:=ExeName+'.hdr';
 
   { Call linker }
   SplitBinCmd(Info.ExeCmd[1],BinStr,CmdStr);
@@ -242,22 +255,29 @@ begin
   MakeSinclairQLExe:=DoExec(BinStr,CmdStr,true,false);
 
   { Kludge:
-      With the above linker script, vlink will produce two files,
-      "exename. text" and "exename. text.rel text". The former is the
-      binary itself, the second is the relocation info. Here we copy
-      the two together. I'll try to get vlink to do this for me in the
-      future. (KB) }
+      With the above linker script, vlink will produce two files. The main binary 
+      and the relocation info. Here we copy the two together. (KB) }
   if MakeSinclairQLExe then
     begin
       ExeLength:=0;
       bufsize:=16384;
 {$push}
 {$i-}
+      { Rename vlink's output file into the header file it is, then parse the 
+        expected length from it. Later we use either this size or the final binary
+        size in the BASIC loader, depending on which one is bigger. (KB) }
+      RenameFile(ExeName,HdrName);
+      assign(fhdr,HdrName);
+      reset(fhdr);
+      readln(fhdr,HeaderLine);
+      Val(Copy(HeaderLine,RPos('0x',HeaderLine),Length(HeaderLine)),HeaderSize,code);
+      close(fhdr);
+
       buf:=GetMem(bufsize);
-      assign(fd,exename);
+      assign(fd,ExeName);
       rewrite(fd,1);
 
-      assign(fs,exename+'. text');
+      assign(fs,ExeName+'.'+ProgramHeaderName);
       reset(fs,1);
       repeat
         blockread(fs,buf^,bufsize,bufread);
@@ -266,7 +286,7 @@ begin
       close(fs);
       // erase(fs);
 
-      assign(fs,exename+'. text.rel text');
+      assign(fs,ExeName+'.'+ProgramHeaderName+'.rel'+ProgramHeaderName);
       reset(fs,1);
       repeat
         blockread(fs,buf^,bufsize,bufread);
@@ -278,7 +298,10 @@ begin
       ExeLength:=FileSize(fd);
       close(fd);
 {$pop}
-      MakeSinclairQLExe:=not (ExeLength = 0);
+      FreeMem(buf);
+      if HeaderSize > ExeLength then
+        ExeLength:=HeaderSize;
+      MakeSinclairQLExe:=(code = 0) and not (ExeLength = 0);
     end;
 end;
 
@@ -309,7 +332,7 @@ begin
       ExeName:=current_module.exefilename;
       BootStr:=DefaultBootString;
 
-      Replace(BootStr,'$BINSIZE',tostr(ExeLength)); { FIX ME }
+      Replace(BootStr,'$BINSIZE',tostr(ExeLength));
       Replace(BootStr,'$EXENAME',ExeName);
 
       Replace(ExeName,target_info.exeext,'');
