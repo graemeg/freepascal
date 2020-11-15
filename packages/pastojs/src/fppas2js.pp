@@ -5878,9 +5878,10 @@ end;
 
 function TPas2JSResolver.BI_AWait_OnGetCallCompatibility(
   Proc: TResElDataBuiltInProc; Expr: TPasExpr; RaiseOnError: boolean): integer;
-// await(const Expr: T): T
 // await(T; p: TJSPromise): T;
 // await(AsyncProc);
+// await(Proc);
+// await(const Expr: T): T
 const
   Signature2 = 'function await(aType,TJSPromise):aType';
 var
@@ -6058,7 +6059,9 @@ begin
         Exclude(Ref.Flags,rrfNoImplicitCallWithoutParams);
         Include(Ref.Flags,rrfImplicitCallWithoutParams);
         end;
-      end;
+      end
+    else
+      LogMsg(20201116000324,mtHint,nAwaitWithoutPromise,sAwaitWithoutPromise,[],Param);
     end;
 
   if length(P)>1 then

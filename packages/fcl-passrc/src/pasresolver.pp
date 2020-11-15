@@ -4849,7 +4849,9 @@ begin
     begin
     Bin:=TBinaryExpr(El);
     if Bin.OpCode=eopSubIdent then
-      El:=Bin.right;
+      El:=Bin.right
+    else
+      exit(nil);
     end;
   if (El is TPrimitiveExpr) and (TPrimitiveExpr(El).Kind=pekIdent) then
     Result:=El;
