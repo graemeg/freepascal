@@ -1148,10 +1148,17 @@ const
             end;
         else
           begin
+            if actasmtoken in [AS_COMMA,AS_SEPARATOR] then
+              begin
+                { no longer in an expression }
+                if not ErrorFlag then
+                  BuildRefExpression := CalculateExpression(expr);
+                exit;
+              end;
+
             { write error only once. }
             if not errorflag then
               Message(asmr_e_invalid_constant_expression);
-            if actasmtoken in [AS_COMMA,AS_SEPARATOR] then exit;
             { consume tokens until we find COMMA or SEPARATOR }
             errorflag := true;
         end;
@@ -1421,7 +1428,7 @@ const
                          Message(asmr_e_invalid_operand_type);
                       { identifiers are handled by BuildExpression }
                       oper.opr.typ := OPR_CONSTANT;
-		      l:=BuildExpression(true,@tempstr);
+                      l:=BuildExpression(true,@tempstr);
                       oper.opr.val :=aint(l);
                       if tempstr<>'' then
                         begin
@@ -1432,13 +1439,13 @@ const
                         end;
                  end;
    { // Constant memory offset .              // }
-   { // This must absolutely be followed by ( // }
      AS_HEXNUM,AS_INTNUM,
      AS_BINNUM,AS_OCTALNUM,AS_PLUS:
                    begin
                       Oper.InitRef;
                       oper.opr.ref.offset:=BuildRefExpression;
-                      BuildReference(oper);
+                      if actasmtoken = AS_LPAREN then
+                        BuildReference(oper);
                    end;
    { // A constant expression, or a Variable ref. // }
      AS_ID:  begin
