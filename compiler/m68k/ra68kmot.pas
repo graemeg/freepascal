@@ -1483,7 +1483,8 @@ const
                    begin
                      Oper.InitRef;
                      oper.opr.ref.offset:=BuildRefExpression;
-                     BuildReference(oper);
+                     if actasmtoken = AS_LPAREN then
+                       BuildReference(oper);
                    end
                  else { is it a label variable ? }
 
