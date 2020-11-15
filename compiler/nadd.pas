@@ -1427,37 +1427,27 @@ implementation
                        end;
                      if v1p^.resultdef.size=v2p^.resultdef.size then
                        begin
-                         if not(is_integer(v1p^.resultdef)) or not(is_integer(v2p^.resultdef)) then
-                           begin
-                             case v1p^.resultdef.size of
-                               1:
-                                 inttype:=u8inttype;
-                               2:
-                                 inttype:=u16inttype;
-                               4:
-                                 inttype:=u32inttype;
-                               8:
-                                 inttype:=u64inttype;
-                               else
-                                 Internalerror(2020060101);
-                             end;
+                         case v1p^.resultdef.size of
+                           1:
+                             inttype:=u8inttype;
+                           2:
+                             inttype:=u16inttype;
+                           4:
+                             inttype:=u32inttype;
+                           8:
+                             inttype:=u64inttype;
+                           else
+                             Internalerror(2020060101);
+                         end;
 
-                             result:=caddnode.create_internal(equaln,
-                               caddnode.create_internal(orn,
-                                 caddnode.create_internal(xorn,ctypeconvnode.create_internal(v1p^.getcopy,inttype),
-                                   ctypeconvnode.create_internal(c1p^.getcopy,inttype)),
-                                 caddnode.create_internal(xorn,ctypeconvnode.create_internal(v2p^.getcopy,inttype),
-                                   ctypeconvnode.create_internal(c2p^.getcopy,inttype))
-                               ),
-                               cordconstnode.create(0,inttype,false));
-                           end
-                         else
-                           result:=caddnode.create_internal(equaln,
-                             caddnode.create_internal(orn,
-                               caddnode.create_internal(xorn,v1p^.getcopy,c1p^.getcopy),
-                               caddnode.create_internal(xorn,v2p^.getcopy,c2p^.getcopy)
-                             ),
-                             cordconstnode.create(0,v1p^.resultdef,false));
+                         result:=caddnode.create_internal(equaln,
+                           caddnode.create_internal(orn,
+                             caddnode.create_internal(xorn,ctypeconvnode.create_internal(v1p^.getcopy,inttype),
+                               ctypeconvnode.create_internal(c1p^.getcopy,inttype)),
+                             caddnode.create_internal(xorn,ctypeconvnode.create_internal(v2p^.getcopy,inttype),
+                               ctypeconvnode.create_internal(c2p^.getcopy,inttype))
+                           ),
+                           cordconstnode.create(0,inttype,false));
                        end;
                    end;
                 { even when short circuit boolean evaluation is active, this
