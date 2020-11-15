@@ -39,5 +39,24 @@ const
   ERR_EX = -17;  { Expression error. }
   ERR_OV = -18;  { Arithmetic overflow. }
   ERR_NI = -19;  { Not implemented. }
-  ERR_RO = -20;	 { Read only. }
+  ERR_RO = -20;  { Read only. }
   ERR_BL = -21;  { Bad line of Basic. }
+
+const
+  Q_OPEN = 0;
+  Q_OPEN_IN = 1;
+  Q_OPEN_NEW = 2;
+  Q_OPEN_OVER = 3;  { Not available on microdrives. }
+  Q_OPEN_DIR = 4;
+
+
+type
+  TConScrParams = record
+    bordercolor:  byte;
+    bordersize:   byte;
+    papercolor:   byte;
+    inkcolor:     byte;
+    width,height: word;
+    x,y:          word;
+  end;
+  PConScrParams = ^TConScrParams;
