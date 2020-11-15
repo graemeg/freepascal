@@ -64,8 +64,8 @@ begin
     move.w -2(a1),d7
     beq @noreloc
 
-    { zero out the number of relocation marker,  so if our code is
-      called again, without reload, it won't relocate itself twice }
+    { zero out the relocation marker, so if our code is called again
+      without reload, it won't relocate itself twice }
     move.w #0,-2(a1)
 
     { first item in the relocation table is the number of relocs }
