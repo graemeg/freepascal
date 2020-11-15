@@ -985,9 +985,14 @@ implementation
                         typecheckpass(expr);
                       end;
                     case expr.resultdef.typ of
-                      stringdef: result:=create_string_for_in_loop(hloopvar, hloopbody, expr);
-                      arraydef: result:=create_array_for_in_loop(hloopvar, hloopbody, expr);
-                      setdef: result:=create_set_for_in_loop(hloopvar, hloopbody, expr);
+                      stringdef:
+                        result:=create_string_for_in_loop(hloopvar, hloopbody, expr);
+                      arraydef:
+                        result:=create_array_for_in_loop(hloopvar, hloopbody, expr);
+                      setdef:
+                        result:=create_set_for_in_loop(hloopvar, hloopbody, expr);
+                      undefineddef:
+                        result:=cnothingnode.create;
                     else
                       begin
                         result:=cerrornode.create;
