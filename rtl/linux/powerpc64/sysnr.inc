@@ -3,7 +3,7 @@
     Copyright (c) 2005-06 by Thomas Schatzl,
     member of the Free Pascal development team.
 
-    Syscall numbers for 2.6.15
+    Syscall numbers for PowerPC64
 
     This file contains the system call numbers.
     See the file COPYING.FPC, included in this distribution,

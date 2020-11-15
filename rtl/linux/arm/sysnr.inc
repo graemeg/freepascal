@@ -17,7 +17,6 @@
 
 {
 * This file contains the system call numbers.
-  Last update from 2.4.22 kernel sources according to the sources it contains already the 2.5 extensions
 }
 
 Const

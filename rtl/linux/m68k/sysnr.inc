@@ -3,8 +3,8 @@
     Copyright (c) 1999-2000 by Michael Van Canneyt,
     member of the Free Pascal development team.
 
-    Syscall nrs for 2.6.23
-
+    Syscall nrs for M68k
+    
     See the file COPYING.FPC, included in this distribution,
     for details about the copyright.
 

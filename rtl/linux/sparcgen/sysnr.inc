@@ -3,7 +3,7 @@
     Copyright (c) 2003 by Peter Vreman
     member of the Free Pascal development team.
 
-    Syscall nrs for 2.4.21 Sparc
+    Syscall nrs for Sparc
 
     See the file COPYING.FPC, included in this distribution,
     for details about the copyright.
