@@ -4309,6 +4309,14 @@ begin
 {$endif cpufpemu}
 
 {$ifdef i386}
+  if target_info.system in systems_i386_default_486 then
+    begin
+      { Avoid use of MMX/CMOVcc instructions on older systems.
+        Some systems might not handle these instructions correctly,
+        Used emulators might also be problematic. PM }
+      if not option.CPUSetExplicitly then
+        init_settings.cputype:=cpu_486;
+    end;
   case target_info.system of
     system_i386_android:
       begin

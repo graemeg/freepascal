@@ -965,8 +965,7 @@ implementation
            while (localsize>0) do
             begin
 {$ifndef i8086}
-              if (CPUX86_HAS_CMOV in cpu_capabilities[current_settings.cputype])
-                 {$ifdef i386} and not (target_info.system in systems_i386_no_cmov_align) {$endif} then
+              if (CPUX86_HAS_CMOV in cpu_capabilities[current_settings.cputype]) then
                 begin
                   for j:=low(alignarray_cmovcpus) to high(alignarray_cmovcpus) do
                    if (localsize>=length(alignarray_cmovcpus[j])) then
