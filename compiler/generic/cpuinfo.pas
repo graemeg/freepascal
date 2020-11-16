@@ -44,6 +44,10 @@ Type
       (cpu_none
       );
 
+   { copied from arm/cpuinfo unit for arm specific
+     TSettings field }
+   tinstructionset = (is_thumb,is_arm);
+
 
 Type
    tfputype =

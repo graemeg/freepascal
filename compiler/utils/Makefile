@@ -3236,7 +3236,7 @@ else
 ppu$(PPUEXT): ../ppu.pas
 	$(COMPILER) ../ppu.pas -Fu../generic -dGENERIC_CPU -Fi..
 ppudump$(EXEEXT): ppuutils/ppudump.pp ppu$(PPUEXT)
-	$(COMPILER) ppuutils/ppudump.pp -Fu../generic -dGENERIC_CPU -Fi..
+	$(COMPILER) ppuutils/ppudump.pp -Fu../llvm -Fu../generic -dGENERIC_CPU -Fi..
 ppufiles$(EXEEXT): ppufiles.pp ppu$(PPUEXT)
 	$(COMPILER) ppufiles.pp -Fu../generic -dGENERIC_CPU -Fi..
 ppumove$(EXEEXT): ppumove.pp ppu$(PPUEXT)

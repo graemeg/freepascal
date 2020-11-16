@@ -44,9 +44,9 @@ interface
       { comphook pulls in sysutils anyways }
       cutils,cclasses,cfileutl,
       cpuinfo,
-{$if defined(LLVM) and not defined(GENERIC_CPU)}
+{$if defined(LLVM) or defined(GENERIC_CPU)}
       llvminfo,
-{$endif LLVM and not GENERIC_CPU}
+{$endif LLVM or GENERIC_CPU}
       globtype,version,systems;
 
     const
@@ -166,23 +166,31 @@ interface
 
          tlsmodel : ttlsmodel;
 
-{$if defined(i8086)}
-         x86memorymodel  : tx86memorymodel;
-{$endif defined(i8086)}
-
-{$if defined(ARM)}
-         instructionset : tinstructionset;
-{$endif defined(ARM)}
-
-{$if defined(LLVM) and not defined(GENERIC_CPU)}
-         llvmversion: tllvmversion;
-{$endif defined(LLVM) and not defined(GENERIC_CPU)}
-
         { CPU targets with microcontroller support can add a controller specific unit }
          controllertype   : tcontrollertype;
 
          { WARNING: this pointer cannot be written as such in record token }
          pmessage : pmessagestaterecord;
+{$if defined(generic_cpu)}
+         case byte of
+{$endif}
+{$if defined(i8086) or defined(generic_cpu)}
+   {$ifdef generic_cpu} 1:({$endif}
+           x86memorymodel  : tx86memorymodel;
+   {$ifdef generic_cpu}   );{$endif}
+{$endif defined(i8086) or defined(generic_cpu)}
+
+{$if defined(ARM) or defined(generic_cpu)}
+   {$ifdef generic_cpu} 2:({$endif}
+         instructionset : tinstructionset;
+   {$ifdef generic_cpu}   );{$endif}
+{$endif defined(ARM) or defined(generic_cpu)}
+
+{$if defined(LLVM) or defined(GENERIC_CPU)}
+   {$ifdef generic_cpu} 3:({$endif}
+         llvmversion: tllvmversion;
+   {$ifdef generic_cpu}   );{$endif}
+{$endif defined(LLVM) or defined(GENERIC_CPU)}
        end;
 
     const
@@ -591,17 +599,17 @@ interface
         disabledircache : false;
 
         tlsmodel : tlsm_none;
-{$if defined(i8086)}
+        controllertype : ct_none;
+        pmessage : nil;
+{$if defined(i8086) or defined(GENERIC_CPU)}
         x86memorymodel : mm_small;
-{$endif defined(i8086)}
+{$endif defined(i8086) or defined(GENERIC_CPU)}
 {$if defined(ARM)}
         instructionset : is_arm;
 {$endif defined(ARM)}
 {$if defined(LLVM) and not defined(GENERIC_CPU)}
         llvmversion    : llvmver_7_0;
 {$endif defined(LLVM) and not defined(GENERIC_CPU)}
-        controllertype : ct_none;
-        pmessage : nil;
       );
 
     var
