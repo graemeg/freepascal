@@ -674,9 +674,10 @@ implementation
       end;
 
 
-        procedure tordconstnode.printnodedata(var t: text);
+    procedure tordconstnode.printnodedata(var t: text);
       begin
         inherited printnodedata(t);
+        writeln(t,printnodeindention,'typedef = "',typedef.GetTypeName,'"');
         writeln(t,printnodeindention,'value = ',tostr(value));
       end;
 
