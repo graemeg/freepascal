@@ -54,6 +54,7 @@ dirs_watcom=watcom
 dirs_freertos=freertos
 dirs_zxspectrum=zxspectrum
 dirs_msxdos=msxdos
+dirs_sinclairql=sinclairql
 
 [install]
 fpcpackage=y
