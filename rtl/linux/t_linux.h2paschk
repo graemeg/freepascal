@@ -8,10 +8,15 @@
 # supported architecture.
 
 @Pascal uses baseunix;
+@Pascal {$i ptypes.inc}
+@Pascal {$i ostypes.inc}
 @Pascal begin
 @C #define _LARGEFILE_SOURCE 1
 @C #define _FILE_OFFSET_BITS 64
 ## @C #define _USE_FILE_OFFSET64
+## @C #ifdef __i386__
+## @C #define _LARGEFILE64_SOURCE
+## @C #endif
 
 @C #include <sys/types.h>
 @C #include <sys/stat.h>
@@ -31,9 +36,38 @@
 @C int main()
 @C {
 
+@type dev_t
+@type gid_t
+@type ino_t
+@type mode_t
+@type nlink_t
+@type off_t
+@type pid_t
+@type size_t
+@type ssize_t
+@type uid_t
+@type clock_t
+@type time_t
+@type socklen_t
+
+@record timeval,struct timeval
+.tv_sec
+.tv_usec
+
 @record timespec,struct timespec
 .tv_sec
 .tv_nsec
+
+@type pthread_t
+@type pthread_attr_t
+@type pthread_mutex_t
+@type pthread_mutexattr_t
+@type pthread_cond_t
+@type pthread_condattr_t
+@type pthread_key_t
+@type pthread_rwlock_t
+@type pthread_rwlockattr_t
+@type rlim_t
 
 @record stat,struct stat
 .st_dev
