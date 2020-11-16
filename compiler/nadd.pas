@@ -490,7 +490,7 @@ implementation
 
 
       var
-        t,vl,hp,lefttarget,righttarget: tnode;
+        t,vl,hp,lefttarget,righttarget, hp2: tnode;
         lt,rt   : tnodetype;
         hdef,
         rd,ld   , inttype: tdef;
@@ -793,7 +793,11 @@ implementation
                           { keep the order of val+const else pointer operations might cause an error }
                           hp:=taddnode(left).left;
                           taddnode(left).left:=right;
-                          left:=left.simplify(forinline);
+                          left.resultdef:=nil;
+                          do_typecheckpass(left);
+                          hp2:=left.simplify(forinline);
+                          if assigned(hp2) then
+                            left:=hp2;
                           if resultdef.typ<>pointerdef then
                             begin
                               { ensure that the constant is not expanded to a larger type due to overflow,

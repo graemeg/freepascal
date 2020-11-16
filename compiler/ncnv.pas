@@ -4117,7 +4117,9 @@ implementation
 
     function ttypeconvnode.retains_value_location:boolean;
       begin
-        result:=(convtype=tc_equal) or
+        result:=assigned(left.resultdef) and
+                (
+                (convtype=tc_equal) or
                 { typecasting from void is always allowed }
                 is_void(left.resultdef) or
                 (left.resultdef.typ=formaldef) or
@@ -4139,7 +4141,8 @@ implementation
                 { on managed platforms, converting an element to an open array
                   involves creating an actual array -> value location changes }
                 ((convtype=tc_elem_2_openarray) and
-                 not(target_info.system in systems_managed_vm));
+                 not(target_info.system in systems_managed_vm))
+                );
       end;
 
 
