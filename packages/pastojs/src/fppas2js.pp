@@ -6027,9 +6027,10 @@ var
   P: TPasExprArray;
   Param, PathEnd: TPasExpr;
   Ref: TResolvedReference;
-  Decl: TPasElement;
-  ResolvedEl: TPasResolverResult;
-  Implicit: Boolean;
+  Decl, IdentEl, SubEl: TPasElement;
+  ResolvedEl, ParamResolved: TPasResolverResult;
+  Implicit, IsPromise: Boolean;
+  TypeEl: TPasType;
 begin
   if Proc=nil then ;
   P:=Params.Params;
@@ -6046,7 +6047,7 @@ begin
       Ref:=TResolvedReference(PathEnd.CustomData);
       Decl:=Ref.Declaration;
       Implicit:=false;
-      if Decl is TPasVariable then
+      if (Decl is TPasVariable) or (Decl.ClassType=TPasArgument) then
         begin
         ComputeElement(Decl,ResolvedEl,[rcNoImplicitProcType]);
         if IsProcedureType(ResolvedEl,true) then
@@ -6061,7 +6062,30 @@ begin
         end;
       end
     else
-      LogMsg(20201116000324,mtHint,nAwaitWithoutPromise,sAwaitWithoutPromise,[],Param);
+      begin
+      ComputeElement(Param,ParamResolved,[]);
+      IsPromise:=false;
+      TypeEl:=ParamResolved.LoTypeEl;
+      IdentEl:=ParamResolved.IdentEl;
+      if TypeEl.ClassType=TPasClassType then
+        IsPromise:=IsExternalClass_Name(TPasClassType(TypeEl),'Promise')
+      else if (ParamResolved.BaseType=btProc) and (IdentEl=nil)
+          and (TypeEl is TPasProcedureType) then
+        IsPromise:=TPasProcedureType(TypeEl).IsAsync
+      else if IdentEl is TPasProcedure then
+        IsPromise:=TPasProcedure(ParamResolved.IdentEl).IsAsync
+      else if IdentEl is TPasResultElement then
+        begin
+        SubEl:=TPasResultElement(IdentEl).Parent;
+        if (SubEl is TPasFunctionType) then
+          IsPromise:=TPasFunctionType(SubEl).IsAsync;
+        end;
+      {$IFDEF VerbosePas2JS}
+      writeln('TPas2JSResolver.BI_AWait_OnFinishParamsExpr Param=',GetObjPath(Param),' ParamResolved=',GetResolverResultDbg(ParamResolved));
+      {$ENDIF}
+      if not IsPromise then
+        LogMsg(20201116000324,mtHint,nAwaitWithoutPromise,sAwaitWithoutPromise,[],Param);
+      end;
     end;
 
   if length(P)>1 then
