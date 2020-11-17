@@ -1,3 +1,4 @@
+{ %norun }
 program twctest;
 
 {$mode delphi}
