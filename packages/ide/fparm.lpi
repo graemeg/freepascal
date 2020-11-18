@@ -38,8 +38,8 @@
       <Filename Value="bin/$(TargetCPU)-$(TargetOS)/fp"/>
     </Target>
     <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir);../../compiler;../../compiler/x86_64"/>
-      <OtherUnitFiles Value="../../compiler;../../compiler/x86;../../compiler/x86_64;../../compiler/systems;../rtl-extra/src/inc;../fv/src"/>
+      <IncludeFiles Value="$(ProjOutDir);../../compiler;../../compiler/arm"/>
+      <OtherUnitFiles Value="../../compiler;../../compiler/armgen;../../compiler/arm;../../compiler/systems;../rtl-extra/src/inc;../fv/src"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>
@@ -49,7 +49,7 @@
       </SyntaxOptions>
     </Parsing>
     <Other>
-      <CustomOptions Value="-dx86_64
+      <CustomOptions Value="-darm
 -dnodebug"/>
     </Other>
   </CompilerOptions>

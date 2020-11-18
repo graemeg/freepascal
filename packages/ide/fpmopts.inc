@@ -75,7 +75,7 @@ var R,R2,R3,TabR,TabIR: TRect;
     Label31,Label41,
     Label51,Label52,Label53: PLabel;
 begin
-  R.Assign(0,0,76,21);
+  R.Assign(0,0,76,31);
   New(D, Init(R, dialog_compilerswitches));
   with D^ do
   begin
