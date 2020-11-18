@@ -884,6 +884,7 @@ type
     Procedure TestAsync_ProcType;
     Procedure TestAsync_ProcTypeAsyncModMismatchFail;
     Procedure TestAsync_Inherited;
+    Procedure TestAsync_ClassInterface;
   end;
 
 function LinesToStr(Args: array of const): string;
@@ -32709,6 +32710,53 @@ begin
     '    return Result;',
     '  };',
     '});',
+    '']),
+    LinesToStr([
+    '']));
+  CheckResolverUnexpectedHints();
+end;
+
+procedure TTestModule.TestAsync_ClassInterface;
+begin
+  StartProgram(false);
+  Add([
+  '{$mode objfpc}',
+  '{$modeswitch externalclass}',
+  'type',
+  '  TJSPromise = class external name ''Promise''',
+  '  end;',
+  '  IUnknown = interface',
+  '    function _AddRef: longint;',
+  '    function _Release: longint;',
+  '  end;',
+  'function Run: IUnknown; async;',
+  'begin',
+  'end;',
+  'procedure Fly;',
+  'var p: TJSPromise;',
+  'begin',
+  '  Run;',
+  '  Run();',
+  '  p:=Run;',
+  '  p:=Run();',
+  'end;',
+  'begin',
+  '  ']);
+  ConvertProgram;
+  CheckSource('TestAsync_ClassInterface',
+    LinesToStr([ // statements
+    'rtl.createInterface(this, "IUnknown", "{D7ADB0E1-758A-322B-BDDF-21CD521DDFA9}", ["_AddRef", "_Release"], null);',
+    'this.Run = async function () {',
+    '  var Result = null;',
+    '  return Result;',
+    '};',
+    'this.Fly = function () {',
+    '  var p = null;',
+    '  $mod.Run();',
+    '  $mod.Run();',
+    '  p = $mod.Run();',
+    '  p = $mod.Run();',
+    '};',
     '']),
     LinesToStr([
     '']));

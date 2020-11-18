@@ -771,7 +771,7 @@ const
     'intfAsIntfT', // rtl.intfAsIntfT
     'createInterface', // rtl.createInterface
     'createTGUID', // rtl.createTGUID
-    'ref', // $ir.ref
+    'ref', // $ir.ref  pbifnIntfExprRefsAdd
     'createIntfRefs', // rtl.createIntfRefs
     'free', // $ir.free
     'getIntfGUIDR', // rtl.getIntfGUIDR
@@ -9856,6 +9856,7 @@ var
 
     NeedIntfRef:=false;
     if (ProcType is TPasFunctionType)
+        and not ProcType.IsAsync
         and AContext.Resolver.IsInterfaceType(
           TPasFunctionType(ProcType).ResultEl.ResultType,citCom)
     then
@@ -10431,6 +10432,7 @@ function TPasToJSConverter.ConvertInheritedExpr(El: TInheritedExpr;
         CreateProcedureCall(Call,ParamsExpr,AncestorProc.ProcType,AContext);
 
       if (AncestorProc is TPasFunction)
+          and not AncestorProc.IsAsync
           and AContext.Resolver.IsInterfaceType(
               TPasFunction(AncestorProc).FuncType.ResultEl.ResultType,citCom) then
         Call:=CreateIntfRef(Call,AContext,El);
@@ -11446,7 +11448,7 @@ var
   C: TClass;
   aName, ArgName: String;
   aClassTypeEl: TPasClassType;
-  ParamTypeEl, TypeEl: TPasType;
+  ParamTypeEl: TPasType;
   NeedIntfRef: Boolean;
   DestRange, SrcRange: TResEvalValue;
   LastArg: TJSArrayLiteralElement;
@@ -11826,10 +11828,8 @@ begin
   NeedIntfRef:=false;
   if (TargetProcType is TPasFunctionType) and (aResolver<>nil) then
     begin
-    TypeEl:=aResolver.ResolveAliasType(TPasFunctionType(TargetProcType).ResultEl.ResultType);
-    if (TypeEl is TPasClassType)
-        and (TPasClassType(TypeEl).ObjKind=okInterface)
-        and (TPasClassType(TypeEl).InterfaceType=citCom) then
+    if aResolver.IsInterfaceType(TPasFunctionType(TargetProcType).ResultEl.ResultType,citCom)
+        and not TargetProcType.IsAsync then
       NeedIntfRef:=true;
     end;
 
