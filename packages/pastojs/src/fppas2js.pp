@@ -1053,13 +1053,15 @@ type
 type
   TPasToJsPlatform = (
     PlatformBrowser,
-    PlatformNodeJS
+    PlatformNodeJS,
+    PlatformElectron
     );
   TPasToJsPlatforms = set of TPasToJsPlatform;
 const
   PasToJsPlatformNames: array[TPasToJsPlatform] of string = (
    'Browser',
-   'NodeJS'
+   'NodeJS',
+   'Electron'
     );
 type
   TPasToJsProcessor = (

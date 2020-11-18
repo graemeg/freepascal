@@ -4762,6 +4762,7 @@ begin
   w('  -T<x>  : Set target platform');
   w('    -Tbrowser: default');
   w('    -Tnodejs : add pas.run(), includes -Jc');
+  w('    -Telectron: experimental');
   w('  -u<x>  : Undefines the symbol <x>');
   w('  -v<x>  : Be verbose. <x> is a combination of the following letters:');
   w('    e    : Show errors (default)');
@@ -4941,6 +4942,7 @@ begin
   Log.LogPlain('Supported targets (targets marked with ''{*}'' are under development):');
   Log.LogPlain(['  ',PasToJsPlatformNames[PlatformBrowser],': webbrowser']);
   Log.LogPlain(['  ',PasToJsPlatformNames[PlatformNodeJS],': Node.js']);
+  Log.LogPlain(['  ',PasToJsPlatformNames[PlatformElectron],': Electron app']);
   Log.LogLn;
   Log.LogPlain('Supported CPU instruction sets:');
   Log.LogPlain('  ECMAScript5, ECMAScript6');
