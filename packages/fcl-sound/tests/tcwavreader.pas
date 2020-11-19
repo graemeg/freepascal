@@ -84,6 +84,7 @@ begin
   TestValidFile('44k_stereo_24.wav');
   TestValidFile('44k_stereo_32.wav');
   TestValidFile('44k_mono_16_tag.wav');
+  TestValidFile('euphoric_tape.wav');
 end;
 
 
