@@ -29,9 +29,10 @@ begin
     P.OSes:=[sinclairql];
 
     T:=P.Targets.AddUnit('qdos.pas');
+    T:=P.Targets.AddUnit('qlfloat.pas');
 
-//    P.ExamplePath.Add('examples');
-//    T:=P.Targets.AddExampleProgram('.pas');
+    P.ExamplePath.Add('examples');
+    T:=P.Targets.AddExampleProgram('qlcube.pas');
 
 {$ifndef ALLPACKAGES}
     Run;
