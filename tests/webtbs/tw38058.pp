@@ -67,5 +67,4 @@ begin
   Elems:=TConverter.Convert([my_a,my_c,my_e]);
   for Elem in Elems do
     write(Elem);
-  readln;
 end.
