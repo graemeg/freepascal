@@ -22,6 +22,7 @@
 { close a file from the handle value }
 procedure do_close(handle : longint);
 begin
+  Error2InOutRes(io_close(handle));
 end;
 
 
@@ -36,8 +37,15 @@ end;
 
 
 function do_write(h: longint; addr: pointer; len: longint) : longint;
+var
+  res: longint;
 begin
-  do_write:=-1;
+  do_write:=0;
+  res:=io_sstrg(h, -1, addr, len);
+  if res < 0 then
+    Error2InOutRes(res)
+  else
+    do_write:=res;
 end;
 
 
@@ -84,7 +92,73 @@ procedure do_open(var f;p:pchar;flags:longint; pchangeable: boolean);
   when (flags and $1000)  the file will be truncate/rewritten
   when (flags and $10000) there is no check for close (needed for textfiles)
 }
+var
+  res: longint;
+  openMode: longint;
 begin
+  openMode:=Q_OPEN;
+
+  { close first if opened }
+  if ((flags and $10000)=0) then
+   begin
+     case filerec(f).mode of
+       fmInput, fmOutput, fmInout:
+         do_close(filerec(f).handle);
+       fmClosed: ;
+     else
+       begin
+         InOutRes:=102; {not assigned}
+         exit;
+       end;
+     end;
+   end;
+
+  { reset file handle }
+  filerec(f).handle:=UnusedHandle;
+
+  { convert filemode to filerec modes }
+  case (flags and 3) of
+    0 : filerec(f).mode:=fmInput;
+    1 : filerec(f).mode:=fmOutput;
+    2 : filerec(f).mode:=fmInout;
+  end;
+
+  { empty name is special }
+  if p[0]=#0 then begin
+    case filerec(f).mode of
+      fminput :
+        filerec(f).handle:=StdInputHandle;
+      fmappend,
+      fmoutput : begin
+        filerec(f).handle:=StdOutputHandle;
+        filerec(f).mode:=fmOutput; {fool fmappend}
+      end;
+    end;
+    exit;
+  end;
+
+  { rewrite (create a new file) }
+  { FIX ME: this will just create a new file, actual overwriting
+    seems to be a more complex endeavor... }
+  if (flags and $1000)<>0 then openMode:=Q_OPEN_NEW;
+
+  res:=io_open(p,openMode);
+
+  if res < 0 then
+    begin
+      Error2InOutRes(res);
+      filerec(f).mode:=fmClosed;
+      exit;
+    end
+  else
+    filerec(f).handle:=res;
+
+  { append mode }
+  if ((Flags and $100)<>0) and
+      (FileRec(F).Handle<>UnusedHandle) then begin
+    do_seekend(filerec(f).handle);
+    filerec(f).mode:=fmOutput; {fool fmappend}
+  end;
 end;
 
 

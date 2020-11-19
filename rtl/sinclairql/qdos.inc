@@ -17,6 +17,7 @@
 
 const
   _MT_INF   = $00;
+  _MT_DMODE = $10;
   _MT_ALCHP = $18;
   _MT_RECHP = $19;
 
@@ -33,6 +34,18 @@ asm
   move.l  a0,(a1)   { sys_vars }
   move.l  (sp)+,d2
   move.l  d1,d0     { jobid }
+end;
+
+procedure mt_dmode(s_mode: pword; d_type: pword); assembler; nostackframe; public name '_mt_dmode';
+asm
+  movem.l d2/a3-a4,-(sp)
+  move.w (a0),d1
+  move.w (a1),d2
+  moveq.l #_MT_DMODE,d0
+  trap #1
+  move.w d1,(a0)
+  move.w d2,(a1) 
+  movem.l (sp)+,d2/a3-a4
 end;
 
 function mt_alchp(size: dword; sizegot: pdword; jobid: Tjobid): pointer; assembler; nostackframe; public name '_mt_alchp';
@@ -109,6 +122,8 @@ end;
 const
   _IO_SBYTE = $05;
   _IO_SSTRG = $07;
+  _SD_WDEF = $0D;
+  _SD_CLEAR = $20;
 
 function io_sbyte(chan: Tchanid; timeout: Ttimeout; c: char): longint; assembler; public name '_io_sbyte';
 asm
@@ -147,12 +162,35 @@ asm
   movem.l (sp)+,d2-d3
 end;
 
+function sd_wdef(chan: Tchanid; timeout: Ttimeout; border_colour: byte; border_width: word; window: PQLRect): longint; assembler; public name '_sd_wdef'; 
+asm
+  movem.l d2-d3,-(sp)
+  move.l window,a1
+  move.w timeout,d3
+  move.w border_width,d2
+  move.b border_colour,d1
+  move.l chan,a0
+  moveq.l #_SD_WDEF,d0
+  trap #3 
+  movem.l (sp)+,d2-d3
+end;
+
+function sd_clear(chan: Tchanid; timeout: Ttimeout): longint; assembler; public name '_sd_clear';
+asm
+  move.l d3,-(sp)
+  move.w timeout,d3
+  move.l chan,a0
+  moveq.l #_SD_CLEAR,d0
+  trap #3 
+  move.l (sp)+,d3
+end;
+
 
 const
   _UT_CON = $c6;
   _UT_SCR = $c8;
 
-function ut_con(params: PConScrParams): Tchanid; assembler; nostackframe; public name '_ut_con';
+function ut_con(params: PWindowDef): Tchanid; assembler; nostackframe; public name '_ut_con';
 asm
   movem.l d2-d3/a2-a3,-(sp)
   move.l params,a1
@@ -164,7 +202,7 @@ asm
   movem.l (sp)+,d2-d3/a2-a3
 end;
 
-function ut_scr(params: PConScrParams): Tchanid; assembler; nostackframe; public name '_ut_scr';
+function ut_scr(params: PWindowDef): Tchanid; assembler; nostackframe; public name '_ut_scr';
 asm
   movem.l d2-d3/a2-a3,-(sp)
   move.l params,a1

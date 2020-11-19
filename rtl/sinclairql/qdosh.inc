@@ -49,14 +49,29 @@ const
   Q_OPEN_OVER = 3;  { Not available on microdrives. }
   Q_OPEN_DIR = 4;
 
+type
+  Tqlfloat = array[0..5] of byte;
+  Pqlfloat = ^Tqlfloat;
 
 type
-  TConScrParams = record
-    bordercolor:  byte;
-    bordersize:   byte;
-    papercolor:   byte;
-    inkcolor:     byte;
-    width,height: word;
-    x,y:          word;
+  TQLRect = record
+    q_width : word;
+    q_height : word;
+    q_x : word;
+    q_y : word;
   end;
-  PConScrParams = ^TConScrParams;
+  PQLRect = ^TQLRect;
+
+type
+  TWindowDef = record
+    border_colour : byte;
+    border_width : byte;
+    paper : byte;
+    ink : byte;
+    width : word;
+    height : word;
+    x_origin: word;
+    y_origin: word;
+  end;
+  PWindowDef = ^TWindowDef;
+

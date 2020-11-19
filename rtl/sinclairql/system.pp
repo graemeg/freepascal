@@ -32,7 +32,7 @@ interface
 
 {Platform specific information}
 const
-    LineEnding = #13#10;
+    LineEnding = #10;
     LFNSupport = false;
     CtrlZMarksEOF: boolean = false; (* #26 not considered as end of file *)
     DirectorySeparator = '\';
@@ -48,19 +48,23 @@ const
     AllFilesMask = '*.*';
 
     sLineBreak = LineEnding;
-    DefaultTextLineBreakStyle : TTextLineBreakStyle = tlbsCRLF;
+    DefaultTextLineBreakStyle : TTextLineBreakStyle = tlbsLF;
 
 const
     UnusedHandle    = $ffff;
-    StdInputHandle  = 0;
-    StdOutputHandle = 1;
-    StdErrorHandle  = $ffff;
+    StdInputHandle: longint = UnusedHandle;
+    StdOutputHandle: longint = UnusedHandle;
+    StdErrorHandle: longint = UnusedHandle;
 
 var
     args: PChar;
     argc: LongInt;
     argv: PPChar;
     envp: PPChar;
+
+    QCON: longint; // QDOS console
+    QSCR: longint; // QDOS screen
+    heapStart: pointer;
 
 
     {$if defined(FPUSOFT)}
@@ -119,6 +123,61 @@ var
     randseed:=0;
   end;
 
+procedure PrintStr(ch: longint; const s: shortstring);
+begin
+  io_sstrg(ch,-1,@s[1],ord(s[0]));
+end;
+
+procedure PrintStr2(ch: longint; const s: shortstring);
+var
+  i: smallint;
+begin
+  for i:=1 to ord(s[0]) do
+    io_sbyte(ch,-1,s[i]);
+end;
+
+procedure DebugStr(const s: shortstring); public name '_dbgstr';
+var
+  i: longint;
+begin
+  PrintStr($00010001,s);
+  for i:=0 to 10000 do begin end;
+end;
+
+{$ifdef FPC_QL_USE_TINYHEAP}
+procedure InitQLHeap;
+begin
+  HeapOrg:=nil;
+  HeapEnd:=nil;
+  FreeList:=nil;
+  HeapPtr:=nil;
+end;
+{$endif}
+
+{*****************************************************************************
+                        System Dependent Entry code
+*****************************************************************************}
+{ QL/QDOS specific startup }
+procedure SysInitQDOS;
+var
+  r: TQLRect;
+begin
+  stdInputHandle:=io_open('con_',Q_OPEN);
+  stdOutputHandle:=stdInputHandle;
+  stdErrorHandle:=stdInputHandle;
+  QCON:=stdInputHandle;
+
+  r.q_width:=512;
+  r.q_height:=256;
+  r.q_x:=0;
+  r.q_y:=0;
+
+  sd_wdef(stdInputHandle,-1,0,16,@r);
+  sd_clear(stdInputHandle,-1);
+
+//  QSCR:=io_open('scr_',Q_OPEN);
+end;
+
 {*****************************************************************************
                          System Dependent Exit code
 *****************************************************************************}
@@ -127,6 +186,12 @@ procedure haltproc(e:longint); external name '_haltproc';
 
 procedure system_exit;
 begin
+//  io_close(QCON);
+//  io_close(QSCR);
+  stdInputHandle:=UnusedHandle;
+  stdOutputHandle:=UnusedHandle;
+  stdErrorHandle:=UnusedHandle;
+
   haltproc(exitcode);
 end;
 
@@ -150,34 +215,24 @@ begin
   CheckInitialStkLen := StkLen;
 end;
 
-procedure PrintStr(const s: shortstring);
-begin
-  io_sstrg($00010001,-1,@s[1],ord(s[0]));
-end;
-
-procedure PrintStr2(const s: shortstring);
-var
-  i: smallint;
-begin
-  for i:=1 to ord(s[0]) do
-    io_sbyte($00010001,-1,s[i]);
-end;
-
 
 begin
   StackLength := CheckInitialStkLen (InitialStkLen);
 { Initialize ExitProc }
   ExitProc:=Nil;
+  SysInitQDOS;
 {$ifndef FPC_QL_USE_TINYHEAP}
 { Setup heap }
   InitHeap;
+{$else FPC_QL_USE_TINYHEAP}
+  InitQLHeap;
 {$endif FPC_QL_USE_TINYHEAP}
   SysInitExceptions;
 {$ifdef FPC_HAS_FEATURE_UNICODESTRINGS}
   InitUnicodeStringManager;
 {$endif FPC_HAS_FEATURE_UNICODESTRINGS}
 { Setup stdin, stdout and stderr }
-(*  SysInitStdIO;*)
+  SysInitStdIO;
 { Reset IO Error }
   InOutRes:=0;
 { Setup command line arguments }
