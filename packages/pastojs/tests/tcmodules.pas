@@ -877,6 +877,7 @@ type
     Procedure TestAsync_ConstructorFail;
     Procedure TestAsync_PropertyGetterFail;
     Procedure TestAwait_NonPromiseWithTypeFail;
+    Procedure TestAwait_AsyncCallTypeMismatch;
     Procedure TestAWait_OutsideAsyncFail;
     Procedure TestAWait_Result;
     Procedure TestAWait_ExternalClassPromise;
@@ -32399,6 +32400,28 @@ begin
   ConvertProgram;
 end;
 
+procedure TTestModule.TestAwait_AsyncCallTypeMismatch;
+begin
+  StartProgram(false);
+  Add([
+  'type',
+  '  TObject = class',
+  '  end;',
+  '  TBird = class',
+  '  end;',
+  'function Fly: TObject; async;',
+  'begin',
+  'end;',
+  'procedure Run; async;',
+  'begin',
+  '  await(TBird,Fly);',
+  'end;',
+  'begin',
+  '']);
+  SetExpectedPasResolverError('Incompatible type arg no. 2: Got "TObject", expected "TBird"',nIncompatibleTypeArgNo);
+  ConvertProgram;
+end;
+
 procedure TTestModule.TestAWait_OutsideAsyncFail;
 begin
   StartProgram(false);
@@ -32468,10 +32491,13 @@ begin
   'type',
   '  TJSPromise = class external name ''Promise''',
   '  end;',
-  'function Fly(w: word): TJSPromise; async;',
+  'function Fly(w: word): TJSPromise;',
   'begin',
   'end;',
   'function Jump(w: word): word; async;',
+  'begin',
+  'end;',
+  'function Eat(w: word): TJSPromise; async;',
   'begin',
   'end;',
   'function Run(d: double): word; async;',
@@ -32481,18 +32507,24 @@ begin
   '  Result:=await(word,p);', // promise needs type
   '  Result:=await(word,Fly(3));', // promise needs type
   '  Result:=await(Jump(4));', // async non promise must omit the type
+  '  Result:=await(word,Jump(5));', // async call can provide fitting type
+  '  Result:=await(word,Eat(6));', // promise needs type
   'end;',
   'begin',
   '']);
   ConvertProgram;
   CheckSource('TestAWait_ExternalClassPromise',
     LinesToStr([ // statements
-    'this.Fly = async function (w) {',
+    'this.Fly = function (w) {',
     '  var Result = null;',
     '  return Result;',
     '};',
     'this.Jump = async function (w) {',
     '  var Result = 0;',
+    '  return Result;',
+    '};',
+    'this.Eat = async function (w) {',
+    '  var Result = null;',
     '  return Result;',
     '};',
     'this.Run = async function (d) {',
@@ -32501,6 +32533,8 @@ begin
     '  Result = await p;',
     '  Result = await $mod.Fly(3);',
     '  Result = await $mod.Jump(4);',
+    '  Result = await $mod.Jump(5);',
+    '  Result = await $mod.Eat(6);',
     '  return Result;',
     '};',
     '']),

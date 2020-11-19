@@ -1538,6 +1538,7 @@ type
     procedure AddElevatedLocal(El: TPasElement); virtual;
     procedure ClearElementData; virtual;
     function GenerateGUID(El: TPasClassType): string; virtual;
+    function CheckCallAsyncFuncResult(Param: TPasExpr; out ResolvedEl: TPasResolverResult): boolean; virtual;
   protected
     // generic/specialize
     procedure SpecializeGenericIntf(SpecializedItem: TPRSpecializedItem);
@@ -5177,6 +5178,35 @@ begin
   Result:=Result+'}';
 end;
 
+function TPas2JSResolver.CheckCallAsyncFuncResult(Param: TPasExpr; out
+  ResolvedEl: TPasResolverResult): boolean;
+var
+  PathEnd: TPasExpr;
+  Ref: TResolvedReference;
+  Decl: TPasElement;
+  DeclFunc: TPasFunction;
+begin
+  Result:=false;
+  PathEnd:=GetPathEndIdent(Param,true);
+  if (PathEnd<>nil) and (PathEnd.CustomData is TResolvedReference) then
+    begin
+    Ref:=TResolvedReference(PathEnd.CustomData);
+    Decl:=Ref.Declaration;
+    if Decl is TPasFunction then
+      begin
+      DeclFunc:=TPasFunction(Decl);
+      if DeclFunc.IsAsync then
+        begin
+        // await(CallAsyncFunction)  ->  use Pascal result type (not TJSPromise)
+        // Note the missing rcCall flag
+        ComputeResultElement(DeclFunc.FuncType.ResultEl,ResolvedEl,[],PathEnd);
+        exit(true);
+        end;
+      end;
+    end;
+  ResolvedEl:=Default(TPasResolverResult);
+end;
+
 procedure TPas2JSResolver.SpecializeGenericIntf(
   SpecializedItem: TPRSpecializedItem);
 begin
@@ -5889,7 +5919,7 @@ const
 var
   Params: TParamsExpr;
   Param: TPasExpr;
-  ParamResolved: TPasResolverResult;
+  ParamResolved, Param2Resolved: TPasResolverResult;
   ParentProc: TPasProcedure;
   TypeEl: TPasType;
 begin
@@ -5934,7 +5964,16 @@ begin
         and (TypeEl.CustomData is TResElDataBaseType) then
       // base type
     else if (TypeEl<>nil) and (ParamResolved.IdentEl is TPasType) then
+      begin
       // custom type
+      if (ParamResolved.BaseType=btContext)
+          and (ParamResolved.LoTypeEl is TPasClassType)
+          and IsExternalClass_Name(TPasClassType(ParamResolved.LoTypeEl),'Promise') then
+        begin
+        // awit(TJSPromise,x) ->  await resolves all promises
+        exit(CheckRaiseTypeArgNo(20201120001741,1,Param,ParamResolved,'non Promise type',RaiseOnError));
+        end;
+      end
     else
       exit(CheckRaiseTypeArgNo(20200519151816,1,Param,ParamResolved,'jsvalue',RaiseOnError));
 
@@ -5949,16 +5988,40 @@ begin
 
     // check second param TJSPromise
     Param:=Params.Params[1];
-    ComputeElement(Param,ParamResolved,[]);
-    if not (rrfReadable in ParamResolved.Flags) then
-      exit(CheckRaiseTypeArgNo(20200520091707,2,Param,ParamResolved,
-         'instance of TJSPromise',RaiseOnError));
+    if CheckCallAsyncFuncResult(Param,Param2Resolved) then
+      begin
+      // await(T,CallAsyncFuncResultS)
+      if (Param2Resolved.BaseType=btContext)
+          and (Param2Resolved.LoTypeEl is TPasClassType)
+          and IsExternalClass_Name(TPasClassType(Param2Resolved.LoTypeEl),'Promise') then
+        begin
+        // await(T,CallAsyncFuncReturningPromise) -> good
+        end
+      else
+        begin
+        // await(T,CallAsyncFuncResultS)
+        // Note: Actually this case is not needed, as you can simply write await(AsyncCall)
+        //       but it helps some parsers and some people find it more readable
+        // make sure you cannot shoot yourself in the foot: -> check T=S OR S is T
+        ParamResolved.Flags:=[rrfReadable,rrfWritable];
+        ParamResolved.IdentEl:=nil;
+        Result:=CheckParamResCompatibility(Param,Param2Resolved,ParamResolved,1,RaiseOnError,false);
+        exit;
+        end;
+      end
+    else
+      begin
+      ComputeElement(Param,Param2Resolved,[]);
+      if not (rrfReadable in Param2Resolved.Flags) then
+        exit(CheckRaiseTypeArgNo(20200520091707,2,Param,Param2Resolved,
+           'instance of TJSPromise',RaiseOnError));
 
-    if (ParamResolved.BaseType<>btContext)
-        or not (ParamResolved.LoTypeEl is TPasClassType)
-        or not IsExternalClass_Name(TPasClassType(ParamResolved.LoTypeEl),'Promise') then
-      exit(CheckRaiseTypeArgNo(20200520091707,2,Param,ParamResolved,
-         'TJSPromise',RaiseOnError));
+      if (Param2Resolved.BaseType<>btContext)
+          or not (Param2Resolved.LoTypeEl is TPasClassType)
+          or not IsExternalClass_Name(TPasClassType(Param2Resolved.LoTypeEl),'Promise') then
+        exit(CheckRaiseTypeArgNo(20200520091707,2,Param,Param2Resolved,
+           'TJSPromise',RaiseOnError));
+      end;
 
     Result:=CheckBuiltInMaxParamCount(Proc,Params,2,RaiseOnError,Signature2);
     end;
@@ -5970,32 +6033,15 @@ procedure TPas2JSResolver.BI_AWait_OnGetCallResult(Proc: TResElDataBuiltInProc;
 // function await(T; p: TJSPromise): T
 // await(Proc());
 var
-  Param, PathEnd: TPasExpr;
-  Ref: TResolvedReference;
-  Decl: TPasElement;
-  DeclFunc: TPasFunction;
+  Param: TPasExpr;
 begin
   Param:=Params.Params[0];
   if length(Params.Params)=1 then
     begin
     // await(expr)
-    PathEnd:=GetPathEndIdent(Param,true);
-    if (PathEnd<>nil) and (PathEnd.CustomData is TResolvedReference) then
-      begin
-      Ref:=TResolvedReference(PathEnd.CustomData);
-      Decl:=Ref.Declaration;
-      if Decl is TPasFunction then
-        begin
-        DeclFunc:=TPasFunction(Decl);
-        if DeclFunc.IsAsync then
-          begin
-          // await(CallAsyncFunction)  ->  use Pascal result type (not TJSPromise)
-          // Note the missing rcCall flag
-          ComputeResultElement(DeclFunc.FuncType.ResultEl,ResolvedEl,[],PathEnd);
-          exit;
-          end;
-        end;
-      end;
+    if CheckCallAsyncFuncResult(Param,ResolvedEl) then
+      // await(CallAsynFuncResultT): T
+      exit;
     // await(expr:T):T
     end
   else
