@@ -868,7 +868,10 @@ implementation
                   end;
                 end;
               variantdef :
-                name:=procprefixes[do_read]+'variant';
+                begin
+                  name:=procprefixes[do_read]+'variant';
+                  include(current_module.moduleflags,mf_uses_variants);
+                end;
               arraydef :
                 begin
                   if is_chararray(para.left.resultdef) then
