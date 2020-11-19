@@ -139,6 +139,8 @@ var
   WindowTitle: AnsiString;
   PTCWrapperObject: TPTCWrapperThread;
 
+function InstallUserMode(Width, Height: SmallInt; Colors: LongInt; HardwarePages: SmallInt; XAspect, YAspect: Word): smallint;
+
 {******************************************************************************}
                                  implementation
 {******************************************************************************}
@@ -156,6 +158,7 @@ var
   VesaInfo: record { dummy, for compatibility with graph.inc under go32v2 }
     ModeList: PInteger;
   end;
+  NextNonStandardModeNumber: LongInt;
 
 {$i graph.inc}
 
@@ -2442,6 +2445,106 @@ end;
     isgraphmode := false;
  end;
 
+  procedure FillCommonVESA16(var mode: TModeInfo);
+  begin
+    mode.HardwarePages := 1;
+    mode.MaxColor := 16;
+    mode.PaletteSize := mode.MaxColor;
+    mode.DirectColor := FALSE;
+    mode.DirectPutPixel  := @ptc_DirectPixelProc_8bpp;
+    mode.PutPixel        := @ptc_PutPixelProc_8bpp;
+    mode.GetPixel        := @ptc_GetPixelProc_8bpp;
+    mode.PutImage        := @ptc_PutImageProc_8bpp;
+    mode.GetImage        := @ptc_GetImageProc_8bpp;
+    mode.GetScanLine     := @ptc_GetScanLineProc_8bpp;
+    mode.SetRGBPalette   := @ptc_SetRGBPaletteProc;
+    mode.GetRGBPalette   := @ptc_GetRGBPaletteProc;
+    mode.HLine           := @ptc_HLineProc_8bpp;
+    mode.VLine           := @ptc_VLineProc_8bpp;
+    mode.PatternLine     := @ptc_PatternLineProc_8bpp;
+    mode.SetVisualPage   := @ptc_SetVisualPage;
+    mode.SetActivePage   := @ptc_SetActivePage;
+  end;
+
+  procedure FillCommonVESA256(var mode: TModeInfo);
+  begin
+    mode.HardwarePages := 1;
+    mode.MaxColor := 256;
+    mode.PaletteSize := mode.MaxColor;
+    mode.DirectColor := FALSE;
+    mode.DirectPutPixel  := @ptc_DirectPixelProc_8bpp;
+    mode.PutPixel        := @ptc_PutPixelProc_8bpp;
+    mode.GetPixel        := @ptc_GetPixelProc_8bpp;
+    mode.PutImage        := @ptc_PutImageProc_8bpp;
+    mode.GetImage        := @ptc_GetImageProc_8bpp;
+    mode.GetScanLine     := @ptc_GetScanLineProc_8bpp;
+    mode.SetRGBPalette   := @ptc_SetRGBPaletteProc;
+    mode.GetRGBPalette   := @ptc_GetRGBPaletteProc;
+    //mode.SetAllPalette := {$ifdef fpc}@{$endif}SetVGARGBAllPalette;
+    mode.HLine           := @ptc_HLineProc_8bpp;
+    mode.VLine           := @ptc_VLineProc_8bpp;
+    mode.PatternLine     := @ptc_PatternLineProc_8bpp;
+    mode.SetVisualPage   := @ptc_SetVisualPage;
+    mode.SetActivePage   := @ptc_SetActivePage;
+  end;
+
+  procedure FillCommonVESA32kOr64k(var mode: TModeInfo);
+  begin
+    mode.HardwarePages := 1;
+    mode.DirectColor := TRUE;
+    mode.DirectPutPixel  := @ptc_DirectPixelProc_16bpp;
+    mode.PutPixel        := @ptc_PutPixelProc_16bpp;
+    mode.GetPixel        := @ptc_GetPixelProc_16bpp;
+    mode.PutImage        := @ptc_PutImageProc_16bpp;
+    mode.GetImage        := @ptc_GetImageProc_16bpp;
+    mode.GetScanLine     := @ptc_GetScanLineProc_16bpp;
+    mode.SetRGBPalette   := @ptc_SetRGBPaletteProc;
+    mode.GetRGBPalette   := @ptc_GetRGBPaletteProc;
+    //mode.SetAllPalette := {$ifdef fpc}@{$endif}SetVGARGBAllPalette;
+    mode.HLine           := @ptc_HLineProc_16bpp;
+    mode.VLine           := @ptc_VLineProc_16bpp;
+    mode.PatternLine     := @ptc_PatternLineProc_16bpp;
+    mode.SetVisualPage   := @ptc_SetVisualPage;
+    mode.SetActivePage   := @ptc_SetActivePage;
+  end;
+
+  procedure FillCommonVESA32k(var mode: TModeInfo);
+  begin
+    FillCommonVESA32kOr64k(mode);
+    mode.MaxColor := 32768;
+    mode.PaletteSize := mode.MaxColor;
+  end;
+  procedure FillCommonVESA64k(var mode: TModeInfo);
+  begin
+    FillCommonVESA32kOr64k(mode);
+    mode.MaxColor := 65536;
+    mode.PaletteSize := mode.MaxColor;
+  end;
+
+{$ifdef FPC_GRAPH_SUPPORTS_TRUECOLOR}
+  procedure FillCommonVESA32bpp(var mode: TModeInfo);
+  begin
+    mode.HardwarePages := 1;
+    mode.MaxColor := 16777216;
+    mode.PaletteSize := mode.MaxColor;
+    mode.DirectColor := TRUE;
+    mode.DirectPutPixel  := @ptc_DirectPixelProc_32bpp;
+    mode.PutPixel        := @ptc_PutPixelProc_32bpp;
+    mode.GetPixel        := @ptc_GetPixelProc_32bpp;
+    mode.PutImage        := @ptc_PutImageProc_32bpp;
+    mode.GetImage        := @ptc_GetImageProc_32bpp;
+    mode.GetScanLine     := @ptc_GetScanLineProc_32bpp;
+    mode.SetRGBPalette   := @ptc_SetRGBPaletteProc;
+    mode.GetRGBPalette   := @ptc_GetRGBPaletteProc;
+    //mode.SetAllPalette := {$ifdef fpc}@{$endif}SetVGARGBAllPalette;
+    mode.HLine           := @ptc_HLineProc_32bpp;
+    mode.VLine           := @ptc_VLineProc_32bpp;
+    mode.PatternLine     := @ptc_PatternLineProc_32bpp;
+    mode.SetVisualPage   := @ptc_SetVisualPage;
+    mode.SetActivePage   := @ptc_SetActivePage;
+  end;
+{$endif FPC_GRAPH_SUPPORTS_TRUECOLOR}
+
   function QueryAdapterInfo:PModeInfo;
   { This routine returns the head pointer to the list }
   { of supported graphics modes.                      }
@@ -2628,106 +2731,6 @@ end;
       mode.SetActivePage  := @ptc_SetActivePage;
     end;
 
-    procedure FillCommonVESA16(var mode: TModeInfo);
-    begin
-      mode.HardwarePages := 1;
-      mode.MaxColor := 16;
-      mode.PaletteSize := mode.MaxColor;
-      mode.DirectColor := FALSE;
-      mode.DirectPutPixel  := @ptc_DirectPixelProc_8bpp;
-      mode.PutPixel        := @ptc_PutPixelProc_8bpp;
-      mode.GetPixel        := @ptc_GetPixelProc_8bpp;
-      mode.PutImage        := @ptc_PutImageProc_8bpp;
-      mode.GetImage        := @ptc_GetImageProc_8bpp;
-      mode.GetScanLine     := @ptc_GetScanLineProc_8bpp;
-      mode.SetRGBPalette   := @ptc_SetRGBPaletteProc;
-      mode.GetRGBPalette   := @ptc_GetRGBPaletteProc;
-      mode.HLine           := @ptc_HLineProc_8bpp;
-      mode.VLine           := @ptc_VLineProc_8bpp;
-      mode.PatternLine     := @ptc_PatternLineProc_8bpp;
-      mode.SetVisualPage   := @ptc_SetVisualPage;
-      mode.SetActivePage   := @ptc_SetActivePage;
-    end;
-
-    procedure FillCommonVESA256(var mode: TModeInfo);
-    begin
-      mode.HardwarePages := 1;
-      mode.MaxColor := 256;
-      mode.PaletteSize := mode.MaxColor;
-      mode.DirectColor := FALSE;
-      mode.DirectPutPixel  := @ptc_DirectPixelProc_8bpp;
-      mode.PutPixel        := @ptc_PutPixelProc_8bpp;
-      mode.GetPixel        := @ptc_GetPixelProc_8bpp;
-      mode.PutImage        := @ptc_PutImageProc_8bpp;
-      mode.GetImage        := @ptc_GetImageProc_8bpp;
-      mode.GetScanLine     := @ptc_GetScanLineProc_8bpp;
-      mode.SetRGBPalette   := @ptc_SetRGBPaletteProc;
-      mode.GetRGBPalette   := @ptc_GetRGBPaletteProc;
-      //mode.SetAllPalette := {$ifdef fpc}@{$endif}SetVGARGBAllPalette;
-      mode.HLine           := @ptc_HLineProc_8bpp;
-      mode.VLine           := @ptc_VLineProc_8bpp;
-      mode.PatternLine     := @ptc_PatternLineProc_8bpp;
-      mode.SetVisualPage   := @ptc_SetVisualPage;
-      mode.SetActivePage   := @ptc_SetActivePage;
-    end;
-
-    procedure FillCommonVESA32kOr64k(var mode: TModeInfo);
-    begin
-      mode.HardwarePages := 1;
-      mode.DirectColor := TRUE;
-      mode.DirectPutPixel  := @ptc_DirectPixelProc_16bpp;
-      mode.PutPixel        := @ptc_PutPixelProc_16bpp;
-      mode.GetPixel        := @ptc_GetPixelProc_16bpp;
-      mode.PutImage        := @ptc_PutImageProc_16bpp;
-      mode.GetImage        := @ptc_GetImageProc_16bpp;
-      mode.GetScanLine     := @ptc_GetScanLineProc_16bpp;
-      mode.SetRGBPalette   := @ptc_SetRGBPaletteProc;
-      mode.GetRGBPalette   := @ptc_GetRGBPaletteProc;
-      //mode.SetAllPalette := {$ifdef fpc}@{$endif}SetVGARGBAllPalette;
-      mode.HLine           := @ptc_HLineProc_16bpp;
-      mode.VLine           := @ptc_VLineProc_16bpp;
-      mode.PatternLine     := @ptc_PatternLineProc_16bpp;
-      mode.SetVisualPage   := @ptc_SetVisualPage;
-      mode.SetActivePage   := @ptc_SetActivePage;
-    end;
-
-    procedure FillCommonVESA32k(var mode: TModeInfo);
-    begin
-      FillCommonVESA32kOr64k(mode);
-      mode.MaxColor := 32768;
-      mode.PaletteSize := mode.MaxColor;
-    end;
-    procedure FillCommonVESA64k(var mode: TModeInfo);
-    begin
-      FillCommonVESA32kOr64k(mode);
-      mode.MaxColor := 65536;
-      mode.PaletteSize := mode.MaxColor;
-    end;
-
-{$ifdef FPC_GRAPH_SUPPORTS_TRUECOLOR}
-    procedure FillCommonVESA32bpp(var mode: TModeInfo);
-    begin
-      mode.HardwarePages := 1;
-      mode.MaxColor := 16777216;
-      mode.PaletteSize := mode.MaxColor;
-      mode.DirectColor := TRUE;
-      mode.DirectPutPixel  := @ptc_DirectPixelProc_32bpp;
-      mode.PutPixel        := @ptc_PutPixelProc_32bpp;
-      mode.GetPixel        := @ptc_GetPixelProc_32bpp;
-      mode.PutImage        := @ptc_PutImageProc_32bpp;
-      mode.GetImage        := @ptc_GetImageProc_32bpp;
-      mode.GetScanLine     := @ptc_GetScanLineProc_32bpp;
-      mode.SetRGBPalette   := @ptc_SetRGBPaletteProc;
-      mode.GetRGBPalette   := @ptc_GetRGBPaletteProc;
-      //mode.SetAllPalette := {$ifdef fpc}@{$endif}SetVGARGBAllPalette;
-      mode.HLine           := @ptc_HLineProc_32bpp;
-      mode.VLine           := @ptc_VLineProc_32bpp;
-      mode.PatternLine     := @ptc_PatternLineProc_32bpp;
-      mode.SetVisualPage   := @ptc_SetVisualPage;
-      mode.SetActivePage   := @ptc_SetActivePage;
-    end;
-{$endif FPC_GRAPH_SUPPORTS_TRUECOLOR}
-
     procedure FillCommonVESA320x200(var mode: TModeInfo);
     begin
       mode.DriverNumber := VESA;
@@ -2777,7 +2780,6 @@ end;
    var
     graphmode:Tmodeinfo;
     I: Integer;
-    NextNonStandardModeNumber: SmallInt;
    begin
      QueryAdapterInfo := ModeList;
      { If the mode listing already exists... }
@@ -3450,6 +3452,74 @@ end;
 {$endif FPC_GRAPH_SUPPORTS_TRUECOLOR}
          end;
   end;
+
+function InstallUserMode(Width, Height: SmallInt; Colors: LongInt; HardwarePages: SmallInt; XAspect, YAspect: Word): smallint;
+var
+  graphmode: Tmodeinfo;
+begin
+  if (NextNonStandardModeNumber > NonStandardModeNumberMaxLimit) or (HardwarePages < 1) or
+     (Width <= 0) or (Height <= 0) or (XAspect <= 0) or (YAspect <= 0) then
+  begin
+    InstallUserMode := grError;
+    exit;
+  end;
+  InitMode(graphmode);
+  case Colors of
+{    2:
+      begin
+      end;
+    4:
+      begin
+      end;}
+    16:
+      begin
+        FillCommonVESA16(graphmode);
+        graphmode.InitMode := @ptc_InitNonStandard16;
+      end;
+    256:
+      begin
+        FillCommonVESA256(graphmode);
+        graphmode.InitMode := @ptc_InitNonStandard256;
+      end;
+    32768:
+      begin
+        FillCommonVESA32k(graphmode);
+        graphmode.InitMode := @ptc_InitNonStandard32k;
+      end;
+    65536:
+      begin
+        FillCommonVESA64k(graphmode);
+        graphmode.InitMode := @ptc_InitNonStandard64k;
+      end;
+{$ifdef FPC_GRAPH_SUPPORTS_TRUECOLOR}
+    16777216:
+      begin
+        FillCommonVESA32bpp(graphmode);
+        graphmode.InitMode := @ptc_InitNonStandard32bpp;
+      end;
+{$endif FPC_GRAPH_SUPPORTS_TRUECOLOR}
+    else
+      begin
+        InstallUserMode := grError;
+        exit;
+      end;
+  end;
+  with graphmode do
+  begin
+    ModeNumber := NextNonStandardModeNumber;
+    DriverNumber := VESA;
+    WriteStr(ModeName, Width, ' x ', Height, ' VESA');
+    MaxX := Width - 1;
+    MaxY := Height - 1;
+    HardwarePages := 1;
+  end;
+  graphmode.XAspect := XAspect;
+  graphmode.YAspect := YAspect;
+  graphmode.HardwarePages := HardwarePages - 1;
+  AddMode(graphmode);
+  Inc(NextNonStandardModeNumber);
+  InstallUserMode := graphmode.ModeNumber;
+end;
 
 initialization
   WindowTitle := ParamStr(0);
