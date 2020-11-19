@@ -79,6 +79,10 @@ begin
   TestValidFile('44k_mono_16.wav');
   TestValidFile('44k_mono_24.wav');
   TestValidFile('44k_mono_32.wav');
+  TestValidFile('44k_stereo_8.wav');
+  TestValidFile('44k_stereo_16.wav');
+  TestValidFile('44k_stereo_24.wav');
+  TestValidFile('44k_stereo_32.wav');
   TestValidFile('44k_mono_16_tag.wav');
 end;
 
