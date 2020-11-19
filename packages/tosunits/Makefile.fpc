@@ -3,7 +3,7 @@
 #
 
 [package]
-name=ami-extra
+name=tosunits
 version=3.3.1
 
 [require]
