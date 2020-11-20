@@ -1033,14 +1033,14 @@ procedure TTestProcedureFunction.TestProcedureFar;
 begin
   AddDeclaration('procedure A; far;');
   ParseProcedure;
-  AssertProc([pmfar],[],ccDefault,0);
+  AssertProc([pmfar],[ptmfar],ccDefault,0);
 end;
 
 procedure TTestProcedureFunction.TestFunctionFar;
 begin
   AddDeclaration('function A : integer; far;');
   ParseFunction;
-  AssertFunc([pmfar],[],ccDefault,0);
+  AssertFunc([pmfar],[ptmfar],ccDefault,0);
 end;
 
 procedure TTestProcedureFunction.TestProcedureCdeclForward;
