@@ -113,9 +113,9 @@ resourcestring
   SManUsagePackageDescription = 'Use descr as the description of man pages';
   
   // HTML usage
-  SHTMLUsageFooter = 'Append xhtml from file as footer to html page';
-  SHTMLUsageNavigator = 'Append xhtml from file in navigator bar';
-  SHTMLUsageHeader = 'Append xhtml from file as header to html page';
+  SHTMLUsageFooter = 'Append xhtml (@filename reads from file) as footer to html page';
+  SHTMLUsageNavigator = 'Append xhtml (@filename reads from file) in navigator bar';
+  SHTMLUsageHeader = 'Append xhtml (@filename reads from file) as header to html page below navigation bar';
   SHTMLUsageFooterDate = 'Append footer with date. fmt is Optional format for FormatDateTime';
   SHTMLUsageCharset = 'Set the HTML character set';
   SHTMLHtmlSearch = 'Add search page with given name to the menu bar';
