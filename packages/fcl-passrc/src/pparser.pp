@@ -1798,7 +1798,14 @@ begin
       else
         break;
     until false;
-    UngetToken;
+    if CurToken=tkLessThan then
+      begin
+      Repeat
+        NextToken; // We should do something with this.
+      Until CurToken=tkGreaterThan;
+      end
+    else
+      UngetToken;
     Result.DestType:=ResolveTypeReference(Name,Result);
     Engine.FinishScope(stTypeDef,Result);
     ok:=true;

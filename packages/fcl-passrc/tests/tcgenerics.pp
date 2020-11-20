@@ -109,6 +109,7 @@ begin
   Source.Add('  TSomeClass<T,T2> = Class(TObject)');
   Source.Add('    b : T;');
   Source.Add('    b2 : T2;');
+  Source.Add('    FItems: ^TArray<T>;');
   Source.Add('  end;');
   ParseDeclarations;
   AssertNotNull('have generic definition',Declarations.Classes);
