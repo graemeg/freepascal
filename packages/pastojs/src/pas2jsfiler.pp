@@ -280,7 +280,9 @@ const
     'Published',
     'Automated',
     'StrictPrivate',
-    'StrictProtected'
+    'StrictProtected',
+    'Required',
+    'Optional'
     );
 
   PCUMemberHintNames: array[TPasMemberHint] of string = (
