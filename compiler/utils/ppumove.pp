@@ -24,10 +24,6 @@
 Program ppumove;
 uses
 
-{$IFDEF MACOS}
-{$DEFINE USE_FAKE_SYSUTILS}
-{$ENDIF MACOS}
-
 {$IFNDEF USE_FAKE_SYSUTILS}
   sysutils,
 {$ELSE}
