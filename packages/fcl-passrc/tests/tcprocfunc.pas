@@ -123,6 +123,7 @@ type
     procedure TestCallingConventionSysV_ABI_Default;
     procedure TestCallingConventionVectorCall;
     procedure TestCallingConventionSysCall;
+    procedure TestCallingConventionSysCallExecbase;
     Procedure TestProcedurePublic;
     Procedure TestProcedurePublicIdent;
     Procedure TestFunctionPublic;
@@ -816,6 +817,12 @@ end;
 procedure TTestProcedureFunction.TestCallingConventionSysCall;
 begin
   ParseProcedure('; syscall abc');
+  AssertProc([],[],ccSysCall,0);
+end;
+
+procedure TTestProcedureFunction.TestCallingConventionSysCallExecbase;
+begin
+  ParseProcedure('; syscall _execBase 123');
   AssertProc([],[],ccSysCall,0);
 end;
 
