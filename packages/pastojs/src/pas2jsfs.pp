@@ -98,7 +98,7 @@ Type
   Public
     // Public Abstract. Must be overridden
     function FindResourceFileName(const aFilename, ModuleDir: string): String; virtual; abstract;
-    function FindIncludeFileName(const aFilename, ModuleDir: string): String; virtual; abstract;
+    function FindIncludeFileName(const aFilename, SrcDir, ModuleDir: string; Mode: TModeSwitch): String; virtual; abstract;
     function LoadFile(Filename: string; Binary: boolean = false): TPas2jsFile; virtual; abstract;
     Function FileExists(Const aFileName: String): Boolean; virtual; abstract;
     function FindUnitJSFileName(const aUnitFilename: string): String; virtual; abstract;
@@ -421,7 +421,7 @@ var
   Filename: String;
 begin
   Result:=nil;
-  Filename:=FS.FindIncludeFileName(aFilename,BaseDirectory);
+  Filename:=FS.FindIncludeFileName(aFilename,BaseDirectory,ModuleDirectory,Mode);
   if Filename='' then exit;
   try
     Result:=FindSourceFile(Filename);
@@ -444,7 +444,7 @@ end;
 function TPas2jsFSResolver.FindIncludeFileName(const aFilename: string): String;
 
 begin
-  Result:=FS.FindIncludeFileName(aFilename,BaseDirectory);
+  Result:=FS.FindIncludeFileName(aFilename,BaseDirectory,ModuleDirectory,Mode);
 end;
 
 

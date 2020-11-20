@@ -233,7 +233,7 @@ type
   Published
     Procedure TestReservedWords;
 
-    // program/units
+    // program, units, includes
     Procedure TestEmptyProgram;
     Procedure TestEmptyProgramUseStrict;
     Procedure TestEmptyUnit;

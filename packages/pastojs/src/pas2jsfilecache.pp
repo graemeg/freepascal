@@ -259,7 +259,7 @@ type
     function FindUnitJSFileName(const aUnitFilename: string): String; override;
     function FindUnitFileName(const aUnitname, InFilename, ModuleDir: string; out IsForeign: boolean): String; override;
     function FindResourceFileName(const aFilename, ModuleDir: string): String; override;
-    function FindIncludeFileName(const aFilename, ModuleDir: string): String; override;
+    function FindIncludeFileName(const aFilename, SrcDir, ModuleDir: string; Mode: TModeSwitch): String; override;
     function AddIncludePaths(const Paths: string; FromCmdLine: boolean; out ErrorMsg: string): boolean;
     function AddUnitPaths(const Paths: string; FromCmdLine: boolean; out ErrorMsg: string): boolean;
     function AddSrcUnitPaths(const Paths: string; FromCmdLine: boolean; out ErrorMsg: string): boolean;
@@ -1832,25 +1832,52 @@ begin
     UsePointDirectory, AlwaysRequireSharedBaseFolder, RelPath);
 end;
 
-function TPas2jsFilesCache.FindIncludeFileName(const aFilename,
-  ModuleDir: string): String;
+function TPas2jsFilesCache.FindIncludeFileName(const aFilename, SrcDir,
+  ModuleDir: string; Mode: TModeSwitch): String;
 
   function SearchCasedInIncPath(const Filename: string): string;
+  var
+    SearchedDir: array of string;
+
+    function SearchDir(Dir: string): boolean;
+    var
+      i: Integer;
+      CurFile: String;
+    begin
+      Dir:=IncludeTrailingPathDelimiter(Dir);
+      for i:=0 to length(SearchedDir)-1 do
+        if SearchedDir[i]=Dir then exit;
+      CurFile:=Dir+Filename;
+      //writeln('SearchDir aFilename=',aFilename,' SrcDir=',SrcDir,' ModDir=',ModuleDir,' Mode=',Mode,' CurFile=',CurFile);
+      Result:=SearchLowUpCase(CurFile);
+      if Result then
+        SearchCasedInIncPath:=CurFile
+      else begin
+        i:=length(SearchedDir);
+        SetLength(SearchedDir,i+1);
+        SearchedDir[i]:=Dir;
+      end;
+    end;
+
   var
     i: Integer;
   begin
     // file name is relative
-    // first search in the same directory as the unit
+    SearchedDir:=nil;
+
+    // first search in the same directory as the include file
+    if not (Mode in [msDelphi,msDelphiUnicode])
+        and (SrcDir<>'') then
+      if SearchDir(SrcDir) then exit;
+
+    // then search in the same directory as the unit
     if ModuleDir<>'' then
-      begin
-      Result:=IncludeTrailingPathDelimiter(ModuleDir)+Filename;
-      if SearchLowUpCase(Result) then exit;
-      end;
+      if SearchDir(ModuleDir) then exit;
+
     // then search in include path
-    for i:=0 to IncludePaths.Count-1 do begin
-      Result:=IncludeTrailingPathDelimiter(IncludePaths[i])+Filename;
-      if SearchLowUpCase(Result) then exit;
-    end;
+    for i:=0 to IncludePaths.Count-1 do
+      if SearchDir(IncludePaths[i]) then exit;
+
     Result:='';
   end;
 

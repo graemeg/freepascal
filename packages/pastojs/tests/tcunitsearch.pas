@@ -143,7 +143,11 @@ type
     procedure TestUS_Program_FU;
     procedure TestUS_Program_FU_o;
     procedure TestUS_Program_FE_o;
+
+    // include files
     procedure TestUS_IncludeSameDir;
+    Procedure TestUS_Include_NestedDelphi;
+    Procedure TestUS_Include_NestedObjFPC;
 
     // uses 'in' modifier
     procedure TestUS_UsesInFile;
@@ -726,6 +730,54 @@ begin
     'end.']);
   AddDir('lib');
   Compile(['test1.pas','-Fusub','-FElib','-ofoo.js']);
+end;
+
+procedure TTestCLI_UnitSearch.TestUS_Include_NestedDelphi;
+begin
+  AddUnit('system.pp',[''],['']);
+  AddFile('sub/inc1.inc',[
+    'type number = longint;',
+    '{$I sub/deep/inc2.inc}',
+    '']);
+  AddFile('sub/deep/inc2.inc',[
+    'type numero = number;',
+    '{$I sub/inc3.inc}',
+    '']);
+  AddFile('sub/inc3.inc',[
+    'type nummer = numero;',
+    '']);
+  AddFile('test1.pas',[
+  '{$mode delphi}',
+  '{$i sub/inc1.inc}',
+  'var',
+  '  n: nummer;',
+  'begin',
+  'end.']);
+  Compile(['test1.pas','-Jc']);
+end;
+
+procedure TTestCLI_UnitSearch.TestUS_Include_NestedObjFPC;
+begin
+  AddUnit('system.pp',[''],['']);
+  AddFile('sub/inc1.inc',[
+    'type number = longint;',
+    '{$I deep/inc2.inc}',
+    '']);
+  AddFile('sub/deep/inc2.inc',[
+    'type numero = number;',
+    '{$I ../inc3.inc}',
+    '']);
+  AddFile('sub/inc3.inc',[
+    'type nummer = numero;',
+    '']);
+  AddFile('test1.pas',[
+  '{$mode objfpc}',
+  '{$i sub/inc1.inc}',
+  'var',
+  '  n: nummer;',
+  'begin',
+  'end.']);
+  Compile(['test1.pas','-Jc']);
 end;
 
 procedure TTestCLI_UnitSearch.TestUS_UsesInFile;
