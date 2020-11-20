@@ -48,7 +48,6 @@ type
     TDepthFirstCallbackType = specialize TDepthFirstCallback<T>;
     TBreadthFirstCallbackType = specialize TBreadthFirstCallback<T>;
   private type
-  type
     TStackType = specialize TStack<TTreeNodeType>;
     TQueueType = specialize TQueue<TTreeNodeType>;
   private
