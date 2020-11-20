@@ -7308,6 +7308,8 @@ begin
           if not (AType.ObjKind in okWithFields) then
             ParseExc(nParserNoFieldsAllowed,SParserNoFieldsAllowedInX,[ObjKindNames[AType.ObjKind]]);
           ParseClassFields(AType,CurVisibility,CurSection=stClassVar);
+          if Curtoken=tkEnd then // case Ta = Class x : String end;
+            UngetToken;
           HaveClass:=False;
           end;
         stClassVar:

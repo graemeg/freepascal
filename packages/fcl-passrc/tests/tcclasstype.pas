@@ -981,7 +981,6 @@ end;
 procedure TTestClassType.TestNoSemicolon;
 begin
   StartClass;
-  fDecl.Add('X : Integer;');
   fDecl.Add('Y : String');
   ParseClass;
 end;
