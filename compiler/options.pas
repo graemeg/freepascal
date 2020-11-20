@@ -2142,9 +2142,11 @@ begin
                  begin
                    init_settings.globalswitches:=init_settings.globalswitches+[cs_asm_extern,cs_link_extern,cs_link_nolink];
                    if more='h' then
-                     init_settings.globalswitches:=init_settings.globalswitches-[cs_link_on_target]
+                     init_settings.globalswitches:=init_settings.globalswitches-[cs_link_on_target,cs_assemble_on_target]
                    else if more='t' then
-                     init_settings.globalswitches:=init_settings.globalswitches+[cs_link_on_target]
+                     init_settings.globalswitches:=init_settings.globalswitches+[cs_link_on_target,cs_assemble_on_target]
+                   else if more='T' then
+                     init_settings.globalswitches:=init_settings.globalswitches+[cs_link_on_target]-[cs_asm_extern]
                    else if more='r' then
                      init_settings.globalswitches:=init_settings.globalswitches+[cs_asm_leave,cs_no_regalloc]
                    else if more<>'' then
