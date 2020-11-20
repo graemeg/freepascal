@@ -463,7 +463,7 @@ begin
     Timeouts.ReadTotalTimeoutConstant := mSec;
     SetCommTimeouts(Handle, Timeouts)
   end;
-  if not ReadFile(Handle, Buffer, count, BytesRead, nil) then
+  if not ReadFile(Handle, Buffer[0], count, BytesRead, nil) then
     result := 0
   else
     result := BytesRead
