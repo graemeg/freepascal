@@ -1643,6 +1643,7 @@ begin
   '$':
     begin
     FToken:=tkNumber;
+    inc(FTokenEnd);
     {$ifdef UsePChar}
     while FTokenEnd^ in HexDigits do inc(FTokenEnd);
     {$else}
