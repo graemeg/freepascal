@@ -442,7 +442,8 @@ const
     'Static',
     'Varargs',
     'ReferenceTo',
-    'Async'
+    'Async',
+    'Far'
     );
 
   PCUProcedureMessageTypeNames: array[TProcedureMessageType] of string = (

@@ -1393,6 +1393,11 @@ begin
     Result:=true;
     PTM:=ptmVarargs;
     end
+  else if CompareText(S,ProcTypeModifiers[ptmFar])=0 then
+    begin
+    Result:=true;
+    PTM:=ptmFar;
+    end
   else if CompareText(S,ProcTypeModifiers[ptmStatic])=0 then
     begin
     Result:=true;
@@ -5383,8 +5388,8 @@ begin
       begin
       if IsAnonymous then
         CheckToken(tkbegin); // begin expected, but ; found
-      if LastToken=tkSemicolon then
-        ParseExcSyntaxError;
+      // if LastToken=tkSemicolon then
+      //  ParseExcSyntaxError;
       continue;
       end
     else if TokenIsCallingConvention(CurTokenString,cc) then
@@ -5417,7 +5422,12 @@ begin
     else if IsAnonymous and TokenIsAnonymousProcedureModifier(Parent,CurTokenString,PM) then
       HandleProcedureModifier(Parent,PM)
     else if TokenIsProcedureTypeModifier(Parent,CurTokenString,PTM) then
-      HandleProcedureTypeModifier(Element,PTM)
+      begin
+      HandleProcedureTypeModifier(Element,PTM);
+      // Backwards compatibility
+      if (PTM=ptmFar) and (Parent is TPasProcedure) then
+        (Parent as TPasProcedure).AddModifier(pmFar)
+      end
     else if (not IsProcType) and (not IsAnonymous)
         and TokenIsProcedureModifier(Parent,CurTokenString,PM) then
       HandleProcedureModifier(Parent,PM)

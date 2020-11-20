@@ -39,6 +39,8 @@ Type
     Procedure TestSimpleVarAbsoluteDot;
     Procedure TestSimpleVarAbsolute2Dots;
     Procedure TestVarProcedure;
+    procedure TestVarProcedureCdecl;
+    procedure TestVarFunctionFar;
     Procedure TestVarFunctionINitialized;
     Procedure TestVarProcedureDeprecated;
     Procedure TestVarRecord;
@@ -245,6 +247,18 @@ procedure TTestVarParser.TestVarProcedure;
 begin
   ParseVar('procedure','');
   AssertVariableType(TPasProcedureType);
+end;
+
+procedure TTestVarParser.TestVarProcedureCdecl;
+begin
+  ParseVar('procedure; cdecl;','');
+  AssertVariableType(TPasProcedureType);
+end;
+
+procedure TTestVarParser.TestVarFunctionFar;
+begin
+  ParseVar('function (cinfo : j_decompress_ptr) : int; far;','');
+  AssertVariableType(TPasFunctionType);
 end;
 
 procedure TTestVarParser.TestVarFunctionINitialized;
