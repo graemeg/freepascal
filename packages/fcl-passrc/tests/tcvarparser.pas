@@ -49,6 +49,7 @@ Type
     Procedure TestVarExternalLib;
     Procedure TestVarExternalLibName;
     procedure TestVarExternalNoSemiColon;
+    procedure TestVarExternalLibNoName;
     Procedure TestVarCVar;
     Procedure TestVarCVarExternal;
     Procedure TestVarPublic;
@@ -324,6 +325,17 @@ begin
   AssertNull('Library name',TheVar.LibraryName);
   AssertNotNull('Library symbol',TheVar.ExportName);
 end;
+
+
+procedure TTestVarParser.TestVarExternalLibNoName;
+begin
+  // Found in e.g.apache headers
+  ParseVar('integer; external ''mylib''','');
+  AssertEquals('Variable modifiers',[vmexternal],TheVar.VarModifiers);
+  AssertNotNull('Library name',TheVar.LibraryName);
+
+end;
+
 
 procedure TTestVarParser.TestVarExternalLibName;
 begin

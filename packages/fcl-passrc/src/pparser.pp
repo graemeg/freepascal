@@ -1192,29 +1192,40 @@ procedure TPasParser.ChangeToken(tk: TToken);
 var
   Cur, Last: PTokenRec;
   IsLast: Boolean;
+
+  Procedure DoChange(tk1,tk2 : TToken);
+
+    begin
+      // change last token '>>' into two '>'
+      Cur:=@FTokenRing[FTokenRingCur];
+      Cur^.Token:=tk2;
+      Cur^.AsString:=TokenInfos[tk2];
+      Last:=@FTokenRing[FTokenRingEnd];
+      Last^.Token:=tk2;
+      Last^.AsString:=TokenInfos[tk2];
+      if Last^.Comments<>nil then
+        Last^.Comments.Clear;
+      Last^.SourcePos:=Cur^.SourcePos;
+      dec(Cur^.SourcePos.Column);
+      Last^.TokenPos:=Cur^.TokenPos;
+      inc(Last^.TokenPos.Column);
+      FTokenRingEnd:=(FTokenRingEnd+1) mod FTokenRingSize;
+      if FTokenRingStart=FTokenRingEnd then
+        FTokenRingStart:=(FTokenRingStart+1) mod FTokenRingSize;
+      FCurToken:=tk1;
+      FCurTokenString:=TokenInfos[tk1];
+    end;
+
 begin
   //writeln('TPasParser.ChangeToken FTokenBufferSize=',FTokenRingStart,' FTokenBufferIndex=',FTokenRingCur);
   IsLast:=((FTokenRingCur+1) mod FTokenRingSize)=FTokenRingEnd;
-  if (CurToken=tkshr) and (tk=tkGreaterThan) and IsLast then
+  if (CurToken=tkGreaterEqualThan) and (tk=tkGreaterThan) and IsLast then
     begin
-    // change last token '>>' into two '>'
-    Cur:=@FTokenRing[FTokenRingCur];
-    Cur^.Token:=tkGreaterThan;
-    Cur^.AsString:='>';
-    Last:=@FTokenRing[FTokenRingEnd];
-    Last^.Token:=tkGreaterThan;
-    Last^.AsString:='>';
-    if Last^.Comments<>nil then
-      Last^.Comments.Clear;
-    Last^.SourcePos:=Cur^.SourcePos;
-    dec(Cur^.SourcePos.Column);
-    Last^.TokenPos:=Cur^.TokenPos;
-    inc(Last^.TokenPos.Column);
-    FTokenRingEnd:=(FTokenRingEnd+1) mod FTokenRingSize;
-    if FTokenRingStart=FTokenRingEnd then
-      FTokenRingStart:=(FTokenRingStart+1) mod FTokenRingSize;
-    FCurToken:=tkGreaterThan;
-    FCurTokenString:='>';
+    DoChange(tkGreaterThan,tkEqual);
+    end
+  else if (CurToken=tkshr) and (tk=tkGreaterThan) and IsLast then
+    begin
+    DoChange(tkGreaterThan,tkGreaterThan);
     end
   else
     CheckToken(tk);
@@ -1770,7 +1781,7 @@ begin
   Try
     // only allowed: ^dottedidentifer
     // forbidden: ^^identifier, ^array of word, ^A<B>
-    ExpectIdentifier;
+    ExpectTokens([tkIdentifier,tkFile]);
     Name:=CurTokenString;
     repeat
       NextToken;
@@ -4196,8 +4207,12 @@ begin
       until CurToken<>tkComma;
     Engine.FinishScope(stTypeDef,T);
   until not (CurToken in [tkSemicolon,tkComma]);
-  if CurToken<>tkGreaterThan then
-    ParseExcExpectedAorB(TokenInfos[tkComma], TokenInfos[tkGreaterThan]);
+  if Not (CurToken in [tkGreaterThan,tkGreaterEqualThan]) then
+    ParseExcExpectedAorB(TokenInfos[tkComma], TokenInfos[tkGreaterThan])
+  else if CurToken=tkGreaterEqualThan then
+    begin
+    ChangeToken(tkGreaterThan);
+    end;
 end;
 {$warn 5043 on}
 
@@ -4611,6 +4626,8 @@ begin
     Result := Result + ' ' + CurTokenText;
     LibName:=DoParseExpression(Parent);
     end;
+  if CurToken=tkSemiColon then
+    exit;
   if not CurTokenIsIdentifier('name') then
     ParseExcSyntaxError;
   NextToken;

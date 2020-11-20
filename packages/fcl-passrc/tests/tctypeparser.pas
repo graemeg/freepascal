@@ -168,6 +168,7 @@ type
     Procedure TestTypeHelperWithParent;
     procedure TestPointerReference;
     Procedure TestPointerKeyWord;
+    Procedure TestPointerFile;
   end;
 
   { TTestRecordTypeParser }
@@ -3673,6 +3674,15 @@ begin
   ParseDeclarations;
   AssertEquals('object definition count',1,Declarations.Classes.Count);
 end;
+
+procedure TTestTypeParser.TestPointerFile;
+begin
+  Add('type');
+  Add('  pfile = ^file;');
+  ParseDeclarations;
+  AssertEquals('object definition count',1,Declarations.Types.Count);
+end;
+
 
 
 initialization
