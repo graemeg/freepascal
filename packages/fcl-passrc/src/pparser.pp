@@ -3616,6 +3616,7 @@ begin
       pt:=GetProcTypeFromToken(CurToken,True);
       AddProcOrFunction(Declarations,ParseProcedureOrFunctionDecl(Declarations, pt, MustBeGeneric));
       end;
+    tkAbsolute,
     tkIdentifier:
       begin
       Scanner.UnSetTokenOption(toOperatorToken);

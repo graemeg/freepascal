@@ -43,6 +43,7 @@ Type
     Procedure TestSimpleIdentifierConst;
     Procedure TestSimpleSetConst;
     Procedure TestSimpleExprConst;
+    Procedure TestSimpleAbsoluteConst;
     Procedure TestSimpleIntConstDeprecatedMsg;
     Procedure TestSimpleIntConstDeprecated;
     Procedure TestSimpleFloatConstDeprecated;
@@ -253,6 +254,19 @@ end;
 procedure TTestConstParser.TestSimpleExprConst;
 begin
   DoTestSimpleExprConst;
+end;
+
+procedure TTestConstParser.TestSimpleAbsoluteConst;
+
+// Found in xi.pp
+
+begin
+  Add('Const');
+  Add('  Absolute = 1;');
+  ParseDeclarations;
+  AssertEquals('One constant definition',1,Declarations.Consts.Count);
+  AssertEquals('First declaration is constant definition.',TPasConst,TObject(Declarations.Consts[0]).ClassType);
+
 end;
 
 procedure TTestConstParser.TestSimpleIntConstDeprecatedMsg;

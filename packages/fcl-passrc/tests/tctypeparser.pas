@@ -50,6 +50,7 @@ type
     Procedure DoTestClassOf(Const AHint : string);
   Published
     Procedure TestAliasType;
+    procedure TestAbsoluteAliasType;
     Procedure TestCrossUnitAliasType;
     Procedure TestAliasTypeDeprecated;
     Procedure TestAliasTypePlatform;
@@ -2894,9 +2895,19 @@ begin
 end;
 
 procedure TTestTypeParser.TestAliasType;
+
 begin
   DoTestAliasType('othertype','');
   AssertEquals('Unresolved type name ','othertype',TPasUnresolvedTypeRef(TPasAliasType(TheType).DestType).name);
+end;
+
+procedure TTestTypeParser.TestAbsoluteAliasType;
+begin
+  Add('Type');
+  Add('  Absolute = Integer;');
+  ParseDeclarations;
+  AssertEquals('First declaration is type definition.',TPasAliasType,TPasElement(Declarations.Types[0]).ClassType);
+  AssertEquals('First declaration has correct name.','Absolute',TPasElement(Declarations.Types[0]).Name);
 end;
 
 procedure TTestTypeParser.TestCrossUnitAliasType;

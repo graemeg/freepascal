@@ -26,6 +26,7 @@ Type
     Procedure TearDown; override;
   Published
     Procedure TestSimpleVar;
+    Procedure TestSimpleVarAbsoluteName;
     Procedure TestSimpleVarHelperName;
     procedure TestSimpleVarHelperType;
     Procedure TestSimpleVarDeprecated;
@@ -127,6 +128,21 @@ procedure TTestVarParser.TestSimpleVar;
 begin
   ParseVar('b','');
   AssertVariableType('b');
+end;
+
+procedure TTestVarParser.TestSimpleVarAbsoluteName;
+Var
+  R : TPasVariable;
+
+begin
+  Add('Var');
+  Add('  Absolute : integer;');
+//  Writeln(source.text);
+  ParseDeclarations;
+  AssertEquals('One variable definition',1,Declarations.Variables.Count);
+  AssertEquals('First declaration is type definition.',TPasVariable,TObject(Declarations.Variables[0]).ClassType);
+  R:=TPasVariable(Declarations.Variables[0]);
+  AssertEquals('First declaration has correct name.','Absolute',R.Name);
 end;
 
 procedure TTestVarParser.TestSimpleVarHelperName;
