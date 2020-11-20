@@ -4564,8 +4564,16 @@ begin
     begin
     Result:=True;
     NextToken;
-    Location:=ReadDottedIdentifier(Parent,AbsoluteExpr,true);
-    UnGetToken;
+    if Curtoken=tkNumber then
+      begin
+      AbsoluteExpr:=CreatePrimitiveExpr(Parent,pekNumber,CurTokenString);
+      Location:=CurTokenString
+      end
+    else
+      begin
+      Location:=ReadDottedIdentifier(Parent,AbsoluteExpr,true);
+      UnGetToken;
+      end
     end
   else
     UngetToken;
