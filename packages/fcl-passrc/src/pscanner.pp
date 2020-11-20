@@ -490,12 +490,15 @@ type
   TBaseFileResolver = class
   private
     FBaseDirectory: string;
+    FMode: TModeSwitch;
+    FModuleDirectory: string;
     FResourcePaths,
     FIncludePaths: TStringList;
     FStrictFileCase : Boolean;
   Protected
     function FindIncludeFileName(const aFilename: string): String; virtual; abstract;
     procedure SetBaseDirectory(AValue: string); virtual;
+    procedure SetModuleDirectory(AValue: string); virtual;
     procedure SetStrictFileCase(AValue: Boolean); virtual;
     Property IncludePaths: TStringList Read FIncludePaths;
     Property ResourcePaths: TStringList Read FResourcePaths;
@@ -507,8 +510,10 @@ type
     function FindResourceFileName(const AName: string): String; virtual; abstract;
     function FindSourceFile(const AName: string): TLineReader; virtual; abstract;
     function FindIncludeFile(const AName: string): TLineReader; virtual; abstract;
-    Property StrictFileCase : Boolean Read FStrictFileCase Write SetStrictFileCase;
-    property BaseDirectory: string read FBaseDirectory write SetBaseDirectory;
+    property BaseDirectory: string read FBaseDirectory write SetBaseDirectory; // e.g. current path of include file
+    property Mode: TModeSwitch read FMode write FMode;
+    property ModuleDirectory: string read FModuleDirectory write SetModuleDirectory; // e.g. path of module file
+    property StrictFileCase : Boolean Read FStrictFileCase Write SetStrictFileCase;
   end;
   TBaseFileResolverClass = Class of TBaseFileResolver;
 
@@ -2454,8 +2459,16 @@ end;
 
 procedure TBaseFileResolver.SetBaseDirectory(AValue: string);
 begin
+  AValue:=IncludeTrailingPathDelimiter(AValue);
   if FBaseDirectory=AValue then Exit;
   FBaseDirectory:=AValue;
+end;
+
+procedure TBaseFileResolver.SetModuleDirectory(AValue: string);
+begin
+  AValue:=IncludeTrailingPathDelimiter(AValue);
+  if FModuleDirectory=AValue then Exit;
+  FModuleDirectory:=AValue;
 end;
 
 procedure TBaseFileResolver.SetStrictFileCase(AValue: Boolean);
@@ -2464,12 +2477,12 @@ begin
   FStrictFileCase:=AValue;
 end;
 
-
 constructor TBaseFileResolver.Create;
 begin
   inherited Create;
   FIncludePaths := TStringList.Create;
   FResourcePaths := TStringList.Create;
+  FMode:=msFPC;
 end;
 
 destructor TBaseFileResolver.Destroy;
@@ -2556,15 +2569,27 @@ function TFileResolver.FindIncludeFileName(const AName: string): String;
 
   begin
     Result:='';
+    // search in BaseDirectory (not in mode Delphi)
+    if (BaseDirectory<>'')
+        and ((ModuleDirectory='') or not (Mode in [msDelphi,msDelphiUnicode])) then
+      begin
+      Result:=SearchLowUpCase(BaseDirectory+FN);
+      if Result<>'' then exit;
+      end;
+    // search in ModuleDirectory
+    if (ModuleDirectory<>'') then
+      begin
+      Result:=SearchLowUpCase(ModuleDirectory+FN);
+      if Result<>'' then exit;
+      end;
+    // search in include paths
     I:=0;
-    While (Result='') and (I<FIncludePaths.Count) do
+    While (I<FIncludePaths.Count) do
       begin
       Result:=SearchLowUpCase(FIncludePaths[i]+FN);
+      if Result<>'' then exit;
       Inc(I);
       end;
-    // search in BaseDirectory
-    if (Result='') and (BaseDirectory<>'') then
-      Result:=SearchLowUpCase(BaseDirectory+FN);
   end;
 
 var
@@ -2930,6 +2955,7 @@ begin
   aPath:=ExtractFilePath(FCurFilename);
   if (aPath<>'') then
     aPath:=IncludeTrailingPathDelimiter(aPath);
+  FileResolver.ModuleDirectory := aPath;
   FileResolver.BaseDirectory := aPath;
   {$ENDIF}
   if LogEvent(sleFile) then
@@ -3369,9 +3395,9 @@ begin
   PushStackItem;
   FCurSourceFile:=NewSourceFile;
   FCurFilename := Param;
-  if FCurSourceFile is TFileLineReader then
+  if FCurSourceFile is TLineReader then
     begin
-    aFileName:=TFileLineReader(FCurSourceFile).Filename;
+    aFileName:=TLineReader(FCurSourceFile).Filename;
     FileResolver.BaseDirectory := ExtractFilePath(aFileName);
     FCurFilename := aFileName; // nicer error messages
     end;
@@ -3715,6 +3741,7 @@ procedure TPascalScanner.HandleMode(const Param: String);
         SetNonToken(tkotherwise);
       end;
     Handled:=false;
+    FileResolver.Mode:=LangMode;
     if Assigned(OnModeChanged) then
       OnModeChanged(Self,LangMode,false,Handled);
   end;

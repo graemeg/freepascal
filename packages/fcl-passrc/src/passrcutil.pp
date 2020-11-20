@@ -123,8 +123,11 @@ begin
     D:=ExtractFilePath(FileName);
     If (D='') then
       D:='.';
+    FResolver.ModuleDirectory:=D;
     FResolver.BaseDirectory:=D;
-    FResolver.AddIncludePath(D);
+
+    FResolver.AddIncludePath(D); // still needed?
+
     FScanner:=TPascalScanner.Create(FResolver);
     FScanner.OpenFile(FileName);
     FContainer:=TSrcContainer.Create;
