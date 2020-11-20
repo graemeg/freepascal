@@ -97,8 +97,6 @@ begin
   Result := Result and (fmt.ChunkHeader.ID = AUDIO_CHUNK_ID_fmt) and ((fmt.ChunkHeader.Size + 8) >= sizeof(fmt));
   if Result and ((fmt.ChunkHeader.Size + 8) > sizeof(fmt)) then
     fStream.Seek((fmt.ChunkHeader.Size + 8) - sizeof(fmt), soCurrent);
-  if Result and (fmt.Format <> 1) then 
-    Exit(False);
 end;
 
 function Min(a, b: Integer): Integer;
