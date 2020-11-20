@@ -125,6 +125,7 @@ type
     procedure TestCallingConventionSysCall;
     procedure TestCallingConventionSysCallExecbase;
     procedure TestCallingConventionSysCallUtilitybase;
+    procedure TestCallingConventionSysCallConsoleDevice;
     Procedure TestProcedurePublic;
     Procedure TestProcedurePublicIdent;
     Procedure TestFunctionPublic;
@@ -830,6 +831,12 @@ end;
 procedure TTestProcedureFunction.TestCallingConventionSysCallUtilitybase;
 begin
   ParseProcedure('; syscall _utilityBase 123');
+  AssertProc([],[],ccSysCall,0);
+end;
+
+procedure TTestProcedureFunction.TestCallingConventionSysCallConsoleDevice;
+begin
+  ParseProcedure('; syscall ConsoleDevice 123');
   AssertProc([],[],ccSysCall,0);
 end;
 
