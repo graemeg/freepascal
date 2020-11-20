@@ -5373,7 +5373,8 @@ begin
         else
           // remove legacy or basesysv on MorphOS syscalls
           begin
-          if CurTokenIsIdentifier('legacy') or CurTokenIsIdentifier('BaseSysV') or CurTokenIsIdentifier('_ExecBase') then
+          if CurTokenIsIdentifier('legacy')
+             or (Curtoken=tkIdentifier) and (Pos('base',LowerCase(CurtokenText))>0) then
             NextToken;
           end;
       end;
