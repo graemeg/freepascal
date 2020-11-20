@@ -2984,8 +2984,6 @@ Procedure TPascalScanner.PopStackItem;
 
 var
   IncludeStackItem: TIncludeStackItem;
-  aFileName : String;
-
 begin
   IncludeStackItem :=
     TIncludeStackItem(FIncludeStack[FIncludeStack.Count - 1]);
