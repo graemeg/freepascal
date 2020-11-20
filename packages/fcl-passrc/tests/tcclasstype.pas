@@ -105,6 +105,7 @@ type
     Procedure TestMethodWithDotFails;
     Procedure TestMethodWithDotOK;
     Procedure TestMethodFunctionWithDotOK;
+    Procedure TestNoSemicolon;
     Procedure TestClassMethodSimple;
     Procedure TestClassMethodSimpleComment;
     Procedure TestConstructor;
@@ -975,6 +976,14 @@ begin
   AssertEquals('1 method resolution procedure',TPasMethodResolution,members[0].ClassType);
   AssertEquals('Default visibility',visDefault,Members[0].Visibility);
   AssertNotNull('1 method resolution procedure',TPasMethodResolution(members[0]).ImplementationProc);
+end;
+
+procedure TTestClassType.TestNoSemicolon;
+begin
+  StartClass;
+  fDecl.Add('X : Integer;');
+  fDecl.Add('Y : String');
+  ParseClass;
 end;
 
 procedure TTestClassType.TestClassMethodSimple;
