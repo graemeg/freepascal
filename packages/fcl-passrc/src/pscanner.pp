@@ -821,6 +821,7 @@ type
     procedure HandleWarn(Param: String); virtual;
     procedure HandleWarnIdentifier(Identifier, Value: String); virtual;
     procedure PushStackItem; virtual;
+    procedure PopStackItem; virtual;
     function DoFetchTextToken: TToken;
     function DoFetchToken: TToken;
     procedure ClearFiles;
@@ -2757,6 +2758,8 @@ begin
       Inc(J);
       end;
     end;
+  if (I=-1) and (BaseDirectory<>'') then
+    I:=FStreams.IndexOf(IncludeTrailingPathDelimiter(BaseDirectory)+aName);
   If (I<>-1) then
     Result:=FStreams.Objects[i] as TStream;
 end;
@@ -2914,13 +2917,20 @@ begin
 end;
 
 procedure TPascalScanner.OpenFile(AFilename: string);
+
+Var
+  aPath : String;
+
 begin
   Clearfiles;
   FCurSourceFile := FileResolver.FindSourceFile(AFilename);
   FCurFilename := AFilename;
   AddFile(FCurFilename);
   {$IFDEF HASFS}
-  FileResolver.BaseDirectory := IncludeTrailingPathDelimiter(ExtractFilePath(FCurFilename));
+  aPath:=ExtractFilePath(FCurFilename);
+  if (aPath<>'') then
+    aPath:=IncludeTrailingPathDelimiter(aPath);
+  FileResolver.BaseDirectory := aPath;
   {$ENDIF}
   if LogEvent(sleFile) then
     DoLog(mtInfo,nLogOpeningFile,SLogOpeningFile,[FormatPath(AFileName)],True);
@@ -2970,9 +2980,31 @@ begin
       Result:=tkoperator;
 end;
 
-function TPascalScanner.FetchToken: TToken;
+Procedure TPascalScanner.PopStackItem;
+
 var
   IncludeStackItem: TIncludeStackItem;
+  aFileName : String;
+
+begin
+  IncludeStackItem :=
+    TIncludeStackItem(FIncludeStack[FIncludeStack.Count - 1]);
+  FIncludeStack.Delete(FIncludeStack.Count - 1);
+  CurSourceFile.{$ifdef pas2js}Destroy{$else}Free{$endif};
+  FCurSourceFile := IncludeStackItem.SourceFile;
+  FCurFilename := IncludeStackItem.Filename;
+  FileResolver.BaseDirectory:=ExtractFilePath(FCurFilename);
+  FCurToken := IncludeStackItem.Token;
+  FCurTokenString := IncludeStackItem.TokenString;
+  FCurLine := IncludeStackItem.Line;
+  FCurRow := IncludeStackItem.Row;
+  FCurColumnOffset := IncludeStackItem.ColumnOffset;
+  FTokenPos := IncludeStackItem.TokenPos;
+  IncludeStackItem.Free;
+end;
+
+function TPascalScanner.FetchToken: TToken;
+
 begin
   FPreviousToken:=FCurToken;
   while true do
@@ -2983,19 +3015,7 @@ begin
       begin
       if FIncludeStack.Count > 0 then
         begin
-        IncludeStackItem :=
-          TIncludeStackItem(FIncludeStack[FIncludeStack.Count - 1]);
-        FIncludeStack.Delete(FIncludeStack.Count - 1);
-        CurSourceFile.{$ifdef pas2js}Destroy{$else}Free{$endif};
-        FCurSourceFile := IncludeStackItem.SourceFile;
-        FCurFilename := IncludeStackItem.Filename;
-        FCurToken := IncludeStackItem.Token;
-        FCurTokenString := IncludeStackItem.TokenString;
-        FCurLine := IncludeStackItem.Line;
-        FCurRow := IncludeStackItem.Row;
-        FCurColumnOffset := IncludeStackItem.ColumnOffset;
-        FTokenPos := IncludeStackItem.TokenPos;
-        IncludeStackItem.Free;
+        PopStackitem;
         Result := FCurToken;
         end
       else
@@ -3330,6 +3350,8 @@ procedure TPascalScanner.HandleIncludeFile(Param: String);
 
 var
   NewSourceFile: TLineReader;
+  aFileName : string;
+
 begin
   Param:=Trim(Param);
   if Length(Param)>1 then
@@ -3345,11 +3367,16 @@ begin
   if not Assigned(NewSourceFile) then
     Error(nErrIncludeFileNotFound, SErrIncludeFileNotFound, [Param]);
 
+
   PushStackItem;
   FCurSourceFile:=NewSourceFile;
   FCurFilename := Param;
   if FCurSourceFile is TFileLineReader then
-    FCurFilename := TFileLineReader(FCurSourceFile).Filename; // nicer error messages
+    begin
+    aFileName:=TFileLineReader(FCurSourceFile).Filename;
+    FileResolver.BaseDirectory := ExtractFilePath(aFileName);
+    FCurFilename := aFileName; // nicer error messages
+    end;
   AddFile(FCurFilename);
   If LogEvent(sleFile) then
     DoLog(mtInfo,nLogOpeningFile,SLogOpeningFile,[FormatPath(FCurFileName)],True);

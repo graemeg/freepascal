@@ -57,6 +57,7 @@ type
     FResolver : TStreamResolver;
     FDoCommentCalled : Boolean;
     FComment: string;
+    FPathPrefix : String;
   protected
     procedure DoComment(Sender: TObject; aComment: String);
     procedure SetUp; override;
@@ -65,12 +66,15 @@ type
     Procedure AssertEquals(Msg : String; Expected,Actual : TToken); overload;
     Procedure AssertEquals(Msg : String; Expected,Actual : TModeSwitch); overload;
     Procedure AssertEquals(Msg : String; Expected,Actual : TModeSwitches); overload;
+    // creates a virtual source file with name 'afile.pp', prepended with PathPrefix
     procedure NewSource(Const Source : string; DoClear : Boolean = True);
     Procedure DoTestToken(t : TToken; Const ASource : String; Const CheckEOF : Boolean = True);
     Procedure TestToken(t : TToken; Const ASource : String; Const CheckEOF : Boolean = True);
     Procedure TestTokens(t : array of TToken; Const ASource : String; Const CheckEOF : Boolean = True;Const DoClear : Boolean = True);
     Property LastIDentifier : String Read FLI Write FLi;
     Property Scanner : TPascalScanner Read FScanner;
+    // Path for source filename.
+    Property PathPrefix : String Read FPathPrefix Write FPathPrefix;
   published
     Procedure TestEmpty;
     procedure TestEOF;
@@ -235,6 +239,7 @@ type
     Procedure TestDefine14;
     Procedure TestInclude;
     Procedure TestInclude2;
+    Procedure TestInclude3;
     Procedure TestUnDefine1;
     Procedure TestMacro1;
     procedure TestMacro2;
@@ -444,17 +449,25 @@ begin
 end;
 
 procedure TTestScanner.NewSource(const Source: string; DoClear : Boolean = True);
+
+Var
+  aFile : String;
+
 begin
+  aFile:='';
   if DoClear then
     FResolver.Clear;
-  FResolver.AddStream('afile.pp',TStringStream.Create(Source));
+  if (FPathPrefix<>'') then
+     aFile:=IncludeTrailingPathDelimiter(FPathPrefix);
+  aFile:=aFile+'afile.pp';
+  FResolver.AddStream(aFile,TStringStream.Create(Source));
   {$ifndef NOCONSOLE} // JC: To get the tests to run with GUI
   Writeln('// '+TestName);
   Writeln(Source);
   {$EndIf}
 //  FreeAndNil(FScanner);
 //  FScanner:=TTestingPascalScanner.Create(FResolver);
-  FScanner.OpenFile('afile.pp');
+  FScanner.OpenFile(aFile);
 end;
 
 procedure TTestScanner.DoTestToken(t: TToken; const ASource: String;
@@ -1623,6 +1636,16 @@ begin
   FScanner.SkipWhiteSpace:=True;
   FScanner.SkipComments:=True;
   TestTokens([tkIf,tkTrue,tkThen,tkElse],'{$I myinclude.inc} else',True,False);
+end;
+
+procedure TTestScanner.TestInclude3;
+begin
+  PathPrefix:='src';
+  FResolver.AddStream('src/myinclude2.inc',TStringStream.Create(' true '));
+  FResolver.AddStream('src/myinclude1.inc',TStringStream.Create('if {$i myinclude2.inc} then '));
+  FScanner.SkipWhiteSpace:=True;
+  FScanner.SkipComments:=True;
+  TestTokens([tkIf,tkTrue,tkThen,tkElse],'{$I src/myinclude1.inc} else',True,False);
 end;
 
 procedure TTestScanner.TestUnDefine1;
