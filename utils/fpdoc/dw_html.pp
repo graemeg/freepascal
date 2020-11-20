@@ -100,8 +100,9 @@ type
     CurOutputNode: TDOMNode;
     InsideHeadRow, DoPasHighlighting: Boolean;
     HighlighterFlags: Byte;
-
-    FooterFile: string;
+    HeaderHTML,
+    NavigatorHTML,
+    FooterHTML: TStringStream;
     FIDF : Boolean;
     FDateFormat: String;
     FIndexColCount : Integer;
@@ -109,6 +110,7 @@ type
     FBaseImageURL : String;
     FUseMenuBrackets: Boolean;
 
+    procedure AppendFragment(aParentNode: TDOMElement; aStream: TStream);
     Procedure CreateAllocator; virtual;
     procedure CreateCSSFile; virtual;
     function ResolveLinkID(const Name: String; Level : Integer = 0): DOMString;
@@ -2078,6 +2080,16 @@ begin
   end;
 end;
 
+procedure THTMLWriter.AppendFragment(aParentNode : TDOMElement; aStream : TStream);
+
+begin
+  if (aStream<>Nil) then
+    begin
+    aStream.Position:=0;
+    ReadXMLFragment(aParentNode,aStream);
+    end;
+end;
+
 procedure THTMLWriter.AppendMenuBar(ASubpageIndex: Integer);
 
 var
@@ -2111,6 +2123,8 @@ var
       AppendText(ParaEl, ']');
   end;
 
+
+
 begin
   TableEl := CreateEl(BodyElement, 'table');
   TableEl['cellpadding'] := '4';
@@ -2137,11 +2151,13 @@ begin
     if Module.InterfaceSection.Variables.Count > 0 then
       AddLink(VarsSubindex, SDocVariables);
     AddLink(IndexSubIndex,SDocIdentifierIndex);  
+    AppendFragment(ParaEl, NavigatorHTML);
     end
   else
     begin
     AddPackageLink(IndexSubIndex, SDocIdentifierIndex);
     AddPackageLink(ClassHierarchySubIndex, SDocPackageClassHierarchy);
+    AppendFragment(ParaEl, NavigatorHTML)
     end;
 
   if Length(SearchPage) > 0 then
@@ -2164,6 +2180,7 @@ begin
     AppendHyperlink(TitleEl, Package);
     AppendText(TitleEl, ')');
   end;
+  AppendFragment(BodyElement,HeaderHTML);
 end;
 
 procedure THTMLWriter.AppendSourceRef(AElement: TPasElement);
@@ -2301,8 +2318,8 @@ Var
   S : String;
   F : TDomElement;
 begin
-  if FooterFile<>'' then
-    ReadXMLFragment(BodyElement, FooterFile)
+  if Assigned(FooterHTML) then
+    AppendFragment(BodyElement, FooterHTML)
   else if IncludeDateInFooter then
     begin
     CreateEl(BodyElement, 'hr');
@@ -3840,13 +3857,35 @@ end;
 
 Function THTMLWriter.InterPretOption(Const Cmd,Arg : String) : boolean;
 
+  Function ReadFile(aFileName : string) : TstringStream;
+
+  begin
+    try
+      if copy(aFileName,1,1)<>'@' then
+        Result:=TStringStream.Create(aFileName)
+      else
+        begin
+        Delete(aFileName,1,1);
+        Result:=TStringStream.Create('');
+        Result.LoadFromFile(aFileName);
+        Result.Position:=0;
+        end;
+    except
+      Result.Free;
+      Raise;
+    end;
+  end;
+
 begin
   Result:=True;
-
   if Cmd = '--html-search' then
     SearchPage := Arg
   else if Cmd = '--footer' then
-    FooterFile := Arg
+    FooterHTML := ReadFile(Arg)
+  else if Cmd = '--header' then
+    HeaderHTML := ReadFile(Arg)
+  else if Cmd = '--navigator' then
+    NavigatorHTML := ReadFile(Arg)
   else if Cmd = '--charset' then
     CharSet := Arg
   else if Cmd = '--index-colcount' then
@@ -3874,8 +3913,12 @@ end;
 
 class procedure THTMLWriter.Usage(List: TStrings);
 begin
-  List.add('--footer');
+  List.add('--header=file');
+  List.Add(SHTMLUsageHeader);
+  List.add('--footer=file');
   List.Add(SHTMLUsageFooter);
+  List.add('--navigator=file');
+  List.Add(SHTMLUsageNavigator);
   List.Add('--footer-date[=Fmt]');
   List.Add(SHTMLUsageFooterDate);
   List.Add('--charset=set');
