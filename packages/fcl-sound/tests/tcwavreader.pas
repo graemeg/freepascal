@@ -28,7 +28,8 @@ var
   WavReader: TWavReader;
   InfoFile: TextFile;
   RawDataFile: File;
-  ExpectedSampleRate, ExpectedChannels, ExpectedBitsPerSample: Integer;
+  ExpectedSampleRate, ExpectedChannels, ExpectedBitsPerSample,
+  ExpectedFormat: Integer;
   ExpectedData: array of Byte;
   ActualData: array of Byte;
   ActualDataLen: Integer;
@@ -37,7 +38,7 @@ begin
   AssignFile(InfoFile, CorrectFileDir + FileName + '.info.txt');
   Reset(InfoFile);
   try
-    Readln(InfoFile, ExpectedSampleRate, ExpectedChannels, ExpectedBitsPerSample);
+    Readln(InfoFile, ExpectedSampleRate, ExpectedChannels, ExpectedBitsPerSample, ExpectedFormat);
   finally
     CloseFile(InfoFile);
   end;
@@ -61,6 +62,7 @@ begin
   try
     if not WavReader.LoadFromFile(CorrectFileDir + FileName) then
       Fail('Error loading wave file');
+    AssertEquals('Incorrect format', ExpectedFormat, WavReader.fmt.Format);
     AssertEquals('Incorrect sample rate', ExpectedSampleRate, WavReader.fmt.SampleRate);
     AssertEquals('Incorrect number of channels', ExpectedChannels, WavReader.fmt.Channels);
     AssertEquals('Incorrect number of bits per sample', ExpectedBitsPerSample, WavReader.fmt.BitsPerSample);
