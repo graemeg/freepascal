@@ -114,6 +114,8 @@ resourcestring
   
   // HTML usage
   SHTMLUsageFooter = 'Append xhtml from file as footer to html page';
+  SHTMLUsageNavigator = 'Append xhtml from file in navigator bar';
+  SHTMLUsageHeader = 'Append xhtml from file as header to html page';
   SHTMLUsageFooterDate = 'Append footer with date. fmt is Optional format for FormatDateTime';
   SHTMLUsageCharset = 'Set the HTML character set';
   SHTMLHtmlSearch = 'Add search page with given name to the menu bar';
@@ -203,7 +205,7 @@ resourcestring
 Const
   SVisibility: array[TPasMemberVisibility] of string =
        ('Default', 'Private', 'Protected', 'Public',
-       'Published', 'Automated','Strict Private','Strict Protected');
+       'Published', 'Automated','Strict Private','Strict Protected','Required','Optional');
 
 type
   TBufType = Array[1..ContentBufSize-1] of byte;
