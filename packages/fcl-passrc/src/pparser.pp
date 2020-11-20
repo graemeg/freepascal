@@ -311,7 +311,7 @@ type
     function CheckProcedureArgs(Parent: TPasElement;
       Args: TFPList; // list of TPasArgument
       ProcType: TProcType): boolean;
-    function CheckVisibility(S: String; var AVisibility: TPasMemberVisibility): Boolean;
+    function CheckVisibility(S: String; var AVisibility: TPasMemberVisibility; IsObjCProtocol : Boolean = False): Boolean;
     procedure ParseExc(MsgNumber: integer; const Msg: String);
     procedure ParseExc(MsgNumber: integer; const Fmt: String; Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif});
     procedure ParseExcExpectedIdentifier;
@@ -6992,18 +6992,20 @@ begin
   end;
 end;
 
-Function IsVisibility(S : String;  var AVisibility :TPasMemberVisibility) : Boolean;
+Function IsVisibility(S : String;  var AVisibility :TPasMemberVisibility; IsObjCProtocol : Boolean) : Boolean;
 
 Const
   VNames : array[TPasMemberVisibility] of string =
-    ('', 'private', 'protected', 'public', 'published', 'automated', '', '');
+    ('', 'private', 'protected', 'public', 'published', 'automated', '', '','required','optional');
+  VLast : Array[Boolean] of TPasMemberVisibility = (visAutomated,visOptional);
+
 Var
   V : TPasMemberVisibility;
 
 begin
   Result:=False;
   S:=lowerCase(S);
-  For V :=Low(TPasMemberVisibility) to High(TPasMemberVisibility) do
+  For V :=Low(TPasMemberVisibility) to VLast[isObjCProtocol] do
     begin
     Result:=(VNames[V]<>'') and (S=VNames[V]);
     if Result then
@@ -7014,8 +7016,7 @@ begin
     end;
 end;
 
-function TPasParser.CheckVisibility(S: String;
-  var AVisibility: TPasMemberVisibility): Boolean;
+function TPasParser.CheckVisibility(S: String; var AVisibility: TPasMemberVisibility; IsObjCProtocol : Boolean = false): Boolean;
 
 Var
   B : Boolean;
@@ -7028,7 +7029,7 @@ begin
     NextToken;
     s:=LowerCase(CurTokenString);
     end;
-  Result:=isVisibility(S,AVisibility);
+  Result:=isVisibility(S,AVisibility,isObjCProtocol);
   if Result then
     begin
     if (AVisibility=visPublished) and (msOmitRTTI in Scanner.CurrentModeSwitches) then
@@ -7264,7 +7265,7 @@ begin
           CurSection:=stVar;
         end;
     tkIdentifier:
-      if CheckVisibility(CurTokenString,CurVisibility) then
+      if CheckVisibility(CurTokenString,CurVisibility,(AType.ObjKind=okObjcProtocol)) then
         CurSection:=stNone
       else
         begin

@@ -170,6 +170,8 @@ type
     procedure TestClassHelperOneMethod;
     procedure TestInterfaceEmpty;
     procedure TestObjcProtocolEmpty;
+    procedure TestObjcProtocolOptional;
+    procedure TestObjcProtocolRequired;
     procedure TestInterfaceDisp;
     procedure TestInterfaceParentedEmpty;
     procedure TestInterfaceOneMethod;
@@ -1926,6 +1928,32 @@ begin
   AssertEquals('Is interface',okObjcProtocol,TheClass.ObjKind);
   AssertTrue('Is objectivec',TheClass.IsObjCClass);
   AssertEquals('No members',0,TheClass.Members.Count);
+  AssertNull('No UUID',TheClass.GUIDExpr);
+end;
+
+procedure TTestClassType.TestObjcProtocolOptional;
+begin
+  StartInterface('','',False,True);
+  FDecl.Add('    optional');
+  AddMember('Procedure DoSomething(A : Integer)');
+  EndClass();
+  ParseClass;
+  AssertEquals('Is interface',okObjcProtocol,TheClass.ObjKind);
+  AssertTrue('Is objectivec',TheClass.IsObjCClass);
+  AssertEquals('No members',1,TheClass.Members.Count);
+  AssertNull('No UUID',TheClass.GUIDExpr);
+end;
+
+procedure TTestClassType.TestObjcProtocolRequired;
+begin
+  StartInterface('','',False,True);
+  FDecl.Add('    required');
+  AddMember('Procedure DoSomething(A : Integer)');
+  EndClass();
+  ParseClass;
+  AssertEquals('Is interface',okObjcProtocol,TheClass.ObjKind);
+  AssertTrue('Is objectivec',TheClass.IsObjCClass);
+  AssertEquals('No members',1,TheClass.Members.Count);
   AssertNull('No UUID',TheClass.GUIDExpr);
 end;
 
