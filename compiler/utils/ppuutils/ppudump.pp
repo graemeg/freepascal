@@ -2299,7 +2299,8 @@ const
         'Link using native linker', {cs_link_native}
         'Link for GNU linker version <=2.19', {cs_link_pre_binutils_2_19}
         'Link using vlink', {cs_link_vlink}
-        'Link-Time Optimization disabled for system unit' {cs_lto_nosystem}
+        'Link-Time Optimization disabled for system unit', {cs_lto_nosystem}
+        'Assemble on target OS' {cs_asemble_on_target}
        );
     localswitchname : array[tlocalswitch] of string[50] =
        { Switches which can be changed locally }
