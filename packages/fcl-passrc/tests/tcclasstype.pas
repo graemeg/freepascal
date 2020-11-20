@@ -171,6 +171,7 @@ type
     procedure TestInterfaceEmpty;
     procedure TestObjcProtocolEmpty;
     procedure TestObjcProtocolEmptyExternal;
+    procedure TestObjcProtocolMultiParent;
     procedure TestObjcProtocolOptional;
     procedure TestObjcProtocolRequired;
     procedure TestInterfaceDisp;
@@ -1943,6 +1944,22 @@ begin
   AssertTrue('Is objectivec',TheClass.IsObjCClass);
   AssertEquals('No members',0,TheClass.Members.Count);
   AssertNull('No UUID',TheClass.GUIDExpr);
+end;
+
+procedure TTestClassType.TestObjcProtocolMultiParent;
+begin
+  StartInterface('A, B','',False,True,true);
+  FParent:='A';
+  EndClass();
+  ParseClass;
+  AssertEquals('Is interface',okObjcProtocol,TheClass.ObjKind);
+  AssertTrue('Is objectivec',TheClass.IsObjCClass);
+  AssertEquals('No members',0,TheClass.Members.Count);
+  AssertNull('No UUID',TheClass.GUIDExpr);
+  AssertEquals('Have 1 interface',1,TheClass.Interfaces.Count);
+  AssertNotNull('Correct class',TheClass.Interfaces[0]);
+  AssertEquals('Correct class',TPasUnresolvedTypeRef,TObject(TheClass.Interfaces[0]).ClassType);
+  AssertEquals('Interface name','B',TPasUnresolvedTypeRef(TheClass.Interfaces[0]).Name);
 end;
 
 procedure TTestClassType.TestObjcProtocolOptional;

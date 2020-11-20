@@ -7434,7 +7434,7 @@ begin
       CheckToken(tkend);
     NextToken;
     AType.AncestorType := ParseTypeReference(AType,false,Expr);
-    if AType.ObjKind in [okClass,okObjCClass] then
+    if AType.ObjKind in [okClass,okObjCClass,okObjcProtocol] then
       while CurToken=tkComma do
         begin
         NextToken;
@@ -7482,7 +7482,7 @@ begin
       AExternalNameSpace:=CurTokenString;
     if (aObjKind in [okObjcCategory,okObjcClass]) then
       begin
-      // Name is optional in objcclass/category
+      // Name is optional in objcclass/category/protocol
       NextToken;
       if CurToken=tkBraceOpen then
         exit;
