@@ -587,7 +587,7 @@ Implementation
         index: longint;
       begin
         MaybeAddLinePostfix;
-        if (cs_link_on_target in current_settings.globalswitches) then
+        if (cs_assemble_on_target in current_settings.globalswitches) then
           newline:=@target_info.newline
         else
           newline:=@source_info.newline;
@@ -623,7 +623,7 @@ Implementation
           compiler itself, especially on hardware with slow disk I/O.
           Consider this as a poor man's pipe on Amiga, because real pipe handling
           would be much more complex and error prone to implement. (KB) }
-        if (([cs_asm_extern,cs_asm_leave,cs_link_on_target] * current_settings.globalswitches) = []) then
+        if (([cs_asm_extern,cs_asm_leave,cs_assemble_on_target] * current_settings.globalswitches) = []) then
          begin
           { try to have an unique name for the .s file }
           tempFileName:=HexStr(GetProcessID shr 4,7)+ExtractFileName(owner.AsmFileName);
@@ -745,7 +745,7 @@ Implementation
       begin
 {$ifdef hasunix}
         DoPipe:=(cs_asm_pipe in current_settings.globalswitches) and
-                (([cs_asm_extern,cs_asm_leave,cs_link_on_target] * current_settings.globalswitches) = []) and
+                (([cs_asm_extern,cs_asm_leave,cs_assemble_on_target] * current_settings.globalswitches) = []) and
                 ((asminfo^.id in [as_gas,as_ggas,as_darwin,as_powerpc_xcoff,as_clang_gas,as_clang_llvm,as_solaris_as]));
 {$else hasunix}
         DoPipe:=false;
@@ -829,9 +829,9 @@ Implementation
         asmbin:=asminfo^.asmbin;
         if (af_llvm in asminfo^.flags) then
           asmbin:=asmbin+llvmutilssuffix;
-        if cs_link_on_target in current_settings.globalswitches then
+        if cs_assemble_on_target in current_settings.globalswitches then
          begin
-           { If linking on target, don't add any path PM }
+           { If assembling on target, don't add any path PM }
            FindAssembler:=utilsprefix+ChangeFileExt(asmbin,target_info.exeext);
            exit;
          end
@@ -937,7 +937,7 @@ Implementation
           Replace(result,'$ARCH',lower(cputypestr[current_settings.cputype]))
 {$endif arm}
         ;
-        if (cs_link_on_target in current_settings.globalswitches) then
+        if (cs_assemble_on_target in current_settings.globalswitches) then
          begin
            Replace(result,'$ASM',maybequoted(ScriptFixFileName(AsmFileName)));
            Replace(result,'$OBJ',maybequoted(ScriptFixFileName(ObjFileName)));
