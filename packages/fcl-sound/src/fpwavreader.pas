@@ -121,8 +121,10 @@ begin
       EoF := sz < sizeof(DataChunk);
       if not EoF then begin
         DataChunk.Size := LEtoN(DataChunk.Size);
-        if DataChunk.Id <> AUDIO_CHUNK_ID_data then
-          ChunkPos := DataChunk.Size
+        if DataChunk.Id <> AUDIO_CHUNK_ID_data then begin
+          ChunkPos := DataChunk.Size;
+          fstream.Seek(DataChunk.Size, soCurrent);
+        end
         else
           ChunkPos := 0;
       end;
