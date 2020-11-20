@@ -7470,7 +7470,7 @@ end;
 function TPasParser.DoParseClassExternalHeader(AObjKind: TPasObjKind; out AExternalNameSpace, AExternalName: string): Boolean;
 begin
   Result:=False;
-  if ((aObjKind in [okObjcCategory,okObjcClass]) or
+  if ((aObjKind in [okObjcCategory,okObjcClass,okObjcProtocol]) or
       ((AObjKind in [okClass,okInterface]) and (msExternalClass in CurrentModeswitches)))
       and CurTokenIsIdentifier('external') then
     begin

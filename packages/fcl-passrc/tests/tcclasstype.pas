@@ -33,7 +33,7 @@ type
     Procedure StartClass (AncestorName : String = 'TObject'; InterfaceList : String = ''; aClassType : TClassDeclType = cdtClass);
     Procedure StartExternalClass (AParent : String; AExternalName,AExternalNameSpace : String );
     Procedure StartClassHelper (ForType : String = 'TOriginal'; AParent : String = 'TObject');
-    Procedure StartInterface (AParent : String = 'IInterface'; UUID : String = ''; Disp : Boolean = False; UseObjcClass : Boolean = False);
+    Procedure StartInterface (AParent : String = 'IInterface'; UUID : String = ''; Disp : Boolean = False; UseObjcClass : Boolean = False; UseExternal : Boolean = False);
     Procedure StartRecordHelper (ForType : String = 'TOriginal'; AParent : String = 'TObject');
     Procedure StartVisibility(A : TPasMemberVisibility);
     Procedure EndClass(AEnd : String = 'end');
@@ -170,6 +170,7 @@ type
     procedure TestClassHelperOneMethod;
     procedure TestInterfaceEmpty;
     procedure TestObjcProtocolEmpty;
+    procedure TestObjcProtocolEmptyExternal;
     procedure TestObjcProtocolOptional;
     procedure TestObjcProtocolRequired;
     procedure TestInterfaceDisp;
@@ -322,7 +323,7 @@ begin
 end;
 
 procedure TTestClassType.StartInterface(AParent: String; UUID: String;
-  Disp: Boolean = False; UseObjcClass : Boolean = False);
+  Disp: Boolean = False; UseObjcClass : Boolean = False; UseExternal : Boolean = False);
 Var
   S : String;
 begin
@@ -330,7 +331,9 @@ begin
   if UseObjCClass then
     begin
     FDecl.Add('{$modeswitch objectivec1}');
-    S:='TMyClass = objcprotocol'
+    S:='TMyClass = objcprotocol';
+    if UseExternal then
+      S:=S+' external name ''abc'' ';
     end
   else if Disp then
     S:='TMyClass = DispInterface'
@@ -1923,6 +1926,17 @@ end;
 procedure TTestClassType.TestObjcProtocolEmpty;
 begin
   StartInterface('','',False,True);
+  EndClass();
+  ParseClass;
+  AssertEquals('Is interface',okObjcProtocol,TheClass.ObjKind);
+  AssertTrue('Is objectivec',TheClass.IsObjCClass);
+  AssertEquals('No members',0,TheClass.Members.Count);
+  AssertNull('No UUID',TheClass.GUIDExpr);
+end;
+
+procedure TTestClassType.TestObjcProtocolEmptyExternal;
+begin
+  StartInterface('','',False,True,true);
   EndClass();
   ParseClass;
   AssertEquals('Is interface',okObjcProtocol,TheClass.ObjKind);
