@@ -122,6 +122,7 @@ type
     procedure TestCallingConventionSysV_ABI_CDec;
     procedure TestCallingConventionSysV_ABI_Default;
     procedure TestCallingConventionVectorCall;
+    procedure TestCallingConventionSysCall;
     Procedure TestProcedurePublic;
     Procedure TestProcedurePublicIdent;
     Procedure TestFunctionPublic;
@@ -810,6 +811,12 @@ procedure TTestProcedureFunction.TestCallingConventionVectorCall;
 begin
   ParseProcedure('; VectorCall');
   AssertProc([],[],ccVectorCall,0);
+end;
+
+procedure TTestProcedureFunction.TestCallingConventionSysCall;
+begin
+  ParseProcedure('; syscall abc');
+  AssertProc([],[],ccSysCall,0);
 end;
 
 procedure TTestProcedureFunction.TestCallingConventionHardFloat;

@@ -5375,7 +5375,6 @@ begin
           begin
           if CurTokenIsIdentifier('legacy') or CurTokenIsIdentifier('BaseSysV') then
             NextToken;
-          NextToken; // remove offset
           end;
       end;
       if IsProcType then
