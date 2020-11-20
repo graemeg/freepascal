@@ -77,7 +77,7 @@ type
   TPQTranConnection = class
   protected
     FPGConn        : PPGConn;
-    FTranActive    : boolean
+    FTranActive    : boolean;
   end;
 
   { TPQConnection }
