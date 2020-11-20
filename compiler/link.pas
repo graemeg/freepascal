@@ -216,10 +216,11 @@ Implementation
          exit;
 
         {When linking on target, the units has not been assembled yet,
+         if assembling is also done on target,
          so there is no object files to look for at
          the host. Look for the corresponding assembler file instead,
          because it will be assembled to object file on the target.}
-        if isunit and (cs_link_on_target in current_settings.globalswitches) then
+        if isunit and (cs_assemble_on_target in current_settings.globalswitches) then
           s:=ChangeFileExt(s,target_info.asmext);
 
         { when it does not belong to the unit then check if
@@ -266,7 +267,7 @@ Implementation
          Message1(exec_w_objfile_not_found,s);
 
         {Restore file extension}
-        if isunit and (cs_link_on_target in current_settings.globalswitches) then
+        if isunit and (cs_assemble_on_target in current_settings.globalswitches) then
           foundfile:= ChangeFileExt(foundfile,target_info.objext);
 
         findobjectfile:=ScriptFixFileName(foundfile);
