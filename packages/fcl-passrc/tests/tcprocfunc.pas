@@ -1336,23 +1336,25 @@ Var
 
 begin
   For t:=otMul to High(TOperatorType) do
+    begin
+    if OperatorTokens[t]='' then continue;
     // No way to distinguish between logical/bitwise or/and/Xor
-    if not (t in [otBitwiseOr,otBitwiseAnd,otBitwiseXor]) then
-      begin
-      S:=GetEnumName(TypeInfo(TOperatorType),Ord(T));
-      ResetParser;
-      if t in UnaryOperators then
-        AddDeclaration(Format('operator %s (a: Integer) : te',[OperatorTokens[t]]))
-      else
-        AddDeclaration(Format('operator %s (a: Integer; b: integer) : te',[OperatorTokens[t]]));
-      ParseOperator;
-      AssertEquals(S+': Token based ',Not (T in [otInc,otDec,otEnumerator]),FOperator.TokenBased);
-      AssertEquals(S+': Correct operator type',T,FOperator.OperatorType);
-      if t in UnaryOperators then
-        AssertEquals(S+': Correct operator name',format('%s(Integer):te',[OperatorNames[t]]),FOperator.Name)
-      else
-        AssertEquals(S+': Correct operator name',format('%s(Integer,Integer):te',[OperatorNames[t]]),FOperator.Name);
-      end;
+    if t in [otBitWiseOr,otBitwiseAnd,otbitwiseXor] then continue;
+
+    S:=GetEnumName(TypeInfo(TOperatorType),Ord(T));
+    ResetParser;
+    if t in UnaryOperators then
+      AddDeclaration(Format('operator %s (a: Integer) : te',[OperatorTokens[t]]))
+    else
+      AddDeclaration(Format('operator %s (a: Integer; b: integer) : te',[OperatorTokens[t]]));
+    ParseOperator;
+    AssertEquals(S+': Token based ',Not (T in [otInc,otDec,otEnumerator]),FOperator.TokenBased);
+    AssertEquals(S+': Correct operator type',T,FOperator.OperatorType);
+    if t in UnaryOperators then
+      AssertEquals(S+': Correct operator name',format('%s(Integer):te',[OperatorNames[t]]),FOperator.Name)
+    else
+      AssertEquals(S+': Correct operator name',format('%s(Integer,Integer):te',[OperatorNames[t]]),FOperator.Name);
+    end;
 end;
 
 procedure TTestProcedureFunction.TestOperatorNames;
@@ -1363,21 +1365,25 @@ Var
 
 begin
   For t:=Succ(otUnknown) to High(TOperatorType) do
-      begin
-      S:=GetEnumName(TypeInfo(TOperatorType),Ord(T));
-      ResetParser;
-      if t in UnaryOperators then
-        AddDeclaration(Format('operator %s (a: Integer) : te',[OperatorNames[t]]))
-      else
-        AddDeclaration(Format('operator %s (a: Integer; b: integer) : te',[OperatorNames[t]]));
-      ParseOperator;
-      AssertEquals(S+': Token based',t in [otIn],FOperator.TokenBased);
-      AssertEquals(S+': Correct operator type',T,FOperator.OperatorType);
-      if t in UnaryOperators then
-        AssertEquals('Correct operator name',format('%s(Integer):te',[OperatorNames[t]]),FOperator.Name)
-      else
-        AssertEquals('Correct operator name',format('%s(Integer,Integer):te',[OperatorNames[t]]),FOperator.Name);
-      end;
+    begin
+    if OperatorNames[t]='' then continue;
+    // otInitialize has no result
+    if t=otInitialize then continue;
+    writeln('TTestProcedureFunction.TestOperatorTokens ',t);
+    S:=GetEnumName(TypeInfo(TOperatorType),Ord(T));
+    ResetParser;
+    if t in UnaryOperators then
+      AddDeclaration(Format('operator %s (a: Integer) : te',[OperatorNames[t]]))
+    else
+      AddDeclaration(Format('operator %s (a: Integer; b: integer) : te',[OperatorNames[t]]));
+    ParseOperator;
+    AssertEquals(S+': Token based',t in [otIn],FOperator.TokenBased);
+    AssertEquals(S+': Correct operator type',T,FOperator.OperatorType);
+    if t in UnaryOperators then
+      AssertEquals('Correct operator name',format('%s(Integer):te',[OperatorNames[t]]),FOperator.Name)
+    else
+      AssertEquals('Correct operator name',format('%s(Integer,Integer):te',[OperatorNames[t]]),FOperator.Name);
+    end;
 end;
 
 procedure TTestProcedureFunction.TestAssignOperatorAfterObject;
