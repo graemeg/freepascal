@@ -1231,7 +1231,7 @@ HKCR
                         StringMap[NextString].ComStr:=StringToOleStr(PString(Params^)^);
                         StringMap[NextString].PasStr:=PString(Params^);
                         Arguments[i].VType:=varOleStr or varByRef;
-                        Arguments[i].VPointer:=StringMap[NextString].ComStr;
+                        Arguments[i].VPointer:=@StringMap[NextString].ComStr;
                         inc(NextString);
                         inc(PPointer(Params));
                       end;
