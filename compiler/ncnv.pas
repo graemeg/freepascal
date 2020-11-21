@@ -2957,10 +2957,7 @@ implementation
 
                    (not(n.nodetype in [modn,divn]) or (not(gotminus1)))
                   ) or
-                  { in case of div/mod, the result of that division/modulo can
-                    usually be different in 32 and 64 bit }
-                  (not gotdivmod and
-                   (((n.nodetype=andn) and wasoriginallysmallerint(tbinarynode(n).left)) or
+                  ((((n.nodetype=andn) and wasoriginallysmallerint(tbinarynode(n).left)) or
                     ((n.nodetype=andn) and wasoriginallysmallerint(tbinarynode(n).right))));
               end;
             else
