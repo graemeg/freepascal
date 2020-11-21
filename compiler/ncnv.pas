@@ -322,7 +322,7 @@ implementation
       globtype,systems,constexp,compinnr,
       cutils,verbose,globals,widestr,ppu,
       symconst,symdef,symsym,symcpu,symtable,
-      ncon,ncal,nset,nadd,nmem,nmat,nbas,nutils,ninl,
+      ncon,ncal,nset,nadd,nmem,nmat,nbas,nutils,ninl,nflw,
       cgbase,procinfo,
       htypechk,blockutl,pass_1,cpuinfo;
 
@@ -2872,6 +2872,9 @@ implementation
 
     function checkremovebiginttypeconvs(n: tnode; out gotsint: boolean;validints : tordtypeset;const l,h : Tconstexprint): boolean;
       var
+        gotminus1,
+        gotsigned,
+        gotunsigned,
         gotdivmod: boolean;
 
       { checks whether a node has an accepted resultdef, or originally
@@ -2880,6 +2883,13 @@ implementation
         begin
           if (n.resultdef.typ<>orddef) then
             exit(false);
+          gotsigned:=gotsigned or is_signed(n.resultdef);
+          gotunsigned:=gotunsigned or not(is_signed(n.resultdef));
+          { actually, we should only check right (denominator) nodes here, but
+            setting it always is a safe approximation }
+          if ((n.nodetype=ordconstn) and
+            (tordconstnode(n).value=-1)) then
+            gotminus1:=true;
           if (torddef(n.resultdef).ordtype in validints) then
             begin
               if is_signed(n.resultdef) then
@@ -2904,7 +2914,12 @@ implementation
                   is_signed(ttypeconvnode(n).left.resultdef)) or
                  ((n.nodetype=ordconstn) and
                   (tordconstnode(n).value<0)) then
-                gotsint:=true;
+                begin
+                  gotsint:=true;
+                  gotsigned:=true;
+                end
+              else
+                gotunsigned:=true;
               exit(true);
             end;
           result:=false;
@@ -2938,7 +2953,10 @@ implementation
                   gotdivmod:=true;
                 result:=
                   (docheckremoveinttypeconvs(tbinarynode(n).left) and
-                   docheckremoveinttypeconvs(tbinarynode(n).right)) or
+                   docheckremoveinttypeconvs(tbinarynode(n).right) and
+
+                   (not(n.nodetype in [modn,divn]) or (not(gotminus1)))
+                  ) or
                   { in case of div/mod, the result of that division/modulo can
                     usually be different in 32 and 64 bit }
                   (not gotdivmod and
@@ -2953,14 +2971,22 @@ implementation
       begin { checkremove64bittypeconvs }
         gotdivmod:=false;
         gotsint:=false;
+        gotminus1:=false;
+        gotsigned:=false;
+        gotunsigned:=false;
         result:=
           docheckremoveinttypeconvs(n) and
-          not(gotdivmod and gotsint);
+          (not(gotdivmod) or (gotsigned xor gotunsigned));
       end;
 
 
     { remove int type conversions and set the result to the given type }
     procedure doremoveinttypeconvs(var n: tnode; todef: tdef; forceunsigned: boolean; signedtype,unsignedtype : tdef);
+      var
+        newblock: tblocknode;
+        newstatements: tstatementnode;
+        originaldivtree: tnode;
+        tempnode: ttempcreatenode;
       begin
         case n.nodetype of
           subn,addn,muln,divn,modn,xorn,andn,orn:
@@ -2969,9 +2995,34 @@ implementation
               if not forceunsigned and
                  is_signed(n.resultdef) then
                 begin
+                  originaldivtree:=nil;
+                  if n.nodetype in [divn,modn] then
+                    originaldivtree:=n.getcopy;
                   doremoveinttypeconvs(tbinarynode(n).left,signedtype,false,signedtype,unsignedtype);
                   doremoveinttypeconvs(tbinarynode(n).right,signedtype,false,signedtype,unsignedtype);
                   n.resultdef:=signedtype;
+                  if n.nodetype in [divn,modn] then
+                    begin
+                      newblock:=internalstatements(newstatements);
+                      tempnode:=ctempcreatenode.create(n.resultdef,n.resultdef.size,tt_persistent,true);
+                      addstatement(newstatements,tempnode);
+                      addstatement(newstatements,cifnode.create_internal(
+                        caddnode.create_internal(equaln,tbinarynode(n).right.getcopy,cordconstnode.create(-1,n.resultdef,false)),
+                          cassignmentnode.create_internal(
+                            ctemprefnode.create(tempnode),
+                            cmoddivnode.create(n.nodetype,tbinarynode(originaldivtree).left.getcopy,cordconstnode.create(-1,tbinarynode(originaldivtree).right.resultdef,false))
+                          ),
+                          cassignmentnode.create_internal(
+                            ctemprefnode.create(tempnode),n
+                          )
+                        )
+                      );
+                      addstatement(newstatements,ctempdeletenode.create_normal_temp(tempnode));
+                      addstatement(newstatements,ctemprefnode.create(tempnode));
+                      n:=newblock;
+                      do_typecheckpass(n);
+                      originaldivtree.free;
+                    end;
                 end
               else
                 begin
