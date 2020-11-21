@@ -16489,7 +16489,7 @@ begin
   Add([
   'type p = ^(red, green);',
   'begin']);
-  CheckParserException('Expected "Identifier" at token "(" in file afile.pp at line 2 column 11',
+  CheckParserException('Expected "Identifier or file"',
     nParserExpectTokenError);
 end;
 
