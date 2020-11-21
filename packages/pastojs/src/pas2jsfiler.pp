@@ -442,8 +442,7 @@ const
     'Static',
     'Varargs',
     'ReferenceTo',
-    'Async',
-    'Far'
+    'Async'
     );
 
   PCUProcedureMessageTypeNames: array[TProcedureMessageType] of string = (
@@ -485,8 +484,7 @@ const
     'LogicalXor',
     'RightShift',
     'Enumerator',
-    'In',
-    'Initialize'
+    'In'
     );
 
   PCUProcedureModifierNames: array[TProcedureModifier] of string = (
