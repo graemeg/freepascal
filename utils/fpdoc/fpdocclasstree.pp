@@ -52,6 +52,7 @@ begin
   FreeAndNil(FClassTree);
   Inherited;
 end;
+
 Function TClassTreeBuilder.BuildTree(AObjects : TStringList) : Integer;
 
 Var
@@ -62,11 +63,13 @@ begin
   Result:=0;
   AObjects.Sorted:=True;
   For I:=0 to AObjects.Count-1 do
-    begin
-    PC:=AObjects.Objects[i] as TPasClassType;
-    If (PC.ObjKind=FObjectKind) and Not PC.IsForward then
-      AddToClassTree(PC,Result);
-    end;
+    // Advanced records
+    if AObjects.Objects[i] is TPasClassType then
+      begin
+      PC:=AObjects.Objects[i] as TPasClassType;
+      If (PC.ObjKind=FObjectKind) and Not PC.IsForward then
+        AddToClassTree(PC,Result);
+      end;
 end;
 
 Function TClassTreeBuilder.NodeMatch(N : TDomNode; AElement : TPasElement; NoPath : Boolean) : Boolean;
