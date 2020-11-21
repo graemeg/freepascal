@@ -1210,7 +1210,7 @@ HKCR
               writeln('DispatchInvoke: Params = ',hexstr(Params));
 {$endif DEBUG_COMDISPATCH}
               { get plain type }
-              CurrType:=CallDesc^.ArgTypes[i] and $3f;
+              CurrType:=CallDesc^.ArgTypes[i] and $7f;
               { a skipped parameter? Don't increment Params pointer if so. }
               if CurrType=varError then
                 begin
