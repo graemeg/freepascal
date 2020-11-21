@@ -1056,7 +1056,8 @@ var
   i, j, k: Integer;
   Module: TPasModule;
   Alias : TPasAliasType;
-  ClassDecl: TPasClassType;
+  MemberDecl: TPasMembersType;
+  ClassLikeDecl : TPasClassType;
   Member: TPasElement;
   s: String;
   Buf : TBufType;
@@ -1089,41 +1090,48 @@ begin
       if not assigned(Module.InterfaceSection) then
         continue;
       for j := 0 to Module.InterfaceSection.Classes.Count - 1 do
-      begin
-        ClassDecl := TPasClassType(Module.InterfaceSection.Classes[j]);
-        Write(ContentFile, CheckImplicitInterfaceLink(ClassDecl.PathName), ' ');
-        if Assigned(ClassDecl.AncestorType) then 
+        begin
+        MemberDecl := TPasClassType(Module.InterfaceSection.Classes[j]);
+        if MemberDecl is TPasClassType then
+          ClassLikeDecl:=MemberDecl as TPasClassType
+        else
+          ClassLikeDecl:=nil;
+        Write(ContentFile, CheckImplicitInterfaceLink(MemberDecl.PathName), ' ');
+        if Assigned(ClassLikeDecl) then
           begin
-             // simple aliases to class types are coded as "alias(classtype)"
-             Write(ContentFile, CheckImplicitInterfaceLink(ClassDecl.AncestorType.PathName));
-             if ClassDecl.AncestorType is TPasAliasType then
+          if Assigned(ClassLikeDecl.AncestorType) then
+            begin
+            // simple aliases to class types are coded as "alias(classtype)"
+            Write(ContentFile, CheckImplicitInterfaceLink(ClassLikeDecl.AncestorType.PathName));
+            if ClassLikeDecl.AncestorType is TPasAliasType then
                begin
-                 alias:= TPasAliasType(ClassDecl.AncestorType);
-                 if assigned(alias.desttype) and (alias.desttype is TPasClassType) then
-                   write(ContentFile,'(',alias.desttype.PathName,')');   
+               alias:= TPasAliasType(ClassLikeDecl.AncestorType);
+               if assigned(alias.desttype) and (alias.desttype is TPasClassType) then
+                  write(ContentFile,'(',alias.desttype.PathName,')');
                end;
-          end
-        else if ClassDecl.ObjKind = okClass then
-          Write(ContentFile, '#rtl.System.TObject')
-        else if ClassDecl.ObjKind = okInterface then
-          Write(ContentFile, '#rtl.System.IUnknown');
-        if ClassDecl.Interfaces.Count>0 then
-          begin
-            for k:=0 to ClassDecl.Interfaces.count-1 do
+            end
+          else if ClassLikeDecl.ObjKind = okClass then
+            Write(ContentFile, '#rtl.System.TObject')
+          else if ClassLikeDecl.ObjKind = okInterface then
+           Write(ContentFile, '#rtl.System.IUnknown');
+          if ClassLikeDecl.Interfaces.Count>0 then
+            begin
+            for k:=0 to ClassLikeDecl.Interfaces.count-1 do
               begin
-                write(contentfile,',',CheckImplicitInterfaceLink(TPasClassType(ClassDecl.Interfaces[k]).PathName));
-                if TPasElement(ClassDecl.Interfaces[k]) is TPasAliasType then
+                write(contentfile,',',CheckImplicitInterfaceLink(TPasClassType(ClassLikeDecl.Interfaces[k]).PathName));
+                if TPasElement(ClassLikeDecl.Interfaces[k]) is TPasAliasType then
                   begin
-                    alias:= TPasAliasType(ClassDecl.Interfaces[k]);
+                    alias:= TPasAliasType(ClassLikeDecl.Interfaces[k]);
                     if assigned(alias.desttype) and (alias.desttype is TPasClassType) then
                       write(ContentFile,'(',CheckImplicitInterfaceLink(alias.desttype.PathName),')');   
                   end;
               end;
+            end;
           end;
         writeln(contentfile);
-        for k := 0 to ClassDecl.Members.Count - 1 do
+        for k := 0 to MemberDecl.Members.Count - 1 do
         begin
-          Member := TPasElement(ClassDecl.Members[k]);
+          Member := TPasElement(MemberDecl.Members[k]);
           Write(ContentFile, Chr(Ord(Member.Visibility) + Ord('0')));
           S:='';
           if Member.ClassType = TPasVariable then

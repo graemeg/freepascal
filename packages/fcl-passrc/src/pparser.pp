@@ -5356,13 +5356,17 @@ begin
         begin
         ResultEl.Name := CurTokenName;
         ExpectToken(tkColon);
-        end
-      else
-        if (CurToken=tkColon) then
-          ResultEl.Name := 'Result'
-        else
-          ParseExc(nParserExpectedColonID,SParserExpectedColonID);
         ResultEl.ResultType := ParseType(ResultEl,CurSourcePos);
+        end
+      else if not ((Parent is TPasOperator) and (TPasOperator(Parent).OperatorType=otInitialize)) then
+        // Initialize operator has no result
+        begin
+         if (CurToken=tkColon) then
+            ResultEl.Name := 'Result'
+          else
+            ParseExc(nParserExpectedColonID,SParserExpectedColonID);
+         ResultEl.ResultType := ParseType(ResultEl,CurSourcePos);
+         end;
       end;
   else
     ResultEl:=Nil;
@@ -6883,7 +6887,10 @@ Var
   CurEl: TPasElement;
   LastToken: TToken;
   AllowVisibility: Boolean;
+  IsGeneric : Boolean;
+
 begin
+  IsGeneric:=False;
   AllowVisibility:=msAdvancedRecords in CurrentModeswitches;
   if AllowVisibility then
     v:=visPublic
@@ -6969,7 +6976,7 @@ begin
         if Not AllowMethods then
           ParseExc(nErrRecordMethodsNotAllowed,SErrRecordMethodsNotAllowed);
         ProcType:=GetProcTypeFromToken(CurToken,LastToken=tkclass);
-        Proc:=ParseProcedureOrFunctionDecl(ARec,ProcType,false,v);
+        Proc:=ParseProcedureOrFunctionDecl(ARec,ProcType,IsGeneric,v);
         if Proc.Parent is TPasOverloadedProc then
           TPasOverloadedProc(Proc.Parent).Overloads.Add(Proc)
         else
@@ -6978,9 +6985,21 @@ begin
         end;
       tkDestructor:
         ParseExc(nParserNoConstructorAllowed,SParserNoConstructorAllowed);
-      tkabsolute,tkGeneric,tkSelf, // Counts as field name
+      tkGeneric, // Can count as field name
+      tkabsolute,
+      tkSelf, // Count as field name
       tkIdentifier :
         begin
+        if (Curtoken=tkGeneric) and AllowVisibility then
+          begin
+          NextToken;
+          if CurToken in [tkClass,tkOperator,tkFunction,tkProcedure] then
+            begin
+            IsGeneric:=True;
+            Continue;
+            end;
+          UnGetToken;
+          end;
         If AllowVisibility and CheckVisibility(CurTokenString,v) then
           begin
           if not (v in [visPrivate,visPublic,visStrictPrivate]) then
@@ -7034,6 +7053,8 @@ begin
       break;
     LastToken:=CurToken;
     NextToken;
+    if not IsClass then
+      IsGeneric:=False;
     end;
 end;
 

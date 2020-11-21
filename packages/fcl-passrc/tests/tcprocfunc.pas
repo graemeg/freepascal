@@ -178,6 +178,7 @@ type
     Procedure TestProcedureCdeclExternalName;
     Procedure TestFunctionCdeclExternalName;
     Procedure TestFunctionAlias;
+    Procedure TestOperatorNamedResult;
     Procedure TestOperatorTokens;
     procedure TestOperatorNames;
     Procedure TestAssignOperatorAfterObject;
@@ -1310,6 +1311,13 @@ begin
   ParseFunction;
   AssertFunc([],[],ccDefault,0);
   AssertEquals('Alias name','''myalias''',Func.AliasName);
+end;
+
+procedure TTestProcedureFunction.TestOperatorNamedResult;
+begin
+  AddDeclaration('operator = (a,b : T) z : Integer;');
+  ParseOperator;
+  AssertEquals('Correct operator type',otEqual,FOperator.OperatorType);
 end;
 
 procedure TTestProcedureFunction.TestProcedureAlias;
