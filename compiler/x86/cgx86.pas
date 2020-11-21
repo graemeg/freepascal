@@ -1399,7 +1399,12 @@ unit cgx86;
               OS_M512:
                 { 256-bit aligned vector }
                 if UseAVX then
-                  result:=A_VMOVAPS
+                  begin
+                    if aligned then
+                      result:=A_VMOVAPS
+                    else
+                      result:=A_VMOVUPS;
+                  end
                 else
                   { SSE does not support 256-bit or 512-bit vectors }
                   InternalError(2018012930);
