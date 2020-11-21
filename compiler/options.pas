@@ -3417,6 +3417,11 @@ begin
       not LinkerSetExplicitly then
      include(init_settings.globalswitches,cs_link_vlink);
 {$endif}
+{$ifdef m68k}
+   if (target_info.system in [system_m68k_sinclairql]) and
+      not LinkerSetExplicitly then
+     include(init_settings.globalswitches,cs_link_vlink);
+{$endif m68k}
 end;
 
 procedure TOption.checkoptionscompatibility;
