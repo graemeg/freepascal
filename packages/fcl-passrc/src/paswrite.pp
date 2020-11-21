@@ -1408,11 +1408,11 @@ end;
 
 procedure TPasWriter.WriteImplRaise(aRaise: TPasImplRaise);
 begin
-  if  assigned(aRaise.ExceptObject) then
+  if assigned(aRaise.ExceptObject) then
     begin
-      Add('raise %s',[GetExpr(aRaise.ExceptObject)]);
-      if aRaise.ExceptAddr<>Nil then
-        Add(' at %s',[GetExpr(aRaise.ExceptAddr)]);
+    Add('raise %s',[GetExpr(aRaise.ExceptObject)]);
+    if aRaise.ExceptAddr<>Nil then
+      Add(' at %s',[GetExpr(aRaise.ExceptAddr)]);
     end
   else
     Add('raise');

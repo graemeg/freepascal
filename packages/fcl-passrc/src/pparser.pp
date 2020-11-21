@@ -1759,12 +1759,20 @@ begin
       end;
     // read nested specialize arguments
     ReadSpecializeArguments(ST,ST.Params);
-    // Important: resolve type reference AFTER args, because arg count is needed
-    ST.DestType:=ResolveTypeReference(GenName,ST,ST.Params.Count);
-
     if CurToken<>tkGreaterThan then
       ParseExcTokenError('[20190801113005]');
-    // ToDo: cascaded specialize A<B>.C<D>
+
+    // Check for cascaded specialize A<B>.C or A<B>.C<D>
+    NextToken;
+    if CurToken<>tkDot then
+      UnGetToken
+    else
+      begin
+      NextToken;
+      ST.SubType:=ParseSimpleType(ST,CurSourcePos,GenName,False);
+      end;
+    // Important: resolve type reference AFTER args, because arg count is needed
+    ST.DestType:=ResolveTypeReference(GenName,ST,ST.Params.Count);
 
     Engine.FinishScope(stTypeDef,ST);
     Result:=ST;
@@ -6846,6 +6854,24 @@ var
     Scanner.UnSetTokenOption(toOperatorToken);
   end;
 
+  Function CheckSection : Boolean;
+
+  begin
+    // Advanced records can have empty sections.
+    { Use Case:
+      Record
+      type
+      const
+      var
+      Case Integer of
+      end;
+    }
+    NextToken;
+    Result:=CurToken in [tkvar,tktype,tkConst,tkCase];
+    if Not Result then
+      UngetToken;
+  end;
+
 Var
   VariantName : String;
   v : TPasMemberVisibility;
@@ -6874,6 +6900,8 @@ begin
         DisableIsClass;
         if Not AllowMethods then
           ParseExc(nErrRecordTypesNotAllowed,SErrRecordTypesNotAllowed);
+        if CheckSection then
+          continue;
         ExpectToken(tkIdentifier);
         ParseMembersLocalTypes(ARec,v);
         end;
@@ -6882,6 +6910,8 @@ begin
         DisableIsClass;
         if Not AllowMethods then
           ParseExc(nErrRecordConstantsNotAllowed,SErrRecordConstantsNotAllowed);
+        if CheckSection then
+          continue;
         ExpectToken(tkIdentifier);
         ParseMembersLocalConsts(ARec,v);
         end;
@@ -6889,6 +6919,8 @@ begin
         begin
         if Not AllowMethods then
           ParseExc(nErrRecordVariablesNotAllowed,SErrRecordVariablesNotAllowed);
+        if CheckSection then
+          continue;
         ExpectToken(tkIdentifier);
         OldCount:=ARec.Members.Count;
         ParseInlineVarDecl(ARec, ARec.Members, v, AEndToken=tkBraceClose);

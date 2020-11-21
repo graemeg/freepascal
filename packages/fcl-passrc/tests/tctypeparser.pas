@@ -363,6 +363,8 @@ type
     Procedure TestAdvRec_ProcOverrideFail;
     Procedure TestAdvRec_ProcMessageFail;
     Procedure TestAdvRec_DestructorFail;
+    Procedure TestAdvRec_CaseInVar;
+    Procedure TestAdvRec_EmptySections;
     Procedure TestAdvRecordInFunction;
     Procedure TestAdvRecordInAnonFunction;
     Procedure TestAdvRecordClassOperator;
@@ -2610,6 +2612,29 @@ begin
   StartRecord(true);
   AddMember('destructor Free;');
   ParseRecordFail(SParserNoConstructorAllowed,nParserNoConstructorAllowed);
+end;
+
+procedure TTestRecordTypeParser.TestAdvRec_CaseInVar;
+
+// Found in System.UITypes.pas
+
+begin
+  StartRecord(true);
+  AddMember('var');
+  AddMember('Case Integer of');
+  AddMember('  1 : (x: integer);');
+  AddMember('  2 : (y,z: integer)');
+  ParseRecord;
+end;
+
+procedure TTestRecordTypeParser.TestAdvRec_EmptySections;
+begin
+  StartRecord(true);
+  AddMember('const');
+  AddMember('type');
+  AddMember('var');
+  AddMember('  x: integer;');
+  ParseRecord;
 end;
 
 procedure TTestRecordTypeParser.TestAdvRecordInFunction;

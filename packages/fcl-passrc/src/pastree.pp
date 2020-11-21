@@ -534,6 +534,7 @@ type
     procedure ClearTypeReferences(aType: TPasElement); override;
   public
     DestType: TPasType;
+    SubType: TPasType;
     Expr: TPasExpr;
   end;
 
@@ -3303,6 +3304,7 @@ end;
 
 destructor TPasAliasType.Destroy;
 begin
+  ReleaseAndNil(TPasElement(SubType){$IFDEF CheckPasTreeRefCount},'TPasAliasType.SubType'{$ENDIF});
   ReleaseAndNil(TPasElement(DestType){$IFDEF CheckPasTreeRefCount},'TPasAliasType.DestType'{$ENDIF});
   ReleaseAndNil(TPasElement(Expr){$IFDEF CheckPasTreeRefCount},'TPasAliasType.Expr'{$ENDIF});
   inherited Destroy;
