@@ -1358,7 +1358,10 @@ implementation
                    (tarraydef(p).elementdef.typ=floatdef) and
                    (
                     (tarraydef(p).lowrange=0) and
-                    (tarraydef(p).highrange=3) and
+                    ((tarraydef(p).highrange=3) or
+                     (UseAVX and (tarraydef(p).highrange=7)) or
+                     (UseAVX512 and (tarraydef(p).highrange=15))
+                    ) and
                     (tfloatdef(tarraydef(p).elementdef).floattype=s32real)
                    )
                   ) or
@@ -1367,7 +1370,10 @@ implementation
                    (tarraydef(p).elementdef.typ=floatdef) and
                    (
                     (tarraydef(p).lowrange=0) and
-                    (tarraydef(p).highrange=1) and
+                    ((tarraydef(p).highrange=1) or
+                     (UseAVX and (tarraydef(p).highrange=3)) or
+                     (UseAVX512 and (tarraydef(p).highrange=7))
+                    )and
                     (tfloatdef(tarraydef(p).elementdef).floattype=s64real)
                    )
                   ) {or
