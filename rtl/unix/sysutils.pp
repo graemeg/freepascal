@@ -1191,12 +1191,12 @@ end;
 Procedure DoGetUniversalDateTime(var year, month, day, hour, min,  sec, msec, usec : word);
 
 var
-  tz:timeval;
+  tp:timeval;
 begin
-  fpgettimeofday(@tz,nil);
-  EpochToUniversal(tz.tv_sec,year,month,day,hour,min,sec);
-  msec:=tz.tv_usec div 1000;
-  usec:=tz.tv_usec mod 1000;
+  fpgettimeofday(@tp,nil);
+  EpochToUniversal(tp.tv_sec,year,month,day,hour,min,sec);
+  msec:=tp.tv_usec div 1000;
+  usec:=tp.tv_usec mod 1000;
 end;
 
 // Now, adjusted to local time.
@@ -1204,12 +1204,14 @@ end;
 Procedure DoGetLocalDateTime(var year, month, day, hour, min,  sec, msec, usec : word);
 
 var
-  tz:timeval;
+  tv:timeval;
+  tz:timezone;
 begin
-  fpgettimeofday(@tz,nil);
-  EpochToLocal(tz.tv_sec,year,month,day,hour,min,sec);
-  msec:=tz.tv_usec div 1000;
-  usec:=tz.tv_usec mod 1000;
+  fpgettimeofday(@tv,@tz);
+  tv.tv_sec:=tv.tv_sec-tz.tz_minuteswest*60;
+  EpochToUniversal(tv.tv_sec,year,month,day,hour,min,sec);
+  msec:=tv.tv_usec div 1000;
+  usec:=tv.tv_usec mod 1000;
 end;
 
 procedure GetTime(var hour,min,sec,msec,usec:word);

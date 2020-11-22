@@ -144,11 +144,13 @@ end;
 
 Procedure GetDate(Var Year, Month, MDay, WDay: Word);
 var
-  tz:timeval;
+  tv:timeval;
+  tz:timezone;
   hour,min,sec : word;
 begin
-  fpgettimeofday(@tz,nil);
-  EpochToLocal(tz.tv_sec,year,month,mday,hour,min,sec);
+  fpgettimeofday(@tv,@tz);
+  tv.tv_sec:=tv.tv_sec-tz.tz_minuteswest*60;
+  EpochToUniversal(tv.tv_sec,year,month,mday,hour,min,sec);
   Wday:=weekday(Year,Month,MDay);
 end;
 
@@ -189,12 +191,14 @@ end;
 
 Procedure GetTime(Var Hour, Minute, Second, Sec100: Word);
 var
-  tz:timeval;
+  tv:timeval;
+  tz:timezone;
   year,month,day : word;
 begin
-  fpgettimeofday(@tz,nil);
-  EpochToLocal(tz.tv_sec,year,month,day,hour,minute,second);
-  sec100:=tz.tv_usec div 10000;
+  fpgettimeofday(@tv,@tz);
+  tv.tv_sec:=tv.tv_sec-tz.tz_minuteswest*60;
+  EpochToUniversal(tv.tv_sec,year,month,day,hour,minute,second);
+  sec100:=tv.tv_usec div 10000;
 end;
 
 
