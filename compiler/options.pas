@@ -4387,44 +4387,61 @@ begin
       ;
   end;
 
-  { ARMHF defaults }
-  if (target_info.abi = abi_eabihf) then
-    { set default cpu type to ARMv7a for ARMHF unless specified otherwise }
-    begin
-    {$ifdef CPUARMV6}
-      { if the compiler is built for armv6, then
-        inherit this setting, e.g. Raspian is armhf but
-        only armv6, this makes rebuilds of the compiler
-        easier }
-      if not option.CPUSetExplicitly then
-        init_settings.cputype:=cpu_armv6;
-      if not option.OptCPUSetExplicitly then
-        init_settings.optimizecputype:=cpu_armv6;
-    {$else CPUARMV6}
-      if not option.CPUSetExplicitly then
-        init_settings.cputype:=cpu_armv7a;
-      if not option.OptCPUSetExplicitly then
-        init_settings.optimizecputype:=cpu_armv7a;
-    {$endif CPUARMV6}
+  { set ABI defaults }
+  case target_info.abi of
+    abi_eabihf:
+      { set default cpu type to ARMv7a for ARMHF unless specified otherwise }
+      begin
+{$ifdef CPUARMV6}
+        { if the compiler is built for armv6, then
+          inherit this setting, e.g. Raspian is armhf but
+          only armv6, this makes rebuilds of the compiler
+          easier }
+        if not option.CPUSetExplicitly then
+          init_settings.cputype:=cpu_armv6;
+        if not option.OptCPUSetExplicitly then
+          init_settings.optimizecputype:=cpu_armv6;
+{$else CPUARMV6}
+        if not option.CPUSetExplicitly then
+          init_settings.cputype:=cpu_armv7a;
+        if not option.OptCPUSetExplicitly then
+          init_settings.optimizecputype:=cpu_armv7a;
+{$endif CPUARMV6}
 
-      { Set FPU type }
-      if not(option.FPUSetExplicitly) then
-        begin
-          if init_settings.cputype < cpu_armv7 then
-            init_settings.fputype:=fpu_vfpv2
-          else
-            init_settings.fputype:=fpu_vfpv3_d16;
-        end
-      else
-        begin
-          if (not(FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[init_settings.fputype]))
-	     or (target_info.system = system_arm_ios) then
-            begin
-              Message(option_illegal_fpu_eabihf);
-              StopOptions(1);
-            end;
-        end;
-    end;
+        { Set FPU type }
+        if not(option.FPUSetExplicitly) then
+          begin
+            if init_settings.cputype < cpu_armv7 then
+              init_settings.fputype:=fpu_vfpv2
+            else
+              init_settings.fputype:=fpu_vfpv3_d16;
+          end
+        else
+          begin
+            if (not(FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[init_settings.fputype]))
+	       or (target_info.system = system_arm_ios) then
+              begin
+                Message(option_illegal_fpu_eabihf);
+                StopOptions(1);
+              end;
+          end;
+      end;
+    abi_eabi:
+      begin
+        if target_info.system=system_arm_linux then
+          begin
+            { this is what Debian uses }
+            if not option.CPUSetExplicitly then
+              init_settings.cputype:=cpu_armv4t;
+            if not option.OptCPUSetExplicitly then
+              init_settings.optimizecputype:=cpu_armv4t;
+            if not(option.FPUSetExplicitly) then
+              init_settings.fputype:=fpu_soft;
+          end;
+      end;
+    else
+      ;
+  end;
 
   if (init_settings.instructionset=is_thumb) and not(CPUARM_HAS_THUMB2 in cpu_capabilities[init_settings.cputype]) then
     begin
