@@ -772,6 +772,11 @@ Implementation
             A_SXTH:
               Result:=OptPass1SXTH(p);
 //            A_VLDR,
+            A_FMADD,
+            A_FMSUB,
+            A_FNMADD,
+            A_FNMSUB,
+            A_FNMUL,
             A_FADD,
             A_FMUL,
             A_FDIV,
