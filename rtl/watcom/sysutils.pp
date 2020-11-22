@@ -650,6 +650,7 @@ begin
   SystemTime.Year := Regs.Cx;
   SystemTime.Month := Regs.Dh;
   SystemTime.Day := Regs.Dl;
+  SystemTime.DayOfWeek := Regs.Al;
 end ;
 
 

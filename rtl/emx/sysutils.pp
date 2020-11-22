@@ -1097,30 +1097,33 @@ asm
  mov ah, 2Ah
  call syscall
 {$IFDEF REGCALL}
- pop eax
+ pop edi
 {$ELSE REGCALL}
  mov edi, SystemTime
 {$ENDIF REGCALL}
- mov ax, cx
- stosw
- xor eax, eax
- mov al, 10
- mul dl
+ xchg ax, cx
  shl eax, 16
  mov al, dh
+ stosd
+ mov al, dl
+ shl eax, 16
+ mov al, cl
  stosd
  push edi
  mov ah, 2Ch
  call syscall
  pop edi
  xor eax, eax
- mov al, cl
- shl eax, 16
  mov al, ch
+ shl eax, 16
+ mov al, cl
  stosd
- mov al, dl
+ xor eax, eax
+ mov al, 10
+ mul dl
  shl eax, 16
  mov al, dh
+ rol eax, 16
  stosd
  pop edi
 end {['eax', 'ecx', 'edx', 'edi']};
