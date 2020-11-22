@@ -1649,8 +1649,11 @@ end;
 
 function GetLocalTimeOffset: Integer;
 
+var
+  tz:timezone;
 begin
- Result := -Tzseconds div 60; 
+  fpgettimeofday(nil,@tz);
+  GetLocalTimeOffset:=tz.tz_minuteswest;
 end;
 
 function GetLocalTimeOffset(const DateTime: TDateTime; const InputIsUTC: Boolean; out Offset: Integer): Boolean;
