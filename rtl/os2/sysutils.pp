@@ -559,10 +559,11 @@ begin
     Year:=DT.Year;
     Month:=DT.Month;
     Day:=DT.Day;
+    DayOfWeek:=DT.WeekDay;
     Hour:=DT.Hour;
     Minute:=DT.Minute;
     Second:=DT.Second;
-    MilliSecond:=DT.Sec100;
+    MilliSecond:=DT.Sec100 * 10;
   end;
 end;
 
