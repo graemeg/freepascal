@@ -188,6 +188,8 @@ uses
          constructor op_reg_reg_reg_shifterop(op : tasmop;_op1,_op2,_op3 : tregister; const _op4 : tshifterop);
          constructor op_reg_reg_reg_cond(op : tasmop;_op1,_op2,_op3 : tregister; const _op4: tasmcond);
 
+         constructor op_const_ref(op:tasmop; _op1: aint; _op2: treference);
+
          { this is for Jmp instructions }
          constructor op_cond_sym(op : tasmop;cond:TAsmCond;_op1 : tasmsymbol);
 
@@ -544,6 +546,15 @@ implementation
        end;
 
 
+     constructor taicpu.op_const_ref(op : tasmop; _op1 : aint; _op2 : treference);
+      begin
+         inherited create(op);
+         ops:=2;
+         loadconst(0,_op1);
+         loadref(1,_op2);
+      end;
+
+
     constructor taicpu.op_cond_sym(op : tasmop;cond:TAsmCond;_op1 : tasmsymbol);
       begin
          inherited create(op);
@@ -551,6 +562,7 @@ implementation
          ops:=1;
          loadsymbol(0,_op1,0);
       end;
+
 
     constructor taicpu.op_regset_reg_ref(op: tasmop; basereg: tregister; nregs: byte; const ref: treference);
       begin

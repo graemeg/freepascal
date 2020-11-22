@@ -44,6 +44,7 @@ interface
         procedure second_trunc_real; override;
         procedure second_get_frame; override;
         procedure second_fma; override;
+        procedure second_prefetch; override;
       private
         procedure load_fpu_location;
       end;
@@ -55,7 +56,7 @@ implementation
       globtype,verbose,globals,
       cpuinfo, defutil,symdef,aasmdata,aasmcpu,
       cgbase,cgutils,pass_1,pass_2,
-      ncal,
+      ncal,nutils,
       cpubase,ncgutil,cgobj,cgcpu, hlcgobj;
 
 {*****************************************************************************
@@ -269,6 +270,34 @@ implementation
         current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg_reg_reg(op[negproduct,negop3],
           location.register,paraarray[1].location.register,paraarray[2].location.register,paraarray[3].location.register));
         cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
+      end;
+
+
+    procedure taarch64inlinenode.second_prefetch;
+      var
+        ref : treference;
+        r : tregister;
+        checkpointer_used : boolean;
+      begin
+        { do not call Checkpointer for left node }
+        checkpointer_used:=(cs_checkpointer in current_settings.localswitches);
+        if checkpointer_used then
+          node_change_local_switch(left,cs_checkpointer,false);
+        secondpass(left);
+        if checkpointer_used then
+          node_change_local_switch(left,cs_checkpointer,false);
+       case left.location.loc of
+         LOC_CREFERENCE,
+         LOC_REFERENCE:
+           begin
+             r:=cg.getintregister(current_asmdata.CurrAsmList,OS_ADDR);
+             cg.a_loadaddr_ref_reg(current_asmdata.CurrAsmList,left.location.reference,r);
+             reference_reset_base(ref,r,0,location.reference.temppos,left.location.reference.alignment,location.reference.volatility);
+             current_asmdata.CurrAsmList.concat(taicpu.op_const_ref(A_PRFM,0,ref));
+           end;
+         else
+           { nothing to prefetch };
+       end;
       end;
 
 
