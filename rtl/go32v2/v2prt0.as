@@ -38,6 +38,7 @@
         .comm   __stubinfo, 4
         .comm   ___djgpp_base_address, 4
         .comm   ___djgpp_selector_limit, 4
+        .comm   __crt0_startup_flags, 4
         .comm   ___djgpp_stack_limit, 4
         .lcomm  sel_buf, 8
 
@@ -920,10 +921,6 @@ ___v2prt0_start_fs:
         .globl  ___bss_count
 ___bs_count:
         .long   1
-
-        .globl  __crt0_startup_flags
-__crt0_startup_flags:
-        .long   0
 
         .globl  __dos_ds
 __dos_ds:
