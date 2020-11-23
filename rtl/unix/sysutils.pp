@@ -1191,12 +1191,12 @@ end;
 Procedure DoGetUniversalDateTime(var year, month, day, hour, min,  sec, msec, usec : word);
 
 var
-  tp:timeval;
+  tz:timeval;
 begin
-  fpgettimeofday(@tp,nil);
-  EpochToUniversal(tp.tv_sec,year,month,day,hour,min,sec);
-  msec:=tp.tv_usec div 1000;
-  usec:=tp.tv_usec mod 1000;
+  fpgettimeofday(@tz,nil);
+  EpochToUniversal(tz.tv_sec,year,month,day,hour,min,sec);
+  msec:=tz.tv_usec div 1000;
+  usec:=tz.tv_usec mod 1000;
 end;
 
 // Now, adjusted to local time.
@@ -1204,14 +1204,12 @@ end;
 Procedure DoGetLocalDateTime(var year, month, day, hour, min,  sec, msec, usec : word);
 
 var
-  tv:timeval;
-  tz:timezone;
+  tz:timeval;
 begin
-  fpgettimeofday(@tv,@tz);
-  tv.tv_sec:=tv.tv_sec-tz.tz_minuteswest*60;
-  EpochToUniversal(tv.tv_sec,year,month,day,hour,min,sec);
-  msec:=tv.tv_usec div 1000;
-  usec:=tv.tv_usec mod 1000;
+  fpgettimeofday(@tz,nil);
+  EpochToLocal(tz.tv_sec,year,month,day,hour,min,sec);
+  msec:=tz.tv_usec div 1000;
+  usec:=tz.tv_usec mod 1000;
 end;
 
 procedure GetTime(var hour,min,sec,msec,usec:word);
@@ -1649,11 +1647,8 @@ end;
 
 function GetLocalTimeOffset: Integer;
 
-var
-  tz:timezone;
 begin
-  fpgettimeofday(nil,@tz);
-  GetLocalTimeOffset:=tz.tz_minuteswest;
+ Result := -Tzseconds div 60; 
 end;
 
 function GetLocalTimeOffset(const DateTime: TDateTime; const InputIsUTC: Boolean; out Offset: Integer): Boolean;
