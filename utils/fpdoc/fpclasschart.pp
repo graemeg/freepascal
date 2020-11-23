@@ -509,7 +509,47 @@ begin
   else
     Writeln(StdErr,Format(SSkipMerge,[S.NodeName,D.NodeName]));
 end;
-  
+
+Function MergeTrees (Dest : TXMLDocument; aRootNode : TPasElementNode) : Integer;
+
+Var
+  aSrc : TXMLDocument;
+
+  Procedure AppendChildClasses(aParent : TDomElement; aNode : TPasElementNode);
+
+  Var
+    El : TDomElement;
+    aChild : TPasElementNode;
+    I : Integer;
+    M : TPasModule;
+
+  begin
+    If (ANode=Nil) or (aNode.ChildCount=0)  then exit;
+    for I:=0 to aNode.ChildCount-1 do
+      begin
+      aChild:=aNode.Children[I];
+      El:=aSrc.CreateElement(UTF8Decode(aChild.Element.Name));
+      M:=aChild.Element.GetModule;
+      If M<>Nil then
+        EL['unit']:=UTF8Decode(M.Name);
+      aParent.AppendChild(El);
+      AppendChildClasses(El,aChild);
+      end;
+  end;
+
+begin
+  aSrc:=TXMLDocument.Create();
+  try
+    aSrc.AppendChild(aSrc.CreateElement('TObject'));
+    AppendChildClasses(aSrc.DocumentElement,aRootNode);
+    MergeTrees(Dest,aSrc);
+  finally
+    aSrc.Free;
+  end;
+end;
+
+
+
 Function AnalyseFiles(Const AOutputName : String; InputFiles,MergeFiles : TStrings; AObjectKind : TPasObjKind) : String;
 
 
@@ -542,7 +582,7 @@ begin
       Try
         ParseSource(Engine,InputFiles[I],OSTarget,CPUTarget);
         Engine.Ftree.BuildTree(Engine.FObjects);
-        ACount:=ACount+MergeTrees(XML,Engine.FTree.ClassTree);
+        ACount:=ACount+MergeTrees(XML,Engine.FTree.RootNode);
       Finally
         FreeAndNil(Engine);
       end;
