@@ -5,55 +5,167 @@ unit fpdocclasstree;
 interface
 
 uses
-  Classes, SysUtils, DOM, pastree;
+  Classes, SysUtils, DOM, pastree, contnrs;
 
 Type
+
+  { TPasElementNode }
+
+  TPasElementNode = Class
+  Private
+    FElement : TPasElement;
+    FChildren : TFPObjectList;
+    function GetChild(aIndex : Integer): TPasElementNode;
+    function GetChildCount: Integer;
+  Public
+    Constructor Create (aElement : TPaselement);
+    Destructor Destroy; override;
+    Procedure AddChild(C : TPasElementNode);
+    Procedure SortChildren;
+    Property Element : TPasElement Read FElement;
+    Property Children [aIndex : Integer] : TPasElementNode Read GetChild;
+    Property ChildCount : Integer Read GetChildCount;
+  end;
+
+  { TClassTreeBuilder }
+
   TClassTreeBuilder = Class
   Private
-    FClassTree : TXMLDocument;
-    FTreeStart : TDomElement;
+    // Full name -> TDomElement;
+    FElementList : TFPObjectHashTable;
     FObjectKind : TPasObjKind;
     FPackage: TPasPackage;
     FParentObject : TPasClassType;
+    FRootNode : TPasElementNode;
+    FRootObjectName : string;
   Protected
-    function LookForElement(PE: TDomElement; AElement: TPasElement; NoPath : Boolean): TDomNode;
-    function NodeMatch(N: TDomNode; AElement: TPasElement; NoPath : Boolean): Boolean;
-    Function AddToClassTree(AElement : TPasElement; Var ACount : Integer) : TDomElement;
+    function AddToList(aElement: TPasClassType): TPasElementNode;
   Public
     Constructor Create(APackage : TPasPackage; AObjectKind : TPasObjKind = okClass);
     Destructor Destroy; override;
     Function BuildTree(AObjects : TStringList) : Integer;
-    Property ClassTree : TXMLDocument Read FClassTree;
+    Property RootNode : TPasElementNode Read FRootNode;
   end;
 
 implementation
+
+{ TPasElementNode }
+
+function SortOnElementName(Item1, Item2: Pointer): Integer;
+begin
+  Result:=CompareText(TPasElementNode(Item1).Element.Name,TPasElementNode(Item2).Element.Name);
+end;
+
+function TPasElementNode.GetChild(aIndex : Integer): TPasElementNode;
+begin
+  if Assigned(FChildren) then
+    Result:=TPasElementNode(FChildren[aIndex])
+  else
+    Raise EListError.Create('Index out of range');
+end;
+
+function TPasElementNode.GetChildCount: Integer;
+begin
+  if Assigned(FChildren) then
+    Result:=FChildren.Count
+  else
+    Result:=0
+end;
+
+constructor TPasElementNode.Create(aElement: TPaselement);
+begin
+  FElement:=aElement;
+end;
+
+destructor TPasElementNode.Destroy;
+begin
+  FreeAndNil(FChildren);
+  inherited Destroy;
+end;
+
+procedure TPasElementNode.AddChild(C: TPasElementNode);
+begin
+  if FChildren=Nil then
+    FChildren:=TFPObjectList.Create(True);
+  FChildren.Add(C);
+end;
+
+procedure TPasElementNode.SortChildren;
+begin
+  if Assigned(FChildren) then
+    FChildren.Sort(@SortOnElementName);
+end;
 
 constructor TClassTreeBuilder.Create(APackage : TPasPackage;
   AObjectKind: TPasObjKind);
 
 begin
-  FCLassTree:=TXMLDocument.Create;
   FPackage:=APAckage;
   FObjectKind:=AObjectKind;
   Case FObjectkind of
-    okObject    : FParentObject:=TPasClassType.Create('System.TObject',FPackage);
-    okClass     : FParentObject:=TPasClassType.Create('System.TObject',FPackage);
-    okInterface : FParentObject:=TPasClassType.Create('System.IInterface',FPackage);
+    okInterface : FRootObjectName:='#rtl.System.IInterface';
+    okObject,
+    okClass    : FRootObjectName:='#rtl.System.TObject';
+  else
+    FRootObjectName:='#rtl.System.TObject';
   end;
+  FParentObject:=TPasClassType.Create(FRootObjectName,FPackage);
   FParentObject.ObjKind:=FObjectKind;
-  FTreeStart:=FClassTree.CreateElement('TObject');
-  FTreeStart['unit']:='System';
-  ClassTree.AppendChild(FTreeStart);
+  FRootNode:=TPasElementNode.Create(FParentObject);
+  FElementList:=TFPObjectHashTable.Create(False);
+  FElementList.Add(FRootObjectName,FRootNode);
 end;
 
 destructor TClassTreeBuilder.Destroy;
 begin
   FreeAndNil(FParentObject);
-  FreeAndNil(FClassTree);
+  FreeAndNil(FRootNode);
+  FreeAndNil(FElementList);
   Inherited;
 end;
 
+Function TClassTreeBuilder.AddToList(aElement : TPasClassType) : TPasElementNode;
+
+Var
+  aParentNode : TPasElementNode;
+  aName : String;
+
+begin
+  if aElement=Nil then
+    aName:=FRootObjectName
+  else
+    begin
+    aName:=aElement.PathName;
+    end;
+  Result:=TPasElementNode(FElementList.Items[aName]);
+  if (Result=Nil) then
+    begin
+    if aElement.AncestorType is TPasClassType then
+      aParentNode:=AddToList(aElement.AncestorType as TPasClassType)
+    else
+      aParentNode:=FRootNode;
+    Result:=TPasElementNode.Create(aElement);
+    aParentNode.AddChild(Result);
+    FElementList.Add(aName,Result);
+    end;
+end;
+
+
 Function TClassTreeBuilder.BuildTree(AObjects : TStringList) : Integer;
+
+(*
+Procedure DumpNode(Prefix : String; N : TPasElementNode);
+
+  Var
+    I : Integer;
+
+  begin
+    Writeln(Prefix,N.FElement.Name);
+    if Assigned(N.FChildren) then
+       For I:=0 to N.FChildren.Count-1 do
+         DumpNode(Prefix+'  ',TPasElementNode(N.FChildren[i]));
+  end;
+*)
 
 Var
   I : Integer;
@@ -61,132 +173,16 @@ Var
 
 begin
   Result:=0;
-  AObjects.Sorted:=True;
   For I:=0 to AObjects.Count-1 do
     // Advanced records
     if AObjects.Objects[i] is TPasClassType then
       begin
       PC:=AObjects.Objects[i] as TPasClassType;
-      If (PC.ObjKind=FObjectKind) and Not PC.IsForward then
-        AddToClassTree(PC,Result);
+      AddToList(PC);
       end;
 end;
 
-Function TClassTreeBuilder.NodeMatch(N : TDomNode; AElement : TPasElement; NoPath : Boolean) : Boolean;
 
-Var
-  PN,S,EN : String;
-
-begin
-  EN:=AELement.Name;
-  Result:=(N.NodeType=ELEMENT_NODE);
-  if Result then
-    begin
-    S:=UTF8Encode(N.NodeName);
-    if NoPath then
-      Begin
-      Result:=CompareText(S,EN)=0;
-      end
-    else
-      begin
-      IF Assigned(Aelement.GetModule) then
-        PN:=Aelement.GetModule.PackageName
-      else
-        PN:=FPackage.Name;
-      S:=PN+'.'+UTF8Encode(TDomElement(N)['unit'])+'.'+S;
-      Result:=(CompareText(S,AElement.PathName)=0);
-      end;
-   end;
-end;
-
-Function TClassTreeBuilder.LookForElement(PE : TDomElement; AElement : TPasElement; NoPath : boolean) : TDomNode;
-
-Var
-  N : TDomNode;
-
-begin
-//  Writeln('Enter TClassTreeBuilderLookForElement');
-  Result:=PE;
-  While (Result<>Nil) and Not NodeMatch(Result,AElement,NoPath) do
-    Result:=Result.NextSibling;
-  If (Result=Nil) then
-    if  Assigned(PE) then
-      begin
-      N:=PE.FirstChild;
-      While (Result=Nil) and (N<>Nil) do
-        begin
-        if (N.NodeType=ELEMENT_NODE) then
-          begin
-          Result:=LookForElement(N as TDomElement,AElement,NoPath);
-          end;
-        N:=N.NextSibling;
-        end;
-      end;
-//  Writeln('Exit TClassTreeBuilderLookForElement');
-end;
-
-Function TClassTreeBuilder.AddToClassTree(AElement : TPasElement; Var ACount : Integer) : TDomElement;
-// there are several codepaths that use uninitialized variables. (N,PE)
-// I initialized them to nil to at least make failures deterministic.
-Var
-  PC : TPasClassType;
-  PE : TDomElement;
-  M : TPasModule;
-  N : TDomNode;
-
-begin
-
-//  Writeln('Enter TClassTreeBuilder.AddToClassTree');
-  //if Assigned(AElement) then
-    //Writeln('Addtoclasstree : ',aElement.Name);
-  Result:=Nil; M:=Nil; N:=Nil;PE:=NIL;PC:=Nil;
-  If (AElement=Nil) then
-    begin
-    Result:=FTreeStart;
-    Exit;
-    end
-  else If (AElement is TPasUnresolvedTypeRef) then
-    begin
-    N:=LookForElement(FTreeStart,AElement,True);
-    If (N=Nil) then
-      PE:=FTreeStart;
-    end
-  else If (AElement is TPasClassType) then
-    begin
-    if (AElement=FParentObject) then
-      Result:=FTreeStart
-    else
-      begin
-      PC:=AElement as TPasClassType;
-      PE:=AddToClassTree(PC.AncestorType,ACount);
-      if PE=Nil then
-        PE:=FTreeStart;
-      N:=LookForElement(PE,PC,False);
-      end
-    end;
-  If (N<>Nil) then
-    begin
-    Result:=N as TDomElement
-    end
-  else if AElement.Name<>'' then
-    begin // N=NIL, PE might be nil.
-    Inc(ACount);
-    Result:=FClassTree.CreateElement(UTF8Decode(AElement.Name));
-    If Not (AElement is TPasUnresolvedTypeRef) then
-      begin
-      M:=AElement.GetModule;
-      if Assigned(M) then
-        Result['unit']:=UTF8Decode(M.Name);
-      end;
-    if PE=Nil then
-      begin
-      PE:=FTreeStart
-      end;
-    // if not assigned, probably needs to be assigned to something else.
-    if assigned(PE) then
-      PE.AppendChild(Result);
-    end;
-end;
 
 end.
 

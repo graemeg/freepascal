@@ -2412,17 +2412,21 @@ procedure THTMLWriter.CreateClassHierarchyPage(AList : TStringList; AddUnit : Bo
     PushOutputNode(h);
   end;
 
-  Procedure AppendClass(E : TDomElement);
+  Procedure AppendClass(E : TPasElementNode);
 
   Var
     N : TDomNode;
-    P,PM : TPasElement;
+    P,PM,M : TPasElement;
     EN : String;
     LL : TstringList;
     I,J : Integer;
 
   begin
-    EN:=Package.Name+'.'+UTF8Encode(E['unit'])+'.'+UTF8Encode(E.NodeName);
+    M:=E.Element.GetModule;
+    if (M<>Nil) then
+      EN:=Package.Name+'.'+UTF8Encode(M.Name)+'.'+UTF8Encode(E.Element.Name)
+    else
+      EN:=UTF8Encode(E.Element.Name);
     J:=AList.IndexOf(EN);
     If J<>-1 then
       P:=AList.Objects[J] as TPasElement
@@ -2442,30 +2446,17 @@ procedure THTMLWriter.CreateClassHierarchyPage(AList : TStringList; AddUnit : Bo
           end
         end
       else
-        AppendText(CurOutputNode,E.Nodename);
-      LL:=TStringList.Create;
-      try
-        N:=E.FirstChild;
-        While (N<>Nil) do
-          begin
-          if (N.NodeType=ELEMENT_NODE) then
-            LL.AddObject(UTF8Encode(N.NodeName),N);
-          N:=N.NextSibling;
-          end;
-        if (LL.Count>0) then
-          begin
-          LL.Sorted:=true;
-          PushClassList;
-          try
-            For I:=0 to LL.Count-1 do
-              AppendClass(LL.Objects[i] as TDomElement);
-          finally
-            PopOutputNode;
-          end;
-          end;
-      finally
-        LL.Free;
-      end;
+        AppendText(CurOutputNode,E.Element.Name);
+      if E.ChildCount>0 then
+        begin
+        PushClassList;
+        try
+          For I:=0 to E.ChildCount-1 do
+            AppendClass(E.Children[i] as TPasElementNode);
+        finally
+          PopOutputNode;
+        end;
+        end;
     Finally
       PopOutputNode;
     end;
@@ -2473,7 +2464,8 @@ procedure THTMLWriter.CreateClassHierarchyPage(AList : TStringList; AddUnit : Bo
 
 Var
   B : TClassTreeBuilder;
-  E : TDomElement;
+  E : TPasElementNode;
+
 begin
   PushOutputNode(BodyElement);
   try
@@ -2483,7 +2475,7 @@ begin
       // Classes
       // WriteXMLFile(B.ClassTree,'tree.xml');
       // Dummy TObject
-      E:=B.ClassTree.DocumentElement;
+      E:=B.RootNode;
       PushClassList;
       try
         AppendClass(E);
