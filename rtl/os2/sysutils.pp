@@ -56,6 +56,7 @@ threadvar
 {$DEFINE FPC_FEXPAND_GETENV_PCHAR}
 {$DEFINE HAS_GETTICKCOUNT}
 {$DEFINE HAS_GETTICKCOUNT64}
+{$DEFINE HAS_LOCALTIMEZONEOFFSET}
 
 { Include platform independent implementation part }
 {$i sysutils.inc}
@@ -549,6 +550,21 @@ end;
                               Time Functions
 ****************************************************************************}
 
+{$DEFINE HAS_DUAL_TZHANDLING}
+{$I tzenv.inc}
+
+var
+  TZAlwaysFromEnv: boolean;
+
+procedure InitTZ2; inline;
+var
+  DT: DosCalls.TDateTime;
+begin
+  DosGetDateTime (DT);
+  TZAlwaysFromEnv := DT.TimeZone = -1;
+end;
+
+
 procedure GetLocalTime (var SystemTime: TSystemTime);
 var
   DT: DosCalls.TDateTime;
@@ -566,6 +582,68 @@ begin
     MilliSecond:=DT.Sec100 * 10;
   end;
 end;
+
+
+function GetUniversalTime (var SystemTime: TSystemTime): boolean;
+var
+  DT: DosCalls.TDateTime;
+  Offset: longint;
+begin
+  if TZAlwaysFromEnv then
+   begin
+    GetLocalTime (SystemTime);
+    Offset := GetLocalTimeOffset;
+   end
+  else
+   begin
+    DosGetDateTime (DT);
+    with SystemTime do
+     begin
+      Year := DT.Year;
+      Month := DT.Month;
+      Day := DT.Day;
+      DayOfWeek := DT.WeekDay;
+      Hour := DT.Hour;
+      Minute := DT.Minute;
+      Second := DT.Second;
+      MilliSecond := DT.Sec100 * 10;
+     end;
+    if DT.TimeZone = -1 then
+     Offset := GetLocalTimeOffset
+    else
+     Offset := DT.TimeZone;
+   end;
+  UpdateTimeWithOffset (SystemTime, Offset);
+  GetUniversalTime := true;
+end;
+
+
+function GetLocalTimeOffset: integer;
+var
+  DT: DosCalls.TDateTime;
+begin
+  if TZAlwaysFromEnv then
+   begin
+    if InDST then
+     GetLocalTimeOffset := DSTOffsetMin
+    else
+     GetLocalTimeOffset := TZOffsetMin;
+   end
+  else
+   begin
+    DosGetDateTime (DT);
+    if DT.TimeZone <> -1 then
+     GetLocalTimeOffset := DT.TimeZone
+    else
+     begin
+      if InDST then
+       GetLocalTimeOffset := DSTOffsetMin
+      else
+       GetLocalTimeOffset := TZOffsetMin;
+     end;
+   end;
+end;
+
 
 {****************************************************************************
                               Misc Functions
@@ -998,6 +1076,8 @@ Initialization
   OnBeep:=@SysBeep;
   LastOSError := 0;
   OrigOSErrorWatch := TOSErrorWatch (SetOSErrorTracking (@TrackLastOSError));
+  InitTZ;
+  InitTZ2;
 Finalization
   FreeTerminateProcs;
   DoneExceptions;
