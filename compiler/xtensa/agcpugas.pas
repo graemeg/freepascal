@@ -78,23 +78,20 @@ unit agcpugas;
       begin
          with ref do
           begin
-{$ifdef extdebug}
-            // if base=NR_NO then
-            //   internalerror(200308292);
-
-            // if ((index<>NR_NO) or (shiftmode<>SM_None)) and ((offset<>0) or (symbol<>nil)) then
-            //   internalerror(200308293);
-{$endif extdebug}
-
             if assigned(symbol) then
               begin
                 s:=symbol.name;
                 if offset<>0 then
                   s:=s+tostr_with_plus(offset);
-                if refaddr=addr_pic then
-                  s:=s+'(PLT)'
-                {else if refaddr=addr_tlscall then
-                  s:=s+'(tlscall)'};
+                case refaddr of
+                  addr_pic:
+                    s:=s+'(PLT)';
+                  addr_full,
+                  addr_no:
+                    ;
+                  else
+                    Internalerror(2020112403);
+                end;
               end
             else
               begin
