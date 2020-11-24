@@ -66,12 +66,12 @@ type
   the system interface symbol table. }
 
 const
-      PIO4   =  7.85398163397448309616E-1;    {  pi/4        }
-      SQRT2  =  1.41421356237309504880;       {  sqrt(2)     }
-      LOG2E  =  1.4426950408889634073599;     {  1/log(2)    }
-      lossth =  1.073741824e9;
-      MAXLOG =  8.8029691931113054295988E1;    { log(2**127)  }
-      MINLOG = -8.872283911167299960540E1;     { log(2**-128) }
+      PIO4   {$ifdef llvm} : double {$endif}  =  7.85398163397448309616E-1;    {  pi/4        }
+      SQRT2  {$ifdef llvm} : double {$endif}  =  1.41421356237309504880;       {  sqrt(2)     }
+      LOG2E  {$ifdef llvm} : double {$endif}  =  1.4426950408889634073599;     {  1/log(2)    }
+      lossth {$ifdef llvm} : double {$endif} =  1.073741824e9;
+      MAXLOG {$ifdef llvm} : double {$endif} =  8.8029691931113054295988E1;    { log(2**127)  }
+      MINLOG {$ifdef llvm} : double {$endif} = -8.872283911167299960540E1;     { log(2**-128) }
       H2_54: double = 18014398509481984.0;    {2^54}
       huge: double = 1e300;
       one:  double = 1.0;
