@@ -104,19 +104,34 @@ const
     {$ifndef FPC_SYSTEM_HAS_ABS}
     {$define FPC_SYSTEM_HAS_ABS}
     function fpc_abs_real(d : ValReal) : ValReal;compilerproc;
+{$ifndef cpullvm}
     begin
       { Function is handled internal in the compiler }
       runerror(207);
       result:=0;
+{$else not cpullvm}
+    assembler;
+    asm
+      fldt d
+      fabs
+{$endif not cpullvm}
     end;
     {$endif FPC_SYSTEM_HAS_ABS}
     {$ifndef FPC_SYSTEM_HAS_SQR}
     {$define FPC_SYSTEM_HAS_SQR}
     function fpc_sqr_real(d : ValReal) : ValReal;compilerproc;
+{$ifndef cpullvm}
     begin
       { Function is handled internal in the compiler }
       runerror(207);
       result:=0;
+{$else not cpullvm}
+    assembler;
+    asm
+      fldt d
+      fldt %st(0)
+      fmult
+{$endif not cpullvm}
     end;
     {$endif FPC_SYSTEM_HAS_SQR}
     {$ifndef FPC_SYSTEM_HAS_SQRT}
