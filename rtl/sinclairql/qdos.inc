@@ -17,9 +17,20 @@
 
 const
   _MT_INF   = $00;
+  _MT_FRJOB = $05;
   _MT_DMODE = $10;
   _MT_ALCHP = $18;
   _MT_RECHP = $19;
+
+procedure mt_frjob(jobID: Tjobid; exitCode: longint); assembler; nostackframe; public name '_mt_frjob';
+asm
+  move.l  d3,-(sp)
+  move.l  jobID,d1
+  move.l  exitCode,d3
+  moveq   #_MT_FRJOB,d0
+  trap    #1
+  move.l  (sp)+,d3
+end;
 
 function mt_inf(sys_vars: ppchar; ver_ascii: plongint): Tjobid; assembler; nostackframe; public name '_mt_inf';
 asm
@@ -28,10 +39,16 @@ asm
   move.l  ver_ascii,-(sp)
   moveq.l #_MT_INF,d0
   trap #1
-  move.l  (sp)+,a1
+  move.l  (sp)+,d0
+  beq.s   @skip_vars
+  move.l  d0,a1
   move.l  d2,(a1)   { ver_ascii }
-  move.l  (sp)+,a1
+@skip_vars:
+  move.l  (sp)+,d0
+  beq.s   @skip_ver
+  move.l  d0,a1
   move.l  a0,(a1)   { sys_vars }
+@skip_ver:
   move.l  (sp)+,d2
   move.l  d1,d0     { jobid }
 end;
@@ -44,7 +61,7 @@ asm
   moveq.l #_MT_DMODE,d0
   trap #1
   move.w d1,(a0)
-  move.w d2,(a1) 
+  move.w d2,(a1)
   movem.l (sp)+,d2/a3-a4
 end;
 
@@ -90,7 +107,8 @@ asm
   move.l mode,d3
   moveq.l #_IO_OPEN,d0
   trap #2
-  bne @quit
+  tst.l d0
+  bne.s @quit
   move.l a0,d0
 @quit:
   movem.l (sp)+,d2-d3
@@ -120,10 +138,67 @@ end;
 
 
 const
+  _IO_FBYTE = $01;
+  _IO_FLINE = $02;
+  _IO_FSTRG = $03;
   _IO_SBYTE = $05;
   _IO_SSTRG = $07;
   _SD_WDEF = $0D;
   _SD_CLEAR = $20;
+  _FS_POSAB = $42;
+  _FS_POSRE = $43;
+  _FS_HEADR = $47;
+  _FS_TRUNCATE = $4B;
+
+function io_fbyte(chan: Tchanid; timeout: Ttimeout): longint; assembler; nostackframe; public name '_io_fbyte';
+asm
+  move.l d3,-(sp)
+  move.w timeout,d3
+  clr.l d1
+  move.l chan,a0
+  moveq.l #_IO_FBYTE,d0
+  trap #3
+  tst.l d0
+  bne @quit
+  move.l d1,d0
+@quit:
+  move.l (sp)+,d3
+end;
+
+function io_fetch(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word; trap_no: longint): longint; assembler;
+asm
+  movem.l d2-d3,-(sp)
+  move.w len,d2
+  move.l buf,a1
+  move.w timeout,d3
+  move.l chan,a0
+  move.l trap_no,d0
+  trap #3
+  tst.l d0
+  beq @ok
+  cmp.w	#ERR_EF,d0
+  beq @eof
+  cmp.w #ERR_NC,d0
+  bne @quit
+@eof:
+  tst.w d1
+  beq @quit
+@ok:
+  clr.l d0
+  move.w d1,d0
+@quit:
+  movem.l (sp)+,d2-d3
+end;
+
+function io_fline(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): longint; public name '_io_fline';
+begin
+  io_fline := io_fetch(chan, timeout, buf, len, _IO_FLINE);
+end;
+
+function io_fstrg(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): longint; public name '_io_fstrg';
+begin
+  io_fstrg := io_fetch(chan, timeout, buf, len, _IO_FSTRG);
+end;
 
 function io_sbyte(chan: Tchanid; timeout: Ttimeout; c: char): longint; assembler; public name '_io_sbyte';
 asm
@@ -137,7 +212,7 @@ asm
   move.l (sp)+,d3
 end;
 
-function io_sstrg(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: smallint): smallint; assembler; public name '_io_sstrg';
+function io_sstrg(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): longint; assembler; public name '_io_sstrg';
 asm
   movem.l d2-d3,-(sp)
   move.w len,d2
@@ -171,20 +246,75 @@ asm
   move.b border_colour,d1
   move.l chan,a0
   moveq.l #_SD_WDEF,d0
-  trap #3 
+  trap #3
   movem.l (sp)+,d2-d3
 end;
 
-function sd_clear(chan: Tchanid; timeout: Ttimeout): longint; assembler; public name '_sd_clear';
+function sd_clear(chan: Tchanid; timeout: Ttimeout): longint; assembler; nostackframe; public name '_sd_clear';
 asm
   move.l d3,-(sp)
   move.w timeout,d3
   move.l chan,a0
   moveq.l #_SD_CLEAR,d0
-  trap #3 
+  trap #3
   move.l (sp)+,d3
 end;
 
+
+function fs_posab(chan: Tchanid; new_pos: dword):longint; assembler; nostackframe; public name '_fs_posab';
+asm
+  move.l d3,-(sp)
+  moveq #_FS_POSAB,d0
+  move.l new_pos,d1
+  moveq #-1,d3
+  move.l chan,a0
+  trap #3
+  tst.l d0
+  bne.s  @quit
+  move.l d1,d0
+@quit:
+  move.l (sp)+,d3
+end;
+
+function fs_posre(chan: Tchanid; new_pos: dword): longint; assembler; nostackframe; public name '_fs_posre';
+asm
+  move.l d3,-(sp)
+  moveq #_FS_POSRE,d0
+  move.l new_pos,d1
+  moveq #-1,d3
+  move.l chan,a0
+  trap #3
+  tst.l d0
+  bne.s  @quit
+  move.l d1,d0
+@quit:
+  move.l (sp)+,d3
+end;
+
+function fs_headr(chan: Tchanid; buf: pointer; buf_size: word): longint; assembler; nostackframe; public name '_fs_headr';
+asm
+  movem.l d2-d3,-(sp)
+  moveq #_FS_HEADR,d0
+  move.l buf_size,d2
+  moveq #-1,d3
+  move.l chan,a0
+  trap #3
+  tst.l d0
+  bne.s  @quit
+  move.l d1,d0
+@quit:
+  movem.l (sp)+,d2-d3
+end;
+
+function fs_truncate(chan: Tchanid): longint; assembler; nostackframe; public name '_fs_truncate';
+asm
+  move.l d3,-(sp)
+  moveq #_FS_TRUNCATE,d0
+  moveq #-1,d3
+  move.l chan, a0
+  trap #3
+  move.l (sp)+,d3
+end;
 
 const
   _UT_CON = $c6;
@@ -196,6 +326,7 @@ asm
   move.l params,a1
   move.w _UT_CON,a2
   jsr (a2)
+  tst.l d0
   bne @quit
   move.l a0,d0
 @quit:
@@ -208,6 +339,7 @@ asm
   move.l params,a1
   move.w _UT_SCR,a2
   jsr (a2)
+  tst.l d0
   bne @quit
   move.l a0,d0
 @quit:
