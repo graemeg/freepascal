@@ -83,7 +83,7 @@ unit ra68kmot;
          procedure consume_all_until(tokens : tasmtokenset);
          function findopcode(const s: string; var opsize: topsize): tasmop;
          Function BuildExpression(allow_symbol : boolean; asmsym : pshortstring) : tcgint;
-         Procedure BuildConstant(maxvalue: tcgint);
+         Procedure BuildConstant(constsize: tcgint);
          Procedure BuildRealConstant(typ : tfloattype);
          Procedure BuildScaling(const oper:tm68koperand);
          Function BuildRefExpression: tcgint;
@@ -932,72 +932,53 @@ const
   end;
 
 
-  Procedure tm68kmotreader.BuildConstant(maxvalue: tcgint);
+  procedure tm68kmotreader.BuildConstant(constsize: tcgint);
   {*********************************************************************}
   { PROCEDURE BuildConstant                                             }
   {  Description: This routine takes care of parsing a DB,DD,or DW      }
   {  line and adding those to the assembler node. Expressions, range-   }
-  {  checking are fullly taken care of.                                 }
-  {   maxvalue: $ff -> indicates that this is a DB node.                }
-  {             $ffff -> indicates that this is a DW node.              }
-  {             $ffffffff -> indicates that this is a DD node.          }
+  {  checking are fully taken care of.                                  }
   {*********************************************************************}
   { EXIT CONDITION:  On exit the routine should point to AS_SEPARATOR.  }
   {*********************************************************************}
   var
-   expr: string;
-   value : tcgint;
+    expr: string;
+    value : tcgint;
   begin
-      Repeat
-        Case actasmtoken of
-          AS_STRING: begin
-                      if maxvalue <> $ff then
-                         Message(asmr_e_string_not_allowed_as_const);
-                      expr := actasmpattern;
-                      if length(expr) > 1 then
-                        Message(asmr_e_string_not_allowed_as_const);
-                      Consume(AS_STRING);
-                      Case actasmtoken of
-                       AS_COMMA: Consume(AS_COMMA);
-                       AS_SEPARATOR: ;
-                      else
-                       Message(asmr_e_invalid_string_expression);
-                      end; { end case }
-                      ConcatString(curlist,expr);
-                    end;
-          AS_INTNUM,AS_BINNUM,
-          AS_OCTALNUM,AS_HEXNUM:
-                    begin
-                      value:=BuildExpression(false,nil);
-                      ConcatConstant(curlist,value,maxvalue);
-                    end;
-          AS_ID:
-                     begin
-                      value:=BuildExpression(false,nil);
-                      if value > maxvalue then
-                      begin
-                         Message(asmr_e_constant_out_of_bounds);
-                         { assuming a value of maxvalue }
-                         value := maxvalue;
-                      end;
-                      ConcatConstant(curlist,value,maxvalue);
-                  end;
-          { These terms can start an assembler expression }
-          AS_PLUS,AS_MINUS,AS_LPAREN,AS_NOT: begin
-                                          value := BuildExpression(false,nil);
-                                          ConcatConstant(curlist,value,maxvalue);
-                                         end;
-          AS_COMMA:  begin
-                       Consume(AS_COMMA);
-                     END;
-          AS_SEPARATOR: ;
+    repeat
+      case actasmtoken of
+        AS_STRING:
+            begin
+              expr:=actasmpattern;
+              Consume(AS_STRING);
+              if (constsize <> 1) or (length(expr) > 1) then
+                Message(asmr_e_string_not_allowed_as_const);
 
-        else
-         begin
-           Message(asmr_e_syntax_error);
-         end;
-    end; { end case }
-   Until actasmtoken = AS_SEPARATOR;
+              if not (actasmtoken in [AS_COMMA, AS_SEPARATOR]) then
+                Message(asmr_e_invalid_string_expression);
+
+              ConcatString(curlist,expr);
+            end;
+        AS_ID,
+        AS_INTNUM,AS_BINNUM,
+        AS_OCTALNUM,AS_HEXNUM,
+        { These terms can start an assembler expression }
+        AS_PLUS,AS_MINUS,AS_LPAREN,AS_NOT:
+            begin
+              value:=BuildExpression(false,nil);
+              ConcatConstant(curlist,value,constsize);
+            end;
+        AS_COMMA:
+            begin
+              Consume(AS_COMMA);
+            end;
+        AS_SEPARATOR: ;
+      else
+        begin
+          Message(asmr_e_syntax_error);
+        end;
+      end; { end case }
+    until actasmtoken = AS_SEPARATOR;
   end;
 
 
@@ -1713,17 +1694,17 @@ const
               AS_DW:
                 begin
                   Consume(AS_DW);
-                  BuildConstant($ffff);
+                  BuildConstant(sizeof(word));
                 end;
               AS_DB:
                 begin
                   Consume(AS_DB);
-                  BuildConstant($ff);
+                  BuildConstant(sizeof(byte));
                 end;
               AS_DD:
                 begin
                   Consume(AS_DD);
-                  BuildConstant(tcgint($ffffffff));
+                  BuildConstant(sizeof(dword));
                 end;
               AS_XDEF:
                 begin
