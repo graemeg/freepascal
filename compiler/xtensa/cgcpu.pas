@@ -1179,11 +1179,14 @@ implementation
            InternalError(2020032602);
          href:=ref;
          if assigned(href.symbol) or
-           (href.index<>NR_NO) or
+           ((href.index<>NR_NO) and (href.offset<>0)) or
            (((href.offset<0) or (href.offset>1020) or (href.offset mod 4<>0))) then
            fixref(list,href);
 
-         list.concat(taicpu.op_reg_ref(A_LSI,reg,href));
+         if (href.base<>NR_NO) and (href.index<>NR_NO) then
+           list.concat(taicpu.op_reg_ref(A_LSX,reg,href))
+         else
+           list.concat(taicpu.op_reg_ref(A_LSI,reg,href));
 
          if fromsize<>tosize then
            a_loadfpu_reg_reg(list,fromsize,tosize,reg,reg);
@@ -1198,11 +1201,14 @@ implementation
            InternalError(2020032604);
          href:=ref;
          if assigned(href.symbol) or
-           (href.index<>NR_NO) or
+           ((href.index<>NR_NO) and (href.offset<>0)) or
            (((href.offset<0) or (href.offset>1020) or (href.offset mod 4<>0))) then
            fixref(list,href);
 
-         list.concat(taicpu.op_reg_ref(A_SSI,reg,href));
+         if (href.base<>NR_NO) and (href.index<>NR_NO) then
+           list.concat(taicpu.op_reg_ref(A_SSX,reg,href))
+         else
+           list.concat(taicpu.op_reg_ref(A_SSI,reg,href));
        end;
 
 
