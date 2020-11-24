@@ -385,11 +385,15 @@ var
   StripStr: string[40];
   DynLinkStr : string;
   GCSectionsStr : string;
+  MapStr: string;
 begin
   StripStr:='';
   GCSectionsStr:='';
   DynLinkStr:='';
+  MapStr:='';
 
+  if UseVlink and (cs_link_map in current_settings.globalswitches) then
+    MapStr:='-M'+Unix2AmigaPath(maybequoted(ScriptFixFilename(current_module.mapfilename)));
   if (cs_link_strip in current_settings.globalswitches) then
     StripStr:='-s';
   if rlinkpath<>'' Then
@@ -406,6 +410,7 @@ begin
   Replace(cmdstr,'$OPT',Info.ExtraOptions);
   Replace(cmdstr,'$EXE',Unix2AmigaPath(maybequoted(ScriptFixFileName(current_module.exefilename))));
   Replace(cmdstr,'$RES',Unix2AmigaPath(maybequoted(ScriptFixFileName(outputexedir+Info.ResName))));
+  Replace(cmdstr,'$MAP',MapStr);
   Replace(cmdstr,'$STRIP',StripStr);
   Replace(cmdstr,'$GCSECTIONS',GCSectionsStr);
   Replace(cmdstr,'$DYNLINK',DynLinkStr);
