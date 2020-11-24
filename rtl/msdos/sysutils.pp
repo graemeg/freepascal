@@ -629,8 +629,6 @@ end;
                               Time Functions
 ****************************************************************************}
 
-{$I tzenv.inc}
-
 Procedure GetLocalTime(var SystemTime: TSystemTime);
 var
   Regs: Registers;
