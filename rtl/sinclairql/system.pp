@@ -51,7 +51,7 @@ const
     DefaultTextLineBreakStyle : TTextLineBreakStyle = tlbsLF;
 
 const
-    UnusedHandle    = $ffff;
+    UnusedHandle    = -1;
     StdInputHandle: longint = UnusedHandle;
     StdOutputHandle: longint = UnusedHandle;
     StdErrorHandle: longint = UnusedHandle;
@@ -62,8 +62,6 @@ var
     argv: PPChar;
     envp: PPChar;
 
-    QCON: longint; // QDOS console
-    QSCR: longint; // QDOS screen
     heapStart: pointer;
 
 
@@ -76,71 +74,61 @@ var
     {$endif defined(FPUSOFT)}
 
 
-  implementation
+implementation
 
-    {$if defined(FPUSOFT)}
+  {$if defined(FPUSOFT)}
 
-    {$define fpc_softfpu_implementation}
-    {$define softfpu_compiler_mul32to64}
-    {$define softfpu_inline}
-    {$i softfpu.pp}
-    {$undef fpc_softfpu_implementation}
+  {$define fpc_softfpu_implementation}
+  {$define softfpu_compiler_mul32to64}
+  {$define softfpu_inline}
+  {$i softfpu.pp}
+  {$undef fpc_softfpu_implementation}
 
-    { we get these functions and types from the softfpu code }
-    {$define FPC_SYSTEM_HAS_float64}
-    {$define FPC_SYSTEM_HAS_float32}
-    {$define FPC_SYSTEM_HAS_flag}
-    {$define FPC_SYSTEM_HAS_extractFloat64Frac0}
-    {$define FPC_SYSTEM_HAS_extractFloat64Frac1}
-    {$define FPC_SYSTEM_HAS_extractFloat64Exp}
-    {$define FPC_SYSTEM_HAS_extractFloat64Sign}
-    {$define FPC_SYSTEM_HAS_ExtractFloat32Frac}
-    {$define FPC_SYSTEM_HAS_extractFloat32Exp}
-    {$define FPC_SYSTEM_HAS_extractFloat32Sign}
+  { we get these functions and types from the softfpu code }
+  {$define FPC_SYSTEM_HAS_float64}
+  {$define FPC_SYSTEM_HAS_float32}
+  {$define FPC_SYSTEM_HAS_flag}
+  {$define FPC_SYSTEM_HAS_extractFloat64Frac0}
+  {$define FPC_SYSTEM_HAS_extractFloat64Frac1}
+  {$define FPC_SYSTEM_HAS_extractFloat64Exp}
+  {$define FPC_SYSTEM_HAS_extractFloat64Sign}
+  {$define FPC_SYSTEM_HAS_ExtractFloat32Frac}
+  {$define FPC_SYSTEM_HAS_extractFloat32Exp}
+  {$define FPC_SYSTEM_HAS_extractFloat32Sign}
 
-    {$endif defined(FPUSOFT)}
+  {$endif defined(FPUSOFT)}
 
-    {$i system.inc}
-    {$ifdef FPC_QL_USE_TINYHEAP}
-    {$i tinyheap.inc}
-    {$endif FPC_QL_USE_TINYHEAP}
-
-
-  function GetProcessID:SizeUInt;
-  begin
-    GetProcessID := 1;
-  end;
+  {$i system.inc}
+  {$ifdef FPC_QL_USE_TINYHEAP}
+  {$i tinyheap.inc}
+  {$endif FPC_QL_USE_TINYHEAP}
 
 
-  procedure SysInitParamsAndEnv;
-  begin
-  end;
+function GetProcessID:SizeUInt;
+begin
+  GetProcessID := mt_inf(nil, nil);
+end;
 
+procedure SysInitParamsAndEnv;
+begin
+end;
 
-  procedure randomize;
-  begin
-    {$WARNING: randseed is uninitialized}
-    randseed:=0;
-  end;
+procedure randomize;
+begin
+  {$WARNING: randseed is uninitialized}
+  randseed:=0;
+end;
 
 procedure PrintStr(ch: longint; const s: shortstring);
 begin
   io_sstrg(ch,-1,@s[1],ord(s[0]));
 end;
 
-procedure PrintStr2(ch: longint; const s: shortstring);
-var
-  i: smallint;
-begin
-  for i:=1 to ord(s[0]) do
-    io_sbyte(ch,-1,s[i]);
-end;
-
 procedure DebugStr(const s: shortstring); public name '_dbgstr';
 var
   i: longint;
 begin
-  PrintStr($00010001,s);
+  PrintStr(stdOutputHandle,s);
   for i:=0 to 10000 do begin end;
 end;
 
@@ -165,17 +153,14 @@ begin
   stdInputHandle:=io_open('con_',Q_OPEN);
   stdOutputHandle:=stdInputHandle;
   stdErrorHandle:=stdInputHandle;
-  QCON:=stdInputHandle;
 
   r.q_width:=512;
   r.q_height:=256;
   r.q_x:=0;
   r.q_y:=0;
 
-  sd_wdef(stdInputHandle,-1,0,16,@r);
+  sd_wdef(stdInputHandle,-1,2,1,@r);
   sd_clear(stdInputHandle,-1);
-
-//  QSCR:=io_open('scr_',Q_OPEN);
 end;
 
 {*****************************************************************************
@@ -185,13 +170,15 @@ end;
 procedure haltproc(e:longint); external name '_haltproc';
 
 procedure system_exit;
+const
+  anyKey: string = 'Press any key to exit';
 begin
-//  io_close(QCON);
-//  io_close(QSCR);
+  io_sstrg(stdOutputHandle, -1, @anyKey[1], ord(anyKey[0]));
+  io_fbyte(stdInputHandle, -1);
+
   stdInputHandle:=UnusedHandle;
   stdOutputHandle:=UnusedHandle;
   stdErrorHandle:=UnusedHandle;
-
   haltproc(exitcode);
 end;
 
