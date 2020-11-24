@@ -126,11 +126,8 @@ const
       runerror(207);
       result:=0;
 {$else not cpullvm}
-    assembler;
-    asm
-      fldt d
-      fldt %st(0)
-      fmult
+    begin
+      fpc_sqr_real:=d*d;
 {$endif not cpullvm}
     end;
     {$endif FPC_SYSTEM_HAS_SQR}
