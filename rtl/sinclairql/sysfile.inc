@@ -50,37 +50,67 @@ end;
 
 
 function do_read(h: longint; addr: pointer; len: longint) : longint;
+var
+  res: longint;
 begin
-  do_read:=-1;
+  do_read := 0;
+  res := io_fline(h, -1, addr, len);
+  if res < 0 then
+    Error2InOutRes(res)
+  else
+    do_read := res;
 end;
 
 
-function do_filepos(handle: longint) : longint;
+function do_filepos(handle: longint): longint;
+var
+  res: longint;
 begin
-  do_filepos:=-1;
+  do_filepos := 0;
+  res := fs_posre(handle, 0);
+  if res < 0 then
+    Error2InOutRes(res)
+  else
+    do_filepos := res;
 end;
 
 
 procedure do_seek(handle, pos: longint);
+var
+  res: longint;
 begin
+  res := fs_posab(handle, pos);
+  if res < 0 then
+    Error2InOutRes(res);
 end;
 
 
-function do_seekend(handle: longint):longint;
+function do_seekend(handle: longint): longint;
 begin
-  do_seekend:=-1;
+  do_seek(handle, -1);
+  do_seekend := do_filepos(handle);
 end;
 
 
-function do_filesize(handle : THandle) : longint;
+function do_filesize(handle: longint): longint;
+var
+  res: longint;
+  header: array [0..$39] of byte;
 begin
-  do_filesize:=-1;
+  do_filesize := 0;
+  res := fs_headr(handle, @header, $40);
+  if res < 0 then
+    Error2InOutRes(res)
+  else
+    do_filesize := plongint(@header[0])^;
 end;
 
 
 { truncate at a given position }
 procedure do_truncate(handle, pos: longint);
 begin
+  do_seek(handle, pos);
+  fs_truncate(handle);
 end;
 
 
