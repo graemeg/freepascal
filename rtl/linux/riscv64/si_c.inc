@@ -39,7 +39,7 @@ procedure _FPC_rv_enter(at_exit: TProcedure; sp: pptruint);
     initialstkptr:=sp;
     operatingsystem_parameter_argc:=argc;
     operatingsystem_parameter_argv:=argv;
-    operatingsystem_parameter_envp:=@sp[1+argc];
+    operatingsystem_parameter_envp:=@sp[argc+2];
 
     libc_start_main(@PascalMain, argc, argv, libc_init_proc, libc_fini_proc, at_exit, sp);
   end;

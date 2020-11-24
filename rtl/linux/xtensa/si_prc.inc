@@ -31,7 +31,7 @@ procedure _FPC_xtensa_enter(sp: pptruint);
     initialstkptr:=sp;
     operatingsystem_parameter_argc:=argc;
     operatingsystem_parameter_argv:=@sp[1];
-    operatingsystem_parameter_envp:=@sp[1+argc];
+    operatingsystem_parameter_envp:=@sp[argc+2];
 
     PascalMain;
   end;
