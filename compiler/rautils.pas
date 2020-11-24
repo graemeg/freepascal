@@ -1795,13 +1795,8 @@ end;
 
 Procedure ConcatConstant(p: TAsmList; value: tcgint; constsize:byte);
 {*********************************************************************}
-{ PROCEDURE ConcatConstant(value: aint; maxvalue: aint);        }
 {  Description: This routine adds the value constant to the current   }
 {  instruction linked list.                                           }
-{   maxvalue -> indicates the size of the data to initialize:         }
-{                  $ff -> create a byte node.                         }
-{                  $ffff -> create a word node.                       }
-{                  $ffffffff -> create a dword node.                  }
 {*********************************************************************}
 var
   rangelo,rangehi : int64;
