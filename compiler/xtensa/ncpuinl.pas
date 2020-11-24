@@ -33,6 +33,8 @@ unit ncpuinl;
         function first_abs_real: tnode; override;
         procedure second_abs_long; override;
         procedure second_abs_real; override;
+        function first_fma: tnode; override;
+        procedure second_fma; override;
       end;
 
   implementation
@@ -48,6 +50,7 @@ unit ncpuinl;
       hlcgobj,
       pass_2,
       cgbase, cgobj, cgutils,
+      ncal,
       cpubase;
 
     procedure tcpuinlinenode.second_abs_long;
@@ -83,6 +86,86 @@ unit ncpuinl;
         current_asmdata.CurrAsmList.concat(setoppostfix(taicpu.op_reg_reg(A_ABS,location.register,left.location.register),PF_S));
       end;
 
+
+    function tcpuinlinenode.first_fma : tnode;
+      begin
+        if is_single(resultdef) then
+          begin
+            expectloc:=LOC_FPUREGISTER;
+            Result:=nil;
+          end
+        else
+          Result:=inherited first_fma;
+      end;
+
+
+    procedure tcpuinlinenode.second_fma;
+      const
+        op : array[false..true] of TAsmOp =
+          (A_MADD,
+           A_MSUB);
+
+      var
+        paraarray : array[1..3] of tnode;
+        i : integer;
+        negproduct : boolean;
+        oppostfix : TOpPostfix;
+        ai: taicpu;
+      begin
+         if is_single(resultdef)and
+           (FPUXTENSA_SINGLE in fpu_capabilities[current_settings.fputype]) then
+           begin
+             negproduct:=false;
+             paraarray[1]:=tcallparanode(tcallparanode(tcallparanode(parameters).nextpara).nextpara).paravalue;
+             paraarray[2]:=tcallparanode(tcallparanode(parameters).nextpara).paravalue;
+             paraarray[3]:=tcallparanode(parameters).paravalue;
+
+             { check if a neg. node can be removed
+               this is possible because changing the sign of
+               a floating point number does not affect its absolute
+               value in any way
+             }
+             if paraarray[1].nodetype=unaryminusn then
+               begin
+                 paraarray[1]:=tunarynode(paraarray[1]).left;
+                 { do not release the unused unary minus node, it is kept and release together with the other nodes,
+                   only no code is generated for it }
+                 negproduct:=not(negproduct);
+               end;
+
+             if paraarray[2].nodetype=unaryminusn then
+               begin
+                 paraarray[2]:=tunarynode(paraarray[2]).left;
+                 { do not release the unused unary minus node, it is kept and release together with the other nodes,
+                   only no code is generated for it }
+                 negproduct:=not(negproduct);
+               end;
+              for i:=1 to 3 do
+               secondpass(paraarray[i]);
+
+             { no memory operand is allowed }
+             for i:=1 to 3 do
+               begin
+                 if not(paraarray[i].location.loc in [LOC_FPUREGISTER,LOC_CFPUREGISTER]) then
+                   hlcg.location_force_fpureg(current_asmdata.CurrAsmList,paraarray[i].location,paraarray[i].resultdef,true);
+               end;
+
+             location_reset(location,LOC_FPUREGISTER,paraarray[1].location.size);
+             location.register:=cg.getfpuregister(current_asmdata.CurrAsmList,location.size);
+
+             hlcg.a_loadfpu_reg_reg(current_asmdata.CurrAsmList,paraarray[3].resultdef,resultdef,
+               paraarray[3].location.register,location.register);
+
+             ai:=taicpu.op_reg_reg_reg(op[negproduct],
+               location.register,paraarray[1].location.register,paraarray[2].location.register);
+             ai.oppostfix:=PF_S;
+             current_asmdata.CurrAsmList.concat(ai);
+
+             cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
+           end
+         else
+           internalerror(2020112401);
+      end;
 
 
 begin

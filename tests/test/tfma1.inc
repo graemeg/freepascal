@@ -241,6 +241,7 @@ procedure testsingle;
       halt(1);
   end;
 
+{$ifndef NODOUBLE}
 
 procedure testdouble;
   var
@@ -480,3 +481,5 @@ procedure testdouble;
     if l0<>-10.0 then
       halt(1);
   end;
+
+{$endif NODOUBLE}

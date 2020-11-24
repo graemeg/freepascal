@@ -47,6 +47,7 @@ interface
          procedure second_cmpfloat;override;
          procedure second_addfloat;override;
          procedure second_cmp;
+         function use_fma: boolean;override;
        end;
 
   implementation
@@ -66,6 +67,13 @@ interface
 {*****************************************************************************
                                TCPUAddNode
 *****************************************************************************}
+
+    function TCPUAddNode.use_fma : boolean;
+      begin
+        Result:=is_single(left.resultdef) and is_single(right.resultdef) and
+          (FPUXTENSA_SINGLE in fpu_capabilities[current_settings.fputype]);
+      end;
+
 
     procedure TCPUAddNode.second_addordinal;
       var
