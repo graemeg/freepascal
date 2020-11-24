@@ -39,7 +39,7 @@ unit i_sinclairql;
             cpu          : cpu_m68k;
             unit_env     : '';
             extradefines : '';
-            exeext       : '.bin';
+            exeext       : '.exe';
             defext       : '';
             scriptext    : '';
             smartext     : '.sl';
