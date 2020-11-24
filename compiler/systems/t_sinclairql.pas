@@ -85,7 +85,7 @@ begin
      end
     else
      begin
-      ExeCmd[1]:='vlink -b rawseg -q $FLAGS $GCSECTIONS $OPT $STRIP -o $EXE -T $RES';
+      ExeCmd[1]:='vlink -b rawseg -q $FLAGS $GCSECTIONS $OPT $STRIP $MAP -o $EXE -T $RES';
      end;
    end;
 end;
@@ -213,6 +213,7 @@ var
   DynLinkStr : string;
   GCSectionsStr : string;
   FlagsStr : string;
+  MapStr : string;
   ExeName: string;
   fd,fs: file;
   fhdr: text;
@@ -227,7 +228,10 @@ begin
   GCSectionsStr:='';
   DynLinkStr:='';
   FlagsStr:='';
+  MapStr:='';
 
+  if (cs_link_map in current_settings.globalswitches) then
+    MapStr:='-M'+maybequoted(ScriptFixFilename(current_module.mapfilename));
   if (cs_link_strip in current_settings.globalswitches) then
     StripStr:='-s';
   if rlinkpath<>'' then
@@ -247,6 +251,7 @@ begin
   Replace(cmdstr,'$OPT',Info.ExtraOptions);
   Replace(cmdstr,'$EXE',maybequoted(ScriptFixFileName(ExeName)));
   Replace(cmdstr,'$RES',maybequoted(ScriptFixFileName(outputexedir+Info.ResName)));
+  Replace(cmdstr,'$MAP',MapStr);
   Replace(cmdstr,'$FLAGS',FlagsStr);
   Replace(cmdstr,'$STRIP',StripStr);
   Replace(cmdstr,'$GCSECTIONS',GCSectionsStr);
