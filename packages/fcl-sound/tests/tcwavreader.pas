@@ -91,6 +91,7 @@ begin
   TestValidFile('44k_stereo_64float.wav');
   TestValidFile('44k_mono_16_tag.wav');
   TestValidFile('euphoric_tape.wav');
+  TestValidFile('odd_fmt_size.wav');
 end;
 
 

@@ -96,7 +96,7 @@ begin
   LEtoN(fmt);
   Result := Result and (fmt.ChunkHeader.ID = AUDIO_CHUNK_ID_fmt) and ((fmt.ChunkHeader.Size + 8) >= sizeof(fmt));
   if Result and ((fmt.ChunkHeader.Size + 8) > sizeof(fmt)) then
-    fStream.Seek((fmt.ChunkHeader.Size + 8) - sizeof(fmt), soCurrent);
+    fStream.Seek(Align((fmt.ChunkHeader.Size + 8) - sizeof(fmt), 2), soCurrent);
 end;
 
 function Min(a, b: Integer): Integer;
