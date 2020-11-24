@@ -1,7 +1,7 @@
 
-  { TStringBuilder }
+  { TGenericStringBuilder }
 
-  TStringBuilder = class
+  TGenericStringBuilder = class
   private
     const
       DefaultCapacity = 64;
@@ -36,66 +36,66 @@
     Constructor Create(const AValue: SBString; aCapacity: Integer);
     Constructor Create(const AValue: SBString; StartIndex: Integer; aLength: Integer; aCapacity: Integer);
 
-    Function Append(const AValue: Boolean): TStringBuilder;
-    Function Append(const AValue: Byte): TStringBuilder;
-    Function Append(const AValue: SBChar): TStringBuilder;
-    Function Append(const AValue: Currency): TStringBuilder;
-    Function Append(const AValue: Double): TStringBuilder;
-    Function Append(const AValue: Smallint): TStringBuilder;
-    Function Append(const AValue: LongInt): TStringBuilder;
-    Function Append(const AValue: Int64): TStringBuilder;
-    Function Append(const AValue: TObject): TStringBuilder;
-    Function Append(const AValue: Shortint): TStringBuilder;
-    Function Append(const AValue: Single): TStringBuilder;
-    Function Append(const AValue: UInt64): TStringBuilder;
-    Function Append(const AValue: TSBCharArray): TStringBuilder;
-    Function Append(const AValue: Word): TStringBuilder;
-    Function Append(const AValue: Cardinal): TStringBuilder;
-    Function Append(const AValue: PSBChar): TStringBuilder;
+    Function Append(const AValue: Boolean): TGenericStringBuilder;
+    Function Append(const AValue: Byte): TGenericStringBuilder;
+    Function Append(const AValue: SBChar): TGenericStringBuilder;
+    Function Append(const AValue: Currency): TGenericStringBuilder;
+    Function Append(const AValue: Double): TGenericStringBuilder;
+    Function Append(const AValue: Smallint): TGenericStringBuilder;
+    Function Append(const AValue: LongInt): TGenericStringBuilder;
+    Function Append(const AValue: Int64): TGenericStringBuilder;
+    Function Append(const AValue: TObject): TGenericStringBuilder;
+    Function Append(const AValue: Shortint): TGenericStringBuilder;
+    Function Append(const AValue: Single): TGenericStringBuilder;
+    Function Append(const AValue: UInt64): TGenericStringBuilder;
+    Function Append(const AValue: TSBCharArray): TGenericStringBuilder;
+    Function Append(const AValue: Word): TGenericStringBuilder;
+    Function Append(const AValue: Cardinal): TGenericStringBuilder;
+    Function Append(const AValue: PSBChar): TGenericStringBuilder;
 {$IFDEF SBUNICODE}
     // Do not use SBRawstring, we need 2 versions in case of unicode
-    Function Append(const AValue: SBString): TStringBuilder;
+    Function Append(const AValue: SBString): TGenericStringBuilder;
 {$ENDIF}
-    Function Append(const AValue: RawByteString): TStringBuilder;
-    Function Append(const AValue: SBChar; RepeatCount: Integer): TStringBuilder;
-    Function Append(const AValue: TSBCharArray; StartIndex: Integer; SBCharCount: Integer): TStringBuilder;
-    Function Append(const AValue: SBString; StartIndex: Integer; Count: Integer): TStringBuilder;
+    Function Append(const AValue: RawByteString): TGenericStringBuilder;
+    Function Append(const AValue: SBChar; RepeatCount: Integer): TGenericStringBuilder;
+    Function Append(const AValue: TSBCharArray; StartIndex: Integer; SBCharCount: Integer): TGenericStringBuilder;
+    Function Append(const AValue: SBString; StartIndex: Integer; Count: Integer): TGenericStringBuilder;
 
-    Function Append(const Fmt: SBString; const Args: array of const): TStringBuilder;
-    Function AppendFormat(const Fmt: SBString; const Args: array of const): TStringBuilder;
-    Function AppendLine: TStringBuilder;
-    Function AppendLine(const AValue: RawByteString): TStringBuilder;
+    Function Append(const Fmt: SBString; const Args: array of const): TGenericStringBuilder;
+    Function AppendFormat(const Fmt: SBString; const Args: array of const): TGenericStringBuilder;
+    Function AppendLine: TGenericStringBuilder;
+    Function AppendLine(const AValue: RawByteString): TGenericStringBuilder;
 
     Procedure Clear;
     Procedure CopyTo(SourceIndex: Integer; Var Destination: TSBCharArray; DestinationIndex: Integer; Count: Integer);
     Function EnsureCapacity(aCapacity: Integer): Integer;
-    Function Equals(StringBuilder: TStringBuilder): Boolean; reintroduce;
+    Function Equals(StringBuilder: TGenericStringBuilder): Boolean; reintroduce;
 
-    Function Insert(Index: Integer; const AValue: Boolean): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: Byte): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: SBChar): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: Currency): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: Double): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: Smallint): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: LongInt): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: TSBCharArray): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: Int64): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: TObject): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: Shortint): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: Single): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: SBString): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: Word): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: Cardinal): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: UInt64): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: SBString; const aRepeatCount: Integer): TStringBuilder;
-    Function Insert(Index: Integer; const AValue: TSBCharArray; startIndex: Integer; SBCharCount: Integer): TStringBuilder;
+    Function Insert(Index: Integer; const AValue: Boolean): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: Byte): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: SBChar): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: Currency): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: Double): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: Smallint): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: LongInt): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: TSBCharArray): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: Int64): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: TObject): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: Shortint): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: Single): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: SBString): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: Word): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: Cardinal): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: UInt64): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: SBString; const aRepeatCount: Integer): TGenericStringBuilder;
+    Function Insert(Index: Integer; const AValue: TSBCharArray; startIndex: Integer; SBCharCount: Integer): TGenericStringBuilder;
 
-    Function Remove(StartIndex: Integer; RemLength: Integer): TStringBuilder;
+    Function Remove(StartIndex: Integer; RemLength: Integer): TGenericStringBuilder;
 
-    Function Replace(const OldChar, NewChar: SBChar): TStringBuilder;
-    Function Replace(const OldChar, NewChar: SBChar; StartIndex: Integer; Count: Integer): TStringBuilder;
-    Function Replace(const OldValue, NewValue: SBRawString): TStringBuilder;
-    Function Replace(const OldValue, NewValue: SBRawString; StartIndex: Integer; Count: Integer): TStringBuilder;
+    Function Replace(const OldChar, NewChar: SBChar): TGenericStringBuilder;
+    Function Replace(const OldChar, NewChar: SBChar; StartIndex: Integer; Count: Integer): TGenericStringBuilder;
+    Function Replace(const OldValue, NewValue: SBRawString): TGenericStringBuilder;
+    Function Replace(const OldValue, NewValue: SBRawString; StartIndex: Integer; Count: Integer): TGenericStringBuilder;
 {$IFDEF SBUNICODE}
     Function ToString: SBString;
 {$ELSE}

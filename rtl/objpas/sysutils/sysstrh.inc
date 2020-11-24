@@ -307,7 +307,7 @@ Type
 {$define TSBCharArray:=Array of SBChar}
 {$define PSBChar:=PAnsiChar}
 {$define SBRAWString:=RawByteString}
-{$define TStringBuilder:=TAnsiStringBuilder}
+{$define TGenericStringBuilder:=TAnsiStringBuilder}
 
 {$i syssbh.inc}
 {$undef SBChar}
@@ -315,7 +315,7 @@ Type
 {$undef TSBCharArray}
 {$undef PSBChar}
 {$undef SBRAWString}
-{$undef TStringBuilder}
+{$undef TGenericStringBuilder}
 
 // Unicode version implementation
 
@@ -325,14 +325,14 @@ Type
 {$define TSBCharArray:=Array of SBChar}
 {$define PSBChar:=PWideChar}
 {$define SBRAWString:=UnicodeString}
-{$define TStringBuilder:=TUnicodeStringBuilder}
+{$define TGenericStringBuilder:=TUnicodeStringBuilder}
 {$i syssbh.inc}
 {$undef SBChar}
 {$undef SBString}
 {$undef TSBCharArray}
 {$undef PSBChar}
 {$undef SBRAWString}
-{$undef TStringBuilder}
+{$undef TGenericStringBuilder}
 {$undef SBUNICODE}
 
 Type
