@@ -24,12 +24,12 @@ const
 
 procedure mt_frjob(jobID: Tjobid; exitCode: longint); assembler; nostackframe; public name '_mt_frjob';
 asm
-  move.l  d3,-(sp)
-  move.l  jobID,d1
+  movem.l d2-d3,-(sp)
   move.l  exitCode,d3
+  move.l  jobID,d1
   moveq   #_MT_FRJOB,d0
   trap    #1
-  move.l  (sp)+,d3
+  movem.l (sp)+,d2-d3
 end;
 
 function mt_inf(sys_vars: ppchar; ver_ascii: plongint): Tjobid; assembler; nostackframe; public name '_mt_inf';
