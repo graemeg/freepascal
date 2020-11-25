@@ -247,7 +247,10 @@ unit agrvgas;
         Replace(result,'$ABI','ilp32');
 {$endif RISCV32}
 {$ifdef RISCV64}
-        Replace(result,'$ABI','lp64');
+        if target_info.abi=abi_riscv_hf then
+          Replace(result,'$ABI','lp64d')
+        else
+          Replace(result,'$ABI','lp64');
 {$endif RISCV64}
       end;
 
