@@ -2601,6 +2601,23 @@ begin
                         else
                           IllegalPara(opt);
                       end;
+{$if defined(m68k)}
+                    'Q':
+                      begin
+                        if (target_info.system in [system_m68k_sinclairql]) then
+                          begin
+                            sinclairql_metadata_format:=Upper(Copy(More,j+1,255));
+                            case sinclairql_metadata_format of
+                              'QHDR', 'XTCC': ; { allowed formats }
+                              else
+                                IllegalPara(opt);
+                            end;
+                            break;
+                          end
+                        else
+                          IllegalPara(opt);
+                      end;
+{$endif defined(m68k)}
                     'R':
                       begin
                         if target_info.system in systems_all_windows then

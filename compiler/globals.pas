@@ -413,6 +413,10 @@ interface
        palmos_applicationname : string = 'FPC Application';
        palmos_applicationid : string[4] = 'FPCA';
 {$endif defined(m68k) or defined(arm)}
+{$if defined(m68k)}
+       { Sinclair QL specific }
+       sinclairql_metadata_format: string[4] = 'QHDR';
+{$endif defined(m68k)}
 
        { default name of the C-style "main" procedure of the library/program }
        { (this will be prefixed with the target_info.cprefix)                }
@@ -1510,7 +1514,7 @@ implementation
        if localexepath='' then
         begin
           hs1 := ExtractFileName(exeName);
-	  hs1 := ChangeFileExt(hs1,source_info.exeext);
+          hs1 := ChangeFileExt(hs1,source_info.exeext);
 {$ifdef macos}
           FindFile(hs1,GetEnvironmentVariable('Commands'),false,localExepath);
 {$else macos}
