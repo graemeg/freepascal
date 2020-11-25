@@ -898,56 +898,72 @@ implementation
 
 
     function llvmgettemprecorddef(const fieldtypes: array of tdef; packrecords, recordalignmin: shortint): trecorddef;
+
+      procedure addtypename(var typename: TSymStr; hdef: tdef);
+        begin
+          case hdef.typ of
+            orddef:
+              case torddef(hdef).ordtype of
+                s8bit,
+                u8bit,
+                pasbool1,
+                pasbool8:
+                  typename:=typename+'i8';
+                s16bit,
+                u16bit:
+                  typename:=typename+'i16';
+                s32bit,
+                u32bit:
+                  typename:=typename+'i32';
+                s64bit,
+                u64bit:
+                  typename:=typename+'i64';
+                customint:
+                  typename:=typename+'i'+tostr(torddef(hdef).packedbitsize);
+                else
+                  { other types should not appear currently, add as needed }
+                  internalerror(2014012001);
+              end;
+            floatdef:
+              case tfloatdef(hdef).floattype of
+                s32real:
+                  typename:=typename+'f32';
+                s64real:
+                  typename:=typename+'f64';
+                else
+                  { other types should not appear currently, add as needed }
+                  internalerror(2014012008);
+              end;
+            arraydef:
+              begin
+                if not is_special_array(hdef) and
+                   not is_packed_array(hdef) then
+                  begin
+                    typename:=typename+'['+tostr(tarraydef(hdef).elecount)+'x';
+                    addtypename(typename,tarraydef(hdef).elementdef);
+                    typename:=typename+']';
+                  end
+                else
+                  typename:=typename+'d'+hdef.unique_id_str;
+              end
+            else
+              typename:=typename+'d'+hdef.unique_id_str;
+          end;
+        end;
+
       var
         i: longint;
         res: PHashSetItem;
         oldsymtablestack: tsymtablestack;
         hrecst: trecordsymtable;
-        hdef: tdef;
         hrecdef: trecorddef;
         sym: tfieldvarsym;
-        typename: string;
+        typename: TSymStr;
       begin
         typename:=internaltypeprefixName[itp_llvmstruct];
         for i:=low(fieldtypes) to high(fieldtypes) do
           begin
-            hdef:=fieldtypes[i];
-            case hdef.typ of
-              orddef:
-                case torddef(hdef).ordtype of
-                  s8bit,
-                  u8bit,
-                  pasbool1,
-                  pasbool8:
-                    typename:=typename+'i8';
-                  s16bit,
-                  u16bit:
-                    typename:=typename+'i16';
-                  s32bit,
-                  u32bit:
-                    typename:=typename+'i32';
-                  s64bit,
-                  u64bit:
-                    typename:=typename+'i64';
-                  customint:
-                    typename:=typename+'i'+tostr(torddef(hdef).packedbitsize);
-                  else
-                    { other types should not appear currently, add as needed }
-                    internalerror(2014012001);
-                end;
-              floatdef:
-                case tfloatdef(hdef).floattype of
-                  s32real:
-                    typename:=typename+'f32';
-                  s64real:
-                    typename:=typename+'f64';
-                  else
-                    { other types should not appear currently, add as needed }
-                    internalerror(2014012008);
-                end;
-              else
-                typename:=typename+'d'+hdef.unique_id_str;
-            end;
+            addtypename(typename,fieldtypes[i]);
           end;
         if not assigned(current_module) then
           internalerror(2014012002);
