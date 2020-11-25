@@ -3283,7 +3283,7 @@ ppumove$(EXEEXT): ppumove.pp ppu$(PPUEXT)
 	$(MAKE) ppumove$(EXEEXT) NOCPUDEF=1
 else
 ppu$(PPUEXT): ../ppu.pas
-	$(COMPILER) ../ppu.pas -Fu../generic -dGENERIC_CPU -Fi..
+	$(COMPILER) ../ppu.pas -Fu../llvm -Fu../generic -dGENERIC_CPU -Fi..
 ppudump$(EXEEXT): ppuutils/ppudump.pp ppu$(PPUEXT)
 	$(COMPILER) ppuutils/ppudump.pp -Fu../llvm -Fu../generic -dGENERIC_CPU -Fi..
 ppufiles$(EXEEXT): ppufiles.pp ppu$(PPUEXT)
