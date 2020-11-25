@@ -154,7 +154,7 @@ end;
 
 procedure draw_line(x1,y1,x2,y2: smallint);
 begin
-  sd_line(QCON,-1,x1,y1,x2,y2);
+  sd_line(stdOutputHandle,-1,x1,y1,x2,y2);
 end;
 
 procedure cube_redraw;
@@ -182,14 +182,14 @@ begin
       longint_to_qlfp(@fcubey[i],cy + sarlongint(mulfp(vy,scale),16));
     end;
 
-  sd_clear(QCON,-1);
+  sd_clear(stdOutputHandle,-1);
   for i:=0 to 3 do 
     begin
       e:=(i+1) and 3;
-      sd_line(QCON,-1,@fcubex[i],@fcubey[i],@fcubex[e],@fcubey[e]);
+      sd_line(stdOutputHandle,-1,@fcubex[i],@fcubey[i],@fcubex[e],@fcubey[e]);
       s:=i+4; e:=e+4;
-      sd_line(QCON,-1,@fcubex[s],@fcubey[s],@fcubex[e],@fcubey[e]);
-      sd_line(QCON,-1,@fcubex[i],@fcubey[i],@fcubex[s],@fcubey[s]);
+      sd_line(stdOutputHandle,-1,@fcubex[s],@fcubey[s],@fcubex[e],@fcubey[e]);
+      sd_line(stdOutputHandle,-1,@fcubex[i],@fcubey[i],@fcubex[s],@fcubey[s]);
     end;
 end;
 
