@@ -187,7 +187,7 @@ unit i_linux;
             unit_env     : 'LINUXUNITS';
             extradefines : 'UNIX;HASUNIX';
             exeext       : '';
-            defext       : '';
+            defext       : '.def';
             scriptext    : '.sh';
             smartext     : '.sl';
             unitext      : '.ppu';
