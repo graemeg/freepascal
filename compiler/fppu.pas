@@ -51,10 +51,15 @@ interface
           comments   : TCmdStrList;
           nsprefix   : TCmdStr; { Namespace prefix the unit was found with }
 {$ifdef Test_Double_checksum}
-          crc_array  : pointer;
-          crc_size   : longint;
-          crc_array2 : pointer;
-          crc_size2  : longint;
+          interface_read_crc_index,
+          interface_write_crc_index,
+          indirect_read_crc_index,
+          indirect_write_crc_index,
+          implementation_read_crc_index,
+          implementation_write_crc_index : cardinal;
+          interface_crc_array,
+          indirect_crc_array,
+          implementation_crc_array  : pointer;
 {$endif def Test_Double_checksum}
           constructor create(LoadedFrom:TModule;const amodulename: string; const afilename:TPathStr;_is_unit:boolean);
           destructor destroy;override;
@@ -1512,8 +1517,11 @@ var
            headerflags:=headerflags or uf_fpu_emulation;
 {$endif cpufpemu}
 {$ifdef Test_Double_checksum_write}
+         if FileExists(ppufilename+'.IMP',false) then
+           RenameFile(ppufilename+'.IMP',ppufilename+'.IMP-old');
          Assign(CRCFile,ppufilename+'.IMP');
          Rewrite(CRCFile);
+         Writeln(CRCFile,'CRC in writeppu method of implementation of ',ppufilename);
 {$endif def Test_Double_checksum_write}
 
          { create new ppufile }
@@ -1681,6 +1689,13 @@ var
          indirect_crc:=ppufile.indirect_crc;
 
 {$ifdef Test_Double_checksum_write}
+         Writeln(CRCFile,'End of implementation CRC in writeppu method of ',ppufilename,
+                 ' implementation_crc=$',hexstr(ppufile.crc,8),
+                 ' interface_crc=$',hexstr(ppufile.interface_crc,8),
+                 ' indirect_crc=$',hexstr(ppufile.indirect_crc,8),
+                 ' implementation_crc_size=',ppufile.implementation_read_crc_index,
+                 ' interface_crc_size=',ppufile.interface_read_crc_index,
+                 ' indirect_crc_size=',ppufile.indirect_read_crc_index);
          close(CRCFile);
 {$endif Test_Double_checksum_write}
 
@@ -1693,8 +1708,11 @@ var
     procedure tppumodule.getppucrc;
       begin
 {$ifdef Test_Double_checksum_write}
+         if FileExists(ppufilename+'.INT',false) then
+           RenameFile(ppufilename+'.INT',ppufilename+'.INT-old');
          Assign(CRCFile,ppufilename+'.INT');
          Rewrite(CRCFile);
+         Writeln(CRCFile,'CRC of getppucrc of ',ppufilename);
 {$endif def Test_Double_checksum_write}
 
          { create new ppufile }
@@ -1757,16 +1775,14 @@ var
            for ppudump when using INTFPPU define }
          ppufile.writeentry(ibendimplementation);
 
-{$ifdef Test_Double_checksum}
-         crc_array:=ppufile.crc_test;
-         ppufile.crc_test:=nil;
-         crc_size:=ppufile.crc_index2;
-         crc_array2:=ppufile.crc_test2;
-         ppufile.crc_test2:=nil;
-         crc_size2:=ppufile.crc_index2;
-{$endif Test_Double_checksum}
-
 {$ifdef Test_Double_checksum_write}
+         Writeln(CRCFile,'End of CRC of getppucrc of ',ppufilename,
+                 ' implementation_crc=$',hexstr(ppufile.crc,8),
+                 ' interface_crc=$',hexstr(ppufile.interface_crc,8),
+                 ' indirect_crc=$',hexstr(ppufile.indirect_crc,8),
+                 ' implementation_crc_size=',ppufile.implementation_write_crc_index,
+                 ' interface_crc_size=',ppufile.interface_write_crc_index,
+                 ' indirect_crc_size=',ppufile.indirect_write_crc_index);
          close(CRCFile);
 {$endif Test_Double_checksum_write}
 
@@ -1825,7 +1841,7 @@ var
                  else if (pu.u.indirect_crc<>pu.indirect_checksum) then
                    writeln('  indcrc change: ',hexstr(pu.u.indirect_crc,8),' <> ',hexstr(pu.indirect_checksum,8))
                  else
-                   writeln('  implcrc change: ',hexstr(pu.u.crc,8),' <> ',hexstr(pu.checksum,8));
+                   writeln('  implcrc change: ',hexstr(pu.u.crc,8),' in ' ,pu.u.ppufilename,' <> ',hexstr(pu.checksum,8),' in ',realmodulename^);
 {$endif DEBUG_UNIT_CRC_CHANGES}
                  recompile_reason:=rr_crcchanged;
                  do_compile:=true;
