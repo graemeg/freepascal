@@ -2,7 +2,9 @@
 {$asmmode default}
 {$H-}
 {$goto on}
-{$inline on}
+{$ifndef DISABLE_INLINE}
+  {$inline on}
+{$endif}
 {$interfaces corba}
 
 { This reduces the memory requirements a lot }
