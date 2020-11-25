@@ -22,29 +22,25 @@ implementation
 {$i qdosfuncs.inc}
 
 var
-  stacktop: pointer;
-  setjmpbuf: jmp_buf;
-  stklen: longint; external name '__stklen';
   binstart: byte; external name '_stext';
   binend: byte; external name '_etext';
   bssstart: byte; external name '_sbss';
   bssend: byte; external name '_ebss';
 
-{ this is const, so it will go into the .data section, not .bss }
-const
-  stackorig: pointer = nil;
-
 procedure PascalMain; external name 'PASCALMAIN';
+procedure PascalStart; forward;
 
 { this function must be the first in this unit which contains code }
 {$OPTIMIZATION OFF}
-function _FPC_proc_start: longint; cdecl; public name '_start';
-var
-  newstack: pointer;
-begin
-  _FPC_proc_start:=0;
-  asm
-    move.l d7,-(sp)
+function _FPC_proc_start: longint; cdecl; assembler; nostackframe; public name '_start';
+asm
+    bra   @start
+    dc.l  $0
+    dc.w  $4afb
+    dc.w  3
+    dc.l  $46504300   { Job name, just FPC for now }
+
+@start:
     { relocation code }
 
     { get our actual position in RAM }
@@ -80,36 +76,22 @@ begin
     bne @relocloop
 
 @noreloc:
-    move.l (sp)+,d7
-
-    { save the original stack pointer }
-    move.l a7,stackorig
-  end;
-
-  { initialize .bss }
-  FillChar(bssstart,PtrUInt(@bssend)-PtrUInt(@bssstart),#0);
-
-  newstack:=mt_alchp(stklen,nil,-1);
-  if not assigned(newstack) then
-    _FPC_proc_start:=ERR_OM
-  else
-    begin
-      stacktop:=pbyte(newstack)+stklen;
-      asm
-        move.l stacktop,sp
-      end;
-      if setjmp(setjmpbuf) = 0 then
-        PascalMain;
-      asm
-        move.l stackorig,sp
-      end;
-      mt_rechp(newstack);
-   end;
+    jsr PascalStart
 end;
 
 procedure _FPC_proc_halt(_ExitCode: longint); public name '_haltproc';
 begin
-  longjmp(setjmpbuf,1); 
+  mt_frjob(-1, _ExitCode);
+end;
+
+procedure PascalStart;
+begin
+  { initialize .bss }
+  FillChar(bssstart,PtrUInt(@bssend)-PtrUInt(@bssstart),#0);
+
+  PascalMain;
+
+  Halt; { this should never be reached }
 end;
 
 
