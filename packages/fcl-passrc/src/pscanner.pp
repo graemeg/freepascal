@@ -3798,7 +3798,7 @@ begin
   'ISO':
     SetMode(msIso,ISOModeSwitches,false,[],[],false);
   'EXTENDEDPASCAL':
-    SetMode(msExtpas,ExtPasModeSwitches,false,[],[],false);
+    SetMode(msExtpas,ExtPasModeSwitches,false);
   'GPC':
     SetMode(msGPC,GPCModeSwitches,false);
   else
