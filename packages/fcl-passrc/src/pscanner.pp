@@ -3797,7 +3797,7 @@ begin
     SetMode(msMac,MacModeSwitches,false,bsMacPasMode);
   'ISO':
     SetMode(msIso,ISOModeSwitches,false,[],[],false);
-  'EXTENDED':
+  'EXTENDEDPASCAL':
     SetMode(msExtpas,ExtPasModeSwitches,false,[],[],false);
   'GPC':
     SetMode(msGPC,GPCModeSwitches,false);
