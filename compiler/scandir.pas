@@ -1339,30 +1339,32 @@ unit scandir;
     procedure dir_setpeflags;
       var
         ident : string;
+        flags : int64;
       begin
         if not (target_info.system in (systems_all_windows)) then
           Message(scan_w_setpeflags_not_support);
-        current_scanner.skipspace;
-        ident:=current_scanner.readid;
-        if ident<>'' then
-          peflags:=peflags or get_peflag_const(ident,scan_e_illegal_peflag)
-        else
-          peflags:=peflags or current_scanner.readval;
+        if current_scanner.readpreprocint(flags,'SETPEFLAGS') then
+          begin
+            if flags>$ffff then
+              message(scan_e_illegal_peflag);
+            peflags:=peflags or uint16(flags);
+          end;
         SetPEFlagsSetExplicity:=true;
       end;
 
     procedure dir_setpeoptflags;
       var
         ident : string;
+        flags : int64;
       begin
         if not (target_info.system in (systems_all_windows)) then
           Message(scan_w_setpeoptflags_not_support);
-        current_scanner.skipspace;
-        ident:=current_scanner.readid;
-        if ident<>'' then
-          peoptflags:=peoptflags or get_peflag_const(ident,scan_e_illegal_peoptflag)
-        else
-          peoptflags:=peoptflags or current_scanner.readval;
+        if current_scanner.readpreprocint(flags,'SETPEOPTFLAGS') then
+          begin
+            if flags>$ffff then
+              message(scan_e_illegal_peoptflag);
+            peoptflags:=peoptflags or uint16(flags);
+          end;
         SetPEOptFlagsSetExplicity:=true;
       end;
 
