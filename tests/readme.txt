@@ -217,6 +217,7 @@ Emulator execution is possible as well. It can't be combined with remote
 execution though.
 
 EMULATOR: name of the emulator to use
+EMULATOR_OPTS: pass the given options to the emulator
 
 Examples:
 
