@@ -578,7 +578,7 @@ begin
 end;
 
 
-procedure randomize;
+procedure randomize(var randseed: cardinal);
 var
   hl   : longint;
   regs : Registers;

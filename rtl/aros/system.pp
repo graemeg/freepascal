@@ -175,7 +175,7 @@ end;
 *****************************************************************************}
 
 { set randseed to a new pseudo random value }
-procedure Randomize;
+Procedure Randomize(var randseed: cardinal);
 var
   tmpTime: TDateStamp;
 begin

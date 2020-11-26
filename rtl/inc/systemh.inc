@@ -786,7 +786,51 @@ const
 
 var
   ExitCode    : TExitCode; public name 'operatingsystem_result';
+
+{ Random / Randomize definitions and variables }
+{$if defined(FPC_HAS_FEATURE_RANDOM)}
+{$ifndef FPC_USE_SIMPLE_RANDOM}
+type
+  TRandomGenerator = record
+  private const
+    MTWIST_N = 624;
+    MTWIST_M = 397;
+
+    MTWIST_UPPER_MASK = cardinal($80000000);
+    MTWIST_LOWER_MASK = cardinal($7FFFFFFF);
+
+    MTWIST_MATRIX_A   = cardinal($9908B0DF);
+
+  private
+    mt_index: cardinal;
+    RandSeed: cardinal;
+    OldRandSeed: cardinal;
+    mt_state: array[0..MTWIST_N-1] of cardinal;
+
+    function MTWIST_MIXBITS(u, v: cardinal): cardinal; inline;
+    function MTWIST_TWIST(u, v: cardinal): cardinal; inline;
+    procedure mtwist_init(seed: cardinal);
+    procedure mtwist_update_state;
+    function mtwist_u32rand: cardinal;
+  public
+    procedure Randomize;
+    procedure Randomize(ARandSeed: cardinal);
+
+    function Random(l:longint): longint;
+    function Random(l: int64): int64;
+    {$ifndef FPUNONE}
+    function Random: extended;
+    {$endif}
+  end;
+var
+  RandGenerator: TRandomGenerator = (mt_index:TRandomGenerator.MTWIST_N+1; RandSeed:0; OldRandSeed:0);
+  RandSeed: Cardinal absolute RandGenerator.RandSeed;
+{$else FPC_USE_SIMPLE_RANDOM}
+var
   RandSeed    : Cardinal;
+{$endif FPC_USE_SIMPLE_RANDOM}
+{$endif FPC_HAS_FEATURE_RANDOM}
+
   { Delphi compatibility }
 
 {$ifdef FPC_HAS_FEATURE_DYNLIBS}
@@ -932,6 +976,7 @@ Function  Random(l:int64):int64;
 Function  Random: extended;
 {$endif}
 Procedure Randomize;
+Procedure Randomize(var RandSeed: cardinal);
 {$endif FPC_HAS_FEATURE_RANDOM}
 
 {$if defined(CPUINT8)}

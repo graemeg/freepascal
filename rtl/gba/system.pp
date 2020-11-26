@@ -63,8 +63,6 @@ var
   fake_heap_end: ^byte; cvar; external;
 
 
-procedure randomize(value: integer);
-
 implementation
 
 {$linklib sysbase}
@@ -110,14 +108,9 @@ end;
                              ParamStr/Randomize
 *****************************************************************************}
 
-procedure randomize();
+procedure randomize(var randseed: cardinal);
 begin
   RandSeed := 63458;
-end;
-
-procedure randomize(value: integer);
-begin
-  RandSeed := value;
 end;
 
 {$ifdef FPC_HAS_FEATURE_COMMANDARGS}

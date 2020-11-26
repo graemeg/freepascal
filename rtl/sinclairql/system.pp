@@ -113,7 +113,7 @@ procedure SysInitParamsAndEnv;
 begin
 end;
 
-procedure randomize;
+procedure randomize(var randseed: cardinal);
 begin
   {$WARNING: randseed is uninitialized}
   randseed:=0;

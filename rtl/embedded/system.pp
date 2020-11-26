@@ -244,7 +244,7 @@ function paramstr(l: longint) : string;
 {$endif FPC_HAS_FEATURE_COMMANDARGS}
 
 {$ifdef FPC_HAS_FEATURE_RANDOM}
-procedure randomize();
+procedure randomize(var randseed: cardinal);
 begin
   RandSeed := 63458;
 end;

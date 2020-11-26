@@ -111,7 +111,7 @@ var
 {$endif FPC_HAS_FEATURE_SOFTFPU}
 {$endif FPUNONE}
 
-procedure randomize;
+procedure randomize(var randseed: cardinal);
 begin
 end;
 

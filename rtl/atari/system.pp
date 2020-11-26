@@ -123,7 +123,7 @@ var
   end;
 
 
-  procedure randomize;
+  procedure randomize(var randseed: cardinal);
   begin
     {$WARNING: randseed initial value is 24bit}
     randseed:=xbios_random;

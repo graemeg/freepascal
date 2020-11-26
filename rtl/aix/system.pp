@@ -89,7 +89,7 @@ function paramstr(l: longint) : string;
        paramstr:='';
  end;
 
-Procedure Randomize;
+Procedure Randomize(var randseed: cardinal);
 Begin
   randseed:=longint(Fptime(nil));
 End;
