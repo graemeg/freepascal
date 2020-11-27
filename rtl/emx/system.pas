@@ -242,7 +242,7 @@ begin
 end;
 
 
-procedure randomize(var randseed: cardinal); assembler; // ToDo
+procedure randomize; assembler;
 asm
     mov ah, 2Ch
     call syscall

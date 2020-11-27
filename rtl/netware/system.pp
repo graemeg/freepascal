@@ -225,7 +225,7 @@ begin
 end;
 
 { set randseed to a new pseudo random value }
-procedure randomize(var randseed: cardinal);
+procedure randomize;
 begin
   randseed := _time (NIL);
 end;

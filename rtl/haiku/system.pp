@@ -154,7 +154,7 @@ begin
     paramstr := '';
 end;
 
-Procedure Randomize(var randseed: cardinal);
+Procedure Randomize;
 Begin
   randseed:=longint(Fptime(nil));
 End;

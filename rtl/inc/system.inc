@@ -51,6 +51,8 @@ const
 {$else}
   STACK_MARGIN = 16384;    { Stack size margin for stack checking }
 {$endif}
+{ Random / Randomize constants }
+  OldRandSeed : Cardinal = 0;
 
 { For Error Handling.}
   ErrorBase : Pointer = nil;public name 'FPC_ERRORBASE';
@@ -601,12 +603,29 @@ type
 {$R-} {range checking off}
 {$Q-} {overflow checking off}
 
-function TRandomGenerator.MTWIST_MIXBITS(u, v: cardinal): cardinal; inline;
+const
+  MTWIST_N = 624;
+  MTWIST_M = 397;
+
+  MT_STATIC_SEED = 5489;
+
+  MTWIST_UPPER_MASK = cardinal($80000000);
+  MTWIST_LOWER_MASK = cardinal($7FFFFFFF);
+
+  MTWIST_MATRIX_A   = cardinal($9908B0DF);
+
+var
+  mt_state: array[0..MTWIST_N-1] of cardinal;
+
+const
+  mt_index: cardinal = MTWIST_N+1;
+
+function MTWIST_MIXBITS(u, v: cardinal): cardinal; inline;
 begin
   result:=(u and MTWIST_UPPER_MASK) or (v and MTWIST_LOWER_MASK);
 end;
 
-function TRandomGenerator.MTWIST_TWIST(u, v: cardinal): cardinal; inline;
+function MTWIST_TWIST(u, v: cardinal): cardinal; inline;
 begin
   { the construct at the end is equivalent to
     if odd(v) then
@@ -617,7 +636,7 @@ begin
   result:=(MTWIST_MIXBITS(u,v) shr 1) xor (cardinal(-(v and 1)) and MTWIST_MATRIX_A);
 end;
 
-procedure TRandomGenerator.mtwist_init(seed: cardinal);
+procedure mtwist_init(seed: cardinal);
 var
   i: longint;
 begin
@@ -628,7 +647,7 @@ begin
   mt_index:=MTWIST_N;
 end;
 
-procedure TRandomGenerator.mtwist_update_state;
+procedure mtwist_update_state;
 var
   count: longint;
 begin
@@ -649,7 +668,7 @@ begin
 end;
 
 
-function TRandomGenerator.mtwist_u32rand: cardinal;
+function mtwist_u32rand: cardinal;
 var
   l_index :cardinal;
 begin
@@ -683,7 +702,7 @@ begin
 end;
 
 
-function TRandomGenerator.Random(l:longint): longint;
+function random(l:longint): longint;
 begin
   { otherwise we can return values = l (JM) }
   if (l < 0) then
@@ -691,7 +710,7 @@ begin
   random := longint((int64(mtwist_u32rand)*l) shr 32);
 end;
 
-function TRandomGenerator.Random(l:int64): int64;
+function random(l:int64): int64;
 var
  a, b, c, d: cardinal;
  q, bd, ad, bc, ac: qword;
@@ -726,48 +745,11 @@ begin
 end;
 
 {$ifndef FPUNONE}
-function TRandomGenerator.Random: extended;
+function random: extended;
 begin
   random := mtwist_u32rand * (extended(1.0)/(int64(1) shl 32));
 end;
 {$endif}
-
-procedure TRandomGenerator.Randomize(ARandSeed: cardinal);
-begin
-  mt_index:=MTWIST_N+1;
-  OldRandSeed:=0;
-  Self.RandSeed:=ARandSeed;
-end;
-
-procedure TRandomGenerator.Randomize;
-begin
-  mt_index:=MTWIST_N+1;
-  OldRandSeed:=0;
-  System.Randomize(Self.RandSeed);
-end;
-
-
-function random(l:longint): longint;
-begin
-  Result:=RandGenerator.Random(l);
-end;
-
-function random(l:int64): int64;
-begin
-  Result:=RandGenerator.Random(l);
-end;
-
-{$ifndef FPUNONE}
-function random: extended;
-begin
-  Result:=RandGenerator.Random;
-end;
-{$endif}
-
-Procedure Randomize;
-begin
-  RandGenerator.Randomize;
-end;
 
 {$else FPC_USE_SIMPLE_RANDOM}
 

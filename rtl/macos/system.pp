@@ -239,7 +239,7 @@ begin
 end;
 
 { set randseed to a new pseudo random value }
-procedure randomize(var randseed: cardinal);
+procedure randomize;
 begin
   randseed:= Cardinal(TickCount);
 end;

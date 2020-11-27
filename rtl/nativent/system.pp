@@ -263,7 +263,7 @@ end;
 
 procedure KeQueryTickCount(TickCount: PLargeInteger); stdcall; external ntdll name 'KeQueryTickCount';
 
-procedure randomize(var randseed: cardinal);
+procedure randomize;
 var
   tc: PLargeInteger;
 begin

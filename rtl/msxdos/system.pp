@@ -591,7 +591,7 @@ begin
 end;
 
 
-procedure randomize(var randseed: cardinal);
+procedure randomize;
 {$ifdef todo}
 var
   hl   : longint;

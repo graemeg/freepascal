@@ -133,7 +133,7 @@ end;
 *****************************************************************************}
 
 { set randseed to a new pseudo random value }
-procedure randomize(var randseed: cardinal);
+procedure randomize;
 var
   IPC_Timer: array [0..2] of byte absolute $27FF01B;
 begin

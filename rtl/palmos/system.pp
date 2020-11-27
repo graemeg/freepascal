@@ -102,7 +102,7 @@ var
     GenerateArgs;
   end;
 
-  procedure randomize(var randseed: cardinal);
+  procedure randomize;
   begin
     {$WARNING: randseed initial value is zero!}
     randseed:=0;

@@ -165,7 +165,7 @@ function paramstr(l: longint) : string;
        paramstr:='';
  end;
 
-Procedure Randomize(var randseed: cardinal);
+Procedure Randomize;
 Begin
   randseed:=longint(Fptime(nil));
 End;

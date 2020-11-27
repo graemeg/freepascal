@@ -823,7 +823,7 @@ begin
     else paramstr:='';
 end;
 
-procedure randomize(var randseed: cardinal);
+procedure randomize;
 var
   dt: TSysDateTime;
 begin

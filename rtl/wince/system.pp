@@ -755,7 +755,7 @@ begin
     paramstr:='';
 end;
 
-procedure randomize(var randseed: cardinal);
+procedure randomize;
 begin
   randseed:=GetTickCount;
 end;
