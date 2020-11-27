@@ -61,6 +61,7 @@ type
     procedure TestOptShortRefGlobals_Unit_FromIntfImpl_ToIntfImpl;
     procedure TestOptShortRefGlobals_Property;
     procedure TestOptShortRefGlobals_ExternalAbstract;
+    procedure TestOptShortRefGlobals_Class;
     procedure TestOptShortRefGlobals_GenericFunction;
     procedure TestOptShortRefGlobals_GenericMethod_Call;
     procedure TestOptShortRefGlobals_GenericStaticMethod_Call;
@@ -542,6 +543,77 @@ begin
     '    this.$class.JumpVirtual(22);',
     '    this.Running(105);',
     '    this.Running(23);',
+    '  };',
+    '});',
+    '']),
+    LinesToStr([
+    '']),
+    LinesToStr([
+    '']));
+end;
+
+procedure TTestOptimizations.TestOptShortRefGlobals_Class;
+begin
+  AddModuleWithIntfImplSrc('UnitA.pas',
+  LinesToStr([
+    'type',
+    '  TBird = class',
+    '  end;',
+    '']),
+  LinesToStr([
+    '']));
+  StartUnit(true,[supTObject]);
+  Add([
+  '{$optimization JSShortRefGlobals}',
+  'interface',
+  'uses unita;',
+  'type',
+  '  TEagle = class(TBird)',
+  '    Size: TBird;',
+  '    class var Color: TBird;',
+  '    procedure Fly;',
+  '    class procedure Run;',
+  '  end;',
+  'implementation',
+  'procedure TEagle.Fly;',
+  'begin',
+  '  Size:=Size;',
+  '  Self.Size:=Self.Size;',
+  '  Color:=Color;',
+  '  Self.Color:=Self.Color;',
+  'end;',
+  'class procedure TEagle.Run;',
+  'begin',
+  '  Color:=Color;',
+  '  Self.Color:=Self.Color;',
+  'end;',
+  '']);
+  ConvertUnit;
+  CheckSource('TestOptShortRefGlobals_Class',
+    LinesToStr([
+    'var $lt = null;',
+    'var $lm = pas.UnitA;',
+    'var $lt1 = $lm.TBird;',
+    'rtl.createClass(this, "TEagle", $lt1, function () {',
+    '  $lt = this;',
+    '  this.Color = null;',
+    '  this.$init = function () {',
+    '    $lt1.$init.call(this);',
+    '    this.Size = null;',
+    '  };',
+    '  this.$final = function () {',
+    '    this.Size = undefined;',
+    '    $lt1.$final.call(this);',
+    '  };',
+    '  this.Fly = function () {',
+    '    this.Size = this.Size;',
+    '    this.Size = this.Size;',
+    '    $lt.Color = this.Color;',
+    '    $lt.Color = this.Color;',
+    '  };',
+    '  this.Run = function () {',
+    '    $lt.Color = this.Color;',
+    '    $lt.Color = this.Color;',
     '  };',
     '});',
     '']),

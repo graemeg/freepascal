@@ -393,7 +393,7 @@ type
     destructor Destroy; override;
     Function CreatePCUSupport: TPCUSupport; virtual;
     function GetInitialModeSwitches: TModeSwitches;
-    function IsUnitReadFromPCU: Boolean;
+    function IsUnitReadFromPCU: Boolean; // unit was read from pcu
     function GetInitialBoolSwitches: TBoolSwitches;
     function GetInitialConverterOptions: TPasToJsConverterOptions;
     procedure CreateScannerAndParser(aFileResolver: TPas2jsFSResolver);
@@ -1053,7 +1053,7 @@ begin
 
   if coEnumValuesAsNumbers in Compiler.Options then
     Include(Result,fppas2js.coEnumNumbers);
-  if coShortRefGlobals in Compiler.Options then
+  if (coShortRefGlobals in Compiler.Options) or IsUnitReadFromPCU then
     Include(Result,fppas2js.coShortRefGlobals);
 
   if coLowerCase in Compiler.Options then
@@ -2219,7 +2219,6 @@ begin
 end;
 
 function TPas2jsCompiler.CreateOptimizer: TPas2JSAnalyzer;
-
 begin
   Result:=TPas2JSAnalyzer.Create;
 end;
@@ -2351,7 +2350,6 @@ begin
 end;
 
 function TPas2jsCompiler.CreateSrcMap(const aFileName: String): TPas2JSSrcMap;
-
 begin
   Result:=TPas2JSSrcMap.Create(aFileName);
 end;
@@ -2787,8 +2785,6 @@ begin
       AddUnitResourceStrings(aFile);
     FResources.DoneUnit(aFile.isMainFile);
     EmitJavaScript(aFile,aFileWriter);
-
-
 
     if aFile.IsMainFile and (TargetPlatform=PlatformNodeJS) then
       aFileWriter.WriteFile('rtl.run();'+LineEnding,aFile.UnitFilename);
@@ -4193,19 +4189,16 @@ begin
 end;
 
 function TPas2jsCompiler.CreateMacroEngine: TPas2jsMacroEngine;
-
 begin
   Result:=TPas2jsMacroEngine.Create;
 end;
 
 function TPas2jsCompiler.CreateLog: TPas2jsLogger;
-
 begin
   Result:=TPas2jsLogger.Create;
 end;
 
 constructor TPas2jsCompiler.Create;
-
 begin
   FOptions:=DefaultP2jsCompilerOptions;
   FConverterGlobals:=TPasToJSConverterGlobals.Create(Self);

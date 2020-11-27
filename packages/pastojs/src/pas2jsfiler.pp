@@ -243,8 +243,9 @@ const
     'Goto'
     );
 
+  PCUMinConverterOptions = [coStoreImplJS,coShortRefGlobals];
   PCUDefaultConverterOptions: TPasToJsConverterOptions =
-    [coUseStrict,coStoreImplJS,coShortRefGlobals];
+    PCUMinConverterOptions+[coUseStrict];
   PCUConverterOptions: array[TPasToJsConverterOption] of string = (
     'LowerCase',
     'SwitchStatement',
@@ -1043,6 +1044,7 @@ type
     procedure DeletePendingSpecialize(PendSpec: TPCUReaderPendingSpecialized);
     function PromiseSpecialize(SpecId: integer; const SpecName: string; RefEl, ErrorEl: TPasElement): TPCUReaderPendingSpecialized; virtual;
     procedure ResolveSpecializedElements(Complete: boolean);
+    function IsSpecialize(ChildEl: TPasElement): boolean;
   protected
     // json
     procedure RaiseMsg(Id: int64; const Msg: string = ''); overload; override;
@@ -1300,7 +1302,7 @@ implementation
 procedure RegisterPCUFormat;
 begin
   if PCUFormat=nil then
-    PCUFormat:=PrecompileFormats.Add('pcu','all used pcu must match exactly',TPCUReader,TPCUWriter);
+    PCUFormat:=PrecompileFormats.Add('pcu','all used pcu must match exactly together',TPCUReader,TPCUWriter);
 end;
 
 function ComparePointer(Data1, Data2: Pointer): integer;
@@ -2164,7 +2166,7 @@ begin
   ParserOptions:=PCUDefaultParserOptions;
   ModeSwitches:=PCUDefaultModeSwitches;
   BoolSwitches:=PCUDefaultBoolSwitches;
-  ConverterOptions:=PCUDefaultConverterOptions-[coStoreImplJS];
+  ConverterOptions:=PCUDefaultConverterOptions;
   TargetPlatform:=PCUDefaultTargetPlatform;
   TargetProcessor:=PCUDefaultTargetProcessor;
 end;
@@ -3467,7 +3469,7 @@ begin
     end
   else if (El.ClassType=TPasModule) or (El is TPasUnitModule) then
     begin
-    // indirect used unit
+    // indirectly used unit (refs to directly used units are created in WriteSection)
     if aContext.IndirectUsesArr=nil then
       begin
       if aContext.SectionObj=nil then
@@ -5642,6 +5644,17 @@ begin
     end;
 end;
 
+function TPCUReader.IsSpecialize(ChildEl: TPasElement): boolean;
+begin
+  if (ChildEl is TPasGenericType)
+      and Resolver.IsSpecialized(TPasGenericType(ChildEl)) then
+    exit(true);
+  if (ChildEl is TPasProcedure)
+      and (TPas2JSProcedureScope(ChildEl.CustomData).SpecializedFromItem<>nil) then
+    exit(true);
+  Result:=false;
+end;
+
 procedure TPCUReader.RaiseMsg(Id: int64; const Msg: string);
 var
   E: EPas2JsReadError;
@@ -6597,8 +6610,7 @@ begin
     for k:=0 to Members.Count-1 do
       begin
       ChildEl:=TPasElement(Members[k]);
-      if (ChildEl is TPasGenericType)
-          and Resolver.IsSpecialized(TPasGenericType(ChildEl)) then
+      if IsSpecialize(ChildEl) then
         // skip specialized type
       else if Index=j then
         break
@@ -6855,7 +6867,7 @@ begin
         RaiseMsg(20180314155953,Section,'indirect unit "'+Name+'"');
       UsedScope:=Module.InterfaceSection.CustomData as TPas2JSSectionScope;
       if not UsedScope.Finished then
-        RaiseMsg(20180314155953,Section,'indirect unit "'+Name+'"');
+        RaiseMsg(20180314155954,Section,'indirect unit "'+Name+'"');
       ReadExternalReferences(UsesObj,Module);
       end;
     end;
@@ -9828,7 +9840,7 @@ begin
     'InitParserOpts': InitialFlags.ParserOptions:=ReadParserOptions(Obj,nil,aName,PCUDefaultParserOptions);
     'InitModeSwitches': InitialFlags.ModeSwitches:=ReadModeSwitches(Obj,nil,aName,PCUDefaultModeSwitches);
     'InitBoolSwitches': InitialFlags.BoolSwitches:=ReadBoolSwitches(Obj,nil,aName,PCUDefaultBoolSwitches);
-    'InitConverterOpts': InitialFlags.ConverterOptions:=ReadConverterOptions(Obj,nil,aName,PCUDefaultConverterOptions-[coStoreImplJS]);
+    'InitConverterOpts': InitialFlags.ConverterOptions:=ReadConverterOptions(Obj,nil,aName,PCUDefaultConverterOptions);
     'FinalParserOpts': Parser.Options:=ReadParserOptions(Obj,nil,aName,InitialFlags.ParserOptions);
     'FinalModeSwitches': Scanner.CurrentModeSwitches:=ReadModeSwitches(Obj,nil,aName,InitialFlags.ModeSwitches);
     'FinalBoolSwitches': Scanner.CurrentBoolSwitches:=ReadBoolSwitches(Obj,nil,aName,InitialFlags.BoolSwitches);

@@ -398,6 +398,7 @@ begin
   aFile.Attr:=faNormal;
   aFile.Age:=DateTimeToFileDate(CurDate);
   writeln('TCustomTestCLI.OnWriteFile ',aFile.Filename,' Found=',FindFile(aFilename)<>nil,' "',LeftStr(aFile.Source,50),'" ');
+  //writeln('TCustomTestCLI.OnWriteFile ',aFile.Source);
 end;
 
 procedure TCustomTestCLI.WriteSources;

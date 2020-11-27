@@ -981,7 +981,7 @@ const
      'yield'
     );
   // reserved words, not usable as global identifiers, can be used as sub identifiers
-  JSReservedGlobalWords: array[0..51] of string = (
+  JSReservedGlobalWords: array[0..52] of string = (
      // keep sorted, first uppercase, then lowercase !
      'Array',
      'ArrayBuffer',
@@ -992,6 +992,7 @@ const
      'EvalError',
      'Float32Array',
      'Float64Array',
+     'FormData',
      'Generator',
      'GeneratorFunction',
      'Infinity',
@@ -9733,11 +9734,30 @@ end;
 function TPasToJSConverter.CreateSubDeclJSNameExpr(El: TPasElement;
   JSName: string; AContext: TConvertContext; PosEl: TPasElement): TJSElement;
 var
+  C: TClass;
+  VarKinds: TCtxVarKinds;
   ParentName: String;
 begin
-  if AContext.IsGlobal then
+  C:=El.ClassType;
+  if C.InheritsFrom(TPasType) or (C=TPasConst) then
+    VarKinds:=[cvkGlobal]
+  else if C.InheritsFrom(TPasVariable) then
     begin
-    ParentName:=GetLocalName(El.Parent,[cvkGlobal,cvkCurType],AContext);
+    VarKinds:=[cvkCurType];
+    if ([vmClass, vmStatic]*TPasVariable(El).VarModifiers<>[]) then
+      VarKinds:=[cvkGlobal]
+    else if El.Parent is TPasMembersType then
+      VarKinds:=[cvkCurType]
+    else
+      VarKinds:=[cvkGlobal];
+    end
+  else if (El.Parent is TProcedureBody) then
+    VarKinds:=[]
+  else
+    VarKinds:=[cvkGlobal];
+  if VarKinds<>[] then
+    begin
+    ParentName:=GetLocalName(El.Parent,VarKinds,AContext);
     if ParentName='' then
       ParentName:='this';
     if JSName[1]='[' then
@@ -14826,7 +14846,7 @@ begin
     ObjLit.Name:=TJSString(TransformElToJSName(El,AContext));
     ObjLit.Expr:=CreateVarInit(El,AContext);
     end
-  else if AContext.IsGlobal then
+  else if AContext.IsGlobal or (El.Parent is TPasMembersType) then
     begin
     // create 'this.A=initvalue'
     AssignSt:=TJSSimpleAssignStatement(CreateElement(TJSSimpleAssignStatement,El));
@@ -18588,7 +18608,7 @@ begin
   try
     New_FuncContext.ThisVar.Element:=El;
     New_FuncContext.ThisVar.Kind:=cvkCurType;
-    New_FuncContext.IsGlobal:=true;
+    New_FuncContext.IsGlobal:=false;
 
     // add class members
     For I:=0 to El.Members.Count-1 do
@@ -18600,8 +18620,10 @@ begin
           and (ClassVarModifiersType*TPasVariable(P).VarModifiers=[]) then
         begin
         if Kind=mfInit then
+        begin
           // mfInit: init var
-          NewEl:=CreateVarDecl(TPasVariable(P),New_FuncContext) // can be nil
+          NewEl:=CreateVarDecl(TPasVariable(P),New_FuncContext); // can be nil
+        end
         else
           begin
           // mfFinalize: clear reference
