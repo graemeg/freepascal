@@ -4268,12 +4268,20 @@ Var
   SL : TStringList;
   L : TUnsortedDuplicatesStringList;
   I : Integer;
+  iCPU : TCPU;
+  iOS : TOS;
 
 begin
   GPathPrefix:=P.Directory;
   AddPackageMacrosToDictionary(P,P.Dictionary);
+  // First target OS
   ResolveFileNames(P,Defaults.CPU,Defaults.OS,False,True);
-
+  // Then other OSes
+  for ICPU:=Low(TCPU) to high(TCPU) do
+    for IOS:=Low(TOS) to high(TOS) do
+       if (IOS<>Defaults.OS) or (iCPU<>Defaults.CPU) then
+         if OSCPUSupported[IOS,ICPU] then
+            ResolveFileNames(P,ICPU,IOS,false);
   AddLn('<package name="%s" output="" content="%s.xct">',[quotexml(P.Name),quotexml(P.Name)]);
   Addln('  <units>');
   SL:=TStringList.Create;
