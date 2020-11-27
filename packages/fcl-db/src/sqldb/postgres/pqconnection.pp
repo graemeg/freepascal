@@ -104,6 +104,8 @@ type
     // Release connection in pool.
     procedure ReleaseConnection(Conn: PPGConn; DoClear : Boolean);
 
+    function PortParamName: string; override;
+
     procedure DoInternalConnect; override;
     procedure DoInternalDisconnect; override;
     function GetHandle : pointer; override;
@@ -1417,6 +1419,11 @@ begin
       end;
       end;
     end;
+end;
+
+function TPQConnection.PortParamName: string;
+begin
+  Result := 'port';
 end;
 
 procedure TPQConnection.UpdateIndexDefs(IndexDefs : TIndexDefs;TableName : string);
