@@ -4278,13 +4278,15 @@ begin
   Addln('  <units>');
   SL:=TStringList.Create;
   For T in P.Targets do
-    if (T.TargetType=ttUnit) and (T.TargetSourceFileName<>'') then
+    if (T.TargetType in [ttUnit,ttImplicitUnit]) and (T.TargetSourceFileName<>'') then
       begin
       SL.Clear;
-      Writeln(T.Name,' -> ',T.TargetSourceFileName);
+      // Writeln(T.Name,' -> ',T.TargetSourceFileName);
       FN:=AddPathPrefix(P,T.TargetSourceFileName);
       SL.Add('-d'+CPUToString(Defaults.CPU));
       SL.Add('-d'+OSToString(Defaults.OS));
+      if Defaults.OS in AllUnixOSes then
+        SL.Add('-dUNIX');
       SL.Add('-M'+ModeToString(T.Mode));
       // Include Path
       L:=TUnsortedDuplicatesStringList.Create;
