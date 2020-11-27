@@ -586,7 +586,8 @@ implementation
     uses
        globals,systems,fmodule,
        verbose,paramgr,symsym,symtable,
-       tgobj,cutils,procinfo;
+       tgobj,cutils,procinfo,
+       cpuinfo;
 
 {*****************************************************************************
                             basic functionallity
@@ -1997,7 +1998,10 @@ implementation
         tmpreg : tregister;
         tmpref : treference;
       begin
-        if assigned(ref.symbol) then
+        if assigned(ref.symbol)
+          { for avrtiny, the code generator generates a ref which is Z relative and while using it,
+            Z is changed, so the following code breaks }
+          {$ifdef avr}and not(CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]){$endif avr} then
           begin
             tmpreg:=getaddressregister(list);
             a_loadaddr_ref_reg(list,ref,tmpreg);
@@ -2030,7 +2034,10 @@ implementation
         tmpreg : tregister;
         tmpref : treference;
       begin
-        if assigned(ref.symbol) then
+        if assigned(ref.symbol)
+          { for avrtiny, the code generator generates a ref which is Z relative and while using it,
+            Z is changed, so the following code breaks }
+          {$ifdef avr}and not(CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]){$endif avr} then
           begin
             tmpreg:=getaddressregister(list);
             a_loadaddr_ref_reg(list,ref,tmpreg);
