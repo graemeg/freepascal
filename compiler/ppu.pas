@@ -33,8 +33,6 @@ interface
 { define INTFPPU}
 
 {$ifdef Test_Double_checksum}
-var
-  CRCFile : text;
 const
   CRC_array_Size = 200000;
 type
@@ -132,6 +130,7 @@ type
     interface_crc_array,
     indirect_crc_array,
     implementation_crc_array  : pcrc_array;
+    CRCFile : text;
   private
 {$endif def Test_Double_checksum}
   protected
@@ -178,6 +177,20 @@ implementation
 {$endif def Test_Double_checksum}
     fpccrc;
 
+{$ifdef Test_Double_checksum}
+{$ifdef TEST_CRC_ERROR}
+const
+  CRC_Interface_Change_Message_Level=V_Error;
+  CRC_Implementation_Change_Message_Level=V_Error;
+  CRC_Indirect_Change_Message_Level=V_Error;
+{$else : not  TEST_CRC_ERROR}
+const
+  CRC_Interface_Change_Message_Level=V_Warning;
+  CRC_Implementation_Change_Message_Level=V_Note;
+  CRC_Indirect_Change_Message_Level=V_Note;
+{$endif : not TEST_CRC_ERROR}
+{$endif Test_Double_checksum}
+
 function swapendian_ppureal(d:ppureal):ppureal;
 
 type ppureal_bytes=array[0..sizeof(d)-1] of byte;
@@ -200,11 +213,20 @@ begin
   crc_only:=false;
 {$ifdef Test_Double_checksum}
   if not assigned(interface_crc_array) then
-    new(interface_crc_array);
+    begin
+      new(interface_crc_array);
+      fillchar(interface_crc_array^,sizeof(interface_crc_array),#$ff);
+    end;
   if not assigned(indirect_crc_array) then
-    new(indirect_crc_array);
+    begin
+      new(indirect_crc_array);
+      fillchar(indirect_crc_array^,sizeof(indirect_crc_array),#$ff);
+    end;
   if not assigned(implementation_crc_array) then
-    new(implementation_crc_array);
+    begin
+      new(implementation_crc_array);
+      fillchar(implementation_crc_array^,sizeof(implementation_crc_array),#$ff);
+    end;
 {$endif Test_Double_checksum}
 end;
 
@@ -381,7 +403,7 @@ begin
        begin
          implementation_crc_array^[implementation_write_crc_index]:=crc;
 {$ifdef Test_Double_checksum_write}
-         Write(CRCFile,'implementation_crc ',implementation_write_crc_index,' $',hexstr(crc,8),' ',len);
+         Write(CRCFile,'imp_crc ',implementation_write_crc_index:6,' $',hexstr(crc,8),' ',len);
 	 pb:=@b;
 	 for ind:=0 to len-1 do
            Write(CRCFile,' ',hexstr(pb[ind],2));
@@ -392,16 +414,16 @@ begin
        end
      else
        begin
-         if (implementation_read_crc_index<crc_array_size) and (implementation_read_crc_index<implementation_write_crc_index) and
+         if (implementation_read_crc_index<crc_array_size) and
             (implementation_crc_array^[implementation_read_crc_index]<>crc) then
            begin
-             Do_comment(V_Note,'implementation CRC changed at index '+tostr(implementation_read_crc_index));
+             do_comment(CRC_implementation_Change_Message_Level,'implementation CRC changed at index '+tostr(implementation_read_crc_index));
 {$ifdef Test_Double_checksum_write}
-             Writeln(CRCFile,'!!!',implementation_read_crc_index,' $',hexstr(implementation_crc_array^[implementation_read_crc_index],8));
+             Writeln(CRCFile,'!!!imp_crc ',implementation_read_crc_index:5,'$',hexstr(crc,8),'<>$',hexstr(implementation_crc_array^[implementation_read_crc_index],8));
            end
          else
            begin
-             Writeln(CRCFile,'implementation_crc ',implementation_read_crc_index,' OK');
+             Writeln(CRCFile,'imp_crc ',implementation_read_crc_index:5,' OK');
 {$endif Test_Double_checksum_write}
            end;
          inc(implementation_read_crc_index);
@@ -415,7 +437,7 @@ begin
           begin
             interface_crc_array^[interface_write_crc_index]:=interface_crc;
 {$ifdef Test_Double_checksum_write}
-            Write(CRCFile,'interface_crc ',interface_write_crc_index,' $',hexstr(interface_crc,8),' ',len);
+            Write(CRCFile,'int_crc ',interface_write_crc_index:5,' $',hexstr(interface_crc,8),' ',len);
 	    pb:=@b;
 	    for ind:=0 to len-1 do
               Write(CRCFile,' ',hexstr(pb[ind],2));
@@ -426,16 +448,16 @@ begin
           end
         else
           begin
-            if (interface_read_crc_index<crc_array_size) and (interface_read_crc_index<interface_write_crc_index) and
+            if (interface_read_crc_index<crc_array_size) and
                (interface_crc_array^[interface_read_crc_index]<>interface_crc) then
               begin
-                Do_comment(V_warning,'interface CRC changed at index '+tostr(interface_read_crc_index));
+                do_comment(CRC_Interface_Change_Message_Level,'interface CRC changed at index '+tostr(interface_read_crc_index));
 {$ifdef Test_Double_checksum_write}
-                Writeln(CRCFile,'!!!',interface_read_crc_index,' $',hexstr(interface_crc_array^[interface_read_crc_index],8));
+                Writeln(CRCFile,'!!!int_crc ',interface_read_crc_index:5,'$',hexstr(interface_crc,8),'<>$',hexstr(interface_crc_array^[interface_read_crc_index],8));
               end
             else
               begin
-                Writeln(CRCFile,'interface_crc ',interface_read_crc_index,' OK');
+                Writeln(CRCFile,'int_crc ',interface_read_crc_index:5,' OK');
 {$endif Test_Double_checksum_write}
               end;
             inc(interface_read_crc_index);
@@ -452,7 +474,7 @@ begin
                begin
                  indirect_crc_array^[indirect_write_crc_index]:=indirect_crc;
 {$ifdef Test_Double_checksum_write}
-                 Write(CRCFile,'indirect_crc ',indirect_write_crc_index,' $',hexstr(indirect_crc,8),' ',len);
+                 Write(CRCFile,'ind_crc ',indirect_write_crc_index:5,' $',hexstr(indirect_crc,8),' ',len);
                  pb:=@b;
                  for ind:=0 to len-1 do
                    Write(CRCFile,' ',hexstr(pb[ind],2));
@@ -463,16 +485,16 @@ begin
                end
              else
                begin
-                 if (indirect_read_crc_index<crc_array_size) and (indirect_read_crc_index<indirect_write_crc_index) and
+                 if (indirect_read_crc_index<crc_array_size) and
                     (indirect_crc_array^[indirect_read_crc_index]<>indirect_crc) then
                    begin
-                     Do_comment(V_note,'Indirect CRC changed at index '+tostr(indirect_read_crc_index));
+                     do_comment(CRC_Indirect_Change_Message_Level,'Indirect CRC changed at index '+tostr(indirect_read_crc_index));
 {$ifdef Test_Double_checksum_write}
-                     Writeln(CRCFile,'!!!',indirect_read_crc_index,' $',hexstr(indirect_crc_array^[indirect_read_crc_index],8));
+                     Writeln(CRCFile,'!!!ind_crc ',indirect_read_crc_index:5,'$',hexstr(indirect_crc,8),'<>$',hexstr(indirect_crc_array^[indirect_read_crc_index],8));
                    end
                  else
                    begin
-                     Writeln(CRCFile,'indirect_crc ',indirect_read_crc_index,' OK');
+                     Writeln(CRCFile,'ind_crc ',indirect_read_crc_index:5,' OK');
 {$endif Test_Double_checksum_write}
                    end;
                  inc(indirect_read_crc_index);
@@ -499,6 +521,16 @@ end;
 
 procedure tppufile.resetfile;
 begin
+{$ifdef Test_Double_checksum_write}
+  if (crc<>0) or (interface_crc<>0) or (indirect_crc<>0) then
+    Writeln(CRCFile,'!!! tppufile.reset called',
+                 ' implementation_crc=$',hexstr(crc,8),
+                 ' interface_crc=$',hexstr(interface_crc,8),
+                 ' indirect_crc=$',hexstr(indirect_crc,8),
+                 ' implementation_crc_size=',implementation_write_crc_index,
+                 ' interface_crc_size=',interface_write_crc_index,
+                 ' indirect_crc_size=',indirect_write_crc_index);
+{$endif Test_Double_checksum_write}
   crc:=0;
   interface_crc:=0;
   indirect_crc:=0;

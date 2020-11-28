@@ -1516,18 +1516,40 @@ var
          if (cs_fp_emulation in current_settings.moduleswitches) then
            headerflags:=headerflags or uf_fpu_emulation;
 {$endif cpufpemu}
-{$ifdef Test_Double_checksum_write}
-         if FileExists(ppufilename+'.IMP',false) then
-           RenameFile(ppufilename+'.IMP',ppufilename+'.IMP-old');
-         Assign(CRCFile,ppufilename+'.IMP');
-         Rewrite(CRCFile);
-         Writeln(CRCFile,'CRC in writeppu method of implementation of ',ppufilename);
-{$endif def Test_Double_checksum_write}
-
          { create new ppufile }
          ppufile:=tcompilerppufile.create(ppufilename);
          if not ppufile.createfile then
           Message(unit_f_ppu_cannot_write);
+
+{$ifdef Test_Double_checksum_write}
+         { Re-use the values collected in .INT part }
+         if assigned(interface_crc_array) then
+           begin
+             ppufile.implementation_write_crc_index:=implementation_write_crc_index;
+             ppufile.interface_write_crc_index:=interface_write_crc_index;
+             ppufile.indirect_write_crc_index:=indirect_write_crc_index;
+             if assigned(ppufile.interface_crc_array) then
+               begin
+                 dispose(ppufile.interface_crc_array);
+                 ppufile.interface_crc_array:=interface_crc_array;
+               end; 
+             if assigned(ppufile.implementation_crc_array) then
+               begin
+                 dispose(ppufile.implementation_crc_array);
+                 ppufile.implementation_crc_array:=implementation_crc_array;
+               end; 
+             if assigned(ppufile.indirect_crc_array) then
+               begin
+                 dispose(ppufile.indirect_crc_array);
+                 ppufile.indirect_crc_array:=indirect_crc_array;
+               end; 
+           end;
+         if FileExists(ppufilename+'.IMP',false) then
+           RenameFile(ppufilename+'.IMP',ppufilename+'.IMP-old');
+         Assign(ppufile.CRCFile,ppufilename+'.IMP');
+         Rewrite(ppufile.CRCFile);
+         Writeln(ppufile.CRCFile,'CRC in writeppu method of implementation of ',ppufilename,' defsgeneration=',defsgeneration);
+{$endif def Test_Double_checksum_write}
 
          { extra header (sub version, module flags) }
          writeextraheader;
@@ -1689,14 +1711,15 @@ var
          indirect_crc:=ppufile.indirect_crc;
 
 {$ifdef Test_Double_checksum_write}
-         Writeln(CRCFile,'End of implementation CRC in writeppu method of ',ppufilename,
+         Writeln(ppufile.CRCFile,'End of implementation CRC in writeppu method of ',ppufilename,
                  ' implementation_crc=$',hexstr(ppufile.crc,8),
                  ' interface_crc=$',hexstr(ppufile.interface_crc,8),
                  ' indirect_crc=$',hexstr(ppufile.indirect_crc,8),
                  ' implementation_crc_size=',ppufile.implementation_read_crc_index,
                  ' interface_crc_size=',ppufile.interface_read_crc_index,
-                 ' indirect_crc_size=',ppufile.indirect_read_crc_index);
-         close(CRCFile);
+                 ' indirect_crc_size=',ppufile.indirect_read_crc_index,
+                 ' defsgeneration=',defsgeneration);
+         close(ppufile.CRCFile);
 {$endif Test_Double_checksum_write}
 
          ppufile.closefile;
@@ -1707,13 +1730,6 @@ var
 
     procedure tppumodule.getppucrc;
       begin
-{$ifdef Test_Double_checksum_write}
-         if FileExists(ppufilename+'.INT',false) then
-           RenameFile(ppufilename+'.INT',ppufilename+'.INT-old');
-         Assign(CRCFile,ppufilename+'.INT');
-         Rewrite(CRCFile);
-         Writeln(CRCFile,'CRC of getppucrc of ',ppufilename);
-{$endif def Test_Double_checksum_write}
 
          { create new ppufile }
          ppufile:=tcompilerppufile.create(ppufilename);
@@ -1721,6 +1737,14 @@ var
          if not ppufile.createfile then
            Message(unit_f_ppu_cannot_write);
 
+{$ifdef Test_Double_checksum_write}
+         if FileExists(ppufilename+'.INT',false) then
+           RenameFile(ppufilename+'.INT',ppufilename+'.INT-old');
+         Assign(ppufile.CRCFile,ppufilename+'.INT');
+         Rewrite(ppufile.CRCFile);
+         Writeln(ppufile.CRCFile,'CRC of getppucrc of ',ppufilename,
+                 ' defsgeneration=',defsgeneration);
+{$endif def Test_Double_checksum_write}
          { first the (JVM) namespace }
          if assigned(namespace) then
            begin
@@ -1776,14 +1800,25 @@ var
          ppufile.writeentry(ibendimplementation);
 
 {$ifdef Test_Double_checksum_write}
-         Writeln(CRCFile,'End of CRC of getppucrc of ',ppufilename,
+         Writeln(ppufile.CRCFile,'End of CRC of getppucrc of ',ppufilename,
                  ' implementation_crc=$',hexstr(ppufile.crc,8),
                  ' interface_crc=$',hexstr(ppufile.interface_crc,8),
                  ' indirect_crc=$',hexstr(ppufile.indirect_crc,8),
                  ' implementation_crc_size=',ppufile.implementation_write_crc_index,
                  ' interface_crc_size=',ppufile.interface_write_crc_index,
-                 ' indirect_crc_size=',ppufile.indirect_write_crc_index);
-         close(CRCFile);
+                 ' indirect_crc_size=',ppufile.indirect_write_crc_index,
+                 ' defsgeneration=',defsgeneration);
+         close(ppufile.CRCFile);
+         { Remember the values generated in .INT part }
+          implementation_write_crc_index:=ppufile.implementation_write_crc_index;
+          interface_write_crc_index:=ppufile.interface_write_crc_index;
+          indirect_write_crc_index:=ppufile.indirect_write_crc_index;
+          interface_crc_array:=ppufile.interface_crc_array;
+          ppufile.interface_crc_array:=nil;
+          implementation_crc_array:=ppufile.implementation_crc_array;
+          ppufile.implementation_crc_array:=nil;
+          indirect_crc_array:=ppufile.indirect_crc_array;
+          ppufile.indirect_crc_array:=nil;
 {$endif Test_Double_checksum_write}
 
          { create and write header, this will only be used
@@ -1837,11 +1872,11 @@ var
                  Message2(unit_u_recompile_crc_change,realmodulename^,pu.u.ppufilename,@queuecomment);
 {$ifdef DEBUG_UNIT_CRC_CHANGES}
                  if (pu.u.interface_crc<>pu.interface_checksum) then
-                   writeln('  intfcrc change: ',hexstr(pu.u.interface_crc,8),' <> ',hexstr(pu.interface_checksum,8))
+                   Comment(V_Normal,'  intfcrc change: '+hexstr(pu.u.interface_crc,8)+' for '+pu.u.ppufilename+' <> '+hexstr(pu.interface_checksum,8)+' in unit '+realmodulename^)
                  else if (pu.u.indirect_crc<>pu.indirect_checksum) then
-                   writeln('  indcrc change: ',hexstr(pu.u.indirect_crc,8),' <> ',hexstr(pu.indirect_checksum,8))
+                   Comment(V_Normal,'  indcrc change: '+hexstr(pu.u.indirect_crc,8)+' for '+pu.u.ppufilename+' <> '+hexstr(pu.indirect_checksum,8)+' in unit '+realmodulename^)
                  else
-                   writeln('  implcrc change: ',hexstr(pu.u.crc,8),' in ' ,pu.u.ppufilename,' <> ',hexstr(pu.checksum,8),' in ',realmodulename^);
+                   Comment(V_Normal,'  implcrc change: '+hexstr(pu.u.crc,8)+' for '+pu.u.ppufilename+' <> '+hexstr(pu.checksum,8)+' in unit '+realmodulename^);
 {$endif DEBUG_UNIT_CRC_CHANGES}
                  recompile_reason:=rr_crcchanged;
                  do_compile:=true;
@@ -1893,9 +1928,9 @@ var
                   Message2(unit_u_recompile_crc_change,realmodulename^,pu.u.ppufilename+' {impl}',@queuecomment);
 {$ifdef DEBUG_UNIT_CRC_CHANGES}
                   if (pu.u.interface_crc<>pu.interface_checksum) then
-                    writeln('  intfcrc change (2): ',hexstr(pu.u.interface_crc,8),' <> ',hexstr(pu.interface_checksum,8))
+                    Comment(V_Normal,'  intfcrc change (2): '+hexstr(pu.u.interface_crc,8)+' for '+pu.u.ppufilename+' <> '+hexstr(pu.interface_checksum,8)+' in unit '+realmodulename^)
                   else if (pu.u.indirect_crc<>pu.indirect_checksum) then
-                    writeln('  indcrc change (2): ',hexstr(pu.u.indirect_crc,8),' <> ',hexstr(pu.indirect_checksum,8));
+                    Comment(V_Normal,'  indcrc change (2): '+hexstr(pu.u.indirect_crc,8)+' for '+pu.u.ppufilename+' <> '+hexstr(pu.indirect_checksum,8)+' in unit '+realmodulename^);
 {$endif DEBUG_UNIT_CRC_CHANGES}
                   recompile_reason:=rr_crcchanged;
                   do_compile:=true;
@@ -1949,11 +1984,11 @@ var
              begin
 {$ifdef DEBUG_UNIT_CRC_CHANGES}
                if (pu.u.interface_crc<>pu.interface_checksum) then
-                 writeln('  intfcrc change (3): ',hexstr(pu.u.interface_crc,8),' <> ',hexstr(pu.interface_checksum,8))
+                 Comment(V_Normal,'  intfcrc change (3): '+hexstr(pu.u.interface_crc,8)+' for '+pu.u.ppufilename+' <> '+hexstr(pu.interface_checksum,8)+' in unit '+realmodulename^)
                else if (pu.u.indirect_crc<>pu.indirect_checksum) then
-                 writeln('  indcrc change (3): ',hexstr(pu.u.indirect_crc,8),' <> ',hexstr(pu.indirect_checksum,8))
+                 Comment(V_Normal,'  indcrc change (3): '+hexstr(pu.u.indirect_crc,8)+' for '+pu.u.ppufilename+' <> '+hexstr(pu.indirect_checksum,8)+' in unit '+realmodulename^)
                else
-                 writeln('  implcrc change (3): ',hexstr(pu.u.crc,8),' <> ',hexstr(pu.checksum,8));
+                 Comment(V_Normal,'  implcrc change (3): '+hexstr(pu.u.crc,8)+' for '+pu.u.ppufilename+' <> '+hexstr(pu.checksum,8)+' in unit '+realmodulename^);
 {$endif DEBUG_UNIT_CRC_CHANGES}
                result:=true;
                exit;
