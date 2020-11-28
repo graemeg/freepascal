@@ -15374,7 +15374,7 @@ var
   C: TClass;
   AssignSt: TJSSimpleAssignStatement;
   NeedInitFunction, HasConstructor, IsJSFunction, NeedClassExt,
-    SpecializeDelay: Boolean;
+    SpecializeDelay, NeedTypeInfo: Boolean;
   Proc: TPasProcedure;
 begin
   Result:=nil;
@@ -15483,6 +15483,7 @@ begin
       end;
 
     NeedInitFunction:=true;
+    NeedTypeInfo:=(pcsfPublished in Scope.Flags) or HasTypeInfo(El,AContext);
     IntfKind:='';
     if El.ObjKind=okInterface then
       begin
@@ -15493,8 +15494,7 @@ begin
         else
           RaiseNotSupported(El,AContext,20180405093512);
         end;
-      NeedInitFunction:=(pcsfPublished in Scope.Flags) or HasTypeInfo(El,AContext)
-                        or (IntfKind<>'') or (coShortRefGlobals in Options);
+      NeedInitFunction:=NeedTypeInfo or (IntfKind<>'') or (coShortRefGlobals in Options);
       end;
 
     if NeedInitFunction then
@@ -15636,11 +15636,14 @@ begin
           AddClassSupportedInterfaces(El,Src,FuncContext);
         AddClassMessageIds(El,Src,FuncContext,pbivnMessageInt);
         AddClassMessageIds(El,Src,FuncContext,pbivnMessageStr);
-        // add RTTI init function
-        if SpecializeDelay then
-          AddClassRTTI(El,DelaySrc,DelayFuncContext)
-        else
-          AddClassRTTI(El,Src,FuncContext);
+        if NeedTypeInfo then
+          begin
+          // add RTTI init function
+          if SpecializeDelay then
+            AddClassRTTI(El,DelaySrc,DelayFuncContext)
+          else
+            AddClassRTTI(El,Src,FuncContext);
+          end;
         end;
 
       end;// end of init function

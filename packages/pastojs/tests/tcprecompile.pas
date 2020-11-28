@@ -130,6 +130,7 @@ begin
       Params.AddStrings(SharedParams);
     if SecondRunParams<>nil then
       Params.AddStrings(SecondRunParams);
+    writeln('BBB1 TCustomTestCLI_Precompile.CheckPrecompile ',Params.Text);
     Compile([MainFile,'-FU'+UnitOutputDir],ExpExitCode);
     if ExpExitCode=0 then
       begin

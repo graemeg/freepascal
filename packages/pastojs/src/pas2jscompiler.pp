@@ -3763,7 +3763,7 @@ begin
      'enumnumbers': SetOption(coEnumValuesAsNumbers,Enable);
      'removenotusedprivates': SetOption(coKeepNotUsedPrivates,not Enable);
      'removenotuseddeclarations': SetOption(coKeepNotUsedDeclarationsWPO,not Enable);
-     'shortrefglobals': SetOption(coShortRefGlobals,not Enable);
+     'shortrefglobals': SetOption(coShortRefGlobals,Enable);
     else
       Log.LogMsgIgnoreFilter(nUnknownOptimizationOption,[QuoteStr(aValue)]);
     end;
