@@ -870,6 +870,8 @@ implementation
 
     procedure gen_save_used_regs(list:TAsmList);
       begin
+        if po_noreturn in current_procinfo.procdef.procoptions then
+          exit;
         { Pure assembler routines need to save the registers themselves }
         if (po_assembler in current_procinfo.procdef.procoptions) then
           exit;
@@ -880,6 +882,8 @@ implementation
 
     procedure gen_restore_used_regs(list:TAsmList);
       begin
+        if po_noreturn in current_procinfo.procdef.procoptions then
+          exit;
         { Pure assembler routines need to save the registers themselves }
         if (po_assembler in current_procinfo.procdef.procoptions) then
           exit;

@@ -1884,6 +1884,11 @@ unit cgcpu;
         ref : TReference;
         ref2: TReference;
       begin
+        { if a subroutine is marked as non-returning, we do
+          not generate any exit code, so we really trust the noreturn directive
+        }
+        if po_noreturn in current_procinfo.procdef.procoptions then
+          exit;
         if not nostackframe then
           begin
             list.concat(taicpu.op_reg(A_UNLK,S_NO,NR_FRAME_POINTER_REG));
