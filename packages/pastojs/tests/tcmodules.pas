@@ -16981,6 +16981,7 @@ end;
 
 procedure TTestModule.TestExternalClass_SameNamePublishedProperty;
 begin
+  WithTypeInfo:=true;
   StartProgram(false);
   Add([
   '{$modeswitch externalclass}',
@@ -16996,10 +16997,14 @@ begin
   '  end;',
   'begin',
   '  JSwiper.new;',
+  //'  if typeinfo(JSwiper)=nil then ;',
   '']);
   ConvertProgram;
   CheckSource('TestExternalClass_SameNamePublishedProperty',
     LinesToStr([ // statements
+    'this.$rtti.$ExtClass("JSwiper", {',
+    '  jsclass: "Swiper"',
+    '});',
     'rtl.createClass(this, "TObject", null, function () {',
     '  this.$init = function () {',
     '    this.FSwiper = null;',
