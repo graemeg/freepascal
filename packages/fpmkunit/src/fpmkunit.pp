@@ -7116,8 +7116,11 @@ begin
           synchronised from the thread that wrote them; the critical section there
           acts as a read/write barrier }
         ReadBarrier;
-
+{$ifdef NO_THREADING}
+      Args.Add('-Fl'+FCachedlibcPath);
+{$ELSE}      
       Args.Add('-Fl'+volatile(FCachedlibcPath));
+{$ENDIF}      
     end;
 
   // Custom options which are added by dependencies
