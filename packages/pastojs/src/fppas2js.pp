@@ -19467,6 +19467,8 @@ var
   Bracket: TJSBracketMemberExpression;
 begin
   El:=ResolveSimpleAliasType(El);
+  if El is TPasSpecializeType then
+    El:=TPasSpecializeTypeData(El.CustomData).SpecializedType;
   aName:=GetTypeInfoName(El,AContext,ErrorEl);
   if aName=GetBIName(pbivnRTTILocal) then
     Result:=CreatePrimitiveDotExpr(aName,El)
