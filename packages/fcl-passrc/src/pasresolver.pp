@@ -21056,6 +21056,7 @@ end;
 
 function TPasResolver.FindElementWithoutParams(const AName: String;
   ErrorPosEl: TPasElement; NoProcsWithArgs, NoGenerics: boolean): TPasElement;
+// ErrorPosEl=nil means to use scanner position as error position
 var
   Data: TPRFindData;
 begin
@@ -21070,6 +21071,7 @@ end;
 function TPasResolver.FindElementWithoutParams(const AName: String; out
   Data: TPRFindData; ErrorPosEl: TPasElement; NoProcsWithArgs,
   NoGenerics: boolean): TPasElement;
+// ErrorPosEl=nil means to use scanner position as error position
 var
   Abort: boolean;
 begin

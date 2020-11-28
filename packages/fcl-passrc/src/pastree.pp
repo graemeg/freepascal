@@ -2155,7 +2155,7 @@ destructor TInlineSpecializeExpr.Destroy;
 var
   i: Integer;
 begin
-  TPasElement(NameExpr).Release{$IFDEF CheckPasTreeRefCount}('CreateElement'){$ENDIF};
+  ReleaseAndNil(TPasElement(NameExpr){$IFDEF CheckPasTreeRefCount},'CreateElement'{$ENDIF});
   for i:=0 to Params.Count-1 do
     TPasElement(Params[i]).Release{$IFDEF CheckPasTreeRefCount}('TInlineSpecializeExpr.Params'){$ENDIF};
   FreeAndNil(Params);
