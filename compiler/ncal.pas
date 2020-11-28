@@ -3578,7 +3578,7 @@ implementation
       var
         candidates : tcallcandidates;
         oldcallnode : tcallnode;
-        hpt : tnode;
+        hpt,tmp : tnode;
         pt : tcallparanode;
         lastpara : longint;
         paraidx,
@@ -4003,6 +4003,19 @@ implementation
                    because the checks above have to take type conversions into
                    e.g. class reference types account }
                  hpt:=actualtargetnode(@hpt)^;
+
+                 { if the value a type helper works on is a derefentiation we need to
+                   pass the original pointer as Self as the Self value might be
+                   changed by the helper }
+                 if is_objectpascal_helper(tdef(procdefinition.owner.defowner)) and
+                    not is_implicit_pointer_object_type(tobjectdef(procdefinition.owner.defowner).extendeddef) and
+                    (hpt.nodetype=derefn) then
+                   begin
+                     tmp:=tderefnode(hpt).left;
+                     tderefnode(hpt).left:=nil;
+                     methodpointer.free;
+                     methodpointer:=tmp;
+                   end;
 
                  { R.Init then R will be initialized by the constructor,
                    Also allow it for simple loads }
