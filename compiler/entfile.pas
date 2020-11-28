@@ -1400,7 +1400,7 @@ begin
     for i:=low(arr) to high(arr) do
       arr[i]:=reverse_byte(arr[i]);
 {$ifdef DEBUG_PPU}
-  for i:=0 to 3 do
+  for i:=low(arr) to high(arr) do
     ppu_log_val('byte['+tostr(i)+']=$'+hexstr(arr[i],2));
   dec_log_level;
 {$endif}
@@ -1871,7 +1871,7 @@ procedure tentryfile.putset(const arr: array of byte);
 {$endif}
     putdata(arr,sizeof(arr));
 {$ifdef DEBUG_PPU}
-  for i:=0 to 31 do
+  for i:=0 to sizeof(arr)-1 do
     ppu_log_val('byte['+tostr(i)+']=$'+hexstr(arr[i],2));
   dec_log_level;
 {$endif}
