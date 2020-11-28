@@ -49,6 +49,7 @@ interface
       reorder : boolean;
       linklibc: boolean;
       Function  WriteResponseFile(isdll:boolean) : Boolean;
+      function postprocessexecutable(const fn: string; isdll: boolean): boolean;
     public
       constructor Create;override;
       procedure SetDefaultInfo;override;
@@ -809,6 +810,11 @@ begin
   if (success) and not(cs_link_nolink in current_settings.globalswitches) then
    DeleteFile(outputexedir+Info.ResName);
 
+  { Post process,
+    as it only writes sections sizes so far, do this only if V_Info is set }
+  if success and CheckVerbosity(V_Info) and not(cs_link_nolink in current_settings.globalswitches) then
+    success:=PostProcessExecutable(current_module.exefilename,false);
+
   MakeExecutable:=success;   { otherwise a recursive call to link method }
 end;
 
@@ -885,6 +891,12 @@ begin
 
   MakeSharedLibrary:=success;   { otherwise a recursive call to link method }
 end;
+
+
+function TLinkerLinux.postprocessexecutable(const fn : string;isdll:boolean):boolean;
+  begin
+    Result:=PostProcessELFExecutable(fn,isdll);
+  end;
 
 {*****************************************************************************
                               TINTERNALLINKERLINUX
