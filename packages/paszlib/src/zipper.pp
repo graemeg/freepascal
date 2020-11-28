@@ -838,6 +838,7 @@ Procedure ZipDateTimeToDateTime(ZD,ZT : Word;out DT : TDateTime);
 
 Var
   Y,M,D,H,N,S,MS : Word;
+  aDate,aTime : TDateTime;
 
 begin
   MS:=0;
@@ -847,10 +848,19 @@ begin
   D:=ZD and 31;
   M:=(ZD shr 5) and 15;
   Y:=((ZD shr 9) and 127)+1980;
-
+  // Some corrections
   if M < 1 then M := 1;
+  if M > 12 then M:=12;
   if D < 1 then D := 1;
-  DT:=ComposeDateTime(EncodeDate(Y,M,D),EncodeTime(H,N,S,MS));
+  if D>MonthDays[IsLeapYear(Y)][M] then
+    D:=MonthDays[IsLeapYear(Y)][M];
+  // Try to encode the result, fall back on today if it fails
+  if Not TryEncodeDate(Y,M,D,aDate) then
+    aDate:=Date;
+  if not TryEncodeTime(H,N,S,MS,aTime) then
+    aTime:=Time;
+  // Return result
+  DT:=ComposeDateTime(aDate,ATime);
 end;
 
 
