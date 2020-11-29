@@ -208,7 +208,7 @@ function iconv_close(__cd:iconv_t):cint;cdecl;external libiconvname name 'libico
 const
   iconvctlname='libiconvctl';
 {$endif}
-var 
+var
   iconvctl:function(__cd:iconv_t; __request:cint; __argument:pointer):cint;cdecl;
 
 procedure fpc_rangeerror; [external name 'FPC_RANGEERROR'];
@@ -229,26 +229,28 @@ threadvar
 procedure InitThread;
 var
   transliterate: cint;
-  iconvindex: longint;
 {$if not(defined(darwin) and (defined(cpuarm) or defined(cpuaarch64))) and not defined(iphonesim)}
-  iconvname: rawbytestring;
+  iconvindex: longint;
 {$endif}
+  iconvname, toencoding: rawbytestring;
 begin
   current_DefaultSystemCodePage:=DefaultSystemCodePage;
-{$if not(defined(darwin) and (defined(cpuarm) or defined(cpuaarch64))) and not defined(iphonesim)}
+{$if declared(iconvindex)}
   iconvindex:=GetCodepageData(DefaultSystemCodePage);
   if iconvindex<>-1 then
     iconvname:=UnixCpMap[iconvindex].name
   else
     { default to UTF-8 on Unix platforms }
     iconvname:='UTF-8';
-  iconv_wide2ansi:=iconv_open(pchar(iconvname),unicode_encoding2);
-  iconv_ansi2wide:=iconv_open(unicode_encoding2,pchar(iconvname));
 {$else}
   { Unix locale settings are ignored on iPhoneOS/iPhoneSimulator }
-  iconv_wide2ansi:=iconv_open('UTF-8',unicode_encoding2);
-  iconv_ansi2wide:=iconv_open(unicode_encoding2,'UTF-8');
+  iconvname:='UTF-8';
 {$endif}
+  toencoding:=iconvname;
+  if not assigned(iconvctl) then
+    toencoding:=toencoding+'//TRANSLIT';
+  iconv_wide2ansi:=iconv_open(pchar(toencoding),unicode_encoding2);
+  iconv_ansi2wide:=iconv_open(unicode_encoding2,pchar(iconvname));
   if assigned(iconvctl) and
      (iconv_wide2ansi<>iconv_t(-1)) then
   begin
@@ -287,6 +289,8 @@ end;
 function open_iconv_for_cps(cp: TSystemCodePage; const otherencoding: pchar; cp_is_from: boolean): iconv_t;
   var
     iconvindex: longint;
+    toencoding: rawbytestring;
+    transliterate: cint;
   begin
     { TODO: add caching (then we also don't need separate code for
       the default system page and other ones)
@@ -302,11 +306,23 @@ function open_iconv_for_cps(cp: TSystemCodePage; const otherencoding: pchar; cp_
       if cp_is_from then
         open_iconv_for_cps:=iconv_open(otherencoding,pchar(UnixCpMap[iconvindex].name))
       else
-        open_iconv_for_cps:=iconv_open(pchar(UnixCpMap[iconvindex].name),otherencoding);
+      begin
+        toencoding:=UnixCpMap[iconvindex].name;
+        if not assigned(iconvctl) then
+          toencoding:=toencoding+'//TRANSLIT';
+        open_iconv_for_cps:=iconv_open(pchar(toencoding),otherencoding);
+      end;
       inc(iconvindex);
     until (open_iconv_for_cps<>iconv_t(-1)) or
           (iconvindex>high(UnixCpMap)) or
           (UnixCpMap[iconvindex].cp<>cp);
+    if not cp_is_from and
+      (open_iconv_for_cps<>iconv_t(-1)) and
+      assigned(iconvctl) then
+    begin
+      transliterate:=1;
+      iconvctl(open_iconv_for_cps,ICONV_SET_TRANSLITERATE,@transliterate);
+    end;
   end;
 
 
@@ -1138,7 +1154,7 @@ initialization
   { (some OSes do this automatically, but e.g. Darwin and Solaris don't)    }
   setlocale(LC_ALL,'');
 
-  { load iconvctl function }
+  { load iconv library and iconvctl function }
   iconvlib:=LoadLibrary(libprefix+libiconvname+'.'+SharedSuffix);
   if iconvlib=0 then
     iconvlib:=LoadLibrary(libprefix+libiconvname+'.'+SharedSuffix+'.6');
