@@ -64,6 +64,7 @@ type
     procedure TestGen_ClassObjFPC;
     procedure TestGen_ClassObjFPC_OverloadFail;
     procedure TestGen_ClassObjFPC_OverloadOtherUnit;
+    procedure TestGen_ClassGenAncestorWithoutParamFail;
     procedure TestGen_ClassForward;
     procedure TestGen_ClassForwardConstraints;
     procedure TestGen_ClassForwardConstraintNameMismatch;
@@ -261,8 +262,8 @@ begin
   '  TBirdAlias = TBird;',
   'begin',
   '']);
-  CheckResolverException('type expected, but TBird<> found',
-    nXExpectedButYFound);
+  CheckResolverException('Generics without specialization cannot be used as a type for a variable',
+    nGenericsWithoutSpecializationAsType);
 end;
 
 procedure TTestResolveGenerics.TestGen_TemplNameEqTypeNameFail;
@@ -938,6 +939,22 @@ begin
   '  a2.a2:=4;',
   '']);
   ParseProgram;
+end;
+
+procedure TTestResolveGenerics.TestGen_ClassGenAncestorWithoutParamFail;
+begin
+  StartProgram(false);
+  Add([
+  '{$mode objfpc}',
+  'type',
+  '  TObject = class end;',
+  '  generic TBird<T> = class end;',
+  '  generic TEagle<T> = class(TBird)',
+  '  end;',
+  'begin',
+  '']);
+  CheckResolverException('Generics without specialization cannot be used as a type for a variable',
+    nGenericsWithoutSpecializationAsType);
 end;
 
 procedure TTestResolveGenerics.TestGen_ClassForward;

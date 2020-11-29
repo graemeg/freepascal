@@ -20905,10 +20905,26 @@ function TPasResolver.FindElementFor(const aName: String; AParent: TPasElement;
   TypeParamCount: integer): TPasElement;
 // called by TPasParser for direct types, e.g. type t = ns1.unit1.tobj.tsub
 var
+  ErrorEl: TPasElement;
+
+  procedure CheckGenericRefWithoutParams(GenEl: TPasGenericType);
+  // called when TypeParamCount=0  check if reference to a generic type is allowed with
+  begin
+    if (GenEl.GenericTemplateTypes=nil) or (GenEl.GenericTemplateTypes.Count=0) then
+      exit;
+    // referrring to a generic type without params
+    if not (msDelphi in CurrentParser.CurrentModeswitches)
+        and (AParent<>nil)
+        and AParent.HasParent(GenEl) then
+      exit; // mode objfpc: inside the generic type it can be referred without params
+    RaiseMsg(20201129005025,nGenericsWithoutSpecializationAsType,sGenericsWithoutSpecializationAsType,['variable'],ErrorEl);
+  end;
+
+var
   p: SizeInt;
   RightPath, CurName, LeftPath: String;
   NeedPop: Boolean;
-  CurScopeEl, NextEl, ErrorEl, BestEl: TPasElement;
+  CurScopeEl, NextEl, BestEl: TPasElement;
   CurSection: TPasSection;
   i: Integer;
   UsesUnit: TPasUsesUnit;
@@ -20980,11 +20996,17 @@ begin
         RaiseInternalError(20190801104033); // caller forgot to handle "With"
       end
     else
+      begin
       NextEl:=FindElementWithoutParams(CurName,ErrorEl,true,true);
+      if (NextEl is TPasGenericType) and (RightPath='') then
+        CheckGenericRefWithoutParams(TPasGenericType(NextEl));
+      end;
     {$IFDEF VerbosePasResolver}
     //if RightPath<>'' then
     //  writeln('TPasResolver.FindElement searching scope "',CurName,'" RightPath="',RightPath,'" ... NextEl=',GetObjName(NextEl));
     {$ENDIF}
+    if NextEl=nil then
+      RaiseIdentifierNotFound(20201129004745,CurName,ErrorEl);
     if NextEl is TPasModule then
       begin
       if CurScopeEl is TPasModule then
@@ -21038,10 +21060,8 @@ begin
       else
         CurScopeEl:=BestEl;
       end
-    else if NextEl<>nil then
-      CurScopeEl:=NextEl
     else
-      RaiseIdentifierNotFound(20170328001941,CurName,ErrorEl);
+      CurScopeEl:=NextEl;
 
     // restore scope
     if NeedPop then
