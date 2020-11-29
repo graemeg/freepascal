@@ -1140,6 +1140,8 @@ initialization
 
   { load iconvctl function }
   iconvlib:=LoadLibrary(libprefix+libiconvname+'.'+SharedSuffix);
+  if iconvlib=0 then
+    iconvlib:=LoadLibrary(libprefix+libiconvname+'.'+SharedSuffix+'.6');
   if iconvlib<>0 then
     pointer(iconvctl):=GetProcAddress(iconvlib,iconvctlname);
 
