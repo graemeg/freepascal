@@ -34,7 +34,7 @@ begin
     tmp := Swap(tmp);
     {$endif}
     Variant(Dest^) := tmp;
-  end;  
+  end;
 end;
 
 type
@@ -126,7 +126,7 @@ begin
   begin
     write(' BYREF failed');
     Code := Code or 1;
-  end;  
+  end;
   if WordRec(tmp).Hi <> absexp then
   begin
     write(' BYVAL failed');
@@ -142,7 +142,7 @@ begin
   TVarData(v).vType := cv.VarType;
 
   test('u8:    ', v.foo(cl.u8, cl.u8prop), varbyte);
-  
+
   test('u16:    ', v.foo(cl.u16, cl.u16prop), varword);       // (Uncertain) D7: treated as Integer
   test('u32:    ', v.foo(cl.u32, cl.u32prop), varlongword);   // (Uncertain) D7: treated as Integer ByRef
   test('s8:     ', v.foo(cl.s8, cl.s8prop), varshortint);     // (Uncertain) D7: treated as Integer
@@ -153,29 +153,37 @@ begin
 {$ifdef fpc}
   test('u64:    ', v.foo(cl.u64, cl.u64prop), varword64);
 {$endif}
-  
+
   test('wordbool:', v.foo(cl.wb, cl.wbprop), varBoolean);
   test('curncy:  ', v.foo(cl.cy, cl.cyprop), varCurrency);
-  
+
   test('single:  ', v.foo(cl.sgl, cl.sglprop), varSingle);
   test('double:  ', v.foo(cl.dbl, cl.dblprop), varDouble);
   test('extended:', v.foo(cl.ext, cl.extprop), -varDouble);  // not a COM type, passed by value
-  
+
   test('date:    ', v.foo(cl.dt, cl.dtprop), varDate);
 
   test('ansistr: ', v.foo(cl.fastr, cl.astr), varStrArg);
+{$ifdef FPC_WINLIKEWIDESTRING}
   test('widestr: ', v.foo(cl.fwstr, cl.wstr), varOleStr);
+{$else FPC_WINLIKEWIDESTRING}
+  test('widestr: ', v.foo(cl.fwstr, cl.wstr), varUStrArg);
+{$endif FPC_WINLIKEWIDESTRING}
 {$ifdef fpc}
   test('unistr:  ', v.foo(cl.fustr, cl.ustr), varUStrArg);
 {$endif}
   test('variant: ', v.foo(cl.fvar, cl.varprop), varVariant);
-  
+
   test('IUnknown:', v.foo(cl.fintf, cl.intfprop), varUnknown);
   test('IDispatch:', v.foo(cl.fdisp, cl.dispprop), varDispatch);
-  
+
   // not an COM type, passed by value; Delphi uses varStrArg
+{$ifdef FPC_WINLIKEWIDESTRING}
   test('shortstr:', v.foo(cl.fsstr, cl.sstr), -varOleStr);
-  // not an COM type, passed by value
+{$else FPC_WINLIKEWIDESTRING}
+  test('shortstr:', v.foo(cl.fsstr, cl.sstr), -varUStrArg);
+{$endif FPC_WINLIKEWIDESTRING}
+// not an COM type, passed by value
   test('longbool:', v.foo(cl.lb, cl.lbprop), -varBoolean);
 
   // typecasted ordinals (only one arg is actually used)

@@ -28,6 +28,9 @@ begin
   erase(input);
 end;
 
+var
+  p : pbyte;
+
 procedure dfs(a, b, c, k1: Byte);
 var
 	x					: Byte;
@@ -52,6 +55,8 @@ begin
 end;
 
 begin
+//    p:=@a;
+
 	if (k1 > k) then Exit;
 	if (a = 1) or (b = 1) or (c = 1) then begin
 		answ := answ + 1;
