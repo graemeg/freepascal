@@ -208,8 +208,6 @@ function iconv_close(__cd:iconv_t):cint;cdecl;external libiconvname name 'libico
 const
   iconvctlname='libiconvctl';
 {$endif}
-var 
-  iconvctl:function(__cd:iconv_t; __request:cint; __argument:pointer):cint;cdecl;
 
 procedure fpc_rangeerror; [external name 'FPC_RANGEERROR'];
 
@@ -242,19 +240,13 @@ begin
   else
     { default to UTF-8 on Unix platforms }
     iconvname:='UTF-8';
-  iconv_wide2ansi:=iconv_open(pchar(iconvname),unicode_encoding2);
+  iconv_wide2ansi:=iconv_open(pchar(iconvname+'//TRANSLIT'),unicode_encoding2);
   iconv_ansi2wide:=iconv_open(unicode_encoding2,pchar(iconvname));
 {$else}
   { Unix locale settings are ignored on iPhoneOS/iPhoneSimulator }
-  iconv_wide2ansi:=iconv_open('UTF-8',unicode_encoding2);
+  iconv_wide2ansi:=iconv_open('UTF-8//TRANSLIT',unicode_encoding2);
   iconv_ansi2wide:=iconv_open(unicode_encoding2,'UTF-8');
 {$endif}
-  if assigned(iconvctl) and
-     (iconv_wide2ansi<>iconv_t(-1)) then
-  begin
-    transliterate:=1;
-    iconvctl(iconv_wide2ansi,ICONV_SET_TRANSLITERATE,@transliterate);
-  end;
 end;
 
 
@@ -302,7 +294,7 @@ function open_iconv_for_cps(cp: TSystemCodePage; const otherencoding: pchar; cp_
       if cp_is_from then
         open_iconv_for_cps:=iconv_open(otherencoding,pchar(UnixCpMap[iconvindex].name))
       else
-        open_iconv_for_cps:=iconv_open(pchar(UnixCpMap[iconvindex].name),otherencoding);
+        open_iconv_for_cps:=iconv_open(pchar(UnixCpMap[iconvindex].name+'//TRANSLIT'),otherencoding);
       inc(iconvindex);
     until (open_iconv_for_cps<>iconv_t(-1)) or
           (iconvindex>high(UnixCpMap)) or
@@ -326,7 +318,6 @@ procedure Wide2AnsiMove(source:pwidechar; var dest:RawByteString; cp:TSystemCode
     mynil : pchar;
     my0 : size_t;
     err : longint;
-    transliterate: cint;
     free_iconv: boolean;
 {$ifdef aix}
     intermediate: rawbytestring;
@@ -357,12 +348,6 @@ procedure Wide2AnsiMove(source:pwidechar; var dest:RawByteString; cp:TSystemCode
     else
       begin
         use_iconv:=open_iconv_for_cps(cp,unicode_encoding2,false);
-        if (use_iconv<>iconv_t(-1)) and
-           assigned(iconvctl) then
-        begin
-          transliterate:=1;
-          iconvctl(use_iconv,ICONV_SET_TRANSLITERATE,@transliterate);
-        end;
         free_iconv:=true;
       end;
     { unsupported encoding -> default move }
@@ -771,19 +756,19 @@ function CompareWideString(const s1, s2 : WideString; Options : TCompareOptions)
   var
     hs1,hs2 : UCS4String;
     us1,us2 : WideString;
-    
+
   begin
     { wcscoll interprets null chars as end-of-string -> filter out }
     if coIgnoreCase in Options then
       begin
       us1:=UpperWideString(s1);
       us2:=UpperWideString(s2);
-      end     
-    else      
-      begin   
+      end
+    else
+      begin
       us1:=s1;
       us2:=s2;
-      end;  
+      end;
     hs1:=WideStringToUCS4StringNoNulls(us1);
     hs2:=WideStringToUCS4StringNoNulls(us2);
     result:=wcscoll(pwchar_t(hs1),pwchar_t(hs2));
@@ -804,7 +789,7 @@ function CompareWideString(const s1, s2 : WideString; Options : TCompareOptions)
       begin
       us1:=s1;
       us2:=s2;
-      end;  
+      end;
     len:=length(us1);
     setlength(hs1,len+1);
     for i:=1 to len do
@@ -1138,12 +1123,10 @@ initialization
   { (some OSes do this automatically, but e.g. Darwin and Solaris don't)    }
   setlocale(LC_ALL,'');
 
-  { load iconvctl function }
+  { load iconv library }
   iconvlib:=LoadLibrary(libprefix+libiconvname+'.'+SharedSuffix);
   if iconvlib=0 then
     iconvlib:=LoadLibrary(libprefix+libiconvname+'.'+SharedSuffix+'.6');
-  if iconvlib<>0 then
-    pointer(iconvctl):=GetProcAddress(iconvlib,iconvctlname);
 
   { set the DefaultSystemCodePage }
   DefaultSystemCodePage:=GetStandardCodePage(scpAnsi);
