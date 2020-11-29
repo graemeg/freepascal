@@ -1127,7 +1127,15 @@ implementation
                 generate_parameter_info;
 
                 if not(procdef.stack_tainting_parameter(calleeside)) and
-                   not(has_assembler_child) {and (para_stack_size=0)} then
+                   not(has_assembler_child)
+{$ifdef m68k}
+                  { parasize must be really zero, this means also that no result may be returned
+                    in a parameter }
+                  and not((current_procinfo.procdef.proccalloption in clearstack_pocalls) and
+                    not(current_procinfo.procdef.generate_safecall_wrapper) and
+                    paramanager.ret_in_param(current_procinfo.procdef.returndef,current_procinfo.procdef))
+{$endif m68k}
+                   {and (para_stack_size=0)} then
                   begin
                     { Only need to set the framepointer }
                     framepointer:=NR_STACK_POINTER_REG;
