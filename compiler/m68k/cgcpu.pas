@@ -1868,13 +1868,22 @@ unit cgcpu;
           begin
             localsize:=align(localsize,4);
 
-            if (localsize > high(smallint)) then
+            if current_procinfo.framepointer=NR_FRAME_POINTER_REG then
               begin
-                list.concat(taicpu.op_reg_const(A_LINK,S_W,NR_FRAME_POINTER_REG,0));
-                list.concat(taicpu.op_const_reg(A_SUBA,S_L,localsize,NR_STACK_POINTER_REG));
+                if (localsize > high(smallint)) then
+                  begin
+                    list.concat(taicpu.op_reg_const(A_LINK,S_W,NR_FRAME_POINTER_REG,0));
+                    list.concat(taicpu.op_const_reg(A_SUBA,S_L,localsize,NR_STACK_POINTER_REG));
+                  end
+                else
+                  list.concat(taicpu.op_reg_const(A_LINK,S_W,NR_FRAME_POINTER_REG,-localsize));
               end
             else
-              list.concat(taicpu.op_reg_const(A_LINK,S_W,NR_FRAME_POINTER_REG,-localsize));
+              begin
+                if localsize<>0 then
+                  list.concat(taicpu.op_const_reg(A_SUBA,S_L,localsize,NR_STACK_POINTER_REG));
+                current_procinfo.final_localsize:=localsize;
+              end;
           end;
       end;
 
@@ -1891,57 +1900,68 @@ unit cgcpu;
           exit;
         if not nostackframe then
           begin
-            list.concat(taicpu.op_reg(A_UNLK,S_NO,NR_FRAME_POINTER_REG));
-
-            { if parasize is less than zero here, we probably have a cdecl function.
-              According to the info here: http://www.makestuff.eu/wordpress/gcc-68000-abi/
-              68k GCC uses two different methods to free the stack, depending if the target
-              architecture supports RTD or not, and one does callee side, the other does
-              caller side free, which looks like a PITA to support. We have to figure this 
-              out later. More info welcomed. (KB) }
-
-            if (parasize > 0) and not (current_procinfo.procdef.proccalloption in clearstack_pocalls) then
+            if current_procinfo.framepointer=NR_FRAME_POINTER_REG then
               begin
-                if CPUM68K_HAS_RTD in cpu_capabilities[current_settings.cputype] then
-                  list.concat(taicpu.op_const(A_RTD,S_NO,parasize))
-                else
+                list.concat(taicpu.op_reg(A_UNLK,S_NO,NR_FRAME_POINTER_REG));
+
+                { if parasize is less than zero here, we probably have a cdecl function.
+                  According to the info here: http://www.makestuff.eu/wordpress/gcc-68000-abi/
+                  68k GCC uses two different methods to free the stack, depending if the target
+                  architecture supports RTD or not, and one does callee side, the other does
+                  caller side free, which looks like a PITA to support. We have to figure this
+                  out later. More info welcomed. (KB) }
+
+                if (parasize > 0) and not (current_procinfo.procdef.proccalloption in clearstack_pocalls) then
                   begin
-                    { We must pull the PC Counter from the stack, before  }
-                    { restoring the stack pointer, otherwise the PC would }
-                    { point to nowhere!                                   }
+                    if CPUM68K_HAS_RTD in cpu_capabilities[current_settings.cputype] then
+                      list.concat(taicpu.op_const(A_RTD,S_NO,parasize))
+                    else
+                      begin
+                        { We must pull the PC Counter from the stack, before  }
+                        { restoring the stack pointer, otherwise the PC would }
+                        { point to nowhere!                                   }
 
-                    { Instead of doing a slow copy of the return address while trying    }
-                    { to feed it to the RTS instruction, load the PC to A1 (scratch reg) }
-                    { then free up the stack allocated for paras, then use a JMP (A1) to }
-                    { return to the caller with the paras freed. (KB) }
+                        { Instead of doing a slow copy of the return address while trying    }
+                        { to feed it to the RTS instruction, load the PC to A1 (scratch reg) }
+                        { then free up the stack allocated for paras, then use a JMP (A1) to }
+                        { return to the caller with the paras freed. (KB) }
 
-                    hregister:=NR_A1;
-                    cg.a_reg_alloc(list,hregister);
-                    reference_reset_base(ref,NR_STACK_POINTER_REG,0,ctempposinvalid,4,[]);
-                    list.concat(taicpu.op_ref_reg(A_MOVE,S_L,ref,hregister));
+                        hregister:=NR_A1;
+                        cg.a_reg_alloc(list,hregister);
+                        reference_reset_base(ref,NR_STACK_POINTER_REG,0,ctempposinvalid,4,[]);
+                        list.concat(taicpu.op_ref_reg(A_MOVE,S_L,ref,hregister));
 
-                    { instead of using a postincrement above (which also writes the     }
-                    { stackpointer reg) simply add 4 to the parasize, the instructions  }
-                    { below then take that size into account as well, so SP reg is only }
-                    { written once (KB) }
-                    parasize:=parasize+4;
+                        { instead of using a postincrement above (which also writes the     }
+                        { stackpointer reg) simply add 4 to the parasize, the instructions  }
+                        { below then take that size into account as well, so SP reg is only }
+                        { written once (KB) }
+                        parasize:=parasize+4;
 
-                    r:=NR_SP;
-                    { can we do a quick addition ... }
-                    if (parasize < 9) then
-                       list.concat(taicpu.op_const_reg(A_ADDQ,S_L,parasize,r))
-                    else { nope ... }
-                       begin
-                         reference_reset_base(ref2,NR_STACK_POINTER_REG,parasize,ctempposinvalid,4,[]);
-                         list.concat(taicpu.op_ref_reg(A_LEA,S_NO,ref2,r));
-                       end;
+                        r:=NR_SP;
+                        { can we do a quick addition ... }
+                        if (parasize < 9) then
+                           list.concat(taicpu.op_const_reg(A_ADDQ,S_L,parasize,r))
+                        else { nope ... }
+                           begin
+                             reference_reset_base(ref2,NR_STACK_POINTER_REG,parasize,ctempposinvalid,4,[]);
+                             list.concat(taicpu.op_ref_reg(A_LEA,S_NO,ref2,r));
+                           end;
 
-                    reference_reset_base(ref,hregister,0,ctempposinvalid,4,[]);
-                    list.concat(taicpu.op_ref(A_JMP,S_NO,ref));
-                  end;
+                        reference_reset_base(ref,hregister,0,ctempposinvalid,4,[]);
+                        list.concat(taicpu.op_ref(A_JMP,S_NO,ref));
+                      end;
+                    end
+                  else
+                    list.concat(taicpu.op_none(A_RTS,S_NO));
               end
             else
-              list.concat(taicpu.op_none(A_RTS,S_NO));
+              begin
+                if parasize<>0 then
+                  Internalerror(2020112901);
+                if  current_procinfo.final_localsize<>0 then
+                  list.concat(taicpu.op_const_reg(A_ADDA,S_L,current_procinfo.final_localsize,NR_STACK_POINTER_REG));
+                list.concat(taicpu.op_none(A_RTS,S_NO));
+              end;
           end
         else
           begin

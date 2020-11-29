@@ -1046,7 +1046,7 @@ implementation
       end;
 
 
-{$if defined(i386) or defined(x86_64) or defined(arm) or defined(riscv32) or defined(riscv64)}
+{$if defined(i386) or defined(x86_64) or defined(arm) or defined(riscv32) or defined(riscv64) or defined(m68k)}
     const
       exception_flags: array[boolean] of tprocinfoflags = (
         [],
@@ -1058,7 +1058,7 @@ implementation
       begin
         tg:=tgobjclass.create;
 
-{$if defined(i386) or defined(x86_64) or defined(arm)}
+{$if defined(i386) or defined(x86_64) or defined(arm) or defined(m68k)}
 {$if defined(arm)}
         { frame and stack pointer must be always the same on arm thumb so it makes no
           sense to fiddle with a frame pointer }
@@ -1156,7 +1156,7 @@ implementation
 {$endif defined(arm)}
               end;
           end;
-{$endif defined(x86) or defined(arm)}
+{$endif defined(x86) or defined(arm) or defined(m68k)}
 {$if defined(xtensa)}
         { On xtensa, the stack frame size can be estimated to avoid using an extra frame pointer,
           in case parameters are passed on the stack.
