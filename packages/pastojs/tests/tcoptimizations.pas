@@ -2359,19 +2359,22 @@ var
 begin
   WithTypeInfo:=true;
   StartProgram(true);
-  Add('type');
-  Add('  TArrA = array of char;');
-  Add('  TArrB = array of string;');
-  Add('  TObject = class');
-  Add('  public');
-  Add('    PublicA: TArrA;');
-  Add('  published');
-  Add('    PublishedB: TArrB;');
-  Add('  end;');
-  Add('var');
-  Add('  C: TObject;');
-  Add('begin');
-  Add('  C.PublicA:=nil;');
+  Add([
+  'type',
+  '  TArrA = array of char;',
+  '  TArrB = array of string;',
+  '  TObject = class',
+  '  public',
+  '    PublicA: TArrA;',
+  '  published',
+  '    PublishedB: TArrB;',
+  '  end;',
+  'var',
+  '  C: TObject;',
+  'begin',
+  '  C.PublicA:=nil;',
+  '  if typeinfo(TObject)=nil then ;',
+  '']);
   ConvertProgram;
   ActualSrc:=ConvertJSModuleToString(JSModule);
   ExpectedSrc:=LinesToStr([
@@ -2395,6 +2398,7 @@ begin
     '  this.C = null;',
     '  $mod.$main = function () {',
     '    $mod.C.PublicA = [];',
+    '    if ($mod.$rtti["TObject"] === null) ;',
     '  };',
     '});',
     '']);

@@ -872,6 +872,7 @@ type
   public
     constructor Create; override;
     destructor Destroy; override;
+    procedure ClearIdentifiers(FreeItems: boolean);
     function FindLocalIdentifier(const Identifier: String): TPasIdentifier; inline;
     function FindIdentifier(const Identifier: String): TPasIdentifier; virtual;
     function RemoveLocalIdentifier(El: TPasElement): boolean; virtual;
@@ -4412,19 +4413,34 @@ end;
 
 destructor TPasIdentifierScope.Destroy;
 begin
-  {$IFDEF VerbosePasResolverMem}
-  writeln('TPasIdentifierScope.Destroy START ',ClassName);
-  {$ENDIF}
-  FItems.ForEachCall(@OnClearItem,nil);
-  {$ifdef pas2js}
-  FItems:=nil;
-  {$else}
-  FItems.Clear;
-  FreeAndNil(FItems);
-  {$endif}
+  ClearIdentifiers(true);
   inherited Destroy;
   {$IFDEF VerbosePasResolverMem}
   writeln('TPasIdentifierScope.Destroy END ',ClassName);
+  {$ENDIF}
+end;
+
+procedure TPasIdentifierScope.ClearIdentifiers(FreeItems: boolean);
+begin
+  {$IFDEF VerbosePasResolverMem}
+  writeln('TPasIdentifierScope.Clear START ',ClassName);
+  {$ENDIF}
+
+  FItems.ForEachCall(@OnClearItem,nil);
+
+  {$ifdef pas2js}
+  if FreeItems then
+    FItems:=nil
+  else
+    FItems.Clear;
+  {$else}
+  FItems.Clear;
+  if FreeItems then
+    FreeAndNil(FItems);
+  {$endif}
+
+  {$IFDEF VerbosePasResolverMem}
+  writeln('TPasIdentifierScope.Clear END ',ClassName);
   {$ENDIF}
 end;
 
