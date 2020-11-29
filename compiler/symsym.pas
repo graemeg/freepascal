@@ -151,7 +151,7 @@ interface
           function find_procdef_bytype_and_para(pt:Tproctypeoption;para:TFPObjectList;retdef:tdef;cpoptions:tcompare_paras_options):Tprocdef;
           function find_procdef_byoptions(ops:tprocoptions): Tprocdef;
           function find_procdef_byprocvardef(d:Tprocvardef):Tprocdef;
-          function find_procdef_assignment_operator(fromdef,todef:tdef;var besteq:tequaltype):Tprocdef;
+          function find_procdef_assignment_operator(fromdef,todef:tdef;var besteq:tequaltype;isexplicit:boolean):Tprocdef;
           function find_procdef_enumerator_operator(fromdef,todef:tdef;var besteq:tequaltype):Tprocdef;
           property ProcdefList:TFPObjectList read FProcdefList;
        end;
@@ -1214,7 +1214,7 @@ implementation
       end;
 
 
-    function Tprocsym.Find_procdef_assignment_operator(fromdef,todef:tdef;var besteq:tequaltype):Tprocdef;
+    function Tprocsym.Find_procdef_assignment_operator(fromdef,todef:tdef;var besteq:tequaltype;isexplicit:boolean):Tprocdef;
       var
         paraidx, realparamcount,
         i, j : longint;
@@ -1223,12 +1223,22 @@ implementation
         pd : tprocdef;
         convtyp : tconverttype;
         eq      : tequaltype;
+        shortstringcount : longint;
+        checkshortstring,
+        isgenshortstring : boolean;
       begin
         { This function will return the pprocdef of pprocsym that
           is the best match for fromdef and todef. }
         result:=nil;
         bestpd:=nil;
         besteq:=te_incompatible;
+        { special handling for assignment operators overloads to shortstring:
+          for implicit assignment we pick the ShortString one if available and
+          only pick one with specific length if it is the *only* one }
+        shortstringcount:=0;
+        checkshortstring:=not isexplicit and
+                          is_shortstring(todef) and
+                          (tstringdef(todef).len<>255);
         for i:=0 to ProcdefList.Count-1 do
           begin
             pd:=tprocdef(ProcdefList[i]);
@@ -1236,7 +1246,7 @@ implementation
               continue;
             if (equal_defs(todef,pd.returndef) or
                 { shortstrings of different lengths are ok as result }
-                (is_shortstring(todef) and is_shortstring(pd.returndef))) and
+                (not isexplicit and is_shortstring(todef) and is_shortstring(pd.returndef))) and
                { the result type must be always really equal and not an alias,
                  if you mess with this code, check tw4093 }
                ((todef=pd.returndef) or
@@ -1270,7 +1280,14 @@ implementation
                        (df_unique in tparavarsym(pd.paras[paraidx]).vardef.defoptions)) then
                       eq:=te_convert_l1;
 
-                    if eq=te_exact then
+                    isgenshortstring:=false;
+                    if checkshortstring and is_shortstring(pd.returndef) then
+                      if tstringdef(pd.returndef).len<>255 then
+                        inc(shortstringcount)
+                      else
+                        isgenshortstring:=true;
+
+                    if (eq=te_exact) and (not checkshortstring or isgenshortstring) then
                       begin
                         besteq:=eq;
                         result:=pd;
@@ -1283,6 +1300,11 @@ implementation
                       end;
                   end;
               end;
+          end;
+        if checkshortstring and (shortstringcount>1) then
+          begin
+            besteq:=te_incompatible;
+            bestpd:=nil;
           end;
         result:=bestpd;
       end;
