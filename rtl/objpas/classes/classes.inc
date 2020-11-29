@@ -2521,6 +2521,9 @@ begin
   GlobalLists.Free;
   ComponentPages.Free;
   FreeAndNil(NeedResolving);
+{$ifdef FPC_HAS_FEATURE_THREADING}
+  GlobalNameSpace.EndWrite;
+{$endif}
   { GlobalNameSpace is an interface so this is enough }
   GlobalNameSpace:=nil;
 
