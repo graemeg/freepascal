@@ -45,8 +45,13 @@ type
 
  function _VectorDotProductAVX(Vector1, Vector2: TVector4): Single; assembler;
  asm
+{$if defined(cpux86_64) and not(defined(win64))}
+   VMOVLHPS XMM0,XMM0,XMM1
+   VMOVLHPS XMM1,XMM2,XMM3
+{$else defined(cpux86_64) and not(defined(win64))}
    VMOVUPS XMM0, [Vector1]
    VMOVUPS XMM1, [Vector2]
+{$endif defined(cpux86_64) and not(defined(win64))}
    VDPPS XMM0, XMM0, XMM1, $71 { Only perform calculations on the X, Y and Z coordinates; only store result in the first element }
    VMOVSS Result, XMM0 { Store result - first element of XMM0 }
  end;
