@@ -3156,7 +3156,7 @@ void                  \2\x0F\x3A                      P6,CYRIX
 ;
 ; GAS specific x86-64 instructions
 ;
-[MOVABS]
+[MOVABS,movabsX]
 (Ch_Wop2, Ch_Rop1)
 reg_al,mem_offs       \1\xA0\45                       X86_64,SM
 reg_ax|32|64,mem_offs \320\1\xA1\45                   X86_64,SM
