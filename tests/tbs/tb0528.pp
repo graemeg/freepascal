@@ -1,5 +1,7 @@
 {%CPU=x86_64,powerpc64}
 {%skiptarget=darwin,aix,win64}
+{ %opt=-Xa }  { use the large option }
+
 
 { darwin limits statically declared data structures to 32 bit for efficiency reasons }
 { the aix assembler cannot deal with the way we declare these arrays in assembler code }

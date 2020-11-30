@@ -788,6 +788,9 @@ begin
   if tf_use_psabieh in target_info.flags then
     cmdstr:=cmdstr+ ' --eh-frame-hdr';
 
+  if cs_large in current_settings.globalswitches then
+    cmdstr:=cmdstr+' --no-relax';
+
   success:=DoExec(FindUtil(utilsprefix+BinStr),CmdStr,true,false);
 
   { Create external .dbg file with debuginfo }

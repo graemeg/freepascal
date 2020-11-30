@@ -230,7 +230,10 @@ interface
          cs_link_vlink,
          { disable LTO for the system unit (needed to work around linker bugs on macOS) }
          cs_lto_nosystem,
-	 cs_assemble_on_target
+         cs_assemble_on_target,
+         { use a memory model which allows large data structures, e.g. > 2 GB static data on x86-64 targets
+           this not supported on all OSes }
+         cs_large
        );
        tglobalswitches = set of tglobalswitch;
 

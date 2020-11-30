@@ -468,12 +468,19 @@ unit cgx86;
           members aren't known until link time, ABIs place very pessimistic limits
           on offset values, e.g. SysV AMD64 allows +/-$1000000 (16 megabytes) }
         if ((ref.offset<low(longint)) or (ref.offset>high(longint))) or
+           ((cs_large in current_settings.globalswitches) and assigned(ref.symbol)) or
            { absolute address is not a common thing in x64, but nevertheless a possible one }
            ((ref.base=NR_NO) and (ref.index=NR_NO) and (ref.symbol=nil)) then
           begin
             { Load constant value to register }
             hreg:=GetAddressRegister(list);
-            list.concat(taicpu.op_const_reg(A_MOV,S_Q,ref.offset,hreg));
+            if (cs_large in current_settings.globalswitches) and assigned(ref.symbol) then
+              begin
+                list.concat(taicpu.op_sym_ofs_reg(A_MOVABS,S_Q,ref.symbol,ref.offset+10,hreg));
+                ref.symbol:=nil;
+              end
+            else
+              list.concat(taicpu.op_const_reg(A_MOV,S_Q,ref.offset,hreg));
             ref.offset:=0;
             {if assigned(ref.symbol) then
               begin

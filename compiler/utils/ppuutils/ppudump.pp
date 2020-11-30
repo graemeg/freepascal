@@ -2300,7 +2300,8 @@ const
         'Link for GNU linker version <=2.19', {cs_link_pre_binutils_2_19}
         'Link using vlink', {cs_link_vlink}
         'Link-Time Optimization disabled for system unit', {cs_lto_nosystem}
-        'Assemble on target OS' {cs_asemble_on_target}
+        'Assemble on target OS', {cs_asemble_on_target}
+        'Use a memory model to support >2GB static data on 64 Bit target' {cs_large}
        );
     localswitchname : array[tlocalswitch] of string[50] =
        { Switches which can be changed locally }

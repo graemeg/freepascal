@@ -2695,6 +2695,13 @@ begin
                         else
                           IllegalPara(opt);
                       end;
+                    'a' :
+                      begin
+                        If UnsetBool(More, j, opt, false) then
+                          exclude(init_settings.globalswitches,cs_large)
+                        else
+                          include(init_settings.globalswitches,cs_large);
+                      end;
                     'c' : Cshared:=TRUE;
                     'd' : Dontlinkstdlibpath:=TRUE;
                     'e' :
