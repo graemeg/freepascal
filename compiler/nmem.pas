@@ -1016,7 +1016,13 @@ implementation
                          (right.resultdef.typ=enumdef) and
                          (tenumdef(htype).basedef=tenumdef(right.resultdef).basedef) and
                     ((tarraydef(left.resultdef).lowrange<>tenumdef(htype).min) or
-                     (tarraydef(left.resultdef).highrange<>tenumdef(htype).max)) then
+                     (tarraydef(left.resultdef).highrange<>tenumdef(htype).max) or
+                   { while we could assume that the value might not be out of range,
+                     memory corruption could have resulted in an illegal value,
+                     so do not skip the type conversion in case of range checking
+
+                     After all, range checking is a safety mean }
+                     (cs_check_range in current_settings.localswitches)) then
                    {Convert array indexes to low_bound..high_bound.}
                    inserttypeconv(right,cenumdef.create_subrange(tenumdef(right.resultdef),
                                                       asizeint(Tarraydef(left.resultdef).lowrange),
