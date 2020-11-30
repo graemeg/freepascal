@@ -72,6 +72,7 @@ type
     procedure TestOptShortRefGlobals_SameUnit_EnumType;
     procedure TestOptShortRefGlobals_SameUnit_ClassType;
     procedure TestOptShortRefGlobals_SameUnit_RecordType;
+    procedure TestOptShortRefGlobals_Unit_InitNoImpl;
 
     // Whole Program Optimization
     procedure TestWPO_OmitLocalVar;
@@ -1482,6 +1483,43 @@ begin
     '    return this;',
     '  };',
     '});',
+    '']));
+end;
+
+procedure TTestOptimizations.TestOptShortRefGlobals_Unit_InitNoImpl;
+begin
+  AddModuleWithIntfImplSrc('UnitA.pas',
+  LinesToStr([
+    'var a: word;',
+    'procedure Run(w: word);',
+    '']),
+  LinesToStr([
+    'procedure Run(w: word);',
+    'begin',
+    'end;',
+    '']));
+  StartUnit(true,[supTObject]);
+  Add([
+  '{$optimization JSShortRefGlobals}',
+  'interface',
+  'implementation',
+  'uses UnitA;', // empty implementation function
+  'begin',
+  '  Run(a);',
+  '']);
+  ConvertUnit;
+  CheckSource('TestOptShortRefGlobals_Unit_InitNoImpl',
+    LinesToStr([
+    'var $impl = $mod.$impl;',
+    'var $lm = null;',
+    'var $lp = null;',
+    '']),
+    LinesToStr([
+    '$lp($lm.a);',
+    '']),
+    LinesToStr([
+    '$lm = pas.UnitA;',
+    '$lp = $lm.Run;',
     '']));
 end;
 

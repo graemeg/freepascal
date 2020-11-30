@@ -1788,7 +1788,7 @@ type
     ImplContext: TSectionContext;
     ImplHeaderStatements: TFPList;
     ImplSrcElements: TJSSourceElements;
-    ImplHeaderIndex: integer; // index in TJSSourceElements(JSElement).Statements
+    ImplHeaderIndex: integer; // index in ImplSrcElements.Statements
     destructor Destroy; override;
     procedure AddImplHeaderStatement(JS: TJSElement);
   end;
@@ -8113,30 +8113,33 @@ begin
           AddToSourceElements(Src,ConvertDeclarations(El.InterfaceSection,IntfSecCtx));
 
         ImplFunc:=CreateImplementationSection(El,IntfSecCtx);
-        if ImplFunc=nil then
+        // add $mod.$implcode = ImplFunc;
+        AssignSt:=TJSSimpleAssignStatement(CreateElement(TJSSimpleAssignStatement,El));
+        AssignSt.LHS:=CreateMemberExpression([ModVarName,GetBIName(pbivnImplCode)]);
+        AssignSt.Expr:=ImplFunc;
+        AddToSourceElements(Src,AssignSt);
+
+        // append initialization section
+        CreateInitSection(El,Src,IntfSecCtx);
+
+        if TJSSourceElements(ImplFunc.AFunction.Body.A).Statements.Count=0 then
           begin
+          // empty implementation
+
           // remove unneeded $impl from interface
           RemoveFromSourceElements(Src,ImplVarSt);
-          if IntfSecCtx.HeaderIndex>0 then
-            dec(IntfSecCtx.HeaderIndex);
-          if IntfSecCtx.ImplHeaderIndex>0 then
-            dec(IntfSecCtx.ImplHeaderIndex);
+          // remove unneeded $mod.$implcode = function(){}
+          RemoveFromSourceElements(Src,AssignSt);
           HasImplUsesClause:=length(El.ImplementationSection.UsesClause)>0;
           end
         else
           begin
-          // add $mod.$implcode = ImplFunc;
-          AssignSt:=TJSSimpleAssignStatement(CreateElement(TJSSimpleAssignStatement,El));
-          AssignSt.LHS:=CreateMemberExpression([ModVarName,GetBIName(pbivnImplCode)]);
-          AssignSt.Expr:=ImplFunc;
-          AddToSourceElements(Src,AssignSt);
           HasImplUsesClause:=true;
           end;
+
         if HasImplUsesClause then
           // add implementation uses list: [<implementation uses1>,<uses2>, ...]
           ArgArray.AddElement(CreateUsesList(El.ImplementationSection,AContext));
-
-        CreateInitSection(El,Src,IntfSecCtx);
 
         end;
 
@@ -17494,14 +17497,15 @@ begin
     if ImplDecl<>nil then
       RaiseInconsistency(20170910175032,El); // elements should have been added directly
     IntfContext.ImplHeaderIndex:=ImplContext.HeaderIndex;
-    if Src.Statements.Count=0 then
-      exit; // no implementation
     Result:=FunDecl;
   finally
     IntfContext.ImplContext:=nil;
     ImplContext.Free;
     if Result=nil then
+      begin
       FunDecl.Free;
+      IntfContext.ImplSrcElements:=nil;
+      end;
   end;
 end;
 

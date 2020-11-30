@@ -1000,6 +1000,7 @@ type
     FElementRefsArray: TPCUFilerElementRefArray; // TPCUFilerElementRef by Id
     FJSON: TJSONObject;
     FPendingIdentifierScopes: TObjectList; // list of TPCUReaderPendingIdentifierScope
+    FIntfSectionObj: TJSONObject;
     procedure Set_Variable_VarType(RefEl: TPasElement; Data: TObject);
     procedure Set_AliasType_DestType(RefEl: TPasElement; Data: TObject);
     procedure Set_PointerType_DestType(RefEl: TPasElement; Data: TObject);
@@ -1097,6 +1098,7 @@ type
     procedure ReadSpecialization(Obj: TJSONObject; GenEl: TPasGenericType; ParamIDs: TJSONArray); virtual;
     procedure ReadExternalReferences(Obj: TJSONObject; El: TPasElement); virtual;
     procedure ReadUsedUnitsInit(Obj: TJSONObject; Section: TPasSection; aContext: TPCUReaderContext); virtual;
+    procedure ReadIndirectUsedUnits(Obj: TJSONObject; Section: TPasSection; aComplete: boolean); virtual;
     procedure ReadUsedUnitsFinish(Obj: TJSONObject; Section: TPasSection; aContext: TPCUReaderContext); virtual;
     procedure ReadSectionScope(Obj: TJSONObject; Scope: TPas2JSSectionScope; aContext: TPCUReaderContext); virtual;
     procedure ReadSection(Obj: TJSONObject; Section: TPasSection; aContext: TPCUReaderContext); virtual;
@@ -2590,7 +2592,7 @@ procedure TPCUWriter.WriteModule(Obj: TJSONObject; aModule: TPasModule;
     if Section=nil then exit;
     if Section.Parent<>aModule then
       RaiseMsg(20180205153912,aModule,PropName);
-    aContext.Section:=Section; // set Section before calling virtual method
+    aContext.Section:=Section; // set Section before calling virtual WriteSection
     aContext.SectionObj:=nil;
     aContext.IndirectUsesArr:=nil;
     WriteSection(Obj,Section,PropName,aContext);
@@ -5533,7 +5535,8 @@ begin
       RaiseMsg(20200531101105,PendSpec.GenericEl,PendSpec.SpecName);// nothing uses this specialize
     end;
   if PendSpec.GenericEl=nil then
-    RaiseMsg(20200531101333,RefEl,PendSpec.SpecName);
+    // not yet ready
+    exit;
   Obj:=PendSpec.Obj;
   if Obj=nil then
     RaiseMsg(20200531101128,PendSpec.GenericEl,PendSpec.SpecName); // specialize missing in JSON
@@ -6815,6 +6818,50 @@ begin
   if aContext=nil then ;
 end;
 
+procedure TPCUReader.ReadIndirectUsedUnits(Obj: TJSONObject;
+  Section: TPasSection; aComplete: boolean);
+// read external refs from indirectly used units
+var
+  i: Integer;
+  Arr: TJSONArray;
+  Data: TJSONData;
+  UsesObj: TJSONObject;
+  Name: string;
+  Module: TPasModule;
+  UsedScope: TPas2JSSectionScope;
+begin
+  if ReadArray(Obj,'IndirectUses',Arr,Section) then
+    begin
+    for i:=0 to Arr.Count-1 do
+      begin
+      Data:=Arr[i];
+      if not (Data is TJSONObject) then
+        RaiseMsg(20180314155716,Section,GetObjName(Data));
+      UsesObj:=TJSONObject(Data);
+      if not ReadString(UsesObj,'Name',Name,Section) then
+        RaiseMsg(20180314155756,Section);
+      if not IsValidIdent(Name,true,true) then
+        RaiseMsg(20180314155800,Section,Name);
+      Module:=Resolver.FindModule(Name,nil,nil);
+      if Module=nil then
+        RaiseMsg(20180314155840,Section,Name);
+      if Module.InterfaceSection=nil then
+        begin
+        if not aComplete then
+          continue;
+        {$IF defined(VerbosePCUFiler) or defined(VerbosePJUFiler)}
+        writeln('TPCUReader.ReadUsedUnitsFinish Resolver.RootElement=',GetObjPath(Resolver.RootElement),' Section=',GetObjPath(Section));
+        {$ENDIF}
+        RaiseMsg(20180314155953,Section,'indirect unit "'+Name+'"');
+        end;
+      UsedScope:=Module.InterfaceSection.CustomData as TPas2JSSectionScope;
+      if not UsedScope.Finished then
+        RaiseMsg(20180314155954,Section,'indirect unit "'+Name+'"');
+      ReadExternalReferences(UsesObj,Module);
+      end;
+    end;
+end;
+
 procedure TPCUReader.ReadUsedUnitsFinish(Obj: TJSONObject;
   Section: TPasSection; aContext: TPCUReaderContext);
 var
@@ -6825,10 +6872,9 @@ var
   Module: TPasModule;
   Data: TJSONData;
   UsesObj, ModuleObj: TJSONObject;
-  Name: string;
 begin
   Scope:=Section.CustomData as TPas2JSSectionScope;
-  // read external refs from used units
+  // read external refs from directly used units
   if ReadArray(Obj,'Uses',Arr,Section) then
     begin
     Scope:=Section.CustomData as TPas2JSSectionScope;
@@ -6855,29 +6901,15 @@ begin
     end;
 
   // read external refs from indirectly used units
-  if ReadArray(Obj,'IndirectUses',Arr,Section) then
+  if Section.ClassType=TInterfaceSection then
+    FIntfSectionObj:=Obj
+  else if Section.ClassType=TImplementationSection then
     begin
-    for i:=0 to Arr.Count-1 do
-      begin
-      Data:=Arr[i];
-      if not (Data is TJSONObject) then
-        RaiseMsg(20180314155716,Section,GetObjName(Data));
-      UsesObj:=TJSONObject(Data);
-      if not ReadString(UsesObj,'Name',Name,Section) then
-        RaiseMsg(20180314155756,Section);
-      if not IsValidIdent(Name,true,true) then
-        RaiseMsg(20180314155800,Section,Name);
-      Module:=Resolver.FindModule(Name,nil,nil);
-      if Module=nil then
-        RaiseMsg(20180314155840,Section,Name);
-      if Module.InterfaceSection=nil then
-        RaiseMsg(20180314155953,Section,'indirect unit "'+Name+'"');
-      UsedScope:=Module.InterfaceSection.CustomData as TPas2JSSectionScope;
-      if not UsedScope.Finished then
-        RaiseMsg(20180314155954,Section,'indirect unit "'+Name+'"');
-      ReadExternalReferences(UsesObj,Module);
-      end;
-    end;
+    ReadIndirectUsedUnits(FIntfSectionObj,Section,true);
+    ReadIndirectUsedUnits(Obj,Section,true);
+    end
+  else
+    ReadIndirectUsedUnits(Obj,Section,true);
 
   Scope.UsesFinished:=true;
 
