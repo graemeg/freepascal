@@ -1,3 +1,4 @@
+{ %MAXVERSION=3.2.0 }
 { %fail }
 
 type
