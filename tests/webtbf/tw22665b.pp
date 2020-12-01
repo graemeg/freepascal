@@ -1,6 +1,6 @@
 { %skiptarget=win64 }
 { %cpu=x86_64 }
-{ %opt=-vw -Sew }
+{ %opt=-vw -Sew -Cg }
 { %fail }
 
 {$asmmode intel}
