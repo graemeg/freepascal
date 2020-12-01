@@ -1475,7 +1475,7 @@ implementation
         if Assigned(procdef.struct) then
           begin
             if Assigned(procdef.struct.objrealname) then
-              Write(T, ' struct="', TNode.SanitiseXMLString(procdef.struct.objrealname^), '"')
+              Write(T, ' struct="', SanitiseXMLString(procdef.struct.objrealname^), '"')
             else
               Write(T, ' struct="&lt;NULL&gt;"');
           end;
@@ -1523,7 +1523,7 @@ implementation
             PrintType('package stub');
         end;
 
-        Write(T, ' name="', TNode.SanitiseXMLString(procdef.customprocname([pno_showhidden, pno_noclassmarker])), '"');
+        Write(T, ' name="', SanitiseXMLString(procdef.customprocname([pno_showhidden, pno_noclassmarker])), '"');
 
         if po_hascallingconvention in procdef.procoptions then
           Write(T, ' convention="', proccalloptionStr[procdef.proccalloption], '"');
@@ -1533,7 +1533,7 @@ implementation
         PrintNodeIndent;
 
         if Assigned(procdef.returndef) and not is_void(procdef.returndef) then
-          WriteLn(T, PrintNodeIndention, '<returndef>', TNode.SanitiseXMLString(procdef.returndef.typesymbolprettyname), '</returndef>');
+          WriteLn(T, PrintNodeIndention, '<returndef>', SanitiseXMLString(procdef.returndef.typesymbolprettyname), '</returndef>');
 
         if po_reintroduce in procdef.procoptions then
           PrintOption('reintroduce');
@@ -2472,7 +2472,6 @@ implementation
            printproc( 'after parsing');
 
 {$ifdef DEBUG_NODE_XML}
-         printnodeindention := printnodespacing;
          XMLPrintProc;
 {$endif DEBUG_NODE_XML}
 
@@ -2913,6 +2912,8 @@ implementation
         WriteLn(T, '<?xml version="1.0" encoding="utf-8"?>');
         WriteLn(T, '<', RootName, ' name="', ModuleName, '">');
         Close(T);
+
+        printnodeindention := printnodespacing;
       end;
 
 

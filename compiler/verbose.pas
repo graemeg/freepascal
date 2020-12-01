@@ -119,6 +119,21 @@ interface
     procedure DoneVerbose;
 
 
+    const
+      printnodespacing = '   ';
+    var
+      { indention used when writing a node tree to the screen }
+      printnodeindention : string;
+
+
+     { Node dumping support functions }
+     procedure printnodeindent; inline;
+     procedure printnodeunindent; inline;
+{$ifdef DEBUG_NODE_XML}
+     function SanitiseXMLString(const S: ansistring): ansistring;
+     function WritePointer(const P: Pointer): ansistring;
+     function WriteGUID(const GUID: TGUID): ansistring;
+{$endif DEBUG_NODE_XML}
 
 implementation
 
@@ -1017,6 +1032,336 @@ implementation
          end;
         DoneRedirectFile;
       end;
+
+
+    procedure printnodeindent; inline;
+      begin
+        printnodeindention:=printnodeindention+printnodespacing;
+      end;
+
+
+    procedure printnodeunindent; inline;
+      begin
+        delete(printnodeindention,1,length(printnodespacing));
+      end;
+
+    {$ifdef DEBUG_NODE_XML}
+    function WritePointer(const P: Pointer): ansistring;
+      begin
+        case PtrUInt(P) of
+          0:
+            WritePointer := 'nil';
+          1..$FFFF:
+            WritePointer := '$' + hexstr(PtrUInt(P), 4);
+          $10000..$FFFFFFFF:
+            WritePointer := '$' + hexstr(PtrUInt(P), 8);
+    {$ifdef CPU64}
+          else
+            WritePointer := '$' + hexstr(PtrUInt(P), 16);
+    {$endif CPU64}
+        end;
+      end;
+
+
+    function WriteGUID(const GUID: TGUID): ansistring;
+      var
+        i: Integer;
+      begin
+        Result := '{' + hexstr(GUID.D1, 8) + '-' + hexstr(GUID.D2, 4) + '-' + hexstr(GUID.D3, 4) + '-';
+        for i := 0 to 7 do
+          Result := Result + hexstr(GUID.D4[i], 2);
+
+        Result := Result + '}';
+      end;
+
+
+    function SanitiseXMLString(const S: ansistring): ansistring;
+      var
+        X, UTF8Len, UTF8Char, CurrentChar: Integer;
+        needs_quoting, in_quotes, add_end_quote: Boolean;
+        DoASCII: Boolean;
+
+        { Write the given byte as #xxx }
+        procedure EncodeControlChar(Value: Byte);
+          begin
+            if X = Length(Result) then
+              add_end_quote := False;
+
+            Delete(Result, X, 1);
+            if in_quotes then
+              begin
+                Insert('#' + tostr(Value) + '''', Result, X);
+
+                { If the entire string consists of control characters, it
+                  doesn't need quoting, so only set the flag here }
+                needs_quoting := True;
+
+                in_quotes := False;
+              end
+            else
+              Insert('#' + tostr(Value), Result, X);
+          end;
+
+        { Write the given byte as either a plain character or an XML keyword }
+        procedure EncodeStandardChar(Value: Byte);
+          begin
+            if not in_quotes then
+              begin
+                in_quotes := True;
+                if (X < Length(Result)) then
+                  begin
+                    needs_quoting := True;
+                    Insert('''', Result, X + 1)
+                  end;
+              end;
+
+            { Check the character for anything that could be mistaken for an XML element }
+            case CurrentChar of
+              Ord('#'):
+                { Required to differentiate '#27' from the escape code #27, for example }
+                needs_quoting:=true;
+
+              Ord('<'):
+                begin
+                  Delete(Result, X, 1);
+                  Insert('&lt;', Result, X);
+                end;
+              Ord('>'):
+                begin
+                  Delete(Result, X, 1);
+                  Insert('&gt;', Result, X);
+                end;
+              Ord('&'):
+                begin
+                  Delete(Result, X, 1);
+                  Insert('&amp;', Result, X);
+                end;
+              Ord('"'):
+                begin
+                  needs_quoting := True;
+                  Delete(Result, X, 1);
+                  Insert('&quot;', Result, X);
+                end;
+              Ord(''''):
+                begin
+                  needs_quoting:=true;
+                  { Simply double it like in pascal strings }
+                  Insert('''', Result, X);
+                end;
+              else
+                { Do nothing };
+            end;
+          end;
+
+        { Convert character between $80 and $FF to UTF-8 }
+        procedure EncodeExtendedChar(Value: Byte);
+          begin
+            if not in_quotes then
+              begin
+                in_quotes := True;
+                if (X < Length(Result)) then
+                  begin
+                    needs_quoting := True;
+                    Insert('''', Result, X + 1)
+                  end;
+              end;
+
+            case Value of
+              $80..$BF: { Add $C2 before the value }
+                Insert(#$C2, Result, X);
+              $C0..$FF: { Zero the $40 bit and add $C3 before the value }
+                begin
+                  Result[X] := Char(Byte(Result[X]) and $BF);
+                  Insert(#$C3, Result, X);
+                end;
+              else
+                { Previous conditions should prevent this procedure from being
+                  called if Value < $80 }
+                InternalError(2019061901);
+            end;
+          end;
+
+      begin
+        needs_quoting := False;
+        Result := S;
+
+        { Gets set to True if an invalid UTF-8 sequence is found }
+        DoASCII := False;
+
+        { By setting in_quotes to false here, we can exclude the single
+          quotation marks surrounding the string if it doesn't contain any
+          control characters, or consists entirely of control characters. }
+        in_quotes := False;
+
+        add_end_quote := True;
+
+        X := Length(Result);
+        while X > 0 do
+          begin
+            CurrentChar := Ord(Result[X]);
+
+            { Control characters and extended characters need special handling }
+            case CurrentChar of
+              $00..$1F, $7F:
+                EncodeControlChar(CurrentChar);
+
+              $20..$7E:
+                EncodeStandardChar(CurrentChar);
+
+              { UTF-8 continuation byte }
+              $80..$BF:
+                begin
+                  if not in_quotes then
+                    begin
+                      in_quotes := True;
+                      if (X < Length(Result)) then
+                        begin
+                          needs_quoting := True;
+                          Insert('''', Result, X + 1)
+                        end;
+                    end;
+
+                  UTF8Char := CurrentChar and $3F; { The data bits of the continuation byte }
+                  UTF8Len := 1; { This variable actually holds 1 less than the length }
+
+                  { By setting DoASCII to true, it marks the string as 'invalid UTF-8'
+                    automatically if it reaches the beginning of the string unexpectedly }
+                  DoASCII := True;
+
+                  Dec(X);
+                  while X > 0 do
+                    begin
+                      CurrentChar := Ord(Result[X]);
+
+                      case CurrentChar of
+                        { A standard character here is invalid UTF-8 }
+                        $00..$7F:
+                          Break;
+
+                        { Another continuation byte }
+                        $80..$BF:
+                          begin
+                            UTF8Char := UTF8Char or ((CurrentChar and $3F) shl (6 * UTF8Len));
+
+                            Inc(UTF8Len);
+                            if UTF8Len >= 4 then
+                              { Sequence too long }
+                              Break;
+                          end;
+
+                        { Lead byte for 2-byte sequences }
+                        $C2..$DF:
+                          begin
+                            if UTF8Len <> 1 then Break;
+
+                            UTF8Char := UTF8Char or ((CurrentChar and $1F) shl 6);
+
+                            { Check to see if the code is in range and not part of an 'overlong' sequence }
+                            case UTF8Char of
+                              $0080..$07FF:
+                                DoASCII := False;
+                              else
+                                { Do nothing - DoASCII is already true }
+                            end;
+                            Break;
+                          end;
+
+                        { Lead byte for 3-byte sequences }
+                        $E0..$EF:
+                          begin
+                            if UTF8Len <> 2 then Break;
+
+                            UTF8Char := UTF8Char or ((CurrentChar and $0F) shl 12);
+
+                            { Check to see if the code is in range and not part of an 'overlong' sequence }
+                            case UTF8Char of
+                              $0800..$D7FF, $E000..$FFFF: { $D800..$DFFF is reserved and hence invalid }
+                                DoASCII := False;
+                              else
+                                { Do nothing - DoASCII is already true }
+                            end;
+                            Break;
+                          end;
+
+                        { Lead byte for 4-byte sequences }
+                        $F0..$F4:
+                          begin
+                            if UTF8Len <> 3 then Break;
+
+                            UTF8Char := UTF8Char or ((CurrentChar and $07) shl 18);
+
+                            { Check to see if the code is in range and not part of an 'overlong' sequence }
+                            case UTF8Char of
+                              $010000..$10FFFF:
+                                DoASCII := False;
+                              else
+                                { Do nothing - DoASCII is already true }
+                            end;
+                            Break;
+                          end;
+
+                        { Invalid character }
+                        else
+                          Break;
+                      end;
+                    end;
+
+                  if DoASCII then
+                    Break;
+
+                  { If all is fine, we don't need to encode any more characters }
+                end;
+
+              { Invalid UTF-8 bytes and lead bytes without continuation bytes }
+              $C0..$FF:
+                begin
+                  DoASCII := True;
+                  Break;
+                end;
+            end;
+
+            Dec(X);
+          end;
+
+        { UTF-8 failed, so encode the string as plain ASCII }
+        if DoASCII then
+          begin
+            { Reset the flags and Result }
+            needs_quoting := False;
+            Result := S;
+            in_quotes := False;
+            add_end_quote := True;
+
+            for X := Length(Result) downto 1 do
+              begin
+                CurrentChar := Ord(Result[X]);
+
+                { Control characters and extended characters need special handling }
+                case CurrentChar of
+                  $00..$1F, $7F:
+                    EncodeControlChar(CurrentChar);
+
+                  $20..$7E:
+                    EncodeStandardChar(CurrentChar);
+
+                  { Extended characters }
+                  else
+                    EncodeExtendedChar(CurrentChar);
+
+                end;
+              end;
+          end;
+
+        if needs_quoting then
+          begin
+            if in_quotes then
+              Result := '''' + Result;
+
+            if add_end_quote then
+              Result := Result + '''';
+          end;
+      end;
+    {$endif DEBUG_NODE_XML}
 
 
 initialization
