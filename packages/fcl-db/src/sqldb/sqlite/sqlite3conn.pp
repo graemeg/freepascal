@@ -19,7 +19,8 @@
 
   TSQLite3Connection properties
       Params - "foreign_keys=ON" - enable foreign key support for this connection:
-                                   http://www.sqlite.org/foreignkeys.html#fk_enable
+                                   https://www.sqlite.org/foreignkeys.html#fk_enable
+               "journal_mode=..."  https://www.sqlite.org/pragma.html#pragma_journal_mode
 
 } 
  
@@ -867,9 +868,12 @@ begin
 end;
 
 procedure TSQLite3Connection.DoInternalConnect;
+const
+  PRAGMAS:array[0..1] of string=('foreign_keys','journal_mode');
 var
   filename: ansistring;
   pvfs: PChar;
+  i,j: integer;
 begin
   Inherited;
   if DatabaseName = '' then
@@ -883,8 +887,11 @@ begin
   checkerror(sqlite3_open_v2(PAnsiChar(filename),@fhandle,GetSQLiteOpenFlags,pvfs));
   if (Length(Password)>0) and assigned(sqlite3_key) then
     checkerror(sqlite3_key(fhandle,PChar(Password),StrLen(PChar(Password))));
-  if Params.IndexOfName('foreign_keys') <> -1 then
-    execsql('PRAGMA foreign_keys =  '+Params.Values['foreign_keys']);
+  for i:=Low(PRAGMAS) to High(PRAGMAS) do begin
+    j:=Params.IndexOfName(PRAGMAS[i]);
+    if j <> -1 then
+      execsql('PRAGMA '+Params[j]);
+  end;
 end;
 
 procedure TSQLite3Connection.DoInternalDisconnect;
