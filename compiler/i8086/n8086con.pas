@@ -44,7 +44,7 @@ interface
 implementation
 
     uses
-      systems,globals,
+      systems,globals,verbose,
       symconst,symdef,symcpu,
       defutil,
       cpubase,
