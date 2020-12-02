@@ -3150,7 +3150,7 @@ Unit Rax86int;
                      end
                    else
 {$endif i8086}
-                     ConcatConstSymbol(curlist,asmsym,asmsymtyp,value,constsize,cseof_hasofs in cse_out_flags);
+                     ConcatConstSymbol(curlist,asmsym,'',asmsymtyp,value,constsize,cseof_hasofs in cse_out_flags);
                  end
                 else
                  ConcatConstant(curlist,value,constsize);
