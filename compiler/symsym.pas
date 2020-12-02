@@ -234,6 +234,10 @@ interface
           procedure set_externalname(const s:string);virtual;
           function mangledname:TSymStr;override;
           destructor destroy;override;
+{$ifdef DEBUG_NODE_XML}
+        public
+          procedure XMLPrintFieldData(var T: Text);
+{$endif DEBUG_NODE_XML}
       end;
       tfieldvarsymclass = class of tfieldvarsym;
 
@@ -410,6 +414,10 @@ interface
           { do not override this routine in platform-specific subclasses,
             override ppuwrite_platform instead }
           procedure ppuwrite(ppufile:tcompilerppufile);override;final;
+{$ifdef DEBUG_NODE_XML}
+        public
+          procedure XMLPrintConstData(var T: Text);
+{$endif DEBUG_NODE_XML}
        end;
        tconstsymclass = class of tconstsym;
 
@@ -1961,6 +1969,15 @@ implementation
         inherited destroy;
       end;
 
+{$ifdef DEBUG_NODE_XML}
+      procedure TFieldVarSym.XMLPrintFieldData(var T: Text);
+        begin
+          WriteLn(T, PrintNodeIndention, '<type>', SanitiseXMLString(vardef.GetTypeName), '</type>');
+          WriteLn(T, PrintNodeIndention, '<visibility>', visibility, '</visibility>');
+          WriteLn(T, PrintNodeIndention, '<offset>', fieldoffset, '</offset>');
+          WriteLn(T, PrintNodeIndention, '<size>', vardef.size, '</size>');
+        end;
+{$endif DEBUG_NODE_XML}
 
 {****************************************************************************
                         TABSTRACTNORMALVARSYM
@@ -2684,6 +2701,47 @@ implementation
         writeentry(ppufile,ibconstsym);
       end;
 
+{$ifdef DEBUG_NODE_XML}
+    procedure TConstSym.XMLPrintConstData(var T: Text);
+      begin
+        WriteLn(T, PrintNodeIndention, '<type>', SanitiseXMLString(constdef.GetTypeName), '</type>');
+
+        case consttyp of
+          constnone:
+            ;
+          conststring,
+          constresourcestring,
+          constwstring:
+            begin
+              WriteLn(T, PrintNodeIndention, '<length>', value.len, '</length>');
+              if value.len = 0 then
+                WriteLn(T, PrintNodeIndention, '<value />')
+              else
+                WriteLn(T, PrintNodeIndention, '<value>', SanitiseXMLString(PChar(value.valueptr)), '</value>');
+            end;
+          constord,
+          constset:
+            WriteLn(T, PrintNodeIndention, '<value>', tostr(value.valueord), '</value>');
+          constpointer:
+            WriteLn(T, PrintNodeIndention, '<value>', WriteConstPUInt(value.valueordptr), '</value>');
+          constreal:
+            WriteLn(T, PrintNodeIndention, '<value>', PBestReal(value.valueptr)^, '</value>');
+          constnil:
+            WriteLn(T, PrintNodeIndention, '<value>nil</value>');
+          constguid:
+            WriteLn(T, PrintNodeIndention, '<value>', WriteGUID(PGUID(value.valueptr)^), '</value>');
+        end;
+
+        WriteLn(T, PrintNodeIndention, '<visibility>', visibility, '</visibility>');
+
+        if not (consttyp in [conststring, constresourcestring, constwstring]) then
+          { constdef.size will return an internal error for string
+            constants because constdef is an open array internally }
+          WriteLn(T, PrintNodeIndention, '<size>', constdef.size, '</size>');
+
+//        WriteLn(T, PrintNodeIndention, '<const_type>', consttyp, '</const_type>');
+      end;
+{$endif DEBUG_NODE_XML}
 
 {****************************************************************************
                                   TENUMSYM

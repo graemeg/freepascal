@@ -1187,6 +1187,11 @@ implementation
            if assigned(rtti_attrs_def) and (rtti_attrs_def.get_attribute_count>0) then
              Message1(parser_e_unbound_attribute,trtti_attribute(rtti_attrs_def.rtti_attributes[0]).typesym.prettyname);
 
+ {$ifdef DEBUG_NODE_XML}
+          if Assigned(hdef) then
+            hdef.XMLPrintDef(newtype);
+ {$endif DEBUG_NODE_XML}
+
          until ((token<>_ID) and (token<>_LECKKLAMMER)) or
                (in_structure and
                 ((idtoken in [_PRIVATE,_PROTECTED,_PUBLIC,_PUBLISHED,_STRICT]) or

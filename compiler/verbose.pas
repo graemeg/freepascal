@@ -132,6 +132,7 @@ interface
 {$ifdef DEBUG_NODE_XML}
      function SanitiseXMLString(const S: ansistring): ansistring;
      function WritePointer(const P: Pointer): ansistring;
+     function WriteConstPUInt(const P: TConstPtrUInt): ansistring;
      function WriteGUID(const GUID: TGUID): ansistring;
 {$endif DEBUG_NODE_XML}
 
@@ -1059,6 +1060,23 @@ implementation
           else
             WritePointer := '$' + hexstr(PtrUInt(P), 16);
     {$endif CPU64}
+        end;
+      end;
+
+
+    function WriteConstPUInt(const P: TConstPtrUInt): ansistring;
+      begin
+        case P of
+          0:
+            WriteConstPUInt := 'nil';
+          1..$FFFF:
+            WriteConstPUInt := '$' + hexstr(P, 4);
+          $10000..$FFFFFFFF:
+            WriteConstPUInt := '$' + hexstr(P, 8);
+    {$ifdef CPU64BITADDR}
+          else
+            WriteConstPUInt := '$' + hexstr(P, 16);
+    {$endif CPU64BITADDR}
         end;
       end;
 
