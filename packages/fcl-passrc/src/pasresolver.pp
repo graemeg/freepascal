@@ -29665,7 +29665,8 @@ begin
     RaiseInternalError(20180215185302,GetObjName(El));
   if Data.ClassType=TResElDataBaseType then
     Result:=BaseTypes[TResElDataBaseType(Data).BaseType]
-  else if Data.ClassType=TResElDataBuiltInProc then
+  else if (Data.ClassType=TResElDataBuiltInProc)
+      and (TResElDataBuiltInProc(Data).BuiltIn<>bfCustom) then
     Result:=BuiltInProcs[TResElDataBuiltInProc(Data).BuiltIn].Element
   else
     Result:=nil;

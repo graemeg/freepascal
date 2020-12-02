@@ -1091,6 +1091,17 @@ const
     'JSValue'
     );
 
+type
+  TPas2jsBuiltInProc = (
+    pbpDebugger,
+    pbpAWait
+    );
+const
+  Pas2jsBuiltInProcNames: array[TPas2jsBuiltInProc] of string = (
+    'Debugger',
+    'AWait'
+    );
+
 const
   ClassVarModifiersType = [vmClass,vmStatic];
   LowJSNativeInt = MinSafeIntDouble;
@@ -1443,9 +1454,11 @@ type
   TPas2JSResolver = class(TPasResolver)
   private
     FJSBaseTypes: array[TPas2jsBaseType] of TPasUnresolvedSymbolRef;
+    FJSBuiltInProcs: array[TPas2jsBuiltInProc] of TResElDataBuiltInProc;
     FExternalNames: TPasResHashList; // list of TPasIdentifier, case sensitive
     FFirstElementData, FLastElementData: TPas2JsElementData;
     function GetJSBaseTypes(aBaseType: TPas2jsBaseType): TPasUnresolvedSymbolRef; inline;
+    function GetJSBuiltInProcs(aProc: TPas2jsBuiltInProc): TResElDataBuiltInProc; inline;
     procedure InternalAdd(Item: TPasIdentifier);
     procedure OnClearHashItem(Item, Dummy: pointer);
   protected
@@ -1602,6 +1615,7 @@ type
       RaiseOnError: boolean): integer; override;
     function FindLocalBuiltInSymbol(El: TPasElement): TPasElement; override;
     property JSBaseTypes[aBaseType: TPas2jsBaseType]: TPasUnresolvedSymbolRef read GetJSBaseTypes;
+    property JSBuiltInProcs[aProc: TPas2jsBuiltInProc]: TResElDataBuiltInProc read GetJSBuiltInProcs;
     // compute literals and constants
     function ExtractPasStringLiteral(El: TPasElement; const S: String): TJSString; virtual;
     function ResolverToJSValue(Value: TResEvalValue; ErrorEl: TPasElement): TJSValue; virtual;
@@ -3177,7 +3191,13 @@ end;
 function TPas2JSResolver.GetJSBaseTypes(aBaseType: TPas2jsBaseType
   ): TPasUnresolvedSymbolRef;
 begin
-  Result:=TPasUnresolvedSymbolRef(FJSBaseTypes[aBaseType]);
+  Result:=FJSBaseTypes[aBaseType];
+end;
+
+function TPas2JSResolver.GetJSBuiltInProcs(aProc: TPas2jsBuiltInProc
+  ): TResElDataBuiltInProc;
+begin
+  Result:=FJSBuiltInProcs[aProc];
 end;
 
 procedure TPas2JSResolver.InternalAdd(Item: TPasIdentifier);
@@ -6191,10 +6211,13 @@ end;
 procedure TPas2JSResolver.ClearBuiltInIdentifiers;
 var
   bt: TPas2jsBaseType;
+  pbp: TPas2jsBuiltInProc;
 begin
   inherited ClearBuiltInIdentifiers;
   for bt in TPas2jsBaseType do
     ReleaseAndNil(TPasElement(FJSBaseTypes[bt]){$IFDEF CheckPasTreeRefCount},'TPasResolver.AddCustomBaseType'{$ENDIF});
+  for pbp in TPas2jsBuiltInProc do
+    FJSBuiltInProcs[pbp]:=nil;
 end;
 
 function TPas2JSResolver.IsJSBaseType(TypeEl: TPasType; Typ: TPas2jsBaseType
@@ -6237,13 +6260,10 @@ begin
     AddBaseType(Pas2JSBuiltInNames[pbitnUIntDouble],btUIntDouble);
   if btIntDouble in TheBaseTypes then
     AddBaseType(Pas2JSBuiltInNames[pbitnIntDouble],btIntDouble);
-  AddBuiltInProc('Debugger','procedure Debugger',
+  FJSBuiltInProcs[pbpDebugger]:=AddBuiltInProc('Debugger','procedure Debugger',
       @BI_Debugger_OnGetCallCompatibility,nil,
       nil,nil,bfCustom,[bipfCanBeStatement]);
-  // ToDo: AddBuiltInProc('Await','function await(T; const Expr: TJSPromise): T',
-  //    @BI_Await_OnGetCallCompatibility,@BI_Await_OnGetCallResult,
-  //    nil,nil,bfCustom,[bipfCanBeStatement]);
-  AddBuiltInProc('AWait','function await(const Expr: T): T',
+  FJSBuiltInProcs[pbpAWait]:=AddBuiltInProc('AWait','function await(const Expr: T): T',
       @BI_AWait_OnGetCallCompatibility,@BI_AWait_OnGetCallResult,
       @BI_AWait_OnEval,@BI_AWait_OnFinishParamsExpr,bfCustom,[bipfCanBeStatement]);
 end;
@@ -6445,11 +6465,20 @@ begin
 end;
 
 function TPas2JSResolver.FindLocalBuiltInSymbol(El: TPasElement): TPasElement;
+var
+  Data: TObject;
 begin
   Result:=inherited FindLocalBuiltInSymbol(El);
   if Result<>nil then exit;
-  if El.CustomData is TResElDataPas2JSBaseType then
-    Result:=JSBaseTypes[TResElDataPas2JSBaseType(El.CustomData).JSBaseType];
+  Data:=El.CustomData;
+  if Data is TResElDataPas2JSBaseType then
+    Result:=JSBaseTypes[TResElDataPas2JSBaseType(Data).JSBaseType]
+  else if (Data.ClassType=TResElDataBuiltInProc)
+      and (TResElDataBuiltInProc(Data).BuiltIn=bfCustom) then
+    case El.Name of
+    'Debugger': Result:=FJSBuiltInProcs[pbpDebugger].Element;
+    'AWait': Result:=FJSBuiltInProcs[pbpAWait].Element;
+    end;
 end;
 
 function TPas2JSResolver.ExtractPasStringLiteral(El: TPasElement;
