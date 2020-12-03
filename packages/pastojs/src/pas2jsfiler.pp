@@ -3461,7 +3461,7 @@ begin
         ParentRef.Obj.Add('Specs',ParentRef.Specs);
         end;
       ParentRef.Specs.Add(Ref.Obj);
-      if Ref.Id=0 then
+      if (Ref.Id=0) then
         CreateElReferenceId(Ref); // every specialization needs an ID
       end
     else
@@ -5658,11 +5658,12 @@ procedure TPCUReader.ResolveSpecializedElements(Complete: boolean);
     OtherPendSpec: TPCUReaderPendingSpecialized;
   begin
     Result:=false;
+    if PendSpec.RefEl=nil then exit;
     for i:=0 to PendSpec.Params.Count-1 do
       begin
       Param:=TPCUReaderPendingSpecializedParam(PendSpec.Params[i]);
       Ref:=GetElReference(Param.Id,PendSpec.GenericEl);
-      if Ref.Element<>nil then continue;
+      if (Ref=nil) or (Ref.Element<>nil) then continue;
       OtherPendSpec:=FPendingSpecialize;
       while OtherPendSpec<>nil do
         begin
@@ -5674,6 +5675,27 @@ procedure TPCUReader.ResolveSpecializedElements(Complete: boolean);
         OtherPendSpec:=OtherPendSpec.Next;
         end;
       end;
+  end;
+
+  function FreeTemplateSpecialization(PendSpec: TPCUReaderPendingSpecialized): boolean;
+  // checks if PendSpec params are only TPasGenericTemplateType
+  // if yes, frees this PendSpec
+  var
+    i: Integer;
+    Param: TPCUReaderPendingSpecializedParam;
+    Ref: TPCUFilerElementRef;
+  begin
+    Result:=true;
+    for i:=0 to PendSpec.Params.Count-1 do
+      begin
+      Param:=TPCUReaderPendingSpecializedParam(PendSpec.Params[i]);
+      Ref:=GetElReference(Param.Id,PendSpec.GenericEl);
+      if Ref=nil then
+        exit(false);
+      if not (Ref.Element is TPasGenericTemplateType) then
+        exit(false);
+      end;
+    DeletePendingSpecialize(PendSpec);
   end;
 
 var
@@ -5688,6 +5710,7 @@ begin
     while PendSpec<>nil do
       begin
       NextPendSpec:=PendSpec.Next;
+
       if PendSpec.RefEl=nil then
         begin
         // no referrer -> use the first element, waiting for this ID
@@ -5705,6 +5728,11 @@ begin
           Changed:=true
         else
           UnresolvedSpec:=PendSpec;
+        end
+      else if Complete and (PendSpec.RefEl=nil) then
+        begin
+        if FreeTemplateSpecialization(PendSpec) then
+          Changed:=true;
         end;
       PendSpec:=NextPendSpec;
       end;

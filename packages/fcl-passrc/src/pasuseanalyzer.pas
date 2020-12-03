@@ -1281,7 +1281,7 @@ begin
     if CanSkipGenericType(ProcType) then exit;
     for i:=0 to ProcType.Args.Count-1 do
       UseSubEl(TPasArgument(ProcType.Args[i]).ArgType);
-    if El is TPasFunctionType then
+    if (El is TPasFunctionType) and (TPasFunctionType(El).ResultEl<>nil) then
       UseSubEl(TPasFunctionType(El).ResultEl.ResultType);
     end
   else if C=TPasSpecializeType then
@@ -1543,12 +1543,15 @@ begin
     UseExpr(ForLoop.StartExpr);
     UseExpr(ForLoop.EndExpr);
     ForScope:=ForLoop.CustomData as TPasForLoopScope;
-    MarkImplScopeRef(ForLoop,ForScope.GetEnumerator,psraRead);
-    UseProcedure(ForScope.GetEnumerator);
-    MarkImplScopeRef(ForLoop,ForScope.MoveNext,psraRead);
-    UseProcedure(ForScope.MoveNext);
-    MarkImplScopeRef(ForLoop,ForScope.Current,psraRead);
-    UseVariable(ForScope.Current,rraRead,false);
+    if ForScope<>nil then
+      begin
+      MarkImplScopeRef(ForLoop,ForScope.GetEnumerator,psraRead);
+      UseProcedure(ForScope.GetEnumerator);
+      MarkImplScopeRef(ForLoop,ForScope.MoveNext,psraRead);
+      UseProcedure(ForScope.MoveNext);
+      MarkImplScopeRef(ForLoop,ForScope.Current,psraRead);
+      UseVariable(ForScope.Current,rraRead,false);
+      end;
     UseImplElement(ForLoop.Body);
     end
   else if C=TPasImplIfElse then
@@ -1650,12 +1653,14 @@ procedure TPasAnalyzer.UseExpr(El: TPasExpr);
     UseElement(SubEl,rraAssign,false);
   end;
 
-  procedure UseBuilInFuncTypeInfo;
+  procedure UseBuiltInFuncTypeInfo;
   var
     ParentParams: TPRParentParams;
     ParamResolved: TPasResolverResult;
     SubEl: TPasElement;
     Params: TPasExprArray;
+    ProcScope: TPasProcedureScope;
+    Proc: TPasProcedure;
   begin
     Resolver.GetParamsOfNameExpr(El,ParentParams);
     if ParentParams.Params=nil then
@@ -1672,7 +1677,11 @@ procedure TPasAnalyzer.UseExpr(El: TPasExpr);
     if (ParamResolved.IdentEl is TPasProcedure)
         and (TPasProcedure(ParamResolved.IdentEl).ProcType is TPasFunctionType) then
       begin
-      SubEl:=TPasFunctionType(TPasProcedure(ParamResolved.IdentEl).ProcType).ResultEl.ResultType;
+      Proc:=TPasProcedure(ParamResolved.IdentEl);
+      ProcScope:=Proc.CustomData as TPasProcedureScope;
+      if ProcScope.DeclarationProc<>nil then
+        Proc:=ProcScope.DeclarationProc;
+      SubEl:=TPasFunctionType(Proc.ProcType).ResultEl.ResultType;
       MarkImplScopeRef(El,SubEl,psraTypeInfo);
       UseTypeInfo(SubEl);
       end
@@ -1751,7 +1760,7 @@ begin
           end;
         bfTypeInfo:
           begin
-          UseBuilInFuncTypeInfo;
+          UseBuiltInFuncTypeInfo;
           exit;
           end;
         bfAssert:

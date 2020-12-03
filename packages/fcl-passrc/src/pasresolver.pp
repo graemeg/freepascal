@@ -18798,7 +18798,10 @@ begin
     begin
     // inside procedure: first param is function result
     ProcScope:=TPasProcedureScope(Scopes[i]);
-    CtxProc:=TPasProcedure(ProcScope.Element);
+    if ProcScope.DeclarationProc<>nil then
+      CtxProc:=ProcScope.DeclarationProc
+    else
+      CtxProc:=TPasProcedure(ProcScope.Element);
     if not (CtxProc.ProcType is TPasFunctionType) then
       begin
       if RaiseOnError then
