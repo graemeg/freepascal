@@ -4017,12 +4017,14 @@ var
 begin
   WriteAliasType(Obj,El,aContext);
   WriteElementList(Obj,El,'Params',El.Params,aContext,true);
+  if El.CustomData=nil then
+    exit; // SpecTypeData can be nil, when a generic A<T> refers to a generic B<T>
   if not (El.CustomData is TPasSpecializeTypeData) then
     RaiseMsg(20200219122421,El,GetObjName(El.CustomData));
   SpecTypeData:=TPasSpecializeTypeData(El.CustomData);
   SpecType:=SpecTypeData.SpecializedType;
   if SpecType=nil then
-    RaiseMsg(20200219122520,El,GetObjName(El.CustomData));
+    RaiseMsg(20201203093316,El);
   WriteElType(Obj,El,'SpecType',SpecType,aContext);
   Obj.Add('SpecName',SpecType.Name);
 end;
@@ -4031,8 +4033,8 @@ procedure TPCUWriter.WriteInlineSpecializeExpr(Obj: TJSONObject;
   Expr: TInlineSpecializeExpr; aContext: TPCUWriterContext);
 begin
   WritePasExpr(Obj,Expr,pekSpecialize,eopNone,aContext);
-  WriteExpr(Obj,Expr,'Name',Expr.NameExpr,aContext);
-  WriteElementList(Obj,Expr,'Params',Expr.Params,aContext,true);
+  WriteExpr(Obj,Expr,'SpecName',Expr.NameExpr,aContext);
+  WriteElementList(Obj,Expr,'SpecParams',Expr.Params,aContext,true);
 end;
 
 procedure TPCUWriter.WriteRangeType(Obj: TJSONObject; El: TPasRangeType;
@@ -8370,8 +8372,13 @@ begin
   Data:=TPasSpecializeTypeData.Create;
   // add to free list
   Resolver.AddResolveData(El,Data,lkModule);
+
   if not ReadInteger(Obj,'SpecType',SpecId,El) then
-    RaiseMsg(20200514130230,El,'SpecType');
+    begin
+    if Obj.Find('SpecType')=nil then
+      RaiseMsg(20201203092759,El,GetObjName(Obj.Find('SpecType')));
+    end;
+
   PromiseSetElReference(SpecId,@Set_SpecializeTypeData,Data,El);
 
   // check old specialized name
@@ -8390,12 +8397,20 @@ end;
 
 procedure TPCUReader.ReadInlineSpecializeExpr(Obj: TJSONObject;
   Expr: TInlineSpecializeExpr; aContext: TPCUReaderContext);
+var
+  Parent: TPasElement;
 begin
   Expr.Kind:=pekSpecialize;
-  Expr.NameExpr:=ReadExpr(Obj,Expr,'Name',aContext);
-  ReadElementList(Obj,Expr,'Params',Expr.Params,
+  Expr.NameExpr:=ReadExpr(Obj,Expr,'SpecName',aContext);
+  ReadElementList(Obj,Expr,'SpecParams',Expr.Params,
     {$IFDEF CheckPasTreeRefCount}'TInlineSpecializeExpr.Params'{$ELSE}true{$ENDIF},
     aContext);
+  Parent:=Expr.Parent;
+  while Parent<>nil do
+    begin
+    if Parent is TProcedureBody then exit; // inside generic method -> ok
+    Parent:=Parent.Parent;
+    end;
   // ToDo: create specialized type
   RaiseMsg(20200512233430,Expr);
 end;
