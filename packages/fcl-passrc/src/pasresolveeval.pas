@@ -1069,7 +1069,8 @@ begin
         begin
         GenType:=TPasGenericType(El);
         if (GenType.GenericTemplateTypes<>nil)
-            and (GenType.GenericTemplateTypes.Count>0) then
+            and (GenType.GenericTemplateTypes.Count>0)
+            and (Pos('<',El.Name)<1) then
           Result:=GetGenericParamCommas(GenType.GenericTemplateTypes.Count)+Result;
         end;
       if El.Name<>'' then

@@ -16734,7 +16734,7 @@ function TPasResolver.CreateSpecializedTypeName(Item: TPRSpecializedItem): strin
       else
         Result:=aType.GetModule.Name;
       Result:=Result+'.'+aType.Name;
-      if aType.CustomData is TPasGenericScope then
+      if (aType.CustomData is TPasGenericScope) and (Pos('<',aType.Name)<1) then
         begin
         ChildItem:=TPasGenericScope(aType.CustomData).SpecializedFromItem;
         if ChildItem<>nil then
@@ -16744,7 +16744,13 @@ function TPasResolver.CreateSpecializedTypeName(Item: TPRSpecializedItem): strin
   end;
 
 begin
+  if Pos('<',Item.GenericEl.Name)>0 then
+    RaiseNotYetImplemented(20201203140102,Item.SpecializedEl,Item.GenericEl.Name);
+
   Result:=Item.GenericEl.Name+GetSpecParams(Item);
+
+  if Pos('><',Result)>0 then
+    RaiseNotYetImplemented(20201203140223,Item.SpecializedEl,Result);
 end;
 
 procedure TPasResolver.InitSpecializeScopes(El: TPasElement; out
