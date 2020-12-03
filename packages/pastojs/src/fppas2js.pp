@@ -4573,19 +4573,24 @@ var
   ClassScope: TPas2JSClassScope;
   ptm: TProcTypeModifier;
   TypeEl, ElTypeEl, HelperForType: TPasType;
+  FuncType: TPasFunctionType;
 begin
   inherited FinishProcedureType(El);
 
   if El is TPasFunctionType then
     begin
-    TypeEl:=ResolveAliasType(TPasFunctionType(El).ResultEl.ResultType);
-    if TypeEl.ClassType=TPasPointerType then
+    FuncType:=TPasFunctionType(El);
+    if FuncType.ResultEl<>nil then
       begin
-      ElTypeEl:=ResolveAliasType(TPasPointerType(TypeEl).DestType);
-      if ElTypeEl.ClassType=TPasRecordType then
-        // ^record
-      else
-        RaiseMsg(20180423110824,nNotSupportedX,sNotSupportedX,['pointer'],El);
+      TypeEl:=ResolveAliasType(FuncType.ResultEl.ResultType);
+      if TypeEl.ClassType=TPasPointerType then
+        begin
+        ElTypeEl:=ResolveAliasType(TPasPointerType(TypeEl).DestType);
+        if ElTypeEl.ClassType=TPasRecordType then
+          // ^record
+        else
+          RaiseMsg(20180423110824,nNotSupportedX,sNotSupportedX,['pointer'],El);
+        end;
       end;
     end;
 
@@ -6260,10 +6265,12 @@ begin
     AddBaseType(Pas2JSBuiltInNames[pbitnUIntDouble],btUIntDouble);
   if btIntDouble in TheBaseTypes then
     AddBaseType(Pas2JSBuiltInNames[pbitnIntDouble],btIntDouble);
-  FJSBuiltInProcs[pbpDebugger]:=AddBuiltInProc('Debugger','procedure Debugger',
+  FJSBuiltInProcs[pbpDebugger]:=AddBuiltInProc(Pas2jsBuiltInProcNames[pbpDebugger],
+      'procedure Debugger',
       @BI_Debugger_OnGetCallCompatibility,nil,
       nil,nil,bfCustom,[bipfCanBeStatement]);
-  FJSBuiltInProcs[pbpAWait]:=AddBuiltInProc('AWait','function await(const Expr: T): T',
+  FJSBuiltInProcs[pbpAWait]:=AddBuiltInProc(Pas2jsBuiltInProcNames[pbpAWait],
+      'function await(const Expr: T): T',
       @BI_AWait_OnGetCallCompatibility,@BI_AWait_OnGetCallResult,
       @BI_AWait_OnEval,@BI_AWait_OnFinishParamsExpr,bfCustom,[bipfCanBeStatement]);
 end;
@@ -6467,6 +6474,7 @@ end;
 function TPas2JSResolver.FindLocalBuiltInSymbol(El: TPasElement): TPasElement;
 var
   Data: TObject;
+  pbp: TPas2jsBuiltInProc;
 begin
   Result:=inherited FindLocalBuiltInSymbol(El);
   if Result<>nil then exit;
@@ -6475,10 +6483,9 @@ begin
     Result:=JSBaseTypes[TResElDataPas2JSBaseType(Data).JSBaseType]
   else if (Data.ClassType=TResElDataBuiltInProc)
       and (TResElDataBuiltInProc(Data).BuiltIn=bfCustom) then
-    case El.Name of
-    'Debugger': Result:=FJSBuiltInProcs[pbpDebugger].Element;
-    'AWait': Result:=FJSBuiltInProcs[pbpAWait].Element;
-    end;
+    for pbp in TPas2jsBuiltInProc do
+      if El.Name=Pas2jsBuiltInProcNames[pbp] then
+        Result:=FJSBuiltInProcs[pbp].Element;
 end;
 
 function TPas2JSResolver.ExtractPasStringLiteral(El: TPasElement;
@@ -15005,22 +15012,26 @@ Var
     Proc: TPasProcedure;
     FunType: TPasFunctionType;
     VarSt: TJSVariableStatement;
-    SrcEl: TPasElement;
-    Scope: TPas2JSProcedureScope;
+    ImplScope: TPas2JSProcedureScope;
   begin
     Proc:=El.Parent as TPasProcedure;
     FunType:=Proc.ProcType as TPasFunctionType;
     ResultEl:=FunType.ResultEl;
-    Scope:=Proc.CustomData as TPas2JSProcedureScope;
-    if Scope.ResultVarName<>'' then
-      ResultVarName:=Scope.ResultVarName
+    ImplScope:=Proc.CustomData as TPas2JSProcedureScope;
+    if (ResultEl=nil) or (ResultEl.ResultType=nil) then
+      begin
+      Proc:=ImplScope.DeclarationProc;
+      FunType:=Proc.ProcType as TPasFunctionType;
+      ResultEl:=FunType.ResultEl;
+      end;
+    if ImplScope.ResultVarName<>'' then
+      ResultVarName:=ImplScope.ResultVarName
     else
       ResultVarName:=ResolverResultVar;
 
     // add 'var result=initvalue'
-    SrcEl:=ResultEl;
     VarSt:=CreateVarStatement(ResultVarName,
-      CreateValInit(ResultEl.ResultType,nil,SrcEl,aContext),ResultEl);
+      CreateValInit(ResultEl.ResultType,nil,ResultEl,aContext),ResultEl);
     Add(VarSt,ResultEl);
     Result:=SLFirst;
   end;

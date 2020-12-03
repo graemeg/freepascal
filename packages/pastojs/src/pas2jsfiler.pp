@@ -1000,6 +1000,7 @@ type
     FElementRefsArray: TPCUFilerElementRefArray; // TPCUFilerElementRef by Id
     FJSON: TJSONObject;
     FPendingIdentifierScopes: TObjectList; // list of TPCUReaderPendingIdentifierScope
+    FPendingForwardProcs: TFPList; // list of TPasElement waiting for implementation of methods
     FIntfSectionObj: TJSONObject;
     procedure Set_Variable_VarType(RefEl: TPasElement; Data: TObject);
     procedure Set_AliasType_DestType(RefEl: TPasElement; Data: TObject);
@@ -6106,6 +6107,7 @@ var
   BuiltInProc: TResElDataBuiltInProc;
   bp: TResolverBuiltInProc;
   pbt: TPas2jsBaseType;
+  pbp: TPas2jsBuiltInProc;
 begin
   if not ReadArray(Obj,BuiltInNodeName,Arr,ErrorEl) then exit;
   for i:=0 to Arr.Count-1 do
@@ -6156,6 +6158,21 @@ begin
         begin
         El:=Resolver.JSBaseTypes[pbt];
         if El=nil then continue;
+        if (CompareText(El.Name,aName)=0) then
+          begin
+          Found:=true;
+          AddElReference(Id,ErrorEl,El);
+          break;
+          end;
+        end;
+      end;
+    if not Found then
+      begin
+      for pbp in TPas2jsBuiltInProc do
+        begin
+        BuiltInProc:=Resolver.JSBuiltInProcs[pbp];
+        if BuiltInProc=nil then continue;
+        El:=BuiltInProc.Element;
         if (CompareText(El.Name,aName)=0) then
           begin
           Found:=true;
@@ -6931,6 +6948,8 @@ procedure TPCUReader.ReadSection(Obj: TJSONObject; Section: TPasSection;
 // Note: can be called twice for each section if there are pending used interfaces
 var
   Scope: TPas2JSSectionScope;
+  i: Integer;
+  El: TPasElement;
 begin
   {$IFDEF VerbosePCUFiler}
   writeln('TPCUReader.ReadSection ',GetObjName(Section));
@@ -6965,10 +6984,19 @@ begin
   end;
 
   Scope.Finished:=true;
-  if Section is TInterfaceSection then
+  if Section.ClassType=TInterfaceSection then
     begin
     ResolvePending(false);
     Resolver.NotifyPendingUsedInterfaces;
+    end
+  else if Section.ClassType=TImplementationSection then
+    begin
+    for i:=0 to FPendingForwardProcs.Count-1 do
+      begin
+      El:=TPasElement(FPendingForwardProcs[i]);
+      Resolver.CheckPendingForwardProcs(El);
+      end;
+    FPendingForwardProcs.Clear;
     end;
 end;
 
@@ -8543,7 +8571,7 @@ begin
     Resolver.PopScope;
   end;
   ReadRecordScope(Obj,Scope,aContext);
-  Resolver.FinishSpecializedClassOrRecIntf(Scope);
+  Resolver.FinishGenericClassOrRecIntf(Scope);
   Resolver.FinishSpecializations(Scope);
 
   ReadSpecializations(Obj,El);
@@ -8914,8 +8942,9 @@ begin
     finally
       Resolver.PopScope;
     end;
-    Resolver.FinishSpecializedClassOrRecIntf(Scope);
-    Resolver.FinishSpecializations(Scope);
+    Resolver.FinishGenericClassOrRecIntf(Scope);
+    if (El.GenericTemplateTypes<>nil) and (El.GenericTemplateTypes.Count>0) then
+      FPendingForwardProcs.Add(El);
     ReadSpecializations(Obj,El);
     end;
 end;
@@ -9446,7 +9475,7 @@ var
   DefProcMods: TProcedureModifiers;
   t: TProcedureMessageType;
   s: string;
-  Found: Boolean;
+  Found, HasBody: Boolean;
   Scope: TPas2JSProcedureScope;
   DeclProcId: integer;
   Ref: TPCUFilerElementRef;
@@ -9470,6 +9499,7 @@ begin
 
   ReadPasElement(Obj,El,aContext);
 
+  HasBody:=Obj.Find('Body')<>nil;
   if ReadInteger(Obj,'DeclarationProc',DeclProcId,El) then
     begin
     // ImplProc
@@ -9481,8 +9511,19 @@ begin
     DeclProc:=TPasProcedure(Ref.Element);
     Scope.DeclarationProc:=DeclProc; // no AddRef
 
-    El.ProcType:=TPasProcedureType(CreateElement(TPasProcedureTypeClass(DeclProc.ProcType.ClassType),'',DeclProc));
+    El.ProcType:=TPasProcedureType(CreateElement(TPasProcedureTypeClass(DeclProc.ProcType.ClassType),'',El));
     El.Modifiers:=ReadProcedureModifiers(Obj,El,'PMods',DeclProc.Modifiers*PCUProcedureModifiersImplProc);
+
+    if HasBody then
+      begin
+      // not a precompiled proc -> copy signature
+      //if El.ProcType is TPasFunctionType then
+      //  begin
+      //  FuncType:=TPasFunctionType(El.ProcType);
+      //  FuncType.ResultEl:=TPasResultElement(CreateElement(TPasResultElement,
+      //    TPasFunctionType(DeclProc.ProcType).ResultEl.Name,FuncType));
+      //  end;
+      end;
     end
   else
     begin
@@ -9526,7 +9567,7 @@ begin
   if (Scope<>nil) and (Obj.Find('ImplProc')=nil) then
     ReadProcScopeReferences(Obj,Scope);
 
-  if Obj.Find('Body')<>nil then
+  if HasBody then
     ReadProcedureBody(Obj,El,aContext);
 end;
 
@@ -9813,12 +9854,14 @@ begin
   inherited Create;
   FInitialFlags:=TPCUInitialFlags.Create;
   FPendingIdentifierScopes:=TObjectList.Create(true);
+  FPendingForwardProcs:=TFPList.Create;
 end;
 
 destructor TPCUReader.Destroy;
 begin
   FreeAndNil(FJSON);
   inherited Destroy;
+  FreeAndNil(FPendingForwardProcs);
   FreeAndNil(FPendingIdentifierScopes);
   FreeAndNil(FInitialFlags);
 end;
@@ -9834,6 +9877,7 @@ begin
   FPendingIdentifierScopes.Clear;
   while FPendingSpecialize<>nil do
     DeletePendingSpecialize(FPendingSpecialize);
+  FPendingForwardProcs.Clear;
 
   inherited Clear;
   FInitialFlags.Clear;
