@@ -1711,7 +1711,6 @@ type
     procedure CheckConditionExpr(El: TPasExpr; const ResolvedEl: TPasResolverResult); virtual;
     procedure CheckProcSignatureMatch(DeclProc, ImplProc: TPasProcedure;
       IsOverride: boolean);
-    procedure CheckPendingForwardProcs(El: TPasElement);
     procedure CheckPointerCycle(El: TPasPointerType);
     procedure CheckGenericTemplateTypes(El: TPasGenericType); virtual;
     procedure ComputeUnaryNot(El: TUnaryExpr; var ResolvedEl: TPasResolverResult;
@@ -2359,8 +2358,9 @@ type
     function GetGenericConstraintErrorEl(ConstraintEl, TemplType: TPasElement): TPasElement;
     function GetSpecializedEl(El: TPasElement; GenericEl: TPasElement;
       Params: TFPList): TPasElement; virtual;
-    procedure FinishSpecializedClassOrRecIntf(Scope: TPasGenericScope); virtual;
+    procedure FinishGenericClassOrRecIntf(Scope: TPasGenericScope); virtual;
     procedure FinishSpecializations(Scope: TPasGenericScope); virtual;
+    procedure CheckPendingForwardProcs(El: TPasElement); virtual;
     function IsSpecialized(El: TPasGenericType): boolean; overload;
     function IsFullySpecialized(El: TPasGenericType): boolean; overload;
     function IsFullySpecialized(Proc: TPasProcedure): boolean; overload;
@@ -6296,7 +6296,7 @@ begin
   PopScope;
 
   Scope:=El.CustomData as TPasRecordScope;
-  FinishSpecializedClassOrRecIntf(Scope);
+  FinishGenericClassOrRecIntf(Scope);
 end;
 
 procedure TPasResolver.FinishClassType(El: TPasClassType);
@@ -6490,7 +6490,7 @@ begin
     PopGenericParamScope(El);
 
   if not El.IsForward then
-    FinishSpecializedClassOrRecIntf(ClassScope);
+    FinishGenericClassOrRecIntf(ClassScope);
 end;
 
 procedure TPasResolver.FinishClassOfType(El: TPasClassOfType);
@@ -6915,6 +6915,7 @@ var
   Arg: TPasArgument;
   ProcTypeScope: TPasProcTypeScope;
   C: TClass;
+  FuncType: TPasFunctionType;
 begin
   if TopScope.Element=El then
     begin
@@ -6955,7 +6956,11 @@ begin
       end;
 
     if El is TPasFunctionType then
-      CheckUseAsType(TPasFunctionType(El).ResultEl.ResultType,20190123095743,TPasFunctionType(El).ResultEl);
+      begin
+      FuncType:=TPasFunctionType(El);
+      if FuncType.ResultEl<>nil then
+        CheckUseAsType(FuncType.ResultEl.ResultType,20190123095743,FuncType.ResultEl);
+      end;
 
     if (proProcTypeWithoutIsNested in Options) and El.IsNested then
       RaiseInvalidProcTypeModifier(20170402120811,El,ptmIsNested,El);
@@ -9288,6 +9293,7 @@ var
   ImplNameParts: TProcedureNameParts;
   ImplNamePart: TProcedureNamePart;
   ImplTemplType, DeclTemplType: TPasGenericTemplateType;
+  FuncType: TPasFunctionType;
 begin
   ImplProc:=ImplProcScope.Element as TPasProcedure;
   DeclProc:=ImplProcScope.DeclarationProc;
@@ -9351,14 +9357,26 @@ begin
       Identifier.Identifier:=DeclArg.Name;
       end
     else
-      RaiseNotYetImplemented(20170203161826,ImplProc);
+      begin
+      // e.g. when Delphi mode omits ImplProc signature
+      AddIdentifier(ImplProcScope,DeclArg.Name,DeclArg,pikSimple);
+      end;
     end;
   if DeclProc.ProcType is TPasFunctionType then
     begin
     // redirect implementation 'Result' to declaration FuncType.ResultEl
-    Identifier:=ImplProcScope.FindLocalIdentifier(ResolverResultVar);
-    if Identifier.Element is TPasResultElement then
-      Identifier.Element:=TPasFunctionType(DeclProc.ProcType).ResultEl;
+    FuncType:=TPasFunctionType(DeclProc.ProcType);
+    if FuncType.ResultEl<>nil then
+      begin
+      Identifier:=ImplProcScope.FindLocalIdentifier(ResolverResultVar);
+      if Identifier=nil then
+        begin
+        // e.g. when Delphi mode omits ImplProc signature
+        AddIdentifier(ImplProcScope,ResolverResultVar,FuncType.ResultEl,pikSimple);
+        end
+      else if Identifier.Element is TPasResultElement then
+        Identifier.Element:=FuncType.ResultEl;
+      end;
     end;
 end;
 
@@ -11833,71 +11851,6 @@ procedure TPasResolver.MarkArrayExprRecursive(Expr: TPasExpr;
 
 begin
   Traverse(Expr,ArrType,0);
-end;
-
-procedure TPasResolver.CheckPendingForwardProcs(El: TPasElement);
-var
-  i: Integer;
-  DeclEl: TPasElement;
-  Proc: TPasProcedure;
-  aClassOrRec: TPasMembersType;
-  ClassOrRecScope: TPasClassOrRecordScope;
-begin
-  if IsElementSkipped(El) then exit;
-  if El is TPasDeclarations then
-    begin
-    for i:=0 to TPasDeclarations(El).Declarations.Count-1 do
-      begin
-      DeclEl:=TPasElement(TPasDeclarations(El).Declarations[i]);
-      if DeclEl is TPasProcedure then
-        begin
-        Proc:=TPasProcedure(DeclEl);
-        if ProcNeedsImplProc(Proc)
-            and (TPasProcedureScope(Proc.CustomData).ImplProc=nil) then
-          RaiseMsg(20170216152219,nForwardProcNotResolved,sForwardProcNotResolved,
-            [GetElementTypeName(Proc),Proc.Name],Proc);
-        end;
-      end;
-    end
-  else if El is TPasMembersType then
-    begin
-    aClassOrRec:=TPasMembersType(El);
-    if (aClassOrRec is TPasClassType) then
-      begin
-      if (TPasClassType(aClassOrRec).ObjKind in [okInterface,okDispInterface]) then
-        exit;
-      if TPasClassType(aClassOrRec).IsForward then
-        exit;
-      if TPasClassType(aClassOrRec).IsExternal then
-        exit;
-      end;
-    ClassOrRecScope:=aClassOrRec.CustomData as TPasClassOrRecordScope;
-    if ClassOrRecScope.SpecializedFromItem<>nil then
-      exit;
-    // finish implementation of (generic) class/record
-    if ClassOrRecScope.GenericStep<>psgsInterfaceParsed then
-      RaiseNotYetImplemented(20190804115324,El);
-    for i:=0 to aClassOrRec.Members.Count-1 do
-      begin
-      DeclEl:=TPasElement(aClassOrRec.Members[i]);
-      if DeclEl is TPasProcedure then
-        begin
-        Proc:=TPasProcedure(DeclEl);
-        if Proc.IsAbstract or Proc.IsExternal then continue;
-        if TPasProcedureScope(Proc.CustomData).ImplProc=nil then
-          begin
-          {$IFDEF VerbosePasResolver}
-          writeln('TPasResolver.CheckPendingForwardProcs Proc.ParentPath=',Proc.PathName);
-          {$ENDIF}
-          RaiseMsg(20170216152221,nForwardProcNotResolved,sForwardProcNotResolved,
-            [GetElementTypeName(Proc),Proc.Name],Proc);
-          end;
-        end;
-      end;
-    ClassOrRecScope.GenericStep:=psgsImplementationParsed;
-    if ClassOrRecScope.SpecializedItems<>nil then
-      FinishSpecializations(ClassOrRecScope);
-    end;
 end;
 
 procedure TPasResolver.CheckPointerCycle(El: TPasPointerType);
@@ -17773,7 +17726,12 @@ begin
     begin
     GenProcType:=GenEl.ProcType;
     if GenProcType.Parent<>GenEl then
-      RaiseNotYetImplemented(20190803212426,GenEl,GetObjName(GenProcType.Parent));
+      begin
+      {$IFDEF defined(VerbosePCUFiler) or defined(VerbosePJUFiler)}
+      writeln('TPasResolver.SpecializeProcedure GenEl=',GetObjPath(GenEl),' GenProcType.Parent=',GetObjPath(GenProcType.Parent));
+      {$ENDIF}
+      RaiseNotYetImplemented(20190803212426,GenEl,GetObjPath(GenProcType.Parent));
+      end;
     NewClass:=TPTreeElement(GenProcType.ClassType);
     SpecEl.ProcType:=TPasProcedureType(NewClass.Create(GenProcType.Name,SpecEl));
     SpecializeElement(GenProcType,SpecEl.ProcType);
@@ -17855,13 +17813,16 @@ begin
   if SpecEl is TPasFunctionType then
     begin
     GenResultEl:=TPasFunctionType(GenEl).ResultEl;
-    if GenResultEl.Parent<>GenEl then
-      RaiseNotYetImplemented(20190803212935,GenEl,GetObjName(GenResultEl.Parent));
-    NewClass:=TPTreeElement(GenResultEl.ClassType);
-    NewResultEl:=TPasResultElement(NewClass.Create(GenResultEl.Name,SpecEl));
-    TPasFunctionType(SpecEl).ResultEl:=NewResultEl;
-    AddFunctionResult(NewResultEl);
-    SpecializeElType(GenResultEl,NewResultEl,GenResultEl.ResultType,NewResultEl.ResultType);
+    if GenResultEl<>nil then
+      begin
+      if GenResultEl.Parent<>GenEl then
+        RaiseNotYetImplemented(20190803212935,GenEl,GetObjName(GenResultEl.Parent));
+      NewClass:=TPTreeElement(GenResultEl.ClassType);
+      NewResultEl:=TPasResultElement(NewClass.Create(GenResultEl.Name,SpecEl));
+      TPasFunctionType(SpecEl).ResultEl:=NewResultEl;
+      AddFunctionResult(NewResultEl);
+      SpecializeElType(GenResultEl,NewResultEl,GenResultEl.ResultType,NewResultEl.ResultType);
+      end;
     end;
 
   FinishProcedureType(SpecEl);
@@ -28783,7 +28744,7 @@ begin
     end;
 end;
 
-procedure TPasResolver.FinishSpecializedClassOrRecIntf(Scope: TPasGenericScope);
+procedure TPasResolver.FinishGenericClassOrRecIntf(Scope: TPasGenericScope);
 var
   El: TPasGenericType;
   SpecializedItems: TObjectList;
@@ -28829,6 +28790,71 @@ begin
   if SpecializedItems=nil then exit;
   for i:=0 to SpecializedItems.Count-1 do
     SpecializeGenericImpl(TPRSpecializedItem(SpecializedItems[i]));
+end;
+
+procedure TPasResolver.CheckPendingForwardProcs(El: TPasElement);
+var
+  i: Integer;
+  DeclEl: TPasElement;
+  Proc: TPasProcedure;
+  aClassOrRec: TPasMembersType;
+  ClassOrRecScope: TPasClassOrRecordScope;
+begin
+  if IsElementSkipped(El) then exit;
+  if El is TPasDeclarations then
+    begin
+    for i:=0 to TPasDeclarations(El).Declarations.Count-1 do
+      begin
+      DeclEl:=TPasElement(TPasDeclarations(El).Declarations[i]);
+      if DeclEl is TPasProcedure then
+        begin
+        Proc:=TPasProcedure(DeclEl);
+        if ProcNeedsImplProc(Proc)
+            and (TPasProcedureScope(Proc.CustomData).ImplProc=nil) then
+          RaiseMsg(20170216152219,nForwardProcNotResolved,sForwardProcNotResolved,
+            [GetElementTypeName(Proc),Proc.Name],Proc);
+        end;
+      end;
+    end
+  else if El is TPasMembersType then
+    begin
+    aClassOrRec:=TPasMembersType(El);
+    if (aClassOrRec is TPasClassType) then
+      begin
+      if (TPasClassType(aClassOrRec).ObjKind in [okInterface,okDispInterface]) then
+        exit;
+      if TPasClassType(aClassOrRec).IsForward then
+        exit;
+      if TPasClassType(aClassOrRec).IsExternal then
+        exit;
+      end;
+    ClassOrRecScope:=aClassOrRec.CustomData as TPasClassOrRecordScope;
+    if ClassOrRecScope.SpecializedFromItem<>nil then
+      exit;
+    // finish implementation of (generic) class/record
+    if ClassOrRecScope.GenericStep<>psgsInterfaceParsed then
+      RaiseNotYetImplemented(20190804115324,El);
+    for i:=0 to aClassOrRec.Members.Count-1 do
+      begin
+      DeclEl:=TPasElement(aClassOrRec.Members[i]);
+      if DeclEl is TPasProcedure then
+        begin
+        Proc:=TPasProcedure(DeclEl);
+        if Proc.IsAbstract or Proc.IsExternal then continue;
+        if TPasProcedureScope(Proc.CustomData).ImplProc=nil then
+          begin
+          {$IFDEF VerbosePasResolver}
+          writeln('TPasResolver.CheckPendingForwardProcs Proc.ParentPath=',Proc.PathName);
+          {$ENDIF}
+          RaiseMsg(20170216152221,nForwardProcNotResolved,sForwardProcNotResolved,
+            [GetElementTypeName(Proc),Proc.Name],Proc);
+          end;
+        end;
+      end;
+    ClassOrRecScope.GenericStep:=psgsImplementationParsed;
+    if ClassOrRecScope.SpecializedItems<>nil then
+      FinishSpecializations(ClassOrRecScope);
+    end;
 end;
 
 function TPasResolver.IsSpecialized(El: TPasGenericType): boolean;
