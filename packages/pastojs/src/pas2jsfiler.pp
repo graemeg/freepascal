@@ -8368,16 +8368,17 @@ begin
     if El.Params[i]=nil then
       RaiseMsg(20200512232836,El,GetObjPath(El.DestType)+' Params['+IntToStr(i)+']=nil');
 
+  if not ReadInteger(Obj,'SpecType',SpecId,El) then
+    begin
+    if Obj.Find('SpecType')<>nil then
+      RaiseMsg(20201203092759,El,GetObjName(Obj.Find('SpecType')));
+    exit; // generic reference to a generic
+    end;
+
   // El.Data TPasSpecializeTypeData
   Data:=TPasSpecializeTypeData.Create;
   // add to free list
   Resolver.AddResolveData(El,Data,lkModule);
-
-  if not ReadInteger(Obj,'SpecType',SpecId,El) then
-    begin
-    if Obj.Find('SpecType')=nil then
-      RaiseMsg(20201203092759,El,GetObjName(Obj.Find('SpecType')));
-    end;
 
   PromiseSetElReference(SpecId,@Set_SpecializeTypeData,Data,El);
 
@@ -8400,6 +8401,7 @@ procedure TPCUReader.ReadInlineSpecializeExpr(Obj: TJSONObject;
 var
   Parent: TPasElement;
 begin
+  ReadPasElement(Obj,Expr,aContext);
   Expr.Kind:=pekSpecialize;
   Expr.NameExpr:=ReadExpr(Obj,Expr,'SpecName',aContext);
   ReadElementList(Obj,Expr,'SpecParams',Expr.Params,

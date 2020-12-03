@@ -233,6 +233,7 @@ type
     procedure TestPC_Constraints;
     // ToDo: constraints
     // ToDo: unit impl declarations used by generics
+    procedure TestPC_GenericClass_InlineSpecialize;
 
     procedure TestPC_UseUnit;
     procedure TestPC_UseUnit_Class;
@@ -3526,6 +3527,29 @@ begin
   '  er: TEagle<TRec>;',
   '  wf: TWater<TFish>;',
   'implementation',
+  '']);
+  WriteReadUnit;
+end;
+
+procedure TTestPrecompile.TestPC_GenericClass_InlineSpecialize;
+begin
+  StartUnit(true,[supTObject]);
+  Add([
+  '{$mode delphi}',
+  'interface',
+  'type',
+  '  TBird<T: class> = class',
+  '  end;',
+  '  TEagle<T: class> = class(TBird<T>)',
+  '  type',
+  '    TMyEagle = TEagle<T>;',
+  '    function Fly(v: T): T;',
+  '  end;',
+  'implementation',
+  'function TEagle<T>.Fly(v: T): T;',
+  'begin',
+  '  TEagle<T>.Create;',
+  'end;',
   '']);
   WriteReadUnit;
 end;
