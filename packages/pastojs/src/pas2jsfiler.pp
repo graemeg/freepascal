@@ -81,6 +81,10 @@ unit Pas2JsFiler;
 
 {$mode objfpc}{$H+}
 
+{$IF FPC_FULLVERSION>30200}
+{$WARN 6060 off : case statement does not handle all possible cases}
+{$ENDIF}
+
 interface
 
 uses
@@ -986,7 +990,7 @@ type
     Obj: TJSONObject;
     GenericEl: TPasGenericType;
     Id: integer;
-    Params: TFPList; // list of PCUReaderPendingSpecializedParams
+    Params: TFPList; // list of TPCUReaderPendingSpecializedParam
     RefEl: TPasElement; // a TInlineSpecializeExpr, TPasSpecializeType, TPasProcedure or TInitializationSection
     SpecName: string;
     Prev, Next: TPCUReaderPendingSpecialized;
@@ -3457,6 +3461,8 @@ begin
         ParentRef.Obj.Add('Specs',ParentRef.Specs);
         end;
       ParentRef.Specs.Add(Ref.Obj);
+      if Ref.Id=0 then
+        CreateElReferenceId(Ref); // every specialization needs an ID
       end
     else
       begin
@@ -4026,15 +4032,15 @@ begin
   if SpecType=nil then
     RaiseMsg(20201203093316,El);
   WriteElType(Obj,El,'SpecType',SpecType,aContext);
-  Obj.Add('SpecName',SpecType.Name);
+  Obj.Add('SpecTypeName',SpecType.Name);
 end;
 
 procedure TPCUWriter.WriteInlineSpecializeExpr(Obj: TJSONObject;
   Expr: TInlineSpecializeExpr; aContext: TPCUWriterContext);
 begin
   WritePasExpr(Obj,Expr,pekSpecialize,eopNone,aContext);
-  WriteExpr(Obj,Expr,'SpecName',Expr.NameExpr,aContext);
-  WriteElementList(Obj,Expr,'SpecParams',Expr.Params,aContext,true);
+  WriteExpr(Obj,Expr,'ISEName',Expr.NameExpr,aContext);
+  WriteElementList(Obj,Expr,'ISEParams',Expr.Params,aContext,true);
 end;
 
 procedure TPCUWriter.WriteRangeType(Obj: TJSONObject; El: TPasRangeType;
@@ -5554,7 +5560,7 @@ begin
     Param:=TPCUReaderPendingSpecializedParam(RefParams[i]);
     if Param.Element<>nil then continue;
     Ref:=GetElReference(Param.Id,RefEl);
-    if Ref=nil then
+    if (Ref=nil) or (Ref.Element=nil) then
       begin
       //writeln('TPCUReader.CreateSpecializedElement SpecName=',PendSpec.SpecName,' Id=',PendSpec.Id,' WAITING for param ',i,': ',Param.Id);
       exit(false);
@@ -5606,6 +5612,70 @@ begin
 end;
 
 procedure TPCUReader.ResolveSpecializedElements(Complete: boolean);
+
+  function GetErrMsg(UnresolvedSpec: TPCUReaderPendingSpecialized): string;
+  var
+    i: Integer;
+    Param: TPCUReaderPendingSpecializedParam;
+    Ref: TPCUFilerElementRef;
+  begin
+    Result:=UnresolvedSpec.SpecName
+         +' Id='+IntToStr(UnresolvedSpec.Id)
+         +' RefEl='+GetObjPath(UnresolvedSpec.RefEl)
+         +' GenericEl='+GetObjPath(UnresolvedSpec.GenericEl)
+         +' Params=<';
+    for i:=0 to UnresolvedSpec.Params.Count-1 do
+      begin
+      if i>0 then Result:=Result+',';
+      Param:=TPCUReaderPendingSpecializedParam(UnresolvedSpec.Params[i]);
+      if Param.Element<>nil then
+        Result:=Result+GetObjPath(Param.Element)
+      else
+        begin
+        Result:=Result+'Id='+IntToStr(Param.Id);
+        if Param.Id<1 then
+          continue;
+        Ref:=GetElReference(Param.Id,UnresolvedSpec.GenericEl);
+        if Ref=nil then
+          begin
+          Result:=Result+',Ref=nil';
+          continue;
+          end;
+        Result:=Result+',Ref.Element='+GetObjPath(Ref.Element);
+        end;
+      end;
+    Result:=Result+'>';
+  end;
+
+  function PushRefElToParamSpec(PendSpec: TPCUReaderPendingSpecialized): boolean;
+  // For example: A<B<...>>
+  // B<...> RefEl is A<...>
+  // push RefEl of A<...> to B<...>, so that B<...> is created
+  var
+    i: Integer;
+    Param: TPCUReaderPendingSpecializedParam;
+    Ref: TPCUFilerElementRef;
+    OtherPendSpec: TPCUReaderPendingSpecialized;
+  begin
+    Result:=false;
+    for i:=0 to PendSpec.Params.Count-1 do
+      begin
+      Param:=TPCUReaderPendingSpecializedParam(PendSpec.Params[i]);
+      Ref:=GetElReference(Param.Id,PendSpec.GenericEl);
+      if Ref.Element<>nil then continue;
+      OtherPendSpec:=FPendingSpecialize;
+      while OtherPendSpec<>nil do
+        begin
+        if (OtherPendSpec.Id=Param.Id) and (OtherPendSpec.RefEl=nil) then
+          begin
+          OtherPendSpec.RefEl:=PendSpec.RefEl;
+          Result:=true;
+          end;
+        OtherPendSpec:=OtherPendSpec.Next;
+        end;
+      end;
+  end;
+
 var
   PendSpec, NextPendSpec, UnresolvedSpec: TPCUReaderPendingSpecialized;
   Changed: Boolean;
@@ -5630,6 +5700,9 @@ begin
         if CreateSpecializedElement(PendSpec) then
           // Note: PendSpec has been freed
           Changed:=true
+        else if PushRefElToParamSpec(PendSpec) then
+          // one param was a pending specialize waiting for its RefEl
+          Changed:=true
         else
           UnresolvedSpec:=PendSpec;
         end;
@@ -5646,13 +5719,13 @@ begin
     while PendSpec<>nil do
       begin
       {AllowWriteln}
-      writeln('TPCUReader.ResolveSpecializedElements PENDING: ',PendSpec.SpecName+' Id='+IntToStr(PendSpec.Id)+' RefEl='+GetObjPath(PendSpec.RefEl)+' GenericEl='+GetObjPath(PendSpec.GenericEl));;
+      writeln('TPCUReader.ResolveSpecializedElements PENDING: ',GetErrMsg(PendSpec));
       {AllowWriteln-}
       PendSpec:=PendSpec.Next;
       end;
     {$ENDIF}
     // a pending specialize cannot resolve its params
-    RaiseMsg(20200531101924,UnresolvedSpec.GenericEl,UnresolvedSpec.SpecName+' Id='+IntToStr(UnresolvedSpec.Id)+' RefEl='+GetObjPath(UnresolvedSpec.RefEl)+' GenericEl='+GetObjPath(UnresolvedSpec.GenericEl));
+    RaiseMsg(20200531101924,UnresolvedSpec.GenericEl,GetErrMsg(UnresolvedSpec));
     end;
 end;
 
@@ -8384,7 +8457,7 @@ begin
   PromiseSetElReference(SpecId,@Set_SpecializeTypeData,Data,El);
 
   // check old specialized name
-  if not ReadString(Obj,'SpecName',SpecName,El) then
+  if not ReadString(Obj,'SpecTypeName',SpecName,El) then
     RaiseMsg(20200219122919,El);
   if SpecName='' then
     RaiseMsg(20200530134152,El);
@@ -8404,8 +8477,8 @@ var
 begin
   ReadPasElement(Obj,Expr,aContext);
   Expr.Kind:=pekSpecialize;
-  Expr.NameExpr:=ReadExpr(Obj,Expr,'SpecName',aContext);
-  ReadElementList(Obj,Expr,'SpecParams',Expr.Params,
+  Expr.NameExpr:=ReadExpr(Obj,Expr,'ISEName',aContext);
+  ReadElementList(Obj,Expr,'ISEParams',Expr.Params,
     {$IFDEF CheckPasTreeRefCount}'TInlineSpecializeExpr.Params'{$ELSE}true{$ENDIF},
     aContext);
   Parent:=Expr.Parent;
