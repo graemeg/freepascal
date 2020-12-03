@@ -4596,6 +4596,7 @@ var
   OldInGeneric: Boolean;
 begin
   WritePasElement(Obj,El,aContext);
+
   Scope:=El.CustomData as TPas2JSProcedureScope;
   //writeln('TPCUWriter.WriteProcedure ',GetObjName(El),' ',GetObjName(Scope),' ',Resolver.GetElementSourcePosStr(El));
 
@@ -6698,7 +6699,7 @@ begin
   if not ReadInteger(Obj,'Id',Id,GenEl) then
     RaiseMsg(20200531085133,GenEl);
   if not ReadString(Obj,'SpecName',SpecName,GenEl) then
-    RaiseMsg(20200531085133,GenEl);
+    RaiseMsg(20200531085134,GenEl);
 
   PendSpec:=PromiseSpecialize(Id,SpecName,nil,GenEl);
   PendSpec.Obj:=Obj;

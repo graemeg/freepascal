@@ -1871,7 +1871,7 @@ type
     procedure SpecializeElArray(GenEl, SpecEl: TPasElement;
       GenList: TPasElementArray; var SpecList: TPasElementArray; AllowReferences: boolean
       {$IFDEF CheckPasTreeRefCount}; const RefId: string{$ENDIF});
-    procedure SpecializeProcedure(GenEl, SpecEl: TPasProcedure; SpecializedItem: TPRSpecializedItem);
+    procedure SpecializeProcedure(GenEl, SpecEl: TPasProcedure; SpecializedItem: TPRSpecializedItem); virtual;
     procedure SpecializeOperator(GenEl, SpecEl: TPasOperator);
     procedure SpecializeProcedureType(GenEl, SpecEl: TPasProcedureType; SpecializedItem: TPRSpecializedItem);
     procedure SpecializeProcedureBody(GenEl, SpecEl: TProcedureBody);
