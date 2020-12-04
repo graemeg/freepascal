@@ -1549,6 +1549,9 @@ implementation
                (current_settings.fputype<>fpu_soft) and
                not(cs_fp_emulation in current_settings.moduleswitches) and
 {$endif cpufpemu}
+{$ifdef xtensa}
+               (FPUXTENSA_DOUBLE in fpu_capabilities[current_settings.fputype]) and
+{$endif xtensa}
                (nodetype=muln) and
                is_real(left.resultdef) and is_real(right.resultdef) and
                left.isequal(right) and
