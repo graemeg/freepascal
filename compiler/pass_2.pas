@@ -43,7 +43,9 @@ uses
          fc_unwind_loop,
          { the left side of an expression is already handled, so we are
            not allowed to do ssl }
-         fc_lefthandled);
+         fc_lefthandled,
+         { in block which contains the exit statement }
+         fc_block_with_exit);
 
        tflowcontrol = set of tenumflowcontrol;
 
