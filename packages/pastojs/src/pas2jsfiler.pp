@@ -798,6 +798,7 @@ type
     procedure WriteIdentifierScope(Obj: TJSONObject; Scope: TPasIdentifierScope; aContext: TPCUWriterContext); virtual;
     procedure WriteModuleScopeFlags(Obj: TJSONObject; const Value, DefaultValue: TPasModuleScopeFlags); virtual;
     procedure WriteModuleScope(Obj: TJSONObject; Scope: TPas2JSModuleScope; aContext: TPCUWriterContext); virtual;
+    procedure WriteModuleScopeLocalVars(Obj: TJSONObject; Scope: TPas2JSModuleScope); virtual;
     // element utilities
     procedure WriteSrcPos(Obj: TJSONObject; El: TPasElement; aContext: TPCUWriterContext); virtual;
     procedure WritePasElement(Obj: TJSONObject; El: TPasElement; aContext: TPCUWriterContext); virtual;
@@ -1005,7 +1006,6 @@ type
     FJSON: TJSONObject;
     FPendingIdentifierScopes: TObjectList; // list of TPCUReaderPendingIdentifierScope
     FPendingForwardProcs: TFPList; // list of TPasElement waiting for implementation of methods
-    FIntfSectionObj: TJSONObject;
     procedure Set_Variable_VarType(RefEl: TPasElement; Data: TObject);
     procedure Set_AliasType_DestType(RefEl: TPasElement; Data: TObject);
     procedure Set_PointerType_DestType(RefEl: TPasElement; Data: TObject);
@@ -2687,6 +2687,8 @@ begin
     WImplBlock(aModule.FinalizationSection,'Final');
     end;
 
+  WriteModuleScopeLocalVars(Obj,ModScope);
+
   //writeln('TPCUWriter.WriteModule WriteExternalReferences of implementation ',Resolver.RootElement.Name,' aContext.Section=',GetObjName(aContext.Section));
   WriteExternalReferences(aContext);
 
@@ -2799,10 +2801,6 @@ procedure TPCUWriter.WriteModuleScope(Obj: TJSONObject;
   Scope: TPas2JSModuleScope; aContext: TPCUWriterContext);
 var
   aModule: TPasModule;
-  i: Integer;
-  SubObj: TJSONObject;
-  LocalVar: TPas2JSStoredLocalVar;
-  LocalVars: TPas2JSStoredLocalVarArray;
 begin
   aModule:=Scope.Element as TPasModule;
   if Scope.FirstName<>FirstDottedIdentifier(aModule.Name) then
@@ -2818,6 +2816,19 @@ begin
   AddReferenceToObj(Obj,'SystemTVarRec',Scope.SystemTVarRec);
   AddReferenceToObj(Obj,'SystemVarRecs',Scope.SystemVarRecs);
 
+  // Scope.StoreJSLocalVars is written later, because some references need implementation units
+
+  WritePasScope(Obj,Scope,aContext);
+end;
+
+procedure TPCUWriter.WriteModuleScopeLocalVars(Obj: TJSONObject;
+  Scope: TPas2JSModuleScope);
+var
+  LocalVars: TPas2JSStoredLocalVarArray;
+  SubObj: TJSONObject;
+  i: Integer;
+  LocalVar: TPas2JSStoredLocalVar;
+begin
   // StoreJSLocalVars
   LocalVars:=Scope.StoreJSLocalVars;
   if length(LocalVars)>0 then
@@ -2834,8 +2845,6 @@ begin
       AddReferenceToObj(SubObj,LocalVar.Name,LocalVar.Element);
       end;
     end;
-
-  WritePasScope(Obj,Scope,aContext);
 end;
 
 procedure TPCUWriter.WriteSrcPos(Obj: TJSONObject; El: TPasElement;
@@ -3480,7 +3489,7 @@ begin
     begin
     // indirectly used unit (refs to directly used units are created in WriteSection)
     if aContext.IndirectUsesArr=nil then
-      begin
+       begin
       if aContext.SectionObj=nil then
         RaiseMsg(20180314154428,El);
       //writeln('TPCUWriter.WriteExternalReference ',Resolver.RootElement.Name,' Section=',GetObjName(aContext.Section),' IndirectUses=',El.Name);
@@ -7005,7 +7014,7 @@ begin
       RaiseMsg(20180313134142,Section,GetObjName(Section.PendingUsedIntf));
     if Arr.Count<>length(Section.UsesClause) then
       RaiseMsg(20180313134338,IntToStr(Arr.Count)+'<>'+IntToStr(length(Section.UsesClause)));
-      for i:=0 to Arr.Count-1 do
+    for i:=0 to Arr.Count-1 do
     begin
       Data:=Arr[i];
       if not (Data is TJSONObject) then
@@ -7022,15 +7031,7 @@ begin
     end;
 
   // read external refs from indirectly used units
-  if Section.ClassType=TInterfaceSection then
-    FIntfSectionObj:=Obj
-  else if Section.ClassType=TImplementationSection then
-    begin
-    ReadIndirectUsedUnits(FIntfSectionObj,Section,true);
-    ReadIndirectUsedUnits(Obj,Section,true);
-    end
-  else
-    ReadIndirectUsedUnits(Obj,Section,true);
+  ReadIndirectUsedUnits(Obj,Section,true);
 
   Scope.UsesFinished:=true;
 
