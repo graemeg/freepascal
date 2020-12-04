@@ -3575,6 +3575,18 @@ implementation
 
 
     function tcallnode.pass_typecheck:tnode;
+
+      function is_undefined_recursive(def:tdef):boolean;
+        begin
+          { might become more refined in the future }
+          if def.typ=undefineddef then
+            result:=true
+          else if def.typ=arraydef then
+            result:=is_undefined_recursive(tarraydef(def).elementdef)
+          else
+            result:=false;
+        end;
+
       var
         candidates : tcallcandidates;
         oldcallnode : tcallnode;
@@ -3584,6 +3596,7 @@ implementation
         paraidx,
         cand_cnt : integer;
         i : longint;
+        ignoregenericparacall,
         ignorevisibility,
         is_const : boolean;
         statements : tstatementnode;
@@ -3771,12 +3784,33 @@ implementation
                       { Multiple candidates left? }
                       if cand_cnt>1 then
                        begin
-                         CGMessage(type_e_cant_choose_overload_function);
+                         { if we're inside a generic and call another function
+                           with generic types as arguments we don't complain in
+                           the generic, but only during the specialization }
+                         ignoregenericparacall:=false;
+                         if df_generic in current_procinfo.procdef.defoptions then
+                           begin
+                             pt:=tcallparanode(left);
+                             while assigned(pt) do
+                              begin
+                                if is_undefined_recursive(pt.resultdef) then
+                                  begin
+                                    ignoregenericparacall:=true;
+                                    break;
+                                  end;
+                                pt:=tcallparanode(pt.right);
+                              end;
+                           end;
+
+                         if not ignoregenericparacall then
+                           begin
+                             CGMessage(type_e_cant_choose_overload_function);
 {$ifdef EXTDEBUG}
-                         candidates.dump_info(V_Hint);
+                             candidates.dump_info(V_Hint);
 {$else EXTDEBUG}
-                         candidates.list(false);
+                             candidates.list(false);
 {$endif EXTDEBUG}
+                           end;
                          { we'll just use the first candidate to make the
                            call }
                        end;
