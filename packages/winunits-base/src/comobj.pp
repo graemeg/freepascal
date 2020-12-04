@@ -1381,7 +1381,13 @@ HKCR
           case InvokeKind of
             DISPATCH_PROPERTYPUT:
               begin
-                if (Arguments[0].VType and varTypeMask) = varDispatch then
+                if ((Arguments[0].VType and varTypeMask) in [varDispatch]) or
+                    { if we have a variant that's passed as a reference we pass it
+                      to the property as a reference as well }
+                    (
+                      ((Arguments[0].VType and varTypeMask) in [varVariant]) and
+                      ((CallDesc^.argtypes[0] and $80) <> 0)
+                    ) then
                   InvokeKind:=DISPATCH_PROPERTYPUTREF;
                 { first name is actually the name of the property to set }
                 DispIDs^[0]:=DISPID_PROPERTYPUT;
