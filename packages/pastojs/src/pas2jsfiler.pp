@@ -3965,9 +3965,8 @@ begin
       SubObj:=TJSONObject.Create;
       Arr.Add(SubObj);
       SubObj.Add('Name',RecValue.Name);
-      if (RecValue.ValueExp<>nil) and (RecValue.ValueExp.Name<>'') then
-        RaiseMsg(20180209192240,RecValue.ValueExp);
-      WriteElement(SubObj,RecValue.ValueExp,aContext);
+      WriteExpr(SubObj,Expr,'NameExpr',RecValue.NameExp,aContext);
+      WriteExpr(SubObj,Expr,'ValueExpr',RecValue.ValueExp,aContext);
       end;
     end;
 end;
@@ -8362,7 +8361,6 @@ var
   i: Integer;
   Data: TJSONData;
   SubObj: TJSONObject;
-  SubEl: TPasElement;
   aName: string;
 begin
   ReadPasExpr(Obj,Expr,pekListOfExp,aContext);
@@ -8375,13 +8373,10 @@ begin
       if not (Data is TJSONObject) then
         RaiseMsg(20180210173636,Expr,'['+IntToStr(i)+'] is '+GetObjName(Data));
       SubObj:=TJSONObject(Data);
-      if ReadString(SubObj,'Name',aName,Expr) then
-        Expr.Fields[i].Name:=aName;
-      SubEl:=ReadNewElement(SubObj,Expr);
-      if not (SubEl is TPasExpr) then
-        RaiseMsg(20180210174041,Expr,'['+IntToStr(i)+'] is '+GetObjName(SubEl));
-      Expr.Fields[i].ValueExp:=TPasExpr(SubEl);
-      ReadElement(SubObj,SubEl,aContext);
+      if not ReadString(SubObj,'Name',aName,Expr) then
+        RaiseMsg(20201204144308,Expr);
+      Expr.Fields[i].NameExp:=ReadExpr(SubObj,Expr,'NameExpr',aContext) as TPrimitiveExpr;
+      Expr.Fields[i].ValueExp:=ReadExpr(SubObj,Expr,'ValueExpr',aContext);
       end;
     end;
 end;
