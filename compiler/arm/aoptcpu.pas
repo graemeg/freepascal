@@ -1545,7 +1545,7 @@ Implementation
                       asml.InsertAfter(dealloc,hpfar1);
                     end;
 
-                  if not Assigned(hp1) then
+                  if (not Assigned(hp1)) or (p=hp1) then
                     GetNextInstruction(p, hp1);
 
                   RemoveCurrentP(p, hp1);
