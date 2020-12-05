@@ -153,6 +153,14 @@ type
      in_fma_double       = 134,
      in_fma_extended     = 135,
      in_fma_float128     = 136,
+     in_max_single       = 137,
+     in_max_double       = 138,
+     in_min_single       = 139,
+     in_min_double       = 140,
+     in_min_dword        = 141,
+     in_min_longint      = 142,
+     in_max_dword        = 143,
+     in_max_longint      = 144,
 
 { MMX functions }
 { these contants are used by the mmx unit }

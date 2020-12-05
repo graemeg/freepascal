@@ -70,7 +70,10 @@ unit optcse;
              in_abs_real,in_exp_real,in_ln_real,in_pi_real,in_popcnt_x,in_arctan_real,in_round_real,in_trunc_real,
              { cse on fma will still not work because it would require proper handling of call nodes
                with more than one parameter }
-             in_fma_single,in_fma_double,in_fma_extended,in_fma_float128])
+             in_fma_single,in_fma_double,in_fma_extended,in_fma_float128,
+             in_min_single,in_min_double,in_max_single,in_max_double,
+             in_max_longint,in_max_dword,in_min_longint,in_min_dword
+             ])
           ) or
           ((n.nodetype=callparan) and not(assigned(tcallparanode(n).right))) or
           ((n.nodetype=loadn) and

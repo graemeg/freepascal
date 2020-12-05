@@ -98,6 +98,7 @@ interface
           function first_seg: tnode; virtual;
           function first_sar: tnode; virtual;
           function first_fma : tnode; virtual;
+          function first_minmax: tnode; virtual;
 {$if not defined(cpu64bitalu) and not defined(cpuhighleveltarget)}
           function first_ShiftRot_assign_64bitint: tnode; virtual;
 {$endif not cpu64bitalu and not cpuhighleveltarget}
@@ -3758,6 +3759,19 @@ implementation
                   set_varstate(tcallparanode(tcallparanode(tcallparanode(left).right).right).left,vs_read,[vsf_must_be_valid]);
                   resultdef:=tcallparanode(left).left.resultdef;
                 end;
+              in_max_longint,
+              in_max_dword,
+              in_min_longint,
+              in_min_dword,
+              in_max_single,
+              in_max_double,
+              in_min_single,
+              in_min_double:
+                begin
+                  set_varstate(tcallparanode(left).left,vs_read,[vsf_must_be_valid]);
+                  set_varstate(tcallparanode(tcallparanode(left).right).left,vs_read,[vsf_must_be_valid]);
+                  resultdef:=tcallparanode(left).left.resultdef;
+                end;
               in_delete_x_y_z:
                 begin
                   result:=handle_delete;
@@ -4190,6 +4204,15 @@ implementation
          in_fma_extended,
          in_fma_float128:
            result:=first_fma;
+         in_max_longint,
+         in_max_dword,
+         in_min_longint,
+         in_min_dword,
+         in_min_single,
+         in_min_double,
+         in_max_single,
+         in_max_double:
+           result:=first_minmax;
          else
            result:=first_cpu;
           end;
@@ -5481,6 +5504,26 @@ implementation
        end;
 
 
+     function tinlinenode.first_minmax: tnode;
+       begin
+         CGMessage1(cg_e_function_not_support_by_selected_instruction_set,'MIN/MAX');
+         result:=nil;
+       end;
+
+//
+//||||||| .merge-left.r31134
+//
+//{$ifdef ARM}
+//              {$i armtype.inc}
+//{$endif ARM}
+//=======
+//
+//{$ifdef x86}
+//              {$i x86type.inc}
+//{$endif x86}
+//{$ifdef ARM}
+//              {$i armtype.inc}
+//{$endif ARM}
 {$if not defined(cpu64bitalu) and not defined(cpuhighleveltarget)}
      function tinlinenode.first_ShiftRot_assign_64bitint: tnode;
        var

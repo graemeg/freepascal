@@ -67,6 +67,7 @@ interface
           procedure second_fma; virtual;
           procedure second_frac_real; virtual;
           procedure second_high; virtual;
+          procedure second_minmax; virtual;
        protected
           function  second_incdec_tempregdef: tdef;virtual;
        end;
@@ -216,6 +217,15 @@ implementation
             in_fma_extended,
             in_fma_float128:
                second_fma;
+            in_max_longint,
+            in_max_dword,
+            in_min_longint,
+            in_min_dword,
+            in_min_single,
+            in_min_double,
+            in_max_single,
+            in_max_double:
+               second_minmax;
             in_and_assign_x_y,
             in_or_assign_x_y,
             in_xor_assign_x_y,
@@ -973,6 +983,12 @@ implementation
     procedure tcginlinenode.second_fma;
       begin
         internalerror(2014032701);
+      end;
+
+
+    procedure tcginlinenode.second_minmax;
+      begin
+        internalerror(2020120501);
       end;
 
 begin
