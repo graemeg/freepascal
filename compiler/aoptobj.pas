@@ -1506,6 +1506,8 @@ Unit AoptObj;
 
     procedure TAOptObj.RemoveCurrentP(var p: tai; const hp1: tai); inline;
       begin
+        if (p=hp1) then
+          internalerror(2020120501);
         UpdateUsedRegs(tai(p.Next));
         AsmL.Remove(p);
         p.Free;
