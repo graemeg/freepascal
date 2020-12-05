@@ -268,6 +268,12 @@ interface
     {# Returns true, if def is a 64 bit type }
     function is_64bit(def : tdef) : boolean;
 
+    { returns true, if def is a longint type }
+    function is_s32bitint(def : tdef) : boolean;
+
+    { returns true, if def is a dword type }
+    function is_u32bitint(def : tdef) : boolean;
+
     { true, if def1 and def2 are both integers of the same bit size and sign }
     function are_equal_ints(def1, def2: tdef): boolean;
 
@@ -1014,6 +1020,22 @@ implementation
     function is_64bit(def : tdef) : boolean;
       begin
          is_64bit:=(def.typ=orddef) and (torddef(def).ordtype in [u64bit,s64bit,scurrency,pasbool64,bool64bit])
+      end;
+
+
+    { returns true, if def is a longint type }
+    function is_s32bitint(def : tdef) : boolean;
+      begin
+        result:=(def.typ=orddef) and
+          (torddef(def).ordtype=s32bit);
+      end;
+
+
+    { returns true, if def is a dword type }
+    function is_u32bitint(def : tdef) : boolean;
+      begin
+        result:=(def.typ=orddef) and
+          (torddef(def).ordtype=u32bit);
       end;
 
 

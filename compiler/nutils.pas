@@ -180,6 +180,9 @@ interface
       in a and the function returns true }
     function GetStatements(p : tnode;var a : array of tstatementnode) : Boolean;
 
+    { checks if p is a single statement, if yes, it is returned in s }
+    function IsSingleStatement(p : tnode;var s : tnode) : Boolean;
+
     type
       TMatchProc2 = function(n1,n2 : tnode) : Boolean is nested;
       TTransformProc2 = function(n1,n2 : tnode) : tnode is nested;
@@ -1640,6 +1643,32 @@ implementation
             p:=tstatementnode(p).right;
           end;
         Result:=true;
+      end;
+
+
+    function IsSingleStatement(p: tnode; var s: tnode): Boolean;
+      begin
+        Result:=false;
+        if assigned(p) then
+          case p.nodetype of
+            blockn:
+              Result:=IsSingleStatement(tblocknode(p).statements,s);
+            statementn:
+              if not(assigned(tstatementnode(p).next)) then
+                begin
+                  Result:=true;
+                  s:=tstatementnode(p).statement;
+                end;
+            inlinen,
+            assignn,
+            calln:
+              begin
+                s:=p;
+                Result:=true;
+              end
+            else
+              ;
+          end;
       end;
 
 

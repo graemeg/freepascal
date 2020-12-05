@@ -1554,6 +1554,10 @@ implementation
 
 
     function tifnode.internalsimplify(warn: boolean) : tnode;
+      var
+        thenstmnt, elsestmnt: tnode;
+        in_nr: tinlinenumber;
+        paratype: tdef;
       begin
         result:=nil;
         { optimize constant expressions }
@@ -1580,6 +1584,46 @@ implementation
                     CGMessagePos(right.fileinfo,cg_w_unreachable_code);
                end;
           end;
+{$if defined(xtensa)}
+        { use min/max intrinsic? }
+        if (left.nodetype in [gtn,gten,ltn,lten]) and IsSingleStatement(right,thenstmnt) and IsSingleStatement(t1,elsestmnt) and
+          (thenstmnt.nodetype=assignn) and (elsestmnt.nodetype=assignn) and
+          not(might_have_sideeffects(left)) and
+          tassignmentnode(thenstmnt).left.isequal(tassignmentnode(elsestmnt).left) and
+          is_32bitint(tassignmentnode(thenstmnt).right.resultdef) and
+          ((tassignmentnode(thenstmnt).right.isequal(taddnode(left).left) and (tassignmentnode(elsestmnt).right.isequal(taddnode(left).right))) or
+           (tassignmentnode(thenstmnt).right.isequal(taddnode(left).right) and (tassignmentnode(elsestmnt).right.isequal(taddnode(left).left)))) then
+          begin
+            paratype:=tassignmentnode(thenstmnt).left.resultdef;
+            if (left.nodetype in [gtn,gten]) and
+              (tassignmentnode(thenstmnt).right.isequal(taddnode(left).left) and (tassignmentnode(elsestmnt).right.isequal(taddnode(left).right))) then
+              begin
+                if is_double(paratype) then
+                  in_nr:=in_max_double
+                else if is_single(paratype) then
+                  in_nr:=in_max_single
+                else if is_u32bitint(paratype) then
+                  in_nr:=in_max_dword
+                else if is_s32bitint(paratype) then
+                  in_nr:=in_max_longint;
+              end
+            else
+              begin
+                if is_double(paratype) then
+                  in_nr:=in_min_double
+                else if is_single(paratype) then
+                  in_nr:=in_min_single
+                else if is_u32bitint(paratype) then
+                  in_nr:=in_min_dword
+                else if is_s32bitint(paratype) then
+                  in_nr:=in_min_longint;
+              end;
+            Result:=cassignmentnode.create_internal(tassignmentnode(thenstmnt).left.getcopy,
+              cinlinenode.create(in_nr,false,ccallparanode.create(taddnode(left).right.getcopy,
+                    ccallparanode.create(taddnode(left).left.getcopy,nil)))
+              );
+          end;
+{$endif defined(xtensa)}
       end;
 
 

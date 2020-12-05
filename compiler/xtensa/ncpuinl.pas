@@ -35,6 +35,8 @@ unit ncpuinl;
         procedure second_abs_real; override;
         function first_fma: tnode; override;
         procedure second_fma; override;
+        function first_minmax: tnode; override;
+        procedure second_minmax; override;
       end;
 
   implementation
@@ -165,6 +167,67 @@ unit ncpuinl;
            end
          else
            internalerror(2020112401);
+      end;
+
+
+    function tcpuinlinenode.first_minmax : tnode;
+      begin
+        if is_32bitint(resultdef) then
+          begin
+            expectloc:=LOC_REGISTER;
+            Result:=nil;
+          end
+        else
+          Result:=inherited first_minmax;
+      end;
+
+
+    procedure tcpuinlineNode.second_minmax;
+      var
+        paraarray : array[1..2] of tnode;
+        i: Integer;
+        ai: taicpu;
+        op: TAsmOp;
+      begin
+         if is_32bitint(resultdef) then
+           begin
+             paraarray[1]:=tcallparanode(tcallparanode(parameters).nextpara).paravalue;
+             paraarray[2]:=tcallparanode(parameters).paravalue;
+
+              for i:=low(paraarray) to high(paraarray) do
+               secondpass(paraarray[i]);
+
+             { no memory operand is allowed }
+             for i:=low(paraarray) to high(paraarray) do
+               begin
+                 if not(paraarray[i].location.loc in [LOC_REGISTER,LOC_CREGISTER]) then
+                   hlcg.location_force_reg(current_asmdata.CurrAsmList,paraarray[i].location,
+                     paraarray[i].resultdef,resultdef,true);
+               end;
+
+             location_reset(location,LOC_REGISTER,paraarray[1].location.size);
+             location.register:=cg.getintregister(current_asmdata.CurrAsmList,location.size);
+
+             case inlinenumber of
+               in_min_dword:
+                 op:=A_MINU;
+               in_max_dword:
+                 op:=A_MAXU;
+               in_min_longint:
+                 op:=A_MIN;
+               in_max_longint:
+                 op:=A_MAX;
+               else
+                 Internalerror(2020120505);
+             end;
+
+             current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg_reg(op,
+               location.register,paraarray[1].location.register,paraarray[2].location.register));
+
+             cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
+           end
+         else
+           internalerror(2020120502);
       end;
 
 
