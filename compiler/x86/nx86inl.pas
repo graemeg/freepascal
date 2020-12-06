@@ -54,6 +54,7 @@ interface
           function first_fma: tnode; override;
           function first_frac_real : tnode; override;
           function first_int_real : tnode; override;
+          function first_minmax: tnode; override;
 
           function simplify(forinline : boolean) : tnode; override;
 
@@ -79,6 +80,7 @@ interface
           procedure second_frac_real;override;
           procedure second_int_real;override;
           procedure second_high;override;
+          procedure second_minmax;override;
        private
           procedure load_fpu_location(lnode: tnode);
        end;
@@ -386,6 +388,27 @@ implementation
            end
          else
            Result:=inherited first_int_real;
+       end;
+
+
+     function tx86inlinenode.first_minmax: tnode;
+       begin
+{$ifndef i8086}
+         if
+{$ifdef i386}
+           ((current_settings.fputype>=fpu_sse) and is_single(resultdef)) or
+           ((current_settings.fputype>=fpu_sse2) and is_double(resultdef))
+{$else i386}
+           ((is_double(resultdef)) or (is_single(resultdef)))
+{$endif i386}
+           then
+           begin
+             expectloc:=LOC_MMREGISTER;
+             Result:=nil;
+           end
+         else
+{$endif i8086}
+           Result:=inherited first_minmax;
        end;
 
 
@@ -1400,5 +1423,118 @@ implementation
         location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
         location.register:=hregister;
       end;
+
+
+    procedure tx86inlinenode.second_minmax;
+      const
+        oparray : array[false..true,false..true,s32real..s64real] of TAsmOp =
+          (
+           (
+            (A_MINSS,A_MINSD),
+            (A_VMINSS,A_VMINSD)
+           ),
+           (
+            (A_MAXSS,A_MAXSD),
+            (A_VMAXSS,A_VMAXSD)
+           )
+          );
+
+      var
+        paraarray : array[1..2] of tnode;
+        memop,
+        i : integer;
+        gotmem : boolean;
+        op: TAsmOp;
+      begin
+{$ifndef i8086}
+         if
+{$ifdef i386}
+           ((current_settings.fputype>=fpu_sse) and is_single(resultdef)) or
+           ((current_settings.fputype>=fpu_sse2) and is_double(resultdef))
+{$else i386}
+           is_single(resultdef) or is_double(resultdef)
+{$endif i386}
+           then
+           begin
+             paraarray[1]:=tcallparanode(tcallparanode(parameters).nextpara).paravalue;
+             paraarray[2]:=tcallparanode(parameters).paravalue;
+
+             for i:=low(paraarray) to high(paraarray) do
+               secondpass(paraarray[i]);
+
+             { only one memory operand is allowed }
+             gotmem:=false;
+             memop:=0;
+             for i:=low(paraarray) to high(paraarray) do
+               begin
+                 if not(paraarray[i].location.loc in [LOC_MMREGISTER,LOC_CMMREGISTER]) then
+                   begin
+                     if (paraarray[i].location.loc in [LOC_REFERENCE,LOC_CREFERENCE]) and not(gotmem) then
+                       begin
+                         memop:=i;
+                         gotmem:=true;
+                       end
+                     else
+                       hlcg.location_force_mmregscalar(current_asmdata.CurrAsmList,paraarray[i].location,paraarray[i].resultdef,true);
+                   end;
+               end;
+
+             op:=oparray[inlinenumber in [in_max_single,in_max_double],UseAVX,tfloatdef(resultdef).floattype];
+
+             location_reset(location,LOC_MMREGISTER,paraarray[1].location.size);
+             location.register:=cg.getmmregister(current_asmdata.CurrAsmList,location.size);
+
+             if gotmem then
+               begin
+                 if UseAVX then
+                   case memop of
+                     1:
+                       emit_ref_reg_reg(op,S_NO,
+                         paraarray[1].location.reference,paraarray[2].location.register,location.register);
+                     2:
+                       emit_ref_reg_reg(op,S_NO,
+                         paraarray[2].location.reference,paraarray[1].location.register,location.register);
+                     else
+                       internalerror(2020120504);
+                   end
+                 else
+                   case memop of
+                     1:
+                       begin
+                         hlcg.a_loadmm_reg_reg(current_asmdata.CurrAsmList,paraarray[2].resultdef,resultdef,
+                           paraarray[2].location.register,location.register,mms_movescalar);
+                         emit_ref_reg(op,S_NO,
+                           paraarray[1].location.reference,location.register);
+                       end;
+                     2:
+                       begin
+                         hlcg.a_loadmm_reg_reg(current_asmdata.CurrAsmList,paraarray[1].resultdef,resultdef,
+                           paraarray[1].location.register,location.register,mms_movescalar);
+                         emit_ref_reg(op,S_NO,
+                           paraarray[2].location.reference,location.register);
+                       end;
+                     else
+                       internalerror(2020120601);
+                   end;
+               end
+             else
+               begin
+                 if UseAVX then
+                   emit_reg_reg_reg(op,S_NO,
+                     paraarray[1].location.register,paraarray[2].location.register,location.register)
+                 else
+                   begin
+                     hlcg.a_loadmm_reg_reg(current_asmdata.CurrAsmList,paraarray[1].resultdef,resultdef,
+                       paraarray[1].location.register,location.register,mms_movescalar);
+                     emit_reg_reg(op,S_NO,
+                       paraarray[2].location.register,location.register)
+                   end;
+               end;
+           end
+         else
+{$endif i8086}
+           internalerror(2020120503);
+      end;
+
 
 end.

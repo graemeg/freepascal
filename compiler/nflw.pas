@@ -302,9 +302,9 @@ implementation
     {$ifdef i8086}
       cpuinfo,
     {$endif i8086}
-    {$ifdef xtensa}
+    {$if defined(xtensa) or defined(i386)}
       cpuinfo,
-    {$endif xtensa}
+    {$endif defined(xtensa) or defined(i386)}
       cgbase,procinfo
       ;
 
@@ -1588,13 +1588,24 @@ implementation
                     CGMessagePos(right.fileinfo,cg_w_unreachable_code);
                end;
           end;
-{$if defined(xtensa)}
+{$if defined(i386) or defined(x86_64) or defined(xtensa)}
         { use min/max intrinsic? }
         if (left.nodetype in [gtn,gten,ltn,lten]) and IsSingleStatement(right,thenstmnt) and IsSingleStatement(t1,elsestmnt) and
           (thenstmnt.nodetype=assignn) and (elsestmnt.nodetype=assignn) and
           not(might_have_sideeffects(left)) and
           tassignmentnode(thenstmnt).left.isequal(tassignmentnode(elsestmnt).left) and
+{$if defined(i386) or defined(x86_64)}
+{$ifdef i386}
+          (((current_settings.fputype>=fpu_sse) and is_single(tassignmentnode(thenstmnt).left.resultdef)) or
+           ((current_settings.fputype>=fpu_sse2) and is_double(tassignmentnode(thenstmnt).left.resultdef))
+          ) and
+{$else i386}
+          (is_single(tassignmentnode(thenstmnt).left.resultdef) or is_double(tassignmentnode(thenstmnt).left.resultdef)) and
+{$endif i386}
+{$endif defined(i386) or defined(x86_64)}
+{$if defined(xtensa)}
           (CPUXTENSA_HAS_MINMAX in cpu_capabilities[current_settings.cputype]) and is_32bitint(tassignmentnode(thenstmnt).right.resultdef) and
+{$endif defined(xtensa)}
           ((tassignmentnode(thenstmnt).right.isequal(taddnode(left).left) and (tassignmentnode(elsestmnt).right.isequal(taddnode(left).right))) or
            (tassignmentnode(thenstmnt).right.isequal(taddnode(left).right) and (tassignmentnode(elsestmnt).right.isequal(taddnode(left).left)))) then
           begin
@@ -1627,7 +1638,7 @@ implementation
                     ccallparanode.create(taddnode(left).left.getcopy,nil)))
               );
           end;
-{$endif defined(xtensa)}
+{$endif defined(i386) or defined(x86_64) or defined(xtensa)}
       end;
 
 
