@@ -480,9 +480,8 @@ begin
 end;
 
 function TChmReader.ReadURLSTR ( APosition: DWord ) : String;
-var
-  URLStrURLOffset: DWord;
 begin
+  result:='';
   if not CheckCommonStreams then
     Exit;
 
@@ -1124,6 +1123,8 @@ var
 
 function readvalue:string;
 begin
+  result:='';
+  title:='';
   if head<tail Then
     begin
       ind:=LEToN(plongint(head)^);
@@ -1308,19 +1309,21 @@ var TryTextual : boolean;
 
 begin
    Result := nil;  SiteMap:=Nil;
-   lookup:=TDictionary<string,TLookupRec>.create;
    // First Try Binary
    Index := GetObject('/$WWKeywordLinks/BTree');
    if (Index = nil) or ForceXML then
    begin
-     Result:=AbortAndTryTextual;
+     Result:=AbortAndTryTextual; // frees index if needed
      Exit;
    end;
    if not CheckCommonStreams then
    begin
-     Result:=AbortAndTryTextual;
+     index.free;
+     Result:=AbortAndTryTextual; // frees index if needed
      Exit;
    end;
+
+   lookup:=TDictionary<string,TLookupRec>.create;
    SiteMap:=TChmSitemap.Create(StIndex);
    itemstack :=TObjectList.create(false);
    //Item   :=Nil;  // cached last created item, in case we need to make
@@ -1349,9 +1352,10 @@ begin
   if trytextual then
     begin
       sitemap.free;
-      Result:=AbortAndTryTextual;
+      Result:=AbortAndTryTextual; // frees index if needed
     end
   else Index.Free;
+  itemstack.free;
   lookup.free;
 end;
 
