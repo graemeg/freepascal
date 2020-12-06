@@ -1591,11 +1591,14 @@ implementation
 {$ifndef llvm}
 {$if defined(i386) or defined(x86_64) or defined(xtensa)}
         { use min/max intrinsic? }
-        if (left.nodetype in [gtn,gten,ltn,lten]) and IsSingleStatement(right,thenstmnt) and IsSingleStatement(t1,elsestmnt) and
+        if (cs_opt_level2 in current_settings.optimizerswitches) and
+           (left.nodetype in [gtn,gten,ltn,lten]) and IsSingleStatement(right,thenstmnt) and IsSingleStatement(t1,elsestmnt) and
           (thenstmnt.nodetype=assignn) and (elsestmnt.nodetype=assignn) and
           not(might_have_sideeffects(left)) and
           tassignmentnode(thenstmnt).left.isequal(tassignmentnode(elsestmnt).left) and
 {$if defined(i386) or defined(x86_64)}
+          { for now, limit it to fastmath mode as NaN handling is not implemented properly yet }
+          (cs_opt_fastmath in current_settings.optimizerswitches) and
 {$ifdef i386}
           (((current_settings.fputype>=fpu_sse) and is_single(tassignmentnode(thenstmnt).left.resultdef)) or
            ((current_settings.fputype>=fpu_sse2) and is_double(tassignmentnode(thenstmnt).left.resultdef))
