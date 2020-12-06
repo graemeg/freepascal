@@ -816,7 +816,8 @@ begin
   { Post process,
     as it only writes sections sizes so far, do this only if V_Info is set }
   if success and CheckVerbosity(V_Info) and not(cs_link_nolink in current_settings.globalswitches) then
-    success:=PostProcessExecutable(current_module.exefilename,false);
+    { do not change success here as we are only writing some info, so if this fails, it does not matter }
+    { success:= }PostProcessExecutable(current_module.exefilename,false);
 
   MakeExecutable:=success;   { otherwise a recursive call to link method }
 end;
