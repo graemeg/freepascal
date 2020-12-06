@@ -21166,7 +21166,12 @@ var
       if ProcScope.ImplProc<>nil then
         ProcScope:=ProcScope.ImplProc.CustomData as TPas2JSProcedureScope;
       if ProcScope.SelfArg=nil then
+        begin
+        {$IFDEF VerbosePas2JS}
+        writeln('CreateReference Proc=',GetObjPath(Proc),' Left=',GetObjPath(Left),' LeftResolved=',GetResolverResultDbg(LeftResolved),' ProcScope.DeclarationProc=',GetObjPath(ProcScope.DeclarationProc));
+        {$ENDIF}
         RaiseNotSupported(PosEl,AContext,20190209214906,GetObjName(Proc));
+        end;
       Result:=CreateProcCallArgRef(Left,LeftResolved,ProcScope.SelfArg,AContext);
       end;
   end;
