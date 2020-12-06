@@ -302,6 +302,9 @@ implementation
     {$ifdef i8086}
       cpuinfo,
     {$endif i8086}
+    {$ifdef xtensa}
+      cpuinfo,
+    {$endif xtensa}
       cgbase,procinfo
       ;
 
@@ -1591,7 +1594,7 @@ implementation
           (thenstmnt.nodetype=assignn) and (elsestmnt.nodetype=assignn) and
           not(might_have_sideeffects(left)) and
           tassignmentnode(thenstmnt).left.isequal(tassignmentnode(elsestmnt).left) and
-          is_32bitint(tassignmentnode(thenstmnt).right.resultdef) and
+          (CPUXTENSA_HAS_MINMAX in cpu_capabilities[current_settings.cputype]) and is_32bitint(tassignmentnode(thenstmnt).right.resultdef) and
           ((tassignmentnode(thenstmnt).right.isequal(taddnode(left).left) and (tassignmentnode(elsestmnt).right.isequal(taddnode(left).right))) or
            (tassignmentnode(thenstmnt).right.isequal(taddnode(left).right) and (tassignmentnode(elsestmnt).right.isequal(taddnode(left).left)))) then
           begin
