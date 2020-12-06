@@ -1560,6 +1560,7 @@ implementation
         paratype: tdef;
       begin
         result:=nil;
+        in_nr:=Default(tinlinenumber);
         { optimize constant expressions }
         if (left.nodetype=ordconstn) then
           begin
