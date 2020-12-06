@@ -1588,6 +1588,7 @@ implementation
                     CGMessagePos(right.fileinfo,cg_w_unreachable_code);
                end;
           end;
+{$ifndef llvm}
 {$if defined(i386) or defined(x86_64) or defined(xtensa)}
         { use min/max intrinsic? }
         if (left.nodetype in [gtn,gten,ltn,lten]) and IsSingleStatement(right,thenstmnt) and IsSingleStatement(t1,elsestmnt) and
@@ -1639,6 +1640,7 @@ implementation
               );
           end;
 {$endif defined(i386) or defined(x86_64) or defined(xtensa)}
+{$endif llvm}
       end;
 
 
