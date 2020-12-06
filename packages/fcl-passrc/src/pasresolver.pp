@@ -2375,6 +2375,7 @@ type
     function GetAttributeCalls(Members: TFPList; Index: integer): TPasExprArray; virtual;
     function ProcNeedsParams(El: TPasProcedureType): boolean;
     function ProcHasSelf(El: TPasProcedure): boolean; // returns false for local procs
+    procedure CreateProcSelfArg(Proc: TPasProcedure); virtual;
     function IsProcOverride(AncestorProc, DescendantProc: TPasProcedure): boolean;
     function GetTopLvlProc(El: TPasElement): TPasProcedure;
     function GetParentProc(El: TPasElement; GetDeclProc: boolean): TPasProcedure;
@@ -7318,6 +7319,7 @@ var
   i: Integer;
   ParentScope: TPasScope;
   TemplTypes: TFPList;
+  ClassRecType: TPasMembersType;
 begin
   if not (ptmStatic in Proc.ProcType.Modifiers) then
     Proc.ProcType.IsOfObject:=true;
@@ -7325,7 +7327,8 @@ begin
   ParentScope:=Scopes[ScopeCount-2];
   // ToDo: store the scanner flags *before* it has parsed the token after the proc
   StoreScannerFlagsInProc(ProcScope);
-  ClassOrRecScope:=Proc.Parent.CustomData as TPasClassOrRecordScope;
+  ClassRecType:=TPasMembersType(Proc.Parent);
+  ClassOrRecScope:=ClassRecType.CustomData as TPasClassOrRecordScope;
   ProcScope.ClassRecScope:=ClassOrRecScope;
 
   TemplTypes:=GetProcTemplateTypes(Proc);
@@ -7401,17 +7404,17 @@ begin
   if Proc.IsAbstract and (ClassOrRecScope is TPasClassScope) then
     Insert(Proc,TPasClassScope(ClassOrRecScope).AbstractProcs,
            length(TPasClassScope(ClassOrRecScope).AbstractProcs));
+
+  CreateProcSelfArg(Proc);
 end;
 
 procedure TPasResolver.FinishMethodImplHeader(ImplProc: TPasProcedure);
 var
   ProcName: String;
-  ClassRecType: TPasMembersType;
   ImplProcScope, DeclProcScope: TPasProcedureScope;
   DeclProc: TPasProcedure;
   ClassOrRecScope: TPasClassOrRecordScope;
   SelfArg: TPasArgument;
-  SelfType, LoSelfType: TPasType;
   LastNamePart: TProcedureNamePart;
 begin
   if ImplProc.IsExternal then
@@ -7425,7 +7428,6 @@ begin
   ClassOrRecScope:=ImplProcScope.ClassRecScope;
   if ClassOrRecScope=nil then
     RaiseInternalError(20161013172346);
-  ClassRecType:=NoNil(ClassOrRecScope.Element) as TPasMembersType;
   if ImplProcScope.GroupScope=nil then
     RaiseInternalError(20190120135017);
 
@@ -7440,6 +7442,8 @@ begin
     ProcName:=LastDottedIdentifier(ProcName);
     end;
 
+  DeclProc:=nil;
+  DeclProcScope:=nil;
   if ImplProcScope.DeclarationProc=nil then
     begin
     {$IFDEF VerbosePasResolver}
@@ -7494,54 +7498,14 @@ begin
   else
     RaiseNotYetImplemented(20190804181222,ImplProc);
 
-  if not DeclProc.IsStatic then
+  SelfArg:=DeclProcScope.SelfArg;
+  if SelfArg<>nil then
     begin
     // add 'Self'
-    if (DeclProc.ClassType=TPasClassConstructor)
-        or (DeclProc.ClassType=TPasClassDestructor) then
-      // actually class constructor/destructor are static
-    else if (DeclProc.ClassType=TPasClassProcedure)
-        or (DeclProc.ClassType=TPasClassFunction) then
-      begin
-      if (ClassOrRecScope is TPasClassScope)
-          and (TPasClassScope(ClassOrRecScope).CanonicalClassOf<>nil) then
-        begin
-        // 'Self' in a class method is the hidden classtype argument
-        // Note: this is true in classes, adv records and helpers
-        SelfArg:=TPasArgument.Create('Self',DeclProc);
-        ImplProcScope.SelfArg:=SelfArg;
-        {$IFDEF CheckPasTreeRefCount}SelfArg.RefIds.Add('TPasProcedureScope.SelfArg');{$ENDIF}
-        SelfArg.Access:=argConst;
-        SelfArg.ArgType:=TPasClassScope(ClassOrRecScope).CanonicalClassOf;
-        SelfArg.ArgType.AddRef{$IFDEF CheckPasTreeRefCount}('TPasArgument.ArgType'){$ENDIF};
-        AddIdentifier(ImplProcScope,'Self',SelfArg,pikSimple);
-        end
-      else
-        RaiseInternalError(20190106121745);
-      end
-    else
-      begin
-      // 'Self' in a method is the hidden instance argument
-      SelfArg:=TPasArgument.Create('Self',DeclProc);
-      ImplProcScope.SelfArg:=SelfArg;
-      {$IFDEF CheckPasTreeRefCount}SelfArg.RefIds.Add('TPasProcedureScope.SelfArg');{$ENDIF}
-      SelfType:=ClassRecType;
-      if (SelfType.ClassType=TPasClassType)
-          and (TPasClassType(SelfType).HelperForType<>nil) then
-        begin
-        // in a helper Self is a var argument of the helped variable
-        SelfType:=TPasClassType(SelfType).HelperForType;
-        end;
-      LoSelfType:=ResolveAliasType(SelfType);
-      if (LoSelfType is TPasClassType)
-          and (TPasClassType(LoSelfType).ObjKind=okClass) then
-        SelfArg.Access:=argConst
-      else
-        SelfArg.Access:=argVar;
-      SelfArg.ArgType:=SelfType;
-      SelfType.AddRef{$IFDEF CheckPasTreeRefCount}('TPasArgument.ArgType'){$ENDIF};
-      AddIdentifier(ImplProcScope,'Self',SelfArg,pikSimple);
-      end;
+    ImplProcScope.SelfArg:=SelfArg;
+    SelfArg.AddRef{$IFDEF CheckPasTreeRefCount}('TPasProcedureScope.SelfArg'){$ENDIF};
+    {$IFDEF CheckPasTreeRefCount}SelfArg.RefIds.Add('TPasProcedureScope.SelfArg');{$ENDIF}
+    AddIdentifier(ImplProcScope,'Self',SelfArg,pikSimple);
     end;
 
   {$IFDEF VerbosePasResolver}
@@ -17224,8 +17188,6 @@ begin
   SpecImplProcScope.BoolSwitches:=GenImplProcScope.BoolSwitches;
   SpecImplProcScope.VisibilityContext:=SpecClassOrRec;
   SpecImplProcScope.ClassRecScope:=SpecClassOrRecScope;
-  if GenDeclProcScope.SelfArg<>nil then
-    RaiseNotYetImplemented(20190922154603,GenImplProc);
 
   if SpecializedProcItem<>nil then
     begin
@@ -17668,8 +17630,6 @@ begin
     if GenProcScope.OverriddenProc<>nil then
       RaiseNotYetImplemented(20190920203536,SpecEl);
     SpecProcScope.ClassRecScope:=GenProcScope.ClassRecScope;
-    if GenProcScope.SelfArg<>nil then
-      RaiseNotYetImplemented(20190920203626,SpecEl);
     // SpecProcScope.Flags
     SpecProcScope.ModeSwitches:=GenProcScope.ModeSwitches;
     SpecProcScope.BoolSwitches:=GenProcScope.BoolSwitches;
@@ -29125,6 +29085,69 @@ begin
   if (C=TPasClassConstructor) or (C=TPasClassDestructor) then
     exit(false);
   Result:=true;
+end;
+
+procedure TPasResolver.CreateProcSelfArg(Proc: TPasProcedure);
+var
+  SelfArg: TPasArgument;
+  SelfType, LoSelfType: TPasType;
+  ProcScope: TPasProcedureScope;
+  ClassOrRecScope: TPasClassOrRecordScope;
+  ClassRecType: TPasMembersType;
+begin
+  if Proc.IsStatic or Proc.IsExternal then exit;
+
+  // add 'Self'
+  if (Proc.ClassType=TPasClassConstructor)
+      or (Proc.ClassType=TPasClassDestructor) then
+    // actually class constructor/destructor are static
+    exit;
+
+  ProcScope:=TPasProcedureScope(Proc.CustomData);
+  ClassOrRecScope:=ProcScope.ClassRecScope;
+  if ClassOrRecScope=nil then exit;
+  ClassRecType:=TPasMembersType(ClassOrRecScope.Element);
+
+  if (Proc.ClassType=TPasClassProcedure)
+      or (Proc.ClassType=TPasClassFunction) then
+    begin
+    if (ClassOrRecScope is TPasClassScope)
+        and (TPasClassScope(ClassOrRecScope).CanonicalClassOf<>nil) then
+      begin
+      // 'Self' in a class method is the hidden classtype argument
+      // Note: this is true in classes, adv records and helpers
+      SelfArg:=TPasArgument.Create('Self',Proc);
+      ProcScope.SelfArg:=SelfArg;
+      {$IFDEF CheckPasTreeRefCount}SelfArg.RefIds.Add('TPasProcedureScope.SelfArg');{$ENDIF}
+      SelfArg.Access:=argConst;
+      SelfArg.ArgType:=TPasClassScope(ClassOrRecScope).CanonicalClassOf;
+      SelfArg.ArgType.AddRef{$IFDEF CheckPasTreeRefCount}('TPasArgument.ArgType'){$ENDIF};
+      end
+    else
+      RaiseInternalError(20190106121745);
+    end
+  else
+    begin
+    // 'Self' in a method is the hidden instance argument
+    SelfArg:=TPasArgument.Create('Self',Proc);
+    ProcScope.SelfArg:=SelfArg;
+    {$IFDEF CheckPasTreeRefCount}SelfArg.RefIds.Add('TPasProcedureScope.SelfArg');{$ENDIF}
+    SelfType:=ClassRecType;
+    if (SelfType.ClassType=TPasClassType)
+        and (TPasClassType(SelfType).HelperForType<>nil) then
+      begin
+      // in a helper Self is a var argument of the helped variable
+      SelfType:=TPasClassType(SelfType).HelperForType;
+      end;
+    LoSelfType:=ResolveAliasType(SelfType);
+    if (LoSelfType is TPasClassType)
+        and (TPasClassType(LoSelfType).ObjKind=okClass) then
+      SelfArg.Access:=argConst
+    else
+      SelfArg.Access:=argVar;
+    SelfArg.ArgType:=SelfType;
+    SelfType.AddRef{$IFDEF CheckPasTreeRefCount}('TPasArgument.ArgType'){$ENDIF};
+    end;
 end;
 
 function TPasResolver.IsProcOverride(AncestorProc, DescendantProc: TPasProcedure
