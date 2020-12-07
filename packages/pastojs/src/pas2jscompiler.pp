@@ -595,13 +595,13 @@ type
     function CreateMacroEngine: TPas2jsMacroEngine;virtual;
     function CreateSrcMap(const aFileName: String): TPas2JSSrcMap; virtual;
     function CreateOptimizer: TPas2JSAnalyzer;
-    // These are mandatory !
-    function CreateSetOfCompilerFiles(keyType: TKeyCompareType): TPasAnalyzerKeySet; virtual; abstract;
-    function CreateFS: TPas2JSFS; virtual; abstract;
+    function CreateSetOfCompilerFiles(keyType: TKeyCompareType): TPasAnalyzerKeySet; virtual; abstract;// mandatory !
+    function CreateFS: TPas2JSFS; virtual; abstract; // mandatory !
     function FormatPath(Const aPath: String): String;
     function FullFormatPath(Const aPath: String): String;
     procedure WritePrecompiledFormats; virtual;
     procedure WriteHelpLine(S: String);
+    function LoadFile(Filename: string; Binary: boolean = false): TPas2jsFile;
     // Override these for PCU format
     function CreateCompilerFile(const PasFileName, PCUFilename: String): TPas2jsCompilerFile; virtual;
     // Command-line option handling
@@ -2292,7 +2292,7 @@ begin
     if SrcMapInclude and FS.FileExists(LocalFilename) then
     begin
       // include source in SrcMap
-      aFile:=FS.LoadFile(LocalFilename);
+      aFile:=LoadFile(LocalFilename);
       SrcMap.SourceContents[i]:=aFile.Source;
     end;
     // translate local file name
@@ -4629,6 +4629,20 @@ begin
   Log.LogRaw(s);
 end;
 
+function TPas2jsCompiler.LoadFile(Filename: string; Binary: boolean
+  ): TPas2jsFile;
+begin
+  try
+    Result:=FS.LoadFile(Filename,Binary);
+  except
+    on E: Exception do
+      begin
+      Log.Log(mtError,E.Message);
+      Terminate(ExitCodeFileNotFound);
+      end
+  end;
+end;
+
 procedure TPas2jsCompiler.WriteHelp;
 
   procedure w(s: string); inline;
@@ -5150,7 +5164,7 @@ begin
         Log.LogMsg(nCustomJSFileNotFound,[InsertFilenames[i]]);
         raise EFileNotFoundError.Create('');
       end;
-      aFile:=FS.LoadFile(Filename);
+      aFile:=LoadFile(Filename);
       if aFile.Source='' then continue;
       aWriter.WriteFile(aFile.Source,Filename);
     end

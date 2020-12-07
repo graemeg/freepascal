@@ -48,7 +48,7 @@ begin
       on E: Exception do
       begin
         {AllowWriteln}
-        writeln(E.Message);
+        writeln('Error: Unhandled exception '+E.ClassName+': '+E.Message);
         {AllowWriteln-}
         if ExitCode=0 then
           ExitCode:=ExitCodeErrorInternal;
