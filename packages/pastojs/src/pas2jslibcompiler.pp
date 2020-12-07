@@ -143,7 +143,7 @@ begin
   Result:=Assigned(OnWriteJSCallBack);
   if Result then
     try
-      Src:=aWriter.{$IF FPC_FULLVERSION>30300}AsString{$ELSE}AsAnsistring{$ENDIF};
+      Src:=aWriter.{$IF FPC_FULLVERSION>30101}AsString{$ELSE}AsAnsistring{$ENDIF};
       OnWriteJSCallBack(OnWriteJSData,PAnsiChar(DestFileName),Length(DestFileName),PAnsiChar(Src),Length(Src));
     except
       Result:=False;
@@ -264,7 +264,7 @@ begin
       if Not Result then
         begin
         LastError:=Format('Compiler exited with exit code %d',[ExitCode]);
-        LastErrorClass:=ECompilerTerminate.ClassName;
+        LastErrorClass:='';
         end;
     except
       On E : Exception do
