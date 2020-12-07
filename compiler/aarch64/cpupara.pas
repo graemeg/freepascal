@@ -349,7 +349,7 @@ unit cpupara;
         paracgsize, locsize: tcgsize;
         firstparaloc: boolean;
       begin
-        result.reset;
+        result.init;
 
         { currently only support C-style array of const,
           there should be no location assigned to the vararg array itself }
