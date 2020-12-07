@@ -2761,10 +2761,9 @@ procedure TPas2jsCompiler.WriteSingleJSFile(aFile: TPas2jsCompilerFile; Combined
   end;
 
 Var
-  aFileWriter : TPas2JSMapper;
-  isSingleFile : Boolean;
-  ResFileName,MapFilename : String;
-
+  aFileWriter: TPas2JSMapper;
+  isSingleFile, JSFileWritten: Boolean;
+  ResFileName,MapFilename: String;
 begin
   aFileWriter:=CombinedFileWriter;
   try
@@ -2795,8 +2794,7 @@ begin
         PostProcessorSupport.CallPostProcessors(aFile.JSFilename,aFileWriter);
 
       // Give chance to descendants to write file
-      if DoWriteJSFile(aFile.JSFilename,aFileWriter) then
-        exit;// descendant has written -> finished
+      JSFileWritten:=DoWriteJSFile(aFile.JSFilename,aFileWriter);
 
       if (aFile.JSFilename='') and (MainJSFile='.') then
         WriteToStandardOutput(aFileWriter);
@@ -2807,7 +2805,8 @@ begin
       CheckOutputDir(aFileWriter.DestFileName);
 
       MapFilename:=aFileWriter.DestFilename+'.map';
-      WriteJSToFile(MapFileName,aFileWriter);
+      if not JSFileWritten then
+        WriteJSToFile(MapFileName,aFileWriter);
       if (FResourceStringFile=rsfUnit) or (aFile.IsMainFile and (FResourceStringFile<>rsfNone)) then
         if FResourceStrings.StringsCount>0 then
           WriteResourceStrings(ChangeFileExt(aFileWriter.DestFileName,'.jrs'));
@@ -4549,6 +4548,7 @@ begin
     on E: Exception do begin
       if ShowDebug then
         Log.LogExceptionBackTrace(E);
+      Log.Log(mtFatal,E.Message);
       raise; // reraise unexpected exception
     end else begin
       if ShowDebug then
