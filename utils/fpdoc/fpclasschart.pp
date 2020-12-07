@@ -447,7 +447,7 @@ Constructor TClassTreeEngine.Create(AClassTree : TXMLDocument; AObjectKind : TPa
 
 begin
   FPackage:=TPasPackage.Create('dummy',Nil);
-  FTree:=TClassTreeBuilder.Create(FPackage,AObjectKind);
+  FTree:=TClassTreeBuilder.Create(Self,FPackage,AObjectKind);
   FObjects:=TStringList.Create;
   Inherited Create;
 end;

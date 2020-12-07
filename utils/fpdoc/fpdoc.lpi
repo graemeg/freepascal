@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="11"/>
+    <Version Value="12"/>
     <General>
       <Flags>
         <SaveClosedFiles Value="False"/>
@@ -10,9 +10,9 @@
         <MainUnitHasTitleStatement Value="False"/>
         <SaveJumpHistory Value="False"/>
         <SaveFoldState Value="False"/>
+        <CompatibilityMode Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <MainUnit Value="0"/>
       <Title Value="FPDoc Documentation generator"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
@@ -65,7 +65,6 @@
       <Unit3>
         <Filename Value="dw_html.pp"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="dw_HTML"/>
       </Unit3>
       <Unit4>
         <Filename Value="dw_ipflin.pas"/>

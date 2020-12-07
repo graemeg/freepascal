@@ -36,9 +36,12 @@ Var
 resourcestring
   // Output strings
   SDocPackageTitle           = 'Reference for package ''%s''';
+  SDocPackageMenuTitle       = 'Package ''%s''';
+  SDocPackageLinkTitle       = 'Package';
   SDocPrograms               = 'Programs';
   SDocUnits                  = 'Units';
   SDocUnitTitle              = 'Reference for unit ''%s''';
+  SDocUnitMenuTitle          = 'Unit ''%s''';
   SDocInheritanceHierarchy   = 'Inheritance Hierarchy';
   SDocInterfaceSection       = 'Interface section';
   SDocImplementationSection  = 'Implementation section';
@@ -205,7 +208,9 @@ resourcestring
 Const
   SVisibility: array[TPasMemberVisibility] of string =
        ('Default', 'Private', 'Protected', 'Public',
-       'Published', 'Automated','Strict Private','Strict Protected','Required','Optional');
+       'Published', 'Automated','Strict Private','Strict Protected',
+       'Required', 'Optional' // ObjCClass
+       );
 
 type
   TBufType = Array[1..ContentBufSize-1] of byte;
@@ -319,9 +324,9 @@ type
     FAlwaysVisible : TStringList;
     DescrDocs: TObjectList;             // List of XML documents
     DescrDocNames: TStringList;         // Names of the XML documents
-    FRootLinkNode: TLinkNode;
-    FRootDocNode: TDocNode;
-    FPackages: TFPList;                   // List of TFPPackage objects
+    FRootLinkNode: TLinkNode;           // Global tree of TlinkNode from the imported .xct files
+    FRootDocNode: TDocNode;             // Global tree of TDocNode from the .xml documentation files
+    FPackages: TFPList;                 // Global list of TPasPackage objects and full tree of sources
     CurModule: TPasModule;
     CurPackageDocNode: TDocNode;
     function ParseUsedUnit(AName, AInputLine,AOSTarget,ACPUTarget: String): TPasModule; virtual;
@@ -338,13 +343,16 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure SetPackageName(const APackageName: String);
+    // process the import objects from external .xct file
     procedure ReadContentFile(const AFilename, ALinkPrefix: String);
+    // creation of an own .xct output file
     procedure WriteContentFile(const AFilename: String);
 
     function CreateElement(AClass: TPTreeElement; const AName: String;
       AParent: TPasElement; AVisibility: TPasMemberVisibility;
       const ASourceFilename: String; ASourceLinenumber: Integer): TPasElement;
       override;
+    function FindInModule(const AName: String ; AModule: TPasModule): TPasElement;
     function FindElement(const AName: String): TPasElement; override;
     function FindModule(const AName: String): TPasModule; override;
     Function HintsToStr(Hints : TPasMemberHints) : String;
@@ -660,7 +668,9 @@ end;
 procedure TFPDocEngine.ReadContentFile(const AFilename, ALinkPrefix: String);
 var
   f: Text;
-  inheritanceinfo : TStringlist;
+  inheritanceinfo : TStringlist; // contents list of TPasClass with inheritance info
+                                 // like this #PackageName.ModuleName.ClassName
+  tmpLinkPrefix : string;
 
   procedure ReadLinkTree;
   var
@@ -708,8 +718,10 @@ var
       i := ThisSpaces + 1;
       while s[i] <> ' ' do
         Inc(i);
+      if ALinkPrefix <> '' then
+        tmpLinkPrefix := ExcludeTrailingPathDelimiter(ALinkPrefix)+'/';
       NewNode := TLinkNode.Create(Copy(s, ThisSpaces + 1, i - ThisSpaces - 1),
-        ALinkPrefix + Copy(s, i + 1, Length(s)));
+        tmpLinkPrefix + Copy(s, i + 1, Length(s)));
       if pos(' ',newnode.link)>0 then
         writeln(stderr,'Bad format imported node: name="',newnode.name,'" link="',newnode.link,'"');
       if Assigned(PrevSibling) then
@@ -721,56 +733,57 @@ var
   end;
 
   function ResolvePackageModule(AName:String;out pkg:TPasPackage;out module:TPasModule;createnew:boolean):String;
-    var
-      DotPos, DotPos2, i: Integer;
-      s: String;
-      HPackage: TPasPackage;
+  var
+    DotPos, DotPos2, i: Integer;
+    s: String;
+    HPackage: TPasPackage;
 
+  begin
+    pkg:=nil; module:=nil; result:='';
+
+    // Find or create package
+    DotPos := Pos('.', AName);
+    s := Copy(AName, 1, DotPos - 1);
+    HPackage := nil;
+    for i := 0 to FPackages.Count - 1 do
+      if CompareText(TPasPackage(FPackages[i]).Name, s) = 0 then
+      begin
+        HPackage := TPasPackage(FPackages[i]);
+        break;
+      end;
+    if not Assigned(HPackage) then
     begin
-      pkg:=nil; module:=nil; result:='';
+      if not CreateNew then
+        exit;
+      HPackage := TPasPackage(inherited CreateElement(TPasPackage, s, nil,
+        '', 0));
+      FPackages.Add(HPackage);
+    end;
 
-      // Find or create package
-      DotPos := Pos('.', AName);
-      s := Copy(AName, 1, DotPos - 1);
-      HPackage := nil;
-      for i := 0 to FPackages.Count - 1 do
-        if CompareText(TPasPackage(FPackages[i]).Name, s) = 0 then
-        begin
-          HPackage := TPasPackage(FPackages[i]);
-          break;
-        end;
-      if not Assigned(HPackage) then
+    // Find or create module
+    DotPos2 := DotPos;
+    repeat
+      Inc(DotPos2);
+    until AName[DotPos2] = '.';
+    s := Copy(AName, DotPos + 1, DotPos2 - DotPos - 1);
+    Module := nil;
+    for i := 0 to HPackage.Modules.Count - 1 do
+      if CompareText(TPasModule(HPackage.Modules[i]).Name, s) = 0 then
       begin
-        if not CreateNew then
-          exit;
-        HPackage := TPasPackage(inherited CreateElement(TPasPackage, s, nil,
-          '', 0));
-        FPackages.Add(HPackage);
+        Module := TPasModule(HPackage.Modules[i]);
+        break;
       end;
-
-      // Find or create module
-      DotPos2 := DotPos;
-      repeat
-        Inc(DotPos2);
-      until AName[DotPos2] = '.';
-      s := Copy(AName, DotPos + 1, DotPos2 - DotPos - 1);
-      Module := nil;
-      for i := 0 to HPackage.Modules.Count - 1 do
-        if CompareText(TPasModule(HPackage.Modules[i]).Name, s) = 0 then
-        begin
-          Module := TPasModule(HPackage.Modules[i]);
-          break;
-        end;
-      if not Assigned(Module) then
-      begin
-        if not CreateNew then
-          exit;
-        Module := TPasExternalModule.Create(s, HPackage);
-        Module.InterfaceSection := TInterfaceSection.Create('', Module);
-        HPackage.Modules.Add(Module);
-      end;
-     pkg:=hpackage;
-     result:=Copy(AName, DotPos2 + 1, length(AName)-dotpos2);
+    if not Assigned(Module) then
+    begin
+      if not CreateNew then
+        exit;
+      Module := TPasExternalModule.Create(s, HPackage);
+      Module.InterfaceSection := TInterfaceSection.Create('', Module);
+      Module.PackageName:= HPackage.Name;
+      HPackage.Modules.Add(Module);
+    end;
+    pkg:=hpackage;
+    result:=Copy(AName, DotPos2 + 1, length(AName)-dotpos2);
   end;
 
   function SearchInList(clslist:TFPList;s:string):TPasElement;
@@ -834,9 +847,9 @@ var
         InheritanceInfo.AddObject(Inheritancestr,result);
     end;
 
-   procedure splitalias(var instr:string;out outstr:string);
-   var i,j:integer;
-   begin 
+    procedure splitalias(var instr:string;out outstr:string);
+    var i,j:integer;
+    begin
      if length(instr)=0 then exit;
      instr:=trim(instr);
      i:=pos('(',instr);
@@ -848,10 +861,10 @@ var
         outstr:=copy(instr,i+1,j);
         delete(instr,i,j+2);
       end
-   end;
+    end;
 
-   Function ResolveAndLinkClass(clname:String;IsClass:boolean;cls:TPasClassType):TPasClassType;
-   begin
+    Function ResolveAndLinkClass(clname:String;IsClass:boolean;cls:TPasClassType):TPasClassType;
+    begin
      result:=TPasClassType(ResolveClassType(clname)); 
      if assigned(result) and not (cls=result) then  // save from tobject=implicit tobject
        begin
@@ -870,47 +883,47 @@ var
      else
        if cls<>result then
          DoLog('Warning : ancestor class %s of class %s could not be resolved',[clname,cls.name]);
-end;
+    end;
 
-function CreateAliasType (alname,clname : string;parentclass:TPasClassType; out cl2 :TPasClassType):TPasAliasType;
-// create alias clname =  alname
-var 
-  pkg     : TPasPackage;
-  module  : TPasModule; 
-  s       : string;  
-begin
-    Result:=nil;
-    s:=ResolvePackageModule(Alname,pkg,module,True);
-    if not assigned(module) then
-      exit;
-    cl2:=TPasClassType(ResolveClassType(alname));
-    if assigned( cl2) and not (parentclass=cl2) then  
-      begin
-        result:=ResolveAliasType(clname);
-        if assigned(result) then
+    function CreateAliasType (alname,clname : string;parentclass:TPasClassType; out cl2 :TPasClassType):TPasAliasType;
+    // create alias clname =  alname
+    var
+      pkg     : TPasPackage;
+      module  : TPasModule;
+      s       : string;
+    begin
+        Result:=nil;
+        s:=ResolvePackageModule(Alname,pkg,module,True);
+        if not assigned(module) then
+          exit;
+        cl2:=TPasClassType(ResolveClassType(alname));
+        if assigned( cl2) and not (parentclass=cl2) then  
           begin
-//            writeln('found alias ',clname,' (',s,') ',result.classname);  
+            result:=ResolveAliasType(clname);
+            if assigned(result) then
+              begin
+    //            writeln('found alias ',clname,' (',s,') ',result.classname);
+              end
+            else
+              begin
+    //            writeln('new alias ',clname,' (',s,') ');
+                cl2.addref;
+                Result := TPasAliasType(CreateElement(TPasAliasType,s,module.interfacesection,vispublic,'',0));
+                module.interfacesection.Declarations.Add(Result);
+                TPasAliasType(Result).DestType := cl2;
+              end
           end
-        else
-          begin
-//            writeln('new alias ',clname,' (',s,') ');
-            cl2.addref;
-            Result := TPasAliasType(CreateElement(TPasAliasType,s,module.interfacesection,vispublic,'',0));
-            module.interfacesection.Declarations.Add(Result);
-            TPasAliasType(Result).DestType := cl2;
-          end
-      end
-end;
+    end;
 
-   procedure ProcessInheritanceStrings(inhInfo:TStringList);
+    procedure ProcessInheritanceStrings(inhInfo:TStringList);
 
-   var i,j : integer;
-       cls : TPasClassType;  
+    var i,j : integer;
+       cls : TPasClassType;
        cls2: TPasClassType;
        clname,
        alname : string;
        inhclass   : TStringList;
-   begin
+    begin
      inhclass:=TStringList.Create;
      inhclass.delimiter:=',';
      if InhInfo.Count>0 then
@@ -922,12 +935,12 @@ end;
 
            for j:= 0 to inhclass.count-1 do
              begin
-               //writeln('processing',inhclass[j]);
+               // writeln('processing',inhclass[j]);
                clname:=inhclass[j];
-               splitalias(clname,alname);               
+               splitalias(clname,alname);
                if alname<>'' then // the class//interface we refered to is an alias
                  begin
-                   // writeln('Found alias pair ',clname,' = ',alname);   
+                   // writeln('Found alias pair ',clname,' = ',alname);
                    if not assigned(CreateAliasType(alname,clname,cls,cls2)) then
                       DoLog('Warning: creating alias %s for %s failed!',[alname,clname]);
                  end 
@@ -936,7 +949,7 @@ end;
              end;
          end;
     inhclass.free;
-   end;
+    end;
 
   var
     s, Name: String;
@@ -993,10 +1006,10 @@ end;
           CurClass.Members.Add(Member);
         end;
       end;
-     ProcessInheritanceStrings(Inheritanceinfo);
+      ProcessInheritanceStrings(Inheritanceinfo);
     finally
-     inheritanceinfo.Free;
-     end;
+      inheritanceinfo.Free;
+    end;
   end;
 
 var
@@ -1044,11 +1057,13 @@ var
     end;
   end;
 
-  function CheckImplicitInterfaceLink(const s : String):String;
+  function CheckImplicitLink(const s : String):String;
   begin
-   if uppercase(s)='IUNKNOWN' then
+    if uppercase(s)='IUNKNOWN' then
      Result:='#rtl.System.IUnknown'
-   else 
+    else if uppercase(s)='TOBJECT' then
+     Result:='#rtl.System.TObject'
+   else
      Result:=s;
   end;
 var
@@ -1096,13 +1111,13 @@ begin
           ClassLikeDecl:=MemberDecl as TPasClassType
         else
           ClassLikeDecl:=nil;
-        Write(ContentFile, CheckImplicitInterfaceLink(MemberDecl.PathName), ' ');
+        Write(ContentFile, CheckImplicitLink(MemberDecl.PathName), ' ');
         if Assigned(ClassLikeDecl) then
           begin
           if Assigned(ClassLikeDecl.AncestorType) then
             begin
             // simple aliases to class types are coded as "alias(classtype)"
-            Write(ContentFile, CheckImplicitInterfaceLink(ClassLikeDecl.AncestorType.PathName));
+            Write(ContentFile, CheckImplicitLink(ClassLikeDecl.AncestorType.PathName));
             if ClassLikeDecl.AncestorType is TPasAliasType then
                begin
                alias:= TPasAliasType(ClassLikeDecl.AncestorType);
@@ -1118,12 +1133,12 @@ begin
             begin
             for k:=0 to ClassLikeDecl.Interfaces.count-1 do
               begin
-                write(contentfile,',',CheckImplicitInterfaceLink(TPasClassType(ClassLikeDecl.Interfaces[k]).PathName));
+                write(contentfile,',',CheckImplicitLink(TPasClassType(ClassLikeDecl.Interfaces[k]).PathName));
                 if TPasElement(ClassLikeDecl.Interfaces[k]) is TPasAliasType then
                   begin
                     alias:= TPasAliasType(ClassLikeDecl.Interfaces[k]);
                     if assigned(alias.desttype) and (alias.desttype is TPasClassType) then
-                      write(ContentFile,'(',CheckImplicitInterfaceLink(alias.desttype.PathName),')');   
+                      write(ContentFile,'(',CheckImplicitLink(alias.desttype.PathName),')');
                   end;
               end;
             end;
@@ -1173,41 +1188,41 @@ begin
   Result.SourceLinenumber := ASourceLinenumber;
 end;
 
-function TFPDocEngine.FindElement(const AName: String): TPasElement;
+function TFPDocEngine.FindInModule ( const AName: String; AModule: TPasModule
+  ) : TPasElement;
+var
+  l: TFPList;
+  i: Integer;
 
-  function FindInModule(AModule: TPasModule; const LocalName: String): TPasElement;
-  
-  var
-    l: TFPList;
-    i: Integer;
-    
-  begin
-    If assigned(AModule.InterfaceSection) and 
-       Assigned(AModule.InterfaceSection.Declarations) then
+begin
+  If Assigned(AModule) and Assigned(AModule.InterfaceSection) and
+     Assigned(AModule.InterfaceSection.Declarations) then
+    begin
+    l:=AModule.InterfaceSection.Declarations;
+    for i := 0 to l.Count - 1 do
       begin
-      l:=AModule.InterfaceSection.Declarations;
-      for i := 0 to l.Count - 1 do
-        begin
-        Result := TPasElement(l[i]);
-        if  CompareText(Result.Name, LocalName) = 0 then
-          exit;
-        end;
-      end;  
-    Result := nil;
- end;
+      Result := TPasElement(l[i]);
+      if CompareText(Result.Name, AName) = 0 then
+        exit;
+      end;
+    end;
+  Result := nil;
+end;
+
+function TFPDocEngine.FindElement(const AName: String): TPasElement;
 
 var
   i: Integer;
   Module: TPasElement;
 begin
-  Result := FindInModule(CurModule, AName);
+  Result := FindInModule( AName, CurModule );
   if not Assigned(Result) and assigned (CurModule.InterfaceSection) then
     for i := CurModule.InterfaceSection.UsesList.Count - 1 downto 0 do
     begin
       Module := TPasElement(CurModule.InterfaceSection.UsesList[i]);
       if Module.ClassType.InheritsFrom(TPasModule) then
       begin
-        Result := FindInModule(TPasModule(Module), AName);
+        Result := FindInModule(AName, TPasModule(Module));
         if Assigned(Result) then
           exit;
       end;

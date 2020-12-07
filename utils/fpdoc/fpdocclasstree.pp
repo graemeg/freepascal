@@ -5,7 +5,7 @@ unit fpdocclasstree;
 interface
 
 uses
-  Classes, SysUtils, DOM, pastree, contnrs;
+  Classes, SysUtils, dGlobals, pastree, contnrs, DOM ,XMLWrite;
 
 Type
 
@@ -13,16 +13,18 @@ Type
 
   TPasElementNode = Class
   Private
-    FElement : TPasElement;
+    FElement : TPasClassType;
+    FParentNode: TPasElementNode;
     FChildren : TFPObjectList;
     function GetChild(aIndex : Integer): TPasElementNode;
     function GetChildCount: Integer;
   Public
-    Constructor Create (aElement : TPaselement);
+    Constructor Create (aElement : TPasClassType);
     Destructor Destroy; override;
     Procedure AddChild(C : TPasElementNode);
     Procedure SortChildren;
-    Property Element : TPasElement Read FElement;
+    Property Element : TPasClassType Read FElement;
+    Property ParentNode : TPasElementNode read  FParentNode;
     Property Children [aIndex : Integer] : TPasElementNode Read GetChild;
     Property ChildCount : Integer Read GetChildCount;
   end;
@@ -31,20 +33,27 @@ Type
 
   TClassTreeBuilder = Class
   Private
-    // Full name -> TDomElement;
+    FEngine:TFPDocEngine;
     FElementList : TFPObjectHashTable;
     FObjectKind : TPasObjKind;
     FPackage: TPasPackage;
     FParentObject : TPasClassType;
     FRootNode : TPasElementNode;
     FRootObjectName : string;
+    FRootObjectPathName : string;
   Protected
     function AddToList(aElement: TPasClassType): TPasElementNode;
   Public
-    Constructor Create(APackage : TPasPackage; AObjectKind : TPasObjKind = okClass);
+    Constructor Create(AEngine:TFPDocEngine; APackage : TPasPackage;
+                          AObjectKind : TPasObjKind = okClass);
     Destructor Destroy; override;
     Function BuildTree(AObjects : TStringList) : Integer;
+{$IFDEF TREE_TEST}
+    Procedure SaveToXml(AFileName: String);
+{$ENDIF}
     Property RootNode : TPasElementNode Read FRootNode;
+    Property PasElToNodes: TFPObjectHashTable read FElementList;
+    function GetPasElNode (APasEl: TPasElement) : TPasElementNode;
   end;
 
 implementation
@@ -72,7 +81,7 @@ begin
     Result:=0
 end;
 
-constructor TPasElementNode.Create(aElement: TPaselement);
+constructor TPasElementNode.Create(aElement: TPasClassType);
 begin
   FElement:=aElement;
 end;
@@ -96,24 +105,38 @@ begin
     FChildren.Sort(@SortOnElementName);
 end;
 
-constructor TClassTreeBuilder.Create(APackage : TPasPackage;
+constructor TClassTreeBuilder.Create(AEngine:TFPDocEngine; APackage : TPasPackage;
   AObjectKind: TPasObjKind);
 
 begin
-  FPackage:=APAckage;
+  FEngine:= AEngine;
+  FPackage:= APAckage;
   FObjectKind:=AObjectKind;
   Case FObjectkind of
-    okInterface : FRootObjectName:='#rtl.System.IInterface';
-    okObject,
-    okClass    : FRootObjectName:='#rtl.System.TObject';
+    okInterface :
+      begin
+        FRootObjectPathName:='#rtl.System.IInterface';
+        FRootObjectName:= 'IInterface';
+      end;
+    okObject, okClass :
+      begin
+        FRootObjectPathName:='#rtl.System.TObject';
+        FRootObjectName:= 'TObject';
+      end
   else
-    FRootObjectName:='#rtl.System.TObject';
+    begin
+      FRootObjectPathName:='#rtl.System.TObject';
+      FRootObjectName:= 'TObject';
+    end;
   end;
-  FParentObject:=TPasClassType.Create(FRootObjectName,FPackage);
+  FParentObject:=TPasClassType.Create(FRootObjectName,FEngine.FindModule('System'));
+  if not Assigned(FParentObject) then
+    FParentObject:=TPasClassType.Create(FRootObjectName,FPackage);
   FParentObject.ObjKind:=FObjectKind;
   FRootNode:=TPasElementNode.Create(FParentObject);
+  FRootNode.FParentNode := nil;
   FElementList:=TFPObjectHashTable.Create(False);
-  FElementList.Add(FRootObjectName,FRootNode);
+  FElementList.Add(FRootObjectPathName,FRootNode);
 end;
 
 destructor TClassTreeBuilder.Destroy;
@@ -124,34 +147,37 @@ begin
   Inherited;
 end;
 
-Function TClassTreeBuilder.AddToList(aElement : TPasClassType) : TPasElementNode;
+function TClassTreeBuilder.AddToList ( aElement: TPasClassType
+  ) : TPasElementNode;
 
 Var
   aParentNode : TPasElementNode;
   aName : String;
 
 begin
+  Result:= nil;
+  if (aElement.ObjKind <> FObjectKind) then exit;
+  aParentNode:= nil;
   if aElement=Nil then
     aName:=FRootObjectName
   else
-    begin
     aName:=aElement.PathName;
-    end;
   Result:=TPasElementNode(FElementList.Items[aName]);
   if (Result=Nil) then
-    begin
+  begin
     if aElement.AncestorType is TPasClassType then
-      aParentNode:=AddToList(aElement.AncestorType as TPasClassType)
-    else
+      aParentNode:=AddToList(aElement.AncestorType as TPasClassType);
+    if not Assigned(aParentNode) then
       aParentNode:=FRootNode;
     Result:=TPasElementNode.Create(aElement);
     aParentNode.AddChild(Result);
+    Result.FParentNode := aParentNode;
     FElementList.Add(aName,Result);
-    end;
+  end;
 end;
 
 
-Function TClassTreeBuilder.BuildTree(AObjects : TStringList) : Integer;
+function TClassTreeBuilder.BuildTree ( AObjects: TStringList ) : Integer;
 
 (*
 Procedure DumpNode(Prefix : String; N : TPasElementNode);
@@ -182,7 +208,64 @@ begin
       end;
 end;
 
+function TClassTreeBuilder.GetPasElNode ( APasEl: TPasElement
+  ) : TPasElementNode;
+begin
+  Result:= TPasElementNode(FElementList.Items[APasEl.PathName]);
+end;
 
+{$IFDEF TREE_TEST}
+procedure TClassTreeBuilder.SaveToXml ( AFileName: String ) ;
+
+  procedure AddPasElChildsToXml (ParentxmlEl : TDOMElement ; ParentPasEl: TPasElementNode ) ;
+  var
+    CounterVar: Integer;
+    PasElNode: TPasElementNode;
+    AXmlDoc: TDOMDocument;
+    xmlEl: TDOMElement;
+    M: TPasModule;
+  begin
+    if not Assigned(ParentPasEl) or (ParentPasEl.ChildCount = 0) then exit;
+    AXmlDoc:= ParentxmlEl.OwnerDocument;
+    for CounterVar := 0 to ParentPasEl.ChildCount-1 do
+    begin
+      PasElNode:= ParentPasEl.Children[CounterVar];
+      xmlEl:= AXmlDoc.CreateElement(UnicodeString(PasElNode.Element.Name));
+      M:= PasElNode.Element.GetModule;
+      xmlEl['unit'] := UnicodeString(M.Name);
+      xmlEl['package'] := UnicodeString(M.PackageName);
+      ParentxmlEl.AppendChild(xmlEl);
+      AddPasElChildsToXml(xmlEl, PasElNode);
+    end;
+  end;
+
+var
+  XmlDoc: TXMLDocument;
+  XmlRootEl: TDOMElement;
+  M: TPasModule;
+begin
+  XmlDoc:= TXMLDocument.Create;
+  try
+    XmlRootEl:= XmlDoc.CreateElement(UnicodeString(FRootNode.Element.Name));
+    M:= FRootNode.Element.GetModule;
+    if Assigned(M) then
+    begin
+      XmlRootEl['unit'] := UnicodeString(M.Name);
+      XmlRootEl['package'] := UnicodeString(M.PackageName);
+    end
+      else
+    begin
+      XmlRootEl['unit'] := 'system';
+      XmlRootEl['package'] := 'rtl';
+    end;
+    XmlDoc.AppendChild(XmlRootEl);
+    AddPasElChildsToXml(XmlRootEl, FRootNode);
+    WriteXMLFile(XmlDoc, AFileName);
+  finally
+    XmlDoc.Free;
+  end;
+end;
+{$ENDIF}
 
 end.
 

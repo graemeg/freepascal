@@ -428,6 +428,8 @@ begin
 end;
 
 begin
+  //AssignFile(Output, 'fpdoc.log');
+  //rewrite(Output);
   With TFPDocApplication.Create(Nil) do
     try
       Run;

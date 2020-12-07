@@ -25,7 +25,7 @@ unit dWriter;
 {$WARN 5024 off : Parameter "$1" not used}
 interface
 
-uses Classes, DOM, dGlobals, PasTree, SysUtils;
+uses Classes, DOM, dGlobals, PasTree, SysUtils, fpdocclasstree;
 
 resourcestring
   SErrFileWriting = 'An error occurred during writing of file "%s": %s';
@@ -80,8 +80,12 @@ type
     FImgExt : String;
     FBeforeEmitNote : TWriterNoteEvent;
     procedure ConvertURL(AContext: TPasElement; El: TDOMElement);
-    
+    procedure CreateClassTree;
   protected
+    TreeClass: TClassTreeBuilder;      // Global class tree
+    TreeInterface: TClassTreeBuilder;  // Global interface tree
+
+    procedure AddElementsFromList(L: TStrings; List: TFPList; UsePathName : Boolean = False);
     Procedure DoLog(Const Msg : String);
     Procedure DoLog(Const Fmt : String; Args : Array of const);
     procedure Warning(AContext: TPasElement; const AMsg: String);
@@ -339,7 +343,8 @@ end;
 
 
 }
-Constructor TFPDocWriter.Create(APackage: TPasPackage; AEngine: TFPDocEngine);
+constructor TFPDocWriter.Create ( APackage: TPasPackage; AEngine: TFPDocEngine
+  ) ;
 
 begin
   inherited Create;
@@ -347,6 +352,9 @@ begin
   FPackage := APackage;
   FTopics:=Tlist.Create;
   FImgExt:='.png';
+  TreeClass:= TClassTreeBuilder.Create(FEngine, FPackage, okClass);
+  TreeInterface:= TClassTreeBuilder.Create(FEngine, FPackage, okInterface);
+  CreateClassTree;
 end;
 
 destructor TFPDocWriter.Destroy;
@@ -358,6 +366,8 @@ begin
   For I:=0 to FTopics.Count-1 do
     TTopicElement(FTopics[i]).Free;
   FTopics.Free;
+  TreeClass.free;
+  TreeInterface.Free;
   Inherited;
 end;
 
@@ -390,7 +400,7 @@ begin
     end;
 end;
 
-Function TFPDocWriter.FindTopicElement(Node : TDocNode): TTopicElement;
+function TFPDocWriter.FindTopicElement ( Node: TDocNode ) : TTopicElement;
 
 Var
   I : Integer;
@@ -711,6 +721,55 @@ begin
   else
     DescrWriteText(El['href']);
   DescrEndURL;
+end;
+
+procedure TFPDocWriter.AddElementsFromList ( L: TStrings; List: TFPList;
+  UsePathName: Boolean ) ;
+Var
+  I : Integer;
+  El : TPasElement;
+  N : TDocNode;
+
+begin
+  For I:=0 to List.Count-1 do
+    begin
+    El:=TPasElement(List[I]);
+    N:=Engine.FindDocNode(El);
+    if (N=Nil) or (not N.IsSkipped) then
+      begin
+      if UsePathName then
+        L.AddObject(El.PathName,El)
+      else
+        L.AddObject(El.Name,El);
+      If el is TPasEnumType then
+        AddElementsFromList(L,TPasEnumType(el).Values);
+      end;
+    end;
+end;
+
+procedure TFPDocWriter.CreateClassTree;
+var
+   L: TStringList;
+   M: TPasModule;
+   I:Integer;
+begin
+  L:=TStringList.Create;
+  try
+    For I:=0 to Package.Modules.Count-1 do
+      begin
+      M:=TPasModule(Package.Modules[i]);
+      if Not (M is TPasExternalModule) and assigned(M.InterfaceSection) then
+        Self.AddElementsFromList(L,M.InterfaceSection.Classes,True)
+      end;
+      TreeClass.BuildTree(L);
+      TreeInterface.BuildTree(L);
+      {$IFDEF TREE_TEST}
+      TreeClass.SaveToXml('TreeClass.xml');
+      TreeInterface.SaveToXml('TreeInterface.xml');
+      {$ENDIF}
+  Finally
+    L.Free;
+  end;
 end;
 
 procedure TFPDocWriter.DoLog(const Msg: String);
@@ -1126,7 +1185,7 @@ begin
     Result := False;
 end;
 
-Procedure TFPDocWriter.ConvertImage(El : TDomElement);
+procedure TFPDocWriter.ConvertImage ( El: TDomElement ) ;
 
 Var
   FN,Cap,LinkName : DOMString;
@@ -1169,7 +1228,7 @@ begin
   Inherited;
 end;
 
-Function TFPDocWriter.WriteDescr(Element: TPasElement) : TDocNode;
+function TFPDocWriter.WriteDescr ( Element: TPasElement ) : TDocNode;
 
 begin
   Result:=Engine.FindDocNode(Element);
@@ -1211,7 +1270,8 @@ begin
     Result:=Not ((M.Visibility=visProtected) and Engine.HideProtected)
 end;
 
-Procedure TFPDocWriter.GetMethodList(ClassDecl: TPasClassType; List : TStringList);
+procedure TFPDocWriter.GetMethodList ( ClassDecl: TPasClassType;
+  List: TStringList ) ;
 
 Var
   I : Integer;

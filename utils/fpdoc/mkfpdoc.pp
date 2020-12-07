@@ -42,6 +42,8 @@ Type
     procedure SetVerbose(AValue: Boolean); virtual;
     Procedure DoLog(Const Msg : String);
     procedure DoLog(Const Fmt : String; Args : Array of Const);
+    Procedure DoLogSender(Sender : TObject; Const Msg : String);
+    // Create documetation by specified Writer class
     procedure CreateOutput(APackage: TFPDocPackage; Engine: TFPDocEngine); virtual;
   Public
     Constructor Create(AOwner : TComponent); override;
@@ -94,6 +96,14 @@ end;
 procedure TFPDocCreator.DoLog(const Fmt: String; Args: array of const);
 begin
   DoLog(Format(Fmt,Args));
+end;
+
+procedure TFPDocCreator.DoLogSender ( Sender: TObject; const Msg: String ) ;
+begin
+  if Assigned(Sender) then
+    DoLog(Format('%s - Sender: %s', [Msg, Sender.ClassName]))
+  else
+    DoLog(Msg);
 end;
 
 procedure TFPDocCreator.HandleOnParseUnit(Sender: TObject;
@@ -208,7 +218,9 @@ Var
   Cmd,Arg : String;
 
 begin
+  // Now is used the specified writer
   WriterClass:=GetWriterClass(Options.Backend);
+  // ALL CONTENT CREATED HERE
   Writer:=WriterClass.Create(Engine.Package,Engine);
   With Writer do
     Try
@@ -225,10 +237,12 @@ begin
           If not InterPretOption(Cmd,Arg) then
             DoLog(SCmdLineInvalidOption,[Cmd+'='+Arg]);
           end;
+      // Output created Documentation
       WriteDoc;
     Finally
       Free;
     end;
+  // Output content files
   Writeln('Content file : ',APackage.ContentFile);
   if Length(APackage.ContentFile) > 0 then
     Engine.WriteContentFile(APackage.ContentFile);
@@ -247,16 +261,21 @@ begin
   Cmd:='';
   FCurPackage:=APackage;
   Engine:=TFPDocEngine.Create;
+  Engine.OnLog:= @DoLogSender;
   try
+    // get documentation Writer html, latex, and other
     WriterClass:=GetWriterClass(Options.Backend);
     For J:=0 to Apackage.Imports.Count-1 do
       begin
       Arg:=Apackage.Imports[j];
+      // conversion import FilePathes
       WriterClass.SplitImport(Arg,Cmd);
+      // create tree of imported objects
       Engine.ReadContentFile(Arg, Cmd);
       end;
     for i := 0 to APackage.Descriptions.Count - 1 do
       Engine.AddDocFile(FixDescrFile(APackage.Descriptions[i]),Options.donttrim);
+    // set engine options
     Engine.SetPackageName(APackage.Name);
     Engine.Output:=APackage.Output;
     Engine.OnLog:=Self.OnLog;
@@ -268,13 +287,18 @@ begin
     Engine.WarnNoNode:=Options.WarnNoNode;
     if Length(Options.Language) > 0 then
       TranslateDocStrings(Options.Language);
+    // scan the input source files
     for i := 0 to APackage.Inputs.Count - 1 do
       try
+        // get options from input packages
         SplitInputFileOption(APackage.Inputs[i],Cmd,Arg);
+        // make absolute filepath
         Cmd:=FixInputFile(Cmd);
         if FProcessedUnits.IndexOf(Cmd)=-1 then
           begin
           FProcessedUnits.Add(Cmd);
+          // Parce sources for OS Target
+          //WriteLn(Format('Parcing unit: %s', [ExtractFilenameOnly(Cmd)]));
           ParseSource(Engine,Cmd+' '+Arg, Options.OSTarget, Options.CPUTarget,[poUseStreams]);
           end;
       except
@@ -290,6 +314,7 @@ begin
     if Not ParseOnly then
       begin
       Engine.StartDocumenting;
+      // Create documentation
       CreateOutput(APackage,Engine);
       end;
   finally
