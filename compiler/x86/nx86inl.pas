@@ -1479,6 +1479,14 @@ implementation
                    end;
                end;
 
+             { due to min/max behaviour that it loads always the second operand (must be the else assignment) into destination if
+               one of the operands is a NaN, we cannot swap operands to omit a mova operation in case fastmath is off }
+             if not(cs_opt_fastmath in current_settings.optimizerswitches) and gotmem and (memop=1) then
+               begin
+                 hlcg.location_force_mmregscalar(current_asmdata.CurrAsmList,paraarray[1].location,paraarray[1].resultdef,true);
+                 gotmem:=false;
+               end;
+
              op:=oparray[inlinenumber in [in_max_single,in_max_double],UseAVX,tfloatdef(resultdef).floattype];
 
              location_reset(location,LOC_MMREGISTER,paraarray[1].location.size);
@@ -1521,7 +1529,7 @@ implementation
                begin
                  if UseAVX then
                    emit_reg_reg_reg(op,S_NO,
-                     paraarray[1].location.register,paraarray[2].location.register,location.register)
+                     paraarray[2].location.register,paraarray[1].location.register,location.register)
                  else
                    begin
                      hlcg.a_loadmm_reg_reg(current_asmdata.CurrAsmList,paraarray[1].resultdef,resultdef,
