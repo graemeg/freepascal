@@ -162,6 +162,8 @@ type
     tkAssignMul,             // *=
     tkAssignDivision,        // /=
     tkAtAt,                  // @@
+    // Three-character tokens
+    tkDotDotDot,             // ... (mac mode)
     // Reserved words
     tkabsolute,
     tkand,
@@ -569,6 +571,10 @@ const
     '0', // false
     '1'  // true  Note: True is <>'0'
     );
+  MACDirectiveBool: array[boolean] of string = (
+    'FALSE', // false
+    'TRUE'  // true  Note: True is <>'0'
+    );
 type
   TMaxPrecInt = {$ifdef fpc}int64{$else}NativeInt{$endif};
   TMaxFloat = {$ifdef fpc}extended{$else}double{$endif};
@@ -628,11 +634,13 @@ type
     procedure Push(const AnOperand: String; OperandPosition: integer);
   public
     Expression: String;
+    MsgCurLine : Integer;
     MsgPos: integer;
     MsgNumber: integer;
     MsgType: TMessageType;
     MsgPattern: String; // Format parameter
-    constructor Create;
+    isMac : Boolean;
+    constructor Create(aIsMac : Boolean = False);
     destructor Destroy; override;
     function Eval(const Expr: string): boolean;
     property OnEvalVariable: TCEEvalVarEvent read FOnEvalVariable write FOnEvalVariable;
@@ -803,8 +811,8 @@ type
     procedure HandleIFDEF(const AParam: String);
     procedure HandleIFNDEF(const AParam: String);
     procedure HandleIFOPT(const AParam: String);
-    procedure HandleIF(const AParam: String);
-    procedure HandleELSEIF(const AParam: String);
+    procedure HandleIF(const AParam: String; aIsMac : Boolean);
+    procedure HandleELSEIF(const AParam: String; aIsMac : Boolean);
     procedure HandleELSE(const AParam: String);
     procedure HandleENDIF(const AParam: String);
     procedure HandleDefine(Param: String); virtual;
@@ -960,6 +968,7 @@ const
     '*=',
     '/=',
     '@@',
+    '...',
     // Reserved words
     'absolute',
     'and',
@@ -1461,12 +1470,16 @@ end;
 function TCondDirectiveEvaluator.IsFalse(const Value: String): boolean;
 begin
   Result:=Value=CondDirectiveBool[false];
+  if (not Result) and isMac then
+    Result:=Value=MacDirectiveBool[false];
 end;
 
 // inline
 function TCondDirectiveEvaluator.IsTrue(const Value: String): boolean;
 begin
   Result:=Value<>CondDirectiveBool[false];
+  if Result and isMac then
+    Result:=Value<>MacDirectiveBool[False];
 end;
 
 function TCondDirectiveEvaluator.IsInteger(const Value: String; out i: TMaxPrecInt
@@ -1786,7 +1799,7 @@ begin
     OnLog(Self,Args);
     if not (aMsgType in [mtError,mtFatal]) then exit;
     end;
-  raise EScannerError.CreateFmt(MsgPattern+' at '+IntToStr(MsgPos),Args);
+  raise EScannerError.CreateFmt(MsgPattern+' at pos '+IntToStr(MsgPos)+' line '+IntToStr(MsgCurLine),Args);
 end;
 
 procedure TCondDirectiveEvaluator.LogXExpectedButTokenFound(const X: String;
@@ -1810,6 +1823,12 @@ procedure TCondDirectiveEvaluator.ReadOperand(Skip: boolean);
    'Abc'
    (expression)
 }
+
+  Function IsMacNoArgFunction(aName : string) : Boolean;
+  begin
+    Result:=SameText(aName,'DEFINED') or SameText(aName,'UNDEFINED');
+  end;
+
 var
   i: TMaxPrecInt;
   e: extended;
@@ -1817,6 +1836,8 @@ var
   Code: integer;
   NameStartP: {$ifdef UsePChar}PChar{$else}integer{$endif};
   p, Lvl: integer;
+  NeedBrace : Boolean;
+
 begin
   {$IFDEF VerbosePasDirectiveEval}
   writeln('TCondDirectiveEvaluator.ReadOperand START Token[',FTokenStart-PChar(Expression)+1,']="',GetTokenString,'" ',FToken,BoolToStr(Skip,' SKIP',''));
@@ -1886,7 +1907,9 @@ begin
     tkIdentifier:
       if Skip then
         begin
+        aName:=GetTokenString;
         NextToken;
+        // for macpas IFC we can have DEFINED A or DEFINED(A)...
         if FToken=tkBraceOpen then
           begin
           // only one parameter is supported
@@ -1895,6 +1918,10 @@ begin
             NextToken;
           if FToken<>tkBraceClose then
             LogXExpectedButTokenFound(')');
+          NextToken;
+          end
+        else if (IsMac and IsMacNoArgFunction(aName)) then
+          begin
           NextToken;
           end;
         end
@@ -1924,6 +1951,14 @@ begin
             LogXExpectedButTokenFound('function');
             end;
           Push(S,p);
+          NextToken;
+          end
+        else if (IsMac and IsMacNoArgFunction(aName)) then
+          begin
+          if FToken<>tkIdentifier then
+            LogXExpectedButTokenFound('identifier');
+          aName:=GetTokenString;
+          Push(CondDirectiveBool[OnEvalVariable(Self,aName,S)],p);
           NextToken;
           end
         else
@@ -2289,9 +2324,9 @@ begin
   {$ENDIF}
 end;
 
-constructor TCondDirectiveEvaluator.Create;
+constructor TCondDirectiveEvaluator.Create(aIsMac: Boolean);
 begin
-
+  IsMac:=aIsMac
 end;
 
 destructor TCondDirectiveEvaluator.Destroy;
@@ -2315,6 +2350,9 @@ begin
   NextToken;
   ReadExpression;
   Result:=IsTrue(FStack[0].Operand);
+  {$IFDEF VerbosePasDirectiveEval}
+  Writeln('COND Eval: ', Expr,' -> ',Result);
+  {$ENDIF}
 end;
 
 { TMacroDef }
@@ -3631,7 +3669,7 @@ begin
     MValue:=Trim(Param);
     MName:=Trim(Copy(MValue,1,Index-1));
     Delete(MValue,1,Index+1);
-    AddMacro(MName,MValue);
+    AddMacro(MName,Trim(MValue));
     end;
 end;
 
@@ -3964,7 +4002,7 @@ begin
     end;
 end;
 
-procedure TPascalScanner.HandleIF(const AParam: String);
+procedure TPascalScanner.HandleIF(const AParam: String; aIsMac: Boolean);
 
 begin
   PushSkipMode;
@@ -3972,6 +4010,8 @@ begin
     PPSkipMode := ppSkipAll
   else
     begin
+    ConditionEval.MsgCurLine:=CurTokenPos.Row;
+    ConditionEval.isMac:=aIsMac;
     if ConditionEval.Eval(AParam) then
       PPSkipMode := ppSkipElseBranch
     else
@@ -3987,12 +4027,13 @@ begin
     end;
 end;
 
-procedure TPascalScanner.HandleELSEIF(const AParam: String);
+procedure TPascalScanner.HandleELSEIF(const AParam: String; aIsMac : Boolean);
 begin
   if PPSkipStackIndex = 0 then
     Error(nErrInvalidPPElse,sErrInvalidPPElse);
   if PPSkipMode = ppSkipIfBranch then
     begin
+    ConditionEval.isMac:=aIsMac;
     if ConditionEval.Eval(AParam) then
       begin
       PPSkipMode := ppSkipElseBranch;
@@ -4058,7 +4099,11 @@ begin
   Result:=tkComment;
   P:=Pos(' ',ADirectiveText);
   If P=0 then
-    P:=Length(ADirectiveText)+1;
+    begin
+    P:=Pos(#9,ADirectiveText);
+    If P=0 then
+      P:=Length(ADirectiveText)+1;
+    end;
   Directive:=Copy(ADirectiveText,2,P-2); // 1 is $
   Param:=ADirectiveText;
   Delete(Param,1,P);
@@ -4073,12 +4118,16 @@ begin
      HandleIFNDEF(Param);
   'IFOPT':
      HandleIFOPT(Param);
+  'IFC',   
   'IF':
-     HandleIF(Param);
+     HandleIF(Param,UpperCase(Directive)='IFC');
+  'ELIFC',
   'ELSEIF':
-     HandleELSEIF(Param);
+     HandleELSEIF(Param,UpperCase(Directive)='ELIFC');
+  'ELSEC',   
   'ELSE':
      HandleELSE(Param);
+  'ENDC',
   'ENDIF':
     HandleENDIF(Param);
   'IFEND':
@@ -4102,7 +4151,9 @@ begin
       Case UpperCase(Directive) of
       'ASSERTIONS':
         DoBoolDirective(bsAssertions);
-      'DEFINE':
+      'DEFINE',
+      'DEFINEC',
+      'SETC':
         HandleDefine(Param);
       'GOTO':
         DoBoolDirective(bsGoto);
@@ -4163,6 +4214,11 @@ begin
         DoBoolDirective(bsWarnings);
       'WRITEABLECONST':
         DoBoolDirective(bsWriteableConst);
+      'ALIGN',
+      'CALLING',
+      'INLINE',
+      'PACKRECORDS',
+      'PACKENUM' : ;
       else
         Handled:=false;
       end;
@@ -4534,7 +4590,13 @@ begin
       else if {$ifdef UsePChar}FTokenPos[0]='.'{$else}(FTokenPos<=l) and (s[FTokenPos]='.'){$endif} then
         begin
         Inc(FTokenPos);
-        Result := tkDotDot;
+        if {$ifdef UsePChar}FTokenPos[0]='.'{$else}(FTokenPos<=l) and (s[FTokenPos]='.'){$endif} then
+          begin
+          Inc(FTokenPos);
+          Result:=tkDotDotDot;
+          end
+        else  
+          Result := tkDotDot;
         end
       else
         Result := tkDot;
@@ -4932,6 +4994,10 @@ end;
 
 procedure TPascalScanner.OnCondEvalLog(Sender: TCondDirectiveEvaluator;
   Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+
+Var
+  Msg : String;
+
 begin
   {$IFDEF VerbosePasDirectiveEval}
   writeln('TPascalScanner.OnCondEvalLog "',Sender.MsgPattern,'"');
@@ -4940,7 +5006,8 @@ begin
   if Sender.MsgType<=mtError then
     begin
     SetCurMsg(Sender.MsgType,Sender.MsgNumber,Sender.MsgPattern,Args);
-    raise EScannerError.Create(FLastMsg);
+    Msg:=Msg+Format('%s(%d,%d) : %s',[FormatPath(FCurFileName),CurRow,CurColumn,FLastMsg]);
+    raise EScannerError.Create(Msg);
     end
   else
     DoLog(Sender.MsgType,Sender.MsgNumber,Sender.MsgPattern,Args,true);

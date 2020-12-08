@@ -261,6 +261,10 @@ type
     procedure TestIFLesserEqualThan;
     procedure TestIFDefinedElseIf;
     procedure TestIfError;
+    procedure TestIFCDefined;
+    procedure TestIFCNotDefined;
+    procedure TestIFCAndDefined;
+    procedure TestIFCFalse;
     Procedure TestModeSwitch;
     Procedure TestOperatorIdentifier;
     Procedure TestUTF8BOM;
@@ -1832,6 +1836,61 @@ begin
     +'begin'+LineEnding
     +'{$if sizeof(integer) <> 4} {$error wrong sizeof(integer)} {$endif}'+LineEnding
     +'end.',True,False);
+end;
+
+procedure TTestScanner.TestIFCDefined;
+begin
+  FScanner.SkipWhiteSpace:=True;
+  FScanner.SkipComments:=True;
+  FScanner.AddDefine('cpu32');
+  TestTokens([tkconst,tkIdentifier,tkEqual,tkString,tkSemicolon,tkbegin,tkend,tkDot],
+    'const platform = '+LineEnding
+    +'{$ifc defined cpu32} ''x86'''+LineEnding
+    +'{$elseif defined(cpu64)} 1 '+LineEnding
+    +'{$else} {$error unknown platform} {$endc};'+LineEnding
+    +'begin end.',True,False);
+end;
+
+procedure TTestScanner.TestIFCNotDefined;
+begin
+  FScanner.SkipWhiteSpace:=True;
+  FScanner.SkipComments:=True;
+  FScanner.AddDefine('cpu32');
+  TestTokens([tkconst,tkIdentifier,tkEqual,tkNumber,tkSemicolon,tkbegin,tkend,tkDot],
+    'const platform = '+LineEnding
+    +'{$ifc not defined cpu32} ''x86'''+LineEnding
+    +'{$else} 1 '+LineEnding
+    +'{$endc};'+LineEnding
+    +'begin end.',True,False);
+end;
+
+procedure TTestScanner.TestIFCAndDefined;
+begin
+  FScanner.SkipWhiteSpace:=True;
+  FScanner.SkipComments:=True;
+  FScanner.AddDefine('cpu32');
+  FScanner.AddDefine('alpha');
+  TestTokens([tkconst,tkIdentifier,tkEqual,tkstring,tkSemicolon,tkbegin,tkend,tkDot],
+    'const platform = '+LineEnding
+    +'{$ifc defined cpu32 and defined alpha} ''x86'''+LineEnding
+    +'{$else} 1 '+LineEnding
+    +'{$endc};'+LineEnding
+    +'begin end.',True,False);
+end;
+
+procedure TTestScanner.TestIFCFalse;
+begin
+  FScanner.SkipWhiteSpace:=True;
+  FScanner.SkipComments:=True;
+  FScanner.AddDefine('cpu32');
+  FScanner.AddDefine('alpha');
+  FScanner.AddMacro('MY','FALSE');
+  TestTokens([tkconst,tkIdentifier,tkEqual,tkNumber,tkSemicolon,tkbegin,tkend,tkDot],
+    'const platform = '+LineEnding
+    +'{$IFC MY} ''x86'''+LineEnding
+    +'{$else} 1 '+LineEnding
+    +'{$endc};'+LineEnding
+    +'begin end.',True,False);
 end;
 
 procedure TTestScanner.TestModeSwitch;

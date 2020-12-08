@@ -518,6 +518,7 @@ end;
 
 procedure TTestProcedureFunction.TestProcedureOneOutArg;
 begin
+  Parser.CurrentModeswitches:=[msObjfpc];
   ParseProcedure('(Out B : Integer)');
   AssertProc([],[],ccDefault,1);
   AssertArg(ProcType,0,'B',argOut,'Integer','');
@@ -525,6 +526,7 @@ end;
 
 procedure TTestProcedureFunction.TestFunctionOneOutArg;
 begin
+  Parser.CurrentModeswitches:=[msObjfpc];
   ParseFunction('(Out B : Integer)');
   AssertFunc([],[],ccDefault,1);
   AssertArg(FuncType,0,'B',argOut,'Integer','');

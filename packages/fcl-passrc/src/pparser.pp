@@ -1403,6 +1403,11 @@ begin
     Result:=true;
     PTM:=ptmStatic;
     end
+  else if CompareText(S,ProcTypeModifiers[ptmCblock])=0 then
+    begin
+    Result:=true;
+    PTM:=ptmCblock;
+    end
   else if (CompareText(S,ProcTypeModifiers[ptmAsync])=0) and (po_AsyncProcs in Options) then
     begin
     Result:=true;
@@ -4917,6 +4922,21 @@ end;
 
 // Starts after the opening bracket token
 procedure TPasParser.ParseArgList(Parent: TPasElement; Args: TFPList; EndToken: TToken);
+
+  Function GetParamName : string;
+
+  begin
+    if ([msDelphi,msDelphiUnicode,msObjfpc]* CurrentModeswitches)<>[] then
+      Result := ExpectIdentifier
+    else
+      begin
+      NextToken;
+      if CurToken in [tkProperty,tkIdentifier,tkClass] then
+        Result:=CurTokenString
+      else
+        ParseExcTokenError('identifier')
+      end;
+  end;
 var
   IsUntyped, ok, LastHadDefaultValue: Boolean;
   Name : String;
@@ -4925,6 +4945,10 @@ var
   Arg: TPasArgument;
   Access: TArgumentAccess;
   ArgType: TPasType;
+  varargs : boolean;
+
+
+
 begin
   LastHadDefaultValue := false;
   while True do
@@ -4934,22 +4958,38 @@ begin
     IsUntyped := False;
     ArgType := nil;
     NextToken;
-    if CurToken = tkConst then
+    if CurToken = tkDotDotDot then
+    begin
+      varargs:=True;
+      expectToken(endToken);
+      Break;
+    end else  if CurToken = tkConst then
     begin
       Access := argConst;
-      Name := ExpectIdentifier;
+      Name := GetParamName;
     end else if CurToken = tkConstRef then
     begin
       Access := argConstref;
-      Name := ExpectIdentifier;
+      Name := getParamName;
     end else if CurToken = tkVar then
     begin
       Access := ArgVar;
-      Name := ExpectIdentifier;
+      Name:=GetParamName;
     end else if (CurToken = tkIdentifier) and (UpperCase(CurTokenString) = 'OUT') then
     begin
-      Access := ArgOut;
-      Name := ExpectIdentifier;
+      if  ([msObjfpc, msDelphi, msDelphiUnicode, msOut] * CurrentModeswitches)<>[] then
+        begin
+        Access := ArgOut;
+        Name := ExpectIdentifier
+        end
+      else
+        Name := CurTokenString
+    end else if (CurToken = tkproperty) or (CurToken=tkClass) then
+      begin
+      if ([msDelphi,msDelphiUnicode,msObjfpc]* CurrentModeswitches)<>[] then
+        ParseExcTokenError('identifier')
+      else
+        Name := CurTokenString
     end else if CurToken = tkIdentifier then
       Name := CurTokenString
     else

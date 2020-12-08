@@ -1069,6 +1069,7 @@ begin
   FHub:=TPasResolverHub.Create(Self);
   inherited SetUp;
   Parser.Options:=Parser.Options+[po_ResolveStandardTypes];
+  Parser.CurrentModeswitches:=[msObjfpc];
   Scanner.OnDirective:=@OnScannerDirective;
   Scanner.OnLog:=@OnScannerLog;
 end;
@@ -2195,7 +2196,8 @@ function TCustomTestResolver.AddModuleWithIntfImplSrc(aFilename, InterfaceSrc,
 var
   Src: String;
 begin
-  Src:='unit '+ExtractFileUnitName(aFilename)+';'+LineEnding;
+  Src:='{$mode objfpc}';
+  Src+='unit '+ExtractFileUnitName(aFilename)+';'+LineEnding;
   Src+=LineEnding;
   Src+='interface'+LineEnding;
   Src+=LineEnding;

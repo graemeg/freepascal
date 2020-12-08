@@ -465,6 +465,11 @@ type
     Procedure TestFunctionOneArg;
     Procedure TestFunctionOfObject;
     Procedure TestFunctionOneArgOfObject;
+    Procedure TestCBlock;
+    Procedure TestMacPasoutArg;
+    Procedure TestMacPasPropertyArg;
+    Procedure TestMacPasPropertyVarArg;
+    Procedure TestMacPasClassArg;
   end;
 
 
@@ -1179,6 +1184,48 @@ Procedure TTestProcedureTypeParser.TestFunctionOneArgOfObject;
 begin
   TestCallingConventions(@DoTestFunctionOneArgOfObject);
 
+end;
+
+procedure TTestProcedureTypeParser.TestCBlock;
+
+
+begin
+  ParseType('reference to procedure (a: integer); cblock;',TPasProcedureType,'');
+  FProc:=Definition as TPasProcedureType;
+  AssertEquals('Argument count',1,Proc.Args.Count);
+  AssertEquals('Is cblock',True,ptmCblock in Proc.Modifiers);
+end;
+
+procedure TTestProcedureTypeParser.TestMacPasoutArg;
+begin
+  Parser.CurrentModeswitches:=[msMac];
+  ParseType('procedure (out: integer); ',TPasProcedureType,'');
+  FProc:=Definition as TPasProcedureType;
+  AssertEquals('Argument count',1,Proc.Args.Count);
+end;
+
+procedure TTestProcedureTypeParser.TestMacPasPropertyArg;
+begin
+  Parser.CurrentModeswitches:=[msMac];
+  ParseType('procedure (property : integer); ',TPasProcedureType,'');
+  FProc:=Definition as TPasProcedureType;
+  AssertEquals('Argument count',1,Proc.Args.Count);
+end;
+
+procedure TTestProcedureTypeParser.TestMacPasPropertyVarArg;
+begin
+  Parser.CurrentModeswitches:=[msMac];
+  ParseType('procedure (var property : integer); ',TPasProcedureType,'');
+  FProc:=Definition as TPasProcedureType;
+  AssertEquals('Argument count',1,Proc.Args.Count);
+end;
+
+procedure TTestProcedureTypeParser.TestMacPasClassArg;
+begin
+  Parser.CurrentModeswitches:=[msMac];
+  ParseType('procedure (class : integer); ',TPasProcedureType,'');
+  FProc:=Definition as TPasProcedureType;
+  AssertEquals('Argument count',1,Proc.Args.Count);
 end;
 
 { TTestRecordTypeParser }
@@ -2825,6 +2872,7 @@ begin
   FErrorSource:='';
   FHint:='';
   FType:=Nil;
+  Parser.CurrentModeswitches:=[msObjfpc];
 end;
 
 Procedure TBaseTestTypeParser.TearDown;
