@@ -19,7 +19,7 @@ unit dw_html;
 {$WARN 5024 off : Parameter "$1" not used}
 interface
 
-uses Classes, DOM, DOM_HTML, dGlobals, PasTree, dWriter, ChmWriter;
+uses Classes, DOM, DOM_HTML, dGlobals, PasTree, dWriter, ChmWriter, chmtypes;
 
 const
   // Subpage indices for modules
