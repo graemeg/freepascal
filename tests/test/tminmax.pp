@@ -1,4 +1,9 @@
+{ %opt=-O- -Oonofastmath }  { with fast math, the operands of min/max might be swapped and this breaks the tests using NaN }
+
 {$mode objfpc}
+uses
+  Math;
+
 procedure TestSingle;
 
   function Min1(a, b: Single): Single; inline;
@@ -36,7 +41,7 @@ procedure TestSingle;
     end;
 
   var
-    v1,v3 : Single;
+    v1,v3,vNaN : Single;
 
   begin
     v1:=1;
@@ -73,6 +78,25 @@ procedure TestSingle;
       halt(33);
     if Max2(v1,v3)<>v3 then
       halt(34);
+    SetExceptionMask([exInvalidOp]);
+    vNaN:=NaN;
+    if not(IsNaN(Min1(v1,vNaN))) then
+      halt(41);
+    if Min1(NaN,v1)<>v1 then
+      halt(42);
+    if not(IsNaN(Max1(v1,vNaN))) then
+      halt(43);
+    if Max1(vNaN,v3)<>v3 then
+      halt(44);
+    if not(IsNaN(Min2(v1,vNaN))) then
+      halt(45);
+    if Min2(vNaN,v3)<>v3 then
+      halt(46);
+    if not(IsNaN(Max2(v1,vNaN))) then
+      halt(47);
+    if Max2(vNaN,v3)<>v3 then
+      halt(48);
+    SetExceptionMask([]);
   end;
 
 procedure TestDouble;
@@ -112,7 +136,7 @@ procedure TestDouble;
     end;
 
   var
-    v1,v3 : Double;
+    v1,v3,vNaN : Double;
 
   begin
     v1:=1;
@@ -149,6 +173,25 @@ procedure TestDouble;
       halt(133);
     if Max2(v1,v3)<>v3 then
       halt(134);
+    SetExceptionMask([exInvalidOp]);
+    vNaN:=NaN;
+    if not(IsNaN(Min1(v1,vNaN))) then
+      halt(141);
+    if Min1(NaN,v1)<>v1 then
+      halt(142);
+    if not(IsNaN(Max1(v1,vNaN))) then
+      halt(143);
+    if Max1(vNaN,v3)<>v3 then
+      halt(144);
+    if not(IsNaN(Min2(v1,vNaN))) then
+      halt(145);
+    if Min2(vNaN,v3)<>v3 then
+      halt(146);
+    if not(IsNaN(Max2(v1,vNaN))) then
+      halt(147);
+    if Max2(vNaN,v3)<>v3 then
+      halt(148);
+    SetExceptionMask([]);
   end;
 
 

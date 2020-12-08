@@ -1614,8 +1614,10 @@ implementation
            (tassignmentnode(thenstmnt).right.isequal(taddnode(left).right) and (tassignmentnode(elsestmnt).right.isequal(taddnode(left).left)))) then
           begin
             paratype:=tassignmentnode(thenstmnt).left.resultdef;
-            if (left.nodetype in [gtn,gten]) and
-              (tassignmentnode(thenstmnt).right.isequal(taddnode(left).left) and (tassignmentnode(elsestmnt).right.isequal(taddnode(left).right))) then
+            if ((left.nodetype in [gtn,gten]) and
+              tassignmentnode(thenstmnt).right.isequal(taddnode(left).left)) or
+              ((left.nodetype in [ltn,lten]) and
+              tassignmentnode(thenstmnt).right.isequal(taddnode(left).right)) then
               begin
                 if is_double(paratype) then
                   in_nr:=in_max_double
@@ -1637,9 +1639,14 @@ implementation
                 else if is_s32bitint(paratype) then
                   in_nr:=in_min_longint;
               end;
+            { for inline nodes, the first parameter is the last one in the linked list
+
+              Due to the defined behaviour for the min/max intrinsics that in case of a NaN
+              the second parameter is taken, we have to put the else part into the second parameter
+              thus pass it to the first callparanode call }
             Result:=cassignmentnode.create_internal(tassignmentnode(thenstmnt).left.getcopy,
-              cinlinenode.create(in_nr,false,ccallparanode.create(taddnode(left).right.getcopy,
-                    ccallparanode.create(taddnode(left).left.getcopy,nil)))
+              cinlinenode.create(in_nr,false,ccallparanode.create(tassignmentnode(elsestmnt).right.getcopy,
+                    ccallparanode.create(tassignmentnode(thenstmnt).right.getcopy,nil)))
               );
           end;
 {$endif defined(i386) or defined(x86_64) or defined(xtensa)}
