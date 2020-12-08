@@ -2685,7 +2685,9 @@ procedure TTestUseAnalyzer.TestWP_Published;
 begin
   StartProgram(false);
   Add('type');
-  Add('  {#tobject_used}TObject = class');
+  Add('  {#tobject_notypeinfo}TObject = class');
+  Add('  end;');
+  Add('  {#tobject_typeinfo}TBird = class');
   Add('  private');
   Add('    {#fcol_used}FCol: string;');
   Add('    {#fbird_notused}FBird: string;');
@@ -2695,9 +2697,9 @@ begin
   Add('    property {#col_used}Col: string read FCol;');
   Add('  end;');
   Add('var');
-  Add('  {#o_used}o: TObject;');
+  Add('  {#b_used}b: TBird;');
   Add('begin');
-  Add('  o:=nil;');
+  Add('  b:=nil;');
   AnalyzeWholeProgram;
 end;
 

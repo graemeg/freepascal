@@ -1313,6 +1313,9 @@ begin
   UseElement(El,rraNone,true);
 
   UseAttributes(El);
+
+  if El.Parent is TPasMembersType then
+    UseTypeInfo(El.Parent);
 end;
 
 procedure TPasAnalyzer.UseAttributes(El: TPasElement);
