@@ -24444,15 +24444,6 @@ var
     Result:=(C=TPasFunction) or (C=TPasProcedure) or (C=TPasConstructor) or (C=TPasDestructor);
   end;
 
-  function ProcHasNoSelf(Proc: TPasProcedure): boolean;
-  begin
-    if Proc=nil then exit(false);
-    if not (Proc.Parent is TPasMembersType) then
-      exit(true);
-    if Proc.IsStatic then exit(true);
-    Result:=false;
-  end;
-
   procedure Append_GetClass(Member: TPasElement);
   var
     P: TPasElement;
