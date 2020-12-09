@@ -58,10 +58,12 @@ type
     FDoCommentCalled : Boolean;
     FComment: string;
     FPathPrefix : String;
+    FTestTokenString: String;
   protected
     procedure DoComment(Sender: TObject; aComment: String);
     procedure SetUp; override;
     procedure TearDown; override;
+    Procedure DoMultilineError;
     Function TokenToString(tk : TToken) : string;
     Procedure AssertEquals(Msg : String; Expected,Actual : TToken); overload;
     Procedure AssertEquals(Msg : String; Expected,Actual : TModeSwitch); overload;
@@ -75,6 +77,7 @@ type
     Property Scanner : TPascalScanner Read FScanner;
     // Path for source filename.
     Property PathPrefix : String Read FPathPrefix Write FPathPrefix;
+    Property TestTokenString : String Read FTestTokenString;
   published
     Procedure TestEmpty;
     procedure TestEOF;
@@ -98,6 +101,17 @@ type
     procedure TestSelf;
     procedure TestSelfNoToken;
     procedure TestString;
+    procedure TestMultilineStringError;
+    procedure TestMultilineStringSource;
+    Procedure TestMultilineStringLF;
+    Procedure TestMultilineStringCR;
+    Procedure TestMultilineStringCRLF;
+    Procedure TestMultilineStringPlatform;
+    Procedure TestMultilineLineEndingDirective;
+    Procedure TestMultilineTrimLeftDirective;
+    procedure TestMultilineStringTrimAll;
+    procedure TestMultilineStringTrimAuto;
+    procedure TestMultilineStringTrim2;
     procedure TestNumber;
     procedure TestChar;
     procedure TestCharString;
@@ -240,6 +254,9 @@ type
     Procedure TestInclude;
     Procedure TestInclude2;
     Procedure TestInclude3;
+    Procedure TestIncludeString;
+    Procedure TestIncludeStringFile;
+    Procedure TestIncludeString2Lines;
     Procedure TestUnDefine1;
     Procedure TestMacro1;
     procedure TestMacro2;
@@ -401,6 +418,7 @@ end;
 
 procedure TTestScanner.SetUp;
 begin
+  FTestTokenString:='';
   FDoCommentCalled:=False;
   FResolver:=TStreamResolver.Create;
   FResolver.OwnsStreams:=True;
@@ -412,6 +430,11 @@ procedure TTestScanner.TearDown;
 begin
   FreeAndNil(FScanner);
   FreeAndNil(FResolver);
+end;
+
+procedure TTestScanner.DoMultilineError;
+begin
+  TestToken(pscanner.tkString,'`A '#10'multiline string`');
 end;
 
 function TTestScanner.TokenToString(tk: TToken): string;
@@ -484,6 +507,7 @@ begin
   NewSource(ASource);
   tk:=FScanner.FetchToken;
   AssertEquals('Read token equals expected token.',t,tk);
+  FTestTokenString:=FScanner.CurTokenString;
   if CheckEOF then
     begin
     tk:=FScanner.FetchToken;
@@ -522,7 +546,9 @@ begin
     tk:=FScanner.FetchToken;
     AssertEquals(Format('Read token %d equals expected token.',[i]),t[i],tk);
     if tk=tkIdentifier then
-      LastIdentifier:=FScanner.CurtokenString;
+      LastIdentifier:=FScanner.CurtokenString
+    else if tk=tkString then
+      fTestTokenString:=FScanner.CurTokenString;
     end;
   if CheckEOF then
     begin
@@ -661,6 +687,142 @@ procedure TTestScanner.TestString;
 
 begin
   TestToken(pscanner.tkString,'''A string''');
+end;
+
+procedure TTestScanner.TestMultilineStringError;
+begin
+  AssertException('Need modeswitch',EScannerError,@DoMultilineError);
+end;
+
+procedure TTestScanner.TestMultilineStringSource;
+
+const
+  S = '''AB'#13#10'CD''';
+
+begin
+  Scanner.CurrentModeSwitches:=[msMultiLineStrings];
+  Scanner.MultilineLineFeedStyle:=elSource;
+  DoTestToken(pscanner.tkString,'`AB'#13#10'CD`');
+  AssertEquals('Correct lineending',S,TestTokenString);
+end;
+
+procedure TTestScanner.TestMultilineStringLF;
+
+const
+  S = '''AB'#10'CD''';
+
+begin
+  Scanner.CurrentModeSwitches:=[msMultiLineStrings];
+  Scanner.MultilineLineFeedStyle:=elLF;
+  DoTestToken(pscanner.tkString,'`AB'#13#10'CD`');
+  AssertEquals('Correct lineending',S,TestTokenString);
+end;
+
+procedure TTestScanner.TestMultilineStringCR;
+const
+  S = '''AB'#13'CD''';
+
+begin
+  Scanner.CurrentModeSwitches:=[msMultiLineStrings];
+  Scanner.MultilineLineFeedStyle:=elCR;
+  DoTestToken(pscanner.tkString,'`AB'#10'CD`');
+  AssertEquals('Correct lineending',S,TestTokenString);
+end;
+
+procedure TTestScanner.TestMultilineStringCRLF;
+const
+  S = '''AB'#13#10'CD''';
+
+begin
+  Scanner.CurrentModeSwitches:=[msMultiLineStrings];
+  Scanner.MultilineLineFeedStyle:=elCRLF;
+  DoTestToken(pscanner.tkString,'`AB'#10'CD`');
+  AssertEquals('Correct lineending',S,TestTokenString);
+end;
+
+procedure TTestScanner.TestMultilineStringPlatform;
+
+const
+  S = '''AB'+sLineBreak+'CD''';
+
+begin
+  Scanner.CurrentModeSwitches:=[msMultiLineStrings];
+  Scanner.MultilineLineFeedStyle:=elPlatform;
+  DoTestToken(pscanner.tkString,'`AB'#13#10'CD`');
+  AssertEquals('Correct lineending',S,TestTokenString);
+end;
+
+procedure TTestScanner.TestMultilineLineEndingDirective;
+begin
+  AssertTrue('Default platform', FSCanner.MultilineLineFeedStyle=elPlatform);
+  TestTokens([tkComment],'{$MULTILINESTRINGLINEENDING CR}');
+  AssertTrue('CR', FSCanner.MultilineLineFeedStyle=elCR);
+  TestTokens([tkComment],'{$MULTILINESTRINGLINEENDING LF}');
+  AssertTrue('LF', FSCanner.MultilineLineFeedStyle=elLF);
+  TestTokens([tkComment],'{$MULTILINESTRINGLINEENDING CRLF}');
+  AssertTrue('CRLF', FSCanner.MultilineLineFeedStyle=elCRLF);
+  TestTokens([tkComment],'{$MULTILINESTRINGLINEENDING SOURCE}');
+  AssertTrue('SOURCE', FSCanner.MultilineLineFeedStyle=elSOURCE);
+  TestTokens([tkComment],'{$MULTILINESTRINGLINEENDING PLATFORM}');
+  AssertTrue('Platform', FSCanner.MultilineLineFeedStyle=elPlatform);
+
+end;
+
+procedure TTestScanner.TestMultilineTrimLeftDirective;
+begin
+  AssertTrue('Default', FSCanner.MultilineLineTrimLeft=0);
+  TestTokens([tkComment],'{$MULTILINESTRINGTRIMLEFT 1}');
+  AssertTrue('1', FSCanner.MultilineLineTrimLeft=1);
+  TestTokens([tkComment],'{$MULTILINESTRINGTRIMLEFT 2}');
+  AssertTrue('2', FSCanner.MultilineLineTrimLeft=2);
+  TestTokens([tkComment],'{$MULTILINESTRINGTRIMLEFT ALL}');
+  AssertTrue('ALL', FSCanner.MultilineLineTrimLeft=-2);
+  TestTokens([tkComment],'{$MULTILINESTRINGTRIMLEFT AUTO}');
+  AssertTrue('AUTO', FSCanner.MultilineLineTrimLeft=-1);
+end;
+
+procedure TTestScanner.TestMultilineStringTrimAll;
+
+const
+   S = '''AB'#10'CD''';
+
+begin
+  SCanner.MultilineLineTrimLeft:=-2;
+  Scanner.CurrentModeSwitches:=[msMultiLineStrings];
+  Scanner.MultilineLineFeedStyle:=elLF;
+  DoTestToken(pscanner.tkString,'`AB'#13#10'    CD`');
+  AssertEquals('Correct trim',S,TestTokenString);
+
+end;
+
+procedure TTestScanner.TestMultilineStringTrimAuto;
+const
+   S = '''AB'#10' CD''';
+
+begin
+  SCanner.MultilineLineTrimLeft:=-1;
+  Scanner.CurrentModeSwitches:=[msMultiLineStrings];
+  Scanner.MultilineLineFeedStyle:=elLF;
+  Scanner.SkipWhiteSpace:=True;
+  DoTestToken(pscanner.tkString,' `AB'#13#10'   CD`');
+  AssertEquals('Correct trim',S,TestTokenString);
+end;
+
+procedure TTestScanner.TestMultilineStringTrim2;
+
+const
+  S = '''AB'#10' CD''';
+  S2 = '''AB'#10'CD''';
+
+begin
+  SCanner.MultilineLineTrimLeft:=2;
+  Scanner.CurrentModeSwitches:=[msMultiLineStrings];
+  Scanner.MultilineLineFeedStyle:=elLF;
+  Scanner.SkipWhiteSpace:=True;
+  DoTestToken(pscanner.tkString,' `AB'#13#10'   CD`');
+  AssertEquals('Correct trim',S,TestTokenString);
+  DoTestToken(pscanner.tkString,' `AB'#13#10' CD`');
+  AssertEquals('Correct trim 2',S2,TestTokenString);
 end;
 
 procedure TTestScanner.TestCharString;
@@ -1652,6 +1814,34 @@ begin
   TestTokens([tkIf,tkTrue,tkThen,tkElse],'{$I src/myinclude1.inc} else',True,False);
 end;
 
+procedure TTestScanner.TestIncludeString;
+begin
+  FResolver.AddStream('myinclude.inc',TStringStream.Create('if true then'));
+  FScanner.SkipWhiteSpace:=True;
+  FScanner.SkipComments:=True;
+  TestTokens([tkString],'{$INCLUDESTRING myinclude.inc}',False,False);
+  AssertEquals('Correct string','''if true then''',TestTokenString)
+end;
+
+procedure TTestScanner.TestIncludeStringFile;
+begin
+  FResolver.AddStream('myinclude.inc',TStringStream.Create('if true then'));
+  FScanner.SkipWhiteSpace:=True;
+  FScanner.SkipComments:=True;
+  TestTokens([tkString],'{$INCLUDESTRINGFILE myinclude.inc}',False,False);
+  AssertEquals('Correct string','''if true then''',TestTokenString)
+end;
+
+procedure TTestScanner.TestIncludeString2Lines;
+begin
+  FResolver.AddStream('myinclude.inc',TStringStream.Create('if true then'#10'else'));
+  FScanner.SkipWhiteSpace:=True;
+  FScanner.SkipComments:=True;
+  FScanner.MultilineLineFeedStyle:=elCRLF;
+  TestTokens([tkString],'{$INCLUDESTRING myinclude.inc}',False,False);
+  AssertEquals('Correct string','''if true then'#13#10'else''',TestTokenString)
+end;
+
 procedure TTestScanner.TestUnDefine1;
 begin
   FSCanner.Defines.Add('ALWAYS');
@@ -1928,7 +2118,7 @@ begin
   DoTestToken(tkLineEnding,#$EF+#$BB+#$BF);
 end;
 
-Procedure TTestScanner.TestBooleanSwitch;
+procedure TTestScanner.TestBooleanSwitch;
 
 begin
   Scanner.CurrentBoolSwitches:=[bsHints];
