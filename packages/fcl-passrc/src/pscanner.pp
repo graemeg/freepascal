@@ -3404,7 +3404,7 @@ var
     {$endif}
     if AddLF then
       begin
-      GetMultiLineStringLineEnd(FCurSourceFile);
+      alf:=GetMultiLineStringLineEnd(FCurSourceFile);
       FCurTokenString:=FCurTokenString+aLF;
       Inc(OldLength,Length(aLF));
       end;
