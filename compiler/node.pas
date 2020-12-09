@@ -943,9 +943,9 @@ implementation
               else
                 Write(T, ',', i)
             end;
-
+        write(t,'"');
         if (nf_pass1_done in flags) then
-          write(t,'" complexity="',node_complexity(self),'"');
+          write(t,' complexity="',node_complexity(self),'"');
       end;
 
     procedure tnode.XMLPrintNodeData(var T: Text);
