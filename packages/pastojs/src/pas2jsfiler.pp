@@ -1637,6 +1637,7 @@ begin
     msOmitRTTI: Result:=48;
     msMultiHelpers: Result:=49;
     msImplicitFunctionSpec: Result:=50;
+    msMultiLineStrings: Result:=51;
   end;
 end;
 
