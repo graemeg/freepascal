@@ -59,6 +59,7 @@ type
     // unit optimization: jsshortrefglobals
     procedure TestOptShortRefGlobals_Program;
     procedure TestOptShortRefGlobals_Unit_FromIntfImpl_ToIntfImpl;
+    procedure TestOptShortRefGlobals_Enums;
     procedure TestOptShortRefGlobals_Property;
     procedure TestOptShortRefGlobals_ExternalAbstract;
     procedure TestOptShortRefGlobals_Class;
@@ -411,6 +412,77 @@ begin
     '$impl.Ant = null;',
     '$impl.Bird = null;',
     '$impl.Eagle = null;',
+    '']));
+end;
+
+procedure TTestOptimizations.TestOptShortRefGlobals_Enums;
+begin
+  AddModuleWithIntfImplSrc('UnitA.pas',
+  LinesToStr([
+    'type',
+    '  TColor = (red,green,blue);',
+    '',
+    '']),
+  LinesToStr([
+    '']));
+  AddModuleWithIntfImplSrc('UnitB.pas',
+  LinesToStr([
+    'type',
+    '  TSize = (small,big);',
+    '',
+    '']),
+  LinesToStr([
+    '']));
+  StartUnit(true,[supWriteln]);
+  Add([
+  '{$optimization JSShortRefGlobals}',
+  'interface',
+  'uses unita;',
+  'const',
+  '  ColorRed = TColor.Red;',
+  'procedure Fly;',
+  'implementation',
+  'uses unitb;',
+  'const',
+  '  SizeSmall = TSize.Small;',
+  'procedure Fly;',
+  'begin',
+  '  writeln(ColorRed);',
+  '  writeln(TColor.Blue);',
+  '  writeln(SizeSmall);',
+  '  writeln(TSize.Big);',
+  '  writeln(unitb.TSize.Big);',
+  'end;',
+  '']);
+  ConvertUnit;
+  CheckSource('TestOptShortRefGlobals_Enums',
+    LinesToStr([
+    'var $impl = $mod.$impl;',
+    'var $lm = pas.UnitA;',
+    'var $lt = $lm.TColor;',
+    'var $lt1 = $lt.red;',
+    'var $lt2 = $lt.blue;',
+    'var $lm1 = null;',
+    'var $lt3 = null;',
+    'var $lt4 = null;',
+    'var $lt5 = null;',
+    'this.ColorRed = $lt1;',
+    'this.Fly = function () {',
+    '  console.log($lt1);',
+    '  console.log($lt2);',
+    '  console.log($lt4);',
+    '  console.log($lt5);',
+    '  console.log($lt5);',
+    '};',
+    '']),
+    LinesToStr([
+    '']),
+    LinesToStr([
+    '$lm1 = pas.UnitB;',
+    '$lt3 = $lm1.TSize;',
+    '$lt4 = $lt3.small;',
+    '$lt5 = $lt3.big;',
+    '$impl.SizeSmall = $lt4;',
     '']));
 end;
 

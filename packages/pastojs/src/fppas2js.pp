@@ -2073,7 +2073,7 @@ type
     Procedure AddImplHeaderStatement(JS: TJSElement; PosEl: TPasElement; aContext: TConvertContext); virtual;
     Procedure AddDelayedInits(El: TPasProgram; Src: TJSSourceElements; AContext: TConvertContext); virtual;
     Procedure AddDelaySpecializeInit(El: TPasGenericType; Src: TJSSourceElements; AContext: TConvertContext); virtual;
-    // set
+    // enum and sets
     Function CreateReferencedSet(El: TPasElement; SetExpr: TJSElement): TJSElement; virtual;
     // record
     Function CreateRecordInit(aRecord: TPasRecordType; Expr: TPasExpr;
@@ -9660,6 +9660,12 @@ begin
         DoError(20190211111038,nNoMemberIsProvidedToAccessProperty,sNoMemberIsProvidedToAccessProperty,[],RightEl);
       end;
     end;
+    end
+  else if RightRefDecl.ClassType=TPasEnumValue then
+    begin
+    // enum value
+    Result:=ConvertIdentifierExpr(RightEl,'',aContext);
+    exit;
     end;
   if (AContext.Access=caAssign)
       and aResolver.IsClassField(RightRefDecl) then

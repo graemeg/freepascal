@@ -53,7 +53,8 @@ type
     supTObject,
     supTVarRec,
     supTypeInfo,
-    supTInterfacedObject
+    supTInterfacedObject,
+    supWriteln
     );
   TSystemUnitParts = set of TSystemUnitPart;
 
@@ -1748,6 +1749,9 @@ begin
     '  TTypeInfoInterface = class external name ''rtl.tTypeInfoInterface''(TTypeInfo) end;',
     '']);
     end;
+  if supWriteln in Parts then
+    Intf.Add('procedure writeln; varargs; external name ''console.log'';');
+
   Intf.Add('var');
   Intf.Add('  ExitCode: Longint = 0;');
 
