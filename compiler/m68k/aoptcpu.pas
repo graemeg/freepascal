@@ -48,7 +48,7 @@ unit aoptcpu;
   Implementation
 
     uses
-      cutils, aasmcpu, cgutils, globals, verbose, cpuinfo, itcpugas;
+      cutils, aasmcpu, cgutils, globtype, globals, verbose, cpuinfo, itcpugas;
 
 { Range check must be disabled explicitly as conversions between signed and unsigned
   32-bit values are done without explicit typecasts }
@@ -86,6 +86,14 @@ unit aoptcpu;
             else
               internalerror(2016112401);
           end
+      end;
+
+    function MatchInstruction(const instr: tai; const op: TAsmOp; const opsize: topsizes): boolean;
+      begin
+        result :=
+          (instr.typ = ait_instruction) and
+          (taicpu(instr).opcode = op) and
+          ((opsize = []) or (taicpu(instr).opsize in opsize));
       end;
 
     function TCpuAsmOptimizer.MaybeRealConstOperSimplify(var p: tai): boolean;
@@ -386,6 +394,19 @@ unit aoptcpu;
                     taicpu(p).ops:=2;
                     result:=true;
                   end;
+              A_JSR:
+                begin
+                  if (cs_opt_level4 in current_settings.optimizerswitches) and
+                    GetNextInstruction(p,next) and
+                    MatchInstruction(next,A_RTS,[S_NO]) then
+                    begin
+                      DebugMsg('Optimizer: JSR, RTS to JMP',p);
+                      taicpu(p).opcode:=A_JMP;
+                      asml.remove(next);
+                      next.free;
+                      result:=true;
+                    end;
+                end;
               { CMP #0,<ea> equals to TST <ea>, just shorter and TST is more flexible anyway }
               A_CMP,A_CMPI:
                 if (taicpu(p).oper[0]^.typ = top_const) and
