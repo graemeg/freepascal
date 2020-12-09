@@ -206,7 +206,8 @@ const
     'PrefixedAttributes',
     'OmitRTTI',
     'MultiHelpers',
-    'ImplicitFunctionSpecialization'
+    'ImplicitFunctionSpecialization',
+    'MultilineStrings'
     ); // Dont forget to update ModeSwitchToInt !
 
   PCUDefaultBoolSwitches: TBoolSwitches = [
