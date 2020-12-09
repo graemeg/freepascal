@@ -12,6 +12,11 @@ const
   DefCPUTarget   = {$I %FPCTARGETCPU%};
   DefFPCVersion  = {$I %FPCVERSION%};
   DefFPCDate     = {$I %FPCDATE%};
+{$IFDEF FPC_BIG_ENDIAN}
+  DefEndianNess = 'FPC_BIG_ENDIAN';
+{$ELSE}
+  DefEndianNess = 'FPC_LITTLE_ENDIAN';
+{$ENDIF}
 
 Type
 
@@ -126,7 +131,7 @@ begin
        SplitInputFIleOption(S,UN,Opts);
        if CompareText(ChangeFileExt(ExtractFileName(Un),''),AUnitName)=0 then
          begin
-         AInputFile:=FixInputFile(UN)+' '+Opts;
+         AInputFile:=FixInputFile(UN)+' '+Opts+' -d'+Options.EndianNess;
          OSTarget:=FProject.Options.OSTarget;
          CPUTarget:=FProject.Options.CPUTarget;
          FProcessedUnits.Add(UN);
@@ -197,6 +202,7 @@ begin
   FProject.Options.StopOnParseError:=False;
   FProject.Options.CPUTarget:=DefCPUTarget;
   FProject.Options.OSTarget:=DefOSTarget;
+  FProject.Options.EndianNess:=DefEndianNess;
   FProcessedUnits:=TStringList.Create;
   FProjectMacros:=TStringList.Create;
 end;
@@ -243,7 +249,8 @@ begin
       Free;
     end;
   // Output content files
-  Writeln('Content file : ',APackage.ContentFile);
+  if FVerbose then
+    DoLog('Content file : '+APackage.ContentFile);
   if Length(APackage.ContentFile) > 0 then
     Engine.WriteContentFile(APackage.ContentFile);
 end;
@@ -292,13 +299,15 @@ begin
       try
         // get options from input packages
         SplitInputFileOption(APackage.Inputs[i],Cmd,Arg);
+        arg:=Arg+' -d'+Options.EndianNess;
         // make absolute filepath
         Cmd:=FixInputFile(Cmd);
         if FProcessedUnits.IndexOf(Cmd)=-1 then
           begin
           FProcessedUnits.Add(Cmd);
+
           // Parce sources for OS Target
-          //WriteLn(Format('Parcing unit: %s', [ExtractFilenameOnly(Cmd)]));
+          //WriteLn(Format('Parsing unit: %s', [ExtractFilenameOnly(Cmd)]));
           ParseSource(Engine,Cmd+' '+Arg, Options.OSTarget, Options.CPUTarget,[poUseStreams]);
           end;
       except

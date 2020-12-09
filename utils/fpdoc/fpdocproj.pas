@@ -51,6 +51,7 @@ Type
     FCPUTarget: String;
     FDefaultPackageName: String;
     FEmitNotes: Boolean;
+    FEndianNess: String;
     FFormat: String;
     FHidePrivate: Boolean;
     FHideProtected: Boolean;
@@ -69,6 +70,7 @@ Type
   Published
     Property OSTarget : String Read FOSTarget Write FOStarget;
     Property CPUTarget : String Read FCPUTarget Write FCPUTarget;
+    Property EndianNess : String Read FEndianNess Write FEndianNess;
     Property Language : String Read FLanguage Write fLanguage;
     Property Backend : String Read FFormat Write FFormat;
     Property BackendOptions : TStrings Read FBackEndoptions Write SetBackendOptions;
@@ -81,6 +83,7 @@ Type
     Property DefaultPackageName : String Read FDefaultPackageName Write FDefaultPackageName;
     Property DontTrim : Boolean Read FDontTrim Write FDontTrim;
     Property EmitNotes : Boolean Read FEmitNotes Write FEmitNotes;
+
   end;
 
   { TFPDocProject }
