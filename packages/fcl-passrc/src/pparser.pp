@@ -4945,10 +4945,6 @@ var
   Arg: TPasArgument;
   Access: TArgumentAccess;
   ArgType: TPasType;
-  varargs : boolean;
-
-
-
 begin
   LastHadDefaultValue := false;
   while True do
@@ -4960,7 +4956,6 @@ begin
     NextToken;
     if CurToken = tkDotDotDot then
     begin
-      varargs:=True;
       expectToken(endToken);
       Break;
     end else  if CurToken = tkConst then

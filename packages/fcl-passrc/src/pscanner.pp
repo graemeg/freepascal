@@ -1854,7 +1854,6 @@ var
   Code: integer;
   NameStartP: {$ifdef UsePChar}PChar{$else}integer{$endif};
   p, Lvl: integer;
-  NeedBrace : Boolean;
 
 begin
   {$IFDEF VerbosePasDirectiveEval}
@@ -2387,9 +2386,9 @@ constructor TLineReader.Create(const AFilename: string);
 begin
   FFileName:=AFileName;
   if LineEnding=#13 then
-    EOLStyle:=elCR
+    {%H-}EOLStyle:=elCR
   else if LineEnding=#13#10 then
-    EOLStyle:=elCRLF
+    {%H-}EOLStyle:=elCRLF
    else
     EOLStyle:=elLF
 end;
@@ -3648,7 +3647,7 @@ procedure TPascalScanner.HandleIncludeString(Param: String);
 
 var
   NewSourceFile: TLineReader;
-  aString,aLine,aFileName : string;
+  aString,aLine: string;
 
 begin
   Param:=Trim(Param);
@@ -5295,7 +5294,7 @@ begin
   if Sender.MsgType<=mtError then
     begin
     SetCurMsg(Sender.MsgType,Sender.MsgNumber,Sender.MsgPattern,Args);
-    Msg:=Msg+Format('%s(%d,%d) : %s',[FormatPath(FCurFileName),CurRow,CurColumn,FLastMsg]);
+    Msg:=Format('%s(%d,%d) : %s',[FormatPath(FCurFileName),CurRow,CurColumn,FLastMsg]);
     raise EScannerError.Create(Msg);
     end
   else
