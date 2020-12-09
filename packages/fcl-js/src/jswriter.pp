@@ -46,6 +46,7 @@ Type
     FCurElement: TJSElement;
     FCurLine: integer;
     FCurColumn: integer;
+    FLineBreak: string;
     FOnWriting: TTextWriterWriting;
   protected
     Function DoWrite(Const S : TJSWriterString) : Integer; virtual; abstract;
@@ -70,6 +71,7 @@ Type
     Property CurColumn: integer read FCurColumn write FCurColumn;// char index, not codepoint
     Property CurElement: TJSElement read FCurElement write SetCurElement;
     Property OnWriting: TTextWriterWriting read FOnWriting write FOnWriting;
+    Property LineBreak: string read FLineBreak write FLineBreak;
   end;
 
   {$ifdef HasFileWriter}
@@ -652,6 +654,15 @@ const
     p:=h;
   end;
 
+  function SkipToNextLineEnd(const S: TJSString; p: integer): integer;
+  var
+    l: SizeInt;
+  begin
+    l:=length(S);
+    while (p<=l) and not (S[p] in [#10,#13]) do inc(p);
+    Result:=p;
+  end;
+
   function SkipToNextLineStart(const S: TJSString; p: integer): integer;
   var
     l: Integer;
@@ -711,9 +722,11 @@ begin
     GetLineIndent(JS,p); // the first line is already indented, skip
     repeat
       StartP:=p;
-      p:=SkipToNextLineStart(JS,StartP);
+      p:=SkipToNextLineEnd(JS,StartP);
       Write(copy(JS,StartP,p-StartP));
       if p>length(JS) then break;
+      Write(sLineBreak);
+      p:=SkipToNextLineStart(JS,p);
       CurLineIndent:=GetLineIndent(JS,p);
       Write(StringOfChar(FIndentChar,FCurIndent+CurLineIndent-MinIndent));
     until false;
@@ -2017,6 +2030,7 @@ constructor TTextWriter.Create;
 begin
   FCurLine:=1;
   FCurColumn:=1;
+  FLineBreak:=sLineBreak;
 end;
 
 {$ifdef FPC_HAS_CPSTRING}
@@ -2085,7 +2099,7 @@ end;
 
 function TTextWriter.WriteLn(const S: TJSWriterString): Integer;
 begin
-  Result:=Write(S)+Write(sLineBreak);
+  Result:=Write(S)+Write(LineBreak);
 end;
 
 function TTextWriter.Write(const Fmt: TJSWriterString;
