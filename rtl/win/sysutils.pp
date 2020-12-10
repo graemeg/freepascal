@@ -1317,25 +1317,26 @@ end;
 ****************************************************************************}
 
 function SysErrorMessage(ErrorCode: Integer): String;
-const
-  MaxMsgSize = Format_Message_Max_Width_Mask;
 var
-  MsgBuffer: unicodestring;
+  MsgBuffer: PWideChar;
+  Msg: UnicodeString;
   len: longint;
 begin
-  SetLength(MsgBuffer, MaxMsgSize);
-  len := FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM,
+  len := FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM or
+                        FORMAT_MESSAGE_IGNORE_INSERTS or
+                        FORMAT_MESSAGE_ALLOCATE_BUFFER,
                         nil,
                         ErrorCode,
                         MakeLangId(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                        PUnicodeChar(MsgBuffer),
-                        MaxMsgSize,
+                        PWideChar(@MsgBuffer),
+                        0,
                         nil);
   // Remove trailing #13#10
-  if (len > 1) and (MsgBuffer[len - 1] = #13) and (MsgBuffer[len] = #10) then
+  if (len > 1) and (MsgBuffer[len - 2] = #13) and (MsgBuffer[len - 1] = #10) then
     Dec(len, 2);
-  SetLength(MsgBuffer, len);
-  Result := MsgBuffer;
+  SetString(Msg, PUnicodeChar(MsgBuffer), len);
+  LocalFree(HLOCAL(MsgBuffer));
+  Result := Msg;
 end;
 
 {****************************************************************************
