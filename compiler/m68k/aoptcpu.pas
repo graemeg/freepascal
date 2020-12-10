@@ -96,6 +96,24 @@ unit aoptcpu;
           ((opsize = []) or (taicpu(instr).opsize in opsize));
       end;
 
+    function MatchInstruction(const instr : tai;const ops : array of TAsmOp;
+     const opsize : topsizes) : boolean;
+      var
+        op : TAsmOp;
+      begin
+        result:=false;
+        for op in ops do
+          begin
+            if (instr.typ = ait_instruction) and
+               (taicpu(instr).opcode = op) and
+               ((opsize = []) or (taicpu(instr).opsize in opsize)) then
+               begin
+                 result:=true;
+                 exit;
+               end;
+          end;
+      end;
+
     function TCpuAsmOptimizer.MaybeRealConstOperSimplify(var p: tai): boolean;
       var
         tmpint64: int64;
@@ -203,7 +221,23 @@ unit aoptcpu;
     begin
       result:=false;
 
-      if GetNextInstruction(p,next) and 
+      if (taicpu(p).opcode=A_MOVE) and
+        GetNextInstruction(p,next) and
+        MatchInstruction(next,A_TST,[taicpu(p).opsize]) and
+        MatchOperand(taicpu(p).oper[1]^,taicpu(next).oper[0]^) and
+        { for movea, it won't work }
+        not((taicpu(p).oper[1]^.typ=top_reg) and isaddressregister(taicpu(p).oper[1]^.reg)) and
+        GetNextInstruction(next,next2) and
+        MatchInstruction(next2,[A_BXX,A_SXX],[S_NO]) and
+        (taicpu(next2).condition in [C_NE,C_EQ,C_PL,C_MI]) then
+        begin
+          DebugMsg('Optimizer: MOVE, TST, Jxx/Sxx to MOVE, Jxx',p);
+          asml.remove(next);
+          next.free;
+          result:=true;
+          exit;
+        end;
+      if GetNextInstruction(p,next) and
          (next.typ = ait_instruction) and
          (taicpu(next).opcode = taicpu(p).opcode) and
          (taicpu(p).opsize = taicpu(next).opsize) and
