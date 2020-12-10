@@ -1737,7 +1737,10 @@ unit cgcpu;
          srcrefp,dstrefp : treference;
          srcref,dstref : treference;
       begin
-         if (len = 1) or ((len in [2,4]) and (current_settings.cputype <> cpu_mc68000)) then
+         if (len = 1) or
+            ((len in [2,4]) and
+             not needs_unaligned(source.alignment,lentocgsize[len]) and
+             not needs_unaligned(dest.alignment,lentocgsize[len])) then
            begin
              //list.concat(tai_comment.create(strpnew('g_concatcopy: small')));
              a_load_ref_ref(list,lentocgsize[len],lentocgsize[len],source,dest);
