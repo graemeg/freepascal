@@ -44,8 +44,9 @@ uses
          { the left side of an expression is already handled, so we are
            not allowed to do ssl }
          fc_lefthandled,
-         { in block which contains the exit statement }
-         fc_block_with_exit);
+         { in block where the exit statement jumps to an extra code instead of
+           immediately finishing execution of the current routine. }
+         fc_no_direct_exit);
 
        tflowcontrol = set of tenumflowcontrol;
 

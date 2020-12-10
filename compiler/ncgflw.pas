@@ -404,7 +404,7 @@ implementation
       begin
          location_reset(location,LOC_VOID,OS_NO);
 
-         if fc_block_with_exit in flowcontrol then
+         if fc_no_direct_exit in flowcontrol then
            include(flowcontrol,fc_gotolabel);
          include(flowcontrol,fc_exit);
          if assigned(left) then

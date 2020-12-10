@@ -927,6 +927,11 @@ implementation
         exitlabel_asmnode:=casmnode.create_get_position;
         temps_finalized:=false;
         bodyexitcode:=generate_bodyexit_block;
+        { Check if bodyexitcode is not empty }
+        with tstatementnode(tblocknode(bodyexitcode).statements) do
+          if (statement.nodetype<>nothingn) or assigned(next) then
+            { Indicate that the extra code is executed after the exit statement }
+            include(flowcontrol,fc_no_direct_exit);
 
         { Generate procedure by combining init+body+final,
           depending on the implicit finally we need to add
