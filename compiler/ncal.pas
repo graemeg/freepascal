@@ -4014,8 +4014,27 @@ implementation
 
               if methodpointer.nodetype<>typen then
                begin
-                  { Remove all postfix operators }
+                 { if the value a type helper works on is a derefentiation (before
+                   removing postix operators) we need to pass the original pointer
+                   as Self as the Self value might be changed by the helper }
+                 if is_objectpascal_helper(tdef(procdefinition.owner.defowner)) and
+                    not is_implicit_pointer_object_type(tobjectdef(procdefinition.owner.defowner).extendeddef) then
+                   begin
+                     hpt:=methodpointer;
+
+                     hpt:=actualtargetnode(@hpt)^;
+                     if hpt.nodetype=derefn then
+                       begin
+                         tmp:=tderefnode(hpt).left;
+                         tderefnode(hpt).left:=nil;
+                         methodpointer.free;
+                         methodpointer:=tmp;
+                       end;
+                   end;
+
                   hpt:=methodpointer;
+
+                  { Remove all postfix operators }
                   while assigned(hpt) and (hpt.nodetype in [subscriptn,vecn]) do
                     hpt:=tunarynode(hpt).left;
 
@@ -4037,19 +4056,6 @@ implementation
                    because the checks above have to take type conversions into
                    e.g. class reference types account }
                  hpt:=actualtargetnode(@hpt)^;
-
-                 { if the value a type helper works on is a derefentiation we need to
-                   pass the original pointer as Self as the Self value might be
-                   changed by the helper }
-                 if is_objectpascal_helper(tdef(procdefinition.owner.defowner)) and
-                    not is_implicit_pointer_object_type(tobjectdef(procdefinition.owner.defowner).extendeddef) and
-                    (hpt.nodetype=derefn) then
-                   begin
-                     tmp:=tderefnode(hpt).left;
-                     tderefnode(hpt).left:=nil;
-                     methodpointer.free;
-                     methodpointer:=tmp;
-                   end;
 
                  { R.Init then R will be initialized by the constructor,
                    Also allow it for simple loads }
