@@ -48,7 +48,7 @@ unit aoptcpu;
   Implementation
 
     uses
-      cutils, aasmcpu, cgutils, globtype, globals, verbose, cpuinfo, itcpugas;
+      cutils, aasmcpu, cgutils, globtype, globals, verbose, cpuinfo, itcpugas, procinfo, cpupi;
 
 { Range check must be disabled explicitly as conversions between signed and unsigned
   32-bit values are done without explicit typecasts }
@@ -398,7 +398,15 @@ unit aoptcpu;
                 begin
                   if (cs_opt_level4 in current_settings.optimizerswitches) and
                     GetNextInstruction(p,next) and
-                    MatchInstruction(next,A_RTS,[S_NO]) then
+                    MatchInstruction(next,A_RTS,[S_NO]) and
+                    { play safe: if any parameter is pushed on the stack, we cannot to this optimization
+                      as the bottom stack element might be a parameter and not the return address as it is expected
+                      after a call (which we simulate by a jmp)
+
+                      Actually, as in this case the stack pointer is no used as a frame pointer and
+                      there will be more instructions to restore the stack frame before jsr, so this
+                      is unlikedly to happen }
+                    (current_procinfo.maxpushedparasize=0) then
                     begin
                       DebugMsg('Optimizer: JSR, RTS to JMP',p);
                       taicpu(p).opcode:=A_JMP;
