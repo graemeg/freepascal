@@ -5830,7 +5830,8 @@ begin
     begin
     // unit
     FinishSection(CurModule.InterfaceSection);
-    FinishSection(CurModule.ImplementationSection);
+    if CurModule.ImplementationSection<>nil then
+      FinishSection(CurModule.ImplementationSection);
     if CurModule.FinalizationSection<>nil then
       // finalization section finished -> resolve
       ResolveImplBlock(CurModule.FinalizationSection);

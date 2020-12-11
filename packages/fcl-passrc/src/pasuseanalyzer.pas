@@ -2680,6 +2680,7 @@ begin
   {$IFDEF VerbosePasAnalyzer}
   writeln('TPasAnalyzer.EmitSectionHints ',GetElModName(Section));
   {$ENDIF}
+  if Section=nil then exit;
   // initialization, program or library sections
   aModule:=Section.GetModule;
   UsesClause:=Section.UsesClause;
