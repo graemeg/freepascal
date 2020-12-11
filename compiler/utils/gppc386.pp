@@ -82,28 +82,51 @@ end;
 var
    fpcgdbini : text;
    CompilerName : String;
+   FullCompilerName : String;
+{$ifdef linux}
+   argv0 : pchar;
+{$endif}
    Dir,Name,Ext : ShortString;
    GDBError,GDBExitCode,i : longint;
 
 begin
 
   fsplit(paramstr(0),Dir,Name,Ext);
+{$ifdef linux}
+  argv0:=argv[0];
+  if (argv0 <> '') then
+    fsplit(argv0,Dir,Name,Ext);
+{$endif}
   if (length(Name)>3) and (UpCase(Name[1])='G') then
     CompilerName:=Copy(Name,2,255)+Ext
   else
-    CompilerName:=DefaultCompilerName;
+    begin
+      if (Name+ext = DefaultCompilerName) then
+        begin
+          writeln(stderr,'Avoiding infinite recursion with ',Name+Ext,' binary');
+          halt(1);
+        end;
+      CompilerName:=DefaultCompilerName;
+    end;
 
-  CompilerName:=filesearch(CompilerName,Dir+PathSep+GetEnvironmentVariable('PATH'));
+  FullCompilerName:=filesearch(CompilerName,Dir+PathSep+GetEnvironmentVariable('PATH'));
+
+  if FullCompilerName='' then
+    begin
+      writeln(stderr,'Unable to find ',CompilerName,' binary');
+      halt(2);
+    end;
+
 
   { support for info functions directly : used in makefiles }
   if (paramcount=1) and (pos('-i',Paramstr(1))=1) then
     begin
-      Exec(CompilerName,Paramstr(1));
+      Exec(FullCompilerName,Paramstr(1));
       exit;
     end;
 
   {$ifdef EXTDEBUG}
-  writeln(stderr,'Using compiler "',CompilerName,'"');
+  writeln(stderr,'Using compiler "',FullCompilerName,'"');
   flush(stderr);
   {$endif}
   if fsearch(GDBIniTempName,'.')<>'' then
@@ -166,6 +189,11 @@ begin
   if GDBExeName='' then
     GDBExeName:=filesearch(GDBAltExeName,Dir+PathSep+GetEnvironmentVariable('PATH'));
 
+  if GDBExeName='' then
+    begin
+      writeln('Unable to find ',GDBExeName,' and ',GDBAltExeName);
+      halt(3);
+    end;
   AdaptToGDB(CompilerName);
   AdaptToGDB(GDBIniTempName);
   {$ifdef EXTDEBUG}
@@ -173,7 +201,7 @@ begin
 {$ifdef win32}
     '--nw '+
 {$endif win32}
-    '--nx --command='+GDBIniTempName+' '+CompilerName);
+    '--nx --command='+GDBIniTempName+' '+FullCompilerName);
   flush(stderr);
   {$endif}
    DosError:=0;
@@ -181,7 +209,7 @@ begin
 {$ifdef win32}
     '--nw '+
 {$endif win32}
-    '--nx --command='+GDBIniTempName+' '+CompilerName);
+    '--nx --command='+GDBIniTempName+' '+FullCompilerName);
   GDBError:=DosError;
   GDBExitCode:=DosExitCode;
   if (GDBError<>0) or (GDBExitCode<>0) then
