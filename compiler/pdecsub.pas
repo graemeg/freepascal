@@ -2241,7 +2241,8 @@ begin
     end;
 
   if consume_sym(sym,symtable) then
-    if (sym.typ=staticvarsym) and
+    if ((sym.typ=staticvarsym) or
+        (sym.typ=absolutevarsym) and (tabsolutevarsym(sym).abstyp=toaddr)) and
        ((tabstractvarsym(sym).vardef.typ=pointerdef) or
         is_32bitint(tabstractvarsym(sym).vardef)) then
       begin
