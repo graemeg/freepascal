@@ -230,7 +230,7 @@ type
   PProtoEnt = ^TProtoEnt;
   PPProtoEnt = ^PProtoEnt;
 
-{$if defined(LINUX) or defined(OPENBSD)}
+{$if defined(LINUX) or defined(OPENBSD) or defined(DARWIN)}
 {$define FIRST_ADDR_THEN_CANONNAME}
 {$endif}
 {$if defined(FREEBSD) or defined(NETBSD) or defined(DRAGONFLY) or defined(SOLARIS) or defined(ANDROID)}
