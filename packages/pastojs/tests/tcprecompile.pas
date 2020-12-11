@@ -54,6 +54,7 @@ type
   TTestCLI_Precompile = class(TCustomTestCLI_Precompile)
   published
     procedure TestPCU_EmptyUnit;
+    procedure TestPCU_UnitWithoutImplementation;
     procedure TestPCU_UTF8BOM;
     procedure TestPCU_ParamNS;
     procedure TestPCU_Overloads;
@@ -168,6 +169,25 @@ procedure TTestCLI_Precompile.TestPCU_EmptyUnit;
 begin
   AddUnit('src/system.pp',[''],['']);
   AddFile('test1.pas',[
+    'begin',
+    'end.']);
+  CheckPrecompile('test1.pas','src');
+end;
+
+procedure TTestCLI_Precompile.TestPCU_UnitWithoutImplementation;
+begin
+  AddUnit('src/system.pp',[''],['']);
+  AddFile('src/unit1.pas',
+    'unit unit1;'+LineEnding
+    +'interface'+LineEnding
+    +'end.'+LineEnding);
+  AddFile('src/unit2.pas',
+    'unit unit2;'+LineEnding
+    +'interface'+LineEnding
+    +'uses unit1;'+LineEnding
+    +'end.'+LineEnding);
+  AddFile('test1.pas',[
+    'uses unit2;',
     'begin',
     'end.']);
   CheckPrecompile('test1.pas','src');
