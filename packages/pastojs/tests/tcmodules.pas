@@ -831,6 +831,7 @@ type
     Procedure TestRTTI_ClassOf;
     Procedure TestRTTI_Record;
     Procedure TestRTTI_RecordAnonymousArray;
+    Procedure TestRTTI_Record_ClassVarType;
     Procedure TestRTTI_LocalTypes;
     Procedure TestRTTI_TypeInfo_BaseTypes;
     Procedure TestRTTI_TypeInfo_Type_BaseTypes;
@@ -12159,7 +12160,7 @@ begin
     '  };',
     '});',
     'rtl.recNewT(this, "TPoint", function () {',
-    '  rtl.createClass(this, "TBird", this.TObject, function () {',
+    '  rtl.createClass(this, "TBird", $mod.TObject, function () {',
     '    this.DoIt = function () {',
     '      this.DoIt();',
     '      this.DoIt();',
@@ -30342,6 +30343,41 @@ begin
     '$mod.p = $mod.$rtti["TFloatRec"];',
     '$mod.p = $mod.$rtti["TFloatRec"];',
     '$mod.p = $mod.$rtti["TFloatRec.d$a"];',
+    '']));
+end;
+
+procedure TTestModule.TestRTTI_Record_ClassVarType;
+begin
+  WithTypeInfo:=true;
+  StartProgram(false);
+  Add([
+  '{$modeswitch AdvancedRecords}',
+  'type',
+  '  TPoint = record',
+  '    type TProc = procedure(w: word);',
+  '    class var p: TProc;',
+  '  end;',
+  'begin',
+  '']);
+  ConvertProgram;
+  CheckSource('TestRTTI_Record_ClassVarType',
+    LinesToStr([ // statements
+    'rtl.recNewT(this, "TPoint", function () {',
+    '  $mod.$rtti.$ProcVar("TPoint.TProc", {',
+    '    procsig: rtl.newTIProcSig([["w", rtl.word]])',
+    '  });',
+    '  this.p = null;',
+    '  this.$eq = function (b) {',
+    '    return true;',
+    '  };',
+    '  this.$assign = function (s) {',
+    '    return this;',
+    '  };',
+    '  var $r = $mod.$rtti.$Record("TPoint", {});',
+    '  $r.addField("p", $mod.$rtti["TPoint.TProc"]);',
+    '}, true);',
+    '']),
+    LinesToStr([ // $mod.$main
     '']));
 end;
 

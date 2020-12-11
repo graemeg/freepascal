@@ -26320,14 +26320,14 @@ begin
         end
       else if C=TPasConst then
         begin
-        NewEl:=ConvertConst(TPasConst(P),aContext);
+        NewEl:=ConvertConst(TPasConst(P),FuncContext);
         IsComplex:=true;
         end
       else if C=TPasProperty then
-        NewEl:=ConvertProperty(TPasProperty(P),AContext)
+        NewEl:=ConvertProperty(TPasProperty(P),FuncContext)
       else if C.InheritsFrom(TPasType) then
         begin
-        NewEl:=CreateTypeDecl(TPasType(P),aContext);
+        NewEl:=CreateTypeDecl(TPasType(P),FuncContext);
         if (C=TPasRecordType) or (C=TPasClassType) then
           IsComplex:=true;
         end
@@ -26335,7 +26335,7 @@ begin
         begin
         if (C=TPasClassConstructor)
            or (C=TPasClassDestructor) then
-          AddGlobalClassMethod(AContext,TPasProcedure(P))
+          AddGlobalClassMethod(FuncContext,TPasProcedure(P))
         else
           begin
           Methods.Add(P);

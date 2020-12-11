@@ -1496,7 +1496,7 @@ begin
     'var $lt2 = null;',
     'rtl.recNewT(this, "TAnt", function () {',
     '  $lt = this;',
-    '  rtl.recNewT($lt, "TLeg", function () {',
+    '  rtl.recNewT(this, "TLeg", function () {',
     '    $lt1 = this;',
     '    this.l = 0;',
     '    this.$eq = function (b) {',
