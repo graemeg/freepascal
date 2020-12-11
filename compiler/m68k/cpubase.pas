@@ -67,13 +67,13 @@ unit cpubase;
       NR_SP = NR_A7;
 
       { Integer Super registers first and last }
-      first_int_imreg = RS_D7+1;
+      first_int_imreg = 8;
 
       { Float Super register first and last }
-      first_fpu_imreg     = RS_FP7+1;
+      first_fpu_imreg     = 8;
 
       { Integer Super registers first and last }
-      first_addr_imreg = RS_SP+1;
+      first_addr_imreg = 8;
 
       { MM Super register first and last }
       first_mm_supreg    = 0;
