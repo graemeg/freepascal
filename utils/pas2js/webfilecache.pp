@@ -94,7 +94,7 @@ type
     function CreateResolver: TPas2jsFSResolver; override;
     function FileExists(const aFileName: String): Boolean; override;
     function FindCustomJSFileName(const aFilename: string): String; override;
-    function FindIncludeFileName(const aFilename, ModuleDir: string): String; override;
+    function FindIncludeFileName(const aFilename, SrcDir, ModuleDir: string; Mode: TModeSwitch): String; override;
     function FindUnitFileName(const aUnitname, InFilename, ModuleDir: string; out IsForeign: boolean): String; override;
     function FindUnitJSFileName(const aUnitFilename: string): String; override;
     function LoadFile(Filename: string; Binary: boolean=false): TPas2jsFile; override;
@@ -330,7 +330,7 @@ begin
 {$ENDIF}
 end;
 
-function TPas2jsWebFS.FindIncludeFileName(const aFilename, ModuleDir: string
+function TPas2jsWebFS.FindIncludeFileName(const aFilename, SrcDir, ModuleDir: string; Mode: TModeSwitch
   ): String;
 begin
 {$IFDEF VERBOSEWEBCACHE}
