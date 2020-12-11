@@ -40,6 +40,8 @@ unit aoptcpu;
 
         function TryToOptimizeMove(var p: tai): boolean;
         function MaybeRealConstOperSimplify(var p: tai): boolean;
+        function OptPass1LEA(var p: tai): Boolean;
+        function OptPass1MOVEM(var p: tai): Boolean;
 
         { outputs a debug message into the assembler file }
         procedure DebugMsg(const s: string; p: tai);
@@ -48,7 +50,8 @@ unit aoptcpu;
   Implementation
 
     uses
-      cutils, aasmcpu, cgutils, globtype, globals, verbose, cpuinfo, itcpugas, procinfo, cpupi;
+      cutils, aasmcpu, cgutils, globtype, globals, verbose, cpuinfo, itcpugas, procinfo, cpupi,
+      aoptutils;
 
 { Range check must be disabled explicitly as conversions between signed and unsigned
   32-bit values are done without explicit typecasts }
@@ -344,6 +347,79 @@ unit aoptcpu;
         end;
     end;
 
+  function TCpuAsmOptimizer.OptPass1LEA(var p: tai): Boolean;
+    var
+      next: tai;
+    begin
+      Result:=false;
+      { LEA (Ax),Ax is a NOP if src and dest reg is equal, so remove it. }
+      if not assigned(taicpu(p).oper[0]^.ref^.symbol) and
+         (((taicpu(p).oper[0]^.ref^.base = taicpu(p).oper[1]^.reg) and
+         (taicpu(p).oper[0]^.ref^.index = NR_NO)) or
+         ((taicpu(p).oper[0]^.ref^.index = taicpu(p).oper[1]^.reg) and
+         (taicpu(p).oper[0]^.ref^.base = NR_NO))) and
+         (taicpu(p).oper[0]^.ref^.offset = 0) then
+        begin
+          DebugMsg('Optimizer: LEA 0(Ax),Ax removed',p);
+          GetNextInstruction(p,next);
+          asml.remove(p);
+          p.free;
+          p:=next;
+          result:=true;
+          exit;
+        end;
+      if (taicpu(p).oper[1]^.reg=NR_A7) and
+        (taicpu(p).oper[0]^.ref^.base=NR_A7) and
+        (taicpu(p).oper[0]^.ref^.index=NR_NO) and
+        (taicpu(p).oper[0]^.ref^.symbol=nil) and
+        (taicpu(p).oper[0]^.ref^.direction=dir_none) and
+        GetNextInstruction(p,next) and
+        MatchInstruction(next,A_MOVEM,[S_L]) and
+        MatchOpType(taicpu(next),top_regset,top_ref) and
+        ((taicpu(p).oper[0]^.ref^.offset=-(PopCnt(Byte(taicpu(next).oper[0]^.dataregset))+PopCnt(Byte(taicpu(next).oper[0]^.addrregset)))*4)) and
+        (taicpu(next).oper[1]^.ref^.base=NR_A7) and
+        (taicpu(next).oper[1]^.ref^.index=NR_NO) and
+        (taicpu(next).oper[1]^.ref^.symbol=nil) and
+        (taicpu(next).oper[1]^.ref^.direction=dir_none) then
+        begin
+          DebugMsg('Optimizer: LEA, MOVE(M) to MOVE(M) predecremented',p);
+          taicpu(next).oper[1]^.ref^.direction:=dir_dec;
+          asml.remove(p);
+          p.free;
+          p:=next;
+          result:=true;
+          exit;
+        end;
+    end;
+
+  function TCpuAsmOptimizer.OptPass1MOVEM(var p: tai): Boolean;
+    var
+      next: tai;
+    begin
+      Result:=false;
+      if MatchOpType(taicpu(p),top_ref,top_regset) and
+        (taicpu(p).oper[0]^.ref^.base=NR_A7) and
+        (taicpu(p).oper[0]^.ref^.index=NR_NO) and
+        (taicpu(p).oper[0]^.ref^.symbol=nil) and
+        (taicpu(p).oper[0]^.ref^.direction=dir_none) and
+        GetNextInstruction(p,next) and
+        MatchInstruction(next,A_LEA,[S_L]) and
+        (taicpu(next).oper[1]^.reg=NR_A7) and
+        (taicpu(next).oper[0]^.ref^.base=NR_A7) and
+        (taicpu(next).oper[0]^.ref^.index=NR_NO) and
+        (taicpu(next).oper[0]^.ref^.symbol=nil) and
+        (taicpu(next).oper[0]^.ref^.direction=dir_none) and
+        ((taicpu(next).oper[0]^.ref^.offset=(PopCnt(Byte(taicpu(p).oper[1]^.dataregset))+PopCnt(Byte(taicpu(p).oper[1]^.addrregset)))*4)) then
+        begin
+          DebugMsg('Optimizer: MOVE(M), LEA to MOVE(M) postincremented',p);
+          taicpu(p).oper[0]^.ref^.direction:=dir_inc;
+          asml.remove(next);
+          next.free;
+          result:=true;
+          exit;
+        end;
+    end;
+
   function TCpuAsmOptimizer.PeepHoleOptPass1Cpu(var p: tai): boolean;
     var
       next: tai;
@@ -358,22 +434,10 @@ unit aoptcpu;
             case taicpu(p).opcode of
               A_MOVE:
                 result:=TryToOptimizeMove(p);
-              { LEA (Ax),Ax is a NOP if src and dest reg is equal, so remove it. }
+              A_MOVEM:
+                result:=OptPass1MOVEM(p);
               A_LEA:
-                if not assigned(taicpu(p).oper[0]^.ref^.symbol) and
-                   (((taicpu(p).oper[0]^.ref^.base = taicpu(p).oper[1]^.reg) and
-                   (taicpu(p).oper[0]^.ref^.index = NR_NO)) or
-                   ((taicpu(p).oper[0]^.ref^.index = taicpu(p).oper[1]^.reg) and
-                   (taicpu(p).oper[0]^.ref^.base = NR_NO))) and
-                   (taicpu(p).oper[0]^.ref^.offset = 0) then
-                  begin
-                    DebugMsg('Optimizer: LEA 0(Ax),Ax removed',p);
-                    GetNextInstruction(p,next);
-                    asml.remove(p);
-                    p.free;
-                    p:=next;
-                    result:=true;
-                  end;
+                Result:=OptPass1LEA(p);
               { Address register sub/add can be replaced with ADDQ/SUBQ or LEA if the value is in the
                 SmallInt range, which is shorter to encode and faster to execute on most 68k }
               A_SUB,A_SUBA,A_ADD,A_ADDA:
