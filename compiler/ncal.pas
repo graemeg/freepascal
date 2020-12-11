@@ -4238,11 +4238,11 @@ implementation
                                 (hpcurr.parasym.paraloc[callerside].location^.reference.offset>
                                  hp.parasym.paraloc[callerside].location^.reference.offset)) or
                                (paramanager.use_fixed_stack and
-                                (node_complexity(hpcurr)<node_complexity(hp))) then
+                                (node_complexity(hpcurr.left)<node_complexity(hp.left))) then
 {$elseif defined(jvm)}
                             if (hpcurr.parasym.paraloc[callerside].location^.reference.offset<hp.parasym.paraloc[callerside].location^.reference.offset) then
 {$else jvm}
-                            if (node_complexity(hpcurr)<node_complexity(hp)) then
+                            if (node_complexity(hpcurr.left)<node_complexity(hp.left)) then
 {$endif jvm}
                               break;
                           end;
@@ -4259,7 +4259,7 @@ implementation
                   LOC_REGISTER :
                     begin
                       if (hp.parasym.paraloc[callerside].location^.loc<>LOC_REFERENCE) and
-                         (node_complexity(hpcurr)>node_complexity(hp)) then
+                         (node_complexity(hpcurr.left)>node_complexity(hp.left)) then
                         break;
                     end;
                   else
