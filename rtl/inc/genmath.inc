@@ -2087,7 +2087,7 @@ function TDoubleRec.GetFrac : QWord;
 
 procedure TDoubleRec.SetFrac(e : QWord);
   begin
-    Data:=(Data and $7ff0000000000000) or (e and $fffffffffffff);
+    Data:=(Data and $fff0000000000000) or (e and $fffffffffffff);
   end;
 
 {
