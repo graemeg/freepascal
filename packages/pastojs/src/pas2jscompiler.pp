@@ -489,6 +489,7 @@ type
     FHasShownEncoding: boolean;
     FHasShownLogo: boolean;
     FInsertFilenames: TStringList;
+    FAppendFilenames: TStringList;
     FInterfaceType: TPasClassInterfaceType;
     FLog: TPas2jsLogger;
     FMainFile: TPas2jsCompilerFile;
@@ -516,6 +517,7 @@ type
     FResourceStrings : TResourceStringsFile;
     FResourceStringFile :  TP2JSResourceStringFile;
     procedure AddInsertJSFilename(const aFilename: string);
+    procedure AddAppendJSFilename(const aFilename: string);
     Procedure AddNamespaces(const Paths: string; FromCmdLine: boolean);
     procedure AddUnitResourceStrings(aFile: TPas2jsCompilerFile);
     function CreateFileWriter(aFile: TPas2jsCompilerFile; const aFilename: string): TPas2JSMapper;
@@ -538,10 +540,13 @@ type
     function GetWriteDebugLog: boolean;
     function GetWriteMsgToStdErr: boolean;
     function IndexOfInsertJSFilename(const aFilename: string): integer;
+    function IndexOfAppendJSFilename(const aFilename: string): integer;
     procedure InsertCustomJSFiles(aWriter: TPas2JSMapper);
+    procedure AppendCustomJSFiles(aWriter: TPas2JSMapper);
     function LoadUsedUnit(Info: TLoadUnitInfo; Context: TPas2jsCompilerFile): TPas2jsCompilerFile;
     function OnMacroCfgDir(Sender: TObject; var Params: string; Lvl: integer): boolean;
     procedure RemoveInsertJSFilename(const aFilename: string);
+    procedure RemoveAppendJSFilename(const aFilename: string);
     function ResolvedMainJSFile: string;
     procedure SetAllJSIntoMainJS(AValue: Boolean);
     procedure SetConverterGlobals(const AValue: TPasToJSConverterGlobals);
@@ -716,7 +721,8 @@ type
     property WriteMsgToStdErr: boolean read GetWriteMsgToStdErr write SetWriteMsgToStdErr;
     property AllJSIntoMainJS: Boolean Read FAllJSIntoMainJS Write SetAllJSIntoMainJS;
     property ExitCode: longint read GetExitCode write SetExitCode;
-    property InsertFilenames: TStringList read FInsertFilenames;
+    property InsertFilenames : TStringList read FInsertFilenames;
+    Property AppendFileNames : TStringList read FAppendFileNames;
     property MainJSFile: String Read FMainJSFile Write FMainJSFile;
     property MainSrcFile: String Read FMainSrcFile Write FMainSrcFile;
     property SrcMapBaseDir: string read FSrcMapBaseDir write SetSrcMapBaseDir; // includes trailing pathdelim
@@ -2790,6 +2796,8 @@ begin
 
     if isSingleFile or aFile.isMainFile then
       begin
+      if aFile.IsMainFile  then
+        AppendCustomJSFiles(aFileWriter);
       if Assigned(PostProcessorSupport) then
         PostProcessorSupport.CallPostProcessors(aFile.JSFilename,aFileWriter);
 
@@ -3399,9 +3407,13 @@ begin
       else ParamFatal('invalid encoding (-Je) "'+aValue+'"');
       end;
     end;
+  'a', // -Ja<js-file>
   'i': // -Ji<js-file>
     if aValue='' then
-      ParamFatal('missing insertion file "'+aValue+'"')
+      if c='a' then
+        ParamFatal('missing append file "'+aValue+'"')
+      else
+        ParamFatal('missing insertion file "'+aValue+'"')
     else if not Quick then
     begin
       if aValue='' then
@@ -3411,10 +3423,16 @@ begin
         Delete(aValue,length(aValue),1);
         if aValue='' then
           Result:=False
+        else if c='i' then
+          RemoveInsertJSFilename(aValue)
         else
-          RemoveInsertJSFilename(aValue);
-      end else
-        AddInsertJSFilename(aValue);
+          RemoveAppendJSFileName(aValue);
+      end
+      else
+        if C='i' then
+          AddInsertJSFilename(aValue)
+        else
+          addAppendJSFileName(aValue)
     end;
   'l': // -Jl
     SetOption(coLowercase,aValue<>'-');
@@ -4205,6 +4223,7 @@ begin
   FNamespaces:=TStringList.Create;
   FDefines:=TStringList.Create;
   FInsertFilenames:=TStringList.Create;
+  FAppendFileNames:=TStringList.Create;
   FLog:=CreateLog;
   FLog.OnFormatPath:=@FormatPath;
   FParamMacros:=CreateMacroEngine;
@@ -4233,6 +4252,7 @@ destructor TPas2jsCompiler.Destroy;
     FreeAndNil(FNamespaces);
     FreeAndNil(FWPOAnalyzer);
     FreeAndNil(FInsertFilenames);
+    FreeAndNil(FAppendFilenames);
 
     FMainFile:=nil;
     FreeAndNil(FUnits);
@@ -4430,6 +4450,7 @@ begin
   FReadingModules.Clear;
   FFiles.FreeItems;
   FInsertFilenames.Clear;
+  FAppendFIleNames.Clear;
   if Assigned(FPostProcessorSupport) then
     FPostProcessorSupport.Clear;
   FCompilerExe:='';
@@ -4699,6 +4720,7 @@ begin
   w('   -FU<x>: Set unit output path to <x>');
   w('  -I<x>  : Add <x> to include paths, same as -Fi');
   w('  -J...  Extra options of pas2js');
+  w('   -Ja<x>: Append JS file <x> to main JS file. E.g. -Jamap.js. Can be given multiple times. To remove a file name append a minus, e.g. -Jamap.js-.');
   w('   -Jc   : Write all JavaScript concatenated into the output file');
   w('   -Je<x>: Encode messages as <x>.');
   w('     -Jeconsole: Console codepage. This is the default.');
@@ -5173,6 +5195,32 @@ begin
   end;
 end;
 
+procedure TPas2jsCompiler.AppendCustomJSFiles(aWriter: TPas2JSMapper);
+var
+  i: Integer;
+  Filename: String;
+  FileResolver: TPas2jsFSResolver;
+  aFile: TPas2jsFile;
+begin
+  if AppendFilenames.Count=0 then exit;
+  FileResolver:=FS.CreateResolver;
+  try
+    for i:=0 to AppendFilenames.Count-1 do begin
+      Filename:=FS.FindCustomJSFileName(AppendFilenames[i]);
+      if Filename='' then
+      begin
+        Log.LogMsg(nCustomJSFileNotFound,[AppendFilenames[i]]);
+        raise EFileNotFoundError.Create('');
+      end;
+      aFile:=LoadFile(Filename);
+      if aFile.Source='' then continue;
+      aWriter.WriteFile(aFile.Source,Filename);
+    end
+  finally
+    FileResolver.Free;
+  end;
+end;
+
 function TPas2jsCompiler.IndexOfInsertJSFilename(const aFilename: string
   ): integer;
 var
@@ -5186,6 +5234,7 @@ end;
 
 procedure TPas2jsCompiler.AddInsertJSFilename(const aFilename: string);
 begin
+
   if IndexOfInsertJSFilename(aFilename)<0 then
     InsertFilenames.Add(aFilename);
 end;
@@ -5198,6 +5247,35 @@ begin
   if i>=0 then
     InsertFilenames.Delete(i);
 end;
+
+function TPas2jsCompiler.IndexOfAppendJSFilename(const aFilename: string
+  ): integer;
+var
+  i: Integer;
+begin
+  for i:=0 to AppendFilenames.Count-1 do
+    if FS.SameFileName(aFilename,AppendFilenames[i]) then
+      exit(i);
+  Result:=-1;
+end;
+
+
+procedure TPas2jsCompiler.RemoveAppendJSFilename(const aFilename: string);
+var
+  i: Integer;
+begin
+  i:=IndexOfAppendJSFilename(aFilename);
+  if i>=0 then
+    AppendFilenames.Delete(i);
+end;
+
+
+procedure TPas2jsCompiler.AddAppendJSFilename(const aFilename: string);
+begin
+  if IndexOfAppendJSFilename(aFilename)<0 then
+    AppendFilenames.Add(aFilename);
+end;
+
 
 function TPas2jsCompiler.GetResolvedMainJSFile: string;
 
