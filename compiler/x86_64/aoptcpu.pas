@@ -90,6 +90,10 @@ uses
                 A_VMOVUPS,
                 A_VMOVUPD:
                   result:=OptPass1_V_MOVAP(p);
+                A_VMINSS,
+                A_VMINSD,
+                A_VMAXSS,
+                A_VMAXSD,
                 A_VSQRTSD,
                 A_VSQRTSS,
                 A_VDIVSD,
