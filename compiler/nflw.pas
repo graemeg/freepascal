@@ -1592,10 +1592,10 @@ implementation
 {$if defined(i386) or defined(x86_64) or defined(xtensa)}
         { use min/max intrinsic? }
         if (cs_opt_level2 in current_settings.optimizerswitches) and
-           (left.nodetype in [gtn,gten,ltn,lten]) and IsSingleStatement(right,thenstmnt) and IsSingleStatement(t1,elsestmnt) and
-          (thenstmnt.nodetype=assignn) and (elsestmnt.nodetype=assignn) and
+           (left.nodetype in [gtn,gten,ltn,lten]) and IsSingleStatement(right,thenstmnt) and ((t1=nil) or IsSingleStatement(t1,elsestmnt)) and
+          (thenstmnt.nodetype=assignn) and ((t1=nil) or (elsestmnt.nodetype=assignn)) and
           not(might_have_sideeffects(left)) and
-          tassignmentnode(thenstmnt).left.isequal(tassignmentnode(elsestmnt).left) and
+          ((t1=nil) or tassignmentnode(thenstmnt).left.isequal(tassignmentnode(elsestmnt).left)) and
 {$if defined(i386) or defined(x86_64)}
           { for now, limit it to fastmath mode as NaN handling is not implemented properly yet }
           (cs_opt_fastmath in current_settings.optimizerswitches) and
@@ -1610,8 +1610,9 @@ implementation
 {$if defined(xtensa)}
           (CPUXTENSA_HAS_MINMAX in cpu_capabilities[current_settings.cputype]) and is_32bitint(tassignmentnode(thenstmnt).right.resultdef) and
 {$endif defined(xtensa)}
-          ((tassignmentnode(thenstmnt).right.isequal(taddnode(left).left) and (tassignmentnode(elsestmnt).right.isequal(taddnode(left).right))) or
-           (tassignmentnode(thenstmnt).right.isequal(taddnode(left).right) and (tassignmentnode(elsestmnt).right.isequal(taddnode(left).left)))) then
+          ((tassignmentnode(thenstmnt).right.isequal(taddnode(left).left) and ((t1=nil) or (tassignmentnode(elsestmnt).right.isequal(taddnode(left).right)))) or
+           (tassignmentnode(thenstmnt).right.isequal(taddnode(left).right) and ((t1=nil) or (tassignmentnode(elsestmnt).right.isequal(taddnode(left).left))))
+          ) then
           begin
             paratype:=tassignmentnode(thenstmnt).left.resultdef;
             if ((left.nodetype in [gtn,gten]) and
@@ -1644,10 +1645,16 @@ implementation
               Due to the defined behaviour for the min/max intrinsics that in case of a NaN
               the second parameter is taken, we have to put the else part into the second parameter
               thus pass it to the first callparanode call }
-            Result:=cassignmentnode.create_internal(tassignmentnode(thenstmnt).left.getcopy,
-              cinlinenode.create(in_nr,false,ccallparanode.create(tassignmentnode(elsestmnt).right.getcopy,
-                    ccallparanode.create(tassignmentnode(thenstmnt).right.getcopy,nil)))
-              );
+            if t1=nil then
+              Result:=cassignmentnode.create_internal(tassignmentnode(thenstmnt).left.getcopy,
+                cinlinenode.create(in_nr,false,ccallparanode.create(tassignmentnode(thenstmnt).left.getcopy,
+                      ccallparanode.create(tassignmentnode(thenstmnt).right.getcopy,nil)))
+                )
+            else
+              Result:=cassignmentnode.create_internal(tassignmentnode(thenstmnt).left.getcopy,
+                cinlinenode.create(in_nr,false,ccallparanode.create(tassignmentnode(elsestmnt).right.getcopy,
+                      ccallparanode.create(tassignmentnode(thenstmnt).right.getcopy,nil)))
+                );
           end;
 {$endif defined(i386) or defined(x86_64) or defined(xtensa)}
 {$endif llvm}
