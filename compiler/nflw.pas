@@ -1597,8 +1597,6 @@ implementation
           not(might_have_sideeffects(left)) and
           ((t1=nil) or tassignmentnode(thenstmnt).left.isequal(tassignmentnode(elsestmnt).left)) and
 {$if defined(i386) or defined(x86_64)}
-          { for now, limit it to fastmath mode as NaN handling is not implemented properly yet }
-          (cs_opt_fastmath in current_settings.optimizerswitches) and
 {$ifdef i386}
           (((current_settings.fputype>=fpu_sse) and is_single(tassignmentnode(thenstmnt).left.resultdef)) or
            ((current_settings.fputype>=fpu_sse2) and is_double(tassignmentnode(thenstmnt).left.resultdef))
