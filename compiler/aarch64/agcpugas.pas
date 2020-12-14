@@ -229,7 +229,7 @@ unit agcpugas;
                   begin
                     check_offset(seh.data.offset,512);
                     check_reg(seh.data.reg,R_MMREGISTER,min_mm_reg);
-                    writeword($DA00 or ((getsupreg(seh.data.reg)-min_int_reg) shl 6) or ((seh.data.offset shr 3)-1));
+                    writeword($DA00 or ((getsupreg(seh.data.reg)-min_mm_reg) shl 6) or ((seh.data.offset shr 3)-1));
                   end;
                 else
                   internalerror(2020041503);
