@@ -1327,10 +1327,6 @@ begin
   errorcode:=word(Errno);
   erroraddr:=addr;
   errorbase:=frame;
-{$ifdef FPC_HAS_FEATURE_EXCEPTIONS}
-  if ExceptAddrStack <> nil then
-    raise TObject(nil) at addr,frame;
-{$endif FPC_HAS_FEATURE_EXCEPTIONS}
   Halt(errorcode);
 end;
 
