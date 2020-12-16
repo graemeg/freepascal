@@ -386,8 +386,6 @@ interface
         { put numerator in register }
         cgsize:=def_cgsize(resultdef);
         opsize:=TCGSize2OpSize[cgsize];
-        if not (cgsize in [OS_32,OS_S32,OS_64,OS_S64]) then
-          InternalError(2013102702);
         rega:=newreg(R_INTREGISTER,RS_EAX,cgsize2subreg(R_INTREGISTER,cgsize));
         regd:=newreg(R_INTREGISTER,RS_EDX,cgsize2subreg(R_INTREGISTER,cgsize));
 
