@@ -799,7 +799,7 @@ implementation
                   tmpreg1:=GetIntRegister(list,OS_INT);
                   tmpreg2:=GetIntRegister(list,OS_INT);
                   list.concat(taicpu.op_reg_reg(A_MOV,NR_Y,tmpreg1));
-                  list.concat(taicpu.op_reg_const_reg(A_SRL,dst,31,tmpreg2));
+                  list.concat(taicpu.op_reg_const_reg(A_SRA,dst,31,tmpreg2));
                   list.concat(taicpu.op_reg_reg(A_CMP,tmpreg1,tmpreg2));
                   ovloc.loc:=LOC_FLAGS;
                   ovloc.resflags.Init(NR_ICC,F_NE);
