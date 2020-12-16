@@ -3347,14 +3347,14 @@ implementation
 {$if defined(cpu16bitalu)}
                   if (resultdef.size <= 2) and
                     (is_32bitint(left.resultdef) or is_64bitint(left.resultdef)) and
-                    (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn]) and
+                    (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn]) and
                     checkremovebiginttypeconvs(left,foundsint,[s8bit,u8bit,s16bit,u16bit],int64(low(smallint)),high(word)) then
                     doremoveinttypeconvs(left,generrordef,not foundsint,s16inttype,u16inttype);
 {$endif defined(cpu16bitalu)}
 {$if defined(cpu8bitalu)}
                  if (resultdef.size<left.resultdef.size) and
                   is_integer(left.resultdef) and
-                  (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn]) and
+                  (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn]) and
                   checkremovebiginttypeconvs(left,foundsint,[s8bit,u8bit],int64(low(shortint)),high(byte)) then
                     doremoveinttypeconvs(left,generrordef,not foundsint,s8inttype,u8inttype);
 {$endif defined(cpu8bitalu)}
