@@ -1054,12 +1054,12 @@ implementation
             WritePointer := 'nil';
           1..$FFFF:
             WritePointer := '$' + hexstr(PtrUInt(P), 4);
+    {$if sizeof(Pointer) > 4}
           $10000..$FFFFFFFF:
             WritePointer := '$' + hexstr(PtrUInt(P), 8);
-    {$ifdef CPU64}
+    {$ifend sizeof(Pointer) > 4}
           else
-            WritePointer := '$' + hexstr(PtrUInt(P), 16);
-    {$endif CPU64}
+            WritePointer := '$' + hexstr(PtrUInt(P), 2*sizeof(Pointer));
         end;
       end;
 
@@ -1071,12 +1071,12 @@ implementation
             WriteConstPUInt := 'nil';
           1..$FFFF:
             WriteConstPUInt := '$' + hexstr(P, 4);
+    {$if sizeof(TConstPtrUInt) > 4}
           $10000..$FFFFFFFF:
             WriteConstPUInt := '$' + hexstr(P, 8);
-    {$ifdef CPU64BITADDR}
+    {$ifend sizeof(TConstPtrUInt) >= 4}
           else
-            WriteConstPUInt := '$' + hexstr(P, 16);
-    {$endif CPU64BITADDR}
+            WriteConstPUInt := '$' + hexstr(P, 2*sizeof(TConstPtrUInt));
         end;
       end;
 
