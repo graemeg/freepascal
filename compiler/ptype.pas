@@ -1587,7 +1587,7 @@ implementation
             if is_func then
               begin
                 consume(_COLON);
-                single_type(pd.returndef,[]);
+                single_type(pd.returndef,[stoAllowSpecialization]);
               end;
             if try_to_consume(_OF) then
               begin
