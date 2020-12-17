@@ -624,7 +624,7 @@ interface
                 cg.a_op_const_reg_reg(current_asmdata.CurrAsmList,OP_SHR,cgsize,resultdef.size*8-power,hreg2,hreg2);
               end;
             emit_reg_reg(A_ADD,opsize,hreg1,hreg2);
-            emit_const_reg(A_AND,opsize,not((aint(1) shl power)-1),hreg2);
+            cg.a_op_const_reg(current_asmdata.CurrAsmList,OP_AND,cgsize,not((aint(1) shl power)-1),hreg2);
             emit_reg_reg(A_SUB,opsize,hreg2,hreg1);
             location.register:=hreg1;
           end
