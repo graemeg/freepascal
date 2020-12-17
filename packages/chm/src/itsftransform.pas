@@ -435,7 +435,15 @@ initialization
 
 finalization
   if Assigned(LocTransforms) then
+  begin
+    while LocTransforms.Count > 0 do
+    begin
+      if Assigned(PITSFTranformItem(LocTransforms.Items[0])^.Instance) then
+          (PITSFTranformItem(LocTransforms.Items[0])^.Instance).Free;
+      LocTransforms.Delete(0);
+    end;
     LocTransforms.Free;
+  end
 
 end.
 
