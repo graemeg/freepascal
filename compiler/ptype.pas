@@ -41,7 +41,7 @@ interface
     procedure resolve_forward_types;
 
     { reads a string, file type or a type identifier }
-    procedure single_type(var def:tdef;options:TSingleTypeOptions);
+    procedure single_type(out def:tdef;options:TSingleTypeOptions);
 
     { reads any type declaration, where the resulting type will get name as type identifier }
     procedure read_named_type(var def:tdef;const newsym:tsym;genericdef:tstoreddef;genericlist:tfphashobjectlist;parseprocvardir:boolean;var hadtypetoken:boolean);
@@ -454,7 +454,7 @@ implementation
       end;
 
 
-    procedure single_type(var def:tdef;options:TSingleTypeOptions);
+    procedure single_type(out def:tdef;options:TSingleTypeOptions);
        var
          t2 : tdef;
          isspecialize,
