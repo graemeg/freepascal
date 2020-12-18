@@ -123,6 +123,18 @@ begin
        end;
    end;
    test_exception('ln(-1)');
+   try
+   exception_called:=false;
+   i := 0;
+   e := ln(i);
+   except
+     on e : exception do
+       begin
+         Writeln('exception called ',e.message);
+         exception_called:=true;
+       end;
+   end;
+   test_exception('ln(0)');
    if program_has_errors then
      Halt(1);
 end.
