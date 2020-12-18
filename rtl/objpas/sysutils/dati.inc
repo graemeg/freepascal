@@ -352,7 +352,7 @@ end;
 
 Const
   DateTimeToStrFormat : Array[Boolean] of string = ('c','f');
-  
+
 function DateTimeToStr(DateTime: TDateTime; ForceTimeIfZero : Boolean = False): string;
 begin
   DateTimeToString(Result, DateTimeToStrFormat[ForceTimeIfZero], DateTime)
@@ -1089,8 +1089,8 @@ var
         end ;
         '/': StoreStr(@FormatSettings.DateSeparator, 1);
         ':': StoreStr(@FormatSettings.TimeSeparator, 1);
-	'[': if (fdoInterval in Options) then isInterval := true else StoreStr(FormatCurrent, 1);
-	']': if (fdoInterval in Options) then isInterval := false else StoreStr(FormatCurrent, 1);
+        '[': if (fdoInterval in Options) then isInterval := true else StoreStr(FormatCurrent, 1);
+        ']': if (fdoInterval in Options) then isInterval := false else StoreStr(FormatCurrent, 1);
         ' ', 'C', 'D', 'H', 'M', 'N', 'S', 'T', 'Y', 'Z', 'F' {$IFDEF MSWindows}, 'G', 'E'{$ENDIF MSWindows} :
         begin
           while (P < FormatEnd) and (UpCase(P^) = Token) do
@@ -1105,9 +1105,9 @@ var
                 StoreInt(Year mod 100, 2);
             end;
             'M': begin
-	      if isInterval and ((prevlasttoken = 'H') or TimeFlag) then
-	        StoreInt(Minute + (Hour + trunc(abs(DateTime))*24)*60, 0)
-	      else
+              if isInterval and ((prevlasttoken = 'H') or TimeFlag) then
+                StoreInt(Minute + (Hour + trunc(abs(DateTime))*24)*60, 0)
+              else
               if (lastformattoken = 'H') or TimeFlag then
               begin
                 if Count = 1 then
@@ -1137,11 +1137,11 @@ var
                 StoreFormat(FormatSettings.LongDateFormat, Nesting+1, False);
               end ;
             end ;
-            'H': 
-	      if isInterval then
-	        StoreInt(Hour + trunc(abs(DateTime))*24, 0)
-	      else
-	      if Clock12 then
+            'H':
+              if isInterval then
+                StoreInt(Hour + trunc(abs(DateTime))*24, 0)
+              else
+              if Clock12 then
               begin
                 tmp := hour mod 12;
                 if tmp=0 then tmp:=12;
@@ -1152,32 +1152,32 @@ var
               end
               else begin
                 if Count = 1 then
-		  StoreInt(Hour, 0)
+                  StoreInt(Hour, 0)
                 else
                   StoreInt(Hour, 2);
               end;
             'N': if isInterval then
-	           StoreInt(Minute + (Hour + trunc(abs(DateTime))*24)*60, 0)
-		 else
-		 if Count = 1 then
+                   StoreInt(Minute + (Hour + trunc(abs(DateTime))*24)*60, 0)
+                 else
+                 if Count = 1 then
                    StoreInt(Minute, 0)
                  else
                    StoreInt(Minute, 2);
             'S': if isInterval then
-	           StoreInt(Second + (Minute + (Hour + trunc(abs(DateTime))*24)*60)*60, 0)
-	         else 
-	         if Count = 1 then
+                   StoreInt(Second + (Minute + (Hour + trunc(abs(DateTime))*24)*60)*60, 0)
+                 else
+                 if Count = 1 then
                    StoreInt(Second, 0)
                  else
                    StoreInt(Second, 2);
             'Z': if Count = 1 then
                    StoreInt(MilliSecond, 0)
                  else
-		   StoreInt(MilliSecond, 3);
+                   StoreInt(MilliSecond, 3);
             'T': if Count = 1 then
-		   StoreFormat(FormatSettings.ShortTimeFormat, Nesting+1, True)
+                   StoreFormat(FormatSettings.ShortTimeFormat, Nesting+1, True)
                  else
-	           StoreFormat(FormatSettings.LongTimeFormat, Nesting+1, True);
+                   StoreFormat(FormatSettings.LongTimeFormat, Nesting+1, True);
             'C': begin
                    StoreFormat(FormatSettings.ShortDateFormat, Nesting+1, False);
                    if (Hour<>0) or (Minute<>0) or (Second<>0) then
@@ -1203,7 +1203,7 @@ var
                      Count := P - FormatCurrent;
                      StoreString(ConvertEraYearString(Count,Year,Month,Day));
                    end;
-		 prevlasttoken := lastformattoken;  
+                 prevlasttoken := lastformattoken;  
                  lastformattoken:=token;
                end;
              'G':
@@ -1217,12 +1217,12 @@ var
                      Count := P - FormatCurrent;
                      StoreString(ConvertEraString(Count,Year,Month,Day));
                    end;
-		 prevlasttoken := lastformattoken;
+                 prevlasttoken := lastformattoken;
                  lastformattoken:=token;
                end;
 {$endif win32 or win64}
           end;
-	  prevlasttoken := lastformattoken;
+          prevlasttoken := lastformattoken;
           lastformattoken := token;
         end;
         else
