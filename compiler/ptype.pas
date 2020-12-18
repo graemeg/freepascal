@@ -42,6 +42,8 @@ interface
 
     { reads a string, file type or a type identifier }
     procedure single_type(out def:tdef;options:TSingleTypeOptions);
+    { ... but rejects types that cannot be returned from functions }
+    function result_type(options:TSingleTypeOptions):tdef;
 
     { reads any type declaration, where the resulting type will get name as type identifier }
     procedure read_named_type(var def:tdef;const newsym:tsym;genericdef:tstoreddef;genericlist:tfphashobjectlist;parseprocvardir:boolean;var hadtypetoken:boolean);
@@ -644,6 +646,14 @@ implementation
           end;
       end;
 
+
+    function result_type(options:TSingleTypeOptions):tdef;
+      begin
+        single_type(result,options);
+        { file types cannot be function results }
+        if result.typ=filedef then
+          message(parser_e_illegal_function_result);
+      end;
 
     procedure parse_record_members(recsym:tsym);
 
@@ -1587,7 +1597,7 @@ implementation
             if is_func then
               begin
                 consume(_COLON);
-                single_type(pd.returndef,[stoAllowSpecialization]);
+                pd.returndef:=result_type([stoAllowSpecialization]);
               end;
             if try_to_consume(_OF) then
               begin
