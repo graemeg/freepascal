@@ -63,6 +63,7 @@ O [0-7]
 D [0-9]
 H [0-9a-fA-F]
 IDENT [a-zA-Z_]([a-zA-Z0-9_])*
+NSWPSTR ([a-zA-Z0-9_\:\.\\])*
 
 %%
 
@@ -108,6 +109,7 @@ END|}                   return(_END);
                             else
                               return(_ID);
                          end;
+{NSWPSTR}         return(_NSWPSTR);
 [ \t\n\f]               ;
 [,()|^&+-*/%~]          returnc(yytext[1]);
 .                       return(_ILLEGAL);

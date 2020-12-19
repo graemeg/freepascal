@@ -12,7 +12,7 @@ unit rcparser;
 %token _ILLEGAL
 %token _NUMBER _QUOTEDSTR _QUOTEDSTRL
 %token _STR_StringFileInfo _STR_VarFileInfo _STR_Translation
-%token _BEGIN _END _ID
+%token _BEGIN _END _ID _NSWPSTR
 %token _LANGUAGE _CHARACTERISTICS _VERSION _MOVEABLE _FIXED _PURE _IMPURE _PRELOAD _LOADONCALL _DISCARDABLE
 %token _BITMAP _CURSOR _ICON _STRINGTABLE _VERSIONINFO
 %token _ANICURSOR _ANIICON _DLGINCLUDE _DLGINIT _HTML _MANIFEST _MESSAGETABLE _PLUGPLAY _RCDATA _VXD
@@ -20,7 +20,7 @@ unit rcparser;
 %token _ACCELERATORS _DIALOG _DIALOGEX _MENU _MENUEX
 
 %type <rcnumtype> numpos numexpr numeral
-%type <rcstrtype> ident_string long_string
+%type <rcstrtype> ident_string long_string non_whitespace_string long_stringfn
 %type <TResourceDesc> resid rcdataid
 %type <TMemoryStream> raw_data raw_item
 %type <TFileStream> filename_string
@@ -188,8 +188,21 @@ ident_string
     | long_string
     ;
 
+non_whitespace_string
+    : _NSWPSTR                                     { string_new($$, yytext, opt_code_page); }
+    ;
+
 filename_string
-    : long_string                                  { $$:= TFileStream.Create($1.v^, fmOpenRead or fmShareDenyWrite); }
+    : long_stringfn                                { $$:= TFileStream.Create($1.v^, fmOpenRead or fmShareDenyWrite); }
+    | non_whitespace_string                        { $$:= TFileStream.Create($1.v^, fmOpenRead or fmShareDenyWrite); }
+    ;
+
+long_stringfn
+    : _QUOTEDSTR                                   { string_new_uni($$, @strbuf[0], strbuflen, opt_code_page, false); }
+    | _QUOTEDSTRL                                  { string_new_uni($$, @strbuf[0], strbuflen, CP_UTF16, false); }
+    | _STR_StringFileInfo                          { string_new($$, yytext, opt_code_page); }
+    | _STR_VarFileInfo                             { string_new($$, yytext, opt_code_page); }
+    | _STR_Translation                             { string_new($$, yytext, opt_code_page); }
     ;
 
 long_string
