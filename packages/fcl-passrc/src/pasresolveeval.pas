@@ -923,6 +923,7 @@ end;
 
 function UnicodeStrToCaption(const u: UnicodeString; MaxLength: integer
   ): Unicodestring;
+// encode a string as a Pascal string literal using '' and #
 var
   InLit: boolean;
   Len: integer;
@@ -4158,7 +4159,7 @@ function TResExprEvaluator.EvalPrimitiveExprString(Expr: TPrimitiveExpr
   var
     h: RawByteString;
   begin
-    if ((u>255) or (ForceUTF16)) and (Result.Kind=revkString) then
+    if ((u>255) or ForceUTF16) and (Result.Kind=revkString) then
       begin
       // switch to unicodestring
       h:=TResEvalString(Result).S;
@@ -4285,7 +4286,7 @@ begin
           end;
         if p=StartP then
           RaiseInternalError(20170523123806);
-        AddHash(u,false);
+        AddHash(u,(S[StartP]='0') and (u>0));
         end;
       end;
     '^':

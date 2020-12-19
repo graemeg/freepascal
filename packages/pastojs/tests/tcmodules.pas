@@ -7467,6 +7467,7 @@ begin
   '  c:=#$DFFF;', // invalid UTF-16
   '  c:=#$FFFF;', // last UCS-2
   '  c:=high(c);', // last UCS-2
+  '  c:=#269;',
   '']);
   ConvertProgram;
   CheckSource('TestCharConst',
@@ -7497,6 +7498,7 @@ begin
     '$mod.c="\uDFFF";',
     '$mod.c="\uFFFF";',
     '$mod.c="\uFFFF";',
+    '$mod.c = "č";',
     '']));
 end;
 
@@ -7607,9 +7609,11 @@ begin
   '  s:=''"''''"'';',
   '  s:=#$20AC;', // euro
   '  s:=#$10437;', // outside BMP
+  //'  s:=#$F0#$90#$90#$B7;', // as UTF-8
   '  s:=default(string);',
   '  s:=concat(s);',
-  '  s:=concat(s,''a'',s)',
+  '  s:=concat(s,''a'',s);',
+  //'  s:=#0250#269;',
   '']);
   ConvertProgram;
   CheckSource('TestStringConst',
@@ -7631,6 +7635,7 @@ begin
     '$mod.s=''"\''"'';',
     '$mod.s="€";',
     '$mod.s="'#$F0#$90#$90#$B7'";',
+    //'$mod.s="'#$F0#$90#$90#$B7'";',
     '$mod.s="";',
     '$mod.s = $mod.s;',
     '$mod.s = $mod.s.concat("a", $mod.s);',

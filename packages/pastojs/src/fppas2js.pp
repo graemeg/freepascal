@@ -6514,9 +6514,10 @@ function TPas2JSResolver.ExtractPasStringLiteral(El: TPasElement;
   S is a Pascal string literal e.g. 'Line'#10
     ''  empty string
     '''' => "'"
-    #decimal
-    #$hex
+    #decimal   #0..255 is UTF-8 byte, #01..0255 is UTF-16, #256+ is UTF-16
+    #$hex      #$0..$ff is UTF-8 byte, #$01..$0FF is UTF-16, #$100+ is UTF-16
     ^l  l is a letter a-z
+    Invalid UTF-8 sequences give an error
 }
 var
   p, StartP, i, l: integer;
@@ -6544,7 +6545,7 @@ begin
         '''':
           begin
           if p>StartP then
-            Result:=Result+StrToJSString(copy(S,StartP,p-StartP));
+            Result:=Result+StrToJSString(copy(S,StartP,p-StartP)); // todo error on invalid UTF-8 sequence
           inc(p);
           StartP:=p;
           if (p>l) or (S[p]<>'''') then
@@ -6558,10 +6559,11 @@ begin
         end;
       until false;
       if p>StartP then
-        Result:=Result+StrToJSString(copy(S,StartP,p-StartP));
+        Result:=Result+StrToJSString(copy(S,StartP,p-StartP)); // todo error on invalid UTF-8 sequence
       end;
     '#':
       begin
+      // byte or word sequence
       inc(p);
       if p>l then
         RaiseInternalError(20170207155121);
