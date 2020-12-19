@@ -623,8 +623,8 @@ function GetThreadPriorityBoost(hThread: THandle; var DisablePriorityBoost: Bool
 function GetThreadSelectorEntry(hThread: THandle; dwSelector: DWORD; var lpSelectorEntry: TLDTEntry): BOOL; external 'kernel32' name 'GetThreadSelectorEntry';
 function GetThreadTimes(hThread: THandle; var lpCreationTime, lpExitTime, lpKernelTime, lpUserTime: TFileTime): BOOL; external 'kernel32' name 'GetThreadTimes';
 function GetTimeZoneInformation(var lpTimeZoneInformation: TTimeZoneInformation): DWORD; external 'kernel32' name 'GetTimeZoneInformation';
-function GetTimeZoneInformationForYear(wYear: USHORT; lpDynamicTimeZoneInformation: PDynamicTimeZoneInformation;
-  var lpTimeZoneInformation: TTimeZoneInformation): BOOL; external 'kernel32' name 'GetTimeZoneInformationForYear';
+//function GetTimeZoneInformationForYear(wYear: USHORT; lpDynamicTimeZoneInformation: PDynamicTimeZoneInformation;
+//  var lpTimeZoneInformation: TTimeZoneInformation): BOOL; external 'kernel32' name 'GetTimeZoneInformationForYear';
 //function GetTitleBarInfo(hwnd: HWND; var pti: TTitleBarInfo): BOOL;external 'user32' name 'GetTitleBarInfo';
 function GetTokenInformation(TokenHandle: THandle; TokenInformationClass: TTokenInformationClass; TokenInformation: Pointer; TokenInformationLength: DWORD; var ReturnLength: DWORD): BOOL; external 'advapi32' name 'GetTokenInformation';
 function GetUpdateRect(hWnd: HWND; var lpRect: TRect; bErase: BOOL): BOOL; external 'user32' name 'GetUpdateRect';

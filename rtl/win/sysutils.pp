@@ -917,6 +917,12 @@ begin
 end;
 
 
+type
+  TGetTimeZoneInformationForYear = function(wYear: USHORT; lpDynamicTimeZoneInformation: PDynamicTimeZoneInformation;
+    var lpTimeZoneInformation: TTimeZoneInformation): BOOL;stdcall;
+var
+  GetTimeZoneInformationForYear:TGetTimeZoneInformationForYear=nil;
+
 function GetLocalTimeOffset(const DateTime: TDateTime; const InputIsUTC: Boolean; out Offset: Integer): Boolean;
 var
   Year: Integer;
@@ -961,10 +967,11 @@ var
   DSTStart, DSTEnd: TDateTime;
 
 begin
+  if not Assigned(GetTimeZoneInformationForYear) then
+    Exit(False);
   Year := YearOf(DateTime);
   TZInfo := Default(TTimeZoneInformation);
-  // GetTimeZoneInformationForYear is supported only on Vista and newer
-  if not ((Win32MajorVersion>=6) and GetTimeZoneInformationForYear(Year, nil, TZInfo)) then
+  if not GetTimeZoneInformationForYear(Year, nil, TZInfo) then
     Exit(False);
 
   if (TZInfo.StandardDate.Month>0) and (TZInfo.DaylightDate.Month>0) then
@@ -1590,6 +1597,9 @@ begin
      FindExInfoDefaults := FindExInfoStandard; // also searches SFNs. XP only.
   if (Win32MajorVersion>=6) and (Win32MinorVersion>=1) then 
     FindFirstAdditionalFlags := FIND_FIRST_EX_LARGE_FETCH; // win7 and 2008R2+
+  // GetTimeZoneInformationForYear is supported only on Vista and newer
+  if (kernel32dll<>0) and (Win32MajorVersion>=6) then
+    GetTimeZoneInformationForYear:=TGetTimeZoneInformationForYear(GetProcAddress(kernel32dll,'GetTimeZoneInformationForYear'));
 end;
 
 Function GetAppConfigDir(Global : Boolean) : String;
