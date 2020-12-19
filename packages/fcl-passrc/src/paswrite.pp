@@ -1659,7 +1659,7 @@ procedure WritePasFile(AElement: TPasElement; const AFilename: string);
 var
   Stream: TFileStream;
 begin
-  Stream := TFileStream.Create(AFilename, fmCreate);
+  Stream := TFileStream.Create(AFilename, fmCreate or fmShareDenyNone);
   try
     WritePasFile(AElement, Stream);
   finally
