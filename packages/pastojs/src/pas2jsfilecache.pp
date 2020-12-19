@@ -1697,6 +1697,7 @@ var
   {$IFDEF FPC}
   i: Integer;
   l: TMaxPrecInt;
+  FS: TFileStream;
   {$ENDIF}
 begin
   if Assigned(OnWriteFile) then
@@ -1726,7 +1727,12 @@ begin
     end;
     {$ELSE}
     try
-      ms.SaveToFile(Filename);
+      FS:=TFileStream.Create (FileName,fmCreate or fmShareDenyNone);
+      Try
+        ms.SaveToStream(FS);
+      finally
+        FS.free;
+      end;
     except
       on E: Exception do begin
         i:=GetLastOSError;
