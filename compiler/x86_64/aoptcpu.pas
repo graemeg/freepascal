@@ -173,6 +173,8 @@ uses
                   Result:=OptPass2Lea(p);
                 A_SUB:
                   Result:=OptPass2SUB(p);
+                A_ADD:
+                  Result:=OptPass2ADD(p);
                 else
                   ;
               end;
@@ -192,6 +194,8 @@ uses
               case taicpu(p).opcode of
                 A_MOV:
                   Result:=PostPeepholeOptMov(p);
+                A_AND:
+                  Result:=PostPeepholeOptAnd(p);
                 A_MOVSX:
                   Result:=PostPeepholeOptMOVSX(p);
                 A_MOVZX:

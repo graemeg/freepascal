@@ -238,6 +238,8 @@ unit aoptcpu;
               if InsContainsSegRef(taicpu(p)) then
                 exit;
               case taicpu(p).opcode Of
+                A_ADD:
+                  Result:=OptPass2ADD(p);
                 A_Jcc:
                   Result:=OptPass2Jcc(p);
                 A_Lea:
@@ -334,6 +336,8 @@ unit aoptcpu;
                    end;
                 A_TEST, A_OR:
                   Result:=PostPeepholeOptTestOr(p);
+                A_AND:
+                  Result:=PostPeepholeOptAnd(p);
                 A_MOVSX:
                   Result:=PostPeepholeOptMOVSX(p);
                 else
