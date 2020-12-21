@@ -81,7 +81,11 @@ unit esp8266;
       begin
         ReadChar := true;
         ACh := #0;
-        uart_rx_one_char(@ACh);  // check failure?
+        repeat
+          uart_rx_one_char(@ACh);  // check failure?
+          if ACh = #0 then
+            vTaskDelay(1);
+        until ACh <> #0;
       end;
 
 begin
