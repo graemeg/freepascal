@@ -282,6 +282,7 @@ type
     Procedure TestChar_Compare;
     Procedure TestChar_BuiltInProcs;
     Procedure TestStringConst;
+    Procedure TestStringConst_InvalidUTF16;
     Procedure TestStringConstSurrogate;
     Procedure TestString_Length;
     Procedure TestString_Compare;
@@ -983,6 +984,28 @@ var
     end;
   end;
 
+  function HasSpecialChar(s: string): boolean;
+  var
+    i: Integer;
+  begin
+    for i:=1 to length(s) do
+      if s[i] in [#0..#31,#127..#255] then
+        exit(true);
+    Result:=false;
+  end;
+
+  function HashSpecialChars(s: string): string;
+  var
+    i: Integer;
+  begin
+    Result:='';
+    for i:=1 to length(s) do
+      if s[i] in [#0..#31,#127..#255] then
+        Result:=Result+'#'+hexstr(ord(s[i]),2)
+      else
+        Result:=Result+s[i];
+  end;
+
   procedure DiffFound;
   var
     ActLineStartP, ActLineEndP, p, StartPos: PChar;
@@ -1011,8 +1034,12 @@ var
         ActLineEndP:=FindLineEnd(ActualP);
         ActLine:=copy(Actual,ActLineStartP-PChar(Actual)+1,ActLineEndP-ActLineStartP);
         writeln('- ',ActLine);
+        if HasSpecialChar(ActLine) then
+          writeln('- ',HashSpecialChars(ActLine));
         // write expected line
         writeln('+ ',ExpLine);
+        if HasSpecialChar(ExpLine) then
+          writeln('- ',HashSpecialChars(ExpLine));
         // write empty line with pointer ^
         for i:=1 to 2+ExpectedP-StartPos do write(' ');
         writeln('^');
@@ -7609,11 +7636,16 @@ begin
   '  s:=''"''''"'';',
   '  s:=#$20AC;', // euro
   '  s:=#$10437;', // outside BMP
-  //'  s:=#$F0#$90#$90#$B7;', // as UTF-8
+  '  s:=''abc''#$20AC;', // ascii,#
+  '  s:=''ä''#$20AC;', // non ascii,#
+  '  s:=#$20AC''abc'';', // #, ascii
+  '  s:=#$20AC''ä'';', // #, non ascii
   '  s:=default(string);',
   '  s:=concat(s);',
   '  s:=concat(s,''a'',s);',
-  //'  s:=#0250#269;',
+  '  s:=#250#269;',
+  //'  s:=#$2F804;',
+  // ToDo: \uD87E\uDC04 -> \u{2F804}
   '']);
   ConvertProgram;
   CheckSource('TestStringConst',
@@ -7635,10 +7667,47 @@ begin
     '$mod.s=''"\''"'';',
     '$mod.s="€";',
     '$mod.s="'#$F0#$90#$90#$B7'";',
-    //'$mod.s="'#$F0#$90#$90#$B7'";',
+    '$mod.s = "abc€";',
+    '$mod.s = "ä€";',
+    '$mod.s = "€abc";',
+    '$mod.s = "€ä";',
     '$mod.s="";',
     '$mod.s = $mod.s;',
     '$mod.s = $mod.s.concat("a", $mod.s);',
+    '$mod.s = "úč";',
+    '']));
+end;
+
+procedure TTestModule.TestStringConst_InvalidUTF16;
+begin
+  StartProgram(false);
+  Add([
+  'const',
+  '  a: char = #$D87E;',
+  '  b: string = #$D87E;',
+  '  c: string = #$D87E#43;',
+  'begin',
+  '  c:=''abc''#$D87E;',
+  '  c:=#0#1#2;',
+  '  c:=#127;',
+  '  c:=#128;',
+  '  c:=#255;',
+  '  c:=#256;',
+  '']);
+  ConvertProgram;
+  CheckSource('TestStringConst',
+    LinesToStr([
+    'this.a = "\uD87E";',
+    'this.b = "\uD87E";',
+    'this.c = "\uD87E+";',
+    '']),
+    LinesToStr([
+    '$mod.c = "abc\uD87E";',
+    '$mod.c = "\x00\x01\x02";',
+    '$mod.c = "'#127'";',
+    '$mod.c = "'#$c2#$80'";',
+    '$mod.c = "'#$c3#$BF'";',
+    '$mod.c = "'#$c4#$80'";',
     '']));
 end;
 

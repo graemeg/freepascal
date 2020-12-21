@@ -6198,7 +6198,8 @@ begin
   cInterfaceToString:=cTypeConversion+1;
 
   {$IFDEF FPC_HAS_CPSTRING}
-  ExprEvaluator.DefaultStringCodePage:=CP_UTF8;
+  ExprEvaluator.DefaultSourceCodePage:=CP_UTF8;
+  ExprEvaluator.DefaultStringCodePage:=CP_UTF16;
   {$ENDIF}
   FExternalNames:=TPasResHashList.Create;
   StoreSrcColumns:=true;
@@ -6514,10 +6515,10 @@ function TPas2JSResolver.ExtractPasStringLiteral(El: TPasElement;
   S is a Pascal string literal e.g. 'Line'#10
     ''  empty string
     '''' => "'"
-    #decimal   #0..255 is UTF-8 byte, #01..0255 is UTF-16, #256+ is UTF-16
-    #$hex      #$0..$ff is UTF-8 byte, #$01..$0FF is UTF-16, #$100+ is UTF-16
+    #decimal
+    #$hex
     ^l  l is a letter a-z
-    Invalid UTF-8 sequences give an error
+    Note that invalid UTF-8 sequences are checked by the scanner
 }
 var
   p, StartP, i, l: integer;
@@ -6563,7 +6564,7 @@ begin
       end;
     '#':
       begin
-      // byte or word sequence
+      // word sequence
       inc(p);
       if p>l then
         RaiseInternalError(20170207155121);
@@ -6588,7 +6589,6 @@ begin
           end;
         if p=StartP then
           RaiseInternalError(20170207164956);
-        Result:=Result+CodePointToJSString(i);
         end
       else
         begin
@@ -6608,8 +6608,8 @@ begin
           end;
         if p=StartP then
           RaiseInternalError(20170207171148);
-        Result:=Result+CodePointToJSString(i);
         end;
+      Result:=Result+CodePointToJSString(i);
       end;
     '^':
       begin
