@@ -15704,7 +15704,7 @@ begin
       end;
     {$endif}
     revkUnicodeString:
-      if length(TResEvalUTF16(Value).S)=1 then
+      if (length(TResEvalUTF16(Value).S)=1) and (bt in btAllChars) then
         begin
         w:=TResEvalUTF16(Value).S[1];
         {$ifdef FPC_HAS_CPSTRING}

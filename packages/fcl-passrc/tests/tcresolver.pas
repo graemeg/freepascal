@@ -299,7 +299,7 @@ type
     Procedure TestIntegerBoolFail;
     Procedure TestBooleanOperators;
     Procedure TestStringOperators;
-    Procedure TestWideCharOperators;
+    Procedure TestWideCharOperators_DelphiUnicode;
     Procedure TestFloatOperators;
     Procedure TestCAssignments;
     Procedure TestTypeCastBaseTypes;
@@ -2181,6 +2181,7 @@ begin
   Result.OnFindUnit:=@OnPasResolverFindUnit;
   Result.OnLog:=@OnPasResolverLog;
   Result.Hub:=Hub;
+  Result.ExprEvaluator.DefaultSourceCodePage:=CP_UTF8;
   FModules.Add(Result);
 end;
 
@@ -4678,9 +4679,9 @@ begin
   ParseProgram;
 end;
 
-procedure TTestResolver.TestWideCharOperators;
+procedure TTestResolver.TestWideCharOperators_DelphiUnicode;
 begin
-  ResolverEngine.ExprEvaluator.DefaultStringCodePage:=CP_UTF8;
+  ResolverEngine.ExprEvaluator.DefaultStringCodePage:=CP_UTF16;
   ResolverEngine.BaseTypeChar:=btWideChar;
   ResolverEngine.BaseTypeString:=btUnicodeString;
   StartProgram(false);
