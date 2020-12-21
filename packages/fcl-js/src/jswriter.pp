@@ -611,10 +611,9 @@ begin
               begin
               inc(I,2); // surrogate, two char codepoint
               continue;
-              end
-            else
-              // invalid UTF-16, cannot be encoded as UTF-8 -> encode as hex
-              R:=R+'\u'+TJSString(HexStr(ord(c),4));
+              end;
+            // invalid UTF-16, cannot be encoded as UTF-8 -> encode as hex
+            R:=R+'\u'+TJSString(HexStr(ord(S[i]),4));
             end
           else
             // invalid UTF-16 at end of string, cannot be encoded as UTF-8 -> encode as hex
