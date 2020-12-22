@@ -6218,6 +6218,9 @@ unit aoptx86;
               end;
           end;
 
+(*      { Disabled this block because it causes IE201810201 in the m68k cross-compiler
+          on x86-64 at least. Feel free to re-enable after this issue is fixed. (KB) }
+
         { Backward check to determine necessity of and %reg,%reg }
         if (taicpu(p).oper[0]^.typ = top_reg) and
           (taicpu(p).oper[0]^.reg = taicpu(p).oper[1]^.reg) and
@@ -6240,6 +6243,7 @@ unit aoptx86;
             Result := True;
             Exit;
           end;
+*)
 
       end;
 
