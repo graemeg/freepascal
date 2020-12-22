@@ -14,6 +14,7 @@
 
  **********************************************************************}
 {$mode objfpc}
+{$goto on}
 unit cpu;
 
   interface
@@ -41,6 +42,7 @@ unit cpu;
     function MOVBESupport: boolean;inline;
     function F16CSupport: boolean;inline;
     function RDRANDSupport: boolean;inline;
+    function RTMSupport: boolean;inline;
 
     var
       is_sse3_cpu : boolean = false;
@@ -60,12 +62,29 @@ unit cpu;
       _SSE42Support,
       _MOVBESupport,
       _F16CSupport,
-      _RDRANDSupport: boolean;
+      _RDRANDSupport,
+      _RTMSupport: boolean;
 
 
     function InterlockedCompareExchange128(var Target: Int128Rec; NewValue: Int128Rec; Comperand: Int128Rec): Int128Rec;
+      label
+        Lretry;
       begin
-        RunError(217);
+        if _RTMSupport then
+          begin
+            asm
+            Lretry:
+              xbegin Lretry
+            end;
+            Result:=Target;
+            if (Result.Lo=Comperand.Lo) and (Result.Hi=Comperand.Hi) then
+              Target:=NewValue;
+            asm
+              xend
+            end;
+          end
+        else
+          RunError(217);
       end;
 
 
@@ -163,14 +182,16 @@ unit cpu;
                  popl %ebx
               end;
               _AVX2Support:=_AVXSupport and ((_ebx and $20)<>0);
+              _RTMSupport:=((_ebx and $800)<>0);
            end;
       end;
 
 
     function InterlockedCompareExchange128Support : boolean;
       begin
-        { 32 Bit CPUs have no 128 Bit interlocked exchange support }
-        result:=false;
+        { 32 Bit CPUs have no 128 Bit interlocked exchange support,
+          but it can simulated using RTM }
+        result:=_RTMSupport;
       end;
 
 
@@ -231,6 +252,12 @@ unit cpu;
     function RDRANDSupport: boolean;inline;
       begin
         result:=_RDRANDSupport;
+      end;
+
+
+    function RTMSupport: boolean;inline;
+      begin
+        result:=_RTMSupport;
       end;
 
 
