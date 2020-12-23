@@ -176,7 +176,9 @@ type
 
    tfpuflags =
       (FPUX86_HAS_AVXUNIT,
-       FPUX86_HAS_AVX512F
+       FPUX86_HAS_AVX512F,
+       FPUX86_HAS_AVX512VL,
+       FPUX86_HAS_AVX512DQ
       );
 
  const
@@ -205,7 +207,7 @@ type
       { fpu_sse42    } [],
       { fpu_avx      } [FPUX86_HAS_AVXUNIT],
       { fpu_avx2     } [FPUX86_HAS_AVXUNIT],
-      { fpu_avx512   } [FPUX86_HAS_AVXUNIT,FPUX86_HAS_AVX512F]
+      { fpu_avx512   } [FPUX86_HAS_AVXUNIT,FPUX86_HAS_AVX512F,FPUX86_HAS_AVX512VL,FPUX86_HAS_AVX512DQ]
    );
 
 Implementation
