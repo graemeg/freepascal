@@ -16652,7 +16652,27 @@ end;
 
 function TPasResolver.CreateSpecializedTypeName(Item: TPRSpecializedItem): string;
 
+  function Get_ProcName(aProc: TPasProcedure): string; forward;
   function GetTypeName(aType: TPasType): string; forward;
+
+  function GetParentName(El: TPasElement): string;
+  begin
+    if El.Parent is TPasType then
+      Result:=GetTypeName(TPasType(El.Parent))
+    else if El is TPasUnresolvedSymbolRef then
+      Result:='System'
+    else if El.Parent is TPasProcedure then
+      Result:=Get_ProcName(TPasProcedure(El.Parent))
+    else
+      Result:=El.GetModule.Name;
+  end;
+
+  function Get_ProcName(aProc: TPasProcedure): string;
+  begin
+    Result:=GetParentName(aProc);
+    if aProc.Name<>'' then
+      Result:=Result+'.'+aProc.Name;
+  end;
 
   function GetSpecParams(Item: TPRSpecializedItem): string;
   var
@@ -16692,13 +16712,7 @@ function TPasResolver.CreateSpecializedTypeName(Item: TPRSpecializedItem): strin
       end
     else
       begin
-      if aType.Parent is TPasType then
-        Result:=GetTypeName(TPasType(aType.Parent))
-      else if aType is TPasUnresolvedSymbolRef then
-        Result:='System'
-      else
-        Result:=aType.GetModule.Name;
-      Result:=Result+'.'+aType.Name;
+      Result:=GetParentName(aType)+'.'+aType.Name;
       if (aType.CustomData is TPasGenericScope) and (Pos('<',aType.Name)<1) then
         begin
         ChildItem:=TPasGenericScope(aType.CustomData).SpecializedFromItem;
@@ -26738,7 +26752,7 @@ function TPasResolver.CheckTypeCastRes(const FromResolved,
   end;
 
 var
-  ToTypeEl, ToType, FromType, FromTypeEl: TPasType;
+  ToTypeEl, FromTypeEl: TPasType;
   ToTypeBaseType: TResolverBaseType;
   C: TClass;
   ToProcType, FromProcType: TPasProcedureType;
@@ -26763,9 +26777,12 @@ begin
       begin
       if ToTypeEl.CustomData is TResElDataBaseType then
         begin
-        // base type cast, e.g. double(aninteger)
+        // type cast to base type, e.g. double(aninteger)
         if ToTypeEl=FromResolved.LoTypeEl then
           exit(cExact);
+        if (FromResolved.BaseType=btContext)
+            and (FromResolved.LoTypeEl.ClassType=TPasGenericTemplateType) then
+          exit(cExact); // e.g. double(T) -> will be checked when specialized
         ToTypeBaseType:=(ToTypeEl.CustomData as TResElDataBaseType).BaseType;
         if ToTypeBaseType=FromResolved.BaseType then
           Result:=cExact
@@ -26950,6 +26967,9 @@ begin
       // e.g. T(var)
       TemplType:=TPasGenericTemplateType(ToTypeEl);
       FromTypeEl:=FromResolved.LoTypeEl;
+      if (FromTypeEl<>nil)
+          and (FromTypeEl.ClassType=TPasGenericTemplateType) then
+        exit(cExact); // e.g. T(S)  -> will be checked when specialized
       for i:=0 to length(TemplType.Constraints)-1 do
         begin
         ConEl:=TemplType.Constraints[i];
@@ -26984,9 +27004,9 @@ begin
           if (FromResolved.IdentEl is TPasType) then
             RaiseMsg(20170404162604,nCannotTypecastAType,sCannotTypecastAType,[],ErrorEl);
           // type cast  classof(classof-var)  upwards or downwards
-          ToType:=TPasClassOfType(ToTypeEl).DestType;
-          FromType:=TPasClassOfType(FromResolved.LoTypeEl).DestType;
-          Result:=CheckClassesAreRelated(ToType,FromType);
+          ToTypeEl:=TPasClassOfType(ToTypeEl).DestType;
+          FromTypeEl:=TPasClassOfType(FromResolved.LoTypeEl).DestType;
+          Result:=CheckClassesAreRelated(ToTypeEl,FromTypeEl);
           end;
         end
       else if FromResolved.BaseType=btPointer then
@@ -27171,9 +27191,8 @@ begin
             and (ToTypeEl=ToResolved.IdentEl) then
           begin
           // for example  class-of(Self) in a class function
-          ToType:=TPasClassOfType(ToTypeEl).DestType;
-          FromType:=TPasClassType(FromTypeEl);
-          Result:=CheckClassesAreRelated(ToType,FromType);
+          ToTypeEl:=TPasClassOfType(ToTypeEl).DestType;
+          Result:=CheckClassesAreRelated(ToTypeEl,FromTypeEl);
           end;
         end;
       end;

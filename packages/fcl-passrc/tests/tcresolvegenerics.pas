@@ -185,6 +185,7 @@ type
     procedure TestGenMethod_OverloadTypeParamCntObjFPC;
     procedure TestGenMethod_OverloadTypeParamCntDelphi;
     procedure TestGenMethod_OverloadArgs;
+    procedure TestGenMethod_TypeCastParam;
   end;
 
 implementation
@@ -2980,6 +2981,29 @@ begin
   '  if obj.specialize {@B}Run<byte>(5)=6 then ;',
   '']);
   ParseProgram;
+end;
+
+procedure TTestResolveGenerics.TestGenMethod_TypeCastParam;
+begin
+  StartUnit(false);
+  Add([
+  '{$mode delphi}',
+  'interface',
+  'type',
+  '  TObject = class end;',
+  '  TArray<T> = array of T;',
+  '  TBird = class',
+  '    F: TArray<TObject>;',
+  '    procedure Run<S>(a: TArray<S>);',
+  '  end;',
+  'implementation',
+  'procedure TBird.Run<S>(a: TArray<S>);',
+  'begin',
+  '  a:=TArray<S>(a);',
+  //'  F:=TArray<TObject>(a);',
+  'end;',
+  '']);
+  ParseUnit;
 end;
 
 initialization
