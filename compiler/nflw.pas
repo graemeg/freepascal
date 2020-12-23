@@ -1563,6 +1563,7 @@ implementation
         paratype: tdef;
       begin
         result:=nil;
+        elsestmnt:=nil;
         in_nr:=Default(tinlinenumber);
         { optimize constant expressions }
         if (left.nodetype=ordconstn) then
@@ -1590,7 +1591,21 @@ implementation
           end;
 {$ifndef llvm}
 {$if defined(i386) or defined(x86_64) or defined(xtensa)}
-        { use min/max intrinsic? }
+        { use min/max intrinsic?
+          convert (with <op> being <, >, >=, <=
+          if a <op> b then
+            x:=a
+          else
+            x:=b;
+
+          and
+
+          if a <op> b then
+            x:=a;
+
+          into appropriate min/max intrinsics
+
+          }
         if (cs_opt_level2 in current_settings.optimizerswitches) and
            (left.nodetype in [gtn,gten,ltn,lten]) and IsSingleStatement(right,thenstmnt) and ((t1=nil) or IsSingleStatement(t1,elsestmnt)) and
           (thenstmnt.nodetype=assignn) and ((t1=nil) or (elsestmnt.nodetype=assignn)) and
@@ -1608,8 +1623,16 @@ implementation
 {$if defined(xtensa)}
           (CPUXTENSA_HAS_MINMAX in cpu_capabilities[current_settings.cputype]) and is_32bitint(tassignmentnode(thenstmnt).right.resultdef) and
 {$endif defined(xtensa)}
-          ((tassignmentnode(thenstmnt).right.isequal(taddnode(left).left) and ((t1=nil) or (tassignmentnode(elsestmnt).right.isequal(taddnode(left).right)))) or
-           (tassignmentnode(thenstmnt).right.isequal(taddnode(left).right) and ((t1=nil) or (tassignmentnode(elsestmnt).right.isequal(taddnode(left).left))))
+          { the right size of the assignment in the then clause must either }
+
+          { equal to the left ... }                                           { ... and the else clause must be either not exist                 }             { or the else clause exists and the right side of the assignment in the else clause }
+                                                                              { and the left side of the assignment in the then clause must be   }             { must be equal to the right side of the comparison operator                        }
+                                                                              {  equal to the right operand of the comparison operator           }
+          ((tassignmentnode(thenstmnt).right.isequal(taddnode(left).left) and (((t1=nil) and (tassignmentnode(thenstmnt).left.isequal(taddnode(left).right))) or (assigned(elsestmnt) and tassignmentnode(elsestmnt).right.isequal(taddnode(left).right)))) or
+          { ... or right operand of the comparison operator }                 { ... and the else clause must be either not exist                 }             { or the else clause exists and the right side of the assignment in the else clause }
+                                                                              { and the left side of the assignment in the then clause must be   }             { must be equal to the left side of the comparison operator                         }
+                                                                              {  equal to the left operand of the comparison operator            }
+           (tassignmentnode(thenstmnt).right.isequal(taddnode(left).right) and (((t1=nil) and (tassignmentnode(thenstmnt).left.isequal(taddnode(left).left))) or (assigned(elsestmnt) and tassignmentnode(elsestmnt).right.isequal(taddnode(left).left))))
           ) then
           begin
             paratype:=tassignmentnode(thenstmnt).left.resultdef;

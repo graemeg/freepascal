@@ -45,7 +45,7 @@ procedure TestSingle;
   function Min3(a, b: Single): Single; inline;
     begin
       Result := b;
-      if a < b then
+      if a < Result then
         Result := a;
     end;
 
@@ -53,7 +53,7 @@ procedure TestSingle;
   function Max3(a, b: Single): Single; inline;
     begin
       Result := b;
-      if a > b then
+      if a > Result then
         Result := a;
     end;
 
@@ -61,7 +61,7 @@ procedure TestSingle;
   function Min4(a, b: Single): Single; inline;
     begin
       Result := b;
-      if a <= b then
+      if a <= Result then
         Result := a;
     end;
 
@@ -69,7 +69,7 @@ procedure TestSingle;
   function Max4(a, b: Single): Single; inline;
     begin
       Result := b;
-      if a >= b then
+      if a >= Result then
         Result := a;
     end;
 
