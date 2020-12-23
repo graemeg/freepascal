@@ -960,8 +960,7 @@ implementation
 
   function UseAVX512: boolean;
     begin
-      // Result:=(current_settings.fputype in fpu_avx_instructionsets) {$ifndef i8086}or (CPUX86_HAS_AVXUNIT in cpu_capabilities[current_settings.cputype]){$endif i8086};
-      Result:=false;
+      Result:={$ifdef i8086}false{$else i8086}UseAVX and (FPUX86_HAS_AVX512F in fpu_capabilities[current_settings.fputype]){$endif i8086};
     end;
 
 
