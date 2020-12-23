@@ -3002,6 +3002,23 @@ unit aoptx86;
                       check opsize to avoid overflow when left shifting the 1 }
                     if (taicpu(p).oper[0]^.typ=top_const) and (topsize2memsize[taicpu(hp2).opsize]<=63) then
                       taicpu(p).oper[0]^.val:=taicpu(p).oper[0]^.val and ((qword(1) shl topsize2memsize[taicpu(hp2).opsize])-1);
+
+{$ifdef x86_64}
+                    { Be careful of, for example:
+                        movl %reg1,%reg2
+                        addl %reg3,%reg2
+                        movq %reg2,%reg4
+
+                      This will cause problems if the upper 32-bits of %reg3 or %reg4 are non-zero
+                    }
+                    if (taicpu(hp1).opsize = S_L) and (taicpu(hp2).opsize = S_Q) then
+                      begin
+                        taicpu(hp2).changeopsize(S_L);
+                        setsubreg(taicpu(hp2).oper[0]^.reg, R_SUBD);
+                        setsubreg(taicpu(hp2).oper[1]^.reg, R_SUBD);
+                      end;
+{$endif x86_64}
+
                     taicpu(hp1).changeopsize(taicpu(hp2).opsize);
                     taicpu(p).changeopsize(taicpu(hp2).opsize);
                     if taicpu(p).oper[0]^.typ=top_reg then
@@ -6218,9 +6235,6 @@ unit aoptx86;
               end;
           end;
 
-(*      { Disabled this block because it causes IE201810201 in the m68k cross-compiler
-          on x86-64 at least. Feel free to re-enable after this issue is fixed. (KB) }
-
         { Backward check to determine necessity of and %reg,%reg }
         if (taicpu(p).oper[0]^.typ = top_reg) and
           (taicpu(p).oper[0]^.reg = taicpu(p).oper[1]^.reg) and
@@ -6243,7 +6257,6 @@ unit aoptx86;
             Result := True;
             Exit;
           end;
-*)
 
       end;
 
