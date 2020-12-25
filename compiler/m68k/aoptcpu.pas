@@ -380,7 +380,8 @@ unit aoptcpu;
         (taicpu(next).oper[1]^.ref^.base=NR_A7) and
         (taicpu(next).oper[1]^.ref^.index=NR_NO) and
         (taicpu(next).oper[1]^.ref^.symbol=nil) and
-        (taicpu(next).oper[1]^.ref^.direction=dir_none) then
+        (taicpu(next).oper[1]^.ref^.direction=dir_none) and 
+        not (current_settings.cputype in cpu_coldfire) then
         begin
           DebugMsg('Optimizer: LEA, MOVE(M) to MOVE(M) predecremented',p);
           taicpu(next).oper[1]^.ref^.direction:=dir_dec;
@@ -409,7 +410,8 @@ unit aoptcpu;
         (taicpu(next).oper[0]^.ref^.index=NR_NO) and
         (taicpu(next).oper[0]^.ref^.symbol=nil) and
         (taicpu(next).oper[0]^.ref^.direction=dir_none) and
-        ((taicpu(next).oper[0]^.ref^.offset=(PopCnt(Byte(taicpu(p).oper[1]^.dataregset))+PopCnt(Byte(taicpu(p).oper[1]^.addrregset)))*4)) then
+        ((taicpu(next).oper[0]^.ref^.offset=(PopCnt(Byte(taicpu(p).oper[1]^.dataregset))+PopCnt(Byte(taicpu(p).oper[1]^.addrregset)))*4)) and
+        not (current_settings.cputype in cpu_coldfire) then
         begin
           DebugMsg('Optimizer: MOVE(M), LEA to MOVE(M) postincremented',p);
           taicpu(p).oper[0]^.ref^.direction:=dir_inc;
