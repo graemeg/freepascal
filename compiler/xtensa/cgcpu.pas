@@ -688,7 +688,16 @@ implementation
                   if LocalSize<>0 then
                     begin
                       a_reg_alloc(list,NR_STACK_POINTER_REG);
-                      list.concat(taicpu.op_reg_reg_const(A_ADDI,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,-localsize));
+                      { not sure if 32512 is the correct value or if it can be larger }
+                      if Localsize>32512 then
+                        begin
+                          reference_reset(ref,4,[]);
+                          ref.symbol:=create_data_entry(nil,-localsize);
+                          list.concat(taicpu.op_reg_ref(A_L32R,NR_A8,ref));
+                          list.concat(taicpu.op_reg_reg_reg(A_ADD,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,NR_A8));
+                        end
+                      else
+                        list.concat(taicpu.op_reg_reg_const(A_ADDI,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,-localsize));
                     end;
 
                   reference_reset(ref,4,[]);
@@ -703,8 +712,15 @@ implementation
                           ref.base:=NR_A8;
                         end
                       else
-                        { fix me! }
-                        Internalerror(2020031101);
+                        begin
+                          reference_reset(ref,4,[]);
+                          ref.symbol:=create_data_entry(nil,localsize-registerarea);
+                          list.concat(taicpu.op_reg_ref(A_L32R,NR_A8,ref));
+                          list.concat(taicpu.op_reg_reg_reg(A_ADD,NR_A8,NR_A8,NR_STACK_POINTER_REG));
+                          reference_reset(ref,4,[]);
+                          ref.base:=NR_A8;
+                          ref.offset:=registerarea;
+                        end;
                     end;
 
                   if current_procinfo.framepointer<>NR_STACK_POINTER_REG then
@@ -831,8 +847,15 @@ implementation
                               ref.base:=NR_A8;
                             end
                           else
-                            { fix me! }
-                            Internalerror(2020031102);
+                            begin
+                              reference_reset(ref,4,[]);
+                              ref.symbol:=create_data_entry(nil,ref.offset);
+                              list.concat(taicpu.op_reg_ref(A_L32R,NR_A8,ref));
+                              list.concat(taicpu.op_reg_reg_reg(A_ADD,NR_A8,NR_A8,NR_STACK_POINTER_REG));
+                              reference_reset(ref,4,[]);
+                              ref.base:=NR_A8;
+                              ref.offset:=0;
+                            end;
                         end;
 
                       // restore a15 if used
@@ -855,7 +878,16 @@ implementation
                         end;
 
                       // restore stack pointer
-                      list.concat(taicpu.op_reg_reg_const(A_ADDI,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,localsize));
+                      { not sure if 32512 is the correct value or if it can be larger }
+                      if Localsize>32512 then
+                        begin
+                          reference_reset(ref,4,[]);
+                          ref.symbol:=create_data_entry(nil,localsize);
+                          list.concat(taicpu.op_reg_ref(A_L32R,NR_A8,ref));
+                          list.concat(taicpu.op_reg_reg_reg(A_ADD,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,NR_A8));
+                        end
+                      else
+                        list.concat(taicpu.op_reg_reg_const(A_ADDI,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,localsize));
                       a_reg_dealloc(list,NR_STACK_POINTER_REG);
                     end;
                   end;
