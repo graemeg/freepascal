@@ -182,6 +182,10 @@ interface
        { Current assignment node }
        aktassignmentnode : tassignmentnode;
 
+       { Create a node tree to load a variable if symbol is assigned, otherwise an error node.
+         Generates an internalerror if called for an absolutevarsym of the "tovar" kind (those
+         are only supported for expansion in the parser) }
+       function gen_load_var(sym: tabstractvarsym): tnode;
 
 implementation
 
@@ -192,9 +196,31 @@ implementation
       defutil,defcmp,
       cpuinfo,
       htypechk,pass_1,procinfo,paramgr,
-      ncon,nflw,ninl,ncnv,nmem,ncal,nutils,
+      nbas,ncon,nflw,ninl,ncnv,nmem,ncal,nutils,
       cgbase
       ;
+
+
+    function gen_load_var(sym: tabstractvarsym): tnode;
+      begin
+        result:=nil;
+        if assigned(sym) then
+          begin
+            if (sym.typ<>absolutevarsym) or
+               (tabsolutevarsym(sym).abstyp<>tovar) then
+              begin
+                result:=cloadnode.create(sym,sym.owner);
+              end
+            else
+              internalerror(2020122601);
+          end
+        else
+          begin
+            result:=cerrornode.create;
+            CGMessage(parser_e_illegal_expression);
+          end;
+      end;
+
 
 {*****************************************************************************
                              TLOADNODE

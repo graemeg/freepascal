@@ -496,7 +496,7 @@ interface
 
     { generate internal static field name based on regular field name }
     function internal_static_field_name(const fieldname: TSymStr): TSymStr;
-    function get_high_value_sym(vs: tparavarsym):tsym; { marking it as inline causes IE 200311075 during loading from ppu file }
+    function get_high_value_sym(vs: tparavarsym):tabstractvarsym; { marking it as inline causes IE 200311075 during loading from ppu file }
 
     procedure check_hints(const srsym: tsym; const symoptions: tsymoptions; const deprecatedmsg : pshortstring);inline;
     procedure check_hints(const srsym: tsym; const symoptions: tsymoptions; const deprecatedmsg : pshortstring;filepos:tfileposinfo);
@@ -534,9 +534,9 @@ implementation
       end;
 
 
-    function get_high_value_sym(vs: tparavarsym):tsym;
+    function get_high_value_sym(vs: tparavarsym):tabstractvarsym;
       begin
-        result := tsym(vs.owner.Find('high'+vs.name));
+        result := tabstractvarsym(vs.owner.Find('high'+vs.name));
       end;
 
 

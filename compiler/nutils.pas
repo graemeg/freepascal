@@ -78,7 +78,7 @@ interface
     procedure checktreenodetypes(n : tnode;typeset : tnodetypeset);
 
     procedure load_procvar_from_calln(var p1:tnode);
-    function get_local_or_para_sym(const aname: string): tsym;
+    function get_local_or_para_sym(const aname: string): tabstractvarsym;
     function maybe_call_procvar(var p1:tnode;tponly:boolean):boolean;
     function load_high_value_node(vs:tparavarsym):tnode;
     function load_self_node:tnode;
@@ -496,10 +496,12 @@ implementation
       end;
 
 
-    function get_local_or_para_sym(const aname: string): tsym;
+    function get_local_or_para_sym(const aname: string): tabstractvarsym;
       var
-        pd : tprocdef;
+        pd: tprocdef;
+        ressym: tsym;
       begin
+        ressym:=nil;
         result:=nil;
         { is not assigned while parsing a property }
         if not assigned(current_procinfo) then
@@ -509,11 +511,11 @@ implementation
           is run for nested procedures }
         pd:=current_procinfo.procdef;
         repeat
-          result := tsym(pd.localst.Find(aname));
-          if assigned(result) then
+          ressym:=tsym(pd.localst.Find(aname));
+          if assigned(ressym) then
             break;
-          result := tsym(pd.parast.Find(aname));
-          if assigned(result) then
+          ressym:=tsym(pd.parast.Find(aname));
+          if assigned(ressym) then
             break;
           { try the parent of a nested function }
           if assigned(pd.owner.defowner) and
@@ -522,98 +524,60 @@ implementation
           else
             break;
         until false;
+        if assigned(ressym) and
+           not(ressym.typ in [localvarsym,paravarsym]) then
+          internalerror(2020122604);
+        result:=tabstractvarsym(ressym);
       end;
 
 
+
     function load_high_value_node(vs:tparavarsym):tnode;
-      var
-        srsym : tsym;
       begin
-        result:=nil;
-        srsym:=get_high_value_sym(vs);
-        if assigned(srsym) then
-          begin
-            result:=cloadnode.create(srsym,vs.owner);
-            typecheckpass(result);
-          end
-        else
-          CGMessage(parser_e_illegal_expression);
+        result:=gen_load_var(get_high_value_sym(vs));
+        typecheckpass(result);
       end;
 
 
     function load_self_node:tnode;
-      var
-        srsym : tsym;
       begin
-        result:=nil;
-
-        srsym:=get_local_or_para_sym('self');
-        if assigned(srsym) then
-          begin
-            result:=cloadnode.create(srsym,srsym.owner);
-            include(tloadnode(result).loadnodeflags,loadnf_is_self);
-          end
-        else
-          begin
-            result:=cerrornode.create;
-            CGMessage(parser_e_illegal_expression);
-          end;
+        result:=gen_load_var(get_local_or_para_sym('self'));
+        if result.nodetype=loadn then
+          include(tloadnode(result).loadnodeflags,loadnf_is_self)
+        else if result.nodetype<>errorn then
+          internalerror(2020122603);
         typecheckpass(result);
       end;
 
 
     function load_result_node:tnode;
-      var
-        srsym : tsym;
-        pd : tprocdef;
-       begin
-        result:=nil;
-        srsym:=get_local_or_para_sym('result');
-        if assigned(srsym) then
-          result:=cloadnode.create(srsym,srsym.owner)
-        else
-          begin
-            result:=cerrornode.create;
-            CGMessage(parser_e_illegal_expression);
-          end;
+      begin
+        result:=gen_load_var(get_local_or_para_sym('result'));
         typecheckpass(result);
       end;
 
 
     function load_self_pointer_node:tnode;
       var
-        srsym : tsym;
+        srsym : tabstractvarsym;
       begin
-        result:=nil;
         srsym:=get_local_or_para_sym('self');
-        if assigned(srsym) then
+        result:=gen_load_var(srsym);
+        if assigned(srsym) and
+           (is_object(tabstractvarsym(srsym).vardef) or is_record(tabstractvarsym(srsym).vardef)) then
           begin
-            result:=cloadnode.create(srsym,srsym.owner);
-            if is_object(tabstractvarsym(srsym).vardef) or is_record(tabstractvarsym(srsym).vardef) then
-              include(tloadnode(result).loadnodeflags,loadnf_load_addr);
-          end
-        else
-          begin
-            result:=cerrornode.create;
-            CGMessage(parser_e_illegal_expression);
+            if result.nodetype=loadn then
+              include(tloadnode(result).loadnodeflags,loadnf_load_addr)
+            else if result.nodetype<>errorn then
+              internalerror(2020122602);
           end;
         typecheckpass(result);
       end;
 
 
     function load_vmt_pointer_node:tnode;
-      var
-        srsym : tsym;
       begin
-        result:=nil;
-        srsym:=get_local_or_para_sym('vmt');
-        if assigned(srsym) then
-          result:=cloadnode.create(srsym,srsym.owner)
-        else
-          begin
-            result:=cerrornode.create;
-            CGMessage(parser_e_illegal_expression);
-          end;
+        result:=gen_load_var(get_local_or_para_sym('vmt'));
         typecheckpass(result);
       end;
 
