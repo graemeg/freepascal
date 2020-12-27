@@ -99,6 +99,8 @@ implementation
            end
           else if tok='RECORDMAX' then
            b.recordalignmax:=l
+          else if tok='MAXCRECORD' then
+           b.maxCrecordalign:=l
           else { Error }
            UpdateAlignmentStr:=false;
         until false;
