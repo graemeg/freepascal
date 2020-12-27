@@ -229,6 +229,9 @@ interface
     {# Returns true, if def is a currency type }
     function is_currency(def : tdef) : boolean;
 
+    {# Returns true, if def is a comp type (handled by the fpu) }
+    function is_fpucomp(def : tdef) : boolean;
+
     {# Returns true, if def is a single type }
     function is_single(def : tdef) : boolean;
 
@@ -265,7 +268,10 @@ interface
     {# Returns true, if def is a 64 bit integer type }
     function is_64bitint(def : tdef) : boolean;
 
-    {# Returns true, if def is a 64 bit type }
+    {# Returns true, if def is a 64 bit signed integer type }
+    function is_s64bitint(def : tdef) : boolean;
+
+    {# Returns true, if def is a 64 bit ordinal type }
     function is_64bit(def : tdef) : boolean;
 
     { returns true, if def is a longint type }
@@ -407,6 +413,12 @@ implementation
          end;
       end;
 
+
+    function is_fpucomp(def: tdef): boolean;
+      begin
+        result:=(def.typ=floatdef) and
+           (tfloatdef(def).floattype=s64comp);
+      end;
 
     { returns true, if def is a single type }
     function is_single(def : tdef) : boolean;
@@ -1009,10 +1021,17 @@ implementation
          result:=(def.typ=orddef) and (torddef(def).ordtype in [u32bit,s32bit,pasbool32,bool32bit])
       end;
 
+
     { true, if def is a 64 bit int type }
     function is_64bitint(def : tdef) : boolean;
       begin
          is_64bitint:=(def.typ=orddef) and (torddef(def).ordtype in [u64bit,s64bit])
+      end;
+
+
+    function is_s64bitint(def: tdef): boolean;
+      begin
+        is_s64bitint:=(def.typ=orddef) and (torddef(def).ordtype=s64bit)
       end;
 
 

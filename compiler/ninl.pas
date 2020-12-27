@@ -2820,7 +2820,10 @@ implementation
 
     function tinlinenode.pass_typecheck:tnode;
 
-      procedure setfloatresultdef;
+      type
+        tfloattypeset = set of tfloattype;
+
+      function removefloatupcasts(var p: tnode; const floattypes: tfloattypeset): tdef;
         var
           hnode: tnode;
         begin
@@ -2830,25 +2833,54 @@ implementation
             which typechecks the arguments, possibly inserting conversion to valreal.
             To handle smaller types without excess precision, we need to remove
             these extra typecasts. }
-          if (left.nodetype=typeconvn) and
-            (ttypeconvnode(left).left.resultdef.typ=floatdef) and
-            (left.flags*[nf_explicit,nf_internal]=[]) and
-            (tfloatdef(ttypeconvnode(left).left.resultdef).floattype in [s32real,s64real,s80real,sc80real,s128real]) then
+          if (p.nodetype=typeconvn) and
+             (ttypeconvnode(p).left.resultdef.typ=floatdef) and
+             (p.flags*[nf_explicit,nf_internal]=[]) and
+             (tfloatdef(ttypeconvnode(p).left.resultdef).floattype in (floattypes*[s32real,s64real,s80real,sc80real,s128real])) then
             begin
-              hnode:=ttypeconvnode(left).left;
-              ttypeconvnode(left).left:=nil;
-              left.free;
-              left:=hnode;
-              resultdef:=left.resultdef;
+              hnode:=ttypeconvnode(p).left;
+              ttypeconvnode(p).left:=nil;
+              p.free;
+              p:=hnode;
+              result:=p.resultdef;
             end
-          else if (left.resultdef.typ=floatdef) and
-            (tfloatdef(left.resultdef).floattype in [s32real,s64real,s80real,sc80real,s128real]) then
-            resultdef:=left.resultdef
+          else if (p.nodetype=typeconvn) and
+             (p.flags*[nf_explicit,nf_internal]=[]) and
+             (ttypeconvnode(p).left.resultdef.typ=floatdef) and
+             (tfloatdef(ttypeconvnode(p).left.resultdef).floattype in (floattypes*[s64currency,s64comp])) then
+            begin
+              hnode:=ttypeconvnode(p).left;
+              ttypeconvnode(p).left:=nil;
+              p.free;
+              p:=hnode;
+              if is_currency(p.resultdef) then
+                begin
+                  if (nf_is_currency in p.flags) and
+                     (p.nodetype=slashn) and
+                     (taddnode(p).right.nodetype=realconstn) and
+                     (trealconstnode(taddnode(p).right).value_real=10000.0) and
+                     not(nf_is_currency in taddnode(p).left.flags) then
+                   begin
+                     hnode:=taddnode(p).left;
+                     taddnode(p).left:=nil;
+                     p.free;
+                     p:=hnode;
+                   end;
+                end;
+              result:=p.resultdef;
+            end
+          { in case the system helper was declared with overloads for different types,
+            keep those }
+          else if (p.resultdef.typ=floatdef) and
+             (tfloatdef(p.resultdef).floattype in (floattypes*[s32real,s64real,s80real,sc80real,s128real])) then
+            result:=p.resultdef
           else
             begin
-              if (left.nodetype <> ordconstn) then
-                inserttypeconv(left,pbestrealtype^);
-              resultdef:=pbestrealtype^;
+              { for variant parameters; the rest has been converted by the
+                call node already }
+              if not(p.nodetype in [ordconstn,realconstn]) then
+                inserttypeconv(P,pbestrealtype^);
+              result:=p.resultdef
             end;
         end;
 
@@ -3595,18 +3627,29 @@ implementation
                   { on i8086, the int64 result is returned in a var param, because
                     it's too big to fit in a register or a pair of registers. In
                     that case we have 2 parameters and left.nodetype is a callparan. }
-                  if left.nodetype = callparan then
-                    temp_pnode := @tcallparanode(left).left
+                  if left.nodetype=callparan then
+                    temp_pnode:=@tcallparanode(left).left
                   else
-                    temp_pnode := @left;
+                    temp_pnode:=@left;
                   set_varstate(temp_pnode^,vs_read,[vsf_must_be_valid]);
-                  { for direct float rounding, no best real type cast should be necessary }
-                  if not((temp_pnode^.resultdef.typ=floatdef) and
-                         (tfloatdef(temp_pnode^.resultdef).floattype in [s32real,s64real,s80real,sc80real,s128real])) and
-                     { converting an int64 to double on platforms without }
-                     { extended can cause precision loss                  }
-                     not(temp_pnode^.nodetype in [ordconstn,realconstn]) then
-                    inserttypeconv(temp_pnode^,pbestrealtype^);
+                  { on platforms where comp and currency are "type int64", this is
+                    handled via inlined system helpers (-> no need for special
+                    handling of s64currency/s64comp for them) }
+                  if inlinenumber=in_trunc_real then
+                    removefloatupcasts(temp_pnode^,[s32real,s64real,s80real,sc80real,s128real,s64currency,s64comp])
+                  else
+                    removefloatupcasts(temp_pnode^,[s32real,s64real,s80real,sc80real,s128real,s64comp]);
+                  if (inlinenumber=in_trunc_real) and
+                     is_currency(temp_pnode^.resultdef) then
+                    begin
+                      result:=cmoddivnode.create(divn,ctypeconvnode.create_internal(temp_pnode^.getcopy,s64inttype),genintconstnode(10000));
+                      exit;
+                    end
+                  else if is_fpucomp(temp_pnode^.resultdef) then
+                    begin
+                      result:=ctypeconvnode.create_internal(temp_pnode^.getcopy,s64inttype);
+                      exit;
+                    end;
                   resultdef:=s64inttype;
                 end;
 
@@ -3633,7 +3676,7 @@ implementation
                   else
                     temp_pnode := @left;
                   set_varstate(temp_pnode^,vs_read,[vsf_must_be_valid]);
-                  setfloatresultdef;
+                  resultdef:=removefloatupcasts(temp_pnode^,[s32real,s64real,s80real,sc80real,s128real]);
                 end;
 
 {$ifdef SUPPORT_MMX}
