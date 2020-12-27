@@ -890,6 +890,7 @@ type
     Procedure TestAsync_ProcTypeAsyncModMismatchFail;
     Procedure TestAsync_Inherited;
     Procedure TestAsync_ClassInterface;
+    Procedure TestAsync_ClassInterface_AsyncMissmatchFail;
   end;
 
 function LinesToStr(Args: array of const): string;
@@ -32942,8 +32943,18 @@ begin
   '    function _AddRef: longint;',
   '    function _Release: longint;',
   '  end;',
+  'function Say(i: IUnknown): IUnknown; async;',
+  'begin',
+  'end;',
   'function Run: IUnknown; async;',
   'begin',
+  '  Result:=await(Run);',
+  '  Result:=await(Run());',
+  '  Result:=await(Run) as IUnknown;',
+  '  Result:=await(Say(nil));',
+  '  Result:=await(Say(await(Run())));',
+  '  Result:=await(Say(await(Run()) as IUnknown));',
+  '  Result:=await(Say(await(Run()) as IUnknown)) as IUnknown;',
   'end;',
   'procedure Fly;',
   'var p: TJSPromise;',
@@ -32959,8 +32970,25 @@ begin
   CheckSource('TestAsync_ClassInterface',
     LinesToStr([ // statements
     'rtl.createInterface(this, "IUnknown", "{D7ADB0E1-758A-322B-BDDF-21CD521DDFA9}", ["_AddRef", "_Release"], null);',
+    'this.Say = async function (i) {',
+    '  var Result = null;',
+    '  return Result;',
+    '};',
     'this.Run = async function () {',
     '  var Result = null;',
+    '  var $ok = false;',
+    '  try {',
+    '    Result = rtl.setIntfL(Result, await $mod.Run());',
+    '    Result = rtl.setIntfL(Result, await $mod.Run());',
+    '    Result = rtl.setIntfL(Result, rtl.intfAsIntfT(await $mod.Run(), $mod.IUnknown));',
+    '    Result = rtl.setIntfL(Result, await $mod.Say(null));',
+    '    Result = rtl.setIntfL(Result, await $mod.Say(await $mod.Run()));',
+    '    Result = rtl.setIntfL(Result, await $mod.Say(rtl.intfAsIntfT(await $mod.Run(), $mod.IUnknown)));',
+    '    Result = rtl.setIntfL(Result, rtl.intfAsIntfT(await $mod.Say(rtl.intfAsIntfT(await $mod.Run(), $mod.IUnknown)), $mod.IUnknown));',
+    '    $ok = true;',
+    '  } finally {',
+    '    if (!$ok) rtl._Release(Result);',
+    '  };',
     '  return Result;',
     '};',
     'this.Fly = function () {',
@@ -32976,6 +33004,29 @@ begin
   CheckResolverUnexpectedHints();
 end;
 
+procedure TTestModule.TestAsync_ClassInterface_AsyncMissmatchFail;
+begin
+  StartProgram(true,[supTInterfacedObject]);
+  Add([
+  '{$mode objfpc}',
+  '{$modeswitch externalclass}',
+  'type',
+  '  TJSPromise = class external name ''Promise''',
+  '  end;',
+  '  IBird = interface',
+  '    procedure Run;',
+  '  end;',
+  '  TBird = class(TInterfacedObject,IBird)',
+  '    procedure Run; async;',
+  '  end;',
+  'procedure TBird.Run;',
+  'begin',
+  'end;',
+  'begin',
+  '  ']);
+  SetExpectedPasResolverError('procedure type modifier "async" mismatch',nXModifierMismatchY);
+  ConvertProgram;
+end;
 
 Initialization
   RegisterTests([TTestModule]);

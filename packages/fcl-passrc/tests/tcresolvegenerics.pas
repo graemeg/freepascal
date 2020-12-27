@@ -3000,7 +3000,7 @@ begin
   'procedure TBird.Run<S>(a: TArray<S>);',
   'begin',
   '  a:=TArray<S>(a);',
-  //'  F:=TArray<TObject>(a);',
+  '  F:=TArray<TObject>(a);',
   'end;',
   '']);
   ParseUnit;
