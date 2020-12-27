@@ -369,12 +369,6 @@ implementation
 
         if assigned(current_procinfo.procdef.parentfpstruct) then
          begin
-           { we only do this after the code has been parsed because
-             otherwise for-loop counters moved to the struct cause
-             errors; we still do it nevertheless to prevent false
-             "unused" symbols warnings and to assist debug info
-             generation }
-           redirect_parentfpstruct_local_syms(current_procinfo.procdef);
            { finish the parentfpstruct (add padding, ...) }
            finish_parentfpstruct(current_procinfo.procdef);
          end;
@@ -2171,7 +2165,7 @@ implementation
 
             { translate imag. register to their real counter parts
               this is necessary for debuginfo and verbose assembler output
-              when SSA will be implented, this will be more complicated because we've to
+              when SSA will be impelented, this will be more complicated because we've to
               maintain location lists }
             procdef.parast.SymList.ForEachCall(@translate_registers,templist);
             procdef.localst.SymList.ForEachCall(@translate_registers,templist);
@@ -2278,7 +2272,19 @@ implementation
             { insert line debuginfo }
             if (cs_debuginfo in current_settings.moduleswitches) or
                (cs_use_lineinfo in current_settings.globalswitches) then
+             begin
+               { We only do this after the code generated because
+                 otherwise for-loop counters moved to the struct cause
+                 errors. And doing it before optimisation passes have run
+                 causes problems when they manually look up symbols
+                 like result and self (nutils.load_self_node etc). Still
+                 do it nevertheless to to assist debug info generation
+                 (hide original symbols, add absolutevarsyms that redirect
+                  to their new locations in the parentfpstruct) }
+              if assigned(current_procinfo.procdef.parentfpstruct) then
+                redirect_parentfpstruct_local_syms(current_procinfo.procdef);
               current_debuginfo.insertlineinfo(aktproccode);
+             end;
 
             finish_eh;
 

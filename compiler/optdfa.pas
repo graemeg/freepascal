@@ -714,7 +714,8 @@ unit optdfa;
                    ((vo_is_funcret in sym.varoptions) and
                     (current_procinfo.procdef.parast.symtablelevel=sym.owner.symtablelevel)
                    )
-                  ) and not(vo_is_external in sym.varoptions)
+                  ) and not(vo_is_external in sym.varoptions) and
+                  not sym.inparentfpstruct;
         end;
 
       var

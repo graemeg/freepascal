@@ -569,12 +569,6 @@ implementation
        begin
         result:=nil;
         srsym:=get_local_or_para_sym('result');
-        if not assigned(srsym) then
-          begin
-            pd:=current_procinfo.procdef;
-            if assigned(pd.procsym) then
-              srsym:=get_local_or_para_sym(pd.procsym.name);
-          end;
         if assigned(srsym) then
           result:=cloadnode.create(srsym,srsym.owner)
         else
