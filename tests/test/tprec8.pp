@@ -40,19 +40,19 @@ begin
     halt(1);
   r.g := 5;
   if (r.g <> 5) then
-    halt(1);
+    halt(2);
   r.h := 65535;
   if (r.h <> 65535) then
-    halt(1);
+    halt(3);
   r.k := true;
   if not (r.k) then
-    halt(1);
+    halt(4);
   r.j := false;
   if r.j then
-    halt(1);
+    halt(5);
   if b <> 0 then
-    halt(1);
+    halt(6);
   if sizeof(tr) <> 13 then
-    halt(2);
+    halt(7);
 end.
 
