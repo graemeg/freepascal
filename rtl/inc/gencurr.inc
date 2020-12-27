@@ -14,16 +14,16 @@
 
 {$ifdef FPC_CURRENCY_IS_INT64}
 
-    function trunc(c : currency) : int64;
+    function trunc(c : currency) : int64; {$ifdef systeminline} inline; {$endif}
       begin
         { the type conversion includes dividing by 10000 }
         result := int64(c)
       end;
 
 {$ifndef cpujvm}
-    function trunc(c : comp) : int64;
+    function trunc(c : comp) : int64; {$ifdef systeminline} inline; {$endif}
 {$else not cpujvm}
-    function trunc_comp(c : comp) : int64;
+    function trunc_comp(c : comp) : int64; {$ifdef systeminline} inline; {$endif}
 {$endif cpujvm}
       begin
         result := c
@@ -34,27 +34,43 @@
       var
         rem, absrem: currency;
       begin
-        { (int64(tmyrec(c))(+/-)5000) div 10000 can overflow }
         result := int64(c);
         rem := c - currency(result);
-        absrem := rem;
-        if absrem < 0 then
-          absrem := -absrem;
-        if (absrem > 0.5) or
-           ((absrem = 0.5) and
-            (rem > 0)) then
-          if (rem > 0) then
-            inc(result)
-          else
-            dec(result);
+        case softfloat_rounding_mode of
+          rmNearest:
+            begin
+              absrem := abs(rem);
+              if (absrem > 0.5) or
+                 ((absrem = 0.5) and
+                  odd(result)) then
+                if (rem > 0) then
+                  inc(result)
+                else
+                  dec(result)
+            end;
+          rmDown:
+            begin
+              if rem < 0 then
+                dec(result);
+            end;
+          rmUp:
+            begin
+              if rem > 0 then
+                inc(result);
+            end;
+          rmTruncate:
+            begin
+              // result is already ok
+            end;
+        end;
       end;
 {$endif FPUNONE}
 
 
 {$ifndef cpujvm}
-    function round(c : comp) : int64;
+    function round(c : comp) : int64; {$ifdef systeminline} inline; {$endif}
 {$else not cpujvm}
-    function round_comp(c : comp) : int64;
+    function round_comp(c : comp) : int64; {$ifdef systeminline} inline; {$endif}
 {$endif cpujvm}
       begin
         result := c
