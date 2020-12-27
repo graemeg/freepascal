@@ -1257,7 +1257,7 @@ implementation
       else
         begin
           symname:=sym.name;
-          symrealname:=sym.realname;
+          symrealname:=sym.EscapedRealName;
         end;
       result:=search_struct_member(trecorddef(nestedvarsdef),symname);
       if not assigned(result) then
@@ -1330,7 +1330,7 @@ implementation
           sl:=tpropaccesslist.create;
           sl.addsym(sl_load,pd.parentfpstruct);
           sl.addsym(sl_subscript,tfieldvarsym(fsym));
-          aliassym:=cabsolutevarsym.create_ref(lsym.name,tfieldvarsym(fsym).vardef,sl);
+          aliassym:=cabsolutevarsym.create_ref(lsym.EscapedRealName,tfieldvarsym(fsym).vardef,sl);
           { hide the original variable (can't delete, because there
             may be other loadnodes that reference it)
             -- only for locals; hiding parameters changes the

@@ -72,6 +72,7 @@ interface
       TSymEntry = class(TFPHashObject)
       private
          FRealName : {$ifdef symansistr}TSymStr{$else}pshortstring{$endif};
+         function GetEscapedRealName: TSymStr;
          function  GetRealname: TSymStr;
          procedure SetRealname(const ANewName: TSymStr);
       public
@@ -80,6 +81,7 @@ interface
          Owner : TSymtable;
          destructor destroy;override;
          property RealName: TSymStr read GetRealName write SetRealName;
+         property EscapedRealName: TSymStr read GetEscapedRealName;
       end;
 
 {************************************************
@@ -205,6 +207,14 @@ implementation
          internalerror(200611011);
        result:=FRealName;
 {$endif}
+      end;
+
+
+    function TSymEntry.GetEscapedRealName: TSymStr;
+      begin
+        result:=GetRealname;
+        if result=Name then
+          result:='$'+result;
       end;
 
 
