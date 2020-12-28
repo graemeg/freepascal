@@ -15,10 +15,10 @@
 
 // Normally, if an optimized version is available for OS/CPU, that will be used
 // Define to use existing unoptimized implementation
-{ the assembler implementation does not work on darwin }
-{$ifdef darwin}
+{ the i386 assembler implementation does not work on platforms with a fixed stack }
+{$if DEFINED(CPU386) and (defined(darwin) or defined(linux))}
 {$DEFINE SHA1PASCAL}
-{$endif darwin}
+{$endif}
 
 unit sha1;
 {$mode objfpc}{$h+}
