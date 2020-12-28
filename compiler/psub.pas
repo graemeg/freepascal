@@ -2165,7 +2165,7 @@ implementation
 
             { translate imag. register to their real counter parts
               this is necessary for debuginfo and verbose assembler output
-              when SSA will be impelented, this will be more complicated because we've to
+              when SSA will be implemented, this will be more complicated because we've to
               maintain location lists }
             procdef.parast.SymList.ForEachCall(@translate_registers,templist);
             procdef.localst.SymList.ForEachCall(@translate_registers,templist);
