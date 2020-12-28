@@ -4203,6 +4203,7 @@ var
   {$ENDIF}
   begin
     if h='' then exit;
+    //writeln('AddSrc ',length(h),' ',ord(h[1]),' ',stringcodepage(h),' ',defaultsystemcodepage);
     {$ifdef FPC_HAS_CPSTRING}
     OnlyASCII:=true;
     for i:=1 to length(h) do
@@ -4238,9 +4239,14 @@ var
         RaiseNotYetImplemented(20201220222608,Expr);
       else
         begin
-        if Value.OnlyASCII and (Value.S<>'') then
-          SetCodePage(Value.S,TargetCP,false);
-        Value.S:=Value.S+h;
+        if Value.S<>'' then
+        begin
+          if Value.OnlyASCII then
+            SetCodePage(Value.S,TargetCP,false);
+          Value.S:=Value.S+h;
+        end else begin
+          Value.S:=h;
+        end;
         end;
       end;
 

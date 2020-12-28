@@ -2181,6 +2181,7 @@ begin
   Result.OnFindUnit:=@OnPasResolverFindUnit;
   Result.OnLog:=@OnPasResolverLog;
   Result.Hub:=Hub;
+  Result.ExprEvaluator.DefaultStringCodePage:=CP_UTF8;
   Result.ExprEvaluator.DefaultSourceCodePage:=CP_UTF8;
   FModules.Add(Result);
 end;
@@ -14308,7 +14309,6 @@ end;
 
 procedure TTestResolver.TestStaticArrayOfChar;
 begin
-  ResolverEngine.ExprEvaluator.DefaultStringCodePage:=CP_UTF8;
   StartProgram(false);
   Add([
   'type',
@@ -14330,7 +14330,6 @@ end;
 
 procedure TTestResolver.TestStaticArrayOfCharDelphi;
 begin
-  ResolverEngine.ExprEvaluator.DefaultStringCodePage:=CP_UTF8;
   StartProgram(false);
   Add([
   '{$mode delphi}',
