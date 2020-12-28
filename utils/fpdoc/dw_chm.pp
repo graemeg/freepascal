@@ -1,5 +1,10 @@
-{%mainunit dw_html}
-{$IFDEF chmInterface}
+unit dw_chm;
+
+interface
+
+uses Classes, DOM, DOM_HTML,
+    dGlobals, PasTree, dwriter, dw_html, ChmWriter, chmtypes;
+
 type
 
   { TFpDocChmWriter }
@@ -42,7 +47,10 @@ type
     Class Function FileNameExtension : String; override;
     Class procedure SplitImport(var AFilename, ALinkPrefix: String); override;
   end;
-{$ELSE} // implementation
+
+implementation
+
+uses SysUtils, HTMWrite, chmsitemap;
 
 { TFpDocChmWriter }
 
@@ -470,7 +478,7 @@ var
   i: Integer;
   PageDoc: TXMLDocument;
   FileStream: TMemoryStream;
-  FileName: String;
+  IFileName,FileName: String;
   FilePath: String;
 begin
   FileName := Engine.Output;
@@ -520,16 +528,16 @@ begin
 
   //write any found images to CHM stream
   FileStream := TMemoryStream.Create;
-  for i := 0 to FImageFileList.Count - 1 do
+  for iFilename in ImageFileList do
   begin
-{$ifdef imagetest}    DoLog('  adding image: '+FImageFileList[i]); {$endif}
-    if FileExists(FImageFileList[i]) then
+{$ifdef imagetest}    DoLog('  adding image: '+iFileName); {$endif}
+    if FileExists(iFileName) then
     begin
 {$ifdef imagetest}    DoLog(' - found'); {$endif}
-      FileName := ExtractFileName(FImageFileList[i]);
-      FilePath := '/'+FixHTMLpath(ExtractFilePath(FImageFileList[i]));
+      FileName := ExtractFileName(iFileName);
+      FilePath := '/'+FixHTMLpath(ExtractFilePath(iFileName));
 
-      FileStream.LoadFromFile(FImageFileList[i]);
+      FileStream.LoadFromFile(iFileName);
       FChm.AddStreamToArchive(FileName, FilePath, FileStream, True);
       FileStream.Size := 0;
     end
@@ -629,4 +637,8 @@ begin
     end;
 end;
 
-{$ENDIF}
+initialization
+  RegisterWriter(TCHMHTMLWriter,'chm','Compressed HTML file output using fpdoc.css stylesheet.');
+finalization
+  UnRegisterWriter('chm');
+end.

@@ -19,7 +19,7 @@ unit dw_html;
 {$WARN 5024 off : Parameter "$1" not used}
 interface
 
-uses Classes, DOM, DOM_HTML, dGlobals, PasTree, dWriter, ChmWriter, chmtypes;
+uses Classes, DOM, DOM_HTML, dGlobals, PasTree, dWriter;
 
 const
   // Subpage indices for modules
@@ -273,16 +273,15 @@ type
     Property IndexColCount : Integer Read FIndexColCount write FIndexColCount;
     Property BaseImageURL : String Read FBaseImageURL Write FBaseImageURL;
     Property UseMenuBrackets : Boolean Read FUseMenuBrackets write FUseMenuBrackets;
+    Property ImageFileList : TStrings Read FImageFileList;
   end;
 
-  {$DEFINE chmInterface}
-  {$I dw_htmlchm.inc}
-  {$UNDEF chmInterface}
+
+Function FixHTMLpath(S : String) : STring;
 
 implementation
 
-uses SysUtils, XMLRead, HTMWrite, sh_pas, fpdocclasstree,
-  chmsitemap;
+uses SysUtils, XMLRead, HTMWrite, sh_pas, fpdocclasstree;
 
 {$i css.inc}
 {$i plusimage.inc}
@@ -294,7 +293,6 @@ begin
   Result:=StringReplace(S,'\','/',[rfReplaceAll]);
 end;
 
-{$I dw_htmlchm.inc}
 
 procedure TFileAllocator.AllocFilename(AElement: TPasElement;
   ASubindex: Integer);
@@ -3955,9 +3953,8 @@ end;
 initialization
   // Do not localize.
   RegisterWriter(THTMLWriter,'html','HTML output using fpdoc.css stylesheet.');
-  RegisterWriter(TCHMHTMLWriter,'chm','Compressed HTML file output using fpdoc.css stylesheet.');
 
 finalization
   UnRegisterWriter('html');
-  UnRegisterWriter('chm');
+
 end.
