@@ -10993,7 +10993,7 @@ begin
     FoundEl:=GetSpecializedEl(NameExpr,FoundEl,TemplParams);
     if FoundEl is TPasProcedure then
       begin
-      // check if params fit the implicit specialized function
+      // check if params fit the explicit specialized function, e.g. Run<Word>()
       CheckCallProcCompatibility(TPasProcedure(FoundEl).ProcType,Params,true);
       end;
     end
@@ -11007,7 +11007,7 @@ begin
       try
         CheckTemplParams(GenTemplates,InferenceParams);
         FoundEl:=GetSpecializedEl(NameExpr,FoundEl,InferenceParams);
-        // check if params fit the implicit specialized function
+        // check if params fit the implicit specialized function, e.g. Run()
         CheckCallProcCompatibility(TPasProcedure(FoundEl).ProcType,Params,true);
       finally
         ReleaseElementList(InferenceParams{$IFDEF CheckPasTreeRefCount},RefIdInferenceParamsExpr{$ENDIF});
@@ -11034,13 +11034,12 @@ begin
       else
         begin
         // typecast to user type
-        CheckTypeCast(TypeEl,Params,true); // emit warnings
+        CheckTypeCast(TypeEl,Params,true); // emit warnings, and errors for specializations
         end;
     end;
 
   // FoundEl compatible element -> create reference
   Ref:=CreateReference(FoundEl,NameExpr,rraRead);
-
   if FindCallData.StartScope.ClassType=ScopeClass_WithExpr then
     Ref.WithExprScope:=TPasWithExprScope(FindCallData.StartScope);
   FindData:=Default(TPRFindData);
@@ -27255,6 +27254,11 @@ begin
   {$IFDEF VerbosePasResolver}
   writeln('TPasResolver.CheckTypeCastArray From=',GetTypeDescription(FromType),' ToType=',GetTypeDescription(ToType));
   {$ENDIF}
+  if not RaiseOnError then
+    begin
+    if (ToType.GenericTemplateTypes<>nil) and (ToType.GenericTemplateTypes.Count>0) then
+      exit(cCompatible); // is later checked when specialized
+    end;
   StartFromType:=FromType;
   StartToType:=ToType;
   Result:=cIncompatible;
@@ -27284,10 +27288,11 @@ begin
         break; // ToType has more dimensions
         end;
       // have same dimension -> check ElType
+      Include(FromElTypeRes.Flags,rrfReadable);
+      FromElTypeRes.IdentEl:=nil;
       {$IFDEF VerbosePasResolver}
       writeln('TPasResolver.CheckTypeCastArray check ElType From=',GetResolverResultDbg(FromElTypeRes),' To=',GetResolverResultDbg(ToElTypeRes));
       {$ENDIF}
-      Include(FromElTypeRes.Flags,rrfReadable);
       Result:=CheckTypeCastRes(FromElTypeRes,ToElTypeRes,ErrorEl,false);
       break;
       end

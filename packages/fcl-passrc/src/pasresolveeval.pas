@@ -4337,8 +4337,8 @@ var
         begin
         // split into two
         dec(u,$10000);
-        ValueUTF16.S:=ValueUTF16.S+WideChar($D800+(u shr 10));
-        ValueUTF16.S:=ValueUTF16.S+WideChar($DC00+(u and $3ff));
+        ValueUTF16.S:=ValueUTF16.S
+                       +WideChar($D800+(u shr 10))+WideChar($DC00+(u and $3ff));
         end
       else
         ValueUTF16.S:=ValueUTF16.S+WideChar(u);
@@ -4401,6 +4401,7 @@ begin
   Result:=TResEvalUTF16.Create;
   {$endif}
   p:=1;
+  //writeln('TResExprEvaluator.EvalPrimitiveExprString ',GetObjPath(Expr),' ',Expr.SourceFilename,' ',Expr.SourceLinenumber div 2048,' S=[',S,']');
   while p<=l do
     case S[p] of
     {$ifdef UsePChar}

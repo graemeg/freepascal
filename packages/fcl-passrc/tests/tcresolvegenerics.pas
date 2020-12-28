@@ -2991,6 +2991,7 @@ begin
   'interface',
   'type',
   '  TObject = class end;',
+  '  TAnt = class end;',
   '  TArray<T> = array of T;',
   '  TBird = class',
   '    F: TArray<TObject>;',
@@ -3002,6 +3003,9 @@ begin
   '  a:=TArray<S>(a);',
   '  F:=TArray<TObject>(a);',
   'end;',
+  'var B: TBird;',
+  'initialization',
+  '  B.Run<TAnt>(nil);',
   '']);
   ParseUnit;
 end;
