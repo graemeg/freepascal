@@ -1,14 +1,10 @@
 {$ASSERTIONS ON}
-{$packrecords c}
-{$push}
-{$codealign recordmin=16}
 
 type
   tm128 = record
     case byte of
       1 : (m128_f32 : array[0..3] of single;)
-  end;
-{$pop}
+  end align 16;
 
 type
   tm128_unaligned = record
