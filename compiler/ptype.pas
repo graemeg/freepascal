@@ -992,6 +992,7 @@ implementation
          old_parse_generic: boolean;
          recst: trecordsymtable;
          hadgendummy : boolean;
+         alignment: Integer;
       begin
          old_current_structdef:=current_structdef;
          old_current_genericdef:=current_genericdef;
@@ -1063,6 +1064,14 @@ implementation
                add_typedconst_init_routine(current_structdef);
              consume(_END);
             end;
+         if (token=_ID) and (pattern='ALIGN') then
+           begin
+             consume(_ID);
+             alignment:=get_intconst.svalue;
+             if not(alignment in [1,2,4,8,16,32,64]) then
+             else
+               recst.recordalignment:=shortint(alignment);
+           end;
          { make the record size aligned (has to be done before inserting the
            parameters, because that may depend on the record's size) }
          recst.addalignmentpadding;
