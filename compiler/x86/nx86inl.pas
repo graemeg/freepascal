@@ -651,7 +651,7 @@ implementation
            LOC_MMREGISTER,LOC_CMMREGISTER:
              begin
                location:=lnode.location;
-               hlcg.location_force_fpureg(current_asmdata.CurrAsmList,location,resultdef,false);
+               hlcg.location_force_fpureg(current_asmdata.CurrAsmList,location,lnode.resultdef,false);
              end;
            else
              internalerror(309991);
