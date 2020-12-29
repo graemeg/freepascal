@@ -508,20 +508,32 @@ unit optdfa;
 
             exitn:
               begin
-                if not(is_void(current_procinfo.procdef.returndef)) then
+                { in case of inlining, an exit node can have a successor, in this case, we do not have to
+                  use the faked resultnode }
+                if assigned(node.successor) then
+                  begin
+                    l:=node.optinfo^.life;
+                    DFASetIncludeSet(l,node.successor.optinfo^.life);
+                    UpdateLifeInfo(node,l);
+                  end
+                else if assigned(resultnode) and (resultnode.nodetype<>nothingn) then
                   begin
                     if not(assigned(node.optinfo^.def)) and
                        not(assigned(node.optinfo^.use)) then
                       begin
                         if assigned(texitnode(node).left) then
                           begin
-                            node.optinfo^.def:=resultnode.optinfo^.def;
+{                           this should never happen as
+                            texitnode.pass_typecheck converts the left node into a separate node already
+
+                             node.optinfo^.def:=resultnode.optinfo^.def;
 
                             dfainfo.use:=@node.optinfo^.use;
                             dfainfo.def:=@node.optinfo^.def;
                             dfainfo.map:=map;
                             foreachnodestatic(pm_postprocess,texitnode(node).left,@AddDefUse,@dfainfo);
-                            calclife(node);
+                            calclife(node); }
+                            Internalerror(2020122901);
                           end
                         else
                           begin

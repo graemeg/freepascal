@@ -163,11 +163,12 @@ unit optutils;
       var
         Continuestack : TFPList;
         Breakstack : TFPList;
+        Exitsuccessor: TNode;
       { sets the successor nodes of a node tree block
         returns the first node of the tree if it's a controll flow node }
       function DoSet(p : tnode;succ : tnode) : tnode;
         var
-          hp1,hp2 : tnode;
+          hp1,hp2, oldexitsuccessor: tnode;
           i : longint;
         begin
           result:=nil;
@@ -203,11 +204,15 @@ unit optutils;
             blockn:
               begin
                 result:=p;
+                oldexitsuccessor:=Exitsuccessor;
+                if nf_block_with_exit in p.flags then
+                  Exitsuccessor:=succ;
                 DoSet(tblocknode(p).statements,succ);
                 if assigned(tblocknode(p).statements) then
                   p.successor:=tblocknode(p).statements
                 else
                   p.successor:=succ;
+                Exitsuccessor:=oldexitsuccessor;
               end;
             forn:
               begin
@@ -288,7 +293,7 @@ unit optutils;
             exitn:
               begin
                 result:=p;
-                p.successor:=nil;
+                p.successor:=Exitsuccessor;
               end;
             casen:
               begin
@@ -337,6 +342,7 @@ unit optutils;
       begin
         Breakstack:=TFPList.Create;
         Continuestack:=TFPList.Create;
+        Exitsuccessor:=nil;
         DoSet(p,last);
         Continuestack.Free;
         Breakstack.Free;
