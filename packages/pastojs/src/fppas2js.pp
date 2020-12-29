@@ -2399,6 +2399,7 @@ const
   TempRefSetPathName = 's';
   TempRefParamName = 'a';
   IdentChars = ['0'..'9', 'A'..'Z', 'a'..'z','_'];
+  AwaitSignature2 = 'function await(aType,TJSPromise):aType';
 
 function CodePointToJSString(u: longword): TJSString;
 begin
@@ -5956,12 +5957,10 @@ end;
 
 function TPas2JSResolver.BI_AWait_OnGetCallCompatibility(
   Proc: TResElDataBuiltInProc; Expr: TPasExpr; RaiseOnError: boolean): integer;
-// await(T; p: TJSPromise): T;
+// await(T; p: TJSPromise): T
+// await(T; jsvalue): T
+// await(AsyncFuncWithResultT): T
 // await(AsyncProc);
-// await(Proc);
-// await(const Expr: T): T
-const
-  Signature2 = 'function await(aType,TJSPromise):aType';
 var
   Params: TParamsExpr;
   Param: TPasExpr;
@@ -5991,6 +5990,48 @@ begin
     // must be the only parameter
     Result:=CheckBuiltInMaxParamCount(Proc,Params,1,RaiseOnError);
     if Result=cIncompatible then exit;
+
+    TypeEl:=ParamResolved.LoTypeEl;
+    if (ParamResolved.IdentEl is TPasResultElement) then
+      begin
+      // await(AsyncFuncCall)
+      if not TPasFunctionType(ParamResolved.IdentEl.Parent).IsAsync then
+        begin
+        {$IFDEF VerbosePas2JS}
+        writeln('TPas2JSResolver.BI_AWait_OnGetCallCompatibility ',GetResolverResultDbg(ParamResolved));
+        {$ENDIF}
+        if RaiseOnError then
+          RaiseMsg(20201229232446,nXExpectedButYFound,sXExpectedButYFound,['async function',GetResolverResultDescription(ParamResolved)],Expr)
+        else
+          exit(cIncompatible);
+        end;
+      end
+    else if (ParamResolved.BaseType=btContext)
+        and (TypeEl is TPasProcedureType) then
+      begin
+      // await(AsyncFuncTypeVar)
+      if not TPasProcedureType(TypeEl).IsAsync then
+        begin
+        {$IFDEF VerbosePas2JS}
+        writeln('TPas2JSResolver.BI_AWait_OnGetCallCompatibility ',GetResolverResultDbg(ParamResolved));
+        {$ENDIF}
+        if RaiseOnError then
+          RaiseMsg(20201229232541,nXExpectedButYFound,sXExpectedButYFound,['async function',GetResolverResultDescription(ParamResolved)],Expr)
+        else
+          exit(cIncompatible);
+        end;
+      end
+    else
+      begin
+      {$IFDEF VerbosePas2JS}
+      writeln('TPas2JSResolver.BI_AWait_OnGetCallCompatibility ',GetResolverResultDbg(ParamResolved));
+      {$ENDIF}
+      if RaiseOnError then
+        RaiseMsg(20201229224920,nXExpectedButYFound,sXExpectedButYFound,['async function',GetResolverResultDescription(ParamResolved)],Expr)
+      else
+        exit(cIncompatible);
+      end;
+
     end
   else if ParamResolved.BaseType=btProc then
     begin
@@ -6028,7 +6069,7 @@ begin
       begin
       if RaiseOnError then
         RaiseMsg(20200520090749,nWrongNumberOfParametersForCallTo,
-          sWrongNumberOfParametersForCallTo,[Signature2],Params);
+          sWrongNumberOfParametersForCallTo,[AwaitSignature2],Params);
       exit(cIncompatible);
       end;
 
@@ -6062,14 +6103,21 @@ begin
         exit(CheckRaiseTypeArgNo(20200520091707,2,Param,Param2Resolved,
            'instance of TJSPromise',RaiseOnError));
 
-      if (Param2Resolved.BaseType<>btContext)
-          or not (Param2Resolved.LoTypeEl is TPasClassType)
-          or not IsExternalClass_Name(TPasClassType(Param2Resolved.LoTypeEl),'Promise') then
-        exit(CheckRaiseTypeArgNo(20200520091707,2,Param,Param2Resolved,
+      if (Param2Resolved.BaseType=btContext)
+          and (Param2Resolved.LoTypeEl is TPasClassType)
+          and IsExternalClass_Name(TPasClassType(Param2Resolved.LoTypeEl),'Promise') then
+        // await(T,aPromise)
+      else if IsJSBaseType(Param2Resolved,pbtJSValue) then
+        // await(T,jsvalue)
+      else if (Param2Resolved.IdentEl is TPasArgument)
+          and (Param2Resolved.LoTypeEl=nil) then
+        // await(T,UntypedArg)
+      else
+        exit(CheckRaiseTypeArgNo(20200520091708,2,Param,Param2Resolved,
            'TJSPromise',RaiseOnError));
       end;
 
-    Result:=CheckBuiltInMaxParamCount(Proc,Params,2,RaiseOnError,Signature2);
+    Result:=CheckBuiltInMaxParamCount(Proc,Params,2,RaiseOnError,AwaitSignature2);
     end;
 end;
 
@@ -6084,11 +6132,18 @@ begin
   Param:=Params.Params[0];
   if length(Params.Params)=1 then
     begin
-    // await(expr)
+    // await(AsyncFuncCall)
     if CheckCallAsyncFuncResult(Param,ResolvedEl) then
+      begin
       // await(CallAsynFuncResultT): T
+      if (ResolvedEl.BaseType=btContext)
+          and (ResolvedEl.LoTypeEl is TPasClassType)
+          and IsExternalClass_Name(TPasClassType(ResolvedEl.LoTypeEl),'Promise') then
+        // async function returns a promise, await resolve all promises -> need final type as first param
+        RaiseMsg(20201229235932,nWrongNumberOfParametersForCallTo,
+          sWrongNumberOfParametersForCallTo,[AwaitSignature2],Param);
       exit;
-    // await(expr:T):T
+      end;
     end
   else
     begin

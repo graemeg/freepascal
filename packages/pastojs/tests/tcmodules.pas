@@ -883,8 +883,11 @@ type
     Procedure TestAwait_NonPromiseWithTypeFail;
     Procedure TestAwait_AsyncCallTypeMismatch;
     Procedure TestAWait_OutsideAsyncFail;
-    Procedure TestAWait_Result;
+    Procedure TestAWait_IntegerFail;
     Procedure TestAWait_ExternalClassPromise;
+    Procedure TestAWait_JSValue;
+    Procedure TestAWait_Result;
+    Procedure TestAWait_ResultPromiseMissingTypeFail;
     Procedure TestAsync_AnonymousProc;
     Procedure TestAsync_ProcType;
     Procedure TestAsync_ProcTypeAsyncModMismatchFail;
@@ -32619,48 +32622,21 @@ begin
   ConvertProgram;
 end;
 
-procedure TTestModule.TestAWait_Result;
+procedure TTestModule.TestAWait_IntegerFail;
 begin
   StartProgram(false);
   Add([
-  '{$modeswitch externalclass}',
-  'type',
-  '  TJSPromise = class external name ''Promise''',
-  '  end;',
-  'function Crawl(d: double = 1.3): word; ',
+  'function Run: word;',
   'begin',
   'end;',
-  'function Run(d: double = 1.6): word; async;',
+  'procedure Fly(w: word); async;',
   'begin',
-  '  Result:=await(1);',
-  '  Result:=await(Crawl);',
-  '  Result:=await(Crawl(4.5));',
-  '  Result:=await(Run);',
-  '  Result:=await(Run(6.7));',
+  '  await(Run());',
   'end;',
   'begin',
-  '  Run(1);']);
+  '  Fly(1);']);
+  SetExpectedPasResolverError('async function expected, but Result:Word found',nXExpectedButYFound);
   ConvertProgram;
-  CheckSource('TestAWait_Result',
-    LinesToStr([ // statements
-    'this.Crawl = function (d) {',
-    '  var Result = 0;',
-    '  return Result;',
-    '};',
-    'this.Run = async function (d) {',
-    '  var Result = 0;',
-    '  Result = await 1;',
-    '  Result = await $mod.Crawl(1.3);',
-    '  Result = await $mod.Crawl(4.5);',
-    '  Result = await $mod.Run(1.6);',
-    '  Result = await $mod.Run(6.7);',
-    '  return Result;',
-    '};',
-    '']),
-    LinesToStr([
-    '$mod.Run(1);'
-    ]));
-  SetExpectedPasResolverError('Await without promise',nAwaitWithoutPromise);
 end;
 
 procedure TTestModule.TestAWait_ExternalClassPromise;
@@ -32721,6 +32697,110 @@ begin
     LinesToStr([
     ]));
   CheckResolverUnexpectedHints();
+end;
+
+procedure TTestModule.TestAWait_JSValue;
+begin
+  StartProgram(false);
+  Add([
+  '{$modeswitch externalclass}',
+  'type',
+  '  TJSPromise = class external name ''Promise''',
+  '  end;',
+  'function Fly(w: word): jsvalue; async;',
+  'begin',
+  'end;',
+  'function Run(d: jsvalue; var e): word; async;',
+  'begin',
+  '  Result:=await(word,d);', // promise needs type
+  '  d:=await(Fly(4));', // async non promise must omit the type
+  '  Result:=await(word,e);', // promise needs type
+  'end;',
+  'begin',
+  '']);
+  ConvertProgram;
+  CheckSource('TestAWait_JSValue',
+    LinesToStr([ // statements
+    'this.Fly = async function (w) {',
+    '  var Result = undefined;',
+    '  return Result;',
+    '};',
+    'this.Run = async function (d, e) {',
+    '  var Result = 0;',
+    '  Result = await d;',
+    '  d = await $mod.Fly(4);',
+    '  Result = await e.get();',
+    '  return Result;',
+    '};',
+    '']),
+    LinesToStr([
+    ]));
+  CheckResolverUnexpectedHints();
+end;
+
+procedure TTestModule.TestAWait_Result;
+begin
+  StartProgram(false);
+  Add([
+  '{$modeswitch externalclass}',
+  'type',
+  '  TJSPromise = class external name ''Promise''',
+  '  end;',
+  'function Crawl(d: double = 1.3): TJSPromise; ',
+  'begin',
+  'end;',
+  'function Run(d: double = 1.6): word; async;',
+  'begin',
+  '  Result:=await(word,Crawl);',
+  '  Result:=await(word,Crawl(4.5));',
+  '  Result:=await(Run);',
+  '  Result:=await(Run(6.7));',
+  'end;',
+  'begin',
+  '  Run(1);']);
+  ConvertProgram;
+  CheckSource('TestAWait_Result',
+    LinesToStr([ // statements
+    'this.Crawl = function (d) {',
+    '  var Result = null;',
+    '  return Result;',
+    '};',
+    'this.Run = async function (d) {',
+    '  var Result = 0;',
+    '  Result = await $mod.Crawl(1.3);',
+    '  Result = await $mod.Crawl(4.5);',
+    '  Result = await $mod.Run(1.6);',
+    '  Result = await $mod.Run(6.7);',
+    '  return Result;',
+    '};',
+    '']),
+    LinesToStr([
+    '$mod.Run(1);'
+    ]));
+  CheckResolverUnexpectedHints();
+end;
+
+procedure TTestModule.TestAWait_ResultPromiseMissingTypeFail;
+begin
+  StartProgram(false);
+  Add([
+  '{$mode objfpc}',
+  '{$modeswitch externalclass}',
+  'type',
+  '  TJSPromise = class external name ''Promise''',
+  '  end;',
+  'function Run: TJSPromise; async;',
+  'begin',
+  'end;',
+  'procedure Fly(w: word); async;',
+  'begin',
+  '  await(Run());',
+  'end;',
+  'begin',
+  '  Fly(1);']);
+  SetExpectedPasResolverError('Wrong number of parameters specified for call to "function await(aType,TJSPromise):aType"',
+    nWrongNumberOfParametersForCallTo);
+  ConvertProgram;
 end;
 
 procedure TTestModule.TestAsync_AnonymousProc;

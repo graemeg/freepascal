@@ -3060,9 +3060,9 @@ End.
     Pas2js supports the JS operators async and await to simplify the use of Promise.
     The await operator corresponds to three intrinsic Pas2js functions:
     <ul>
-    <li><i>function await(AsyncFunctionWithResultT): T;</i>  // implicit promise</li>
+    <li><i>function await(AsyncFunctionWithResultT()): T;</i>  // implicit promise, the inner () can be omitted</li>
     <li><i>function await(aType; p: TJSPromise): aType;</i>  // explicit promise requires the resolved type</li>
-    <li><i>function await(const Expr: T): T;</i>  // implicit promise</li>
+    <li><i>function await(aType; j: jsvalue): aType;</i>  // explicit promise requires the resolved type</li>
     </ul>
     The await function can only be used inside a procedure with the async modifier.<br>
     Example for the explicit promise:
