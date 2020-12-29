@@ -3106,7 +3106,8 @@ end;
 function TPascalScanner.FetchToken: TToken;
 
 begin
-  FPreviousToken:=FCurToken;
+  if Not (FCurToken in [tkWhiteSpace,tkLineEnding]) then
+    FPreviousToken:=FCurToken;
   while true do
   begin
     Result := DoFetchToken;
@@ -5051,8 +5052,7 @@ begin
       begin
       if ForceCaret or PPisSkipping or
          (PreviousToken in [tkeof,tkTab,tkLineEnding,tkComment,tkIdentifier,
-                   tkNil,tkOperator,tkBraceClose,tkSquaredBraceClose,tkCaret,
-                   tkWhitespace]) then
+                   tkNil,tkOperator,tkBraceClose,tkSquaredBraceClose,tkCaret]) then
         begin
         Inc(FTokenPos);
         Result := tkCaret;

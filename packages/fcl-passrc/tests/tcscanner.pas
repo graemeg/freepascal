@@ -115,6 +115,7 @@ type
     procedure TestNumber;
     procedure TestChar;
     procedure TestCharString;
+    procedure TestCaretString;
     procedure TestBraceOpen;
     procedure TestBraceClose;
     procedure TestMul;
@@ -829,6 +830,12 @@ procedure TTestScanner.TestCharString;
 
 begin
   TestToken(pscanner.tkChar,'''A''');
+end;
+
+procedure TTestScanner.TestCaretString;
+begin
+
+  TestTokens([tkIdentifier,tkWhiteSpace,tkEqual,tkwhiteSpace,pscanner.tkString,tkSemicolon],'a = ^C''abc'';',false);
 end;
 
 procedure TTestScanner.TestNumber;
