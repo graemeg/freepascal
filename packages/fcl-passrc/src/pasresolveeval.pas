@@ -4147,10 +4147,12 @@ function TResExprEvaluator.EvalPrimitiveExprString(Expr: TPrimitiveExpr
  //   Source codepage is needed for reading non ASCII string literals 'ä'.
  //   Target codepage is needed for reading non ASCII # literals.
  //   Target codepage costs time to compute.
+var
+  Value: TResEvalValue;
 
   procedure RangeError(id: TMaxPrecInt);
   begin
-    Result.Free;
+    Value.Free;
     RaiseRangeCheck(id,Expr);
   end;
 
@@ -4183,13 +4185,13 @@ var
   var
     h: RawByteString;
   begin
-    if Result.Kind=revkString then
+    if Value.Kind=revkString then
       begin
       // switch to unicodestring
-      h:=TResEvalString(Result).S;
-      Result.Free;
-      Result:=nil; // in case of exception in GetUnicodeStr
-      Result:=TResEvalUTF16.CreateValue(GetUnicodeStr(h,Expr));
+      h:=TResEvalString(Value).S;
+      Value.Free;
+      Value:=nil; // in case of exception in GetUnicodeStr
+      Value:=TResEvalUTF16.CreateValue(GetUnicodeStr(h,Expr));
       end;
   end;
 {$ENDIF}
@@ -4197,7 +4199,7 @@ var
   procedure AddSrc(h: String);
   {$ifdef FPC_HAS_CPSTRING}
   var
-    Value: TResEvalString;
+    ValueAnsi: TResEvalString;
     OnlyASCII: Boolean;
     i: Integer;
   {$ENDIF}
@@ -4216,13 +4218,13 @@ var
         break;
         end;
 
-    if Result.Kind=revkString then
+    if Value.Kind=revkString then
       begin
-      Value:=TResEvalString(Result);
-      if OnlyASCII and Value.OnlyASCII then
+      ValueAnsi:=TResEvalString(Value);
+      if OnlyASCII and ValueAnsi.OnlyASCII then
         begin
         // concatenate ascii strings
-        Value.S:=Value.S+h;
+        ValueAnsi.S:=ValueAnsi.S+h;
         exit;
         end;
 
@@ -4232,47 +4234,47 @@ var
       CP_UTF16:
         begin
         ForceUTF16;
-        TResEvalUTF16(Result).S:=TResEvalUTF16(Result).S+GetUnicodeStr(h,Expr);
-        //writeln('AddSrc len(h)=',length(h),' StringCodePage=',StringCodePage(h),' GetCodePage=',GetCodePage(h),' S=',length(TResEvalUTF16(Result).S));
+        TResEvalUTF16(Value).S:=TResEvalUTF16(Value).S+GetUnicodeStr(h,Expr);
+        //writeln('AddSrc len(h)=',length(h),' StringCodePage=',StringCodePage(h),' GetCodePage=',GetCodePage(h),' S=',length(TResEvalUTF16(Value).S));
         end;
       CP_UTF16BE:
         RaiseNotYetImplemented(20201220222608,Expr);
       else
         begin
-        if Value.S<>'' then
+        if ValueAnsi.S<>'' then
         begin
-          if Value.OnlyASCII then
-            SetCodePage(Value.S,TargetCP,false);
-          Value.S:=Value.S+h;
+          if ValueAnsi.OnlyASCII then
+            SetCodePage(ValueAnsi.S,TargetCP,false);
+          ValueAnsi.S:=ValueAnsi.S+h;
         end else begin
-          Value.S:=h;
+          ValueAnsi.S:=h;
         end;
         end;
       end;
 
       end
     else
-      TResEvalUTF16(Result).S:=TResEvalUTF16(Result).S+GetUnicodeStr(h,Expr);
+      TResEvalUTF16(Value).S:=TResEvalUTF16(Value).S+GetUnicodeStr(h,Expr);
     {$else}
-    TResEvalUTF16(Result).S:=TResEvalUTF16(Result).S+h;
+    TResEvalUTF16(Value).S:=TResEvalUTF16(Value).S+h;
     {$endif}
   end;
 
   procedure AddHash(u: longword);
   {$ifdef FPC_HAS_CPSTRING}
   begin
-    if Result.Kind=revkString then
-      TResEvalString(Result).s:=TResEvalString(Result).S+Chr(u)
+    if Value.Kind=revkString then
+      TResEvalString(Value).s:=TResEvalString(Value).S+Chr(u)
     else
-      TResEvalUTF16(Result).S:=TResEvalUTF16(Result).S+WideChar(u);
+      TResEvalUTF16(Value).S:=TResEvalUTF16(Value).S+WideChar(u);
   end;
   {$else}
   begin
-    TResEvalUTF16(Result).S:=TResEvalUTF16(Result).S+WideChar(u);
+    TResEvalUTF16(Value).S:=TResEvalUTF16(Value).S+WideChar(u);
   end;
   {$endif}
 
-  function ReadHash(Value: TResEvalValue; const S: string; p, l: integer): integer;
+  function ReadHash(const S: string; p, l: integer): integer;
   var
     StartP: Integer;
     u: longword;
@@ -4283,6 +4285,7 @@ var
     OldCP: TSystemCodePage;
     {$ENDIF}
   begin
+    //writeln('ReadHash S="',S,'" p=',p,' l=',l,' ',StringCodePage(S));
     Result:=p;
     inc(Result);
     if Result>l then
@@ -4402,9 +4405,9 @@ begin
   TargetCP:=CP_ACP;
   SourceCPValid:=false;
   SourceCP:=CP_ACP;
-  Result:=TResEvalString.Create;
+  Value:=TResEvalString.Create;
   {$else}
-  Result:=TResEvalUTF16.Create;
+  Value:=TResEvalUTF16.Create;
   {$endif}
   p:=1;
   //writeln('TResExprEvaluator.EvalPrimitiveExprString ',GetObjPath(Expr),' ',Expr.SourceFilename,' ',Expr.SourceLinenumber div 2048,' S=[',S,']');
@@ -4442,7 +4445,7 @@ begin
         AddSrc(copy(S,StartP,p-StartP));
       end;
     '#':
-      p:=ReadHash(Result,S,p,l);
+      p:=ReadHash(S,p,l);
     '^':
       begin
       // ^A is #1
@@ -4460,6 +4463,7 @@ begin
     else
       RaiseNotYetImplemented(20170523123815,Expr,'ord='+IntToStr(ord(S[p])));
     end;
+  Result:=Value;
   {$IFDEF VerbosePasResEval}
   //writeln('TResExprEvaluator.EvalPrimitiveExprString Result=',Result.AsString);
   {$ENDIF}
