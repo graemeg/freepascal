@@ -10176,7 +10176,6 @@ begin
   if ParentParams.InlineSpec<>nil then
     begin
     TypeCnt:=InlParams.Count;
-    // ToDo: generic functions without params
     DeclEl:=FindGenericEl(aName,TypeCnt,FindData,El);
     if DeclEl<>nil then
       begin
@@ -10767,7 +10766,7 @@ begin
   else if Value.ClassType=TInlineSpecializeExpr then
     begin
     // e.g. Name<>()
-    ResolveInlineSpecializeExpr(TInlineSpecializeExpr(Value),rraRead);
+    ResolveInlineSpecializeExpr(TInlineSpecializeExpr(Value),Access);
     end
   else if Value.ClassType=TParamsExpr then
     begin
@@ -27380,7 +27379,7 @@ procedure TPasResolver.ComputeElement(El: TPasElement; out
             end
           else if ParentNeedsExprResult(Expr) then
             begin
-            // a procedure
+            // a procedure address
             exit;
             end;
           if rcSetReferenceFlags in Flags then
@@ -28245,6 +28244,8 @@ begin
     else
       Result:=true;
     end
+  else if C=TInlineSpecializeExpr then
+    Result:=ParentNeedsExprResult(TInlineSpecializeExpr(P))
   else if C.InheritsFrom(TPasExpr) then
     Result:=true
   else if (C=TPasEnumValue)

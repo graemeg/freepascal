@@ -77,7 +77,8 @@ type
     // ToDo: FuncName:= instead of Result:=
 
     // generic methods
-    procedure TestGenMethod_ObjFPC;
+    procedure TestGenMethod_ImplicitSpec_ObjFPC;
+    procedure TestGenMethod_Delphi;
 
     // generic array
     procedure TestGen_Array_OtherUnit;
@@ -2135,7 +2136,7 @@ begin
     '']));
 end;
 
-procedure TTestGenerics.TestGenMethod_ObjFPC;
+procedure TTestGenerics.TestGenMethod_ImplicitSpec_ObjFPC;
 begin
   StartProgram(false);
   Add([
@@ -2166,7 +2167,7 @@ begin
   '  o.{@C}Run(''foo'',''bar'');',
   '']);
   ConvertProgram;
-  CheckSource('TestGenMethod_ObjFPC',
+  CheckSource('TestGenMethod_ImplicitSpec_ObjFPC',
     LinesToStr([ // statements
     'rtl.createClass(this, "TObject", null, function () {',
     '  this.$init = function () {',
@@ -2189,6 +2190,49 @@ begin
     '$mod.o.Run$G1(1, true);',
     '$mod.o.Run$1G1(2, 3);',
     '$mod.o.Run$2G1("foo", "bar");',
+    '']));
+end;
+
+procedure TTestGenerics.TestGenMethod_Delphi;
+begin
+  StartProgram(false);
+  Add([
+  '{$mode delphi}',
+  'type',
+  '  TObject = class',
+  '    procedure Run<S>;',
+  '  end; ',
+  'procedure TObject.Run<S>;',
+  'begin',
+  'end;',
+  'var o: TObject;',
+  'begin',
+  '  o.Run<word>;',
+  '  o.Run<word>();',
+  '  with o do begin',
+  '    Run<word>;',
+  '    Run<word>();',
+  '  end;',
+  '']);
+  ConvertProgram;
+  CheckSource('TestGenMethod_Delphi',
+    LinesToStr([ // statements
+    'rtl.createClass(this, "TObject", null, function () {',
+    '  this.$init = function () {',
+    '  };',
+    '  this.$final = function () {',
+    '  };',
+    '  this.Run$G1 = function () {',
+    '  };',
+    '});',
+    'this.o = null;',
+    '']),
+    LinesToStr([ // $mod.$main
+    '$mod.o.Run$G1();',
+    '$mod.o.Run$G1();',
+    'var $with = $mod.o;',
+    '$with.Run$G1();',
+    '$with.Run$G1();',
     '']));
 end;
 
