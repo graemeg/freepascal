@@ -945,9 +945,9 @@ begin
   'begin',
   '  DoIt;']);
   AnalyzeProgram;
-  CheckUseAnalyzerHint(mtHint,nPALocalVariableNotUsed,'Local variable "b" not used');
-  CheckUseAnalyzerHint(mtHint,nPALocalVariableIsAssignedButNeverUsed,
-    'Local variable "c" is assigned but never used');
+  CheckUseAnalyzerHint(mtHint,nPAFieldNotUsed,'Field "b" not used');
+  CheckUseAnalyzerHint(mtHint,nPAFieldIsAssignedButNeverUsed,
+    'Field "c" is assigned but never used');
   CheckUseAnalyzerUnexpectedHints;
 end;
 
@@ -2278,9 +2278,9 @@ begin
   Add('begin');
   Add('  Point(1);');
   AnalyzeProgram;
-  CheckUseAnalyzerHint(mtHint,nPALocalVariableIsAssignedButNeverUsed,
-    'Local variable "X" is assigned but never used');
-  CheckUseAnalyzerHint(mtHint,nPALocalVariableNotUsed,'Local variable "Y" not used');
+  CheckUseAnalyzerHint(mtHint,nPAFieldIsAssignedButNeverUsed,
+    'Field "X" is assigned but never used');
+  CheckUseAnalyzerHint(mtHint,nPAFieldNotUsed,'Field "Y" not used');
   CheckUseAnalyzerUnexpectedHints;
 end;
 
@@ -2319,7 +2319,7 @@ begin
   Add('begin');
   Add('  Point();');
   AnalyzeProgram;
-  CheckUseAnalyzerHint(mtHint,nPALocalVariableNotUsed,'Local variable "Y" not used');
+  CheckUseAnalyzerHint(mtHint,nPAFieldNotUsed,'Field "Y" not used');
   CheckUseAnalyzerUnexpectedHints;
 end;
 
@@ -2385,7 +2385,7 @@ begin
   '  specialize Point<word>();',
   '']);
   AnalyzeProgram;
-  CheckUseAnalyzerHint(mtHint,nPALocalVariableNotUsed,'Local variable "Y" not used');
+  CheckUseAnalyzerHint(mtHint,nPAFieldNotUsed,'Field "Y" not used');
   CheckUseAnalyzerUnexpectedHints;
 end;
 

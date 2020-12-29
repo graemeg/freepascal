@@ -62,6 +62,10 @@ const
   // non fpc hints
   nPAParameterInOverrideNotUsed = 4501;
   sPAParameterInOverrideNotUsed = 'Parameter "%s" not used';
+  nPAFieldNotUsed = 4502;
+  sPAFieldNotUsed = 'Field "%s" not used';
+  nPAFieldIsAssignedButNeverUsed = 4503;
+  sPAFieldIsAssignedButNeverUsed = 'Field "%s" is assigned but never used';
   // fpc hints: use same IDs as fpc
   nPAUnitNotUsed = 5023;
   sPAUnitNotUsed = 'Unit "%s" not used in %s';
@@ -2827,8 +2831,14 @@ begin
           sPAPrivateFieldIsNeverUsed,[El.FullName],El);
       end
     else if El.ClassType=TPasVariable then
-      EmitMessage(20170311234201,mtHint,nPALocalVariableNotUsed,
-        sPALocalVariableNotUsed,[El.Name],El)
+      begin
+      if El.Parent is TPasMembersType then
+        EmitMessage(20201229033108,mtHint,nPAFieldNotUsed,
+          sPAFieldNotUsed,[El.Name],El)
+      else
+        EmitMessage(20170311234201,mtHint,nPALocalVariableNotUsed,
+          sPALocalVariableNotUsed,[El.Name],El);
+      end
     else
       EmitMessage(20170314221334,mtHint,nPALocalXYNotUsed,
         sPALocalXYNotUsed,[El.ElementTypeName,El.Name],El);
@@ -2842,6 +2852,9 @@ begin
     if El.Visibility in [visPrivate,visStrictPrivate] then
       EmitMessage(20170311234159,mtHint,nPAPrivateFieldIsAssignedButNeverUsed,
         sPAPrivateFieldIsAssignedButNeverUsed,[El.FullName],El)
+    else if El.Parent is TPasMembersType then
+      EmitMessage(20201229033618,mtHint,nPAFieldIsAssignedButNeverUsed,
+        sPAFieldIsAssignedButNeverUsed,[El.Name],El)
     else
       EmitMessage(20170311233825,mtHint,nPALocalVariableIsAssignedButNeverUsed,
         sPALocalVariableIsAssignedButNeverUsed,[El.Name],El);
