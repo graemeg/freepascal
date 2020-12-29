@@ -4734,7 +4734,7 @@ end;
 
 procedure TPasResolver.GetParamsOfNameExpr(El: TPasExpr; out
   ParentParams: TPRParentParams);
-// Checks is El is the name expression of a call or array access
+// Checks if El is the name expression of a call or array access
 // For example: a.b.El()  a.El[]
 // Note: TPasParser guarantees that there is at most one TBinaryExpr
 //       and one TInlineSpecializeExpr between El and TParamsExpr
@@ -10207,9 +10207,19 @@ begin
       begin
       TemplTypes:=GetProcTemplateTypes(Proc);
       if (TemplTypes<>nil) then
+        begin
         // implicit function specialization without bracket
+        {$IFDEF VerbosePasResolver}
+        DeclEl:=El;
+        while DeclEl.Parent is TPasExpr do
+          DeclEl:=DeclEl.Parent;
+        {AllowWriteln}
+        writeln('TPasResolver.ResolveNameExpr ',WritePasElTree(TPasExpr(DeclEl),'  '));
+        {AllowWriteln-}
+        {$ENDIF}
         RaiseMsg(20191007222004,nCouldNotInferTypeArgXForMethodY,
           sCouldNotInferTypeArgXForMethodY,[TPasGenericTemplateType(TemplTypes[0]).Name,Proc.Name],El);
+        end;
       end;
 
     if El.Parent.ClassType=TPasProperty then

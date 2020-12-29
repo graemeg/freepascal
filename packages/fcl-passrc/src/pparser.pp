@@ -2527,11 +2527,16 @@ begin
         NextToken;
         if CurToken=tkspecialize then
           begin
+          // Obj.specialize ...
           if CanSpecialize=aMust then
             CheckToken(tkLessThan);
           CanSpecialize:=aMust;
           NextToken;
-          end;
+          end
+        else if msDelphi in CurrentModeswitches then
+          CanSpecialize:=aCan
+        else
+          CanSpecialize:=aCannot;
         if CurToken in [tkIdentifier,tktrue,tkfalse,tkself] then // true and false are sub identifiers as well
           begin
           aName:=aName+'.'+CurTokenString;
