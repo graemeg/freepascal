@@ -13938,7 +13938,7 @@ begin
       begin
       // type cast
       Param0:=Params.Params[0];
-      ComputeElement(Param0,ParamResolved,[]);
+      ComputeElement(Param0,ParamResolved,Flags);
       ComputeTypeCast(ResolvedEl.LoTypeEl,ResolvedEl.HiTypeEl,Param0,
                       ParamResolved,ResolvedEl,Flags);
       end

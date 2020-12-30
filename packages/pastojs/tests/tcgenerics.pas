@@ -83,6 +83,7 @@ type
     // generic array
     procedure TestGen_Array_OtherUnit;
     procedure TestGen_ArrayOfUnitImplRec;
+    procedure TestGen_Array_TypecastJSValueResultToArg;
 
     // generic procedure type
     procedure TestGen_ProcType_ProcLocal;
@@ -2368,6 +2369,51 @@ begin
     'pas.UnitA.$rtti["TDyn<UnitA.TAnt>"].eltype = pas.UnitA.$rtti["TAnt"];',
     'pas.UnitA.$rtti["TDyn<UnitA.TBird>"].eltype = pas.UnitA.$rtti["TBird"];',
     'pas.UnitA.$rtti["TStatic<UnitA.TBird>"].eltype = pas.UnitA.$rtti["TBird"];',
+    '']),
+    LinesToStr([ // $mod.$main
+    '']));
+end;
+
+procedure TTestGenerics.TestGen_Array_TypecastJSValueResultToArg;
+begin
+  StartProgram(false);
+  Add([
+  '{$mode delphi}',
+  'type',
+  '  TArray<T> = array of T;',
+  '  TFunc = function: JSValue of object;',
+  '  TObject = class',
+  '    f: TFunc;',
+  '    function Run: jsvalue; virtual; abstract;',
+  '  end;',
+  'procedure Sit(Arr: TArray<TObject>);',
+  'begin',
+  'end;',
+  'procedure Fly(o: TObject);',
+  'begin',
+  '  Sit(TArray<TObject>(o.f()));',
+  '  Sit(TArray<TObject>(o.Run));',
+  '  Sit(TArray<TObject>(o.Run()));',
+  'end;',
+  'begin']);
+  ConvertProgram;
+  CheckSource('TestGen_Array_TypecastJSValueResultToArg',
+    LinesToStr([ // statements
+    'rtl.createClass(this, "TObject", null, function () {',
+    '  this.$init = function () {',
+    '    this.f = null;',
+    '  };',
+    '  this.$final = function () {',
+    '    this.f = undefined;',
+    '  };',
+    '});',
+    'this.Sit = function (Arr) {',
+    '};',
+    'this.Fly = function (o) {',
+    '  $mod.Sit(o.f());',
+    '  $mod.Sit(o.Run());',
+    '  $mod.Sit(o.Run());',
+    '};',
     '']),
     LinesToStr([ // $mod.$main
     '']));
