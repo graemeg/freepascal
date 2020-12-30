@@ -43,7 +43,7 @@ if [ -w "$sysdir" ] ; then
   fpccfgfile="$sysdir"/fpc.cfg
   fppkgfile="$sysdir"/fppkg.cfg
   defaultfile="$sysdir"/fppkg/default
-  compilerconfigdir="-d CompilerConfigDir=$sysdir/fppkg"
+  compilerconfigdir="-d CompilerConfigDir=$sysdir/fppkg/"
   fppkgconfdir=$sysdir/fppkg/conf.d
 else
   echo No write premission in $sysdir.
