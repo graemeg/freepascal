@@ -4943,7 +4943,7 @@ procedure TPasParser.ParseArgList(Parent: TPasElement; Args: TFPList; EndToken: 
       end;
   end;
 var
-  IsUntyped, ok, LastHadDefaultValue: Boolean;
+  OldForceCaret,IsUntyped, ok, LastHadDefaultValue: Boolean;
   Name : String;
   Value : TPasExpr;
   i, OldArgCount: Integer;
@@ -5022,9 +5022,11 @@ begin
     if not IsUntyped then
       begin
       Arg := TPasArgument(Args[OldArgCount]);
-      ArgType := ParseType(Arg,CurSourcePos);
+      ArgType:=Nil;
       ok:=false;
+      oldForceCaret:=Scanner.SetForceCaret(True);
       try
+        ArgType := ParseType(Arg,CurSourcePos);
         NextToken;
         if CurToken = tkEqual then
           begin
@@ -5048,6 +5050,7 @@ begin
         UngetToken;
         ok:=true;
       finally
+        Scanner.SetForceCaret(oldForceCaret);
         if (not ok) and (ArgType<>nil) then
           ArgType.Release{$IFDEF CheckPasTreeRefCount}('CreateElement'){$ENDIF};
       end;

@@ -102,6 +102,8 @@ type
     Procedure TestFunctionArrayOfConstArg;
     procedure TestProcedureConstArrayOfConstArg;
     Procedure TestFunctionConstArrayOfConstArg;
+    procedure TestProcedureOnePointerArg;
+
     Procedure TestProcedureCdecl;
     Procedure TestFunctionCdecl;
     Procedure TestProcedureCdeclDeprecated;
@@ -354,6 +356,7 @@ procedure TTestProcedureFunction.AssertArg(ProcType: TPasProcedureType;
 
 Var
   A : TPasArgument;
+  T : TPasType;
   N : String;
 
 begin
@@ -361,11 +364,21 @@ begin
   N:='Argument '+IntToStr(AIndex+1)+' : ';
   if (TypeName='') then
     AssertNull(N+' No argument type',A.ArgType)
-  else
+  else if TypeName[1]<>'^' then
     begin
     AssertNotNull(N+' Have argument type',A.ArgType);
     AssertEquals(N+' Correct argument type name',TypeName,A.ArgType.Name);
+    end
+  else  
+    begin
+    AssertNotNull(N+' Have argument type',A.ArgType);
+    T:=A.ArgType;
+    AssertEquals(N+' type Is pointer type',TPasPointerType,T.CLassType);
+    T:=TPasPointerType(T).DestType;
+    AssertNotNull(N+'Have dest type',T);
+    AssertEquals(N+' Correct argument dest type name',Copy(TypeName,2,MaxInt),T.Name);
     end;
+    
 end;
 
 procedure TTestProcedureFunction.AssertArrayArg(ProcType: TPasProcedureType;
@@ -479,6 +492,13 @@ begin
   ParseProcedure('(B : Integer)');
   AssertProc([],[],ccDefault,1);
   AssertArg(ProcType,0,'B',argDefault,'Integer','');
+end;
+
+procedure TTestProcedureFunction.TestProcedureOnePointerArg;
+begin
+  ParseProcedure('(B : ^Integer)');
+  AssertProc([],[],ccDefault,1);
+  AssertArg(ProcType,0,'B',argDefault,'^Integer','');
 end;
 
 procedure TTestProcedureFunction.TestFunctionOneArg;
