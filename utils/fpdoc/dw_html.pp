@@ -53,6 +53,8 @@ type
     function GetCSSFilename(ARelativeTo: TPasElement): DOMString; virtual;
   end;
 
+  { TLongNameFileAllocator }
+
   TLongNameFileAllocator = class(TFileAllocator)
   private
     FExtension: String;
@@ -255,7 +257,6 @@ type
     // Start producing html complete package documentation
     procedure WriteHTMLPages; virtual;
     procedure WriteXHTMLPages;
-    function  ModuleForElement(AnElement:TPasElement):TPasModule;
 
     Function InterPretOption(Const Cmd,Arg : String) : boolean; override;
     Procedure WriteDoc; override;
@@ -275,7 +276,6 @@ type
     Property UseMenuBrackets : Boolean Read FUseMenuBrackets write FUseMenuBrackets;
     Property ImageFileList : TStrings Read FImageFileList;
   end;
-
 
 Function FixHTMLpath(S : String) : STring;
 
@@ -310,7 +310,6 @@ begin
 end;
 
 
-
 constructor TLongNameFileAllocator.Create(const AExtension: String);
 begin
   inherited Create;
@@ -331,12 +330,12 @@ begin
     Result := 'index';
     excl := True;
   end
-  else if AElement.ClassType = TPasModule then
+    else if AElement.ClassType = TPasModule then
   begin
     Result := LowerCase(AElement.Name) + PathDelim + 'index';
     excl := True;
   end
-  else
+    else
   begin
     if AElement is TPasOperator then
     begin
@@ -371,9 +370,11 @@ begin
       excl := (ASubindex > 0);
     end;
     // searching for TPasModule - it is on the 2nd level
-    if Assigned(AElement.Parent) then
-      while Assigned(AElement.Parent.Parent) do
-        AElement := AElement.Parent;
+    if AElement.GetModule <> nil then
+      AElement := AElement.GetModule 
+    else
+      Raise EFPDocWriterError.Create(
+      'TLongNameFileAllocator error: Unresolved module name for element: ' +AElement.PathName);
     // cut off Package Name
     Result := Copy(Result, Length(AElement.Parent.Name) + 2, MaxInt);
     // to skip dots in unit name
@@ -834,15 +835,6 @@ begin
   end;
 end;
 
-function  THTMLWriter.ModuleForElement(AnElement:TPasElement):TPasModule;
-
-begin
-  result:=TPasModule(AnElement);
-  while assigned(result) and not (result is TPasModule) do 
-        result:=TPasModule(result.parent);
-  if not (result is TPasModule) then
-   result:=nil;
-end;
 
 procedure THTMLWriter.CreateCSSFile;
 
@@ -1691,7 +1683,7 @@ begin
     end else
     begin
       Result := nil;
-      AppendText(Parent, Element.Name);
+      AppendText(Parent, Element.Name); // unresolved items
     end;
   end else
   begin
@@ -2294,7 +2286,7 @@ begin
         else
           AppendText(NewEl,El['id']);
        l:=El['id'];
-       DescrEl := Engine.FindShortDescr(ModuleForElement(AElement),UTF8Encode(L));
+       DescrEl := Engine.FindShortDescr(AElement.GetModule,UTF8Encode(L));
        if Assigned(DescrEl) then
          begin
          AppendNbSp(CreatePara(CreateTD(TREl)), 2);
@@ -2494,7 +2486,7 @@ type
       if (PE<>Nil) then
         begin
         AppendHyperLink(CurOutputNode,PE);
-        PM:=ModuleForElement(PE);
+        PM:=PE.GetModule();
         if (PM<>Nil) then
           begin
           AppendText(CurOutputNode,' (');
@@ -3157,7 +3149,7 @@ var
   i: Integer;
   s: String;
   t : TPasType;
-  ah,ol,wt,ct,wc,cc  : boolean;
+  ah,ol,wt,ct,wc,cc : boolean;
   isRecord : Boolean;
 
 begin
@@ -3172,30 +3164,24 @@ begin
       begin
       Member := TPasElement(Members[i]);
       MVisibility:=Member.Visibility;
+      cc:=(Member is TPasConst);
+      ct:=(Member is TPasType);
       ol:=(Member is TPasOverloadedProc);
       ah:=ol or ((Member is TPasProcedure) and (TPasProcedure(Member).ProcType.Args.Count > 0));
       if ol then
         Member:=TPasElement((Member as TPasOverloadedProc).Overloads[0]);
       if Not Engine.ShowElement(Member) then
         continue;
-      if (CurVisibility <> MVisibility) then
+      if (CurVisibility <> MVisibility) or (cc <> wc) or (ct <> wt) then
         begin
         CurVisibility := MVisibility;
+        wc:=cc;
+        wt:=ct;
         s:=VisibilityNames[MVisibility];
         AppendKw(CreateCode(CreatePara(CreateTD(CreateTR(TableEl)))), UTF8Decode(s));
+        if (ct) then AppendKw(CreateCode(CreatePara(CreateTD(CreateTR(TableEl)))), 'type');
+        if (cc) then AppendKw(CreateCode(CreatePara(CreateTD(CreateTR(TableEl)))), 'const');
         end;
-      ct:=(Member is TPasType);
-      if ct and (not wt) then
-        begin
-        AppendKw(CreateCode(CreatePara(CreateTD(CreateTR(TableEl)))), 'Type');
-        end;
-      wt:=ct;
-      cc:=(Member is TPasConst);
-      if cc and (not wc) then
-        begin
-        AppendKw(CreateCode(CreatePara(CreateTD(CreateTR(TableEl)))), 'Const');
-        end;
-      wc:=cc;
       TREl := CreateTR(TableEl);
       CodeEl := CreateCode(CreatePara(CreateTD_vtop(TREl)));
       AppendNbSp(CodeEl, 2);
@@ -3218,7 +3204,7 @@ begin
         If Assigned(TPasConst(Member).VarType) then
           begin
           AppendSym(CodeEl, ' = ');
-          AppendTypeDecl(TPasType(Member),TableEl,CodeEl);
+          AppendTypeDecl(TPasType(TPasConst(Member).VarType),TableEl,CodeEl);
           end;
         AppendSym(CodeEl, ' = ');
         AppendText(CodeEl,UTF8Decode(TPasConst(Member).Expr.GetDeclaration(True)));
@@ -3270,7 +3256,7 @@ begin
         else
           AppendText(CodeEl, UTF8Decode(Member.Name));
         AppendSym(CodeEl, ': ');
-        AppendHyperlink(CodeEl, TPasVariable(Member).VarType);
+        AppendType(CodeEl, TableEl, TPasVariable(Member).VarType,False);
         AppendSym(CodeEl, ';');
         end
       else
@@ -3490,6 +3476,7 @@ var
             AppendText(ParaEl, 'pt');
           visPublished:
             AppendText(ParaEl, 'pl');
+          else
         end;
         AppendNbSp(ParaEl, 1);
 
@@ -3558,6 +3545,7 @@ var
             AppendText(ParaEl, 'pt');
           visPublished:
             AppendText(ParaEl, 'pl');
+          else
         end;
         AppendNbSp(ParaEl, 1);
 

@@ -55,8 +55,9 @@ Type
     procedure OutputLog(Sender: TObject; const Msg: String);
     procedure ParseCommandLine;
     procedure ParseOption(const S: String);
-    Procedure Usage(AnExitCode : Byte);
-    Procedure DoRun; override;
+    procedure Usage(AnExitCode : Byte);
+    procedure ExceptProc(Sender: TObject; E: Exception);
+    procedure DoRun; override;
   Public
     Constructor Create(AOwner : TComponent); override;
     Destructor Destroy; override;
@@ -64,7 +65,7 @@ Type
   end;
 
 
-Procedure TFPDocApplication.Usage(AnExitCode : Byte);
+procedure TFPDocApplication.Usage(AnExitCode: Byte);
 
 Var
   I,P : Integer;
@@ -146,6 +147,11 @@ begin
     L.Free;
   end;
   Halt(AnExitCode);
+end;
+
+procedure TFPDocApplication.ExceptProc(Sender: TObject; E: Exception);
+begin
+  OutputLog(Sender, DumpExceptionCallStack(E));
 end;
 
 destructor TFPDocApplication.Destroy;
@@ -427,6 +433,7 @@ begin
   StopOnException:=true;
   FCreator:=TFPDocCreator.Create(Self);
   FCreator.OnLog:=@OutputLog;
+  OnException:= @ExceptProc;
 end;
 
 begin

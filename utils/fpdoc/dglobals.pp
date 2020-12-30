@@ -23,7 +23,7 @@ unit dGlobals;
 
 interface
 
-uses Classes, DOM, PasTree, PParser, uriparser;
+uses Classes, DOM, PasTree, PParser, uriparser, SysUtils;
 
 Const
   CacheSize = 20;
@@ -343,9 +343,9 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure SetPackageName(const APackageName: String);
-    // process the import objects from external .xct file
+    // The process importing of objects from external .xct file
     procedure ReadContentFile(const AFilename, ALinkPrefix: String);
-    // creation of an own .xct output file
+    // Creation of an own .xct output file
     procedure WriteContentFile(const AFilename: String);
 
     function CreateElement(AClass: TPTreeElement; const AName: String;
@@ -385,6 +385,7 @@ type
 
 
 procedure TranslateDocStrings(const Lang: String);
+function DumpExceptionCallStack(E: Exception):String;
 
 Function IsLinkNode(Node : TDomNode) : Boolean;
 Function IsExampleNode(Example : TDomNode) : Boolean;
@@ -395,7 +396,7 @@ Function IsLinkAbsolute(ALink: String): boolean;
 
 implementation
 
-uses SysUtils, Gettext, XMLRead;
+uses Gettext, XMLRead;
 
 const
   AbsoluteLinkPrefixes : array[0..2] of string = ('/', 'http://', 'ms-its:');
@@ -1133,7 +1134,7 @@ begin
             begin
             for k:=0 to ClassLikeDecl.Interfaces.count-1 do
               begin
-                write(contentfile,',',CheckImplicitLink(TPasClassType(ClassLikeDecl.Interfaces[k]).PathName));
+                write(contentfile,',',CheckImplicitLink(TPasType(ClassLikeDecl.Interfaces[k]).PathName));
                 if TPasElement(ClassLikeDecl.Interfaces[k]) is TPasAliasType then
                   begin
                     alias:= TPasAliasType(ClassLikeDecl.Interfaces[k]);
@@ -1755,6 +1756,23 @@ begin
       Result := true;
       break;
     end;
+end;
+
+function DumpExceptionCallStack(E: Exception):String;
+var
+  I: Integer;
+  Frames: PPointer;
+begin
+  Result := 'Program exception! ' + LineEnding +
+    'Stacktrace:' + LineEnding + LineEnding;
+  if E <> nil then begin
+    Result := Result + 'Exception class: ' + E.ClassName + LineEnding +
+    'Message: ' + E.Message + LineEnding;
+  end;
+  Result := Result + BackTraceStrFunc(ExceptAddr);
+  Frames := ExceptFrames;
+  for I := 0 to ExceptFrameCount - 1 do
+    Result := Result + LineEnding + BackTraceStrFunc(Frames[I]);
 end;
 
 initialization
