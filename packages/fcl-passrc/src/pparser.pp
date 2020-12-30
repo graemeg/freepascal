@@ -5347,6 +5347,7 @@ Var
   OK: Boolean;
   IsProcType: Boolean; // false = procedure, true = procedure type
   IsAnonymous: Boolean;
+  OldForceCaret : Boolean;
   PTM: TProcTypeModifier;
   ModTokenCount: Integer;
   LastToken: TToken;
@@ -5364,7 +5365,12 @@ begin
       if CurToken = tkColon then
         begin
         ResultEl:=TPasFunctionType(Element).ResultEl;
-        ResultEl.ResultType := ParseType(ResultEl,CurSourcePos);
+        OldForceCaret:=Scanner.SetForceCaret(True);
+        try
+          ResultEl.ResultType := ParseType(ResultEl,CurSourcePos);
+        finally
+          Scanner.SetForceCaret(OldForceCaret);
+        end;
         end
       // In Delphi mode, the signature in the implementation section can be
       // without result as it was declared

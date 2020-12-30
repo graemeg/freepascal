@@ -103,6 +103,7 @@ type
     procedure TestProcedureConstArrayOfConstArg;
     Procedure TestFunctionConstArrayOfConstArg;
     procedure TestProcedureOnePointerArg;
+    procedure TestFUnctionPointerResult;
 
     Procedure TestProcedureCdecl;
     Procedure TestFunctionCdecl;
@@ -245,6 +246,7 @@ end;
 function TTestProcedureFunction.ParseFunction(const ASource : String;AResult: string = ''; const AHint: String = ''; CC : TCallingConvention = ccDefault): TPasProcedure;
 Var
   D :String;
+  aType : TPasType;
 begin
   if (AResult='') then
     AResult:='Integer';
@@ -255,8 +257,16 @@ begin
   Self.ParseFunction;
   Result:=FFunc;
   AssertNotNull('Have function result element',FuncType.ResultEl);
-  AssertNotNull('Have function result type element',FuncType.ResultEl.ResultType);
-  AssertEquals('Correct function result type name',AResult,FuncType.ResultEl.ResultType.Name);
+  aType:=FuncType.ResultEl.ResultType;
+  AssertNotNull('Have function result type element',aType);
+  if aResult[1]='^' then
+    begin
+    Delete(aResult,1,1);
+    AssertEquals('Result is pointer type',TPasPointerType,aType.ClassType);
+    aType:=TPasPointerType(aType).DestType;
+    AssertNotNull('Result pointer type has destination type',aType);
+    end;
+  AssertEquals('Correct function result type name',AResult,aType.Name);
 end;
 
 procedure TTestProcedureFunction.ParseOperator;
@@ -499,6 +509,12 @@ begin
   ParseProcedure('(B : ^Integer)');
   AssertProc([],[],ccDefault,1);
   AssertArg(ProcType,0,'B',argDefault,'^Integer','');
+end;
+
+procedure TTestProcedureFunction.TestFunctionPointerResult;
+begin
+  ParseFunction('()','^LongInt');
+  AssertFunc([],[],ccDefault,0);
 end;
 
 procedure TTestProcedureFunction.TestFunctionOneArg;
