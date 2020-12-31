@@ -423,7 +423,7 @@ Implementation
 
                             DebugMsg('Peephole LdiOp2Opi performed', p);
 
-                            RemoveCurrentP(p);
+                            result:=RemoveCurrentP(p);
                           end;
                       end;
                   end;
@@ -447,6 +447,7 @@ Implementation
                         taicpu(p).loadconst(0,taicpu(p).oper[0]^.ref^.offset)
                       else
                         taicpu(p).loadconst(0,taicpu(p).oper[0]^.ref^.offset-32);
+                      result:=true;
                     end;
                 A_LDS:
                   if (taicpu(p).oper[1]^.ref^.symbol=nil) and
@@ -468,6 +469,8 @@ Implementation
                         taicpu(p).loadconst(1,taicpu(p).oper[1]^.ref^.offset)
                       else
                         taicpu(p).loadconst(1,taicpu(p).oper[1]^.ref^.offset-32);
+
+                      result:=true;
                     end;
                 A_IN:
                     if GetNextInstruction(p,hp1) then
