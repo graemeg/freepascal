@@ -887,7 +887,7 @@ type
     Procedure TestAWait_ExternalClassPromise;
     Procedure TestAWait_JSValue;
     Procedure TestAWait_Result;
-    Procedure TestAWait_ResultPromiseMissingTypeFail;
+    Procedure TestAWait_ResultPromiseMissingTypeFail; // await(AsyncCallResultPromise) needs T
     Procedure TestAsync_AnonymousProc;
     Procedure TestAsync_ProcType;
     Procedure TestAsync_ProcTypeAsyncModMismatchFail;
@@ -32646,6 +32646,8 @@ begin
   '{$modeswitch externalclass}',
   'type',
   '  TJSPromise = class external name ''Promise''',
+  '  end;',
+  '  TJSThenable = class external name ''Thenable''',
   '  end;',
   'function Fly(w: word): TJSPromise;',
   'begin',

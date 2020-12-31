@@ -5239,9 +5239,16 @@ end;
 
 procedure TPas2JSResolver.SpecializeGenericIntf(
   SpecializedItem: TPRSpecializedItem);
+var
+  El: TPasElement;
 begin
   inherited SpecializeGenericIntf(SpecializedItem);
   RenameSpecialized(SpecializedItem);
+  El:=SpecializedItem.SpecializedEl;
+  if (El is TPasGenericType)
+      and IsFullySpecialized(TPasGenericType(El))
+      and (SpecializeParamsNeedDelay(SpecializedItem)<>nil) then
+    TPas2JSResolverHub(Hub).AddJSDelaySpecialize(TPasGenericType(El));
 end;
 
 procedure TPas2JSResolver.SpecializeGenericImpl(
@@ -5252,11 +5259,6 @@ begin
   inherited SpecializeGenericImpl(SpecializedItem);
 
   El:=SpecializedItem.SpecializedEl;
-  if (El is TPasGenericType)
-      and IsFullySpecialized(TPasGenericType(El))
-      and (SpecializeParamsNeedDelay(SpecializedItem)<>nil) then
-    TPas2JSResolverHub(Hub).AddJSDelaySpecialize(TPasGenericType(El));
-
   if El is TPasMembersType then
     begin
     if FOverloadScopes=nil then
@@ -8208,6 +8210,7 @@ begin
         Lib:=TPasLibrary(El);
         if Assigned(Lib.LibrarySection) then
           AddToSourceElements(Src,ConvertDeclarations(Lib.LibrarySection,IntfContext));
+        // ToDo AddDelayedInits(Lib,Src,IntfContext);
         CreateInitSection(Lib,Src,IntfContext);
         end
       else

@@ -55,6 +55,7 @@ type
     procedure TestGen_ClassInterface_InterfacedObject;
     procedure TestGen_ClassInterface_COM_RTTI;
     procedure TestGen_ClassInterface_Helper;
+    procedure TestGen_ClassInterface_DelayedInitSpec;
 
     // statements
     Procedure TestGen_InlineSpec_Constructor;
@@ -1631,6 +1632,74 @@ begin
     '      rtl.setIntfP(this.p, "Ant", v);',
     '    }',
     '}, 3);',
+    '']));
+end;
+
+procedure TTestGenerics.TestGen_ClassInterface_DelayedInitSpec;
+begin
+  WithTypeInfo:=true;
+  StartProgram(true,[supTObject,supTInterfacedObject]);
+  AddModuleWithIntfImplSrc('UnitA.pas',
+  LinesToStr([
+  '{$mode delphi}',
+  'type',
+  '  TAnt<T> = interface',
+  '    procedure Run(x: T);',
+  '  end;',
+  '']),
+  LinesToStr([
+  '']));
+  Add([
+  '{$mode delphi}',
+  'uses UnitA;',
+  'type',
+  '  TArrWord = array of word;',
+  '  TMyIntf = TAnt<TArrWord>;',
+  '  TBird = class(TInterfacedObject,TMyIntf)',
+  '    procedure Run(a: TArrWord); external name ''Run'';',
+  '  end;',
+  'var',
+  '  i: TMyIntf;',
+  'begin',
+  '  i:=TBird.Create;',
+  '  i.Run([3,4]);',
+  'end.']);
+  ConvertProgram;
+  CheckUnit('UnitA.pas',
+    LinesToStr([ // statements
+    'rtl.module("UnitA", ["system"], function () {',
+    '  var $mod = this;',
+    '  $mod.$rtti.$Interface("TAnt<test1.TArrWord>");',
+    '  rtl.createInterface(',
+    '    this,',
+    '    "TAnt$G1",',
+    '    "{B145F21B-2696-32D5-87A5-F16C037A2D45}",',
+    '    ["Run"],',
+    '    pas.system.IUnknown,',
+    '    function () {',
+    '      this.$initSpec = function () {',
+    '        var $r = this.$rtti;',
+    '        $r.addMethod("Run", 0, [["x", pas.program.$rtti["TArrWord"]]]);',
+    '      };',
+    '    },',
+    '    "TAnt<test1.TArrWord>"',
+    '  );',
+    '});']));
+  CheckSource('TestGen_ClassInterface_DelayedInitSpec',
+    LinesToStr([ // statements
+    'this.$rtti.$DynArray("TArrWord", {',
+    '  eltype: rtl.word',
+    '});',
+    'rtl.createClass(this, "TBird", pas.system.TInterfacedObject, function () {',
+    '  rtl.addIntf(this, pas.UnitA.TAnt$G1);',
+    '  rtl.addIntf(this, pas.system.IUnknown);',
+    '});',
+    'this.i = null;',
+    'pas.UnitA.TAnt$G1.$initSpec();',
+    '']),
+    LinesToStr([ // $mod.$main
+    'rtl.setIntfP($mod, "i", rtl.queryIntfT($mod.TBird.$create("Create"), pas.UnitA.TAnt$G1), true);',
+    '$mod.i.Run([3, 4]);',
     '']));
 end;
 
