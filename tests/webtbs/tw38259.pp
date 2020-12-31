@@ -1,16 +1,21 @@
-{ %OPT=-O3 -Sew -vw }
 {$mode objfpc}
 {$inline on}
 
-procedure test; inline;
-begin
-  exit;
-end;
+procedure mymove(var src,dst; len: ptrint); inline;
+  begin
+    if len<=0 then
+      exit;
+  end;
 
-function f: longint;
+
+function concatansistrings(p1,p2 : pchar;length1,length2 : longint) : pchar;
+var
+  p : pchar;
 begin
-  test; // tt.pp(11,3) Warning: Function result variable does not seem to be initialized
-  result:=4;
+  getmem(p,length1+length2+1);
+  mymove(p1[0],p[0],length1);
+  mymove(p2[0],p[length1],length2+1);
+  concatansistrings:=p;
 end;
 
 begin

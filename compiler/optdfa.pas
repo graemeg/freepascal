@@ -940,8 +940,11 @@ unit optdfa;
                 MaybeSearchIn(texitnode(node).left);
                 { exit uses the resultnode implicitly, so searching for a matching node is
                   useless, if we reach the exit node and found the living node not in left, then
-                  it can be only the resultnode  }
-                if not(Result) and not(is_void(current_procinfo.procdef.returndef)) and
+                  it can be only the resultnode
+
+                  successor might be assigned in case of an inlined exit node, in this case we do not warn about an unassigned
+                  result as this had happened already when the routine has been compiled }
+                if not(assigned(node.successor)) and not(Result) and not(is_void(current_procinfo.procdef.returndef)) and
                   not(assigned(texitnode(node).resultexpr)) and
                   { don't warn about constructors }
                   not(current_procinfo.procdef.proctypeoption in [potype_class_constructor,potype_constructor]) then
