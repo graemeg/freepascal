@@ -1,57 +1,289 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <PathDelim Value="/"/>
-    <Version Value="5"/>
+    <Version Value="12"/>
     <General>
-      <MainUnit Value="0"/>
-      <IconPath Value="./"/>
-      <TargetFileExt Value=""/>
-      <ActiveEditorIndexAtStart Value="1"/>
+      <Flags>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <MainUnitHasTitleStatement Value="False"/>
+        <MainUnitHasScaledStatement Value="False"/>
+        <LRSInOutputDirectory Value="False"/>
+        <CompatibilityMode Value="True"/>
+      </Flags>
     </General>
     <VersionInfo>
-      <ProjectVersion Value=""/>
       <Language Value=""/>
       <CharSet Value=""/>
     </VersionInfo>
+    <BuildModes Count="1">
+      <Item1 Name="default" Default="True"/>
+    </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
-      <IgnoreBinaries Value="False"/>
-      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
-      <ExcludeFileFilter Value="*.(bak|ppu|ppw|o|so);*~;backup"/>
     </PublishOptions>
     <RunParams>
       <local>
-        <FormatVersion Value="1"/>
-        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+        <CommandLineParams Value="extractindex D:/src/chm/chmlaptop500gb/testproject/5/chmtest.chm"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+        <WorkingDirectory Value="D:/src/chm/chmlaptop500gb/testproject/5"/>
       </local>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default">
+          <local>
+            <CommandLineParams Value="extractindex D:/src/chm/chmlaptop500gb/testproject/5/chmtest.chm"/>
+            <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+            <WorkingDirectory Value="D:/src/chm/chmlaptop500gb/testproject/5"/>
+          </local>
+        </Mode0>
+      </Modes>
     </RunParams>
-    <Units Count="1">
+    <Units Count="14">
       <Unit0>
         <Filename Value="chmls.lpr"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="chmls"/>
-        <CursorPos X="22" Y="66"/>
-        <TopLine Value="41"/>
-        <EditorIndex Value="0"/>
-        <UsageCount Value="29"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="45"/>
+        <CursorPos X="24" Y="104"/>
+        <UsageCount Value="192"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit0>
+      <Unit1>
+        <Filename Value="chmreader.pas"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="1580"/>
+        <CursorPos X="91" Y="1669"/>
+        <UsageCount Value="91"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="chmsitemap.pas"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="464"/>
+        <CursorPos X="14" Y="509"/>
+        <UsageCount Value="91"/>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="../../../../lazarus/components/lazutils/utf8process.pp"/>
+        <UnitName Value="UTF8Process"/>
+        <EditorIndex Value="12"/>
+        <TopLine Value="170"/>
+        <CursorPos X="69" Y="209"/>
+        <UsageCount Value="87"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="htmlutil.pas"/>
+        <UnitName Value="HTMLUtil"/>
+        <EditorIndex Value="11"/>
+        <TopLine Value="175"/>
+        <CursorPos X="3" Y="175"/>
+        <UsageCount Value="84"/>
+        <Loaded Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="../../rtl-generics/src/inc/generics.dictionariesh.inc"/>
+        <EditorIndex Value="10"/>
+        <TopLine Value="566"/>
+        <CursorPos X="44" Y="614"/>
+        <UsageCount Value="84"/>
+        <Loaded Value="True"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="../../rtl-generics/src/generics.collections.pas"/>
+        <UnitName Value="Generics.Collections"/>
+        <EditorIndex Value="9"/>
+        <TopLine Value="400"/>
+        <CursorPos X="18" Y="470"/>
+        <UsageCount Value="81"/>
+        <Loaded Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../../../rtl/win32/classes.pp"/>
+        <UnitName Value="Classes"/>
+        <EditorIndex Value="7"/>
+        <CursorPos X="15" Y="44"/>
+        <UsageCount Value="81"/>
+        <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../../../rtl/objpas/classes/classesh.inc"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="195"/>
+        <CursorPos X="8" Y="272"/>
+        <UsageCount Value="81"/>
+        <Loaded Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="chmwriter.pas"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="1179"/>
+        <CursorPos X="40" Y="1258"/>
+        <UsageCount Value="68"/>
+        <Loaded Value="True"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="../../../utils/fpdoc/dw_html.pp"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="161"/>
+        <CursorPos Y="198"/>
+        <UsageCount Value="66"/>
+        <Loaded Value="True"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="../../../utils/fpdoc/dw_htmlchm.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="177"/>
+        <CursorPos X="17" Y="219"/>
+        <UsageCount Value="66"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="chmtypes.pas"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="59"/>
+        <Loaded Value="True"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="../../../rtl/objpas/classes/lists.inc"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="635"/>
+        <CursorPos Y="680"/>
+        <UsageCount Value="33"/>
+        <Loaded Value="True"/>
+      </Unit13>
     </Units>
-    <JumpHistory Count="0">
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="1291" Column="34" TopLine="1211"/>
+      </Position1>
+      <Position2>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="1366" Column="12" TopLine="1314"/>
+      </Position2>
+      <Position3>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="1376" Column="50" TopLine="1314"/>
+      </Position3>
+      <Position4>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="1325" Column="5" TopLine="1280"/>
+      </Position4>
+      <Position5>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="91" Column="14" TopLine="46"/>
+      </Position5>
+      <Position6>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="933" Column="3" TopLine="926"/>
+      </Position6>
+      <Position7>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="937" Column="21" TopLine="926"/>
+      </Position7>
+      <Position8>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="1313" Column="17" TopLine="1266"/>
+      </Position8>
+      <Position9>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="91" Column="15" TopLine="46"/>
+      </Position9>
+      <Position10>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="934" Column="3" TopLine="926"/>
+      </Position10>
+      <Position11>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="1322" Column="17" TopLine="1273"/>
+      </Position11>
+      <Position12>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="1360" Column="28" TopLine="1312"/>
+      </Position12>
+      <Position13>
+        <Filename Value="chmreader.pas"/>
+      </Position13>
+      <Position14>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="53" Column="64"/>
+      </Position14>
+      <Position15>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="80" Column="38"/>
+      </Position15>
+      <Position16>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="81" Column="48"/>
+      </Position16>
+      <Position17>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="944" Column="83" TopLine="862"/>
+      </Position17>
+      <Position18>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="1503" Column="12" TopLine="1421"/>
+      </Position18>
+      <Position19>
+        <Filename Value="chmreader.pas"/>
+        <Caret Line="1554" Column="41" TopLine="1472"/>
+      </Position19>
+      <Position20>
+        <Filename Value="chmls.lpr"/>
+        <Caret Line="492" Column="38" TopLine="482"/>
+      </Position20>
+      <Position21>
+        <Filename Value="chmls.lpr"/>
+      </Position21>
+      <Position22>
+        <Filename Value="chmls.lpr"/>
+        <Caret Line="47" Column="58"/>
+      </Position22>
+      <Position23>
+        <Filename Value="chmls.lpr"/>
+        <Caret Line="189" Column="3" TopLine="186"/>
+      </Position23>
+      <Position24>
+        <Filename Value="chmls.lpr"/>
+        <Caret Line="1009" Column="33" TopLine="983"/>
+      </Position24>
+      <Position25>
+        <Filename Value="chmls.lpr"/>
+        <Caret Line="140" Column="21" TopLine="64"/>
+      </Position25>
+      <Position26>
+        <Filename Value="chmls.lpr"/>
+        <Caret Line="1011" Column="20" TopLine="989"/>
+      </Position26>
+      <Position27>
+        <Filename Value="chmls.lpr"/>
+        <Caret Line="199" Column="64" TopLine="173"/>
+      </Position27>
+      <Position28>
+        <Filename Value="chmls.lpr"/>
+      </Position28>
+      <Position29>
+        <Filename Value="chmls.lpr"/>
+        <Caret Line="197" Column="85" TopLine="146"/>
+      </Position29>
+      <Position30>
+        <Filename Value="chmls.lpr"/>
+        <Caret Line="462" TopLine="373"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="5"/>
+    <Version Value="11"/>
     <SearchPaths>
-      <OtherUnitFiles Value="/home/andrew/programming/lazarus/components/chmhelp/packages/chm/"/>
+      <UnitOutputDirectory Value="../units/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
-    <CodeGeneration>
-      <Generate Value="Faster"/>
-    </CodeGeneration>
-    <Other>
-      <CompilerPath Value="$(CompPath)"/>
-    </Other>
+    <Parsing>
+      <SyntaxOptions>
+        <UseAnsiStrings Value="False"/>
+      </SyntaxOptions>
+    </Parsing>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="2">

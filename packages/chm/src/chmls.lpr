@@ -61,7 +61,7 @@ Const
   CmdNames : array [TCmdEnum] of String = ('LIST','EXTRACT','EXTRACTALL','UNBLOCK','EXTRACTALIAS','EXTRACTTOC','EXTRACTINDEX','PRINTIDXHDR','PRINTSYSTEM','PRINTWINDOWS','PRINTTOPICS','');
 
 var
-  theopts : array[1..4] of TOption;
+  theopts : array[1..5] of TOption;
 
 
 Procedure Usage;
@@ -72,6 +72,7 @@ begin
   writeln(stderr,'Switches : ');
   writeln(stderr,' -h, --help     : this screen');
   writeln(stderr,' -p, --no-page  : do not page list output');
+  writeln(stderr,' --no-offset    : do not show "offset" column in list output');
   writeln(stderr,' -n,--name-only : only show "name" column in list output');
   writeln(stderr);
   writeln(stderr,'Where command is one of the following or if omitted, equal to LIST.');
@@ -137,6 +138,12 @@ begin
   end;
   with theopts[4] do
    begin
+    name:='no-offset';
+    has_arg:=0;
+    flag:=nil;
+  end;
+  with theopts[5] do
+   begin
     name:='';
     has_arg:=0;
     flag:=nil;
@@ -183,20 +190,30 @@ begin
 end;
 
 
+var donotshowoffset : boolean=false;
+
 procedure TListObject.OnFileEntry(Name: String; Offset, UncompressedSize,
   ASection: Integer);
 begin
   Inc(Count);
   if (Section > -1) and (ASection <> Section) then Exit;
   if (Count = 1) or ((Count mod 40 = 0) and not donotpage) then
-    WriteLn(StdErr, '<Section> <Offset> <UnCompSize>  <Name>');
+    begin
+      Write(StdErr, '<Section> ');
+      if not donotshowoffset then
+        Write(StdErr, '<Offset> ');
+      Writeln(StdErr, '<UnCompSize>  <Name>');
+    end;
   if not nameonly then
     begin
       Write(' ');
       Write(ASection);
       Write('      ');
-      WriteStrAdj(IntToStr(Offset), 10);
-      Write('  ');
+      if not donotshowoffset then
+        begin
+          WriteStrAdj(IntToStr(Offset), 10);
+          Write('  ');
+        end;
       WriteStrAdj(IntToStr(UncompressedSize), 11);
       Write('  ');
     end;
@@ -1003,6 +1020,7 @@ begin
                    end;
                1 : name_only:=true;
                2 : donotpage:=true;
+               3 : donotshowoffset:=true;
 
                 end;
            end;
