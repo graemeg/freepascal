@@ -447,6 +447,7 @@ type
     PackageName: string;
     Filename   : String;  // the IN filename, only written when not empty.
   end;
+  TPasModuleClass = class of TPasModule;
 
   { TPasUnitModule }
 

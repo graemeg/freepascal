@@ -4360,6 +4360,7 @@ begin
       end;
     if not (CurToken in [tkComma,tkSemicolon]) then
       ParseExc(nParserExpectedCommaSemicolon,SParserExpectedCommaSemicolon);
+    Engine.FinishScope(stDeclaration,E);
   until (CurToken=tkSemicolon);
 end;
 

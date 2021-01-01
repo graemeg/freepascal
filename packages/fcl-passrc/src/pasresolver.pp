@@ -1698,6 +1698,7 @@ type
     procedure FinishAncestors(aClass: TPasClassType); virtual;
     procedure FinishMethodResolution(El: TPasMethodResolution); virtual;
     procedure FinishAttributes(El: TPasAttributes); virtual;
+    procedure FinishExportSymbol(El: TPasExportSymbol); virtual;
     procedure FinishProcParamAccess(ProcType: TPasProcedureType; Params: TParamsExpr); virtual;
     procedure FinishPropertyParamAccess(Params: TParamsExpr;
       Prop: TPasProperty); virtual;
@@ -5826,6 +5827,7 @@ begin
     FinishSection(TPasLibrary(CurModule).LibrarySection);
     // resolve begin..end block
     ResolveImplBlock(CurModule.InitializationSection);
+    ResolveImplBlock(CurModule.FinalizationSection);
     end
   else if (CurModuleClass=TPasModule) then
     begin
@@ -7776,6 +7778,8 @@ begin
     FinishMethodResolution(TPasMethodResolution(El))
   else if C=TPasAttributes then
     FinishAttributes(TPasAttributes(El))
+  else if C=TPasExportSymbol then
+    FinishExportSymbol(TPasExportSymbol(El))
   else
     begin
     {$IFDEF VerbosePasResolver}
@@ -9131,6 +9135,31 @@ begin
     TResolvedRefCtxAttrProc(AttrRef.Context).Proc:=aConstructor;
     PopScope;
     end;
+end;
+
+procedure TPasResolver.FinishExportSymbol(El: TPasExportSymbol);
+
+  procedure CheckExpExpr(Expr: TPasExpr; Kinds: TREVKinds; const Expected: string);
+  var
+    Value: TResEvalValue;
+    ResolvedEl: TPasResolverResult;
+  begin
+    if Expr=nil then exit;
+    ResolveExpr(Expr,rraRead);
+    Value:=Eval(Expr,[refConst]);
+    if (Value<>nil) and (Value.Kind in Kinds) then
+      begin
+      ReleaseEvalValue(Value);
+      exit;
+      end;
+    ReleaseEvalValue(Value);
+    ComputeElement(Expr,ResolvedEl,[rcConstant]);
+    RaiseXExpectedButYFound(20210101194628,Expected,GetTypeDescription(ResolvedEl),Expr);
+  end;
+
+begin
+  CheckExpExpr(El.ExportIndex,[revkInt,revkUInt],'integer');
+  CheckExpExpr(El.ExportName,[revkString,revkUnicodeString],'string');
 end;
 
 procedure TPasResolver.FinishProcParamAccess(ProcType: TPasProcedureType;
@@ -20836,6 +20865,7 @@ begin
     else if AClass.InheritsFrom(TPasImplBlock) then
       // resolved when finished
     else if AClass=TPasAttributes then
+    else if AClass=TPasExportSymbol then
     else if AClass=TPasUnresolvedUnitRef then
       RaiseMsg(20171018121900,nCantFindUnitX,sCantFindUnitX,[AName],El)
     else
