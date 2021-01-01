@@ -489,6 +489,74 @@ implementation
         end;
 
 
+      function SwapRightWithLeftRight : tnode;
+        var
+          hp : tnode;
+        begin
+          hp:=right;
+          right:=taddnode(left).right;
+          taddnode(left).right:=hp;
+          left:=left.simplify(forinline);
+          if resultdef.typ<>pointerdef then
+            begin
+              { ensure that the constant is not expanded to a larger type due to overflow,
+                but this is only useful if no pointer operation is done }
+              left:=ctypeconvnode.create_internal(left,resultdef);
+              do_typecheckpass(left);
+            end;
+          result:=GetCopyAndTypeCheck;
+        end;
+
+
+      function SwapRightWithLeftLeft : tnode;
+        var
+          hp,hp2 : tnode;
+        begin
+          { keep the order of val+const else pointer operations might cause an error }
+          hp:=taddnode(left).left;
+          taddnode(left).left:=right;
+          left.resultdef:=nil;
+          do_typecheckpass(left);
+          hp2:=left.simplify(forinline);
+          if assigned(hp2) then
+            left:=hp2;
+          if resultdef.typ<>pointerdef then
+            begin
+              { ensure that the constant is not expanded to a larger type due to overflow,
+                but this is only useful if no pointer operation is done }
+              left:=ctypeconvnode.create_internal(left,resultdef);
+              do_typecheckpass(left);
+            end;
+          right:=left;
+          left:=hp;
+          result:=GetCopyAndTypeCheck;
+        end;
+
+
+      function SwapLeftWithRightRight : tnode;
+        var
+          hp: tnode;
+        begin
+          hp:=left;
+          left:=taddnode(right).right;
+          taddnode(right).right:=hp;
+          right:=right.simplify(false);
+          result:=GetCopyAndTypeCheck;
+        end;
+
+
+      function SwapLeftWithRightLeft : tnode;
+        var
+          hp: tnode;
+        begin
+          hp:=left;
+          left:=taddnode(right).left;
+          taddnode(right).left:=hp;
+          right:=right.simplify(false);
+          result:=GetCopyAndTypeCheck;
+        end;
+
+
       var
         t,vl,hp,lefttarget,righttarget, hp2: tnode;
         lt,rt   : tnodetype;
@@ -752,20 +820,7 @@ implementation
                       andn,
                       orn,
                       muln:
-                        begin
-                          hp:=right;
-                          right:=taddnode(left).right;
-                          taddnode(left).right:=hp;
-                          left:=left.simplify(forinline);
-                          if resultdef.typ<>pointerdef then
-                            begin
-                              { ensure that the constant is not expanded to a larger type due to overflow,
-                                but this is only useful if no pointer operation is done }
-                              left:=ctypeconvnode.create_internal(left,resultdef);
-                              do_typecheckpass(left);
-                            end;
-                          result:=GetCopyAndTypeCheck;
-                        end;
+                        Result:=SwapRightWithLeftRight;
                       else
                         ;
                     end;
@@ -778,26 +833,7 @@ implementation
                       andn,
                       orn,
                       muln:
-                        begin
-                          { keep the order of val+const else pointer operations might cause an error }
-                          hp:=taddnode(left).left;
-                          taddnode(left).left:=right;
-                          left.resultdef:=nil;
-                          do_typecheckpass(left);
-                          hp2:=left.simplify(forinline);
-                          if assigned(hp2) then
-                            left:=hp2;
-                          if resultdef.typ<>pointerdef then
-                            begin
-                              { ensure that the constant is not expanded to a larger type due to overflow,
-                                but this is only useful if no pointer operation is done }
-                              left:=ctypeconvnode.create_internal(left,resultdef);
-                              do_typecheckpass(left);
-                            end;
-                          right:=left;
-                          left:=hp;
-                          result:=GetCopyAndTypeCheck;
-                        end;
+                        Result:=SwapRightWithLeftLeft;
                       else
                         ;
                     end;
@@ -808,7 +844,7 @@ implementation
           end;
         if is_constintnode(left) and (is_integer(right.resultdef) or is_pointer(right.resultdef)) then
           begin
-            if tordconstnode(left).value = 0 then
+            if (tordconstnode(left).value = 0) and (nodetype in [addn,orn,xorn,subn,andn,muln]) then
               begin
                 case nodetype of
                   addn,orn,xorn:
@@ -825,24 +861,13 @@ implementation
                     ;
                 end;
               end
-            else if tordconstnode(left).value = 1 then
-              begin
-                case nodetype of
-                  muln:
-                   result := right.getcopy;
-                  else
-                    ;
-                end;
-              end
-            else if tordconstnode(left).value = -1 then
-              begin
-                case nodetype of
-                  muln:
-                   result := ctypeconvnode.create_internal(cunaryminusnode.create(right.getcopy),right.resultdef);
-                  else
-                    ;
-                end;
-              end
+
+            else if (tordconstnode(left).value = 1) and (nodetype=muln) then
+              result := right.getcopy
+
+            else if (tordconstnode(left).value = -1) and (nodetype=muln) then
+              result := ctypeconvnode.create_internal(cunaryminusnode.create(right.getcopy),right.resultdef)
+
             { try to fold
                           op
                          /  \
@@ -863,13 +888,7 @@ implementation
                       andn,
                       orn,
                       muln:
-                        begin
-                          hp:=left;
-                          left:=taddnode(right).right;
-                          taddnode(right).right:=hp;
-                          right:=right.simplify(false);
-                          result:=GetCopyAndTypeCheck;
-                        end;
+                        Result:=SwapLeftWithRightRight;
                       else
                         ;
                     end;
@@ -882,13 +901,7 @@ implementation
                       andn,
                       orn,
                       muln:
-                        begin
-                          hp:=left;
-                          left:=taddnode(right).left;
-                          taddnode(right).left:=hp;
-                          right:=right.simplify(false);
-                          result:=GetCopyAndTypeCheck;
-                        end;
+                        Result:=SwapLeftWithRightLeft;
                       else
                         ;
                     end;
