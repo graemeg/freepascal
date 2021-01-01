@@ -708,9 +708,9 @@ implementation
           end;
 
         { Add,Sub,Mul,Or,Xor,Andn with constant 0, 1 or -1?  }
-        if is_constintnode(right) and (is_integer(left.resultdef) or is_pointer(left.resultdef)) then
+       if is_constintnode(right) and (is_integer(left.resultdef) or is_pointer(left.resultdef)) then
           begin
-            if tordconstnode(right).value = 0 then
+            if (tordconstnode(right).value = 0) and (nodetype in [addn,subn,orn,xorn,andn,muln]) then
               begin
                 case nodetype of
                   addn,subn,orn,xorn:
@@ -725,24 +725,13 @@ implementation
                     ;
                 end;
               end
-            else if tordconstnode(right).value = 1 then
-              begin
-                case nodetype of
-                  muln:
-                   result := left.getcopy;
-                  else
-                    ;
-                end;
-              end
-            else if tordconstnode(right).value = -1 then
-              begin
-                case nodetype of
-                  muln:
-                   result := ctypeconvnode.create_internal(cunaryminusnode.create(left.getcopy),left.resultdef);
-                  else
-                    ;
-                end;
-              end
+
+            else if (tordconstnode(right).value = 1) and (nodetype=muln) then
+              result := left.getcopy
+
+            else if (tordconstnode(right).value = -1) and (nodetype=muln) then
+              result := ctypeconvnode.create_internal(cunaryminusnode.create(left.getcopy),left.resultdef)
+
             { try to fold
                           op                         op
                          /  \                       /  \
