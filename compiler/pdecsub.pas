@@ -1066,7 +1066,8 @@ implementation
                            end
                          else if (srsym.typ=typesym) and
                              (sp_generic_dummy in srsym.symoptions) and
-                             (ttypesym(srsym).typedef.typ=undefineddef) then
+                             (ttypesym(srsym).typedef.typ=undefineddef) and
+                             not assigned(genericparams) then
                            begin
                              { this is a generic dummy symbol that has not yet
                                been used; so we rename the dummy symbol and continue
@@ -1162,12 +1163,21 @@ implementation
               end;
             if not assigned(dummysym) then
               begin
-                dummysym:=ctypesym.create(orgspnongen,cundefineddef.create(true));
+                { overloading generic routines with non-generic types is not
+                  allowed, so we create a procsym as dummy }
+                dummysym:=cprocsym.create(orgspnongen);
                 if assigned(astruct) then
                   astruct.symtable.insert(dummysym)
                 else
                   symtablestack.top.insert(dummysym);
-              end;
+              end
+            else if (dummysym.typ<>procsym) and
+                (
+                  { show error only for the declaration, not also the implementation }
+                  not assigned(astruct) or
+                  (symtablestack.top.symtablelevel<>main_program_level)
+                ) then
+              Message1(sym_e_duplicate_id,dummysym.realname);
             if not (sp_generic_dummy in dummysym.symoptions) then
               begin
                 include(dummysym.symoptions,sp_generic_dummy);
