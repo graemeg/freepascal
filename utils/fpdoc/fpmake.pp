@@ -53,6 +53,8 @@ begin
     T.Dependencies.AddUnit('dwlinear');
     T.Dependencies.AddUnit('dw_txt');
     T.Dependencies.AddUnit('dw_linrtf');
+    T.Dependencies.AddUnit('dw_basemd');
+    T.Dependencies.AddUnit('dw_markdown');
 
     T:=P.Targets.AddProgram('makeskel.pp');
     T.ResourceStrings:=true;
@@ -78,6 +80,8 @@ begin
     P.Targets.AddUnit('dw_xml.pp').install:=false;
     P.Targets.AddUnit('sh_pas.pp').install:=false;
     P.Targets.AddUnit('dw_html.pp').install:=false;
+    P.Targets.AddUnit('dw_basemd.pp').install:=false;
+    P.Targets.AddUnit('dw_markdown.pp').install:=false;
     T:=P.Targets.AddUnit('dw_latex.pp');
     T.install:=false;
     T.ResourceStrings:=true;

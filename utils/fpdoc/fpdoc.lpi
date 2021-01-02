@@ -28,15 +28,15 @@
     </PublishOptions>
     <RunParams>
       <local>
-        <CommandLineParams Value="--macro=FPCDIR=../fpcsrc --project=rtl-project.xml --format=html --output=rtl --footer-date=&quot;mmm dd yyyy&quot;"/>
-        <WorkingDirectory Value="/home/michael/FPC/build/tag_3_2_0/fpcdocs"/>
+        <CommandLineParams Value="--macro=FPCDIR=/Users/Michael/fpc/ --project=rtl-project.xml --format=md --output=rtl"/>
+        <WorkingDirectory Value="/Users/Michael/FPC_SRC/docs"/>
       </local>
       <FormatVersion Value="2"/>
       <Modes Count="1">
         <Mode0 Name="default">
           <local>
-            <CommandLineParams Value="--macro=FPCDIR=../fpcsrc --project=rtl-project.xml --format=html --output=rtl --footer-date=&quot;mmm dd yyyy&quot;"/>
-            <WorkingDirectory Value="/home/michael/FPC/build/tag_3_2_0/fpcdocs"/>
+            <CommandLineParams Value="--macro=FPCDIR=/Users/Michael/fpc/ --project=rtl-project.xml --format=md --output=rtl"/>
+            <WorkingDirectory Value="/Users/Michael/FPC_SRC/docs"/>
           </local>
         </Mode0>
       </Modes>
@@ -46,7 +46,7 @@
         <PackageName Value="FCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="16">
+    <Units Count="19">
       <Unit0>
         <Filename Value="fpdoc.pp"/>
         <IsPartOfProject Value="True"/>
@@ -118,6 +118,18 @@
         <Filename Value="fpdocclasstree.pp"/>
         <IsPartOfProject Value="True"/>
       </Unit15>
+      <Unit16>
+        <Filename Value="dw_markdown.pp"/>
+        <IsPartOfProject Value="True"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="dw_chm.pp"/>
+        <IsPartOfProject Value="True"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="dw_basemd.pp"/>
+        <IsPartOfProject Value="True"/>
+      </Unit18>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -129,6 +141,11 @@
       <IncludeFiles Value="$(ProjOutDir)"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <Linking>
+      <Debugging>
+        <DebugInfoType Value="dsDwarf3"/>
+      </Debugging>
+    </Linking>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">

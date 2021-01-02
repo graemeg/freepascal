@@ -50,10 +50,15 @@ resourcestring
   SDocConstsTypesVars        = 'Constants, types and variables';
   SDocResStrings             = 'Resource strings';
   SDocTypes                  = 'Types';
+  SDocType                   = 'Type';
   SDocConstants              = 'Constants';
+  SDocConstant               = 'Constant';
   SDocClasses                = 'Classes';
+  SDocClass                  = 'Class';
   SDocProceduresAndFunctions = 'Procedures and functions';
+  SDocProcedureOrFunction    = 'Procedure/function';
   SDocVariables              = 'Variables';
+  SDocVariable               = 'Variable';
   SDocIdentifierIndex        = 'Index';
   SDocPackageClassHierarchy  = 'Class hierarchy';
   SDocModuleIndex            = 'Index of all identifiers in unit ''%s''';
@@ -72,9 +77,13 @@ resourcestring
   SDocRemark                 = 'Remark:   ';
   SDocMethodOverview         = 'Method overview';
   SDocPropertyOverview       = 'Property overview';
+  SDocEventOverview          = 'Event overview';
   SDocInterfacesOverview     = 'Interfaces overview';
   SDocInterface              = 'Interfaces';
   SDocPage                   = 'Page';
+  SDocMember                 = 'Member';
+  SDocMembers                = 'Members';
+  SDocField                  = 'Field';
   SDocMethod                 = 'Method';
   SDocProperty               = 'Property';
   SDocAccess                 = 'Access';
@@ -83,6 +92,7 @@ resourcestring
   SDocMethods                = 'Methods';
   SDocEvents                 = 'Events';
   SDocByName                 = 'by Name';
+  SDocByInheritance          = 'By inheritance';
   SDocValue                  = 'Value';
   SDocExplanation            = 'Explanation';
   SDocProcedure              = 'Procedure';
@@ -95,6 +105,10 @@ resourcestring
   // The next line requires leading/trailing space due to XML comment layout:
   SDocGeneratedByComment     = ' Generated using FPDoc - (c) 2000-2012 FPC contributors and Sebastian Guenther, sg@freepascal.org ';
   SDocNotes                  = 'Notes';
+  SDocName                   = 'Name';
+  SDocType_s                 = 'Type(s)';
+  SDocTopic                  = 'Topic';
+  SDocNoneAVailable          = 'No members available';
   
   // Topics
   SDocRelatedTopics = 'Related topics';
@@ -1545,22 +1559,27 @@ end;
 function TFPDocEngine.FindDocNode(AElement: TPasElement): TDocNode;
 begin
   Result:=Nil;
-  If Assigned(AElement) then
+  If not Assigned(AElement) then
+    exit;
+  if aElement.CustomData is TDocNode then
+    Exit(TDocNode(aElement.CustomData));
+  if AElement.InheritsFrom(TPasUnresolvedTypeRef) then
+    Result := FindDocNode(AElement.GetModule, AElement.Name)
+  else
     begin
-    if AElement.InheritsFrom(TPasUnresolvedTypeRef) then
-      Result := FindDocNode(AElement.GetModule, AElement.Name)
-    else
-      begin
-      Result := RootDocNode.FindChild(AElement.PathName);
-      if (Result=Nil) and (AElement is TPasoperator) then
-        Result:=RootDocNode.FindChild(TPasOperator(AElement).OldName(True));
-      end;
-    if (Result=Nil) and
-       WarnNoNode and
-       (Length(AElement.PathName)>0) and
-       (AElement.PathName[1]='#') then
-      DoLog(Format('No documentation node found for identifier : %s',[AElement.PathName]));
+    Result := RootDocNode.FindChild(AElement.PathName);
+    if (Result=Nil) and (AElement is TPasoperator) then
+      Result:=RootDocNode.FindChild(TPasOperator(AElement).OldName(True));
     end;
+  if (Result<>Nil) then
+    begin
+    if aElement.CustomData=Nil then
+      aElement.CustomData:=Result;
+    end
+  else if WarnNoNode and
+          (Length(AElement.PathName)>0) and
+          (AElement.PathName[1]='#') then
+    DoLog(Format('No documentation node found for identifier : %s',[AElement.PathName]));
 end;
 
 function TFPDocEngine.FindDocNode(ARefModule: TPasModule;

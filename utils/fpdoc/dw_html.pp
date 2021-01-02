@@ -21,80 +21,26 @@ interface
 
 uses Classes, DOM, DOM_HTML, dGlobals, PasTree, dWriter;
 
-const
-  // Subpage indices for modules
-  ResstrSubindex = 1;
-  ConstsSubindex = 2;
-  TypesSubindex = 3;
-  ClassesSubindex = 4;
-  ProcsSubindex = 5;
-  VarsSubindex = 6;
-  // Maybe needed later for topic overview ??
-  TopicsSubIndex = 7;
-  IndexSubIndex = 8;
-  ClassHierarchySubIndex = 9;
-
-  // Subpage indices for classes
-  PropertiesByInheritanceSubindex = 1;
-  PropertiesByNameSubindex = 2;
-  MethodsByInheritanceSubindex = 3;
-  MethodsByNameSubindex = 4;
-  EventsByInheritanceSubindex = 5;
-  EventsByNameSubindex = 6;
 
 type
 
-  TFileAllocator = class
-  public
-    procedure AllocFilename(AElement: TPasElement; ASubindex: Integer); virtual;
-    function GetFilename(AElement: TPasElement;
-      ASubindex: Integer): String; virtual; abstract;
-    function GetRelativePathToTop(AElement: TPasElement): String; virtual;
-    function GetCSSFilename(ARelativeTo: TPasElement): DOMString; virtual;
-  end;
-
-  { TLongNameFileAllocator }
-
-  TLongNameFileAllocator = class(TFileAllocator)
-  private
-    FExtension: String;
-  public
-    constructor Create(const AExtension: String);
-    function GetFilename(AElement: TPasElement; ASubindex: Integer): String; override;
-    function GetRelativePathToTop(AElement: TPasElement): String; override;
-    property Extension: String read FExtension;
-  end;
-
-
-  TPageInfo = class
-    Element: TPasElement;
-    SubpageIndex: Integer;
-  end;
-
-
   { THTMLWriter }
 
-  THTMLWriter = class(TFPDocWriter)
+  THTMLWriter = class(TMultiFileDocWriter)
   private
     FImageFileList: TStrings;
     FOnTest: TNotifyEvent;
     FCharSet : String;
     procedure CreateMinusImage;
     procedure CreatePlusImage;
-    function GetPageCount: Integer;
     procedure SetOnTest(const AValue: TNotifyEvent);
   protected
     FCSSFile: String;
-    FAllocator: TFileAllocator;
-    CurDirectory: String;       // relative to curdir of process
-    BaseDirectory: String;      // relative path to package base directory
-    PageInfos: TObjectList;     // list of TPageInfo objects
 
     Doc: THTMLDocument;
     HeadElement,
     BodyElement, TitleElement: TDOMElement;
 
-    Module: TPasModule;
 
     OutputNodeStack: TList;
     CurOutputNode: TDOMNode;
@@ -111,12 +57,10 @@ type
     FUseMenuBrackets: Boolean;
 
     procedure AppendFragment(aParentNode: TDOMElement; aStream: TStream);
-    Procedure CreateAllocator; virtual;
+    function CreateAllocator : TFileAllocator; override;
+    procedure WriteDocPage(const aFileName: String; aElement: TPasElement; aSubPageIndex: Integer);  override;
+
     procedure CreateCSSFile; virtual;
-    function ResolveLinkID(const Name: String; Level : Integer = 0): DOMString;
-    function ResolveLinkIDInUnit(const Name,AUnitName: String): DOMString;
-    function ResolveLinkWithinPackage(AElement: TPasElement;
-      ASubpageIndex: Integer): String;
 
     // Helper functions for creating DOM elements
     function CreateEl(Parent: TDOMNode; const AName: DOMString): THTMLElement;
@@ -255,7 +199,6 @@ type
     function CreateXHTMLPage(AElement: TPasElement; ASubpageIndex: Integer): TXMLDocument;
 
     // Start producing html complete package documentation
-    procedure WriteHTMLPages; virtual;
     procedure WriteXHTMLPages;
 
     Function InterPretOption(Const Cmd,Arg : String) : boolean; override;
@@ -264,9 +207,7 @@ type
     class procedure Usage(List: TStrings); override;
     Class procedure SplitImport(var AFilename, ALinkPrefix: String); override;
     Property SearchPage: String Read FSearchPage Write FSearchPage;
-    property Allocator: TFileAllocator read FAllocator;
 
-    property PageCount: Integer read GetPageCount;
     Property IncludeDateInFooter : Boolean Read FIDF Write FIDF;
     Property DateFormat : String Read FDateFormat Write FDateFormat;
     property OnTest: TNotifyEvent read FOnTest write SetOnTest;
@@ -293,354 +234,8 @@ begin
   Result:=StringReplace(S,'\','/',[rfReplaceAll]);
 end;
 
-
-procedure TFileAllocator.AllocFilename(AElement: TPasElement;
-  ASubindex: Integer);
-begin
-end;
-
-function TFileAllocator.GetRelativePathToTop(AElement: TPasElement): String;
-begin
-  Result:='';
-end;
-
-function TFileAllocator.GetCSSFilename(ARelativeTo: TPasElement): DOMString;
-begin
-  Result := Utf8Decode(GetRelativePathToTop(ARelativeTo)) + 'fpdoc.css';
-end;
-
-
-constructor TLongNameFileAllocator.Create(const AExtension: String);
-begin
-  inherited Create;
-  FExtension := AExtension;
-end;
-
-function TLongNameFileAllocator.GetFilename(AElement: TPasElement; ASubindex: Integer): String;
-
-var
-  n,s: String;
-  i: Integer;
-  excl: Boolean; //search
-begin
-  Result:='';
-  excl := False;
-  if AElement.ClassType = TPasPackage then
-  begin
-    Result := 'index';
-    excl := True;
-  end
-    else if AElement.ClassType = TPasModule then
-  begin
-    Result := LowerCase(AElement.Name) + PathDelim + 'index';
-    excl := True;
-  end
-    else
-  begin
-    if AElement is TPasOperator then
-    begin
-      if Assigned(AElement.Parent) then
-        result:=LowerCase(AElement.Parent.PathName);
-      With TPasOperator(aElement) do
-        Result:= Result + 'op-'+OperatorTypeToOperatorName(OperatorType);
-      s := '';
-      N:=LowerCase(aElement.Name); // Should not contain any weird chars.
-      Delete(N,1,Pos('(',N));
-      i := 1;
-      Repeat
-        I:=Pos(',',N);
-        if I=0 then
-          I:=Pos(')',N);
-        if I>1 then
-          begin
-          if (S<>'') then
-            S:=S+'-';
-          S:=S+Copy(N,1,I-1);
-          end;
-        Delete(N,1,I);
-      until I=0;
-      // First char is maybe :
-      if (N<>'') and  (N[1]=':') then
-        Delete(N,1,1);
-      Result:=Result + '-'+ s + '-' + N;
-    end
-      else
-    begin
-      Result := LowerCase(AElement.PathName);
-      excl := (ASubindex > 0);
-    end;
-    // searching for TPasModule - it is on the 2nd level
-    if AElement.GetModule <> nil then
-      AElement := AElement.GetModule 
-    else
-      Raise EFPDocWriterError.Create(
-      'TLongNameFileAllocator error: Unresolved module name for element: ' +AElement.PathName);
-    // cut off Package Name
-    Result := Copy(Result, Length(AElement.Parent.Name) + 2, MaxInt);
-    // to skip dots in unit name
-    i := Length(AElement.Name);
-    while (i <= Length(Result)) and (Result[i] <> '.') do
-      Inc(i);
-    if (i <= Length(Result)) and (i > 0) then
-      Result[i] := PathDelim;
-    if excl or (Length(Result)=0) then
-      begin
-        // exclude the from full text search index
-        s:= '.'+ExtractFileName(Result + '.');
-        n:= ExtractFileDir(Result);
-        Result := n + DirectorySeparator + s;
-        Result := Copy(Result, 1, Length(Result)-1);
-      end;
-  end;
-
-  if ASubindex > 0 then
-    Result := Result + '-' + IntToStr(ASubindex);
-
-  Result := Result + Extension;
-//  Writeln('Result filename : ',Result);
-end;
-
-function TLongNameFileAllocator.GetRelativePathToTop(AElement: TPasElement): String;
-begin
-  if (AElement.ClassType=TPasPackage) then
-    Result := ''
-  else if (AElement.ClassType=TTopicElement) then
-    begin
-    If (AElement.Parent.ClassType=TTopicElement) then
-      Result:='../'+GetRelativePathToTop(AElement.Parent)
-    else if (AElement.Parent.ClassType=TPasPackage) then
-      Result:=''
-    else if (AElement.Parent.ClassType=TPasModule) then
-      Result:='../';
-    end
-  else
-    Result := '../';
-end;
-
-Type
-
-  { TLinkData }
-
-  TLinkData = Class(TObject)
-    FPathName,
-    FLink,
-    FModuleName : String;
-
-    Constructor Create(Const APathName,ALink,AModuleName : string);
-  end;
-
-{ TLinkData }
-
-constructor TLinkData.Create(Const APathName, ALink, AModuleName: string);
-begin
-  FPathName:=APathName;
-  FLink:=ALink;
-  FModuleName:=AModuleName;
-end;
-
 constructor THTMLWriter.Create(APackage: TPasPackage; AEngine: TFPDocEngine);
 
-  procedure AddPage(AElement: TPasElement; ASubpageIndex: Integer);
-  var
-    PageInfo: TPageInfo;
-  begin
-    PageInfo := TPageInfo.Create;
-    PageInfo.Element := AElement;
-    PageInfo.SubpageIndex := ASubpageIndex;
-    PageInfos.Add(PageInfo);
-    Allocator.AllocFilename(AElement, ASubpageIndex);
-    if ASubpageIndex = 0 then
-      Engine.AddLink(AElement.PathName,
-        Allocator.GetFilename(AElement, ASubpageIndex));
-  end;
-
-  procedure AddTopicPages(AElement: TPasElement);
-
-  var
-    PreviousTopic,
-    TopicElement : TTopicElement;
-    PageInfo : TPageInfo;
-    DocNode,
-    TopicNode : TDocNode;
-
-  begin
-    DocNode:=Engine.FindDocNode(AElement);
-    If not Assigned(DocNode) then
-      exit;
-    TopicNode:=DocNode.FirstChild;
-    PreviousTopic:=Nil;
-    While Assigned(TopicNode) do
-      begin
-      If TopicNode.TopicNode then
-        begin
-        TopicElement:=TTopicElement.Create(TopicNode.Name,AElement);
-        Topics.Add(TopicElement);
-        TopicElement.TopicNode:=TopicNode;
-        TopicElement.Previous:=PreviousTopic;
-        If Assigned(PreviousTopic) then
-          PreviousTopic.Next:=TopicElement;
-        PreviousTopic:=TopicElement;
-        if AElement is TTopicElement then
-          TTopicElement(AElement).SubTopics.Add(TopicElement);
-        PageInfo := TPageInfo.Create;
-        PageInfo.Element := TopicElement;
-        PageInfo.SubpageIndex := 0;
-        PageInfos.Add(PageInfo);
-        Allocator.AllocFilename(TopicElement,0);
-        Engine.AddLink(TopicElement.PathName, Allocator.GetFilename(TopicElement,0));
-        if AElement is TTopicElement then
-          TTopicElement(AElement).SubTopics.Add(TopicElement)
-        else // Only one level of recursion.
-          AddTopicPages(TopicElement);
-        end;
-      TopicNode:=TopicNode.NextSibling;
-      end;
-  end;
-
-
-  Function HaveClasses(AModule: TPasModule) : Boolean;
-
-  begin
-    result:=assigned(AModule)
-           and assigned(AModule.InterfaceSection)
-           and assigned(AModule.InterfaceSection.Classes)
-           and (AModule.InterfaceSection.Classes.Count>0);
-  end;
-
-  procedure AddPages(AElement: TPasElement; ASubpageIndex: Integer;
-    AList: TFPList);
-  var
-    i,j: Integer;
-    R : TPasRecordtype;
-    FPEl : TPasElement;
-    DocNode: TDocNode;
-  begin
-    if AList.Count > 0 then
-      begin
-      AddPage(AElement, ASubpageIndex);
-      for i := 0 to AList.Count - 1 do
-        begin
-        AddPage(TPasElement(AList[i]), 0);
-        if (TObject(AList[i]) is TPasRecordType) then
-          begin
-          R:=TObject(AList[I]) as TPasRecordType;
-          For J:=0 to R.Members.Count-1 do
-            begin
-            FPEl:=TPasElement(R.Members[J]);
-            if ((FPEL is TPasProperty) or (FPEL is TPasProcedureBase))
-               and Engine.ShowElement(FPEl) then
-                 begin
-                 DocNode := Engine.FindDocNode(FPEl);
-                 if Assigned(DocNode) then
-                   AddPage(FPEl, 0);
-                 end;
-            end;
-          end;
-        end;
-      end;
-  end;
-
-  Procedure AddClassMemberPages(AModule: TPasModule; LinkList : TObjectList);
-  var
-    i, j, k: Integer;
-    ClassEl: TPasClassType;
-    FPEl, AncestorMemberEl: TPasElement;
-    DocNode: TDocNode;
-    ALink : DOMString;
-    DidAutolink: Boolean;
-
-  begin
-  for i := 0 to AModule.InterfaceSection.Classes.Count - 1 do
-    begin
-    ClassEl := TPasClassType(AModule.InterfaceSection.Classes[i]);
-    AddPage(ClassEl, 0);
-    // !!!: Only add when there are items
-    AddPage(ClassEl, PropertiesByInheritanceSubindex);
-    AddPage(ClassEl, PropertiesByNameSubindex);
-    AddPage(ClassEl, MethodsByInheritanceSubindex);
-    AddPage(ClassEl, MethodsByNameSubindex);
-    AddPage(ClassEl, EventsByInheritanceSubindex);
-    AddPage(ClassEl, EventsByNameSubindex);
-    for j := 0 to ClassEl.Members.Count - 1 do
-      begin
-      FPEl := TPasElement(ClassEl.Members[j]);
-      if Not Engine.ShowElement(FPEl) then
-        continue;
-      DocNode := Engine.FindDocNode(FPEl);
-      if Assigned(DocNode) then
-        begin
-        if Assigned(DocNode.Node) then
-          ALink:=DocNode.Node['link']
-        else
-          ALink:='';
-        If (ALink<>'') then
-          LinkList.Add(TLinkData.Create(FPEl.PathName,UTF8Encode(ALink),AModule.name))
-        else
-          AddPage(FPEl, 0);
-        end
-      else
-        begin
-        DidAutolink := False;
-        if Assigned(ClassEl.AncestorType) and
-          (ClassEl.AncestorType.ClassType.inheritsfrom(TPasClassType)) then
-          begin
-          for k := 0 to TPasClassType(ClassEl.AncestorType).Members.Count - 1 do
-            begin
-            AncestorMemberEl :=
-              TPasElement(TPasClassType(ClassEl.AncestorType).Members[k]);
-            if AncestorMemberEl.Name = FPEl.Name then
-              begin
-              DocNode := Engine.FindDocNode(AncestorMemberEl);
-              if Assigned(DocNode) then
-                begin
-                DidAutolink := True;
-                Engine.AddLink(FPEl.PathName,
-                  Engine.FindAbsoluteLink(AncestorMemberEl.PathName));
-                break;
-                end;
-              end;
-            end;
-          end;
-        if not DidAutolink then
-          AddPage(FPEl, 0);
-        end;
-      end;
-    end;
-    end;
-
-  procedure ScanModule(AModule: TPasModule; LinkList : TObjectList);
-  var
-    i: Integer;
-    s: String;
-
-  begin
-    if not assigned(Amodule.Interfacesection) then
-      exit; 
-    AddPage(AModule, 0);
-    AddPage(AModule,IndexSubIndex);
-    AddTopicPages(AModule);
-    with AModule do
-      begin
-      if InterfaceSection.ResStrings.Count > 0 then
-        begin
-        AddPage(AModule, ResstrSubindex);
-        s := Allocator.GetFilename(AModule, ResstrSubindex);
-        for i := 0 to InterfaceSection.ResStrings.Count - 1 do
-          with TPasResString(InterfaceSection.ResStrings[i]) do
-            Engine.AddLink(PathName, s + '#' + LowerCase(Name));
-        end;
-      AddPages(AModule, ConstsSubindex, InterfaceSection.Consts);
-      AddPages(AModule, TypesSubindex, InterfaceSection.Types);
-      if InterfaceSection.Classes.Count > 0 then
-        begin
-        AddPage(AModule, ClassesSubindex);
-        AddClassMemberPages(AModule,LinkList);
-        end;
-
-      AddPages(AModule, ProcsSubindex, InterfaceSection.Functions);
-      AddPages(AModule, VarsSubindex, InterfaceSection.Variables);
-      end;
-  end;
 
 var
   i: Integer;
@@ -649,52 +244,19 @@ var
 
 begin
   inherited Create(APackage, AEngine);
-
   // should default to true since this is the old behavior
   UseMenuBrackets:=True;
-
   IndexColCount:=3;
   Charset:='iso-8859-1';
-  CreateAllocator;
   OutputNodeStack := TList.Create;
-
-  PageInfos := TObjectList.Create;
   FImageFileList := TStringList.Create;
-
-  // Allocate page for the package itself, if a name is given (i.e. <> '#')
-  if Length(Package.Name) > 1 then
-    begin
-    AddPage(Package, 0);
-    AddPage(Package,IndexSubIndex);
-    I:=0;
-    H:=False;
-    While (I<Package.Modules.Count) and Not H do
-      begin
-      H:=HaveClasses(TPasModule(Package.Modules[i]));
-      Inc(I);
-      end;
-    if H then
-      AddPage(Package,ClassHierarchySubIndex);
-    AddTopicPages(Package);
-    end;
-  L:=TObjectList.Create;
-  try
-    for i := 0 to Package.Modules.Count - 1 do
-      ScanModule(TPasModule(Package.Modules[i]),L);
-    // Resolve links
-    For I:=0 to L.Count-1 do
-      With TLinkData(L[i]) do
-        Engine.AddLink(FPathName,UTF8Encode(ResolveLinkIDInUnit(FLink,FModuleName)));
-  finally
-    L.Free;
-  end;
+  AllocatePages;
 end;
 
 destructor THTMLWriter.Destroy;
 begin
   PageInfos.Free;
   OutputNodeStack.Free;
-  FAllocator.Free;
   FImageFileList.Free;
   inherited Destroy;
 end;
@@ -746,57 +308,28 @@ begin
   Result := nil;
 end;
 
-procedure CreatePath(const AFilename: String);
-var
-  EndIndex: Integer;
-  Path: String;
-begin
-  EndIndex := Length(AFilename);
-  if EndIndex = 0 then
-    exit;
-  while not (AFilename[EndIndex] in AllowDirectorySeparators) do
-  begin
-    Dec(EndIndex);
-    if EndIndex = 0 then
-      exit;
-  end;
 
-  Path := Copy(AFilename, 1, EndIndex - 1);
-  if not DirectoryExists(Path) then
-  begin
-    CreatePath(Path);
-    MkDir(Path);
+procedure THTMLWriter.WriteDocPage(const aFileName: String; aElement: TPasElement; aSubPageIndex: Integer);
+
+Var
+  PageDoc: TXMLDocument;
+
+begin
+  PageDoc := CreateHTMLPage(aElement, aSubpageIndex);
+  try
+    //writeln('Element: ',Element.PathName, ' FileName: ', Filename);
+    WriteHTMLFile(PageDoc, aFilename);
+  except
+    on E: Exception do
+      DoLog(SErrCouldNotCreateFile, [aFileName, e.Message]);
   end;
+  PageDoc.Free;
 end;
 
-
-procedure THTMLWriter.WriteHTMLPages;
-var
-  i: Integer;
-  PageDoc: TXMLDocument;
-  Filename: String;
+procedure THTMLWriter.WriteDoc;
 
 begin
-  if Engine.Output <> '' then
-    Engine.Output := IncludeTrailingBackSlash(Engine.Output);
-  for i := 0 to PageInfos.Count - 1 do
-    with TPageInfo(PageInfos[i]) do
-    begin
-      PageDoc := CreateHTMLPage(Element, SubpageIndex);
-      try
-        Filename := Engine.Output + Allocator.GetFilename(Element, SubpageIndex);
-        try
-          CreatePath(Filename);
-          //writeln('Element: ',Element.PathName, ' FileName: ', Filename);
-          WriteHTMLFile(PageDoc, Filename);
-        except
-          on E: Exception do
-            DoLog(SErrCouldNotCreateFile, [FileName, e.Message]);
-        end;
-      finally
-        PageDoc.Free;
-      end;
-    end;
+  Inherited;
   CreateCSSFile;
   CreatePlusImage;
   CreateMinusImage;
@@ -912,60 +445,6 @@ end;
 }
 
 
-{ Used for:
-  - <link> elements in descriptions
-  - "see also" entries
-  - AppendHyperlink (for unresolved parse tree element links)
-}
-
-function THTMLWriter.ResolveLinkIDInUnit(const Name,AUnitName: String): DOMString;
-
-begin
-  Result:=ResolveLinkID(Name);
-  If (Result='') and (AUnitName<>'') and (length(Name)>0) and (Name[1]<>'#') then
-     Result:=ResolveLinkID(AUnitName+'.'+Name);
-end;
-
-function THTMLWriter.ResolveLinkID(const Name: String; Level : Integer = 0): DOMString;
-
-var
-  res,s: String;
-
-begin
-  res:=Engine.ResolveLink(Module,Name, True);
-  // engine can return backslashes on Windows
-  if Length(res) > 0 then
-   begin
-     s:=Copy(Res, 1, Length(CurDirectory) + 1);
-    if (S= CurDirectory + '/') or (s= CurDirectory + '\') then
-      Res := Copy(Res, Length(CurDirectory) + 2, Length(Res))
-    else if not IsLinkAbsolute(Res) then
-      Res := BaseDirectory + Res;
-   end;
-  Result:=UTF8Decode(Res);
-end;
-
-function THTMLWriter.ResolveLinkWithinPackage(AElement: TPasElement;
-  ASubpageIndex: Integer): String;
-var
-  ParentEl: TPasElement;
-  s : String;
-begin
-  ParentEl := AElement;
-  while Assigned(ParentEl) and not (ParentEl.ClassType = TPasPackage) do
-    ParentEl := ParentEl.Parent;
-  if Assigned(ParentEl) and (TPasPackage(ParentEl) = Engine.Package) then
-  begin
-    Result := Allocator.GetFilename(AElement, ASubpageIndex);
-    // engine/allocator can return backslashes on Windows
-    s:=Copy(Result, 1, Length(CurDirectory) + 1);
-    if (S= CurDirectory + '/') or (s= CurDirectory + '\') then
-      Result := Copy(Result, Length(CurDirectory) + 2, Length(Result))
-    else
-      Result := BaseDirectory + Result;
-  end else
-    SetLength(Result, 0);
-end;
 
 function THTMLWriter.CreateEl(Parent: TDOMNode;
   const AName: DOMString): THTMLElement;
@@ -2099,6 +1578,11 @@ begin
     end;
 end;
 
+function THTMLWriter.CreateAllocator: TFileAllocator;
+begin
+   Result:=TLongNameFileAllocator.Create('.html');
+end;
+
 procedure THTMLWriter.AppendMenuBar(ASubpageIndex: Integer);
 
 var
@@ -2406,7 +1890,7 @@ begin
     end;
 end;
 
-Procedure THTMLWriter.CreateTopicPageBody(AElement : TTopicElement);
+procedure THTMLWriter.CreateTopicPageBody(AElement: TTopicElement);
 
 var
   DocNode: TDocNode;
@@ -3122,22 +2606,6 @@ begin
 end;
 
 
-function PropertyFilter(AMember: TPasElement): Boolean;
-begin
-  Result := (AMember.ClassType = TPasProperty) and
-    (Copy(AMember.Name, 1, 2) <> 'On');
-end;
-
-function MethodFilter(AMember: TPasElement): Boolean;
-begin
-  Result := AMember.InheritsFrom(TPasProcedureBase);
-end;
-
-function EventFilter(AMember: TPasElement): Boolean;
-begin
-  Result := (AMember.ClassType = TPasProperty) and
-    (Copy(AMember.Name, 1, 2) = 'On');
-end;
 
 procedure THTMLWriter.CreateMemberDeclarations(AParent : TPasElement; Members : TFPList; TableEl : TDOmelement; AddEnd : Boolean);
 
@@ -3288,8 +2756,6 @@ end;
 
 procedure THTMLWriter.CreateClassPageBody(AClass: TPasClassType;
   ASubpageIndex: Integer);
-type
-  TMemberFilter = function(AMember: TPasElement): Boolean;
 var
   ParaEl: TDOMElement;
 
@@ -3869,11 +3335,6 @@ begin
     Result:=False;
 end;
 
-procedure THTMLWriter.WriteDoc;
-begin
-   DoLog(SWritingPages, [PageCount]);
-   WriteHTMLPages;
-end;
 
 class procedure THTMLWriter.Usage(List: TStrings);
 begin
@@ -3921,20 +3382,11 @@ end;
 
 // private methods
 
-function THTMLWriter.GetPageCount: Integer;
-begin
-  Result := PageInfos.Count;
-end;
 
 procedure THTMLWriter.SetOnTest(const AValue: TNotifyEvent);
 begin
   if FOnTest=AValue then exit;
     FOnTest:=AValue;
-end;
-
-procedure THTMLWriter.CreateAllocator;
-begin
-  FAllocator:=TLongNameFileAllocator.Create('.html');
 end;
 
 

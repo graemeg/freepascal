@@ -7,6 +7,13 @@ uses Classes, DOM, DOM_HTML,
 
 type
 
+  { TCHmFileNameAllocator }
+
+  TCHmFileNameAllocator = Class(TLongNameFileAllocator)
+    // Override this, because the logic messes up the filenames for plain html files.
+    function GetFilename(AElement: TPasElement; ASubindex: Integer): String; override;
+  end;
+
   { TFpDocChmWriter }
 
   TFpDocChmWriter = class (TChmWriter)
@@ -44,7 +51,8 @@ type
     procedure GenerateTOC;
     procedure GenerateIndex;
   public
-    procedure WriteHTMLPages; override;
+    procedure WriteDoc; override;
+    function CreateAllocator: TFileAllocator; override;
     
     function  InterPretOption(const Cmd,Arg : String): boolean; override;
 
@@ -56,6 +64,89 @@ type
 implementation
 
 uses SysUtils, HTMWrite;
+
+{ TCHmFileNameAllocator }
+
+function TCHmFileNameAllocator.GetFilename(AElement: TPasElement; ASubindex: Integer): String;
+var
+  n,s: String;
+  i: Integer;
+  excl: Boolean; //search
+begin
+  Result:='';
+  excl := False;
+  if AElement.ClassType = TPasPackage then
+  begin
+    Result := 'index';
+    excl := True;
+  end
+  else if AElement.ClassType = TPasModule then
+  begin
+    Result := LowerCase(AElement.Name) + PathDelim + 'index';
+    excl := True;
+  end
+  else
+  begin
+    if AElement is TPasOperator then
+    begin
+      if Assigned(AElement.Parent) then
+        result:=LowerCase(AElement.Parent.PathName);
+      With TPasOperator(aElement) do
+        Result:= Result + 'op-'+OperatorTypeToOperatorName(OperatorType);
+      s := '';
+      N:=LowerCase(aElement.Name); // Should not contain any weird chars.
+      Delete(N,1,Pos('(',N));
+      i := 1;
+      Repeat
+        I:=Pos(',',N);
+        if I=0 then
+          I:=Pos(')',N);
+        if I>1 then
+          begin
+          if (S<>'') then
+            S:=S+'-';
+          S:=S+Copy(N,1,I-1);
+          end;
+        Delete(N,1,I);
+      until I=0;
+      // First char is maybe :
+      if (N<>'') and  (N[1]=':') then
+        Delete(N,1,1);
+      Result:=Result + '-'+ s + '-' + N;
+    end
+      else
+    begin
+      Result := LowerCase(AElement.PathName);
+      excl := (ASubindex > 0);
+    end;
+    // searching for TPasModule - it is on the 2nd level
+    if Assigned(AElement.Parent) then
+      while Assigned(AElement.Parent.Parent) do
+        AElement := AElement.Parent;
+    // cut off Package Name
+    Result := Copy(Result, Length(AElement.Parent.Name) + 2, MaxInt);
+    // to skip dots in unit name
+    i := Length(AElement.Name);
+    while (i <= Length(Result)) and (Result[i] <> '.') do
+      Inc(i);
+    if (i <= Length(Result)) and (i > 0) then
+      Result[i] := PathDelim;
+    if excl or (Length(Result)=0) then
+      begin
+        // exclude the from full text search index
+        s:= '.'+ExtractFileName(Result + '.');
+        n:= ExtractFileDir(Result);
+        Result := n + DirectorySeparator + s;
+        Result := Copy(Result, 1, Length(Result)-1);
+      end;
+  end;
+
+  if ASubindex > 0 then
+    Result := Result + '-' + IntToStr(ASubindex);
+
+  Result := Result + Extension;
+//  Writeln('Result filename : ',Result);
+end;
 
 { TFpDocChmWriter }
 
@@ -523,7 +614,7 @@ begin
   DoLog('Generating Index Done');
 end;
 
-procedure TCHMHTMLWriter.WriteHTMLPages;
+procedure TCHMHTMLWriter.WriteDoc;
 var
   i: Integer;
   PageDoc: TXMLDocument;
@@ -605,6 +696,11 @@ begin
   DeleteFile(FTempUncompressedName);
 end;
 
+function TCHMHTMLWriter.CreateAllocator: TFileAllocator;
+begin
+  Result:=TCHmFileNameAllocator.Create('.html');
+end;
+
 function TCHMHTMLWriter.InterPretOption(const Cmd, Arg: String): boolean;
 begin
   Result:=True;
@@ -660,7 +756,7 @@ begin
   List.Add(SCHMUsageChmTitle);
 end;
 
-Class Function TCHMHTMLWriter.FileNameExtension : String; 
+class function TCHMHTMLWriter.FileNameExtension: String;
 
 begin
   result:='.chm';
