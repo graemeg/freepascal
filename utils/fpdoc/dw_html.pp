@@ -255,7 +255,6 @@ end;
 
 destructor THTMLWriter.Destroy;
 begin
-  PageInfos.Free;
   OutputNodeStack.Free;
   FImageFileList.Free;
   inherited Destroy;
