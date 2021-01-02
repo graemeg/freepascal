@@ -3374,6 +3374,8 @@ implementation
                     exit;
                   end;
               end;
+            if (tprocsym(sym).procdeflist.count=0) and (sp_generic_dummy in tprocsym(sym).symoptions) then
+              result:=is_visible_for_object(sym.owner,sym.visibility,contextobjdef);
           end
         else
           result:=is_visible_for_object(sym.owner,sym.visibility,contextobjdef);
@@ -4250,6 +4252,14 @@ implementation
                         if not is_visible_for_object(pdef.owner,pdef.visibility,contextclassh) then
                           continue;
                         srsym:=tprocdef(tprocsym(srsym).procdeflist[i]).procsym;
+                        srsymtable:=srsym.owner;
+                        result:=true;
+                        exit;
+                      end;
+                    if (sp_generic_dummy in tprocsym(srsym).symoptions) and
+                        (tprocsym(srsym).procdeflist.count=0) and
+                        is_visible_for_object(srsym.owner,srsym.visibility,contextclassh) then
+                      begin
                         srsymtable:=srsym.owner;
                         result:=true;
                         exit;

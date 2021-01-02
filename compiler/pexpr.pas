@@ -1514,9 +1514,11 @@ implementation
             begin
               if srsym.typ=typesym then
                 spezdef:=ttypesym(srsym).typedef
+              else if tprocsym(srsym).procdeflist.count>0 then
+                spezdef:=tdef(tprocsym(srsym).procdeflist[0])
               else
-                spezdef:=tdef(tprocsym(srsym).procdeflist[0]);
-              if (spezdef.typ=errordef) and (sp_generic_dummy in srsym.symoptions) then
+                spezdef:=nil;
+              if (not assigned(spezdef) or (spezdef.typ=errordef)) and (sp_generic_dummy in srsym.symoptions) then
                 symname:=srsym.RealName
               else
                 symname:='';
@@ -3048,12 +3050,20 @@ implementation
                wasgenericdummy:=false;
                if assigned(srsym) and
                    (sp_generic_dummy in srsym.symoptions) and
-                   (srsym.typ=typesym) and
+                   (srsym.typ in [procsym,typesym]) and
                    (
                      (
                        (m_delphi in current_settings.modeswitches) and
                        not (token in [_LT, _LSHARPBRACKET]) and
-                       (ttypesym(srsym).typedef.typ=undefineddef)
+                       (
+                         (
+                           (srsym.typ=typesym) and
+                           (ttypesym(srsym).typedef.typ=undefineddef)
+                         ) or (
+                           (srsym.typ=procsym) and
+                           (tprocsym(srsym).procdeflist.count=0)
+                         )
+                       )
                      )
                      or
                      (
@@ -3306,8 +3316,14 @@ implementation
                 procsym :
                   begin
                     p1:=nil;
+                    if (m_delphi in current_settings.modeswitches) and
+                        (sp_generic_dummy in srsym.symoptions) and
+                        (token in [_LT,_LSHARPBRACKET]) then
+                      begin
+                        p1:=cspecializenode.create(nil,getaddr,srsym)
+                      end
                     { check if it's a method/class method }
-                    if is_member_read(srsym,srsymtable,p1,hdef) then
+                    else if is_member_read(srsym,srsymtable,p1,hdef) then
                       begin
                         { if we are accessing a owner procsym from the nested }
                         { class we need to call it as a class member          }
@@ -4214,7 +4230,8 @@ implementation
             typesym:
               result:=ttypesym(sym).typedef;
             procsym:
-              result:=tdef(tprocsym(sym).procdeflist[0]);
+              if not (sp_generic_dummy in sym.symoptions) or (tprocsym(sym).procdeflist.count>0) then
+                result:=tdef(tprocsym(sym).procdeflist[0]);
             else
               internalerror(2015092701);
           end;
