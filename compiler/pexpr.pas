@@ -3558,17 +3558,18 @@ implementation
                  (block_type=bt_body) and
                  (token in [_LT,_LSHARPBRACKET]) then
                begin
-                 if p1.nodetype=typen then
-                   idstr:=ttypenode(p1).typesym.name
-                 else
-                   if (p1.nodetype=loadvmtaddrn) and
-                       (tloadvmtaddrnode(p1).left.nodetype=typen) then
-                     idstr:=ttypenode(tloadvmtaddrnode(p1).left).typesym.name
+                 idstr:='';
+                 case p1.nodetype of
+                   typen:
+                     idstr:=ttypenode(p1).typesym.name;
+                   loadvmtaddrn:
+                     if tloadvmtaddrnode(p1).left.nodetype=typen then
+                       idstr:=ttypenode(tloadvmtaddrnode(p1).left).typesym.name;
+                   loadn:
+                     idstr:=tloadnode(p1).symtableentry.name;
                    else
-                     if (p1.nodetype=loadn) then
-                       idstr:=tloadnode(p1).symtableentry.name
-                     else
-                       idstr:='';
+                     ;
+                 end;
                  { if this is the case then the postfix handling is done in
                    sub_expr if necessary }
                  dopostfix:=not could_be_generic(idstr);
