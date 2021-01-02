@@ -236,12 +236,16 @@ begin
   S2CP:=TranslatePlaceholderCP(S2CP);
 {$ifdef FPC_HAS_CPSTRING}
   { if the result is rawbytestring and both strings have the same code page,
-    keep that code page }
-  if (cp=CP_NONE) and
-     (S1CP=S2CP) then
-    DestCP:=S1CP;
+    keep that code page or keep the code page if the other string is empty }
+  if cp=CP_NONE then
+    begin
+     if (S1CP=S2CP) or (S2='') then
+       DestCP:=S1CP
+     else if S1='' then
+       DestCP:=S2CP;
+    end;
 {$endif FPC_HAS_CPSTRING}
-  if (S1CP<>DestCP) or (S2CP<>DestCP) then
+  if ((S1CP<>DestCP) and (s1<>'')) or ((S2CP<>DestCP) and (s2<>'')) then
     begin
       ansistr_concat_complex(DestS,S1,S2,DestCP);
       exit;
