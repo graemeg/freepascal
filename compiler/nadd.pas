@@ -512,9 +512,10 @@ implementation
         var
           hp,hp2 : tnode;
         begin
-          { keep the order of val+const else pointer operations might cause an error }
+          { keep the order of val+const else pointer and string operations might cause an error }
           hp:=taddnode(left).left;
-          taddnode(left).left:=right;
+          taddnode(left).left:=taddnode(left).right;
+          taddnode(left).right:=right;
           left.resultdef:=nil;
           do_typecheckpass(left);
           hp2:=left.simplify(forinline);
@@ -1206,7 +1207,23 @@ implementation
              exit;
           end;
 
-        { set constant evaluation }
+        { try to fold
+                    op
+                   /  \
+                 op  const1
+                /  \
+              val const2
+
+          while operating on strings
+        }
+        if (cs_opt_level2 in current_settings.optimizerswitches) and (nodetype=addn) and ((rt=stringconstn) or is_constcharnode(right)) and (left.nodetype=nodetype) and
+          (compare_defs(resultdef,left.resultdef,nothingn)=te_exact) and ((taddnode(left).right.nodetype=stringconstn) or is_constcharnode(taddnode(left).right)) then
+          begin
+            Result:=SwapRightWithLeftLeft;
+            exit;
+          end;
+
+          { set constant evaluation }
         if (right.nodetype=setconstn) and
            not assigned(tsetconstnode(right).left) and
            (left.nodetype=setconstn) and
