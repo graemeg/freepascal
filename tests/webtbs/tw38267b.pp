@@ -1,6 +1,6 @@
 { %opt=-O3 -Sg }
 {$mode objfpc} {$longstrings+}
-label start1, end1, start2, end2, start3, end3;
+label start1, end1, start2, end2, start3, end3, start4, end4;
 
 var
 	s: string;
@@ -88,5 +88,34 @@ end3:
     if PtrUint(CodePointer(@end3) - CodePointer(@start3))>300 then
       halt(3);
     writeln;
+
+	writeln('31 literals concatenated with 1 dynamic string, they could fold but didn''t at all:');
+start4:
+	s := 'Once like a Great House' + (LineEnding +
+		('founded on sand,' + (LineEnding +
+		('Stood our Temple' + (LineEnding +
+		('whose pillars on troubles were based.' + (LineEnding +
+		('Now mischievous spirits, bound,' + (LineEnding +
+		('in dim corners stand,' + (LineEnding +
+		('Rotted columns, but' + (LineEnding +
+		('with iron-bound bands embraced' + (LineEnding +
+		('Cracked, crumbling marble,' + (LineEnding +
+		('tempered on every hand,' + (LineEnding +
+		('By strong steel' + (LineEnding +
+		('forged in fire and faith.' + (LineEnding +
+		('Shackled, these wayward servants' + (LineEnding +
+		('serve the land,' + (LineEnding +
+		('The Temple secured' + (LineEnding +
+		('by the Builder’s grace.' +
+		Copy('', 1, 0)))))))))))))))))))))))))))))));
+end4:
+    writeln(Copy(s, 1, 0), PtrUint(CodePointer(@end4) - CodePointer(@start4)), ' b of code');
+    { more than 100 bytes of code might point out that the constants are not folded,
+      example x86_64-linux: not folded: 1384 bytes; folded: 108 bytes
+    }
+    if PtrUint(CodePointer(@end4) - CodePointer(@start4))>300 then
+      halt(4);
+
+
     writeln('ok');
 end.

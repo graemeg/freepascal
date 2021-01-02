@@ -536,12 +536,28 @@ implementation
 
       function SwapLeftWithRightRight : tnode;
         var
-          hp: tnode;
+          hp,hp2 : tnode;
         begin
-          hp:=left;
-          left:=taddnode(right).right;
-          taddnode(right).right:=hp;
-          right:=right.simplify(false);
+          { keep the order of val+const else string operations might cause an error }
+          hp:=taddnode(right).right;
+
+          taddnode(right).right:=taddnode(right).left;
+          taddnode(right).left:=left;
+
+          right.resultdef:=nil;
+          do_typecheckpass(right);
+          hp2:=right.simplify(forinline);
+          if assigned(hp2) then
+            right:=hp2;
+          if resultdef.typ<>pointerdef then
+            begin
+              { ensure that the constant is not expanded to a larger type due to overflow,
+                but this is only useful if no pointer operation is done }
+              right:=ctypeconvnode.create_internal(right,resultdef);
+              do_typecheckpass(right);
+            end;
+          left:=right;
+          right:=hp;
           result:=GetCopyAndTypeCheck;
         end;
 
@@ -1207,23 +1223,7 @@ implementation
              exit;
           end;
 
-        { try to fold
-                    op
-                   /  \
-                 op  const1
-                /  \
-              val const2
-
-          while operating on strings
-        }
-        if (cs_opt_level2 in current_settings.optimizerswitches) and (nodetype=addn) and ((rt=stringconstn) or is_constcharnode(right)) and (left.nodetype=nodetype) and
-          (compare_defs(resultdef,left.resultdef,nothingn)=te_exact) and ((taddnode(left).right.nodetype=stringconstn) or is_constcharnode(taddnode(left).right)) then
-          begin
-            Result:=SwapRightWithLeftLeft;
-            exit;
-          end;
-
-          { set constant evaluation }
+        { set constant evaluation }
         if (right.nodetype=setconstn) and
            not assigned(tsetconstnode(right).left) and
            (left.nodetype=setconstn) and
@@ -1381,9 +1381,48 @@ implementation
             exit;
           end;
 
-        { slow simplifications }
+        if cs_opt_level1 in current_settings.optimizerswitches then
+          begin
+          end;
+
+        { slow simplifications and/or more sophisticated transformations which might make debugging harder }
         if cs_opt_level2 in current_settings.optimizerswitches then
           begin
+            if nodetype=addn then
+              begin
+                { try to fold
+                            op
+                           /  \
+                         op  const1
+                        /  \
+                      val const2
+
+                  while operating on strings
+                }
+                if ((rt=stringconstn) or is_constcharnode(right)) and (left.nodetype=nodetype) and
+                  (compare_defs(resultdef,left.resultdef,nothingn)=te_exact) and ((taddnode(left).right.nodetype=stringconstn) or is_constcharnode(taddnode(left).right)) then
+                  begin
+                    Result:=SwapRightWithLeftLeft;
+                    exit;
+                  end;
+
+                { try to fold
+                              op
+                             /  \
+                         const1  op
+                                /  \
+                            const2 val
+
+                  while operating on strings
+                }
+                if ((lt=stringconstn) or is_constcharnode(left)) and (right.nodetype=nodetype) and
+                  (compare_defs(resultdef,right.resultdef,nothingn)=te_exact) and ((taddnode(right).left.nodetype=stringconstn) or is_constcharnode(taddnode(right).left)) then
+                  begin
+                    Result:=SwapLeftWithRightRight;
+                    exit;
+                  end;
+              end;
+
             { the comparison is might be expensive and the nodes are usually only
               equal if some previous optimizations were done so don't check
               this simplification always
