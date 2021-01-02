@@ -3567,6 +3567,8 @@ implementation
                        idstr:=ttypenode(tloadvmtaddrnode(p1).left).typesym.name;
                    loadn:
                      idstr:=tloadnode(p1).symtableentry.name;
+                   calln:
+                     idstr:=tcallnode(p1).symtableprocentry.name;
                    else
                      ;
                  end;
@@ -4231,6 +4233,8 @@ implementation
             loadn:
               if not searchsym_with_symoption(tloadnode(n).symtableentry.Name,srsym,srsymtable,sp_generic_dummy) then
                 srsym:=nil;
+            calln:
+              srsym:=tcallnode(n).symtableprocentry;
             specializen:
               srsym:=tspecializenode(n).sym;
             { TODO : handle const nodes }
