@@ -149,7 +149,7 @@ implementation
                        else
                         begin
                           index:=0;
-                          consume(_INTCONST);
+                          message(type_e_ordinal_expr_expected);
                         end;
                        include(options,eo_index);
                        pt.free;
@@ -166,7 +166,7 @@ implementation
                        else if is_constcharnode(pt) then
                          hpname:=chr(tordconstnode(pt).value.svalue and $ff)
                        else
-                         consume(_CSTRING);
+                         message(type_e_string_expr_expected);
                        include(options,eo_name);
                        pt.free;
                        DefString:=hpname+'='+InternalProcName;
