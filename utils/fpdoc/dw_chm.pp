@@ -428,6 +428,7 @@ begin
   
   if ETypeName[1] = 'f' then Exit(cmtFunction);
   if ETypeName[1] = 'c' then Exit(cmtConstructor);
+  if ETypeName[1] = 'd' then Exit(cmtDestructor);
   if ETypeName[1] = 'v' then Exit(cmtVariable);
   if ETypeName[1] = 'i' then Exit(cmtInterface);
   // the p's
