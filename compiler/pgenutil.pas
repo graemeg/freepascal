@@ -1790,8 +1790,7 @@ uses
                 if not searchsym_with_flags(sym.name,srsym,srsymtable,[ssf_no_addsymref]) then
                   srsym:=nil;
               end
-            else if (sym.typ=procsym) and
-                (tprocsym(sym).procdeflist.count>0) then
+            else if sym.typ=procsym then
               srsym:=sym
             else
               { dummy symbol is already not so dummy anymore }
