@@ -39,8 +39,8 @@ uses
     procedure generate_specialization(var tt:tdef;parse_class_parent:boolean;_prettyname:string;parsedtype:tdef;symname:string;parsedpos:tfileposinfo);inline;
     procedure generate_specialization(var tt:tdef;parse_class_parent:boolean;_prettyname:string);inline;
     function generate_specialization_phase1(out context:tspecializationcontext;genericdef:tdef):tdef;inline;
-    function generate_specialization_phase1(out context:tspecializationcontext;genericdef:tdef;symname:string):tdef;inline;
-    function generate_specialization_phase1(out context:tspecializationcontext;genericdef:tdef;parsedtype:tdef;symname:string;parsedpos:tfileposinfo):tdef;
+    function generate_specialization_phase1(out context:tspecializationcontext;genericdef:tdef;symname:string;symtable:tsymtable):tdef;inline;
+    function generate_specialization_phase1(out context:tspecializationcontext;genericdef:tdef;parsedtype:tdef;symname:string;symtable:tsymtable;parsedpos:tfileposinfo):tdef;
     function generate_specialization_phase2(context:tspecializationcontext;genericdef:tstoreddef;parse_class_parent:boolean;_prettyname:ansistring):tdef;
     function check_generic_constraints(genericdef:tstoreddef;paramlist:tfpobjectlist;poslist:tfplist):boolean;
     function parse_generic_parameters(allowconstraints:boolean):tfphashobjectlist;
@@ -613,23 +613,23 @@ uses
 {$push}
 {$warn 5036 off}
       begin
-        result:=generate_specialization_phase1(context,genericdef,nil,'',dummypos);
+        result:=generate_specialization_phase1(context,genericdef,nil,'',nil,dummypos);
       end;
 {$pop}
 
 
-    function generate_specialization_phase1(out context:tspecializationcontext;genericdef:tdef;symname:string):tdef;
+    function generate_specialization_phase1(out context:tspecializationcontext;genericdef:tdef;symname:string;symtable:tsymtable):tdef;
       var
         dummypos : tfileposinfo;
 {$push}
 {$warn 5036 off}
       begin
-        result:=generate_specialization_phase1(context,genericdef,nil,symname,dummypos);
+        result:=generate_specialization_phase1(context,genericdef,nil,symname,symtable,dummypos);
       end;
 {$pop}
 
 
-    function generate_specialization_phase1(out context:tspecializationcontext;genericdef:tdef;parsedtype:tdef;symname:string;parsedpos:tfileposinfo):tdef;
+    function generate_specialization_phase1(out context:tspecializationcontext;genericdef:tdef;parsedtype:tdef;symname:string;symtable:tsymtable;parsedpos:tfileposinfo):tdef;
       var
         found,
         err : boolean;
@@ -637,6 +637,7 @@ uses
         gencount : longint;
         countstr,genname,ugenname : string;
         tmpstack : tfpobjectlist;
+        symowner : tsymtable;
       begin
         context:=nil;
         result:=nil;
@@ -741,12 +742,17 @@ uses
 
         context.genname:=genname;
 
-        if assigned(genericdef) and (genericdef.owner.symtabletype in [objectsymtable,recordsymtable]) then
+        if assigned(genericdef) then
+          symowner:=genericdef.owner
+        else
+          symowner:=symtable;
+
+        if assigned(symowner) and (symowner.symtabletype in [objectsymtable,recordsymtable]) then
           begin
-            if genericdef.owner.symtabletype = objectsymtable then
-              found:=searchsym_in_class(tobjectdef(genericdef.owner.defowner),tobjectdef(genericdef.owner.defowner),ugenname,context.sym,context.symtable,[])
+            if symowner.symtabletype = objectsymtable then
+              found:=searchsym_in_class(tobjectdef(symowner.defowner),tobjectdef(symowner.defowner),ugenname,context.sym,context.symtable,[])
             else
-              found:=searchsym_in_record(tabstractrecorddef(genericdef.owner.defowner),ugenname,context.sym,context.symtable);
+              found:=searchsym_in_record(tabstractrecorddef(symowner.defowner),ugenname,context.sym,context.symtable);
             if not found then
               found:=searchsym(ugenname,context.sym,context.symtable);
           end
@@ -1350,7 +1356,7 @@ uses
         context : tspecializationcontext;
         genericdef : tstoreddef;
       begin
-        genericdef:=tstoreddef(generate_specialization_phase1(context,tt,parsedtype,symname,parsedpos));
+        genericdef:=tstoreddef(generate_specialization_phase1(context,tt,parsedtype,symname,nil,parsedpos));
         if genericdef<>generrordef then
           genericdef:=tstoreddef(generate_specialization_phase2(context,genericdef,parse_class_parent,_prettyname));
         tt:=genericdef;

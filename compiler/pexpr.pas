@@ -1520,7 +1520,7 @@ implementation
                 symname:=srsym.RealName
               else
                 symname:='';
-              spezdef:=generate_specialization_phase1(spezcontext,spezdef,symname);
+              spezdef:=generate_specialization_phase1(spezcontext,spezdef,symname,srsym.owner);
               case spezdef.typ of
                 errordef:
                   begin
@@ -2994,7 +2994,7 @@ implementation
                      begin
                        {$push}
                        {$warn 5036 off}
-                       hdef:=generate_specialization_phase1(spezcontext,nil,nil,orgstoredpattern,dummypos);
+                       hdef:=generate_specialization_phase1(spezcontext,nil,nil,orgstoredpattern,nil,dummypos);
                        {$pop}
                        if hdef=generrordef then
                          begin
@@ -4269,7 +4269,7 @@ implementation
             end;
 
           if assigned(parseddef) and assigned(gensym) and assigned(p2) then
-            gendef:=generate_specialization_phase1(spezcontext,gendef,parseddef,gensym.realname,p2.fileinfo)
+            gendef:=generate_specialization_phase1(spezcontext,gendef,parseddef,gensym.realname,gensym.owner,p2.fileinfo)
           else
             gendef:=generate_specialization_phase1(spezcontext,gendef);
           case gendef.typ of
