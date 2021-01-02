@@ -26,7 +26,7 @@ type
 
   TMemberListOption = (mloAppendParent,mloAppendType,mloCheckVisibility);
   TMemberListOptions = Set of TMemberListOption;
-
+  TNavigationMode = (nmUnitTree,nmUnitSubTree);
   { TMarkdownWriter }
 
   TMarkdownWriter = class(TBaseMarkdownWriter)
@@ -37,8 +37,10 @@ type
     FAdditionalConfig : TStrings;
     FFooterMarkDown : TStrings;
     FHeaderMarkDown : TStrings;
+    FNavigationMode: TNavigationMode;
     FOnTest: TNotifyEvent;
     FNavigation : TStrings;
+    FUnitSubTreeStarted : Boolean;
     function GetAdditionalConfig: TStrings;
     function GetClassDeclaration(aEl: TPasClassType): String;
     function GetClassDeclarationFirstLine(aEl: TPasClassType): String;
@@ -137,6 +139,7 @@ type
     Property HeaderMarkDown : TStrings Read GetHeaderMarkDown;
     Property FooterMarkDown : TStrings Read GetFooterMarkDown;
     property AdditionalConfig : TStrings Read GetAdditionalConfig;
+    property NavigationMode:  TNavigationMode Read FNavigationMode;
   end;
 
 implementation
@@ -180,35 +183,47 @@ procedure TMarkdownWriter.AddToNavigation(const aFileName: String; aElement: TPa
       aFile:=' '''+aFile+'''';
     FNavigation.Add(StringOfChar(' ',aLevel*4)+'- '+aName+aFile);
   end;
+Var
+  Offs : Integer;
 
 begin
   if aElement is TPasPackage then
     begin
-      case aSubPageIndex of
-        IdentifierIndex:
-          begin
-          AddToNav(1,SDocPackageLinkTitle,'');
-          AddToNav(2,SDocOverview,aFileName);
-          end;
-        IndexSubIndex :  AddToNav(2,SDocIdentifierIndex,aFileName);
-        ClassHierarchySubIndex :  AddToNav(2,SDocPackageClassHierarchy,aFileName);
-      end
+    case aSubPageIndex of
+      IdentifierIndex:
+        begin
+        AddToNav(1,SDocPackageLinkTitle,'');
+        AddToNav(2,SDocOverview,aFileName);
+        end;
+      IndexSubIndex :  AddToNav(2,SDocIdentifierIndex,aFileName);
+      ClassHierarchySubIndex :  AddToNav(2,SDocPackageClassHierarchy,aFileName);
+    end
     end
   else if (aElement is TPasModule) then
     begin
-      case aSubPageIndex of
-        IdentifierIndex :
-          begin
-          AddToNav(1,Format(StringReplace(SDocUnitMenuTitle,'''','',[rfReplaceALl]),[aElement.Name]),'');
-          AddToNav(2,SDocOverview,aFileName);
-          end;
-        ResstrSubindex:  AddToNav(2,SDocResStrings,aFileName);
-        ConstsSubindex:  AddToNav(2,SDocConstants,aFileName);
-        TypesSubindex: AddToNav(2,SDocTypes,aFileName);
-        ClassesSubindex: AddToNav(2,SDocClasses,aFileName);
-        ProcsSubindex: AddToNav(2,SDocProceduresAndFunctions,aFileName);
-        VarsSubindex: AddToNav(2,SDocVariables,aFileName);
-      end;
+    offS:=Ord (NavigationMode=nmUnitSubTree);
+    if Offs=1 then
+      if Not FUnitSubTreeStarted then
+        begin
+        FUnitSubTreeStarted:=True;
+        AddToNav(1,SDocUnits,'');
+        end;;
+    case aSubPageIndex of
+      IdentifierIndex :
+        begin
+        if Offs=0 then
+          AddToNav(1+Offs,Format(StringReplace(SDocUnitMenuTitle,'''','',[rfReplaceALl]),[aElement.Name]),'')
+        else
+          AddToNav(1+Offs,aElement.Name,'');
+        AddToNav(2+offs,SDocOverview,aFileName);
+        end;
+      ResstrSubindex:  AddToNav(2+Offs,SDocResStrings,aFileName);
+      ConstsSubindex:  AddToNav(2+Offs,SDocConstants,aFileName);
+      TypesSubindex: AddToNav(2+Offs,SDocTypes,aFileName);
+      ClassesSubindex: AddToNav(2+Offs,SDocClasses,aFileName);
+      ProcsSubindex: AddToNav(2+Offs,SDocProceduresAndFunctions,aFileName);
+      VarsSubindex: AddToNav(2+Offs,SDocVariables,aFileName);
+    end;
     end
 end;
 
@@ -811,6 +826,7 @@ var
   DocNode: TDocNode;
 begin
   DocNode:=AElement.TopicNode;
+  AppendTitle(AElement.Name);
   if not Assigned(DocNode) then  // should always be true, but we're being careful.
     exit;
   AppendShortDescr(AElement, DocNode);
@@ -1875,10 +1891,19 @@ begin
   else if Cmd = '--image-url' then
     FBaseImageURL  := Arg
   else if Cmd = '--theme' then
+    begin
     if arg='-' then
       Theme:=''
     else
       Theme  := Arg
+    end
+  else if Cmd='--navigation' then
+    begin
+    if SameText(Arg,'UnitSubTree') then
+      FNavigationMode:=nmUnitSubTree
+    else if SameText(Arg,'UnitTree') then
+      FNavigationMode:=nmUnitTree;
+    end;
 end;
 
 class procedure TMarkdownWriter.Usage(List: TStrings);

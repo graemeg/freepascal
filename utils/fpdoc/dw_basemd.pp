@@ -110,6 +110,8 @@ Type
     function EscapeMarkDown(aText: Domstring): string;
     function EscapeMarkDown(aText: String): string;
     function CreateLink(Const aText,aLink : String) : String;
+    function GetListPrefix: String;virtual;
+
     // Append to current line
     procedure AppendToLine(aText: DomString; DoEscape: boolean = true);
     procedure AppendToLine(aText: UTF8String; DoEscape: boolean = true); virtual;
@@ -403,22 +405,29 @@ begin
   if FCurrentIndentIndex<=0 then
      FPDocError(SErrMinIndentStack);
   Dec(FCurrentIndentIndex);
+  CalcPrefix;
 end;
 
 procedure TBaseMarkdownWriter.StartList(aType: TListType);
 begin
   If FListStack>=MaxLists then
     FPDocError(SErrMaxListStack);
+  OutputCurrentLine;
   Inc(FListStack);
   FListTypes[FListStack]:=aType;
+  if FListStack>1 then
+    PushIndent(CurrentIndent+Length(GetListprefix));
 end;
 
 procedure TBaseMarkdownWriter.StopList(aType: TListType);
 begin
+  OutputCurrentLine;
   If FListStack<=0 then
     FPDocError(SErrMinListStack);
   if FListTypes[FListStack]<>aType then
     FPDocError(SErrPopListStack);
+  if FListStack>1 then
+    PopIndent;
   Dec(FListStack);
 end;
 
@@ -451,6 +460,7 @@ function TBaseMarkdownWriter.CurrentList: TListType;
 begin
   if FListStack=0 then
     FPDOcError(SErrNotInList);
+  Result:=FListTypes[FListStack];
 end;
 
 procedure TBaseMarkdownWriter.EndSpan(aRender : TRender);
@@ -629,16 +639,23 @@ begin
   StopList(ltDefinition);
 end;
 
-procedure TBaseMarkdownWriter.DescrBeginListItem;
+
+function TBaseMarkdownWriter.GetListPrefix : String;
+
 begin
   Case CurrentList of
-    ltOrdered   : AppendToLine('1. ');
-    ltUnordered : AppendToLine('- ');
-    ltDefinition :
-      begin
-      AppendToLine('- ');
-      end;
+    ltOrdered   : Result:='1. ';
+    ltUnordered : Result:='- ';
+    ltDefinition : Result:=':    ';
   end;
+end;
+
+procedure TBaseMarkdownWriter.DescrBeginListItem;
+Var
+  Pref : String;
+begin
+  Pref:=GetListPrefix;
+  AppendToLine(Pref);
 end;
 
 
