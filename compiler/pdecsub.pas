@@ -1168,7 +1168,11 @@ implementation
                 else
                   symtablestack.top.insert(dummysym);
               end;
-            include(dummysym.symoptions,sp_generic_dummy);
+            if not (sp_generic_dummy in dummysym.symoptions) then
+              begin
+                include(dummysym.symoptions,sp_generic_dummy);
+                add_generic_dummysym(dummysym);
+              end;
             { start token recorder for the declaration }
             pd.init_genericdecl;
             current_scanner.startrecordtokens(pd.genericdecltokenbuf);
