@@ -4430,6 +4430,7 @@ procedure TPCUWriter.WriteExportSymbol(Obj: TJSONObject; El: TPasExportSymbol;
   aContext: TPCUWriterContext);
 begin
   WritePasElement(Obj,El,aContext);
+  WriteExpr(Obj,El,'NameExpr',El.NameExpr,aContext);
   WriteExpr(Obj,El,'ExportName',El.ExportName,aContext);
   WriteExpr(Obj,El,'ExportIndex',El.ExportIndex,aContext);
 end;
@@ -9256,6 +9257,7 @@ procedure TPCUReader.ReadExportSymbol(Obj: TJSONObject; El: TPasExportSymbol;
   aContext: TPCUReaderContext);
 begin
   ReadPasElement(Obj,El,aContext);
+  El.NameExpr:=ReadExpr(Obj,El,'NameExpr',aContext);
   El.ExportName:=ReadExpr(Obj,El,'ExportName',aContext);
   El.ExportIndex:=ReadExpr(Obj,El,'ExportIndex',aContext);
 end;

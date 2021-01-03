@@ -1935,6 +1935,7 @@ end;
 procedure TCustomTestPrecompile.CheckRestoredExportSymbol(const Path: string;
   Orig, Rest: TPasExportSymbol; Flags: TPCCheckFlags);
 begin
+  CheckRestoredElement(Path+'.NameExpr',Orig.NameExpr,Rest.NameExpr,Flags);
   CheckRestoredElement(Path+'.ExportName',Orig.ExportName,Rest.ExportName,Flags);
   CheckRestoredElement(Path+'.ExportIndex',Orig.ExportIndex,Rest.ExportIndex,Flags);
 end;
