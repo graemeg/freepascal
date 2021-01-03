@@ -62,9 +62,10 @@ function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
 var
   c: dword;
 begin
+  softfloat_rounding_mode:=RoundMode;
+  Reslut:=GetRoundMode;
   c:=Ord(RoundMode) shl 16;
   c:=_controlfp(c, _MCW_RC);
-  Result:=TFPURoundingMode((c shr 16) and 3);
 end;
 
 function GetPrecisionMode: TFPUPrecisionMode;

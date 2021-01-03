@@ -137,10 +137,10 @@ const
 var
   FPCR: DWord;
 begin
+  Result:=GetRoundMode;
   FPCR:=GetFPCR and not FPU68K_ROUND_MASK;
   SetFPCR(FPCR or FPCToFPURoundingMode[RoundMode]);
   softfloat_rounding_mode:=RoundMode;
-  Result:=RoundMode;
 end;
 
 function GetPrecisionMode: TFPUPrecisionMode;

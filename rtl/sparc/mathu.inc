@@ -32,6 +32,7 @@ function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
     cw: dword;
   begin
     cw:=get_fsr;
+    softfloat_rounding_mode:=RoundMode;
     result:=TFPURoundingMode(cw shr 30);
     set_fsr((cw and $3fffffff) or (rm2bits[RoundMode] shl 30));
   end;

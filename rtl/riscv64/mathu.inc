@@ -50,7 +50,7 @@ function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
     rm2bits : array[TFPURoundingMode] of byte = (0,2,3,1);
   begin
     softfloat_rounding_mode:=RoundMode;
-    SetRoundMode:=RoundMode;
+    SetRoundMode:=GetRoundMode;
     setrm(rm2bits[RoundMode]);
   end;
 

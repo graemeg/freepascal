@@ -101,12 +101,12 @@ begin
         mode := FP_RND_RM;
       end;
   end;
+  result := GetRoundMode;
 {$ifndef aix}
   setFPSCR((getFPSCR and (not RoundModeMask)) or mode);
 {$else not aix}
   fp_swap_rnd(mode);
 {$endif not aix}
-  result := RoundMode;
 end;
 
 

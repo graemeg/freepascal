@@ -51,7 +51,7 @@ function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
     rm2bits: array[TFPURoundingMode] of byte = (0,2,1,3);
   begin
     softfloat_rounding_mode:=RoundMode;
-    SetRoundMode:=RoundMode;
+    SetRoundMode:=GetRoundMode;
     setfpcr((getfpcr and $ff3fffff) or (rm2bits[RoundMode] shl 22));
   end;
 

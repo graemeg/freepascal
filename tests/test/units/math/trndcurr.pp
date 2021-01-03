@@ -1,13 +1,20 @@
 uses
   Math;
 
+
+const
+  failure_count : longint = 0;
+  first_error : longint = 0;
+
 {$ifndef SKIP_CURRENCY_TEST}
 procedure testround(const c, expected: currency; error: longint);
 begin
   if round(c)<>expected then
     begin
       writeln('round(',c,') = ',round(c),' instead of ', expected);
-      halt(error);
+      inc(failure_count);
+      if first_error=0 then
+        first_error:=error;
     end;
 end;
 
@@ -31,7 +38,11 @@ begin
   testround(-1.4,-1.0,154);
 
   writeln('Rounding mode: rmUp');
-  SetRoundMode(rmUp);
+  if SetRoundMode(rmUp)<>rmNearest then
+    writeln('Warning: previous mode was not rmNearest');
+  if GetRoundMode <> rmUp then
+    begin
+    end;
   testround(0.5,1.0,5);
   testround(1.5,2.0,6);
   testround(-0.5,0.0,7);
@@ -75,4 +86,6 @@ begin
   testround(-0.4,0.0,165);
   testround(-1.4,-1.0,166);
 {$endif}
+  if failure_count>0 then
+    halt(first_error);
 end.

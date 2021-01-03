@@ -201,6 +201,7 @@ var
 begin
   CtlWord:=Get8087CW;
   SSECSR:=GetMXCSR;
+  softfloat_rounding_mode:=RoundMode;
   Set8087CW((CtlWord and $F3FF) or (Ord(RoundMode) shl 10));
   SetMXCSR((SSECSR and $ffff9fff) or (dword(RoundMode) shl 13));
 {$ifdef FPC_HAS_TYPE_EXTENDED}

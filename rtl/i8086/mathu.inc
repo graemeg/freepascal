@@ -155,6 +155,7 @@ function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
 var
   CtlWord: Word;
 begin
+  softfloat_rounding_mode:=RoundMode;
   CtlWord := Get8087CW;
   Set8087CW((CtlWord and $F3FF) or (Ord(RoundMode) shl 10));
 {  if has_sse_support then

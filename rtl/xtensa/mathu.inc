@@ -20,6 +20,7 @@ function GetRoundMode: TFPURoundingMode;
 
 function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
   begin
+    SetRoundMode:=softfloat_rounding_mode;
     softfloat_rounding_mode:=RoundMode;
   end;
 

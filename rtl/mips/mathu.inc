@@ -62,6 +62,7 @@ function SetRoundMode(const RoundMode: TFPURoundingMode): TFPURoundingMode;
   begin
     fsr:=get_fsr;
     result:=fsr2roundmode[fsr and fpu_rounding_mask];
+    softfloat_rounding_mode:=RoundMode;
     set_fsr((fsr and not fpu_rounding_mask) or roundmode2fsr[RoundMode]);
   end;
 
