@@ -1381,10 +1381,6 @@ implementation
             exit;
           end;
 
-        if cs_opt_level1 in current_settings.optimizerswitches then
-          begin
-          end;
-
         { slow simplifications and/or more sophisticated transformations which might make debugging harder }
         if cs_opt_level2 in current_settings.optimizerswitches then
           begin
