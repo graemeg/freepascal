@@ -609,6 +609,14 @@ procedure Win32Ansi2UnicodeMove(source:pchar;cp : TSystemCodePage;var dest:Unico
         dwFlags:=MB_PRECOMPOSED;
       end;
     destlen:=MultiByteToWideChar(cp, dwFlags, source, len, nil, 0);
+    { destlen=0 means that Windows cannot convert, so call the default
+      handler. This is similiar to what unix does and is a good fallback
+      if rawbyte strings are passed }
+    if destlen=0 then
+      begin
+        DefaultAnsi2UnicodeMove(source,DefaultSystemCodePage,dest,len);
+        exit;
+      end;
     // this will null-terminate
     setlength(dest, destlen);
     if destlen>0 then
