@@ -5,7 +5,7 @@ unit fpdocclasstree;
 interface
 
 uses
-  Classes, SysUtils, dGlobals, pastree, contnrs, DOM ,XMLWrite;
+  Classes, SysUtils, dGlobals, pastree, contnrs{$IFDEF TREE_TEST}, DOM ,XMLWrite{$ENDIF};
 
 Type
 
