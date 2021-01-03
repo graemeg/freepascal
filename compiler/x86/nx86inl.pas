@@ -1223,7 +1223,9 @@ implementation
              { only one memory operand is allowed }
              gotmem:=false;
              memop:=0;
-             for i:=1 to 3 do
+             { in case parameters come on the FPU stack, we have to pop them in reverse order as we
+               called secondpass }
+             for i:=3 downto 1 do
                begin
                  if not(paraarray[i].location.loc in [LOC_MMREGISTER,LOC_CMMREGISTER]) then
                    begin
