@@ -23,6 +23,13 @@ end;
 
 begin
 {$ifndef SKIP_CURRENCY_TEST}
+  if GetRoundMode <> rmNearest then
+    begin
+      writeln('Starting rounding mode is not rmNearest');
+      inc(failure_count);
+      if first_error=0 then
+        first_error:=200;
+    end;
   writeln('Rounding mode: rmNearest (even)');
   testround(0.5,0.0,1);
   testround(1.5,2.0,2);
@@ -42,6 +49,10 @@ begin
     writeln('Warning: previous mode was not rmNearest');
   if GetRoundMode <> rmUp then
     begin
+      writeln('Failed to set rounding mode to rmUp');
+      inc(failure_count);
+      if first_error=0 then
+        first_error:=201;
     end;
   testround(0.5,1.0,5);
   testround(1.5,2.0,6);
@@ -57,7 +68,15 @@ begin
   testround(-1.4,-1.0,158);
 
   writeln('Rounding mode: rmDown');
-  SetRoundMode(rmDown);
+  if SetRoundMode(rmDown)<>rmUp then
+    writeln('Warning: previous mode was not rmUp');
+  if GetRoundMode <> rmDown then
+    begin
+      writeln('Failed to set rounding mode to rmDown');
+      inc(failure_count);
+      if first_error=0 then
+        first_error:=202;
+    end;
   testround(0.5,0.0,9);
   testround(1.5,1.0,10);
   testround(-0.5,-1.0,11);
@@ -72,7 +91,15 @@ begin
   testround(-1.4,-2.0,162);
 
   writeln('Rounding mode: rmTruncate');
-  SetRoundMode(rmTruncate);
+  if SetRoundMode(rmTruncate)<>rmDown then
+    writeln('Warning: previous mode was not rmDown');
+  if GetRoundMode <> rmTruncate then
+    begin
+      writeln('Failed to set rounding mode to rmTruncate');
+      inc(failure_count);
+      if first_error=0 then
+        first_error:=203;
+    end;
   testround(0.5,0.0,13);
   testround(1.5,1.0,14);
   testround(-0.5,0.0,15);
@@ -86,6 +113,8 @@ begin
   testround(-0.4,0.0,165);
   testround(-1.4,-1.0,166);
 {$endif}
-  if failure_count>0 then
+  if failure_count=0 then
+    writeln('SetRoundMode test finished OK')
+  else
     halt(first_error);
 end.
