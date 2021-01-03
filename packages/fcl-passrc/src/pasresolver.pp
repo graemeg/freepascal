@@ -1612,6 +1612,7 @@ type
     procedure AddClassType(El: TPasClassType; TypeParams: TFPList); virtual;
     procedure AddVariable(El: TPasVariable); virtual;
     procedure AddResourceString(El: TPasResString); virtual;
+    procedure AddExportSymbol(El: TPasExportSymbol); virtual;
     procedure AddEnumType(El: TPasEnumType); virtual;
     procedure AddEnumValue(El: TPasEnumValue); virtual;
     procedure AddProperty(El: TPasProperty); virtual;
@@ -9139,7 +9140,7 @@ end;
 
 procedure TPasResolver.FinishExportSymbol(El: TPasExportSymbol);
 
-  procedure CheckExpExpr(Expr: TPasExpr; Kinds: TREVKinds; const Expected: string);
+  procedure CheckConstExpr(Expr: TPasExpr; Kinds: TREVKinds; const Expected: string);
   var
     Value: TResEvalValue;
     ResolvedEl: TPasResolverResult;
@@ -9157,9 +9158,40 @@ procedure TPasResolver.FinishExportSymbol(El: TPasExportSymbol);
     RaiseXExpectedButYFound(20210101194628,Expected,GetTypeDescription(ResolvedEl),Expr);
   end;
 
+var
+  Expr: TPasExpr;
+  DeclEl: TPasElement;
+  FindData: TPRFindData;
+  Ref: TResolvedReference;
+  ResolvedEl: TPasResolverResult;
 begin
-  CheckExpExpr(El.ExportIndex,[revkInt,revkUInt],'integer');
-  CheckExpExpr(El.ExportName,[revkString,revkUnicodeString],'string');
+  Expr:=El.NameExpr;
+  if Expr<>nil then
+    begin
+    ResolveExpr(Expr,rraRead);
+    //ResolveGlobalSymbol(Expr);
+    ComputeElement(Expr,ResolvedEl,[rcConstant]);
+    DeclEl:=ResolvedEl.IdentEl;
+    if DeclEl=nil then
+      RaiseMsg(20210103012907,nXExpectedButYFound,sXExpectedButYFound,['symbol',GetTypeDescription(ResolvedEl)],Expr);
+    if not (DeclEl.Parent is TPasSection) then
+      RaiseMsg(20210103012908,nXExpectedButYFound,sXExpectedButYFound,['global symbol',GetElementTypeName(DeclEl)],Expr);
+    end
+  else
+    begin
+    FindFirstEl(El.Name,FindData,El);
+    DeclEl:=FindData.Found;
+    if DeclEl=nil then
+      RaiseMsg(20210103002747,nIdentifierNotFound,sIdentifierNotFound,[El.Name],El);
+    if not (DeclEl.Parent is TPasSection) then
+      RaiseMsg(20210103003244,nXExpectedButYFound,sXExpectedButYFound,['global symbol',GetObjPath(DeclEl)],El);
+    Ref:=CreateReference(DeclEl,El,rraRead,@FindData);
+    CheckFoundElement(FindData,Ref);
+    end;
+
+  // check index and name
+  CheckConstExpr(El.ExportIndex,[revkInt,revkUInt],'integer');
+  CheckConstExpr(El.ExportName,[revkString,revkUnicodeString],'string');
 end;
 
 procedure TPasResolver.FinishProcParamAccess(ProcType: TPasProcedureType;
@@ -10276,7 +10308,7 @@ begin
       if ProcNeedsParams(Proc.ProcType) and not ExprIsAddrTarget(El) then
         begin
         {$IFDEF VerbosePasResolver}
-        writeln('TPasResolver.ResolveNameExpr ',GetObjName(El));
+        writeln('TPasResolver.ResolveNameExpr ',GetObjPath(El));
         {$ENDIF}
         RaiseMsg(20170216152138,nWrongNumberOfParametersForCallTo,
           sWrongNumberOfParametersForCallTo,[Proc.Name],El);
@@ -12203,6 +12235,14 @@ begin
   if not C.InheritsFrom(TPasSection) then
     RaiseNotYetImplemented(20171004092518,El);
   AddIdentifier(TPasIdentifierScope(TopScope),El.Name,El,pikSimple);
+end;
+
+procedure TPasResolver.AddExportSymbol(El: TPasExportSymbol);
+begin
+  {$IFDEF VerbosePasResolver}
+  writeln('TPasResolver.AddExportSymbol ',GetObjName(El));
+  {$ENDIF}
+  // Note: export symbol is not added to scope
 end;
 
 procedure TPasResolver.AddEnumType(El: TPasEnumType);
@@ -17452,6 +17492,8 @@ begin
     AddProcedureType(TPasProcedureType(SpecEl),nil);
     SpecializeProcedureType(TPasProcedureType(GenEl),TPasProcedureType(SpecEl),nil);
     end
+  else if C=TPasExportSymbol then
+    RaiseMsg(20210101234958,nSymbolCannotExportedFromALibrary,sSymbolCannotExportedFromALibrary,[],GenEl)
   else
     RaiseNotYetImplemented(20190728151215,GenEl);
 end;
@@ -20866,6 +20908,7 @@ begin
       // resolved when finished
     else if AClass=TPasAttributes then
     else if AClass=TPasExportSymbol then
+      AddExportSymbol(TPasExportSymbol(El))
     else if AClass=TPasUnresolvedUnitRef then
       RaiseMsg(20171018121900,nCantFindUnitX,sCantFindUnitX,[AName],El)
     else
@@ -28209,10 +28252,12 @@ function TPasResolver.ExprIsAddrTarget(El: TPasExpr): boolean;
   e.g. '@p().o[].El' or '@El[]'
   b) mode delphi: the last element of a right side of an assignment
   c) an accessor function, e.g. property P read El;
+  d) an export
 }
 var
   Parent: TPasElement;
   Prop: TPasProperty;
+  C: TClass;
 begin
   Result:=false;
   if El=nil then exit;
@@ -28221,31 +28266,34 @@ begin
   repeat
     Parent:=El.Parent;
     //writeln('TPasResolver.ExprIsAddrTarget El=',GetObjName(El),' Parent=',GetObjName(Parent));
-    if Parent.ClassType=TUnaryExpr then
+    C:=Parent.ClassType;
+    if C=TUnaryExpr then
       begin
       if TUnaryExpr(Parent).OpCode=eopAddress then exit(true);
       end
-    else if Parent.ClassType=TBinaryExpr then
+    else if C=TBinaryExpr then
       begin
       if TBinaryExpr(Parent).right<>El then exit;
       if TBinaryExpr(Parent).OpCode<>eopSubIdent then exit;
       end
-    else if Parent.ClassType=TParamsExpr then
+    else if C=TParamsExpr then
       begin
       if TParamsExpr(Parent).Value<>El then exit;
       end
-    else if Parent.ClassType=TPasProperty then
+    else if C=TPasProperty then
       begin
       Prop:=TPasProperty(Parent);
       Result:=(Prop.ReadAccessor=El) or (Prop.WriteAccessor=El) or (Prop.StoredAccessor=El);
       exit;
       end
-    else if Parent.ClassType=TPasImplAssign then
+    else if C=TPasImplAssign then
       begin
       if TPasImplAssign(Parent).right<>El then exit;
       if (msDelphi in CurrentParser.CurrentModeswitches) then exit(true);
       exit;
       end
+    else if C=TPasExportSymbol then
+      exit(true)
     else
       exit;
     El:=TPasExpr(Parent);

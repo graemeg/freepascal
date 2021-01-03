@@ -4341,27 +4341,43 @@ end;
 procedure TPasParser.ParseExportDecl(Parent: TPasElement; List: TFPList);
 Var
   E : TPasExportSymbol;
+  aName: String;
+  NameExpr: TPasExpr;
 begin
-  Repeat
-    if List.Count<>0 then
-      ExpectIdentifier;
-    E:=TPasExportSymbol(CreateElement(TPasExportSymbol,CurtokenString,Parent));
-    List.Add(E);
-    NextToken;
-    if CurTokenIsIdentifier('INDEX') then
-      begin
-      NextToken;
-      E.Exportindex:=DoParseExpression(E,Nil)
-      end
-    else if CurTokenIsIdentifier('NAME') then
-      begin
-      NextToken;
-      E.ExportName:=DoParseExpression(E,Nil)
-      end;
-    if not (CurToken in [tkComma,tkSemicolon]) then
-      ParseExc(nParserExpectedCommaSemicolon,SParserExpectedCommaSemicolon);
-    Engine.FinishScope(stDeclaration,E);
-  until (CurToken=tkSemicolon);
+  try
+    Repeat
+      if List.Count>0 then
+        ExpectIdentifier;
+      aName:=ReadDottedIdentifier(Parent,NameExpr,true);
+      E:=TPasExportSymbol(CreateElement(TPasExportSymbol,aName,Parent));
+      if NameExpr.Kind=pekIdent then
+        // simple identifier -> no need to store NameExpr
+        NameExpr.Release{$IFDEF CheckPasTreeRefCount}('CreateElement'){$ENDIF}
+      else
+        begin
+        E.NameExpr:=NameExpr;
+        NameExpr.Parent:=E;
+        end;
+      NameExpr:=nil;
+      List.Add(E);
+      if CurTokenIsIdentifier('INDEX') then
+        begin
+        NextToken;
+        E.Exportindex:=DoParseExpression(E,Nil)
+        end
+      else if CurTokenIsIdentifier('NAME') then
+        begin
+        NextToken;
+        E.ExportName:=DoParseExpression(E,Nil)
+        end;
+      if not (CurToken in [tkComma,tkSemicolon]) then
+        ParseExc(nParserExpectedCommaSemicolon,SParserExpectedCommaSemicolon);
+      Engine.FinishScope(stDeclaration,E);
+    until (CurToken=tkSemicolon);
+  finally
+    if NameExpr<>nil then
+      NameExpr.Release{$IFDEF CheckPasTreeRefCount}('CreateElement'){$ENDIF}
+  end;
 end;
 
 function TPasParser.ParseProcedureType(Parent: TPasElement;

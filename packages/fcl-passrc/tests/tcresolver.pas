@@ -986,6 +986,7 @@ type
     Procedure TestLibrary_ExportFunc_IndexStringFail;
     Procedure TestLibrary_ExportVar; // ToDo
     Procedure TestLibrary_Initialization_Finalization;
+    Procedure TestLibrary_ExportFuncOverloadFail; // ToDo
     // ToDo Procedure TestLibrary_UnitExports;
   end;
 
@@ -18831,6 +18832,25 @@ begin
   '  Run(4);',
   '']);
   ParseLibrary;
+end;
+
+procedure TTestResolver.TestLibrary_ExportFuncOverloadFail;
+begin
+  exit;
+
+  StartLibrary(false);
+  Add([
+  'procedure Run(w: word); overload;',
+  'begin',
+  'end;',
+  'procedure Run(d: double); overload;',
+  'begin',
+  'end;',
+  'exports',
+  '  Run,',
+  '  afile.run;',
+  'begin']);
+  CheckResolverException('The symbol cannot be exported from a library',123);
 end;
 
 initialization

@@ -208,6 +208,7 @@ const
   nClassTypesAreNotRelatedXY = 3142;
   nDirectiveXNotAllowedHere = 3143;
   nAwaitWithoutPromise = 3144;
+  nSymbolCannotExportedFromALibrary = 3145;
 
   // using same IDs as FPC
   nVirtualMethodXHasLowerVisibility = 3250; // was 3050
@@ -363,6 +364,7 @@ resourcestring
   sClassTypesAreNotRelatedXY = 'Class types "%s" and "%s" are not related';
   sDirectiveXNotAllowedHere = 'Directive "%s" not allowed here';
   sAwaitWithoutPromise = 'Await without promise';
+  sSymbolCannotExportedFromALibrary = 'The symbol cannot be exported from a library';
 
 type
   { TResolveData - base class for data stored in TPasElement.CustomData }
