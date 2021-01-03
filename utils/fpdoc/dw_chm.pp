@@ -152,11 +152,18 @@ end;
 
 procedure TFpDocChmWriter.FileAdded ( AStream: TStream;
   const AEntry: TFileEntryRec ) ;
+var FTsave : boolean;  
 begin
   // Exclude Full text index for files starting from the dot
   if Pos('.', AEntry.Name) <> 1 then
-    inherited FileAdded(AStream, AEntry);
-
+    inherited FileAdded(AStream, AEntry)
+  else
+    begin
+      FTsave:=FullTextSearch;
+      FullTextSearch:=False;
+      inherited FileAdded(AStream, AEntry);
+      FullTextSearch:=FTsave;
+    end;
 end;
 
 { TCHMHTMLWriter }
