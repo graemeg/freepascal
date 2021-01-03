@@ -139,7 +139,7 @@ resourcestring
   SHTMLIndexColcount = 'Use N columns in the identifier index pages';
   SHTMLImageUrl = 'Prefix image URLs with url';
   SHTMLDisableMenuBrackets = 'Disable ''['' and '']'' characters around menu items at the top of the page. Useful for custom css';
-    
+
   // CHM usage
   SCHMUsageTOC     = 'Use [File] as the table of contents. Usually a .hhc file.';
   SCHMUsageIndex   = 'Use [File] as the index. Usually a .hhk file.';
@@ -150,6 +150,18 @@ resourcestring
   SCHMUsageAutoIDX = 'Automatically generate an Index. Ignores --index-file';
   SCHMUsageMakeSearch = 'Automatically generate a Search Index from filenames that match *.htm*';
   SCHMUsageChmTitle= 'Title of the chm. Defaults to the value from --package';
+
+  // MarkDown usage
+  SMDUsageFooter = 'Append markdown (@filename reads from file) as footer to every markdown page';
+  SMDUsageHeader = 'Prepend markdown (@filename reads from file) as header to every markdown page';
+  SMDIndexColcount = 'Use N columns in the identifier index pages';
+  SMDImageUrl = 'Prefix image URLs with url';
+  SMDTheme = 'Use name as theme name';
+  SMDNavigation = 'Use scheme for navigation tree, here scheme is one of:';
+  SMDNavSubtree = 'UnitSubTree : put all units in a sub tree of a Units node';
+  SMDNavTree = 'UnitTree : put every units as a node on the same level as packages node';
+
+
 
   SXMLUsageSource  = 'Include source file and line info in generated XML';
 

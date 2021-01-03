@@ -1909,13 +1909,19 @@ end;
 class procedure TMarkdownWriter.Usage(List: TStrings);
 begin
   List.add('--header=file');
-  List.Add(SHTMLUsageHeader);
+  List.Add(SMDUsageHeader);
   List.add('--footer=file');
-  List.Add(SHTMLUsageFooter);
+  List.Add(SMDUsageFooter);
   List.Add('--index-colcount=N');
-  List.Add(SHTMLIndexColcount);
+  List.Add(SMDIndexColcount);
   List.Add('--image-url=url');
-  List.Add(SHTMLImageUrl);
+  List.Add(SMDImageUrl);
+  List.Add('--theme=name');
+  List.Add(SMDTheme);
+  List.Add('--navigation=scheme');
+  List.Add(SMDNavigation);
+  List.Add(SMDNavSubtree);
+  List.Add(SMDNavTree);
 end;
 
 class procedure TMarkdownWriter.SplitImport(var AFilename, ALinkPrefix: String);
