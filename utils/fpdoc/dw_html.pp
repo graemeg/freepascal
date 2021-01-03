@@ -19,168 +19,76 @@ unit dw_html;
 {$WARN 5024 off : Parameter "$1" not used}
 interface
 
-uses Classes, DOM, DOM_HTML, dGlobals, PasTree, dWriter;
+uses Classes, DOM, DOM_HTML, dGlobals, PasTree, dWriter, dw_basehtml;
 
 
 type
 
   { THTMLWriter }
 
-  THTMLWriter = class(TMultiFileDocWriter)
+  THTMLWriter = class(TBaseHTMLWriter)
   private
-    FImageFileList: TStrings;
+    FHeadElement: TDomElement;
     FOnTest: TNotifyEvent;
+    FCSSFile: String;
     FCharSet : String;
+    FHeaderHTML,
+    FNavigatorHTML,
+    FFooterHTML: TStringStream;
+    FTitleElement: TDOMElement;
+    FIncludeDateInFooter : Boolean;
+    FUseMenuBrackets: Boolean;
+    FDateFormat: String;
+    FIndexColCount : Integer;
+    FSearchPage : String;
     procedure CreateMinusImage;
     procedure CreatePlusImage;
     procedure SetOnTest(const AValue: TNotifyEvent);
   protected
-    FCSSFile: String;
-
-    Doc: THTMLDocument;
-    HeadElement,
-    BodyElement, TitleElement: TDOMElement;
-
-
-    OutputNodeStack: TList;
-    CurOutputNode: TDOMNode;
-    InsideHeadRow, DoPasHighlighting: Boolean;
-    HighlighterFlags: Byte;
-    HeaderHTML,
-    NavigatorHTML,
-    FooterHTML: TStringStream;
-    FIDF : Boolean;
-    FDateFormat: String;
-    FIndexColCount : Integer;
-    FSearchPage : String;
-    FBaseImageURL : String;
-    FUseMenuBrackets: Boolean;
-
-    procedure AppendFragment(aParentNode: TDOMElement; aStream: TStream);
     function CreateAllocator : TFileAllocator; override;
     procedure WriteDocPage(const aFileName: String; aElement: TPasElement; aSubPageIndex: Integer);  override;
 
     procedure CreateCSSFile; virtual;
 
-    // Helper functions for creating DOM elements
-    function CreateEl(Parent: TDOMNode; const AName: DOMString): THTMLElement;
-    function CreatePara(Parent: TDOMNode): THTMLElement;
-    function CreateH1(Parent: TDOMNode): THTMLElement;
-    function CreateH2(Parent: TDOMNode): THTMLElement;
-    function CreateH3(Parent: TDOMNode): THTMLElement;
-    function CreateTable(Parent: TDOMNode; const AClass: DOMString = ''): THTMLElement;
-    function CreateContentTable(Parent: TDOMNode): THTMLElement;
-    function CreateTR(Parent: TDOMNode): THTMLElement;
-    function CreateTD(Parent: TDOMNode): THTMLElement;
-    function CreateTD_vtop(Parent: TDOMNode): THTMLElement;
-    function CreateLink(Parent: TDOMNode; const AHRef: String): THTMLElement;
-    function CreateLink(Parent: TDOMNode; const AHRef: DOMString): THTMLElement;
-    function CreateAnchor(Parent: TDOMNode; const AName: DOMString): THTMLElement;
-    function CreateCode(Parent: TDOMNode): THTMLElement;
-    function CreateWarning(Parent: TDOMNode): THTMLElement;
-
-    // Description node conversion
-    Procedure DescrEmitNotesHeader(AContext : TPasElement); override;
-    Procedure DescrEmitNotesFooter(AContext : TPasElement); override;
-    procedure PushOutputNode(ANode: TDOMNode);
-    procedure PopOutputNode;
-    procedure DescrWriteText(const AText: DOMString); override;
-    procedure DescrBeginBold; override;
-    procedure DescrEndBold; override;
-    procedure DescrBeginItalic; override;
-    procedure DescrEndItalic; override;
-    procedure DescrBeginEmph; override;
-    procedure DescrEndEmph; override;
-    procedure DescrBeginUnderline; override;
-    procedure DescrEndUnderline; override;
-    procedure DescrWriteImageEl(const AFileName, ACaption, ALinkName : DOMString); override;
-    procedure DescrWriteFileEl(const AText: DOMString); override;
-    procedure DescrWriteKeywordEl(const AText: DOMString); override;
-    procedure DescrWriteVarEl(const AText: DOMString); override;
-    procedure DescrBeginLink(const AId: DOMString); override;
-    procedure DescrEndLink; override;
-    procedure DescrBeginURL(const AURL: DOMString); override;
-    procedure DescrEndURL; override;
-    procedure DescrWriteLinebreak; override;
-    procedure DescrBeginParagraph; override;
-    procedure DescrEndParagraph; override;
-    procedure DescrBeginCode(HasBorder: Boolean; const AHighlighterName: String); override;
-    procedure DescrWriteCodeLine(const ALine: String); override;
-    procedure DescrEndCode; override;
-    procedure DescrBeginOrderedList; override;
-    procedure DescrEndOrderedList; override;
-    procedure DescrBeginUnorderedList; override;
-    procedure DescrEndUnorderedList; override;
-    procedure DescrBeginDefinitionList; override;
-    procedure DescrEndDefinitionList; override;
-    procedure DescrBeginListItem; override;
-    procedure DescrEndListItem; override;
-    procedure DescrBeginDefinitionTerm; override;
-    procedure DescrEndDefinitionTerm; override;
-    procedure DescrBeginDefinitionEntry; override;
-    procedure DescrEndDefinitionEntry; override;
-    procedure DescrBeginSectionTitle; override;
-    procedure DescrBeginSectionBody; override;
-    procedure DescrEndSection; override;
-    procedure DescrBeginRemark; override;
-    procedure DescrEndRemark; override;
-    procedure DescrBeginTable(ColCount: Integer; HasBorder: Boolean); override;
-    procedure DescrEndTable; override;
-    procedure DescrBeginTableCaption; override;
-    procedure DescrEndTableCaption; override;
-    procedure DescrBeginTableHeadRow; override;
-    procedure DescrEndTableHeadRow; override;
-    procedure DescrBeginTableRow; override;
-    procedure DescrEndTableRow; override;
-    procedure DescrBeginTableCell; override;
-    procedure DescrEndTableCell; override;
-
-    procedure AppendText(Parent: TDOMNode; const AText: String);
-    procedure AppendText(Parent: TDOMNode; const AText: DOMString);
-    procedure AppendNbSp(Parent: TDOMNode; ACount: Integer);
-    procedure AppendSym(Parent: TDOMNode; const AText: DOMString);
-    procedure AppendKw(Parent: TDOMNode; const AText: String);
-    procedure AppendKw(Parent: TDOMNode; const AText: DOMString);
-    function AppendPasSHFragment(Parent: TDOMNode; const AText: String;
-      AShFlags: Byte): Byte;
-    Procedure AppendShortDescr(AContext : TPasElement;Parent: TDOMNode; DocNode : TDocNode);
-    procedure AppendShortDescr(Parent: TDOMNode; Element: TPasElement);
-    procedure AppendShortDescrCell(Parent: TDOMNode; Element: TPasElement);
-    procedure AppendDescr(AContext: TPasElement; Parent: TDOMNode;
-      DescrNode: TDOMElement; AutoInsertBlock: Boolean);
-    procedure AppendDescrSection(AContext: TPasElement; Parent: TDOMNode;  DescrNode: TDOMElement; const ATitle: String);
-    procedure AppendDescrSection(AContext: TPasElement; Parent: TDOMNode;  DescrNode: TDOMElement; const ATitle: DOMString);
-    function AppendHyperlink(Parent: TDOMNode; Element: TPasElement): TDOMElement;
+    procedure AppendTitle(const AText: String; Hints : TPasMemberHints = []); virtual;
+    procedure AppendTitle(const AText: DOMString; Hints : TPasMemberHints = []); virtual;
     function AppendType(CodeEl, TableEl: TDOMElement;
       Element: TPasType; Expanded: Boolean;
-      NestingLevel: Integer = 0): TDOMElement;
-    function AppendProcType(CodeEl, TableEl: TDOMElement;
-      Element: TPasProcedureType; Indent: Integer): TDOMElement;
-    procedure AppendProcExt(CodeEl: TDOMElement; Element: TPasProcedure);
-    procedure AppendProcDecl(CodeEl, TableEl: TDOMElement; Element: TPasProcedureBase);
-    procedure AppendProcArgsSection(Parent: TDOMNode; Element: TPasProcedureType; SkipResult : Boolean = False);
-    function AppendRecordType(CodeEl, TableEl: TDOMElement; Element: TPasRecordType; NestingLevel: Integer): TDOMElement;
-    procedure CreateMemberDeclarations(AParent: TPasElement; Members: TFPList; TableEl: TDOmelement; AddEnd: Boolean);
+      NestingLevel: Integer = 0): TDOMElement; virtual;
+    function AppendProcType(CodeEl, TableEl: TDOMElement;  Element: TPasProcedureType; Indent: Integer): TDOMElement; virtual;
+    procedure AppendProcExt(CodeEl: TDOMElement; Element: TPasProcedure); virtual;
+    procedure AppendProcDecl(CodeEl, TableEl: TDOMElement; Element: TPasProcedureBase); virtual;
+    procedure AppendProcArgsSection(Parent: TDOMNode; Element: TPasProcedureType; SkipResult : Boolean = False); virtual;
+    function AppendRecordType(CodeEl, TableEl: TDOMElement; Element: TPasRecordType; NestingLevel: Integer): TDOMElement; virtual;
+    procedure CreateMemberDeclarations(AParent: TPasElement; Members: TFPList; TableEl: TDOmelement; AddEnd: Boolean); virtual;
 
-    procedure AppendTitle(const AText: String; Hints : TPasMemberHints = []);
-    procedure AppendTitle(const AText: DOMString; Hints : TPasMemberHints = []);
-    procedure AppendMenuBar(ASubpageIndex: Integer);
-    procedure AppendTopicMenuBar(Topic : TTopicElement);
-    procedure AppendSourceRef(AElement: TPasElement);
-    procedure FinishElementPage(AElement: TPasElement);
-    Procedure AppendSeeAlsoSection(AElement : TPasElement;DocNode : TDocNode);
-    Procedure AppendExampleSection(AElement : TPasElement;DocNode : TDocNode);
-    procedure AppendFooter;
-    procedure CreateIndexPage(L : TStringList);
-    procedure CreateModuleIndexPage(AModule: TPasModule);
+    procedure AppendMenuBar(ASubpageIndex: Integer);virtual;
+    procedure AppendTopicMenuBar(Topic : TTopicElement);virtual;
+    procedure FinishElementPage(AElement: TPasElement);virtual;
+    procedure AppendFooter;virtual;
+
+
+    procedure AppendClassMemberListLink(aClass: TPasClassType; ParaEl: TDomElement; AListSubpageIndex: Integer; const AText: DOMString);virtual;
+    procedure CreateClassMainPage(aClass: TPasClassType);virtual;
+    procedure CreateClassInheritanceSubpage(aClass: TPasClassType; AFilter: TMemberFilter);virtual;
+    procedure CreateClassSortedSubpage(AClass: TPasClassType; AFilter: TMemberFilter);virtual;
+
+    procedure CreateIndexPage(L : TStringList); virtual;
+    procedure CreateModuleIndexPage(AModule: TPasModule); virtual;
+    // Package
     procedure CreatePageBody(AElement: TPasElement; ASubpageIndex: Integer); virtual;
-    procedure CreatePackagePageBody;
+    procedure CreatePackagePageBody;virtual;
     procedure CreatePackageIndex;
     procedure CreatePackageClassHierarchy;
     procedure CreateClassHierarchyPage(AddUnit : Boolean);
-    procedure AddModuleIdentifiers(AModule : TPasModule; L : TStrings);
+    // Topic
     Procedure CreateTopicPageBody(AElement : TTopicElement);
+    // Module
+    procedure CreateModuleMainPage(aModule: TPasModule);virtual;
+    procedure CreateModuleSimpleSubpage(aModule: TPasModule; ASubpageIndex: Integer; const ATitle: DOMString; AList: TFPList);virtual;
+    procedure CreateModuleResStringsPage(aModule: TPasModule);virtual;
     procedure CreateModulePageBody(AModule: TPasModule; ASubpageIndex: Integer);
+    // Identifiers
     procedure CreateConstPageBody(AConst: TPasConst);
     procedure CreateTypePageBody(AType: TPasType);
     procedure CreateClassPageBody(AClass: TPasClassType; ASubpageIndex: Integer);
@@ -189,36 +97,35 @@ type
     procedure CreateProcPageBody(AProc: TPasProcedureBase);
     Procedure CreateTopicLinks(Node : TDocNode; PasElement : TPasElement);
     procedure AppendTypeDecl(AType: TPasType; TableEl, CodeEl: TDomElement);
+    Property HeaderHTML : TStringStream Read FHeaderHTML;
+    Property NavigatorHTML : TStringStream read FNavigatorHTML;
+    Property FooterHTML : TStringStream read FFooterHTML;
+    Property CSSFile : String Read FCSSFile;
+    Property HeadElement : TDomElement Read FHeadElement;
+    Property TitleElement: TDOMElement Read FTitleElement;
   public
     // Creating all module hierarchy classes is here !!!!
     constructor Create(APackage: TPasPackage; AEngine: TFPDocEngine); override;
-    destructor Destroy; override;
-
-    // Single-page generation
-    function CreateHTMLPage(AElement: TPasElement; ASubpageIndex: Integer): TXMLDocument;
-    function CreateXHTMLPage(AElement: TPasElement; ASubpageIndex: Integer): TXMLDocument;
-
-    // Start producing html complete package documentation
-    procedure WriteXHTMLPages;
-
-    Function InterPretOption(Const Cmd,Arg : String) : boolean; override;
-    Procedure WriteDoc; override;
+    // Overrides
     Class Function FileNameExtension : String; override;
     class procedure Usage(List: TStrings); override;
     Class procedure SplitImport(var AFilename, ALinkPrefix: String); override;
-    Property SearchPage: String Read FSearchPage Write FSearchPage;
 
-    Property IncludeDateInFooter : Boolean Read FIDF Write FIDF;
+    Function InterPretOption(Const Cmd,Arg : String) : boolean; override;
+    Procedure WriteDoc; override;
+
+    // Single-page generation
+    function CreateHTMLPage(AElement: TPasElement; ASubpageIndex: Integer): TXMLDocument; virtual;
+
+    Property SearchPage: String Read FSearchPage Write FSearchPage;
+    Property IncludeDateInFooter : Boolean Read FIncludeDateInFooter Write FIncludeDateInFooter;
     Property DateFormat : String Read FDateFormat Write FDateFormat;
     property OnTest: TNotifyEvent read FOnTest write SetOnTest;
     Property CharSet : String Read FCharSet Write FCharSet;
     Property IndexColCount : Integer Read FIndexColCount write FIndexColCount;
-    Property BaseImageURL : String Read FBaseImageURL Write FBaseImageURL;
     Property UseMenuBrackets : Boolean Read FUseMenuBrackets write FUseMenuBrackets;
-    Property ImageFileList : TStrings Read FImageFileList;
   end;
 
-Function FixHTMLpath(S : String) : STring;
 
 implementation
 
@@ -228,19 +135,7 @@ uses SysUtils, XMLRead, HTMWrite, sh_pas, fpdocclasstree;
 {$i plusimage.inc}
 {$i minusimage.inc}
 
-Function FixHTMLpath(S : String) : STring;
-
-begin
-  Result:=StringReplace(S,'\','/',[rfReplaceAll]);
-end;
-
 constructor THTMLWriter.Create(APackage: TPasPackage; AEngine: TFPDocEngine);
-
-
-var
-  i: Integer;
-  L : TObjectList;
-  H : Boolean;
 
 begin
   inherited Create(APackage, AEngine);
@@ -248,16 +143,7 @@ begin
   UseMenuBrackets:=True;
   IndexColCount:=3;
   Charset:='iso-8859-1';
-  OutputNodeStack := TList.Create;
-  FImageFileList := TStringList.Create;
   AllocatePages;
-end;
-
-destructor THTMLWriter.Destroy;
-begin
-  OutputNodeStack.Free;
-  FImageFileList.Free;
-  inherited Destroy;
 end;
 
 function THTMLWriter.CreateHTMLPage(AElement: TPasElement;
@@ -265,10 +151,11 @@ function THTMLWriter.CreateHTMLPage(AElement: TPasElement;
 var
   HTMLEl: THTMLHtmlElement;
   HeadEl: THTMLHeadElement;
+  BodyElement : THTMLElement;
   El: TDOMElement;
 begin
-  Doc := THTMLDocument.Create;
-  Result := Doc;
+  Result := THTMLDocument.Create;
+  SetHTMLDocument(THTMLDocument(Result));
   Doc.AppendChild(Doc.Impl.CreateDocumentType(
     'HTML', '-//W3C//DTD HTML 4.01 Transitional//EN',
     'http://www.w3.org/TR/html4/loose.dtd'));
@@ -277,18 +164,19 @@ begin
   Doc.AppendChild(HTMLEl);
 
   HeadEl := Doc.CreateHeadElement;
-  HeadElement:=HeadEl;
+  FHeadElement:=HeadEl;
   HTMLEl.AppendChild(HeadEl);
   El := Doc.CreateElement('meta');
   HeadEl.AppendChild(El);
   El['http-equiv'] := 'Content-Type';
   
   El['content'] := 'text/html; charset=utf-8';
-  TitleElement := Doc.CreateElement('title');
+  FTitleElement := Doc.CreateElement('title');
   HeadEl.AppendChild(TitleElement);
   El := Doc.CreateElement('link');
 
   BodyElement := Doc.CreateElement('body');
+  ContentElement:=BodyElement;
   HTMLEl.AppendChild(BodyElement);
 
   CreatePageBody(AElement, ASubpageIndex);
@@ -301,23 +189,18 @@ begin
   El['href'] := UTF8Decode(FixHtmlPath(UTF8Encode(Allocator.GetCSSFilename(AElement))));
 end;
 
-function THTMLWriter.CreateXHTMLPage(AElement: TPasElement;
-  ASubpageIndex: Integer): TXMLDocument;
-begin
-  Result := nil;
-end;
-
 
 procedure THTMLWriter.WriteDocPage(const aFileName: String; aElement: TPasElement; aSubPageIndex: Integer);
 
 Var
   PageDoc: TXMLDocument;
-
+  FN : String;
 begin
   PageDoc := CreateHTMLPage(aElement, aSubpageIndex);
   try
-    //writeln('Element: ',Element.PathName, ' FileName: ', Filename);
-    WriteHTMLFile(PageDoc, aFilename);
+    FN:=GetFileBaseDir(Engine.Output)+aFilename;
+    //writeln('Element: ',Element.PathName, ' FileName: ', FN);
+    WriteHTMLFile(PageDoc, FN);
   except
     on E: Exception do
       DoLog(SErrCouldNotCreateFile, [aFileName, e.Message]);
@@ -367,7 +250,6 @@ begin
   end;
 end;
 
-
 procedure THTMLWriter.CreateCSSFile;
 
 Var
@@ -397,783 +279,9 @@ begin
   end;
 end;
 
-procedure THTMLWriter.WriteXHTMLPages;
-begin
-end;
-
-{procedure THTMLWriter.CreateDoc(const ATitle: DOMString;
-  AElement: TPasElement; const AFilename: String);
-var
-  El: TDOMElement;
-  DocInfo: TDocInfo;
-  CSSName: String;
-
-begin
-  Doc := TXHTMLDocument.Create;
-  with TXHTMLDocument(Doc) do
-  begin
-    Encoding := 'ISO8859-1';
-    CSSName := 'fpdoc.css';
-    if Assigned(Module) then
-      CSSName := '../' + CSSName;
-$IFNDEF ver1_0
-    StylesheetType := 'text/css';
-    StylesheetHRef := CSSName;
-$ENDIF
-    CreateRoot(xhtmlStrict);
-    with RequestHeadElement do
-    begin
-      AppendText(RequestTitleElement, ATitle);
-      El := CreateElement('link');
-      AppendChild(El);
-      El['rel'] := 'stylesheet';
-      El['type'] := 'text/css';
-      El['href'] := FixHtmlPath(CSSName);
-    end;
-    Self.BodyElement := RequestBodyElement('en');
-  end;
-
-  if Length(AFilename) > 0 then
-  begin
-    DocInfo := TDocInfo.Create;
-    DocInfos.Add(DocInfo);
-    DocInfo.Element := AElement;
-    DocInfo.Filename := AFilename;
-  end;
-end;
-}
-
-
-
-function THTMLWriter.CreateEl(Parent: TDOMNode;
-  const AName: DOMString): THTMLElement;
-begin
-  Result := Doc.CreateElement(AName);
-  Parent.AppendChild(Result);
-end;
-
-function THTMLWriter.CreatePara(Parent: TDOMNode): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'p');
-end;
-
-function THTMLWriter.CreateH1(Parent: TDOMNode): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'h1');
-end;
-
-function THTMLWriter.CreateH2(Parent: TDOMNode): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'h2');
-end;
-
-function THTMLWriter.CreateH3(Parent: TDOMNode): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'h3');
-end;
-
-function THTMLWriter.CreateTable(Parent: TDOMNode; const AClass: DOMString = ''): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'table');
-  Result['cellspacing'] := '0';
-  Result['cellpadding'] := '0';
-  if AClass <> '' then
-    Result['class'] := AClass;
-end;
-
-function THTMLWriter.CreateContentTable(Parent: TDOMNode): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'table');
-end;
-
-function THTMLWriter.CreateTR(Parent: TDOMNode): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'tr');
-end;
-
-function THTMLWriter.CreateTD(Parent: TDOMNode): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'td');
-end;
-
-function THTMLWriter.CreateTD_vtop(Parent: TDOMNode): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'td');
-  Result['valign'] := 'top';
-end;
-
-function THTMLWriter.CreateLink(Parent: TDOMNode; const AHRef: String): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'a');
-  Result['href'] := UTF8Decode(FixHtmlPath(AHRef));
-end;
-
-function THTMLWriter.CreateLink(Parent: TDOMNode;
-  const AHRef: DOMString): THTMLElement;
-begin
-  Result:=CreateLink(Parent,UTF8Encode(aHREf));
-end;
-
-function THTMLWriter.CreateAnchor(Parent: TDOMNode;
-  const AName: DOMString): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'a');
-  Result['name'] := AName;
-end;
-
-function THTMLWriter.CreateCode(Parent: TDOMNode): THTMLElement;
-begin
-  Result := CreateEl(CreateEl(Parent, 'tt'), 'span');
-  Result['class'] := 'code';
-end;
-
-function THTMLWriter.CreateWarning(Parent: TDOMNode): THTMLElement;
-begin
-  Result := CreateEl(Parent, 'span');
-  Result['class'] := 'warning';
-end;
-
-procedure THTMLWriter.DescrEmitNotesHeader(AContext: TPasElement);
-begin
-  AppendText(CreateH2(BodyElement), SDocNotes);
-  PushOutputNode(BodyElement);
-end;
-
-procedure THTMLWriter.DescrEmitNotesFooter(AContext: TPasElement);
-begin
-  PopOutPutNode;
-end;
-
-procedure THTMLWriter.PushOutputNode(ANode: TDOMNode);
-begin
-  OutputNodeStack.Add(CurOutputNode);
-  CurOutputNode := ANode;
-end;
-
-procedure THTMLWriter.PopOutputNode;
-begin
-  CurOutputNode := TDOMNode(OutputNodeStack[OutputNodeStack.Count - 1]);
-  OutputNodeStack.Delete(OutputNodeStack.Count - 1);
-end;
-
-procedure THTMLWriter.DescrWriteText(const AText: DOMString);
-begin
-  AppendText(CurOutputNode, AText);
-end;
-
-procedure THTMLWriter.DescrBeginBold;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'b'));
-end;
-
-procedure THTMLWriter.DescrEndBold;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginItalic;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'i'));
-end;
-
-procedure THTMLWriter.DescrEndItalic;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginEmph;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'em'));
-end;
-
-procedure THTMLWriter.DescrEndEmph;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginUnderline;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'u'));
-end;
-
-procedure THTMLWriter.DescrEndUnderline;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrWriteImageEl(const AFileName, ACaption, ALinkName : DOMString);
-
-Var
-  Pel,Cel: TDOMNode;
-  El :TDomElement;
-  D : String;
-  L : Integer;
-   
-begin
-  // Determine parent node.
-  If (ACaption='') then
-    Pel:=CurOutputNode
-  else
-    begin
-    Cel:=CreateTable(CurOutputNode, 'imagetable');
-    Pel:=CreateTD(CreateTR(Cel));
-    Cel:=CreateTD(CreateTR(Cel));
-    El := CreateEl(Cel, 'span');
-    El['class'] := 'imagecaption';
-    Cel := El;
-    If (ALinkName<>'') then
-      Cel:=CreateAnchor(Cel,ALinkName);
-    AppendText(Cel,ACaption);
-    end;
-
-  // Determine URL for image.  
-  If (Module=Nil) then
-    D:=Allocator.GetRelativePathToTop(Package)
-  else
-    D:=Allocator.GetRelativePathToTop(Module);
-  L:=Length(D);
-  If (L>0) and (D[L]<>'/') then
-    D:=D+'/';
-
-  // Create image node.  
-  El:=CreateEl(Pel,'img');
-  EL['src']:=UTF8Decode(D + BaseImageURL) + AFileName;
-  El['alt']:=ACaption;
-
-  //cache image filename, so it can be used later (CHM)
-  FImageFileList.Add(UTF8Encode(UTF8Decode(BaseImageURL) + AFileName));
-end;
-
-procedure THTMLWriter.DescrWriteFileEl(const AText: DOMString);
-var
-  NewEl: TDOMElement;
-begin
-  NewEl := CreateEl(CurOutputNode, 'span');
-  NewEl['class'] := 'file';
-  AppendText(NewEl, AText);
-end;
-
-procedure THTMLWriter.DescrWriteKeywordEl(const AText: DOMString);
-var
-  NewEl: TDOMElement;
-begin
-  NewEl := CreateEl(CurOutputNode, 'span');
-  NewEl['class'] := 'kw';
-  AppendText(NewEl, AText);
-end;
-
-procedure THTMLWriter.DescrWriteVarEl(const AText: DOMString);
-begin
-  AppendText(CreateEl(CurOutputNode, 'var'), AText);
-end;
-
-procedure THTMLWriter.DescrBeginLink(const AId: DOMString);
-var
-  a,s,n : String;
-
-begin
-  a:=UTF8Encode(AId);
-  s := UTF8Encode(ResolveLinkID(a));
-  if Length(s) = 0 then
-  begin
-    if assigned(module) then
-      s:=module.name
-    else
-      s:='?';
-    if a='' then a:='<empty>';
-    if Assigned(CurrentContext) then
-      N:=CurrentContext.Name
-    else
-      N:='?';
-    DoLog(SErrUnknownLinkID, [s,n,a]);
-    PushOutputNode(CreateEl(CurOutputNode, 'b'));
-  end else
-    PushOutputNode(CreateLink(CurOutputNode, s));
-end;
-
-procedure THTMLWriter.DescrEndLink;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginURL(const AURL: DOMString);
-begin
-  PushOutputNode(CreateLink(CurOutputNode, AURL));
-end;
-
-procedure THTMLWriter.DescrEndURL;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrWriteLinebreak;
-begin
-  CreateEl(CurOutputNode, 'br');
-end;
-
-procedure THTMLWriter.DescrBeginParagraph;
-begin
-  PushOutputNode(CreatePara(CurOutputNode));
-end;
-
-procedure THTMLWriter.DescrEndParagraph;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginCode(HasBorder: Boolean; const AHighlighterName: String);
-begin
-  DoPasHighlighting := (AHighlighterName = '') or (AHighlighterName = 'Pascal');
-  HighlighterFlags := 0;
-  PushOutputNode(CreateEl(CurOutputNode, 'pre'));
-end;
-
-procedure THTMLWriter.DescrWriteCodeLine(const ALine: String);
-begin
-  if DoPasHighlighting then
-  begin
-    HighlighterFlags := AppendPasSHFragment(CurOutputNode, ALine,
-      HighlighterFlags);
-    AppendText(CurOutputNode, #10);
-  end else
-    AppendText(CurOutputNode, ALine + #10);
-end;
-
-procedure THTMLWriter.DescrEndCode;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginOrderedList;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'ol'));
-end;
-
-procedure THTMLWriter.DescrEndOrderedList;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginUnorderedList;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'ul'));
-end;
-
-procedure THTMLWriter.DescrEndUnorderedList;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginDefinitionList;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'dl'));
-end;
-
-procedure THTMLWriter.DescrEndDefinitionList;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginListItem;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'li'));
-end;
-
-procedure THTMLWriter.DescrEndListItem;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginDefinitionTerm;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'dt'));
-end;
-
-procedure THTMLWriter.DescrEndDefinitionTerm;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginDefinitionEntry;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'dd'));
-end;
-
-procedure THTMLWriter.DescrEndDefinitionEntry;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginSectionTitle;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'h3'));
-end;
-
-procedure THTMLWriter.DescrBeginSectionBody;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrEndSection;
-begin
-end;
-
-procedure THTMLWriter.DescrBeginRemark;
-var
-  NewEl, TDEl: TDOMElement;
-begin
-  NewEl := CreateEl(CurOutputNode, 'table');
-  NewEl['width'] := '100%';
-  NewEl['border'] := '0';
-  NewEl['CellSpacing'] := '0';
-  NewEl['class'] := 'remark';
-  NewEl := CreateTR(NewEl);
-  TDEl := CreateTD(NewEl);
-  TDEl['valign'] := 'top';
-  TDEl['class'] := 'pre';
-  AppendText(CreateEl(TDEl, 'b'), SDocRemark);
-  PushOutputNode(CreateTD(NewEl));
-end;
-
-procedure THTMLWriter.DescrEndRemark;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginTable(ColCount: Integer; HasBorder: Boolean);
-var
-  Table: TDOMElement;
-begin
-  Table := CreateEl(CurOutputNode, 'table');
-  Table['border'] := UTF8Decode(IntToStr(Ord(HasBorder)));
-  PushOutputNode(Table);
-end;
-
-procedure THTMLWriter.DescrEndTable;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginTableCaption;
-begin
-  PushOutputNode(CreateEl(CurOutputNode, 'caption'));
-end;
-
-procedure THTMLWriter.DescrEndTableCaption;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginTableHeadRow;
-begin
-  PushOutputNode(CreateTr(CurOutputNode));
-  InsideHeadRow := True;
-end;
-
-procedure THTMLWriter.DescrEndTableHeadRow;
-begin
-  InsideHeadRow := False;
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginTableRow;
-begin
-  PushOutputNode(CreateTR(CurOutputNode));
-end;
-
-procedure THTMLWriter.DescrEndTableRow;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.DescrBeginTableCell;
-begin
-  if InsideHeadRow then
-    PushOutputNode(CreateEl(CurOutputNode, 'th'))
-  else
-    PushOutputNode(CreateTD(CurOutputNode));
-end;
-
-procedure THTMLWriter.DescrEndTableCell;
-begin
-  PopOutputNode;
-end;
-
-procedure THTMLWriter.AppendText(Parent: TDOMNode; const AText: String);
-begin
-  AppendText(Parent,UTF8Decode(aText));
-end;
-
-
-procedure THTMLWriter.AppendText(Parent: TDOMNode; const AText: DOMString);
-begin
-  Parent.AppendChild(Doc.CreateTextNode(AText));
-end;
-
-procedure THTMLWriter.AppendNbSp(Parent: TDOMNode; ACount: Integer);
-begin
-  while ACount > 0 do
-  begin
-    Parent.AppendChild(Doc.CreateEntityReference('nbsp'));
-    Dec(ACount);
-  end;
-end;
-
-procedure THTMLWriter.AppendSym(Parent: TDOMNode; const AText: DOMString);
-var
-  El: TDOMElement;
-begin
-  El := CreateEl(Parent, 'span');
-  El['class'] := 'sym';
-  AppendText(El, AText);
-end;
-
-procedure THTMLWriter.AppendKw(Parent: TDOMNode; const AText: String);
-begin
-  AppendKW(Parent,UTF8Decode(aText));
-end;
-
-procedure THTMLWriter.AppendKw(Parent: TDOMNode; const AText: DOMString);
-var
-  El: TDOMElement;
-begin
-  El := CreateEl(Parent, 'span');
-  El['class'] := 'kw';
-  AppendText(El, AText);
-end;
-
-function THTMLWriter.AppendPasSHFragment(Parent: TDOMNode;
-  const AText: String; AShFlags: Byte): Byte;
-
-
-var
-  Line, Last, p: PChar;
-  El: TDOMElement;
-
-  Procedure MaybeOutput;
-
-  Var
-    CurParent: TDomNode;
-
-  begin
-    If (Last<>Nil) then
-      begin
-      If (el<>Nil) then
-        CurParent:=El
-      else
-        CurParent:=Parent;
-      AppendText(CurParent,Last);
-      El:=Nil;
-      Last:=Nil;
-      end;
-  end;
-
-  Function NewEl(Const ElType,Attr,AttrVal : DOMString) : TDomElement;
-
-  begin
-    Result:=CreateEl(Parent,ElType);
-    Result[Attr]:=AttrVal;
-  end;
-
-  Function NewSpan(Const AttrVal : DOMString) : TDomElement;
-
-  begin
-    Result:=CreateEl(Parent,'span');
-    Result['class']:=AttrVal;
-  end;
-
-begin
-  GetMem(Line, Length(AText) * 3 + 4);
-  Try
-  DoPascalHighlighting(AShFlags, PChar(AText), Line);
-  Result := AShFlags;
-  Last := Nil;
-  p := Line;
-  el:=nil;
-  while p[0] <> #0 do
-  begin
-    if p[0] = LF_ESCAPE then
-      begin
-      p[0] := #0;
-      MaybeOutput;
-      case Ord(p[1]) of
-        shDefault:    El:=Nil;
-        shInvalid:    El:=newel('font','color','red');
-        shSymbol :    El:=newspan('sym');
-        shKeyword:    El:=newspan('kw');
-        shComment:    El:=newspan('cmt');
-        shDirective:  El:=newspan('dir');
-        shNumbers:    El:=newspan('num');
-        shCharacters: El:=newspan('chr');
-        shStrings:    El:=newspan('str');
-        shAssembler:  El:=newspan('asm');
-      end;
-      Inc(P);
-      end
-    else If (Last=Nil) then
-      Last:=P;
-    Inc(p);
-  end;
-  MaybeOutput;
-  Finally
-    FreeMem(Line);
-  end;
-end;
-
-procedure THTMLWriter.AppendShortDescr ( AContext: TPasElement;
-  Parent: TDOMNode; DocNode: TDocNode ) ;
-
-Var
-  N : TDocNode;
-
-begin
-  if Assigned(DocNode) then
-    begin
-    If (DocNode.Link<>'') then
-      begin
-      N:=Engine.FindLinkedNode(DocNode);
-      If (N<>Nil) then
-        DocNode:=N;
-      end;
-    If Assigned(DocNode.ShortDescr) then
-      begin
-      PushOutputNode(Parent);
-      try
-        if not ConvertShort(AContext,TDomElement(DocNode.ShortDescr)) then
-          Warning(AContext, SErrInvalidShortDescr)
-      finally
-        PopOutputNode;
-      end;
-      end;
-    end;
-end;
-
-procedure THTMLWriter.AppendShortDescr(Parent: TDOMNode; Element: TPasElement);
-
-begin
-  AppendShortDescr(Element,Parent,Engine.FindDocNode(Element));
-end;
-
-procedure THTMLWriter.AppendShortDescrCell(Parent: TDOMNode;
-  Element: TPasElement);
-
-var
-  ParaEl: TDOMElement;
-
-begin
-  if Assigned(Engine.FindShortDescr(Element)) then
-  begin
-    AppendNbSp(CreatePara(CreateTD(Parent)), 2);
-    ParaEl := CreatePara(CreateTD(Parent));
-    ParaEl['class'] := 'cmt';
-    AppendShortDescr(ParaEl, Element);
-  end;
-end;
-
-procedure THTMLWriter.AppendDescr(AContext: TPasElement; Parent: TDOMNode;
-  DescrNode: TDOMElement; AutoInsertBlock: Boolean);
-begin
-  if Assigned(DescrNode) then
-  begin
-    PushOutputNode(Parent);
-    try
-      ConvertDescr(AContext, DescrNode, AutoInsertBlock);
-    finally
-      PopOutputNode;
-    end;
-  end;
-end;
-
-procedure THTMLWriter.AppendDescrSection(AContext: TPasElement; Parent: TDOMNode; DescrNode: TDOMElement; const ATitle: String);
-begin
-  AppendDescrSection(aContext,Parent,DescrNode,UTF8Decode(aTitle));
-end;
-
-procedure THTMLWriter.AppendDescrSection(AContext: TPasElement;
-  Parent: TDOMNode; DescrNode: TDOMElement; const ATitle: DOMString);
-begin
-  if not IsDescrNodeEmpty(DescrNode) then
-  begin
-    If (ATitle<>'') then // Can be empty for topic.
-      AppendText(CreateH2(Parent), ATitle);
-    AppendDescr(AContext, Parent, DescrNode, True);
-  end;
-end;
-
-
-
-function THTMLWriter.AppendHyperlink(Parent: TDOMNode;
-  Element: TPasElement): TDOMElement;
-var
-  s: DOMString;
-  UnitList: TFPList;
-  i: Integer;
-  ThisPackage: TLinkNode;
-begin
-  if Assigned(Element) then
-  begin
-    if Element.InheritsFrom(TPasUnresolvedTypeRef) then
-    begin
-      s := ResolveLinkID(Element.Name);
-      if Length(s) = 0 then
-      begin
-        { Try all packages }
-        ThisPackage := Engine.RootLinkNode.FirstChild;
-        while Assigned(ThisPackage) do
-        begin
-          s := ResolveLinkID(ThisPackage.Name + '.' + Element.Name);
-          if Length(s) > 0 then
-            break;
-          ThisPackage := ThisPackage.NextSibling;
-        end;
-        if Length(s) = 0 then
-        begin
-          { Okay, then we have to try all imported units of the current module }
-          UnitList := Module.InterfaceSection.UsesList;
-          for i := UnitList.Count - 1 downto 0 do
-          begin
-            { Try all packages }
-            ThisPackage := Engine.RootLinkNode.FirstChild;
-            while Assigned(ThisPackage) do
-            begin
-              s := ResolveLinkID(ThisPackage.Name + '.' +
-                TPasType(UnitList[i]).Name + '.' + Element.Name);
-              if Length(s) > 0 then
-                break;
-              ThisPackage := ThisPackage.NextSibling;
-            end;
-            if length(s)=0 then
-              s := ResolveLinkID('#rtl.System.' + Element.Name);
-            if Length(s) > 0 then
-              break;
-          end;
-        end;
-      end;
-    end else if Element is TPasEnumValue then
-      s := ResolveLinkID(Element.Parent.PathName)
-    else  
-      s := ResolveLinkID(Element.PathName);
-
-    if Length(s) > 0 then
-    begin
-      Result := CreateLink(Parent, s);
-      AppendText(Result, Element.Name);
-    end else
-    begin
-      Result := nil;
-      AppendText(Parent, Element.Name); // unresolved items
-    end;
-  end else
-  begin
-    Result := nil;
-    AppendText(CreateWarning(Parent), '<NIL>');
-  end;
-end;
-
 
 { Returns the new CodeEl, which will be the old CodeEl in most cases }
-function THTMLWriter.AppendType(CodeEl, TableEl: TDOMElement;
-  Element: TPasType; Expanded: Boolean; NestingLevel: Integer): TDOMElement;
+function THTMLWriter.AppendType(CodeEl, TableEl: TDOMElement;  Element: TPasType; Expanded: Boolean; NestingLevel: Integer): TDOMElement;
 
 Var
   S : String;
@@ -1504,17 +612,6 @@ begin
   Result := CodeEl;
 end;
 
-procedure THTMLWriter.AppendTitle(const AText: DOMString; Hints : TPasMemberHints = []);
-
-Var
-  T : UnicodeString;
-begin
-  T:=AText;
-  if (Hints<>[]) then
-    T:=T+' ('+UTF8Decode(Engine.HintsToStr(Hints))+')';
-  AppendText(TitleElement, AText);
-  AppendText(CreateH1(BodyElement), T);
-end;
 
 procedure THTMLWriter.AppendTopicMenuBar(Topic : TTopicElement);
 
@@ -1531,7 +628,7 @@ var
   end;
 
 begin
-  TableEl := CreateEl(BodyElement, 'table');
+  TableEl := CreateEl(ContentElement, 'table');
   TableEl['cellpadding'] := '4';
   TableEl['cellspacing'] := '0';
   TableEl['border'] := '0';
@@ -1567,15 +664,6 @@ begin
   end;
 end;
 
-procedure THTMLWriter.AppendFragment(aParentNode : TDOMElement; aStream : TStream);
-
-begin
-  if (aStream<>Nil) then
-    begin
-    aStream.Position:=0;
-    ReadXMLFragment(aParentNode,aStream);
-    end;
-end;
 
 function THTMLWriter.CreateAllocator: TFileAllocator;
 begin
@@ -1618,7 +706,7 @@ var
 
 
 begin
-  TableEl := CreateEl(BodyElement, 'table');
+  TableEl := CreateEl(ContentElement, 'table');
   TableEl['cellpadding'] := '4';
   TableEl['cellspacing'] := '0';
   TableEl['border'] := '0';
@@ -1703,139 +791,9 @@ begin
     AppendHyperlink(ParaEl, Package);
     AppendText(ParaEl, ']');
   end;
-  AppendFragment(BodyElement,HeaderHTML);
+  AppendFragment(ContentElement,HeaderHTML);
 end;
 
-procedure THTMLWriter.AppendSourceRef(AElement: TPasElement);
-begin
-  AppendText(CreatePara(BodyElement), Format(SDocSourcePosition,
-    [ExtractFileName(AElement.SourceFilename), AElement.SourceLinenumber]));
-end;
-
-procedure THTMLWriter.AppendSeeAlsoSection ( AElement: TPasElement;
-  DocNode: TDocNode ) ;
-
-var
-  Node: TDOMNode;
-  TableEl, El, TREl, ParaEl, NewEl, DescrEl: TDOMElement;
-  l,s,n: DOMString;
-  IsFirstSeeAlso : Boolean;
-
-begin
-  if Not (Assigned(DocNode) and Assigned(DocNode.SeeAlso)) then
-    Exit;
-  IsFirstSeeAlso := True;
-  Node:=DocNode.SeeAlso.FirstChild;
-  While Assigned(Node) do
-    begin
-    if (Node.NodeType=ELEMENT_NODE) and (Node.NodeName='link') then
-      begin
-       if IsFirstSeeAlso then
-         begin
-         IsFirstSeeAlso := False;
-         AppendText(CreateH2(BodyElement), SDocSeeAlso);
-         TableEl := CreateTable(BodyElement);
-         end;
-       El:=TDOMElement(Node);
-       TREl:=CreateTR(TableEl);
-       ParaEl:=CreatePara(CreateTD_vtop(TREl));
-       l:=El['id'];
-       s:= ResolveLinkID(UTF8ENcode(l));
-       if Length(s)=0 then
-         begin
-         if assigned(module) then
-           s:=UTF8Decode(module.name)
-         else
-           s:='?';
-         if l='' then l:='<empty>';
-         if Assigned(AElement) then
-           N:=UTF8Decode(AElement.Name)
-         else
-           N:='?';
-         DoLog(SErrUnknownLinkID, [s,N,l]);
-         NewEl := CreateEl(ParaEl,'b')
-         end
-       else
-         NewEl := CreateLink(ParaEl,s);
-        if Not IsDescrNodeEmpty(El) then
-          begin
-          PushOutputNode(NewEl);
-          Try
-            ConvertBaseShortList(AElement, El, True)
-          Finally
-            PopOutputNode;
-          end;
-          end
-        else
-          AppendText(NewEl,El['id']);
-       l:=El['id'];
-       DescrEl := Engine.FindShortDescr(AElement.GetModule,UTF8Encode(L));
-       if Assigned(DescrEl) then
-         begin
-         AppendNbSp(CreatePara(CreateTD(TREl)), 2);
-         ParaEl := CreatePara(CreateTD(TREl));
-         ParaEl['class'] := 'cmt';
-         PushOutputNode(ParaEl);
-         try
-           ConvertShort(AElement, DescrEl);
-         finally
-           PopOutputNode;
-         end;
-         end;
-       end; // Link node
-     Node := Node.NextSibling;
-     end; // While
-end;
-
-procedure THTMLWriter.AppendExampleSection ( AElement: TPasElement;
-  DocNode: TDocNode ) ;
-
-var
-  Node: TDOMNode;
-//  TableEl, El, TREl, TDEl, ParaEl, NewEl, DescrEl: TDOMElement;
-  fn,s: String;
-  f: Text;
-
-begin
-  if not (Assigned(DocNode) and Assigned(DocNode.FirstExample)) then
-    Exit;
-  Node := DocNode.FirstExample;
-  while Assigned(Node) do
-    begin
-    if (Node.NodeType = ELEMENT_NODE) and (Node.NodeName = 'example') then
-      begin
-      fn:=Engine.GetExampleFilename(TDOMElement(Node));
-      If (fn<>'') then
-        begin
-        AppendText(CreateH2(BodyElement), SDocExample);
-        try
-          Assign(f, FN);
-          Reset(f);
-          try
-            PushOutputNode(BodyElement);
-            DescrBeginCode(False, UTF8Encode(TDOMElement(Node)['highlighter']));
-            while not EOF(f) do
-              begin
-              ReadLn(f, s);
-              DescrWriteCodeLine(s);
-              end;
-            DescrEndCode;
-            PopOutputNode;
-          finally
-            Close(f);
-          end;
-        except
-          on e: Exception do
-            begin
-            e.Message := '[example] ' + e.Message;
-            raise;
-            end;
-        end;
-        end;
-      end;
-    Node := Node.NextSibling;
-    end;
-end;
 
 procedure THTMLWriter.AppendFooter;
 
@@ -1844,11 +802,11 @@ Var
   F : TDomElement;
 begin
   if Assigned(FooterHTML) then
-    AppendFragment(BodyElement, FooterHTML)
+    AppendFragment(ContentElement, FooterHTML)
   else if IncludeDateInFooter then
     begin
-    CreateEl(BodyElement, 'hr');
-    F:=CreateEl(BodyElement,'span');
+    CreateEl(ContentElement, 'hr');
+    F:=CreateEl(ContentElement,'span');
     F['class']:='footer';
     If (FDateFormat='') then
       S:=DateToStr(Date)
@@ -1865,43 +823,44 @@ var
 
 begin
   DocNode := Engine.FindDocNode(AElement);
-  If Assigned(DocNode) then
-    begin
-    // Description
-    if Assigned(DocNode.Descr) then
-      AppendDescrSection(AElement, BodyElement, DocNode.Descr, UTF8Encode(SDocDescription));
+  If Not Assigned(DocNode) then
+    exit;
 
-    // Append "Errors" section
-    if Assigned(DocNode.ErrorsDoc) then
-      AppendDescrSection(AElement, BodyElement, DocNode.ErrorsDoc, UTF8Encode(SDocErrors));
+  // Description
+  if Assigned(DocNode.Descr) then
+    AppendDescrSection(AElement, ContentElement, DocNode.Descr, UTF8Encode(SDocDescription));
 
-    // Append Version info
-    if Assigned(DocNode.Version) then
-      AppendDescrSection(AElement, BodyElement, DocNode.Version, UTF8Encode(SDocVersion));
+  // Append "Errors" section
+  if Assigned(DocNode.ErrorsDoc) then
+    AppendDescrSection(AElement, ContentElement, DocNode.ErrorsDoc, UTF8Encode(SDocErrors));
 
-    // Append "See also" section
-    AppendSeeAlsoSection(AElement,DocNode);
+  // Append Version info
+  if Assigned(DocNode.Version) then
+    AppendDescrSection(AElement, ContentElement, DocNode.Version, UTF8Encode(SDocVersion));
 
-    // Append examples, if present
-    AppendExampleSection(AElement,DocNode);
-    // Append notes, if present
-    ConvertNotes(AElement,DocNode.Notes);
-    end;
+  // Append "See also" section
+  AppendSeeAlsoSection(AElement,DocNode);
+
+  // Append examples, if present
+  AppendExampleSection(AElement,DocNode);
+  // Append notes, if present
+  ConvertNotes(AElement,DocNode.Notes);
 end;
 
 procedure THTMLWriter.CreateTopicPageBody(AElement: TTopicElement);
 
 var
   DocNode: TDocNode;
+
 begin
   AppendTopicMenuBar(AElement);
   DocNode:=AElement.TopicNode;
   if Assigned(DocNode) then  // should always be true, but we're being careful.
     begin
     AppendShortDescr(AElement,TitleElement, DocNode);
-    AppendShortDescr(AElement,CreateH2(BodyElement), DocNode);
+    AppendShortDescr(AElement,CreateH2(ContentElement), DocNode);
     if Assigned(DocNode.Descr) then
-       AppendDescrSection(AElement, BodyElement, DocNode.Descr, '');
+       AppendDescrSection(AElement, ContentElement, DocNode.Descr, '');
     AppendSeeAlsoSection(AElement,DocNode);
     CreateTopicLinks(DocNode,AElement);
     AppendExampleSection(AElement,DocNode);
@@ -1910,6 +869,7 @@ begin
 end;
 
 procedure THTMLWriter.CreateClassHierarchyPage(AddUnit : Boolean);
+
 type
   TypeEN = (NPackage, NModule, NName);
 
@@ -1995,7 +955,7 @@ type
   end;
 
 begin
-  PushOutputNode(BodyElement);
+  PushOutputNode(ContentElement);
   try
     PushClassList;
     AppendClass(TreeClass.RootNode);
@@ -2030,11 +990,12 @@ begin
   CreateClassHierarchyPage(True);
 end;
 
-procedure THTMLWriter.CreatePageBody(AElement: TPasElement;
-  ASubpageIndex: Integer);
+procedure THTMLWriter.CreatePageBody(AElement: TPasElement; ASubpageIndex: Integer);
+
 var
   i: Integer;
   Element: TPasElement;
+
 begin
   CurDirectory := Allocator.GetFilename(AElement, ASubpageIndex);
   i := Length(CurDirectory);
@@ -2121,7 +1082,7 @@ begin
     end;  
   Try  
   // Create a quick jump table to all available letters.    
-  TableEl := CreateTable(BodyElement);
+  TableEl := CreateTable(ContentElement);
   TableEl['border']:='1';
   TableEl['width']:='50%';
   TREl := CreateTR(TableEl);
@@ -2140,10 +1101,10 @@ begin
     CL:=Lists[C];
     If CL<>Nil then
       begin
-      El:=CreateH2(BodyElement);
+      El:=CreateH2(ContentElement);
       AppendText(El,UTF8Decode(C));
       CreateAnchor(El,UTF8Decode('SECTION'+C));
-      TableEl := CreateTable(BodyElement);
+      TableEl := CreateTable(ContentElement);
       TableEl['Width']:='80%';
       // Determine number of rows needed
       Rows:=(CL.Count div IndexColCount);
@@ -2172,22 +1133,6 @@ begin
       FreeAndNil(Lists[C]);
   end;  
 end;
-
-
-procedure THTMLWriter.AddModuleIdentifiers(AModule : TPasModule; L : TStrings);
-
-begin
-  if assigned(AModule.InterfaceSection) Then
-   begin
-      AddElementsFromList(L,AModule.InterfaceSection.Consts);
-      AddElementsFromList(L,AModule.InterfaceSection.Types);
-      AddElementsFromList(L,AModule.InterfaceSection.Functions);
-      AddElementsFromList(L,AModule.InterfaceSection.Classes);
-      AddElementsFromList(L,AModule.InterfaceSection.Variables);
-      AddElementsFromList(L,AModule.InterfaceSection.ResStrings);
-   end;
-end;
-
 
 procedure THTMLWriter.CreatePackageIndex;
 
@@ -2219,6 +1164,7 @@ begin
 end;
 
 procedure THTMLWriter.CreatePackagePageBody;
+
 var
   DocNode: TDocNode;
   TableEl, TREl: TDOMElement;
@@ -2229,10 +1175,10 @@ var
 begin
   AppendMenuBar(0);
   AppendTitle(UTF8Encode(Format(SDocPackageTitle, [Copy(Package.Name, 2, 256)])));
-  AppendShortDescr(CreatePara(BodyElement), Package);
+  AppendShortDescr(CreatePara(ContentElement), Package);
 
-  AppendText(CreateH2(BodyElement), UTF8Encode(SDocUnits));
-  TableEl := CreateTable(BodyElement);
+  AppendText(CreateH2(ContentElement), UTF8Encode(SDocUnits));
+  TableEl := CreateTable(ContentElement);
   L:=TStringList.Create;
   Try
     L.Sorted:=True;
@@ -2255,13 +1201,12 @@ begin
   if Assigned(DocNode) then
     begin
     if Assigned(DocNode.Descr) then
-       AppendDescrSection(nil, BodyElement, DocNode.Descr, UTF8Decode(SDocDescription));
+       AppendDescrSection(nil, ContentElement, DocNode.Descr, UTF8Decode(SDocDescription));
     CreateTopicLinks(DocNode,Package);
     end;
 end;
 
-procedure THTMLWriter.CreateTopicLinks ( Node: TDocNode;
-  PasElement: TPasElement ) ;
+procedure THTMLWriter.CreateTopicLinks (Node: TDocNode; PasElement: TPasElement) ;
 
 var
   DocNode: TDocNode;
@@ -2279,8 +1224,8 @@ begin
       if first then
         begin
         First:=False;
-        AppendText(CreateH2(BodyElement), UTF8Decode(SDocRelatedTopics));
-        TableEl := CreateTable(BodyElement);
+        AppendText(CreateH2(ContentElement), UTF8Decode(SDocRelatedTopics));
+        TableEl := CreateTable(ContentElement);
         end;
       TREl := CreateTR(TableEl);
       ThisTopic:=FindTopicElement(DocNode);
@@ -2309,133 +1254,137 @@ begin
   end;  
 end;
 
+procedure THTMLWriter.CreateModuleMainPage(aModule : TPasModule);
+
+var
+  TableEl, TREl, TDEl, CodeEl: TDOMElement;
+  i: Integer;
+  UnitRef: TPasType;
+  DocNode: TDocNode;
+
+begin
+  AppendMenuBar(0);
+  AppendTitle(UTF8Decode(Format(SDocUnitTitle, [AModule.Name])),AModule.Hints);
+  AppendShortDescr(CreatePara(ContentElement), AModule);
+
+  if AModule.InterfaceSection.UsesList.Count > 0 then
+  begin
+    TableEl := CreateTable(ContentElement);
+    AppendKw(CreateCode(CreatePara(CreateTD(CreateTR(TableEl)))), 'uses');
+    for i := 0 to AModule.InterfaceSection.UsesList.Count - 1 do
+    begin
+      UnitRef := TPasType(AModule.InterfaceSection.UsesList[i]);
+      DocNode := Engine.FindDocNode(UnitRef);
+      if Assigned(DocNode) and DocNode.IsSkipped then
+        continue;
+      TREl := CreateTR(TableEl);
+      TDEl := CreateTD_vtop(TREl);
+      CodeEl := CreateCode(CreatePara(TDEl));
+      AppendNbSp(CodeEl, 2);
+      AppendHyperlink(CodeEl, UnitRef);
+      if i < AModule.InterfaceSection.UsesList.Count - 1 then
+        AppendSym(CodeEl, ',')
+      else
+        AppendSym(CodeEl, ';');
+      AppendText(CodeEl, '  ');               // Space for descriptions
+      AppendShortDescrCell(TREl, UnitRef);
+    end;
+  end;
+
+  DocNode := Engine.FindDocNode(AModule);
+  if Assigned(DocNode) then
+    begin
+    if Assigned(DocNode.Descr) then
+      AppendDescrSection(AModule, ContentElement, DocNode.Descr, UTF8Decode(SDocOverview));
+    ConvertNotes(AModule,DocNode.Notes);
+    CreateTopicLinks(DocNode,AModule);
+    end;
+end;
+
+
+procedure THTMLWriter.CreateModuleSimpleSubpage(aModule: TPasModule; ASubpageIndex: Integer; const ATitle: DOMString; AList: TFPList);
+
+var
+  TableEl, TREl, CodeEl: TDOMElement;
+  i, j: Integer;
+  Decl: TPasElement;
+  SortedList: TFPList;
+  DocNode: TDocNode;
+  S : String;
+
+begin
+  AppendMenuBar(ASubpageIndex);
+  S:=UTF8Encode(ATitle);
+  AppendTitle(UTF8Decode(Format(SDocUnitTitle + ': %s', [AModule.Name, S])));
+  SortedList := TFPList.Create;
+  try
+    for i := 0 to AList.Count - 1 do
+    begin
+      Decl := TPasElement(AList[i]);
+      DocNode := Engine.FindDocNode(Decl);
+      if (not Assigned(DocNode)) or (not DocNode.IsSkipped) then
+      begin
+        j := 0;
+        while (j < SortedList.Count) and (CompareText(
+          TPasElement(SortedList[j]).PathName, Decl.PathName) < 0) do
+          Inc(j);
+        SortedList.Insert(j, Decl);
+      end;
+    end;
+
+    TableEl := CreateTable(ContentElement);
+    for i := 0 to SortedList.Count - 1 do
+    begin
+      Decl := TPasElement(SortedList[i]);
+      TREl := CreateTR(TableEl);
+      CodeEl := CreateCode(CreatePara(CreateTD_vtop(TREl)));
+      AppendHyperlink(CodeEl, Decl);
+      AppendShortDescrCell(TREl, Decl);
+    end;
+  finally
+    SortedList.Free;
+  end;
+end;
+
+procedure THTMLWriter.CreateModuleResStringsPage(aModule : TPasModule);
+var
+  ParaEl: TDOMElement;
+  i: Integer;
+  Decl: TPasResString;
+begin
+  AppendMenuBar(ResstrSubindex);
+  AppendTitle(UTF8Decode(Format(SDocUnitTitle + ': %s', [AModule.Name, SDocResStrings])));
+  for i := 0 to AModule.InterfaceSection.ResStrings.Count - 1 do
+  begin
+    Decl := TPasResString(AModule.InterfaceSection.ResStrings[i]);
+    CreateEl(ContentElement, 'a')['name'] := UTF8Decode(LowerCase(Decl.Name));
+    ParaEl := CreatePara(ContentElement);
+    AppendText(CreateCode(ParaEl), UTF8Decode(Decl.Name));
+    CreateEl(ParaEl, 'br');
+    AppendText(ParaEl, UTF8Decode(Decl.Expr.getDeclaration(true)));
+  end;
+end;
+
+
 procedure THTMLWriter.CreateModulePageBody(AModule: TPasModule;
   ASubpageIndex: Integer);
-
-  procedure CreateMainPage;
-  var
-    TableEl, TREl, TDEl, CodeEl: TDOMElement;
-    i: Integer;
-    UnitRef: TPasType;
-    DocNode: TDocNode;
-  begin
-    AppendMenuBar(0);
-    AppendTitle(UTF8Decode(Format(SDocUnitTitle, [AModule.Name])),AModule.Hints);
-    AppendShortDescr(CreatePara(BodyElement), AModule);
-
-    if AModule.InterfaceSection.UsesList.Count > 0 then
-    begin
-      TableEl := CreateTable(BodyElement);
-      AppendKw(CreateCode(CreatePara(CreateTD(CreateTR(TableEl)))), 'uses');
-      for i := 0 to AModule.InterfaceSection.UsesList.Count - 1 do
-      begin
-        UnitRef := TPasType(AModule.InterfaceSection.UsesList[i]);
-        DocNode := Engine.FindDocNode(UnitRef);
-        if Assigned(DocNode) and DocNode.IsSkipped then
-          continue;
-        TREl := CreateTR(TableEl);
-        TDEl := CreateTD_vtop(TREl);
-        CodeEl := CreateCode(CreatePara(TDEl));
-        AppendNbSp(CodeEl, 2);
-        AppendHyperlink(CodeEl, UnitRef);
-        if i < AModule.InterfaceSection.UsesList.Count - 1 then
-          AppendSym(CodeEl, ',')
-        else
-          AppendSym(CodeEl, ';');
-        AppendText(CodeEl, '  ');               // Space for descriptions
-        AppendShortDescrCell(TREl, UnitRef);
-      end;
-    end;
-
-    DocNode := Engine.FindDocNode(AModule);
-    if Assigned(DocNode) then
-      begin
-      if Assigned(DocNode.Descr) then
-        AppendDescrSection(AModule, BodyElement, DocNode.Descr, UTF8Decode(SDocOverview));
-      ConvertNotes(AModule,DocNode.Notes);
-      CreateTopicLinks(DocNode,AModule);
-      end;
-  end;
-
-  procedure CreateSimpleSubpage(const ATitle: DOMString; AList: TFPList);
-  var
-    TableEl, TREl, CodeEl: TDOMElement;
-    i, j: Integer;
-    Decl: TPasElement;
-    SortedList: TFPList;
-    DocNode: TDocNode;
-    S : String;
-
-  begin
-    AppendMenuBar(ASubpageIndex);
-    S:=UTF8Encode(ATitle);
-    AppendTitle(UTF8Decode(Format(SDocUnitTitle + ': %s', [AModule.Name, S])));
-    SortedList := TFPList.Create;
-    try
-      for i := 0 to AList.Count - 1 do
-      begin
-        Decl := TPasElement(AList[i]);
-        DocNode := Engine.FindDocNode(Decl);
-        if (not Assigned(DocNode)) or (not DocNode.IsSkipped) then
-        begin
-          j := 0;
-          while (j < SortedList.Count) and (CompareText(
-            TPasElement(SortedList[j]).PathName, Decl.PathName) < 0) do
-            Inc(j);
-          SortedList.Insert(j, Decl);
-        end;
-      end;
-
-      TableEl := CreateTable(BodyElement);
-      for i := 0 to SortedList.Count - 1 do
-      begin
-        Decl := TPasElement(SortedList[i]);
-        TREl := CreateTR(TableEl);
-        CodeEl := CreateCode(CreatePara(CreateTD_vtop(TREl)));
-        AppendHyperlink(CodeEl, Decl);
-        AppendShortDescrCell(TREl, Decl);
-      end;
-    finally
-      SortedList.Free;
-    end;
-  end;
-
-  procedure CreateResStringsPage;
-  var
-    ParaEl: TDOMElement;
-    i: Integer;
-    Decl: TPasResString;
-  begin
-    AppendMenuBar(ResstrSubindex);
-    AppendTitle(UTF8Decode(Format(SDocUnitTitle + ': %s', [AModule.Name, SDocResStrings])));
-    for i := 0 to AModule.InterfaceSection.ResStrings.Count - 1 do
-    begin
-      Decl := TPasResString(AModule.InterfaceSection.ResStrings[i]);
-      CreateEl(BodyElement, 'a')['name'] := UTF8Decode(LowerCase(Decl.Name));
-      ParaEl := CreatePara(BodyElement);
-      AppendText(CreateCode(ParaEl), UTF8Decode(Decl.Name));
-      CreateEl(ParaEl, 'br');
-      AppendText(ParaEl, UTF8Decode(Decl.Expr.getDeclaration(true)));
-    end;
-  end;
-  
 
 begin
   case ASubpageIndex of
     0:
-      CreateMainPage;
+      CreateModuleMainPage(aModule);
     ResstrSubindex:
-      CreateResStringsPage;
+      CreateModuleResStringsPage(aModule);
     ConstsSubindex:
-      CreateSimpleSubpage(UTF8Decode(SDocConstants), AModule.InterfaceSection.Consts);
+      CreateModuleSimpleSubpage(aModule, ConstsSubindex,UTF8Decode(SDocConstants), AModule.InterfaceSection.Consts);
     TypesSubindex:
-      CreateSimpleSubpage(UTF8Decode(SDocTypes), AModule.InterfaceSection.Types);
+      CreateModuleSimpleSubpage(aModule, TypesSubindex,UTF8Decode(SDocTypes), AModule.InterfaceSection.Types);
     ClassesSubindex:
-      CreateSimpleSubpage(UTF8Decode(SDocClasses), AModule.InterfaceSection.Classes);
+      CreateModuleSimpleSubpage(aModule, ClassesSubindex,UTF8Decode(SDocClasses), AModule.InterfaceSection.Classes);
     ProcsSubindex:
-      CreateSimpleSubpage(UTF8Decode(SDocProceduresAndFunctions), AModule.InterfaceSection.Functions);
+      CreateModuleSimpleSubpage(aModule, ProcsSubindex, UTF8Decode(SDocProceduresAndFunctions), AModule.InterfaceSection.Functions);
     VarsSubindex:
-      CreateSimpleSubpage(UTF8Decode(SDocVariables), AModule.InterfaceSection.Variables);
+      CreateModuleSimpleSubpage(aModule, VarsSubindex,UTF8Decode(SDocVariables), AModule.InterfaceSection.Variables);
     IndexSubIndex: 
       CreateModuleIndexPage(AModule);
   end;
@@ -2447,11 +1396,11 @@ var
 begin
   AppendMenuBar(-1);
   AppendTitle(UTF8Decode(AConst.Name),AConst.Hints);
-  AppendShortDescr(CreatePara(BodyElement), AConst);
-  AppendText(CreateH2(BodyElement), UTF8Decode(SDocDeclaration));
-  AppendSourceRef(AConst);
+  AppendShortDescr(CreatePara(ContentElement), AConst);
+  AppendText(CreateH2(ContentElement), UTF8Decode(SDocDeclaration));
+  AppendSourceRef(ContentElement,AConst);
 
-  TableEl := CreateTable(BodyElement);
+  TableEl := CreateTable(ContentElement);
   CodeEl := CreateCode(CreatePara(CreateTD(CreateTR(TableEl))));
 
   AppendKw(CodeEl, 'const');
@@ -2524,7 +1473,7 @@ begin
   if AType.InheritsFrom(TPasProcedureType) then
   begin
     AppendSym(AppendType(CodeEl, TableEl, TPasType(AType), True), ';');
-    AppendProcArgsSection(BodyElement, TPasProcedureType(AType));
+    AppendProcArgsSection(ContentElement, TPasProcedureType(AType));
   end else
   // Record
   if AType.ClassType = TPasRecordType then
@@ -2579,11 +1528,11 @@ var
 begin
   AppendMenuBar(-1);
   AppendTitle(UTF8Decode(AType.Name),AType.Hints);
-  AppendShortDescr(CreatePara(BodyElement), AType);
-  AppendText(CreateH2(BodyElement), UTF8Decode(SDocDeclaration));
-  AppendSourceRef(AType);
+  AppendShortDescr(CreatePara(ContentElement), AType);
+  AppendText(CreateH2(ContentElement), UTF8Decode(SDocDeclaration));
+  AppendSourceRef(ContentElement,AType);
 
-  TableEl := CreateTable(BodyElement);
+  TableEl := CreateTable(ContentElement);
   TREl := CreateTR(TableEl);
   TDEl := CreateTD(TREl);
   CodeEl := CreateCode(CreatePara(TDEl));
@@ -2753,35 +1702,46 @@ begin
   AppendTitle(UTF8Decode(aText),Hints);
 end;
 
-procedure THTMLWriter.CreateClassPageBody(AClass: TPasClassType;
-  ASubpageIndex: Integer);
-var
-  ParaEl: TDOMElement;
+procedure THTMLWriter.AppendTitle(const AText: DOMString; Hints : TPasMemberHints = []);
 
-  procedure AppendMemberListLink(AListSubpageIndex: Integer;
-    const AText: DOMString);
-  var
-    LinkEl: TDOMElement;
-  begin
-    if FUseMenuBrackets then
-      AppendText(ParaEl, '[');
-    LinkEl := CreateEl(ParaEl, 'a');
-    LinkEl['href'] :=UTF8Decode(FixHtmlPath(ResolveLinkWithinPackage(AClass, AListSubpageIndex)));
-    LinkEl['onClick'] := 'window.open(''' + LinkEl['href'] + ''', ''list'', ' +
-     '''dependent=yes,resizable=yes,scrollbars=yes,height=400,width=300''); return false;';
-    AppendText(LinkEl, AText);
-    AppendText(ParaEl, ' (');
-    LinkEl := CreateEl(ParaEl, 'a');
-    LinkEl['href'] :=UTF8Decode(FixHtmlPath(ResolveLinkWithinPackage(AClass, AListSubpageIndex + 1)));
-    LinkEl['onClick'] := 'window.open(''' + LinkEl['href'] + ''', ''list'', ' +
-     '''dependent=yes,resizable=yes,scrollbars=yes,height=400,width=300''); return false;';
-    AppendText(LinkEl, UTF8Decode(SDocByName));
-    AppendText(ParaEl, ')');
-    if FUseMenuBrackets then
-      AppendText(ParaEl, '] ')
-    else
-      AppendText(ParaEl, ' ');
-  end;
+Var
+  T : UnicodeString;
+begin
+  T:=AText;
+  if (Hints<>[]) then
+    T:=T+' ('+UTF8Decode(Engine.HintsToStr(Hints))+')';
+  AppendText(TitleElement, AText);
+  AppendText(CreateH1(ContentElement), T);
+end;
+
+
+procedure THTMLWriter.AppendClassMemberListLink(aClass : TPasClassType; ParaEl : TDomElement; AListSubpageIndex: Integer;  const AText: DOMString);
+
+var
+  LinkEl: TDOMElement;
+begin
+  if FUseMenuBrackets then
+    AppendText(ParaEl, '[');
+  LinkEl := CreateEl(ParaEl, 'a');
+  LinkEl['href'] :=UTF8Decode(FixHtmlPath(ResolveLinkWithinPackage(AClass, AListSubpageIndex)));
+  LinkEl['onClick'] := 'window.open(''' + LinkEl['href'] + ''', ''list'', ' +
+   '''dependent=yes,resizable=yes,scrollbars=yes,height=400,width=300''); return false;';
+  AppendText(LinkEl, AText);
+  AppendText(ParaEl, ' (');
+  LinkEl := CreateEl(ParaEl, 'a');
+  LinkEl['href'] :=UTF8Decode(FixHtmlPath(ResolveLinkWithinPackage(AClass, AListSubpageIndex + 1)));
+  LinkEl['onClick'] := 'window.open(''' + LinkEl['href'] + ''', ''list'', ' +
+   '''dependent=yes,resizable=yes,scrollbars=yes,height=400,width=300''); return false;';
+  AppendText(LinkEl, UTF8Decode(SDocByName));
+  AppendText(ParaEl, ')');
+  if FUseMenuBrackets then
+    AppendText(ParaEl, '] ')
+  else
+    AppendText(ParaEl, ' ');
+end;
+
+
+procedure THTMLWriter.CreateClassMainPage(aClass : TPasClassType);
 
   procedure AppendGenericTypes(CodeEl : TDomElement; AList : TFPList; isSpecialize : Boolean);
 
@@ -2799,264 +1759,268 @@ var
     AppendSym(CodeEl, '>');
   end;
 
-  procedure CreateMainPage;
-  var
-    TableEl, TREl, TDEl, CodeEl: TDOMElement;
-    i: Integer;
-    ThisInterface,
-    ThisClass: TPasClassType;
-    ThisTreeNode: TPasElementNode;
+
+var
+  ParaEl,TableEl, TREl, TDEl, CodeEl: TDOMElement;
+  i: Integer;
+  ThisInterface,
+  ThisClass: TPasClassType;
+  ThisTreeNode: TPasElementNode;
+begin
+  //WriteLn('@ClassPageBody.CreateMainPage Class=', AClass.Name);
+  AppendMenuBar(-1);
+  AppendTitle(UTF8Decode(AClass.Name),AClass.Hints);
+
+  ParaEl := CreatePara(ContentElement);
+  AppendClassMemberListLink(aClass,ParaEl,PropertiesByInheritanceSubindex, UTF8Decode(SDocProperties));
+  AppendClassMemberListLink(aClass,ParaEl,MethodsByInheritanceSubindex, UTF8Decode(SDocMethods));
+  AppendClassMemberListLink(aClass,ParaEl,EventsByInheritanceSubindex, UTF8Decode(SDocEvents));
+
+  AppendShortDescr(CreatePara(ContentElement), AClass);
+  AppendText(CreateH2(ContentElement), UTF8Decode(SDocDeclaration));
+  AppendSourceRef(ContentElement,AClass);
+
+  TableEl := CreateTable(ContentElement);
+
+  TREl := CreateTR(TableEl);
+  TDEl := CreateTD(TREl);
+  CodeEl := CreateCode(CreatePara(TDEl));
+  AppendKw(CodeEl, 'type');
+  if AClass.GenericTemplateTypes.Count>0 then
+    AppendKw(CodeEl, ' generic ');
+  AppendText(CodeEl, ' ' + UTF8Decode(AClass.Name) + ' ');
+  if AClass.GenericTemplateTypes.Count>0 then
+    AppendGenericTypes(CodeEl,AClass.GenericTemplateTypes,false);
+  AppendSym(CodeEl, '=');
+  AppendText(CodeEl, ' ');
+  AppendKw(CodeEl, UTF8Decode(ObjKindNames[AClass.ObjKind]));
+
+  if Assigned(AClass.AncestorType) then
   begin
-    //WriteLn('@ClassPageBody.CreateMainPage Class=', AClass.Name);
-    AppendMenuBar(-1);
-    AppendTitle(UTF8Decode(AClass.Name),AClass.Hints);
+    AppendSym(CodeEl, '(');
+    AppendHyperlink(CodeEl, AClass.AncestorType);
+    if AClass.Interfaces.count>0 Then
+      begin
+        for i:=0 to AClass.interfaces.count-1 do
+         begin
+           AppendSym(CodeEl, ', ');
+           AppendHyperlink(CodeEl,TPasClassType(AClass.Interfaces[i]));
+         end;
+      end;
+    AppendSym(CodeEl, ')');
+  end;
+  CreateMemberDeclarations(AClass, AClass.Members,TableEl, not AClass.IsShortDefinition);
 
-    ParaEl := CreatePara(BodyElement);
-    AppendMemberListLink(PropertiesByInheritanceSubindex, UTF8Decode(SDocProperties));
-    AppendMemberListLink(MethodsByInheritanceSubindex, UTF8Decode(SDocMethods));
-    AppendMemberListLink(EventsByInheritanceSubindex, UTF8Decode(SDocEvents));
+  AppendText(CreateH2(ContentElement), UTF8Decode(SDocInheritance));
+  TableEl := CreateTable(ContentElement);
 
-    AppendShortDescr(CreatePara(BodyElement), AClass);
-    AppendText(CreateH2(BodyElement), UTF8Decode(SDocDeclaration));
-    AppendSourceRef(AClass);
+  // Now we are using only TreeClass for show inheritance
 
-    TableEl := CreateTable(BodyElement);
+  ThisClass := AClass; ThisTreeNode := Nil;
+  if AClass.ObjKind = okInterface then
+    ThisTreeNode := TreeInterface.GetPasElNode(AClass)
+  else
+    ThisTreeNode := TreeClass.GetPasElNode(AClass);
+  while True do
+  begin
+    TREl := CreateTR(TableEl);
+    TDEl := CreateTD_vtop(TREl);
+    TDEl['align'] := 'center';
+    CodeEl := CreateCode(CreatePara(TDEl));
 
+    // Show class item
+    if Assigned(ThisClass) Then
+      AppendHyperlink(CodeEl, ThisClass);
+    //else
+    //  AppendHyperlink(CodeEl, ThisTreeNode);
+    // Show links to class interfaces
+    if Assigned(ThisClass) and (ThisClass.Interfaces.count>0) then
+      begin
+        for i:=0 to ThisClass.interfaces.count-1 do
+          begin
+            ThisInterface:=TPasClassType(ThisClass.Interfaces[i]);
+            AppendText(CodeEl,',');
+            AppendHyperlink(CodeEl, ThisInterface);
+          end;
+      end;
+    // short class description
+    if Assigned(ThisClass) then
+          AppendShortDescrCell(TREl, ThisClass);
+
+    if Assigned(ThisTreeNode) then
+      if Assigned(ThisTreeNode.ParentNode) then
+      begin
+        TDEl := CreateTD(CreateTR(TableEl));
+        TDEl['align'] := 'center';
+        AppendText(TDEl, '|');
+        ThisClass := ThisTreeNode.ParentNode.Element;
+        ThisTreeNode := ThisTreeNode.ParentNode;
+      end
+        else
+      begin
+        ThisClass := nil;
+        ThisTreeNode:= nil;
+        break;
+      end
+    else
+      break;
+  end;
+  FinishElementPage(AClass);
+end;
+
+procedure THTMLWriter.CreateClassInheritanceSubpage(aClass : TPasClassType; AFilter: TMemberFilter);
+
+var
+  ThisClass: TPasClassType;
+  i: Integer;
+  Member: TPasElement;
+  TableEl, TREl, TDEl, ParaEl, LinkEl: TDOMElement;
+begin
+  TableEl := CreateTable(ContentElement);
+  ThisClass := AClass;
+  while True do
+  begin
     TREl := CreateTR(TableEl);
     TDEl := CreateTD(TREl);
-    CodeEl := CreateCode(CreatePara(TDEl));
-    AppendKw(CodeEl, 'type');
-    if AClass.GenericTemplateTypes.Count>0 then
-      AppendKw(CodeEl, ' generic ');
-    AppendText(CodeEl, ' ' + UTF8Decode(AClass.Name) + ' ');
-    if AClass.GenericTemplateTypes.Count>0 then
-      AppendGenericTypes(CodeEl,AClass.GenericTemplateTypes,false);
-    AppendSym(CodeEl, '=');
-    AppendText(CodeEl, ' ');
-    AppendKw(CodeEl, UTF8Decode(ObjKindNames[AClass.ObjKind]));
-
-    if Assigned(AClass.AncestorType) then
+    TDEl['colspan'] := '3';
+    CreateTD(TREl);
+    LinkEl := AppendHyperlink(CreateEl(CreateCode(CreatePara(TDEl)), 'b'), ThisClass);
+    if Assigned(LinkEl) then
+      LinkEl['onClick'] := 'opener.location.href = ''' + LinkEl['href'] +
+        '''; return false;';
+    for i := 0 to ThisClass.Members.Count - 1 do
     begin
-      AppendSym(CodeEl, '(');
-      AppendHyperlink(CodeEl, AClass.AncestorType);
-      if AClass.Interfaces.count>0 Then
-        begin
-          for i:=0 to AClass.interfaces.count-1 do
-           begin
-             AppendSym(CodeEl, ', ');
-             AppendHyperlink(CodeEl,TPasClassType(AClass.Interfaces[i]));
-           end;
-        end;
-      AppendSym(CodeEl, ')');
-    end;
-    CreateMemberDeclarations(AClass, AClass.Members,TableEl, not AClass.IsShortDefinition);
-
-    AppendText(CreateH2(BodyElement), UTF8Decode(SDocInheritance));
-    TableEl := CreateTable(BodyElement);
-
-    // Now we are using only TreeClass for show inheritance
-
-    ThisClass := AClass; ThisTreeNode := Nil;
-    if AClass.ObjKind = okInterface then
-      ThisTreeNode := TreeInterface.GetPasElNode(AClass)
-    else
-      ThisTreeNode := TreeClass.GetPasElNode(AClass);
-    while True do
-    begin
+      Member := TPasElement(ThisClass.Members[i]);
+      if Not (Engine.ShowElement(Member) and AFilter(Member)) then
+        continue;
       TREl := CreateTR(TableEl);
-      TDEl := CreateTD_vtop(TREl);
-      TDEl['align'] := 'center';
-      CodeEl := CreateCode(CreatePara(TDEl));
+      ParaEl := CreatePara(CreateTD(TREl));
+      case Member.Visibility of
+        visPrivate:
+          AppendText(ParaEl, 'pv');
+        visProtected:
+          AppendText(ParaEl, 'pt');
+        visPublished:
+          AppendText(ParaEl, 'pl');
+        else
+      end;
+      AppendNbSp(ParaEl, 1);
 
-      // Show class item
-      if Assigned(ThisClass) Then
-        AppendHyperlink(CodeEl, ThisClass);
-      //else
-      //  AppendHyperlink(CodeEl, ThisTreeNode);
-      // Show links to class interfaces
-      if Assigned(ThisClass) and (ThisClass.Interfaces.count>0) then
-        begin
-          for i:=0 to ThisClass.interfaces.count-1 do
-            begin
-              ThisInterface:=TPasClassType(ThisClass.Interfaces[i]);
-              AppendText(CodeEl,',');
-              AppendHyperlink(CodeEl, ThisInterface);
-            end;
-        end;
-      // short class description
-      if Assigned(ThisClass) then
-            AppendShortDescrCell(TREl, ThisClass);
+      ParaEl := CreateTD(TREl);
+      if (Member.ClassType = TPasProperty) and
+        (Length(TPasProperty(Member).WriteAccessorName) = 0) then
+      begin
+        AppendText(ParaEl, 'ro');
+        AppendNbSp(ParaEl, 1);
+      end;
 
-      if Assigned(ThisTreeNode) then
-        if Assigned(ThisTreeNode.ParentNode) then
-        begin
-          TDEl := CreateTD(CreateTR(TableEl));
-          TDEl['align'] := 'center';
-          AppendText(TDEl, '|');
-          ThisClass := ThisTreeNode.ParentNode.Element;
-          ThisTreeNode := ThisTreeNode.ParentNode;
-        end
-          else
-        begin
-          ThisClass := nil;
-          ThisTreeNode:= nil;
-          break;
-        end
-      else
-        break;
-    end;
-    FinishElementPage(AClass);
-  end;
-
-  procedure CreateInheritanceSubpage(AFilter: TMemberFilter);
-  var
-    ThisClass: TPasClassType;
-    i: Integer;
-    Member: TPasElement;
-    TableEl, TREl, TDEl, ParaEl, LinkEl: TDOMElement;
-  begin
-    TableEl := CreateTable(BodyElement);
-    ThisClass := AClass;
-    while True do
-    begin
-      TREl := CreateTR(TableEl);
-      TDEl := CreateTD(TREl);
-      TDEl['colspan'] := '3';
-      CreateTD(TREl);
-      LinkEl := AppendHyperlink(CreateEl(CreateCode(CreatePara(TDEl)), 'b'), ThisClass);
+      LinkEl := AppendHyperlink(CreatePara(CreateTD(TREl)), Member);
       if Assigned(LinkEl) then
         LinkEl['onClick'] := 'opener.location.href = ''' + LinkEl['href'] +
           '''; return false;';
+    end;
+    if (not Assigned(ThisClass.AncestorType)) or
+      (not (ThisClass.AncestorType.ClassType.inheritsfrom(TPasClassType))) then
+      break;
+    ThisClass := TPasClassType(ThisClass.AncestorType);
+    AppendNbSp(CreatePara(CreateTD(CreateTR(TableEl))), 1);
+  end;
+end;
+
+procedure THTMLWriter.CreateClassSortedSubpage(AClass: TPasClassType; AFilter: TMemberFilter);
+var
+  List: TFPList;
+  ThisClass: TPasClassType;
+  i, j: Integer;
+  Member: TPasElement;
+  ParaEl, TableEl, TREl, TDEl, LinkEl: TDOMElement;
+
+begin
+  List := TFPList.Create;
+  try
+    ThisClass := AClass;
+    while True do
+    begin
       for i := 0 to ThisClass.Members.Count - 1 do
       begin
         Member := TPasElement(ThisClass.Members[i]);
-        if Not (Engine.ShowElement(Member) and AFilter(Member)) then
-          continue;
-        TREl := CreateTR(TableEl);
-        ParaEl := CreatePara(CreateTD(TREl));
-        case Member.Visibility of
-          visPrivate:
-            AppendText(ParaEl, 'pv');
-          visProtected:
-            AppendText(ParaEl, 'pt');
-          visPublished:
-            AppendText(ParaEl, 'pl');
-          else
-        end;
-        AppendNbSp(ParaEl, 1);
-
-        ParaEl := CreateTD(TREl);
-        if (Member.ClassType = TPasProperty) and
-          (Length(TPasProperty(Member).WriteAccessorName) = 0) then
+        if Engine.ShowElement(Member) and AFilter(Member) then
         begin
-          AppendText(ParaEl, 'ro');
-          AppendNbSp(ParaEl, 1);
+          j := 0;
+          while (j < List.Count) and
+            (CompareText(TPasElement(List[j]).Name, Member.Name) < 0) do
+            Inc(j);
+          List.Insert(j, Member);
         end;
-
-        LinkEl := AppendHyperlink(CreatePara(CreateTD(TREl)), Member);
-        if Assigned(LinkEl) then
-          LinkEl['onClick'] := 'opener.location.href = ''' + LinkEl['href'] +
-            '''; return false;';
       end;
       if (not Assigned(ThisClass.AncestorType)) or
         (not (ThisClass.AncestorType.ClassType.inheritsfrom(TPasClassType))) then
         break;
       ThisClass := TPasClassType(ThisClass.AncestorType);
-      AppendNbSp(CreatePara(CreateTD(CreateTR(TableEl))), 1);
     end;
-  end;
 
-  procedure CreateSortedSubpage(AFilter: TMemberFilter);
-  var
-    List: TFPList;
-    ThisClass: TPasClassType;
-    i, j: Integer;
-    Member: TPasElement;
-    TableEl, TREl, TDEl, ParaEl, LinkEl: TDOMElement;
-  begin
-    List := TFPList.Create;
-    try
-      ThisClass := AClass;
-      while True do
-      begin
-        for i := 0 to ThisClass.Members.Count - 1 do
-        begin
-          Member := TPasElement(ThisClass.Members[i]);
-          if Engine.ShowElement(Member) and AFilter(Member) then
-          begin
-            j := 0;
-            while (j < List.Count) and
-              (CompareText(TPasElement(List[j]).Name, Member.Name) < 0) do
-              Inc(j);
-            List.Insert(j, Member);
-          end;
-        end;
-        if (not Assigned(ThisClass.AncestorType)) or
-          (not (ThisClass.AncestorType.ClassType.inheritsfrom(TPasClassType))) then
-          break;
-        ThisClass := TPasClassType(ThisClass.AncestorType);
+    TableEl := CreateTable(ContentElement);
+    for i := 0 to List.Count - 1 do
+    begin
+      Member := TPasElement(List[i]);
+      TREl := CreateTR(TableEl);
+      ParaEl := CreatePara(CreateTD(TREl));
+      case Member.Visibility of
+        visPrivate:
+          AppendText(ParaEl, 'pv');
+        visProtected:
+          AppendText(ParaEl, 'pt');
+        visPublished:
+          AppendText(ParaEl, 'pl');
+        else
       end;
+      AppendNbSp(ParaEl, 1);
 
-      TableEl := CreateTable(BodyElement);
-      for i := 0 to List.Count - 1 do
+      ParaEl := CreatePara(CreateTD(TREl));
+      if (Member.ClassType = TPasProperty) and
+        (Length(TPasProperty(Member).WriteAccessorName) = 0) then
       begin
-        Member := TPasElement(List[i]);
-        TREl := CreateTR(TableEl);
-        ParaEl := CreatePara(CreateTD(TREl));
-        case Member.Visibility of
-          visPrivate:
-            AppendText(ParaEl, 'pv');
-          visProtected:
-            AppendText(ParaEl, 'pt');
-          visPublished:
-            AppendText(ParaEl, 'pl');
-          else
-        end;
+        AppendText(ParaEl, 'ro');
         AppendNbSp(ParaEl, 1);
-
-        ParaEl := CreatePara(CreateTD(TREl));
-        if (Member.ClassType = TPasProperty) and
-          (Length(TPasProperty(Member).WriteAccessorName) = 0) then
-        begin
-          AppendText(ParaEl, 'ro');
-          AppendNbSp(ParaEl, 1);
-        end;
-
-        TDEl := CreateTD(TREl);
-        TDEl['nowrap'] := 'nowrap';
-        ParaEl := CreatePara(TDEl);
-        LinkEl := AppendHyperlink(ParaEl, Member);
-        if Assigned(LinkEl) then
-          LinkEl['onClick'] := 'opener.location.href = ''' + LinkEl['href'] +
-            '''; return false;';
-        AppendText(ParaEl, ' (');
-        LinkEl := AppendHyperlink(ParaEl, Member.Parent);
-        if Assigned(LinkEl) then
-          LinkEl['onClick'] := 'opener.location.href = ''' + LinkEl['href'] +
-            '''; return false;';
-        AppendText(ParaEl, ')');
       end;
-    finally
-      List.Free;
+
+      TDEl := CreateTD(TREl);
+      TDEl['nowrap'] := 'nowrap';
+      ParaEl := CreatePara(TDEl);
+      LinkEl := AppendHyperlink(ParaEl, Member);
+      if Assigned(LinkEl) then
+        LinkEl['onClick'] := 'opener.location.href = ''' + LinkEl['href'] +
+          '''; return false;';
+      AppendText(ParaEl, ' (');
+      LinkEl := AppendHyperlink(ParaEl, Member.Parent);
+      if Assigned(LinkEl) then
+        LinkEl['onClick'] := 'opener.location.href = ''' + LinkEl['href'] +
+          '''; return false;';
+      AppendText(ParaEl, ')');
     end;
+  finally
+    List.Free;
   end;
+end;
+
+procedure THTMLWriter.CreateClassPageBody(AClass: TPasClassType; ASubpageIndex: Integer);
 
 begin
   case ASubpageIndex of
     0:
-      CreateMainPage;
+      CreateClassMainPage(aClass);
     PropertiesByInheritanceSubindex:
-      CreateInheritanceSubpage(@PropertyFilter);
+      CreateClassInheritanceSubpage(aClass,@PropertyFilter);
     PropertiesByNameSubindex:
-      CreateSortedSubpage(@PropertyFilter);
+      CreateClassSortedSubpage(aClass,@PropertyFilter);
     MethodsByInheritanceSubindex:
-      CreateInheritanceSubpage(@MethodFilter);
+      CreateClassInheritanceSubpage(aClass,@MethodFilter);
     MethodsByNameSubindex:
-      CreateSortedSubpage(@MethodFilter);
+      CreateClassSortedSubpage(aClass,@MethodFilter);
     EventsByInheritanceSubindex:
-      CreateInheritanceSubpage(@EventFilter);
+      CreateClassInheritanceSubpage(aClass,@EventFilter);
     EventsByNameSubindex:
-      CreateSortedSubpage(@EventFilter);
+      CreateClassSortedSubpage(aClass,@EventFilter);
   end;
 end;
 
@@ -3200,11 +2164,11 @@ var
 begin
   AppendMenuBar(-1);
   AppendTitle(UTF8Decode(AElement.FullName),AElement.Hints);
-  AppendShortDescr(CreatePara(BodyElement), AElement);
-  AppendText(CreateH2(BodyElement), SDocDeclaration);
-  AppendSourceRef(AElement);
+  AppendShortDescr(CreatePara(ContentElement), AElement);
+  AppendText(CreateH2(ContentElement), SDocDeclaration);
+  AppendSourceRef(ContentElement,AElement);
 
-  TableEl := CreateTable(BodyElement);
+  TableEl := CreateTable(ContentElement);
   TREl := CreateTR(TableEl);
   CodeEl := CreateCode(CreatePara(CreateTD(TREl)));
   AppendText(CodeEl, ' ');      // !!!: Workaround for current HTML writer
@@ -3227,7 +2191,7 @@ begin
   else if AElement is TPasType then
     CreateTypePage(TPasType(AElement))
   else
-    AppendText(CreateWarning(BodyElement), '<' + AElement.ClassName + '>');
+    AppendText(CreateWarning(ContentElement), '<' + AElement.ClassName + '>');
 
   FinishElementPage(AElement);
 end;
@@ -3238,11 +2202,11 @@ var
 begin
   AppendMenuBar(-1);
   AppendTitle(AVar.FullName,AVar.Hints);
-  AppendShortDescr(CreatePara(BodyElement), AVar);
-  AppendText(CreateH2(BodyElement), SDocDeclaration);
-  AppendSourceRef(AVar);
+  AppendShortDescr(CreatePara(ContentElement), AVar);
+  AppendText(CreateH2(ContentElement), SDocDeclaration);
+  AppendSourceRef(ContentElement,AVar);
 
-  TableEl := CreateTable(BodyElement);
+  TableEl := CreateTable(ContentElement);
   TREl := CreateTR(TableEl);
   TDEl := CreateTD(TREl);
   CodeEl := CreateCode(CreatePara(TDEl));
@@ -3264,16 +2228,18 @@ begin
 end;
 
 procedure THTMLWriter.CreateProcPageBody(AProc: TPasProcedureBase);
+
 var
   TableEl, TREl, TDEl, CodeEl: TDOMElement;
+
 begin
   AppendMenuBar(-1);
   AppendTitle(UTF8Decode(AProc.Name),AProc.Hints);
-  AppendShortDescr(CreatePara(BodyElement), AProc);
-  AppendText(CreateH2(BodyElement), SDocDeclaration);
-  AppendSourceRef(AProc);
+  AppendShortDescr(CreatePara(ContentElement), AProc);
+  AppendText(CreateH2(ContentElement), SDocDeclaration);
+  AppendSourceRef(ContentElement,AProc);
 
-  TableEl := CreateTable(BodyElement);
+  TableEl := CreateTable(ContentElement);
   TREl := CreateTR(TableEl);
   TDEl := CreateTD(TREl);
   CodeEl := CreateCode(CreatePara(TDEl));
@@ -3310,22 +2276,22 @@ begin
   if Cmd = '--html-search' then
     SearchPage := Arg
   else if Cmd = '--footer' then
-    FooterHTML := ReadFile(Arg)
+    FFooterHTML := ReadFile(Arg)
   else if Cmd = '--header' then
-    HeaderHTML := ReadFile(Arg)
+    FHeaderHTML := ReadFile(Arg)
   else if Cmd = '--navigator' then
-    NavigatorHTML := ReadFile(Arg)
+    FNavigatorHTML := ReadFile(Arg)
   else if Cmd = '--charset' then
     CharSet := Arg
   else if Cmd = '--index-colcount' then
     IndexColCount := StrToIntDef(Arg,IndexColCount)
   else if Cmd = '--image-url' then
-    FBaseImageURL  := Arg
+    BaseImageURL  := Arg
   else if Cmd = '--css-file' then
     FCSSFile := arg
   else if Cmd = '--footer-date' then
     begin
-    FIDF:=True;
+    FIncludeDateInFooter:=True;
     FDateFormat:=Arg;
     end
   else if Cmd = '--disable-menu-brackets' then

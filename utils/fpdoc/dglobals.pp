@@ -158,8 +158,8 @@ resourcestring
   SMDImageUrl = 'Prefix image URLs with url';
   SMDTheme = 'Use name as theme name';
   SMDNavigation = 'Use scheme for navigation tree, here scheme is one of:';
-  SMDNavSubtree = 'UnitSubTree : put all units in a sub tree of a Units node';
-  SMDNavTree = 'UnitTree : put every units as a node on the same level as packages node';
+  SMDNavSubtree = '    UnitSubTree : put all units in a sub tree of a Units node';
+  SMDNavTree =    '    UnitTree : put every units as a node on the same level as packages node';
 
 
 

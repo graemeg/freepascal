@@ -37,7 +37,7 @@ uses
   dw_man,    // Man page writer
   dw_linrtf, // linear RTF writer
   dw_txt,    // TXT writer
-  fpdocproj, mkfpdoc, dw_basemd;
+  fpdocproj, mkfpdoc, dw_basemd, dw_basehtml;
 
 
 Type

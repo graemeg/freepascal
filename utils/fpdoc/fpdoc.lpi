@@ -46,7 +46,7 @@
         <PackageName Value="FCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="19">
+    <Units Count="20">
       <Unit0>
         <Filename Value="fpdoc.pp"/>
         <IsPartOfProject Value="True"/>
@@ -130,6 +130,10 @@
         <Filename Value="dw_basemd.pp"/>
         <IsPartOfProject Value="True"/>
       </Unit18>
+      <Unit19>
+        <Filename Value="dw_basehtml.pp"/>
+        <IsPartOfProject Value="True"/>
+      </Unit19>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

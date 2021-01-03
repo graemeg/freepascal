@@ -186,10 +186,12 @@ type
     procedure DescrEndTableRow; virtual; abstract;
     procedure DescrBeginTableCell; virtual; abstract;
     procedure DescrEndTableCell; virtual; abstract;
+
     Property CurrentContext : TPasElement Read FContext ;
   public
     Constructor Create(APackage: TPasPackage; AEngine: TFPDocEngine); virtual;
     destructor Destroy;  override;
+    procedure AddModuleIdentifiers(AModule: TPasModule; L: TStrings);
     property Engine : TFPDocEngine read FEngine;
     Property Package : TPasPackage read FPackage;
     Property Topics : TList Read FTopics;
@@ -525,6 +527,7 @@ begin
          and assigned(AModule.InterfaceSection.Classes)
          and (AModule.InterfaceSection.Classes.Count>0);
 end;
+
 
 procedure TMultiFileDocWriter.AddPages(AElement: TPasElement; ASubpageIndex: Integer;
   AList: TFPList);
@@ -1027,6 +1030,22 @@ begin
   TreeInterface.Free;
   Inherited;
 end;
+
+procedure TFPDocWriter.AddModuleIdentifiers(AModule : TPasModule; L : TStrings);
+
+begin
+  if assigned(AModule.InterfaceSection) Then
+   begin
+      AddElementsFromList(L,AModule.InterfaceSection.Consts);
+      AddElementsFromList(L,AModule.InterfaceSection.Types);
+      AddElementsFromList(L,AModule.InterfaceSection.Functions);
+      AddElementsFromList(L,AModule.InterfaceSection.Classes);
+      AddElementsFromList(L,AModule.InterfaceSection.Variables);
+      AddElementsFromList(L,AModule.InterfaceSection.ResStrings);
+   end;
+end;
+
+
 
 function TFPDocWriter.InterpretOption(const Cmd, Arg: String): Boolean;
 begin

@@ -1,9 +1,8 @@
 {
     FPDoc  -  Free Pascal Documentation Tool
-    Copyright (C) 2000 - 2005 by
-      Areca Systems GmbH / Sebastian Guenther, sg@freepascal.org
+    Copyright (C) 2021 by Michael Van Canneyt
 
-    * HTML/XHTML output generator
+    * Markdown generator, multi-file
 
     See the file COPYING, included in this distribution,
     for details about the copyright.

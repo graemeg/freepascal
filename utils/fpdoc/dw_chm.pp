@@ -2,7 +2,7 @@ unit dw_chm;
 
 interface
 
-uses Classes, DOM, DOM_HTML,
+uses Classes, DOM,
     dGlobals, PasTree, dwriter, dw_html, chmwriter, chmtypes, chmsitemap;
 
 type
@@ -63,7 +63,7 @@ type
 
 implementation
 
-uses SysUtils, HTMWrite;
+uses SysUtils, HTMWrite, dw_basehtml;
 
 { TCHmFileNameAllocator }
 
@@ -179,12 +179,12 @@ begin
     DoLog('Note: --index-page not assigned. Using default "index.html"');
   end;
   
-  if FCSSFile <> '' then
+  if CSSFile <> '' then
   begin
-    if not FileExists(FCSSFile) Then
-      Raise Exception.CreateFmt('Can''t find CSS file "%S"',[FCSSFILE]);
+    if not FileExists(CSSFile) Then
+      Raise Exception.CreateFmt('Can''t find CSS file "%S"',[CSSFILE]);
     TempStream := TMemoryStream.Create;
-    TempStream.LoadFromFile(FCSSFile);
+    TempStream.LoadFromFile(CSSFile);
     TempStream.Position := 0;
     FChm.AddStreamToArchive('fpdoc.css', '/', TempStream, True);
     TempStream.Free;

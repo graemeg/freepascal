@@ -1,3 +1,16 @@
+{
+    FPDoc  -  Free Pascal Documentation Tool
+    Copyright (C) 2021 by Michael Van Canneyt
+
+    * Basic Markdown output generator. No assumptions about document/documentation structure
+
+    See the file COPYING, included in this distribution,
+    for details about the copyright.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+}
 unit dw_basemd;
 
 {$mode objfpc}{$H+}
@@ -32,7 +45,6 @@ Type
     FFileRendering: TRender;
     FIndentSize: Byte;
     FKeywordRendering: TRender;
-    FModule: TPasModule;
     FPrefix : string;
     FMetadata,
     FMarkDown: TStrings;
@@ -486,7 +498,7 @@ end;
 procedure TBaseMarkdownWriter.DescrWriteImageEl(const AFileName, ACaption, ALinkName : DOMString);
 
 Var
-  D,FN : String;
+  aLink,D,FN : String;
   L : integer;
 begin
   // Determine URL for image.
@@ -498,15 +510,16 @@ begin
   If (L>0) and (D[L]<>'/') then
     D:=D+'/';
 
-  FN:=UTF8Decode(D + BaseImageURL) + AFileName;
+  FN:=D + BaseImageURL+ Utf8Encode(AFileName);
   EnsureEmptyLine;
-  AppendToLine('!['+aCaption+']('+FN+')',False);
+  aLink:='!['+UTF8Encode(aCaption)+']('+FN+')';
+  AppendToLine(aLink,False);
 end;
 
 procedure TBaseMarkdownWriter.DescrWriteFileEl(const AText: DOMString);
 
 begin
-  AppendRendered(aText,FileRendering);
+  AppendRendered(UTF8Encode(aText),FileRendering);
 end;
 
 procedure TBaseMarkdownWriter.DescrWriteKeywordEl(const AText: DOMString);
@@ -516,7 +529,7 @@ end;
 
 procedure TBaseMarkdownWriter.DescrWriteVarEl(const AText: DOMString);
 begin
-  AppendRendered(aText,VarRendering);
+  AppendRendered(UTF8Encode(aText),VarRendering);
 end;
 
 procedure TBaseMarkdownWriter.DescrBeginLink(const AId: DOMString);
@@ -556,7 +569,7 @@ end;
 
 procedure TBaseMarkdownWriter.DescrBeginURL(const AURL: DOMString);
 begin
-  FLink:=aURL;
+  FLink:=UTF8Encode(aURL);
   AppendToLine('[');
 end;
 
