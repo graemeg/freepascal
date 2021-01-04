@@ -143,7 +143,13 @@ implementation
              A_VANDPS,
              A_VUNPCKLPS,
              A_VUNPCKHPS,
-             A_VSHUFPD:
+             A_VSHUFPD,
+             A_VREDUCEPD,
+             A_VREDUCEPS,
+             A_VREDUCESD,
+             A_VREDUCESS,
+             A_VROUNDSS,
+             A_VROUNDSD:
                result:=true;
              else
                result:=false;
