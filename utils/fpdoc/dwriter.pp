@@ -714,6 +714,7 @@ begin
         Engine.AddLink(FPathName,UTF8Encode(ResolveLinkIDInUnit(FLink,FModuleName)));
   finally
     L.Free;
+    ML.Free;
   end;
 end;
 
