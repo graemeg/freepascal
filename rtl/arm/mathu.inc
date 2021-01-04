@@ -63,7 +63,7 @@ var
   c: dword;
 begin
   softfloat_rounding_mode:=RoundMode;
-  Reslut:=GetRoundMode;
+  Result:=GetRoundMode;
   c:=Ord(RoundMode) shl 16;
   c:=_controlfp(c, _MCW_RC);
 end;
