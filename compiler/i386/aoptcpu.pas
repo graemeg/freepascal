@@ -252,6 +252,8 @@ unit aoptcpu;
                   Result:=OptPass2Jmp(p);
                 A_MOV:
                   Result:=OptPass2MOV(p);
+                A_MOVZX:
+                  Result:=OptPass2Movx(p);
                 A_SUB:
                   Result:=OptPass2SUB(p);
                 else
@@ -288,7 +290,9 @@ unit aoptcpu;
                   {   "cmpl $3,%eax; movzbl 8(%ebp),%ebx; je .Lxxx"           }
                   { so we can't safely replace the movzx then with xor/mov,   }
                   { since that would change the flags (JM)                    }
-                  if not(cs_opt_regvar in current_settings.optimizerswitches) then
+                  if PostPeepholeOptMovzx(p) then
+                    Result := True
+                  else if not(cs_opt_regvar in current_settings.optimizerswitches) then
                     begin
                       if (taicpu(p).oper[1]^.typ = top_reg) then
                         if (taicpu(p).oper[0]^.typ = top_reg)
@@ -340,6 +344,8 @@ unit aoptcpu;
                   Result:=PostPeepholeOptAnd(p);
                 A_MOVSX:
                   Result:=PostPeepholeOptMOVSX(p);
+                A_SHR:
+                  Result:=PostPeepholeOptShr(p);
                 else
                   ;
               end;
