@@ -2299,7 +2299,8 @@ implementation
               srsym:=tsym(helperdef.symtable.FindWithHash(hashedid));
               if assigned(srsym) and
                   { Delphi allows hiding a property by a procedure with the same name }
-                  (srsym.typ=procsym) then
+                  (srsym.typ=procsym) and
+                  (tprocsym(srsym).procdeflist.count>0) then
                 begin
                   hasoverload:=processprocsym(tprocsym(srsym),foundanything);
                   { when there is no explicit overload we stop searching }
@@ -2388,7 +2389,8 @@ implementation
                srsym:=tprocsym(tabstractrecorddef(tobjectdef(structdef).extendeddef).symtable.FindWithHash(hashedid));
                if assigned(srsym) and
                   { Delphi allows hiding a property by a procedure with the same name }
-                  (srsym.typ=procsym) then
+                  (srsym.typ=procsym) and
+                  (tprocsym(srsym).procdeflist.count>0) then
                  begin
                    hasoverload:=processprocsym(tprocsym(srsym),foundanything);
                    { when there is no explicit overload we stop searching }
@@ -2463,7 +2465,8 @@ implementation
               begin
                 srsym:=tsym(srsymtable.FindWithHash(hashedid));
                 if assigned(srsym) and
-                   (srsym.typ=procsym) then
+                   (srsym.typ=procsym) and
+                   (tprocsym(srsym).procdeflist.count>0) then
                   begin
                     { add all definitions }
                     hasoverload:=false;
