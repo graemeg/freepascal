@@ -322,58 +322,60 @@ var
 
 begin
   DoLog('Generating Table of contents...');
-  if Assigned(Package) then
+  if not Assigned(Package) then
   begin
-    Toc := TChmSiteMap.Create(stTOC);
-    Stream := TMemoryStream.Create;
-    ObjByUnitItem := TOC.Items.NewItem;
-    ObjByUnitItem.Text      := 'Classes and Objects, by Unit';
-    AlphaObjItem := TOC.Items.NewItem;
-    AlphaObjItem.Text       := 'Alphabetical Classes and Objects List';
-    RoutinesByUnitItem := TOC.Items.NewItem;
-    RoutinesByUnitItem.Text := 'Routines, by Unit';
-    AlphaRoutinesItem  := TOC.Items.NewItem;
-    AlphaRoutinesItem.Text  := 'Alphabetical Routines List';
+    DoLog('Package is not assigned...');
+    Exit;
+  end;
+  Toc := TChmSiteMap.Create(stTOC);
+  Stream := TMemoryStream.Create;
+  ObjByUnitItem := TOC.Items.NewItem;
+  ObjByUnitItem.Text      := 'Classes and Objects, by Unit';
+  AlphaObjItem := TOC.Items.NewItem;
+  AlphaObjItem.Text       := 'Alphabetical Classes and Objects List';
+  RoutinesByUnitItem := TOC.Items.NewItem;
+  RoutinesByUnitItem.Text := 'Routines, by Unit';
+  AlphaRoutinesItem  := TOC.Items.NewItem;
+  AlphaRoutinesItem.Text  := 'Alphabetical Routines List';
 
-    // objects and classes
-    for i := 0 to Package.Modules.Count - 1 do
+  // objects and classes
+  for i := 0 to Package.Modules.Count - 1 do
+  begin
+    AModule := TPasModule(Package.Modules[i]);
+    If not assigned(AModule.InterfaceSection) Then
+       Continue;
+    ObjUnitItem := ObjByUnitItem.Children.NewItem;
+    ObjUnitItem.Text := AModule.Name;
+    RoutinesUnitItem := RoutinesByUnitItem.Children.NewItem;
+    RoutinesUnitItem.Text := AModule.Name;
+    for j := 0 to AModule.InterfaceSection.Classes.Count-1 do
     begin
-      AModule := TPasModule(Package.Modules[i]);
-      If not assigned(AModule.InterfaceSection) Then
-         Continue;
-      ObjUnitItem := ObjByUnitItem.Children.NewItem;
-      ObjUnitItem.Text := AModule.Name;
-      RoutinesUnitItem := RoutinesByUnitItem.Children.NewItem;
-      RoutinesUnitItem.Text := AModule.Name;
-      for j := 0 to AModule.InterfaceSection.Classes.Count-1 do
-      begin
-        Element := TPasClassType(AModule.InterfaceSection.Classes[j]);
-        // by unit
-        TmpItem := ObjUnitItem.Children.NewItem;
-        TmpItem.Text := Element.Name;
-        TmpItem.addLocal(FixHTMLpath(Allocator.GetFilename(Element, 0)));
-        
-        //alpha
-        TmpItem := GetAlphaItem(AlphaObjItem.Children, UpperCase(Copy(Element.Name, 1, 2))).Children.NewItem;
-        TmpItem.Text := Element.Name;
-        TmpItem.addLocal(FixHTMLpath(Allocator.GetFilename(Element, 0)));
-        
-      end;
-      
-      // non object procedures and functions
-      for j := 0 to AModule.InterfaceSection.Functions.Count-1 do
-      begin
-        Element := TPasFunctionType(AModule.InterfaceSection.Functions[j]);
-        // by unit
-        TmpItem := RoutinesUnitItem.Children.NewItem;
-        TmpItem.Text := Element.Name;
-        TmpItem.addLocal(FixHTMLpath(Allocator.GetFilename(Element, 0)));
-        
-        // alpha
-        TmpItem := GetAlphaItem(AlphaRoutinesItem.Children, UpperCase(Element.Name[1])).Children.NewItem;
-        TmpItem.Text := Element.Name;
-        TmpItem.addLocal(FixHTMLpath(Allocator.GetFilename(Element, 0)));
-      end;
+      Element := TPasClassType(AModule.InterfaceSection.Classes[j]);
+      // by unit
+      TmpItem := ObjUnitItem.Children.NewItem;
+      TmpItem.Text := Element.Name;
+      TmpItem.addLocal(FixHTMLpath(Allocator.GetFilename(Element, 0)));
+
+      //alpha
+      TmpItem := GetAlphaItem(AlphaObjItem.Children, UpperCase(Copy(Element.Name, 1, 2))).Children.NewItem;
+      TmpItem.Text := Element.Name;
+      TmpItem.addLocal(FixHTMLpath(Allocator.GetFilename(Element, 0)));
+
+    end;
+
+    // non object procedures and functions
+    for j := 0 to AModule.InterfaceSection.Functions.Count-1 do
+    begin
+      Element := TPasFunctionType(AModule.InterfaceSection.Functions[j]);
+      // by unit
+      TmpItem := RoutinesUnitItem.Children.NewItem;
+      TmpItem.Text := Element.Name;
+      TmpItem.addLocal(FixHTMLpath(Allocator.GetFilename(Element, 0)));
+
+      // alpha
+      TmpItem := GetAlphaItem(AlphaRoutinesItem.Children, UpperCase(Element.Name[1])).Children.NewItem;
+      TmpItem.Text := Element.Name;
+      TmpItem.addLocal(FixHTMLpath(Allocator.GetFilename(Element, 0)));
     end;
   end;
   // cleanup
@@ -406,7 +408,7 @@ begin
   end;
 
   if not fnobintoc then
-    fchm.AppendBinaryTOCFromSiteMap(Toc);  
+    fchm.AppendBinaryTOCFromSiteMap(Toc);
   TOC.SaveToStream(Stream);
   TOC.Free;
 
@@ -461,164 +463,166 @@ var
 begin
   DoLog('Generating Index...');
 
-  if Assigned(Package) then
+  if not Assigned(Package) then
   begin
-    Index := TChmSiteMap.Create(stIndex);
-    Stream := TMemoryStream.Create;
-    for i := 0 to Package.Modules.Count - 1 do
-    begin
-      AModule := TPasModule(Package.Modules[i]);
-      if not assigned(AModule.InterfaceSection) then
-        continue;
-      ParentItem := Index.Items.NewItem;
-      ParentItem.Text := AModule.Name;
-      ParentItem.addLocal(FixHTMLpath(Allocator.GetFilename(AModule, 0)));
-
-      //  classes
-      for j := 0 to AModule.InterfaceSection.Classes.Count-1 do
-      begin
-        ParentElement := TPasClassType(AModule.InterfaceSection.Classes[j]);
-        ParentItem := Index.Items.NewItem;
-        ParentItem.Text := ParentELement.Name;
-        ParentItem.addLocal(FixHTMLpath(Allocator.GetFilename(ParentElement, 0)));
-        for k := 0 to TPasClassType(ParentElement).Members.Count-1 do
-        begin
-          TmpElement := TPasElement(TPasClassType(ParentElement).Members.Items[k]);
-          if Engine.HidePrivate and(TmpElement.Visibility = visPrivate) then
-            continue;
-          if Engine.HideProtected and(TmpElement.Visibility = visProtected) then
-            continue;
-          Urls:=FixHTMLpath(Allocator.GetFilename(TmpElement, 0));
-          RedirectUrl:='';
-          if TmpElement is TPasEnumValue then
-             RedirectUrl := UTF8Encode(ResolveLinkIDAbs(tmpElement.Parent.PathName))
-           else
-             RedirectUrl := UTF8Encode(ResolveLinkIDAbs(tmpElement.PathName));
-
-          if(trim(RedirectUrl)<>'') and (RedirectUrl<>urls) then
-            begin
-              //writeln('Hint: Index Resolved:',urls,' to ',RedirectUrl);
-              urls:=RedirectUrl;
-            end;
-
-          TmpItem := ParentItem.Children.NewItem;
-          case ElementType(TmpElement) of
-            cmtProcedure   : TmpItem.Text := TmpElement.Name + ' procedure';
-            cmtFunction    : TmpItem.Text := TmpElement.Name + ' function';
-            cmtConstructor : TmpItem.Text := TmpElement.Name + ' constructor';
-            cmtDestructor  : TmpItem.Text := TmpElement.Name + ' destructor';
-            cmtProperty    : TmpItem.Text := TmpElement.Name + ' property';
-            cmtVariable    : TmpItem.Text := TmpElement.Name + ' variable';
-            cmtInterface   : TmpItem.Text := TmpElement.Name + ' interface';
-            cmtOperator    : TmpItem.Text := TmpElement.Name + ' operator';
-            cmtConstant    : TmpItem.Text := TmpElement.Name + ' const';
-            cmtUnknown     : TmpItem.Text := TmpElement.Name;
-          end;
-          TmpItem.addLocal(Urls);
-          {
-          ParentElement = Class
-             TmpElement = Member
-          }
-          MemberItem := nil;
-          MemberItem := GetAlphaItem(Index.Items, TmpElement.Name);
-          // ahh! if MemberItem.Local is empty MemberType is not shown!
-          MemberItem.addLocal(Urls);
-
-          TmpItem := MemberItem.Children.NewItem;
-          TmpItem.Text := ParentElement.Name;
-          TmpItem.AddLocal(Urls);
-        end;
-      end;
-      // routines
-      for j := 0 to AModule.InterfaceSection.Functions.Count-1 do
-      begin
-        // routine name
-        ParentElement := TPasElement(AModule.InterfaceSection.Functions[j]);
-        case ElementType(ParentElement) of
-          cmtProcedure   : SName:= ' procedure';
-          cmtFunction    : SName:= ' function';
-          cmtOperator    : SName:= ' operator';
-          //cmtConstant    : SName:= ' const';
-          else             SName:= ' unknown'
-        end;
-        SName:= ParentElement.Name + ' ' + SName;
-        MultiAlphaItem(Index.Items, SName, ParentElement, AModule.Name);
-      end;
-      // consts
-      for j := 0 to AModule.InterfaceSection.Consts.Count-1 do
-      begin
-        ParentElement := TPasElement(AModule.InterfaceSection.Consts[j]);
-        SName:= ParentElement.Name + ' const';
-        MultiAlphaItem(Index.Items, SName, ParentElement, AModule.Name);
-      end;
-      // types
-      for j := 0 to AModule.InterfaceSection.Types.Count-1 do
-      begin
-        ParentElement := TPasType(AModule.InterfaceSection.Types[j]);
-        TmpItem := Index.Items.NewItem;
-        TmpItem.Text := ParentElement.Name;
-        TmpItem.addLocal(FixHTMLpath(Allocator.GetFilename(ParentElement, 0)));
-        // enums
-        if ParentELement is TPasEnumType then
-        begin
-          ParentItem := TmpItem;
-          for k := 0 to TPasEnumType(ParentElement).Values.Count-1 do
-          begin
-            TmpElement := TPasType(TPasEnumType(ParentElement).Values.Items[k]);
-            // subitem
-            TmpItem := ParentItem.Children.NewItem;
-            TmpItem.Text := TmpElement.Name;
-            TmpItem.addLocal(ParentItem.Local);
-            // root level
-            TmpItem := Index.Items.NewItem;
-            TmpItem.Text := TmpElement.Name;
-            TmpItem.addLocal(ParentItem.Local);
-          end;
-        end;
-      end;
-      // variables
-      for j := 0 to AModule.InterfaceSection.Variables.Count-1 do
-      begin
-        ParentElement := TPasElement(AModule.InterfaceSection.Variables[j]);
-        SName:= ParentElement.Name + ' variable';
-        MultiAlphaItem(Index.Items, SName, ParentElement, AModule.Name);
-      end;
-      // declarations
-      {
-      for j := 0 to AModule.InterfaceSection.Declarations.Count-1 do
-      begin
-        ParentElement := TPasElement(AModule.InterfaceSection.Declarations[j]);
-        TmpItem := Index.Items.NewItem;
-        TmpItem.Text := ParentElement.Name;
-        TmpItem.Local := FixHTMLpath(Allocator.GetFilename(ParentElement, 0));
-      end;
-      // resource strings
-      for j := 0 to AModule.InterfaceSection.ResStrings.Count-1 do
-      begin
-        ParentElement := TPasElement(AModule.InterfaceSection.ResStrings[j]);
-        TmpItem := Index.Items.NewItem;
-        TmpItem.Text := ParentElement.Name;
-        TmpItem.Local := FixHTMLpath(Allocator.GetFilename(ParentElement, 0));
-      end;
-      }
-    end;
-
-    // Sort
-    Index.Items.Sort(TListSortCompare(@TOCSort));
-    for i := 0 to Index.Items.Count-1 do
-    begin
-      Index.Items.Item[i].Children.Sort(TListSortCompare(@TOCSort));
-    end;
-
-    // save
-    Index.SaveToStream(Stream);
-    if not fnobinindex then
-      fchm.AppendBinaryindexFromSitemap(index,false);
-    Index.Free;
-    Stream.Position :=0 ;
-    FChm.AppendIndex(Stream);
-    Stream.Free;
+    DoLog('Package is not assigned...');
+    Exit;
   end;
+  Index := TChmSiteMap.Create(stIndex);
+  Stream := TMemoryStream.Create;
+  for i := 0 to Package.Modules.Count - 1 do
+  //if false then
+  begin
+    AModule := TPasModule(Package.Modules[i]);
+    if not assigned(AModule.InterfaceSection) then
+      continue;
+    ParentItem := Index.Items.NewItem;
+    ParentItem.Text := AModule.Name;
+    ParentItem.addLocal(FixHTMLpath(Allocator.GetFilename(AModule, 0)));
+
+    //  classes
+    for j := 0 to AModule.InterfaceSection.Classes.Count-1 do
+    begin
+      ParentElement := TPasClassType(AModule.InterfaceSection.Classes[j]);
+      ParentItem := Index.Items.NewItem;
+      ParentItem.Text := ParentELement.Name;
+      ParentItem.addLocal(FixHTMLpath(Allocator.GetFilename(ParentElement, 0)));
+      for k := 0 to TPasClassType(ParentElement).Members.Count-1 do
+      begin
+        TmpElement := TPasElement(TPasClassType(ParentElement).Members.Items[k]);
+        if Engine.HidePrivate and(TmpElement.Visibility = visPrivate) then
+          continue;
+        if Engine.HideProtected and(TmpElement.Visibility = visProtected) then
+          continue;
+        Urls:=FixHTMLpath(Allocator.GetFilename(TmpElement, 0));
+        RedirectUrl:='';
+        if TmpElement is TPasEnumValue then
+           RedirectUrl := UTF8Encode(ResolveLinkIDAbs(tmpElement.Parent.PathName))
+         else
+           RedirectUrl := UTF8Encode(ResolveLinkIDAbs(tmpElement.PathName));
+
+        if(trim(RedirectUrl)<>'') and (RedirectUrl<>urls) then
+          begin
+            //writeln('Hint: Index Resolved:',urls,' to ',RedirectUrl);
+            urls:=RedirectUrl;
+          end;
+
+        TmpItem := ParentItem.Children.NewItem;
+        case ElementType(TmpElement) of
+          cmtProcedure   : TmpItem.Text := TmpElement.Name + ' procedure';
+          cmtFunction    : TmpItem.Text := TmpElement.Name + ' function';
+          cmtConstructor : TmpItem.Text := TmpElement.Name + ' constructor';
+          cmtDestructor  : TmpItem.Text := TmpElement.Name + ' destructor';
+          cmtProperty    : TmpItem.Text := TmpElement.Name + ' property';
+          cmtVariable    : TmpItem.Text := TmpElement.Name + ' variable';
+          cmtInterface   : TmpItem.Text := TmpElement.Name + ' interface';
+          cmtOperator    : TmpItem.Text := TmpElement.Name + ' operator';
+          cmtConstant    : TmpItem.Text := TmpElement.Name + ' const';
+          cmtUnknown     : TmpItem.Text := TmpElement.Name;
+        end;
+        TmpItem.addLocal(Urls);
+        {
+        ParentElement = Class
+           TmpElement = Member
+        }
+        MemberItem := nil;
+        MemberItem := GetAlphaItem(Index.Items, TmpElement.Name);
+        // ahh! if MemberItem.Local is empty MemberType is not shown!
+        MemberItem.addLocal(Urls);
+
+        TmpItem := MemberItem.Children.NewItem;
+        TmpItem.Text := ParentElement.Name;
+        TmpItem.AddLocal(Urls);
+      end;
+    end;
+    // routines
+    for j := 0 to AModule.InterfaceSection.Functions.Count-1 do
+    begin
+      // routine name
+      ParentElement := TPasElement(AModule.InterfaceSection.Functions[j]);
+      case ElementType(ParentElement) of
+        cmtProcedure   : SName:= ' procedure';
+        cmtFunction    : SName:= ' function';
+        cmtOperator    : SName:= ' operator';
+        //cmtConstant    : SName:= ' const';
+        else             SName:= ' unknown'
+      end;
+      SName:= ParentElement.Name + ' ' + SName;
+      MultiAlphaItem(Index.Items, SName, ParentElement, AModule.Name);
+    end;
+    // consts
+    for j := 0 to AModule.InterfaceSection.Consts.Count-1 do
+    begin
+      ParentElement := TPasElement(AModule.InterfaceSection.Consts[j]);
+      SName:= ParentElement.Name + ' const';
+      MultiAlphaItem(Index.Items, SName, ParentElement, AModule.Name);
+    end;
+    // types
+    for j := 0 to AModule.InterfaceSection.Types.Count-1 do
+    begin
+      ParentElement := TPasType(AModule.InterfaceSection.Types[j]);
+      TmpItem := Index.Items.NewItem;
+      TmpItem.Text := ParentElement.Name;
+      TmpItem.addLocal(FixHTMLpath(Allocator.GetFilename(ParentElement, 0)));
+      // enums
+      if ParentELement is TPasEnumType then
+      begin
+        ParentItem := TmpItem;
+        for k := 0 to TPasEnumType(ParentElement).Values.Count-1 do
+        begin
+          TmpElement := TPasType(TPasEnumType(ParentElement).Values.Items[k]);
+          // subitem
+          TmpItem := ParentItem.Children.NewItem;
+          TmpItem.Text := TmpElement.Name;
+          TmpItem.addLocal(ParentItem.Local);
+          // root level
+          TmpItem := Index.Items.NewItem;
+          TmpItem.Text := TmpElement.Name;
+          TmpItem.addLocal(ParentItem.Local);
+        end;
+      end;
+    end;
+    // variables
+    for j := 0 to AModule.InterfaceSection.Variables.Count-1 do
+    begin
+      ParentElement := TPasElement(AModule.InterfaceSection.Variables[j]);
+      SName:= ParentElement.Name + ' variable';
+      MultiAlphaItem(Index.Items, SName, ParentElement, AModule.Name);
+    end;
+    // declarations
+    {
+    for j := 0 to AModule.InterfaceSection.Declarations.Count-1 do
+    begin
+      ParentElement := TPasElement(AModule.InterfaceSection.Declarations[j]);
+      TmpItem := Index.Items.NewItem;
+      TmpItem.Text := ParentElement.Name;
+      TmpItem.Local := FixHTMLpath(Allocator.GetFilename(ParentElement, 0));
+    end;
+    // resource strings
+    for j := 0 to AModule.InterfaceSection.ResStrings.Count-1 do
+    begin
+      ParentElement := TPasElement(AModule.InterfaceSection.ResStrings[j]);
+      TmpItem := Index.Items.NewItem;
+      TmpItem.Text := ParentElement.Name;
+      TmpItem.Local := FixHTMLpath(Allocator.GetFilename(ParentElement, 0));
+    end;
+    }
+  end;
+
+  // Sort
+  Index.Items.Sort(TListSortCompare(@TOCSort));
+  for i := 0 to Index.Items.Count-1 do
+  begin
+    Index.Items.Item[i].Children.Sort(TListSortCompare(@TOCSort));
+  end;
+  // save
+  Index.SaveToStream(Stream);
+  if not fnobinindex then
+    fchm.AppendBinaryindexFromSitemap(index,false);
+  Index.Free;
+  Stream.Position :=0 ;
+  FChm.AppendIndex(Stream);
+  Stream.Free;
   DoLog('Generating Index Done');
 end;
 
@@ -646,8 +650,9 @@ begin
   FChm.TempRawStream := FTempUncompressed;
   FChm.OnGetFileData := @RetrieveOtherFiles;
   FChm.OnLastFile := @LastFileAdded;
-  fchm.hasbinarytoc:=not fnobintoc;;
-  fchm.hasbinaryindex:=not fnobinindex;
+  FChm.hasbinarytoc:=not fnobintoc;
+  FChm.hasbinaryindex:=not fnobinindex;
+  //FChm.Cores:=1;
   ProcessOptions;
 
   FileStream := TMemoryStream.Create;
@@ -663,7 +668,7 @@ begin
           WriteHTMLFile(PageDoc, FileStream);
           FChm.AddStreamToArchive(FileName, FilePath, FileStream, True);
         except
-	  on E: Exception do
+          on E: Exception do
             DoLog(Format(SErrCouldNotCreateFile, [FileName, e.Message]));
         end;
       finally
@@ -698,7 +703,7 @@ begin
   FChm.Execute;
   FChm.Free;
   DoLog('Collecting done');
-  // we don't need to free FTempUncompressed
+  // we don't need to free FTempUncompressed it is freed into TFpDocChmWriter
   // FTempUncompressed.Free;
   FOutChm.Free;
   DeleteFile(FTempUncompressedName);
