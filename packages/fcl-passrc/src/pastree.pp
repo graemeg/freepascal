@@ -3100,7 +3100,7 @@ begin
   CN:=CN+' '+IntToStr(FRefCount);
   //If Assigned(Parent) then
   //  CN:=CN+' ('+Parent.ClassName+')';
-  Writeln('TPasElement.Release : ',Cn);
+  Writeln('TPasElement.Release : ',Cn,' at ',aId);
   {AllowWriteln-}
   {$endif}
   {$IFDEF CheckPasTreeRefCount}
@@ -3136,7 +3136,7 @@ begin
     Dec(FGlobalRefCount);
     {$endif}
     end;
-{$if defined(debugrefcount) or defined(VerbosePasTreeMem)}  Writeln('TPasElement.Released : ',Cn); {$endif}
+{$if defined(debugrefcount) or defined(VerbosePasTreeMem)}  Writeln('TPasElement.Released : ',Cn,' at ',aID); {$endif}
 end;
 
 procedure TPasElement.ForEachCall(const aMethodCall: TOnForEachPasElement;
