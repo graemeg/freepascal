@@ -843,11 +843,11 @@ implementation
                          { and conversion to float is favoured)                }
                          doconv:=tc_int_2_real;
                          if is_extended(def_to) then
-                           eq:=te_convert_l2
+                           eq:=te_convert_l1
                          else if is_double(def_to) then
-                           eq:=te_convert_l3
+                           eq:=te_convert_l2
                          else if is_single(def_to) then
-                           eq:=te_convert_l4
+                           eq:=te_convert_l3
                          else
                            eq:=te_convert_l2;
                        end;
