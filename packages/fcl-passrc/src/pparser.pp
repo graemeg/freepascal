@@ -3142,7 +3142,10 @@ begin
       FinishedModule;
   finally
     if HasFinished then
+      begin
+      Module.Release{$IFDEF CheckPasTreeRefCount}('TPasPackage.Modules'){$ENDIF};
       FCurModule:=nil; // clear module if there is an error or finished parsing
+      end;
   end;
 end;
 
