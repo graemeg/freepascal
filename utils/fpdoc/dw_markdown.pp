@@ -124,7 +124,6 @@ type
     procedure WriteDocPage(const aFileName: String; aElement: TPasElement; aSubPageIndex: Integer); override;
 
     // Start producing html complete package documentation
-    function  ModuleForElement(AnElement:TPasElement):TPasModule;
 
     Function InterPretOption(Const Cmd,Arg : String) : boolean; override;
     Procedure WriteDoc; override;
@@ -324,18 +323,6 @@ begin
   If FHeaderMarkDown=Nil then
     FHeaderMarkDown:=TStringList.Create;
   Result:=FHeaderMarkDown;
-end;
-
-
-
-function  TMarkdownWriter.ModuleForElement(AnElement:TPasElement):TPasModule;
-
-begin
-  result:=TPasModule(AnElement);
-  while assigned(result) and not (result is TPasModule) do 
-        result:=TPasModule(result.parent);
-  if not (result is TPasModule) then
-   result:=nil;
 end;
 
 procedure TMarkdownWriter.AppendShortDescr(AContext: TPasElement; DocNode: TDocNode) ;
@@ -715,7 +702,7 @@ begin
 
       DescrEndTableCell;
       DescrBeginTableCell;
-      DescrEl:=Engine.FindShortDescr(ModuleForElement(AElement),UTF8Encode(aList[i]));
+      DescrEl:=Engine.FindShortDescr(AElement.GetModule(),UTF8Encode(aList[i]));
       if Assigned(DescrEl) then
         ConvertShort(AElement, DescrEl)
       else
@@ -882,7 +869,7 @@ type
     PE:=EN.Element;
     DescrBeginListItem;
     AppendHyperLink(PE);
-    PM:=ModuleForElement(PE);
+    PM:=PE.GetModule();
     if (PM<>Nil) then
       begin
       AppendText(' (');

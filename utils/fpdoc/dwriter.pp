@@ -282,7 +282,7 @@ Type
     procedure AllocateClassMemberPages(AModule: TPasModule; LinkList: TObjectList); virtual;
     procedure AllocateModulePages(AModule: TPasModule; LinkList: TObjectList); virtual;
     procedure AllocatePackagePages; virtual;
-    // Prefix every filename generated with the eesult of this.
+    // Prefix every filename generated with the result of this.
     function GetFileBaseDir(aOutput: String): String; virtual;
 
     function  ModuleHasClasses(AModule: TPasModule): Boolean;

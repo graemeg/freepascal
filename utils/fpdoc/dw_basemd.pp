@@ -21,8 +21,8 @@ uses
   Classes, SysUtils, dwriter, DOM, pastree, dglobals;
 
 Const
-  MaxIndents = 10;
-  MaxLists = 10;
+  MaxIndents = 32;
+  MaxLists = 32;
 
 Type
   THeaderLevel = 1..6;
@@ -842,6 +842,7 @@ end;
 destructor TBaseMarkdownWriter.Destroy;
 begin
   FreeAndNil(FMarkDown);
+  FreeAndNil(FMetadata);
   inherited Destroy;
 end;
 
