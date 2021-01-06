@@ -131,6 +131,8 @@ interface
        protected
           FProcdefList   : TFPObjectList;
           FProcdefDerefList : TFPList;
+          fgenprocsymovlds : tfpobjectlist;
+          fgenprocsymovldsderefs : tfplist;
        public
           constructor create(const n : TSymStr);virtual;
           constructor ppuload(ppufile:tcompilerppufile);
@@ -153,7 +155,11 @@ interface
           function find_procdef_byprocvardef(d:Tprocvardef):Tprocdef;
           function find_procdef_assignment_operator(fromdef,todef:tdef;var besteq:tequaltype;isexplicit:boolean):Tprocdef;
           function find_procdef_enumerator_operator(fromdef,todef:tdef;var besteq:tequaltype):Tprocdef;
+          procedure add_generic_overload(sym:tprocsym);
           property ProcdefList:TFPObjectList read FProcdefList;
+          { only valid if sp_generic_dummy is set and either an overload was
+            added using add_generic_overload or this was loaded from a ppu }
+          property genprocsymovlds:tfpobjectlist read fgenprocsymovlds;
        end;
        tprocsymclass = class of tprocsym;
 
@@ -902,8 +908,10 @@ implementation
 
     constructor tprocsym.ppuload(ppufile:tcompilerppufile);
       var
+         symderef,
          pdderef : tderef;
          i,
+         symcnt,
          pdcnt : longint;
       begin
          inherited ppuload(procsym,ppufile);
@@ -915,6 +923,17 @@ implementation
             ppufile.getderef(pdderef);
             FProcdefDerefList.Add(Pointer(PtrInt(pdderef.dataidx)));
           end;
+         if sp_generic_dummy in symoptions then
+           begin
+             fgenprocsymovlds:=tfpobjectlist.create(false);
+             fgenprocsymovldsderefs:=tfplist.create;
+             symcnt:=ppufile.getword;
+             for i:=1 to symcnt do
+               begin
+                 ppufile.getderef(symderef);
+                 fgenprocsymovldsderefs.add(pointer(ptrint(symderef.dataidx)));
+               end;
+           end;
          ppuload_platform(ppufile);
       end;
 
@@ -924,6 +943,8 @@ implementation
         FProcdefList.Free;
         if assigned(FProcdefDerefList) then
           FProcdefDerefList.Free;
+        fgenprocsymovlds.free;
+        fgenprocsymovldsderefs.free;
         inherited destroy;
       end;
 
@@ -941,6 +962,17 @@ implementation
            begin
              d.dataidx:=PtrInt(FProcdefDerefList[i]);
              ppufile.putderef(d);
+           end;
+         if sp_generic_dummy in symoptions then
+           begin
+             if not assigned(fgenprocsymovldsderefs) then
+               internalerror(2021010301);
+             ppufile.putword(fgenprocsymovldsderefs.count);
+             for i:=0 to fgenprocsymovldsderefs.count-1 do
+               begin
+                 d.dataidx:=ptrint(fgenprocsymovldsderefs[i]);
+                 ppufile.putderef(d);
+               end;
            end;
          writeentry(ppufile,ibprocsym);
       end;
@@ -996,6 +1028,7 @@ implementation
         i  : longint;
         pd : tprocdef;
         d  : tderef;
+        sym : tprocsym;
       begin
         inherited;
         if not assigned(FProcdefDerefList) then
@@ -1013,6 +1046,21 @@ implementation
                 FProcdefDerefList.Add(Pointer(PtrInt(d.dataidx)));
               end;
           end;
+        if sp_generic_dummy in symoptions then
+          begin
+            if not assigned(fgenprocsymovlds) then
+              internalerror(2021010602);
+            if not assigned(fgenprocsymovldsderefs) then
+              fgenprocsymovldsderefs:=tfplist.create
+            else
+              fgenprocsymovldsderefs.clear;
+            for i:=0 to fgenprocsymovlds.count-1 do
+              begin
+                sym:=tprocsym(fgenprocsymovlds[i]);
+                d.build(sym);
+                fgenprocsymovldsderefs.add(pointer(ptrint(d.dataidx)));
+              end;
+          end;
       end;
 
 
@@ -1021,6 +1069,7 @@ implementation
         i  : longint;
         pd : tprocdef;
         d  : tderef;
+        sym : tsym;
       begin
         { Clear all procdefs }
         ProcdefList.Clear;
@@ -1031,6 +1080,20 @@ implementation
             d.dataidx:=PtrInt(FProcdefDerefList[i]);
             pd:=tprocdef(d.resolve);
             ProcdefList.Add(pd);
+          end;
+        if sp_generic_dummy in symoptions then
+          begin
+            if not assigned(fgenprocsymovlds) then
+              internalerror(2021010603);
+            if not assigned(fgenprocsymovldsderefs) then
+              internalerror(2021010302);
+            fgenprocsymovlds.clear;
+            for i:= 0 to fgenprocsymovldsderefs.count-1 do
+              begin
+                d.dataidx:=ptrint(fgenprocsymovldsderefs[i]);
+                sym:=tprocsym(d.resolve);
+                fgenprocsymovlds.add(sym);
+              end;
           end;
       end;
 
@@ -1395,6 +1458,21 @@ implementation
               end;
           end;
         result:=bestpd;
+      end;
+
+
+    procedure tprocsym.add_generic_overload(sym:tprocsym);
+      var
+        i : longint;
+      begin
+        if not (sp_generic_dummy in symoptions) then
+          internalerror(2021010601);
+        if not assigned(fgenprocsymovlds) then
+          fgenprocsymovlds:=tfpobjectlist.create(false);
+        for i:=0 to genprocsymovlds.count-1 do
+          if tprocsym(genprocsymovlds[i])=sym then
+            exit;
+        genprocsymovlds.add(sym);
       end;
 
 

@@ -1183,6 +1183,8 @@ implementation
                 include(dummysym.symoptions,sp_generic_dummy);
                 add_generic_dummysym(dummysym);
               end;
+            if dummysym.typ=procsym then
+              tprocsym(dummysym).add_generic_overload(aprocsym);
             { start token recorder for the declaration }
             pd.init_genericdecl;
             current_scanner.startrecordtokens(pd.genericdecltokenbuf);
