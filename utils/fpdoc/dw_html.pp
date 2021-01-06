@@ -129,7 +129,7 @@ type
 
 implementation
 
-uses SysUtils, XMLRead, HTMWrite, sh_pas, fpdocclasstree;
+uses SysUtils, HTMWrite, fpdocclasstree;
 
 {$i css.inc}
 {$i plusimage.inc}

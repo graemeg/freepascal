@@ -29,23 +29,65 @@ Type
 
   { TXMLWriter }
 
-  TXMLWriter = Class(TFPDocWriter)
+  TXMLWriter = Class(TMultiFileDocWriter)
   private
-    FShowSourceInfo: Boolean;
+    FShowSourceInfo:Boolean;
+    FUseFlatStructure:Boolean;
+  protected
+    function CreateAllocator : TFileAllocator; override;
+    procedure AllocatePackagePages; override;
+    procedure AllocateModulePages(AModule: TPasModule; {%H-}LinkList: TObjectList); override;
+    procedure WriteDocPage(const aFileName: String; aElement: TPasElement; {%H-}aSubPageIndex: Integer); override;
   public
+    constructor Create(APackage: TPasPackage; AEngine: TFPDocEngine); override;
     function ModuleToXMLStruct(AModule: TPasModule): TXMLDocument;
     Procedure WriteDoc; override;
     class procedure Usage(List: TStrings); override;
     function  InterPretOption(const Cmd,Arg : String): boolean; override;
   end;
 
+  { TFlatFileAllocator }
 
+  TFlatFileAllocator = class(TFileAllocator)
+  private
+    FExtension: String;
+  public
+    constructor Create(const AExtension: String);
+    function GetFilename(AElement: TPasElement; ASubindex: Integer): String; override;
+    function GetRelativePathToTop(AElement: TPasElement): String; override;
+    property Extension: String read FExtension;
+  end;
 
 
 implementation
 
 const
   DefaultVisibility = [visDefault, visPublic, visPublished, visProtected];
+
+{ TXmlFileAllocator }
+
+constructor TFlatFileAllocator.Create(const AExtension: String);
+begin
+  FExtension:= AExtension;
+  inherited Create();
+end;
+
+function TFlatFileAllocator.GetFilename(AElement: TPasElement; ASubindex: Integer
+  ): String;
+begin
+  Result:='';
+  if AElement.ClassType = TPasPackage then
+    Result := 'index'
+  else if AElement.ClassType = TPasModule then
+    Result := LowerCase(AElement.Name);
+
+  Result := Result + Extension;
+end;
+
+function TFlatFileAllocator.GetRelativePathToTop(AElement: TPasElement): String;
+begin
+  Result:=inherited GetRelativePathToTop(AElement);
+end;
 
 function TXMLWriter.ModuleToXMLStruct(AModule: TPasModule): TXMLDocument;
 
@@ -586,24 +628,59 @@ end;
 { TXMLWriter }
 
 procedure TXMLWriter.WriteDoc;
+begin
+  inherited WriteDoc;
+end;
+
+function TXMLWriter.CreateAllocator: TFileAllocator;
+begin
+  if FUseFlatStructure then
+    Result:=TFlatFileAllocator.Create('.xml')
+  else
+    Result:=TLongNameFileAllocator.Create('.xml');
+end;
+
+procedure TXMLWriter.AllocatePackagePages;
+var
+  H: Boolean;
+begin
+  H:= false; // TODO: I want to public TreeClass for package
+  if H then
+    AddPage(Package,ClassHierarchySubIndex);
+end;
+
+procedure TXMLWriter.AllocateModulePages(AModule: TPasModule;
+  LinkList: TObjectList);
+begin
+  if not assigned(Amodule.Interfacesection) then
+    exit;
+  AddPage(AModule, 0);
+end;
+
+procedure TXMLWriter.WriteDocPage(const aFileName: String;
+  aElement: TPasElement; aSubPageIndex: Integer);
 var
   doc: TXMLDocument;
-  i: Integer;
 begin
-  if Engine.Output <> '' then
-    Engine.Output := IncludeTrailingBackSlash(Engine.Output);
-
-  for i := 0 to Package.Modules.Count - 1 do
+  if (aElement is TPasModule) then
   begin
-    doc := ModuleToXMLStruct(TPasModule(Package.Modules[i]));
-    WriteXMLFile(doc, Engine.Output + TPasModule(Package.Modules[i]).Name + '.xml' );
+    doc := ModuleToXMLStruct(TPasModule(aElement));
+    WriteXMLFile(doc, GetFileBaseDir(Engine.Output) + aFileName);
     doc.Free;
   end;
+end;
+
+constructor TXMLWriter.Create(APackage: TPasPackage; AEngine: TFPDocEngine);
+begin
+  FUseFlatStructure:= False;
+  FShowSourceInfo:= False;
+  inherited Create(APackage, AEngine);
 end;
 
 class procedure TXMLWriter.Usage(List: TStrings);
 begin
   List.AddStrings(['--source-info', SXMLUsageSource]);
+  List.AddStrings(['--flat-structure', SXMLUsageFlatStructure]);
 end;
 
 function TXMLWriter.InterPretOption(const Cmd, Arg: String): boolean;
@@ -611,6 +688,8 @@ begin
   Result := True;
   if Cmd = '--source-info' then
     FShowSourceInfo:=True
+  else if Cmd = '--flat-structure' then
+      FUseFlatStructure:=True
   else
     Result:=inherited InterPretOption(Cmd, Arg);
 end;

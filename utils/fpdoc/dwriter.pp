@@ -310,7 +310,6 @@ function MethodFilter(AMember: TPasElement): Boolean;
 function EventFilter(AMember: TPasElement): Boolean;
 
 
-
 // Register backend
 Procedure RegisterWriter(AClass : TFPDocWriterClass; Const AName,ADescr : String);
 // UnRegister backend
@@ -398,7 +397,6 @@ constructor TMultiFileDocWriter.Create(APackage: TPasPackage;
   AEngine: TFPDocEngine);
 begin
   inherited Create(APackage, AEngine);
-  FAllocator:=CreateAllocator;
   FPageInfos:=TFPObjectList.Create;
 end;
 
@@ -759,6 +757,7 @@ var
   FinalFilename: String;
 
 begin
+  FAllocator:=CreateAllocator;
   AllocatePages;
   DoLog(SWritingPages, [PageCount]);
   if Engine.Output <> '' then
