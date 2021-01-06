@@ -721,7 +721,7 @@ end;
 function TMultiFileDocWriter.GetFileBaseDir(aOutput: String) : String;
 
 begin
-  Result:=Engine.Output;
+  Result:=aOutput;
   if Result<>'' then
     Result:=IncludeTrailingPathDelimiter(Result);
 end;
