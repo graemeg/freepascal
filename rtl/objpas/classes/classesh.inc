@@ -1139,7 +1139,7 @@ type
     function Read(var Buffer; Count: Longint): Longint; override;
     function Write(const Buffer; Count: Longint): Longint; override;
     function Seek(const Offset: int64; Origin: TSeekOrigin): int64; override;
-    procedure Check(err:integer); virtual;
+    procedure Check(err:integer); virtual; abstract;
   end;
 
   { TOwnerStream }

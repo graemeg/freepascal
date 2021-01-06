@@ -2038,12 +2038,4 @@ begin
   Result := FStream;
 end;
 
-procedure TProxyStream.Check(err:integer);
-var e : EInOutError;
-begin
-  e:= EInOutError.Create('Proxystream.Check');
-  e.Errorcode:=err;
-  raise e;
-end;
-
 {$pop}
