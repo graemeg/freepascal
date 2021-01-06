@@ -477,10 +477,6 @@ implementation
           begin
             new(callpara);
             callpara^.def:=paraloc^.def;
-            if firstparaloc then
-              callpara^.alignment:=paras[i]^.Alignment
-            else
-              callpara^.alignment:=std_param_align;
             { if the paraloc doesn't contain the value itself, it's a byval
               parameter }
             if paraloc^.retvalloc then
@@ -493,6 +489,11 @@ implementation
                 callpara^.sret:=false;
                 callpara^.byval:=not paraloc^.llvmvalueloc;
               end;
+            if firstparaloc and
+               callpara^.byval then
+              callpara^.alignment:=paras[i]^.Alignment
+            else
+              callpara^.alignment:=std_param_align;
             llvmextractvalueextinfo(paras[i]^.def, callpara^.def, callpara^.valueext);
             case paraloc^.llvmloc.loc of
               LOC_CONSTANT:
