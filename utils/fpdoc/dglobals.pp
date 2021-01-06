@@ -162,7 +162,7 @@ resourcestring
   SMDNavTree =    '    UnitTree : put every units as a node on the same level as packages node';
 
 
-
+  SXMLUsageFlatStructure  = 'Use a flat output structure of XML files and directories';
   SXMLUsageSource  = 'Include source file and line info in generated XML';
 
   // Linear usage
@@ -671,7 +671,7 @@ var
   i: Integer;
 begin
   for i := 0 to FPackages.Count - 1 do
-    TPasPackage(FPackages[i]).Release;
+    TPasPackage(FPackages[i]).Release{$IFDEF CheckPasTreeRefCount}('TFPDocEngine.Destroy'){$ENDIF};
   FreeAndNil(FRootDocNode);
   FreeAndNil(FRootLinkNode);
   FreeAndNil(DescrDocNames);
@@ -807,6 +807,7 @@ var
       Module := TPasExternalModule.Create(s, HPackage);
       Module.InterfaceSection := TInterfaceSection.Create('', Module);
       Module.PackageName:= HPackage.Name;
+      // Module.AddRef{$IFDEF CheckPasTreeRefCount}('ReadContentFile.ResolvePackageModule'){$ENDIF};
       HPackage.Modules.Add(Module);
     end;
     pkg:=hpackage;
@@ -867,6 +868,7 @@ var
       // Create node for class
       Result := TPasExternalClassType.Create(s, Module.InterfaceSection);
       Result.ObjKind := okClass;
+      // Result.AddRef{$IFDEF CheckPasTreeRefCount}('ReadContentFile.ResolveAndLinkClass'){$ENDIF};
       Module.InterfaceSection.Declarations.Add(Result);
       Module.InterfaceSection.Classes.Add(Result);
       // defer processing inheritancestr till all classes are loaded.
@@ -895,7 +897,7 @@ var
      result:=TPasClassType(ResolveClassType(clname)); 
      if assigned(result) and not (cls=result) then  // save from tobject=implicit tobject
        begin
-         result.addref;
+         result.addref{$IFDEF CheckPasTreeRefCount}('ReadContentFile.ResolveAndLinkClass'){$ENDIF};
          if IsClass then
            begin
              cls.ancestortype:=result;
@@ -934,7 +936,7 @@ var
             else
               begin
     //            writeln('new alias ',clname,' (',s,') ');
-                cl2.addref;
+                cl2.addref{$IFDEF CheckPasTreeRefCount}('ReadContentFile.CreateAliasType'){$ENDIF};
                 Result := TPasAliasType(CreateElement(TPasAliasType,s,module.interfacesection,vispublic,'',0));
                 module.interfacesection.Declarations.Add(Result);
                 TPasAliasType(Result).DestType := cl2;
