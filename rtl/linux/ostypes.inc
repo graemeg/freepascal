@@ -430,6 +430,17 @@ type
   tiovec=iovec;
   piovec=^tiovec;
 
+  cpu_set_t = record
+{$ifdef CPU64}
+    __bits : array[0..15] of culong;
+{$else CPU64}
+    __bits : array[0..0] of culong;
+{$endif CPU64}
+  end;
+
+  tcpu_set_t = cpu_set_t;
+  pcpu_set_t = ^tcpu_set_t;
+
 {$if defined(cpupowerpc)}
 const
   { FP exception related constants for prctl(); PowerPC specific }

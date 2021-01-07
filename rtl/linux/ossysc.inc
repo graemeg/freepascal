@@ -732,3 +732,9 @@ begin
   fpsetrlimit:=do_syscall(syscall_nr_setrlimit,TSysParam(Resource),TSysParam(rlim));
 end;
 
+function FpSchedGetAffinity(pid : pid_t;cpusetsize : size_t;mask : pcpu_set_t) : cint;
+begin
+  FpSchedGetAffinity := do_syscall(syscall_nr_sched_getaffinity,TSysParam(pid),TSysParam(cpusetsize),TSysParam(mask));
+end;
+
+

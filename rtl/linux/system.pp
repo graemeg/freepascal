@@ -113,6 +113,8 @@ procedure OsSetupEntryInformation(constref info: TEntryInformation); forward;
 
 {$endif FPC_LOAD_SOFTFPU}
 
+{$define HAS_GETCPUCOUNT}
+
 {$I system.inc}
 
 {$ifdef android}
@@ -457,6 +459,24 @@ Procedure Randomize;
 Begin
   randseed:=longint(Fptime(nil));
 End;
+
+function GetCPUCount: LongWord;
+  var
+    cpus : tcpu_set_t;
+    BytesWritten,i : cint;
+  begin
+    Result := 1;
+    { same approach as nproc uses:
+      we return the number of available CPUs }
+    BytesWritten:=FpSchedGetAffinity(0,sizeof(cpus),@cpus);
+    if BytesWritten>0 then
+      begin
+        Result := 0;
+        for i:=0 to BytesWritten-1 do
+          Result:=Result+Popcnt((PByte(@cpus)+i)^);
+      end;
+  end;
+
 
 {*****************************************************************************
                                     cmdline
