@@ -143,7 +143,6 @@ begin
   UseMenuBrackets:=True;
   IndexColCount:=3;
   Charset:='iso-8859-1';
-  AllocatePages;
 end;
 
 function THTMLWriter.CreateHTMLPage(AElement: TPasElement;
@@ -2297,7 +2296,7 @@ begin
   else if Cmd = '--disable-menu-brackets' then
     FUseMenuBrackets:=False
   else
-    Result:=False;
+    Result:=inherited InterPretOption(Cmd, Arg);
 end;
 
 
@@ -2321,6 +2320,7 @@ begin
   List.Add(SHTMLImageUrl);
   List.Add('--disable-menu-brackets');
   List.Add(SHTMLDisableMenuBrackets);
+  inherited Usage(List);
 end;
 
 class procedure THTMLWriter.SplitImport(var AFilename, ALinkPrefix: String);

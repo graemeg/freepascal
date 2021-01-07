@@ -1889,11 +1889,14 @@ begin
       FNavigationMode:=nmUnitSubTree
     else if SameText(Arg,'UnitTree') then
       FNavigationMode:=nmUnitTree;
-    end;
+    end
+  else
+    Result:=inherited InterPretOption(Cmd, Arg);
 end;
 
 class procedure TMarkdownWriter.Usage(List: TStrings);
 begin
+  inherited Usage(List);
   List.add('--header=file');
   List.Add(SMDUsageHeader);
   List.add('--footer=file');
@@ -1906,7 +1909,10 @@ begin
   List.Add(SMDTheme);
   List.Add('--navigation=scheme');
   List.Add(SMDNavigation);
+  // we have to write even count of params into list either we will have a exception
+  List.Add('');
   List.Add(SMDNavSubtree);
+  List.Add('');
   List.Add(SMDNavTree);
 end;
 

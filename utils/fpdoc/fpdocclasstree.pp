@@ -5,7 +5,7 @@ unit fpdocclasstree;
 interface
 
 uses
-  Classes, SysUtils, dGlobals, pastree, contnrs{$IFDEF TREE_TEST}, DOM ,XMLWrite{$ENDIF};
+  Classes, SysUtils, dGlobals, pastree, contnrs, DOM ,XMLWrite;
 
 Type
 
@@ -48,9 +48,7 @@ Type
                           AObjectKind : TPasObjKind = okClass);
     Destructor Destroy; override;
     Function BuildTree(AObjects : TStringList) : Integer;
-{$IFDEF TREE_TEST}
     Procedure SaveToXml(AFileName: String);
-{$ENDIF}
     Property RootNode : TPasElementNode Read FRootNode;
     Property PasElToNodes: TFPObjectHashTable read FElementList;
     function GetPasElNode (APasEl: TPasElement) : TPasElementNode;
@@ -214,8 +212,7 @@ begin
   Result:= TPasElementNode(FElementList.Items[APasEl.PathName]);
 end;
 
-{$IFDEF TREE_TEST}
-procedure TClassTreeBuilder.SaveToXml ( AFileName: String ) ;
+procedure TClassTreeBuilder.SaveToXml ( AFileName: String );
 
   procedure AddPasElChildsToXml (ParentxmlEl : TDOMElement ; ParentPasEl: TPasElementNode ) ;
   var
@@ -245,6 +242,7 @@ var
   M: TPasModule;
 begin
   XmlDoc:= TXMLDocument.Create;
+  XmlDoc.AppendChild(XmlDoc.CreateComment(UTF8Decode(SDocGeneratedByComment)));
   try
     XmlRootEl:= XmlDoc.CreateElement(UnicodeString(FRootNode.Element.Name));
     M:= FRootNode.Element.GetModule;
@@ -265,7 +263,6 @@ begin
     XmlDoc.Free;
   end;
 end;
-{$ENDIF}
 
 end.
 

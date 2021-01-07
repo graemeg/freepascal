@@ -65,13 +65,21 @@ type
     Destructor Destroy; override;
   end;
 
+  { TFileAllocator }
+
   TFileAllocator = class
+  private
+    FSubPageNames: Boolean;
+  protected
+    function GetFilePostfix(ASubindex: Integer):String;
   public
+    procedure Create(); overload;
     procedure AllocFilename(AElement: TPasElement; ASubindex: Integer); virtual;
     function GetFilename(AElement: TPasElement;
       ASubindex: Integer): String; virtual; abstract;
     function GetRelativePathToTop(AElement: TPasElement): String; virtual;
     function GetCSSFilename(ARelativeTo: TPasElement): DOMString; virtual;
+    property SubPageNames: Boolean read FSubPageNames write FSubPageNames;
   end;
 
   TLongNameFileAllocator = class(TFileAllocator)
@@ -228,6 +236,7 @@ const
   TopicsSubIndex = 7;
   IndexSubIndex = 8;
   ClassHierarchySubIndex = 9;
+  InterfaceHierarchySubIndex = 10;
 
   // Subpage indices for classes
   PropertiesByInheritanceSubindex = 11;
@@ -236,6 +245,7 @@ const
   MethodsByNameSubindex = 14;
   EventsByInheritanceSubindex = 15;
   EventsByNameSubindex = 16;
+
 
 Type
   { TMultiFileDocWriter }
@@ -260,7 +270,7 @@ Type
 
   TMultiFileDocWriter = Class(TFPDocWriter)
   Private
-    FAllocator: TFileAllocator;
+    FSubPageNames: Boolean;
     FBaseDirectory: String;
     FCurDirectory: String;
     FModule: TPasModule;
@@ -268,6 +278,7 @@ Type
     function GetPageCount: Integer;
 
   Protected
+    FAllocator: TFileAllocator;
     function ResolveLinkID(const Name: String; Level: Integer=0): DOMString;
     function ResolveLinkIDInUnit(const Name,AUnitName: String): DOMString;
     function ResolveLinkWithinPackage(AElement: TPasElement; ASubpageIndex: Integer): String;
@@ -284,15 +295,17 @@ Type
     procedure AllocatePackagePages; virtual;
     // Prefix every filename generated with the result of this.
     function GetFileBaseDir(aOutput: String): String; virtual;
-
+    function InterPretOption(const Cmd, Arg: String): boolean; override;
     function  ModuleHasClasses(AModule: TPasModule): Boolean;
     Property PageInfos : TFPObjectList Read FPageInfos;
+    Property SubPageNames: Boolean Read FSubPageNames;
   Public
     constructor Create(APackage: TPasPackage; AEngine: TFPDocEngine); override;
     Destructor Destroy; override;
     procedure WriteDoc; override;
+    class procedure Usage(List: TStrings); override;
     property PageCount: Integer read GetPageCount;
-    Property Allocator : TFileAllocator Read FAllocator Write FAllocator;
+    Property Allocator : TFileAllocator Read FAllocator;
     Property Module: TPasModule  Read FModule Write FModule;
     Property CurDirectory: String Read FCurDirectory Write FCurDirectory;    // relative to curdir of process
     property BaseDirectory: String read FBaseDirectory Write FBaseDirectory; // relative path to package base directory
@@ -398,6 +411,7 @@ constructor TMultiFileDocWriter.Create(APackage: TPasPackage;
 begin
   inherited Create(APackage, AEngine);
   FPageInfos:=TFPObjectList.Create;
+  FSubPageNames:= False;
 end;
 
 destructor TMultiFileDocWriter.Destroy;
@@ -758,6 +772,7 @@ var
 
 begin
   FAllocator:=CreateAllocator;
+  FAllocator.SubPageNames:= SubPageNames;
   AllocatePages;
   DoLog(SWritingPages, [PageCount]);
   if Engine.Output <> '' then
@@ -772,7 +787,19 @@ begin
        end;
 end;
 
+class procedure TMultiFileDocWriter.Usage(List: TStrings);
+begin
+  List.AddStrings(['--use-subpagenames', SUsageSubNames]);
+end;
 
+function TMultiFileDocWriter.InterPretOption(const Cmd, Arg: String): boolean;
+begin
+  Result := True;
+  if Cmd = '--use-subpagenames' then
+    FSubPageNames:= True
+  else
+    Result:=inherited InterPretOption(Cmd, Arg);
+end;
 
 
 { TWriterRecord }
@@ -882,6 +909,36 @@ end;
   TFileAllocator
   ---------------------------------------------------------------------}
 
+function TFileAllocator.GetFilePostfix(ASubindex: Integer): String;
+begin
+  if FSubPageNames then
+  case ASubindex of
+    IdentifierIndex: Result:='';
+    ResstrSubindex: Result:='reestr';
+    ConstsSubindex: Result:='consts';
+    TypesSubindex: Result:='types';
+    ClassesSubindex: Result:='classes';
+    ProcsSubindex: Result:='procs';
+    VarsSubindex: Result:='vars';
+    TopicsSubIndex: Result:='topics';
+    IndexSubIndex: Result:='indexes';
+    ClassHierarchySubIndex: Result:='class-tree';
+    InterfaceHierarchySubIndex: Result:='interface-tree';
+    PropertiesByInheritanceSubindex: Result:='props';
+    PropertiesByNameSubindex: Result:='props-n';
+    MethodsByInheritanceSubindex: Result:='methods';
+    MethodsByNameSubindex: Result:='methods-n';
+    EventsByInheritanceSubindex: Result:='events';
+    EventsByNameSubindex: Result:='events-n';
+  end
+    else
+  Result:= IntToStr(ASubindex);
+end;
+
+procedure TFileAllocator.Create();
+begin
+  FSubPageNames:= False;
+end;
 
 procedure TFileAllocator.AllocFilename(AElement: TPasElement;
   ASubindex: Integer);
@@ -951,11 +1008,8 @@ begin
       Result:=Result + '-'+ s + '-' + N;
     end else
       Result := LowerCase(AElement.PathName);
-    // searching for TPasModule - it is on the 2nd level
-    if Assigned(AElement.Parent) then
-      while Assigned(AElement.Parent.Parent) do
-        AElement := AElement.Parent;
     // cut off Package Name
+    AElement:= AElement.GetModule;
     Result := Copy(Result, Length(AElement.Parent.Name) + 2, MaxInt);
     // to skip dots in unit name
     i := Length(AElement.Name);
@@ -966,8 +1020,7 @@ begin
   end;
 
   if ASubindex > 0 then
-    Result := Result + '-' + IntToStr(ASubindex);
-
+    Result := Result + '-' + GetFilePostfix(ASubindex);
   Result := Result + Extension;
 end;
 
@@ -1437,12 +1490,9 @@ begin
       if Not (M is TPasExternalModule) and assigned(M.InterfaceSection) then
         Self.AddElementsFromList(L,M.InterfaceSection.Classes,True)
       end;
+      // You can see this tree by using --format=xml option
       TreeClass.BuildTree(L);
       TreeInterface.BuildTree(L);
-      {$IFDEF TREE_TEST}
-      TreeClass.SaveToXml('TreeClass.xml');
-      TreeInterface.SaveToXml('TreeInterface.xml');
-      {$ENDIF}
   Finally
     L.Free;
   end;

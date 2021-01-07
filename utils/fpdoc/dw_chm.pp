@@ -119,11 +119,8 @@ begin
       Result := LowerCase(AElement.PathName);
       excl := (ASubindex > 0);
     end;
-    // searching for TPasModule - it is on the 2nd level
-    if Assigned(AElement.Parent) then
-      while Assigned(AElement.Parent.Parent) do
-        AElement := AElement.Parent;
     // cut off Package Name
+    AElement:= AElement.GetModule;
     Result := Copy(Result, Length(AElement.Parent.Name) + 2, MaxInt);
     // to skip dots in unit name
     i := Length(AElement.Name);
@@ -142,10 +139,8 @@ begin
   end;
 
   if ASubindex > 0 then
-    Result := Result + '-' + IntToStr(ASubindex);
-
+    Result := Result + '-' + GetFilePostfix(ASubindex);
   Result := Result + Extension;
-//  Writeln('Result filename : ',Result);
 end;
 
 { TFpDocChmWriter }
@@ -634,6 +629,11 @@ var
   IFileName,FileName: String;
   FilePath: String;
 begin
+  FAllocator:=CreateAllocator;
+  FAllocator.SubPageNames:= SubPageNames;
+  AllocatePages;
+  DoLog(SWritingPages, [PageCount]);
+
   FileName := Engine.Output;
   if FileName = '' then
     Raise Exception.Create('Error: no --output option used.'); 

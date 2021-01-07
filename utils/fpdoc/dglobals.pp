@@ -161,7 +161,6 @@ resourcestring
   SMDNavSubtree = '    UnitSubTree : put all units in a sub tree of a Units node';
   SMDNavTree =    '    UnitTree : put every units as a node on the same level as packages node';
 
-
   SXMLUsageFlatStructure  = 'Use a flat output structure of XML files and directories';
   SXMLUsageSource  = 'Include source file and line info in generated XML';
 
@@ -172,7 +171,7 @@ resourcestring
   STitle           = 'FPDoc - Free Pascal Documentation Tool';
   SVersion         = 'Version %s [%s]';
   SCopyright1      = '(c) 2000 - 2003 Areca Systems GmbH / Sebastian Guenther, sg@freepascal.org';
-  SCopyright2      = '(c) 2005 - 2012 various FPC contributors';
+  SCopyright2      = '(c) 2005 - 2021 various FPC contributors';
 
   SCmdLineHelp     = 'Usage: %s [options]';
   SUsageOption008  = '--base-descr-dir=DIR prefix all description files with this directory';
@@ -213,6 +212,7 @@ resourcestring
   SUsageOption300  = '--dry-run         Only parse sources and XML, do not create output';
   SUsageOption310  = '--write-project=file';
   SUsageOption320  = '                  Write all command-line options to a project file';
+  SUsageSubNames   = 'Use the file subnames instead the indexes as postfixes';
 
   SUsageFormats        = 'The following output formats are supported by this fpdoc:';
   SUsageBackendHelp    = 'Specify an output format, combined with --help to get more help for this backend.';

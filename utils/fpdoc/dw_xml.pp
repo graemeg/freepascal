@@ -81,6 +81,8 @@ begin
   else if AElement.ClassType = TPasModule then
     Result := LowerCase(AElement.Name);
 
+  if ASubindex > 0 then
+    Result := Result + '-' + GetFilePostfix(ASubindex);
   Result := Result + Extension;
 end;
 
@@ -641,12 +643,10 @@ begin
 end;
 
 procedure TXMLWriter.AllocatePackagePages;
-var
-  H: Boolean;
 begin
-  H:= false; // TODO: I want to public TreeClass for package
-  if H then
-    AddPage(Package,ClassHierarchySubIndex);
+  AddPage(Package, IdentifierIndex);
+  AddPage(Package, ClassHierarchySubIndex);
+  AddPage(Package, InterfaceHierarchySubIndex);
 end;
 
 procedure TXMLWriter.AllocateModulePages(AModule: TPasModule;
@@ -654,7 +654,7 @@ procedure TXMLWriter.AllocateModulePages(AModule: TPasModule;
 begin
   if not assigned(Amodule.Interfacesection) then
     exit;
-  AddPage(AModule, 0);
+  AddPage(AModule, IdentifierIndex);
 end;
 
 procedure TXMLWriter.WriteDocPage(const aFileName: String;
@@ -667,6 +667,13 @@ begin
     doc := ModuleToXMLStruct(TPasModule(aElement));
     WriteXMLFile(doc, GetFileBaseDir(Engine.Output) + aFileName);
     doc.Free;
+  end
+  else if (aElement is TPasPackage) then
+  begin
+    if aSubPageIndex = ClassHierarchySubIndex then
+      TreeClass.SaveToXml(GetFileBaseDir(Engine.Output) + aFileName);
+    if aSubPageIndex = InterfaceHierarchySubIndex then
+      TreeInterface.SaveToXml(GetFileBaseDir(Engine.Output) + aFileName);
   end;
 end;
 
@@ -679,6 +686,7 @@ end;
 
 class procedure TXMLWriter.Usage(List: TStrings);
 begin
+  inherited Usage(List);
   List.AddStrings(['--source-info', SXMLUsageSource]);
   List.AddStrings(['--flat-structure', SXMLUsageFlatStructure]);
 end;
