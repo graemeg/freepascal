@@ -1,3 +1,5 @@
+{ %CONFIGFILE=fpcunit-console-defaults.ini testdefaults.ini }
+
 program testregexpr;
 
 {$mode objfpc}{$H+}

@@ -1,3 +1,4 @@
+{ %norun }
 unit tcregexp;
 
 {$mode objfpc}{$H+}
