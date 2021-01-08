@@ -122,6 +122,7 @@ unit aoptx86;
         function PrePeepholeOptSxx(var p : tai) : boolean;
         function PrePeepholeOptIMUL(var p : tai) : boolean;
 
+        function OptPass1Add(var p: tai): boolean;
         function OptPass1AND(var p : tai) : boolean;
         function OptPass1_V_MOVAP(var p : tai) : boolean;
         function OptPass1VOP(var p : tai) : boolean;
@@ -3171,6 +3172,42 @@ unit aoptx86;
       end;
 
 
+    function TX86AsmOptimizer.OptPass1Add(var p : tai) : boolean;
+      var
+        hp1 : tai;
+      begin
+        result:=false;
+        { replace
+            addX     const,%reg1
+            leaX     (%reg1,%reg1,Y),%reg2   // Base or index might not be equal to reg1
+            dealloc  %reg1
+
+            by
+
+            leaX     const+const*Y(%reg1,%reg1,Y),%reg2
+        }
+        if MatchOpType(taicpu(p),top_const,top_reg) and
+          GetNextInstruction(p,hp1) and
+          MatchInstruction(hp1,A_LEA,[taicpu(p).opsize]) and
+          ((taicpu(p).oper[1]^.reg=taicpu(hp1).oper[0]^.ref^.base) or
+           (taicpu(p).oper[1]^.reg=taicpu(hp1).oper[0]^.ref^.index)) then
+          begin
+            TransferUsedRegs(TmpUsedRegs);
+            UpdateUsedRegs(TmpUsedRegs, tai(p.next));
+            if not(RegUsedAfterInstruction(taicpu(p).oper[1]^.reg,hp1,TmpUsedRegs)) then
+              begin
+                DebugMsg(SPeepholeOptimization + 'AddLea2Lea done',p);
+                if taicpu(p).oper[1]^.reg=taicpu(hp1).oper[0]^.ref^.base then
+                  inc(taicpu(hp1).oper[0]^.ref^.offset,taicpu(p).oper[0]^.val);
+                if taicpu(p).oper[1]^.reg=taicpu(hp1).oper[0]^.ref^.index then
+                  inc(taicpu(hp1).oper[0]^.ref^.offset,taicpu(p).oper[0]^.val*max(taicpu(hp1).oper[0]^.ref^.scalefactor,1));
+                RemoveCurrentP(p);
+                result:=true;
+              end;
+          end;
+      end;
+
+
     function TX86AsmOptimizer.OptPass1LEA(var p : tai) : boolean;
       var
         hp1, hp2, hp3: tai;
@@ -3350,7 +3387,11 @@ unit aoptx86;
                ) or
                ((taicpu(hp1).oper[0]^.ref^.base=taicpu(p).oper[1]^.reg) and
                 (taicpu(hp1).oper[0]^.ref^.scalefactor <= 1) and
-                (taicpu(p).oper[0]^.ref^.base=NR_NO) and
+                ((taicpu(p).oper[0]^.ref^.base=NR_NO) or
+                 ((taicpu(p).oper[0]^.ref^.base=taicpu(p).oper[0]^.ref^.base) and
+                  (taicpu(p).oper[0]^.ref^.index=NR_NO)
+                 )
+                ) and
                 not(RegUsedBetween(taicpu(p).oper[0]^.ref^.index,p,hp1)))
               ) and
               not(RegUsedBetween(taicpu(p).oper[0]^.ref^.base,p,hp1)) and

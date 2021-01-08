@@ -137,6 +137,8 @@ unit aoptcpu;
               if InsContainsSegRef(taicpu(p)) then
                 exit;
               case taicpu(p).opcode Of
+                A_ADD:
+                  Result:=OptPass1ADD(p);
                 A_AND:
                   Result:=OptPass1And(p);
                 A_IMUL:

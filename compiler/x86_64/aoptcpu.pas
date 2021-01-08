@@ -71,6 +71,8 @@ uses
           ait_instruction:
             begin
               case taicpu(p).opcode of
+                A_ADD:
+                  Result:=OptPass1ADD(p);
                 A_AND:
                   Result:=OptPass1AND(p);
                 A_IMUL:
