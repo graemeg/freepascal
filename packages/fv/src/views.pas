@@ -1905,7 +1905,8 @@ VAR S, D: Sw_Integer; Min, Max: TPoint;
    PROCEDURE GrowI (Var I: Sw_Integer);
    BEGIN
      If (GrowMode AND gfGrowRel = 0) Then Inc(I, D)
-       Else I := (I * S + (S - D) SHR 1) DIV (S - D); { Calc grow value }
+       Else If  S = D then I := 1
+         Else I := (I * S + (S - D) SHR 1) DIV (S - D); { Calc grow value }
    END;
 
 BEGIN
