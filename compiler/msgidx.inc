@@ -471,6 +471,7 @@ const
   parser_e_location_size_too_large=03357;
   parser_e_location_regpair_only_data=03358;
   parser_e_location_regpair_only_consecutive=03359;
+  parser_e_constructurs_cannot_take_type_parameters=03360;
   type_e_mismatch=04000;
   type_e_incompatible_types=04001;
   type_e_not_equal_types=04002;
@@ -1135,9 +1136,9 @@ const
   option_info=11024;
   option_help_pages=11025;
 
-  MsgTxtSize = 86847;
+  MsgTxtSize = 86896;
 
   MsgIdxMax : array[1..20] of longint=(
-    28,107,360,130,99,63,145,36,223,68,
+    28,107,361,130,99,63,145,36,223,68,
     63,20,30,1,1,1,1,1,1,1
   );

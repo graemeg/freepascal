@@ -1133,61 +1133,70 @@ implementation
 
         if assigned(genericparams) then
           begin
-            include(pd.defoptions,df_generic);
-            { push the parameter symtable so that constraint definitions are added
-              there and not in the owner symtable }
-            symtablestack.push(pd.parast);
-            { register the parameters }
-            for i:=0 to genericparams.count-1 do
+            if potype=potype_constructor then
               begin
-                 tsym(genericparams[i]).register_sym;
-                 if tsym(genericparams[i]).typ=typesym then
-                   tstoreddef(ttypesym(genericparams[i]).typedef).register_def;
-              end;
-            insert_generic_parameter_types(pd,nil,genericparams);
-            { the list is no longer required }
-            genericparams.free;
-            genericparams:=nil;
-            symtablestack.pop(pd.parast);
-            parse_generic:=true;
-            { also generate a dummy symbol if none exists already }
-            if assigned(astruct) then
-              dummysym:=tsym(astruct.symtable.find(spnongen))
+                Message(parser_e_constructurs_cannot_take_type_parameters);
+                genericparams.free;
+                genericparams:=nil;
+              end
             else
               begin
-                dummysym:=tsym(symtablestack.top.find(spnongen));
-                if not assigned(dummysym) and
-                    (symtablestack.top=current_module.localsymtable) and
-                    assigned(current_module.globalsymtable) then
-                  dummysym:=tsym(current_module.globalsymtable.find(spnongen));
-              end;
-            if not assigned(dummysym) then
-              begin
-                { overloading generic routines with non-generic types is not
-                  allowed, so we create a procsym as dummy }
-                dummysym:=cprocsym.create(orgspnongen);
+                include(pd.defoptions,df_generic);
+                { push the parameter symtable so that constraint definitions are added
+                  there and not in the owner symtable }
+                symtablestack.push(pd.parast);
+                { register the parameters }
+                for i:=0 to genericparams.count-1 do
+                  begin
+                     tsym(genericparams[i]).register_sym;
+                     if tsym(genericparams[i]).typ=typesym then
+                       tstoreddef(ttypesym(genericparams[i]).typedef).register_def;
+                  end;
+                insert_generic_parameter_types(pd,nil,genericparams);
+                { the list is no longer required }
+                genericparams.free;
+                genericparams:=nil;
+                symtablestack.pop(pd.parast);
+                parse_generic:=true;
+                { also generate a dummy symbol if none exists already }
                 if assigned(astruct) then
-                  astruct.symtable.insert(dummysym)
+                  dummysym:=tsym(astruct.symtable.find(spnongen))
                 else
-                  symtablestack.top.insert(dummysym);
-              end
-            else if (dummysym.typ<>procsym) and
-                (
-                  { show error only for the declaration, not also the implementation }
-                  not assigned(astruct) or
-                  (symtablestack.top.symtablelevel<>main_program_level)
-                ) then
-              Message1(sym_e_duplicate_id,dummysym.realname);
-            if not (sp_generic_dummy in dummysym.symoptions) then
-              begin
-                include(dummysym.symoptions,sp_generic_dummy);
-                add_generic_dummysym(dummysym);
+                  begin
+                    dummysym:=tsym(symtablestack.top.find(spnongen));
+                    if not assigned(dummysym) and
+                        (symtablestack.top=current_module.localsymtable) and
+                        assigned(current_module.globalsymtable) then
+                      dummysym:=tsym(current_module.globalsymtable.find(spnongen));
+                  end;
+                if not assigned(dummysym) then
+                  begin
+                    { overloading generic routines with non-generic types is not
+                      allowed, so we create a procsym as dummy }
+                    dummysym:=cprocsym.create(orgspnongen);
+                    if assigned(astruct) then
+                      astruct.symtable.insert(dummysym)
+                    else
+                      symtablestack.top.insert(dummysym);
+                  end
+                else if (dummysym.typ<>procsym) and
+                    (
+                      { show error only for the declaration, not also the implementation }
+                      not assigned(astruct) or
+                      (symtablestack.top.symtablelevel<>main_program_level)
+                    ) then
+                  Message1(sym_e_duplicate_id,dummysym.realname);
+                if not (sp_generic_dummy in dummysym.symoptions) then
+                  begin
+                    include(dummysym.symoptions,sp_generic_dummy);
+                    add_generic_dummysym(dummysym);
+                  end;
+                if dummysym.typ=procsym then
+                  tprocsym(dummysym).add_generic_overload(aprocsym);
+                { start token recorder for the declaration }
+                pd.init_genericdecl;
+                current_scanner.startrecordtokens(pd.genericdecltokenbuf);
               end;
-            if dummysym.typ=procsym then
-              tprocsym(dummysym).add_generic_overload(aprocsym);
-            { start token recorder for the declaration }
-            pd.init_genericdecl;
-            current_scanner.startrecordtokens(pd.genericdecltokenbuf);
           end
         else if assigned(genericdef) then
           insert_generic_parameter_types(pd,tstoreddef(genericdef),generictypelist);
