@@ -153,6 +153,9 @@ const
   faction_compare_with_next = 6;
   faction_compare2_with_previous = 7;
   faction_compare2_with_next = 8;
+  faction_compare_both_with_previous = 9;
+  faction_compare_both_with_next = 10;
+
 
   Function TestResultsTableName(const RunId : String) : string;
   var
@@ -347,6 +350,18 @@ begin
             FCompareRunID:=FNext2RunID;
             ShowRunComparison;
           end;
+        faction_compare_both_with_previous : 
+          begin
+            FRunID:=FPreviousRunID;
+            FCompareRunID:=FPrevious2RunID;
+            ShowRunComparison;
+          end;
+        faction_compare_both_with_next : 
+          begin
+            FRunID:=FNextRunID;
+            FCompareRunID:=FNext2RunID;
+            ShowRunComparison;
+          end;
 {$ifdef TEST}
         98 :
           begin
@@ -402,6 +417,10 @@ begin
     FAction:=faction_compare2_with_previous
   else if S='Compare_right_to_next' then
     FAction:=faction_compare2_with_next
+  else if S='Compare_both_to_previous' then
+    FAction:=faction_compare_both_with_previous
+  else if S='Compare_both_to_next' then
+    FAction:=faction_compare_both_with_next
   else
     FAction:=StrToIntDef(S,0);
   S:=RequestVariables['limit'];
@@ -1397,7 +1416,22 @@ begin
               ParaGraphStart;
             end;
               
-          EmitSubmitButton('action','Show/Compare');
+          if (FPrevious2RunID<>'') and (FPreviousRunId<>'') then
+            begin
+              EmitSubmitButton('action','Compare_both_to_previous');
+              AddNewPar:=true;
+            end;
+          if (FNext2RunID<>'') and (FNextRunId<>'') then
+            begin
+              EmitSubmitButton('action','Compare_both_to_next');
+              AddNewPar:=true;
+            end;
+          if AddNewPar then
+            begin
+              ParagraphEnd;
+              ParaGraphStart;
+            end;
+           EmitSubmitButton('action','Show/Compare');
           if FTestFileID<>'' then
             EmitSubmitButton('action','View_history');
           EmitResetButton('','Reset form');
