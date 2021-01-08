@@ -4986,7 +4986,7 @@ unit aoptx86;
         MinSize, MaxSize, TrySmaller, TargetSize: TOpSize;
         TargetSubReg: TSubRegister;
         hp1, hp2: tai;
-        RegInUse, p_removed: Boolean;
+        RegInUse, RegChanged, p_removed: Boolean;
 
         { Store list of found instructions so we don't have to call
           GetNextInstructionUsingReg multiple times }
@@ -5036,6 +5036,7 @@ unit aoptx86;
         TrySmallerLimit := UpperLimit;
         TrySmaller := S_NO;
         SmallerOverflow := False;
+        RegChanged := False;
 
         while GetNextInstructionUsingReg(hp1, hp1, ThisReg) and
           (hp1.typ = ait_instruction) and
@@ -5418,6 +5419,7 @@ unit aoptx86;
                             begin
                               DebugMsg(SPeepholeOptimization + 'Simplified register usage so ' + debug_regname(taicpu(hp1).oper[1]^.reg) + ' = ' + debug_regname(taicpu(p).oper[1]^.reg), p);
                               ThisReg := taicpu(hp1).oper[1]^.reg;
+                              RegChanged := True;
 
                               TransferUsedRegs(TmpUsedRegs);
                               AllocRegBetween(ThisReg, p, hp1, TmpUsedRegs);
@@ -5452,9 +5454,12 @@ unit aoptx86;
                   { Now go through every instruction we found and change the
                     size. If TargetSize = MaxSize, then almost no changes are
                     needed and Result can remain False if it hasn't been set
-                    yet. }
+                    yet.
 
-                  if (TargetSize <> MaxSize) and (InstrMax >= 0) then
+                    If RegChanged is True, then the register requires changing
+                    and so the point about TargetSize = MaxSize doesn't apply. }
+
+                  if ((TargetSize <> MaxSize) or RegChanged) and (InstrMax >= 0) then
                     begin
                       for Index := 0 to InstrMax do
                         begin
