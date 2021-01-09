@@ -506,6 +506,7 @@ const
   nDuplicateMessageIdXAtY = 4029;
   nDispatchRequiresX = 4030;
   nConstRefNotForXAsConst = 4031;
+  nSymbolCannotBeExportedFromALibrary = 4032;
 // resourcestring patterns of messages
 resourcestring
   sPasElementNotSupported = 'Pascal element not supported: %s';
@@ -539,6 +540,7 @@ resourcestring
   sDuplicateMessageIdXAtY = 'Duplicate message id "%s" at %s';
   sDispatchRequiresX = 'Dispatch requires %s';
   sConstRefNotForXAsConst = 'ConstRef not yet implemented for %s. Treating as Const';
+  sSymbolCannotBeExportedFromALibrary = 'The symbol cannot be exported from a library';
 
 const
   ExtClassBracketAccessor = '[]'; // external name '[]' marks the array param getter/setter
@@ -606,6 +608,7 @@ type
     pbifnValEnum,
     pbifnFreeLocalVar,
     pbifnFreeVar,
+    pbifnLibraryMain,
     pbifnOverflowCheckInt,
     pbifnProcType_Create,
     pbifnProcType_CreateSafe,
@@ -671,6 +674,7 @@ type
     pbivnImplCode,
     pbivnMessageInt,
     pbivnMessageStr,
+    pbivnLibrary, // library
     pbivnLocalModuleRef,
     pbivnLocalProcRef,
     pbivnLocalTypeRef,
@@ -682,6 +686,7 @@ type
     pbivnPtrClass,
     pbivnPtrRecord,
     pbivnProcOk,
+    pbivnProgram,  // program
     pbivnResourceStrings,
     pbivnResourceStringOrig,
     pbivnRTL,
@@ -791,6 +796,7 @@ const
     'valEnum', // pbifnValEnum  rtl.valEnum
     'freeLoc', // pbifnFreeLocalVar  rtl.freeLoc
     'free', // pbifnFreeVar  rtl.free
+    '$main', // pbifnLibraryMain
     'oc', //  pbifnOverflowCheckInt rtl.oc
     'createCallback', // pbifnProcType_Create  rtl.createCallback
     'createSafeCallback', // pbifnProcType_CreateSafe  rtl.createSafeCallback
@@ -855,6 +861,7 @@ const
     '$implcode', // pbivnImplCode
     '$msgint', // pbivnMessageInt
     '$msgstr', // pbivnMessageStr
+    'library', //  pbivnLibrary  pas.library
     '$lm', // pbivnLocalModuleRef
     '$lp', // pbivnLocalProcRef
     '$lt', // pbivnLocalTypeRef
@@ -866,6 +873,7 @@ const
     '$class', // pbivnPtrClass, ClassType
     '$record', // pbivnPtrRecord, hidden recordtype
     '$ok', // pbivnProcOk
+    'program', // pbivnProgram  pas.program
     '$resourcestrings', // pbivnResourceStrings
     'org', // pbivnResourceStringOrig
     'rtl', // pbivnRTL
@@ -1538,6 +1546,7 @@ type
       Params: TParamsExpr); override;
     procedure FinishPropertyParamAccess(Params: TParamsExpr; Prop: TPasProperty
       ); override;
+    procedure FinishExportSymbol(El: TPasExportSymbol); override;
     procedure FindCreatorArrayOfConst(Args: TFPList; ErrorEl: TPasElement);
     function FindProc_ArrLitToArrayOfConst(ErrorEl: TPasElement): TPasFunction; virtual;
     function FindSystemExternalClassType(const aClassName, JSName: string;
@@ -2071,7 +2080,7 @@ type
     Procedure CreateInitSection(El: TPasModule; Src: TJSSourceElements; AContext: TConvertContext); virtual;
     Procedure AddHeaderStatement(JS: TJSElement; PosEl: TPasElement; aContext: TConvertContext); virtual;
     Procedure AddImplHeaderStatement(JS: TJSElement; PosEl: TPasElement; aContext: TConvertContext); virtual;
-    Procedure AddDelayedInits(El: TPasProgram; Src: TJSSourceElements; AContext: TConvertContext); virtual;
+    Procedure AddDelayedInits(El: TPasModule; Src: TJSSourceElements; AContext: TConvertContext); virtual;
     Procedure AddDelaySpecializeInit(El: TPasGenericType; Src: TJSSourceElements; AContext: TConvertContext); virtual;
     // enum and sets
     Function CreateReferencedSet(El: TPasElement; SetExpr: TJSElement): TJSElement; virtual;
@@ -4878,6 +4887,41 @@ begin
   if Args=nil then
     RaiseNotYetImplemented(20190215210914,Params,GetObjName(Prop));
   FindCreatorArrayOfConst(Args,Params);
+end;
+
+procedure TPas2JSResolver.FinishExportSymbol(El: TPasExportSymbol);
+var
+  ResolvedEl: TPasResolverResult;
+  DeclEl: TPasElement;
+  Proc: TPasProcedure;
+begin
+  if El.Parent is TLibrarySection then
+    // ok
+  else
+    // everywhere else: not supported
+    RaiseMsg(20210106224720,nNotSupportedX,sNotSupportedX,['non library export'],El.ExportIndex);
+  if El.ExportIndex<>nil then
+    RaiseMsg(20210106223403,nNotSupportedX,sNotSupportedX,['export index'],El.ExportIndex);
+
+  inherited FinishExportSymbol(El);
+
+  ComputeElement(El,ResolvedEl,[]);
+  DeclEl:=ResolvedEl.IdentEl;
+  if DeclEl=nil then
+    RaiseMsg(20210106223620,nSymbolCannotBeExportedFromALibrary,
+      sSymbolCannotBeExportedFromALibrary,[],El)
+  else if DeclEl is TPasProcedure then
+    begin
+    Proc:=TPasProcedure(DeclEl);
+    if Proc.Parent is TPasSection then
+      // ok
+    else
+      RaiseMsg(20210106224436,nSymbolCannotBeExportedFromALibrary,
+        sSymbolCannotBeExportedFromALibrary,[],El);
+    end
+  else
+    RaiseMsg(20210106223621,nSymbolCannotBeExportedFromALibrary,
+      sSymbolCannotBeExportedFromALibrary,[],El);
 end;
 
 procedure TPas2JSResolver.FindCreatorArrayOfConst(Args: TFPList;
@@ -8083,6 +8127,18 @@ Program:
         };
     });
 
+Library:
+ rtl.module('library',
+    [<uses1>,<uses2>, ...],
+    function(){
+      var $mod = this;
+      <librarysection>
+      this.$main=function(){
+        <initialization>
+        };
+    });
+  export1 = pas.unit1.func1;
+
 Unit without implementation:
  rtl.module('<unitname>',
     [<interface uses1>,<uses2>, ...],
@@ -8136,6 +8192,7 @@ begin
     ModScope:=nil;
   OuterSrc:=TJSSourceElements(CreateElement(TJSSourceElements, El));
   Result:=OuterSrc;
+  IntfContext:=nil;
   ok:=false;
   try
     // create 'rtl.module(...)'
@@ -8145,7 +8202,7 @@ begin
     ArgArray := RegModuleCall.Args;
     RegModuleCall.Args:=ArgArray;
 
-    // add unitname parameter: unitname
+    // add module name parameter
     ModuleName:=TransformModuleName(El,false,AContext);
     ArgArray.Elements.AddElement.Expr:=CreateLiteralString(El,ModuleName);
 
@@ -8183,95 +8240,88 @@ begin
       IntfContext:=TInterfaceSectionContext.Create(El,Src,AContext)
     else
       IntfContext:=TSectionContext.Create(El,Src,AContext);
-    try
-      // add "var $mod = this;"
-      IntfContext.ThisVar.Element:=El;
-      IntfContext.ThisVar.Kind:=cvkGlobal;
-      if El.CustomData is TPasModuleScope then
-        IntfContext.ScannerBoolSwitches:=TPasModuleScope(El.CustomData).BoolSwitches;
-      ModVarName:=GetBIName(pbivnModule);
-      IntfContext.AddLocalVar(ModVarName,El,cvkGlobal,false);
-      AddToSourceElements(Src,CreateVarStatement(ModVarName,
-        CreatePrimitiveDotExpr('this',El),El));
+    // add "var $mod = this;"
+    IntfContext.ThisVar.Element:=El;
+    IntfContext.ThisVar.Kind:=cvkGlobal;
+    if El.CustomData is TPasModuleScope then
+      IntfContext.ScannerBoolSwitches:=TPasModuleScope(El.CustomData).BoolSwitches;
+    ModVarName:=GetBIName(pbivnModule);
+    IntfContext.AddLocalVar(ModVarName,El,cvkGlobal,false);
+    AddToSourceElements(Src,CreateVarStatement(ModVarName,
+      CreatePrimitiveDotExpr('this',El),El));
 
-      if (ModScope<>nil) then
-        RestoreImplJSLocals(ModScope,IntfContext);
+    if (ModScope<>nil) then
+      RestoreImplJSLocals(ModScope,IntfContext);
 
-      if (El is TPasProgram) then
-        begin // program
-        Prg:=TPasProgram(El);
-        if Assigned(Prg.ProgramSection) then
-          AddToSourceElements(Src,ConvertDeclarations(Prg.ProgramSection,IntfContext));
-        AddDelayedInits(Prg,Src,IntfContext);
-        CreateInitSection(Prg,Src,IntfContext);
-        end
-      else if El is TPasLibrary then
-        begin // library
-        Lib:=TPasLibrary(El);
-        if Assigned(Lib.LibrarySection) then
-          AddToSourceElements(Src,ConvertDeclarations(Lib.LibrarySection,IntfContext));
-        // ToDo AddDelayedInits(Lib,Src,IntfContext);
-        CreateInitSection(Lib,Src,IntfContext);
+    if (El is TPasProgram) then
+      begin // program
+      Prg:=TPasProgram(El);
+      if Assigned(Prg.ProgramSection) then
+        AddToSourceElements(Src,ConvertDeclarations(Prg.ProgramSection,IntfContext));
+      AddDelayedInits(Prg,Src,IntfContext);
+      CreateInitSection(Prg,Src,IntfContext);
+      end
+    else if El is TPasLibrary then
+      begin // library
+      Lib:=TPasLibrary(El);
+      if Assigned(Lib.LibrarySection) then
+        AddToSourceElements(Src,ConvertDeclarations(Lib.LibrarySection,IntfContext));
+      AddDelayedInits(Lib,Src,IntfContext);
+      CreateInitSection(Lib,Src,IntfContext);
+      // ToDo: append exports
+      end
+    else
+      begin // unit
+      IntfSecCtx:=TInterfaceSectionContext(IntfContext);
+      if Assigned(El.ImplementationSection) then
+        begin
+        // add var $impl = $mod.$impl
+        ImplVarSt:=CreateVarStatement(GetBIName(pbivnImplementation),
+          CreateMemberExpression([ModVarName,GetBIName(pbivnImplementation)]),El);
+        AddToSourceElements(Src,ImplVarSt);
+        // register local var $impl
+        IntfSecCtx.AddLocalVar(GetBIName(pbivnImplementation),El.ImplementationSection,cvkGlobal,false);
+        end;
+      if Assigned(El.InterfaceSection) then
+        AddToSourceElements(Src,ConvertDeclarations(El.InterfaceSection,IntfSecCtx));
+
+      ImplFunc:=CreateImplementationSection(El,IntfSecCtx);
+      // add $mod.$implcode = ImplFunc;
+      AssignSt:=TJSSimpleAssignStatement(CreateElement(TJSSimpleAssignStatement,El));
+      AssignSt.LHS:=CreateMemberExpression([ModVarName,GetBIName(pbivnImplCode)]);
+      AssignSt.Expr:=ImplFunc;
+      AddToSourceElements(Src,AssignSt);
+
+      // append initialization section
+      CreateInitSection(El,Src,IntfSecCtx);
+
+      if TJSSourceElements(ImplFunc.AFunction.Body.A).Statements.Count=0 then
+        begin
+        // empty implementation
+
+        // remove unneeded $impl from interface
+        RemoveFromSourceElements(Src,ImplVarSt);
+        // remove unneeded $mod.$implcode = function(){}
+        RemoveFromSourceElements(Src,AssignSt);
+        HasImplUsesClause:=(El.ImplementationSection<>nil)
+                       and (length(El.ImplementationSection.UsesClause)>0);
         end
       else
-        begin // unit
-        IntfSecCtx:=TInterfaceSectionContext(IntfContext);
-        if Assigned(El.ImplementationSection) then
-          begin
-          // add var $impl = $mod.$impl
-          ImplVarSt:=CreateVarStatement(GetBIName(pbivnImplementation),
-            CreateMemberExpression([ModVarName,GetBIName(pbivnImplementation)]),El);
-          AddToSourceElements(Src,ImplVarSt);
-          // register local var $impl
-          IntfSecCtx.AddLocalVar(GetBIName(pbivnImplementation),El.ImplementationSection,cvkGlobal,false);
-          end;
-        if Assigned(El.InterfaceSection) then
-          AddToSourceElements(Src,ConvertDeclarations(El.InterfaceSection,IntfSecCtx));
-
-        ImplFunc:=CreateImplementationSection(El,IntfSecCtx);
-        // add $mod.$implcode = ImplFunc;
-        AssignSt:=TJSSimpleAssignStatement(CreateElement(TJSSimpleAssignStatement,El));
-        AssignSt.LHS:=CreateMemberExpression([ModVarName,GetBIName(pbivnImplCode)]);
-        AssignSt.Expr:=ImplFunc;
-        AddToSourceElements(Src,AssignSt);
-
-        // append initialization section
-        CreateInitSection(El,Src,IntfSecCtx);
-
-        if TJSSourceElements(ImplFunc.AFunction.Body.A).Statements.Count=0 then
-          begin
-          // empty implementation
-
-          // remove unneeded $impl from interface
-          RemoveFromSourceElements(Src,ImplVarSt);
-          // remove unneeded $mod.$implcode = function(){}
-          RemoveFromSourceElements(Src,AssignSt);
-          HasImplUsesClause:=(El.ImplementationSection<>nil)
-                         and (length(El.ImplementationSection.UsesClause)>0);
-          end
-        else
-          begin
-          HasImplUsesClause:=true;
-          end;
-
-        if HasImplUsesClause then
-          // add implementation uses list: [<implementation uses1>,<uses2>, ...]
-          ArgArray.AddElement(CreateUsesList(El.ImplementationSection,AContext));
-
+        begin
+        HasImplUsesClause:=true;
         end;
 
-      if (ModScope<>nil) and (coStoreImplJS in Options) then
-        StoreImplJSLocals(ModScope,IntfContext);
-    finally
-      IntfContext.Free;
-    end;
+      if HasImplUsesClause then
+        // add implementation uses list: [<implementation uses1>,<uses2>, ...]
+        ArgArray.AddElement(CreateUsesList(El.ImplementationSection,AContext));
 
-    // add implementation function
-    if ImplVarSt<>nil then
-      begin
-      end;
+      end; // end unit
+
+    if (ModScope<>nil) and (coStoreImplJS in Options) then
+      StoreImplJSLocals(ModScope,IntfContext);
     ok:=true;
   finally
+    IntfContext.Free;
     if not ok then
       FreeAndNil(Result);
   end;
@@ -15397,6 +15447,8 @@ begin
         end
       else if C=TPasAttributes then
         continue
+      else if C=TPasExportSymbol then
+        continue
       else
         RaiseNotSupported(P as TPasElement,AContext,20161024191434);
       Add(E,P);
@@ -17148,11 +17200,21 @@ begin
     Scope:=nil;
     end;
 
-  IsMain:=(El is TPasProgram);
-  if IsMain then
+  if El.ClassType=TPasProgram then
+    begin
+    IsMain:=true;
     FunName:=GetBIName(pbifnProgramMain)
+    end
+  else if El.ClassType=TPasLibrary then
+    begin
+    IsMain:=true;
+    FunName:=GetBIName(pbifnLibraryMain)
+    end
   else
+    begin
+    IsMain:=false;
     FunName:=GetBIName(pbifnUnitInit);
+    end;
   NeedRTLCheckVersion:=IsMain and (coRTLVersionCheckMain in Options);
 
   RootContext:=AContext.GetRootContext as TRootContext;
@@ -17680,7 +17742,7 @@ begin
   IntfSec.AddImplHeaderStatement(JS);
 end;
 
-procedure TPasToJSConverter.AddDelayedInits(El: TPasProgram;
+procedure TPasToJSConverter.AddDelayedInits(El: TPasModule;
   Src: TJSSourceElements; AContext: TConvertContext);
 var
   aResolver: TPas2JSResolver;
@@ -26617,8 +26679,10 @@ begin
     if Result<>'' then
       exit;
     end;
-  if El is TPasProgram then
-    Result:='program'
+  if El.ClassType=TPasProgram then
+    Result:=GetBIName(pbivnProgram)
+  else if El.ClassType=TPasLibrary then
+    Result:=GetBIName(pbivnLibrary)
   else
     begin
     Result:='';

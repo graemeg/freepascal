@@ -125,6 +125,7 @@ type
     FModules: TObjectList;// list of TTestEnginePasResolver
     FParser: TTestPasParser;
     FPasProgram: TPasProgram;
+    FPasLibrary: TPasLibrary;
     FHintMsgs: TObjectList; // list of TTestHintMessage
     FHintMsgsGood: TFPList; // list of TTestHintMessage marked as expected
     FJSRegModuleCall: TJSCallExpression;
@@ -157,6 +158,7 @@ type
     procedure ParseModuleQueue; virtual;
     procedure ParseModule; virtual;
     procedure ParseProgram; virtual;
+    procedure ParseLibrary; virtual;
     procedure ParseUnit; virtual;
   protected
     function FindModuleWithFilename(aFilename: string): TTestEnginePasResolver; virtual;
@@ -166,9 +168,11 @@ type
       ImplementationSrc: string): TTestEnginePasResolver; virtual;
     procedure AddSystemUnit(Parts: TSystemUnitParts = []); virtual;
     procedure StartProgram(NeedSystemUnit: boolean; SystemUnitParts: TSystemUnitParts = []); virtual;
+    procedure StartLibrary(NeedSystemUnit: boolean; SystemUnitParts: TSystemUnitParts = []); virtual;
     procedure StartUnit(NeedSystemUnit: boolean; SystemUnitParts: TSystemUnitParts = []); virtual;
     procedure ConvertModule; virtual;
     procedure ConvertProgram; virtual;
+    procedure ConvertLibrary; virtual;
     procedure ConvertUnit; virtual;
     function ConvertJSModuleToString(El: TJSElement): string; virtual;
     procedure CheckDottedIdentifier(Msg: string; El: TJSElement; DottedName: string);
@@ -196,6 +200,7 @@ type
     function GetResolver(const Filename: string): TTestEnginePasResolver;
     function GetDefaultNamespace: string;
     property PasProgram: TPasProgram Read FPasProgram;
+    property PasLibrary: TPasLibrary Read FPasLibrary;
     property Resolvers[Index: integer]: TTestEnginePasResolver read GetResolvers;
     property ResolverCount: integer read GetResolverCount;
     property Engine: TTestEnginePasResolver read FEngine;
@@ -894,6 +899,12 @@ type
     Procedure TestAsync_Inherited;
     Procedure TestAsync_ClassInterface;
     Procedure TestAsync_ClassInterface_AsyncMissmatchFail;
+
+    // Library
+    Procedure TestLibrary_Empty;
+    Procedure TestLibrary_ExportFunc; // ToDo
+    // ToDo: test delayed specialization init
+    // ToDO: analyzer
   end;
 
 function LinesToStr(Args: array of const): string;
@@ -1587,6 +1598,22 @@ begin
       FFirstPasStatement:=TPasImplBlock(PasProgram.InitializationSection.Elements[0]);
 end;
 
+procedure TCustomTestModule.ParseLibrary;
+var
+  Init: TInitializationSection;
+begin
+  if SkipTests then exit;
+  ParseModule;
+  if SkipTests then exit;
+  AssertEquals('Has library',TPasLibrary,Module.ClassType);
+  FPasLibrary:=TPasLibrary(Module);
+  AssertNotNull('Has library section',PasLibrary.LibrarySection);
+  Init:=PasLibrary.InitializationSection;
+  if (Init<>nil) and (Init.Elements.Count>0) then
+    if TObject(Init.Elements[0]) is TPasImplBlock then
+      FFirstPasStatement:=TPasImplBlock(PasLibrary.InitializationSection.Elements[0]);
+end;
+
 procedure TCustomTestModule.ParseUnit;
 begin
   if SkipTests then exit;
@@ -1869,6 +1896,17 @@ begin
   Add('');
 end;
 
+procedure TCustomTestModule.StartLibrary(NeedSystemUnit: boolean;
+  SystemUnitParts: TSystemUnitParts);
+begin
+  if NeedSystemUnit then
+    AddSystemUnit(SystemUnitParts)
+  else
+    Parser.ImplicitUses.Clear;
+  Add('library '+ExtractFileUnitName(Filename)+';');
+  Add('');
+end;
+
 procedure TCustomTestModule.StartUnit(NeedSystemUnit: boolean;
   SystemUnitParts: TSystemUnitParts);
 begin
@@ -1974,6 +2012,8 @@ begin
   AssertEquals('module name param is string',ord(jstString),ord(ModuleNameExpr.Value.ValueType));
   if Module is TPasProgram then
     AssertEquals('module name','program',String(ModuleNameExpr.Value.AsString))
+  else if Module is TPasLibrary then
+    AssertEquals('module name','library',String(ModuleNameExpr.Value.AsString))
   else
     AssertEquals('module name',Module.Name,String(ModuleNameExpr.Value.AsString));
 
@@ -1990,7 +2030,7 @@ begin
   CheckFunctionParam('module intf-function',Arg,FJSModuleSrc);
 
   // search for $mod.$init or $mod.$main - the last statement
-  if Module is TPasProgram then
+  if (Module is TPasProgram) or (Module is TPasLibrary) then
     begin
     InitName:='$main';
     AssertEquals('$mod.'+InitName+' function 1',true,JSModuleSrc.Statements.Count>0);
@@ -2009,7 +2049,7 @@ begin
         InitFunction:=InitAssign.Expr as TJSFunctionDeclarationStatement;
         FJSInitBody:=InitFunction.AFunction.Body as TJSFunctionBody;
         end
-      else if Module is TPasProgram then
+      else if (Module is TPasProgram) or (Module is TPasLibrary) then
         CheckDottedIdentifier('init function',InitAssign.LHS,'$mod.'+InitName);
       end;
     end;
@@ -2025,6 +2065,13 @@ procedure TCustomTestModule.ConvertProgram;
 begin
   Add('end.');
   ParseProgram;
+  ConvertModule;
+end;
+
+procedure TCustomTestModule.ConvertLibrary;
+begin
+  Add('end.');
+  ParseLibrary;
   ConvertModule;
 end;
 
@@ -2089,7 +2136,7 @@ begin
   // program main or unit initialization
   if (Module is TPasProgram) or (Trim(InitStatements)<>'') then
     begin
-    if Module is TPasProgram then
+    if (Module is TPasProgram) or (Module is TPasLibrary) then
       InitName:='$main'
     else
       InitName:='$init';
@@ -33108,6 +33155,42 @@ begin
   '  ']);
   SetExpectedPasResolverError('procedure type modifier "async" mismatch',nXModifierMismatchY);
   ConvertProgram;
+end;
+
+procedure TTestModule.TestLibrary_Empty;
+begin
+  StartLibrary(false);
+  Add([
+  '']);
+  ConvertLibrary;
+  CheckSource('TestLibrary_Empty',
+    LinesToStr([ // statements
+    '']),
+    LinesToStr([
+    '']));
+  CheckResolverUnexpectedHints();
+end;
+
+procedure TTestModule.TestLibrary_ExportFunc;
+begin
+  exit;
+
+  StartLibrary(false);
+  Add([
+  'procedure Run(w: word);',
+  'begin',
+  'end;',
+  'exports',
+  '  Run,',
+  '  run name ''Foo'';',
+  '']);
+  ConvertLibrary;
+  CheckSource('TestLibrary_ExportFunc',
+    LinesToStr([ // statements
+    '']),
+    LinesToStr([
+    '']));
+  CheckResolverUnexpectedHints();
 end;
 
 Initialization
