@@ -16,7 +16,9 @@ procedure PascalMain; external name 'PASCALMAIN';
 
 {$ifdef FPC_HAS_INDIRECT_ENTRY_INFORMATION}
 procedure SysEntry(constref info: TEntryInformation); external name 'FPC_SysEntry';
+{$ifndef FPC_USE_LIBC}
 procedure SysEntry_InitTLS(constref info: TEntryInformation); external name 'FPC_SysEntry_InitTLS';
+{$endif FPC_USE_LIBC}
 
 var
   InitFinalTable : record end; external name 'INITFINAL';

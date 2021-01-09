@@ -125,6 +125,9 @@ procedure OsSetupEntryInformation(constref info: TEntryInformation); forward;
                                TLS handling
 *****************************************************************************}
 
+{ TLS initialization is not required if linking against libc }
+{$if not defined(FPC_USE_LIBC)}
+
 {$if defined(CPUARM)}
 {$define INITTLS}
 Function fpset_tls(p : pointer;size : SizeUInt):cint;
@@ -184,6 +187,8 @@ begin
     end;
 end;
 {$endif defined(CPUX86_64)}
+
+{$endif not FPC_USE_LIBC}
 
 
 {$ifdef INITTLS}
@@ -323,6 +328,8 @@ begin
   info.PascalMain();
 end;
 
+
+{$ifndef FPC_USE_LIBC}
 procedure SysEntry_InitTLS(constref info: TEntryInformation);[public,alias:'FPC_SysEntry_InitTLS'];
 begin
   SetupEntryInformation(info);
@@ -334,6 +341,7 @@ begin
 {$endif cpui386}
   info.PascalMain();
 end;
+{$endif FPC_USE_LIBC}
 
 {$else}
 var
@@ -361,6 +369,7 @@ begin
 end;
 
 
+{$ifdef FPC_USE_LIBC}
 procedure SysEntry_InitTLS(constref info: TEntryInformation);[public,alias:'FPC_SysEntry_InitTLS'];
 begin
   initialstkptr := info.OS.stkptr;
@@ -375,6 +384,7 @@ begin
 {$endif cpui386}
   info.PascalMain();
 end;
+{$endif FPC_USE_LIBC}
 
 {$endif FPC_BOOTSTRAP_INDIRECT_ENTRY}
 
