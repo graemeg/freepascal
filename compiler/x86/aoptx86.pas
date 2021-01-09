@@ -5693,6 +5693,7 @@ unit aoptx86;
         symbol: TAsmSymbol;
         reg: tsuperregister;
         regavailable: Boolean;
+        tmpreg: TRegister;
       begin
         result:=false;
         symbol:=nil;
@@ -5796,17 +5797,16 @@ unit aoptx86;
                    ((Taicpu(hp1).opcode=A_INC) or (Taicpu(hp1).opcode=A_DEC))
                   ) then
                   begin
-                    TransferUsedRegs(TmpUsedRegs);
-                    UpdateUsedRegs(TmpUsedRegs, tai(p.next));
-
                     { search for an available register which is volatile }
                     regavailable:=false;
                     for reg in tcpuregisterset do
                       begin
+                        tmpreg:=newreg(R_INTREGISTER,reg,R_SUBL);
                         if (reg in paramanager.get_volatile_registers_int(current_procinfo.procdef.proccalloption)) and
-                          not(reg in TmpUsedRegs[R_INTREGISTER].GetUsedRegs) and
-                          not(RegInInstruction(newreg(R_INTREGISTER,reg,R_SUBL),hp1))
+                          not(reg in UsedRegs[R_INTREGISTER].GetUsedRegs) and
+                          not(RegInInstruction(tmpreg,hp1))
 {$ifdef i386}
+                          { use only registers which can be accessed byte wise }
                           and (reg in [RS_EAX,RS_EBX,RS_ECX,RS_EDX])
 {$endif i386}
                           then
@@ -5818,23 +5818,24 @@ unit aoptx86;
 
                     if regavailable then
                       begin
+                        TAsmLabel(symbol).decrefs;
                         Taicpu(p).clearop(0);
                         Taicpu(p).ops:=1;
                         Taicpu(p).is_jmp:=false;
                         Taicpu(p).opcode:=A_SETcc;
                         DebugMsg(SPeepholeOptimization+'JccAdd2SetccAdd',p);
                         Taicpu(p).condition:=inverse_cond(Taicpu(p).condition);
-                        Taicpu(p).loadreg(0,newreg(R_INTREGISTER,reg,R_SUBL));
+                        Taicpu(p).loadreg(0,tmpreg);
 
                         if getsubreg(Taicpu(hp1).oper[1]^.reg)<>R_SUBL then
                           begin
                             case getsubreg(Taicpu(hp1).oper[1]^.reg) of
                               R_SUBW:
-                                hp2:=Taicpu.op_reg_reg(A_MOVZX,S_BW,newreg(R_INTREGISTER,reg,R_SUBL),
+                                hp2:=Taicpu.op_reg_reg(A_MOVZX,S_BW,tmpreg,
                                   newreg(R_INTREGISTER,reg,R_SUBW));
                               R_SUBD,
                               R_SUBQ:
-                                hp2:=Taicpu.op_reg_reg(A_MOVZX,S_BL,newreg(R_INTREGISTER,reg,R_SUBL),
+                                hp2:=Taicpu.op_reg_reg(A_MOVZX,S_BL,tmpreg,
                                   newreg(R_INTREGISTER,reg,R_SUBD));
                               else
                                 Internalerror(2020030601);
