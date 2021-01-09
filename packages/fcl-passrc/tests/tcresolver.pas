@@ -986,8 +986,8 @@ type
     Procedure TestLibrary_ExportFunc_IndexStringFail;
     Procedure TestLibrary_ExportVar; // ToDo
     Procedure TestLibrary_Initialization_Finalization;
-    Procedure TestLibrary_ExportFuncOverloadFail; // ToDo
-    // ToDo Procedure TestLibrary_UnitExports;
+    Procedure TestLibrary_ExportFuncOverloadFail;
+    Procedure TestLibrary_UnitExports;
   end;
 
 function LinesToStr(Args: array of const): string;
@@ -18836,8 +18836,6 @@ end;
 
 procedure TTestResolver.TestLibrary_ExportFuncOverloadFail;
 begin
-  exit;
-
   StartLibrary(false);
   Add([
   'procedure Run(w: word); overload;',
@@ -18850,7 +18848,24 @@ begin
   '  Run,',
   '  afile.run;',
   'begin']);
-  CheckResolverException('The symbol cannot be exported from a library',123);
+  CheckResolverException(sCantDetermineWhichOverloadedFunctionToCall,
+    nCantDetermineWhichOverloadedFunctionToCall);
+end;
+
+procedure TTestResolver.TestLibrary_UnitExports;
+begin
+  StartUnit(false);
+  Add([
+  'interface' ,
+  'procedure Run;',
+  'implementation',
+  'procedure Run;',
+  'begin',
+  'end;',
+  'exports',
+  '  Run;',
+  '']);
+  ParseUnit;
 end;
 
 initialization

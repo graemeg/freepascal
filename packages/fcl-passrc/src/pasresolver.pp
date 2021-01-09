@@ -9049,7 +9049,7 @@ begin
     CurEl:=nil;
     if not SameText(RightStr(AttrName,length('Attribute')),'Attribute') then
       begin
-      // first search AttrName+'Attibute'
+      // first search AttrName+'Attribute'
       CurEl:=FindFirstEl(AttrName+'Attribute',Data,NameExpr);
       end;
     // then search the name
@@ -9164,12 +9164,14 @@ var
   FindData: TPRFindData;
   Ref: TResolvedReference;
   ResolvedEl: TPasResolverResult;
+  Section: TPasSection;
+  Scope: TPasIdentifierScope;
+  ScopeIdent: TPasIdentifier;
 begin
   Expr:=El.NameExpr;
   if Expr<>nil then
     begin
     ResolveExpr(Expr,rraRead);
-    //ResolveGlobalSymbol(Expr);
     ComputeElement(Expr,ResolvedEl,[rcConstant]);
     DeclEl:=ResolvedEl.IdentEl;
     if DeclEl=nil then
@@ -9187,6 +9189,18 @@ begin
       RaiseMsg(20210103003244,nXExpectedButYFound,sXExpectedButYFound,['global symbol',GetObjPath(DeclEl)],El);
     Ref:=CreateReference(DeclEl,El,rraRead,@FindData);
     CheckFoundElement(FindData,Ref);
+    end;
+
+  if DeclEl is TPasProcedure then
+    begin
+    Section:=DeclEl.Parent as TPasSection;
+    Scope:=Section.CustomData as TPasIdentifierScope;
+    ScopeIdent:=Scope.FindLocalIdentifier(DeclEl.Name);
+    if (ScopeIdent=nil) then
+      RaiseNotYetImplemented(20210106103001,El,GetObjPath(DeclEl));
+    if ScopeIdent.NextSameIdentifier<>nil then
+      RaiseMsg(20210106103320,nCantDetermineWhichOverloadedFunctionToCall,
+        sCantDetermineWhichOverloadedFunctionToCall,[],El);
     end;
 
   // check index and name
@@ -21318,7 +21332,7 @@ procedure TPasResolver.CheckFoundElement(
 // Call this method after finding an element by searching the scopes.
 
   function IsFieldInheritingConst(aRef: TResolvedReference): boolean;
-  // returns true of aRef is a TPasVariable that inherits its const from parent.
+  // returns true if aRef is a TPasVariable that inherits its const from parent.
   // For example
   //  type TRecord = record
   //    a: word; // inherits const
@@ -27564,6 +27578,21 @@ procedure TPasResolver.ComputeElement(El: TPasElement; out
       end;
   end;
 
+  procedure ComputeExportSymbol(ExpSymbol: TPasExportSymbol);
+  var
+    Ref: TResolvedReference;
+  begin
+    if ExpSymbol.CustomData is TResolvedReference then
+      begin
+      Ref:=TResolvedReference(El.CustomData);
+      ComputeElement(Ref.Declaration,ResolvedEl,Flags+[rcNoImplicitProc],StartEl);
+      end
+    else if ExpSymbol.NameExpr<>nil then
+      ComputeElement(ExpSymbol.NameExpr,ResolvedEl,Flags,StartEl)
+    else
+      RaiseNotYetImplemented(20210106225512,ExpSymbol);
+  end;
+
 var
   DeclEl: TPasElement;
   ElClass: TClass;
@@ -27946,6 +27975,8 @@ begin
     ComputeSpecializeType(TPasSpecializeType(El))
   else if ElClass=TInlineSpecializeExpr then
     ComputeElement(TInlineSpecializeExpr(El).NameExpr,ResolvedEl,Flags,StartEl)
+  else if ElClass=TPasExportSymbol then
+    ComputeExportSymbol(TPasExportSymbol(El))
   else
     RaiseNotYetImplemented(20160922163705,El);
   {$IF defined(nodejs) and defined(VerbosePasResolver)}
