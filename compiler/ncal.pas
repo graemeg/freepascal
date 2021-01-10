@@ -928,7 +928,10 @@ implementation
                   reused above) }
                 left:=ctemprefnode.create(paratemp);
               end;
+            { add the finish statements to the call cleanup block }
             addstatement(finistat,ctempdeletenode.create(paratemp));
+            aktcallnode.add_done_statement(finiblock);
+
             firstpass(fparainit);
             firstpass(left);
           end;
