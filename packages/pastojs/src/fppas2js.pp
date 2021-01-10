@@ -26464,7 +26464,7 @@ begin
           if (C=TPasConstructor)
               or ((aResolver<>nil) and aResolver.IsClassMethod(P)
                 and not aResolver.MethodIsStatic(TPasProcedure(P))) then
-            IsComplex:=true; // needs $record
+            ; //IsComplex:=true; // needs $record
           end;
         end
       else if C=TPasAttributes then
