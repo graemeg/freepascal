@@ -9205,7 +9205,7 @@ begin
 
   // check index and name
   CheckConstExpr(El.ExportIndex,[revkInt,revkUInt],'integer');
-  CheckConstExpr(El.ExportName,[revkString,revkUnicodeString],'string');
+  CheckConstExpr(El.ExportName,revkAllStrings,'string');
 end;
 
 procedure TPasResolver.FinishProcParamAccess(ProcType: TPasProcedureType;
@@ -12257,6 +12257,7 @@ begin
   writeln('TPasResolver.AddExportSymbol ',GetObjName(El));
   {$ENDIF}
   // Note: export symbol is not added to scope
+  if El=nil then ;
 end;
 
 procedure TPasResolver.AddEnumType(El: TPasEnumType);
