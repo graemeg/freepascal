@@ -571,7 +571,7 @@ implementation
           just associated to pointer types }
         use_tag_prefix:=(def.typ in tagtypes) and
                       ((def.typ<>stringdef) or
-                       (tstringdef(tdef).stringtype in [st_shortstring,st_longstring]));
+                       (tstringdef(def).stringtype in [st_shortstring,st_longstring]));
       end;
 
 
