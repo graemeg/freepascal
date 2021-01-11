@@ -178,10 +178,13 @@ unit cpupara;
                cl.typ:=X86_64_INTEGERSI_CLASS;
                { gcc/clang sign/zero-extend all values to 32 bits, except for
                  _Bool (= Pascal boolean), which is only zero-extended to 8 bits
-                 as per the x86-64 ABI -> do the same }
+                 as per the x86-64 ABI -> do the same
+
+                 some testing showed, that this is not true for 8 bit values:
+                 in case of an 8 bit value, it is not zero/sign extended }
                if not assigned(cl.def) or
-                  not is_pasbool(cl.def) or
-                  (torddef(cl.def).ordtype<>pasbool1) then
+                  not(cl.def.typ=orddef) or
+                  not(torddef(cl.def).ordtype in [uchar,u8bit,s8bit,pasbool1]) then
                  cl.def:=u32inttype;
              end
            else
