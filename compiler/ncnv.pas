@@ -2947,7 +2947,7 @@ implementation
               end;
             notn:
               result:=docheckremoveinttypeconvs(tunarynode(n).left);
-            addn,muln,divn,modn,andn:
+            addn,muln,divn,modn,andn,shln:
               begin
                 if n.nodetype in [divn,modn] then
                   gotdivmod:=true;
@@ -2986,7 +2986,7 @@ implementation
         tempnode: ttempcreatenode;
       begin
         case n.nodetype of
-          subn,addn,muln,divn,modn,xorn,andn,orn:
+          subn,addn,muln,divn,modn,xorn,andn,orn,shln:
             begin
               exclude(n.flags,nf_internal);
               if not forceunsigned and
@@ -3341,20 +3341,20 @@ implementation
                     to 64 bit                                               }
                   if (resultdef.size <= 4) and
                     is_64bitint(left.resultdef) and
-                    (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn]) and
+                    (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn,shln]) and
                     checkremovebiginttypeconvs(left,foundsint,[s8bit,u8bit,s16bit,u16bit,s32bit,u32bit],int64(low(longint)),high(cardinal)) then
                     doremoveinttypeconvs(left,generrordef,not foundsint,s32inttype,u32inttype);
 {$if defined(cpu16bitalu)}
                   if (resultdef.size <= 2) and
                     (is_32bitint(left.resultdef) or is_64bitint(left.resultdef)) and
-                    (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn]) and
+                    (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn,shln]) and
                     checkremovebiginttypeconvs(left,foundsint,[s8bit,u8bit,s16bit,u16bit],int64(low(smallint)),high(word)) then
                     doremoveinttypeconvs(left,generrordef,not foundsint,s16inttype,u16inttype);
 {$endif defined(cpu16bitalu)}
 {$if defined(cpu8bitalu)}
                  if (resultdef.size<left.resultdef.size) and
                   is_integer(left.resultdef) and
-                  (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn]) and
+                  (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn,shln]) and
                   checkremovebiginttypeconvs(left,foundsint,[s8bit,u8bit],int64(low(shortint)),high(byte)) then
                     doremoveinttypeconvs(left,generrordef,not foundsint,s8inttype,u8inttype);
 {$endif defined(cpu8bitalu)}
