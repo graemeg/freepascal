@@ -30,7 +30,7 @@ type
     procedure SetValue(position:SizeUInt; value:T);inline;
     function GetValue(position:SizeUInt):T;inline;
     function GetMutable(position:SizeUInt):PT;inline;
-    procedure IncreaseCapacity();inline;
+    procedure IncreaseCapacity();
   public
     function Size():SizeUInt;inline;
     constructor Create();
@@ -142,7 +142,14 @@ begin
   GetMutable:=@FData[(FStart+position) mod FCapacity];
 end;
 
-procedure TDeque.IncreaseCapacity;inline;
+procedure TDeque.IncreaseCapacity;
+  function Min(const A,B: SizeUInt): SizeUInt; inline; //no need to drag in the entire Math unit ;-)
+  begin
+    if (A<B) then
+      Result:=A
+    else
+      Result:=B;
+  end;
 const
   // if size is small, multiply by 2;
   // if size bigger but <256M, inc by 1/8*size;
@@ -151,7 +158,7 @@ const
   cSizeBig = 256*1024*1024;
 var
   i,OldEnd,
-  DataSize:SizeUInt;
+  DataSize,CurLast,EmptyElems,Elems:SizeUInt;
 begin
   OldEnd:=FCapacity;
   DataSize:=FCapacity*SizeOf(T);
@@ -165,11 +172,32 @@ begin
     FCapacity:=FCapacity+FCapacity div 8
   else
     FCapacity:=FCapacity+FCapacity div 16;
-
   SetLength(FData, FCapacity);
   if (FStart>0) then
-    for i:=0 to FStart-1 do
-      FData[OldEnd+i]:=FData[i];
+  begin
+    if (FCapacity-OldEnd>=FStart) then //we have room to move all items in one go
+    begin
+      if IsManagedType(T) then
+        for i:=0 to FStart-1 do
+          FData[OldEnd+i]:=FData[i]
+      else
+        Move(FData[0], FData[OldEnd], FStart*SizeOf(T));
+    end
+    else
+    begin  //we have to move things around in chunks: we have more data in front of FStart than we have newly created unused elements
+      CurLast := OldEnd-1;
+      EmptyElems:=FCapacity-1-CurLast;
+      while (FStart>0) do
+      begin
+        Elems:=Min(EmptyElems, FStart);
+        for i:=0 to Elems-1 do
+          FData[CurLast+1+i]:=FData[i];
+        for i := 0 to FCapacity-Elems-1 do
+          FData[i]:=FData[Elems+i];
+        Dec(FStart, Elems);
+      end;
+    end;
+  end;
 end;
 
 procedure TDeque.Reserve(cap:SizeUInt);inline;
