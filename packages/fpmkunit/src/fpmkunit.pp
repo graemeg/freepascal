@@ -1059,8 +1059,12 @@ Type
     FOptions: TStrings;
     FCPU: TCPU;
     FOS: TOS;
+    FSourceCPU: TCPU;
+    FSourceOS: TOS;
     FMode : TCompilerMode;
+    FCompilerDate : String;
     FCompilerVersion : String;
+    FFullCompilerVersion : String;
     FPrefix: String;
     FBaseInstallDir,
     FUnitInstallDir,
@@ -1134,7 +1138,11 @@ Type
     Property Target : String Read FTarget Write SetTarget;
     Property OS : TOS Read FOS Write SetOS;
     Property CPU : TCPU Read FCPU Write SetCPU;
+    Property SourceOS : TOS Read FSourceOS;
+    Property SourceCPU : TCPU Read FSourceCPU;
     Property CompilerVersion : String read FCompilerVersion;
+    Property CompilerDate : String read FCompilerDate;
+    Property FullCompilerVersion : String read FFullCompilerVersion;
     Property ExplicitOSNone: Boolean read FExplicitOSNone Write FExplicitOSNone;
     Property BuildString : String read GetBuildString;
     Property BuildOS : TOS read GetBuildOS;
@@ -1774,6 +1782,7 @@ ResourceString
   SWarnExtCommandNotFound = 'Warning: External command "%s" not found but "%s" is older then "%s"';
   SWarnDuplicatePackage = 'Warning: Package %s is already added. Using the existing package';
   SWarngccNotFound        = 'Could not find libgcc';
+  SWarncrossgccNotFound   = 'Could not find libgcc for cross-configuration';
   SWarngcclibpath         = 'Warning: Unable to determine the libgcc path.';
   SWarnNoFCLProcessSupport= 'No FCL-Process support';
   SWarnRetryRemDirectory     = 'Failed to remove directory "%s". Retry after a short delay';
@@ -2838,6 +2847,10 @@ end;
 
 function GetDefaultLibGCCDir(CPU : TCPU;OS: TOS; var ErrorMessage: string): string;
 
+var
+  CrossPrefix: string;
+  UseBinutilsPrefix: boolean;
+
   function Get4thWord(const AString: string): string;
   var p: pchar;
       spacecount: integer;
@@ -2874,7 +2887,7 @@ function GetDefaultLibGCCDir(CPU : TCPU;OS: TOS; var ErrorMessage: string): stri
       GccExecutable: string;
   begin
     result := '';
-    GccExecutable := ExeSearch(AddProgramExtension('gcc', OS),Sysutils.GetEnvironmentVariable('PATH'));
+   GccExecutable := ExeSearch(AddProgramExtension(CrossPrefix+'gcc', OS),Sysutils.GetEnvironmentVariable('PATH'));
     if FileExists(GccExecutable) then
       begin
 {$ifdef HAS_UNIT_PROCESS}
@@ -2894,6 +2907,8 @@ function GetDefaultLibGCCDir(CPU : TCPU;OS: TOS; var ErrorMessage: string): stri
       ErrorMessage := SWarnNoFCLProcessSupport;
 {$endif HAS_UNIT_PROCESS}
       end
+    else if UseBinutilsPrefix then
+      ErrorMessage := SWarncrossgccNotFound
     else
       ErrorMessage := SWarngccNotFound;
   end;
@@ -2901,10 +2916,42 @@ function GetDefaultLibGCCDir(CPU : TCPU;OS: TOS; var ErrorMessage: string): stri
 begin
   result := '';
   ErrorMessage:='';
+  if (Defaults.SourceOS<>OS) then
+    UseBinutilsPrefix:=true;
+  if (Defaults.SourceCPU<>CPU) then
+    begin
+      { we need to accept 32<->64 conversion }
+      { expect for OpenBSD which does not allow this }
+      if not(
+         ((Defaults.SourceCPU=aarch64) and (CPU=arm)) or
+         ((Defaults.SourceCPU=powerpc64) and (CPU=powerpc)) or
+         ((Defaults.SourceCPU=x86_64) and (CPU=i386)) or
+         ((Defaults.SourceCPU=riscv64) and (CPU=riscv32)) or
+         ((Defaults.SourceCPU=sparc64) and (CPU=sparc)) or
+         ((CPU=aarch64) and (Defaults.SourceCPU=arm)) or
+         ((CPU=powerpc64) and (Defaults.SourceCPU=powerpc)) or
+         ((CPU=x86_64) and (Defaults.SourceCPU=i386)) or
+         ((CPU=riscv64) and (Defaults.SourceCPU=riscv32)) or
+         ((CPU=sparc64) and (Defaults.SourceCPU=sparc))
+         ) or (Defaults.SourceOS=openbsd) then
+        UseBinutilsPrefix:=true; 
+    end;
+  if not UseBinutilsPrefix then
+    CrossPrefix:=''
+  else if Sysutils.GetEnvironmentVariable('BINUTILSPREFIX')<>'' then
+    CrossPrefix:=Sysutils.GetEnvironmentVariable('BINUTILSPREFIX')
+  else
+    CrossPrefix:=CPUToString(CPU)+'-'+OSToString(OS)+'-';
   if OS in [freebsd, openbsd, dragonfly] then
-    result := '/usr/local/lib'
+    begin
+      if CrossPrefix='' then
+        result := '/usr/local/lib'
+    end
   else if OS = netbsd then
-    result := '/usr/pkg/lib'
+    begin
+      if CrossPrefix='' then
+        result := '/usr/pkg/lib'
+    end
   else if OS = linux then
     case CPU of
       i386:     result := GetGccDirArch('cpui386','-m32');
@@ -5017,6 +5064,27 @@ begin
         OS:=StringToOS({$I %FPCTARGETOS%});
       if FCompilerVersion='' then
         FCompilerVersion:={$I %FPCVERSION%};
+{$endif HAS_UNIT_PROCESS}
+    end;
+  if (FSourceOS=osNone) then
+    begin
+{$ifdef HAS_UNIT_PROCESS}
+      // Detect compiler version/target from -i option
+      infosl:=TStringList.Create;
+      infosl.Delimiter:=' ';
+      infosl.DelimitedText:=GetCompilerInfo(GetCompiler,'-iDWSPSO', False, True);
+      if infosl.Count<>4 then
+        Raise EInstallerError.Create(SErrInvalidFPCInfo);
+      FCompilerDate:=infosl[0];
+      FFullCompilerVersion:=infosl[1];
+      FSourceCPU:=StringToCPU(infosl[2]);
+      FSourceOS:=StringToOS(infosl[3]);
+{$else HAS_UNIT_PROCESS}
+      // Defaults taken from compiler used to build fpmake
+      FSourceCPU:=StringToCPU({$I %FPCTARGETCPU%});
+      FSourceOS:=StringToOS({$I %FPCTARGETOS%});
+      FFullCompilerVersion:={$I %FPCFULLVERSION%};
+      FCompilerDate:={$I %FPCDATE%};
 {$endif HAS_UNIT_PROCESS}
     end;
 end;
