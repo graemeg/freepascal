@@ -88,6 +88,8 @@ implementation
     R_X86_64_TLSDESC_CALL = 35;
     R_X86_64_TLSDESC = 36;
     R_X86_64_IRELATIVE = 37;
+    R_X86_64_GOTPCRELX =41;
+    R_X86_64_REX_GOTPCRELX =42;
     R_X86_64_GNU_VTINHERIT = 250;    { GNU extension to record C++ vtable hierarchy }
     R_X86_64_GNU_VTENTRY = 251;      { GNU extension to record C++ vtable member usage }
 
@@ -169,6 +171,10 @@ implementation
           result:=R_X86_64_32S;
         RELOC_GOTPCREL :
           result:=R_X86_64_GOTPCREL;
+        RELOC_GOTPCRELX :
+          result:=R_X86_64_GOTPCRELX;
+        RELOC_REX_GOTPCRELX :
+          result:=R_X86_64_REX_GOTPCRELX;
         RELOC_PLT32 :
           result:=R_X86_64_PLT32;
         RELOC_TPOFF:

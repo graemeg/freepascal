@@ -59,6 +59,8 @@ interface
          RELOC_RELATIVE_5,
          { PIC }
          RELOC_GOTPCREL,
+         RELOC_GOTPCRELX,
+         RELOC_REX_GOTPCRELX,
          RELOC_PLT32,
          RELOC_TLSGD,
          RELOC_TPOFF,
