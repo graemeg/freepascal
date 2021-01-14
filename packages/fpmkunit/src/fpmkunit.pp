@@ -2850,6 +2850,8 @@ function GetDefaultLibGCCDir(CPU : TCPU;OS: TOS; var ErrorMessage: string): stri
 var
   CrossPrefix: string;
   UseBinutilsPrefix: boolean;
+  SourceOS : TOS;
+  SourceCPU : TCPU;
 
   function Get4thWord(const AString: string): string;
   var p: pchar;
@@ -2916,24 +2918,35 @@ var
 begin
   result := '';
   ErrorMessage:='';
-  if (Defaults.SourceOS<>OS) then
+  if assigned(Defaults) then
+    begin
+      SourceOS:=Defaults.SourceOS;
+      SourceCPU:=Defaults.SourceCPU;
+    end
+  else
+    begin
+      SourceOS:=StringToOS({$I %FPCTARGETOS%});
+      SourceCPU:=StringToCPU({$I %FPCTARGETCPU%});
+    end;
+
+  if (SourceOS<>OS) then
     UseBinutilsPrefix:=true;
-  if (Defaults.SourceCPU<>CPU) then
+  if (SourceCPU<>CPU) then
     begin
       { we need to accept 32<->64 conversion }
       { expect for OpenBSD which does not allow this }
       if not(
-         ((Defaults.SourceCPU=aarch64) and (CPU=arm)) or
-         ((Defaults.SourceCPU=powerpc64) and (CPU=powerpc)) or
-         ((Defaults.SourceCPU=x86_64) and (CPU=i386)) or
-         ((Defaults.SourceCPU=riscv64) and (CPU=riscv32)) or
-         ((Defaults.SourceCPU=sparc64) and (CPU=sparc)) or
-         ((CPU=aarch64) and (Defaults.SourceCPU=arm)) or
-         ((CPU=powerpc64) and (Defaults.SourceCPU=powerpc)) or
-         ((CPU=x86_64) and (Defaults.SourceCPU=i386)) or
-         ((CPU=riscv64) and (Defaults.SourceCPU=riscv32)) or
-         ((CPU=sparc64) and (Defaults.SourceCPU=sparc))
-         ) or (Defaults.SourceOS=openbsd) then
+         ((SourceCPU=aarch64) and (CPU=arm)) or
+         ((SourceCPU=powerpc64) and (CPU=powerpc)) or
+         ((SourceCPU=x86_64) and (CPU=i386)) or
+         ((SourceCPU=riscv64) and (CPU=riscv32)) or
+         ((SourceCPU=sparc64) and (CPU=sparc)) or
+         ((CPU=aarch64) and (SourceCPU=arm)) or
+         ((CPU=powerpc64) and (SourceCPU=powerpc)) or
+         ((CPU=x86_64) and (SourceCPU=i386)) or
+         ((CPU=riscv64) and (SourceCPU=riscv32)) or
+         ((CPU=sparc64) and (SourceCPU=sparc))
+         ) or (SourceOS=openbsd) then
         UseBinutilsPrefix:=true; 
     end;
   if not UseBinutilsPrefix then
