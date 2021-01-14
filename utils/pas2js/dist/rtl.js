@@ -739,15 +739,20 @@ var rtl = {
         delete this[id];
         old._Release(); // may fail
       }
-      this[id]=intf;
+      if(intf) {
+        this[id]=intf;
+      }
       return intf;
     },
     free: function(){
       //console.log('rtl.intfRefs.free...');
       for (var id in this){
         if (this.hasOwnProperty(id)){
-          //console.log('rtl.intfRefs.free: id='+id+' '+this[id].$name+' $o='+this[id].$o.$classname);
-          this[id]._Release();
+          var intf = this[id];
+          if (intf){
+            //console.log('rtl.intfRefs.free: id='+id+' '+intf.$name+' $o='+intf.$o.$classname);
+            intf._Release();
+          }
         }
       }
     }
