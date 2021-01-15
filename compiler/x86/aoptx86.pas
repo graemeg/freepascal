@@ -5693,93 +5693,91 @@ unit aoptx86;
         symbol: TAsmSymbol;
         reg: tsuperregister;
         regavailable: Boolean;
-        tmpreg: TRegister;
+        increg, tmpreg: TRegister;
       begin
         result:=false;
-        symbol:=nil;
-        if GetNextInstruction(p,hp1) then
+        if GetNextInstruction(p,hp1) and (hp1.typ=ait_instruction) then
           begin
             symbol := TAsmLabel(taicpu(p).oper[0]^.ref^.symbol);
 
-            if (hp1.typ=ait_instruction) and
-               GetNextInstruction(hp1,hp2) and
-               ((hp2.typ=ait_label) or
-                 { trick to skip align }
+            if GetNextInstruction(hp1,hp2) and
+              (
+                (hp2.typ=ait_label) or
+                { trick to skip align }
                 ((hp2.typ=ait_align) and GetNextInstruction(hp2,hp2) and (hp2.typ=ait_label))
-               ) and
-               (Tasmlabel(symbol) = Tai_label(hp2).labsym) then
-                 { jb @@1                            cmc
-                   inc/dec operand           -->     adc/sbb operand,0
-                   @@1:
+              ) and
+              (Tasmlabel(symbol) = Tai_label(hp2).labsym) and
+              (
+                (
+                  ((Taicpu(hp1).opcode=A_ADD) or (Taicpu(hp1).opcode=A_SUB)) and
+                  MatchOptype(Taicpu(hp1),top_const,top_reg) and
+                  (Taicpu(hp1).oper[0]^.val=1)
+                ) or
+                ((Taicpu(hp1).opcode=A_INC) or (Taicpu(hp1).opcode=A_DEC))
+              ) then
+             { jb @@1                            cmc
+               inc/dec operand           -->     adc/sbb operand,0
+               @@1:
 
-                   ... and ...
+               ... and ...
 
-                   jnb @@1
-                   inc/dec operand           -->     adc/sbb operand,0
-                   @@1: }
+               jnb @@1
+               inc/dec operand           -->     adc/sbb operand,0
+               @@1: }
               begin
-                carryadd_opcode:=A_NONE;
                 if Taicpu(p).condition in [C_NAE,C_B,C_C] then
                   begin
-                    if (Taicpu(hp1).opcode=A_INC) or
-                      ((Taicpu(hp1).opcode=A_ADD) and
-                       MatchOptype(Taicpu(hp1),top_const,top_reg) and
-                       (Taicpu(hp1).oper[0]^.val=1)
-                      ) then
-                      carryadd_opcode:=A_ADC;
-                    if (Taicpu(hp1).opcode=A_DEC) or
-                      ((Taicpu(hp1).opcode=A_SUB) and
-                       MatchOptype(Taicpu(hp1),top_const,top_reg) and
-                       (Taicpu(hp1).oper[0]^.val=1)
-                      ) then
-                      carryadd_opcode:=A_SBB;
-                    if carryadd_opcode<>A_NONE then
-                      begin
-                        Taicpu(p).clearop(0);
-                        Taicpu(p).ops:=0;
-                        Taicpu(p).is_jmp:=false;
-                        Taicpu(p).opcode:=A_CMC;
-                        Taicpu(p).condition:=C_NONE;
-                        DebugMsg(SPeepholeOptimization+'JccAdd/Inc/Dec2CmcAdc/Sbb',p);
-                        Taicpu(hp1).ops:=2;
-                        if (Taicpu(hp1).opcode=A_ADD) or (Taicpu(hp1).opcode=A_SUB) then
-                          Taicpu(hp1).loadoper(1,Taicpu(hp1).oper[1]^)
-                        else
-                          Taicpu(hp1).loadoper(1,Taicpu(hp1).oper[0]^);
-                        Taicpu(hp1).loadconst(0,0);
-                        Taicpu(hp1).opcode:=carryadd_opcode;
-                        result:=true;
-                        exit;
-                      end;
+                    case taicpu(hp1).opcode of
+                      A_INC,
+                      A_ADD:
+                        carryadd_opcode:=A_ADC;
+                      A_DEC,
+                      A_SUB:
+                        carryadd_opcode:=A_SBB;
+                      else
+                        InternalError(2021011001);
+                    end;
+
+                    Taicpu(p).clearop(0);
+                    Taicpu(p).ops:=0;
+                    Taicpu(p).is_jmp:=false;
+                    Taicpu(p).opcode:=A_CMC;
+                    Taicpu(p).condition:=C_NONE;
+                    DebugMsg(SPeepholeOptimization+'JccAdd/Inc/Dec2CmcAdc/Sbb',p);
+                    Taicpu(hp1).ops:=2;
+                    if (Taicpu(hp1).opcode=A_ADD) or (Taicpu(hp1).opcode=A_SUB) then
+                      Taicpu(hp1).loadoper(1,Taicpu(hp1).oper[1]^)
+                    else
+                      Taicpu(hp1).loadoper(1,Taicpu(hp1).oper[0]^);
+                    Taicpu(hp1).loadconst(0,0);
+                    Taicpu(hp1).opcode:=carryadd_opcode;
+                    result:=true;
+                    exit;
                   end
                 else if Taicpu(p).condition in [C_AE,C_NB,C_NC] then
                   begin
-                    if (Taicpu(hp1).opcode=A_INC) or
-                      ((Taicpu(hp1).opcode=A_ADD) and
-                       MatchOptype(Taicpu(hp1),top_const,top_reg) and
-                       (Taicpu(hp1).oper[0]^.val=1)
-                      ) then
-                      carryadd_opcode:=A_ADC;
-                    if (Taicpu(hp1).opcode=A_DEC) or
-                      ((Taicpu(hp1).opcode=A_SUB) and
-                       MatchOptype(Taicpu(hp1),top_const,top_reg) and
-                       (Taicpu(hp1).oper[0]^.val=1)
-                      ) then
-                      carryadd_opcode:=A_SBB;
-                    if carryadd_opcode<>A_NONE then
-                      begin
-                        Taicpu(hp1).ops:=2;
-                        DebugMsg(SPeepholeOptimization+'JccAdd/Inc/Dec2Adc/Sbb',p);
-                        if (Taicpu(hp1).opcode=A_ADD) or (Taicpu(hp1).opcode=A_SUB) then
-                          Taicpu(hp1).loadoper(1,Taicpu(hp1).oper[1]^)
-                        else
-                          Taicpu(hp1).loadoper(1,Taicpu(hp1).oper[0]^);
-                        Taicpu(hp1).loadconst(0,0);
-                        Taicpu(hp1).opcode:=carryadd_opcode;
-                        RemoveCurrentP(p, hp1);
-                        result:=true;
-                        exit;
-                      end;
+                    case taicpu(hp1).opcode of
+                      A_INC,
+                      A_ADD:
+                        carryadd_opcode:=A_ADC;
+                      A_DEC,
+                      A_SUB:
+                        carryadd_opcode:=A_SBB;
+                      else
+                        InternalError(2021011002);
+                    end;
+
+                    Taicpu(hp1).ops:=2;
+                    DebugMsg(SPeepholeOptimization+'JccAdd/Inc/Dec2Adc/Sbb',p);
+                    if (Taicpu(hp1).opcode=A_ADD) or (Taicpu(hp1).opcode=A_SUB) then
+                      Taicpu(hp1).loadoper(1,Taicpu(hp1).oper[1]^)
+                    else
+                      Taicpu(hp1).loadoper(1,Taicpu(hp1).oper[0]^);
+                    Taicpu(hp1).loadconst(0,0);
+                    Taicpu(hp1).opcode:=carryadd_opcode;
+                    RemoveCurrentP(p, hp1);
+                    result:=true;
+                    exit;
                   end
                  {
                    jcc @@1                            setcc tmpreg
@@ -5789,312 +5787,323 @@ unit aoptx86;
                    While this increases code size slightly, it makes the code much faster if the
                    jump is unpredictable
                  }
-                else if not(cs_opt_size in current_settings.optimizerswitches) and
-                  ((((Taicpu(hp1).opcode=A_ADD) or (Taicpu(hp1).opcode=A_SUB)) and
-                    (Taicpu(hp1).oper[0]^.typ=top_const) and
-                    (Taicpu(hp1).oper[1]^.typ=top_reg) and
-                    (Taicpu(hp1).oper[0]^.val=1)) or
-                   ((Taicpu(hp1).opcode=A_INC) or (Taicpu(hp1).opcode=A_DEC))
-                  ) then
-                  begin
-                    { search for an available register which is volatile }
-                    regavailable:=false;
-                    for reg in tcpuregisterset do
-                      begin
-                        tmpreg:=newreg(R_INTREGISTER,reg,R_SUBL);
-                        if (reg in paramanager.get_volatile_registers_int(current_procinfo.procdef.proccalloption)) and
-                          not(reg in UsedRegs[R_INTREGISTER].GetUsedRegs) and
-                          not(RegInInstruction(tmpreg,hp1))
-{$ifdef i386}
-                          { use only registers which can be accessed byte wise }
-                          and (reg in [RS_EAX,RS_EBX,RS_ECX,RS_EDX])
-{$endif i386}
-                          then
-                          begin
-                            regavailable:=true;
-                            break;
-                          end;
+                 else if not(cs_opt_size in current_settings.optimizerswitches) then
+                   begin
+                     { search for an available register which is volatile }
+                     for reg in tcpuregisterset do
+                       begin
+                         if
+ {$if defined(i386) or defined(i8086)}
+                           { Only use registers whose lowest 8-bits can Be accessed }
+                           (reg in [RS_EAX,RS_EBX,RS_ECX,RS_EDX]) and
+ {$endif i386 or i8086}
+                           (reg in paramanager.get_volatile_registers_int(current_procinfo.procdef.proccalloption)) and
+                           not(reg in UsedRegs[R_INTREGISTER].GetUsedRegs)
+                           { We don't need to check if tmpreg is in hp1 or not, because
+                             it will be marked as in use at p (if not, this is
+                             indictive of a compiler bug). }
+                           then
+                           begin
+                             TAsmLabel(symbol).decrefs;
+                             increg := newreg(R_INTREGISTER,reg,R_SUBL);
+                             Taicpu(p).clearop(0);
+                             Taicpu(p).ops:=1;
+                             Taicpu(p).is_jmp:=false;
+                             Taicpu(p).opcode:=A_SETcc;
+                             DebugMsg(SPeepholeOptimization+'JccAdd2SetccAdd',p);
+                             Taicpu(p).condition:=inverse_cond(Taicpu(p).condition);
+                             Taicpu(p).loadreg(0,increg);
+
+                             if getsubreg(Taicpu(hp1).oper[1]^.reg)<>R_SUBL then
+                               begin
+                                 case getsubreg(Taicpu(hp1).oper[1]^.reg) of
+                                   R_SUBW:
+                                     begin
+                                       tmpreg := newreg(R_INTREGISTER,reg,R_SUBW);
+                                       hp2:=Taicpu.op_reg_reg(A_MOVZX,S_BW,increg,tmpreg);
+                                     end;
+                                   R_SUBD:
+                                     begin
+                                       tmpreg := newreg(R_INTREGISTER,reg,R_SUBD);
+                                       hp2:=Taicpu.op_reg_reg(A_MOVZX,S_BL,increg,tmpreg);
+                                     end;
+ {$ifdef x86_64}
+                                   R_SUBQ:
+                                     begin
+                                       { MOVZX doesn't have a 64-bit variant, because
+                                         the 32-bit version implicitly zeroes the
+                                         upper 32-bits of the destination register }
+                                       hp2:=Taicpu.op_reg_reg(A_MOVZX,S_BL,increg,
+                                         newreg(R_INTREGISTER,reg,R_SUBD));
+                                       tmpreg := newreg(R_INTREGISTER,reg,R_SUBQ);
+                                     end;
+ {$endif x86_64}
+                                   else
+                                     Internalerror(2020030601);
+                                 end;
+                                 taicpu(hp2).fileinfo:=taicpu(hp1).fileinfo;
+                                 asml.InsertAfter(hp2,p);
+                               end
+                             else
+                               tmpreg := increg;
+
+                             if (Taicpu(hp1).opcode=A_INC) or (Taicpu(hp1).opcode=A_DEC) then
+                               begin
+                                 Taicpu(hp1).ops:=2;
+                                 Taicpu(hp1).loadoper(1,Taicpu(hp1).oper[0]^)
+                               end;
+                             Taicpu(hp1).loadreg(0,tmpreg);
+                             AllocRegBetween(tmpreg,p,hp1,UsedRegs);
+
+                             Result := True;
+
+                             { p is no longer a Jcc instruction, so exit }
+                             Exit;
+                           end;
+                       end;
+                   end;
+               end;
+
+              { Detect the following:
+                  jmp<cond>     @Lbl1
+                  jmp           @Lbl2
+                  ...
+                @Lbl1:
+                  ret
+
+                Change to:
+
+                  jmp<inv_cond> @Lbl2
+                  ret
+              }
+              if MatchInstruction(hp1,A_JMP,[]) and (taicpu(hp1).oper[0]^.ref^.refaddr=addr_full) then
+                begin
+                  hp2:=getlabelwithsym(TAsmLabel(symbol));
+                  if Assigned(hp2) and SkipLabels(hp2,hp2) and
+                    MatchInstruction(hp2,A_RET,[S_NO]) then
+                    begin
+                      taicpu(p).condition := inverse_cond(taicpu(p).condition);
+
+                      { Change label address to that of the unconditional jump }
+                      taicpu(p).loadoper(0, taicpu(hp1).oper[0]^);
+
+                      TAsmLabel(symbol).DecRefs;
+                      taicpu(hp1).opcode := A_RET;
+                      taicpu(hp1).is_jmp := false;
+                      taicpu(hp1).ops := taicpu(hp2).ops;
+                      DebugMsg(SPeepholeOptimization+'JccJmpRet2J!ccRet',p);
+                      case taicpu(hp2).ops of
+                        0:
+                          taicpu(hp1).clearop(0);
+                        1:
+                          taicpu(hp1).loadconst(0,taicpu(hp2).oper[0]^.val);
+                        else
+                          internalerror(2016041302);
                       end;
-
-                    if regavailable then
-                      begin
-                        TAsmLabel(symbol).decrefs;
-                        Taicpu(p).clearop(0);
-                        Taicpu(p).ops:=1;
-                        Taicpu(p).is_jmp:=false;
-                        Taicpu(p).opcode:=A_SETcc;
-                        DebugMsg(SPeepholeOptimization+'JccAdd2SetccAdd',p);
-                        Taicpu(p).condition:=inverse_cond(Taicpu(p).condition);
-                        Taicpu(p).loadreg(0,tmpreg);
-
-                        if getsubreg(Taicpu(hp1).oper[1]^.reg)<>R_SUBL then
-                          begin
-                            case getsubreg(Taicpu(hp1).oper[1]^.reg) of
-                              R_SUBW:
-                                hp2:=Taicpu.op_reg_reg(A_MOVZX,S_BW,tmpreg,
-                                  newreg(R_INTREGISTER,reg,R_SUBW));
-                              R_SUBD,
-                              R_SUBQ:
-                                hp2:=Taicpu.op_reg_reg(A_MOVZX,S_BL,tmpreg,
-                                  newreg(R_INTREGISTER,reg,R_SUBD));
-                              else
-                                Internalerror(2020030601);
-                            end;
-                            taicpu(hp2).fileinfo:=taicpu(hp1).fileinfo;
-                            asml.InsertAfter(hp2,p);
-                          end;
-                        if (Taicpu(hp1).opcode=A_INC) or (Taicpu(hp1).opcode=A_DEC) then
-                          begin
-                            Taicpu(hp1).ops:=2;
-                            Taicpu(hp1).loadoper(1,Taicpu(hp1).oper[0]^)
-                          end;
-                        Taicpu(hp1).loadreg(0,newreg(R_INTREGISTER,reg,getsubreg(Taicpu(hp1).oper[1]^.reg)));
-                        AllocRegBetween(newreg(R_INTREGISTER,reg,getsubreg(Taicpu(hp1).oper[1]^.reg)),p,hp1,UsedRegs);
-                      end;
-                  end;
-              end;
-
-          { Detect the following:
-              jmp<cond>     @Lbl1
-              jmp           @Lbl2
-              ...
-            @Lbl1:
-              ret
-
-            Change to:
-
-              jmp<inv_cond> @Lbl2
-              ret
-          }
-            if MatchInstruction(hp1,A_JMP,[]) and (taicpu(hp1).oper[0]^.ref^.refaddr=addr_full) then
-              begin
-                hp2:=getlabelwithsym(TAsmLabel(symbol));
-                if Assigned(hp2) and SkipLabels(hp2,hp2) and
-                  MatchInstruction(hp2,A_RET,[S_NO]) then
-                  begin
-                    taicpu(p).condition := inverse_cond(taicpu(p).condition);
-
-                    { Change label address to that of the unconditional jump }
-                    taicpu(p).loadoper(0, taicpu(hp1).oper[0]^);
-
-                    TAsmLabel(symbol).DecRefs;
-                    taicpu(hp1).opcode := A_RET;
-                    taicpu(hp1).is_jmp := false;
-                    taicpu(hp1).ops := taicpu(hp2).ops;
-                    DebugMsg(SPeepholeOptimization+'JccJmpRet2J!ccRet',p);
-                    case taicpu(hp2).ops of
-                      0:
-                        taicpu(hp1).clearop(0);
-                      1:
-                        taicpu(hp1).loadconst(0,taicpu(hp2).oper[0]^.val);
-                      else
-                        internalerror(2016041302);
                     end;
-                  end;
-              end;
-          end;
 {$ifndef i8086}
-        if CPUX86_HAS_CMOV in cpu_capabilities[current_settings.cputype] then
-          begin
-             { check for
-                    jCC   xxx
-                    <several movs>
-                 xxx:
-             }
-             l:=0;
-             GetNextInstruction(p, hp1);
-             while assigned(hp1) and
-               CanBeCMOV(hp1) and
-               { stop on labels }
-               not(hp1.typ=ait_label) do
-               begin
-                  inc(l);
-                  GetNextInstruction(hp1,hp1);
-               end;
-             if assigned(hp1) then
-               begin
-                  if FindLabel(tasmlabel(symbol),hp1) then
-                    begin
-                      if (l<=4) and (l>0) then
+                end
+              else if CPUX86_HAS_CMOV in cpu_capabilities[current_settings.cputype] then
+                begin
+                 { check for
+                        jCC   xxx
+                        <several movs>
+                     xxx:
+                 }
+                 l:=0;
+                 while assigned(hp1) and
+                   CanBeCMOV(hp1) and
+                   { stop on labels }
+                   not(hp1.typ=ait_label) do
+                   begin
+                      inc(l);
+                      GetNextInstruction(hp1,hp1);
+                   end;
+                 if assigned(hp1) then
+                   begin
+                      if FindLabel(tasmlabel(symbol),hp1) then
                         begin
-                          condition:=inverse_cond(taicpu(p).condition);
-                          GetNextInstruction(p,hp1);
-                          repeat
-                            if not Assigned(hp1) then
-                              InternalError(2018062900);
-
-                            taicpu(hp1).opcode:=A_CMOVcc;
-                            taicpu(hp1).condition:=condition;
-                            UpdateUsedRegs(hp1);
-                            GetNextInstruction(hp1,hp1);
-                          until not(CanBeCMOV(hp1));
-
-                          { Remember what hp1 is in case there's multiple aligns to get rid of }
-                          hp2 := hp1;
-                          repeat
-                            if not Assigned(hp2) then
-                              InternalError(2018062910);
-
-                            case hp2.typ of
-                              ait_label:
-                                { What we expected - break out of the loop (it won't be a dead label at the top of
-                                  a cluster because that was optimised at an earlier stage) }
-                                Break;
-                              ait_align:
-                                { Go to the next entry until a label is found (may be multiple aligns before it) }
-                                begin
-                                  hp2 := tai(hp2.Next);
-                                  Continue;
-                                end;
-                              else
-                                begin
-                                  { Might be a comment or temporary allocation entry }
-                                  if not (hp2.typ in SkipInstr) then
-                                    InternalError(2018062911);
-
-                                  hp2 := tai(hp2.Next);
-                                  Continue;
-                                end;
-                            end;
-
-                          until False;
-
-                          { Now we can safely decrement the reference count }
-                          tasmlabel(symbol).decrefs;
-
-                          DebugMsg(SPeepholeOptimization+'JccMov2CMov',p);
-
-                          { Remove the original jump }
-                          RemoveInstruction(p); { Note, the choice to not use RemoveCurrentp is deliberate }
-
-                          GetNextInstruction(hp2, p); { Instruction after the label }
-
-                          { Remove the label if this is its final reference }
-                          if (tasmlabel(symbol).getrefs=0) then
-                            StripLabelFast(hp1);
-
-                          if Assigned(p) then
+                          if (l<=4) and (l>0) then
                             begin
-                              UpdateUsedRegs(p);
-                              result:=true;
+                              condition:=inverse_cond(taicpu(p).condition);
+                              GetNextInstruction(p,hp1);
+                              repeat
+                                if not Assigned(hp1) then
+                                  InternalError(2018062900);
+
+                                taicpu(hp1).opcode:=A_CMOVcc;
+                                taicpu(hp1).condition:=condition;
+                                UpdateUsedRegs(hp1);
+                                GetNextInstruction(hp1,hp1);
+                              until not(CanBeCMOV(hp1));
+
+                              { Remember what hp1 is in case there's multiple aligns to get rid of }
+                              hp2 := hp1;
+                              repeat
+                                if not Assigned(hp2) then
+                                  InternalError(2018062910);
+
+                                case hp2.typ of
+                                  ait_label:
+                                    { What we expected - break out of the loop (it won't be a dead label at the top of
+                                      a cluster because that was optimised at an earlier stage) }
+                                    Break;
+                                  ait_align:
+                                    { Go to the next entry until a label is found (may be multiple aligns before it) }
+                                    begin
+                                      hp2 := tai(hp2.Next);
+                                      Continue;
+                                    end;
+                                  else
+                                    begin
+                                      { Might be a comment or temporary allocation entry }
+                                      if not (hp2.typ in SkipInstr) then
+                                        InternalError(2018062911);
+
+                                      hp2 := tai(hp2.Next);
+                                      Continue;
+                                    end;
+                                end;
+
+                              until False;
+
+                              { Now we can safely decrement the reference count }
+                              tasmlabel(symbol).decrefs;
+
+                              DebugMsg(SPeepholeOptimization+'JccMov2CMov',p);
+
+                              { Remove the original jump }
+                              RemoveInstruction(p); { Note, the choice to not use RemoveCurrentp is deliberate }
+
+                              GetNextInstruction(hp2, p); { Instruction after the label }
+
+                              { Remove the label if this is its final reference }
+                              if (tasmlabel(symbol).getrefs=0) then
+                                StripLabelFast(hp1);
+
+                              if Assigned(p) then
+                                begin
+                                  UpdateUsedRegs(p);
+                                  result:=true;
+                                end;
+                              exit;
                             end;
-                          exit;
+                        end
+                      else
+                        begin
+                           { check further for
+                                  jCC   xxx
+                                  <several movs 1>
+                                  jmp   yyy
+                          xxx:
+                                  <several movs 2>
+                          yyy:
+                           }
+                          { hp2 points to jmp yyy }
+                          hp2:=hp1;
+                          { skip hp1 to xxx (or an align right before it) }
+                          GetNextInstruction(hp1, hp1);
+
+                          if assigned(hp2) and
+                            assigned(hp1) and
+                            (l<=3) and
+                            (hp2.typ=ait_instruction) and
+                            (taicpu(hp2).is_jmp) and
+                            (taicpu(hp2).condition=C_None) and
+                            { real label and jump, no further references to the
+                              label are allowed }
+                            (tasmlabel(symbol).getrefs=1) and
+                            FindLabel(tasmlabel(symbol),hp1) then
+                             begin
+                               l:=0;
+                               { skip hp1 to <several moves 2> }
+                               if (hp1.typ = ait_align) then
+                                 GetNextInstruction(hp1, hp1);
+
+                               GetNextInstruction(hp1, hpmov2);
+
+                               hp1 := hpmov2;
+                               while assigned(hp1) and
+                                 CanBeCMOV(hp1) do
+                                 begin
+                                   inc(l);
+                                   GetNextInstruction(hp1, hp1);
+                                 end;
+                               { hp1 points to yyy (or an align right before it) }
+                               hp3 := hp1;
+                               if assigned(hp1) and
+                                 FindLabel(tasmlabel(taicpu(hp2).oper[0]^.ref^.symbol),hp1) then
+                                 begin
+                                    condition:=inverse_cond(taicpu(p).condition);
+                                    GetNextInstruction(p,hp1);
+                                    repeat
+                                      taicpu(hp1).opcode:=A_CMOVcc;
+                                      taicpu(hp1).condition:=condition;
+                                      UpdateUsedRegs(hp1);
+                                      GetNextInstruction(hp1,hp1);
+                                    until not(assigned(hp1)) or
+                                      not(CanBeCMOV(hp1));
+
+                                    condition:=inverse_cond(condition);
+                                    hp1 := hpmov2;
+                                    { hp1 is now at <several movs 2> }
+                                    while Assigned(hp1) and CanBeCMOV(hp1) do
+                                      begin
+                                        taicpu(hp1).opcode:=A_CMOVcc;
+                                        taicpu(hp1).condition:=condition;
+                                        UpdateUsedRegs(hp1);
+                                        GetNextInstruction(hp1,hp1);
+                                      end;
+
+                                    hp1 := p;
+
+                                    { Get first instruction after label }
+                                    GetNextInstruction(hp3, p);
+
+                                    if assigned(p) and (hp3.typ = ait_align) then
+                                      GetNextInstruction(p, p);
+
+                                    { Don't dereference yet, as doing so will cause
+                                      GetNextInstruction to skip the label and
+                                      optional align marker. [Kit] }
+                                    GetNextInstruction(hp2, hp4);
+
+                                    DebugMsg(SPeepholeOptimization+'JccMovJmpMov2CMovCMov',hp1);
+
+                                    { remove jCC }
+                                    RemoveInstruction(hp1);
+
+                                    { Now we can safely decrement it }
+                                    tasmlabel(symbol).decrefs;
+
+                                    { Remove label xxx (it will have a ref of zero due to the initial check }
+                                    StripLabelFast(hp4);
+
+                                    { remove jmp }
+                                    symbol := taicpu(hp2).oper[0]^.ref^.symbol;
+
+                                    RemoveInstruction(hp2);
+
+                                    { As before, now we can safely decrement it }
+                                    tasmlabel(symbol).decrefs;
+
+                                    { Remove label yyy (and the optional alignment) if its reference falls to zero }
+                                    if tasmlabel(symbol).getrefs = 0 then
+                                      StripLabelFast(hp3);
+
+                                    if Assigned(p) then
+                                      begin
+                                        UpdateUsedRegs(p);
+                                        result:=true;
+                                      end;
+                                    exit;
+                                 end;
+                             end;
                         end;
-                    end
-                  else
-                    begin
-                       { check further for
-                              jCC   xxx
-                              <several movs 1>
-                              jmp   yyy
-                      xxx:
-                              <several movs 2>
-                      yyy:
-                       }
-                      { hp2 points to jmp yyy }
-                      hp2:=hp1;
-                      { skip hp1 to xxx (or an align right before it) }
-                      GetNextInstruction(hp1, hp1);
-
-                      if assigned(hp2) and
-                        assigned(hp1) and
-                        (l<=3) and
-                        (hp2.typ=ait_instruction) and
-                        (taicpu(hp2).is_jmp) and
-                        (taicpu(hp2).condition=C_None) and
-                        { real label and jump, no further references to the
-                          label are allowed }
-                        (tasmlabel(symbol).getrefs=1) and
-                        FindLabel(tasmlabel(symbol),hp1) then
-                         begin
-                           l:=0;
-                           { skip hp1 to <several moves 2> }
-                           if (hp1.typ = ait_align) then
-                             GetNextInstruction(hp1, hp1);
-
-                           GetNextInstruction(hp1, hpmov2);
-
-                           hp1 := hpmov2;
-                           while assigned(hp1) and
-                             CanBeCMOV(hp1) do
-                             begin
-                               inc(l);
-                               GetNextInstruction(hp1, hp1);
-                             end;
-                           { hp1 points to yyy (or an align right before it) }
-                           hp3 := hp1;
-                           if assigned(hp1) and
-                             FindLabel(tasmlabel(taicpu(hp2).oper[0]^.ref^.symbol),hp1) then
-                             begin
-                                condition:=inverse_cond(taicpu(p).condition);
-                                GetNextInstruction(p,hp1);
-                                repeat
-                                  taicpu(hp1).opcode:=A_CMOVcc;
-                                  taicpu(hp1).condition:=condition;
-                                  UpdateUsedRegs(hp1);
-                                  GetNextInstruction(hp1,hp1);
-                                until not(assigned(hp1)) or
-                                  not(CanBeCMOV(hp1));
-
-                                condition:=inverse_cond(condition);
-                                hp1 := hpmov2;
-                                { hp1 is now at <several movs 2> }
-                                while Assigned(hp1) and CanBeCMOV(hp1) do
-                                  begin
-                                    taicpu(hp1).opcode:=A_CMOVcc;
-                                    taicpu(hp1).condition:=condition;
-                                    UpdateUsedRegs(hp1);
-                                    GetNextInstruction(hp1,hp1);
-                                  end;
-
-                                hp1 := p;
-
-                                { Get first instruction after label }
-                                GetNextInstruction(hp3, p);
-
-                                if assigned(p) and (hp3.typ = ait_align) then
-                                  GetNextInstruction(p, p);
-
-                                { Don't dereference yet, as doing so will cause
-                                  GetNextInstruction to skip the label and
-                                  optional align marker. [Kit] }
-                                GetNextInstruction(hp2, hp4);
-
-                                DebugMsg(SPeepholeOptimization+'JccMovJmpMov2CMovCMov',hp1);
-
-                                { remove jCC }
-                                RemoveInstruction(hp1);
-
-                                { Now we can safely decrement it }
-                                tasmlabel(symbol).decrefs;
-
-                                { Remove label xxx (it will have a ref of zero due to the initial check }
-                                StripLabelFast(hp4);
-
-                                { remove jmp }
-                                symbol := taicpu(hp2).oper[0]^.ref^.symbol;
-
-                                RemoveInstruction(hp2);
-
-                                { As before, now we can safely decrement it }
-                                tasmlabel(symbol).decrefs;
-
-                                { Remove label yyy (and the optional alignment) if its reference falls to zero }
-                                if tasmlabel(symbol).getrefs = 0 then
-                                  StripLabelFast(hp3);
-
-                                if Assigned(p) then
-                                  begin
-                                    UpdateUsedRegs(p);
-                                    result:=true;
-                                  end;
-                                exit;
-                             end;
-                         end;
-                    end;
-               end;
-          end;
+                   end;
 {$endif i8086}
+              end;
+          end;
       end;
 
 
