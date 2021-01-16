@@ -142,7 +142,7 @@ type
 
 implementation
 
-uses SysUtils, fpdocclasstree;
+uses fpdocstrs, SysUtils, fpdocclasstree;
 
 
 Function FixHTMLpath(S : String) : STring;

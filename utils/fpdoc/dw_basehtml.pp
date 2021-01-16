@@ -158,7 +158,7 @@ Function FixHTMLpath(S : String) : STring;
 
 implementation
 
-uses xmlread, sysutils, sh_pas;
+uses fpdocstrs, xmlread, sysutils, sh_pas;
 
 Function FixHTMLpath(S : String) : STring;
 

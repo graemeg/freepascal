@@ -28,7 +28,7 @@ Procedure CreateTxtDocForPackage(APackage: TPasPackage; AEngine: TFPDocEngine);
 
 implementation
 
-uses SysUtils, Classes, dwLinear;
+uses fpdocstrs, SysUtils, Classes, dwLinear;
 
 Const
   MaxListLevel     = 10;

@@ -42,7 +42,7 @@ type
     FTree : TClassTreeBuilder;
     FObjects : TStringList;
   public
-    Constructor Create(AClassTree : TXMLDocument; AObjectKind : TPasObjKind);
+    Constructor Create(AClassTree : TXMLDocument; AObjectKindSet : TPasObjKindSet);
     Destructor Destroy; override;
     function CreateElement(AClass: TPTreeElement; const AName: String;
       AParent: TPasElement; AVisibility :TPasMemberVisibility;
@@ -442,14 +442,12 @@ begin
     end;
 end;
 
-Constructor TClassTreeEngine.Create(AClassTree : TXMLDocument; AObjectKind : TPasObjKind);
-
-
+Constructor TClassTreeEngine.Create(AClassTree : TXMLDocument; AObjectKindSet : TPasObjKindSet);
 begin
-  FPackage:=TPasPackage.Create('dummy',Nil);
-  FTree:=TClassTreeBuilder.Create(Self,FPackage,AObjectKind);
-  FObjects:=TStringList.Create;
   Inherited Create;
+  FPackage:=TPasPackage.Create('dummy',Nil);
+  FTree:=TClassTreeBuilder.Create(Self,FPackage,AObjectKindSet);
+  FObjects:=TStringList.Create;
 end;
 
 destructor TClassTreeEngine.Destroy;
@@ -538,11 +536,13 @@ Var
   end;
 
 begin
+  Result:= 0;
   aSrc:=TXMLDocument.Create();
   try
     aSrc.AppendChild(aSrc.CreateElement('TObject'));
     AppendChildClasses(aSrc.DocumentElement,aRootNode);
     MergeTrees(Dest,aSrc);
+    Inc(Result);
   finally
     aSrc.Free;
   end;
@@ -578,7 +578,7 @@ begin
       end;
     For I:=0 to InputFiles.Count-1 do
       begin
-      Engine := TClassTreeEngine.Create(XML,AObjectKind);
+      Engine := TClassTreeEngine.Create(XML,[AObjectKind]);
       Try
         ParseSource(Engine,InputFiles[I],OSTarget,CPUTarget);
         Engine.Ftree.BuildTree(Engine.FObjects);

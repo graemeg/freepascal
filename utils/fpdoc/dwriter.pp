@@ -27,31 +27,6 @@ interface
 
 uses Classes, DOM, contnrs, dGlobals, PasTree, SysUtils, fpdocclasstree;
 
-resourcestring
-  SErrFileWriting = 'An error occurred during writing of file "%s": %s';
-
-  SErrInvalidShortDescr = 'Invalid short description';
-  SErrInvalidDescr = 'Invalid description (illegal XML element: "%s")';
-  SErrInvalidParaContent = 'Invalid paragraph content';
-  SErrInvalidElementInList = 'Invalid element in list - only "li" allowed';
-  SErrInvalidListContent = 'Invalid list content';
-  SErrInvalidRemarkContent = 'Invalid <remark> content (illegal XML element: "%s")';
-  SErrListIsEmpty = 'List is empty - need at least one "li" element';
-  SErrInvalidDefinitionTermContent = 'Invalid content in definition term';
-  SErrDefinitionEntryMissing = 'Definition entry after definition term is missing';
-  SErrInvalidBorderValue = 'Invalid "border" value for %s';
-  SErrInvalidTableContent = 'Invalid table content';
-  SErrTableRowEmpty = 'Table row is empty (no "td" elements found)';
-  SErrInvalidContentBeforeSectionTitle = 'Invalid content before section title';
-  SErrSectionTitleExpected = 'Section title ("title" element) expected';
-
-  SErrDescrTagUnknown = 'Warning: Unknown tag "%s" in description';
-  SErrUnknownEntityReference = 'Warning: Unknown entity reference "&%s;" found';
-  SErrUnknownLinkID = 'Warning: Target ID of <link> in unit "%s", element "%s", is unknown: "%s"';
-  SErrUnknownPrintShortID = 'Warning: Target ID of <printshort> is unknown: "%s"';
-  SErrUnknownLink = 'Could not resolve link to "%s"';
-  SErralreadyRegistered = 'Class for output format "%s" already registered';
-  SErrUnknownWriterClass = 'Unknown output format "%s"';
 
 type
   // Phony element for pas pages.
@@ -338,6 +313,8 @@ function SortPasElements(Item1, Item2: Pointer): Integer;
 
 
 implementation
+
+uses fpdocstrs;
 
 function SortPasElements(Item1, Item2: Pointer): Integer;
 begin
@@ -1065,8 +1042,8 @@ begin
   FPackage := APackage;
   FTopics:=Tlist.Create;
   FImgExt:='.png';
-  TreeClass:= TClassTreeBuilder.Create(FEngine, FPackage, okClass);
-  TreeInterface:= TClassTreeBuilder.Create(FEngine, FPackage, okInterface);
+  TreeClass:= TClassTreeBuilder.Create(FEngine, FPackage, okWithFields);
+  TreeInterface:= TClassTreeBuilder.Create(FEngine, FPackage, [okInterface]);
   CreateClassTree;
 end;
 
@@ -1722,8 +1699,8 @@ begin
   if Node.NodeType <> ELEMENT_NODE then
   begin
     if Node.NodeType = TEXT_NODE then
-	  Result := IsWhitespaceNode(TDOMText(Node))
-	else  
+      Result := IsWhitespaceNode(TDOMText(Node))
+    else
       Result := Node.NodeType = COMMENT_NODE;
     exit;
   end;

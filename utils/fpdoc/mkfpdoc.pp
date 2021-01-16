@@ -34,6 +34,7 @@ Type
     FProjectMacros: TStrings;
     FScannerLogEvents: TPScannerLogEvents;
     FVerbose: Boolean;
+    function GetLogLevels: TFPDocLogLevels;
     function GetOptions: TEngineOptions;
     function GetPackages: TFPDocPackages;
     procedure SetBaseDescrDir(AValue: String);
@@ -73,6 +74,7 @@ Type
 
 implementation
 
+uses fpdocstrs;
 
 { TFPDocCreator }
 
@@ -255,6 +257,23 @@ begin
     Engine.WriteContentFile(APackage.ContentFile);
 end;
 
+Function TFPDocCreator.GetLogLevels : TFPDocLogLevels;
+
+  Procedure DoOpt(doSet : Boolean; aLevel: TFPDocLogLevel);
+
+  begin
+    if DoSet then
+      Result:=Result+[aLevel];
+  end;
+
+begin
+  Result:=[];
+  DoOpt(Options.WarnNoNode,dleWarnNoNode);
+  DoOpt(Options.WarnUsedFile,dleWarnUsedFile);
+  DoOpt(Options.WarnDocumentationEmpty,dleDocumentationEmpty);
+  DoOpt(Options.WarnXCT,dleXCT);
+end;
+
 procedure TFPDocCreator.CreateDocumentation(APackage: TFPDocPackage;
   ParseOnly: Boolean);
 
@@ -291,7 +310,7 @@ begin
     Engine.HideProtected:=Options.HideProtected;
     Engine.HidePrivate:=Not Options.ShowPrivate;
     Engine.OnParseUnit:=@HandleOnParseUnit;
-    Engine.WarnNoNode:=Options.WarnNoNode;
+    Engine.DocLogLevels:=GetLogLevels;
     if Length(Options.Language) > 0 then
       TranslateDocStrings(Options.Language);
     // scan the input source files

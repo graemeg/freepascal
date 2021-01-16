@@ -151,7 +151,7 @@ type
 implementation
 
 uses
-  SysUtils, dwriter;
+  fpdocstrs, SysUtils, dwriter;
 
 
 { TFPDocWriter overrides }

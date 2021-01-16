@@ -37,7 +37,7 @@ uses
   dw_man,    // Man page writer
   dw_linrtf, // linear RTF writer
   dw_txt,    // TXT writer
-  fpdocproj, mkfpdoc, dw_basemd, dw_basehtml;
+  fpdocproj, mkfpdoc, dw_basemd, dw_basehtml, fpdocstrs;
 
 
 Type
@@ -104,6 +104,9 @@ begin
   Writeln(SUsageOption215);
   Writeln(SUsageOption215A);
   Writeln(SUsageOption220);
+  Writeln(SUsageOption221);
+  Writeln(SUsageOption222);
+  Writeln(SUsageOption223);
   Writeln(SUsageOption230);
   Writeln(SUsageOption240);
   Writeln(SUsageOption250);
@@ -151,7 +154,9 @@ end;
 
 procedure TFPDocApplication.ExceptProc(Sender: TObject; E: Exception);
 begin
+{$IFDEF EXCEPTION_STACK}
   OutputLog(Sender, DumpExceptionCallStack(E));
+{$ENDIF}
 end;
 
 destructor TFPDocApplication.Destroy;
@@ -307,6 +312,12 @@ begin
     FCreator.Options.HideProtected := True
   else if s = '--warn-no-node' then
     FCreator.Options.WarnNoNode := True
+  else if s = '--warn-documentation-empty' then
+    FCreator.Options.WarnDocumentationEmpty := True
+  else if s = '--warn-used-file' then
+    FCreator.Options.WarnUsedFile := True
+  else if s = '--warn-XCT' then
+    FCreator.Options.WarnXCT := True
   else if s = '--show-private' then
     FCreator.Options.ShowPrivate := True
   else if s = '--stop-on-parser-error' then

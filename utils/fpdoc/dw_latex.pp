@@ -30,7 +30,7 @@ Procedure CreateLaTeXDocForPackage(APackage: TPasPackage; AEngine: TFPDocEngine)
 
 implementation
 
-uses SysUtils, Classes, dwLinear, dwriter;
+uses fpdocstrs, SysUtils, Classes, dwLinear, dwriter;
 
 
 Type

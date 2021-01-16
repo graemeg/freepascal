@@ -61,6 +61,8 @@ Type
 
 implementation
 
+uses fpdocstrs;
+
 const
   DefaultVisibility = [visDefault, visPublic, visPublished, visProtected];
 

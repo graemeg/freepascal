@@ -184,15 +184,8 @@ Type
 
 implementation
 
-resourcestring
-  SErrCannotChangeIndentSizeWhenIndented = 'Cannot change indent size while text is indented.';
-  SErrIndentMismatch = 'Indent mismatch: trying to undent when current indent too small';
-  SErrNotInList = 'Not in list';
-  SErrPopListStack = 'Pop list stack list type mismatch';
-  SErrMinListStack = 'Min list stack reached';
-  SErrMaxListStack = 'Max list stack reached';
-  SErrMinIndentStack = 'Min indent stack reached';
-  SErrMaxIndentStack = 'Max indent stack reached';
+uses fpdocstrs;
+
 
 procedure TBaseMarkdownWriter.SetIndentSize(AValue: Byte);
 begin

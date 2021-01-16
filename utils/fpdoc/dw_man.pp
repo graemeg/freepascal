@@ -185,6 +185,8 @@ Type
 
 implementation
 
+uses fpdocstrs;
+
 { TManWriter }
 
 constructor TManWriter.Create(APackage: TPasPackage; AEngine: TFPDocEngine);

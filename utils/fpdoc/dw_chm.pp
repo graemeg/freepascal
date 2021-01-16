@@ -63,7 +63,7 @@ type
 
 implementation
 
-uses SysUtils, HTMWrite, dw_basehtml;
+uses fpdocstrs, SysUtils, HTMWrite, dw_basehtml;
 
 { TCHmFileNameAllocator }
 

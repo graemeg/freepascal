@@ -42,6 +42,7 @@ begin
     P.Options.Add('-S2h');
 
     T:=P.Targets.AddProgram('fpdoc.pp');
+    T.Dependencies.AddUnit('fpdocstrs');
     T.Dependencies.AddUnit('dglobals');
     T.Dependencies.AddUnit('dw_ipflin');
     T.Dependencies.AddUnit('dwriter');
@@ -65,17 +66,15 @@ begin
     T:=P.Targets.AddProgram('fpclasschart.pp');
     T.ResourceStrings:=true;
 
-    T := P.Targets.AddUnit('dglobals.pp');
+    T := P.Targets.AddUnit('fpdocstrs.pp');
     T.install:=false;
     T.ResourceStrings:=true;
 
     T := P.Targets.AddUnit('dwriter.pp');
     T.install:=false;
-    T.ResourceStrings:=true;
 
     T := P.Targets.AddUnit('fpdocxmlopts.pas');
     T.install:=false;
-    T.ResourceStrings:=true;
 
     P.Targets.AddUnit('dw_xml.pp').install:=false;
     P.Targets.AddUnit('sh_pas.pp').install:=false;
@@ -84,7 +83,7 @@ begin
     P.Targets.AddUnit('dw_markdown.pp').install:=false;
     T:=P.Targets.AddUnit('dw_latex.pp');
     T.install:=false;
-    T.ResourceStrings:=true;
+
     P.Targets.AddUnit('dw_txt.pp').install:=false;
     P.Targets.AddUnit('dw_man.pp').install:=false;
     P.Targets.AddUnit('dwlinear.pp').install:=false;

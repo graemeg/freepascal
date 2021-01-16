@@ -60,8 +60,11 @@ Type
     FMoDir: String;
     FOSTarget: String;
     FSOPE: Boolean;
+    FWarnDocumentationEmpty: Boolean;
     FWarnNoNode: Boolean;
     FDontTrim : Boolean;
+    FWarnUsedFile: Boolean;
+    FWarnXCT: Boolean;
     procedure SetBackendOptions(const AValue: TStrings);
   Public
     Constructor Create;
@@ -77,6 +80,9 @@ Type
     Property StopOnParseError : Boolean Read FSOPE Write FSOPE;
     Property HideProtected : Boolean Read FHideProtected Write FHideProtected;
     Property WarnNoNode : Boolean Read FWarnNoNode Write FWarnNoNode;
+    Property WarnUsedFile : Boolean Read FWarnUsedFile Write FWarnUsedFile;
+    Property WarnDocumentationEmpty : Boolean Read FWarnDocumentationEmpty Write FWarnDocumentationEmpty;
+    Property WarnXCT : Boolean Read FWarnXCT Write FWarnXCT;
     Property ShowPrivate : Boolean Read FHidePrivate Write FHidePrivate;
     Property InterfaceOnly : Boolean Read FIO Write FIO;
     Property MoDir : String Read FMoDir Write FMODir;
@@ -189,6 +195,9 @@ begin
     FSOPE:=O.StopOnParseError;
     HideProtected:=O.HideProtected;
     WarnNoNode:=O.WarnNoNode;
+    WarnUsedFile:=O.WarnUsedFile;
+    WarnDocumentationEmpty:=O.WarnDocumentationEmpty;
+    WarnXCT:=O.WarnXCT;
     ShowPrivate:=O.ShowPrivate;
     InterfaceOnly:=O.InterfaceOnly;
     MoDir:=O.MoDir;

@@ -121,6 +121,8 @@ Type
 
 implementation
 
+uses fpdocstrs;
+
 const
   cDupLinkedDocParam = '--duplinkeddoc';
 

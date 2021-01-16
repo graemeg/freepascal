@@ -2,12 +2,15 @@ unit fpdocclasstree;
 
 {$mode objfpc}{$H+}
 
+
 interface
 
 uses
   Classes, SysUtils, dGlobals, pastree, contnrs, DOM ,XMLWrite;
 
 Type
+
+  TPasObjKindSet = set of TPasObjKind;
 
   { TPasElementNode }
 
@@ -35,7 +38,7 @@ Type
   Private
     FEngine:TFPDocEngine;
     FElementList : TFPObjectHashTable;
-    FObjectKind : TPasObjKind;
+    FObjectKind : TPasObjKindSet;
     FPackage: TPasPackage;
     FParentObject : TPasClassType;
     FRootNode : TPasElementNode;
@@ -45,7 +48,7 @@ Type
     function AddToList(aElement: TPasClassType): TPasElementNode;
   Public
     Constructor Create(AEngine:TFPDocEngine; APackage : TPasPackage;
-                          AObjectKind : TPasObjKind = okClass);
+                          AObjectKind : TPasObjKindSet = okWithFields);
     Destructor Destroy; override;
     Function BuildTree(AObjects : TStringList) : Integer;
     Procedure SaveToXml(AFileName: String);
@@ -55,6 +58,9 @@ Type
   end;
 
 implementation
+
+uses
+  fpdocstrs, pasresolver;
 
 { TPasElementNode }
 
@@ -104,33 +110,36 @@ begin
 end;
 
 constructor TClassTreeBuilder.Create(AEngine:TFPDocEngine; APackage : TPasPackage;
-  AObjectKind: TPasObjKind);
+  AObjectKind: TPasObjKindSet);
 
 begin
   FEngine:= AEngine;
   FPackage:= APAckage;
   FObjectKind:=AObjectKind;
-  Case FObjectkind of
-    okInterface :
+  if (okInterface in FObjectkind) then
       begin
         FRootObjectPathName:='#rtl.System.IInterface';
         FRootObjectName:= 'IInterface';
-      end;
-    okObject, okClass :
+      end
+  else if (FObjectkind * okWithFields) <> [] then
       begin
         FRootObjectPathName:='#rtl.System.TObject';
         FRootObjectName:= 'TObject';
       end
-  else
+  else  // TODO: I don`t know need it ? Without that the code may be simplified.
     begin
       FRootObjectPathName:='#rtl.System.TObject';
       FRootObjectName:= 'TObject';
     end;
-  end;
   FParentObject:=TPasClassType.Create(FRootObjectName,FEngine.FindModule('System'));
   if not Assigned(FParentObject) then
     FParentObject:=TPasClassType.Create(FRootObjectName,FPackage);
-  FParentObject.ObjKind:=FObjectKind;
+  if (okInterface in FObjectkind) then
+      FParentObject.ObjKind:=okInterface
+  else if (FObjectkind * okWithFields) <> [] then
+    FParentObject.ObjKind:=okClass
+  else
+    FParentObject.ObjKind:=okClass;
   FRootNode:=TPasElementNode.Create(FParentObject);
   FRootNode.FParentNode := nil;
   FElementList:=TFPObjectHashTable.Create(False);
@@ -154,7 +163,8 @@ Var
 
 begin
   Result:= nil;
-  if (aElement.ObjKind <> FObjectKind) then exit;
+  if not (aElement.ObjKind in FObjectKind) then exit;
+
   aParentNode:= nil;
   if aElement=Nil then
     aName:=FRootObjectName
@@ -227,10 +237,11 @@ procedure TClassTreeBuilder.SaveToXml ( AFileName: String );
     for CounterVar := 0 to ParentPasEl.ChildCount-1 do
     begin
       PasElNode:= ParentPasEl.Children[CounterVar];
-      xmlEl:= AXmlDoc.CreateElement(UnicodeString(PasElNode.Element.Name));
+      xmlEl:= AXmlDoc.CreateElement(UTF8Decode(PasElNode.Element.Name));
       M:= PasElNode.Element.GetModule;
-      xmlEl['unit'] := UnicodeString(M.Name);
-      xmlEl['package'] := UnicodeString(M.PackageName);
+      xmlEl['unit'] := UTF8Decode(M.Name);
+      xmlEl['package'] := UTF8Decode(M.PackageName);
+      xmlEl['type'] := UTF8Decode(GetElementTypeName(PasElNode.Element));
       ParentxmlEl.AppendChild(xmlEl);
       AddPasElChildsToXml(xmlEl, PasElNode);
     end;
@@ -244,17 +255,24 @@ begin
   XmlDoc:= TXMLDocument.Create;
   XmlDoc.AppendChild(XmlDoc.CreateComment(UTF8Decode(SDocGeneratedByComment)));
   try
-    XmlRootEl:= XmlDoc.CreateElement(UnicodeString(FRootNode.Element.Name));
+    XmlRootEl:= XmlDoc.CreateElement(UTF8Decode(FRootNode.Element.Name));
     M:= FRootNode.Element.GetModule;
     if Assigned(M) then
     begin
-      XmlRootEl['unit'] := UnicodeString(M.Name);
-      XmlRootEl['package'] := UnicodeString(M.PackageName);
+      XmlRootEl['unit'] := UTF8Decode(M.Name);
+      XmlRootEl['package'] := UTF8Decode(M.PackageName);
+      XmlRootEl['type'] := UTF8Decode(GetElementTypeName(FRootNode.Element));
     end
       else
     begin
       XmlRootEl['unit'] := 'system';
       XmlRootEl['package'] := 'rtl';
+      if (okWithFields * FObjectKind) <> [] then
+        XmlRootEl['type'] := 'class'
+      else if (okInterface in FObjectKind) then
+        XmlRootEl['type'] := 'interface'
+      else
+        XmlRootEl['type'] := 'class';
     end;
     XmlDoc.AppendChild(XmlRootEl);
     AddPasElChildsToXml(XmlRootEl, FRootNode);
