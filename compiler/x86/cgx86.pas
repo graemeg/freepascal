@@ -1995,7 +1995,7 @@ unit cgx86;
             href.scalefactor:=a;
             list.concat(taicpu.op_ref_reg(A_LEA,TCgSize2OpSize[size],href,dst));
           end
-        else if (op in [OP_MUL,OP_IMUL]) and (size in [OS_32,OS_S32,OS_64,OS_S64]) and
+        else if (op in [OP_MUL,OP_IMUL]) and (size in [OS_16,OS_S16,OS_32,OS_S32,OS_64,OS_S64]) and
           (a>1) and (a<=maxLongint) and not ispowerof2(int64(a),power) then
           begin
             { MUL with overflow checking should be handled specifically in the code generator }
@@ -2343,6 +2343,17 @@ unit cgx86;
             begin
               if reg2opsize(src) <> dstsize then
                 internalerror(200109226);
+              { x86 does not have an 8 Bit imul, so do 16 Bit multiplication
+                we do not need to zero/sign extend as we discard the upper bits anyways }
+              if (TOpCG2AsmOp[op]=A_IMUL) and (size in [OS_8,OS_S8]) then
+                begin
+                  { this might only happen if no overflow checking is done }
+                  if cs_check_overflow in current_settings.localswitches then
+                    Internalerror(2021011601);
+                  src:=makeregsize(list,src,OS_16);
+                  dst:=makeregsize(list,dst,OS_16);
+                  dstsize:=S_W;
+                end;
               instr:=taicpu.op_reg_reg(TOpCG2AsmOp[op],dstsize,src,dst);
               list.concat(instr);
             end;

@@ -43,6 +43,7 @@ implementation
 
     uses
       globtype,constexp,
+      cutils,
       aasmdata,defutil,
       pass_2,
       ncon,
@@ -70,7 +71,7 @@ implementation
           op:=OP_SHR;
 
         opsize:=def_cgsize(resultdef);
-        mask:=resultdef.size*8-1;
+        mask:=max(resultdef.size,4)*8-1;
 
         { load left operators in a register }
         if not(left.location.loc in [LOC_CREGISTER,LOC_REGISTER]) or

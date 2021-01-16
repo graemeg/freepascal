@@ -387,7 +387,10 @@ interface
         cgsize:=def_cgsize(resultdef);
         opsize:=TCGSize2OpSize[cgsize];
         rega:=newreg(R_INTREGISTER,RS_EAX,cgsize2subreg(R_INTREGISTER,cgsize));
-        regd:=newreg(R_INTREGISTER,RS_EDX,cgsize2subreg(R_INTREGISTER,cgsize));
+        if cgsize in [OS_8,OS_S8] then
+          regd:=NR_AH
+        else
+          regd:=newreg(R_INTREGISTER,RS_EDX,cgsize2subreg(R_INTREGISTER,cgsize));
 
         location_reset(location,LOC_REGISTER,cgsize);
         hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,resultdef,false);
