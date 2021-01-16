@@ -69,24 +69,8 @@ implementation
         else
           op:=OP_SHR;
 
-        { special treatment of 32bit values for backwards compatibility }
-        { mul optimizations require to keep the sign (FK) }
-        if left.resultdef.size<=4 then
-          begin
-            if is_signed(left.resultdef) then
-              opsize:=OS_S32
-            else
-              opsize:=OS_32;
-            mask:=31;
-          end
-        else
-          begin
-            if is_signed(left.resultdef) then
-              opsize:=OS_S64
-            else
-              opsize:=OS_64;
-            mask:=63;
-          end;
+        opsize:=def_cgsize(resultdef);
+        mask:=resultdef.size*8-1;
 
         { load left operators in a register }
         if not(left.location.loc in [LOC_CREGISTER,LOC_REGISTER]) or
