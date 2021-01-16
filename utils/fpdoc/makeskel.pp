@@ -23,7 +23,7 @@ program MakeSkel;
 {$h+}
 
 uses
-  SysUtils, Classes, Gettext, dGlobals, PasTree, PParser,PScanner;
+  fpdocstrs, SysUtils, Classes, Gettext, dGlobals, PasTree, PParser,PScanner;
 
 resourcestring
   STitle = 'MakeSkel - FPDoc skeleton XML description file generator';

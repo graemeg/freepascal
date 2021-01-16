@@ -70,6 +70,9 @@ begin
     T.install:=false;
     T.ResourceStrings:=true;
 
+    T := P.Targets.AddUnit('dglobals.pp');
+    T.install:=false;
+
     T := P.Targets.AddUnit('dwriter.pp');
     T.install:=false;
 

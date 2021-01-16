@@ -44,15 +44,8 @@ Const
 
 implementation
 
-Uses XMLRead, XMLWrite;
+Uses fpdocstrs, XMLRead, XMLWrite;
 
-Resourcestring
-  SErrInvalidRootNode = 'Invalid options root node: Got "%s", expected "docproject"';
-  SErrNoPackagesNode = 'No "packages" node found in docproject';
-  SErrNoInputFile = 'unit tag without file attribute found';
-  SErrNoDescrFile = 'description tag without file attribute';
-  SErrNoImportFile = 'Import tag without file attribute';
-  SErrNoImportPrefix = 'Import tag without prefix attribute';
 
 { TXMLFPDocOptions }
 
