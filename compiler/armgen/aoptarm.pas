@@ -902,8 +902,8 @@ Implementation
         { reg1 might not be modified inbetween }
         not(RegModifiedBetween(taicpu(p).oper[1]^.reg,p,hp1)) then
         begin
-          DebugMsg('Peephole SxtbAndImm2Sxtb done', p);
-          taicpu(hp1).opcode:=A_SXTB;
+          DebugMsg('Peephole SxtbAndImm2Uxtb done', p);
+          taicpu(hp1).opcode:=A_UXTB;
           taicpu(hp1).ops:=2;
           taicpu(hp1).loadReg(1,taicpu(p).oper[1]^.reg);
           GetNextInstruction(p,hp2);
