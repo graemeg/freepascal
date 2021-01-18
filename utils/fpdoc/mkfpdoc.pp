@@ -338,7 +338,7 @@ begin
         except
           on E: EParserError do
             begin
-              eMsg:= Format('Error of parcer: %s(%d,%d): %s',[E.Filename, E.Row, E.Column, E.Message]);
+              eMsg:= Format('Parser error: %s (%d,%d): %s',[E.Filename, E.Row, E.Column, E.Message]);
               If Options.StopOnParseError then Raise;
             end;
           on E: EFileNotFoundError do
