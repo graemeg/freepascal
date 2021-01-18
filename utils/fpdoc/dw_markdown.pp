@@ -116,6 +116,8 @@ type
     procedure CreateClassMemberPageBody(AElement: TPasElement); virtual;
     procedure CreateInheritanceSubpage(aClass: TPasClassType; aTitle : string; AFilter: TMemberFilter); virtual;
     procedure CreateSortedSubpage(ACLass: TPasClassType; aTitle : string; AFilter: TMemberFilter ); virtual;
+    //  Here we write the documentation
+    Procedure DoWriteDocumentation; override;
   public
     constructor Create(APackage: TPasPackage; AEngine: TFPDocEngine); override;
     destructor Destroy; override;
@@ -126,7 +128,6 @@ type
     // Start producing html complete package documentation
 
     Function InterPretOption(Const Cmd,Arg : String) : boolean; override;
-    Procedure WriteDoc; override;
     Class Function FileNameExtension : String; override;
     class procedure Usage(List: TStrings); override;
     Class procedure SplitImport(var AFilename, ALinkPrefix: String); override;
@@ -300,16 +301,13 @@ begin
     end;
 end;
 
-
-
-procedure TMarkdownWriter.WriteDoc;
+procedure TMarkdownWriter.DoWriteDocumentation;
 
 begin
   Inherited;
   If MarkDownEngine=memkDocs then
     WriteMkdocsYaml;
 end;
-
 
 function TMarkdownWriter.GetFooterMarkDown: TStrings;
 begin
@@ -650,6 +648,7 @@ procedure TMarkdownWriter.AppendSeeAlsoSection(AElement: TPasElement; DocNode: T
       else
         N:='?';
       DoLog(SErrUnknownLinkID, [s,N,aID]);
+      LinkUnresolvedInc();
       end ;
      if doBold then
        DescrBeginBold

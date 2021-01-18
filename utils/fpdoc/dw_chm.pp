@@ -40,7 +40,7 @@ type
     FAutoIndex: Boolean;
     FOtherFiles: String;
     procedure ProcessOptions;
-    function ResolveLinkIDAbs(const Name: String; Level : Integer = 0): DOMString;
+    function ResolveLinkIDAbs(const Name: String): DOMString;
     function RetrieveOtherFiles(const DataName: String; out PathInChm: String;
               out FileName: String; var Stream: TStream): Boolean;
     procedure LastFileAdded(Sender: TObject);
@@ -50,10 +50,10 @@ type
             APasEl: TPasElement; Prefix:String);
     procedure GenerateTOC;
     procedure GenerateIndex;
+  protected
+    procedure DoWriteDocumentation; override;
   public
-    procedure WriteDoc; override;
     function CreateAllocator: TFileAllocator; override;
-    
     function  InterPretOption(const Cmd,Arg : String): boolean; override;
 
     class procedure Usage(List: TStrings); override;
@@ -163,7 +163,7 @@ end;
 
 { TCHMHTMLWriter }
 
-function TCHMHTMLWriter.ResolveLinkIDAbs(const Name: String; Level : Integer = 0): DOMString;
+function TCHMHTMLWriter.ResolveLinkIDAbs(const Name: String): DOMString;
 
 begin
   Result:=UTF8Decode(FixHTMLpath(Engine.ResolveLink(Module,Name, True)));
@@ -623,7 +623,7 @@ begin
   DoLog('Generating Index Done');
 end;
 
-procedure TCHMHTMLWriter.WriteDoc;
+procedure TCHMHTMLWriter.DoWriteDocumentation;
 var
   i: Integer;
   PageDoc: TXMLDocument;
@@ -631,8 +631,6 @@ var
   IFileName,FileName: String;
   FilePath: String;
 begin
-  FAllocator:=CreateAllocator;
-  FAllocator.SubPageNames:= SubPageNames;
   AllocatePages;
   DoLog(SWritingPages, [PageCount]);
 

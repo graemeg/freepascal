@@ -99,9 +99,10 @@ Type
     Procedure WriteExampleFile(FN : String); virtual;
     procedure WriteExample(ADocNode: TDocNode);
     procedure WriteSeeAlso(ADocNode: TDocNode; Comma : Boolean);
+    // Here we write the documentation.
+    procedure DoWriteDocumentation; override;
   Public
     Constructor Create(APackage: TPasPackage; AEngine: TFPDocEngine); override;
-    procedure WriteDoc; override;
     // Documentation writing methods.
     // Package
     Procedure WritePackagePage;
@@ -970,7 +971,7 @@ end;
   Actual man page writing
   ---------------------------------------------------------------------}
 
-procedure TManWriter.WriteDoc;
+procedure TManWriter.DoWriteDocumentation;
 
 var
   i : Integer;

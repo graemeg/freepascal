@@ -67,7 +67,6 @@ type
     procedure FinishElementPage(AElement: TPasElement);virtual;
     procedure AppendFooter;virtual;
 
-
     procedure AppendClassMemberListLink(aClass: TPasClassType; ParaEl: TDomElement; AListSubpageIndex: Integer; const AText: DOMString);virtual;
     procedure CreateClassMainPage(aClass: TPasClassType);virtual;
     procedure CreateClassInheritanceSubpage(aClass: TPasClassType; AFilter: TMemberFilter);virtual;
@@ -97,6 +96,9 @@ type
     procedure CreateProcPageBody(AProc: TPasProcedureBase);
     Procedure CreateTopicLinks(Node : TDocNode; PasElement : TPasElement);
     procedure AppendTypeDecl(AType: TPasType; TableEl, CodeEl: TDomElement);
+    //  Main documentation process
+    Procedure DoWriteDocumentation; override;
+
     Property HeaderHTML : TStringStream Read FHeaderHTML;
     Property NavigatorHTML : TStringStream read FNavigatorHTML;
     Property FooterHTML : TStringStream read FFooterHTML;
@@ -104,7 +106,7 @@ type
     Property HeadElement : TDomElement Read FHeadElement;
     Property TitleElement: TDOMElement Read FTitleElement;
   public
-    // Creating all module hierarchy classes is here !!!!
+    // Creating all module hierarchy classes happens here !
     constructor Create(APackage: TPasPackage; AEngine: TFPDocEngine); override;
     // Overrides
     Class Function FileNameExtension : String; override;
@@ -112,7 +114,6 @@ type
     Class procedure SplitImport(var AFilename, ALinkPrefix: String); override;
 
     Function InterPretOption(Const Cmd,Arg : String) : boolean; override;
-    Procedure WriteDoc; override;
 
     // Single-page generation
     function CreateHTMLPage(AElement: TPasElement; ASubpageIndex: Integer): TXMLDocument; virtual;
@@ -207,7 +208,8 @@ begin
   PageDoc.Free;
 end;
 
-procedure THTMLWriter.WriteDoc;
+procedure THTMLWriter.DoWriteDocumentation;
+
 
 begin
   Inherited;

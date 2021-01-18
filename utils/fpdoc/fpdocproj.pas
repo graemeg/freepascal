@@ -55,6 +55,7 @@ Type
     FFormat: String;
     FHidePrivate: Boolean;
     FHideProtected: Boolean;
+    FFallBackSeeAlsoLinks: Boolean;
     FIO: Boolean;
     FLanguage: String;
     FMoDir: String;
@@ -63,7 +64,7 @@ Type
     FWarnDocumentationEmpty: Boolean;
     FWarnNoNode: Boolean;
     FDontTrim : Boolean;
-    FWarnUsedFile: Boolean;
+    FInfoUsedFile: Boolean;
     FWarnXCT: Boolean;
     procedure SetBackendOptions(const AValue: TStrings);
   Public
@@ -79,8 +80,9 @@ Type
     Property BackendOptions : TStrings Read FBackEndoptions Write SetBackendOptions;
     Property StopOnParseError : Boolean Read FSOPE Write FSOPE;
     Property HideProtected : Boolean Read FHideProtected Write FHideProtected;
+    Property FallBackSeeAlsoLinks :Boolean Read  FFallBackSeeAlsoLinks Write FFallBackSeeAlsoLinks;
     Property WarnNoNode : Boolean Read FWarnNoNode Write FWarnNoNode;
-    Property WarnUsedFile : Boolean Read FWarnUsedFile Write FWarnUsedFile;
+    Property InfoUsedFile : Boolean Read FInfoUsedFile Write FInfoUsedFile;
     Property WarnDocumentationEmpty : Boolean Read FWarnDocumentationEmpty Write FWarnDocumentationEmpty;
     Property WarnXCT : Boolean Read FWarnXCT Write FWarnXCT;
     Property ShowPrivate : Boolean Read FHidePrivate Write FHidePrivate;
@@ -195,7 +197,7 @@ begin
     FSOPE:=O.StopOnParseError;
     HideProtected:=O.HideProtected;
     WarnNoNode:=O.WarnNoNode;
-    WarnUsedFile:=O.WarnUsedFile;
+    InfoUsedFile:=O.InfoUsedFile;
     WarnDocumentationEmpty:=O.WarnDocumentationEmpty;
     WarnXCT:=O.WarnXCT;
     ShowPrivate:=O.ShowPrivate;

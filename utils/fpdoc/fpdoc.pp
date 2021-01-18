@@ -101,6 +101,8 @@ begin
   Writeln(SUsageOption190);
   Writeln(SUsageOption200);
   Writeln(SUsageOption210);
+  Writeln(SUsageOption211);
+  Writeln(SUsageOption212);
   Writeln(SUsageOption215);
   Writeln(SUsageOption215A);
   Writeln(SUsageOption220);
@@ -154,6 +156,8 @@ end;
 
 procedure TFPDocApplication.ExceptProc(Sender: TObject; E: Exception);
 begin
+  OutputLog(Sender, Format('Exception: Class - %s', [E.ClassName]));
+  OutputLog(Sender, E.Message);
 {$IFDEF EXCEPTION_STACK}
   OutputLog(Sender, DumpExceptionCallStack(E));
 {$ENDIF}
@@ -310,12 +314,14 @@ begin
     Usage(0)
   else if s = '--hide-protected' then
     FCreator.Options.HideProtected := True
+  else if s = '--fallback-seealso-links' Then
+   FCreator.Options.FallBackSeeAlsoLinks := True
   else if s = '--warn-no-node' then
     FCreator.Options.WarnNoNode := True
   else if s = '--warn-documentation-empty' then
     FCreator.Options.WarnDocumentationEmpty := True
-  else if s = '--warn-used-file' then
-    FCreator.Options.WarnUsedFile := True
+  else if s = '--info-used-file' then
+    FCreator.Options.InfoUsedFile := True
   else if s = '--warn-XCT' then
     FCreator.Options.WarnXCT := True
   else if s = '--show-private' then
@@ -441,15 +447,15 @@ end;
 constructor TFPDocApplication.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  StopOnException:=true;
+  StopOnException:=false;
   FCreator:=TFPDocCreator.Create(Self);
   FCreator.OnLog:=@OutputLog;
   OnException:= @ExceptProc;
 end;
 
 begin
-  //AssignFile(Output, 'fpdoc.log');
-  //rewrite(Output);
+  //AssignFile(StdErr, 'fpdoc_err.log');
+  //rewrite(StdErr);
   With TFPDocApplication.Create(Nil) do
     try
       Run;

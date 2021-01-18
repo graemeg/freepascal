@@ -167,7 +167,7 @@ type
     HasContentFile: Boolean;
     HidePrivate: Boolean;       // Hide private class members in output?
     HideProtected: Boolean;     // Hide protected class members in output?
-
+    FalbackSeeAlsoLinks: Boolean; // Simplify SeeAlso Links
     constructor Create;
     destructor Destroy; override;
     procedure SetPackageName(const APackageName: String);
@@ -188,6 +188,7 @@ type
     // Link tree support
     procedure AddLink(const APathName, ALinkTo: String);
     function FindAbsoluteLink(const AName: String): String;
+    // resolve link inside actual AModule and AModule.Parent = APackage
     function ResolveLink(AModule: TPasModule; const ALinkDest: String; Strict : Boolean = False): String;
     function FindLinkedNode(ANode: TDocNode): TDocNode;
     Function ShowElement(El : TPasElement) : Boolean; inline;
@@ -1191,7 +1192,6 @@ end;
 function TFPDocEngine.ResolveLink(AModule: TPasModule; const ALinkDest: String; Strict : Boolean = False): String;
 var
   i: Integer;
-
 begin
 {
   if Assigned(AModule) then
@@ -1202,14 +1202,18 @@ begin
   if (ALinkDest='') then
     Exit('');
   if (ALinkDest[1] = '#') then
+    // Link has full path
     Result := FindAbsoluteLink(ALinkDest)
   else if (AModule=Nil) then
+    // Trying to add package name only
     Result:= FindAbsoluteLink(RootLinkNode.FirstChild.Name+'.'+ALinkDest)
   else
     begin
-    if Pos(AModule.Name,ALinkDest) = 1 then
+    if Pos(LowerCase(AModule.Name)+'.',LowerCase(ALinkDest)) = 1 then
+      // fix ERROR - Link starts from name of module
       Result := ResolveLink(AModule, AModule.packagename + '.' + ALinkDest, Strict)
     else
+      // Link should be a first level inside of module
       Result := ResolveLink(AModule, AModule.PathName + '.' + ALinkDest, Strict);
     if (Result='') then
       begin
@@ -1220,12 +1224,17 @@ begin
     end;
   // Match on parent : class/enumerated/record/module
   if (Result='') and not strict then
+    begin
+    // TODO: I didn't see a calling this code at entire lcl package
+    // Writeln('INFO UnStrinct(): ' + ALinkDest);
     for i := Length(ALinkDest) downto 1 do
       if ALinkDest[i] = '.' then
         begin
         Result := ResolveLink(AModule, Copy(ALinkDest, 1, i - 1), Strict);
+        //if Result <> '' then Writeln('INFO LinkResolved UnStrinct(): '+Result);
         exit;
         end;
+    end;
 end;
 
 procedure ReadXMLFileALT(OUT ADoc:TXMLDocument;const AFileName:ansistring);

@@ -89,11 +89,12 @@ Type
     Property LastURL : DomString Read FLastURL Write FLastURL;
     // Overriden from fpdocwriter;
     procedure DescrWriteText(const AText: DOMString); override;
+    // Actual writing happens here.
+    Procedure DoWriteDocumentation; override;
   Public
     Constructor Create(APackage: TPasPackage; AEngine: TFPDocEngine); override;
     function InterpretOption(const Cmd, Arg: String): Boolean; override;
     class procedure Usage(List: TStrings); override;
-    procedure WriteDoc; override;
     // Linear Documentation writing methods.
     Procedure ProcessPackage;
     Procedure ProcessTopics(DocNode : TDocNode; Alevel : Integer);
@@ -593,7 +594,7 @@ begin
     Result := '<nil>';
 end;
 
-procedure TLinearWriter.WriteDoc;
+procedure TLinearWriter.DoWriteDocumentation;
 
 var
   i : Integer;

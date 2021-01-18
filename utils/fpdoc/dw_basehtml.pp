@@ -428,6 +428,7 @@ begin
     else
       N:='?';
     DoLog(SErrUnknownLinkID, [s,n,a]);
+    LinkUnresolvedInc();
     PushOutputNode(CreateEl(CurOutputNode, 'b'));
   end else
     PushOutputNode(CreateLink(CurOutputNode, s));
@@ -797,7 +798,10 @@ begin
        TREl:=CreateTR(TableEl);
        ParaEl:=CreatePara(CreateTD_vtop(TREl));
        l:=El['id'];
-       s:= ResolveLinkID(UTF8ENcode(l));
+       if Assigned(Engine) and Engine.FalbackSeeAlsoLinks then
+         s:= ResolveLinkIDUnStrict(UTF8ENcode(l))
+       else
+         s:= ResolveLinkID(UTF8ENcode(l));
        if Length(s)=0 then
          begin
          if assigned(module) then
@@ -806,10 +810,11 @@ begin
            s:='?';
          if l='' then l:='<empty>';
          if Assigned(AElement) then
-           N:=UTF8Decode(AElement.Name)
+           N:=UTF8Decode(AElement.PathName)
          else
            N:='?';
          DoLog(SErrUnknownLinkID, [s,N,l]);
+         LinkUnresolvedInc();
          NewEl := CreateEl(ParaEl,'b')
          end
        else

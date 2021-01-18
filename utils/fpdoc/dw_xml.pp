@@ -38,10 +38,11 @@ Type
     procedure AllocatePackagePages; override;
     procedure AllocateModulePages(AModule: TPasModule; {%H-}LinkList: TObjectList); override;
     procedure WriteDocPage(const aFileName: String; aElement: TPasElement; {%H-}aSubPageIndex: Integer); override;
+    //  Here we write the documentation.
+    Procedure DoWriteDocumentation; override;
   public
     constructor Create(APackage: TPasPackage; AEngine: TFPDocEngine); override;
     function ModuleToXMLStruct(AModule: TPasModule): TXMLDocument;
-    Procedure WriteDoc; override;
     class procedure Usage(List: TStrings); override;
     function  InterPretOption(const Cmd,Arg : String): boolean; override;
   end;
@@ -633,9 +634,9 @@ end;
 
 { TXMLWriter }
 
-procedure TXMLWriter.WriteDoc;
+procedure TXMLWriter.DoWriteDocumentation;
 begin
-  inherited WriteDoc;
+  inherited DoWriteDocumentation;
 end;
 
 function TXMLWriter.CreateAllocator: TFileAllocator;

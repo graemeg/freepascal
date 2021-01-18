@@ -603,7 +603,7 @@ var
 begin
   Writer := TTxtWriter.Create(APackage, AEngine);
   try
-    Writer.WriteDoc;
+    Writer.DoWriteDocumentation;
   finally
     Writer.Free;
   end;

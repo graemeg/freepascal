@@ -12,7 +12,7 @@ type
   { TXMLWriter }
 
   TDXMLWriter = class(TFPDocWriter)
-    procedure WriteDoc; override;
+    procedure DoWriteDocumentation; override;
   end;
 
   { TDocumentation }
@@ -472,7 +472,7 @@ end;
 
 { TXMLWriter }
 
-procedure TDXMLWriter.WriteDoc;
+procedure TDXMLWriter.DoWriteDocumentation;
 var
   i: integer;
 begin

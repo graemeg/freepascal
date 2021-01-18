@@ -551,6 +551,7 @@ begin
     else
       N:='?';
     DoLog(SErrUnknownLinkID, [s,n,a]);
+    LinkUnresolvedInc();
     end
 end;
 
