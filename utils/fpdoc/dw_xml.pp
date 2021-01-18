@@ -110,6 +110,8 @@ var
       visAutomated       : Result := 'automated';
       visStrictPrivate   : Result := 'strictprivate';
       visStrictProtected : Result := 'strictprotected';
+      visRequired        : Result := 'required';
+      visOptional        : Result := 'optional';
     end;
   end;
 

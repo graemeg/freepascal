@@ -338,6 +338,8 @@ function THTMLWriter.AppendProcType(CodeEl, TableEl: TDOMElement;
 var
   i: Integer;
   Arg: TPasArgument;
+  S : String;
+
 begin
   if Element.Args.Count > 0 then
   begin
@@ -347,12 +349,9 @@ begin
     begin
       Arg := TPasArgument(Element.Args[i]);
       CodeEl := CreateIndentedCodeEl(Indent + 2);
-
-      case Arg.Access of
-        argConst: AppendKw(CodeEl, 'const ');
-        argVar: AppendKw(CodeEl, 'var ');
-        argOut: AppendKw(CodeEl, 'out ');
-      end;
+      S:=AccessNames[Arg.Access];
+      if (S<>'') then
+        AppendKw(CodeEl,S);
       AppendText(CodeEl, Arg.Name);
       if Assigned(Arg.ArgType) then
       begin
@@ -1758,12 +1757,25 @@ procedure THTMLWriter.CreateClassMainPage(aClass : TPasClassType);
     AppendSym(CodeEl, '>');
   end;
 
+  procedure AppendInterfaceInfo(ACodeEl : TDomElement ; AThisClass: TPasClassType);
+  var
+    i:Integer;
+    ThisInterface:TPasClassType;
+  begin
+  if Assigned(AThisClass) and (AThisClass.Interfaces.count>0) then
+    begin
+      for i:=0 to AThisClass.interfaces.count-1 do
+        begin
+          ThisInterface:=TPasClassType(AThisClass.Interfaces[i]);
+          AppendText(ACodeEl,',');
+          AppendHyperlink(ACodeEl, ThisInterface);
+        end;
+    end;
+  end;
 
 var
   ParaEl,TableEl, TREl, TDEl, CodeEl: TDOMElement;
-  i: Integer;
-  ThisInterface,
-  ThisClass: TPasClassType;
+  ThisClass, PrevClass: TPasClassType;
   ThisTreeNode: TPasElementNode;
 begin
   //WriteLn('@ClassPageBody.CreateMainPage Class=', AClass.Name);
@@ -1794,25 +1806,6 @@ begin
   AppendText(CodeEl, ' ');
   AppendKw(CodeEl, UTF8Decode(ObjKindNames[AClass.ObjKind]));
 
-  if Assigned(AClass.AncestorType) then
-  begin
-    AppendSym(CodeEl, '(');
-    AppendHyperlink(CodeEl, AClass.AncestorType);
-    if AClass.Interfaces.count>0 Then
-      begin
-        for i:=0 to AClass.interfaces.count-1 do
-         begin
-           AppendSym(CodeEl, ', ');
-           AppendHyperlink(CodeEl,TPasClassType(AClass.Interfaces[i]));
-         end;
-      end;
-    AppendSym(CodeEl, ')');
-  end;
-  CreateMemberDeclarations(AClass, AClass.Members,TableEl, not AClass.IsShortDefinition);
-
-  AppendText(CreateH2(ContentElement), UTF8Decode(SDocInheritance));
-  TableEl := CreateTable(ContentElement);
-
   // Now we are using only TreeClass for show inheritance
 
   ThisClass := AClass; ThisTreeNode := Nil;
@@ -1820,6 +1813,29 @@ begin
     ThisTreeNode := TreeInterface.GetPasElNode(AClass)
   else
     ThisTreeNode := TreeClass.GetPasElNode(AClass);
+  if not Assigned(ThisTreeNode) Then
+    DoLog('EROOR Tree Class information: '+ThisClass.PathName);
+
+  if Assigned(AClass.AncestorType) then
+  begin
+    AppendSym(CodeEl, '(');
+    // Show parent class information
+    //TODO: Specialized generic classes is not processed now.
+    //      TLazFixedRoundBufferListMemBase as example
+    AppendHyperlink(CodeEl, AClass.AncestorType);
+    AppendInterfaceInfo(CodeEl, AClass);
+    AppendSym(CodeEl, ')');
+  end;
+  // Class members
+  CreateMemberDeclarations(AClass, AClass.Members,TableEl, not AClass.IsShortDefinition);
+
+  AppendText(CreateH2(ContentElement), UTF8Decode(SDocInheritance));
+  TableEl := CreateTable(ContentElement);
+
+  // Process tree class information
+  // First tree class link is to This class
+  PrevClass:= nil;
+
   while True do
   begin
     TREl := CreateTR(TableEl);
@@ -1828,23 +1844,10 @@ begin
     CodeEl := CreateCode(CreatePara(TDEl));
 
     // Show class item
-    if Assigned(ThisClass) Then
-      AppendHyperlink(CodeEl, ThisClass);
-    //else
-    //  AppendHyperlink(CodeEl, ThisTreeNode);
-    // Show links to class interfaces
-    if Assigned(ThisClass) and (ThisClass.Interfaces.count>0) then
-      begin
-        for i:=0 to ThisClass.interfaces.count-1 do
-          begin
-            ThisInterface:=TPasClassType(ThisClass.Interfaces[i]);
-            AppendText(CodeEl,',');
-            AppendHyperlink(CodeEl, ThisInterface);
-          end;
-      end;
-    // short class description
-    if Assigned(ThisClass) then
-          AppendShortDescrCell(TREl, ThisClass);
+    AppendHyperlink(CodeEl, ThisClass);
+    if Assigned(PrevClass) then // Interfaces from prevClass
+      AppendInterfaceInfo(CodeEl, PrevClass);
+    AppendShortDescrCell(TREl, ThisClass);
 
     if Assigned(ThisTreeNode) then
       if Assigned(ThisTreeNode.ParentNode) then
@@ -1852,6 +1855,7 @@ begin
         TDEl := CreateTD(CreateTR(TableEl));
         TDEl['align'] := 'center';
         AppendText(TDEl, '|');
+        PrevClass:= ThisClass;
         ThisClass := ThisTreeNode.ParentNode.Element;
         ThisTreeNode := ThisTreeNode.ParentNode;
       end
@@ -1859,6 +1863,7 @@ begin
       begin
         ThisClass := nil;
         ThisTreeNode:= nil;
+        PrevClass:= nil;
         break;
       end
     else

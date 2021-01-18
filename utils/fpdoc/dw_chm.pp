@@ -341,8 +341,10 @@ begin
        Continue;
     ObjUnitItem := ObjByUnitItem.Children.NewItem;
     ObjUnitItem.Text := AModule.Name;
+    ObjUnitItem.addLocal(FixHTMLpath(Allocator.GetFilename(AModule, ClassesSubindex)));
     RoutinesUnitItem := RoutinesByUnitItem.Children.NewItem;
     RoutinesUnitItem.Text := AModule.Name;
+    RoutinesUnitItem.addLocal(FixHTMLpath(Allocator.GetFilename(AModule, ProcsSubindex)));
     for j := 0 to AModule.InterfaceSection.Classes.Count-1 do
     begin
       Element := TPasClassType(AModule.InterfaceSection.Classes[j]);
