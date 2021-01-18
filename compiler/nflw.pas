@@ -2722,6 +2722,13 @@ implementation
            result:=right;
            right:=nil;
          end;
+       { if the finally block contains no code, we can kill
+         it and just return the try part }
+       if has_no_code(right) and not(assigned(third)) and not(implicitframe) then
+         begin
+           result:=left;
+           left:=nil;
+         end;
      end;
 
 
