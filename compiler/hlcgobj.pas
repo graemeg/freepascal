@@ -4901,6 +4901,7 @@ implementation
   procedure thlcgobj.initialize_regvars(p: TObject; arg: pointer);
     var
       href : treference;
+      mmreg : tregister;
     begin
       if (tsym(p).typ=staticvarsym) and not(tstaticvarsym(p).noregvarinitneeded) then
        begin
@@ -4922,12 +4923,18 @@ implementation
                      tstaticvarsym(p).initialloc.register);
              end;
            LOC_CMMREGISTER :
-             { clear the whole register }
-             a_opmm_reg_reg(TAsmList(arg),OP_XOR,tstaticvarsym(p).vardef,
-               { as we pass shuffle=nil, we have to pass a full register }
-               newreg(R_MMREGISTER,getsupreg(tstaticvarsym(p).initialloc.register),R_SUBMMWHOLE),
-               newreg(R_MMREGISTER,getsupreg(tstaticvarsym(p).initialloc.register),R_SUBMMWHOLE),
-               nil);
+             begin
+{$ifdef ARM}
+               { Do not pass d0 (which uses f0 and f1) for arm single type variable }
+               mmreg:=tstaticvarsym(p).initialloc.register;
+{$else}
+               { clear the whole register }
+               mmreg:=newreg(R_MMREGISTER,getsupreg(tstaticvarsym(p).initialloc.register),R_SUBMMWHOLE);
+{$endif}             
+               a_opmm_reg_reg(TAsmList(arg),OP_XOR,tstaticvarsym(p).vardef, mmreg, mmreg,
+                 { as we pass shuffle=nil, we have to pass a full register }
+                 nil);
+             end;
            LOC_CFPUREGISTER :
              begin
                { initialize fpu regvar by loading from memory }
