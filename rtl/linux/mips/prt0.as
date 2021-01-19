@@ -52,6 +52,7 @@ _dynamic_start:
 _start:
         /* load fp */
         move    $s8,$sp
+        /* set __stkptr value to $s8 */
         lui     $at,%hi(__stkptr)
         sw      $s8,%lo(__stkptr)($at)
 
