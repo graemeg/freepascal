@@ -4,14 +4,6 @@
 }
 
 {$ifdef FPC} {$mode delphi}  {$endif}
-unit tregistry2;
-
-interface
-
-procedure DoRegTest2;
-
-implementation
-
 uses Windows, SysUtils, Classes, registry;
 
 {$ifdef FPC}
@@ -24,7 +16,8 @@ const
   
 procedure TestFailed(ErrCode: integer);
 begin
-  raise Exception.Create('Test FAILED. Error code: ' + IntToStr(ErrCode));
+  writeln('Test FAILED. Error code: ' + IntToStr(ErrCode));
+  Halt(ErrCode);
 end;
 
 procedure ClearReg(const KeyName: string = '');
@@ -212,5 +205,6 @@ begin
   end;
 end;
 
+begin
+  DoRegTest2;
 end.
-
