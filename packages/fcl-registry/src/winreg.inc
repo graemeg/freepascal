@@ -81,7 +81,28 @@ function TRegistry.DeleteKey(const Key: UnicodeString): Boolean;
 
 Var
   u: UnicodeString;
+  subkeys: TUnicodeStringArray;
+  k, old: HKEY;
+  i: integer;
 begin
+  old:=fCurrentKey;
+  k:=GetKey(Key);
+  if k <> 0 then
+    begin
+      fCurrentKey:=k;
+      try
+        subkeys:=GetKeyNames;
+        for i:=0 to High(subkeys) do
+          begin
+            Result:=DeleteKey(subkeys[i]);
+            if not Result then
+              exit;
+          end;
+      finally
+        fCurrentKey:=old;
+        CloseKey(k);
+      end;
+    end;
   u:=PRepKey(Key);
   FLastError:=RegDeleteKeyW(GetBaseKey(RelativeKey(Key)),PWideChar(u));
   Result:=FLastError=ERROR_SUCCESS;
