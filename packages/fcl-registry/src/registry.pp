@@ -266,6 +266,7 @@ type
     procedure DeleteKey(const Section, Name: String); override;
     procedure UpdateFile; override;
     function ValueExists(const Section, Ident: string): Boolean; override;
+    function SectionExists(const Section: string): Boolean; override;
     property RegIniFile: TRegIniFile read FRegIniFile;
   end{$ifdef XMLREG}deprecated 'Use TRegistry instead. Will be removed in 4.0'{$endif} platform; 
 
@@ -1125,13 +1126,18 @@ end;
 
 function TRegistryIniFile.ValueExists(const Section, Ident: string): Boolean;
 begin
-  with FRegInifile do
-    if OpenSection(Section) then
-      try
-        Result:=FRegInifile.ValueExists(Ident);
-      finally
-        CloseSection;
-      end;
+  Result:=FRegInifile.OpenSection(Section);
+  if Result then
+    try
+      Result:=FRegInifile.ValueExists(Ident);
+    finally
+      FRegInifile.CloseSection;
+    end;
+end;
+
+function TRegistryIniFile.SectionExists(const Section: string): Boolean;
+begin
+  Result:=FRegIniFile.KeyExists(Section);
 end;
 
 {$ifdef XMLREG}
