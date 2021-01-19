@@ -26,7 +26,7 @@ unit n68kadd;
 interface
 
     uses
-       node,nadd,ncgadd,cpubase,cgbase;
+       symtype,node,nadd,ncgadd,cpubase,cgbase;
 
 
     type
@@ -34,7 +34,7 @@ interface
        private
           function getresflags(unsigned: boolean) : tresflags;
           function getfloatresflags: tresflags;
-          function inlineable_realconstnode(const n: tnode): boolean;
+          function inlineable_realconstnode(const n: tnode; fpu_type : tdef): boolean;
           procedure second_mul64bit;
        protected
           function use_generic_mul64bit: boolean; override;
@@ -55,7 +55,7 @@ implementation
     uses
       globtype,systems,
       cutils,verbose,globals,
-      symconst,symdef,paramgr,symtype,
+      symconst,symdef,paramgr,
       aasmbase,aasmtai,aasmdata,aasmcpu,defutil,htypechk,
       cpuinfo,pass_1,pass_2,
       cpupara,cgutils,procinfo,
@@ -146,9 +146,14 @@ implementation
       end;
 
 
-    function t68kaddnode.inlineable_realconstnode(const n: tnode): boolean;
+    function t68kaddnode.inlineable_realconstnode(const n: tnode; fpu_type : tdef): boolean;
       begin
-        result:=(n.nodetype = realconstn) and
+        if assigned(fpu_type) and
+	   ((FPUM68K_HAS_EXTENDED in fpu_capabilities[current_settings.fputype])
+            or (fpu_type.size < sizeof(bestreal))) then
+          result:=false
+        else
+          result:=(n.nodetype = realconstn) and
             not ((trealconstnode(n).value_real=MathInf.Value) or
                  (trealconstnode(n).value_real=MathNegInf.Value) or
                  (trealconstnode(n).value_real=MathQNaN.value));
@@ -191,7 +196,7 @@ implementation
 
         { have left in the register, right can be a memory location }
         if (FPUM68K_HAS_FLOATIMMEDIATE in fpu_capabilities[current_settings.fputype]) and
-           inlineable_realconstnode(left) then
+           inlineable_realconstnode(left,resultdef) then
           begin
             location.register := cg.getfpuregister(current_asmdata.CurrAsmList,location.size);
             current_asmdata.CurrAsmList.concat(taicpu.op_realconst_reg(A_FMOVE,tcgsize2opsize[left.location.size],trealconstnode(left).value_real,location.register))
@@ -211,7 +216,7 @@ implementation
           LOC_REFERENCE,LOC_CREFERENCE:
               begin
                 if (FPUM68K_HAS_FLOATIMMEDIATE in fpu_capabilities[current_settings.fputype]) and
-                   inlineable_realconstnode(right) then
+                   inlineable_realconstnode(right,resultdef) then
                   current_asmdata.CurrAsmList.concat(taicpu.op_realconst_reg(op,tcgsize2opsize[right.location.size],trealconstnode(right).value_real,location.register))
                 else
                   begin
@@ -284,7 +289,7 @@ implementation
                   begin
                     hlcg.location_force_fpureg(current_asmdata.CurrAsmList,left.location,left.resultdef,true);
                     if not (current_settings.fputype = fpu_coldfire) and
-                       inlineable_realconstnode(right) then
+                       inlineable_realconstnode(right,left.resultdef) then
                       current_asmdata.CurrAsmList.concat(taicpu.op_realconst_reg(A_FCMP,tcgsize2opsize[right.location.size],trealconstnode(right).value_real,left.location.register))
                     else
                       begin
