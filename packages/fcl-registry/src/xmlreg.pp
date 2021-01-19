@@ -235,23 +235,13 @@ end;
 Function TXmlRegistry.DeleteKey(KeyPath : UnicodeString) : Boolean;
 
 Var
-  N, Curr : TDomElement;
-  Node: TDOMNode;
+  N : TDomElement;
 
 begin
  N:=FindKey(KeyPath);
  Result:=(N<>Nil);
  If Result then
    begin
-   //if a key has subkeys, result shall be false and nothing shall be deleted
-   Curr:=N;
-   Node:=Curr.FirstChild;
-   While Assigned(Node) do
-     begin
-     If (Node.NodeType=ELEMENT_NODE) and (Node.NodeName=SKey) then
-       Exit(False);
-     Node:=Node.NextSibling;
-     end;
    (N.ParentNode as TDomElement).RemoveChild(N);
    FDirty:=True;
    MaybeFlush;
