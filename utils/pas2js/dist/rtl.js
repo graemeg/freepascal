@@ -707,10 +707,9 @@ var rtl = {
   },
 
   intfAsIntfT: function (intf,intftype){
-    if (intf){
-      var i = rtl.getIntfG(intf.$o,intftype.$guid);
-      if (i!==null) return i;
-    }
+    if (!intf) return null;
+    var i = rtl.getIntfG(intf.$o,intftype.$guid);
+    if (i) return i;
     rtl.raiseEInvalidCast();
   },
 
