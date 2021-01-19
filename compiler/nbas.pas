@@ -1023,8 +1023,8 @@ implementation
                   if segment <> NR_NO then
                     Result := gas_regname(segment) + ':'
                   else
-                    Result := '';
 {$endif defined(x86)}
+                    Result := '';
 
                   if Assigned(symbol) then
                     begin
