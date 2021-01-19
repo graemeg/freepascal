@@ -1,6 +1,7 @@
 {
   This unit tests mostly TRegIniFile to work properly and be Delphi compatible.
-  Please keep this unit Delphi compatible.
+  This test also runs on non-Windows platforms where XML registry is used.
+  Please keep this test Delphi compatible.
 }
 
 {$ifdef FPC} {$mode delphi}  {$endif}
@@ -205,6 +206,19 @@ begin
   end;
 end;
 
+procedure DeleteUserXmlFile;
 begin
-  DoRegTest2;
+{$ifdef FPC}
+  DeleteFile(Includetrailingpathdelimiter(GetAppConfigDir(False))+'reg.xml');
+  RemoveDir(GetAppConfigDir(False));
+{$endif FPC}
+end;
+
+begin
+  try
+    DoRegTest2;
+  finally
+    DeleteUserXmlFile;
+  end;
 end.
+
