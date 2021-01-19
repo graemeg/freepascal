@@ -259,6 +259,8 @@ begin
   Result:=(Length(KeyPath)>0);
   If Not Result then
     Exit;
+  If (KeyPath[1] in ['/','\']) then
+    FCurrentElement:=Nil;
   KeyPath:=NormalizeKey(KeyPath);
   If (FCurrentElement<>nil) then
   begin
@@ -907,6 +909,8 @@ begin
   Result:=Nil;
   If (Length(S)=0) then
     Exit;
+  if S[1] in ['/','\'] then
+    FCurrentElement:=nil;
   S:=NormalizeKey(S);
   If (FCurrentElement<>nil) then
   begin
