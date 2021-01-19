@@ -6001,10 +6001,23 @@ var
 
   function CloseBlock: boolean; // true if parent reached
   var C: TPasImplBlockClass;
+    NeedUnget: Boolean;
   begin
     C:=TPasImplBlockClass(CurBlock.ClassType);
     if C=TPasImplExceptOn then
-      Engine.FinishScope(stExceptOnStatement,CurBlock)
+      begin
+      Engine.FinishScope(stExceptOnStatement,CurBlock);
+      NeedUnget:=CurToken=tkSemicolon;
+      if NeedUnget then
+        NextToken;
+      if (CurToken in [tkend,tkelse])
+          or ((CurToken=tkIdentifier) and (lowercase(CurTokenString)='on')) then
+        // ok
+      else
+        ParseExcExpectedAorB('end','on');
+      if NeedUnget then
+        UngetToken;
+      end
     else if C=TPasImplWithDo then
       Engine.FinishScope(stWithExpr,CurBlock);
     CurBlock:=CurBlock.Parent as TPasImplBlock;
@@ -6063,6 +6076,7 @@ var
   TypeEl: TPasType;
   ImplRaise: TPasImplRaise;
   VarEl: TPasVariable;
+  ImplExceptOn: TPasImplExceptOn;
 
 begin
   NewImplElement:=nil;
@@ -6486,6 +6500,8 @@ begin
         //        ParseExc;
         CheckStatementCanStart;
 
+        //writeln('TPasParser.ParseStatement ',CurToken,' ',CurTokenString);
+
         // On is usable as an identifier
         if lowerCase(CurTokenText)='on' then
           begin
@@ -6496,31 +6512,33 @@ begin
             begin
               SrcPos:=CurTokenPos;
               ExpectIdentifier;
-              El:=TPasImplExceptOn(CreateElement(TPasImplExceptOn,'',CurBlock,SrcPos));
+              ImplExceptOn:=TPasImplExceptOn(CreateElement(TPasImplExceptOn,'',CurBlock,SrcPos));
+              El:=ImplExceptOn;
               SrcPos:=CurSourcePos;
               Name:=CurTokenString;
               NextToken;
+              //writeln('TPasParser.ParseStatement ',CurToken,' ',CurTokenString);
               //writeln('ON t=',Name,' Token=',CurTokenText);
               if CurToken=tkColon then
                 begin
                 // the first expression was the variable name
                 NextToken;
-                TypeEl:=ParseSimpleType(El,SrcPos,'');
-                TPasImplExceptOn(El).TypeEl:=TypeEl;
-                VarEl:=TPasVariable(CreateElement(TPasVariable,Name,El,SrcPos));
-                TPasImplExceptOn(El).VarEl:=VarEl;
+                TypeEl:=ParseSimpleType(ImplExceptOn,SrcPos,'');
+                ImplExceptOn.TypeEl:=TypeEl;
+                VarEl:=TPasVariable(CreateElement(TPasVariable,Name,ImplExceptOn,SrcPos));
+                ImplExceptOn.VarEl:=VarEl;
                 VarEl.VarType:=TypeEl;
                 TypeEl.AddRef{$IFDEF CheckPasTreeRefCount}('TPasVariable.VarType'){$ENDIF};
-                if TypeEl.Parent=El then
+                if TypeEl.Parent=ImplExceptOn then
                   TypeEl.Parent:=VarEl;
                 end
               else
                 begin
                 UngetToken;
-                TPasImplExceptOn(El).TypeEl:=ParseSimpleType(El,SrcPos,'');
+                ImplExceptOn.TypeEl:=ParseSimpleType(ImplExceptOn,SrcPos,'');
                 end;
-              Engine.FinishScope(stExceptOnExpr,El);
-              CreateBlock(TPasImplExceptOn(El));
+              Engine.FinishScope(stExceptOnExpr,ImplExceptOn);
+              CreateBlock(ImplExceptOn);
               El:=nil;
               ExpectToken(tkDo);
             end else

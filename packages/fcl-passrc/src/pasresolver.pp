@@ -3937,10 +3937,16 @@ end;
 { EPasResolve }
 
 procedure EPasResolve.SetPasElement(AValue: TPasElement);
+var
+  Old: TPasElement;
 begin
   if FPasElement=AValue then Exit;
-  if PasElement<>nil then
+  Old:=FPasElement;
+  if Old<>nil then
+    begin
+    Old:=nil;
     PasElement.Release{$IFDEF CheckPasTreeRefCount}('EPasResolve.SetPasElement'){$ENDIF};
+    end;
   FPasElement:=AValue;
   if PasElement<>nil then
     PasElement.AddRef{$IFDEF CheckPasTreeRefCount}('EPasResolve.SetPasElement'){$ENDIF};
@@ -7526,11 +7532,13 @@ procedure TPasResolver.FinishExceptOnExpr;
 var
   El: TPasImplExceptOn;
   ResolvedType: TPasResolverResult;
+  TypeEl: TPasType;
 begin
   CheckTopScope(TPasExceptOnScope);
   El:=TPasImplExceptOn(FTopScope.Element);
-  ComputeElement(El.TypeEl,ResolvedType,[rcType]);
-  CheckIsClass(El.TypeEl,ResolvedType);
+  TypeEl:=El.TypeEl;
+  ComputeElement(TypeEl,ResolvedType,[rcType]);
+  CheckIsClass(TypeEl,ResolvedType);
 end;
 
 procedure TPasResolver.FinishExceptOnStatement;
