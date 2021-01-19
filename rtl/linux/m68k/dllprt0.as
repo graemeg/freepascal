@@ -24,6 +24,7 @@ _startlib:
 # This is a normal C function with args (argc,argv,envp)
 FPC_SHARED_LIB_START:
         link.w   %a6,#0
+        move.l   %sp,__stkptr
         move.l   8(%fp),%d0
         move.l   %d0,operatingsystem_parameter_argc
         move.l   12(%fp),%d0

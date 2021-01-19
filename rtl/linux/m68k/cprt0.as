@@ -38,6 +38,7 @@ __entry:
         lea.l    8(%sp,%d0.l*4),%a0
         move.l   %a0,operatingsystem_parameter_envp
         move.l   %sp,%a0       /* argv */
+        move.l   %sp,__stkptr
 
         pea      (%sp)         /* highest available stack address */
         pea      (%a1)         /* termination function provided by kernel */
