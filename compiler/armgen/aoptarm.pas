@@ -531,6 +531,11 @@ Implementation
                               { Instruction will become mov r1,r1 }
                               DebugMsg('Peephole Optimization: Mov2None 2 done', next_hp);
 
+                              { Allocate r1 between the instructions; not doing
+                                so may cause problems when removing superfluous
+                                MOVs later (i38055) }
+                              AllocRegBetween(taicpu(p).oper[1]^.reg, p, next_hp, UsedRegs);
+
                               if (next_hp = hp1) then
                                 { Don't let hp1 become a dangling pointer }
                                 hp1 := nil;
