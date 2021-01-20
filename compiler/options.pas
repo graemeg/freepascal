@@ -1830,6 +1830,7 @@ begin
                   exclude(init_settings.globalswitches,cs_use_heaptrc);
                   exclude(init_settings.globalswitches,cs_use_lineinfo);
                   exclude(init_settings.localswitches,cs_checkpointer);
+                  paratargetdbg:=dbg_none;
                   localvartrashing := -1;
                 end
                else
