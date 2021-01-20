@@ -13399,6 +13399,15 @@ begin
     Result:=Add;
     exit;
     end
+  else if bt in btAllJSInteger then
+    begin
+    // ord(integer)
+    Result:=CheckOrdConstant(aResolver,Param);
+    if Result<>nil then exit;
+    // ord(integer) ->  integer
+    Result:=ConvertExpression(Param,AContext);
+    exit;
+    end
   else if bt=btContext then
     begin
     C:=ParamResolved.LoTypeEl.ClassType;
