@@ -3359,8 +3359,10 @@ begin
   '  i2: TInt2;',
   'begin',
   '  i:=i2;',
-  '  if i=i2 then ;']);
+  '  if i=i2 then ;',
+  '  i:=ord(i);']);
   ParseProgram;
+  CheckResolverUnexpectedHints;
 end;
 
 procedure TTestResolver.TestIntegerRangeHighLowerLowFail;

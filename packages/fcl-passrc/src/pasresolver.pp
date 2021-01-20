@@ -19136,19 +19136,19 @@ begin
     exit(cIncompatible);
   Params:=TParamsExpr(Expr);
 
-  // first param: bool, enum or char
+  // first param: bool, integer, enum or char
   Param:=Params.Params[0];
   ComputeElement(Param,ParamResolved,[]);
   Result:=cIncompatible;
   if rrfReadable in ParamResolved.Flags then
     begin
-    if ParamResolved.BaseType in (btAllBooleans+btAllChars) then
+    if ParamResolved.BaseType in btArrayRangeTypes then
       Result:=cExact
     else if (ParamResolved.BaseType=btContext) and (ParamResolved.LoTypeEl is TPasEnumType) then
       Result:=cExact
     else if ParamResolved.BaseType=btRange then
       begin
-      if ParamResolved.SubType in btAllBooleans+btAllChars then
+      if ParamResolved.SubType in btArrayRangeTypes then
         Result:=cExact
       else if ParamResolved.SubType=btContext then
         begin
