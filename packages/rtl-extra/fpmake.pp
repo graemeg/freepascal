@@ -27,8 +27,6 @@ Const
   WinsockOSes   = [win32,win64,wince,os2,emx,netware,netwlibc];
   WinSock2OSes  = [win32,win64,wince];
   SocketsOSes   = UnixLikes+AllAmigaLikeOSes+[netware,netwlibc,os2,emx,wince,win32,win64];
-  Socksyscall   = [beos,freebsd,haiku,linux,netbsd,openbsd,dragonfly];
-  Socklibc  = unixlikes-socksyscall;
   gpmOSes = [Linux,Android];
   AllTargetsextra = ObjectsOSes + UComplexOSes + MatrixOSes+
                       SerialOSes +PrinterOSes+SocketsOSes+gpmOSes;
@@ -36,6 +34,7 @@ Const
 Var
   P : TPackage;
   T : TTarget;
+  Socksyscall, Socklibc : set of Tos;
 
 begin
   With Installer do
@@ -51,6 +50,15 @@ begin
     if Defaults.CPU=jvm then
       P.OSes := P.OSes - [java,android];
 
+    Socksyscall := [beos,freebsd,haiku,linux,netbsd,dragonfly];
+    Socklibc  := unixlikes-socksyscall;
+{$ifdef FPC_USE_SYSCALL}
+    if Defaults.OS=openbsd then
+      begin
+        system.include(Socksyscall,openbsd);
+        system.exclude(Socklibc,openbsd);
+      end;
+{$endif}
     P.Email := '';
     P.Description := 'Rtl-extra, RTL not needed for bootstrapping';
     P.NeedLibC:= false;
