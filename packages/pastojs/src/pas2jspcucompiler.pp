@@ -187,6 +187,7 @@ begin
     RaiseInternalError(20180312142954,'');
   FPCUReader:=FPCUFormat.ReaderClass.Create;
   FPCUReader.SourceFilename:=ExtractFileName(MyFile.PCUFilename);
+  FPCUReader.PCUFilename:=MyFile.PCUFilename;
 
   if MyFile.ShowDebug then
     MyFile.Log.LogMsg(nParsingFile,[QuoteStr(MyFile.PCUFilename)]);
