@@ -5,7 +5,7 @@
 }
 
 {$ifdef FPC} {$mode delphi}  {$endif}
-uses Windows, SysUtils, Classes, registry;
+uses SysUtils, Classes, registry;
 
 {$ifdef FPC}
   {$WARN implicit_string_cast_loss off}
