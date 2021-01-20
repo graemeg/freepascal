@@ -4,7 +4,7 @@ program fp37060;
 
 uses sockets, Classes, SysUtils;
 
-procedure BuildBadAddrs4(out bad_addrs: TStringList);
+procedure BuildBadAddrs4(var bad_addrs: TStringList);
 begin
   bad_addrs.Add('1.1.1.1.1'); // too many octets
   bad_addrs.Add('0xa.3.4.5'); //hex in octets
@@ -32,7 +32,7 @@ begin
   bad_addrs.Add('&7.&5.30.4'); // octal
 end;
 
-procedure BuildGoodAddrs4(out good_addrs: TStringList);
+procedure BuildGoodAddrs4(var good_addrs: TStringList);
 begin
   good_addrs.Add('127.0.0.1|127.0.0.1');
   good_addrs.Add('0.0.0.0|0.0.0.0');
@@ -40,7 +40,7 @@ begin
   good_addrs.Add('255.255.255.255|255.255.255.255');
 end;
 
-procedure BuildBadAddrs6(out bad_addrs: TStringList);
+procedure BuildBadAddrs6(var bad_addrs: TStringList);
 begin
   // start with some obviously bad formats.
   bad_addrs.Add('');
@@ -193,7 +193,7 @@ begin
   bad_addrs.Add('127.0.0.2');
 end;
 
-procedure BuildGoodAddrs6(out addrlist: TStringList);
+procedure BuildGoodAddrs6(var addrlist: TStringList);
 begin
   // Each str is two parts, separated by a pipe. The left part is the input
   // address to be parsed, and the right is the expected result of taking the
