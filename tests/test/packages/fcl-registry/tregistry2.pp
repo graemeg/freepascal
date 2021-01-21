@@ -1,3 +1,5 @@
+{ %TARGET=win32,win64,wince,linux }
+
 {
   This unit tests mostly TRegIniFile to work properly and be Delphi compatible.
   This test also runs on non-Windows platforms where XML registry is used.
@@ -5,7 +7,11 @@
 }
 
 {$ifdef FPC} {$mode delphi}  {$endif}
-uses SysUtils, Classes, registry;
+uses
+{$ifdef unix}
+  cwstring,
+{$endif unix}
+  SysUtils, Classes, registry;
 
 {$ifdef FPC}
   {$WARN implicit_string_cast_loss off}
