@@ -8621,7 +8621,9 @@ Var
           WriteBarrier;
           AThread.FDone:=False;
           RTLeventSetEvent(AThread.NotifyStartTask);
-          end;
+          end
+        else
+          sleep(100);
         if not PackageAvailable then
           Finished := True;
       end;
