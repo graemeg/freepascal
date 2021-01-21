@@ -262,6 +262,7 @@ begin
       Add('  .data           : {');
       Add('    PROVIDE(_DATA_BASE_ = .);');
       Add('    *(.data .data.* .gnu.linkonce.d.*)');
+      Add('    *(fpc.resources)');
       Add('    VBCC_CONSTRUCTORS_ELF');
       Add('  }');
       Add('  .ctors          : { *(.ctors .ctors.*) }');
@@ -293,6 +294,7 @@ begin
       Add('  .plt            : { *(.plt) }');
       Add('  .bss            : {');
       Add('    *(.bss .bss.* .gnu.linkonce.b.*)');
+      Add('    *(fpc.reshandles)');
       Add('    *(COMMON)');
       Add('  }');
       Add('  .bss68k         : { *(BSS bss) }');
