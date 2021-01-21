@@ -812,7 +812,7 @@ begin
         lNewOffset:=FCacheStreamPosition+Offset;
       end;
   end;
-  if lNewOffset>0 then begin
+  if lNewOffset>=0 then begin
     FCacheStreamPosition:=lNewOffset;
     Result:=lNewOffset;
   end else begin
