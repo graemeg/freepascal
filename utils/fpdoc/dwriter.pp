@@ -257,7 +257,7 @@ Type
     FPageInfos: TFPObjectList;     // list of TPageInfo objects
     FLinkUnresolvedCnt: Integer;
     function GetPageCount: Integer;
-
+    function LinkFix(ALink:String):String;
   Protected
     FAllocator: TFileAllocator;
     Procedure LinkUnresolvedInc();
@@ -431,24 +431,13 @@ end;
 
 function TMultiFileDocWriter.ResolveLinkID(const Name: String): DOMString;
 var
-  res,s: String;
+  res: String;
 
 begin
   res:=Engine.ResolveLink(Module,Name, True);
   // engine can return backslashes on Windows
-  if Length(res) > 0 then
-  begin
-    s:=Copy(Res, 1, Length(CurDirectory) + 1);
-    if (S= CurDirectory + '/') or (s= CurDirectory + '\') then
-    begin
-      // TODO: I didn`t see a call to this code on a processing the lcl ana lazutil. What is that?
-      Res := Copy(Res, Length(CurDirectory) + 2, Length(Res));
-      //writeLn('INFO: ResolveLinkID "\" - ', Res);
-    end
-    else if not IsLinkAbsolute(Res) then
-      Res := BaseDirectory + Res;
-  end;
-  Result:=UTF8Decode(Res);
+  res:= LinkFix(res);
+  Result:=UTF8Decode(res);
 end;
 
 function TMultiFileDocWriter.ResolveLinkIDUnStrict(const Name: String
@@ -474,7 +463,25 @@ begin
       // have cut last element
       res:= Engine.ResolveLink(Module, Copy(Name, 1, IdLast-1), True);
   end;
+  res:= LinkFix(res);
   Result:=UTF8Decode(res);
+end;
+
+function TMultiFileDocWriter.LinkFix(ALink: String): String;
+var
+  res, s:String;
+begin
+  res:= ALink;
+  if Length(res) > 0 then
+  begin
+    // If the link is in the same directory as current dir, then remove the directory part.
+    s:=Copy(res, 1, Length(CurDirectory) + 1);
+    if (S= CurDirectory + '/') or (s= CurDirectory + '\') then
+      res := Copy(res, Length(CurDirectory) + 2, Length(res))
+    else if not IsLinkAbsolute(res) then
+      res := BaseDirectory + res;
+  end;
+  Result:= res;
 end;
 
 { Used for:
