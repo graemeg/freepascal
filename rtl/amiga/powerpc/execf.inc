@@ -35,6 +35,10 @@ function SetSignal(newSignals: longword; signalMask: longword): longword; syscal
 
 procedure AddPort(port: PMsgPort); syscall IExec 300;
 
+function CreateMsgPort(): PMsgPort; syscall IExec 308;
+
+procedure DeleteMsgPort(Port: PMsgPort); syscall IExec 316;
+
 function GetMsg(port: PMsgPort): PMessage; syscall IExec 324;
 procedure PutMsg(port: PMsgPort; message: PMessage); syscall IExec 328;
 procedure RemPort(port: PMsgPort); syscall IExec 332;
@@ -58,6 +62,8 @@ procedure DropInterface(_interface: POS4Interface); syscall IExec 456;
 
 function OpenDevice(devName: PChar; unitNumber: longword;ioRequest: PIORequest; flags: longword): longint; syscall IExec 504;
 function CloseDevice(ioRequest: PIORequest): Pointer; syscall IExec 508;
+function CreateIORequest(const IOReplyPort: PMsgPort; Size: LongWord): PIORequest; syscall IExec 512;
+procedure DeleteIORequest(IORequest: PIORequest); syscall IExec 516;
 
 function DoIO(ioRequest: PIORequest): shortint; syscall IExec 528;
 
