@@ -162,7 +162,7 @@ const
     RunIDVal : qword;
     Error : word;
   begin
-    system.val (RunId,RunIdVal,error);
+    system.val (Trim(RunId),RunIdVal,error);
     if (error<>0) then
       result:='ErrorTable'
     else if (RunIdVal <= LastOldTestRun) then
@@ -1153,7 +1153,7 @@ Const
   SGetRunData = 'SELECT TU_ID,TU_DATE,TC_NAME,TO_NAME,' +
                 'TU_SUBMITTER,TU_MACHINE,TU_COMMENT,TV_VERSION,'+
                 'TU_CATEGORY_FK,TU_SVNCOMPILERREVISION,TU_SVNRTLREVISION,'+
-                'TU_COMPILERDATE,'+
+                'TU_COMPILERDATE,TU_COMPILERFULLVERSION,'+
                 'TU_SVNPACKAGESREVISION,TU_SVNTESTSREVISION,'+
                '(TU_SUCCESSFULLYFAILED+TU_SUCCESFULLYCOMPILED+TU_SUCCESSFULLYRUN) AS OK,'+
                '(TU_FAILEDTOCOMPILE+TU_FAILEDTORUN+TU_FAILEDTOFAIL) as Failed,'+
@@ -1169,12 +1169,70 @@ Const
 
 
 Var
-  Q1,Q2 : TSQLQuery;
+  Q1, Q2 : TSQLQuery;
   F : TField;
-  SC : string;
-  Date1, Date2: TDateTime;
-  AddNewPar : boolean;
-  CompilerDate1, CompilerDate2: TDateTime;
+  SC, FRight : string;
+  Date1, Date2 : TDateTime;
+  AddNewPar, same_date : boolean;
+  CompilerDate1, CompilerDate2 : TDateTime;
+
+  procedure EmitOneRow(RowTitle,FieldLeft,FieldRight : String; is_same : boolean);
+    var
+      FieldColor : string;
+    begin
+      if (FieldRight='') then
+        FieldColor:=''
+      else if is_same then
+        FieldColor:='style="color:green;"'
+      else
+        FieldColor:='style="color:red;"';
+      With FHTMLWriter do
+        begin
+          RowNext;
+          if FieldColor<>'' then
+            begin
+              TagStart('TD',FieldColor);
+            end
+          else 
+            CellStart;
+          LDumpLn(RowTitle);
+          if FieldColor<>'' then
+            begin
+              CellEnd;
+              TagStart('TD',FieldColor);
+            end
+          else 
+            CellNext;
+          LDumpLn(FieldLeft);
+          if FieldColor<>'' then
+            begin
+             CellEnd;
+             TagStart('TD',FieldColor);
+            end
+          else 
+            CellNext;
+          LDumpLn(FieldRight);
+          CellEnd;
+        end;
+    end;
+  procedure EmitOneRow(RowTitle,FieldLeft,FieldRight : String);
+    var
+      is_same : boolean;
+    begin
+      is_same:=(FieldLeft=FieldRight);
+      EmitOneRow(RowTitle,FieldLeft,FieldRight,is_same);
+    end;
+  procedure EmitRow(RowTitle,FieldName : String);
+    var
+      FieldLeft, FieldRight : String;
+    begin
+      FieldLeft:=Q1.FieldByName(FieldName).AsString;
+      if Q2=nil then
+        FieldRight:=''
+      else
+        FieldRight:=Q2.FieldByName(FieldName).AsString;
+      EmitOneRow(RowTitle,FieldLeft,FieldRight);
+    end;
 begin
   Result:=(FRunID<>'');
   If Result then
@@ -1210,172 +1268,99 @@ begin
             CellNext;
               EmitInput('run2id',FCompareRunID);
             CellEnd;
-          RowNext;
-            CellStart;
-              DumpLn('Operating system:');
-            CellNext;
-              DumpLn(Q1.FieldByName('TO_NAME').AsString);
-            CellNext;
-              if Q2 <> nil then
-                DumpLn(Q2.FieldByName('TO_NAME').AsString);
-            CellEnd;
-          RowNext;
-            CellStart;
-              DumpLn('Processor:');
-            CellNext;
-              DumpLn(Q1.FieldByName('TC_NAME').AsString);
-            CellNext;
-              if Q2 <> nil then
-                DumpLn(Q2.FieldByName('TC_NAME').AsString);
-            CellEnd;
-          RowNext;
-            CellStart;
-              DumpLn('Version:');
-            CellNext;
-              DumpLn(Q1.FieldByNAme('TV_VERSION').AsString);
-            CellNext;
-              if Q2 <> nil then
-                DumpLn(Q2.FieldByNAme('TV_VERSION').AsString);
-            CellEnd;
-          RowNext;
-            CellStart;
-              DumpLn('Fails/OK/Total:');
-            CellNext;
-              Dump(Q1.FieldByName('Failed').AsString);
-              Dump('/'+Q1.FieldByName('OK').AsString);
-              DumpLn('/'+Q1.FieldByName('Total').AsString);
-            CellNext;
-              if Q2 <> nil then
-                begin
-                  Dump(Q2.FieldByName('Failed').AsString);
-                  Dump('/'+Q2.FieldByName('Ok').AsString);
-                  DumpLn('/'+Q2.FieldByName('Total').AsString);
-               end;
-            CellEnd;
 
-          RowNext;
-            CellStart;
-              DumpLn('Comment:');
-            CellNext;
-              DumpLn(Q1.FieldByName('TU_COMMENT').AsString);
-            CellNext;
-              if Q2 <> nil then
-                DumpLn(Q2.FieldByName('TU_COMMENT').AsString);
-            CellEnd;
-          RowNext;
-            CellStart;
-              DumpLn('Machine:');
-            CellNext;
-              DumpLn(Q1.FieldByName('TU_MACHINE').AsString);
-            CellNext;
-              if Q2 <> nil then
-                DumpLn(Q2.FieldByName('TU_MACHINE').AsString);
-            CellEnd;
-          if GetCategoryName(FCategory)<>'All' then
+          EmitRow('Operating system:','TO_NAME');
+          EmitRow('Processor:','TC_NAME');
+          EmitRow('Version:','TV_VERSION');
+          if Q2 = nil then
+            FRight:=''
+          else
             begin
-              RowNext;
-                CellStart;
-                DumpLn('Category:');
-                CellNext;
-                DumpLn(GetCategoryName(Q1.FieldByName('TU_CATEGORY_FK').AsString));
-                CellNext;
-                if Q2 <> nil then
-                  DumpLn(GetCategoryName(Q2.FieldByName('TU_CATEGORY_FK').AsString));
-                CellEnd;
+              FRight:=Q2.FieldByName('Failed').AsString+
+                      '/'+Q2.FieldByName('Ok').AsString+
+                      '/'+Q2.FieldByName('Total').AsString;
             end;
+          EmitOneRow('Fails/OK/Total:',
+            Q1.FieldByName('Failed').AsString+
+            '/'+Q1.FieldByName('OK').AsString+
+            '/'+Q1.FieldByName('Total').AsString,
+            FRight);
+          EmitRow('Version:','TV_VERSION');
+          EmitRow('Full version:','TU_COMPILERFULLVERSION');
+          EmitRow('Comment:','TU_COMMENT');
+          EmitRow('Machine:','TU_MACHINE');
+          if GetCategoryName(FCategory)<>'All' then
+            EmitRow('Category:','TU_CATEGORY_FK');
           If GetCategoryName(FCategory)<>'DB' then
             begin
-              RowNext;
-                CellStart;
-                DumpLn('SVN Revisions:');
-                CellNext;
-                SC:=Q1.FieldByName('svnrev').AsString;
-                if (SC<>'') then
-                  FormatSVNData(SC);
-                LDumpLn(SC);
-                CellNext;
-                if Q2 <> nil then
-                  begin
-                    SC:=Q2.FieldByName('svnrev').AsString;
-                    FormatSVNData(SC);
-                    LDumpLn(SC);
-                  end;
-                CellEnd;
-            end;
-           RowNext;
-            CellStart;
-              DumpLn('Submitter:');
-            CellNext;
-              DumpLn(Q1.FieldByName('TU_SUBMITTER').AsString);
-            CellNext;
+              SC:=Q1.FieldByName('svnrev').AsString;
+              if (SC<>'') then
+                FormatSVNData(SC);
               if Q2 <> nil then
-                DumpLn(Q2.FieldByName('TU_SUBMITTER').AsString);
-            CellEnd;
-          RowNext;
-            CellStart;
-              DumpLn('Date:');
-            CellNext;
-              F := Q1.FieldByName('TU_DATE');
-              Date1 := F.AsDateTime;
-              DumpLn(F.AsString);
-              F := Q1.FieldByName('TU_COMPILERDATE');
+                begin
+                  FRight:=Q2.FieldByName('svnrev').AsString;
+                  FormatSVNData(FRight);
+                end
+              else
+                FRight:='';
+              EmitOneRow('SVN revisions:',SC,FRight);
+            end;
+          EmitRow('Submitter:','TU_SUBMITTER');
+          F := Q1.FieldByName('TU_DATE');
+          Date1 := F.AsDateTime;
+          SC:=F.AsString;
+          F := Q1.FieldByName('TU_COMPILERDATE');
+          Try
+            CompilerDate1 := F.AsDateTime;
+            if not SameDate(Date1,CompilerDate1) then
+              SC:=SC+' <> '+F.AsString;
+          Except
+            { Not a valid date, do nothing }
+          end;
+          if Q2 = nil then
+            FRight:=''
+          else
+            begin
+              F := Q2.FieldByName('TU_DATE');
+              Date2 := F.AsDateTime;
+              FRight:= F.AsString;
+              F := Q2.FieldByName('TU_COMPILERDATE');
               Try
-                CompilerDate1 := F.AsDateTime;
-                if not SameDate(Date1,CompilerDate1) then
-                  DumpLn(' <> '+F.AsString);
+                CompilerDate2 := F.AsDateTime;
+                if not SameDate(Date2,CompilerDate2) then
+                  FRight:=FRight+' <> '+F.AsString;
               Except
                 { Not a valid date, do nothing }
               end;
-            CellNext;
-              if Q2 <> nil then
-                begin
-                F := Q2.FieldByName('TU_DATE');
-                Date2 := F.AsDateTime;
-                DumpLn(F.AsString);
-                F := Q2.FieldByName('TU_COMPILERDATE');
-                Try
-                  CompilerDate2 := F.AsDateTime;
-                  if not SameDate(Date2,CompilerDate2) then
-                    DumpLn(' <> '+F.AsString);
-                Except
-                  { Not a valid date, do nothing }
-                end;
-                end;
-            CellEnd;
-          RowNext;
-            CellStart;
-              DumpLn('Previous run:');
-            CellNext;
-              FPreviousRunID:=GetPreviousRunID(FRunID);
-              if FPreviousRunID<>'' then
-                EmitHiddenVar('previousrunid',FPreviousRunID);
-              DumpLn(FPreviousRunID);
-            CellNext;
-              if (FCompareRunID<>'') then
-                begin
-                  FPrevious2RunID:=GetPreviousRunID(FCompareRunID);
-                  DumpLn(FPrevious2RunID);
-                  if FPrevious2RunID <> '' then
-                    EmitHiddenVar('previous2runid',FPrevious2RunID);
-                end;
-            CellEnd;
-          RowNext;
-            CellStart;
-              DumpLn('Next run:');
-            CellNext;
-              FNextRunID:=GetNextRunID(FRunID);
-              if FNextRunID<>'' then
-                EmitHiddenVar('nextrunid',FNextRunID);
-              DumpLn(FNextRunID);
-            CellNext;
-              if (FCompareRunID<>'') then
-                begin
-                  FNext2RunID:=GetNextRunID(FCompareRunID);
-                  DumpLn(FNext2RunID);
-                  if FNext2RunID <> '' then
-                    EmitHiddenVar('next2runid',FNext2RunID);
-                end;
-            CellEnd;
+            end;
+          same_date:=(Copy(SC,1,10)=Copy(FRight,1,10));
+          EmitOneRow('Date:',SC,FRight,same_date); 
+          FPreviousRunID:=GetPreviousRunID(FRunID);
+          if FPreviousRunID<>'' then
+            EmitHiddenVar('previousrunid',FPreviousRunID);
+          SC:=FPreviousRunID;
+          if (FCompareRunID<>'') then
+            begin
+              FPrevious2RunID:=GetPreviousRunID(FCompareRunID);
+              FRight:=FPrevious2RunID;
+              if FPrevious2RunID <> '' then
+                EmitHiddenVar('previous2runid',FPrevious2RunID);
+            end
+          else
+            FRight:='';
+          EmitOneRow('Previous run:',SC,FRight);
+          FNextRunID:=GetNextRunID(FRunID);
+          if FNextRunID<>'' then
+            EmitHiddenVar('nextrunid',FNextRunID);
+          SC:=FNextRunID;
+          if (FCompareRunID<>'') then
+            begin
+              FNext2RunID:=GetNextRunID(FCompareRunID);
+              FRight:=FNext2RunID;
+              if FNext2RunID <> '' then
+                EmitHiddenVar('next2runid',FNext2RunID);
+            end;
+          EmitOneRow('Next run:',SC,FRight);
           RowEnd;
           TableEnd;
           ParagraphStart;
@@ -1558,7 +1543,7 @@ begin
         finally
           Free;
         end;
-      If Not (FRunCount=0) and not (FNoSkipped or FOnlyFailed) then
+      If Not (FRunCount=0) and not (FNoSkipped and FOnlyFailed) then
         begin
         ParaGraphStart;
         TagStart('IMG',Format('Src="'+TestsuiteCGIURL+
@@ -2950,10 +2935,6 @@ Procedure TTestSuite.DoDrawPie(Img : TFPCustomImage; Skipped,Failed,Total : Inte
 
 Var
   Cnv : TFPImageCanvas;
-  W,H,FH,CR,ra : Integer;
-  A1,A2,FR,SR,PR : Double;
-  R : TRect;
-  F : TFreeTypeFont;
 
   Procedure AddPie(X,Y,R : Integer; AStart,AStop : Double; Col : TFPColor);
 
@@ -2961,14 +2942,14 @@ Var
     DX,Dy : Integer;
 
   begin
-    DX:=Round(R*Cos(A1));
-    DY:=Round(R*Sin(A1));
+    DX:=Round(R*Cos(AStart));
+    DY:=Round(R*Sin(AStart));
     Cnv.Line(X,Y,X+DX,Y-DY);
-    DX:=Round(Ra*Cos(A2));
-    DY:=Round(Ra*Sin(A2));
+    DX:=Round(R*Cos(AStop));
+    DY:=Round(R*Sin(AStop));
     Cnv.Line(X,Y,X+DX,Y-Dy);
-    DX:=Round(R/2*Cos((A1+A2)/2));
-    DY:=Round(R/2*Sin((A1+A2)/2));
+    DX:=Round(R/2*Cos((AStart+AStop)/2));
+    DY:=Round(R/2*Sin((AStart+AStop)/2));
     Cnv.Brush.FpColor:=Col;
     Cnv.FloodFill(X+DX,Y-DY);
   end;
@@ -2979,7 +2960,11 @@ Var
     Result:=(2*Pi*(F/T))
   end;
 
-
+Var
+  W,H,FH,CR,RA : Integer;
+  A1,A2,FR,SR,PR : Double;
+  R : TRect;
+  F : TFreeTypeFont;
 
 begin
   F:=TFreeTypeFont.Create;
@@ -3044,7 +3029,12 @@ begin
       Writeln(stdout,'Setting brush style');
       system.flush(stdout);
     end;
-  cnv.brush.FPColor:=colRed;
+  cnv.brush.FPColor:=colDkGray;
+  SR:=Skipped/Total;
+  FR:=Failed/Total;
+  PR:=1-SR-FR;
+  cnv.font.FPColor:=colDkGray;
+  Cnv.Textout(1,FH*2,Format('%d Skipped (%3.1f%%)',[Skipped,SR*100]));
 //  cnv.pen.width:=1;
   // Writeln('Drawing ellipse');
   Cnv.Ellipse(R);
@@ -3053,15 +3043,16 @@ begin
       Writeln(stdout,'Setting text');
       system.flush(stdout);
     end;
-  Cnv.Textout(1,FH*2,Format('%d Skipped (%3.1f%%)',[Skipped,SR*100]));
-  A1:=(Pi*2*(failed/total));
-  A2:=A1+(Pi*2*(Skipped/Total));
-  AddPie(Ra,R.Top+Ra,Ra,A1,A2,ColYellow);
+  A1:=0;
+  A2:=A1+FractionAngle(Failed,Total);
+  cnv.font.FPColor:=colRed;
+  Cnv.Textout(1,FH*3,Format('%d Failed (%3.1f%%)',[Failed,FR*100]));
+  AddPie(Ra,R.Top+Ra,Ra,A1,A2,ColRed);
   cnv.font.FPColor:=colGreen;
+  Cnv.Textout(1,FH,Format('%d Passed (%3.1f%%)',[Total-Skipped-Failed,PR*100]));
   // Writeln('Palette size : ',Img.Palette.Count);
   A1:=A2;
-  A2:=A1+(Pi*2*((Total-(Skipped+Failed))/Total));
-  Cnv.Textout(1,FH*3,Format('%d Passed (%3.1f%%',[Total-Skipped-Failed,PR*100]));
+  A2:=A1+FractionAngle(Total-(Skipped+Failed),Total);
   AddPie(Ra,R.Top+Ra,Ra,A1,A2,ColGreen);
   // Writeln('Palette size : ',Img.Palette.Count);
   // Writeln('All done');
