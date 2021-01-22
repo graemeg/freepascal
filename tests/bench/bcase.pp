@@ -1375,8 +1375,8 @@ procedure TSingleEntryAtMinus4WithElse.DoTestIteration(Iteration: Integer);
     { This helps catch errors where all branches, including else, are skipped }
     FResultStorage[Byte(Index)] := $FF;
     case Index of
-      -4: FResultStorage[Index] := 1;
-      else FResultStorage[Index] := 0;
+      -4: FResultStorage[Byte(Index)] := 1;
+      else FResultStorage[Byte(Index)] := 0;
     end;
   end;
 
@@ -1609,8 +1609,8 @@ procedure TSingleEntryWithMinus1To5RangeWithElse.DoTestIteration(Iteration: Inte
     { This helps catch errors where all branches, including else, are skipped }
     FResultStorage[Byte(Index)] := $FF;
     case Index of
-      -1..5: FResultStorage[Index] := 1;
-      else FResultStorage[Index] := 0;
+      -1..5: FResultStorage[Byte(Index)] := 1;
+      else FResultStorage[Byte(Index)] := 0;
     end;
   end;
 
@@ -1658,8 +1658,8 @@ procedure TSingleEntryWithMinus1To50RangeWithElse.DoTestIteration(Iteration: Int
     { This helps catch errors where all branches, including else, are skipped }
     FResultStorage[Byte(Index)] := $FF;
     case Index of
-      -1..50: FResultStorage[Index] := 1;
-      else FResultStorage[Index] := 0;
+      -1..50: FResultStorage[Byte(Index)] := 1;
+      else FResultStorage[Byte(Index)] := 0;
     end;
   end;
 
@@ -1739,8 +1739,11 @@ procedure TExtremeRange2.DoTestIteration(Iteration: Integer);
   var
     Index, Input: Word;
   begin
+{$push}
+{$r-}
     Index := (Iteration and $FFFF);
     Input := (Iteration and $1) - 1;
+{$pop}
     FResultStorage[Index] := 0; { Covers $FFFF }
     case Input of
       0..$FFFD:
@@ -1826,8 +1829,11 @@ procedure TExtremeRange4.DoTestIteration(Iteration: Integer);
   var
     Index, Input: Word;
   begin
+{$push}
+{$r-}
     Index := (Iteration and $FFFF);
     Input := (Iteration and $1) - 1;
+{$pop}
     FResultStorage[Index] := 2; { Covers 1..$FFFE }
     case Input of
       0:
