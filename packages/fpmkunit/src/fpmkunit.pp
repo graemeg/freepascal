@@ -3383,9 +3383,8 @@ begin
 end;
 
 procedure TCompileWorkerThread.execute;
-begin
-  while not Terminated do
-    begin
+  procedure RaiseMainEvent;
+  begin
     { Make sure all of our results are committed before we set (F)Done to true.
       While RTLeventSetEvent implies a barrier, once the main thread is notified
       it will walk over all threads and look for those that have Done=true -> it
@@ -3394,6 +3393,12 @@ begin
     WriteBarrier;
     FDone:=true;
     RTLeventSetEvent(FNotifyMainThreadEvent);
+  end;
+begin
+  if not Terminated then
+    RaiseMainEvent;
+  while not Terminated do
+    begin
     RTLeventWaitFor(FNotifyStartTask,500);
     if not FDone then
       begin
@@ -3404,9 +3409,15 @@ begin
       try
         FBuildEngine.Compile(APackage);
         FCompilationOK:=true;
+        FBuildEngine.log(vlInfo,'Done compiling: '+APackage.Name);
+        RaiseMainEvent;
       except
         on E: Exception do
-          FErrorMessage := E.Message;
+          begin
+            FErrorMessage := 'Failed compiling: '+APackage.Name+': '+E.Message;
+            FBuildEngine.log(vlInfo,FErrorMessage);
+            RaiseMainEvent;
+          end;
       end;
       end;
     end;
@@ -8621,9 +8632,7 @@ Var
           WriteBarrier;
           AThread.FDone:=False;
           RTLeventSetEvent(AThread.NotifyStartTask);
-          end
-        else
-          sleep(100);
+          end;
         if not PackageAvailable then
           Finished := True;
       end;
