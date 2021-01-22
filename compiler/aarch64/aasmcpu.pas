@@ -1018,6 +1018,7 @@ implementation
           A_TST,
           A_FCMP,A_FCMPE,
           A_CBZ,A_CBNZ,
+          A_PRFM,A_PRFUM,
           A_RET:
             result:=operand_read;
           A_STR,A_STUR:
@@ -1025,14 +1026,6 @@ implementation
               result:=operand_read
             else
               { check for pre/post indexed in spilling_get_operation_type_ref }
-              result:=operand_read;
-          A_STLXP,
-          A_STLXR,
-          A_STXP,
-          A_STXR:
-            if opnr=0 then
-              result:=operand_write
-            else
               result:=operand_read;
           A_STP:
             begin
@@ -1102,12 +1095,21 @@ implementation
            A_FCVTZS,
            A_SDIV,
            A_SMULL,
+           A_STLXP,
+           A_STLXR,
+           A_STXP,
+           A_STXR,
            A_SUB,
+           A_SXTB,
+           A_SXTH,
+           A_SXTW,
            A_UBFIZ,
            A_UBFX,
            A_UCVTF,
            A_UDIV,
-           A_UMULL:
+           A_UMULL,
+           A_UXTB,
+           A_UXTH:
              if opnr=0 then
                result:=operand_write
              else

@@ -587,6 +587,9 @@ implementation
         manipulated_a: tcgint;
         leftover_a: word;
       begin
+{$ifdef extdebug}
+        list.concat(tai_comment.Create(strpnew('Generating constant ' + tostr(a))));
+{$endif extdebug}
         case a of
           { Small positive number }
           $0..$FFFF:
