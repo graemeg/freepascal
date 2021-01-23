@@ -135,6 +135,8 @@ interface
           { if nexttoken<>NOTOKEN, then nexttokenpos holds its filepos }
           next_filepos   : tfileposinfo;
 
+          { current macro nesting depth }
+          macro_nesting_depth,
           comment_level,
           yylexcount     : longint;
           ignoredirectives : TFPHashList; { ignore directives, used to give warnings only once }
@@ -2922,7 +2924,10 @@ type
         if assigned(inputfile.next) then
          begin
            if inputfile.is_macro then
-             to_dispose:=inputfile
+             begin
+               to_dispose:=inputfile;
+               dec(macro_nesting_depth);
+             end
            else
              begin
                to_dispose:=nil;
@@ -3686,6 +3691,7 @@ type
         addfile(hp);
         with inputfile do
          begin
+           inc(macro_nesting_depth);
            setmacro(p,len);
          { local buffer }
            inputbuffer:=buf;
@@ -4868,7 +4874,7 @@ type
                  mac:=tmacro(search_macro(pattern));
                  if assigned(mac) and (not mac.is_compiler_var) and (assigned(mac.buftext)) then
                   begin
-                    if yylexcount<max_macro_nesting then
+                    if (yylexcount<max_macro_nesting) and (macro_nesting_depth<max_macro_nesting) then
                      begin
                        mac.is_used:=true;
                        inc(yylexcount);
