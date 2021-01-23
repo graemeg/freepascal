@@ -16,17 +16,17 @@ Type
 
   TPasElementNode = Class
   Private
-    FElement : TPasClassType;
+    FElement : TPasType;
     FParentNode: TPasElementNode;
     FChildren : TFPObjectList;
     function GetChild(aIndex : Integer): TPasElementNode;
     function GetChildCount: Integer;
   Public
-    Constructor Create (aElement : TPasClassType);
+    Constructor Create (aElement : TPasType);
     Destructor Destroy; override;
     Procedure AddChild(C : TPasElementNode);
     Procedure SortChildren;
-    Property Element : TPasClassType Read FElement;
+    Property Element : TPasType Read FElement;
     Property ParentNode : TPasElementNode read  FParentNode;
     Property Children [aIndex : Integer] : TPasElementNode Read GetChild;
     Property ChildCount : Integer Read GetChildCount;
@@ -45,7 +45,7 @@ Type
     FRootObjectName : string;
     FRootObjectPathName : string;
   Protected
-    function AddToList(aElement: TPasClassType): TPasElementNode;
+    function AddToList(aElement: TPasType): TPasElementNode;
   Public
     Constructor Create(AEngine:TFPDocEngine; APackage : TPasPackage;
                           AObjectKind : TPasObjKindSet = okWithFields);
@@ -85,7 +85,7 @@ begin
     Result:=0
 end;
 
-constructor TPasElementNode.Create(aElement: TPasClassType);
+constructor TPasElementNode.Create(aElement: TPasType);
 begin
   FElement:=aElement;
 end;
@@ -154,30 +154,42 @@ begin
   Inherited;
 end;
 
-function TClassTreeBuilder.AddToList ( aElement: TPasClassType
+function TClassTreeBuilder.AddToList ( aElement: TPasType
   ) : TPasElementNode;
 
 Var
   aParentNode : TPasElementNode;
   aName : String;
+  aElementClass: TPasClassType;
 
 begin
-  Result:= nil;
-  if not (aElement.ObjKind in FObjectKind) then exit;
+  Result:= nil; aElementClass:=nil;
+  if  (aElement is TPasClassType) then
+    aElementClass:= TPasClassType(aElement);
+  if Assigned(aElementClass) and not (aElementClass.ObjKind in FObjectKind) then exit;
+  if not Assigned(aElementClass) and not (aElement is TPasAliasType) then exit;
 
   aParentNode:= nil;
   if aElement=Nil then
     aName:=FRootObjectName
+  else if (aElement is TPasAliasType) then
+    aName:=TPasAliasType(aElement).DestType.FullName
   else
     aName:=aElement.PathName;
   Result:=TPasElementNode(FElementList.Items[aName]);
   if (Result=Nil) then
   begin
-    if aElement.AncestorType is TPasClassType then
-      aParentNode:=AddToList(aElement.AncestorType as TPasClassType);
+    if Assigned(aElementClass) and (
+        (aElementClass.AncestorType is TPasClassType) or
+        (aElementClass.AncestorType is TPasAliasType)
+                                    ) then
+       aParentNode:=AddToList(aElementClass.AncestorType);
     if not Assigned(aParentNode) then
       aParentNode:=FRootNode;
-    Result:=TPasElementNode.Create(aElement);
+    if (aElement is TPasAliasType) then
+      Result:=TPasElementNode.Create(TPasAliasType(TPasType(aElement)).DestType)
+    else
+      Result:=TPasElementNode.Create(aElement);
     aParentNode.AddChild(Result);
     Result.FParentNode := aParentNode;
     FElementList.Add(aName,Result);

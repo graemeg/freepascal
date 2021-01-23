@@ -1744,7 +1744,6 @@ end;
 procedure THTMLWriter.CreateClassMainPage(aClass : TPasClassType);
 
   procedure AppendGenericTypes(CodeEl : TDomElement; AList : TFPList; isSpecialize : Boolean);
-
   Var
     I : integer;
   begin
@@ -1757,6 +1756,16 @@ procedure THTMLWriter.CreateClassMainPage(aClass : TPasClassType);
       AppendText(CodeEl,UTF8Decode(TPasGenericTemplateType(AList[i]).Name));
       end;
     AppendSym(CodeEl, '>');
+  end;
+
+  procedure AppendGeneric(ACodeEl : TDomElement ; AGenericObject: TPasClassType);
+  begin
+    if AGenericObject.GenericTemplateTypes.Count>0 then
+    begin
+      AppendKw(ACodeEl, ' generic ');
+      AppendText(ACodeEl, ' ' + UTF8Decode(AGenericObject.Name) + ' ');
+      AppendGenericTypes(ACodeEl,AGenericObject.GenericTemplateTypes,false);
+    end;
   end;
 
   procedure AppendInterfaceInfo(ACodeEl : TDomElement ; AThisClass: TPasClassType);
@@ -1777,7 +1786,7 @@ procedure THTMLWriter.CreateClassMainPage(aClass : TPasClassType);
 
 var
   ParaEl,TableEl, TREl, TDEl, CodeEl: TDOMElement;
-  ThisClass, PrevClass: TPasClassType;
+  ThisClass, PrevClass: TPasType;
   ThisTreeNode: TPasElementNode;
 begin
   //WriteLn('@ClassPageBody.CreateMainPage Class=', AClass.Name);
@@ -1799,11 +1808,14 @@ begin
   TDEl := CreateTD(TREl);
   CodeEl := CreateCode(CreatePara(TDEl));
   AppendKw(CodeEl, 'type');
+
+  if not Assigned(AClass.GenericTemplateTypes) then
+      Dolog('ERROR generic init: %s', [AClass.name]);
   if AClass.GenericTemplateTypes.Count>0 then
-    AppendKw(CodeEl, ' generic ');
-  AppendText(CodeEl, ' ' + UTF8Decode(AClass.Name) + ' ');
-  if AClass.GenericTemplateTypes.Count>0 then
-    AppendGenericTypes(CodeEl,AClass.GenericTemplateTypes,false);
+    AppendGeneric(CodeEl, AClass)
+  else
+    AppendText(CodeEl, ' ' + UTF8Decode(AClass.Name) + ' ');
+
   AppendSym(CodeEl, '=');
   AppendText(CodeEl, ' ');
   AppendKw(CodeEl, UTF8Decode(ObjKindNames[AClass.ObjKind]));
@@ -1816,16 +1828,23 @@ begin
   else
     ThisTreeNode := TreeClass.GetPasElNode(AClass);
   if not Assigned(ThisTreeNode) Then
-    DoLog('EROOR Tree Class information: '+ThisClass.PathName);
+    DoLog('ERROR Tree Class information: '+ThisClass.PathName);
 
   if Assigned(AClass.AncestorType) then
   begin
     AppendSym(CodeEl, '(');
     // Show parent class information
-    //TODO: Specialized generic classes is not processed now.
-    //      TLazFixedRoundBufferListMemBase as example
-    AppendHyperlink(CodeEl, AClass.AncestorType);
-    AppendInterfaceInfo(CodeEl, AClass);
+    if (AClass.AncestorType is TPasSpecializeType) then
+    begin
+      AppendText(CodeEl, 'specialize ');
+      AppendHyperlink(CodeEl, TPasSpecializeType(AClass.AncestorType).DestType);
+      AppendText(CodeEl, '<,>');
+    end
+    else
+    begin
+      AppendHyperlink(CodeEl, AClass.AncestorType);
+      AppendInterfaceInfo(CodeEl, AClass);
+    end;
     AppendSym(CodeEl, ')');
   end;
   // Class members
@@ -1847,8 +1866,8 @@ begin
 
     // Show class item
     AppendHyperlink(CodeEl, ThisClass);
-    if Assigned(PrevClass) then // Interfaces from prevClass
-      AppendInterfaceInfo(CodeEl, PrevClass);
+    if Assigned(PrevClass) and (PrevClass Is TPasClassType)  then // Interfaces from prevClass
+      AppendInterfaceInfo(CodeEl, TPasClassType(PrevClass));
     AppendShortDescrCell(TREl, ThisClass);
 
     if Assigned(ThisTreeNode) then
