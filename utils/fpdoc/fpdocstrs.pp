@@ -189,6 +189,7 @@ resourcestring
   SUsageOption310  = '--write-project=file';
   SUsageOption320  = '                  Write all command-line options to a project file';
   SUsageSubNames   = 'Use the file subnames instead the indexes as postfixes';
+  SUsageOnlyPages  = 'Only write pages in LIST, LIST is comma-separated list of filenames or @filename where the named file contains 1 file per line.';
 
   SUsageFormats        = 'The following output formats are supported by this fpdoc:';
   SUsageBackendHelp    = 'Specify an output format, combined with --help to get more help for this backend.';

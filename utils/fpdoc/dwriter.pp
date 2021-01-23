@@ -256,6 +256,8 @@ Type
     FModule: TPasModule;
     FPageInfos: TFPObjectList;     // list of TPageInfo objects
     FLinkUnresolvedCnt: Integer;
+    FOutputPageNames: TStringList;
+    function GetOutputPageNames: TStrings;
     function GetPageCount: Integer;
     function LinkFix(ALink:String):String;
   Protected
@@ -286,6 +288,7 @@ Type
     function  ModuleHasClasses(AModule: TPasModule): Boolean;
     // Allocate pages etc.
     Procedure DoWriteDocumentation; override;
+    Function MustGeneratePage(aFileName : String) : Boolean; virtual;
 
     Property PageInfos : TFPObjectList Read FPageInfos;
     Property SubPageNames: Boolean Read FSubPageNames;
@@ -298,6 +301,7 @@ Type
     Property Module: TPasModule  Read FModule Write FModule;
     Property CurDirectory: String Read FCurDirectory Write FCurDirectory;    // relative to curdir of process
     property BaseDirectory: String read FBaseDirectory Write FBaseDirectory; // relative path to package base directory
+    Property OutputPageNames : TStrings Read GetOutputPageNames;
  end;
 
   TFPDocWriterClass = Class of TFPDocWriter;
@@ -328,7 +332,7 @@ function SortPasElements(Item1, Item2: Pointer): Integer;
 
 implementation
 
-uses fpdocstrs;
+uses strutils, fpdocstrs;
 
 function SortPasElements(Item1, Item2: Pointer): Integer;
 begin
@@ -416,6 +420,16 @@ end;
 function TMultiFileDocWriter.GetPageCount: Integer;
 begin
   Result := PageInfos.Count;
+end;
+
+function TMultiFileDocWriter.GetOutputPageNames: TStrings;
+begin
+  If (FoutputPageNames=Nil) then
+    begin
+    FOutputPageNames:=TStringList.Create;
+    FOutputPageNames.Sorted:=True;
+    end;
+  Result:=FOutputPageNames;
 end;
 
 procedure TMultiFileDocWriter.OutputResults();
@@ -826,22 +840,59 @@ begin
      with TPageInfo(PageInfos[i]) do
        begin
        FileName:= Allocator.GetFilename(Element, SubpageIndex);
-       FinalFilename := GetFileBaseDir(Engine.Output) + FileName;
-       CreatePath(FinalFilename);
-       WriteDocPage(FileName,ELement,SubPageIndex);
+       if MustGeneratePage(FileName) then
+         begin
+         FinalFilename := GetFileBaseDir(Engine.Output) + FileName;
+         CreatePath(FinalFilename);
+         WriteDocPage(FileName,ELement,SubPageIndex);
+         end;
        end;
+end;
+
+function TMultiFileDocWriter.MustGeneratePage(aFileName: String): Boolean;
+begin
+  Result:=Not Assigned(FOutputPageNames);
+  if Not Result then
+    Result:=FOutputPageNames.IndexOf(aFileName)<>-1;
+  Writeln(afilename ,': ',result);
 end;
 
 class procedure TMultiFileDocWriter.Usage(List: TStrings);
 begin
   List.AddStrings(['--use-subpagenames', SUsageSubNames]);
+  List.AddStrings(['--only-pages=LIST', SUsageOnlyPages]);
 end;
 
 function TMultiFileDocWriter.InterPretOption(const Cmd, Arg: String): boolean;
+
+Var
+  I : Integer;
+  FN : String;
+
 begin
+  Writeln('Cmd : ',Cmd);
   Result := True;
   if Cmd = '--use-subpagenames' then
     FSubPageNames:= True
+  else
+  if Cmd = '--only-pages' then
+    begin
+    Result:=Arg<>'';
+    if Result then
+      begin
+      if Arg[1]='@' then
+        begin
+        FN:=Copy(Arg,2,Length(Arg)-1);
+        OutputPageNames.LoadFromFile(FN);
+        end
+      else
+        begin
+        For I:=1 to WordCount(Arg,[',']) do
+          OutputPageNames.Add(ExtractWord(I,Arg,[',']));
+        end;
+      Writeln('OutputPagenames ',OutputPagenames.CommaText);
+      end
+    end
   else
     Result:=inherited InterPretOption(Cmd, Arg);
 end;

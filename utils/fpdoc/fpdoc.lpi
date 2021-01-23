@@ -158,8 +158,8 @@
       </Debugging>
     </Linking>
     <Other>
-      <CustomOptions Value="-dCheckPasTreeRefCount
--dDebugRefCount"/>
+      <CustomOptions Value="-dCheckPasTreeRefCountx
+-dDebugRefCountx"/>
       <OtherDefines Count="1">
         <Define0 Value="CheckPasTreeRefCount"/>
       </OtherDefines>
