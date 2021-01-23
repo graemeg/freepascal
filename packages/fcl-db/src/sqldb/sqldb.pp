@@ -802,6 +802,7 @@ type
     Property Proxy : TSQLConnection Read FProxy;
   Published
     Property ConnectorType : String Read FConnectorType Write SetConnectorType;
+    Property Port;
   end;
 
   TSQLConnectionClass = Class of TSQLConnection;
@@ -1197,8 +1198,12 @@ end;
 
 procedure TCustomSQLStatement.DeAllocateCursor;
 begin
-  if Assigned(FCursor) and Assigned(Database) then
-    DataBase.DeAllocateCursorHandle(FCursor);
+  if Assigned(FCursor) then
+     begin
+     if Assigned(Database) then
+       DataBase.DeAllocateCursorHandle(FCursor);
+     FreeAndNil(FCursor);
+     end;
 end;
 
 function TCustomSQLStatement.ExpandMacros( OrigSQL : String ) : String;
@@ -1515,6 +1520,7 @@ begin
     end;
   finally;
     DeAllocateCursorHandle(Cursor);
+    FreeAndNil(Cursor);
   end;
 end;
 
