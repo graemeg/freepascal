@@ -2000,10 +2000,11 @@ const msgtxt : array[0..000362,1..240] of char=(
   '**2Xs_Strip all symbols from executable'#010+
   '**2XS_Try to link units statically (default, defines FPC_LINK_STATIC)'#010+
   '**2Xt_Link with st','atic libraries (-static is passed to linker)'#010+
+  '**2Xu_Generate executable in UF2 format  (embedded targets only)'#010+
   '**2Xv_Generate table for Virtual Entry calls'#010+
   '**2XV_Use VLink as external linker       (default on Amiga, MorphOS)'#010+
-  '**2XX_Try to smartlink units             (defines FPC_LINK_SMART)'#010+
+  '**2XX_Try to sma','rtlink units             (defines FPC_LINK_SMART)'#010+
   '**1*_'#010+
-  '**1?_Show',' this help'#010+
+  '**1?_Show this help'#010+
   '**1h_Shows this help without waiting'
 );

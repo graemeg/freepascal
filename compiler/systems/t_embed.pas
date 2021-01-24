@@ -39,6 +39,7 @@ implementation
        TlinkerEmbedded=class(texternallinker)
        private
           Function  WriteResponseFile: Boolean;
+          Function  GenerateUF2(binFile,uf2File : string;baseAddress : longWord):boolean;
        public
           constructor Create; override;
           procedure SetDefaultInfo; override;
@@ -1653,6 +1654,10 @@ begin
         success:=DoExec(FindUtil(utilsprefix+'objcopy'),'-O binary '+
           FixedExeFileName+' '+
           maybequoted(ScriptFixFileName(ChangeFileExt(current_module.exefilename,'.bin'))),true,false);
+        if success and (target_info.system in systems_support_uf2) and (cs_generate_uf2 in current_settings.globalswitches) then
+          success := GenerateUF2(maybequoted(ScriptFixFileName(ChangeFileExt(current_module.exefilename,'.bin'))),
+                                 maybequoted(ScriptFixFileName(ChangeFileExt(current_module.exefilename,'.uf2'))),
+                                 embedded_controllers[current_settings.controllertype].flashbase);
 {$ifdef ARM}
       if success and (current_settings.controllertype = ct_raspi2) then
         success:=DoExec(FindUtil(utilsprefix+'objcopy'),'-O binary '+ FixedExeFileName + ' kernel7.img',true,false);
@@ -1668,6 +1673,106 @@ function TLinkerEmbedded.postprocessexecutable(const fn : string;isdll:boolean):
     Result:=PostProcessELFExecutable(fn,isdll);
   end;
 
+
+function TlinkerEmbedded.GenerateUF2(binFile,uf2File : string;baseAddress : longWord):boolean;
+type 
+  TFamilies= record
+    k : String;
+    v : longWord;
+  end;
+  tuf2Block = record
+    magicStart0,
+    magicStart1,
+    flags,
+    targetAddr,
+    payloadSize,
+    blockNo,
+    numBlocks,
+    familyid : longWord;
+    data : array[0..255] of byte;
+    padding : array[0..511-256-32-4] of byte;
+    magicEnd : longWord;
+  end;
+
+const
+  Families : array of TFamilies = (
+    (k:'SAMD21'; v:$68ed2b88),
+    (k:'SAML21'; v:$1851780a),
+    (k:'SAMD51'; v:$55114460),
+    (k:'NRF52';  v:$1b57745f),
+    (k:'STM32F0';v:$647824b6),
+    (k:'STM32F1';v:$5ee21072),
+    (k:'STM32F2';v:$5d1a0a2e),
+    (k:'STM32F3';v:$6b846188),
+    (k:'STM32F4';v:$57755a57),
+    (k:'STM32F7';v:$53b80f00),
+    (k:'STM32G0';v:$300f5633),
+    (k:'STM32G4';v:$4c71240a),
+    (k:'STM32H7';v:$6db66082),
+    (k:'STM32L0';v:$202e3a91),
+    (k:'STM32L1';v:$1e1f432d),
+    (k:'STM32L4';v:$00ff6919),
+    (k:'STM32L5';v:$04240bdf),
+    (k:'STM32WB';v:$70d16653),
+    (k:'STM32WL';v:$21460ff0)
+  );
+
+var
+  f,g : file;
+  uf2block : Tuf2Block;
+  totalRead,numRead : longWord;
+  familyId,i : longWord;
+  ExtraOptions : String;
+
+begin
+  if pos('-Ttext=',Info.ExtraOptions) > 0 then
+  begin
+    ExtraOptions := copy(Info.ExtraOptions,pos('-Ttext=',Info.ExtraOptions)+7,length(Info.ExtraOptions));
+    for i := 1 to length(ExtraOptions) do
+      if pos(copy(ExtraOptions,i,1),'0123456789abcdefxABCDEFX') = 0 then
+        ExtraOptions := copy(ExtraOptions,1,i);
+    baseAddress := StrToIntDef(ExtraOptions,0);
+  end;
+
+  familyId := 0;
+  for i := 0 to length(Families)-1 do
+  begin
+    if pos(Families[i].k,embedded_controllers[current_settings.controllertype].controllerunitstr) = 1 then
+      familyId := Families[i].v;
+  end;
+
+  if (baseAddress and $07ffffff) <> 0 then
+  begin
+    totalRead := 0;
+    numRead := 0;
+    assign(f,binfile);
+    reset(f,1);
+    assign(g,uf2file);
+    rewrite(g,1);
+
+    repeat
+      fillchar(uf2block,sizeof(uf2block),0);
+      uf2block.magicStart0 := $0A324655; // "UF2\n"
+      uf2block.magicStart1 := $9E5D5157; // Randomly selected
+      if familyId = 0 then
+        uf2block.flags := 0
+      else
+        uf2block.flags := $2000;
+      uf2block.targetAddr := baseAddress + totalread;
+      uf2block.payloadSize := 256;
+      uf2block.blockNo := (totalRead div sizeOf(uf2block.data));
+      uf2block.numBlocks := (filesize(f) + 255) div 256;
+      uf2block.familyId := familyId;
+      uf2block.magicEnd := $0AB16F30; // Randomly selected
+      blockRead(f,uf2block.data,sizeof(uf2block.data),numRead);
+      blockwrite(g,uf2block,sizeof(uf2block));
+      inc(totalRead,numRead);
+    until (numRead=0) or (NumRead<>sizeOf(uf2block.data));
+    close(f);
+    close(g);
+  end;
+  Result := true;
+end;
 
 {*****************************************************************************
                               TlinkerEmbedded_SdccSdld

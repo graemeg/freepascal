@@ -2788,6 +2788,18 @@ begin
                       end;
                     't' :
                       include(init_settings.globalswitches,cs_link_staticflag);
+                    'u' :
+                      begin
+                        if target_info.system in systems_support_uf2 then
+                          begin
+                            if UnsetBool(More, j, opt, false) then
+                              exclude(init_settings.globalswitches,cs_generate_uf2)
+                            else
+                              include(init_settings.globalswitches,cs_generate_uf2);
+                          end
+                        else
+                          IgnoredPara('-Xu');
+                      end;
                     'v' :
                       begin
                         If UnsetBool(More, j, opt, false) then

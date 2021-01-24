@@ -233,7 +233,9 @@ interface
          cs_assemble_on_target,
          { use a memory model which allows large data structures, e.g. > 2 GB static data on x86-64 targets
            this not supported on all OSes }
-         cs_large
+         cs_large,
+         { if applicable, the compiler generates an executable in uf2 format }
+         cs_generate_uf2
        );
        tglobalswitches = set of tglobalswitch;
 
