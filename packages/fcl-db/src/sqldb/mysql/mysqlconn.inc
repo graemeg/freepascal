@@ -1058,7 +1058,7 @@ begin
     Result := 0
   else
     Result := EncodeDate(EY, EM, ED);
-  Result := ComposeDateTime(Result, EncodeTime(EH, EN, ES, EMS));
+  Result := ComposeDateTime(Result, EncodeTimeInterval(EH, EN, ES, EMS));
 end;
 
 function TConnectionName.InternalStrToTime(C: pchar; Len: integer): TDateTime;
