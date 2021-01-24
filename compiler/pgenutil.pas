@@ -990,7 +990,7 @@ uses
                               paramdef2:=tconstsym(tstoreddef(def).genericparas[i]).constdef
                             else
                               paramdef2:=ttypesym(tstoreddef(def).genericparas[i]).typedef;
-                            if not equal_defs(paramdef2,paramdef2) then
+                            if not equal_defs(paramdef1,paramdef2) then
                               begin
                                 allequal:=false;
                                 break;
