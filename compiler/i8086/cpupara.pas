@@ -101,8 +101,6 @@ unit cpupara;
 
 
     function tcpuparamanager.ret_in_param(def:tdef;pd:tabstractprocdef):boolean;
-      var
-        size: longint;
       begin
         if handle_common_ret_in_param(def,pd,result) then
           exit;
@@ -307,7 +305,6 @@ unit cpupara;
       var
         retcgsize  : tcgsize;
         paraloc : pcgparalocation;
-        sym: tfieldvarsym;
         usedef: tdef;
         handled: boolean;
       begin

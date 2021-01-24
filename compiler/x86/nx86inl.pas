@@ -1144,6 +1144,7 @@ implementation
 
 
     procedure tx86inlinenode.second_fma;
+{$ifndef i8086}
       const
         op : array[false..true,false..true,s32real..s64real,0..3] of TAsmOp =
           (
@@ -1178,6 +1179,7 @@ implementation
         negop3,
         negproduct,
         gotmem : boolean;
+{$endif i8086}
       begin
 {$ifndef i8086}
          if (cpu_capabilities[current_settings.cputype]*[CPUX86_HAS_FMA,CPUX86_HAS_FMA4])<>[] then
@@ -1444,6 +1446,7 @@ implementation
 
 
     procedure tx86inlinenode.second_minmax;
+{$ifndef i8086}
       const
         oparray : array[false..true,false..true,s32real..s64real] of TAsmOp =
           (
@@ -1463,6 +1466,7 @@ implementation
         i : integer;
         gotmem : boolean;
         op: TAsmOp;
+{$endif i8086}
       begin
 {$ifndef i8086}
          if

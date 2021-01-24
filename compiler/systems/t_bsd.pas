@@ -231,7 +231,6 @@ end;
 Function TLinkerBSD.WriteResponseFile(isdll:boolean) : Boolean;
 Var
   linkres      : TLinkRes;
-  FilesList    : TLinkRes;
   i            : longint;
   HPath        : TCmdStrListItem;
   s,s1,s2      : TCmdStr;
@@ -581,7 +580,6 @@ var
   targetstr,
   emulstr       : TCmdStr;
   GCSectionsStr : string[63];
-  exportedsyms: text;
   success : boolean;
 begin
   MakeSharedLibrary:=false;

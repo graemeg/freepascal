@@ -56,8 +56,8 @@ unit rgcpu;
 
 
     procedure trgcpu.add_constraints(reg:tregister);
-      var
-        supreg,i : Tsuperregister;
+      {var
+        supreg,i : Tsuperregister;}
       begin
         case getsubreg(reg) of
           { Let 64bit floats conflict with all odd float regs }
@@ -76,8 +76,8 @@ unit rgcpu;
           { Let 64bit ints conflict with all odd int regs }
           R_SUBQ:
             begin
-              supreg:=getsupreg(reg);
               {
+              supreg:=getsupreg(reg);
               i:=RS_G1;
               while (i<=RS_I7) do
                 begin
@@ -95,7 +95,6 @@ unit rgcpu;
         helpins  : tai;
         tmpref   : treference;
         helplist : TAsmList;
-        hreg     : tregister;
       begin
         if (abs(spilltemp.offset)>63) or (CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]) then
           begin
@@ -121,7 +120,6 @@ unit rgcpu;
       var
         tmpref   : treference;
         helplist : TAsmList;
-        hreg     : tregister;
       begin
         if (abs(spilltemp.offset)>63) or (CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]) then
           begin
@@ -185,8 +183,6 @@ unit rgcpu;
 
 
     function trgcpu.do_spill_replace(list:TAsmList;instr:tai_cpu_abstract_sym;orgreg:tsuperregister;const spilltemp:treference):boolean;
-      var
-        b : byte;
       begin
         result:=false;
         if not(spilltemp.offset in [0..63]) or (CPUAVR_16_REGS in cpu_capabilities[current_settings.cputype]) then

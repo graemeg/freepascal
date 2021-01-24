@@ -59,7 +59,7 @@ implementation
 
     procedure tavrnotnode.second_boolean;
       var
-        tmpreg,lreg : tregister;
+        tmpreg : tregister;
         i : longint;
         falselabel,truelabel,skiplabel: TAsmLabel;
       begin

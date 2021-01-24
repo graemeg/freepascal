@@ -302,11 +302,11 @@ uses
       regnumber_index : array[tregisterindex] of tregisterindex = (
         {$i rjvmrni.inc}
       );
-
+(*
       std_regname_index : array[tregisterindex] of tregisterindex = (
         {$i rjvmsri.inc}
       );
-
+*)
     function reg_cgsize(const reg: tregister): tcgsize;
       begin
         result:=OS_NO;

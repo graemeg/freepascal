@@ -78,7 +78,6 @@ implementation
       var
         tmpreg: tregister;
         lab: tasmlabel;
-        ovloc: tlocation;
         op: topcg;
         isu32int: boolean;
       begin

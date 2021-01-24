@@ -258,7 +258,6 @@ Implementation
 
     var
       hp1, hp2, hp3: tai;
-      s: string;
     begin
       result:=false;
 

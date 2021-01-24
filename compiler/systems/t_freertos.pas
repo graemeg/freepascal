@@ -944,7 +944,6 @@ end;
 function TlinkerFreeRTOS.MakeExecutable:boolean;
 var
   StaticStr,
-  S,
   binstr,
   cmdstr,
   mapstr: Ansistring;
@@ -953,9 +952,12 @@ var
   DynLinkStr,
   StripStr,
   FixedExeFileName: string;
+{$ifdef XTENSA}
+  S: Ansistring;
   t: Text;
   hp: TCmdStrListItem;
   filepath: TCmdStr;
+{$endif XTENSA}
 begin
 {$ifdef XTENSA}
   { idfpath can be set by -Ff, else default to environment value of IDF_PATH }

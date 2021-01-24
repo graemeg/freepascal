@@ -400,7 +400,6 @@ unit cpupara;
       var
         cur_stack_offset: aword;
         curintreg, curfloatreg, curmmreg: tsuperregister;
-        retcgsize  : tcgsize;
       begin
         init_values(curintreg,curfloatreg,curmmreg,cur_stack_offset);
 

@@ -406,7 +406,6 @@ implementation
          hregisterhi,
 {$endif not cpu64bitalu and not cpuhighleveltarget}
          hregister : tregister;
-         hloc: tlocation;
         begin
           { set defaults }
           addconstant:=true;

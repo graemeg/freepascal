@@ -921,6 +921,7 @@ implementation
           Intel 64 and IA-32 Architectures Software Developer’s Manual
             Volume 2B: Instruction Set Reference, N-Z, January 2015
         }
+{$ifndef i8086}
         alignarray_cmovcpus:array[0..10] of string[11]=(
           #$66#$66#$66#$0F#$1F#$84#$00#$00#$00#$00#$00,
           #$66#$66#$0F#$1F#$84#$00#$00#$00#$00#$00,
@@ -933,6 +934,7 @@ implementation
           #$0F#$1F#$00,
           #$66#$90,
           #$90);
+{$endif i8086}
 {$ifdef i8086}
         alignarray:array[0..5] of string[8]=(
           #$90#$90#$90#$90#$90#$90#$90,

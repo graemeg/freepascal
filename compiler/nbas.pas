@@ -706,8 +706,10 @@ implementation
 
 
     function tblocknode.simplify(forinline : boolean): tnode;
+{$ifdef break_inlining}
       var
         a : array[0..3] of tstatementnode;
+{$endif break_inlining}
       begin
         result := nil;
         { Warning: never replace a blocknode with another node type,

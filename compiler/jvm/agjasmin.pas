@@ -1126,9 +1126,6 @@ implementation
 
 
     function getopstr(const o:toper) : ansistring;
-      var
-        d: double;
-        s: single;
       begin
         case o.typ of
           top_reg:

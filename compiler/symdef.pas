@@ -2343,8 +2343,10 @@ implementation
 
 
    function tstoreddef.is_intregable : boolean;
+{$ifndef cpuhighleveltarget}
      var
        recsize,temp: longint;
+{$endif cpuhighleveltarget}
      begin
         case typ of
           orddef,

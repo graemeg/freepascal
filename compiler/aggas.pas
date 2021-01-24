@@ -497,7 +497,6 @@ implementation
     procedure TGNUAssembler.WriteSection(atype:TAsmSectiontype;const aname:string;aorder:TAsmSectionOrder;secalign:longint;secflags:TSectionFlags=[];secprogbits:TSectionProgbits=SPB_None);
       var
         s : string;
-        secflag: TSectionFlag;
         usesectionprogbits,
         usesectionflags: boolean;
       begin

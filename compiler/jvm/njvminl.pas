@@ -161,7 +161,7 @@ implementation
     function tjvminlinenode.first_copy: tnode;
       var
         ppn: tcallparanode;
-        arr, len, start, kind: tnode;
+        arr, len, start: tnode;
         eledef: tdef;
         counter, ndims: longint;
         finaltype: char;
@@ -401,7 +401,6 @@ implementation
         lefttemp: ttempcreatenode;
         newblock: tblocknode;
         newstatement: tstatementnode;
-        primitive: boolean;
       begin
         { first parameter is the array, the rest are the dimensions }
         newparas:=tcallparanode(left).right;

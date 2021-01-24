@@ -1654,9 +1654,6 @@ unit aoptx86;
 
     { Replaces all references to AOldReg in a memory reference to ANewReg }
     class function TX86AsmOptimizer.ReplaceRegisterInRef(var ref: TReference; const AOldReg, ANewReg: TRegister): Boolean;
-      var
-        OldSupReg: TSuperRegister;
-        OldSubReg, MemSubReg: TSubRegister;
       begin
         Result := False;
         { For safety reasons, only check for exact register matches }
@@ -1681,7 +1678,7 @@ unit aoptx86;
     class function TX86AsmOptimizer.ReplaceRegisterInOper(const p: taicpu; const OperIdx: Integer; const AOldReg, ANewReg: TRegister): Boolean;
       var
         OldSupReg, NewSupReg: TSuperRegister;
-        OldSubReg, NewSubReg, MemSubReg: TSubRegister;
+        OldSubReg, NewSubReg: TSubRegister;
         OldRegType: TRegisterType;
         ThisOper: POper;
       begin
@@ -1839,7 +1836,6 @@ unit aoptx86;
     function TX86AsmOptimizer.DeepMOVOpt(const p_mov: taicpu; const hp: taicpu): Boolean;
       var
         CurrentReg, ReplaceReg: TRegister;
-        SubReg: TSubRegister;
       begin
         Result := False;
 
@@ -3210,8 +3206,7 @@ unit aoptx86;
 
     function TX86AsmOptimizer.OptPass1LEA(var p : tai) : boolean;
       var
-        hp1, hp2, hp3: tai;
-        l : ASizeInt;
+        hp1: tai;
         ref: Integer;
         saveref: treference;
         TempReg: TRegister;
@@ -5686,13 +5681,15 @@ unit aoptx86;
 
     function TX86AsmOptimizer.OptPass2Jcc(var p : tai) : boolean;
       var
-        hp1,hp2,hp3,hp4,hpmov2: tai;
-        carryadd_opcode : TAsmOp;
+        hp1,hp2: tai;
+{$ifndef i8086}
+        hp3,hp4,hpmov2: tai;
         l : Longint;
         condition : TAsmCond;
+{$endif i8086}
+        carryadd_opcode : TAsmOp;
         symbol: TAsmSymbol;
         reg: tsuperregister;
-        regavailable: Boolean;
         increg, tmpreg: TRegister;
       begin
         result:=false;
@@ -7072,12 +7069,14 @@ unit aoptx86;
 
 
     function TX86AsmOptimizer.PostPeepholeOptPush(var p : tai) : Boolean;
+{$ifdef x86_64}
       var
         hp1, hp2, hp3, hp4, hp5: tai;
+{$endif x86_64}
       begin
         Result:=false;
-        hp5:=nil;
 {$ifdef x86_64}
+        hp5:=nil;
         { replace
             push %rax
             call   procname

@@ -540,7 +540,6 @@ Implementation
   function TCpuAsmOptimizer.OptPass1ADDSUB(var p: tai): Boolean;
     var
       hp1,hp2: tai;
-      oldreg: tregister;
     begin
       Result := OptPass1DataCheckMov(p);
 
@@ -621,7 +620,7 @@ Implementation
 
   function TCpuAsmOptimizer.OptPass1MUL(var p: tai): Boolean;
     var
-      hp1,hp2: tai;
+      hp1: tai;
       oldreg: tregister;
     begin
       Result := OptPass1DataCheckMov(p);
@@ -1099,7 +1098,7 @@ Implementation
 
   function TCpuAsmOptimizer.OptPass1MOV(var p: tai): Boolean;
     var
-      hp1, hpfar1, hp2, hp3: tai;
+      hp1, hpfar1, hp2: tai;
       i, i2: longint;
       tempop: tasmop;
       dealloc: tai_regalloc;

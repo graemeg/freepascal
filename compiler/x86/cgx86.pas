@@ -447,9 +447,9 @@ unit cgx86;
       var
         hreg : tregister;
         href : treference;
-{$ifndef x86_64}
+{$ifdef i386}
         add_hreg: boolean;
-{$endif not  x86_64}
+{$endif i386}
       begin
         hreg:=NR_NO;
         { make_simple_ref() may have already been called earlier, and in that
@@ -1083,7 +1083,9 @@ unit cgx86;
     procedure tcgx86.a_loadaddr_ref_reg(list : TAsmList;const ref : treference;r : tregister);
       var
         dirref,tmpref : treference;
+{$ifndef i8086}
         tmpreg : TRegister;
+{$endif i8086}
       begin
         dirref:=ref;
 
@@ -3231,10 +3233,12 @@ unit cgx86;
 
 {$ifdef x86}
 {$ifndef NOTARGETWIN}
+{$ifndef i8086}
       var
         href : treference;
         i : integer;
         again : tasmlabel;
+{$endif i8086}
 {$endif NOTARGETWIN}
 {$endif x86}
       begin

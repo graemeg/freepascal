@@ -1312,7 +1312,7 @@ implementation
         nodeset : THashSet absolute arg;
         entry : ptempinfo_flags_entry;
         i : longint;
-        hashsetitem: PHashSetItem;
+        {hashsetitem: PHashSetItem;}
       begin
         result:=fen_true;
         case n.nodetype of

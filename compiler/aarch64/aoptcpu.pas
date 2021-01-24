@@ -754,8 +754,6 @@ Implementation
 
 
   function TCpuAsmOptimizer.PeepHoleOptPass1Cpu(var p: tai): boolean;
-    var
-      hp1: tai;
     begin
       result := false;
       if p.typ=ait_instruction then
@@ -817,8 +815,6 @@ Implementation
 
 
   function TCpuAsmOptimizer.PeepHoleOptPass2Cpu(var p: tai): boolean;
-    var
-      hp1: tai;
     begin
       result := false;
       if p.typ=ait_instruction then

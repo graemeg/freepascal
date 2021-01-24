@@ -164,10 +164,6 @@ interface
 
 
     procedure tx86unaryminusnode.second_float;
-      var
-        reg : tregister;
-        href : treference;
-        l1 : tasmlabel;
       begin
         secondpass(left);
 

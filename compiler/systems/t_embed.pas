@@ -1676,17 +1676,14 @@ function TLinkerEmbedded.postprocessexecutable(const fn : string;isdll:boolean):
 function TlinkerEmbedded_SdccSdld.WriteResponseFile: Boolean;
   Var
     linkres  : TLinkRes;
-    i        : longint;
-    HPath    : TCmdStrListItem;
-    s,s1,s2  : TCmdStr;
+    //i        : longint;
+    //HPath    : TCmdStrListItem;
+    s{,s1,s2}  : TCmdStr;
     prtobj,
     cprtobj  : string[80];
     linklibc : boolean;
-    found1,
-    found2   : boolean;
-  {$if defined(ARM)}
-    LinkStr  : string;
-  {$endif}
+    //found1,
+    //found2   : boolean;
   begin
     WriteResponseFile:=False;
     linklibc:=(SharedLibFiles.Find('c')<>nil);

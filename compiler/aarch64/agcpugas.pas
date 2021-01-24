@@ -265,7 +265,6 @@ unit agcpugas;
         sehlist,
         tmplist : TAsmList;
         xdatasym : tasmsymbol;
-        unwindread,
         unwindrec : longword;
       begin
         if not assigned(list) then

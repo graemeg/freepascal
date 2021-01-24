@@ -563,8 +563,6 @@ unit optloop;
 
 
     function OptimizeForLoop_iterforloops(var n: tnode; arg: pointer): foreachnoderesult;
-      var
-        hp : tnode;
       begin
         Result:=fen_false;
         if (n.nodetype=forn) and

@@ -575,7 +575,7 @@ implementation
 
 
       var
-        t,vl,hp,lefttarget,righttarget, hp2: tnode;
+        t,vl,lefttarget,righttarget: tnode;
         lt,rt   : tnodetype;
         hdef,
         rd,ld   , inttype: tdef;
@@ -3823,7 +3823,6 @@ implementation
     function taddnode.first_add64bitint: tnode;
       var
         procname: string[31];
-        temp: tnode;
         power: longint;
       begin
         result := nil;

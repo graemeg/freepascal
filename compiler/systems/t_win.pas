@@ -430,7 +430,9 @@ implementation
          l1,l2,l3,l4 {$ifdef ARM} ,l5 {$endif ARM} : tasmlabel;
          importname : string;
          suffix : integer;
+{$ifndef AARCH64}
          href : treference;
+{$endif AARCH64}
          i,j  : longint;
          ImportLibrary : TImportLibrary;
          ImportSymbol  : TImportSymbol;

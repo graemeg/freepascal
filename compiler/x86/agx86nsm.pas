@@ -53,7 +53,9 @@ interface
       private
         FSections: TFPHashObjectList;
         FGroups: TFPHashObjectList;
+{$ifndef i8086}
         using_relative : boolean;
+{$endif i8086}
         function CodeSectionName(const aname:string): string;
         procedure WriteReference(var ref : treference);
         procedure WriteOper(const o:toper;s : topsize; opcode: tasmop;ops:longint;dest : boolean);
@@ -681,10 +683,6 @@ interface
       end;
 
     procedure TX86NasmAssembler.WriteGroups;
-      {$ifdef i8086}
-      var
-        i: Integer;
-      {$endif i8086}
       begin
 {$ifdef i8086}
         if target_info.system in [system_i8086_msdos,system_i8086_win16,system_i8086_embedded] then

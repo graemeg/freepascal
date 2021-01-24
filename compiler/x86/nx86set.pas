@@ -420,7 +420,7 @@ implementation
            start,stop : byte;    {Start/stop when range; Stop=element when an element.}
          end;
        var
-         hreg,hreg2,
+         hreg,{$ifndef i8086} hreg2, {$endif}
          pleftreg   : tregister;
          opsize     : tcgsize;
          opdef      : torddef;

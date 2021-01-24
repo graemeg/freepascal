@@ -57,7 +57,6 @@ uses
         hp: tnode;
         srsym: tsym;
         pd: tprocdef;
-        resourcestrrec: trecorddef;
       begin
         { support word/smallint constants, initialized with Seg() }
         if (def.ordtype in [u16bit,s16bit]) and (node.nodetype=inlinen) and

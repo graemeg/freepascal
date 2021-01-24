@@ -1567,7 +1567,6 @@ implementation
         SegDef: TOmfRecord_SEGDEF;
         GrpDef: TOmfRecord_GRPDEF;
         nsections,ngroups: Integer;
-        objsym: TObjSymbol;
       begin
         { calc amount of sections we have and set their index, starting with 1 }
         nsections:=1;
@@ -3157,9 +3156,6 @@ implementation
         i: Integer;
         ExeSec: TMZExeSection;
         ObjSec: TOmfObjSection;
-        StartDataPos: LongWord;
-        buf: array [0..1023] of byte;
-        bytesread: LongWord;
       begin
         Header.LoadableImageSize:=0;
         ExeSec:=MZFlatContentSection;
@@ -3271,7 +3267,6 @@ implementation
         i: Integer;
         ExeSec: TMZExeSection;
         ObjSec: TOmfObjSection;
-        StartDataPos: LongWord;
         buf: array [0..1023] of byte;
         bytesread: LongWord;
       begin
@@ -4102,9 +4097,8 @@ cleanup:
 
     function TNewExeEntryTable.GetSize: QWord;
       var
-        CurBundleStart, i: Integer;
+        CurBundleStart: Integer;
         CurBundleSize: Byte;
-        cp: TNewExeEntryPoint;
       begin
         Result:=0;
         CurBundleStart:=1;

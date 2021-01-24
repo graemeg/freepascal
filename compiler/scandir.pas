@@ -1362,7 +1362,6 @@ unit scandir;
 
     procedure dir_setpeflags;
       var
-        ident : string;
         flags : int64;
       begin
         if not (target_info.system in (systems_all_windows)) then
@@ -1378,7 +1377,6 @@ unit scandir;
 
     procedure dir_setpeoptflags;
       var
-        ident : string;
         flags : int64;
       begin
         if not (target_info.system in (systems_all_windows)) then

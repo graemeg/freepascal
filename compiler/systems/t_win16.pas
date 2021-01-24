@@ -238,7 +238,6 @@ function TExternalLinkerWin16WLink.WriteResponseFile(isdll: boolean): Boolean;
 Var
   linkres  : TLinkRes;
   s        : string;
-  i: Integer;
 begin
   WriteResponseFile:=False;
 

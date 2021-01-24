@@ -326,10 +326,8 @@ Unit raavrgas;
 
       var
         tempreg : tregister;
-        ireg : tsuperregister;
         hl : tasmlabel;
         ofs : longint;
-        registerset : tcpuregisterset;
         tempstr : string;
         tempsymtyp : tasmsymtype;
       Begin
@@ -612,18 +610,16 @@ Unit raavrgas;
 
 
     function tavrattreader.is_asmopcode(const s: string):boolean;
-
+(*
       const
         { sorted by length so longer postfixes will match first }
         postfix2strsorted : array[1..19] of string[2] = (
           'EP','SB','BT','SH',
           'IA','IB','DA','DB','FD','FA','ED','EA',
           'B','D','E','P','T','H','S');
-
+*)
       var
-        len,
-        j,
-        sufidx : longint;
+        j : longint;
         hs : string;
         maxlen : longint;
         icond : tasmcond;

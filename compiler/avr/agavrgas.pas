@@ -154,8 +154,6 @@ unit agavrgas;
       function getopstr(const o:toper) : string;
         var
           hs : string;
-          first : boolean;
-          r : tsuperregister;
         begin
           case o.typ of
             top_reg:

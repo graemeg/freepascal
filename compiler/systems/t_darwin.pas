@@ -320,8 +320,7 @@ implementation
       FilesList    : TLinkRes;
       i            : longint;
       HPath        : TCmdStrListItem;
-      s,s1,s2      : TCmdStr;
-      Fl1,Fl2      : Boolean;
+      s            : TCmdStr;
     begin
       WriteResponseFile:=False;
       if ReOrderEntries Then
