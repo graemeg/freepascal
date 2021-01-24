@@ -3585,7 +3585,7 @@ option_invalid_iphoneos_deployment_target=11051_E_UngÅltiger Wert fÅr die Umgebu
 % XY.Z or XY.Z.AB with X, Y,Z , A and B all digits from 0-9.
 % In case of iOS, it has to be X.Z.A, where X, Z and A can all be either 1 or 2
 % digits from 0-9.
-option_illegal_fpu_eabihf=11052_E_Sie mÅssen beim Ziel EABIHF ABI einen der FPU Typen VFPV2, VFPV3 oder VFPV3_D16 verwenden
+option_illegal_fpu_eabihf=11052_E_Sie mÅssen beim Ziel EABIHF ABI einen der VFP FPU-Typen verwenden
 % The EABIHF (VFP hardfloat) ABI target can only be used with VFP FPUs.
 option_w_unsupported_debug_format=11053_W_Das ausgewÑhlte Debugformat wird auf dem aktuellen Ziel nicht unterstÅtzt. Die aktuelle Einstellung wird beibehalten
 % Not all targets support all debug formats (in particular, Stabs is not supported on 64 bit targets).
