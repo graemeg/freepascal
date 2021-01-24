@@ -1720,11 +1720,9 @@ unit rgobj;
           {        while compiling the compiler. }
           tmpr:=NR_STACK_POINTER_REG;
           { e.g. AVR does not have a stack pointer register }
-{$if defined(RS_STACK_POINTER_REG)}
-  {$if (RS_STACK_POINTER_REG<>RS_INVALID)}
+{$if declared(RS_STACK_POINTER_REG) and (RS_STACK_POINTER_REG<>RS_INVALID)}
           if (regtype=getregtype(tmpr)) then
             include(adj_colours,RS_STACK_POINTER_REG);
-  {$ifend}
 {$ifend}
           {Assume a spill by default...}
           found:=false;
