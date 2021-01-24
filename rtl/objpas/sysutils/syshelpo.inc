@@ -1,8 +1,12 @@
 
 Class Function TORDINALHELPER.Parse(const AString: string): TORDINALTYPE; inline; static;
 
+var
+  Error: Integer;
 begin
-  Result:=StrToInt(AString);
+  Val(AString,Result,Error);
+  if Error<>0 then
+    raise EConvertError.CreateFmt(SInvalidInteger,[AString]);
 end;
 
 Class Function TORDINALHELPER.Size: Integer; inline; static;
