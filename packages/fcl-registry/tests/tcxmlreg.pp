@@ -39,6 +39,7 @@ end;
 procedure TTestXMLRegistry.TearDown;
 begin
   FreeAndNil(FXMLReg);
+  DeleteFile('test.xml');
   inherited TearDown;
 end;
 
