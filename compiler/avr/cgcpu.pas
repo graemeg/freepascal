@@ -309,7 +309,7 @@ unit cgcpu;
 
     procedure tcgavr.a_load_ref_cgpara(list : TAsmList;size : tcgsize;const r : treference;const paraloc : TCGPara);
       var
-        tmpref, ref: treference;
+        tmpref: treference;
         location: pcgparalocation;
         sizeleft: tcgint;
         i: Integer;
@@ -326,7 +326,6 @@ unit cgcpu;
                 a_load_ref_reg(list,location^.size,location^.size,tmpref,location^.register);
               LOC_REFERENCE:
                 begin
-                  ref:=tmpref;
                   for i:=1 to sizeleft do
                     begin
                       tmpreg:=getintregister(list,OS_8);
@@ -2442,7 +2441,7 @@ unit cgcpu;
       var
         countreg,tmpreg,tmpreg2: tregister;
         srcref,dstref : treference;
-        copysize,countregsize : tcgsize;
+        countregsize : tcgsize;
         l : TAsmLabel;
         i : longint;
         SrcQuickRef, DestQuickRef : Boolean;
@@ -2458,7 +2457,6 @@ unit cgcpu;
             dstref.base:=NR_R26;
             dstref.addressmode:=AM_POSTINCREMENT;
 
-            copysize:=OS_8;
             if len<256 then
               countregsize:=OS_8
             else if len<65536 then

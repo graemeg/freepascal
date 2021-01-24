@@ -201,7 +201,6 @@ unit cpupara;
         paracgsize   : tcgsize;
         paralen : longint;
         i : integer;
-        firstparaloc: boolean;
 
       procedure assignintreg;
         begin
@@ -300,7 +299,6 @@ unit cpupara;
              if paralen=0 then
                internalerror(200410311);
 {$endif EXTDEBUG}
-             firstparaloc:=true;
              if loc=LOC_REGISTER then
                begin
                  { the lsb is located in the register with the lowest number,
@@ -386,7 +384,6 @@ unit cpupara;
                          inc(paraloc^.reference.offset,2);
                        end;
                    end;
-                 firstparaloc:=false;
                end;
           end;
         curfloatreg:=nextfloatreg;
