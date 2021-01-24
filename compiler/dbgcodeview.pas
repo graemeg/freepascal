@@ -124,7 +124,7 @@ interface
         LF_PAD10      = $fa,
         LF_PAD11      = $fb,
         LF_PAD12      = $fc,
-        LF_PAD13      = $fc,
+        LF_PAD13      = $fd,
         LF_PAD14      = $fe,
         LF_PAD15      = $ff,
 
