@@ -708,7 +708,7 @@ implementation
         while realintfdef.is_unique_objpasdef do
           realintfdef:=realintfdef.childof;
 
-        tmpstr:=_class.objname^+'_$_'+realintfdef.objname^+'_$_'+tostr(i)+'_$_'+pd.mangledname;
+        tmpstr:=_class.objname^+'_$_'+make_mangledname('',realintfdef.owner,'')+'_$$_'+realintfdef.objname^+'_$_'+tostr(i)+'_$_'+pd.mangledname;
         if length(tmpstr)>100 then
           begin
             crc:=0;
