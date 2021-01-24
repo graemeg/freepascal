@@ -266,7 +266,7 @@ begin
     AssertTrue(format('OpenKey(''%s'') failed.',[Base]),B);
 
     B := R.DeleteKey('One');
-    AssertFalse(format('DeleteKey(''%s'') should have failed, but it succeeded.',[OneFull]),B);
+    AssertTrue(format('DeleteKey(''%s'') should have succeeded, but it failed.',[OneFull]),B);
   finally
     R.Free;
     CleanUp(ExceptObject <> nil);
