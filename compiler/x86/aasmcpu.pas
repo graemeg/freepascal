@@ -3704,13 +3704,17 @@ implementation
         needed_VEX_Extension: boolean;
         needed_VEX: boolean;
         needed_EVEX: boolean;
+{$ifdef x86_64}
         needed_VSIB: boolean;
+{$endif x86_64}
         opmode: integer;
         VEXvvvv: byte;
         VEXmmmmm: byte;
+{
         VEXw    : byte;
         VEXpp   : byte;
         VEXll   : byte;
+}
         EVEXvvvv: byte;
         EVEXpp: byte;
         EVEXr: byte;
@@ -3809,14 +3813,17 @@ implementation
         needed_VEX    := false;
         needed_EVEX   := false;
         needed_VEX_Extension := false;
+{$ifdef x86_64}
         needed_VSIB   := false;
+{$endif x86_64}
         opmode   := -1;
         VEXvvvv  := 0;
         VEXmmmmm := 0;
-
+{
         VEXll    := 0;
         VEXw     := 0;
         VEXpp    := 0;
+}
         EVEXpp   := 0;
         EVEXvvvv := 0;
         EVEXr    := 0;
@@ -3869,7 +3876,9 @@ implementation
                                  begin
                                    // VSIB memory addresing
                                    if getsupreg(oper[opidx]^.ref^.index) and $10 = $0 then EVEXv := 1; // VECTOR-Index
+                                   {$ifdef x86_64}
                                    needed_VSIB := true;
+                                   {$endif x86_64}
                                  end;
                                end;
                       else
@@ -3880,12 +3889,12 @@ implementation
                  end;
            &333: begin
                    VEXvvvv              := VEXvvvv  OR $02; // set SIMD-prefix $F3
-                   VEXpp                := $02;             // set SIMD-prefix $F3
+                   //VEXpp                := $02;             // set SIMD-prefix $F3
                    EVEXpp               := $02;             // set SIMD-prefix $F3
                  end;
            &334: begin
                    VEXvvvv              := VEXvvvv  OR $03; // set SIMD-prefix $F2
-                   VEXpp                := $03;             // set SIMD-prefix $F2
+                   //VEXpp                := $03;             // set SIMD-prefix $F2
                    EVEXpp               := $03;             // set SIMD-prefix $F2
                  end;
            &350: needed_EVEX            := true;            // AVX512 instruction or AVX128/256/512-instruction (depended on operands [x,y,z]mm16..)
@@ -3893,18 +3902,18 @@ implementation
            &352: EVEXw1                 := $01;
            &361: begin
                    VEXvvvv              := VEXvvvv  OR $01; // set SIMD-prefix $66
-                   VEXpp                := $01;             // set SIMD-prefix $66
+                   //VEXpp                := $01;             // set SIMD-prefix $66
                    EVEXpp               := $01;             // set SIMD-prefix $66
                  end;
            &362: needed_VEX             := true;
            &363: begin
                    needed_VEX_Extension := true;
                    VEXvvvv              := VEXvvvv  OR (1 shl 7); // set REX.W
-                   VEXw                 := 1;
+                   //VEXw                 := 1;
                  end;
            &364: begin
                    VEXvvvv              := VEXvvvv  OR $04; // vectorlength = 256 bits AND no scalar
-                   VEXll                := $01;
+                   //VEXll                := $01;
                    EVEXll               := $01;
                  end;
            &366,
