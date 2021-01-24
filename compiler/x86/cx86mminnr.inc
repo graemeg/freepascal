@@ -499,5 +499,5 @@
   in_x86_pcmpistrm = in_x86_mm_first+498,
   in_x86_pcmpistrm_from_mem = in_x86_mm_first+499,
   in_x86_pcmpgtq = in_x86_mm_first+500,
-  in_x86_pcmpgtq_from_mem = in_x86_mm_first+501,
-  in_x86mm_last = in_x86_mm_first+501
+  in_x86_pcmpgtq_from_mem = in_x86_mm_first+501
+
