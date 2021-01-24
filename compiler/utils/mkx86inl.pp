@@ -4,8 +4,7 @@ program mkx86inl;
 {$H+}
 
 uses
-  sysutils, classes,
-  strutils;
+  sysutils, classes;
 
 type
   TOperDirection = (operIn, operVar, operOut);
@@ -18,6 +17,93 @@ type
 
 const
   DirLUT: array[TOperDirection] of string = ('','var ','out ');
+
+{ ***************************************************************************
+  the routines Copy2SymbDel, PosSetEx, PosSet, RemoveTrailingChars, TrimRightSet are copied and reformatted
+  from StrUtils and thus covered by the copyright of strutils (see below) as compiler utilities cannot
+  depend on packages
+
+    This file is part of the Free Pascal run time library.
+    Copyright (c) 1999-2005 by the Free Pascal development team
+
+    See the file COPYING.FPC, included in this distribution,
+    for details about the copyright.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*************************************************************************** }
+
+function Copy2SymbDel(var S: string; Symb: Char): string;
+  var
+    p: SizeInt;
+  begin
+    p:=Pos(Symb,S);
+    if p=0 then
+      begin
+        result:=s;
+        s:='';
+      end
+    else
+      begin
+        Result:=Copy(S,1,p-1);
+        delete(s,1,p);
+      end;
+  end;
+
+
+function PosSetEx(const c: TSysCharSet; const s: ansistring; count: Integer): SizeInt;
+  var
+    i,j:SizeInt;
+  begin
+   if pchar(pointer(s))=nil then
+    j:=0
+   else
+    begin
+     i:=length(s);
+     j:=count;
+     if j>i then
+      begin
+       result:=0;
+       exit;
+      end;
+     while (j<=i) and (not (s[j] in c)) do inc(j);
+     if (j>i) then
+      j:=0;                                         // not found.
+    end;
+   result:=j;
+  end;
+
+function PosSet(const c: TSysCharSet; const s: ansistring): SizeInt;
+  begin
+    result:=possetex(c,s,1);
+  end;
+
+procedure RemoveTrailingChars(VAR S: AnsiString; const CSet: TSysCharset);
+  var
+    I,J: LONGINT;
+
+  Begin
+   I:=Length(S);
+   IF (I>0) Then
+    Begin
+     J:=I;
+     While (j>0) and (S[J] IN CSet) DO DEC(J);
+     IF J<>I Then
+      SetLength(S,J);
+    End;
+  End;
+
+function TrimRightSet(const S: String; const CSet: TSysCharSet): String;
+
+begin
+  result:=s;
+  RemoveTrailingchars(result,cset);
+end;
+
+{ ***************************************************************************
+   end of StrUtils code
+  ***************************************************************************}
 
 function GetPascalType(const ATyp: string): string;
   begin

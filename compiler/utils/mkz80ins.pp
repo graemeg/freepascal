@@ -18,7 +18,7 @@ program mkz80ins;
 {$mode objfpc}{$H+}
 
 uses
-  SysUtils,StrUtils;
+  SysUtils;
 
 const
   Version = '1.0.0';
@@ -83,6 +83,37 @@ type
     constructor Create;
     destructor Destroy;override;
   end;
+
+{ ***************************************************************************
+  the routines LeftStr, AnsiStartsStr are copied and reformatted
+  from StrUtils and thus covered by the copyright of strutils (see below) as compiler utilities cannot
+  depend on packages
+
+    This file is part of the Free Pascal run time library.
+    Copyright (c) 1999-2005 by the Free Pascal development team
+
+    See the file COPYING.FPC, included in this distribution,
+    for details about the copyright.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*************************************************************************** }
+
+function LeftStr(const AText: AnsiString; const ACount: SizeInt): AnsiString;
+  begin
+    Result:=Copy(AText,1,ACount);
+  end;
+
+
+function AnsiStartsStr(const ASubText, AText: string): Boolean;
+  begin
+    Result := (ASubText = '') or (LeftStr(AText, Length(ASubText)) = ASubText);
+  end;
+
+{ ***************************************************************************
+ end of StrUtils code
+***************************************************************************}
 
 function PasEncode(const S: string): string;
   var
