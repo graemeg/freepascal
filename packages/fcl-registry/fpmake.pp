@@ -46,8 +46,7 @@ begin
     T:=P.Targets.AddUnit('xmlreg.pp');
 
     P.ExamplePath.Add('examples');
-    P.Targets.AddExampleProgram('tests/testbasics.pp');
-    P.Targets.AddExampleProgram('tests/regtestframework.pp');
+    P.Targets.AddExampleProgram('tests/tregtestframework.pp');
     // 'tests/Makefile
     // 'tests/Makefile.fpc
 

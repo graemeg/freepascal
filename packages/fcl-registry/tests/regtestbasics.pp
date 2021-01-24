@@ -1,4 +1,4 @@
-unit TestBasics;
+unit RegTestBasics;
 
 {$IFDEF FPC}
   {$mode objfpc}{$H+}

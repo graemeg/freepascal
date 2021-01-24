@@ -1,4 +1,4 @@
-unit tcxmlreg;
+unit regtcxmlreg;
 
 {$mode objfpc}{$H+}
 

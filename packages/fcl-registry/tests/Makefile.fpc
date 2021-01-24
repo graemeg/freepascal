@@ -1,12 +1,12 @@
 #
-#   Makefile.fpc for DB TestFramework
+#   Makefile.fpc for Registry TestFramework
 #
 
 [package]
 main=fcl
 
 [target]
-examples=regtestframework
+examples=tregtestframework
 
 [install]
 fpcpackage=y
