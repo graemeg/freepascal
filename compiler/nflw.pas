@@ -1558,14 +1558,14 @@ implementation
 
 
     function tifnode.internalsimplify(warn: boolean) : tnode;
+{$if defined(i386) or defined(x86_64) or defined(xtensa)}
       var
         thenstmnt, elsestmnt: tnode;
         in_nr: tinlinenumber;
         paratype: tdef;
+{$endif}
       begin
         result:=nil;
-        elsestmnt:=nil;
-        in_nr:=Default(tinlinenumber);
         { optimize constant expressions }
         if (left.nodetype=ordconstn) then
           begin
@@ -1607,6 +1607,8 @@ implementation
           into appropriate min/max intrinsics
 
           }
+        elsestmnt:=nil;
+        in_nr:=Default(tinlinenumber);
         if (cs_opt_level2 in current_settings.optimizerswitches) and
            (left.nodetype in [gtn,gten,ltn,lten]) and IsSingleStatement(right,thenstmnt) and
            ((t1=nil) or IsSingleStatement(t1,elsestmnt)) and

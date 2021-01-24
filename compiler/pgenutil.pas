@@ -1379,8 +1379,6 @@ uses
         constraintdata : tgenericconstraintdata;
         old_block_type : tblock_type;
         fileinfo : tfileposinfo;
-        last_token : ttoken;
-        last_type_pos : tfileposinfo;
       begin
         result:=tfphashobjectlist.create(false);
         firstidx:=0;
@@ -1389,8 +1387,6 @@ uses
         block_type:=bt_type;
         allowconst:=true;
         is_const:=false;
-        last_token:=NOTOKEN;
-        last_type_pos:=current_filepos;
         repeat
           if allowconst and try_to_consume(_CONST) then
             begin
@@ -1605,8 +1601,6 @@ uses
               is_const:=false;
               allowconst:=true;
             end;
-          last_token:=token;
-          last_type_pos:=current_filepos;
         until not (try_to_consume(_COMMA) or try_to_consume(_SEMICOLON));
         { if the constant parameter is not terminated then the type restriction was
           not specified and we need to give an error }

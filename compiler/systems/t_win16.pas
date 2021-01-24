@@ -104,7 +104,6 @@ var
   i,j: Integer;
   ImportLibrary: TImportLibrary;
   ImportSymbol: TImportSymbol;
-  AsmPrefix: String;
 
   procedure AddImport(const dllname,afuncname,mangledname:string;ordnr:longint;isvar:boolean);
     begin
@@ -114,7 +113,6 @@ var
     end;
 
 begin
-  AsmPrefix:='imp'+Lower(current_module.modulename^);
   current_module.linkotherstaticlibs.add(current_module.importlibfilename,link_always);
   ObjWriter:=TOmfLibObjectWriter.CreateAr(current_module.importlibfilename,32);
   ObjOutput:=TOmfObjOutput.Create(ObjWriter);

@@ -179,10 +179,7 @@ implementation
 
 
     function tjvmaddrnode.isdererence: boolean;
-      var
-        target: tnode;
       begin
-        target:=actualtargetnode(@left)^;
         result:=
           (left.nodetype=derefn);
       end;

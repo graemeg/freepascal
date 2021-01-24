@@ -1520,7 +1520,6 @@ implementation
         RawRecord: TOmfRawRecord;
         i,idx: Integer;
         objsym: TObjSymbol;
-        ExternalNameElem: TOmfExternalNameElement;
         ExtDefRec: TOmfRecord_EXTDEF;
       begin
         ExtNames:=TFPHashObjectList.Create;
@@ -1532,7 +1531,7 @@ implementation
             objsym:=TObjSymbol(Data.ObjSymbolList[i]);
             if objsym.bind=AB_EXTERNAL then
               begin
-                ExternalNameElem:=TOmfExternalNameElement.Create(ExtNames,objsym.Name);
+                TOmfExternalNameElement.Create(ExtNames,objsym.Name);
                 objsym.symidx:=idx;
                 Inc(idx);
               end;
@@ -4411,7 +4410,7 @@ cleanup:
       var
         s: TSymStr;
         Separator: SizeInt;
-        SegName, SegClass: string;
+        {SegName,} SegClass: string;
         IsStack, IsBss: Boolean;
       begin
         { allow mixing initialized and uninitialized data in the same section
@@ -4423,12 +4422,12 @@ cleanup:
         Separator:=Pos('||',s);
         if Separator>0 then
           begin
-            SegName:=Copy(s,1,Separator-1);
+            //SegName:=Copy(s,1,Separator-1);
             SegClass:=Copy(s,Separator+2,Length(s)-Separator-1);
           end
         else
           begin
-            SegName:=s;
+            //SegName:=s;
             SegClass:='';
           end;
         { wlink recognizes the stack segment by the class name 'STACK' }

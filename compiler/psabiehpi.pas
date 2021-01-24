@@ -694,7 +694,9 @@ implementation
         otherunit: boolean; }
         wrappedexception: tregister;
         exceptloc: tlocation;
+{$if defined(i386) or defined(x86_64)}
         typeindex : aint;
+{$endif}
       begin
         paraloc1.init;
 {
@@ -722,7 +724,9 @@ implementation
         { check if the exception is handled by this node }
         if assigned(excepttype) then
           begin
+{$if defined(i386) or defined(x86_64)}
             typeindex:=(current_procinfo as tpsabiehprocinfo).CurrentAction.AddAction(excepttype);
+{$endif}
             current_asmdata.getjumplabel(catchstartlab);
 {$if defined(i386)}
             hlcg.a_cmp_const_reg_label (list,osuinttype,OC_EQ,typeindex+1,NR_FUNCTION_RESULT64_HIGH_REG,catchstartlab);

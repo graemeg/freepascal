@@ -105,7 +105,6 @@ implementation
       afterprocstartlabel : tasmlabel;
       hp,
       afterproccodestart  : tai;
-      instrcount          : longint;
     begin
       { insert debug information for local variables and parameters, but only
         for routines implemented in the Pascal code }
@@ -121,7 +120,6 @@ implementation
       { set the start label for local variables after the first instruction,
         because javac's code completion support assumes that all info at
         bytecode position 0 is for parameters }
-      instrcount:=0;
       afterproccodestart:=def.procstarttai;
       while assigned(afterproccodestart.next) do
         begin

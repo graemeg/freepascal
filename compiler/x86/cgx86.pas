@@ -445,13 +445,17 @@ unit cgx86;
 
     procedure tcgx86.make_simple_ref(list:TAsmList;var ref: treference;isdirect:boolean);
       var
+{$ifndef i8086}
         hreg : tregister;
+{$endif i8086}
         href : treference;
 {$ifdef i386}
         add_hreg: boolean;
 {$endif i386}
       begin
+{$ifndef i8086}
         hreg:=NR_NO;
+{$endif i8086}
         { make_simple_ref() may have already been called earlier, and in that
           case make sure we don't perform the PIC-simplifications twice }
         if (ref.refaddr in [addr_pic,addr_pic_no_got]) then

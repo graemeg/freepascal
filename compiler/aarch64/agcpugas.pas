@@ -252,7 +252,6 @@ unit agcpugas;
         lastsym : tai_symbol;
         lastsec : tai_section;
         inprologue,
-        inhandlerdata,
         deleteai : boolean;
         totalcount,
         instrcount,
@@ -277,7 +276,6 @@ unit agcpugas;
         instrcount:=0;
         datacount:=0;
         unwinddata:=nil;
-        inhandlerdata:=false;
         inprologue:=false;
         handlerdata:=nil;
         handlerdataidx:=0;
