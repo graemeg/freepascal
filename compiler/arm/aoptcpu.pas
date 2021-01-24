@@ -59,6 +59,7 @@ Type
     function InstructionLoadsFromReg(const reg : TRegister; const hp : tai) : boolean; override;
 
     function RegLoadedWithNewValue(reg : tregister; hp : tai) : boolean; override;
+    function OptPass1And(var p: tai): Boolean; override; { There's optimisation code that's general for all ARM platforms }
   protected
     function LookForPreindexedPattern(p: taicpu): boolean;
     function LookForPostindexedPattern(p: taicpu): boolean;
@@ -67,7 +68,6 @@ Type
     { Individual optimisation routines }
     function OptPass1DataCheckMov(var p: tai): Boolean;
     function OptPass1ADDSUB(var p: tai): Boolean;
-    function OptPass1And(var p: tai): Boolean; override; { There's optimisation code that's general for all ARM platforms }
     function OptPass1CMP(var p: tai): Boolean;
     function OptPass1LDR(var p: tai): Boolean;
     function OptPass1STM(var p: tai): Boolean;
