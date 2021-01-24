@@ -2521,7 +2521,11 @@ unit rgobj;
         {Safe: this procedure is only called if there are spilled nodes.}
         with spillednodes do
           for i:=0 to length-1 do
-            tg.ungetiftemp(list,spill_temps^[buf^[i]]);
+            begin
+              j:=buf^[i];
+              if tg.istemp(spill_temps^[j]) then
+                tg.ungettemp(list,spill_temps^[j]);
+            end;
         freemem(spill_temps);
       end;
 
