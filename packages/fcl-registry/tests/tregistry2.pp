@@ -1,4 +1,4 @@
-{ %TARGET=win32,win64,wince,linux }
+{ %TARGET=win32,win64,wince,linux,solaris,openbsd }
 
 {
   This unit tests mostly TRegIniFile to work properly and be Delphi compatible.

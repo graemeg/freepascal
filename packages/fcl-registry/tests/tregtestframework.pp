@@ -1,4 +1,4 @@
-{ %TARGET=win32,win64,wince,linux,solaris, }
+{ %TARGET=win32,win64,wince,linux,solaris,openbsd }
 program tregtestframework;
 
 {$IFDEF FPC}
