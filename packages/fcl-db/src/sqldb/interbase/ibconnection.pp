@@ -92,7 +92,8 @@ type
     procedure GetFloat(CurrBuff, Buffer : pointer; Size : Byte);
     procedure SetFloat(CurrBuff: pointer; Dbl: Double; Size: integer);
 
-    procedure CheckError(ProcName : string; Status : PISC_STATUS);
+    procedure CheckError(ProcName : string; Status : PISC_STATUS;IgnoreErrors : Array of Longint); overload;
+    procedure CheckError(ProcName : string; Status : PISC_STATUS); overload;
     procedure SetParameters(cursor : TSQLCursor; aTransation : TSQLTransaction; AParams : TParams);
     procedure FreeSQLDABuffer(var aSQLDA : PXSQLDA);
     function  IsDialectStored: boolean;
@@ -170,6 +171,12 @@ const
   INVALID_DATA = -1;
 
 procedure TIBConnection.CheckError(ProcName : string; Status : PISC_STATUS);
+
+begin
+  CheckError(ProcName,Status,[]);
+end;
+
+procedure TIBConnection.CheckError(ProcName : string; Status : PISC_STATUS; IgnoreErrors : Array of Longint);
 var
   i,ErrorCode : longint;
   Msg, SQLState : string;
@@ -181,6 +188,10 @@ begin
   if ((Status[0] = 1) and (Status[1] <> 0)) then
     begin
     ErrorCode := Status[1];
+    if Length(IgnoreErrors)>0 then
+      for I in IgnoreErrors do
+        if I=ErrorCode then
+          Exit;
 {$IFDEF LinkDynamically}
     if assigned(fb_sqlstate) then // >= Firebird 2.5
     begin
@@ -967,7 +978,8 @@ begin
     if FSelectable and (CursorName<>'') then
       begin
       if isc_dsql_free_statement(@Status, @StatementHandle, DSQL_close)<>0 then
-        CheckError('Close Cursor', Status); // Ignore this, it can already be closed.
+        // If transaction was closed (keepOpenOnCommit, then the cursor is already closed.
+        CheckError('Close Cursor', Status, [335544577]); 
       end;
     end;
 end;
