@@ -338,15 +338,15 @@ interface
         property DwarfUnifiedLogicalSegments: TFPHashObjectList read FExeUnifiedLogicalSegments;
         property Header: TMZExeHeader read FHeader;
       protected
-        procedure Load_Symbol(const aname:string);override;
         procedure DoRelocationFixup(objsec:TObjSection);override;
         procedure Order_ObjSectionList(ObjSectionList : TFPObjectList;const aPattern:string);override;
-        procedure MemPos_ExeSection(const aname:string);override;
-        procedure MemPos_EndExeSection;override;
         function writeData:boolean;override;
       public
         constructor create;override;
         destructor destroy;override;
+        procedure Load_Symbol(const aname:string);override;
+        procedure MemPos_EndExeSection;override;
+        procedure MemPos_ExeSection(const aname:string);override;
         property MZFlatContentSection: TMZExeSection read GetMZFlatContentSection;
       end;
 

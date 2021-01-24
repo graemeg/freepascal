@@ -188,6 +188,8 @@ uses
       procedure gen_initialize_fields_code(list:TAsmList);
 
       procedure gen_typecheck(list: TAsmList; checkop: tasmop; checkdef: tdef);
+
+      procedure g_copyvalueparas(p: TObject; arg: pointer); override;
      protected
       procedure a_load_const_stack_intern(list : TAsmList;size : tdef;a : tcgint; typ: TRegisterType; legalize_const: boolean);
 
@@ -197,8 +199,6 @@ uses
       procedure allocate_enum_with_base_ref(list: TAsmList; vs: tabstractvarsym; const initref: treference; destbaseref: treference);
       procedure allocate_implicit_struct_with_base_ref(list: TAsmList; vs: tabstractvarsym; ref: treference);
       procedure gen_load_uninitialized_function_result(list: TAsmList; pd: tprocdef; resdef: tdef; const resloc: tcgpara); override;
-
-      procedure g_copyvalueparas(p: TObject; arg: pointer); override;
 
       procedure inittempvariables(list:TAsmList);override;
 

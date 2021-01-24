@@ -36,9 +36,9 @@ interface
         protected
          procedure set_labelsym_resultdef; override;
          procedure set_absvarsym_resultdef; override;
-         procedure pass_generate_code;override;
         public
          get_offset_only: boolean;
+         procedure pass_generate_code;override;
        end;
 
        ti8086derefnode = class(tx86derefnode)

@@ -130,6 +130,7 @@ type
       - it has no 'near' or 'far' specifiers
       - it is compiled in a $F- state }
     function default_far:boolean;
+   protected
     procedure Setinterfacedef(AValue: boolean);override;
    public
     constructor create(level:byte;doregister:boolean);override;

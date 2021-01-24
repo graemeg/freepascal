@@ -33,11 +33,12 @@ interface
        private
          function  GetResFlags(unsigned:Boolean):TResFlags;
        protected
-         function pass_1 : tnode;override;
          procedure second_cmpordinal;override;
          procedure second_cmpsmallset;override;
          procedure second_cmp64bit;override;
          procedure second_cmp;
+       public
+         function pass_1 : tnode;override;
        end;
 
   implementation
