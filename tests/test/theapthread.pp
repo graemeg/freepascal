@@ -15,12 +15,14 @@ type
   tpair = class;
 
   tproducethread = class(tthread)
+    running: boolean;
     pair: tpair;
     constructor create(apair: tpair);
     procedure execute; override;
   end;
 
   tconsumethread = class(tthread)
+    running: boolean;
     pair: tpair;
     constructor create(apair: tpair);
     procedure execute; override;
@@ -197,11 +199,13 @@ end;
 
 procedure tproducethread.execute;
 begin
+  running:=true;
   producer(pair);
 end;
 
 procedure tconsumethread.execute;
 begin
+  running:=true;
   consumer(pair);
 end;
 
@@ -221,7 +225,12 @@ begin
       pairs[i] := tpair.create;
     for i := low(pairs) to high(pairs) do
       pairs[i].resume;
-    sleep(1500);
+
+    { wait till all threads are really resumed }
+    for i :=  low(pairs) to high(pairs) do
+      while not(pairs[i].produce_thread.running) or not(pairs[i].consume_thread.running) do
+        sleep(100);
+
     done := true;
     for i := low(pairs) to high(pairs) do
     begin
