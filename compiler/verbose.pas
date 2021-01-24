@@ -753,7 +753,7 @@ implementation
         UpdateStatus;
       { Fix replacements }
         DefaultReplacements(s);
-        if status.showmsgnrs then
+        if status.showmsgnrs and ((v and V_Normal)=0) then
           s:='('+tostr(w)+') '+s;
         if doqueue then
           begin
