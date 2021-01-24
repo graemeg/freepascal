@@ -31,6 +31,10 @@ type
     function GetValue(position:SizeUInt):T;inline;
     function GetMutable(position:SizeUInt):PT;inline;
     procedure IncreaseCapacity();
+  protected
+    procedure MoveSimpleData(StartIndex: SizeUInt; Offset: SizeInt; NrElems: SizeUInt);
+    procedure MoveManagedData(StartIndex: SizeUInt; Offset: SizeInt; NrElems: SizeUInt);
+    procedure MoveData(StartIndex: SizeUInt; Offset: SizeInt; NrElems: SizeUInt);
   public
     function Size():SizeUInt;inline;
     constructor Create();
@@ -127,6 +131,8 @@ end;
 procedure TDeque.SetValue(position:SizeUInt; value:T);inline;
 begin
   Assert(position < size, 'Deque access out of range');
+  if IsManagedType(T) then
+    Finalize(FData[(FStart+position)mod FCapacity]);
   FData[(FStart+position)mod FCapacity]:=value;
 end;
 
@@ -140,6 +146,40 @@ function TDeque.GetMutable(position:SizeUInt):PT;inline;
 begin
   Assert(position < size, 'Deque access out of range');
   GetMutable:=@FData[(FStart+position) mod FCapacity];
+end;
+
+
+
+procedure TDeque.MoveSimpleData(StartIndex: SizeUInt; Offset: SizeInt;  NrElems: SizeUInt);
+begin
+  Move(FData[StartIndex], FData[StartIndex+Offset], NrElems*SizeOf(T));
+  if Offset>0 then
+    FillChar(FData[StartIndex], NrElems*SizeOf(T), 0)
+  else
+    FillChar(FData[StartIndex+NrElems+Offset], -Offset*SizeOf(T), 0);
+end;
+
+procedure TDeque.MoveManagedData(StartIndex: SizeUInt; Offset: SizeInt; NrElems: SizeUInt);
+var
+  i: SizeUInt;
+begin
+  //since we always move blocks where Abs(Offset)>=NrElems, there is no need for
+  //2 seperate loops (1 for ngeative and 1 for positive Offsett)
+  for i := 0 to NrElems-1 do
+  begin
+    Finalize(FData[StartIndex+i+Offset]);
+    FData[StartIndex+i+Offset] := FData[StartIndex+i];
+    Finalize(FData[StartIndex+i]);
+    FillChar(FData[StartIndex+i], SizeOf(T), 0);
+  end;
+end;
+
+procedure TDeque.MoveData(StartIndex: SizeUInt; Offset: SizeInt; NrElems: SizeUInt);
+begin
+  if IsManagedType(T) then
+    MoveManagedData(StartIndex, Offset, NrElems)
+  else
+    MoveSimpleData(StartIndex, Offset, NrElems);
 end;
 
 procedure TDeque.IncreaseCapacity;
@@ -177,11 +217,7 @@ begin
   begin
     if (FCapacity-OldEnd>=FStart) then //we have room to move all items in one go
     begin
-      if IsManagedType(T) then
-        for i:=0 to FStart-1 do
-          FData[OldEnd+i]:=FData[i]
-      else
-        Move(FData[0], FData[OldEnd], FStart*SizeOf(T));
+      MoveData(0, OldEnd ,FStart)
     end
     else
     begin  //we have to move things around in chunks: we have more data in front of FStart than we have newly created unused elements
@@ -189,11 +225,9 @@ begin
       EmptyElems:=FCapacity-1-CurLast;
       while (FStart>0) do
       begin
-        Elems:=Min(EmptyElems, FStart);
-        for i:=0 to Elems-1 do
-          FData[CurLast+1+i]:=FData[i];
-        for i := 0 to FCapacity-Elems-1 do
-          FData[i]:=FData[Elems+i];
+        Elems := Min(EmptyElems, FStart);
+        MoveData(0, CurLast+1, Elems);
+        MoveData(Elems, -Elems, FCapacity-Elems);
         Dec(FStart, Elems);
       end;
     end;
