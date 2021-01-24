@@ -13,6 +13,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  **********************************************************************}
+{$H+}
 program msg2inc;
 
 {$ifdef unix}
@@ -622,21 +623,28 @@ Var
   hs : string;
 begin
   hs:='';
-  for i:=1 to length(s) do
-    case S[i] of
-      '$' :
-        if (s[i+1] in ['0'..'9']) then
-          hs:=hs+'arg'
-        else
-          hs:=hs+'\$';
-      '&','{','}','#','_','%':            // Escape these characters
-        hs := hs + '\' + S[i];
-      '~','^':
-        hs := hs + '\'+S[i]+' ';
-      '\':
-        hs:=hs+'$\backslash$'
-    else
-      hs := hs + S[i];
+  i:=1;
+  while i<=length(s) do
+    begin
+      case S[i] of
+        '$' :
+          if (s[i+1] in ['0'..'9']) then
+            begin
+              hs:=hs+'\textlangle arg. '+s[i+1]+'\textrangle{}';
+              inc(i);
+            end
+          else
+            hs:=hs+'\$';
+        '&','{','}','#','_','%':            // Escape these characters
+          hs := hs + '\' + S[i];
+        '~','^':
+          hs := hs + '\'+S[i]+' ';
+        '\':
+          hs:=hs+'$\backslash$'
+      else
+        hs := hs + S[i];
+      end;
+      inc(i);
     end;
   EscapeString:=hs;
 end;
@@ -646,6 +654,7 @@ var
   t,f   : text;
   line,
   i,k   : longint;
+  number,
   s,s1  : string;
   texoutput : boolean;
 begin
@@ -695,20 +704,27 @@ begin
            if i>0 then
             begin
               inc(i);
+              number:='';
               while s[i] in ['0'..'9'] do
-               inc(i);
+               begin
+                 number:=number+s[i];
+                 inc(i);
+               end;
+              { strip leading zeros }
+              while number[1]='0' do
+                Delete(number,1,1);
               inc(i);
               s1:='';
               k:=0;
               while (k<5) and (s[i+k]<>'_') do
                begin
                  case s[i+k] of
-                  'W' : s1:='Warning: ';
-                  'E' : s1:='Error: ';
-                  'F' : s1:='Fatal: ';
-                  'N' : s1:='Note: ';
-                  'I' : s1:='Info: ';
-                  'H' : s1:='Hint: ';
+                  'W' : s1:='Warning '+number+': ';
+                  'E' : s1:='Error '+number+': ';
+                  'F' : s1:='Fatal error '+number+': ';
+                  'N' : s1:='Note '+number+': ';
+                  'I' : s1:='Info '+number+': ';
+                  'H' : s1:='Hint '+number+': ';
                  end;
                  inc(k);
                end;
