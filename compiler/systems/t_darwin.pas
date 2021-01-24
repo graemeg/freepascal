@@ -481,7 +481,7 @@ implementation
       emulstr:='';
       ltostr:='';
       if (cs_link_map in current_settings.globalswitches) then
-        mapstr:='-Map '+maybequoted(ChangeFileExt(current_module.exefilename,'.map'));
+        mapstr:='-map '+maybequoted(ChangeFileExt(current_module.exefilename,'.map'));
 
       if (cs_link_staticflag in current_settings.globalswitches) then
         StaticStr:='-static';
