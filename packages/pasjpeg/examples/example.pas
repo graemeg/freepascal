@@ -1,3 +1,8 @@
+{$IFDEF FPC}
+{$MODE DELPHI}
+{$GOTO ON}
+{$DEFINE DELPHI_STREAM}
+{$ENDIF}
 Unit example;
 
 { This file illustrates how to use the IJG code as a subroutine library
@@ -37,6 +42,10 @@ function read_JPEG_file (filename : string) : boolean;
 
 implementation
 
+{$ifdef delphi_stream}
+  uses
+    Classes;
+{$endif delphi_stream}
 { <setjmp.h> is used for the optional error recovery mechanism shown in
   the second part of the example. }
 
@@ -93,7 +102,11 @@ var
 
   jerr : jpeg_error_mgr;
   { More stuff }
+{$ifdef delphi_stream}
+  outfile : TFileStream;
+{$else delphi_stream}
   outfile : FILE;               { target file }
+{$endif delphi_stream}
   row_pointer : array[0..0] of JSAMPROW ;       { pointer to JSAMPLE row[s] }
   row_stride : int;             { physical row width in image buffer }
 begin
@@ -117,7 +130,9 @@ begin
     stdio stream.  You can also write your own code to do something else.
     VERY IMPORTANT: use "b" option to fopen() if you are on a machine that
     requires it in order to write binary files. }
-
+{$ifdef delphi_stream}
+  outfile := TFileStream.Create(filename, fmCreate);
+{$else delphi_stream}
   Assign(outfile, filename);
   {$push}{$I-}
   ReWrite(outfile, 1);
@@ -127,6 +142,7 @@ begin
     WriteLn(output, 'can''t open ', filename);
     Halt(1);
   end;
+{$endif delphi_stream}
   jpeg_stdio_dest(@cinfo, @outfile);
 
   { Step 3: set parameters for compression }
@@ -179,7 +195,11 @@ begin
 
   jpeg_finish_compress(@cinfo);
   { After finish_compress, we can close the output file. }
+{$ifdef delphi_stream}
+  outfile.Free;
+{$else delphi_stream}
   system.close(outfile);
+{$endif delphi_stream}
 
   { Step 7: release JPEG compression object }
 
@@ -321,7 +341,11 @@ var
 
   jerr  : my_error_mgr;
   { More stuff }
-  infile : FILE;                { source file }
+{$ifdef delphi_stream}
+  infile : TFileStream;
+{$else delphi_stream}
+  infile : FILE;               { target file }
+{$endif delphi_stream}
   buffer : JSAMPARRAY;          { Output row buffer }
   row_stride : int;             { physical row width in output buffer }
 begin
@@ -331,6 +355,9 @@ begin
     VERY IMPORTANT: use "b" option to fopen() if you are on a machine that
     requires it in order to read binary files. }
 
+{$ifdef delphi_stream}
+  infile := TFileStream.Create(filename, fmOpenRead);
+{$else delphi_stream}
   Assign(infile, filename);
   {$push}{$I-}
   Reset(infile, 1);
@@ -341,6 +368,7 @@ begin
     read_JPEG_file := FALSE;
     exit;
   end;
+{$endif delphi_stream}
 
   { Step 1: allocate and initialize JPEG decompression object }
 
@@ -356,7 +384,11 @@ begin
     { Nomssi: if we get here, we are in trouble, because e.g. cinfo.mem
               is not guaranted to be NIL }
     jpeg_destroy_decompress(@cinfo);
+{$ifdef delphi_stream}
+    infile.Free;
+{$else delphi_stream}
     system.close(infile);
+{$endif delphi_stream}
     read_JPEG_file := FALSE;
     exit;
   end;
@@ -440,7 +472,11 @@ begin
     Here we postpone it until after no more JPEG errors are possible,
     so as to simplify the setjmp error logic above.  (Actually, I don't
     think that jpeg_destroy can do an error exit, but why assume anything...) }
+{$ifdef delphi_stream}
+  infile.Free;
+{$else delphi_stream}
   system.close(infile);
+{$endif delphi_stream}
 
   { At this point you may want to check to see whether any corrupt-data
     warnings occurred (test whether jerr.pub.num_warnings is nonzero). }
