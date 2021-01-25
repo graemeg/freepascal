@@ -94,13 +94,13 @@ begin
   SetLength(S1,100);
   For I:=0 to 99 do
     S1[I]:=i;
-  XMLReg.SetValueData('b',dtBinary,S1[1],Length(S1));
+  XMLReg.SetValueData('b',dtBinary,S1[0],Length(S1));
   XMLReg.Flush;
-  DS:=SizeOf(S1) div 4;
+  DS:=Length(S1) div 4;
   SetLength(S2,DS);
   For I:=0 to DS-1 do
     S2[I]:=i;
-  AssertEquals('Cannot read, buffer size too small',False,XMLReg.GetValueData('b',dt,S2[1],ds));
+  AssertEquals('Cannot read, buffer size too small',False,XMLReg.GetValueData('b',dt,S2[0],DS));
   AssertTrue('Correct data type reported',dt=dtBinary);
   AssertEquals('Correct data buffer size reported',Length(S1),DS);
 end;
