@@ -1051,10 +1051,40 @@ unit cgcpu;
     procedure tcg68k.a_loadfpu_reg_reg(list: TAsmList; fromsize, tosize: tcgsize; reg1, reg2: tregister);
       var
         instr : taicpu;
+        op: tasmop;
+        href: treference;
+        hreg: tregister;
       begin
-        instr:=taicpu.op_reg_reg(A_FMOVE,fpuregopsize,reg1,reg2);
-        add_move_instruction(instr);
-        list.concat(instr);
+        if fromsize > tosize then
+          begin
+            { we have to do a load-store through an intregister or the stack in this case,
+              which is probably the fastest way, and simpler than messing around with FPU control
+              words for one-off custom rounding (KB) }
+            case tosize of
+              OS_F32:
+                  begin
+                    //list.concat(tai_comment.create(strpnew('a_loadfpu_reg_reg rounding via intreg')));
+                    hreg := getintregister(list,OS_32);
+                    list.concat(taicpu.op_reg_reg(A_FMOVE, tcgsize2opsize[tosize], reg1, hreg));
+                    list.concat(taicpu.op_reg_reg(A_FMOVE, tcgsize2opsize[tosize], hreg, reg2));
+                  end;
+            else
+              begin
+                //list.concat(tai_comment.create(strpnew('a_loadfpu_reg_reg rounding via stack')));
+                reference_reset_base(href, NR_STACK_POINTER_REG, 0, ctempposinvalid, 0, []);
+                href.direction:=dir_dec;
+                list.concat(taicpu.op_reg_ref(A_FMOVE, tcgsize2opsize[tosize], reg1, href));
+                href.direction:=dir_inc;
+                list.concat(taicpu.op_ref_reg(A_FMOVE, tcgsize2opsize[tosize], href, reg2));
+              end;
+            end;
+          end
+        else
+          begin
+            instr:=taicpu.op_reg_reg(A_FMOVE,fpuregopsize,reg1,reg2);
+            add_move_instruction(instr);
+            list.concat(instr);
+          end;
       end;
 
 
@@ -1067,6 +1097,8 @@ unit cgcpu;
         href := ref;
         fixref(list,href,current_settings.fputype = fpu_coldfire);
         list.concat(taicpu.op_ref_reg(A_FMOVE,opsize,href,reg));
+        if fromsize > tosize then
+          a_load_reg_reg(list,fromsize,tosize,reg,reg);
       end;
 
     procedure tcg68k.a_loadfpu_reg_ref(list: TAsmList; fromsize,tosize: tcgsize; reg: tregister; const ref: treference);
