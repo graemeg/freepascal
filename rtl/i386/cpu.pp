@@ -74,13 +74,24 @@ unit cpu;
         if _RTMSupport then
           begin
             asm
-            .Lretry:
+{$ifdef USE_REAL_INSTRUCTIONS}
+         .Lretry:
               xbegin .Lretry
+{$else}
+{   3d:	c7 f8 fa ff ff ff    	xbegin    }
+         .byte 0xc7,0xf8, 0xfa, 0xff, 0xff, 0xff
+{$endif}
             end;
             Result:=Target;
             if (Result.Lo=Comperand.Lo) and (Result.Hi=Comperand.Hi) then
               Target:=NewValue;
             asm
+{$ifdef USE_REAL_INSTRUCTIONS}
+              xend
+{$else}
+  { 8a:	0f 01 d5             	xend    }
+         .byte 0x0f, 0x01, 0xd5
+{$endif}
               xend
             end;
           end
@@ -119,7 +130,11 @@ unit cpu;
 
     function cr0 : longint;assembler;
       asm
+{$ifdef USE_REAL_INSTRUCTIONS}
+         mov eax,cr0
+{$else}
          DB 0Fh,20h,0C0h
+{$endif}
          { mov eax,cr0
            special registers are not allowed in the assembler
                 parsers }
@@ -138,8 +153,12 @@ unit cpu;
     function XGETBV(i : dword) : int64;assembler;
       asm
         movl %eax,%ecx
+{$ifdef USE_REAL_INSTRUCTIONS}
+        xgetbv
+{$else}
         // older FPCs don't know the xgetbv opcode
         .byte 0x0f,0x01,0xd0
+{$endif}
       end;
 
 
