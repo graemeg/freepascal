@@ -3485,7 +3485,7 @@ wpo_cant_create_feedback_file=12019_E_Cannot create specified whole program opti
 #
 option_logo=11023_[
 Free Pascal Compiler versie $FPCFULLVERSION [$FPCDATE] voor $FPCTARGET
-Copyright (c) 1993-2020 door Florian Klaempfl en anderen
+Copyright (c) 1993-2021 door Florian Klaempfl en anderen
 ]
 #
 # Info (option -i)

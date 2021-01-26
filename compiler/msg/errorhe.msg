@@ -2407,7 +2407,7 @@ option_confict_asm_debug=11041_W_סוג הפלט של המאסף שנבחר "$1" אינו יכול ליצור מי
 #
 option_logo=11023_[
 Free Pascal Compiler version $FPCFULLVERSION [$FPCDATE] for $FPCCPU
-Copyright (c) 1993-2020 by Florian Klaempfl and others
+Copyright (c) 1993-2021 by Florian Klaempfl and others
 ]
 
 #

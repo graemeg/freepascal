@@ -3514,7 +3514,7 @@ wpo_cant_create_feedback_file=12019_E_Impossível criar arquivo retorno otimiza�
 #
 option_logo=11023_[
 Compilador Free Pascal versão $FPCFULLVERSION [$FPCDATE] para $FPCCPU
-Copyright (c) 1993-2020 by Florian Klaempfl and others
+Copyright (c) 1993-2021 by Florian Klaempfl and others
 ]
 
 #
