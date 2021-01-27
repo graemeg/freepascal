@@ -40,9 +40,12 @@ type
     procedure MoveSimpleData(StartIndex: SizeUInt; Offset: SizeInt; NrElems: SizeUInt);
     procedure MoveManagedData(StartIndex: SizeUInt; Offset: SizeInt; NrElems: SizeUInt);
     procedure MoveData(StartIndex: SizeUInt; Offset: SizeInt; NrElems: SizeUInt);
+    procedure ClearSingleDataEntry(Index: SizeUInt); virtual;
+    procedure ClearData; virtual;
   public
     function Size():SizeUInt;inline;
     constructor Create();
+    destructor Destroy(); override;
     Procedure  Clear;
     procedure PushBack(value:T);inline;
     procedure PushFront(value:T);inline;
@@ -68,8 +71,15 @@ begin
   FStart:=0;
 end;
 
+destructor TDeque.Destroy();
+begin
+  Clear;
+  inherited Destroy;
+end;
+
 procedure TDeque.Clear;
 begin
+ ClearData;
  FDataSize:=0;
  FStart:=0;
 end;
@@ -96,6 +106,7 @@ procedure TDeque.PopFront();inline;
 begin
   if(FDataSize>0) then
   begin
+    ClearSingleDataEntry(FStart);
     inc(FStart);
     dec(FDataSize);
     if(FStart=FCapacity) then
@@ -106,7 +117,10 @@ end;
 procedure TDeque.PopBack();inline;
 begin
   if(FDataSize>0) then
+  begin
+    ClearSingleDataEntry((FStart+FDataSize-1)mod FCapacity);
     dec(FDataSize);
+  end;
 end;
 
 procedure TDeque.PushFront(value:T);inline;
@@ -136,8 +150,7 @@ end;
 procedure TDeque.SetValue(position:SizeUInt; value:T);inline;
 begin
   Assert(position < size, 'Deque access out of range');
-  if IsManagedType(T) then
-    Finalize(FData[(FStart+position)mod FCapacity]);
+  ClearSingleDataEntry((FStart+position)mod FCapacity);
   FData[(FStart+position)mod FCapacity]:=value;
 end;
 
@@ -152,7 +165,6 @@ begin
   Assert(position < size, 'Deque access out of range');
   GetMutable:=@FData[(FStart+position) mod FCapacity];
 end;
-
 
 
 procedure TDeque.MoveSimpleData(StartIndex: SizeUInt; Offset: SizeInt;  NrElems: SizeUInt);
@@ -185,6 +197,27 @@ begin
     MoveManagedData(StartIndex, Offset, NrElems)
   else
     MoveSimpleData(StartIndex, Offset, NrElems);
+end;
+
+procedure TDeque.ClearSingleDataEntry(Index: SizeUInt);
+begin
+  if IsManagedType(T) then
+  begin
+    Finalize(FData[Index]);
+    FillChar(FData[Index], SizeOf(T), 0);
+  end
+  else
+    FData[Index] := default(T);
+end;
+
+procedure TDeque.ClearData;
+var
+  i: SizeUint;
+begin
+  if IsManagedType(T) then
+    for i := Low(FData) to High(FData) do
+      Finalize(FData[i]);
+  FillChar(FData[Low(FData)], SizeUInt(Length(FData))*SizeOf(T), 0);
 end;
 
 procedure TDeque.IncreaseCapacity;
