@@ -42,6 +42,7 @@ type
     procedure MoveData(StartIndex: SizeUInt; Offset: SizeInt; NrElems: SizeUInt);
     procedure ClearSingleDataEntry(Index: SizeUInt); virtual;
     procedure ClearData; virtual;
+    property Data: TArr read FData;
   public
     function Size():SizeUInt;inline;
     constructor Create();
