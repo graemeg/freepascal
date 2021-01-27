@@ -72,6 +72,7 @@ var
   n,s: String;
   i: Integer;
   excl: Boolean; //search
+  MElement: TPasElement;
 begin
   Result:='';
   excl := False;
@@ -120,7 +121,9 @@ begin
       excl := (ASubindex > 0);
     end;
     // cut off Package Name
-    AElement:= AElement.GetModule;
+    MElement:= AElement.GetModule;
+    if Assigned(MElement) then
+      AElement:= MElement;
     Result := Copy(Result, Length(AElement.Parent.Name) + 2, MaxInt);
     // to skip dots in unit name
     i := Length(AElement.Name);
