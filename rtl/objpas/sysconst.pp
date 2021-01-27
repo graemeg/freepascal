@@ -90,13 +90,13 @@ const
   SNoDynLibsSupport      = 'Dynamic libraries not supported. Recompile program with dynamic library driver.';
   SMissingWStringManager = 'Widestring manager not available. Recompile program with appropriate manager.';
   SSigQuit               = 'SIGQUIT signal received.';
-  SObjectCheckError      = 'Object reference is Nil';
+  SObjectCheckError      = 'Object reference is Nil or VMT is damaged';
   SOSError               = 'System error, (OS Code %d):'+LineEnding+'%s';
   SOutOfMemory           = 'Out of memory';
   SOverflow              = 'Floating point overflow';
   SPrivilege             = 'Privileged instruction';
   SRangeError            = 'Range check error';
-  SStackOverflow         = 'Stack overflow';
+  SStackOverflow         = 'Stack overflow or stack misalignment';
   SSafecallException     = 'Exception in safecall method';
   SiconvError            = 'iconv error';
   SThreadError           = 'Thread error';
