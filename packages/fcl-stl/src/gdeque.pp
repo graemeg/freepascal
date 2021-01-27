@@ -14,6 +14,11 @@
 
 unit gdeque;
 
+{
+  Implements a generic double ended queue.
+  (See: https://en.wikipedia.org/wiki/Double-ended_queue)
+}
+
 interface
 
 type
