@@ -1067,7 +1067,7 @@ function TLongNameFileAllocator.GetFilename(AElement: TPasElement; ASubindex: In
 var
   n,s: String;
   i: Integer;
-
+  MElement: TPasElement;
 begin
   Result:='';
   if AElement.ClassType = TPasPackage then
@@ -1105,7 +1105,9 @@ begin
     end else
       Result := LowerCase(AElement.PathName);
     // cut off Package Name
-    AElement:= AElement.GetModule;
+    MElement:= AElement.GetModule;
+    if Assigned(MElement) then
+      AElement:= MElement;
     Result := Copy(Result, Length(AElement.Parent.Name) + 2, MaxInt);
     // to skip dots in unit name
     i := Length(AElement.Name);
