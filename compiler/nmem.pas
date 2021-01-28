@@ -1051,7 +1051,16 @@ implementation
                         and not is_64bit(right.resultdef)
 {$endif not cpu64bitaddr}
                         then
-                       newordtyp:=Torddef(right.resultdef).ordtype
+                        begin
+                          { in case of an integer type, we need a new type which covers declaration range and index range,
+                            see tests/webtbs/tw38413.pp
+                          }
+                          if is_integer(right.resultdef) then
+                            newordtyp:=range_to_basetype(min(TConstExprInt(Tarraydef(left.resultdef).lowrange),torddef(right.resultdef).low),
+                              max(TConstExprInt(Tarraydef(left.resultdef).highrange),torddef(right.resultdef).high))
+                          else
+                            newordtyp:=Torddef(right.resultdef).ordtype;
+                        end
                      else
                        newordtyp:=torddef(sizesinttype).ordtype;
                      inserttypeconv(right,corddef.create(newordtyp,
