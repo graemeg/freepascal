@@ -70,7 +70,7 @@ unit cpu;
     function InterlockedCompareExchange128(var Target: Int128Rec; NewValue: Int128Rec; Comperand: Int128Rec): Int128Rec;
       begin
 {$if FPC_FULLVERSION >= 30101}
-{$ifndef FPC_PIC}      
+{$ifndef FPC_PIC}
         if _RTMSupport then
           begin
             asm
@@ -92,11 +92,10 @@ unit cpu;
   { 8a:	0f 01 d5             	xend    }
          .byte 0x0f, 0x01, 0xd5
 {$endif}
-              xend
             end;
           end
         else
-{$endif FPC_PIC}        
+{$endif FPC_PIC}
 {$endif FPC_FULLVERSION >= 30101}
           RunError(217);
       end;
