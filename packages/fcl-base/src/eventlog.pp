@@ -23,7 +23,7 @@ uses SysUtils,Classes;
 
 Type
   TEventLog = Class;
-  TLogType = (ltSystem,ltFile);
+  TLogType = (ltSystem,ltFile,ltStdOut,ltStdErr);
   TLogCodeEvent = Procedure (Sender : TObject; Var Code : DWord) of Object;
   TLogCategoryEvent = Procedure (Sender : TObject; Var Code : Word) of Object;
 
@@ -52,10 +52,13 @@ Type
     procedure DeActivateLog;
     procedure ActivateFileLog;
     procedure SetFileName(const Value: String);
+    procedure ActivateIOLog;
     procedure ActivateSystemLog;
     function DefaultFileName: String;
+    function FormatLogMessage(EventType : TEventType; const Msg: String): String;
     procedure WriteFileLog(EventType : TEventType; const Msg: String);
     procedure WriteSystemLog(EventType: TEventType; const Msg: String);
+    procedure WriteIOLog(EventType: TEventType; const Msg: String; var OutFile: TextFile);
     procedure DeActivateFileLog;
     procedure DeActivateSystemLog;
     procedure CheckIdentification;
@@ -114,6 +117,8 @@ Resourcestring
   SLogDebug     = 'Debug';
   SLogCustom    = 'Custom (%d)';
   SErrLogFailedMsg = 'Failed to log entry (Error: %s)';
+  SErrLogOpenStdOut = 'Standard Output not available for logging';
+  SErrLogOpenStdErr = 'Standard Error not available for logging';
 
 implementation
 
@@ -201,20 +206,30 @@ begin
   Case FlogType of
     ltFile   : WriteFileLog(EventType,Msg);
     ltSystem : WriteSystemLog(EventType,Msg);
+    ltStdOut : WriteIOLog(EventType,Msg,StdOut);
+    ltStdErr : WriteIOLog(EventType,Msg,StdErr);
   end;
 end;
 
-procedure TEventLog.WriteFileLog(EventType : TEventType; const Msg : String);
-
+function TEventLog.FormatLogMessage(EventType : TEventType; const Msg: String): String;
 Var
-  S,TS,T : String;
+  TS,T : String;
 
 begin
   If FTimeStampFormat='' then
     FTimeStampFormat:='yyyy-mm-dd hh:nn:ss.zzz';
   TS:=FormatDateTime(FTimeStampFormat,Now);
   T:=EventTypeToString(EventType);
-  S:=Format('%s [%s %s] %s%s',[Identification,TS,T,Msg,LineEnding]);
+  Result:=Format('%s [%s %s] %s',[Identification,TS,T,Msg]);
+end;
+
+procedure TEventLog.WriteFileLog(EventType : TEventType; const Msg : String);
+
+Var
+  S : String;
+
+begin
+  S:=FormatLogMessage(EventType, Msg)+LineEnding;
   try
     FStream.WriteBuffer(S[1],Length(S));
     S:='';
@@ -224,6 +239,11 @@ begin
   end;
   If (S<>'') and RaiseExceptionOnError then
     Raise ELogError.CreateFmt(SErrLogFailedMsg,[S]);
+end;
+
+procedure TEventLog.WriteIOLog(EventType: TEventType; const Msg: String; var OutFile: TextFile);
+begin
+  Writeln(OutFile,FormatLogMessage(EventType,Msg));
 end;
 
 procedure TEventLog.Log(const Fmt: String; Args: array of const);
@@ -249,6 +269,8 @@ begin
   Case FLogType of
     ltFile : ActivateFileLog;
     ltSystem : ActivateSystemLog;
+    ltStdOut,
+    ltStdErr : ActivateIOLog;
   end;
 end;
 
@@ -258,6 +280,8 @@ begin
   Case FLogType of
     ltFile : DeActivateFileLog;
     ltSystem : DeActivateSystemLog;
+    { nothing to do here }
+    ltStdOut,ltStdErr : ;
   end;
 end;
 
@@ -277,6 +301,24 @@ begin
   FStream:=TFileStream.Create(FFileName,fFileFlags);
   if fAppendContent then
     FStream.Seek(0,soFromEnd);
+end;
+
+Procedure TEventLog.ActivateIOLog;
+
+var
+  errmsg: String;
+  m: LongInt;
+
+begin
+  if FLogtype = ltStdOut then begin
+    m := TextRec(StdOut).Mode;
+    errmsg := SErrLogOpenStdOut;
+  end else begin
+    m := TextRec(StdErr).Mode;
+    errmsg := SErrLogOpenStdErr;
+  end;
+  if (m <> fmOutput) and (m <> fmAppend) then
+    raise ELogError.Create(errmsg);
 end;
 
 Procedure TEventLog.DeActivateFileLog;
