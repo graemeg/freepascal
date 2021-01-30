@@ -26,6 +26,7 @@ Type
   TLogType = (ltSystem,ltFile,ltStdOut,ltStdErr);
   TLogCodeEvent = Procedure (Sender : TObject; Var Code : DWord) of Object;
   TLogCategoryEvent = Procedure (Sender : TObject; Var Code : Word) of Object;
+  TLogMessageEvent = Procedure (Sender : TObject; EventType : TEventType; Const Msg : String) of Object;
 
   TEventLog = Class(TComponent)
   Private
@@ -44,6 +45,7 @@ Type
     FOnGetCustomCategory : TLogCategoryEvent;
     FOnGetCustomEventID : TLogCodeEvent;
     FOnGetCustomEvent : TLogCodeEvent;
+    FOnLogMessage: TLogMessageEvent;
     FPaused : Boolean;
     procedure SetActive(const Value: Boolean);
     procedure SetIdentification(const Value: String);
@@ -65,6 +67,7 @@ Type
     Procedure DoGetCustomEventID(Var Code : DWord);
     Procedure DoGetCustomEventCategory(Var Code : Word);
     Procedure DoGetCustomEvent(Var Code : DWord);
+    Procedure DoLogMessage(EventType : TEventType; const Msg: String);
   Protected
     Procedure CheckInactive;
     Procedure EnsureActive;
@@ -104,6 +107,7 @@ Type
     Property OnGetCustomCategory : TLogCategoryEvent Read FOnGetCustomCategory Write FOnGetCustomCategory;
     Property OnGetCustomEventID : TLogCodeEvent Read FOnGetCustomEventID Write FOnGetCustomEventID;
     Property OnGetCustomEvent : TLogCodeEvent Read FOnGetCustomEvent Write FOnGetCustomEvent;
+    Property OnLogMessage : TLogMessageEvent read FOnLogMessage write FOnLogMessage;
     Property Paused : Boolean Read FPaused Write FPaused;
   End;
 
@@ -209,6 +213,7 @@ begin
     ltStdOut : WriteIOLog(EventType,Msg,StdOut);
     ltStdErr : WriteIOLog(EventType,Msg,StdErr);
   end;
+  DoLogMessage(EventType, Msg);
 end;
 
 function TEventLog.FormatLogMessage(EventType : TEventType; const Msg: String): String;
@@ -394,6 +399,13 @@ Procedure TEventLog.DoGetCustomEvent(Var Code : DWord);
 begin
   If Assigned(FOnGetCustomEvent) then
     FOnGetCustomEvent(Self,Code);
+end;
+
+Procedure TEventLog.DoLogMessage(EventType : TEventType; const Msg: String);
+
+begin
+  If Assigned(FOnLogMessage) then
+    FOnLogMessage(Self,EventType,Msg);
 end;
 
 
