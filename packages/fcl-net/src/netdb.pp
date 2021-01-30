@@ -84,11 +84,37 @@ Const
   MaxRecursion = 10;
   MaxIP4Mapped = 10;
 
+  { from http://www.iana.org/assignments/dns-parameters }
+  DNSQRY_A     = 1;                     // name to IP address
+  DNSQRY_AAAA  = 28;                    // name to IP6 address
+  DNSQRY_A6    = 38;                    // name to IP6 (new)
+  DNSQRY_PTR   = 12;                    // IP address to name 
+  DNSQRY_MX    = 15;                    // name to MX 
+  DNSQRY_TXT   = 16;                    // name to TXT
+  DNSQRY_CNAME = 5;
+  DNSQRY_SOA   = 6;
+  DNSQRY_NS    = 2;
+  DNSQRY_SRV   = 33;
+
+  // Flags 1
+  QF_QR     = $80;
+  QF_OPCODE = $78;
+  QF_AA     = $04;
+  QF_TC     = $02;  // Truncated.
+  QF_RD     = $01;
+
+  // Flags 2
+  QF_RA     = $80;
+  QF_Z      = $70;
+  QF_RCODE  = $0F;
+
 var
   EtcPath: string;
 {$endif FPC_USE_LIBC}
 
 Type
+  TDNSRcode = (rcNoError, rcFormatError,rcServFail,rcNXDomain,
+    rcNotImpl,rcRefused,rcReserved,rcInvalid);
   TDNSServerArray = Array of THostAddr;
   TServiceEntry = record
     Name     : String;
@@ -134,6 +160,66 @@ Type
   end;
 
 {$ifndef FPC_USE_LIBC}
+
+Type 
+  TPayLoad  = Array[0..511] of Byte;
+  TPayLoadTCP = Array[0 .. 65535] of Byte;
+
+  TDNSHeader = packed Record
+    id      : Array[0..1] of Byte;
+    flags1  : Byte;
+    flags2  : Byte;
+    qdcount : word;
+    ancount : word;
+    nscount : word;
+    arcount : word;
+  end;
+
+  TQueryData = packed Record
+    h: TDNSHeader;
+    Payload : TPayLoad;
+  end;
+
+  TQueryDataLength = packed record
+    length: Word;
+    hpl: TQueryData;
+  end;
+
+  TQueryDataLengthTCP = packed Record
+    length: Word;
+    h: TDNSHeader;
+    Payload : TPayLoadTCP;
+  end;
+
+  PRRData = ^TRRData;
+  TRRData = Packed record       // RR record
+    Atype    : Word;            // Answer type
+    AClass   : Word;
+    TTL      : Cardinal;
+    RDLength : Word;
+  end;
+
+  TRRNameData = packed record
+    RRName   : ShortString;
+    RRMeta   : TRRData;
+    RDataSt  : Word;
+  end;
+  TRRNameDataArray = array of TRRNameData;
+
+  TDNSDomainName = ShortString;
+  TDNSRR_SOA = packed record
+    mname, rname: TDNSDomainName;
+    serial,refresh,retry,expire,min: Cardinal;
+  end;
+  TDNSRR_MX = packed record
+    preference: Word;
+    exchange: TDNSDomainName;
+  end;
+  TDNSRR_SRV = packed record
+    priority, weight, port: Word;
+    target: TDNSDomainName;
+  end;
+
 Var
   DNSServers            : TDNSServerArray;
   DNSOptions            : String;
@@ -189,6 +275,82 @@ Function GetProtocolByNumber(proto: Integer;  Var H : TProtocolEntry) : boolean;
 Function ProcessHosts(FileName : String) : PHostListEntry;
 Function FreeHostsList(var List : PHostListEntry) : Integer;
 Procedure HostsListToArray(var List : PHostListEntry; Var Hosts : THostEntryArray; FreeList : Boolean);
+
+Procedure CheckResolveFile;
+Function Query(Resolver : Integer; Var Qry,Ans : TQueryData; QryLen : Integer; Var AnsLen : Integer) : Boolean;
+function QueryTCP(Resolver : Integer; Var Qry: TQueryDataLength;
+  var Ans: TQueryDataLengthTCP; QryLen : Integer; Var AnsLen : Integer) : Boolean;
+Function BuildPayLoad(Var Q : TQueryData; Name : String; RR : Word; QClass : Word) : Integer;
+Function BuildPayLoadTCP(Var Q : TQueryDataLength; Name : String; RR : Word; QClass : Word) : Integer;
+
+Function SkipAnsQueries(Var Ans : TQueryData; L : Integer) : integer;
+Function SkipAnsQueries(Var Ans : TQueryDataLengthTCP; L : Integer) : integer;
+
+function stringfromlabel(pl: TPayLoad; var start: Integer): string;
+function stringfromlabel(pl: TPayLoadTCP; var start: Integer): string;
+Function CheckAnswer(Const Qry : TDNSHeader; Var Ans : TDNSHeader) : Boolean;
+function IsValidAtype(atype: Word): Boolean;
+
+function IsTruncated(R: TDNSHeader): Boolean;
+function GetRcode(R: TDNSHeader): TDNSRcode;
+function GetFixlenStr(pl: TPayLoad; startidx: Cardinal; len: Byte;
+  out res: ShortString): Byte;
+function GetFixlenStr(pl: TPayLoadTCP; startidx: Cardinal; len: Byte;
+  out res: ShortString): Byte;
+
+function NextNameRR(const pl: TPayLoadTCP; start: Word;
+  out RRName: TRRNameData): Boolean;
+function NextNameRR(const pl: TPayLoad; start: Word;
+  out RRName: TRRNameData): Boolean;
+
+function GetRRrecords(const pl: TPayloadTCP; var Start: Word; Count: Word):
+  TRRNameDataArray;
+function GetRRrecords(const pl: TPayload; var Start: Word; Count: Word):
+  TRRNameDataArray;
+
+function DnsLookup(dn: String; qtype: Word; out Ans: TQueryData;
+  out AnsLen: Longint): Boolean;
+function DnsLookup(dn: String; qtype: Word; out Ans: TQueryDataLengthTCP;
+  out AnsLen: Longint): Boolean;
+
+function DNSRRGetA(const RR: TRRNameData; const pl: TPayLoadTCP;
+  out IP: THostAddr): Boolean;
+function DNSRRGetA(const RR: TRRNameData; const pl: TPayLoad;
+  out IP: THostAddr): Boolean;
+function DNSRRGetCNAME(const RR: TRRNameData; const pl: TPayLoad;
+  out cn: TDNSDomainName): Boolean;
+function DNSRRGetCNAME(const RR: TRRNameData; const pl: TPayLoadTCP;
+  out cn: TDNSDomainName): Boolean;
+function DNSRRGetAAAA(const RR: TRRNameData; const pl: TPayLoadTCP;
+  out IP: THostAddr6): Boolean;
+function DNSRRGetAAAA(const RR: TRRNameData; const pl: TPayLoad;
+  out IP: THostAddr6): Boolean;
+function DNSRRGetNS(const RR: TRRNameData; const pl: TPayLoadTCP;
+  out NSName: TDNSDomainName): Boolean;
+function DNSRRGetNS(const RR: TRRNameData; const pl: TPayLoad;
+  out NSName: TDNSDomainName): Boolean;
+function DNSRRGetSOA(const RR: TRRNameData; const pl: TPayLoadTCP;
+  out dnssoa: TDNSRR_SOA): Boolean;
+function DNSRRGetSOA(const RR: TRRNameData; const pl: TPayLoad;
+  out dnssoa: TDNSRR_SOA): Boolean;
+function  DNSRRGetText(const RR: TRRNameData; const pl: TPayLoad;
+  out dnstext: AnsiString): Boolean;
+function  DNSRRGetText(const RR: TRRNameData; const pl: TPayLoadTCP;
+  out dnstext: AnsiString): Boolean;
+function DNSRRGetMX(const RR: TRRNameData; const pl: TPayLoadTCP;
+  out MX: TDNSRR_MX): Boolean;
+function DNSRRGetMX(const RR: TRRNameData; const pl: TPayLoad;
+  out MX: TDNSRR_MX): Boolean;
+function DNSRRGetPTR(const RR: TRRNameData; const pl: TPayLoadTCP;
+  out ptr: TDNSDomainName): Boolean;
+function DNSRRGetPTR(const RR: TRRNameData; const pl: TPayLoad;
+  out ptr: TDNSDomainName): Boolean;
+function DNSRRGetSRV(const RR: TRRNameData; const pl: TPayload;
+  out srv: TDNSRR_SRV): Boolean;
+function DNSRRGetSRV(const RR: TRRNameData; const pl: TPayloadTCP;
+  out srv: TDNSRR_SRV): Boolean;
+
+
 {$endif FPC_USE_LIBC}
 
 Implementation
@@ -201,54 +363,14 @@ uses
    sysutils;
 
 {$ifndef FPC_USE_LIBC}
+type
+  TTCPSocketResult = (srTimeout,srPartial,srSocketClose,srOK);
+
 var
   DefaultDomainListArr : array of string;
   NDots: Integer;
 
-const
-  { from http://www.iana.org/assignments/dns-parameters }
-  DNSQRY_A     = 1;                     // name to IP address 
-  DNSQRY_AAAA  = 28;                    // name to IP6 address
-  DNSQRY_A6    = 38;                    // name to IP6 (new)
-  DNSQRY_PTR   = 12;                    // IP address to name 
-  DNSQRY_MX    = 15;                    // name to MX 
-  DNSQRY_TXT   = 16;                    // name to TXT
-  DNSQRY_CNAME = 5;
-
-  // Flags 1
-  QF_QR     = $80;
-  QF_OPCODE = $78;
-  QF_AA     = $04;
-  QF_TC     = $02;  // Truncated.
-  QF_RD     = $01;
-
-  // Flags 2
-  QF_RA     = $80;
-  QF_Z      = $70;
-  QF_RCODE  = $0F;
-
-
    
-Type 
-  TPayLoad  = Array[0..511] of Byte;
-  TQueryData = packed Record
-    id      : Array[0..1] of Byte;
-    flags1  : Byte;
-    flags2  : Byte; 
-    qdcount : word;
-    ancount : word;
-    nscount : word;
-    arcount : word;
-    Payload : TPayLoad;
-  end;
-  
-  PRRData = ^TRRData;
-  TRRData = Packed record       // RR record
-    Atype    : Word;            // Answer type
-    AClass   : Word;
-    TTL      : Cardinal;
-    RDLength : Word;
-  end;
 
 { ---------------------------------------------------------------------
     Some Parsing routines
@@ -685,9 +807,10 @@ Var
   
 begin
   Result:=-1;
-  If length(Name)>506 then
+  If (Length(Name) = 0) or (length(Name)>506) then
     Exit;
-  Result:=0;  
+
+  Result:=0;
   P:=@Q.Payload[0];
   Repeat
     L:=Pos('.',Name);
@@ -695,6 +818,17 @@ begin
       S:=Length(Name)
     else
       S:=L-1;
+    // empty label is invalid, unless it's a dot at the end.
+    if (S = 0) then
+    begin
+      if (Length(Name) > 0) then
+      begin
+        Result := -1;
+        exit;
+      end
+      else
+        break; // empty label at end, break out for final 0 length byte.
+    end;
     P[Result]:=S;
     Move(Name[1],P[Result+1],S);
     Inc(Result,S+1);
@@ -710,7 +844,23 @@ begin
   Inc(Result,2);
 end;
 
+{Construct a TCP query payload from the given name, rr and qclass. The
+ principal difference between the TCP and UDP payloads is the two-octet
+ length field in the TCP payload. The UDP payload has no length field.
 
+ See RFC-1035, section 4.2.2.
+
+ Returns the length of the constructed payload, which doesn't include
+ the header or the length field.}
+function BuildPayLoadTCP(var Q: TQueryDataLength; Name: String; RR: Word;
+  QClass: Word): Integer;
+var
+  l: Word;
+begin
+  l := BuildPayLoad(Q.hpl, Name, RR, QClass);
+  Q.length := htons(l + SizeOf(Q.hpl.h));
+  Result := l;
+end;
 
 Function NextRR(Const PayLoad : TPayLoad;Var Start : LongInt; AnsLen : LongInt; Var RR : TRRData) : Boolean;
 
@@ -783,9 +933,8 @@ end;
 { ---------------------------------------------------------------------
     QueryData handling functions
   ---------------------------------------------------------------------}
-  
-Function CheckAnswer(Const Qry : TQueryData; Var Ans : TQueryData) : Boolean;
 
+function CheckAnswer(const Qry: TDNSHeader; var Ans: TDNSHeader): Boolean;
 begin
   Result:=False;
   With Ans do
@@ -797,7 +946,7 @@ begin
     If (Flags1 and QF_QR)=0 then
       exit;
     if (Flags1 and QF_OPCODE)<>0 then 
-      exit;  
+      exit;
     if (Flags2 and QF_RCODE)<>0 then
       exit;  
     // Number of answers ?  
@@ -806,6 +955,586 @@ begin
       Exit;
     Result:=True;
     end;
+end;
+
+{
+ Check that Atype is valid. These are the DNSQRY_? params we support. See the
+ definitions at the top of this unit for the names.
+ Deliberately excluding axfr (252), mailb (253), maila (254), and * (255).
+}
+function IsValidAtype(atype: Word): Boolean;
+begin
+  Result := False;
+  case atype of
+    1 .. 16, 28, 33: Result := True;
+  end;
+end;
+
+function IsTruncated(R: TDNSHeader): Boolean;
+begin
+  Result := ((R.flags1 and QF_TC) > 0);
+end;
+
+function GetRcode(R: TDNSHeader): TDNSRcode;
+var
+  rcode_n: Byte;
+begin
+  rcode_n := (R.flags2 and QF_RCODE);
+  case rcode_n of
+    0: Result := rcNoError;
+    1: Result := rcFormatError;
+    2: Result := rcServFail;
+    3: Result := rcNXDomain;
+    4: Result := rcNotImpl;
+    5: Result := rcRefused;
+    6 .. 15: Result := rcReserved;
+  else
+    Result := rcInvalid;
+  end;
+end;
+
+function GetFixlenStr(pl: TPayLoad; startidx: Cardinal; len: Byte; out
+  res: ShortString): Byte;
+begin
+  Result := 0;
+  res := '';
+  if (startidx + len) > Length(pl) then exit;
+  SetLength(res, len);
+  Move(pl[startidx], res[1], len);
+  Result := len;
+end;
+
+function GetFixlenStr(pl: TPayLoadTCP; startidx: Cardinal; len: Byte;
+  out res: ShortString): Byte;
+begin
+  Result := 0;
+  res := '';
+  if (startidx + len) > Length(pl) then exit;
+  SetLength(res, len);
+  Move(pl[startidx], res[1], len);
+  Result := len;
+end;
+
+function NextNameRR(const pl: TPayLoadTCP; start: Word; out RRName: TRRNameData
+  ): Boolean;
+var
+  I : Integer;
+  PA : PRRData;
+
+begin
+  Result:=False;
+  I:=Start;
+  if (Length(pl) - I) < (SizeOf(TRRData)+2) then exit;
+  RRName.RRName := stringfromlabel(pl, I);
+  if (Length(pl) - I) < (SizeOf(TRRData)) then exit;
+
+  PA:=PRRData(@pl[I]);
+  RRName.RRMeta := PA^;
+  RRName.RRMeta.AClass := NToHs(RRName.RRMeta.AClass);
+  RRName.RRMeta.Atype := NToHs(RRName.RRMeta.Atype);
+  if not IsValidAtype(RRName.RRMeta.Atype) then
+    exit;
+  RRName.RRMeta.RDLength := NToHs(RRName.RRMeta.RDLength);
+  RRName.RRMeta.TTL := NToHl(RRName.RRMeta.TTL);
+  RRName.RDataSt := I+SizeOf(TRRData);
+  // verify that start + rdlength is within the buffer boundary.
+  if RRName.RDataSt + RRName.RRMeta.RDLength > Length(pl) then exit;
+  Result := True;
+end;
+
+function NextNameRR(const pl: TPayLoad; start: Word; out RRName: TRRNameData
+  ): Boolean;
+var
+  I : Integer;
+  PA : PRRData;
+
+begin
+  Result:=False;
+  I:=Start;
+  if (Length(pl) - I) < (SizeOf(TRRData)+2) then exit;
+  RRName.RRName := stringfromlabel(pl, I);
+  if (Length(pl) - I) < (SizeOf(TRRData)) then exit;
+
+  PA:=PRRData(@pl[I]);
+  RRName.RRMeta := PA^;
+  RRName.RRMeta.AClass := NToHs(RRName.RRMeta.AClass);
+  RRName.RRMeta.Atype := NToHs(RRName.RRMeta.Atype);
+  if not IsValidAtype(RRName.RRMeta.Atype) then
+    exit;
+
+  RRName.RRMeta.RDLength := NToHs(RRName.RRMeta.RDLength);
+  RRName.RRMeta.TTL := NToHl(RRName.RRMeta.TTL);
+  RRName.RDataSt := I+SizeOf(TRRData);
+  // verify that start + rdlength is within the buffer boundary.
+  if RRName.RDataSt + RRName.RRMeta.RDLength > Length(pl) then exit;
+  Result := True;
+end;
+
+function GetRRrecords(const pl: TPayloadTCP; var Start: Word; Count: Word
+  ): TRRNameDataArray;
+var
+  I, Total: Word;
+  B: Boolean;
+  RRN: TRRNameData;
+
+begin
+  I:=0;
+  Total := 0;
+  SetLength(Result,Count);
+  while (I < Count) do
+  begin
+    B := NextNameRR(pl, Start, RRN);
+    if not B then break;
+    Inc(Total);
+    Result[I] := RRN;
+    Inc(I);
+    Start := RRN.RDataSt+RRN.RRMeta.RDLength;
+  end;
+  if Total < Count then SetLength(Result,Total);
+end;
+
+function GetRRrecords(const pl: TPayload; var Start: Word; Count: Word
+  ): TRRNameDataArray;
+var
+  I, Total: Word;
+  B: Boolean;
+  RRN: TRRNameData;
+
+begin
+  I:=0;
+  Total := 0;
+  SetLength(Result,Count);
+  while (I < Count) do
+  begin
+    B := NextNameRR(pl, Start, RRN);
+    if not B then break;
+    Inc(Total);
+    Result[I] := RRN;
+    Inc(I);
+    Start := RRN.RDataSt+RRN.RRMeta.RDLength;
+  end;
+  if Total < Count then SetLength(Result,Total);
+end;
+
+function DnsLookup(dn: String; qtype: Word; out Ans: TQueryData; out
+  AnsLen: Longint): Boolean;
+var
+  Qry: TQueryData;
+  QryLen: Longint;
+  idx: Word;
+begin
+  Result := False;
+  AnsLen := -2;
+
+  CheckResolveFile;
+  if Length(DNSServers) = 0 then
+    exit;
+
+  QryLen := BuildPayLoad(Qry, dn, qtype, 1);
+  if QryLen <= 0 then exit;
+
+  AnsLen := -1;
+  { Try the query at each configured resolver in turn, until one of them
+   returns an answer. We check for AnsLen > -1 because we need to distinguish
+   between failure to connect and the server saying it doesn't know or can't
+   answer. If AnsLen = -1 then we failed to connect. If AnsLen >= 0 but qr
+   = False, then we connected but the server returned an error code.}
+  idx := 0;
+  repeat
+    Result := Query(idx,Qry,Ans,QryLen,AnsLen);
+    Inc(idx);
+  until (idx > High(DNSServers)) or (Result = True) or (AnsLen >= 0);
+end;
+
+function DnsLookup(dn: String; qtype: Word; out Ans: TQueryDataLengthTCP; out
+  AnsLen: Longint): Boolean;
+var
+  Qry: TQueryDataLength;
+  QryLen: Longint;
+  idx: Word;
+
+begin
+  Result := False;
+  AnsLen := -2;
+
+  CheckResolveFile;
+  if Length(DNSServers) = 0 then
+    exit;
+
+  QryLen:=BuildPayLoadTCP(Qry, dn, qtype, 1);
+  if QryLen <= 0 then exit;
+  AnsLen := -1;
+
+  { Try the query at each configured resolver in turn, until one of them
+   returns an answer. We check for AnsLen > -1 because we need to distinguish
+   between failure to connect and the server saying it doesn't know or can't
+   answer. If AnsLen = -1 then we failed to connect. If AnsLen >= 0 but qr
+   = False, then we connected but the server returned an error code.}
+  idx := 0;
+  repeat
+    Result := QueryTCP(idx,Qry,Ans,QryLen,AnsLen);
+    Inc(idx);
+  until (idx > High(DNSServers)) or (Result = True) or (AnsLen >= 0);
+end;
+
+function DNSRRGetA(const RR: TRRNameData; const pl: TPayLoadTCP; out
+  IP: THostAddr): Boolean;
+begin
+  IP.s_addr := 0;
+  Result := False;
+  if RR.RRMeta.Atype <> DNSQRY_A then exit;
+  if (Length(pl) - RR.RDataSt) < 4 then exit;
+  Move(pl[RR.RDataSt], IP, SizeOf(THostAddr));
+  IP.s_addr := NToHl(IP.s_addr);
+  Result := True;
+end;
+
+function DNSRRGetA(const RR: TRRNameData; const pl: TPayLoad; out IP: THostAddr
+  ): Boolean;
+begin
+  IP.s_addr := 0;
+  Result := False;
+  if RR.RRMeta.Atype <> DNSQRY_A then exit;
+  if (Length(pl) - RR.RDataSt) < 4 then exit;
+  Move(pl[RR.RDataSt], IP, SizeOf(THostAddr));
+  IP.s_addr := NToHl(IP.s_addr);
+  Result := True;
+end;
+
+function DNSRRGetCNAME(const RR: TRRNameData; const pl: TPayLoad; out
+  cn: TDNSDomainName): Boolean;
+var
+  n: Integer;
+begin
+  Result := False;
+  cn := '';
+  if RR.RRMeta.Atype <> DNSQRY_CNAME then exit;
+  n := RR.RDataSt;
+  if (RR.RDataSt + RR.RRMeta.RDLength) > Length(pl) then exit;
+  cn := stringfromlabel(pl, n);
+  Result := True;
+end;
+
+function DNSRRGetCNAME(const RR: TRRNameData; const pl: TPayLoadTCP; out
+  cn: TDNSDomainName): Boolean;
+var
+  n: Integer;
+begin
+  Result := False;
+  cn := '';
+  if RR.RRMeta.Atype <> DNSQRY_CNAME then exit;
+  n := RR.RDataSt;
+  if (n + RR.RRMeta.rdlength) > Length(pl) then exit;
+  cn := stringfromlabel(pl, n);
+  Result := True;
+end;
+
+function DNSRRGetAAAA(const RR: TRRNameData; const pl: TPayLoadTCP; out
+  IP: THostAddr6): Boolean;
+begin
+  IP.s6_addr32[0] := 0;
+  IP.s6_addr32[1] := 0;
+  IP.s6_addr32[2] := 0;
+  IP.s6_addr32[3] := 0;
+  Result := False;
+  if RR.RRMeta.Atype <> DNSQRY_AAAA then exit;
+  if (RR.RDataSt + SizeOf(THostAddr6)) > Length(pl) then exit;
+  Move(pl[RR.RDataSt],IP,SizeOf(THostAddr6));
+  Result := True;
+end;
+
+function DNSRRGetAAAA(const RR: TRRNameData; const pl: TPayLoad; out
+  IP: THostAddr6): Boolean;
+begin
+  IP.s6_addr32[0] := 0;
+  IP.s6_addr32[1] := 0;
+  IP.s6_addr32[2] := 0;
+  IP.s6_addr32[3] := 0;
+  Result := False;
+  if RR.RRMeta.Atype <> DNSQRY_AAAA then exit;
+  if (RR.RDataSt + SizeOf(THostAddr6)) > Length(pl) then exit;
+  Move(pl[RR.RDataSt],IP,SizeOf(THostAddr6));
+  Result := True;
+end;
+
+function DNSRRGetNS(const RR: TRRNameData; const pl: TPayLoadTCP; out
+  NSName: TDNSDomainName): Boolean;
+var
+  n: LongInt;
+begin
+  NSName := '';
+  Result := False;
+  if RR.RRMeta.Atype <> DNSQRY_NS then exit;
+  if (RR.RDataSt + RR.RRMeta.RDLength) > Length(pl) then exit;
+  n := RR.RDataSt;
+  NSName := stringfromlabel(pl, n);
+  Result := True;
+end;
+
+function DNSRRGetNS(const RR: TRRNameData; const pl: TPayLoad; out
+  NSName: TDNSDomainName): Boolean;
+var
+  n: LongInt;
+begin
+  NSName := '';
+  Result := False;
+  if RR.RRMeta.Atype <> DNSQRY_NS then exit;
+  if (RR.RDataSt + RR.RRMeta.RDLength) > Length(pl) then exit;
+  n := RR.RDataSt;
+  NSName := stringfromlabel(pl, n);
+  Result := True;
+end;
+
+function DNSRRGetSOA(const RR: TRRNameData; const pl: TPayLoadTCP; out
+  dnssoa: TDNSRR_SOA): Boolean;
+var
+  idx: Integer;
+begin
+  // can't trust the counts we've been given, so check that we never
+  // exceed the end of the payload buffer.
+  idx := RR.RDataSt;
+  Result := False;
+  if RR.RRMeta.Atype <> DNSQRY_SOA then exit;
+  dnssoa.mname := stringfromlabel(pl, idx);
+  if idx >= Length(pl) then exit;
+
+  dnssoa.rname := stringfromlabel(pl, idx);
+
+  if (idx + (SizeOf(Cardinal) * 5)) > Length(pl) then exit;
+  Move(pl[idx],dnssoa.serial,SizeOf(Cardinal));
+  Inc(idx, SizeOf(Cardinal));
+  Move(pl[idx], dnssoa.refresh, SizeOf(Cardinal));
+  Inc(idx, SizeOf(Cardinal));
+  Move(pl[idx], dnssoa.retry, SizeOf(Cardinal));
+  Inc(idx, SizeOf(Cardinal));
+  Move(pl[idx], dnssoa.expire, SizeOf(Cardinal));
+  Inc(idx, SizeOf(Cardinal));
+  Move(pl[idx], dnssoa.min, SizeOf(Cardinal));
+  Result := True;
+  dnssoa.serial := NToHl(dnssoa.serial);
+  dnssoa.min := NToHl(dnssoa.min);
+  dnssoa.expire := NToHl(dnssoa.expire);
+  dnssoa.refresh := NToHl(dnssoa.refresh);
+  dnssoa.retry := NToHl(dnssoa.retry);
+end;
+
+function DNSRRGetSOA(const RR: TRRNameData; const pl: TPayLoad; out
+  dnssoa: TDNSRR_SOA): Boolean;
+var
+  idx: Integer;
+begin
+  // can't trust the counts we've been given, so check that we never
+  // exceed the end of the payload buffer.
+  idx := RR.RDataSt;
+  Result := False;
+  if RR.RRMeta.Atype <> DNSQRY_SOA then exit;
+  dnssoa.mname := stringfromlabel(pl, idx);
+  if idx >= Length(pl) then exit;
+
+  dnssoa.rname := stringfromlabel(pl, idx);
+
+  if (idx + (SizeOf(Cardinal) * 5)) > Length(pl) then exit;
+  Move(pl[idx],dnssoa.serial,SizeOf(Cardinal));
+  Inc(idx, SizeOf(Cardinal));
+  Move(pl[idx], dnssoa.refresh, SizeOf(Cardinal));
+  Inc(idx, SizeOf(Cardinal));
+  Move(pl[idx], dnssoa.retry, SizeOf(Cardinal));
+  Inc(idx, SizeOf(Cardinal));
+  Move(pl[idx], dnssoa.expire, SizeOf(Cardinal));
+  Inc(idx, SizeOf(Cardinal));
+  Move(pl[idx], dnssoa.min, SizeOf(Cardinal));
+  Result := True;
+  dnssoa.serial := NToHl(dnssoa.serial);
+  dnssoa.min := NToHl(dnssoa.min);
+  dnssoa.expire := NToHl(dnssoa.expire);
+  dnssoa.refresh := NToHl(dnssoa.refresh);
+  dnssoa.retry := NToHl(dnssoa.retry);
+end;
+
+function DNSRRGetText(const RR: TRRNameData; const pl: TPayLoad; out
+  dnstext: AnsiString): Boolean;
+var
+  wrk: ShortString;
+  idx: LongInt;
+  l: Byte;
+begin
+  Result := False;
+  dnstext := '';
+  if RR.RRMeta.Atype <> DNSQRY_TXT then exit;
+  wrk := '';
+
+  idx := RR.RDataSt;
+  if (Length(pl) - idx)  < 2 then exit;
+
+  repeat
+    l := GetFixlenStr(pl, idx+1, pl[idx], wrk);
+    if l = 0 then exit; // count would send us past end of buffer
+    dnstext := dnstext + wrk;
+    Inc(idx, l+1);
+  until (idx >= (RR.RDataSt + RR.RRMeta.RDLength)) or ((Length(pl) - idx) < 2);
+  Result := True;
+end;
+
+function DNSRRGetText(const RR: TRRNameData; const pl: TPayLoadTCP; out
+  dnstext: AnsiString): Boolean;
+var
+  wrk: ShortString;
+  idx: LongInt;
+  l: Byte;
+begin
+  Result := False;
+  dnstext := '';
+  if RR.RRMeta.Atype <> DNSQRY_TXT then exit;
+  wrk := '';
+
+  idx := RR.RDataSt;
+  if (Length(pl) - idx)  < 2 then exit;
+
+  repeat
+    l := GetFixlenStr(pl, idx+1, pl[idx], wrk);
+    if l = 0 then exit; // count would send us past end of buffer
+    dnstext := dnstext + wrk;
+    Inc(idx, l+1);
+  until (idx >= (RR.RDataSt + RR.RRMeta.RDLength)) or ((Length(pl) - idx) < 2);
+  Result := True;
+end;
+
+function DNSRRGetMX(const RR: TRRNameData; const pl: TPayLoadTCP; out
+  MX: TDNSRR_MX): Boolean;
+var
+  idx: Integer;
+begin
+  Result := False;
+  MX.preference := 0;
+  MX.exchange := '';
+  if RR.RRMeta.Atype <> DNSQRY_MX then exit;
+  idx := RR.RDataSt;
+  if idx + SizeOf(Word) >= Length(pl) then exit;
+  Move(pl[idx],MX.preference, SizeOf(Word));
+  Inc(idx, SizeOf(Word));
+  if (Length(pl) - idx) < 2 then exit;
+  MX.exchange := stringfromlabel(pl, idx);
+  MX.preference := NToHs(MX.preference);
+  Result := True;
+end;
+
+function DNSRRGetMX(const RR: TRRNameData; const pl: TPayLoad; out MX: TDNSRR_MX
+  ): Boolean;
+var
+  idx: Integer;
+begin
+  Result := False;
+  MX.preference := 0;
+  MX.exchange := '';
+  if RR.RRMeta.Atype <> DNSQRY_MX then exit;
+  idx := RR.RDataSt;
+  if idx + SizeOf(Word) >= Length(pl) then exit;
+  Move(pl[idx],MX.preference, SizeOf(Word));
+  Inc(idx, SizeOf(Word));
+  if (Length(pl) - idx) < 2 then exit;
+  MX.exchange := stringfromlabel(pl, idx);
+  MX.preference := NToHs(MX.preference);
+  Result := True;
+end;
+
+function DNSRRGetPTR(const RR: TRRNameData; const pl: TPayLoadTCP; out
+  ptr: TDNSDomainName): Boolean;
+var
+  n: Integer;
+begin
+  Result := False;
+  ptr := '';
+  if RR.RRMeta.Atype <> DNSQRY_PTR then exit;
+  n := RR.RDataSt;
+  if (n + RR.RRMeta.RDLength) > Length(pl) then exit;
+  ptr := stringfromlabel(pl, n);
+  Result := True;
+end;
+
+function DNSRRGetPTR(const RR: TRRNameData; const pl: TPayLoad; out
+  ptr: TDNSDomainName): Boolean;
+var
+  n: Integer;
+begin
+  Result := False;
+  ptr := '';
+  if RR.RRMeta.Atype <> DNSQRY_PTR then exit;
+  n := RR.RDataSt;
+  if (n + RR.RRMeta.RDLength) > Length(pl) then exit;
+  ptr := stringfromlabel(pl, n);
+  Result := True;
+end;
+
+function DNSRRGetSRV(const RR: TRRNameData; const pl: TPayload; out
+  srv: TDNSRR_SRV): Boolean;
+var
+  idx: Integer;
+begin
+  Result := False;
+  srv.priority := 0;
+  srv.weight := 0;
+  srv.port := 0;
+  srv.target := '';
+  if RR.RRMeta.Atype <> DNSQRY_SRV then exit;
+
+  idx := RR.RDataSt;
+  if idx +  RR.RRMeta.RDLength > Length(pl) then exit;
+
+  Move(pl[idx], srv.priority, SizeOf(Word));
+  Inc(idx, SizeOf(Word));
+  if (Length(pl) - idx) < 2 then exit;
+
+  Move(pl[idx], srv.weight, SizeOf(Word));
+  Inc(idx, SizeOf(Word));
+  if (Length(pl) - idx) < 2 then exit;
+
+  Move(pl[idx], srv.port, SizeOf(Word));
+  Inc(idx, SizeOf(Word));
+  if (Length(pl) - idx) < 2 then exit;
+
+  srv.target := stringfromlabel(pl, idx);
+
+  srv.priority := NToHs(srv.priority);
+  srv.weight := NToHs(srv.weight);
+  srv.port := NToHs(srv.port);
+
+  Result := True;
+end;
+
+function DNSRRGetSRV(const RR: TRRNameData; const pl: TPayloadTCP; out
+  srv: TDNSRR_SRV): Boolean;
+var
+  idx: Integer;
+begin
+  Result := False;
+  srv.priority := 0;
+  srv.weight := 0;
+  srv.port := 0;
+  srv.target := '';
+  if RR.RRMeta.Atype <> DNSQRY_SRV then exit;
+
+  idx := RR.RDataSt;
+  if idx +  RR.RRMeta.RDLength > Length(pl) then exit;
+
+  Move(pl[idx], srv.priority, SizeOf(Word));
+  Inc(idx, SizeOf(Word));
+  if (Length(pl) - idx) < 2 then exit;
+
+  Move(pl[idx], srv.weight, SizeOf(Word));
+  Inc(idx, SizeOf(Word));
+  if (Length(pl) - idx) < 2 then exit;
+
+  Move(pl[idx], srv.port, SizeOf(Word));
+  Inc(idx, SizeOf(Word));
+  if (Length(pl) - idx) < 2 then exit;
+
+  srv.target := stringfromlabel(pl, idx);
+
+  srv.priority := NToHs(srv.priority);
+  srv.weight := NToHs(srv.weight);
+  srv.port := NToHs(srv.port);
+
+  Result := True;
 end;
 
 Function SkipAnsQueries(Var Ans : TQueryData; L : Integer) : integer;
@@ -817,10 +1546,10 @@ begin
   Result:=0;
   With Ans do
     begin
-    qdcount := htons(qdcount);
+    h.qdcount := htons(h.qdcount);
     i:=0;
     q:=0;
-    While (Q<qdcount) and (i<l) do  
+    While (Q<h.qdcount) and (i<l) do  
       begin
       If Payload[i]>63 then
         begin
@@ -842,6 +1571,39 @@ begin
     end;  
 end;
 
+function SkipAnsQueries(var Ans: TQueryDataLengthTCP; L: Integer): integer;
+var
+  Q,I : Integer;
+
+begin
+  Result:=0;
+  With Ans do
+  begin
+    h.qdcount := htons(h.qdcount);
+    i:=0;
+    q:=0;
+    While (Q<h.qdcount) and (i<l) do
+    begin
+      If Payload[i]>63 then
+      begin
+        Inc(I,6);
+        Inc(Q);
+      end
+      else
+      begin
+        If Payload[i]=0 then
+        begin
+          inc(q);
+          Inc(I,5);
+        end
+        else
+          Inc(I,Payload[i]+1);
+      end;
+    end;
+    Result:=I;
+  end;
+end;
+
 { ---------------------------------------------------------------------
     DNS Query functions.
   ---------------------------------------------------------------------}
@@ -857,7 +1619,7 @@ Var
   
 begin
   Result:=False;
-  With Qry do
+  With Qry.h do
     begin
     ID[0]:=Random(256);
     ID[1]:=Random(256);
@@ -890,39 +1652,256 @@ begin
   AL:=SizeOf(SA);
   L:=fprecvfrom(Sock,@ans,SizeOf(Ans),0,@SA,@AL);
   fpclose(Sock);
-  // Check lenght answer and fields in header data.
-  If (L<12) or not CheckAnswer(Qry,Ans) Then
+
+  if L < 12 then exit;
+  // Return Payload length.
+  Anslen:=L-12;
+  // even though we may still return false to indicate an error, if AnsLen
+  // is >= 0 then the caller knows the dns server responded.
+  If not CheckAnswer(Qry.h,Ans.h) Then
     exit;
-  // Return Payload length.  
-  Anslen:=L-12;  
-  Result:=True;  
+  Result:=True;
+  //end;
 end;
 
-function stringfromlabel(pl: TPayLoad; start: integer): string;
+function FetchDNSResponse(sock: Cint; out len: ssize_t;
+  out Ans: TQueryDataLengthTCP): TTCPSocketResult;
 var
-  l,i: integer;
+  respsize: Word;
+  L: ssize_t;
+
+begin
+  Result := srOK;
+  len := 0;
+
+  // peek into the socket buffer and see if a full message is waiting.
+  L := fprecv(sock, @Ans, SizeOf(Ans), MSG_PEEK);
+  if L = 0 then
+  begin
+    Result := srSocketClose;
+    exit;
+  end;
+  // The first two bytes of a DNS TCP payload is the number of octets in the
+  // response, excluding the two bytes of length. This lets us see if we've
+  // received the full response.
+  respsize := NToHs(Ans.length);
+  if (L < 2) or (L < (respsize + SizeOf(Ans.length))) then
+  begin
+    Result := srPartial;
+    exit;
+  end;
+
+  // The full DNS response is waiting in the buffer. Get it now.
+  len := fprecv(sock, @Ans, SizeOf(Ans), 0);
+end;
+
+function QueryTCP(Resolver: Integer; var Qry: TQueryDataLength;
+  var Ans: TQueryDataLengthTCP; QryLen: Integer; var AnsLen: Integer): Boolean;
+Var
+  SA : TInetSockAddr;
+  Sock : cint;
+  L: ssize_t;
+  RTO : Longint;
+  ReadFDS : TFDSet;
+  count: Integer;
+  sendsize: ssize_t;
+  respsize: Word;
+  resp: TTCPSocketResult;
+  tstart: QWord;
+
+begin
+  tstart := GetTickCount64;
+  Result:=False;
+  With Qry.hpl.h do
+  begin
+    ID[0]:=Random(256);
+    ID[1]:=Random(256);
+    Flags1:=QF_RD;
+    Flags2:=0;
+    qdcount:=htons(1); // was 1 shl 8;
+    ancount:=0;
+    nscount:=0;
+    arcount:=0;
+  end;
+  Sock:=FpSocket(AF_INET,SOCK_STREAM,0);
+  If Sock=-1 then
+    exit;
+  With SA do
+  begin
+    sin_family:=AF_INET;
+    sin_port:=htons(DNSport);
+    sin_addr.s_addr:=cardinal(DNSServers[Resolver]); // octets already in net order
+  end;
+
+  // connect to the resolver
+  if (fpconnect(Sock, @SA, SizeOf(SA)) <> 0) then
+    exit;
+
+  // send the query to the resolver
+  sendsize := QryLen + SizeOf(Qry.hpl.h) + SizeOf(Qry.length);
+  count := fpsend(Sock,@Qry,sendsize,0);
+  if count < sendsize then
+  begin
+    fpclose(Sock);
+    exit;
+  end;
+
+  // tell other side we're done writing.
+  fpshutdown(Sock, SHUT_WR);
+
+  RTO := 5000;
+  fpFD_ZERO(ReadFDS);
+  fpFD_Set(sock,ReadFDS);
+
+  // select to wait for data
+  if fpSelect(sock+1, @ReadFDS, Nil, Nil,  RTO)<=0 then
+  begin
+    // timed out, nothing received.
+    fpclose(sock);
+    exit;
+  end;
+
+  // for partial responses, keep trying until all data received or the
+  // timeout period has elapsed. the timeout period includes the time
+  // spent waiting on select.
+  resp := FetchDNSResponse(Sock, L, Ans);
+  while (resp = srPartial) and ((GetTickCount64 - tstart) < RTO) do
+  begin
+    // need to sleep to avoid high cpu. 50ms means a 5 second timeout will
+    // make up to 100 calls to FetchDNSResponse.
+    Sleep(50);
+    resp := FetchDNSResponse(Sock, L, Ans);
+  end;
+
+  fpclose(sock);
+  if resp <> srOK then exit;
+
+  // Set AnsLen to be the size of the payload minus the header.
+  Anslen := L-SizeOf(Qry.hpl.h);
+  // if the final check finds problems with the answer, we'll return false
+  // but AnsLen being >=0 will let the caller know that the server did
+  // respond, but either declined to answer or couldn't.
+  If not CheckAnswer(Qry.hpl.h,Ans.h) then
+    exit;
+  Result:=True;
+end;
+
+{
+Read a string from the payload buffer. Handles compressed as well as
+regular labels. On termination start points to the character after the
+end of the str.
+}
+
+function stringfromlabel(pl: TPayLoad; var start: Integer): string;
+var
+  l,i,n,lc: integer;
+  ptr: Word;
+  ptrseen: Boolean = False;
 begin
   result := '';
   l := 0;
   i := 0;
+  n := start;
+  // Label counter. Per rfc1035, s. 3.1, each label is at least 2 bytes and the
+  // max length for a domain is 255, so there can't be more than 127 labels.
+  // This helps to short-circuit loops in label pointers.
+  lc := 0;
   repeat
-    l := ord(pl[start]);
+    // each iteration of this loop is for one label. whether a pointer or a
+    // regular label, we need 2 bytes headroom minimum.
+    if n > (Length(pl) - 2) then break;
+    l := ord(pl[n]);
     { compressed reply }
     while (l >= 192) do
       begin
-        { the -12 is because of the reply header length }
-        start := (l and not(192)) shl 8 + ord(pl[start+1]) - 12;
-        l := ord(pl[start]);
+        if not ptrseen then start := n + 2;
+        ptrseen := True;
+        ptr := (l and not(192)) shl 8 + ord(pl[n+1]);
+        {ptr must point backward and be >= 12 (for the dns header.}
+        if (ptr >= (n+12)) or (ptr < 12) then l := 0 // l=0 causes loop to exit
+        else
+        begin
+          { the -12 is because of the reply header length. we do the decrement
+          here to avoid overflowing if ptr < 12.}
+          n := ptr - 12;
+          l := ord(pl[n]);
+        end;
       end;
+    // check we point inside the buffer
+    if (n+l+1) > Length(pl) then l := 0;
     if l <> 0 then begin
       setlength(result,length(result)+l);
-      move(pl[start+1],result[i+1],l);
+      move(pl[n+1],result[i+1],l);
       result := result + '.';
-      inc(start,l); inc(start);
+      inc(n,l); inc(n);
       inc(i,l); inc(i);
+      if n > start then start := n;
     end;
-  until l = 0;
-  if result[length(result)] = '.' then setlength(result,length(result)-1);
+    Inc(lc); // label count
+  until (l = 0) or (lc > 127);
+  // per rfc1035, section 4.1.4, a domain name may be represented by
+  // either a sequence of labels followed by 0, or a pointer, or a series
+  // of labels followed by a pointer. If there's a pointer there's no 0 to
+  // skip over when calculating the final index.
+  if not ptrseen then Inc(start); // jump past the 0.
+  if (Length(result) > 0) and (result[length(result)] = '.') then
+    setlength(result,length(result)-1);
+end;
+
+function stringfromlabel(pl: TPayLoadTCP; var start: Integer): string;
+var
+  l,i,n,lc: integer;
+  ptr: Word;
+  ptrseen: Boolean = False;
+begin
+  result := '';
+  l := 0;
+  i := 0;
+  n := start;
+  // Label counter. Per rfc1035, s. 3.1, each label is at least 2 bytes and the
+  // max length for a domain is 255, so there can't be more than 127 labels.
+  // This helps to short-circuit loops in label pointers.
+  lc := 0;
+  repeat
+    // each iteration of this loop is for one label. whether a pointer or a
+    // regular label, we need 2 bytes headroom minimum.
+    if n > (Length(pl) - 2) then break;
+    l := ord(pl[n]);
+    { compressed reply }
+    while (l >= 192) do
+      begin
+        if not ptrseen then start := n + 2;
+        ptrseen := True;
+        ptr := (l and not(192)) shl 8 + ord(pl[n+1]);
+        {ptr must point backward and be >= 12 (for the dns header.}
+        if (ptr >= (n+12)) or (ptr < 12) then l := 0 // l=0 causes loop to exit
+        else
+        begin
+          { the -12 is because of the reply header length. we do the decrement
+          here to avoid overflowing if ptr < 12.}
+          n := ptr - 12;
+          l := ord(pl[n]);
+        end;
+      end;
+    // check we point inside the buffer
+    if (n+l+1) > Length(pl) then l := 0;
+    if l <> 0 then begin
+      setlength(result,length(result)+l);
+      move(pl[n+1],result[i+1],l);
+      result := result + '.';
+      inc(n,l); inc(n);
+      inc(i,l); inc(i);
+      if n > start then start := n;
+    end;
+    Inc(lc); // label count
+  until (l = 0) or (lc > 127);
+  // per rfc1035, section 4.1.4, a domain name may be represented by
+  // either a sequence of labels followed by 0, or a pointer, or a series
+  // of labels followed by a pointer. If there's a pointer there's no 0 to
+  // skip over when calculating the final index.
+  if not ptrseen then Inc(start); // jump past the 0.
+  if (Length(result) > 0) and (result[length(result)] = '.') then
+    setlength(result,length(result)-1);
 end;
 
 Function ResolveNameAt(Resolver : Integer; HostName : String; Var Addresses : Array of THostAddr; Recurse: Integer) : Integer;
@@ -941,7 +1920,7 @@ begin
   else  
     begin
     AnsStart:=SkipAnsQueries(Ans,AnsLen);
-    MaxAnswer:=Ans.AnCount-1;
+    MaxAnswer:=Ans.h.AnCount-1;
     If MaxAnswer>High(Addresses) then
       MaxAnswer:=High(Addresses);
     I:=0;
@@ -1022,7 +2001,7 @@ begin
   end else
     begin
     AnsStart:=SkipAnsQueries(Ans,AnsLen);
-    MaxAnswer:=Ans.AnCount-1;
+    MaxAnswer:=Ans.h.AnCount-1;
     If MaxAnswer>High(Addresses) then
       MaxAnswer:=High(Addresses);
     I:=0;
@@ -1085,7 +2064,7 @@ begin
   else  
     begin
     AnsStart:=SkipAnsQueries(Ans,AnsLen);
-    MaxAnswer:=Ans.AnCount-1;
+    MaxAnswer:=Ans.h.AnCount-1;
     If MaxAnswer>High(Names) then
       MaxAnswer:=High(Names);
     I:=0;
