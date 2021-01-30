@@ -55,6 +55,10 @@ uses
 {$DEFINE HAVECLOCKGETTIME}
 {$ENDIF}
 
+{$if defined(LINUX)}
+{$DEFINE HAS_STATX}
+{$endif}
+
 { Include platform independent interface part }
 {$i sysutilh.inc}
 
@@ -547,12 +551,26 @@ begin
     end;
 end;
 
+
 Function FileAge (Const FileName : RawByteString): Int64;
 Var
   Info : Stat;
   SystemFileName: RawByteString;
+{$ifdef HAS_STATX}
+  Infox : Statx;
+{$endif HAS_STATX}
 begin
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
+
+{$ifdef HAS_STATX}
+  { first try statx }
+  if (Fpstatx(0,pchar(SystemFileName),0,STATX_MTIME or STATX_MODE,Infox)>=0) and not(fpS_ISDIR(Infox.stx_mode)) then
+    begin
+      Result:=Infox.stx_mtime.tv_sec;
+      exit;
+    end;
+{$endif HAS_STATX}
+
   If  (fpstat(pchar(SystemFileName),Info)<0) or fpS_ISDIR(info.st_mode) then
     exit(-1)
   else 
