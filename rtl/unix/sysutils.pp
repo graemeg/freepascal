@@ -56,9 +56,12 @@ uses
 {$ENDIF}
 
 {$if defined(LINUX)}
-{$DEFINE USE_STATX}
-{$DEFINE USE_UTIMENSAT}
-{$DEFINE USE_FUTIMES}
+  {$if sizeof(clong)<=4}
+    {$DEFINE USE_STATX}
+    {$DEFINE USE_UTIMENSAT}
+  {$endif sizeof(clong)<=4}
+
+  {$DEFINE USE_FUTIMES}
 {$endif}
 
 { Include platform independent interface part }
@@ -1086,10 +1089,10 @@ end;
 
 
 Function FileSetDate (Handle : Longint;Age : Int64) : Longint;
-{$ifdef USE_UTIMENSAT}
+{$ifdef USE_FUTIMES}
 var
   times : tkernel_timespecs;
-{$endif USE_UTIMENSAT}
+{$endif USE_FUTIMES}
 begin
   Result:=0;
 {$ifdef USE_FUTIMES}
