@@ -56,7 +56,7 @@ uses
 {$ENDIF}
 
 {$if defined(LINUX)}
-  {$if sizeof(clong)<=4}
+  {$if sizeof(clong)<8}
     {$DEFINE USE_STATX}
     {$DEFINE USE_UTIMENSAT}
   {$endif sizeof(clong)<=4}
@@ -562,14 +562,14 @@ Var
   Info : Stat;
   SystemFileName: RawByteString;
 {$ifdef USE_STATX}
-  Infox : Statx;
+  Infox : TStatx;
 {$endif USE_STATX}
 begin
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
 
 {$ifdef USE_STATX}
   { first try statx }
-  if (Fpstatx(0,pchar(SystemFileName),0,STATX_MTIME or STATX_MODE,Infox)>=0) and not(fpS_ISDIR(Infox.stx_mode)) then
+  if (statx(0,pchar(SystemFileName),0,STATX_MTIME or STATX_MODE,Infox)>=0) and not(fpS_ISDIR(Infox.stx_mode)) then
     begin
       Result:=Infox.stx_mtime.tv_sec;
       exit;
@@ -611,7 +611,7 @@ end;
 
 
 {$ifdef USE_STATX}
-Function LinuxToWinAttr (const FN : RawByteString; Const Info : Statx) : Longint;
+Function LinuxToWinAttr (const FN : RawByteString; Const Info : TStatx) : Longint;
 Var
   LinkInfo : Stat;
   nm : RawByteString;
@@ -928,16 +928,16 @@ end;
 Function FindGetFileInfo(const s: RawByteString; var f: TAbstractSearchRec; var Name: RawByteString):boolean;
 Var
 {$ifdef USE_STATX}
-  stx : linux.statx;
+  stx : linux.tstatx;
 {$endif USE_STATX}
   st : baseunix.stat;
   WinAttr : longint;
 begin
 {$ifdef USE_STATX}
   if Assigned(f.FindHandle) and ( (PUnixFindData(F.FindHandle)^.searchattr and faSymlink) > 0) then
-    FindGetFileInfo:=Fpstatx(AT_FDCWD,pointer(s),AT_SYMLINK_NOFOLLOW,STATX_ALL,stx)=0
+    FindGetFileInfo:=statx(AT_FDCWD,pointer(s),AT_SYMLINK_NOFOLLOW,STATX_ALL,stx)=0
   else
-    FindGetFileInfo:=Fpstatx(AT_FDCWD,pointer(s),0,STATX_ALL,stx)=0;
+    FindGetFileInfo:=statx(AT_FDCWD,pointer(s),0,STATX_ALL,stx)=0;
   if FindGetFileInfo then
     begin
       WinAttr:=LinuxToWinAttr(s,stx);
@@ -1080,12 +1080,12 @@ Function FileGetDate (Handle : Longint) : Int64;
 Var
   Info : Stat;
 {$ifdef USE_STATX}
-  Infox : Statx;
+  Infox : TStatx;
 {$endif USE_STATX}
 begin
   Result:=-1;
 {$ifdef USE_STATX}
-  if Fpstatx(Handle,nil,0,STATX_MTIME,Infox)=0 then
+  if statx(Handle,nil,0,STATX_MTIME,Infox)=0 then
     Result:=Infox.stx_Mtime.tv_sec
   else if fpgeterrno=ESysENOSYS then
 {$endif USE_STATX}
@@ -1108,7 +1108,7 @@ begin
   times[0].tv_nsec:=0;
   times[1].tv_sec:=Age;
   times[1].tv_nsec:=0;
-  if fpfutimens(Handle,times) = -1 then
+  if futimens(Handle,times) = -1 then
     Result:=fpgeterrno;
 {$else USE_FUTIMES}
   FileSetDate:=-1;
@@ -1181,7 +1181,7 @@ begin
   times[0].tv_nsec:=0;
   times[1].tv_sec:=Age;
   times[1].tv_nsec:=0;
-  if fputimensat(AT_FDCWD,PChar(SystemFileName),times,0) = -1 then
+  if utimensat(AT_FDCWD,PChar(SystemFileName),times,0) = -1 then
     Result:=fpgeterrno;
   if fpgeterrno=ESysENOSYS then
 {$endif USE_UTIMENSAT}

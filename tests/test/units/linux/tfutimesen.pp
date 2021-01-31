@@ -7,7 +7,7 @@ var
   res : cint;
   f1,f2 : text;
   err : word;
-  mystatx1,mystatx2 : statx;
+  mystatx1,mystatx2 : tstatx;
   times : tkernel_timespecs;
   st,major,minor : string;
   i,p,e : longint;
@@ -57,17 +57,17 @@ begin
   rewrite(f2);
   write(f2,'ccccc');
 
-  res:=fpstatx(AT_FDCWD,'tutimensat1.txt',AT_SYMLINK_NOFOLLOW,STATX_ALL,mystatx1);
+  res:=statx(AT_FDCWD,'tutimensat1.txt',AT_SYMLINK_NOFOLLOW,STATX_ALL,mystatx1);
   if res<>0 then
     halt(1);
   times[0].tv_sec:=mystatx1.stx_atime.tv_sec;
   times[0].tv_nsec:=mystatx1.stx_atime.tv_nsec;
   times[1].tv_sec:=mystatx1.stx_mtime.tv_sec;
   times[1].tv_nsec:=mystatx1.stx_mtime.tv_nsec;
-  res:=fpfutimens(textrec(f2).handle,times);
+  res:=futimens(textrec(f2).handle,times);
   if res<>0 then
     halt(1);
-  res:=fpstatx(AT_FDCWD,'tutimensat2.txt',AT_SYMLINK_NOFOLLOW,STATX_ALL,mystatx2);
+  res:=statx(AT_FDCWD,'tutimensat2.txt',AT_SYMLINK_NOFOLLOW,STATX_ALL,mystatx2);
   if res<>0 then
     halt(1);
 

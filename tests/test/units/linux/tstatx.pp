@@ -4,7 +4,7 @@ uses
 
 var
   un : utsname;
-  mystatx : statx;
+  mystatx : tstatx;
   res : cint;
   f : text;
   st,major,minor : string;
@@ -53,7 +53,7 @@ begin
   rewrite(f);
   write(f,'ccccc');
   close(f);
-  res:=fpstatx(AT_FDCWD,'test.txt',AT_SYMLINK_NOFOLLOW,STATX_ALL,mystatx);
+  res:=statx(AT_FDCWD,'test.txt',AT_SYMLINK_NOFOLLOW,STATX_ALL,mystatx);
   erase(f);
   if res<>0 then
     begin
