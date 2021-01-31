@@ -2351,10 +2351,14 @@ begin
 end;
 
 procedure DoVarCast(var aDest : TVarData; const aSource : TVarData; aVarType : LongInt);
+var
+  Handler: TCustomVariantType;
 begin
   with aSource do
     if vType = aVarType then
       DoVarCopy(aDest, aSource)
+    else if FindCustomVariantType(vType, Handler) then
+      Handler.CastTo(aDest, aSource, aVarType)
     else begin
       if (vType = varNull) and NullStrictConvert then
         VarCastError(varNull, aVarType);
