@@ -555,7 +555,8 @@ Type
 
    tkernel_timespecs = array[0..1] of kernel_timespec;
 
-  Function fputimensat(dfd: cint; path:pchar;const times:tkernel_timespecs;flags:cint):cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'statx'; {$ENDIF}
+Function fputimensat(dfd: cint; path:pchar;const times:tkernel_timespecs;flags:cint):cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'statx'; {$ENDIF}
+Function fpfutimens(fd: cint; const times:tkernel_timespecs):cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'futimens'; {$ENDIF}
 
 implementation
 
@@ -893,4 +894,25 @@ begin
 {$endif sizeof(clong)<=4}
 end;
 
+
+Function fpfutimens(fd: cint; const times:tkernel_timespecs):cint;
+var
+  tsa: Array[0..1] of timespec;
+begin
+{$if sizeof(clong)<=4}
+  fpfutimens:=do_syscall(syscall_nr_utimensat_time64,fd,TSysParam(nil),TSysParam(@times),0);
+  if (fpfutimens>=0) or (fpgeterrno<>ESysENOSYS) then
+    exit;
+  { try 32 bit fall back }
+  tsa[0].tv_sec := times[0].tv_sec;
+  tsa[0].tv_nsec := times[0].tv_nsec;
+  tsa[1].tv_sec := times[1].tv_sec;
+  tsa[1].tv_nsec := times[1].tv_nsec;
+  fpfutimens:=do_syscall(syscall_nr_utimensat,fd,TSysParam(nil),TSysParam(@tsa),0);
+{$else sizeof(clong)<=4}
+  fpfutimens:=do_syscall(syscall_nr_utimensat,fd,TSysParam(nil),TSysParam(@times),0);
+{$endif sizeof(clong)<=4}
+end;
+
 end.
+

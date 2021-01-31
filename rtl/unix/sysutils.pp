@@ -58,6 +58,7 @@ uses
 {$if defined(LINUX)}
 {$DEFINE USE_STATX}
 {$DEFINE USE_UTIMENSAT}
+{$DEFINE USE_FUTIMES}
 {$endif}
 
 { Include platform independent interface part }
@@ -1027,10 +1028,22 @@ end;
 
 
 Function FileSetDate (Handle : Longint;Age : Int64) : Longint;
-
+{$ifdef USE_UTIMENSAT}
+var
+  times : tkernel_timespecs;
+{$endif USE_UTIMENSAT}
 begin
-  // Impossible under Linux from FileHandle !!
+  Result:=0;
+{$ifdef USE_FUTIMES}
+  times[0].tv_sec:=Age;
+  times[0].tv_nsec:=0;
+  times[1].tv_sec:=Age;
+  times[1].tv_nsec:=0;
+  if fpfutimens(Handle,times) = -1 then
+    Result:=fpgeterrno;
+{$else USE_FUTIMES}
   FileSetDate:=-1;
+{$endif USE_FUTIMES}
 end;
 
 
