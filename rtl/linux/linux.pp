@@ -544,6 +544,19 @@ Type
 
   function Fpstatx(dfd: cint; filename: pchar; flags,mask: cuint; var buf: statx):cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'statx'; {$ENDIF}
 
+Type
+   kernel_time64_t = clonglong;
+
+   kernel_timespec = record
+     tv_sec  : kernel_time64_t;
+     tv_nsec : clonglong;
+   end;
+   pkernel_timespec = ^kernel_timespec;
+
+   tkernel_timespecs = array[0..1] of kernel_timespec;
+
+  Function fputimensat(dfd: cint; path:pchar;const times:tkernel_timespecs;flags:cint):cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'statx'; {$ENDIF}
+
 implementation
 
 
@@ -860,5 +873,24 @@ begin
 end;
 
 {$endif}
+
+Function fputimensat(dfd: cint; path:pchar;const times:tkernel_timespecs;flags:cint):cint;
+var
+  tsa: Array[0..1] of timespec;
+begin
+{$if sizeof(clong)<=4}
+  fputimensat:=do_syscall(syscall_nr_utimensat_time64,dfd,TSysParam(path),TSysParam(@times),0);
+  if (fputimensat>=0) or (fpgeterrno<>ESysENOSYS) then
+    exit;
+  { try 32 bit fall back }
+  tsa[0].tv_sec := times[0].tv_sec;
+  tsa[0].tv_nsec := times[0].tv_nsec;
+  tsa[1].tv_sec := times[1].tv_sec;
+  tsa[1].tv_nsec := times[1].tv_nsec;
+  fputimensat:=do_syscall(syscall_nr_utimensat,dfd,TSysParam(path),TSysParam(@tsa),0);
+{$else sizeof(clong)<=4}
+  fputimensat:=do_syscall(syscall_nr_utimensat,dfd,TSysParam(path),TSysParam(@times),0);
+{$endif sizeof(clong)<=4}
+end;
 
 end.
