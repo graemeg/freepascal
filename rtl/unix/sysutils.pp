@@ -1077,14 +1077,22 @@ End;
 
 
 Function FileGetDate (Handle : Longint) : Int64;
-
-Var Info : Stat;
-
+Var
+  Info : Stat;
+{$ifdef USE_STATX}
+  Infox : Statx;
+{$endif USE_STATX}
 begin
-  If (fpFStat(Handle,Info))<0 then
-    Result:=-1
-  else
-    Result:=Info.st_Mtime;
+  Result:=-1;
+{$ifdef USE_STATX}
+  if Fpstatx(Handle,nil,0,STATX_MTIME,Infox)=0 then
+    Result:=Infox.stx_Mtime.tv_sec
+  else if fpgeterrno=ESysENOSYS then
+{$endif USE_STATX}
+    begin
+      If fpFStat(Handle,Info)=0 then
+        Result:=Info.st_Mtime;
+    end;
 end;
 
 
