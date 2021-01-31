@@ -1160,9 +1160,8 @@ var
   SystemFileName: RawByteString;
 {$ifdef USE_UTIMENSAT}
   times : tkernel_timespecs;
-{$else USE_UTIMENSAT}
-  t: TUTimBuf;
 {$endif USE_UTIMENSAT}
+  t: TUTimBuf;
 begin
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
   Result:=0;
@@ -1173,12 +1172,15 @@ begin
   times[1].tv_nsec:=0;
   if fputimensat(AT_FDCWD,PChar(SystemFileName),times,0) = -1 then
     Result:=fpgeterrno;
-{$else USE_UTIMENSAT}
-  t.actime:= Age;
-  t.modtime:=Age;
-  if fputime(PChar(SystemFileName), @t) = -1 then
-    Result:=fpgeterrno;
+  if fpgeterrno=ESysENOSYS then
 {$endif USE_UTIMENSAT}
+    begin
+      Result:=0;
+      t.actime:= Age;
+      t.modtime:=Age;
+      if fputime(PChar(SystemFileName), @t) = -1 then
+        Result:=fpgeterrno;
+    end
 end;
 
 {****************************************************************************
