@@ -1078,7 +1078,6 @@ implementation
                                                          int64(Tarraydef(left.resultdef).highrange),
                                                          true
                                                         ));
-                     printnode(self);
                    end
                  else
                    begin
