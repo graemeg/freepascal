@@ -56,7 +56,8 @@ uses
 {$ENDIF}
 
 {$if defined(LINUX)}
-{$DEFINE HAS_STATX}
+{$DEFINE USE_STATX}
+{$DEFINE USE_UTIMENSAT}
 {$endif}
 
 { Include platform independent interface part }
@@ -556,20 +557,20 @@ Function FileAge (Const FileName : RawByteString): Int64;
 Var
   Info : Stat;
   SystemFileName: RawByteString;
-{$ifdef HAS_STATX}
+{$ifdef USE_STATX}
   Infox : Statx;
-{$endif HAS_STATX}
+{$endif USE_STATX}
 begin
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
 
-{$ifdef HAS_STATX}
+{$ifdef USE_STATX}
   { first try statx }
   if (Fpstatx(0,pchar(SystemFileName),0,STATX_MTIME or STATX_MODE,Infox)>=0) and not(fpS_ISDIR(Infox.stx_mode)) then
     begin
       Result:=Infox.stx_mtime.tv_sec;
       exit;
     end;
-{$endif HAS_STATX}
+{$endif USE_STATX}
 
   If  (fpstat(pchar(SystemFileName),Info)<0) or fpS_ISDIR(info.st_mode) then
     exit(-1)
@@ -1086,14 +1087,27 @@ end;
 Function FileSetDate (Const FileName : RawByteString; Age : Int64) : Longint;
 var
   SystemFileName: RawByteString;
+{$ifdef USE_UTIMENSAT}
+  times : tkernel_timespecs;
+{$else USE_UTIMENSAT}
   t: TUTimBuf;
+{$endif USE_UTIMENSAT}
 begin
   SystemFileName:=ToSingleByteFileSystemEncodedFileName(FileName);
   Result:=0;
+{$ifdef USE_UTIMENSAT}
+  times[0].tv_sec:=Age;
+  times[0].tv_nsec:=0;
+  times[1].tv_sec:=Age;
+  times[1].tv_nsec:=0;
+  if fputimensat(AT_FDCWD,PChar(SystemFileName),times,0) = -1 then
+    Result:=fpgeterrno;
+{$else USE_UTIMENSAT}
   t.actime:= Age;
   t.modtime:=Age;
   if fputime(PChar(SystemFileName), @t) = -1 then
     Result:=fpgeterrno;
+{$endif USE_UTIMENSAT}
 end;
 
 {****************************************************************************
