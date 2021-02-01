@@ -1621,7 +1621,7 @@ end;
 
 procedure TFPDocWriter.OutputResults();
 begin
-  DoLog('Documentation process finished.');
+  DoLog('Package: %s - Documentation process finished.', [FPackage.Name]);
 end;
 
 function TFPDocWriter.ConvertExtShort(AContext: TPasElement;

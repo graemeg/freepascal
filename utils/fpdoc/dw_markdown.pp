@@ -1473,12 +1473,19 @@ begin
   if aEL.ExternalName<>'' then
     aLine:=aLine+' external name '''+ael.ExternalName+'''';
   if Assigned(aEL.AncestorType) then
+    if (aEL.AncestorType is TPasSpecializeType) then
     begin
-    aLine:=aLine+' ('+ael.AncestorType.Name;
-    if Assigned(ael.Interfaces) and (aEl.Interfaces.Count>0) then
-      For I:=0 to aEl.Interfaces.Count-1 do
-        aLine:=aLine+', '+TPasElement(aEl.Interfaces[i]).Name;
-    aLine:=aLine+')';
+      aLine:=aLine+'(specialize ';
+      aLine:=aLine+ TPasSpecializeType(aEL.AncestorType).DestType.Name;
+      aLine:=aLine+ '<,>)';
+    end
+      else
+    begin
+      aLine:=aLine+' ('+ael.AncestorType.Name;
+      if Assigned(ael.Interfaces) and (aEl.Interfaces.Count>0) then
+        For I:=0 to aEl.Interfaces.Count-1 do
+          aLine:=aLine+', '+TPasElement(aEl.Interfaces[i]).Name;
+      aLine:=aLine+')';
     end;
   if Assigned(aEl.GUIDExpr) then
     aLine:=aLine+' ['+aEl.GUIDExpr.GetDeclaration(True)+']';
