@@ -11,7 +11,7 @@ uses
 type
   TMyVar = packed record
     VType: TVarType;
-    Dummy1: array[0..Pred(SizeOf(Pointer) - 2)] of Byte;
+    Dummy1: array[0..2] of Word;
     Dummy2,
     Dummy3: Pointer;
     procedure Init;
