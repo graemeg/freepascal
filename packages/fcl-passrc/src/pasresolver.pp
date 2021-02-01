@@ -18763,52 +18763,65 @@ function TPasResolver.BI_InExclude_OnGetCallCompatibility(
 // check params of built in proc 'include'
 var
   Params: TParamsExpr;
-  Param: TPasExpr;
-  ParamResolved: TPasResolverResult;
+  Param0, Param1: TPasExpr;
+  Param0Resolved, Param1Resolved: TPasResolverResult;
   EnumType: TPasEnumType;
   C: TClass;
+  LoTypeEl: TPasType;
+  RgType: TPasRangeType;
 begin
   if not CheckBuiltInMinParamCount(Proc,Expr,2,RaiseOnError) then
     exit(cIncompatible);
   Params:=TParamsExpr(Expr);
 
-  // first param: set variable
+  // first Param0: set variable
   // todo set of int, set of char, set of bool
-  Param:=Params.Params[0];
-  ComputeElement(Param,ParamResolved,[rcNoImplicitProc]);
+  Param0:=Params.Params[0];
+  ComputeElement(Param0,Param0Resolved,[rcNoImplicitProc]);
+  Param1:=Params.Params[1];
+  ComputeElement(Param1,Param1Resolved,[]);
+
   EnumType:=nil;
-  if ([rrfReadable,rrfWritable]*ParamResolved.Flags=[rrfReadable,rrfWritable])
-      and (ParamResolved.IdentEl<>nil) then
+  RgType:=nil;
+  if ([rrfReadable,rrfWritable]*Param0Resolved.Flags=[rrfReadable,rrfWritable])
+      and (Param0Resolved.IdentEl<>nil) then
     begin
-    C:=ParamResolved.IdentEl.ClassType;
+    C:=Param0Resolved.IdentEl.ClassType;
     if (C.InheritsFrom(TPasVariable)
         or (C=TPasArgument)
         or (C=TPasResultElement)) then
       begin
-      if (ParamResolved.BaseType=btSet)
-          and (ParamResolved.LoTypeEl is TPasEnumType) then
-        EnumType:=TPasEnumType(ParamResolved.LoTypeEl);
+      if Param0Resolved.BaseType=btSet then
+        begin
+        LoTypeEl:=Param0Resolved.LoTypeEl;
+        if LoTypeEl.ClassType=TPasEnumType then
+          begin
+          EnumType:=TPasEnumType(LoTypeEl);
+          if (not (rrfReadable in Param0Resolved.Flags))
+              or (Param0Resolved.LoTypeEl<>EnumType) then
+            begin
+            if RaiseOnError then
+              RaiseIncompatibleType(20210201225926,nIncompatibleTypeArgNo,
+                ['2'],Param0Resolved.LoTypeEl,EnumType,Param0);
+            exit(cIncompatible);
+            end;
+          end
+        else if LoTypeEl.ClassType=TPasRangeType then
+          begin
+          RgType:=TPasRangeType(LoTypeEl);
+          ComputeElement(RgType.RangeExpr.left,Param0Resolved,[]);
+          Result:=CheckAssignResCompatibility(Param0Resolved,Param1Resolved,Param1,RaiseOnError);
+          end;
+        end;
       end;
     end;
-  if EnumType=nil then
+  if (EnumType=nil) and (RgType=nil) then
     begin
     {$IFDEF VerbosePasResolver}
-    writeln('TPasResolver.OnGetCallCompatibility_InExclude ',GetResolverResultDbg(ParamResolved));
+    writeln('TPasResolver.OnGetCallCompatibility_InExclude ',GetResolverResultDbg(Param0Resolved));
     {$ENDIF}
-    exit(CheckRaiseTypeArgNo(20170216152301,1,Param,ParamResolved,
+    exit(CheckRaiseTypeArgNo(20170216152301,1,Param0,Param0Resolved,
       'variable of set of enumtype',RaiseOnError));
-    end;
-
-  // second param: enum
-  Param:=Params.Params[1];
-  ComputeElement(Param,ParamResolved,[]);
-  if (not (rrfReadable in ParamResolved.Flags))
-      or (ParamResolved.LoTypeEl<>EnumType) then
-    begin
-    if RaiseOnError then
-      RaiseIncompatibleType(20170216152302,nIncompatibleTypeArgNo,
-        ['2'],ParamResolved.LoTypeEl,EnumType,Param);
-    exit(cIncompatible);
     end;
 
   Result:=CheckBuiltInMaxParamCount(Proc,Params,2,RaiseOnError);

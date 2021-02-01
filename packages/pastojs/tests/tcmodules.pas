@@ -389,6 +389,7 @@ type
     Procedure TestSet_Property;
     Procedure TestSet_EnumConst;
     Procedure TestSet_IntConst;
+    Procedure TestSet_IntRange;
     Procedure TestSet_AnonymousEnumType;
     Procedure TestSet_AnonymousEnumTypeChar; // ToDo
     Procedure TestSet_ConstEnum;
@@ -6417,6 +6418,44 @@ begin
     '$mod.Enums = rtl.createSet(null, 1, 2);',
     'if (0 in $mod.Enums) ;',
     'if (0 in rtl.createSet(0, 1)) ;',
+    '']));
+end;
+
+procedure TTestModule.TestSet_IntRange;
+begin
+  StartProgram(false);
+  Add([
+  'type',
+  '  TRange = 1..3;',
+  '  TEnums = set of TRange;',
+  'const',
+  '  Orange = 2;',
+  'var',
+  '  Enum: byte;',
+  '  Enums: TEnums;',
+  'begin',
+  '  Enums:=[];',
+  '  Enums:=[1];',
+  '  Enums:=[2..3];',
+  '  Include(enums,orange);',
+  '  Exclude(enums,orange);',
+  '  if orange in enums then;',
+  '  if orange in [orange,1] then;']);
+  ConvertProgram;
+  CheckSource('TestSet_IntRange',
+    LinesToStr([ // statements
+    'this.Orange = 2;',
+    'this.Enum = 0;',
+    'this.Enums = {};',
+    '']),
+    LinesToStr([
+    '$mod.Enums = {};',
+    '$mod.Enums = rtl.createSet(1);',
+    '$mod.Enums = rtl.createSet(null, 2, 3);',
+    '$mod.Enums = rtl.includeSet($mod.Enums, 2);',
+    '$mod.Enums = rtl.excludeSet($mod.Enums, 2);',
+    'if (2 in $mod.Enums) ;',
+    'if (2 in rtl.createSet(2, 1)) ;',
     '']));
 end;
 
