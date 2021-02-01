@@ -1,5 +1,8 @@
 unit dw_chm;
 
+{$mode objfpc}
+{$h+}
+
 interface
 
 uses Classes, DOM,
