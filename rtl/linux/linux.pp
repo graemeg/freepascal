@@ -556,7 +556,7 @@ Type
    tkernel_timespecs = array[0..1] of kernel_timespec;
 
 {$ifndef android}
-Function utimensat(dfd: cint; path:pchar;const times:tkernel_timespecs;flags:cint):cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'statx'; {$ENDIF}
+Function utimensat(dfd: cint; path:pchar;const times:tkernel_timespecs;flags:cint):cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'utimensat'; {$ENDIF}
 Function futimens(fd: cint; const times:tkernel_timespecs):cint; {$ifdef FPC_USE_LIBC} cdecl; external name 'futimens'; {$ENDIF}
 {$endif android}
 
@@ -875,7 +875,6 @@ begin
   statx:=do_syscall(syscall_nr_statx,TSysParam(dfd),TSysParam(filename),TSysParam(flags),TSysParam(mask),TSysParam(@buf));
 end;
 
-{$endif}
 
 {$ifndef android}
 Function utimensat(dfd: cint; path:pchar;const times:tkernel_timespecs;flags:cint):cint;
@@ -917,6 +916,7 @@ begin
 {$endif sizeof(clong)<=4}
 end;
 {$endif android}
+{$endif not FPC_USE_LIBC}
 
 end.
 
