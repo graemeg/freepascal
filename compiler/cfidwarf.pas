@@ -435,7 +435,8 @@ implementation
                     end
                   else
                     begin
-                      tc:=tai_const.create_sym(cielabel);
+                      { according to the dwarf (2 to 4) standard, this is an uword being always 32 bit unsigned }
+                      tc:=tai_const.create_type_sym(aitconst_32bit,cielabel);
                       { force label offset to secrel32 for windows systems }
                       if (target_info.system in systems_windows+systems_wince) then
                         tc.consttype:=aitconst_secrel32_symbol;
