@@ -150,7 +150,7 @@ uses
    defutil,defcmp,
    { pass 1 }
    htypechk,procinfo,
-   nmem,ncnv,ninl,ncon,nld,
+   nmem,ncnv,ninl,ncon,nld,nadd,
    { parser specific stuff }
    pbase,pexpr,
    { codegen }
@@ -826,7 +826,7 @@ function get_next_varsym(def: tabstractrecorddef; const SymList:TFPHashObjectLis
         { maybe pchar ? }
         else
           if is_char(def.pointeddef) and
-             (node.nodetype<>addrn) then
+            ((node.nodetype=stringconstn) or is_constcharnode(node)) then
             begin
               { create a tcb for the string data (it's placed in a separate
                 asmlist) }
@@ -875,7 +875,7 @@ function get_next_varsym(def: tabstractrecorddef; const SymList:TFPHashObjectLis
         { maybe pwidechar ? }
         else
           if is_widechar(def.pointeddef) and
-             (node.nodetype<>addrn) then
+            (node.nodetype in [stringconstn,ordconstn]) then
             begin
               if (node.nodetype in [stringconstn,ordconstn]) then
                 begin
@@ -912,13 +912,13 @@ function get_next_varsym(def: tabstractrecorddef; const SymList:TFPHashObjectLis
                 Message(parser_e_illegal_expression);
           end
         else
-          if (node.nodetype=addrn) or
+          if (node.nodetype in [addrn,addn,subn]) or
              is_proc2procvar_load(node,pd) then
             begin
               { insert typeconv }
               inserttypeconv(node,def);
               hp:=node;
-              while assigned(hp) and (hp.nodetype in [addrn,typeconvn,subscriptn,vecn]) do
+              while assigned(hp) and (hp.nodetype in [addrn,typeconvn,subscriptn,vecn,addn,subn]) do
                 hp:=tunarynode(hp).left;
               if (hp.nodetype=loadn) then
                 begin
@@ -927,6 +927,28 @@ function get_next_varsym(def: tabstractrecorddef; const SymList:TFPHashObjectLis
                   while assigned(hp) and (hp.nodetype<>loadn) do
                     begin
                        case hp.nodetype of
+                         addn :
+                           begin
+                             if (is_constintnode(taddnode(hp).right) or
+                               is_constenumnode(taddnode(hp).right) or
+                               is_constcharnode(taddnode(hp).right) or
+                               is_constboolnode(taddnode(hp).right)) and
+                               is_pointer(taddnode(hp).left.resultdef) then
+                               ftcb.queue_addn(tpointerdef(taddnode(hp).left.resultdef).pointeddef,get_ordinal_value(taddnode(hp).right))
+                             else
+                               Message(parser_e_illegal_expression);
+                           end;
+                         subn :
+                           begin
+                             if (is_constintnode(taddnode(hp).right) or
+                               is_constenumnode(taddnode(hp).right) or
+                               is_constcharnode(taddnode(hp).right) or
+                               is_constboolnode(taddnode(hp).right)) and
+                               is_pointer(taddnode(hp).left.resultdef) then
+                               ftcb.queue_subn(tpointerdef(taddnode(hp).left.resultdef).pointeddef,get_ordinal_value(taddnode(hp).right))
+                             else
+                               Message(parser_e_illegal_expression);
+                           end;
                          vecn :
                            begin
                              if (is_constintnode(tvecnode(hp).right) or

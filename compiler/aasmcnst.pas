@@ -427,6 +427,10 @@ type
      function queue_subscriptn_multiple_by_name(def: tabstractrecorddef; const fields: array of TIDString): tdef;
      { queue a type conversion operation }
      procedure queue_typeconvn(fromdef, todef: tdef); virtual;
+     { queue a add operation }
+     procedure queue_addn(def: tdef; const index: tconstexprint); virtual;
+     { queue a sub operation }
+     procedure queue_subn(def: tdef; const index: tconstexprint); virtual;
      { finalise the queue (so a new one can be created) and flush the
         previously queued operations, applying them in reverse order on a...}
      { ... procdef }
@@ -2077,6 +2081,18 @@ implementation
          inc(fqueue_offset,elelen*v.svalue)
        else
          message3(type_e_range_check_error_bounds,tostr(index),tostr(vecbase),tostr(high(fqueue_offset)-fqueue_offset div elelen+vecbase))
+     end;
+
+
+   procedure ttai_typedconstbuilder.queue_addn(def: tdef; const index: tconstexprint);
+     begin
+       inc(fqueue_offset,def.size*int64(index));
+     end;
+
+
+   procedure ttai_typedconstbuilder.queue_subn(def: tdef; const index: tconstexprint);
+     begin
+       dec(fqueue_offset,def.size*int64(index));
      end;
 
 
