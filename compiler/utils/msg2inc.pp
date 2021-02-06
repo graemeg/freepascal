@@ -730,6 +730,9 @@ begin
                end;
               if s[i+k]='_' then
                inc(i,k+1);
+              if number<>'' then
+                writeln(t,'\index[msgnr]{',number,'}');
+              writeln(t,'\index[msgtxt]{',escapestring(Copy(s,i,255)),'}');
               writeln(t,'\item ['+s1+escapestring(Copy(s,i,255))+'] \hfill \\');
             end
            else
