@@ -1082,10 +1082,12 @@ Var
 {$ifdef USE_STATX}
   Infox : TStatx;
 {$endif USE_STATX}
+  Char0 : char;
 begin
   Result:=-1;
 {$ifdef USE_STATX}
-  if statx(Handle,nil,0,STATX_MTIME,Infox)=0 then
+  Char0:=#0;
+  if statx(Handle,@Char0,AT_EMPTY_PATH,STATX_MTIME,Infox)=0 then
     Result:=Infox.stx_Mtime.tv_sec
   else if fpgeterrno=ESysENOSYS then
 {$endif USE_STATX}
