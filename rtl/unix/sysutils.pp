@@ -569,7 +569,7 @@ begin
 
 {$ifdef USE_STATX}
   { first try statx }
-  if (statx(0,pchar(SystemFileName),0,STATX_MTIME or STATX_MODE,Infox)>=0) and not(fpS_ISDIR(Infox.stx_mode)) then
+  if (statx(AT_FDCWD,pchar(SystemFileName),0,STATX_MTIME or STATX_MODE,Infox)>=0) and not(fpS_ISDIR(Infox.stx_mode)) then
     begin
       Result:=Infox.stx_mtime.tv_sec;
       exit;
