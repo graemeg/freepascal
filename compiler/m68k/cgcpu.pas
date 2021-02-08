@@ -1068,15 +1068,17 @@ unit cgcpu;
                     list.concat(taicpu.op_reg_reg(A_FMOVE, tcgsize2opsize[tosize], reg1, hreg));
                     list.concat(taicpu.op_reg_reg(A_FMOVE, tcgsize2opsize[tosize], hreg, reg2));
                   end;
+              OS_F64:
+                  begin
+                    //list.concat(tai_comment.create(strpnew('a_loadfpu_reg_reg rounding via stack')));
+                    reference_reset_base(href, NR_STACK_POINTER_REG, 0, ctempposinvalid, 0, []);
+                    href.direction:=dir_dec;
+                    list.concat(taicpu.op_reg_ref(A_FMOVE, tcgsize2opsize[tosize], reg1, href));
+                    href.direction:=dir_inc;
+                    list.concat(taicpu.op_ref_reg(A_FMOVE, tcgsize2opsize[tosize], href, reg2));
+                  end;
             else
-              begin
-                //list.concat(tai_comment.create(strpnew('a_loadfpu_reg_reg rounding via stack')));
-                reference_reset_base(href, NR_STACK_POINTER_REG, 0, ctempposinvalid, 0, []);
-                href.direction:=dir_dec;
-                list.concat(taicpu.op_reg_ref(A_FMOVE, tcgsize2opsize[tosize], reg1, href));
-                href.direction:=dir_inc;
-                list.concat(taicpu.op_ref_reg(A_FMOVE, tcgsize2opsize[tosize], href, reg2));
-              end;
+              internalerror(2021020802);
             end;
           end
         else
@@ -1098,7 +1100,7 @@ unit cgcpu;
         fixref(list,href,current_settings.fputype = fpu_coldfire);
         list.concat(taicpu.op_ref_reg(A_FMOVE,opsize,href,reg));
         if fromsize > tosize then
-          a_load_reg_reg(list,fromsize,tosize,reg,reg);
+          a_loadfpu_reg_reg(list,fromsize,tosize,reg,reg);
       end;
 
     procedure tcg68k.a_loadfpu_reg_ref(list: TAsmList; fromsize,tosize: tcgsize; reg: tregister; const ref: treference);
