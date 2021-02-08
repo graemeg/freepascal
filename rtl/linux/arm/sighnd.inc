@@ -40,7 +40,7 @@ asm
 end;
 {$endif not CPUTHUMB}
 
-{$if FPC_VERSION >= 30200}
+{$if FPC_FULLVERSION >= 30200}
 Procedure SignalToHandleErrorAddrFrame_Thumb(Errno : longint;addr : CodePointer; frame : Pointer); nostackframe; assembler;
 asm
 .thumb_func
@@ -98,7 +98,7 @@ begin
       ucontext^.uc_mcontext.arm_r0:=res;
       ucontext^.uc_mcontext.arm_r1:=uContext^.uc_mcontext.arm_pc;
       ucontext^.uc_mcontext.arm_r2:=uContext^.uc_mcontext.arm_fp;
-{$if FPC_VERSION >= 30200}
+{$if FPC_FULLVERSION >= 30200}
 {$ifndef CPUTHUMB}
       if (ucontext^.uc_mcontext.arm_cpsr and (1 shl 5))=0 then
         begin
