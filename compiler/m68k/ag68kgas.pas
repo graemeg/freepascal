@@ -169,7 +169,7 @@ interface
       end;
 
 
-    function getopstr(var o:toper) : string;
+    function getopstr(size: topsize; var o:toper) : string;
       var
         i : tsuperregister;
       begin
@@ -220,10 +220,14 @@ interface
             getopstr:='#'+tostr(longint(o.val));
           top_realconst:
             begin
-              str(o.val_real,getopstr);
-              if getopstr[1]=' ' then
-                getopstr[1]:='+';
-              getopstr:='#0d'+getopstr;
+              case size of
+                S_FS:
+                  getopstr:='#0x'+hexstr(longint(single(o.val_real)),sizeof(single)*2);
+                S_FD:
+                  getopstr:='#0x'+hexstr(BestRealRec(o.val_real).Data,sizeof(bestreal)*2);
+              else
+                internalerror(2021020801);
+              end;
             end;
           else internalerror(200405021);
         end;
@@ -337,7 +341,7 @@ interface
                         sep:=':'
                       else
                         sep:=',';
-                      s:=s+sep+getopstr(taicpu(hp).oper[i]^);
+                      s:=s+sep+getopstr(taicpu(hp).opsize,taicpu(hp).oper[i]^);
                     end;
                 end;
            end;
