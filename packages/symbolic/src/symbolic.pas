@@ -240,7 +240,7 @@ const InfixOperatorName   : array[addo..powo] of char= ('+','-','*','/','^');
              'LOG10','LOG2','LNXP1','!','ARCTAN2',
              'STEP','POWER','HYPOT','LOGN');
      LenFunctionNames : array[cosx..lognx] of longint=
-             (3,3,3,3,3,3,2,3,1,5,6,6,6,4,4,4,7,7,7,5,4,5,1,7,4,5,5,4);
+             (3,3,3,3,4,3,2,3,1,5,6,6,6,4,4,4,7,7,7,5,4,5,1,7,4,5,5,4);
 
 {$I exprstrs.inc}
 
