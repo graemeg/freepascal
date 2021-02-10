@@ -145,6 +145,7 @@ const
   SHHMMError                    = 'mm in a sequence hh:mm is interpreted as minutes. No longer versions allowed! (Position : %d).' ;
   SFullpattern                  = 'Couldn''t match entire pattern string. Input too short at pattern position %d.';
   SPatternCharMismatch          = 'Pattern mismatch char "%s" at position %d.';
+  SAMPMError                    = 'Hour >= 13 not allowed in AM/PM mode.';
 
   SShortMonthNameJan = 'Jan';
   SShortMonthNameFeb = 'Feb';
