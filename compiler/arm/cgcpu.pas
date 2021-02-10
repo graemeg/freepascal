@@ -294,7 +294,8 @@ unit cgcpu;
           rg[R_INTREGISTER]:=trgintcpu.create(R_INTREGISTER,R_SUBWHOLE,
               [RS_R0,RS_R1,RS_R2,RS_R3,RS_R9,RS_R12,RS_R4,RS_R5,RS_R6,RS_R8,
                RS_R10,RS_R11,RS_R14],first_int_imreg,[]);
-        rg[R_FPUREGISTER]:=trgcpu.create(R_FPUREGISTER,R_SUBNONE,
+        if FPUARM_HAS_FPA in fpu_capabilities[current_settings.fputype] then
+          rg[R_FPUREGISTER]:=trgcpu.create(R_FPUREGISTER,R_SUBNONE,
             [RS_F0,RS_F1,RS_F2,RS_F3,RS_F4,RS_F5,RS_F6,RS_F7],first_fpu_imreg,[]);
         { The register allocator currently cannot deal with multiple
           non-overlapping subregs per register, so we can only use
@@ -306,7 +307,7 @@ unit cgcpu;
                RS_D16,RS_D17,RS_D18,RS_D19,RS_D20,RS_D21,RS_D22,RS_D23,RS_D24,RS_D25,RS_D26,RS_D27,RS_D28,RS_D29,RS_D30,RS_D31,
                RS_D8,RS_D9,RS_D10,RS_D11,RS_D12,RS_D13,RS_D14,RS_D15
               ],first_mm_imreg,[])
-        else
+        else if FPUARM_HAS_VFP_EXTENSION in fpu_capabilities[current_settings.fputype] then
           rg[R_MMREGISTER]:=trgcpu.create(R_MMREGISTER,R_SUBFD,
               [RS_D0,RS_D1,RS_D2,RS_D3,RS_D4,RS_D5,RS_D6,RS_D7,RS_D8,RS_D9,RS_D10,RS_D11,RS_D12,RS_D13,RS_D14,RS_D15],first_mm_imreg,[]);
       end;
@@ -4329,7 +4330,8 @@ unit cgcpu;
           rg[R_INTREGISTER]:=trgintcputhumb2.create(R_INTREGISTER,R_SUBWHOLE,
               [RS_R0,RS_R1,RS_R2,RS_R3,RS_R4,RS_R5,RS_R6,RS_R7,RS_R8,
                RS_R10,RS_R12,RS_R14],first_int_imreg,[]);
-        rg[R_FPUREGISTER]:=trgcpu.create(R_FPUREGISTER,R_SUBNONE,
+        if FPUARM_HAS_FPA in fpu_capabilities[current_settings.fputype] then
+          rg[R_FPUREGISTER]:=trgcpu.create(R_FPUREGISTER,R_SUBNONE,
             [RS_F0,RS_F1,RS_F2,RS_F3,RS_F4,RS_F5,RS_F6,RS_F7],first_fpu_imreg,[]);
 
         if (FPUARM_HAS_32REGS in fpu_capabilities[current_settings.fputype]) and
@@ -4349,10 +4351,7 @@ unit cgcpu;
           rg[R_MMREGISTER]:=trgcpu.create(R_MMREGISTER,R_SUBFD,
               [RS_D0,RS_D1,RS_D2,RS_D3,RS_D4,RS_D5,RS_D6,RS_D7,
                RS_D8,RS_D9,RS_D10,RS_D11,RS_D12,RS_D13,RS_D14,RS_D15
-              ],first_mm_imreg,[])
-        else
-          rg[R_MMREGISTER]:=trgcpu.create(R_MMREGISTER,R_SUBNONE,
-              [RS_S0,RS_S1,RS_R2,RS_R3,RS_R4,RS_S31],first_mm_imreg,[]);
+              ],first_mm_imreg,[]);
       end;
 
 
