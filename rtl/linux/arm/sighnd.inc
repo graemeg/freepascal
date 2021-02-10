@@ -23,7 +23,7 @@ end;
 {$ifndef CPUTHUMB}
 Procedure SignalToHandleErrorAddrFrame_ARM(Errno : longint;addr : CodePointer; frame : Pointer); nostackframe; assembler;
 asm
-{$if FPC_VERSION >= 30200}
+{$if FPC_FULLVERSION >= 30200}
 .code 32
 {$endif}
   // the address is of the faulting instruction, and sigreturn will
@@ -57,6 +57,9 @@ asm
   mov lr, r0
   pop {r0,r1,r2,pc}
 .text
+{$ifndef CPUTHUMB}
+.code 32
+{$endif CPUTHUMB}
 end;
 {$endif}
 
