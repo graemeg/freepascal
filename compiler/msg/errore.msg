@@ -2582,7 +2582,7 @@ cg_w_interrupt_does_not_save_registers=06062_W_The target CPU does not support p
 #
 # Assembler reader
 #
-# 07144 is the last used one
+# 07145 is the last used one
 #
 asmr_d_start_reading=07000_DL_Starting $1 styled assembler parsing
 % This informs you that an assembler block is being parsed
@@ -2924,6 +2924,8 @@ asmr_w_segment_override_ignored_in_64bit_mode=07141_W_Segment base $1 will be ge
 asmr_e_mismatch_broadcasting_elements=07142_E_Mismatch broadcasting elements (expected: {$1} found: {$2})
 asmr_e_invalid_arrangement=07143_E_Invalid arrangement specifier "$1"
 asmr_e_a64_invalid_regset=07144_E_Registers in a register set must be consecutive.
+asmr_e_unknown_field=07145_E_Unknown field identifier
+% The internal assembler read cannot find the passed field identifier.
 #
 # Assembler/binary writers
 #

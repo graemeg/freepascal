@@ -1645,6 +1645,7 @@ Begin
      sym:=search_struct_member(tabstractrecorddef(st.defowner),base);
      if not assigned(sym) then
       begin
+        Message(asmr_e_unknown_field);
         GetRecordOffsetSize:=false;
         exit;
       end;
