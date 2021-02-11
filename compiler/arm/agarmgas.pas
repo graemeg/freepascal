@@ -64,7 +64,6 @@ unit agarmgas;
         'armv3',
         'armv4',
         'armv4t',
-        'armv5',
         'armv5t',
         'armv5te',
         'armv5tej',
