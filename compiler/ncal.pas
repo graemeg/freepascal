@@ -1367,6 +1367,16 @@ implementation
                  if parasym.varspez in [vs_var,vs_out,vs_constref] then
                    set_unique(left);
 
+                 if (parasym.varspez=vs_const) and (parasym.vardef.typ=formaldef) then
+                   begin
+                     { compilerprocs never capture the address of their
+                       parameters }
+                     if not(po_compilerproc in aktcallnode.procdefinition.procoptions) then
+                       make_not_regable(left,[ra_addr_regable,ra_addr_taken])
+                     else
+                       make_not_regable(left,[ra_addr_regable])
+                   end
+                 else
                   case parasym.varspez of
                     vs_out :
                       begin
@@ -1392,16 +1402,6 @@ implementation
                         else
                           make_not_regable(left,[ra_addr_regable])
                       end;
-                    vs_const:
-                      if parasym.vardef.typ=formaldef then
-                        begin
-                          { compilerprocs never capture the address of their
-                            parameters }
-                          if not(po_compilerproc in aktcallnode.procdefinition.procoptions) then
-                            make_not_regable(left,[ra_addr_regable,ra_addr_taken])
-                          else
-                            make_not_regable(left,[ra_addr_regable])
-                        end;
                     else
                       set_varstate(left,vs_read,[vsf_must_be_valid]);
                   end;
