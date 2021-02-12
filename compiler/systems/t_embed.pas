@@ -1074,6 +1074,12 @@ begin
       Add('  .debug_str      0 : { *(.debug_str) }');
       Add('  .debug_loc      0 : { *(.debug_loc) }');
       Add('  .debug_macinfo  0 : { *(.debug_macinfo) }');
+      Add('  /* DWARF 3 */');
+      Add('  .debug_pubtypes 0 : { *(.debug_pubtypes) }');
+      Add('  .debug_ranges   0 : { *(.debug_ranges) }');
+      Add('  /* DWARF Extension.  */');
+      Add('  .debug_macro    0 : { *(.debug_macro) }');
+
       Add('}');
     end;
 {$endif AVR}
