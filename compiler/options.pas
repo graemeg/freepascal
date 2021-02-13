@@ -1117,7 +1117,7 @@ begin
          (
           ((length(opt)>1) and (opt[2] in ['i','d','v','T','u','n','X','l','U'])) or
           ((length(opt)>3) and (opt[2]='F') and (opt[3]='e')) or
-          ((length(opt)>3) and (opt[2]='C') and (opt[3]='p')) or
+          ((length(opt)>3) and (opt[2]='C') and (opt[3] in ['a','f','p'])) or
           ((length(opt)>3) and (opt[2]='W') and (opt[3] in ['m','p']))
          )
         ) then
