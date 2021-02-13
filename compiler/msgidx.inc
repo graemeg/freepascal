@@ -1085,6 +1085,7 @@ const
   option_features_only_for_system_unit=11060;
   option_debug_info_requires_external_linker=11061;
   option_valgrind_heaptrc_mismatch=11062;
+  option_unsupported_fpu=11063;
   wpo_cant_find_file=12000;
   wpo_begin_processing=12001;
   wpo_end_processing=12002;
@@ -1138,9 +1139,9 @@ const
   option_info=11024;
   option_help_pages=11025;
 
-  MsgTxtSize = 87127;
+  MsgTxtSize = 87216;
 
   MsgIdxMax : array[1..20] of longint=(
     28,107,361,131,99,63,146,36,223,68,
-    63,20,30,1,1,1,1,1,1,1
+    64,20,30,1,1,1,1,1,1,1
   );

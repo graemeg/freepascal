@@ -3426,7 +3426,7 @@ unit_u_ppu_llvm_mismatch=10067_U_Skipping unit, PPU and compiler have to be both
 #
 #  Options
 #
-# 11062 is the last used one
+# 11063 is the last used one
 #
 option_usage=11000_O_$1 [options] <inputfile> [options]
 # BeginOfTeX
@@ -3583,6 +3583,8 @@ option_features_only_for_system_unit=11060_E_Feature switches are only supported
 % system unit through the ppu of the system unit.
 option_debug_info_requires_external_linker=11061_N_The selected debug format is not supported by the internal linker, switching to external linking
 option_valgrind_heaptrc_mismatch=11062_E_You can not use both options ($1) ($2) at same time.
+option_unsupported_fpu=11063_F_The selected FPU type "$1" is not supported by the selected instruction set "$2"
+% Not all instruction sets support all FPU types. For example on ARM, Thumb(-1) supports no FPU/VFP instruction set
 %\end{description}
 # EndOfTeX
 

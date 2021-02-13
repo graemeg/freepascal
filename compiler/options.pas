@@ -4485,6 +4485,8 @@ begin
       def_system_macro('CPUTHUMB');
       if not option.FPUSetExplicitly then
         init_settings.fputype:=fpu_soft;
+      if not(init_settings.fputype in [fpu_none,fpu_soft,fpu_libgcc]) then
+        Message2(option_unsupported_fpu,fputypestr[init_settings.fputype],'Thumb');
 {$if defined(FPC_ARMEL) or defined(FPC_ARMHF)}
       target_info.llvmdatalayout:='e-p:32:32:32-i1:8:32-i8:8:32-i16:16:32-i32:32:32-i64:64:64-f32:32:32-f64:64:64-v64:64:64-v128:64:128-a0:0:32-n32-S64';
 {$else FPC_ARMAL or FPC_ARMHF}
