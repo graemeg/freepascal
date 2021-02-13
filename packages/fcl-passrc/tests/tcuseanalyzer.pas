@@ -114,6 +114,7 @@ type
     procedure TestM_Hint_InterfaceUnitVariableUsed;
     procedure TestM_Hint_ValueParameterIsAssignedButNeverUsed;
     procedure TestM_Hint_LocalVariableIsAssignedButNeverUsed;
+    procedure TestM_Hint_PropertyIsAssignedButNeverUsed;
     procedure TestM_Hint_LocalXYNotUsed;
     procedure TestM_Hint_PrivateFieldIsNeverUsed;
     procedure TestM_Hint_PrivateFieldIsAssignedButNeverUsed;
@@ -1914,6 +1915,26 @@ begin
     'Local variable "b" is assigned but never used');
   CheckUseAnalyzerHint(mtHint,nPALocalVariableIsAssignedButNeverUsed,
     'Local variable "c" is assigned but never used');
+  CheckUseAnalyzerUnexpectedHints;
+end;
+
+procedure TTestUseAnalyzer.TestM_Hint_PropertyIsAssignedButNeverUsed;
+begin
+  StartProgram(true);
+  Add([
+  'type',
+  '  TObject = class',
+  '  private',
+  '    FSize: word;',
+  '  public',
+  '    property ReadSize: word read FSize;',
+  '    property WriteSize: word write FSize;',
+  '  end;',
+  'var o: TObject;',
+  'begin',
+  '  o.WriteSize:=o.ReadSize;',
+  '']);
+  AnalyzeProgram;
   CheckUseAnalyzerUnexpectedHints;
 end;
 
