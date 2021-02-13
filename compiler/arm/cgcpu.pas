@@ -4896,15 +4896,18 @@ unit cgcpu;
           begin
             firstfloatreg:=RS_NO;
             lastfloatreg:=RS_NO;
-            { save floating point registers? }
-            for r:=RS_F0 to RS_F7 do
-              if r in rg[R_FPUREGISTER].used_in_proc-paramanager.get_volatile_registers_fpu(pocall_stdcall) then
-                begin
-                  if firstfloatreg=RS_NO then
-                    firstfloatreg:=r;
-                  lastfloatreg:=r;
-                  inc(stackmisalignment,12);
-                end;
+            if FPUARM_HAS_FPA in fpu_capabilities[current_settings.fputype] then
+              begin
+                { save floating point registers? }
+                for r:=RS_F0 to RS_F7 do
+                  if r in rg[R_FPUREGISTER].used_in_proc-paramanager.get_volatile_registers_fpu(pocall_stdcall) then
+                    begin
+                      if firstfloatreg=RS_NO then
+                        firstfloatreg:=r;
+                      lastfloatreg:=r;
+                      inc(stackmisalignment,12);
+                    end;
+              end;
 
             a_reg_alloc(list,NR_STACK_POINTER_REG);
             if current_procinfo.framepointer<>NR_STACK_POINTER_REG then
@@ -4964,22 +4967,25 @@ unit cgcpu;
                   end;
               end;
 
-            if firstfloatreg<>RS_NO then
+            if FPUARM_HAS_FPA in fpu_capabilities[current_settings.fputype] then
               begin
-                reference_reset(ref,4,[]);
-                if tg.direction*tcpuprocinfo(current_procinfo).floatregstart>=1023 then
+                if firstfloatreg<>RS_NO then
                   begin
-                    a_load_const_reg(list,OS_ADDR,-tcpuprocinfo(current_procinfo).floatregstart,NR_R12);
-                    list.concat(taicpu.op_reg_reg_reg(A_SUB,NR_R12,current_procinfo.framepointer,NR_R12));
-                    ref.base:=NR_R12;
-                  end
-                else
-                  begin
-                    ref.base:=current_procinfo.framepointer;
-                    ref.offset:=tcpuprocinfo(current_procinfo).floatregstart;
+                    reference_reset(ref,4,[]);
+                    if tg.direction*tcpuprocinfo(current_procinfo).floatregstart>=1023 then
+                      begin
+                        a_load_const_reg(list,OS_ADDR,-tcpuprocinfo(current_procinfo).floatregstart,NR_R12);
+                        list.concat(taicpu.op_reg_reg_reg(A_SUB,NR_R12,current_procinfo.framepointer,NR_R12));
+                        ref.base:=NR_R12;
+                      end
+                    else
+                      begin
+                        ref.base:=current_procinfo.framepointer;
+                        ref.offset:=tcpuprocinfo(current_procinfo).floatregstart;
+                      end;
+                    list.concat(taicpu.op_reg_const_ref(A_SFM,newreg(R_FPUREGISTER,firstfloatreg,R_SUBWHOLE),
+                      lastfloatreg-firstfloatreg+1,ref));
                   end;
-                list.concat(taicpu.op_reg_const_ref(A_SFM,newreg(R_FPUREGISTER,firstfloatreg,R_SUBWHOLE),
-                  lastfloatreg-firstfloatreg+1,ref));
               end;
           end;
       end;
@@ -4998,38 +5004,41 @@ unit cgcpu;
         if not(nostackframe) then
           begin
             stackmisalignment:=0;
-            { restore floating point register }
-            firstfloatreg:=RS_NO;
-            lastfloatreg:=RS_NO;
-            { save floating point registers? }
-            for r:=RS_F0 to RS_F7 do
-              if r in rg[R_FPUREGISTER].used_in_proc-paramanager.get_volatile_registers_fpu(pocall_stdcall) then
-                begin
-                  if firstfloatreg=RS_NO then
-                    firstfloatreg:=r;
-                  lastfloatreg:=r;
-                  { floating point register space is already included in
-                    localsize below by calc_stackframe_size
-                   inc(stackmisalignment,12);
-                  }
-                end;
-
-            if firstfloatreg<>RS_NO then
+            if FPUARM_HAS_FPA in fpu_capabilities[current_settings.fputype] then
               begin
-                reference_reset(ref,4,[]);
-                if tg.direction*tcpuprocinfo(current_procinfo).floatregstart>=1023 then
+                { restore floating point register }
+                firstfloatreg:=RS_NO;
+                lastfloatreg:=RS_NO;
+                { save floating point registers? }
+                for r:=RS_F0 to RS_F7 do
+                  if r in rg[R_FPUREGISTER].used_in_proc-paramanager.get_volatile_registers_fpu(pocall_stdcall) then
+                    begin
+                      if firstfloatreg=RS_NO then
+                        firstfloatreg:=r;
+                      lastfloatreg:=r;
+                      { floating point register space is already included in
+                        localsize below by calc_stackframe_size
+                       inc(stackmisalignment,12);
+                      }
+                    end;
+
+                if firstfloatreg<>RS_NO then
                   begin
-                    a_load_const_reg(list,OS_ADDR,-tcpuprocinfo(current_procinfo).floatregstart,NR_R12);
-                    list.concat(taicpu.op_reg_reg_reg(A_SUB,NR_R12,current_procinfo.framepointer,NR_R12));
-                    ref.base:=NR_R12;
-                  end
-                else
-                  begin
-                    ref.base:=current_procinfo.framepointer;
-                    ref.offset:=tcpuprocinfo(current_procinfo).floatregstart;
+                    reference_reset(ref,4,[]);
+                    if tg.direction*tcpuprocinfo(current_procinfo).floatregstart>=1023 then
+                      begin
+                        a_load_const_reg(list,OS_ADDR,-tcpuprocinfo(current_procinfo).floatregstart,NR_R12);
+                        list.concat(taicpu.op_reg_reg_reg(A_SUB,NR_R12,current_procinfo.framepointer,NR_R12));
+                        ref.base:=NR_R12;
+                      end
+                    else
+                      begin
+                        ref.base:=current_procinfo.framepointer;
+                        ref.offset:=tcpuprocinfo(current_procinfo).floatregstart;
+                      end;
+                    list.concat(taicpu.op_reg_const_ref(A_LFM,newreg(R_FPUREGISTER,firstfloatreg,R_SUBWHOLE),
+                      lastfloatreg-firstfloatreg+1,ref));
                   end;
-                list.concat(taicpu.op_reg_const_ref(A_LFM,newreg(R_FPUREGISTER,firstfloatreg,R_SUBWHOLE),
-                  lastfloatreg-firstfloatreg+1,ref));
               end;
 
             regs:=rg[R_INTREGISTER].used_in_proc-paramanager.get_volatile_registers_int(pocall_stdcall);
