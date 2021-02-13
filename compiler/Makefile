@@ -4641,7 +4641,7 @@ override DIFF:=$(CMP) -i218
 endif
 endif
 ifeq ($(OS_TARGET), darwin)
-CODESIGN?=$(strip $(wildcard $(addsuffix /codesign,$(SEARCHPATH))))
+CODESIGN?=$(firstword $(wildcard $(addsuffix /codesign$(SRCEXEEXT),$(SEARCHPATH))))
 endif
 ifneq ($(CYCLELEVEL),1)
 ifndef ALLOW_WARNINGS
@@ -4945,7 +4945,7 @@ ifneq ($(OS_TARGET),darwin)
 DIFFRESULT:=$(shell $(DIFF) $(OLDFPC) $(FPC))
 else
 ifneq ($(CODESIGN),)
-DIFFRESULT:=$(shell $(COPY) $(OLDFPC) $(OLDFPC).tmp; $(COPY) $(FPC) $(FPC).tmp; strip -no_uuid $(OLDFPC).tmp; strip -no_uuid $(FPC).tmp; $(CODESIGN) --remove-signature $(OLDFPC).tmp; codesign --remove-signature $(FPC).tmp; $(DIFF) $(OLDFPC).tmp $(FPC).tmp; $(RMPROG) $(OLDFPC).tmp $(FPC).tmp)
+DIFFRESULT:=$(shell $(COPY) $(OLDFPC) $(OLDFPC).tmp; $(COPY) $(FPC) $(FPC).tmp; strip -no_uuid $(OLDFPC).tmp; strip -no_uuid $(FPC).tmp; $(CODESIGN) --remove-signature $(OLDFPC).tmp; $(CODESIGN) --remove-signature $(FPC).tmp; $(DIFF) $(OLDFPC).tmp $(FPC).tmp; $(RMPROG) $(OLDFPC).tmp $(FPC).tmp)
 else
 DIFFRESULT:=$(shell $(COPY) $(OLDFPC) $(OLDFPC).tmp; $(COPY) $(FPC) $(FPC).tmp; strip -no_uuid $(OLDFPC).tmp; strip -no_uuid $(FPC).tmp; $(DIFF) $(OLDFPC).tmp $(FPC).tmp; $(RMPROG) $(OLDFPC).tmp $(FPC).tmp)
 endif
