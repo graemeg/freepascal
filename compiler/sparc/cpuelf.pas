@@ -136,6 +136,5 @@ implementation
 initialization
   RegisterAssembler(as_sparc_elf32_info,TElfAssembler);
   ElfTarget:=elf_target_sparc;
-
 end.
 

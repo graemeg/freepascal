@@ -49,7 +49,10 @@ unit raarm;
       begin
         result:=inherited ConcatInstruction(p);
         (result as taicpu).oppostfix:=oppostfix;
-        (result as taicpu).wideformat:=wideformat;
+        if wideformat then
+          include((result as taicpu).flags,cf_wideformat)
+        else
+          exclude((result as taicpu).flags,cf_wideformat);
       end;
 
 

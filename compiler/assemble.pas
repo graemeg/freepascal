@@ -205,6 +205,10 @@ interface
 
       TInternalAssembler=class(TAssembler)
       private
+{$ifdef ARM}
+        { true, if thumb instructions are generated }
+        Code16 : Boolean;
+{$endif ARM}
         FCObjOutput : TObjOutputclass;
         FCInternalAr : TObjectWriterClass;
         { the aasmoutput lists that need to be processed }
@@ -1290,6 +1294,9 @@ Implementation
         ObjOutput:=nil;
         ObjData:=nil;
         SmartAsm:=smart;
+{$ifdef ARM}
+        Code16:=current_settings.instructionset=is_thumb;
+{$endif ARM}
       end;
 
 
@@ -1713,8 +1720,11 @@ Implementation
                    asd_thumb_func:
                      ObjData.ThumbFunc:=true;
                    asd_code:
-                     { ai_directive(hp).name can be only 16 or 32, this is checked by the reader }
-                     ObjData.ThumbFunc:=tai_directive(hp).name='16';
+                     begin
+                       { ai_directive(hp).name can be only 16 or 32, this is checked by the reader }
+                       ObjData.ThumbFunc:=tai_directive(hp).name='16';
+                       Code16:=tai_directive(hp).name='16';
+                     end
 {$endif ARM}
 {$ifdef RISCV}
                    asd_option:
@@ -1746,6 +1756,12 @@ Implementation
                ObjData.alloc(Tai_string(hp).len);
              ait_instruction :
                begin
+{$ifdef arm}
+                 if code16 then
+                   include(taicpu(hp).flags,cf_thumb)
+                 else
+                   exclude(taicpu(hp).flags,cf_thumb);
+{$endif arm}
                  { reset instructions which could change in pass 2 }
                  Taicpu(hp).resetpass2;
                  ObjData.alloc(Taicpu(hp).Pass1(ObjData));

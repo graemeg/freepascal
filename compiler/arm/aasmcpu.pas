@@ -189,6 +189,9 @@ uses
 
       pinsentry=^tinsentry;
 
+      taicpuflag = (cf_wideformat,cf_inIT,cf_lastinIT,cf_thumb);
+      taicpuflags = set of taicpuflag;
+
     const
       InsTab : array[0..instabentries-1] of TInsEntry={$i armtab.inc}
 
@@ -198,12 +201,12 @@ uses
     type
       taicpu = class(tai_cpu_abstract_sym)
          oppostfix : TOpPostfix;
-         wideformat : boolean;
          roundingmode : troundingmode;
+         flags : taicpuflags;
          procedure loadshifterop(opidx:longint;const so:tshifterop);
          procedure loadregset(opidx:longint; regsetregtype: tregistertype; regsetsubregtype: tsubregister; const s:tcpuregisterset; ausermode: boolean=false);
          procedure loadconditioncode(opidx:longint;const acond:tasmcond);
-         procedure loadmodeflags(opidx:longint;const flags:tcpumodeflags);
+         procedure loadmodeflags(opidx:longint;const _modeflags:tcpumodeflags);
          procedure loadspecialreg(opidx:longint;const areg:tregister; const aflags:tspecialregflags);
          procedure loadrealconst(opidx:longint;const _value:bestreal);
 
@@ -235,8 +238,8 @@ uses
          constructor op_cond(op: tasmop; cond: tasmcond);
 
          { CPSxx }
-         constructor op_modeflags(op: tasmop; flags: tcpumodeflags);
-         constructor op_modeflags_const(op: tasmop; flags: tcpumodeflags; a: aint);
+         constructor op_modeflags(op: tasmop; _modeflags: tcpumodeflags);
+         constructor op_modeflags_const(op: tasmop; _modeflags: tcpumodeflags; a: aint);
 
          { MSR }
          constructor op_specialreg_reg(op: tasmop; specialreg: tregister; specialregflags: tspecialregflags; _op2: tregister);
@@ -273,9 +276,6 @@ uses
          procedure ppubuildderefimploper(var o:toper);override;
          procedure ppuderefoper(var o:toper);override;
       private
-         { pass1 info }
-         inIT,
-         lastinIT: boolean;
          { arm version info }
          fArmVMask,
          fArmMask  : longint;
@@ -404,14 +404,14 @@ implementation
          end;
       end;
 
-    procedure taicpu.loadmodeflags(opidx: longint; const flags: tcpumodeflags);
+    procedure taicpu.loadmodeflags(opidx: longint; const _modeflags: tcpumodeflags);
       begin
         allocate_oper(opidx+1);
         with oper[opidx]^ do
          begin
            if typ<>top_modeflags then
              clearop(opidx);
-           modeflags:=flags;
+           modeflags:=_modeflags;
            typ:=top_modeflags;
          end;
       end;
@@ -585,18 +585,18 @@ implementation
         loadconditioncode(0, cond);
       end;
 
-    constructor taicpu.op_modeflags(op: tasmop; flags: tcpumodeflags);
+    constructor taicpu.op_modeflags(op: tasmop; _modeflags: tcpumodeflags);
       begin
         inherited create(op);
         ops := 1;
-        loadmodeflags(0,flags);
+        loadmodeflags(0,_modeflags);
       end;
 
-    constructor taicpu.op_modeflags_const(op: tasmop; flags: tcpumodeflags; a: aint);
+    constructor taicpu.op_modeflags_const(op: tasmop; _modeflags: tcpumodeflags; a: aint);
       begin
         inherited create(op);
         ops := 2;
-        loadmodeflags(0,flags);
+        loadmodeflags(0,_modeflags);
         loadconst(1,a);
       end;
 
@@ -1427,7 +1427,7 @@ implementation
                                        (taicpu(curtai).oper[1]^.reg >= NR_R8) or
                                        (op2reg >= NR_R8) then
                                       begin
-                                        taicpu(curtai).wideformat:=true;
+                                        include(taicpu(curtai).flags,cf_wideformat);
 
                                         { Handle special cases where register rules are violated by optimizer/user }
                                         { if d == 13 || (d == 15 && S == ‚Äò0‚Äô) || n == 15 || m IN [13,15] then UNPREDICTABLE; }
@@ -1698,8 +1698,14 @@ implementation
                       end;
                     else
                       begin
-                        taicpu(curtai).inIT:=in_it;
-                        taicpu(curtai).lastinIT:=in_it and (it_count=1);
+                        if in_it then
+                          include(taicpu(curtai).flags,cf_inIT)
+                        else
+                          exclude(taicpu(curtai).flags,cf_inIT);
+                        if in_it and (it_count=1) then
+                          include(taicpu(curtai).flags,cf_lastinIT)
+                        else
+                          exclude(taicpu(curtai).flags,cf_lastinIT);
 
                         if in_it then
                           begin
@@ -2239,8 +2245,7 @@ implementation
       begin
         fArmVMask:=Masks[current_settings.cputype] or FPUMasks[current_settings.fputype];
 
-        if objdata.ThumbFunc then
-        //if current_settings.instructionset=is_thumb then
+        if cf_thumb in flags then
           begin
             fArmMask:=IF_THUMB;
             if CPUARM_HAS_THUMB2 in cpu_capabilities[current_settings.cputype] then
@@ -2496,7 +2501,7 @@ implementation
           end;
 
         { Check wideformat flag }
-        if wideformat and ((p^.flags and IF_WIDE)=0) then
+        if (cf_wideformat in flags) and ((p^.flags and IF_WIDE)=0) then
           begin
             matches:=0;
             exit;
@@ -2594,8 +2599,8 @@ implementation
         begin
           if (p^.code[0]=#$60) and
              (GenerateThumb2Code and
-              ((not inIT) and (oppostfix<>PF_S)) or
-              (inIT and (condition=C_None))) then
+              ((not(cf_inIT in flags)) and (oppostfix<>PF_S)) or
+              ((cf_inIT in flags) and (condition=C_None))) then
             begin
               Matches:=0;
               exit;
@@ -2609,10 +2614,10 @@ implementation
         end
       else if p^.code[0]=#$62 then
         begin
-          if (GenerateThumb2Code and
-              (condition<>C_None) and
-              (not inIT) and
-              (not lastinIT)) then
+          if GenerateThumb2Code and
+            (condition<>C_None) and
+            (not(cf_inIT in flags)) and
+            (not(cf_lastinIT in flags)) then
             begin
               Matches:=0;
               exit;
@@ -2620,7 +2625,7 @@ implementation
         end
       else if p^.code[0]=#$63 then
         begin
-          if inIT then
+          if cf_inIT in flags then
             begin
               Matches:=0;
               exit;
@@ -2641,7 +2646,7 @@ implementation
         end
       else if p^.code[0]=#$6B then
         begin
-          if inIT or
+          if (cf_inIT in flags) or
              (oppostfix<>PF_S) then
             begin
               Matches:=0;
