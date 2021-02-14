@@ -379,7 +379,7 @@ unit agarmgas;
       postfix:='';
       if GenerateThumb2Code then
         begin
-          if taicpu(hp).wideformat then
+          if cf_wideformat in taicpu(hp).flags then
             postfix:='.w';
         end;
       if unified_syntax then
