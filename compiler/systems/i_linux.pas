@@ -679,7 +679,7 @@ unit i_linux;
             name         : 'Linux for ARMEL';
             shortname    : 'Linux';
             flags        : [tf_needs_symbol_size,tf_needs_symbol_type,tf_files_case_sensitive,
-                            tf_requires_proper_alignment,tf_safecall_exceptions,
+                            tf_needs_dwarf_cfi,tf_requires_proper_alignment,tf_safecall_exceptions,
 {$ifdef tls_threadvars}
                             tf_section_threadvars,
 {$endif tls_threadvars}

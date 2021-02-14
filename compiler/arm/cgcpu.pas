@@ -3733,6 +3733,15 @@ unit cgcpu;
                    if r in regs then
                      inc(registerarea,4);
                  list.concat(taicpu.op_regset(A_PUSH,R_INTREGISTER,R_SUBWHOLE,regs));
+                 { we need to run the loop twice to get cfi right }
+                 registerarea:=0;
+                 for r:=RS_R0 to RS_R15 do
+                   if r in regs then
+                     begin
+                       inc(registerarea,4);
+                       current_asmdata.asmcfi.cfa_offset(list,newreg(R_INTREGISTER,r,R_SUBWHOLE),-registerarea);
+                     end;
+                 current_asmdata.asmcfi.cfa_def_cfa_offset(list,registerarea);
                end;
 
             stackmisalignment:=registerarea mod current_settings.alignment.localalignmax;
@@ -3772,18 +3781,14 @@ unit cgcpu;
                     a_load_const_reg(list,OS_ADDR,-localsize,NR_R4);
                     list.concat(taicpu.op_reg_reg_reg(A_ADD,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,NR_R4));
                     include(regs,RS_R4);
-
-                    //!!!! if current_procinfo.framepointer=NR_STACK_POINTER_REG then
-                    //!!!!   a_reg_alloc(list,NR_R12);
-                    //!!!! a_load_const_reg(list,OS_ADDR,LocalSize,NR_R12);
-                    //!!!! list.concat(taicpu.op_reg_reg_reg(A_SUB,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,NR_R12));
-                    //!!!! a_reg_dealloc(list,NR_R12);
                   end;
+                current_asmdata.asmcfi.cfa_def_cfa_offset(list,registerarea+localsize);
               end;
 
             if current_procinfo.framepointer<>NR_STACK_POINTER_REG then
               begin
                 list.concat(taicpu.op_reg_reg_const(A_ADD,current_procinfo.framepointer,NR_STACK_POINTER_REG,0));
+                current_asmdata.asmcfi.cfa_def_cfa_register(list,current_procinfo.framepointer);
               end;
           end;
       end;
