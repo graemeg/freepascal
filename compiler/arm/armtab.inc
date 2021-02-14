@@ -592,7 +592,7 @@
     opcode  : A_CMN;
     ops     : 2;
     optypes : (ot_reglo,ot_reglo,ot_none,ot_none,ot_none,ot_none);
-    code    : #107#66#192;
+    code    : #111#66#192;
     flags   : if_thumb or if_armv4t
   ),
   (
@@ -641,7 +641,7 @@
     opcode  : A_CMP;
     ops     : 2;
     optypes : (ot_reglo,ot_reglo,ot_none,ot_none,ot_none,ot_none);
-    code    : #107#66#128;
+    code    : #111#66#128;
     flags   : if_thumb or if_armv4t
   ),
   (
@@ -655,7 +655,7 @@
     opcode  : A_CMP;
     ops     : 2;
     optypes : (ot_reglo,ot_immediateshifter,ot_none,ot_none,ot_none,ot_none);
-    code    : #107#40#0;
+    code    : #111#40#0;
     flags   : if_thumb or if_armv4t
   ),
   (
@@ -2328,7 +2328,7 @@
     opcode  : A_TST;
     ops     : 2;
     optypes : (ot_reglo,ot_reglo,ot_none,ot_none,ot_none,ot_none);
-    code    : #107#66#0;
+    code    : #111#66#0;
     flags   : if_thumb or if_armv4t
   ),
   (

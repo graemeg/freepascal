@@ -746,9 +746,9 @@ unit cgcpu;
         (A_NONE,A_MOV,A_ADD,A_AND,A_NONE,A_NONE,A_MUL,A_MUL,A_NONE,A_NONE,A_ORR,
          A_ASR,A_LSL,A_LSR,A_SUB,A_EOR,A_NONE,A_ROR);
 
-      op_reg_postfix: array[TOpCG] of TOpPostfix =
-        (PF_None,PF_None,PF_None,PF_None,PF_None,PF_None,PF_None,PF_None,PF_None,PF_None,PF_None,
-         PF_None,PF_None,PF_None,PF_None,PF_None,PF_None,PF_None);
+      op_reg_postfix_thumb: array[TOpCG] of TOpPostfix =
+        (PF_None,PF_None,PF_None,PF_S,PF_None,PF_None,PF_None,PF_None,PF_None,PF_None,PF_S,
+         PF_None,PF_S,PF_S,PF_None,PF_S,PF_None,PF_S);
 
     procedure tcgarm.a_op_const_reg_reg(list: TAsmList; op: TOpCg;
       size: tcgsize; a: tcgint; src, dst: tregister);
@@ -3925,7 +3925,7 @@ unit cgcpu;
                      a_internal_load_ref_reg(list,OS_S8,OS_S8,usedtmpref,tmpreg);
                    list.concat(taicpu.op_reg_const(A_LSL,tmpreg,8));
 
-                   list.concat(taicpu.op_reg_reg(A_ORR,reg,tmpreg));
+                   list.concat(setoppostfix(taicpu.op_reg_reg(A_ORR,reg,tmpreg),PF_S));
                  end;
                OS_32,OS_S32:
                  begin
@@ -3955,7 +3955,7 @@ unit cgcpu;
                        inc(usedtmpref.offset,dir*2);
                        a_internal_load_ref_reg(list,OS_16,OS_16,usedtmpref,tmpreg);
                        list.concat(taicpu.op_reg_const(A_LSL,tmpreg,16));
-                       list.concat(taicpu.op_reg_reg(A_ORR,reg,tmpreg));
+                       list.concat(setoppostfix(taicpu.op_reg_reg(A_ORR,reg,tmpreg),PF_S));
                      end
                    else
                      begin
@@ -3965,15 +3965,15 @@ unit cgcpu;
                        inc(usedtmpref.offset,dir);
                        a_internal_load_ref_reg(list,OS_8,OS_8,usedtmpref,tmpreg);
                        list.concat(taicpu.op_reg_const(A_LSL,tmpreg,8));
-                       list.concat(taicpu.op_reg_reg(A_ORR,reg,tmpreg));
+                       list.concat(setoppostfix(taicpu.op_reg_reg(A_ORR,reg,tmpreg),PF_S));
                        inc(usedtmpref.offset,dir);
                        a_internal_load_ref_reg(list,OS_8,OS_8,usedtmpref,tmpreg);
                        list.concat(taicpu.op_reg_const(A_LSL,tmpreg,16));
-                       list.concat(taicpu.op_reg_reg(A_ORR,reg,tmpreg));
+                       list.concat(setoppostfix(taicpu.op_reg_reg(A_ORR,reg,tmpreg),PF_S));
                        inc(usedtmpref.offset,dir);
                        a_internal_load_ref_reg(list,OS_8,OS_8,usedtmpref,tmpreg);
                        list.concat(taicpu.op_reg_const(A_LSL,tmpreg,24));
-                       list.concat(taicpu.op_reg_reg(A_ORR,reg,tmpreg));
+                       list.concat(setoppostfix(taicpu.op_reg_reg(A_ORR,reg,tmpreg),PF_S));
                      end;
                  end
                else
@@ -3996,7 +3996,7 @@ unit cgcpu;
           if not(size in [OS_8,OS_S8,OS_16,OS_S16,OS_32,OS_S32]) then
             internalerror(2002090908);
           if is_thumb_imm(a) then
-            list.concat(taicpu.op_reg_const(A_MOV,reg,a))
+            list.concat(setoppostfix(taicpu.op_reg_const(A_MOV,reg,a),PF_S))
           else
             begin
               reference_reset(hr,4,[]);
@@ -4157,7 +4157,7 @@ unit cgcpu;
           OP_NEG:
             list.concat(taicpu.op_reg_reg(A_NEG,dst,src));
           OP_NOT:
-            list.concat(taicpu.op_reg_reg(A_MVN,dst,src));
+            list.concat(setoppostfix(taicpu.op_reg_reg(A_MVN,dst,src),PF_S));
           OP_DIV,OP_IDIV:
             internalerror(200308284);
           OP_ROL:
@@ -4168,13 +4168,13 @@ unit cgcpu;
               tmpreg:=getintregister(list,OS_32);
               a_load_const_reg(list,OS_32,32,tmpreg);
               list.concat(taicpu.op_reg_reg(A_SUB,tmpreg,src));
-              list.concat(taicpu.op_reg_reg(A_ROR,dst,src));
+              list.concat(setoppostfix(taicpu.op_reg_reg(A_ROR,dst,src),PF_S));
             end;
           else
             begin
               a_reg_alloc(list,NR_DEFAULTFLAGS);
               list.concat(setoppostfix(
-                taicpu.op_reg_reg(op_reg_opcg2asmop[op],dst,src),op_reg_postfix[op]));
+                taicpu.op_reg_reg(op_reg_opcg2asmop[op],dst,src),op_reg_postfix_thumb[op]));
             end;
         end;
         maybeadjustresult(list,op,size,dst);
@@ -4210,7 +4210,7 @@ unit cgcpu;
              // if cgsetflags or setflags then
              a_reg_alloc(list,NR_DEFAULTFLAGS);
             list.concat(setoppostfix(
-              taicpu.op_reg_const(op_reg_opcg2asmop[op],dst,a),op_reg_postfix[op]));
+              taicpu.op_reg_const(op_reg_opcg2asmop[op],dst,a),op_reg_postfix_thumb[op]));
 
             if (cgsetflags {!!! or setflags }) and (size in [OS_8,OS_16,OS_32]) then
               begin
@@ -4269,7 +4269,7 @@ unit cgcpu;
             { x := y and 0; just clears a register, this sometimes gets generated on 64bit ops.
               Just using mov x, #0 might allow some easier optimizations down the line. }
             else if (op = OP_AND) and (dword(a)=0) then
-              list.concat(taicpu.op_reg_const(A_MOV,dst,0))
+              list.concat(setoppostfix(taicpu.op_reg_const(A_MOV,dst,0),PF_S))
             { x := y AND $FFFFFFFF just copies the register, so use mov for better optimizations }
             else if (op = OP_AND) and (not(dword(a))=0) then
               // do nothing
@@ -4325,10 +4325,10 @@ unit cgcpu;
         ai:=setcondition(taicpu.op_sym(A_B,l1),flags_to_cond(f));
         ai.is_jmp:=true;
         list.concat(ai);
-        list.concat(taicpu.op_reg_const(A_MOV,reg,0));
+        list.concat(setoppostfix(taicpu.op_reg_const(A_MOV,reg,0),PF_S));
         list.concat(taicpu.op_sym(A_B,l2));
         cg.a_label(list,l1);
-        list.concat(taicpu.op_reg_const(A_MOV,reg,1));
+        list.concat(setoppostfix(taicpu.op_reg_const(A_MOV,reg,1),PF_S));
         a_reg_dealloc(list,NR_DEFAULTFLAGS);
         cg.a_label(list,l2);
       end;
@@ -5355,11 +5355,11 @@ unit cgcpu;
         case op of
           OP_NEG:
             begin
-              list.concat(taicpu.op_reg_const(A_MOV,regdst.reglo,0));
-              list.concat(taicpu.op_reg_const(A_MOV,regdst.reghi,0));
+              list.concat(setoppostfix(taicpu.op_reg_const(A_MOV,regdst.reglo,0),PF_S));
+              list.concat(setoppostfix(taicpu.op_reg_const(A_MOV,regdst.reghi,0),PF_S));
               cg.a_reg_alloc(list,NR_DEFAULTFLAGS);
               list.concat(taicpu.op_reg_reg(A_SUB,regdst.reglo,regsrc.reglo));
-              list.concat(taicpu.op_reg_reg(A_SBC,regdst.reghi,regsrc.reghi));
+              list.concat(setoppostfix(taicpu.op_reg_reg(A_SBC,regdst.reghi,regsrc.reghi),PF_S));
               cg.a_reg_dealloc(list,NR_DEFAULTFLAGS);
             end;
           OP_NOT:
@@ -5376,13 +5376,13 @@ unit cgcpu;
             begin
               cg.a_reg_alloc(list,NR_DEFAULTFLAGS);
               list.concat(taicpu.op_reg_reg(A_ADD,regdst.reglo,regsrc.reglo));
-              list.concat(taicpu.op_reg_reg(A_ADC,regdst.reghi,regsrc.reghi));
+              list.concat(setoppostfix(taicpu.op_reg_reg(A_ADC,regdst.reghi,regsrc.reghi),PF_S));
             end;
           OP_SUB:
             begin
               cg.a_reg_alloc(list,NR_DEFAULTFLAGS);
               list.concat(taicpu.op_reg_reg(A_SUB,regdst.reglo,regsrc.reglo));
-              list.concat(taicpu.op_reg_reg(A_SBC,regdst.reghi,regsrc.reghi));
+              list.concat(setoppostfix(taicpu.op_reg_reg(A_SBC,regdst.reghi,regsrc.reghi),PF_S));
             end;
           else
             internalerror(2003083105);
@@ -5417,7 +5417,7 @@ unit cgcpu;
 
                tmpreg:=cg.getintregister(list,OS_32);
                cg.a_load_const_reg(list,OS_32,aint(hi(value)),tmpreg);
-               list.concat(taicpu.op_reg_reg(A_ADC,reg.reghi,tmpreg));
+               list.concat(setoppostfix(taicpu.op_reg_reg(A_ADC,reg.reghi,tmpreg),PF_S));
             end;
           OP_SUB:
             begin
@@ -5436,7 +5436,7 @@ unit cgcpu;
 
               tmpreg:=cg.getintregister(list,OS_32);
               cg.a_load_const_reg(list,OS_32,hi(value),tmpreg);
-              list.concat(taicpu.op_reg_reg(A_SBC,reg.reghi,tmpreg));
+              list.concat(setoppostfix(taicpu.op_reg_reg(A_SBC,reg.reghi,tmpreg),PF_S));
             end;
           else
             internalerror(2003083106);

@@ -371,7 +371,7 @@ unit agarmgas;
 
     Procedure TArmInstrWriter.WriteInstruction(hp : tai);
     var op: TAsmOp;
-        postfix,s: string;
+        postfix,s,oppostfixstr: string;
         i: byte;
         sep: string[3];
     begin
@@ -382,17 +382,24 @@ unit agarmgas;
           if cf_wideformat in taicpu(hp).flags then
             postfix:='.w';
         end;
+      { GNU AS does not like an S postfix for several instructions in thumb mode though it is the only
+        valid encoding of mvn in thumb mode according to the arm docs }
+      if GenerateThumbCode and (taicpu(hp).oppostfix=PF_S) and
+        ((op=A_MVN) or (op=A_ORR) or (op=A_AND) or (op=A_LSL) or (op=A_ADC) or (op=A_LSR) or (op=A_SBC) or (op=A_EOR) or (op=A_ROR)) then
+        oppostfixstr:=''
+      else
+        oppostfixstr:=oppostfix2str[taicpu(hp).oppostfix];
       if unified_syntax then
         begin
           if taicpu(hp).ops = 0 then
-            s:=#9+gas_op2str[op]+cond2str[taicpu(hp).condition]+oppostfix2str[taicpu(hp).oppostfix]
+            s:=#9+gas_op2str[op]+cond2str[taicpu(hp).condition]+oppostfixstr
           else if taicpu(hp).oppostfix in [PF_8..PF_U32F64] then
-            s:=#9+gas_op2str[op]+cond2str[taicpu(hp).condition]+oppostfix2str[taicpu(hp).oppostfix]
+            s:=#9+gas_op2str[op]+cond2str[taicpu(hp).condition]+oppostfixstr
           else
-            s:=#9+gas_op2str[op]+oppostfix2str[taicpu(hp).oppostfix]+cond2str[taicpu(hp).condition]+postfix; // Conditional infixes are deprecated in unified syntax
+            s:=#9+gas_op2str[op]+oppostfixstr+cond2str[taicpu(hp).condition]+postfix; // Conditional infixes are deprecated in unified syntax
         end
       else
-        s:=#9+gas_op2str[op]+cond2str[taicpu(hp).condition]+oppostfix2str[taicpu(hp).oppostfix];
+        s:=#9+gas_op2str[op]+cond2str[taicpu(hp).condition]+oppostfixstr;
       if taicpu(hp).ops<>0 then
         begin
           sep:=#9;

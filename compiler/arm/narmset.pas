@@ -112,11 +112,11 @@ implementation
              right.resultdef, right.resultdef, true);
 
             hregister:=hlcg.getintregister(current_asmdata.CurrAsmList, opdef);
-            current_asmdata.CurrAsmList.concat(taicpu.op_reg_const(A_MOV,hregister,1));
+            hlcg.a_load_const_reg(current_asmdata.CurrAsmList,opdef,1,hregister);
 
             if GenerateThumbCode or GenerateThumb2Code then
               begin
-                current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_LSL,hregister,left.location.register));
+                hlcg.a_op_reg_reg(current_asmdata.CurrAsmList,OP_SHL,opdef,left.location.register,hregister);
                 cg.a_reg_alloc(current_asmdata.CurrAsmList,NR_DEFAULTFLAGS);
                 current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_TST,right.location.register,hregister));
               end
