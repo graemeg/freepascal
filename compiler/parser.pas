@@ -354,6 +354,10 @@ implementation
          exceptblockcounter:=0;
          current_settings.maxfpuregisters:=-1;
          current_settings.pmessage:=nil;
+
+         { Load current state from the init values }
+         current_settings:=init_settings;
+
        { reset the unit or create a new program }
          { a unit compiled at command line must be inside the loaded_unit list }
          if (compile_level=1) then
@@ -368,9 +372,6 @@ implementation
          if not(assigned(current_module) and
                 (current_module.state in [ms_compile,ms_second_compile])) then
            internalerror(200212281);
-
-         { Load current state from the init values }
-         current_settings:=init_settings;
 
          { load current asmdata from current_module }
          current_asmdata:=TAsmData(current_module.asmdata);
