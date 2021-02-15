@@ -542,9 +542,26 @@ implementation
     procedure TDwarfAsmCFILowLevel.cfa_advance_loc(list:TAsmList);
       var
         currloclabel : tasmlabel;
+        hp : tai;
       begin
         if FLastloclabel=nil then
           internalerror(200404082);
+        { search the list backwards and check if we really need an advance loc,
+          i.e. if real code/data has been generated since the last cfa_advance_loc
+          call
+        }
+        hp:=tai(list.Last);
+        while assigned(hp) do
+          begin
+            { if we encounter FLastloclabel without encountering code/data, see check below,
+              we do not need insert an advance_loc entry }
+            if (hp.typ=ait_label) and (tai_label(hp).labsym=FLastloclabel) then
+              exit;
+            { stop if we find any tai which results in code or data }
+            if not(hp.typ in ([ait_label]+SkipInstr)) then
+              break;
+            hp:=tai(hp.Previous);
+          end;
         current_asmdata.getlabel(currloclabel,alt_dbgframe);
         list.concat(tai_label.create(currloclabel));
         DwarfList.concat(tdwarfitem.create_reloffset(DW_CFA_advance_loc4,doe_32bit,FLastloclabel,currloclabel));
