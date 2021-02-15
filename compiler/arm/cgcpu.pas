@@ -1907,7 +1907,7 @@ unit cgcpu;
          r : byte;
          mmregs,
          regs, saveregs : tcpuregisterset;
-         registerarea,
+         registerarea, offset,
          r7offset,
          stackmisalignment : pint;
          imm1, imm2: DWord;
@@ -2005,6 +2005,7 @@ unit cgcpu;
                              break;
                            end;
                      list.concat(setoppostfix(taicpu.op_ref_regset(A_STM,ref,R_INTREGISTER,R_SUBWHOLE,regs),PF_FD));
+                     current_asmdata.asmcfi.cfa_def_cfa_offset(list,registerarea);
                    end;
 
                 if current_procinfo.framepointer<>NR_STACK_POINTER_REG then
@@ -2013,6 +2014,15 @@ unit cgcpu;
                       framepointer is at R11-12 (for get_caller_frame) }
                     list.concat(taicpu.op_reg_reg_const(A_SUB,NR_FRAME_POINTER_REG,NR_R12,4));
                     a_reg_dealloc(list,NR_R12);
+                    current_asmdata.asmcfi.cfa_def_cfa_register(list,current_procinfo.framepointer);
+                    current_asmdata.asmcfi.cfa_def_cfa_offset(list,4);
+                    offset:=-4;
+                    for r:=RS_R15 downto RS_R0 do
+                      if r in regs then
+                        begin
+                          current_asmdata.asmcfi.cfa_offset(list,newreg(R_INTREGISTER,r,R_SUBWHOLE),offset);
+                          dec(offset,4);
+                        end;
                   end;
               end
             else
@@ -2095,6 +2105,8 @@ unit cgcpu;
                     list.concat(taicpu.op_reg_reg_reg(A_SUB,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,NR_R12));
                     a_reg_dealloc(list,NR_R12);
                   end;
+                if current_procinfo.framepointer=NR_STACK_POINTER_REG then
+                  current_asmdata.asmcfi.cfa_def_cfa_offset(list,registerarea+localsize);
               end;
 
             if (mmregs<>[]) or
