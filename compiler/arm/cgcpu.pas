@@ -2010,12 +2010,6 @@ unit cgcpu;
 
                 if current_procinfo.framepointer<>NR_STACK_POINTER_REG then
                   begin
-                    { the framepointer now points to the saved R15, so the saved
-                      framepointer is at R11-12 (for get_caller_frame) }
-                    list.concat(taicpu.op_reg_reg_const(A_SUB,NR_FRAME_POINTER_REG,NR_R12,4));
-                    a_reg_dealloc(list,NR_R12);
-                    current_asmdata.asmcfi.cfa_def_cfa_register(list,current_procinfo.framepointer);
-                    current_asmdata.asmcfi.cfa_def_cfa_offset(list,4);
                     offset:=-4;
                     for r:=RS_R15 downto RS_R0 do
                       if r in regs then
@@ -2023,6 +2017,12 @@ unit cgcpu;
                           current_asmdata.asmcfi.cfa_offset(list,newreg(R_INTREGISTER,r,R_SUBWHOLE),offset);
                           dec(offset,4);
                         end;
+                    { the framepointer now points to the saved R15, so the saved
+                      framepointer is at R11-12 (for get_caller_frame) }
+                    list.concat(taicpu.op_reg_reg_const(A_SUB,NR_FRAME_POINTER_REG,NR_R12,4));
+                    a_reg_dealloc(list,NR_R12);
+                    current_asmdata.asmcfi.cfa_def_cfa_register(list,current_procinfo.framepointer);
+                    current_asmdata.asmcfi.cfa_def_cfa_offset(list,4);
                   end;
               end
             else
