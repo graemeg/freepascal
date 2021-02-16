@@ -543,6 +543,8 @@ implementation
       var
         currloclabel : tasmlabel;
         hp : tai;
+        instrcount : longint;
+        dwarfloc: Integer;
       begin
         if FLastloclabel=nil then
           internalerror(200404082);
@@ -562,9 +564,36 @@ implementation
               break;
             hp:=tai(hp.Previous);
           end;
+
+        { check if the last advance entry is less then 8 instructions away:
+          as x86 instructions might not be bigger than 15 bytes and most other
+          CPUs use only 4 byte instructions or smaller, this is safe
+          we could search even more but this takes more time and 8 instructions should be normally enough
+        }
+        hp:=tai(list.Last);
+        instrcount:=0;
+        dwarfloc:=DW_CFA_advance_loc4;
+        while assigned(hp) and (instrcount<8) do
+          begin
+            { stop if we find any tai which results in code or data }
+            if not(hp.typ in ([ait_label,ait_instruction]+SkipInstr)) then
+              break;
+            if (hp.typ=ait_label) and (tai_label(hp).labsym=FLastloclabel) then
+              begin
+                dwarfloc:=DW_CFA_advance_loc1;
+                break;
+              end;
+            if hp.typ=ait_instruction then
+              inc(instrcount);
+            hp:=tai(hp.Previous);
+          end;
+
         current_asmdata.getlabel(currloclabel,alt_dbgframe);
         list.concat(tai_label.create(currloclabel));
-        DwarfList.concat(tdwarfitem.create_reloffset(DW_CFA_advance_loc4,doe_32bit,FLastloclabel,currloclabel));
+        if dwarfloc=DW_CFA_advance_loc1 then
+          DwarfList.concat(tdwarfitem.create_reloffset(DW_CFA_advance_loc1,doe_8bit,FLastloclabel,currloclabel))
+        else
+          DwarfList.concat(tdwarfitem.create_reloffset(DW_CFA_advance_loc4,doe_32bit,FLastloclabel,currloclabel));
         FLastloclabel:=currloclabel;
       end;
 
