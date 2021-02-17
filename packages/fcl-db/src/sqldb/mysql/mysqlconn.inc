@@ -575,7 +575,6 @@ begin
     // Version string should start with version number:
     // Note: in case of MariaDB version mismatch: tough luck, we report MySQL
     // version only.
-    writeln('TConnectionName.DoInternalConnect FullVersion=',FullVersion,' MySQLVersion=',MySQLVersion);
     if (pos(MySQLVersion, FullVersion) <> 1) and
        (pos(MariaDBVersion, FullVersion) <> 1) then
       Raise EInOutError.CreateFmt(SErrVersionMisMatch,[ClassName,MySQLVersion,FullVersion]);
