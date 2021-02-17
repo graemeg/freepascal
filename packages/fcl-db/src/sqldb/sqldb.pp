@@ -3137,7 +3137,7 @@ begin
       UpdateServerIndexDefs;
 
     FStatement.Execute;
-    if not Cursor.FSelectable then
+    if (Cursor=nil) or (not Cursor.FSelectable) then
       DatabaseError(SErrNoSelectStatement,Self);
 
     // InternalInitFieldDef is only called after a prepare. i.e. not twice if
