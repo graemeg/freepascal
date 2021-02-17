@@ -151,6 +151,13 @@ begin
         end;
     T.ResourceStrings := True;
 
+    T:=P.Targets.AddUnit('mysql80dyn.pp');
+      with T.Dependencies do
+        begin
+          AddInclude('mysql.inc');
+        end;
+    T.ResourceStrings := True;
+
     P.ExamplePath.Add('examples');
     P.Targets.AddExampleProgram('testdb3.pp');
     P.Targets.AddExampleProgram('testdb4.pp');

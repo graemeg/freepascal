@@ -473,6 +473,14 @@ begin
           AddUnit('fpddsqldb');
           AddUnit('mysql57conn');
         end;
+    T:=P.Targets.AddUnit('fpddmysql80.pp', DatadictOSes);
+      with T.Dependencies do
+        begin
+          AddUnit('sqldb');
+          AddUnit('fpdatadict');
+          AddUnit('fpddsqldb');
+          AddUnit('mysql80conn');
+        end;
     T:=P.Targets.AddUnit('fpddodbc.pp', DatadictOSes);
       with T.Dependencies do
         begin
@@ -706,6 +714,17 @@ begin
         end;
 
     T:=P.Targets.AddUnit('mysql57conn.pas', SqldbConnectionOSes);
+    T.ResourceStrings:=true;
+      with T.Dependencies do
+        begin
+          AddInclude('mysqlconn.inc');
+          AddUnit('bufdataset');
+          AddUnit('sqldb');
+          AddUnit('db');
+          AddUnit('dbconst');
+        end;
+
+    T:=P.Targets.AddUnit('mysql80conn.pas', SqldbConnectionOSes);
     T.ResourceStrings:=true;
       with T.Dependencies do
         begin

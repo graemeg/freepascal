@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, toolsunit
   ,db, sqldb
-  ,mysql40conn, mysql41conn, mysql50conn, mysql51conn, mysql55conn, mysql56conn, mysql57conn
+  ,mysql40conn, mysql41conn, mysql50conn, mysql51conn, mysql55conn, mysql56conn, mysql57conn, mysql80conn
   ,ibconnection
   ,pqconnection
   ,odbcconn
@@ -20,13 +20,13 @@ uses
   ;
 
 type
-  TSQLConnType = (mysql40,mysql41,mysql50,mysql51,mysql55,mysql56,mysql57,postgresql,interbase,odbc,oracle,sqlite3,mssql,sybase);
+  TSQLConnType = (mysql40,mysql41,mysql50,mysql51,mysql55,mysql56,mysql57,mysql80,postgresql,interbase,odbc,oracle,sqlite3,mssql,sybase);
   TSQLServerType = (ssFirebird, ssInterbase, ssMSSQL, ssMySQL, ssOracle, ssPostgreSQL, ssSQLite, ssSybase, ssUnknown);
 
 const
-  MySQLConnTypes = [mysql40,mysql41,mysql50,mysql51,mysql55,mysql56,mysql57];
+  MySQLConnTypes = [mysql40,mysql41,mysql50,mysql51,mysql55,mysql56,mysql57,mysql80];
   SQLConnTypesNames : Array [TSQLConnType] of String[19] =
-        ('MYSQL40','MYSQL41','MYSQL50','MYSQL51','MYSQL55','MYSQL56','MYSQL57','POSTGRESQL','INTERBASE','ODBC','ORACLE','SQLITE3','MSSQL','SYBASE');
+        ('MYSQL40','MYSQL41','MYSQL50','MYSQL51','MYSQL55','MYSQL56','MYSQL57','MYSQL80','POSTGRESQL','INTERBASE','ODBC','ORACLE','SQLITE3','MSSQL','SYBASE');
              
   STestNotApplicable = 'This test does not apply to this sqldb connection type';
 
@@ -183,6 +183,7 @@ begin
     MYSQL55:    Fconnection := TMySQL55Connection.Create(nil);
     MYSQL56:    Fconnection := TMySQL56Connection.Create(nil);
     MYSQL57:    Fconnection := TMySQL57Connection.Create(nil);
+    MYSQL80:    Fconnection := TMySQL80Connection.Create(nil);
     SQLITE3:    Fconnection := TSQLite3Connection.Create(nil);
     POSTGRESQL: Fconnection := TPQConnection.Create(nil);
     INTERBASE : Fconnection := TIBConnection.Create(nil);
