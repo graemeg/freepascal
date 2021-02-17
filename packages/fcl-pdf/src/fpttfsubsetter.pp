@@ -940,12 +940,18 @@ end;
 function TFontSubsetter.buildHmtxTable: TStream;
 var
   n: integer;
+  GID: longint;
+  LastGID: longint;
 begin
   Result := TMemoryStream.Create;
+  LastGID := Length(FFontInfo.Widths)-1;
   for n := 0 to FGlyphIDs.Count-1 do
   begin
-    WriteUInt16(Result, FFontInfo.Widths[FGlyphIDs[n].GID].AdvanceWidth);
-    WriteInt16(Result, FFontInfo.Widths[FGlyphIDs[n].GID].LSB);
+    GID := FGlyphIDs[n].GID;
+    if GID > LastGID then
+      GID := LastGID;
+    WriteUInt16(Result, FFontInfo.Widths[GID].AdvanceWidth);
+    WriteInt16(Result, FFontInfo.Widths[GID].LSB);
   end;
 end;
 
