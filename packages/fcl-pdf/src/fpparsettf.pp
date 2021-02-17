@@ -822,13 +822,13 @@ begin
   if embed and not Embeddable then
     raise ETTF.Create(rsFontEmbeddingNotAllowed);
   PrepareEncoding(Encoding);
-//  MissingWidth:=ToNatural(Widths[Chars[CharCodes^[32]]].AdvanceWidth);  // Char(32) - Space character
-  FMissingWidth := Widths[Chars[CharCodes^[32]]].AdvanceWidth;  // Char(32) - Space character
+//  MissingWidth:=ToNatural(GetAdvanceWidth(Chars[CharCodes^[32]]));  // Char(32) - Space character
+  FMissingWidth := GetAdvanceWidth(Chars[CharCodes^[32]]);  // Char(32) - Space character
   for I:=0 to 255 do
   begin
     if (CharCodes^[i]>=0) and (CharCodes^[i]<=High(Chars))
-    and (Widths[Chars[CharCodes^[i]]].AdvanceWidth> 0) and (CharNames^[i]<> '.notdef') then
-      CharWidth[I]:= ToNatural(Widths[Chars[CharCodes^[I]]].AdvanceWidth)
+    and (GetAdvanceWidth(Chars[CharCodes^[i]])> 0) and (CharNames^[i]<> '.notdef') then
+      CharWidth[I]:= ToNatural(GetAdvanceWidth(Chars[CharCodes^[I]]))
     else
       CharWidth[I]:= FMissingWidth;
   end;
@@ -930,8 +930,19 @@ begin
 end;
 
 function TTFFileInfo.GetAdvanceWidth(AIndex: word): word;
+var
+  i: SizeInt;
 begin
-  Result := Widths[AIndex].AdvanceWidth;
+  // There may be more glyphs than elements in the array, in which
+  // case the last entry is to be used.
+  // https://docs.microsoft.com/en-us/typography/opentype/spec/hmtx
+  i := Length(Widths);
+  if AIndex >= i then
+    Dec(i)
+  else
+    i := AIndex;
+
+  Result := Widths[i].AdvanceWidth;
 end;
 
 function TTFFileInfo.ItalicAngle: single;
@@ -972,7 +983,7 @@ function TTFFileInfo.GetMissingWidth: integer;
 begin
   if FMissingWidth = 0 then
   begin
-    FMissingWidth := Widths[Chars[CharCodes^[32]]].AdvanceWidth;  // 32 is in reference to the Space character
+    FMissingWidth := GetAdvanceWidth(Chars[CharCodes^[32]]);  // 32 is in reference to the Space character
   end;
   Result := FMissingWidth;
 end;
