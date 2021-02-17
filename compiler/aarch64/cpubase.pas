@@ -303,7 +303,7 @@ unit cpubase;
 
       NR_MM_RESULT_REG  = NR_D0;
 
-      NR_RETURN_ADDRESS_REG = NR_FUNCTION_RETURN_REG;
+      NR_RETURN_ADDRESS_REG = NR_LR;
 
       { Offset where the parent framepointer is pushed }
       PARENT_FRAMEPOINTER_OFFSET = 0;

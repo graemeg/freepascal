@@ -244,8 +244,6 @@ implementation
           datatype:=dt_none;
       end;
 
-
-
 {****************************************************************************
                              TDwarfAsmCFILowLevel
 ****************************************************************************}
@@ -290,6 +288,13 @@ implementation
         list.concat(tai_const.create_uleb128bit((-1) div data_alignment_factor));
       end;
 {$elseif defined(arm)}
+    procedure TDwarfAsmCFILowLevel.generate_initial_instructions(list:TAsmList);
+      begin
+        list.concat(tai_const.create_8bit(DW_CFA_def_cfa));
+        list.concat(tai_const.create_uleb128bit(dwarf_reg(NR_STACK_POINTER_REG)));
+        list.concat(tai_const.create_uleb128bit(0));
+      end;
+{$elseif defined(aarch64)}
     procedure TDwarfAsmCFILowLevel.generate_initial_instructions(list:TAsmList);
       begin
         list.concat(tai_const.create_8bit(DW_CFA_def_cfa));
