@@ -1465,6 +1465,7 @@ var
   i,r  : integer;
   iGetResult : TGetResult;
   pc : TRecordBuffer;
+  CurBufIndex: TBufDatasetIndex;
 
 begin
   FOpen:=False;
@@ -1514,10 +1515,17 @@ begin
   if FAutoIncValue>-1 then FAutoIncValue:=1;
   if assigned(FParser) then FreeAndNil(FParser);
   For I:=FIndexes.Count-1 downto 0 do
-    if (BufIndexDefs[i].IndexType in [itDefault,itCustom]) or (BufIndexDefs[i].DiscardOnClose) then
-       BufIndexDefs[i].Free
+    begin
+    CurBufIndex:=BufIndexDefs[i];
+    if (CurBufIndex.IndexType in [itDefault,itCustom]) or (CurBufIndex.DiscardOnClose) then
+      begin
+      if FCurrentIndexDef=CurBufIndex then
+        FCurrentIndexDef:=nil;
+      CurBufIndex.Free;
+      end
     else
-       FreeAndNil(BufIndexDefs[i].FBufferIndex);
+      FreeAndNil(CurBufIndex.FBufferIndex);
+    end;
 end;
 
 procedure TCustomBufDataset.InternalFirst;
@@ -3149,16 +3157,18 @@ function TCustomBufDataset.GetIndexFieldNames: String;
 var
   i, p: integer;
   s: string;
+  IndexBuf: TBufIndex;
 
 begin
   Result := FIndexFieldNames;
-  if (CurrentIndexBuf=Nil) then
+  IndexBuf:=CurrentIndexBuf;
+  if (IndexBuf=Nil) then
     Exit;
   Result:='';
-  for i := 1 to WordCount(CurrentIndexBuf.FieldsName, [Limiter]) do
+  for i := 1 to WordCount(IndexBuf.FieldsName, [Limiter]) do
   begin
-    s := ExtractDelimited(i, CurrentIndexBuf.FieldsName, [Limiter]);
-    p := Pos(s, CurrentIndexBuf.DescFields);
+    s := ExtractDelimited(i, IndexBuf.FieldsName, [Limiter]);
+    p := Pos(s, IndexBuf.DescFields);
     if p>0 then
       s := s + Desc;
     Result := Result + Limiter + s;
