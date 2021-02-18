@@ -3,7 +3,7 @@
     Copyright (c) 2007 by Michael Van Canneyt, member of the
     Free Pascal development team
 
-    MySQL 5.7 Data Dictionary Engine Implementation.
+    MySQL 8.0 Data Dictionary Engine Implementation.
 
     See the file COPYING.FPC, included in this distribution,
     for details about the copyright.

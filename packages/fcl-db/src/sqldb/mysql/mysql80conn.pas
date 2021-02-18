@@ -1,5 +1,5 @@
 {
-  Contains the TMysqlConnection for MySQL 5.7
+  Contains the TMysqlConnection for MySQL 8.0
 }
 
 unit mysql80conn;
