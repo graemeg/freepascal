@@ -1797,12 +1797,16 @@ implementation
             reference_reset_base(ref,NR_SP,-16,ctempposinvalid,16,[]);
             ref.addressmode:=AM_PREINDEXED;
             list.concat(taicpu.op_reg_reg_ref(A_STP,NR_FP,NR_LR,ref));
+            current_asmdata.asmcfi.cfa_def_cfa_offset(list,2*sizeof(pint));
+            current_asmdata.asmcfi.cfa_offset(list,NR_FP,-16);
+            current_asmdata.asmcfi.cfa_offset(list,NR_LR,-8);
             if target_info.system=system_aarch64_win64 then
               list.concat(cai_seh_directive.create_offset(ash_savefplr_x,16));
             { initialise frame pointer }
             if current_procinfo.procdef.proctypeoption<>potype_exceptfilter then
               begin
                 a_load_reg_reg(list,OS_ADDR,OS_ADDR,NR_SP,NR_FP);
+                current_asmdata.asmcfi.cfa_def_cfa_register(list,NR_FP);
                 if target_info.system=system_aarch64_win64 then
                   list.concat(cai_seh_directive.create(ash_setfp));
               end
