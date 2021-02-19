@@ -44,6 +44,19 @@ const
   DaySaturday  = 6;
   DaySunday    = 7;
 
+  MonthJanuary   = 1;
+  MonthFebruary  = 2;
+  MonthMarch     = 3;
+  MonthApril     = 4;
+  MonthMay       = 5;
+  MonthJune      = 6;
+  MonthJuly      = 7;
+  MonthAugust    = 8;
+  MonthSeptember = 9;
+  MonthOctober   = 10;
+  MonthNovember  = 11;
+  MonthDecember  = 12;
+
   // Fraction of a day
   OneHour        = TDateTime(1)/HoursPerDay;
   OneMinute      = TDateTime(1)/MinsPerDay;
