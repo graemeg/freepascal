@@ -54,7 +54,7 @@ const
     '         <HaltOnFail> may be one of (y, Y, t, T, 1) to halt the execution on the first failing.' + sLineBreak +
     ' ' + sLineBreak +
     '  The program expects some files to be present in the <dataDir> folder : ' + sLineBreak +
-    '     - UCA_Rules_SHORT.xml ' + sLineBreak +
+    '     - UCA_Rules_SHORT.txt ' + sLineBreak +
     '     - allkeys.txt this is the file allkeys_CLDR.txt renamed to allkeys.txt' + sLineBreak +
     '  These files are in the core.zip file of the CLDR release files. The CLDR''version used should be synchronized the' + sLineBreak +
     '  version of the Unicode version used, for example for Uniocde 7 it will be CLDR 26.' + sLineBreak +
