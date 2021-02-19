@@ -43,6 +43,14 @@ asm
   str r1, [r0]
 {$endif REMAP_VECTTAB}
 
+{$if defined(FPUARM_HAS_VFP_EXTENSION)}
+  ldr r0, .Lcpacr
+  ldr r1, [r0]
+  orr r1, r1, #0xf00000
+  str r1, [r0]
+  dsb
+  isb
+{$endif defined(FPUARM_HAS_VFP_EXTENSION)}
   bl PASCALMAIN
   b HaltProc
 
@@ -56,6 +64,10 @@ asm
   .long _data
 .L_edata:
   .long _edata
+{$if not defined(FPUARM_HAS_VFP_EXTENSION)}
+.Lcpacr:
+  .long 0xE000ED88
+{$endif defined(FPUARM_HAS_VFP_EXTENSION)}
 {$ifdef REMAP_VECTTAB}
 .Lvtor:
   .long 0xE000ED08
