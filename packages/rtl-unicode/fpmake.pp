@@ -16,11 +16,12 @@ Const
   CPUnits       = [aix,amiga,aros,android,beos,darwin,iphonesim,ios,emx,gba,nds,freebsd,go32v2,haiku,linux,morphos,netbsd,netware,netwlibc,openbsd,os2,solaris,watcom,wii,win32,win64,wince,dragonfly,freertos];
   utf8bidiOSes  = [netware,netwlibc];
   freebidiOSes  = [netware,netwlibc];
+  GraphemeBreakPropertyOSes = AllOSes;
 
 // Character not movable because fpwidestring depends on it.
 //  CharacterOSes = [android,darwin,freebsd,linux,netbsd,openbsd,solaris,win32,win64,dragonfly];
 
-  UnicodeAllOSes =   CollationOSes + utf8bidiOSes + freebidiOSes + CPUnits;
+  UnicodeAllOSes =   CollationOSes + utf8bidiOSes + freebidiOSes + CPUnits + GraphemeBreakPropertyOSes;
 
 // Amiga has a crt in its RTL dir, but it is commented in the makefile
 
@@ -138,6 +139,12 @@ begin
     T:=P.Targets.AddImplicitUnit('cp950.pas',CPUnits);
 
 //    T:=P.Targets.AddUnit('character.pp',characterOSes);
+
+    T:=P.Targets.AddUnit('graphemebreakproperty.pp',GraphemeBreakPropertyOSes);
+    with T.Dependencies do
+      begin
+        AddInclude('graphemebreakproperty_code.inc');
+      end;
   end
 end;
 
