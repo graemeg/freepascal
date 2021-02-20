@@ -74,3 +74,4 @@ asm
 .Ltext_start:
   .long _text_start
 {$endif REMAP_VECTTAB}
+end;

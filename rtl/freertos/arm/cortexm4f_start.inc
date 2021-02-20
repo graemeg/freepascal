@@ -64,7 +64,7 @@ asm
   .long _data
 .L_edata:
   .long _edata
-{$if not defined(FPUARM_HAS_VFP_EXTENSION)}
+{$if defined(FPUARM_HAS_VFP_EXTENSION)}
 .Lcpacr:
   .long 0xE000ED88
 {$endif defined(FPUARM_HAS_VFP_EXTENSION)}
