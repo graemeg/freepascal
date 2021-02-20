@@ -27,9 +27,12 @@ end;
 
 
 Function TInputPipeStream.GetNumBytesAvailable: DWord;
-
+var
+  fib: TFileInfoBlock;
 begin
   Result := 0;
+  if Boolean(ExamineFH(BPTR(Handle), @fib)) then
+    Result := fib.fib_size;
 end;
 
 function TInputPipeStream.GetPosition: Int64;
@@ -53,5 +56,5 @@ begin
    FileClose(FHandle);
    if DeleteIt then
      AmigaDos.dosDeleteFile(@(Filename[0]));
- end;  
+ end;
 end;

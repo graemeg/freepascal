@@ -65,6 +65,13 @@ end;
 var
   UID: Integer = 0;
 
+{$ifdef MorphOS}
+const
+  BUF_LINE = 0; // flush on \n, etc
+  BUF_FULL = 1; // never flush except when needed
+  BUF_NONE = 2; // no buffering
+{$endif}
+
 Procedure TProcess.Execute;
 var
   I: integer;
@@ -74,6 +81,10 @@ var
   Params: string;
   TempName: string;
   cos: BPTR;
+  {$ifdef MorphOS}
+  inA, inB, OutA, OutB: BPTR;
+  Res: Integer;
+  {$endif}
 begin
   if (ApplicationName = '') and (CommandLine = '') and (Executable = '') then
    raise EProcess.Create (SNoCommandline);
@@ -114,17 +125,61 @@ begin
     ChDir (FCurrentDirectory);
    end;
   try
-   cos := BPTR(0);
-   repeat
-     Inc(UID);
-     TempName := 'T:PrO_'+ HexStr(FindTask(nil)) + '_' + IntToHex(UID,8);
-   until not FileExists(TempName);
-   //sysdebugln('TProcess start: "' + ExecName + ' ' + Params+'"  >' + TempName);
-   cos := AmigaDos.DosOpen(PChar(TempName), MODE_READWRITE);
-   FExitCode := LongInt(amigados.Execute(PChar(ExecName + ' ' + Params), BPTR(0), cos));
-   DosSeek(cos, 0, OFFSET_BEGINNING);
-   CreateStreams(0, THandle(cos),0);
-   //FExitCode := ExecuteProcess (ExecName, Params);
+    {$ifdef MorphOS}
+    if (poUsePipes in Options) and (not (poWaitOnExit in Options)) then
+    begin
+      FProcessID := 0;
+      // Pipenames, should be unique
+      TempName := 'PIPE:PrO_' + HexStr(Self) + HexStr(GetTickCount, 8);
+      inA := DOSOpen(PChar(TempName), MODE_OLDFILE);
+      inB := DOSOpen(PChar(TempName), MODE_NEWFILE);
+      TempName := TempName + 'o';
+      outA := DOSOpen(PChar(TempName), MODE_OLDFILE);
+      outB := DOSOpen(PChar(TempName), MODE_NEWFILE);
+      // set buffer for all pipes
+      SetVBuf(inA, nil, BUF_NONE, -1);
+      SetVBuf(inB, nil, BUF_LINE, -1);
+      SetVBuf(outA, nil, BUF_NONE, -1);
+      SetVBuf(outB, nil, BUF_LINE, -1);
+      // the actual Start of the command with given parameter and streams
+      Res := SystemTags(PChar(ExecName + ' ' + Params),
+                        [SYS_Input, AsTag(outA),
+                         SYS_Output, AsTag(inB),
+                         SYS_Asynch, AsTag(True),
+                         TAG_END]);
+      // the two streams will be destroyed by system, we do not need to care about
+      // the other two we will destroy when the PipeStreams they are attached to are destroyed
+      if Res <> -1 then
+      begin
+        FProcessID := 1;
+        CreateStreams(THandle(outB), THandle(inA),0);
+      end
+      else
+      begin
+        // if the command did not start, we need to delete all Streams
+        if outB <> BPTR(0) then DosClose(outB);
+        if outA <> BPTR(0) then DosClose(outA);
+        if inB <> BPTR(0) then DosClose(inB);
+        if inA <> BPTR(0) then DosClose(inA);
+      end;
+    end
+    else
+    {$endif}
+    begin
+      // if no streams needed we still use the old sychronous way
+      FProcessID := 0;
+      cos := BPTR(0);
+      repeat
+        Inc(UID);
+        TempName := 'T:PrO_'+ HexStr(FindTask(nil)) + '_' + IntToHex(UID,8);
+      until not FileExists(TempName);
+      //sysdebugln('TProcess start: "' + ExecName + ' ' + Params+'"  >' + TempName);
+      cos := AmigaDos.DosOpen(PChar(TempName), MODE_READWRITE);
+      FExitCode := LongInt(amigados.Execute(PChar(ExecName + ' ' + Params), BPTR(0), cos));
+      DosSeek(cos, 0, OFFSET_BEGINNING);
+      CreateStreams(0, THandle(cos),0);
+    end;
+    //FExitCode := ExecuteProcess (ExecName, Params);
   except
 (* Normalize the raised exception so that it is aligned to other platforms. *)
     On E: EOSError do

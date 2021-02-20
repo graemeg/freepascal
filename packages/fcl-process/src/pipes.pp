@@ -91,10 +91,30 @@ begin
 end;
 
 Function TInputPipeStream.Read (Var Buffer; Count : Longint) : longint;
-
+{$ifdef MorphOS}
+var
+  i: Integer;
+  Runner: PByte;
+{$endif}
 begin
+  {$ifdef MorphOS}
+  FillChar(Buffer, Count, 0);
+  if FGetS(Handle, @Buffer, Count) = nil then
+    Result := 0
+  else
+  begin
+    Result := 0;
+    Runner := @Buffer;
+    repeat
+      if Runner^ = 0 then
+        Break;
+      Inc(Result);
+    until Result >= Count;
+  end;
+  {$else}
   Result:=Inherited Read(Buffer,Count);
   Inc(FPos,Result);
+  {$endif}
 end;
 
 function TInputPipeStream.Seek(const Offset: int64; Origin: TSeekOrigin): int64;
