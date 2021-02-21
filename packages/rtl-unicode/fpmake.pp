@@ -17,11 +17,12 @@ Const
   utf8bidiOSes  = [netware,netwlibc];
   freebidiOSes  = [netware,netwlibc];
   GraphemeBreakPropertyOSes = AllOSes-[embedded,zxspectrum,msxdos,amstradcpc];
+  EastAsianWidthOSes        = AllOSes-[embedded,zxspectrum,msxdos,amstradcpc];
 
 // Character not movable because fpwidestring depends on it.
 //  CharacterOSes = [android,darwin,freebsd,linux,netbsd,openbsd,solaris,win32,win64,dragonfly];
 
-  UnicodeAllOSes =   CollationOSes + utf8bidiOSes + freebidiOSes + CPUnits + GraphemeBreakPropertyOSes;
+  UnicodeAllOSes =   CollationOSes + utf8bidiOSes + freebidiOSes + CPUnits + GraphemeBreakPropertyOSes + EastAsianWidthOSes;
 
 // Amiga has a crt in its RTL dir, but it is commented in the makefile
 
@@ -144,6 +145,12 @@ begin
     with T.Dependencies do
       begin
         AddInclude('graphemebreakproperty_code.inc');
+      end;
+
+    T:=P.Targets.AddUnit('eastasianwidth.pp',EastAsianWidthOSes);
+    with T.Dependencies do
+      begin
+        AddInclude('eastasianwidth_code.inc');
       end;
   end
 end;
