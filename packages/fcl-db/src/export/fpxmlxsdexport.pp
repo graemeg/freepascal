@@ -2990,7 +2990,7 @@ begin
   }
 
   CreateXSD := True;
-  DecimalSeparator := char(''); //Don't override decimal separator by default
+  DecimalSeparator := #0; //Don't override decimal separator by default
 
   if Source is TXMLXSDFormatSettings then
   begin
