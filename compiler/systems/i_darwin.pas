@@ -263,7 +263,7 @@ const
         name         : 'Darwin for PowerPC64';
         shortname    : 'Darwin';
         flags        : [tf_p_ext_support,tf_files_case_sensitive,tf_smartlink_sections,tf_dwarf_relative_addresses,tf_dwarf_only_local_labels,
-                        tf_pic_default,tf_has_winlike_resources,tf_supports_symbolorderfile,tf_supports_hidden_symbols];
+                        tf_pic_default,tf_has_winlike_resources,tf_supports_hidden_symbols];
         cpu          : cpu_powerpc64;
         unit_env     : 'BSDUNITS';
         extradefines : 'UNIX;BSD;HASUNIX';
