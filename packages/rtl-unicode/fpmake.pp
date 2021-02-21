@@ -16,7 +16,7 @@ Const
   CPUnits       = [aix,amiga,aros,android,beos,darwin,iphonesim,ios,emx,gba,nds,freebsd,go32v2,haiku,linux,morphos,netbsd,netware,netwlibc,openbsd,os2,solaris,watcom,wii,win32,win64,wince,dragonfly,freertos];
   utf8bidiOSes  = [netware,netwlibc];
   freebidiOSes  = [netware,netwlibc];
-  GraphemeBreakPropertyOSes = AllOSes;
+  GraphemeBreakPropertyOSes = AllOSes-[embedded,zxspectrum,msxdos,amstradcpc];
 
 // Character not movable because fpwidestring depends on it.
 //  CharacterOSes = [android,darwin,freebsd,linux,netbsd,openbsd,solaris,win32,win64,dragonfly];
