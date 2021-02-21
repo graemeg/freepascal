@@ -4154,6 +4154,7 @@ implementation
          symtable:=tarraysymtable.create(self);
       end;
 
+
     constructor tarraydef.create_vector(l ,h: asizeint; def: tdef);
       begin
         self.create(l,h,def);
@@ -4163,7 +4164,8 @@ implementation
 
     constructor tarraydef.create_openarray;
       begin
-        self.create(0,-1,sizesinttype)
+        self.create(0,-1,sizesinttype);
+        include(arrayoptions,ado_OpenArray);
       end;
 
 
@@ -4367,7 +4369,7 @@ implementation
           end;
 
         { Tarraydef.size may never be called for an open array! }
-        if (highrange=-1) and (lowrange=0) then
+        if ado_OpenArray in arrayoptions then
           internalerror(99080501);
         if not (ado_IsBitPacked in arrayoptions) then
           cachedelesize:=elesize
@@ -4472,7 +4474,7 @@ implementation
            end
          else if (ado_IsDynamicArray in arrayoptions) then
            GetTypeName:='{Dynamic} Array Of '+elementdef.typename
-         else if ((highrange=-1) and (lowrange=0)) then
+         else if (ado_OpenArray in arrayoptions) then
            GetTypeName:='{Open} Array Of '+elementdef.typename
          else
            begin

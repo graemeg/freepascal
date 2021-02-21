@@ -3284,7 +3284,8 @@ const
    { ado_IsConstString      } 'ConstString',
    { ado_IsBitPacked        } 'BitPacked',
    { ado_IsVector           } 'Vector',
-   { ado_IsGeneric          } 'Generic'
+   { ado_IsGeneric          } 'Generic',
+   { ado_OpenArray          } 'OpenArray'
   );
 var
   symoptions: tarraydefoptions;

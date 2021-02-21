@@ -572,7 +572,9 @@ type
     ado_IsConstString,      // string constant
     ado_IsBitPacked,        // bitpacked array
     ado_IsVector,           // Vector
-    ado_IsGeneric           // the index of the array is generic (meaning that the size is not yet known)
+    ado_IsGeneric,          // the index of the array is generic (meaning that the size is not yet known)
+    ado_OpenArray           // open array, replaces the old hack with high being -1 for an open array:
+                            // this is still true, but this flag is set as well
   );
   tarraydefoptions=set of tarraydefoption;
 

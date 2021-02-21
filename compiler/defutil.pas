@@ -796,8 +796,7 @@ implementation
            range is also -1 ! (PFV) }
          result:=(p.typ=arraydef) and
                  (tarraydef(p).rangedef=sizesinttype) and
-                 (tarraydef(p).lowrange=0) and
-                 (tarraydef(p).highrange=-1) and
+                 (ado_OpenArray in tarraydef(p).arrayoptions) and
                  ((tarraydef(p).arrayoptions * [ado_IsVariant,ado_IsArrayOfConst,ado_IsConstructor,ado_IsDynamicArray])=[]);
       end;
 
