@@ -1584,7 +1584,9 @@ implementation
 
    class function ttai_typedconstbuilder.is_smartlink_vectorized_dead_strip: boolean;
      begin
-       result:=tf_smartlink_sections in target_info.flags;
+       result:=(tf_smartlink_sections in target_info.flags) and
+               (not(target_info.system in systems_darwin) or
+                (tf_supports_symbolorderfile in target_info.flags));
      end;
 
 
