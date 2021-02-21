@@ -991,6 +991,7 @@ implementation
                                sym:=clocalvarsym.create('$exceptsym',vs_value,ot,[]);
                             end;
                           excepTSymtable:=tstt_excepTSymtable.create;
+                          excepTSymtable.defowner:=current_procinfo.procdef;
                           excepTSymtable.insert(sym);
                           symtablestack.push(excepTSymtable);
                        end
