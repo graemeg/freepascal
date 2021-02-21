@@ -1298,9 +1298,10 @@ implementation
           { if one of the two is at the end while the other isn't, add a '.0' }
           if (i1>length(s1)) and
              (i2<=length(s2)) then
-            s1:=s1+'.0'
-          else if i2>length(s2) then
-            s2:=s2+'.0';
+            s1:=s1+'.0';
+          if (i2>length(s2)) and
+             (i1<=length(s1)) then
+             s2:=s2+'.0';
           { compare non-numerical characters normally }
           while (i1<=length(s1)) and
                 not(s1[i1] in ['0'..'9']) and
