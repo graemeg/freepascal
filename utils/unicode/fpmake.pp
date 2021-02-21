@@ -61,6 +61,7 @@ begin
     T:=P.Targets.AddProgram('cldrparser.lpr');
     T:=P.Targets.AddProgram('unihelper.lpr');
     T:=P.Targets.AddProgram('gbpparser.lpr');
+    T:=P.Targets.AddProgram('eawparser.lpr');
 
     end;
 end;
