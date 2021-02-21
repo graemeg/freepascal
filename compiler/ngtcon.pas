@@ -328,6 +328,25 @@ function get_next_varsym(def: tabstractrecorddef; const SymList:TFPHashObjectLis
 {$push}
 {$r-}
 {$q-}
+    { to work around broken x86 shifting, while generating bitmask }
+    function getbitmask(len: byte): aword;
+      begin
+        if len >= (sizeof(result) * 8) then
+          result:=0
+        else
+          result:=aword(1) shl len;
+        result:=aword(result-1);
+      end;
+
+    { shift left, and always pad the right bits with zeroes }
+    function shiftleft(value: aword; count: byte): aword;
+      begin
+        if count >= (sizeof(result) * 8) then
+          result:=0
+        else
+          result:=(value shl count) and (not getbitmask(count));
+      end;
+
     { (values between quotes below refer to fields of bp; fields not         }
     {  mentioned are unused by this routine)                                 }
     { bitpacks "value" as bitpacked value of bitsize "packedbitsize" into    }
@@ -342,16 +361,15 @@ function get_next_varsym(def: tabstractrecorddef; const SymList:TFPHashObjectLis
         if (target_info.endian=endian_big) then
           begin
             { bitpacked format: left-aligned (i.e., "big endian bitness") }
-            { work around broken x86 shifting }
-            if (AIntBits<>bp.packedbitsize) and
+            if (bp.packedbitsize<AIntBits) and
                (bp.curbitoffset<AIntBits) then
-              bp.curval:=bp.curval or ((value shl (AIntBits-bp.packedbitsize)) shr bp.curbitoffset);
+              bp.curval:=bp.curval or (shiftleft(value,AIntBits-bp.packedbitsize) shr bp.curbitoffset);
             shiftcount:=((AIntBits-bp.packedbitsize)-bp.curbitoffset);
             { carry-over to the next element? }
             if (shiftcount<0) then
               begin
                 if shiftcount>=-AIntBits then
-                  bp.nextval:=(value and ((aword(1) shl (-shiftcount))-1)) shl
+                  bp.nextval:=(value and getbitmask(-shiftcount)) shl
                               (AIntBits+shiftcount)
                 else
                   bp.nextval:=0;
