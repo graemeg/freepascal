@@ -3360,67 +3360,164 @@ unit aoptx86;
         if (taicpu(p).oper[1]^.reg <> NR_STACK_POINTER_REG) and
           GetNextInstructionUsingReg(p,hp1,taicpu(p).oper[1]^.reg) then
           begin
-            { changes
-                lea offset1(regX), reg1
-                lea offset2(reg1), reg1
-                to
-                lea offset1+offset2(regX), reg1 }
-
+            { Check common LEA/LEA conditions }
             if MatchInstruction(hp1,A_LEA,[taicpu(p).opsize]) and
-              MatchOperand(taicpu(p).oper[1]^,taicpu(hp1).oper[1]^) and
-              (taicpu(p).oper[0]^.ref^.relsymbol=nil) and
-              (taicpu(p).oper[0]^.ref^.segment=NR_NO) and
-              (taicpu(p).oper[0]^.ref^.symbol=nil) and
-              (((taicpu(hp1).oper[0]^.ref^.base=taicpu(p).oper[1]^.reg) and
-                (taicpu(p).oper[0]^.ref^.scalefactor <= 1) and
-                (taicpu(p).oper[0]^.ref^.index=NR_NO) and
-                (taicpu(p).oper[0]^.ref^.index=taicpu(hp1).oper[0]^.ref^.index) and
-                (taicpu(p).oper[0]^.ref^.scalefactor=taicpu(hp1).oper[0]^.ref^.scalefactor)
-               ) or
-               ((taicpu(hp1).oper[0]^.ref^.index=taicpu(p).oper[1]^.reg) and
-                (taicpu(p).oper[0]^.ref^.index=NR_NO)
-               ) or
-               ((taicpu(hp1).oper[0]^.ref^.base=taicpu(p).oper[1]^.reg) and
-                (taicpu(hp1).oper[0]^.ref^.scalefactor <= 1) and
-                ((taicpu(p).oper[0]^.ref^.base=NR_NO) or
-                 ((taicpu(p).oper[0]^.ref^.base=taicpu(p).oper[0]^.ref^.base) and
-                  (taicpu(p).oper[0]^.ref^.index=NR_NO)
-                 )
-                ) and
-                not(RegUsedBetween(taicpu(p).oper[0]^.ref^.index,p,hp1)))
-              ) and
-              not(RegUsedBetween(taicpu(p).oper[0]^.ref^.base,p,hp1)) and
-              (taicpu(p).oper[0]^.ref^.relsymbol=taicpu(hp1).oper[0]^.ref^.relsymbol) and
-              (taicpu(p).oper[0]^.ref^.segment=taicpu(hp1).oper[0]^.ref^.segment) and
-              (taicpu(p).oper[0]^.ref^.symbol=taicpu(hp1).oper[0]^.ref^.symbol) then
+              (taicpu(p).oper[1]^.reg = taicpu(hp1).oper[1]^.reg) and
+              (taicpu(p).oper[0]^.ref^.relsymbol = nil) and
+              (taicpu(p).oper[0]^.ref^.segment = NR_NO) and
+              (taicpu(p).oper[0]^.ref^.symbol = nil) and
+              (taicpu(hp1).oper[0]^.ref^.relsymbol = nil) and
+              (taicpu(hp1).oper[0]^.ref^.segment = NR_NO) and
+              (taicpu(hp1).oper[0]^.ref^.symbol = nil) and
+              (
+                (taicpu(p).oper[0]^.ref^.base = NR_NO) or { Don't call RegUsedBetween unnecessarily }
+                not(RegUsedBetween(taicpu(p).oper[0]^.ref^.base,p,hp1))
+              ) then
               begin
-                DebugMsg(SPeepholeOptimization + 'LeaLea2Lea done',p);
-                if taicpu(hp1).oper[0]^.ref^.index=taicpu(p).oper[1]^.reg then
+                { changes
+                    lea (regX,scale), reg1
+                    lea offset(reg1,reg1), reg1
+                    to
+                    lea offset(regX,scale*2), reg1
+
+                  and
+                    lea (regX,scale1), reg1
+                    lea offset(reg1,scale2), reg1
+                    to
+                    lea offset(regX,scale1*scale2), reg1
+
+                  ... so long as the final scale does not exceed 8
+
+                  (Similarly, allow the first instruction to be "lea (regX,regX),reg1")
+                  }
+                if (taicpu(p).oper[0]^.ref^.offset = 0) and
+                  (taicpu(hp1).oper[0]^.ref^.index = taicpu(p).oper[1]^.reg) and
+                  (
+                    (
+                      (taicpu(p).oper[0]^.ref^.base = NR_NO)
+                    ) or (
+                      (taicpu(p).oper[0]^.ref^.scalefactor <= 1) and
+                      (
+                        (taicpu(p).oper[0]^.ref^.base = taicpu(p).oper[0]^.ref^.index) and
+                        not(RegUsedBetween(taicpu(p).oper[0]^.ref^.index, p, hp1))
+                      )
+                    )
+                  ) and (
+                    (
+                      { lea (reg1,scale2), reg1 variant }
+                      (taicpu(hp1).oper[0]^.ref^.base = NR_NO) and
+                      (
+                        (
+                          (taicpu(p).oper[0]^.ref^.base = NR_NO) and
+                          (taicpu(hp1).oper[0]^.ref^.scalefactor * taicpu(p).oper[0]^.ref^.scalefactor <= 8)
+                        ) or (
+                          { lea (regX,regX), reg1 variant }
+                          (taicpu(p).oper[0]^.ref^.base <> NR_NO) and
+                          (taicpu(hp1).oper[0]^.ref^.scalefactor <= 4)
+                        )
+                      )
+                    ) or (
+                      { lea (reg1,reg1), reg1 variant }
+                      (taicpu(hp1).oper[0]^.ref^.base = taicpu(p).oper[1]^.reg) and
+                      (taicpu(hp1).oper[0]^.ref^.scalefactor <= 1)
+                    )
+                  ) then
                   begin
-                    taicpu(hp1).oper[0]^.ref^.index:=taicpu(p).oper[0]^.ref^.base;
-                    inc(taicpu(hp1).oper[0]^.ref^.offset,taicpu(p).oper[0]^.ref^.offset*max(taicpu(hp1).oper[0]^.ref^.scalefactor,1));
-                    { if the register is used as index and base, we have to increase for base as well
-                      and adapt base }
-                    if taicpu(hp1).oper[0]^.ref^.base=taicpu(p).oper[1]^.reg then
+                    DebugMsg(SPeepholeOptimization + 'LeaLea2Lea 2 done',p);
+
+                    { Make everything homogeneous to make calculations easier }
+                    if (taicpu(p).oper[0]^.ref^.base <> NR_NO) then
                       begin
-                        taicpu(hp1).oper[0]^.ref^.base:=taicpu(p).oper[0]^.ref^.base;
-                        inc(taicpu(hp1).oper[0]^.ref^.offset,taicpu(p).oper[0]^.ref^.offset);
+                        if taicpu(p).oper[0]^.ref^.index <> NR_NO then
+                          { Convert lea (regX,regX),reg1 to lea (regX,2),reg1 }
+                          taicpu(p).oper[0]^.ref^.scalefactor := 2
+                        else
+                          taicpu(p).oper[0]^.ref^.index := taicpu(p).oper[0]^.ref^.base;
+
+                        taicpu(p).oper[0]^.ref^.base := NR_NO;
                       end;
+
+                    if (taicpu(hp1).oper[0]^.ref^.base = NR_NO) then
+                      begin
+                        { Just to prevent miscalculations }
+                        if (taicpu(hp1).oper[0]^.ref^.scalefactor = 0) then
+                          taicpu(hp1).oper[0]^.ref^.scalefactor := taicpu(p).oper[0]^.ref^.scalefactor
+                        else
+                          taicpu(hp1).oper[0]^.ref^.scalefactor := taicpu(hp1).oper[0]^.ref^.scalefactor * taicpu(p).oper[0]^.ref^.scalefactor;
+                      end
+                    else
+                      begin
+                        taicpu(hp1).oper[0]^.ref^.base := NR_NO;
+                        taicpu(hp1).oper[0]^.ref^.scalefactor := taicpu(p).oper[0]^.ref^.scalefactor * 2;
+                      end;
+
+                    taicpu(hp1).oper[0]^.ref^.index := taicpu(p).oper[0]^.ref^.index;
+                    RemoveCurrentP(p);
+                    result:=true;
+                    exit;
                   end
-                else
+
+                { changes
+                    lea offset1(regX), reg1
+                    lea offset2(reg1), reg1
+                    to
+                    lea offset1+offset2(regX), reg1 }
+                else if
+                  (
+                    (taicpu(hp1).oper[0]^.ref^.index = taicpu(p).oper[1]^.reg) and
+                    (taicpu(p).oper[0]^.ref^.index = NR_NO)
+                  ) or (
+                    (taicpu(hp1).oper[0]^.ref^.base = taicpu(p).oper[1]^.reg) and
+                    (taicpu(hp1).oper[0]^.ref^.scalefactor <= 1) and
+                    (
+                      (
+                        (taicpu(p).oper[0]^.ref^.index = NR_NO) or
+                        (taicpu(p).oper[0]^.ref^.base = NR_NO)
+                      ) or (
+                        (taicpu(p).oper[0]^.ref^.scalefactor <= 1) and
+                        (
+                          (taicpu(p).oper[0]^.ref^.index = NR_NO) or
+                          (
+                            (taicpu(p).oper[0]^.ref^.index = taicpu(p).oper[0]^.ref^.base) and
+                            (
+                              (taicpu(hp1).oper[0]^.ref^.index = NR_NO) or
+                              (taicpu(hp1).oper[0]^.ref^.base = NR_NO)
+                            )
+                          )
+                        )
+                      )
+                    )
+                  ) then
                   begin
-                    inc(taicpu(hp1).oper[0]^.ref^.offset,taicpu(p).oper[0]^.ref^.offset);
-                    taicpu(hp1).oper[0]^.ref^.base:=taicpu(p).oper[0]^.ref^.base;
+                    DebugMsg(SPeepholeOptimization + 'LeaLea2Lea 1 done',p);
+
+                    if taicpu(hp1).oper[0]^.ref^.index=taicpu(p).oper[1]^.reg then
+                      begin
+                        taicpu(hp1).oper[0]^.ref^.index:=taicpu(p).oper[0]^.ref^.base;
+                        inc(taicpu(hp1).oper[0]^.ref^.offset,taicpu(p).oper[0]^.ref^.offset*max(taicpu(hp1).oper[0]^.ref^.scalefactor,1));
+                        { if the register is used as index and base, we have to increase for base as well
+                          and adapt base }
+                        if taicpu(hp1).oper[0]^.ref^.base=taicpu(p).oper[1]^.reg then
+                          begin
+                            taicpu(hp1).oper[0]^.ref^.base:=taicpu(p).oper[0]^.ref^.base;
+                            inc(taicpu(hp1).oper[0]^.ref^.offset,taicpu(p).oper[0]^.ref^.offset);
+                          end;
+                      end
+                    else
+                      begin
+                        inc(taicpu(hp1).oper[0]^.ref^.offset,taicpu(p).oper[0]^.ref^.offset);
+                        taicpu(hp1).oper[0]^.ref^.base:=taicpu(p).oper[0]^.ref^.base;
+                      end;
+                    if taicpu(p).oper[0]^.ref^.index<>NR_NO then
+                      begin
+                        taicpu(hp1).oper[0]^.ref^.base:=taicpu(hp1).oper[0]^.ref^.index;
+                        taicpu(hp1).oper[0]^.ref^.index:=taicpu(p).oper[0]^.ref^.index;
+                        taicpu(hp1).oper[0]^.ref^.scalefactor:=taicpu(p).oper[0]^.ref^.scalefactor;
+                      end;
+                    RemoveCurrentP(p);
+                    result:=true;
+                    exit;
                   end;
-                if taicpu(p).oper[0]^.ref^.index<>NR_NO then
-                  begin
-                    taicpu(hp1).oper[0]^.ref^.base:=taicpu(hp1).oper[0]^.ref^.index;
-                    taicpu(hp1).oper[0]^.ref^.index:=taicpu(p).oper[0]^.ref^.index;
-                    taicpu(hp1).oper[0]^.ref^.scalefactor:=taicpu(p).oper[0]^.ref^.scalefactor;
-                  end;
-                RemoveCurrentP(p);
-                result:=true;
-                exit;
               end;
 
             { Change:
