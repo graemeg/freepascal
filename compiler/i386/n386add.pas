@@ -486,13 +486,13 @@ interface
         begin
           cg.getcpuregister(current_asmdata.CurrAsmList,NR_EDX);
           hlcg.a_load_loc_reg(current_asmdata.CurrAsmList,right.resultdef,osuinttype,right.location,NR_EDX);
-          cg.ungetcpuregister(current_asmdata.CurrAsmList,NR_EDX);
           reglo:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
           reghi:=cg.getintregister(current_asmdata.CurrAsmList,OS_INT);
           if use_ref then
             current_asmdata.CurrAsmList.concat(Taicpu.Op_ref_reg_reg(A_MULX,S_L,ref,reglo,reghi))
           else
             emit_reg_reg_reg(A_MULX,S_L,reg,reglo,reghi);
+          cg.ungetcpuregister(current_asmdata.CurrAsmList,NR_EDX);
 
           location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
           location.register64.reglo:=reglo;
