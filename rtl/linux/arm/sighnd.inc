@@ -41,6 +41,7 @@ end;
 {$endif not(defined(CPUTHUMB)) and not(defined(CPUTHUMB2))}
 
 {$if FPC_FULLVERSION >= 30200}
+{$if defined(CPU_HAS_THUMB))}
 Procedure SignalToHandleErrorAddrFrame_Thumb(Errno : longint;addr : CodePointer; frame : Pointer); nostackframe; assembler;
 asm
 .thumb_func
@@ -61,7 +62,8 @@ asm
 .code 32
 {$endif not(defined(CPUTHUMB)) and not(defined(CPUTHUMB2))}
 end;
-{$endif}
+{$endif defined(CPU_HAS_THUMB))}
+{$endif FPC_FULLVERSION >= 30200}
 
 procedure SignalToRunerror(Sig: longint; { _a2,_a3,_a4 : dword; } SigContext: PSigInfo; uContext : PuContext); public name '_FPC_DEFAULTSIGHANDLER'; cdecl;
 var
@@ -110,7 +112,11 @@ begin
       else
 {$endif not(defined(CPUTHUMB)) and not(defined(CPUTHUMB2))}
         begin
+{$if defined(CPU_HAS_THUMB))}
           ucontext^.uc_mcontext.arm_pc:=ptruint(@SignalToHandleErrorAddrFrame_Thumb);
+{$else defined(CPU_HAS_THUMB))}
+          halt(217);
+{$endif defined(CPU_HAS_THUMB))}
         end;
 {$else}
       ucontext^.uc_mcontext.arm_pc:=ptruint(@SignalToHandleErrorAddrFrame_ARM);
