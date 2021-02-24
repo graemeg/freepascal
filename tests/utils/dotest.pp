@@ -839,7 +839,7 @@ end;
 function RunCompiler(const ExtraPara: string):boolean;
 var
   args,LocalExtraArgs,
-  wpoargs : string;
+  wpoargs,wposuffix : string;
   passnr,
   passes  : longint;
   execres : boolean;
@@ -880,6 +880,7 @@ begin
   if Config.NeedOptions<>'' then
    AppendOptions(Config.NeedOptions,args);
   wpoargs:='';
+  wposuffix:='';
   if (Config.WpoPasses=0) or
      (Config.WpoParas='') then
     passes:=1
@@ -891,6 +892,7 @@ begin
     begin
       if (passes>1) then
         begin
+          wposuffix:='_'+tostr(passnr);
           wpoargs:=' -OW'+config.wpoparas+' -FW'+TestOutputFileName('',PPFile[current],'wp'+tostr(passnr));
           if (passnr>1) then
             wpoargs:=wpoargs+' -Ow'+config.wpoparas+' -Fw'+TestOutputFileName('',PPFile[current],'wp'+tostr(passnr-1));
@@ -899,12 +901,12 @@ begin
       { also get the output from as and ld that writes to stderr sometimes }
       StartTicks:=GetMicroSTicks;
     {$ifndef macos}
-      execres:=ExecuteRedir(CompilerBin,args+wpoargs,'',CompilerLogFile,'stdout');
+      execres:=ExecuteRedir(CompilerBin,args+wpoargs,'',CompilerLogFile+wposuffix,'stdout');
     {$else macos}
       {Due to that Toolserver is not reentrant, we have to asm and link via script.}
-      execres:=ExecuteRedir(CompilerBin,'-s '+args+wpoargs,'',CompilerLogFile,'stdout');
+      execres:=ExecuteRedir(CompilerBin,'-s '+args+wpoargs,'',CompilerLogFile+wposuffix,'stdout');
       if execres then
-        execres:=ExecuteRedir(TestOutputDir + ':ppas','','',CompilerLogFile,'stdout');
+        execres:=ExecuteRedir(TestOutputDir + ':ppas','','',CompilerLogFile+wpo_suffix,'stdout');
     {$endif macos}
       EndTicks:=GetMicroSTicks;
       Verbose(V_Debug,'Exitcode '+ToStr(ExecuteResult));
@@ -913,6 +915,8 @@ begin
           Verbose(V_Normal,'Compilation took '+ToStr(EndTicks-StartTicks)+' us');
         end;
 
+      if passes > 1 then
+        CopyFile(CompilerLogFile+wposuffix,CompilerLogFile,true);
       { Error during execution? }
       if (not execres) and (ExecuteResult=0) then
         begin
