@@ -1024,7 +1024,10 @@ cycledep:
 # extcycle should still work, but generates
 # lots of warnings, so ALLOW_WARNINGS=1 is required
 extcycle:
-        $(MAKE) cycle OPT="$(OPT) -n -OG2p3 -glttt -CRriot -dEXTDEBUG" ALLOW_WARNINGS=1
+        $(MAKE) cycle RTLOPT="$(RTLOPT) -n -glttt -CRriot -dEXTDEBUG" LOCALOPT="$(LOCALOPT) -n -glttt -CRriot -dEXTDEBUG" ALLOW_WARNINGS=1
+
+extoptcycle:
+        $(MAKE) cycle RTLOPT="$(RTLOPT) -n -glttt -CRriot -dEXTDEBUG -dDEBUG_ALL_OPT" LOCALOPT="$(LOCALOPT) -n -glttt -CRriot -dEXTDEBUG -dDEBUG_ALL_OPT" ALLOW_WARNINGS=1
 
 cvstest:
         $(MAKE) cycle 'LOCALOPT=-n -Se' 'RTLOPT=-n -Se'

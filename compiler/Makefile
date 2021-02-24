@@ -5052,7 +5052,9 @@ endif
 cycledep:
 	$(MAKE) cycle USEDEPEND=1
 extcycle:
-	$(MAKE) cycle OPT="$(OPT) -n -OG2p3 -glttt -CRriot -dEXTDEBUG" ALLOW_WARNINGS=1
+	$(MAKE) cycle OPT="$(OPT) -n -glttt -CRriot -dEXTDEBUG" ALLOW_WARNINGS=1
+extoptcycle:
+	$(MAKE) cycle OPT="$(OPT) -n -glttt -CRriot -dEXTDEBUG -dDEBUG_ALL_OPT" ALLOW_WARNINGS=1
 cvstest:
 	$(MAKE) cycle 'LOCALOPT=-n -Se' 'RTLOPT=-n -Se'
 ifeq ($(findstring -dFPC_SOFT_FPUX80,$(LOCALOPT)),)
