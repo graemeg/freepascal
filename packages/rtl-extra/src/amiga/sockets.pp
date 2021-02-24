@@ -201,12 +201,18 @@ end;
 
 function fpgeterrno: longint; inline;
 begin
-  fpgeterrno := bsd_Errno;
+  if Assigned(SocketBase) then
+    fpgeterrno := bsd_Errno
+  else
+    fpgeterrno := 0;
 end;
 
 function fpClose(d: LongInt): LongInt; inline;
 begin
-  fpClose := bsd_CloseSocket(d);
+  if Assigned(SocketBase) then
+    fpClose := bsd_CloseSocket(d)
+  else
+    fpClose := -1;
 end;
 
 function fpaccept(s: cint; addrx: PSockaddr; Addrlen: PSocklen): cint;
@@ -289,8 +295,16 @@ end;
 
 function fpsocket(domain: cint; xtype: cint; protocol: cint): cint;
 begin
-  fpsocket := bsd_socket(domain, xtype, protocol);
-  internal_socketerror := fpgeterrno;
+  if Assigned(SocketBase) then
+  begin
+    fpsocket := bsd_socket(domain, xtype, protocol);
+    internal_socketerror := fpgeterrno;
+  end
+  else
+  begin
+    fpsocket := -1;
+    internal_socketerror := ESockEPROTONOSUPPORT;
+  end;
 end;
 
 

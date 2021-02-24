@@ -48,7 +48,7 @@ Type
 
 { C style calls, linked in from Libc }
 
-function gethostbyname(Name: PChar): PHostEntry; syscall SocketBase 35;
+function fpgethostbyname(Name: PChar): PHostEntry; syscall SocketBase 35;
 function getnetbyname(Name: PChar): PNetEntry; syscall SocketBase 37;
 function getnetbyaddr(Net: Longint; NetType: Longint): PNetEntry; syscall SocketBase 38;
 function getservbyname(Name: PChar; Protocol: PChar): PServEntry; syscall SocketBase 39;
@@ -61,12 +61,25 @@ procedure setservent(StayOpen: longint); syscall SocketBase 92;
 procedure endservent; syscall SocketBase 93;
 function getservent: PServEntry; syscall SocketBase 94;
 
+
+function gethostbyname(Name: PChar): PHostEntry;
+begin
+  if Assigned(SocketBase) then
+    gethostbyname := fpgethostbyname(Name)
+  else
+    gethostbyname := nil;
+end;
+
 function gethostbyaddr(Addr: PChar; Len: Longint; HType: Longint): PHostentry;
 var
   addr1,
   addr2: in_addr;
   IP: PPLongInt;
 begin
+  gethostbyaddr := nil;
+  if not Assigned(SocketBase) then
+    Exit;
+  //
   Addr1 :=  in_addr(PHostAddr(Addr)^);
   Addr2.s_addr := htonl(Addr1.s_addr);
   gethostbyaddr := Pointer(bsd_GetHostByAddr(Pointer(@Addr2.s_addr), Len, HType));
@@ -78,19 +91,21 @@ begin
       repeat
         ip^^ := ntohl(ip^^);
         Inc(IP);
-      until ip^ = nil; 
+      until ip^ = nil;
     end;
   end;
 end;
 
 function  GetDNSError: integer;
 begin
-  GetDNSError:=bsd_Errno;
+  GetDNSError := 0;
+  if assigned(SocketBase) then
+    GetDNSError := bsd_Errno;
 end;
 
 Function InitResolve : Boolean;
 begin
-  Result:=True;
+  Result := Assigned(SocketBase);
 end;
 
 Function FinalResolve : Boolean;
