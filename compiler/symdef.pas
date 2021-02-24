@@ -4385,7 +4385,10 @@ implementation
 
         if (cachedelecount = 0) then
           begin
-            size := -1;
+            if ado_isconststring in arrayoptions then
+              size := 0
+            else
+              size := -1;
             exit;
           end;
 
