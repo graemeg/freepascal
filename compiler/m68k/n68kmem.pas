@@ -35,7 +35,6 @@ interface
        t68kvecnode = class(tcgvecnode)
           procedure update_reference_reg_mul(maybe_const_reg: tregister; regsize: tdef; l: aint); override;
           procedure update_reference_reg_packed(maybe_const_reg: tregister; regsize: tdef; l:aint); override;
-          function valid_index_size(size: tcgsize): boolean; override;
           //procedure pass_generate_code;override;
        end;
 
@@ -54,14 +53,6 @@ implementation
 {*****************************************************************************
                              T68KVECNODE
 *****************************************************************************}
-
-     function t68kvecnode.valid_index_size(size: tcgsize): boolean;
-       begin
-         if (CPUM68K_HAS_INDEXWORD in cpu_capabilities[current_settings.cputype]) then
-           result:=tcgsize2signed[size] in [OS_S16,OS_S32]
-         else
-           result:=inherited;
-       end;
 
     { this routine must, like any other routine, not change the contents }
     { of base/index registers of references, as these may be regvars.    }
