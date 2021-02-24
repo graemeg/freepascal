@@ -3370,8 +3370,12 @@ unit aoptx86;
               (taicpu(hp1).oper[0]^.ref^.segment = NR_NO) and
               (taicpu(hp1).oper[0]^.ref^.symbol = nil) and
               (
-                (taicpu(p).oper[0]^.ref^.base = NR_NO) or { Don't call RegUsedBetween unnecessarily }
-                not(RegUsedBetween(taicpu(p).oper[0]^.ref^.base,p,hp1))
+                (taicpu(p).oper[0]^.ref^.base = NR_NO) or { Don't call RegModifiedBetween unnecessarily }
+                not(RegModifiedBetween(taicpu(p).oper[0]^.ref^.base,p,hp1))
+              ) and (
+                (taicpu(p).oper[0]^.ref^.index = taicpu(p).oper[0]^.ref^.base) or { Don't call RegModifiedBetween unnecessarily }
+                (taicpu(p).oper[0]^.ref^.index = NR_NO) or
+                not(RegModifiedBetween(taicpu(p).oper[0]^.ref^.index,p,hp1))
               ) then
               begin
                 { changes
@@ -5348,6 +5352,25 @@ unit aoptx86;
                   if not MatchOpType(taicpu(hp1), top_reg, top_reg) then
                     Break;
 
+                  if not SuperRegistersEqual(taicpu(hp1).oper[0]^.reg, ThisReg) then
+                    begin
+                      { Because hp1 was obtained via GetNextInstructionUsingReg
+                        and ThisReg doesn't appear in the first operand, it
+                        must appear in the second operand and hence gets
+                        overwritten }
+                      if (InstrMax = -1) and
+                        Reg1WriteOverwritesReg2Entirely(taicpu(hp1).oper[1]^.reg, ThisReg) then
+                        begin
+                          { The two MOVZX instructions are adjacent, so remove the first one }
+                          DebugMsg(SPeepholeOptimization + 'Movzx2Nop 5', p);
+                          RemoveCurrentP(p);
+                          Result := True;
+                          Exit;
+                        end;
+
+                      Break;
+                    end;
+
                   { The objective here is to try to find a combination that
                     removes one of the MOV/Z instructions. }
                   case taicpu(hp1).opsize of
@@ -5460,8 +5483,7 @@ unit aoptx86;
                     ((TargetSize = S_W) and (taicpu(hp1).opsize in [S_W, S_BW])) then
                     begin
                       { Convert the output MOVZX to a MOV }
-                      if (taicpu(hp1).oper[0]^.typ = top_reg) and
-                        SuperRegistersEqual(taicpu(hp1).oper[1]^.reg, ThisReg) then
+                      if SuperRegistersEqual(taicpu(hp1).oper[1]^.reg, ThisReg) then
                         begin
                           { Or remove it completely! }
                           DebugMsg(SPeepholeOptimization + 'Movzx2Nop 2', hp1);
