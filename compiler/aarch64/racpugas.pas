@@ -556,6 +556,10 @@ Unit racpugas;
 
 
     function taarch64attreader.ToConditionCode(const hs: string; is_operand: boolean): tasmcond;
+{$push}{$j-}
+      const
+        extracond2str: array[C_HS..C_LO] of string[2] = ('CS','CC');
+{$pop}
       begin
         case actopcode of
           A_CSEL,A_CSINC,A_CSINV,A_CSNEG,A_CSET,A_CSETM,
@@ -568,9 +572,14 @@ Unit racpugas;
                 begin
                   { workaround for DFA bug }
                   result:=low(tasmcond);
-                  for result:=low(tasmcond) to high(tasmcond) do
+                  for result:=low(uppercond2str) to high(uppercond2str) do
                     begin
                       if hs=uppercond2str[result] then
+                        exit;
+                    end;
+                  for result:=low(extracond2str) to high(extracond2str) do
+                    begin
+                      if hs=extracond2str[result] then
                         exit;
                     end;
                 end;
