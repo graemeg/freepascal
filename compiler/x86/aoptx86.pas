@@ -3991,76 +3991,92 @@ unit aoptx86;
       begin
         Result:=false;
 
-        if MatchOpType(taicpu(p),top_reg) and
-          GetNextInstruction(p, hp1) and
-          ((MatchInstruction(hp1, A_TEST, [S_B]) and
-           MatchOpType(taicpu(hp1),top_reg,top_reg) and
-           (taicpu(hp1).oper[0]^.reg = taicpu(hp1).oper[1]^.reg)) or
-           (MatchInstruction(hp1, A_CMP, [S_B]) and
-            MatchOpType(taicpu(hp1),top_const,top_reg) and
-            (taicpu(hp1).oper[0]^.val=0))
-          ) and
-          (taicpu(p).oper[0]^.reg = taicpu(hp1).oper[1]^.reg) and
-          GetNextInstruction(hp1, hp2) and
-          MatchInstruction(hp2, A_Jcc, []) then
-          { Change from:             To:
-
-            set(C) %reg              j(~C) label
-            test   %reg,%reg/cmp $0,%reg
-            je     label
-
-
-            set(C) %reg              j(C)  label
-            test   %reg,%reg/cmp $0,%reg
-            jne    label
-          }
+        if MatchOpType(taicpu(p),top_reg) and GetNextInstruction(p, hp1) then
           begin
-            next := tai(p.Next);
+            if ((MatchInstruction(hp1, A_TEST, [S_B]) and
+               MatchOpType(taicpu(hp1),top_reg,top_reg) and
+               (taicpu(hp1).oper[0]^.reg = taicpu(hp1).oper[1]^.reg)) or
+               (MatchInstruction(hp1, A_CMP, [S_B]) and
+                MatchOpType(taicpu(hp1),top_const,top_reg) and
+                (taicpu(hp1).oper[0]^.val=0))
+              ) and
+              (taicpu(p).oper[0]^.reg = taicpu(hp1).oper[1]^.reg) and
+              GetNextInstruction(hp1, hp2) and
+              MatchInstruction(hp2, A_Jcc, []) then
+              { Change from:             To:
 
-            TransferUsedRegs(TmpUsedRegs);
-            UpdateUsedRegs(TmpUsedRegs, next);
-            UpdateUsedRegs(TmpUsedRegs, tai(hp1.next));
+                set(C) %reg              j(~C) label
+                test   %reg,%reg/cmp $0,%reg
+                je     label
 
-            JumpC := taicpu(hp2).condition;
-            Unconditional := False;
 
-            if conditions_equal(JumpC, C_E) then
-              SetC := inverse_cond(taicpu(p).condition)
-            else if conditions_equal(JumpC, C_NE) then
-              SetC := taicpu(p).condition
-            else
-              { We've got something weird here (and inefficent) }
+                set(C) %reg              j(C)  label
+                test   %reg,%reg/cmp $0,%reg
+                jne    label
+              }
               begin
-                DebugMsg('DEBUG: Inefficient jump - check code generation', p);
-                SetC := C_NONE;
+                next := tai(p.Next);
 
-                { JAE/JNB will always branch (use 'condition_in', since C_AE <> C_NB normally) }
-                if condition_in(C_AE, JumpC) then
-                  Unconditional := True
+                TransferUsedRegs(TmpUsedRegs);
+                UpdateUsedRegs(TmpUsedRegs, next);
+                UpdateUsedRegs(TmpUsedRegs, tai(hp1.next));
+
+                JumpC := taicpu(hp2).condition;
+                Unconditional := False;
+
+                if conditions_equal(JumpC, C_E) then
+                  SetC := inverse_cond(taicpu(p).condition)
+                else if conditions_equal(JumpC, C_NE) then
+                  SetC := taicpu(p).condition
                 else
-                  { Not sure what to do with this jump - drop out }
-                  Exit;
-              end;
+                  { We've got something weird here (and inefficent) }
+                  begin
+                    DebugMsg('DEBUG: Inefficient jump - check code generation', p);
+                    SetC := C_NONE;
 
-            RemoveInstruction(hp1);
+                    { JAE/JNB will always branch (use 'condition_in', since C_AE <> C_NB normally) }
+                    if condition_in(C_AE, JumpC) then
+                      Unconditional := True
+                    else
+                      { Not sure what to do with this jump - drop out }
+                      Exit;
+                  end;
 
-            if Unconditional then
-              MakeUnconditional(taicpu(hp2))
-            else
+                RemoveInstruction(hp1);
+
+                if Unconditional then
+                  MakeUnconditional(taicpu(hp2))
+                else
+                  begin
+                    if SetC = C_NONE then
+                      InternalError(2018061402);
+
+                    taicpu(hp2).SetCondition(SetC);
+                  end;
+
+                if not RegUsedAfterInstruction(taicpu(p).oper[0]^.reg, hp2, TmpUsedRegs) then
+                  begin
+                    RemoveCurrentp(p, hp2);
+                    Result := True;
+                  end;
+
+                DebugMsg(SPeepholeOptimization + 'SETcc/TESTCmp/Jcc -> Jcc',p);
+              end
+            else if MatchInstruction(hp1, A_MOV, [S_B]) and
+              MatchOpType(taicpu(hp1),top_reg,top_reg) and
+              MatchOperand(taicpu(p).oper[0]^,taicpu(hp1).oper[0]^) then
               begin
-                if SetC = C_NONE then
-                  InternalError(2018061402);
-
-                taicpu(hp2).SetCondition(SetC);
+                TransferUsedRegs(TmpUsedRegs);
+                UpdateUsedRegs(TmpUsedRegs, tai(p.Next));
+                if not RegUsedAfterInstruction(taicpu(p).oper[0]^.reg, hp1, TmpUsedRegs) then
+                  begin
+                    AllocRegBetween(taicpu(p).oper[0]^.reg,p,hp1,UsedRegs);
+                    taicpu(p).oper[0]^.reg:=taicpu(hp1).oper[1]^.reg;
+                    RemoveInstruction(hp1);
+                    DebugMsg(SPeepholeOptimization + 'SETcc/Mov -> SETcc',p);
+                    Result := true;
+                  end;
               end;
-
-            if not RegUsedAfterInstruction(taicpu(p).oper[0]^.reg, hp2, TmpUsedRegs) then
-              begin
-                RemoveCurrentp(p, hp2);
-                Result := True;
-              end;
-
-            DebugMsg(SPeepholeOptimization + 'SETcc/TESTCmp/Jcc -> Jcc',p);
           end;
       end;
 
