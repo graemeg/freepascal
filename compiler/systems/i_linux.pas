@@ -234,7 +234,7 @@ unit i_linux;
                 localalignmax   : 8;
                 recordalignmin  : 0;
                 recordalignmax  : 16;
-                maxCrecordalign : 4;
+                maxCrecordalign : 2;
               );
             first_parm_offset : 8;
             stacksize    : 8*1024*1024;
