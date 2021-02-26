@@ -7176,8 +7176,9 @@ begin
 
   // libc-linker path (always for Linux, since required for LLVM and SEH; this does not
   // force the linking of anything by itself, but just adds a search directory)
-  if APackage.NeedLibC or
-     (Defaults.OS=linux) then
+  // Do not add it if -Xd option is used
+  if (APackage.NeedLibC or (Defaults.OS=linux)) and
+     ((not Defaults.HaveOptions) or (Defaults.Options.IndexOf('-Xd')=-1)) then
     begin
       if FCachedlibcPath='' then
         begin
