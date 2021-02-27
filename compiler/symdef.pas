@@ -1216,7 +1216,7 @@ interface
        { type of classrefs, used for stabs }
        pvmttype,
        { return type of the setjmp function }
-       setjmpresulttype      : tdef;
+       exceptionreasontype      : tdef;
 
        { pointer to the anchestor of all classes }
        class_tobject : tobjectdef;

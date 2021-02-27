@@ -88,6 +88,8 @@ implementation
 
       class procedure tllvmexceptionstatehandler.get_exception_temps(list: TAsmList; var t: texceptiontemps);
         begin
+          if not assigned(exceptionreasontype) then
+            exceptionreasontype:=ossinttype;
           tg.gethltemp(list,ossinttype,ossinttype.size,tt_persistent,t.reasonbuf);
         end;
 

@@ -522,7 +522,9 @@ implementation
 
     class procedure tpsabiehexceptionstatehandler.get_exception_temps(list: TAsmList; var t: texceptiontemps);
       begin
-        tg.gethltemp(list,ossinttype,ossinttype.size,tt_persistent,t.reasonbuf);
+        if not assigned(exceptionreasontype) then
+          exceptionreasontype:=ossinttype;
+        tg.gethltemp(list,exceptionreasontype,exceptionreasontype.size,tt_persistent,t.reasonbuf);
       end;
 
 

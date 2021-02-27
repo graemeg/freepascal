@@ -460,15 +460,13 @@ implementation
 
     procedure add_label_init(p:TObject;arg:pointer);
       begin
-        if not assigned(setjmpresulttype) then
-          setjmpresulttype:=search_system_proc('fpc_setjmp').returndef;
         if tstoredsym(p).typ=labelsym then
           begin
             addstatement(tstatementnode(arg^),
               cifnode.create(caddnode.create(equaln,
                 ccallnode.createintern('fpc_setjmp',
                   ccallparanode.create(cloadnode.create(tlabelsym(p).jumpbuf,tlabelsym(p).jumpbuf.owner),nil)),
-                cordconstnode.create(1,setjmpresulttype,true))
+                cordconstnode.create(1,search_system_proc('fpc_setjmp').returndef,true))
               ,cgotonode.create(tlabelsym(p)),nil)
             );
           end;
