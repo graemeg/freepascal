@@ -131,10 +131,12 @@ unit cgexcept;
 
 
     class procedure tcgexceptionstatehandler.get_exception_temps(list:TAsmList;var t:texceptiontemps);
-     begin
+      begin
+        if not assigned(setjmpresulttype) then
+          setjmpresulttype:=search_system_proc('fpc_setjmp').returndef;
         tg.gethltemp(list,rec_exceptaddr,rec_exceptaddr.size,tt_persistent,t.envbuf);
         tg.gethltemp(list,rec_jmp_buf,rec_jmp_buf.size,tt_persistent,t.jmpbuf);
-        tg.gethltemp(list,ossinttype,ossinttype.size,tt_persistent,t.reasonbuf);
+        tg.gethltemp(list,setjmpresulttype,setjmpresulttype.size,tt_persistent,t.reasonbuf);
       end;
 
 
@@ -207,7 +209,7 @@ unit cgexcept;
         location_reset(tmpresloc,LOC_REGISTER,def_cgsize(setjmpres.def));
         tmpresloc.register:=hlcg.getintregister(list,setjmpres.def);
         hlcg.gen_load_cgpara_loc(list,setjmpres.def,setjmpres,tmpresloc,true);
-        hlcg.g_exception_reason_save(list,setjmpres.def,ossinttype,tmpresloc.register,t.reasonbuf);
+        hlcg.g_exception_reason_save(list,setjmpres.def,setjmpresulttype,tmpresloc.register,t.reasonbuf);
         { if we get 1 here in the function result register, it means that we
           longjmp'd back here }
         hlcg.a_cmp_const_reg_label(list,setjmpres.def,OC_NE,0,tmpresloc.register,exceptstate.exceptionlabel);
@@ -237,9 +239,9 @@ unit cgexcept;
          popaddrstack(list);
          if not onlyfree then
           begin
-            reasonreg:=hlcg.getintregister(list,osuinttype);
-            hlcg.g_exception_reason_load(list,osuinttype,osuinttype,t.reasonbuf,reasonreg);
-            hlcg.a_cmp_const_reg_label(list,osuinttype,OC_EQ,a,reasonreg,endexceptlabel);
+            reasonreg:=hlcg.getintregister(list,setjmpresulttype);
+            hlcg.g_exception_reason_load(list,setjmpresulttype,setjmpresulttype,t.reasonbuf,reasonreg);
+            hlcg.a_cmp_const_reg_label(list,setjmpresulttype,OC_EQ,a,reasonreg,endexceptlabel);
           end;
       end;
 

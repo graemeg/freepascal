@@ -1213,7 +1213,10 @@ interface
        { several types to simulate more or less C++ objects for GDB }
        vmttype,
        vmtarraytype,
-       pvmttype      : tdef;     { type of classrefs, used for stabs }
+       { type of classrefs, used for stabs }
+       pvmttype,
+       { return type of the setjmp function }
+       setjmpresulttype      : tdef;
 
        { pointer to the anchestor of all classes }
        class_tobject : tobjectdef;
