@@ -2292,6 +2292,10 @@ implementation
       { a constructor doesn't actually return a value in the jvm }
       if (tabstractprocdef(pd).proctypeoption=potype_constructor) then
         totalremovesize:=paraheight
+      else if jvmimplicitpointertype(realresdef) then
+        totalremovesize:=paraheight-1
+      else if is_void(realresdef) then
+        totalremovesize:=paraheight
       else
         { even a byte takes up a full stackslot -> align size to multiple of 4 }
         totalremovesize:=paraheight-(align(realresdef.size,4) shr 2);
