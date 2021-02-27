@@ -517,7 +517,8 @@ implementation
             result:=(tarraydef(def).highrange>=tarraydef(def).lowrange) or
                 is_open_array(def) or
                 is_array_of_const(def) or
-                is_array_constructor(def);
+                is_array_constructor(def) or
+                is_conststring_array(def);
           filedef,
           recorddef,
           setdef:
