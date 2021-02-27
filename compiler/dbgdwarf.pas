@@ -4521,6 +4521,12 @@ implementation
 
       begin
         case def.objecttype of
+          odt_objcclass,
+          odt_objcprotocol:
+            begin
+              inherited;
+              exit
+            end;
           odt_cppclass,
           odt_object:
             begin
