@@ -12136,9 +12136,9 @@ begin
     '$mod.TRec.SetInt($mod.TRec.GetInt() + 2);',
     '$mod.TRec.SetInt($mod.TRec.Fx);',
     '$mod.TRec.Fy = $mod.r.Fx + 1;',
-    'if ($mod.r.GetInt() === 2) ;',
-    '$mod.r.SetInt($mod.r.GetInt() + 2);',
-    '$mod.r.SetInt($mod.r.Fx);',
+    'if ($mod.TRec.GetInt() === 2) ;',
+    '$mod.TRec.SetInt($mod.TRec.GetInt() + 2);',
+    '$mod.TRec.SetInt($mod.r.Fx);',
     '']));
 end;
 
@@ -12602,8 +12602,8 @@ begin
     '  $mod.TPoint.Fly();',
     '})();',
     '$mod.TPoint.x = $mod.r.x + 10;',
-    '$mod.r.Fly();',
-    '$mod.r.Fly();',
+    '$mod.TPoint.Fly();',
+    '$mod.TPoint.Fly();',
     '']));
 end;
 
@@ -13521,36 +13521,58 @@ end;
 
 procedure TTestModule.TestClass_CallClassMethodStatic;
 begin
-  exit;
-
   StartProgram(false);
   Add([
   'type',
   '  TObject = class',
   '  public',
-  '    class var w: word;',
-  '    class function GetIt: tobject; static;',
+  '    class function Fly: tobject; static;',
   '  end;',
-  'class function tobject.getit: tobject;',
+  'class function tobject.Fly: tobject;',
   'begin',
-  '  Result.GetIt;',
-  '  w:=3;',
-  '  w:=w+3;',
+  '  Result.Fly;',
+  '  Result.Fly();',
+  '  Fly;',
+  '  Fly();',
+  '  Fly.Fly;',
+  '  Fly.Fly();',
   'end;',
   'var Obj: tobject;',
   'begin',
-  '  obj.GetIt;',
-  '  obj.w:=obj.w+4;',
+  '  obj.Fly;',
+  '  obj.Fly();',
   '  with obj do begin',
-  '    w:=w-5;',
+  '    Fly;',
+  '    Fly();',
   '  end;',
   '']);
   ConvertProgram;
   CheckSource('TestClass_CallClassMethodStatic',
     LinesToStr([ // statements
+    'rtl.createClass(this, "TObject", null, function () {',
+    '  this.$init = function () {',
+    '  };',
+    '  this.$final = function () {',
+    '  };',
+    '  this.Fly = function () {',
+    '    var Result = null;',
+    '    $mod.TObject.Fly();',
+    '    $mod.TObject.Fly();',
+    '    $mod.TObject.Fly();',
+    '    $mod.TObject.Fly();',
+    '    $mod.TObject.Fly();',
+    '    $mod.TObject.Fly();',
+    '    return Result;',
+    '  };',
+    '});',
     'this.Obj = null;'
     ]),
     LinesToStr([ // $mod.$main
+    '$mod.TObject.Fly();',
+    '$mod.TObject.Fly();',
+    'var $with = $mod.Obj;',
+    '$with.Fly();',
+    '$with.Fly();',
     '']));
 end;
 
@@ -22690,21 +22712,21 @@ begin
     'this.c = null;',
     '']),
     LinesToStr([ // $mod.$main
-    '$mod.b.SetSpeed($mod.b.GetSpeed() + 12);',
+    '$mod.TObject.SetSpeed($mod.TObject.GetSpeed() + 12);',
     '$mod.TObjHelper.SetLeft($mod.TObjHelper.GetLeft() + 13);',
     '$mod.TObjHelper.SetLeft($mod.TObjHelper.GetLeft() + 14);',
     'var $with = $mod.b;',
     '$with.SetSpeed($with.GetSpeed() + 32);',
     '$mod.TObjHelper.SetLeft($mod.TObjHelper.GetLeft() + 33);',
     '$mod.TObjHelper.SetLeft($mod.TObjHelper.GetLeft() + 34);',
-    '$mod.c.SetSpeed($mod.c.GetSpeed() + 12);',
+    '$mod.TObject.SetSpeed($mod.TObject.GetSpeed() + 12);',
     '$mod.TObjHelper.SetLeft($mod.TObjHelper.GetLeft() + 13);',
     '$mod.TObjHelper.SetLeft($mod.TObjHelper.GetLeft() + 14);',
     'var $with1 = $mod.c;',
     '$with1.SetSpeed($with1.GetSpeed() + 32);',
     '$mod.TObjHelper.SetLeft($mod.TObjHelper.GetLeft() + 33);',
     '$mod.TObjHelper.SetLeft($mod.TObjHelper.GetLeft() + 34);',
-    '$mod.TBird.SetSpeed($mod.TBird.GetSpeed() + 12);',
+    '$mod.TObject.SetSpeed($mod.TObject.GetSpeed() + 12);',
     '$mod.TObjHelper.SetLeft($mod.TObjHelper.GetLeft() + 13);',
     '$mod.TObjHelper.SetLeft($mod.TObjHelper.GetLeft() + 14);',
     'var $with2 = $mod.TBird;',
@@ -24490,7 +24512,7 @@ begin
     '']),
     LinesToStr([ // $mod.$main
     '$mod.THelper.Fly.call({',
-    '  p: $mod.o.GetField(),',
+    '  p: $mod.TObject.GetField(),',
     '  get: function () {',
     '      return this.p;',
     '    },',
@@ -24508,7 +24530,7 @@ begin
     '      this.p = v;',
     '    }',
     '}, 12);',
-    'var $with1 = $mod.o.GetField();',
+    'var $with1 = $mod.TObject.GetField();',
     '$mod.THelper.Fly.call({',
     '  get: function () {',
     '      return $with1;',

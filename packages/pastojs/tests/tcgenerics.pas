@@ -170,8 +170,8 @@ begin
     '']),
     LinesToStr([ // $mod.$main
     '$mod.TPoint$G1.x = $mod.p.x + 10;',
-    '$mod.p.Fly();',
-    '$mod.p.Fly();',
+    '$mod.TPoint$G1.Fly();',
+    '$mod.TPoint$G1.Fly();',
     '']));
 end;
 
@@ -757,7 +757,7 @@ begin
     '    $mod.TPoint$G1.x = this.x + 5;',
     '    $mod.TPoint$G1.x = $mod.TPoint$G1.x + 6;',
     '    this.Fly();',
-    '    $mod.TPoint$G1.Fly();',
+    '    this.Fly();',
     '    this.Run();',
     '    $mod.TPoint$G1.Run();',
     '  };',

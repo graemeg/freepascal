@@ -9789,15 +9789,12 @@ begin
   if RightRefDecl is TPasProcedure then
     begin
     Proc:=TPasProcedure(RightRefDecl);
-    if coShortRefGlobals in Options then
+    if not aResolver.ProcHasSelf(Proc) then
       begin
-      if not aResolver.ProcHasSelf(Proc) then
-        begin
-        // a.StaticProc  ->  $lp(defaultargs)
-        // ToDo: check if left side has only types (no call nor field)
-        Result:=ConvertIdentifierExpr(RightEl,TPrimitiveExpr(RightEl).Value,aContext);
-        exit;
-        end;
+      // a.StaticProc  ->  pas.unit1.aclass.StaticProc(defaultargs)
+      // ToDo: check if left side has only types (no call nor field)
+      Result:=ConvertIdentifierExpr(RightEl,TPrimitiveExpr(RightEl).Value,aContext);
+      exit;
       end;
     end;
 
