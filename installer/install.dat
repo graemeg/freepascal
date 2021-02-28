@@ -368,8 +368,6 @@ package=utils-pas2fpmos2.zip[up2fpos2.zip],Generate fpmake.pp for Pascal source
 package=utils-pas2jnios2.zip[p2jnos2.zip],Generate JNI bridge for Pascal code
 # OS/2 31
 package=utils-pas2utos2.zip[p2utos2.zip],Pascal source to FPC Unit test generator
-# OS/2 32
-package=ufcl-pdfos2.zip[ufcpdos2.zip],PDF generating and TTF file info library
 
 #
 # OS/2 packages 2nd part
@@ -438,8 +436,6 @@ package=utils-rmwaitos2.zip[rmwos2.zip],Remove (delete) file(s) with optional re
 package=utils-lexyaccos2.zip[lexyos2.zip],Compiler generator for TP and compatibles
 # OS/2-2 31
 package=utils-fpcmos2.zip[fpcmos2.zip],Generate Makefiles out of Makefile.fpc files
-# OS/2-2 32
-package=utils-unicodeos2.zip[ucodeos2.zip],Transformation of Unicode consortium data for FPC
 
 
 
@@ -457,6 +453,12 @@ package=utils-pas2jsos2.zip[p2jsos2.zip],Convert Pascal sources to Javascript
 package=utils-webidlos2.zip[widlos2.zip],Web IDL parser and converter to Object Pascal classes
 # OS/2-3 4
 package=utils-json2pasos2.zip[js2pos2.zip],Create Object Pascal classes from JSON files
+# OS/2-3 5
+package=ufcl-pdfos2.zip[ufcpdos2.zip],PDF generating and TTF file info library
+# OS/2-2 6
+package=utils-unicodeos2.zip[ucodeos2.zip],Transformation of Unicode consortium data for FPC
+# OS/2-3 7
+package=utplylibos2.zip[utpllos2.zip],Units for sources created with the compiler generator
 
 #
 # EMX packages
@@ -531,8 +533,6 @@ package=utils-pas2fpmemx.zip[up2fpemx.zip],Generate fpmake.pp for Pascal source
 package=utils-pas2jniemx.zip[p2jnemx.zip],Generate JNI bridge for Pascal code
 # EMX 31
 package=utils-pas2utemx.zip[p2utemx.zip],Pascal source to FPC Unit test generator
-# EMX 32
-package=ufcl-pdfemx.zip[ufcpdemx.zip],PDF generating and TTF file info library
 
 #
 # EMX packages 2nd part
@@ -601,8 +601,6 @@ package=utils-rmwaitemx.zip[rmwemx.zip],Remove (delete) file(s) with optional re
 package=utils-lexyaccemx.zip[ulexyemx.zip],Compiler generator for TP and compatibles
 # EMX-2 31
 package=utils-fpcmemx.zip[fpcmemx.zip],Generate Makefiles out of Makefile.fpc files
-# EMX-3 32
-package=utils-unicodeemx.zip[ucodeemx.zip],Transformation of Unicode consortium data for FPC
 
 
 #
@@ -618,6 +616,12 @@ package=utils-pas2jsemx.zip[p2jsemx.zip],Convert Pascal sources to Javascript
 package=utils-webidlemx.zip[widlemx.zip],Web IDL parser and converter to Object Pascal classes
 # EMX-3 4
 package=utils-json2pasemx.zip[js2pemx.zip],Create Object Pascal classes from JSON files
+# EMX-3 5
+package=ufcl-pdfemx.zip[ufcpdemx.zip],PDF generating and TTF file info library
+# EMX-2 6
+package=utils-unicodeemx.zip[ucodeemx.zip],Transformation of Unicode consortium data for FPC
+# EMX-3 7
+package=utplylibemx.zip[utpllemx.zip],Units for sources created with the compiler generator
 
 
 #
@@ -743,6 +747,8 @@ package=units-x11-3.3.1.source.zip[ux11src.zip],X Window (X11) interface units
 package=units-fcl-pdf-3.3.1.source.zip[ufcpdsrc.zip],PDF generating and TTF file info library
 # Source-2 30
 package=units-dblib-3.3.1.source.zip,Headers for the MS SQL Server RDBMS
+# Source-2 31
+package=units-tplylib.source.zip[utpllsrc.zip],Units for sources created with the compiler generator
 
 
 #
