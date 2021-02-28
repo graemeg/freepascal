@@ -186,10 +186,21 @@ interface
     type
       TMatchProc2 = function(n1,n2 : tnode) : Boolean is nested;
       TTransformProc2 = function(n1,n2 : tnode) : tnode is nested;
+      TMatchProc4 = function(n1,n2,n3,n4 : tnode) : Boolean is nested;
+      TTransformProc4 = function(n1,n2,n3,n4 : tnode) : tnode is nested;
 
     { calls matchproc with n1 and n2 as parameters, if it returns true, transformproc is called, does the same with the nodes swapped,
       the result of transformproc is assigned to res }
     function MatchAndTransformNodesCommutative(n1,n2 : tnode;matchproc : TMatchProc2;transformproc : TTransformProc2;var res : tnode) : Boolean;
+
+    { calls matchproc with n1, n2, n3 and n4 as parameters being considered as the leafs of commutative nodes so all 8 possible
+      combinations are tested, if it returns true, transformproc is called,
+      the result of transformproc is assigned to res
+
+      this allows to find pattern like (3*a)+(3*b) and transfrom them into 3*(a+b)
+    }
+    function MatchAndTransformNodesCommutative(n1,n2,n3,n4 : tnode;matchproc : TMatchProc4;transformproc : TTransformProc4;var res : tnode) : Boolean;
+
 
 implementation
 
@@ -1638,6 +1649,31 @@ implementation
           res:=transformproc(n1,n2)
         else if matchproc(n2,n1) then
           res:=transformproc(n2,n1)
+        else
+          result:=false;
+      end;
+
+
+    function MatchAndTransformNodesCommutative(n1,n2,n3,n4 : tnode;matchproc : TMatchProc4;transformproc : TTransformProc4;var res : tnode) : Boolean;
+      begin
+        res:=nil;
+        result:=true;
+        if matchproc(n1,n2,n3,n4) then
+          res:=transformproc(n1,n2,n3,n4)
+        else if matchproc(n1,n2,n4,n3) then
+          res:=transformproc(n1,n2,n4,n3)
+        else if matchproc(n2,n1,n3,n4) then
+          res:=transformproc(n2,n1,n3,n4)
+        else if matchproc(n2,n1,n4,n3) then
+          res:=transformproc(n2,n1,n4,n3)
+        else if matchproc(n3,n4,n1,n2) then
+          res:=transformproc(n3,n4,n1,n2)
+        else if matchproc(n4,n3,n1,n2) then
+          res:=transformproc(n4,n3,n1,n2)
+        else if matchproc(n3,n4,n2,n1) then
+          res:=transformproc(n3,n4,n2,n1)
+        else if matchproc(n4,n3,n2,n1) then
+          res:=transformproc(n4,n3,n2,n1)
         else
           result:=false;
       end;

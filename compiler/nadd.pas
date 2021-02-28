@@ -489,6 +489,20 @@ implementation
         end;
 
 
+      function IsAndOrAndNot(n1,n2,n3,n4 : tnode): Boolean;
+        begin
+          result:=(n4.nodetype=notn) and
+            tnotnode(n4).left.isequal(n2);
+        end;
+
+
+      function TransformAndOrAndNot(n1,n2,n3,n4 : tnode): tnode;
+        begin
+          result:=caddnode.create_internal(xorn,n3.getcopy,
+            caddnode.create_internal(andn,caddnode.create_internal(xorn,n3.getcopy,n1.getcopy),n2.getcopy));
+        end;
+
+
       function SwapRightWithLeftRight : tnode;
         var
           hp : tnode;
@@ -1689,6 +1703,28 @@ implementation
                    end;
               end;
 {$endif cpurox}
+            { optimize
+
+                (a and b) or (c and not(b))
+
+                into
+
+                c xor ((c xor a) and b)
+            }
+            if (nodetype=orn) and
+             (left.resultdef.typ=orddef) and
+             (left.nodetype=andn) and
+             (right.nodetype=andn) and
+             { this test is not needed but it speeds up the test and allows to bail out early }
+             ((taddnode(left).left.nodetype=notn) or (taddnode(left).right.nodetype=notn) or
+              (taddnode(right).left.nodetype=notn) or (taddnode(right).right.nodetype=notn)
+             ) and
+             not(might_have_sideeffects(self)) then
+             begin
+               if MatchAndTransformNodesCommutative(taddnode(left).left,taddnode(left).right,taddnode(right).left,taddnode(right).right,
+                 @IsAndOrAndNot,@TransformAndOrAndNot,Result) then
+                 exit;
+             end;
           end;
       end;
 
