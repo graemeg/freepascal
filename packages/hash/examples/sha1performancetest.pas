@@ -6,7 +6,7 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  SysUtils,Classes,sha1,dateutils;
+  SysUtils,Classes,sha1;
 
 var
   StartTime: TDateTime;
@@ -24,6 +24,6 @@ begin
     ss := LowerCase(SHA1Print(SHA1string(s)));
   EndTime:=now;
   writeln('Performance test finished. Elapsed time:');
-  writeln(TimeToStr(EndTime-StartTime));
+  writeln((EndTime-StartTime)*3600*24:0:3,' s');
 end.
 
