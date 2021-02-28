@@ -1939,7 +1939,11 @@ implementation
               not(tfloatdef(left.resultdef).floattype in [s64comp,s64currency]) then
              begin
                if cs_excessprecision in current_settings.localswitches then
-                 resultrealdef:=pbestrealtype^
+                 begin
+                   resultrealdef:=pbestrealtype^;
+                   inserttypeconv(right,resultrealdef);
+                   inserttypeconv(left,resultrealdef);
+                 end
                else
                  resultrealdef:=left.resultdef
              end

@@ -97,7 +97,7 @@ implementation
       systems,
       verbose,globals,cutils,compinnr,
       globtype,constexp,
-      symconst,symtype,symdef,
+      symconst,symtype,symdef,symcpu,
       defcmp,defutil,
       htypechk,pass_1,
       cgbase,
@@ -966,9 +966,17 @@ implementation
            exit;
 
          resultdef:=left.resultdef;
-         if (left.resultdef.typ=floatdef) or
-            is_currency(left.resultdef) then
+         if is_currency(left.resultdef) then
            begin
+           end
+         else if left.resultdef.typ=floatdef then
+           begin
+             if not(tfloatdef(left.resultdef).floattype in [s64comp,s64currency]) and
+               (cs_excessprecision in current_settings.localswitches) then
+               begin
+                 inserttypeconv(left,pbestrealtype^);
+                 resultdef:=left.resultdef
+               end;
            end
 {$ifdef SUPPORT_MMX}
          else if (cs_mmx in current_settings.localswitches) and
