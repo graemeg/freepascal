@@ -888,7 +888,8 @@ implementation
             internalerror(2013120110);
         end;
 
-        hlcg.location_force_reg(current_asmdata.CurrAsmList,op1.location,op1.resultdef,resultdef,true);
+        if not(op1.location.loc in [LOC_REGISTER,LOC_CREGISTER]) then
+          hlcg.location_force_reg(current_asmdata.CurrAsmList,op1.location,op1.resultdef,resultdef,true);
 
         location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
 {$if not defined(cpu64bitalu) and not defined(cpuhighleveltarget)}
@@ -920,8 +921,10 @@ implementation
 {$if not defined(cpu64bitalu) and not defined(cpuhighleveltarget)}
                  if def_cgsize(resultdef) in [OS_64,OS_S64] then
                    begin
-                     hlcg.location_force_reg(current_asmdata.CurrAsmList,op2.location,
-                                             op2.resultdef,alusinttype,true);
+                     if not(op2.location.loc in [LOC_REGISTER,LOC_CREGISTER]) or
+                       not(equal_defs(op2.resultdef,alusinttype)) then
+                       hlcg.location_force_reg(current_asmdata.CurrAsmList,op2.location,
+                                               op2.resultdef,alusinttype,true);
                      cg64.a_op64_reg_reg_reg(current_asmdata.CurrAsmList,op,def_cgsize(resultdef),
                                              joinreg64(op2.location.register,NR_NO),op1.location.register64,
                                              location.register64);
@@ -929,8 +932,9 @@ implementation
                  else
 {$endif not cpu64bitalu and not cpuhighleveltarget}
                    begin
-                     hlcg.location_force_reg(current_asmdata.CurrAsmList,op2.location,
-                                             op2.resultdef,resultdef,true);
+                     if not(op2.location.loc in [LOC_REGISTER,LOC_CREGISTER]) then
+                       hlcg.location_force_reg(current_asmdata.CurrAsmList,op2.location,
+                                               op2.resultdef,resultdef,true);
                      hlcg.a_op_reg_reg_reg(current_asmdata.CurrAsmList,op,resultdef,
                                            op2.location.register,op1.location.register,
                                            location.register);
