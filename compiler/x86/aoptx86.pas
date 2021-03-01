@@ -3076,6 +3076,55 @@ unit aoptx86;
             Result:=true;
             exit;
           end;
+
+{$ifdef x86_64}
+        { Convert:
+            movq x(ref),%reg64
+            shrq y,%reg64
+          To:
+            movq x+4(ref),%reg32
+            shrq y-32,%reg32 (Remove if y = 32)
+        }
+        if (taicpu(p).opsize = S_Q) and
+          (taicpu(p).oper[0]^.typ = top_ref) and { Second operand will be a register }
+          (taicpu(p).oper[0]^.ref^.offset <= $7FFFFFFB) and
+          MatchInstruction(hp1, A_SHR, [taicpu(p).opsize]) and
+          MatchOpType(taicpu(hp1), top_const, top_reg) and
+          (taicpu(hp1).oper[0]^.val >= 32) and
+          (taicpu(hp1).oper[1]^.reg = taicpu(p).oper[1]^.reg) then
+          begin
+            RegName1 := debug_regname(taicpu(hp1).oper[1]^.reg);
+            PreMessage := 'movq ' + debug_operstr(taicpu(p).oper[0]^) + ',' + RegName1 + '; ' +
+              'shrq $' + debug_tostr(taicpu(hp1).oper[0]^.val) + ',' + RegName1 + ' -> movl ';
+
+            { Convert to 32-bit }
+            setsubreg(taicpu(p).oper[1]^.reg, R_SUBD);
+            taicpu(p).opsize := S_L;
+
+            Inc(taicpu(p).oper[0]^.ref^.offset, 4);
+
+            PreMessage := PreMessage + debug_operstr(taicpu(p).oper[0]^) + ',' + debug_regname(taicpu(p).oper[1]^.reg);
+            if (taicpu(hp1).oper[0]^.val = 32) then
+              begin
+                DebugMsg(SPeepholeOptimization + PreMessage + ' (MovShr2Mov)', p);
+                RemoveInstruction(hp1);
+              end
+            else
+              begin
+                { This will potentially open up more arithmetic operations since
+                  the peephole optimizer now has a big hint that only the lower
+                  32 bits are currently in use (and opcodes are smaller in size) }
+                setsubreg(taicpu(hp1).oper[1]^.reg, R_SUBD);
+                taicpu(hp1).opsize := S_L;
+
+                Dec(taicpu(hp1).oper[0]^.val, 32);
+                DebugMsg(SPeepholeOptimization + PreMessage +
+                  '; shrl $' + debug_tostr(taicpu(hp1).oper[0]^.val) + ',' + debug_regname(taicpu(hp1).oper[1]^.reg) + ' (MovShr2MovShr)', p);
+              end;
+            Result := True;
+            Exit;
+          end;
+{$endif x86_64}
       end;
 
 
