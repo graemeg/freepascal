@@ -85,6 +85,7 @@ type
     procedure TestM_Class_PropertyInherited;
     procedure TestM_Class_MethodOverride;
     procedure TestM_Class_MethodOverride2;
+    procedure TestM_Class_NestedClass;
     procedure TestM_ClassInterface_Corba;
     procedure TestM_ClassInterface_NoHintsForMethod;
     procedure TestM_ClassInterface_NoHintsForImpl;
@@ -1319,6 +1320,36 @@ begin
   Add('  o.DoA;');
   Add('  o:=TMobile.Create;'); // use TMobile after o.DoA
   AnalyzeProgram;
+end;
+
+procedure TTestUseAnalyzer.TestM_Class_NestedClass;
+begin
+  StartUnit(true,[supTObject]);
+  Add([
+  'interface',
+  'type',
+  '  TBird = class',
+  '  public type',
+  '    TWing = class',
+  '    private',
+  '      function GetCurrent: TBird;',
+  '    public',
+  '      function MoveNext: Boolean; reintroduce;',
+  '      property Current: TBird read GetCurrent;',
+  '    end;',
+  '  end;',
+  'implementation',
+  'function TBird.TWing.GetCurrent: TBird;',
+  'begin',
+  '  Result:=nil;',
+  'end;',
+  'function TBird.TWing.MoveNext: Boolean; reintroduce;',
+  'begin',
+  '  Result:=false;',
+  'end;',
+  '']);
+  AnalyzeUnit;
+  CheckUseAnalyzerUnexpectedHints;
 end;
 
 procedure TTestUseAnalyzer.TestM_ClassInterface_Corba;

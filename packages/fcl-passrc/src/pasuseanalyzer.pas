@@ -2357,11 +2357,18 @@ begin
     else if IsModuleInternal(Member) then
       // private or strict private
       continue
-    else if (Mode=paumAllPasUsable) and FirstTime
-        and ((Member.ClassType=TPasProperty) or (Member is TPasType)) then
+    else if (Mode=paumAllPasUsable) and FirstTime then
       begin
-      // non private property can be used by typeinfo by descendants in other units
-      UseTypeInfo(Member);
+      if Member.ClassType=TPasProperty then
+        begin
+        // non private property can be used by typeinfo by descendants in other units
+        UseTypeInfo(Member);
+        end
+      else if Member is TPasType then
+        begin
+        // non private type can be used by descendants in other units
+        UseType(TPasType(Member),Mode);
+        end
       end
     else
       ; // else: class/record is in unit interface, mark all non private members
