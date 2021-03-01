@@ -109,6 +109,14 @@ implementation
        function avx_opcode_only_op0_may_be_memref(opcode : TAsmOp) : boolean;
          begin
            case opcode of
+             A_VMAXPD,
+             A_VMAXPS,
+             A_VMAXSD,
+             A_VMAXSS,
+             A_VMINPD,
+             A_VMINPS,
+             A_VMINSD,
+             A_VMINSS,
              A_VMULSS,
              A_VMULSD,
              A_VSUBSS,
@@ -350,7 +358,15 @@ implementation
                               A_SHUFPD,
                               A_SHUFPS,
                               A_VCOMISD,
-                              A_VCOMISS:
+                              A_VCOMISS,
+                              A_MINSS,
+                              A_MINSD,
+                              A_MINPS,
+                              A_MINPD,
+                              A_MAXSS,
+                              A_MAXSD,
+                              A_MAXPS,
+                              A_MAXPD:
                                 replaceoper:=-1;
 
                               A_IMUL:
