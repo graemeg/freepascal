@@ -932,7 +932,8 @@ implementation
                  else
 {$endif not cpu64bitalu and not cpuhighleveltarget}
                    begin
-                     if not(op2.location.loc in [LOC_REGISTER,LOC_CREGISTER]) then
+                     if not(op2.location.loc in [LOC_REGISTER,LOC_CREGISTER]) or
+                       not(equal_defs(op2.resultdef,resultdef)) then
                        hlcg.location_force_reg(current_asmdata.CurrAsmList,op2.location,
                                                op2.resultdef,resultdef,true);
                      hlcg.a_op_reg_reg_reg(current_asmdata.CurrAsmList,op,resultdef,
