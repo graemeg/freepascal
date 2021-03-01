@@ -29123,20 +29123,23 @@ function TPasResolver.IsTGUID(RecTypeEl: TPasRecordType): boolean;
 var
   Members: TFPList;
   El: TPasElement;
+  i, MemberIndex: Integer;
 begin
   Result:=false;
   if not SameText(RecTypeEl.Name,'TGUID') then exit;
   if SameText(RecTypeEl.GetModule.Name,'system') then exit(true);
   Members:=RecTypeEl.Members;
-  if Members.Count<4 then exit;
-  El:=TPasElement(Members[0]);
-  if not SameText(El.Name,'D1') then exit;
-  El:=TPasElement(Members[1]);
-  if not SameText(El.Name,'D2') then exit;
-  El:=TPasElement(Members[2]);
-  if not SameText(El.Name,'D3') then exit;
-  El:=TPasElement(Members[3]);
-  if not SameText(El.Name,'D4') then exit;
+  i:=1;
+  for MemberIndex:=0 to Members.Count-1 do
+    begin
+    El:=TPasElement(Members[MemberIndex]);
+    if (El.ClassType<>TPasVariable) then continue;
+    if SameText(El.Name,'D'+IntToStr(i)) then
+      begin
+      if i=4 then exit(true);
+      inc(i);
+      end;
+    end;
   Result:=true;
 end;
 
