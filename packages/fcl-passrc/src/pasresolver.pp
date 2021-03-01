@@ -6252,7 +6252,7 @@ procedure TPasResolver.FinishSubElementType(Parent: TPasElement; El: TPasType);
       begin
       List.Add(El);
       end;
-    El.AddRef{$IFDEF CheckPasTreeRefCount}aID{$ENDIF};
+    El.AddRef{$IFDEF CheckPasTreeRefCount}(aID){$ENDIF};
     El.Parent:=NewParent;
   end;
 
