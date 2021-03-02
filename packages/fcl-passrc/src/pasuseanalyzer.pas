@@ -2854,7 +2854,7 @@ begin
     begin
     // write without read
     if (vmExternal in El.VarModifiers)
-        or (El.ClassType=TPasProperty)
+        or (El.ClassType=TPasProperty)
         or ((El.Parent is TPasClassType) and TPasClassType(El.Parent).IsExternal) then
       exit;
     if El.Visibility in [visPrivate,visStrictPrivate] then
