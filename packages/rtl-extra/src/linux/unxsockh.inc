@@ -13,7 +13,21 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 }
 
-Const
+type
+  Pucred = ^ucred;
+
+  ucred = record
+    pid: cuint32;
+    uid: cuint32;
+    gid: cuint32;
+  end;
+
+const
+
+  SCM_RIGHTS      = $01; { rw: access rights (array of int) }
+  SCM_CREDENTIALS = $02; { rw: struct ucred                 }
+  SCM_SECURITY    = $03; { rw: security label               }
+
 {* Supported address families. *}
   AF_UNSPEC     = 0;
   AF_UNIX       = 1;     { Unix domain sockets          }
@@ -38,14 +52,33 @@ Const
   AF_ASH        = 18;    { Ash                          }
   AF_ECONET     = 19;    { Acorn Econet                 }
   AF_ATMSVC     = 20;    { ATM SVCs                     }
+  AF_RDS        = 21;    { RDS sockets                  }
   AF_SNA        = 22;	 { Linux SNA Project (nutters!) }
   AF_IRDA       = 23;    { IRDA sockets                 }
   AF_PPPOX	= 24;    { PPPoX sockets                }
   AF_WANPIPE    = 25;    { Wanpipe API Sockets }
   AF_LLC        = 26;    { Linux LLC                    }
+  AF_IB         = 27;    { Native InfiniBand address    }
+  AF_MPLS       = 28;	   { MPLS                         }
+  AF_CAN        = 29;    { Controller Area Network      }
   AF_TIPC       = 30;    { TIPC sockets                 }
   AF_BLUETOOTH  = 31;    { Bluetooth sockets            }
-  AF_MAX        = 32;    { For now.. }
+  AF_IUCV       = 32;    { IUCV sockets                 }
+  AF_RXRPC      = 33;    { RxRPC sockets                }
+  AF_ISDN       = 34;    { mISDN sockets                }
+  AF_PHONET     = 35;    { Phonet sockets               }
+  AF_IEEE802154 = 36;    { IEEE802154 sockets           }
+  AF_CAIF       = 37;    { CAIF sockets                 }
+  AF_ALG        = 38;    { Algorithm sockets            }
+  AF_NFC        = 39;    { NFC sockets                  }
+  AF_VSOCK      = 40;    { vSockets                     }
+  AF_KCM        = 41;    { Kernel Connection Multiplexor}
+  AF_QIPCRTR    = 42;    { Qualcomm IPC Router          }
+  AF_SMC        = 43;    { smc sockets: reserve number for
+                           PF_SMC protocol family that
+                           reuses AF_INET address family}
+  AF_XDP        = 44;    { XDP sockets                  }
+  AF_MAX        = 45;    { For now..                    }
   
   SOCK_MAXADDRLEN = 255;             { longest possible addresses }
 
@@ -76,18 +109,35 @@ Const
   PF_ASH        = AF_ASH;
   PF_ECONET     = AF_ECONET;
   PF_ATMSVC     = AF_ATMSVC;
+  PF_RDS        = AF_RDS;
   PF_SNA        = AF_SNA;
   PF_IRDA       = AF_IRDA;
   PF_PPPOX	= AF_PPPOX;
   PF_WANPIPE    = AF_WANPIPE;
   PF_LLC        = AF_LLC;
+  PF_IB         = AF_IB;
+  PF_MPLS       = AF_MPLS;
+  PF_CAN        = AF_CAN;
   PF_TIPC       = AF_TIPC;
   PF_BLUETOOTH  = AF_BLUETOOTH;
+  PF_IUCV       = AF_IUCV;
+  PF_RXRPC      = AF_RXRPC;
+  PF_ISDN       = AF_ISDN;
+  PF_PHONET     = AF_PHONET;
+  PF_IEEE802154 = AF_IEEE802154;
+  PF_CAIF       = AF_CAIF;
+  PF_ALG        = AF_ALG;
+  PF_NFC        = AF_NFC;
+  PF_VSOCK      = AF_VSOCK;
+  PF_KCM        = AF_KCM;
+  PF_QIPCRTR    = AF_QIPCRTR;
+  PF_SMC        = AF_SMC;
+  PF_XDP        = AF_XDP;
   PF_MAX        = AF_MAX;
 
 
 { Maximum queue length specifiable by listen.  }
-  SOMAXCONN     = 128;
+  SOMAXCONN = 4096;
 
 { For setsockoptions(2) }
          SOL_SOCKET  =   1;
@@ -220,7 +270,52 @@ Const
         IP_PMTUDISC_DO          = 2;    { Always DF.  }
 
 { To select the IP level.  }
+{ Setsockoptions(2) level. Thanks to BSD these must match IPPROTO_xxx }
         SOL_IP                  = 0;
+        // SOL_ICMP	  =   1;  { No-no-no! Due to Linux :-) we cannot use SOL_ICMP=1 }
+	      SOL_TCP       =   6;
+	      SOL_UDP       =  17;
+
+{ Socket level values for IPv6.  }
+	      SOL_IPV6      =  41;
+	      SOL_ICMPV6    =  58;
+
+      	SOL_SCTP      = 132;
+	      SOL_UDPLITE   = 136;   { UDP-Lite (RFC 3828) }
+	      SOL_RAW       = 255;
+	      SOL_IPX       = 256;
+	      SOL_AX25      = 257;
+	      SOL_ATALK     = 258;
+	      SOL_NETROM    = 259;
+	      SOL_ROSE      = 260;
+	      SOL_DECNET    = 261;
+	      SOL_X25       = 262;
+	      SOL_PACKET    = 263;
+	      SOL_ATM       = 264;   { ATM layer (cell level) }
+	      SOL_AAL       = 265;   { ATM Adaption Layer (packet level) }
+	      SOL_IRDA      = 266;
+	      SOL_NETBEUI   = 267;
+	      SOL_LLC       = 268;
+	      SOL_DCCP      = 269;
+	      SOL_NETLINK   = 270;
+	      SOL_TIPC      = 271;
+	      SOL_RXRPC     = 272;
+	      SOL_PPPOL2TP  = 273;
+	      SOL_BLUETOOTH = 274;
+	      SOL_PNPIPE    = 275;
+	      SOL_RDS       = 276;
+	      SOL_IUCV      = 277;
+	      SOL_CAIF      = 278;
+	      SOL_ALG       = 279;
+	      SOL_NFC       = 280;
+	      SOL_KCM       = 281;
+	      SOL_TLS       = 282;
+	      SOL_XDP       = 283;
+
+
+{ IPX options }
+        IPX_TYPE = 1;
+
 
         IP_DEFAULT_MULTICAST_TTL = 1;
         IP_DEFAULT_MULTICAST_LOOP = 1;
@@ -274,10 +369,6 @@ Const
         IPV6_PMTUDISC_WANT      = 1;    { Use per route hints.  }
         IPV6_PMTUDISC_DO     = 2;    { Always DF.  }
 
-{ Socket level values for IPv6.  }
-        SOL_IPV6                 = 41;
-        SOL_ICMPV6               = 58;
-
 { Routing header options for IPv6.  }
         IPV6_RTHDR_LOOSE         = 0;   { Hop doesn't need to be neighbour. }
         IPV6_RTHDR_STRICT     = 1;    { Hop must be a neighbour.  }
@@ -285,24 +376,38 @@ Const
         IPV6_RTHDR_TYPE_0        = 0;    { IPv6 Routing header type 0.  }
         
   { Flags for send, recv etc. }
-  MSG_OOB      = $0001;              { Process out-of-band data}
-  MSG_PEEK     = $0002;              { Peek at incoming messages }
-  MSG_DONTROUTE= $0004;              { Don't use local routing }
+  MSG_OOB                = $00000001;              { Process out-of-band data}
+  MSG_PEEK               = $00000002;              { Peek at incoming messages }
+  MSG_DONTROUTE          = $00000004;              { Don't use local routing }
   MSG_TRYHARD  = MSG_DONTROUTE;
-  MSG_CTRUNC   = $0008;              { Control data lost before delivery }
-  MSG_PROXY    = $0010;              { Supply or ask second address }
-  MSG_TRUNC    = $0020;
-  MSG_DONTWAIT = $0040;              { Non-blocking I/O }
-  MSG_EOR      = $0080;              { End of record }
-  MSG_WAITALL  = $0100;              { Wait for a full request }
-  MSG_FIN      = $0200;
-  MSG_SYN      = $0400;
-  MSG_CONFIRM  = $0800;              { Confirm path validity }
-  MSG_RST      = $1000;
-  MSG_ERRQUERE = $2000;              { Fetch message from error queue }
-  MSG_NOSIGNAL = $4000;              { Do not generate SIGPIPE }
-  MSG_MORE     = $8000;              { Sender will send more }
+  MSG_CTRUNC             = $00000008;              { Control data lost before delivery }
+  MSG_PROXY              = $00000010;              { Supply or ask second address }
+  MSG_PROBE              = MSG_PROXY;              { Do not send. Only probe path f.e. for MTU }
+  MSG_TRUNC              = $00000020;
+  MSG_DONTWAIT           = $00000040;              { Non-blocking I/O }
+  MSG_EOR                = $00000080;              { End of record }
+  MSG_WAITALL            = $00000100;              { Wait for a full request }
+  MSG_FIN                = $00000200;
+  MSG_SYN                = $00000400;
+  MSG_CONFIRM            = $00000800;              { Confirm path validity }
+  MSG_RST                = $00001000;
+  MSG_ERRQUERE           = $00002000;              { Fetch message from error queue }
+  MSG_NOSIGNAL           = $00004000;              { Do not generate SIGPIPE }
+  MSG_MORE               = $00008000;              { Sender will send more }
+  MSG_WAITFORONE         = $00010000;              { recvmmsg(): block until 1+ packets avail }
+  MSG_SENDPAGE_NOPOLICY  = $00010000;              { sendpage() internal : do no apply policy }
+  MSG_SENDPAGE_NOTLAST   = $00020000;              { sendpage() internal : not the last page }
+  MSG_BATCH              = $00040000;              { sendmmsg(): more messages coming }
   MSG_EOF      = MSG_FIN;
+  MSG_NO_SHARED_FRAGS    = $00080000;              { sendpage() internal : page frags are not shared }
+  MSG_SENDPAGE_DECRYPTED = $00100000;              { sendpage() internal : page may carry
+                                                     plain text and require encryption }
+  MSG_ZEROCOPY           = $04000000;              { Use user data in kernel path }
+  MSG_FASTOPEN           = $20000000;              { Send data in TCP SYN }
+  MSG_CMSG_CLOEXEC       = $40000000;              { Set close_on_exec for file
+                                                     descriptor received through SCM_RIGHTS }
+  MSG_CMSG_COMPAT        = $0; {$80000000}         { This message would need 32 bit fixups, so use 0 instead }
+
   
      TCP_NODELAY = 1;
   { Limit MSS  }
