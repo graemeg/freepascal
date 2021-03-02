@@ -7125,7 +7125,7 @@ unit aoptx86;
             movl/q %reg1,%reg2
           To:
             leal/q $-x(%reg1),%reg2
-            subl/q $x,%reg1
+            subl/q $x,%reg1 (can be removed if %reg1 or the flags are not used afterwards)
 
           Breaks the dependency chain and potentially permits the removal of
           a CMP instruction if one follows.
@@ -7149,12 +7149,26 @@ unit aoptx86;
             taicpu(hp1).opcode := A_LEA;
             taicpu(hp1).loadref(0, NewRef);
 
-            { Move what is now the LEA instruction to before the SUB instruction }
-            Asml.Remove(hp1);
-            Asml.InsertBefore(hp1, p);
-            AllocRegBetween(taicpu(hp1).oper[1]^.reg, hp1, p, UsedRegs);
+            TransferUsedRegs(TmpUsedRegs);
+            UpdateUsedRegs(TmpUsedRegs, tai(p.Next));
+            if RegUsedAfterInstruction(NewRef.base, hp1, TmpUsedRegs) or
+              RegUsedAfterInstruction(NR_DEFAULTFLAGS, hp1, TmpUsedRegs) then
+              begin
+                { Move what is now the LEA instruction to before the SUB instruction }
+                Asml.Remove(hp1);
+                Asml.InsertBefore(hp1, p);
+                AllocRegBetween(taicpu(hp1).oper[1]^.reg, hp1, p, UsedRegs);
 
-            DebugMsg(SPeepholeOptimization + 'SubMov2LeaSub', p);
+                DebugMsg(SPeepholeOptimization + 'SubMov2LeaSub', p);
+                p := hp1;
+              end
+            else
+              begin
+                { Since %reg1 or the flags aren't used afterwards, we can delete p completely }
+                RemoveCurrentP(p, hp1);
+                DebugMsg(SPeepholeOptimization + 'SubMov2Lea', p);
+              end;
+
             Result := True;
           end;
       end;
