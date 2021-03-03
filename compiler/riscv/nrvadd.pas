@@ -34,7 +34,7 @@ unit nrvadd;
       trvaddnode = class(tcgaddnode)
         function pass_1: tnode; override;
       protected                            
-        procedure Cmp(signed: boolean);
+        procedure Cmp(signed,is_smallset: boolean);
 
         function use_mul_helper: boolean; override;
 
@@ -72,14 +72,17 @@ implementation
      low_value = {$ifdef CPU64BITALU} low(int64) {$else} low(longint) {$endif};
 {$endif}
 
-    procedure trvaddnode.Cmp(signed: boolean);
+    procedure trvaddnode.Cmp(signed,is_smallset: boolean);
       var
         flabel,tlabel: tasmlabel;
         op, opi: TAsmOp;
+        allow_constant : boolean;
       begin
         pass_left_right;
 
-        force_reg_left_right(true,true);
+        allow_constant:=(not is_smallset) or not (nodetype in [lten,gten]);
+
+        force_reg_left_right(true,allow_constant);
 
         if nf_swapped in flags then
           swapleftright;
@@ -164,12 +167,20 @@ implementation
               if (left.location.loc=LOC_CONSTANT) and
                  (not is_imm12(left.location.value)) then
                 hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,left.resultdef,false);
-
-              if left.location.loc=LOC_CONSTANT then
-                current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_const(opi,location.register,right.location.register,left.location.value))
+              if is_smallset then
+                begin
+                  current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_reg(A_AND,right.location.register,right.location.register,left.location.register));
+                  current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_reg(A_SUB,location.register,left.location.register,right.location.register));
+                  current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_const(A_SLTIU,location.register,location.register,1));
+                end
               else
-                current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_reg(op,location.register,right.location.register,left.location.register));
-              current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_const(A_SLTIU,location.register,location.register,1));
+                begin
+                  if left.location.loc=LOC_CONSTANT then
+                    current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_const(opi,location.register,right.location.register,left.location.value))
+                  else
+                    current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_reg(op,location.register,right.location.register,left.location.register));
+                  current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_const(A_SLTIU,location.register,location.register,1));
+                end;
             end;
           gten:
             begin
@@ -179,12 +190,20 @@ implementation
               if (right.location.loc=LOC_CONSTANT) and
                  (not is_imm12(right.location.value)) then
                 hlcg.location_force_reg(current_asmdata.CurrAsmList,right.location,right.resultdef,right.resultdef,false);
-
-              if right.location.loc=LOC_CONSTANT then
-                current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_const(opi,location.register,left.location.register,right.location.value))
+              if is_smallset then
+                begin
+                  current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_reg(A_AND,left.location.register,right.location.register,left.location.register));
+                  current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_reg(A_SUB,location.register,left.location.register,right.location.register));
+                  current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_const(A_SLTIU,location.register,location.register,1));
+                end
               else
-                current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_reg(op,location.register,left.location.register,right.location.register));
-              current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_const(A_SLTIU,location.register,location.register,1));
+                begin
+                   if right.location.loc=LOC_CONSTANT then
+                    current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_const(opi,location.register,left.location.register,right.location.value))
+                  else
+                    current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_reg(op,location.register,left.location.register,right.location.register));
+                  current_asmdata.CurrAsmList.Concat(taicpu.op_reg_reg_const(A_SLTIU,location.register,location.register,1));
+                end;
             end;
         else
           Internalerror(2016061101);
@@ -205,7 +224,7 @@ implementation
 
     procedure trvaddnode.second_cmpsmallset;
       begin
-        Cmp(true);
+        Cmp(false,true);
       end;
 
 
@@ -216,7 +235,7 @@ implementation
         unsigned:=not(is_signed(left.resultdef)) or
                   not(is_signed(right.resultdef));
 
-        Cmp(not unsigned);
+        Cmp(not unsigned,false);
       end;
 
 
@@ -227,7 +246,7 @@ implementation
         unsigned:=not(is_signed(left.resultdef)) or
                   not(is_signed(right.resultdef));
 
-        Cmp(not unsigned);
+        Cmp(not unsigned,false);
       end;                  
 
 
