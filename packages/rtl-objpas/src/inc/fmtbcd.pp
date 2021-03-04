@@ -797,10 +797,12 @@ INTERFACE
 {$endif}
 
   function __get_null : tBCD; Inline;
+  function __get_zero : tBCD; Inline;
   function __get_one : tBCD; Inline;
 
   PROPERTY
     NullBCD : tBCD Read __get_null;
+    ZeroBCD : tBCD Read __get_zero;
     OneBCD : tBCD Read __get_one;
 
 //{$define __lo_bh := 1 * ( -( MaxFmtBCDFractionSize * 1 + 2 ) ) }
@@ -887,16 +889,20 @@ IMPLEMENTATION
     OneBCD_ : tBCD;
 
   function __get_null : tBCD; Inline;
-
     begin
       __get_null := NullBCD_;
-     end;
+    end;
+
+  function __get_zero : tBCD; Inline;
+    begin
+      __get_zero := NullBCD_;
+      __get_zero.Precision := 1;
+    end;
 
   function __get_one : tBCD; Inline;
-
     begin
       __get_one := OneBCD_;
-     end;
+    end;
 
   type
     range_digits = 1..maxfmtbcdfractionsize;
@@ -1584,7 +1590,7 @@ IMPLEMENTATION
     begin
       _SELECT
         _WHEN aValue = 0
-          _THEN result := NullBCD;
+          _THEN result := ZeroBCD;
         _WHEN aValue = 1
           _THEN result := OneBCD;
         _WHEN aValue = low ( myInttype )
@@ -4129,12 +4135,6 @@ begin
         not_implemented;
     else { array or something like that }
         not_implemented;
-    end;
-  // peephole, avoids problems with databases, mantis #30853
-  if (Result.Precision = 0) and (Result.SignSpecialPlaces = 0) then 
-    begin
-      Result.Precision := 10;
-      Result.SignSpecialPlaces := 2;
     end;
 end;
 
