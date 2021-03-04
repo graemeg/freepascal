@@ -7131,13 +7131,20 @@ unit aoptx86;
           a CMP instruction if one follows.
         }
         Result := False;
-        if not (cs_opt_size in current_settings.optimizerswitches) and
-          (taicpu(p).opsize in [S_L{$ifdef x86_64}, S_Q{$endif x86_64}]) and
+        if (taicpu(p).opsize in [S_L{$ifdef x86_64}, S_Q{$endif x86_64}]) and
           MatchOpType(taicpu(p),top_const,top_reg) and
           GetNextInstruction(p, hp1) and
           MatchInstruction(hp1, A_MOV, [taicpu(p).opsize]) and
           (taicpu(hp1).oper[1]^.typ = top_reg) and
-          MatchOperand(taicpu(hp1).oper[0]^, taicpu(p).oper[1]^.reg) then
+          MatchOperand(taicpu(hp1).oper[0]^, taicpu(p).oper[1]^.reg) and
+          (
+            { Don't do SubMov2LeaSub under -Os, but do allow SubMov2Lea }
+            not (cs_opt_size in current_settings.optimizerswitches) or
+            (
+              not RegUsedAfterInstruction(taicpu(p).oper[1]^.reg, hp1, TmpUsedRegs) and
+              RegUsedAfterInstruction(NR_DEFAULTFLAGS, hp1, TmpUsedRegs)
+            )
+          ) then
           begin
             { Change the MOV instruction to a LEA instruction, and update the
               first operand }
