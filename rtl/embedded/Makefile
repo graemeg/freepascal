@@ -502,6 +502,11 @@ override FPCOPT+=-Cprv32imac
 CPU_UNITS=fe310g000 fe310g002 gd32vf103xx
 CPU_UNITS_DEFINED=1
 endif
+ifeq ($(SUBARCH),rv32i)
+override FPCOPT+=-Cprv32i
+CPU_UNITS=
+CPU_UNITS_DEFINED=1
+endif
 ifeq ($(CPU_UNITS_DEFINED),)
 $(error No CPUs enabled for given SUBARCH, pass either a SUBARCH or set CPU_UNITS_DEFINED=1 if you know what you are doing)
 endif
