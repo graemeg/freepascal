@@ -41,11 +41,11 @@ procedure test_boolean;
   begin
     for i:=1 to 100 do
       begin
-        a:=boolean(random(1));
+        a:=boolean(random(2));
         _a:=a;
-        b:=boolean(random(1));
+        b:=boolean(random(2));
         _b:=b;
-        c:=boolean(random(1));
+        c:=boolean(random(2));
         _c:=c;
         if (a and b) or (c and not(b))<>_c xor ((_c xor _a) and _b) then
           begin
@@ -87,7 +87,7 @@ procedure test_pboolean;
         _b:=b^;
         c:=nil;  
         { c should not matter in this case }      
-        _c:=boolean(random(1));
+        _c:=boolean(random(2));
         if (a^ and b^) or (c^ and not(b^))<>_c xor ((_c xor _a) and _b) then
           begin
             writeln('Error: ','a=',a^,'b=',b^,'c=',c^);
