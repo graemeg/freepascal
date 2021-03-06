@@ -1715,6 +1715,7 @@ implementation
              (left.resultdef.typ=orddef) and
              (left.nodetype=andn) and
              (right.nodetype=andn) and
+             not(is_boolean(resultdef) or (cs_full_boolean_eval in current_settings.localswitches)) and
              { this test is not needed but it speeds up the test and allows to bail out early }
              ((taddnode(left).left.nodetype=notn) or (taddnode(left).right.nodetype=notn) or
               (taddnode(right).left.nodetype=notn) or (taddnode(right).right.nodetype=notn)
