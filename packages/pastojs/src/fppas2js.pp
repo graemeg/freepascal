@@ -20520,34 +20520,51 @@ function TPasToJSConverter.CreateGUIDObjLit(aTGUIDRecord: TPasRecordType;
   const GUID: TGUID; PosEl: TPasElement; AContext: TConvertContext
   ): TJSObjectLiteral;
 var
+  i: integer;
   Members: TFPList;
+
+  function GetMember(const aName: string): TPasElement;
+  begin
+    while i<Members.Count do
+      begin
+      Result:=TPasElement(Members[i]);
+      inc(i);
+      if (Result is TPasVariable) then
+        if SameText(Result.Name,aName) then
+          exit
+        else
+          RaiseInconsistency(20180415094721,PosEl);
+      end;
+    RaiseInconsistency(20210306223031,PosEl);
+  end;
+
+var
   PropEl: TJSObjectLiteralElement;
   MemberEl: TPasElement;
   ArrLit: TJSArrayLiteral;
-  i: Integer;
 begin
   Members:=aTGUIDRecord.Members;
   Result:=TJSObjectLiteral(CreateElement(TJSObjectLiteral,PosEl));
+  i:=0;
+
   // D1: 0x12345678
+  MemberEl:=GetMember('D1');
   PropEl:=Result.Elements.AddElement;
-  MemberEl:=TPasElement(Members[0]);
-  if not SameText(MemberEl.Name,'D1') then
-    RaiseInconsistency(20180415094721,PosEl);
   PropEl.Name:=TJSString(TransformElToJSName(MemberEl,AContext));
   PropEl.Expr:=CreateLiteralHexNumber(PosEl,GUID.D1,8);
   // D2: 0x1234
+  MemberEl:=GetMember('D2');
   PropEl:=Result.Elements.AddElement;
-  MemberEl:=TPasElement(Members[1]);
   PropEl.Name:=TJSString(TransformElToJSName(MemberEl,AContext));
   PropEl.Expr:=CreateLiteralHexNumber(PosEl,GUID.D2,4);
   // D3: 0x1234
+  MemberEl:=GetMember('D3');
   PropEl:=Result.Elements.AddElement;
-  MemberEl:=TPasElement(Members[2]);
   PropEl.Name:=TJSString(TransformElToJSName(MemberEl,AContext));
   PropEl.Expr:=CreateLiteralHexNumber(PosEl,GUID.D3,4);
   // D4: [0x12,0x12,0x12,0x12,0x12,0x12,0x12,0x12]
+  MemberEl:=GetMember('D4');
   PropEl:=Result.Elements.AddElement;
-  MemberEl:=TPasElement(Members[3]);
   PropEl.Name:=TJSString(TransformElToJSName(MemberEl,AContext));
   ArrLit:=TJSArrayLiteral(CreateElement(TJSArrayLiteral,PosEl));
   PropEl.Expr:=ArrLit;
