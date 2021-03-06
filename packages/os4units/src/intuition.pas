@@ -835,7 +835,7 @@ type
   TIntuiRawKeyData = record
     Version: Word;  // version of this structure (see below)
     Reserved: Word; // always 0, reserved for future use
-    Class: Word;    // copy of ie_SubClass (see IECLASS_EXTENDED_RAWKEY)
+    Class_: Word;    // copy of ie_SubClass (see IECLASS_EXTENDED_RAWKEY)
     Code: Word;     // rawkey code
     DeadKeys: TExtendedDeadKey; // deadkey information
   end;
