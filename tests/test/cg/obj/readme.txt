@@ -54,7 +54,7 @@ OS/2 (os2-i386): original EMX port of GCC (GCC 2.8.1) except for tcext6.c which
 Data retieved from .comment or similar section:
 beos-i386 : GCC: (GNU) 2.95v.3-beos-060710
 android-arm-eabi : GCC: (GNU) 4.7.A*
-solaris-sparc : .acomp: WorkShop Compilers 4.2 30 Oct 1996 C 4.2
+solaris-sparc : GCC: (GNU) 5.5.0
 linux-arm : GCC: (GNU) 2.95.1 19990816 (release)
 linux-arm-eabi : GCC: (Debian 4.3.2-1) 4.3.2
 linux-powerpc : GCC: (GNU) 2.95.4 20011002 (Debian prerelease)
