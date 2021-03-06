@@ -258,6 +258,10 @@ unit cgrv;
 
 
     procedure tcgrv.a_op_reg_reg_reg(list: TAsmList; op: TOpCg; size: tcgsize; src1, src2, dst: tregister);
+      var
+        name: String;
+        pd: tprocdef;
+        paraloc1, paraloc2: tcgpara;
       begin
         if op=OP_NOT then
           begin
@@ -295,6 +299,47 @@ unit cgrv;
               end
             else
 {$endif RISCV64}
+            if (op in [OP_IMUL,OP_MUL]) and not(CPURV_HAS_MUL in cpu_capabilities[current_settings.cputype]) then
+              begin
+                case size of
+                  OS_8:
+                    name:='fpc_mul_byte';
+                  OS_S8:
+                    name:='fpc_mul_shortint';
+                  OS_16:
+                    name:='fpc_mul_word';
+                  OS_S16:
+                    name:='fpc_mul_integer';
+                  OS_32:
+                    name:='fpc_mul_dword';
+                  OS_S32:
+                    name:='fpc_mul_longint';
+                  else
+                    Internalerror(2021030601);
+                end;
+
+//                if check_overflow then
+//                  name:=name+'_checkoverflow';
+
+                pd:=search_system_proc(name);
+                paraloc1.init;
+                paraloc2.init;
+                paramanager.getcgtempparaloc(list,pd,1,paraloc1);
+                paramanager.getcgtempparaloc(list,pd,2,paraloc2);
+                a_load_reg_cgpara(list,OS_8,src1,paraloc2);
+                a_load_reg_cgpara(list,OS_8,src2,paraloc1);
+                paramanager.freecgpara(list,paraloc2);
+                paramanager.freecgpara(list,paraloc1);
+                alloccpuregisters(list,R_INTREGISTER,paramanager.get_volatile_registers_int(pocall_default));
+                a_call_name(list,upper(name),false);
+                dealloccpuregisters(list,R_INTREGISTER,paramanager.get_volatile_registers_int(pocall_default));
+                cg.a_reg_alloc(list,NR_FUNCTION_RESULT_REG);
+                cg.a_load_reg_reg(list,size,size,NR_FUNCTION_RESULT_REG,dst);
+                cg.a_reg_dealloc(list,NR_FUNCTION_RESULT_REG);
+                paraloc2.done;
+                paraloc1.done;
+              end
+            else
               begin
                 list.concat(taicpu.op_reg_reg_reg(TOpCG2AsmOp[op],dst,src2,src1));
                 maybeadjustresult(list,op,size,dst);

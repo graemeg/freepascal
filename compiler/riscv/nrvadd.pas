@@ -213,9 +213,7 @@ implementation
 
     function trvaddnode.use_mul_helper: boolean;
       begin
-        if not (CPURV_HAS_MUL in cpu_capabilities[current_settings.cputype]) and
-           (nodetype=muln) and
-           not(torddef(resultdef).ordtype in [u8bit,s8bit]) then
+        if (nodetype=muln) and not(CPURV_HAS_MUL in cpu_capabilities[current_settings.cputype]) then
           result:=true
         else
           Result:=inherited use_mul_helper;
