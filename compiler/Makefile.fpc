@@ -839,7 +839,7 @@ endif
 #
 #####################################################################
 
-.PHONY: cycle fullcycle wpocycle
+.PHONY: cycle full full_targets fullcycle wpocycle
 
 ifeq ($(CPU_SOURCE),$(PPC_TARGET))
 
@@ -1044,7 +1044,8 @@ cvstest:
 # unless FPC_SUPPORT_X87_TYPES_ON_WIN64 is set,
 # win64 cannot compile i386 or i8086 compiler
 # This is also the case for other CPUs that don't support
-# 80bit real type.
+# 80bit real type, unless -dFPC_SOFT_FPUX80
+# option is used.
 
 ifeq ($(findstring -dFPC_SOFT_FPUX80,$(LOCALOPT)),)
 ifeq ($(OS_SOURCE),win64)
@@ -1073,6 +1074,9 @@ ifdef DOWPOCYCLE
         $(MAKE) rtl 'FPC=$(BASEDIR)/$(EXENAMEPREFIX)$(EXENAME)'
 endif
         $(MAKE) $(FULL_TARGETS) 'FPC=$(BASEDIR)/$(EXENAMEPREFIX)$(EXENAME)'
+
+full_targets:
+	$(MAKE) $(FULL_TARGETS)
 
 #####################################################################
 # Docs

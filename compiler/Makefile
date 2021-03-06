@@ -4913,7 +4913,7 @@ endif
 	$(COMPILER) pp.pas
 	$(EXECPPAS)
 	$(MOVE) $(COMPILER_TARGETDIR)/$(PPEXENAME) $(EXENAME)
-.PHONY: cycle fullcycle wpocycle
+.PHONY: cycle full full_targets fullcycle wpocycle
 ifeq ($(CPU_SOURCE),$(PPC_TARGET))
 ifeq ($(OS_SOURCE),$(OS_TARGET))
 ifndef NOWPOCYCLE
@@ -5080,6 +5080,8 @@ ifdef DOWPOCYCLE
 	$(MAKE) rtl 'FPC=$(BASEDIR)/$(EXENAMEPREFIX)$(EXENAME)'
 endif
 	$(MAKE) $(FULL_TARGETS) 'FPC=$(BASEDIR)/$(EXENAMEPREFIX)$(EXENAME)'
+full_targets:
+	$(MAKE) $(FULL_TARGETS)
 htmldocs:
 	$(PASDOC) -p -h -o html$(PATHSEP)$(PPC_TARGET) -d fpc -d gdb -d $(PPC_TARGET) -u $(PPC_TARGET) $(PPC_TARGET)$(PATHSEP)*.pas systems$(PATHSEP)*.pas *.pas
 .PHONY: quickinstall exeinstall install installsymlink fullinstall fullinstallsymlink
