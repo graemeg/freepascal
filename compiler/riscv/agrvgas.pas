@@ -130,7 +130,9 @@ unit agrvgas;
                  s:=s+gas_regname(base)+','+gas_regname(index)
                else
                  internalerror(2006052502);
-             end;
+             end
+           else
+             Internalerror(2021030602);
 
            case refaddr of
              addr_lo12: s:='%lo'+s;

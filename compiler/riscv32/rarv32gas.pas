@@ -533,7 +533,10 @@ Unit rarv32gas;
                end;
               { Do we have a indexing reference, then parse it also }
               if actasmtoken=AS_LPAREN then
-                BuildReference(oper);
+                begin
+                  oper.InitRef;
+                  BuildReference(oper);
+                end;
             end;
 
           AS_REGISTER: { Register, a variable reference or a constant reference  }
