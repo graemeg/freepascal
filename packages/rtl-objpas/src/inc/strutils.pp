@@ -1051,7 +1051,7 @@ begin
   if (Length(AText) >= Length(ASubText)) and (ASubText <> '') then
     Result := StrLComp(PChar(ASubText), PChar(AText), Length(ASubText)) = 0
   else
-    Result := False;
+    Result := (AsubText='');
 end;
 
 
