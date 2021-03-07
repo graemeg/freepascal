@@ -22,8 +22,10 @@ var
   BSS_START: record end; external name '__bss_start';
   STACK_PTR: record end; external name '__stkptr';
 
-  libc_init_proc: TProcedure; weakexternal name '_init';
-  libc_fini_proc: TProcedure; weakexternal name '_fini';
+  { as we do not call these procedures directly, calling conventions do not matter and
+    even if we did, we use c calling conventions anyways }
+  procedure __libc_csu_init; external name '__libc_csu_init';
+  procedure __libc_csu_fini; external name '__libc_csu_fini';
 
 procedure libc_start_main(main: TProcedure; argc: ptruint; argv: ppchar; init, fini, rtld_fini: TProcedure; stack_end: pointer); cdecl; external name '__libc_start_main';
 procedure libc_exit(code: ptruint); cdecl; external name 'exit';
@@ -41,7 +43,7 @@ procedure _FPC_rv_enter(at_exit: TProcedure; sp: pptruint);
     operatingsystem_parameter_argv:=argv;
     operatingsystem_parameter_envp:=@sp[argc+2];
 
-    libc_start_main(@PascalMain, argc, argv, libc_init_proc, libc_fini_proc, at_exit, sp);
+    libc_start_main(@PascalMain, argc, argv, @__libc_csu_init, @__libc_csu_fini, at_exit, sp);
   end;
 
 
@@ -51,7 +53,7 @@ procedure _FPC_proc_start; assembler; nostackframe; public name '_start';
     .option push
     .option norelax
 .L1:
-    auipc gp, %pcrel_hi(BSS_START+0x800)
+    auipc gp, %pcrel_hi(BSS_START+0x7f8)
     addi  gp, gp, %pcrel_lo(.L1)
     .option pop
 
@@ -79,3 +81,20 @@ procedure _FPC_proc_haltproc(e:longint); cdecl; public name '_haltproc';
         _FPC_rv_exit(e);
       end;
   end;
+
+
+ procedure initgp; assembler; nostackframe;
+   asm
+   .Linitgp:
+     .option push
+     .option norelax
+   .L1:
+     auipc gp, %pcrel_hi(BSS_START+0x7f8)
+     addi  gp, gp, %pcrel_lo(.L1)
+     .option pop
+     jalr x0, x1
+
+     .section ".preinit_array","aw"
+     .dc.a .Linitgp
+     .text
+ end;
