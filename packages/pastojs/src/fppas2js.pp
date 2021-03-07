@@ -15579,11 +15579,11 @@ begin
     RaiseNotSupported(El,AContext,20170927183645);
   if El.Parent is TProcedureBody then
     RaiseNotSupported(El,AContext,20181231004355);
+  if not aResolver.IsFullySpecialized(El) then exit;
   if El.IsForward then
     exit(ConvertClassForwardType(El,AContext))
   else if El.IsExternal then
     exit(ConvertExtClassType(El,AContext));
-  if not aResolver.IsFullySpecialized(El) then exit;
 
   if El.CustomData is TPas2JSClassScope then
     begin

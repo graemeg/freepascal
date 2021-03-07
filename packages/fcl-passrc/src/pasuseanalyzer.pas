@@ -262,7 +262,7 @@ type
     procedure UseElement(El: TPasElement; Access: TResolvedRefAccess;
       UseFull: boolean); virtual;
     procedure UseTypeInfo(El: TPasElement); virtual;
-    procedure UseAttributes(El: TPasElement); virtual;
+    function UseAttributes(El: TPasElement): boolean; virtual;
     function UseModule(aModule: TPasModule; Mode: TPAUseMode): boolean; virtual;
     procedure UseSection(Section: TPasSection; Mode: TPAUseMode); virtual;
     procedure UseImplBlock(Block: TPasImplBlock; Mark: boolean); virtual;
@@ -1322,12 +1322,13 @@ begin
     UseTypeInfo(El.Parent);
 end;
 
-procedure TPasAnalyzer.UseAttributes(El: TPasElement);
+function TPasAnalyzer.UseAttributes(El: TPasElement): boolean;
 var
   Calls: TPasExprArray;
   i: Integer;
 begin
   Calls:=Resolver.GetAttributeCallsEl(El);
+  Result:=Calls<>nil;
   for i:=0 to length(Calls)-1 do
     UseExpr(Calls[i]);
 end;
@@ -2412,7 +2413,9 @@ begin
         end;
     end;
 
-  UseAttributes(El);
+  if UseAttributes(El) and (El.ClassType=TPasClassType) then
+    UseTypeInfo(El); // class with attributes,
+        // typeinfo can be used at runtime via typeinfo(aClass) -> always mark
 end;
 
 procedure TPasAnalyzer.UseClassConstructor(El: TPasMembersType);
