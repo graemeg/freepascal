@@ -2347,7 +2347,7 @@ begin
     if FSecure then
       AddToResult(SCookieSecure);
     if FSameSite<>ssEmpty then
-      AddToResult(SCookieSameSite+': '+SSameSiteValues[FSameSite]);
+      AddToResult(SCookieSameSite+'='+SSameSiteValues[FSameSite]);
   except
 {$ifdef cgidebug}
     On E : Exception do
