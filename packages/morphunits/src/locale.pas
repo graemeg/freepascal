@@ -187,6 +187,7 @@ const
   OC_Version         = OC_TagBase + 3; // catalog version number required
   OC_Language        = OC_TagBase + 4; // preferred language of catalog
   OC_CodeSet         = OC_TagBase + 5; // V51
+  OC_BuiltInStrings  = OC_TagBase + 6; // V52.3
 
   // Comparison types for StrnCmp()
   SC_ASCII    = 0;

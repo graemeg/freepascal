@@ -397,7 +397,7 @@ const
   ASLSM_MaxWidth      = ASL_TB + 117; // Maximum display width to allow
   ASLSM_MinHeight     = ASL_TB + 118; // Minimum display height to allow
   ASLSM_MaxHeight     = ASL_TB + 119; // Maximum display height to allow
-  ASLSM_MinDepth      = ASL_TB + 120; // Minimum display depth
+  //ASLSM_MinDepth      = ASL_TB + 120; // Minimum display depth // obsolete due to a compatibility issue
   ASLSM_MaxDepth      = ASL_TB + 121; // Maximum display depth
   ASLSM_FilterFunc    = ASL_TB + 122; // Function to filter mode id's
 
@@ -406,8 +406,10 @@ const
   ASLSM_PopToFront = ASL_TB + 131; // Make the requester window visible when it opens
   // V45
   ASLSM_Activate = ASL_TB + 132; // Activate the requester window when it opens
+  // V51
+  ASLSM_MinDepth      = ASL_TB + 133; // Minimum display depth
 
-  ASL_LAST_TAG = ASL_TB + 133;
+  ASL_LAST_TAG = ASL_TB + 134;
 
 {***************************************************************************}
 

@@ -3336,6 +3336,7 @@ const
   MM_RunBlanker            = $406; // Start screensaver for this monitor
   MM_EnterPowerSaveMode    = $407; // Start power saving mode
   MM_ExitBlanker           = $408; // Stop screensaver or power saving mode
+  MM_Authorization         = $409; // Opens the user password authorization screen, added in 51.68
 
 type
   PmsGetRootBitMap = ^TmsGetRootBitMap;

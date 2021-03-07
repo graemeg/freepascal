@@ -676,11 +676,15 @@ const
   TASKINFOTYPE_USERDATA              = $2b; // Get/Set task tc_UserData (LongWord)
   TASKINFOTYPE_RESURRECT_TASK        = $2c; // Tag used to restart a suspended task (LongWord)
   TASKINFOTYPE_EMULHANDLE            = $2d; // Get/Set task emulhandle (APTR)
+  // Added in exec 50.67
   TASKINFOTYPE_EXCEPTIONCOUNT        = $2e; // Get task exception count (LongWord)
   TASKINFOTYPE_HITCOUNT              = $2f; // Get task hit count (LongWord)
+  // Added in exec 51.3
   TASKINFOTYPE_MAXHITCOUNT           = $30; // Get/Set task max hit count. If more hits happen the task is put to sleep. (LongWord)
+  // Added in exec 51.13
   TASKINFOTYPE_ALERTCOUNT            = $31; // Get task alert count (LongWord)
   TASKINFOTYPE_MAXALERTCOUNT         = $32; // Get/Set task max alert count. If more alerts happen the task is put to sleep. (LongWord)
+  // Added in exec 51.14
   TASKINFOTYPE_PID                   = $33; // Get task unique ID. This ID is unique to every task. (LongWord)
 
   TASKINFOTYPE_68K_NEWFRAME  = $50;
@@ -1747,7 +1751,14 @@ const
   SYSTEMINFOTAG_MEMHEADER = SYSTEMINFOTAG_DUMMY + $1;
   SYSTEMINFOTAG_HOOK      = SYSTEMINFOTAG_DUMMY + $2;
 
+// TLSAlloc (V51.46)
+const
+  TLS_INVALID_INDEX = $ffffffff;
 
+// tags for TLSAlloc
+  TLSTAG_DUMMY = TAG_USER + $120000;
+  TLSTAG_DESTRUCTOR = TLSTAG_DUMMY + $0; // Destructor function to call on task termination if the TLS value is non-nil. The function is called with as: procedure(value: APTR; userdata: APTR);
+  TLSTAG_USERDATA   = TLSTAG_DUMMY + $1;  // Userdata for the destructor function. Defaults to nil.
 
 function Supervisor(userFunction: Pointer location 'a5'): Cardinal;
 SysCall MOS_ExecBase 030;
@@ -2331,6 +2342,14 @@ procedure PutMsgHead(Port: PMsgPort; Message: PMessage); SysCall BaseSysV MOS_Ex
 function NewGetTaskPIDAttrsA(PID: LongWord location 'd0'; Data: APTR location 'a0'; DataSize: LongWord location 'd1'; Type_: LongWord location 'd2'; Tags: PTagItem location 'a1'): LongWord; SysCall MOS_ExecBase 1068;
 function NewSetTaskPIDAttrsA(PID: LongWord location 'd0'; Data: APTR location 'a0'; DataSize: LongWord location 'd1'; Type_: LongWord location 'd2'; Tags: PTagItem location 'a1'): LongWord; SysCall MOS_ExecBase 1074;
 
+// added in V51.46
+function TLSAllocA(Tags: PTagItem): LongWord; SysCall BaseSysV MOS_ExecBase 1084;
+function TLSFree(Idx: LongWord): LongInt; SysCall BaseSysV MOS_ExecBase 1090;
+function TLSGetValue(Idx: LongWord): APTR; SysCall BaseSysV MOS_ExecBase 1096;
+function TLSSetValue(Idx: LongWord; Value: APTR): LongInt; SysCall BaseSysV MOS_ExecBase 1102;
+procedure TLSCallDestructors(Task: PTask); SysCall BaseSysV MOS_ExecBase 1108;
+
+
 
 function NewGetTaskAttrs(Task: PTask; Data: APTR; DataSize, TType: LongWord; const Tags: array of PtrUInt): LongWord; Inline;
 function NewSetTaskAttrs(Task: PTask; Data: APTR; DataSize, TType: Cardinal; const Tags: array of PtrUInt): LongWord; Inline;
@@ -2341,6 +2360,8 @@ function NewCreateTask(const Tags: array of PtrUInt): PTask; inline;
 function AddExecNode(InNode: APTR; const Tags: array of PtrUInt): APTR; inline;
 function NewGetTaskPIDAttrs(PID: LongWord; Data: APTR; DataSize, Type_: LongWord; const Tags: array of PtrUInt): LongWord; inline;
 function NewSetTaskPIDAttrs(PID: LongWord; Data: APTR; DataSize, Type_: LongWord; const Tags: array of PtrUInt): LongWord; inline;
+
+function TLSAlloc(const Tags: array of PtrUInt): LongWord; inline;
 
 function CreateExtIO(const Mp: PMsgPort; Size: Integer): PIORequest;
 procedure DeleteExtIO(ioReq: PIORequest);
@@ -2390,6 +2411,11 @@ end;
 function NewSetTaskPIDAttrs(PID: LongWord; Data: APTR; DataSize: LongWord; Type_: LongWord; const Tags: array of PtrUInt): LongWord; inline;
 begin
   NewSetTaskPIDAttrs := NewSetTaskPIDAttrsA(PID, Data, DataSize, Type_, @Tags);
+end;
+
+function TLSAlloc(const Tags: array of PtrUInt): LongWord; inline;
+begin
+  TLSAlloc := TLSAllocA(@Tags);
 end;
 
 function GetEmulHandle: PEmulHandle; assembler; nostackframe;
