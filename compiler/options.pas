@@ -212,6 +212,7 @@ var
   p : pchar;
   hs,hs1,hs3,s : TCmdStr;
   J: longint;
+  xmloutput: Text;
 const
   NewLineStr = '$\n';
   OSTargetsPlaceholder = '$OSTARGETS';
@@ -407,6 +408,17 @@ const
      end;
   end;
 
+  procedure ListOptimizationsXML;
+  var
+    opt: toptimizerswitch;
+  begin
+    WriteLn(xmloutput,'<optimizations>');
+    for opt:=low(toptimizerswitch) to high(toptimizerswitch) do
+      if OptimizerSwitchStr[opt]<>'' then
+        WriteLn(xmloutput,'<optimization name="',OptimizerSwitchStr[opt],'"/>');
+    WriteLn(xmloutput,'</optimizations>');
+  end;
+
   procedure ListWPOptimizations (OrigString: TCmdStr);
   var
     wpopt: twpoptimizerswitch;
@@ -498,6 +510,23 @@ const
         Comment(V_Normal,hs);
         hs1:=''
        end;
+     end;
+{$POP}
+  end;
+
+  procedure ListControllerTypesXML;
+  var
+    controllertype : tcontrollertype;
+  begin
+{$PUSH}
+ {$WARN 6018 OFF} (* Unreachable code due to compile time evaluation *)
+    if (ControllerSupport) then
+     begin
+      WriteLn(xmloutput,'<controllertypes>');
+      for controllertype:=low(tcontrollertype) to high(tcontrollertype) do
+        if embedded_controllers[controllertype].ControllerTypeStr<>'' then
+          WriteLn(xmloutput,'<controllertype name="',embedded_controllers[controllertype].ControllerTypeStr,'"/>');
+      WriteLn(xmloutput,'</controllertypes>');
      end;
 {$POP}
   end;
@@ -627,31 +656,44 @@ begin
        Comment(V_Normal,s);
      end;
    end
+  else if Copy(More,1,1) = 'x' then
+    begin
+      Assign(xmloutput,Copy(More,2,length(More)-1));
+      Rewrite(xmloutput);
+      WriteLn(xmloutput,'<?xml version="1.0" encoding="utf-8"?>');
+      WriteLn(xmloutput,'<fpcoutput>');
+      WriteLn(xmloutput,'<info>');
+      ListOptimizationsXML;
+      ListControllerTypesXML;
+      WriteLn(xmloutput,'</info>');
+      WriteLn(xmloutput,'</fpcoutput>');
+      Close(xmloutput);
+   end
   else
    begin
-    J := 1;
-    while J <= Length (More) do
-     begin
-      if J > 1 then
-       Comment(V_Normal,'');  (* Put empty line between multiple sections *)
-      case More [J] of
-       'a': ListABITargets ('');
-       'b': Comment(V_Normal, cgbackend2str[cgbackend]);
-       'c': ListCPUInstructionSets ('');
-       'f': ListFPUInstructionSets ('');
-       'i': ListAsmModes ('');
-       'm': ListModeswitches ('');
-       'o': ListOptimizations ('');
-       'r': ListFeatures ('');
-       't': ListOSTargets ('');
-       'u': ListControllerTypes ('');
-       'w': ListWPOptimizations ('');
-      else
-       IllegalPara ('-i' + More);
+     J := 1;
+     while J <= Length (More) do
+      begin
+       if J > 1 then
+        Comment(V_Normal,'');  (* Put empty line between multiple sections *)
+       case More [J] of
+        'a': ListABITargets ('');
+        'b': Comment(V_Normal, cgbackend2str[cgbackend]);
+        'c': ListCPUInstructionSets ('');
+        'f': ListFPUInstructionSets ('');
+        'i': ListAsmModes ('');
+        'm': ListModeswitches ('');
+        'o': ListOptimizations ('');
+        'r': ListFeatures ('');
+        't': ListOSTargets ('');
+        'u': ListControllerTypes ('');
+        'w': ListWPOptimizations ('');
+       else
+        IllegalPara ('-i' + More);
+       end;
+       Inc (J);
       end;
-      Inc (J);
-     end;
-   end;
+    end;
   StopOptions(0);
 end;
 
@@ -1952,7 +1994,7 @@ begin
            'i' :
              begin
                if (More='') or
-                    (More [1] in ['a', 'b', 'c', 'f', 'i', 'm', 'o', 'r', 't', 'u', 'w']) then
+                    (More [1] in ['a', 'b', 'c', 'f', 'i', 'm', 'o', 'r', 't', 'u', 'w', 'x']) then
                  WriteInfo (More)
                else
                  QuickInfo:=QuickInfo+More;
