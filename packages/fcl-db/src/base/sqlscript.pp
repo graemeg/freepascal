@@ -507,6 +507,7 @@ begin
   FIsSkipping:=False;
   FSkipStackIndex:=0;
   Faborted:=False;
+  FLine:=0;
   DefaultDirectives;
   Repeat
     NextStatement();
