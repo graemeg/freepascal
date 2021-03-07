@@ -55,7 +55,7 @@ implementation
 **************************************}
 
   {$ifndef NoRaRVGas}
-       ,rarv32gas
+       ,rarvgas
   {$endif NoRaRVGas}
 
 {**************************************
