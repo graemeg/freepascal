@@ -116,40 +116,58 @@ Type  PINTRTLEvent = ^TINTRTLEvent;
     procedure CInitThreadvar(var offset : dword;size : dword);
       begin
         {$ifdef cpusparc}
+        {$define threadvarblocksize_set}
         threadvarblocksize:=align(threadvarblocksize,16);
         {$endif cpusparc}
         
         {$ifdef cpusparc64}
+        {$define threadvarblocksize_set}
         threadvarblocksize:=align(threadvarblocksize,16);
         {$endif cpusparc64}
 
         {$ifdef cpupowerpc}
+        {$define threadvarblocksize_set}
         threadvarblocksize:=align(threadvarblocksize,8);
         {$endif cpupowerc}
 
         {$ifdef cpui386}
+        {$define threadvarblocksize_set}
         threadvarblocksize:=align(threadvarblocksize,8);
         {$endif cpui386}
 
         {$ifdef cpuarm}
+        {$define threadvarblocksize_set}
         threadvarblocksize:=align(threadvarblocksize,4);
         {$endif cpuarm}
 
         {$ifdef cpum68k}
+        {$define threadvarblocksize_set}
         threadvarblocksize:=align(threadvarblocksize,2);
         {$endif cpum68k}
 
         {$ifdef cpux86_64}
+        {$define threadvarblocksize_set}
         threadvarblocksize:=align(threadvarblocksize,16);
         {$endif cpux86_64}
 
         {$ifdef cpupowerpc64}
+        {$define threadvarblocksize_set}
         threadvarblocksize:=align(threadvarblocksize,16);
         {$endif cpupowerpc64}
 
         {$ifdef cpuaarch64}
+        {$define threadvarblocksize_set}
         threadvarblocksize:=align(threadvarblocksize,16);
         {$endif cpuaarch64}
+
+        {$ifdef cpuriscv}
+        {$define threadvarblocksize_set}
+        threadvarblocksize:=align(threadvarblocksize,16);
+        {$endif cpuriscv}
+
+        {$ifndef threadvarblocksize_set}
+        {$error threadvarblocksize must be set! }
+        {$endif threadvarblocksize_set}
 
         offset:=threadvarblocksize;
 
