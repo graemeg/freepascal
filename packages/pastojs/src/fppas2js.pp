@@ -2159,6 +2159,7 @@ type
       AContext: TConvertContext): TJSElement; virtual;
     Function CreateRTTIMemberProperty(Members: TFPList; Index: integer;
       AContext: TConvertContext): TJSElement; virtual;
+    Procedure CreateRTTIAnonymous(El: TPasType; AContext: TConvertContext); virtual; // needed by precompiled files from 2.0.0
     Function CreateRTTIMembers(El: TPasMembersType; Src: TJSSourceElements;
       FuncContext: TFunctionContext; MembersSrc: TJSSourceElements;
       MembersFuncContext: TFunctionContext; RTTIExpr: TJSElement;
@@ -19963,6 +19964,23 @@ var
     ObjLit.Expr:=JS;
   end;
 
+  function VarTypeInfoAlreadyCreated(VarType: TPasType): boolean;
+  var
+    i: Integer;
+    PrevMember: TPasElement;
+  begin
+    i:=Index-1;
+    while (i>=0) do
+      begin
+      PrevMember:=TPasElement(Members[i]);
+      if (PrevMember is TPasVariable) and (TPasVariable(PrevMember).VarType=VarType)
+          and IsElementUsed(PrevMember) then
+        exit(true);
+      dec(i);
+      end;
+    Result:=false;
+  end;
+
 var
   JSTypeInfo: TJSElement;
   aName: String;
@@ -19975,7 +19993,10 @@ begin
   V:=TPasVariable(Members[Index]);
   VarType:=V.VarType;
   if (VarType<>nil) and (VarType.Name='') then
-    RaiseNotSupported(VarType,AContext,20210223022919);
+    begin
+    if not VarTypeInfoAlreadyCreated(VarType) then
+      CreateRTTIAnonymous(VarType,AContext); // only needed by precompiled files from 2.0.0
+    end;
 
   JSTypeInfo:=CreateTypeInfoRef(VarType,AContext,V);
   OptionsEl:=nil;
@@ -20291,6 +20312,37 @@ begin
     if Result=nil then
       Call.Free;
   end;
+end;
+
+procedure TPasToJSConverter.CreateRTTIAnonymous(El: TPasType;
+  AContext: TConvertContext);
+// if El has any anonymous types, create the RTTI
+var
+  C: TClass;
+  JS: TJSElement;
+  GlobalCtx: TFunctionContext;
+  Src: TJSSourceElements;
+begin
+  if El.Name<>'' then
+    RaiseNotSupported(El,AContext,20170905162324,'inconsistency');
+
+  GlobalCtx:=AContext.GetGlobalFunc;
+  if GlobalCtx=nil then
+    RaiseNotSupported(El,AContext,20181229130835);
+  if not (GlobalCtx.JSElement is TJSSourceElements) then
+    begin
+    {$IFDEF VerbosePas2JS}
+    writeln('TPasToJSConverter.CreateRTTIAnonymous GlobalCtx=',GetObjName(GlobalCtx),' JSElement=',GetObjName(GlobalCtx.JSElement));
+    {$ENDIF}
+    RaiseNotSupported(El,AContext,20181229130926);
+    end;
+  Src:=TJSSourceElements(GlobalCtx.JSElement);
+  C:=El.ClassType;
+  if C=TPasArrayType then
+    begin
+    JS:=ConvertArrayType(TPasArrayType(El),AContext);
+    AddToSourceElements(Src,JS);
+    end;
 end;
 
 function TPasToJSConverter.CreateRTTIMembers(El: TPasMembersType;
