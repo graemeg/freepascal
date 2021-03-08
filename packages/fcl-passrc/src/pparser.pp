@@ -5495,8 +5495,12 @@ begin
         else
           // remove legacy or basesysv on MorphOS syscalls
           begin
-          if CurTokenIsIdentifier('legacy') or CurTokenIsIdentifier('consoledevice')
-             or (Curtoken=tkIdentifier) and (Pos('base',LowerCase(CurtokenText))>0) then
+          if (Pos('sysv',LowerCase(CurtokenText))>0) or CurTokenIsIdentifier('legacy') then
+            NextToken; 
+          // remove LibBase (Amiga, AROS, MorphOS)  or Interface (OS4)
+          if CurTokenIsIdentifier('consoledevice') or
+              ((Curtoken=tkIdentifier) and (Pos('base',LowerCase(CurtokenText)) > 0)) or 
+              ((Curtoken=tkIdentifier) and (CurtokenText[1] = 'I')) then
             NextToken;
           end;
       end;
