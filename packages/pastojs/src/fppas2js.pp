@@ -8183,7 +8183,7 @@ Var
   HasImplUsesClause, ok, NeedRTLCheckVersion: Boolean;
   Prg: TPasProgram;
   Lib: TPasLibrary;
-  AssignSt: TJSSimpleAssignStatement;
+  ImplFuncAssignSt: TJSSimpleAssignStatement;
   IntfSecCtx: TInterfaceSectionContext;
   ModScope: TPas2JSModuleScope;
 begin
@@ -8290,10 +8290,10 @@ begin
 
       ImplFunc:=CreateImplementationSection(El,IntfSecCtx);
       // add $mod.$implcode = ImplFunc;
-      AssignSt:=TJSSimpleAssignStatement(CreateElement(TJSSimpleAssignStatement,El));
-      AssignSt.LHS:=CreateMemberExpression([ModVarName,GetBIName(pbivnImplCode)]);
-      AssignSt.Expr:=ImplFunc;
-      AddToSourceElements(Src,AssignSt);
+      ImplFuncAssignSt:=TJSSimpleAssignStatement(CreateElement(TJSSimpleAssignStatement,El));
+      ImplFuncAssignSt.LHS:=CreateMemberExpression([ModVarName,GetBIName(pbivnImplCode)]);
+      ImplFuncAssignSt.Expr:=ImplFunc;
+      AddToSourceElements(Src,ImplFuncAssignSt);
 
       // append initialization section
       CreateInitSection(El,Src,IntfSecCtx);
@@ -8305,7 +8305,7 @@ begin
         // remove unneeded $impl from interface
         RemoveFromSourceElements(Src,ImplVarSt);
         // remove unneeded $mod.$implcode = function(){}
-        RemoveFromSourceElements(Src,AssignSt);
+        RemoveFromSourceElements(Src,ImplFuncAssignSt);
         HasImplUsesClause:=(El.ImplementationSection<>nil)
                        and (length(El.ImplementationSection.UsesClause)>0);
         end
@@ -27078,8 +27078,8 @@ begin
   for i:=0 to ElRefList.Count-1 do
     begin
     El:=TPasElement(ElRefList[i]);
-    if ElNeedsGlobalAlias(El) then
-      CreateGlobalElPath(El,SectionContext);
+    // Note: they are all needed by precompiled code, do not check ElNeedsGlobalAlias
+    CreateGlobalElPath(El,SectionContext);
     end;
 end;
 

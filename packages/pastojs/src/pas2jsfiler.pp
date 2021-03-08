@@ -46,8 +46,6 @@ Works:
 - gzipped json
 - write final switches
 - srcmaps for precompiled js
-
-ToDo:
 - generics:
   - generic proc bodies are stored with all elements, but without resolver customdata
   - specializations are stored like external elements
@@ -70,8 +68,9 @@ ToDo:
   - TPCUReader.ReadExternalSpecialized
     -
   - TPCUReader.ReadSpecializeType reads a TPasSpecializeType and creates specialized type
-  - TPCUReader.ReadInlineSpecializeExpr: ToDo create specialized type
+  - TPCUReader.ReadInlineSpecializeExpr: create specialized type
 
+Todo:
 - store used GUIDs
 - distinguish reader errors in fatal and error
 - when pcu is bad, unload and use src
