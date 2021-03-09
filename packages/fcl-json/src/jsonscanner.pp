@@ -51,7 +51,7 @@ type
 
   EScannerError = class(EParserError);
 
-  TJSONOption = (joUTF8,joStrict,joComments,joIgnoreTrailingComma,joIgnoreDuplicates);
+  TJSONOption = (joUTF8,joStrict,joComments,joIgnoreTrailingComma,joIgnoreDuplicates,joBOMCheck);
   TJSONOptions = set of TJSONOption;
 
 Const
@@ -141,10 +141,26 @@ end;
 
 constructor TJSONScanner.Create(Source: TStream; AOptions: TJSONOptions);
 
+  procedure SkipStreamBOM;
+  Var
+    OldPos : integer;
+    Header : array[0..3] of byte;
+  begin
+    OldPos := Source.Position;
+    FillChar(Header, SizeOf(Header), 0);
+    if Source.Read(Header, 3) = 3 then
+      if (Header[0]=$EF) and (Header[1]=$BB) and (Header[2]=$BF) then
+        exit;
+    Source.Position := OldPos;
+  end;
+
+
 Var
   S : RawByteString;
 
 begin
+  if (joBOMCheck in aOptions) then
+    SkipStreamBom;
   S:='';
   SetLength(S,Source.Size-Source.Position);
   if Length(S)>0 then

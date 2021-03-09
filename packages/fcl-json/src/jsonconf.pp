@@ -31,7 +31,7 @@ uses
   SysUtils, Classes, fpjson, jsonscanner, jsonparser;
 
 Const
-  DefaultJSONOptions = [joUTF8,joComments];
+  DefaultJSONOptions = [joUTF8,joComments,joBOMCheck];
 
 type
   EJSONConfigError = class(Exception);
