@@ -165,6 +165,16 @@ Type  PINTRTLEvent = ^TINTRTLEvent;
         threadvarblocksize:=align(threadvarblocksize,16);
         {$endif cpuriscv}
 
+        {$ifdef cpumips}
+        {$define threadvarblocksize_set}
+        threadvarblocksize:=align(threadvarblocksize,16);
+        {$endif cpumips}
+
+        {$ifdef cpuxtensa}
+        {$define threadvarblocksize_set}
+        threadvarblocksize:=align(threadvarblocksize,16);
+        {$endif cpuxtensa}
+
         {$ifndef threadvarblocksize_set}
         {$error threadvarblocksize must be set! }
         {$endif threadvarblocksize_set}
