@@ -378,9 +378,14 @@ begin
   FFileName := Value;
 end;
 
+function FieldDefDataSize(fd:TFieldDef):integer;
+begin
+  result:=fd.Size*fd.CharSize+1;
+end;
+
 procedure TFixedFormatDataSet.InternalInitFieldDefs;
 var
-  i, Len, MaxLen :Integer;
+  i, Len, DataLen, MaxLen :Integer;
   LstFields      :TStrings;
   FEnc : TSystemCodePage;
 
@@ -410,12 +415,11 @@ begin
         Fenc:=FEncoding.CodePage
       else
         FEnc:=DefaultSystemCodePage;
-      FieldDefs.Add(Trim(LstFields.Names[i]), ftString, Len, 0, False,False,FieldDefs.Count+1,FEnc);
-      Inc(Len);
+      DataLen:=FieldDefDataSize(FieldDefs.Add(Trim(LstFields.Names[i]), ftString, Len, 0, False,False,FieldDefs.Count+1,FEnc));
 {$IFDEF FPC_REQUIRES_PROPER_ALIGNMENT}
-      Len := Align(Len, SizeOf(PtrInt));
+      DataLen := Align(DataLen, SizeOf(PtrInt));
 {$ENDIF}
-      Inc(FRecordSize, Len);
+      Inc(FRecordSize, DataLen);
     end;
   finally
     LstFields.Free;
@@ -696,7 +700,7 @@ begin
       Result := RecBuf < StrEnd(RecBuf); // just ''=Null
       if Result and Assigned(Buffer) then
       begin
-        StrLCopy(Buffer, RecBuf, Field.Size);
+        StrLCopy(Buffer, RecBuf, Field.DataSize);
         if FTrimSpace then // trim trailing spaces
         begin
           BufEnd := StrEnd(Buffer);
@@ -759,7 +763,7 @@ begin
   i := 1;
   while (i < FieldNo) and (i < FieldDefs.Count) do
   begin
-    Len := FieldDefs.Items[i-1].Size + 1;
+    Len := FieldDefDataSize(FieldDefs[i-1]);
 {$IFDEF FPC_REQUIRES_PROPER_ALIGNMENT}
     Len := Align(Len, SizeOf(PtrInt));
 {$ENDIF}
@@ -912,7 +916,7 @@ begin
   Dest := PChar(Result);
   for i := 0 to FieldDefs.Count - 1 do
   begin
-    Len := FieldDefs[i].Size;
+    Len := FieldDefDataSize(FieldDefs[i])-1;
     Move(Src^, Dest^, Len);
     Inc(Src, Len);
     Inc(Dest, Len);
@@ -928,14 +932,14 @@ begin
   // calculate fixed length record size
   Len := 0;
   for i := 0 to FieldDefs.Count - 1 do
-    Inc(Len, FieldDefs[i].Size);
+    Inc(Len, FieldDefDataSize(FieldDefs[i])-1);
   SetLength(Result, Len);
 
   Src  := PChar(Buffer);
   Dest := PChar(Result);
   for i := 0 to FieldDefs.Count - 1 do
   begin
-    Len := FieldDefs[i].Size;
+    Len := FieldDefDataSize(FieldDefs[i])-1;
     Move(Src^, Dest^, Len);
     // fields in record buffer are null-terminated, but pad them with spaces to fixed length
     SrcLen := StrLen(Src);
@@ -1142,7 +1146,7 @@ begin
 
   for i := 0 to FieldDefs.Count - 1 do
   begin
-    MaxLen := FieldDefs[i].Size;
+    MaxLen := FieldDefDataSize(FieldDefs[i])-1;
     S := ExtractDelimited(Source, Pos);
     Len := Length(S);
 
@@ -1152,8 +1156,7 @@ begin
     if Len = 0 then // bug in StrPLCopy
       Dest^ := #0
     else
-      StrPLCopy(Dest, S, Len); // null-terminate
-
+      StrPLCopy(Dest, S, Len+1); // null-terminate
     Inc(Dest, MaxLen+1);
    end;
 end;
@@ -1173,7 +1176,7 @@ begin
   Src := PChar(Buffer);
   for i := 0 to FieldDefs.Count - 1 do
   begin
-    MaxLen := FieldDefs[i].Size;
+    MaxLen := FieldDefDataSize(FieldDefs[i])-1;
     Len := StrLen(Src); // field values are null-terminated in record buffer
     if Len > MaxLen then
       Len := MaxLen;
