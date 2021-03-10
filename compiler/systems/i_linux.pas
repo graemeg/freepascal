@@ -1107,7 +1107,7 @@ unit i_linux;
             system       : system_riscv32_linux;
             name         : 'Linux for RISC-V 32';
             shortname    : 'Linux';
-            flags        : [tf_needs_symbol_size,tf_smartlink_sections,
+            flags        : [tf_needs_symbol_size,tf_smartlink_sections,tf_needs_dwarf_cfi,
                             tf_needs_symbol_type,tf_files_case_sensitive,
                             tf_requires_proper_alignment,tf_has_winlike_resources,
                             tf_supports_hidden_symbols];
@@ -1144,7 +1144,7 @@ unit i_linux;
             linkextern   : ld_linux;
             ar           : ar_gnu_ar;
             res          : res_elf;
-            dbg          : dbg_dwarf2;
+            dbg          : dbg_dwarf3;
             script       : script_unix;
             endian       : endian_little;
             alignment    :
@@ -1177,7 +1177,7 @@ unit i_linux;
             system       : system_riscv64_linux;
             name         : 'Linux for RISC-V 64';
             shortname    : 'Linux';
-            flags        : [tf_needs_symbol_size,tf_smartlink_sections,
+            flags        : [tf_needs_symbol_size,tf_smartlink_sections,tf_needs_dwarf_cfi,
                             tf_needs_symbol_type,tf_files_case_sensitive,
                             tf_requires_proper_alignment,tf_has_winlike_resources,
                             tf_supports_hidden_symbols
@@ -1215,7 +1215,7 @@ unit i_linux;
             linkextern   : ld_linux;
             ar           : ar_gnu_ar;
             res          : res_elf;
-            dbg          : dbg_dwarf2;
+            dbg          : dbg_dwarf3;
             script       : script_unix;
             endian       : endian_little;
             alignment    :
