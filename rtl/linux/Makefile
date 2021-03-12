@@ -382,7 +382,7 @@ SYSINIT_UNITS=si_prc si_dll si_c
 endif
 ifeq ($(ARCH),riscv64)
 override LOADERS=
-SYSINIT_UNITS=si_prc si_dll si_c
+SYSINIT_UNITS=si_prc si_dll si_c si_g
 endif
 ifeq ($(ARCH),mipsel)
 override FPCOPT+=-Ur
