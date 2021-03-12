@@ -495,16 +495,11 @@ type
     LayerInfo: PLayer_Info;        // points to head of the list
     Lock: TSignalSemaphore;
     BackFill: PHook;
-{$ifdef aros}
     VisibleRegion: PRegion;        // Private!
-{$else}
-    Reserved1: ULONG;
-{$endif}
     ClipRegion: PRegion;
     SaveClipRects: PRegion;        // used to back out when in trouble
     Width,
     Height: SmallInt;
-{$ifdef aros}
     Shape: PRegion;              // Private!
     ShapeRegion: PRegion;        // Private!
     VisibleShape: PRegion;       // Private!
@@ -512,9 +507,6 @@ type
     SuperSaveClipRectCounter: Byte; // Private!
     Visible: Byte;               // Private!
     Reserved2: array[0..1] of Byte;
-{$else}
-    Reserved2: array[0..17] of Byte;
-{$endif}
     { this must stay here }
     DamageList: PRegion;   // list of rectangles to refreshthrough
   end;
@@ -997,12 +989,12 @@ type
       );
     1:(
       DestAddr: SmallInt; // destination Pointer
-      DestData: SmallInt; // data to send      
+      DestData: SmallInt; // data to send
       );
     2:(
       VWaitPos: SmallInt; // vertical wait position
-      HWaitPos: SmallInt; // horizontal wait position      
-      );  
+      HWaitPos: SmallInt; // horizontal wait position
+      );
   end;
 
   TCopList = record
@@ -1678,7 +1670,6 @@ type
     Reserved: array[0..1] of IPTR;
   end;
 // AROS-specifics.
-{$ifdef aros}
 const
 // Tags for AddDisplayDriverA()
   DDRV_BootMode     = TAG_USER + $01; // (LongBool) Boot mode driver which will be
@@ -1702,7 +1693,6 @@ type
     mask: ULONG;
     gfxhidd: APTR;
   end;
-{$endif}
 
 const
   VTAG_END_CM            = $00000000;
@@ -1807,9 +1797,7 @@ type
     es_SimpleSprite: TSimpleSprite;         { conventional simple sprite structure }
     es_WordWidth: Word;                 { graphics use only, subject to change }
     es_Flags: Word;                 { graphics use only, subject to change }
-{$ifdef aros} // New in AROS
     es_Bitmap: PBitmap;  // Actual image data.
-{$endif}
   end;
 
 const
@@ -1860,14 +1848,14 @@ const
   RPTAG_PenMode    = $80000080;
   RPTAG_FgColor    = $80000081;
   RPTAG_BgColor    = $80000082;
-{$ifdef aros}
+
 // Extensions invented by AROS
   RPTAG_PatternOriginX     = $800000C0; // SmallInt
   RPTAG_PatternOriginY     = $800000C1; // SmallInt
   RPTAG_ClipRectangle      = $800000C2; // PRectangle Clones PRectangle.
   RPTAG_ClipRectangleFlags = $800000C3; // LongWord
   RPTAG_RemapColorFonts    = $800000C4; // LongBool
-{$endif}
+
 
 // Flags for ClipRectangleFlags
   RPCRF_RELRIGHT  = $01; // ClipRectangle.MaxX is relative to right of layer/bitmap
