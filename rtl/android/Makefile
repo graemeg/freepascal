@@ -2869,7 +2869,7 @@ endif
 ifeq ($(FULL_TARGET),z80-amstradcpc)
 override COMPILER_TARGETDIR+=.
 endif
-override SHARED_LIBUNITS=$(SYSTEMUNIT) objpas strings dos unix baseunix unixtype unixutil sysutils typinfo math $(CPU_UNITS) getopts errors sockets sortbase classes fgl sysconst rtlconsts 
+override SHARED_LIBUNITS=$(SYSTEMUNIT) objpas strings dos unix baseunix unixtype unixutil sysutils typinfo math $(CPU_UNITS) getopts errors sockets sortbase classes fgl sysconst rtlconsts
 ifdef REQUIRE_UNITSDIR
 override UNITSDIR+=$(REQUIRE_UNITSDIR)
 endif
@@ -3119,7 +3119,15 @@ else
 ifneq ($(findstring $(FPCFPMAKE_CPU_OPT),mips mipsel),)
 FPCMAKE_CROSSGCCOPT=-mabi=32
 else
+ifneq ($(findstring $(FPCFPMAKE_CPU_OPT),riscv64),)
+FPCMAKE_CROSSGCCOPT=-mabi=lp64
+else
+ifneq ($(findstring $(FPCFPMAKE_CPU_OPT),riscv32),)
+FPCMAKE_CROSSGCCOPT=-mabi=ilp32
+else
 FPCMAKE_CROSSGCCOPT=-m32
+endif
+endif
 endif
 endif
 endif

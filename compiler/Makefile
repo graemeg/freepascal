@@ -2765,7 +2765,15 @@ else
 ifneq ($(findstring $(FPCFPMAKE_CPU_OPT),mips mipsel),)
 FPCMAKE_CROSSGCCOPT=-mabi=32
 else
+ifneq ($(findstring $(FPCFPMAKE_CPU_OPT),riscv64),)
+FPCMAKE_CROSSGCCOPT=-mabi=lp64
+else
+ifneq ($(findstring $(FPCFPMAKE_CPU_OPT),riscv32),)
+FPCMAKE_CROSSGCCOPT=-mabi=ilp32
+else
 FPCMAKE_CROSSGCCOPT=-m32
+endif
+endif
 endif
 endif
 endif
@@ -5052,9 +5060,9 @@ endif
 cycledep:
 	$(MAKE) cycle USEDEPEND=1
 extcycle:
-	$(MAKE) cycle OPT="$(OPT) -n -glttt -CRriot -dEXTDEBUG" ALLOW_WARNINGS=1
+	$(MAKE) cycle RTLOPT="$(RTLOPT) -n -glttt -CRriot -dEXTDEBUG" LOCALOPT="$(LOCALOPT) -n -glttt -CRriot -dEXTDEBUG" ALLOW_WARNINGS=1
 extoptcycle:
-	$(MAKE) cycle OPT="$(OPT) -n -glttt -CRriot -dEXTDEBUG -dDEBUG_ALL_OPT" ALLOW_WARNINGS=1
+	$(MAKE) cycle RTLOPT="$(RTLOPT) -n -glttt -CRriot -dEXTDEBUG -dDEBUG_ALL_OPT" LOCALOPT="$(LOCALOPT) -n -glttt -CRriot -dEXTDEBUG -dDEBUG_ALL_OPT" ALLOW_WARNINGS=1
 cvstest:
 	$(MAKE) cycle 'LOCALOPT=-n -Se' 'RTLOPT=-n -Se'
 ifeq ($(findstring -dFPC_SOFT_FPUX80,$(LOCALOPT)),)
