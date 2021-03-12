@@ -189,12 +189,13 @@ function WritePixelArrayAlpha(Src: APTR; SrcX, SrcY, SrcMod: LongInt; Rp: PRastP
 procedure BltTemplateAlpha(SrcTemplate: APTR; SrcX, SrcY: LongInt; Rp: PRastPort; DestX, DestY: LongInt; Width, Height: LongWord); syscall ICyberGfx 232;
 
 // Functions and procedures with array of const go here
-function AllocCModeListTags(const ModeListTags: array of PtrUInt): PList;
-function BestCModeIDTags(const BestModeIDTags: array of PtrUInt): LongWord;
-procedure CVideoCtrlTags(ViewPort: PViewPort; const TagList: array of PtrUInt);
-procedure DoCDrawMethodTags(Hook: PHook; a1arg: PRastPort; const TagList: array of PtrUInt);
-function LockBitMapTags(BitMap: APTR; const TagList: array of PtrUInt): APTR;
-procedure UnLockBitMapTags(Handle: APTR; const TagList: array of PtrUInt);
+function AllocCModeListTags(const ModeListTags: array of PtrUInt): PList; inline;
+function BestCModeIDTags(const BestModeIDTags: array of PtrUInt): LongWord; inline;
+function CModeRequestTags(ModeRequest: APTR; const ModeRequestTags : array of PtrUInt): LongWord; inline;
+procedure CVideoCtrlTags(ViewPort: PViewPort; const TagList: array of PtrUInt); inline;
+procedure DoCDrawMethodTags(Hook: PHook; a1arg: PRastPort; const TagList: array of PtrUInt); inline;
+function LockBitMapTags(BitMap: APTR; const TagList: array of PtrUInt): APTR; inline;
+procedure UnLockBitMapTags(Handle: APTR; const TagList: array of PtrUInt); inline;
 
 function SHIFT_PIXFMT(fmt: LongInt): LongInt;
 function DOWNSHIFT_PIXFMT(fmt: LongInt): LongInt;
@@ -210,6 +211,11 @@ end;
 function BestCModeIDTags(const BestModeIDTags: array of PtrUInt): LongWord; inline;
 begin
   BestCModeIDTags := BestCModeIDTagList(@BestModeIDTags);
+end;
+
+function CModeRequestTags(ModeRequest: APTR; const ModeRequestTags : array of PtrUInt): LongWord;
+begin
+  CModeRequestTags := CModeRequestTagList(ModeRequest, @ModeRequestTags);
 end;
 
 procedure CVideoCtrlTags(ViewPort: PViewPort; const TagList: array of PtrUInt); inline;
