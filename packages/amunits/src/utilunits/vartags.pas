@@ -13,10 +13,6 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  **********************************************************************}
-{$I useamigasmartlink.inc}
-{$ifdef use_amiga_smartlink}
-    {$smartlink on}
-{$endif use_amiga_smartlink}
 
 unit vartags;
 

@@ -30,11 +30,6 @@
 }
 {$PACKRECORDS 2}
 
-{$I useamigasmartlink.inc}
-{$ifdef use_amiga_smartlink}
-   {$smartlink on}
-{$endif use_amiga_smartlink}
-
 UNIT AHI_SUB;
 
 INTERFACE

@@ -34,11 +34,6 @@ unit consoleio;
 
 }
 
-{$I useamigasmartlink.inc}
-{$ifdef use_amiga_smartlink}
-    {$smartlink on}
-{$endif use_amiga_smartlink}
-
 interface
 
 uses exec, intuition, console, amigalib, conunit;

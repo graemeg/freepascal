@@ -218,14 +218,14 @@ const
      BMB_SPECIALFMT = 7;
      BMF_SPECIALFMT = 1 shl BMB_SPECIALFMT;
 
-FUNCTION AllocCModeListTagList(ModeListTags : pTagItem location 'a1') : pList; syscall CyberGfxBase 072;
+FUNCTION AllocCModeListTagList(ModeListTags : pTagItem location 'a1') : PCyberModeNode; syscall CyberGfxBase 072;
 FUNCTION BestCModeIDTagList(BestModeIDTags : pTagItem location 'a0') : longword; syscall CyberGfxBase 060;
 FUNCTION CModeRequestTagList(ModeRequest : POINTER location 'a0'; ModeRequestTags : pTagItem location 'a1') : longword; syscall CyberGfxBase 066;
 PROCEDURE CVideoCtrlTagList(ViewPort : pViewPort location 'a0'; TagList : pTagItem location 'a1'); syscall CyberGfxBase 162;
 PROCEDURE DoCDrawMethodTagList(Hook : pHook location 'a0'; a1arg : pRastPort location 'a1'; TagList : pTagItem location 'a2'); syscall CyberGfxBase 156;
 FUNCTION ExtractColor(a0arg : pRastPort location 'a0'; BitMap : pBitMap location 'a1'; Colour : longword location 'd0'; SrcX : longword location 'd1'; SrcY : longword location 'd2'; Width : longword location 'd3'; Height : longword location 'd4') : longword; syscall CyberGfxBase 186;
 FUNCTION FillPixelArray(a1arg : pRastPort location 'a1'; DestX : WORD location 'd0'; DestY : WORD location 'd1'; SizeX : WORD location 'd2'; SizeY : WORD location 'd3'; ARGB : longword location 'd4') : longword; syscall CyberGfxBase 150;
-PROCEDURE FreeCModeList(ModeList : pList location 'a0'); syscall CyberGfxBase 078;
+PROCEDURE FreeCModeList(ModeList : PCyberModeNode location 'a0'); syscall CyberGfxBase 078;
 FUNCTION GetCyberIDAttr(CyberIDAttr : longword location 'd0'; CyberDisplayModeID : longword location 'd1') : longword; syscall CyberGfxBase 102;
 FUNCTION GetCyberMapAttr(CyberGfxBitmap : pBitMap location 'a0'; CyberAttrTag : longword location 'd0') : longword; syscall CyberGfxBase 096;
 FUNCTION InvertPixelArray(a1arg : pRastPort location 'a1'; DestX : WORD location 'd0'; DestY : WORD location 'd1'; SizeX : WORD location 'd2'; SizeY : WORD location 'd3') : longword; syscall CyberGfxBase 144;
@@ -243,7 +243,7 @@ FUNCTION WriteRGBPixel(a1arg : pRastPort location 'a1'; x : WORD location 'd0'; 
 {
  Functions and procedures with array of PtrUInt go here
 }
-FUNCTION AllocCModeListTags(const ModeListTags : array of PtrUInt) : pList;
+FUNCTION AllocCModeListTags(const ModeListTags : array of PtrUInt) : PCyberModeNode;
 FUNCTION BestCModeIDTags(const BestModeIDTags : array of PtrUInt) : longword;
 FUNCTION CModeRequestTags(ModeRequest : POINTER; const ModeRequestTags : array of PtrUInt) : longword;
 PROCEDURE CVideoCtrlTags(ViewPort : pViewPort; const TagList : array of PtrUInt);
@@ -258,7 +258,7 @@ IMPLEMENTATION
 {
  Functions and procedures with array of PtrUInt go here
 }
-FUNCTION AllocCModeListTags(const ModeListTags : array of PtrUInt) : pList;
+FUNCTION AllocCModeListTags(const ModeListTags : array of PtrUInt) : PCyberModeNode;
 begin
     AllocCModeListTags := AllocCModeListTagList(@ModeListTags);
 end;

@@ -22,11 +22,6 @@
     nils.sjoholm@mailbox.swipnet.se Nils Sjoholm
 }
 
-{$I useamigasmartlink.inc}
-{$ifdef use_amiga_smartlink}
-    {$smartlink on}
-{$endif use_amiga_smartlink}
-
 {
   This unit must be deprecated because at least:
   - It is leaking memory. It allocates a new buffer for each string which won't
@@ -34,9 +29,9 @@
   - The unit doesn't provide any way to free allocated string buffers manually.
     (Because ReleasePas2C is not a public function.)
   - It does allocations outside the Pascal heap, which the compiler has no control
-    over, and makes it very hard to track these allocations, because the heaptrc 
+    over, and makes it very hard to track these allocations, because the heaptrc
     unit doesn't work.
-  - The intuition.library documentation states that AllocRemember() is a quite 
+  - The intuition.library documentation states that AllocRemember() is a quite
     ineffective function, because it does two memory allocations and because it
     doesn't use memory pools it has a terrible effect on memory fragmentation.
   - It uses a for loop byte to copy the string contents, which is very slow.

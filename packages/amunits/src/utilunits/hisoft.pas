@@ -26,11 +26,6 @@
         nils.sjoholm@mailbox.swipnet.se Nils Sjoholm
 }
 
-{$I useamigasmartlink.inc}
-{$ifdef use_amiga_smartlink}
-    {$smartlink on}
-{$endif use_amiga_smartlink}
-
 unit hisoft;
 
 interface
