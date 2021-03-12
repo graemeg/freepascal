@@ -538,7 +538,13 @@ begin
            Message1(exec_w_init_file_not_found,'crti.o');
 
          { then the crtbegin* }
-         if cs_create_pic in current_settings.moduleswitches then
+         if (cs_create_pic in current_settings.moduleswitches)
+{$ifdef RISCV}
+         { on RISC-V we need to use always the *S.o variants
+           if shared libraries are involved }
+         or (not SharedLibFiles.Empty)
+{$endif RISCV}
+         then
            begin
              if librarysearchpath.FindFile('crtbeginS.o',false,s) then
                AddFileName(s)
@@ -649,7 +655,13 @@ begin
       { objects which must be at the end }
       if linklibc and (libctype<>uclibc) then
        begin
-         if cs_create_pic in current_settings.moduleswitches then
+         if (cs_create_pic in current_settings.moduleswitches)
+{$ifdef RISCV}
+         { on RISC-V we need to use always the *S.o variants
+           if shared libraries are involved }
+         or linksToSharedLibFiles
+{$endif RISCV}
+         then
            begin
              found1:=librarysearchpath.FindFile('crtendS.o',false,s1);
              if not(found1) then
