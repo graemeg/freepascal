@@ -47,6 +47,7 @@ uses
 
          constructor op_reg(op : tasmop;_op1 : tregister);
          constructor op_const(op : tasmop;_op1 : aint);
+         constructor op_ref(op : tasmop;_op1 : treference);
 
          constructor op_reg_reg(op : tasmop;_op1,_op2 : tregister);
          constructor op_reg_ref(op : tasmop;_op1 : tregister;const _op2 : treference);
@@ -141,6 +142,14 @@ uses cutils, cclasses;
          inherited create(op);
          ops:=1;
          loadreg(0,_op1);
+      end;
+
+
+    constructor taicpu.op_ref(op : tasmop;_op1 : treference);
+      begin
+         inherited create(op);
+         ops:=1;
+         loadref(0,_op1);
       end;
 
 

@@ -99,7 +99,9 @@ interface
          addr_lo12,
          addr_pcrel_hi20,
          addr_pcrel_lo12,
-         addr_pcrel
+         addr_pcrel,
+         addr_got_pcrel_hi,
+         addr_plt
          {$endif RISCV}
          {$IFDEF AVR}
          ,addr_lo8

@@ -133,16 +133,24 @@ unit cgrv;
         else
           reference_reset_symbol(href,current_asmdata.WeakRefAsmSymbol(s,AT_FUNCTION),0,0,[]);
 
-        current_asmdata.getjumplabel(l);
+        if cs_create_pic in current_settings.moduleswitches then
+          begin
+            href.refaddr:=addr_plt;
+            list.concat(taicpu.op_ref(A_CALL,href));
+          end
+        else
+          begin
+            current_asmdata.getjumplabel(l);
 
-        a_label(list,l);
+            a_label(list,l);
 
-        href.refaddr:=addr_pcrel_hi20;
-        list.concat(taicpu.op_reg_ref(A_AUIPC,NR_RETURN_ADDRESS_REG,href));
+            href.refaddr:=addr_pcrel_hi20;
+            list.concat(taicpu.op_reg_ref(A_AUIPC,NR_RETURN_ADDRESS_REG,href));
 
-        reference_reset_symbol(href,l,0,0,[]);
-        href.refaddr:=addr_pcrel_lo12;
-        list.concat(taicpu.op_reg_reg_ref(A_JALR,NR_RETURN_ADDRESS_REG,NR_RETURN_ADDRESS_REG,href));
+            reference_reset_symbol(href,l,0,0,[]);
+            href.refaddr:=addr_pcrel_lo12;
+            list.concat(taicpu.op_reg_reg_ref(A_JALR,NR_RETURN_ADDRESS_REG,NR_RETURN_ADDRESS_REG,href));
+          end;
 
         { not assigned while generating external wrappers }
         if assigned(current_procinfo) then
@@ -721,20 +729,40 @@ unit cgrv;
 
         if assigned(ref.symbol) then
           begin
-            reference_reset_symbol(href,ref.symbol,ref.offset,ref.alignment,ref.volatility);
-            ref.symbol:=nil;
-            ref.offset:=0;
+            if cs_create_pic in current_settings.moduleswitches then
+              begin
+                reference_reset_symbol(href,ref.symbol,0,0,[]);
+                ref.symbol:=nil;
 
-            tmpreg:=getintregister(list,OS_INT);
+                tmpreg:=getintregister(list,OS_INT);
 
-            current_asmdata.getaddrlabel(l);
-            a_label(list,l);
+                current_asmdata.getaddrlabel(l);
+                a_label(list,l);
 
-            href.refaddr:=addr_pcrel_hi20;
-            list.concat(taicpu.op_reg_ref(A_AUIPC,tmpreg,href));
-            reference_reset_symbol(href,l,0,0,ref.volatility);
-            href.refaddr:=addr_pcrel_lo12;
-            list.concat(taicpu.op_reg_reg_ref(A_ADDI,tmpreg,tmpreg,href));
+                href.refaddr:=addr_got_pcrel_hi;
+                list.concat(taicpu.op_reg_ref(A_AUIPC,tmpreg,href));
+                reference_reset_symbol(href,l,0,0,[]);
+                href.refaddr:=addr_pcrel_lo12;
+                href.base:=tmpreg;
+                list.concat(taicpu.op_reg_ref(A_LD,tmpreg,href));
+              end
+            else
+              begin
+                reference_reset_symbol(href,ref.symbol,ref.offset,ref.alignment,ref.volatility);
+                ref.symbol:=nil;
+                ref.offset:=0;
+
+                tmpreg:=getintregister(list,OS_INT);
+
+                current_asmdata.getaddrlabel(l);
+                a_label(list,l);
+
+                href.refaddr:=addr_pcrel_hi20;
+                list.concat(taicpu.op_reg_ref(A_AUIPC,tmpreg,href));
+                reference_reset_symbol(href,l,0,0,ref.volatility);
+                href.refaddr:=addr_pcrel_lo12;
+                list.concat(taicpu.op_reg_reg_ref(A_ADDI,tmpreg,tmpreg,href));
+              end;
 
             if (ref.index<>NR_NO) and
                (ref.base<>NR_NO) then

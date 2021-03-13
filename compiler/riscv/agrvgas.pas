@@ -74,7 +74,8 @@ unit agrvgas;
             else
               begin
                 s :='';
-                s := s+'(';
+                if not(refaddr in [addr_no,addr_pic_no_got,addr_plt]) then
+                  s := s+'(';
                 if assigned(symbol) then
                   begin
                     if asminfo^.dollarsign<>'$' then
@@ -103,14 +104,10 @@ unit agrvgas;
                 s:=s+tostr(offset);
             end;
 
-           if not(refaddr in [addr_no,addr_pic_no_got]) then
+           if not(refaddr in [addr_no,addr_pic_no_got,addr_plt]) then
              begin
                s := s+')';
              end;
-{$ifdef cpu64bitaddr}
-           if (refaddr=addr_pic) then
-             s := s + '@got';
-{$endif cpu64bitaddr}
 
            if (index=NR_NO) then
              begin
@@ -139,6 +136,8 @@ unit agrvgas;
              addr_hi20: s:='%hi'+s;
              addr_pcrel_lo12: s:='%pcrel_lo'+s;
              addr_pcrel_hi20: s:='%pcrel_hi'+s;
+             addr_got_pcrel_hi: s:='%got_pcrel_hi'+s;
+             addr_plt: s:=s+'@plt';
              else
                ;
            end;

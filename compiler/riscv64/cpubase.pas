@@ -38,7 +38,7 @@ uses
 type
       TAsmOp=(A_None,
         { Pseudo instructions }
-        A_NOP,
+        A_NOP,A_CALL,
         { normal opcodes }
         A_LUI,A_AUIPC,A_JAL,A_JALR,
         A_Bxx,A_LB,A_LH,A_LW,A_LBU,A_LHU,
