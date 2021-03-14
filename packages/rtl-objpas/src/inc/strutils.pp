@@ -129,6 +129,7 @@ function StringsReplace(const S: string; OldPattern, NewPattern: array of string
 Function ReplaceStr(const AText, AFromText, AToText: string): string;inline;
 Function ReplaceText(const AText, AFromText, AToText: string): string;inline;
 
+
 { ---------------------------------------------------------------------
     Soundex Functions.
   ---------------------------------------------------------------------}
@@ -226,7 +227,13 @@ function IntToRoman(Value: Longint): string;
 function TryRomanToInt(S: String; out N: LongInt; Strictness: TRomanConversionStrictness = rcsRelaxed): Boolean;
 function RomanToInt(const S: string; Strictness: TRomanConversionStrictness = rcsRelaxed): Longint;
 function RomanToIntDef(Const S : String; const ADefault: Longint = 0; Strictness: TRomanConversionStrictness = rcsRelaxed): Longint;
-procedure BinToHex(BinValue, HexValue: PChar; BinBufSize: Integer);
+procedure BinToHex(const BinBuffer: TBytes; BinBufOffset: Integer; var HexBuffer: TBytes; HexBufOffset: Integer; Count: Integer); overload;
+procedure BinToHex(BinValue: Pointer; HexValue: PWideChar; BinBufSize: Integer); overload;
+procedure BinToHex(const BinValue; HexValue: PWideChar; BinBufSize: Integer); overload;
+procedure BinToHex(BinValue: PAnsiChar; HexValue: PAnsiChar; BinBufSize: Integer); overload;
+procedure BinToHex(BinValue: PAnsiChar; HexValue: PWideChar; BinBufSize: Integer); overload;
+procedure BinToHex(const BinValue; HexValue: PAnsiChar; BinBufSize: Integer); overload;
+procedure BinToHex(BinValue: Pointer; HexValue: PAnsiChar; BinBufSize: Integer); overload;
 function HexToBin(HexValue, BinValue: PChar; BinBufSize: Integer): Integer;
 
 const
@@ -3186,6 +3193,7 @@ begin
 end;
 
 // def from delphi.about.com:
+(*
 procedure BinToHex(BinValue, HexValue: PChar; BinBufSize: Integer);
 
 Const
@@ -3200,6 +3208,68 @@ begin
     inc(hexvalue,2);
     inc(binvalue);
     end;
+end;
+*)
+
+procedure BinToHex(BinValue: PAnsiChar; HexValue: PAnsiChar; BinBufSize: Integer);
+const
+  HexDigits : AnsiString='0123456789ABCDEF';
+ var
+   i : longint;
+ begin
+  for i:=0 to BinBufSize-1 do
+  begin
+    HexValue[0]:=HexDigits[1+((Ord(BinValue[i]) shr 4))];
+    HexValue[1]:=HexDigits[1+((Ord(BinValue[i]) and 15))];
+    Inc(HexValue,2);
+  end;
+end;
+
+procedure BinToHex(BinValue: PAnsiChar; HexValue: PWideChar; BinBufSize: Integer);
+const
+  HexDigits : WideString='0123456789ABCDEF';
+var
+  i : longint;
+begin
+  for i:=0 to BinBufSize-1 do
+  begin
+    HexValue[0]:=HexDigits[1+((Ord(BinValue[i]) shr 4))];
+    HexValue[1]:=HexDigits[1+((Ord(BinValue[i]) and 15))];
+    Inc(HexValue,2);
+  end;
+end;
+
+procedure BinToHex(const BinBuffer: TBytes; BinBufOffset: Integer; var HexBuffer: TBytes; HexBufOffset: Integer; Count: Integer);
+const
+  HexDigits : String='0123456789ABCDEF';
+var
+  i : longint;
+begin
+  for i:=0 to Count-1 do
+  begin
+    HexBuffer[HexBufOffset+2*i+0]:=Byte(HexDigits[1+(BinBuffer[BinBufOffset + i] shr 4)]);
+    HexBuffer[HexBufOffset+2*i+1]:=Byte(HexDigits[1+(BinBuffer[BinBufOffset + i] and 15)]);
+  end;
+end;
+
+procedure BinToHex(BinValue: Pointer; HexValue: PAnsiChar; BinBufSize: Integer);
+begin
+  BinToHex(PAnsiChar(BinValue), HexValue, BinBufSize);
+end;
+
+procedure BinToHex(BinValue: Pointer; HexValue: PWideChar; BinBufSize: Integer);
+begin
+  BinToHex(PAnsiChar(BinValue), HexValue, BinBufSize);
+end;
+
+procedure BinToHex(const BinValue; HexValue: PAnsiChar; BinBufSize: Integer);
+begin
+  BinToHex(PAnsiChar(BinValue), HexValue, BinBufSize);
+ end;
+ 
+procedure BinToHex(const BinValue; HexValue: PWideChar; BinBufSize: Integer);
+begin
+  BinToHex(PAnsiChar(BinValue), HexValue, BinBufSize);
 end;
 
 
