@@ -4077,6 +4077,9 @@ begin
   TestFrom('\u00f8','ø'); // this is ø
   TestFrom('\u00f8\"','ø"'); // this is ø"
   TestFrom('\ud83c\udf1f',GlowingStar);
+  TestFrom('\u0041\u0042','AB');   //issue #0038622
+  TestFrom('\u0041\u0042\u0043','ABC');
+  TestFrom('\u0041\u0042\u0043\u0044','ABCD');
 end;
 
 procedure TTestJSONString.TestStringToJSONString;

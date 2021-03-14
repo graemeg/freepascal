@@ -1014,6 +1014,7 @@ begin
                 if (U1<>0) then
                   begin
                   App:={$IFDEF FPC_HAS_CPSTRING}UTF8Encode({$ENDIF}WideChar(U1)+WideChar(U2){$IFDEF FPC_HAS_CPSTRING}){$ENDIF};
+                  U1:=0;
                   U2:=0;
                   end
                 else
