@@ -71,6 +71,8 @@ implementation
 
     function twasminnode.checkgenjumps(out setparts: Tsetparts; out numparts: byte; out use_small: boolean): boolean;
       begin
+        { call inherited to initialize use_small }
+        inherited;
         result:=false;
       end;
 
