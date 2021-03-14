@@ -1832,7 +1832,10 @@ implementation
       realresdef: tdef;
       ft: TWasmFuncType;
     begin
-      ft:=tcpuprocdef(pd).create_functype;
+      if pd.typ=procvardef then
+        ft:=tcpuprocvardef(pd).create_functype
+      else
+        ft:=tcpuprocdef(pd).create_functype;
       totalremovesize:=Length(ft.params)-Length(ft.results);
       if (Length(ft.results)=0) and (po_discardresult in pd.procoptions) then
         dec(totalremovesize);
