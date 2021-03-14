@@ -15,7 +15,7 @@
  **********************************************************************}
 
 
-Procedure UniqueString (Var S : WideString);external name 'FPC_WIDESTR_UNIQUE';{$ifndef VER3_2}}discardresult;{$endif VER3_2}
+Procedure UniqueString (Var S : WideString);external name 'FPC_WIDESTR_UNIQUE';{$ifndef VER3_2}discardresult;{$endif VER3_2}
 Function Pos (Const Substr : WideString; Const Source : WideString; Offset : SizeInt = 1) : SizeInt;
 Function Pos (c : Char; Const s : WideString; Offset : SizeInt = 1) : SizeInt;
 Function Pos (c : WideChar; Const s : WideString; Offset : SizeInt = 1) : SizeInt;
