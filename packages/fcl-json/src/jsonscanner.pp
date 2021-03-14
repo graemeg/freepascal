@@ -254,7 +254,7 @@ var
   I : Integer;
   OldLength, SectionLength,  tstart,tcol, u1,u2: Integer;
   C , c2: char;
-  S : String[4];
+  S : String[8];
   Line : String;
   IsStar,EOC: Boolean;
 
@@ -274,6 +274,7 @@ var
     FCurTokenString:=FCurTokenString+U;
     OldLength:=Length(FCurTokenString);
     u1:=0;
+    u2:=0;
     end;
   end;
 
