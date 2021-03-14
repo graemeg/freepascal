@@ -101,10 +101,6 @@ unit cgcpu;
       end;
 
 
-
-
-
-
     procedure tcgrv32.a_load_reg_reg(list : TAsmList;fromsize, tosize : tcgsize;reg1,reg2 : tregister);
       var
         ai: taicpu;
