@@ -305,6 +305,7 @@ type
     _OBJCCATEGORY,
     _OBJCPROTOCOL,
     _WEAKEXTERNAL,
+    _DISCARDRESULT,
     _DISPINTERFACE,
     _UNIMPLEMENTED,
     _IMPLEMENTATION,
@@ -647,6 +648,7 @@ const
       (str:'OBJCCATEGORY'  ;special:false;keyword:[m_objectivec1];op:NOTOKEN), { Objective-C category }
       (str:'OBJCPROTOCOL'  ;special:false;keyword:[m_objectivec1];op:NOTOKEN), { Objective-C protocol }
       (str:'WEAKEXTERNAL'  ;special:false;keyword:[m_none];op:NOTOKEN),
+      (str:'DISCARDRESULT' ;special:false;keyword:[m_none];op:NOTOKEN),
       (str:'DISPINTERFACE' ;special:false;keyword:[m_class];op:NOTOKEN),
       (str:'UNIMPLEMENTED' ;special:false;keyword:[m_none];op:NOTOKEN),
       (str:'IMPLEMENTATION';special:false;keyword:alllanguagemodes-[m_iso,m_extpas];op:NOTOKEN),

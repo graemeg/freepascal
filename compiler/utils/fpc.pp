@@ -184,6 +184,10 @@ program fpc;
      ppcbin:='ppcxtensa';
      processorname:='xtensa';
 {$endif xtensa}
+{$ifdef wasm32}
+     ppcbin:='ppcwasm32';
+     processorname:='wasm32';
+{$endif wasm32}
      versionstr:='';                      { Default is just the name }
      if ParamCount = 0 then
        begin
@@ -271,6 +275,8 @@ program fpc;
                              cpusuffix:='xtensa'
                            else if processorstr='z80' then
                              cpusuffix:='z80'
+                           else if processorstr='wasm32' then
+                             cpusuffix:='wasm32'
                            else
                              error('Illegal processor type "'+processorstr+'"');
 

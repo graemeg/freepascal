@@ -23,7 +23,7 @@ begin
     P.Email := '';
     P.Description := 'Generic collection library.';
     P.NeedLibC:= false;
-    P.OSes := AllOSes-[embedded,win16,macosclassic,palmos,zxspectrum,msxdos,amstradcpc,watcom,sinclairql];
+    P.OSes := AllOSes-[embedded,win16,macosclassic,palmos,zxspectrum,msxdos,amstradcpc,watcom,sinclairql,wasi];
     if Defaults.CPU=jvm then
       P.OSes := P.OSes - [java,android];
 

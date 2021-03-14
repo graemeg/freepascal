@@ -19,3 +19,4 @@
   add_unicode(ADirectory+IncludeTrailingPathDelimiter('unicode'));
   add_pas2js(ADirectory+IncludeTrailingPathDelimiter('pas2js'));
   add_ihxutil(ADirectory+IncludeTrailingPathDelimiter('ihxutil'));
+  add_wasmbin(ADirectory+IncludeTrailingPathDelimiter('wasmbin'));

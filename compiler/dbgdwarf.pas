@@ -683,7 +683,10 @@ implementation
         DW_OP_HP_unknown := $e0,
         DW_OP_HP_is_value := $e1,DW_OP_HP_fltconst4 := $e2,
         DW_OP_HP_fltconst8 := $e3,DW_OP_HP_mod_range := $e4,
-        DW_OP_HP_unmod_range := $e5,DW_OP_HP_tls := $e6
+        DW_OP_HP_unmod_range := $e5,DW_OP_HP_tls := $e6,
+
+        { WebAssembly extensions. }
+        DW_OP_WASM_location = $ed
         );
 {$pop}
 
@@ -1055,12 +1058,14 @@ implementation
 
     function TDebugInfoDwarf.is_fbreg(reg: tregister): boolean;
       begin
-{$ifdef i8086}
+{$if defined(i8086)}
         result:=reg=NR_BP;
-{$else i8086}
+{$elseif defined(wasm)}
+        result:=reg=NR_LOCAL_FRAME_POINTER_REG;
+{$else}
         { always return false, because we don't emit DW_AT_frame_base attributes yet }
         result:=false;
-{$endif i8086}
+{$endif}
       end;
 
     function TDebugInfoDwarf.def_dwarf_lab(def: tdef): tasmsymbol;
@@ -2243,6 +2248,9 @@ implementation
       var
         labsym : tasmsymbol;
       begin
+        { end of the symbol }
+        labsym:=def_dwarf_lab(def);
+        current_asmdata.asmlists[al_dwarf_info].concat(tai_symbol_end.Create(labsym));
         { create a derived reference type for pass-by-reference parameters }
         { (gdb doesn't support DW_AT_variable_parameter yet)               }
         labsym:=def_dwarf_ref_lab(def);
@@ -3252,30 +3260,33 @@ implementation
         flist : TFPList;
         dbgname : String;
       begin
-        { insert DEBUGSTART and DEBUGEND labels }
-        dbgname:=make_mangledname('DEBUGSTART',current_module.localsymtable,'');
-        { Darwin's linker does not like two global labels both pointing to the
-          end of a section, which can happen in case of units without code ->
-          make them local; we don't need the debugtable stuff there either,
-          so it doesn't matter that they are not global.
-        }
-        if (target_info.system in systems_darwin) then
-          dbgname:='L'+dbgname;
-        new_section(current_asmdata.asmlists[al_start],sec_code,dbgname,0,secorder_begin);
-        if not(target_info.system in systems_darwin) then
-          current_asmdata.asmlists[al_start].concat(tai_symbol.Createname_global(dbgname,AT_METADATA,0,voidpointertype))
-        else
-          current_asmdata.asmlists[al_start].concat(tai_symbol.Createname(dbgname,AT_METADATA,0,voidpointertype));
+        if not (target_info.system in systems_wasm) then
+          begin
+            { insert DEBUGSTART and DEBUGEND labels }
+            dbgname:=make_mangledname('DEBUGSTART',current_module.localsymtable,'');
+            { Darwin's linker does not like two global labels both pointing to the
+              end of a section, which can happen in case of units without code ->
+              make them local; we don't need the debugtable stuff there either,
+              so it doesn't matter that they are not global.
+            }
+            if (target_info.system in systems_darwin) then
+              dbgname:='L'+dbgname;
+            new_section(current_asmdata.asmlists[al_start],sec_code,dbgname,0,secorder_begin);
+            if not(target_info.system in systems_darwin) then
+              current_asmdata.asmlists[al_start].concat(tai_symbol.Createname_global(dbgname,AT_METADATA,0,voidpointertype))
+            else
+              current_asmdata.asmlists[al_start].concat(tai_symbol.Createname(dbgname,AT_METADATA,0,voidpointertype));
 
-        dbgname:=make_mangledname('DEBUGEND',current_module.localsymtable,'');
-        { See above. }
-        if (target_info.system in systems_darwin) then
-          dbgname:='L'+dbgname;
-        new_section(current_asmdata.asmlists[al_end],sec_code,dbgname,0,secorder_end);
-        if not(target_info.system in systems_darwin) then
-          current_asmdata.asmlists[al_end].concat(tai_symbol.Createname_global(dbgname,AT_METADATA,0,voidpointertype))
-        else
-          current_asmdata.asmlists[al_end].concat(tai_symbol.Createname(dbgname,AT_METADATA,0,voidpointertype));
+            dbgname:=make_mangledname('DEBUGEND',current_module.localsymtable,'');
+            { See above. }
+            if (target_info.system in systems_darwin) then
+              dbgname:='L'+dbgname;
+            new_section(current_asmdata.asmlists[al_end],sec_code,dbgname,0,secorder_end);
+            if not(target_info.system in systems_darwin) then
+              current_asmdata.asmlists[al_end].concat(tai_symbol.Createname_global(dbgname,AT_METADATA,0,voidpointertype))
+            else
+              current_asmdata.asmlists[al_end].concat(tai_symbol.Createname(dbgname,AT_METADATA,0,voidpointertype));
+          end;
 
         { insert .Ldebug_abbrev0 label }
         templist:=TAsmList.create;
@@ -3570,19 +3581,27 @@ implementation
         if (m_objectivec1 in current_settings.modeswitches) then
           append_attribute(DW_AT_APPLE_major_runtime_vers,DW_FORM_data1,[1]);
 
-        dbgname:=make_mangledname('DEBUGSTART',current_module.localsymtable,'');
-        if (target_info.system in systems_darwin) then
+        if target_info.system in systems_wasm then
           begin
-            bind:=AB_LOCAL;
-            dbgname:='L'+dbgname;
+            append_attribute(DW_AT_low_pc,DW_FORM_data4,[0]);
+            { todo: append DW_AT_ranges }
           end
         else
-          bind:=AB_GLOBAL;
-        append_labelentry(DW_AT_low_pc,current_asmdata.DefineAsmSymbol(dbgname,bind,AT_METADATA,voidpointertype));
-        dbgname:=make_mangledname('DEBUGEND',current_module.localsymtable,'');
-        if (target_info.system in systems_darwin) then
-          dbgname:='L'+dbgname;
-        append_labelentry(DW_AT_high_pc,current_asmdata.DefineAsmSymbol(dbgname,bind,AT_METADATA,voidpointertype));
+          begin
+            dbgname:=make_mangledname('DEBUGSTART',current_module.localsymtable,'');
+            if (target_info.system in systems_darwin) then
+              begin
+                bind:=AB_LOCAL;
+                dbgname:='L'+dbgname;
+              end
+            else
+              bind:=AB_GLOBAL;
+            append_labelentry(DW_AT_low_pc,current_asmdata.DefineAsmSymbol(dbgname,bind,AT_METADATA,voidpointertype));
+            dbgname:=make_mangledname('DEBUGEND',current_module.localsymtable,'');
+            if (target_info.system in systems_darwin) then
+              dbgname:='L'+dbgname;
+            append_labelentry(DW_AT_high_pc,current_asmdata.DefineAsmSymbol(dbgname,bind,AT_METADATA,voidpointertype));
+          end;
 
         finish_entry;
 
@@ -3666,7 +3685,7 @@ implementation
       begin
         { Reference all DEBUGINFO sections from the main .fpc section }
         { to prevent eliminating them by smartlinking                 }
-        if (target_info.system in ([system_powerpc_macosclassic]+systems_darwin)) then
+        if (target_info.system in ([system_powerpc_macosclassic]+systems_darwin+systems_wasm)) then
           exit;
         new_section(list,sec_fpc,'links',0);
 

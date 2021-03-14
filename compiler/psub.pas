@@ -2398,7 +2398,7 @@ implementation
 
         { check if the definitions of certain types are available which might not be available in older rtls and
           which are assigned "on the fly" in types_dec }
-{$ifndef jvm}
+{$if not defined(jvm) and not defined(wasm)}
         if not assigned(rec_exceptaddr) then
           Message1(cg_f_internal_type_not_found,'TEXCEPTADDR');
         if not assigned(rec_tguid) then

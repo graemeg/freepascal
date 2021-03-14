@@ -203,6 +203,10 @@ type
      ,
      {$i ccpuinnr.inc}
 {$endif}
+{$if defined(WASM32)}
+     ,
+     {$i ccpuinnr.inc}
+{$endif}
    );
 
 implementation

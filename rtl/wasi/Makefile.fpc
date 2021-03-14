@@ -1,0 +1,82 @@
+#
+#   Makefile.fpc for WASI
+#
+[package]
+main=rtl
+[target]
+loaders=
+units=system $(SYSINIT_UNITS) objpas wasiapi ctypes strings
+
+[require]
+nortl=y
+[install]
+fpcpackage=y
+[default]
+fpcdir=../..
+target=wasi
+cpu=wasm32
+[compiler]
+includedir=$(INC) $(PROCINC)
+sourcedir=$(INC) $(PROCINC) $(COMMON)
+[prerules]
+RTL=..
+INC=../inc
+COMMON=$(RTL)/common
+PROCINC=../$(CPU_TARGET)
+UNITPREFIX=rtl
+SYSTEMUNIT=system
+SYSINIT_UNITS=si_prc
+
+# Paths
+OBJPASDIR=$(RTL)/objpas
+# Insert exception handler in system unit
+ifdef EXCEPTIONS_IN_SYSTEM
+override FPCOPT+=-dEXCEPTIONS_IN_SYSTEM
+endif
+# Insert exception handler in system unit
+ifdef NO_EXCEPTIONS_IN_SYSTEM
+override FPCOPT+=-dNO_EXCEPTIONS_IN_SYSTEM
+endif
+[rules]
+# Get the system independent include file names.
+# This will set the following variables :
+# SYSINCNAMES
+include $(INC)/makefile.inc
+SYSINCDEPS=$(addprefix $(INC)/,$(SYSINCNAMES))
+# Get the processor dependent include file names.
+# This will set the following variables :
+# CPUINCNAMES
+include $(PROCINC)/makefile.cpu
+SYSCPUDEPS=$(addprefix $(PROCINC)/,$(CPUINCNAMES))
+# Put system unit dependencies together.
+SYSDEPS=$(SYSINCDEPS) $(SYSCPUDEPS)
+
+#
+# System Units (System, Objpas, Strings)
+#
+system$(PPUEXT) : system.pp $(SYSDEPS) wasiinc/wasitypes.inc wasiinc/wasiprocs.inc
+        $(COMPILER) $(FPC_SYSTEM_OPT) -Us -Sg system.pp -Fiwasiinc
+
+objpas$(PPUEXT): $(OBJPASDIR)/objpas.pp $(INC)/except.inc system$(PPUEXT)
+        $(COMPILER) -Fi$(OBJPASDIR) $(OBJPASDIR)/objpas.pp
+
+strings$(PPUEXT) : $(INC)/strings.pp $(INC)/stringsi.inc\
+                   $(PROCINC)/strings.inc $(PROCINC)/stringss.inc\
+                   $(SYSTEMUNIT)$(PPUEXT)
+        $(COMPILER) $<
+
+#
+# $(SYSINIT_UNITS) Units
+#
+si_prc$(PPUEXT) : si_prc.pp $(SYSTEMUNIT)$(PPUEXT)
+        $(COMPILER) $<
+
+#
+# Other $(SYSTEMUNIT)-dependent RTL Units
+#
+
+wasiapi$(PPUEXT) : wasiapi.pp wasiinc/wasitypes.inc wasiinc/wasiprocs.inc $(SYSTEMUNIT)$(PPUEXT)
+        $(COMPILER) $< -Fiwasiinc
+
+ctypes$(PPUEXT) :  $(INC)/ctypes.pp $(SYSTEMUNIT)$(PPUEXT)
+        $(COMPILER) $<

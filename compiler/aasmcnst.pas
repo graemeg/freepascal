@@ -1165,7 +1165,7 @@ implementation
    class function ttai_typedconstbuilder.get_string_symofs(typ: tstringtype; winlikewidestring: boolean): pint;
      begin
        { darwin's linker does not support negative offsets }
-       if not(target_info.system in systems_darwin) and
+       if not(target_info.system in systems_darwin+systems_wasm) and
           { it seems that clang's assembler has a bug with the ADRP instruction... }
           (target_info.system<>system_aarch64_win64) then
          result:=0

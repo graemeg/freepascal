@@ -33,7 +33,10 @@ implementation
        SysUtils,
        cutils,cfileutl,cclasses,
        globtype,globals,systems,verbose,comphook,cscript,fmodule,i_embed,link,
-       cpuinfo;
+{$ifdef wasm32}
+       t_wasi,import,export,
+{$endif wasm32}
+       cpuinfo,aasmbase;
 
     type
        TlinkerEmbedded=class(texternallinker)
@@ -57,6 +60,17 @@ implementation
           procedure SetDefaultInfo; override;
           function  MakeExecutable:boolean; override;
 {          function postprocessexecutable(const fn : string;isdll:boolean):boolean;}
+       end;
+
+       { TLinkerEmbedded_Wasm }
+
+       TLinkerEmbedded_Wasm=class(texternallinker)
+       public
+         constructor Create;override;
+         procedure SetDefaultInfo;override;
+
+         //function  MakeExecutable:boolean;override;
+         function  MakeSharedLibrary:boolean;override;
        end;
 
 
@@ -2026,6 +2040,82 @@ function TlinkerEmbedded_SdccSdld.MakeExecutable: boolean;
     MakeExecutable:=success;   { otherwise a recursive call to link method }
   end;
 
+{*****************************************************************************
+                              TlinkerEmbedded_Wasm
+*****************************************************************************}
+
+constructor TLinkerEmbedded_Wasm.Create;
+  begin
+    inherited Create;
+  end;
+
+procedure TLinkerEmbedded_Wasm.SetDefaultInfo;
+  begin
+    Info.DllCmd[1] := 'wasm-ld $SONAME $GCSECTIONS -o $EXE';
+    //Info.DllCmd[2] := 'wasmtool --exportrename $INPUT $EXE';
+  end;
+
+function TLinkerEmbedded_Wasm.MakeSharedLibrary: boolean;
+  var
+    GCSectionsStr  : ansistring;
+    binstr, cmdstr : Tcmdstr;
+    InitStr,
+    FiniStr,
+    SoNameStr      : string[80];
+    mapstr,ltostr  : TCmdStr;
+    success        : Boolean;
+
+    tmp : TCmdStrListItem;
+    tempFileName : ansistring;
+  begin
+    //Result := true;
+    //Result:=inherited MakeSharedLibrary;
+    if (cs_link_smart in current_settings.globalswitches) and
+       create_smartlink_sections then
+     GCSectionsStr:='--gc-sections'
+    else
+      GCSectionsStr:='';
+
+    SoNameStr:='';
+    SplitBinCmd(Info.DllCmd[1],binstr,cmdstr);
+    Replace(cmdstr,'$EXE',maybequoted(current_module.exefilename));
+
+    tmp := TCmdStrListItem(ObjectFiles.First);
+    while Assigned(tmp) do begin
+      cmdstr := tmp.Str+ ' ' + cmdstr;
+      tmp := TCmdStrListItem(tmp.Next);
+    end;
+
+    if HasExports then
+      cmdstr := cmdstr + ' --export-dynamic'; //' --export-dynamic';
+
+    cmdstr := cmdstr + ' --no-entry --allow-undefined';
+
+    if (cs_link_strip in current_settings.globalswitches) then
+     begin
+       { only remove non global symbols and debugging info for a library }
+       cmdstr := cmdstr + ' --strip-all';
+     end;
+
+    //Replace(cmdstr,'$OPT',Info.ExtraOptions);
+    //Replace(cmdstr,'$RES',maybequoted(outputexedir+Info.ResName));
+    //Replace(cmdstr,'$INIT',InitStr);
+    //Replace(cmdstr,'$FINI',FiniStr);
+    Replace(cmdstr,'$SONAME',SoNameStr);
+    //Replace(cmdstr,'$MAP',mapstr);
+    //Replace(cmdstr,'$LTO',ltostr);
+    Replace(cmdstr,'$GCSECTIONS',GCSectionsStr);
+    writeln(utilsprefix+binstr,' ',cmdstr);
+    success:=DoExec(FindUtil(utilsprefix+binstr),cmdstr,true,false);
+
+    //SplitBinCmd(Info.DllCmd[2],binstr,cmdstr);
+    //Replace(cmdstr,'$INPUT',current_module.objfilename );
+    //Replace(cmdstr,'$EXE',maybequoted(current_module.exefilename));
+    //DoExec(FindUtil(utilsprefix+binstr),cmdstr,false,false);
+
+    MakeSharedLibrary:=success;
+  end;
+
 
 {*****************************************************************************
                                      Initialize
@@ -2089,4 +2179,11 @@ initialization
   RegisterLinker(ld_embedded,TlinkerEmbedded_SdccSdld);
   RegisterTarget(system_z80_embedded_info);
 {$endif z80}
+
+{$ifdef wasm32}
+  RegisterTarget(system_wasm32_embedded_info);
+  RegisterImport(system_wasm32_embedded, timportlibwasi);
+  RegisterExport(system_wasm32_embedded, texportlibwasi);
+  RegisterLinker(ld_embedded, TLinkerEmbedded_Wasm);
+{$endif wasm32}
 end.

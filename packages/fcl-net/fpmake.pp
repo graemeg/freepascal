@@ -30,7 +30,7 @@ begin
     P.Email := '';
     P.Description := 'Network related parts of Free Component Libraries (FCL), FPC''s OOP library.';
     P.NeedLibC:= false;
-    P.OSes:=P.OSes-[embedded,msdos,win16,macosclassic,palmos,zxspectrum,msxdos,amstradcpc,sinclairql];
+    P.OSes:=P.OSes-[embedded,msdos,win16,macosclassic,palmos,zxspectrum,msxdos,amstradcpc,sinclairql,wasi];
     if Defaults.CPU=jvm then
       P.OSes := P.OSes - [java,android];
 

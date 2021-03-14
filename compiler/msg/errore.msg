@@ -4233,6 +4233,9 @@ x*2Tlinux_Linux
 Z*2Tembedded_Embedded
 Z*2Tzxspectrum_ZX Spectrum
 Z*2Tmsxdos_MSX-DOS
+# wasm32 targets
+W*2Tembedded_Embedded
+W*2Twasi_The WebAssembly System Interface (WASI)
 # end of targets section
 **1u<x>_Undefines the symbol <x>
 **1U_Unit options:

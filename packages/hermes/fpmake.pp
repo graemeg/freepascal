@@ -25,7 +25,7 @@ begin
     P.Email := '';
     P.Description := 'Library for pixel graphics conversion';
     P.NeedLibC := false;
-    P.OSes:=AllOSes-[embedded,msdos,win16,macosclassic,palmos,zxspectrum,msxdos,amstradcpc,sinclairql];
+    P.OSes:=AllOSes-[embedded,msdos,win16,macosclassic,palmos,zxspectrum,msxdos,amstradcpc,sinclairql,wasi];
     if Defaults.CPU=jvm then
       P.OSes := P.OSes - [java,android];
 

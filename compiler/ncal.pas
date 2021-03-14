@@ -4252,7 +4252,7 @@ implementation
                                  hp.parasym.paraloc[callerside].location^.reference.offset)) or
                                (paramanager.use_fixed_stack and
                                 (node_complexity(hpcurr.left)<node_complexity(hp.left))) then
-{$elseif defined(jvm)}
+{$elseif defined(jvm) or defined(wasm)}
                             if (hpcurr.parasym.paraloc[callerside].location^.reference.offset<hp.parasym.paraloc[callerside].location^.reference.offset) then
 {$else jvm}
                             if (node_complexity(hpcurr.left)<node_complexity(hp.left)) then

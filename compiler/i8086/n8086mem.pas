@@ -48,6 +48,7 @@ interface
        { tx86vecnode doesn't work for i8086, so we inherit tcgvecnode }
        ti8086vecnode = class(tcgvecnode)
         protected
+         function get_address_type: tdef;override;
          function first_arraydef: tnode;override;
          procedure update_reference_reg_mul(maybe_const_reg: tregister; regsize: tdef; l: aint);override;
        end;
@@ -185,6 +186,12 @@ implementation
 {*****************************************************************************
                              TI8086VECNODE
 *****************************************************************************}
+
+    function ti8086vecnode.get_address_type: tdef;
+      begin
+        result:=tx86pointerdef(cpointerdef).getreusablex86(resultdef,x86pt_near);
+      end;
+
 
     function ti8086vecnode.first_arraydef: tnode;
       var

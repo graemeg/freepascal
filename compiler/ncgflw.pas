@@ -24,6 +24,11 @@ unit ncgflw;
 
 {$i fpcdefs.inc}
 
+{$if defined(jvm) or defined(wasm)}
+  {$define SkipABIEH}
+{$endif}
+
+
 interface
 
     uses
@@ -75,9 +80,9 @@ interface
 
        tcgraisenode = class(traisenode)
          function pass_1: tnode;override;
-{$ifndef jvm}
+{$ifndef SkipABIEH}
          procedure pass_generate_code;override;
-{$endif jvm}
+{$endif SkipABIEH}
        end;
 
        tcgtryexceptnode = class(ttryexceptnode)
@@ -115,9 +120,9 @@ implementation
       cpubase,
       tgobj,paramgr,
       cgobj,hlcgobj,nutils
-{$ifndef jvm}
+{$ifndef SkipABIEH}
       ,psabiehpi
-{$endif jvm}
+{$endif}
       ;
 {*****************************************************************************
                          Second_While_RepeatN
@@ -1123,7 +1128,7 @@ implementation
           end;
       end;
 
-{$ifndef jvm}
+{$ifndef SkipABIEH}
     { has to be factored out as well }
     procedure tcgraisenode.pass_generate_code;
       var
@@ -1170,7 +1175,7 @@ implementation
             include(flowcontrol,fc_catching_exceptions);
           end;
       end;
-{$endif jvm}
+{$endif SkipABIEH}
 
 
 begin

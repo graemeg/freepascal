@@ -32,7 +32,10 @@ interface
 
     uses
       globtype,globals,
-      aasmbase,aasmtai,aasmdata,aasmcfi,
+      cpubase,aasmbase,aasmtai,aasmdata,aasmcfi,
+{$ifdef wasm}
+      aasmcpu,
+{$endif wasm}
       assemble;
 
     type
@@ -66,6 +69,9 @@ interface
         procedure WriteTree(p:TAsmList);override;
         procedure WriteAsmList;override;
         destructor destroy; override;
+{$ifdef WASM}
+        procedure WriteFuncType(functype: TWasmFuncType);
+{$endif WASM}
        private
         setcount: longint;
         procedure WriteDecodedSleb128(a: int64);
@@ -118,7 +124,7 @@ implementation
 {$ifdef m68k}
       cpuinfo,aasmcpu,
 {$endif m68k}
-      cpubase,objcasm;
+      objcasm;
 
     const
       line_length = 70;
@@ -549,6 +555,11 @@ implementation
            begin
              if (atype in [sec_stub]) then
                writer.AsmWrite('.section ');
+           end;
+         system_wasm32_wasi,
+         system_wasm32_embedded:
+           begin
+             writer.AsmWrite('.section ');
            end
          else
            begin
@@ -711,6 +722,37 @@ implementation
       end;
 
 
+{$ifdef WASM}
+    procedure TGNUAssembler.WriteFuncType(functype: TWasmFuncType);
+      var
+        wasm_basic_typ: TWasmBasicType;
+        first: boolean;
+      begin
+        writer.AsmWrite('(');
+        first:=true;
+        for wasm_basic_typ in functype.params do
+          begin
+            if first then
+              first:=false
+            else
+              writer.AsmWrite(',');
+            writer.AsmWrite(gas_wasm_basic_type_str[wasm_basic_typ]);
+          end;
+        writer.AsmWrite(') -> (');
+        first:=true;
+        for wasm_basic_typ in functype.results do
+          begin
+            if first then
+              first:=false
+            else
+              writer.AsmWrite(',');
+            writer.AsmWrite(gas_wasm_basic_type_str[wasm_basic_typ]);
+          end;
+        writer.AsmWrite(')');
+      end;
+{$endif WASM}
+
+
     procedure TGNUAssembler.WriteTree(p:TAsmList);
 
       function needsObject(hp : tai_symbol) : boolean;
@@ -797,6 +839,28 @@ implementation
               writer.AsmLn;
             end;
         end;
+
+{$ifdef WASM}
+      procedure WriteFuncTypeDirective(hp:tai_functype);
+        begin
+          writer.AsmWrite(#9'.functype'#9);
+          writer.AsmWrite(hp.funcname);
+          writer.AsmWrite(' ');
+          WriteFuncType(hp.functype);
+          writer.AsmLn;
+        end;
+
+
+      procedure WriteImportExport(hp:tai_impexp);
+        var
+          symstypestr: string;
+        begin
+          Str(hp.symstype,symstypestr);
+          writer.AsmWriteLn(asminfo^.comment+'ait_importexport(extname='''+hp.extname+''', intname='''+hp.intname+''', extmodule='''+hp.extmodule+''', symstype='+symstypestr+')');
+          if hp.extmodule='' then
+            writer.AsmWriteLn(#9'.export_name '+hp.intname+', '+hp.extname);
+        end;
+{$endif WASM}
 
     var
       ch       : char;
@@ -1377,6 +1441,10 @@ implementation
                  { the .localentry directive has to specify the size from the
                    start till here of the non-local entry code as second argument }
                  s:=', .-';
+               if ((target_info.system <> system_arm_linux) and (target_info.system <> system_arm_android)) then
+                 sepChar := '@'
+               else
+                 sepChar := '#';
                if replaceforbidden then
                  begin
                    { avoid string truncation }
@@ -1387,6 +1455,11 @@ implementation
                      begin
                        writer.AsmWrite(#9'.globl ');
                        writer.AsmWriteLn(ApplyAsmSymbolRestrictions(tai_symbolpair(hp).sym^));
+                     end;
+                   if (tf_needs_symbol_type in target_info.flags) then
+                     begin
+                       writer.AsmWrite(#9'.type'#9 + ApplyAsmSymbolRestrictions(tai_symbolpair(hp).sym^));
+                       writer.AsmWriteLn(',' + sepChar + 'function');
                      end;
                  end
                else
@@ -1399,6 +1472,11 @@ implementation
                      begin
                        writer.AsmWrite(#9'.globl ');
                        writer.AsmWriteLn(tai_symbolpair(hp).sym^);
+                     end;
+                   if (tf_needs_symbol_type in target_info.flags) then
+                     begin
+                       writer.AsmWrite(#9'.type'#9 + tai_symbolpair(hp).sym^);
+                       writer.AsmWriteLn(',' + sepChar + 'function');
                      end;
                  end;
              end;
@@ -1548,6 +1626,24 @@ implementation
                end;
                writer.AsmLn;
              end;
+
+{$ifdef WASM}
+           ait_local:
+             begin
+               if tai_local(hp).first then
+                 writer.AsmWrite(#9'.local'#9)
+               else
+                 writer.AsmWrite(', ');
+               writer.AsmWrite(gas_wasm_basic_type_str[tai_local(hp).bastyp]);
+               if tai_local(hp).last then
+                 writer.AsmLn;
+             end;
+           ait_functype:
+             WriteFuncTypeDirective(tai_functype(hp));
+           ait_importexport:
+             WriteImportExport(tai_impexp(hp));
+{$endif WASM}
+
            else
              if not WriteComments(hp) then
                internalerror(2006012201);

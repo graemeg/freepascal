@@ -23,7 +23,7 @@ begin
     P.Email := '';
     P.Description := 'Several hash and cryptography algorithms (MD5,CRC,Linux crypt and NTLM1).';
     P.NeedLibC:= false;
-    P.OSes:=P.OSes-[embedded,win16,macosclassic,palmos,zxspectrum,msxdos,amstradcpc,sinclairql];
+    P.OSes:=P.OSes-[embedded,win16,macosclassic,palmos,zxspectrum,msxdos,amstradcpc,sinclairql,wasi];
     if Defaults.CPU=jvm then
       P.OSes := P.OSes - [java,android];
 

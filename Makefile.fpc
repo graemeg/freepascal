@@ -97,6 +97,9 @@ endif
 ifeq ($(CPU_TARGET),z80)
 PPSUF=z80
 endif
+ifeq ($(CPU_TARGET),wasm32)
+PPSUF=wasm32
+endif
 
 # cross compilers uses full cpu_target, not just ppc-suffix
 # (except if the target cannot run a native compiler)

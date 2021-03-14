@@ -40,3 +40,5 @@
 
 {$include ihxutil/fpmake.pp}
 
+{$include wasmbin/fpmake.pp}
+

@@ -386,6 +386,10 @@ implementation
         create_fpu_types;
         s64currencytype:=corddef.create(scurrency,low(int64),high(int64),true);
 {$endif jvm}
+{$ifdef wasm}
+        create_fpu_types;
+        s64currencytype:=corddef.create(scurrency,low(int64),high(int64),true);
+{$endif wasm}
 {$ifdef xtensa}
         create_fpu_types;
         s64currencytype:=corddef.create(scurrency,low(int64),high(int64),true);

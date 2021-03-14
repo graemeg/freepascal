@@ -4677,7 +4677,7 @@ implementation
             they can be interpreted as all different starting symbols of
             subsections and be reordered }
           if (item<>firstitem) and
-             (target_info.system in systems_darwin) then
+             (target_info.system in (systems_darwin+systems_wasm)) then
             begin
               { the .set already defines the symbol, so can't emit a tai_symbol as that will redefine it }
               if global then

@@ -111,7 +111,7 @@ Type
   // Please keep this order, see OSCPUSupported below
   TCpu=(cpuNone,
     i386,m68k,powerpc,sparc,x86_64,arm,powerpc64,avr,armeb,
-    mips,mipsel,mips64,mips64el,jvm,i8086,aarch64,cpuwasm,sparc64,riscv32,riscv64,xtensa,z80
+    mips,mipsel,mips64,mips64el,jvm,i8086,aarch64,wasm32,sparc64,riscv32,riscv64,xtensa,z80
   );
   TCPUS = Set of TCPU;
 
@@ -122,7 +122,8 @@ Type
     palmos,macosclassic,darwin,emx,watcom,morphos,netwlibc,
     win64,wince,gba,nds,embedded,symbian,haiku,iphonesim,
     aix,java,android,nativent,msdos,wii,aros,dragonfly,
-    win16,wasm,freertos,zxspectrum,msxdos,ios,amstradcpc,sinclairql
+    win16,freertos,zxspectrum,msxdos,ios,amstradcpc,sinclairql,
+    wasi
   );
   TOSes = Set of TOS;
 
@@ -186,7 +187,7 @@ Const
 
   { This table is kept OS,Cpu because it is easier to maintain (PFV) }
   OSCPUSupported : array[TOS,TCpu] of boolean = (
-    { os          none   i386    m68k  ppc    sparc  x86_64 arm    ppc64  avr    armeb  mips   mipsel mips64 mips64el jvm    i8086 aarch64 wasm   sparc64 riscv32 riscv64  xtensa z80}
+    { os          none   i386    m68k  ppc    sparc  x86_64 arm    ppc64  avr    armeb  mips   mipsel mips64 mips64el jvm    i8086 aarch64 wasm32 sparc64 riscv32 riscv64  xtensa z80}
     { none }    ( false, false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false),
     { linux }   ( false, true,  true,  true,  true,  true,  true,  true,  false, true , true , true , true , true ,   false, false, true , false, true ,  true ,  true,    true , false),
     { go32v2 }  ( false, true,  false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false),
@@ -213,7 +214,7 @@ Const
     { wince    }( false, true,  false, false, false, false, true,  false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false),
     { gba    }  ( false, false, false, false, false, false, true,  false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false),
     { nds    }  ( false, false, false, false, false, false, true,  false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false),
-    { embedded }( false, true,  true,  true,  true,  true,  true,  true,  true,  true , false, true,  false, true,    false, true , false, false, false,  true,   true,    true , false),
+    { embedded }( false, true,  true,  true,  true,  true,  true,  true,  true,  true , false, true,  false, true,    false, true , false, true,  false,  true,   true,    true , false),
     { symbian } ( false, true,  false, false, false, false, true,  false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false),
     { haiku }   ( false, true,  false, false, false, true,  false, false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false),
     { iphonesim}( false, true,  false, false, false, true,  false, false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false),
@@ -226,13 +227,13 @@ Const
     { aros }    ( false, true,  false, false, false, true,  true,  false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false),
     { dragonfly}( false, false, false, false, false, true,  false, false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false),
     { win16 }   ( false, false, false, false, false, false, false, false, false, false, false, false, false, false,   false, true , false, false, false,  false,  false,   false, false),
-    { wasm }    ( false, false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false, true,  false,  false,  false,   false, false),
     { freertos }( false, false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   true , false),
     {zxspectrum}( false, false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, true ),
     { msxdos }  ( false, false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, true ),
     { ios }     ( false, false, false, false, false, false,  true, false, false, false, false, false, false, false,   false, false, true , false, false,  false,  false,   false, false),
     {amstradcpc}( false, false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, true ),
-    {sinclairql}( false, false, true,  false, false, false, false, false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false)
+    {sinclairql}( false, false, true,  false, false, false, false, false, false, false, false, false, false, false,   false, false, false, false, false,  false,  false,   false, false),
+    { wasi }    ( false, false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false, true,  false,  false,  false,   false, false)
   );
 
   // Useful

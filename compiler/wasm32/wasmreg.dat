@@ -1,0 +1,23 @@
+;
+; WebAssembly registers
+;
+; layout
+; <name>,<type>,<subtype>,<value>,<stdname>
+;
+; WebAssembly does not have any registers, since it is stack-based.
+; We do define a few artificial registers to make integration
+; with the rest of the compiler easier though.
+
+; general/int registers
+NO,$00,$00,$00,INVALID
+; used as base register in reference when referring to the top
+; of the evaluation stack (offset = offset on the evaluation
+; stack)
+R0,$01,$00,$00,evalstacktopptr
+; for addressing locals ("stack pointer")
+R1,$01,$00,$01,localsstackptr
+; generic fake evaluation stack register for use by the register allocator
+R2,$01,$00,$02,evalstacktop
+; fake register, representing the local frame pointer. Used for accessing
+; address-taken local variables on the linear stack: (localframeptr+offset).
+R3,$01,$00,$03,localframeptr

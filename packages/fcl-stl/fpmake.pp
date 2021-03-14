@@ -25,7 +25,7 @@ begin
     P.Email := '';
     P.Description := 'Generic container library of Free Component Libraries (FCL), FPC''s OOP library.';
     P.NeedLibC:= false;
-    P.OSes:=AllOSes-[embedded,zxspectrum,msxdos,amstradcpc,sinclairql];
+    P.OSes:=AllOSes-[embedded,zxspectrum,msxdos,amstradcpc,sinclairql,wasi];
     if Defaults.CPU=jvm then
       P.OSes := P.OSes - [java,android];
 

@@ -25,7 +25,7 @@ begin
     P.Description := 'Process (execution) related parts of Free Component Libraries (FCL), FPC''s OOP library.';
     P.Options.Add('-S2h');
     P.NeedLibC:= false;
-    P.OSes:=AllOSes-[embedded,msdos,win16,go32v2,nativent,macosclassic,palmos,atari,zxspectrum,msxdos,amstradcpc,sinclairql];
+    P.OSes:=AllOSes-[embedded,msdos,win16,go32v2,nativent,macosclassic,palmos,atari,zxspectrum,msxdos,amstradcpc,sinclairql,wasi];
     if Defaults.CPU=jvm then
       P.OSes := P.OSes - [java,android];
 

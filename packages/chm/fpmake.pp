@@ -25,7 +25,7 @@ begin
     P.Email := '';
     P.Description := 'Standalone CHM reader and writer library';
     P.NeedLibC:= false;
-    P.OSes := P.OSes - [embedded,nativent,msdos,win16,macosclassic,palmos,atari,zxspectrum,msxdos,amstradcpc,watcom,sinclairql];
+    P.OSes := P.OSes - [embedded,nativent,msdos,win16,macosclassic,palmos,atari,zxspectrum,msxdos,amstradcpc,watcom,sinclairql,wasi];
     if Defaults.CPU=jvm then
       P.OSes := P.OSes - [java,android];
 

@@ -61,6 +61,9 @@ interface
        tcaseblock = record
           { label (only used in pass_generate_code) }
           blocklabel : tasmlabel;
+{$ifdef WASM}
+          BlockBr : Integer;
+{$endif WASM}
 
           { shortcut - set to true if blocklabel isn't actually unique to the
             case block due to one of the following conditions:

@@ -91,6 +91,11 @@ interface
           ait_llvmmetadatareftypedconst, { reference to metadata inside a metadata constant }
           ait_llvmmetadatarefoperand, { llvm metadata referece: !metadataname !id }
 {$endif}
+{$ifdef wasm}
+          ait_importexport,
+          ait_local,
+          ait_functype,
+{$endif}
           { SEH directives used in ARM,MIPS and x86_64 COFF targets }
           ait_seh_directive,
           { Dwarf CFI directive }
@@ -233,6 +238,11 @@ interface
           'llvmmetadatareftc',
           'llvmmetadatarefop',
 {$endif}
+{$ifdef wasm}
+          'importexport',
+          'local',
+          'functype',
+{$endif}
           'cfi',
           'seh_directive',
           'eabi_attribute'
@@ -288,6 +298,11 @@ interface
        ,top_fenceflags
        ,top_roundingmode
 {$endif defined(riscv32) or defined(riscv64)}
+{$ifdef wasm}
+       ,top_functype
+       ,top_single
+       ,top_double
+{$endif wasm}
        );
 
       { kinds of operations that an instruction can perform on an operand }
@@ -341,6 +356,9 @@ interface
                      ait_llvmmetadatareftypedconst,
                      ait_llvmmetadatarefoperand,
 {$endif llvm}
+{$ifdef wasm}
+                     ait_importexport,ait_local,ait_functype,
+{$endif wasm}
                      ait_seh_directive,
                      ait_cfi,
                      ait_eabi_attribute
@@ -516,6 +534,11 @@ interface
             top_fenceflags : (fenceflags : TFenceFlags);
             top_roundingmode : (roundingmode : TRoundingMode);
         {$endif defined(riscv32) or defined(riscv64)}
+        {$ifdef wasm}
+            top_functype : (functype: TWasmFuncType);
+            top_single : (sval:single);
+            top_double : (dval:double);
+        {$endif wasm}
         end;
         poper=^toper;
 
@@ -2995,6 +3018,10 @@ implementation
               top_wstring:
                 donewidestring(pwstrval);
 {$endif jvm}
+{$ifdef wasm}
+              top_functype:
+                FreeAndNil(functype);
+{$endif wasm}
               else
                 ;
             end;

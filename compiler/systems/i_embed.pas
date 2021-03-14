@@ -784,6 +784,77 @@ unit i_embed;
             llvmdatalayout : 'todo';
           );
 
+       system_wasm32_embedded_info : tsysteminfo =
+          (
+            system       : system_wasm32_embedded;
+            name         : 'Embedded';
+            shortname    : 'embedded';
+            flags        : [tf_under_development,tf_needs_symbol_size,tf_needs_symbol_type,
+                            tf_files_case_sensitive,tf_no_generic_stackcheck,
+                            tf_smartlink_sections,
+                            { avoid the creation of threadvar tables }
+                            tf_section_threadvars];
+            cpu          : cpu_wasm32;
+            unit_env     : '';
+            extradefines : '';
+            exeext       : '.wasm';
+            defext       : '.def';
+            scriptext    : '.sh';
+            smartext     : '.sl';
+            unitext      : '.ppu';
+            unitlibext   : '.ppl';
+            asmext       : '.wat';
+            objext       : '.o';
+            resext       : '';
+            resobjext    : '.o';
+            sharedlibext : ''; // keep it empty! The sharedlibext drives the export module name
+                               // if this is populated, then the name should be cleared when generating import
+            staticlibext : '.a';
+            staticlibprefix : '';
+            sharedlibprefix : '';
+            sharedClibext : '.wasm';
+            staticClibext : '.wasm';
+            staticClibprefix : '';
+            sharedClibprefix : '';
+            importlibprefix : '';
+            importlibext : '.wasm';
+            Cprefix      : '';
+            newline      : #10;
+            dirsep       : '/';
+            assem        : as_wasm32_llvm_mc;
+            assemextern  : as_wasm32_llvm_mc;
+            link         : ld_none;
+            linkextern   : ld_embedded;
+            ar           : ar_none;
+            res          : res_none;
+            dbg          : dbg_dwarf2;
+            script       : script_unix;
+            endian       : endian_little;
+            alignment    :
+              (
+                procalign       : 4;
+                loopalign       : 4;
+                jumpalign       : 0;
+                jumpalignskipmax    : 0;
+                coalescealign   : 0;
+                coalescealignskipmax: 0;
+                constalignmin   : 0;
+                constalignmax   : 4;
+                varalignmin     : 4;
+                varalignmax     : 4;
+                localalignmin   : 4;
+                localalignmax   : 4;
+                recordalignmin  : 0;
+                recordalignmax  : 2;
+                maxCrecordalign : 4
+              );
+            first_parm_offset : 0;
+            stacksize   : 262144;
+            stackalign   : 4;
+            abi          : abi_default;
+            llvmdatalayout : 'todo';
+          );
+
  implementation
 
 initialization

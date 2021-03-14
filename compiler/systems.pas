@@ -85,7 +85,7 @@ interface
           id          : tasm;
           idtxt       : string[12];
           asmbin      : string[16];
-          asmcmd      : string[70];
+          asmcmd      : string[100];
           supported_targets : set of tsystem;
           flags        : set of tasmflags;
           labelprefix : string[3];
@@ -187,7 +187,7 @@ interface
        { using packed causes bus errors on processors which require alignment }
        tsysteminfo = record
           system       : tsystem;
-          name         : string[34];
+          name         : string[39];
           shortname    : string[12];
           flags        : set of tsystemflags;
           cpu          : tsystemcpu;
@@ -199,20 +199,20 @@ interface
           smartext,
           unitext,
           unitlibext,
-          asmext       : string[4];
+          asmext       : string[5];
           objext       : string[6];
           resext       : string[4];
           resobjext    : string[7];
           sharedlibext : string[10];
           staticlibext,
-          staticlibprefix : string[4];
+          staticlibprefix : string[6];
           sharedlibprefix : string[4];
           sharedClibext : string[10];
           staticClibext,
-          staticClibprefix : string[4];
+          staticClibprefix : string[6];
           sharedClibprefix : string[4];
           importlibprefix : string[10];
-          importlibext : string[4];
+          importlibext : string[6];
           Cprefix      : string[2];
           newline      : string[2];
           dirsep       : char;
@@ -293,6 +293,9 @@ interface
                          system_aarch64_darwin];
        systems_darwin = systems_ios + systems_iphonesym + systems_macosx;
 
+       { all WebAssembly systems }
+       systems_wasm = [system_wasm32_embedded,system_wasm32_wasi];
+
        {all solaris systems }
        systems_solaris = [system_sparc_solaris, system_i386_solaris,
                           system_x86_64_solaris];
@@ -369,7 +372,7 @@ interface
                                          system_arm_wince,
                                          system_x86_64_win64,
                                          system_i8086_win16,
-                                         system_aarch64_win64]+systems_linux+systems_android;
+                                         system_aarch64_win64]+systems_linux+systems_android+systems_wasm;
 
        { all systems that reference symbols in other binaries using indirect imports }
        systems_indirect_var_imports = systems_all_windows+[system_i386_nativent];
@@ -390,7 +393,8 @@ interface
                                    system_i386_openbsd,system_x86_64_openbsd,
                                    system_riscv32_linux,system_riscv64_linux,
                                    system_aarch64_win64,
-                                   system_z80_zxspectrum,system_z80_msxdos
+                                   system_z80_zxspectrum,system_z80_msxdos,
+                                   system_wasm32_wasi
                                   ]+systems_darwin+systems_amigalike;
 
        { all systems that use the PE+ header in the PE/COFF file
@@ -460,7 +464,7 @@ interface
        cpu2str : array[TSystemCpu] of string[10] =
             ('','i386','m68k','alpha','powerpc','sparc','vm','ia64','x86_64',
              'mips','arm', 'powerpc64', 'avr', 'mipsel','jvm', 'i8086',
-             'aarch64', 'wasm', 'sparc64', 'riscv32', 'riscv64', 'xtensa',
+             'aarch64', 'wasm32', 'sparc64', 'riscv32', 'riscv64', 'xtensa',
              'z80');
 
        abiinfo : array[tabi] of tabiinfo = (
@@ -1151,9 +1155,9 @@ begin
   {$endif cpuaarch64}
 {$endif aarch64}
 
-{$ifdef wasm}
-  default_target(system_wasm_wasm32);
-{$endif wasm}
+{$ifdef wasm32}
+  default_target(system_wasm32_wasi);
+{$endif wasm32}
 
 {$ifdef z80}
   default_target(system_z80_embedded);

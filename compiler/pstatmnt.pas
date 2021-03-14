@@ -381,9 +381,9 @@ implementation
              { variable must be an ordinal, int64 is not allowed for 32bit targets }
              if (
                  not(is_ordinal(hloopvar.resultdef))
-    {$ifndef cpu64bitaddr}
+    {$if not defined(cpu64bitaddr) and not defined(cpu64bitalu)}
                  or is_64bitint(hloopvar.resultdef)
-    {$endif not cpu64bitaddr}
+    {$endif not cpu64bitaddr and not cpu64bitalu}
                ) and
                (hloopvar.resultdef.typ<>undefineddef)
                then

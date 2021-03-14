@@ -51,7 +51,7 @@
              cpu_jvm,                      { 14 }
              cpu_i8086,                    { 15 }
              cpu_aarch64,                  { 16 }
-             cpu_wasm,                     { 17 }
+             cpu_wasm32,                   { 17 }
              cpu_sparc64,                  { 18 }
              cpu_riscv32,                  { 19 }
              cpu_riscv64,                  { 20 }
@@ -181,7 +181,7 @@
              system_i8086_win16,        { 89 }
              system_i8086_embedded,     { 90 }
              system_arm_aros,           { 91 }
-             system_wasm_wasm32,        { 92 }
+             system_wasm32_embedded,    { 92 }
              system_sparc64_linux,      { 93 }
              system_sparc64_solaris,    { 94 }
              system_arm_netbsd,         { 95 }
@@ -202,7 +202,8 @@
              system_z80_msxdos,         { 110 }
              system_aarch64_darwin,     { 111 }
              system_z80_amstradcpc,     { 112 }
-             system_m68k_sinclairql     { 113 }
+             system_m68k_sinclairql,    { 113 }
+             system_wasm32_wasi         { 114 }
        );
 
      type
@@ -254,7 +255,7 @@
              ,as_solaris_as
              ,as_m68k_vasm
              ,as_m68k_as_aout
-             ,as_wasm_binaryen
+             ,as_wasm32_binaryen
              ,as_powerpc_gas_legacy    { for systems with very old GAS versions only, which don't support eg. named sections }
              ,as_clang_llvm
              ,as_clang_gas             { machine code assembler in gas style assembled by clang }
@@ -262,6 +263,8 @@
              ,as_sdcc_sdasz80
              ,as_z80_vasm
              ,as_z80_rel
+             ,as_wasm32_wabt
+             ,as_wasm32_llvm_mc        { WebAssembly code assembled by llvm-mc (llvm machine code playground) }
        );
 
        tlink = (ld_none,
@@ -307,7 +310,8 @@
              ld_zxspectrum,
              ld_msxdos,
              ld_amstradcpc,
-             ld_sinclairql
+             ld_sinclairql,
+             ld_wasi
        );
 
        tar = (ar_none

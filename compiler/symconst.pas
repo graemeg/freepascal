@@ -435,7 +435,9 @@ type
       "varargs" modifier or Mac-Pascal ".." parameter }
     po_variadic,
     { implicitly return same type as the class instance to which the message is sent }
-    po_objc_related_result_type
+    po_objc_related_result_type,
+    { procedure returns value (like a function), that should be discarded }
+    po_discardresult
   );
   tprocoptions=set of tprocoption;
 
@@ -1101,7 +1103,8 @@ inherited_objectoptions : tobjectoptions = [oo_has_virtual,oo_has_private,oo_has
       'po_is_auto_setter',{po_is_auto_setter}
       'po_noinline',{po_noinline}
       'C-style array-of-const', {po_variadic}
-      'objc-related-result-type' {po_objc_related_result_type}
+      'objc-related-result-type', {po_objc_related_result_type}
+      'po_discardresult' { po_discardresult }
     );
 
 implementation

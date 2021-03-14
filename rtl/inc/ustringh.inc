@@ -15,7 +15,7 @@
  **********************************************************************}
 
 
-Procedure UniqueString (Var S : UnicodeString);external name 'FPC_UNICODESTR_UNIQUE';
+Procedure UniqueString (Var S : UnicodeString);external name 'FPC_UNICODESTR_UNIQUE';{$ifndef VER3_2}discardresult;{$endif VER3_2}
 Function Pos (Const Substr : UnicodeString; Const Source : UnicodeString; Offset: Sizeint = 1) : SizeInt;
 Function Pos (c : Char; Const s : UnicodeString; Offset: Sizeint = 1) : SizeInt;
 Function Pos (c : UnicodeChar; Const s : UnicodeString; Offset: Sizeint = 1) : SizeInt;

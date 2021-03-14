@@ -55,6 +55,7 @@ dirs_freertos=freertos
 dirs_zxspectrum=zxspectrum
 dirs_msxdos=msxdos
 dirs_sinclairql=sinclairql
+dirs_wasi=wasi
 
 [install]
 fpcpackage=y
