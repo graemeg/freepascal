@@ -88,6 +88,7 @@ type
     procedure SetCapacity(NewCapacity: Integer);
     procedure SetCount(NewCount: Integer);
     Procedure RaiseIndexError(Index : Integer);{$ifndef VER2_6}noreturn;{$endif VER2_6}
+    property List: PPointerList read FList;
   public
     destructor Destroy; override;
     function Add(Item: Pointer): Integer;
@@ -111,7 +112,6 @@ type
     property Capacity: Integer read FCapacity write SetCapacity;
     property Count: Integer read FCount write SetCount;
     property Items[Index: Integer]: Pointer read Get write Put; default;
-    property List: PPointerList read FList;
   end;
 
 
