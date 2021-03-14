@@ -14,7 +14,7 @@
 
  **********************************************************************}
 
-function fpc_setjmp(var S : jmp_buf) : longint;assembler;nostackframe;[Public, alias : 'FPC_SETJMP'];nostackframe;compilerproc;
+function fpc_setjmp(var S : jmp_buf) : longint;[Public, alias : 'FPC_SETJMP'];compilerproc;assembler;nostackframe;
   asm
     sd ra,   0*8(a0)
     sd s0,   1*8(a0)
@@ -51,7 +51,7 @@ function fpc_setjmp(var S : jmp_buf) : longint;assembler;nostackframe;[Public, a
 {$endif FPUFD or FPUD}
 {$if defined(FPUF)}
     frcsr t0
-                 
+
     sd t0,   14*8(a0)
 
     fsw f8,  30*4(a0)
@@ -72,7 +72,7 @@ function fpc_setjmp(var S : jmp_buf) : longint;assembler;nostackframe;[Public, a
   end;
 
 
-procedure fpc_longjmp(var S : jmp_buf;value : longint);assembler;nostackframe;[Public, alias : 'FPC_LONGJMP'];compilerproc;
+procedure fpc_longjmp(var S : jmp_buf;value : longint);[Public, alias : 'FPC_LONGJMP'];compilerproc;assembler;nostackframe;
   asm
     ld ra,  0*8(a0)
     ld s0,  1*8(a0)
@@ -123,7 +123,7 @@ procedure fpc_longjmp(var S : jmp_buf;value : longint);assembler;nostackframe;[P
     flw f27, 41*4(a0)
 
     fscsr sp
-{$endif FPUF}     
+{$endif FPUF}
     ld sp, 13*8(a0)
 
     beq a1, x0, .Lone
