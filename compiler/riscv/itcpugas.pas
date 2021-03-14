@@ -1,7 +1,7 @@
 {
     Copyright (c) 1998-2002 by Florian Klaempfl
 
-    This unit contains the Risc-V32 GAS instruction tables
+    This unit contains the RiscV GAS instruction tables
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,12 +21,12 @@
 }
 unit itcpugas;
 
-{$i fpcdefs.inc}
+{$I fpcdefs.inc}
 
-interface
+  interface
 
     uses
-      cpubase,cgbase;
+      cpubase, cgbase;
 
     const
       gas_op2str: array[tasmop] of string[14] = ('<none>',
@@ -42,14 +42,31 @@ interface
         'fence','fence.i',
         'ecall','ebreak',
         'csrrw','csrrs','csrrc','csrrwi','csrrsi','csrrci',
+{$ifdef RISCV64}
+        { 64-bit }
+        'addiw','slliw','srliw','sraiw',
+        'addw','sllw','srlw','subw','sraw',
+        'ld','sd','lwu',
+{$endif RISCV64}
 
         { m-extension }
         'mul','mulh','mulhsu','mulhu',
         'div','divu','rem','remu',
+{$ifdef RISCV64}
+        { 64-bit }
+        'mulw',
+        'divw','divuw','remw','remuw',
+{$endif RISCV64}
 
         { a-extension }
         'lr.w','sc.w','amoswap.w','amoadd.w','amoxor.w','amoand.w',
         'amoor.w','amomin.w','amomax.w','amominu.w','amomaxu.w',
+
+{$ifdef RISCV64}
+        { 64-bit }
+        'lr.d','sc.d','amoswap.d','amoadd.d','amoxor.d','amoand.d',
+        'amoor.d','amomin.d','amomax.d','amominu.d','amomaxu.d',
+{$endif RISCV64}
 
         { f-extension }
         'flw','fsw',
@@ -63,6 +80,12 @@ interface
         'frcsr','frrm','frflags','fscsr','fsrm',
         'fsflags','fsrmi','fsflagsi',
 
+{$ifdef RISCV64}
+        { 64-bit }
+        'fcvt.l.s','fcvt.lu.s',
+        'fcvt.s.l','fcvt.s.lu',
+{$endif RISCV64}
+
         { d-extension }
         'fld','fsd',
         'fmadd.d','fmsub.d','fnmsub.d','fnmadd.d',
@@ -73,6 +96,12 @@ interface
         'fcvt.d.s','fcvt.s.d',
         'fcvt.w.d','fcvt.wu.d','fcvt.d.w','fcvt.d.wu',
 
+{$ifdef RISCV64}
+        { 64-bit }
+        'fcvt.l.d','fcvt.lu.d','fmv.x.d',
+        'fcvt.d.l','fcvt.d.lu','fmv.d.x',
+{$endif RISCV64}
+
         { Machine mode }
         'mret','hret','sret','uret',
         'wfi',
@@ -81,11 +110,10 @@ interface
         'sfence.vm'
         );
 
-    function gas_regnum_search(const s:string):Tregister;
-    function gas_regname(r:Tregister):string;
+    function gas_regnum_search(const s: string): Tregister;
+    function gas_regname(r: Tregister): string;
 
-
-implementation
+  implementation
 
     uses
       globtype,globals,aasmbase,
@@ -139,3 +167,4 @@ implementation
       end;
 
 end.
+
