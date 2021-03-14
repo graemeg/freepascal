@@ -744,7 +744,11 @@ unit cgrv;
                 reference_reset_symbol(href,l,0,0,[]);
                 href.refaddr:=addr_pcrel_lo12;
                 href.base:=tmpreg;
+{$ifdef RISCV64}
                 list.concat(taicpu.op_reg_ref(A_LD,tmpreg,href));
+{$else}
+                list.concat(taicpu.op_reg_ref(A_LW,tmpreg,href));
+{$endif}
               end
             else
               begin
