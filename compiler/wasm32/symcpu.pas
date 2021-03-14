@@ -94,6 +94,7 @@ type
   { tcpuprocvardef }
 
   tcpuprocvardef = class(tprocvardef)
+    function create_functype: TWasmFuncType;
     function is_pushleftright: boolean; override;
   end;
   tcpuprocvardefclass = class of tcpuprocvardef;
@@ -220,26 +221,19 @@ implementation
 ****************************************************************************}
 
 
-  destructor tcpuprocdef.destroy;
-    begin
-      exprasmlist.free;
-      inherited destroy;
-    end;
-
-
-  function tcpuprocdef.create_functype: TWasmFuncType;
+  function create_functype_common(pd: tabstractprocdef): TWasmFuncType;
     var
       i: Integer;
       prm: tcpuparavarsym;
       bt: TWasmBasicType;
     begin
-      init_paraloc_info(callerside);
+      pd.init_paraloc_info(callerside);
       result:=TWasmFuncType.Create([],[]);
-      if Assigned(paras) and (paras.Count>0) then
+      if Assigned(pd.paras) and (pd.paras.Count>0) then
         begin
-          for i:=0 to paras.Count-1 do
+          for i:=0 to pd.paras.Count-1 do
             begin
-              prm := tcpuparavarsym(paras[i]);
+              prm := tcpuparavarsym(pd.paras[i]);
               case prm.paraloc[callerside].Size of
                 OS_8..OS_32, OS_S8..OS_S32:
                   result.add_param(wbt_i32);
@@ -260,10 +254,10 @@ implementation
               end;
             end;
         end;
-      if Assigned(returndef) and (returndef.size>0) and
-         not paramanager.ret_in_param(returndef,self) then
+      if Assigned(pd.returndef) and (pd.returndef.size>0) and
+         not paramanager.ret_in_param(pd.returndef,pd) then
         begin
-          if not defToWasmBasic(returndef,bt) then
+          if not defToWasmBasic(pd.returndef,bt) then
             bt:=wbt_i32;
           case bt of
             wbt_i64:
@@ -279,6 +273,19 @@ implementation
     end;
 
 
+  destructor tcpuprocdef.destroy;
+    begin
+      exprasmlist.free;
+      inherited destroy;
+    end;
+
+
+  function tcpuprocdef.create_functype: TWasmFuncType;
+    begin
+      Result:=create_functype_common(self);
+    end;
+
+
   function tcpuprocdef.is_pushleftright: boolean;
     begin
       Result:=true;
@@ -288,6 +295,11 @@ implementation
 {****************************************************************************
                              tcpuprocvardef
 ****************************************************************************}
+
+    function tcpuprocvardef.create_functype: TWasmFuncType;
+      begin
+        Result:=create_functype_common(Self);
+      end;
 
     function tcpuprocvardef.is_pushleftright: boolean;
       begin
