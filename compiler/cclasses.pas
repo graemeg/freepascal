@@ -77,6 +77,7 @@ type
   TListCallback = procedure(data,arg:pointer) of object;
   TListStaticCallback = procedure(data,arg:pointer);
   TDynStringArray = Array Of String;
+  TDirection = (FromBeginning,FromEnd);
   TFPList = class(TObject)
   private
     FList: PPointerList;
@@ -100,6 +101,7 @@ type
     function Extract(item: Pointer): Pointer;
     function First: Pointer;
     function IndexOf(Item: Pointer): Integer;
+    function IndexOfItem(Item: Pointer; Direction: TDirection): Integer;
     procedure Insert(Index: Integer; Item: Pointer);
     function Last: Pointer;
     procedure Move(CurIndex, NewIndex: Integer);
@@ -145,6 +147,7 @@ type
     function Extract(Item: TObject): TObject; {$ifdef CCLASSESINLINE}inline;{$endif}
     function Remove(AObject: TObject): Integer;
     function IndexOf(AObject: TObject): Integer; {$ifdef CCLASSESINLINE}inline;{$endif}
+    function IndexOfItem(AObject: TObject; Direction: TDirection): Integer; {$ifdef CCLASSESINLINE}inline;{$endif}
     function FindInstanceOf(AClass: TClass; AExact: Boolean; AStartAt: Integer): Integer;
     procedure Insert(Index: Integer; AObject: TObject); {$ifdef CCLASSESINLINE}inline;{$endif}
     function First: TObject; {$ifdef CCLASSESINLINE}inline;{$endif}
@@ -872,6 +875,29 @@ begin
     end;
 end;
 
+function TFPList.IndexOfItem(Item: Pointer; Direction: TDirection): Integer;
+var
+  psrc  : PPointer;
+  Index : Integer;
+begin
+  if Direction=FromBeginning then
+    Result:=IndexOf(Item)
+  else
+    begin
+      Result:=-1;
+      psrc:=@FList^[FCount-1];
+      For Index:=FCount-1 downto 0 Do
+        begin
+          if psrc^=Item then
+            begin
+              Result:=Index;
+              exit;
+            end;
+          dec(psrc);
+        end;
+    end;
+end;
+
 procedure TFPList.Insert(Index: Integer; Item: Pointer);
 begin
   if (Index < 0) or (Index > FCount )then
@@ -1056,6 +1082,11 @@ end;
 function TFPObjectList.IndexOf(AObject: TObject): Integer;
 begin
   Result := FList.IndexOf(Pointer(AObject));
+end;
+
+function TFPObjectList.IndexOfItem(AObject: TObject; Direction: TDirection): Integer; {$ifdef CCLASSESINLINE}inline;{$endif}
+begin
+  Result := FList.IndexOfItem(Pointer(AObject),Direction);
 end;
 
 function TFPObjectList.GetCount: integer;
