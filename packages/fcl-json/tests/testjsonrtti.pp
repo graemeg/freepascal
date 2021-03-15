@@ -767,7 +767,7 @@ begin
   AssertNotNull('Result of streaming available',FSR);
   If FToFree is TComponent then
     ACount:=ACount+2; // Tag + Name
-  Writeln(FSR.ASJSON);
+  // Writeln(FSR.ASJSON);
   AssertEquals('Property count correct',ACount,FSR.Count);
 end;
 
