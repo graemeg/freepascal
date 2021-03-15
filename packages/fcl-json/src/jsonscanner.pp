@@ -378,12 +378,11 @@ begin
                         if (joUTF8 in Options) or (DefaultSystemCodePage=CP_UTF8) then
                           S:=Utf8Encode(WideString(WideChar(u2))) // ToDo: use faster function
                         else
-                          S:=String(WideChar(u1))+String(WideChar(u2)); // WideChar converts the encoding. Should it warn on loss?
+                          S:=String(WideChar(u2)); // WideChar converts the encoding. Should it warn on loss?
                         U1:=0;  
                         U2:=0;
                         end;
                       end;
-                    Writeln(' U2 : ',U2,' : >',S,'<');
                     end;
               #0  : Error(SErrOpenString,[FCurRow]);
             else
