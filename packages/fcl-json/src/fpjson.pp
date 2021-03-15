@@ -1013,12 +1013,22 @@ begin
                 Inc(I,4);
                 if (U1<>0) then
                   begin
-                  App:={$IFDEF FPC_HAS_CPSTRING}UTF8Encode({$ENDIF}WideChar(U1)+WideChar(U2){$IFDEF FPC_HAS_CPSTRING}){$ENDIF};
-                  U1:=0;
-                  U2:=0;
-                  end
+                  if ((U1>=$D800) and (U1<=$DBFF)) and
+                     ((U2>=$DC00) and (U2<=$DFFF)) then                  
+                    begin
+                     App:={$IFDEF FPC_HAS_CPSTRING}UTF8Encode({$ENDIF}WideChar(U1)+WideChar(U2){$IFDEF FPC_HAS_CPSTRING}){$ENDIF};
+                     U2:=0;
+                    end 
+                  else
+                    begin
+                    App:={$IFDEF FPC_HAS_CPSTRING}UTF8Encode({$ENDIF}WideChar(U1){$IFDEF FPC_HAS_CPSTRING}){$ENDIF};
+                    Result:=Result+App;
+                    App:='';
+                   end;
+                  end 
                 else
-                  U1:=U2;
+                   App:='';
+                U1:=U2;
                 end;
         end;
         if App<>'' then
