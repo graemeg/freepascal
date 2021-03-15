@@ -7025,7 +7025,7 @@ unit aoptx86;
 
     function TX86AsmOptimizer.OptPass2ADD(var p : tai) : boolean;
       var
-        hp1: tai;
+        hp1: tai; NewRef: TReference;
 
         { This entire nested function is used in an if-statement below, but we
           want to avoid all the used reg transfers and GetNextInstruction calls
@@ -7045,45 +7045,103 @@ unit aoptx86;
 
       begin
         Result := False;
+        if not GetNextInstruction(p, hp1) or (hp1.typ <> ait_instruction) then
+          Exit;
 
-        { Change:
-            add     %reg2,%reg1
-            mov/s/z #(%reg1),%reg1  (%reg1 superregisters must be the same)
-
-          To:
-            mov/s/z #(%reg1,%reg2),%reg1
-        }
-
-        if (taicpu(p).opsize in [S_L{$ifdef x86_64}, S_Q{$endif}]) and
-          MatchOpType(taicpu(p), top_reg, top_reg) and
-          GetNextInstruction(p, hp1) and
-          MatchInstruction(hp1, [A_MOV, A_MOVZX, A_MOVSX{$ifdef x86_64}, A_MOVSXD{$endif}], []) and
-          MatchOpType(taicpu(hp1), top_ref, top_reg) and
-          (taicpu(hp1).oper[0]^.ref^.scalefactor <= 1) and
-          (
-            (
-              (taicpu(hp1).oper[0]^.ref^.base = taicpu(p).oper[1]^.reg) and
-              (taicpu(hp1).oper[0]^.ref^.index = NR_NO)
-            ) or (
-              (taicpu(hp1).oper[0]^.ref^.index = taicpu(p).oper[1]^.reg) and
-              (taicpu(hp1).oper[0]^.ref^.base = NR_NO)
-            )
-          ) and (
-            Reg1WriteOverwritesReg2Entirely(taicpu(p).oper[1]^.reg, taicpu(hp1).oper[1]^.reg) or
-            (
-              { If the super registers ARE equal, then this MOV/S/Z does a partial write }
-              not SuperRegistersEqual(taicpu(p).oper[1]^.reg, taicpu(hp1).oper[1]^.reg) and
-              MemRegisterNotUsedLater
-            )
-          ) then
+        if (taicpu(p).opsize in [S_L{$ifdef x86_64}, S_Q{$endif}]) then
           begin
-            taicpu(hp1).oper[0]^.ref^.base := taicpu(p).oper[1]^.reg;
-            taicpu(hp1).oper[0]^.ref^.index := taicpu(p).oper[0]^.reg;
+            { Change:
+                add     %reg2,%reg1
+                mov/s/z #(%reg1),%reg1  (%reg1 superregisters must be the same)
 
-            DebugMsg(SPeepholeOptimization + 'AddMov2Mov done', p);
-            RemoveCurrentp(p, hp1);
-            Result := True;
-            Exit;
+              To:
+                mov/s/z #(%reg1,%reg2),%reg1
+            }
+            if MatchOpType(taicpu(p), top_reg, top_reg) and
+              MatchInstruction(hp1, [A_MOV, A_MOVZX, A_MOVSX{$ifdef x86_64}, A_MOVSXD{$endif}], []) and
+              MatchOpType(taicpu(hp1), top_ref, top_reg) and
+              (taicpu(hp1).oper[0]^.ref^.scalefactor <= 1) and
+              (
+                (
+                  (taicpu(hp1).oper[0]^.ref^.base = taicpu(p).oper[1]^.reg) and
+                  (taicpu(hp1).oper[0]^.ref^.index = NR_NO)
+                ) or (
+                  (taicpu(hp1).oper[0]^.ref^.index = taicpu(p).oper[1]^.reg) and
+                  (taicpu(hp1).oper[0]^.ref^.base = NR_NO)
+                )
+              ) and (
+                Reg1WriteOverwritesReg2Entirely(taicpu(p).oper[1]^.reg, taicpu(hp1).oper[1]^.reg) or
+                (
+                  { If the super registers ARE equal, then this MOV/S/Z does a partial write }
+                  not SuperRegistersEqual(taicpu(p).oper[1]^.reg, taicpu(hp1).oper[1]^.reg) and
+                  MemRegisterNotUsedLater
+                )
+              ) then
+              begin
+                taicpu(hp1).oper[0]^.ref^.base := taicpu(p).oper[1]^.reg;
+                taicpu(hp1).oper[0]^.ref^.index := taicpu(p).oper[0]^.reg;
+
+                DebugMsg(SPeepholeOptimization + 'AddMov2Mov done', p);
+                RemoveCurrentp(p, hp1);
+                Result := True;
+                Exit;
+              end;
+
+            { Change:
+                addl/q $x,%reg1
+                movl/q %reg1,%reg2
+              To:
+                leal/q $x(%reg1),%reg2
+                addl/q $x,%reg1 (can be removed if %reg1 or the flags are not used afterwards)
+
+              Breaks the dependency chain.
+            }
+            if MatchOpType(taicpu(p),top_const,top_reg) and
+              MatchInstruction(hp1, A_MOV, [taicpu(p).opsize]) and
+              (taicpu(hp1).oper[1]^.typ = top_reg) and
+              MatchOperand(taicpu(hp1).oper[0]^, taicpu(p).oper[1]^.reg) and
+              (
+                { Don't do AddMov2LeaAdd under -Os, but do allow AddMov2Lea }
+                not (cs_opt_size in current_settings.optimizerswitches) or
+                (
+                  not RegUsedAfterInstruction(taicpu(p).oper[1]^.reg, hp1, TmpUsedRegs) and
+                  RegUsedAfterInstruction(NR_DEFAULTFLAGS, hp1, TmpUsedRegs)
+                )
+              ) then
+              begin
+                { Change the MOV instruction to a LEA instruction, and update the
+                  first operand }
+
+                reference_reset(NewRef, 1, []);
+                NewRef.base := taicpu(p).oper[1]^.reg;
+                NewRef.scalefactor := 1;
+                NewRef.offset := taicpu(p).oper[0]^.val;
+
+                taicpu(hp1).opcode := A_LEA;
+                taicpu(hp1).loadref(0, NewRef);
+
+                TransferUsedRegs(TmpUsedRegs);
+                UpdateUsedRegs(TmpUsedRegs, tai(p.Next));
+                if RegUsedAfterInstruction(NewRef.base, hp1, TmpUsedRegs) or
+                  RegUsedAfterInstruction(NR_DEFAULTFLAGS, hp1, TmpUsedRegs) then
+                  begin
+                    { Move what is now the LEA instruction to before the SUB instruction }
+                    Asml.Remove(hp1);
+                    Asml.InsertBefore(hp1, p);
+                    AllocRegBetween(taicpu(hp1).oper[1]^.reg, hp1, p, UsedRegs);
+
+                    DebugMsg(SPeepholeOptimization + 'AddMov2LeaAdd', p);
+                    p := hp1;
+                  end
+                else
+                  begin
+                    { Since %reg1 or the flags aren't used afterwards, we can delete p completely }
+                    RemoveCurrentP(p, hp1);
+                    DebugMsg(SPeepholeOptimization + 'AddMov2Lea', p);
+                  end;
+
+                Result := True;
+              end;
           end;
       end;
 
