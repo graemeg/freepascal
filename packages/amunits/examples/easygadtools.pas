@@ -118,8 +118,8 @@ BEGIN
   gad := ButtonGadget(2,10,HG,200,HGadget,'Screen Requester');
   HG := HG + DistGad + 3;
 
-  //gad := CycleGadget(3,100,HG,100,HGadget,'Cycle me',@strarray);
-  //HG := HG + DistGad+4;
+  gad := CycleGadget(3,100,HG,100,HGadget,'Cycle me',@strarray);
+  HG := HG + DistGad+4;
 
   gad := ButtonGadget(4,10,HG,96,HGadget,'OK');
   gad := ButtonGadget(5,115,HG,96,HGadget,'Cancel');

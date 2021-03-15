@@ -21,7 +21,7 @@
 
 Program DeviceInfo;
 
-uses exec,amigados,strings;
+uses exec,amigados;
 
 Const
   MaxSize = 80;
@@ -44,7 +44,7 @@ End;
 Procedure AsdaLaVista(warum : String ; code : longint);
 
 Begin
-  If Inf   <> Nil Then ExecFreeMem(Inf,SizeOf(tInfoData));
+  If Inf   <> Nil Then FreeMem(Inf);
   If warum <> '' Then WriteLn('[3;32m',warum,'[0;31m');
   halt(code);
 End;
@@ -56,7 +56,7 @@ Begin
   If ParamCount = 0 Then AsdaLaVista(' DiskInfo V1.0, © 1992 T.Schmid - Usage : DiskInfo Dfx:',0);
   MyFile := ParamStr(1) + #0;
 
-  Inf:=pInfoData(ExecAllocMem( SizeOf(tInfoData), MEMF_PUBLIC ) );
+  Inf:=pInfoData(AllocMem( SizeOf(tInfoData) ) );
   If Inf=Nil Then AsdaLaVista('No memory',5);
 
   s:= 'Writeenabled';

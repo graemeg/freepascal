@@ -45,9 +45,9 @@ Begin
 
     rda:=ReadArgs (template,@vecarray,Nil);
     If rda<>Nil Then Begin
-       If vecarray[0] <> 0 then width := long(@vecarray[0]);
-       If vecarray[1] <> 0 then height := long(@vecarray[1]);
-       If vecarray[2] <> 0 then depth := long(@vecarray[2]);
+       If vecarray[0] <> 0 then width := PlongInt(vecarray[0])^;
+       If vecarray[1] <> 0 then height := PLongInt(vecarray[1])^;
+       If vecarray[2] <> 0 then depth := PLongInt(vecarray[2])^;
        FreeArgs(rda);
     End;
 
