@@ -1633,6 +1633,7 @@ implementation
          is_first_type: boolean;
 {$endif powerpc or powerpc64}
          old_block_type: tblock_type;
+         tmpidx: Integer;
       begin
          old_block_type:=block_type;
          block_type:=bt_var;
@@ -2003,6 +2004,10 @@ implementation
 
               trecordsymtable(recst).insertunionst(Unionsymtable,offset);
               uniondef.owner.deletedef(uniondef);
+              { this prevents a dangling pointer and use after free }
+              tmpidx:=current_module.deflist.IndexOfItem(uniondef,FromEnd);
+              if tmpidx<>-1 then
+                current_module.deflist[tmpidx]:=nil;
            end;
          { free the list }
          sc.free;
