@@ -122,6 +122,8 @@ begin
 
       // create testcase node
       caseNode:=junitXML.CreateElement('testcase');
+      if pos('../', classname) = 1 then
+        Delete(classname, 1, 3);
       TDOMElement(caseNode).SetAttribute('classname',WideString(className));
       TDOMElement(caseNode).SetAttribute('name',WideString(caseName));
       rootNode.AppendChild(caseNode);
@@ -164,15 +166,15 @@ begin
           caseNode.AppendChild(tmpNode);
           continue;
         end;
-      if AnsiStartsText(PATTERN_SKIPPED, tmpLine) then 
+      if AnsiStartsText(PATTERN_SKIPPED, tmpLine) then
         begin
           Inc(skipped);
           caseNode.AppendChild(junitXML.CreateElement('skipped'));
-          continue; 
+          continue;
         end;
-      if AnsiStartsText(PATTERN_SUCCESS, tmpLine) then 
+      if AnsiStartsText(PATTERN_SUCCESS, tmpLine) then
         begin
-          Inc(success); 
+          Inc(success);
           continue;
         end;
       writeln('Unparseable line: [',tmpLine,']');
