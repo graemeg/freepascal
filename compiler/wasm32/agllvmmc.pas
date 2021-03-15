@@ -75,7 +75,7 @@ implementation
       cur_unit: tused_unit;
     begin
       for i:=0 to current_module.deflist.Count-1 do
-        if tdef(current_module.deflist[i]).typ = procdef then
+        if assigned(current_module.deflist[i]) and (tdef(current_module.deflist[i]).typ=procdef) then
           begin
             proc := tprocdef(current_module.deflist[i]);
             if (po_external in proc.procoptions) and assigned(proc.import_dll) then
