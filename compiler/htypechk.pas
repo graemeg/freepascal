@@ -625,7 +625,8 @@ implementation
         pd : tprocdef;
         oldcount,
         count: longint;
-        parasym : tparavarsym;
+        sym : tsym;
+        parasym : tparavarsym absolute sym;
       begin
         result:=false;
         count := pf.parast.SymList.count;
@@ -633,8 +634,8 @@ implementation
         oldcount:=count;
         while count > 0 do
           begin
-            parasym:=tparavarsym(pf.parast.SymList[count-1]);
-            if parasym.typ<>paravarsym then
+            sym:=tsym(pf.parast.SymList[count-1]);
+            if sym.typ<>paravarsym then
               begin
                 dec(count);
               end
