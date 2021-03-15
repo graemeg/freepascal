@@ -492,7 +492,7 @@ begin
       begin
         if (BytesRead + available > DataLength) then
           begin
-            DataLength:=BytesRead + READ_BYTES;
+            DataLength:=BytesRead + max(READ_BYTES,available);
             Setlength(Data,DataLength);
           end;
         NumBytes := p.Read(data[1+BytesRead], Available);
