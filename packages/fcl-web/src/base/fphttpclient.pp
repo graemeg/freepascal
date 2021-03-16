@@ -231,6 +231,17 @@ Type
     Class Procedure SimpleDelete(const URL: string; Response : TStrings);
     Class Procedure SimpleDelete(const URL: string; const LocalFileName: String);
     Class function SimpleDelete(const URL: string) : RawByteString;
+    // Simple Patch
+    // Put URL, and Requestbody. Return response in Stream, File, TstringList or String;
+    Procedure Patch(const URL: string; const Response: TStream);
+    Procedure Patch(const URL: string; Response : TStrings);
+    Procedure Patch(const URL: string; const LocalFileName: String);
+    function Patch(const URL: string) : RawByteString;
+    // Simple class methods.
+    Class Procedure SimplePatch(const URL: string; const Response: TStream);
+    Class Procedure SimplePatch(const URL: string; Response : TStrings);
+    Class Procedure SimplePatch(const URL: string; const LocalFileName: String);
+    Class function SimplePatch(const URL: string) : RawByteString;
     // Simple Options
     // Options from URL, and Requestbody. Return response in Stream, File, TstringList or String;
     Procedure Options(const URL: string; const Response: TStream);
@@ -1845,6 +1856,103 @@ begin
       Free;
     end;
 end;
+
+
+
+
+
+procedure TFPCustomHTTPClient.Patch(const URL: string; const Response: TStream);
+begin
+  HTTPMethod('PATCH',URL,Response,[]);
+end;
+
+procedure TFPCustomHTTPClient.Patch(const URL: string; Response: TStrings);
+begin
+  Response.Text:=Patch(URL);
+end;
+
+procedure TFPCustomHTTPClient.Patch(const URL: string; const LocalFileName: String
+  );
+
+Var
+  F : TFileStream;
+
+begin
+  F:=TFileStream.Create(LocalFileName,fmCreate);
+  try
+    Patch(URL,F);
+  finally
+    F.Free;
+  end;
+end;
+
+function TFPCustomHTTPClient.Patch(const URL: string): RawByteString;
+Var
+  SS : TRawByteStringStream;
+begin
+  SS:=TRawByteStringStream.Create();
+  try
+    Patch(URL,SS);
+    Result:=SS.Datastring;
+  finally
+    SS.Free;
+  end;
+end;
+
+class procedure TFPCustomHTTPClient.SimplePatch(const URL: string;
+  const Response: TStream);
+
+begin
+  With Self.Create(nil) do
+    try
+      KeepConnection := False;
+      Patch(URL,Response);
+    finally
+      Free;
+    end;
+end;
+
+class procedure TFPCustomHTTPClient.SimplePatch(const URL: string;
+  Response: TStrings);
+
+begin
+  With Self.Create(nil) do
+    try
+      KeepConnection := False;
+      Patch(URL,Response);
+    finally
+      Free;
+    end;
+end;
+
+class procedure TFPCustomHTTPClient.SimplePatch(const URL: string;
+  const LocalFileName: String);
+
+begin
+  With Self.Create(nil) do
+    try
+      KeepConnection := False;
+      Patch(URL,LocalFileName);
+    finally
+      Free;
+    end;
+end;
+
+class function TFPCustomHTTPClient.SimplePatch(const URL: string): RawByteString;
+
+begin
+  With Self.Create(nil) do
+    try
+      KeepConnection := False;
+      Result:=Patch(URL);
+    finally
+      Free;
+    end;
+end;
+
+
+
+
 
 procedure TFPCustomHTTPClient.Options(const URL: string; const Response: TStream
   );
