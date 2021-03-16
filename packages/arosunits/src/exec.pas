@@ -1213,6 +1213,9 @@ const
   RAWFMTFUNC_SERIAL = 1; // Output to debug log (usually serial port)
   RAWFMTFUNC_COUNT  = 2; // Just count characters, PutChData is a pointer to the counter (ULONG *)
 
+var
+  ExecBase: PExecBase absolute AOS_ExecBase;
+
 // function headers
 function Supervisor(UserFunction: TProcedure): ULONG; syscall AOS_ExecBase 5;
 procedure Reschedule(Task: PTask); syscall AOS_ExecBase 8;

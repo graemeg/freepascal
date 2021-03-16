@@ -1736,6 +1736,9 @@ const
 
 //**********************************************************************
 
+var
+  ExecBase: PExecBase absolute AOS_ExecBase;
+
 function ExecObtain(): LongWord; syscall IExec 60;
 function ExecRelease(): LongWord; syscall IExec 64;
 procedure ExecExpunge(); syscall IExec 68;

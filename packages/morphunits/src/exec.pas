@@ -20,10 +20,6 @@ unit exec;
 
 interface
 
-var
-  ExecBase: Pointer;
-
-
 { Some types for classic Amiga and AROS compatibility }
 type
   STRPTR    = PChar;
@@ -1759,6 +1755,9 @@ const
   TLSTAG_DUMMY = TAG_USER + $120000;
   TLSTAG_DESTRUCTOR = TLSTAG_DUMMY + $0; // Destructor function to call on task termination if the TLS value is non-nil. The function is called with as: procedure(value: APTR; userdata: APTR);
   TLSTAG_USERDATA   = TLSTAG_DUMMY + $1;  // Userdata for the destructor function. Defaults to nil.
+
+var
+  ExecBase: PExecBase absolute MOS_ExecBase;
 
 function Supervisor(userFunction: Pointer location 'a5'): Cardinal;
 SysCall MOS_ExecBase 030;

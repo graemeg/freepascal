@@ -1173,7 +1173,8 @@ CONST
        PAVLKEYCOMP = ^AVLKEYCOMP;
        AVLKEYCOMP = APTR;
 
-
+var
+  ExecBase: PExecBase absolute _ExecBase;
 
 PROCEDURE AbortIO(ioRequest : pIORequest location 'a1'); syscall _ExecBase 480;
 PROCEDURE AddDevice(device : pDevice location 'a1'); syscall _ExecBase 432;
