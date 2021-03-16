@@ -1868,7 +1868,7 @@ end;
 
 procedure TFPCustomHTTPClient.Patch(const URL: string; Response: TStrings);
 begin
-  Response.Text:=Put(URL);
+  Response.Text:=Patch(URL);
 end;
 
 procedure TFPCustomHTTPClient.Patch(const URL: string; const LocalFileName: String
@@ -1880,7 +1880,7 @@ Var
 begin
   F:=TFileStream.Create(LocalFileName,fmCreate);
   try
-    Put(URL,F);
+    Patch(URL,F);
   finally
     F.Free;
   end;
@@ -1892,7 +1892,7 @@ Var
 begin
   SS:=TRawByteStringStream.Create();
   try
-    Put(URL,SS);
+    Patch(URL,SS);
     Result:=SS.Datastring;
   finally
     SS.Free;
@@ -1906,7 +1906,7 @@ begin
   With Self.Create(nil) do
     try
       KeepConnection := False;
-      Put(URL,Response);
+      Patch(URL,Response);
     finally
       Free;
     end;
@@ -1919,7 +1919,7 @@ begin
   With Self.Create(nil) do
     try
       KeepConnection := False;
-      Put(URL,Response);
+      Patch(URL,Response);
     finally
       Free;
     end;
@@ -1932,7 +1932,7 @@ begin
   With Self.Create(nil) do
     try
       KeepConnection := False;
-      Put(URL,LocalFileName);
+      Patch(URL,LocalFileName);
     finally
       Free;
     end;
@@ -1944,7 +1944,7 @@ begin
   With Self.Create(nil) do
     try
       KeepConnection := False;
-      Result:=Put(URL);
+      Result:=Patch(URL);
     finally
       Free;
     end;
