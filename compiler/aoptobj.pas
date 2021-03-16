@@ -1400,6 +1400,8 @@ Unit AoptObj;
             reg:=newreg(R_FPUREGISTER,getsupreg(reg),R_SUBWHOLE);
           R_ADDRESSREGISTER:
             reg:=newreg(R_ADDRESSREGISTER,getsupreg(reg),R_SUBWHOLE);
+          R_SPECIALREGISTER:
+            reg:=newreg(R_SPECIALREGISTER,getsupreg(reg),R_SUBWHOLE);
           else
             Internalerror(2018030701);
         end;

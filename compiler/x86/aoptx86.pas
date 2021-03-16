@@ -5867,7 +5867,7 @@ unit aoptx86;
       var
         hp1,hp2: tai;
 {$ifndef i8086}
-        hp3,hp4,hpmov2: tai;
+        hp3,hp4,hpmov2, hp5: tai;
         l : Longint;
         condition : TAsmCond;
 {$endif i8086}
@@ -6083,6 +6083,76 @@ unit aoptx86;
                       end;
                     end;
 {$ifndef i8086}
+                end
+              {
+                  convert
+                  j<c>  .L1
+                  mov   1,reg
+                  jmp   .L2
+                .L1
+                  mov   0,reg
+                .L2
+
+                into
+                  mov   0,reg
+                  set<not(c)> reg
+
+                take care of alignment and that the mov 0,reg is not converted into a xor as this
+                would destroy the flag contents
+              }
+              else if MatchInstruction(hp1,A_MOV,[]) and
+                MatchOpType(taicpu(hp1),top_const,top_reg) and
+{$ifdef i386}
+                (
+                { Under i386, ESI, EDI, EBP and ESP
+                  don't have an 8-bit representation }
+                  not (getsupreg(taicpu(hp1).oper[1]^.reg) in [RS_ESI, RS_EDI, RS_EBP, RS_ESP])
+                ) and
+{$endif i386}
+                (taicpu(hp1).oper[0]^.val=1) and
+                GetNextInstruction(hp1,hp2) and
+                MatchInstruction(hp2,A_JMP,[]) and (taicpu(hp2).oper[0]^.ref^.refaddr=addr_full) and
+                GetNextInstruction(hp2,hp3) and
+                { skip align }
+                ((hp3.typ<>ait_align) or GetNextInstruction(hp3,hp3)) and
+                (hp3.typ=ait_label) and
+                (tasmlabel(taicpu(p).oper[0]^.ref^.symbol)=tai_label(hp3).labsym) and
+                (tai_label(hp3).labsym.getrefs=1) and
+                GetNextInstruction(hp3,hp4) and
+                MatchInstruction(hp4,A_MOV,[]) and
+                MatchOpType(taicpu(hp4),top_const,top_reg) and
+                (taicpu(hp4).oper[0]^.val=0) and
+                MatchOperand(taicpu(hp1).oper[1]^,taicpu(hp4).oper[1]^) and
+                GetNextInstruction(hp4,hp5) and
+                (hp5.typ=ait_label) and
+                (tasmlabel(taicpu(hp2).oper[0]^.ref^.symbol)=tai_label(hp5).labsym) and
+                (tai_label(hp5).labsym.getrefs=1) then
+                begin
+                  AllocRegBetween(NR_FLAGS,p,hp4,UsedRegs);
+                  DebugMsg(SPeepholeOptimization+'JccMovJmpMov2MovSetcc',p);
+                  { remove last label }
+                  RemoveInstruction(hp5);
+                  { remove second albel }
+                  RemoveInstruction(hp3);
+                  { if align is present remove it }
+                  if GetNextInstruction(hp2,hp3) and (hp3.typ=ait_align) then
+                    RemoveInstruction(hp3);
+                  { remove jmp }
+                  RemoveInstruction(hp2);
+                  if taicpu(hp1).opsize=S_B then
+                    RemoveInstruction(hp1)
+                  else
+                    taicpu(hp1).loadconst(0,0);
+                  taicpu(hp4).opcode:=A_SETcc;
+                  taicpu(hp4).opsize:=S_B;
+                  taicpu(hp4).condition:=inverse_cond(taicpu(p).condition);
+                  taicpu(hp4).loadreg(0,newreg(R_INTREGISTER,getsupreg(taicpu(hp4).oper[1]^.reg),R_SUBL));
+                  taicpu(hp4).opercnt:=1;
+                  taicpu(hp4).ops:=1;
+                  taicpu(hp4).freeop(1);
+                  RemoveCurrentP(p);
+                  Result:=true;
+                  exit;
                 end
               else if CPUX86_HAS_CMOV in cpu_capabilities[current_settings.cputype] then
                 begin
