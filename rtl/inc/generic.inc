@@ -1401,14 +1401,13 @@ end;
     function fpc_mul_word(f1,f2 : word;checkoverflow : boolean) : word;[public,alias: 'FPC_MUL_WORD']; compilerproc;
       var
         _f1,bitpos : word;
-        b : byte;
         f1overflowed : boolean;
       begin
         fpc_mul_word:=0;
         bitpos:=1;
         f1overflowed:=false;
 
-        for b:=0 to 15 do
+        while f1<>0 do
           begin
             if (f2 and bitpos)<>0 then
               begin
@@ -1487,14 +1486,13 @@ end;
     function fpc_mul_dword(f1,f2 : dword;checkoverflow : boolean) : dword;[public,alias: 'FPC_MUL_DWORD']; compilerproc;
       var
         _f1,bitpos : dword;
-        b : byte;
         f1overflowed : boolean;
       begin
         fpc_mul_dword:=0;
         bitpos:=1;
         f1overflowed:=false;
 
-        for b:=0 to 31 do
+        while f1<>0 do
           begin
             if (f2 and bitpos)<>0 then
               begin
@@ -1598,14 +1596,13 @@ end;
     function fpc_mul_byte_checkoverflow(f1,f2 : byte) : byte;[public,alias: 'FPC_MUL_BYTE_CHECKOVERFLOW']; compilerproc;
       var
         _f1, bitpos : byte;
-        b : byte;
         f1overflowed : boolean;
       begin
         fpc_mul_byte_checkoverflow := 0;
         bitpos := 1;
         f1overflowed := false;
 
-        for b := 0 to 7 do
+        while f1<>0 do
           begin
             if (f2 and bitpos) <> 0 then
               begin
@@ -1708,14 +1705,13 @@ end;
     function fpc_mul_word_checkoverflow(f1,f2 : word) : word;[public,alias: 'FPC_MUL_WORD_CHECKOVERFLOW']; compilerproc;
       var
         _f1,bitpos : word;
-        b : byte;
         f1overflowed : boolean;
       begin
         fpc_mul_word_checkoverflow:=0;
         bitpos:=1;
         f1overflowed:=false;
 
-        for b:=0 to 15 do
+        while f1<>0 do
           begin
             if (f2 and bitpos)<>0 then
               begin
@@ -1819,14 +1815,13 @@ end;
     function fpc_mul_dword_checkoverflow(f1,f2 : dword) : dword;[public,alias: 'FPC_MUL_DWORD_CHECKOVERFLOW']; compilerproc;
       var
         _f1,bitpos : dword;
-        b : byte;
         f1overflowed : boolean;
       begin
         fpc_mul_dword_checkoverflow:=0;
         bitpos:=1;
         f1overflowed:=false;
 
-        for b:=0 to 31 do
+        while f1<>0 do
           begin
             if (f2 and bitpos)<>0 then
               begin
