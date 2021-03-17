@@ -5487,7 +5487,9 @@ begin
             if (Proc.Visibility=visStrictPrivate)
                 or ((Proc.Visibility=visPrivate)
                   and (Proc.GetModule<>Data^.Proc.GetModule)) then
-              // a private private is hidden by definition -> no hint
+              // a private method is hidden by definition -> no hint
+            else if (Proc.Visibility=visPublished) then
+              // a published can hide (used for overloading rtti) -> no hint
             else if (ProcScope.ImplProc<>nil)  // not abstract, external
                 and (not ProcHasImplElements(ProcScope.ImplProc)) then
               // hidden method has implementation, but no statements -> useless

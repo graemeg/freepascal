@@ -816,6 +816,7 @@ type
     Procedure TestRTTI_DynArray;
     Procedure TestRTTI_ArrayNestedAnonymous;
     Procedure TestRTTI_PublishedMethodOverloadFail;
+    Procedure TestRTTI_PublishedMethodHideNoHint;
     Procedure TestRTTI_PublishedMethodExternalFail;
     Procedure TestRTTI_PublishedClassPropertyFail;
     Procedure TestRTTI_PublishedClassFieldFail;
@@ -29495,6 +29496,59 @@ begin
   SetExpectedPasResolverError('Duplicate published method "Proc" at test1.pp(6,19)',
     nDuplicatePublishedMethodXAtY);
   ConvertProgram;
+end;
+
+procedure TTestModule.TestRTTI_PublishedMethodHideNoHint;
+begin
+  WithTypeInfo:=true;
+  StartUnit(false);
+  Add([
+  'interface',
+  'type',
+  '  TObject = class',
+  '  end;',
+  '  {$M+}',
+  '  TBird = class',
+  '    procedure Fly;',
+  '  end;',
+  '  {$M-}',
+  'type',
+  '  TEagle = class(TBird)',
+  '    procedure Fly;',
+  '  end;',
+  'implementation',
+  'procedure TBird.Fly;',
+  'begin',
+  'end;',
+  'procedure TEagle.Fly;',
+  'begin',
+  'end;',
+  '']);
+  ConvertUnit;
+  CheckSource('TestRTTI_PublishedMethodHideNoHint',
+    LinesToStr([ // statements
+    'rtl.createClass(this, "TObject", null, function () {',
+    '  this.$init = function () {',
+    '  };',
+    '  this.$final = function () {',
+    '  };',
+    '});',
+    'rtl.createClass(this, "TBird", this.TObject, function () {',
+    '  this.Fly = function () {',
+    '  };',
+    '  var $r = this.$rtti;',
+    '  $r.addMethod("Fly", 0, null);',
+    '});',
+    'rtl.createClass(this, "TEagle", this.TBird, function () {',
+    '  this.Fly = function () {',
+    '  };',
+    '  var $r = this.$rtti;',
+    '  $r.addMethod("Fly", 0, null);',
+    '});',
+    '']),
+    LinesToStr([ // $mod.$main
+    ]));
+  CheckResolverUnexpectedHints(true);
 end;
 
 procedure TTestModule.TestRTTI_PublishedMethodExternalFail;
