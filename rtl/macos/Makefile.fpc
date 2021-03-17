@@ -24,7 +24,7 @@ implicitunits=cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
 
 rsts=sysconst
 # math typinfo sysconst rtlconsts
-  
+
 [require]
 nortl=y
 
@@ -114,14 +114,12 @@ uuchar$(PPUEXT): $(SYSTEMUNIT)$(PPUEXT) $(INC)/uuchar.pp
 	$(COMPILER) $(INC)/uuchar.pp
 
 objpas$(PPUEXT) : $(OBJPASDIR)/objpas.pp system$(PPUEXT)
-	$(COPY) $(OBJPASDIR)/objpas.pp .
-	$(COMPILER) objpas $(REDIR)
-	$(DEL) objpas.pp
+	$(COMPILER) $(OBJPASDIR)/objpas.pp $(REDIR)
 
 sysutils$(PPUEXT) : sysutils.pp objpas$(PPUEXT) system$(PPUEXT) sysconst$(PPUEXT) macostp$(PPUEXT) macutils$(PPUEXT)
 	$(COMPILER) -Fi$(OBJPASDIR)/sysutils sysutils.pp
 	
-sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT) softfpu$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT) 
+sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT) softfpu$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) $(OBJPASDIR)/sysconst.pp
 		
 rtlconsts$(PPUEXT) : $(OBJPASDIR)/rtlconsts.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
@@ -160,13 +158,13 @@ macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT)
 #
 
 dos$(PPUEXT) : $(DOSDEPS) unixutil$(PPUEXT) system$(PPUEXT)
-        $(COMPILER) dos $(REDIR)
+        $(COMPILER) dos.pp $(REDIR)
 
 #crt$(PPUEXT) : crt.pp $(INC)/textrec.inc system$(PPUEXT)
-#        $(COMPILER) crt $(REDIR)
+#        $(COMPILER) crt.pp $(REDIR)
 
 #printer$(PPUEXT) : printer.pp system$(PPUEXT)
-#        $(COMPILER) printer $(REDIR)
+#        $(COMPILER) printer.pp $(REDIR)
 
 #
 # Other system-independent RTL Units

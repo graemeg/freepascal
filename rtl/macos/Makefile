@@ -3261,12 +3261,10 @@ strings$(PPUEXT) : $(INC)/strings.pp system$(PPUEXT)
 uuchar$(PPUEXT): $(SYSTEMUNIT)$(PPUEXT) $(INC)/uuchar.pp
 	$(COMPILER) $(INC)/uuchar.pp
 objpas$(PPUEXT) : $(OBJPASDIR)/objpas.pp system$(PPUEXT)
-	$(COPY) $(OBJPASDIR)/objpas.pp .
-	$(COMPILER) objpas $(REDIR)
-	$(DEL) objpas.pp
+	$(COMPILER) $(OBJPASDIR)/objpas.pp $(REDIR)
 sysutils$(PPUEXT) : sysutils.pp objpas$(PPUEXT) system$(PPUEXT) sysconst$(PPUEXT) macostp$(PPUEXT) macutils$(PPUEXT)
 	$(COMPILER) -Fi$(OBJPASDIR)/sysutils sysutils.pp
-sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT) softfpu$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT) 
+sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT) softfpu$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
 	$(COMPILER) $(OBJPASDIR)/sysconst.pp
 rtlconsts$(PPUEXT) : $(OBJPASDIR)/rtlconsts.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
 	$(COMPILER) $(OBJPASDIR)/rtlconsts.pp
@@ -3285,7 +3283,7 @@ types$(PPUEXT) : $(OBJPASDIR)/types.pp objpas$(PPUEXT) math$(PPUEXT) $(SYSTEMUNI
 macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT)
 	$(COMPILER) $(INC)/macpas.pp $(REDIR)
 dos$(PPUEXT) : $(DOSDEPS) unixutil$(PPUEXT) system$(PPUEXT)
-	$(COMPILER) dos $(REDIR)
+	$(COMPILER) dos.pp $(REDIR)
 iso7185$(PPUEXT) : $(INC)/iso7185.pp heaptrc$(PPUEXT)
 	$(COMPILER) $(INC)/iso7185.pp
 extpas$(PPUEXT) : $(INC)/extpas.pp dos$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
