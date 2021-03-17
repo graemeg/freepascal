@@ -147,7 +147,7 @@ constructor TJSONScanner.Create(Source: TStream; AOptions: TJSONOptions);
     Header : array[0..3] of byte;
   begin
     OldPos := Source.Position;
-    FillChar(Header, SizeOf(Header), 0);
+    FillChar(Header{%H-}, SizeOf(Header), 0);
     if Source.Read(Header, 3) = 3 then
       if (Header[0]=$EF) and (Header[1]=$BB) and (Header[2]=$BF) then
         exit;
