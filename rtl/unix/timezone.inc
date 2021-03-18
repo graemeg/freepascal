@@ -210,7 +210,7 @@ var
   NewTZInfoEx: TTZInfoEx;
 begin
   LockTZInfo;
-  if GetLocalTimezone(fptime,false,NewTZInfo,NewTZInfoEx) then
+  if GetLocalTimezone(fptime,true,NewTZInfo,NewTZInfoEx) then
     SetTZInfo(NewTZInfo,NewTZInfoEx);
   UnlockTZInfo;
 end;
