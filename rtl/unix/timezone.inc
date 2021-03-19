@@ -278,6 +278,7 @@ var
   buf    : array[0..bufsize-1] of byte;
   bufptr : pbyte;
   bufbytes : tsSize;
+  bufoverflow : boolean;
   f      : longint;
   tzhead : ttzhead;
 
@@ -288,22 +289,22 @@ var
     readfilebuf:=bufbytes;
   end;
 
-  Procedure checkbufptr;
+  Procedure checkbufptr(asize : integer);
   
   var
     a : tssize;
     
   begin
-    a:=bufptr-@buf;
+    a:=bufptr-@buf+asize;
     if (a>bufbytes) then
-      Writeln('Reading past end of file : ',a);
+      bufoverflow:=true;
   end;
 
   function readbufbyte: byte;
   begin
-    // checkbufptr;
     if bufptr > @buf[bufsize-1] then
       readfilebuf;
+    checkbufptr(1);
     readbufbyte := bufptr^;
     inc(bufptr);
   end;
@@ -319,13 +320,13 @@ var
         numbytes := count;
       if numbytes > 0 then
       begin
+        checkbufptr(numbytes);
         if assigned(dest) then
           move(bufptr^, dest^, numbytes);
         inc(bufptr, numbytes);
         dec(count, numbytes);
         inc(readbuf, numbytes);
         inc(dest, numbytes);
-        // checkbufptr;
       end;
       if count > 0 then
         readfilebuf
@@ -462,10 +463,11 @@ begin
   f:=fpopen(fn,Open_RdOnly);
   if f<0 then
    exit(False);
+  bufoverflow:=false;
   bufptr := @buf[bufsize-1]+1;
   tzhead:=default(ttzhead);
   LockTZInfo;
-  ReadTimezoneFile:=(readheader() and readdata());
+  ReadTimezoneFile:=(readheader() and readdata()) and not BufOverflow;
   ClearCurrentTZinfo;
   UnlockTZInfo;
   fpclose(f);
