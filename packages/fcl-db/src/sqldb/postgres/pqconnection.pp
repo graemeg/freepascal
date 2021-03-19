@@ -924,15 +924,15 @@ begin
             end
           else
             begin
-            if AParams[i].DataType = ftUnknown then
+            if P.DataType = ftUnknown then
               begin
-              if AParams[i].IsNull then
+              if P.IsNull then
                 s:=s+' unknown ,'
               else
-                DatabaseErrorFmt(SUnknownParamFieldType,[AParams[i].Name],self)
+                DatabaseErrorFmt(SUnknownParamFieldType,[P.Name],self)
               end
             else
-              DatabaseErrorFmt(SUnsupportedParameter,[Fieldtypenames[AParams[i].DataType]],self);
+              DatabaseErrorFmt(SUnsupportedParameter,[Fieldtypenames[P.DataType]],self);
             end;
           end;
         s[length(s)] := ')';
