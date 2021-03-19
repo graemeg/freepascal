@@ -854,7 +854,6 @@ begin
   Result:=Not Assigned(FOutputPageNames);
   if Not Result then
     Result:=FOutputPageNames.IndexOf(aFileName)<>-1;
-  Writeln(afilename ,': ',result);
 end;
 
 class procedure TMultiFileDocWriter.Usage(List: TStrings);
