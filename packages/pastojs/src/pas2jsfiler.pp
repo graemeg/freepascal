@@ -513,7 +513,8 @@ const
     'DispId',
     'NoReturn',
     'Far',
-    'Final'
+    'Final',
+    'DiscardResult'
     );
   PCUProcedureModifiersImplProc = [pmInline,pmAssembler,pmCompilerProc,pmNoReturn];
 

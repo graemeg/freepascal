@@ -140,6 +140,7 @@ type
     Procedure TestFunctionVarArgs;
     Procedure TestProcedureCDeclVarargs;
     Procedure TestFunctionCDeclVarArgs;
+    procedure TestFunctionDiscardResult;
     Procedure TestProcedureForwardInterface;
     Procedure TestFunctionForwardInterface;
     Procedure TestProcedureForward;
@@ -877,6 +878,13 @@ procedure TTestProcedureFunction.TestCallingConventionSysCallConsoleDevice;
 begin
   ParseProcedure('; syscall ConsoleDevice 123');
   AssertProc([],[],ccSysCall,0);
+end;
+
+procedure TTestProcedureFunction.TestFunctionDiscardResult;
+begin
+  AddDeclaration('function A : Integer; discardresult');
+  ParseFunction;
+  AssertFunc([pmDiscardResult],[],ccDefault,0);
 end;
 
 procedure TTestProcedureFunction.TestCallingConventionHardFloat;
