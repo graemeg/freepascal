@@ -872,6 +872,15 @@ end;
 {$endif FPC_SYSTEM_HAS_TRUELY_ANSISTR_UNIQUE}
 
 
+Function fpc_ansistr_Unique_func(Var S : RawByteString): Pointer; external name 'FPC_ANSISTR_UNIQUE';
+
+
+Procedure UniqueString(var S : RawByteString);{$ifdef FPC_HAS_CPSTRING}rtlproc;{$endif FPC_HAS_CPSTRING}{$ifdef SYSTEMINLINE}inline;{$endif}
+  begin
+    fpc_ansistr_Unique_func(S);
+  end;
+
+
 {$ifndef FPC_SYSTEM_HAS_ANSISTR_UNIQUE}
 {$define FPC_SYSTEM_HAS_ANSISTR_UNIQUE}
 // MV: inline the basic checks for case that S is already unique.

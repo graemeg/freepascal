@@ -1319,7 +1319,7 @@ function  Pos(const substr : shortstring;c:char; Offset: Sizeint = 1): SizeInt;
 ****************************************************************************}
 
 {$ifdef FPC_HAS_FEATURE_ANSISTRINGS}
-Procedure UniqueString(var S : RawByteString);{$ifdef FPC_HAS_CPSTRING}rtlproc;{$endif FPC_HAS_CPSTRING}external name 'FPC_ANSISTR_UNIQUE';{$ifndef VER3_2}discardresult;{$endif VER3_2}
+Procedure UniqueString(var S : RawByteString);{$ifdef FPC_HAS_CPSTRING}rtlproc;{$endif FPC_HAS_CPSTRING}{$ifdef SYSTEMINLINE}inline;{$endif}
 Function  Pos (const Substr : RawByteString; const Source : RawByteString; Offset: Sizeint = 1) : SizeInt;
 Function  Pos (c : AnsiChar; const s : RawByteString; Offset: Sizeint = 1) : SizeInt;
 {$ifdef VER3_0}

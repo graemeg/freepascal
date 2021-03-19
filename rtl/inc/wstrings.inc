@@ -546,6 +546,15 @@ end;
                      Public functions, In interface.
 *****************************************************************************}
 
+Function fpc_widestr_Unique_func(Var S : WideString): Pointer; external name 'FPC_WIDESTR_UNIQUE';
+
+
+Procedure UniqueString (Var S : WideString);{$ifdef SYSTEMINLINE}inline;{$endif}
+  begin
+    fpc_widestr_Unique_func(S);
+  end;
+
+
 Function fpc_widestr_Unique(Var S : Pointer): Pointer; [Public,Alias : 'FPC_WIDESTR_UNIQUE']; compilerproc;
   begin
     pointer(result) := pointer(s);

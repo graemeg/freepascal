@@ -1104,6 +1104,15 @@ procedure WideCharToStrVar(S : PWideChar;out Dest : AnsiString);
   end;
 
 
+Function fpc_unicodestr_Unique_func(Var S : UnicodeString): Pointer; external name 'FPC_UNICODESTR_UNIQUE';
+
+
+Procedure UniqueString (Var S : UnicodeString);{$ifdef SYSTEMINLINE}inline;{$endif}
+  begin
+    fpc_unicodestr_Unique_func(S);
+  end;
+
+
 {$ifndef FPC_HAS_UNICODESTR_UNIQUE}
 {$define FPC_HAS_UNICODESTR_UNIQUE}
 Function fpc_unicodestr_Unique(Var S : Pointer): Pointer; [Public,Alias : 'FPC_UNICODESTR_UNIQUE']; compilerproc;
