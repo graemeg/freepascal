@@ -29,7 +29,7 @@ type
   pleap=^tleap;
   tleap=record
     transition : int64;
-    change     : int64;
+    change     : longint;
   end;
 
 var
@@ -277,17 +277,31 @@ const
 var
   buf    : array[0..bufsize-1] of byte;
   bufptr : pbyte;
+  bufbytes : tsSize;
   f      : longint;
   tzhead : ttzhead;
 
-  procedure readfilebuf;
+  function readfilebuf : TsSize;
   begin
     bufptr := @buf[0];
-    fpread(f, buf, bufsize);
+    bufbytes:=fpread(f, buf, bufsize);
+    readfilebuf:=bufbytes;
+  end;
+
+  Procedure checkbufptr;
+  
+  var
+    a : tssize;
+    
+  begin
+    a:=bufptr-@buf;
+    if (a>bufbytes) then
+      Writeln('Reading past end of file : ',a);
   end;
 
   function readbufbyte: byte;
   begin
+    // checkbufptr;
     if bufptr > @buf[bufsize-1] then
       readfilebuf;
     readbufbyte := bufptr^;
@@ -311,6 +325,7 @@ var
         dec(count, numbytes);
         inc(readbuf, numbytes);
         inc(dest, numbytes);
+        // checkbufptr;
       end;
       if count > 0 then
         readfilebuf
@@ -403,13 +418,12 @@ var
      end;
 
     readbuf(zone_names,tzhead.tzh_charcnt);
-
     if version=2 then
       begin // read 64bit values
         for i:=0 to num_leaps-1 do
          begin
            readbuf(@leaps[i].transition,sizeof(int64));
-           readbuf(@leaps[i].change,sizeof(int64));
+           readbuf(@leaps[i].change,sizeof(longint));
            leaps[i].transition:=decode(leaps[i].transition);
            leaps[i].change:=decode(leaps[i].change);
          end;
