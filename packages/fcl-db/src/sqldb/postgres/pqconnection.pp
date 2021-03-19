@@ -845,7 +845,7 @@ const TypeStrings : array[TFieldType] of string =
       'time',      // ftTime
       'timestamp', // ftDateTime
       'Unknown',   // ftBytes
-      'Unknown',   // ftVarBytes
+      'bytea',     // ftVarBytes
       'Unknown',   // ftAutoInc
       'bytea',     // ftBlob 
       'text',      // ftMemo
@@ -1041,7 +1041,7 @@ begin
               end;
             ftFmtBCD:
               s := BCDToStr(AParams[i].AsFMTBCD, FSQLFormatSettings);
-            ftBlob, ftGraphic:
+            ftBlob, ftGraphic, ftVarBytes:
               begin
               Handled:=true;
               bd:= AParams[i].AsBlob;
@@ -1064,7 +1064,7 @@ begin
             StrMove(PAnsiChar(ar[i]), PAnsiChar(s), L+1);
             lengths[i]:=L;
             end;
-          if (AParams[i].DataType in [ftBlob,ftMemo,ftGraphic,ftCurrency]) then
+          if (AParams[i].DataType in [ftBlob,ftMemo,ftGraphic,ftCurrency,ftVarBytes]) then
             Formats[i]:=1
           else
             Formats[i]:=0;  
@@ -1338,7 +1338,7 @@ begin
           end;
           pchar(Buffer + li)^ := #0;
           end;
-        ftBlob, ftMemo :
+        ftBlob, ftMemo, ftVarBytes :
           CreateBlob := True;
         ftDate :
           begin
