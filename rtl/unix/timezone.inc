@@ -64,8 +64,22 @@ var
     else
       Exit(0);
   end;
+var
+  timerLoUTC, timerHiUTC: int64;
 begin
-  if (num_transitions=0) or (timer<transitions[0]) then
+  if (num_transitions>0) and not timerIsUTC then
+   begin
+     timerLoUTC:=timer-types[type_idxs[0]].offset;
+     timerHiUTC:=timer-types[type_idxs[num_transitions-1]].offset;
+   end
+  else
+   begin
+     timerLoUTC:=timer;
+     timerHiUTC:=timer;
+   end;
+
+  if (num_transitions=0) or (timerLoUTC<transitions[0]) then
+   { timer is before the first transition }
    begin
      i:=0;
      while (i<num_types) and (types[i].isdst) do
@@ -77,6 +91,15 @@ begin
      trans_end:=high(trans_end);
    end
   else
+  if (num_transitions>0) and (timerHiUTC>=transitions[num_transitions-1]) then
+   { timer is after the last transition }
+   begin
+     i:=type_idxs[num_transitions-1];
+     trans_start:=transitions[num_transitions-1];
+     trans_end:=high(trans_end);
+   end
+  else
+   { timer inbetween }
    begin
       // Use binary search.
       L := 1;
@@ -410,6 +433,13 @@ var
 
     readdata:=true;
   end;
+  procedure ClearCurrentTZinfo;
+  var
+    i:integer;
+  begin
+    for i:=low(CurrentTZinfo) to high(CurrentTZinfo) do
+      CurrentTZinfo[i] := Default(TTZInfo);
+  end;
 begin
   if fn='' then
    fn:='localtime';
@@ -422,6 +452,7 @@ begin
   tzhead:=default(ttzhead);
   LockTZInfo;
   ReadTimezoneFile:=(readheader() and readdata());
+  ClearCurrentTZinfo;
   UnlockTZInfo;
   fpclose(f);
 end;
