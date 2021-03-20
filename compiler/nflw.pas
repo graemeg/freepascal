@@ -1896,7 +1896,7 @@ implementation
         needsifblock : Boolean;
         cond : tnodetype;
         fromexpr : tnode;
-        toexpr : tnode;
+        toexpr, leftcopy: tnode;
         { if the upper bound is not constant, it must be store in a temp initially }
         usetotemp : boolean;
         { if the lower bound is not constant, it must be store in a temp before calculating the upper bound }
@@ -2056,6 +2056,10 @@ implementation
               cond:=gten;
           end;
 
+        { get rid of nf_write etc. as the left node is now only read }
+        leftcopy:=left.getcopy;
+        node_reset_flags(leftcopy,[nf_pass1_done,nf_modify,nf_write]);
+
         if needsifblock then
           begin
             if usetotemp then
@@ -2063,7 +2067,7 @@ implementation
             else
               toexpr:=t1.getcopy;
 
-            addstatement(ifstatements,cwhilerepeatnode.create(caddnode.create_internal(cond,left.getcopy,toexpr),loopblock,false,true));
+            addstatement(ifstatements,cwhilerepeatnode.create(caddnode.create_internal(cond,leftcopy,toexpr),loopblock,false,true));
 
             if usefromtemp then
               fromexpr:=ctemprefnode.create(fromtemp)
@@ -2091,10 +2095,10 @@ implementation
           begin
             { is a simple comparision for equality sufficient? }
             if do_loopvar_at_end and (lnf_backward in loopflags) and (lnf_counter_not_used in loopflags) then
-              addstatement(ifstatements,cwhilerepeatnode.create(caddnode.create_internal(equaln,left.getcopy,
+              addstatement(ifstatements,cwhilerepeatnode.create(caddnode.create_internal(equaln,leftcopy,
                 caddnode.create_internal(subn,t1.getcopy,cordconstnode.create(1,t1.resultdef,false))),loopblock,false,true))
             else
-              addstatement(ifstatements,cwhilerepeatnode.create(caddnode.create_internal(cond,left.getcopy,t1.getcopy),loopblock,false,true));
+              addstatement(ifstatements,cwhilerepeatnode.create(caddnode.create_internal(cond,leftcopy,t1.getcopy),loopblock,false,true));
             addstatement(statements,ifblock);
           end;
         current_filepos:=storefilepos;
