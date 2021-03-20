@@ -285,6 +285,7 @@ Var
         Raise EProcess.CreateFmt(SErrCannotExecute,[FCommandLine,GetLastError]);
       FProcessHandle:=FProcessInformation.hProcess;
       FThreadHandle:=FProcessInformation.hThread;
+      FThreadId:=FProcessInformation.dwThreadId;  
       FProcessID:=FProcessINformation.dwProcessID;
     Finally
       if POUsePipes in Options then
