@@ -60,7 +60,7 @@ implementation
 
     procedure twasmcallnode.do_release_unused_return_value;
       begin
-        if is_void(resultdef) and not (po_discardresult in procdefinition.procoptions) then
+        if is_void(resultdef) then
           exit;
         current_asmdata.CurrAsmList.concat(taicpu.op_none(a_drop));
         thlcgwasm(hlcg).decstack(current_asmdata.CurrAsmList,1);

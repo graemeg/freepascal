@@ -2997,8 +2997,7 @@ const
      (mask:po_is_auto_setter;  str: 'Automatically generated setter'),
      (mask:po_noinline;        str: 'Never inline'),
      (mask:po_variadic;        str: 'C VarArgs with array-of-const para'),
-     (mask:po_objc_related_result_type; str: 'Objective-C related result type'),
-     (mask:po_discardresult;   str: 'Discard result')
+     (mask:po_objc_related_result_type; str: 'Objective-C related result type')
   );
 var
   proctypeoption  : tproctypeoption;
