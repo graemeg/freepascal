@@ -2468,13 +2468,13 @@ ifndef CONCAT
 CONCAT=utils/concat
 endif
 ifndef GPARMAKE
-GPARMAKE=./gparmake$(EXEEXT)
+GPARMAKE=./gparmake$(SRCEXEEXT)
 endif
 ifndef PREPUP
 PREPUP=utils/prepup
 endif
 ifndef CREATELST
-CREATELST=./createlst$(EXEEXT)
+CREATELST=./createlst$(SRCEXEEXT)
 endif
 tstunits:
 ifdef inOS2
