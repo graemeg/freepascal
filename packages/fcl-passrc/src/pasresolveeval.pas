@@ -1524,6 +1524,8 @@ function TResExprEvaluator.EvalBinaryExpr(Expr: TBinaryExpr;
   Flags: TResEvalFlags): TResEvalValue;
 var
   LeftValue, RightValue: TResEvalValue;
+  Left: TPasExpr;
+  SubBin: TBinaryExpr;
 begin
   Result:=nil;
   if (Expr.Kind=pekBinary) and (Expr.OpCode=eopSubIdent) then
@@ -1534,6 +1536,52 @@ begin
   LeftValue:=nil;
   RightValue:=nil;
   try
+    if Expr.OpCode=eopAdd then
+      begin
+      // handle multi adds without stack
+      Left:=Expr.left;
+      while Left.ClassType=TBinaryExpr do
+        begin
+        SubBin:=TBinaryExpr(Left);
+        if SubBin.OpCode<>eopAdd then break;
+        Left:=SubBin.left;
+        end;
+      LeftValue:=Eval(Expr.left,Flags);
+      while LeftValue<>nil do
+        begin
+        SubBin:=TBinaryExpr(Left.Parent);
+        RightValue:=Eval(SubBin.right,Flags);
+        if RightValue=nil then exit;
+
+        if LeftValue.Kind=revkExternal then
+          begin
+          if [refConst,refConstExt]*Flags=[refConst] then
+            RaiseConstantExprExp(20210321205928,Expr.left);
+          Result:=LeftValue;
+          LeftValue:=nil;
+          exit;
+          end;
+        if RightValue.Kind=revkExternal then
+          begin
+          if [refConst,refConstExt]*Flags=[refConst] then
+            RaiseConstantExprExp(20210321205948,Expr.right);
+          Result:=RightValue;
+          RightValue:=nil;
+          exit;
+          end;
+
+        Result:=EvalBinaryAddExpr(SubBin,LeftValue,RightValue);
+        ReleaseEvalValue(LeftValue);
+        if SubBin=Expr then exit;
+
+        LeftValue:=Result;
+        Result:=nil;
+        Left:=SubBin;
+        end;
+
+      exit;
+      end;
+
     LeftValue:=Eval(Expr.left,Flags);
     if LeftValue=nil then exit;
     RightValue:=Eval(Expr.right,Flags);
