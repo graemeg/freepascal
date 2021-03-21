@@ -104,16 +104,16 @@ asm
 
 @setmant:
   move.l  d1,(a0)         { copy into mantissa }
-@fin:
-  movem.l (sp)+,d2-d4/a0  { reset register variables and return value }
-  rts
+  bra     @fin
 
 { quick exit if zero }
-
 @zeroval:
   move.w  d2,(a0)+        { zero exponent }
   move.l  d2,(a0)         { zero mantissa }
-  bra     @fin
+
+@fin:
+  movem.l (sp)+,d2-d4/a0  { reset register variables and return value }
+  move.l  a0,d0           { copy return value into d0 as well }
 end;
 
 
