@@ -64,6 +64,7 @@ type
     procedure TestPCU_Class_Constructor;
     procedure TestPCU_Class_ClassConstructor;
     procedure TestPCU_ClassInterface;
+    procedure TestPCU_EnumNames;
     procedure TestPCU_Namespace;
     procedure TestPCU_CheckVersionMain;
     procedure TestPCU_CheckVersionMain2;
@@ -135,6 +136,7 @@ begin
     if ExpExitCode=0 then
       begin
       NewSrc:=JSFile.Source;
+      //writeln('TCustomTestCLI_Precompile.CheckPrecompile ',NewSrc);
       if not CheckSrcDiff(OrigSrc,NewSrc,s) then
         begin
         WriteSources;
@@ -508,6 +510,46 @@ begin
     '  i[2]:=i[3];',
     'end.']);
   CheckPrecompile('test1.pas','src');
+end;
+
+procedure TTestCLI_Precompile.TestPCU_EnumNames;
+var
+  SharedParams: TStringList;
+begin
+  AddUnit('src/system.pp',[
+    'type integer = longint;',
+    '  TObject = class end;',
+    'procedure Writeln; varargs;'],
+    ['procedure Writeln; begin end;']);
+  AddUnit('src/unit1.pp',
+  ['type',
+  '  TEnum = (red,green,blue);',
+   '  TBird = class ',
+   '  private',
+   '    Color: TEnum;',
+   '  public',
+   '    procedure Fly;',
+   '    procedure Run;',
+   '  end;',
+   ''],
+  ['procedure TBird.Fly;',
+   'begin',
+   '  Color:=blue;',
+   'end;',
+   'procedure TBird.Run;',
+   'begin',
+   '  Color:=green;',
+   'end;']);
+  AddFile('test1.pas',[
+    'uses unit1;',
+    'var b: TBird;',
+    'begin',
+    '  b.Fly();',
+    '  b.Run();',
+    'end.']);
+  SharedParams:=TStringList.Create;
+  SharedParams.Add('-OoEnumNumbers-');
+  CheckPrecompile('test1.pas','src',SharedParams);
 end;
 
 procedure TTestCLI_Precompile.TestPCU_Namespace;

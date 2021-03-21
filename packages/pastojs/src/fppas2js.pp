@@ -25054,7 +25054,9 @@ var
   Parent: TPasElement;
   CurModule: TPasModule;
   ElClass: TClass;
+  aResolver: TPas2JSResolver;
 begin
+  aResolver:=AContext.Resolver;
   Result:=AContext.GetLocalName(El,[cvkGlobal]);
   if Result<>'' then
     begin
@@ -25091,6 +25093,12 @@ begin
         Result:=TransformModuleName(TPasModule(Parent),true,AContext)
       else
         RaiseNotSupported(El,AContext,20200609230526,GetObjPath(El));
+      end
+    else
+      begin
+      // parent has local var
+      if (coStoreImplJS in Options) and (aResolver.GetParentProcBody(Parent)=nil) then
+        StoreImplJSLocal(Parent,AContext);
       end;
     Result:=Result+'.'+TransformElToJSName(El,AContext);
     end
