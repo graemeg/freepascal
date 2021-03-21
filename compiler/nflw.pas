@@ -1905,13 +1905,19 @@ implementation
         countermin, countermax: Tconstexprint;
 
       procedure iterate_counter(var s : tstatementnode;fw : boolean);
+        var
+          leftcopy: tnode;
         begin
+          { get rid of nf_write etc. as the left node is now only read }
+          leftcopy:=left.getcopy;
+          node_reset_flags(leftcopy,[nf_pass1_done,nf_modify,nf_write]);
+
           if fw then
             addstatement(s,
-              cassignmentnode.create_internal(left.getcopy,cinlinenode.createintern(in_succ_x,false,left.getcopy)))
+              cassignmentnode.create_internal(left.getcopy,cinlinenode.createintern(in_succ_x,false,leftcopy)))
           else
             addstatement(s,
-              cassignmentnode.create_internal(left.getcopy,cinlinenode.createintern(in_pred_x,false,left.getcopy)));
+              cassignmentnode.create_internal(left.getcopy,cinlinenode.createintern(in_pred_x,false,leftcopy)));
         end;
 
       function iterate_counter_func(arg : tnode;fw : boolean) : tnode;
