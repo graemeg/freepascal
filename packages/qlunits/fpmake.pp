@@ -13,7 +13,7 @@ begin
 {$endif ALLPACKAGES}
 
     P:=AddPackage('qlunits');
-    P.ShortName := 'qlunits';
+    P.ShortName := 'qlun';
 
     P.Author := 'FPC core team';
     P.License := 'LGPL with modification';
