@@ -558,13 +558,12 @@ begin
   S:=Checkoptions('shqd:ni:p:wP::cm:',['help','quiet','noindexpage','directory:','port:','indexpage:','watch','project::','config:','simpleserver','mimetypes:']);
   if (S<>'') or HasOption('h','help') then
     usage(S);
-  FServeOnly:=HasOption('s','simpleserver');
+  FServeOnly:=HasOption('s','serve-only');
   Quiet:=HasOption('q','quiet');
   Port:=StrToIntDef(GetOptionValue('p','port'),3000);
   D:=GetOptionValue('d','directory');
   if D='' then
     D:=GetCurrentDir;
-  D:=ExpandFileName(D);
   if HasOption('m','mimetypes') then
     MimeTypesFile:=GetOptionValue('m','mimetypes');
   if MimeTypesFile='' then
