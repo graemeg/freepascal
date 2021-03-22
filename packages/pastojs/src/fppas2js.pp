@@ -2261,6 +2261,7 @@ type
     Function ConvertBinaryExpression(El: TBinaryExpr; AContext: TConvertContext): TJSElement; virtual;
     Function ConvertBinaryExpressionRes(El: TBinaryExpr; AContext: TConvertContext;
       const LeftResolved, RightResolved: TPasResolverResult; var A,B: TJSElement): TJSElement; virtual;
+    function ConvertBinaryExpressionMultiAdd(El: TBinaryExpr; AContext: TConvertContext): TJSElement; virtual;
     Function ConvertSubIdentExpression(El: TBinaryExpr; AContext: TConvertContext): TJSElement; virtual;
     Function ConvertSubIdentExprCustom(El: TBinaryExpr; AContext: TConvertContext;
       const OnConvertRight: TConvertJSEvent = nil; Data: Pointer = nil): TJSElement; virtual;
@@ -8787,6 +8788,11 @@ begin
   aResolver:=AContext.Resolver;
 
   case El.OpCode of
+  eopAdd:
+    begin
+    Result:=ConvertBinaryExpressionMultiAdd(El,aContext);
+    exit;
+    end;
   eopSubIdent:
     begin
     Result:=ConvertSubIdentExpression(El,AContext);
@@ -8803,9 +8809,10 @@ begin
   OldAccess:=AContext.Access;
   AContext.Access:=caRead;
   Call:=nil;
-  A:=ConvertExpression(El.left,AContext);
+  A:=nil;
   B:=nil;
   try
+    A:=ConvertExpression(El.left,AContext);
     B:=ConvertExpression(El.right,AContext);
 
     if aResolver<>nil then
@@ -9675,6 +9682,103 @@ begin
         exit;
       end;
     end;
+end;
+
+function TPasToJSConverter.ConvertBinaryExpressionMultiAdd(El: TBinaryExpr;
+  AContext: TConvertContext): TJSElement;
+// handle multi add without stack
+// Note: The parser generates a list of TBinaryExpr.Lefts
+var
+  aResolver: TPas2JSResolver;
+  Left: TPasExpr;
+  SubBin: TBinaryExpr;
+  A, B: TJSElement;
+  LeftResolved, RightResolved, ResultResolved: TPasResolverResult;
+  Flags: TPasResolverComputeFlags;
+  R: TJSBinary;
+  OldAccess: TCtxAccess;
+begin
+  Result:=nil;
+  aResolver:=AContext.Resolver;
+  Left:=El;
+  while Left.ClassType=TBinaryExpr do
+    begin
+    SubBin:=TBinaryExpr(Left);
+    if SubBin.OpCode<>eopAdd then break;
+    Left:=SubBin.left;
+    if Left.Parent<>SubBin then
+      begin
+      if aResolver<>nil then
+        RaiseNotSupported(SubBin,AContext,20210321220458)
+      else if Left.Parent=nil then
+        Left.Parent:=SubBin
+      else
+        RaiseNotSupported(SubBin,AContext,20210321221135);
+      end;
+    end;
+  if Left=El then
+    RaiseNotSupported(El,AContext,20210321221047);
+  OldAccess:=AContext.Access;
+  AContext.Access:=caRead;
+  A:=nil;
+  B:=nil;
+  try
+    A:=ConvertExpression(Left,AContext);
+    Flags:=[];
+    if aResolver<>nil then
+      aResolver.ComputeElement(Left,LeftResolved,Flags);
+    repeat
+      SubBin:=TBinaryExpr(Left.Parent);
+      B:=ConvertExpression(SubBin.right,AContext);
+      if aResolver<>nil then
+        begin
+        aResolver.ComputeElement(El.right,RightResolved,Flags);
+        Result:=ConvertBinaryExpressionRes(SubBin,AContext,LeftResolved,RightResolved,A,B);
+        if (Result<>nil) then
+          begin
+          A:=nil;
+          B:=nil;
+          if SubBin=El then exit;
+          end;
+        aResolver.ComputeBinaryExprRes(SubBin,ResultResolved,Flags,LeftResolved,RightResolved);
+        end;
+      if Result=nil then
+        begin
+        // +
+        R:=TJSBinary(CreateElement(TJSAdditiveExpressionPlus,El));
+        R.A:=A; A:=nil;
+        R.B:=B; B:=nil;
+        Result:=R;
+
+        if (bsOverflowChecks in AContext.ScannerBoolSwitches) and (aResolver<>nil) then
+          case El.OpCode of
+          eopAdd,eopSubtract:
+            if (LeftResolved.BaseType in btAllJSOverflowAddSubType)
+                or (RightResolved.BaseType in btAllJSOverflowAddSubType) then
+              Result:=CreateOverflowCheckCall(Result,SubBin);
+          eopMultiply:
+            if (LeftResolved.BaseType in btAllJSOverflowMultType)
+                or (RightResolved.BaseType in btAllJSOverflowMultType) then
+              Result:=CreateOverflowCheckCall(Result,SubBin);
+          end;
+
+        if SubBin=El then exit;
+        end;
+      // next
+      A:=Result;
+      Result:=nil;
+      if aResolver<>nil then
+        LeftResolved:=ResultResolved;
+      Left:=SubBin;
+    until false;
+  finally
+    AContext.Access:=OldAccess;
+    if Result=nil then
+      begin
+      A.Free;
+      B.Free;
+      end;
+  end;
 end;
 
 function TPasToJSConverter.ConvertSubIdentExpression(El: TBinaryExpr;
