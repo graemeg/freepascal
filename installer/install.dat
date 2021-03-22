@@ -33,7 +33,7 @@ package=basedos.zip[basedos.zip],~B~asic system for Go32v2 (required)
 # Dos 2
 package=aslddos.zip[aslddos.zip],GNU ~L~inker and GNU Assembler for Go32v2 (required)
 # Dos 3
-package=idedos.zip[idedos.zip],~I~DE with integrated debugger/compiler (BETA)
+package=units-idedos.zip[uidedos.zip],~I~DE with integrated debugger/compiler (BETA)
 # Dos 4
 package=utilsdos.zip[utilsdos.zip],~E~xtra Utilities
 # Dos 5
@@ -116,25 +116,25 @@ package=units-rtl-objpasdos.zip[urtlodos.zip],RTL-Object Pascal units (e.g. Delp
 # Dos-2 10
 package=units-rtl-unicodedos.zip[urtludos.zip],RTL-miscellaneous Unicode support units
 # Dos-2 11
-package=utils-fpcmkcfgdos.zip[ufpckdos.zip],Creation of Free Pascal configuration files
+package=utils-fpcmkcfgdos.zip[fpckdos.zip],Creation of Free Pascal configuration files
 # Dos-2 12
-package=utils-fpcmdos.zip[ufpcmdos.zip],Generate Makefiles out of Makefile.fpc files
+package=utils-fpcmdos.zip[fpcmdos.zip],Generate Makefiles out of Makefile.fpc files
 # Dos-2 13
-package=utils-fprcpdos.zip[ufprcdos.zip],Free Pascal Resource Compiler Preprocessor
+package=utils-fprcpdos.zip[fprcdos.zip],Free Pascal Resource Compiler Preprocessor
 # Dos-2 14
-package=utils-h2pasdos.zip[uh2pados.zip],Create Pascal interface units from C headers
+package=utils-h2pasdos.zip[h2pados.zip],Create Pascal interface units from C headers
 # Dos-2 15
-package=utils-pas2fpmdos.zip[up2fpdos.zip],Generate fpmake.pp for Pascal source
+package=utils-pas2fpmdos.zip[p2fpdos.zip],Generate fpmake.pp for Pascal source
 # Dos-2 16
-package=utils-pas2utdos.zip[up2utdos.zip],Pascal source to FPC Unit test generator
+package=utils-pas2utdos.zip[p2utdos.zip],Pascal source to FPC Unit test generator
 # Dos-2 17
-package=utils-rmwaitdos.zip[urmwdos.zip],Remove (delete) file(s) with optional retries
+package=utils-rmwaitdos.zip[rmwdos.zip],Remove (delete) file(s) with optional retries
 # Dos-2 18
-package=utils-lexyaccdos.zip[ulexydos.zip],Compiler generator for TP and compatibles
+package=utils-lexyaccdos.zip[lexydos.zip],Compiler generator for TP and compatibles
 # Dos-2 19
 package=units-ptcdos.zip[uptcdos.zip],Free portable framebuffer library
 # Dos-2 20
-package=utils-dxegendos.zip[udxegdos.zip],Generation of D~X~E modules loadable at runtime
+package=utils-dxegendos.zip[dxegdos.zip],Generation of D~X~E modules loadable at runtime
 # Dos-2 21
 package=units-fcl-pdfdos.zip[ufcpddos.zip],PDF generating and TTF file info library
 # Dos-2 22
@@ -142,14 +142,18 @@ package=units-rtl-genericsdos.zip[urtlgdos.zip],RTL-generic collection library
 # Dos-2 23
 package=units-webidldos.zip[uwidldos.zip],WEB IDL parser and converter to Object Pascal classes
 # Dos-2 24
-package=utils-fpcresdos.zip[ufprsdos.zip],Free Pascal Resource Converter
+package=utils-fpcresdos.zip[fprsdos.zip],Free Pascal Resource Converter
 # Dos-2 25
-package=utils-fpcreslipodos.zip[ufprldos.zip],Free Pascal External Resource Thinner
+package=utils-fpcreslipodos.zip[fprldos.zip],Free Pascal External Resource Thinner
 # Dos-2 26
-package=utils-json2pasdos.zip[ujs2pdos.zip],A utility to create Object Pascal classes files from sample JSON files
+package=utils-json2pasdos.zip[jsnpdos.zip],A utility to create Object Pascal classes files from sample JSON files
 # Dos-2 27
+package=units-tplylibdos.zip[utplldos.zip],Units for sources created with the compiler generator
 # Dos-2 28
+# Source-2 7
+package=utils-unicodedos.zip[ucddos.zip],Transformation of Unicode consortium data for FPC
 # Dos-2 29
+package=utils-ihxutildos.zip[ihxudos.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
 
 #
 # Win32 packages
@@ -168,7 +172,7 @@ package=base.i386-win32.zip,~B~asic system for Win32 (required)
 # Win32 2
 package=asld.i386-win32.zip,GNU ~L~inker and GNU Assembler for Win32 (required)
 # Win32 3
-package=ide.i386-win32.zip,~I~DE with integrated debugger/compiler (BETA)
+package=units-ide.i386-win32.zip,~I~DE with integrated debugger/compiler (BETA)
 # Win32 4
 package=utils.i386-win32.zip,~E~xtra Utilities
 # Win32 5
@@ -311,7 +315,7 @@ package=baseos2.zip,~B~asic system for OS/2 (required)
 # OS/2 2
 package=asldos2.zip,GNU ~L~inker and GNU assembler for OS/2 (required)
 # OS/2 3
-package=ideos2.zip,~I~DE with integrated compiler (BETA - no debugger)
+package=uideos2.zip,~I~DE with integrated compiler (BETA - no debugger)
 # OS/2 4
 package=utilsos2.zip[utilos2.zip],~E~xtra Utilities
 # OS/2 5
@@ -323,7 +327,7 @@ package=ufvos2.zip,Free ~V~ision (FV)
 # OS/2 8
 package=uos2unitsos2.zip[uos2os2.zip],Units interfacing libraries delivered with OS/2/eCS
 # OS/2 9
-package=utils-h2pasos2.zip[uh2paos2.zip],Create Pascal interface units from C headers
+package=utils-h2pasos2.zip[h2paos2.zip],Create Pascal interface units from C headers
 # OS/2 10
 package=upasjpegos2.zip[upjpos2.zip],Pas~J~PEG units
 # OS/2 11
@@ -359,11 +363,11 @@ package=utils-fpmcos2.zip[fpmcos2.zip],Free Pascal Message Compiler
 # OS/2 26
 package=utils-fppkgos2.zip[fppkgos2.zip],Free Pascal package repository utility
 # OS/2 27
-package=utils-fprcpos2.zip[ufprcos2.zip],Free Pascal Resource Compiler Preprocessor
+package=utils-fprcpos2.zip[fprcos2.zip],Free Pascal Resource Compiler Preprocessor
 # OS/2 28
 package=utils-fpcresos2.zip[fpresos2.zip],Free Pascal Resource Converter
 # OS/2 29
-package=utils-pas2fpmos2.zip[up2fpos2.zip],Generate fpmake.pp for Pascal source
+package=utils-pas2fpmos2.zip[p2fpos2.zip],Generate fpmake.pp for Pascal source
 # OS/2 30
 package=utils-pas2jnios2.zip[p2jnos2.zip],Generate JNI bridge for Pascal code
 # OS/2 31
@@ -476,7 +480,7 @@ package=baseemx.zip,~B~asic system for EMX (required)
 # EMX 2
 package=asldemx.zip,GNU ~L~inker and GNU assembler for EMX (required)
 # EMX 3
-package=ideemx.zip,~I~DE with integrated compiler (BETA - no debugger)
+package=uideemx.zip,~I~DE with integrated compiler (BETA - no debugger)
 # EMX 4
 package=utilsemx.zip[utilemx.zip],~E~xtra Utilities
 # EMX 5
@@ -652,7 +656,7 @@ package=compiler.source.zip[compsrc.zip],~C~ompiler sources
 # Source 3
 package=rtl.source.zip[rtlsrc.zip],Run time library sources
 # Source 4
-package=ide-3.3.1.source.zip[idesrc.zip],IDE sources
+package=units-ide-3.3.1.source.zip[uidesrc.zip],IDE sources
 # Source 5
 package=utils-3.3.1.source.zip[utilssrc.zip],~U~tils sources
 # Source 6
@@ -701,7 +705,7 @@ package=units-mysql-3.3.1.source.zip[umysqsrc.zip],MySQL interface units sources
 # Source-2 6
 package=utils-lexyacc-3.3.1.source.zip[ulexysrc.zip],Compiler generator for TP and compatibles
 # Source-2 7
-package=utils-unicode-3.3.1.source.zip[uucdsrc.zip],Transformation of Unicode consortium data for FPC
+package=utils-unicode-3.3.1.source.zip[ucdsrc.zip],Transformation of Unicode consortium data for FPC
 # Source-2 8
 package=units-os2units-3.3.1.source.zip[uos2src.zip],Units interfacing libraries delivered with OS/2/eCS
 # Source-2 9
@@ -823,41 +827,41 @@ package=units-rtl-generics-3.3.1.source.zip[urtlgsrc.zip],RTL-generic collection
 pack=~U~tils sources
 filecheck=*.source.zip[*src.zip]
 # Source 1
-package=utils-dxegen-3.3.1.source.zip[udxegsrc.zip],Generation of D~X~E modules loadable at runtime
+package=utils-dxegen-3.3.1.source.zip[dxegsrc.zip],Generation of D~X~E modules loadable at runtime
 # Source 2
-package=utils-fpcmkcfg-3.3.1.source.zip[ufpcksrc.zip],Creation of Free Pascal configuration files
+package=utils-fpcmkcfg-3.3.1.source.zip[fpcksrc.zip],Creation of Free Pascal configuration files
 # Source 3
-package=utils-fpcm-3.3.1.source.zip[ufpcmsrc.zip],Generate Makefiles out of Makefile.fpc files
+package=utils-fpcm-3.3.1.source.zip[fpcmsrc.zip],Generate Makefiles out of Makefile.fpc files
 # Source 4
-package=utils-fpdoc-3.3.1.source.zip[ufpdcsrc.zip],Free Pascal documentation generation utility
+package=utils-fpdoc-3.3.1.source.zip[fpdcsrc.zip],Free Pascal documentation generation utility
 # Source 5
-package=utils-fpmc-3.3.1.source.zip[ufpmcsrc.zip],Free Pascal Message Compiler
+package=utils-fpmc-3.3.1.source.zip[fpmcsrc.zip],Free Pascal Message Compiler
 # Source 6
-package=utils-fppkg-3.3.1.source.zip[ufpkgsrc.zip],Free Pascal package repository utility
+package=utils-fppkg-3.3.1.source.zip[fpkgsrc.zip],Free Pascal package repository utility
 # Source 7
-package=utils-fprcp-3.3.1.source.zip[ufprcsrc.zip],Free Pascal Resource Compiler Preprocessor
+package=utils-fprcp-3.3.1.source.zip[fprcsrc.zip],Free Pascal Resource Compiler Preprocessor
 # Source 8
-package=utils-fpcres-3.3.1.source.zip[ufprssrc.zip],Free Pascal Resource Converter
+package=utils-fpcres-3.3.1.source.zip[fprssrc.zip],Free Pascal Resource Converter
 # Source 9
-package=utils-fpcreslipo-3.3.1.source.zip[ufprlsrc.zip],Free Pascal External Resource Thinner
+package=utils-fpcreslipo-3.3.1.source.zip[fprlsrc.zip],Free Pascal External Resource Thinner
 # Source 10
-package=utils-h2pas-3.3.1.source.zip[uh2pasrc.zip],Create Pascal interface units from C headers
+package=utils-h2pas-3.3.1.source.zip[h2pasrc.zip],Create Pascal interface units from C headers
 # Source 11
-package=utils-json2pas-3.3.1.source.zip[ujs2psrc.zip],A utility to create Object Pascal classes files from sample JSON files
+package=utils-json2pas-3.3.1.source.zip[jsnpsrc.zip],A utility to create Object Pascal classes files from sample JSON files
 # Source 12
-package=utils-importtl-3.3.1.source.zip[uimptsrc.zip],
+package=utils-importtl-3.3.1.source.zip[imptsrc.zip],
 # Source 13
-package=utils-instantfpc-3.3.1.source.zip[uifpcsrc.zip],Instantaneous Free Pascal source executer
+package=utils-instantfpc-3.3.1.source.zip[ifpcsrc.zip],Instantaneous Free Pascal source executer
 # Source 14
-package=utils-pas2js-3.3.1.source.zip[up2jssrc.zip],Pascal to JavaScript converter
+package=utils-pas2js-3.3.1.source.zip[p2jssrc.zip],Pascal to JavaScript converter
 # Source 15
-package=utils-pas2fpm-3.3.1.source.zip[up2fpsrc.zip],Generate fpmake.pp for Pascal source
+package=utils-pas2fpm-3.3.1.source.zip[p2fpsrc.zip],Generate fpmake.pp for Pascal source
 # Source 16
-package=utils-pas2jni-3.3.1.source.zip[up2jnsrc.zip],Generate JNI bridge for Pascal code
+package=utils-pas2jni-3.3.1.source.zip[p2jnsrc.zip],Generate JNI bridge for Pascal code
 # Source 17
-package=utils-pas2ut-3.3.1.source.zip[up2utsrc.zip],Pascal source to FPC Unit test generator
+package=utils-pas2ut-3.3.1.source.zip[p2utsrc.zip],Pascal source to FPC Unit test generator
 # Source 18
-package=utils-rmwait-3.3.1.source.zip[urmwsrc.zip],Remove (delete) file(s) with optional retries
+package=utils-rmwait-3.3.1.source.zip[rmwsrc.zip],Remove (delete) file(s) with optional retries
 
 defaultcfg=
 #
