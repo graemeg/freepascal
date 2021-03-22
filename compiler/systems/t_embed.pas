@@ -634,8 +634,10 @@ begin
  
       { Atmel }
       ct_sam3x8e,
+      ct_samd51p19a,
       ct_arduino_due,
       ct_flip_n_click,
+      ct_wio_terminal,
       
       { Nordic Semiconductor }
       ct_nrf51422_xxaa,

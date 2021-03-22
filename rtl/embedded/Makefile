@@ -378,7 +378,8 @@ CPU_UNITS=lm3fury lm3tempest stm32f10x_ld stm32f10x_md stm32f10x_hd stm32f10x_xl
 CPU_UNITS_DEFINED=1
 endif
 ifeq ($(SUBARCH),armv7em)
-CPU_UNITS=lm4f120 xmc4500 mk20d5 mk20d7 mk22f51212 mk64f12 stm32f401xx stm32f407xx stm32f411xe stm32f429xx stm32f446xx stm32f745 stm32f746 stm32f756 nrf52 cortexm3 cortexm4 cortexm7 # thumb2_bare
+CPU_UNITS=lm4f120 xmc4500 mk20d5 mk20d7 mk22f51212 mk64f12 stm32f401xx stm32f407xx stm32f411xe stm32f429xx stm32f446xx stm32f745 stm32f746 stm32f756 nrf52 cortexm3 cortexm4 cortexm7 \
+samd51p19a # thumb2_bare
 CPU_UNITS_DEFINED=1
 endif
 ifeq ($(SUBARCH),armv4t)
