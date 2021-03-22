@@ -4609,34 +4609,39 @@ implementation
 
     procedure TDebugInfoDwarf3.appenddef_variant(list:TAsmList;def: tvariantdef);
       const
-        VARIANTS: array[1..27] of record Value: Word; Name: String end = (
-          (value:0;     name:''),
-          (value:1;     name:''),
-          (value:2;     name:'VSMALLINT'),
-          (value:3;     name:'VINTEGER'),
-          (value:4;     name:'VSINGLE'),
-          (value:5;     name:'VDOUBLE'),
-          (value:6;     name:'VCURRENCY'),
-          (value:7;     name:'VDATE'),
-          (value:8;     name:'VOLESTR'),
-          (value:9;     name:'VDISPATCH'),
-          (value:10;    name:'VERROR'),
-          (value:11;    name:'VBOOLEAN'),
-          (value:12;    name:''),
-          (value:13;    name:'VUNKNOWN'),
-          (value:14;    name:''),
-          (value:16;    name:'VSHORTINT'),
-          (value:17;    name:'VBYTE'),
-          (value:18;    name:'VWORD'),
-          (value:19;    name:'VLONGWORD'),
-          (value:20;    name:'VINT64'),
-          (value:21;    name:'VQWORD'),
-          (value:36;    name:'VRECORD'),
-          (value:$48;   name:''),
-          (value:$100;  name:'VSTRING'),
-          (value:$101;  name:'VANY'),
-          (value:$2000; name:'VARRAY'),
-          (value:$4000; name:'VPOINTER')
+        VARIANTS: array[1..27] of record
+          Value: Word;
+          Name: String;
+          { some fields are only supported by some features }
+          features : tfeatures
+        end = (
+          (value:0;     name:'';features: []),
+          (value:1;     name:'';features: []),
+          (value:2;     name:'VSMALLINT';features: []),
+          (value:3;     name:'VINTEGER';features: []),
+          (value:4;     name:'VSINGLE';features: [f_softfpu]),
+          (value:5;     name:'VDOUBLE';features: [f_softfpu]),
+          (value:6;     name:'VCURRENCY';features: [f_softfpu]),
+          (value:7;     name:'VDATE';features: [f_softfpu]),
+          (value:8;     name:'VOLESTR';features: []),
+          (value:9;     name:'VDISPATCH';features: []),
+          (value:10;    name:'VERROR';features: []),
+          (value:11;    name:'VBOOLEAN';features: []),
+          (value:12;    name:'';features: []),
+          (value:13;    name:'VUNKNOWN';features: []),
+          (value:14;    name:'';features: []),
+          (value:16;    name:'VSHORTINT';features: []),
+          (value:17;    name:'VBYTE';features: []),
+          (value:18;    name:'VWORD';features: []),
+          (value:19;    name:'VLONGWORD';features: []),
+          (value:20;    name:'VINT64';features: []),
+          (value:21;    name:'VQWORD';features: []),
+          (value:36;    name:'VRECORD';features: []),
+          (value:$48;   name:'';features: []),
+          (value:$100;  name:'VSTRING';features: []),
+          (value:$101;  name:'VANY';features: []),
+          (value:$2000; name:'VARRAY';features: []),
+          (value:$4000; name:'VPOINTER';features: [])
         );
       var
         fs: tfieldvarsym;
@@ -4669,20 +4674,23 @@ implementation
         { variants }
         for idx := Low(VARIANTS) to High(VARIANTS) do
           begin
-            append_entry(DW_TAG_variant,true,[
-              DW_AT_discr_value,DW_FORM_udata,VARIANTS[idx].value
-              ]);
-            finish_entry;
-
-            if VARIANTS[idx].name <> '' then
+            if (features*VARIANTS[idx].features)=VARIANTS[idx].features then
               begin
-                fs := tfieldvarsym(vardatadef.symtable.Find(VARIANTS[idx].name));
-                if (fs = nil) or (fs.typ <> fieldvarsym) then
-                  internalerror(20060927200+idx);
-                appendsym_fieldvar(list,fs);
-              end;
+                append_entry(DW_TAG_variant,true,[
+                  DW_AT_discr_value,DW_FORM_udata,VARIANTS[idx].value
+                  ]);
+                finish_entry;
 
-            finish_children; { variant }
+                if VARIANTS[idx].name <> '' then
+                  begin
+                    fs := tfieldvarsym(vardatadef.symtable.Find(VARIANTS[idx].name));
+                    if (fs = nil) or (fs.typ <> fieldvarsym) then
+                      internalerror(2006092702+idx);
+                    appendsym_fieldvar(list,fs);
+                  end;
+
+                finish_children; { variant }
+              end;
           end;
 
 
