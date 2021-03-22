@@ -1711,6 +1711,8 @@ var
   Decl: TPasElement;
   ModScope: TPasModuleScope;
   Access: TResolvedRefAccess;
+  Bin: TBinaryExpr;
+  Left: TPasExpr;
 begin
   if El=nil then exit;
   // Note: expression itself is not marked, but it can reference identifiers
@@ -1792,8 +1794,29 @@ begin
     // ok
   else if C=TBinaryExpr then
     begin
-    UseExpr(TBinaryExpr(El).left);
-    UseExpr(TBinaryExpr(El).right);
+    Bin:=TBinaryExpr(El);
+    if Bin.OpCode=eopAdd then
+      begin
+      // handle multi add expressions without stack
+      Left:=Bin;
+      while Left.ClassType=TBinaryExpr do
+        begin
+        Bin:=TBinaryExpr(Left);
+        if Bin.OpCode<>eopAdd then break;
+        Left:=Bin.left;
+        end;
+      UseExpr(Left);
+      repeat
+        Bin:=TBinaryExpr(Left.Parent);
+        UseExpr(Bin.right);
+        Left:=Bin;
+      until Left=El;
+      end
+    else
+      begin
+      UseExpr(Bin.left);
+      UseExpr(Bin.right);
+      end;
     end
   else if C=TUnaryExpr then
     UseExpr(TUnaryExpr(El).Operand)

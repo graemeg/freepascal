@@ -1546,7 +1546,7 @@ begin
         if SubBin.OpCode<>eopAdd then break;
         Left:=SubBin.left;
         end;
-      LeftValue:=Eval(Expr.left,Flags);
+      LeftValue:=Eval(Left,Flags);
       while LeftValue<>nil do
         begin
         SubBin:=TBinaryExpr(Left.Parent);

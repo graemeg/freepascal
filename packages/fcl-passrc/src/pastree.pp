@@ -5873,7 +5873,6 @@ begin
   end;
 end;
 
-
 constructor TBinaryExpr.Create(AParent : TPasElement; xleft,xright:TPasExpr; AOpCode:TExprOpCode);
 begin
   inherited Create(AParent,pekBinary, AOpCode);
@@ -5893,9 +5892,33 @@ begin
 end;
 
 destructor TBinaryExpr.Destroy;
+var
+  El: TPasExpr;
+  SubBin: TBinaryExpr;
 begin
-  ReleaseAndNil(TPasElement(left){$IFDEF CheckPasTreeRefCount},'TBinaryExpr.left'{$ENDIF});
-  ReleaseAndNil(TPasElement(right){$IFDEF CheckPasTreeRefCount},'TBinaryExpr.right'{$ENDIF});
+  // handle left of binary chains without stack
+  El:=Left;
+  while El is TBinaryExpr do
+    begin
+    SubBin:=TBinaryExpr(El);
+    El:=SubBin.left;
+    if (El=nil) or (El.Parent<>SubBin) then
+      begin
+      El:=SubBin;
+      break;
+      end;
+    end;
+
+  repeat
+    if El=left then
+      SubBin:=Self
+    else
+      SubBin:=TBinaryExpr(El.Parent);
+    ReleaseAndNil(TPasElement(SubBin.left){$IFDEF CheckPasTreeRefCount},'TBinaryExpr.left'{$ENDIF});
+    ReleaseAndNil(TPasElement(SubBin.right){$IFDEF CheckPasTreeRefCount},'TBinaryExpr.left'{$ENDIF});
+    El:=SubBin;
+  until El=Self;
+
   inherited Destroy;
 end;
 
