@@ -1248,6 +1248,7 @@ begin
   result := StrPas(@ResultBuffer[0]);
 end ;
 
+
 Function DateTimeToFileDate(DateTime : TDateTime) : Int64;
 
 Var YY,MM,DD,H,m,s,msec : Word;
@@ -1256,7 +1257,6 @@ begin
   Decodedate (DateTime,YY,MM,DD);
   DecodeTime (DateTime,h,m,s,msec);
 {$ifndef unix}
-{.$ifndef hasamiga}
   If (YY<1980) or (YY>2099) then
     Result:=0
   else
@@ -1264,9 +1264,6 @@ begin
     Result:=(s shr 1) or (m shl 5) or (h shl 11);
     Result:=Result or longint(DD shl 16 or (MM shl 21) or (word(YY-1980) shl 25));
     end;
-{.$else hasamiga}
-//  Result:=LocalToAmigaFileDate(yy,mm,dd,h,m,s);
-{.$endif}
 {$else unix}
   Result:=LocalToEpoch(yy,mm,dd,h,m,s);
 {$endif unix}
