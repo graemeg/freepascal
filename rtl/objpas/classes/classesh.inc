@@ -2466,7 +2466,7 @@ procedure ObjectTextToResource(Input, Output: TStream);
 { Utility routines }
 
 function LineStart(Buffer, BufPos: PChar): PChar;
-procedure BinToHex(BinValue, HexValue: PChar; BinBufSize: Integer);
+procedure BinToHex(BinValue, HexValue: PChar; BinBufSize: Integer); deprecated 'use procedures from unit StrUtils';
 function HexToBin(HexValue, BinValue: PChar; BinBufSize: Integer): Integer;
 function ExtractStrings(Separators, WhiteSpace: TSysCharSet; Content: PChar; Strings: TStrings; AddEmptyStrings : Boolean = False): Integer;
 
