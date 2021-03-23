@@ -20,7 +20,7 @@
 unit Character;
 
 interface
-{$ifndef VER2_4}
+
 {$mode objfpc}
 {$H+}
 {$PACKENUM 1}
@@ -187,10 +187,10 @@ type
   function ToLower(const AString : UnicodeString) : UnicodeString; overload;
   function ToUpper(AChar : UnicodeChar) : UnicodeChar; overload;
   function ToUpper(const AString : UnicodeString) : UnicodeString; overload;
-{$endif VER2_4}
+
 
 implementation
-{$ifndef VER2_4}
+
 uses
   SysUtils,
   RtlConsts;
@@ -851,5 +851,4 @@ begin
     raise EArgumentException.Create(SInvalidUnicodeCodePointSequence);
 end;
 
-{$endif VER2_4}
 end.

@@ -1394,11 +1394,6 @@ const
   maxdigits = 15;
 {$endif}
 
-{ deactive aligned function for 2.6 }
-{$ifdef VER2_6}
-{$macro on}
-{$define aligned:= }
-{$endif VER2_6}
 Function FloatToStrFIntl(const Value; format: TFloatFormat; Precision, Digits: Integer; ValueType: TFloatValue; Const FormatSettings: TFormatSettings): String;
 Var
   P, PE, Q, Exponent: Integer;

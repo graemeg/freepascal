@@ -3341,20 +3341,8 @@ function fpc_PopCnt_dword(AValue : DWord): DWord;[Public,Alias:'FPC_POPCNT_DWORD
 
 {$ifndef FPC_SYSTEM_HAS_POPCNT_QWORD}
 function fpc_PopCnt_qword(AValue : QWord): QWord;[Public,Alias:'FPC_POPCNT_QWORD'];compilerproc;
-{$ifdef VER2_6}
-  var
-    i : SizeInt;
-  begin
-    Result:=0;
-    for i:=0 to 15 do
-      begin
-        inc(Result,PopCntData[AValue and $f]);
-        AValue:=AValue shr 4;
-      end;
-{$else VER2_6}
   begin
     Result:=PopCnt(lo(AValue))+PopCnt(hi(AValue))
-{$endif VER2_6}
   end;
 {$endif}
 

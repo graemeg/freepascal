@@ -28,10 +28,6 @@ interface
 uses
   types, sysutils, sortbase;
 
-{$IF defined(VER2_4)}
-  {$DEFINE OldSyntax}
-{$IFEND}
-
 const
   MaxListSize = Maxint div 16;
 
@@ -127,7 +123,8 @@ type
       PT = ^T;
       TTypeList = PT;
       PTypeList = ^TTypeList;
-  {$ifndef OldSyntax}protected var{$else}var protected{$endif}
+  protected
+    var
       FOnCompare: TCompareFunc;
     procedure CopyItem(Src, Dest: Pointer); override;
     procedure Deref(Item: Pointer); override;
@@ -152,10 +149,8 @@ type
     function IndexOf(const Item: T): Integer;
     procedure Insert(Index: Integer; const Item: T); {$ifdef FGLINLINE} inline; {$endif}
     property Last: T read GetLast write SetLast;
-{$ifndef VER2_4}
     procedure Assign(Source: TFPGList);
     procedure AddList(Source: TFPGList);
-{$endif VER2_4}
     function Remove(const Item: T): Integer; {$ifdef FGLINLINE} inline; {$endif}
     procedure Sort(Compare: TCompareFunc);
     procedure Sort(Compare: TCompareFunc; SortingAlgorithm: PSortingAlgorithm);
@@ -171,7 +166,8 @@ type
       TTypeList = PT;
       PTypeList = ^TTypeList;
       TFPGListEnumeratorSpec = specialize TFPGListEnumerator<T>;
-  {$ifndef OldSyntax}protected var{$else}var protected{$endif}
+  protected
+    var
       FOnCompare: TCompareFunc;
       FFreeObjects: Boolean;
     procedure CopyItem(Src, Dest: Pointer); override;
@@ -193,10 +189,8 @@ type
     function IndexOf(const Item: T): Integer;
     procedure Insert(Index: Integer; const Item: T); {$ifdef FGLINLINE} inline; {$endif}
     property Last: T read GetLast write SetLast;
-{$ifndef VER2_4}
     procedure AddList(Source: TFPGObjectList);
     procedure Assign(Source: TFPGObjectList);
-{$endif VER2_4}
     function Remove(const Item: T): Integer; {$ifdef FGLINLINE} inline; {$endif}
     procedure Sort(Compare: TCompareFunc);
     procedure Sort(Compare: TCompareFunc; SortingAlgorithm: PSortingAlgorithm);
@@ -213,7 +207,8 @@ type
       TTypeList = PT;
       PTypeList = ^TTypeList;
       TFPGListEnumeratorSpec = specialize TFPGListEnumerator<T>;
-  {$ifndef OldSyntax}protected var{$else}var protected{$endif}
+  protected
+    var
       FOnCompare: TCompareFunc;
     procedure CopyItem(Src, Dest: Pointer); override;
     procedure Deref(Item: Pointer); override;
@@ -234,10 +229,8 @@ type
     function IndexOf(const Item: T): Integer;
     procedure Insert(Index: Integer; const Item: T); {$ifdef FGLINLINE} inline; {$endif}
     property Last: T read GetLast write SetLast;
-{$ifndef VER2_4}
     procedure Assign(Source: TFPGInterfacedObjectList);
     procedure AddList(Source: TFPGInterfacedObjectList);
-{$endif VER2_4}
     function Remove(const Item: T): Integer; {$ifdef FGLINLINE} inline; {$endif}
     procedure Sort(Compare: TCompareFunc);
     procedure Sort(Compare: TCompareFunc; SortingAlgorithm: PSortingAlgorithm);
@@ -303,7 +296,8 @@ type
       TDataCompareFunc = function(const Data1, Data2: TData): Integer;
       PKey = ^TKey;
 // unsed      PData = ^TData;
-  {$ifndef OldSyntax}protected var{$else}var protected{$endif}
+  protected
+    var
       FOnKeyCompare: TKeyCompareFunc;
       FOnDataCompare: TDataCompareFunc;
     procedure CopyItem(Src, Dest: Pointer); override;
@@ -350,7 +344,8 @@ type
       TDataCompareFunc = function(const Data1, Data2: TData): Integer;
       PKey = ^TKey;
 // unsed      PData = ^TData;
-  {$ifndef OldSyntax}protected var{$else}var protected{$endif}
+  protected
+    var
       FOnKeyCompare: TKeyCompareFunc;
       FOnDataCompare: TDataCompareFunc;
       FFreeObjects: Boolean;
@@ -399,7 +394,8 @@ type
       TDataCompareFunc = function(const Data1, Data2: TData): Integer;
       PKey = ^TKey;
 // unsed      PData = ^TData;
-  {$ifndef OldSyntax}protected var{$else}var protected{$endif}
+  protected
+    var
       FOnKeyCompare: TKeyCompareFunc;
       FOnDataCompare: TDataCompareFunc;
     procedure CopyItem(Src, Dest: Pointer); override;
@@ -1009,7 +1005,6 @@ begin
   inherited SetLast(@Value);
 end;
 
-{$ifndef VER2_4}
 procedure TFPGList.AddList(Source: TFPGList);
 
 var
@@ -1036,7 +1031,6 @@ begin
   else
     Inherited Assign(TFPSList(source))
 end;
-{$endif VER2_4}
 
 function TFPGList.Remove(const Item: T): Integer;
 begin
@@ -1149,7 +1143,6 @@ begin
   inherited SetLast(@Value);
 end;
 
-{$ifndef VER2_4}
 procedure TFPGObjectList.AddList(Source: TFPGObjectList);
 var
   i: Integer;
@@ -1163,7 +1156,6 @@ begin
   Clear;
   AddList(Source);
 end;
-{$endif VER2_4}
 
 function TFPGObjectList.Remove(const Item: T): Integer;
 begin
@@ -1279,7 +1271,6 @@ begin
   inherited SetLast(@Value);
 end;
 
-{$ifndef VER2_4}
 procedure TFPGInterfacedObjectList.Assign(Source: TFPGInterfacedObjectList);
 
 begin
@@ -1294,7 +1285,6 @@ begin
   for I := 0 to Source.Count - 1 do
     Add(Source[i]);
 end;
-{$endif VER2_4}
 
 function TFPGInterfacedObjectList.Remove(const Item: T): Integer;
 begin

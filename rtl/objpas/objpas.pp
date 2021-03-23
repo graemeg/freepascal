@@ -370,7 +370,7 @@ Type
    end;
 
    TResStrInitTable = packed record
-     Count: {$ifdef VER2_6}longint{$else}sizeint{$endif};
+     Count: sizeint;
      Tables: packed array[1..{$ifdef cpu16}8191{$else cpu16}32767{$endif cpu16}] of PResStrInitEntry;
    end;
    PResStrInitTable = ^TResStrInitTable;

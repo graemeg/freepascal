@@ -422,11 +422,7 @@ Function fpc_Char_To_UChar(const c : Char): UnicodeChar; compilerproc;
 Function fpc_UChar_To_Char(const c : UnicodeChar): Char; compilerproc;
 Function fpc_UChar_To_UnicodeStr(const c : UnicodeChar): UnicodeString; compilerproc;
 Function fpc_UChar_To_AnsiStr(const c : UnicodeChar{$ifdef FPC_HAS_CPSTRING};cp : TSystemCodePage{$endif FPC_HAS_CPSTRING}): AnsiString; compilerproc;
-{$ifdef VER2_6}
-procedure fpc_UChar_To_ShortStr(out result : shortstring;const c : WideChar) compilerproc;
-{$else}
 function fpc_UChar_To_ShortStr(const c : WideChar): shortstring; compilerproc;
-{$endif}
 
 Function fpc_PWideChar_To_UnicodeStr(const p : pwidechar): unicodestring; compilerproc;
 {$ifdef FPC_HAS_FEATURE_ANSISTRINGS}

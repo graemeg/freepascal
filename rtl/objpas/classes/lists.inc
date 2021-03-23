@@ -11,7 +11,7 @@
 
  **********************************************************************}
 
-{$if defined(VER2_0) or not defined(FPC_TESTGENERICS)}
+{$if not defined(FPC_TESTGENERICS)}
 
 {****************************************************************************}
 {*                           TFPListEnumerator                              *}

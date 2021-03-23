@@ -19,9 +19,6 @@
 {$ifndef FPC_REQUIRES_PROPER_ALIGNMENT}
   {$define USE_PACKED}
 {$endif}
-{$ifdef VER2_6}
-  {$define USE_PACKED}
-{$endif}
 
 {$ifndef VER3_0}
 { 3.1.1 and newer also (re)stores $MinEnumSize and $PackSet upon $Push/$Pop }
@@ -54,11 +51,7 @@ type
     {$else}
     TypeInfo: PPointer;
     {$endif}
-    {$ifdef VER2_6}
-    Offset: Longint;
-    {$else}
     Offset: SizeInt;
-    {$endif}
   end;
 
   PRecordInfoFull=^TRecordInfoFull;

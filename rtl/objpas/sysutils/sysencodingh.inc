@@ -12,7 +12,6 @@
     *********************************************************************
 }
 
-{$ifndef VER2_4}
 type
   EEncodingError = class(Exception);
 
@@ -189,4 +188,3 @@ type
     function Clone: TEncoding; override;
     function GetPreamble: TBytes; override;
   end;
-{$endif VER2_4}

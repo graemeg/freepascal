@@ -1066,8 +1066,7 @@ type
   end;
   TInitFinalTable = record
     TableCount,
-    InitCount  : {$if defined(VER2)}longint
-                 {$elseif defined(VER3_0)}sizeint
+    InitCount  : {$if defined(VER3_0)}sizeint
                  {$else}ALUUInt{$endif}
                  ;
     Procs      : array[1..maxunits] of TInitFinalRec;

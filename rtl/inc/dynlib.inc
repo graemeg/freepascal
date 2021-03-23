@@ -156,7 +156,7 @@ const
   SNoDynLibs = 'This binary has no dynamic library support compiled in.';
   SRecompileWithDynLibs = 'Recompile the application with a dynamic-library-driver in the program uses clause before other units using dynamic libraries.';
 
-Procedure NoDynLibsError; {$ifndef ver2_6}noreturn;{$endif}
+Procedure NoDynLibsError; noreturn;
 begin
 {$ifndef EMBEDDED}
 {$ifdef FPC_HAS_FEATURE_CONSOLEIO}
@@ -170,32 +170,32 @@ begin
   RunError(235)
 end;
 
-Function NoLoadLibraryU(const Name: UnicodeString): TLibHandle; {$ifndef ver2_6}noreturn;{$endif}
+Function NoLoadLibraryU(const Name: UnicodeString): TLibHandle; noreturn;
 begin
   NoDynLibsError;
 end;
 
-Function NoLoadLibraryA(const Name: RawByteString): TLibHandle; {$ifndef ver2_6}noreturn;{$endif}
+Function NoLoadLibraryA(const Name: RawByteString): TLibHandle; noreturn;
 begin
   NoDynLibsError;
 end;
 
-function NoGetProcAddress(Lib: TLibHandle; const Proc: AnsiString): {$ifdef cpui8086}FarPointer{$else}Pointer{$endif}; {$ifndef ver2_6}noreturn;{$endif}
+function NoGetProcAddress(Lib: TLibHandle; const Proc: AnsiString): {$ifdef cpui8086}FarPointer{$else}Pointer{$endif}; noreturn;
 begin
   NoDynLibsError;
 end;
 
-function NoGetProcAddressOrdinal(Lib: TLibHandle; Ordinal: TOrdinalEntry): {$ifdef cpui8086}FarPointer{$else}Pointer{$endif}; {$ifndef ver2_6}noreturn;{$endif}
+function NoGetProcAddressOrdinal(Lib: TLibHandle; Ordinal: TOrdinalEntry): {$ifdef cpui8086}FarPointer{$else}Pointer{$endif}; noreturn;
 begin
   NoDynLibsError;
 end;
 
-function NoGetLoadErrorStr: String; {$ifndef ver2_6}noreturn;{$endif}
+function NoGetLoadErrorStr: String; noreturn;
 begin
   NoDynLibsError;
 end;
 
-function NoUnloadLibrary(Lib: TLibHandle): Boolean; {$ifndef ver2_6}noreturn;{$endif}
+function NoUnloadLibrary(Lib: TLibHandle): Boolean; noreturn;
 begin
   NoDynLibsError;
 end;

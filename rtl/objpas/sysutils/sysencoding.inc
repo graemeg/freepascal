@@ -12,7 +12,6 @@
     *********************************************************************
 }
 
-{$ifndef VER2_4}
 { TEncoding }
 
 class function TEncoding.GetANSI: TEncoding;
@@ -856,5 +855,3 @@ begin
       Inc(I, 2);
     end;
 end;
-
-{$endif VER2_4}
