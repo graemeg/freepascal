@@ -4129,7 +4129,7 @@ begin
         if not DoProcedure(Source,method_name,args) then
         // may be function?
         try
-          variant(dummy_data) := Unassigned;
+          dummy_data.VType := varEmpty;
           if not DoFunction(dummy_data,Source,method_name,args) then
             RaiseDispError;
         finally
@@ -4482,7 +4482,7 @@ Var
 begin
   case (PropInfo^.PropProcs shr 2) and 3 of
     ptfield:
-      PVariant(Pointer(Instance)+PtrUInt(PropInfo^.SetProc))^:=Value;	
+      PVariant(Pointer(Instance)+PtrUInt(PropInfo^.SetProc))^:=Value;
     ptVirtual,ptStatic:
       begin
         if ((PropInfo^.PropProcs shr 2) and 3)=ptStatic then
