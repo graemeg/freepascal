@@ -3806,7 +3806,7 @@ begin
     else if C=TPasDestructor then
       Obj.Add('Type','Destructor')
     else if C=TPasClassDestructor then
-      Obj.Add('Type','Class Destructor')
+      Obj.Add('Type','ClassDestructor')
     else if C=TPasAnonymousProcedure then
       Obj.Add('Type','AnonymousProcedure')
     else if C=TPasAnonymousFunction then
