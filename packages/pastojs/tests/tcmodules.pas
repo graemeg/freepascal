@@ -406,6 +406,7 @@ type
     Procedure TestLoHiDelphiMode;
     Procedure TestAssignments;
     Procedure TestArithmeticOperators1;
+    Procedure TestMultiAdd;
     Procedure TestLogicalOperators;
     Procedure TestBitwiseOperators;
     Procedure TestBitwiseOperatorsLongword;
@@ -3306,6 +3307,38 @@ begin
     '$mod.vB = $mod.vA;',
     'if ($mod.vA < $mod.vB){ $mod.vC = $mod.vA } else $mod.vC = $mod.vB;'
     ]));
+end;
+
+procedure TTestModule.TestMultiAdd;
+begin
+  StartProgram(false);
+  Add([
+  'function TryEncodeDate(Year, Month, Day: Word): Boolean;',
+  'var Date: double;',
+  'begin',
+  '  Result:=(Year>0) and (Year<10000) and',
+  '          (Month >= 1) and (Month<=12) and',
+  '          (Day>0) and (Day<=31);',
+  '  Date := (146097*Year) SHR 2 + (1461*Year) SHR 2 + (153*LongWord(Month)+2) DIV 5 + LongWord(Day);',
+  'end;',
+  'var s: string;',
+  'begin',
+  '  s:=''a''+''b''+''c''+''d'';']);
+  ConvertProgram;
+  CheckSource('TestMultiAdd',
+    LinesToStr([ // statements
+    'this.TryEncodeDate = function (Year, Month, Day) {',
+    '  var Result = false;',
+    '  var date = 0.0;',
+    '  Result = (Year > 0) && (Year < 10000) && (Month >= 1) && (Month <= 12) && (Day > 0) && (Day <= 31);',
+    '  date = ((146097 * Year) >>> 2) + ((1461 * Year) >>> 2) + rtl.trunc(((153 * Month) + 2) / 5) + Day;',
+    '  return Result;',
+    '};',
+    'this.s = "";',
+    '']),
+    LinesToStr([ // this.$main
+    '$mod.s = "a" + "b" + "c" + "d";',
+    '']));
 end;
 
 procedure TTestModule.TestLogicalOperators;

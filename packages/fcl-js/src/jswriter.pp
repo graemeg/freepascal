@@ -1430,7 +1430,6 @@ begin
         or (ElC=TJSMultiplicativeExpressionMul)) then
     begin
     // handle left handed multi add without stack
-    FSkipRoundBrackets:=true;
     SetLength(Binaries{%H-},8);
     BinariesCnt:=0;
     while Left is TJSBinaryExpression do
@@ -1443,6 +1442,7 @@ begin
       inc(BinariesCnt);
       Left:=SubBin.A;
       end;
+
     WriteJS(Left);
     Writer.CurElement:=El;
 
