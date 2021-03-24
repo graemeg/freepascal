@@ -177,14 +177,14 @@ function DelSpace1(const S: string): string;
 function Tab2Space(const S: string; Numb: Byte): string;
 function NPos(const C: string; S: string; N: Integer): SizeInt;
 
-Function RPosEX(C:char;const S : AnsiString;offs:cardinal):SizeInt; overload;
-Function RPosex (Const Substr : AnsiString; Const Source : AnsiString;offs:cardinal) : SizeInt; overload;
+Function RPosEx(C:char;const S : AnsiString;offs:cardinal):SizeInt; overload;
+Function RPosEx(C:Unicodechar;const S : UnicodeString;offs:cardinal):SizeInt; overload;
+Function RPosEx(Const Substr : AnsiString; Const Source : AnsiString;offs:cardinal) : SizeInt; overload;
+Function RPosEx(Const Substr : UnicodeString; Const Source : UnicodeString;offs:cardinal) : SizeInt; overload;
 Function RPos(c:char;const S : AnsiString):SizeInt; overload;
-Function RPos (Const Substr : AnsiString; Const Source : AnsiString) : SizeInt; overload;
-Function RPosEX(C:Unicodechar;const S : UnicodeString;offs:cardinal):SizeInt; overload;
-Function RPosex (Const Substr : UnicodeString; Const Source : UnicodeString;offs:cardinal) : SizeInt; overload;
 Function RPos(c:Unicodechar;const S : UnicodeString):SizeInt; overload;
-Function RPos (Const Substr : UnicodeString; Const Source : UnicodeString) : SizeInt; overload;
+Function RPos(Const Substr : AnsiString; Const Source : AnsiString) : SizeInt; overload;
+Function RPos(Const Substr : UnicodeString; Const Source : UnicodeString) : SizeInt; overload;
 
 function AddChar(C: Char; const S: string; N: Integer): string;
 function AddCharR(C: Char; const S: string; N: Integer): string;
