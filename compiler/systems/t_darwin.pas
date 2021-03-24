@@ -51,11 +51,15 @@ implementation
 
     tlinkerdarwin=class(texternallinker)
     private
-      LinkFilesFileName,
       LinkSymsFileName   : TCmdStr;
-      Function  WriteResponseFile(isdll:boolean) : Boolean;
+      function WriteFileList: TCmdStr;
       function GetDarwinCrt1ObjName(isdll: boolean): TCmdStr;
       Function GetDarwinPrtobjName(isdll: boolean): TCmdStr;
+      function GetLinkArch: TCmdStr;
+      function GetLinkVersion: TCmdStr;
+      function GetSysroot: TCmdStr;
+      function GetLibSearchPath: TCmdStr;
+      function GetLibraries: TCmdStr;
     public
       constructor Create;override;
       procedure SetDefaultInfo;override;
@@ -123,16 +127,16 @@ implementation
              programs with problems that require Valgrind will have more
              than 60KB of data (first 4KB of address space is always invalid)
            }
-           ExeCmd[1]:='ld $PRTOBJ $TARGET $EMUL $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP $MAP $LTO $ORDERSYMS -multiply_defined suppress -L. -o $EXE $CATRES $FILELIST';
+           ExeCmd[1]:='ld $PRTOBJ $TARGET $OPT $STATIC $GCSECTIONS $STRIP $MAP $LTO $ORDERSYMS -L. -o $EXE $ARCH $VERSION $SYSROOT $LIBSEARCHPATH $FILELIST $LIBRARIES';
            if not(cs_gdb_valgrind in current_settings.globalswitches) then
              ExeCmd[1]:=ExeCmd[1]+' -pagezero_size 0x10000';
   {$else ndef cpu64bitaddr}
-           ExeCmd[1]:='ld $PRTOBJ $TARGET $EMUL $OPT $DYNLINK $STATIC $GCSECTIONS $STRIP $MAP $LTO $ORDERSYMS -multiply_defined suppress -L. -o $EXE $CATRES $FILELIST';
+           ExeCmd[1]:='ld $PRTOBJ $TARGET $OPT $STATIC $GCSECTIONS $STRIP $MAP $LTO $ORDERSYMS -L. -o $EXE $ARCH $VERSION $SYSROOT $LIBSEARCHPATH $FILELIST $LIBRARIES';
   {$endif ndef cpu64bitaddr}
            if (apptype<>app_bundle) then
-             DllCmd[1]:='ld $PRTOBJ $TARGET $EMUL $OPT $GCSECTIONS $MAP $LTO $ORDERSYMS -dynamic -dylib -multiply_defined suppress -L. -o $EXE $CATRES $FILELIST'
+             DllCmd[1]:='ld $PRTOBJ $TARGET $OPT $GCSECTIONS $MAP $LTO $ORDERSYMS -dynamic -dylib -L. -o $EXE $ARCH $VERSION $SYSROOT $LIBSEARCHPATH $FILELIST $LIBRARIES'
            else
-             DllCmd[1]:='ld $PRTOBJ $TARGET $EMUL $OPT $GCSECTIONS $MAP $LTO $ORDERSYMS -dynamic -bundle -multiply_defined suppress -L. -o $EXE $CATRES $FILELIST';
+             DllCmd[1]:='ld $PRTOBJ $TARGET $OPT $GCSECTIONS $MAP $LTO $ORDERSYMS -dynamic -bundle -L. -o $EXE $ARCH $VERSION $SYRSROOT $LIBSEARCHPATH $FILELIST $LIBRARIES';
            DllCmd[2]:='strip -x $EXE';
            DynamicLinker:='';
          end;
@@ -298,106 +302,152 @@ implementation
       end;
 
 
-    Function tlinkerdarwin.GetDarwinPrtobjName(isdll: boolean): TCmdStr;
-    var
-      startupfile: TCmdStr;
-    begin
-      result:='';
+    function tlinkerdarwin.GetDarwinPrtobjName(isdll: boolean): TCmdStr;
+      var
+        startupfile: TCmdStr;
+      begin
+        result:='';
 
-      startupfile:=GetDarwinCrt1ObjName(isdll);
-      if startupfile<>'' then
-        begin
-         if not librarysearchpath.FindFile(startupfile,false,result) then
-           result:='/usr/lib/'+startupfile;
+        startupfile:=GetDarwinCrt1ObjName(isdll);
+        if startupfile<>'' then
+          begin
+           if not librarysearchpath.FindFile(startupfile,false,result) then
+             result:='/usr/lib/'+startupfile;
+          end;
+        result:=maybequoted(result);
+      end;
+
+
+    function tlinkerdarwin.GetLinkArch: TCmdStr;
+      begin
+        case target_info.system of
+          system_powerpc_darwin:
+            result:='-arch ppc';
+          system_i386_darwin,
+          system_i386_iphonesim:
+            result:='-arch i386';
+          system_powerpc64_darwin:
+            result:='-arch ppc64';
+          system_x86_64_darwin,
+          system_x86_64_iphonesim:
+            result:='-arch x86_64';
+          system_arm_ios:
+            { current versions of the linker require the sub-architecture type
+              to be specified }
+            result:='-arch '+lower(cputypestr[current_settings.cputype]);
+          system_aarch64_ios,
+          system_aarch64_darwin:
+            result:='-arch arm64';
+          else
+            internalerror(2014121801);
         end;
-      result:=maybequoted(result);
-    end;
+      end;
 
 
-    Function tlinkerdarwin.WriteResponseFile(isdll:boolean) : Boolean;
+    function tlinkerdarwin.GetLinkVersion: TCmdStr;
+      begin
+        if MacOSXVersionMin<>'' then
+          begin
+            result:='-macosx_version_min '+MacOSXVersionMin;
+          end
+        else if iPhoneOSVersionMin<>'' then
+          begin
+            result:='-iphoneos_version_min '+iPhoneOSVersionMin;
+          end
+        else
+          begin
+            result:='';
+          end;
+      end;
+
+
+    function tlinkerdarwin.GetSysroot: TCmdStr;
+      begin
+        if sysrootpath<>'' then
+          begin
+            result:='-syslibroot '+maybequoted(sysrootpath);
+          end
+        else
+          begin
+            result:='';
+          end;
+      end;
+
+
+    function tlinkerdarwin.GetLibSearchPath: TCmdStr;
+      var
+        HPath: TCmdStrListItem;
+      begin
+        result:='';
+        HPath:=TCmdStrListItem(current_module.locallibrarysearchpath.First);
+        while assigned(HPath) do
+         begin
+           result:=result+' '+maybequoted('-L'+HPath.Str);
+           HPath:=TCmdStrListItem(HPath.Next);
+         end;
+        HPath:=TCmdStrListItem(LibrarySearchPath.First);
+        while assigned(HPath) do
+         begin
+           result:=result+' '+maybequoted('-L'+HPath.Str);
+           HPath:=TCmdStrListItem(HPath.Next);
+         end;
+
+        HPath:=TCmdStrListItem(current_module.localframeworksearchpath.First);
+        while assigned(HPath) do
+         begin
+           result:=result+' '+maybequoted('-F'+HPath.Str);
+           HPath:=TCmdStrListItem(HPath.Next);
+         end;
+        HPath:=TCmdStrListItem(FrameworkSearchPath.First);
+        while assigned(HPath) do
+         begin
+           result:=result+' '+maybequoted('-F'+HPath.Str);
+           HPath:=TCmdStrListItem(HPath.Next);
+         end;
+      end;
+
+
+    function tlinkerdarwin.GetLibraries: TCmdStr;
+      var
+        s: TCmdStr;
+        i: longint;
+      begin
+        result:='';
+        while not SharedLibFiles.Empty do
+          begin
+            s:=SharedLibFiles.GetFirst;
+            if (s<>'c') or ReOrderEntries then
+              begin
+                i:=Pos(target_info.sharedlibext,s);
+                if i>0 then
+                  Delete(s,i,length(s));
+                result:=result+' '+maybequoted('-l'+s);
+              end;
+           { be sure that libc is the last lib }
+           if not ReOrderEntries then
+             begin
+               result:=result+' -lc'
+             end;
+         end;
+
+        while not FrameworkFiles.empty do
+          begin
+            result:=result+' -framework '+maybequoted(FrameworkFiles.GetFirst);
+          end;
+      end;
+
+
+    Function tlinkerdarwin.WriteFileList: TCmdStr;
     Var
-      linkres      : TLinkRes;
-      FilesList    : TLinkRes;
-      i            : longint;
-      HPath        : TCmdStrListItem;
+      FilesList    : TScript;
       s            : TCmdStr;
     begin
-      WriteResponseFile:=False;
       if ReOrderEntries Then
          ExpandAndApplyOrder(SharedLibFiles);
 
-      { Open link.res file }
-      LinkRes:=TLinkRes.Create(outputexedir+Info.ResName,false);
-
-      if sysrootpath<>'' then
-        begin
-          LinkRes.Add('-syslibroot');
-          LinkRes.Add(sysrootpath);
-        end;
-
-      LinkRes.Add('-arch');
-      case target_info.system of
-        system_powerpc_darwin:
-          LinkRes.Add('ppc');
-        system_i386_darwin,
-        system_i386_iphonesim:
-          LinkRes.Add('i386');
-        system_powerpc64_darwin:
-          LinkRes.Add('ppc64');
-        system_x86_64_darwin,
-        system_x86_64_iphonesim:
-          LinkRes.Add('x86_64');
-        system_arm_ios:
-          { current versions of the linker require the sub-architecture type
-            to be specified }
-          LinkRes.Add(lower(cputypestr[current_settings.cputype]));
-        system_aarch64_ios,
-        system_aarch64_darwin:
-          LinkRes.Add('arm64');
-        else
-          internalerror(2014121801);
-      end;
-      if MacOSXVersionMin<>'' then
-        begin
-          LinkRes.Add('-macosx_version_min');
-          LinkRes.Add(MacOSXVersionMin);
-        end
-      else if iPhoneOSVersionMin<>'' then
-        begin
-          LinkRes.Add('-iphoneos_version_min');
-          LinkRes.Add(iPhoneOSVersionMin);
-        end;
-
-      { Write path to search libraries }
-      HPath:=TCmdStrListItem(current_module.locallibrarysearchpath.First);
-      while assigned(HPath) do
-       begin
-         LinkRes.Add('-L'+HPath.Str);
-         HPath:=TCmdStrListItem(HPath.Next);
-       end;
-      HPath:=TCmdStrListItem(LibrarySearchPath.First);
-      while assigned(HPath) do
-       begin
-         LinkRes.Add('-L'+HPath.Str);
-         HPath:=TCmdStrListItem(HPath.Next);
-       end;
-
-      HPath:=TCmdStrListItem(current_module.localframeworksearchpath.First);
-      while assigned(HPath) do
-       begin
-         LinkRes.Add('-F'+HPath.Str);
-         HPath:=TCmdStrListItem(HPath.Next);
-       end;
-      HPath:=TCmdStrListItem(FrameworkSearchPath.First);
-      while assigned(HPath) do
-       begin
-         LinkRes.Add('-F'+HPath.Str);
-         HPath:=TCmdStrListItem(HPath.Next);
-       end;
-
-      { main objectfiles }
-      LinkFilesFileName:=UniqueName('linkfiles')+'.res';
-      FilesList:=TLinkRes.Create(outputexedir+LinkFilesFileName,false);
+      { main objectfiles and static libraries: in filelist file to avoid overflowing command line limit }
+      result:=UniqueName(outputexedir+'linkfiles')+'.res';
+      FilesList:=TScript.Create(result);
       while not ObjectFiles.Empty do
         begin
           s:=ObjectFiles.GetFirst;
@@ -406,46 +456,15 @@ implementation
               s:=TargetFixFileName(s);
               FilesList.Add(s);
             end;
+          { Write staticlibraries }
+          while not StaticLibFiles.Empty do
+            begin
+              s:=StaticLibFiles.GetFirst;
+              FilesList.Add(s)
+            end;
         end;
       FilesList.writetodisk;
       FilesList.Free;
-
-      { Write staticlibraries }
-      while not StaticLibFiles.Empty do
-        begin
-          S:=StaticLibFiles.GetFirst;
-          LinkRes.AddFileName(s)
-        end;
-
-      { Write sharedlibraries like -l<lib> }
-      while not SharedLibFiles.Empty do
-        begin
-          S:=SharedLibFiles.GetFirst;
-          if (s<>'c') or ReOrderEntries then
-            begin
-              i:=Pos(target_info.sharedlibext,S);
-              if i>0 then
-                Delete(S,i,255);
-              LinkRes.Add('-l'+s);
-            end;
-         { be sure that libc is the last lib }
-         if not ReOrderEntries then
-           begin
-             LinkRes.Add('-lc')
-           end;
-       end;
-
-      while not FrameworkFiles.empty do
-        begin
-          LinkRes.Add('-framework');
-          LinkRes.Add(FrameworkFiles.GetFirst);
-        end;
-
-    { Write and Close response }
-      linkres.writetodisk;
-      linkres.Free;
-
-      WriteResponseFile:=True;
     end;
 
 
@@ -455,16 +474,14 @@ implementation
       cmdstr,
       mapstr,
       targetstr,
-      emulstr,
       extdbgbinstr,
       extdbgcmdstr,
       ltostr,
-      ordersymfile: TCmdStr;
-      linkscript: TAsmScript;
-      DynLinkStr : string[60];
+      ordersymfile,
+      linkfiles: TCmdStr;
       GCSectionsStr,
       StaticStr,
-      StripStr   : string[63];
+      StripStr   : TCmdStr;
       success : boolean;
     begin
       if not(cs_link_nolink in current_settings.globalswitches) then
@@ -473,13 +490,11 @@ implementation
     { Create some replacements }
       StaticStr:='';
       StripStr:='';
-      DynLinkStr:='';
       GCSectionsStr:='';
-      linkscript:=nil;
       mapstr:='';
       targetstr:='';
-      emulstr:='';
       ltostr:='';
+
       if (cs_link_map in current_settings.globalswitches) then
         mapstr:='-map '+maybequoted(ChangeFileExt(current_module.exefilename,'.map'));
 
@@ -491,11 +506,6 @@ implementation
       if (cs_link_smart in current_settings.globalswitches) then
         GCSectionsStr:='-dead_strip -no_dead_strip_inits_and_terms';
 
-      if CShared Then
-       begin
-         DynLinKStr:=DynLinkStr+' -dynamic'; // one dash!
-       end;
-
       { add custom LTO library if using custom clang }
       if (cs_lto in current_settings.moduleswitches) and
          not(cs_link_on_target in current_settings.globalswitches) and
@@ -505,10 +515,10 @@ implementation
           ltostr:='-lto_library '+maybequoted(utilsdirectory+'/../lib/libLTO.dylib');
         end;
 
-    { Write used files and libraries }
-      WriteResponseFile(false);
+      { Write list of files to link }
+      linkfiles:=WriteFileList;
 
-    { Write symbol order file }
+      { Write symbol order file }
       ordersymfile:=WriteSymbolOrderFile;
 
     { Call linker }
@@ -516,9 +526,7 @@ implementation
       Replace(cmdstr,'$EXE',maybequoted(current_module.exefilename));
       Replace(cmdstr,'$OPT',Info.ExtraOptions);
       Replace(cmdstr,'$TARGET',targetstr);
-      Replace(cmdstr,'$EMUL',EmulStr);
       Replace(cmdstr,'$MAP',mapstr);
-      Replace(cmdstr,'$CATRES',CatFileContent(outputexedir+Info.ResName));
       Replace(cmdstr,'$RES',maybequoted(outputexedir+Info.ResName));
       Replace(cmdstr,'$LTO',ltostr);
       if ordersymfile<>'' then
@@ -526,12 +534,16 @@ implementation
       else
         Replace(cmdstr,'$ORDERSYMS','');
 
-      Replace(cmdstr,'$FILELIST','-filelist '+maybequoted(outputexedir+LinkFilesFileName));
       Replace(cmdstr,'$STATIC',StaticStr);
       Replace(cmdstr,'$STRIP',StripStr);
       Replace(cmdstr,'$GCSECTIONS',GCSectionsStr);
-      Replace(cmdstr,'$DYNLINK',DynLinkStr);
       Replace(cmdstr,'$PRTOBJ',GetDarwinPrtobjName(false));
+      Replace(cmdstr,'$ARCH', GetLinkArch);
+      Replace(cmdstr,'$VERSION',GetLinkVersion);
+      Replace(cmdstr,'$SYSROOT',GetSysroot);
+      Replace(cmdstr,'$LIBSEARCHPATH',GetLibSearchPath);
+      Replace(cmdstr,'$FILELIST','-filelist '+maybequoted(linkfiles));
+      Replace(cmdstr,'$LIBRARIES',GetLibraries);
       BinStr:=FindUtil(utilsprefix+BinStr);
 
       { create dsym file? }
@@ -544,28 +556,11 @@ implementation
           extdbgcmdstr:=maybequoted(current_module.exefilename);
         end;
 
-      if not(cs_link_nolink in current_settings.globalswitches) then
-        begin
-          { we have to use a script to use the IFS hack }
-          linkscript:=GenerateScript(outputexedir+'ppaslink');
-          linkscript.AddLinkCommand(BinStr,CmdStr,'');
-          if (extdbgcmdstr<>'') then
-            linkscript.AddLinkCommand(extdbgbinstr,extdbgcmdstr,'');
-          linkscript.WriteToDisk;
-          BinStr:=linkscript.fn;
-          if not path_absolute(BinStr) then
-            if cs_link_on_target in current_settings.globalswitches then
-              BinStr:='.'+target_info.dirsep+BinStr
-            else
-              BinStr:='.'+source_info.dirsep+BinStr;
-          CmdStr:='';
-        end;
-
-      success:=DoExec(BinStr,CmdStr,true,true);
+      success:=DoExec(BinStr,CmdStr,true,false);
       if (success and
           (extdbgbinstr<>'') and
           (cs_link_nolink in current_settings.globalswitches)) then
-        success:=DoExec(extdbgbinstr,extdbgcmdstr,false,true);
+        success:=DoExec(extdbgbinstr,extdbgcmdstr,false,false);
 
     { Remove ReponseFile }
       if (success) and not(cs_link_nolink in current_settings.globalswitches) then
@@ -573,9 +568,7 @@ implementation
          DeleteFile(outputexedir+Info.ResName);
          if ordersymfile<>'' then
            DeleteFile(ordersymfile);
-         DeleteFile(linkscript.fn);
-         linkscript.free;
-         DeleteFile(outputexedir+LinkFilesFileName);
+         DeleteFile(linkfiles);
        end;
 
       MakeExecutable:=success;   { otherwise a recursive call to link method }
@@ -586,18 +579,16 @@ implementation
     var
       InitStr,
       FiniStr,
-      SoNameStr : string[80];
-      linkscript: TAsmScript;
       binstr,
       cmdstr,
       mapstr,
       ltostr,
       ordersymfile,
       targetstr,
-      emulstr,
       extdbgbinstr,
-      extdbgcmdstr  : TCmdStr;
-      GCSectionsStr : string[63];
+      extdbgcmdstr,
+      linkfiles,
+      GCSectionsStr : TCmdStr;
       exportedsyms: text;
       success : boolean;
     begin
@@ -605,21 +596,20 @@ implementation
       GCSectionsStr:='';
       mapstr:='';
       ltostr:='';
-      linkscript:=nil;
       if not(cs_link_nolink in current_settings.globalswitches) then
        Message1(exec_i_linking,current_module.sharedlibfilename);
 
-    { Write used files and libraries }
-      WriteResponseFile(true);
+      { Write list of files to link }
+      linkfiles:=WriteFileList;
 
-    { Write symbol order file }
+      { Write symbol order file }
       ordersymfile:=WriteSymbolOrderFile;
 
       if (cs_link_smart in current_settings.globalswitches) then
         GCSectionsStr:='-dead_strip -no_dead_strip_inits_and_terms';
 
       if (cs_link_map in current_settings.globalswitches) then
-        mapstr:='-Map '+maybequoted(ChangeFileExt(current_module.sharedlibfilename,'.map'));
+        mapstr:='-map '+maybequoted(ChangeFileExt(current_module.sharedlibfilename,'.map'));
 
       { add custom LTO library if using custom clang }
       if (cs_lto in current_settings.moduleswitches) and
@@ -631,25 +621,19 @@ implementation
         end;
 
       targetstr:='';
-      emulstr:='';
 
       InitStr:='-init FPC_LIB_START';
       FiniStr:='-fini FPC_LIB_EXIT';
-      SoNameStr:='-soname '+ExtractFileName(current_module.sharedlibfilename);
 
       { Call linker }
       SplitBinCmd(Info.DllCmd[1],binstr,cmdstr);
       Replace(cmdstr,'$EXE',maybequoted(ExpandFileName(current_module.sharedlibfilename)));
       Replace(cmdstr,'$OPT',Info.ExtraOptions);
       Replace(cmdstr,'$TARGET',targetstr);
-      Replace(cmdstr,'$EMUL',EmulStr);
-      Replace(cmdstr,'$CATRES',CatFileContent(outputexedir+Info.ResName));
-      Replace(cmdstr,'$FILELIST','-filelist '+maybequoted(outputexedir+LinkFilesFileName));
       Replace(cmdstr,'$RES',maybequoted(outputexedir+Info.ResName));
       Replace(cmdstr,'$INIT',InitStr);
       Replace(cmdstr,'$FINI',FiniStr);
       Replace(cmdstr,'$GCSECTIONS',GCSectionsStr);
-      Replace(cmdstr,'$SONAME',SoNameStr);
       Replace(cmdstr,'$MAP',mapstr);
       Replace(cmdstr,'$LTO',ltostr);
       if ordersymfile<>'' then
@@ -657,6 +641,12 @@ implementation
       else
         Replace(cmdstr,'$ORDERSYMS','');
       Replace(cmdstr,'$PRTOBJ',GetDarwinPrtobjName(true));
+      Replace(cmdstr,'$ARCH', GetLinkArch);
+      Replace(cmdstr,'$VERSION',GetLinkVersion);
+      Replace(cmdstr,'$SYSROOT',GetSysroot);
+      Replace(cmdstr,'$LIBSEARCHPATH',GetLibSearchPath);
+      Replace(cmdstr,'$FILELIST','-filelist '+maybequoted(linkfiles));
+      Replace(cmdstr,'$LIBRARIES',GetLibraries);
       BinStr:=FindUtil(utilsprefix+BinStr);
 
       { create dsym file? }
@@ -679,31 +669,14 @@ implementation
             writeln(exportedsyms,texportlibunix(exportlib).exportedsymnames.getfirst);
           until texportlibunix(exportlib).exportedsymnames.empty;
           close(exportedsyms);
-          cmdstr:=cmdstr+' -exported_symbols_list '+maybequoted(outputexedir)+LinkSymsFileName;
+          cmdstr:=cmdstr+' -exported_symbols_list '+maybequoted(outputexedir+LinkSymsFileName);
         end;
 
-      if not(cs_link_nolink in current_settings.globalswitches) then
-        begin
-          { we have to use a script to use the IFS hack }
-          linkscript:=GenerateScript(outputexedir+'ppaslink');
-          linkscript.AddLinkCommand(BinStr,CmdStr,'');
-          if (extdbgbinstr<>'') then
-            linkscript.AddLinkCommand(extdbgbinstr,extdbgcmdstr,'');
-          linkscript.WriteToDisk;
-          BinStr:=linkscript.fn;
-          if not path_absolute(BinStr) then
-            if cs_link_on_target in current_settings.globalswitches then
-              BinStr:='.'+target_info.dirsep+BinStr
-            else
-              BinStr:='.'+source_info.dirsep+BinStr;
-          CmdStr:='';
-        end;
-
-      success:=DoExec(BinStr,cmdstr,true,true);
+      success:=DoExec(BinStr,cmdstr,true,false);
       if (success and
           (extdbgbinstr<>'') and
           (cs_link_nolink in current_settings.globalswitches)) then
-        success:=DoExec(extdbgbinstr,extdbgcmdstr,false,true);
+        success:=DoExec(extdbgbinstr,extdbgcmdstr,false,false);
 
     { Strip the library ? }
       if success and (cs_link_strip in current_settings.globalswitches) then
@@ -713,17 +686,15 @@ implementation
          success:=DoExec(FindUtil(utilsprefix+binstr),cmdstr,false,false);
        end;
 
-    { Remove ReponseFile }
+    { Remove temporary files }
       if (success) and not(cs_link_nolink in current_settings.globalswitches) then
         begin
           DeleteFile(outputexedir+Info.ResName);
           if ordersymfile<>'' then
             DeleteFile(ordersymfile);
-          DeleteFile(linkscript.fn);
-          linkscript.free;
            if LinkSymsFileName<>'' then
              DeleteFile(outputexedir+LinkSymsFileName);
-           DeleteFile(outputexedir+LinkFilesFileName);
+           DeleteFile(linkfiles);
         end;
 
       MakeSharedLibrary:=success;   { otherwise a recursive call to link method }
