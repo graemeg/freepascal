@@ -7576,8 +7576,11 @@ var
   i: Integer;
 begin
   for i:=0 to length(PrecompiledVars)-1 do
-    if PrecompiledVars[i].Name=aName then
-      exit(PrecompiledVars[i]);
+    begin
+    Result:=PrecompiledVars[i];
+    if Result.Name=aName then
+      exit;
+    end;
   if not WithParents then
     exit(nil);
   Result:=inherited FindPrecompiledVar(aName,WithParents);
@@ -7589,8 +7592,11 @@ var
   i: Integer;
 begin
   for i:=0 to length(PrecompiledVars)-1 do
-    if PrecompiledVars[i].Element=El then
-      exit(PrecompiledVars[i]);
+    begin
+    Result:=PrecompiledVars[i];
+    if Result.Element=El then
+      exit;
+    end;
   if not WithParents then
     exit(nil);
   Result:=inherited FindPrecompiledVar(El, WithParents);
@@ -7623,6 +7629,7 @@ function TFunctionContext.AddLocalVar(aName: string; El: TPasElement;
 var
   l: Integer;
   Ident, V: TFCLocalIdentifier;
+  PV: TPas2JSStoredLocalVar;
 begin
   Ident:=FindLocalVar(aName,true);
   if Ident<>nil then
@@ -7644,7 +7651,15 @@ begin
         raise EPas2JS.Create('[20200608131330] "'+aName+'" El='+GetObjPath(El));
         end;
       end;
+    end
+  else if aKind=cvkGlobal then
+    begin
+    // check precompiled names
+    PV:=FindPrecompiledVar(El,true);
+    if PV<>nil then
+      aName:=PV.Name;
     end;
+  // add
   l:=length(LocalVars);
   SetLength(LocalVars,l+1);
   Result:=TFCLocalIdentifier.Create(aName,El,aKind);
@@ -17016,6 +17031,7 @@ begin
         AddToSourceElements(ConstSrcElems,Lit);
         end;
       end;
+
     if coShortRefGlobals in Options then
       CreateGlobalAlias_List(ImplJS.ShortRefs,AContext);
     // precompiled body
