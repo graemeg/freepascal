@@ -873,10 +873,15 @@ begin
 
     if (Res<>SQL_NO_DATA) then ODBCCheckResult( Res, SQL_HANDLE_STMT, ODBCCursor.FSTMTHandle, 'Could not execute statement.' );
 
-    if ODBCSuccess(SQLNumResultCols(ODBCCursor.FSTMTHandle, ColumnCount)) then
-      ODBCCursor.FSelectable:=ColumnCount>0
-    else
-      ODBCCursor.FSelectable:=False;
+    // go to first selectable result - see issue #38664
+    ODBCCursor.FSelectable:=False;
+    while not ODBCCursor.FSelectable and ODBCSuccess(Res) and
+      ODBCSuccess(SQLNumResultCols(ODBCCursor.FSTMTHandle, ColumnCount)) do
+      begin
+      ODBCCursor.FSelectable:=ColumnCount>0;
+      if not ODBCCursor.FSelectable then
+        Res:=SQLMoreResults(ODBCCursor.FSTMTHandle);
+      end;
 
   finally
     // free parameter buffers

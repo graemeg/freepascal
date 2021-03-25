@@ -1217,6 +1217,7 @@ type   TSQLFetch=function (StatementHandle:SQLHSTMT):SQLRETURN;{$ifdef fpc} extd
 
 type   TSQLNumResultCols=function (StatementHandle:SQLHSTMT;
            var ColumnCount:SQLSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
+type   TSQLMoreResults=function (StatementHandle:SQLHSTMT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};
 
 type   TSQLDescribeCol=function (StatementHandle:SQLHSTMT;
            ColumnNumber:SQLUSMALLINT;ColumnName:PSQLCHAR;
@@ -1444,6 +1445,7 @@ var    SQLCloseCursor:TSQLCloseCursor;
 var    SQLExecute:TSQLExecute;
 var    SQLFetch:TSQLFetch;
 var    SQLNumResultCols:TSQLNumResultCols;
+var    SQLMoreResults:TSQLMoreResults;
 var    SQLDescribeColA:TSQLDescribeCol;
        SQLDescribeColW:TSQLDescribeColW;
 var    SQLFetchScroll:TSQLFetchScroll;
@@ -1608,6 +1610,8 @@ var
    function SQLNumResultCols(
                StatementHandle:SQLHSTMT;
                var ColumnCount:SQLSMALLINT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
+   function SQLMoreResults(
+               StatementHandle:SQLHSTMT):SQLRETURN;{$ifdef fpc} extdecl {$else} stdcall {$endif};external odbclib;
    function SQLDescribeCol(
                StatementHandle:SQLHSTMT;
                ColumnNumber:SQLUSMALLINT;
@@ -1918,6 +1922,7 @@ begin
     pointer(SQLExecute) := GetProcedureAddress(ODBCLibraryHandle,'SQLExecute');
     pointer(SQLFetch) := GetProcedureAddress(ODBCLibraryHandle,'SQLFetch');
     pointer(SQLNumResultCols) := GetProcedureAddress(ODBCLibraryHandle,'SQLNumResultCols');
+    pointer(SQLMoreResults) := GetProcedureAddress(ODBCLibraryHandle,'SQLMoreResults');
     pointer(SQLFetchScroll) := GetProcedureAddress(ODBCLibraryHandle,'SQLFetchScroll');
     pointer(SQLExtendedFetch) := GetProcedureAddress(ODBCLibraryHandle,'SQLExtendedFetch');
     pointer(SQLGetData) := GetProcedureAddress(ODBCLibraryHandle,'SQLGetData');
