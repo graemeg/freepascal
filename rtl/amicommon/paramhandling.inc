@@ -116,7 +116,7 @@ begin
   Count := 0;
   { first index is one }
   LocalIndex := 1;
-  while (P[Count] <> #0) do
+  while assigned(P) and (P[Count] <> #0) do
   begin
     while (p[count]=' ') or (p[count]=#9) or (p[count]=LineEnding) do
       Inc(count);
