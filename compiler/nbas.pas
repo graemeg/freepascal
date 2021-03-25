@@ -706,10 +706,31 @@ implementation
 
 
     function tblocknode.simplify(forinline : boolean): tnode;
-{$ifdef break_inlining}
       var
+        hp, nextp: TStatementNode;
+        lastp: TNode;
+{$ifdef break_inlining}
         a : array[0..3] of tstatementnode;
 {$endif break_inlining}
+
+        procedure EraseCurrentStatement;
+          begin
+            { make sure the nf_block_with_exit and nf_usercode_entry flags are safeguarded }
+            if Assigned(nextp) then
+              nextp.flags := nextp.flags + (hp.left.flags * [nf_block_with_exit, nf_usercode_entry]);
+
+            hp.right := nil;
+            hp.Free;
+            hp := nextp;
+            if not Assigned(lastp) then
+              Exit;
+
+            if lastp = Self then
+              TBlockNode(lastp).left := nextp
+            else
+              TStatementNode(lastp).right := nextp;
+          end;
+
       begin
         result := nil;
         { Warning: never replace a blocknode with another node type,
@@ -717,33 +738,93 @@ implementation
           main program body, and those nodes should always be blocknodes
           since that's what the compiler expects elsewhere. }
 
-        if assigned(left) and
-           not assigned(tstatementnode(left).right) then
+        lastp := Self;
+        hp := TStatementNode(left);
+
+        if Assigned(hp) then
           begin
-            case tstatementnode(left).left.nodetype of
-              blockn:
-                begin
-                  { if the current block contains only one statement, and
-                    this one statement only contains another block, replace
-                    this block with that other block.                       }
-                  result:=tstatementnode(left).left;
-                  tstatementnode(left).left:=nil;
-                  { make sure the nf_block_with_exit flag is safeguarded }
-                  result.flags:=result.flags+(flags*[nf_block_with_exit,nf_usercode_entry]);
-                  exit;
+            if not assigned(tstatementnode(left).right) then
+              begin
+                { Simplify single-statement blocks }
+                case tstatementnode(left).left.nodetype of
+                  blockn:
+                    begin
+                      { if the current block contains only one statement, and
+                        this one statement only contains another block, replace
+                        this block with that other block.                       }
+                      result:=tstatementnode(left).left;
+                      tstatementnode(left).left:=nil;
+                      { make sure the nf_block_with_exit and nf_usercode_entry flags are safeguarded }
+                      result.flags:=result.flags+(flags*[nf_block_with_exit,nf_usercode_entry]);
+                      exit;
+                    end;
+                  nothingn:
+                    begin
+                      { if the block contains only a statement with a nothing node,
+                        get rid of the statement }
+                      left.Free;
+                      left:=nil;
+                      exit;
+                    end;
+                  else
+                    ;
                 end;
-              nothingn:
-                begin
-                  { if the block contains only a statement with a nothing node,
-                    get rid of the statement }
-                  left.Free;
-                  left:=nil;
-                  exit;
+              end
+            else
+              repeat
+                nextp := TStatementNode(hp.Right);
+                case hp.left.nodetype of
+                  blockn:
+                    if not Assigned(TBlockNode(hp.left).left) then
+                      begin
+                        { Empty block - delete statement (and block within),
+                          but only if the nf_usercode_entry flag is not set}
+                        if hp.left.flags * [nf_usercode_entry] = [] then
+                          begin
+                            EraseCurrentStatement;
+                            Continue;
+                          end;
+                      end
+                    else
+                      begin
+                        if (TStatementNode(TBlockNode(hp.left).left).left.nodetype = nothingn) and
+                          not Assigned(TStatementNode(TBlockNode(hp.left).left).right) then
+                          begin
+                            { Block contains only a statement->nothingn branch }
+                            EraseCurrentStatement;
+                            Continue;
+                          end;
+
+                        if not Assigned(nextp) then
+                          begin
+                            { If the last statement contains a block, Merge them
+                              (statements within will already be simplified) }
+
+                            { Internal error is triggered if the calling block only
+                              had one statement - code flow should have exited
+                              earlier. }
+                            nextp := TStatementNode(TBlockNode(hp.left).left);
+                            TBlockNode(hp.left).left := nil;
+                            EraseCurrentStatement;
+                            Continue;
+                          end;
+                      end;
+                  nothingn:
+                    { Make sure it's not the only node left }
+                      begin
+                        { Delete statement (and nothing node within) }
+                        EraseCurrentStatement;
+                        Continue;
+                      end;
+                  else
+                    ;
                 end;
-              else
-                ;
-            end;
+
+                lastp := hp;
+                hp := nextp;
+              until not Assigned(hp);
           end;
+
 {$ifdef break_inlining}
         { simple sequence of tempcreate, assign and return temp.? }
         if GetStatements(left,a) and
