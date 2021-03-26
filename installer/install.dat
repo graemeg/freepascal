@@ -471,7 +471,7 @@ package=utils-json2pasos2.zip[js2pos2.zip],Create Object Pascal classes from JSO
 # OS/2-3 5
 package=ufcl-pdfos2.zip[ufcpdos2.zip],PDF generating and TTF file info library
 # OS/2-2 6
-package=utils-unicodeos2.zip[ucodeos2.zip],Transformation of Unicode consortium data for FPC
+package=utils-unicodeos2.zip[ucdos2.zip],Transformation of Unicode consortium data for FPC
 # OS/2-3 7
 package=utplylibos2.zip[utpllos2.zip],Units for sources created with the compiler generator
 
@@ -531,19 +531,19 @@ package=uopensslemx.zip[uosslemx.zip],OpenSSL interface units
 # EMX 22
 package=utils-fpcmkcfgemx.zip[fcmkemx.zip],Creation of Free Pascal configuration files
 # EMX 23
-package=utils-fpdocemx.zip[fpdocemx.zip],Free Pascal documentation generation utility.
+package=utils-fpdocemx.zip[fpdocemx.zip],Free Pascal documentation generation utility
 # EMX 24
-package=utils-fpmcemx.zip[fpmcemx.zip],Free Pascal Message Compiler.
+package=utils-fpmcemx.zip[fpmcemx.zip],Free Pascal Message Compiler
 # EMX 25
-package=utils-fppkgemx.zip[fppkgemx.zip],Free Pascal package repository utility.
+package=utils-fppkgemx.zip[fppkgemx.zip],Free Pascal package repository utility
 # EMX 26
-package=utils-fprcpemx.zip[ufprcemx.zip],Free Pascal Resource Compiler Preprocessor
+package=utils-fprcpemx.zip[fprcemx.zip],Free Pascal Resource Compiler Preprocessor
 # EMX 27
 package=utils-fpcresemx.zip[fpresemx.zip],Free Pascal Resource Converter
 # EMX 28
-package=utils-h2pasemx.zip[uh2paemx.zip],Create Pascal interface units from C headers
+package=utils-h2pasemx.zip[h2paemx.zip],Create Pascal interface units from C headers
 # EMX 29
-package=utils-pas2fpmemx.zip[up2fpemx.zip],Generate fpmake.pp for Pascal source
+package=utils-pas2fpmemx.zip[p2fpemx.zip],Generate fpmake.pp for Pascal source
 # EMX 30
 package=utils-pas2jniemx.zip[p2jnemx.zip],Generate JNI bridge for Pascal code
 # EMX 31
@@ -611,12 +611,7 @@ package=urtl-objpasemx.zip[urtloemx.zip],RTL-Object Pascal units (e.g. Delphi co
 # EMX-2 28
 package=urtl-unicodeemx.zip[urtluemx.zip],RTL-miscellaneous Unicode support units
 # EMX-2 29
-package=utils-rmwaitemx.zip[rmwemx.zip],Remove (delete) file(s) with optional retries
-# EMX-2 30
-package=utils-lexyaccemx.zip[ulexyemx.zip],Compiler generator for TP and compatibles
-# EMX-2 31
-package=utils-fpcmemx.zip[fpcmemx.zip],Generate Makefiles out of Makefile.fpc files
-
+package=units-webidlemx.zip[uwidlemx.zip],WEB IDL parser and converter to Object Pascal classes
 
 #
 # EMX packages 3rd part
@@ -633,11 +628,32 @@ package=utils-webidlemx.zip[widlemx.zip],Web IDL parser and converter to Object 
 package=utils-json2pasemx.zip[js2pemx.zip],Create Object Pascal classes from JSON files
 # EMX-3 5
 package=ufcl-pdfemx.zip[ufcpdemx.zip],PDF generating and TTF file info library
-# EMX-2 6
-package=utils-unicodeemx.zip[ucodeemx.zip],Transformation of Unicode consortium data for FPC
+# EMX-3 6
+package=utils-unicodeemx.zip[ucdemx.zip],Transformation of Unicode consortium data for FPC
 # EMX-3 7
 package=utplylibemx.zip[utpllemx.zip],Units for sources created with the compiler generator
-
+# EMX-3 8
+package=utils-fpdocemx.zip[fpdcemx.zip],Free Pascal documentation generation utility
+# EMX-3 9
+package=utils-fppkgemx.zip[fpkgemx.zip],Free Pascal package repository utility
+# EMX-3 10
+package=utils-fpcreslipoemx.zip[fprlemx.zip],Free Pascal External Resource Thinner
+# EMX-3 11
+package=utils-fpcresemx.zip[fprsemx.zip],Free Pascal Resource Converter
+# EMX-3 12
+package=utils-ihxutilemx.zip[ihxuemx.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
+# EMX-3 13
+package=utils-json2pasemx.zip[jsnpemx.zip],A utility to create Object Pascal classes fil|es from sample JSON files
+# EMX-3 14
+package=utils-pas2fpmemx.zip[p2fmemx.zip],Generate fpmake.pp for Pascal source
+# EMX-3 15
+package=utils-lexyaccemx.zip[tplyemx.zip],A compiler generator for Turbo Pascal and compatibles
+# EMX-3 16
+package=utils-rmwaitemx.zip[rmwemx.zip],Remove (delete) file(s) with optional retries
+# EMX-3 17
+package=utils-lexyaccemx.zip[ulexyemx.zip],Compiler generator for TP and compatibles
+# EMX-3 18
+package=utils-fpcmemx.zip[fpcmemx.zip],Generate Makefiles out of Makefile.fpc files
 
 #
 # Common packages
