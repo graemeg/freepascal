@@ -115,45 +115,56 @@ package=units-rtl-extrados.zip[urtledos.zip],RTL-additional units not needed for
 package=units-rtl-objpasdos.zip[urtlodos.zip],RTL-Object Pascal units (e.g. Delphi compatibility)
 # Dos-2 10
 package=units-rtl-unicodedos.zip[urtludos.zip],RTL-miscellaneous Unicode support units
-# Dos-2 11
-package=utils-fpcmkcfgdos.zip[fpckdos.zip],Creation of Free Pascal configuration files
-# Dos-2 12
-package=utils-fpcmdos.zip[fpcmdos.zip],Generate Makefiles out of Makefile.fpc files
-# Dos-2 13
-package=utils-fprcpdos.zip[fprcdos.zip],Free Pascal Resource Compiler Preprocessor
-# Dos-2 14
-package=utils-h2pasdos.zip[h2pados.zip],Create Pascal interface units from C headers
-# Dos-2 15
-package=utils-pas2fpmdos.zip[p2fpdos.zip],Generate fpmake.pp for Pascal source
-# Dos-2 16
-package=utils-pas2utdos.zip[p2utdos.zip],Pascal source to FPC Unit test generator
-# Dos-2 17
-package=utils-rmwaitdos.zip[rmwdos.zip],Remove (delete) file(s) with optional retries
-# Dos-2 18
-package=utils-lexyaccdos.zip[lexydos.zip],Compiler generator for TP and compatibles
 # Dos-2 19
 package=units-ptcdos.zip[uptcdos.zip],Free portable framebuffer library
-# Dos-2 20
-package=utils-dxegendos.zip[dxegdos.zip],Generation of D~X~E modules loadable at runtime
 # Dos-2 21
 package=units-fcl-pdfdos.zip[ufcpddos.zip],PDF generating and TTF file info library
 # Dos-2 22
 package=units-rtl-genericsdos.zip[urtlgdos.zip],RTL-generic collection library
 # Dos-2 23
 package=units-webidldos.zip[uwidldos.zip],WEB IDL parser and converter to Object Pascal classes
-# Dos-2 24
-package=utils-fpcresdos.zip[fprsdos.zip],Free Pascal Resource Converter
-# Dos-2 25
-package=utils-fpcreslipodos.zip[fprldos.zip],Free Pascal External Resource Thinner
-# Dos-2 26
-package=utils-json2pasdos.zip[jsnpdos.zip],A utility to create Object Pascal classes files from sample JSON files
 # Dos-2 27
 package=units-tplylibdos.zip[utplldos.zip],Units for sources created with the compiler generator
-# Dos-2 28
-# Source-2 7
+
+#
+# Go32v2 utils packages 3rd part
+#
+pack=Dos/Go32v2-~U~tils
+filecheck=*dos.zip
+# Dos-3 1
+package=utils-fpcmkcfgdos.zip[fpckdos.zip],Creation of Free Pascal configuration files
+# Dos-3 2
+package=utils-fpcmdos.zip[fpcmdos.zip],Generate Makefiles out of Makefile.fpc files
+# Dos-3 3
+package=utils-fprcpdos.zip[fprcdos.zip],Free Pascal Resource Compiler Preprocessor
+# Dos-3 4
+package=utils-h2pasdos.zip[h2pados.zip],Create Pascal interface units from C headers
+# Dos-3 5
+package=utils-pas2fpmdos.zip[p2fpdos.zip],Generate fpmake.pp for Pascal source
+# Dos-3 6
+package=utils-pas2utdos.zip[p2utdos.zip],Pascal source to FPC Unit test generator
+# Dos-3 7
+package=utils-rmwaitdos.zip[rmwdos.zip],Remove (delete) file(s) with optional retries
+# Dos-3 8
+package=utils-dxegendos.zip[dxegdos.zip],Generation of D~X~E modules loadable at runtime
+# Dos-3 9
+package=utils-fpcresdos.zip[fprsdos.zip],Free Pascal Resource Converter
+# Dos-3 10
+package=utils-fpcreslipodos.zip[fprldos.zip],Free Pascal External Resource Thinner
+# Dos-3 11
+package=utils-json2pasdos.zip[jsnpdos.zip],A utility to create Object Pascal classes files from sample JSON files
+# Dos-3 12
 package=utils-unicodedos.zip[ucddos.zip],Transformation of Unicode consortium data for FPC
-# Dos-2 29
+# Dos-3 13
 package=utils-ihxutildos.zip[ihxudos.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
+# Dos-3 14
+package=utils-lexyaccdos.zip[lexydos.zip],Compiler generator for TP and compatibles
+# Dos-3 15
+package=utils-fpcmkcfgdos.zip[fcmkdos.zip],A utility to create the Free Pascal configuration files
+# Dos-3 16
+package=utils-pas2fpmdos.zip[p2fmdos.zip],Generate fpmake.pp for Pascal source
+# Dos-3 17
+package=utils-lexyaccdos.zip[tplydos.zip],A compiler generator for Turbo Pascal and compatibles
 
 #
 # Win32 packages
@@ -685,8 +696,10 @@ package=units-graph-3.3.1.source.zip[ugrphsrc.zip],Unit Graph sources
 package=units-hermes-3.3.1.source.zip[uhermsrc.zip],Port of Hermes graphics library
 # Source 18
 package=units-fppkg-3.3.1.source.zip[ufppksrc.zip],Units for FPPkg packaging support
-
-
+# Source 19
+package=units-fpc-all.source.zip[ufpcasrc.zip],uninitialized function result in function TPa|ckage.GetDescription:AnsiString(0);
+# Source 20
+package=units-webidl.source.zip[uwidlsrc.zip],WEB IDL parser and converter to Object Pascal classes
 #
 # Source packages 2nd part
 #
@@ -862,6 +875,15 @@ package=utils-pas2jni-3.3.1.source.zip[p2jnsrc.zip],Generate JNI bridge for Pasc
 package=utils-pas2ut-3.3.1.source.zip[p2utsrc.zip],Pascal source to FPC Unit test generator
 # Source 18
 package=utils-rmwait-3.3.1.source.zip[rmwsrc.zip],Remove (delete) file(s) with optional retries
+# Source 19
+package=utils-fpcmkcfg.source.zip[fcmksrc.zip],A utility to create the Free Pascal configuration files
+# Source 20
+package=utils-ihxutil.source.zip[ihxusrc.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
+# Source 21
+package=utils-pas2fpm.source.zip[p2fmsrc.zip],Generate fpmake.pp for Pascal source
+# Source 22
+package=utils-lexyacc.source.zip[tplysrc.zip],A compiler generator for Turbo Pascal and compatibles
+
 
 defaultcfg=
 #
