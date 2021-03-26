@@ -158,13 +158,12 @@ package=utils-unicodedos.zip[ucddos.zip],Transformation of Unicode consortium da
 # Dos-3 13
 package=utils-ihxutildos.zip[ihxudos.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
 # Dos-3 14
-package=utils-lexyaccdos.zip[lexydos.zip],Compiler generator for TP and compatibles
+package=utils-lexyaccdos.zip[tplydos.zip],A compiler generator for Turbo Pascal and compatibles
 # Dos-3 15
 package=utils-fpcmkcfgdos.zip[fcmkdos.zip],A utility to create the Free Pascal configuration files
 # Dos-3 16
 package=utils-pas2fpmdos.zip[p2fmdos.zip],Generate fpmake.pp for Pascal source
 # Dos-3 17
-package=utils-lexyaccdos.zip[tplydos.zip],A compiler generator for Turbo Pascal and compatibles
 
 #
 # Win32 packages
@@ -448,7 +447,7 @@ package=urtl-unicodeos2.zip[urtluos2.zip],RTL-miscellaneous Unicode support unit
 # OS/2-2 29
 package=utils-rmwaitos2.zip[rmwos2.zip],Remove (delete) file(s) with optional retries
 # OS/2-2 30
-package=utils-lexyaccos2.zip[lexyos2.zip],Compiler generator for TP and compatibles
+package=utils-lexyaccos2.zip[tplyos2.zip],Compiler generator for TP and compatibles
 # OS/2-2 31
 package=utils-fpcmos2.zip[fpcmos2.zip],Generate Makefiles out of Makefile.fpc files
 
@@ -474,6 +473,22 @@ package=ufcl-pdfos2.zip[ufcpdos2.zip],PDF generating and TTF file info library
 package=utils-unicodeos2.zip[ucdos2.zip],Transformation of Unicode consortium data for FPC
 # OS/2-3 7
 package=utplylibos2.zip[utpllos2.zip],Units for sources created with the compiler generator
+# OS/2-3 8
+package=units-webidlos2.zip[uwidlos2.zip],WEB IDL parser and converter to Object Pascal classes
+# OS/2-3 9
+package=utils-fpdocos2.zip[fpdcos2.zip],Free Pascal documentation generation utility
+# OS/2-3 10
+package=utils-fppkgos2.zip[fpkgos2.zip],Free Pascal package repository utility
+# OS/2-3 11
+package=utils-fpcreslipoos2.zip[fprlos2.zip],Free Pascal External Resource Thinner
+# OS/2-3 12
+package=utils-fpcresos2.zip[fprsos2.zip],Free Pascal Resource Converter
+# OS/2-3 13
+package=utils-ihxutilos2.zip[ihxuos2.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
+# OS/2-3 14
+package=utils-json2pasos2.zip[jsnpos2.zip],A utility to create Object Pascal classes files from sample JSON files
+# OS/2-3 15
+package=utils-pas2fpmos2.zip[p2fmos2.zip],Generate fpmake.pp for Pascal source
 
 #
 # EMX packages
@@ -651,9 +666,8 @@ package=utils-lexyaccemx.zip[tplyemx.zip],A compiler generator for Turbo Pascal 
 # EMX-3 16
 package=utils-rmwaitemx.zip[rmwemx.zip],Remove (delete) file(s) with optional retries
 # EMX-3 17
-package=utils-lexyaccemx.zip[ulexyemx.zip],Compiler generator for TP and compatibles
-# EMX-3 18
 package=utils-fpcmemx.zip[fpcmemx.zip],Generate Makefiles out of Makefile.fpc files
+# EMX-3 18
 
 #
 # Common packages
