@@ -32,6 +32,8 @@ type
     FParamIndex:TParamBinding; // maps the i-th parameter in the query to the TParams passed to PrepareStatement
     FParamBuf:array of pointer; // buffers that can be used to bind the i-th parameter in the query
   public
+    property STMTHandle:SQLHSTMT read FSTMTHandle;
+
     constructor Create(Connection:TODBCConnection);
     destructor Destroy; override;
   end;
@@ -141,6 +143,8 @@ type
     Class Function ConnectionClass : TSQLConnectionClass; override;
     Class Function Description : String; override;
   end;
+
+function ODBCSuccess(const Res:SQLRETURN):boolean;
 
 implementation
 
