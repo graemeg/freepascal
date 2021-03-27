@@ -192,8 +192,8 @@ unit cgutils;
     {# Clear to zero a treference, and set is base address
        to base register.
     }
-    procedure reference_reset_base(var ref : treference;base : tregister;offset : longint; temppos : treftemppos; alignment : longint; volatility: tvolatilityset);
-    procedure reference_reset_symbol(var ref : treference;sym : tasmsymbol;offset, alignment : longint; volatility: tvolatilityset);
+    procedure reference_reset_base(var ref: treference; base: tregister; offset: asizeint; temppos: treftemppos; alignment: longint; volatility: tvolatilityset);
+    procedure reference_reset_symbol(var ref: treference;sym: tasmsymbol; offset: asizeint; alignment : longint; volatility: tvolatilityset);
     { This routine verifies if two references are the same, and
        if so, returns TRUE, otherwise returns false.
     }
@@ -244,7 +244,7 @@ uses
       end;
 
 
-    procedure reference_reset_base(var ref: treference; base: tregister; offset : longint; temppos : treftemppos ; alignment : longint; volatility: tvolatilityset);
+    procedure reference_reset_base(var ref: treference; base: tregister; offset: asizeint; temppos: treftemppos ; alignment: longint; volatility: tvolatilityset);
       begin
         reference_reset(ref,alignment,volatility);
         ref.base:=base;
@@ -253,7 +253,7 @@ uses
       end;
 
 
-    procedure reference_reset_symbol(var ref: treference; sym: tasmsymbol; offset, alignment: longint; volatility: tvolatilityset);
+    procedure reference_reset_symbol(var ref: treference; sym: tasmsymbol; offset: asizeint; alignment: longint; volatility: tvolatilityset);
       begin
         reference_reset(ref,alignment,volatility);
         ref.symbol:=sym;
