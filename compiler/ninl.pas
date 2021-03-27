@@ -3209,7 +3209,11 @@ implementation
                   if target_info.system in systems_managed_vm then
                     message(parser_e_feature_unsupported_for_vm);
                    if (left.resultdef.typ=enumdef) and
-                      (tenumdef(left.resultdef).has_jumps) then
+                      (tenumdef(left.resultdef).has_jumps) and
+                      (
+                        (left.nodetype<>typen) or
+                        not (sp_generic_para in ttypenode(left).typesym.symoptions)
+                      ) then
                      CGMessage(type_e_no_type_info);
                    set_varstate(left,vs_read,[vsf_must_be_valid]);
                    resultdef:=voidpointertype;
@@ -3219,9 +3223,6 @@ implementation
                 begin
                   if target_info.system in systems_managed_vm then
                     message(parser_e_feature_unsupported_for_vm);
-                  if (left.resultdef.typ=enumdef) and
-                     (tenumdef(left.resultdef).has_jumps) then
-                    CGMessage(type_e_no_type_info);
                   set_varstate(left,vs_read,[vsf_must_be_valid]);
                   resultdef:=typekindtype;
                 end;
@@ -3935,9 +3936,18 @@ implementation
 
           in_typeinfo_x:
             begin
-              result:=caddrnode.create_internal(
-                crttinode.create(tstoreddef(left.resultdef),fullrtti,rdt_normal)
-              );
+              if (left.resultdef.typ=enumdef) and
+                 (tenumdef(left.resultdef).has_jumps) then
+                begin
+                  if (left.nodetype=typen) and (sp_generic_para in ttypenode(left).typesym.symoptions) then
+                    result:=cnilnode.create
+                  else
+                    internalerror(2021032601);
+                end
+              else
+                result:=caddrnode.create_internal(
+                  crttinode.create(tstoreddef(left.resultdef),fullrtti,rdt_normal)
+                );
             end;
 
           in_gettypekind_x:
