@@ -1494,6 +1494,11 @@ Unit Rax86int;
                  4 :
                   l:=ord(actasmpattern[4]) + ord(actasmpattern[3]) shl 8 +
                      Ord(actasmpattern[2]) shl 16 + ord(actasmpattern[1]) shl 24;
+                 8 :
+                  begin
+                    move(actasmpattern[1],l,8);
+                    l:=SwapEndian(l);
+                  end;
                 else
                   Message1(asmr_e_invalid_string_as_opcode_operand,actasmpattern);
                 end;
