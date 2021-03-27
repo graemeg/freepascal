@@ -509,56 +509,44 @@ Const
   wrAbandoned= 2;
   wrError    = 3;
 
-type Tbasiceventstate=record
-                        fhandle    : THandle;
-                        flasterror : longint;
-                       end;
-     plocaleventrec= ^tbasiceventstate;
-
 function intBasicEventCreate(EventAttributes : Pointer;
 AManualReset,InitialState : Boolean;const Name : ansistring):pEventState;
 var
   n : PChar;
 begin
-  new(plocaleventrec(result));
   if Length(Name) = 0 then
     n := Nil
   else
     n := PChar(Name);
-  plocaleventrec(result)^.FHandle := CreateEvent(EventAttributes, AManualReset, InitialState,n);
+  Result := PEventState(CreateEvent(EventAttributes, AManualReset, InitialState,n));
 end;
 
 procedure intbasiceventdestroy(state:peventstate);
 
 begin
-  closehandle(plocaleventrec(state)^.fhandle);
-  dispose(plocaleventrec(state));
+  closehandle(THandle(state));
 end;
 
 procedure intbasiceventResetEvent(state:peventstate);
 
 begin
-  ResetEvent(plocaleventrec(state)^.FHandle)
+  ResetEvent(THandle(state))
 end;
 
 procedure intbasiceventSetEvent(state:peventstate);
 
 begin
-  SetEvent(plocaleventrec(state)^.FHandle);
+  SetEvent(THandle(state));
 end;
 
 function intbasiceventWaitFor(Timeout : Cardinal;state:peventstate) : longint;
 
 begin
-  case WaitForSingleObject(plocaleventrec(state)^.fHandle, Timeout) of
+  case WaitForSingleObject(THandle(state), Timeout) of
     WAIT_ABANDONED: Result := wrAbandoned;
     WAIT_OBJECT_0: Result := wrSignaled;
     WAIT_TIMEOUT: Result := wrTimeout;
-    WAIT_FAILED:
-        begin
-        Result := wrError;
-        plocaleventrec(state)^.FLastError := GetLastError;
-       end;
+    WAIT_FAILED: Result := wrError;
   else
     Result := wrError;
   end;
