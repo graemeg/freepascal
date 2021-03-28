@@ -2387,6 +2387,7 @@ type
       EvalLow: boolean; ErrorEl: TPasElement): TResEvalValue; virtual; // compute low() or high()
     function EvalTypeRange(Decl: TPasType; Flags: TResEvalFlags): TResEvalValue; virtual; // compute low() and high()
     function HasTypeInfo(El: TPasType): boolean; virtual;
+    function IsAnonymousElType(El: TPasType): boolean; virtual;
     function GetActualBaseType(bt: TResolverBaseType): TResolverBaseType; virtual;
     function GetCombinedBoolean(Bool1, Bool2: TResolverBaseType; ErrorEl: TPasElement): TResolverBaseType; virtual;
     function GetCombinedInt(const Int1, Int2: TPasResolverResult; ErrorEl: TPasElement): TResolverBaseType; virtual;
@@ -6236,15 +6237,26 @@ procedure TPasResolver.FinishSubElementType(Parent: TPasElement; El: TPasType);
     {$IFDEF CheckPasTreeRefCount};const aId: string{$ENDIF});
   var
     i: Integer;
-    p: TPasElement;
+    p, Prev: TPasElement;
   begin
     p:=El.Parent;
     if NewParent=p.Parent then
       begin
-      // e.g. a:array of longint; -> insert a$a in front of a
+      // e.g. m,n:array of longint; -> insert n$a in front of m
       i:=List.Count-1;
       while (i>=0) and (List[i]<>Pointer(p)) do
         dec(i);
+      if P is TPasVariable then
+        begin
+        while (i>0) do
+          begin
+          Prev:=TPasElement(List[i-1]);
+          if (Prev.ClassType=P.ClassType) and (TPasVariable(Prev).VarType=TPasVariable(P).VarType) then
+            dec(i) // e.g. m,n: array of longint
+          else
+            break;
+          end;
+        end;
       if i<0 then
         List.Add(El)
       else
@@ -29670,6 +29682,37 @@ begin
   else if El.Parent is TPasAnonymousProcedure then
     exit;
   Result:=true;
+end;
+
+function TPasResolver.IsAnonymousElType(El: TPasType): boolean;
+// e.g. b$a$a
+var
+  aName: String;
+  i, l: SizeInt;
+  j: Integer;
+begin
+  Result:=false;
+  if AnonymousElTypePostfix='' then exit;
+  aName:=El.Name;
+  l:=length(AnonymousElTypePostfix);
+  i:=length(aName);
+  repeat
+    dec(i,l);
+    if i>0 then
+      begin
+      j:=i;
+      while (j<=l) and (aName[i+j]=AnonymousElTypePostfix[j]) do inc(j);
+      if j>l then
+        begin
+        Result:=true;
+        continue;
+        end;
+      end;
+    if not Result then exit; // no postfix
+    // at least one anonymous eltype postfix
+    Result:=IsValidIdent(LeftStr(aName,i+l));
+    exit;
+  until false;
 end;
 
 function TPasResolver.GetActualBaseType(bt: TResolverBaseType

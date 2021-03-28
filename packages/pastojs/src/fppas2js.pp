@@ -2162,6 +2162,7 @@ type
     Function CreateRTTIMemberProperty(Members: TFPList; Index: integer;
       AContext: TConvertContext): TJSElement; virtual;
     Procedure CreateRTTIAnonymous(El: TPasType; AContext: TConvertContext); virtual; // needed by precompiled files from 2.0.0
+    Function CreateRTTIAnonymousArray(El: TPasArrayType; AContext: TConvertContext): TJSCallExpression; virtual;
     Function CreateRTTIMembers(El: TPasMembersType; Src: TJSSourceElements;
       FuncContext: TFunctionContext; MembersSrc: TJSSourceElements;
       MembersFuncContext: TFunctionContext; RTTIExpr: TJSElement;
@@ -16631,19 +16632,13 @@ var
 
 var
   aResolver: TPas2JSResolver;
-  Scope: TPas2JSArrayScope;
-  SpecializeDelay: Boolean;
   AssignSt: TJSSimpleAssignStatement;
-  CallName, ArrName: String;
-  Obj: TJSObjectLiteral;
-  Prop: TJSObjectLiteralElement;
-  ArrLit: TJSArrayLiteral;
-  Arr: TPasArrayType;
+  ArrName: String;
   Index: Integer;
-  ElTypeHi, ElTypeLo: TPasType;
+  ElTypeLo: TPasType;
   RangeEl: TPasExpr;
   Call: TJSCallExpression;
-  RgLen, RangeEnd: TMaxPrecInt;
+  RangeEnd: TMaxPrecInt;
   List: TJSStatementList;
   Func: TJSFunctionDeclarationStatement;
   BodySrc: TJSSourceElements;
@@ -16665,9 +16660,6 @@ begin
   {$IFDEF VerbosePas2JS}
   writeln('TPasToJSConverter.ConvertArrayType ',GetObjName(El));
   {$ENDIF}
-
-  Scope:=El.CustomData as TPas2JSArrayScope;
-  SpecializeDelay:=(Scope<>nil) and (SpecializeNeedsDelay(El,AContext));
 
   ProcScope:=nil;
   Src:=nil;
@@ -16766,7 +16758,7 @@ begin
       else
         Result:=ArraySt;
 
-      // store precompiled enum type in proc
+      // store precompiled array type in proc
       StorePrecompiledJS(ArraySt);
 
       ArraySt:=nil;
@@ -16778,52 +16770,12 @@ begin
     end;
     end;
 
-  if HasTypeInfo(El,AContext) then
+  if (not (AContext.PasElement is TPasMembersType)) // rtti of members is added separate
+      and HasTypeInfo(El,AContext) then
     begin
-    // module.$rtti.$DynArray("name",{...})
-    if length(El.Ranges)>0 then
-      CallName:=GetBIName(pbifnRTTINewStaticArray)
-    else
-      CallName:=GetBIName(pbifnRTTINewDynArray);
-    Call:=CreateRTTINewType(El,CallName,false,AContext,Obj);
+    Call:=nil;
     try
-      ElTypeHi:=aResolver.ResolveAliasType(El.ElType,false);
-      ElTypeLo:=aResolver.ResolveAliasType(ElTypeHi);
-      if length(El.Ranges)>0 then
-        begin
-        // static array
-        // dims: [dimsize1,dimsize2,...]
-        Prop:=Obj.Elements.AddElement;
-        Prop.Name:=TJSString(GetBIName(pbivnRTTIArray_Dims));
-        ArrLit:=TJSArrayLiteral(CreateElement(TJSArrayLiteral,El));
-        Prop.Expr:=ArrLit;
-        Arr:=El;
-        Index:=0;
-        repeat
-          RangeEl:=Arr.Ranges[Index];
-          RgLen:=aResolver.GetRangeLength(RangeEl);
-          ArrLit.AddElement(CreateLiteralNumber(RangeEl,RgLen));
-          inc(Index);
-          if Index=length(Arr.Ranges) then
-            begin
-            if ElTypeLo.ClassType<>TPasArrayType then
-              break;
-            Arr:=TPasArrayType(ElTypeLo);
-            if length(Arr.Ranges)=0 then
-              RaiseNotSupported(Arr,AContext,20170411222315,'static array of anonymous array');
-            ElTypeHi:=aResolver.ResolveAliasType(Arr.ElType,false);
-            ElTypeLo:=aResolver.ResolveAliasType(ElTypeHi);
-            Index:=0;
-            end;
-        until false;
-        end;
-      // eltype: ref
-      if not SpecializeDelay then
-        begin
-        Prop:=Obj.Elements.AddElement;
-        Prop.Name:=TJSString(GetBIName(pbivnRTTIArray_ElType));
-        Prop.Expr:=CreateTypeInfoRef(ElTypeHi,AContext,El);
-        end;
+      Call:=CreateRTTIAnonymousArray(El,AContext);
 
       if Src<>nil then
         begin
@@ -20132,6 +20084,7 @@ begin
 
   JSTypeInfo:=CreateTypeInfoRef(VarType,AContext,V);
   OptionsEl:=nil;
+
   // Note: create JSTypeInfo first, it may raise an exception
   Call:=CreateCallExpression(V);
   try
@@ -20477,6 +20430,80 @@ begin
     end;
 end;
 
+function TPasToJSConverter.CreateRTTIAnonymousArray(El: TPasArrayType;
+  AContext: TConvertContext): TJSCallExpression;
+var
+  Scope: TPas2JSArrayScope;
+  SpecializeDelay: Boolean;
+  CallName: String;
+  Call: TJSCallExpression;
+  Obj: TJSObjectLiteral;
+  aResolver: TPas2JSResolver;
+  ElTypeHi, ElTypeLo: TPasType;
+  Prop: TJSObjectLiteralElement;
+  ArrLit: TJSArrayLiteral;
+  Arr: TPasArrayType;
+  Index: Integer;
+  RangeEl: TPasExpr;
+  RgLen: TMaxPrecInt;
+begin
+  Result:=nil;
+  aResolver:=AContext.Resolver;
+
+  Scope:=El.CustomData as TPas2JSArrayScope;
+  SpecializeDelay:=(Scope<>nil) and (SpecializeNeedsDelay(El,AContext));
+
+  // module.$rtti.$DynArray("name",{...})
+  if length(El.Ranges)>0 then
+    CallName:=GetBIName(pbifnRTTINewStaticArray)
+  else
+    CallName:=GetBIName(pbifnRTTINewDynArray);
+  Call:=CreateRTTINewType(El,CallName,false,AContext,Obj);
+  try
+    ElTypeHi:=aResolver.ResolveAliasType(El.ElType,false);
+    ElTypeLo:=aResolver.ResolveAliasType(ElTypeHi);
+    if length(El.Ranges)>0 then
+      begin
+      // static array
+      // dims: [dimsize1,dimsize2,...]
+      Prop:=Obj.Elements.AddElement;
+      Prop.Name:=TJSString(GetBIName(pbivnRTTIArray_Dims));
+      ArrLit:=TJSArrayLiteral(CreateElement(TJSArrayLiteral,El));
+      Prop.Expr:=ArrLit;
+      Arr:=El;
+      Index:=0;
+      repeat
+        RangeEl:=Arr.Ranges[Index];
+        RgLen:=aResolver.GetRangeLength(RangeEl);
+        ArrLit.AddElement(CreateLiteralNumber(RangeEl,RgLen));
+        inc(Index);
+        if Index=length(Arr.Ranges) then
+          begin
+          if ElTypeLo.ClassType<>TPasArrayType then
+            break;
+          Arr:=TPasArrayType(ElTypeLo);
+          if length(Arr.Ranges)=0 then
+            RaiseNotSupported(Arr,AContext,20170411222315,'static array of anonymous array');
+          ElTypeHi:=aResolver.ResolveAliasType(Arr.ElType,false);
+          ElTypeLo:=aResolver.ResolveAliasType(ElTypeHi);
+          Index:=0;
+          end;
+      until false;
+      end;
+    // eltype: ref
+    if not SpecializeDelay then
+      begin
+      Prop:=Obj.Elements.AddElement;
+      Prop.Name:=TJSString(GetBIName(pbivnRTTIArray_ElType));
+      Prop.Expr:=CreateTypeInfoRef(ElTypeHi,AContext,El);
+      end;
+    Result:=Call;
+  finally
+    if Result=nil then
+      Call.Free;
+  end;
+end;
+
 function TPasToJSConverter.CreateRTTIMembers(El: TPasMembersType;
   Src: TJSSourceElements; FuncContext: TFunctionContext;
   MembersSrc: TJSSourceElements; MembersFuncContext: TFunctionContext;
@@ -20532,35 +20559,51 @@ begin
   Members:=El.Members;
   For i:=0 to Members.Count-1 do
     begin
+    NewEl:=nil;
     P:=TPasElement(Members[i]);
     C:=P.ClassType;
-    // check visibility
-    case mt of
-    mtClass:
-      if P.Visibility<>visPublished then continue;
-    mtInterface: ; // all members of an interface are published
-    mtRecord:
-      // a published record publishes all non private members
-      if P.Visibility in [visPrivate,visStrictPrivate] then
-        continue;
-    end;
-    if not IsElementUsed(P) then continue;
-
-    NewEl:=nil;
-    if C=TPasVariable then
-      NewEl:=CreateRTTIMemberField(Members,i,MembersFuncContext)
-    else if C.InheritsFrom(TPasProcedure) then
+    writeln('AAA1 TPasToJSConverter.CreateRTTIMembers ',GetObjPath(P));
+    if C.InheritsFrom(TPasType) and HasTypeInfo(TPasType(P),MembersFuncContext) then
       begin
-      if aResolver.GetProcTemplateTypes(TPasProcedure(P))<>nil then
-        continue; // parametrized functions cannot be published
-      NewEl:=CreateRTTIMemberMethod(Members,i,MembersFuncContext);
+        writeln('AAA2 TPasToJSConverter.CreateRTTIMembers ',GetObjPath(P));
+      // published subtype
+      if aResolver.IsAnonymousElType(TPasType(P)) then
+        begin
+        // published anonymous eltype
+          writeln('AAA3 TPasToJSConverter.CreateRTTIMembers ',GetObjPath(P));
+        if C.InheritsFrom(TPasArrayType) then
+          NewEl:=CreateRTTIAnonymousArray(TPasArrayType(P),MembersFuncContext);
+        end;
       end
-    else if C=TPasProperty then
-      NewEl:=CreateRTTIMemberProperty(Members,i,MembersFuncContext)
-    else if C.InheritsFrom(TPasType)
-        or (C=TPasAttributes) then
     else
-      DoError(20190105142236,nSymbolCannotBePublished,sSymbolCannotBePublished,[],P);
+      begin
+      // check visibility
+      case mt of
+      mtClass:
+        if P.Visibility<>visPublished then continue;
+      mtInterface: ; // all members of an interface are published
+      mtRecord:
+        // a published record publishes all non private members
+        if P.Visibility in [visPrivate,visStrictPrivate] then
+          continue;
+      end;
+      if not IsElementUsed(P) then continue;
+
+      if C=TPasVariable then
+        NewEl:=CreateRTTIMemberField(Members,i,MembersFuncContext)
+      else if C.InheritsFrom(TPasProcedure) then
+        begin
+        if aResolver.GetProcTemplateTypes(TPasProcedure(P))<>nil then
+          continue; // parametrized functions cannot be published
+        NewEl:=CreateRTTIMemberMethod(Members,i,MembersFuncContext);
+        end
+      else if C=TPasProperty then
+        NewEl:=CreateRTTIMemberProperty(Members,i,MembersFuncContext)
+      else if C.InheritsFrom(TPasType)
+          or (C=TPasAttributes) then
+      else
+        DoError(20190105142236,nSymbolCannotBePublished,sSymbolCannotBePublished,[],P);
+      end;
     if NewEl=nil then
       continue; // e.g. abstract or external proc
     // add RTTI element
