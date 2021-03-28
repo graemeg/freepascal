@@ -1,3 +1,4 @@
+{$mode objfpc}
 program Project1;
 
 {$ifdef cpu64}
