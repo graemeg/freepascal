@@ -372,7 +372,7 @@ package=utils-fppkgos2.zip[fppkgos2.zip],Free Pascal package repository utility
 # OS/2 27
 package=utils-fprcpos2.zip[fprcos2.zip],Free Pascal Resource Compiler Preprocessor
 # OS/2 28
-package=utils-fpcresos2.zip[fpresos2.zip],Free Pascal Resource Converter
+package=utils-fpcresos2.zip[fprsos2.zip],Free Pascal Resource Converter
 # OS/2 29
 package=utils-pas2fpmos2.zip[p2fmos2.zip],Generate fpmake.pp for Pascal source
 # OS/2 30
@@ -478,8 +478,6 @@ package=utils-fpdocos2.zip[fpdcos2.zip],Free Pascal documentation generation uti
 package=utils-fppkgos2.zip[fpkgos2.zip],Free Pascal package repository utility
 # OS/2-3 11
 package=utils-fpcreslipoos2.zip[fprlos2.zip],Free Pascal External Resource Thinner
-# OS/2-3 12
-package=utils-fpcresos2.zip[fprsos2.zip],Free Pascal Resource Converter
 # OS/2-3 13
 package=utils-ihxutilos2.zip[ihxuos2.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
 # OS/2-3 14
@@ -549,7 +547,7 @@ package=utils-fppkgemx.zip[fppkgemx.zip],Free Pascal package repository utility
 # EMX 26
 package=utils-fprcpemx.zip[fprcemx.zip],Free Pascal Resource Compiler Preprocessor
 # EMX 27
-package=utils-fpcresemx.zip[fpresemx.zip],Free Pascal Resource Converter
+package=utils-fpcresemx.zip[fprsemx.zip],Free Pascal Resource Converter
 # EMX 28
 package=utils-h2pasemx.zip[h2paemx.zip],Create Pascal interface units from C headers
 # EMX 29
@@ -649,16 +647,14 @@ package=utils-fppkgemx.zip[fpkgemx.zip],Free Pascal package repository utility
 # EMX-3 10
 package=utils-fpcreslipoemx.zip[fprlemx.zip],Free Pascal External Resource Thinner
 # EMX-3 11
-package=utils-fpcresemx.zip[fprsemx.zip],Free Pascal Resource Converter
-# EMX-3 12
 package=utils-ihxutilemx.zip[ihxuemx.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
-# EMX-3 13
+# EMX-3 12
 package=utils-json2pasemx.zip[jsnpemx.zip],A utility to create Object Pascal classes fil|es from sample JSON files
-# EMX-3 14
+# EMX-3 13
 package=utils-lexyaccemx.zip[tplyemx.zip],A compiler generator for Turbo Pascal and compatibles
-# EMX-3 15
+# EMX-3 14
 package=utils-rmwaitemx.zip[rmwemx.zip],Remove (delete) file(s) with optional retries
-# EMX-3 16
+# EMX-3 15
 package=utils-fpcmemx.zip[fpcmemx.zip],Generate Makefiles out of Makefile.fpc files
 
 #
