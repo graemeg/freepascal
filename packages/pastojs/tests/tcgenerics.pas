@@ -486,7 +486,7 @@ begin
     '  };',
     '  this.Alter = function (w) {',
     '    this.FItems = rtl.arraySetLength(this.FItems, 0, rtl.length(this.FItems) + 1);',
-    '    this.FItems.splice(2, 0, w);',
+    '    this.FItems = rtl.arrayInsert(w, this.FItems, 2);',
     '    this.FItems.splice(2, 3);',
     '  };',
     '}, "TList<System.Word>");',

@@ -1040,6 +1040,14 @@ var rtl = {
     }
   },
 
+  arrayInsert: function(item, arr, index){
+    if (arr){
+      return arr.splice(index,0,item);
+    } else {
+      return [item];
+    }
+  },
+
   setCharAt: function(s,index,c){
     return s.substr(0,index)+c+s.substr(index+1);
   },

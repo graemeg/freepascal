@@ -555,6 +555,7 @@ type
     pbifnArray_ConcatN,
     pbifnArray_Copy,
     pbifnArray_Equal,
+    pbifnArray_Insert,
     pbifnArray_Length,
     pbifnArray_Reference,
     pbifnArray_SetLength,
@@ -743,6 +744,7 @@ const
     'arrayConcatN', // rtl.arrayConcatN   pbifnArray_ConcatN
     'arrayCopy', // rtl.arrayCopy      pbifnArray_Copy
     'arrayEq', // rtl.arrayEq          pbifnArray_Equal
+    'arrayInsert', // rtl.arrayCopy      pbifnArray_Insert
     'length', // rtl.length    pbifnArray_Length
     'arrayRef', // rtl.arrayRef  pbifnArray_Reference
     'arraySetLength', // rtl.arraySetLength  pbifnArray_SetLength
@@ -14379,6 +14381,8 @@ end;
 
 function TPasToJSConverter.ConvertBuiltIn_CopyArray(El: TParamsExpr;
   AContext: TConvertContext): TJSElement;
+// convert  copy(Arr,Start,Count)
+//   ->  rtl.arrayCopy(type,Arr,Start,Count)
 var
   Param: TPasExpr;
   ParamResolved, ElTypeResolved: TPasResolverResult;
@@ -14447,25 +14451,32 @@ end;
 
 function TPasToJSConverter.ConvertBuiltIn_InsertArray(El: TParamsExpr;
   AContext: TConvertContext): TJSElement;
-// procedure insert(item,var array,const position)
-// ->  array.splice(position,0,item);
+// procedure insert(item,var AnArray,const position)
+// ->  AnArray=rtl.arrayInsert(item,AnArray,position);
 var
-  ArrEl: TJSElement;
   Call: TJSCallExpression;
+  AssignSt: TJSSimpleAssignStatement;
 begin
   Result:=nil;
-  Call:=nil;
+  AssignSt:=nil;
   try
+    // AnArray=
+    AssignSt:=TJSSimpleAssignStatement(CreateElement(TJSSimpleAssignStatement,El));
+    AssignSt.LHS:=ConvertExpression(El.Params[1],AContext);
     Call:=CreateCallExpression(El);
-    ArrEl:=ConvertExpression(El.Params[1],AContext);
-    Call.Expr:=CreateDotNameExpr(El,ArrEl,'splice');
-    Call.AddArg(ConvertExpression(El.Params[2],AContext));
-    Call.AddArg(CreateLiteralNumber(El,0));
+    AssignSt.Expr:=Call;
+    // rtl.arrayInsert
+    Call.Expr:=CreateMemberExpression([GetBIName(pbivnRTL),GetBIName(pbifnArray_Insert)]);
+    // param: item
     Call.AddArg(ConvertExpression(El.Params[0],AContext));
-    Result:=Call;
+    // param: AnArray
+    Call.AddArg(ConvertExpression(El.Params[1],AContext));
+    // param: position
+    Call.AddArg(ConvertExpression(El.Params[2],AContext));
+    Result:=AssignSt;
   finally
     if Result=nil then
-      Call.Free;
+      AssignSt.Free;
   end;
 end;
 
