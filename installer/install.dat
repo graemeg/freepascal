@@ -444,7 +444,7 @@ package=urtl-unicodeos2.zip[urtluos2.zip],RTL-miscellaneous Unicode support unit
 # OS/2-2 29
 package=utils-rmwaitos2.zip[rmwos2.zip],Remove (delete) file(s) with optional retries
 # OS/2-2 30
-package=utils-lexyaccos2.zip[tplyos2.zip],Compiler generator for TP and compatibles
+package=utils-lexyaccos2.zip[tplyos2.zip],A compiler generator for Turbo Pascal and compatibles
 # OS/2-2 31
 package=utils-fpcmos2.zip[fpcmos2.zip],Generate Makefiles out of Makefile.fpc files
 
@@ -738,7 +738,7 @@ package=units-ibase-3.3.1.source.zip[uibassrc.zip],Interbase interface units sou
 # Source-2 5
 package=units-mysql-3.3.1.source.zip[umysqsrc.zip],MySQL interface units sources
 # Source-2 6
-package=utils-lexyacc-3.3.1.source.zip[ulexysrc.zip],Compiler generator for TP and compatibles
+package=utils-lexyacc-3.3.1.source.zip[tplysrc.zip],A compiler generator for Turbo Pascal and compatibles
 # Source-2 7
 package=utils-unicode-3.3.1.source.zip[ucdsrc.zip],Transformation of Unicode consortium data for FPC
 # Source-2 8
@@ -901,8 +901,6 @@ package=utils-rmwait-3.3.1.source.zip[rmwsrc.zip],Remove (delete) file(s) with o
 package=utils-fpcmkcfg-3.3.1.source.zip[fcmksrc.zip],A utility to create the Free Pascal configuration files
 # Source 20
 package=utils-ihxutil-3.3.1.source.zip[ihxusrc.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
-# Source 21
-package=utils-lexyacc-3.3.1.source.zip[tplysrc.zip],A compiler generator for Turbo Pascal and compatibles
 
 
 defaultcfg=
