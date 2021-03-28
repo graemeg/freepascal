@@ -1190,8 +1190,8 @@ begin
   Writer.FullTextSearch := MakeSearchable;
   Writer.HasBinaryTOC := MakeBinaryTOC;
   Writer.HasBinaryIndex := MakeBinaryIndex;
-  Writer.IndexName := ExtractFileName(IndexFileName);
-  Writer.TocName   := ExtractFileName(TableOfContentsFileName);
+  Writer.IndexName := IndexFileName;
+  Writer.TocName   := TableOfContentsFileName;
   Writer.ReadmeMessage := ReadmeMessage;
   Writer.DefaultWindow := FDefaultWindow;
   Writer.LocaleID := FLocaleID;
@@ -1231,16 +1231,19 @@ begin
 end;
 
 procedure TChmProject.LoadSitemaps;
+var
+  FullFileName: string;
 // #IDXHDR (merged files) goes into the system file, and need to keep  TOC sitemap around
 begin
    if FTableOfContentsFileName<>'' then
    begin
-     if fileexists(FTableOfContentsFileName) then
+     FullFileName := IncludeTrailingPathDelimiter(ProjectDir()) + ExtractFileName(FTableOfContentsFileName);
+     if FileExists(FullFileName) then
        begin
          FreeAndNil(FTocStream);
          FTocStream:=TMemoryStream.Create;
          try
-           FTocStream.loadfromfile(FTableOfContentsFilename);
+           FTocStream.loadfromfile(FullFileName);
            //writeln(ftableofcontentsfilename, ' ' ,ftocstream.size);
            FTocStream.Position:=0;
            FreeAndNil(FToc);
@@ -1257,18 +1260,19 @@ begin
      else
        error(chmerror,'Can''t find TOC file'+FTableOfContentsFileName);
    end;
-   if FIndexFileName<>'' then
+   FullFileName := IncludeTrailingPathDelimiter(ProjectDir()) + ExtractFileName(FIndexFileName);
+   if FileExists(FullFileName) then
    begin
      if fileexists(FIndexFileName) then
        begin
         FreeAndNil(FIndexStream);
         FIndexStream:=TMemoryStream.Create;
         try
-          FIndexStream.LoadFromFile(FIndexFileName);
+          FIndexStream.LoadFromFile(FullFileName);
           FIndexStream.Position:=0;
           FreeAndNil(FIndex);
           FIndex:=TChmSiteMap.Create(stindex);
-          FIndex.loadfromfile(FIndexFileName);
+          FIndex.loadfromfile(FullFileName);
           Error(chmnote,'Index items:'+inttostr(findex.Items.count));
         except
           on e: Exception do
