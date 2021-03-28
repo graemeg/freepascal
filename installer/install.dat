@@ -140,7 +140,7 @@ package=utils-fprcpdos.zip[fprcdos.zip],Free Pascal Resource Compiler Preprocess
 # Dos-3 4
 package=utils-h2pasdos.zip[h2pados.zip],Create Pascal interface units from C headers
 # Dos-3 5
-package=utils-pas2fpmdos.zip[p2fpdos.zip],Generate fpmake.pp for Pascal source
+package=utils-pas2fpmdos.zip[p2fmdos.zip],Generate fpmake.pp for Pascal source
 # Dos-3 6
 package=utils-pas2utdos.zip[p2utdos.zip],Pascal source to FPC Unit test generator
 # Dos-3 7
@@ -161,9 +161,6 @@ package=utils-ihxutildos.zip[ihxudos.zip],A tool to convert Intel HEX Format fil
 package=utils-lexyaccdos.zip[tplydos.zip],A compiler generator for Turbo Pascal and compatibles
 # Dos-3 15
 package=utils-fpcmkcfgdos.zip[fcmkdos.zip],A utility to create the Free Pascal configuration files
-# Dos-3 16
-package=utils-pas2fpmdos.zip[p2fmdos.zip],Generate fpmake.pp for Pascal source
-# Dos-3 17
 
 #
 # Win32 packages
@@ -377,7 +374,7 @@ package=utils-fprcpos2.zip[fprcos2.zip],Free Pascal Resource Compiler Preprocess
 # OS/2 28
 package=utils-fpcresos2.zip[fpresos2.zip],Free Pascal Resource Converter
 # OS/2 29
-package=utils-pas2fpmos2.zip[p2fpos2.zip],Generate fpmake.pp for Pascal source
+package=utils-pas2fpmos2.zip[p2fmos2.zip],Generate fpmake.pp for Pascal source
 # OS/2 30
 package=utils-pas2jnios2.zip[p2jnos2.zip],Generate JNI bridge for Pascal code
 # OS/2 31
@@ -487,8 +484,6 @@ package=utils-fpcresos2.zip[fprsos2.zip],Free Pascal Resource Converter
 package=utils-ihxutilos2.zip[ihxuos2.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
 # OS/2-3 14
 package=utils-json2pasos2.zip[jsnpos2.zip],A utility to create Object Pascal classes files from sample JSON files
-# OS/2-3 15
-package=utils-pas2fpmos2.zip[p2fmos2.zip],Generate fpmake.pp for Pascal source
 
 #
 # EMX packages
@@ -558,7 +553,7 @@ package=utils-fpcresemx.zip[fpresemx.zip],Free Pascal Resource Converter
 # EMX 28
 package=utils-h2pasemx.zip[h2paemx.zip],Create Pascal interface units from C headers
 # EMX 29
-package=utils-pas2fpmemx.zip[p2fpemx.zip],Generate fpmake.pp for Pascal source
+package=utils-pas2fpmemx.zip[p2fmemx.zip],Generate fpmake.pp for Pascal source
 # EMX 30
 package=utils-pas2jniemx.zip[p2jnemx.zip],Generate JNI bridge for Pascal code
 # EMX 31
@@ -660,14 +655,11 @@ package=utils-ihxutilemx.zip[ihxuemx.zip],A tool to convert Intel HEX Format fil
 # EMX-3 13
 package=utils-json2pasemx.zip[jsnpemx.zip],A utility to create Object Pascal classes fil|es from sample JSON files
 # EMX-3 14
-package=utils-pas2fpmemx.zip[p2fmemx.zip],Generate fpmake.pp for Pascal source
-# EMX-3 15
 package=utils-lexyaccemx.zip[tplyemx.zip],A compiler generator for Turbo Pascal and compatibles
-# EMX-3 16
+# EMX-3 15
 package=utils-rmwaitemx.zip[rmwemx.zip],Remove (delete) file(s) with optional retries
-# EMX-3 17
+# EMX-3 16
 package=utils-fpcmemx.zip[fpcmemx.zip],Generate Makefiles out of Makefile.fpc files
-# EMX-3 18
 
 #
 # Common packages
@@ -898,7 +890,7 @@ package=utils-instantfpc-3.3.1.source.zip[ifpcsrc.zip],Instantaneous Free Pascal
 # Source 14
 package=utils-pas2js-3.3.1.source.zip[p2jssrc.zip],Pascal to JavaScript converter
 # Source 15
-package=utils-pas2fpm-3.3.1.source.zip[p2fpsrc.zip],Generate fpmake.pp for Pascal source
+package=utils-pas2fpm-3.3.1.source.zip[p2fmsrc.zip],Generate fpmake.pp for Pascal source
 # Source 16
 package=utils-pas2jni-3.3.1.source.zip[p2jnsrc.zip],Generate JNI bridge for Pascal code
 # Source 17
@@ -906,13 +898,11 @@ package=utils-pas2ut-3.3.1.source.zip[p2utsrc.zip],Pascal source to FPC Unit tes
 # Source 18
 package=utils-rmwait-3.3.1.source.zip[rmwsrc.zip],Remove (delete) file(s) with optional retries
 # Source 19
-package=utils-fpcmkcfg.source.zip[fcmksrc.zip],A utility to create the Free Pascal configuration files
+package=utils-fpcmkcfg-3.3.1.source.zip[fcmksrc.zip],A utility to create the Free Pascal configuration files
 # Source 20
-package=utils-ihxutil.source.zip[ihxusrc.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
+package=utils-ihxutil-3.3.1.source.zip[ihxusrc.zip],A tool to convert Intel HEX Format files different formats used on various Z80 systems
 # Source 21
-package=utils-pas2fpm.source.zip[p2fmsrc.zip],Generate fpmake.pp for Pascal source
-# Source 22
-package=utils-lexyacc.source.zip[tplysrc.zip],A compiler generator for Turbo Pascal and compatibles
+package=utils-lexyacc-3.3.1.source.zip[tplysrc.zip],A compiler generator for Turbo Pascal and compatibles
 
 
 defaultcfg=
