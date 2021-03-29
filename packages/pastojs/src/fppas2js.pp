@@ -16773,6 +16773,7 @@ begin
   if (not (AContext.PasElement is TPasMembersType)) // rtti of members is added separate
       and HasTypeInfo(El,AContext) then
     begin
+    // writeln('TPasToJSConverter.ConvertArrayType ',GetObjPath(El),' ',GetObjPath(AContext.PasElement));
     Call:=nil;
     try
       Call:=CreateRTTIAnonymousArray(El,AContext);
@@ -20562,15 +20563,13 @@ begin
     NewEl:=nil;
     P:=TPasElement(Members[i]);
     C:=P.ClassType;
-    writeln('AAA1 TPasToJSConverter.CreateRTTIMembers ',GetObjPath(P));
+    //writeln('TPasToJSConverter.CreateRTTIMembers ',GetObjPath(P));
     if C.InheritsFrom(TPasType) and HasTypeInfo(TPasType(P),MembersFuncContext) then
       begin
-        writeln('AAA2 TPasToJSConverter.CreateRTTIMembers ',GetObjPath(P));
       // published subtype
       if aResolver.IsAnonymousElType(TPasType(P)) then
         begin
         // published anonymous eltype
-          writeln('AAA3 TPasToJSConverter.CreateRTTIMembers ',GetObjPath(P));
         if C.InheritsFrom(TPasArrayType) then
           NewEl:=CreateRTTIAnonymousArray(TPasArrayType(P),MembersFuncContext);
         end;
