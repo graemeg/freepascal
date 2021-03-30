@@ -473,6 +473,8 @@ implementation
             cgsize2subreg:=R_SUBMMY;
           OS_M512:
             cgsize2subreg:=R_SUBMMZ;
+          OS_S128,
+          OS_128,
           OS_NO:
             { error message should have been thrown already before, so avoid only
               an internal error }
