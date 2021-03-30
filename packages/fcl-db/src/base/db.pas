@@ -1112,6 +1112,8 @@ type
   TObjectField = class(TField)
   private
     FFieldFields: TFields;
+    FObjectType: string;
+    FUnNamed: boolean;
   protected
     function GetAsVariant: Variant; override;
     function GetFieldCount: Integer;
@@ -1124,6 +1126,9 @@ type
     property FieldCount: Integer read GetFieldCount;
     property Fields: TFields read GetFields;
     property FieldValues[AIndex: Integer]: Variant read GetFieldValue  write SetFieldValue; default;
+    property UnNamed: Boolean read FUnNamed default False;
+  published
+    property ObjectType: string read FObjectType write FObjectType;
   end;
 
 { TIndexDef }
