@@ -1480,11 +1480,11 @@ mmxreg,mmxrm          \2\x0F\xEB\110                  PENT,MMX,SM
 xmmreg,xmmrm          \361\2\x0F\xEB\110              WILLAMETTE,SSE2,SM
 
 [PREFETCH,prefetchX]
-(Ch_All)
+(Ch_Rop1)
 mem                   \2\x0F\x0D\200                  PENT,3DNOW,SM
 
 [PREFETCHW,prefetchwX]
-(Ch_All)
+(Ch_Rop1)
 mem                   \2\x0F\x0D\201                  PENT,3DNOW,SM
 
 [PSLLD]
@@ -2516,19 +2516,19 @@ mem                   \2\x0F\xAE\200                  P6,SSE,FPU
 ;
 
 [PREFETCHNTA]
-(Ch_All)
+(Ch_Rop1)
 mem                   \2\x0F\x18\200                      KATMAI
 
 [PREFETCHT0]
-(Ch_All)
+(Ch_Rop1)
 mem                   \2\x0F\x18\201                      KATMAI
 
 [PREFETCHT1]
-(Ch_All)
+(Ch_Rop1)
 mem                   \2\x0F\x18\202                      KATMAI
 
 [PREFETCHT2]
-(Ch_All)
+(Ch_Rop1)
 mem                   \2\x0F\x18\203                      KATMAI
 
 [SFENCE]
