@@ -120,7 +120,7 @@ end;
 function TFieldDef.CreateField(AOwner: TComponent; ParentField: TObjectField = nil; const FieldName: string = ''; CreateChildren: Boolean = True): TField;
 
 var TheField : TFieldClass;
-    i: integer;
+    i,n: integer;
 
 begin
 {$ifdef dsdebug}
@@ -156,10 +156,19 @@ begin
       TFmtBCDField(Result).Precision := FPrecision;
 
     if CreateChildren and HasChildDefs then
-    begin
-      for i := 0 to ChildDefs.Count - 1 do
-        ChildDefs[i].CreateField(nil, TObjectField(Result), '');
-    end;
+      if DataType = ftArray then
+      begin
+        if TFieldDefs(Collection).DataSet.SparseArrays then
+          n := 1
+        else
+          n := Size; // created field for each array element
+        for i := 0 to n - 1 do
+          // all array elements are of same type
+          ChildDefs[0].CreateField(nil, TObjectField(Result), Format('%s[%d]', [Result.FieldName, i]));
+      end
+      else
+        for i := 0 to ChildDefs.Count - 1 do
+          ChildDefs[i].CreateField(nil, TObjectField(Result), '');
   except
     Result.Free;
     Raise;
@@ -3781,6 +3790,15 @@ begin
   if N > Size then N := Size;
   for I := 0 to N - 1  do
     SetFieldValue(I, AValue[I]);
+end;
+
+{ TArrayField }
+
+constructor TArrayField.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  SetDataType(ftArray);
+  Size := 10;
 end;
 
 { TFieldsEnumerator }

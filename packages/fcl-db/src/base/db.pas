@@ -1131,6 +1131,14 @@ type
     property ObjectType: string read FObjectType write FObjectType;
   end;
 
+{ TArrayField }
+
+  TArrayField = class(TObjectField)
+  private
+  public
+    constructor Create(AOwner: TComponent); override;
+  end;
+
 { TIndexDef }
 
   TIndexDefs = class;
@@ -1599,6 +1607,7 @@ type
     FOnPostError: TDataSetErrorEvent;
     FRecordCount: Longint;
     FIsUniDirectional: Boolean;
+    FSparseArrays: Boolean;
     FState : TDataSetState;
     FInternalOpenComplete: Boolean;
     Procedure DoInsertAppend(DoAppend : Boolean);
@@ -1619,6 +1628,7 @@ type
     Procedure UpdateFieldDefs;
     procedure SetBlockReadSize(AValue: Integer); virtual;
     Procedure SetFieldDefs(AFieldDefs: TFieldDefs);
+    procedure SetSparseArrays(AValue: Boolean);
     procedure DoInsertAppendRecord(const Values: array of const; DoAppend : boolean);
   protected
     procedure RecalcBufListSize;
@@ -1843,6 +1853,7 @@ type
     property RecordCount: Longint read GetRecordCount;
     property RecNo: Longint read GetRecNo write SetRecNo;
     property RecordSize: Word read GetRecordSize;
+    property SparseArrays: Boolean read FSparseArrays write SetSparseArrays;
     property State: TDataSetState read FState;
     property Fields : TFields read FFieldList;
     property FieldValues[FieldName : string] : Variant read GetFieldValues write SetFieldValues; default;
@@ -2340,7 +2351,7 @@ const
       { ftWideString} TWideStringField,
       { ftLargeint} TLargeIntField,
       { ftADT} Nil,
-      { ftArray} Nil,
+      { ftArray} TArrayField,
       { ftReference} Nil,
       { ftDataSet} Nil,
       { ftOraBlob} TBlobField,
@@ -2369,6 +2380,8 @@ const
   // incorrect results
   ftBlobTypes = [ftBlob, ftMemo, ftGraphic, ftFmtMemo, ftParadoxOle,
     ftDBaseOle, ftTypedBinary, ftOraBlob, ftOraClob, ftWideMemo];
+
+  ObjectFieldTypes = [ftADT, ftArray, ftReference, ftDataSet];
 
 var
   LoginDialogExProc: function(const ADatabaseName: string; var AUserName, APassword: string; UserNameReadOnly: Boolean): Boolean = nil;
