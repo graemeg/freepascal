@@ -1316,9 +1316,6 @@ begin
   source := '';
   GetLineInfo:=false;
 
-  if not OpenDwarf(codepointer(addr)) then
-    exit;
-
   CacheIndex:=addr mod LineInfoCacheLength;
 
   if LineInfoCache[CacheIndex].addr=addr then
@@ -1329,6 +1326,9 @@ begin
       GetLineInfo:=true;
       exit;
     end;
+
+  if not OpenDwarf(codepointer(addr)) then
+    exit;
 
 {$ifdef CPUI8086}
   {$if defined(FPC_MM_MEDIUM) or defined(FPC_MM_LARGE) or defined(FPC_MM_HUGE)}
