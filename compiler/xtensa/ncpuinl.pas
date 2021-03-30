@@ -26,10 +26,10 @@ unit ncpuinl;
   interface
 
     uses
-      node,ninl,ncginl, aasmbase;
+      node,ninl,ncginl,aasmbase;
 
     type
-      tcpuinlineNode = class(tcginlinenode)
+      tcpuinlinenode = class(tcginlinenode)
         function first_abs_real: tnode; override;
         procedure second_abs_long; override;
         procedure second_abs_real; override;
@@ -37,13 +37,14 @@ unit ncpuinl;
         procedure second_fma; override;
         function first_minmax: tnode; override;
         procedure second_minmax; override;
+        procedure second_prefetch; override;
       end;
 
   implementation
 
     uses
       cpuinfo,
-      verbose,globals,
+      verbose,globals,globtype,
       compinnr,
       aasmdata,
       aasmcpu,
@@ -52,7 +53,7 @@ unit ncpuinl;
       hlcgobj,
       pass_2,
       cgbase, cgobj, cgutils,
-      ncal,
+      ncal,nutils,
       cpubase;
 
     procedure tcpuinlinenode.second_abs_long;
@@ -182,7 +183,7 @@ unit ncpuinl;
       end;
 
 
-    procedure tcpuinlineNode.second_minmax;
+    procedure tcpuinlinenode.second_minmax;
       var
         paraarray : array[1..2] of tnode;
         i: Integer;
@@ -228,6 +229,34 @@ unit ncpuinl;
            end
          else
            internalerror(2020120502);
+      end;
+
+
+    procedure tcpuinlinenode.second_prefetch;
+      var
+        ref : treference;
+        r : tregister;
+        checkpointer_used : boolean;
+      begin
+        { do not call Checkpointer for left node }
+        checkpointer_used:=(cs_checkpointer in current_settings.localswitches);
+        if checkpointer_used then
+          node_change_local_switch(left,cs_checkpointer,false);
+        secondpass(left);
+        if checkpointer_used then
+          node_change_local_switch(left,cs_checkpointer,false);
+       case left.location.loc of
+         LOC_CREFERENCE,
+         LOC_REFERENCE:
+           begin
+             r:=cg.getintregister(current_asmdata.CurrAsmList,OS_ADDR);
+             cg.a_loadaddr_ref_reg(current_asmdata.CurrAsmList,left.location.reference,r);
+             reference_reset_base(ref,r,0,location.reference.temppos,left.location.reference.alignment,location.reference.volatility);
+             current_asmdata.CurrAsmList.concat(taicpu.op_reg_const(A_DPFR,ref.base,ref.offset));
+           end;
+         else
+           { nothing to prefetch };
+       end;
       end;
 
 
