@@ -63,35 +63,7 @@ end;
 destructor TFieldDef.Destroy;
 
 begin
-  FChildDefs.Free;
-  Inherited Destroy;
-end;
-
-function TFieldDef.AddChild: TFieldDef;
-begin
-  Result := ChildDefs.AddFieldDef;
-end;
-
-function TFieldDef.GetChildDefs: TFieldDefs;
-begin
-  if FChildDefs = nil then
-    FChildDefs := TFieldDefs.Create(Self);
-  Result := FChildDefs;
-end;
-
-procedure TFieldDef.SetChildDefs(AValue: TFieldDefs);
-begin
-  ChildDefs.Assign(AValue);
-end;
-
-function TFieldDef.HasChildDefs: Boolean;
-begin
-  Result := Assigned(FChildDefs) and (FChildDefs.Count > 0);
-end;
-
-function TFieldDef.GetParentDef: TFieldDef;
-begin
-  Result := TFieldDefs(Collection).ParentDef;
+  Inherited destroy;
 end;
 
 procedure TFieldDef.Assign(APersistent: TPersistent);
@@ -117,10 +89,9 @@ begin
     inherited Assign(APersistent);
 end;
 
-function TFieldDef.CreateField(AOwner: TComponent; ParentField: TObjectField = nil; const FieldName: string = ''; CreateChildren: Boolean = True): TField;
+function TFieldDef.CreateField(AOwner: TComponent): TField;
 
 var TheField : TFieldClass;
-    i,n: integer;
 
 begin
 {$ifdef dsdebug}
@@ -154,21 +125,6 @@ begin
       TBCDField(Result).Precision := FPrecision
     else if (Result is TFmtBCDField) then
       TFmtBCDField(Result).Precision := FPrecision;
-
-    if CreateChildren and HasChildDefs then
-      if DataType = ftArray then
-      begin
-        if TFieldDefs(Collection).DataSet.SparseArrays then
-          n := 1
-        else
-          n := Size; // created field for each array element
-        for i := 0 to n - 1 do
-          // all array elements are of same type
-          ChildDefs[0].CreateField(nil, TObjectField(Result), Format('%s[%d]', [Result.FieldName, i]));
-      end
-      else
-        for i := 0 to ChildDefs.Count - 1 do
-          ChildDefs[i].CreateField(nil, TObjectField(Result), '');
   except
     Result.Free;
     Raise;
@@ -193,17 +149,8 @@ begin
   Changed(False);
 end;
 
-function TFieldDef.GetSize: Integer;
-begin
-  if HasChildDefs and (FSize = 0) then
-    Result := FChildDefs.Count
-  else
-    Result := FSize;
-end;
-
 procedure TFieldDef.SetSize(const AValue: Integer);
 begin
-  if HasChildDefs and (DataType <> ftArray) then Exit;
   FSize := AValue;
   Changed(False);
 end;
@@ -302,17 +249,9 @@ begin
   Result:=TFieldDef;
 end;
 
-constructor TFieldDefs.Create(AOwner: TPersistent);
-var ADataSet: TDataSet;
+constructor TFieldDefs.Create(ADataSet: TDataSet);
 begin
-  if AOwner is TFieldDef then
-  begin
-    FParentDef := TFieldDef(AOwner);
-    ADataSet := TFieldDefs(FParentDef.Collection).DataSet;
-  end
-  else
-    ADataSet := AOwner as TDataSet;
-  Inherited Create(ADataset, AOwner, FieldDefClass);
+  Inherited Create(ADataset, Owner, FieldDefClass);
 end;
 
 function TFieldDefs.Add(const AName: string; ADataType: TFieldType; ASize, APrecision: Integer;
@@ -1159,25 +1098,6 @@ const
   ValueToLookupMap: array[Boolean] of TFieldKind = (fkData, fkLookup);
 begin
   FieldKind := ValueToLookupMap[AValue];
-end;
-
-procedure TField.SetParentField(AField: TObjectField);
-begin
-  if AField <> FParentField then
-  begin
-    if FDataSet <> nil then FDataSet.CheckInactive;
-    if AField <> nil then
-    begin
-      if AField.DataSet <> nil then AField.DataSet.CheckInactive;
-      AField.Fields.CheckFieldName(FFieldName);
-      AField.Fields.Add(Self);
-      if FDataSet <> nil then FDataSet.Fields.Remove(Self);
-      FDataSet := AField.DataSet;
-    end
-    else if FDataSet <> nil then FDataSet.Fields.Add(Self);
-    if FParentField <> nil then FParentField.Fields.Remove(Self);
-    FParentField := AField;
-  end;
 end;
 
 procedure TField.SetReadOnly(const AValue: Boolean);
@@ -3741,64 +3661,6 @@ end;
 procedure TVariantField.SetVarValue(const aValue: Variant);
 begin
   SetData(@aValue);
-end;
-
-{ TObjectField }
-
-function TObjectField.GetFieldCount: Integer;
-begin
-  Result := Fields.Count;
-end;
-
-function TObjectField.GetFields: TFields;
-begin
-  Result := FFieldFields;
-end;
-
-function TObjectField.GetFieldValue(AIndex: Integer): Variant;
-begin
-  Result := FFieldFields[AIndex].Value;
-end;
-
-procedure TObjectField.SetFieldValue(AIndex: Integer; const AValue: Variant);
-begin
-  FFieldFields[AIndex].Value := AValue;
-end;
-
-procedure TObjectField.SetParentField(AField: TObjectField);
-begin
-  inherited SetParentField(AField);
-end;
-
-function TObjectField.GetAsVariant: Variant;
-var I: integer;
-begin
-  if IsNull then
-    Result := Null
-  else
-  begin
-    Result := VarArrayCreate([0, FieldCount - 1], varVariant);
-    for I := 0 to FieldCount - 1 do
-      Result[I] := GetFieldValue(I);
-  end;
-end;
-
-procedure TObjectField.SetVarValue(const AValue: Variant);
-var N,I: integer;
-begin
-  N := VarArrayHighBound(AValue, 1) + 1;
-  if N > Size then N := Size;
-  for I := 0 to N - 1  do
-    SetFieldValue(I, AValue[I]);
-end;
-
-{ TArrayField }
-
-constructor TArrayField.Create(AOwner: TComponent);
-begin
-  inherited Create(AOwner);
-  SetDataType(ftArray);
-  Size := 10;
 end;
 
 { TFieldsEnumerator }

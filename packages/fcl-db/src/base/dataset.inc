@@ -881,12 +881,6 @@ begin
   FFieldDefs.Assign(AFieldDefs);
 end;
 
-procedure TDataSet.SetSparseArrays(AValue: Boolean);
-begin
- CheckInactive;
- FSparseArrays := AValue;
-end;
-
 procedure TDataSet.DoInsertAppendRecord(const Values: array of const; DoAppend : boolean);
 var i : integer;
     ValuesSize : integer;

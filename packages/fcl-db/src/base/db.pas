@@ -75,7 +75,6 @@ type
   TDataSource = Class;
   TDataLink = Class;
   TDBTransaction = Class;
-  TObjectField = class;
 
 { Exception classes }
 
@@ -170,19 +169,14 @@ type
     FCodePage : TSystemCodePage;
     FDataType : TFieldType;
     FFieldNo : Longint;
-    FChildDefs : TFieldDefs;
     FInternalCalcField : Boolean;
     FPrecision : Longint;
     FRequired : Boolean;
     FSize : Integer;
     function GetCharSize: Word;
-    function GetChildDefs: TFieldDefs;
     Function GetFieldClass : TFieldClass;
-    function GetParentDef: TFieldDef;
-    function GetSize: Integer;
     procedure SetAttributes(AValue: TFieldAttributes);
     procedure SetDataType(AValue: TFieldType);
-    procedure SetChildDefs(AValue: TFieldDefs);
     procedure SetPrecision(const AValue: Longint);
     procedure SetSize(const AValue: Integer);
     procedure SetRequired(const AValue: Boolean);
@@ -192,23 +186,19 @@ type
       ADataType: TFieldType; ASize: Integer; ARequired: Boolean; AFieldNo: Longint;
       ACodePage: TSystemCodePage = CP_ACP); overload;
     destructor Destroy; override;
-    function AddChild: TFieldDef;
     procedure Assign(APersistent: TPersistent); override;
-    function CreateField(AOwner: TComponent; ParentField: TObjectField = nil;  const FieldName: string = ''; CreateChildren: Boolean = True): TField;
-    function HasChildDefs: Boolean;
+    function CreateField(AOwner: TComponent): TField;
     property FieldClass: TFieldClass read GetFieldClass;
     property FieldNo: Longint read FFieldNo;
     property CharSize: Word read GetCharSize;
     property InternalCalcField: Boolean read FInternalCalcField write FInternalCalcField;
-    property ParentDef: TFieldDef read GetParentDef;
     property Required: Boolean read FRequired write SetRequired;
     Property Codepage : TSystemCodePage Read FCodePage;
   Published
     property Attributes: TFieldAttributes read FAttributes write SetAttributes default [];
     property DataType: TFieldType read FDataType write SetDataType;
-    property ChildDefs: TFieldDefs read GetChildDefs write SetChildDefs stored HasChildDefs;
     property Precision: Longint read FPrecision write SetPrecision default 0;
-    property Size: Integer read GetSize write SetSize default 0;
+    property Size: Integer read FSize write SetSize default 0;
   end;
   TFieldDefClass = Class of TFieldDef;
 
@@ -216,14 +206,13 @@ type
 
   TFieldDefs = class(TDefCollection)
   private
-    FParentDef: TFieldDef;
     FHiddenFields : Boolean;
     function GetItem(Index: Longint): TFieldDef;
     procedure SetItem(Index: Longint; const AValue: TFieldDef);
   Protected
     Class Function FieldDefClass : TFieldDefClass; virtual;
   public
-    constructor Create(AOwner: TPersistent);
+    constructor Create(ADataSet: TDataSet);
 //    destructor Destroy; override;
     Function Add(const AName: string; ADataType: TFieldType; ASize, APrecision: Integer; ARequired, AReadOnly: Boolean; AFieldNo : Integer; ACodePage:TSystemCodePage) : TFieldDef; overload;
     Function Add(const AName: string; ADataType: TFieldType; ASize: Word; ARequired: Boolean; AFieldNo : Integer) : TFieldDef; overload;
@@ -239,7 +228,6 @@ type
     Function MakeNameUnique(const AName : String) : string; virtual;
     Property HiddenFields : Boolean Read FHiddenFields Write FHiddenFields;
     property Items[Index: Longint]: TFieldDef read GetItem write SetItem; default;
-    property ParentDef: TFieldDef read FParentDef;
   end;
   TFieldDefsClass = Class of TFieldDefs;
 
@@ -312,8 +300,6 @@ type
     FOnSetText: TFieldSetTextEvent;
     FOnValidate: TFieldNotifyEvent;
     FOrigin : String;
-    FParentField: TObjectField;
-    FProviderFlags : TProviderFlags;
     FReadOnly : Boolean;
     FRequired : Boolean;
     FSize : integer;
@@ -321,6 +307,7 @@ type
     FValueBuffer : Pointer;
     FValidating : Boolean;
     FVisible : Boolean;
+    FProviderFlags : TProviderFlags;
     function GetIndex : longint;
     function GetLookup: Boolean;
     procedure SetAlignment(const AValue: TAlignMent);
@@ -398,7 +385,6 @@ type
     procedure SetNewValue(const AValue: Variant);
     procedure SetSize(AValue: Integer); virtual;
     procedure SetParentComponent(AParent: TComponent); override;
-    procedure SetParentField(AField: TObjectField); virtual;
     procedure SetText(const AValue: string); virtual;
     procedure SetVarValue(const AValue: Variant); virtual;
   public
@@ -475,7 +461,6 @@ type
     property LookupResultField: string read FLookupResultField write FLookupResultField;
     property Lookup: Boolean read GetLookup write SetLookup stored false; deprecated;
     property Origin: string read FOrigin write FOrigin;
-    property ParentField: TObjectField read FParentField write SetParentField;
     property ProviderFlags : TProviderFlags read FProviderFlags write FProviderFlags;
     property ReadOnly: Boolean read FReadOnly write SetReadOnly;
     property Required: Boolean read FRequired write FRequired;
@@ -1107,38 +1092,6 @@ type
     property AsGuid: TGUID read GetAsGuid write SetAsGuid;
   end;
 
-{ TObjectField }
-
-  TObjectField = class(TField)
-  private
-    FFieldFields: TFields;
-    FObjectType: string;
-    FUnNamed: boolean;
-  protected
-    function GetAsVariant: Variant; override;
-    function GetFieldCount: Integer;
-    function GetFields: TFields; virtual;
-    function GetFieldValue(AIndex: Integer): Variant; virtual;
-    procedure SetFieldValue(AIndex: Integer; const AValue: Variant); virtual;
-    procedure SetParentField(AField: TObjectField); override;
-    procedure SetVarValue(const AValue: Variant); override;
-  public
-    property FieldCount: Integer read GetFieldCount;
-    property Fields: TFields read GetFields;
-    property FieldValues[AIndex: Integer]: Variant read GetFieldValue  write SetFieldValue; default;
-    property UnNamed: Boolean read FUnNamed default False;
-  published
-    property ObjectType: string read FObjectType write FObjectType;
-  end;
-
-{ TArrayField }
-
-  TArrayField = class(TObjectField)
-  private
-  public
-    constructor Create(AOwner: TComponent); override;
-  end;
-
 { TIndexDef }
 
   TIndexDefs = class;
@@ -1607,7 +1560,6 @@ type
     FOnPostError: TDataSetErrorEvent;
     FRecordCount: Longint;
     FIsUniDirectional: Boolean;
-    FSparseArrays: Boolean;
     FState : TDataSetState;
     FInternalOpenComplete: Boolean;
     Procedure DoInsertAppend(DoAppend : Boolean);
@@ -1628,7 +1580,6 @@ type
     Procedure UpdateFieldDefs;
     procedure SetBlockReadSize(AValue: Integer); virtual;
     Procedure SetFieldDefs(AFieldDefs: TFieldDefs);
-    procedure SetSparseArrays(AValue: Boolean);
     procedure DoInsertAppendRecord(const Values: array of const; DoAppend : boolean);
   protected
     procedure RecalcBufListSize;
@@ -1853,7 +1804,6 @@ type
     property RecordCount: Longint read GetRecordCount;
     property RecNo: Longint read GetRecNo write SetRecNo;
     property RecordSize: Word read GetRecordSize;
-    property SparseArrays: Boolean read FSparseArrays write SetSparseArrays;
     property State: TDataSetState read FState;
     property Fields : TFields read FFieldList;
     property FieldValues[FieldName : string] : Variant read GetFieldValues write SetFieldValues; default;
@@ -2351,7 +2301,7 @@ const
       { ftWideString} TWideStringField,
       { ftLargeint} TLargeIntField,
       { ftADT} Nil,
-      { ftArray} TArrayField,
+      { ftArray} Nil,
       { ftReference} Nil,
       { ftDataSet} Nil,
       { ftOraBlob} TBlobField,
@@ -2380,8 +2330,6 @@ const
   // incorrect results
   ftBlobTypes = [ftBlob, ftMemo, ftGraphic, ftFmtMemo, ftParadoxOle,
     ftDBaseOle, ftTypedBinary, ftOraBlob, ftOraClob, ftWideMemo];
-
-  ObjectFieldTypes = [ftADT, ftArray, ftReference, ftDataSet];
 
 var
   LoginDialogExProc: function(const ADatabaseName: string; var AUserName, APassword: string; UserNameReadOnly: Boolean): Boolean = nil;
