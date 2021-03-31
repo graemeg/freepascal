@@ -830,7 +830,6 @@ type
     Procedure TestRTTI_Class_OtherUnit_TypeAlias;
     Procedure TestRTTI_Class_OmitRTTI;
     Procedure TestRTTI_Class_Field_AnonymousArrayOfSelfClass;
-    Procedure TestRTTI_Class_Field_AnonymousArrayOfSelfClass2;
     Procedure TestRTTI_IndexModifier;
     Procedure TestRTTI_StoredModifier;
     Procedure TestRTTI_DefaultValue;

@@ -17947,7 +17947,7 @@ begin
 
   if GenEl.Body<>nil then
     begin
-    // implementation proc
+    // implementation or anonymous proc
     if SpecializedItem<>nil then
       SpecializedItem.Step:=prssImplementationBuilding;
     GenBody:=GenEl.Body;
@@ -18435,11 +18435,21 @@ begin
 end;
 
 procedure TPasResolver.SpecializeProcedureExpr(GenEl, SpecEl: TProcedureExpr);
+var
+  GenProc: TPasAnonymousProcedure;
+  NewClass: TPTreeElement;
 begin
   SpecializeExpr(GenEl,SpecEl);
-  if GenEl.Proc=nil then
+  GenProc:=GenEl.Proc;
+  if GenProc=nil then
     RaiseNotYetImplemented(20190808221018,GenEl);
-  RaiseNotYetImplemented(20190808221040,GenEl);
+  if not (GenProc is TPasAnonymousProcedure) then
+    RaiseNotYetImplemented(20210331224052,GenEl);
+  if GenProc.Parent<>GenEl then
+    RaiseNotYetImplemented(20210331223856,GenEl);
+  NewClass:=TPTreeElement(GenProc.ClassType);
+  SpecEl.Proc:=TPasAnonymousProcedure(NewClass.Create(GenProc.Name,SpecEl));
+  SpecializeElement(GenProc,SpecEl.Proc);
 end;
 
 procedure TPasResolver.SpecializeResString(GenEl, SpecEl: TPasResString);

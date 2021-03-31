@@ -75,6 +75,7 @@ type
     procedure TestGenProc_TypeInfo;
     procedure TestGenProc_Infer_Widen;
     procedure TestGenProc_Infer_PassAsArg;
+    procedure TestGenProc_AnonymousProc;
     // ToDo: FuncName:= instead of Result:=
 
     // generic methods
@@ -2213,6 +2214,64 @@ begin
     LinesToStr([ // $mod.$main
     '$mod.Run$G1($mod.Run$G1(5));',
     '$mod.Run$G1($mod.Run$G1(6));',
+    '']));
+end;
+
+procedure TTestGenerics.TestGenProc_AnonymousProc;
+begin
+  StartProgram(false);
+  Add([
+  '{$mode delphi}',
+  'type',
+  '  TProc = reference to procedure;',
+  '  TFunc = reference to function(Value: JSValue): JSValue;',
+  'function Run<T>(a: T; p: TProc): T;',
+  'var b: T;',
+  '  f: TFunc;',
+  'begin',
+  '  Result:=Run(a,procedure()begin end);',
+  '  f:=function(b: JSValue): JSValue begin end;',
+  '  f:=function(b: JSValue): JSValue',
+  '      function Sub(c: JSValue): JSValue;',
+  '      begin',
+  '        Result:=c;',
+  '      end;',
+  '    begin',
+  '      Result:=Sub(b);',
+  '    end;',
+  'end;',
+  'begin',
+  '  Run<word>(3,procedure() begin end);',
+  '']);
+  ConvertProgram;
+  CheckSource('TestGenProc_AnonymousProc',
+    LinesToStr([ // statements
+    'this.Run$G1 = function (a, p) {',
+    '  var Result = 0;',
+    '  var b = 0;',
+    '  var f = null;',
+    '  Result = $mod.Run$G1(a, function () {',
+    '  });',
+    '  f = function (b) {',
+    '    var Result = undefined;',
+    '    return Result;',
+    '  };',
+    '  f = function (b) {',
+    '    var Result = undefined;',
+    '    function Sub(c) {',
+    '      var Result = undefined;',
+    '      Result = c;',
+    '      return Result;',
+    '    };',
+    '    Result = Sub(b);',
+    '    return Result;',
+    '  };',
+    '  return Result;',
+    '};',
+    '']),
+    LinesToStr([ // $mod.$main
+    '$mod.Run$G1(3, function () {',
+    '});',
     '']));
 end;
 
