@@ -718,10 +718,13 @@ implementation
               empty value is assigned
 
            But not when the result is in the flags, then
-          loading the left node afterwards can destroy the flags.
+           loading the left node afterwards can destroy the flags.
+
+           Neither if right contains conditional nodes: this might cause problems with
+           temp. nodes with init code used by CSE, see e.g. #38129
         }
         if not(right.expectloc in [LOC_FLAGS,LOC_JUMP]) and
-            (node_complexity(right)>node_complexity(left)) then
+            (node_complexity(right)>node_complexity(left)) and not(has_conditional_nodes(right)) then
          begin
            secondpass(right);
            if codegenerror then
