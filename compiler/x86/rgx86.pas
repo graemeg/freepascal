@@ -407,8 +407,10 @@ implementation
             { 32 bit operations on 32 bit registers on x86_64 can result in
               zeroing the upper 32 bits of the register. This does not happen
               with memory operations, so we have to perform these calculations
-              in registers.  }
-            if (opsize=S_L) then
+              in registers.
+
+              However, for instructions not modifying registers, this is not a problem }
+            if (opsize=S_L) and (opcode<>A_CMP) and (opcode<>A_TEST) and (opcode<>A_BT) then
               replaceoper:=-1;
 {$endif x86_64}
 
