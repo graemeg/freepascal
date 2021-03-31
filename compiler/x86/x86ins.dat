@@ -1267,7 +1267,7 @@ mmxreg,mmxrm          \2\x0F\xDB\110                  PENT,MMX,SM
 xmmreg,xmmrm          \361\2\x0F\xDB\110              WILLAMETTE,SSE2,SM
 
 [PANDN]
-(Ch_All)
+(Ch_Mop2, Ch_Rop1)
 mmxreg,mmxrm          \2\x0F\xDF\110                  PENT,MMX,SM
 xmmreg,xmmrm          \361\2\x0F\xDF\110              WILLAMETTE,SSE2,SM
 
@@ -1475,7 +1475,7 @@ void                  \1\x9D                          X86_64
 void                  \326\1\x9D                      X86_64
 
 [POR]
-(Ch_All)
+(Ch_Mop2, Ch_Rop1)
 mmxreg,mmxrm          \2\x0F\xEB\110                  PENT,MMX,SM
 xmmreg,xmmrm          \361\2\x0F\xEB\110              WILLAMETTE,SSE2,SM
 
