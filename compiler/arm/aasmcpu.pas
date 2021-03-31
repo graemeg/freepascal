@@ -166,14 +166,14 @@ uses
       IF_ARMv7M     = $00F00000;
       IF_ARMv7EM    = $01000000;
 
-      IF_FPMASK     = $F0000000;
-      IF_FPA        = $10000000;
-      IF_VFPv2      = $20000000;
-      IF_VFPv3      = $40000000;
-      IF_VFPv4      = $80000000;
+      IF_FPMASK     = $00000F00;
+      IF_FPA        = $00000100;
+      IF_VFPv2      = $00000200;
+      IF_VFPv3      = $00000400;
+      IF_VFPv4      = $00000800;
 
       { if the instruction can change in a second pass }
-      IF_PASS2  = longint($80000000);
+      IF_PASS2  = $80000000;
 
     type
       TInsTabCache=array[TasmOp] of longint;
@@ -278,7 +278,7 @@ uses
       private
          { arm version info }
          fArmVMask,
-         fArmMask  : longint;
+         fArmMask  : longword;
          { next fields are filled in pass1, so pass2 is faster }
          inssize   : shortint;
          insoffset : longint;
