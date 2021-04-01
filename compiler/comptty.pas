@@ -30,19 +30,19 @@ function IsATTY(var t : text) : Boolean;
 
 const
 (* This allows compile-time removal of the colouring functionality under not supported platforms *)
-{$if defined(linux) or defined(MSWINDOWS) or defined(OS2) or defined(GO32V2) or defined(WATCOM)}
+{$if defined(linux) or defined(MSWINDOWS) or defined(OS2) or defined(GO32V2) or defined(WATCOM) or defined(DARWIN)}
   TTYCheckSupported = true;
-{$else defined(linux) or defined(MSWINDOWS) or defined(OS2) or defined(GO32V2) or defined(WATCOM)}
+{$else defined(linux) or defined(MSWINDOWS) or defined(OS2) or defined(GO32V2) or defined(WATCOM) or defined(DARWIN)}
   TTYCheckSupported = false;
-{$endif defined(linux) or defined(MSWINDOWS) or defined(OS2) or defined(GO32V2) or defined(WATCOM)}
+{$endif defined(linux) or defined(MSWINDOWS) or defined(OS2) or defined(GO32V2) or defined(WATCOM) or defined(DARWIN)}
 
 
 implementation
 
-{$ifdef linux}
+{$if defined(linux) or defined(darwin)}
   uses
    termio;
-{$endif linux}
+{$endif defined(linux) or defined(darwin)}
 {$ifdef mswindows}
   uses
    windows;
@@ -60,12 +60,12 @@ const
   CachedIsATTY : Boolean = false;
   IsATTYValue : Boolean = false;
 
-{$ifdef linux}
+{$if defined(linux) or defined(darwin)}
 function LinuxIsATTY(var t : text) : Boolean; inline;
 begin
   LinuxIsATTY:=termio.IsATTY(t)=1;
 end;
-{$endif linux}
+{$endif defined(linux) or defined(darwin)}
 
 {$ifdef MSWINDOWS}
 const
@@ -152,9 +152,9 @@ begin
   if not(CachedIsATTY) then
     begin
 (* If none of the supported values is defined, false is returned by default. *)
-{$ifdef linux}
+{$if defined(linux) or defined(darwin)}
       IsATTYValue:=LinuxIsATTY(t);
-{$endif linux}
+{$endif defined(linux) or defined(darwin)}
 {$ifdef MSWINDOWS}
       IsATTYValue:=WindowsIsATTY(t);
 {$endif MSWINDOWS}
