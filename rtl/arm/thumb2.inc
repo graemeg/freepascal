@@ -158,21 +158,26 @@ asm
         subge   r1,r1,#8
         bge     .LFillchar1
 .LFillchar2:
-        movs r1,r1              // anything left?
-        it eq
-        moveq pc,lr
-        rsb     r1,r1,#7
-        mov     r1,r1,lsl #2
-        add     pc,r1
-        mov     r0,r0
-        strb r2,[r3],#1
-        strb r2,[r3],#1
-        strb r2,[r3],#1
-        strb r2,[r3],#1
-        strb r2,[r3],#1
-        strb r2,[r3],#1
-        strb r2,[r3],#1
+        adr r0, .Ljumptable
+        tbb [r0, r1]
+
+        strb r2,[r3,#6]
+        strb r2,[r3,#5]
+        strb r2,[r3,#4]
+        strb r2,[r3,#3]
+        strb r2,[r3,#2]
+        strb r2,[r3,#1]
+        strb r2,[r3,#0]
         mov pc,lr
+.Ljumptable:
+        .byte 7
+        .byte 6
+        .byte 5
+        .byte 4
+        .byte 3
+        .byte 2
+        .byte 1
+        .byte 0
 end;
 {$endif FPC_SYSTEM_HAS_FILLCHAR}
 
