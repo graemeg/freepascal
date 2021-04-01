@@ -124,42 +124,70 @@ end;
 Procedure FillChar(var x;count:longint;value:byte);assembler;nostackframe;
 asm
         // less than 0?
-        cmp r1,#0
-        it lt
-        movlt pc,lr
-        mov     r3,r0
-        cmp     r1,#8           // at least 8 bytes to do?
-        blt     .LFillchar2
-        orr r2,r2,r2,lsl #8
-        orr r2,r2,r2,lsl #16
+        cmp   r1,#0
+        it    le
+        movle pc,lr
+        mov   r3,r0
+        cmp   r1,#8           // at least 8 bytes to do?
+        add   r1, r0
+        blt   .LFillchar3
+        orr   r2,r2,r2,lsl #8
+        orr   r2,r2,r2,lsl #16
 .LFillchar0:
-        tst     r3,#3           // aligned yet?
-        itt ne
-        strneb r2,[r3],#1
-        subne   r1,r1,#1
-        bne     .LFillchar0
+        ands    ip, r3, #3
+        beq     .LAligned
+
+        subs    r0, ip, #1
+        lsls    r0, r0, #1
+        add     pc, r0
+        nop
+
+        strb    r2,[r3,#2]
+        strb    r2,[r3,#1]
+        strb    r2,[r3,#0]
+        rsb     r0, ip, #4
+        add     r3, r0
+
+.LAligned:
         mov     ip,r2
+        push    {r4,r5,lr}
+        mov     r4,r2
+        mov     r5,r2
 .LFillchar1:
-        cmp     r1,#8           // 8 bytes still to do?
-        blt     .LFillchar2
-        stmia   r3!,{r2,ip}
-        sub     r1,r1,#8
-        cmp     r1,#8           // 8 bytes still to do?
-        blt     .LFillchar2
-        stmia   r3!,{r2,ip}
-        sub     r1,r1,#8
-        cmp     r1,#8           // 8 bytes still to do?
-        blt     .LFillchar2
-        stmia   r3!,{r2,ip}
-        sub     r1,r1,#8
-        cmp     r1,#8           // 8 bytes still to do?
-        itt ge
-        stmgeia r3!,{r2,ip}
-        subge   r1,r1,#8
-        bge     .LFillchar1
+        // Use calculated jump to do fills of x*16 bytes
+        subs  r0, r1, r3
+        cmp   r0, #128
+        bge   .LFillchar1_128
+        lsrs  r0, #4
+        beq   .LFillchar2
+        rsb   r0, #8
+        lsls  r0, #2
+        add   pc, r0
+        nop
+.LFillchar1_128:
+        stmia r3!,{r2,r4,r5,ip}
+        stmia r3!,{r2,r4,r5,ip}
+        stmia r3!,{r2,r4,r5,ip}
+        stmia r3!,{r2,r4,r5,ip}
+        stmia r3!,{r2,r4,r5,ip}
+        stmia r3!,{r2,r4,r5,ip}
+        stmia r3!,{r2,r4,r5,ip}
+        stmia r3!,{r2,r4,r5,ip}
+        b .LFillchar1
 .LFillchar2:
-        adr r0, .Ljumptable
-        tbb [r0, r1]
+        // Mop up any leftover 8 byte chunks. We are still aligned at this point
+        pop     {r4,r5,lr}
+        sub     r0, r1, r3
+        cmp     r0, #8
+        it      ge
+        stmgeia r3!,{r2,ip}
+.LFillchar3:
+        // Write any remaining bytes
+        subs r0, r3, r1
+        adds r0, #7 // 7-(e-s) = 7+(s-e)
+        lsls r0, #1
+        add  pc, r0
+        nop
 
         strb r2,[r3,#6]
         strb r2,[r3,#5]
@@ -168,16 +196,6 @@ asm
         strb r2,[r3,#2]
         strb r2,[r3,#1]
         strb r2,[r3,#0]
-        mov pc,lr
-.Ljumptable:
-        .byte 7
-        .byte 6
-        .byte 5
-        .byte 4
-        .byte 3
-        .byte 2
-        .byte 1
-        .byte 0
 end;
 {$endif FPC_SYSTEM_HAS_FILLCHAR}
 
