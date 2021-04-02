@@ -601,7 +601,7 @@ const
       for controllertype:=low(tcontrollertype) to high(tcontrollertype) do
         if embedded_controllers[controllertype].ControllerTypeStr<>'' then
           WriteLn(xmloutput,'      <controllertype name="',embedded_controllers[controllertype].ControllerTypeStr,
-            ' controllerunit="',embedded_controllers[controllertype].controllerunitstr, '"/>');
+            '" controllerunit="',embedded_controllers[controllertype].controllerunitstr, '"/>');
       WriteLn(xmloutput,'    </controllertypes>');
      end;
 {$POP}
