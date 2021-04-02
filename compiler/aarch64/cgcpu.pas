@@ -588,7 +588,7 @@ implementation
         leftover_a: word;
       begin
 {$ifdef extdebug}
-        list.concat(tai_comment.Create(strpnew('Generating constant ' + tostr(a))));
+        list.concat(tai_comment.Create(strpnew('Generating constant ' + tostr(a) + ' / $' + hexstr(a, 16))));
 {$endif extdebug}
         case a of
           { Small positive number }
@@ -623,7 +623,7 @@ implementation
                       Exit;
                     end;
 
-                  { This determines whether this write can be peformed with an ORR followed by MOVK
+                  { This determines whether this write can be performed with an ORR followed by MOVK
                     by copying the 2nd word to the 4th word for the ORR constant, then overwriting
                     the 4th word (unless the word is.  The alternative would require 3 instructions }
                   leftover_a := word(a shr 48);
@@ -644,14 +644,15 @@ implementation
                     called for a and it returned False.  Reduces processing time. [Kit] }
                   if (manipulated_a <> a) and is_shifter_const(manipulated_a, size) then
                     begin
+                      { Encode value as:
+                          orr  reg,xzr,manipulated_a
+                          movk reg,#(leftover_a),lsl #48
+                      }
                       list.concat(taicpu.op_reg_reg_const(A_ORR, reg, makeregsize(NR_XZR, size), manipulated_a));
-                      if (leftover_a <> 0) then
-                        begin
-                          shifterop_reset(so);
-                          so.shiftmode := SM_LSL;
-                          so.shiftimm := 48;
-                          list.concat(taicpu.op_reg_const_shifterop(A_MOVK, reg, leftover_a, so));
-                        end;
+                      shifterop_reset(so);
+                      so.shiftmode := SM_LSL;
+                      so.shiftimm := 48;
+                      list.concat(taicpu.op_reg_const_shifterop(A_MOVK, reg, leftover_a, so));
                       Exit;
                     end;
 
@@ -664,7 +665,7 @@ implementation
                           stored as the first 16 bits followed by a shifter constant }
                         case a of
                           TCgInt($FFFF0000FFFF0000)..TCgInt($FFFF0000FFFFFFFF):
-                            doinverted := False
+                            doinverted := False;
                           else
                             begin
                               doinverted := True;
