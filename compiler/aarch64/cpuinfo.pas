@@ -37,7 +37,14 @@ Type
    { possible supported processors for this target }
    tcputype =
       (cpu_none,
-       cpu_armv8
+       cpu_armv8,
+       cpu_armv8a,
+       cpu_armv81a,
+       cpu_armv82a,
+       cpu_armv83a,
+       cpu_armv84a,
+       cpu_armv85a,
+       cpu_armv86a
       );
 
 Type
@@ -97,8 +104,15 @@ Const
      pocall_interrupt
    ];
 
-   cputypestr : array[tcputype] of string[8] = ('',
-     'ARMV8'
+   cputypestr : array[tcputype] of string[9] = ('',
+     'ARMV8',
+     'ARMV8-A',
+     'ARMV8.1-A',
+     'ARMV8.2-A',
+     'ARMV8.3-A',
+     'ARMV8.4-A',
+     'ARMV8.5-A',
+     'ARMV8.6-A'
    );
 
    fputypestr : array[tfputype] of string[9] = ('',
@@ -120,6 +134,33 @@ Const
      [{$ifndef llvm}cs_opt_regvar,{$endif}cs_opt_stackframe,cs_opt_tailrecursion,cs_opt_nodecse];
    level3optimizerswitches = genericlevel3optimizerswitches + level2optimizerswitches + [{,cs_opt_loopunroll}];
    level4optimizerswitches = genericlevel4optimizerswitches + level3optimizerswitches + [];
+
+type
+   tcpuflags =
+     (CPUA64_HAS_LSE       { CPU supports Large System Extensions }
+     );
+
+   tfpuflags =
+     (CPUA64_HAS_VFP       { CPU supports VFP }
+     );
+
+const
+   cpu_capabilities : array[tcputype] of set of tcpuflags =
+     ( { cpu_none      } [],
+       { cpu_armv8     } [],
+       { cpu_armv8a    } [],
+       { cpu_armv81a   } [CPUA64_HAS_LSE],
+       { cpu_armv82a   } [CPUA64_HAS_LSE],
+       { cpu_armv83a   } [CPUA64_HAS_LSE],
+       { cpu_armv84a   } [CPUA64_HAS_LSE],
+       { cpu_armv85a   } [CPUA64_HAS_LSE],
+       { cpu_armv86a   } [CPUA64_HAS_LSE]
+     );
+
+   fpu_capabilities : array[tfputype] of set of tfpuflags =
+     ( { fpu_none         } [],
+       { fpu_vfp          } [CPUA64_HAS_VFP]
+     );
 
 Implementation
 

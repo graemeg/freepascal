@@ -65,7 +65,14 @@ unit agcpugas;
     const
       cputype_to_gas_march : array[tcputype] of string = (
         '', // cpu_none
-        'armv8'
+        'armv8',
+        'armv8-a',
+        'armv8.1-a',
+        'armv8.2-a',
+        'armv8.3-a',
+        'armv8.4-a',
+        'armv8.5-a',
+        'armv8.6-a'
       );
 
   implementation
