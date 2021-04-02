@@ -313,6 +313,8 @@
   {$define cpurefshaveindexreg}
   {$define SUPPORT_GET_FRAME}
   {$define SUPPORT_SAFECALL}
+  {$define cpucapabilities}
+  {$define fpucapabilities}
 {$endif aarch64}
 
 {$ifdef riscv32}

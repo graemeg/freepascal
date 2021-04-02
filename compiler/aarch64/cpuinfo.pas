@@ -137,11 +137,11 @@ Const
 
 type
    tcpuflags =
-     (CPUA64_HAS_LSE       { CPU supports Large System Extensions }
+     (CPUAARCH64_HAS_LSE       { CPU supports Large System Extensions }
      );
 
    tfpuflags =
-     (CPUA64_HAS_VFP       { CPU supports VFP }
+     (CPUAARCH64_HAS_VFP       { CPU supports VFP }
      );
 
 const
@@ -149,17 +149,17 @@ const
      ( { cpu_none      } [],
        { cpu_armv8     } [],
        { cpu_armv8a    } [],
-       { cpu_armv81a   } [CPUA64_HAS_LSE],
-       { cpu_armv82a   } [CPUA64_HAS_LSE],
-       { cpu_armv83a   } [CPUA64_HAS_LSE],
-       { cpu_armv84a   } [CPUA64_HAS_LSE],
-       { cpu_armv85a   } [CPUA64_HAS_LSE],
-       { cpu_armv86a   } [CPUA64_HAS_LSE]
+       { cpu_armv81a   } [CPUAARCH64_HAS_LSE],
+       { cpu_armv82a   } [CPUAARCH64_HAS_LSE],
+       { cpu_armv83a   } [CPUAARCH64_HAS_LSE],
+       { cpu_armv84a   } [CPUAARCH64_HAS_LSE],
+       { cpu_armv85a   } [CPUAARCH64_HAS_LSE],
+       { cpu_armv86a   } [CPUAARCH64_HAS_LSE]
      );
 
    fpu_capabilities : array[tfputype] of set of tfpuflags =
      ( { fpu_none         } [],
-       { fpu_vfp          } [CPUA64_HAS_VFP]
+       { fpu_vfp          } [CPUAARCH64_HAS_VFP]
      );
 
 Implementation
