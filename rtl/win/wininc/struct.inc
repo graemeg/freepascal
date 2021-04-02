@@ -6304,41 +6304,92 @@ Const
      lpemptyrecord = ^emptyrecord;
      HPROPSHEETPAGE = ^emptyrecord;
 
-     PROPSHEETHEADER = record
+     PROPSHEETHEADERA = record
           dwSize : DWORD;
           dwFlags : DWORD;
           hwndParent : HWND;
           hInstance : HINST;
           case longint of
               0 : (hIcon : HICON);
-              1 : (pszIcon : LPCTSTR;
-                   pszCaption : LPCTSTR;
+              1 : (pszIcon : LPCSTR;
+                   pszCaption : LPCSTR;
                    nPages : UINT;
                    case longint of
                       0 : (nStartPage : UINT);
-                      1 : (pStartPage : LPCTSTR;
+                      1 : (pStartPage : LPCSTR;
                            case longint of
                               0 : (ppsp : LPCPROPSHEETPAGE);
                               1 : (phpage : ^HPROPSHEETPAGE;
                                    pfnCallback : PFNPROPSHEETCALLBACK;
                                    case longint of
                                      0 : (hbmWatermark : HBITMAP);
-                                     1 : (pszbmWatermark : LPCTSTR;
+                                     1 : (pszbmWatermark : LPCSTR;
                                           hplWatermark : HPALETTE;
                                           case longint of
                                              0 : (hbmHeader : HBITMAP);
-                                             1 : (pszbmHeader: PAnsiChar);
+                                             1 : (pszbmHeader: LPCStr);
                                          );
                                   );
                           );
                   );
        end;
-     LPPROPSHEETHEADER = ^PROPSHEETHEADER;
-     LPCPROPSHEETHEADER = ^PROPSHEETHEADER;
-     _PROPSHEETHEADER = PROPSHEETHEADER;
-     TPROPSHEETHEADER = PROPSHEETHEADER;
-     PPROPSHEETHEADER = ^PROPSHEETHEADER;
+     LPPROPSHEETHEADERA = ^PROPSHEETHEADERA;
+     LPCPROPSHEETHEADERA = ^PROPSHEETHEADERA;
+     _PROPSHEETHEADERA = PROPSHEETHEADERA;
+     TPROPSHEETHEADERA = PROPSHEETHEADERA;
+     PPROPSHEETHEADERA = ^PROPSHEETHEADERA;
 
+     PROPSHEETHEADERW = record
+          dwSize : DWORD;
+          dwFlags : DWORD;
+          hwndParent : HWND;
+          hInstance : HINST;
+          case longint of
+              0 : (hIcon : HICON);
+              1 : (pszIcon : LPCWSTR;
+                   pszCaption : LPCWSTR;
+                   nPages : UINT;
+                   case longint of
+                      0 : (nStartPage : UINT);
+                      1 : (pStartPage : LPCWSTR;
+                           case longint of
+                              0 : (ppsp : LPCPROPSHEETPAGE);
+                              1 : (phpage : ^HPROPSHEETPAGE;
+                                   pfnCallback : PFNPROPSHEETCALLBACK;
+                                   case longint of
+                                     0 : (hbmWatermark : HBITMAP);
+                                     1 : (pszbmWatermark : LPCWSTR;
+                                          hplWatermark : HPALETTE;
+                                          case longint of
+                                             0 : (hbmHeader : HBITMAP);
+                                             1 : (pszbmHeader: LPCWStr);
+                                         );
+                                  );
+                          );
+                  );
+       end;
+     LPPROPSHEETHEADERW = ^PROPSHEETHEADERW;
+     LPCPROPSHEETHEADERW = ^PROPSHEETHEADERW;
+     _PROPSHEETHEADERW = PROPSHEETHEADERW;
+     TPROPSHEETHEADERW = PROPSHEETHEADERW;
+     PPROPSHEETHEADERW = ^PROPSHEETHEADERW;
+
+     {$ifdef Unicode}
+     PROPSHEETHEADER    = PROPSHEETHEADERW;
+     LPPROPSHEETHEADER  = LPPROPSHEETHEADERW;
+     LPCPROPSHEETHEADER = LPCPROPSHEETHEADERW;
+     _PROPSHEETHEADER   = _PROPSHEETHEADERW;
+     TPROPSHEETHEADER   = TPROPSHEETHEADERW;
+     PPROPSHEETHEADER   = PPROPSHEETHEADERW;
+     {$else}
+     PROPSHEETHEADER    = PROPSHEETHEADERA;
+     LPPROPSHEETHEADER  = LPPROPSHEETHEADERA;
+     LPCPROPSHEETHEADER = LPCPROPSHEETHEADERA;
+     _PROPSHEETHEADER   = _PROPSHEETHEADERA;
+     TPROPSHEETHEADER   = TPROPSHEETHEADERA;
+     PPROPSHEETHEADER   = PPROPSHEETHEADERA;
+     {$endif}
+    
      { PropertySheet callbacks  }
      LPFNADDPROPSHEETPAGE = function (_para1:HPROPSHEETPAGE; _para2:LPARAM):WINBOOL;stdcall;
      TFNADDPROPSHEETPAGE = LPFNADDPROPSHEETPAGE;
