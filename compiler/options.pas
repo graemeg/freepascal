@@ -4664,6 +4664,20 @@ begin
     def_system_macro('CPUTHUMB2');
 {$endif arm}
 
+{$ifdef aarch64}
+  case target_info.system of
+    system_aarch64_darwin:
+      begin
+        if not option.CPUSetExplicitly then
+          init_settings.cputype:=cpu_armv84a;
+        if not option.OptCPUSetExplicitly then
+          init_settings.optimizecputype:=cpu_armv84a;
+      end;
+    else
+      ;
+  end;
+{$endif aarch64}
+
 {$if defined(riscv32) or defined(riscv64)}
   { RISC-V defaults }
   if (target_info.abi = abi_riscv_hf) then
