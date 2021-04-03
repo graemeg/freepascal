@@ -798,3 +798,43 @@
 
 [INS]
 
+; Large System Extensions
+
+[CAS]
+
+[CASP]
+
+[LDADD]
+
+[LDCLR]
+
+[LDEOR]
+
+[LDSET]
+
+[LDSMAX]
+
+[LDSMIN]
+
+[LDUMAX]
+
+[LDUMIN]
+
+[STADD]
+
+[STCLR]
+
+[STEOR]
+
+[STSET]
+
+[STSMAX]
+
+[STSMIN]
+
+[STUMAX]
+
+[STUMIN]
+
+[SWP]
+

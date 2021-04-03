@@ -882,6 +882,8 @@ implementation
                   else
                     result:=sr_complex;
                 end;
+              A_LDADD,
+              A_STADD,
               A_LDAR,
               A_LDAXR,
               A_LDXR,
