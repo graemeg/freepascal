@@ -213,23 +213,34 @@ function declocked(var l : longint) : boolean;assembler;nostackframe;
   { input:  address of l in x0                                      }
   { output: boolean indicating whether l is zero after decrementing }
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    mov    w1,#-1
+    ldadd  w1,w2,[x0]
+    adds   w2,w2,w1
+    cset   w0,eq
+  {$else CPUAARCH64_HAS_LSE}
   .LDecLockedLoop:
     ldxr   w1,[x0]
     sub    w1,w1,#1
     stxr   w2,w1,[x0]
     cbnz   w2,.LDecLockedLoop
     cset   w0, eq
+  {$endif CPUAARCH64_HAS_LSE}
   end;
-
 
 {$define FPC_SYSTEM_HAS_INCLOCKED_LONGINT}
 procedure inclocked(var l : longint);assembler;nostackframe;
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    mov    w1,#1
+    ldadd  w1,w2,[x0]
+  {$else CPUAARCH64_HAS_LSE}
   .LIncLockedLoop:
     ldxr   w1,[x0]
     add    w1,w1,#1
     stxr   w2,w1,[x0]
     cbnz   w2,.LIncLockedLoop
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
@@ -238,23 +249,35 @@ function declocked(var l : int64) : boolean;assembler;nostackframe;
   { input:  address of l in x0                                      }
   { output: boolean indicating whether l is zero after decrementing }
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    mov    x1,#-1
+    ldadd  x1,x2,[x0]
+    adds   x2,x2,x1
+    cset   w0,eq
+   {$else CPUAARCH64_HAS_LSE}
   .LDecLockedLoop:
     ldxr   x1,[x0]
     subs   x1,x1,#1
     stxr   w2,x1,[x0]
     cbnz   w2,.LDecLockedLoop
     cset   w0, eq
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
 {$define FPC_SYSTEM_HAS_INCLOCKED_INT64}
 procedure inclocked(var l : int64);assembler;nostackframe;
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    mov    x1,#1
+    ldadd  x1,x2,[x0]
+  {$else CPUAARCH64_HAS_LSE}
   .LIncLockedLoop:
     ldxr   x1,[x0]
     add    x1,x1,#1
     stxr   w2,x1,[x0]
     cbnz   w2,.LIncLockedLoop
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
@@ -263,12 +286,18 @@ function InterLockedDecrement (var Target: longint) : longint; assembler; nostac
   { output: target-1 in x0          }
   { side-effect: target := target-1 }
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    mov    w1,#-1
+    ldadd  w1,w2,[x0]
+    add    w0,w2,w1
+  {$else CPUAARCH64_HAS_LSE}
   .LInterDecLockedLoop:
     ldxr   w1,[x0]
     sub    w1,w1,#1
     stxr   w2,w1,[x0]
     cbnz   w2,.LInterDecLockedLoop
     mov    w0,w1
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
@@ -277,12 +306,18 @@ function InterLockedIncrement (var Target: longint) : longint; assembler; nostac
   { output: target+1 in x0          }
   { side-effect: target := target+1 }
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    mov    w1,#1
+    ldadd  w1,w2,[x0]
+    add    w0,w2,w1
+  {$else CPUAARCH64_HAS_LSE}
   .LInterIncLockedLoop:
     ldxr   w1,[x0]
     add    w1,w1,#1
     stxr   w2,w1,[x0]
     cbnz   w2,.LInterIncLockedLoop
     mov    w0,w1
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
