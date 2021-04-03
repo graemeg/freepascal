@@ -49,11 +49,18 @@ type
   MMFAR,                            {!< Mem Manage Address Register                              }
   BFAR,                             {!< Bus Fault Address Register                               }
   AFSR: longword;                   {!< Auxiliary Fault Status Register                          }
+  // CPUID registers
   PFR: array[0..1] of longword;     {!< Processor Feature Register                               }
   DFR,                              {!< Debug Feature Register                                   }
   ADR: longword;                    {!< Auxiliary Feature Register                               }
   MMFR: array[0..3] of longword;    {!< Memory Model Feature Register                            }
-  ISAR: array[0..4] of longword;    {!< ISA Feature Register                                     }
+  ISAR: array[0..5] of longword;    {!< ISA Feature Register                                     }
+  CLIDR,
+  CTR,
+  CCSIDR,
+  CSSELR: longword;
+
+  CPACR: longword;
  end;
 
  TSysTickRegisters = record
@@ -143,6 +150,13 @@ type
   ITATBCTR0: longword;
  end;
 
+ TFPExtRegisters = record
+  FPCCR,
+  FPCAR,
+  FPDSCR: longword;
+  MVFR: array[0..2] of longword;
+ end;
+
 var
  // System Control
  InterruptControlType: longword     absolute (SCS_BASE+$0004);
@@ -150,7 +164,7 @@ var
  SysTick: TSysTickRegisters         absolute (SCS_BASE+$0010);
  NVIC: TNVICRegisters               absolute (SCS_BASE+$0100);
  SoftwareTriggerInterrupt: longword absolute (SCS_BASE+$0000);
- SCBID: TIDRegisters                absolute (SCS_BASE+$EFD0);
+ FPExt: TFPExtRegisters             absolute (SCS_BASE+$0F34);
 
  // Core Debug
  CoreDebug: TCoreDebugRegisters     absolute (SCS_BASE+$0DF0);
