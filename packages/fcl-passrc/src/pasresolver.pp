@@ -10628,6 +10628,7 @@ begin
     end;
   eopAdd:
     begin
+    // handle multi add
     Left:=El.left;
     while (Left.ClassType=TBinaryExpr) do
       begin
