@@ -3314,8 +3314,10 @@ procedure TTestModule.TestMultiAdd;
 begin
   StartProgram(false);
   Add([
+  'function Fly: string; external name ''fly'';',
   'function TryEncodeDate(Year, Month, Day: Word): Boolean;',
-  'var Date: double;',
+  'var',
+  '  Date: double;',
   'begin',
   '  Result:=(Year>0) and (Year<10000) and',
   '          (Month >= 1) and (Month<=12) and',
@@ -3324,7 +3326,10 @@ begin
   'end;',
   'var s: string;',
   'begin',
-  '  s:=''a''+''b''+''c''+''d'';']);
+  '  s:=''a''+''b''+''c''+''d'';',
+  '  s:=s+Fly+''e'';',
+  '  s:=Fly+Fly+Fly;',
+  '']);
   ConvertProgram;
   CheckSource('TestMultiAdd',
     LinesToStr([ // statements
@@ -3339,6 +3344,8 @@ begin
     '']),
     LinesToStr([ // this.$main
     '$mod.s = "a" + "b" + "c" + "d";',
+    '$mod.s = $mod.s + fly() + "e";',
+    '$mod.s = fly() + fly() + fly();',
     '']));
 end;
 
