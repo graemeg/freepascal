@@ -155,7 +155,6 @@ function TChmProject.GetData(const DataName: String; out PathInChm: String; out
   FileName: String; var Stream: TStream): Boolean;
 begin
   Result := False; // Return true to abort compressing files
-
   TMemoryStream(Stream).LoadFromFile(ProjectDir+DataName);
   // clean up the filename
   FileName := StringReplace(ExtractFileName(DataName), '\', '/', [rfReplaceAll]);
@@ -353,8 +352,8 @@ var
 begin
   Cfg := TXMLConfig.Create(nil);
   Cfg.Filename := AFileName;
-  FileName := AFileName;
-  FBasePath:=extractfilepath(expandfilename(afilename));
+  FileName := expandfilename(AFileName);
+  FBasePath:=extractfilepath(FileName);
 
   Files.Clear;
   FileCount := Cfg.GetValue('Files/Count/Value', 0);
@@ -580,8 +579,9 @@ var
 
 begin
  { Defaults other than global }
-   MakeBinaryIndex:=True;
-  FBasePath:=extractfilepath(expandfilename(afilename));
+  MakeBinaryIndex:=True;
+  filename:=expandfilename(afilename);
+  FBasePath:=extractfilepath(filename);
   Fini:=TMeminiFile.Create(AFileName);
   secs := TStringList.create;
   strs := TStringList.create;
@@ -758,7 +758,6 @@ begin
       inc(i);
     end;
    outstring:=localpath+instring;
-
    i:=pos('#',outstring);
    if i<>0 then begin
      if i<>length(outstring) then // trims lone '#' at end of url.
@@ -777,7 +776,7 @@ begin
      delete(outstring,i,length(outstring)-i+1);
    end;
 
-  outstring:=expandfilename(StringReplace(outstring,'%20',' ',[rfReplaceAll]));// expandfilename(instring));
+  outstring:=expandfilename(includetrailingpathdelimiter(fbasepath)+StringReplace(outstring,'%20',' ',[rfReplaceAll]));// expandfilename(instring));
 
   outstring:=extractrelativepath(basepath,outstring);
   outstring:=StringReplace(outstring,'\','/',[rfReplaceAll]);
@@ -937,14 +936,14 @@ var
   fn,reffn   : string;
   tmplst : Tstringlist;
 
-function trypath(const vn:string):boolean;
+function trypath(const vn:string;const vl:string):boolean;
 var vn2: String;
   strrec : TStringIndex;
 begin
   vn2:=uppercase(vn);
   if FileInTotalList(vn2) then
    begin
-     Error(ChmNote,'Found duplicate file '+vn+' while scanning '+fn,1);
+     Error(ChmNote,'Found duplicate file '+vl+' while scanning '+fn,1);
      exit(true);
    end;
 
@@ -956,10 +955,12 @@ begin
       StrRec.TheString:=vn2;
       StrRec.Strid    :=0;
       fTotalFileList.Add(StrRec);
-      newfiles.add(vn);
-      Error(ChmNote,'Found file '+vn+' while scanning '+fn,1);
+      newfiles.add(vl);
+      Error(ChmNote,'Found file '+vl+' while scanning '+fn,1);
     end;
 end;
+
+var efn : string;
 
 begin
  localfilelist:=TStringList.Create;
@@ -969,12 +970,16 @@ begin
      localfilelist.clear;
      if (FAllowedExtensions.Indexof(uppercase(extractfileext(fn)))<>-1) then
        begin
-         if fileexists(fn) then
+         if fbasepath<>'' then
+           efn:=IncludeTrailingPathDelimiter(FBasePath)+fn
+         else
+           efn:=fn;
+         if fileexists(efn) then
            begin
              domdoc:=THtmlDocument.Create;
              try
                Error(chmnote,'Scanning file '+fn+'.',5);
-               ReadHtmlFile(domdoc,fn);
+               ReadHtmlFile(domdoc,efn);
                localpath:=extractfilepath(fn);
                if (length(localpath)>0) and not (localpath[length(localpath)] in ['/','\']) then
                  localpath:=localpath+pathsep;
@@ -982,7 +987,7 @@ begin
                for i:=0 to localFilelist.count-1 do
                  begin
                    reffn:=localfilelist[i];
-                   if not trypath(reffn) then  //  if not trypath(localpath+s) then
+                   if not trypath(IncludeTrailingPathDelimiter(fbasepath)+reffn,reffn) then  //  if not trypath(localpath+s) then
                        Error(ChmWarning,'Found file '+reffn+' while scanning '+fn+', but couldn''t find it on disk',2);
                  end;
              except
@@ -1011,7 +1016,7 @@ begin
                  begin
                    delete(reffn,1,pos('url(''', reffn)+4);
                    reffn:=trim(copy(reffn,1,pos('''',reffn)-1));
-                   if not trypath(reffn) then
+                   if not trypath(IncludeTrailingPathDelimiter(fbasepath)+reffn,reffn) then
 //                     if not trypath(localpath+s) then
                        Error(ChmWarning,'Found file '+reffn+' while scanning '+fn+', but couldn''t find it on disk',2);
                  end;
@@ -1198,10 +1203,10 @@ begin
   for i:=0 to files.count-1 do
     begin
       nd:=TChmContextNode(files.objects[i]);
-      if not fileexists(files[i]) then
+      if not fileexists(IncludeTrailingPathDelimiter(FBasePath)+files[i]) then
          Error(chmWarning,'File '+Files[i]+' does not exist');
       if assigned(nd) and (nd.contextnumber<>0) then
-        Writer.AddContext(nd.ContextNumber,files[i]);
+        Writer.AddContext(nd.ContextNumber,IncludeTrailingPathDelimiter(FBasePath)+files[i]);
     end;
   if FWIndows.Count>0 then
     Writer.Windows:=FWIndows;
@@ -1252,39 +1257,39 @@ begin
          except
           on e:exception do
             begin
-               error(chmerror,'Error loading TOC file '+FTableOfContentsFileName);
+               error(chmerror,'Error loading TOC file '+FullFileName);
                freeandnil(ftoc); freeandnil(FTocStream);
              end;
            end;
        end
      else
-       error(chmerror,'Can''t find TOC file'+FTableOfContentsFileName);
+       error(chmerror,'Can''t find TOC file '+FullFileName);
    end;
-   FullFileName := IncludeTrailingPathDelimiter(ProjectDir()) + ExtractFileName(FIndexFileName);
-   if FileExists(FullFileName) then
-   begin
-     if fileexists(FIndexFileName) then
-       begin
-        FreeAndNil(FIndexStream);
-        FIndexStream:=TMemoryStream.Create;
-        try
-          FIndexStream.LoadFromFile(FullFileName);
-          FIndexStream.Position:=0;
-          FreeAndNil(FIndex);
-          FIndex:=TChmSiteMap.Create(stindex);
-          FIndex.loadfromfile(FullFileName);
-          Error(chmnote,'Index items:'+inttostr(findex.Items.count));
-        except
-          on e: Exception do
-            begin
-              error(chmerror,'Error loading index file '+FIndexFileName);
-              freeandnil(findex); freeandnil(findexstream);
-            end;
-          end;
-       end
-     else
-       error(chmerror,'Can''t find index file '+FIndexFileName);
-   end;
+   if FIndexFileName<>'' then
+     begin
+       FullFileName := IncludeTrailingPathDelimiter(ProjectDir()) + ExtractFileName(FIndexFileName);
+       if FileExists(FullFileName) then
+         begin
+            FreeAndNil(FIndexStream);
+            FIndexStream:=TMemoryStream.Create;
+            try
+              FIndexStream.LoadFromFile(FullFileName);
+              FIndexStream.Position:=0;
+              FreeAndNil(FIndex);
+              FIndex:=TChmSiteMap.Create(stindex);
+              FIndex.loadfromfile(FullFileName);
+              Error(chmnote,'Index items:'+inttostr(findex.Items.count));
+            except
+              on e: Exception do
+                begin
+                  error(chmerror,'Error loading index file '+FullFileName);
+                  freeandnil(findex); freeandnil(findexstream);
+                end;
+              end;
+           end
+         else
+           error(chmerror,'Can''t find index file '+FullFileName);
+     end;
 end;
 
 
