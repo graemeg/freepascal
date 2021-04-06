@@ -2380,6 +2380,7 @@ unit aoptx86;
 
                                  mov mem, %reg"
                             }
+                            AllocRegBetween(taicpu(hp1).oper[1]^.reg,p,hp1,usedregs);
                             taicpu(p).loadreg(1, taicpu(hp1).oper[1]^.reg);
                             DebugMsg(SPeepholeOptimization + 'MovMov2Mov 3 done',p);
                             RemoveInstruction(hp1);
