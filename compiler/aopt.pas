@@ -219,8 +219,9 @@ Unit aopt;
                             p := hp1;
                           End
                         { merge allocations/deallocations }
-                        else if assigned(findregalloc(tai_regalloc(p).reg, tai(p.next)))
-                          and getnextinstruction(p,hp1) and
+                        else if assigned(findregalloc(tai_regalloc(p).reg, tai(p.next))) and
+                          getnextinstruction(p,hp1) and
+                          (not(RegLoadedWithNewValue(tai_regalloc(p).Reg, hp1)) or InstructionLoadsFromReg(tai_regalloc(p).Reg, hp1)) and
                           { don't merge deallocations/allocation which mark a new use of register, this
                             enables more possibilities for the peephole optimizer }
                           not(tai_regalloc(p).keep) then
