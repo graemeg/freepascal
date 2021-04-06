@@ -6196,6 +6196,9 @@ Var
   FileStat: stat;
 {$endif UNIX}
 begin
+  { First delete file on Darwin OS to avoid codesign issues }
+  if (Defaults.SourceOS=Darwin) and FileExists(Dest) then
+    SysDeleteFile(Dest);
   Log(vlInfo,SInfoCopyingFile,[Src,Dest]);
   FIn:=TFileStream.Create(Src,fmopenRead or fmShareDenyNone);
   Try
