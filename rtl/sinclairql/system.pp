@@ -109,8 +109,50 @@ begin
   GetProcessID := mt_inf(nil, nil);
 end;
 
+var
+  CmdLine_len : word; external name '__CmdLine_len';
+  pCmdLine : pchar; external name '__pCmdLine';
 procedure SysInitParamsAndEnv;
+var
+  str_len, i : word;
+  c : char;
+  in_word : boolean;
+const
+  word_separators=[' ',#0];
 begin
+  str_len:=CmdLine_len;
+  argc:=0;
+  argv:=nil;
+  args:=pCmdLine;
+  if not assigned(args) then
+    exit;
+  { Parse command line }
+  { Compute argc imply replace spaces by #0 }
+  i:=0;
+  in_word:=false;
+  while (i < str_len) do
+    begin
+      c:=args[i];
+      if (not in_word) then
+        begin
+          if not(c in word_separators) then
+            begin
+              inc(argc);
+              argv[argc]:=@args[i];
+              in_word:=true;
+            end
+          else
+            begin
+              args[i]:=#0;
+            end;
+       end
+     else if (c in word_separators) then
+       begin
+         in_word:=false;
+         args[i]:=#0;
+       end;
+     inc(i);
+   end;    
 end;
 
 procedure randomize;
