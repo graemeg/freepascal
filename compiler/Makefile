@@ -352,7 +352,7 @@ override PACKAGE_VERSION=3.3.1
 unexport FPC_VERSION FPC_COMPILERINFO
 CYCLETARGETS=i386 powerpc sparc arm x86_64 powerpc64 m68k armeb mipsel mips avr jvm i8086 aarch64 sparc64 riscv32 riscv64 xtensa z80 wasm32
 ALLTARGETS=$(CYCLETARGETS)
-NO_NATIVE_COMPILER_OS_LIST=amstradcpc embedded freertos gba macosclassic msdos msxdos nds palmos symbian watcom wii win16 zxspectrum
+NO_NATIVE_COMPILER_OS_LIST=amstradcpc embedded freertos gba macosclassic msdos msxdos nds palmos sinclairql symbian watcom wii win16 zxspectrum
 NO_NATIVE_COMPILER_CPU_LIST=avr i8086 jvm z80 wasm32
 ifneq ($(CPU_SOURCE),$(CPU_TARGET))
 ifneq ($(findstring $(CPU_TARGET),$(NO_NATIVE_COMPILER_CPU_LIST)),)

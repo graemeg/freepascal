@@ -38,7 +38,7 @@ CYCLETARGETS=i386 powerpc sparc arm x86_64 powerpc64 m68k armeb mipsel mips avr 
 ALLTARGETS=$(CYCLETARGETS)
 
 # All OS targets that do not support native compiler
-NO_NATIVE_COMPILER_OS_LIST=amstradcpc embedded freertos gba macosclassic msdos msxdos nds palmos symbian watcom wii win16 zxspectrum
+NO_NATIVE_COMPILER_OS_LIST=amstradcpc embedded freertos gba macosclassic msdos msxdos nds palmos sinclairql symbian watcom wii win16 zxspectrum
 # All CPU targets that do not support native compiler
 NO_NATIVE_COMPILER_CPU_LIST=avr i8086 jvm z80 wasm32
 
