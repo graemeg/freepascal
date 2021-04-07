@@ -145,10 +145,7 @@ Implementation
     begin
       p := taicpu(hp);
       Result := false;
-      if not ((assigned(hp)) and (hp.typ = ait_instruction)) then
-        exit;
-
-      if Result then
+      if not(assigned(hp) and (hp.typ = ait_instruction) and (p.ops > 0)) then
         exit;
 
       case p.opcode of
