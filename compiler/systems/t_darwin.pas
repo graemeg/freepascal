@@ -557,9 +557,8 @@ implementation
         end;
 
       success:=DoExec(BinStr,CmdStr,true,false);
-      if (success and
-          (extdbgbinstr<>'') and
-          (cs_link_nolink in current_settings.globalswitches)) then
+      if success and
+         (extdbgbinstr<>'') then
         success:=DoExec(extdbgbinstr,extdbgcmdstr,false,false);
 
     { Remove ReponseFile }
