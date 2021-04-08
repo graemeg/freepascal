@@ -26,18 +26,13 @@ var
   binend: byte; external name '_etext';
   bssstart: byte; external name '_sbss';
   bssend: byte; external name '_ebss';
-  a4_at_entry : dword;
-  a5_at_entry : dword;
-  a6_at_entry : dword;
-  a7_at_entry : dword;
   nb_ChannelIds : word;
   pChannelIds : pdword;
-  pData : pointer;
   CmdLine_len : word; public name '__CmdLine_len';
   pCmdLine : pchar; public name '__pCmdLine';
 
 procedure PascalMain; external name 'PASCALMAIN';
-procedure PascalStart; forward;
+procedure PascalStart(commandLine: pword; channelData: pword); cdecl; forward;
 
 { this function must be the first in this unit which contains code }
 {$OPTIMIZATION OFF}
@@ -50,30 +45,6 @@ asm
     dc.l  $46504300   { Job name, just FPC for now }
 
 @start:
-    { According to QDOS:SMS reference manual }
-    { Section 3.2 v 4.4 (10/06/2018) }
-    move.l a4,d0
-    move.l d0,a4_at_entry
-    move.l a5,d0
-    move.l d0,a5_at_entry
-    move.l a6,d0
-    move.l d0,a6_at_entry
-    move.l a7,d0
-    move.l d0,a7_at_entry
-
-    move.w (a7),d0
-    move.w d0,nb_ChannelIds
-    add.l #2,d0
-    move.l d0,pChannelIds
-    move.l a6,d0
-    add.l  a4,d0
-    move.l d0,pData
-    move.l a6,d0
-    add.l  a5,d0
-    move.l d0,a0
-    move.w (a0),CmdLine_Len
-    add.l  #2,d0
-    move.l d0,pCmdLine
     { relocation code }
 
     { get our actual position in RAM }
@@ -109,6 +80,9 @@ asm
     bne @relocloop
 
 @noreloc:
+    pea (a7)
+    pea (a6,a5)
+
     jsr PascalStart
 end;
 
@@ -117,10 +91,15 @@ begin
   mt_frjob(-1, _ExitCode);
 end;
 
-procedure PascalStart;
+procedure PascalStart(commandLine: pword; channelData: pword); cdecl;
 begin
   { initialize .bss }
   FillChar(bssstart,PtrUInt(@bssend)-PtrUInt(@bssstart),#0);
+
+  nb_ChannelIDs:=channelData[0];
+  pChannelIDs:=@channelData[1];
+  CmdLine_Len:=commandLine[0];
+  pCmdLine:=@commandLine[1];
 
   PascalMain;
 
