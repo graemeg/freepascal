@@ -4450,10 +4450,10 @@ begin
       Message(option_w_unsupported_debug_format);
 
   { switch assembler if it's binary and we got -a on the cmdline }
-  if ((cs_asm_leave in init_settings.globalswitches) and
-     (af_outputbinary in target_asm.flags)) or
-     { if -s is passed, we shouldn't call the internal assembler }
-     (cs_asm_extern in init_settings.globalswitches) then
+  if (af_outputbinary in target_asm.flags) and
+     ((cs_asm_leave in init_settings.globalswitches) or
+      { if -s is passed, we shouldn't call the internal assembler }
+      (cs_asm_extern in init_settings.globalswitches)) then
    begin
      Message(option_switch_bin_to_src_assembler);
 {$ifdef llvm}
