@@ -514,7 +514,7 @@ interface
             asmbin : 'clang';
             asmcmd : '-x assembler -c -target $TRIPLET -o $OBJ $EXTRAOPT -x assembler $ASM';
             supported_targets : [system_x86_64_darwin,system_x86_64_iphonesim];
-            flags : [af_needar,af_smartlink_sections,af_supports_dwarf,af_no_stabs,af_llvm];
+            flags : [af_needar,af_smartlink_sections,af_supports_dwarf,af_no_stabs,af_llvm,af_supports_hlcfi];
             labelprefix : 'L';
             labelmaxlen : -1;
             comment : '# ';
@@ -593,7 +593,7 @@ interface
             asmbin : 'clang';
             asmcmd : '-x assembler -c -target $TRIPLET -o $OBJ $EXTRAOPT -x assembler $ASM';
             supported_targets : [system_i386_darwin,system_i386_iphonesim];
-            flags : [af_needar,af_smartlink_sections,af_supports_dwarf,af_no_stabs,af_llvm];
+            flags : [af_needar,af_smartlink_sections,af_supports_dwarf,af_no_stabs,af_llvm,af_supports_hlcfi];
             labelprefix : 'L';
             labelmaxlen : -1;
             comment : '# ';

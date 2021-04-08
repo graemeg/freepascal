@@ -78,6 +78,7 @@ interface
          ,af_no_stabs
          { assembler is part of the LLVM toolchain }
          ,af_llvm
+         ,af_supports_hlcfi
        );
 
        pasminfo = ^tasminfo;
