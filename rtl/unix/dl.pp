@@ -136,7 +136,7 @@ uses
     begin
       SimpleExtractFilename:=Copy(s,PosLastSlash(s)+1,Length(s)-PosLastSlash(s));
     end;
-      
+
 
   procedure UnixGetModuleByAddr(addr: pointer; var baseaddr: pointer; var filename: openstring);
     var
@@ -147,10 +147,6 @@ uses
       dladdr(addr, @dlinfo);
       baseaddr:=dlinfo.dli_fbase;
       filename:=String(dlinfo.dli_fname);
-    {$ifdef darwin}
-      if SimpleExtractFilename(filename)=SimpleExtractFilename(ParamStr(0)) then
-        baseaddr:=nil;
-    {$endif darwin}
     end;
 
 {$ifdef aix}

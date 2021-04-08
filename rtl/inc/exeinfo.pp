@@ -22,13 +22,15 @@
   might be seen as invalid by heaptrc unit CheckPointer function }
 
 {$checkpointer off}
-
+{$modeswitch out}
 unit exeinfo;
 interface
 
 {$S-}
 
 type
+  TExeProcessAddress = {$ifdef cpui8086}word{$else}ptruint{$endif};
+  TExeOffset = {$ifdef cpui8086}longword{$else}ptruint{$endif};
   TExeFile=record
     f : file;
     // cached filesize
@@ -36,14 +38,18 @@ type
     isopen    : boolean;
     nsects    : longint;
     sechdrofs,
-    secstrofs : {$ifdef cpui8086}longword{$else}ptruint{$endif};
-    processaddress : {$ifdef cpui8086}word{$else}ptruint{$endif};
+    secstrofs : TExeOffset;
+    processaddress : TExeProcessAddress;
 {$ifdef cpui8086}
     processsegment : word;
 {$endif cpui8086}
+{$ifdef darwin}
+    { total size of all headers }
+    loadcommandssize: ptruint;
+{$endif}
     FunctionRelative: boolean;
     // Offset of the binary image forming permanent offset to all retrieved values
-    ImgOffset: {$ifdef cpui8086}longword{$else}ptruint{$endif};
+    ImgOffset: TExeOffset;
     filename  : string;
     // Allocate static buffer for reading data
     buf       : array[0..4095] of byte;
@@ -65,6 +71,9 @@ procedure GetModuleByAddr(addr: pointer; var baseaddr: pointer; var filename: st
 implementation
 
 uses
+{$ifdef darwin}
+  ctypes, baseunix, dl,
+{$endif}
   strings{$ifdef windows},windows{$endif windows};
 
 {$if defined(unix) and not defined(beos) and not defined(haiku)}
@@ -1098,89 +1107,316 @@ end;
 ****************************************************************************}
 
 {$ifdef darwin}
+{$push}
+{$packrecords c}
 type
-  MachoFatHeader= packed record
-    magic: longint;
-    nfatarch: longint;
+  tmach_integer = cint;
+  tmach_cpu_type = tmach_integer;
+  tmach_cpu_subtype = tmach_integer;
+  tmach_cpu_threadtype = tmach_integer;
+
+
+  tmach_fat_header=record
+    magic: cuint32;
+    nfatarch: cuint32;
   end;
-  MachoHeader=packed record
-    magic: longword;
-    cpu_type_t: longint;
-    cpu_subtype_t: longint;
-    filetype: longint;
-    ncmds: longint;
-    sizeofcmds: longint;
-    flags: longint;
+
+  tmach_fat_arch=record
+    cputype: tmach_cpu_type;
+    cpusubtype: tmach_cpu_subtype;
+    offset: cuint32;
+    size: cuint32;
+    align: cuint32;
   end;
-  cmdblock=packed record
-    cmd: longint;
-    cmdsize: longint;
+  pmach_fat_arch = ^tmach_fat_arch;
+
+(* not yet supported (only needed for slices or combined slice size > 4GB; unrelated to 64 bit processes)
+  tmach_fat_arch_64=record
+    cputype: tmach_cpu_type;
+    cpusubtype: tmach_cpu_subtype;
+    offset: cuint64;
+    size: cuint64;
+    align: cuint32;
+    reserved: cuint32;
   end;
-  symbSeg=packed record
-    symoff :      longint;
-    nsyms  :      longint;
-    stroff :      longint;
-    strsize:      longint;
+*)
+
+  { note: always big endian }
+  tmach_header=record
+    magic: cuint32;
+    cputype: tmach_cpu_type;
+    cpusubtype: tmach_cpu_subtype;
+    filetype: cuint32;
+    ncmds: cuint32;
+    sizeofcmds: cuint32;
+    flags: cuint32;
+    {$IFDEF CPU64}
+    reserved: cuint32;
+    {$ENDIF}
   end;
-  tstab=packed record
-    strpos  : longint;
+  pmach_header = ^tmach_header;
+
+  tmach_load_command=record
+    cmd: cuint32;
+    cmdsize: cuint32;
+  end;
+  pmach_load_command=^tmach_load_command;
+
+  tmach_symtab_command=record
+    cmd    :      cuint32;
+    cmdsize:      cuint32;
+    symoff :      cuint32;
+    nsyms  :      cuint32;
+    stroff :      cuint32;
+    strsize:      cuint32;
+  end;
+  pmach_symtab_command = ^tmach_symtab_command;
+
+  tstab=record
+    strpos  : longword;
     ntype   : byte;
     nother  : byte;
     ndesc   : word;
-    nvalue  : dword;
+    nvalue  : longword;
   end;
+  pstab = ^tstab;
 
+  tmach_vm_prot = cint;
 
-function OpenMachO32PPC(var e:TExeFile):boolean;
+  tmach_segment_command = record
+    cmd     : cuint32;
+    cmdsize : cuint32;
+    segname : array [0..15] of Char;
+    vmaddr  : {$IFDEF CPU64}cuint64{$ELSE}cuint32{$ENDIF};
+    vmsize  : {$IFDEF CPU64}cuint64{$ELSE}cuint32{$ENDIF};
+    fileoff : {$IFDEF CPU64}cuint64{$ELSE}cuint32{$ENDIF};
+    filesize: {$IFDEF CPU64}cuint64{$ELSE}cuint32{$ENDIF};
+    maxprot : tmach_vm_prot;
+    initptot: tmach_vm_prot;
+    nsects  : cuint32;
+    flags   : cuint32;
+  end;
+  pmach_segment_command = ^tmach_segment_command;
+
+  tmach_uuid_command = record
+    cmd     : cuint32;
+    cmdsize : cuint32;
+    uuid    : array[0..15] of cuint8;
+  end;
+  pmach_uuid_command = ^tmach_uuid_command;
+
+  tmach_section = record
+    sectname : array [0..15] of Char;
+    segname  : array [0..15] of Char;
+    addr     : {$IFDEF CPU64}cuint64{$ELSE}cuint32{$ENDIF};
+    size     : {$IFDEF CPU64}cuint64{$ELSE}cuint32{$ENDIF};
+    offset   : cuint32;
+    align    : cuint32;
+    reloff   : cuint32;
+    nreloc   : cuint32;
+    flags    : cuint32;
+    reserved1: cuint32;
+    reserved2: cuint32;
+    {$IFDEF CPU64}
+    reserved3: cuint32;
+    {$ENDIF}
+  end;
+  pmach_section = ^tmach_section;
+
+  tmach_fat_archs = array[1..high(longint) div sizeof(tmach_header)] of tmach_fat_arch;
+  tmach_fat_header_archs = record
+    header: tmach_fat_header;
+    archs: tmach_fat_archs;
+  end;
+  pmach_fat_header_archs = ^tmach_fat_header_archs;
+
+{$pop}
+
+const
+  MACH_MH_EXECUTE = $02;
+
+  MACH_FAT_MAGIC = $cafebabe;
+// not yet supported: only for binaries with slices > 4GB, or total size > 4GB
+//  MACH_FAT_MAGIC_64 = $cafebabf;
+{$ifdef cpu32}
+  MACH_MAGIC = $feedface;
+{$else}
+  MACH_MAGIC = $feedfacf;
+{$endif}
+  MACH_CPU_ARCH_MASK = cuint32($ff000000);
+
+{$ifdef cpu32}
+  MACH_LC_SEGMENT = $01;
+{$else}
+  MACH_LC_SEGMENT = $19;
+{$endif}
+  MACH_LC_SYMTAB  = $02;
+  MACH_LC_UUID    = $1b;
+
+{ the in-memory mapping of the mach header of the main binary }
+function _NSGetMachExecuteHeader: pmach_header; cdecl; external 'c';
+
+function getpagesize: cint; cdecl; external 'c';
+
+function MapMachO(const h: THandle; offset, len: SizeUInt; out addr: pointer; out memoffset, mappedsize: SizeUInt): boolean;
 var
-   mh:MachoHeader;
+  pagesize: cint;
 begin
-  OpenMachO32PPC:= false;
+  pagesize:=getpagesize;
+  addr:=fpmmap(nil, len+(offset and (pagesize-1)), PROT_READ, MAP_PRIVATE, h, offset and not(pagesize-1));
+  if addr=MAP_FAILED then
+    begin
+      addr:=nil;
+      memoffset:=0;
+      mappedsize:=0;
+    end
+  else
+    begin
+       memoffset:=offset and (pagesize - 1);
+       mappedsize:=len+(offset and (pagesize-1));
+    end;
+end;
+
+procedure UnmapMachO(p: pointer; size: SizeUInt);
+begin
+  fpmunmap(p,size);
+end;
+
+function OpenMachO(var e:TExeFile):boolean;
+var
+  mh         : tmach_header;
+  processmh  : pmach_header;
+  cmd: pmach_load_command;
+  segmentcmd: pmach_segment_command;
+  mappedexe: pointer;
+  mappedoffset, mappedsize: SizeUInt;
+  i: cuint32;
+  foundpagezero: boolean;
+begin
+  OpenMachO:=false;
   E.FunctionRelative:=false;
   if e.size<sizeof(mh) then
     exit;
   blockread (e.f, mh, sizeof(mh));
+  case mh.magic of
+    MACH_FAT_MAGIC:
+      begin
+        { todo }
+        exit
+      end;
+    MACH_MAGIC:
+      begin
+        // check that at least the architecture matches (we should also check the subarch,
+        // but that's harder because of architecture-specific backward compatibility rules)
+        processmh:=_NSGetMachExecuteHeader;
+        if (mh.cputype and not(MACH_CPU_ARCH_MASK)) <> (processmh^.cputype and not(MACH_CPU_ARCH_MASK)) then
+          exit;
+      end;
+    else
+      exit;
+  end;
   e.sechdrofs:=filepos(e.f);
   e.nsects:=mh.ncmds;
-  OpenMachO32PPC:=true;
+  e.loadcommandssize:=mh.sizeofcmds;
+  if mh.filetype = MACH_MH_EXECUTE then
+    begin
+      foundpagezero:= false;
+      { make sure to unmap again on all exit paths }
+      if not MapMachO(filerec(e.f).handle, e.sechdrofs, e.loadcommandssize, mappedexe, mappedoffset, mappedsize) then
+        exit;
+      cmd:=pmach_load_command(mappedexe+mappedoffset);
+      for i:= 1 to e.nsects do
+        begin
+          case cmd^.cmd of
+            MACH_LC_SEGMENT:
+              begin
+                segmentcmd:=pmach_segment_command(cmd);
+                if segmentcmd^.segname='__PAGEZERO' then
+                  begin
+                    e.processaddress:=segmentcmd^.vmaddr+segmentcmd^.vmsize;
+                    OpenMachO:=true;
+                    break;
+                  end;
+              end;
+          end;
+          cmd:=pmach_load_command(pointer(cmd)+cmd^.cmdsize);
+        end;
+      UnmapMachO(mappedexe, mappedsize);
+    end
+  else
+    OpenMachO:=true;
 end;
 
 
-function FindSectionMachO32PPC(var e:TExeFile;const asecname:string;var secofs,seclen:longint):boolean;
+function FindSectionMachO(var e:TExeFile;const asecname:string;var secofs,seclen:longint):boolean;
 var
-   i: longint;
-   block:cmdblock;
-   symbolsSeg: symbSeg;
+   i, j: cuint32;
+   cmd: pmach_load_command;
+   symtabcmd: pmach_symtab_command;
+   segmentcmd: pmach_segment_command;
+   section: pmach_section;
+   mappedexe: pointer;
+   mappedoffset, mappedsize: SizeUInt;
+   dwarfsecname: string;
 begin
-  FindSectionMachO32PPC:=false;
-  seek(e.f,e.sechdrofs);
+  FindSectionMachO:=false;
+  { make sure to unmap again on all exit paths }
+  if not MapMachO(filerec(e.f).handle, e.sechdrofs, e.loadcommandssize, mappedexe, mappedoffset, mappedsize) then
+    exit;
+  cmd:=pmach_load_command(mappedexe+mappedoffset);
   for i:= 1 to e.nsects do
     begin
-      {$I-}
-      blockread (e.f, block, sizeof(block));
-      {$I+}
-      if IOResult <> 0 then
-        Exit;
-      if block.cmd = $2   then
-      begin
-          blockread (e.f, symbolsSeg, sizeof(symbolsSeg));
-          if asecname='.stab' then
-            begin
-              secofs:=symbolsSeg.symoff;
-              { the caller will divide again by sizeof(tstab) }
-              seclen:=symbolsSeg.nsyms*sizeof(tstab);
-              FindSectionMachO32PPC:=true;
-            end
-          else if asecname='.stabstr' then
-            begin
-              secofs:=symbolsSeg.stroff;
-              seclen:=symbolsSeg.strsize;
-              FindSectionMachO32PPC:=true;
-            end;
-          exit;
+      case cmd^.cmd of
+        MACH_LC_SEGMENT:
+          begin
+            segmentcmd:=pmach_segment_command(cmd);
+            if segmentcmd^.segname='__DWARF' then
+              begin
+                if asecname[1]='.' then
+                  dwarfsecname:='__'+copy(asecname,2,length(asecname))
+                else
+                  dwarfsecname:=asecname;
+                section:=pmach_section(pointer(segmentcmd)+sizeof(segmentcmd^));
+                for j:=1 to segmentcmd^.nsects do
+                  begin
+                    if section^.sectname = dwarfsecname then
+                      begin
+                        secofs:=section^.offset;
+                        seclen:=section^.size;
+                        FindSectionMachO:=true;
+                        UnmapMachO(mappedexe, mappedsize);
+                        exit;
+                      end;
+                    inc(section);
+                  end;
+              end;
+          end;
+        MACH_LC_SYMTAB:
+          begin
+            symtabcmd:=pmach_symtab_command(cmd);
+            if asecname='.stab' then
+              begin
+                secofs:=symtabcmd^.symoff;
+                { the caller will divide again by sizeof(tstab) }
+                seclen:=symtabcmd^.nsyms*sizeof(tstab);
+                FindSectionMachO:=true;
+              end
+            else if asecname='.stabstr' then
+              begin
+                secofs:=symtabcmd^.stroff;
+                seclen:=symtabcmd^.strsize;
+                FindSectionMachO:=true;
+              end;
+            if FindSectionMachO then
+              begin
+                UnmapMachO(mappedexe, mappedsize);
+                exit;
+              end;
+          end;
       end;
-      Seek(e.f, FilePos (e.f) + block.cmdsize - sizeof(block));
+      cmd:=pmach_load_command(pointer(cmd)+cmd^.cmdsize);
     end;
+  UnmapMachO(mappedexe, mappedsize);
 end;
 {$endif darwin}
 
@@ -1260,8 +1496,8 @@ const
      findproc : @FindSectionElf;
 {$endif ELF32 or ELF64}
 {$ifdef darwin}
-     openproc : @OpenMachO32PPC;
-     findproc : @FindSectionMachO32PPC;
+     openproc : @OpenMachO;
+     findproc : @FindSectionMachO;
 {$endif darwin}
 {$IFDEF EMX}
      openproc : @OpenEMXaout;
@@ -1351,7 +1587,7 @@ begin
   CheckDbgFile:=(dbgcrc=c);
 end;
 
-
+{$ifndef darwin}
 function ReadDebugLink(var e:TExeFile;var dbgfn:string):boolean;
 var
   dbglink : array[0..255] of char;
@@ -1395,6 +1631,71 @@ begin
         end;
     end;
 end;
+{$else}
+function ReadDebugLink(var e:TExeFile;var dbgfn:string):boolean;
+var
+   dsymexefile: TExeFile;
+   execmd, dsymcmd: pmach_load_command;
+   exeuuidcmd, dsymuuidcmd: pmach_uuid_command;
+   mappedexe, mappeddsym: pointer;
+   mappedexeoffset, mappedexesize, mappeddsymoffset, mappeddsymsize: SizeUInt;
+   i, j: cuint32;
+   filenamestartpos, b: byte;
+begin
+  ReadDebugLink:=false;
+  if not MapMachO(filerec(e.f).handle, e.sechdrofs, e.loadcommandssize, mappedexe, mappedexeoffset, mappedexesize) then
+    exit;
+  execmd:=pmach_load_command(mappedexe+mappedexeoffset);
+  for i:=1 to e.nsects do
+    begin
+      case execmd^.cmd of
+        MACH_LC_UUID:
+          begin
+            exeuuidcmd:=pmach_uuid_command(execmd);
+            filenamestartpos:=1;
+            for b:=1 to length(e.filename) do
+              begin
+                if e.filename[b] = '/' then
+                  filenamestartpos:=b+1;
+              end;
+            if not OpenExeFile(dsymexefile,e.filename+'.dSYM/Contents/Resources/DWARF/'+copy(e.filename,filenamestartpos,length(e.filename))) then
+              begin
+                UnmapMachO(mappedexe, mappedexesize);
+                exit;
+              end;
+            if not MapMachO(filerec(dsymexefile.f).handle, dsymexefile.sechdrofs, dsymexefile.loadcommandssize, mappeddsym, mappeddsymoffset, mappeddsymsize) then
+              begin
+                CloseExeFile(dsymexefile);
+                UnmapMachO(mappedexe, mappedexesize);
+                exit;
+              end;
+            dsymcmd:=pmach_load_command(mappeddsym+mappeddsymoffset);
+            for j:=1 to dsymexefile.nsects do
+              begin
+                case dsymcmd^.cmd of
+                  MACH_LC_UUID:
+                    begin
+                      dsymuuidcmd:=pmach_uuid_command(dsymcmd);
+                      if comparebyte(exeuuidcmd^.uuid, dsymuuidcmd^.uuid, sizeof(exeuuidcmd^.uuid)) = 0 then
+                        begin
+                          dbgfn:=dsymexefile.filename;
+                          ReadDebugLink:=true;
+                        end;
+                      break;
+                    end;
+                end;
+              end;
+            UnmapMachO(mappeddsym, mappeddsymsize);
+            CloseExeFile(dsymexefile);
+            UnmapMachO(mappedexe, mappedexesize);
+            exit;
+          end;
+      end;
+      execmd:=pmach_load_command(pointer(execmd)+execmd^.cmdsize);
+    end;
+  UnmapMachO(mappedexe, mappedexesize);
+end;
+{$endif}
 
 
 begin

@@ -268,10 +268,13 @@ getopts$(PPUEXT) : $(INC)/getopts.pp $(SYSTEMUNIT)$(PPUEXT)
 heaptrc$(PPUEXT) : $(INC)/heaptrc.pp $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) -Sg $(INC)/heaptrc.pp
 
-lineinfo$(PPUEXT) : $(INC)/lineinfo.pp $(SYSTEMUNIT)$(PPUEXT) strings$(PPUEXT) $(INC)/exeinfo.pp sysutils$(PPUEXT)
+exeinfo$(PPUEXT) : $(INC)/exeinfo.pp $(SYSTEMUNIT)$(PPUEXT) strings$(PPUEXT) ctypes$(PPUEXT) dl$(PPUEXT) baseunix$(PPUEXT)
 	$(COMPILER) $<
 
-lnfodwrf$(PPUEXT) : $(INC)/lnfodwrf.pp $(SYSTEMUNIT)$(PPUEXT) strings$(PPUEXT) $(INC)/exeinfo.pp lineinfo$(PPUEXT) sysutils$(PPUEXT)
+lineinfo$(PPUEXT) : $(INC)/lineinfo.pp $(SYSTEMUNIT)$(PPUEXT) strings$(PPUEXT) exeinfo$(PPUEXT) sysutils$(PPUEXT)
+	$(COMPILER) $<
+
+lnfodwrf$(PPUEXT) : $(INC)/lnfodwrf.pp $(SYSTEMUNIT)$(PPUEXT) strings$(PPUEXT) exeinfo$(PPUEXT) lineinfo$(PPUEXT) sysutils$(PPUEXT) baseunix$(PPUEXT) ctypes$(PPUEXT)
 	$(COMPILER) $<
 
 lnfogdb$(PPUEXT) : $(UNIXINC)/lnfogdb.pp $(SYSTEMUNIT)$(PPUEXT) ctypes$(PPUEXT) baseunix$(PPUEXT) unix$(PPUEXT)

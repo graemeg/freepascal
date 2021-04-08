@@ -267,6 +267,8 @@ type
 {$endif cpui8086}
 
 function OpenDwarf(addr : codepointer) : boolean;
+var
+  oldprocessaddress: TExeProcessAddress;
 begin
   // False by default
   OpenDwarf:=false;
@@ -308,9 +310,11 @@ begin
     exit;
   if ReadDebugLink(e,dbgfn) then
     begin
+      oldprocessaddress:=e.processaddress;
       CloseExeFile(e);
       if not OpenExeFile(e,dbgfn) then
         exit;
+      e.processaddress:=oldprocessaddress;
     end;
 
   // Find debug data section
