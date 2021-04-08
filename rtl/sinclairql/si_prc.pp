@@ -32,11 +32,10 @@ var
   pCmdLine : pchar; public name '__pCmdLine';
 
 procedure PascalMain; external name 'PASCALMAIN';
-procedure PascalStart(commandLine: pword; channelData: pword); cdecl; forward;
+procedure PascalStart(commandLine: pword; channelData: pword); cdecl; noreturn; forward;
 
 { this function must be the first in this unit which contains code }
-{$OPTIMIZATION OFF}
-function _FPC_proc_start: longint; cdecl; assembler; nostackframe; public name '_start';
+procedure _FPC_proc_start; cdecl; assembler; nostackframe; noreturn; public name '_start';
 asm
     bra   @start
     dc.l  $0
@@ -83,15 +82,15 @@ asm
     pea (a7)
     pea (a6,a5)
 
-    jsr PascalStart
+    bra PascalStart
 end;
 
-procedure _FPC_proc_halt(_ExitCode: longint); public name '_haltproc';
+procedure _FPC_proc_halt(_ExitCode: longint); noreturn; public name '_haltproc';
 begin
   mt_frjob(-1, _ExitCode);
 end;
 
-procedure PascalStart(commandLine: pword; channelData: pword); cdecl;
+procedure PascalStart(commandLine: pword; channelData: pword); cdecl; noreturn;
 begin
   { initialize .bss }
   FillChar(bssstart,PtrUInt(@bssend)-PtrUInt(@bssstart),#0);
@@ -102,8 +101,6 @@ begin
   pCmdLine:=@commandLine[1];
 
   PascalMain;
-
-  Halt; { this should never be reached }
 end;
 
 
