@@ -350,13 +350,27 @@ begin
  GetProcessID := SizeUInt (fpGetPID);
 end;
 
+function InternalPageSize: SizeUInt; inline;
+begin
+{$ifndef darwin}
+  InternalPageSize := 4096;
+{$else not darwin}
+  InternalPageSize := darwin_page_size;
+{$endif not darwin}
+end;
+
+function AlignedStackTop: Pointer;
+begin
+  AlignedStackTop:=Pointer((ptruint(sptr) + InternalPageSize - 1) and not(InternalPageSize - 1));
+end;
+
 function CheckInitialStkLen(stklen : SizeUInt) : SizeUInt;
 var
   stackpointer: ptruint;
 begin
-  stackpointer := (ptruint(sptr) + 4095) and not(4095);
+  stackpointer := ptruint(AlignedStackTop);
   if stklen > stackpointer then
-    stklen := stackpointer-4096;
+    stklen := stackpointer - InternalPageSize;
   result := stklen;
 end;
 
@@ -366,7 +380,7 @@ Begin
 {$endif darwin}
   IsConsole := TRUE;
   StackLength := CheckInitialStkLen(InitialStkLen);
-  StackBottom := Sptr - StackLength;
+  StackBottom := AlignedStackTop - StackLength;
 {$ifdef FPC_HAS_SETSYSNR_INC}
   { This procedure is needed for openbsd system which re-uses
     the same syscall numbers depending on OS version }
