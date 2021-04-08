@@ -1336,8 +1336,13 @@ implementation
           OP_NEG,
           OP_NOT:
             begin
-              list.concat(taicpu.op_reg_reg(TOpCG2AsmOpReg[op],dst,src));
-              maybeadjustresult(list,op,size,dst);
+              if (op=OP_NOT) and (size in [OS_8,OS_S8]) then
+                list.concat(taicpu.op_reg_reg_const(A_EOR,dst,src,255))
+              else
+                begin
+                  list.concat(taicpu.op_reg_reg(TOpCG2AsmOpReg[op],dst,src));
+                  maybeadjustresult(list,op,size,dst);
+                end;
             end
           else
             a_op_reg_reg_reg(list,op,size,src,dst,dst);
