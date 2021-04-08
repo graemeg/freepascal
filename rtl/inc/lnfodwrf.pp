@@ -896,7 +896,10 @@ begin
       end;
 
       { when we have found the address we need to return the previous
-        line because that contains the call instruction }
+        line because that contains the call instruction
+        Note that there may not be any call instruction, because this may
+        be the actual instruction that crashed, and it may be on the first
+        line of the function }
       if (state.segment > segment) or
          ((state.segment = segment) and
           (state.address >= addr)) then
@@ -918,10 +921,17 @@ begin
     opcode := ReadNext();
   end;
 
-  if (found) then begin
-    line := prev_line;
-    source := GetFullFilename(file_names, include_directories, prev_file);
-  end;
+  if (found) then
+    begin
+      { can happen if the crash happens on the first instruction with line info }
+      if prev_line = 0 then
+        begin
+          prev_line := state.line;
+          prev_file := state.file_id;
+        end;
+      line := prev_line;
+      source := GetFullFilename(file_names, include_directories, prev_file);
+    end;
 end;
 
 
