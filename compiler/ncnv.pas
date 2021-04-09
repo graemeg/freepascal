@@ -942,7 +942,7 @@ implementation
          {An attempt to convert the result of a floating point division
           (with the / operator) to an integer type will fail. Give a hint
           to use the div operator.}
-         if (node.nodetype=slashn) and (def.typ=orddef) then
+         if (node.nodetype=slashn) and (def.typ=orddef) and not(is_currency(def)) then
            cgmessage(type_h_use_div_for_int);
          {In expressions like int64:=longint+longint, an integer overflow could be avoided
           by simply converting the operands to int64 first. Give a hint to do this.}
