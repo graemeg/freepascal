@@ -19,4 +19,28 @@
 
 procedure Error2InOutRes(errno: longint);
 begin
+  { Convert QL error code to InOutRes error code. }
+  case errno of
+    ERR_NC : InOutRes := 1;    { Operation not complete }
+    ERR_NJ : InOutRes := 1;    { Not a (valid) job. }
+    ERR_OM : InOutRes := 203;  { Out of memory. }
+    ERR_OR : InOutRes := 201;  { Out of range. }
+    ERR_BO : InOutRes := 106;  { Buffer overflow. }
+    ERR_NO : InOutRes := 103;  { Channel not open. }
+    ERR_NF : InOutRes := 2;    { File or device not found. }
+    ERR_FX : InOutRes := 5;    { File already exists. }
+    ERR_IU : InOutRes := 5;    { File or device already in use. }
+    ERR_EF : InOutRes := 100;  { End of file. }
+    ERR_DF : InOutRes := 101;  { Drive full. }
+    ERR_BN : InOutRes := 15;   { Bad device. }
+    ERR_TE : InOutRes := 162;  { Transmission error. }
+    ERR_FF : InOutRes := 152;  { Format failed. }
+    ERR_BP : InOutRes := 218;  { Bad parameter. }
+    ERR_FE : InOutRes := 5;    { File error. }
+    ERR_EX : InOutRes := 106;  { Expression error. }
+    ERR_OV : InOutRes := 215;  { Arithmetic overflow. }
+    ERR_NI : InOutRes := 1;    { Not implemented. }
+    ERR_RO : InOutRes := 150;  { Read only. }
+    ERR_BL : InOutRes := 1;    { UNLIKELY! Bad line of Basic. }
+  end;
 end;
