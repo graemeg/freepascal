@@ -1075,8 +1075,9 @@ implementation
                       ((tcallparanode(tcallparanode(left).right).left.location.value-setbase) div bitsperop)*tcgsize2size[opsize]);
                     cg.a_op_const_ref(current_asmdata.CurrAsmList,cgop,opsize,l,tcallparanode(left).left.location.reference);
                   end;
+                LOC_CSUBSETREG,
                 LOC_CREGISTER :
-                  cg.a_op_const_reg(current_asmdata.CurrAsmList,cgop,tcallparanode(left).left.location.size,l,tcallparanode(left).left.location.register);
+                  hlcg.a_op_const_loc(current_asmdata.CurrAsmList,cgop,tcallparanode(left).left.resultdef,l,tcallparanode(left).left.location);
                 else
                   internalerror(200405022);
               end;
