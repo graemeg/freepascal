@@ -261,13 +261,13 @@ asm
 end;
 
 
-function fs_posab(chan: Tchanid; new_pos: dword):longint; assembler; nostackframe; public name '_fs_posab';
+function fs_posab(chan: Tchanid; new_pos: dword): longint; assembler; nostackframe; public name '_fs_posab';
 asm
   move.l d3,-(sp)
-  moveq #_FS_POSAB,d0
+  move.l chan,a0
   move.l new_pos,d1
   moveq #-1,d3
-  move.l chan,a0
+  moveq #_FS_POSAB,d0
   trap #3
   tst.l d0
   bne.s  @quit
@@ -279,10 +279,10 @@ end;
 function fs_posre(chan: Tchanid; new_pos: dword): longint; assembler; nostackframe; public name '_fs_posre';
 asm
   move.l d3,-(sp)
-  moveq #_FS_POSRE,d0
+  move.l chan,a0
   move.l new_pos,d1
   moveq #-1,d3
-  move.l chan,a0
+  moveq #_FS_POSRE,d0
   trap #3
   tst.l d0
   bne.s  @quit
@@ -294,10 +294,11 @@ end;
 function fs_headr(chan: Tchanid; buf: pointer; buf_size: word): longint; assembler; nostackframe; public name '_fs_headr';
 asm
   movem.l d2-d3,-(sp)
-  moveq #_FS_HEADR,d0
+  move.l buf,a1
+  move.l chan,a0
   move.l buf_size,d2
   moveq #-1,d3
-  move.l chan,a0
+  moveq #_FS_HEADR,d0
   trap #3
   tst.l d0
   bne.s  @quit
@@ -309,9 +310,9 @@ end;
 function fs_truncate(chan: Tchanid): longint; assembler; nostackframe; public name '_fs_truncate';
 asm
   move.l d3,-(sp)
-  moveq #_FS_TRUNCATE,d0
-  moveq #-1,d3
   move.l chan, a0
+  moveq #-1,d3
+  moveq #_FS_TRUNCATE,d0
   trap #3
   move.l (sp)+,d3
 end;
