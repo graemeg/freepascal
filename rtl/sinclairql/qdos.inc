@@ -98,6 +98,7 @@ end;
 const
   _IO_OPEN = $01;
   _IO_CLOSE = $02;
+  _IO_DELET = $04;
 
 function io_open_qlstr(name_qlstr: pointer; mode: longint): Tchanid; assembler; nostackframe; public name '_io_open_qlstr';
 asm
@@ -136,6 +137,32 @@ asm
   trap #2
 end;
 
+function io_delet_qlstr(name_qlstr: pointer): longint; assembler; nostackframe; public name '_io_delet_qlstr';
+asm
+  movem.l d2-d3,-(sp)
+  move.l name_qlstr,a0
+  moveq.l #-1,d1
+  moveq.l #_IO_DELET,d0
+  trap #2
+  tst.l d0
+@quit:
+  movem.l (sp)+,d2-d3
+end;
+
+function io_delet(name: pchar): Tchanid; public name '_io_delet';
+var
+  len: longint;
+  name_qlstr: array[0..63] of char;
+begin
+  len:=length(name);
+  if len > length(name_qlstr)-2 then
+    len:=length(name_qlstr)-2;
+
+  PWord(@name_qlstr)[0]:=len;
+  Move(name^,name_qlstr[2],len);
+
+  result:=io_delet_qlstr(@name_qlstr);
+end;
 
 const
   _IO_FBYTE = $01;
@@ -345,4 +372,16 @@ asm
   move.l a0,d0
 @quit:
   movem.l (sp)+,d2-d3/a2-a3
+end;
+
+const
+  _MT_RCLCK = $13;
+
+function mt_rclck: longint; assembler; nostackframe; public name '_mt_rclck';
+asm
+  move.l d2,-(sp)
+  moveq #_MT_RCLCK,d0
+  trap #1
+  move.l d1,d0
+  move.l (sp)+,d2
 end;

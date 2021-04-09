@@ -26,6 +26,7 @@ procedure mt_rechp(area: pointer); external name '_mt_rechp';
 function io_open_qlstr(name_qlstr: pointer; mode: longint): Tchanid; external name '_io_open_qlstr';
 function io_open(name: pchar; mode: longint): Tchanid; external name '_io_open';
 function io_close(chan: Tchanid): longint; external name '_io_close';
+function io_delet(name: pchar): longint; external name '_io_delet';
 
 function io_fbyte(chan: Tchanid; timeout: Ttimeout): longint; external name '_io_fbyte';
 function io_fline(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): longint; external name '_io_fline';
@@ -43,3 +44,5 @@ function sd_clear(chan: Tchanid; timeout: Ttimeout): longint; external name '_sd
 
 function ut_con(params: PWindowDef): Tchanid; external name '_ut_con';
 function ut_scr(params: PWindowDef): Tchanid; external name '_ut_scr';
+
+function mt_rclck: longint; external name '_mt_rclck';
