@@ -25,9 +25,10 @@ begin
   Error2InOutRes(io_close(handle));
 end;
 
-
+{ delete a file, given its name }
 procedure do_erase(p : pchar; pchangeable: boolean);
 begin
+  Error2InOutRes(io_delet(p));
 end;
 
 
@@ -68,7 +69,7 @@ var
 begin
   do_filepos := 0;
   res := fs_posre(handle, 0);
-  if res < 0 then
+  if (res < 0) and (res <> ERR_EF) then
     Error2InOutRes(res)
   else
     do_filepos := res;
@@ -80,14 +81,20 @@ var
   res: longint;
 begin
   res := fs_posab(handle, pos);
-  if res < 0 then
+  if (res < 0) and (res <> ERR_EF) then
     Error2InOutRes(res);
 end;
 
 
+{ The maximum length of a QL file is 2^31 - 64 bytes ($7FFFFFC0)
+  so the maximum offset is that, minus 1. ($7fffffBF) }
+
+const
+  MAX_QL_FILE_LENGTH = $7FFFFFBF;
+
 function do_seekend(handle: longint): longint;
 begin
-  do_seek(handle, -1);
+  do_seek(handle, MAX_QL_FILE_LENGTH);
   do_seekend := do_filepos(handle);
 end;
 
@@ -168,9 +175,7 @@ begin
   end;
 
   { rewrite (create a new file) }
-  { FIX ME: this will just create a new file, actual overwriting
-    seems to be a more complex endeavor... }
-  if (flags and $1000)<>0 then openMode:=Q_OPEN_NEW;
+  if (flags and $1000)<>0 then openMode:=Q_OPEN_OVER;
 
   res:=io_open(p,openMode);
 

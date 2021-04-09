@@ -24,6 +24,13 @@ end;
 
 procedure do_rmdir(const s : rawbytestring);
 begin
+  { Deleting a directory is as simple as deleting
+    a file. There must be no files in the directory
+    though. However, SMSQ seems to return zero for a file
+    or directory name that is not present. It should return
+    ERR_NF. (At least on RAM_/FLP_ or WIN_)
+  }
+  Error2InOutRes(io_delet(pchar(s)));
 end;
 
 
