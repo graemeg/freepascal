@@ -52,9 +52,12 @@ Implementation
     var
       p: taicpu;
     begin
-      p := taicpu(hp);
       Result := false;
-      if not(assigned(hp) and (hp.typ = ait_instruction) and (p.ops > 0)) then
+      if not(assigned(hp) and (hp.typ = ait_instruction)) then
+        exit;
+
+      p := taicpu(hp);
+      if not(p.ops > 0) then
         exit;
 
       case p.opcode of
