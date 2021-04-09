@@ -28,10 +28,12 @@ Interface
 
 {$i fpcdefs.inc}
 
-uses cpubase, aoptobj, aoptcpub, aopt, aasmtai,aasmdata, aasmcpu;
+uses cpubase, cgbase, aoptobj, aoptcpub, aopt, aasmtai,aasmdata, aasmcpu;
 
 Type
   TCpuAsmOptimizer = class(TAsmOptimizer)
+    function RegLoadedWithNewValue(reg : tregister; hp : tai) : boolean; override;
+
     { uses the same constructor as TAopObj }
     function PeepHoleOptPass1Cpu(var p: tai): boolean; override;
 
@@ -44,7 +46,49 @@ Type
 Implementation
 
   uses
-    cutils, verbose, cgbase, cgcpu, cgobj;
+    cutils, verbose, cgcpu, cgobj;
+
+  function TCpuAsmOptimizer.RegLoadedWithNewValue(reg: tregister; hp: tai): boolean;
+    var
+      p: taicpu;
+    begin
+      p := taicpu(hp);
+      Result := false;
+      if not(assigned(hp) and (hp.typ = ait_instruction) and (p.ops > 0)) then
+        exit;
+
+      case p.opcode of
+        A_CMP,
+        A_CMPI,
+        A_CMPL,
+        A_CMPLI:
+          begin
+            result:=reg=NR_CR;
+            exit;
+          end;
+        A_STB,
+        { the register forming the address is modified so no new value is loaded }
+        A_STBU,
+        A_STBUX,
+        A_STBX,
+        A_STH,
+        A_STHBRX,
+        A_STHU,
+        A_STHUX,
+        A_STHX,
+        A_STMW:
+          exit;
+        else
+          ;
+      end;
+      case p.oper[0]^.typ of
+        top_reg:
+          Result := (p.oper[0]^.reg = reg) ;
+        else
+          ;
+      end;
+    end;
+
 
   function TCpuAsmOptimizer.cmpi_mfcr_opt(p, next1, next2: taicpu): boolean;
     var
