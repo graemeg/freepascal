@@ -14,7 +14,7 @@ var
   iconvres: size_t;
 begin
   H := iconv_open(PChar(ToEncoding), PChar(FromEncoding));
-  if not assigned(H) then
+  if h=Iconv_t(-1) then
   begin
     Res := S;
     exit(-1);
@@ -48,7 +48,8 @@ begin
           Dst:=PChar(Res)+Offset;
           OutLen:=Length(Res)-Offset;
         end;
-       iconvres:=iconv(H, nil, nil, @Dst, @Outlen);
+       InLen=0;
+       iconvres:=iconv(H, nil, @InLen, @Dst, @Outlen);
        if iconvres = size_t(-1) then
          begin
            res:=s;
@@ -91,7 +92,8 @@ begin
         SetLength(Res, Length(Res)+InLen*2+5); // 5 is minimally one utf-8 char
         Dst:=PChar(Res)+Offset;
         OutLen:=Length(Res)-Offset;
-        iconv(H, nil, nil, @Dst, @Outlen);
+        InLen:=0;
+        iconv(H, nil, @InLen, @Dst, @Outlen);
       end;
    {$endif}
     // trim output buffer
@@ -101,7 +103,8 @@ begin
         SetLength(Res, Length(Res)+InLen*2+5); // 5 is minimally one utf-8 char
         Dst:=PChar(Res)+Offset;
         OutLen:=Length(Res)-Offset;
-        iconvres:=iconv(H, nil, nil, @Dst, @Outlen);
+        InLen:=0;
+        iconvres:=iconv(H, nil, @InLen, @Dst, @Outlen);
         setlength(Res,Length(Res) - Outlen);
     iconv_close(H);
   end;
