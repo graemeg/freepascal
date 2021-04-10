@@ -657,14 +657,16 @@ var
 begin
   Result:='';
   S:=PeerSubject;
-  P:=Pos(S,'/CN=');
+  P:=Pos('/CN=', S);
   if (P>0) then
     begin
     Delete(S,1,P+3);
     P:=Pos('/',S);
     if (P>0) then
-      Result:=Copy(S,1,P-1);
-    end;
+      Result:=Copy(S,1,P-1)
+    else
+      Result := S;
+    end
 end;
 
 function TSSL.PeerNameHash: cardinal;
