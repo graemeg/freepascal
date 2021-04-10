@@ -26,13 +26,10 @@ var
   binend: byte; external name '_etext';
   bssstart: byte; external name '_sbss';
   bssend: byte; external name '_ebss';
-  nb_ChannelIds : word;
-  pChannelIds : pdword;
-  CmdLine_len : word; public name '__CmdLine_len';
-  pCmdLine : pchar; public name '__pCmdLine';
+  jobStackDataPtr: pointer; public name '__job_stack_data_ptr';
 
 procedure PascalMain; external name 'PASCALMAIN';
-procedure PascalStart(commandLine: pword; channelData: pword); cdecl; noreturn; forward;
+procedure PascalStart(a7_on_entry: pointer); noreturn; forward;
 
 { this function must be the first in this unit which contains code }
 procedure _FPC_proc_start; cdecl; assembler; nostackframe; noreturn; public name '_start';
@@ -79,8 +76,7 @@ asm
     bne @relocloop
 
 @noreloc:
-    pea (a7)
-    pea (a6,a5)
+    move.l a7,a0
 
     bra PascalStart
 end;
@@ -90,15 +86,12 @@ begin
   mt_frjob(-1, _ExitCode);
 end;
 
-procedure PascalStart(commandLine: pword; channelData: pword); cdecl; noreturn;
+procedure PascalStart(a7_on_entry: pointer); noreturn;
 begin
   { initialize .bss }
   FillChar(bssstart,PtrUInt(@bssend)-PtrUInt(@bssstart),#0);
 
-  nb_ChannelIDs:=channelData[0];
-  pChannelIDs:=@channelData[1];
-  CmdLine_Len:=commandLine[0];
-  pCmdLine:=@commandLine[1];
+  jobStackDataPtr:=a7_on_entry;
 
   PascalMain;
 end;
