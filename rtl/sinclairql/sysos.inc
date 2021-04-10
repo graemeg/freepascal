@@ -16,6 +16,7 @@
  **********************************************************************}
 
 {$i qdos.inc}
+{$i sms.inc}
 
 procedure Error2InOutRes(errno: longint);
 begin

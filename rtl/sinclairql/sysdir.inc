@@ -18,7 +18,30 @@
                            Directory Handling
 *****************************************************************************}
 procedure do_mkdir(const s : rawbytestring);
+var
+  chanId: tchanid;
+  errCode: longint;
 begin
+  { The QL needs a open file handle on which to create a
+    directory. The file should be opened as a new file as
+    errors occur if the file exists when creating a new
+    directory when it's already there. }
+  chanId := io_open(PChar(s), Q_OPEN_OVER);
+  if chanId < 0 then
+    begin
+      Error2InOutRes(chanId); 
+      exit;
+    end;
+
+  { Convert the opened file to a directory. }
+  errCode := iof_mkdir(chanId);
+
+  { Close the file/directory. No errors occur. }
+  io_close(chanId);
+
+  { Check if the mkdir actually worked. }
+  if errCode < 0 then
+    Error2InOutRes(errCode);
 end;
 
 
