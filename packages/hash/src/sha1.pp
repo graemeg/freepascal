@@ -51,6 +51,8 @@ function SHA1Match(const Digest1, Digest2: TSHA1Digest): Boolean;
 
 implementation
 
+uses sysutils,sysconst;
+
 // inverts the bytes of (Count div 4) cardinals from source to target.
 procedure Invert(Source, Dest: Pointer; Count: PtrUInt);
 var
@@ -257,6 +259,11 @@ begin
   SHA1Final(Context, Result);
 end;
 
+procedure RaiseFileNotFoundException(const fn : String);
+begin
+  raise EFileNotFoundException.Create(SFileNotFound);
+end;
+
 function SHA1File(const Filename: String; const Bufsize: PtrUInt): TSHA1Digest;
 var
   F: File;
@@ -284,7 +291,9 @@ begin
     until Count < BufSize;
     FreeMem(Buf, BufSize);
     Close(F);
-  end;
+  end
+  else
+    RaiseFileNotFoundException(FileName);
 
   SHA1Final(Context, Result);
   FileMode := ofm;
