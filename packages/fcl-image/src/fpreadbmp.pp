@@ -124,15 +124,8 @@ end;
 
 { Counts how many bits are set }
 function TFPReaderBMP.CountBits(Value : byte) : shortint;
-var i,bits : shortint;
 begin
-  bits:=0;
-  for i:=0 to 7 do
-  begin
-    if (value mod 2)<>0 then inc(bits);
-    value:=value shr 1;
-  end;
-  Result:=bits;
+   Result:=PopCnt(Value);
 end;
 
 { If compression is bi_bitfields, there could be arbitrary masks for colors.
@@ -156,7 +149,7 @@ begin
     inc(tmp);
     Mask:= Mask shr 1;
   end;
-  tmp:=tmp-(8-CountBits(Mask and $FF));
+  tmp:=tmp-(8-popcnt(Mask and $FF));
   Result:=tmp;
 end;
 
