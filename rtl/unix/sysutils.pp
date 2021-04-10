@@ -55,6 +55,11 @@ uses
 {$DEFINE HAVECLOCKGETTIME}
 {$ENDIF}
 
+{$IF defined(DARWIN)}
+{$DEFINE HAS_ISFILENAMECASEPRESERVING}
+{$DEFINE HAS_ISFILENAMECASESENSITIVE}
+{$ENDIF}
+
 {$if defined(LINUX)}
   {$if sizeof(clong)<8}
     {$DEFINE USE_STATX}
@@ -1195,6 +1200,42 @@ begin
         Result:=fpgeterrno;
     end
 end;
+
+{$IF defined(DARWIN)}
+Function IsFileNameCaseSensitive(Const aFileName : RawByteString) : Boolean;
+var
+  res : clong;
+begin
+  res:=FpPathconf(PChar(aFileName),11 {_PC_CASE_SENSITIVE });
+  { fall back to default if path is not found }
+  if res<0 then
+    Result:=FileNameCaseSensitive
+  else
+     Result:=res<>0;
+end;
+
+Function IsFileNameCaseSensitive(Const aFileName : UnicodeString) : Boolean;
+begin
+  Result:=IsFileNameCaseSensitive(RawByteString(aFileName));
+end;
+
+Function IsFileNameCasePreserving(Const aFileName : RawByteString) : Boolean;
+var
+  res : clong;
+begin
+  res:=FpPathconf(PChar(aFileName),12 { _PC_CASE_PRESERVING });
+  if res<0 then
+    { fall back to default if path is not found }
+    Result:=FileNameCasePreserving
+  else
+     Result:=res<>0;
+end;
+
+Function IsFileNameCasePreserving(Const aFileName : UnicodeString) : Boolean;
+begin
+  Result:=IsFileNameCasePreserving(RawByteString(aFileName));
+end;
+{$ENDIF defined(DARWIN)}
 
 {****************************************************************************
                               Disk Functions

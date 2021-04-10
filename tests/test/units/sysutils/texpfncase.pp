@@ -116,6 +116,9 @@ begin
 {$IFDEF DEBUG}
  {$IFDEF FPC}
   WriteLn ('FileNameCaseSensitive = ', FileNameCaseSensitive);
+  WriteLn ('IsFileNameCaseSensitive('''+TempDir+''') = ', IsFileNameCaseSensitive(TempDir));
+  Writeln('Setting FileNameCaseSensitive to result of IsFileNameCaseSensitive('''+TempDir+''');');
+  FileNameCaseSensitive:=IsFileNameCaseSensitive(TempDir);
  {$ENDIF FPC}
   WriteLn ('TempDir = ', TempDir);
   WriteLn ('SetCurrentDir result = ', SetCurrentDir (TempDir));

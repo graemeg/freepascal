@@ -875,3 +875,28 @@ Function FileSetDateUTC (Const FileName : RawByteString;const FileDateTimeUTC : 
 begin
   Result:=FileSetDateUTC(UnicodeString(FileName),FileDateTimeUTC);
 end;
+
+{$IFNDEF HAS_ISFILENAMECASESENSITIVE}
+Function IsFileNameCaseSensitive(Const aFileName : RawByteString) : Boolean;
+begin
+  Result:=FileNameCaseSensitive;
+end;
+
+Function IsFileNameCaseSensitive(Const aFileName : UnicodeString) : Boolean;
+begin
+  Result:=FileNameCaseSensitive;
+end;
+{$ENDIF HAS_ISFILENAMECASESENSITIVE}
+
+{$IFNDEF HAS_ISFILENAMECASEPRESERVING}
+Function IsFileNameCasePreserving(Const aFileName : RawByteString) : Boolean;
+begin
+  Result:=FileNameCasePreserving;
+end;
+
+Function IsFileNameCasePreserving(Const aFileName : UnicodeString) : Boolean;
+begin
+  Result:=FileNameCasePreserving;
+end;
+{$ENDIF HAS_ISFILENAMECASEPRESERVING}
+

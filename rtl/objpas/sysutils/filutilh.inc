@@ -252,3 +252,9 @@ Function GetFileAsString(Const aFileName : RawByteString; aEncoding : TEncoding)
 Function GetFileAsString(Const aFileName : UnicodeString) : UnicodeString;
 Function GetFileAsString(Const aFileName : UnicodeString; aEncoding : TEncoding) : UnicodeString;
 
+Function IsFileNameCaseSensitive(Const aFileName : RawByteString) : Boolean;
+Function IsFileNameCaseSensitive(Const aFileName : UnicodeString) : Boolean;
+
+Function IsFileNameCasePreserving(Const aFileName : RawByteString) : Boolean;
+Function IsFileNameCasePreserving(Const aFileName : UnicodeString) : Boolean;
+
