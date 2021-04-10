@@ -175,6 +175,7 @@ const
   _FS_POSAB = $42;
   _FS_POSRE = $43;
   _FS_HEADR = $47;
+  _FS_RENAME = $4A;
   _FS_TRUNCATE = $4B;
 
 function io_fbyte(chan: Tchanid; timeout: Ttimeout): longint; assembler; nostackframe; public name '_io_fbyte';
@@ -325,6 +326,32 @@ asm
   move.l d1,d0
 @quit:
   movem.l (sp)+,d2-d3
+end;
+
+function fs_rename_qlstr(chan: Tchanid; new_name_as_qlstr: pointer): longint; assembler; nostackframe; public name '_fs_rename_qlstr';
+asm
+  move.l d3,-(sp)
+  move.l new_name_as_qlstr,a1
+  move.l chan,a0
+  moveq #-1,d3
+  moveq #_FS_RENAME,d0
+  trap #3
+  move.l (sp)+,d3
+end;
+
+function fs_rename(chan: Tchanid; new_name: pchar): longint; public name '_fs_rename';
+var
+  len: longint;
+  new_name_qlstr: array[0..63] of char;
+begin
+  len:=length(new_name);
+  if len > length(new_name_qlstr)-2 then
+    len:=length(new_name_qlstr)-2;
+
+  PWord(@new_name_qlstr)[0]:=len;
+  Move(new_name^,new_name_qlstr[2],len);
+
+  fs_rename:=fs_rename_qlstr(chan,@new_name_qlstr);
 end;
 
 function fs_truncate(chan: Tchanid): longint; assembler; nostackframe; public name '_fs_truncate';
