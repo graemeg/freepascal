@@ -80,6 +80,7 @@ type sigset_t = array[0..3] of Longint;
 
     psigcontext = ^sigcontextrec;
     PSigContextRec = ^SigContextRec;
+{$if (defined(CPUi386) or defined(CPUX86_64))}
     SigContextRec = record
        sc_mask      : sigset_t;          { signal mask to restore }
        sc_onstack   : longint;              { sigstack state to restore }
@@ -120,8 +121,14 @@ type sigset_t = array[0..3] of Longint;
        fpr_ex_sw    : cardinal;
        fpr_pad      : array[0..63] of char;
        end;
+{$endif def x86}
 
 
+{$ifdef CPUAARCH64}
+        SigContextRec = record
+            _dummy : cint;
+        end;
+{$endif cpuaarch64}
 
   Sigval = Record
             Case Boolean OF

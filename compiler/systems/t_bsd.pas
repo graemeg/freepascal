@@ -693,6 +693,11 @@ end;
 
 initialization
   RegisterLinker(ld_bsd,TLinkerBSD);
+{$ifdef aarch64}
+  RegisterImport(system_aarch64_freebsd,timportlibbsd);
+  RegisterExport(system_aarch64_freebsd,texportlibbsd);
+  RegisterTarget(system_aarch64_freebsd_info);
+{$endif aarch64}
 {$ifdef x86_64}
   RegisterImport(system_x86_64_dragonfly,timportlibbsd);
   RegisterExport(system_x86_64_dragonfly,texportlibbsd);

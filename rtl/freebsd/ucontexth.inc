@@ -20,6 +20,7 @@ type
   end;
   {$packrecords C}
 
+{$if (defined(CPUi386) or defined(CPUX86_64))}
   mcontext_t = record
     {*
      * The first 20 fields must match the definition of
@@ -53,7 +54,34 @@ type
     mc_fpstate: TMCFPStateArray;
     mc_spare2: array[0..7] of cInt;
   end;
+{$endif def x86}
 
+{$ifdef CPUAARCH64}
+  gpregs = record
+    gp_x: array[0..30] of cInt; { __register_t gp_x[30]; }
+    gp_lr: cInt;
+    gp_sp: cInt;
+    gp_elr: cInt;
+    gp_spsr: cuint32;
+    gp_pad: cInt;
+  end;
+
+  fpregs = record
+    fp_q: array[0..64] of cInt; { __uint128_t fp_q[32] }
+    fp_sr: cuint32;
+    fp_cr: cuint32;
+    fp_flags: cInt;
+    fp_pad: cInt;
+  end;
+
+  mcontext_t = record
+    mc_gpregs: gpregs;
+    mc_fpregs: fpregs;
+    mc_flags: cint32;
+    mc_pad: cint32;
+    mc_spare: array[0..8] of cInt;
+  end;
+{$endif cpuaarch64}
 
   pucontext_t = ^ucontext_t;
   ucontext_t = record  // required for kse threads

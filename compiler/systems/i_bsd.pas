@@ -33,6 +33,82 @@ unit i_bsd;
        systems;
 
     const
+       system_aarch64_freebsd_info : tsysteminfo =
+          (
+            system       : system_aarch64_freebsd;
+            name         : 'FreeBSD for aarch64';
+            shortname    : 'FreeBSD';
+            flags        : [tf_needs_symbol_size,
+                            tf_needs_symbol_type,
+                            tf_files_case_sensitive,
+                            tf_requires_proper_alignment,tf_safecall_exceptions,
+                            tf_smartlink_sections,tf_pic_uses_got,
+                            tf_has_winlike_resources
+{$ifdef llvm}
+                            ,tf_use_psabieh
+{$endif llvm}
+                            ,tf_supports_hidden_symbols
+                            ];
+            cpu          : cpu_aarch64;
+            unit_env     : 'BSDUNITS';
+            extradefines : 'UNIX;HASUNIX;BSD';
+            exeext       : '';
+            defext       : '.def';
+            scriptext    : '.sh';
+            smartext     : '.sl';
+            unitext      : '.ppu';
+            unitlibext   : '.ppl';
+            asmext       : '.s';
+            objext       : '.o';
+            resext       : '.res';
+            resobjext    : '.or';
+            sharedlibext : '.so';
+            staticlibext : '.a';
+            staticlibprefix : 'libp';
+            sharedlibprefix : 'lib';
+            sharedClibext : '.so';
+            staticClibext : '.a';
+            staticClibprefix : 'lib';
+            sharedClibprefix : 'lib';
+            importlibprefix : 'libimp';
+            importlibext : '.a';
+            Cprefix      : '';
+            newline      : #10;
+            dirsep       : '/';
+            assem        : as_gas;
+            assemextern  : as_gas;
+            link         : ld_none;
+            linkextern   : ld_bsd;
+            ar           : ar_gnu_ar;
+            res          : res_elf;
+            dbg          : dbg_dwarf2;            //dbg_stabs;
+            script       : script_unix;
+            endian       : endian_little;
+            alignment    :
+              (
+                procalign       : 8;
+                loopalign       : 4;
+                jumpalign       : 0;
+                jumpalignskipmax    : 0;
+                coalescealign   : 0;
+                coalescealignskipmax: 0;
+                constalignmin   : 0;
+                constalignmax   : 16;
+                varalignmin     : 0;
+                varalignmax     : 16;
+                localalignmin   : 4;
+                localalignmax   : 16;
+                recordalignmin  : 0;
+                recordalignmax  : 16;
+                maxCrecordalign : 16
+              );
+            first_parm_offset : 16;
+            stacksize    : 8*1024*1024;
+            stackalign   : 16;
+            abi          : abi_default;
+            llvmdatalayout : 'e-m:e-i8:8:32-i16:16:32-i64:64-i128:128-n32:64-S128'
+          );
+
        system_i386_freebsd_info : tsysteminfo =
           (
             system       : system_i386_FreeBSD;
@@ -726,6 +802,11 @@ unit i_bsd;
   implementation
 
 initialization
+{$ifdef cpuaarch64}
+  {$ifdef FreeBSD}
+     set_source_info(system_aarch64_freebsd_info);
+  {$endif FreeBSD}
+{$endif cpuaarch64}
 {$ifdef cpui386}
   {$ifdef FreeBSD}
      set_source_info(system_i386_FreeBSD_info);

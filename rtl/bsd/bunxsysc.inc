@@ -376,7 +376,7 @@ end;
 
 function __pipe_call(sysnr:TSysParam):TSysResult; {$ifdef cpui386}oldfpccall{$endif} external name 'FPC_DOSYS0';
 
-{$if defined(freebsd) or defined (dragonfly)}
+{$if (defined(freebsd) or defined (dragonfly)) and (defined(CPUi386) or defined(CPUX86_64))}
   {$define PIPE_RESULT_IN_EAX_AND_EDX}
 {$endif}
 Function FPpipe(var fildes : tfildes):cint;

@@ -123,7 +123,7 @@ interface
         { go32v2 }  ( true,  false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false,  false, false, false,  false,  false, false),
         { win32 }   ( true,  false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false,  false, false, false,  false,  false, false),
         { os2 }     ( true,  false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false,  false, false, false,  false,  false, false),
-        { freebsd } ( true,  false, false, false, true,  false, false, false, false, false, false, false, false, false,   false, false, false,  false, false, false,  false,  false, false),
+        { freebsd } ( true,  false, false, false, true,  false, false, false, false, false, false, false, false, false,   false, false, true,   false, false, false,  false,  false, false),
         { beos }    ( true,  false, false, false, false, false, false, false, false, false, false, false, false, false,   false, false, false,  false, false, false,  false,  false, false),
         { haiku }   ( true,  false, false, false, true,  false, false, false, false, false, false, false, false, false,   false, false, false,  false, false, false,  false,  false, false),
         { netbsd }  ( true,  true,  true,  true,  true,  true,  false, false, false, false, false, false, false, false,   false, false, false,  false, false, false,  false,  false, false),
