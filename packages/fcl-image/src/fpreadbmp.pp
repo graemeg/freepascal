@@ -149,7 +149,7 @@ begin
     inc(tmp);
     Mask:= Mask shr 1;
   end;
-  tmp:=tmp-(8-popcnt(Mask and $FF));
+  tmp:=tmp-(8-popcnt(byte(Mask and $FF)));
   Result:=tmp;
 end;
 
