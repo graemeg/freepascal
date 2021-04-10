@@ -24,12 +24,12 @@ const
 
 procedure mt_frjob(jobID: Tjobid; exitCode: longint); assembler; nostackframe; public name '_mt_frjob';
 asm
-  movem.l d2-d3,-(sp)
+  movem.l d2-d3/a2-a3,-(sp)
   move.l  exitCode,d3
   move.l  jobID,d1
   moveq   #_MT_FRJOB,d0
   trap    #1
-  movem.l (sp)+,d2-d3
+  movem.l (sp)+,d2-d3/a2-a3
 end;
 
 function mt_inf(sys_vars: ppchar; ver_ascii: plongint): Tjobid; assembler; nostackframe; public name '_mt_inf';
@@ -287,35 +287,28 @@ asm
   move.l (sp)+,d3
 end;
 
-
-function fs_posab(chan: Tchanid; new_pos: dword): longint; assembler; nostackframe; public name '_fs_posab';
+function fs_posab(chan: Tchanid; var new_pos: longint): longint; assembler; nostackframe; public name '_fs_posab';
 asm
-  move.l d3,-(sp)
+  movem.l d3/a0,-(sp) { a0 = new_pos }
+  move.l (a0),d1
   move.l chan,a0
-  move.l new_pos,d1
   moveq #-1,d3
   moveq #_FS_POSAB,d0
   trap #3
-  tst.l d0
-  bne.s  @quit
-  move.l d1,d0
-@quit:
-  move.l (sp)+,d3
+  movem.l (sp)+,d3/a0
+  move.l d1,(a0)
 end;
 
-function fs_posre(chan: Tchanid; new_pos: dword): longint; assembler; nostackframe; public name '_fs_posre';
+function fs_posre(chan: Tchanid; var new_pos: longint): longint; assembler; nostackframe; public name '_fs_posre';
 asm
-  move.l d3,-(sp)
+  movem.l d3/a0,-(sp) { a0 = new_pos }
+  move.l (a0),d1
   move.l chan,a0
-  move.l new_pos,d1
   moveq #-1,d3
   moveq #_FS_POSRE,d0
   trap #3
-  tst.l d0
-  bne.s  @quit
-  move.l d1,d0
-@quit:
-  move.l (sp)+,d3
+  movem.l (sp)+,d3/a0
+  move.l d1,(a0)
 end;
 
 function fs_headr(chan: Tchanid; buf: pointer; buf_size: word): longint; assembler; nostackframe; public name '_fs_headr';

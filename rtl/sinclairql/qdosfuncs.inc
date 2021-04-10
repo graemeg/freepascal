@@ -34,8 +34,8 @@ function io_fstrg(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): lo
 function io_sbyte(chan: Tchanid; timeout: Ttimeout; c: char): longint; external name '_io_sbyte';
 function io_sstrg(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): longint; external name '_io_sstrg';
 
-function fs_posab(chan: Tchanid; new_pos: dword): longint; external name '_fs_posab';
-function fs_posre(chan: Tchanid; new_pos: dword): longint; external name '_fs_posre';
+function fs_posab(chan: Tchanid; var new_pos: longint): longint; external name '_fs_posab';
+function fs_posre(chan: Tchanid; var new_pos: longint): longint; external name '_fs_posre';
 function fs_headr(chan: Tchanid; buf: pointer; buf_size: word): longint; external name '_fs_headr';
 function fs_truncate(chan: Tchanid): longint; external name '_fs_truncate';
 

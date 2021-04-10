@@ -56,6 +56,8 @@ var
 begin
   do_read := 0;
   res := io_fline(h, -1, addr, len);
+  if res = ERR_EF then
+    res := 0;
   if res < 0 then
     Error2InOutRes(res)
   else
@@ -66,13 +68,17 @@ end;
 function do_filepos(handle: longint): longint;
 var
   res: longint;
+  pos: longint;
 begin
   do_filepos := 0;
-  res := fs_posre(handle, 0);
-  if (res < 0) and (res <> ERR_EF) then
+  pos := 0;
+  res := fs_posre(handle, pos);
+  if res = ERR_EF then
+    res := 0;
+  if (res < 0) then
     Error2InOutRes(res)
   else
-    do_filepos := res;
+    do_filepos := pos;
 end;
 
 
@@ -81,7 +87,9 @@ var
   res: longint;
 begin
   res := fs_posab(handle, pos);
-  if (res < 0) and (res <> ERR_EF) then
+  if res = ERR_EF then
+    res := 0;
+  if (res < 0) then
     Error2InOutRes(res);
 end;
 
@@ -93,9 +101,19 @@ const
   MAX_QL_FILE_LENGTH = $7FFFFFBF;
 
 function do_seekend(handle: longint): longint;
+var
+  res: longint;
+  pos: longint;
 begin
-  do_seek(handle, MAX_QL_FILE_LENGTH);
-  do_seekend := do_filepos(handle);
+  do_seekend:=-1;
+  pos:=MAX_QL_FILE_LENGTH;
+  res:=fs_posab(handle, pos);
+  if res = ERR_EF then
+    res := 0;
+  if res < 0 then
+    Error2InOutRes(res)
+  else
+    do_seekend := pos;
 end;
 
 
