@@ -84,6 +84,7 @@ type
 { the functions declared as external here are implemented in the system unit. They're included
   here via externals, do avoid double implementation of assembler wrappers (KB) }
 
+procedure mt_frjob(jobID: Tjobid; exitCode: longint); external name '_mt_frjob';
 function mt_inf(sys_vars: ppchar; ver_ascii: plongint): Tjobid; external name '_mt_inf';
 
 procedure mt_dmode(s_mode: pword; d_type: pword); external name '_mt_dmode';
@@ -94,9 +95,18 @@ procedure mt_rechp(area: pointer); external name '_mt_rechp';
 function io_open_qlstr(name_qlstr: pointer; mode: longint): Tchanid; external name '_io_open_qlstr';
 function io_open(name: pchar; mode: longint): Tchanid; external name '_io_open';
 function io_close(chan: Tchanid): longint; external name '_io_close';
+function io_delet(name: pchar): longint; external name '_io_delet';
 
+function io_fbyte(chan: Tchanid; timeout: Ttimeout): longint; external name '_io_fbyte';
+function io_fline(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): longint; external name '_io_fline';
+function io_fstrg(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): longint; external name '_io_fstrg';
 function io_sbyte(chan: Tchanid; timeout: Ttimeout; c: char): longint; external name '_io_sbyte';
-function io_sstrg(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: smallint): smallint; external name '_io_sstrg';
+function io_sstrg(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): longint; external name '_io_sstrg';
+
+function fs_posab(chan: Tchanid; var new_pos: longint): longint; external name '_fs_posab';
+function fs_posre(chan: Tchanid; var new_pos: longint): longint; external name '_fs_posre';
+function fs_headr(chan: Tchanid; buf: pointer; buf_size: word): longint; external name '_fs_headr';
+function fs_truncate(chan: Tchanid): longint; external name '_fs_truncate';
 
 function sd_wdef(chan: Tchanid; timeout: Ttimeout; border_colour: byte; border_width: word; window: PQLRect): longint; external name '_sd_wdef'; 
 function sd_clear(chan: Tchanid; timeout: Ttimeout): longint; external name '_sd_clear';
@@ -104,6 +114,7 @@ function sd_clear(chan: Tchanid; timeout: Ttimeout): longint; external name '_sd
 function ut_con(params: PWindowDef): Tchanid; external name '_ut_con';
 function ut_scr(params: PWindowDef): Tchanid; external name '_ut_scr';
 
+function mt_rclck: longint; external name '_mt_rclck';
 
 procedure sd_point(chan: Tchanid; timeout: Ttimeout; x: Pqlfloat; y: Pqlfloat);
 procedure sd_point(chan: Tchanid; timeout: Ttimeout; x: double; y: double);
