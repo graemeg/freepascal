@@ -481,8 +481,6 @@ Var
 
 begin
   Result := GetData(Name, @Buffer, BufSize, RegDataType);
-  If not (RegDataType in [rdBinary, rdUnknown]) Then
-    Raise ERegistryException.CreateFmt(SInvalidRegType, [Name]);
 end;
 
 function TRegistry.ReadBinaryData(const Name: String; var Buffer;
