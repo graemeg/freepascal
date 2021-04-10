@@ -871,8 +871,14 @@ implementation
            end
          else
            begin
-             readprocdef.free;
-             writeprocdef.free;
+             if readprocdef.proctypeoption=potype_propgetter then
+               readprocdef.maybe_put_in_symtable_stack
+             else
+               readprocdef.free;
+             if writeprocdef.proctypeoption=potype_propsetter then
+               writeprocdef.maybe_put_in_symtable_stack
+             else
+               writeprocdef.free;
            end;
 
          result:=p;
