@@ -89,7 +89,7 @@ interface
     function  ErrorCount:longint;
     procedure SetErrorFlags(const s:string);
     procedure GenerateError;
-    procedure Internalerror(i:longint);{$ifndef VER2_6}noreturn;{$endif VER2_6}
+    procedure Internalerror(i:longint);noreturn;
     procedure Comment(l:longint;s:ansistring);
     function  MessageStr(w:longint):TMsgStr;
     procedure Message(w:longint;onqueue:tmsgqueueevent=nil);
@@ -583,7 +583,7 @@ implementation
       end;
 
 
-    procedure internalerror(i : longint);{$ifndef VER2_6}noreturn;{$endif VER2_6}
+    procedure internalerror(i : longint);noreturn;
       begin
         UpdateStatus;
         do_internalerror(i);

@@ -90,7 +90,7 @@ implementation
 { use a separate procedure here instead of calling internalerrorproc directly because
   - procedure variables cannot have a noreturn directive
   - having a procedure and a procedure variable with the same name in the interfaces of different units is confusing }
-procedure internalerror(i:longint);{$ifndef VER2_6}noreturn;{$endif VER2_6}
+procedure internalerror(i:longint);noreturn;
 
 begin
   internalerrorproc(i);
@@ -196,10 +196,6 @@ try_qword:
   result.overflow:=true;
 end;
 
-{ workaround for 2.6.x bug }
-{$ifdef VER2_6}
-    {$push} {$Q-}
-{$endif VER2_6}
 function sub_from(const a:Tconstexprint;b:qword):Tconstexprint;
 
 const abs_low_int64=qword(9223372036854775808);   {abs(low(int64)) -> overflow error}
@@ -244,10 +240,6 @@ try_qword:
 ov:
   result.overflow:=true;
 end;
-{ workaround for 2.6.x bug }
-{$ifdef VER2_6}
-    {$pop}
-{$endif VER2_6}
 
 operator + (const a,b:Tconstexprint):Tconstexprint;
 

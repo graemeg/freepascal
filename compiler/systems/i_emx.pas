@@ -112,12 +112,10 @@ unit i_emx;
 initialization
 {$ifdef CPUI386}
   {$ifdef EMX}
-    {$IFNDEF VER1_0}
       set_source_info(system_i386_emx_info);
       { OS/2 via EMX can be run under DOS as well }
       if (OS_Mode=osDOS) or (OS_Mode=osDPMI) then
         source_info.scriptext := '.bat';
-    {$ENDIF VER1_0}
   {$endif EMX}
 {$endif CPUI386}
 end.
