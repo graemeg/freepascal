@@ -36,6 +36,7 @@ interface
 
     tcpuprocinfo=class(tcgprocinfo)
     public
+      function calc_stackframe_size : longint;override;
       procedure setup_eh; override;
       procedure postprocess_code; override;
       procedure set_first_temp_offset;override;
@@ -76,6 +77,12 @@ implementation
 {*****************************************************************************
                            tcpuprocinfo
 *****************************************************************************}
+
+    function tcpuprocinfo.calc_stackframe_size: longint;
+      begin
+        { the stack frame in WebAssembly should always have a 16-byte alignment }
+        Result:=Align(inherited calc_stackframe_size,16);
+      end;
 
     procedure tcpuprocinfo.setup_eh;
       begin
