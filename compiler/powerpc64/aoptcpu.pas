@@ -27,10 +27,10 @@ interface
 
 {$I fpcdefs.inc}
 
-uses cpubase, aoptobj, aoptcpub, aopt;
+uses cpubase, aoptobj, aoptcpub, aopt, aoptppc;
 
 type
-  TCpuAsmOptimizer = class(TAsmOptimizer)
+  TCpuAsmOptimizer = class(TPPCAsmOptimizer)
     { uses the same constructor as TAopObj }
   end;
 
