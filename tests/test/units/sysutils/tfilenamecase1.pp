@@ -20,8 +20,16 @@ Begin
     end;
   if IsFileNameCasePreserving('tfilenamecase1.dat') then
     begin
-      if not(FileExists('Tfilenamecase1.dat')) then
-        halt(1);
+      if IsFileNameCaseSensitive('tfilenamecase1.dat') then
+        begin
+          if FileExists('Tfilenamecase1.dat') then
+            halt(1);
+        end
+      else
+        begin
+          if not(FileExists('Tfilenamecase1.dat')) then
+            halt(1);
+        end
     end;
 End.
 
