@@ -115,9 +115,6 @@ initialization
     {$IFNDEF EMX}
       set_source_info(system_i386_os2_info);
     {$ENDIF EMX}
-    {$IFDEF VER1_0}
-      set_source_info(system_i386_os2_info);
-    {$ENDIF VER1_0}
   {$endif os2}
 {$endif CPUI386}
 end.
