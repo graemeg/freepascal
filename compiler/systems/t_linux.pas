@@ -140,9 +140,14 @@ begin
 {$else}
 {$ifdef powerpc64}
       if target_info.abi<>abi_powerpc_elfv2 then
-        LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib64;=/usr/lib64;=/usr/X11R6/lib64',true)
+        LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/X11R6/lib64',true)
       else
-        LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib64;=/usr/lib/powerpc64le-linux-gnu;=/usr/X11R6/powerpc64le-linux-gnu',true);
+        LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib/powerpc64le-linux-gnu;=/usr/X11R6/powerpc64le-linux-gnu',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/usr/lib64',true);
+      { /lib64 should be the really first, so add it before everything else }
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib',true);
+      LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib64',true);
 {$else powerpc64}
       LibrarySearchPath.AddLibraryPath(sysrootpath,'=/lib;=/usr/lib;=/usr/X11R6/lib',true);
 {$endif powerpc64}
