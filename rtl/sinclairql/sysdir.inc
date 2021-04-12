@@ -34,7 +34,7 @@ begin
     end;
 
   { Convert the opened file to a directory. }
-  errCode := iof_mkdir(chanId);
+  errCode := iof_mkdr(chanId);
 
   { Close the file/directory. No errors occur. }
   io_close(chanId);

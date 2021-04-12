@@ -14,15 +14,15 @@
  **********************************************************************}
 
 const
-    _IOF_MKDIR = $4d;
+    _IOF_MKDR = $4d;
 
-function iof_mkdir(chan: Tchanid): longint; assembler; nostackframe; public name '_iof_mkdir';
+function iof_mkdr(chan: Tchanid): longint; assembler; nostackframe; public name '_iof_mkdr';
 asm
   move.l d3,-(sp)
   move.l chan,a0
   moveq.l #-1,d3
   moveq.l #0,d1
-  moveq.l #_IOF_MKDIR,d0
+  moveq.l #_IOF_MKDR,d0
   trap #3
   move.l (sp)+,d3
 end;

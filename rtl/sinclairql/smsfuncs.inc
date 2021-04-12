@@ -13,4 +13,4 @@
 
  **********************************************************************}
 
-function iof_mkdir(chan: Tchanid): longint; assembler; nostackframe; external name '_iof_mkdir';
+function iof_mkdr(chan: Tchanid): longint; external name '_iof_mkdr';
