@@ -10,7 +10,7 @@ loaders=$(LOADERS)
 units=$(SYSTEMUNIT) uuchar objpas iso7185 buildrtl cpall
 # extpas macpas
 implicitunits=si_prc \
-      ctypes rtlconsts \
+      ctypes rtlconsts strings \
       sortbase charset fpwidestring \
       cp1250 cp1251 cp1252 cp1253 cp1254 cp1255 cp1256 cp1257 cp1258 \
       cp437 cp646 cp737 cp775 cp850 cp852 cp855 cp856 cp857 cp860 cp861 cp862 \

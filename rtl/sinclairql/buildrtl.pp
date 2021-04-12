@@ -5,7 +5,7 @@ unit buildrtl;
     uses
       si_prc,
 
-      ctypes, {strings,}
+      ctypes, strings,
       rtlconsts, {sysconst,} {math,} {types,}
       {typinfo,} sortbase, {fgl,} {classes,}
       charset, {character,} {getopts,}
