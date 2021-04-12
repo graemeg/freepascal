@@ -63,7 +63,32 @@ end;
 destructor TFieldDef.Destroy;
 
 begin
-  Inherited destroy;
+  Inherited Destroy;
+end;
+
+function TFieldDef.AddChild: TFieldDef;
+begin
+  // Adds a new TFieldDef object to the ChildDefs array.
+end;
+
+function TFieldDef.GetChildDefs: TFieldDefs;
+begin
+
+end;
+
+procedure TFieldDef.SetChildDefs(AValue: TFieldDefs);
+begin
+
+end;
+
+function TFieldDef.HasChildDefs: Boolean;
+begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TFieldDef.HasChildDefs
+end;
+
+function TFieldDef.GetParentDef: TFieldDef;
+begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TFieldDef.ParentDef
 end;
 
 procedure TFieldDef.Assign(APersistent: TPersistent);
@@ -89,7 +114,7 @@ begin
     inherited Assign(APersistent);
 end;
 
-function TFieldDef.CreateField(AOwner: TComponent): TField;
+function TFieldDef.CreateField(AOwner: TComponent; ParentField: TObjectField = nil; const FieldName: string = ''; CreateChildren: Boolean = True): TField;
 
 var TheField : TFieldClass;
 
@@ -147,6 +172,11 @@ procedure TFieldDef.SetPrecision(const AValue: Longint);
 begin
   FPrecision := AValue;
   Changed(False);
+end;
+
+function TFieldDef.GetSize: Integer;
+begin
+  Result := FSize;
 end;
 
 procedure TFieldDef.SetSize(const AValue: Integer);
@@ -249,9 +279,11 @@ begin
   Result:=TFieldDef;
 end;
 
-constructor TFieldDefs.Create(ADataSet: TDataSet);
+constructor TFieldDefs.Create(AOwner: TPersistent);
+var ADataSet: TDataSet;
 begin
-  Inherited Create(ADataset, Owner, FieldDefClass);
+  ADataSet := AOwner as TDataSet;
+  Inherited Create(ADataset, AOwner, FieldDefClass);
 end;
 
 function TFieldDefs.Add(const AName: string; ADataType: TFieldType; ASize, APrecision: Integer;
@@ -1098,6 +1130,11 @@ const
   ValueToLookupMap: array[Boolean] of TFieldKind = (fkData, fkLookup);
 begin
   FieldKind := ValueToLookupMap[AValue];
+end;
+
+procedure TField.SetParentField(AField: TObjectField);
+begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TField.ParentField
 end;
 
 procedure TField.SetReadOnly(const AValue: Boolean);
@@ -3661,6 +3698,54 @@ end;
 procedure TVariantField.SetVarValue(const aValue: Variant);
 begin
   SetData(@aValue);
+end;
+
+{ TObjectField }
+
+function TObjectField.GetFieldCount: Integer;
+begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TObjectField.GetFieldCount
+end;
+
+function TObjectField.GetFields: TFields;
+begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TObjectField.GetFields
+  Result := FFieldFields;
+end;
+
+function TObjectField.GetFieldValue(AIndex: Integer): Variant;
+begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TObjectField.GetFieldValue
+end;
+
+procedure TObjectField.SetFieldValue(AIndex: Integer; const AValue: Variant);
+begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TObjectField.SetFieldValue
+end;
+
+procedure TObjectField.SetParentField(AField: TObjectField);
+begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TObjectField.SetParentField
+  inherited SetParentField(AField);
+end;
+
+function TObjectField.GetAsVariant: Variant;
+begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TObjectField.GetAsVariant
+end;
+
+procedure TObjectField.SetVarValue(const AValue: Variant);
+begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TObjectField.SetVarValue
+end;
+
+{ TArrayField }
+
+constructor TArrayField.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  SetDataType(ftArray);
+  Size := 10;
 end;
 
 { TFieldsEnumerator }

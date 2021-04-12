@@ -881,6 +881,12 @@ begin
   FFieldDefs.Assign(AFieldDefs);
 end;
 
+procedure TDataSet.SetSparseArrays(AValue: Boolean);
+begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TDataSet.SparseArrays
+  FSparseArrays := AValue;
+end;
+
 procedure TDataSet.DoInsertAppendRecord(const Values: array of const; DoAppend : boolean);
 var i : integer;
     ValuesSize : integer;
