@@ -43,7 +43,8 @@ unit cpunode;
        n68kset,
        n68kinl,
        n68kmat,
-       n68kcnv
+       n68kcnv,
+       n68kutil
        ;
 
 end.
