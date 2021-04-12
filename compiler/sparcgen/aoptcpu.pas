@@ -107,11 +107,11 @@ unit aoptcpu;
     var
       p: taicpu;
     begin
-      p:=taicpu(hp);
       result:=false;
       if not ((assigned(hp)) and (hp.typ=ait_instruction)) then
         exit;
 
+      p:=taicpu(hp);
       case p.opcode of
         { These instructions do not write into a register at all }
         A_NOP,
