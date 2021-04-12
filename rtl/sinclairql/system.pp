@@ -72,6 +72,7 @@ var
 
 function SetQLJobName(const s: string): longint;
 function GetQLJobName: string;
+function GetQLJobNamePtr: pointer;
 
 
 implementation
@@ -252,6 +253,14 @@ begin
     end;
 end;
 
+function GetQLJobNamePtr: pointer;
+begin
+  GetQLJobNamePtr:=nil;
+  if pword(@start_proc)[3] = $4afb then
+    begin
+      GetQLJobNamePtr:=@pword(@start_proc)[4];
+    end;
+end;
 
 {*****************************************************************************
                         System Dependent Entry code
