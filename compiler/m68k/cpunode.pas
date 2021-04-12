@@ -30,25 +30,20 @@ unit cpunode;
     uses
        { generic nodes }
        ncgbas,ncgld,ncgflw,ncgcnv,ncgmem,ncgcon,ncgcal,ncgset,ncginl,ncgmat,ncgadd,
+       { symtable }
+       symcpu,
+       aasmdef,
        { to be able to only parts of the generic code,
          the processor specific nodes must be included
          after the generic one (FK)
        }
-         n68kadd,
-         n68kcal,
-//       nppccon,
-//       nppcflw,
-         n68kmem,
-         n68kset,
-         n68kinl,
-//       nppcopt,
-       { this not really a node }
-//       nppcobj,
-         n68kmat,
-         n68kcnv,
-         { symtable }
-         symcpu,
-         aasmdef
-         ;
+       n68kadd,
+       n68kcal,
+       n68kmem,
+       n68kset,
+       n68kinl,
+       n68kmat,
+       n68kcnv
+       ;
 
 end.
