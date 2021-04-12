@@ -70,6 +70,9 @@ var
 
     {$endif defined(FPUSOFT)}
 
+function SetQLJobName(const s: string): longint;
+function GetQLJobName: string;
+
 
 implementation
 
@@ -190,6 +193,11 @@ begin
   randseed:=mt_rclck;
 end;
 
+
+{*****************************************************************************
+                      Platform specific custom calls
+*****************************************************************************}
+
 procedure PrintStr(ch: longint; const s: shortstring);
 begin
   io_sstrg(ch,-1,@s[1],ord(s[0]));
@@ -204,11 +212,53 @@ begin
 end;
 
 
+var
+  start_proc: byte; external name '_start'; 
+
+  { WARNING! if you change this value, make sure there's enough
+    buffer space for the job name in the startup code! }
+const
+  JOB_NAME_MAX_LEN = 48;
+
+function SetQLJobName(const s: string): longint;
+var
+  len: longint;
+begin
+  SetQLJobName:=-1;
+  if pword(@start_proc)[3] = $4afb then
+    begin
+      len:=length(s);
+      if len > JOB_NAME_MAX_LEN then
+        len:=JOB_NAME_MAX_LEN;
+      Move(s[1],pword(@start_proc)[5],len);
+      pword(@start_proc)[4]:=len;
+      SetQLJobName:=len;
+    end;
+end;
+
+function GetQLJobName: string;
+var
+  len: longint;
+begin
+  GetQLJobName:='';
+  if pword(@start_proc)[3] = $4afb then
+    begin
+      len:=pword(@start_proc)[4];
+      if len <= JOB_NAME_MAX_LEN then
+        begin
+          SetLength(GetQLJobName,len);
+          Move(pword(@start_proc)[5],GetQLJobName[1],len);
+        end;
+    end;
+end;
+
+
 {*****************************************************************************
                         System Dependent Entry code
 *****************************************************************************}
 var
   jobStackDataPtr: pointer; external name '__job_stack_data_ptr';
+  program_name: shortstring; external name '__fpc_program_name';
 
 { QL/QDOS specific startup }
 procedure SysInitQDOS;
@@ -219,6 +269,8 @@ begin
   QL_ChannelIDs:=@pword(jobStackDataPtr)[1];
   QL_CommandLineLen:=pword(@QL_ChannelIDs[QL_ChannelIDNum])[0];
   QL_CommandLine:=@pword(@QL_ChannelIDs[QL_ChannelIDNum])[1];
+
+  SetQLJobName(program_name);
 
   stdInputHandle:=io_open('con_',Q_OPEN);
   stdOutputHandle:=stdInputHandle;

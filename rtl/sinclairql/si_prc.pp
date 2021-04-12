@@ -37,8 +37,19 @@ asm
     bra   @start
     dc.l  $0
     dc.w  $4afb
-    dc.w  3
-    dc.l  $46504300   { Job name, just FPC for now }
+    dc.w  8
+    dc.l  $4650435f   { Job name buffer. FPC_PROG by default, can be overridden }
+    dc.l  $50524f47   { the startup code will inject the main program name here }
+    dc.l  $00000000   { user codes is free to use the SetQLJobName() function   }
+    dc.l  $00000000   { max. length: 48 characters }
+    dc.l  $00000000
+    dc.l  $00000000
+    dc.l  $00000000
+    dc.l  $00000000
+    dc.l  $00000000
+    dc.l  $00000000
+    dc.l  $00000000
+    dc.l  $00000000
 
 @start:
     { relocation code }
