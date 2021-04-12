@@ -30,6 +30,8 @@ begin
 
     T:=P.Targets.AddUnit('qdos.pas');
     T:=P.Targets.AddUnit('qlfloat.pas');
+    T:=P.Targets.AddUnit('qlutil.pas');
+    T:=P.Targets.AddUnit('sms.pas');
 
     P.ExamplePath.Add('examples');
     T:=P.Targets.AddExampleProgram('qlcube.pas');

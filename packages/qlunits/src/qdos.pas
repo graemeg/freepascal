@@ -106,7 +106,10 @@ function io_sstrg(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): lo
 function fs_posab(chan: Tchanid; var new_pos: longint): longint; external name '_fs_posab';
 function fs_posre(chan: Tchanid; var new_pos: longint): longint; external name '_fs_posre';
 function fs_headr(chan: Tchanid; buf: pointer; buf_size: word): longint; external name '_fs_headr';
+function fs_rename_qlstr(chan: Tchanid; new_name_as_qlstr: pointer): longint; external name '_fs_rename_qlstr';
+function fs_rename(chan: Tchanid; new_name: pchar): longint; external name '_fs_rename';
 function fs_truncate(chan: Tchanid): longint; external name '_fs_truncate';
+function fs_mkdir(chan: Tchanid): longint; external name '_iof_mkdr'; { SMS }
 
 function sd_wdef(chan: Tchanid; timeout: Ttimeout; border_colour: byte; border_width: word; window: PQLRect): longint; external name '_sd_wdef'; 
 function sd_clear(chan: Tchanid; timeout: Ttimeout): longint; external name '_sd_clear';
