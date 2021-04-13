@@ -302,14 +302,14 @@ procedure haltproc(e:longint); external name '_haltproc';
 
 procedure system_exit;
 const
-  anyKey: string = 'Press any key to exit';
+  anyKey: pchar = 'Press any key to exit';
 begin
   if assigned(args) then
     FreeMem(args);
   if assigned(argv) then
     FreeMem(argv);
 
-  io_sstrg(stdOutputHandle, -1, @anyKey[1], ord(anyKey[0]));
+  io_sstrg(stdOutputHandle, -1, anyKey, length(anykey));
   io_fbyte(stdInputHandle, -1);
 
   stdInputHandle:=UnusedHandle;
