@@ -2019,8 +2019,9 @@ begin
     end;
   Finally
     // Make sure there is a document in case of error
-    if (aResponse.ContentStream.Size=0) and Not ((aResponse.Code div 100)=2) then
-      IO.RESTOutput.CreateErrorContent(aResponse.Code,aResponse.CodeText);
+    // MVC: Disabled for the moment, we need more reliable detection of this. it adds error twice in case of exception.
+    // if (aResponse.ContentStream.Size=0) and Not ((aResponse.Code div 100)=2) then
+    //  IO.RESTOutput.CreateErrorContent(aResponse.Code,aResponse.CodeText);
     if Not ((IO.Operation in [roOptions,roHEAD]) or aResponse.ContentSent) then
       IO.RestOutput.FinalizeOutput;
     aResponse.ContentStream.Position:=0;
