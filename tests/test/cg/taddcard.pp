@@ -94,6 +94,10 @@ begin
  i:=i * 16;
  if i <> 160 then
     result := false;
+ i:=$10;
+ i:=i * $100010;
+ if i <> $1000100 then
+    result := false;
  j:=10000;
  i:=10000;
  i:=i * j;
