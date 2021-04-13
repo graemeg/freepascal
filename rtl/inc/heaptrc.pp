@@ -30,6 +30,8 @@ interface
   {$define windows}
 {$endif}
 
+{$Q-}
+{$R-}
 
 Procedure DumpHeap;
 Procedure DumpHeap(SkipIfNoLeaks : Boolean);
