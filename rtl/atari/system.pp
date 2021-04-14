@@ -76,6 +76,9 @@ var
 
   implementation
 
+    {$define FPC_SYSTEM_HAS_STACKTOP}
+    {$define FPC_SYSTEM_HAS_BACKTRACESTR}
+
     {$if defined(FPUSOFT)}
 
     {$define fpc_softfpu_implementation}
@@ -104,8 +107,6 @@ var
     {$endif FPC_ATARI_USE_TINYHEAP}
     {$i syspara.inc}
 
-  var
-    basepage: PPD; external name '__base';
 
 
   function GetProcessID:SizeUInt;
@@ -160,6 +161,8 @@ end;
 
 begin
   StackLength := CheckInitialStkLen (InitialStkLen);
+  StackBottom := StackTop - StackLength;
+  StackMargin := min(align(StackLength div 20,2),STACK_MARGIN_MAX);
 { Initialize ExitProc }
   ExitProc:=Nil;
 {$ifndef FPC_ATARI_USE_TINYHEAP}

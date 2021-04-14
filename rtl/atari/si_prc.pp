@@ -24,7 +24,7 @@ implementation
 var
   procdesc: PPD; public name '__base';
   tpasize: longint;
-  stacktop: pointer;
+  stacktop: pointer; public name '__stktop';
   stklen: longint; external name '__stklen';
 
 

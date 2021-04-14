@@ -42,3 +42,22 @@ begin
       end;
     end;
 end;
+
+var
+  stackpointer_on_entry: pointer; external name '__stktop';
+
+function StackTop: Pointer;
+begin
+  StackTop:=stackpointer_on_entry;
+end;
+
+var
+  basepage: PPD; external name '__base';
+
+function SysBackTraceStr (Addr: CodePointer): ShortString;
+begin
+  if (addr<basepage^.p_tbase) or (addr>pointer(basepage^.p_tbase+basepage^.p_tlen)) then
+    SysBackTraceStr:='  Addr $'+hexstr(addr)
+  else
+    SysBackTraceStr:='  Offs $'+hexstr(pointer(addr-basepage^.p_tbase));
+end;
