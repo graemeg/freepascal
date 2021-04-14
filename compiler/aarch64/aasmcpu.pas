@@ -1046,6 +1046,13 @@ implementation
                  { check for pre/post indexed in spilling_get_operation_type_ref }
                  result:=operand_read;
              end;
+           A_MOVK:
+             begin
+               if opnr=0 then
+                 result:=operand_readwrite
+               else
+                 result:=operand_read;
+             end;
 {$ifdef EXTDEBUG}
            { play save to avoid hard to find bugs, better fail at compile time }
            A_ADD,
@@ -1080,7 +1087,6 @@ implementation
            A_LSR,
            A_LSRV,
            A_MOV,
-           A_MOVK,
            A_MOVN,
            A_MOVZ,
            A_MSUB,
