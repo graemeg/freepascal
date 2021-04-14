@@ -6199,8 +6199,18 @@ Var
 {$endif UNIX}
 begin
   { First delete file on Darwin OS to avoid codesign issues }
-  if (Defaults.SourceOS=Darwin) and FileExists(Dest) then
-    SysDeleteFile(Dest);
+  if (Defaults.SourceOS=Darwin) then
+    begin
+      D:=IncludeTrailingPathDelimiter(Dest);
+      If DirectoryExists(D) then
+        begin
+          D:=D+ExtractFileName(Src);
+          if FileExists(D) then
+            SysDeleteFile(D);
+       end
+     else if FileExists(Dest) then
+       SysDeleteFile(Dest);
+    end;
   Log(vlInfo,SInfoCopyingFile,[Src,Dest]);
   FIn:=TFileStream.Create(Src,fmopenRead or fmShareDenyNone);
   Try
