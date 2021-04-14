@@ -1,7 +1,7 @@
 {
     Copyright (c) 1998-2002 by Florian Klaempfl
 
-    This unit implements the SPARC specific class for the register
+    This unit implements the AArch64 specific class for the register
     allocator
 
     This program is free software; you can redistribute it and/or modify
@@ -87,8 +87,8 @@ implementation
           begin
             helplist:=TAsmList.create;
 
-            if getregtype(tempreg)=R_INTREGISTER then
-              hreg:=tempreg
+            if (getregtype(tempreg)=R_INTREGISTER) then
+              hreg:=getregisterinline(helplist,[R_SUBWHOLE])
             else
               hreg:=cg.getaddressregister(helplist);
 
@@ -100,6 +100,8 @@ implementation
             else
               helpins:=spilling_create_store(tempreg,tmpref);
             helplist.concat(helpins);
+            if (getregtype(tempreg)=R_INTREGISTER) then
+              ungetregisterinline(helplist,hreg);
             add_cpu_interferences(helpins);
             list.insertlistafter(pos,helplist);
             helplist.free;
