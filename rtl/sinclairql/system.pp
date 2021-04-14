@@ -77,6 +77,9 @@ function GetQLJobNamePtr: pointer;
 
 implementation
 
+  {$define FPC_SYSTEM_HAS_STACKTOP}
+  {$define FPC_SYSTEM_HAS_BACKTRACESTR}
+
   {$if defined(FPUSOFT)}
 
   {$define fpc_softfpu_implementation}
@@ -266,7 +269,7 @@ end;
                         System Dependent Entry code
 *****************************************************************************}
 var
-  jobStackDataPtr: pointer; external name '__job_stack_data_ptr';
+  jobStackDataPtr: pointer; external name '__stackpointer_on_entry';
   program_name: shortstring; external name '__fpc_program_name';
 
 { QL/QDOS specific startup }
@@ -341,6 +344,8 @@ end;
 
 begin
   StackLength := CheckInitialStkLen (InitialStkLen);
+  StackBottom := StackTop - StackLength;
+  StackMargin := min(align(StackLength div 20,2),STACK_MARGIN_MAX);
 { Initialize ExitProc }
   ExitProc:=Nil;
   SysInitQDOS;

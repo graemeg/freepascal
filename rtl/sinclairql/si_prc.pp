@@ -26,7 +26,7 @@ var
   binend: byte; external name '_etext';
   bssstart: byte; external name '_sbss';
   bssend: byte; external name '_ebss';
-  jobStackDataPtr: pointer; public name '__job_stack_data_ptr';
+  stackpointer_on_entry: pointer; public name '__stackpointer_on_entry';
 
 procedure PascalMain; external name 'PASCALMAIN';
 procedure PascalStart(a7_on_entry: pointer); noreturn; forward;
@@ -102,7 +102,7 @@ begin
   { initialize .bss }
   FillChar(bssstart,PtrUInt(@bssend)-PtrUInt(@bssstart),#0);
 
-  jobStackDataPtr:=a7_on_entry;
+  stackpointer_on_entry:=a7_on_entry;
 
   PascalMain;
 end;
