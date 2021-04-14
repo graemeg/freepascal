@@ -28,7 +28,7 @@ procedure Move(const source;var dest;count:sizeint); [public, alias: 'FPC_MOVE']
 begin
   if count <= 0 then
     exit;
-  bcopy(source,dest,count);
+  bcopy(source,dest,size_t(count));
 end;
 {$endif not FPC_SYSTEM_HAS_MOVE}
 
@@ -41,7 +41,7 @@ Procedure FillChar(var x;count: sizeint;value:byte);{$ifdef SYSTEMINLINE}inline;
 begin
   if count <= 0 then
     exit;
-  memset(x,value,count);
+  memset(x,value,size_t(count));
 end;
 {$endif FPC_SYSTEM_HAS_FILLCHAR}
 
