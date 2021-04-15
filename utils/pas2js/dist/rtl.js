@@ -1042,7 +1042,8 @@ var rtl = {
 
   arrayInsert: function(item, arr, index){
     if (arr){
-      return arr.splice(index,0,item);
+      arr.splice(index,0,item);
+      return arr;
     } else {
       return [item];
     }
