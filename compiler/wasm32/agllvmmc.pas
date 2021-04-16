@@ -210,11 +210,11 @@ implementation
         if (exponent=(1 shl exponent_bits)-1) then
           begin
             if fraction=0 then
-              result:=result+'inf'
+              result:=result+'infinity'
             else
               begin
                 result:=result+'nan';
-                if fraction<>((int64(1) shl fraction_bits)-1) then
+                if fraction<>(int64(1) shl (fraction_bits-1)) then
                   result:=result+':0x'+HexStr(fraction,fraction_hexdigits);
               end;
           end
