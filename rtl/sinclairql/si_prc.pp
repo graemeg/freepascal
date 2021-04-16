@@ -79,12 +79,36 @@ asm
     move.l (a1)+,d7
     beq @noreloc
 
+{.$DEFINE PACKEDRELOCS}
+{$IFNDEF PACKEDRELOCS}
 @relocloop:
     { we read the offsets and relocate them }
     move.l (a1)+,d1
     add.l d0,(a0,d1)
     subq.l #1,d7
     bne @relocloop
+{$ELSE PACKEDRELOCS}
+    moveq #0,d2
+@relocloop:
+    { we read the offsets and relocate them }
+    moveq #0,d1
+    move.b (a1)+,d1
+    bne @addoffs
+    { if byte = 0, we have a long offset following }
+    move.b (a1)+,d1
+    lsl.w #8,d1
+    move.b (a1)+,d1
+    swap d1
+    move.b (a1)+,d1
+    lsl.w #8,d1
+    move.b (a1)+,d1
+    subq.l #4,d7
+@addoffs:
+    add.l d1,d2
+    add.l d0,(a0,d2)
+    subq.l #1,d7
+    bpl @relocloop
+{$ENDIF PACKEDRELOCS}
 
 @noreloc:
     move.l a7,a0
