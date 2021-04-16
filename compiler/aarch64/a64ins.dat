@@ -800,11 +800,6 @@
 
 ; Large System Extensions
 
-[CAS]
-
-[CASP]
-
-[LDADD]
 
 [LDCLR]
 
@@ -837,4 +832,26 @@
 [STUMIN]
 
 [SWP]
+
+[SWPA]
+
+[SWPAL]
+
+[SWPL]
+
+[LDADD]
+
+[LDADDA]
+
+[LDADDAL]
+
+[LDADDL]
+
+[CAS]
+
+[CASA]
+
+[CASAL]
+
+[CASL]
 

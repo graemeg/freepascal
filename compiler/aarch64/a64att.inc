@@ -398,9 +398,6 @@
 'ror',
 'neg',
 'ins',
-'cas',
-'casp',
-'ldadd',
 'ldclr',
 'ldeor',
 'ldset',
@@ -416,5 +413,16 @@
 'stsmin',
 'stumax',
 'stumin',
-'swp'
+'swp',
+'swpa',
+'swpal',
+'swpl',
+'ldadd',
+'ldadda',
+'ldaddal',
+'ldaddl',
+'cas',
+'casa',
+'casal',
+'casl'
 );

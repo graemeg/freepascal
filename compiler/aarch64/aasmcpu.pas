@@ -883,11 +883,26 @@ implementation
                     result:=sr_complex;
                 end;
               A_LDADD,
+              A_LDADDA,
+              A_LDADDAL,
+              A_LDADDL,
+
+              A_SWP,
+              A_SWPA,
+              A_SWPAL,
+              A_SWPL,
+
+              A_CAS,
+              A_CASA,
+              A_CASAL,
+              A_CASL,
+
               A_STADD,
               A_LDAR,
               A_LDAXR,
               A_LDXR,
               A_LDXP,
+
               A_STLR,
               A_STLXR,
               A_STLXP,

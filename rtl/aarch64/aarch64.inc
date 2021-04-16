@@ -326,22 +326,30 @@ function InterLockedExchange (var Target: longint;Source : longint) : longint; a
   { output: target in x0                          }
   { side-effect: target := source                 }
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    swp    w1,w0,[x0]
+  {$else CPUAARCH64_HAS_LSE}
   .LInterLockedXchgLoop:
     ldxr   w2,[x0]
     stxr   w3,w1,[x0]
     cbnz   w3,.LInterLockedXchgLoop
     mov    w0,w2
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
 function InterLockedExchangeAdd (var Target: longint;Source : longint) : longint; assembler; nostackframe;
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    ldadd    w1,w0,[x0]
+  {$else CPUAARCH64_HAS_LSE}
   .LInterLockedXchgAddLoop:
     ldxr   w2,[x0]
     add    w4,w2,w1
     stxr   w3,w4,[x0]
     cbnz   w3,.LInterLockedXchgAddLoop
     mov    w0,w2
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
@@ -350,6 +358,10 @@ function InterlockedCompareExchange(var Target: longint; NewValue: longint; Comp
   { output: value stored in target before entry of the function      }
   { side-effect: NewValue stored in target if (target = comparand)   }
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    cas    w2,w1,[x0]
+    mov    w0,w2
+  {$else CPUAARCH64_HAS_LSE}
   .LInterlockedCompareExchangeLoop:
     ldxr   w3,[x0]
     cmp    w3,w2
@@ -357,54 +369,79 @@ function InterlockedCompareExchange(var Target: longint; NewValue: longint; Comp
     stxr   w5,w4,[x0]
     cbnz   w5,.LInterlockedCompareExchangeLoop
     mov    w0,w3
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
 function InterLockedDecrement64 (var Target: int64) : int64; assembler; nostackframe;
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    mov    x1,#-1
+    ldadd  x1,x2,[x0]
+    add    x0,x2,x1
+  {$else CPUAARCH64_HAS_LSE}
   .LInterDecLockedLoop:
     ldxr   x1,[x0]
     sub    x1,x1,#1
     stxr   w2,x1,[x0]
     cbnz   w2,.LInterDecLockedLoop
     mov    x0,x1
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
 function InterLockedIncrement64 (var Target: int64) : int64; assembler; nostackframe;
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    mov    x1,#1
+    ldadd  x1,x2,[x0]
+    add    x0,x2,x1
+  {$else CPUAARCH64_HAS_LSE}
   .LInterIncLockedLoop:
     ldxr   x1,[x0]
     add    x1,x1,#1
     stxr   w2,x1,[x0]
     cbnz   w2,.LInterIncLockedLoop
     mov    x0,x1
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
 function InterLockedExchange64 (var Target: int64;Source : int64) : int64; assembler; nostackframe;
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    swp    x1,x0,[x0]
+  {$else CPUAARCH64_HAS_LSE}
   .LInterLockedXchgLoop:
     ldxr   x2,[x0]
     stxr   w3,x1,[x0]
     cbnz   w3,.LInterLockedXchgLoop
     mov    x0,x2
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
 function InterLockedExchangeAdd64 (var Target: int64;Source : int64) : int64; assembler; nostackframe;
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    ldadd    x1,x0,[x0]
+  {$else CPUAARCH64_HAS_LSE}
   .LInterLockedXchgAddLoop:
     ldxr   x2,[x0]
     add    x4,x2,x1
     stxr   w3,x4,[x0]
     cbnz   w3,.LInterLockedXchgAddLoop
     mov    x0,x2
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
 function InterLockedCompareExchange64(var Target: int64; NewValue, Comperand : int64): int64; assembler; nostackframe;
   asm
+  {$ifdef CPUAARCH64_HAS_LSE}
+    cas    x2,x1,[x0]
+    mov    x0,x2
+  {$else CPUAARCH64_HAS_LSE}
   .LInterlockedCompareExchangeLoop:
     ldxr   x3,[x0]
     cmp    x3,x2
@@ -412,6 +449,7 @@ function InterLockedCompareExchange64(var Target: int64; NewValue, Comperand : i
     stxr   w5,x4,[x0]
     cbnz   w5,.LInterlockedCompareExchangeLoop
     mov    x0,x3
+  {$endif CPUAARCH64_HAS_LSE}
   end;
 
 
