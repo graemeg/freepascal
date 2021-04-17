@@ -432,6 +432,7 @@ begin
         Move(FBuffer[VPosition], AString[Succ(VStrLength)], VLength);
       end;
       FillBuffer;
+      VPByte := @FBuffer[FBufferPosition];
       VPosition := FBufferPosition;
     end;
   until (FBufferPosition = FBufferRead) or (VPByte^ in [10, 13]);
