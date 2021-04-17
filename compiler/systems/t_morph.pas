@@ -98,6 +98,8 @@ begin
 
   { Open link.res file }
   LinkRes:=TLinkRes.Create(outputexedir+Info.ResName,true);
+  if UseVLink and (source_info.dirsep <> '/') then
+    LinkRes.fForceUseForwardSlash:=true;
 
   { Write path to search libraries }
   HPath:=TCmdStrListItem(current_module.locallibrarysearchpath.First);

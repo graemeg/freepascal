@@ -140,6 +140,8 @@ function TLinkerZXSpectrum.WriteResponseFile_Vlink: Boolean;
 
     { Open link.res file }
     LinkRes:=TLinkRes.Create(outputexedir+Info.ResName,true);
+    if (source_info.dirsep <> '/') then
+      LinkRes.fForceUseForwardSlash:=true;
 
     LinkRes.Add('INPUT (');
 

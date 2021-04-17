@@ -91,6 +91,7 @@ type
   TLinkRes = Class (TScript)
     section: string[30];
     fRealResponseFile: Boolean;
+    fForceUseForwardSlash: Boolean;
     constructor Create(const ScriptName : TCmdStr; RealResponseFile: Boolean);
     procedure Add(const s:TCmdStr);
     procedure AddFileName(const s:TCmdStr);
@@ -497,6 +498,7 @@ constructor TLinkRes.Create(const ScriptName: TCmdStr; RealResponseFile: Boolean
 begin
   inherited Create(ScriptName);
   fRealResponseFile:=RealResponseFile;
+  fForceUseForwardSlash:=false;
 end;
 
 procedure TLinkRes.Add(const s:TCmdStr);
@@ -506,6 +508,9 @@ begin
 end;
 
 procedure TLinkRes.AddFileName(const s:TCmdStr);
+var
+  ls: TCmdStr;
+  i: longint;
 begin
   if section<>'' then
    begin
@@ -514,23 +519,31 @@ begin
    end;
   if s<>'' then
    begin
+     ls:=s;
+     if fForceUseForwardSlash then
+       { Fix separator }
+       for i:=1 to length(ls) do
+         if (ls[i]=source_info.dirsep) then
+           ls[i]:='/';
      { GNU ld only supports double quotes in the response file. }
      if fRealResponseFile and
-        (s[1]='''') and
+        (ls[1]='''') and
         (((cs_link_on_target in current_settings.globalswitches) and
           (target_info.script=script_unix)) or
          (not(cs_link_on_target in current_settings.globalswitches) and
           (source_info.script=script_unix))) then
        inherited add(UnixRequoteWithDoubleQuotes(s))
-     else if not(s[1] in ['a'..'z','A'..'Z','/','\','.','"']) then
+     else if not(ls[1] in ['a'..'z','A'..'Z','/','\','.','"']) then
       begin
-        if cs_link_on_target in current_settings.globalswitches then
-          inherited Add('.'+target_info.DirSep+s)
+        if fForceUseForwardSlash then
+          inherited Add('./'+ls)
+        else if (cs_link_on_target in current_settings.globalswitches) then
+          inherited Add('.'+target_info.DirSep+ls)
         else
-          inherited Add('.'+source_info.DirSep+s);
+          inherited Add('.'+source_info.DirSep+ls);
       end
      else
-      inherited Add(s);
+      inherited Add(ls);
    end;
 end;
 
