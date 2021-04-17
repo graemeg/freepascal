@@ -34,6 +34,7 @@ interface
 
       twasminlinenode = class(tcginlinenode)
       private
+        procedure second_high; override;
         procedure second_memory_size;
         procedure second_memory_grow;
         procedure second_unreachable;
@@ -52,12 +53,71 @@ implementation
       aasmbase,aasmdata,aasmcpu,
       cgbase,cgutils,
       hlcgobj,hlcgcpu,
-      defutil,pass_2,
+      defutil,pass_2,verbose,
       symtype,symdef;
 
 {*****************************************************************************
                                twasminlinenode
 *****************************************************************************}
+
+    procedure twasminlinenode.second_high;
+      var
+        hightype: TWasmBasicType;
+      begin
+        secondpass(left);
+        if not(is_dynamic_array(left.resultdef)) then
+          Internalerror(2019122801);
+        { determine the WasmBasicType of the result }
+        if is_64bit(resultdef) then
+          hightype:=wbt_i64
+        else
+          hightype:=wbt_i32;
+        { length in dynamic arrays is at offset -sizeof(pint) }
+        thlcgwasm(hlcg).a_load_loc_stack(current_asmdata.CurrAsmList,left.resultdef,left.location);
+        { 64-bit pointer values need a <>0 comparison to produce a 32-bit int on the stack (0 or 1) for the 'if' instruction.
+          32-bit pointer values don't need it, because 'if' already expects and pops a 32-bit int and checks for <>0. }
+        if is_64bit(left.resultdef) then
+          begin
+            thlcgwasm(hlcg).a_load_const_stack(current_asmdata.CurrAsmList,left.resultdef,0,R_INTREGISTER);
+            thlcgwasm(hlcg).a_cmp_stack_stack(current_asmdata.CurrAsmList,left.resultdef,OC_NE);
+          end;
+        { if not nil }
+        current_asmdata.CurrAsmList.Concat(taicpu.op_functype(a_if,TWasmFuncType.Create([],[hightype])));
+        thlcgwasm(hlcg).incblock;
+        thlcgwasm(hlcg).decstack(current_asmdata.CurrAsmList,1);
+        { volatility of the dyn. array refers to the volatility of the
+          string pointer, not of the string data }
+        thlcgwasm(hlcg).a_load_loc_stack(current_asmdata.CurrAsmList,left.resultdef,left.location);
+        { length in dynamic arrays is at offset -ossinttype.size }
+        thlcgwasm(hlcg).a_op_const_stack(current_asmdata.CurrAsmList,OP_SUB,left.resultdef,ossinttype.size);
+        { load length }
+        if ossinttype.size=8 then
+          current_asmdata.CurrAsmList.Concat(taicpu.op_const(a_i64_load,0))
+        else
+          current_asmdata.CurrAsmList.Concat(taicpu.op_const(a_i32_load,0));
+        { else }
+        current_asmdata.CurrAsmList.Concat(taicpu.op_none(a_else));
+        thlcgwasm(hlcg).decstack(current_asmdata.CurrAsmList,1);
+        { high=-1 }
+        thlcgwasm(hlcg).a_load_const_stack(current_asmdata.CurrAsmList,resultdef,-1,R_INTREGISTER);
+        { endif }
+        current_asmdata.CurrAsmList.Concat(taicpu.op_none(a_end_if));
+        thlcgwasm(hlcg).decblock;
+
+        location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
+{$if not defined(cpu64bitalu) and not defined(cpuhighleveltarget)}
+        if location.size in [OS_64,OS_S64] then
+          begin
+            location.register64.reglo := cg.getintregister(current_asmdata.CurrAsmList,OS_32);
+            location.register64.reghi := cg.getintregister(current_asmdata.CurrAsmList,OS_32);
+          end
+        else
+{$endif}
+          location.register := hlcg.getintregister(current_asmdata.CurrAsmList,resultdef);
+
+        thlcgwasm(hlcg).a_load_stack_loc(current_asmdata.CurrAsmList,resultdef,location);
+      end;
+
 
     procedure twasminlinenode.second_memory_size;
       begin
