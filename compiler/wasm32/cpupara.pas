@@ -99,7 +99,7 @@ implementation
           recorddef :
             begin
               { Delphi stdcall passes records on the stack for call by value }
-              result:=(varspez=vs_const) or (def.size=0);
+              result:=(varspez=vs_const) or (not (def.size in [1,2,4,8]));
             end;
           arraydef :
             begin
