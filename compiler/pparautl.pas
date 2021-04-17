@@ -780,6 +780,7 @@ implementation
         forwardfound : boolean;
         symentry: TSymEntry;
         item : tlinkedlistitem;
+        tmpidx: Integer;
       begin
         forwardfound:=false;
 
@@ -1092,6 +1093,10 @@ implementation
 
                    { Release current procdef }
                    currpd.owner.deletedef(currpd);
+                   { this prevents a dangling pointer and use after free }
+                   tmpidx:=current_module.deflist.IndexOfItem(currpd,FromEnd);
+                   if tmpidx<>-1 then
+                     current_module.deflist[tmpidx]:=nil;
                    currpd:=fwpd;
                  end
                else
