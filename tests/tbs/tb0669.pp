@@ -15,15 +15,15 @@ end;
 function FpSysCall(sysnr:TSysParam):TSysResult;
 assembler; nostackframe;
 asm
-  {mov w8,w0
+  (* mov w8,w0
   svc #0
   tbz x0,#63,.Ldone
   str x30,[sp,#-16]!
-  neg x0,x0}
+  neg x0,x0 *)
   bl seterrno
-  {ldr x30,[sp],#16
+  (* ldr x30,[sp],#16
   mov x0,#-1
-.Ldone:}
+.Ldone: *)
 end;
 
 begin
