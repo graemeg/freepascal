@@ -70,31 +70,36 @@ implementation
   procedure TLLVMMachineCodePlaygroundAssembler.WriteImports;
     var
       i    : integer;
+      def  : tdef;
       proc : tprocdef;
       list : TAsmList;
       cur_unit: tused_unit;
     begin
       for i:=0 to current_module.deflist.Count-1 do
-        if assigned(current_module.deflist[i]) and (tdef(current_module.deflist[i]).typ=procdef) then
-          begin
-            proc := tprocdef(current_module.deflist[i]);
-            if (po_external in proc.procoptions) and assigned(proc.import_dll) then
-              begin
-                //WriteProcDef(proc);
-                list:=TAsmList.Create;
-                thlcgwasm(hlcg).g_procdef(list,proc);
-                WriteTree(list);
-                list.free;
-                writer.AsmWrite(#9'.import_module'#9);
-                writer.AsmWrite(proc.mangledname);
-                writer.AsmWrite(', ');
-                writer.AsmWriteLn(proc.import_dll^);
-                writer.AsmWrite(#9'.import_name'#9);
-                writer.AsmWrite(proc.mangledname);
-                writer.AsmWrite(', ');
-                writer.AsmWriteLn(proc.import_name^);
-              end;
-          end;
+        begin
+          def:=tdef(current_module.deflist[i]);
+          { since commit 48986 deflist might have NIL entries }
+          if assigned(def) and (def.typ=procdef) then
+            begin
+              proc := tprocdef(def);
+              if (po_external in proc.procoptions) and assigned(proc.import_dll) then
+                begin
+                  //WriteProcDef(proc);
+                  list:=TAsmList.Create;
+                  thlcgwasm(hlcg).g_procdef(list,proc);
+                  WriteTree(list);
+                  list.free;
+                  writer.AsmWrite(#9'.import_module'#9);
+                  writer.AsmWrite(proc.mangledname);
+                  writer.AsmWrite(', ');
+                  writer.AsmWriteLn(proc.import_dll^);
+                  writer.AsmWrite(#9'.import_name'#9);
+                  writer.AsmWrite(proc.mangledname);
+                  writer.AsmWrite(', ');
+                  writer.AsmWriteLn(proc.import_name^);
+                end;
+            end;
+         end;
       list:=TAsmList.Create;
       cur_unit:=tused_unit(usedunits.First);
       while assigned(cur_unit) do

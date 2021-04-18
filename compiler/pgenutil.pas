@@ -813,6 +813,9 @@ uses
             st : TSymtable;
             i : longint;
           begin
+            { since commit 48986 deflist might have NIL entries }
+            if not assigned(def) then
+              exit;
             case def.typ of
               procdef:
                 tprocdef(def).forwarddef:=false;

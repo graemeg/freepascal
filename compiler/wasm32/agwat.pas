@@ -957,14 +957,17 @@ implementation
     procedure TWabtTextAssembler.WriteImports;
       var
         i    : integer;
+        def  : tdef;
         proc : tprocdef;
         sym  : tsym;
         j    : integer;
         psym : tprocsym;
       begin
         for i:=0 to current_module.deflist.Count-1 do begin
-          if tdef(current_module.deflist[i]).typ = procdef then begin
-            proc := tprocdef(current_module.deflist[i]);
+          def:=tdef(current_module.deflist[i]);
+          { since commit 48986 deflist might have NIL entries }
+          if assigned(def) and (def.typ=procdef) then begin
+            proc := tprocdef(def);
             if (po_external in proc.procoptions) and assigned(proc.import_dll) then begin
               writer.AsmWrite(#9'(import "');
               writer.AsmWrite(proc.import_dll^);

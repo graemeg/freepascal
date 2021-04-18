@@ -618,6 +618,9 @@ implementation
         for i:=current_module.localsymtable.deflist.count-1 downto 0 do
           begin
             def:=tdef(current_module.localsymtable.deflist[i]);
+            { since commit 48986 deflist might have NIL entries }
+            if not assigned(def) then
+              continue;
             { this also frees def, as the defs are owned by the symtable }
             if not def.is_registered and
                not(df_not_registered_no_free in def.defoptions) then
