@@ -140,6 +140,7 @@ const
 
 
   suppported_targets_x_smallr = systems_linux + systems_solaris + systems_android
+                             + systems_openbsd
                              + [system_i386_haiku,system_x86_64_haiku]
                              + [system_i386_beos]
                              + [system_m68k_amiga];

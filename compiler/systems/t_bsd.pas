@@ -482,12 +482,14 @@ begin
      (tf_smartlink_sections in target_info.flags) then
     GCSectionsStr:='--gc-sections';
 
-   if(cs_profile in current_settings.moduleswitches) or
+  if (cs_profile in current_settings.moduleswitches) or
      ((Info.DynamicLinker<>'') and
       ((not SharedLibFiles.Empty) or
        (target_info.system in systems_openbsd))) then
-   DynLinkStr:='-dynamic-linker='+Info.DynamicLinker;
+    DynLinkStr:='-dynamic-linker='+Info.DynamicLinker;
 
+  if rlinkpath<>'' then
+    DynLinkStr:=DynLinkStr+' --rpath-link '+rlinkpath;
   if CShared Then
    begin
       DynLinKStr:=DynLinkStr+' --shared'
