@@ -21,7 +21,7 @@ uses
   MemCheck,
   {$ENDIF}
   Classes, consoletestrunner, tcconverter, TCModules, TCSrcMap,
-  TCFiler, TCUnitSearch, TCOptimizations, TCGenerics, TCPrecompile;
+  TCFiler, TCUnitSearch, TCOptimizations, TCGenerics, TCPrecompile, unit2;
 
 type
 

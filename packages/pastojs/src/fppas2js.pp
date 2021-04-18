@@ -2082,8 +2082,8 @@ type
     Procedure CreateInitSection(El: TPasModule; Src: TJSSourceElements; AContext: TConvertContext); virtual;
     Procedure AddHeaderStatement(JS: TJSElement; PosEl: TPasElement; aContext: TConvertContext); virtual;
     Procedure AddImplHeaderStatement(JS: TJSElement; PosEl: TPasElement; aContext: TConvertContext); virtual;
-    Procedure AddDelayedInits(El: TPasModule; Src: TJSSourceElements; AContext: TConvertContext); virtual;
-    Procedure AddDelaySpecializeInit(El: TPasGenericType; Src: TJSSourceElements; AContext: TConvertContext); virtual;
+    function AddDelayedInits(El: TPasModule; Src: TJSSourceElements; AContext: TConvertContext): boolean; virtual;
+    function CreateDelaySpecializeInit(El: TPasGenericType; AContext: TConvertContext): TJSElement; virtual;
     // enum and sets
     Function CreateReferencedSet(El: TPasElement; SetExpr: TJSElement): TJSElement; virtual;
     // record
@@ -8199,7 +8199,7 @@ Var
   ModuleName, ModVarName: String;
   IntfContext: TSectionContext;
   ImplVarSt: TJSVariableStatement;
-  HasImplUsesClause, ok, NeedRTLCheckVersion: Boolean;
+  HasImplCode, ok, NeedRTLCheckVersion: Boolean;
   Prg: TPasProgram;
   Lib: TPasLibrary;
   ImplFuncAssignSt: TJSSimpleAssignStatement;
@@ -8280,7 +8280,7 @@ begin
       Prg:=TPasProgram(El);
       if Assigned(Prg.ProgramSection) then
         AddToSourceElements(Src,ConvertDeclarations(Prg.ProgramSection,IntfContext));
-      AddDelayedInits(Prg,Src,IntfContext);
+      HasImplCode:=AddDelayedInits(Prg,Src,IntfContext);
       CreateInitSection(Prg,Src,IntfContext);
       end
     else if El is TPasLibrary then
@@ -8288,7 +8288,7 @@ begin
       Lib:=TPasLibrary(El);
       if Assigned(Lib.LibrarySection) then
         AddToSourceElements(Src,ConvertDeclarations(Lib.LibrarySection,IntfContext));
-      AddDelayedInits(Lib,Src,IntfContext);
+      HasImplCode:=AddDelayedInits(Lib,Src,IntfContext);
       CreateInitSection(Lib,Src,IntfContext);
       // ToDo: append exports
       end
@@ -8317,7 +8317,9 @@ begin
       // append initialization section
       CreateInitSection(El,Src,IntfSecCtx);
 
-      if TJSSourceElements(ImplFunc.AFunction.Body.A).Statements.Count=0 then
+      if TJSSourceElements(ImplFunc.AFunction.Body.A).Statements.Count>0 then
+        HasImplCode:=true
+      else
         begin
         // empty implementation
 
@@ -8325,18 +8327,14 @@ begin
         RemoveFromSourceElements(Src,ImplVarSt);
         // remove unneeded $mod.$implcode = function(){}
         RemoveFromSourceElements(Src,ImplFuncAssignSt);
-        HasImplUsesClause:=(El.ImplementationSection<>nil)
+        // keep impl uses section
+        HasImplCode:=(El.ImplementationSection<>nil)
                        and (length(El.ImplementationSection.UsesClause)>0);
-        end
-      else
-        begin
-        HasImplUsesClause:=true;
         end;
 
-      if HasImplUsesClause then
+      if HasImplCode then
         // add implementation uses list: [<implementation uses1>,<uses2>, ...]
         ArgArray.AddElement(CreateUsesList(El.ImplementationSection,AContext));
-
       end; // end unit
 
     if (ModScope<>nil) and (coStoreImplJS in Options) then
@@ -17846,13 +17844,18 @@ begin
   IntfSec.AddImplHeaderStatement(JS);
 end;
 
-procedure TPasToJSConverter.AddDelayedInits(El: TPasModule;
-  Src: TJSSourceElements; AContext: TConvertContext);
+function TPasToJSConverter.AddDelayedInits(El: TPasModule;
+  Src: TJSSourceElements; AContext: TConvertContext): boolean;
 var
   aResolver: TPas2JSResolver;
   Hub: TPas2JSResolverHub;
   i: Integer;
+  JS: TJSElement;
+  AssignSt: TJSSimpleAssignStatement;
+  FunDecl: TJSFunctionDeclarationStatement;
+  ImplSrc: TJSSourceElements;
 begin
+  Result:=false;
   aResolver:=AContext.Resolver;
   if aResolver=nil then exit;
   if El=nil then ;
@@ -17860,12 +17863,29 @@ begin
   {$IFDEF VerbosePas2JS}
   writeln('TPasToJSConverter.AddDelayedInits Hub.JSDelaySpecializeCount=',Hub.JSDelaySpecializeCount);
   {$ENDIF}
+  ImplSrc:=nil;
   for i:=0 to Hub.JSDelaySpecializeCount-1 do
-    AddDelaySpecializeInit(Hub.JSDelaySpecializes[i],Src,AContext);
+    begin
+    JS:=CreateDelaySpecializeInit(Hub.JSDelaySpecializes[i],AContext);
+    if JS=nil then continue;
+    if ImplSrc=nil then
+      begin
+      // create  "$mod.$implcode = function(){ }"
+      AssignSt:=TJSSimpleAssignStatement(CreateElement(TJSSimpleAssignStatement,El));
+      AddToSourceElements(Src,AssignSt);
+      AssignSt.LHS:=CreateMemberExpression([GetBIName(pbivnModule),GetBIName(pbivnImplCode)]);
+      // create function(){}
+      FunDecl:=CreateFunctionSt(El,true,true);
+      AssignSt.Expr:=FunDecl;
+      ImplSrc:=TJSSourceElements(FunDecl.AFunction.Body.A);
+      end;
+    AddToSourceElements(ImplSrc,JS);
+    Result:=true;
+    end;
 end;
 
-procedure TPasToJSConverter.AddDelaySpecializeInit(El: TPasGenericType;
-  Src: TJSSourceElements; AContext: TConvertContext);
+function TPasToJSConverter.CreateDelaySpecializeInit(El: TPasGenericType;
+  AContext: TConvertContext): TJSElement;
 var
   C: TClass;
   Path: String;
@@ -17876,6 +17896,7 @@ var
   ElTypeHi, ElTypeLo: TPasType;
   aResolver: TPas2JSResolver;
 begin
+  Result:=nil;
   if not IsElementUsed(El) then exit;
   if not AContext.Resolver.IsFullySpecialized(El) then
     RaiseNotSupported(El,AContext,20201202145045,'not fully specialized, probably a bug in the analyzer');
@@ -17889,7 +17910,7 @@ begin
     Path:=CreateReferencePath(El,AContext,rpkPathAndName)+'.'+GetBIName(pbifnClassInitSpecialize);
     Call:=CreateCallExpression(El);
     Call.Expr:=CreatePrimitiveDotExpr(Path,El);
-    AddToSourceElements(Src,Call);
+    Result:=Call;
     end
   else if (C=TPasProcedureType) or (C=TPasFunctionType) then
     begin
@@ -17901,7 +17922,7 @@ begin
     DotExpr.Name:=TJSString(GetBIName(pbivnRTTIProc_InitSpec));
     Call:=CreateCallExpression(El);
     Call.Expr:=DotExpr;
-    AddToSourceElements(Src,Call);
+    Result:=Call;
     end
   else if (C=TPasArrayType) then
     begin
@@ -17928,7 +17949,7 @@ begin
     AssignSt.LHS:=CreateDotNameExpr(El,CreateTypeInfoRef(El,AContext,El),
                                    TJSString(GetBIName(pbivnRTTIArray_ElType)));
     AssignSt.Expr:=CreateTypeInfoRef(ElTypeHi,AContext,El);
-    AddToSourceElements(Src,AssignSt);
+    Result:=AssignSt;
     end
   else
     RaiseNotSupported(El,AContext,20200831115251);
