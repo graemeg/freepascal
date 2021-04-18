@@ -1959,7 +1959,8 @@ var
   pt : tnode;
 {$endif WITHDMT}
 begin
-  if (not assigned(pd.owner.defowner) or
+  if assigned(pd.owner) and
+     (not assigned(pd.owner.defowner) or
       not is_java_class_or_interface(tdef(pd.owner.defowner))) and
      (po_external in pd.procoptions) then
     Message2(parser_e_proc_dir_conflict,'EXTERNAL','"VIRTUAL"');
