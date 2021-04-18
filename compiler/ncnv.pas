@@ -2948,6 +2948,11 @@ implementation
                 gotsint:=true;
                 result:=docheckremoveinttypeconvs(tunarynode(n).left);
               end;
+            shrn:
+              begin
+                result:=wasoriginallysmallerint(tbinarynode(n).left) and
+                  docheckremoveinttypeconvs(tbinarynode(n).right);
+              end;
             notn:
               result:=docheckremoveinttypeconvs(tunarynode(n).left);
             addn,muln,divn,modn,andn,shln:
@@ -2981,15 +2986,26 @@ implementation
 
 
     { remove int type conversions and set the result to the given type }
-    procedure doremoveinttypeconvs(var n: tnode; todef: tdef; forceunsigned: boolean; signedtype,unsignedtype : tdef);
+    procedure doremoveinttypeconvs(level : dword;var n: tnode; todef: tdef; forceunsigned: boolean; signedtype,unsignedtype : tdef);
       var
         newblock: tblocknode;
         newstatements: tstatementnode;
         originaldivtree: tnode;
         tempnode: ttempcreatenode;
       begin
+        { we may not recurse into shr nodes:
+
+          dword1:=dword1+((dword2+dword3) shr 2);
+
+          while we can remove an extension on the addition, we cannot remove it from the shr
+        }
+        if (n.nodetype=shrn) and (level<>0) then
+          begin
+            inserttypeconv_internal(n,todef);
+            exit;
+          end;
         case n.nodetype of
-          subn,addn,muln,divn,modn,xorn,andn,orn,shln:
+          subn,addn,muln,divn,modn,xorn,andn,orn,shln,shrn:
             begin
               exclude(n.flags,nf_internal);
               if not forceunsigned and
@@ -2998,8 +3014,8 @@ implementation
                   originaldivtree:=nil;
                   if n.nodetype in [divn,modn] then
                     originaldivtree:=n.getcopy;
-                  doremoveinttypeconvs(tbinarynode(n).left,signedtype,false,signedtype,unsignedtype);
-                  doremoveinttypeconvs(tbinarynode(n).right,signedtype,false,signedtype,unsignedtype);
+                  doremoveinttypeconvs(level+1,tbinarynode(n).left,signedtype,false,signedtype,unsignedtype);
+                  doremoveinttypeconvs(level+1,tbinarynode(n).right,signedtype,false,signedtype,unsignedtype);
                   n.resultdef:=signedtype;
                   if n.nodetype in [divn,modn] then
                     begin
@@ -3026,8 +3042,8 @@ implementation
                 end
               else
                 begin
-                  doremoveinttypeconvs(tbinarynode(n).left,unsignedtype,forceunsigned,signedtype,unsignedtype);
-                  doremoveinttypeconvs(tbinarynode(n).right,unsignedtype,forceunsigned,signedtype,unsignedtype);
+                  doremoveinttypeconvs(level+1,tbinarynode(n).left,unsignedtype,forceunsigned,signedtype,unsignedtype);
+                  doremoveinttypeconvs(level+1,tbinarynode(n).right,unsignedtype,forceunsigned,signedtype,unsignedtype);
                   n.resultdef:=unsignedtype;
                 end;
               //if ((n.nodetype=andn) and (tbinarynode(n).left.nodetype=ordconstn) and
@@ -3044,12 +3060,12 @@ implementation
               if not forceunsigned and
                  is_signed(n.resultdef) then
                 begin
-                  doremoveinttypeconvs(tunarynode(n).left,signedtype,false,signedtype,unsignedtype);
+                  doremoveinttypeconvs(level+1,tunarynode(n).left,signedtype,false,signedtype,unsignedtype);
                   n.resultdef:=signedtype;
                 end
               else
                 begin
-                  doremoveinttypeconvs(tunarynode(n).left,unsignedtype,forceunsigned,signedtype,unsignedtype);
+                  doremoveinttypeconvs(level+1,tunarynode(n).left,unsignedtype,forceunsigned,signedtype,unsignedtype);
                   n.resultdef:=unsignedtype;
                 end;
             end;
@@ -3344,22 +3360,22 @@ implementation
                     to 64 bit                                               }
                   if (resultdef.size <= 4) and
                     is_64bitint(left.resultdef) and
-                    (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn,shln]) and
+                    (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn,shln,shrn]) and
                     checkremovebiginttypeconvs(left,foundsint,[s8bit,u8bit,s16bit,u16bit,s32bit,u32bit],int64(low(longint)),high(cardinal)) then
-                    doremoveinttypeconvs(left,generrordef,not foundsint,s32inttype,u32inttype);
+                    doremoveinttypeconvs(0,left,generrordef,not foundsint,s32inttype,u32inttype);
 {$if defined(cpu16bitalu)}
                   if (resultdef.size <= 2) and
                     (is_32bitint(left.resultdef) or is_64bitint(left.resultdef)) and
-                    (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn,shln]) and
+                    (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn,shln,shrn]) and
                     checkremovebiginttypeconvs(left,foundsint,[s8bit,u8bit,s16bit,u16bit],int64(low(smallint)),high(word)) then
-                    doremoveinttypeconvs(left,generrordef,not foundsint,s16inttype,u16inttype);
+                    doremoveinttypeconvs(0,left,generrordef,not foundsint,s16inttype,u16inttype);
 {$endif defined(cpu16bitalu)}
 {$if defined(cpu8bitalu)}
                  if (resultdef.size<left.resultdef.size) and
                   is_integer(left.resultdef) and
-                  (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn,shln]) and
+                  (left.nodetype in [subn,addn,muln,divn,modn,xorn,andn,orn,notn,unaryminusn,shln,shrn]) and
                   checkremovebiginttypeconvs(left,foundsint,[s8bit,u8bit],int64(low(shortint)),high(byte)) then
-                    doremoveinttypeconvs(left,generrordef,not foundsint,s8inttype,u8inttype);
+                    doremoveinttypeconvs(0,left,generrordef,not foundsint,s8inttype,u8inttype);
 {$endif defined(cpu8bitalu)}
                   { the above simplification may have left a redundant equal
                     typeconv (e.g. int32 to int32). If that's the case, we remove it }
