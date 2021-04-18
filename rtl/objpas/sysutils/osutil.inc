@@ -245,7 +245,7 @@ begin
     Repeat
       Result:=Format('%s%.5d.tmp',[Start,I]);
       Inc(I);
-    Until not FileExists(Result);
+    Until not (FileExists(Result) or DirectoryExists(Result));
     end;
 end;
 {$endif}
