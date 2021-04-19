@@ -210,7 +210,8 @@ implementation
       if slopt in [SL_SETZERO,SL_SETMAX] then
         inherited
       else if not(sreg.bitlen in [32,64]) or
-              (sreg.startbit<>0) then
+              (sreg.startbit<>0) or
+              (getsubreg(fromreg)<getsubreg(sreg.subsetreg)) then
         begin
           makeregssamesize(list,def_cgsize(fromsize),sreg.subsetregsize,fromreg,sreg.subsetreg,fromreg,toreg);
           list.concat(taicpu.op_reg_reg_const_const(A_BFI,toreg,fromreg,sreg.startbit,sreg.bitlen))
