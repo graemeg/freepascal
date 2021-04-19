@@ -379,15 +379,23 @@ Implementation
                          taicpu(hp1).oper[0]^.reg, taicpu(p).oper[1]^.reg,
                          shifterop);
 
+                { Make sure the register used in the shifting is tracked all
+                  the way through, otherwise it may become deallocated while
+                  it's still live and cause incorrect optimisations later }
+                if (taicpu(hp1).oper[0]^.reg <> taicpu(p).oper[1]^.reg) then
+                  begin
+                    TransferUsedRegs(TmpUsedRegs);
+                    UpdateUsedRegs(TmpUsedRegs, tai(p.Next));
+                    ALlocRegBetween(taicpu(p).oper[1]^.reg, p, hp1, TmpUsedRegs);
+                  end;
+
                 taicpu(hp2).fileinfo:=taicpu(hp1).fileinfo;
                 asml.insertbefore(hp2, hp1);
-                GetNextInstruction(p, hp2);
-                asml.remove(p);
-                asml.remove(hp1);
-                p.free;
-                hp1.free;
-                p:=hp2;
-                DebugMsg('Peephole FoldShiftProcess done', p);
+
+                RemoveInstruction(hp1);
+                RemoveCurrentp(p);
+
+                DebugMsg('Peephole FoldShiftProcess done', hp2);
                 Result:=true;
                 break;
               end;
