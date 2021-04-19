@@ -115,7 +115,7 @@ begin
      end
     else
      begin
-      ExeCmd[1]:='vlink -b rawseg -q $FLAGS $GCSECTIONS $OPT $STRIP $MAP -o $EXE -T $RES';
+      ExeCmd[1]:='vlink $QLFLAGS $FLAGS $GCSECTIONS $OPT $STRIP $MAP -o $EXE -T $RES';
      end;
    end;
 end;
@@ -245,6 +245,7 @@ var
   DynLinkStr : string;
   GCSectionsStr : string;
   FlagsStr : string;
+  QLFlagsStr: string;
   MapStr : string;
   ExeName: string;
   fd,fs: file;
@@ -258,6 +259,7 @@ var
   QLHeader: TQLHeader;
   XTccData: TXTccData;
   BinSize: longint;
+  RelocSize: longint;
   DataSpace: DWord;
 begin
   StripStr:='';
@@ -276,6 +278,10 @@ begin
     begin
       if create_smartlink_sections then
         GCSectionsStr:='-gc-all';
+      if sinclairql_vlink_experimental then
+        QLFlagsStr:='-b sinclairql -q -'+lower(sinclairql_metadata_format)+' -stack='+tostr(StackSize)
+      else
+        QLFlagsStr:='-b rawseg -q';
     end;
 
   ExeName:=current_module.exefilename;
@@ -292,18 +298,20 @@ begin
   Replace(cmdstr,'$STRIP',StripStr);
   Replace(cmdstr,'$GCSECTIONS',GCSectionsStr);
   Replace(cmdstr,'$DYNLINK',DynLinkStr);
+  Replace(cmdstr,'$QLFLAGS',QLFlagsStr);
 
   MakeSinclairQLExe:=DoExec(BinStr,CmdStr,true,false);
 
   { Kludge:
       With the above linker script, vlink will produce two files. The main binary 
       and the relocation info. Here we copy the two together. (KB) }
-  if MakeSinclairQLExe then
+  if MakeSinclairQLExe and not sinclairql_vlink_experimental then
     begin
       QLHeader:=DefaultQLHeader;
       XTccData:=DefaultXTccData;
 
       BinSize:=0;
+      RelocSize:=0;
       bufsize:=16384;
 {$push}
 {$i-}
@@ -321,13 +329,18 @@ begin
       assign(fd,ExeName);
       rewrite(fd,1);
 
+      assign(fs,ExeName+'.'+ProgramHeaderName+'.rel'+ProgramHeaderName);
+      reset(fs,1);
+      RelocSize := FileSize(fs);
+      close(fs);
+
       assign(fs,ExeName+'.'+ProgramHeaderName);
       reset(fs,1);
       BinSize := FileSize(fs);
 
       { We assume .bss size is total size indicated by linker minus emmited binary.
         DataSpace size is .bss + stack space }
-      DataSpace := NToBE(DWord(HeaderSize - BinSize + StackSize));
+      DataSpace := NToBE(DWord(max((HeaderSize - BinSize) - RelocSize + StackSize,0)));
 
       { Option: prepend QEmuLator and QPC2 v5 compatible header to EXE }
       if sinclairql_metadata_format='QHDR' then

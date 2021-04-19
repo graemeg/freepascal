@@ -2761,6 +2761,13 @@ begin
                           IllegalPara(opt);
                       end;
 {$if defined(m68k)}
+                    'L':
+                      begin
+                        if (target_info.system in [system_m68k_sinclairql]) then
+                          sinclairql_vlink_experimental:=true
+                        else
+                          IllegalPara(opt);
+                      end;
                     'Q':
                       begin
                         if (target_info.system in [system_m68k_sinclairql]) then
