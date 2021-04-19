@@ -107,7 +107,7 @@ asm
     add.l d1,d2
     add.l d0,(a0,d2)
     subq.l #1,d7
-    bpl @relocloop
+    bgt @relocloop
 {$ENDIF PACKEDRELOCS}
 
 @noreloc:
