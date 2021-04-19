@@ -133,7 +133,7 @@ begin
         i:=h;
         repeat
           j:=i+p;
-          if stdnames[std_regname_index[j]]>=stdnames[std_regname_index[i]] then
+          if stdfullnames[std_regname_index[j]]>=stdfullnames[std_regname_index[i]] then
             break;
           t:=std_regname_index[i];
           std_regname_index[i]:=std_regname_index[j];
@@ -164,7 +164,7 @@ begin
         i:=h;
         repeat
           j:=i+p;
-          if gasnames[gas_regname_index[j]]>=gasnames[gas_regname_index[i]] then
+          if gasfullnames[gas_regname_index[j]]>=gasfullnames[gas_regname_index[i]] then
             break;
           t:=gas_regname_index[i];
           gas_regname_index[i]:=gas_regname_index[j];

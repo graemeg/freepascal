@@ -216,6 +216,11 @@ const
         actasmregister:=std_regnum_search(lower(s));
         if actasmregister<>NR_NO then
           begin
+            { this is a hack. if the reg is valid, and its string doesn't
+              contain a dot, we make sure it's a full size reg (KB) }
+            if (getregtype(actasmregister) in [R_ADDRESSREGISTER,R_INTREGISTER]) and
+               (Pos('.',s) = 0) then
+              setsubreg(actasmregister,R_SUBWHOLE);
             result:=true;
             actasmtoken:=AS_REGISTER;
           end;
@@ -1196,7 +1201,7 @@ const
                      while actasmtoken <> AS_SEPARATOR do
                         Consume(actasmtoken);
                    end;
-                   exit;
+                 exit;
                end;
               { // (reg,reg .. // }
               Consume(AS_COMMA);

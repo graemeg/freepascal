@@ -331,6 +331,10 @@ implementation
         {$i r68kstd.inc}
       );
 
+      std_regfullname_table : TRegNameTable = (
+        {$i r68kstdf.inc}
+      );
+
       regnumber_index : array[tregisterindex] of tregisterindex = (
         {$i r68krni.inc}
       );
@@ -484,6 +488,10 @@ implementation
     function std_regnum_search(const s:string):Tregister;
       begin
         result:=regnumber_table[findreg_by_name_table(s,std_regname_table,std_regname_index)];
+        if result=NR_NO then
+          begin
+            result:=regnumber_table[findreg_by_name_table(s,std_regfullname_table,std_regname_index)];
+          end;
       end;
 
 
