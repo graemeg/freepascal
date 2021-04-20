@@ -1,0 +1,10 @@
+{
+  "data" : [
+   { "name" : "Father", "age": 30 },
+   { "name" : "Mother", "age": 29 },
+   { "name" : "Grandfather", "age": 62 },
+   { "name" : "GrandMother", "age": 61 },
+   { "name" : "Child 1", "age": 2 },
+   { "name" : "Child 2", "age": 4 }
+  ]
+}

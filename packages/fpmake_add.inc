@@ -145,4 +145,5 @@
   add_ide(ADirectory+IncludeTrailingPathDelimiter('ide'));
   add_vclcompat(ADirectory+IncludeTrailingPathDelimiter('vcl-compat'));
   add_qlunits(ADirectory+IncludeTrailingPathDelimiter('qlunits'));
+  add_mustache(ADirectory+IncludeTrailingPathDelimiter('fcl-mustache'));
   

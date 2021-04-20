@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>{{title}}</title>
+  </head>
+    <body>
+      <h1>Family members</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th><th>Age</th>
+          </tr>
+        </thead>
+        <tbody>
+{{#data}}
+        <tr>  
+          <td>{{name}}</td><td>{{age}}</td>
+        </tr> 
+{{/data}}
+        </tbody>
+      </table>
+    </body>
+</html>
