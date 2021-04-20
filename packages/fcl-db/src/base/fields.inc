@@ -68,12 +68,13 @@ end;
 
 function TFieldDef.AddChild: TFieldDef;
 begin
+  // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TFieldDef.AddChild
   // Adds a new TFieldDef object to the ChildDefs array.
 end;
 
 function TFieldDef.GetChildDefs: TFieldDefs;
 begin
-
+  Result:=nil;
 end;
 
 procedure TFieldDef.SetChildDefs(AValue: TFieldDefs);
@@ -84,11 +85,13 @@ end;
 function TFieldDef.HasChildDefs: Boolean;
 begin
   // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TFieldDef.HasChildDefs
+  Result:=False;
 end;
 
 function TFieldDef.GetParentDef: TFieldDef;
 begin
   // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TFieldDef.ParentDef
+  Result:=nil;
 end;
 
 procedure TFieldDef.Assign(APersistent: TPersistent);
@@ -3705,6 +3708,7 @@ end;
 function TObjectField.GetFieldCount: Integer;
 begin
   // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TObjectField.GetFieldCount
+  Result:=0;
 end;
 
 function TObjectField.GetFields: TFields;
@@ -3716,6 +3720,7 @@ end;
 function TObjectField.GetFieldValue(AIndex: Integer): Variant;
 begin
   // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TObjectField.GetFieldValue
+  Result:=NULL;
 end;
 
 procedure TObjectField.SetFieldValue(AIndex: Integer; const AValue: Variant);
@@ -3732,6 +3737,7 @@ end;
 function TObjectField.GetAsVariant: Variant;
 begin
   // http://docwiki.embarcadero.com/Libraries/Sydney/en/Data.DB.TObjectField.GetAsVariant
+  Result:=NULL;
 end;
 
 procedure TObjectField.SetVarValue(const AValue: Variant);
