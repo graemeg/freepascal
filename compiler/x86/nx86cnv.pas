@@ -72,11 +72,6 @@ implementation
     function tx86typeconvnode.first_real_to_real : tnode;
       begin
          first_real_to_real:=nil;
-        { comp isn't a floating type }
-         if (tfloatdef(resultdef).floattype=s64comp) and
-            (tfloatdef(left.resultdef).floattype<>s64comp) and
-            not (nf_explicit in flags) then
-           CGMessage(type_w_convert_real_2_comp);
          if use_vectorfpu(resultdef) then
            expectloc:=LOC_MMREGISTER
          else

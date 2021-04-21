@@ -1630,6 +1630,10 @@ implementation
                    include(flags,nf_is_currency);
                    typecheckpass(left);
                  end;
+             { comp is handled by the fpu but not a floating type point }
+             if is_fpucomp(resultdef) and not(is_fpucomp(left.resultdef)) and
+               not (nf_explicit in flags) then
+               Message(type_w_convert_real_2_comp);
            end
          else
            include(flags,nf_is_currency);
