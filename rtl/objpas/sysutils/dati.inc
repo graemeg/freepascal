@@ -75,18 +75,20 @@ end;
 {   MSecsToTimeStamp   }
 
 function MSecsToTimeStamp(MSecs: comp): TTimeStamp;
+var
+  D1:Int64;
 begin
-  result.Date := Trunc(msecs / msecsperday);
-  msecs:= msecs-comp(result.date)*msecsperday;
-  result.Time := Round(MSecs);
-end ;
+  D1:=Trunc(msecs);
+  result.Date := D1 div msecsperday;
+  result.Time := D1 - result.date * msecsperday;
+end;
 
 {   TimeStampToMSecs   }
 
 function TimeStampToMSecs(const TimeStamp: TTimeStamp): comp;
 begin
   result := TimeStamp.Time + comp(timestamp.date)*msecsperday;
-end ;
+end;
 
 Function TryEncodeDate(Year,Month,Day : Word; Out Date : TDateTime) : Boolean;
 
