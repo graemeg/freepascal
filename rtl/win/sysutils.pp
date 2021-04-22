@@ -1037,14 +1037,18 @@ end;
                               Locale Functions
 ****************************************************************************}
 
-function GetLocaleStr(LID, LT: Longint; const Def: string): ShortString;
+function GetLocaleStr(LID, LT: Longint; const Def: string): AnsiString;
 var
   L: Integer;
-  Buf: array[0..255] of Char;
+  Buf: unicodestring;
 begin
-  L := GetLocaleInfoA(LID, LT, Buf, SizeOf(Buf));
+  L := GetLocaleInfoW(LID, LT, nil, 0);
   if L > 0 then
-    SetString(Result, @Buf[0], L - 1)
+    begin
+      SetLength(Buf,L-1); // L includes terminating NULL
+      L := GetLocaleInfoW(LID, LT, @Buf[1], L);
+      result:=buf;
+    end
   else
     Result := Def;
 end;
