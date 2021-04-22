@@ -581,7 +581,7 @@ endif
 endif
 endif
 endif
-override LOCALOPT+=-d$(CPC_TARGET) -dGDB -dBROWSERLOG
+override LOCALOPT+=-d$(CPC_TARGET) -dGDB
 ifdef LLVM
 ifeq ($(findstring $(PPC_TARGET),x86_64 aarch64 arm),)
 $(error The $(PPC_TARGET) architecture is not (yet) supported by the FPC/LLVM code generator)

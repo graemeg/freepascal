@@ -323,7 +323,7 @@ endif
 endif
 
 # set correct defines (-d$(CPU_TARGET) is automatically added in makefile.fpc)
-override LOCALOPT+=-d$(CPC_TARGET) -dGDB -dBROWSERLOG
+override LOCALOPT+=-d$(CPC_TARGET) -dGDB
 
 #include LLVM define/directory if requested
 ifdef LLVM
