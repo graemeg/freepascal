@@ -205,9 +205,12 @@ end;
 function GetModuleFileName: String;
 const
   MAX_PATH_SIZE = 2048;
+var
+  FileName: WideString;
 begin
-  SetLength(Result, MAX_PATH_SIZE);
-  SetLength(Result, Windows.GetModuleFileName(HInstance, @Result[1], MAX_PATH_SIZE));
+  SetLength(FileName, MAX_PATH_SIZE);
+  SetLength(FileName, Windows.GetModuleFileNameW(HInstance, @FileName[1], MAX_PATH_SIZE));
+  Result := FileName;
 end;
 
 function GetModuleName: String;
