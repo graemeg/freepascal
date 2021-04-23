@@ -90,7 +90,7 @@ Type
 const
 // SSL and Crypto DLL arrays must have the same length and contain
 // matched pairs of DLL filenames. Place newer versions at the beginning.
-{$IFDEF WIN64}
+{$IF DEFINED(WIN64)}
   SSL_DLL_Names:    array[1..3] of string = ('libssl-1_1-x64',    'ssleay32', 'libssl32');
   Crypto_DLL_Names: array[1..3] of string = ('libcrypto-1_1-x64', 'libeay32', 'libeay32');
 {$ELSEIF DEFINED(WINDOWS)}
