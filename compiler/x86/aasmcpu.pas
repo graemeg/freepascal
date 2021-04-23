@@ -3682,6 +3682,16 @@ implementation
              end;
 {$endif i386}
            objdata.writereloc(data,len,p,Reloctype);
+{$ifdef x86_64}
+	   { Computed offset is not yet correct for GOTPC relocation }
+           { RELOC_GOTPCREL, RELOC_REX_GOTPCRELX, RELOC_GOTPCRELX need special handling }
+           if assigned(p) and (RelocType in [RELOC_GOTPCREL, RELOC_REX_GOTPCRELX, RELOC_GOTPCRELX]) and
+              { These relocations seem to be used only for ELF
+                which always has relocs_use_addend set to true 
+                so that it is the orgsize of the last relocation which needs to be fixed PM  }
+              (insend<>objdata.CurrObjSec.size) then
+             dec(TObjRelocation(objdata.CurrObjSec.ObjRelocations.Last).orgsize,insend-objdata.CurrObjSec.size);
+{$endif}
          end;
 
 

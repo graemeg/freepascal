@@ -672,7 +672,10 @@ implementation
         if assigned(objreloc) then
           begin
             objreloc.size:=len;
-            if reltype in [RELOC_RELATIVE{$ifdef x86},RELOC_PLT32{$endif}{$ifdef x86_64},RELOC_TLSGD,RELOC_GOTPCREL{$endif}] then
+            { RELOC_GOTPCREL, RELOC_REX_GOTPCRELX, RELOC_GOTPCRELX] need special handling
+              this is done in x86/aasmcpu unit }
+            if reltype in [RELOC_RELATIVE{$ifdef x86},RELOC_PLT32{$endif}
+               {$ifdef x86_64}, RELOC_GOTPCREL, RELOC_REX_GOTPCRELX, RELOC_GOTPCRELX,RELOC_TLSGD{$endif}] then
               dec(data,len);
             if ElfTarget.relocs_use_addend then
               begin
