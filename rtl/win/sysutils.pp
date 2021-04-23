@@ -1046,7 +1046,8 @@ begin
   if L > 0 then
     begin
       SetLength(Buf,L-1); // L includes terminating NULL
-      L := GetLocaleInfoW(LID, LT, @Buf[1], L);
+      if l>1 Then
+        L := GetLocaleInfoW(LID, LT, @Buf[1], L);
       result:=buf;
     end
   else
