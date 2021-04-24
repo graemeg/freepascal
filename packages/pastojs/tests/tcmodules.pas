@@ -29738,17 +29738,19 @@ procedure TTestModule.TestRTTI_Class_Method;
 begin
   WithTypeInfo:=true;
   StartProgram(false);
-  Add('type');
-  Add('  TObject = class');
-  Add('  private');
-  Add('    procedure Internal; external name ''$intern'';');
-  Add('  published');
-  Add('    procedure Click; virtual; abstract;');
-  Add('    procedure Notify(Sender: TObject); virtual; abstract;');
-  Add('    function GetNotify: boolean; external name ''GetNotify'';');
-  Add('    procedure Println(a,b: longint); varargs; virtual; abstract;');
-  Add('  end;');
-  Add('begin');
+  Add([
+  'type',
+  '  TObject = class',
+  '  private',
+  '    procedure Internal; external name ''$intern'';',
+  '  published',
+  '    procedure Click; virtual; abstract;',
+  '    procedure Notify(Sender: TObject); virtual; abstract;',
+  '    function GetNotify: boolean; external name ''GetNotify'';',
+  '    procedure Println(a,b: longint); varargs; virtual; abstract;',
+  '    function Fetch(URL: string): word; async; external name ''Fetch'';',
+  '  end;',
+  'begin']);
   ConvertProgram;
   CheckSource('TestRTTI_Class_Method',
     LinesToStr([ // statements
@@ -29763,6 +29765,9 @@ begin
     '  $r.addMethod("GetNotify", 1, null, rtl.boolean,{flags: 4});',
     '  $r.addMethod("Println", 0, [["a", rtl.longint], ["b", rtl.longint]], null, {',
     '    flags: 2',
+    '  });',
+    '  $r.addMethod("Fetch", 1, [["URL", rtl.string]], rtl.word, {',
+    '    flags: 20',
     '  });',
     '});',
     '']),

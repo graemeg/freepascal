@@ -2314,6 +2314,7 @@ type
       pfVarargs = 2;
       pfExternal = 4;
       pfSafeCall = 8;
+      pfAsync = $10;
       // PropertyFlag
       pfGetFunction = 1; // getter is a function
       pfSetProcedure = 2; // setter is a function
@@ -16565,10 +16566,12 @@ begin
       if ResultTypeInfo<>nil then
         InnerCall.AddArg(ResultTypeInfo);
       end;
-    // add param flags
+    // add procedure flags
     Flags:=0;
     if ptmVarargs in El.Modifiers then
       inc(Flags,pfVarargs);
+    if ptmAsync in El.Modifiers then
+      inc(Flags,pfAsync);
     if El.CallingConvention=ccSafeCall then
       inc(Flags,pfSafeCall);
     if Flags>0 then
@@ -20237,6 +20240,8 @@ begin
       inc(Flags,pfStatic);
     if ptmVarargs in Proc.ProcType.Modifiers then
       inc(Flags,pfVarargs);
+    if ptmAsync in Proc.ProcType.Modifiers then
+      inc(Flags,pfAsync);
     if Proc.IsExternal then
       inc(Flags,pfExternal);
     if Flags>0 then
