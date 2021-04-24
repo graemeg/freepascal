@@ -217,7 +217,7 @@ implementation
     function twasmraisenode.pass_1 : tnode;
       var
         statements : tstatementnode;
-        current_addr : tlabelnode;
+        //current_addr : tlabelnode;
         raisenode : tcallnode;
       begin
         result:=internalstatements(statements);
@@ -240,9 +240,10 @@ implementation
             else
               begin
                 third:=cinlinenode.create(in_get_frame,false,nil);
-                current_addr:=clabelnode.create(cnothingnode.create,clabelsym.create('$raiseaddr'));
-                addstatement(statements,current_addr);
-                right:=caddrnode.create(cloadnode.create(current_addr.labsym,current_addr.labsym.owner));
+                //current_addr:=clabelnode.create(cnothingnode.create,clabelsym.create('$raiseaddr'));
+                //addstatement(statements,current_addr);
+                //right:=caddrnode.create(cloadnode.create(current_addr.labsym,current_addr.labsym.owner));
+                right:=cnilnode.create;
 
                 { raise address off by one so we are for sure inside the action area for the raise }
                 if tf_use_psabieh in target_info.flags then
