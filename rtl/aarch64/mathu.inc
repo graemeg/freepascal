@@ -14,25 +14,25 @@
 
 {$asmmode gas}
 
-function getfpcr: dword; nostackframe; assembler;
+function getfpcr: qword; nostackframe; assembler;
   asm
     mrs x0,fpcr
   end;
 
 
-procedure setfpcr(val: dword); nostackframe; assembler;
+procedure setfpcr(val: qword); nostackframe; assembler;
   asm
     msr fpcr,x0
   end;
 
 
-function getfpsr: dword; nostackframe; assembler;
+function getfpsr: qword; nostackframe; assembler;
   asm
     mrs x0,fpsr
   end;
 
 
-procedure setfpsr(val: dword); nostackframe; assembler;
+procedure setfpsr(val: qword); nostackframe; assembler;
   asm
     msr fpsr, x0
   end;
@@ -75,7 +75,7 @@ const
   fpu_ufe = 1 shl 11;
   fpu_ixe = 1 shl 12;
   fpu_ide = 1 shl 15;
-  fpu_exception_mask = fpu_ioe or fpu_dze or fpu_ofe or fpu_ufe or fpu_ixe or fpu_ide;
+  fpu_exception_mask = qword(fpu_ioe or fpu_dze or fpu_ofe or fpu_ufe or fpu_ixe or fpu_ide);
   fpu_exception_mask_to_status_mask_shift = 8;
 
 
@@ -111,13 +111,13 @@ function GetExceptionMask: TFPUExceptionMask;
 
 function SetExceptionMask(const Mask: TFPUExceptionMask): TFPUExceptionMask;
   var
-    newfpcr: dword;
+    newfpcr: qword;
   begin
     { clear "exception happened" flags }
     ClearExceptions(false);
     softfloat_exception_mask:=mask;
 
-    { at least the ThunderX AArch64 support apperently hardware exceptions,
+    { at least the ThunderX AArch64 support apparently hardware exceptions,
       so set fpcr correctly, thought it might be WI on most implementations it does not hurt
     }
     newfpcr:=fpu_exception_mask;
@@ -143,7 +143,7 @@ function SetExceptionMask(const Mask: TFPUExceptionMask): TFPUExceptionMask;
 
 procedure ClearExceptions(RaisePending: Boolean);
   var
-    fpsr: dword;
+    fpsr: qword;
     f: TFPUException;
   begin
     fpsr:=getfpsr;
