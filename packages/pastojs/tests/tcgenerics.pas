@@ -62,6 +62,7 @@ type
     Procedure TestGen_CallUnitImplProc;
     Procedure TestGen_IntAssignTemplVar;
     Procedure TestGen_TypeCastDotField;
+    Procedure TestGen_Except;
 
     // generic helper
     procedure TestGen_HelperForArray;
@@ -1947,6 +1948,77 @@ begin
     LinesToStr([ // $mod.$main
     '$mod.o.Field = 5;',
     'if (6 === $mod.o.Field) ;',
+    '']));
+end;
+
+procedure TTestGenerics.TestGen_Except;
+begin
+  StartProgram(false);
+  Add([
+  'type',
+  '  TObject = class end;',
+  '  generic TBird<T> = class',
+  '    Field: T;',
+  '    procedure Fly;',
+  '  end;',
+  '  Exception = class',
+  '  end;',
+  '  generic EBird<T> = class(Exception)',
+  '    Id: T;',
+  '  end;',
+  'var',
+  '  b: specialize TBird<word>;',
+  'procedure TBird.Fly;',
+  'begin',
+  '  try',
+  '  except',
+  '    on E: Exception do Fly;',
+  '    on EBird: specialize EBird<word> do EBird.Id:=3;',
+  '  else',
+  '    Fly;',
+  '  end;',
+  'end;',
+  'begin',
+  '']);
+  ConvertProgram;
+  CheckSource('TestGen_Except',
+    LinesToStr([ // statements
+    'rtl.createClass(this, "TObject", null, function () {',
+    '  this.$init = function () {',
+    '  };',
+    '  this.$final = function () {',
+    '  };',
+    '});',
+    'rtl.createClass(this, "Exception", this.TObject, function () {',
+    '});',
+    'rtl.createClass(this, "TBird$G1", this.TObject, function () {',
+    '  this.$init = function () {',
+    '    $mod.TObject.$init.call(this);',
+    '    this.Field = 0;',
+    '  };',
+    '  this.Fly = function () {',
+    '    try {} catch ($e) {',
+    '      if ($mod.Exception.isPrototypeOf($e)) {',
+    '        var E = $e;',
+    '        this.Fly();',
+    '      } else if ($mod.EBird$G1.isPrototypeOf($e)) {',
+    '        var EBird = $e;',
+    '        EBird.Id = 3;',
+    '      } else {',
+    '        this.Fly();',
+    '      }',
+    '    };',
+    '  };',
+    '}, "TBird<System.Word>");',
+    'this.b = null;',
+    'rtl.createClass(this, "EBird$G1", this.Exception, function () {',
+    '  this.$init = function () {',
+    '    $mod.Exception.$init.call(this);',
+    '    this.Id = 0;',
+    '  };',
+    '}, "EBird<System.Word>");',
+    '']),
+    LinesToStr([ // $mod.$main
     '']));
 end;
 

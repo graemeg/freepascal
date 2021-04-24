@@ -157,6 +157,7 @@ type
     procedure TestGenProc_TypeParamCntOverloadNoParams;
     procedure TestGenProc_TypeParamWithDefaultParamDelphiFail;
     procedure TestGenProc_ParamSpecWithT;
+    // ToDo: TestGenProc_ParamSpecWithTNestedType function Fly<T>(a: TBird<T>.TEvent; aSender: T): Word;
     // ToDo: NestedResultAssign
 
     // generic function infer types

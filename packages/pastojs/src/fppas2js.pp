@@ -4488,6 +4488,9 @@ begin
       AddElevatedLocal(El);
       end;
     end
+  else if ParentC=TPasImplExceptOn then
+    // except on var
+    RaiseVarModifierNotSupported(LocalVarModifiersAllowed)
   else if ParentC=TImplementationSection then
     // implementation var
     RaiseVarModifierNotSupported(ImplementationVarModifiersAllowed)
@@ -4499,7 +4502,7 @@ begin
   else
     begin
     {$IFDEF VerbosePas2JS}
-    writeln('TPas2JSResolver.FinishVariable ',GetObjName(El),' Parent=',GetObjName(El.Parent));
+    writeln('TPas2JSResolver.FinishVariable ',GetObjPath(El));
     {$ENDIF}
     RaiseNotYetImplemented(20170324151259,El);
     end;
