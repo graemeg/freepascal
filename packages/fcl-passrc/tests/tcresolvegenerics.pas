@@ -157,7 +157,7 @@ type
     procedure TestGenProc_TypeParamCntOverloadNoParams;
     procedure TestGenProc_TypeParamWithDefaultParamDelphiFail;
     procedure TestGenProc_ParamSpecWithT;
-    procedure TestGenProc_ParamSpecWithTNestedType; // ToDo
+    procedure TestGenProc_ParamSpecWithTNestedType;
     // ToDo: NestedResultAssign
 
     // generic function infer types
@@ -2557,8 +2557,6 @@ end;
 
 procedure TTestResolveGenerics.TestGenProc_ParamSpecWithTNestedType;
 begin
-  exit;
-
   StartProgram(false);
   Add([
   '{$mode delphi}',
@@ -2578,7 +2576,7 @@ begin
   'var',
   '  Bird: TBird<TObject>;',
   'begin',
-  '  Fly<TObject>(Run,Bird);',
+  '  Fly<TObject>(@Run,Bird);',
   '']);
   ParseProgram;
 end;

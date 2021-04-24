@@ -1690,6 +1690,7 @@ type
     procedure FinishMethodImplHeader(ImplProc: TPasProcedure); virtual;
     procedure FinishExceptOnExpr; virtual;
     procedure FinishExceptOnStatement; virtual;
+    procedure FinishParserSpecializeType(El: TPasSpecializeType); virtual;
     procedure FinishWithDo(El: TPasImplWithDo); virtual;
     procedure FinishForLoopHeader(Loop: TPasImplForLoop); virtual;
     procedure FinishDeclaration(El: TPasElement); virtual;
@@ -2153,6 +2154,7 @@ type
     function PushHelperDotScope(HiType: TPasType): TPasDotBaseScope;
     function PushTemplateDotScope(TemplType: TPasGenericTemplateType; ErrorEl: TPasElement): TPasDotBaseScope;
     function PushDotScope(HiType: TPasType): TPasDotBaseScope;
+    function PushParserSpecializeType(SpecType: TPasSpecializeType): TPasDotBaseScope;
     function PushWithExprScope(Expr: TPasExpr): TPasWithExprScope;
     function StashScopes(NewScopeCnt: integer): integer; // returns old StashDepth
     function StashSubExprScopes: integer; // returns old StashDepth
@@ -5238,6 +5240,9 @@ begin
       begin
       // El is the first element found -> raise error
       // ToDo: use the ( as error position
+      {$IFDEF VerbosePasResolver}
+      writeln('TPasResolver.OnFindCallElements El=',GetObjPath(El));
+      {$ENDIF}
       RaiseMsg(20170216151525,nIllegalQualifierAfter,sIllegalQualifierAfter,
         ['(',El.ElementTypeName],Data^.Params);
       end;
@@ -7603,6 +7608,12 @@ begin
   //writeln('TPasResolver.FinishExceptOnStatement START');
   CheckTopScope(TPasExceptOnScope);
   ResolveImplElement(TPasImplExceptOn(FTopScope.Element).Body);
+  PopScope;
+end;
+
+procedure TPasResolver.FinishParserSpecializeType(El: TPasSpecializeType);
+begin
+  if El=nil then ;
   PopScope;
 end;
 
@@ -18120,6 +18131,13 @@ begin
   SpecializeElList(GenEl,SpecEl,GenEl.Params,SpecEl.Params,true
     {$IFDEF CheckPasTreeRefCount},'TPasSpecializeType.Params'{$ENDIF});
 
+  if GenEl.SubType<>nil then
+    begin
+    PushParserSpecializeType(SpecEl);
+    SpecializeElType(GenEl,SpecEl,GenEl.SubType,SpecEl.SubType);
+    PopScope;
+    end;
+
   FinishSpecializeType(SpecEl);
   {$IFDEF VerbosePasResolver}
   //writeln('TPasResolver.SpecializeSpecializeType ',GetObjName(SpecEl.DestType),' ',GetObjName(SpecEl.CustomData));
@@ -21807,6 +21825,7 @@ end;
 procedure TPasResolver.BeginScope(ScopeType: TPasScopeType; El: TPasElement);
 begin
   case ScopeType of
+  stSpecializeType: PushParserSpecializeType(El as TPasSpecializeType);
   stWithExpr: PushWithExprScope(El as TPasExpr);
   else
     RaiseMsg(20181210163324,nNotYetImplemented,sNotYetImplemented+' BeginScope',[IntToStr(ord(ScopeType))],nil);
@@ -21824,9 +21843,10 @@ begin
   stResourceString: FinishResourcestring(El as TPasResString);
   stProcedure: FinishProcedure(El as TPasProcedure);
   stProcedureHeader: FinishProcedureType(El as TPasProcedureType);
+  stSpecializeType: FinishParserSpecializeType(El as TPasSpecializeType);
+  stWithExpr: FinishWithDo(El as TPasImplWithDo);
   stExceptOnExpr: FinishExceptOnExpr;
   stExceptOnStatement: FinishExceptOnStatement;
-  stWithExpr: FinishWithDo(El as TPasImplWithDo);
   stForLoopHeader: FinishForLoopHeader(El as TPasImplForLoop);
   stDeclaration: FinishDeclaration(El);
   stAncestors: FinishAncestors(El as TPasClassType);
@@ -22782,6 +22802,12 @@ begin
     Result:=PushTemplateDotScope(TPasGenericTemplateType(LoType),HiType)
   else
     Result:=PushHelperDotScope(HiType);
+end;
+
+function TPasResolver.PushParserSpecializeType(SpecType: TPasSpecializeType
+  ): TPasDotBaseScope;
+begin
+  Result:=PushDotScope(SpecType.DestType);
 end;
 
 function TPasResolver.PushWithExprScope(Expr: TPasExpr): TPasWithExprScope;
@@ -27709,7 +27735,9 @@ procedure TPasResolver.ComputeElement(El: TPasElement; out
   var
     TypeEl: TPasType;
   begin
-    if SpecType.CustomData is TPasSpecializeTypeData then
+    if SpecType.SubType<>nil then
+      ComputeElement(SpecType.SubType,ResolvedEl,Flags,StartEl)
+    else if SpecType.CustomData is TPasSpecializeTypeData then
       begin
       TypeEl:=TPasSpecializeTypeData(SpecType.CustomData).SpecializedType;
       if TypeEl=nil then
@@ -28393,6 +28421,7 @@ function TPasResolver.ResolveAliasType(aType: TPasType; SkipTypeAlias: boolean
   ): TPasType;
 var
   C: TClass;
+  SpecType: TPasSpecializeType;
 begin
   while aType<>nil do
     begin
@@ -28406,9 +28435,16 @@ begin
       aType:=NoNil(TResolvedReference(aType.CustomData).Declaration) as TPasType
     else if C=TPasSpecializeType then
       begin
-      if aType.CustomData is TPasSpecializeTypeData then
-        exit(TPasSpecializeTypeData(aType.CustomData).SpecializedType);
-      aType:=TPasSpecializeType(aType).DestType;
+      SpecType:=TPasSpecializeType(aType);
+      if SpecType.SubType<>nil then
+        // e.g. a<b>.c
+        aType:=SpecType.SubType
+      else
+        begin
+        if SpecType.CustomData is TPasSpecializeTypeData then
+          exit(TPasSpecializeTypeData(SpecType.CustomData).SpecializedType);
+        aType:=SpecType.DestType;
+        end;
       end
     else
       exit(aType);

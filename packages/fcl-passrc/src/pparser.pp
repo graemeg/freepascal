@@ -157,6 +157,7 @@ type
     stResourceString, // e.g. TPasResString
     stProcedure, // also method, procedure, constructor, destructor, ...
     stProcedureHeader,
+    stSpecializeType, // calls BeginScope to resolve c in a<b>.c
     stWithExpr, // calls BeginScope after parsing every WITH-expression
     stExceptOnExpr,
     stExceptOnStatement,
@@ -1766,6 +1767,8 @@ begin
     ReadSpecializeArguments(ST,ST.Params);
     if CurToken<>tkGreaterThan then
       ParseExcTokenError('[20190801113005]');
+    // Important: resolve type reference AFTER args, because arg count is needed
+    ST.DestType:=ResolveTypeReference(GenName,ST,ST.Params.Count);
 
     // Check for cascaded specialize A<B>.C or A<B>.C<D>
     NextToken;
@@ -1774,10 +1777,10 @@ begin
     else
       begin
       NextToken;
+      Engine.BeginScope(stSpecializeType,ST);
       ST.SubType:=ParseSimpleType(ST,CurSourcePos,GenName,False);
+      Engine.FinishScope(stSpecializeType,ST);
       end;
-    // Important: resolve type reference AFTER args, because arg count is needed
-    ST.DestType:=ResolveTypeReference(GenName,ST,ST.Params.Count);
 
     Engine.FinishScope(stTypeDef,ST);
     Result:=ST;

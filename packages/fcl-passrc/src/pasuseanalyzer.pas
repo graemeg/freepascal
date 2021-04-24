@@ -2471,6 +2471,7 @@ begin
     if Param is TPasGenericTemplateType then continue;
     UseElement(Param,rraRead,false);
     end;
+  UseElType(El,El.SubType,Mode);
 end;
 
 procedure TPasAnalyzer.UseVariable(El: TPasVariable;
