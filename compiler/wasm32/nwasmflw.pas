@@ -49,6 +49,13 @@ interface
         procedure pass_generate_code;override;
       end;
 
+      { twasmraisenode }
+
+      twasmraisenode = class(tcgraisenode)
+      public
+        function pass_1 : tnode;override;
+      end;
+
       { twasmtryexceptnode }
 
       twasmtryexceptnode = class(tcgtryexceptnode)
@@ -68,9 +75,9 @@ implementation
     uses
       verbose,globals,systems,globtype,constexp,
       symconst,symdef,symsym,aasmtai,aasmdata,aasmcpu,defutil,defcmp,
-      procinfo,cgbase,pass_1,pass_2,parabase,
+      procinfo,cgbase,pass_1,pass_2,parabase,compinnr,
       cpubase,cpuinfo,
-      nbas,nld,ncon,ncnv,
+      nbas,nld,ncon,ncnv,ncal,ninl,nmem,nadd,
       tgobj,paramgr,
       cgutils,hlcgobj,hlcgcpu;
 
@@ -204,6 +211,65 @@ implementation
       end;
 
 {*****************************************************************************
+                             twasmraisenode
+*****************************************************************************}
+
+    function twasmraisenode.pass_1 : tnode;
+      var
+        statements : tstatementnode;
+        current_addr : tlabelnode;
+        raisenode : tcallnode;
+      begin
+        result:=internalstatements(statements);
+
+        if assigned(left) then
+          begin
+            { first para must be a class }
+            firstpass(left);
+            { insert needed typeconvs for addr,frame }
+            if assigned(right) then
+              begin
+                { addr }
+                firstpass(right);
+                { frame }
+                if assigned(third) then
+                  firstpass(third)
+                else
+                  third:=cpointerconstnode.Create(0,voidpointertype);
+              end
+            else
+              begin
+                third:=cinlinenode.create(in_get_frame,false,nil);
+                current_addr:=clabelnode.create(cnothingnode.create,clabelsym.create('$raiseaddr'));
+                addstatement(statements,current_addr);
+                right:=caddrnode.create(cloadnode.create(current_addr.labsym,current_addr.labsym.owner));
+
+                { raise address off by one so we are for sure inside the action area for the raise }
+                if tf_use_psabieh in target_info.flags then
+                  right:=caddnode.create_internal(addn,right,cordconstnode.create(1,sizesinttype,false));
+              end;
+
+            raisenode:=ccallnode.createintern('fpc_raiseexception',
+              ccallparanode.create(third,
+              ccallparanode.create(right,
+              ccallparanode.create(left,nil)))
+              );
+            include(raisenode.callnodeflags,cnf_call_never_returns);
+            addstatement(statements,raisenode);
+          end
+        else
+          begin
+            addstatement(statements,ccallnode.createintern('fpc_popaddrstack',nil));
+            raisenode:=ccallnode.createintern('fpc_reraise',nil);
+            include(raisenode.callnodeflags,cnf_call_never_returns);
+            addstatement(statements,raisenode);
+          end;
+        left:=nil;
+        right:=nil;
+        third:=nil;
+      end;
+
+{*****************************************************************************
                              twasmtryexceptnode
 *****************************************************************************}
 
@@ -258,6 +324,7 @@ implementation
 initialization
   cifnode:=twasmifnode;
   cwhilerepeatnode:=twasmwhilerepeatnode;
+  craisenode:=twasmraisenode;
   ctryexceptnode:=twasmtryexceptnode;
   ctryfinallynode:=twasmtryfinallynode;
 end.
