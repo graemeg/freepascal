@@ -614,6 +614,7 @@ implementation
         i: longint;
         def: tdef;
         sym: tsym;
+        tmpidx: Integer;
       begin
         for i:=current_module.localsymtable.deflist.count-1 downto 0 do
           begin
@@ -633,6 +634,10 @@ implementation
                    tprocdef(def).procsym.is_registered then
                  tprocsym(tprocdef(def).procsym).ProcdefList.Remove(def);
                 current_module.localsymtable.deletedef(def);
+                { this prevents a dangling pointer and use after free }
+                tmpidx:=current_module.deflist.IndexOfItem(def,FromEnd);
+                if tmpidx<>-1 then
+                  current_module.deflist[tmpidx]:=nil;
               end;
           end;
         { from high to low so we hopefully have moves of less data }
