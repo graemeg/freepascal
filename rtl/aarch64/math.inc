@@ -72,6 +72,17 @@
       end;
     {$endif FPC_SYSTEM_HAS_TRUNC}
 
+{$ifndef VER3_2}
+    {$ifndef FPC_SYSTEM_HAS_FRAC}
+    {$define FPC_SYSTEM_HAS_FRAC}
+    function fpc_frac_real(d : ValReal) : ValReal;compilerproc;
+      begin
+        { Function is handled internal in the compiler }
+        runerror(207);
+        result:=0;
+      end;
+    {$endif FPC_SYSTEM_HAS_FRAC}
+{$endif VER3_2}
 
     {$ifndef FPC_SYSTEM_HAS_ROUND}
     {$define FPC_SYSTEM_HAS_ROUND}

@@ -36,6 +36,7 @@ interface
         function first_round_real: tnode; override;
         function first_trunc_real: tnode; override;
         function first_int_real: tnode; override;
+        function first_frac_real: tnode; override;
         function first_fma : tnode; override;
         procedure second_abs_real; override;
         procedure second_sqr_real; override;
@@ -44,6 +45,7 @@ interface
         procedure second_round_real; override;
         procedure second_trunc_real; override;
         procedure second_int_real; override;
+        procedure second_frac_real; override;
         procedure second_get_frame; override;
         procedure second_fma; override;
         procedure second_prefetch; override;
@@ -112,21 +114,29 @@ implementation
 
     function taarch64inlinenode.first_int_real : tnode;
       begin
-       expectloc:=LOC_MMREGISTER;
-       result:=nil;
+        expectloc:=LOC_MMREGISTER;
+        result:=nil;
       end;
 
 
-     function taarch64inlinenode.first_fma : tnode;
-       begin
-         if ((is_double(resultdef)) or (is_single(resultdef))) then
-           begin
-             expectloc:=LOC_MMREGISTER;
-             Result:=nil;
-           end
-         else
-           Result:=inherited first_fma;
-       end;
+    function taarch64inlinenode.first_frac_real : tnode;
+      begin
+        expectloc:=LOC_MMREGISTER;
+        result:=nil;
+      end;
+
+
+    function taarch64inlinenode.first_fma : tnode;
+      begin
+        if ((is_double(resultdef)) or (is_single(resultdef))) then
+          begin
+            expectloc:=LOC_MMREGISTER;
+            Result:=nil;
+          end
+        else
+          Result:=inherited first_fma;
+     end;
+
 
     procedure taarch64inlinenode.second_abs_real;
       begin
@@ -205,6 +215,20 @@ implementation
         location_reset(location,LOC_MMREGISTER,def_cgsize(resultdef));
         location.register:=cg.getmmregister(current_asmdata.CurrAsmList,location.size);
         current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_FRINTZ,location.register,left.location.register));
+        cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
+      end;
+
+
+    procedure taarch64inlinenode.second_frac_real;
+      var
+        hreg: tregister;
+      begin
+        secondpass(left);
+        hlcg.location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,left.resultdef,true);
+        location_reset(location,LOC_MMREGISTER,def_cgsize(resultdef));
+        location.register:=cg.getmmregister(current_asmdata.CurrAsmList,location.size);
+        current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_FRINTZ,location.register,left.location.register));
+        current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg_reg(A_FSUB,location.register,left.location.register,location.register));
         cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
       end;
 
