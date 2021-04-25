@@ -4883,12 +4883,21 @@ type
                        inc(yylexcount);
                        substitutemacro(pattern,mac.buftext,mac.buflen,
                          mac.fileinfo.line,mac.fileinfo.fileindex);
-                     { handle empty macros }
+                       { handle empty macros }
                        if c=#0 then
-                         reload;
-                       readtoken(false);
-                       { that's all folks }
-                       dec(yylexcount);
+                         begin
+                           reload;
+                           { avoid macro nesting error in case of
+                             a sequence of empty macros, see #38802 }
+                           dec(yylexcount);
+                           readtoken(false);
+                         end
+                       else
+                         begin
+                           readtoken(false);
+                           { that's all folks }
+                           dec(yylexcount);
+                         end;
                        exit;
                      end
                     else
