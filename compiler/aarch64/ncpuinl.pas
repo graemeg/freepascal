@@ -1,7 +1,7 @@
 {
     Copyright (c) 1998-2002 by Florian Klaempfl
 
-    Generates ARM inline nodes
+    Generates AAarch64 inline nodes
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ interface
         function first_sqrt_real: tnode; override;
         function first_round_real: tnode; override;
         function first_trunc_real: tnode; override;
+        function first_int_real: tnode; override;
         function first_fma : tnode; override;
         procedure second_abs_real; override;
         procedure second_sqr_real; override;
@@ -42,6 +43,7 @@ interface
         procedure second_abs_long; override;
         procedure second_round_real; override;
         procedure second_trunc_real; override;
+        procedure second_int_real; override;
         procedure second_get_frame; override;
         procedure second_fma; override;
         procedure second_prefetch; override;
@@ -105,6 +107,13 @@ implementation
       begin
         expectloc:=LOC_MMREGISTER;
         result:=nil;
+      end;
+
+
+    function taarch64inlinenode.first_int_real : tnode;
+      begin
+       expectloc:=LOC_MMREGISTER;
+       result:=nil;
       end;
 
 
@@ -184,6 +193,19 @@ implementation
         location.register:=cg.getintregister(current_asmdata.CurrAsmList,location.size);
         { convert to signed integer rounding towards zero }
         current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_FCVTZS,location.register,left.location.register));
+      end;
+
+
+    procedure taarch64inlinenode.second_int_real;
+      var
+        hreg: tregister;
+      begin
+        secondpass(left);
+        hlcg.location_force_mmregscalar(current_asmdata.CurrAsmList,left.location,left.resultdef,true);
+        location_reset(location,LOC_MMREGISTER,def_cgsize(resultdef));
+        location.register:=cg.getmmregister(current_asmdata.CurrAsmList,location.size);
+        current_asmdata.CurrAsmList.concat(taicpu.op_reg_reg(A_FRINTZ,location.register,left.location.register));
+        cg.maybe_check_for_fpu_exception(current_asmdata.CurrAsmList);
       end;
 
 
