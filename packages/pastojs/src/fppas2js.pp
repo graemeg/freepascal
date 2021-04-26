@@ -16575,7 +16575,11 @@ begin
     if El.CallingConvention=ccSafeCall then
       inc(Flags,pfSafeCall);
     if Flags>0 then
+      begin
+      if not (El is TPasFunctionType) then
+        InnerCall.AddArg(CreateLiteralNull(El));
       InnerCall.AddArg(CreateLiteralNumber(El,Flags));
+      end;
 
     if El.IsOfObject then
       begin
@@ -19828,9 +19832,8 @@ var
 begin
   Result:=nil;
   if Args.Count=0 then
-    Result:=CreateLiteralNull(Parent)
+    Result:=TJSArrayLiteral(CreateElement(TJSArrayLiteral,Parent))
   else
-    begin
     try
       Params:=TJSArrayLiteral(CreateElement(TJSArrayLiteral,Parent));
       for i:=0 to Args.Count-1 do
@@ -19840,7 +19843,6 @@ begin
       if Result=nil then
         Params.Free;
     end;
-  end;
 end;
 
 procedure TPasToJSConverter.AddRTTIArgument(Arg: TPasArgument;
@@ -20146,6 +20148,7 @@ var
   OptionsEl: TJSObjectLiteral;
   ResultTypeInfo: TJSElement;
   Call: TJSCallExpression;
+  Flags: Integer;
 
   procedure AddOption(const aName: String; JS: TJSElement);
   var
@@ -20155,8 +20158,6 @@ var
     if OptionsEl=nil then
       begin
       OptionsEl:=TJSObjectLiteral(CreateElement(TJSObjectLiteral,Proc));
-      if ResultTypeInfo=nil then
-        Call.AddArg(CreateLiteralNull(Proc));
       Call.AddArg(OptionsEl);
       end;
     ObjLit:=OptionsEl.Elements.AddElement;
@@ -20167,7 +20168,7 @@ var
 var
   FunName: String;
   C: TClass;
-  MethodKind, Flags: Integer;
+  MethodKind: Integer;
   ResultEl: TPasResultElement;
   ProcScope, OverriddenProcScope: TPasProcedureScope;
   OverriddenClass: TPasClassType;
@@ -20225,16 +20226,8 @@ begin
     // param params as []
     Call.AddArg(CreateRTTIArgList(Proc,Proc.ProcType.Args,AContext));
 
-    // param resulttype as typeinfo reference
-    if C.InheritsFrom(TPasFunction) then
-      begin
-      ResultEl:=TPasFunction(Proc).FuncType.ResultEl;
-      ResultTypeInfo:=CreateTypeInfoRef(ResultEl.ResultType,AContext,ResultEl);
-      if ResultTypeInfo<>nil then
-        Call.AddArg(ResultTypeInfo);
-      end;
-
-    // param options if needed as {}
+    // optional params:
+    ResultTypeInfo:=nil;
     Flags:=0;
     if Proc.IsStatic then
       inc(Flags,pfStatic);
@@ -20244,9 +20237,24 @@ begin
       inc(Flags,pfAsync);
     if Proc.IsExternal then
       inc(Flags,pfExternal);
-    if Flags>0 then
-      AddOption(GetBIName(pbivnRTTIProcFlags),CreateLiteralNumber(Proc,Flags));
     Attr:=aResolver.GetAttributeCalls(Members,Index);
+
+    // param resulttype as typeinfo reference
+    if C.InheritsFrom(TPasFunction) then
+      begin
+      ResultEl:=TPasFunction(Proc).FuncType.ResultEl;
+      ResultTypeInfo:=CreateTypeInfoRef(ResultEl.ResultType,AContext,ResultEl);
+      if ResultTypeInfo<>nil then
+        Call.AddArg(ResultTypeInfo);
+      end;
+    if (ResultTypeInfo=nil) and ((Flags>0) or (length(Attr)>0)) then
+      Call.AddArg(CreateLiteralNull(Proc));
+
+    // flags if needed
+    if (Flags>0) or (length(Attr)>0) then
+      Call.AddArg(CreateLiteralNumber(Proc,Flags));
+
+    // param options if needed as {}
     if length(Attr)>0 then
       AddOption(GetBIName(pbivnRTTIMemberAttributes),
                 CreateRTTIAttributes(Attr,Proc,AContext));

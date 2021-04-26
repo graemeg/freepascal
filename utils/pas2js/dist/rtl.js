@@ -1354,11 +1354,10 @@ var rtl = {
         };
       };
     };
-    tis.addMethod = function(name,methodkind,params,result,options){
+    tis.addMethod = function(name,methodkind,params,result,flags,options){
       var t = this.$addMember(name,rtl.tTypeMemberMethod,options);
       t.methodkind = methodkind;
-      t.procsig = rtl.newTIProcSig(params);
-      t.procsig.resulttype = result?result:null;
+      t.procsig = rtl.newTIProcSig(params,result?result:null,flags?flags:0);
       this.methods.push(name);
       return t;
     };
