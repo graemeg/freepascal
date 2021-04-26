@@ -955,6 +955,8 @@ var
   t: Text;
   hp: TCmdStrListItem;
   filepath: TCmdStr;
+  i,j: integer;
+  lib: AnsiString;
 {$endif XTENSA}
 begin
 {$ifdef XTENSA}
@@ -1139,6 +1141,20 @@ begin
   if ioresult<>0 then
     exit;
 
+  { extract libraries from linker options and add to static libraries list }
+  Info.ExtraOptions:=trim(Info.ExtraOptions);
+  i := pos('-l', Info.ExtraOptions);
+  while i > 0 do
+   begin
+     j:=pos(' ',Info.ExtraOptions);
+     if j=0 then
+       j:=length(Info.ExtraOptions)+1;
+     lib:=copy(Info.ExtraOptions,i+2,j-i-2);
+     AddStaticCLibrary(lib);
+     delete(Info.ExtraOptions,i,j);
+     trim(Info.ExtraOptions);
+     i := pos('-l', Info.ExtraOptions);
+   end;
   hp:=TCmdStrListItem(StaticLibFiles.First);
   while assigned(hp) do
     begin
@@ -1256,8 +1272,7 @@ begin
     Replace(cmdstr,'$GCSECTIONS',GCSectionsStr);
     Replace(cmdstr,'$DYNLINK',DynLinkStr);
    end;
-  if success and not(cs_link_nolink in current_settings.globalswitches) then
-    success:=DoExec(FindUtil(utilsprefix+BinStr),cmdstr,true,false);
+   success:=DoExec(FindUtil(utilsprefix+BinStr),cmdstr,true,false);
 
 { Remove ReponseFile }
   if success and not(cs_link_nolink in current_settings.globalswitches) then
