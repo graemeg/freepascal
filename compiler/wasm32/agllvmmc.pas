@@ -112,13 +112,16 @@ implementation
                 list.Concat(tai_functype.create(make_mangledname('FINALIZE$',cur_unit.u.globalsymtable,''),TWasmFuncType.Create([],[])));
             end;
           for i:=0 to cur_unit.u.deflist.Count-1 do
-            if assigned(cur_unit.u.deflist[i]) and (tdef(cur_unit.u.deflist[i]).typ = procdef) then
-              begin
-                proc := tprocdef(cur_unit.u.deflist[i]);
-                if (not proc.owner.iscurrentunit or (po_external in proc.procoptions)) and
-                   ((proc.paras.Count=0) or (proc.has_paraloc_info in [callerside,callbothsides])) then
-                  thlcgwasm(hlcg).g_procdef(list,proc);
-              end;
+            begin
+              def:=tdef(cur_unit.u.deflist[i]);
+              if assigned(def) and (tdef(def).typ = procdef) then
+                begin
+                  proc := tprocdef(def);
+                  if (not proc.owner.iscurrentunit or (po_external in proc.procoptions)) and
+                     ((proc.paras.Count=0) or (proc.has_paraloc_info in [callerside,callbothsides])) then
+                    thlcgwasm(hlcg).g_procdef(list,proc);
+                end;
+            end;
           cur_unit:=tused_unit(cur_unit.Next);
         end;
       WriteTree(list);
