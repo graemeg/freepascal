@@ -41,10 +41,12 @@ unit agcpugas;
 
       TAArch64Assembler=class(TGNUassembler)
         constructor CreateWithWriter(info: pasminfo; wr: TExternalAssemblerOutputFile; freewriter, smart: boolean); override;
+        function MakeCmdLine: TCmdStr; override;
       end;
 
       TAArch64AppleAssembler=class(TAppleGNUassembler)
         constructor CreateWithWriter(info: pasminfo; wr: TExternalAssemblerOutputFile; freewriter, smart: boolean); override;
+        function MakeCmdLine: TCmdStr; override;
       end;
 
       TAArch64ClangGASAssembler=class(TAArch64Assembler)
@@ -53,6 +55,7 @@ unit agcpugas;
       protected
         function sectionflags(secflags:TSectionFlags):string;override;
       public
+        function MakeCmdLine: TCmdStr; override;
         procedure WriteAsmList; override;
       end;
 
@@ -64,6 +67,18 @@ unit agcpugas;
 
     const
       cputype_to_gas_march : array[tcputype] of string = (
+        '', // cpu_none
+        '', // armv8 is not accepted by GNU assembler
+        'armv8-a',
+        'armv8.1-a',
+        'armv8.2-a',
+        'armv8.3-a',
+        'armv8.4-a',
+        'armv8.5-a',
+        'armv8.6-a'
+      );
+
+      cputype_to_clang_march : array[tcputype] of string = (
         '', // cpu_none
         'armv8',
         'armv8-a',
@@ -94,6 +109,15 @@ unit agcpugas;
         InstrWriter := TAArch64InstrWriter.create(self);
       end;
 
+    function TAArch64Assembler.MakeCmdLine: TCmdStr;
+      begin
+        result:=inherited MakeCmdLine;
+        if cputype_to_gas_march[current_settings.cputype] <> '' then
+	  Replace(result,'$MARCHOPT','-march='+cputype_to_gas_march[current_settings.cputype])
+        else
+          Replace(result,'$MARCHOPT','');
+      end;
+
 {****************************************************************************}
 {                      Apple AArch64 Assembler writer                        }
 {****************************************************************************}
@@ -105,9 +129,23 @@ unit agcpugas;
       end;
 
 
+    function TAArch64AppleAssembler.MakeCmdLine: TCmdStr;
+      begin
+        result:=inherited MakeCmdLine;
+        if cputype_to_gas_march[current_settings.cputype] <> '' then
+	  Replace(result,'$MARCHOPT','-march='+cputype_to_gas_march[current_settings.cputype])
+        else
+          Replace(result,'$MARCHOPT','');
+      end;
+
 {****************************************************************************}
 {                      CLang AArch64 Assembler writer                        }
 {****************************************************************************}
+
+    function TAArch64ClangGASAssembler.MakeCmdLine: TCmdStr;
+      begin
+        result:=inherited MakeCmdLine;
+      end;
 
     procedure TAArch64ClangGASAssembler.TransformSEHDirectives(list:TAsmList);
 
@@ -773,7 +811,7 @@ unit agcpugas;
             id     : as_gas;
             idtxt  : 'AS';
             asmbin : 'as';
-            asmcmd : '-o $OBJ $EXTRAOPT $ASM';
+            asmcmd : '-o $OBJ $MARCHOPT $EXTRAOPT $ASM';
             supported_targets : [system_aarch64_freebsd,system_aarch64_linux,system_aarch64_android];
             flags : [af_needar,af_smartlink_sections];
             labelprefix : '.L';
@@ -787,7 +825,7 @@ unit agcpugas;
             id     : as_clang_asdarwin;
             idtxt  : 'CLANG';
             asmbin : 'clang';
-            asmcmd : '-x assembler -c -target $TRIPLET -o $OBJ $EXTRAOPT -x assembler $ASM';
+            asmcmd : '-x assembler -c -target $TRIPLET -o $OBJ $MARCHOPT $EXTRAOPT -x assembler $ASM';
             supported_targets : [system_aarch64_ios,system_aarch64_darwin];
             flags : [af_needar,af_smartlink_sections,af_supports_dwarf,af_llvm,af_supports_hlcfi];
             labelprefix : 'L';
@@ -801,7 +839,7 @@ unit agcpugas;
             id     : as_clang_gas;
             idtxt  : 'CLANG';
             asmbin : 'clang';
-            asmcmd : '-x assembler -c -target $TRIPLET -o $OBJ $EXTRAOPT -x assembler $ASM';
+            asmcmd : '-x assembler -c -target $TRIPLET -o $OBJ $MARCHOPT $EXTRAOPT -x assembler $ASM';
             supported_targets : [system_aarch64_win64];
             flags : [af_needar,af_smartlink_sections,af_supports_dwarf,af_llvm,af_supports_hlcfi];
             labelprefix : '.L';
