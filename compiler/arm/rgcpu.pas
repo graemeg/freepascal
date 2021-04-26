@@ -400,10 +400,11 @@ unit rgcpu;
         level := 0;
         while assigned(hp) do
           begin
-            if IsIT(taicpu(hp).opcode) then
-              break
-            else if hp.typ=ait_instruction then
-              inc(level);
+            if hp.typ=ait_instruction then
+              if IsIT(taicpu(hp).opcode) then
+                break
+              else
+                inc(level);
 
             hp:=tai(hp.Previous);
           end;
