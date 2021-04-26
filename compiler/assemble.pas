@@ -1719,6 +1719,11 @@ Implementation
 {$ifdef ARM}
                    asd_thumb_func:
                      ObjData.ThumbFunc:=true;
+                   asd_force_thumb:
+                     begin
+                       ObjData.ThumbFunc:=true;
+                       Code16:=true;
+                     end;
                    asd_code:
                      begin
                        { ai_directive(hp).name can be only 16 or 32, this is checked by the reader }
@@ -1922,6 +1927,9 @@ Implementation
                      { ignore for now, but should be added}
                      ;
                    asd_thumb_func:
+                     { ignore for now, but should be added}
+                     ;
+                   asd_force_thumb:
                      { ignore for now, but should be added}
                      ;
                    asd_code:
