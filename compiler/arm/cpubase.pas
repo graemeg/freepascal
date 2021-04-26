@@ -605,6 +605,9 @@ unit cpubase;
       end;
 
 
+{$push}
+{ Disable range and overflow checking here }
+{$R-}{$Q-}        
     function is_thumb32_imm(d: aint): boolean;
       var
         t : aint;
@@ -639,9 +642,6 @@ unit cpubase;
           end;
       end;
     
-{$push}
-{ Disable range and overflow checking here }
-{$R-}{$Q-}        
     function is_continuous_mask(d : aword;var lsb, width: byte) : boolean;
       var
         msb : byte;
