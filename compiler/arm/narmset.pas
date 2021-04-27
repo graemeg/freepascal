@@ -196,10 +196,18 @@ implementation
             if assigned(t^.less) then
               genitem_thumb2(list,t^.less);
             { fill possible hole }
-            for i:=last.svalue+1 to t^._low.svalue-1 do
-              list.concat(Tai_const.Create_rel_sym(aitconst_half16bit,tablelabel,elselabel));
-            for i:=t^._low.svalue to t^._high.svalue do
-              list.concat(Tai_const.Create_rel_sym(aitconst_half16bit,tablelabel,blocklabel(t^.blockid)));
+            i:=last.svalue+1;
+            while i<=t^._low.svalue-1 do
+              begin
+                list.concat(Tai_const.Create_rel_sym(aitconst_half16bit,tablelabel,elselabel));
+                i:=i+1;
+              end;
+            i:=t^._low.svalue;
+            while i<=t^._high.svalue do
+              begin
+                list.concat(Tai_const.Create_rel_sym(aitconst_half16bit,tablelabel,blocklabel(t^.blockid)));
+                i:=i+1;
+              end;
             last:=t^._high.svalue;
             if assigned(t^.greater) then
               genitem_thumb2(list,t^.greater);
