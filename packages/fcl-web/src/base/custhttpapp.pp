@@ -76,7 +76,6 @@ Type
     Procedure InitResponse(AResponse : TResponse); override;
     function WaitForRequest(out ARequest : TRequest; out AResponse : TResponse) : boolean; override;
     Function CreateServer : TEmbeddedHttpServer; virtual;
-    Property HTTPServer : TEmbeddedHttpServer Read FServer;
   Public
     Procedure Run; override;
     Procedure Terminate; override;
@@ -104,6 +103,8 @@ Type
     Property UseSSL : Boolean Read GetUseSSL Write SetUseSSL;
     // HostName to use when using SSL
     Property HostName : String Read GetHostName Write SetHostName;
+    // Access to server so you can set certificate data
+    Property HTTPServer : TEmbeddedHttpServer Read FServer;
   end;
 
   { TCustomHTTPApplication }
@@ -111,6 +112,7 @@ Type
   TCustomHTTPApplication = Class(TCustomWebApplication)
   private
     procedure FakeConnect;
+    function GetCertificateData: TCertificateData;
     function GetHostName: String;
     function GetIdle: TNotifyEvent;
     function GetIDleTimeOut: Cardinal;
@@ -133,9 +135,10 @@ Type
     procedure SetUseSSL(AValue: Boolean);
   protected
     function InitializeWebHandler: TWebHandler; override;
-    Function HTTPHandler : TFPHTTPServerHandler;
   Public
     procedure Terminate; override;
+    // Access to HTTP handler
+    Function HTTPHandler : TFPHTTPServerHandler;
     Property Address : string Read GetAddress Write SetAddress;
     Property Port : Word Read GetPort Write SetPort Default 80;
     // Max connections on queue (for Listen call)
@@ -154,6 +157,8 @@ Type
     Property UseSSL : Boolean Read GetUseSSL Write SetUseSSL;
     // Hostname to use when using SSL
     Property HostName : String Read GetHostName Write SetHostName;
+    // Access to certificate data
+    Property CertificateData : TCertificateData Read GetCertificateData;
   end;
 
 
@@ -294,6 +299,11 @@ begin
   except
     // Ignore errors this may raise.
   end
+end;
+
+function TCustomHTTPApplication.GetCertificateData: TCertificateData;
+begin
+  Result:=HTTPHandler.HTTPServer.CertificateData;
 end;
 
 function TCustomHTTPApplication.GetHostName: String;
