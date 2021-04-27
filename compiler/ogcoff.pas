@@ -2063,6 +2063,8 @@ const pemagic : array[0..3] of byte = (
                   FCoffSyms.Read(bosym,sizeof(bosym));
                   if bosym.Name.Offset.Zeroes<>0 then
                     begin
+                      { Added for sake of global data analysis }
+                      strname[0]:=#0;
                       move(bosym.Name.ShortName,strname[1],8);
                       strname[9]:=#0;
                       strname[0]:=chr(strlen(@strname[1]));
@@ -2081,6 +2083,8 @@ const pemagic : array[0..3] of byte = (
                   FCoffSyms.Read(sym,sizeof(sym));
                   if plongint(@sym.name)^<>0 then
                     begin
+                      { Added for sake of global data analysis }
+                      strname[0]:=#0;
                       move(sym.name,strname[1],8);
                       strname[9]:=#0;
                       strname[0]:=chr(strlen(@strname[1]));

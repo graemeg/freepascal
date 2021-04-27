@@ -1403,8 +1403,8 @@ Implementation
                   len:=p-pstart;
                   if len>255 then
                     internalerror(200509187);
-                  move(pstart^,hs[1],len);
                   hs[0]:=chr(len);
+                  move(pstart^,hs[1],len);
                   sym:=objdata.symbolref(hs);
                   { Second symbol? }
                   if assigned(relocsym) then
