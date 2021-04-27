@@ -18,6 +18,7 @@ unit ptcgraph;
 
 {//$define logging}
 {$define FPC_GRAPH_SUPPORTS_TRUECOLOR}
+{$modeswitch DEFAULTPARAMETERS+}
 
 {******************************************************************************}
                                     interface
@@ -139,7 +140,7 @@ var
   WindowTitle: AnsiString;
   PTCWrapperObject: TPTCWrapperThread;
 
-function InstallUserMode(Width, Height: SmallInt; Colors: LongInt; HardwarePages: SmallInt; XAspect, YAspect: Word): smallint;
+function InstallUserMode(Width, Height: SmallInt; Colors: LongInt; HardwarePages: SmallInt = 1; XAspect: Word = 10000; YAspect: Word = 10000): smallint;
 
 {******************************************************************************}
                                  implementation
