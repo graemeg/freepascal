@@ -191,7 +191,7 @@ implementation
 
         procedure genitem_thumb2(list:TAsmList;t : pcaselabel);
           var
-            i : aint;
+            i : int64;
           begin
             if assigned(t^.less) then
               genitem_thumb2(list,t^.less);
