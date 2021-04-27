@@ -189,6 +189,7 @@ implementation
                    { should the node be replaced? }
                    if assigned(hp) then
                      begin
+                       hp.flags := hp.flags + (p.flags * [nf_usercode_entry]);
                        p.free;
                        { switch to new node }
                        p:=hp;
