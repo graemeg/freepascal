@@ -96,8 +96,7 @@ unit ag68kvasm;
         result:=asminfo^.asmcmd;
 
         case target_info.system of
-          { a.out doesn't support named sections, a.out is limited 
-            (no named sections) lets use ELF for interoperability }
+          { a.out doesn't support named sections, lets use ELF for interoperability }
           system_m68k_amiga,
           system_m68k_atari,
           system_m68k_sinclairql: objtype:='-Felf';
