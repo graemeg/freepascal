@@ -21,7 +21,7 @@ unit custhttpapp;
 Interface
 
 uses
-  Classes, SysUtils, httpdefs, custweb, ssockets,  fphttpserver;
+  Classes, SysUtils, httpdefs, custweb, ssockets,  fphttpserver, sslbase;
 
 Type
   TCustomHTTPApplication = Class;
