@@ -266,6 +266,7 @@ begin
   GCSectionsStr:='';
   DynLinkStr:='';
   FlagsStr:='';
+  QLFlagsStr:='';
   MapStr:='';
 
   if (cs_link_map in current_settings.globalswitches) then
