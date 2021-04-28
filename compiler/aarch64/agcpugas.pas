@@ -837,7 +837,7 @@ unit agcpugas;
        as_aarch64_clang_gas_info : tasminfo =
           (
             id     : as_clang_gas;
-            idtxt  : 'CLANG';
+            idtxt  : 'AS-CLANG';
             asmbin : 'clang';
             asmcmd : '-x assembler -c -target $TRIPLET -o $OBJ $MARCHOPT $EXTRAOPT -x assembler $ASM';
             supported_targets : [system_aarch64_win64];
