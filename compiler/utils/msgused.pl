@@ -4,8 +4,8 @@
 
 unlink("./msgidx.inc");
 unlink("./msgtxt.inc");
-@compiler_src = (glob("./*.inc"),
-                 glob("./*.pas"));
+@compiler_src = (glob("./*.inc"),glob("./*/*.inc"),
+                 glob("./*.pas"),glob("./*/*.pas"));
 
 open(MESSAGE_FILE, "< ./msg/errore.msg") or
   die "Couldn't open <./msg/errore.msg> for reading: $!\n";
