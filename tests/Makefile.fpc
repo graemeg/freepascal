@@ -111,7 +111,7 @@ C_SUBDIR=$(TEST_OS_TARGET)/$(TEST_CPU_TARGET)
 
 # Date and time the testsuite was run
 ifneq ($(DATE),__missing_command_DATE)
-TEST_DATETIME:=$(shell $(DATE) +%Y%m%d%H%M)
+TEST_DATETIME:=$(shell $(DATE) -u +%Y%m%d%H%M)
 else
 # Use a spaceless string, as it will be used for file names
 TEST_DATETIME="No-date"

@@ -2421,7 +2421,7 @@ endif
 TEST_OUTPUTDIR=output/$(TEST_TARGETSUFFIX)
 C_SUBDIR=$(TEST_OS_TARGET)/$(TEST_CPU_TARGET)
 ifneq ($(DATE),__missing_command_DATE)
-TEST_DATETIME:=$(shell $(DATE) +%Y%m%d%H%M)
+TEST_DATETIME:=$(shell $(DATE) -u +%Y%m%d%H%M)
 else
 TEST_DATETIME="No-date"
 endif
