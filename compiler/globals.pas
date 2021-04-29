@@ -416,7 +416,7 @@ interface
 {$if defined(m68k)}
        { Sinclair QL specific }
        sinclairql_metadata_format: string[4] = 'QHDR';
-       sinclairql_vlink_experimental: boolean = false; { temporary }
+       sinclairql_vlink_experimental: boolean = true; { temporary }
 {$endif defined(m68k)}
 
        { default name of the C-style "main" procedure of the library/program }

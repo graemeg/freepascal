@@ -2764,7 +2764,7 @@ begin
                     'L':
                       begin
                         if (target_info.system in [system_m68k_sinclairql]) then
-                          sinclairql_vlink_experimental:=true
+                          sinclairql_vlink_experimental:=false
                         else
                           IllegalPara(opt);
                       end;
