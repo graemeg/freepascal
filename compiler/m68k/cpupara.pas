@@ -83,7 +83,7 @@ unit cpupara;
       begin
         { d0 and d1 are considered volatile }
         Result:=VOLATILE_INTREGISTERS;
-        if (target_info.system in [system_m68k_palmos]) or
+        if (target_info.system in [system_m68k_palmos,system_m68k_macosclassic]) or
            ((target_info.system in [system_m68k_atari]) and (calloption in [pocall_syscall])) then
           include(result,RS_D2);
       end;
