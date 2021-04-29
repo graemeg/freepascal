@@ -4196,6 +4196,7 @@ A*2Twince_Windows CE
 # aarch64 targets
 a*2Tandroid_Android
 a*2Tdarwin_Darwin/Mac OS X
+a*2Tfreebsd_FreeBSD
 a*2Tios_iOS
 a*2Tlinux_Linux
 a*2Twin64_Windows 64
