@@ -337,8 +337,8 @@ implementation
                 else
                   begin
                     calc_divconst_magic_unsigned(resultdef.size * 8, tordconstnode(right).value, reciprocal, magic_add, shift);
-                    cg.a_load_const_reg(current_asmdata.CurrAsmList, opsize, reciprocal, resultreg);
-
+                    { Add explicit typecast to tcgint type, to avoid range or overflow check }
+                    cg.a_load_const_reg(current_asmdata.CurrAsmList, opsize, tcgint(reciprocal), resultreg);
                     { UMULH is only available for the full 64-bit registers }
                     if opsize in [OS_64, OS_S64] then
                       begin
