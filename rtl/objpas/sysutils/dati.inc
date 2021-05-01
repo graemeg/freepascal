@@ -1141,7 +1141,7 @@ var
             end ;
             'H':
               if isInterval then
-                StoreInt(Hour + trunc(abs(DateTime))*24, 0)
+                StoreInt(Hour + trunc(abs(DateTime))*24, Count)
               else
               if Clock12 then
               begin
@@ -1159,14 +1159,14 @@ var
                   StoreInt(Hour, 2);
               end;
             'N': if isInterval then
-                   StoreInt(Minute + (Hour + trunc(abs(DateTime))*24)*60, 0)
+                   StoreInt(Minute + (Hour + trunc(abs(DateTime))*24)*60, Count)
                  else
                  if Count = 1 then
                    StoreInt(Minute, 0)
                  else
                    StoreInt(Minute, 2);
             'S': if isInterval then
-                   StoreInt(Second + (Minute + (Hour + trunc(abs(DateTime))*24)*60)*60, 0)
+                   StoreInt(Second + (Minute + (Hour + trunc(abs(DateTime))*24)*60)*60, Count)
                  else
                  if Count = 1 then
                    StoreInt(Second, 0)
