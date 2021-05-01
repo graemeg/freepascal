@@ -65,9 +65,17 @@ uses
 (****** non portable routines ******)
 
 function FileOpen(const FileName: rawbytestring; Mode: Integer): THandle;
+var
+  QLMode: Integer;
 begin
   FileOpen:=-1;
-  if FileOpen < -1 then
+  case Mode of
+    fmOpenRead: QLMode := Q_OPEN_IN;
+    fmOpenWrite: QLMode :=  Q_OPEN_OVER;
+    fmOpenReadWrite: QLMode := Q_OPEN;
+  end;
+  FileOpen := io_open(pchar(Filename), QLMode);
+  if FileOpen < 0 then
     FileOpen:=-1;
 end;
 
@@ -99,8 +107,9 @@ end;
 
 function FileCreate(const FileName: RawByteString) : THandle;
 begin
-  FileCreate:=-1;
-  if FileCreate < -1 then
+  DeleteFile(FileName);
+  FileCreate := io_open(pchar(FileName), Q_OPEN_NEW);
+  if FileCreate < 0 then
     FileCreate:=-1;
 end;
 
@@ -119,12 +128,12 @@ end;
 
 function FileRead(Handle: THandle; out Buffer; Count: LongInt): LongInt;
 begin
-  FileRead:=-1;
   if (Count<=0) then
     exit;
 
-  FileRead:=-1;
-  if FileRead < -1 then
+  { io_fstrg handles EOF }
+  FileRead := io_fstrg(Handle, -1, @Buffer, Count);
+  if FileRead < 0 then
     FileRead:=-1;
 end;
 
@@ -134,9 +143,8 @@ begin
   FileWrite:=-1;
   if (Count<=0) then 
     exit;
-
-  FileWrite:=-1;
-  if FileWrite < -1 then
+  FileWrite:= io_sstrg(Handle, -1, @Buffer, Count);
+  if FileWrite < 0 then
     FileWrite:=-1;
 end;
 
@@ -144,42 +152,88 @@ end;
 function FileSeek(Handle: THandle; FOffset, Origin: LongInt) : LongInt;
 var
   dosResult: longint;
+  seekEOF: longint;
 begin
-  FileSeek:=-1;
+  FileSeek := -1;
 
-  dosResult:=-1;
-  if dosResult < 0 then
-    exit;
+  case Origin of
+    fsFromBeginning: dosResult := fs_posab(Handle, FOffset);
+    fsFromCurrent: dosResult := fs_posre(Handle, FOffset);
+    fsFromEnd: 
+      begin
+        seekEOF := $7FFFFFBF;
+        dosResult := fs_posab(Handle, seekEOF);
+        fOffset := -FOffset;
+        dosResult := fs_posre(Handle, FOffset);
+      end;  
+  end;
 
-  FileSeek:=dosResult;
+  { We might need to handle Errors in dosResult, but
+    EOF is permitted as a non-error in QDOS/SMSQ. }
+  if dosResult = ERR_EF then
+    dosResult := 0;
+
+  if dosResult <> 0 then
+    begin
+      FileSeek := -1;
+      exit;
+    end;
+
+  { However, BEWARE! FS_POSAB/FS_POSRE use FOFFSET as a VAR parameter.
+    the new file position is returned in FOFFSET. }
+
+  { Did we change FOffset? }
+  FileSeek := FOffset;
 end;
 
 function FileSeek(Handle: THandle; FOffset: Int64; Origin: Longint): Int64;
+var
+  longOffset: longint;
 begin
-  FileSeek:=FileSeek(Handle,LongInt(FOffset),Origin);
+  longOffset := longint(FOffset);
+  FileSeek:=FileSeek(Handle, longOffset, Origin);
+  flush(output);
 end;
 
 
 procedure FileClose(Handle: THandle);
 begin
+  io_close(Handle);
 end;
 
 
 function FileTruncate(Handle: THandle; Size: Int64): Boolean;
 begin
-  FileTruncate:=False;
+  FileTruncate := False;
+  if FileSeek(Handle, LongInt(Size), fsFromBeginning) = -1 then
+    exit;
+  if fs_truncate(Handle) = 0 then
+    FileTruncate := True;
 end;
-
 
 function DeleteFile(const FileName: RawByteString) : Boolean;
 begin
   DeleteFile:=false;
+  if io_delet(pchar(Filename)) < 0 then
+    exit;
+  DeleteFile := True;
 end;
 
 
 function RenameFile(const OldName, NewName: RawByteString): Boolean;
+var
+  Handle: THandle;
+  QLerr: longint;
 begin
   RenameFile:=false;
+  Handle := FileOpen(OldName, fmOpenReadWrite);
+  if Handle = -1 then
+    exit;
+
+  QLerr := fs_rename(Handle, pchar(NewName));
+  FileClose(Handle);
+  if QLerr >= 0 then
+    RenameFile := true; 
 end;
 
 
