@@ -1061,7 +1061,8 @@ implementation
                  { check for pre/post indexed in spilling_get_operation_type_ref }
                  result:=operand_read;
              end;
-           A_MOVK:
+           A_MOVK,
+           A_BFI:
              begin
                if opnr=0 then
                  result:=operand_readwrite
@@ -1074,7 +1075,6 @@ implementation
            A_ADRP,
            A_AND,
            A_ASR,
-           A_BFI,
            A_BFXIL,
            A_CLZ,
            A_CSEL,
