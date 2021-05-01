@@ -1,6 +1,6 @@
 {
     This file is part of the Free Pascal run time library.
-    Copyright (c) 2020 by Karoly Balogh
+    Copyright (c) 2020-2021 by Karoly Balogh
 
     Headers to QDOS OS functions used by the Sinclair QL RTL
 
@@ -13,7 +13,6 @@
 
  **********************************************************************}
 
-{$i qdosh.inc}
 
 procedure mt_frjob(jobID: Tjobid; exitCode: longint); external name '_mt_frjob';
 function mt_inf(sys_vars: ppchar; ver_ascii: plongint): Tjobid; external name '_mt_inf';

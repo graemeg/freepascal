@@ -19,6 +19,7 @@ interface
 
 implementation
 
+{$i qdosh.inc}
 {$i qdosfuncs.inc}
 
 var

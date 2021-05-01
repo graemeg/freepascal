@@ -53,6 +53,7 @@ uses
 { Include platform independent implementation part }
 {$i sysutils.inc}
 
+{$i qdosh.inc}
 {$i qdosfuncs.inc}
 {$i smsfuncs.inc}
 
