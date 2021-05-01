@@ -1861,7 +1861,7 @@ implementation
                   (varregable <> vr_none)) or
                  (not refpara and
                   not(varregable in [vr_none,vr_addr])))
-{$if not defined(powerpc) and not defined(powerpc64)}
+{$if not defined(powerpc) and not defined(powerpc64) and not defined(aarch64)}
                 and ((vardef.typ <> recorddef) or
                      (varregable = vr_addr) or
                      tabstractrecordsymtable(tabstractrecorddef(vardef).symtable).has_single_field(tempdef) or
