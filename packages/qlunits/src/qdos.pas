@@ -54,6 +54,68 @@ const
   Q_OPEN_OVER = 3;  { Not available on microdrives. }
   Q_OPEN_DIR = 4;
 
+{ sysvars offsets }
+const
+   SV_IDENT = $00;
+   SV_CHEAP = $04;
+   SV_CHPFR = $08;
+   SV_FREE = $0c;
+   SV_BASIC = $10;
+   SV_TRNSP = $14;
+   SV_TRNFR = $18;
+   SV_RESPR = $1c;
+   SV_RAMT = $20;
+   SV_RAND = $2e;
+   SV_POLLM = $30;
+   SV_TVMOD = $32;
+   SV_SCRST = $33;
+   SV_MCSTA = $34;
+   SV_PCINT = $35;
+   SV_NETNR = $37;
+   SV_I2LST = $38;
+   SV_PLIST = $3c;
+   SV_SHLST = $40;
+   SV_DRLST = $44;
+   SV_DDLST = $48;
+   SV_KEYQ = $4c;
+   SV_TRAPV = $50;
+   SV_BTPNT = $54;
+   SV_BTBAS = $58;
+   SV_BTTOP = $5c;
+   SV_JBTAG = $60;
+   SV_JBMAX = $62;
+   SV_JBPNT = $64;
+   SV_JBBAS = $68;
+   SV_JBTOP = $6c;
+   SV_CHTAG = $70;
+   SV_CHMAX = $72;
+   SV_CHPNT = $74;
+   SV_CHBAS = $78;
+   SV_CHTOP = $7c;
+   SV_CAPS = $88;
+   SV_ARBUF = $8a;
+   SV_ARDEL = $8c;
+   SV_ARFRQ = $8e;
+   SV_ARCNT = $90;
+   SV_CQCH = $92;
+   SV_SOUND = $96;
+   SV_SER1C = $98;
+   SV_SER2C = $9c;
+   SV_TMODE = $a0;
+   SV_PTYP = $a1;
+   SV_CSUB = $a2;
+   SV_TIMO = $a6;
+   SV_TIMOV = $a8;
+   SV_FSTAT = $aa;
+   SV_MDRUN = $ee;
+   SV_MDCNT = $ef;
+   SV_MDDID = $f0;
+   SV_MDSTA = $f8;
+   SV_FSDEF = $100;
+   SV_FSLST = $140;
+   SV_TOP = $180;
+
+
 type
   Tqlfloat = array[0..5] of byte;
   Pqlfloat = ^Tqlfloat;
@@ -81,43 +143,13 @@ type
   PWindowDef = ^TWindowDef;
 
 
-{ the functions declared as external here are implemented in the system unit. They're included
-  here via externals, do avoid double implementation of assembler wrappers (KB) }
+{ the functions declared in qdosfuncs.inc are implemented in the system unit. They're included
+  here via externals, do avoid double implementation of assembler wrappers. for this reason,
+  qdosfuncs.inc in packages/qlunits must be kept identical to the one in rtl/sinclairql (KB). }
 
-procedure mt_frjob(jobID: Tjobid; exitCode: longint); external name '_mt_frjob';
-function mt_inf(sys_vars: ppchar; ver_ascii: plongint): Tjobid; external name '_mt_inf';
+{$i qdosfuncs.inc}
 
-procedure mt_dmode(s_mode: pword; d_type: pword); external name '_mt_dmode';
-
-function mt_alchp(size: dword; sizegot: pdword; jobid: Tjobid): pointer; external name '_mt_alchp';
-procedure mt_rechp(area: pointer); external name '_mt_rechp';
-
-function io_open_qlstr(name_qlstr: pointer; mode: longint): Tchanid; external name '_io_open_qlstr';
-function io_open(name: pchar; mode: longint): Tchanid; external name '_io_open';
-function io_close(chan: Tchanid): longint; external name '_io_close';
-function io_delet(name: pchar): longint; external name '_io_delet';
-
-function io_fbyte(chan: Tchanid; timeout: Ttimeout): longint; external name '_io_fbyte';
-function io_fline(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): longint; external name '_io_fline';
-function io_fstrg(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): longint; external name '_io_fstrg';
-function io_sbyte(chan: Tchanid; timeout: Ttimeout; c: char): longint; external name '_io_sbyte';
-function io_sstrg(chan: Tchanid; timeout: Ttimeout; buf: pointer; len: word): longint; external name '_io_sstrg';
-
-function fs_posab(chan: Tchanid; var new_pos: longint): longint; external name '_fs_posab';
-function fs_posre(chan: Tchanid; var new_pos: longint): longint; external name '_fs_posre';
-function fs_headr(chan: Tchanid; buf: pointer; buf_size: word): longint; external name '_fs_headr';
-function fs_rename_qlstr(chan: Tchanid; new_name_as_qlstr: pointer): longint; external name '_fs_rename_qlstr';
-function fs_rename(chan: Tchanid; new_name: pchar): longint; external name '_fs_rename';
-function fs_truncate(chan: Tchanid): longint; external name '_fs_truncate';
-function fs_mkdir(chan: Tchanid): longint; external name '_iof_mkdr'; { SMS }
-
-function sd_wdef(chan: Tchanid; timeout: Ttimeout; border_colour: byte; border_width: word; window: PQLRect): longint; external name '_sd_wdef'; 
-function sd_clear(chan: Tchanid; timeout: Ttimeout): longint; external name '_sd_clear';
-
-function ut_con(params: PWindowDef): Tchanid; external name '_ut_con';
-function ut_scr(params: PWindowDef): Tchanid; external name '_ut_scr';
-
-function mt_rclck: longint; external name '_mt_rclck';
+{ other functions, not used/implemented by the RTL }
 
 procedure sd_point(chan: Tchanid; timeout: Ttimeout; x: Pqlfloat; y: Pqlfloat);
 procedure sd_point(chan: Tchanid; timeout: Ttimeout; x: double; y: double);
