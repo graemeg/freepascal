@@ -583,13 +583,15 @@ implementation
         opc: tasmop;
         shift: byte;
         so: tshifterop;
-        reginited,doinverted: boolean;
+        reginited,doinverted,extendedsize: boolean;
         manipulated_a: tcgint;
         leftover_a: word;
       begin
 {$ifdef extdebug}
         list.concat(tai_comment.Create(strpnew('Generating constant ' + tostr(a) + ' / $' + hexstr(a, 16))));
 {$endif extdebug}
+        extendedsize := (size in [OS_64,OS_S64]);
+
         case a of
           { Small positive number }
           $0..$FFFF:
@@ -613,19 +615,50 @@ implementation
             end;
           else
             begin
+              if not extendedsize then
+                { Mostly so programmers don't get confused when they view the disassembly and
+                  'a' is sign-extended to 64-bit, say, but also avoids potential problems with
+                  third-party assemblers if the number is out of bounds for a given size }
+                a := Cardinal(a);
 
-              if size in [OS_64,OS_S64] then
+              { Check to see if a is a valid shifter constant that can be encoded in ORR as is }
+              if is_shifter_const(a,size) then
                 begin
-                  { Check to see if a is a valid shifter constant that can be encoded in ORR as is }
-                  if is_shifter_const(a,size) then
+                  { Use synthetic "MOV" instruction instead of "ORR reg,wzr,#a" (an alias),
+                    since AArch64 conventions prefer this, and it's clearer in the
+                    disassembly }
+                  list.concat(taicpu.op_reg_const(A_MOV,reg,a));
+                  Exit;
+                end;
+
+              { If the value of a fits into 32 bits, it's fastest to use movz/movk regardless }
+              if extendedsize and ((a shr 32) <> 0) then
+                begin
+                  { This determines whether this write can be performed with an ORR followed by MOVK
+                    by copying the 3nd word to the 1st word for the ORR constant, then overwriting
+                    the 1st word.  The alternative would require 4 instructions.  This sequence is
+                    common when division reciprocals are calculated (e.g. 3 produces AAAAAAAAAAAAAAAB). }
+                  leftover_a := word(a and $FFFF);
+                  manipulated_a := (a and $FFFFFFFFFFFF0000) or ((a shr 32) and $FFFF);
+                  { if manipulated_a = a, don't check, because is_shifter_const was already
+                    called for a and it returned False.  Reduces processing time. [Kit] }
+                  if (manipulated_a <> a) and is_shifter_const(manipulated_a, OS_64) then
                     begin
-                      list.concat(taicpu.op_reg_reg_const(A_ORR,reg,makeregsize(NR_XZR,size),a));
+                      { Encode value as:
+                          orr  reg,xzr,manipulated_a
+                          movk reg,#(leftover_a)
+
+                        Use "orr" instead of "mov" here for the assembly dump so it better
+                        implies that something special is happening with the number arrangement.
+                      }
+                      list.concat(taicpu.op_reg_reg_const(A_ORR, reg, NR_XZR, manipulated_a));
+                      list.concat(taicpu.op_reg_const(A_MOVK, reg, leftover_a));
                       Exit;
                     end;
 
                   { This determines whether this write can be performed with an ORR followed by MOVK
                     by copying the 2nd word to the 4th word for the ORR constant, then overwriting
-                    the 4th word (unless the word is.  The alternative would require 3 instructions }
+                    the 4th word.  The alternative would require 3 instructions }
                   leftover_a := word(a shr 48);
                   manipulated_a := (a and $0000FFFFFFFFFFFF);
 
@@ -642,13 +675,16 @@ implementation
                   manipulated_a := manipulated_a or (((a shr 16) and $FFFF) shl 48);
                   { if manipulated_a = a, don't check, because is_shifter_const was already
                     called for a and it returned False.  Reduces processing time. [Kit] }
-                  if (manipulated_a <> a) and is_shifter_const(manipulated_a, size) then
+                  if (manipulated_a <> a) and is_shifter_const(manipulated_a, OS_64) then
                     begin
                       { Encode value as:
                           orr  reg,xzr,manipulated_a
                           movk reg,#(leftover_a),lsl #48
+
+                        Use "orr" instead of "mov" here for the assembly dump so it better
+                        implies that something special is happening with the number arrangement.
                       }
-                      list.concat(taicpu.op_reg_reg_const(A_ORR, reg, makeregsize(NR_XZR, size), manipulated_a));
+                      list.concat(taicpu.op_reg_reg_const(A_ORR, reg, NR_XZR, manipulated_a));
                       shifterop_reset(so);
                       so.shiftmode := SM_LSL;
                       so.shiftimm := 48;
@@ -679,10 +715,7 @@ implementation
                   end;
                 end
               else
-                begin
-                  a:=cardinal(a);
-                  doinverted:=False;
-                end;
+                doinverted:=False;
             end;
         end;
 
