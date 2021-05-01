@@ -71,7 +71,7 @@ include $(PROCINC)/makefile.cpu
 SYSCPUDEPS=$(addprefix $(PROCINC)/,$(CPUINCNAMES))
 
 # Put system unit dependencies together.
-SYSDEPS=$(SYSINCDEPS) $(SYSCPUDEPS) qdos.inc qdosfuncs.inc sms.inc
+SYSDEPS=$(SYSINCDEPS) $(SYSCPUDEPS) qdos.inc qdosh.inc qdosfuncs.inc sms.inc
 
 
 #

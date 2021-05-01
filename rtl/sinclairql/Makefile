@@ -3622,7 +3622,7 @@ include $(INC)/makefile.inc
 SYSINCDEPS=$(addprefix $(INC)/,$(SYSINCNAMES))
 include $(PROCINC)/makefile.cpu
 SYSCPUDEPS=$(addprefix $(PROCINC)/,$(CPUINCNAMES))
-SYSDEPS=$(SYSINCDEPS) $(SYSCPUDEPS) qdos.inc qdosfuncs.inc sms.inc
+SYSDEPS=$(SYSINCDEPS) $(SYSCPUDEPS) qdos.inc qdosh.inc qdosfuncs.inc sms.inc
 $(SYSTEMUNIT)$(PPUEXT) : $(SYSTEMUNIT).pp $(SYSDEPS)
 	$(COMPILER) $(FPC_SYSTEM_OPT) -Us -Sg @rtl.cfg $(SYSTEMUNIT).pp $(REDIR)
 uuchar$(PPUEXT): $(SYSTEMUNIT)$(PPUEXT) $(INC)/uuchar.pp
