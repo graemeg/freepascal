@@ -1435,6 +1435,12 @@ end;
       hfsq,f,s,z,R,w,t1,t2,dk: double;
       k,hx,i,j: longint;
       lx: longword;
+{$push}
+{ if we have to check manually fpu exceptions, then force the exit statements here to
+  throw one }
+{$CHECKFPUEXCEPTIONS+}
+{ turn off fastmath as it converts (d-d)/zero into 0 and thus not raising an exception }
+{$OPTIMIZATION NOFASTMATH}
     begin
       hx := float64high(d);
       lx := float64low(d);
@@ -1443,20 +1449,15 @@ end;
       if (hx < $00100000) then              { x < 2**-1022  }
       begin
         if (((hx and $7fffffff) or longint(lx))=0) then
-          begin
-            float_raise(float_flag_divbyzero);
-            exit(-two54/zero);                { log(+-0)=-inf }
-          end;
+          exit(-two54/zero);                { log(+-0)=-inf }
         if (hx<0) then
-          begin
-            float_raise(float_flag_invalid);
-            exit((d-d)/zero);                 { log(-#) = NaN }
-          end;
+          exit((d-d)/zero);                 { log(-#) = NaN }
         dec(k, 54); d := d * two54;         { subnormal number, scale up x }
         hx := float64high(d);
       end;
       if (hx >= $7ff00000) then
         exit(d+d);
+{$pop}
       inc(k, (hx shr 20)-1023);
       hx := hx and $000fffff;
       i := (hx + $95f64) and $100000;
