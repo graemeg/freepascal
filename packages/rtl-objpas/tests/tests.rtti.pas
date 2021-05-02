@@ -104,6 +104,10 @@ type
     procedure MakeFromOrdinalSet;
     procedure MakeFromOrdinalString;
     procedure MakeFromOrdinalNil;
+
+{$ifndef fpc}
+    procedure Ignore(const aMsg: String);
+{$endif}
   end;
 
 implementation
@@ -301,6 +305,13 @@ begin
   LContext.Free;
   CheckTrue(IsTestCaseClassFound, 'RTTI information does not contain class of testcase.');
 end;*)
+
+{$ifndef fpc}
+procedure TTestCase1.Ignore(const aMsg: string);
+begin
+  { empty }
+end;
+{$endif}
 
 procedure TTestCase1.TestGetValueStringCastError;
 var
@@ -552,7 +563,7 @@ var
 begin
   fs := 3.14;
 
-  TValue.Make(@fs, TypeInfo(fs), v);
+  TValue.Make(@fs, TypeInfo(Single), v);
   CheckEquals(v.IsClass, False);
   CheckEquals(v.IsObject, False);
   CheckEquals(v.IsOrdinal, False);
@@ -586,7 +597,7 @@ var
 begin
   fd := 3.14;
 
-  TValue.Make(@fd, TypeInfo(fd), v);
+  TValue.Make(@fd, TypeInfo(Double), v);
   CheckEquals(v.IsClass, False);
   CheckEquals(v.IsObject, False);
   CheckEquals(v.IsOrdinal, False);
@@ -620,7 +631,7 @@ var
 begin
   fe := 3.14;
 
-  TValue.Make(@fe, TypeInfo(fe), v);
+  TValue.Make(@fe, TypeInfo(Extended), v);
   CheckEquals(v.IsClass, False);
   CheckEquals(v.IsObject, False);
   CheckEquals(v.IsOrdinal, False);
@@ -654,7 +665,7 @@ var
 begin
   fcu := 3.14;
 
-  TValue.Make(@fcu, TypeInfo(fcu), v);
+  TValue.Make(@fcu, TypeInfo(Currency), v);
   CheckEquals(v.IsClass, False);
   CheckEquals(v.IsObject, False);
   CheckEquals(v.IsOrdinal, False);
@@ -689,7 +700,7 @@ var
 begin
   fco := 314;
 
-  TValue.Make(@fco, TypeInfo(fco), v);
+  TValue.Make(@fco, TypeInfo(Comp), v);
 
   if v.Kind <> tkFloat then
     Exit;
@@ -726,11 +737,13 @@ var
 begin
   e := te1;
 
-  TValue.Make(@e, TypeInfo(e), v);
+  TValue.Make(@e, TypeInfo(TTestEnum), v);
   Check(not v.IsClass);
   Check(not v.IsArray);
   Check(not v.IsEmpty);
+{$ifdef fpc}
   Check(not v.IsOpenArray);
+{$endif}
   Check(not v.IsObject);
   Check(v.IsOrdinal);
 
@@ -745,11 +758,13 @@ var
 begin
   c := #20;
 
-  TValue.Make(@c, TypeInfo(c), v);
+  TValue.Make(@c, TypeInfo(AnsiChar), v);
   Check(not v.IsClass);
   Check(not v.IsArray);
   Check(not v.IsEmpty);
+{$ifdef fpc}
   Check(not v.IsOpenArray);
+{$endif}
   Check(not v.IsObject);
   Check(v.IsOrdinal);
 
@@ -765,11 +780,13 @@ var
 begin
   c := #$1234;
 
-  TValue.Make(@c, TypeInfo(c), v);
+  TValue.Make(@c, TypeInfo(WideChar), v);
   Check(not v.IsClass);
   Check(not v.IsArray);
   Check(not v.IsEmpty);
+{$ifdef fpc}
   Check(not v.IsOpenArray);
+{$endif}
   Check(not v.IsObject);
   Check(v.IsOrdinal);
 
@@ -880,9 +897,13 @@ begin
   end;
 end;
 
-procedure TTestCase1.TestIsType;
 type
   TMyLongInt = type LongInt;
+
+procedure TTestCase1.TestIsType;
+{ Delphi does not provide type information for local types :/ }
+{type
+  TMyLongInt = type LongInt;}
 var
   v: TValue;
   l: LongInt;
@@ -890,21 +911,21 @@ var
 begin
   l := 42;
   ml := 42;
-  TValue.Make(@l, TypeInfo(l), v);
-  Check(v.IsType(TypeInfo(l)));
-  Check(not v.IsType(TypeInfo(ml)));
+  TValue.Make(@l, TypeInfo(LongInt), v);
+  Check(v.IsType(TypeInfo(LongInt)));
+  Check(not v.IsType(TypeInfo(TMyLongInt)));
   Check(not v.IsType(TypeInfo(String)));
-  Check(v.specialize IsType<LongInt>);
-  Check(not v.specialize IsType<TMyLongInt>);
-  Check(not v.specialize IsType<String>);
+  Check(v.{$ifdef fpc}specialize{$endif} IsType<LongInt>);
+  Check(not v.{$ifdef fpc}specialize{$endif} IsType<TMyLongInt>);
+  Check(not v.{$ifdef fpc}specialize{$endif} IsType<String>);
 
-  TValue.Make(@ml, TypeInfo(ml), v);
-  Check(v.IsType(TypeInfo(ml)));
-  Check(not v.IsType(TypeInfo(l)));
+  TValue.Make(@ml, TypeInfo(TMyLongInt), v);
+  Check(v.IsType(TypeInfo(TMyLongInt)));
+  Check(not v.IsType(TypeInfo(LongInt)));
   Check(not v.IsType(TypeInfo(String)));
-  Check(v.specialize IsType<TMyLongInt>);
-  Check(not v.specialize IsType<LongInt>);
-  Check(not v.specialize IsType<String>);
+  Check(v.{$ifdef fpc}specialize{$endif} IsType<TMyLongInt>);
+  Check(not v.{$ifdef fpc}specialize{$endif} IsType<LongInt>);
+  Check(not v.{$ifdef fpc}specialize{$endif} IsType<String>);
 end;
 
 procedure TTestCase1.TestPropGetValueBoolean;
@@ -1467,7 +1488,7 @@ begin
     try
       ARttiType := c.GetType(ATestClass.ClassInfo);
       AProperty := ARttiType.GetProperty('AObject');
-      TypeInfo := GetPropInfo(ATestClass, 'AObject')^.PropType;
+      TypeInfo := GetPropInfo(ATestClass, 'AObject')^.PropType{$ifndef fpc}^{$endif};
 
       O := TPersistent.Create;
       TValue.Make(@O, TypeInfo, AValue);
@@ -1503,16 +1524,19 @@ begin
     try
       ARttiType := c.GetType(ATestClass.ClassInfo);
       AProperty := ARttiType.GetProperty('AUnknown');
-      TypeInfo := GetPropInfo(ATestClass, 'AUnknown')^.PropType;
+      TypeInfo := GetPropInfo(ATestClass, 'AUnknown')^.PropType{$ifndef fpc}^{$endif};
 
       i := TInterfacedObject.Create;
       TValue.Make(@i, TypeInfo, AValue);
       AProperty.SetValue(ATestClass, AValue);
       Check(ATestClass.AUnknown = i);
 
+    {$ifdef fpc}
+      { Delphi does not provide an implicit assignment overload for IUnknown }
       i := TInterfacedObject.Create;
       AProperty.SetValue(ATestClass, i);
       Check(ATestClass.AUnknown = i);
+    {$endif}
     finally
       AtestClass.Free;
     end;
@@ -1542,7 +1566,7 @@ begin
       ARttiType := c.GetType(ATestClass.ClassInfo);
 
       AProperty := ARttiType.GetProperty('ASingle');
-      TypeInfo := GetPropInfo(ATestClass, 'ASingle')^.PropType;
+      TypeInfo := GetPropInfo(ATestClass, 'ASingle')^.PropType{$ifndef fpc}^{$endif};
 
       S := 1.1;
       TValue.Make(@S, TypeInfo, AValue);
@@ -1554,7 +1578,7 @@ begin
       CheckEquals(S, ATestClass.ASingle, 0.001);
 
       AProperty := ARttiType.GetProperty('ADouble');
-      TypeInfo := GetPropInfo(ATestClass, 'ADouble')^.PropType;
+      TypeInfo := GetPropInfo(ATestClass, 'ADouble')^.PropType{$ifndef fpc}^{$endif};
 
       D := 2.1;
       TValue.Make(@D, TypeInfo, AValue);
@@ -1566,7 +1590,7 @@ begin
       CheckEquals(D, ATestClass.ADouble, 0.001);
 
       AProperty := ARttiType.GetProperty('AExtended');
-      TypeInfo := GetPropInfo(ATestClass, 'AExtended')^.PropType;
+      TypeInfo := GetPropInfo(ATestClass, 'AExtended')^.PropType{$ifndef fpc}^{$endif};
 
       E := 3.1;
       TValue.Make(@E, TypeInfo, AValue);
@@ -1578,7 +1602,7 @@ begin
       CheckEquals(E, ATestClass.AExtended, 0.001);
 
       AProperty := ARttiType.GetProperty('ACurrency');
-      TypeInfo := GetPropInfo(ATestClass, 'ACurrency')^.PropType;
+      TypeInfo := GetPropInfo(ATestClass, 'ACurrency')^.PropType{$ifndef fpc}^{$endif};
 
       Cur := 40;
       TValue.Make(@Cur, TypeInfo, AValue);
@@ -1590,7 +1614,7 @@ begin
       CheckEquals(Cur, ATestClass.ACurrency, 0.001);
 
       AProperty := ARttiType.GetProperty('AComp');
-      TypeInfo := GetPropInfo(ATestClass, 'AComp')^.PropType;
+      TypeInfo := GetPropInfo(ATestClass, 'AComp')^.PropType{$ifndef fpc}^{$endif};
 
       Cmp := 50;
       TValue.Make(@Cmp, TypeInfo, AValue);
@@ -1625,7 +1649,7 @@ begin
     try
       ARttiType := c.GetType(ATestClass.ClassInfo);
       AProperty := ARttiType.GetProperty('AArray');
-      TypeInfo := GetPropInfo(ATestClass, 'AArray')^.PropType;
+      TypeInfo := GetPropInfo(ATestClass, 'AArray')^.PropType{$ifndef fpc}^{$endif};
 
       A := [1, 2, 3, 4, 5];
       TValue.Make(@A, TypeInfo, AValue);

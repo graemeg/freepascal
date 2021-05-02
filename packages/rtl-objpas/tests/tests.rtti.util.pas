@@ -1,6 +1,8 @@
 unit Tests.Rtti.Util;
 
+{$ifdef fpc}
 {$mode objfpc}{$H+}
+{$endif}
 
 interface
 
@@ -10,13 +12,21 @@ uses
 {$ifndef fpc}
 type
   CodePointer = Pointer;
+  PCodePointer = ^CodePointer;
+  SizeInt = NativeInt;
+  QWord = UInt64;
 
   TValueHelper = record helper for TValue
+    class procedure Make<T>(const aValue: T; var aResult: TValue); overload; static;
     function AsUnicodeString: UnicodeString;
     function AsAnsiString: AnsiString;
     function AsChar: Char; inline;
     function AsAnsiChar: AnsiChar;
     function AsWideChar: WideChar;
+  end;
+
+  TTypeDataHelper = record helper for TTypeData
+    function SetSize: SizeInt; inline;
   end;
 {$endif}
 
@@ -42,7 +52,9 @@ function GetDoubleValue(aValue: Double): TValue;
 function GetExtendedValue(aValue: Extended): TValue;
 function GetCompValue(aValue: Comp): TValue;
 function GetCurrencyValue(aValue: Currency): TValue;
+{$ifdef fpc}
 function GetArray(const aArg: array of SizeInt): TValue;
+{$endif}
 
 implementation
 
@@ -50,6 +62,11 @@ uses
   SysUtils, Math;
 
 {$ifndef fpc}
+class procedure TValueHelper.Make<T>(const aValue: T; var aResult: TValue);
+begin
+  TValue.Make(@aValue, PTypeInfo(System.TypeInfo(T)), aResult);
+end;
+
 function TValueHelper.AsUnicodeString: UnicodeString;
 begin
   Result := UnicodeString(AsString);
@@ -60,23 +77,28 @@ begin
   Result := AnsiString(AsString);
 end;
 
-function TValue.AsWideChar: WideChar;
+function TValueHelper.AsWideChar: WideChar;
 begin
   if Kind <> tkWideChar then
     raise EInvalidCast.Create('Invalid cast');
   Result := WideChar(Word(AsOrdinal));
 end;
 
-function TValue.AsAnsiChar: AnsiChar;
+function TValueHelper.AsAnsiChar: AnsiChar;
 begin
   if Kind <> tkChar then
     raise EInvalidCast.Create('Invalid cast');
   Result := AnsiChar(Byte(AsOrdinal));
 end;
 
-function TValue.AsChar: Char;
+function TValueHelper.AsChar: Char;
 begin
   Result := AsWideChar;
+end;
+
+function TTypeDataHelper.SetSize: NativeInt;
+begin
+  Result := SetTypeOrSize;
 end;
 {$endif}
 
@@ -105,7 +127,7 @@ var
 begin
 {$ifdef debug}
   Writeln('Empty: ', aValue1.IsEmpty, ' ', aValue2.IsEmpty);
-  Writeln('Kind: ', aValue1.Kind, ' ', aValue2.Kind);
+  Writeln('Kind: ', TypeKindToStr(aValue1.Kind), ' ', TypeKindToStr(aValue2.Kind));
   Writeln('Array: ', aValue1.IsArray, ' ', aValue2.IsArray);
 {$endif}
   if aValue1.IsEmpty and aValue2.IsEmpty then
@@ -120,7 +142,7 @@ begin
       for i := 0 to aValue1.GetArrayLength - 1 do
         if not EqualValues(aValue1.GetArrayElement(i), aValue2.GetArrayElement(i)) then begin
 {$ifdef debug}
-          Writeln('Element ', i, ' differs: ', HexStr(aValue1.GetArrayElement(i).AsOrdinal, 4), ' ', HexStr(aValue2.GetArrayElement(i).AsOrdinal, 4));
+          Writeln('Element ', i, ' differs: ', IntToHex(aValue1.GetArrayElement(i).AsOrdinal, 4), ' ', IntToHex(aValue2.GetArrayElement(i).AsOrdinal, 4));
 {$endif}
           Result := False;
           Break;
@@ -131,8 +153,10 @@ begin
     td1 := aValue1.TypeData;
     td2 := aValue2.TypeData;
     case aValue1.Kind of
+    {$ifdef fpc}
       tkBool:
         Result := aValue1.AsBoolean xor not aValue2.AsBoolean;
+    {$endif}
       tkSet:
         if td1^.SetSize = td2^.SetSize then
           if td1^.SetSize < SizeOf(SizeInt) then
@@ -144,12 +168,16 @@ begin
       tkEnumeration,
       tkChar,
       tkWChar,
+    {$ifdef fpc}
       tkUChar,
+    {$endif}
       tkInt64,
       tkInteger:
         Result := aValue1.AsOrdinal = aValue2.AsOrdinal;
+    {$ifdef fpc}
       tkQWord:
         Result := aValue1.AsUInt64 = aValue2.AsUInt64;
+    {$endif}
       tkFloat:
         if td1^.FloatType <> td2^.FloatType then
           Result := False
@@ -167,9 +195,17 @@ begin
               Result := aValue1.AsCurrency = aValue2.AsCurrency;
           end;
         end;
+    {$ifdef fpc}
       tkSString,
+    {$else}
+      tkShortString,
+    {$endif}
       tkUString,
+    {$ifdef fpc}
       tkAString,
+    {$else}
+      tkAnsiString,
+    {$endif}
       tkWString:
         Result := aValue1.AsString = aValue2.AsString;
       tkDynArray,
@@ -186,13 +222,21 @@ begin
       tkClass,
       tkClassRef,
       tkInterface,
+    {$ifdef fpc}
       tkInterfaceRaw,
+    {$endif}
       tkPointer:
         Result := PPointer(aValue1.GetReferenceToRawData)^ = PPointer(aValue2.GetReferenceToRawData)^;
+    {$ifdef fpc}
       tkProcVar:
+    {$else}
+      tkProcedure:
+    {$endif}
         Result := PCodePointer(aValue1.GetReferenceToRawData)^ = PCodePointer(aValue2.GetReferenceToRawData)^;
       tkRecord,
+    {$ifdef fpc}
       tkObject,
+    {$endif}
       tkMethod,
       tkVariant: begin
         if aValue1.DataSize = aValue2.DataSize then
