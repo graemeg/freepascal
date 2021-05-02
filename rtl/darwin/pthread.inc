@@ -84,3 +84,24 @@ function pthread_mutexattr_destroy(_para1:Ppthread_mutexattr_t):cint;cdecl;exter
 function pthread_mutexattr_gettype(_para1:Ppthread_mutexattr_t; _para2:Pcint):cint;cdecl;external 'c' name 'pthread_mutexattr_gettype';
 function pthread_mutexattr_settype(_para1:Ppthread_mutexattr_t; _para2:cint):cint;cdecl;external 'c' name 'pthread_mutexattr_settype';
 function pthread_cond_timedwait(__cond:ppthread_cond_t; __mutex:ppthread_mutex_t; __abstime:ptimespec):cint; cdecl;external 'c' name 'pthread_cond_timedwait';
+
+var
+  // available in macOS 10.6 / iOS 3.2 and higher
+  pthread_setname_np: function(name: PAnsiChar):cint;cdecl;
+
+var
+  PthreadDLL: Pointer;
+
+function LoadPthreads: Boolean;
+begin
+  PThreadDLL:=DlOpen('libSystem.dylib',RTLD_LAZY);
+  Result:=PThreadDLL<>Nil;
+  if not Result then
+    exit;
+  Pointer(pthread_setname_np):=dlsym(PthreadDLL,'pthread_setname_np');
+end;
+
+function UnLoadPthreads: Boolean;
+begin
+  Result:=dlclose(PThreadDLL)=0;
+end;

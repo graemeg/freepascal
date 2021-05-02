@@ -60,6 +60,10 @@ interface
  {$endif darwin}
 {$endif}
 
+{$if defined(Darwin) or defined(iphonesim)}
+  {$define dynpthreads}
+{$endif darwin}
+
 {$define basicevents_with_pthread_cond}
 
 Procedure SetCThreadManager;
@@ -544,6 +548,15 @@ Type  PINTRTLEvent = ^TINTRTLEvent;
           pthread_setname_np(pthread_t(threadHandle), @CuttedName[1]);
         end;
       end;
+{$elseif defined(Darwin) or defined(iphonesim)}
+  {$ifdef dynpthreads}
+      if Assigned(pthread_setname_np) then
+  {$endif dynpthreads}
+      begin
+        // only allowed to set from within the thread
+        if threadHandle=TThreadID(-1) then
+          pthread_setname_np(@ThreadName[1]);
+      end;
 {$else}
        {$Warning SetThreadDebugName needs to be implemented}
 {$endif}
@@ -553,6 +566,13 @@ Type  PINTRTLEvent = ^TINTRTLEvent;
   procedure CSetThreadDebugNameU(threadHandle: TThreadID; const ThreadName: UnicodeString);
     begin
 {$if defined(Linux) or defined(Android)}
+  {$ifdef dynpthreads}
+      if Assigned(pthread_setname_np) then
+  {$endif dynpthreads}
+      begin
+        CSetThreadDebugNameA(threadHandle, AnsiString(ThreadName));
+      end;
+{$elseif defined(Darwin) or defined(iphonesim)}
   {$ifdef dynpthreads}
       if Assigned(pthread_setname_np) then
   {$endif dynpthreads}
