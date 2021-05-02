@@ -78,6 +78,16 @@ type
     procedure TestMakeAnsiChar;
     procedure TestMakeWideChar;
 
+    procedure TestMakeNativeInt;
+
+    procedure TestMakeGenericNil;
+    procedure TestMakeGenericLongInt;
+    procedure TestMakeGenericString;
+    procedure TestMakeGenericObject;
+    procedure TestMakeGenericDouble;
+    procedure TestMakeGenericAnsiChar;
+    procedure TestMakeGenericWideChar;
+
     procedure TestFromOrdinal;
 
     procedure TestDataSize;
@@ -781,6 +791,188 @@ begin
   c := #$1234;
 
   TValue.Make(@c, TypeInfo(WideChar), v);
+  Check(not v.IsClass);
+  Check(not v.IsArray);
+  Check(not v.IsEmpty);
+{$ifdef fpc}
+  Check(not v.IsOpenArray);
+{$endif}
+  Check(not v.IsObject);
+  Check(v.IsOrdinal);
+
+  Check(v.GetReferenceToRawData <> @c);
+  Check(WideChar(v.AsOrdinal) = #$1234);
+  Check(v.AsWideChar = #$1234);
+end;
+
+procedure TTestCase1.TestMakeNativeInt;
+var
+  fni: NativeInt;
+  s: AnsiString;
+  v: TValue;
+  o: TObject;
+begin
+  fni := 2021;
+
+  TValue.Make(fni, TypeInfo(LongInt), v);
+  CheckEquals(v.IsClass, False);
+  CheckEquals(v.IsObject, False);
+  CheckEquals(v.IsOrdinal, True);
+  Check(NativeInt(v.GetReferenceToRawData) <> fni);
+  CheckEquals(v.AsOrdinal, 2021);
+
+  s := 'Hello World';
+  TValue.Make(NativeInt(s), TypeInfo(AnsiString), v);
+  CheckEquals(v.IsClass, False);
+  CheckEquals(v.IsObject, False);
+  CheckEquals(v.IsOrdinal, False);
+  CheckEquals(v.AsString, s);
+
+  o := TObject.Create;
+  TValue.Make(NativeInt(o), TypeInfo(TObject), v);
+  CheckEquals(v.IsClass, False);
+  CheckEquals(v.IsObject, True);
+  CheckEquals(v.IsOrdinal, False);
+  Check(PPointer(v.GetReferenceToRawData)^ = Pointer(o));
+  Check(v.AsObject = o);
+  o.Free;
+end;
+
+procedure TTestCase1.TestMakeGenericNil;
+var
+  value: TValue;
+begin
+  TValue.{$ifdef fpc}specialize{$endif} Make<TObject>(Nil, value);
+  CheckTrue(value.IsEmpty);
+  CheckTrue(value.IsObject);
+  CheckTrue(value.IsClass);
+  CheckTrue(value.IsOrdinal);
+  CheckFalse(value.IsArray);
+  CheckTrue(value.AsObject=Nil);
+  CheckTrue(value.AsClass=Nil);
+  CheckTrue(value.AsInterface=Nil);
+  CheckEquals(0, value.AsOrdinal);
+
+  TValue.{$ifdef fpc}specialize{$endif} Make<TClass>(Nil, value);
+  CheckTrue(value.IsEmpty);
+  CheckTrue(value.IsClass);
+  CheckTrue(value.IsOrdinal);
+  CheckFalse(value.IsArray);
+  CheckTrue(value.AsObject=Nil);
+  CheckTrue(value.AsClass=Nil);
+  CheckTrue(value.AsInterface=Nil);
+  CheckEquals(0, value.AsOrdinal);
+end;
+
+procedure TTestCase1.TestMakeGenericLongInt;
+var
+  value: TValue;
+begin
+  TValue.{$ifdef fpc}specialize{$endif} Make<LongInt>(0, value);
+  CheckTrue(value.IsOrdinal);
+  CheckFalse(value.IsEmpty);
+  CheckFalse(value.IsClass);
+  CheckFalse(value.IsObject);
+  CheckFalse(value.IsArray);
+  CheckEquals(0, value.AsOrdinal);
+  CheckEquals(0, value.AsInteger);
+  CheckEquals(0, value.AsInt64);
+  CheckEquals(0, value.AsUInt64);
+end;
+
+procedure TTestCase1.TestMakeGenericString;
+var
+  value: TValue;
+begin
+  TValue.{$ifdef fpc}specialize{$endif} Make<String>('test', value);
+  CheckFalse(value.IsEmpty);
+  CheckFalse(value.IsObject);
+  CheckFalse(value.IsClass);
+  CheckFalse(value.IsArray);
+  CheckEquals('test', value.AsString);
+end;
+
+procedure TTestCase1.TestMakeGenericObject;
+var
+  value: TValue;
+  TestClass: TTestValueClass;
+begin
+  TestClass := TTestValueClass.Create;
+  TestClass.AInteger := 54329;
+  TValue.{$ifdef fpc}specialize{$endif} Make<TTestValueClass>(TestClass, value);
+  CheckEquals(value.IsClass, False);
+  CheckEquals(value.IsObject, True);
+  Check(value.AsObject=TestClass);
+  Check(PPointer(value.GetReferenceToRawData)^ = Pointer(TestClass));
+  CheckEquals(TTestValueClass(value.AsObject).AInteger, 54329);
+  TestClass.Free;
+end;
+
+procedure TTestCase1.TestMakeGenericDouble;
+var
+  fd: Double;
+  v: TValue;
+  hadexcept: Boolean;
+begin
+  fd := 3.14;
+
+  TValue.{$ifdef fpc}specialize{$endif} Make<Double>(fd, v);
+  CheckEquals(v.IsClass, False);
+  CheckEquals(v.IsObject, False);
+  CheckEquals(v.IsOrdinal, False);
+  Check(v.AsExtended=fd);
+  Check(v.GetReferenceToRawData <> @fd);
+
+  try
+    hadexcept := False;
+    v.AsInt64;
+  except
+    hadexcept := True;
+  end;
+
+  CheckTrue(hadexcept, 'No signed type conversion exception');
+
+  try
+    hadexcept := False;
+    v.AsUInt64;
+  except
+    hadexcept := True;
+  end;
+
+  CheckTrue(hadexcept, 'No unsigned type conversion exception');
+end;
+
+
+procedure TTestCase1.TestMakeGenericAnsiChar;
+var
+  c: AnsiChar;
+  v: TValue;
+begin
+  c := #20;
+
+  TValue.{$ifdef fpc}specialize{$endif} Make<AnsiChar>(c, v);
+  Check(not v.IsClass);
+  Check(not v.IsArray);
+  Check(not v.IsEmpty);
+{$ifdef fpc}
+  Check(not v.IsOpenArray);
+{$endif}
+  Check(not v.IsObject);
+  Check(v.IsOrdinal);
+
+  Check(v.GetReferenceToRawData <> @c);
+  Check(AnsiChar(v.AsOrdinal) = #20);
+  Check(v.AsAnsiChar = #20);
+end;
+
+procedure TTestCase1.TestMakeGenericWideChar;
+var
+  c: WideChar;
+  v: TValue;
+begin
+  c := #$1234;
+
+  TValue.{$ifdef fpc}specialize{$endif} Make<WideChar>(c, v);
   Check(not v.IsClass);
   Check(not v.IsArray);
   Check(not v.IsEmpty);
