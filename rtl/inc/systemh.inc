@@ -1447,6 +1447,27 @@ procedure SetTextCodePage(var T: Text; CodePage: TSystemCodePage);
 {$ifdef FPC_HAS_FEATURE_UNICODESTRINGS}
 Function GetFullName(var T:Text) : UnicodeString;
 {$endif FPC_HAS_FEATURE_UNICODESTRINGS}
+procedure SetTextAutoFlush (var T: Text; AutoFlush: boolean);
+(* By default, output to text files is buffered in case of "regular" files,  *)
+(* i.e. files on regular block devices, and not buffered in case of various  *)
+(* other devices like console or sockets. Calling this procedure right after *)
+(* opening the file (i.e. after Rewrite or Append) allows changing the       *)
+(* default behaviour either to always perform flush after every Write or     *)
+(* WriteLn in case of AutoFlush = true, i.e. disable output buffering for    *)
+(* the given particular open text file even in case of regular files on      *)
+(* block devices, or to enforce output buffering even in case of text files  *)
+(* used for output to other devices like console or sockets in case of       *)
+(* AutoFlush = false. Note that reopening the file resets the behaviour to   *)
+(* the default. Runtime error 103 is triggered if the text file is not open, *)
+(* runtime error 105 if the text file is open strictly for input. The call   *)
+(* is ignored if InOutRes is not 0 before the call.                          *)
+function GetTextAutoFlush (var T: Text): boolean;
+(* Check whether output buffering is enabled for the currently open file, or *)
+(* not - either due to default behaviour for the associated device, or due   *)
+(* a previous call of SetTextAutoFlush. Runtime error 103 is triggered if    *)
+(* the text file is not open, runtime error 105 if the text file is open     *)
+(* strictly for input. The call is ignored if InOutRes is not 0 before the   *)
+(* call.                                                                     *)
 {$endif FPC_HAS_FEATURE_TEXTIO}
 
 {****************************************************************************

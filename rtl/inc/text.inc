@@ -614,6 +614,42 @@ begin
 end;
 
 
+procedure SetTextAutoFlush (var T: Text; AutoFlush: boolean);[IOCheck];
+Begin
+  If InOutRes<>0 then
+   exit;
+  if TextRec(T).mode<>fmOutput then
+   begin
+     if TextRec(T).mode=fmInput then
+      InOutRes:=105
+     else
+      InOutRes:=103;
+     exit;
+   end;
+  if AutoFlush then
+   TextRec(T).FlushFunc := TextRec(T).InOutFunc
+  else
+   TextRec(T).FlushFunc := nil;
+End;
+
+
+function GetTextAutoFlush (var T: Text): boolean;[IOCheck];
+Begin
+  GetTextAutoFlush := false;
+  If InOutRes<>0 then
+   exit;
+  if TextRec(t).mode<>fmOutput then
+   begin
+     if TextRec(t).mode=fmInput then
+      InOutRes:=105
+     else
+      InOutRes:=103;
+     exit;
+   end;
+  GetTextAutoFlush := Assigned (TextRec(T).FlushFunc);
+End;
+
+
 Function fpc_get_input:PText;compilerproc;
 begin
   fpc_get_input:=@Input;
