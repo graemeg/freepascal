@@ -1,4 +1,4 @@
-{ Author: Mattias Gaertner  2019  mattias@freepascal.org
+{ Author: Mattias Gaertner  2021  mattias@freepascal.org
 
 Abstract:
   TPas2jsCompiler is the wheel boss of the pas2js compiler.
@@ -4828,7 +4828,7 @@ begin
   if FHasShownLogo then exit;
   FHasShownLogo:=true;
   WriteVersionLine;
-  Log.LogPlain('Copyright (c) 2019 Free Pascal team.');
+  Log.LogPlain('Copyright (c) 2021 Free Pascal team.');
   if coShowInfos in Options then
     WriteEncoding;
 end;
