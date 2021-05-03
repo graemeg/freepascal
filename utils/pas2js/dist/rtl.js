@@ -229,7 +229,7 @@ var rtl = {
   createCallback: function(scope, fn){
     var cb;
     if (typeof(fn)==='string'){
-      if (!scope.$events) scope.$events = {};
+      if (!scope.hasOwnProperty('$events')) scope.$events = {};
       cb = scope.$events[fn];
       if (cb) return cb;
       scope.$events[fn] = cb = function(){
@@ -248,7 +248,7 @@ var rtl = {
   createSafeCallback: function(scope, fn){
     var cb;
     if (typeof(fn)==='string'){
-      if (!scope.$events) scope.$events = {};
+      if (!scope.hasOwnProperty('$events')) scope.$events = {};
       cb = scope.$events[fn];
       if (cb) return cb;
       scope.$events[fn] = cb = function(){
