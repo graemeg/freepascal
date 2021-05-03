@@ -587,7 +587,7 @@ ifeq ($(findstring $(PPC_TARGET),x86_64 aarch64 arm),)
 $(error The $(PPC_TARGET) architecture is not (yet) supported by the FPC/LLVM code generator)
 endif
 ifeq ($(findstring $(OS_TARGET),darwin iphonesim linux),)
-$(error The $(PPC_TARGET) target OS is not (yet) supported by the FPC/LLVM code generator)
+$(error The $(OS_TARGET) target OS is not (yet) supported by the FPC/LLVM code generator)
 endif
 override LOCALOPT+=-dllvm -Fullvm
 endif
