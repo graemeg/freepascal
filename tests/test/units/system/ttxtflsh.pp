@@ -2,7 +2,7 @@
 { $DEFINE DEBUG}
 (* Define the following if the test will be run manually in a console       *)
 (* (no output redirection) - otherwise the test will fail for some targets. *)
-{ $DEFINE CONSOLE}
+{ $DEFINE TESTINCONSOLE}
 {$I-}
 uses
  Dos;
@@ -24,10 +24,10 @@ const
   {$DEFINE TESTCONSOLEOK}
  {$ELSE}
 *)
-  {$IFDEF CONSOLE}
+  {$IFDEF TESTINCONSOLE}
  ConsoleDeviceName = '';
    {$DEFINE TESTCONSOLEOK}
-  {$ENDIF CONSOLE}
+  {$ENDIF TESTINCONSOLE}
  { $ENDIF}
 {$ENDIF}
 
