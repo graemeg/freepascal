@@ -1,5 +1,5 @@
-{$DEFINE VERBOSE}
-{$DEFINE DEBUG}
+{ $DEFINE VERBOSE}
+{ $DEFINE DEBUG}
 (* Define the following if the test will be run manually in a console       *)
 (* (no output redirection) - otherwise the test will fail for some targets. *)
 { $DEFINE CONSOLE}
@@ -18,12 +18,12 @@ const
  ConsoleDeviceName = 'CON';
  {$DEFINE TESTCONSOLEOK}
 {$ELSE}
-{ {$IF DEFINED(UNIX)}
-(* I don't know whether there's a device on Unix allowing to enforce output to console even if standard output is redirected for the given process... *)
+(* {$IF DEFINED(UNIX)}
+{ I don't know whether there's a device on Unix allowing to enforce output to console even if standard output is redirected for the given process... }
  ConsoleDeviceName = '/dev/tty';
   {$DEFINE TESTCONSOLEOK}
  {$ELSE}
-}
+*)
   {$IFDEF CONSOLE}
  ConsoleDeviceName = '';
    {$DEFINE TESTCONSOLEOK}
