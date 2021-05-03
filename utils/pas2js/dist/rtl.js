@@ -229,7 +229,10 @@ var rtl = {
   createCallback: function(scope, fn){
     var cb;
     if (typeof(fn)==='string'){
-      cb = function(){
+      if (!scope.$events) scope.$events = {};
+      cb = scope.$events[fn];
+      if (cb) return cb;
+      scope.$events[fn] = cb = function(){
         return scope[fn].apply(scope,arguments);
       };
     } else {
@@ -243,32 +246,38 @@ var rtl = {
   },
 
   createSafeCallback: function(scope, fn){
-    var cb = function(){
-      try{
-        if (typeof(fn)==='string'){
+    var cb;
+    if (typeof(fn)==='string'){
+      if (!scope.$events) scope.$events = {};
+      cb = scope.$events[fn];
+      if (cb) return cb;
+      scope.$events[fn] = cb = function(){
+        try{
           return scope[fn].apply(scope,arguments);
-        } else {
+        } catch (err) {
+          if (!rtl.handleUncaughtException(err)) throw err;
+        }
+      };
+    } else {
+      cb = function(){
+        try{
           return fn.apply(scope,arguments);
-        };
-      } catch (err) {
-        if (!rtl.handleUncaughtException(err)) throw err;
-      }
+        } catch (err) {
+          if (!rtl.handleUncaughtException(err)) throw err;
+        }
+      };
     };
     cb.scope = scope;
     cb.fn = fn;
     return cb;
   },
 
-  cloneCallback: function(cb){
-    return rtl.createCallback(cb.scope,cb.fn);
-  },
-
   eqCallback: function(a,b){
     // can be a function or a function wrapper
-    if (a==b){
+    if (a===b){
       return true;
     } else {
-      return (a!=null) && (b!=null) && (a.fn) && (a.scope===b.scope) && (a.fn==b.fn);
+      return (a!=null) && (b!=null) && (a.fn) && (a.scope===b.scope) && (a.fn===b.fn);
     }
   },
 
