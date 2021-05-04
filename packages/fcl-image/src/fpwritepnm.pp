@@ -15,8 +15,8 @@
 {*****************************************************************************}
 {Support for writing PNM (Portable aNyMap) formats added :
     * PBM (P1,P4) : Portable BitMap format : 1 bit per pixel
-    * PGM (P2,P5) : Portable GrayMap format : 8 bits per pixel
-    * PPM (P5,P6) : Portable PixelMap foramt : 24 bits per pixel}
+    * PGM (P2,P5) : Portable GrayMap format : 8 bits per pixel for P2 (ASCII), 8 or 16 bit for P5 (binary)
+    * PPM (P3,P6) : Portable PixelMap format : 24 bits per pixel for P3 (ASCII), 24 or 48 bit for P6 (binary)}
 {$mode objfpc}{$h+}
 unit FPWritePNM;
 
@@ -38,7 +38,7 @@ type
   protected
     procedure InternalWrite(Stream:TStream;Img:TFPCustomImage);override;
   public
-    Property FullWidth: Boolean Read FFullWidth Write SetFullWidth;
+    Property FullWidth: Boolean Read FFullWidth Write SetFullWidth; {if true write 16 bits per colour for P5, P6 formats}
     function GuessColorDepthOfImage(Img: TFPCustomImage): TPNMColorDepth;
     function GetColorDepthOfExtension(AExtension: string): TPNMColorDepth;
     function GetFileExtension(AColorDepth: TPNMColorDepth): string;
@@ -233,18 +233,18 @@ var useBitMapType: integer;
                 4:if(Red<=$2F00)or(Green<=$2F00)or(Blue<=$2F00)
                   then
                     aLine[Coulumn shr 3]:=aLine[Coulumn shr 3] or ($80 shr (Coulumn and $07));
-                5: if FullWidth then
-                     dLine[Coulumn]:=Word(Round(Red*0.299+Green*0.587+Blue*0.114))
-                   else
+                5: if FullWidth then {16 bit per colour}
+                     dLine[Coulumn]:=NToBe(Word(Round(Red*0.299+Green*0.587+Blue*0.114))) {write in big-endian format}
+                   else {8 bit per colour}
                      aLine[Coulumn]:=Hi(Word(Round(Red*0.299+Green*0.587+Blue*0.114)));
                 6:if FullWidth then
-                  begin
-                    dLine[3*Coulumn]:=NToBE(Red);
+                  begin {16 bit per colour}
+                    dLine[3*Coulumn]:=NToBE(Red); {write in big-endian format}
                     dLine[3*Coulumn+1]:=NToBE(Green);
                     dLine[3*Coulumn+2]:=NToBE(Blue);
                   end
                   else
-                  begin
+                  begin {8 bit per colour}
                     aLine[3*Coulumn]:=Hi(Red);
                     aLine[3*Coulumn+1]:=Hi(Green);
                     aLine[3*Coulumn+2]:=Hi(Blue);
