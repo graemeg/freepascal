@@ -59,7 +59,11 @@ Type
     function InstructionLoadsFromReg(const reg : TRegister; const hp : tai) : boolean; override;
 
     function RegLoadedWithNewValue(reg : tregister; hp : tai) : boolean; override;
-    function OptPass1And(var p: tai): Boolean; override; { There's optimisation code that's general for all ARM platforms }
+
+     { With these routines, there's optimisation code that's general for all ARM platforms }
+    function OptPass1And(var p: tai): Boolean; override;
+    function OptPass1LDR(var p: tai): Boolean; override;
+    function OptPass1STR(var p: tai): Boolean; override;
   protected
     function LookForPreindexedPattern(p: taicpu): boolean;
     function LookForPostindexedPattern(p: taicpu): boolean;
@@ -69,9 +73,7 @@ Type
     function OptPass1DataCheckMov(var p: tai): Boolean;
     function OptPass1ADDSUB(var p: tai): Boolean;
     function OptPass1CMP(var p: tai): Boolean;
-    function OptPass1LDR(var p: tai): Boolean;
     function OptPass1STM(var p: tai): Boolean;
-    function OptPass1STR(var p: tai): Boolean;
     function OptPass1MOV(var p: tai): Boolean;
     function OptPass1MUL(var p: tai): Boolean;
     function OptPass1MVN(var p: tai): Boolean;
@@ -834,7 +836,9 @@ Implementation
     var
       hp1: tai;
     begin
-      Result := False;
+      Result := inherited OptPass1LDR(p);
+      if Result then
+        Exit;
 
       { change
         ldr reg1,ref
@@ -1022,7 +1026,9 @@ Implementation
     var
       hp1: tai;
     begin
-      Result := False;
+      Result := inherited OptPass1STR(p);
+      if Result then
+        Exit;
 
       { Common conditions }
       if (taicpu(p).oper[1]^.typ = top_ref) and

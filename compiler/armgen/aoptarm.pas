@@ -26,7 +26,7 @@ Unit aoptarm;
 {$i fpcdefs.inc}
 
 { $define DEBUG_PREREGSCHEDULER}
-{ $define DEBUG_AOPTCPU}
+{$define DEBUG_AOPTCPU}
 
 Interface
 
@@ -41,12 +41,15 @@ Type
 
     function RemoveSuperfluousMove(const p: tai; movp: tai; const optimizer: string): boolean;
     function RedundantMovProcess(var p: tai; var hp1: tai): boolean;
-    function GetNextInstructionUsingReg(Current: tai; out Next: tai; reg: TRegister): Boolean;
+    function GetNextInstructionUsingReg(Current: tai; out Next: tai; const reg: TRegister): Boolean;
 
     function OptPass1UXTB(var p: tai): Boolean;
     function OptPass1UXTH(var p: tai): Boolean;
     function OptPass1SXTB(var p: tai): Boolean;
     function OptPass1SXTH(var p: tai): Boolean;
+
+    function OptPass1LDR(var p: tai): Boolean; virtual;
+    function OptPass1STR(var p: tai): Boolean; virtual;
     function OptPass1And(var p: tai): Boolean; virtual;
   End;
 
@@ -69,15 +72,23 @@ Implementation
     systems,
     cpuinfo,
     cgobj,procinfo,
-    aasmbase,aasmdata;
+    aasmbase,aasmdata,itcpugas;
 
 
 {$ifdef DEBUG_AOPTCPU}
+  const
+    SPeepholeOptimization: shortstring = 'Peephole Optimization: ';
+
   procedure TARMAsmOptimizer.DebugMsg(const s: string;p : tai);
     begin
       asml.insertbefore(tai_comment.Create(strpnew(s)), p);
     end;
 {$else DEBUG_AOPTCPU}
+  { Empty strings help the optimizer to remove string concatenations that won't
+    ever appear to the user on release builds. [Kit] }
+  const
+    SPeepholeOptimization = '';
+
   procedure TARMAsmOptimizer.DebugMsg(const s: string;p : tai);inline;
     begin
     end;
@@ -179,7 +190,7 @@ Implementation
 
 
   function TARMAsmOptimizer.GetNextInstructionUsingReg(Current: tai;
-    Out Next: tai; reg: TRegister): Boolean;
+    Out Next: tai; const reg: TRegister): Boolean;
     var
       gniResult: Boolean;
     begin
@@ -395,7 +406,14 @@ Implementation
                   UpdateUsedRegs(TmpUsedRegs, tai(current_hp.Next));
                   LDRChange := False;
 
-                  if (taicpu(next_hp).opcode in [A_LDR,A_STR]) and (taicpu(next_hp).ops = 2) then
+                  if (taicpu(next_hp).opcode in [A_LDR,A_STR]) and (taicpu(next_hp).ops = 2)
+{$ifdef AARCH64}
+                    { If r0 is the zero register, then this sequence of instructions will cause
+                      an access violation, but that's better than an assembler error caused by
+                      changing r0 to xzr inside the reference (Where it's illegal). [Kit] }
+                    and (getsupreg(taicpu(p).oper[1]^.reg) <> RS_XZR)
+{$endif AARCH64}
+                    then
                     begin
 
                       { Change the registers from r1 to r0 }
@@ -1016,6 +1034,201 @@ Implementation
            RemoveSuperfluousMove(p, hp1, 'UxthMov2Data') then
         Result:=true;
     end;
+
+
+  function TARMAsmOptimizer.OptPass1LDR(var p : tai) : Boolean;
+    var
+      hp1: tai;
+      Reference: TReference;
+      NewOp: TAsmOp;
+    begin
+      Result := False;
+      if (taicpu(p).ops <> 2) or (taicpu(p).condition <> C_None) then
+        Exit;
+
+      Reference := taicpu(p).oper[1]^.ref^;
+      if (Reference.addressmode = AM_OFFSET) and
+        not RegInRef(taicpu(p).oper[0]^.reg, Reference) and
+        { Delay calling GetNextInstruction for as long as possible }
+        GetNextInstruction(p, hp1) and
+        (hp1.typ = ait_instruction) and
+        (taicpu(hp1).condition = C_None) and
+        (taicpu(hp1).oppostfix = taicpu(p).oppostfix) then
+        begin
+          if (taicpu(hp1).opcode = A_STR) and
+            RefsEqual(taicpu(hp1).oper[1]^.ref^, Reference) and
+            (getregtype(taicpu(p).oper[0]^.reg) = getregtype(taicpu(hp1).oper[0]^.reg)) then
+            begin
+              { With:
+                  ldr reg1,[ref]
+                  str reg2,[ref]
+
+                If reg1 = reg2, Remove str
+              }
+              if taicpu(p).oper[0]^.reg = taicpu(hp1).oper[0]^.reg then
+                begin
+                  DebugMsg(SPeepholeOptimization + 'Removed redundant store instruction (load/store -> load/nop)', hp1);
+                  RemoveInstruction(hp1);
+                  Result := True;
+                  Exit;
+                end;
+            end
+          else if (taicpu(hp1).opcode = A_LDR) and
+            RefsEqual(taicpu(hp1).oper[1]^.ref^, Reference) then
+            begin
+              { With:
+                  ldr reg1,[ref]
+                  ldr reg2,[ref]
+
+                If reg1 = reg2, delete the second ldr
+                If reg1 <> reg2, changing the 2nd ldr to a mov might introduce
+                  a dependency, but it will likely open up new optimisations, so
+                  do it for now and handle any new dependencies later.
+              }
+              if taicpu(p).oper[0]^.reg = taicpu(hp1).oper[0]^.reg then
+                begin
+                  DebugMsg(SPeepholeOptimization + 'Removed duplicate load instruction (load/load -> load/nop)', hp1);
+                  RemoveInstruction(hp1);
+                  Result := True;
+                  Exit;
+                end
+              else if
+                (getregtype(taicpu(p).oper[0]^.reg) = R_INTREGISTER) and
+                (getregtype(taicpu(hp1).oper[0]^.reg) = R_INTREGISTER) and
+                (getsubreg(taicpu(p).oper[0]^.reg) = getsubreg(taicpu(hp1).oper[0]^.reg)) then
+                begin
+                  DebugMsg(SPeepholeOptimization + 'Changed second ldr' + oppostfix2str[taicpu(hp1).oppostfix] + ' to mov (load/load -> load/move)', hp1);
+                  taicpu(hp1).opcode := A_MOV;
+                  taicpu(hp1).oppostfix := PF_None;
+                  taicpu(hp1).loadreg(1, taicpu(p).oper[0]^.reg);
+                  AllocRegBetween(taicpu(p).oper[0]^.reg, p, hp1, UsedRegs);
+                  Result := True;
+                  Exit;
+                end;
+            end;
+        end;
+    end;
+
+
+    function TARMAsmOptimizer.OptPass1STR(var p : tai) : Boolean;
+      var
+        hp1: tai;
+        Reference: TReference;
+        SizeMismatch: Boolean;
+        SrcReg: TRegister;
+        NewOp: TAsmOp;
+      begin
+        Result := False;
+        if (taicpu(p).ops <> 2) or (taicpu(p).condition <> C_None) then
+          Exit;
+
+        Reference := taicpu(p).oper[1]^.ref^;
+        if (Reference.addressmode = AM_OFFSET) and
+          not RegInRef(taicpu(p).oper[0]^.reg, Reference) and
+          { Delay calling GetNextInstruction for as long as possible }
+          GetNextInstruction(p, hp1) and
+          (hp1.typ = ait_instruction) and
+          (taicpu(hp1).condition = C_None) and
+          (taicpu(hp1).oppostfix = taicpu(p).oppostfix) then
+
+        if GetNextInstruction(p, hp1) and
+          (hp1.typ = ait_instruction) and
+          (taicpu(hp1).condition = C_None) then
+          begin
+            { Saves constant dereferencing and makes it easier to change the size if necessary }
+            SrcReg := taicpu(p).oper[0]^.reg;
+
+            if (taicpu(hp1).opcode = A_LDR) and
+              RefsEqual(taicpu(hp1).oper[1]^.ref^, Reference) and
+              (
+                (taicpu(hp1).oppostfix = taicpu(p).oppostfix) or
+                ((taicpu(p).oppostfix = PF_B) and (taicpu(hp1).oppostfix = PF_SB)) or
+                ((taicpu(p).oppostfix = PF_H) and (taicpu(hp1).oppostfix = PF_SH))
+{$ifdef AARCH64}
+                or ((taicpu(p).oppostfix = PF_W) and (taicpu(hp1).oppostfix = PF_SW))
+{$endif AARCH64}
+              ) then
+              begin
+                { With:
+                    str reg1,[ref]
+                    ldr reg2,[ref]
+
+                  If reg1 = reg2, Remove ldr.
+                  If reg1 <> reg2, replace ldr with "mov reg2,reg1"
+                }
+
+                if (SrcReg = taicpu(hp1).oper[0]^.reg) and
+                  { e.g. the ldrb in strb/ldrb is not a null operation as it clears the upper 24 bits }
+                  (taicpu(p).oppostfix=PF_None) then
+                  begin
+                    DebugMsg(SPeepholeOptimization + 'Removed redundant load instruction (store/load -> store/nop)', hp1);
+                    RemoveInstruction(hp1);
+                    Result := True;
+                    Exit;
+                  end
+                else if (getregtype(taicpu(p).oper[0]^.reg) = R_INTREGISTER) and
+                  (getregtype(taicpu(hp1).oper[0]^.reg) = R_INTREGISTER) and
+                  (getsubreg(taicpu(p).oper[0]^.reg) = getsubreg(taicpu(hp1).oper[0]^.reg)) then
+                  begin
+                    case taicpu(hp1).oppostfix of
+                      PF_B:
+                        NewOp := A_UXTB;
+                      PF_SB:
+                        NewOp := A_SXTB;
+                      PF_H:
+                        NewOp := A_UXTH;
+                      PF_SH:
+                        NewOp := A_SXTH;
+{$ifdef AARCH64}
+                      PF_SW:
+                        NewOp := A_SXTW;
+                      PF_W,
+{$endif AARCH64}
+                      PF_None:
+                        NewOp := A_MOV;
+                      else
+                        InternalError(2021043001);
+                    end;
+
+                    DebugMsg(SPeepholeOptimization + 'Changed ldr' + oppostfix2str[taicpu(hp1).oppostfix] + ' to ' + gas_op2str[NewOp] + ' (store/load -> store/move)', hp1);
+
+                    taicpu(hp1).oppostfix := PF_None;
+                    taicpu(hp1).opcode := NewOp;
+                    taicpu(hp1).loadreg(1, taicpu(p).oper[0]^.reg);
+                    AllocRegBetween(taicpu(p).oper[0]^.reg, p, hp1, UsedRegs);
+                    Result := True;
+                    Exit;
+                  end;
+              end
+            else if (taicpu(hp1).opcode = A_STR) and
+              RefsEqual(taicpu(hp1).oper[1]^.ref^, Reference) then
+              begin
+                { With:
+                    str reg1,[ref]
+                    str reg2,[ref]
+
+                  If reg1 <> reg2, delete the first str
+                  IF reg1 = reg2, delete the second str
+                }
+                if SrcReg = taicpu(hp1).oper[0]^.reg then
+                  begin
+                    DebugMsg(SPeepholeOptimization + 'Removed duplicate store instruction (store/store -> store/nop)', hp1);
+                    RemoveInstruction(hp1);
+                    Result := True;
+                    Exit;
+                  end
+                else if
+                  { Registers same byte size? }
+                  (tcgsize2size[reg_cgsize(taicpu(p).oper[0]^.reg)] = tcgsize2size[reg_cgsize(taicpu(hp1).oper[0]^.reg)]) then
+                  begin
+                    DebugMsg(SPeepholeOptimization + 'Removed dominated store instruction (store/store -> nop/store)', p);
+                    RemoveCurrentP(p, hp1);
+                    Result := True;
+                    Exit;
+                  end;
+              end;
+          end;
+      end;
 
 
   function TARMAsmOptimizer.OptPass1And(var p : tai) : Boolean;

@@ -44,6 +44,10 @@ Interface
         function RegLoadedWithNewValue(reg: tregister; hp: tai): boolean;override;
         function InstructionLoadsFromReg(const reg: TRegister; const hp: tai): boolean;override;
         function LookForPostindexedPattern(var p : tai) : boolean;
+      public
+        { With these routines, there's optimisation code that's general for all ARM platforms }
+        function OptPass1LDR(var p: tai): Boolean; override;
+        function OptPass1STR(var p: tai): Boolean; override;
       private
         function RemoveSuperfluousFMov(const p: tai; movp: tai; const optimizer: string): boolean;
         function OptPass1Shift(var p: tai): boolean;
@@ -288,6 +292,24 @@ Implementation
               movp.free;
             end;
         end;
+    end;
+
+
+  function TCpuAsmOptimizer.OptPass1LDR(var p: tai): Boolean;
+    begin
+      Result := False;
+      if inherited OptPass1LDR(p) or
+        LookForPostindexedPattern(p) then
+        Exit(True);
+    end;
+
+
+  function TCpuAsmOptimizer.OptPass1STR(var p: tai): Boolean;
+    begin
+      Result := False;
+      if inherited OptPass1STR(p) or
+        LookForPostindexedPattern(p) then
+        Exit(True);
     end;
 
 
@@ -764,9 +786,10 @@ Implementation
       if p.typ=ait_instruction then
         begin
           case taicpu(p).opcode of
-            A_LDR,
+            A_LDR:
+              Result:=OptPass1LDR(p);
             A_STR:
-              Result:=LookForPostindexedPattern(p);
+              Result:=OptPass1STR(p);
             A_MOV:
               Result:=OptPass1Mov(p);
             A_STP:
