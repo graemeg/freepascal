@@ -801,6 +801,12 @@ implementation
       var
         reg : tregisterrec;
       begin
+        { Explicitly zero the whole record, to avoid
+          trouble as this record is used as is in a
+          hash calculation, which might give unreliable
+          results if the record as gaps between fields
+          due to field alignment. PM 2021-05-06 }
+        fillchar(result,sizeof(trttiparaloc),#0);
         if paraloc^.Loc=LOC_REFERENCE then
           begin
             reg:=tregisterrec(paraloc^.reference.index);
