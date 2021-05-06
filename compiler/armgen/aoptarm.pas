@@ -1170,35 +1170,43 @@ Implementation
                   (getregtype(taicpu(hp1).oper[0]^.reg) = R_INTREGISTER) and
                   (getsubreg(taicpu(p).oper[0]^.reg) = getsubreg(taicpu(hp1).oper[0]^.reg)) then
                   begin
-                    case taicpu(hp1).oppostfix of
-                      PF_B:
-                        NewOp := A_UXTB;
-                      PF_SB:
-                        NewOp := A_SXTB;
-                      PF_H:
-                        NewOp := A_UXTH;
-                      PF_SH:
-                        NewOp := A_SXTH;
+                    NewOp:=A_NONE;
+                    if taicpu(hp1).oppostfix=PF_None then
+                      NewOp:=A_MOV
+                    else 
+{$ifndef AARCH64}
+                      if (current_settings.cputype >= cpu_armv6) then
+{$endif not AARCH64}
+                      case taicpu(hp1).oppostfix of
+                        PF_B:
+                          NewOp := A_UXTB;
+                        PF_SB:
+                          NewOp := A_SXTB;
+                        PF_H:
+                          NewOp := A_UXTH;
+                        PF_SH:
+                          NewOp := A_SXTH;
 {$ifdef AARCH64}
-                      PF_SW:
-                        NewOp := A_SXTW;
-                      PF_W,
+                        PF_SW:
+                          NewOp := A_SXTW;
+                        PF_W:
+                          NewOp := A_MOV;
 {$endif AARCH64}
-                      PF_None:
-                        NewOp := A_MOV;
                       else
                         InternalError(2021043001);
-                    end;
+                      end;
+                    if (NewOp<>A_None) then
+                      begin
+                        DebugMsg(SPeepholeOptimization + 'Changed ldr' + oppostfix2str[taicpu(hp1).oppostfix] + ' to ' + gas_op2str[NewOp] + ' (store/load -> store/move)', hp1);
 
-                    DebugMsg(SPeepholeOptimization + 'Changed ldr' + oppostfix2str[taicpu(hp1).oppostfix] + ' to ' + gas_op2str[NewOp] + ' (store/load -> store/move)', hp1);
-
-                    taicpu(hp1).oppostfix := PF_None;
-                    taicpu(hp1).opcode := NewOp;
-                    taicpu(hp1).loadreg(1, taicpu(p).oper[0]^.reg);
-                    AllocRegBetween(taicpu(p).oper[0]^.reg, p, hp1, UsedRegs);
-                    Result := True;
-                    Exit;
-                  end;
+                        taicpu(hp1).oppostfix := PF_None;
+                        taicpu(hp1).opcode := NewOp;
+                        taicpu(hp1).loadreg(1, taicpu(p).oper[0]^.reg);
+                        AllocRegBetween(taicpu(p).oper[0]^.reg, p, hp1, UsedRegs);
+                        Result := True;
+                        Exit;
+                      end;
+                end
               end
             else if (taicpu(hp1).opcode = A_STR) and
               RefsEqual(taicpu(hp1).oper[1]^.ref^, Reference) then
