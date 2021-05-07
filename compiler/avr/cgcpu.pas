@@ -2357,7 +2357,9 @@ unit cgcpu;
          if ref.addressmode<>AM_UNCHANGED then
            internalerror(2011021706);
 
-        if assigned(ref.symbol) or (ref.offset<>0) then
+         if assigned(ref.symbol) or (ref.offset<>0) or
+           { If no other reference information it must imply an absolute reference to address 0 }
+           ((ref.index=NR_NO) and (ref.base=NR_NO)) then
           begin
             reference_reset(tmpref,0,[]);
             tmpref.symbol:=ref.symbol;
