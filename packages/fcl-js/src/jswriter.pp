@@ -63,10 +63,10 @@ Type
     {$endif}
     Function Write(Const S : TJSWriterString) : Integer;
     Function WriteLn(Const S : TJSWriterString) : Integer;
-    Function Write(Const Fmt : TJSWriterString; Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif}) : Integer;
-    Function WriteLn(Const Fmt : TJSWriterString; Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif}) : Integer;
-    Function Write(Const Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif}) : Integer;
-    Function WriteLn(Const Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif}) : Integer;
+    Function Write(Const Fmt : TJSWriterString; Args : Array of const) : Integer;
+    Function WriteLn(Const Fmt : TJSWriterString; Args : Array of const) : Integer;
+    Function Write(Const Args : Array of const) : Integer;
+    Function WriteLn(Const Args : Array of const) : Integer;
     Property CurLine: integer read FCurLine write FCurLine;
     Property CurColumn: integer read FCurColumn write FCurColumn;// char index, not codepoint
     Property CurElement: TJSElement read FCurElement write SetCurElement;
@@ -179,7 +179,7 @@ Type
   Protected
     // Helper routines
     Procedure Error(Const Msg : TJSWriterString);
-    Procedure Error(Const Fmt : TJSWriterString; Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+    Procedure Error(Const Fmt : TJSWriterString; Args : Array of const);
     Procedure WriteIndent; // inline;
     {$ifdef FPC_HAS_CPSTRING}
     Procedure Write(Const U : UnicodeString);
@@ -466,7 +466,7 @@ begin
 end;
 
 procedure TJSWriter.Error(const Fmt: TJSWriterString;
-  Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+  Args: array of const);
 begin
   Raise EJSWriter.CreateFmt(Fmt,Args);
 end;
@@ -2137,19 +2137,19 @@ begin
 end;
 
 function TTextWriter.Write(const Fmt: TJSWriterString;
-  Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif}): Integer;
+  Args: array of const): Integer;
 
 begin
   Result:=Write(Format(Fmt,Args));
 end;
 
 function TTextWriter.WriteLn(const Fmt: TJSWriterString;
-  Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif}): Integer;
+  Args: array of const): Integer;
 begin
   Result:=WriteLn(Format(Fmt,Args));
 end;
 
-function TTextWriter.Write(const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif}): Integer;
+function TTextWriter.Write(const Args: array of const): Integer;
 
 Var
   I : Integer;
@@ -2209,8 +2209,7 @@ begin
     end;
 end;
 
-function TTextWriter.WriteLn(
-  const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif}): Integer;
+function TTextWriter.WriteLn(const Args: array of const): Integer;
 begin
   Result:=Write(Args)+Writeln('');
 end;

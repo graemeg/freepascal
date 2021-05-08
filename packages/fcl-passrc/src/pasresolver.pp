@@ -1801,7 +1801,7 @@ type
     fExprEvaluator: TResExprEvaluator;
     procedure OnExprEvalLog(Sender: TResExprEvaluator; const id: TMaxPrecInt;
       MsgType: TMessageType; MsgNumber: integer; const Fmt: String;
-      Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif}; PosEl: TPasElement); virtual;
+      Args: array of const; PosEl: TPasElement); virtual;
     function OnExprEvalIdentifier(Sender: TResExprEvaluator;
       Expr: TPrimitiveExpr; Flags: TResEvalFlags): TResEvalValue; virtual;
     function OnExprEvalParams(Sender: TResExprEvaluator;
@@ -2174,10 +2174,10 @@ type
     class function GetDbgSourcePosStr(El: TPasElement): string;
     function GetElementSourcePosStr(El: TPasElement): string;
     procedure SetLastMsg(const id: TMaxPrecInt; MsgType: TMessageType; MsgNumber: integer;
-      Const Fmt : String; Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+      Const Fmt : String; Args : Array of const;
       PosEl: TPasElement);
     procedure LogMsg(const id: TMaxPrecInt; MsgType: TMessageType; MsgNumber: integer;
-      const Fmt: String; Args: Array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+      const Fmt: String; Args: Array of const;
       PosEl: TPasElement); overload;
     class function GetWarnIdentifierNumbers(Identifier: string;
       out MsgNumbers: TIntegerDynArray): boolean; virtual;
@@ -2188,7 +2188,7 @@ type
     procedure GetIncompatibleProcParamsDesc(GotType, ExpType: TPasProcedureType;
       out GotDesc, ExpDesc: string);
     procedure RaiseMsg(const Id: TMaxPrecInt; MsgNumber: integer; const Fmt: String;
-      Args: Array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+      Args: Array of const;
       ErrorPosEl: TPasElement); virtual;
     procedure RaiseNotYetImplemented(id: TMaxPrecInt; El: TPasElement; Msg: string = ''); virtual;
     procedure RaiseInternalError(id: TMaxPrecInt; const Msg: string = '');
@@ -2202,13 +2202,13 @@ type
     procedure RaiseVarExpected(id: TMaxPrecInt; ErrorEl: TPasElement; IdentEl: TPasElement);
     procedure RaiseRangeCheck(id: TMaxPrecInt; ErrorEl: TPasElement);
     procedure RaiseIncompatibleTypeDesc(id: TMaxPrecInt; MsgNumber: integer;
-      const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+      const Args: array of const;
       const GotDesc, ExpDesc: String; ErrorEl: TPasElement);
     procedure RaiseIncompatibleType(id: TMaxPrecInt; MsgNumber: integer;
-      const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+      const Args: array of const;
       GotType, ExpType: TPasType; ErrorEl: TPasElement);
     procedure RaiseIncompatibleTypeRes(id: TMaxPrecInt; MsgNumber: integer;
-      const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+      const Args: array of const;
       const GotType, ExpType: TPasResolverResult;
       ErrorEl: TPasElement);
     procedure RaiseHelpersCannotBeUsedAsType(id: TMaxPrecInt; ErrorEl: TPasElement);
@@ -15459,7 +15459,7 @@ end;
 
 procedure TPasResolver.OnExprEvalLog(Sender: TResExprEvaluator;
   const id: TMaxPrecInt; MsgType: TMessageType; MsgNumber: integer;
-  const Fmt: String; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  const Fmt: String; Args: array of const;
   PosEl: TPasElement);
 begin
   if MsgType<=mtError then
@@ -23070,7 +23070,7 @@ end;
 
 procedure TPasResolver.SetLastMsg(const id: TMaxPrecInt; MsgType: TMessageType;
   MsgNumber: integer; const Fmt: String;
-  Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  Args: array of const;
   PosEl: TPasElement);
 var
 {$IFDEF VerbosePasResolver}
@@ -23112,7 +23112,7 @@ begin
 end;
 
 procedure TPasResolver.RaiseMsg(const Id: TMaxPrecInt; MsgNumber: integer;
-  const Fmt: String; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  const Fmt: String; Args: array of const;
   ErrorPosEl: TPasElement);
 var
   E: EPasResolve;
@@ -23224,25 +23224,22 @@ begin
 end;
 
 procedure TPasResolver.RaiseIncompatibleTypeDesc(id: TMaxPrecInt; MsgNumber: integer;
-  const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  const Args: array of const;
   const GotDesc, ExpDesc: String; ErrorEl: TPasElement);
 
   function GetString(ArgNo: integer): string;
   begin
     if ArgNo>High(Args) then
       exit('invalid param '+IntToStr(ArgNo));
-    {$ifdef pas2js}
-    if isString(Args[ArgNo]) then
-      Result:=String(Args[ArgNo])
-    else
-      Result:='invalid param '+jsTypeOf(Args[ArgNo]);
-    {$else}
     case Args[ArgNo].VType of
+{$IFDEF PAS2JS}    
+    vtUnicodeString: Result:=Args[ArgNo].VUnicodeString;
+{$ELSE}    
     vtAnsiString: Result:=AnsiString(Args[ArgNo].VAnsiString);
+{$ENDIF}    
     else
       Result:='invalid param '+IntToStr(Ord(Args[ArgNo].VType));
     end;
-    {$endif}
   end;
 
 begin
@@ -23270,7 +23267,7 @@ begin
 end;
 
 procedure TPasResolver.RaiseIncompatibleType(id: TMaxPrecInt; MsgNumber: integer;
-  const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  const Args: array of const;
   GotType, ExpType: TPasType; ErrorEl: TPasElement);
 var
   GotDesc, ExpDesc: String;
@@ -23280,7 +23277,7 @@ begin
 end;
 
 procedure TPasResolver.RaiseIncompatibleTypeRes(id: TMaxPrecInt; MsgNumber: integer;
-  const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  const Args: array of const;
   const GotType, ExpType: TPasResolverResult;
   ErrorEl: TPasElement);
 var
@@ -23315,7 +23312,7 @@ end;
 
 procedure TPasResolver.LogMsg(const id: TMaxPrecInt; MsgType: TMessageType;
   MsgNumber: integer; const Fmt: String;
-  Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  Args: array of const;
   PosEl: TPasElement);
 var
   Scanner: TPascalScanner;

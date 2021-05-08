@@ -591,7 +591,7 @@ type
 
   TCEEvalVarEvent = function(Sender: TCondDirectiveEvaluator; Name: String; out Value: string): boolean of object;
   TCEEvalFunctionEvent = function(Sender: TCondDirectiveEvaluator; Name, Param: String; out Value: string): boolean of object;
-  TCELogEvent = procedure(Sender: TCondDirectiveEvaluator; Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif}) of object;
+  TCELogEvent = procedure(Sender: TCondDirectiveEvaluator; Args : Array of const) of object;
 
   { TCondDirectiveEvaluator - evaluate $IF expression }
 
@@ -631,7 +631,7 @@ type
     function IsExtended(const Value: String; out e: TMaxFloat): boolean;
     procedure NextToken;
     procedure Log(aMsgType: TMessageType; aMsgNumber: integer;
-      const aMsgFmt: String; const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif}; MsgPos: integer = 0);
+      const aMsgFmt: String; const Args: array of const; MsgPos: integer = 0);
     procedure LogXExpectedButTokenFound(const X: String; ErrorPos: integer = 0);
     procedure ReadOperand(Skip: boolean = false); // unary operators plus one operand
     procedure ReadExpression; // binary operators
@@ -786,8 +786,7 @@ type
     function IndexOfWarnMsgState(Number: integer; InsertPos: boolean): integer;
     function OnCondEvalFunction(Sender: TCondDirectiveEvaluator; Name,
       Param: String; out Value: string): boolean;
-    procedure OnCondEvalLog(Sender: TCondDirectiveEvaluator;
-      Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+    procedure OnCondEvalLog(Sender: TCondDirectiveEvaluator; Args: array of const);
     function OnCondEvalVar(Sender: TCondDirectiveEvaluator; Name: String; out
       Value: string): boolean;
     procedure SetAllowedBoolSwitches(const AValue: TBoolSwitches);
@@ -806,11 +805,11 @@ type
     function FetchLine: boolean;
     procedure AddFile(aFilename: string); virtual;
     function GetMacroName(const Param: String): String;
-    procedure SetCurMsg(MsgType: TMessageType; MsgNumber: integer; Const Fmt : String; Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+    procedure SetCurMsg(MsgType: TMessageType; MsgNumber: integer; Const Fmt : String; Args : Array of const);
     Procedure DoLog(MsgType: TMessageType; MsgNumber: integer; Const Msg : String; SkipSourceInfo : Boolean = False);overload;
-    Procedure DoLog(MsgType: TMessageType; MsgNumber: integer; Const Fmt : String; Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif};SkipSourceInfo : Boolean = False);overload;
+    Procedure DoLog(MsgType: TMessageType; MsgNumber: integer; Const Fmt : String; Args : Array of const;SkipSourceInfo : Boolean = False);overload;
     procedure Error(MsgNumber: integer; const Msg: string);overload;
-    procedure Error(MsgNumber: integer; const Fmt: string; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});overload;
+    procedure Error(MsgNumber: integer; const Fmt: string; Args: array of const);overload;
     procedure PushSkipMode;
     function GetMultiLineStringLineEnd(aReader: TLineReader): string;
 
@@ -1246,8 +1245,8 @@ function FilenameIsUnixAbsolute(const TheFilename: string): boolean;
 function IsNamedToken(Const AToken : String; Out T : TToken) : Boolean;
 Function ExtractFilenameOnly(Const AFileName : String) : String;
 
-procedure CreateMsgArgs(var MsgArgs: TMessageArgs; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
-function SafeFormat(const Fmt: string; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif}): string;
+procedure CreateMsgArgs(var MsgArgs: TMessageArgs; Args: array of const);
+function SafeFormat(const Fmt: string; Args: array of const): string;
 
 implementation
 
@@ -1341,7 +1340,7 @@ begin
     T:=SortedTokens[I];
 end;
 
-procedure CreateMsgArgs(var MsgArgs: TMessageArgs; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+procedure CreateMsgArgs(var MsgArgs: TMessageArgs; Args: array of const);
 var
   i: Integer;
   {$ifdef pas2js}
@@ -1394,7 +1393,7 @@ begin
     {$endif}
 end;
 
-function SafeFormat(const Fmt: string; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif}): string;
+function SafeFormat(const Fmt: string; Args: array of const): string;
 var
   MsgArgs: TMessageArgs;
   i: Integer;
@@ -1804,7 +1803,7 @@ end;
 
 procedure TCondDirectiveEvaluator.Log(aMsgType: TMessageType;
   aMsgNumber: integer; const aMsgFmt: String;
-  const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  const Args: array of const;
   MsgPos: integer);
 begin
   if MsgPos<1 then
@@ -3331,7 +3330,7 @@ begin
 end;
 
 procedure TPascalScanner.Error(MsgNumber: integer; const Fmt: string;
-  Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+  Args: array of const);
 begin
   SetCurMsg(mtError,MsgNumber,Fmt,Args);
   raise EScannerError.CreateFmt('%s(%d,%d) Error: %s',
@@ -5281,7 +5280,7 @@ begin
 end;
 
 procedure TPascalScanner.OnCondEvalLog(Sender: TCondDirectiveEvaluator;
-  Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+  Args: array of const);
 
 Var
   Msg : String;
@@ -5505,7 +5504,7 @@ begin
 end;
 
 procedure TPascalScanner.DoLog(MsgType: TMessageType; MsgNumber: integer;
-  const Fmt: String; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  const Fmt: String; Args: array of const;
   SkipSourceInfo: Boolean);
 
 Var
@@ -5656,7 +5655,7 @@ begin
 end;
 
 procedure TPascalScanner.SetCurMsg(MsgType: TMessageType; MsgNumber: integer;
-  const Fmt: String; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+  const Fmt: String; Args: array of const);
 begin
   FLastMsgType := MsgType;
   FLastMsgNumber := MsgNumber;

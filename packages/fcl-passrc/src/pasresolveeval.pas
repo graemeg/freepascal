@@ -695,7 +695,7 @@ type
 
   TPasResEvalLogHandler = procedure(Sender: TResExprEvaluator; const id: TMaxPrecInt;
     MsgType: TMessageType; MsgNumber: integer;
-    const Fmt: String; Args: Array of {$ifdef pas2js}jsvalue{$else}const{$endif}; PosEl: TPasElement) of object;
+    const Fmt: String; Args: Array of const; PosEl: TPasElement) of object;
   TPasResEvalIdentHandler = function(Sender: TResExprEvaluator;
     Expr: TPrimitiveExpr; Flags: TResEvalFlags): TResEvalValue of object;
   TPasResEvalParamsHandler = function(Sender: TResExprEvaluator;
@@ -718,9 +718,9 @@ type
     FOnRangeCheckEl: TPasResEvalRangeCheckElHandler;
   protected
     procedure LogMsg(const id: TMaxPrecInt; MsgType: TMessageType; MsgNumber: integer;
-      const Fmt: String; Args: Array of {$ifdef pas2js}jsvalue{$else}const{$endif}; PosEl: TPasElement); overload;
+      const Fmt: String; Args: Array of const; PosEl: TPasElement); overload;
     procedure RaiseMsg(const Id: TMaxPrecInt; MsgNumber: integer; const Fmt: String;
-      Args: Array of {$ifdef pas2js}jsvalue{$else}const{$endif}; ErrorPosEl: TPasElement);
+      Args: Array of const; ErrorPosEl: TPasElement);
     procedure RaiseNotYetImplemented(id: TMaxPrecInt; El: TPasElement; Msg: string = ''); virtual;
     procedure RaiseInternalError(id: TMaxPrecInt; const Msg: string = '');
     procedure RaiseConstantExprExp(id: TMaxPrecInt; ErrorEl: TPasElement);
@@ -1327,14 +1327,14 @@ end;
 
 procedure TResExprEvaluator.LogMsg(const id: TMaxPrecInt; MsgType: TMessageType;
   MsgNumber: integer; const Fmt: String;
-  Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  Args: array of const;
   PosEl: TPasElement);
 begin
   OnLog(Self,id,MsgType,MsgNumber,Fmt,Args,PosEl);
 end;
 
 procedure TResExprEvaluator.RaiseMsg(const Id: TMaxPrecInt; MsgNumber: integer;
-  const Fmt: String; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  const Fmt: String; Args: array of const;
   ErrorPosEl: TPasElement);
 begin
   LogMsg(id,mtError,MsgNumber,Fmt,Args,ErrorPosEl);

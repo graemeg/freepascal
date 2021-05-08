@@ -162,23 +162,23 @@ type
     function FindMsg(MsgNumber: integer; ExceptionOnNotFound: boolean): TPas2jsMessage;
     procedure Sort;
     procedure LogRaw(const Msg: string); overload;
-    procedure LogRaw(Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF}); overload;
+    procedure LogRaw(Args: array of const); overload;
     procedure LogLn;
     procedure LogPlain(const Msg: string); overload;
-    procedure LogPlain(Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF}); overload;
+    procedure LogPlain(Args: array of const); overload;
     procedure LogMsg(MsgNumber: integer;
-      Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF};
+      Args: array of const;
       const Filename: string = ''; Line: integer = 0; Col: integer = 0;
       UseFilter: boolean = true);
     procedure Log(MsgType: TMessageType; Msg: string; MsgNumber: integer = 0;
       const Filename: string = ''; Line: integer = 0; Col: integer = 0;
       UseFilter: boolean = true);
     procedure LogMsgIgnoreFilter(MsgNumber: integer;
-      Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF});
+      Args: array of const);
     procedure LogExceptionBackTrace(E: Exception);
     function MsgTypeToStr(MsgType: TMessageType): string;
     function GetMsgText(MsgNumber: integer;
-      Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF}): string;
+      Args: array of const): string;
     function FormatMsg(MsgType: TMessageType; Msg: string; MsgNumber: integer = 0;
       const Filename: string = ''; Line: integer = 0; Col: integer = 0): string;
     function FormatJSONMsg(MsgType: TMessageType; Msg: string; MsgNumber: integer = 0;
@@ -192,7 +192,7 @@ type
     procedure CloseDebugLog;
     procedure DebugLogWriteLn(Msg: string); overload;
     function GetEncodingCaption: string;
-    class function Concatenate(Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF}): string;
+    class function Concatenate(Args: array of const): string;
   public
     property Encoding: string read FEncoding write SetEncoding; // normalized
     property MsgCount: integer read GetMsgCount;
@@ -810,7 +810,7 @@ begin
 end;
 
 function TPas2jsLogger.GetMsgText(MsgNumber: integer;
-  Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF}): string;
+  Args: array of const): string;
 var
   Msg: TPas2jsMessage;
 begin
@@ -825,7 +825,7 @@ begin
 end;
 
 procedure TPas2jsLogger.LogRaw(
-  Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF});
+  Args: array of const);
 begin
   LogRaw(Concatenate(Args));
 end;
@@ -870,7 +870,7 @@ begin
 end;
 
 class function TPas2jsLogger.Concatenate(
-  Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF}): string;
+  Args: array of const): string;
 var
   s: String;
   i: Integer;
@@ -940,13 +940,13 @@ begin
 end;
 
 procedure TPas2jsLogger.LogPlain(
-  Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF});
+  Args: array of const);
 begin
   LogPlain(Concatenate(Args));
 end;
 
 procedure TPas2jsLogger.LogMsg(MsgNumber: integer;
-  Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF};
+  Args: array of const;
   const Filename: string; Line: integer; Col: integer; UseFilter: boolean);
 var
   Msg: TPas2jsMessage;
@@ -977,7 +977,7 @@ begin
 end;
 
 procedure TPas2jsLogger.LogMsgIgnoreFilter(MsgNumber: integer;
-  Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF});
+  Args: array of const);
 begin
   LogMsg(MsgNumber,Args,'',0,0,false);
 end;

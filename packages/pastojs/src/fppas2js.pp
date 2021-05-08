@@ -1660,7 +1660,7 @@ type
       RaiseOnIncompatible: boolean): integer; override;
     // utility
     procedure RaiseMsg(const Id: TMaxPrecInt; MsgNumber: integer; const Fmt: String;
-      Args: array of {$IFDEF pas2js}jsvalue{$ELSE}const{$ENDIF}; ErrorPosEl: TPasElement); override;
+      Args: array of const; ErrorPosEl: TPasElement); override;
     function GetOverloadName(El: TPasElement): string;
     function GetBaseDescription(const R: TPasResolverResult; AddPath: boolean=
       false): string; override;
@@ -1961,9 +1961,9 @@ type
     // Error functions
     Procedure DoError(Id: TMaxPrecInt; Const Msg : String);
     Procedure DoError(Id: TMaxPrecInt; Const Msg : String;
-      const Args: array of {$IFDEF pas2js}jsvalue{$ELSE}const{$ENDIF});
+      const Args: array of const);
     Procedure DoError(Id: TMaxPrecInt; MsgNumber: integer; const MsgPattern: string;
-      const Args: array of {$IFDEF pas2js}jsvalue{$ELSE}const{$ENDIF}; El: TPasElement);
+      const Args: array of const; El: TPasElement);
     procedure RaiseNotSupported(El: TPasElement; AContext: TConvertContext; Id: TMaxPrecInt; const Msg: string = '');
     procedure RaiseIdentifierNotFound(Identifier: string; El: TPasElement; Id: TMaxPrecInt);
     procedure RaiseInconsistency(Id: TMaxPrecInt; El: TPasElement);
@@ -7163,7 +7163,7 @@ begin
 end;
 
 procedure TPas2JSResolver.RaiseMsg(const Id: TMaxPrecInt; MsgNumber: integer;
-  const Fmt: String; Args: array of {$IFDEF pas2js}jsvalue{$ELSE}const{$ENDIF};
+  const Fmt: String; Args: array of const;
   ErrorPosEl: TPasElement);
 begin
   {$IFDEF VerbosePas2JS}
@@ -26779,7 +26779,7 @@ begin
 end;
 
 procedure TPasToJSConverter.DoError(Id: TMaxPrecInt; const Msg: String;
-  const Args: array of {$IFDEF pas2js}jsvalue{$ELSE}const{$ENDIF});
+  const Args: array of const);
 var
   E: EPas2JS;
 begin
@@ -26791,7 +26791,7 @@ end;
 
 procedure TPasToJSConverter.DoError(Id: TMaxPrecInt; MsgNumber: integer;
   const MsgPattern: string;
-  const Args: array of {$IFDEF pas2js}jsvalue{$ELSE}const{$ENDIF};
+  const Args: array of const;
   El: TPasElement);
 var
   E: EPas2JS;

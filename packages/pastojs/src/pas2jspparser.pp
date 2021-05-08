@@ -43,7 +43,7 @@ type
     constructor Create(AScanner: TPascalScanner;
       AFileResolver: TBaseFileResolver; AEngine: TPasTreeContainer); reintroduce;
     procedure RaiseParserError(MsgNumber: integer;
-      Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF});
+      Args: array of const);
     procedure ParseSubModule(var Module: TPasModule);
     property Log: TPas2jsLogger read FLog write FLog;
   end;
@@ -116,7 +116,7 @@ begin
 end;
 
 procedure TPas2jsPasParser.RaiseParserError(MsgNumber: integer;
-  Args: array of {$IFDEF Pas2JS}jsvalue{$ELSE}const{$ENDIF});
+  Args: array of const);
 var
   Msg: TPas2jsMessage;
 begin

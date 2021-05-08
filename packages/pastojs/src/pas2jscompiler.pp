@@ -459,7 +459,7 @@ type
   Protected
     procedure CfgSyntaxError(const Msg: string);
     function ConditionEvalVariable(Sender: TCondDirectiveEvaluator; aName: String; out Value: string): boolean;
-    procedure ConditionEvalLog(Sender: TCondDirectiveEvaluator;  Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+    procedure ConditionEvalLog(Sender: TCondDirectiveEvaluator;  Args: array of const);
     property ConditionEvaluator: TCondDirectiveEvaluator read FConditionEval;
     property CurrentCfgFilename: string read FCurrentCfgFilename;
     property CurrentCfgLineNumber: integer read FCurrentCfgLineNumber;
@@ -1946,7 +1946,7 @@ begin
 end;
 
 procedure TPas2JSConfigSupport.ConditionEvalLog(Sender: TCondDirectiveEvaluator;
-  Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+  Args: array of const);
 begin
   CfgSyntaxError(SafeFormat(Sender.MsgPattern,Args));
 end;
@@ -2139,7 +2139,7 @@ function TPas2jsCompiler.MarkNeedBuilding(aFile: TPas2jsCompilerFile;
   Checked: TPasAnalyzerKeySet; var SrcFileCount: integer): boolean;
 
   procedure Mark(MsgNumber: integer;
-    Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+    Args: array of const);
   begin
     if aFile.NeedBuild then exit;
     aFile.NeedBuild:=true;

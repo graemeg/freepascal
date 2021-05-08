@@ -311,7 +311,7 @@ type
     function IsSpecializedGenericType(El: TPasElement): boolean;
     procedure EmitMessage(Id: TMaxPrecInt; MsgType: TMessageType;
       MsgNumber: integer; Fmt: String;
-      const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+      const Args: array of const;
       PosEl: TPasElement);
     procedure EmitMessage(Msg: TPAMessage);
     class function GetWarnIdentifierNumbers(Identifier: string;
@@ -3229,7 +3229,7 @@ end;
 
 procedure TPasAnalyzer.EmitMessage(Id: TMaxPrecInt; MsgType: TMessageType;
   MsgNumber: integer; Fmt: String;
-  const Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  const Args: array of const;
   PosEl: TPasElement);
 var
   Msg: TPAMessage;

@@ -297,7 +297,7 @@ type
     Function SaveComments(Const AValue : String) : String;
     function LogEvent(E : TPParserLogEvent) : Boolean; inline;
     Procedure DoLog(MsgType: TMessageType; MsgNumber: integer; Const Msg : String; SkipSourceInfo : Boolean = False);overload;
-    Procedure DoLog(MsgType: TMessageType; MsgNumber: integer; Const Fmt : String; Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif};SkipSourceInfo : Boolean = False);overload;
+    Procedure DoLog(MsgType: TMessageType; MsgNumber: integer; Const Fmt : String; Args : Array of const;SkipSourceInfo : Boolean = False);overload;
     function GetProcTypeFromToken(tk: TToken; IsClass: Boolean=False ): TProcType;
     procedure ParseAsmBlock(AsmBlock: TPasImplAsmStatement); virtual;
     procedure ParseRecordMembers(ARec: TPasRecordType; AEndToken: TToken; AllowMethods : Boolean);
@@ -314,7 +314,7 @@ type
       ProcType: TProcType): boolean;
     function CheckVisibility(S: String; var AVisibility: TPasMemberVisibility; IsObjCProtocol : Boolean = False): Boolean;
     procedure ParseExc(MsgNumber: integer; const Msg: String);
-    procedure ParseExc(MsgNumber: integer; const Fmt: String; Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+    procedure ParseExc(MsgNumber: integer; const Fmt: String; Args : Array of const);
     procedure ParseExcExpectedIdentifier;
     procedure ParseExcSyntaxError;
     procedure ParseExcTokenError(const Arg: string);
@@ -372,7 +372,7 @@ type
   public
     constructor Create(AScanner: TPascalScanner; AFileResolver: TBaseFileResolver;  AEngine: TPasTreeContainer);
     Destructor Destroy; override;
-    procedure SetLastMsg(MsgType: TMessageType; MsgNumber: integer; Const Fmt : String; Args : Array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+    procedure SetLastMsg(MsgType: TMessageType; MsgNumber: integer; Const Fmt : String; Args : Array of const);
     // General parsing routines
     function CurTokenName: String;
     function CurTokenText: String;
@@ -988,7 +988,7 @@ begin
 end;
 
 procedure TPasParser.ParseExc(MsgNumber: integer; const Fmt: String;
-  Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+  Args: array of const);
 var
   p: TPasSourcePos;
 begin
@@ -2326,7 +2326,7 @@ begin
     tkCaret                 : Result:=eopDeref;
   else
     result:=eopAdd; // Fool compiler
-    ParseExc(nParserNotAnOperand,SParserNotAnOperand,[AToken,TokenInfos[AToken]]);
+    ParseExc(nParserNotAnOperand,SParserNotAnOperand,[ord(AToken),TokenInfos[AToken]]);
   end;
 end;
 
@@ -4890,7 +4890,7 @@ begin
 end;
 
 procedure TPasParser.SetLastMsg(MsgType: TMessageType; MsgNumber: integer;
-  const Fmt: String; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif});
+  const Fmt: String; Args: array of const);
 begin
   FLastMsgType := MsgType;
   FLastMsgNumber := MsgNumber;
@@ -4906,7 +4906,7 @@ begin
 end;
 
 procedure TPasParser.DoLog(MsgType: TMessageType; MsgNumber: integer;
-  const Fmt: String; Args: array of {$ifdef pas2js}jsvalue{$else}const{$endif};
+  const Fmt: String; Args: array of const;
   SkipSourceInfo: Boolean);
 
 Var
