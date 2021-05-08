@@ -266,6 +266,7 @@
              ,as_z80_rel
              ,as_wasm32_wabt
              ,as_wasm32_llvm_mc        { WebAssembly code assembled by llvm-mc (llvm machine code playground) }
+             ,as_arm_vasm
        );
 
        tlink = (ld_none,

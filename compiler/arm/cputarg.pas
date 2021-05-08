@@ -81,6 +81,10 @@ implementation
       ,agarmgas
     {$endif}
 
+    {$ifndef Noagrmvasm}
+      ,agarmvasm
+    {$endif Noagarmvasm}
+
       ,ogcoff
       ,ogelf
       ,cpuelf
