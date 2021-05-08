@@ -33,25 +33,25 @@ const
   fpu_exception_mask = fpu_ioe or fpu_dze or fpu_ofe or fpu_ufe or fpu_ixe or fpu_ide;
   fpu_exception_mask_to_status_mask_shift = 8;
 
-function getfpcr: dword; nostackframe; assembler;
+function getfpcr: qword; nostackframe; assembler;
   asm
     mrs x0,fpcr
   end;
 
 
-procedure setfpcr(val: dword); nostackframe; assembler;
+procedure setfpcr(val: qword); nostackframe; assembler;
   asm
     msr fpcr,x0
   end;
 
 
-function getfpsr: dword; nostackframe; assembler;
+function getfpsr: qword; nostackframe; assembler;
   asm
     mrs x0,fpsr
   end;
 
 
-procedure setfpsr(val: dword); nostackframe; assembler;
+procedure setfpsr(val: qword); nostackframe; assembler;
   asm
     msr fpsr, x0
   end;
@@ -69,7 +69,7 @@ const
 
 procedure RaisePendingExceptions;
   var
-    fpsr : dword;
+    fpsr : qword;
     f: TFPUException;
   begin
     fpsr:=getfpsr;
@@ -96,7 +96,7 @@ procedure RaisePendingExceptions;
   exceptions are not supported }
 procedure fpc_throwfpuexception;[public,alias:'FPC_THROWFPUEXCEPTION'];
   var
-    fpsr : dword;
+    fpsr : qword;
     f: TFPUException;
   begin
     { at this point, we know already, that an exception will be risen }
