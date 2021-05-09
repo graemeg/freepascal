@@ -37,6 +37,7 @@ Type
    { possible supported processors for this target }
    tcputype =
       (cpu_none,
+       cpu_armv2,
        cpu_armv3,
        cpu_armv4,
        cpu_armv4t,
@@ -554,6 +555,7 @@ Const
    ];
 
    cputypestr : array[tcputype] of string[8] = ('',
+     'ARMV2',
      'ARMV3',
      'ARMV4',
      'ARMV4T',
@@ -1095,6 +1097,7 @@ Const
  const
    cpu_capabilities : array[tcputype] of set of tcpuflags =
      ( { cpu_none     } [],
+       { cpu_armv2    } [],
        { cpu_armv3    } [],
        { cpu_armv4    } [CPUARM_HAS_ALL_MEM,CPUARM_HAS_UMULL],
        { cpu_armv4t   } [CPUARM_HAS_THUMB,CPUARM_HAS_ALL_MEM,CPUARM_HAS_BX,CPUARM_HAS_UMULL],

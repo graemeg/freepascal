@@ -2213,6 +2213,7 @@ implementation
             IF_NONE,
             IF_ARMv4,
             IF_ARMv4,
+            IF_ARMv4,
             IF_ARMv4T or IF_ARMv4,
             IF_ARMv4T or IF_ARMv4 or IF_ARMv5 or IF_ARMv5T,
             IF_ARMv4T or IF_ARMv4 or IF_ARMv5 or IF_ARMv5T or IF_ARMv5TE,

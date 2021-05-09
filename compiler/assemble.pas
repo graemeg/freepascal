@@ -1791,7 +1791,10 @@ Implementation
                    eattrtype_dword:
                      eabi_section.alloc(LengthUleb128(tai_eabi_attribute(hp).value));
                    eattrtype_ntbs:
-                     eabi_section.alloc(Length(tai_eabi_attribute(hp).valuestr^)+1);
+                     if assigned(tai_eabi_attribute(hp).valuestr) then
+                       eabi_section.alloc(Length(tai_eabi_attribute(hp).valuestr^)+1)
+                     else
+                       eabi_section.alloc(1);
                    else
                      Internalerror(2019100701);
                  end;
@@ -1969,7 +1972,10 @@ Implementation
                    eattrtype_dword:
                      eabi_section.alloc(LengthUleb128(tai_eabi_attribute(hp).value));
                    eattrtype_ntbs:
-                     eabi_section.alloc(Length(tai_eabi_attribute(hp).valuestr^)+1);
+                     if assigned(tai_eabi_attribute(hp).valuestr) then
+                       eabi_section.alloc(Length(tai_eabi_attribute(hp).valuestr^)+1)
+                     else
+                       eabi_section.alloc(1);
                    else
                      Internalerror(2019100703);
                  end;
@@ -2336,7 +2342,10 @@ Implementation
                      end;
                    eattrtype_ntbs:
                      begin
-                       s:=tai_eabi_attribute(hp).valuestr^+#0;
+                       if assigned(tai_eabi_attribute(hp).valuestr) then
+                         s:=tai_eabi_attribute(hp).valuestr^+#0
+                       else
+                         s:=#0;
                        eabi_section.write(s[1],Length(s));
                      end
                    else

@@ -61,6 +61,7 @@ unit agarmgas;
     const 
       cputype_to_gas_march : array[tcputype] of string = (
         '', // cpu_none
+        'armv2',
         'armv3',
         'armv4',
         'armv4t',

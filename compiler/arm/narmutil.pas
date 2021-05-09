@@ -97,6 +97,7 @@ interface
         if (target_info.system in [system_arm_linux]) and (target_info.abi in [abi_eabihf,abi_eabi]) then
           begin
             case current_settings.cputype of
+              cpu_armv2,
               cpu_armv3:
                 begin
                   current_asmdata.asmlists[al_start].Concat(tai_eabi_attribute.create(Tag_CPU_arch,0));
