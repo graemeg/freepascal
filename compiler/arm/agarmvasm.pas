@@ -51,7 +51,6 @@ unit agarmvasm;
        itcpugas,cpuinfo,
        aasmcpu;
 
-
 {****************************************************************************}
 {                         VASM m68k Assembler writer                         }
 {****************************************************************************}
@@ -63,6 +62,7 @@ unit agarmvasm;
         InstrWriter := TARMInstrWriter.create(self);
       end;
 
+
     function TARMVASM.sectionattrs(atype:TAsmSectiontype):string;
       begin
         case atype of
@@ -73,13 +73,7 @@ unit agarmvasm;
           sec_data, sec_rodata:
             result:='adrw';
           sec_rodata_norel:
-            case target_info.system of
-              { stop vlink from complaining when it merges ro sections into rw ones (KB) }
-              system_m68k_atari: result:='adrw';
-              system_m68k_amiga: result:='adrw';
-            else
-              result:='adr';
-            end;
+            result:='adr';
           sec_bss, sec_threadvar:
             result:='aurw';
           sec_stab, sec_stabstr:
@@ -88,6 +82,7 @@ unit agarmvasm;
             result:='';
         end;
       end;
+
 
     function TARMVASM.MakeCmdLine: TCmdStr;
       var
@@ -108,8 +103,6 @@ unit agarmvasm;
         Replace(result,'$OTYPE',objtype);
         Replace(result,'$EXTRAOPT',asmextraopt);
       end;
-
-
 
 {*****************************************************************************
                                   Initialize
