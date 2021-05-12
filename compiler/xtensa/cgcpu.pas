@@ -655,6 +655,7 @@ implementation
             case target_info.abi of
               abi_xtensa_call0:
                 begin
+                  list.concat(tai_comment.Create(strpnew('  Start of abi_call0 entry localsize='+tostr(localsize))));
                   if current_procinfo.framepointer<>NR_STACK_POINTER_REG then
                     Include(regs,RS_A15);
                   if pi_do_call in current_procinfo.flags then
@@ -693,23 +694,29 @@ implementation
                         begin
                           reference_reset(ref,4,[]);
                           ref.symbol:=create_data_entry(nil,-localsize);
+                          list.concat(tai_comment.Create(strpnew(' Decreasing stack pointer by localsize='+tostr(localsize)+' using A8 register')));
                           list.concat(taicpu.op_reg_ref(A_L32R,NR_A8,ref));
                           list.concat(taicpu.op_reg_reg_reg(A_ADD,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,NR_A8));
                         end
                       else
-                        list.concat(taicpu.op_reg_reg_const(A_ADDI,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,-localsize));
+                        begin
+                          list.concat(tai_comment.Create(strpnew(' Decreasing stack pointer by localsize='+tostr(localsize)+' using A8 register')));
+                          list.concat(taicpu.op_reg_reg_const(A_ADDI,NR_STACK_POINTER_REG,NR_STACK_POINTER_REG,-localsize));
+                        end;
                     end;
 
                   reference_reset(ref,4,[]);
                   ref.base:=NR_STACK_POINTER_REG;
                   ref.offset:=localsize;
-                  if ref.offset>1024 then
+                  if localsize>1024 then
                     begin
-                      if ref.offset<=1024+32512 then
+                      list.concat(tai_comment.Create(strpnew('  Special entry code of abi_xtensa_call0 entry localsize='+tostr(localsize))));
+                      if localsize<=1024+32512 then
                         begin
-                          list.concat(taicpu.op_reg_reg_const(A_ADDMI,NR_A8,NR_STACK_POINTER_REG,ref.offset and $fffffc00));
-                          ref.offset:=ref.offset and $3ff;
+                          list.concat(taicpu.op_reg_reg_const(A_ADDI,NR_A8,NR_STACK_POINTER_REG,localsize-registerarea));
+                          reference_reset(ref,4,[]);
                           ref.base:=NR_A8;
+                          ref.offset:=registerarea;
                         end
                       else
                         begin
@@ -726,6 +733,7 @@ implementation
                   if current_procinfo.framepointer<>NR_STACK_POINTER_REG then
                     begin
                       dec(ref.offset,4);
+                      list.concat(tai_comment.Create(strpnew(' Storing reg A15 at offset='+tostr(ref.offset))));
                       list.concat(taicpu.op_reg_ref(A_S32I,NR_A15,ref));
                       a_reg_alloc(list,NR_FRAME_POINTER_REG);
                       list.concat(taicpu.op_reg_reg(A_MOV,NR_A15,NR_STACK_POINTER_REG));
@@ -737,12 +745,14 @@ implementation
                         if r in regs then
                           begin
                             dec(ref.offset,4);
+                            list.concat(tai_comment.Create(strpnew(' Storing reg '+std_regname(newreg(R_INTREGISTER,r,R_SUBWHOLE))+' at offset='+tostr(ref.offset))));
                             list.concat(taicpu.op_reg_ref(A_S32I,newreg(R_INTREGISTER,r,R_SUBWHOLE),ref));
                           end;
                     end;
                 end;
               abi_xtensa_windowed:
                 begin
+                  list.concat(tai_comment.Create(strpnew('  Start of abi_windowed entry localsize='+tostr(localsize))));
                   if stack_parameters and (pi_estimatestacksize in current_procinfo.flags) then
                     begin
                       list.concat(tai_comment.Create(strpnew('Stackframe size was estimated before code generation due to stack parameters')));
@@ -838,23 +848,23 @@ implementation
                       reference_reset(ref,4,[]);
                       ref.base:=NR_STACK_POINTER_REG;
                       ref.offset:=localsize;
-                      if ref.offset>1024 then
+                      if localsize>1024 then
                         begin
-                          if ref.offset<=1024+32512 then
+                          if localsize<=1024+32512 then
                             begin
-                              list.concat(taicpu.op_reg_reg_const(A_ADDMI,NR_A8,NR_STACK_POINTER_REG,ref.offset and $fffffc00));
-                              ref.offset:=ref.offset and $3ff;
+                              list.concat(taicpu.op_reg_reg_const(A_ADDI,NR_A8,NR_STACK_POINTER_REG,ref.offset-registerarea));
+                              ref.offset:=registerarea;
                               ref.base:=NR_A8;
                             end
                           else
                             begin
                               reference_reset(ref,4,[]);
-                              ref.symbol:=create_data_entry(nil,ref.offset);
+                              ref.symbol:=create_data_entry(nil,ref.offset-registerarea);
                               list.concat(taicpu.op_reg_ref(A_L32R,NR_A8,ref));
                               list.concat(taicpu.op_reg_reg_reg(A_ADD,NR_A8,NR_A8,NR_STACK_POINTER_REG));
                               reference_reset(ref,4,[]);
                               ref.base:=NR_A8;
-                              ref.offset:=0;
+                              ref.offset:=registerarea;
                             end;
                         end;
 
@@ -862,6 +872,7 @@ implementation
                       if current_procinfo.framepointer<>NR_STACK_POINTER_REG then
                         begin
                           dec(ref.offset,4);
+                          list.concat(tai_comment.Create(strpnew(' Restoring reg A15 from offset='+tostr(ref.offset))));
                           list.concat(taicpu.op_reg_ref(A_L32I,NR_A15,ref));
                           a_reg_dealloc(list,NR_FRAME_POINTER_REG);
                         end;
@@ -873,12 +884,14 @@ implementation
                             if r in regs then
                               begin
                                 dec(ref.offset,4);
+                                list.concat(tai_comment.Create(strpnew(' Restoring reg '+std_regname(newreg(R_INTREGISTER,r,R_SUBWHOLE))+' from offset='+tostr(ref.offset))));
                                 list.concat(taicpu.op_reg_ref(A_L32I,newreg(R_INTREGISTER,r,R_SUBWHOLE),ref));
                               end;
                         end;
 
                       // restore stack pointer
                       { not sure if 32512 is the correct value or if it can be larger }
+                      list.concat(tai_comment.Create(strpnew(' Restoring stack pointer')));
                       if Localsize>32512 then
                         begin
                           reference_reset(ref,4,[]);
