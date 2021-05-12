@@ -2723,10 +2723,10 @@ function(){
     Destructors are not allowed.<br>
     Constructors are supported in four ways:
     <ul>
-      <li><i>constructor New</i> is translated to <i>new ExtClass(params)</i>.</li>
+      <li><i>constructor New</i> is translated to <i>new ExtClass(params)</i>, and for nested external class: <i>new ExtParentClass.ExtClass(Params)</i></li>
       <li><i>constructor New; external name ''GlobalFunc''</i> is translated to <i>new GlobalFunc(params)</i>.</li>
       <li><i>constructor SomeName; external name </i>'{}'</i> is translated to <i>{}</i>.</li>
-      <li>Otherwise it is translated to <i>new ExtClass.FuncName(params)</i>.</li>
+      <li>Otherwise it is translated to <i>new ExtClass.FuncName(params)</i>, and for nested external class: <i>new ExtParentClass.ExtClass.FuncName(params)</i>.</li>
     </ul>
 
     <table class="sample">
