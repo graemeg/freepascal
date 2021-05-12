@@ -927,7 +927,45 @@ Implementation
                        (taicpu(hp1).oper[0]^.reg=taicpu(p).oper[0]^.reg) and  }
                        assigned(FindRegDeAlloc(taicpu(p).oper[0]^.reg,tai(hp1.Next))) then
                       begin
-                        DebugMsg('Peephole MovOp2Op performed', p);
+                        DebugMsg('Peephole MovOp2Op 1 performed', p);
+
+                        for i := 0 to taicpu(hp1).ops-1 do
+                          if taicpu(hp1).oper[i]^.typ=top_reg then
+                            if taicpu(hp1).oper[i]^.reg=taicpu(p).oper[0]^.reg then
+                              taicpu(hp1).oper[i]^.reg:=taicpu(p).oper[1]^.reg;
+
+                        alloc:=FindRegAllocBackward(taicpu(p).oper[0]^.reg,tai(p.Previous));
+                        dealloc:=FindRegDeAlloc(taicpu(p).oper[0]^.reg,tai(hp1.Next));
+
+                        if assigned(alloc) and assigned(dealloc) then
+                          begin
+                            asml.Remove(alloc);
+                            alloc.Free;
+                            asml.Remove(dealloc);
+                            dealloc.Free;
+                          end;
+
+                        { life range of reg1 is increased }
+                        AllocRegBetween(taicpu(p).oper[1]^.reg,p,hp1,usedregs);
+                        { p will be removed, update used register as we continue
+                          with the next instruction after p }
+
+                        result:=RemoveCurrentP(p);
+                      end
+                    { turn
+                      mov reg1, reg0
+                      <op> reg1,xxxx
+                      dealloc reg1
+                      into
+                      <op> reg1,xxx
+                    }
+                    else if MatchOpType(taicpu(p),top_reg,top_reg) and
+                       GetNextInstructionUsingReg(p,hp1,taicpu(p).oper[0]^.reg) and
+                       not(RegModifiedBetween(taicpu(p).oper[1]^.reg, p, hp1)) and
+                       MatchInstruction(hp1,[A_CP,A_CPC,A_CPI,A_SBRS,A_SBRC]) and
+                       assigned(FindRegDeAlloc(taicpu(p).oper[0]^.reg,tai(hp1.Next))) then
+                      begin
+                        DebugMsg('Peephole MovOp2Op 2 performed', p);
 
                         for i := 0 to taicpu(hp1).ops-1 do
                           if taicpu(hp1).oper[i]^.typ=top_reg then
