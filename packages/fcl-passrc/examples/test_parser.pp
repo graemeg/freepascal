@@ -1297,12 +1297,17 @@ procedure GetTypes(pe:TPasElement; lindent:integer);
      ccSafeCall:WriteFmt(true,'SaveCall;',false);
    end;
   end;
-  
+
+  procedure GetHiddenModifiers(Mfs:TProcTypeModifiers);
+
+  begin
+   if ptmVarargs in Mfs then WriteFmt(true,'varargs;',false);
+  end;
+
  procedure GetHiddenModifiers(Mfs:TProcedureModifiers);
   begin
    if pmInline in Mfs then WriteFmt(true,'inline;',false);
    if pmAssembler in Mfs then WriteFmt(true,'assembler;',false);
-   if pmVarargs in Mfs then WriteFmt(true,'varargs;',false);
    if pmCompilerProc in Mfs then WriteFmt(true,'compilerproc;',false);
   end; 
 
@@ -1349,6 +1354,7 @@ procedure GetTypes(pe:TPasElement; lindent:integer);
    if lpp.IsStatic then WriteFmt(true,'static;',false);
    if lpp.IsForward then WriteFmt(true,'forward;',false);
    GetHiddenModifiers(lpp.Modifiers);
+   GetHiddenModifiers(lpp.ProcType.Modifiers);
    GetTCallingConvention(lpp.CallingConvention);
    if GetTPasMemberHints(TPasElement(lpp).Hints) then WriteFmt(false,'',true); //BUG ? missing hints
    if not Unformated then writeln;
@@ -1443,7 +1449,7 @@ procedure GetTypes(pe:TPasElement; lindent:integer);
    if assigned(pc) then
     begin
      s:=GetIndent(indent);
-     if (pc.ObjKind=okGeneric) then
+     if (pc.GenericTemplateTypes<>Nil) then
        begin
        write(s,'generic ',pc.Name);
        for l:=0 to pc.GenericTemplateTypes.Count-1 do
