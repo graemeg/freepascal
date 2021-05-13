@@ -75,6 +75,8 @@ unit navrinl;
 
 
     function tavrinlinenode.pass_typecheck_cpu : tnode;
+      var
+        para1,para2,para3,para4: tcallparanode;
       begin
         Result:=nil;
         case inlinenumber of
@@ -99,15 +101,19 @@ unit navrinl;
             end;
           in_avr_des:
             begin
-              CheckParameters(2);
+              CheckParameters(4);
               resultdef:=voidtype;
-              if not(is_constintnode(tcallparanode(left).paravalue)) then
-                MessagePos(tcallparanode(left).paravalue.fileinfo,type_e_constant_expr_expected);
-              if not(is_constboolnode(tcallparanode(tcallparanode(left).nextpara).paravalue)) then
-                MessagePos(tcallparanode(tcallparanode(left).nextpara).paravalue.fileinfo,type_e_constant_expr_expected);
-              if (tordconstnode(tcallparanode(left).paravalue).value<0) or
-                (tordconstnode(tcallparanode(left).paravalue).value>15) then
-                MessagePos(tcallparanode(left).paravalue.fileinfo,parser_e_range_check_error);
+              para4:=tcallparanode(left);
+              para3:=tcallparanode(tcallparanode(para4).nextpara);
+              para2:=tcallparanode(tcallparanode(para3).nextpara);
+              para1:=tcallparanode(tcallparanode(para2).nextpara);
+              if not(is_constintnode(para4.paravalue)) then
+                MessagePos(para4.paravalue.fileinfo,type_e_constant_expr_expected);
+              if not(is_constboolnode(para3.paravalue)) then
+                MessagePos(para3.paravalue.fileinfo,type_e_constant_expr_expected);
+              if (tordconstnode(para4.paravalue).value<0) or
+                (tordconstnode(para4.paravalue).value>15) then
+                MessagePos(para4.paravalue.fileinfo,parser_e_range_check_error);
             end;
           else
             Result:=inherited pass_typecheck_cpu;
@@ -142,6 +148,10 @@ unit navrinl;
 
 
     procedure tavrinlinenode.pass_generate_code_cpu;
+      var
+        para1,para2,para3,para4: tcallparanode;
+        ref: treference;
+        r: TRegister;
       begin
         case inlinenumber of
           in_avr_nop:
@@ -170,12 +180,52 @@ unit navrinl;
             end;
           in_avr_des:
             begin
-              if tordconstnode(tcallparanode(tcallparanode(left).nextpara).paravalue).value=0 then
+              para4:=tcallparanode(left);
+              para3:=tcallparanode(tcallparanode(para4).nextpara);
+              para2:=tcallparanode(tcallparanode(para3).nextpara);
+              para1:=tcallparanode(tcallparanode(para2).nextpara);
+              secondpass(tcallparanode(para1).paravalue);
+              secondpass(tcallparanode(para2).paravalue);
+
+              cg.getcpuregister(current_asmdata.CurrAsmList,NR_R30);
+              cg.getcpuregister(current_asmdata.CurrAsmList,NR_R31);
+
+              cg.a_loadaddr_ref_reg(current_asmdata.CurrAsmList,tcallparanode(para2).paravalue.location.reference,NR_R30);
+              reference_reset(ref,0,[]);
+              ref.base:=NR_R30;
+              for r:=NR_R8 to NR_R15 do
+                begin
+                  cg.getcpuregister(current_asmdata.CurrAsmList,r);
+                  cg.a_load_ref_reg(current_asmdata.CurrAsmList,OS_8,OS_8,ref,r);
+                  inc(ref.offset);
+                end;
+              cg.a_loadaddr_ref_reg(current_asmdata.CurrAsmList,tcallparanode(para1).paravalue.location.reference,NR_R30);
+              reference_reset(ref,0,[]);
+              ref.base:=NR_R30;
+              for r:=NR_R0 to NR_R7 do
+                begin
+                  cg.getcpuregister(current_asmdata.CurrAsmList,r);
+                  cg.a_load_ref_reg(current_asmdata.CurrAsmList,OS_8,OS_8,ref,r);
+                  inc(ref.offset);
+                end;
+              if tordconstnode(para3.paravalue).value=0 then
                 current_asmdata.CurrAsmList.concat(taicpu.op_none(A_CLH))
               else
                 current_asmdata.CurrAsmList.concat(taicpu.op_none(A_SEH));
-              current_asmdata.CurrAsmList.concat(taicpu.op_const(A_DES,int64(tordconstnode(tcallparanode(left).paravalue).value)));
-            end;
+              current_asmdata.CurrAsmList.concat(taicpu.op_const(A_DES,int64(tordconstnode(para4.paravalue).value)));
+
+              for r:=NR_R8 to NR_R15 do
+                cg.ungetcpuregister(current_asmdata.CurrAsmList,r);
+
+              { save data }
+              ref.offset:=0;
+              for r:=NR_R0 to NR_R7 do
+                begin
+                  cg.a_load_reg_ref(current_asmdata.CurrAsmList,OS_8,OS_8,r,ref);
+                  cg.ungetcpuregister(current_asmdata.CurrAsmList,r);
+                  inc(ref.offset);
+                end;
+            end
           else
             inherited pass_generate_code_cpu;
         end;
