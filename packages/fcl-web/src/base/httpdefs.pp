@@ -363,6 +363,7 @@ type
     // Variables
     Class Function GetVariableHeaderName(AVariable : THTTPVariableType) : String;
     Function  GetHTTPVariable(AVariable : THTTPVariableType) : String;
+    Class Function ParseContentType(const AContentType: String; Parameters: TStrings) : String;
     // Get/Set custom headers.
     Function GetCustomHeader(const Name: String) : String; virtual;
     Procedure SetCustomHeader(const Name, Value: String); virtual;
@@ -1395,6 +1396,125 @@ begin
   Result:=FVariables[AVariable];
 end;
 
+type
+  TParseState =
+    (psStart, psContentType, psSearchParam, psParam, psSearchParamEqual, psSearchParamValue, psParamValueQuoted, psParamValue);
+
+Class Function THTTPHeader.ParseContentType(const AContentType: String; Parameters: TStrings): String;
+var
+  len: Integer;
+  ind: Integer;
+  state: TParseState;
+  start: Integer;
+  paramname: string;
+  paramvalue: string;
+begin
+  // See rfc1341, Content-Type
+  Result := '';
+  len := Length(AContentType);
+  if len=0 then
+    Exit;
+
+  ind := 1;
+  state := psStart;
+  while ind <= len do
+    begin
+    case state of
+      psStart:
+        begin
+        if not (AContentType[ind] in [' ']) then
+          begin
+          state := psContentType;
+          start := ind;
+          end;
+        end;
+      psContentType:
+        begin
+        if (AContentType[ind] in [' ', ';']) then
+          begin
+            Result := Copy(AContentType, start, ind-start);
+          if not Assigned(Parameters) then
+            Exit;
+          state := psSearchParam;
+          end;
+        if (ind = len) then
+          begin
+          Result := Copy(AContentType, start, ind-start+1);
+          end;
+        end;
+      psSearchParam:
+        begin
+        if not (AContentType[ind] in [' ', ';']) then
+          begin
+          state := psParam;
+          start := ind;
+          end;
+        end;
+      psParam:
+        begin
+        if (AContentType[ind] in [' ', '=']) then
+          begin
+            paramname := Copy(AContentType, start, ind-start);
+          if AContentType[ind] = '=' then
+            state := psSearchParamValue
+          else
+            state := psSearchParamEqual
+          end;
+        end;
+      psSearchParamEqual:
+        begin
+        if (AContentType[ind] = '=') then
+          state := psSearchParamValue;
+        end;
+      psSearchParamValue:
+        begin
+        if (AContentType[ind] = '"') then
+          begin
+          state := psParamValueQuoted;
+          start := ind +1;
+          end
+        else if (AContentType[ind] <> ' ') then
+          begin
+          state := psParamValue;
+          start := ind;
+          end;
+        end;
+      psParamValue:
+        begin
+        if (AContentType[ind] in [' ', ';']) then
+          begin
+          paramvalue := Copy(AContentType, start, ind-start);
+          Parameters.Values[paramname] := paramvalue;
+
+          state := psSearchParam;
+          end
+        else if (ind = len) then
+          begin
+          paramvalue := Copy(AContentType, start, ind-start+1);
+          Parameters.Values[paramname] := paramvalue;
+          end
+        end;
+      psParamValueQuoted:
+        begin
+        if AContentType[ind] = '"' then
+          begin
+          paramvalue := Copy(AContentType, start, ind-start);
+          Parameters.Values[paramname] := paramvalue;
+
+          state := psSearchParam;
+          end
+        else if (ind = len) then
+          begin
+          paramvalue := Copy(AContentType, start, ind-start+1);
+          Parameters.Values[paramname] := paramvalue;
+          end
+        end;
+    end;
+
+    inc(ind);
+    end;
+end;
+
 function THTTPHeader.GetHTTPVariable(AIndex: Integer): String;
 begin
   if (AIndex>=0) and (AIndex<=Ord(High(THTTPVariableType))) then
@@ -2385,10 +2505,10 @@ function TRequest.DerriveStreamingContentType(): TStreamingContentType;
 var
   CT: string;
 begin
-  CT:=ContentType;
-  if Pos('MULTIPART/FORM-DATA',Uppercase(CT))<>0 then
+  CT:=Uppercase(ParseContentType(ContentType, nil));
+  if CT='MULTIPART/FORM-DATA' then
     Result := sctMultipart
-  else if Pos('APPLICATION/X-WWW-FORM-URLENCODED',Uppercase(CT))<>0 then
+  else if CT='APPLICATION/X-WWW-FORM-URLENCODED' then
     Result := sctFormUrlEncoded
   else
     Result := sctUnknown
@@ -2397,20 +2517,19 @@ end;
 procedure TRequest.ProcessStreamingMultiPart(const State: TContentStreamingState; const Buf; const Size: Integer);
 Var
   ST: TStrings;
-  S, CT, B: String;
-  I: Integer;
+  S: String;
 begin
 {$ifdef CGIDEBUG} SendMethodEnter('ProcessStreamingMultiPart');{$endif CGIDEBUG}
   if State=cssStart then
     begin
-    CT := ContentType;
-    i:=Pos('=',CT);
-    B:=Copy(CT,I+1,Length(CT)-I);
-    I:=Length(B);
-    If (I>0) and (B[1]='"') then
-      B:=Copy(B,2,I-2);
-    FMimeItems := CreateMimeItems;
-    FMimeItems.Boundary := B;
+    ST := TStringList.Create;
+    try
+      ParseContentType(ContentType, ST);
+      FMimeItems := CreateMimeItems;
+      FMimeItems.Boundary := ST.Values['boundary'];
+    finally
+      ST.Free;
+    end;
     end;
 
   if FKeepFullContents or not FMimeItems.SupportsStreamingProcessing then
