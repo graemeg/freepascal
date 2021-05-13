@@ -40,6 +40,8 @@ unit navrinl;
   implementation
 
     uses
+      verbose,
+      constexp,
       compinnr,
       aasmdata,
       aasmcpu,
@@ -48,6 +50,7 @@ unit navrinl;
       hlcgobj,
       pass_2,
       cgbase, cgobj, cgutils,
+      ncon,ncal,
       cpubase;
 
     procedure tavrinlinenode.second_abs_long;
@@ -94,6 +97,18 @@ unit navrinl;
               CheckParameters(1);
               resultdef:=voidtype;
             end;
+          in_avr_des:
+            begin
+              CheckParameters(2);
+              resultdef:=voidtype;
+              if not(is_constintnode(tcallparanode(left).paravalue)) then
+                MessagePos(tcallparanode(left).paravalue.fileinfo,type_e_constant_expr_expected);
+              if not(is_constboolnode(tcallparanode(tcallparanode(left).nextpara).paravalue)) then
+                MessagePos(tcallparanode(tcallparanode(left).nextpara).paravalue.fileinfo,type_e_constant_expr_expected);
+              if (tordconstnode(tcallparanode(left).paravalue).value<0) or
+                (tordconstnode(tcallparanode(left).paravalue).value>15) then
+                MessagePos(tcallparanode(left).paravalue.fileinfo,parser_e_range_check_error);
+            end;
           else
             Result:=inherited pass_typecheck_cpu;
         end;
@@ -109,7 +124,8 @@ unit navrinl;
           in_avr_sei,
           in_avr_wdr,
           in_avr_cli,
-          in_avr_restore:
+          in_avr_restore,
+          in_avr_des:
             begin
               expectloc:=LOC_VOID;
               resultdef:=voidtype;
@@ -151,6 +167,14 @@ unit navrinl;
               secondpass(left);
               hlcg.location_force_reg(current_asmdata.CurrAsmList,left.location,left.resultdef,left.resultdef,false);
               current_asmdata.CurrAsmList.concat(taicpu.op_const_reg(A_OUT, NIO_SREG, left.location.register));
+            end;
+          in_avr_des:
+            begin
+              if tordconstnode(tcallparanode(tcallparanode(left).nextpara).paravalue).value=0 then
+                current_asmdata.CurrAsmList.concat(taicpu.op_none(A_CLH))
+              else
+                current_asmdata.CurrAsmList.concat(taicpu.op_none(A_SEH));
+              current_asmdata.CurrAsmList.concat(taicpu.op_const(A_DES,int64(tordconstnode(tcallparanode(left).paravalue).value)));
             end;
           else
             inherited pass_generate_code_cpu;

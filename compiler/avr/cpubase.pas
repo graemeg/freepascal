@@ -53,7 +53,8 @@ unit cpubase;
         A_LSL,A_LSR,A_ROL,A_ROR,A_ASR,A_SWAP,A_BSET,A_BCLR,A_SBI,A_CBI,
         A_SEC,A_SEH,A_SEI,A_SEN,A_SER,A_SES,A_SET,A_SEV,A_SEZ,
         A_CLC,A_CLH,A_CLI,A_CLN,A_CLR,A_CLS,A_CLT,A_CLV,A_CLZ,
-        A_BST,A_BLD,A_BREAK,A_NOP,A_SLEEP,A_WDR,A_XCH);
+        A_BST,A_BLD,A_BREAK,A_NOP,A_SLEEP,A_WDR,A_XCH,
+        A_DES);
 
 
       { This should define the array of instructions as string }

@@ -256,7 +256,9 @@ unit raavr;
        // A_WDR
        (numOperands: (1 shl 0); Operands: ((typ: top_none), (typ: top_none))),
        // A_XCH
-       (numOperands: (1 shl 2); Operands: ((typ: top_reg; rt: rt_Z), (typ: top_reg; rt: rt_all)))
+       (numOperands: (1 shl 2); Operands: ((typ: top_reg; rt: rt_Z), (typ: top_reg; rt: rt_all))),
+       // A_DES
+       (numOperands: (1 shl 1); Operands: ((typ: top_const; max: 15; min: 0), (typ: top_none)))
        );
 {$POP}
 

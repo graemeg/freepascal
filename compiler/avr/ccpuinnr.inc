@@ -18,5 +18,6 @@
   in_avr_sleep = in_cpu_first+3,
   in_avr_nop = in_cpu_first+4,
   in_avr_save = in_cpu_first+5,
-  in_avr_restore = in_cpu_first+6
+  in_avr_restore = in_cpu_first+6,
+  in_avr_des = in_cpu_first+7
 

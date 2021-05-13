@@ -44,7 +44,8 @@ interface
         'lsl','lsr','rol','ror','asr','swap','bset','bclr','sbi','cbi',
         'sec','seh','sei','sen','ser','ses','set','sev','sez',
         'clc','clh','cli','cln','clr','cls','clt','clv','clz',
-        'bst','bld','break','nop','sleep','wdr','xch');
+        'bst','bld','break','nop','sleep','wdr','xch',
+        'des');
 
     function gas_regnum_search(const s:string):Tregister;
     function gas_regname(r:Tregister):string;

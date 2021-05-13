@@ -29,6 +29,8 @@ unit intrinsics;
     { Restores SREG }
     procedure avr_restore(old_sreg: byte); [INTERNPROC: in_avr_restore];
 
+    procedure avr_des(decrypt: boolean;round: byte);[INTERNPROC: in_avr_des];
+
   implementation
 
 end.
