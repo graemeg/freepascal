@@ -84,6 +84,7 @@ function SetQLJobName(const s: string): longint;
 function GetQLJobName: string;
 function GetQLJobNamePtr: pointer;
 
+procedure SetQLDefaultConExitMessage(const msg: PChar);
 
 implementation
 
@@ -275,10 +276,17 @@ begin
     end;
 end;
 
+const
+  QLDefaultConExitMessage: PChar = 'Press any key to exit';
+
+procedure SetQLDefaultConExitMessage(const msg: PChar);
+begin
+  QLDefaultConExitMessage:=msg;
+end;
+
 
 function QLOpenCon(var console: QLConHandle): boolean; weakexternal name 'QLOpenCon';
 procedure QLCloseCon(var console: QLConHandle); weakexternal name 'QLCloseCon';
-function QLDefaultConExitMessage: PChar; weakexternal name 'QLDefaultConExitMessage';
 
 function DefaultQLOpenCon(var console: QLConHandle): boolean;
 var
@@ -307,21 +315,12 @@ begin
 end;
 
 procedure DefaultQLCloseCon(var console: QLConHandle);
-const
-  anyKey: pchar = 'Press any key to exit';
-var
-  msg: pchar;
 begin
   with console do
     begin
-      if assigned(@QLDefaultConExitMessage) then
-        msg:=QLDefaultConExitMessage
-      else
-        msg:=anyKey;
-
-      if assigned(msg) then
+      if assigned(QLDefaultConExitMessage) and (length(QLDefaultConExitMessage) > 0) then
         begin
-          io_sstrg(outputHandle, -1, msg, length(msg));
+          io_sstrg(outputHandle, -1, QLDefaultConExitMessage, length(QLDefaultConExitMessage));
           io_fbyte(inputHandle, -1);
         end;
     end;
