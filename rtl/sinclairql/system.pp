@@ -70,6 +70,16 @@ var
 
     {$endif defined(FPUSOFT)}
 
+type
+  QLConHandle = record
+    inputHandle: longint;
+    outputHandle: longint;
+    errorHandle: longint;
+    userData: pointer;
+  end;
+
+
+
 function SetQLJobName(const s: string): longint;
 function GetQLJobName: string;
 function GetQLJobNamePtr: pointer;
@@ -265,17 +275,68 @@ begin
     end;
 end;
 
+
+function QLOpenCon(var console: QLConHandle): boolean; weakexternal name 'QLOpenCon';
+procedure QLCloseCon(var console: QLConHandle); weakexternal name 'QLCloseCon';
+function QLDefaultConExitMessage: PChar; weakexternal name 'QLDefaultConExitMessage';
+
+function DefaultQLOpenCon(var console: QLConHandle): boolean;
+var
+  r: TQLRect;
+begin
+  DefaultQLOpenCon:=false;
+  with console do 
+    begin
+      inputHandle:=io_open('con_',Q_OPEN);
+      if inputHandle <= 0 then
+        exit;
+
+      outputHandle:=inputHandle;
+      errorHandle:=inputHandle;
+      userData:=nil;
+
+      r.q_width:=512;
+      r.q_height:=256;
+      r.q_x:=0;
+      r.q_y:=0;
+
+      sd_wdef(inputHandle,-1,2,1,@r);
+      sd_clear(inputHandle,-1);
+    end;
+  DefaultQLOpenCon:=true;
+end;
+
+procedure DefaultQLCloseCon(var console: QLConHandle);
+const
+  anyKey: pchar = 'Press any key to exit';
+var
+  msg: pchar;
+begin
+  with console do
+    begin
+      if assigned(@QLDefaultConExitMessage) then
+        msg:=QLDefaultConExitMessage
+      else
+        msg:=anyKey;
+
+      if assigned(msg) then
+        begin
+          io_sstrg(outputHandle, -1, msg, length(msg));
+          io_fbyte(inputHandle, -1);
+        end;
+    end;
+end;
+
 {*****************************************************************************
                         System Dependent Entry code
 *****************************************************************************}
 var
   jobStackDataPtr: pointer; external name '__stackpointer_on_entry';
   program_name: shortstring; external name '__fpc_program_name';
+  QLCon: QLConHandle;
 
 { QL/QDOS specific startup }
 procedure SysInitQDOS;
-var
-  r: TQLRect;
 begin
   QL_ChannelIDNum:=pword(jobStackDataPtr)[0];
   QL_ChannelIDs:=@pword(jobStackDataPtr)[1];
@@ -284,17 +345,17 @@ begin
 
   SetQLJobName(program_name);
 
-  stdInputHandle:=io_open('con_',Q_OPEN);
-  stdOutputHandle:=stdInputHandle;
-  stdErrorHandle:=stdInputHandle;
+  if assigned(@QLOpenCon) then
+    QLOpenCon(QLCon)
+  else
+    DefaultQLOpenCon(QLCon);
 
-  r.q_width:=512;
-  r.q_height:=256;
-  r.q_x:=0;
-  r.q_y:=0;
-
-  sd_wdef(stdInputHandle,-1,2,1,@r);
-  sd_clear(stdInputHandle,-1);
+  with QLCon do
+    begin
+      stdInputHandle:=inputHandle;
+      stdOutputHandle:=outputHandle;
+      stdErrorHandle:=errorHandle;
+    end;
 end;
 
 {*****************************************************************************
@@ -304,16 +365,16 @@ end;
 procedure haltproc(e:longint); external name '_haltproc';
 
 procedure system_exit;
-const
-  anyKey: pchar = 'Press any key to exit';
 begin
   if assigned(args) then
     FreeMem(args);
   if assigned(argv) then
     FreeMem(argv);
 
-  io_sstrg(stdOutputHandle, -1, anyKey, length(anykey));
-  io_fbyte(stdInputHandle, -1);
+  if assigned(@QLCloseCon) then
+    QLCloseCon(QLCon)
+  else
+    DefaultQLCloseCon(QLCon);
 
   stdInputHandle:=UnusedHandle;
   stdOutputHandle:=UnusedHandle;
