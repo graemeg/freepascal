@@ -4,7 +4,7 @@
     Copyright (c) 2008 by the Free Pascal development team.
 
     Processor dependent implementation for the system unit for
-    AVR
+    RiscV32
 
     See the file COPYING.FPC, included in this distribution,
     for details about the copyright.
@@ -15,10 +15,8 @@
 
  **********************************************************************}
 
-procedure fpc_cpuinit;{$ifdef SYSTEMINLINE}inline;{$endif}
-  begin
-  end;
-
+{ Common RiscV stuff }
+{$I ../riscv/riscv.inc}
 
 {$IFNDEF INTERNAL_BACKTRACE}
 {$define FPC_SYSTEM_HAS_GET_FRAME}
