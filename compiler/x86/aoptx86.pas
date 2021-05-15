@@ -5160,11 +5160,15 @@ unit aoptx86;
 
         { Data flow analysis }
         TestValMin, TestValMax: TCgInt;
-        SmallerOverflow, FirstCheck: Boolean;
+        SmallerOverflow: Boolean;
 
       begin
         Result := False;
         p_removed := False;
+
+        { This is anything but quick! }
+        if not(cs_opt_level2 in current_settings.optimizerswitches) then
+          Exit;
 
         SetLength(InstrList, 0);
         InstrMax := -1;
@@ -5173,6 +5177,12 @@ unit aoptx86;
         case taicpu(p).opsize of
           S_BW, S_BL:
             begin
+{$if defined(i386) or defined(i8086)}
+              { If the target size is 8-bit, make sure we can actually encode it }
+              if not (GetSupReg(ThisReg) in [RS_EAX,RS_EBX,RS_ECX,RS_EDX]) then
+                Exit;
+{$endif i386 or i8086}
+
               UpperLimit := $FF;
               MinSize := S_B;
               if taicpu(p).opsize = S_BW then
@@ -5190,33 +5200,6 @@ unit aoptx86;
             InternalError(2020112301);
         end;
 
-        { With MinSize and MaxSize set, we can check some other optimisations
-          first, before attempting the expensive data flow analysis }
-        FirstCheck := GetNextInstructionUsingReg(p, hp1, ThisReg) and
-          (hp1.typ = ait_instruction) and
-          (
-            { Under -O1 and -O2, GetNextInstructionUsingReg may return an
-              instruction that doesn't actually contain ThisReg }
-            (cs_opt_level3 in current_settings.optimizerswitches) or
-            RegInInstruction(ThisReg, hp1)
-          );
-
-        { Data-flow analysis won't get anywhere since there was no instruction match }
-        if not FirstCheck then
-          Exit;
-
-        { Check for:
-            movz ##,%reg
-            cmp  $y,%reg
-            (%reg deallocated)
-
-          Change register size so movz becomes mov
-        }
-
-        { This is anything but quick! }
-        if not(cs_opt_level2 in current_settings.optimizerswitches) then
-          Exit;
-
         TestValMin := 0;
         TestValMax := UpperLimit;
         TrySmallerLimit := UpperLimit;
@@ -5224,19 +5207,17 @@ unit aoptx86;
         SmallerOverflow := False;
         RegChanged := False;
 
-        while FirstCheck { No need to waste checking for the next instruction again } or
+        hp1 := p;
+
+        while GetNextInstructionUsingReg(hp1, hp1, ThisReg) and
+          (hp1.typ = ait_instruction) and
           (
-            GetNextInstructionUsingReg(hp1, hp1, ThisReg) and
-            (hp1.typ = ait_instruction) and
-            (
-              { Under -O1 and -O2, GetNextInstructionUsingReg may return an
-                instruction that doesn't actually contain ThisReg }
-              (cs_opt_level3 in current_settings.optimizerswitches) or
-              RegInInstruction(ThisReg, hp1)
-            )
+            { Under -O1 and -O2, GetNextInstructionUsingReg may return an
+              instruction that doesn't actually contain ThisReg }
+            (cs_opt_level3 in current_settings.optimizerswitches) or
+            RegInInstruction(ThisReg, hp1)
           ) do
           begin
-            FirstCheck := False;
 
             case taicpu(hp1).opcode of
               A_INC,A_DEC:
@@ -5259,9 +5240,6 @@ unit aoptx86;
 
               A_CMP:
                 begin
-                  { Smallest signed value for MinSize }
-                  TrySmallerLimit := not (UpperLimit shr 1);
-
                   if (taicpu(hp1).oper[1]^.typ <> top_reg) or
                     { Has to be an exact match on the register }
                     (taicpu(hp1).oper[1]^.reg <> ThisReg) or
@@ -5269,7 +5247,11 @@ unit aoptx86;
                     { Make sure the comparison value is not smaller than the
                       smallest allowed signed value for the minimum size (e.g.
                       -128 for 8-bit) }
-                    (taicpu(hp1).oper[0]^.val < TrySmallerLimit) then
+                    not (
+                      ((taicpu(hp1).oper[0]^.val and UpperLimit) = taicpu(hp1).oper[0]^.val) or
+                      { Is it in the negative range? }
+                      (((not taicpu(hp1).oper[0]^.val) and (UpperLimit shr 1)) = (not taicpu(hp1).oper[0]^.val))
+                    ) then
                     Break;
 
                   TestValMin := TestValMin - taicpu(hp1).oper[0]^.val;
@@ -5295,7 +5277,7 @@ unit aoptx86;
                       end;
 
                       { Update the register to its new size }
-                      ThisReg := newreg(R_INTREGISTER, getsupreg(ThisReg), TargetSubReg);
+                      setsubreg(ThisReg, TargetSubReg);
 
                       taicpu(hp1).oper[1]^.reg := ThisReg;
                       taicpu(hp1).opsize := MinSize;
@@ -5604,7 +5586,7 @@ unit aoptx86;
                   end;
 
                   { Update the register to its new size }
-                  ThisReg := newreg(R_INTREGISTER, getsupreg(ThisReg), TargetSubReg);
+                  setsubreg(ThisReg, TargetSubReg);
 
                   if TargetSize = MinSize then
                     begin
