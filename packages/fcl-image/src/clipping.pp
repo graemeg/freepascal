@@ -57,7 +57,7 @@ begin
   SortRect (bounds);
   with Bounds do
     result := (x >= left) and (x <= right) and
-              (y >= bottom) and (y <= top);
+              (y >= top) and (y <= bottom);
 end;
 
 Function CheckRectClipping (ClipRect:TRect; var Rect:Trect) : Boolean;
