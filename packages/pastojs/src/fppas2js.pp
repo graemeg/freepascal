@@ -2039,6 +2039,7 @@ type
     Function CreateVarDecl(const aName: String; Init: TJSElement; El: TPasElement): TJSVarDeclaration; virtual;
     // JS literals
     Function CreateLiteralNumber(El: TPasElement; const n: TJSNumber): TJSLiteral; virtual;
+    Function CreateLiteralFloat(El: TPasElement; const n: TJSNumber): TJSElement; virtual;
     Function CreateLiteralHexNumber(El: TPasElement; const n: TMaxPrecInt; Digits: byte): TJSLiteral; virtual;
     Function CreateLiteralString(El: TPasElement; const s: string): TJSLiteral; virtual;
     Function CreateLiteralJSString(El: TPasElement; const s: TJSString): TJSLiteral; virtual;
@@ -17705,7 +17706,7 @@ begin
   revkUInt:
     Result:=CreateLiteralNumber(El,TResEvalUInt(Value).UInt);
   revkFloat:
-    Result:=CreateLiteralNumber(El,TResEvalFloat(Value).FloatValue);
+    Result:=CreateLiteralFloat(El,TResEvalFloat(Value).FloatValue);
   {$IFDEF FPC_HAS_CPSTRING}
   revkString:
     Result:=CreateLiteralString(El,TResEvalString(Value).S);
@@ -24256,6 +24257,30 @@ function TPasToJSConverter.CreateLiteralNumber(El: TPasElement;
 begin
   Result:=TJSLiteral(CreateElement(TJSLiteral,El));
   Result.Value.AsNumber:=n;
+end;
+
+function TPasToJSConverter.CreateLiteralFloat(El: TPasElement;
+  const n: TJSNumber): TJSElement;
+var
+  DivExpr: TJSMultiplicativeExpressionDiv;
+  Lit: TJSLiteral;
+begin
+  if IsInfinite(n) then
+    begin
+    DivExpr:=TJSMultiplicativeExpressionDiv(CreateElement(TJSMultiplicativeExpressionDiv,El));
+    if n<0 then
+      DivExpr.A:=CreateLiteralNumber(El,-1)
+    else
+      DivExpr.A:=CreateLiteralNumber(El,1);
+    DivExpr.B:=CreateLiteralNumber(El,0);
+    Result:=DivExpr;
+    end
+  else
+    begin
+    Lit:=TJSLiteral(CreateElement(TJSLiteral,El));
+    Lit.Value.AsNumber:=n;
+    Result:=Lit;
+    end;
 end;
 
 function TPasToJSConverter.CreateLiteralHexNumber(El: TPasElement;

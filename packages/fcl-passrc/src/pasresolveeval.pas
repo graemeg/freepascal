@@ -763,6 +763,7 @@ type
     procedure SuccUnicodeString(Value: TResEvalUTF16; ErrorEl: TPasElement);
     procedure PredEnum(Value: TResEvalEnum; ErrorEl: TPasElement);
     procedure SuccEnum(Value: TResEvalEnum; ErrorEl: TPasElement);
+    function DivideByZero(LeftSign, RightSign: TValueSign): TMaxPrecFloat;
     function CreateResEvalInt(UInt: TMaxPrecUInt): TResEvalValue; virtual;
   public
     constructor Create;
@@ -814,6 +815,7 @@ type
 
 procedure ReleaseEvalValue(var Value: TResEvalValue);
 function NumberIsFloat(const Value: string): boolean;
+function Sign(const Value: TMaxPrecUInt): TValueSign; overload;
 
 {$ifdef FPC_HAS_CPSTRING}
 function RawStrToCaption(const r: RawByteString; MaxLength: integer): string;
@@ -850,6 +852,14 @@ begin
   for i:=2 to length(Value) do
     if Value[i] in ['.','E','e'] then exit(true);
   Result:=false;
+end;
+
+function Sign(const Value: TMaxPrecUInt): TValueSign;
+begin
+  if Value>0 then
+    Result:=1
+  else
+    Result:=0;
 end;
 
 {$ifdef FPC_HAS_CPSTRING}
@@ -2537,32 +2547,32 @@ var
   aCurrency: TMaxPrecCurrency;
 begin
   Result:=nil;
+  Flo:=0.0;
   case LeftValue.Kind of
   revkInt:
     begin
     Int:=TResEvalInt(LeftValue).Int;
     case RightValue.Kind of
     revkInt:
+      begin
       // int / int
       if TResEvalInt(RightValue).Int=0 then
-        RaiseDivByZero(20170711143925,Expr)
+        Flo:=DivideByZero(Sign(Int),Sign(TResEvalInt(RightValue).Int))
       else
-        Result:=TResEvalFloat.CreateValue(Int / TResEvalInt(RightValue).Int);
+        Flo:=Int / TResEvalInt(RightValue).Int;
+      end;
     revkUInt:
       // int / uint
       if TResEvalUInt(RightValue).UInt=0 then
-        RaiseDivByZero(20170711144013,Expr)
+        Flo:=DivideByZero(Math.Sign(Int),Sign(TResEvalUInt(RightValue).UInt))
       else
-        Result:=TResEvalFloat.CreateValue(Int / TResEvalUInt(RightValue).UInt);
+        Flo:=Int / TResEvalUInt(RightValue).UInt;
     revkFloat:
-      begin
       // int / float
       try
         Flo:=Int / TResEvalFloat(RightValue).FloatValue;
       except
-        RaiseMsg(20170711144525,nDivByZero,sDivByZero,[],Expr);
-      end;
-      Result:=TResEvalFloat.CreateValue(Flo);
+        Flo:=DivideByZero(Sign(Int),Sign(TResEvalFloat(RightValue).FloatValue))
       end;
     revkCurrency:
       begin
@@ -2573,6 +2583,7 @@ begin
         RaiseMsg(20180421164915,nDivByZero,sDivByZero,[],Expr);
       end;
       Result:=TResEvalCurrency.CreateValue(aCurrency);
+      exit;
       end;
     else
       {$IFDEF VerbosePasResolver}
@@ -2588,24 +2599,21 @@ begin
     revkInt:
       // uint / int
       if TResEvalInt(RightValue).Int=0 then
-        RaiseDivByZero(20170711144103,Expr)
+        Flo:=DivideByZero(Sign(UInt),Sign(TResEvalInt(RightValue).Int))
       else
-        Result:=TResEvalFloat.CreateValue(UInt / TResEvalInt(RightValue).Int);
+        Flo:=UInt / TResEvalInt(RightValue).Int;
     revkUInt:
       // uint / uint
       if TResEvalUInt(RightValue).UInt=0 then
-        RaiseDivByZero(20170711144203,Expr)
+        Flo:=DivideByZero(Sign(UInt),Sign(TResEvalUInt(RightValue).UInt))
       else
-        Result:=TResEvalFloat.CreateValue(UInt / TResEvalUInt(RightValue).UInt);
+        Flo:=UInt / TResEvalUInt(RightValue).UInt;
     revkFloat:
-      begin
       // uint / float
       try
         Flo:=UInt / TResEvalFloat(RightValue).FloatValue;
       except
-        RaiseMsg(20170711144912,nDivByZero,sDivByZero,[],Expr);
-      end;
-      Result:=TResEvalFloat.CreateValue(Flo);
+        Flo:=DivideByZero(Sign(UInt),Sign(TResEvalFloat(RightValue).FloatValue))
       end;
     revkCurrency:
       begin
@@ -2616,6 +2624,7 @@ begin
         RaiseMsg(20180421164959,nDivByZero,sDivByZero,[],Expr);
       end;
       Result:=TResEvalCurrency.CreateValue(aCurrency);
+      exit;
       end;
     else
       {$IFDEF VerbosePasResolver}
@@ -2631,24 +2640,21 @@ begin
     revkInt:
       // float / int
       if TResEvalInt(RightValue).Int=0 then
-        RaiseDivByZero(20170711144954,Expr)
+        Flo:=DivideByZero(Sign(Flo),Sign(TResEvalInt(RightValue).Int))
       else
-        Result:=TResEvalFloat.CreateValue(Flo / TResEvalInt(RightValue).Int);
+        Flo:=Flo / TResEvalInt(RightValue).Int;
     revkUInt:
       // float / uint
       if TResEvalUInt(RightValue).UInt=0 then
-        RaiseDivByZero(20170711145023,Expr)
+        Flo:=DivideByZero(Sign(Flo),Sign(TResEvalUInt(RightValue).UInt))
       else
-        Result:=TResEvalFloat.CreateValue(Flo / TResEvalUInt(RightValue).UInt);
+        Flo:=Flo / TResEvalUInt(RightValue).UInt;
     revkFloat:
-      begin
       // float / float
       try
         Flo:=Flo / TResEvalFloat(RightValue).FloatValue;
       except
-        RaiseMsg(20170711145040,nDivByZero,sDivByZero,[],Expr);
-      end;
-      Result:=TResEvalFloat.CreateValue(Flo);
+        Flo:=DivideByZero(Sign(Flo),Sign(TResEvalFloat(RightValue).FloatValue))
       end;
     revkCurrency:
       begin
@@ -2674,34 +2680,28 @@ begin
     revkInt:
       // currency / int
       if TResEvalInt(RightValue).Int=0 then
-        RaiseDivByZero(20180421165154,Expr)
+        RaiseMsg(20210515133307,nDivByZero,sDivByZero,[],Expr)
       else
-        Result:=TResEvalCurrency.CreateValue(aCurrency / TResEvalInt(RightValue).Int);
+        aCurrency:=aCurrency / TResEvalInt(RightValue).Int;
     revkUInt:
       // currency / uint
       if TResEvalUInt(RightValue).UInt=0 then
-        RaiseDivByZero(20180421165205,Expr)
+        RaiseMsg(20210515133318,nDivByZero,sDivByZero,[],Expr)
       else
-        Result:=TResEvalCurrency.CreateValue(aCurrency / TResEvalUInt(RightValue).UInt);
+        aCurrency:=aCurrency / TResEvalUInt(RightValue).UInt;
     revkFloat:
-      begin
       // currency / float
       try
         aCurrency:=aCurrency / TResEvalFloat(RightValue).FloatValue;
       except
         RaiseMsg(20180421165237,nDivByZero,sDivByZero,[],Expr);
       end;
-      Result:=TResEvalCurrency.CreateValue(aCurrency);
-      end;
     revkCurrency:
-      begin
       // currency / currency
       try
         aCurrency:=aCurrency / TResEvalCurrency(RightValue).Value;
       except
         RaiseMsg(20180421165252,nDivByZero,sDivByZero,[],Expr);
-      end;
-      Result:=TResEvalCurrency.CreateValue(aCurrency);
       end;
     else
       {$IFDEF VerbosePasResolver}
@@ -2709,13 +2709,16 @@ begin
       {$ENDIF}
       RaiseNotYetImplemented(20180421165301,Expr);
     end;
+    Result:=TResEvalCurrency.CreateValue(aCurrency);
+    exit;
     end;
   else
     {$IFDEF VerbosePasResolver}
-    writeln('TResExprEvaluator.EvalBinaryDivExpr div ?- Left=',LeftValue.AsDebugString,' Right=',RightValue.AsDebugString);
+    writeln('TResExprEvaluator.EvalBinaryDivExpr ? / - Left=',LeftValue.AsDebugString,' Right=',RightValue.AsDebugString);
     {$ENDIF}
     RaiseNotYetImplemented(20170530102352,Expr);
   end;
+  Result:=TResEvalFloat.CreateValue(Flo);
 end;
 
 function TResExprEvaluator.EvalBinaryDivExpr(Expr: TBinaryExpr; LeftValue,
@@ -5635,6 +5638,18 @@ begin
   else
     inc(Value.Index);
   Value.IdentEl:=TPasEnumValue(EnumType.Values[Value.Index]);
+end;
+
+function TResExprEvaluator.DivideByZero(LeftSign, RightSign: TValueSign
+  ): TMaxPrecFloat;
+// FPC/Delphi compatibility: exception at runtime, no exception at compile time
+begin
+  if LeftSign=0 then
+    Result:=0.0
+  else if (LeftSign<0)<>(RightSign<0) then
+    Result:=Math.NegInfinity
+  else
+    Result:=Math.Infinity;
 end;
 
 { TResolveData }
