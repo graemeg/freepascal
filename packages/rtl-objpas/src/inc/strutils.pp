@@ -222,7 +222,7 @@ function Dec2Numb(N: Longint; Len, Base: Byte): string;
 function Numb2Dec(S: string; Base: Byte): Longint;
 function IntToBin(Value: Longint; Digits, Spaces: Integer): string;
 function IntToBin(Value: Longint; Digits: Integer): string;
-function intToBin(Value: int64; Digits:integer): string;
+function IntToBin(Value: int64; Digits:integer): string;
 function IntToRoman(Value: Longint): string;
 function TryRomanToInt(S: String; out N: LongInt; Strictness: TRomanConversionStrictness = rcsRelaxed): Boolean;
 function RomanToInt(const S: string; Strictness: TRomanConversionStrictness = rcsRelaxed): Longint;
@@ -247,7 +247,7 @@ function PosSet (const c:string;const s : ansistring ):SizeInt;
 function PosSetEx (const c:TSysCharSet;const s : ansistring;count:Integer ):SizeInt;
 function PosSetEx (const c:string;const s : ansistring;count:Integer ):SizeInt;
 
-Procedure Removeleadingchars(VAR S : AnsiString; Const CSet:TSysCharset);
+Procedure RemoveLeadingchars(VAR S : AnsiString; Const CSet:TSysCharset);
 Procedure RemoveTrailingChars(VAR S : AnsiString;Const CSet:TSysCharset);
 Procedure RemovePadChars(VAR S : AnsiString;Const CSet:TSysCharset);
 
