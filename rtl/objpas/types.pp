@@ -686,6 +686,7 @@ begin
   Result.x := apt.X;
   Result.y := apt.Y;
 end;
+
 { TRectF }
 
 function TRectF.GetHeight: Single;
@@ -712,8 +713,8 @@ function TRectF.Union(const r: TRectF): TRectF;
 begin
   result.left:=min(r.left,left);
   result.top:=min(r.top,top);
-  result.right:=min(r.right,right);
-  result.bottom:=min(r.bottom,bottom);
+  result.right:=max(r.right,right);
+  result.bottom:=max(r.bottom,bottom);
 end;
 
 procedure TRectF.Offset(const dx, dy: Single);
