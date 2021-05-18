@@ -48,11 +48,11 @@ Type
     function PeepHoleOptPass1Cpu(var p: tai): boolean; override;
     procedure PeepHoleOptPass2;override;
   private
-   function OptPass1ADD(var p : tai) : boolean;
-   function OptPass1ANDI(var p : tai) : boolean;
-   function OptPass1CALL(var p : tai) : boolean;
-   function OptPass1CLR(var p : tai) : boolean;
-   function OptPass1IN(var p : tai) : boolean;
+    function OptPass1ADD(var p : tai) : boolean;
+    function OptPass1ANDI(var p : tai) : boolean;
+    function OptPass1CALL(var p : tai) : boolean;
+    function OptPass1CLR(var p : tai) : boolean;
+    function OptPass1IN(var p : tai) : boolean;
     function OptPass1LDI(var p : tai) : boolean;
     function OptPass1LDS(var p : tai) : boolean;
     function OptPass1MOV(var p : tai) : boolean;
