@@ -224,6 +224,7 @@ begin
       Add('  .bss (NOLOAD): {');
       Add('      _sbss = .;');
       Add('      *(.bss .bss.*)');
+      Add('      . = ALIGN(2); SHORT(0x0000);');
       Add('      _ebss = .;');
       Add('  } :'+ProgramHeaderName);
       Add('}');
