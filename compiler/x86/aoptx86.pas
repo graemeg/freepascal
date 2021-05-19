@@ -2819,24 +2819,73 @@ unit aoptx86;
             Result:=true;
             exit;
           end;
-        if MatchOpType(taicpu(p),top_reg,top_ref) and
-          MatchInstruction(hp1,A_CMP,A_TEST,[taicpu(p).opsize]) and
-          (taicpu(hp1).oper[1]^.typ = top_ref) and
-           RefsEqual(taicpu(p).oper[1]^.ref^, taicpu(hp1).oper[1]^.ref^) then
+        if MatchInstruction(hp1,A_CMP,A_TEST,[taicpu(p).opsize]) then
           begin
-            { change
-                mov reg1, mem1
-                test/cmp x, mem1
+            if MatchOpType(taicpu(p),top_reg,top_ref) and
+              (taicpu(hp1).oper[1]^.typ = top_ref) and
+              RefsEqual(taicpu(p).oper[1]^.ref^, taicpu(hp1).oper[1]^.ref^) then
+              begin
+                { change
+                    mov reg1, mem1
+                    test/cmp x, mem1
 
-                to
+                    to
 
-                mov reg1, mem1
-                test/cmp x, reg1
-            }
-            taicpu(hp1).loadreg(1,taicpu(p).oper[0]^.reg);
-            DebugMsg(SPeepholeOptimization + 'MovTestCmp2MovTestCmp 1',hp1);
-            AllocRegBetween(taicpu(p).oper[0]^.reg,p,hp1,usedregs);
-            exit;
+                    mov reg1, mem1
+                    test/cmp x, reg1
+                }
+                taicpu(hp1).loadreg(1,taicpu(p).oper[0]^.reg);
+                DebugMsg(SPeepholeOptimization + 'MovTestCmp2MovTestCmp 1',hp1);
+                AllocRegBetween(taicpu(p).oper[0]^.reg,p,hp1,usedregs);
+                Result := True;
+                Exit;
+              end;
+
+            if MatchOpType(taicpu(p),top_ref,top_reg) and
+              { The x86 assemblers have difficulty comparing values against absolute addresses }
+              (taicpu(p).oper[0]^.ref^.refaddr in [addr_no, addr_pic, addr_pic_no_got]) and
+              (taicpu(hp1).oper[0]^.typ <> top_ref) and
+              MatchOperand(taicpu(hp1).oper[1]^, taicpu(p).oper[1]^.reg) and
+              (
+                (
+                  (taicpu(hp1).opcode = A_TEST)
+                ) or (
+                  (taicpu(hp1).opcode = A_CMP) and
+                  { A sanity check more than anything }
+                  not MatchOperand(taicpu(hp1).oper[0]^, taicpu(p).oper[1]^.reg)
+                )
+              ) then
+              begin
+                { change
+                    mov      mem, %reg
+                    cmp/test x,   %reg / test %reg,%reg
+                    (reg deallocated)
+
+                    to
+
+                    cmp/test x,   mem  / cmp  0,   mem
+                }
+                TransferUsedRegs(TmpUsedRegs);
+                UpdateUsedRegs(TmpUsedRegs, tai(p.Next));
+                if not RegUsedAfterInstruction(taicpu(p).oper[1]^.reg, hp1, TmpUsedRegs) then
+                  begin
+                    { Convert test %reg,%reg or test $-1,%reg to cmp $0,mem }
+                    if (taicpu(hp1).opcode = A_TEST) and
+                      (
+                        MatchOperand(taicpu(hp1).oper[0]^, taicpu(p).oper[1]^.reg) or
+                        MatchOperand(taicpu(hp1).oper[0]^, -1)
+                      ) then
+                      begin
+                        taicpu(hp1).opcode := A_CMP;
+                        taicpu(hp1).loadconst(0, 0);
+                      end;
+                    taicpu(hp1).loadref(1, taicpu(p).oper[0]^.ref^);
+                    DebugMsg(SPeepholeOptimization + 'MOV/CMP -> CMP (memory check)', p);
+                    RemoveCurrentP(p, hp1);
+                    Result := True;
+                    Exit;
+                  end;
+              end;
           end;
 
         if MatchInstruction(hp1,A_LEA,[S_L{$ifdef x86_64},S_Q{$endif x86_64}]) and
