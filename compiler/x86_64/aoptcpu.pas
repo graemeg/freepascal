@@ -145,6 +145,8 @@ uses
                 A_XORPD,
                 A_PXOR:
                   Result:=OptPass1PXor(p);
+                A_TEST:
+                  Result:=OptPass1Test(p);
                 else
                   ;
               end;

@@ -166,6 +166,8 @@ unit aoptcpu;
                 A_MOVSX,
                 A_MOVZX :
                   Result:=OptPass1Movx(p);
+                A_TEST:
+                  Result:=OptPass1Test(p);
                 A_PUSH:
                   begin
                     if (taicpu(p).opsize = S_W) and

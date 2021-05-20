@@ -122,6 +122,7 @@ unit aoptx86;
         function PrePeepholeOptSxx(var p : tai) : boolean;
         function PrePeepholeOptIMUL(var p : tai) : boolean;
 
+        function OptPass1Test(var p: tai): boolean;
         function OptPass1Add(var p: tai): boolean;
         function OptPass1AND(var p : tai) : boolean;
         function OptPass1_V_MOVAP(var p : tai) : boolean;
@@ -3267,6 +3268,74 @@ unit aoptx86;
       end;
 
 
+    function TX86AsmOptimizer.OptPass1Test(var p: tai) : boolean;
+      var
+        hp1, p_label, p_dist, hp1_dist: tai;
+        JumpLabel, JumpLabel_dist: TAsmLabel;
+      begin
+        Result := False;
+        { Search for:
+            test  %reg,%reg
+            j(c1) @lbl1
+            ...
+          @lbl:
+            test %reg,%reg (same register)
+            j(c2) @lbl2
+
+          If c2 is a subset of c1, change to:
+            test  %reg,%reg
+            j(c1) @lbl2
+            (@lbl1 may become a dead label as a result)
+        }
+
+        if MatchOpType(taicpu(p), top_reg, top_reg) and
+          (taicpu(p).oper[0]^.reg = taicpu(p).oper[1]^.reg) and
+          GetNextInstruction(p, hp1) and
+          MatchInstruction(hp1, A_JCC, []) and
+          (taicpu(hp1).oper[0]^.typ = top_ref) then
+          begin
+            JumpLabel := TAsmLabel(taicpu(hp1).oper[0]^.ref^.symbol);
+            p_label := nil;
+            if Assigned(JumpLabel) then
+              p_label := getlabelwithsym(JumpLabel);
+
+            if Assigned(p_label) and
+              GetNextInstruction(p_label, p_dist) and
+              MatchInstruction(p_dist, A_TEST, []) and
+              { It's fine if the second test uses smaller sub-registers }
+              (taicpu(p_dist).opsize <= taicpu(p).opsize) and
+              MatchOpType(taicpu(p_dist), top_reg, top_reg) and
+              SuperRegistersEqual(taicpu(p_dist).oper[0]^.reg, taicpu(p).oper[0]^.reg) and
+              SuperRegistersEqual(taicpu(p_dist).oper[1]^.reg, taicpu(p).oper[1]^.reg) and
+              GetNextInstruction(p_dist, hp1_dist) and
+              MatchInstruction(hp1_dist, A_JCC, []) then
+              begin
+                JumpLabel_dist := TAsmLabel(taicpu(hp1_dist).oper[0]^.ref^.symbol);
+
+                if JumpLabel = JumpLabel_dist then
+                  { This is an infinite loop }
+                  Exit;
+
+                { Best optimisation when the second condition is a subset (or equal) to the first }
+                if condition_in(taicpu(hp1_dist).condition, taicpu(hp1).condition) then
+                  begin
+                    if Assigned(JumpLabel_dist) then
+                      JumpLabel_dist.IncRefs;
+
+                    if Assigned(JumpLabel) then
+                      JumpLabel.DecRefs;
+
+                    DebugMsg(SPeepholeOptimization + 'TEST/Jcc/@Lbl/TEST/Jcc -> TEST/Jcc, redirecting first jump', hp1);
+                    taicpu(hp1).loadref(0, taicpu(hp1_dist).oper[0]^.ref^);
+                    Result := True;
+                    Exit;
+                  end;
+              end;
+          end;
+
+      end;
+
+
     function TX86AsmOptimizer.OptPass1Add(var p : tai) : boolean;
       var
         hp1 : tai;
@@ -4346,6 +4415,7 @@ unit aoptx86;
        var
          v: TCGInt;
          hp1, hp2: tai;
+         FirstMatch: Boolean;
        begin
          Result:=false;
 
@@ -4361,6 +4431,7 @@ unit aoptx86;
                MatchInstruction(hp1,A_Jcc,A_SETcc,[]) then
                begin
                  hp2 := p;
+                 FirstMatch := True;
                  { When dealing with "cmp $0,%reg", only ZF and SF contain
                    anything meaningful once it's converted to "test %reg,%reg";
                    additionally, some jumps will always (or never) branch, so
@@ -4368,9 +4439,13 @@ unit aoptx86;
                    comparison, optimising the conditions if possible.
                    Similarly with SETcc... those that are always set to 0 or 1
                    are changed to MOV instructions }
-                 while GetNextInstruction(hp2, hp1) and
-                   MatchInstruction(hp1,A_Jcc,A_SETcc,[]) do
+                 while FirstMatch or { Saves calling GetNextInstruction unnecessarily }
+                   (
+                     GetNextInstruction(hp2, hp1) and
+                     MatchInstruction(hp1,A_Jcc,A_SETcc,[])
+                   ) do
                    begin
+                     FirstMatch := False;
                      case taicpu(hp1).condition of
                        C_B, C_C, C_NAE, C_O:
                          { For B/NAE:
