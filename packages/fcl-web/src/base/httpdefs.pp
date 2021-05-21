@@ -2573,10 +2573,9 @@ procedure TRequest.HandleStreamingUnknownEncoding(const State: TContentStreaming
 var
   S: TStream;
 begin
+  ProcessStreamingSetContent(State, Buf, Size);
   if Assigned(FOnUnknownEncoding) then
     begin
-    ProcessStreamingSetContent(State, Buf, Size);
-
     if state=cssEnd then
       begin
       try
