@@ -197,7 +197,7 @@ unit cgutils;
     { This routine verifies if two references are the same, and
        if so, returns TRUE, otherwise returns false.
     }
-    function references_equal(const sref,dref : treference) : boolean;
+    function references_equal(const sref,dref : treference) : boolean; {$ifdef USEINLINE}inline;{$endif USEINLINE}
 
     { tlocation handling }
 
@@ -262,7 +262,7 @@ uses
       end;
 
 
-    function references_equal(const sref,dref : treference):boolean;
+    function references_equal(const sref,dref : treference):boolean; {$ifdef USEINLINE}inline;{$endif USEINLINE}
       begin
         references_equal:=CompareByte(sref,dref,sizeof(treference))=0;
       end;

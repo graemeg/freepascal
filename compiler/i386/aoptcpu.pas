@@ -221,8 +221,6 @@ unit aoptcpu;
                 A_MOVSD,
                 A_MOVSS:
                   Result:=OptPass1MOVXX(p);
-                A_SETcc:
-                  Result:=OptPass1SETcc(p);
                 else
                   ;
               end;
@@ -260,6 +258,8 @@ unit aoptcpu;
                   Result:=OptPass2Movx(p);
                 A_SUB:
                   Result:=OptPass2SUB(p);
+                A_SETcc:
+                  Result:=OptPass2SETcc(p);
                 else
                   ;
               end;

@@ -127,8 +127,6 @@ uses
                   result:=OptPass1Sub(p);
                 A_SHL,A_SAL:
                   result:=OptPass1SHLSAL(p);
-                A_SETcc:
-                  result:=OptPass1SETcc(p);
                 A_FSTP,A_FISTP:
                   result:=OptPass1FSTP(p);
                 A_FLD:
@@ -181,6 +179,8 @@ uses
                   Result:=OptPass2SUB(p);
                 A_ADD:
                   Result:=OptPass2ADD(p);
+                A_SETcc:
+                  result:=OptPass2SETcc(p);
                 else
                   ;
               end;
