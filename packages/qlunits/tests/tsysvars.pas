@@ -40,7 +40,7 @@ var
 begin
   actual_offset:=pbyte(test.sysvar)-pbyte(@system_vars);
   writeln(test.name,' at: ',actual_offset,' $',hexstr(actual_offset,3));
-  check_sysvar_offset:=(actual_offset = align(actual_offset,2)) and (test.offset = actual_offset);
+  check_sysvar_offset:=(test.offset = actual_offset);
 end;
 
 function test_sysvar_offsets: boolean;
