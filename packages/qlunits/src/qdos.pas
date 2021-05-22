@@ -23,7 +23,14 @@ type
   Tchanid = longint;
   Tjobid = longint;
   Ttimeout = smallint;
+  Tcolour = byte;
 
+type
+  Pqlstr = ^Tqlstr;
+  Tqlstr = record
+    qs_strlen: word;
+    qs_str: array[0..0] of char;
+  end;
 
 const
   ERR_NC = -1;   { Operation not complete }
@@ -142,6 +149,177 @@ type
     y_origin: word;
   end;
   PWindowDef = ^TWindowDef;
+
+type
+  Pqdos_queue = ^Tqdos_queue;
+  Tqdos_queue = record
+    q_nextq: Pqdos_queue;
+    q_end: pchar;
+    q_nextin: pchar;
+    q_nxtout: pchar;
+    q_queue: array[0..1] of char;
+  end;
+
+const
+  QDOSQUEUE_SIZE = $12;
+
+type
+  Tchan_defb = record
+    ch_len: dword;
+    ch_drivr: pbyte;
+    ch_owner: Tjobid;
+    ch_rflag: pbyte;
+    ch_tag: word;
+    ch_stat: byte;
+    ch_actn: byte;
+    ch_jobwt: Tjobid;
+  end;
+
+const
+  CHAN_DEFBSIZE = $18;
+
+type
+  Pser_cdefb = ^Tser_cdefb;
+  Tser_cdefb = record
+    ser_cdef: Tchan_defb;
+    ser_chnq: word;
+    ser_par: word;
+    ser_thsx: word;
+    ser_prot: word;
+    ser_rxq: Tqdos_queue;
+    ser_dum1: array[0..79] of byte;
+    ser_txq: Tqdos_queue;
+    ser_dum2: array[0..79] of byte;
+  end;
+
+const
+  SER_CDEFBSIZE = $E4;
+
+type
+  Tnet_cdefb = record
+    net_cdef: Tchan_defb;
+    net_hedr: byte;
+    net_self: byte;
+    net_blkl: byte;
+    net_blkh: byte;
+    net_type: byte;
+    net_nbyt: byte;
+    net_dchk: byte;
+    net_hchk: byte;
+    net_data: array[0..254] of byte;
+    net_rpnt: byte;
+  end;
+
+const
+  NET_CDEFBSIZE = $120;
+
+type
+  Tpipe_cdefb = record
+    ch_cdef: Tchan_defb;
+    ch_qin: Pqdos_queue;
+    ch_qout: Pqdos_queue;
+  end;
+
+const
+  PIPE_CDEFBSIZE = $20;
+
+type
+  Tscrn_info = record
+    sd_xmin: word;
+    sd_ymin: word;
+    sd_xsize: word;
+    sd_ysize: word;
+    sd_borwd: word;
+    sd_xpos: word;
+    sd_ypos: word;
+    sd_xinc: word;
+    sd_yinc: word;
+    sd_font: array[0..1] of pointer;
+    sd_scrb: pointer;
+    sd_pmask: dword;
+    sd_smask: dword;
+    sd_imask: dword;
+    sd_cattr: byte;
+    sd_curf: byte;
+    sd_pcolr: Tcolour;
+    sd_scolr: Tcolour;
+    sd_icolr: Tcolour;
+    sd_bcolr: Tcolour;
+    sd_nlsta: byte;
+    sd_fmod: byte;
+    sd_xorg: Tqlfloat;
+    sd_yorg: Tqlfloat;
+    sd_scal: Tqlfloat;
+    sd_fbuf: pointer;
+    sd_fuse: pointer;
+    sd_linel: word;
+  end;
+
+const
+  SCRN_INFOSIZE = $4E;
+
+type
+  Pscr_cdefb = ^Tscr_cdefb;
+  Tscr_cdefb = record
+    scr_cdef: Tchan_defb;
+    scr_info: Tscrn_info;
+  end;
+
+const
+  SCR_CDEFBSIZE = CHAN_DEFBSIZE + SCRN_INFOSIZE;
+
+const
+  CA_UNDERLINE = $1;
+  CA_FLASH = $2;
+  CA_TRANS = $4;
+  CA_XOR = $8;
+  CA_DOUBLE_HEIGHT = $10;
+  CA_EXT_WIDTH = $20;
+  CA_DBLE_WIDTH = $40;
+  CA_GRAF_POS_CHAR = $80;
+
+type
+  Tcon_union1 = record
+    sdu_linel: longint;
+    sdu_kbd: Tqdos_queue;
+  end;
+
+  Pcon_cdefb = ^Tcon_cdefb;
+  Tcon_cdefb = record
+    con_cdef: Tchan_defb;
+    con_info: Tscrn_info;
+    case boolean of
+      false:  ( sd_js: Tcon_union1 );
+      true:   ( sd_jm: Tqdos_queue );
+  end;
+
+const
+  CON_CDEFBSIZE = SCR_CDEFBSIZE + QDOSQUEUE_SIZE + 4;
+
+type
+  Pfs_cdefb = ^Tfs_cdefb;
+  Tfs_cdefb = record
+    fs_cdef: Tchan_defb;
+    fs_next: Pfs_cdefb;
+    fs_access: byte;
+    fs_drive: byte;
+    fs_filnr: word;
+    fs_nblok: word;
+    fs_nbyte: word;
+    fs_eblok: word;
+    fs_ebyte: word;
+    fs_cblock: pointer;
+    fs_updt: byte;
+    fs_res1: shortint;
+    fs_res2: longint;
+    fs_name: Tqlstr;
+    fs_pad: array[0..105] of byte;
+  end;
+
+const
+  FS_CDEFBSIZE = $a0;
+  FSCDEF_SIZE = FS_CDEFBSIZE; { inconsistently named alias, from C code }
+
 
 { Variable/type includes before function declarations }
 {$i qdos_sysvars.inc}

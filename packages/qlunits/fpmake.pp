@@ -41,6 +41,7 @@ begin
 
     P.ExamplePath.Add('tests');
     T:=P.Targets.AddExampleProgram('tsysvars.pas');
+    T:=P.Targets.AddExampleProgram('trecsize.pas');
 
 {$ifndef ALLPACKAGES}
     Run;
