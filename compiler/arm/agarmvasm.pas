@@ -84,6 +84,27 @@ unit agarmvasm;
       end;
 
 
+    const
+      cputype_to_vasm_march : array[tcputype] of string = (
+        '', // cpu_none
+        'a2',
+        'a3',
+        'a4',
+        'a4t',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '');
+
     function TARMVASM.MakeCmdLine: TCmdStr;
       var
         objtype: string;
@@ -99,7 +120,7 @@ unit agarmvasm;
 
         Replace(result,'$ASM',maybequoted(ScriptFixFileName(AsmFileName)));
         Replace(result,'$OBJ',maybequoted(ScriptFixFileName(ObjFileName)));
-        Replace(result,'$ARCH','-m'+cputype_to_gas_march[current_settings.cputype]);
+        Replace(result,'$ARCH','-'+cputype_to_vasm_march[current_settings.cputype]);
         Replace(result,'$OTYPE',objtype);
         Replace(result,'$EXTRAOPT',asmextraopt);
       end;
