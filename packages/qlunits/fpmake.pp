@@ -39,6 +39,9 @@ begin
     T:=P.Targets.AddExampleProgram('mtinf.pas');
     T:=P.Targets.AddExampleProgram('sms_info.pas');
 
+    P.ExamplePath.Add('tests');
+    T:=P.Targets.AddExampleProgram('tsysvars.pas');
+
 {$ifndef ALLPACKAGES}
     Run;
     end;
