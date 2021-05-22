@@ -142,13 +142,14 @@ type
   end;
   PWindowDef = ^TWindowDef;
 
+{ Variable/type includes before function declarations }
+{$i qdos_sysvars.inc}
 
 { the functions declared in qdosfuncs.inc are implemented in the system unit. They're included
   here via externals, do avoid double implementation of assembler wrappers. for this reason,
   qdosfuncs.inc in packages/qlunits must be kept identical to the one in rtl/sinclairql (KB). }
 
 {$i qdosfuncs.inc}
-{$i qdos_sysvars.inc}
 
 { other functions, not used/implemented by the RTL }
 

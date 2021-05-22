@@ -22,12 +22,14 @@ uses
   qdos;
 
 
+{ Variable/type includes before function declarations }
+{$i sms_sysvars.inc}
+
 { the functions declared in smsfuncs.inc are implemented in the system unit. They're included
   here via externals, do avoid double implementation of assembler wrappers. for this reason,
   smsfuncs.inc in packages/qlunits must be kept identical to the one in rtl/sinclairql (KB). }
 
 {$i smsfuncs.inc}
-{$i sms_sysvars.inc}
 
 
 implementation

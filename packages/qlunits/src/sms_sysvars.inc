@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  **********************************************************************}
-{
+
 
 { This file holds the system variables for an SMSQ system and uses
   the SMSQ naming convention. ND. }
@@ -220,7 +220,7 @@ Type
     sys_xdly: Byte;      { Suspend delay after executing another job [SMSQ/E 3.13+] }
     sys_ouch: Byte;      { Ouch flag (currently used to activate SGC debug) [SMSQ] }
 
-  end; 
+  end;
 
   pSystemVariables = ^SystemVariables;
 
