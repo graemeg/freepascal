@@ -12,7 +12,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
  **********************************************************************}
-
+{$PACKRECORDS 2}
 
 { This file holds the system variables for an SMSQ system and uses
   the SMSQ naming convention. ND. }
