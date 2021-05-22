@@ -1,7 +1,7 @@
 {
     Copyright (c) 2021 Karoly Balogh and Norman Dunbar
 
-    System info/System variables access on a Sinclair QL, QDOS naming
+    System info/System variables access on a Sinclair QL, SMS naming
     Example program for Free Pascal's Sinclair QL support
 
     This example program is in the Public Domain under the terms of
@@ -9,10 +9,10 @@
 
  **********************************************************************}
 
-program mtinf;
+program sms_info;
 
 uses
-  qdos;
+  sms;
 
 type
   Tver = array[0..3] of char;
@@ -35,14 +35,15 @@ begin
 end;
 
 begin
-  job_id:=mt_inf(@system_vars,@ver_ascii);
+  job_id:=sms_info(@system_vars,@ver_ascii);
 
   writeln('Job ID:',lo(job_id),' Tag:',hi(job_id));
-  writeln('Identification: ',get_id_str(system_vars^.SV_IDENT));
+  writeln('Identification: ',get_id_str(system_vars^.SYS_IDNT));
   writeln('Version: ',Tver(ver_ascii));
 
   writeln('System vars are at: $',hexstr(system_vars));
-  writeln('Processor type: 680',hexstr(system_vars^.SV_PTYP,2));
-  writeln('Monitor mode: ',system_vars^.SV_TVMOD);
-  writeln('Random number: ',system_vars^.SV_RAND);
+  writeln('Processor type: 680',hexstr(system_vars^.SYS_PTYP,2));
+  writeln('Monitor mode: ',system_vars^.SYS_TMOD);
+  writeln('Random number: ',system_vars^.SYS_RAND);
+  writeln('Real Time Clock: ',system_vars^.SYS_RTC);
 end.

@@ -27,6 +27,7 @@ uses
   smsfuncs.inc in packages/qlunits must be kept identical to the one in rtl/sinclairql (KB). }
 
 {$i smsfuncs.inc}
+{$i sms_sysvars.inc}
 
 
 implementation

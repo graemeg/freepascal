@@ -11,3 +11,5 @@ The following units are available:
 The following examples are available:
 
     qlcube - draws a 3D rotating wireframe cube with QDOS drawing functions
+    mtinf - example of using the QDOS version of the System Variables
+    sms_info - example of using the SMSQ version of the System Variables

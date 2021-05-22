@@ -37,6 +37,7 @@ begin
     P.ExamplePath.Add('examples');
     T:=P.Targets.AddExampleProgram('qlcube.pas');
     T:=P.Targets.AddExampleProgram('mtinf.pas');
+    T:=P.Targets.AddExampleProgram('sms_info.pas');
 
 {$ifndef ALLPACKAGES}
     Run;

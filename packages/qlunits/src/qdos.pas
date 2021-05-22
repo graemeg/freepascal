@@ -148,6 +148,7 @@ type
   qdosfuncs.inc in packages/qlunits must be kept identical to the one in rtl/sinclairql (KB). }
 
 {$i qdosfuncs.inc}
+{$i qdos_sysvars.inc}
 
 { other functions, not used/implemented by the RTL }
 
