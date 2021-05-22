@@ -293,7 +293,7 @@ var
   r: TQLRect;
 begin
   DefaultQLOpenCon:=false;
-  with console do 
+  with console do
     begin
       inputHandle:=io_open('con_',Q_OPEN);
       if inputHandle <= 0 then
@@ -308,8 +308,8 @@ begin
       r.q_x:=0;
       r.q_y:=0;
 
-      sd_wdef(inputHandle,-1,2,1,@r);
-      sd_clear(inputHandle,-1);
+      sd_wdef(outputHandle,-1,2,1,@r);
+      sd_clear(outputHandle,-1);
     end;
   DefaultQLOpenCon:=true;
 end;
@@ -333,6 +333,7 @@ var
   jobStackDataPtr: pointer; external name '__stackpointer_on_entry';
   program_name: shortstring; external name '__fpc_program_name';
   QLCon: QLConHandle;
+  QLConOpen: boolean;
 
 { QL/QDOS specific startup }
 procedure SysInitQDOS;
@@ -345,9 +346,11 @@ begin
   SetQLJobName(program_name);
 
   if assigned(@QLOpenCon) then
-    QLOpenCon(QLCon)
+    QLConOpen:=QLOpenCon(QLCon)
   else
-    DefaultQLOpenCon(QLCon);
+    QLConOpen:=DefaultQLOpenCon(QLCon);
+  if not QLConOpen then
+    halt(1);
 
   with QLCon do
     begin
@@ -370,10 +373,13 @@ begin
   if assigned(argv) then
     FreeMem(argv);
 
-  if assigned(@QLCloseCon) then
-    QLCloseCon(QLCon)
-  else
-    DefaultQLCloseCon(QLCon);
+  if QLConOpen then
+    begin
+      if assigned(@QLCloseCon) then
+        QLCloseCon(QLCon)
+      else
+        DefaultQLCloseCon(QLCon);
+    end;
 
   stdInputHandle:=UnusedHandle;
   stdOutputHandle:=UnusedHandle;

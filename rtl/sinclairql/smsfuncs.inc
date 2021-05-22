@@ -13,4 +13,6 @@
 
  **********************************************************************}
 
+function sms_info(sys_vars: ppchar; ver_ascii: plongint): Tjobid; external name '_mt_inf';
+function iob_fbyt(chan: Tchanid; timeout: Ttimeout): longint; external name '_io_fbyte';
 function iof_mkdr(chan: Tchanid): longint; external name '_iof_mkdr';
