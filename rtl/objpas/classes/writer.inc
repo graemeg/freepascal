@@ -892,8 +892,9 @@ begin
     if PropType^.Kind<>tkClass then
       exit;
     ObjValue := TObject(GetObjectProp(Instance, PropInfo));
-    if not ObjValue.InheritsFrom(TComponent) or
-       not (csSubComponent in TComponent(ObjValue).ComponentStyle) then
+    if not (assigned(ObjValue) and
+            ObjValue.InheritsFrom(TComponent) and
+            (csSubComponent in TComponent(ObjValue).ComponentStyle)) then
       exit;
   end;
 
