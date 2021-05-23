@@ -224,6 +224,10 @@
   {$if defined(CPUARMHF) and not(defined(FPC_OARM)) and not(defined(FPC_ARMEL)) and not(defined(FPC_ARMEB))}
     {$define FPC_ARMHF}
   {$endif}
+  { inherit FPC_OARM? }
+  {$if defined(CPUARM) and not(defined(FPC_ARMHF)) and not(defined(FPC_ARMEL)) and not(defined(FPC_ARMEB))}
+    {$define FPC_ARMHF}
+  {$endif}
 {$endif arm}
 
 {$ifdef m68k}
