@@ -36,8 +36,9 @@ unit sysinit;
    var
       tlsdir: record end; external name '_tls_used';
 
-    procedure LinkIn(p1,p2,p3: Pointer); inline;
+    function LinkIn(p1,p2,p3: Pointer): pointer;
       begin
+        LinkIn:=p1;
       end;
 {$endif}
 
