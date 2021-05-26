@@ -35,6 +35,10 @@ unit aoptutils;
     function MatchOpType(const p : taicpu; type0,type1,type2 : toptype) : Boolean;
 {$endif max_operands>2}
 
+    { skips all alignment fields and returns the next label (or non-align).
+      returns immediately with true if hp is a label }
+    function SkipAligns(hp: tai; out hp2: tai): boolean;
+
     { skips all labels and returns the next "real" instruction }
     function SkipLabels(hp: tai; out hp2: tai): boolean;
 
@@ -66,6 +70,21 @@ unit aoptutils;
       end;
 {$endif max_operands>2}
 
+
+    { skips all alignment fields and returns the next label (or non-align).
+      Returns immediately with True if hp is a label }
+    function SkipAligns(hp: tai; out hp2: tai): boolean;
+      begin
+        while assigned(hp) and
+              (hp.typ in SkipInstr + [ait_label,ait_align]) Do
+          begin
+            { Check that the label is actually live }
+            if (hp.typ = ait_label) and tai_label(hp).labsym.is_used then
+              Break;
+            hp := tai(hp.next);
+          end;
+        SkipAligns := SetAndTest(hp, hp2);
+      end;
 
     { skips all labels and returns the next "real" instruction }
     function SkipLabels(hp: tai; out hp2: tai): boolean;

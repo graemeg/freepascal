@@ -145,6 +145,8 @@ uses
                   Result:=OptPass1PXor(p);
                 A_TEST:
                   Result:=OptPass1Test(p);
+                A_Jcc:
+                  Result:=OptPass1Jcc(p);
                 else
                   ;
               end;

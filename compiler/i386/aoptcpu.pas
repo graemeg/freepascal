@@ -189,6 +189,8 @@ unit aoptcpu;
                   Result:=OptPass1SHLSAL(p);
                 A_SUB:
                   Result:=OptPass1Sub(p);
+                A_Jcc:
+                  Result:=OptPass1Jcc(p);
                 A_MOVAPD,
                 A_MOVAPS,
                 A_MOVUPD,
