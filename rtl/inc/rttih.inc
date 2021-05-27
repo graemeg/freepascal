@@ -11,7 +11,7 @@
 
  **********************************************************************}
 
-{ sadly MinEnumSize is not handled by Push/Pop :'( }
+{$PUSH}
 {$MINENUMSIZE 1   this saves a lot of memory }
 
 type
@@ -26,7 +26,7 @@ type
               tkDynArray,tkInterfaceRaw,tkProcVar,tkUString,tkUChar,
               tkHelper,tkFile,tkClassRef,tkPointer);
 
-{$MINENUMSIZE DEFAULT}
+{$POP}
 
 const
   { some Delphi-compatible aliases }
