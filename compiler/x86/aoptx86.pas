@@ -3023,6 +3023,7 @@ unit aoptx86;
           GetNextInstruction(hp1, hp2) and
           MatchInstruction(hp2,A_MOV,[]) and
           (SuperRegistersEqual(taicpu(hp2).oper[0]^.reg,taicpu(p).oper[1]^.reg)) and
+          (topsize2memsize[taicpu(hp1).opsize]>=topsize2memsize[taicpu(hp2).opsize]) and
           (
             IsFoldableArithOp(taicpu(hp1), taicpu(p).oper[1]^.reg)
 {$ifdef x86_64}
