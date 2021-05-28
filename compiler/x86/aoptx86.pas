@@ -6951,7 +6951,9 @@ unit aoptx86;
                     taicpu(hp2).SetCondition(SetC);
                   end;
 
-                if not RegUsedAfterInstruction(taicpu(p).oper[0]^.reg, hp2, TmpUsedRegs) then
+                { as hp2 is a jump, we cannot use RegUsedAfterInstruction but we have to check if it is included in
+                  TmpUsedRegs }
+                if not TmpUsedRegs[getregtype(taicpu(p).oper[0]^.reg)].IsUsed(taicpu(p).oper[0]^.reg) then
                   begin
                     RemoveCurrentp(p, hp2);
                     DebugMsg(SPeepholeOptimization + 'SETcc/TEST/Jcc -> Jcc',p);
