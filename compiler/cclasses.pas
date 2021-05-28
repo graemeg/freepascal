@@ -883,15 +883,18 @@ begin
   else
     begin
       Result:=-1;
-      psrc:=@FList^[FCount-1];
-      For Index:=FCount-1 downto 0 Do
+      if FCount>0 then
         begin
-          if psrc^=Item then
+          psrc:=@FList^[FCount-1];
+          For Index:=FCount-1 downto 0 Do
             begin
-              Result:=Index;
-              exit;
+              if psrc^=Item then
+                begin
+                  Result:=Index;
+                  exit;
+                end;
+              dec(psrc);
             end;
-          dec(psrc);
         end;
     end;
 end;
