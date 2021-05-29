@@ -685,11 +685,11 @@ begin
     result := stklen;
 end;
 
-{$if FPC_FULLVERSION>30200}
+{$if FPC_FULLVERSION>30300}
 {$if defined(CPUI386) or defined(CPUARM)}
 {$I abitag.inc}
 {$endif defined(CPUI386) or defined(CPUARM)}
-{$endif FPC_FULLVERSION>30200}
+{$endif FPC_FULLVERSION>30300}
 
 begin
 {$if defined(i386) and not defined(FPC_USE_LIBC)}
