@@ -2464,14 +2464,18 @@ Var
   B : String;
   I : Integer;
   S : String;
+  ST: TStringList;
 
 begin
 {$ifdef CGIDEBUG} SendMethodEnter('ProcessMultiPart');{$endif CGIDEBUG}
-  i:=Pos('=',Boundary);
-  B:=Copy(Boundary,I+1,Length(Boundary)-I);
-  I:=Length(B);
-  If (I>0) and (B[1]='"') then
-    B:=Copy(B,2,I-2);
+  ST := TStringList.Create;
+  try
+    ParseContentType(Boundary, ST);
+    B := ST.Values['boundary'];
+  finally
+    ST.Free;
+  end;
+
   L:=CreateMimeItems;
   Try
     if Stream is TStringStream then
