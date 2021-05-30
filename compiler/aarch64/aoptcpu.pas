@@ -801,6 +801,7 @@ Implementation
               Result:=OptPass1Shift(p);
             A_AND:
               Result:=OptPass1And(p);
+            A_CSEL,
             A_ADD,
             A_ADC,
             A_SUB,
