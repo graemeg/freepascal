@@ -815,7 +815,7 @@ INTERFACE
     __hi_bh =  ( MaxFmtBCDFractionSize + 1 );
 
   type
-    tBCD_helper = Maybe_Packed record
+    tBCD_helper =  Maybe_Packed record
                     Prec : {$ifopt r+} 0..( __hi_bh - __lo_bh + 1 ) {$else} Integer {$endif};
                     Plac : {$ifopt r+} 0..( __hi_bh - __lo_bh + 1 ) {$else} Integer {$endif};
                     FDig,
@@ -866,6 +866,7 @@ IMPLEMENTATION
     PROTECTED
       function GetInstance(const v : TVarData): tObject; OVERRIDE;
     PUBLIC
+      function LeftPromotion(const V: TVarData; const Operation: TVarOp; out RequiredVarType: TVarType): Boolean; override;
       procedure BinaryOp(var Left: TVarData; const Right: TVarData; const Operation: TVarOp); override;
       procedure Clear(var V: TVarData); override;
       procedure Copy(var Dest: TVarData; const Source: TVarData; const Indirect: Boolean); override;
@@ -4161,6 +4162,16 @@ function TFMTBcdFactory.GetInstance(const v : TVarData): tObject;
     result:=tObject(v.VPointer);
   end;
 
+
+function TFMTBcdFactory.LeftPromotion(const V: TVarData; const Operation: TVarOp; out RequiredVarType: TVarType): Boolean;
+// mantis 38496
+begin
+   if v.vtype in FloatVarTypes then  // floats can accept full result of a mixed float-bcd operation
+     RequiredVarType := v.vtype
+   else
+     RequiredVarType := VarType;
+   result:=true;
+end;
 
 procedure TFMTBcdFactory.BinaryOp(var Left: TVarData; const Right: TVarData; const Operation: TVarOp);
   var l, r: TBCD;
