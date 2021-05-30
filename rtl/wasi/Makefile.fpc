@@ -5,7 +5,7 @@
 main=rtl
 [target]
 loaders=
-units=system $(SYSINIT_UNITS) objpas wasiapi ctypes strings sysconst
+units=system $(SYSINIT_UNITS) objpas wasiapi ctypes strings sysconst sysutils
 
 [require]
 nortl=y
@@ -84,5 +84,9 @@ ctypes$(PPUEXT) :  $(INC)/ctypes.pp $(SYSTEMUNIT)$(PPUEXT)
 #
 # Delphi Compatible Units
 #
+sysutils$(PPUEXT) : sysutils.pp $(wildcard $(OBJPASDIR)/sysutils/*.inc) \
+                    objpas$(PPUEXT) wasiapi$(PPUEXT) sysconst$(PPUEXT) system$(PPUEXT)
+        $(COMPILER) $< -Fi$(OBJPASDIR)/sysutils
+
 sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) $<
