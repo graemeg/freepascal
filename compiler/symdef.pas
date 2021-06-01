@@ -1987,12 +1987,6 @@ implementation
 {$ifndef symansistr}
         stringdispose(_fullownerhierarchyname);
 {$endif not symansistr}
-        { set self to nil in current_module's deflist, if the def has been
-          registered, in order to avoid dangling pointers in current_module.deflist }
-        if registered and assigned(current_module) and
-           (defid>=0) and (defid<current_module.deflist.Count) and
-           (current_module.deflist[defid]=self) then
-          current_module.deflist[defid]:=nil;
         inherited destroy;
       end;
 
@@ -2537,6 +2531,7 @@ implementation
              begin
                current_module.deflist.Add(self);
                defid:=current_module.deflist.Count-1;
+               registered_in_module:=current_module;
              end;
            maybe_put_in_symtable_stack;
          end

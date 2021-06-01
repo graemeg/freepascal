@@ -33,7 +33,8 @@ interface
       { symtable }
       symconst,symbase,
       { aasm }
-      aasmbase,ppu
+      aasmbase,ppu,
+      finput
       ;
 
     type
@@ -65,6 +66,7 @@ interface
          function XMLPrintType: ansistring; virtual;
 {$endif DEBUG_NODE_XML}
         public
+         registered_in_module : tmodulebase;
          typesym    : tsym;  { which type the definition was generated this def }
          { stabs debugging }
          stab_number : word;
@@ -72,6 +74,7 @@ interface
          defoptions  : tdefoptions;
          defstates   : tdefstates;
          constructor create(dt:tdeftyp);
+         destructor destroy; override;
          procedure buildderef;virtual;abstract;
          procedure buildderefimpl;virtual;abstract;
          procedure deref;virtual;abstract;
@@ -383,6 +386,23 @@ implementation
       end;
 
 
+    destructor tdef.destroy;
+      begin
+        { set self to nil in registered_in_module's deflist, if the def has been
+          registered, in order to avoid dangling pointers in registered_in_module.deflist }
+        if assigned(registered_in_module) then
+          begin
+           if defid>=0 then
+             tmodule(registered_in_module).deflist[defid]:=nil
+           else if defid<defid_not_registered then
+             tmodule(registered_in_module).deflist[-(defid-defid_not_registered+1)]:=nil
+           else
+             internalerror(2021060101);
+          end;
+        inherited;
+      end;
+
+
     function tdef.typename:string;
       begin
         result:=OwnerHierarchyName;
@@ -446,6 +466,7 @@ implementation
             if not assigned(current_module) then
               internalerror(2015102505);
             current_module.deflist.Add(self);
+            registered_in_module:=current_module;
             { invert the defid to indicate that it was only set because we
               needed a unique number -- then add defid_not_registered so we
               don't get the values between defid_registered and 0 }
