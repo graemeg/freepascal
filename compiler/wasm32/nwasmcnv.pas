@@ -37,16 +37,18 @@ interface
          procedure second_int_to_real;override;
          procedure second_int_to_bool;override;
          procedure second_ansistring_to_pchar;override;
+         procedure second_class_to_intf;override;
        end;
 
 implementation
 
    uses
       verbose,globals,globtype,aasmdata,
-      defutil,fmodule,cpubase,
+      defutil,defcmp,fmodule,cpubase,
       cgbase,cgutils,pass_1,pass_2,
       aasmbase,aasmcpu,
-      symdef,
+      symdef,symconst,
+      tgobj,
       hlcgobj,hlcgcpu;
 
 
@@ -165,6 +167,70 @@ implementation
         location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
         location.register:=hlcg.getaddressregister(current_asmdata.CurrAsmList,resultdef);
         thlcgwasm(hlcg).a_load_stack_loc(current_asmdata.CurrAsmList,resultdef,location);
+      end;
+
+
+    procedure twasmtypeconvnode.second_class_to_intf;
+      var
+        hd : tobjectdef;
+        ImplIntf : TImplementedInterface;
+      begin
+        location_reset(location,LOC_REGISTER,def_cgsize(resultdef));
+        case left.location.loc of
+           LOC_CREFERENCE,
+           LOC_REFERENCE:
+             begin
+                location.register:=hlcg.getaddressregister(current_asmdata.CurrAsmList,resultdef);
+                hlcg.a_load_ref_reg(current_asmdata.CurrAsmList,left.resultdef,resultdef,left.location.reference,location.register);
+                location_freetemp(current_asmdata.CurrAsmList,left.location);
+             end;
+           LOC_CREGISTER:
+             begin
+                location.register:=hlcg.getaddressregister(current_asmdata.CurrAsmList,resultdef);
+                hlcg.a_load_reg_reg(current_asmdata.CurrAsmList,left.resultdef,resultdef,left.location.register,location.register);
+             end;
+           LOC_REGISTER:
+             begin
+               location.register:=left.location.register;
+               hlcg.g_ptrtypecast_reg(current_asmdata.CurrAsmList,left.resultdef,resultdef,location.register);
+             end;
+           LOC_CONSTANT:
+             begin
+                location.register:=hlcg.getaddressregister(current_asmdata.CurrAsmList,resultdef);
+                hlcg.a_load_const_reg(current_asmdata.CurrAsmList,resultdef,left.location.value,location.register);
+             end
+           else
+             internalerror(121120001);
+        end;
+        hd:=tobjectdef(left.resultdef);
+        while assigned(hd) do
+          begin
+            ImplIntf:=find_implemented_interface(hd,tobjectdef(resultdef));
+            if assigned(ImplIntf) then
+              begin
+                case ImplIntf.IType of
+                  etStandard:
+                    begin
+                      thlcgwasm(hlcg).a_cmp_const_reg_stack(current_asmdata.CurrAsmList,resultdef,OC_NE,0,location.register);
+
+                      current_asmdata.CurrAsmList.concat(taicpu.op_none(a_if));
+                      thlcgwasm(hlcg).incblock;
+                      thlcgwasm(hlcg).decstack(current_asmdata.CurrAsmList,1);
+
+                      hlcg.a_op_const_reg(current_asmdata.CurrAsmList,OP_ADD,resultdef,ImplIntf.ioffset,location.register);
+
+                      current_asmdata.CurrAsmList.concat(taicpu.op_none(a_end_if));
+                      thlcgwasm(hlcg).decblock;
+                      break;
+                    end;
+                  else
+                    internalerror(200802163);
+                end;
+              end;
+            hd:=hd.childof;
+          end;
+        if hd=nil then
+          internalerror(2002081301);
       end;
 
 begin
