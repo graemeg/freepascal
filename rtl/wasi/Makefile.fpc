@@ -6,7 +6,7 @@ main=rtl
 [target]
 loaders=
 units=system $(SYSINIT_UNITS) objpas wasiapi ctypes strings sysconst sysutils \
-      sortbase math rtlconsts types typinfo fgl
+      sortbase math rtlconsts types typinfo fgl macpas
 
 [require]
 nortl=y
@@ -106,6 +106,12 @@ rtlconsts$(PPUEXT) : $(OBJPASDIR)/rtlconsts.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PP
 
 sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) $<
+
+#
+# Mac Pascal Model
+#
+macpas$(PPUEXT) : $(INC)/macpas.pp objpas$(PPUEXT) math$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
+        $(COMPILER) $< $(REDIR)
 
 #
 # Other system-independent RTL Units
