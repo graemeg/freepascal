@@ -1169,7 +1169,7 @@ unit nx86add;
 {$ifndef i8086}
         { test if the result stays in an xmm register, fiddeling with fpu registers and fma makes no sense }
         Result:=use_vectorfpu(resultdef) and
-          ((cpu_capabilities[current_settings.cputype]*[CPUX86_HAS_FMA,CPUX86_HAS_FMA4])<>[]);
+          ((fpu_capabilities[current_settings.fputype]*[FPUX86_HAS_FMA,FPUX86_HAS_FMA4])<>[]);
 {$else i8086}
         Result:=inherited use_fma;
 {$endif i8086}
