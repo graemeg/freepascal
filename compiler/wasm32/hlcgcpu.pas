@@ -225,6 +225,8 @@ uses
         twice. Returns how many stack slots have been consumed, disregarding
         the "dup". }
       function prepare_stack_for_ref(list: TAsmList; var ref: treference; dup: boolean): longint;
+
+      procedure gen_load_cgpara_loc(list: TAsmList; vardef: tdef; const para: TCGPara; var destloc: tlocation; reusepara: boolean);override;
      protected
       { return the load/store opcode to load/store from/to ref; if the result
         has to be and'ed after a load to get the final value, that constant
@@ -1059,6 +1061,20 @@ implementation
             internalerror(2010120525);
           end;}
         end;
+    end;
+
+  procedure thlcgwasm.gen_load_cgpara_loc(list: TAsmList; vardef: tdef; const para: TCGPara; var destloc: tlocation; reusepara: boolean);
+    begin
+      { support loading a function result (from the evaluation stack), to a register }
+      if assigned(para.location) and (not assigned(para.location^.next)) and
+         (para.location^.loc in [LOC_REFERENCE,LOC_CREFERENCE]) and
+         (para.location^.reference.index=NR_EVAL_STACK_BASE) and
+         (para.location^.reference.offset=0) and
+         (def_cgsize(para.location^.Def)=destloc.size) and
+         (destloc.loc=LOC_REGISTER) then
+        a_load_stack_loc(list,para.location^.Def,destloc)
+      else
+        inherited;
     end;
 
   procedure thlcgwasm.a_load_const_reg(list: TAsmList; tosize: tdef; a: tcgint; register: tregister);
