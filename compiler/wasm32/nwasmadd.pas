@@ -44,6 +44,7 @@ interface
           procedure second_cmp64bit;override;
           procedure second_add64bit; override;
           procedure second_cmpordinal;override;
+          procedure second_cmpsmallset;override;
 
           // special treatement for short-boolean expressions
           // using IF block, instead of direct labels
@@ -259,6 +260,21 @@ interface
       begin
         second_generic_compare(not is_signed(left.resultdef));
       end;
+
+
+    procedure twasmaddnode.second_cmpsmallset;
+      begin
+        case nodetype of
+          equaln,unequaln:
+            second_generic_compare(true);
+          lten,gten:
+            { not implemented yet }
+            internalerror(2021060104);
+          else
+            internalerror(2021060103);
+        end;
+      end;
+
 
     procedure twasmaddnode.second_addboolean;
       begin
