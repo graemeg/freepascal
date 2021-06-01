@@ -334,14 +334,10 @@ interface
 
     procedure twasmaddnode.second_generic_compare(unsigned: boolean);
       var
-        truelabel,
-        falselabel: tasmlabel;
         cmpop: TOpCmp;
       begin
-        truelabel:=nil;
-        falselabel:=nil;
         pass_left_right;
-        { swap the operands to make it easier for the optimizer to optimize
+        { swap the operands to make it easier for the optimizer to optimize
           the operand stack slot reloading in case both are in a register }
         if (left.location.loc in [LOC_REGISTER,LOC_CREGISTER]) and
            (right.location.loc in [LOC_REGISTER,LOC_CREGISTER]) then
