@@ -6,7 +6,7 @@ main=rtl
 [target]
 loaders=
 units=system $(SYSINIT_UNITS) objpas wasiapi ctypes strings sysconst sysutils \
-      sortbase
+      sortbase math
 
 [require]
 nortl=y
@@ -88,6 +88,9 @@ ctypes$(PPUEXT) :  $(INC)/ctypes.pp $(SYSTEMUNIT)$(PPUEXT)
 sysutils$(PPUEXT) : sysutils.pp $(wildcard $(OBJPASDIR)/sysutils/*.inc) \
                     objpas$(PPUEXT) wasiapi$(PPUEXT) sysconst$(PPUEXT) system$(PPUEXT)
         $(COMPILER) $< -Fi$(OBJPASDIR)/sysutils
+
+math$(PPUEXT): $(OBJPASDIR)/math.pp objpas$(PPUEXT) sysutils$(PPUEXT)
+        $(COMPILER) $<
 
 sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) $<
