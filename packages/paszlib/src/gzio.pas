@@ -165,6 +165,7 @@ begin
   s^.crc := crc32(0, nil, 0);
   s^.msg := '';
   s^.transparent := false;
+  s^.total_out:=0;
 
   s^.path := path; { limit to 255 chars }
 
