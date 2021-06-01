@@ -8,7 +8,7 @@ loaders=
 units=system $(SYSINIT_UNITS) objpas wasiapi ctypes strings sysconst sysutils \
       sortbase math rtlconsts types typinfo fgl macpas iso7185 getopts \
       charset cpall character unicodedata unicodenumtable fpwidestring \
-      classes uuchar
+      classes uuchar dos
 
 [require]
 nortl=y
@@ -88,6 +88,12 @@ wasiapi$(PPUEXT) : wasiapi.pp wasiinc/wasitypes.inc wasiinc/wasiprocs.inc $(SYST
         $(COMPILER) $< -Fiwasiinc
 
 ctypes$(PPUEXT) :  $(INC)/ctypes.pp $(SYSTEMUNIT)$(PPUEXT)
+        $(COMPILER) $<
+
+#
+# TP7 Compatible RTL Units
+#
+dos$(PPUEXT) : dos.pp $(INC)/filerec.inc $(INC)/textrec.inc system$(PPUEXT)
         $(COMPILER) $<
 
 #
