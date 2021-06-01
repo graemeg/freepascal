@@ -21,9 +21,9 @@ Const
 
   PrinterOSes   = [go32v2,msdos,os2,win32,win64]+unixlikes-[beos,haiku,morphos];
   SerialOSes    = [android,linux,netbsd,openbsd,win32,win64];
-  UComplexOSes  = [atari,embedded,emx,gba,go32v2,msdos,nativent,nds,netware,netwlibc,os2,sinclairql,symbian,watcom,wii,wince,win32,win64,freertos]+UnixLikes+AllAmigaLikeOSes;
-  MatrixOSes    = [atari,embedded,emx,gba,go32v2,msdos,nativent,nds,netware,netwlibc,os2,sinclairql,symbian,watcom,wii,win32,win64,wince,freertos]+UnixLikes+AllAmigaLikeOSes;
-  ObjectsOSes   = [atari,embedded,emx,gba,go32v2,macosclassic,msdos,nds,netware,netwlibc,os2,sinclairql,symbian,watcom,wii,win16,win32,win64,wince,freertos]+UnixLikes+AllAmigaLikeOSes;
+  UComplexOSes  = [atari,embedded,emx,gba,go32v2,msdos,nativent,nds,netware,netwlibc,os2,sinclairql,symbian,watcom,wii,wince,win32,win64,freertos,wasi]+UnixLikes+AllAmigaLikeOSes;
+  MatrixOSes    = [atari,embedded,emx,gba,go32v2,msdos,nativent,nds,netware,netwlibc,os2,sinclairql,symbian,watcom,wii,win32,win64,wince,freertos,wasi]+UnixLikes+AllAmigaLikeOSes;
+  ObjectsOSes   = [atari,embedded,emx,gba,go32v2,macosclassic,msdos,nds,netware,netwlibc,os2,sinclairql,symbian,watcom,wii,win16,win32,win64,wince,freertos,wasi]+UnixLikes+AllAmigaLikeOSes;
   WinsockOSes   = [win32,win64,wince,os2,emx,netware,netwlibc];
   WinSock2OSes  = [win32,win64,wince];
   SocketsOSes   = UnixLikes+AllAmigaLikeOSes+[netware,netwlibc,os2,emx,wince,win32,win64];
@@ -95,6 +95,7 @@ begin
     // Add clocale for Android first in order to compile the source file
     // from the 'android' dir, not the 'unix' dir.
     T:=P.Targets.AddUnit('real48utils.pp',AllTargetsextra-[msdos,win16]  { msdos,win16 excluded temporarily, until bitpacked records containing longints on 16-bit targets are fixed }
+                                                         -[wasi]         { internal error on the WebAssembly target }
                                                          -[embedded]);   { at least avr has no floats }
     if Defaults.CPU<>jvm then
       T:=P.Targets.AddUnit('clocale.pp',[android]);
@@ -158,7 +159,8 @@ begin
      begin
        addinclude('clocale.inc',clocaleincOSes);
      end;
-    T:=P.Targets.AddUnit('sortalgs.pp');
+    T:=P.Targets.AddUnit('sortalgs.pp',AllTargetsextra
+                                       -[wasi]);  { uses goto, which is not supported on the WebAssembly target }
   end
 end;
 
