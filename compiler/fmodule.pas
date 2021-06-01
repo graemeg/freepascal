@@ -734,7 +734,7 @@ implementation
         if assigned(deflist) then
           begin
             for i:=0 to deflist.Count-1 do
-              if assigned(deflist[i]) and (deflist[i] is tdef) and
+              if assigned(deflist[i]) and
                  (tdef(deflist[i]).registered_in_module=self) then
                 tdef(deflist[i]).registered_in_module:=nil;
             deflist.free;
