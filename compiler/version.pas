@@ -83,9 +83,9 @@ interface
 {$ifdef cpuxtensa}
         source_cpu_string = 'xtensa';
 {$endif cpuxtensa}
-{$ifdef wasm32}
+{$ifdef cpuwasm32}
         source_cpu_string = 'wasm32';
-{$endif wasm32}
+{$endif cpuwasm32}
 
 function version_string:string;
 function full_version_string:string;
