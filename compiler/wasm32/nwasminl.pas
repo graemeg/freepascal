@@ -38,11 +38,14 @@ interface
         procedure second_memory_size;
         procedure second_memory_grow;
         procedure second_unreachable;
+      protected
+        function first_sqr_real: tnode; override;
       public
         function pass_typecheck_cpu: tnode; override;
         function first_cpu: tnode; override;
         procedure pass_generate_code_cpu; override;
         procedure second_length;override;
+        procedure second_sqr_real; override;
       end;
 
 implementation
@@ -149,6 +152,13 @@ implementation
       begin
         location_reset(location,LOC_VOID,OS_NO);
         current_asmdata.CurrAsmList.Concat(taicpu.op_none(a_unreachable));
+      end;
+
+
+    function twasminlinenode.first_sqr_real: tnode;
+      begin
+        expectloc:=LOC_FPUREGISTER;
+        first_sqr_real:=nil;
       end;
 
 
@@ -266,6 +276,30 @@ implementation
             location.register:=hlcg.getregisterfordef(current_asmdata.CurrAsmList,resultdef);
             thlcgwasm(hlcg).a_load_stack_loc(current_asmdata.CurrAsmList,resultdef,location);
           end;
+      end;
+
+
+    procedure twasminlinenode.second_sqr_real;
+      begin
+        secondpass(left);
+        hlcg.location_force_fpureg(current_asmdata.CurrAsmList,left.location,left.resultdef,true);
+
+        thlcgwasm(hlcg).a_load_loc_stack(current_asmdata.CurrAsmList,left.resultdef,left.location);
+        thlcgwasm(hlcg).a_load_loc_stack(current_asmdata.CurrAsmList,left.resultdef,left.location);
+
+        case left.location.size of
+          OS_F32:
+            current_asmdata.CurrAsmList.Concat(taicpu.op_none(a_f32_mul));
+          OS_F64:
+            current_asmdata.CurrAsmList.Concat(taicpu.op_none(a_f64_mul));
+          else
+            internalerror(2021060102);
+        end;
+        thlcgwasm(hlcg).decstack(current_asmdata.CurrAsmList,1);
+
+        location_reset(location,LOC_FPUREGISTER,def_cgsize(resultdef));
+        location.register:=hlcg.getregisterfordef(current_asmdata.CurrAsmList,resultdef);
+        thlcgwasm(hlcg).a_load_stack_loc(current_asmdata.CurrAsmList,resultdef,location);
       end;
 
 begin
