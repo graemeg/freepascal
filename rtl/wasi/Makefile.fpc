@@ -5,7 +5,8 @@
 main=rtl
 [target]
 loaders=
-units=system $(SYSINIT_UNITS) objpas wasiapi ctypes strings sysconst sysutils
+units=system $(SYSINIT_UNITS) objpas wasiapi ctypes strings sysconst sysutils \
+      sortbase
 
 [require]
 nortl=y
@@ -89,4 +90,10 @@ sysutils$(PPUEXT) : sysutils.pp $(wildcard $(OBJPASDIR)/sysutils/*.inc) \
         $(COMPILER) $< -Fi$(OBJPASDIR)/sysutils
 
 sysconst$(PPUEXT) : $(OBJPASDIR)/sysconst.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
+        $(COMPILER) $<
+
+#
+# Other system-independent RTL Units
+#
+sortbase$(PPUEXT) : $(INC)/sortbase.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) $<
