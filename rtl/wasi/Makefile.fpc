@@ -7,7 +7,7 @@ main=rtl
 loaders=
 units=system $(SYSINIT_UNITS) objpas wasiapi ctypes strings sysconst sysutils \
       sortbase math rtlconsts types typinfo fgl macpas iso7185 getopts \
-      charset
+      charset cpall
 
 [require]
 nortl=y
@@ -125,6 +125,9 @@ getopts$(PPUEXT) : $(INC)/getopts.pp $(SYSTEMUNIT)$(PPUEXT)
 
 charset$(PPUEXT) : $(INC)/charset.pp $(SYSTEMUNIT)$(PPUEXT) objpas$(PPUEXT)
         $(COMPILER) $<
+
+cpall$(PPUEXT): $(RTL)/charmaps/cpall.pas $(SYSTEMUNIT)$(PPUEXT) charset$(PPUEXT)
+        $(COMPILER) $< -Fu$(INC) -Fi$(RTL)/charmaps
 
 sortbase$(PPUEXT) : $(INC)/sortbase.pp objpas$(PPUEXT) $(SYSTEMUNIT)$(PPUEXT)
         $(COMPILER) $<
