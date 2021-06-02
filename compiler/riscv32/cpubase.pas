@@ -379,7 +379,7 @@ implementation
       begin
        is_calljmp:=false;
         case o of
-          A_JAL,A_JALR,A_Bxx:
+          A_JAL,A_JALR,A_Bxx,A_CALL:
             is_calljmp:=true;
           else
             ;
