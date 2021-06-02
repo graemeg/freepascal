@@ -842,7 +842,7 @@ implementation
               reg:=makeregsize(reg,OS_64);
             fromsize:=tosize;
           end;
-        if (ref.alignment<>0) and
+        if not(target_info.system=system_aarch64_darwin) and (ref.alignment<>0) and
            (ref.alignment<tcgsize2size[tosize]) then
           begin
             a_load_reg_ref_unaligned(list,fromsize,tosize,reg,ref);
@@ -891,7 +891,7 @@ implementation
         }
         if fromsize in [OS_8,OS_16,OS_32] then
           reg:=makeregsize(reg,OS_32);
-        if (ref.alignment<>0) and
+        if not(target_info.system=system_aarch64_darwin) and (ref.alignment<>0) and
            (ref.alignment<tcgsize2size[fromsize]) then
           begin
             a_load_ref_reg_unaligned(list,fromsize,tosize,ref,reg);
