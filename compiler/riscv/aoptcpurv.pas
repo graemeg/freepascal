@@ -249,7 +249,7 @@ implementation
                      MatchInstruction(hp1,[A_ADDI{$ifdef riscv64},A_ADDIW{$endif}]) and
                      (taicpu(hp1).ops=3) and
                      MatchOperand(taicpu(p).oper[0]^,taicpu(hp1).oper[1]^) and
-                     (taicpu(p).oper[2]^.typ=top_const) and
+                     (taicpu(hp1).oper[2]^.typ=top_const) and
                      is_imm12(taicpu(p).oper[2]^.val+taicpu(hp1).oper[2]^.val) and
                      (not RegModifiedBetween(taicpu(p).oper[1]^.reg, p,hp1)) and
                      RegEndOfLife(taicpu(p).oper[0]^.reg, taicpu(hp1)) then
