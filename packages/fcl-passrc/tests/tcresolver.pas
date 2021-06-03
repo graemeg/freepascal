@@ -4957,14 +4957,21 @@ end;
 procedure TTestResolver.TestHighLow;
 begin
   StartProgram(false);
-  Add('var');
-  Add('  bo: boolean;');
-  Add('  by: byte;');
-  Add('  ch: char;');
-  Add('begin');
-  Add('  for bo:=low(boolean) to high(boolean) do;');
-  Add('  for by:=low(byte) to high(byte) do;');
-  Add('  for ch:=low(char) to high(char) do;');
+  Add([
+  'const',
+  '  abc = ''abc'';',
+  'var',
+  '  bo: boolean;',
+  '  by: byte;',
+  '  ch: char;',
+  '  s: string;',
+  '  i: longint = high(abc);',
+  'begin',
+  '  for bo:=low(boolean) to high(boolean) do;',
+  '  for by:=low(byte) to high(byte) do;',
+  '  for ch:=low(char) to high(char) do;',
+  '  for i:=low(s) to high(s) do;',
+  '']);
   ParseProgram;
 end;
 

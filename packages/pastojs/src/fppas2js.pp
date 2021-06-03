@@ -2025,10 +2025,12 @@ type
     Function CreateCallCharCodeAt(Arg: TJSElement; aNumber: integer; El: TPasElement): TJSCallExpression; virtual;
     Function CreateCallFromCharCode(Arg: TJSElement; El: TPasElement): TJSCallExpression; virtual;
     Function CreateUsesList(UsesSection: TPasSection; AContext : TConvertContext): TJSArrayLiteral;
+    // js statement list
     Procedure AddToStatementList(var First, Last: TJSStatementList;
       Add: TJSElement; Src: TPasElement); overload;
     Procedure AddToStatementList(St: TJSStatementList; Add: TJSElement; Src: TPasElement); overload;
     Procedure PrependToStatementList(var St: TJSElement; Add: TJSElement; PosEl: TPasElement);
+    // js var
     Procedure AddToVarStatement(VarStat: TJSVariableStatement; Add: TJSElement;
       Src: TPasElement);
     Function CreateValInit(PasType: TPasType; Expr: TPasExpr; El: TPasElement;
@@ -2037,6 +2039,15 @@ type
     Function CreateVarStatement(const aName: String; Init: TJSElement;
       El: TPasElement): TJSVariableStatement; virtual;
     Function CreateVarDecl(const aName: String; Init: TJSElement; El: TPasElement): TJSVarDeclaration; virtual;
+    // misc
+    Function CreateExternalBracketAccessorCall(El: TParamsExpr; AContext: TConvertContext): TJSElement; virtual;
+    Function CreateAssignStatement(LeftEl: TPasExpr; AssignContext: TAssignContext): TJSElement; virtual;
+    Function CreateGetEnumeratorLoop(El: TPasImplForLoop;
+      AContext: TConvertContext): TJSElement; virtual;
+    Function CreateCallRTLFreeLoc(Setter, Getter: TJSElement; Src: TPasElement): TJSElement; virtual;
+    Function CreateDotSplit(El: TPasElement; Expr: TJSElement): TJSElement; virtual;
+    Function CreatePrecompiledJS(El: TJSElement): string; virtual;
+    Procedure AddRTLVersionCheck(FuncContext: TFunctionContext; PosEl: TPasElement);
     // JS literals
     Function CreateLiteralNumber(El: TPasElement; const n: TJSNumber): TJSLiteral; virtual;
     Function CreateLiteralFloat(El: TPasElement; const n: TJSNumber): TJSElement; virtual;
@@ -2126,25 +2137,18 @@ type
     Procedure AddClassConstructors(FuncContext: TFunctionContext; PosEl: TPasElement); virtual;
     Procedure AddClassMessageIds(El: TPasClassType; Src: TJSSourceElements;
       FuncContext: TFunctionContext; pbivn: TPas2JSBuiltInName); virtual;
-    // misc
+    // callbacks
     Function CreateCallback(Expr: TPasExpr; ResolvedEl: TPasResolverResult;
       aSafeCall: boolean; AContext: TConvertContext): TJSElement; virtual;
     Function CreateSafeCallback(Expr: TPasExpr; JS: TJSElement; AContext: TConvertContext): TJSElement; virtual;
-    Function CreateExternalBracketAccessorCall(El: TParamsExpr; AContext: TConvertContext): TJSElement; virtual;
-    Function CreateAssignStatement(LeftEl: TPasExpr; AssignContext: TAssignContext): TJSElement; virtual;
-    Function CreateGetEnumeratorLoop(El: TPasImplForLoop;
-      AContext: TConvertContext): TJSElement; virtual;
-    Function CreateCallRTLFreeLoc(Setter, Getter: TJSElement; Src: TPasElement): TJSElement; virtual;
+    // property
     Function CreatePropertyGet(Prop: TPasProperty; Expr: TPasExpr;
       AContext: TConvertContext; PosEl: TPasElement): TJSElement; virtual;
     Function AppendPropertyAssignArgs(Call: TJSCallExpression; Prop: TPasProperty;
       AssignContext: TAssignContext; PosEl: TPasElement): TJSCallExpression; virtual;
     Function AppendPropertyReadArgs(Call: TJSCallExpression; Prop: TPasProperty;
       aContext: TConvertContext; PosEl: TPasElement): TJSCallExpression; virtual;
-    Function CreateDotSplit(El: TPasElement; Expr: TJSElement): TJSElement; virtual;
-    Function CreatePrecompiledJS(El: TJSElement): string; virtual;
     Function CreateRaisePropReadOnly(PosEl: TPasElement): TJSElement; virtual;
-    Procedure AddRTLVersionCheck(FuncContext: TFunctionContext; PosEl: TPasElement);
     // create elements for RTTI
     Function CreateTypeInfoRef(El: TPasType; AContext: TConvertContext;
       ErrorEl: TPasElement): TJSElement; virtual;
@@ -13739,6 +13743,20 @@ begin
         exit;
         end;
       end;
+    btString:
+      begin
+        writeln('AAA1 TPasToJSConverter.ConvertBuiltIn_LowHigh ',IsLow);
+      if isLow then
+        // low(aString) -> 1
+        Result:=CreateLiteralNumber(El,1)
+      else
+        begin
+        // high(aString) -> aString.length
+        Result:=ConvertExpression(Param,AContext);
+        Result:=CreateDotNameExpr(El,Result,'length');
+        end;
+      exit;
+      end;
   end;
   DoError(20170210110717,nXExpectedButYFound,sXExpectedButYFound,['enum or array',
     AContext.Resolver.GetResolverResultDescription(ResolvedEl)],Param);
@@ -19742,6 +19760,7 @@ end;
 
 function TPasToJSConverter.CreateDotSplit(El: TPasElement; Expr: TJSElement
   ): TJSElement;
+// create Expr.split('')
 var
   DotExpr: TJSDotMemberExpression;
   Call: TJSCallExpression;
