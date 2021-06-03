@@ -989,7 +989,7 @@ begin
       SQL_VARCHAR:
       begin
         FieldSize:=ColumnSize;
-        if FieldSize=BLOB_BUF_SIZE then // SQL_VARCHAR declared as NVARCHAR(MAX) must be ftBlob - variable data size
+        if FieldSize=BLOB_BUF_SIZE then // SQL_VARCHAR declared as NVARCHAR(MAX) must be ftMemo - variable data size
           FieldType:=ftMemo
         else
           FieldType:=ftString;
@@ -999,7 +999,7 @@ begin
       SQL_WVARCHAR:
       begin
         FieldSize:=ColumnSize;
-        if FieldSize=BLOB_BUF_SIZE then // SQL_VARCHAR declared as NVARCHAR(MAX) must be ftBlob - variable data size
+        if FieldSize=BLOB_BUF_SIZE then // SQL_WVARCHAR declared as NVARCHAR(MAX) must be ftWideMemo - variable data size
           FieldType:=ftWideMemo
         else
           FieldType:=ftWideString;
