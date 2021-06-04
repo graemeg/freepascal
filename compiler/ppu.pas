@@ -277,7 +277,7 @@ end;
 function tppufile.readheader: longint;
 begin
   if fsize<sizeof(tppuheader) then
-    exit(0);
+    exit(-1);
   result:=f.Read(header,sizeof(tppuheader));
   { The header is always stored in little endian order }
   { therefore swap if on a big endian machine          }
