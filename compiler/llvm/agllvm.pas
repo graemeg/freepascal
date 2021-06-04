@@ -1601,6 +1601,9 @@ implementation
         if fputypestrllvm[current_settings.fputype]<>'' then
           optstr:=optstr+' -m'+fputypestrllvm[current_settings.fputype];
 
+        if cputypestr[current_settings.cputype]<>'' then
+          optstr:=optstr+' -march='+cputypestr[current_settings.cputype];
+
         replace(result,'$OPT',optstr);
         inc(fnextpass);
       end;
