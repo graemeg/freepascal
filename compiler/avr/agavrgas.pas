@@ -96,7 +96,7 @@ unit agavrgas;
                 internalerror(2011021707)
               else if base<>NR_NO then
                 begin
-                  if addressmode=AM_PREDRECEMENT then
+                  if addressmode=AM_PREDECREMENT then
                     s:='-';
 
                   case base of

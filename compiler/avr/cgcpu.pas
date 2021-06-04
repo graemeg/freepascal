@@ -1374,12 +1374,11 @@ unit cgcpu;
            end;
          if not conv_done then
            begin
-             // CC
-             // Write to 16 bit ioreg, first high byte then low byte
-             // sequence required for 16 bit timer registers
-             // See e.g. atmega328p manual para 15.3 Accessing 16 bit registers
-             // Avrxmega3: write low byte first then high byte
-             // See e.g. megaAVR-0 family data sheet 7.5.6 Accessing 16-bit registers
+             { Write to 16 bit ioreg, first high byte then low byte
+               sequence required for 16 bit timer registers
+               See e.g. atmega328p manual para 15.3 Accessing 16 bit registers
+               Avrxmega3: write low byte first then high byte
+               See e.g. megaAVR-0 family data sheet 7.5.6 Accessing 16-bit registers }
              if (current_settings.cputype <> cpu_avrxmega3) and
                (fromsize in [OS_16, OS_S16]) and QuickRef and addr_is_io_register(href.offset) then
                begin
@@ -2608,22 +2607,21 @@ unit cgcpu;
                 dstref:=dest;
               end;
 
-              // CC
-              // If dest is an ioreg and size = 16 bit then
-              // write high byte first, then low byte
-              // but not for avrxmega3
-              if (len = 2) and DestQuickRef and (current_settings.cputype <> cpu_avrxmega3) and
-                  addr_is_io_register(dest.offset) then
-                begin
-                  // If src is also a 16 bit ioreg then read low byte then high byte
-                  if SrcQuickRef and addr_is_io_register(srcref.offset) then
-                    begin
-                      // First read source into temp registers
-                      tmpreg:=getintregister(list, OS_16);
-                      list.concat(taicpu.op_reg_ref(GetLoad(srcref),tmpreg,srcref));
-                      inc(srcref.offset);
-                      tmpreg2:=GetNextReg(tmpreg);
-                      list.concat(taicpu.op_reg_ref(GetLoad(srcref),tmpreg2,srcref));
+            { If dest is an ioreg and size = 16 bit then
+              write high byte first, then low byte
+              but not for avrxmega3 }
+            if (len = 2) and DestQuickRef and (current_settings.cputype <> cpu_avrxmega3) and
+                addr_is_io_register(dest.offset) then
+              begin
+                // If src is also a 16 bit ioreg then read low byte then high byte
+                if SrcQuickRef and addr_is_io_register(srcref.offset) then
+                  begin
+                    // First read source into temp registers
+                    tmpreg:=getintregister(list, OS_16);
+                    list.concat(taicpu.op_reg_ref(GetLoad(srcref),tmpreg,srcref));
+                    inc(srcref.offset);
+                    tmpreg2:=GetNextReg(tmpreg);
+                    list.concat(taicpu.op_reg_ref(GetLoad(srcref),tmpreg2,srcref));
 
                     // then move temp registers to dest in reverse order
                     inc(dstref.offset);
@@ -2637,7 +2635,7 @@ unit cgcpu;
                       predecrement version of LD with pre-incremented pointer  }
                     if current_settings.cputype = cpu_avrtiny then
                       begin
-                        srcref.addressmode:=AM_PREDRECEMENT;
+                        srcref.addressmode:=AM_PREDECREMENT;
                         list.concat(taicpu.op_reg_const(A_SUBI,srcref.base,-2));
                         list.concat(taicpu.op_reg_const(A_SBCI,GetNextReg(srcref.base),$FF));
                       end
@@ -2658,7 +2656,7 @@ unit cgcpu;
                     if not(SrcQuickRef) and (current_settings.cputype <> cpu_avrtiny) then
                       srcref.addressmode:=AM_POSTINCREMENT
                     else if current_settings.cputype = cpu_avrtiny then
-                      srcref.addressmode:=AM_PREDRECEMENT
+                      srcref.addressmode:=AM_PREDECREMENT
                     else
                       srcref.addressmode:=AM_UNCHANGED;
 
@@ -2695,17 +2693,18 @@ unit cgcpu;
                   if DestQuickRef then
                     inc(dstref.offset);
                 end;
-              if not(SrcQuickRef) then
-                begin
-                  ungetcpuregister(list,srcref.base);
-                  ungetcpuregister(list,TRegister(ord(srcref.base)+1));
-                end;
-              if not(DestQuickRef) then
-                begin
-                  ungetcpuregister(list,dstref.base);
-                  ungetcpuregister(list,TRegister(ord(dstref.base)+1));
-                end;
-            end;
+
+            if not(SrcQuickRef) then
+              begin
+                ungetcpuregister(list,srcref.base);
+                ungetcpuregister(list,TRegister(ord(srcref.base)+1));
+              end;
+            if not(DestQuickRef) then
+              begin
+                ungetcpuregister(list,dstref.base);
+                ungetcpuregister(list,TRegister(ord(dstref.base)+1));
+              end;
+          end;
         end;
 
 

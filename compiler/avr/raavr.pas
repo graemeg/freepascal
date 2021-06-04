@@ -164,13 +164,13 @@ unit raavr;
        // Perhaps handle separately with a check on sub-architecture? Range check only important if smaller instruction code selected on larger arch
        (numOperands: (1 shl 2); Operands: ((typ: top_reg; rt: rt_all), (typ: top_const; max: 65535; min: 0))),
        // A_LD
-       (numOperands: (1 shl 2); Operands: ((typ: top_reg; rt: rt_all), (typ: top_reg; rt: rt_XYZ; am: [AM_UNCHANGED, AM_POSTINCREMENT, AM_PREDRECEMENT]))),
+       (numOperands: (1 shl 2); Operands: ((typ: top_reg; rt: rt_all), (typ: top_reg; rt: rt_XYZ; am: [AM_UNCHANGED, AM_POSTINCREMENT, AM_PREDECREMENT]))),
        // A_LDD
        (numOperands: (1 shl 2); Operands: ((typ: top_reg; rt: rt_all), (typ: top_reg; rt: rt_YZ; am: [AM_UNCHANGED]; minconst: 0; maxconst: 63))),
        // A_STS TODO: See LDS above
        (numOperands: (1 shl 2); Operands: ((typ: top_const; max: 65535; min: 0), (typ: top_reg; rt: rt_all))),
        // A_ST
-       (numOperands: (1 shl 2); Operands: ((typ: top_reg; rt: rt_XYZ; am: [AM_UNCHANGED, AM_POSTINCREMENT, AM_PREDRECEMENT]), (typ: top_reg; rt: rt_all))),
+       (numOperands: (1 shl 2); Operands: ((typ: top_reg; rt: rt_XYZ; am: [AM_UNCHANGED, AM_POSTINCREMENT, AM_PREDECREMENT]), (typ: top_reg; rt: rt_all))),
        // A_STD
        (numOperands: (1 shl 2); Operands: ((typ: top_reg; rt: rt_YZ; am: [AM_UNCHANGED]; minconst: 0; maxconst: 63), (typ: top_reg; rt: rt_all))),
        // A_LPM
@@ -348,7 +348,7 @@ unit raavr;
 
                         if not (err) and not(AM_UNCHANGED in AVRInstrConstraint[opcode].Operands[i].am) and
                           ((AM_POSTINCREMENT in AVRInstrConstraint[opcode].Operands[i].am) or
-                           (AM_PREDRECEMENT in AVRInstrConstraint[opcode].Operands[i].am)) then
+                           (AM_PREDECREMENT in AVRInstrConstraint[opcode].Operands[i].am)) then
                           err := not opregasref;
 
                         if not(err) and opregasref then
