@@ -511,7 +511,7 @@ implementation
         { build up parameters and description }
         para:=tcallparanode(parametersnode);
         paramssize:=0;
-        names := #0;
+        names := '';
         while assigned(para) do
           begin
             { Skipped parameters are actually (varType=varError, vError=DISP_E_PARAMNOTFOUND).
@@ -575,12 +575,11 @@ implementation
 
         if variantdispatch then
           begin
-            { length-1, because the following names variable *always* starts
-              with #0 which will be the terminator for methodname }
-            tcb.emit_pchar_const(pchar(methodname),length(methodname)-1,true);
-            { length-1 because we added a null terminator to the string itself
-              already }
-            tcb.emit_pchar_const(pchar(names),length(names)-1,true);
+            tcb.emit_pchar_const(pchar(methodname),length(methodname),true);
+            if names<>'' then
+              { length-1 because we added a null terminator to the string itself
+                already }
+              tcb.emit_pchar_const(pchar(names),length(names)-1,true);
           end;
 
         { may be referred from other units in case of inlining -> global
