@@ -1601,7 +1601,9 @@ implementation
         if fputypestrllvm[current_settings.fputype]<>'' then
           optstr:=optstr+' -m'+fputypestrllvm[current_settings.fputype];
 
-        if cputypestr[current_settings.cputype]<>'' then
+        { restrict march to aarch64 for now to fix x86_64 compilation failure }
+        if (cputypestr[current_settings.cputype]<>'')
+           and (target_info.system in [system_aarch64_darwin, system_aarch64_linux]) then
           optstr:=optstr+' -march='+cputypestr[current_settings.cputype];
 
         replace(result,'$OPT',optstr);
