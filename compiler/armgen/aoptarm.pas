@@ -1361,10 +1361,10 @@ Implementation
             to
             and reg3,reg1,x
           }
-          else if ((taicpu(p).oper[2]^.val and $ffffff00)=0) and
-            MatchInstruction(p, A_AND, [C_None], [PF_None]) and
+          else if MatchInstruction(p, A_AND, [C_None], [PF_None]) and
             GetNextInstructionUsingReg(p,hp1,taicpu(p).oper[0]^.reg) and
-            MatchInstruction(hp1, [A_UXTB,A_UXTH], [C_None], [PF_None]) and
+            ((((taicpu(p).oper[2]^.val and $ffffff00)=0) and MatchInstruction(hp1, A_UXTB, [C_None], [PF_None])) or
+             (((taicpu(p).oper[2]^.val and $ffff0000)=0) and MatchInstruction(hp1, A_UXTH, [C_None], [PF_None]))) and
             (taicpu(hp1).ops = 2) and
             RegEndofLife(taicpu(p).oper[0]^.reg,taicpu(hp1)) and
             MatchOperand(taicpu(hp1).oper[1]^, taicpu(p).oper[0]^.reg) and
