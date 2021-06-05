@@ -2989,7 +2989,7 @@ implementation
                   (token=_ASSIGNMENT) then
                   begin
                     found_arg_name:=true;
-                    p1:=cstringconstnode.createstr(storedpattern);
+                    p1:=cstringconstnode.createstr(orgstoredpattern);
                     consume(_ASSIGNMENT);
                     exit;
                   end;
