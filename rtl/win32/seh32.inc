@@ -164,11 +164,8 @@ function __FPC_default_handler(
   var context: TContext;
   var dispatch: TDispatcherContext): EXCEPTION_DISPOSITION; cdecl; [public,alias:'__FPC_DEFAULT_HANDLER'];
 var
+  Exc: TExceptObject;
   code: longint;
-  Obj: TObject;
-  Adr: Pointer;
-  Frames: PCodePointer;
-  FrameCount: Longint;
 begin
   if (rec.ExceptionFlags and EXCEPTION_UNWIND)=0 then
   begin
@@ -199,11 +196,11 @@ begin
       if code<0 then
         SysResetFPU;
       code:=abs(code);
-      Adr:=rec.ExceptionAddress;
-      Obj:=nil;
+      Exc.Addr:=rec.ExceptionAddress;
+      Exc.FObject:=nil;
       if Assigned(ExceptObjProc) then
-        Obj:=TObject(TExceptObjProc(ExceptObjProc)(code,rec));
-      if Obj=nil then
+        Exc.FObject:=TObject(TExceptObjProc(ExceptObjProc)(code,rec));
+      if Exc.FObject=nil then
       begin
         { This works because RtlUnwind does not actually unwind the stack on i386
           (and only on i386) }
@@ -212,26 +209,34 @@ begin
         erroraddr:=pointer(context.Eip);
         Halt(code);
       end;
-      FrameCount:=GetBacktrace(context,nil,Frames);
+      Exc.FrameCount:=GetBacktrace(context,nil,Exc.Frames);
     end
     else
     begin
-      Obj:=TObject(rec.ExceptionInformation[1]);
-      Adr:=rec.ExceptionInformation[0];
-      Frames:=PCodePointer(rec.ExceptionInformation[3]);
-      FrameCount:=ptruint(rec.ExceptionInformation[2]);
+      Exc.FObject:=TObject(rec.ExceptionInformation[1]);
+      Exc.Addr:=rec.ExceptionInformation[0];
+      Exc.Frames:=PCodePointer(rec.ExceptionInformation[3]);
+      Exc.FrameCount:=ptruint(rec.ExceptionInformation[2]);
       code:=217;
     end;
+
+    Exc.Refcount:=0;
+    Exc.SEHFrame:=@frame;
+    Exc.ExceptRec:=@rec;
+    { link to ExceptObjectStack }
+    Exc.Next:=ExceptObjectStack;
+    ExceptObjectStack:=@Exc;
+
     if Assigned(ExceptProc) then
     begin
-      ExceptProc(Obj,Adr,FrameCount,Frames);
+      ExceptProc(Exc.FObject,Exc.Addr,Exc.FrameCount,Exc.Frames);
       Halt(217);
     end
     else
     begin
       errorcode:=word(code);
       errorbase:=pointer(rec.ExceptionInformation[4]);
-      erroraddr:=pointer(Adr);
+      erroraddr:=pointer(Exc.Addr);
       Halt(code);
     end;
   end;
