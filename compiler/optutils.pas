@@ -307,7 +307,9 @@ unit optutils;
               begin
                 { not sure if this is enough (FK) }
                 result:=p;
-                if not(cnf_call_never_returns in tcallnode(p).callnodeflags) then
+                if cnf_call_never_returns in tcallnode(p).callnodeflags then
+                  p.successor:=nil
+                else
                   p.successor:=succ;
               end;
             inlinen:
