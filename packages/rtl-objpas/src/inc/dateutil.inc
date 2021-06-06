@@ -2769,7 +2769,9 @@ end;
 
 function TryISOStrToTime(const aString: string; Out outTime: TDateTime): Boolean;
 var
-  xHour, xMinute, xSecond, xMillisecond, xLength: LongInt;
+  xHour, xMinute, xSecond, xLength, res: LongInt;
+  xFractionalSecond: Extended;
+  tmp: String;
 begin
   Result := True;
   xLength := Length(aString);
@@ -2829,24 +2831,31 @@ begin
           (aString[6] = ':') and
           TryStrToInt(Copy(aString, 7, 2), xSecond) and
           TryEncodeTime(xHour, xMinute, xSecond, 0, outTime);
-    10: Result :=
-          TryStrToInt(Copy(aString, 1, 2), xHour) and
-          TryStrToInt(Copy(aString, 3, 2), xMinute) and
-          TryStrToInt(Copy(aString, 5, 2), xSecond) and
-          (aString[7] = '.') and
-          TryStrToInt(Copy(aString, 8, 3), xMillisecond) and
-          TryEncodeTime(xHour, xMinute, xSecond, xMillisecond, outTime);
-    12: Result :=
-          TryStrToInt(Copy(aString, 1, 2), xHour) and
-          (aString[3] = ':') and
-          TryStrToInt(Copy(aString, 4, 2), xMinute) and
-          (aString[6] = ':') and
-          TryStrToInt(Copy(aString, 7, 2), xSecond) and
-          (aString[9] = '.') and
-          TryStrToInt(Copy(aString, 10, 3), xMillisecond) and
-          TryEncodeTime(xHour, xMinute, xSecond, xMillisecond, outTime);
-  else
-    Result := False;
+    else
+        if xLength >= 9 then
+        begin
+          Result := 
+            TryStrToInt(Copy(aString, 1, 2), xHour) and
+            (aString[3] = ':') and
+            TryStrToInt(Copy(aString, 4, 2), xMinute) and
+            (aString[6] = ':') and
+            TryStrToInt(Copy(aString, 7, 2), xSecond) and
+            ((aString[9] = '.') or (aString[9] = ',')) and
+            TryEncodeTime(xHour, xMinute, xSecond, 0, outTime);
+          if Result then
+          begin
+            tmp := Copy(aString, 9, xLength-8);
+            if tmp <> '' then
+            begin
+              tmp[1] := '.';
+              val(tmp, xFractionalSecond, res);
+              Result := res = 0;
+              if Result then
+                outTime := outTime + xFractionalSecond * OneSecond;
+            end;
+          end;
+        end else
+          Result := false;
   end;
 
   if not Result then
