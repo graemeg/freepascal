@@ -70,6 +70,14 @@ begin
     end else begin
       TVarData(v).VType := t;
       case t of
+        varStrArg: begin
+          TVarData(v).VType := varString;
+          AnsiString(TVarData(v).VString) := AnsiString(StrPas(PPWideChar(arg)^));
+        end;
+        varUStrArg: begin
+          TVarData(v).VType := varUString;
+          UnicodeString(TVarData(v).VUString) := StrPas(PPWideChar(arg)^);
+        end;
         varSingle,
         varSmallint,
         varInteger,
@@ -83,7 +91,7 @@ begin
           TVarData(v).VAny := PPointer(arg)^;
       end;
     end;
-    if v <> argvalues[i] then begin
+    if (not VarIsStr(v) and (v <> argvalues[i])) or (VarIsStr(v) and (UnicodeString(v) <> UnicodeString(argvalues[i]))) then begin
       Writeln('Arg ', i, ' value: got: ', String(v), ', expected: ', String(argvalues[i]));
       Halt(1);
     end;
@@ -101,8 +109,22 @@ begin
   ref := (aType and varByRef) <> 0;
   aType := aType and not varByRef;
   case aType of
+    {$ifndef windows}
+    varOleStr:
+      Result := varUStrArg;
+    {$endif}
     varString:
+    {$ifdef windows}
       Result := varOleStr;
+    {$else}
+      Result := varUStrArg; { not varStrArg }
+    {$endif}
+    varUString:
+    {$ifdef windows}
+      Result := varOleStr;
+    {$else}
+      Result := varUStrArg;
+    {$endif}
     otherwise
       Result := aType;
   end;
@@ -134,7 +156,7 @@ begin
   argnames[1] := 'Date';
   argnames[0] := 'Foobar';
   argvalues[1] := 42;
-  argvalues[0] := 'Hello';
+  argvalues[0] := UnicodeString('Hello');
   argtypes[1] := ConvertArgType(TVarData(argvalues[1]).VType);
   argtypes[0] := ConvertArgType(TVarData(argvalues[0]).VType);
   v.&Begin(Date:=42,Foobar:='Hello');
