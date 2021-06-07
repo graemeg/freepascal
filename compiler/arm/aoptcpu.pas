@@ -91,6 +91,10 @@ Type
     function PeepHoleOptPass1Cpu(var p: tai): boolean; override;
     procedure PeepHoleOptPass2;override;
     function PostPeepHoleOptsCpu(var p: tai): boolean; override;
+  protected
+    function OptPass1AndThumb2(var p : tai) : boolean;
+    function OptPass1LDM(var p : tai) : boolean;
+    function OptPass1STM(var p : tai) : boolean;
   End;
 
   function MustBeLast(p : tai) : boolean;
@@ -2468,16 +2472,13 @@ Implementation
         end;
     end;
 
-  function TCpuThumb2AsmOptimizer.PeepHoleOptPass1Cpu(var p: tai): boolean;
+
+  function TCpuThumb2AsmOptimizer.OptPass1STM(var p: tai): boolean;
     var
       hp : taicpu;
-      //hp1,hp2 : tai;
     begin
       result:=false;
-      if inherited PeepHoleOptPass1Cpu(p) then
-        result:=true
-      else if (p.typ=ait_instruction) and
-        MatchInstruction(p, A_STM, [C_None], [PF_FD,PF_DB]) and
+      if  MatchInstruction(p, A_STM, [C_None], [PF_FD,PF_DB]) and
         (taicpu(p).oper[0]^.ref^.addressmode=AM_PREINDEXED) and
         (taicpu(p).oper[0]^.ref^.index=NR_STACK_POINTER_REG) and
         ((taicpu(p).oper[1]^.regset^*[8..13,15])=[]) then
@@ -2488,24 +2489,16 @@ Implementation
           asml.Remove(p);
           p:=hp;
           result:=true;
-        end
-      {else if (p.typ=ait_instruction) and
-        MatchInstruction(p, A_STR, [C_None], [PF_None]) and
-        (taicpu(p).oper[1]^.ref^.addressmode=AM_PREINDEXED) and
-        (taicpu(p).oper[1]^.ref^.index=NR_STACK_POINTER_REG) and
-        (taicpu(p).oper[1]^.ref^.offset=-4) and
-        (getsupreg(taicpu(p).oper[0]^.reg) in [0..7,14]) then
-        begin
-          DebugMsg('Peephole Str2Push done', p);
-          hp := taicpu.op_regset(A_PUSH, R_INTREGISTER, R_SUBWHOLE, [getsupreg(taicpu(p).oper[0]^.reg)]);
-          asml.InsertAfter(hp, p);
-          asml.Remove(p);
-          p.Free;
-          p:=hp;
-          result:=true;
-        end}
-      else if (p.typ=ait_instruction) and
-        MatchInstruction(p, A_LDM, [C_None], [PF_FD,PF_IA]) and
+        end;
+    end;
+
+
+  function TCpuThumb2AsmOptimizer.OptPass1LDM(var p: tai): boolean;
+    var
+      hp : taicpu;
+    begin
+      result:=false;
+      if MatchInstruction(p, A_LDM, [C_None], [PF_FD,PF_IA]) and
         (taicpu(p).oper[0]^.ref^.addressmode=AM_PREINDEXED) and
         (taicpu(p).oper[0]^.ref^.index=NR_STACK_POINTER_REG) and
         ((taicpu(p).oper[1]^.regset^*[8..14])=[]) then
@@ -2517,24 +2510,14 @@ Implementation
           p.Free;
           p:=hp;
           result:=true;
-        end
-      {else if (p.typ=ait_instruction) and
-        MatchInstruction(p, A_LDR, [C_None], [PF_None]) and
-        (taicpu(p).oper[1]^.ref^.addressmode=AM_POSTINDEXED) and
-        (taicpu(p).oper[1]^.ref^.index=NR_STACK_POINTER_REG) and
-        (taicpu(p).oper[1]^.ref^.offset=4) and
-        (getsupreg(taicpu(p).oper[0]^.reg) in [0..7,15]) then
-        begin
-          DebugMsg('Peephole Ldr2Pop done', p);
-          hp := taicpu.op_regset(A_POP, R_INTREGISTER, R_SUBWHOLE, [getsupreg(taicpu(p).oper[0]^.reg)]);
-          asml.InsertBefore(hp, p);
-          asml.Remove(p);
-          p.Free;
-          p:=hp;
-          result:=true;
-        end}
-      else if (p.typ=ait_instruction) and
-        MatchInstruction(p, [A_AND], [], [PF_None]) and
+        end;
+    end;
+
+
+    function TCpuThumb2AsmOptimizer.OptPass1AndThumb2(var p : tai) : boolean;
+    begin
+      result:=false;
+      if MatchInstruction(p, [A_AND], [], [PF_None]) and
         (taicpu(p).ops = 2) and
         (taicpu(p).oper[1]^.typ=top_const) and
         ((taicpu(p).oper[1]^.val=255) or
@@ -2550,8 +2533,7 @@ Implementation
 
           result := true;
         end
-      else if (p.typ=ait_instruction) and
-        MatchInstruction(p, [A_AND], [], [PF_None]) and
+      else if MatchInstruction(p, [A_AND], [], [PF_None]) and
         (taicpu(p).ops = 3) and
         (taicpu(p).oper[2]^.typ=top_const) and
         ((taicpu(p).oper[2]^.val=255) or
@@ -2566,34 +2548,28 @@ Implementation
           taicpu(p).ops:=2;
 
           result := true;
-        end
-      {else if (p.typ=ait_instruction) and
-        MatchInstruction(p, [A_CMP], [C_None], [PF_None]) and
-        (taicpu(p).oper[1]^.typ=top_const) and
-        (taicpu(p).oper[1]^.val=0) and
-        GetNextInstruction(p,hp1) and
-        (taicpu(hp1).opcode=A_B) and
-        (taicpu(hp1).condition in [C_EQ,C_NE]) then
-        begin
-          if taicpu(hp1).condition = C_EQ then
-            hp2:=taicpu.op_reg_ref(A_CBZ, taicpu(p).oper[0]^.reg, taicpu(hp1).oper[0]^.ref^)
-          else
-            hp2:=taicpu.op_reg_ref(A_CBNZ, taicpu(p).oper[0]^.reg, taicpu(hp1).oper[0]^.ref^);
-
-          taicpu(hp2).is_jmp := true;
-
-          asml.InsertAfter(hp2, hp1);
-
-          asml.Remove(hp1);
-          hp1.Free;
-          asml.Remove(p);
-          p.Free;
-
-          p := hp2;
-
-          result := true;
-        end}
+        end;
     end;
+
+
+  function TCpuThumb2AsmOptimizer.PeepHoleOptPass1Cpu(var p: tai): boolean;
+    begin
+      result:=false;
+      if inherited PeepHoleOptPass1Cpu(p) then
+        result:=true
+      else if p.typ=ait_instruction then
+        case taicpu(p).opcode of
+          A_STM:
+            result:=OptPass1STM(p);
+          A_LDM:
+            result:=OptPass1LDM(p);
+          A_AND:
+            result:=OptPass1AndThumb2(p);
+          else
+            ;
+        end;
+    end;
+
 
   procedure TCpuThumb2AsmOptimizer.PeepHoleOptPass2;
     var
