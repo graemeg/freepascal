@@ -1502,6 +1502,27 @@ end;
 {$endif} { FASTEST }
 
 {$ifdef ZLIB_DEBUG}
+function zmemcmp(s1p, s2p : PByte; len : Cardinal) : Integer;
+var
+  j : Cardinal;
+  source,
+  dest : PByte;
+begin
+  source := s1p;
+  dest := s2p;
+  for j := 0 to pred(len) do
+  begin
+    if (source^ <> dest^) then
+    begin
+      zmemcmp := 2*Ord(source^ > dest^)-1;
+      exit;
+    end;
+    Inc(source);
+    Inc(dest);
+  end;
+  zmemcmp := 0;
+end;
+
 { ===========================================================================
   Check that the match at match_start is indeed a match. }
 

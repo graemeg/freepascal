@@ -29,7 +29,7 @@ function inflate_fast( bl : cardinal;
 implementation
 
 uses
-  infutil;
+  infutil{$IFDEF ZLIB_DEBUG}, SysUtils{$ENDIF};
 
 
 { Called with number of bytes left to write in window at least 258

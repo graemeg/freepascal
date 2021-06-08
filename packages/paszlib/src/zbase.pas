@@ -380,10 +380,6 @@ const
   PRESET_DICT = $20; { preset dictionary flag in zlib header }
 
 
-  {$IFDEF ZLIB_DEBUG}
-  procedure Assert(cond : boolean; msg : string);
-  {$ENDIF}
-
   procedure Trace(x : string);
   procedure Tracev(x : string);
   procedure Tracevv(x : string);
@@ -459,12 +455,6 @@ begin
   Write('Zlib - Halt...');
   ReadLn;
   Halt(1);
-end;
-
-procedure Assert(cond : boolean; msg : string);
-begin
-  if not cond then
-    z_error(msg);
 end;
 
 procedure Trace(x : string);

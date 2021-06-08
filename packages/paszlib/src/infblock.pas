@@ -45,7 +45,7 @@ function inflate_blocks_sync_point(var s : inflate_blocks_state) : integer;
 implementation
 
 uses
-  infcodes, inftrees, infutil;
+  infcodes, inftrees, infutil{$IFDEF ZLIB_DEBUG}, SysUtils{$ENDIF};
 
 { Tables for deflate from PKZIP's appnote.txt. }
 Const

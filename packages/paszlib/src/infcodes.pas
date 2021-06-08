@@ -31,7 +31,7 @@ procedure inflate_codes_free(var c : pInflate_codes_state;
 implementation
 
 uses
-  infutil, inffast;
+  infutil, inffast{$IFDEF ZLIB_DEBUG}, SysUtils{$ENDIF};
 
 
 function inflate_codes_new (bl : cardinal;
@@ -185,7 +185,7 @@ begin
         if (t^.base >= $20) and (t^.base < $7f) then
           Tracevv('inflate:         literal '+char(t^.base))
         else
-          Tracevv('inflate:         literal '+IntToStr(t^.base));
+          Tracevv('inflate:         literal $'+IntToHex(t^.base, 2));
         {$ENDIF}          
         c^.mode := LIT;
         continue;  { break switch statement }
