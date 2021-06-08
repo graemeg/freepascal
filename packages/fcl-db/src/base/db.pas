@@ -2554,7 +2554,7 @@ end;
 procedure TIndexDef.SetDescFields(const AValue: string);
 begin
   if FDescFields=AValue then exit;
-  if AValue <> '' then FOptions[A:=FOptions + [ixDescending];
+  if AValue <> '' then FOptions:=FOptions + [ixDescending];
   FDescFields:=AValue;
 end;
 
