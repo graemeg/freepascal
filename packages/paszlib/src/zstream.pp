@@ -325,6 +325,7 @@ end;
 function Tdecompressionstream.Seek(const Offset: Int64; Origin: TSeekOrigin): Int64;
 
 var c,off: int64;
+    buf: array[0..8191] of Byte;
 
 begin
   off:=Offset;
@@ -344,9 +345,9 @@ begin
   while off>0 do
     begin
       c:=off;
-      if c>bufsize then
-        c:=bufsize;
-      if read(Fbuffer^,c)<>c then
+      if c>SizeOf(buf) then
+        c:=SizeOf(buf);
+      if read(buf,c)<>c then
         raise Edecompressionerror.create(Sseek_failed);
       dec(off,c);
     end;
