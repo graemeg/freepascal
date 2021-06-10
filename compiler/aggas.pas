@@ -1323,13 +1323,17 @@ implementation
              begin
                if (tai_label(hp).labsym.is_used) then
                 begin
-                  if (tai_label(hp).labsym.bind=AB_PRIVATE_EXTERN) then
-                    begin
-                      writer.AsmWrite(#9'.private_extern ');
-                      writer.AsmWriteln(tai_label(hp).labsym.name);
-                    end;
+{$ifdef DEBUG_LABEL}
+                  writer.AsmWrite(asminfo^.comment);
+                  writer.AsmWriteLn('References = ' + tostr(tai_label(hp).labsym.getrefs));
+{$endif DEBUG_LABEL}
                   if tai_label(hp).labsym.bind in [AB_GLOBAL,AB_PRIVATE_EXTERN] then
                    begin
+                     if (tai_label(hp).labsym.bind=AB_PRIVATE_EXTERN) then
+                       begin
+                         writer.AsmWrite(#9'.private_extern ');
+                         writer.AsmWriteln(tai_label(hp).labsym.name);
+                       end;
 {$ifdef arm}
                      { do no change arm mode accidently, .globl seems to reset the mode }
                      if GenerateThumbCode or GenerateThumb2Code then
