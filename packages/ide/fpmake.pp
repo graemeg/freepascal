@@ -11,6 +11,7 @@ const
   NoGDBOption: boolean = false;
   GDBMIOption: boolean = false;
   GDBMI_Disabled: boolean = false;
+  LLVM_Disabled: boolean = false;
   GDBMI_DEFAULT_OSes = [aix, darwin, freebsd, haiku,linux, netbsd, openbsd, solaris, win32, win64];
 
 procedure ide_check_gdb_availability(Sender: TObject);
@@ -149,6 +150,7 @@ begin
   AddCustomFpmakeCommandlineOption('NoIDE','If value=1 or ''Y'', the IDE will be skipped');
   AddCustomFpmakeCommandlineOption('IDE','If value=1 or ''Y'', the IDE will be build for each target');
   AddCustomFpmakeCommandlineOption('LLVM','If value=1 or ''Y'', the Compiler codegenerator will use LLVM');
+  AddCustomFpmakeCommandlineOption('NoLLVM','If value=1 or ''Y'', ito explicitly disable use of LLVM');
 end;
 
 procedure add_ide(const ADirectory: string);
@@ -187,11 +189,24 @@ begin
       CompilerTarget:=StringToCPU(s)
     else
       CompilerTarget:=Defaults.CPU;
-    s:=GetCustomFpmakeCommandlineOptionValue('LLVM');
+{$ifdef CPULLVM}
+    llvm:=true;
+{$else}
+    llvm:=false;
+{$endif}
+    s := GetCustomFpmakeCommandlineOptionValue('NOLLVM');
     if (s='1') or (s='Y') then
-      llvm:=true
+     LLVM_Disabled := true;
+    if LLVM_Disabled then
+      llvm:=false
     else
-      llvm:=false;
+      begin
+        s:=GetCustomFpmakeCommandlineOptionValue('LLVM');
+        if (s='1') or (s='Y') then
+          llvm:=true
+        else
+          llvm:=false;
+      end;
     { Only try to build natively }
     { or for cross-compile if the resulting executable
       does not depend on C libs }
