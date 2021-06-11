@@ -20,8 +20,8 @@ fpcdir=.
 rule=help
 
 [prerules]
-REQUIREDVERSION=3.2.0
-REQUIREDVERSION2=3.2.2
+REQUIREDVERSION=3.2.2
+REQUIREDVERSION2=3.2.0
 
 
 # make versions < 3.77 (OS2 version) are buggy
