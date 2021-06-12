@@ -436,14 +436,16 @@ begin
   if IsSharedLib then
     Replace(cmdstr,'$SONAME',ExtractFileName(outname));
 
-  binstr:=FindUtil(utilsprefix+BinStr);
   { We should use BFD version of LD, since GOLD version does not support INSERT command in linker scripts }
-  if binstr <> '' then begin
-    { Checking if ld.bfd exists }
-    s:=ChangeFileExt(binstr, '.bfd' + source_info.exeext);
+  s:=utilsprefix+binstr+'.bfd';
+  if (source_info.exeext<>'') then
+    s:=s+source_info.exeext;
+  s:=FindUtil(s);
     if FileExists(s, True) then
-      binstr:=s;
-  end;
+    binstr:=s
+  else
+    // fallback to ld for very old or custom binutils
+    binstr:=FindUtil(utilsprefix+BinStr);
 
   success:=DoExec(binstr,CmdStr,true,false);
 
