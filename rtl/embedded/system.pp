@@ -300,7 +300,7 @@ begin
 
 {$ifdef FPC_HAS_FEATURE_THREADING}
   { threading }
-  //InitSystemThreads; // Empty call for embedded anyway
+  InitSystemThreads;
 {$endif FPC_HAS_FEATURE_THREADING}
 
 {$ifdef FPC_HAS_FEATURE_WIDESTRINGS}
