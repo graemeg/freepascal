@@ -51,7 +51,6 @@ function NoBeginThread(sa : Pointer;stacksize : PtrUInt;
                      creationFlags : dword; var ThreadId : TThreadID) : TThreadID;NoReturn;
   begin
     NoThreadError;
-    result:=tthreadid(-1);
   end;
 
 
