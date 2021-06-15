@@ -4954,9 +4954,21 @@ begin
 
   { Default alignment settings,
     1. load the defaults for the target
-    2. override with generic optimizer setting (little size)
-    3. override with the user specified -Oa }
+    2. adapt defaults specifically for the target
+    3. override with generic optimizer setting (little size)
+    4. override with the user specified -Oa }
   UpdateAlignment(init_settings.alignment,target_info.alignment);
+
+{$ifdef arm}
+  if (init_settings.instructionset=is_thumb) and not(CPUARM_HAS_THUMB2 in cpu_capabilities[init_settings.cputype]) then
+   begin
+     init_settings.alignment.procalign:=2;
+     init_settings.alignment.jumpalign:=2;
+     init_settings.alignment.coalescealign:=2;
+     init_settings.alignment.loopalign:=2;
+   end;
+{$endif arm}
+
   if (cs_opt_size in init_settings.optimizerswitches) then
    begin
      init_settings.alignment.procalign:=1;
