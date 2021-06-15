@@ -9,7 +9,7 @@ var
 
 procedure Pascalmain; external name 'PASCALMAIN';
 
-procedure HaltProc; assembler; nostackframe; public name'_haltproc';
+procedure HaltProc; assembler; nostackframe; public name'_haltproc'; noreturn;
 asm
 .Lloop:
    b .Lloop
