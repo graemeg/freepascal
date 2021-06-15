@@ -3849,6 +3849,10 @@ unit cgcpu;
          stackmisalignment: pint;
          stack_parameters : Boolean;
       begin
+        { a routine not returning needs no exit code,
+          we trust this directive as arm thumb is normally used if small code shall be generated }
+        if po_noreturn in current_procinfo.procdef.procoptions then
+          exit;
         if not(nostackframe) then
           begin
             stack_parameters:=current_procinfo.procdef.stack_tainting_parameter(calleeside);
@@ -5052,6 +5056,10 @@ unit cgcpu;
          LocalSize : longint;
          stackmisalignment: pint;
       begin
+        { a routine not returning needs no exit code,
+          we trust this directive as arm thumb is normally used if small code shall be generated }
+        if po_noreturn in current_procinfo.procdef.procoptions then
+          exit;
         if not(nostackframe) then
           begin
             stackmisalignment:=0;
