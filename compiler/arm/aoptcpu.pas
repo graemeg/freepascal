@@ -2055,7 +2055,7 @@ Implementation
       Result := False;
 
       { Try to merge two STRs into an STM instruction }
-      if (taicpu(p).oper[1]^.typ = top_ref) and
+      if not(GenerateThumbCode) and (taicpu(p).oper[1]^.typ = top_ref) and
         (taicpu(p).oper[1]^.ref^.addressmode = AM_OFFSET) and
         (
           (taicpu(p).oper[1]^.ref^.base = NR_NO) or
