@@ -617,7 +617,8 @@ begin
         // Note: this field can be stored as BCD or integer, depending on FPrecision;
         // that's why we allow 0 precision
         if FSize < 1   then FSize := 1;
-        if FSize >= 20 then FSize := 20;
+        // Removed, bug report 39009
+        // if FSize >= 20 then FSize := 20;
         if FPrecision > FSize-2 then FPrecision := FSize-2; //Leave space for . and -
         if FPrecision < 0       then FPrecision := 0;
       end;
