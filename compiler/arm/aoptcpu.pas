@@ -110,7 +110,8 @@ Implementation
     systems,
     cpuinfo,
     cgobj,procinfo,
-    aasmbase,aasmdata;
+    aasmbase,aasmdata,
+    aoptutils;
 
 { Range check must be disabled explicitly as conversions between signed and unsigned
   32-bit values are done without explicit typecasts }
@@ -556,6 +557,9 @@ Implementation
   function TCpuAsmOptimizer.OptPass1ADDSUB(var p: tai): Boolean;
     var
       hp1,hp2: tai;
+      sign: Integer;
+      newvalue: TCGInt;
+      b: byte;
     begin
       Result := OptPass1DataCheckMov(p);
 
@@ -622,6 +626,45 @@ Implementation
             end;
         end;
 
+
+      {
+        optimize
+
+        add/sub rx,ry,const1
+        add/sub rx,rx,const2
+
+        into
+
+        add/sub rx,ry,const1+/-const
+
+        check if the first operation has no postfix and condition
+      }
+      if MatchInstruction(p,[A_ADD,A_SUB],[C_None],[PF_None]) and
+        MatchOptype(taicpu(p),top_reg,top_reg,top_const) and
+        GetNextInstructionUsingReg(p,hp1,taicpu(p).oper[0]^.reg) and
+        MatchInstruction(hp1,[A_ADD,A_SUB],[C_None],[PF_None]) and
+        MatchOptype(taicpu(hp1),top_reg,top_reg,top_const) and
+        MatchOperand(taicpu(p).oper[0]^,taicpu(hp1).oper[0]^) and
+        MatchOperand(taicpu(p).oper[0]^,taicpu(hp1).oper[1]^) then
+        begin
+          sign:=1;
+          if (taicpu(p).opcode=A_SUB) xor (taicpu(hp1).opcode=A_SUB) then
+            sign:=-1;
+          newvalue:=taicpu(p).oper[2]^.val+sign*taicpu(hp1).oper[2]^.val;
+          if (not(GenerateThumbCode) and is_shifter_const(newvalue,b)) or
+            (GenerateThumbCode and is_thumb_imm(newvalue)) then
+            begin
+              DebugMsg(SPeepholeOptimization + 'Merge Add/Sub done', p);
+              taicpu(p).oper[2]^.val:=newvalue;
+              RemoveInstruction(hp1);
+              Result:=true;
+              if newvalue=0 then
+                begin
+                  RemoveCurrentP(p);
+                  Exit;
+                end;
+            end;
+        end;
       if (taicpu(p).condition = C_None) and
         (taicpu(p).oppostfix = PF_None) and
         LookForPreindexedPattern(taicpu(p)) then
