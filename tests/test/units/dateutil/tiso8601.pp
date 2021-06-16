@@ -1,3 +1,4 @@
+{ %OPT=-Mobjfpc }
 program tiso8601;
 
 uses
