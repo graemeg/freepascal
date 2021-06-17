@@ -36,6 +36,9 @@ uses
   aopt, aoptobj, aoptarm;
 
 Type
+
+  { TCpuAsmOptimizer }
+
   TCpuAsmOptimizer = class(TARMAsmOptimizer)
     { Can't be done in some cases due to the limited range of jumps }
     function CanDoJumpOpts: Boolean; override;
@@ -79,6 +82,7 @@ Type
     function OptPass1MVN(var p: tai): Boolean;
     function OptPass1VMov(var p: tai): Boolean;
     function OptPass1VOp(var p: tai): Boolean;
+    function OptPass1Push(var p: tai): Boolean;
 
     function OptPass2Bcc(var p: tai): Boolean;
     function OptPass2STM(var p: tai): Boolean;
@@ -303,8 +307,8 @@ Implementation
     end;
 
 
-  function TCpuAsmOptimizer.GetNextInstructionUsingRef(Current: tai;
-    Out Next: tai; const ref: TReference; StopOnStore: Boolean = true): Boolean;
+    function TCpuAsmOptimizer.GetNextInstructionUsingRef(Current: tai; out
+   Next: tai; const ref: TReference; StopOnStore: Boolean): Boolean;
     begin
       Next:=Current;
       repeat
@@ -1941,6 +1945,37 @@ Implementation
     end;
 
 
+  function TCpuAsmOptimizer.OptPass1Push(var p: tai): Boolean;
+    var
+      hp1: tai;
+    begin
+      Result:=false;
+      if (taicpu(p).oper[0]^.regset^=[RS_R14]) and
+        GetNextInstruction(p,hp1) and
+        MatchInstruction(hp1,A_POP,[C_None],[PF_None]) and
+        (taicpu(hp1).oper[0]^.regset^=[RS_R15]) then
+        begin
+          if not(CPUARM_HAS_BX in cpu_capabilities[current_settings.cputype]) then
+            begin
+              DebugMsg('Peephole Optimization: PushPop2Mov done', p);
+              taicpu(p).ops:=2;
+              taicpu(p).loadreg(1, NR_R14);
+              taicpu(p).loadreg(0, NR_R15);
+              taicpu(p).opcode:=A_MOV;
+            end
+          else
+            begin
+              DebugMsg('Peephole Optimization: PushPop2Bx done', p);
+              taicpu(p).loadreg(0, NR_R14);
+              taicpu(p).opcode:=A_BX;
+            end;
+          RemoveInstruction(hp1);
+          Result:=true;
+          Exit;
+        end;
+    end;
+
+
   function TCpuAsmOptimizer.OptPass2Bcc(var p: tai): Boolean;
     var
       hp1,hp2,hp3,after_p: tai;
@@ -2299,6 +2334,8 @@ Implementation
             A_VCVT,
             A_VABS:
               Result := OptPass1VOp(p);
+            A_PUSH:
+              Result := OptPass1Push(p);
             else
               ;
           end;
