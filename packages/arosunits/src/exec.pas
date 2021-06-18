@@ -1344,7 +1344,7 @@ function NewStackSwap(NewStack: PStackSwapStruct; Function_: APTR; Args: PStackS
 function TaggedOpenLibrary(Tag: LongInt): APTR; syscall AOS_ExecBase 135;
 function ReadGayle: ULONG; syscall AOS_ExecBase 136;
 function VNewRawDoFmt(const FormatString: STRPTR; PutChProc: TProcedure; PutChData: APTR; VaListStream: PChar): STRPTR; syscall AOS_ExecBase 137;
-function NewAddTaskA(TagList: PTagItem): APTR; syscall AOS_ExecBase 153;
+function NewCreateTaskA(TagList: PTagItem): APTR; syscall AOS_ExecBase 153;
 function AddResetCallback(ResetCallback: PInterrupt): LongBool; syscall AOS_ExecBase 167;
 procedure RemResetCallback(ResetCallback: PInterrupt); syscall AOS_ExecBase 168;
 function ShutdownA(Action: ULONG): ULONG; syscall AOS_ExecBase 173;
@@ -1356,15 +1356,15 @@ procedure Switch; syscall AOS_ExecBase 9;
 procedure Dispatch; syscall AOS_ExecBase 10;
 function AVL_AddNode(Root: PPAVLNode; Node: PAVLNode; Func: PAVLNODECOMP): PAVLNode; syscall AOS_ExecBase 139;
 function AVL_RemNodeByAddress(Root: PPAVLNode; Node: PAVLNode): PAVLNode; syscall AOS_ExecBase 140;
-function AVL_RemNodeByKey(Root: PPAVLNode; Key: AVLKey; Func: PAVLNODECOMP): PAVLNode; syscall AOS_ExecBase 141;
-function AVL_FindNode(Root: PPAVLNode; Key: AVLKey; Func: PAVLNODECOMP): PAVLNode; syscall AOS_ExecBase 142;
+function AVL_RemNodeByKey(Root: PPAVLNode; Key: AVLKey; Func: PAVLKEYCOMP): PAVLNode; syscall AOS_ExecBase 141;
+function AVL_FindNode(Root: PPAVLNode; Key: AVLKey; Func: PAVLKEYCOMP): PAVLNode; syscall AOS_ExecBase 142;
 function AVL_FindPrevNodeByAddress(Node: PAVLNode): PAVLNode; syscall AOS_ExecBase 143;
-function AVL_FindPrevNodeByKey(Node: PAVLNode; Key: AVLKey): PAVLNode; syscall AOS_ExecBase 144;
+function AVL_FindPrevNodeByKey(Node: PAVLNode; Key: AVLKey; func: PAVLKeyComp): PAVLNode; syscall AOS_ExecBase 144;
 function AVL_FindNextNodeByAddress(Node: PAVLNode): PAVLNode; syscall AOS_ExecBase 145;
-function AVL_FindNextNodeByKey(Node: PAVLNode; Key: AVLKey): PAVLNode; syscall AOS_ExecBase 146;
+function AVL_FindNextNodeByKey(Node: PAVLNode; Key: AVLKey; func: PAVLKeyComp): PAVLNode; syscall AOS_ExecBase 146;
 function AVL_FindFirstNode(Root: PAVLNode): PAVLNode; syscall AOS_ExecBase 147;
 function AVL_FindLastNode(Root: PAVLNode): PAVLNode; syscall AOS_ExecBase 148;
-function NewAddTask(Task: PTask; InitialPC: APTR; FinalPC: APTR; TagList: PTagItem): APTR; syscall AOS_ExecBase 152;
+function NewAddTaskA(Task: PTask; InitialPC: APTR; FinalPC: APTR; TagList: PTagItem): APTR; syscall AOS_ExecBase 152;
 function AllocVecPooled(Pool: APTR; Size: ULONG): APTR; syscall AOS_ExecBase 149;
 procedure FreeVecPooled(Pool: APTR; Memory: APTR); syscall AOS_ExecBase 150;
 function NewAllocEntry(Entry: PMemList; var Return_Entry: PMemList; var Return_Flags: ULONG): LongBool; syscall AOS_ExecBase 151;
@@ -1374,19 +1374,19 @@ function NewAllocEntry(Entry: PMemList; var Return_Entry: PMemList; var Return_F
 procedure NewMinList(Ml: PMinList); syscall AOS_ExecBase 138;
 function AVL_AddNode(Root: PPAVLNode; Node: PAVLNode; Func: PAVLNODECOMP): PAVLNode; syscall AOS_ExecBase 142;
 function AVL_RemNodeByAddress(Root: PPAVLNode; Node: PAVLNode): PAVLNode; syscall AOS_ExecBase 143;
-function AVL_RemNodeByKey(Root: PPAVLNode; Key: AVLKey; Func: PAVLNODECOMP): PAVLNode; syscall AOS_ExecBase 144;
-function AVL_FindNode(Root: PPAVLNode; Key: AVLKey; Func: PAVLNODECOMP): PAVLNode; syscall AOS_ExecBase 145;
+function AVL_RemNodeByKey(Root: PPAVLNode; Key: AVLKey; Func: PAVLKEYCOMP): PAVLNode; syscall AOS_ExecBase 144;
+function AVL_FindNode(Root: PPAVLNode; Key: AVLKey; Func: PAVLKEYCOMP): PAVLNode; syscall AOS_ExecBase 145;
 function AVL_FindPrevNodeByAddress(Node: PAVLNode): PAVLNode; syscall AOS_ExecBase 146;
-function AVL_FindPrevNodeByKey(Node: PAVLNode; Key: AVLKey): PAVLNode; syscall AOS_ExecBase 147;
+function AVL_FindPrevNodeByKey(Node: PAVLNode; Key: AVLKey; func: PAVLKeyComp): PAVLNode; syscall AOS_ExecBase 147;
 function AVL_FindNextNodeByAddress(Node: PAVLNode): PAVLNode; syscall AOS_ExecBase 148;
-function AVL_FindNextNodeByKey(Node: PAVLNode; Key: AVLKey): PAVLNode; syscall AOS_ExecBase 149;
+function AVL_FindNextNodeByKey(Node: PAVLNode; Key: AVLKey; func: PAVLKeyComp): PAVLNode; syscall AOS_ExecBase 149;
 function AVL_FindFirstNode(Root: PAVLNode): PAVLNode; syscall AOS_ExecBase 150;
 function AVL_FindLastNode(Root: PAVLNode): PAVLNode; syscall AOS_ExecBase 151;
 function FindTaskByPID(ProcessID: LongWord): PTask; syscall AOS_ExecBase 166;
 function AllocVecPooled(Pool: APTR; Size: ULONG): APTR; syscall AOS_ExecBase 169;
 procedure FreeVecPooled(Pool: APTR; Memory: APTR); syscall AOS_ExecBase 170;
 function NewAllocEntry(Entry: PMemList; var Return_Entry: PMemList; var Return_Flags: ULONG): LongBool; syscall AOS_ExecBase 174;
-function NewAddTask(Task: PTask; InitialPC: APTR; FinalPC: APTR; TagList: PTagItem): APTR; syscall AOS_ExecBase 176;
+function NewAddTaskA(Task: PTask; InitialPC: APTR; FinalPC: APTR; TagList: PTagItem): APTR; syscall AOS_ExecBase 176;
 function AllocTaskStorage: LongInt; syscall AOS_ExecBase 180;
 procedure FreeTaskStorage(Slot: LongInt); syscall AOS_ExecBase 181;
 function SaveTaskStorage: APTR; syscall AOS_ExecBase 182;
@@ -1413,6 +1413,9 @@ function IsListEmpty(List: PList): Boolean;
 function IsMinListEmpty(List: PMinList): Boolean;
 function IsMsgPortEmpty( mp: pMsgPort): Boolean;
 
+function NewAddTask(Task: PTask; InitialPC: APTR; FinalPC: APTR; const Tags: array of PtrUInt): APTR;
+function NewCreateTask(const Tags: array of PtrUInt): APTR;
+
 type
   TNodeProcedure = procedure(Node:PNode); // Procedure for ForEachNode;
 
@@ -1423,6 +1426,16 @@ function CreateExtIO(const Mp: PMsgPort; Size: Integer): PIORequest;
 procedure DeleteExtIO(ioReq: PIORequest);
 
 implementation
+
+function NewAddTask(Task: PTask; InitialPC: APTR; FinalPC: APTR; const Tags: array of PtrUInt): APTR;
+begin
+  NewAddTask := NewAddTaskA(Task, InitialPC, FinalPC, @Tags);
+end;
+
+function NewCreateTask(const Tags: array of PtrUInt): APTR;
+begin
+  NewCreateTask := NewCreateTaskA(@Tags);
+end;
 
 // C Macros
 procedure SetNodeName(Node: PNode; Name: PChar); inline;
