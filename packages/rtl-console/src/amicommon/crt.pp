@@ -535,11 +535,7 @@ begin
   OutP := DosOutput();
   //SetMode(OutP, 1);
   // Wait one millisecond for the key (-1 = timeout)
-  {$if defined(AROS)}
-  KeyPressed := WaitForChar(OutP, 1) <> 0;
-  {$else}
   KeyPressed := WaitForChar(OutP, 1);
-  {$endif}
   //SetMode(OutP, 0);
 end;
 

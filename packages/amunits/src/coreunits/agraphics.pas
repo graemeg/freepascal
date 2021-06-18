@@ -383,12 +383,12 @@ type
       );
     1:(
       DestAddr: SmallInt; // destination Pointer
-      DestData: SmallInt; // data to send      
+      DestData: SmallInt; // data to send
       );
     2:(
       VWaitPos: SmallInt; // vertical wait position
-      HWaitPos: SmallInt; // horizontal wait position      
-      );  
+      HWaitPos: SmallInt; // horizontal wait position
+      );
   end;
 
 { structure of cprlist that points to list that hardware actually executes }
@@ -400,7 +400,7 @@ type
         MaxCount : smallint;       { number of long instructions }
     end;
 
-    
+
     tCopList = record
         Next    : pCopList;     { next block for this copper list }
         _CopList : pCopList;    { system use }
@@ -2248,7 +2248,7 @@ const
 
 
 var
-    GfxBase : pLibrary = nil;
+    GfxBase : PGfxBase = nil;
 
 PROCEDURE AddAnimOb(anOb : pAnimOb location 'a0'; anKey : ppAnimOb location 'a1'; rp : pRastPort location 'a2'); syscall GfxBase 156;
 PROCEDURE AddBob(bob : pBob location 'a0'; rp : pRastPort location 'a1'); syscall GfxBase 096;
@@ -2617,10 +2617,10 @@ const
     LIBVERSION : longword = 0;
 
 initialization
-  GfxBase := OpenLibrary(GRAPHICSNAME,LIBVERSION);
+  GfxBase := PGFXBase(OpenLibrary(GRAPHICSNAME,LIBVERSION));
 finalization
   if Assigned(GfxBase) then
-    CloseLibrary(GfxBase);
+    CloseLibrary(PLibrary(GfxBase));
 END. (* UNIT GRAPHICS *)
 
 

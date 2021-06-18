@@ -1656,8 +1656,8 @@ SysCall MOS_DOSBase 66;
 function dosDeleteFile(fname: PChar location 'd1'): LongBool;
 SysCall MOS_DOSBase 72;
 
-function dosRename(oldName: PChar location 'd1';
-                   newName: PChar location 'd2'): LongInt;
+function dosRename(oldName: STRPTR location 'd1';
+                   newName: STRPTR location 'd2'): LongBool;
 SysCall MOS_DOSBase 78;
 
 function Lock(lname     : PChar   location 'd1';
@@ -1671,15 +1671,15 @@ function DupLock(lock: BPTR location 'd1'): LongInt;
 SysCall MOS_DOSBase 096;
 
 function Examine(lock         : BPTR        location 'd1';
-                 fileInfoBlock: PFileInfoBlock location 'd2'): LongInt;
+                 fileInfoBlock: PFileInfoBlock location 'd2'): LongBool;
 SysCall MOS_DOSBase 102;
 
 function ExNext(lock         : BPTR        location 'd1';
-                fileInfoBlock: PFileInfoBlock location 'd2'): LongInt;
+                fileInfoBlock: PFileInfoBlock location 'd2'): LongBool;
 SysCall MOS_DOSBase 108;
 
 function Info(lock          : BPTR   location 'd1';
-              parameterBlock: PInfoData location 'd2'): LongInt;
+              parameterBlock: PInfoData location 'd2'): LongBool;
 SysCall MOS_DOSBase 114;
 
 function dosCreateDir(dname: PChar location 'd1'): LongInt;
@@ -1714,7 +1714,7 @@ function SetComment(name   : PChar location 'd1';
 SysCall MOS_DOSBase 180;
 
 function SetProtection(name: PChar   location 'd1';
-                       mask: LongInt location 'd2'): LongInt;
+                       mask: LongInt location 'd2'): LongBool;
 SysCall MOS_DOSBase 186;
 
 function DateStamp(date: PDateStamp location 'd1'): PDateStamp;
@@ -1733,9 +1733,9 @@ SysCall MOS_DOSBase 210;
 function IsInteractive(file1: BPTR location 'd1'): LongBool;
 SysCall MOS_DOSBase 216;
 
-function Execute(string1: PChar   location 'd1';
-                 file1  : BPTR location 'd2';
-                 file2  : BPTR location 'd3'): LongBool;
+function Execute(string1: STRPTR location 'd1';
+                 file1  : BPTR   location 'd2';
+                 file2  : BPTR   location 'd3'): LongBool;
 SysCall MOS_DOSBase 222;
 
 function AllocDosObject(type1: Cardinal location 'd1';
@@ -1873,13 +1873,13 @@ function VFPrintf(fh      : BPTR location 'd1';
                   argarray: PLongInt location 'd3'): LongInt;
 SysCall MOS_DOSBase 354;
 
-function dosFlush(fh: BPTR location 'd1'): LongInt;
+function dosFlush(fh: BPTR location 'd1'): LongBool;
 SysCall MOS_DOSBase 360;
 
 function SetVBuf(fh   : BPTR location 'd1';
                  buff : PChar   location 'd2';
                  type1: LongInt location 'd3';
-                 size : LongInt location 'd4'): LongInt;
+                 size : LongInt location 'd4'): LongBool;
 SysCall MOS_DOSBase 366;
 
 function DupLockFromFH(fh: BPTR location 'd1'): BPTR;
@@ -1921,7 +1921,7 @@ function SameLock(lock1: BPTR location 'd1';
 SysCall MOS_DOSBase 420;
 
 function SetMode(fh  : BPTR location 'd1';
-                 mode: LongInt location 'd2'): LongInt;
+                 mode: LongInt location 'd2'): LongBool;
 SysCall MOS_DOSBase 426;
 
 function ExAll(lock   : BPTR       location 'd1';
@@ -2085,7 +2085,7 @@ SysCall MOS_DOSBase 666;
 function RemDosEntry(dlist: PDosList location 'd1'): LongBool;
 SysCall MOS_DOSBase 672;
 
-function AddDosEntry(dlist: PDosList location 'd1'): LongInt;
+function AddDosEntry(dlist: PDosList location 'd1'): LongBool;
 SysCall MOS_DOSBase 678;
 
 function FindDosEntry(dlist: PDosList location 'd1';

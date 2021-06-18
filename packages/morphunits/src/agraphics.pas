@@ -1978,7 +1978,7 @@ const
   GRAPHICSNAME: PChar  = 'graphics.library';
 
 var
-  GfxBase : Pointer = nil;
+  GfxBase : PGfxBase = nil;
 
 function BltBitMap(srcBitMap: PBitMap location 'a0'; XSrc: LongInt location 'd0'; YSrc: LongInt location 'd1'; DestBitMap: PBitMap location 'a1'; XDest: LongInt location 'd2'; YDest: LongInt location 'd3'; XSize: LongInt location 'd4'; YSize: LongInt location 'd5'; MinTerm: LongWord location 'd6'; Mask: LongWord location 'd7'; TempA: TPlanePtr location 'a2'): LongInt; SysCall GfxBase 030;
 procedure BltTemplate(Source: TPlanePtr location 'a0'; XSrc: LongInt location 'd0'; SrcMod: LongInt location 'd1'; DestRP: PRastPort location 'a1'; XDest: LongInt location 'd2'; YDest: LongInt location 'd3'; XSize: LongInt location 'd4'; YSize: LongInt location 'd5'); SysCall GfxBase 036;
@@ -2365,8 +2365,8 @@ begin
 end;
 
 initialization
-  GfxBase := OpenLibrary(GRAPHICSNAME,LIBVERSION);
+  GfxBase := PGfxBase(OpenLibrary(GRAPHICSNAME,LIBVERSION));
 finalization
   if Assigned(GfxBase) then
-    CloseLibrary(GfxBase);
+    CloseLibrary(PLibrary(GfxBase));
 end.

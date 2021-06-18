@@ -1437,7 +1437,7 @@ Type
       3: ( dol_Misc: array[0..23] of Byte;
            dol_Name: DWord;    { BPTR }
          );
-    end; 
+    end;
 
 
 { This structure can take on different values depending on whether it is
@@ -2596,7 +2596,7 @@ function FindVar(const Name: STRPTR; Type_: LongWord): PLocalVar; syscall IDos 7
 function CliInitNewcli(Dp: PDosPacket): LongInt; syscall IDos 736;
 function CliInitRun(Dp: PDosPacket): LongInt; syscall IDos 740;
 function WriteChars(const Buf: STRPTR; BufLen: LongWord): LongInt; syscall IDos 744;
-function PutStr(const Str: STRPTR): LongBool; syscall IDos 748;
+function PutStr(const Str: STRPTR): LongInt; syscall IDos 748;
 function VPrintf(const Format: STRPTR; const ArgArray: PLongInt): LongInt; syscall IDos 752;
 // 756 Printf
 // 760 reserved
