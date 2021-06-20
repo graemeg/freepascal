@@ -3773,6 +3773,10 @@ unit cgcpu;
               end;
 
             registerarea:=0;
+            { do not save integer registers if the procedure does not return }
+            if po_noreturn in current_procinfo.procdef.procoptions then
+              regs:=[];
+
             if regs<>[] then
                begin
                  for r:=RS_R0 to RS_R15 do
