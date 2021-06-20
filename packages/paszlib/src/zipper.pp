@@ -972,7 +972,7 @@ end;
 procedure TDeflater.Compress;
 Var
   Buf : PByte;
-  I,Count,NewCount : integer;
+  I,Count : integer;
   C : TCompressionStream;
   BytesNow : Int64;
   NextMark : Int64;
@@ -996,9 +996,8 @@ begin
         Count:=FInFile.Read(Buf^,FBufferSize);
         For I:=0 to Count-1 do
           UpdC32(Buf[i]);
-        NewCount:=Count;
-        while (NewCount>0) do
-          NewCount:=NewCount-C.Write(Buf^,NewCount);
+        // Writebuffer will loop  
+        C.WriteBuffer(Buf^,Count);
         inc(BytesNow,Count);
         if BytesNow>NextMark Then
           begin
