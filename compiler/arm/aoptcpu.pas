@@ -640,6 +640,10 @@ Implementation
         into
 
         add/sub rx,ry,const1+/-const
+        or
+        mov rx,ry if const1+/-const=0
+        or
+        remove it, if rx=ry and const1+/-const=0
 
         check if the first operation has no postfix and condition
       }
@@ -664,7 +668,13 @@ Implementation
               Result:=true;
               if newvalue=0 then
                 begin
-                  RemoveCurrentP(p);
+                  if MatchOperand(taicpu(p).oper[0]^,taicpu(p).oper[1]^) then
+                    RemoveCurrentP(p)
+                  else
+                    begin
+                      taicpu(p).opcode:=A_MOV;
+                      taicpu(p).ops:=2;
+                    end;
                   Exit;
                 end;
             end;
