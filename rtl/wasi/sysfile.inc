@@ -27,8 +27,19 @@ begin
 end;
 
 procedure Do_Erase(p: pchar; pchangeable: boolean);
+var
+  fd: __wasi_fd_t;
+  pr: PChar;
+  res: __wasi_errno_t;
 begin
-  DebugWriteLn('Do_Erase');
+  if not ConvertToFdRelativePath(p,fd,pr) then
+    exit;
+  res:=__wasi_path_unlink_file(fd,pr,StrLen(pr));
+  if res=__WASI_ERRNO_SUCCESS then
+    InOutRes:=0
+  else
+    InOutRes:=Errno2InoutRes(res);
+  FreeMem(pr);
 end;
 
 procedure do_truncate (handle:thandle;fpos:int64);
