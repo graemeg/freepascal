@@ -51,6 +51,8 @@ const
 var
   argc: longint;
   argv: PPChar;
+  preopened_dirs_count: longint;
+  preopened_dirs: PPChar;
 
 procedure DebugWrite(const P: PChar);
 procedure DebugWriteLn(const P: PChar);
@@ -92,6 +94,8 @@ var
   res: __wasi_errno_t;
   prestat_dir_name: PChar;
 begin
+  preopened_dirs_count:=0;
+  preopened_dirs:=nil;
   fd:=3;
   repeat
     res:=__wasi_fd_prestat_get(fd, @prestat);
@@ -99,14 +103,16 @@ begin
     begin
       if (prestat.tag=__WASI_PREOPENTYPE_DIR) and (prestat.u.dir.pr_name_len>0) then
       begin
-        //GetMem(prestat_dir_name,prestat.u.dir.pr_name_len+1);
-        //if __wasi_fd_prestat_dir_name(fd,PByte(prestat_dir_name),prestat.u.dir.pr_name_len)=__WASI_ERRNO_SUCCESS then
-        //begin
-        //  prestat_dir_name[prestat.u.dir.pr_name_len]:=#0;
-        //  //Writeln(prestat_dir_name);
-        //end
-        //else
-        //  FreeMem(prestat_dir_name,prestat.u.dir.pr_name_len+1);
+        GetMem(prestat_dir_name,prestat.u.dir.pr_name_len+1);
+        if __wasi_fd_prestat_dir_name(fd,PByte(prestat_dir_name),prestat.u.dir.pr_name_len)=__WASI_ERRNO_SUCCESS then
+        begin
+          prestat_dir_name[prestat.u.dir.pr_name_len]:=#0;
+          Inc(preopened_dirs_count);
+          ReAllocMem(preopened_dirs, preopened_dirs_count*SizeOf(PChar));
+          preopened_dirs[preopened_dirs_count-1]:=prestat_dir_name;
+        end
+        else
+          FreeMem(prestat_dir_name,prestat.u.dir.pr_name_len+1);
       end;
     end;
     Inc(fd);
