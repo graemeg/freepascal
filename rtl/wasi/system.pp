@@ -53,6 +53,9 @@ var
   argv: PPChar;
   preopened_dirs_count: longint;
   preopened_dirs: PPChar;
+  drives_count: longint;
+  current_dirs: PPChar;
+  current_drive: longint;
 
 procedure DebugWrite(const P: PChar);
 procedure DebugWriteLn(const P: PChar);
@@ -87,15 +90,24 @@ begin
   __wasi_proc_exit(ExitCode);
 End;
 
+function HasDriveLetter(const path: PChar): Boolean;
+begin
+  HasDriveLetter:=(path<>nil) and (UpCase(path[0]) in ['A'..'Z']) and (path[1] = ':');
+end;
+
 procedure Setup_PreopenedDirs;
 var
   fd: __wasi_fd_t;
   prestat: __wasi_prestat_t;
   res: __wasi_errno_t;
   prestat_dir_name: PChar;
+  drive_nr: longint;
 begin
   preopened_dirs_count:=0;
   preopened_dirs:=nil;
+  drives_count:=0;
+  current_dirs:=nil;
+  current_drive:=0;
   fd:=3;
   repeat
     res:=__wasi_fd_prestat_get(fd, @prestat);
@@ -108,8 +120,28 @@ begin
         begin
           prestat_dir_name[prestat.u.dir.pr_name_len]:=#0;
           Inc(preopened_dirs_count);
-          ReAllocMem(preopened_dirs, preopened_dirs_count*SizeOf(PChar));
+          if preopened_dirs=nil then
+            preopened_dirs:=AllocMem(preopened_dirs_count*SizeOf(PChar))
+          else
+            ReAllocMem(preopened_dirs, preopened_dirs_count*SizeOf(PChar));
           preopened_dirs[preopened_dirs_count-1]:=prestat_dir_name;
+          if HasDriveLetter(prestat_dir_name) then
+            drive_nr:=Ord(UpCase(prestat_dir_name[0]))-(Ord('A')-1)
+          else
+            drive_nr:=0;
+          if (drive_nr+1)>drives_count then
+          begin
+            drives_count:=drive_nr+1;
+            if current_dirs=nil then
+              current_dirs:=AllocMem(drives_count*SizeOf(PChar))
+            else
+              ReAllocMem(current_dirs,drives_count*SizeOf(PChar));
+          end;
+          if current_dirs[drive_nr]=nil then
+          begin
+            current_dirs[drive_nr]:=GetMem(1+StrLen(prestat_dir_name));
+            Move(prestat_dir_name^,current_dirs[drive_nr]^,StrLen(prestat_dir_name)+1);
+          end;
         end
         else
           FreeMem(prestat_dir_name,prestat.u.dir.pr_name_len+1);
@@ -117,6 +149,8 @@ begin
     end;
     Inc(fd);
   until res<>__WASI_ERRNO_SUCCESS;
+  while (current_drive<drives_count) and (current_dirs[current_drive]=nil) do
+    Inc(current_drive);
 end;
 
 procedure setup_arguments;

@@ -35,5 +35,10 @@ end;
 
 procedure do_getdir(drivenr : byte;var dir : rawbytestring);
 begin
-  DebugWriteLn('do_getdir');
+  if drivenr=0 then
+    drivenr:=current_drive;
+  if (drivenr<=drives_count) and (current_dirs[drivenr]<>nil) then
+    dir:=current_dirs[drivenr]
+  else
+    InoutRes:=15;
 end;
