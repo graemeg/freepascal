@@ -55,6 +55,7 @@ var
   preopened_dirs: PPChar;
   drives_count: longint;
   current_dirs: PPChar;
+  current_dir_fds: Plongint;
   current_drive: longint;
 
 procedure DebugWrite(const P: PChar);
@@ -107,6 +108,7 @@ begin
   preopened_dirs:=nil;
   drives_count:=0;
   current_dirs:=nil;
+  current_dir_fds:=nil;
   current_drive:=0;
   fd:=3;
   repeat
@@ -133,14 +135,21 @@ begin
           begin
             drives_count:=drive_nr+1;
             if current_dirs=nil then
-              current_dirs:=AllocMem(drives_count*SizeOf(PChar))
+            begin
+              current_dirs:=AllocMem(drives_count*SizeOf(PChar));
+              current_dir_fds:=AllocMem(drives_count*SizeOf(longint));
+            end
             else
+            begin
               ReAllocMem(current_dirs,drives_count*SizeOf(PChar));
+              ReAllocMem(current_dir_fds,drives_count*SizeOf(longint));
+            end;
           end;
           if current_dirs[drive_nr]=nil then
           begin
             current_dirs[drive_nr]:=GetMem(1+StrLen(prestat_dir_name));
             Move(prestat_dir_name^,current_dirs[drive_nr]^,StrLen(prestat_dir_name)+1);
+            current_dir_fds[drive_nr]:=fd;
           end;
         end
         else
