@@ -43,8 +43,14 @@ begin
 end;
 
 procedure do_truncate (handle:thandle;fpos:int64);
+var
+  res: __wasi_errno_t;
 begin
-  DebugWriteLn('do_truncate');
+  res:=__wasi_fd_filestat_set_size(handle,fpos);
+  if res=__WASI_ERRNO_SUCCESS then
+    InOutRes:=0
+  else
+    InOutRes:=Errno2InoutRes(res);
 end;
 
 procedure Do_Rename(p1,p2:pchar; p1changeable, p2changeable: boolean);
