@@ -121,6 +121,8 @@ var
   fdflags: __wasi_fdflags_t = 0;
   ourfd: __wasi_fd_t;
   res: __wasi_errno_t;
+  pr: PChar;
+  fd: __wasi_fd_t;
 Begin
 { close first if opened }
   if ((flags and $10000)=0) then
@@ -174,12 +176,14 @@ Begin
      end;
      exit;
    end;
+  if not ConvertToFdRelativePath(p,fd,pr) then
+    exit;
 { real open call }
   repeat
-    res:=__wasi_path_open(3,  { not sure about this fd... }
+    res:=__wasi_path_open(fd,
                           0,
-                          p,
-                          strlen(p),
+                          pr,
+                          strlen(pr),
                           oflags,
                           fs_rights_base,
                           fs_rights_base,
@@ -203,4 +207,5 @@ Begin
       FileRec(f).Handle:=ourfd;
       InOutRes:=0;
     end;
+  FreeMem(pr);
 end;

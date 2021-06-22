@@ -58,6 +58,8 @@ var
   current_dir_fds: Plongint;
   current_drive: longint;
 
+function ConvertToFdRelativePath(path: PChar; out fd: LongInt; out relfd_path: PChar): Boolean;
+
 procedure DebugWrite(const P: PChar);
 procedure DebugWriteLn(const P: PChar);
 procedure DebugWriteChar(Ch: Char);
@@ -94,6 +96,44 @@ End;
 function HasDriveLetter(const path: PChar): Boolean;
 begin
   HasDriveLetter:=(path<>nil) and (UpCase(path[0]) in ['A'..'Z']) and (path[1] = ':');
+end;
+
+function ConvertToFdRelativePath(path: PChar; out fd: LongInt; out relfd_path: PChar): Boolean;
+var
+  drive_nr: longint;
+  IsAbsolutePath: Boolean;
+begin
+  fd:=0;
+  relfd_path:=nil;
+
+  if HasDriveLetter(path) then
+  begin
+    drive_nr:=Ord(UpCase(path[0]))-(Ord('A')-1);
+    inc(path,2);
+  end
+  else
+    drive_nr:=current_drive;
+  if path[0] in ['/','\'] then
+  begin
+    { todo: search absolute path in preopened dirs array }
+    InOutRes:=3;
+    ConvertToFdRelativePath:=false;
+    exit;
+  end
+  else
+  begin
+    { path is relative to a current directory }
+    if (drive_nr>=drives_count) or (current_dirs[drive_nr]=nil) then
+    begin
+      InOutRes:=15;
+      ConvertToFdRelativePath:=false;
+      exit;
+    end;
+    fd:=current_dir_fds[drive_nr];
+    relfd_path:=GetMem(1+StrLen(path));
+    Move(path^,relfd_path^,1+StrLen(path));
+    ConvertToFdRelativePath:=true;
+  end;
 end;
 
 procedure Setup_PreopenedDirs;
