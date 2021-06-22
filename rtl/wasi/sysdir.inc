@@ -19,8 +19,19 @@
 *****************************************************************************}
 
 procedure Do_MkDir(s: rawbytestring);
+var
+  fd: __wasi_fd_t;
+  pr: PChar;
+  res: __wasi_errno_t;
 begin
-  DebugWriteLn('Do_MkDir');
+  if not ConvertToFdRelativePath(PChar(s),fd,pr) then
+    exit;
+  res:=__wasi_path_create_directory(fd,pr,StrLen(pr));
+  if res=__WASI_ERRNO_SUCCESS then
+    InOutRes:=0
+  else
+    InOutRes:=Errno2InoutRes(res);
+  FreeMem(pr);
 end;
 
 procedure Do_RmDir(s: rawbytestring);
