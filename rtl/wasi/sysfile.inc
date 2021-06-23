@@ -133,8 +133,21 @@ begin
 end;
 
 function Do_FileSize(Handle:thandle):Int64;
+var
+  res: __wasi_errno_t;
+  buf: __wasi_filestat_t;
 begin
-  DebugWriteLn('Do_FileSize');
+  res:=__wasi_fd_filestat_get(Handle, @buf);
+  if res=__WASI_ERRNO_SUCCESS then
+  begin
+    InOutRes:=0;
+    Do_FileSize:=buf.size;
+  end
+  else
+  begin
+    InOutRes:=Errno2InoutRes(res);
+    Do_FileSize:=0;
+  end;
 end;
 
 procedure Do_Open(var f; p: pchar; flags: longint; pchangeable: boolean);
