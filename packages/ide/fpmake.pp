@@ -203,9 +203,7 @@ begin
       begin
         s:=GetCustomFpmakeCommandlineOptionValue('LLVM');
         if (s='1') or (s='Y') then
-          llvm:=true
-        else
-          llvm:=false;
+          llvm:=true;
       end;
     { Only try to build natively }
     { or for cross-compile if the resulting executable
