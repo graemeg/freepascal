@@ -68,6 +68,25 @@ implementation
 
 
   procedure TLLVMMachineCodePlaygroundAssembler.WriteImports;
+
+      procedure WriteImportDll(proc: tprocdef);
+        var
+          list : TAsmList;
+        begin
+          list:=TAsmList.Create;
+          thlcgwasm(hlcg).g_procdef(list,proc);
+          WriteTree(list);
+          list.free;
+          writer.AsmWrite(#9'.import_module'#9);
+          writer.AsmWrite(proc.mangledname);
+          writer.AsmWrite(', ');
+          writer.AsmWriteLn(proc.import_dll^);
+          writer.AsmWrite(#9'.import_name'#9);
+          writer.AsmWrite(proc.mangledname);
+          writer.AsmWrite(', ');
+          writer.AsmWriteLn(proc.import_name^);
+        end;
+
     var
       i    : integer;
       def  : tdef;
@@ -82,22 +101,8 @@ implementation
           if assigned(def) and (def.typ=procdef) then
             begin
               proc := tprocdef(def);
-              if (po_external in proc.procoptions) and assigned(proc.import_dll) then
-                begin
-                  //WriteProcDef(proc);
-                  list:=TAsmList.Create;
-                  thlcgwasm(hlcg).g_procdef(list,proc);
-                  WriteTree(list);
-                  list.free;
-                  writer.AsmWrite(#9'.import_module'#9);
-                  writer.AsmWrite(proc.mangledname);
-                  writer.AsmWrite(', ');
-                  writer.AsmWriteLn(proc.import_dll^);
-                  writer.AsmWrite(#9'.import_name'#9);
-                  writer.AsmWrite(proc.mangledname);
-                  writer.AsmWrite(', ');
-                  writer.AsmWriteLn(proc.import_name^);
-                end;
+              if (po_external in proc.procoptions) and (po_has_importdll in proc.procoptions) then
+                WriteImportDll(proc);
             end;
          end;
       list:=TAsmList.Create;
@@ -117,7 +122,9 @@ implementation
               if assigned(def) and (tdef(def).typ = procdef) then
                 begin
                   proc := tprocdef(def);
-                  if (not proc.owner.iscurrentunit or (po_external in proc.procoptions)) and
+                  if (po_external in proc.procoptions) and (po_has_importdll in proc.procoptions) then
+                    WriteImportDll(proc)
+                  else if (not proc.owner.iscurrentunit or (po_external in proc.procoptions)) and
                      ((proc.paras.Count=0) or (proc.has_paraloc_info in [callerside,callbothsides])) then
                     thlcgwasm(hlcg).g_procdef(list,proc);
                 end;
