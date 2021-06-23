@@ -227,7 +227,8 @@ Begin
                           __WASI_RIGHTS_FD_SEEK or
                           __WASI_RIGHTS_FD_TELL or
                           __WASI_RIGHTS_FD_FDSTAT_SET_FLAGS or
-                          __WASI_RIGHTS_FD_ADVISE;
+                          __WASI_RIGHTS_FD_ADVISE or
+                          __WASI_RIGHTS_POLL_FD_READWRITE;
          FileRec(f).mode:=fminput;
        end;
    1 : begin
@@ -237,6 +238,7 @@ Begin
                           __WASI_RIGHTS_FD_TELL or
                           __WASI_RIGHTS_FD_FDSTAT_SET_FLAGS or
                           __WASI_RIGHTS_FD_ADVISE or
+                          __WASI_RIGHTS_POLL_FD_READWRITE or
                           __WASI_RIGHTS_FD_FILESTAT_SET_SIZE or
                           __WASI_RIGHTS_FD_FILESTAT_SET_TIMES or
                           __WASI_RIGHTS_FD_ALLOCATE or
@@ -252,6 +254,7 @@ Begin
                           __WASI_RIGHTS_FD_TELL or
                           __WASI_RIGHTS_FD_FDSTAT_SET_FLAGS or
                           __WASI_RIGHTS_FD_ADVISE or
+                          __WASI_RIGHTS_POLL_FD_READWRITE or
                           __WASI_RIGHTS_FD_FILESTAT_SET_SIZE or
                           __WASI_RIGHTS_FD_FILESTAT_SET_TIMES or
                           __WASI_RIGHTS_FD_ALLOCATE or
