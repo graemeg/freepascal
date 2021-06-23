@@ -226,11 +226,11 @@ Begin
          FileRec(f).mode:=fminput;
        end;
    1 : begin
-         fs_rights_base :=__WASI_RIGHTS_FD_WRITE or __WASI_RIGHTS_FD_FILESTAT_GET or __WASI_RIGHTS_FD_SEEK or __WASI_RIGHTS_FD_TELL;
+         fs_rights_base :=__WASI_RIGHTS_FD_WRITE or __WASI_RIGHTS_FD_FILESTAT_GET or __WASI_RIGHTS_FD_SEEK or __WASI_RIGHTS_FD_TELL or __WASI_RIGHTS_FD_FILESTAT_SET_SIZE or __WASI_RIGHTS_FD_FILESTAT_SET_TIMES;
          FileRec(f).mode:=fmoutput;
        end;
    2 : begin
-         fs_rights_base :=__WASI_RIGHTS_FD_READ or __WASI_RIGHTS_FD_WRITE or __WASI_RIGHTS_FD_FILESTAT_GET or __WASI_RIGHTS_FD_SEEK or __WASI_RIGHTS_FD_TELL;
+         fs_rights_base :=__WASI_RIGHTS_FD_READ or __WASI_RIGHTS_FD_WRITE or __WASI_RIGHTS_FD_FILESTAT_GET or __WASI_RIGHTS_FD_SEEK or __WASI_RIGHTS_FD_TELL or __WASI_RIGHTS_FD_FILESTAT_SET_SIZE or __WASI_RIGHTS_FD_FILESTAT_SET_TIMES;
          FileRec(f).mode:=fminout;
        end;
   end;
