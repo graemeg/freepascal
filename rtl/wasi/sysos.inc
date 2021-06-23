@@ -58,8 +58,19 @@ end;
 
 function Do_IsDevice(Handle:THandle):boolean;
 var
+  res: __wasi_errno_t;
   ourfdstat: __wasi_fdstat_t;
 begin
-  __wasi_fd_fdstat_get(Handle,@ourfdstat);
-  Do_IsDevice:=ourfdstat.fs_filetype in [__WASI_FILETYPE_BLOCK_DEVICE,__WASI_FILETYPE_CHARACTER_DEVICE];
+  res:=__wasi_fd_fdstat_get(Handle,@ourfdstat);
+  if res=__WASI_ERRNO_SUCCESS then
+    begin
+      if ourfdstat.fs_filetype=__WASI_FILETYPE_UNKNOWN then
+        { wasmtime 0.24.0 and later versions return __WASI_FILETYPE_UNKNOWN for stdin/stdout/stderr }
+        Do_IsDevice:=Handle<=2
+      else
+        Do_IsDevice:=ourfdstat.fs_filetype in [__WASI_FILETYPE_BLOCK_DEVICE,__WASI_FILETYPE_CHARACTER_DEVICE]
+    end
+  else
+    { in case of error (e.g. access denied), assume device for stdin/stdout/stderr }
+    Do_IsDevice:=Handle<=2;
 end;
