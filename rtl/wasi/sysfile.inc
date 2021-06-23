@@ -235,7 +235,9 @@ Begin
                           __WASI_RIGHTS_FD_TELL or
                           __WASI_RIGHTS_FD_FILESTAT_SET_SIZE or
                           __WASI_RIGHTS_FD_FILESTAT_SET_TIMES or
-                          __WASI_RIGHTS_FD_ALLOCATE;
+                          __WASI_RIGHTS_FD_ALLOCATE or
+                          __WASI_RIGHTS_FD_DATASYNC or
+                          __WASI_RIGHTS_FD_SYNC;
          FileRec(f).mode:=fmoutput;
        end;
    2 : begin
@@ -246,7 +248,9 @@ Begin
                           __WASI_RIGHTS_FD_TELL or
                           __WASI_RIGHTS_FD_FILESTAT_SET_SIZE or
                           __WASI_RIGHTS_FD_FILESTAT_SET_TIMES or
-                          __WASI_RIGHTS_FD_ALLOCATE;
+                          __WASI_RIGHTS_FD_ALLOCATE or
+                          __WASI_RIGHTS_FD_DATASYNC or
+                          __WASI_RIGHTS_FD_SYNC;
          FileRec(f).mode:=fminout;
        end;
   end;
