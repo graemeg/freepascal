@@ -123,13 +123,33 @@ begin
 end;
 
 procedure Do_Seek(Handle:thandle;Pos:Int64);
+var
+  res: __wasi_errno_t;
+  newoffset: __wasi_filesize_t;
 begin
-  DebugWriteLn('Do_Seek');
+  res:=__wasi_fd_seek(Handle,Pos,__WASI_WHENCE_SET,@newoffset);
+  if res=__WASI_ERRNO_SUCCESS then
+    InOutRes:=0
+  else
+    InOutRes:=Errno2InoutRes(res);
 end;
 
 function Do_Seekend(Handle:thandle):Int64;
+var
+  res: __wasi_errno_t;
+  newoffset: __wasi_filesize_t;
 begin
-  DebugWriteLn('Do_Seekend');
+  res:=__wasi_fd_seek(Handle,0,__WASI_WHENCE_END,@newoffset);
+  if res=__WASI_ERRNO_SUCCESS then
+  begin
+    InOutRes:=0;
+    Do_Seekend:=newoffset;
+  end
+  else
+  begin
+    InOutRes:=Errno2InoutRes(res);
+    Do_Seekend:=-1;
+  end;
 end;
 
 function Do_FileSize(Handle:thandle):Int64;
