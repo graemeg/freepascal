@@ -164,9 +164,9 @@ Begin
     Inc(Dt.Year);
     leap:=((Dt.Year mod 4)=0) and (((Dt.Year mod 100)<>0) or ((Dt.Year mod 400)=0));
     if leap then
-      days_in_year:=365
+      days_in_year:=366
     else
-      days_in_year:=366;
+      days_in_year:=365;
   end;
   Dt.Month:=1;
   Inc(NanoSecsPast);
