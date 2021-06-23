@@ -100,8 +100,9 @@ end;
 
 function ConvertToFdRelativePath(path: PChar; out fd: LongInt; out relfd_path: PChar): Boolean;
 var
-  drive_nr: longint;
+  drive_nr,I,pdir_drive,longest_match,pdir_length: longint;
   IsAbsolutePath: Boolean;
+  pdir, savepath: PChar;
 begin
   fd:=0;
   relfd_path:=nil;
@@ -115,10 +116,45 @@ begin
     drive_nr:=current_drive;
   if path[0] in ['/','\'] then
   begin
-    { todo: search absolute path in preopened dirs array }
+    { path is absolute. Try to find it in the preopened dirs array }
     InOutRes:=3;
     ConvertToFdRelativePath:=false;
-    exit;
+    longest_match:=0;
+    savepath:=path;
+    for I:=0 to preopened_dirs_count-1 do
+    begin
+      path:=savepath;
+      pdir:=preopened_dirs[I];
+      if HasDriveLetter(pdir) then
+      begin
+        pdir_drive:=Ord(UpCase(pdir[0]))-(Ord('A')-1);
+        Inc(pdir,2);
+      end
+      else
+        pdir_drive:=0;
+      if pdir_drive<>drive_nr then
+        continue;
+      pdir_length:=StrLen(pdir);
+      if pdir_length>StrLen(path) then
+        continue;
+      if CompareByte(path^,pdir^,pdir_length)<>0 then
+        continue;
+      Inc(path,pdir_length);
+      if not (path^ in [#0,'/','\']) then
+        continue;
+      if pdir_length>longest_match then
+      begin
+        longest_match:=pdir_length;
+        while path^ in ['/','\'] do
+          Inc(path);
+        fd:=I+3;
+        FreeMem(relfd_path);
+        relfd_path:=GetMem(StrLen(path)+1);
+        Move(path^,relfd_path^,StrLen(path)+1);
+        InOutRes:=0;
+        ConvertToFdRelativePath:=true;
+      end;
+    end;
   end
   else
   begin
