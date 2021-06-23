@@ -96,7 +96,7 @@ ctypes$(PPUEXT) :  $(INC)/ctypes.pp $(SYSTEMUNIT)$(PPUEXT)
 #
 # TP7 Compatible RTL Units
 #
-dos$(PPUEXT) : dos.pp $(INC)/filerec.inc $(INC)/textrec.inc system$(PPUEXT)
+dos$(PPUEXT) : dos.pp $(INC)/filerec.inc $(INC)/textrec.inc wasiapi$(PPUEXT) system$(PPUEXT)
         $(COMPILER) $<
 
 #

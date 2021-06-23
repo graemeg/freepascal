@@ -46,7 +46,7 @@ Type
 
 {Extra Utils}
 //function weekday(y,m,d : longint) : longint; platform;
-//Procedure UnixDateToDt(SecsPast: LongInt; Var Dt: DateTime); platform;
+Procedure WasiDateToDt(NanoSecsPast: UInt64; Var Dt: DateTime); platform;
 //Function  DTToUnixDate(DT: DateTime): LongInt; platform;
 
 {Disk}
@@ -54,11 +54,8 @@ Type
 
 Implementation
 
-//Uses
-//  UnixUtil,
-//  Strings,
-//  Unix,
-//  {$ifdef FPC_USE_LIBC}initc{$ELSE}Syscall{$ENDIF};
+Uses
+  WasiAPI;
 
 {$DEFINE HAS_GETMSCOUNT}
 
@@ -140,8 +137,45 @@ begin
 end;
 
 
-Procedure UnixDateToDt(SecsPast: LongInt; Var Dt: DateTime);
+Procedure WasiDateToDt(NanoSecsPast: UInt64; Var Dt: DateTime);
+const
+  days_in_month: array [boolean, 1..12] of Byte =
+    ((31,28,31,30,31,30,31,31,30,31,30,31),
+     (31,29,31,30,31,30,31,31,30,31,30,31));
+var
+  leap: Boolean;
+  days_in_year: LongInt;
 Begin
+  { todo: convert UTC to local time, as soon as we can get the local timezone
+    from WASI: https://github.com/WebAssembly/WASI/issues/239 }
+  NanoSecsPast:=NanoSecsPast div 1000000000;
+  Dt.Sec:=NanoSecsPast mod 60;
+  NanoSecsPast:=NanoSecsPast div 60;
+  Dt.Min:=NanoSecsPast mod 60;
+  NanoSecsPast:=NanoSecsPast div 60;
+  Dt.Hour:=NanoSecsPast mod 24;
+  NanoSecsPast:=NanoSecsPast div 24;
+  Dt.Year:=1970;
+  leap:=false;
+  days_in_year:=365;
+  while NanoSecsPast>=days_in_year do
+  begin
+    Dec(NanoSecsPast,days_in_year);
+    Inc(Dt.Year);
+    leap:=((Dt.Year mod 4)=0) and (((Dt.Year mod 100)<>0) or ((Dt.Year mod 400)=0));
+    if leap then
+      days_in_year:=365
+    else
+      days_in_year:=366;
+  end;
+  Dt.Month:=1;
+  Inc(NanoSecsPast);
+  while NanoSecsPast>days_in_month[leap,Dt.Month] do
+  begin
+    Dec(NanoSecsPast,days_in_month[leap,Dt.Month]);
+    Inc(Dt.Month);
+  end;
+  Dt.Day:=Word(NanoSecsPast);
 End;
 
 
@@ -623,20 +657,20 @@ Begin
 end;
 
 Procedure getftime (var f; var time : longint);
-{Var
-  Info: baseunix.stat;
-  DT: DateTime;}
+Var
+  Info: __wasi_filestat_t;
+  DT: DateTime;
 Begin
-{  doserror:=0;
-  if fpfstat(filerec(f).handle,info)<0 then
+  doserror:=0;
+  if __wasi_fd_filestat_get(filerec(f).handle,@Info)<>__WASI_ERRNO_SUCCESS then
    begin
      Time:=0;
      doserror:=6;
      exit
    end
   else
-   UnixDateToDT(Info.st_mTime,DT);
-  PackTime(DT,Time);}
+   WasiDateToDt(Info.mtim,DT);
+  PackTime(DT,Time);
 End;
 
 Procedure setftime(var f; time : longint);
