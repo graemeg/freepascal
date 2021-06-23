@@ -86,6 +86,7 @@ end;
 
 Procedure Randomize;
 Begin
+  __wasi_random_get(@RandSeed,SizeOf(RandSeed));
 End;
 
 procedure System_exit;
