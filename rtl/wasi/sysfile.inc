@@ -105,8 +105,21 @@ begin
 end;
 
 function Do_FilePos(Handle: thandle):Int64;
+var
+  res: __wasi_errno_t;
+  fpos:__wasi_filesize_t;
 begin
-  DebugWriteLn('Do_FilePos');
+  res:=__wasi_fd_tell(Handle,@fpos);
+  if res=__WASI_ERRNO_SUCCESS then
+  begin
+    InOutRes:=0;
+    Do_FilePos:=fpos;
+  end
+  else
+  begin
+    InOutRes:=Errno2InoutRes(res);
+    Do_FilePos:=-1;
+  end;
 end;
 
 procedure Do_Seek(Handle:thandle;Pos:Int64);
