@@ -51,6 +51,7 @@ const
 var
   argc: longint;
   argv: PPChar;
+  envp: PPChar;
   preopened_dirs_count: longint;
   preopened_dirs: PPChar;
   drives_count: longint;
@@ -79,6 +80,8 @@ var
   argv_size,
   argv_buf_size: __wasi_size_t;
   argv_buf: Pointer;
+  environc,environ_buf_size,envp_size: __wasi_size_t;
+  environ_buf: Pointer;
 
 function GetProcessID: SizeUInt;
 begin
@@ -239,6 +242,27 @@ begin
     Inc(current_drive);
 end;
 
+procedure Setup_Environment;
+begin
+  if envp<>nil then
+    exit;
+  if __wasi_environ_sizes_get(@environc, @environ_buf_size)<>__WASI_ERRNO_SUCCESS then
+  begin
+    envp:=nil;
+    exit;
+  end;
+  envp_size:=(environc+1)*SizeOf(PChar);
+  GetMem(envp, envp_size);
+  GetMem(environ_buf, environ_buf_size);
+  envp[environc]:=nil;
+  if __wasi_environ_get(Pointer(envp), environ_buf)<>__WASI_ERRNO_SUCCESS then
+  begin
+    FreeMem(envp, envp_size);
+    FreeMem(environ_buf, environ_buf_size);
+    envp:=nil;
+  end;
+end;
+
 procedure setup_arguments;
 begin
   if argv<>nil then
@@ -361,5 +385,6 @@ begin
 {$ifdef FPC_HAS_FEATURE_THREADING}
   InitSystemThreads;
 {$endif}
-  Setup_PreopenedDirs
+  Setup_Environment;
+  Setup_PreopenedDirs;
 end.

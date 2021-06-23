@@ -721,54 +721,66 @@ End;
 ******************************************************************************}
 
 Function EnvCount: Longint;
-{var
+var
   envcnt : longint;
-  p      : ppchar;}
+  p      : ppchar;
 Begin
-(*  envcnt:=0;
-  p:=envp;      {defined in syslinux}
-  while (p^<>nil) do
-   begin
-     inc(envcnt);
-     inc(p);
-   end;
-  EnvCount := envcnt*)
+  envcnt:=0;
+  p:=envp;      {defined in system}
+  if p<>nil then
+    while p^<>nil do
+      begin
+        inc(envcnt);
+        inc(p);
+      end;
+  EnvCount := envcnt
 End;
 
 
 Function EnvStr (Index: longint): String;
-{Var
+Var
   i : longint;
-  p : ppchar;}
+  p : ppchar;
 Begin
-(*  if Index <= 0 then
+  if (Index <= 0) or (envp=nil) then
     envstr:=''
   else
     begin
-      p:=envp;      {defined in syslinux}
+      p:=envp;      {defined in system}
       i:=1;
       while (i<Index) and (p^<>nil) do
         begin
           inc(i);
           inc(p);
         end;
-      if p=nil then
+      if p^=nil then
         envstr:=''
       else
         envstr:=strpas(p^)
-    end;*)
+    end;
 end;
 
 
 Function GetEnv(EnvVar: String): String;
-{var
-  p     : pchar;}
+var
+  hp : ppchar;
+  hs : string;
+  eqpos : longint;
 Begin
-{  p:=BaseUnix.fpGetEnv(EnvVar);
-  if p=nil then
-   GetEnv:=''
-  else
-   GetEnv:=StrPas(p);}
+  getenv:='';
+  hp:=envp;
+  if hp<>nil then
+    while assigned(hp^) do
+      begin
+        hs:=strpas(hp^);
+        eqpos:=pos('=',hs);
+        if copy(hs,1,eqpos-1)=envvar then
+          begin
+            getenv:=copy(hs,eqpos+1,length(hs)-eqpos);
+            break;
+          end;
+        inc(hp);
+      end;
 End;
 
 
