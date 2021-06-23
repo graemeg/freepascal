@@ -54,8 +54,25 @@ begin
 end;
 
 procedure Do_Rename(p1,p2:pchar; p1changeable, p2changeable: boolean);
+var
+  fd1,fd2: __wasi_fd_t;
+  pr1,pr2: PChar;
+  res: __wasi_errno_t;
 begin
-  DebugWriteLn('Do_Rename');
+  if not ConvertToFdRelativePath(p1,fd1,pr1) then
+    exit;
+  if not ConvertToFdRelativePath(p2,fd2,pr2) then
+  begin
+    FreeMem(pr1);
+    exit;
+  end;
+  res:=__wasi_path_rename(fd1,pr1,StrLen(pr1),fd2,pr2,StrLen(pr2));
+  if res=__WASI_ERRNO_SUCCESS then
+    InOutRes:=0
+  else
+    InOutRes:=Errno2InoutRes(res);
+  FreeMem(pr1);
+  FreeMem(pr2);
 end;
 
 function Do_Write(Handle:thandle;Addr:Pointer;Len:Longint):longint;
