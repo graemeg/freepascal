@@ -658,14 +658,22 @@ end;
 
 Procedure getftime (var f; var time : longint);
 Var
+  res: __wasi_errno_t;
   Info: __wasi_filestat_t;
   DT: DateTime;
 Begin
   doserror:=0;
-  if __wasi_fd_filestat_get(filerec(f).handle,@Info)<>__WASI_ERRNO_SUCCESS then
+  res:=__wasi_fd_filestat_get(filerec(f).handle,@Info);
+  if res<>__WASI_ERRNO_SUCCESS then
    begin
      Time:=0;
-     doserror:=6;
+     case res of
+       __WASI_ERRNO_ACCES,
+       __WASI_ERRNO_NOTCAPABLE:
+         doserror:=5;
+       else
+         doserror:=6;
+     end;
      exit
    end
   else
