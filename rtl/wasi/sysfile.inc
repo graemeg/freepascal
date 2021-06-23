@@ -225,7 +225,8 @@ Begin
          fs_rights_base :=__WASI_RIGHTS_FD_READ or
                           __WASI_RIGHTS_FD_FILESTAT_GET or
                           __WASI_RIGHTS_FD_SEEK or
-                          __WASI_RIGHTS_FD_TELL;
+                          __WASI_RIGHTS_FD_TELL or
+                          __WASI_RIGHTS_FD_FDSTAT_SET_FLAGS;
          FileRec(f).mode:=fminput;
        end;
    1 : begin
@@ -233,6 +234,7 @@ Begin
                           __WASI_RIGHTS_FD_FILESTAT_GET or
                           __WASI_RIGHTS_FD_SEEK or
                           __WASI_RIGHTS_FD_TELL or
+                          __WASI_RIGHTS_FD_FDSTAT_SET_FLAGS or
                           __WASI_RIGHTS_FD_FILESTAT_SET_SIZE or
                           __WASI_RIGHTS_FD_FILESTAT_SET_TIMES or
                           __WASI_RIGHTS_FD_ALLOCATE or
@@ -246,6 +248,7 @@ Begin
                           __WASI_RIGHTS_FD_FILESTAT_GET or
                           __WASI_RIGHTS_FD_SEEK or
                           __WASI_RIGHTS_FD_TELL or
+                          __WASI_RIGHTS_FD_FDSTAT_SET_FLAGS or
                           __WASI_RIGHTS_FD_FILESTAT_SET_SIZE or
                           __WASI_RIGHTS_FD_FILESTAT_SET_TIMES or
                           __WASI_RIGHTS_FD_ALLOCATE or
