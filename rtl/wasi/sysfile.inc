@@ -222,15 +222,15 @@ Begin
 { We do the conversion of filemodes here, concentrated on 1 place }
   case (flags and 3) of
    0 : begin
-         fs_rights_base :=__WASI_RIGHTS_FD_READ;
+         fs_rights_base :=__WASI_RIGHTS_FD_READ or __WASI_RIGHTS_FD_FILESTAT_GET;
          FileRec(f).mode:=fminput;
        end;
    1 : begin
-         fs_rights_base :=__WASI_RIGHTS_FD_WRITE;
+         fs_rights_base :=__WASI_RIGHTS_FD_WRITE or __WASI_RIGHTS_FD_FILESTAT_GET;
          FileRec(f).mode:=fmoutput;
        end;
    2 : begin
-         fs_rights_base :=__WASI_RIGHTS_FD_READ or __WASI_RIGHTS_FD_WRITE;
+         fs_rights_base :=__WASI_RIGHTS_FD_READ or __WASI_RIGHTS_FD_WRITE or __WASI_RIGHTS_FD_FILESTAT_GET;
          FileRec(f).mode:=fminout;
        end;
   end;
