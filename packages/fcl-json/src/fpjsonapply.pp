@@ -244,10 +244,6 @@ procedure TJSONApplier.Execute;
     if aPath='' then
       exit;
     D:=Result.FindPath(aPath);
-    if Assigned(D) then
-      Writeln('Have : ',D.ClassName)
-    else
-      Writeln('No D');
     if (D=Nil) or Not (D is TJSONObject) then
       Raise EJSON.CreateFmt(SErrPathNotFound,[aPath,aDesc]);
     Result:=D as TJSONObject;
