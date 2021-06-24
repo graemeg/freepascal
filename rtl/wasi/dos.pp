@@ -24,7 +24,7 @@ Type
 {$endif FPC_REQUIRES_PROPER_ALIGNMENT}
     Record
   {Fill : array[1..21] of byte;  Fill replaced with below}
-//    SearchPos  : TOff;        {directory position}
+    SearchPos  : UInt64;      {directory position}
     SearchNum  : LongInt;     {to track which search this is}
     DirPtr     : Pointer;     {directory pointer for reading directory}
     SearchType : Byte;        {0=normal, 1=open will close, 2=only 1 file}
@@ -69,15 +69,15 @@ Uses
                            --- Link C Lib if set ---
 ******************************************************************************}
 
-{type
+type
   RtlInfoType = Record
-    FMode,
-    FInode,
+    FMode: LongInt;
+    {FInode,
     FUid,
-    FGid,
-    FSize,
-    FMTime : LongInt;
-  End;}
+    FGid,}
+    FSize: __wasi_filesize_t;
+    FMTime: __wasi_timestamp_t;
+  End;
 
 
 {******************************************************************************
@@ -405,22 +405,32 @@ End;
 
 
 Function FindGetFileInfo(const s:string;var f:SearchRec):boolean;
-{var
+var
+  s_ansi: ansistring;
   DT   : DateTime;
   Info : RtlInfoType;
-  st   : baseunix.stat;}
+  st   : __wasi_filestat_t;
+  fd   : __wasi_fd_t;
+  pr   : PChar;
 begin
-{  FindGetFileInfo:=false;
-  if not fpstat(s,st)>=0 then
-   exit;
-  info.FSize:=st.st_Size;
-  info.FMTime:=st.st_mtime;
-  if (st.st_mode and STAT_IFMT)=STAT_IFDIR then
+  FindGetFileInfo:=false;
+  s_ansi:=s;
+  if not ConvertToFdRelativePath(PChar(s_ansi),fd,pr) then
+    exit;
+  { todo: __WASI_LOOKUPFLAGS_SYMLINK_FOLLOW??? }
+  if __wasi_path_filestat_get(fd,0,pr,StrLen(pr),@st)<>__WASI_ERRNO_SUCCESS then
+    begin
+      FreeMem(pr);
+      exit;
+    end;
+  info.FSize:=st.size;
+  info.FMTime:=st.mtim;
+  if st.filetype=__WASI_FILETYPE_DIRECTORY then
    info.fmode:=$10
   else
    info.fmode:=$0;
-  if (st.st_mode and STAT_IWUSR)=0 then
-   info.fmode:=info.fmode or 1;
+  {if (st.st_mode and STAT_IWUSR)=0 then
+   info.fmode:=info.fmode or 1;}
   if s[f.NamePos+1]='.' then
    info.fmode:=info.fmode or $2;
 
@@ -429,11 +439,12 @@ begin
      f.Name:=Copy(s,f.NamePos+1,255);
      f.Attr:=Info.FMode;
      f.Size:=Info.FSize;
-     f.mode:=st.st_mode;
-     UnixDateToDT(Info.FMTime, DT);
+     {f.mode:=st.st_mode;}
+     WasiDateToDT(Info.FMTime, DT);
      PackTime(DT,f.Time);
      FindGetFileInfo:=true;
-   End;}
+   End;
+  FreeMem(pr);
 end;
 
 
@@ -561,7 +572,7 @@ Procedure FindFirst(Const Path: PathStr; Attr: Word; Var f: SearchRec);
   opens dir and calls FindWorkProc
 }
 Begin
-(*  fillchar(f,sizeof(f),0);
+  fillchar(f,sizeof(f),0);
   if Path='' then
    begin
      DosError:=3;
@@ -573,7 +584,7 @@ Begin
   f.SearchAttr := Attr or archive or readonly;
   f.SearchPos  := 0;
   f.NamePos := Length(f.SearchSpec);
-  while (f.NamePos>0) and (f.SearchSpec[f.NamePos]<>'/') do
+  while (f.NamePos>0) and (f.SearchSpec[f.NamePos] in ['/','\']) do
    dec(f.NamePos);
 {Wildcards?}
   if (Pos('?',Path)=0)  and (Pos('*',Path)=0) then
@@ -599,7 +610,7 @@ Begin
      f.SearchNum:=CurrSearchNum;
      f.SearchType:=0;
      FindNext(f);
-   end;*)
+   end;
 End;
 
 
