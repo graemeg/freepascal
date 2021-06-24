@@ -1173,6 +1173,9 @@ endif
 ifeq ($(OS_TARGET),zxspectrum)
 OEXT=.rel
 endif
+ifeq ($(OS_TARGET),wasi)
+EXEEXT=.wasm
+endif
 ifneq ($(findstring $(OS_SOURCE),$(LIMIT83fs)),)
 FPCMADE=fpcmade.$(SHORTSUFFIX)
 ZIPSUFFIX=$(SHORTSUFFIX)
