@@ -618,7 +618,9 @@ begin
       DllPrefix:='';
     end
   else if LTarget='wii' then
-    ExeExt:='.dol';
+    ExeExt:='.dol'
+  else if LTarget='wasi' then
+    ExeExt:='.wasm';
 end;
 
 {$ifndef LIMIT83FS}
