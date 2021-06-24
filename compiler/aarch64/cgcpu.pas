@@ -34,6 +34,9 @@ interface
        rgcpu;
 
     type
+
+      { tcgaarch64 }
+
       tcgaarch64=class(tcg)
        protected
         { changes register size without adding register allocation info }
@@ -92,6 +95,7 @@ interface
         procedure g_flags2reg(list: TAsmList; size: tcgsize; const f:tresflags; reg: tregister);override;
         procedure g_overflowcheck(list: TAsmList; const loc: tlocation; def: tdef);override;
         procedure g_overflowcheck_loc(list: TAsmList; const loc: tlocation; def: tdef; ovloc: tlocation);override;
+        procedure g_stackpointer_alloc(list: TAsmList; localsize: longint);override;
         procedure g_proc_entry(list: TAsmList; localsize: longint; nostackframe: boolean);override;
         procedure g_proc_exit(list: TAsmList; parasize: longint; nostackframe: boolean);override;
         procedure g_maybe_got_init(list: TAsmList); override;
@@ -120,6 +124,7 @@ interface
         C_LT,C_GE,C_LE,C_NE,C_LS,C_CC,C_CS,C_HI
       );
 
+      winstackpagesize = 4096;
 
 implementation
 
@@ -1809,6 +1814,55 @@ implementation
       end;
 
 
+    procedure tcgaarch64.g_stackpointer_alloc(list : TAsmList;localsize : longint);
+      var
+        href : treference;
+        i : integer;
+        again : tasmlabel;
+      begin
+        if localsize>0 then
+         begin
+           { windows guards only a few pages for stack growing,
+             so we have to access every page first              }
+           if (target_info.system=system_aarch64_win64) and
+              (localsize>=winstackpagesize) then
+             begin
+               if localsize div winstackpagesize<=4 then
+                 begin
+                   handle_reg_imm12_reg(list,A_SUB,OS_ADDR,NR_SP,localsize,NR_SP,NR_IP0,false,true);
+                   for i:=1 to localsize div winstackpagesize do
+                     begin
+                       reference_reset_base(href,NR_SP,localsize-i*winstackpagesize+4,ctempposinvalid,4,[]);
+                       list.concat(Taicpu.op_reg_ref(A_STR,NR_WZR,href));
+                     end;
+                   reference_reset_base(href,NR_SP,0,ctempposinvalid,4,[]);
+                   list.concat(Taicpu.op_reg_ref(A_STR,NR_WZR,href));
+                 end
+               else
+                 begin
+                    current_asmdata.getjumplabel(again);
+                    getcpuregister(list,NR_IP0);
+                    a_load_const_reg(list,OS_ADDR,localsize div winstackpagesize,NR_IP0);
+                    a_label(list,again);
+                    handle_reg_imm12_reg(list,A_SUB,OS_ADDR,NR_SP,winstackpagesize,NR_SP,NR_IP1,false,true);
+                    reference_reset_base(href,NR_SP,0,ctempposinvalid,4,[]);
+                    list.concat(Taicpu.op_reg_ref(A_STR,NR_WZR,href));
+                    list.concat(setoppostfix(Taicpu.op_reg_reg_const(A_SUB,NR_IP0,NR_IP0,1),PF_S));
+                    a_jmp_cond(list,OC_NE,again);
+                    handle_reg_imm12_reg(list,A_SUB,OS_ADDR,NR_SP,localsize mod winstackpagesize,NR_SP,NR_IP1,false,true);
+                    ungetcpuregister(list,NR_IP0);
+                 end
+             end
+           else
+             begin
+               handle_reg_imm12_reg(list,A_SUB,OS_ADDR,NR_SP,localsize,NR_SP,NR_IP0,false,true);
+               if target_info.system=system_aarch64_win64 then
+                 list.concat(cai_seh_directive.create_offset(ash_stackalloc,localsize));
+             end;
+         end;
+      end;
+
+
     procedure tcgaarch64.g_proc_entry(list: TAsmList; localsize: longint; nostackframe: boolean);
       var
         hitem: tlinkedlistitem;
@@ -1870,9 +1924,7 @@ implementation
               begin
                 localsize:=align(localsize,16);
                 current_procinfo.final_localsize:=localsize;
-                handle_reg_imm12_reg(list,A_SUB,OS_ADDR,NR_SP,localsize,NR_SP,NR_IP0,false,true);
-                if target_info.system=system_aarch64_win64 then
-                  list.concat(cai_seh_directive.create_offset(ash_stackalloc,localsize));
+                g_stackpointer_alloc(list,localsize);
               end;
             { By default, we use the frame pointer to access parameters passed via
               the stack and the stack pointer to address local variables and temps
