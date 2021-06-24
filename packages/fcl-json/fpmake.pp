@@ -83,12 +83,19 @@ begin
       begin
       AddUnit('fpjson');
       AddUnit('jsonparser');
-     end;
+      end;
     T:=P.Targets.AddUnit('json2yaml.pp');
     with T.Dependencies do
       begin
       AddUnit('fpjson');
-     end;
+      end;
+    T:=P.Targets.AddUnit('fpjsonapply.pp');
+    with T.Dependencies do
+      begin
+      AddUnit('fpjson');
+      end;
+    T.ResourceStrings:=true;
+
 
     P.ExamplePath.Add('examples');
     T:=P.Targets.AddExampleProgram('confdemo.pp');
