@@ -195,6 +195,7 @@ var
   KeyUp: Boolean;        // Event is a key up event
   Buff: array[0..19] of Char;
   ie: TInputEvent;       // for mapchar
+  IAddr: Pointer;
 begin
   KeyCode := 0;
   SysPollKeyEvent := 0;
@@ -223,6 +224,7 @@ begin
       IClass := iMsg^.iClass;
       MouseX := iMsg^.MouseX;
       MouseY := iMsg^.MouseY;
+      IAddr := iMsg^.IAddress;
       ReplyMsg(PMessage(iMsg)); // fast reply to system
       SetShiftState(IQual); // set Shift state qualifiers. do this for all messages we get.
       // main event case
@@ -339,6 +341,7 @@ begin
           ie.ie_Code := ICode;
           ie.ie_Qualifier := IQual;
           ie.ie_NextEvent := nil;
+          ie.ie_position.ie_addr := IAddr;
           Buff[0] := #0;
           Ret := MapRawKey(@ie, @Buff[0], 1, nil);
           KeyCode := Ord(Buff[0]);
@@ -370,6 +373,7 @@ begin
               ie.ie_Code := ICode;
               ie.ie_Qualifier := 0;
               ie.ie_NextEvent := nil;
+              ie.ie_position.ie_addr := IAddr;
               Buff[0] := #0;
               Ret := MapRawKey(@ie, @Buff[0], 1, nil);
               if Ret > 0 then
