@@ -1641,322 +1641,322 @@ endif
 override INSTALL_BUILDUNIT=buildrtl
 override INSTALL_FPCPACKAGE=y
 ifeq ($(FULL_TARGET),i386-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-go32v2)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-win32)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-os2)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-freebsd)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-beos)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-haiku)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-netbsd)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-solaris)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-netware)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-openbsd)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-wdosx)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-darwin)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-emx)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-watcom)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-netwlibc)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-wince)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-symbian)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-nativent)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-iphonesim)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-android)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-aros)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),m68k-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),m68k-netbsd)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),m68k-amiga)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),m68k-atari)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),m68k-palmos)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),m68k-macosclassic)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),m68k-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),m68k-sinclairql)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc-netbsd)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc-amiga)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc-macosclassic)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc-darwin)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc-morphos)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc-wii)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc-aix)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),sparc-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),sparc-netbsd)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),sparc-solaris)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),sparc-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-freebsd)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-haiku)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-netbsd)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-solaris)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-openbsd)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-darwin)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-win64)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-iphonesim)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-android)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-aros)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),x86_64-dragonfly)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-netbsd)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-palmos)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-wince)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-gba)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-nds)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-symbian)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-android)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-aros)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-freertos)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),arm-ios)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc64-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc64-darwin)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc64-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),powerpc64-aix)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),avr-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),armeb-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),armeb-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),mips-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),mipsel-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),mipsel-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),mipsel-android)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),mips64el-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),jvm-java)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),jvm-android)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i8086-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i8086-msdos)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i8086-win16)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),aarch64-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),aarch64-freebsd)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),aarch64-darwin)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),aarch64-win64)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),aarch64-android)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),aarch64-ios)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),wasm32-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),wasm32-wasi)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),sparc64-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),riscv32-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),riscv32-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),riscv64-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),riscv64-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),xtensa-linux)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),xtensa-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),xtensa-freertos)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),z80-embedded)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),z80-zxspectrum)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),z80-msxdos)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),z80-amstradcpc)
-override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC)
+override COMPILER_INCLUDEDIR+=$(INC) $(PROCINC) $(ARCH)
 endif
 ifeq ($(FULL_TARGET),i386-linux)
 override COMPILER_SOURCEDIR+=$(INC) $(PROCINC) $(COMMON) $(WINDIR)

@@ -50,7 +50,7 @@ fpcdir=../..
 target=win64
 
 [compiler]
-includedir=$(INC) $(PROCINC)
+includedir=$(INC) $(PROCINC) $(ARCH)
 sourcedir=$(INC) $(PROCINC) $(COMMON) $(WINDIR)
 
 

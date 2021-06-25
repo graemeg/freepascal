@@ -50,10 +50,6 @@ var
 
 implementation
 
-{$ifdef CPUX86_64}
-{$asmmode att}
-{$endif CPUX86_64}
-
 var
 {$ifdef VER3_0}
   SysInstance : qword;
@@ -65,41 +61,15 @@ var
 {$define FPC_SYSTEM_HAS_OSSETUPENTRYINFORMATION}
 procedure OsSetupEntryInformation(constref info: TEntryInformation); forward;
 
-{$ifdef FPC_USE_WIN64_SEH}
-function main_wrapper(arg: Pointer; proc: Pointer): ptrint; assembler; nostackframe;
-asm
-    subq   $40, %rsp
-.seh_stackalloc 40
-.seh_endprologue
-    call   %rdx             { "arg" is passed in %rcx }
-    nop                     { this nop is critical for exception handling }
-    addq   $40, %rsp
-.seh_handler __FPC_default_handler,@except,@unwind
-end;
-{$endif FPC_USE_WIN64_SEH}
-{$ifdef CPUAARCH64)}
-function main_wrapper(arg: Pointer; proc: Pointer): ptrint; assembler; nostackframe;
-asm
-    stp fp,lr,[sp, #-16]!
-.seh_savefplr_x -16
-.seh_endprologue
-    blr x1                  // { "arg" is passed in x0 }
-    nop                     // { this nop is critical for exception handling }
-    ldp	fp,lr,[sp], #16
-.seh_handler __FPC_default_handler,@except,@unwind
-end;
-{$endif}
+procedure SetupEntryInformation(constref info: TEntryInformation);forward;
 
-{$if defined(CPUX86_64)}
 {$define FPC_SYSTEM_HAS_STACKTOP}
-function StackTop: pointer; assembler;nostackframe;
-asm
-   movq  %gs:(8),%rax
-end;
-{$endif}
+function main_wrapper(arg: Pointer; proc: Pointer): ptrint; forward;
 
 { include system independent routines }
 {$I system.inc}
+
+{$I cpuwin.inc}
 
 {*****************************************************************************
                          System Dependent Exit code
@@ -152,80 +122,6 @@ begin
   ExitProcess(exitcode);
 end;
 
-var
-  { old compilers emitted a reference to _fltused if a module contains
-    floating type code so the linker could leave away floating point
-    libraries or not. VC does this as well so we need to define this
-    symbol as well (FK)
-  }
-  _fltused : int64;cvar;public;
-  { value of the stack segment
-    to check if the call stack can be written on exceptions }
-  _SS : Cardinal;
-
-
-{$ifdef VER3_0}
-procedure Exe_entry;[public,alias:'_FPC_EXE_Entry'];
-{$else VER3_0}
-procedure Exe_entry(constref info: TEntryInformation);[public,alias:'_FPC_EXE_Entry'];
-{$endif VER3_0}
-  begin
-{$ifndef VER3_0}
-     SetupEntryInformation(info);
-{$endif VER3_0}
-     IsLibrary:=false;
-     { install the handlers for exe only ?
-       or should we install them for DLL also ? (PM) }
-{$ifndef SYSTEM_USE_WIN_SEH}
-     install_exception_handlers;
-{$endif SYSTEM_USE_WIN_SEH}
-     ExitCode:=0;
-{$if defined(CPUX86_64)}
-     asm
-        xorq %rax,%rax
-        movw %ss,%ax
-        movl %eax,_SS(%rip)
-        movq %rbp,%rsi
-        xorq %rbp,%rbp
-{$ifdef VER3_0}
-{$ifdef FPC_USE_WIN64_SEH}
-        xor  %rcx,%rcx
-        lea  PASCALMAIN(%rip),%rdx
-        call main_wrapper
-{$else FPC_USE_WIN64_SEH}
-        call PASCALMAIN
-{$endif FPC_USE_WIN64_SEH}
-{$else VER3_0}
-{$ifdef FPC_USE_WIN64_SEH}
-        xor  %rcx,%rcx
-        lea  EntryInformation(%rip),%rdx
-        movq TEntryInformation.PascalMain(%rdx),%rdx
-        call main_wrapper
-{$else FPC_USE_WIN64_SEH}
-        lea  EntryInformation(%rip),%rdx
-        call TEntryInformation.PascalMain(%rdx)
-{$endif FPC_USE_WIN64_SEH}
-{$endif VER3_0}
-        movq %rsi,%rbp
-     end ['RSI','RBP'];     { <-- specifying RSI allows compiler to save/restore it properly }
-{$elseif defined(CPUAARCH64)}
-     asm
-        mov x0,#0
-        adrp x1,EntryInformation@PAGE
-        add x1,x1,EntryInformation@PAGEOFF
-        ldr x1,[x1,TEntryInformation.PascalMain]
-        adrp x8,main_wrapper@PAGE
-        add x8,x8,main_wrapper@PAGEOFF
-        blr x8
-     end ['X8'];
-{$else}
-     info.PascalMain();
-{$endif}
-     { if we pass here there was no error ! }
-     system_exit;
-  end;
-
-
 {$ifdef VER3_0}
 procedure _FPC_DLLMainCRTStartup(_hinstance : qword;_dllreason : dword;_dllparam:Pointer);stdcall;public name '_DLLMainCRTStartup';
 begin
@@ -247,52 +143,10 @@ begin
 end;
 {$endif VER3_0}
 
-{$ifdef CPUX86_64}
-function is_prefetch(p : pointer) : boolean;
-  var
-    a : array[0..15] of byte;
-    doagain : boolean;
-    instrlo,instrhi,opcode : byte;
-    i : longint;
-  begin
-    result:=false;
-    { read memory savely without causing another exeception }
-    if not(ReadProcessMemory(GetCurrentProcess,p,@a,sizeof(a),nil)) then
-      exit;
-    i:=0;
-    doagain:=true;
-    while doagain and (i<15) do
-      begin
-        opcode:=a[i];
-        instrlo:=opcode and $f;
-        instrhi:=opcode and $f0;
-        case instrhi of
-          { prefix? }
-          $20,$30:
-            doagain:=(instrlo and 7)=6;
-          $60:
-            doagain:=(instrlo and $c)=4;
-          $f0:
-            doagain:=instrlo in [0,2,3];
-          $0:
-            begin
-              result:=(instrlo=$f) and (a[i+1] in [$d,$18]);
-              exit;
-            end;
-          else
-            doagain:=false;
-        end;
-        inc(i);
-      end;
-  end;
-{$endif}
-
-
 //
 // Hardware exception handling
 //
 {$I seh64.inc}
-
 
 type
   TVectoredExceptionHandler = function (excep : PExceptionPointers) : Longint;
