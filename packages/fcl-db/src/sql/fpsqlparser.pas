@@ -2241,6 +2241,9 @@ end;
 
 function TSQLParser.CreateLiteral(AParent : TSQLElement) : TSQLLiteral;
 
+var
+  SQLFS: TFormatSettings;
+
 begin
   Result:=Nil;
   Case CurrentToken of
@@ -2257,7 +2260,9 @@ begin
     tsqlFloatNumber:
       begin
       Result:=TSQLLiteral(CreateElement(TSQLFloatLiteral,AParent));
-      TSQLFloatLiteral(Result).Value:=StrToFloat(CurrentTokenString);
+      SQLFS:=DefaultFormatSettings;
+      SQLFS.DecimalSeparator:='.';
+      TSQLFloatLiteral(Result).Value:=StrToFloat(CurrentTokenString,SQLFS);
       end;
     tsqlNull :
       Result:=TSQLLiteral(CreateElement(TSQLNullLiteral,AParent));
