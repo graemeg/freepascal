@@ -341,7 +341,7 @@ begin
           ie.ie_Code := ICode;
           ie.ie_Qualifier := IQual;
           ie.ie_NextEvent := nil;
-          ie.ie_position.ie_addr := IAddr;
+          ie.ie_position.ie_addr := PPointer(IAddr)^;
           Buff[0] := #0;
           Ret := MapRawKey(@ie, @Buff[0], 1, nil);
           KeyCode := Ord(Buff[0]);
