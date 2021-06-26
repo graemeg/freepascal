@@ -179,7 +179,7 @@ Type
       WhiteSmoke         = TColor($F5F5F5);
       Yellow             = TColor($FFFF00);
       YellowGreen        = TColor($9ACD32);
-      // extended colosr (from lazarus Graphics)
+      // extended colors (from lazarus Graphics)
       MoneyGreen         = TColor($C0DCC0);
       Cream              = TColor($F0FBFF);
       MedGray            = TColor($A4A0A0);
