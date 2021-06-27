@@ -8418,7 +8418,9 @@ unit aoptx86;
               (
                 (
                   (taicpu(hp1).oper[0]^.ref^.base = taicpu(p).oper[1]^.reg) and
-                  (taicpu(hp1).oper[0]^.ref^.index = NR_NO)
+                  (taicpu(hp1).oper[0]^.ref^.index = NR_NO) and
+                  { r/esp cannot be an index }
+                  (taicpu(p).oper[0]^.reg<>NR_STACK_POINTER_REG)
                 ) or (
                   (taicpu(hp1).oper[0]^.ref^.index = taicpu(p).oper[1]^.reg) and
                   (taicpu(hp1).oper[0]^.ref^.base = NR_NO)
