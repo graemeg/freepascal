@@ -2584,6 +2584,8 @@ implementation
            if ((br=NR_RIP) and (ir<>NR_NO)) or
              (ir=NR_RIP) then
              message(asmw_e_illegal_use_of_rip);
+           if ir=NR_STACK_POINTER_REG then
+             Message(asmw_e_illegal_use_of_sp);
            { 16 bit? }
 
            if ((ir<>NR_NO) and (isub in [R_SUBMMX,R_SUBMMY,R_SUBMMZ]) and
