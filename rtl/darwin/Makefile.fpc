@@ -116,7 +116,7 @@ include $(PROCINC)/makefile.cpu
 SYSCPUDEPS=$(addprefix $(PROCINC)/,$(CPUINCNAMES))
 
 # Put system unit dependencies together.
-SYSDEPS=$(SYSINCDEPS) $(SYSCPUDEPS) sighnd.inc sig_cpu.inc
+SYSDEPS=$(SYSINCDEPS) $(SYSCPUDEPS) $(OSPROCINC)/sighnd.inc $(OSPROCINC)/sig_cpu.inc
 
 
 #

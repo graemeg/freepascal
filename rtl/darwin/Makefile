@@ -3296,7 +3296,7 @@ include $(INC)/makefile.inc
 SYSINCDEPS=$(addprefix $(INC)/,$(SYSINCNAMES))
 include $(PROCINC)/makefile.cpu
 SYSCPUDEPS=$(addprefix $(PROCINC)/,$(CPUINCNAMES))
-SYSDEPS=$(SYSINCDEPS) $(SYSCPUDEPS) sighnd.inc sig_cpu.inc
+SYSDEPS=$(SYSINCDEPS) $(SYSCPUDEPS) $(OSPROCINC)/sighnd.inc $(OSPROCINC)/sig_cpu.inc
 $(SYSTEMUNIT)$(PPUEXT) : $(BSDINC)/$(SYSTEMUNIT).pp $(SYSDEPS)
 	$(COMPILER) $(FPC_SYSTEM_OPT) -Us -Sg $(BSDINC)/$(SYSTEMUNIT).pp
 sysinit$(PPUEXT) : sysinit.pas $(SYSTEMUNIT)$(PPUEXT)
