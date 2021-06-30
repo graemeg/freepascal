@@ -63,6 +63,7 @@ Procedure Read (Args : Arguments);
 Procedure ReadLn (Args : Arguments);
 Function Seg (Var X) : Longint;
 Function SizeOf (X : TAnyType) : Longint;
+Function BitSizeOf (X : TAnyType) : Longint;
 Procedure Str (Var X : TNumericType; Var S : String);
 Function Succ (X : TOrdinal) : TOrdinal;
 Procedure Val (const S : string;Var V;var Code : word);
