@@ -397,13 +397,13 @@ Begin
      If i<=RtlFindSize Then
       Begin
         RtlFindRecs[i].SearchNum:=0;
-        if f.dirfd<>0 then
+        if f.dirfd<>-1 then
           repeat
             res:=__wasi_fd_close(f.dirfd);
           until (res=__WASI_ERRNO_SUCCESS) or (res<>__WASI_ERRNO_INTR);
       End;
    end;
-  f.dirfd:=0;
+  f.dirfd:=-1;
 End;
 
 
@@ -546,13 +546,11 @@ Begin
               RtlFindRecs[ArrayPos].DirFD := f.DirFD;
             end
            else
-            f.DirFD:=0;
+            f.DirFD:=-1;
            FreeMem(pr);
          end
         else
-         begin
-           f.DirFD:=0;
-         end;
+         f.DirFD:=-1;
       End;
      if ArrayPos>0 then
        RtlFindRecs[ArrayPos].LastUsed:=0;
@@ -560,7 +558,7 @@ Begin
 {Main loop}
   SName:=Copy(f.SearchSpec,f.NamePos+1,255);
   Found:=False;
-  Finished:=(f.DirFD=0);
+  Finished:=(f.DirFD=-1);
   While Not Finished Do
    Begin
      res:=__wasi_fd_readdir(f.DirFD,
@@ -634,7 +632,7 @@ Begin
         else }
          DosError:=18;
       end;
-     f.DirFD:=0;
+     f.DirFD:=-1;
      f.SearchType:=1;
      f.searchnum:=-1;
    end
