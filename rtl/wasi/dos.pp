@@ -26,7 +26,7 @@ Type
   {Fill : array[1..21] of byte;  Fill replaced with below}
     SearchPos  : UInt64;      {directory position}
     SearchNum  : LongInt;     {to track which search this is}
-    DirPtr     : Pointer;     {directory pointer for reading directory}
+    DirFD      : LongInt;     {directory fd handle for reading directory}
     SearchType : Byte;        {0=normal, 1=open will close, 2=only 1 file}
     SearchAttr : Byte;        {attribute we are searching for}
     Mode       : Word;
@@ -283,7 +283,7 @@ end;
 ******************************************************************************}
 
 
-(*Function FNMatch(const Pattern,Name:string):Boolean;
+Function FNMatch(const Pattern,Name:string):Boolean;
 Var
   LenPat,LenName : longint;
 
@@ -362,14 +362,14 @@ Begin {start FNMatch}
   LenPat:=Length(Pattern);
   LenName:=Length(Name);
   FNMatch:=DoFNMatch(1,1);
-End;*)
+End;
 
 
 Const
   RtlFindSize = 15;
 Type
   RtlFindRecType = Record
-    DirPtr   : Pointer;
+    DirFD    : LongInt;
     SearchNum,
     LastUsed : LongInt;
   End;
@@ -380,12 +380,13 @@ Var
 
 Procedure FindClose(Var f: SearchRec);
 {
-  Closes dirptr if it is open
+  Closes dirfd if it is open
 }
-{Var
-  i : longint;}
+Var
+  res: __wasi_errno_t;
+  i : longint;
 Begin
-{  if f.SearchType=0 then
+  if f.SearchType=0 then
    begin
      i:=1;
      repeat
@@ -396,11 +397,13 @@ Begin
      If i<=RtlFindSize Then
       Begin
         RtlFindRecs[i].SearchNum:=0;
-        if f.dirptr<>nil then
-         fpclosedir(pdir(f.dirptr)^);
+        if f.dirfd<>0 then
+          repeat
+            res:=__wasi_fd_close(f.dirfd);
+          until (res=__WASI_ERRNO_SUCCESS) or (res<>__WASI_ERRNO_INTR);
       End;
    end;
-  f.dirptr:=nil;}
+  f.dirfd:=0;
 End;
 
 
@@ -452,11 +455,11 @@ Function  FindLastUsed: Longint;
 {
   Find unused or least recently used dirpointer slot in findrecs array
 }
-{Var
+Var
   BestMatch,i : Longint;
-  Found       : Boolean;}
+  Found       : Boolean;
 Begin
-{  BestMatch:=1;
+  BestMatch:=1;
   i:=1;
   Found:=False;
   While (i <= RtlFindSize) And (Not Found) Do
@@ -473,7 +476,7 @@ Begin
       End;
      Inc(i);
    End;
-  FindLastUsed := BestMatch;}
+  FindLastUsed := BestMatch;
 End;
 
 
@@ -482,8 +485,10 @@ Procedure FindNext(Var f: SearchRec);
 {
   re-opens dir if not already in array and calls FindWorkProc
 }
-{Var
-
+Var
+  fd,ourfd: __wasi_fd_t;
+  pr: PChar;
+  res: __wasi_errno_t;
   DirName  : Array[0..256] of Char;
   i,
   ArrayPos : Longint;
@@ -491,9 +496,10 @@ Procedure FindNext(Var f: SearchRec);
   SName    : string;
   Found,
   Finished : boolean;
-  p        : pdirent;}
+  Buf: array [0..SizeOf(__wasi_dirent_t)+256-1] of Byte;
+  BufUsed: __wasi_size_t;
 Begin
-(*  If f.SearchType=0 Then
+  If f.SearchType=0 Then
    Begin
      ArrayPos:=0;
      For i:=1 to RtlFindSize Do
@@ -515,16 +521,37 @@ Begin
            Move(f.SearchSpec[1], DirName[0], f.NamePos);
            DirName[f.NamePos] := #0;
          End;
-        f.DirPtr := fpopendir(@DirName[0]);
-        If f.DirPtr <> nil Then
+        if ConvertToFdRelativePath(@DirName[0],fd,pr) then
          begin
-           ArrayPos:=FindLastUsed;
-           If RtlFindRecs[ArrayPos].SearchNum > 0 Then
-            FpCloseDir((pdir(rtlfindrecs[arraypos].dirptr)^));
-           RtlFindRecs[ArrayPos].SearchNum := f.SearchNum;
-           RtlFindRecs[ArrayPos].DirPtr := f.DirPtr;
-           if f.searchpos>0 then
-            seekdir(pdir(f.dirptr), f.searchpos);
+           repeat
+             res:=__wasi_path_open(fd,
+                                   0,
+                                   pr,
+                                   strlen(pr),
+                                   __WASI_OFLAGS_DIRECTORY,
+                                   __WASI_RIGHTS_FD_READDIR,
+                                   __WASI_RIGHTS_FD_READDIR,
+                                   0,
+                                   @ourfd);
+           until (res=__WASI_ERRNO_SUCCESS) or (res<>__WASI_ERRNO_INTR);
+           If res=__WASI_ERRNO_SUCCESS Then
+            begin
+              f.DirFD := ourfd;
+              ArrayPos:=FindLastUsed;
+              If RtlFindRecs[ArrayPos].SearchNum > 0 Then
+                repeat
+                  res:=__wasi_fd_close(RtlFindRecs[arraypos].DirFD);
+                until (res=__WASI_ERRNO_SUCCESS) or (res<>__WASI_ERRNO_INTR);
+              RtlFindRecs[ArrayPos].SearchNum := f.SearchNum;
+              RtlFindRecs[ArrayPos].DirFD := f.DirFD;
+            end
+           else
+            f.DirFD:=0;
+           FreeMem(pr);
+         end
+        else
+         begin
+           f.DirFD:=0;
          end;
       End;
      if ArrayPos>0 then
@@ -533,14 +560,25 @@ Begin
 {Main loop}
   SName:=Copy(f.SearchSpec,f.NamePos+1,255);
   Found:=False;
-  Finished:=(f.dirptr=nil);
+  Finished:=(f.DirFD=0);
   While Not Finished Do
    Begin
-     p:=fpreaddir(pdir(f.dirptr)^);
-     if p=nil then
+     res:=__wasi_fd_readdir(f.DirFD,
+                            @buf,
+                            SizeOf(buf),
+                            f.searchpos,
+                            @bufused);
+     if (res<>__WASI_ERRNO_SUCCESS) or (bufused<=SizeOf(__wasi_dirent_t)) then
       FName:=''
      else
-      FName:=Strpas(@p^.d_name[0]);
+      begin
+        if P__wasi_dirent_t(@buf)^.d_namlen<=255 then
+          SetLength(FName,P__wasi_dirent_t(@buf)^.d_namlen)
+        else
+          SetLength(FName,255);
+        Move(buf[SizeOf(__wasi_dirent_t)],FName[1],Length(FName));
+        f.searchpos:=P__wasi_dirent_t(@buf)^.d_next;
+      end;
      If FName='' Then
       Finished:=True
      Else
@@ -555,15 +593,12 @@ Begin
    End;
 {Shutdown}
   If Found Then
-   Begin
-     f.searchpos:=telldir(pdir(f.dirptr));
-     DosError:=0;
-   End
+   DosError:=0
   Else
    Begin
      FindClose(f);
      DosError:=18;
-   End;*)
+   End;
 End;
 
 
@@ -584,7 +619,7 @@ Begin
   f.SearchAttr := Attr or archive or readonly;
   f.SearchPos  := 0;
   f.NamePos := Length(f.SearchSpec);
-  while (f.NamePos>0) and (f.SearchSpec[f.NamePos] in ['/','\']) do
+  while (f.NamePos>0) and not (f.SearchSpec[f.NamePos] in ['/','\']) do
    dec(f.NamePos);
 {Wildcards?}
   if (Pos('?',Path)=0)  and (Pos('*',Path)=0) then
@@ -599,7 +634,7 @@ Begin
         else }
          DosError:=18;
       end;
-     f.DirPtr:=nil;
+     f.DirFD:=0;
      f.SearchType:=1;
      f.searchnum:=-1;
    end
