@@ -697,33 +697,32 @@ implementation
         if not Result then
           case Subset of
             C_A,  C_NBE:
-              Result := (c in [C_A,  C_AE, C_NB, C_NBE]);
-            C_AE, C_NB:
-              Result := (c in [C_AE, C_NB]);
-            C_B,  C_NAE:
+              Result := (c in [C_A,  C_AE, C_NB, C_NC, C_NBE,C_NE, C_NZ]);
+            C_AE, C_NB, C_NC:
+              { C_A  / C_NBE: CF = 0 and ZF = 0; not a subset because ZF has to be zero as well
+                C_AE / C_NB:  CF = 0 }
+              Result := (c in [C_AE, C_NB, C_NC]);
+            C_B,  C_C,  C_NAE:
+              { C_B  / C_NAE: CF = 1
+                C_BE / C_NA:  CF = 1 or ZF = 1 }
               Result := (c in [C_B,  C_BE, C_C,  C_NA, C_NAE]);
             C_BE, C_NA:
               Result := (c in [C_BE, C_NA]);
-            C_C:
-              { C_B  / C_NAE: CF = 1
-                C_BE / C_NA:  CF = 1 or ZF = 1 }
-              Result := (c in [C_B,  C_BE, C_NA, C_NAE]);
             C_E,  C_Z:
-              Result := (c in [C_AE, C_BE, C_E,  C_NA, C_NB, C_NG, C_NL]);
+              Result := (c in [C_AE, C_BE, C_E,  C_NA, C_NG, C_Z]);
             C_G,  C_NLE:
-              Result := (c in [C_G,  C_GE, C_NL, C_NLE]);
+              { Not-equal can be considered equivalent to less than or greater than }
+              Result := (c in [C_G,  C_GE, C_NE, C_NL, C_NLE,C_NZ]);
             C_GE, C_NL:
               Result := (c in [C_GE, C_NL]);
             C_L,  C_NGE:
-              Result := (c in [C_L,  C_LE, C_NG, C_NGE]);
+              Result := (c in [C_L,  C_LE, C_NE, C_NG, C_NGE,C_NZ]);
             C_LE, C_NG:
               Result := (c in [C_LE, C_NG]);
-            C_NC:
-              { C_A  / C_NBE: CF = 0 and ZF = 0; not a subset because ZF has to be zero as well
-                C_AE / C_NB:  CF = 0 }
-              Result := (c in [C_AE, C_NB]);
             C_NE, C_NZ:
-              Result := (c in [C_NE, C_NZ, C_A,  C_B,  C_NAE,C_NBE,C_L,  C_G,  C_NLE,C_NGE]);
+              { Note that not equal is NOT a subset of greater/less than because
+                not equal is less than OR greater than. Same with above and below }
+              Result := (c in [C_NE, C_NZ]);
             C_NP, C_PO:
               Result := (c in [C_NP, C_PO]);
             C_P,  C_PE:

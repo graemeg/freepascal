@@ -2002,10 +2002,7 @@ Unit AoptObj;
 {$ifdef cpudelayslot}
                         RemoveDelaySlot(p);
 {$endif cpudelayslot}
-                        UpdateUsedRegs(tai(p.Next));
-                        AsmL.Remove(p);
-                        p.Free;
-                        p := hp1;
+                        RemoveCurrentP(p, hp1);
 
                         Result := True;
                         Exit;
@@ -2043,8 +2040,7 @@ Unit AoptObj;
 {$ifdef cpudelayslot}
                             RemoveDelaySlot(hp1);
 {$endif cpudelayslot}
-                            asml.remove(hp1);
-                            hp1.free;
+                            RemoveInstruction(hp1);
 
                             stoploop := False;
 
@@ -2081,7 +2077,7 @@ Unit AoptObj;
                 else
                   begin
                     { Do not try to optimize if the test generating the condition
-                      is the same instruction, like 'bne	$v0,$zero,.Lj3' for MIPS }
+                      is the same instruction, like 'bne $v0,$zero,.Lj3' for MIPS }
                     if (taicpu(p).ops>1) or (taicpu(hp1).ops>1) then
                       exit;
 
@@ -2089,7 +2085,8 @@ Unit AoptObj;
                         jmp<cond1>    @Lbl1
                         jmp<cond2>    @Lbl2
 
-                        Remove 2nd jump if conditions are equal or cond2 is fully covered by cond1
+                        Remove 2nd jump if conditions are equal or cond2 is a subset of cond1
+                        (as if the first jump didn't branch, then neither will the 2nd)
                     }
 
                     if condition_in(taicpu(hp1).condition, taicpu(p).condition) then
@@ -2098,9 +2095,10 @@ Unit AoptObj;
 
                         NCJLabel.decrefs;
                         GetNextInstruction(hp1, hp2);
-
-                        AsmL.Remove(hp1);
-                        hp1.Free;
+{$ifdef cpudelayslot}
+                        RemoveDelaySlot(hp1);
+{$endif cpudelayslot}
+                        RemoveInstruction(hp1);
 
                         hp1 := hp2;
 
@@ -2114,9 +2112,9 @@ Unit AoptObj;
                         jmp<cond1>  @Lbl1
                         jmp<cond2>  @Lbl2
 
-                      And inv(cond2) is a subset of cond1 (e.g. je followed by jne, or jae followed by jbe) )
+                      And inv(cond1) is a subset of cond2 (e.g. je followed by jne, or jae followed by jbe) )
                     }
-                    if condition_in(inverse_cond(taicpu(hp1).condition), taicpu(p).condition) then
+                    if condition_in(inverse_cond(taicpu(p).condition), taicpu(hp1).condition) then
                       begin
                         GetNextInstruction(hp1, hp2);
 
@@ -2124,16 +2122,16 @@ Unit AoptObj;
                           the first jump completely }
                         if FindLabel(CJLabel, hp2) then
                           begin
+                            { However, to be absolutely correct, cond2 must be changed to inv(cond1) }
+                            taicpu(hp1).condition := inverse_cond(taicpu(p).condition);
+
                             DebugMsg(SPeepholeOptimization+'jmp<cond> before jmp<inv_cond> - removed first jump',p);
 
                             CJLabel.decrefs;
 {$ifdef cpudelayslot}
                             RemoveDelaySlot(p);
 {$endif cpudelayslot}
-                            UpdateUsedRegs(tai(p.Next));
-                            AsmL.Remove(p);
-                            p.Free;
-                            p := hp1;
+                            RemoveCurrentP(p, hp1);
 
                             Result := True;
                             Exit;
@@ -2146,7 +2144,7 @@ Unit AoptObj;
                             improve this particular optimisation to work on AVR,
                             please do. [Kit] }
                           begin
-                            { Since cond1 is a subset of inv(cond2), jmp<cond2> will always branch if
+                            { Since inv(cond1) is a subset of cond2, jmp<cond2> will always branch if
                               jmp<cond1> does not, so change jmp<cond2> to an unconditional jump. }
 
                             DebugMsg(SPeepholeOptimization+'jmp<cond> before jmp<inv_cond> - made second jump unconditional',p);

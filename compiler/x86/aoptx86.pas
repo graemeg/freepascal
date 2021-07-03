@@ -3406,7 +3406,7 @@ unit aoptx86;
             if (taicpu(p).oper[0]^.typ = top_reg) and
               (taicpu(p).oper[0]^.reg = taicpu(p).oper[1]^.reg) and
               MatchInstruction(hp1, A_JCC, []) and
-              (taicpu(hp1).oper[0]^.typ = top_ref) then
+              IsJumpToLabel(taicpu(hp1)) then
               begin
                 JumpLabel := TAsmLabel(taicpu(hp1).oper[0]^.ref^.symbol);
                 p_label := nil;
@@ -3422,7 +3422,7 @@ unit aoptx86;
                   SuperRegistersEqual(taicpu(p_dist).oper[0]^.reg, taicpu(p).oper[0]^.reg) and
                   SuperRegistersEqual(taicpu(p_dist).oper[1]^.reg, taicpu(p).oper[1]^.reg) and
                   GetNextInstruction(p_dist, hp1_dist) and
-                  MatchInstruction(hp1_dist, A_JCC, []) then
+                  MatchInstruction(hp1_dist, A_JCC, []) then { This doesn't have to be an explicit label }
                   begin
                     JumpLabel_dist := TAsmLabel(taicpu(hp1_dist).oper[0]^.ref^.symbol);
 
@@ -3430,9 +3430,10 @@ unit aoptx86;
                       { This is an infinite loop }
                       Exit;
 
-                    { Best optimisation when the second condition is a subset (or equal) to the first }
-                    if condition_in(taicpu(hp1_dist).condition, taicpu(hp1).condition) then
+                    { Best optimisation when the first condition is a subset (or equal) of the second }
+                    if condition_in(taicpu(hp1).condition, taicpu(hp1_dist).condition) then
                       begin
+                        { Any registers used here will already be allocated }
                         if Assigned(JumpLabel_dist) then
                           JumpLabel_dist.IncRefs;
 
