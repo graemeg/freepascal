@@ -2811,6 +2811,9 @@ unit aoptx86;
                         if
                           not RegModifiedByInstruction(taicpu(p).oper[0]^.reg, hp1) and
                           not RegModifiedBetween(taicpu(p).oper[0]^.reg, hp1, hp2) and
+                          { if we replace taicpu(p).oper[1]^.reg by taicpu(p).oper[0]^.reg,
+                            taicpu(p).oper[1]^.reg might not be modified in between }
+                          not RegModifiedBetween(CurrentReg, p, hp2) and
                           DeepMovOpt(taicpu(p), taicpu(hp2)) then
                           begin
                             { Just in case something didn't get modified (e.g. an
@@ -2838,7 +2841,6 @@ unit aoptx86;
                                     hp3 := hp2;
                                     Continue;
                                   end;
-
                                 end;
                           end;
                       end;
