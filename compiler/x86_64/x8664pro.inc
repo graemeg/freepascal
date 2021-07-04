@@ -375,7 +375,7 @@
 (Ch: [Ch_All]),
 (Ch: [Ch_All]),
 (Ch: [Ch_All]),
-(Ch: [Ch_ROp1, Ch_RWOp2, Ch_RFLAGScc]),
+(Ch: [Ch_ROp1, Ch_WOp2, Ch_RFLAGScc]),
 (Ch: [Ch_RFLAGScc]),
 (Ch: [Ch_RFLAGScc, Ch_WOp1]),
 (Ch: [Ch_RWESI, Ch_WMemEDI, Ch_RWEDI, Ch_RDirFlag]),

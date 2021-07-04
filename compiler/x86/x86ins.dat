@@ -2165,7 +2165,7 @@ void                  \333\3\x0F\xA7\xE0              P6,CYRIX
 void                  \333\3\x0F\xA7\xE8              P6,CYRIX
 
 [CMOVcc,cmovCCX]
-(Ch_ROp1, Ch_RWOp2, Ch_RFLAGScc)
+(Ch_ROp1, Ch_WOp2, Ch_RFLAGScc)
 reg16|32|64,regmem    \320\1\x0F\13\x40\110          P6,SM
 
 [Jcc]
