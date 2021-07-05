@@ -223,6 +223,9 @@ unit aoptcpu;
                 A_MOVSD,
                 A_MOVSS:
                   Result:=OptPass1MOVXX(p);
+                A_SHRX,
+                A_SHLX:
+                  Result:=OptPass1SHXX(p);
                 else
                   ;
               end;

@@ -147,6 +147,7 @@ unit aoptx86;
         function OptPass1VPXor(var p: tai): boolean;
         function OptPass1Imul(var p : tai) : boolean;
         function OptPass1Jcc(var p : tai) : boolean;
+        function OptPass1SHXX(var p: tai): boolean;
 
         function OptPass2Movx(var p : tai): Boolean;
         function OptPass2MOV(var p : tai) : boolean;
@@ -4877,6 +4878,37 @@ unit aoptx86;
              begin
                taicpu(p).loadoper(2,taicpu(hp1).oper[1]^);
                DebugMsg(SPeepholeOptimization + 'ImulMov2Imul done',p);
+               RemoveInstruction(hp1);
+               result:=true;
+             end;
+         end;
+     end;
+
+
+   function TX86AsmOptimizer.OptPass1SHXX(var p: tai): boolean;
+     var
+       hp1 : tai;
+     begin
+       result:=false;
+       { replace
+           IMul   %reg0,%reg1,%reg2
+           Mov    %reg2,%reg3
+           dealloc  %reg2
+
+           by
+           Imul   %reg0,%reg1,%reg3
+       }
+       if GetNextInstruction(p,hp1) and
+         MatchInstruction(hp1,A_MOV,[taicpu(p).opsize]) and
+         MatchOperand(taicpu(p).oper[2]^,taicpu(hp1).oper[0]^) and
+         (taicpu(hp1).oper[1]^.typ=top_reg) then
+         begin
+           TransferUsedRegs(TmpUsedRegs);
+           UpdateUsedRegs(TmpUsedRegs, tai(p.next));
+           if not(RegUsedAfterInstruction(taicpu(hp1).oper[0]^.reg,hp1,TmpUsedRegs)) then
+             begin
+               taicpu(p).loadoper(2,taicpu(hp1).oper[1]^);
+               DebugMsg(SPeepholeOptimization + 'SHXXMov2SHXX done',p);
                RemoveInstruction(hp1);
                result:=true;
              end;

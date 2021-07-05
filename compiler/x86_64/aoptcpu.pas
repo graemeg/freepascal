@@ -147,6 +147,9 @@ uses
                   Result:=OptPass1Test(p);
                 A_Jcc:
                   Result:=OptPass1Jcc(p);
+                A_SHRX,
+                A_SHLX:
+                  Result:=OptPass1SHXX(p);
                 else
                   ;
               end;
