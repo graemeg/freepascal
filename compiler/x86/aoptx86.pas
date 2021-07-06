@@ -2239,7 +2239,7 @@ unit aoptx86;
                   MatchOperand(taicpu(hp1).oper[1]^,taicpu(hp2).oper[1]^) and
                   MatchOperand(taicpu(hp2).oper[0]^,taicpu(hp2).oper[1]^) and
                   GetNextInstruction(hp2,hp3) and
-                  MatchInstruction(hp3,A_Jcc,A_Setcc,[S_NO]) and
+                  MatchInstruction(hp3,A_Jcc,A_Setcc,[]) and
                   (taicpu(hp3).condition in [C_E,C_NE]) then
                   begin
                     TransferUsedRegs(TmpUsedRegs);
