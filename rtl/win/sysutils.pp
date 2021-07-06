@@ -455,10 +455,13 @@ type
 const
   CShareAny = FILE_SHARE_READ or FILE_SHARE_WRITE or FILE_SHARE_DELETE;
   COpenReparse = FILE_FLAG_OPEN_REPARSE_POINT or FILE_FLAG_BACKUP_SEMANTICS;
+  CVolumePrefix = 'Volume';
+  CGlobalPrefix = '\\?\';
 var
   HFile, Handle: THandle;
   PBuffer: ^TReparseDataBuffer;
   BytesReturned: DWORD;
+  guid: TGUID;
 begin
   Result := slrError;
   SymLinkRec := Default(TUnicodeSymLinkRec);
@@ -476,6 +479,10 @@ begin
                 @PBuffer^.PathBufferMount[4 { skip start '\??\' } +
                   PBuffer^.SubstituteNameOffset div SizeOf(WCHAR)],
                 PBuffer^.SubstituteNameLength div SizeOf(WCHAR) - 4);
+              if (Length(SymLinkRec.TargetName) = Length(CVolumePrefix) + 2 { brackets } + 32 { guid } + 4 { - } + 1 { \ }) and
+                  (Copy(SymLinkRec.TargetName, 1, Length(CVolumePrefix)) = CVolumePrefix) and
+                  TryStringToGUID(String(Copy(SymLinkRec.TargetName, Length(CVolumePrefix) + 1, Length(SymLinkRec.TargetName) - Length(CVolumePrefix) - 1)), guid) then
+                SymLinkRec.TargetName := CGlobalPrefix + SymLinkRec.TargetName;
             end;
             IO_REPARSE_TAG_SYMLINK: begin
               SymLinkRec.TargetName := WideCharLenToString(
@@ -487,10 +494,8 @@ begin
           end;
 
           if SymLinkRec.TargetName <> '' then begin
-            Handle := FindFirstFileExW(PUnicodeChar(SymLinkRec.TargetName), FindExInfoDefaults , @SymLinkRec.FindData,
-                        FindExSearchNameMatch, Nil, 0);
-            if Handle <> INVALID_HANDLE_VALUE then begin
-              Windows.FindClose(Handle);
+            { the fields of WIN32_FILE_ATTRIBUTE_DATA match with the first fields of WIN32_FIND_DATA }
+            if GetFileAttributesExW(PUnicodeChar(SymLinkRec.TargetName), GetFileExInfoStandard, @SymLinkRec.FindData) then begin
               SymLinkRec.Attr := SymLinkRec.FindData.dwFileAttributes;
               SymLinkRec.Size := QWord(SymLinkRec.FindData.nFileSizeHigh) shl 32 + QWord(SymLinkRec.FindData.nFileSizeLow);
             end else if RaiseErrorOnMissing then
