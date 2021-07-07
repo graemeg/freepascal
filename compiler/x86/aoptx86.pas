@@ -1339,6 +1339,13 @@ unit aoptx86;
             (p.opcode = A_FNSTSW)) and
            (p.oper[0]^.typ=top_reg) and
            Reg1WriteOverwritesReg2Entirely(p.oper[0]^.reg,reg)) or
+          (((p.opcode = A_SHRX) or (p.opcode = A_SHLX)) and
+           (p.ops=3) and
+           (Reg1WriteOverwritesReg2Entirely(p.oper[2]^.reg,reg)) and
+           (((p.oper[1]^.typ=top_reg) and not(Reg1ReadDependsOnReg2(p.oper[1]^.reg,reg))) or
+            ((p.oper[1]^.typ=top_ref) and not(RegInRef(reg,p.oper[1]^.ref^)))) and
+            (((p.oper[0]^.typ=top_reg) and not(Reg1ReadDependsOnReg2(p.oper[0]^.reg,reg))) or
+            ((p.oper[0]^.typ=top_ref) and not(RegInRef(reg,p.oper[0]^.ref^))))) or
           (((p.opcode = A_XOR) or (p.opcode = A_SUB) or (p.opcode = A_SBB)) and
            (p.oper[0]^.typ=top_reg) and (p.oper[1]^.typ=top_reg) and
            (p.oper[0]^.reg=p.oper[1]^.reg) and
