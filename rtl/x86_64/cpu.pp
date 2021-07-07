@@ -40,6 +40,8 @@ unit cpu;
     function F16CSupport: boolean;inline;
     function RDRANDSupport: boolean;inline;
     function RTMSupport: boolean;inline;
+    function BMI1Support: boolean;inline;
+    function BMI2Support: boolean;inline;
 
     var
       is_sse3_cpu : boolean = false;
@@ -62,7 +64,9 @@ unit cpu;
       _MOVBESupport,
       _F16CSupport,
       _RDRANDSupport,
-      _RTMSupport: boolean;
+      _RTMSupport,
+      _BMI1Support,
+      _BMI2Support: boolean;
 
     function InterlockedCompareExchange128(var Target: Int128Rec; NewValue: Int128Rec; Comperand: Int128Rec): Int128Rec; assembler;
      {
@@ -181,7 +185,9 @@ unit cpu;
            movl %ebx,_ebx
         end ['rax','rbx','rcx','rdx'];
         _AVX2Support:=_AVXSupport and ((_ebx and $20)<>0);
-        _RTMSupport:=((_ebx and $800)<>0);
+        _BMI1Support:=(_ebx and $8)<>0;
+        _BMI2Support:=(_ebx and $100)<>0;
+        _RTMSupport:=(_ebx and $800)<>0;
       end;
 
 
@@ -254,6 +260,19 @@ unit cpu;
       begin
         result:=_RTMSupport;
       end;
+
+
+    function BMI1Support: boolean;inline;
+      begin
+        result:=_BMI1Support;
+      end;
+
+
+    function BMI2Support: boolean;inline;
+      begin
+        result:=_BMI2Support;
+      end;
+
 
 begin
   SetupSupport;
