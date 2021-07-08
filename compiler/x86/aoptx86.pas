@@ -5840,9 +5840,9 @@ unit aoptx86;
             checks first that are likely to be False. [Kit] }
           begin
 
-            if MatchOperand(taicpu(p).oper[1]^, NR_EDX) and
-              (
+            if (
                 (
+                  MatchOperand(taicpu(p).oper[1]^, NR_EDX) and
                   (taicpu(hp1).oper[1]^.reg = NR_EAX) and
                   (
                     MatchOperand(taicpu(hp1).oper[0]^, taicpu(p).oper[0]^) or
@@ -5850,6 +5850,7 @@ unit aoptx86;
                   )
                 ) or
                 (
+                  MatchOperand(taicpu(p).oper[1]^, NR_EAX) and
                   (taicpu(hp1).oper[1]^.reg = NR_EDX) and
                   (
                     MatchOperand(taicpu(hp1).oper[0]^, taicpu(p).oper[0]^) or
