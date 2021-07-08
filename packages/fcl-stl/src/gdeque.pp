@@ -213,7 +213,7 @@ end;
 
 procedure TDeque.ClearData;
 var
-  i: SizeUint;
+  i: SizeInt;
 begin
   if IsManagedType(T) then
     for i := Low(FData) to High(FData) do
