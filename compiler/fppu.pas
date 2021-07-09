@@ -538,7 +538,7 @@ var
 
        var
          fnd : boolean;
-         hs  : TPathStr;
+         hs : TPathStr;
          nsitem : TCmdStrListItem;
        begin
          if shortname then
@@ -1129,20 +1129,30 @@ var
                else
                 begin
                   { check the date of the source files:
-                     1 path of ppu
-                     2 path of main source
-                     3 current dir
-                     4 include/unit path }
-                  Source_Time:=GetNamedFileTime(path+hs);
+                     1 path of sourcefn
+                     2 path of ppu
+                     3 path of main source
+                     4 current dir
+                     5 include/unit path }
                   found:=false;
-                  if Source_Time<>-1 then
-                    hs:=path+hs
+                  if sourcefn<>'' then
+                    Source_Time:=GetNamedFileTime(sourcefn)
                   else
-                   if not(is_main) then
+                    Source_Time:=-1;
+                  if Source_Time<>-1 then
+                    hs:=sourcefn
+                  else
                     begin
-                      Source_Time:=GetNamedFileTime(main_dir+hs);
+                      Source_Time:=GetNamedFileTime(path+hs);
                       if Source_Time<>-1 then
-                        hs:=main_dir+hs;
+                        hs:=path+hs
+                      else
+                       if not(is_main) then
+                        begin
+                          Source_Time:=GetNamedFileTime(main_dir+hs);
+                          if Source_Time<>-1 then
+                            hs:=main_dir+hs;
+                        end;
                     end;
                   if Source_Time=-1 then
                     Source_Time:=GetNamedFileTime(hs);
