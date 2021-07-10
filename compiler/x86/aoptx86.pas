@@ -4789,23 +4789,165 @@ unit aoptx86;
       end;
 
 
+     function IsCmpSubset(cond1, cond2: TAsmCond): Boolean; inline;
+       begin
+         Result := condition_in(cond1, cond2) or
+           { Not strictly subsets due to the actual flags checked, but because we're
+             comparing integers, E is a subset of AE and GE and their aliases }
+           ((cond1 in [C_E, C_Z]) and (cond2 in [C_AE, C_NB, C_NC, C_GE, C_NL]));
+       end;
+
+
      function TX86AsmOptimizer.OptPass1Cmp(var p: tai): boolean;
        var
          v: TCGInt;
-         hp1, hp2: tai;
+         hp1, hp2, p_dist, p_jump, hp1_dist, p_label, hp1_label: tai;
          FirstMatch: Boolean;
+         JumpLabel, JumpLabel_dist, JumpLabel_far: TAsmLabel;
        begin
          Result:=false;
 
+         { All these optimisations need a next instruction }
+         if not GetNextInstruction(p, hp1) then
+           Exit;
+
+         { Search for:
+             cmp   ###,###
+             j(c1) @lbl1
+             ...
+           @lbl:
+             cmp   ###.### (same comparison as above)
+             j(c2) @lbl2
+
+           If c1 is a subset of c2, change to:
+             cmp   ###,###
+             j(c2) @lbl2
+             (@lbl1 may become a dead label as a result)
+         }
+
+         { Also handle cases where there are multiple jumps in a row }
+         p_jump := hp1;
+         while Assigned(p_jump) and MatchInstruction(p_jump, A_JCC, []) do
+           begin
+             if IsJumpToLabel(taicpu(p_jump)) then
+               begin
+                 JumpLabel := TAsmLabel(taicpu(p_jump).oper[0]^.ref^.symbol);
+                 p_label := nil;
+                 if Assigned(JumpLabel) then
+                   p_label := getlabelwithsym(JumpLabel);
+
+                 if Assigned(p_label) and
+                   GetNextInstruction(p_label, p_dist) and
+                   MatchInstruction(p_dist, A_CMP, []) and
+                   MatchOperand(taicpu(p_dist).oper[0]^, taicpu(p).oper[0]^) and
+                   MatchOperand(taicpu(p_dist).oper[1]^, taicpu(p).oper[1]^) and
+                   GetNextInstruction(p_dist, hp1_dist) and
+                   MatchInstruction(hp1_dist, A_JCC, []) then { This doesn't have to be an explicit label }
+                   begin
+                     JumpLabel_dist := TAsmLabel(taicpu(hp1_dist).oper[0]^.ref^.symbol);
+
+                     if JumpLabel = JumpLabel_dist then
+                       { This is an infinite loop }
+                       Exit;
+
+                     { Best optimisation when the first condition is a subset (or equal) of the second }
+                     if IsCmpSubset(taicpu(p_jump).condition, taicpu(hp1_dist).condition) then
+                       begin
+                         { Any registers used here will already be allocated }
+                         if Assigned(JumpLabel_dist) then
+                           JumpLabel_dist.IncRefs;
+
+                         if Assigned(JumpLabel) then
+                           JumpLabel.DecRefs;
+
+                         DebugMsg(SPeepholeOptimization + 'CMP/Jcc/@Lbl/CMP/Jcc -> CMP/Jcc, redirecting first jump', p_jump);
+                         taicpu(p_jump).condition := taicpu(hp1_dist).condition;
+                         taicpu(p_jump).loadref(0, taicpu(hp1_dist).oper[0]^.ref^);
+                         Result := True;
+                         { Don't exit yet.  Since p and p_jump haven't actually been
+                           removed, we can check for more on this iteration }
+                       end
+                     else if IsCmpSubset(taicpu(hp1_dist).condition, inverse_cond(taicpu(p_jump).condition)) and
+                       GetNextInstruction(hp1_dist, hp1_label) and
+                       SkipAligns(hp1_label, hp1_label) and
+                       (hp1_label.typ = ait_label) then
+                       begin
+                         JumpLabel_far := tai_label(hp1_label).labsym;
+
+                         if (JumpLabel_far = JumpLabel_dist) or (JumpLabel_far = JumpLabel) then
+                           { This is an infinite loop }
+                           Exit;
+
+                         if Assigned(JumpLabel_far) then
+                           begin
+                             { In this situation, if the first jump branches, the second one will never,
+                               branch so change the destination label to after the second jump }
+
+                             DebugMsg(SPeepholeOptimization + 'CMP/Jcc/@Lbl/CMP/Jcc/@Lbl -> CMP/Jcc, redirecting first jump to 2nd label', p_jump);
+
+                             if Assigned(JumpLabel) then
+                               JumpLabel.DecRefs;
+
+                             JumpLabel_far.IncRefs;
+
+                             taicpu(p_jump).oper[0]^.ref^.symbol := JumpLabel_far;
+
+                             Result := True;
+                             { Don't exit yet.  Since p and p_jump haven't actually been
+                               removed, we can check for more on this iteration }
+                             Continue;
+                           end;
+                       end;
+
+                   end;
+               end;
+             { Search for:
+                 cmp   ###,###
+                 j(c1) @lbl1
+                 cmp   ###,### (same as first)
+
+               Remove second cmp
+             }
+
+             if GetNextInstruction(p_jump, hp2) and
+               (
+                 (
+                   MatchInstruction(hp2, A_CMP, []) and
+                   (
+                     (
+                       MatchOpType(taicpu(p), top_const, top_reg) and
+                       (taicpu(hp2).oper[0]^.val = taicpu(p).oper[0]^.val) and
+                       SuperRegistersEqual(taicpu(p).oper[1]^.reg, taicpu(hp2).oper[1]^.reg)
+                     ) or (
+                       MatchOperand(taicpu(hp2).oper[0]^, taicpu(p).oper[0]^) and
+                       MatchOperand(taicpu(hp2).oper[1]^, taicpu(p).oper[1]^)
+                     )
+                   )
+                 ) or (
+                   { Also match cmp $0,%reg; jcc @lbl; test %reg,%reg }
+                   MatchOperand(taicpu(p).oper[0]^, 0) and
+                   (taicpu(p).oper[1]^.typ = top_reg) and
+                   MatchInstruction(hp2, A_TEST, []) and
+                   MatchOpType(taicpu(hp2), top_reg, top_reg) and
+                   (taicpu(hp2).oper[0]^.reg = taicpu(hp2).oper[1]^.reg) and
+                   SuperRegistersEqual(taicpu(p).oper[1]^.reg, taicpu(hp2).oper[1]^.reg)
+                 )
+               ) then
+               begin
+                 DebugMsg(SPeepholeOptimization + 'CMP/Jcc/CMP; removed superfluous CMP', hp2);
+                 RemoveInstruction(hp2);
+                 Result := True;
+                 { Continue the while loop in case "Jcc/CMP" follows the second CMP that was just removed }
+               end;
+
+             GetNextInstruction(p_jump, p_jump);
+           end;
+
          if taicpu(p).oper[0]^.typ = top_const then
            begin
-             { Though GetNextInstruction can be factored out, it is an expensive
-               call, so delay calling it until we have first checked cheaper
-               conditions that are independent of it. }
 
              if (taicpu(p).oper[0]^.val = 0) and
                (taicpu(p).oper[1]^.typ = top_reg) and
-               GetNextInstruction(p, hp1) and
                MatchInstruction(hp1,A_Jcc,A_SETcc,[]) then
                begin
                  hp2 := p;
@@ -4908,7 +5050,6 @@ unit aoptx86;
                  Exit;
                end
              else if (taicpu(p).oper[0]^.val = 1) and
-               GetNextInstruction(p, hp1) and
                MatchInstruction(hp1,A_Jcc,A_SETcc,[]) and
                (taicpu(hp1).condition in [C_L, C_NGE]) then
                begin
@@ -4955,7 +5096,6 @@ unit aoptx86;
                  end;
 
                  if (taicpu(p).oper[0]^.val=v) and
-                    GetNextInstruction(p, hp1) and
                     MatchInstruction(hp1,A_Jcc,A_SETcc,[]) and
                     (Taicpu(hp1).condition in [C_E,C_NE]) then
                    begin
@@ -4980,7 +5120,6 @@ unit aoptx86;
            end;
 
          if (taicpu(p).oper[1]^.typ = top_reg) and
-           GetNextInstruction(p, hp1) and
            MatchInstruction(hp1,A_MOV,[]) and
            not RegInInstruction(taicpu(p).oper[1]^.reg, hp1) and
            (
