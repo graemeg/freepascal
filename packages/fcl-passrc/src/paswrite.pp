@@ -436,9 +436,26 @@ procedure TPasWriter.WriteDummyExternalFunctions(aSection : TPasSection);
       end;
   end;
 
+  procedure DoCheckClass(C: TPasClassType; Force : Boolean; Prefix: String);
+  var
+    I: Integer;
+    M : TPasElement;
+
+  begin
+    if (C.ExternalName<>'') then
+      for I:=0 to C.Members.Count-1 do
+      begin
+        M:=TPasElement(C.members[I]);
+        if (M is TPasClassType) then
+          DoCheckClass(M as TPasClassType, Force, Prefix + C.SafeName + '.')
+        else
+          DoCheckElement(M, Force, Prefix + C.SafeName + '.');
+      end;
+  end;
+
 Var
-  I,J : Integer;
-  E,M : TPasElement;
+  I : Integer;
+  E : TPasElement;
   C : TPasClassType;
 
 begin
@@ -450,15 +467,7 @@ begin
     E:=TPasElement(aSection.Declarations[i]);
     DoCheckElement(E,False,'');
     if (E is TPasClassType) then
-      begin
-      C:=E as TPasClassType;
-      if (C.ExternalName<>'') then
-        For J:=0 to C.Members.Count-1 do
-          begin
-          M:=TPasElement(C.members[J]);
-          DoCheckElement(M,True,C.SafeName+'.');
-          end;
-      end;
+      DoCheckClass(E as TPasClassType, True, '');
     end;
   Addln;
   Addln('// end of dummy implementations');
