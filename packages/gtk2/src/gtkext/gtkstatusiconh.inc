@@ -48,6 +48,7 @@ var
   gtk_status_icon_set_screen : procedure(status_icon:PGtkStatusIcon; screen:PGdkScreen); cdecl;
   gtk_status_icon_get_screen : function(status_icon:PGtkStatusIcon):PGdkScreen; cdecl;
   gtk_status_icon_set_tooltip : procedure(status_icon:PGtkStatusIcon; tooltip_text:Pgchar); cdecl;
+  gtk_status_icon_set_tooltip_text : procedure(status_icon:PGtkStatusIcon; text:Pgchar); cdecl;
   gtk_status_icon_set_visible : procedure(status_icon:PGtkStatusIcon; visible:gboolean); cdecl;
   gtk_status_icon_get_visible : function(status_icon:PGtkStatusIcon):gboolean; cdecl;
   gtk_status_icon_set_blinking : procedure(status_icon:PGtkStatusIcon; blinking:gboolean); cdecl;

@@ -49,6 +49,7 @@ begin
   pointer(gtk_status_icon_set_screen):=GetProcAddress(gtkhandle,'gtk_status_icon_set_screen');
   pointer(gtk_status_icon_get_screen):=GetProcAddress(gtkhandle,'gtk_status_icon_get_screen');
   pointer(gtk_status_icon_set_tooltip):=GetProcAddress(gtkhandle,'gtk_status_icon_set_tooltip');
+  pointer(gtk_status_icon_set_tooltip_text):=GetProcAddress(gtkhandle,'gtk_status_icon_set_tooltip_text');
   pointer(gtk_status_icon_set_visible):=GetProcAddress(gtkhandle,'gtk_status_icon_set_visible');
   pointer(gtk_status_icon_get_visible):=GetProcAddress(gtkhandle,'gtk_status_icon_get_visible');
   pointer(gtk_status_icon_set_blinking):=GetProcAddress(gtkhandle,'gtk_status_icon_set_blinking');
