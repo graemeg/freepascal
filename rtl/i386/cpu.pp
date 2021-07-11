@@ -35,6 +35,14 @@ unit cpu;
     function AESSupport : boolean;inline;
     function AVXSupport: boolean;inline;
     function AVX2Support: boolean;inline;
+    function AVX512FSupport: boolean;inline;    
+    function AVX512DQSupport: boolean;inline;    
+    function AVX512IFMASupport: boolean;inline;    
+    function AVX512PFSupport: boolean;inline;    
+    function AVX512ERSupport: boolean;inline;    
+    function AVX512CDSupport: boolean;inline;    
+    function AVX512BWSupport: boolean;inline;    
+    function AVX512VLSupport: boolean;inline;    
     function FMASupport: boolean;inline;
     function POPCNTSupport: boolean;inline;
     function SSE41Support: boolean;inline;
@@ -57,6 +65,14 @@ unit cpu;
     var
       _AVXSupport,
       _AVX2Support,
+      _AVX512FSupport,
+      _AVX512DQSupport,
+      _AVX512IFMASupport,
+      _AVX512PFSupport,
+      _AVX512ERSupport,
+      _AVX512CDSupport,
+      _AVX512BWSupport,
+      _AVX512VLSupport,
       _AESSupport,
       _FMASupport,
       _POPCNTSupport,
@@ -167,11 +183,18 @@ unit cpu;
 
     procedure SetupSupport;
       var
-         _ecx,_ebx : longint;
+         _ecx,_ebx,maxcpuidvalue : longint;
       begin
         is_sse3_cpu:=false;
          if cpuid_support then
            begin
+              asm
+                 pushl %ebx
+                 movl $0,%eax
+                 cpuid
+                 movl %eax,maxcpuidvalue
+                 popl %ebx
+              end;
               asm
                  pushl %ebx
                  movl $1,%eax
@@ -199,18 +222,29 @@ unit cpu;
 
               _FMASupport:=_AVXSupport and ((_ecx and $1000)<>0);
 
-              asm
-                 pushl %ebx
-                 movl $7,%eax
-                 movl $0,%ecx
-                 cpuid
-                 movl %ebx,_ebx
-                 popl %ebx
-              end;
-              _AVX2Support:=_AVXSupport and ((_ebx and $20)<>0);
-              _BMI1Support:=(_ebx and $8)<>0;
-              _BMI2Support:=(_ebx and $100)<>0;
-              _RTMSupport:=((_ebx and $800)<>0);
+              if maxcpuidvalue>=7 then
+                begin
+                  asm
+                    pushl %ebx
+                    movl $7,%eax
+                    movl $0,%ecx
+                    cpuid
+                    movl %ebx,_ebx
+                    popl %ebx
+                  end;
+                  _AVX2Support:=_AVXSupport and ((_ebx and $20)<>0);
+                  _AVX512FSupport:=(_ebx and $10000)<>0;
+                  _AVX512DQSupport:=(_ebx and $20000)<>0;
+                  _AVX512IFMASupport:=(_ebx and $200000)<>0;
+                  _AVX512PFSupport:=(_ebx and $4000000)<>0;
+                  _AVX512ERSupport:=(_ebx and $8000000)<>0;
+                  _AVX512CDSupport:=(_ebx and $10000000)<>0;
+                  _AVX512BWSupport:=(_ebx and $40000000)<>0;
+                  _AVX512VLSupport:=(_ebx and $80000000)<>0;
+                  _BMI1Support:=(_ebx and $8)<>0;
+                  _BMI2Support:=(_ebx and $100)<>0;
+                  _RTMSupport:=((_ebx and $800)<>0);
+                end;
            end;
       end;
 
@@ -238,6 +272,54 @@ unit cpu;
     function AVX2Support: boolean;inline;
       begin
         result:=_AVX2Support;
+      end;
+
+
+    function AVX512FSupport: boolean;inline;
+      begin
+        result:=_AVX512FSupport;
+      end;
+
+
+    function AVX512DQSupport: boolean;inline;
+      begin
+        result:=_AVX512DQSupport;
+      end;
+
+
+    function AVX512IFMASupport: boolean;inline;    
+      begin
+        result:=_AVX512IFMASupport;
+      end;
+
+
+    function AVX512PFSupport: boolean;inline;    
+      begin
+        result:=_AVX512PFSupport;
+      end;
+
+
+    function AVX512ERSupport: boolean;inline;    
+      begin
+        result:=_AVX512ERSupport;
+      end;
+
+
+    function AVX512CDSupport: boolean;inline;    
+      begin
+        result:=_AVX512CDSupport;
+      end;
+
+
+    function AVX512BWSupport: boolean;inline;    
+      begin
+        result:=_AVX512BWSupport;
+      end;
+
+
+    function AVX512VLSupport: boolean;inline;    
+      begin
+        result:=_AVX512VLSupport;
       end;
 
 
