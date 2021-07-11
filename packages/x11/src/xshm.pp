@@ -65,34 +65,34 @@ type
         readOnly : TBool;
      end;
 
-function XShmQueryExtension(para1:PDisplay):TBoolResult;cdecl;external libX11;
-function XShmGetEventBase(para1:PDisplay):cint;cdecl;external libX11;
-function XShmQueryVersion(para1:PDisplay; para2:Pcint; para3:Pcint; para4:PBool):TBoolResult;cdecl;external libX11;
-function XShmPixmapFormat(para1:PDisplay):cint;cdecl;external libX11;
-function XShmAttach(para1:PDisplay; para2:PXShmSegmentInfo):TStatus;cdecl;external libX11;
-function XShmDetach(para1:PDisplay; para2:PXShmSegmentInfo):TStatus;cdecl;external libX11;
-function XShmPutImage(para1:PDisplay; para2:TDrawable; para3:TGC; para4:PXImage; para5:cint;
-           para6:cint; para7:cint; para8:cint; para9:cuint; para10:cuint;
-           para11:TBool):TStatus;cdecl;external libX11;
-function XShmGetImage(para1:PDisplay; para2:TDrawable; para3:PXImage; para4:cint; para5:cint;
-           para6:culong):TStatus;cdecl;external libX11;
-function XShmCreateImage(para1:PDisplay; para2:PVisual; para3:cuint; para4:cint; para5:Pchar;
-           para6:PXShmSegmentInfo; para7:cuint; para8:cuint):PXImage;cdecl;external libX11;
-function XShmCreatePixmap(para1:PDisplay; para2:TDrawable; para3:Pchar; para4:PXShmSegmentInfo; para5:cuint;
-           para6:cuint; para7:cuint):TPixmap;cdecl;external libX11;
+function XShmQueryExtension(dpy:PDisplay):TBoolResult;cdecl;external libX11;
+function XShmGetEventBase(dpy:PDisplay):cint;cdecl;external libX11;
+function XShmQueryVersion(dpy:PDisplay;majorVersion,minorVersion:Pcint;sharedPixmaps:PBool):TBoolResult;cdecl;external libX11;
+function XShmPixmapFormat(dpy:PDisplay):cint;cdecl;external libX11;
+function XShmAttach(dpy:PDisplay;shminfo:PXShmSegmentInfo):TStatus;cdecl;external libX11;
+function XShmDetach(dpy:PDisplay;shminfo:PXShmSegmentInfo):TStatus;cdecl;external libX11;
+function XShmPutImage(dpy:PDisplay;d:TDrawable;gc:TGC;image:PXImage;
+           src_x,src_y,dst_x,dst_y:cint;src_width,src_height:cuint;
+           send_event:TBool):TStatus;cdecl;external libX11;
+function XShmGetImage(dpy:PDisplay;d:TDrawable;image:PXImage;x,y:cint;
+           plane_mask:culong):TStatus;cdecl;external libX11;
+function XShmCreateImage(dpy:PDisplay;visual:PVisual;depth:cuint;format:cint;data:Pchar;
+           shminfo:PXShmSegmentInfo;width,height:cuint):PXImage;cdecl;external libX11;
+function XShmCreatePixmap(dpy:PDisplay;d:TDrawable;data:Pchar;shminfo:PXShmSegmentInfo;
+           width,height,depth:cuint):TPixmap;cdecl;external libX11;
 
 { overloaded functions to handle TBool parameters as actual booleans }
-function XShmPutImage(para1:PDisplay; para2:TDrawable; para3:TGC; para4:PXImage; para5:cint;
-           para6:cint; para7:cint; para8:cint; para9:cuint; para10:cuint;
-           para11:Boolean):TStatus;
+function XShmPutImage(dpy:PDisplay;d:TDrawable;gc:TGC;image:PXImage;
+           src_x,src_y,dst_x,dst_y:cint;src_width,src_height:cuint;
+           send_event:Boolean):TStatus;
 
 implementation
 
-function XShmPutImage(para1:PDisplay; para2:TDrawable; para3:TGC; para4:PXImage; para5:cint;
-           para6:cint; para7:cint; para8:cint; para9:cuint; para10:cuint;
-           para11:Boolean):TStatus;
+function XShmPutImage(dpy:PDisplay;d:TDrawable;gc:TGC;image:PXImage;
+           src_x,src_y,dst_x,dst_y:cint;src_width,src_height:cuint;
+           send_event:Boolean):TStatus;
 begin
-  XShmPutImage := XShmPutImage(para1,para2,para3,para4,para5,para6,para7,para8,para9,para10,Ord(para11));
+  XShmPutImage := XShmPutImage(dpy,d,gc,image,src_x,src_y,dst_x,dst_y,src_width,src_height,Ord(send_event));
 end;
 
 end.
