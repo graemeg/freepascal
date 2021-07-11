@@ -1038,7 +1038,7 @@ type
 {$IFDEF S}function{$ELSE}var{$ENDIF}sqlite3_vfs_unregister{$IFDEF D}: function{$ENDIF}(vfs: psqlite3_vfs): cint; cdecl;{$IFDEF S}external Sqlite3Lib;{$ENDIF}
 {$IFDEF S}function{$ELSE}var{$ENDIF}sqlite3_mutex_alloc{$IFDEF D}: function{$ENDIF}(n: cint): psqlite3_mutex; cdecl;{$IFDEF S}external Sqlite3Lib;{$ENDIF}
 {$IFDEF S}procedure{$ELSE}var{$ENDIF}sqlite3_mutex_free{$IFDEF D}: procedure{$ENDIF}(mtx: psqlite3_mutex); cdecl;{$IFDEF S}external Sqlite3Lib;{$ENDIF}
-{$IFDEF S}procedure{$ELSE}var{$ENDIF}sqlite3_mutex_ente{$IFDEF D}: procedure{$ENDIF}(mtx: psqlite3_mutex); cdecl;{$IFDEF S}external Sqlite3Lib;{$ENDIF}
+{$IFDEF S}procedure{$ELSE}var{$ENDIF}sqlite3_mutex_enter{$IFDEF D}: procedure{$ENDIF}(mtx: psqlite3_mutex); cdecl;{$IFDEF S}external Sqlite3Lib;{$ENDIF}
 {$IFDEF S}function{$ELSE}var{$ENDIF}sqlite3_mutex_try{$IFDEF D}: function{$ENDIF}(mtx: psqlite3_mutex): cint; cdecl;{$IFDEF S}external Sqlite3Lib;{$ENDIF}
 {$IFDEF S}procedure{$ELSE}var{$ENDIF}sqlite3_mutex_leave{$IFDEF D}: procedure{$ENDIF}(mtx: psqlite3_mutex); cdecl;{$IFDEF S}external Sqlite3Lib;{$ENDIF}
 {$IFDEF S}function{$ELSE}var{$ENDIF}sqlite3_mutex_held{$IFDEF D}: function{$ENDIF}(mtx: psqlite3_mutex): cint; cdecl;{$IFDEF S}external Sqlite3Lib;{$ENDIF}
@@ -1362,7 +1362,7 @@ begin
   pointer(sqlite3_soft_heap_limit64) := GetProcedureAddress(LibHandle,'sqlite3_soft_heap_limit64');
   pointer(sqlite3_reset_auto_extension) := GetProcedureAddress(LibHandle,'sqlite3_reset_auto_extension');
   pointer(sqlite3_mutex_free) := GetProcedureAddress(LibHandle,'sqlite3_mutex_free');
-  pointer(sqlite3_mutex_ente) := GetProcedureAddress(LibHandle,'sqlite3_mutex_ente');
+  pointer(sqlite3_mutex_enter) := GetProcedureAddress(LibHandle,'sqlite3_mutex_enter');
   pointer(sqlite3_mutex_leave) := GetProcedureAddress(LibHandle,'sqlite3_mutex_leave');
   pointer(sqlite3_backup_init) := GetProcedureAddress(LibHandle,'sqlite3_backup_init');
   pointer(sqlite3_backup_step) := GetProcedureAddress(LibHandle,'sqlite3_backup_step');
