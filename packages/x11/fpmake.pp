@@ -140,6 +140,12 @@ begin
     T.Dependencies.AddUnit('fontconfig');
     T:=P.Targets.AddUnit('xext.pas');
     T.Dependencies.AddUnit('xlib');
+    T:=P.Targets.AddUnit('mitmisc.pp');
+      with T.Dependencies do
+        begin
+          AddInclude('mitmiscconst.inc');
+          AddUnit('xlib');
+        end;
 
 {$ifndef ALLPACKAGES}
     Run;
