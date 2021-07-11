@@ -138,7 +138,7 @@ begin
     T.Dependencies.AddUnit('xlib');
     T.Dependencies.AddUnit('xrender');
     T.Dependencies.AddUnit('fontconfig');
-    T:=P.Targets.AddUnit('xext.pas');
+    T:=P.Targets.AddUnit('xext.pp');
     T.Dependencies.AddUnit('xlib');
     T:=P.Targets.AddUnit('mitmisc.pp');
       with T.Dependencies do
