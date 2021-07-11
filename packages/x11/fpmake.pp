@@ -146,6 +146,14 @@ begin
           AddInclude('mitmiscconst.inc');
           AddUnit('xlib');
         end;
+    T:=P.Targets.AddUnit('shape.pp');
+      with T.Dependencies do
+        begin
+          AddInclude('shapeconst.inc');
+          AddUnit('x');
+          AddUnit('xlib');
+          AddUnit('xutil');
+        end;
 
 {$ifndef ALLPACKAGES}
     Run;
