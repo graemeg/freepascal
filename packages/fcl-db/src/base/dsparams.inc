@@ -748,6 +748,12 @@ begin
   Value:=AValue;
 end;
 
+procedure TParam.SetAsByte(const AValue: LongInt);
+begin
+  FDataType:=ftByte;
+  Value:=AValue;
+end;
+
 Procedure TParam.SetAsBytes(const AValue: TBytes);
 begin
   FDataType:=ftVarBytes;
@@ -968,6 +974,7 @@ begin
   if Assigned(Field) then
     case FDataType of
       ftUnknown  : DatabaseErrorFmt(SUnknownParamFieldType,[Name],DataSet);
+      ftByte     : Field.AsInteger:=AsByte;
       // Need TField.AsSmallInt
       ftSmallint : Field.AsInteger:=AsSmallInt;
       // Need TField.AsWord
@@ -1009,6 +1016,7 @@ begin
     FDataType:=Field.DataType;
     case Field.DataType of
       ftUnknown  : DatabaseErrorFmt(SUnknownParamFieldType,[Name],DataSet);
+      ftByte     : AsByte:=Field.AsInteger;
       // Need TField.AsSmallInt
       ftSmallint : AsSmallint:=Field.AsInteger;
       // Need TField.AsWord
