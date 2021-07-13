@@ -2842,10 +2842,12 @@ writeln ( '> ', i4, ' ', bh.Singles[i4], ' ', Add );
       PFmt := Section.FmtDS; // start from decimal point until end
       i := length(BCDStr) - Scale + ord(Scale=0);
       dec(j1, Section.FmtEnd-Section.FmtDS);
-      j := j1 + 1;
+      j := j1 + 1; // points to decimal separator in output buffer
       while PFmt < Section.FmtEnd do
         PutFmtDigit(PFmt, i, j, 1);
-      je := j; // store position after last decimal digit
+      if j-j1=2 then // alone decimal separator at end of output buffer
+        dec(j);
+      je := j; // store position after last decimal digit (or any constant character) in output buffer
     end;
 
     // output whole number part of BCDStr
