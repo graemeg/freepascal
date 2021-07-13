@@ -225,7 +225,6 @@ implementation
 
      function gen_c_style_operator(ntyp:tnodetype;p1,p2:tnode) : tnode;
        var
-         hp    : tnode;
          hdef  : tdef;
          temp  : ttempcreatenode;
          newstatement : tstatementnode;
@@ -240,13 +239,7 @@ implementation
                result can be wrong }
            end;
 
-         hp:=p1;
-         while assigned(hp) and
-               (hp.nodetype in [derefn,subscriptn,vecn,typeconvn]) do
-           hp:=tunarynode(hp).left;
-         if not assigned(hp) then
-           internalerror(200410121);
-         if (hp.nodetype=calln) then
+         if might_have_sideeffects(p1,[mhs_exceptions]) then
            begin
              typecheckpass(p1);
              result:=internalstatements(newstatement);
