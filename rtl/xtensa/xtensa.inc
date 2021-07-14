@@ -32,21 +32,10 @@ begin
 end;
 
 {$ifdef fpc_abi_windowed}
-const
-  // Minimum call8 calls to force register spilling to stack for caller of forceSpilledRegs
-  spillcount = 6;
-
-procedure forceSpilledRegs(n: uint32); assembler; public name 'forcespilledregs';
-  label
-    done, fin;
+procedure forceSpilledRegs; assembler; public name 'forcespilledregs';
   asm
-    beqz a2, done
-    addi a10, a2, -1
-    call8 forcespilledregs
-    done:
-    bnez a2, fin
-    movi a15, 0
-    fin:
+    movi a2, 0
+    syscall
   end;
 
 procedure fixCodeAddress(var addr: pointer);
@@ -67,17 +56,13 @@ procedure fixCodeAddress(var addr: pointer);
 {$IFNDEF INTERNAL_BACKTRACE}
   {$define FPC_SYSTEM_HAS_GET_FRAME}
   function get_frame:pointer;assembler;
-    label
-      done;
     asm
       {$ifdef fpc_abi_windowed}
         // Force registers to spill onto stack
-        movi a10, spillcount
         call8 forcespilledregs
         // now get frame pointer of caller
         addi a2, a1, -12
         l32i a2, a2, 0
-        done:
       {$else}
         mov a2, a1
       {$endif}
@@ -89,7 +74,7 @@ procedure fixCodeAddress(var addr: pointer);
 function get_caller_addr(framebp:pointer;addr:pointer=nil):pointer;
   begin
     {$ifdef fpc_abi_windowed}
-      forceSpilledRegs(spillcount);
+      forceSpilledRegs;
       if (ptruint(framebp)>$3ff00000)and(ptruint(framebp)<$40000000) then
         begin
           get_caller_addr:=pointer((framebp-16)^);
@@ -108,7 +93,7 @@ function get_caller_frame(framebp:pointer;addr:pointer=nil):pointer;
     {$ifdef fpc_abi_windowed}
       if (ptruint(framebp)>$3ff00000)and(ptruint(framebp)<$40000000) then
         begin
-          forceSpilledRegs(spillcount);
+          forceSpilledRegs;
           get_caller_frame:=pointer((framebp-12)^);
         end
       else
@@ -125,7 +110,7 @@ function get_caller_frame(framebp:pointer;addr:pointer=nil):pointer;
     begin
       if (ptruint(framebp)>$3ff00000)and(ptruint(framebp)<$40000000) then
         begin
-          forceSpilledRegs(spillcount);
+          forceSpilledRegs;
           addr:=codepointer((framebp-16)^);
           framebp := pointer((framebp-12)^);
           fixCodeAddress(addr);
