@@ -1136,12 +1136,14 @@ var
                      5 include/unit path }
                   found:=false;
                   if sourcefn<>'' then
-                    Source_Time:=GetNamedFileTime(sourcefn)
-                  else
+                  begin
+                    temp_dir:=ExtractFilePath(SetDirSeparators(sourcefn));
+                    Source_Time:=GetNamedFileTime(temp_dir+hs);
+                    if Source_Time<>-1 then
+                      hs:=temp_dir+hs;
+                  end else
                     Source_Time:=-1;
-                  if Source_Time<>-1 then
-                    hs:=sourcefn
-                  else
+                  if Source_Time=-1 then
                     begin
                       Source_Time:=GetNamedFileTime(path+hs);
                       if Source_Time<>-1 then
