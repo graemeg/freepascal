@@ -3742,8 +3742,15 @@ unit aoptx86;
         { changes "lea (%reg1), %reg2" into "mov %reg1, %reg2" }
         if (taicpu(p).oper[0]^.ref^.base <> NR_NO) and
            (taicpu(p).oper[0]^.ref^.index = NR_NO) and
-           { do not mess with leas acessing the stack pointer }
-           (taicpu(p).oper[1]^.reg <> NR_STACK_POINTER_REG) and
+           (
+             { do not mess with leas accessing the stack pointer
+               unless it's a null operation }
+             (taicpu(p).oper[1]^.reg <> NR_STACK_POINTER_REG) or
+             (
+               (taicpu(p).oper[0]^.ref^.base = NR_STACK_POINTER_REG) and
+               (taicpu(p).oper[0]^.ref^.offset = 0)
+             )
+           ) and
            (not(Assigned(taicpu(p).oper[0]^.ref^.Symbol))) then
           begin
             if (taicpu(p).oper[0]^.ref^.offset = 0) then
