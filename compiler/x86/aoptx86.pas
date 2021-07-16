@@ -127,6 +127,7 @@ unit aoptx86;
 
         function PrePeepholeOptSxx(var p : tai) : boolean;
         function PrePeepholeOptIMUL(var p : tai) : boolean;
+        function PrePeepholeOptAND(var p : tai) : boolean;
 
         function OptPass1Test(var p: tai): boolean;
         function OptPass1Add(var p: tai): boolean;
@@ -1212,6 +1213,19 @@ unit aoptx86;
                     AsmL.InsertAfter(taicpu.op_const_reg(A_SHL, opsize, ShiftValue, taicpu(hp1).oper[1]^.reg),hp1);
               end;
             end;
+      end;
+
+
+    function TX86AsmOptimizer.PrePeepholeOptAND(var p : tai) : boolean;
+      begin
+        Result := False;
+        if MatchOperand(taicpu(p).oper[0]^, 0) and
+          not RegInUsedRegs(NR_DEFAULTFLAGS, UsedRegs) then
+          begin
+            DebugMsg(SPeepholeOptimization + 'AND 0 -> MOV 0', p);
+            taicpu(p).opcode := A_MOV;
+            Result := True;
+          end;
       end;
 
 
@@ -2594,6 +2608,39 @@ unit aoptx86;
                   end;
               end;
           end;
+
+        if (taicpu(hp1).opcode = A_OR) and
+          (taicpu(p).oper[1]^.typ = top_reg) and
+          MatchOperand(taicpu(p).oper[0]^, 0) and
+          MatchOperand(taicpu(hp1).oper[1]^, taicpu(p).oper[1]^.reg) then
+          begin
+            {   mov 0,  %reg
+                or  ###,%reg
+              Change to (only if the flags are not used):
+                mov ###,%reg
+            }
+            TransferUsedRegs(TmpUsedRegs);
+            UpdateUsedRegs(TmpUsedRegs, tai(p.Next));
+            if not (RegInUsedRegs(NR_DEFAULTFLAGS, TmpUsedRegs)) then
+              begin
+{$ifdef x86_64}
+                { OR only supports 32-bit sign-extended constants for 64-bit
+                  instructions, so compensate for this if the constant is
+                  encoded as a value greater than or equal to 2^31 }
+                if (taicpu(hp1).opsize = S_Q) and
+                  (taicpu(hp1).oper[0]^.typ = top_const) and
+                  (taicpu(hp1).oper[0]^.val >= $80000000) then
+                  taicpu(hp1).oper[0]^.val := taicpu(hp1).oper[0]^.val or $FFFFFFFF00000000;
+{$endif x86_64}
+
+                DebugMsg(SPeepholeOptimization + 'MOV 0 / OR -> MOV', p);
+                taicpu(hp1).opcode := A_MOV;
+                RemoveCurrentP(p, hp1);
+                Result := True;
+                Exit;
+              end;
+          end;
+
         { Next instruction is also a MOV ? }
         if MatchInstruction(hp1,A_MOV,[taicpu(p).opsize]) then
           begin

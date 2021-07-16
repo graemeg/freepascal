@@ -54,6 +54,8 @@ uses
                   result:=PrePeepholeOptIMUL(p);
                 A_SAR,A_SHR:
                   result:=PrePeepholeOptSxx(p);
+                A_AND:
+                  Result:=PrePeepholeOptAND(p);
                 else
                   ;
               end;
