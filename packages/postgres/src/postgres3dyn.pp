@@ -242,8 +242,8 @@ Procedure ReleasePostgres3;
 
 function PQsetdb(M_PGHOST,M_PGPORT,M_PGOPT,M_PGTTY,M_DBNAME : pchar) : ppgconn;
 
-var Postgres3LibraryHandle : TLibHandle;
-  Postgres3LoadedLibrary : String;
+var Postgres3LibraryHandle : TLibHandle= NilHandle;
+  Postgres3LoadedLibrary : String = '';
 
 implementation
 
@@ -421,7 +421,7 @@ begin
   EnterCriticalsection(libpgCriticalSection);
   try
     if RefCount > 0 then dec(RefCount);
-    if RefCount = 0 then
+    if (RefCount = 0) and ( Postgres3LibraryHandle <> nilhandle) then
       begin
       if not UnloadLibrary(Postgres3LibraryHandle) then inc(RefCount);
       ReleaseDllist;
